@@ -10,7 +10,9 @@ import {
   SET_SEARCH_TEXT,
   SET_LOADING,
   SET_TEXT,
-  SELECT_CHANGE
+  SELECT_CHANGE,
+  RESET_MODAL,
+  OPEN_MODAL
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -55,4 +57,13 @@ export const onSelectChangeAction = (value: string, id: string) => ({
   type: SELECT_CHANGE,
   value,
   id
+})
+
+export const openModalAction = (open: boolean) => ({
+  type: OPEN_MODAL,
+  open
+})
+
+export const resetModalAction = () => ({
+  type: RESET_MODAL
 })

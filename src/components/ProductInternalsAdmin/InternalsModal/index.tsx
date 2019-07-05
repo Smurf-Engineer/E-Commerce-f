@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Modal from 'antd/lib/modal'
+import get from 'lodash/get'
 import { Container, CloseIcon, Title } from './styledComponents'
 import messages from './messages'
 import { BLUE } from '../../../theme/colors'
@@ -18,21 +19,35 @@ import {
 } from './styledComponents'
 import closeIcon from '../../../assets/cancel-button.svg'
 import Select from 'antd/lib/select'
-import { ProductInternalsInfo } from '../../../types/common'
+import {
+  ProductInternalsInfo,
+  ProductCode,
+  GenderType,
+  ProductSize,
+  FitStyle,
+  BasicColor,
+  ProductColors,
+  CollectionType
+} from '../../../types/common'
 
 interface Props {
   open: boolean
   width?: string | number
   title?: string
   internalId: string
-  discountItemId: string
   productCode: string
   discountTypes: string[]
-  rate: number
-  discountActive: boolean
-  expiry: string
   loading: boolean
   productInternalsInfo: ProductInternalsInfo
+  gender: string
+  size: string
+  fitStyle: string
+  color: string
+  pocketZipper: string
+  frontZipper: string
+  binding: string
+  bibBrace: string
+  collection: string
   requestClose?: () => void
   formatMessage: (messageDescriptor: any) => string
   handleOnInputChange: (event: any) => void
@@ -47,18 +62,42 @@ const InternalsModal = ({
   requestClose,
   formatMessage,
   width,
-  discountTypes,
   handleOnInputChange,
   internalId,
-  discountItemId,
   handleOnSelectChange,
   productCode,
-  rate,
   onSaveDiscount,
-  expiry,
-  loading
+  loading,
+  productInternalsInfo,
+  gender: genderValue,
+  size,
+  fitStyle,
+  color,
+  pocketZipper,
+  frontZipper,
+  binding,
+  bibBrace,
+  collection
 }: Props) => {
-  console.log('YE ', productInternalsInfo)
+  const productsCodes = get(
+    productInternalsInfo,
+    'products',
+    []
+  ) as ProductCode[]
+  const genders = get(productInternalsInfo, 'genders', []) as GenderType[]
+  const sizes = get(productInternalsInfo, 'sizes', []) as ProductSize[]
+  const fitStyles = get(productInternalsInfo, 'fitStyles', []) as FitStyle[]
+  const basicColors = get(
+    productInternalsInfo,
+    'basicColors',
+    []
+  ) as BasicColor[]
+  const colors = get(productInternalsInfo, 'colors', []) as ProductColors[]
+  const collections = get(
+    productInternalsInfo,
+    'collections',
+    []
+  ) as CollectionType[]
 
   const selectProductCode = (value: string) =>
     handleOnSelectChange(value, 'productCode')
@@ -104,19 +143,19 @@ const InternalsModal = ({
               onSelect={selectProductCode}
               defaultValue={productCode}
             >
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+              {productsCodes.map(({ code }) => (
+                <Option key={code} value={code}>
+                  {code}
                 </Option>
               ))}
             </StyledSelect>
           </Column>
           <Column>
             <Label>{formatMessage(messages.gender)}</Label>
-            <StyledSelect onSelect={selectGender} defaultValue={productCode}>
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+            <StyledSelect onSelect={selectGender} defaultValue={genderValue}>
+              {genders.map(({ id, gender }) => (
+                <Option key={gender} value={id}>
+                  {gender}
                 </Option>
               ))}
             </StyledSelect>
@@ -125,20 +164,20 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.size)}</Label>
-            <StyledSelect onSelect={selectSize} defaultValue={productCode}>
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+            <StyledSelect onSelect={selectSize} defaultValue={size}>
+              {sizes.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
                 </Option>
               ))}
             </StyledSelect>
           </Column>
           <Column>
             <Label>{formatMessage(messages.fitStyle)}</Label>
-            <StyledSelect onSelect={selectFit} defaultValue={productCode}>
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+            <StyledSelect onSelect={selectFit} defaultValue={fitStyle}>
+              {fitStyles.map(({ info }) => (
+                <Option key={info} value={info}>
+                  {info}
                 </Option>
               ))}
             </StyledSelect>
@@ -147,10 +186,10 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.color)}</Label>
-            <StyledSelect onSelect={selectColor} defaultValue={productCode}>
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+            <StyledSelect onSelect={selectColor} defaultValue={color}>
+              {colors.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
                 </Option>
               ))}
             </StyledSelect>
@@ -159,11 +198,11 @@ const InternalsModal = ({
             <Label>{formatMessage(messages.pocketZipper)}</Label>
             <StyledSelect
               onSelect={selectPocketZipper}
-              defaultValue={productCode}
+              defaultValue={pocketZipper}
             >
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+              {basicColors.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
                 </Option>
               ))}
             </StyledSelect>
@@ -174,21 +213,21 @@ const InternalsModal = ({
             <Label>{formatMessage(messages.frontZipper)}</Label>
             <StyledSelect
               onSelect={selectFrontZipper}
-              defaultValue={productCode}
+              defaultValue={frontZipper}
             >
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+              {basicColors.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
                 </Option>
               ))}
             </StyledSelect>
           </Column>
           <Column>
             <Label>{formatMessage(messages.binding)}</Label>
-            <StyledSelect onSelect={selectBinding} defaultValue={productCode}>
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+            <StyledSelect onSelect={selectBinding} defaultValue={binding}>
+              {basicColors.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
                 </Option>
               ))}
             </StyledSelect>
@@ -197,23 +236,20 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.bibBrace)}</Label>
-            <StyledSelect onSelect={selectBibBrace} defaultValue={productCode}>
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+            <StyledSelect onSelect={selectBibBrace} defaultValue={bibBrace}>
+              {basicColors.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
                 </Option>
               ))}
             </StyledSelect>
           </Column>
           <Column>
             <Label>{formatMessage(messages.collection)}</Label>
-            <StyledSelect
-              onSelect={selectCollection}
-              defaultValue={productCode}
-            >
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
+            <StyledSelect onSelect={selectCollection} defaultValue={collection}>
+              {collections.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
                 </Option>
               ))}
             </StyledSelect>
@@ -225,9 +261,7 @@ const InternalsModal = ({
           </StyledButton>
           <ButtonWrapper color={BLUE}>
             <StyledButton
-              disabled={
-                !internalId.length || !discountItemId.length || !rate || !expiry
-              }
+              disabled={!internalId.length || !productCode.length}
               type="primary"
               onClick={onSaveDiscount}
               loading={loading}

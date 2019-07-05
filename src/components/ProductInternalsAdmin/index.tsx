@@ -36,6 +36,16 @@ interface Props {
   searchText: string
   productCode: string
   data: Data
+  gender: string
+  size: string
+  fitStyle: string
+  color: string
+  pocketZipper: string
+  frontZipper: string
+  binding: string
+  bibBrace: string
+  collection: string
+  modalOpen: boolean
   formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -45,6 +55,8 @@ interface Props {
   setLoadingAction: (loading: boolean) => void
   setTextAction: (field: string, value: string) => void
   onSelectChangeAction: (value: string, id: string) => void
+  openModalAction: (open: boolean) => void
+  resetModalAction: () => void
 }
 
 interface Data extends QueryProps {
@@ -81,7 +93,17 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       internalId,
       productCode,
       onSelectChangeAction,
-      data: { productInternalsInfo }
+      data: { productInternalsInfo },
+      gender,
+      size,
+      fitStyle,
+      color,
+      pocketZipper,
+      frontZipper,
+      binding,
+      bibBrace,
+      collection,
+      modalOpen
     } = this.props
 
     return (
@@ -105,8 +127,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
           interactiveHeaders={true}
         />
         <InternalsModal
-          open={false}
-          requestClose={this.handleOnCloseDiscountModal}
+          open={modalOpen}
+          requestClose={this.handleOnCloseModal}
           handleOnInputChange={this.handleOnInputChange}
           handleOnSelectChange={onSelectChangeAction}
           onSaveDiscount={this.handleOnSaveDiscount}
@@ -114,19 +136,31 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
             formatMessage,
             internalId,
             productCode,
-            discountItemId: '',
-            rate: 1,
-            discountActive: true,
-            expiry: '',
             loading: false,
-            productInternalsInfo
+            productInternalsInfo,
+            gender,
+            size,
+            fitStyle,
+            color,
+            pocketZipper,
+            frontZipper,
+            binding,
+            bibBrace,
+            collection
           }}
         />
       </Container>
     )
   }
-
-  handleOnAddInternal = () => {}
+  handleOnCloseModal = () => {
+    const { openModalAction } = this.props
+    openModalAction(false)
+  }
+  handleOnAddInternal = () => {
+    const { resetModalAction, openModalAction } = this.props
+    resetModalAction()
+    openModalAction(true)
+  }
 
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props

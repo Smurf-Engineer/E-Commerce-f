@@ -39,6 +39,20 @@ interface Props {
   onChangePage: (page: number) => void
 }
 
+const productHeaders = [
+  { title: 'internalId', id: 'internal_id' },
+  { title: 'productCode', id: 'product_code' },
+  { title: 'gender', id: 'gender' },
+  { title: 'size', id: 'size' },
+  { title: 'fitStyle', id: 'fit_style' },
+  { title: 'color', id: 'color' },
+  { title: 'frontZipper', id: 'front_zipper' },
+  { title: 'pocketZipper', id: 'pocket_zipper' },
+  { title: 'binding', id: 'binding' },
+  { title: 'bibBrace', id: 'bib_brace' },
+  { title: 'productCode', id: 'collection' }
+]
+
 const InternalsList = ({
   formatMessage,
   interactiveHeaders,
@@ -62,19 +76,6 @@ const InternalsList = ({
   if (!internals || !internals.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
-  const productHeaders = [
-    { title: 'internalId', id: 'internal_id' },
-    { title: 'productCode', id: 'product_code' },
-    { title: 'gender', id: 'gender' },
-    { title: 'size', id: 'size' },
-    { title: 'fitStyle', id: 'fit_style' },
-    { title: 'color', id: 'color' },
-    { title: 'frontZipper', id: 'front_zipper' },
-    { title: 'pocketZipper', id: 'pocket_zipper' },
-    { title: 'binding', id: 'binding' },
-    { title: 'bibBrace', id: 'bib_brace' },
-    { title: 'productCode', id: 'collection' }
-  ]
 
   const mobileHeaders = productHeaders.map(({ title, id }) => (
     <Header key={id}>{formatMessage(messages[title])}</Header>

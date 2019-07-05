@@ -8,10 +8,26 @@ export const getProductInternalsInfoQuery = gql`
   query getProductInternalsInfo {
     productInternalsInfo: getProductInternalsInfo {
       basicColors {
-        id
+        name
       }
       products {
         code
+      }
+      genders {
+        id
+        gender
+      }
+      sizes {
+        name
+      }
+      fitStyles {
+        info: description
+      }
+      colors {
+        name
+      }
+      collections {
+        name
       }
     }
   }

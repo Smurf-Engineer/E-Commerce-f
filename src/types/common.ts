@@ -1170,6 +1170,11 @@ export interface ProductColors {
   image: string
 }
 
+export interface ProductSize {
+  id: number
+  name: string
+}
+
 export interface Colors {
   colors: string
   stitchingColors: string
@@ -1294,7 +1299,11 @@ export interface ProductInternalsInfo {
   basicColors: BasicColor[]
   products: ProductCode[]
   genders: GenderType[]
-  sizes: Size[]
+  sizes: ProductSize[]
   fitStyles: FitStyle[]
   colors: ProductColors[]
+}
+
+export interface CollectionType {
+  name: string
 }

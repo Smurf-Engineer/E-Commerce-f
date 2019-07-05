@@ -10,17 +10,13 @@ import {
   SET_ID,
   SET_SEARCH_TEXT,
   SET_TEXT,
-  SELECT_CHANGE
+  SELECT_CHANGE,
+  OPEN_MODAL,
+  RESET_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
-export const initialState = fromJS({
-  currentPage: 1,
-  orderBy: 'id',
-  sort: 'desc',
-  id: -1,
-  searchText: '',
-  loading: false,
+const modalData = {
   internalId: '',
   productCode: '',
   gender: '',
@@ -32,6 +28,16 @@ export const initialState = fromJS({
   binding: '',
   bibBrace: '',
   collection: ''
+}
+export const initialState = fromJS({
+  currentPage: 1,
+  orderBy: 'id',
+  sort: 'desc',
+  id: -1,
+  searchText: '',
+  loading: false,
+  modalOpen: false,
+  ...{ ...modalData }
 })
 
 const productInternalsAdminReducer: Reducer<any> = (
@@ -53,6 +59,10 @@ const productInternalsAdminReducer: Reducer<any> = (
       return state.set(action.field, action.value)
     case SELECT_CHANGE:
       return state.set(action.id, action.value)
+    case OPEN_MODAL:
+      return state.set('modalOpen', action.open)
+    case RESET_MODAL:
+      return state.merge({ ...modalData })
     default:
       return state
   }

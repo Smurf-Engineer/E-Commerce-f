@@ -14,3 +14,5 @@ export const SET_SEARCH_TEXT = `${namespace}/SET_SEARCH_TEXT`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_TEXT = `${namespace}/SET_TEXT`
 export const SELECT_CHANGE = `${namespace}/SELECT_CHANGE`
+export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
+export const RESET_MODAL = `${namespace}/RESET_MODAL`
