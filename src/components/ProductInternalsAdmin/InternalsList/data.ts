@@ -35,13 +35,5 @@ export const getProductInternalsQuery = gql`
         collection
       }
     }
-    productInternalsInfo: getProductInternalsInfo {
-      basicColors {
-        id
-      }
-      products {
-        code
-      }
-    }
   }
 `

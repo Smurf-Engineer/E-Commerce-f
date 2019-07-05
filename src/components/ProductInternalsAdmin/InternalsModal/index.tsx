@@ -18,6 +18,7 @@ import {
 } from './styledComponents'
 import closeIcon from '../../../assets/cancel-button.svg'
 import Select from 'antd/lib/select'
+import { ProductInternalsInfo } from '../../../types/common'
 
 interface Props {
   open: boolean
@@ -31,6 +32,7 @@ interface Props {
   discountActive: boolean
   expiry: string
   loading: boolean
+  productInternalsInfo: ProductInternalsInfo
   requestClose?: () => void
   formatMessage: (messageDescriptor: any) => string
   handleOnInputChange: (event: any) => void
@@ -56,6 +58,8 @@ const InternalsModal = ({
   expiry,
   loading
 }: Props) => {
+  console.log('YE ', productInternalsInfo)
+
   const selectProductCode = (value: string) =>
     handleOnSelectChange(value, 'productCode')
   const selectGender = (value: string) => handleOnSelectChange(value, 'gender')

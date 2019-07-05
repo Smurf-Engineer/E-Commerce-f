@@ -2,7 +2,7 @@
  * ProductInternalsAdmin Component - Created by eduardoquintero on 03/07/19.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { isNumber } from '../../utils/utilsFiles'
@@ -14,10 +14,18 @@ import {
   SearchInput,
   AddInternalButton
 } from './styledComponents'
+import { getProductInternalsInfoQuery } from './data'
 import List from './InternalsList'
 import InternalsModal from './InternalsModal'
 import messages from './messages'
-import { sorts, ProductInternal, Message } from '../../types/common'
+import {
+  sorts,
+  ProductInternal,
+  Message,
+  QueryProps,
+  BasicColor,
+  ProductCode
+} from '../../types/common'
 
 interface Props {
   history: any
@@ -27,6 +35,7 @@ interface Props {
   internalId: string
   searchText: string
   productCode: string
+  data: Data
   formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -36,6 +45,13 @@ interface Props {
   setLoadingAction: (loading: boolean) => void
   setTextAction: (field: string, value: string) => void
   onSelectChangeAction: (value: string, id: string) => void
+}
+
+interface Data extends QueryProps {
+  productInternalsInfo: {
+    basicColors: BasicColor[]
+    products: ProductCode[]
+  }
 }
 
 interface StateProps {
@@ -64,7 +80,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       searchText,
       internalId,
       productCode,
-      onSelectChangeAction
+      onSelectChangeAction,
+      data: { productInternalsInfo }
     } = this.props
 
     return (
@@ -98,11 +115,11 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
             internalId,
             productCode,
             discountItemId: '',
-            discountTypes: ['%'],
             rate: 1,
             discountActive: true,
             expiry: '',
-            loading: false
+            loading: false,
+            productInternalsInfo
           }}
         />
       </Container>
@@ -150,6 +167,11 @@ const mapStateToProps = (state: any) =>
   state.get('productInternalsAdmin').toJS()
 
 const ProductInternalsAdminEnhance = compose(
+  graphql(getProductInternalsInfoQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
   connect(
     mapStateToProps,
     { ...ProductInternalActions }

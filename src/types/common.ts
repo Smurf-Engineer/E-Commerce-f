@@ -1280,3 +1280,21 @@ export interface ProductTilePlaceHolder {
   image?: string
   sport_id?: string | null
 }
+
+export interface BasicColor {
+  id: number
+  name: string
+}
+
+export interface ProductCode {
+  code: string
+}
+
+export interface ProductInternalsInfo {
+  basicColors: BasicColor[]
+  products: ProductCode[]
+  genders: GenderType[]
+  sizes: Size[]
+  fitStyles: FitStyle[]
+  colors: ProductColors[]
+}
