@@ -44,7 +44,8 @@ export const initialState = fromJS({
     [ImageTypes.DESKTOP]: '',
     [ImageTypes.MOBILE]: '',
     url: '',
-    loading: false
+    loading: false,
+    id: null
   },
   secondaryHeader: [],
   mainHeaderLoading: {
@@ -84,6 +85,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       )
     case SET_HOMEPAGE_INFO: {
       const {
+        id,
         homepageImages,
         headerImageLink,
         headerImage,
@@ -111,7 +113,8 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
           return mainHeader.merge({
             [ImageTypes.DESKTOP]: headerImage,
             [ImageTypes.MOBILE]: headerImageMobile,
-            url: headerImageLink
+            url: headerImageLink,
+            id
           })
         })
         return map

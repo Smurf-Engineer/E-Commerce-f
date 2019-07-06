@@ -39,7 +39,12 @@ import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
-import { QueryProps, ProductTiles } from '../../types/common'
+import {
+  QueryProps,
+  ProductTiles,
+  Product,
+  HomepageImagesType
+} from '../../types/common'
 
 interface Data extends QueryProps {
   files: any
@@ -64,6 +69,8 @@ interface Props extends RouteComponentProps<any> {
   headerImage: string
   headerImageLink: string
   productTiles: ProductTiles[]
+  featuredProducts: Product[]
+  homepageImages: HomepageImagesType[]
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -81,9 +88,11 @@ export class Home extends React.Component<Props, {}> {
       client: { query }
     } = this.props
     const queryParams = queryString.parse(search)
+
     try {
       const response = await query({
         query: getHomepageInfo,
+        variables: { sportRoute: params.sportRoute },
         fetchPolicy: 'network-only'
       })
       dispatch(setHomepageInfoAction(response.data.getHomepageContent))
@@ -147,7 +156,9 @@ export class Home extends React.Component<Props, {}> {
       clientInfo,
       headerImageMobile,
       headerImage,
-      productTiles
+      productTiles,
+      featuredProducts,
+      homepageImages
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
@@ -163,6 +174,15 @@ export class Home extends React.Component<Props, {}> {
         {...{ history, SearchResults }}
       />
     ) : null
+
+    const featured = featuredProducts && !!featuredProducts.length && (
+      <FeaturedProducts
+        formatMessage={intl.formatMessage}
+        openQuickView={this.handleOnQuickView}
+        currentCurrency={currentCurrency || config.defaultCurrency}
+        {...{ history, featuredProducts }}
+      />
+    )
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -208,13 +228,8 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
-          <FeaturedProducts
-            formatMessage={intl.formatMessage}
-            openQuickView={this.handleOnQuickView}
-            currentCurrency={currentCurrency || config.defaultCurrency}
-            {...{ history }}
-          />
-          <FeaturedContent {...{ history }} />
+          {featured}
+          <FeaturedContent {...{ history }} featuredContent={homepageImages} />
           <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />

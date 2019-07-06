@@ -1228,6 +1228,7 @@ export interface DesignSearchCode {
 export interface NavbarSports {
   name: string
   menuOpen: boolean
+  route: string
 }
 export interface SimpleCart {
   id: number
@@ -1243,6 +1244,20 @@ export interface SportType {
   navbar: boolean
 }
 
+export interface ProductInternal {
+  id?: number
+  internalId: string
+  productCode: number
+  gender: string
+  size: string
+  fitStyle?: string
+  color?: string
+  frontZipper?: string
+  pocketZipper?: string
+  binding?: string
+  bibBrace?: string
+  collection: string
+}
 export interface HeaderImagePlaceHolder {
   id?: number
   desktopImage?: string
@@ -1265,4 +1280,11 @@ export interface ProductTilePlaceHolder {
   contentTile?: string
   image?: string
   sport_id?: string | null
+}
+
+export interface HomepageImagesType {
+  id: number
+  desktopImage: string
+  mobileImage: string
+  url: string
 }

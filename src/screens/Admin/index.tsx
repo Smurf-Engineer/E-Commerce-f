@@ -17,6 +17,7 @@ import { Login } from './Login'
 import logo from '../../assets/jakroo_logo.svg'
 import AdminLayout from '../../components/AdminLayout'
 import ProductCatalog from '../../components/ProductCatalog'
+import ProductInternalsAdmin from '../../components/ProductInternalsAdmin'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
@@ -188,6 +189,12 @@ export class Admin extends React.Component<Props, {}> {
         <Route
           path="/admin/products"
           render={() => <ProductCatalog {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/products-internal"
+          render={() => (
+            <ProductInternalsAdmin {...{ history, formatMessage }} />
+          )}
         />
         <Route
           path="/admin/design-lab"

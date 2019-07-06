@@ -25,6 +25,16 @@ interface Region {
   realCountryCode: string
 }
 
+const sportRoutes = [
+  '/cycling',
+  '/triathlon',
+  '/nordic',
+  '/active',
+  '/mountain_bike',
+  '/road_bike',
+  '/training',
+  '/run'
+]
 server
   .set('trust proxy', true)
   .disable('x-powered-by')
@@ -43,6 +53,7 @@ server
       currency: 'usd',
       realCountryCode: 'us'
     }
+
     try {
       const resultFetch = await fetch(
         `${config.graphqlUriBase}region?ip=${req.ip}`
@@ -52,10 +63,16 @@ server
       console.error(error)
     }
 
+    const redirectUrl = `/${locale.code}?lang=${locale.lang}&currency=${
+      locale.currency
+    }`
     if (location === '/') {
-      res.redirect(
-        `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
-      )
+      res.redirect(redirectUrl)
+      return
+    }
+
+    if (sportRoutes.includes(location)) {
+      res.redirect(`${location}${redirectUrl}`)
       return
     }
 

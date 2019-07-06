@@ -75,14 +75,12 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   handleOnGoHome = () => {
-    const {
-      history,
-      currentCurrency,
-      currentRegion,
-      currentLanguage
-    } = this.props
-    history.push(
-      `/${currentRegion}?lang=${currentLanguage}&currency=${currentCurrency}`
+    const { currentCurrency, currentRegion, currentLanguage } = this.props
+    // TODO: temporal solution to avoid the site crashing when you
+    // click on Jakroo's logo in the menuBar from the product-catalogue screen
+    window.location.replace(
+      `/${currentRegion || 'us'}?lang=${currentLanguage ||
+        'en'}&currency=${currentCurrency}`
     )
   }
 
