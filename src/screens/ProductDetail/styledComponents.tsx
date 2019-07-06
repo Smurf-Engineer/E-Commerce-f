@@ -68,7 +68,7 @@ export const Title = styled.div`
 
 export const HowItFits = styled.div`
   margin: 16px 0;
-  margin-bottom: 45px;
+  margin-bottom: 16px;
   height: 40px;
   width: 190px;
   color: white;
@@ -439,14 +439,6 @@ export const DownloadTemplateContainer = styled.div`
 `
 export const DownloadAnchor = styled.a`
   display: flex;
-`
-export const AvailableLabel = styled.div`
-  margin-top: 15px;
-  height: 22px;
-  color: #5f6062;
-  font-size: 16px;
-  font-style: italic;
-  line-height: 22px;
 `
 
 export const DownloadImg = styled.img`

@@ -48,7 +48,6 @@ import {
   QuestionSpan, // Downloadtemplate,
   // DownloadTemplateContainer,
   // DownloadAnchor,
-  AvailableLabel,
   // DownloadImg,
   DetailsList,
   DetailsListItem,
@@ -79,14 +78,12 @@ import {
   ProductColors,
   ProductFile
 } from '../../types/common'
-import { ProductGenders } from './constants'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 const WHITENAME = 'White'
-const { Men, Women, Unisex } = ProductGenders
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -228,19 +225,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = product
     const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag.replace(/_/, ' ')
-
-    const maleGender = genders.find(x => x.name === Men)
-    const femaleGender = genders.find(x => x.name === Women)
-    const unisexGender = genders.find(x => x.name === Unisex)
-
-    let genderMessage = messages.maleGenderLabel
-    if (unisexGender) {
-      genderMessage = messages.unisexGenderLabel
-    } else if (femaleGender) {
-      genderMessage = maleGender
-        ? messages.unisexGenderLabel
-        : messages.femaleGenderLabel
-    }
 
     let renderPrices
 
@@ -505,6 +489,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                         <Render3D
                           customProduct={true}
                           designId={0}
+                          phoneView={true}
                           textColor="white"
                           isProduct={true}
                           {...{ product }}
@@ -588,7 +573,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </MobileButtonWrapper>
                 )}
                 <Description>{description}</Description>
-                <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
                 <BannerMaterialSection>
                   {bannerMaterials.map((banner: ProductFile) => (
                     <BannerMaterial src={banner.url} />
