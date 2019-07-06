@@ -25,6 +25,16 @@ interface Region {
   realCountryCode: string
 }
 
+const sportRoutes = [
+  '/cycling',
+  '/triathlon',
+  '/nordic',
+  '/active',
+  '/mountain_bike',
+  '/road_bike',
+  '/training',
+  '/run'
+]
 server
   .set('trust proxy', true)
   .disable('x-powered-by')
@@ -44,17 +54,6 @@ server
       realCountryCode: 'us'
     }
 
-    let sportRoutes = {
-      CYCLING: '/cycling',
-      TRIATHLON: '/triathlon',
-      NORDIC: '/nordic',
-      ACTIVE: '/active',
-      MOUNTAIN_BIKE: '/mountain_bike',
-      ROAD_BIKE: '/road_bike',
-      TRAINING: '/training',
-      RUN: '/run'
-    }
-
     try {
       const resultFetch = await fetch(
         `${config.graphqlUriBase}region?ip=${req.ip}`
@@ -72,33 +71,9 @@ server
       return
     }
 
-    switch (location) {
-      case sportRoutes.CYCLING:
-        res.redirect(`${sportRoutes.CYCLING}${redirectUrl}`)
-        return
-      case sportRoutes.TRIATHLON:
-        res.redirect(`${sportRoutes.TRIATHLON}${redirectUrl}`)
-        return
-      case sportRoutes.NORDIC:
-        res.redirect(`${sportRoutes.NORDIC}${redirectUrl}`)
-        return
-      case sportRoutes.ACTIVE:
-        res.redirect(`${sportRoutes.ACTIVE}${redirectUrl}`)
-        return
-      case sportRoutes.MOUNTAIN_BIKE:
-        res.redirect(`${sportRoutes.MOUNTAIN_BIKE}${redirectUrl}`)
-        return
-      case sportRoutes.ROAD_BIKE:
-        res.redirect(`${sportRoutes.ROAD_BIKE}${redirectUrl}`)
-        return
-      case sportRoutes.TRAINING:
-        res.redirect(`${sportRoutes.TRAINING}${redirectUrl}`)
-        return
-      case sportRoutes.RUN:
-        res.redirect(`${sportRoutes.RUN}${redirectUrl}`)
-        return
-      default:
-        break
+    if (sportRoutes.includes(location)) {
+      res.redirect(`${location}${redirectUrl}`)
+      return
     }
 
     const parser = new UAParser(req.headers['user-agent'] as string)
