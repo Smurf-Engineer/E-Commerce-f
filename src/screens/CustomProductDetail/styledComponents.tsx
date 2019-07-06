@@ -67,7 +67,7 @@ export const TitleName = styled.div`
 `
 export const HowItFits = styled.div`
   margin: 16px 0;
-  margin-bottom: 45px;
+  margin-bottom: 16px;
   height: 40px;
   width: 190px;
   color: white;
