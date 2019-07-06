@@ -48,6 +48,7 @@ interface Props {
   binding: string
   bibBrace: string
   collection: string
+  id: number
   requestClose?: () => void
   formatMessage: (messageDescriptor: Message) => string
   handleOnInputChange: (event: any) => void
@@ -79,7 +80,8 @@ const InternalsModal = ({
   binding,
   bibBrace,
   collection,
-  deleteProduct
+  deleteProduct,
+  id
 }: Props) => {
   const productsCodes = get(
     productInternalsInfo,
@@ -129,7 +131,9 @@ const InternalsModal = ({
         onCancel={requestClose}
       >
         <CloseIcon src={closeIcon} onClick={requestClose} />
-        <Title>{formatMessage(messages.newInternal)}</Title>
+        <Title>
+          {formatMessage(messages[id >= 0 ? 'editInternal' : 'newInternal'])}
+        </Title>
         <Label>{formatMessage(messages.internalId)}</Label>
         <StyledInput
           id={'internalId'}

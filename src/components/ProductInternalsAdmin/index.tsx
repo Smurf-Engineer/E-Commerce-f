@@ -61,6 +61,7 @@ interface Props {
   collection: string
   id: number
   modalOpen: boolean
+  loading: boolean
   formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -123,7 +124,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       bibBrace,
       collection,
       modalOpen,
-      loading
+      loading,
+      id
     } = this.props
 
     return (
@@ -167,7 +169,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
             frontZipper,
             binding,
             bibBrace,
-            collection
+            collection,
+            id
           }}
         />
       </Container>
