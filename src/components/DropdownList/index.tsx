@@ -5,8 +5,10 @@ import * as React from 'react'
 import Popover from 'antd/lib/popover'
 import { connect } from 'react-redux'
 import { compose, withApollo } from 'react-apollo'
+import get from 'lodash/get'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
+import { History } from 'history'
 import MenuSports from '../MenuSports'
 import * as thunkActions from './thunkActions'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants'
@@ -16,6 +18,7 @@ import {
   setMenuSportSelectedAction,
   setGenderSportAction
 } from './actions'
+import { sportRoutePosition } from './constants'
 import { Filter } from '../../types/common'
 import {
   Option,
@@ -31,10 +34,11 @@ const WOMEN = 'women'
 export interface Option {
   label: string
   menuOpen: boolean
+  route: string
 }
 
 interface Props {
-  history: any
+  history: History
   dispatch: any
   client: any
   genderSportSelected: number
@@ -43,6 +47,7 @@ interface Props {
   menuGender: any
   currentCurrency: string
   sports: Filter[]
+  currentRegion: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -147,7 +152,7 @@ export class DropdownList extends React.PureComponent<Props> {
     }
   }
 
-  handleOnHideSportsMenu = (visible: boolean, index: number) => {
+  handleOnHideSportsMenu = (index: number) => (visible: boolean) => {
     const { dispatch } = this.props
     dispatch(setMenuSportSelectedAction(index, visible))
 
@@ -170,50 +175,78 @@ export class DropdownList extends React.PureComponent<Props> {
       history,
       sports
     } = this.props
+
+    const pathName = get(history, 'location.pathname', '')
+    const sportRoute = pathName && pathName.split('/')
     const sportMenus =
       sportOptions &&
-      sportOptions.map(({ label: name, menuOpen }, index) => (
-        <Menu.Item key={name}>
-          <Popover
-            overlayStyle={overStyle}
-            trigger="hover"
-            placement="bottom"
-            visible={menuOpen}
-            mouseEnterDelay={0.3}
-            onVisibleChange={isVisible =>
-              this.handleOnHideSportsMenu(isVisible, index)
-            }
-            content={
-              <MenuSports
-                {...{
-                  sports,
-                  formatMessage,
-                  currentCurrency,
-                  history,
-                  name
-                }}
-                visible={menuOpen}
-                type={index}
-                onPressSeeAll={this.handleOnSeeAll}
-                onPressQuickView={this.handleOnQuickView}
-                onPressCustomize={this.handleOnCustomize}
-                onPressThumbnail={this.handleOnHideSportsMenu}
-              />
-            }
-          >
-            <OptionDropdown>{name}</OptionDropdown>
-          </Popover>
-        </Menu.Item>
-      ))
+      sportOptions.map(({ label: name, menuOpen, route }, index) => {
+        const sportSelected = sportRoute[sportRoutePosition] === route
+        return (
+          <Menu.Item key={name}>
+            <Popover
+              overlayStyle={overStyle}
+              trigger="hover"
+              placement="bottom"
+              visible={menuOpen}
+              mouseEnterDelay={0.3}
+              onVisibleChange={this.handleOnHideSportsMenu(index)}
+              content={
+                <MenuSports
+                  {...{
+                    sports,
+                    formatMessage,
+                    currentCurrency,
+                    history,
+                    name
+                  }}
+                  visible={menuOpen}
+                  type={index}
+                  onPressSeeAll={this.handleOnSeeAll}
+                  onPressQuickView={this.handleOnQuickView}
+                  onPressCustomize={this.handleOnCustomize}
+                  onPressThumbnail={this.handleOnHideSportsMenu}
+                />
+              }
+            >
+              <OptionDropdown
+                selected={sportSelected}
+                id={route}
+                onClick={this.handleRedirect}
+              >
+                {name}
+              </OptionDropdown>
+            </Popover>
+          </Menu.Item>
+        )
+      })
     return (
       <Menu mode="horizontal" selectable={false} style={menuStyle}>
         {sportMenus}
       </Menu>
     )
   }
+
+  handleRedirect = ({
+    currentTarget: { id }
+  }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { history, currentRegion } = this.props
+    const {
+      location: { search }
+    } = history
+    const path = `/${id}/${currentRegion}${search}`
+    window.location.replace(path)
+  }
 }
 
-const mapStateToProps = (state: any) => state.get('menu').toJS()
+const mapStateToProps = (state: any) => {
+  const menu = state.get('menu').toJS()
+  const region = state.get('languageProvider').toJS()
+  return {
+    ...menu,
+    ...region
+  }
+}
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 

@@ -27,16 +27,16 @@ import {
   FitStyle,
   BasicColor,
   ProductColors,
-  CollectionType
+  CollectionType,
+  Message
 } from '../../../types/common'
 
 interface Props {
   open: boolean
   width?: string | number
   title?: string
-  internalId: string
-  productCode: string
-  discountTypes: string[]
+  internalId: number
+  productCode: number
   loading: boolean
   productInternalsInfo: ProductInternalsInfo
   gender: string
@@ -49,10 +49,11 @@ interface Props {
   bibBrace: string
   collection: string
   requestClose?: () => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   handleOnInputChange: (event: any) => void
   handleOnSelectChange: (value: string, id: string) => void
-  onSaveDiscount: () => void
+  onSave: () => void
+  deleteProduct: () => void
 }
 
 const { Option } = Select
@@ -66,7 +67,7 @@ const InternalsModal = ({
   internalId,
   handleOnSelectChange,
   productCode,
-  onSaveDiscount,
+  onSave,
   loading,
   productInternalsInfo,
   gender: genderValue,
@@ -77,7 +78,8 @@ const InternalsModal = ({
   frontZipper,
   binding,
   bibBrace,
-  collection
+  collection,
+  deleteProduct
 }: Props) => {
   const productsCodes = get(
     productInternalsInfo,
@@ -123,7 +125,7 @@ const InternalsModal = ({
         footer={null}
         closable={false}
         destroyOnClose={true}
-        onOk={onSaveDiscount}
+        onOk={onSave}
         onCancel={requestClose}
       >
         <CloseIcon src={closeIcon} onClick={requestClose} />
@@ -153,8 +155,8 @@ const InternalsModal = ({
           <Column>
             <Label>{formatMessage(messages.gender)}</Label>
             <StyledSelect onSelect={selectGender} defaultValue={genderValue}>
-              {genders.map(({ id, gender }) => (
-                <Option key={gender} value={id}>
+              {genders.map(({ gender }) => (
+                <Option key={gender} value={gender}>
                   {gender}
                 </Option>
               ))}
@@ -256,14 +258,14 @@ const InternalsModal = ({
           </Column>
         </Row>
         <ButtonsContainer>
-          <StyledButton disabled={loading} onClick={requestClose}>
+          <StyledButton disabled={loading} onClick={deleteProduct}>
             {formatMessage(messages.delete)}
           </StyledButton>
           <ButtonWrapper color={BLUE}>
             <StyledButton
-              disabled={!internalId.length || !productCode.length}
+              disabled={!internalId || !productCode}
               type="primary"
-              onClick={onSaveDiscount}
+              onClick={onSave}
               loading={loading}
             >
               {formatMessage(messages.save)}

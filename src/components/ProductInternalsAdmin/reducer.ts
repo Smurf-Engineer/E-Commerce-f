@@ -7,33 +7,35 @@ import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
   RESET_DATA,
-  SET_ID,
   SET_SEARCH_TEXT,
   SET_TEXT,
   SELECT_CHANGE,
   OPEN_MODAL,
-  RESET_MODAL
+  RESET_MODAL,
+  SET_INTERNAL_TO_UPDATE,
+  SET_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
 const modalData = {
+  id: -1,
   internalId: '',
-  productCode: '',
-  gender: '',
-  size: '',
-  fitStyle: '',
-  color: '',
-  pocketZipper: '',
-  frontZipper: '',
-  binding: '',
-  bibBrace: '',
-  collection: ''
+  productCode: null,
+  gender: null,
+  size: null,
+  fitStyle: null,
+  color: null,
+  pocketZipper: null,
+  frontZipper: null,
+  binding: null,
+  bibBrace: null,
+  collection: null
 }
+
 export const initialState = fromJS({
   currentPage: 1,
   orderBy: 'id',
   sort: 'desc',
-  id: -1,
   searchText: '',
   loading: false,
   modalOpen: false,
@@ -49,8 +51,6 @@ const productInternalsAdminReducer: Reducer<any> = (
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
-    case SET_ID:
-      return state.set('id', action.id)
     case RESET_DATA:
       return initialState
     case SET_SEARCH_TEXT:
@@ -63,6 +63,15 @@ const productInternalsAdminReducer: Reducer<any> = (
       return state.set('modalOpen', action.open)
     case RESET_MODAL:
       return state.merge({ ...modalData })
+    case SET_INTERNAL_TO_UPDATE: {
+      return state.merge({
+        ...action.internal,
+        modalOpen: true,
+        loading: false
+      })
+    }
+    case SET_LOADING:
+      return state.set('loading', action.loading)
     default:
       return state
   }

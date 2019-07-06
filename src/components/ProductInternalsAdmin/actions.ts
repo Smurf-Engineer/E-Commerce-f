@@ -6,16 +6,17 @@ import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
   RESET_DATA,
-  SET_ID,
+  SET_INTERNAL_ID,
   SET_SEARCH_TEXT,
   SET_LOADING,
   SET_TEXT,
   SELECT_CHANGE,
   RESET_MODAL,
-  OPEN_MODAL
+  OPEN_MODAL,
+  SET_INTERNAL_TO_UPDATE
 } from './constants'
 
-import { AnyAction, sorts } from '../../types/common'
+import { AnyAction, sorts, ProductInternal } from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
   type: SET_ORDER_BY,
@@ -32,9 +33,9 @@ export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
 })
 
-export const setIdAction = (id: number): AnyAction => ({
-  type: SET_ID,
-  id
+export const setInternalIdAction = (internalId: string): AnyAction => ({
+  type: SET_INTERNAL_ID,
+  internalId
 })
 
 export const setSearchTextAction = (searchText: string) => ({
@@ -66,4 +67,9 @@ export const openModalAction = (open: boolean) => ({
 
 export const resetModalAction = () => ({
   type: RESET_MODAL
+})
+
+export const setInternalToUpdate = (internal: ProductInternal) => ({
+  type: SET_INTERNAL_TO_UPDATE,
+  internal
 })

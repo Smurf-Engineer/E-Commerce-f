@@ -1233,6 +1233,7 @@ export interface DesignSearchCode {
 export interface NavbarSports {
   name: string
   menuOpen: boolean
+  route: string
 }
 export interface SimpleCart {
   id: number
@@ -1250,7 +1251,7 @@ export interface SportType {
 
 export interface ProductInternal {
   id?: number
-  internalId: string
+  internalId: number
   productCode: number
   gender: string
   size: string
@@ -1260,7 +1261,22 @@ export interface ProductInternal {
   pocketZipper?: string
   binding?: string
   bibBrace?: string
-  collection: string
+  collection?: string
+}
+
+export interface ProductInternalInput {
+  id?: number
+  internal_id: number
+  product_code: number
+  gender: string
+  size: string
+  fit_style?: string
+  color?: string
+  front_zipper?: string
+  pocket_zipper?: string
+  binding?: string
+  bib_brace?: string
+  collection?: string
 }
 export interface HeaderImagePlaceHolder {
   id?: number
@@ -1292,7 +1308,7 @@ export interface BasicColor {
 }
 
 export interface ProductCode {
-  code: string
+  code: number
 }
 
 export interface ProductInternalsInfo {
@@ -1306,4 +1322,11 @@ export interface ProductInternalsInfo {
 
 export interface CollectionType {
   name: string
+}
+
+export interface HomepageImagesType {
+  id: number
+  desktopImage: string
+  mobileImage: string
+  url: string
 }
