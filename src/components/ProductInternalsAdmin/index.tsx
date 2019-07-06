@@ -211,12 +211,12 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
     }
     setLoadingAction(true)
     try {
-      await this.updateAddProduct(isUpdating, productInternal)
+      await this.upsertProduct(isUpdating, productInternal)
     } catch (error) {
       message.error(formatMessage(messages.unexpectedError))
     }
   }
-  async updateAddProduct(
+  async upsertProduct(
     isUpdating: boolean,
     productInternal: ProductInternalInput
   ) {

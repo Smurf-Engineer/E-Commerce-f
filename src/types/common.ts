@@ -1318,6 +1318,7 @@ export interface ProductInternalsInfo {
   sizes: ProductSize[]
   fitStyles: FitStyle[]
   colors: ProductColors[]
+  collections: CollectionType[]
 }
 
 export interface CollectionType {

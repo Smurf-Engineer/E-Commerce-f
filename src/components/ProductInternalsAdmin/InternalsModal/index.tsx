@@ -88,37 +88,39 @@ const InternalsModal = ({
     'products',
     []
   ) as ProductCode[]
-  const genders = get(productInternalsInfo, 'genders', []) as GenderType[]
-  const sizes = get(productInternalsInfo, 'sizes', []) as ProductSize[]
-  const fitStyles = get(productInternalsInfo, 'fitStyles', []) as FitStyle[]
-  const basicColors = get(
+  const genders = get<ProductInternalsInfo, 'genders', GenderType[]>(
+    productInternalsInfo,
+    'genders',
+    []
+  )
+  const sizes = get<ProductInternalsInfo, 'sizes', ProductSize[]>(
+    productInternalsInfo,
+    'sizes',
+    []
+  )
+  const fitStyles = get<ProductInternalsInfo, 'fitStyles', FitStyle[]>(
+    productInternalsInfo,
+    'fitStyles',
+    []
+  )
+  const basicColors = get<ProductInternalsInfo, 'basicColors', BasicColor[]>(
     productInternalsInfo,
     'basicColors',
     []
-  ) as BasicColor[]
-  const colors = get(productInternalsInfo, 'colors', []) as ProductColors[]
-  const collections = get(
+  )
+  const colors = get<ProductInternalsInfo, 'colors', ProductColors[]>(
     productInternalsInfo,
-    'collections',
+    'colors',
     []
-  ) as CollectionType[]
+  )
+  const collections = get<
+    ProductInternalsInfo,
+    'collections',
+    CollectionType[]
+  >(productInternalsInfo, 'collections', [])
 
-  const selectProductCode = (value: string) =>
-    handleOnSelectChange(value, 'productCode')
-  const selectGender = (value: string) => handleOnSelectChange(value, 'gender')
-  const selectSize = (value: string) => handleOnSelectChange(value, 'size')
-  const selectFit = (value: string) => handleOnSelectChange(value, 'fitStyle')
-  const selectColor = (value: string) => handleOnSelectChange(value, 'color')
-  const selectPocketZipper = (value: string) =>
-    handleOnSelectChange(value, 'pocketZipper')
-  const selectFrontZipper = (value: string) =>
-    handleOnSelectChange(value, 'frontZipper')
-  const selectBinding = (value: string) =>
-    handleOnSelectChange(value, 'binding')
-  const selectBibBrace = (value: string) =>
-    handleOnSelectChange(value, 'bibBrace')
-  const selectCollection = (value: string) =>
-    handleOnSelectChange(value, 'collection')
+  const handleOnSelect = (fieldId: string) => (value: string) =>
+    handleOnSelectChange(value, fieldId)
   return (
     <Container>
       <Modal
@@ -146,7 +148,7 @@ const InternalsModal = ({
           <Column>
             <Label>{formatMessage(messages.productCode)}</Label>
             <StyledSelect
-              onSelect={selectProductCode}
+              onSelect={handleOnSelect('productCode')}
               defaultValue={productCode}
             >
               {productsCodes.map(({ code }) => (
@@ -158,7 +160,10 @@ const InternalsModal = ({
           </Column>
           <Column>
             <Label>{formatMessage(messages.gender)}</Label>
-            <StyledSelect onSelect={selectGender} defaultValue={genderValue}>
+            <StyledSelect
+              onSelect={handleOnSelect('gender')}
+              defaultValue={genderValue}
+            >
               {genders.map(({ gender }) => (
                 <Option key={gender} value={gender}>
                   {gender}
@@ -170,7 +175,7 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.size)}</Label>
-            <StyledSelect onSelect={selectSize} defaultValue={size}>
+            <StyledSelect onSelect={handleOnSelect('size')} defaultValue={size}>
               {sizes.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
@@ -180,7 +185,10 @@ const InternalsModal = ({
           </Column>
           <Column>
             <Label>{formatMessage(messages.fitStyle)}</Label>
-            <StyledSelect onSelect={selectFit} defaultValue={fitStyle}>
+            <StyledSelect
+              onSelect={handleOnSelect('fitStyle')}
+              defaultValue={fitStyle}
+            >
               {fitStyles.map(({ info }) => (
                 <Option key={info} value={info}>
                   {info}
@@ -192,7 +200,10 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.color)}</Label>
-            <StyledSelect onSelect={selectColor} defaultValue={color}>
+            <StyledSelect
+              onSelect={handleOnSelect('color')}
+              defaultValue={color}
+            >
               {colors.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
@@ -203,7 +214,7 @@ const InternalsModal = ({
           <Column>
             <Label>{formatMessage(messages.pocketZipper)}</Label>
             <StyledSelect
-              onSelect={selectPocketZipper}
+              onSelect={handleOnSelect('pocketZipper')}
               defaultValue={pocketZipper}
             >
               {basicColors.map(({ name }) => (
@@ -218,7 +229,7 @@ const InternalsModal = ({
           <Column>
             <Label>{formatMessage(messages.frontZipper)}</Label>
             <StyledSelect
-              onSelect={selectFrontZipper}
+              onSelect={handleOnSelect('frontZipper')}
               defaultValue={frontZipper}
             >
               {basicColors.map(({ name }) => (
@@ -230,7 +241,10 @@ const InternalsModal = ({
           </Column>
           <Column>
             <Label>{formatMessage(messages.binding)}</Label>
-            <StyledSelect onSelect={selectBinding} defaultValue={binding}>
+            <StyledSelect
+              onSelect={handleOnSelect('binding')}
+              defaultValue={binding}
+            >
               {basicColors.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
@@ -242,7 +256,10 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.bibBrace)}</Label>
-            <StyledSelect onSelect={selectBibBrace} defaultValue={bibBrace}>
+            <StyledSelect
+              onSelect={handleOnSelect('bibBrace')}
+              defaultValue={bibBrace}
+            >
               {basicColors.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
@@ -252,7 +269,10 @@ const InternalsModal = ({
           </Column>
           <Column>
             <Label>{formatMessage(messages.collection)}</Label>
-            <StyledSelect onSelect={selectCollection} defaultValue={collection}>
+            <StyledSelect
+              onSelect={handleOnSelect('collection')}
+              defaultValue={collection}
+            >
               {collections.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
