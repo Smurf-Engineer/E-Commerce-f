@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo'
 export const getHomepageInfo = gql`
   query getHomepageContent($route: String) {
     getHomepageContent(sportRoute: $route) {
+      id
       headerImageMobile: header_image_mobile
       headerImage: header_image
       headerImageLink: header_image_link
@@ -39,14 +40,16 @@ export const getHomepageInfo = gql`
 export const setMainHeaderMutation = graphql(
   gql`
     mutation setMainHeader(
-      $headerImage: String!
-      $headerImageMobile: String!
-      $headerImageLink: String!
+      $headerImage: String
+      $headerImageMobile: String
+      $headerImageLink: String
+      $homePageImageId: Int
     ) {
       setMainHeader(
         headerImage: $headerImage
         headerImageMobile: $headerImageMobile
         headerImageLink: $headerImageLink
+        id: $homePageImageId
       ) {
         message
       }
