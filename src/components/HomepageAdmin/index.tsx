@@ -114,6 +114,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       })
       await this.handleOnChangePage()
       const {
+        id,
         featuredProducts,
         homepageImages,
         headerImageLink,
@@ -125,6 +126,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         return { visible: true, product: item }
       })
       const cleanData = {
+        id,
         items,
         homepageImages,
         headerImageLink,
@@ -161,7 +163,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         variables: {
           headerImage: mainHeader.desktopImage,
           headerImageMobile: mainHeader.mobileImage,
-          headerImageLink: mainHeader.url
+          headerImageLink: mainHeader.url,
+          homePageImageId: mainHeader.id
         }
       })
       message.success(get(response, 'data.setMainHeader.message', ''))
