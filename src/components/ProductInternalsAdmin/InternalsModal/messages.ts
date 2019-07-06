@@ -6,20 +6,16 @@ import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   newInternal: {
-    id: 'components.InternalsModal.newDiscount',
+    id: 'components.InternalsModal.newInternal',
     defaultMessage: 'New Product Internal'
   },
   editInternal: {
-    id: 'components.InternalsModal.editDiscount',
+    id: 'components.InternalsModal.editInternal',
     defaultMessage: 'Edit Product Internal'
   },
   internalId: {
     id: 'components.InternalsModal.internalId',
     defaultMessage: 'Internal ID'
-  },
-  discountItemId: {
-    id: 'components.InternalsModal.discountItemId',
-    defaultMessage: 'Discount Item ID'
   },
   productCode: {
     id: 'components.InternalsModal.productCode',
