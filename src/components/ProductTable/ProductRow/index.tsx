@@ -53,8 +53,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
     return <div>{renderView}</div>
   }
   handleOnClick = () => {
-    const { onPressDelete, featuredId, index, id } = this.props
-    console.log(id, featuredId)
+    const { onPressDelete, featuredId, index } = this.props
     onPressDelete(index, featuredId)
   }
 }

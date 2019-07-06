@@ -8,10 +8,15 @@ import {
   RESET_DATA,
   SET_INTERNAL_ID,
   SET_SEARCH_TEXT,
-  SET_LOADING
+  SET_LOADING,
+  SET_TEXT,
+  SELECT_CHANGE,
+  RESET_MODAL,
+  OPEN_MODAL,
+  SET_INTERNAL_TO_UPDATE
 } from './constants'
 
-import { AnyAction, sorts } from '../../types/common'
+import { AnyAction, sorts, ProductInternal } from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
   type: SET_ORDER_BY,
@@ -41,4 +46,30 @@ export const setSearchTextAction = (searchText: string) => ({
 export const setLoadingAction = (loading: boolean) => ({
   type: SET_LOADING,
   loading
+})
+
+export const setTextAction = (field: string, value: string) => ({
+  type: SET_TEXT,
+  field,
+  value
+})
+
+export const onSelectChangeAction = (value: string, id: string) => ({
+  type: SELECT_CHANGE,
+  value,
+  id
+})
+
+export const openModalAction = (open: boolean) => ({
+  type: OPEN_MODAL,
+  open
+})
+
+export const resetModalAction = () => ({
+  type: RESET_MODAL
+})
+
+export const setInternalToUpdate = (internal: ProductInternal) => ({
+  type: SET_INTERNAL_TO_UPDATE,
+  internal
 })

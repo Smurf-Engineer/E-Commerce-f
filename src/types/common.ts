@@ -1170,6 +1170,11 @@ export interface ProductColors {
   image: string
 }
 
+export interface ProductSize {
+  id: number
+  name: string
+}
+
 export interface Colors {
   colors: string
   stitchingColors: string
@@ -1246,7 +1251,7 @@ export interface SportType {
 
 export interface ProductInternal {
   id?: number
-  internalId: string
+  internalId: number
   productCode: number
   gender: string
   size: string
@@ -1256,7 +1261,22 @@ export interface ProductInternal {
   pocketZipper?: string
   binding?: string
   bibBrace?: string
-  collection: string
+  collection?: string
+}
+
+export interface ProductInternalInput {
+  id?: number
+  internal_id: number
+  product_code: number
+  gender: string
+  size: string
+  fit_style?: string
+  color?: string
+  front_zipper?: string
+  pocket_zipper?: string
+  binding?: string
+  bib_brace?: string
+  collection?: string
 }
 export interface HeaderImagePlaceHolder {
   id?: number
@@ -1280,6 +1300,29 @@ export interface ProductTilePlaceHolder {
   contentTile?: string
   image?: string
   sport_id?: string | null
+}
+
+export interface BasicColor {
+  id: number
+  name: string
+}
+
+export interface ProductCode {
+  code: number
+}
+
+export interface ProductInternalsInfo {
+  basicColors: BasicColor[]
+  products: ProductCode[]
+  genders: GenderType[]
+  sizes: ProductSize[]
+  fitStyles: FitStyle[]
+  colors: ProductColors[]
+  collections: CollectionType[]
+}
+
+export interface CollectionType {
+  name: string
 }
 
 export interface HomepageImagesType {

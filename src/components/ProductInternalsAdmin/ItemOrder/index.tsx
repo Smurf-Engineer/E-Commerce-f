@@ -10,7 +10,7 @@ import { ProductInternal } from '../../../types/common'
 
 interface Props {
   id?: number
-  internalId: string
+  internalId: number
   productCode: number
   gender: string
   size: string

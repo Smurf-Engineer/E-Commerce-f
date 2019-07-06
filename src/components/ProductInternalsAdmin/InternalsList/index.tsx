@@ -76,6 +76,7 @@ const InternalsList = ({
   if (!internals || !internals.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
+
   const mobileHeaders = productHeaders.map(({ title, id }) => (
     <Header key={id}>{formatMessage(messages[title])}</Header>
   ))
