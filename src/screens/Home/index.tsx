@@ -175,7 +175,7 @@ export class Home extends React.Component<Props, {}> {
       />
     ) : null
 
-    const featured = !!featuredProducts.length && (
+    const featured = featuredProducts && !!featuredProducts.length && (
       <FeaturedProducts
         formatMessage={intl.formatMessage}
         openQuickView={this.handleOnQuickView}
