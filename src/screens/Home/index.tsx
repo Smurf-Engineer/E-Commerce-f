@@ -8,12 +8,11 @@ import queryString from 'query-string'
 import { compose, withApollo } from 'react-apollo'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
-import { getHomepageInfo } from './data'
+import * as thunkActions from './thunkActions'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import * as homeActions from './actions'
-import { setHomepageInfoAction } from './actions'
 import Layout from '../../components/MainLayout'
 import {
   Container,
@@ -87,18 +86,10 @@ export class Home extends React.Component<Props, {}> {
       location: { search },
       client: { query }
     } = this.props
+    const { getHomepage } = thunkActions
     const queryParams = queryString.parse(search)
+    await dispatch(getHomepage(query, params.sportRoute))
 
-    try {
-      const response = await query({
-        query: getHomepageInfo,
-        variables: { sportRoute: params.sportRoute },
-        fetchPolicy: 'network-only'
-      })
-      dispatch(setHomepageInfoAction(response.data.getHomepageContent))
-    } catch (e) {
-      console.error(e)
-    }
     if (params && params.region && !isEmpty(queryParams)) {
       dispatch(
         setRegionAction({
