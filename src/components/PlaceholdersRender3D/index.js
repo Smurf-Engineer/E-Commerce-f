@@ -522,8 +522,12 @@ class Render3D extends PureComponent {
         }
       })
       if (this.zipper) {
-        this.zipper.white.dispose()
-        this.zipper.black.dispose()
+        if (this.zipper.white) {
+          this.zipper.white.dispose()
+        }
+        if (this.zipper.black) {
+          this.zipper.black.dispose()
+        }
         delete this.zipper
       }
       if (this.binding) {

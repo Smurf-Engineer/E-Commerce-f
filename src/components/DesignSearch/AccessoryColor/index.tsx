@@ -13,37 +13,51 @@ interface Props {
   id: string
   name: string
   color: AccesoryColor
+  allowSelection?: boolean
   onSelectColor: (color: string, id: string) => void
 }
 
-const AccessoryColor = ({ name, color, onSelectColor, id }: Props) => {
+const AccessoryColor = ({
+  name,
+  color,
+  onSelectColor,
+  id,
+  allowSelection
+}: Props) => {
   const accessColor = color === BLACK ? Colors.BLACK : Colors.WHITE
   const handleOnSelectColor = (selectedColor: string) => {
     onSelectColor(selectedColor, id)
   }
+  const colorSelector = (
+    <Row>
+      <Name>{name}</Name>
+      <Oval color={accessColor} />
+    </Row>
+  )
   return (
     <Container>
-      <Popover
-        content={
-          <div>
-            {
-              <ColorPicker
-                {...{ color }}
-                onSelectColor={selectedColor =>
-                  handleOnSelectColor(selectedColor)
-                }
-              />
-            }
-          </div>
-        }
-        trigger="hover"
-        placement="right"
-      >
-        <Row>
-          <Name>{name}</Name>
-          <Oval color={accessColor} />
-        </Row>
-      </Popover>
+      {allowSelection ? (
+        <Popover
+          content={
+            <div>
+              {
+                <ColorPicker
+                  {...{ color }}
+                  onSelectColor={selectedColor =>
+                    handleOnSelectColor(selectedColor)
+                  }
+                />
+              }
+            </div>
+          }
+          trigger="hover"
+          placement="right"
+        >
+          {colorSelector}
+        </Popover>
+      ) : (
+        colorSelector
+      )}
     </Container>
   )
 }

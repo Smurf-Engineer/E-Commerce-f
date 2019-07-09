@@ -143,7 +143,6 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       return fontObject
       // tslint:disable-next-line: align
     }, [])
-
     const orderContent = order && (
       <OrderFiles
         {...{
@@ -310,8 +309,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
   }
 
   handleGeneratePdf = async () => {
+    const { order, generatePdf, creatingPdfAction, setPdfAction } = this.props
     try {
-      const { order, generatePdf, creatingPdfAction, setPdfAction } = this.props
       creatingPdfAction(true)
       const pdf = await generatePdf({
         variables: {
