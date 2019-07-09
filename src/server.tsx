@@ -89,8 +89,6 @@ server
     const mobileDetect = mobileParser(req)
     dispatch(setMobileDetect(mobileDetect))
 
-    const { lang, currency } = req.query
-
     dispatch({
       type: SET_USER_AGENT_ACTION,
       client: ua,
@@ -100,9 +98,9 @@ server
     dispatch(
       setRegionAction({
         region: code,
-        localeIndex: lang,
-        locale: lang,
-        currency
+        localeIndex: langFound,
+        locale: langFound,
+        currency: currencyFound
       })
     )
 
