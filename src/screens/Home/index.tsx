@@ -4,9 +4,7 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import queryString from 'query-string'
 import { compose, withApollo } from 'react-apollo'
-import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 import * as thunkActions from './thunkActions'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
@@ -34,7 +32,6 @@ import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
 import FeaturedContent from '../../components/FeaturedContent'
 import messages from './messages'
-import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
@@ -83,14 +80,12 @@ export class Home extends React.Component<Props, {}> {
     const {
       dispatch,
       match: { params },
-      location: { search },
       client: { query }
     } = this.props
     const { getHomepage } = thunkActions
-    const queryParams = queryString.parse(search)
-    await dispatch(getHomepage(query, params.sportRoute))
 
-    if (params && params.region && !isEmpty(queryParams)) {
+    await dispatch(getHomepage(query, params.sportRoute))
+    /* if (params && params.region && !isEmpty(queryParams)) {
       dispatch(
         setRegionAction({
           region: params.region,
@@ -99,7 +94,11 @@ export class Home extends React.Component<Props, {}> {
           currency: queryParams.currency
         })
       )
-    }
+    } */
+  }
+
+  componentWillUnmount() {
+    console.log('unmounted')
   }
 
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {

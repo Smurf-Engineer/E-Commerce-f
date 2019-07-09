@@ -87,6 +87,14 @@ server
       country: locale.realCountryCode
     })
 
+    /* dispatch({
+      type: SET_REGION_ACTION,
+      region: locale.code,
+      localeIndex: locale.lang,
+      locale: locale.lang,
+      currency: locale.currency
+    }) */
+
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
       const jsx = sheet.collectStyles(
