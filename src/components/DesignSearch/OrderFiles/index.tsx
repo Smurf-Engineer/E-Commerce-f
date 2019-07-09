@@ -69,7 +69,7 @@ class OrderFiles extends React.PureComponent<Props> {
         shortId,
         image,
         pdfUrl,
-        product: { name: modelName }
+        product: { name: modelName, zipper }
       },
       uploadingFile,
       formatMessage,
@@ -85,6 +85,8 @@ class OrderFiles extends React.PureComponent<Props> {
       creatingPdf
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
+    const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
+
     return (
       <Container>
         <RenderLayout>
@@ -96,7 +98,8 @@ class OrderFiles extends React.PureComponent<Props> {
               bibColor,
               bindingColor,
               onSelectStitchingColor,
-              onSelectColor
+              onSelectColor,
+              allowZipperSelection
             }}
             stitchingValue={colorAccessories.stitching || stitchingValue}
             stitchingName={colorAccessories.stitchingName || stitchingName}
