@@ -12,6 +12,19 @@ export const GetProductsByIdQuery = gql`
       category_id
       sport_id
       mpn
+      flatlock
+      bibBrace {
+        white
+        black
+      }
+      binding {
+        white
+        black
+      }
+      zipper {
+        white
+        black
+      }
       colors {
         id
         name
