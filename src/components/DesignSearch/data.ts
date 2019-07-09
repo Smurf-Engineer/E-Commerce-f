@@ -9,6 +9,10 @@ export const orderSearchQuery = gql`
     order: getDesignByCode(code: $code) {
       product {
         name
+        zipper {
+          white
+          black
+        }
       }
       code
       status: order_status
