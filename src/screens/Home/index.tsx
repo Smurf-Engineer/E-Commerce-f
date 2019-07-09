@@ -85,20 +85,6 @@ export class Home extends React.Component<Props, {}> {
     const { getHomepage } = thunkActions
 
     await dispatch(getHomepage(query, params.sportRoute))
-    /* if (params && params.region && !isEmpty(queryParams)) {
-      dispatch(
-        setRegionAction({
-          region: params.region,
-          localeIndex: queryParams.lang,
-          locale: queryParams.lang,
-          currency: queryParams.currency
-        })
-      )
-    } */
-  }
-
-  componentWillUnmount() {
-    console.log('unmounted')
   }
 
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
