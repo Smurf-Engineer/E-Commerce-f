@@ -13,6 +13,7 @@ import {
   SET_GENDERS,
   SET_CURRENCIES,
   REMOVE_MATERIAL,
+  MOVE_MATERIAL,
   SET_FILE_FIELD,
   SET_COLORS,
   ADD_MATERIAL,
@@ -194,6 +195,13 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         map.set('bannersLoading', false)
         return map
       })
+    }
+    case MOVE_MATERIAL: {
+      const { indexTo, array, index } = action
+      const oldList = state.getIn(['product', array])
+      var olditem = oldList.get(index)
+      var newlist = oldList.delete(index).insert(indexTo, olditem)
+      return state.setIn(['product', array], newlist)
     }
     case SET_FILE_FIELD: {
       const { selected, id, name, value } = action

@@ -71,6 +71,7 @@ interface Props {
   addBanner: (item: any) => void
   setBanner: (index: number, field: string, value: any) => void
   removeFile: (array: string, index: number) => void
+  moveFile: (array: string, index: number, indexTo: number) => void
   addFile: (array: string, item: any) => void
   setFileField: (
     selected: string,
@@ -137,6 +138,7 @@ export class ProductForm extends React.Component<Props, {}> {
       setDesignCenter,
       removeBanner,
       setColors,
+      moveFile,
       addBanner,
       setBanner,
       setFileField,
@@ -234,6 +236,7 @@ export class ProductForm extends React.Component<Props, {}> {
           bannersLoading,
           setBanner,
           customizable,
+          moveFile,
           setCheck,
           genders,
           colors,
