@@ -6,6 +6,7 @@ import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
 import { RED, BLACK, BLUE_DARK } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 interface StyledProps {
   selected?: boolean
@@ -29,7 +30,14 @@ export const Content = styled.div`
     justify-content: center;
   }
 `
-
+export const MenIcon = styled(Icon)`
+  margin-left: 8px;
+  color: #2196f3;
+`
+export const WomenIcon = styled(Icon)`
+  margin-left: 8px;
+  color: deeppink;
+`
 export const ImagePreview = styled.div`
   width: 50%;
 
