@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
+import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
@@ -40,6 +41,7 @@ import {
 } from '../../types/common'
 import { INTERNALS_LIMIT } from './constants'
 
+const { confirm } = Modal
 interface Props {
   history: any
   currentPage: number
@@ -62,7 +64,7 @@ interface Props {
   id: number
   modalOpen: boolean
   loading: boolean
-  formatMessage: (messageDescriptor: Message) => string
+  formatMessage: (messageDescriptor: Message, params?: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
@@ -314,6 +316,21 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
   }
 
   handleOnDeleteProductInternal = async () => {
+    const { formatMessage, internalId } = this.props
+    confirm({
+      title: formatMessage(messages.confirmTitle),
+      content: formatMessage(messages.confirmMessage, { internalId }),
+      onOk: async () => {
+        try {
+          await this.handleOnConfirmDeleteProductInternal()
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+
+  handleOnConfirmDeleteProductInternal = async () => {
     const {
       id,
       deleteProduct,
