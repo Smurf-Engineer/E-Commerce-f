@@ -21,7 +21,8 @@ import {
   SET_BANNERS_LOADING,
   SAVED_PRODUCT,
   ENABLE_SPORT,
-  SET_SPORT
+  SET_SPORT,
+  SET_PROMPT
 } from './constants'
 import { AnyAction, Product } from '../../types/common'
 
@@ -55,6 +56,11 @@ export const savedProduct = (
 
 export const setBannersLoading = (value: boolean): AnyAction => ({
   type: SET_BANNERS_LOADING,
+  value
+})
+
+export const setPrompt = (value: boolean): AnyAction => ({
+  type: SET_PROMPT,
   value
 })
 
