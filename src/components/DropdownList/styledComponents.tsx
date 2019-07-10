@@ -1,8 +1,14 @@
 /**
  * Styled Components - Created by david on 07/02/18.
  */
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { GRAY_DARK, RED } from '../../theme/colors'
+import Menu from 'antd/lib/menu'
+
+const showMenu = keyframes`
+  from { opacity: 0};
+  to {opacity: 1, visibility: visible};
+`
 
 export const Container = styled.div`
   display: flex;
@@ -37,3 +43,13 @@ export const menuStyle = {
   justifyContent: 'space-between',
   width: '100%'
 } as React.CSSProperties
+
+export const StyledMenu = styled(Menu)`
+  background-color: transparent;
+  border-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  transition: all 1s ease-in;
+  animation: ${showMenu} 1s ease-in;
+`

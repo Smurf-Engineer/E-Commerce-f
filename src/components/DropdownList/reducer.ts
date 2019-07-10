@@ -17,12 +17,7 @@ export const initialState = fromJS({
     { label: 'men', visible: false },
     { label: 'women', visible: false }
   ],
-  sportOptions: [
-    { label: 'cycling', menuOpen: false },
-    { label: 'triathlon', menuOpen: false },
-    // { label: 'nordic', visible: false }, TODO: uncomment when nordic will be needed
-    { label: 'active', menuOpen: false }
-  ],
+  sportOptions: [],
   sports: [],
   genderSportSelected: 0
 })
@@ -53,7 +48,10 @@ const menuReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('genderSportSelected', 0)
     case SET_SPORTS: {
       const { sportOptions, sportsData } = action
-      return state.merge({ sportOptions, sports: sportsData })
+      return state.merge({
+        sportOptions,
+        sports: sportsData
+      })
     }
     default:
       return state

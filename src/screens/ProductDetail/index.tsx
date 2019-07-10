@@ -57,7 +57,9 @@ import {
   Loading,
   MobileButton,
   MobileButtonWrapper,
-  StyledButtonWrapper
+  StyledButtonWrapper,
+  MenIcon,
+  WomenIcon
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
@@ -76,7 +78,8 @@ import {
   SelectedType,
   PriceRange,
   ProductColors,
-  ProductFile
+  ProductFile,
+  ItemDetailType
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
@@ -469,7 +472,18 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         {formatMessage(messages.compareLabe)}
       </CompareButton>
     )
-
+    let menAvailable = false
+    let womenAvailable = false
+    if (genders) {
+      genders.forEach((genderItem: ItemDetailType) => {
+        if (genderItem.name === 'Men') {
+          menAvailable = true
+        }
+        if (genderItem.name === 'Women') {
+          womenAvailable = true
+        }
+      })
+    }
     const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
 
     return (
@@ -551,7 +565,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 <TitleRow>
                   <TitleSubtitleContainer>
                     {/* TODO: Use unique name when "isRetail" */}
-                    <Title>{name}</Title>
+                    <Title>
+                      {name}
+                      {menAvailable && <MenIcon type="man" />}
+                      {womenAvailable && <WomenIcon type="woman" />}
+                    </Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     <Subtitle>{`MPN: ${mpnCode}`}</Subtitle>
                   </TitleSubtitleContainer>
