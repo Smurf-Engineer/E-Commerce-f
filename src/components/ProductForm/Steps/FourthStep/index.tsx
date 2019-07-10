@@ -29,6 +29,7 @@ import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
 import { validTypes } from '../../constants'
 import MediaBlock from './MediaBlock'
 import BannerBlock from './BannerBlock'
+import Draggable from '../../../Draggable'
 const Dragger = Upload.Dragger
 interface Props {
   productMaterials: ProductFile[]
@@ -145,17 +146,21 @@ export class FourthStep extends React.Component<Props, {}> {
               {bannerMaterials.map(
                 (material: ProductFile, index: number) =>
                   material.active && (
-                    <BannerBlock
+                    <Draggable
                       {...{ index }}
                       key={index}
                       id={material.id}
-                      url={material.url}
-                      selected={productMaterials[material.id]}
                       section="banner"
                       onDropRow={this.handleMoveBanner}
-                      handleCheckMaterial={this.handleCheckMaterial}
-                      handleRemoveMaterial={this.handleRemoveMaterial}
-                    />
+                    >
+                      <BannerBlock
+                        id={material.id}
+                        url={material.url}
+                        selected={productMaterials[material.id]}
+                        handleCheckMaterial={this.handleCheckMaterial}
+                        handleRemoveMaterial={this.handleRemoveMaterial}
+                      />
+                    </Draggable>
                   )
               )}
               <Upload
@@ -200,14 +205,18 @@ export class FourthStep extends React.Component<Props, {}> {
             {mediaFiles.length ? (
               <MediaSection>
                 {mediaFiles.map((mediaFile: ProductFile, index: number) => (
-                  <MediaBlock
-                    {...{ index, mediaFile }}
+                  <Draggable
+                    {...{ index }}
                     key={index}
-                    openMedia={this.openMedia}
+                    id={mediaFile.id}
                     section="media"
-                    removeMediaFile={this.removeMediaFile}
                     onDropRow={this.handleOnDropRow}
-                  />
+                  >
+                    <MediaBlock
+                      {...{ index, mediaFile }}
+                      removeMediaFile={this.removeMediaFile}
+                    />
+                  </Draggable>
                 ))}
               </MediaSection>
             ) : (
@@ -222,9 +231,6 @@ export class FourthStep extends React.Component<Props, {}> {
         )}
       </Container>
     )
-  }
-  openMedia = ({ url }: ProductFile) => () => {
-    window.open(url)
   }
 
   handleCheckMaterial = (event: any) => {
