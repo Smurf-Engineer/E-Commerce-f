@@ -73,7 +73,7 @@ class Render3D extends PureComponent {
       0.1,
       1000
     )
-    camera.position.z = phoneView ? 150 : 250
+    camera.position.z = phoneView ? 100 : 250
     if (designSearch) {
       camera.position.z = 150
     }
