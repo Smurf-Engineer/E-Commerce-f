@@ -50,7 +50,7 @@ const productHeaders = [
   { title: 'pocketZipper', id: 'pocket_zipper' },
   { title: 'binding', id: 'binding' },
   { title: 'bibBrace', id: 'bib_brace' },
-  { title: 'productCode', id: 'collection' }
+  { title: 'collection', id: 'collection' }
 ]
 
 const InternalsList = ({
