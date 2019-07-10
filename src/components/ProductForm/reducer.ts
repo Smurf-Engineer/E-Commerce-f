@@ -17,6 +17,7 @@ import {
   SET_FILE_FIELD,
   SET_COLORS,
   ADD_MATERIAL,
+  MOVE_BANNER,
   ADD_BANNER,
   SET_SPORT,
   ENABLE_SPORT,
@@ -199,9 +200,16 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
     case MOVE_MATERIAL: {
       const { indexTo, array, index } = action
       const oldList = state.getIn(['product', array])
-      var olditem = oldList.get(index)
-      var newlist = oldList.delete(index).insert(indexTo, olditem)
-      return state.setIn(['product', array], newlist)
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.setIn(['product', array], newList)
+    }
+    case MOVE_BANNER: {
+      const { indexTo, index } = action
+      const oldList = state.get('bannerMaterials')
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.set('bannerMaterials', newList)
     }
     case SET_FILE_FIELD: {
       const { selected, id, name, value } = action

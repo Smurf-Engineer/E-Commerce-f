@@ -18,6 +18,7 @@ import {
   SET_COLORS,
   REMOVE_BANNER,
   ADD_BANNER,
+  MOVE_BANNER,
   SET_BANNER,
   SET_BANNERS_LOADING,
   SAVED_PRODUCT,
@@ -111,6 +112,12 @@ export const moveFile = (
 ): AnyAction => ({
   type: MOVE_MATERIAL,
   array,
+  index,
+  indexTo
+})
+
+export const moveBanner = (index: number, indexTo: number): AnyAction => ({
+  type: MOVE_BANNER,
   index,
   indexTo
 })

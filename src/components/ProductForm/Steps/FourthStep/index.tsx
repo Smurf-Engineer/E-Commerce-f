@@ -5,7 +5,7 @@ import * as React from 'react'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
 import Spin from 'antd/lib/spin'
-import { Icon, message, Upload, Checkbox } from 'antd'
+import { Icon, message, Upload } from 'antd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import {
@@ -13,10 +13,6 @@ import {
   Separator,
   RowInput,
   AddMaterial,
-  MaterialDiv,
-  MaterialImage,
-  MaterialButtons,
-  MaterialButton,
   MediaSection,
   LoaderBox,
   Label,
@@ -32,6 +28,7 @@ import {
 import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
 import { validTypes } from '../../constants'
 import MediaBlock from './MediaBlock'
+import BannerBlock from './BannerBlock'
 const Dragger = Upload.Dragger
 interface Props {
   productMaterials: ProductFile[]
@@ -45,6 +42,7 @@ interface Props {
   setBannersLoading: (value: boolean) => void
   removeBanner: (index: number) => void
   moveFile: (array: string, index: number, indexTo: number) => void
+  moveBanner: (index: number, indexTo: number) => void
   addBanner: (item: any) => void
   setBanner: (index: number, field: string, value: any) => void
   removeFile: (array: string, index: number) => void
@@ -145,22 +143,18 @@ export class FourthStep extends React.Component<Props, {}> {
             </Label>
             <InputDiv isFlex={true}>
               {bannerMaterials.map(
-                (material: any, index: number) =>
+                (material: ProductFile, index: number) =>
                   material.active && (
-                    <MaterialDiv>
-                      <MaterialButtons>
-                        <MaterialButton
-                          onClick={this.handleRemoveMaterial(index)}
-                          type="close"
-                        />
-                        <Checkbox
-                          name={material.id}
-                          onChange={this.handleCheckMaterial}
-                          checked={productMaterials[material.id]}
-                        />
-                      </MaterialButtons>
-                      <MaterialImage src={material.url} alt="avatar" />
-                    </MaterialDiv>
+                    <BannerBlock
+                      {...{ index }}
+                      id={material.id}
+                      url={material.url}
+                      selected={productMaterials[material.id]}
+                      section="banner"
+                      onDropRow={this.handleMoveBanner}
+                      handleCheckMaterial={this.handleCheckMaterial}
+                      handleRemoveMaterial={this.handleRemoveMaterial}
+                    />
                   )
               )}
               <Upload
@@ -204,10 +198,11 @@ export class FourthStep extends React.Component<Props, {}> {
             </RowInput>
             {mediaFiles.length ? (
               <MediaSection>
-                {mediaFiles.map((mediaFile: any, index: number) => (
+                {mediaFiles.map((mediaFile: ProductFile, index: number) => (
                   <MediaBlock
                     {...{ index, mediaFile }}
                     openMedia={this.openMedia}
+                    section="media"
                     removeMediaFile={this.removeMediaFile}
                     onDropRow={this.handleOnDropRow}
                   />
@@ -327,6 +322,10 @@ export class FourthStep extends React.Component<Props, {}> {
   handleOnDropRow = (dragIndex: number, dropIndex: number) => {
     const { moveFile } = this.props
     moveFile('mediaFiles', dragIndex, dropIndex)
+  }
+  handleMoveBanner = (dragIndex: number, dropIndex: number) => {
+    const { moveBanner } = this.props
+    moveBanner(dragIndex, dropIndex)
   }
 }
 
