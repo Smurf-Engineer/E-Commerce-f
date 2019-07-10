@@ -26,7 +26,7 @@ interface Props {
   section: string
   connectDragSource: ConnectDragSource
   connectDropTarget: ConnectDropTarget
-  handleRemoveMaterial: (index: number) => () => void
+  handleRemoveMaterial: (index: number) => void
   handleCheckMaterial: (event: CheckboxChangeEvent) => void
   onDropRow: (dragIndex: number, dropIndex: number) => void
 }
@@ -85,15 +85,13 @@ class BannerBlockDrag extends React.PureComponent<Props> {
       url,
       selected,
       handleCheckMaterial,
-      handleRemoveMaterial,
-      index,
       connectDragSource,
       connectDropTarget
     } = this.props
     const renderView = (
       <Container>
         <MaterialButtons>
-          <MaterialButton onClick={handleRemoveMaterial(index)} type="close" />
+          <MaterialButton onClick={this.handleOnRemove} type="close" />
           <Checkbox
             name={id}
             onChange={handleCheckMaterial}
@@ -104,6 +102,10 @@ class BannerBlockDrag extends React.PureComponent<Props> {
       </Container>
     )
     return connectDragSource(connectDropTarget(<div>{renderView}</div>))
+  }
+  handleOnRemove = () => {
+    const { index, handleRemoveMaterial } = this.props
+    handleRemoveMaterial(index)
   }
 }
 

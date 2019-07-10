@@ -31,7 +31,7 @@ interface Props {
   connectDropTarget: ConnectDropTarget
   openMedia: (file: ProductFile) => () => void
   onDropRow: (dragIndex: number, dropIndex: number) => void
-  removeMediaFile: (index: number) => () => void
+  removeMediaFile: (index: number) => void
 }
 const rowSource = {
   beginDrag({ id, index, section }: Props) {
@@ -86,8 +86,6 @@ class MediaBlockDrag extends React.PureComponent<Props> {
     const {
       openMedia,
       mediaFile,
-      removeMediaFile,
-      index,
       connectDragSource,
       connectDropTarget
     } = this.props
@@ -106,13 +104,17 @@ class MediaBlockDrag extends React.PureComponent<Props> {
             <FileName>{mediaFile.name}</FileName>
             <FileExtension>{mediaFile.extension}</FileExtension>
           </div>
-          <DeleteFile onClick={removeMediaFile(index)}>
+          <DeleteFile onClick={this.handleOnRemove}>
             <FormattedMessage {...messages.delete} />
           </DeleteFile>
         </MediaFooter>
       </Container>
     )
     return connectDragSource(connectDropTarget(<div>{renderView}</div>))
+  }
+  handleOnRemove = () => {
+    const { index, removeMediaFile } = this.props
+    removeMediaFile(index)
   }
 }
 

@@ -147,6 +147,7 @@ export class FourthStep extends React.Component<Props, {}> {
                   material.active && (
                     <BannerBlock
                       {...{ index }}
+                      key={index}
                       id={material.id}
                       url={material.url}
                       selected={productMaterials[material.id]}
@@ -201,6 +202,7 @@ export class FourthStep extends React.Component<Props, {}> {
                 {mediaFiles.map((mediaFile: ProductFile, index: number) => (
                   <MediaBlock
                     {...{ index, mediaFile }}
+                    key={index}
                     openMedia={this.openMedia}
                     section="media"
                     removeMediaFile={this.removeMediaFile}
@@ -233,7 +235,7 @@ export class FourthStep extends React.Component<Props, {}> {
     setCheck('productMaterials', name, checked)
   }
 
-  handleRemoveMaterial = (index: number) => () => {
+  handleRemoveMaterial = (index: number) => {
     const { removeBanner, setBanner, bannerMaterials, setCheck } = this.props
     setCheck('productMaterials', bannerMaterials[index].id, false)
     if (bannerMaterials[index].toUpload) {
@@ -261,7 +263,7 @@ export class FourthStep extends React.Component<Props, {}> {
     })
   }
 
-  removeMediaFile = (index: number) => () => {
+  removeMediaFile = (index: number) => {
     const { removeFile } = this.props
     removeFile('mediaFiles', index)
   }
