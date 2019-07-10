@@ -282,9 +282,10 @@ const InternalsModal = ({
           </Column>
         </Row>
         <ButtonsContainer>
-          <StyledButton disabled={loading} onClick={deleteProduct}>
+          <StyledButton disabled={loading || id < 0} onClick={deleteProduct}>
             {formatMessage(messages.delete)}
           </StyledButton>
+
           <ButtonWrapper color={BLUE}>
             <StyledButton
               disabled={!internalId || !productCode}
