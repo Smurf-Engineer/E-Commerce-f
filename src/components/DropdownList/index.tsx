@@ -24,7 +24,7 @@ import {
   Option,
   OptionDropdown,
   overStyle,
-  menuStyle
+  StyledMenu
 } from './styledComponents'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
@@ -221,9 +221,9 @@ export class DropdownList extends React.PureComponent<Props> {
         )
       })
     return (
-      <Menu mode="horizontal" selectable={false} style={menuStyle}>
+      <StyledMenu mode="horizontal" selectable={false}>
         {sportMenus}
-      </Menu>
+      </StyledMenu>
     )
   }
 
