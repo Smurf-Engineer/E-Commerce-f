@@ -360,7 +360,6 @@ class Render3D extends PureComponent {
             /* Zipper */
             if (!!zipper) {
               const texture = zipper.black || zipper.white
-              console.log(texture)
               const zipperObj = textureLoader.load(texture)
               zipperObj.minFilter = THREE.LinearFilter
               const zipperIndex = getMeshIndex(ZIPPER)
