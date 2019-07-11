@@ -24,6 +24,7 @@ import {
   SET_BANNERS_LOADING,
   SET_DESIGN_CENTER,
   SAVED_PRODUCT,
+  SET_PROMPT,
   REMOVE_BANNER
 } from './constants'
 import { getFileExtension, getFileName } from '../../utils/utilsFiles'
@@ -39,7 +40,8 @@ export const initialState = fromJS({
   newSport: '',
   newSportEnabled: false,
   bannersLoading: false,
-  dataExtra: {}
+  dataExtra: {},
+  openPrompt: false
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
@@ -167,6 +169,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         loading: false
       })
     }
+    case SET_PROMPT:
+      return state.set('openPrompt', action.value)
     case SET_CURRENCIES:
       return state.setIn(['product', 'priceRange'], action.currencies)
     case SET_LOADING:

@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
+import Modal from 'antd/lib/modal/Modal'
 import { graphql, compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import {
@@ -20,6 +21,7 @@ import {
 } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
+import ModalTitle from '../ModalTitle'
 import { QueryProps, Product, ProductFile } from '../../types/common'
 import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
@@ -31,7 +33,10 @@ import {
   HeaderRow,
   FullLoader,
   LoadingMessage,
-  MainBody
+  MainBody,
+  StyledGhostButton,
+  StyledButton,
+  ModalMessage
 } from './styledComponents'
 
 interface DataExtra extends QueryProps {
@@ -49,9 +54,11 @@ interface Props {
   client: any
   bannersLoading: boolean
   loading: boolean
+  openPrompt: boolean
   loadingMessage: string
   dataExtra: DataExtra
   resetData: () => void
+  setPrompt: (value: boolean) => void
   uploadFilesAction: (
     formatMessage: (messageDescriptor: any) => string,
     productImages: any[],
@@ -114,10 +121,12 @@ export class ProductForm extends React.Component<Props, {}> {
       fetchPolicy: 'network-only'
     })
     const extraData = get(dataExtra, 'data.extraData', [])
+    window.onbeforeunload = () => true
     setProductAction(product, extraData)
   }
   componentWillUnmount() {
     const { resetData } = this.props
+    window.onbeforeunload = null
     resetData()
   }
   render() {
@@ -140,6 +149,7 @@ export class ProductForm extends React.Component<Props, {}> {
       setDesignCenter,
       removeBanner,
       setColors,
+      openPrompt,
       moveFile,
       addBanner,
       setBanner,
@@ -261,7 +271,28 @@ export class ProductForm extends React.Component<Props, {}> {
             <LoadingMessage>{loadingMessage}</LoadingMessage>
           </FullLoader>
         )}
-        <BackLabel onClick={this.handleOnClickBack}>
+        <Modal
+          visible={openPrompt}
+          title={<ModalTitle title={formatMessage(messages.areYouSure)} />}
+          footer={[
+            <StyledGhostButton key="cancel" onClick={this.handlePrompt(false)}>
+              {formatMessage(messages.cancel)}
+            </StyledGhostButton>,
+            <StyledButton
+              key={'save'}
+              type="primary"
+              onClick={this.handleOnClickBack}
+            >
+              {formatMessage(messages.yes)}
+            </StyledButton>
+          ]}
+          closable={false}
+          maskClosable={false}
+          destroyOnClose={true}
+        >
+          <ModalMessage>{formatMessage(messages.outWithoutSave)}</ModalMessage>
+        </Modal>
+        <BackLabel onClick={this.handlePrompt(true)}>
           <Icon type="left" />
           <BackText>
             <FormattedMessage {...messages.backToProducts} />
@@ -513,10 +544,15 @@ export class ProductForm extends React.Component<Props, {}> {
       } else {
         history.push('/admin/products')
       }
+      message.success(formatMessage(messages.success))
     } catch (error) {
       setUploadingAction(false, '')
       message.error(formatMessage(messages.errorUploading))
     }
+  }
+  handlePrompt = (value: boolean) => () => {
+    const { setPrompt } = this.props
+    setPrompt(value)
   }
   changeStep = (currentStep: Number) => () => {
     this.setState({ currentStep })

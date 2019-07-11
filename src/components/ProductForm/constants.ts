@@ -21,6 +21,7 @@ export const SET_CURRENCIES = `${namespace}/SET_CURRENCIES`
 export const SAVED_PRODUCT = `${namespace}/SAVED_PRODUCT`
 export const SET_DESIGN_CENTER = `${namespace}/SET_DESIGN_CENTER`
 export const SET_COLORS = `${namespace}/SET_COLORS`
+export const SET_PROMPT = `${namespace}/SET_PROMPT`
 export const MOVE_MATERIAL = `${namespace}/MOVE_MATERIAL`
 export const MOVE_BANNER = `${namespace}/MOVE_BANNER`
 
