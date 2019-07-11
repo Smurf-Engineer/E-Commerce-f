@@ -435,7 +435,8 @@ class Render3D extends PureComponent {
             children[objectChildCount].material = frontMaterial
 
             /* Object Conig */
-            object.position.y = phoneView ? -3 : 0
+            const verticalPosition = phoneView ? -3 : 0
+            object.position.y = verticalPosition
             object.name = MESH_NAME
             this.scene.add(object)
 
@@ -636,7 +637,8 @@ class Render3D extends PureComponent {
           }
 
           /* Object Conig */
-          object.position.y = phoneView ? -3 : 0
+          const verticalPosition = phoneView ? -3 : 0
+          object.position.y = verticalPosition
           object.name = MESH_NAME
           this.scene.add(object)
           this.setState({ loadingModel: false, firstLoad: false })
