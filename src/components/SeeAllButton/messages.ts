@@ -11,6 +11,6 @@ export default defineMessages({
   },
   seeAllFilters: {
     id: 'components.seAllButton.seeAllFilters',
-    defaultMessage: 'See All Filters'
+    defaultMessage: 'See All {sportName}'
   }
 })
