@@ -20,7 +20,7 @@ import {
 } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
-import { QueryProps, Product } from '../../types/common'
+import { QueryProps, Product, ProductFile } from '../../types/common'
 import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
   Container,
@@ -71,6 +71,8 @@ interface Props {
   addBanner: (item: any) => void
   setBanner: (index: number, field: string, value: any) => void
   removeFile: (array: string, index: number) => void
+  moveFile: (array: string, index: number, indexTo: number) => void
+  moveBanner: (index: number, indexTo: number) => void
   addFile: (array: string, item: any) => void
   setFileField: (
     selected: string,
@@ -133,10 +135,12 @@ export class ProductForm extends React.Component<Props, {}> {
       newSportEnabled,
       setBannersLoading,
       removeFile,
+      moveBanner,
       addFile,
       setDesignCenter,
       removeBanner,
       setColors,
+      moveFile,
       addBanner,
       setBanner,
       setFileField,
@@ -231,9 +235,11 @@ export class ProductForm extends React.Component<Props, {}> {
           colorsProducts,
           removeBanner,
           addBanner,
+          moveBanner,
           bannersLoading,
           setBanner,
           customizable,
+          moveFile,
           setCheck,
           genders,
           colors,
@@ -407,18 +413,16 @@ export class ProductForm extends React.Component<Props, {}> {
             // tslint:disable-next-line: align
           }, [])
         : []
-      const productMaterialsDet = productMaterials
-        ? Object.keys(productMaterials).reduce(
-            (arr: any[], materialId: string) => {
-              if (productMaterials[materialId]) {
-                arr.push({ id: materialId })
-              }
-              return arr
-              // tslint:disable-next-line: align
-            },
-            []
-          )
-        : []
+      const productMaterialsDet = bannerMaterials.reduce(
+        (arr: any[], banner: ProductFile) => {
+          if (productMaterials[banner.id]) {
+            arr.push({ id: banner.id })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        },
+        []
+      )
       const sizeRangeDet = sizeRange
         ? Object.keys(sizeRange).reduce((arr: any[], sizeId: string) => {
             if (sizeRange[sizeId]) {
