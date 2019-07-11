@@ -697,7 +697,7 @@
   "components.TextTab.enterTextPlaceholder": "Enter Text",
   "components.TextTab.applyButton": "Apply",
   "components.seAllButton.seeAll": "See All",
-  "components.seAllButton.seeAllFilters": "See All Filters {sportName}",
+  "components.seAllButton.seeAllFilters": "See All {sportName}",
   "components.ConfirmCountryDialog.tittle": "WHAT IS YOUR COUNTRY OF RESIDENCE?",
   "components.ConfirmCountryDialog.save": "Save",
   "components.ConfirmCountryDialog.placeholder": "Select country",
