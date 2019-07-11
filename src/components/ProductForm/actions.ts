@@ -12,16 +12,19 @@ import {
   SET_CHECK,
   REMOVE_MATERIAL,
   ADD_MATERIAL,
+  MOVE_MATERIAL,
   SET_FILE_FIELD,
   SET_DESIGN_CENTER,
   SET_COLORS,
   REMOVE_BANNER,
   ADD_BANNER,
+  MOVE_BANNER,
   SET_BANNER,
   SET_BANNERS_LOADING,
   SAVED_PRODUCT,
   ENABLE_SPORT,
-  SET_SPORT
+  SET_SPORT,
+  SET_PROMPT
 } from './constants'
 import { AnyAction, Product } from '../../types/common'
 
@@ -55,6 +58,11 @@ export const savedProduct = (
 
 export const setBannersLoading = (value: boolean): AnyAction => ({
   type: SET_BANNERS_LOADING,
+  value
+})
+
+export const setPrompt = (value: boolean): AnyAction => ({
+  type: SET_PROMPT,
   value
 })
 
@@ -101,6 +109,23 @@ export const addFile = (array: string, item: any): AnyAction => ({
   type: ADD_MATERIAL,
   array,
   item
+})
+
+export const moveFile = (
+  array: string,
+  index: number,
+  indexTo: number
+): AnyAction => ({
+  type: MOVE_MATERIAL,
+  array,
+  index,
+  indexTo
+})
+
+export const moveBanner = (index: number, indexTo: number): AnyAction => ({
+  type: MOVE_BANNER,
+  index,
+  indexTo
 })
 
 export const setFileField = (

@@ -9,7 +9,8 @@ import {
   Container,
   Divider,
   Filters,
-  LoadingContainer
+  LoadingContainer,
+  Categories
 } from './styledComponents'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
@@ -26,6 +27,7 @@ interface Props {
   data: Data
   type: number
   history: any
+  genderSelected: number
   onPressSeeAll: (
     gender: number | undefined,
     category: string,
@@ -35,10 +37,12 @@ interface Props {
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: (visible: boolean, index: number) => void
   setCategoryAction: (sport: number) => void
+  setGenderAction: (gender: number) => void
   categorySelected: number
   sports: Filter[]
   visible: boolean
   currentCurrency: string
+  genderOptions: Filter[]
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -46,6 +50,11 @@ export class MenuSports extends React.PureComponent<Props, {}> {
   handleOnHoverCategory = (categorySelected: number) => {
     const { setCategoryAction } = this.props
     setCategoryAction(categorySelected)
+  }
+
+  handleOnHoverGender = (genderSelected: number) => {
+    const { setGenderAction } = this.props
+    setGenderAction(genderSelected)
   }
 
   onSeeAllFilters = () => {
@@ -59,10 +68,12 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       sports,
       onPressSeeAll,
       type,
-      categorySelected
+      categorySelected,
+      genderOptions,
+      genderSelected
     } = this.props
     onPressSeeAll(
-      undefined,
+      genderOptions[genderSelected].id,
       categories[categorySelected].name,
       sports[type].name
     )
@@ -83,10 +94,12 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       onPressCustomize,
       onPressQuickView,
       categorySelected,
+      genderSelected,
       sports,
       formatMessage,
       currentCurrency,
-      data: { categories, loading }
+      data: { categories, loading },
+      genderOptions
     } = this.props
 
     if (!visible) {
@@ -100,29 +113,42 @@ export class MenuSports extends React.PureComponent<Props, {}> {
         </LoadingContainer>
       )
     }
-
     const sportFilter = this.getFilter(sports, type)
     const categoryFilter = this.getFilter(categories, categorySelected)
+    const genderFilter = this.getFilter(genderOptions, genderSelected)
 
+    const sportName = sports[type].name
     return (
       <Container>
-        <Filters>
+        <Filters width={'10%'}>
           <FilterList
-            filters={categories}
-            filterSelected={categorySelected}
-            onHoverFilter={this.handleOnHoverCategory}
+            filters={genderOptions}
+            filterSelected={genderSelected}
+            onHoverFilter={this.handleOnHoverGender}
           />
           {loading || (categories && !categories.length) ? null : (
             <SeeAllButton
               onClick={this.onSeeAllFilters}
-              {...{ formatMessage }}
+              withFilterWord={true}
+              {...{ formatMessage, sportName }}
             />
           )}
         </Filters>
         <Divider type="vertical" />
+        <Categories>
+          <Filters>
+            <FilterList
+              filters={categories}
+              filterSelected={categorySelected}
+              onHoverFilter={this.handleOnHoverCategory}
+            />
+          </Filters>
+        </Categories>
+        <Divider type="vertical" />
         {loading || (categories && !categories.length) ? null : (
           <ProductList
             {...{
+              genderFilter,
               sportFilter,
               categoryFilter,
               onPressCustomize,

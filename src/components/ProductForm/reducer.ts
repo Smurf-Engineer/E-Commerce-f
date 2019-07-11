@@ -13,15 +13,18 @@ import {
   SET_GENDERS,
   SET_CURRENCIES,
   REMOVE_MATERIAL,
+  MOVE_MATERIAL,
   SET_FILE_FIELD,
   SET_COLORS,
   ADD_MATERIAL,
+  MOVE_BANNER,
   ADD_BANNER,
   SET_SPORT,
   ENABLE_SPORT,
   SET_BANNERS_LOADING,
   SET_DESIGN_CENTER,
   SAVED_PRODUCT,
+  SET_PROMPT,
   REMOVE_BANNER
 } from './constants'
 import { getFileExtension, getFileName } from '../../utils/utilsFiles'
@@ -37,7 +40,8 @@ export const initialState = fromJS({
   newSport: '',
   newSportEnabled: false,
   bannersLoading: false,
-  dataExtra: {}
+  dataExtra: {},
+  openPrompt: false
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
@@ -165,6 +169,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         loading: false
       })
     }
+    case SET_PROMPT:
+      return state.set('openPrompt', action.value)
     case SET_CURRENCIES:
       return state.setIn(['product', 'priceRange'], action.currencies)
     case SET_LOADING:
@@ -194,6 +200,20 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         map.set('bannersLoading', false)
         return map
       })
+    }
+    case MOVE_MATERIAL: {
+      const { indexTo, array, index } = action
+      const oldList = state.getIn(['product', array])
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.setIn(['product', array], newList)
+    }
+    case MOVE_BANNER: {
+      const { indexTo, index } = action
+      const oldList = state.get('bannerMaterials')
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.set('bannerMaterials', newList)
     }
     case SET_FILE_FIELD: {
       const { selected, id, name, value } = action

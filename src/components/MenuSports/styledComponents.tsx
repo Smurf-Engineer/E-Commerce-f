@@ -19,10 +19,19 @@ export const LoadingContainer = styled.div`
   align-items: center;
 `
 
+interface FilterProps {
+  width?: string
+}
+
 export const Filters = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: ${({ width }: FilterProps) => width};
+`
+
+export const Categories = styled.div`
+  padding-left: 16px;
   width: 20%;
 `
 
