@@ -5,6 +5,7 @@ import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as menuSportActions from './actions'
+import get from 'lodash/get'
 import {
   Container,
   Divider,
@@ -29,7 +30,7 @@ interface Props {
   history: any
   genderSelected: number
   onPressSeeAll: (
-    gender: number | undefined,
+    gender: number | string | undefined,
     category: string,
     sport: string
   ) => void
@@ -72,11 +73,12 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       genderOptions,
       genderSelected
     } = this.props
-    onPressSeeAll(
-      genderOptions[genderSelected].id,
-      categories[categorySelected].name,
-      sports[type].name
-    )
+
+    const gender = get(
+      genderOptions[genderSelected],
+      'name'
+    ).toLocaleLowerCase()
+    onPressSeeAll(gender, categories[categorySelected].name, sports[type].name)
   }
 
   onPressThumbnail = () => {
