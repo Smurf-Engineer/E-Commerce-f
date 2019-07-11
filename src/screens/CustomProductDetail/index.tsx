@@ -94,7 +94,6 @@ interface Props extends RouteComponentProps<any> {
   showSpecs: boolean
   currentCurrency: string
   showFitsModal: boolean
-  phone: boolean
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
@@ -127,8 +126,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       setLoadingModel,
       showDetails,
       currentCurrency,
-      showFitsModal,
-      phone
+      showFitsModal
     } = this.props
     const { formatMessage } = intl
 
@@ -386,7 +384,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     customProduct={true}
                     textColor="white"
                     {...{ designId }}
-                    phoneView={phone}
+                    phoneView={true}
                   />
                   <HowItFits onClick={this.toggleFitsModal(true)}>
                     <FormattedMessage {...messages.howItFits} />
