@@ -21,6 +21,7 @@ import {
 } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
+import ModalTitle from '../ModalTitle'
 import { QueryProps, Product, ProductFile } from '../../types/common'
 import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
@@ -148,11 +149,8 @@ export class ProductForm extends React.Component<Props, {}> {
       setDesignCenter,
       removeBanner,
       setColors,
-<<<<<<< HEAD
       openPrompt,
-=======
       moveFile,
->>>>>>> 80774ccb6ccdf3a14c0e05b4aeab806a51be5360
       addBanner,
       setBanner,
       setFileField,
