@@ -11,6 +11,9 @@ export const getProductInternalsInfoQuery = gql`
       basicColors {
         name
       }
+      frontZipperColors {
+        name
+      }
       products {
         code
       }

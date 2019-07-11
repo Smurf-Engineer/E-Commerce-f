@@ -10,6 +10,7 @@ import fetch from 'node-fetch'
 import Html from './helpers/Html'
 import renderHtml from './helpers/render'
 import UAParser from 'ua-parser-js'
+import { setRegionAction } from './screens/LanguageProvider/actions'
 import { configureServerClient } from './apollo'
 import App from './screens/App'
 import configureStore from './store'
@@ -46,12 +47,18 @@ server
     const store = configureStore()
     const { dispatch } = store
 
+    const {
+      lang: langFound = 'en',
+      currency: currencyFound = 'usd'
+    } = req.query
+    const code = req.params ? req.params[0].split('/').pop() : 'us'
+
     let locale: Region = {
       region: 'global',
-      code: 'us',
-      lang: 'en',
-      currency: 'usd',
-      realCountryCode: 'us'
+      code,
+      lang: langFound,
+      currency: currencyFound,
+      realCountryCode: code
     }
 
     try {
@@ -81,11 +88,21 @@ server
 
     const mobileDetect = mobileParser(req)
     dispatch(setMobileDetect(mobileDetect))
+
     dispatch({
       type: SET_USER_AGENT_ACTION,
       client: ua,
       country: locale.realCountryCode
     })
+
+    dispatch(
+      setRegionAction({
+        region: code,
+        localeIndex: langFound,
+        locale: langFound,
+        currency: currencyFound
+      })
+    )
 
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()

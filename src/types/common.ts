@@ -1313,6 +1313,7 @@ export interface ProductCode {
 
 export interface ProductInternalsInfo {
   basicColors: BasicColor[]
+  frontZipperColors: BasicColor[]
   products: ProductCode[]
   genders: GenderType[]
   sizes: ProductSize[]

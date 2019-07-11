@@ -108,6 +108,13 @@ const InternalsModal = ({
     'basicColors',
     []
   )
+
+  const frontZipperColors = get<
+    ProductInternalsInfo,
+    'frontZipperColors',
+    BasicColor[]
+  >(productInternalsInfo, 'frontZipperColors', [])
+
   const colors = get<ProductInternalsInfo, 'colors', ProductColors[]>(
     productInternalsInfo,
     'colors',
@@ -140,7 +147,7 @@ const InternalsModal = ({
         <StyledInput
           id={'internalId'}
           onChange={handleOnInputChange}
-          maxLength={15}
+          maxLength={8}
           data-is-number={true}
           value={internalId}
         />
@@ -232,7 +239,7 @@ const InternalsModal = ({
               onSelect={handleOnSelect('frontZipper')}
               defaultValue={frontZipper}
             >
-              {basicColors.map(({ name }) => (
+              {frontZipperColors.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
                 </Option>
@@ -282,9 +289,10 @@ const InternalsModal = ({
           </Column>
         </Row>
         <ButtonsContainer>
-          <StyledButton disabled={loading} onClick={deleteProduct}>
+          <StyledButton disabled={loading || id < 0} onClick={deleteProduct}>
             {formatMessage(messages.delete)}
           </StyledButton>
+
           <ButtonWrapper color={BLUE}>
             <StyledButton
               disabled={!internalId || !productCode}
