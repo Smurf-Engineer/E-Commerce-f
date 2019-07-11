@@ -29,7 +29,8 @@ const modalData = {
   frontZipper: null,
   binding: null,
   bibBrace: null,
-  collection: null
+  collection: null,
+  loading: false
 }
 
 export const initialState = fromJS({
@@ -37,7 +38,6 @@ export const initialState = fromJS({
   orderBy: 'id',
   sort: 'desc',
   searchText: '',
-  loading: false,
   modalOpen: false,
   ...{ ...modalData }
 })
