@@ -20,7 +20,7 @@ export const DPI = 96
 export const CM_PER_INCH = 2.54
 export const REGULAR_CANVAS = 1024
 export const HIGH_RESOLUTION_CANVAS = 2048
-
+export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
 
 /* Accesories color */

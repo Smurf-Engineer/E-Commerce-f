@@ -33,6 +33,7 @@ import {
   PROPEL_PALMS,
   GRIP_TAPE,
   REGULAR_CANVAS,
+  PHONE_POSITION,
   HIGH_RESOLUTION_CANVAS,
   MESH_NAME
 } from '../../constants'
@@ -435,7 +436,7 @@ class Render3D extends PureComponent {
             children[objectChildCount].material = frontMaterial
 
             /* Object Conig */
-            const verticalPosition = phoneView ? -3 : 0
+            const verticalPosition = phoneView ? PHONE_POSITION : 0
             object.position.y = verticalPosition
             object.name = MESH_NAME
             this.scene.add(object)
@@ -637,7 +638,7 @@ class Render3D extends PureComponent {
           }
 
           /* Object Conig */
-          const verticalPosition = phoneView ? -3 : 0
+          const verticalPosition = phoneView ? PHONE_POSITION : 0
           object.position.y = verticalPosition
           object.name = MESH_NAME
           this.scene.add(object)
