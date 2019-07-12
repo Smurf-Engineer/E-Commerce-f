@@ -704,7 +704,6 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
           const svgColors = designHasChanges ? areaColors : colors
-          console.log('areas:', areas)
           areas.forEach(
             (map, index) =>
               (children[

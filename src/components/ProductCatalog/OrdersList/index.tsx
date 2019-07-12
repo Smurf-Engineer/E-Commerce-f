@@ -52,11 +52,12 @@ const OrdersList = ({
   }
   const handleCheck = async (id: number) => {
     try {
-      await updateActiveProduct({
+      return await updateActiveProduct({
         variables: { id }
       })
     } catch (e) {
       message.error(e.message)
+      return false
     }
   }
   const header = (
