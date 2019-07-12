@@ -117,7 +117,7 @@ class Menu extends React.PureComponent<Props, {}> {
       return <div>{formatMessage(messages.error)}</div>
     }
 
-    const optionsSports = sports.map(({ name, id, categories }, index) => {
+    const optionsSports = sports.map(({ name, categories }, index) => {
       // TODO: Check this out.
       // this.getCategories(id)
       return (
@@ -128,7 +128,7 @@ class Menu extends React.PureComponent<Props, {}> {
         >
           {categories.map(({ name: categoryName }: any) => (
             <MenuAntd.Item
-              key={`sport=${name}&category=${categoryName.toLowerCase()}`}
+              key={`sport=${name}&category=${categoryName.replace(' & ', ' ')}`}
             >
               {categoryName}
             </MenuAntd.Item>
