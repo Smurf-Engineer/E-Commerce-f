@@ -325,7 +325,16 @@ class Render3D extends PureComponent {
   }
   renderProduct = async product => {
     const { phoneView } = this.props
-    const { obj, mtl, flatlock, zipper, bumpMap, binding, bibBrace } = product
+    const {
+      obj,
+      mtl,
+      flatlock,
+      zipper,
+      bumpMap,
+      binding,
+      bibBrace,
+      branding
+    } = product
     /* Object and MTL load */
     if (obj && mtl) {
       const mtlLoader = new THREE.MTLLoader()
@@ -427,7 +436,6 @@ class Render3D extends PureComponent {
             if (gripTapeIndex >= 0) {
               object.children[gripTapeIndex].material.color.set(WHITE)
             }
-
             /* Assign materials */
             const canvasObj = children[meshIndex].clone()
             object.add(canvasObj)
@@ -435,6 +443,22 @@ class Render3D extends PureComponent {
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
 
+            /* Branding */
+            if (!!branding) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const textureLoader = new THREE.TextureLoader()
+              const brandingTexture = textureLoader.load(branding)
+              brandingTexture.minFilter = THREE.LinearFilter
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                map: brandingTexture,
+                side: THREE.FrontSide,
+                bumpMap,
+                transparent: true
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
             /* Object Conig */
             const verticalPosition = phoneView ? PHONE_POSITION : 0
             object.position.y = verticalPosition
@@ -565,7 +589,6 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-
           if (!proDesign && !fromSvg) {
             areas.forEach(
               (map, index) =>
