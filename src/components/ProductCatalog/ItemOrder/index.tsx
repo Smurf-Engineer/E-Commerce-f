@@ -36,15 +36,16 @@ class ItemOrder extends React.PureComponent<Props, State> {
   }
   onChange = async () => {
     const { onCheck, id } = this.props
-    this.setState({ loading: true })
     try {
+      this.setState({ loading: true })
       await onCheck({
         variables: { id }
       })
+      this.setState({ loading: false })
     } catch (e) {
+      this.setState({ loading: false })
       message.error(e.message)
     }
-    this.setState({ loading: false })
   }
   render() {
     const { loading } = this.state
