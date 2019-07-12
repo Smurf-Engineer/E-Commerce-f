@@ -2,11 +2,10 @@
  * ProductHorizontalList Component - Created by david on 12/02/18.
  */
 import * as React from 'react'
-import { Container, AllButton, ContainerLoading } from './styledComponents'
+import { Container, ContainerLoading } from './styledComponents'
 import { compose, graphql } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
-import SeeAllButton from '../SeeAllButton'
 import ProductThumbnail from '../ProductThumbnail'
 import { productsQuery } from './data'
 import { ProductType, QueryProps, Filter } from '../../types/common'
@@ -107,14 +106,7 @@ export const ProductHorizontalList = ({
       />
     )
   })
-  return (
-    <Container {...{ width }}>
-      {list}
-      <AllButton>
-        <SeeAllButton onClick={onPressSeeAll} {...{ formatMessage }} />
-      </AllButton>
-    </Container>
-  )
+  return <Container {...{ width }}>{list}</Container>
 }
 
 type OwnProps = {

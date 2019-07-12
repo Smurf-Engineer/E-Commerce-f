@@ -11,7 +11,8 @@ import {
   OPEN_SIDEBAR_MOBILE,
   RESET_REDUCER_DATA,
   CLEAR_FILTERS,
-  SET_SELECTED_HOME_FILTERS
+  SET_SELECTED_HOME_FILTERS,
+  SET_ALL_GENDERS
 } from './constants'
 import { AnyAction, Filter } from '../../types/common'
 
@@ -61,4 +62,8 @@ export const clearFiltersAction = () => ({
 
 export const setHomeSelectedFilters = () => ({
   type: SET_SELECTED_HOME_FILTERS
+})
+
+export const setAllGendersAction = () => ({
+  type: SET_ALL_GENDERS
 })
