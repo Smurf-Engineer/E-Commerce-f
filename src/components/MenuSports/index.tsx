@@ -59,7 +59,9 @@ export class MenuSports extends React.PureComponent<Props, {}> {
 
   onSeeAllFilters = () => {
     const { sports, type } = this.props
-    window.location.replace(`/product-catalogue?sport=${sports[type].name}`)
+    window.location.replace(
+      `/product-catalogue?sport=${sports[type].name}&gender=all`
+    )
   }
 
   onPressSeeAll = () => {
@@ -120,7 +122,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
     const sportName = sports[type].name
     return (
       <Container>
-        <Filters width={'10%'}>
+        <Filters width={'15%'}>
           <FilterList
             filters={genderOptions}
             filterSelected={genderSelected}
