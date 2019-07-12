@@ -13,6 +13,7 @@ export const GetProductsByIdQuery = gql`
       sport_id
       mpn
       flatlock
+      branding
       bibBrace {
         white
         black

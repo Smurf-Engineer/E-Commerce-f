@@ -13,7 +13,7 @@ interface Props {
   productType?: string
   active: boolean
   disabled: boolean
-  onCheck: (id: number) => void
+  onCheck: (id: number) => boolean
   onProductClick: (id: number) => void
 }
 
@@ -40,10 +40,13 @@ class ItemOrder extends React.PureComponent<Props, State> {
       event.stopPropagation()
     }
   }
-  onChange = () => {
+  onChange = async () => {
     const { onCheck, id } = this.props
     this.setState({ loading: true })
-    onCheck(id)
+    const result = await onCheck(id)
+    if (!result) {
+      this.setState({ loading: false })
+    }
   }
   render() {
     const { loading } = this.state

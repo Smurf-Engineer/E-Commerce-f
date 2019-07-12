@@ -472,7 +472,7 @@ class Render3D extends PureComponent {
             this.zipper.white = this.textureLoader.load(white)
             this.zipper.white.minFilter = THREE.LinearFilter
           }
-          if(black) {
+          if (black) {
             this.zipper.black = this.textureLoader.load(black)
             this.zipper.black.minFilter = THREE.LinearFilter
           }
@@ -704,6 +704,7 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
           const svgColors = designHasChanges ? areaColors : colors
+          console.log('areas:', areas)
           areas.forEach(
             (map, index) =>
               (children[

@@ -5,6 +5,7 @@ import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+import message from 'antd/lib/message'
 import messages from './messages'
 import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
@@ -50,9 +51,13 @@ const OrdersList = ({
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
   const handleCheck = async (id: number) => {
-    await updateActiveProduct({
-      variables: { id }
-    })
+    try {
+      await updateActiveProduct({
+        variables: { id }
+      })
+    } catch (e) {
+      message.error(e.message)
+    }
   }
   const header = (
     <MediaQuery maxWidth={768}>
