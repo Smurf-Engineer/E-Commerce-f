@@ -28,9 +28,7 @@ export const initialState = fromJS({
   limit: 12,
   skip: 0,
   currentPage: 1,
-  collectionFilters: {
-    Custom: true
-  },
+  collectionFilters: {},
   genderFilters: {},
   sportFilters: {},
   categoryFilters: {},
@@ -95,7 +93,8 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_ALL_GENDERS:
       return state.merge({
-        genderFilters: { Men: true, Women: true, Unisex: true }
+        genderFilters: { Men: true, Women: true, Unisex: true },
+        collectionFilters: { Custom: true }
       })
     default:
       return state
