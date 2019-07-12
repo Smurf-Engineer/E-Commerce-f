@@ -3,7 +3,8 @@
  */
 import * as React from 'react'
 import { Container, Cell, ImageCell } from './styledComponents'
-import { Switch } from 'antd'
+import Switch from 'antd/lib/switch'
+import message from 'antd/lib/message'
 interface Props {
   image: string
   id: number
@@ -13,7 +14,7 @@ interface Props {
   productType?: string
   active: boolean
   disabled: boolean
-  onCheck: (id: number) => void
+  onCheck: (variables: {}) => Promise<any>
   onProductClick: (id: number) => void
 }
 
@@ -24,13 +25,6 @@ class ItemOrder extends React.PureComponent<Props, State> {
   state = {
     loading: false
   }
-  componentDidUpdate(prevProps: Props) {
-    const { active: newActive } = this.props
-    const { active: oldActive } = prevProps
-    if (oldActive !== newActive) {
-      this.setState({ loading: false })
-    }
-  }
   handleOnClick = () => {
     const { onProductClick, id } = this.props
     onProductClick(id)
@@ -40,10 +34,18 @@ class ItemOrder extends React.PureComponent<Props, State> {
       event.stopPropagation()
     }
   }
-  onChange = () => {
+  onChange = async () => {
     const { onCheck, id } = this.props
-    this.setState({ loading: true })
-    onCheck(id)
+    try {
+      this.setState({ loading: true })
+      await onCheck({
+        variables: { id }
+      })
+      this.setState({ loading: false })
+    } catch (e) {
+      this.setState({ loading: false })
+      message.error(e.message)
+    }
   }
   render() {
     const { loading } = this.state

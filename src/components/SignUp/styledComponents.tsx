@@ -6,7 +6,9 @@ import Input from '../Common/CustomInput'
 import Divider from 'antd/lib/divider'
 import Button from 'antd/lib/button'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  width: 100%;
+`
 
 export const SignUpLabel = styled.div`
   height: 25px;
@@ -31,8 +33,8 @@ export const DividerRow = styled.div`
   margin-bottom: 16px;
   width: 42%;
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 25%;
-    margin: 0px 72px;
+    margin: 0px auto;
+    justify-content: center;
   }
 `
 export const RightDivider = styled(Divider)``
@@ -54,10 +56,17 @@ export const StyledInput = styled(Input)`
 
 export const SocialMediaContainer = styled.div`
   padding: 0 81px;
+  @media (min-width: 320px) {
+    padding: 0;
+  }
 `
 
 export const FormContainer = styled.div`
   padding: 0 77px;
+
+  @media (min-width: 320px) {
+    padding: 0;
+  }
 `
 
 export const NewsLetterRow = styled.div`
@@ -65,7 +74,6 @@ export const NewsLetterRow = styled.div`
   justify-content: center;
 `
 export const NewsLetterText = styled.div`
-  height: 22px;
   width: 301.35px;
   color: #5f6062;
   font-size: 16px;

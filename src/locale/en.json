@@ -697,7 +697,7 @@
   "components.TextTab.enterTextPlaceholder": "Enter Text",
   "components.TextTab.applyButton": "Apply",
   "components.seAllButton.seeAll": "See All",
-  "components.seAllButton.seeAllFilters": "See All Filters",
+  "components.seAllButton.seeAllFilters": "See All {sportName}",
   "components.ConfirmCountryDialog.tittle": "WHAT IS YOUR COUNTRY OF RESIDENCE?",
   "components.ConfirmCountryDialog.save": "Save",
   "components.ConfirmCountryDialog.placeholder": "Select country",
@@ -883,7 +883,7 @@
   "screens.CustomProductDetail.size": "Size",
   "screens.CustomProductDetail.fit": "Fit",
   "screens.CustomProductDetail.addToCartButton": "ADD TO CART",
-  "screens.CustomProductDetail.description": "Description",
+  "screens.CustomProductDetail.description": "Additional Product details",
   "screens.CustomProductDetail.specs": "Specs",
   "screens.CustomProductDetail.intendedUse": "INTENDED USE",
   "screens.CustomProductDetail.temperatures": "TEMPERATURE RANGE",
@@ -894,10 +894,10 @@
   "screens.CustomProductDetail.reviews": "Reviews",
   "screens.Designs.errorTitle": "Oops",
   "screens.Designs.errorMessage": "Seems like the design was deleted or is not available",
-  "screens.ProductDetail.customizeLabel": "CUSTOMIZE",
+  "screens.ProductDetail.customizeLabel": "START YOUR DESIGN",
   "screens.ProductDetail.buyNowLabel": "BUY NOW",
   "screens.ProductDetail.intendedUseLabel": "INTENDED USE",
-  "screens.ProductDetail.detailsLabel": "Details",
+  "screens.ProductDetail.detailsLabel": "Additional Product details",
   "screens.ProductDetail.specsLabel": "Specs",
   "screens.ProductDetail.temperaturesLabel": "TEMPERATURE RANGE",
   "screens.ProductDetail.materialsLabel": "Materials info",
@@ -1022,5 +1022,6 @@
   "components.ImageList.size": "Max. size {width} cm x {height} cm",
   "components.SocialMedia.tailrecursive": "Developed by Tail Recursive",
   "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2019",
-  "components.FacebookGmailLogin.userExistsError": "An account for this email already exists, please log in with your email"
+  "components.FacebookGmailLogin.userExistsError": "An account for this email already exists, please log in with your email",
+  "screens.AdminLayout.editNavigation": "Edit Main Navigation"
 }

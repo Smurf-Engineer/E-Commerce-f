@@ -25,13 +25,18 @@ import {
   Title,
   Subtitle,
   ImagePreview,
+  ColorWheel,
   ProductData,
   AvailablePrices,
   PricesRow,
   Description,
+  HowItFits,
+  ModelContainer,
   ButtonsRow,
   StyledButton,
   CompareButton,
+  BannerMaterialSection,
+  BannerMaterial,
   BuyNowOptions,
   SectionRow,
   SectionTitle,
@@ -40,13 +45,9 @@ import {
   SectionButton,
   SizeRowTitleRow,
   // GetFittedLabel, TODO: hide get fitted for Jakroo phase I
-  QuestionSpan,
-  RelatedProductsContainer,
-  ReviewsHeader,
-  // Downloadtemplate,
+  QuestionSpan, // Downloadtemplate,
   // DownloadTemplateContainer,
   // DownloadAnchor,
-  AvailableLabel,
   // DownloadImg,
   DetailsList,
   DetailsListItem,
@@ -56,35 +57,36 @@ import {
   Loading,
   MobileButton,
   MobileButtonWrapper,
-  StyledButtonWrapper
+  StyledButtonWrapper,
+  MenIcon,
+  WomenIcon
 } from './styledComponents'
+import colorWheel from '../../assets/Colorwheel.svg'
+import Modal from '../../components/Common/JakrooModal'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
+import Render3D from '../../components/Render3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
-import YotpoReviews from '../../components/YotpoReviews'
 import AddtoCartButton from '../../components/AddToCartButton'
-import RelatedProducts from '../../components/RelatedProducts'
 import {
   Product,
   QueryProps,
-  ImageType,
   CartItemDetail,
   SelectedType,
-  Filter,
   PriceRange,
-  ProductColors
+  ProductColors,
+  ProductFile,
+  ItemDetailType
 } from '../../types/common'
-import { ProductGenders } from './constants'
-// import DownloadIcon from '../../assets/download.svg'
 import config from '../../config/index'
+import YotpoSection from '../../components/YotpoSection'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 const WHITENAME = 'White'
-const { Men, Women, Unisex } = ProductGenders
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -125,13 +127,13 @@ interface Props extends RouteComponentProps<any> {
 
 interface StateProps {
   showDetails: boolean
-  showSpecs: boolean
+  showFits: boolean
 }
 
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: false,
-    showSpecs: false
+    showFits: false
   }
 
   componentWillUnmount() {
@@ -183,42 +185,51 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
 
     const { formatMessage } = intl
-    const { showDetails, showSpecs } = this.state
-
-    const name = get(product, 'name', '')
-    // TODO: commented until MNP code gets implemented in all retail products
-    // const code = get(product, 'code', '')
-    const type = get(product, 'type', '')
-    const description = get(product, 'description', '')
-    const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', [] as Filter[])
-
-    const isRetail =
-      get(product, 'retailMen', false) || get(product, 'retailWomen', false)
-    const imagesArray = get(product, 'images', [] as ImageType[])
-    const reviewsScore = get(product, 'yotpoAverageScore', {})
-    // const template = get(product, 'template', '')
-    const products = get(product, 'relatedProducts', [] as Product[])
-
-    const mpnCode = get(product, 'mpn')
-    const colors = get(product, 'colors', [] as ProductColors[])
-
-    const maleGender = genders.find(x => x.name === Men)
-    const femaleGender = genders.find(x => x.name === Women)
-    const unisexGender = genders.find(x => x.name === Unisex)
-
-    let genderMessage = messages.maleGenderLabel
-    if (unisexGender) {
-      genderMessage = messages.unisexGenderLabel
-    } else if (femaleGender) {
-      genderMessage = maleGender
-        ? messages.unisexGenderLabel
-        : messages.femaleGenderLabel
+    const { showDetails, showFits } = this.state
+    if ((!product || error) && !loading) {
+      return (
+        <Layout {...{ intl, history }}>
+          <Loading>
+            <FormattedMessage {...messages.productNotFound} />
+          </Loading>
+        </Layout>
+      )
+    } else if (loading) {
+      return (
+        <Layout {...{ intl, history }}>
+          <Loading>
+            <Spin />
+          </Loading>
+        </Layout>
+      )
     }
+    const {
+      name,
+      type,
+      description,
+      materials,
+      genders,
+      images: imagesArray,
+      customizable,
+      retailMen,
+      retailWomen,
+      yotpoAverageScore: reviewsScore,
+      relatedProducts: products,
+      mpn: mpnCode,
+      obj,
+      mtl,
+      bannerMaterials,
+      details: detailsOptions,
+      mediaFiles,
+      colors,
+      relatedItemTag,
+      fitStyles,
+      sizeRange
+    } = product
+    const isRetail = retailMen || retailWomen || !customizable
+    const moreTag = relatedItemTag.replace(/_/, ' ')
 
     let renderPrices
-    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
-    const sizeRange = get(product, 'sizeRange', []) as SelectedType[]
 
     const {
       location: { search }
@@ -236,23 +247,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
     const genderIndex = findIndex(imagesArray, searchObject)
 
-    const images = imagesArray[genderIndex] || imagesArray[0]
-
-    const moreImages =
-      imagesArray.length > 1
-        ? imagesArray.filter(({ genderId }) => genderId !== images.genderId)
-        : []
-
-    let retailPrice
-    if (!product || error) {
-      return (
-        <Layout {...{ intl, history }}>
-          <Loading>
-            <Spin />
-          </Loading>
-        </Layout>
+    let images = null
+    let moreImages = []
+    if (!!imagesArray) {
+      images = imagesArray[genderIndex] || imagesArray[0]
+      moreImages = imagesArray.filter(
+        ({ genderId: imageGender }) => imageGender !== images.genderId
       )
     }
+
+    let retailPrice
 
     const currencyPrices = filter(product.priceRange, {
       abbreviation: currentCurrency || config.defaultCurrency
@@ -302,7 +306,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     let productInfo
     let availableFits
 
-    const detailsOptions = get(product, 'details')
     const productDetails = (detailsOptions && detailsOptions.split(',')) || ['']
     const details = productDetails.map((productDetail, index) => (
       <DetailsListItem key={index}>{productDetail}</DetailsListItem>
@@ -321,15 +324,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           showContent={showDetails}
           toggleView={this.toggleProductInfo}
         >
-          <DetailsList>{details}</DetailsList>
-        </ProductInfo>
-        <ProductInfo
-          id="Specs"
-          title={formatMessage(messages.materialsLabel)}
-          showContent={showSpecs}
-          toggleView={this.toggleProductInfo}
-        >
-          {materialsLit}
+          <DetailsList>
+            {details} {materialsLit}
+          </DetailsList>
         </ProductInfo>
       </div>
     )
@@ -475,7 +472,18 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         {formatMessage(messages.compareLabe)}
       </CompareButton>
     )
-
+    let menAvailable = false
+    let womenAvailable = false
+    if (genders) {
+      genders.forEach((genderItem: ItemDetailType) => {
+        if (genderItem.name === 'Men') {
+          menAvailable = true
+        }
+        if (genderItem.name === 'Women') {
+          womenAvailable = true
+        }
+      })
+    }
     const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
 
     return (
@@ -489,16 +497,55 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Spin />
                   </Loading>
                 ) : (
-                  <ImagesSlider
-                    onLoadModel={setLoadingModel}
-                    squareArrows={true}
-                    {...{
-                      images,
-                      moreImages,
-                      loadingImage,
-                      setLoadingImageAction
-                    }}
-                  />
+                  <div>
+                    {customizable && obj && mtl ? (
+                      <ModelContainer>
+                        <Render3D
+                          customProduct={true}
+                          designId={0}
+                          phoneView={true}
+                          textColor="white"
+                          isProduct={true}
+                          {...{ product }}
+                        />
+                        <HowItFits onClick={this.toggleFitsModal(true)}>
+                          <FormattedMessage {...messages.howItFits} />
+                        </HowItFits>
+                        {showFits && (
+                          <Modal
+                            open={showFits}
+                            requestClose={this.toggleFitsModal(false)}
+                            width={'90%'}
+                            style={{ maxWidth: '704px' }}
+                            withLogo={false}
+                          >
+                            <ImagesSlider
+                              onLoadModel={setLoadingModel}
+                              squareArrows={true}
+                              leftSide={true}
+                              {...{
+                                images,
+                                moreImages,
+                                loadingImage,
+                                setLoadingImageAction
+                              }}
+                            />
+                          </Modal>
+                        )}
+                      </ModelContainer>
+                    ) : (
+                      <ImagesSlider
+                        onLoadModel={setLoadingModel}
+                        squareArrows={true}
+                        {...{
+                          images,
+                          moreImages,
+                          loadingImage,
+                          setLoadingImageAction
+                        }}
+                      />
+                    )}
+                  </div>
                 )}
                 {/* {!isRetail &&
                   template && (
@@ -514,18 +561,15 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     </Desktop>
                   )} */}
               </ImagePreview>
-              {!isRetail && (
-                <MobileButtonWrapper>
-                  <MobileButton type="primary" onClick={this.gotoCustomize}>
-                    {formatMessage(messages.customizeLabel)}
-                  </MobileButton>
-                </MobileButtonWrapper>
-              )}
               <ProductData>
                 <TitleRow>
                   <TitleSubtitleContainer>
                     {/* TODO: Use unique name when "isRetail" */}
-                    <Title>{name}</Title>
+                    <Title>
+                      {name}
+                      {menAvailable && <MenIcon type="man" />}
+                      {womenAvailable && <WomenIcon type="woman" />}
+                    </Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     <Subtitle>{`MPN: ${mpnCode}`}</Subtitle>
                   </TitleSubtitleContainer>
@@ -538,12 +582,25 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   rating={get(reviewsScore, 'averageScore', 0)}
                   totalReviews={get(reviewsScore, 'total', 0)}
                 />
+                {!isRetail && (
+                  <MobileButtonWrapper>
+                    <MobileButton onClick={this.gotoCustomize}>
+                      <ColorWheel src={colorWheel} />
+                      {formatMessage(messages.customizeLabel)}
+                    </MobileButton>
+                  </MobileButtonWrapper>
+                )}
                 <Description>{description}</Description>
-                <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
+                <BannerMaterialSection>
+                  {bannerMaterials.map((banner: ProductFile) => (
+                    <BannerMaterial src={banner.url} />
+                  ))}
+                </BannerMaterialSection>
                 <ButtonsRow>
                   {!isRetail && (
                     <StyledButtonWrapper>
-                      <StyledButton type="primary" onClick={this.gotoCustomize}>
+                      <StyledButton onClick={this.gotoCustomize}>
+                        <ColorWheel src={colorWheel} />
                         {formatMessage(messages.customizeLabel)}
                       </StyledButton>
                     </StyledButtonWrapper>
@@ -559,23 +616,25 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
-          {product && !!products.length && (
-            <RelatedProductsContainer>
-              <RelatedProducts
-                currentCurrency={currentCurrency || config.defaultCurrency}
-                {...{ products, history, formatMessage }}
-              />
-            </RelatedProductsContainer>
-          )}
-          <ReviewsHeader>
-            <FormattedMessage {...messages.reviews} />
-          </ReviewsHeader>
-          <YotpoReviews {...{ yotpoId }} />
+          <YotpoSection
+            {...{
+              yotpoId,
+              mediaFiles,
+              products,
+              moreTag,
+              name,
+              history,
+              formatMessage,
+              currentCurrency
+            }}
+          />
         </Container>
       </Layout>
     )
   }
-
+  toggleFitsModal = (showFits: boolean) => () => {
+    this.setState({ showFits })
+  }
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[`show${id}`]
     this.setState({ [`show${id}`]: !stateValue } as any)

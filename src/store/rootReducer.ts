@@ -50,6 +50,7 @@ import designSearch from '../screens/DesignSearch/reducer'
 import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
+import productInternalsAdmin from '../components/ProductInternalsAdmin/reducer'
 import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
@@ -109,6 +110,7 @@ export interface ReducersObject {
   fitAndSizing: any
   admin: any
   adminLayout: any
+  productInternalsAdmin: any
 }
 
 const appInitialState = fromJS({
@@ -221,7 +223,8 @@ const rootReducer = combineReducers({
   app: appReducer,
   admin,
   adminLayout,
-  usersAdmin
+  usersAdmin,
+  productInternalsAdmin
 })
 
 export default rootReducer

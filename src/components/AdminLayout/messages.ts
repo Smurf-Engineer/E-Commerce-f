@@ -21,9 +21,17 @@ export default defineMessages({
     id: 'screens.AdminLayout.designSearch',
     defaultMessage: 'Design Search'
   },
+  products: {
+    id: 'screens.AdminLayout.products',
+    defaultMessage: 'PRODUCTS'
+  },
   productCatalog: {
     id: 'screens.AdminLayout.productCatalog',
-    defaultMessage: 'PRODUCT CATALOG'
+    defaultMessage: 'Product Catalog'
+  },
+  productInternal: {
+    id: 'screens.AdminLayout.productInternal',
+    defaultMessage: 'Product Internal List'
   },
   editContent: {
     id: 'screens.AdminLayout.editContent',
@@ -44,5 +52,9 @@ export default defineMessages({
   logout: {
     id: 'screens.AdminLayout.logout',
     defaultMessage: 'LOGOUT'
+  },
+  editNavigation: {
+    id: 'screens.AdminLayout.editNavigation',
+    defaultMessage: 'Edit Main Navigation'
   }
 })

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
+import sumBy from 'lodash/sumBy'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import Steps from 'antd/lib/steps'
@@ -343,6 +344,8 @@ class Checkout extends React.Component<Props, {}> {
 
     const showOrderButton = currentStep === ReviewTab
 
+    const simpleCart = this.getSimpleCart()
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -457,7 +460,8 @@ class Checkout extends React.Component<Props, {}> {
                   deleteCouponCodeAction,
                   proDesignReview,
                   paymentMethod,
-                  currentCurrency
+                  currentCurrency,
+                  simpleCart
                 }}
               />
             </SummaryContainer>
@@ -638,7 +642,20 @@ class Checkout extends React.Component<Props, {}> {
 
     this.placeOrder(event)
   }
-
+  getSimpleCart = () => {
+    const {
+      location: {
+        state: { cart }
+      }
+    } = this.props
+    return cart.map(({ product, itemDetails }: CartItems) => {
+      const simpleCartItem = {
+        id: product.id,
+        quantity: sumBy(itemDetails, 'quantity')
+      }
+      return simpleCartItem
+    })
+  }
   placeOrder = async (event: any, paypalObj?: object) => {
     const {
       location,
@@ -737,7 +754,7 @@ class Checkout extends React.Component<Props, {}> {
         query: getTaxQuery,
         variables: {
           country: billingCountry,
-          weight: weightSum,
+          cart: this.getSimpleCart(),
           shipAddress: taxAddress
         },
         fetchPolicy: 'network-only'

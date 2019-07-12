@@ -12,6 +12,20 @@ export const GetProductsByIdQuery = gql`
       category_id
       sport_id
       mpn
+      flatlock
+      branding
+      bibBrace {
+        white
+        black
+      }
+      binding {
+        white
+        black
+      }
+      zipper {
+        white
+        black
+      }
       colors {
         id
         name
@@ -26,6 +40,17 @@ export const GetProductsByIdQuery = gql`
       customizable: design_center
       description
       details
+      mediaFiles: media_files {
+        id
+        url
+      }
+      bannerMaterials: banner_materials {
+        id
+        url
+      }
+      obj
+      mtl
+      bumpMap: bump_map
       materials: materials_info
       temperatures: temperature_range
       weight
@@ -66,6 +91,7 @@ export const GetProductsByIdQuery = gql`
       retailMen: men_retail
       retailWomen: women_retail
       template
+      relatedItemTag: related_item_tag
       relatedProducts: related {
         id
         type: name

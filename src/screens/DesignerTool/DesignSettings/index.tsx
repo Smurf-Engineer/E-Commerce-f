@@ -67,11 +67,11 @@ class DesignSettings extends React.PureComponent<Props, {}> {
   state = {
     code: ''
   }
-
   render() {
     const {
       themeImage,
       themeName,
+      productCode,
       designName,
       productData,
       selectedTheme,
@@ -140,7 +140,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           </Row>
           <InputContainer>
             <Input
-              value={code}
+              value={code || productCode}
               onChange={this.handleOnUpdateProductCode}
               placeholder="Product Code"
               onSearch={this.handleOnSearch}
@@ -241,7 +241,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         size
       }
       const design = {
-        name, colors: areaColors,
+        name,
+        colors: areaColors,
         image: styleImage,
         canvas,
         fullColors: colors,

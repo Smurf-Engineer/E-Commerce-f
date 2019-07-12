@@ -3,14 +3,14 @@
  */
 import * as React from 'react'
 import Popover from 'antd/lib/popover'
-import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
-import { compose, graphql } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
+import get from 'lodash/get'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
-import { categoriesQuery } from './data'
-import MenuGender from '../MenuGender'
+import { History } from 'history'
 import MenuSports from '../MenuSports'
+import * as thunkActions from './thunkActions'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_SPORTS } from '../MenuSports/constants'
 import {
@@ -18,42 +18,46 @@ import {
   setMenuSportSelectedAction,
   setGenderSportAction
 } from './actions'
-import { Filter, QueryProps } from '../../types/common'
+import { sportRoutePosition } from './constants'
+import { Filter } from '../../types/common'
 import {
   Option,
   OptionDropdown,
   overStyle,
-  menuStyle
+  StyledMenu
 } from './styledComponents'
-import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 const MEN = 'men'
 const WOMEN = 'women'
 
-interface Data extends QueryProps {
-  genders: Filter[]
-  sports: Filter[]
-}
-
 export interface Option {
   label: string
-  visible: boolean
+  menuOpen: boolean
+  route: string
 }
 
 interface Props {
-  history: any
+  history: History
   dispatch: any
-  data: Data
+  client: any
   genderSportSelected: number
   sportOptions: Option[]
   genderOptions: Option[]
   menuGender: any
   currentCurrency: string
+  sports: Filter[]
+  currentRegion: string
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class DropdownList extends React.PureComponent<Props> {
+  componentDidMount = async () => {
+    const { client, dispatch } = this.props
+    const { getSportsMenu } = thunkActions
+    await dispatch(getSportsMenu(client))
+  }
+
   handleOnSeeAllFilters = (type: number) => {
     const {
       history: { push, location }
@@ -148,9 +152,8 @@ export class DropdownList extends React.PureComponent<Props> {
     }
   }
 
-  handleOnHideSportsMenu = (visible: boolean, index: number) => {
+  handleOnHideSportsMenu = (index: number) => (visible: boolean) => {
     const { dispatch } = this.props
-
     dispatch(setMenuSportSelectedAction(index, visible))
 
     if (!visible) {
@@ -166,102 +169,89 @@ export class DropdownList extends React.PureComponent<Props> {
 
   render() {
     const {
-      data,
-      genderOptions,
       sportOptions,
       formatMessage,
-      genderSportSelected,
       currentCurrency,
-      history
+      history,
+      sports
     } = this.props
-    const { genders, sports } = data
 
-    // TODO: REMOVE IT LATER
-    if (data && data.error) {
-      return <div>ERROR</div>
-    }
-
-    const genderMenus = genderOptions.map(({ label, visible }, index) => (
-      <Menu.Item key={label}>
-        <Popover
-          overlayStyle={overStyle}
-          trigger="hover"
-          placement="bottom"
-          visible={visible}
-          mouseEnterDelay={0.3}
-          onVisibleChange={isVisible =>
-            this.handleOnHideGenderMenu(isVisible, index)
-          }
-          content={
-            <MenuGender
-              {...{
-                genders,
-                sports,
-                visible,
-                formatMessage,
-                currentCurrency,
-                history
-              }}
-              type={index}
-              onPressSeeAll={this.handleOnSeeAll}
-              onPressQuickView={this.handleOnQuickView}
-              onPressCustomize={this.handleOnCustomize}
-              onPressThumbnail={this.handleOnHideGenderMenu}
-              sportSelected={genderSportSelected}
-              setSportAction={this.handleOnGenderSportChange}
-            />
-          }
-        >
-          <OptionDropdown>
-            <FormattedMessage {...messages[label]} />
-          </OptionDropdown>
-        </Popover>
-      </Menu.Item>
-    ))
-    const sportMenus = sportOptions.map(({ label, visible }, index) => (
-      <Menu.Item key={label}>
-        <Popover
-          overlayStyle={overStyle}
-          trigger="hover"
-          placement="bottom"
-          visible={visible}
-          mouseEnterDelay={0.3}
-          onVisibleChange={isVisible =>
-            this.handleOnHideSportsMenu(isVisible, index)
-          }
-          content={
-            <MenuSports
-              {...{ sports, visible, formatMessage, currentCurrency, history }}
-              type={index}
-              name={label}
-              onPressSeeAll={this.handleOnSeeAll}
-              onPressQuickView={this.handleOnQuickView}
-              onPressCustomize={this.handleOnCustomize}
-              onPressThumbnail={this.handleOnHideSportsMenu}
-            />
-          }
-        >
-          <OptionDropdown>
-            <FormattedMessage {...messages[label]} />
-          </OptionDropdown>
-        </Popover>
-      </Menu.Item>
-    ))
+    const pathName = get(history, 'location.pathname', '')
+    const sportRoute = pathName && pathName.split('/')
+    const sportMenus =
+      sportOptions &&
+      sportOptions.map(({ label: name, menuOpen, route }, index) => {
+        const sportSelected = sportRoute[sportRoutePosition] === route
+        return (
+          <Menu.Item key={name}>
+            <Popover
+              overlayStyle={overStyle}
+              trigger="hover"
+              placement="bottom"
+              visible={menuOpen}
+              mouseEnterDelay={0.3}
+              onVisibleChange={this.handleOnHideSportsMenu(index)}
+              content={
+                <MenuSports
+                  {...{
+                    sports,
+                    formatMessage,
+                    currentCurrency,
+                    history,
+                    name
+                  }}
+                  visible={menuOpen}
+                  type={index}
+                  onPressSeeAll={this.handleOnSeeAll}
+                  onPressQuickView={this.handleOnQuickView}
+                  onPressCustomize={this.handleOnCustomize}
+                  onPressThumbnail={this.handleOnHideSportsMenu}
+                />
+              }
+            >
+              <OptionDropdown
+                selected={sportSelected}
+                id={route}
+                onClick={this.handleRedirect}
+              >
+                {name}
+              </OptionDropdown>
+            </Popover>
+          </Menu.Item>
+        )
+      })
     return (
-      <Menu mode="horizontal" selectable={false} style={menuStyle}>
-        {genderMenus}
+      <StyledMenu mode="horizontal" selectable={false}>
         {sportMenus}
-      </Menu>
+      </StyledMenu>
     )
+  }
+
+  handleRedirect = ({
+    currentTarget: { id }
+  }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { history, currentRegion } = this.props
+    const {
+      location: { search }
+    } = history
+    const path = `/${id}/${currentRegion}${search}`
+    window.location.replace(path)
   }
 }
 
-const mapStateToProps = (state: any) => state.get('menu').toJS()
+const mapStateToProps = (state: any) => {
+  const menu = state.get('menu').toJS()
+  const region = state.get('languageProvider').toJS()
+  return {
+    ...menu,
+    ...region
+  }
+}
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const DropdownListEnhance = compose(
-  graphql<Data>(categoriesQuery),
+  withApollo,
   connect(
     mapStateToProps,
     mapDispatchToProps

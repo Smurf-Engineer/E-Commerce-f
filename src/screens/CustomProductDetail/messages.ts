@@ -21,6 +21,22 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.maleGenderLabel',
     defaultMessage: 'Available for Men'
   },
+  howItFits: {
+    id: 'screens.CustomProductDetail.howItFits',
+    defaultMessage: 'SEE HOW IT FITS'
+  },
+  featured: {
+    id: 'screens.CustomProductDetail.featured',
+    defaultMessage: 'FEATURED'
+  },
+  more: {
+    id: 'screens.CustomProductDetail.more',
+    defaultMessage: 'MORE'
+  },
+  customerReview: {
+    id: 'screens.CustomProductDetail.customerReview',
+    defaultMessage: 'CUSTOMER REVIEW'
+  },
   unisexGenderLabel: {
     id: 'screens.CustomProductDetail.unisexGenderLabel',
     defaultMessage: 'Available for Men and Women'
@@ -43,7 +59,7 @@ export default defineMessages({
   },
   description: {
     id: 'screens.CustomProductDetail.description',
-    defaultMessage: 'Description'
+    defaultMessage: 'Additional Product details'
   },
   specs: {
     id: 'screens.CustomProductDetail.specs',

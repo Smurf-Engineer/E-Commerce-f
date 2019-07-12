@@ -19,6 +19,7 @@ import { Product } from '../../types/common'
 interface Props {
   history: any
   dispatch: any
+  title?: string
   currentCurrency: string
   products: Product[]
   phone: boolean
@@ -27,7 +28,13 @@ interface Props {
 
 export class RelatedProducts extends React.Component<Props, {}> {
   render() {
-    const { products, phone, currentCurrency, formatMessage } = this.props
+    const {
+      products,
+      phone,
+      currentCurrency,
+      formatMessage,
+      title
+    } = this.props
 
     const renderProductList = products.map((product, key) => {
       const {
@@ -80,7 +87,7 @@ export class RelatedProducts extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <Title>{formatMessage(messages.title)}</Title>
+        <Title>{title || formatMessage(messages.title)}</Title>
         <Divider />
         <ProductsContainer>{renderProductList}</ProductsContainer>
       </Container>

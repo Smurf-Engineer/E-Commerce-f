@@ -238,3 +238,10 @@ export const AddMaterial = styled.div`
 export const MaterialButton = styled(Icon)`
   cursor: pointer;
 `
+export const LoaderBox = styled.div`
+  width: 200px;
+  height: 200px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+`

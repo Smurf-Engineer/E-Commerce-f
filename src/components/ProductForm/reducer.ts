@@ -8,23 +8,27 @@ import {
   CHANGE_VALUE,
   RESET_DATA,
   SET_LOADING,
-  SET_BANNERS,
+  SET_BANNER,
   SET_CHECK,
   SET_GENDERS,
   SET_CURRENCIES,
   REMOVE_MATERIAL,
+  MOVE_MATERIAL,
   SET_FILE_FIELD,
   SET_COLORS,
   ADD_MATERIAL,
+  MOVE_BANNER,
   ADD_BANNER,
-  SET_BANNER,
+  SET_SPORT,
+  ENABLE_SPORT,
+  SET_BANNERS_LOADING,
   SET_DESIGN_CENTER,
   SAVED_PRODUCT,
-  REMOVE_BANNER,
-  ADD_PICTURE
+  SET_PROMPT,
+  REMOVE_BANNER
 } from './constants'
 import { getFileExtension, getFileName } from '../../utils/utilsFiles'
-import { Reducer } from '../../types/common'
+import { Reducer, ProductPicture } from '../../types/common'
 import { currencies, quantities } from './Steps/ThirdStep/constants'
 import omitDeep from 'omit-deep'
 
@@ -33,8 +37,11 @@ export const initialState = fromJS({
   loading: true,
   loadingMessage: '',
   bannerMaterials: [],
-  fixed: false,
-  dataExtra: {}
+  newSport: '',
+  newSportEnabled: false,
+  bannersLoading: false,
+  dataExtra: {},
+  openPrompt: false
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
@@ -50,13 +57,42 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         sizeRange,
         fitStyles,
         sports,
+        genders,
         colors,
-        productMaterials
+        productMaterials,
+        pictures
       } = product
       const { bannerMaterials } = extraData
+      const gendersSelected = genders
+        ? genders.reduce((obj, { id, name }) => {
+            const blockImage = pictures.find(
+              (block: ProductPicture) => block.gender_id === id
+            )
+            obj[id] = {
+              ...blockImage,
+              name,
+              selected: true
+            }
+            return obj
+            // tslint:disable-next-line: align
+          }, {})
+        : {}
+      const colorsSelected = colors
+        ? colors.reduce((obj, { id, name }) => {
+            const blockImage = pictures.find(
+              (block: ProductPicture) => block.color_id === id
+            )
+            obj[id] = {
+              ...blockImage,
+              name,
+              selected: true
+            }
+            return obj
+            // tslint:disable-next-line: align
+          }, {})
+        : {}
       const mediaFilesDetailed = mediaFiles
         ? mediaFiles.map((file: any, index: number) => ({
-            toUpload: false,
             url: file.url,
             id: index,
             extension: getFileExtension(file.url),
@@ -112,20 +148,13 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
               // tslint:disable-next-line: align
             }, {})
           : {}
-      const colorsDet =
-        colors && colors.length
-          ? colors.reduce((obj, item) => {
-              obj[item.id] = item.name
-              return obj
-              // tslint:disable-next-line: align
-            }, {})
-          : {}
       const detailedProduct = {
         ...product,
         sports: sportsProduct,
         sizeRange: sizeRangeDet,
         fitStyles: fitStylesDet,
-        colors: colorsDet,
+        genders: gendersSelected,
+        colors: colorsSelected,
         productMaterials: productMaterialsDet,
         mediaFiles: mediaFilesDetailed,
         priceRange: currenciesProduct
@@ -140,6 +169,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         loading: false
       })
     }
+    case SET_PROMPT:
+      return state.set('openPrompt', action.value)
     case SET_CURRENCIES:
       return state.setIn(['product', 'priceRange'], action.currencies)
     case SET_LOADING:
@@ -157,28 +188,48 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const oldList = state.getIn(['product', array])
       return state.setIn(['product', array], oldList.remove(index))
     }
+    case ENABLE_SPORT:
+      return state.set('newSportEnabled', action.value)
+    case SET_SPORT:
+      return state.set('newSport', action.value)
     case ADD_MATERIAL: {
       const { item, array } = action
       const oldList = state.getIn(['product', array])
-      return state.setIn(['product', array], oldList.push(item))
+      return state.withMutations((map: any) => {
+        map.setIn(['product', array], oldList.push(item))
+        map.set('bannersLoading', false)
+        return map
+      })
+    }
+    case MOVE_MATERIAL: {
+      const { indexTo, array, index } = action
+      const oldList = state.getIn(['product', array])
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.setIn(['product', array], newList)
+    }
+    case MOVE_BANNER: {
+      const { indexTo, index } = action
+      const oldList = state.get('bannerMaterials')
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.set('bannerMaterials', newList)
     }
     case SET_FILE_FIELD: {
-      const { array, index, field, value } = action
-      return state.setIn(['product', array, index, field], value)
-    }
-    case ADD_PICTURE: {
-      const { index, item } = action
-      return state.setIn(['product', 'pictures', index], fromJS(item))
+      const { selected, id, name, value } = action
+      return state.setIn(['product', selected, id, name], value)
     }
     case ADD_BANNER: {
       const { item } = action
       const oldList = state.get('bannerMaterials')
-      return state.set('bannerMaterials', oldList.push(item))
+      return state.set('bannerMaterials', oldList.push(fromJS(item)))
     }
     case SET_BANNER: {
       const { index, field, value } = action
       return state.setIn(['bannerMaterials', index, field], value)
     }
+    case SET_BANNERS_LOADING:
+      return state.set('bannersLoading', action.value)
     case REMOVE_BANNER: {
       const { index } = action
       const oldList = state.get('bannerMaterials')
@@ -202,62 +253,22 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       return state.update('product', product => {
         return product.merge({
           designCenter: action.value,
-          genders: List(),
-          pictures: List(),
+          genders: Map(),
           productMaterials: Map(),
           mediaFiles: List(),
           colors: Map()
         })
       })
-
-    case SET_BANNERS:
-      return state.merge({ bannerMaterials: action.banners, fixed: true })
-    case SET_GENDERS: {
-      const customizable = state.getIn(['product', 'designCenter'])
-      return state.withMutations((map: any) => {
-        // TODO: Change the way we store the pictures depending of the product type setting everything in different Maps
-        map.setIn(['product', 'genders'], fromJS(action.genders))
-        if (customizable) {
-          const pictures = action.genders.map((gender: any) => ({
-            front_image: '',
-            back_image: '',
-            left_image: '',
-            right_image: '',
-            gender_id: gender.id
-          }))
-          map.setIn(['product', 'pictures'], List.of(...pictures))
-        } else {
-          map.setIn(['product', 'pictures'], List())
-        }
-        return map
-      })
-    }
+    case SET_GENDERS:
+      return state.setIn(
+        ['product', 'genders', action.id, 'selected'],
+        action.value
+      )
     case SET_COLORS: {
-      // TODO: Change the way we store the pictures depending of the product type setting everything in different Maps
-      const { colors, pictures, genders } = state.get('product').toJS()
-      const gender = genders.length ? genders[0].id : ''
-      Object.keys(colors).forEach((id: string) => {
-        const index = pictures.findIndex(
-          (picture: any) => picture.color_id === parseInt(id, 10)
-        )
-        if (!colors[id] && index !== -1) {
-          pictures.splice(index, 1)
-        } else if (colors[id] && index === -1) {
-          pictures.push({
-            front_image: '',
-            back_image: '',
-            left_image: '',
-            right_image: '',
-            color_id: parseInt(id, 10),
-            gender_id: gender || ''
-          })
-        }
-      })
-      return state.withMutations((map: any) => {
-        map.setIn(['product', 'colors'], fromJS(colors))
-        map.setIn(['product', 'pictures'], List.of(...pictures))
-        return map
-      })
+      return state.setIn(
+        ['product', 'colors', action.id, 'selected'],
+        action.value
+      )
     }
     case CHANGE_VALUE:
       return state.setIn(['product', action.field], fromJS(action.value))

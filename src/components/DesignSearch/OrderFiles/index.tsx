@@ -7,6 +7,7 @@ import Button from 'antd/lib/button'
 import messages from './messages'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
+import Divider from 'antd/lib/divider'
 import indexOf from 'lodash/indexOf'
 import message from 'antd/lib/message'
 import Render3D from '../../../components/Render3D'
@@ -41,6 +42,7 @@ interface Props {
   uploadingThumbnail: boolean
   changes: boolean
   colorAccessories: any
+  creatingPdf: boolean
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any, params?: any) => string
@@ -48,6 +50,7 @@ interface Props {
   setUploadingThumbnailAction: (uploading: boolean) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
+  onGeneratePdf: () => void
 }
 class OrderFiles extends React.PureComponent<Props> {
   render3D: any
@@ -66,7 +69,7 @@ class OrderFiles extends React.PureComponent<Props> {
         shortId,
         image,
         pdfUrl,
-        product: { name: modelName }
+        product: { name: modelName, zipper }
       },
       uploadingFile,
       formatMessage,
@@ -77,9 +80,13 @@ class OrderFiles extends React.PureComponent<Props> {
       changes,
       onSelectStitchingColor,
       colorAccessories,
-      onSelectColor
+      onSelectColor,
+      onGeneratePdf,
+      creatingPdf
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
+    const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
+
     return (
       <Container>
         <RenderLayout>
@@ -91,7 +98,8 @@ class OrderFiles extends React.PureComponent<Props> {
               bibColor,
               bindingColor,
               onSelectStitchingColor,
-              onSelectColor
+              onSelectColor,
+              allowZipperSelection
             }}
             stitchingValue={colorAccessories.stitching || stitchingValue}
             stitchingName={colorAccessories.stitchingName || stitchingName}
@@ -122,6 +130,17 @@ class OrderFiles extends React.PureComponent<Props> {
             </Label>
             <Status>{statusOrder}</Status>
           </StatusContainer>
+          <Button
+            loading={creatingPdf}
+            disabled={creatingPdf}
+            onClick={onGeneratePdf}
+            icon="download"
+          >
+            <ButtonContainer>
+              <FormattedMessage {...messages.generatePDF} />
+            </ButtonContainer>
+          </Button>
+          <Divider />
           <Button onClick={this.onDownload} icon="download">
             <ButtonContainer>
               <FormattedMessage {...messages.downloadAll} />

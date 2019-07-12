@@ -11,6 +11,8 @@ export const SET_INSTALLED_FONTS_ACTION = `${namespace}/SET_INSTALLED_FONTS_ACTI
 export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
+export const PRODUCTS = 'products'
+export const PRODUCT_INTERNAL = 'productInternal'
 export const PRODUCT_CATALOG = 'productCatalog'
 export const DESIGN_SEARCH = 'designSearch'
 export const EDIT_CONTENT = 'editContent'
@@ -18,6 +20,7 @@ export const HOMEPAGE = 'homepage'
 export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
 export const LOGOUT_MENU = 'logout'
+export const EDIT_NAVIGATION = 'editNavigation'
 
 export const options = [
   {
@@ -25,12 +28,12 @@ export const options = [
     options: [ORDER_STATUS, DISCOUNTS, DESIGN_SEARCH]
   },
   {
-    title: PRODUCT_CATALOG,
-    options: []
+    title: EDIT_CONTENT,
+    options: [EDIT_NAVIGATION, DESIGN_LAB]
   },
   {
-    title: EDIT_CONTENT,
-    options: [HOMEPAGE, DESIGN_LAB]
+    title: PRODUCTS,
+    options: [PRODUCT_CATALOG, PRODUCT_INTERNAL]
   },
   {
     title: USERS,
