@@ -122,7 +122,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
     const sportName = sports[type].name
     return (
       <Container>
-        <Filters width={'10%'}>
+        <Filters width={'15%'}>
           <FilterList
             filters={genderOptions}
             filterSelected={genderSelected}
