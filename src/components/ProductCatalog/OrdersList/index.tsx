@@ -5,7 +5,6 @@ import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
-import message from 'antd/lib/message'
 import messages from './messages'
 import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
@@ -50,16 +49,6 @@ const OrdersList = ({
   if (!orders || !orders.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
-  const handleCheck = async (id: number) => {
-    try {
-      return await updateActiveProduct({
-        variables: { id }
-      })
-    } catch (e) {
-      message.error(e.message)
-      return false
-    }
-  }
   const header = (
     <MediaQuery maxWidth={768}>
       {matches => {
@@ -100,7 +89,7 @@ const OrdersList = ({
         <ItemOrder
           key={index}
           active={active}
-          onCheck={handleCheck}
+          onCheck={updateActiveProduct}
           disabled={!obj && !mtl && isCustom}
           image={get(images[0], 'front', jakrooLogo)}
           productType={formatMessage(
