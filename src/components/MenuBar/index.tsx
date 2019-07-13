@@ -260,6 +260,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                       buyNowHeader,
                       saveAndBuy
                     }}
+                    handleOnGoHome={this.handleOnGoHome}
                     totalItems={itemsInCart}
                     hide={hideTop}
                     loginButton={loggedUser}

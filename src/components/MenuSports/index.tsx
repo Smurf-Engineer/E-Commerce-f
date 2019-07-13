@@ -76,7 +76,8 @@ export class MenuSports extends React.PureComponent<Props, {}> {
 
     const gender = get(
       genderOptions[genderSelected],
-      'name'
+      'name',
+      ''
     ).toLocaleLowerCase()
     onPressSeeAll(gender, categories[categorySelected].name, sports[type].name)
   }
