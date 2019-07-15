@@ -55,3 +55,6 @@ export const PERSONAL = 'Personal'
 
 /* Files Constants */
 export const MP4_EXTENSION = '.mp4'
+
+/* Keys Constants */
+export const KEY_ENTER = 'Enter'
