@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'components.ProductInternalsAdmin.addInternalLabel',
     defaultMessage: '+ ADD NEW PRODUCT INTERNAL'
   },
+  download: {
+    id: 'components.ProductInternalsAdmin.download',
+    defaultMessage: 'DOWNLOAD CSV'
+  },
   alreadyExist: {
     id: 'components.ProductInternalsAdmin.alreadyExist',
     defaultMessage: 'Product internal already exists.'

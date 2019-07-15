@@ -13,7 +13,8 @@ import {
   OPEN_MODAL,
   RESET_MODAL,
   SET_INTERNAL_TO_UPDATE,
-  SET_LOADING
+  SET_LOADING,
+  SET_DOWNLOADING_FILE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -30,7 +31,8 @@ const modalData = {
   binding: null,
   bibBrace: null,
   collection: null,
-  loading: false
+  loading: false,
+  downloading: false
 }
 
 export const initialState = fromJS({
@@ -72,6 +74,8 @@ const productInternalsAdminReducer: Reducer<any> = (
     }
     case SET_LOADING:
       return state.set('loading', action.loading)
+    case SET_DOWNLOADING_FILE:
+      return state.set('downloading', action.downloading)
     default:
       return state
   }

@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import { GRAY_LIGHTEST } from '../../theme/colors'
 
 const Search = Input.Search
 
@@ -46,4 +47,18 @@ export const AddInternalButton = styled(Button)`
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
+`
+
+export const BottomContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-right: 32px;
+`
+
+export const DownloadButton = styled(Button)`
+  background-color: ${({ disabled }: any) =>
+    disabled ? `${GRAY_LIGHTEST} !important` : ''};
+  border-color: ${({ disabled }: any) =>
+    disabled ? `${GRAY_LIGHTEST} !important` : ''};
 `
