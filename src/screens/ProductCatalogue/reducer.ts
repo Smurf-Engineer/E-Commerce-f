@@ -15,6 +15,7 @@ import {
   SET_SELECTED_HOME_FILTERS,
   INLINE_FILTER,
   CATEGORY_FILTER,
+  SET_ALL_GENDERS,
   cyclingGroup
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -63,9 +64,8 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         })
       }
       return state
-        .updateIn(
-          [type, name],
-          (value: any) => (firstGenderSet ? true : !!!value)
+        .updateIn([type, name], (value: any) =>
+          firstGenderSet ? true : !!!value
         )
         .merge({ skip: 0, currentPage: 1 })
     case ORDERBY_SELECTED:
@@ -90,6 +90,10 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         sportFilters: { [ROADBIKE]: true },
         categoryFilters: { [CATEGORY_FILTER]: true },
         collectionFilters: { [INLINE_FILTER]: true }
+      })
+    case SET_ALL_GENDERS:
+      return state.merge({
+        genderFilters: { Men: true, Women: true, Unisex: true }
       })
     default:
       return state

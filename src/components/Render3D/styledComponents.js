@@ -99,7 +99,7 @@ export const DragText = styled.div`
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: ${({ isProduct }) => (isProduct ? '8%' : '19%')};
+  bottom: ${({ isProduct }) => (isProduct ? '0' : '19%')};
   left: 50%;
   transform: translate(-50%, -50%);
 

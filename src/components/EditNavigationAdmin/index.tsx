@@ -104,7 +104,11 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
   }
 }
 const EditNavigationAdminEnhance = compose(
-  graphql<Data>(GetSportsQuery),
+  graphql<Data>(GetSportsQuery, {
+    options: () => ({
+      fetchPolicy: 'network-only'
+    })
+  }),
   ActivateInNavbarMutation,
   WithLoading
 )(EditNavigationAdmin)
