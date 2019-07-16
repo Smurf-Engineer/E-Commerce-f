@@ -28,9 +28,7 @@ export const initialState = fromJS({
   limit: 12,
   skip: 0,
   currentPage: 1,
-  collectionFilters: {
-    Custom: true
-  },
+  collectionFilters: {},
   genderFilters: {},
   sportFilters: {},
   categoryFilters: {},
