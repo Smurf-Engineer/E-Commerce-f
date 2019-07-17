@@ -16,7 +16,8 @@ import {
   MediaSection,
   LoaderBox,
   Label,
-  InputDiv
+  InputDiv,
+  AddButton
 } from './styledComponents'
 import GenderBlock from './GenderBlock'
 import { uploadFile } from '../../api'
@@ -25,12 +26,10 @@ import {
   TypePicture,
   ItemDetailType
 } from '../../../../types/common'
-import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
 import { validTypes } from '../../constants'
 import MediaBlock from './MediaBlock'
 import BannerBlock from './BannerBlock'
 import Draggable from '../../../Draggable'
-const Dragger = Upload.Dragger
 interface Props {
   productMaterials: ProductFile[]
   mediaFiles: ProductFile[]
@@ -187,19 +186,12 @@ export class FourthStep extends React.Component<Props, {}> {
                 <Label>
                   <FormattedMessage {...messages.featuredImages} />
                 </Label>
-                <Dragger
-                  multiple={true}
-                  className="avatar-uploader"
-                  customRequest={this.handleSetMedia}
-                  showUploadList={false}
-                  beforeUpload={this.beforeUploadMedia}
-                >
-                  <Icon type="upload" />
-                  <p className="ant-upload-hint">20 MB max.</p>
-                  <p className="ant-upload-text">
-                    Click or drag images or videos to this area
-                  </p>
-                </Dragger>
+                <AddButton onClick={this.handleAddMediaBox(false)}>
+                  <FormattedMessage {...messages.addImages} />
+                </AddButton>
+                <AddButton onClick={this.handleAddMediaBox(true)}>
+                  <FormattedMessage {...messages.addVideos} />
+                </AddButton>
               </InputDiv>
             </RowInput>
             {mediaFiles.length ? (
@@ -214,6 +206,7 @@ export class FourthStep extends React.Component<Props, {}> {
                   >
                     <MediaBlock
                       {...{ index, mediaFile }}
+                      handleSetMedia={this.handleSetMedia}
                       removeMediaFile={this.removeMediaFile}
                     />
                   </Draggable>
@@ -269,11 +262,6 @@ export class FourthStep extends React.Component<Props, {}> {
     })
   }
 
-  removeMediaFile = (index: number) => {
-    const { removeFile } = this.props
-    removeFile('mediaFiles', index)
-  }
-
   beforeUpload = (file: any) => {
     const isValidType = validTypes.includes(file.type)
     if (!isValidType) {
@@ -300,18 +288,29 @@ export class FourthStep extends React.Component<Props, {}> {
     return (isJPG || isPNG || isMP4) && isLt2M
   }
 
+  removeMediaFile = (index: number) => {
+    const { removeFile } = this.props
+    removeFile('mediaFiles', index)
+  }
+
+  handleAddMediaBox = (isVideo: boolean) => () => {
+    const { addFile, mediaFiles } = this.props
+    const id = mediaFiles.length + 1
+    addFile('mediaFiles', { id, isVideo })
+  }
+
   handleSetMedia = (event: any) => {
-    const { addFile, mediaFiles, setBannersLoading } = this.props
-    const { file } = event
+    const { setFileField, mediaFiles, setBannersLoading } = this.props
+    const {
+      file,
+      data: { index, isMobile }
+    } = event
+    console.log('event:', event)
     const id = mediaFiles.length + 1
     setBannersLoading(true)
     uploadFile(file, id.toString(), 'media').then(({ imageUri }) => {
-      addFile('mediaFiles', {
-        url: imageUri,
-        id,
-        name: getFileName(file.name),
-        extension: getFileExtension(file.name)
-      })
+      const urlField = isMobile ? 'urlMobile' : 'url'
+      setFileField('mediaFiles', index, urlField, imageUri)
     })
   }
 

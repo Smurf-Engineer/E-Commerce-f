@@ -33,6 +33,7 @@ import { getFileExtension, getFileName } from '../../utils/utilsFiles'
 import { Reducer, ProductPicture } from '../../types/common'
 import { currencies, quantities } from './Steps/ThirdStep/constants'
 import omitDeep from 'omit-deep'
+import { MP4_EXTENSION } from '../../constants'
 
 export const initialState = fromJS({
   product: {},
@@ -106,7 +107,9 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const mediaFilesDetailed = mediaFiles
         ? mediaFiles.map((file: any, index: number) => ({
             url: file.url,
+            urlMobile: file.urlMobile,
             id: index,
+            isVideo: getFileExtension(file.url) === MP4_EXTENSION,
             extension: getFileExtension(file.url),
             name: getFileName(file.url)
           }))
