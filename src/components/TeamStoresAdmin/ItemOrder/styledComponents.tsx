@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by eduardoquintero on 03/07/19.
+ * Styled Components - Created by eduardoquintero on 15/07/19.
  */
 import styled from 'styled-components'
 import { RED } from '../../../theme/colors'

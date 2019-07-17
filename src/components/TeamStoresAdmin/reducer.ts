@@ -1,5 +1,5 @@
 /**
- * ProductInternalsAdmin Reducer - Created by eduardoquintero on 03/07/19.
+ * TeamStoresAdmin Reducer - Created by eduardoquintero on 15/07/19.
  */
 
 import { fromJS } from 'immutable'

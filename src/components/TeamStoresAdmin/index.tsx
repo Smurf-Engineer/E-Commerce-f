@@ -18,7 +18,6 @@ interface Props {
   orderBy: string
   sort: sorts
   client: any
-  internalId: number
   searchText: string
   productCode: number
   gender: string
@@ -37,7 +36,6 @@ interface Props {
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setInternalIdAction: (internalId: string) => void
   setSearchTextAction: (searchText: string) => void
   setLoadingAction: (loading: boolean) => void
 }

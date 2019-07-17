@@ -16,13 +16,5 @@ export default defineMessages({
   unexpectedError: {
     id: 'components.TeamStoresAdmin.unexpectedError',
     defaultMessage: 'Oops! Something went wrong.'
-  },
-  confirmTitle: {
-    id: 'components.TeamStoresAdmin.confirmTitle',
-    defaultMessage: `Delete product internal`
-  },
-  confirmMessage: {
-    id: 'components.TeamStoresAdmin.confirmMessage',
-    defaultMessage: `You are about to delete the internal ID no. {internalId}.`
   }
 })

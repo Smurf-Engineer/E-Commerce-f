@@ -1,5 +1,5 @@
 /**
- * ItemOrder Component - Created by eduardoquintero on 03/07/19.
+ * ItemOrder Component - Created by eduardoquintero on 15/07/19.
  */
 import * as React from 'react'
 import { Container, Cell } from './styledComponents'
