@@ -87,7 +87,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   handleOnGoHome = () => {
     const {
       currentCurrency,
-      currentRegion,
+      currentRegion = '',
       currentLanguage,
       regionsData: { regionsResult }
     } = this.props
@@ -96,15 +96,12 @@ class MenuBar extends React.Component<Props, StateProps> {
     const regionsCodes =
       regionsResult && regionsResult.map(region => region.code)
 
-    let regionCode = ''
-    if (!currentRegion) {
-      regionCode = 'us?'
-    } else if (regionsCodes.includes(currentRegion)) {
-      regionCode = `${currentRegion}?`
-    }
+    const regionCode = regionsCodes.includes(currentRegion)
+      ? currentRegion
+      : 'us'
 
     window.location.replace(
-      `/${regionCode}lang=${currentLanguage ||
+      `/${regionCode}?lang=${currentLanguage ||
         'en'}&currency=${currentCurrency}`
     )
   }

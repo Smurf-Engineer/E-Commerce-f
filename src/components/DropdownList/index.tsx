@@ -228,14 +228,9 @@ export class DropdownList extends React.PureComponent<Props> {
       regionsCodes
     } = this.props
 
-    let region = ''
-    if (!currentRegion) {
-      region = 'us?'
-    } else if (regionsCodes.includes(currentRegion)) {
-      region = `${currentRegion}?`
-    }
+    const region = regionsCodes.includes(currentRegion) ? currentRegion : 'us'
 
-    const path = `/${id}/${region}lang=${currentLanguage ||
+    const path = `/${id}/${region}?lang=${currentLanguage ||
       'en'}&currency=${currentCurrency}`
     window.location.replace(path)
   }
