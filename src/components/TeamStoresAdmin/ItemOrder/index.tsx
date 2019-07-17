@@ -39,7 +39,7 @@ const ItemOrder = ({
         {userFirstName} {userLastName}
       </Cell>
       <Cell>{formatMessage(messages[onDemand ? 'onDemand' : 'fixed'])}</Cell>
-      <Cell>{cutOffDateString || '-'}</Cell>
+      <Cell>{onDemand ? '-' : cutOffDateString}</Cell>
       <Cell>
         <Switch onChange={handleOnSetFeatured} checked={featured} />
       </Cell>
