@@ -45,11 +45,11 @@ interface Props {
 }
 
 const productHeaders = [
-  { title: 'name', id: 'team_stores.name' },
-  { title: 'manager', id: 'users.first_name' },
-  { title: 'type', id: 'team_stores.on_demand_mode' },
-  { title: 'cutoffDate', id: 'team_stores.cutoff_date' },
-  { title: 'featured', id: 'team_stores.featured' }
+  { title: 'name', id: 'name' },
+  { title: 'manager', id: 'first_name' },
+  { title: 'type', id: 'on_demand_mode' },
+  { title: 'cutoffDate', id: 'cutoff_date' },
+  { title: 'featured', id: 'featured' }
 ]
 
 const TeamStoresList = ({

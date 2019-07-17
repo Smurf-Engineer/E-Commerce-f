@@ -5,8 +5,21 @@
 import gql from 'graphql-tag'
 
 export const GetTeamStoresQuery = gql`
-  query GetTeamStoresList {
-    teamStoresList {
+  query GetTeamStoresList(
+    $limit: Int
+    $offset: Int
+    $order: String
+    $orderAs: String
+    $searchText: String
+  ) {
+    teamStoresList(
+      limit: $limit
+      offset: $offset
+      withPrivates: true
+      order: $order
+      orderAs: $orderAs
+      searchText: $searchText
+    ) {
       fullCount
       teamStores {
         id
