@@ -7,9 +7,10 @@ import Cart from '../CartForHeader'
 import Menu from '../MobileMenu'
 import messages from './messages'
 import { Container, Logo, Button } from './styledComponents'
+import { History } from 'history'
 
 interface Props {
-  history: any
+  history: History
   loginButton: React.ReactNode
   regionButton: React.ReactNode
   totalItems: number
@@ -19,6 +20,7 @@ interface Props {
   saveAndBuy: (buy: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
+  handleOnGoHome: () => void
 }
 
 export const MenuBarMobile = ({
@@ -31,9 +33,9 @@ export const MenuBarMobile = ({
   openWithoutSaveModalAction,
   formatMessage,
   buyNowHeader,
-  saveAndBuy
+  saveAndBuy,
+  handleOnGoHome
 }: Props) => {
-  const handleGoHome = () => window.location.replace('/')
   const handleOnSaveAndBuy = () => {
     saveAndBuy(true)
   }
@@ -42,7 +44,7 @@ export const MenuBarMobile = ({
       {!buyNowHeader && <Menu {...{ history, loginButton, formatMessage }} />}
       <Logo
         src={logo}
-        onClick={handleGoHome}
+        onClick={handleOnGoHome}
         className={buyNowHeader ? 'alignLeft' : ''}
       />
       {regionButton}
