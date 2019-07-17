@@ -16,6 +16,7 @@ export const GetTeamStoresQuery = gql`
       limit: $limit
       offset: $offset
       withPrivates: true
+      onlyFeatured: false
       order: $order
       orderAs: $orderAs
       searchText: $searchText

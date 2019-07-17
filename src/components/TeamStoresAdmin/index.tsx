@@ -6,11 +6,15 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { compose } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import message from 'antd/lib/message'
+import { GetTeamStoresQuery } from './TeamStoresList/data'
+import { setTeamStoreFeaturedMutation } from './data'
 import * as TeamStoresActions from './actions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './TeamStoresList'
 import messages from './messages'
 import { sorts, Message } from '../../types/common'
+import { TEAM_STORES_LIMIT } from './constants'
 
 interface Props {
   history: any
@@ -38,6 +42,7 @@ interface Props {
   resetDataAction: () => void
   setSearchTextAction: (searchText: string) => void
   setLoadingAction: (loading: boolean) => void
+  setTeamStoreFeatured: (variables: {}) => void
 }
 
 interface StateProps {
@@ -75,6 +80,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
           onSortClick={this.handleOnSortClick}
           onChangePage={this.handleOnChangePage}
           interactiveHeaders={true}
+          onSetFeatured={this.handleOnSetFeatured}
         />
       </Container>
     )
@@ -98,11 +104,54 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       this.raiseSearchWhenUserStopsTyping()
     })
   }
+  handleOnSetFeatured = async (id: number) => {
+    const {
+      setTeamStoreFeatured,
+      orderBy,
+      sort,
+      searchText,
+      formatMessage,
+      currentPage
+    } = this.props
+    try {
+      const offset = currentPage ? (currentPage - 1) * TEAM_STORES_LIMIT : 0
+
+      await setTeamStoreFeatured({
+        variables: { id },
+        update: (store: any) => {
+          const storedData = store.readQuery({
+            query: GetTeamStoresQuery,
+            variables: {
+              limit: TEAM_STORES_LIMIT,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            }
+          })
+          store.writeQuery({
+            query: GetTeamStoresQuery,
+            variables: {
+              limit: TEAM_STORES_LIMIT,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            },
+            data: storedData
+          })
+        }
+      })
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => state.get('teamStoresAdmin').toJS()
 
 const TeamStoresAdminEnhance = compose(
+  setTeamStoreFeaturedMutation,
   connect(
     mapStateToProps,
     { ...TeamStoresActions }
