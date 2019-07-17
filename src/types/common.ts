@@ -258,6 +258,27 @@ export type TeamStoreType = {
   priceRanges: ItemDetailType[]
 }
 
+export type TeamStoreAdminResultType = {
+  fullCount: number
+  teamStores: TeamStoreAdminType[]
+}
+
+export type TeamStoreAdminType = {
+  id: number
+  name: string
+  cutoffDate: DateObjectType
+  deliveryDate: DateObjectType
+  private: boolean
+  createdAt: string
+  items: TeamStoreItemtype[]
+  priceRanges: ItemDetailType[]
+  featured: boolean
+  userFirstName: string
+  userLastName: string
+  onDemand: boolean
+  cutOffDateString: string
+}
+
 export type DateObjectType = {
   day: string
   dayOrdinal: string

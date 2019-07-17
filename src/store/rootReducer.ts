@@ -51,6 +51,8 @@ import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
 import productInternalsAdmin from '../components/ProductInternalsAdmin/reducer'
+import teamStoresAdmin from '../components/TeamStoresAdmin/reducer'
+
 import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
@@ -111,6 +113,7 @@ export interface ReducersObject {
   admin: any
   adminLayout: any
   productInternalsAdmin: any
+  teamStoresAdmin: any
 }
 
 const appInitialState = fromJS({
@@ -224,7 +227,8 @@ const rootReducer = combineReducers({
   admin,
   adminLayout,
   usersAdmin,
-  productInternalsAdmin
+  productInternalsAdmin,
+  teamStoresAdmin
 })
 
 export default rootReducer
