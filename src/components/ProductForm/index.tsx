@@ -56,8 +56,12 @@ interface Props {
   loading: boolean
   openPrompt: boolean
   loadingMessage: string
+  specDetail: string
+  materialDetail: string
   dataExtra: DataExtra
   resetData: () => void
+  setSpec: (value: string) => void
+  setMaterial: (value: string) => void
   setPrompt: (value: boolean) => void
   uploadFilesAction: (
     formatMessage: (messageDescriptor: any) => string,
@@ -143,6 +147,10 @@ export class ProductForm extends React.Component<Props, {}> {
       newSport,
       newSportEnabled,
       setBannersLoading,
+      setSpec,
+      specDetail,
+      setMaterial,
+      materialDetail,
       removeFile,
       moveBanner,
       addFile,
@@ -184,9 +192,16 @@ export class ProductForm extends React.Component<Props, {}> {
           setValue,
           setDesignCenter,
           setCheck,
+          setSpec,
+          specDetail,
+          setMaterial,
+          materialDetail,
           newSport,
           newSportEnabled,
           seasons,
+          moveFile,
+          removeFile,
+          addFile,
           enableNewSportAction,
           setNewSport,
           setGenderAction,
@@ -318,7 +333,7 @@ export class ProductForm extends React.Component<Props, {}> {
               {screenSteps[currentStep]}
             </HeaderRow>
             <Stepper
-              {...{ currentStep, validNext }}
+              {...{ currentStep, validNext, customizable }}
               changeStep={this.changeStep}
               showMissingFields={this.showMissingFields}
               handleSave={this.handleSave}
@@ -363,11 +378,11 @@ export class ProductForm extends React.Component<Props, {}> {
           season &&
           yotpoId &&
           code &&
-          details &&
+          details.length &&
           genders &&
           Object.keys(genders).some(key => genders[key].selected) &&
           product.hasOwnProperty('designCenter') &&
-          materials &&
+          materials.length &&
           categoryName &&
           (sportSelected || hasNewSport) &&
           description &&
@@ -435,6 +450,8 @@ export class ProductForm extends React.Component<Props, {}> {
         tags,
         active
       } = product
+      const specsDetails = details.join(', ')
+      const materialsDetails = materials.join('-')
       const sportsProduct = sports
         ? Object.keys(sports).reduce((arr: any[], sportId: string) => {
             if (sports[sportId]) {
@@ -512,8 +529,8 @@ export class ProductForm extends React.Component<Props, {}> {
         description,
         obj,
         mtl,
-        details,
-        materials,
+        details: specsDetails,
+        materials: materialsDetails,
         genders: gendersDet,
         season,
         new_sport: newSportEnabled ? newSport : '',

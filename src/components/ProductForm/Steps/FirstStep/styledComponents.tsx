@@ -3,6 +3,7 @@
  */
 import { Radio, Checkbox, Switch } from 'antd'
 import styled from 'styled-components'
+import Icon from 'antd/lib/icon'
 interface TextProps {
   capitalize: boolean
 }
@@ -28,6 +29,38 @@ export const Title = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
+`
+export const MoreIcon = styled(Icon)`
+  cursor: pointer;
+  transform: rotate(90deg);
+`
+export const RemoveDetail = styled(Icon)`
+  cursor: pointer;
+`
+
+export const SpecList = styled.div`
+  display: flex;
+  flex-flow: column;
+  padding: 8px 0;
+`
+export const SpecName = styled.div`
+  flex: 1;
+  margin-left: 8px;
+`
+export const SpecDetail = styled.div`
+  margin: 8px 0;
+  cursor: grab;
+  background: #fafafa;
+  border: 1px solid #d9d9d9;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: gray;
+  border-radius: 2px;
+  padding: 8px;
+  &:active {
+    cursor: grabbing;
+  }
 `
 
 export const Text = styled.div`

@@ -10,6 +10,7 @@ import { Container, BackButton, NextButton } from './styledComponents'
 interface Props {
   validNext?: boolean
   currentStep: number
+  customizable: boolean
   changeStep: (step: number) => void
   showMissingFields: () => void
   handleSave: (onlyeSave: boolean) => void
@@ -19,6 +20,7 @@ const Stepper = ({
   changeStep,
   validNext,
   showMissingFields,
+  customizable,
   handleSave
 }: Props) => (
   <Container>
@@ -43,7 +45,7 @@ const Stepper = ({
         <Icon type="right" />
       </NextButton>
     )}
-    {currentStep === 3 && (
+    {currentStep === 3 && customizable && (
       <NextButton enabled={true} onClick={handleSave(false)}>
         <FormattedMessage {...messages.submit} />
       </NextButton>

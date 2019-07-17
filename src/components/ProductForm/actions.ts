@@ -24,7 +24,9 @@ import {
   SAVED_PRODUCT,
   ENABLE_SPORT,
   SET_SPORT,
-  SET_PROMPT
+  SET_PROMPT,
+  SET_SPEC,
+  SET_MATERIAL
 } from './constants'
 import { AnyAction, Product } from '../../types/common'
 
@@ -103,6 +105,16 @@ export const removeFile = (array: string, index: number): AnyAction => ({
   type: REMOVE_MATERIAL,
   array,
   index
+})
+
+export const setSpec = (value: string): AnyAction => ({
+  type: SET_SPEC,
+  value
+})
+
+export const setMaterial = (value: string): AnyAction => ({
+  type: SET_MATERIAL,
+  value
 })
 
 export const addFile = (array: string, item: any): AnyAction => ({
