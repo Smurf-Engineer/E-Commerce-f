@@ -20,7 +20,7 @@ const colors = {
   none: { upColor: '#bebebe', downColor: '#bebebe' }
 }
 
-const InternalsTable = ({
+const AdminTable = ({
   id,
   label,
   sort = 'none',
@@ -53,4 +53,4 @@ const InternalsTable = ({
   )
 }
 
-export default InternalsTable
+export default AdminTable
