@@ -63,6 +63,7 @@ export class FourthStep extends React.Component<Props, {}> {
       selectedGenders,
       customizable,
       genders,
+      setFileField,
       colors,
       colorsProducts,
       bannerMaterials
@@ -218,7 +219,7 @@ export class FourthStep extends React.Component<Props, {}> {
                     <MediaBlock
                       {...{ index, mediaFile, counter }}
                       beforeUpload={this.beforeUploadMedia}
-                      handleSetMedia={this.handleSetMedia}
+                      handleSetMedia={setFileField}
                       removeMediaFile={this.removeMediaFile}
                     />
                   </Draggable>
@@ -302,19 +303,6 @@ export class FourthStep extends React.Component<Props, {}> {
     const { addFile, mediaFiles } = this.props
     const id = mediaFiles.length + 1
     addFile('mediaFiles', { id, isVideo })
-  }
-
-  handleSetMedia = (event: any) => {
-    const { setFileField, mediaFiles } = this.props
-    const {
-      file,
-      data: { index, isMobile }
-    } = event
-    const id = mediaFiles.length + 1
-    uploadFile(file, id.toString(), 'media').then(({ imageUri }) => {
-      const urlField = isMobile ? 'urlMobile' : 'url'
-      setFileField('mediaFiles', index, urlField, imageUri)
-    })
   }
 
   handleSetFile = (event: any) => {

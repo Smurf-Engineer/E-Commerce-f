@@ -15,6 +15,7 @@ export const Container = styled.div`
   border: 1px solid #cccccc;
   display: flex;
   flex-flow: column;
+  cursor: grab;
 `
 export const Images = styled.div`
   display: flex;
@@ -29,11 +30,13 @@ export const ImageBox = styled.img`
 
 export const DeleteFile = styled.div`
   height: 17px;
-  width: 50px;
+  width: 20px;
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
   cursor: pointer;
+  margin-right: 47%;
+  display: inline-block;
 `
 export const DesktopImage = styled(Upload)`
   border: 1px dashed #cccccc;
@@ -86,9 +89,19 @@ export const VideoBox = styled.video`
   height: 100%;
 `
 export const Loader = styled.div`
-  width: 200px;
-  height: 200px;
+  flex: 2;
+  height: 220px;
   display: inline-flex;
+  border: 1px dashed #cccccc;
+  justify-content: center;
+  align-items: center;
+`
+export const SubLoader = styled.div`
+  flex: 1;
+  height: 220px;
+  display: inline-flex;
+  margin-left: 18px;
+  border: 1px dashed #cccccc;
   justify-content: center;
   align-items: center;
 `

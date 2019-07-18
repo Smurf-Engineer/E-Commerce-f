@@ -11,6 +11,7 @@ import {
   DeleteFile,
   DesktopImage,
   AddMaterial,
+  SubLoader,
   Loader,
   VideoBox,
   Label,
@@ -19,29 +20,35 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { ProductFile } from '../../../../../types/common'
+import { uploadFile } from '../../../api'
 
 interface Props {
   mediaFile: ProductFile
   index: number
   counter: object
-  handleSetMedia: (event: any) => void
+  handleSetMedia: (
+    selected: string,
+    id: string,
+    name: string,
+    value: string
+  ) => void
   beforeUpload: (file: any) => boolean
   removeMediaFile: (index: number) => void
 }
 
 class MediaBlock extends React.PureComponent<Props> {
   state = {
-    loading: false
+    loading: false,
+    subLoading: false
   }
   render() {
     const {
-      handleSetMedia,
       beforeUpload,
       index,
       counter,
       mediaFile: { isVideo, url, urlMobile }
     } = this.props
-    const { loading } = this.state
+    const { loading, subLoading } = this.state
     const labelMessage = isVideo ? messages.video : messages.image
     const elementNode = isVideo ? (
       <VideoBox controls={true}>
@@ -50,11 +57,38 @@ class MediaBlock extends React.PureComponent<Props> {
     ) : (
       <ImageBox maxWidth={true} src={url} alt="avatar" />
     )
+    const subElementNode = subLoading ? (
+      <SubLoader>
+        <Spin size="large" />
+      </SubLoader>
+    ) : (
+      <MobileImage
+        data={{ index, isMobile: true }}
+        customRequest={this.handleRequest}
+        showUploadList={false}
+        beforeUpload={beforeUpload}
+      >
+        {urlMobile ? (
+          <ImageBox maxWidth={true} src={urlMobile} alt="avatar" />
+        ) : (
+          <AddMaterial>
+            <Icon type="plus" />
+            <Label>
+              <FormattedMessage {...messages.mobile} />
+              {counter[index]}
+            </Label>
+          </AddMaterial>
+        )}
+      </MobileImage>
+    )
     return (
       <Container>
-        <DeleteFile onClick={this.handleOnRemove}>
-          <Icon type="close" />
-        </DeleteFile>
+        <div>
+          <DeleteFile onClick={this.handleOnRemove}>
+            <Icon type="close" />
+          </DeleteFile>
+          <Icon type="ellipsis" />
+        </div>
         <Images>
           {loading ? (
             <Loader>
@@ -71,7 +105,7 @@ class MediaBlock extends React.PureComponent<Props> {
                 elementNode
               ) : (
                 <AddMaterial>
-                  <Icon type={'plus'} />
+                  <Icon type="plus" />
                   <Label>
                     <FormattedMessage {...labelMessage} />
                     {counter[index]}
@@ -80,35 +114,30 @@ class MediaBlock extends React.PureComponent<Props> {
               )}
             </DesktopImage>
           )}
-          {!isVideo && (
-            <MobileImage
-              data={{ index, isMobile: true }}
-              customRequest={handleSetMedia}
-              showUploadList={false}
-              beforeUpload={beforeUpload}
-            >
-              {urlMobile ? (
-                <ImageBox maxWidth={true} src={urlMobile} alt="avatar" />
-              ) : (
-                <AddMaterial>
-                  <Icon type={'plus'} />
-                  <Label>
-                    <FormattedMessage {...messages.mobile} />
-                    {counter[index]}
-                  </Label>
-                </AddMaterial>
-              )}
-            </MobileImage>
-          )}
+          {!isVideo && subElementNode}
         </Images>
       </Container>
     )
   }
-  handleRequest = (event: any) => {
+  setLoading = (value: boolean, isMobile: boolean) => {
+    if (isMobile) {
+      this.setState({ subLoading: value })
+    } else {
+      this.setState({ loading: value })
+    }
+  }
+  handleRequest = async (event: any) => {
     const { handleSetMedia } = this.props
-    this.setState({ loading: true })
-    handleSetMedia(event)
-    this.setState({ loading: false })
+    const {
+      file,
+      data: { index, isMobile }
+    } = event
+    this.setLoading(true, isMobile)
+    const response = await uploadFile(file, index, 'media')
+    const { imageUri } = response
+    const urlField = isMobile ? 'urlMobile' : 'url'
+    handleSetMedia('mediaFiles', index, urlField, imageUri)
+    this.setLoading(false, isMobile)
   }
   handleOnRemove = () => {
     const { index, removeMediaFile } = this.props
