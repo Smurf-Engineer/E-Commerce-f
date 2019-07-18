@@ -20,7 +20,6 @@ import {
   ADD_BANNER,
   MOVE_BANNER,
   SET_BANNER,
-  SET_BANNERS_LOADING,
   SAVED_PRODUCT,
   ENABLE_SPORT,
   SET_SPORT,
@@ -56,11 +55,6 @@ export const savedProduct = (
   mediaFiles,
   bannerMaterials,
   loadingMessage
-})
-
-export const setBannersLoading = (value: boolean): AnyAction => ({
-  type: SET_BANNERS_LOADING,
-  value
 })
 
 export const setPrompt = (value: boolean): AnyAction => ({

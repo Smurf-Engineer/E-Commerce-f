@@ -60,6 +60,7 @@ export const getProductQuery = gql`
       mediaFiles: media_files {
         id
         url
+        urlMobile: url_mobile
       }
       obj
       bumpMap: bump_map

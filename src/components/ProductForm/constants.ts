@@ -6,7 +6,6 @@ const namespace = 'src/ProductForm'
 
 export const SET_PRODUCT_DATA = `${namespace}/SET_PRODUCT_DATA`
 export const SET_LOADING = `${namespace}/SET_LOADING`
-export const SET_BANNERS_LOADING = `${namespace}/SET_BANNERS_LOADING`
 export const SET_GENDERS = `${namespace}/SET_GENDERS`
 export const SET_CHECK = `${namespace}/SET_CHECK`
 export const REMOVE_MATERIAL = `${namespace}/REMOVE_MATERIAL`

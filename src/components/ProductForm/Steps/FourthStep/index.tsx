@@ -4,7 +4,6 @@
 import * as React from 'react'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
-import Spin from 'antd/lib/spin'
 import { Icon, message, Upload } from 'antd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -14,7 +13,6 @@ import {
   RowInput,
   AddMaterial,
   MediaSection,
-  LoaderBox,
   Label,
   InputDiv,
   AddButton
@@ -37,9 +35,7 @@ interface Props {
   colorsProducts: object
   genders: ItemDetailType[]
   colors: ItemDetailType[]
-  bannersLoading: boolean
   customizable: boolean
-  setBannersLoading: (value: boolean) => void
   removeBanner: (index: number) => void
   moveFile: (array: string, index: number, indexTo: number) => void
   moveBanner: (index: number, indexTo: number) => void
@@ -69,7 +65,6 @@ export class FourthStep extends React.Component<Props, {}> {
       genders,
       colors,
       colorsProducts,
-      bannersLoading,
       bannerMaterials
     } = this.props
     let productsImagesForm
@@ -118,6 +113,22 @@ export class FourthStep extends React.Component<Props, {}> {
         []
       )
     }
+    let videoCount = 1
+    let imageCount = 1
+    const counter = mediaFiles.reduce(
+      (count: object, item: ProductFile, index: number) => {
+        if (item.isVideo) {
+          count[index] = videoCount
+          videoCount++
+        } else {
+          count[index] = imageCount
+          imageCount++
+        }
+        return count
+        // tslint:disable-next-line: align
+      },
+      {}
+    )
     return (
       <Container>
         <Separator>
@@ -194,7 +205,7 @@ export class FourthStep extends React.Component<Props, {}> {
                 </AddButton>
               </InputDiv>
             </RowInput>
-            {mediaFiles.length ? (
+            {!!mediaFiles.length && (
               <MediaSection>
                 {mediaFiles.map((mediaFile: ProductFile, index: number) => (
                   <Draggable
@@ -205,20 +216,14 @@ export class FourthStep extends React.Component<Props, {}> {
                     onDropRow={this.handleOnDropRow}
                   >
                     <MediaBlock
-                      {...{ index, mediaFile }}
+                      {...{ index, mediaFile, counter }}
+                      beforeUpload={this.beforeUploadMedia}
                       handleSetMedia={this.handleSetMedia}
                       removeMediaFile={this.removeMediaFile}
                     />
                   </Draggable>
                 ))}
               </MediaSection>
-            ) : (
-              <div />
-            )}
-            {bannersLoading && (
-              <LoaderBox>
-                <Spin size="large" />
-              </LoaderBox>
             )}
           </div>
         )}
@@ -300,14 +305,12 @@ export class FourthStep extends React.Component<Props, {}> {
   }
 
   handleSetMedia = (event: any) => {
-    const { setFileField, mediaFiles, setBannersLoading } = this.props
+    const { setFileField, mediaFiles } = this.props
     const {
       file,
       data: { index, isMobile }
     } = event
-    console.log('event:', event)
     const id = mediaFiles.length + 1
-    setBannersLoading(true)
     uploadFile(file, id.toString(), 'media').then(({ imageUri }) => {
       const urlField = isMobile ? 'urlMobile' : 'url'
       setFileField('mediaFiles', index, urlField, imageUri)

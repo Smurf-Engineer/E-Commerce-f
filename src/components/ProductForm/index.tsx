@@ -91,7 +91,6 @@ interface Props {
     name: string,
     value: string
   ) => void
-  setBannersLoading: (value: boolean) => void
   setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setCurrencies: (currencies: any) => void
@@ -146,7 +145,6 @@ export class ProductForm extends React.Component<Props, {}> {
       bannersLoading,
       newSport,
       newSportEnabled,
-      setBannersLoading,
       setSpec,
       specDetail,
       setMaterial,
@@ -269,7 +267,6 @@ export class ProductForm extends React.Component<Props, {}> {
           genders,
           colors,
           pictures,
-          setBannersLoading,
           bannerMaterials,
           setValue,
           selectedGenders,

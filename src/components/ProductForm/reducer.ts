@@ -23,7 +23,6 @@ import {
   SET_MATERIAL,
   SET_SPORT,
   ENABLE_SPORT,
-  SET_BANNERS_LOADING,
   SET_DESIGN_CENTER,
   SAVED_PRODUCT,
   SET_PROMPT,
@@ -213,7 +212,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const { item, array } = action
       const oldList = state.getIn(['product', array])
       return state.withMutations((map: any) => {
-        map.setIn(['product', array], oldList.push(item))
+        map.setIn(['product', array], oldList.push(fromJS(item)))
         map.set('bannersLoading', false)
         map.set('specDetail', '')
         map.set('materialDetail', '')
@@ -247,8 +246,6 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const { index, field, value } = action
       return state.setIn(['bannerMaterials', index, field], value)
     }
-    case SET_BANNERS_LOADING:
-      return state.set('bannersLoading', action.value)
     case REMOVE_BANNER: {
       const { index } = action
       const oldList = state.get('bannerMaterials')

@@ -23,7 +23,7 @@ export const Images = styled.div`
 export const ImageBox = styled.img`
   object-fit: contain;
   cursor: pointer;
-  height: 220px;
+  height: 100%;
   width: ${({ maxWidth }: DivProps) => (maxWidth ? '100%' : '200px')};
 `
 
@@ -39,8 +39,13 @@ export const DesktopImage = styled(Upload)`
   border: 1px dashed #cccccc;
   padding: 5px 0;
   flex: 2;
+  height: 220px;
+  align-items: center;
+  display: flex;
+  text-align: center;
   .ant-upload {
     width: 100%;
+    height: 100%;
   }
 `
 
@@ -48,5 +53,42 @@ export const MobileImage = styled(Upload)`
   border: 1px dashed #cccccc;
   margin-left: 18px;
   padding: 5px 0;
+  height: 220px;
   flex: 1;
+  align-items: center;
+  display: flex;
+  text-align: center;
+  .ant-upload {
+    width: 100%;
+    height: 100%;
+  }
+`
+export const AddMaterial = styled.div`
+  height: 100%;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  flex-flow: column;
+  font-size: 18px;
+  padding-top: 38px;
+  color: #bebebe;
+`
+export const Label = styled.div`
+  display: flex;
+  flex-flow: row;
+  margin-top: 16px;
+`
+export const VideoBox = styled.video`
+  width: 100%;
+  cursor: pointer;
+  height: 100%;
+`
+export const Loader = styled.div`
+  width: 200px;
+  height: 200px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 `
