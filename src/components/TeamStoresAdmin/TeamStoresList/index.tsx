@@ -8,7 +8,7 @@ import get from 'lodash/get'
 import messages from './messages'
 import { TEAM_STORES_LIMIT } from '../constants'
 import { Container, Header, Row, Table } from './styledComponents'
-import AdminTable from '../../../AdminTable'
+import AdminTable from '../../AdminTable'
 import ItemOrder from '../ItemOrder'
 import EmptyContainer from '../../EmptyContainer'
 import {
