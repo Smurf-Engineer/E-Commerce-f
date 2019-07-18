@@ -227,7 +227,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       sizeRange
     } = product
     const isRetail = retailMen || retailWomen || !customizable
-    const moreTag = relatedItemTag.replace(/_/, ' ')
+    const moreTag = relatedItemTag.replace(/_/g, ' ')
 
     let renderPrices
 
