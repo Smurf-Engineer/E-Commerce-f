@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { Container, Icon, IconsContainer, Header } from './styledComponents'
-import { sorts } from '../types/common'
+import { sorts } from '../../types/common'
 
 interface Props {
   label: string
