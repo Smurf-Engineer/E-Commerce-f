@@ -117,9 +117,9 @@ export interface Product {
   isTopProduct: boolean
   relatedItemTag?: string
   categoryName?: string
-  details: string
+  details: string | string[]
   specs: string
-  materials?: string
+  materials?: string | string[]
   season?: string
   name: string
   customizable: boolean
