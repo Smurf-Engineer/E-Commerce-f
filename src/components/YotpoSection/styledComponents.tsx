@@ -33,7 +33,6 @@ export const SlideImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 8px;
 `
 export const RelatedProductsContainer = styled.div`
   margin-bottom: 80px;
