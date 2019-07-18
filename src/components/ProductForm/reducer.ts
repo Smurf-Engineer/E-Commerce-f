@@ -28,7 +28,7 @@ import {
   SET_PROMPT,
   REMOVE_BANNER
 } from './constants'
-import { getFileExtension, getFileName } from '../../utils/utilsFiles'
+import { getFileExtension } from '../../utils/utilsFiles'
 import { Reducer, ProductPicture } from '../../types/common'
 import { currencies, quantities } from './Steps/ThirdStep/constants'
 import omitDeep from 'omit-deep'
@@ -108,9 +108,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
             url: file.url,
             urlMobile: file.urlMobile,
             id: index,
-            isVideo: getFileExtension(file.url) === MP4_EXTENSION,
-            extension: getFileExtension(file.url),
-            name: getFileName(file.url)
+            isVideo: getFileExtension(file.url) === MP4_EXTENSION
           }))
         : []
       const detailedBanners = bannerMaterials.map((banner: any) => ({

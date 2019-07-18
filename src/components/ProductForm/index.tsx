@@ -101,7 +101,7 @@ interface Props {
 const Step = Steps.Step
 export class ProductForm extends React.Component<Props, {}> {
   state = {
-    currentStep: 3
+    currentStep: 0
   }
   async componentDidMount() {
     const {
