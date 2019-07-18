@@ -9,7 +9,7 @@ export const downloadCsv = () => {
       const response = await fetch(`${config.graphqlUriBase}download/csv`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearers ${user.token}`
+          Authorization: `Bearer ${user.token}`
         }
       })
       if (response.ok) {
