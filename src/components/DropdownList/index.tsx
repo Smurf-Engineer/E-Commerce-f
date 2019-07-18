@@ -28,9 +28,6 @@ import {
 } from './styledComponents'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
-const MEN = 'men'
-const WOMEN = 'women'
-
 export interface Option {
   label: string
   menuOpen: boolean
@@ -39,6 +36,7 @@ export interface Option {
 
 interface Props {
   history: History
+  regionsCodes: string[]
   dispatch: any
   client: any
   genderSportSelected: number
@@ -46,6 +44,7 @@ interface Props {
   genderOptions: Option[]
   menuGender: any
   currentCurrency: string
+  currentLanguage: string
   sports: Filter[]
   currentRegion: string
   formatMessage: (messageDescriptor: any) => string
@@ -81,7 +80,7 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 
   handleOnSeeAll = (
-    type: number,
+    genderSelected: string,
     categorySelected: string,
     sportSelected: string
   ) => {
@@ -94,15 +93,7 @@ export class DropdownList extends React.PureComponent<Props> {
 
     const { gender, category, sport } = queryString.parse(search)
 
-    let genderString = ''
-    if (type > 0) {
-      genderString = `gender=${WOMEN}&`
-    }
-    if (type === 0) {
-      genderString = `gender=${MEN}&`
-    }
-
-    const toGender = type ? WOMEN : MEN
+    let genderString = `gender=${genderSelected}&`
     const toCategory = categorySelected.replace(' & ', ' ')
     const toSport = sportSelected && (sportSelected as string).toLowerCase()
 
@@ -116,7 +107,7 @@ export class DropdownList extends React.PureComponent<Props> {
     let isChangingSport = false
 
     if (atProductCatalogue) {
-      isChangingGender = gender && gender !== toGender
+      isChangingGender = gender && gender !== genderString
       isChangingCategory = category && category !== toCategory
       isChangingSport = sport && sport !== toSport
     }
@@ -230,11 +221,17 @@ export class DropdownList extends React.PureComponent<Props> {
   handleRedirect = ({
     currentTarget: { id }
   }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const { history, currentRegion } = this.props
     const {
-      location: { search }
-    } = history
-    const path = `/${id}/${currentRegion}${search}`
+      currentRegion,
+      currentCurrency,
+      currentLanguage,
+      regionsCodes
+    } = this.props
+
+    const region = regionsCodes.includes(currentRegion) ? currentRegion : 'us'
+
+    const path = `/${id}/${region}?lang=${currentLanguage ||
+      'en'}&currency=${currentCurrency}`
     window.location.replace(path)
   }
 }

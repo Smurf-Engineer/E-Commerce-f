@@ -495,7 +495,7 @@ export class FirstStep extends React.Component<Props, {}> {
       target: { value }
     } = event
     const { setSpec } = this.props
-    setSpec(value)
+    setSpec(value.replace(/[,\/]/g, ''))
   }
 
   handleMoveSpecs = (dragIndex: number, dropIndex: number) => {
@@ -516,10 +516,7 @@ export class FirstStep extends React.Component<Props, {}> {
       addFile,
       product: { details }
     } = this.props
-    if (
-      !/[,\/]/g.test(value) &&
-      !details.find((item: string) => item === value.trim())
-    ) {
+    if (!details.find((item: string) => item === value.trim())) {
       addFile('details', value)
     }
   }
@@ -536,7 +533,7 @@ export class FirstStep extends React.Component<Props, {}> {
 
   handleMaterialChange = (value: string) => {
     const { setMaterial } = this.props
-    setMaterial(value)
+    setMaterial(value.replace(/[-\/]/g, ''))
   }
 
   handleAddMaterial = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -548,10 +545,7 @@ export class FirstStep extends React.Component<Props, {}> {
         addFile,
         product: { materials }
       } = this.props
-      if (
-        !/[,\/]/g.test(value) &&
-        !materials.find((item: string) => item === value.trim())
-      ) {
+      if (!materials.find((item: string) => item === value.trim())) {
         addFile('materials', value)
       }
     }

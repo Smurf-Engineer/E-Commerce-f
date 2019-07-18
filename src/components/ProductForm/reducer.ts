@@ -213,9 +213,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const oldList = state.getIn(['product', array])
       return state.withMutations((map: any) => {
         map.setIn(['product', array], oldList.push(fromJS(item)))
-        map.set('bannersLoading', false)
-        map.set('specDetail', '')
-        map.set('materialDetail', '')
+        map.merge({ bannersLoading: false, specDetail: '', materialDetail: '' })
         return map
       })
     }
