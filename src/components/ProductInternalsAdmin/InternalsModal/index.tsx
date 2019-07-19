@@ -15,13 +15,13 @@ import {
   Label,
   StyledButton,
   ButtonWrapper,
-  ButtonsContainer
+  ButtonsContainer,
+  StyledSearch
 } from './styledComponents'
 import closeIcon from '../../../assets/cancel-button.svg'
-import Select from 'antd/lib/select'
+import Select, { SelectValue } from 'antd/lib/select'
 import {
   ProductInternalsInfo,
-  ProductCode,
   GenderType,
   ProductSize,
   FitStyle,
@@ -53,6 +53,7 @@ interface Props {
   formatMessage: (messageDescriptor: Message) => string
   handleOnInputChange: (event: any) => void
   handleOnSelectChange: (value: string, id: string) => void
+  handleOnSelectCode: (value: SelectValue) => void
   onSave: () => void
   deleteProduct: () => void
 }
@@ -67,6 +68,7 @@ const InternalsModal = ({
   handleOnInputChange,
   internalId,
   handleOnSelectChange,
+  handleOnSelectCode,
   productCode,
   onSave,
   loading,
@@ -83,11 +85,11 @@ const InternalsModal = ({
   deleteProduct,
   id
 }: Props) => {
-  const productsCodes = get(
+  const productsCodes = get<ProductInternalsInfo, 'products', String[]>(
     productInternalsInfo,
     'products',
     []
-  ) as ProductCode[]
+  )
   const genders = get<ProductInternalsInfo, 'genders', GenderType[]>(
     productInternalsInfo,
     'genders',
@@ -128,6 +130,7 @@ const InternalsModal = ({
 
   const handleOnSelect = (fieldId: string) => (value: string) =>
     handleOnSelectChange(value, fieldId)
+
   return (
     <Container>
       <Modal
@@ -154,7 +157,15 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.productCode)}</Label>
-            <StyledSelect
+            <StyledSearch
+              onChange={this.debounceSearchCode}
+              size="large"
+              dataSource={productsCodes}
+              onSelect={handleOnSelectCode}
+            >
+              <StyledInput />
+            </StyledSearch>
+            {/*<StyledSelect
               onSelect={handleOnSelect('productCode')}
               defaultValue={productCode}
             >
@@ -163,7 +174,7 @@ const InternalsModal = ({
                   {code}
                 </Option>
               ))}
-            </StyledSelect>
+              </StyledSelect>*/}
           </Column>
           <Column>
             <Label>{formatMessage(messages.gender)}</Label>

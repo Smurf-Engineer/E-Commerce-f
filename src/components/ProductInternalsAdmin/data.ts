@@ -14,9 +14,7 @@ export const getProductInternalsInfoQuery = gql`
       frontZipperColors {
         name
       }
-      products {
-        code
-      }
+      products
       genders {
         gender: product_internals_gender
       }

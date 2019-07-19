@@ -40,6 +40,7 @@ import {
   MessagePayload
 } from '../../types/common'
 import { INTERNALS_LIMIT } from './constants'
+import { SelectValue } from 'antd/lib/select'
 
 const { confirm } = Modal
 interface Props {
@@ -157,6 +158,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
           handleOnSelectChange={onSelectChangeAction}
           onSave={this.handleOnSave}
           deleteProduct={this.handleOnDeleteProductInternal}
+          handleOnSelectCode={this.handleOnSelectCode}
           {...{
             formatMessage,
             internalId,
@@ -313,6 +315,10 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
     }
     resetModalAction()
     openModalAction(false)
+  }
+
+  handleOnSelectCode = (value: SelectValue) => {
+    console.log(value)
   }
 
   handleOnDeleteProductInternal = async () => {
