@@ -37,6 +37,9 @@ interface Props {
   colors: ItemDetailType[]
   customizable: boolean
   removeBanner: (index: number) => void
+  uploadMediaFile: (event: any) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
   moveFile: (array: string, index: number, indexTo: number) => void
   moveBanner: (index: number, indexTo: number) => void
   addBanner: (item: any) => void
@@ -63,7 +66,7 @@ export class FourthStep extends React.Component<Props, {}> {
       selectedGenders,
       customizable,
       genders,
-      setFileField,
+      uploadMediaFile,
       colors,
       colorsProducts,
       bannerMaterials
@@ -117,7 +120,7 @@ export class FourthStep extends React.Component<Props, {}> {
     let videoCount = 1
     let imageCount = 1
     const counter = mediaFiles.reduce(
-      (count: object, item: ProductFile, index: number) => {
+      (count: number[], item: ProductFile, index: number) => {
         if (item.isVideo) {
           count[index] = videoCount
           videoCount++
@@ -128,7 +131,7 @@ export class FourthStep extends React.Component<Props, {}> {
         return count
         // tslint:disable-next-line: align
       },
-      {}
+      []
     )
     return (
       <Container>
@@ -217,9 +220,8 @@ export class FourthStep extends React.Component<Props, {}> {
                     onDropRow={this.handleOnDropRow}
                   >
                     <MediaBlock
-                      {...{ index, mediaFile, counter }}
+                      {...{ index, mediaFile, counter, uploadMediaFile }}
                       beforeUpload={this.beforeUploadMedia}
-                      handleSetMedia={setFileField}
                       removeMediaFile={this.removeMediaFile}
                     />
                   </Draggable>
@@ -295,14 +297,14 @@ export class FourthStep extends React.Component<Props, {}> {
   }
 
   removeMediaFile = (index: number) => {
-    const { removeFile } = this.props
-    removeFile('mediaFiles', index)
+    const { removeMedia } = this.props
+    removeMedia(index)
   }
 
   handleAddMediaBox = (isVideo: boolean) => () => {
-    const { addFile, mediaFiles } = this.props
+    const { addMedia, mediaFiles } = this.props
     const id = mediaFiles.length + 1
-    addFile('mediaFiles', { id, isVideo })
+    addMedia({ id, isVideo })
   }
 
   handleSetFile = (event: any) => {

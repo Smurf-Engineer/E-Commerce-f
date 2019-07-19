@@ -10,7 +10,9 @@ import {
   SlideImageContainer,
   SlideVideo,
   SlideImage,
-  RelatedProductsContainer
+  ImageContainer,
+  RelatedProductsContainer,
+  SlideImageMobile
 } from './styledComponents'
 import messages from './messages'
 import config from '../../config/index'
@@ -56,7 +58,10 @@ const YotpoSection = ({
                     <source src={image.url} type="video/mp4" />
                   </SlideVideo>
                 ) : (
-                  <SlideImage src={image.url} />
+                  <ImageContainer>
+                    <SlideImage src={image.url} />
+                    <SlideImageMobile src={image.urlMobile} />
+                  </ImageContainer>
                 )}
               </SlideImageContainer>
             ))}

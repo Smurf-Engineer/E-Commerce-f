@@ -38,6 +38,7 @@ import {
   StyledButton,
   ModalMessage
 } from './styledComponents'
+import { uploadMediaAction } from './api'
 
 interface DataExtra extends QueryProps {
   categories: object[]
@@ -59,6 +60,9 @@ interface Props {
   specDetail: string
   materialDetail: string
   dataExtra: DataExtra
+  uploadMediaFile: (event: any) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
   resetData: () => void
   setSpec: (value: string) => void
   setMaterial: (value: string) => void
@@ -156,6 +160,9 @@ export class ProductForm extends React.Component<Props, {}> {
       removeBanner,
       setColors,
       openPrompt,
+      uploadMediaFile,
+      addMedia,
+      removeMedia,
       moveFile,
       addBanner,
       setBanner,
@@ -261,6 +268,9 @@ export class ProductForm extends React.Component<Props, {}> {
           moveBanner,
           bannersLoading,
           setBanner,
+          uploadMediaFile,
+          addMedia,
+          removeMedia,
           customizable,
           moveFile,
           setCheck,
@@ -592,7 +602,7 @@ const ProductFormEnhance = compose(
   graphql(upsertProduct, { name: 'upsertProductAction' }),
   connect(
     mapStateToProps,
-    { ...ProductFormActions }
+    { ...ProductFormActions, uploadMediaFile: uploadMediaAction }
   )
 )(ProductForm)
 

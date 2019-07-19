@@ -20,18 +20,13 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { ProductFile } from '../../../../../types/common'
-import { uploadFile } from '../../../api'
 
 interface Props {
   mediaFile: ProductFile
   index: number
-  counter: object
-  handleSetMedia: (
-    selected: string,
-    id: string,
-    name: string,
-    value: string
-  ) => void
+  counter: number[]
+  uploadMediaFile: (event: any) => void
+  setMedia: (id: string, name: string, value: string) => void
   beforeUpload: (file: any) => boolean
   removeMediaFile: (index: number) => void
 }
@@ -127,16 +122,12 @@ class MediaBlock extends React.PureComponent<Props> {
     }
   }
   handleRequest = async (event: any) => {
-    const { handleSetMedia } = this.props
+    const { uploadMediaFile } = this.props
     const {
-      file,
-      data: { index, isMobile }
+      data: { isMobile }
     } = event
     this.setLoading(true, isMobile)
-    const response = await uploadFile(file, index, 'media')
-    const { imageUri } = response
-    const urlField = isMobile ? 'urlMobile' : 'url'
-    handleSetMedia('mediaFiles', index, urlField, imageUri)
+    await uploadMediaFile(event)
     this.setLoading(false, isMobile)
   }
   handleOnRemove = () => {

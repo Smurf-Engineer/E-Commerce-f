@@ -24,6 +24,9 @@ import {
   SET_SPORT,
   ENABLE_SPORT,
   SET_DESIGN_CENTER,
+  ADD_MEDIA,
+  REMOVE_MEDIA,
+  SET_MEDIA,
   SAVED_PRODUCT,
   SET_PROMPT,
   REMOVE_BANNER
@@ -197,6 +200,20 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         ['product', action.selected, action.id],
         action.checked
       )
+    case ADD_MEDIA: {
+      const { value } = action
+      const oldList = state.getIn(['product', 'mediaFiles'])
+      return state.setIn(['product', 'mediaFiles'], oldList.push(fromJS(value)))
+    }
+    case REMOVE_MEDIA: {
+      const { index } = action
+      const oldList = state.getIn(['product', 'mediaFiles'])
+      return state.setIn(['product', 'mediaFiles'], oldList.remove(index))
+    }
+    case SET_MEDIA: {
+      const { id, name, value } = action
+      return state.setIn(['product', 'mediaFiles', id, name], value)
+    }
     case REMOVE_MATERIAL: {
       const { index, array } = action
       const oldList = state.getIn(['product', array])

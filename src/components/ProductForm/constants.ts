@@ -25,6 +25,9 @@ export const MOVE_MATERIAL = `${namespace}/MOVE_MATERIAL`
 export const MOVE_BANNER = `${namespace}/MOVE_BANNER`
 export const SET_SPEC = `${namespace}/SET_SPEC`
 export const SET_MATERIAL = `${namespace}/SET_MATERIAL`
+export const SET_MEDIA = `${namespace}/SET_MEDIA`
+export const ADD_MEDIA = `${namespace}/ADD_MEDIA`
+export const REMOVE_MEDIA = `${namespace}/REMOVE_MEDIA`
 
 export const CHANGE_VALUE = `${namespace}/CHANGE_VALUE`
 export const RESET_DATA = `${namespace}/RESET_DATA`
