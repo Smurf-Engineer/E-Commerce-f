@@ -2,30 +2,23 @@
  * MenuRegion Component - Created by david on 20/02/18.
  */
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
 import findIndex from 'lodash/findIndex'
 import Modal from 'antd/lib/modal'
-import { regionsQuery } from './data'
 import Popover from 'antd/lib/popover'
 import Menu from './Menu'
 import {
-  QueryProps,
   RegionConfig,
   Region as RegionType,
   Currency
 } from '../../types/common'
 import { TopText, Regions, overStyle } from './styledComponents'
 
-interface Data extends QueryProps {
-  regionsResult: RegionType[]
-}
-
 interface Props {
-  data: Data
+  regionsResult: RegionType[]
   onChangeLocation: (payload: RegionConfig) => void
-  currentRegion: string
-  currentLanguage: string
-  currentCurrency: string
+  currentRegion?: string
+  currentLanguage?: string
+  currentCurrency?: string
   isMobile?: boolean
 }
 
@@ -37,8 +30,6 @@ interface State {
 }
 
 export class MenuRegion extends React.PureComponent<Props, State> {
-  static defaultProps: Data
-
   state = {
     currentRegionTemp: null,
     currentLanguageTemp: null,
@@ -85,17 +76,15 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     } = this.state
 
     const {
-      currentRegion,
-      currentLanguage,
-      currentCurrency,
-      data: { regionsResult }
+      currentRegion = '',
+      currentLanguage = '',
+      currentCurrency = '',
+      regionsResult
     } = this.props
 
-    const regionIndex = this.getCurrentIndex(
-      regionsResult,
-      currentRegion,
-      'code'
-    )
+    const regionIndex =
+      !!currentRegion &&
+      this.getCurrentIndex(regionsResult, currentRegion, 'code')
     const region =
       regionsResult[
         currentRegionTemp !== null ? currentRegionTemp : regionIndex
@@ -148,11 +137,11 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       openModal
     } = this.state
     const {
-      currentRegion,
-      currentLanguage,
-      currentCurrency,
+      currentRegion = '',
+      currentLanguage = '',
+      currentCurrency = '',
       isMobile,
-      data: { regionsResult, loading, error }
+      regionsResult = []
     } = this.props
 
     let region = {} as RegionType
@@ -161,7 +150,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     let languageIndex = 0
     let currencyIndex = 0
 
-    if (!loading && regionsResult) {
+    if (regionsResult && regionsResult.length) {
       regionIndex = this.getCurrentIndex(regionsResult, currentRegion, 'code')
       region = regionsResult[regionIndex] || {}
 
@@ -209,9 +198,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
         <Regions>
           <img src={region.icon} />
           <TopText>
-            {loading || error || !currency.shortName
-              ? null
-              : currency.shortName.toUpperCase()}
+            {!currency.shortName ? null : currency.shortName.toUpperCase()}
           </TopText>
         </Regions>
       </Popover>
@@ -220,9 +207,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
         <Regions onClick={this.handleModalClick}>
           <img src={region.icon} />
           <TopText>
-            {loading || error || !currency.shortName
-              ? null
-              : currency.shortName.toUpperCase()}
+            {!currency.shortName ? null : currency.shortName.toUpperCase()}
           </TopText>
         </Regions>
         <Modal
@@ -240,12 +225,4 @@ export class MenuRegion extends React.PureComponent<Props, State> {
   }
 }
 
-const regionEnhance = compose(
-  graphql<Data>(regionsQuery, {
-    options: () => ({
-      fetchPolicy: 'network-only',
-      variables: {}
-    })
-  })
-)(MenuRegion)
-export default regionEnhance
+export default MenuRegion

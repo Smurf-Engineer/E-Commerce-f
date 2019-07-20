@@ -19,6 +19,8 @@ import {
   ADD_MATERIAL,
   MOVE_BANNER,
   ADD_BANNER,
+  SET_SPEC,
+  SET_MATERIAL,
   SET_SPORT,
   ENABLE_SPORT,
   SET_BANNERS_LOADING,
@@ -41,13 +43,19 @@ export const initialState = fromJS({
   newSportEnabled: false,
   bannersLoading: false,
   dataExtra: {},
-  openPrompt: false
+  openPrompt: false,
+  specDetail: '',
+  materialDetail: ''
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case RESET_DATA:
       return initialState
+    case SET_MATERIAL:
+      return state.set('materialDetail', action.value)
+    case SET_SPEC:
+      return state.set('specDetail', action.value)
     case SET_PRODUCT_DATA: {
       // TODO: Refactor all of the incoming data logic
       const { product, extraData } = action
@@ -58,10 +66,14 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         fitStyles,
         sports,
         genders,
+        details,
+        materials,
         colors,
         productMaterials,
         pictures
       } = product
+      const specDetails = details ? details.split(',') : []
+      const materialsValue = materials ? materials.split('-') : []
       const { bannerMaterials } = extraData
       const gendersSelected = genders
         ? genders.reduce((obj, { id, name }) => {
@@ -151,6 +163,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const detailedProduct = {
         ...product,
         sports: sportsProduct,
+        details: specDetails,
+        materials: materialsValue,
         sizeRange: sizeRangeDet,
         fitStyles: fitStylesDet,
         genders: gendersSelected,
@@ -197,7 +211,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const oldList = state.getIn(['product', array])
       return state.withMutations((map: any) => {
         map.setIn(['product', array], oldList.push(item))
-        map.set('bannersLoading', false)
+        map.merge({ bannersLoading: false, specDetail: '', materialDetail: '' })
         return map
       })
     }

@@ -127,7 +127,7 @@ export default defineMessages({
   },
   addMore: {
     id: 'components.FirstStep.addMore',
-    defaultMessage: 'Add More...'
+    defaultMessage: '+ Add More...'
   },
   materialInfo: {
     id: 'components.FirstStep.materialInfo',
