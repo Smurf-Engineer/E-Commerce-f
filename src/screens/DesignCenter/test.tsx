@@ -1,7 +1,7 @@
 /**
  * DesignCenter Test - Created by david on 23/02/18.
  */
-import { Map, List } from 'immutable'
+import { Map } from 'immutable'
 import designCenterReducer, { initialState } from './reducer'
 import {
   setCurrentTabAction,
@@ -153,8 +153,8 @@ describe(' DesignCenter Screen', () => {
             title: 'Overview of the DesignLab User Interface',
             channelId: 'UCbA-7_tX_0I5e8DCCJd4Tyw',
             channelTitle: 'JAKROO Custom Sports Apparel',
-            description:
-              'A walk through of the user interface of DesignLab.↵TRY IT YOURSELF: https://designlab.jakroo.com↵↵DesignLab is a Custom Sports Apparel design tool by JAKROO.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵MUSIC CREDIT:↵Adventures by A Himitsu https://www.youtube.com/channel/UCgFw...↵Creative Commons — Attribution 3.0 Unported— CC BY 3.0↵http://creativecommons.org/licenses/b... Music released by Argofox↵https://youtu.be/8BXNwnxaVQE Music provided by Audio Library↵https://youtu.be/MkNeIUgNPQ8',
+            // tslint:disable-next-line:max-line-length
+            description: `A walk through of the user interface of DesignLab.↵TRY IT YOURSELF: https://designlab.jakroo.com↵↵DesignLab is a Custom Sports Apparel design tool by JAKROO.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵.↵MUSIC CREDIT:↵Adventures by A Himitsu https://www.youtube.com/channel/UCgFw...↵Creative Commons — Attribution 3.0 Unported— CC BY 3.0↵http://creativecommons.org/licenses/b... Music released by Argofox↵https://youtu.be/8BXNwnxaVQE Music provided by Audio Library↵https://youtu.be/MkNeIUgNPQ8`,
             playlistId: 'PLkZvdHfe9ad2RcdQYan6SuPVlR7ig2eVc',
             position: 0,
             publishedAt: '2019-04-25T20:02:10.000Z',
