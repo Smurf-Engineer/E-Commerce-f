@@ -125,6 +125,7 @@ export class ProductForm extends React.Component<Props, {}> {
     }
     const dataExtra = await query({
       query: getExtraData,
+      variables: { id },
       fetchPolicy: 'network-only'
     })
     const extraData = get(dataExtra, 'data.extraData', [])
