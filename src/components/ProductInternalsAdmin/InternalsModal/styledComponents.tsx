@@ -42,6 +42,9 @@ export const StyledInput = styled(Input)`
 export const StyledSearch = styled(Search)`
   border-radius: 0;
   max-height: 32px;
+  line-height: 0px;
+  font-size: 14px;
+  width: 96%;
   & .ant-select-search__field {
     border-radius: 0;
     max-height: 32px;
@@ -50,9 +53,6 @@ export const StyledSearch = styled(Search)`
   & .ant-select-search {
     line-height: 0px;
   }
-  line-height: 0px;
-  font-size: 14px;
-  width: 96%;
 `
 
 export const StyledSelect = styled(Select)`

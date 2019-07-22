@@ -159,7 +159,6 @@ const InternalsModal = ({
             <Label>{formatMessage(messages.productCode)}</Label>
             <StyledSearch
               onChange={handleOnProductChange}
-              size="large"
               dataSource={productsCodes}
               filterOption={true}
               value={productCode}
