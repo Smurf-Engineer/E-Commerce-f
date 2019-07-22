@@ -45,7 +45,7 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
 
   handleGoTo = (link: string) => () => {
     const { history } = this.props
-    history.push(link)
+    history.push(`/${link}`)
   }
 }
 

@@ -118,7 +118,7 @@ export class Home extends React.Component<Props, {}> {
 
   handleGoTo = () => {
     const { history, headerImageLink } = this.props
-    history.push(headerImageLink)
+    history.push(`/${headerImageLink}`)
   }
 
   render() {
