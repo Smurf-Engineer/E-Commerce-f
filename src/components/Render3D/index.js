@@ -463,7 +463,6 @@ class Render3D extends PureComponent {
             const verticalPosition = phoneView ? PHONE_POSITION : 0
             object.position.y = verticalPosition
             object.name = MESH_NAME
-            console.log(object)
             this.scene.add(object)
 
             this.setState({ loadingModel: false, firstLoad: false })

@@ -47,6 +47,12 @@ export const StyledSearch = styled(Search)`
     max-height: 32px;
     font-size: 14px;
   }
+  & .ant-select-search {
+    line-height: 0px;
+  }
+  line-height: 0px;
+  font-size: 14px;
+  width: 96%;
 `
 
 export const StyledSelect = styled(Select)`

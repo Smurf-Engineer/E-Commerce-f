@@ -19,7 +19,7 @@ import {
   StyledSearch
 } from './styledComponents'
 import closeIcon from '../../../assets/cancel-button.svg'
-import Select, { SelectValue } from 'antd/lib/select'
+import Select from 'antd/lib/select'
 import {
   ProductInternalsInfo,
   GenderType,
@@ -36,7 +36,7 @@ interface Props {
   width?: string | number
   title?: string
   internalId: number
-  productCode: number
+  productCode: string
   loading: boolean
   productInternalsInfo: ProductInternalsInfo
   gender: string
@@ -53,9 +53,9 @@ interface Props {
   formatMessage: (messageDescriptor: Message) => string
   handleOnInputChange: (event: any) => void
   handleOnSelectChange: (value: string, id: string) => void
-  handleOnSelectCode: (value: SelectValue) => void
   onSave: () => void
   deleteProduct: () => void
+  handleOnProductChange: (value: string) => void
 }
 
 const { Option } = Select
@@ -68,7 +68,6 @@ const InternalsModal = ({
   handleOnInputChange,
   internalId,
   handleOnSelectChange,
-  handleOnSelectCode,
   productCode,
   onSave,
   loading,
@@ -83,7 +82,8 @@ const InternalsModal = ({
   bibBrace,
   collection,
   deleteProduct,
-  id
+  id,
+  handleOnProductChange
 }: Props) => {
   const productsCodes = get<ProductInternalsInfo, 'products', String[]>(
     productInternalsInfo,
@@ -158,23 +158,14 @@ const InternalsModal = ({
           <Column>
             <Label>{formatMessage(messages.productCode)}</Label>
             <StyledSearch
-              onChange={this.debounceSearchCode}
+              onChange={handleOnProductChange}
               size="large"
               dataSource={productsCodes}
-              onSelect={handleOnSelectCode}
+              filterOption={true}
+              value={productCode}
             >
-              <StyledInput />
+              <StyledInput maxLength={3} />
             </StyledSearch>
-            {/*<StyledSelect
-              onSelect={handleOnSelect('productCode')}
-              defaultValue={productCode}
-            >
-              {productsCodes.map(({ code }) => (
-                <Option key={code} value={code}>
-                  {code}
-                </Option>
-              ))}
-              </StyledSelect>*/}
           </Column>
           <Column>
             <Label>{formatMessage(messages.gender)}</Label>
