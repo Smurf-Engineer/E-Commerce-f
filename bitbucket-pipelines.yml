@@ -12,14 +12,16 @@ definitions:
 
 pipelines:
   custom:
-    create-test-env:
+    CREATE TEST ENV:
       - variables:
-        - name: GRAPHQL_URI_BASE
+        - name: BACKEND_BRANCH_NAME
       - step:
             name: Create/Update Test environment
             deployment: Test
             script:
               - export CI=false
+              - export BACK_URL=$(echo $BACKEND_BRANCH_NAME-api | awk '{gsub(/\//,"-")}1');
+              - export GRAPHQL_URI_BASE=https://$BACK_URL-backend.$PROJECT_NAME.$DOMAIN/api/
               - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
               - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
               - /tmp/google-cloud-sdk/install.sh -q
@@ -35,8 +37,8 @@ pipelines:
               - docker build --build-arg LOG_ROCKET_KEY=$LOG_ROCKET_KEY --build-arg GOOGLE_ID=$GOOGLE_ID --build-arg GOOGLE_TAG_MANAGER_ID=$GOOGLE_TAG_MANAGER_ID --build-arg FACEBOOK_ID=$FACEBOOK_ID --build-arg GRAPHQL_URI_BASE=$GRAPHQL_URI_BASE --build-arg BASE_URL=$BASE_URL --build-arg STORAGE_URL=$STORAGE_URL --build-arg PK_STRIPE_US=$PK_STRIPE_US --build-arg PK_STRIPE_EU=$PK_STRIPE_EU --build-arg PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID --build-arg PAYPAL_CLIENT_ID_US=$PAYPAL_CLIENT_ID_US --build-arg PAYPAL_CLIENT_ID_CA=$PAYPAL_CLIENT_ID_CA --build-arg PAYPAL_CLIENT_ID_EU=$PAYPAL_CLIENT_ID_EU --build-arg PAYPAL_ENV=$PAYPAL_ENV --build-arg GOOGLE_MAP_KEY=$GOOGLE_MAP_KEY --build-arg INTERCOM_KEY=$INTERCOM_KEY --build-arg DEFAULT_CURRENCY=$DEFAULT_CURRENCY --build-arg GOOGLE_FONTS_KEY=$GOOGLE_FONTS_KEY --build-arg GOOGLE_FONTS_URL=$GOOGLE_FONTS_URL --build-arg YOUTUBE_ID=$YOUTUBE_ID --build-arg YOUTUBE_KEY=$YOUTUBE_KEY --build-arg TUTORIALS_TAB_ACTIVE=$TUTORIALS_TAB_ACTIVE . -t $DOCKER_IMAGE
               - gcloud docker -- push $DOCKER_IMAGE
               - gcloud container builds submit devops/ --config=cloudbuild.yaml --substitutions=_RELEASE_NAME=$DEPLOY_NAME,_COMPUTE_ZONE=$GCP_ZONE,_CONTAINER_CLUSTER=$GCP_CLUSTER
-              - echo https://$DEPLOY_NAME-$APP.$PROJECT_NAME.$DOMAIN Success🤘🏾!!!
-    delete-env:
+              - echo https://$DEPLOY_NAME-frontend.$PROJECT_NAME.$DOMAIN Success🤘🏾!!!
+    DELETE ENV:
       - step:
             name: Delete environment
             deployment: Test
@@ -52,7 +54,7 @@ pipelines:
                - export DEPLOY_NAME=$(echo $BITBUCKET_BRANCH | awk '{gsub(/\//,"-")}1');
                - gcloud container clusters get-credentials $GCP_CLUSTER --zone=$GCP_ZONE
                - gcloud container builds submit devops/ --config=delete.yaml --substitutions _RELEASE_NAME=$DEPLOY_NAME,_COMPUTE_ZONE=$GCP_ZONE,_CONTAINER_CLUSTER=$GCP_CLUSTER
-    deploy development:
+    DEPLOY DEVELOPMENT:
       - step:
           name: Deploy to Kubernetes
           deployment: staging
