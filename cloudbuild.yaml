@@ -1,6 +1,6 @@
 steps:
 - name: gcr.io/$PROJECT_ID/helm
-  args: ['upgrade','${_RELEASE_NAME}','--install']
+  args: ['upgrade','${_RELEASE_NAME}','--install', '.']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}'
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CONTAINER_CLUSTER}'
