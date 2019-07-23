@@ -17,12 +17,12 @@ export const Text = styled.div`
 
 export const StyledImg = styled.img`
   width: 100%;
-  height: 128px;
-  object-fit: cover;
+  height: 172px;
+  object-fit: contain;
 `
 
 export const TeamStoreCard = styled.div`
-  width: 468px;
+  width: 658px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: auto;

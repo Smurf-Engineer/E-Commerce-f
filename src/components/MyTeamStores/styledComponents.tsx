@@ -32,6 +32,12 @@ export const AddTeamStoreButton = styled(Button)`
   text-align: center;
 `
 
+export const PaginationRow = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+`
+
 export const CreateTeamStoreLegend = styled.div`
   height: 46px;
   width: 464px;
