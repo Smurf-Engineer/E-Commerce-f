@@ -593,7 +593,7 @@ class Render3D extends PureComponent {
     } else {
       onLoadModel(true)
     }
-
+    console.log(product.mtl)
     this.mtlLoader.load(product.mtl, materials => {
       materials.preload()
       this.objLoader.setMaterials(materials)
@@ -648,6 +648,7 @@ class Render3D extends PureComponent {
             })
             children[zipperIndex].material = zipperMaterial
             this.setState({ zipperIndex })
+            console.log('ZIPPER ', zipperIndex)
           }
           /* Binding */
           if (!!this.binding) {
@@ -684,11 +685,13 @@ class Render3D extends PureComponent {
           object.add(...areasLayers)
 
           children[meshIndex].material = insideMaterial
+          console.log(children)
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
           if (labelIndex >= 0) {
             object.children[labelIndex].material.color.set(DEFAULT_COLOR)
           }
+          console.log('LABEL ', labelIndex)
           const propelPalmsIndex = findIndex(
             children,
             ({ name }) => name === PROPEL_PALMS
