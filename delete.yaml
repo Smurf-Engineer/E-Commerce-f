@@ -1,0 +1,11 @@
+steps:
+- name: gcr.io/$PROJECT_ID/helm
+  args: ['delete','${_RELEASE_NAME}', '--purge']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CONTAINER_CLUSTER}'
+substitutions:
+    _RELEASE_NAME: staging
+    _COMPUTE_ZONE: us-central1-a
+    _CONTAINER_CLUSTER: cluster
+logsBucket: 'gs://gcp-development-229201_cloudbuild'
