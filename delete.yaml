@@ -5,7 +5,7 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}'
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CONTAINER_CLUSTER}'
 substitutions:
-    _RELEASE_NAME: staging
-    _COMPUTE_ZONE: us-central1-a
-    _CONTAINER_CLUSTER: cluster
-logsBucket: 'gs://gcp-development-229201_cloudbuild'
+    _RELEASE_NAME: default
+    _COMPUTE_ZONE: us-central1-f
+    _CONTAINER_CLUSTER: development
+logsBucket: 'gs://jv2-design-center_cloudbuild/'

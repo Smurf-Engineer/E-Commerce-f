@@ -5,14 +5,13 @@ project:
     environment: $ENVIRONMENT
     name: $PROJECT_NAME
     domain: $DOMAIN
-    withSubdomain: true
-    db: $DB_USERNAME
+    withSubdomain: $WITH_SUBDOMAIN
 deployment:
     port: $PORT
     image: $DOCKER_IMAGE
 ingress:
-    withCert: true
-    secretCert: ""
+    withCert: $WITH_CERT
+    secretCert: $SECRET_CERT
 service:
     port: 5001
 namespace: $ENVIRONMENT
