@@ -49,8 +49,8 @@ pipelines:
                - gcloud auth activate-service-account --key-file gcloud-api-key.json
                - gcloud config set project $GCP_PROJECT
                - export DEPLOY_NAME=$(echo $BITBUCKET_BRANCH | awk '{gsub(/\//,"-")}1');
-               - gcloud container clusters get-credentials $GCP_CLUSTER --zone=$GCP_CLUSTER
-               - gcloud container builds submit . --config=delete.yaml --substitutions _RELEASE_NAME=$DEPLOY_NAME,_COMPUTE_ZONE=$GCP_ZONE,_CONTAINER_CLUSTER=$GCP_CLUSTER
+               - gcloud container clusters get-credentials $GCP_CLUSTER --zone=$GCP_ZONE
+               - gcloud container builds submit devops/ --config=delete.yaml --substitutions _RELEASE_NAME=$DEPLOY_NAME,_COMPUTE_ZONE=$GCP_ZONE,_CONTAINER_CLUSTER=$GCP_CLUSTER
   # default:
     # - step:
     #     script:
