@@ -5,10 +5,8 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}'
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CONTAINER_CLUSTER}'
 substitutions:
-    _ENVIRONMENT: default
     _RELEASE_NAME: test
     _COMPUTE_ZONE: us-central1-f
     _CONTAINER_CLUSTER: development
-    _DEPLOYMENT_IMAGE: default
 logsBucket: 'gs://jv2-design-center_cloudbuild/'
 images: ['gcr.io/$PROJECT_ID/${BRANCH_NAME}']
