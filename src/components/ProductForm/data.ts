@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const getExtraData = gql`
-  query extraData {
-    extraData {
+  query extraData($id: Int) {
+    extraData(id: $id) {
       bannerMaterials {
         id
         url

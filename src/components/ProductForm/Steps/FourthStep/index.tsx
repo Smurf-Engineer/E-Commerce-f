@@ -168,6 +168,7 @@ export class FourthStep extends React.Component<Props, {}> {
                       onDropRow={this.handleMoveBanner}
                     >
                       <BannerBlock
+                        {...{ index }}
                         id={material.id}
                         url={material.url}
                         selected={productMaterials[material.id]}
