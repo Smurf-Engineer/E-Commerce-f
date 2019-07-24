@@ -582,6 +582,7 @@ class Render3D extends PureComponent {
           if (propelPalmsIndex >= 0) {
             object.children[propelPalmsIndex].material.color.set(WHITE)
           }
+          console.log(object)
           const gripTapeIndex = findIndex(
             children,
             ({ name }) => name === GRIP_TAPE
