@@ -12,7 +12,7 @@ definitions:
 
 pipelines:
   custom:
-    CREATE STAGING ENV:
+    DEPLOY STAGING ENV:
       - variables:
         - name: BACKEND_BRANCH_NAME
       - step:
@@ -38,7 +38,7 @@ pipelines:
               - gcloud docker -- push $DOCKER_IMAGE
               - gcloud container builds submit devops/ --config=cloudbuild.yaml --substitutions=_RELEASE_NAME=$DEPLOY_NAME,_COMPUTE_ZONE=$GCP_ZONE,_CONTAINER_CLUSTER=$GCP_CLUSTER
               - echo https://$DEPLOY_NAME-frontend.$PROJECT_NAME.$DOMAIN Success🤘🏾!!!
-    CREATE TEST ENV:
+    DEPLOY TEST ENV:
       - step:
             name: Create/Update Test environment
             deployment: Test
