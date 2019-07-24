@@ -4,13 +4,12 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import queryString from 'query-string'
-import isEmpty from 'lodash/isEmpty'
+import { compose, withApollo } from 'react-apollo'
 import get from 'lodash/get'
+import * as thunkActions from './thunkActions'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
-import { compose } from 'react-apollo'
 import * as homeActions from './actions'
 import Layout from '../../components/MainLayout'
 import {
@@ -33,16 +32,23 @@ import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
 import FeaturedContent from '../../components/FeaturedContent'
 import messages from './messages'
-import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
+import {
+  QueryProps,
+  ProductTiles,
+  Product,
+  HomepageImagesType
+} from '../../types/common'
 
-const backgroundImg = 'homepage_cycling_desktop.jpg'
-const backgroundImgMobile = 'homepage_cycling_mobile.jpg'
-
+interface Data extends QueryProps {
+  files: any
+}
 interface Props extends RouteComponentProps<any> {
+  data: Data
   someKey?: string
+  client: any
   productId: number
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
@@ -55,6 +61,12 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   currentCurrency: string
   clientInfo: any
+  headerImageMobile: string
+  headerImage: string
+  headerImageLink: string
+  productTiles: ProductTiles[]
+  featuredProducts: Product[]
+  homepageImages: HomepageImagesType[]
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -64,23 +76,15 @@ export class Home extends React.Component<Props, {}> {
   }
   private stepInput: any
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       dispatch,
       match: { params },
-      location: { search }
+      client: { query }
     } = this.props
-    const queryParams = queryString.parse(search)
-    if (params && params.region && !isEmpty(queryParams)) {
-      dispatch(
-        setRegionAction({
-          region: params.region,
-          localeIndex: queryParams.lang,
-          locale: queryParams.lang,
-          currency: queryParams.currency
-        })
-      )
-    }
+    const { getHomepage } = thunkActions
+
+    dispatch(getHomepage(query, params.sportRoute))
   }
 
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
@@ -113,8 +117,10 @@ export class Home extends React.Component<Props, {}> {
   }
 
   handleGoTo = () => {
-    const { history } = this.props
-    history.push('/design-center?id=5')
+    const { history, headerImageLink } = this.props
+    if (headerImageLink) {
+      history.push(`/${headerImageLink}`)
+    }
   }
 
   render() {
@@ -125,7 +131,12 @@ export class Home extends React.Component<Props, {}> {
       intl,
       fakeWidth,
       currentCurrency,
-      clientInfo
+      clientInfo,
+      headerImageMobile,
+      headerImage,
+      productTiles,
+      featuredProducts,
+      homepageImages
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
@@ -141,6 +152,15 @@ export class Home extends React.Component<Props, {}> {
         {...{ history, SearchResults }}
       />
     ) : null
+
+    const featured = featuredProducts && !!featuredProducts.length && (
+      <FeaturedProducts
+        formatMessage={intl.formatMessage}
+        openQuickView={this.handleOnQuickView}
+        currentCurrency={currentCurrency || config.defaultCurrency}
+        {...{ history, featuredProducts }}
+      />
+    )
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -150,16 +170,14 @@ export class Home extends React.Component<Props, {}> {
                 if (matches) {
                   return (
                     <SearchBackground
-                      src={`${
-                        config.storageUrl
-                      }/homepage/${backgroundImgMobile}`}
+                      src={headerImageMobile}
                       onClick={this.handleGoTo}
                     />
                   )
                 }
                 return (
                   <SearchBackground
-                    src={`${config.storageUrl}/homepage/${backgroundImg}`}
+                    src={headerImage}
                     onClick={this.handleGoTo}
                   />
                 )
@@ -188,13 +206,8 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
-          <FeaturedProducts
-            formatMessage={intl.formatMessage}
-            openQuickView={this.handleOnQuickView}
-            currentCurrency={currentCurrency || config.defaultCurrency}
-            {...{ history }}
-          />
-          <FeaturedContent {...{ history }} />
+          {featured}
+          <FeaturedContent {...{ history }} featuredContent={homepageImages} />
           <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />
@@ -209,7 +222,7 @@ export class Home extends React.Component<Props, {}> {
               <SubText>{formatMessage(messages.priceDrop)}</SubText>
             </PropositionTile>
           </PropositionTilesContainer>
-          <ImagesGrid {...{ fakeWidth, history, browserName }} />
+          <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
           <YotpoHome />
         </Container>
       </Layout>
@@ -222,7 +235,6 @@ const mapStateToProps = (state: any) => {
   const responsive = state.get('responsive').toJS()
   const langProps = state.get('languageProvider').toJS()
   const app = state.get('app').toJS()
-
   return { ...home, ...responsive, ...langProps, ...app }
 }
 
@@ -230,6 +242,7 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const HomeEnhance = compose(
   injectIntl,
+  withApollo,
   connect(
     mapStateToProps,
     mapDispatchToProps

@@ -53,7 +53,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   onSelectColorBlock: (index: number) => void
-  onSelectColor: (color: string) => void
+  onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
@@ -132,7 +132,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
     const { index, names } = this.state
 
     const hasStitching = !!product && !!product.flatlock
-    const hasZipper = !!product && !!product.zipper
+    const hasZipper =
+      !!product &&
+      !!product.zipper &&
+      !!product.zipper.white &&
+      !!product.zipper.black
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
 
@@ -238,7 +242,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
                   onSelectStitchingColor,
                   stitchingColor,
                   disableTooltip,
-                  colorsList
+                  colorsList,
+                  formatMessage
                 }}
               />
             </StitchingList>
@@ -264,7 +269,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
     this.setState(({ names }: State) => {
       const { onSelectColor, colorBlock } = this.props
       const updatedNames = [...names]
-      onSelectColor(color)
+      onSelectColor(color, name)
       updatedNames[colorBlock] = name
       return { names: updatedNames }
     })

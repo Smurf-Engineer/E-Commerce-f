@@ -63,6 +63,7 @@ export const DESIGN_RESET_EDITING_ACTION = `${namespace}/DESIGN_RESET_EDITING_AC
 export const REAPPLY_CANVAS_IMAGE_ACTION = `${namespace}/REAPPLY_CANVAS_IMAGE_ACTION`
 export const SET_ART_FORMAT_ACTION = `${namespace}/SET_ART_FORMAT_ACTION`
 export const ON_TAB_CLICK_ACTION = `${namespace}/ON_TAB_CLICK_ACTION`
+export const UPDATE_COLOR_IDEAS_LIST = `${namespace}/UPDATE_COLOR_IDEAS_LIST`
 
 export enum Tabs {
   RenderTab = 0,

@@ -128,7 +128,7 @@ class ColorTab extends React.PureComponent<Props> {
         </DraggerContainer>
         <ColorList
           stitching={false}
-          {...{ onSelectColor }}
+          {...{ onSelectColor, formatMessage }}
           colorsList={colorsList}
         />
         <SectionTitle>
@@ -149,7 +149,7 @@ class ColorTab extends React.PureComponent<Props> {
             </Button>
           </DraggerWithLoading>
         </DraggerContainer>
-        <ColorList stitching={true} {...{ colorsList }} />
+        <ColorList stitching={true} {...{ colorsList, formatMessage }} />
       </Container>
     )
   }

@@ -49,6 +49,7 @@ export interface Prices {
 export interface Filter {
   id: number
   name: string
+  image?: string
 }
 
 export interface SelectedType extends Filter {}
@@ -82,7 +83,8 @@ export type PriceRange = {
 
 export interface GenderType {
   id: number
-  gender: string
+  name?: string
+  gender?: string
 }
 
 export type HomePageBatch = {
@@ -97,16 +99,27 @@ type ExtraFile = {
 
 export interface Product {
   id: number
+  active: boolean
   code: string
   shortId?: string
   images: ImageType[]
+  contentTile?: string
   type: string
+  material_banner?: string
+  pictures?: any[]
+  mediaFiles?: object[]
   description: string
+  productMaterials?: object[]
+  designCenter?: boolean
   priceRange: PriceRange[]
   collections: number
   isTopProduct: boolean
-  details: string
+  relatedItemTag?: string
+  categoryName?: string
+  details: string | string[]
   specs: string
+  materials?: string | string[]
+  season?: string
   name: string
   customizable: boolean
   yotpoId: string
@@ -124,7 +137,9 @@ export interface Product {
   obj?: string
   mtl?: string
   themes?: Theme[]
+  tags?: string
   label: string
+  sports?: any[]
   flatlock: string
   bumpMap: string
   binding?: ExtraFile
@@ -205,6 +220,19 @@ export type LockerTableType = {
   id?: number
   totalOrders: number
   visible: boolean
+}
+
+export type ProductTableType = {
+  product: Product
+  visible: boolean
+}
+
+export type ProductTiles = {
+  id: number
+  contentTile: string
+  title: string
+  image: string
+  loading: boolean
 }
 
 export type DesignResultType = {
@@ -402,6 +430,24 @@ export type TeamstoreType = {
   totalItems: number
 }
 
+export type ProductPicture = {
+  gender_id?: number
+  front_image?: string
+  back_image?: string
+  left_image?: string
+  right_image?: string
+  toUpload?: object | boolean
+  color_id?: number
+}
+export type TypePicture = {
+  id: string
+  name: string
+  images: BlockImage[]
+}
+export type FileUploaded = {
+  id: string
+  imageUri: string
+}
 export interface TeamstoreResult {
   fullCount: string
   teamStores: TeamstoreType[]
@@ -409,6 +455,31 @@ export interface TeamstoreResult {
 
 export type ItemDetailType = {
   id?: number
+  name?: string | boolean
+  gender?: string
+}
+
+export type BlockImage = {
+  name?: string
+  label?: string
+  src?: string
+  index?: number
+}
+
+export type BlockProduct = string[] | BlockImage[]
+
+export type ProductImage = {
+  genderName?: string
+  genderId?: number
+  genderBlockImages: BlockProduct[]
+}
+
+export type ProductFile = {
+  id: number
+  url?: string
+  active?: boolean
+  toUpload?: Blob | boolean
+  extension?: string
   name?: string
 }
 
@@ -521,6 +592,15 @@ export interface OrderHistory {
   netsuiteAttempts: number
 }
 
+export interface Discount {
+  id?: number
+  code: string
+  discountItemId: string
+  type: string
+  rate: number
+  expiry: string
+  active?: boolean
+}
 export interface FulfillmentNetsuite {
   packages: string
 }
@@ -1058,6 +1138,8 @@ export interface OrderSearchResult {
   stitchingValue?: string
   stitchingName?: string
   shortId: string
+  pdfUrl?: string
+  product: Product
 }
 
 export interface FilesDownload {
@@ -1085,6 +1167,11 @@ export interface ProductColors {
   id: number
   name: string
   image: string
+}
+
+export interface ProductSize {
+  id: number
+  name: string
 }
 
 export interface Colors {
@@ -1128,4 +1215,114 @@ export interface UserInfo {
   state: string
   zipCode: string
   country: string
+}
+export interface User {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  socialMethod: string
+  administrator: boolean
+}
+
+export interface DesignSearchCode {
+  code: string
+}
+
+export interface NavbarSports {
+  name: string
+  menuOpen: boolean
+  route: string
+}
+export interface SimpleCart {
+  id: number
+  quantity: number
+}
+
+export interface SportType {
+  id: number
+  name: string
+  active: boolean
+  catalogue: boolean
+  route: string
+  navbar: boolean
+}
+
+export interface ProductInternal {
+  id?: number
+  internalId: number
+  productCode: string
+  gender: string
+  size: string
+  fitStyle?: string
+  color?: string
+  frontZipper?: string
+  pocketZipper?: string
+  binding?: string
+  bibBrace?: string
+  collection?: string
+}
+
+export interface ProductInternalInput {
+  id?: number
+  internal_id: number
+  product_code: number
+  gender: string
+  size: string
+  fit_style?: string
+  color?: string
+  front_zipper?: string
+  pocket_zipper?: string
+  binding?: string
+  bib_brace?: string
+  collection?: string
+}
+export interface HeaderImagePlaceHolder {
+  id?: number
+  desktopImage?: string
+  mobileImage?: string
+  url?: string
+  sport_id?: string | null
+}
+
+export interface HeadeImageResponse {
+  id?: number
+  image?: string
+  image_mobile: string
+  link?: string
+  sport_id?: string
+}
+
+export interface ProductTilePlaceHolder {
+  id?: number
+  title?: string
+  contentTile?: string
+  image?: string
+  sport_id?: string | null
+}
+
+export interface BasicColor {
+  id: number
+  name: string
+}
+export interface ProductInternalsInfo {
+  basicColors: BasicColor[]
+  frontZipperColors: BasicColor[]
+  products: String[]
+  genders: GenderType[]
+  sizes: ProductSize[]
+  fitStyles: FitStyle[]
+  colors: ProductColors[]
+  collections: CollectionType[]
+}
+
+export interface CollectionType {
+  name: string
+}
+
+export interface HomepageImagesType {
+  id: number
+  desktopImage: string
+  mobileImage: string
+  url: string
 }

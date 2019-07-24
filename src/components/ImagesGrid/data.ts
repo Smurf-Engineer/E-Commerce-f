@@ -5,6 +5,6 @@ export const productsHomeQuery = gql`
     productsHome {
       method
       result
-    }
+¡    }
   }
 `

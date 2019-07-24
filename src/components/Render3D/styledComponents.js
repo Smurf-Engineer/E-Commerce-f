@@ -12,11 +12,12 @@ export const Container = styled.div`
   @media (max-width: 375px) {
     height: 25em;
   }
+  position: relative;
 `
 
 export const Render = styled.div`
   height: ${({ customProduct, designSearch }) =>
-    customProduct || designSearch ? '535px' : '90vh'};
+    customProduct || designSearch ? '515px' : '90vh'};
   width: 100%;
   cursor: grab;
   @media (max-width: 375px) {
@@ -51,6 +52,12 @@ export const Progress = styled(AntdProgress)`
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+`
+export const ProgressProduct = styled(AntdProgress)`
+  position: absolute;
+  top: 30%;
+  right: 0;
+  left: 0;
 `
 
 export const Loading = styled(Spin)`
@@ -87,12 +94,12 @@ export const ThumbnailButton = styled(AntdButton)`
 `
 
 export const DragText = styled.div`
-  color: #5f6062;
+  color: ${({ textColor }) => (textColor ? textColor : '#5f6062')};
   user-select: none;
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 19%;
+  bottom: ${({ isProduct }) => (isProduct ? '0' : '19%')};
   left: 50%;
   transform: translate(-50%, -50%);
 

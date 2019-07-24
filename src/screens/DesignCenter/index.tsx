@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose, graphql } from 'react-apollo'
+import { compose, graphql, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
@@ -16,8 +16,6 @@ import Modal from 'antd/lib/modal/Modal'
 import { saveAndBuyAction } from '../../components/MainLayout/actions'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
-import find from 'lodash/find'
-import colorList from '../DesignerTool/DesignCenterCustomize/ColorList/colors'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
 import {
@@ -94,7 +92,8 @@ import {
   addTeamStoreItemMutation,
   getDesignQuery,
   getColorsQuery,
-  requestColorChartMutation
+  requestColorChartMutation,
+  getDesignLabInfo
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -115,6 +114,7 @@ interface Props extends RouteComponentProps<any> {
   dataProduct?: DataProduct
   dataDesign?: DataDesign
   intl: InjectedIntl
+  client: any
   currentTab: number
   colorBlock: number
   colorBlockHovered: number
@@ -181,6 +181,8 @@ interface Props extends RouteComponentProps<any> {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  deliveryDays: number
+  tutorialPlaylist: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -287,6 +289,7 @@ interface Props extends RouteComponentProps<any> {
   setSendingColorChartAction: (sending: boolean) => void
   onOpenColorChartAction: (open: boolean) => void
   onOpenColorChartFormAction: (open: boolean) => void
+  setDesignLabAction: (data: any) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -299,11 +302,13 @@ export class DesignCenter extends React.Component<Props, {}> {
     clearStoreAction()
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       designHasChanges,
       responsive,
-      intl: { formatMessage }
+      intl: { formatMessage },
+      client: { query },
+      setDesignLabAction
     } = this.props
     if (
       responsive.tablet &&
@@ -316,6 +321,15 @@ export class DesignCenter extends React.Component<Props, {}> {
         return 'Changes you made may not be saved.'
       }
       return null
+    }
+    try {
+      const response = await query({
+        query: getDesignLabInfo,
+        fetchPolicy: 'network-only'
+      })
+      setDesignLabAction(response.data.getDesignLabInfo)
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -470,13 +484,8 @@ export class DesignCenter extends React.Component<Props, {}> {
     setPaletteAction(colors)
   }
 
-  setColorEvent = (color: string) => {
+  setColorEvent = (color: string, colorName: string) => {
     const { setColorAction, style } = this.props
-    const colorName = get(
-      find(colorList, colorObject => colorObject.value === color),
-      'name',
-      ''
-    )
     window.dataLayer.push({
       event: SELECTED_COLOR,
       label: colorName,
@@ -631,7 +640,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       openResetPlaceholderModal,
       colorChartSending,
       colorChartModalOpen,
-      colorChartModalFormOpen
+      colorChartModalFormOpen,
+      deliveryDays,
+      tutorialPlaylist
     } = this.props
 
     const { formatMessage } = intl
@@ -663,7 +674,7 @@ export class DesignCenter extends React.Component<Props, {}> {
           hideBottomHeader={true}
           hideFooter={true}
         >
-          <Header onPressBack={this.handleOnPressBack} />
+          <Header {...{ deliveryDays }} onPressBack={this.handleOnPressBack} />
           <Error>
             <Title>Oops!</Title>
             <ErrorMessage>
@@ -798,7 +809,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <BackIcon src={backIcon} />
               </BackCircle>
             )}
-          {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
+          {!isMobile && (
+            <Header
+              {...{ deliveryDays }}
+              onPressBack={this.handleOnPressBack}
+            />
+          )}
           {!isMobile && (
             <Tabs
               currentTheme={themeId}
@@ -923,7 +939,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   openResetPlaceholderModal,
                   colorChartSending,
                   colorChartModalOpen,
-                  colorChartModalFormOpen
+                  colorChartModalFormOpen,
+                  tutorialPlaylist
                 }}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
@@ -1208,6 +1225,7 @@ const mapStateToProps = (state: any) => {
 const DesignCenterEnhance = compose(
   injectIntl,
   addTeamStoreItemMutation,
+  withApollo,
   connect(
     mapStateToProps,
     {

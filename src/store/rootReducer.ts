@@ -36,12 +36,20 @@ import myLocker from '../components/MyLocker/reducer'
 import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import orderHistoryAdmin from '../components/OrderHistoryAdmin/reducer'
+import discountsAdmin from '../components/DiscountsAdmin/reducer'
+import homepageAdmin from '../components/HomepageAdmin/reducer'
+import designLabAdmin from '../components/DesignLabAdmin/reducer'
+import productCatalogAdmin from '../components/ProductCatalog/reducer'
+import productDetailAdmin from '../components/ProductDetailsAdmin/reducer'
+import productForm from '../components/ProductForm/reducer'
+import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
-import designSearch from '../screens/DesignSearch/reducer'
+import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
+import productInternalsAdmin from '../components/ProductInternalsAdmin/reducer'
 import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
@@ -50,7 +58,6 @@ import {
 } from './constants'
 
 export interface ReducersObject {
-  designSearch: any
   customProductDetail: any
   warrantyProgram: any
   orderPlaced: any
@@ -60,6 +67,7 @@ export interface ReducersObject {
   shoppingCartPage: any
   storeFront: any
   createStore: any
+  designSearchAdmin: any
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
@@ -67,14 +75,17 @@ export interface ReducersObject {
   fitWidget: any
   designs: any
   productDetail: any
+  productForm: any
   product: any
   productCatalog: any
   designCenter: any
   languageProvider: any
   home: any
   reset: any
+  productDetailAdmin: any
   app: any
   menuGender: any
+  productCatalogAdmin: any
   menuSports: any
   layout: any
   menu: any
@@ -89,10 +100,15 @@ export interface ReducersObject {
   myFiles: any
   orderHistory: any
   orderHistoryAdmin: any
+  usersAdmin: any
+  discountsAdmin: any
+  homepageAdmin: any
+  designLabAdmin: any
   overview: any
   fitAndSizing: any
   admin: any
   adminLayout: any
+  productInternalsAdmin: any
 }
 
 const appInitialState = fromJS({
@@ -157,7 +173,6 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
-  designSearch,
   customProductDetail,
   warrantyProgram,
   orderPlaced,
@@ -173,9 +188,13 @@ const rootReducer = combineReducers({
   subscriptionTest,
   fitWidget,
   designs,
+  designSearchAdmin,
+  productForm,
   productDetail,
   productCatalog,
+  productCatalogAdmin,
   designCenter,
+  productDetailAdmin,
   languageProvider,
   menu,
   forgot,
@@ -192,12 +211,17 @@ const rootReducer = combineReducers({
   myFiles,
   orderHistory,
   orderHistoryAdmin,
+  discountsAdmin,
+  homepageAdmin,
+  designLabAdmin,
   overview,
   fitAndSizing,
   responsive: responsiveReducer,
   app: appReducer,
   admin,
-  adminLayout
+  adminLayout,
+  usersAdmin,
+  productInternalsAdmin
 })
 
 export default rootReducer

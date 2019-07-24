@@ -18,8 +18,7 @@ export const initialState = fromJS({
   saveAndBuy: false,
   showTeamStores: false,
   fonts: {},
-  openKeys: ['aboutOrders'],
-  screen: ''
+  openKeys: ['aboutOrders']
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {

@@ -13,6 +13,9 @@ import {
   Type,
   Description,
   InfoContainer,
+  GendersContainer,
+  MenIcon,
+  WomenIcon,
   Label,
   Price,
   BuyNow,
@@ -123,12 +126,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
       designId
     } = this.props
     if (teamStoreShortId) {
-      return `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
+      return `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&modelId=${yotpoId}`
     }
     if (myLockerList) {
       return `/custom-product?${designId && `id=${designId}`}`
     }
-    return `/product?id=${id}&yotpoId=${yotpoId}${
+    return `/product?id=${id}&modelId=${yotpoId}${
       gender ? `&gender=${gender}` : ''
     }`
   }
@@ -175,6 +178,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
       footer,
       labelButton,
       image,
+      product,
       hideCustomButton,
       hideQuickView,
       customizable,
@@ -240,6 +244,18 @@ class ProductThumbnail extends React.Component<Props, {}> {
         </BuyNow>
       </RetailColors>
     )
+    let menAvailable = false
+    let womenAvailable = false
+    if (!!product.genders) {
+      product.genders.forEach(gender => {
+        if (gender.name === 'Men') {
+          menAvailable = true
+        }
+        if (gender.name === 'Women') {
+          womenAvailable = true
+        }
+      })
+    }
     return (
       <Container>
         <ImageSlide
@@ -272,7 +288,13 @@ class ProductThumbnail extends React.Component<Props, {}> {
           footer
         ) : (
           <Footer>
-            <Type>{type}</Type>
+            <Type>
+              {type}
+              <GendersContainer>
+                {menAvailable && <MenIcon type="man" />}
+                {womenAvailable && <WomenIcon type="woman" />}
+              </GendersContainer>
+            </Type>
             <Description>{description}</Description>
             <InfoContainer>
               {colorOptions}

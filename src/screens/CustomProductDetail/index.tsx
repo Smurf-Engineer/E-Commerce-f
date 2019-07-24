@@ -28,7 +28,10 @@ import {
   AvailablePrices,
   Description,
   AvailableLabel,
+  HowItFits,
   BuyNowOptions,
+  BannerMaterialSection,
+  BannerMaterial,
   SectionRow,
   SectionTitleContainer,
   SectionTitle,
@@ -36,40 +39,37 @@ import {
   SectionButton,
   SizeRowTitleRow,
   QuestionSpan,
-  RelatedProductsContainer,
-  ReviewsHeader,
   ButtonsRow,
   DetailsList,
   DetailsListItem,
   PrivateContainer,
   PrivateTitle,
+  RenderContainer,
   PrivateSubtitle,
   ProApproved,
   ProApprovedLabel
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
-import ImagesSlider from '../../components/ImageSlider'
 import {
   QueryProps,
   DesignType,
-  Filter,
   SelectedType,
   ItemDetailType,
-  FitStyle,
   CartItemDetail,
-  Product
+  ProductFile
 } from '../../types/common'
+import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
+import ImagesSlider from '../../components/ImageSlider'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
-import RelatedProducts from '../../components/RelatedProducts'
 import ProductInfo from '../../components/ProductInfo'
-import YotpoReviews from '../../components/YotpoReviews'
 import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
 import { ProductGenders } from '../ProductDetail/constants'
+import YotpoSection from '../../components/YotpoSection'
 
 const MAX_AMOUNT_PRICES = 4
 const { Men, Women, Unisex } = ProductGenders
@@ -93,7 +93,8 @@ interface Props extends RouteComponentProps<any> {
   showDetails: boolean
   showSpecs: boolean
   currentCurrency: string
-  phone: boolean
+  showFitsModal: boolean
+  setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -116,17 +117,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       intl,
       history,
       location: { search },
-      setLoadingModel,
       data: { design, error },
       designsData: { myDesigns },
       selectedGender,
       selectedSize,
       selectedFit,
       openFitInfo,
+      setLoadingModel,
       showDetails,
-      showSpecs,
       currentCurrency,
-      phone
+      showFitsModal
     } = this.props
     const { formatMessage } = intl
 
@@ -134,12 +134,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const shared = get(design, 'shared', false)
     const shortId = get(design, 'shortId', '')
+    const product = get(design, 'product', null)
 
     const designs = get(myDesigns, 'designs', [] as DesignType[])
 
     const ownedDesign = designs && designs.find(d => d.shortId === shortId)
 
-    if (error || (!shared && !ownedDesign)) {
+    if (!product || error || (!shared && !ownedDesign)) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -159,34 +160,41 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
     const proDesign = get(design, 'proDesign', false)
-    const product = get(design, 'product', null)
-
-    const images = get(product, 'images', [])
-    const genderId = get(product, 'genderId', 0)
-    const genders = get(product, 'genders', [] as Filter[])
-    const type = get(product, 'type', '')
-    const yotpoAverageScore = get(product, 'yotpoAverageScore')
-    const description = get(product, 'description')
-    const yotpoId = get(product, 'yotpoId', '')
-    const sizeRange = get(product, 'sizeRange', [] as ItemDetailType[])
-    const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
-    const details = get(product, 'details', '')
-    const products = get(product, 'relatedProducts', [] as Product[])
-    const materials = get(product, 'materials', '')
-
-    const rating = get(yotpoAverageScore, 'averageScore', 0)
+    const {
+      images: imagesArray,
+      genders,
+      type,
+      yotpoAverageScore,
+      description,
+      yotpoId,
+      sizeRange,
+      fitStyles,
+      details,
+      relatedProducts: products,
+      materials,
+      mediaFiles,
+      bannerMaterials,
+      averageScore: rating,
+      relatedItemTag
+    } = product
     const totalReviews = get(yotpoAverageScore, 'total', 0)
-
-    const genderIndex = findIndex(images, { genderId })
-
-    const thumbnails = images && (images[genderIndex] || images[0])
+    const genderId = selectedGender ? selectedGender.id : 0
+    const genderIndex = findIndex(imagesArray, { genderId })
+    const moreTag = relatedItemTag.replace(/_/, ' ')
 
     const currencyPrices =
       product &&
       filter(product.priceRange, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
-
+    let images = null
+    let moreImages = []
+    if (!!imagesArray) {
+      images = imagesArray[genderIndex] || imagesArray[0]
+      moreImages = imagesArray.filter(
+        ({ genderId: imageGender }) => imageGender !== images.genderId
+      )
+    }
     const symbol = currencyPrices ? currencyPrices[0].shortName : ''
 
     const renderPrices =
@@ -360,13 +368,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           toggleView={this.toggleProductInfo}
         >
           <DetailsList>{detailsItems}</DetailsList>
-        </ProductInfo>
-        <ProductInfo
-          id="Specs"
-          title={formatMessage(messages.materials)}
-          showContent={showSpecs}
-          toggleView={this.toggleProductInfo}
-        >
           {materialsList}
         </ProductInfo>
       </div>
@@ -378,19 +379,36 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           {design && (
             <Content>
               <ImagePreview>
-                <ImagesSlider
-                  onLoadModel={setLoadingModel}
-                  threeDmodel={
-                    <Render3D
-                      customProduct={true}
-                      {...{ designId }}
-                      phoneView={phone}
-                    />
-                  }
-                  customProduct={true}
-                  customImage={designImage}
-                  images={thumbnails}
-                />
+                <RenderContainer>
+                  <Render3D
+                    customProduct={true}
+                    textColor="white"
+                    {...{ designId }}
+                    phoneView={true}
+                  />
+                  <HowItFits onClick={this.toggleFitsModal(true)}>
+                    <FormattedMessage {...messages.howItFits} />
+                  </HowItFits>
+                  {showFitsModal && (
+                    <Modal
+                      open={showFitsModal}
+                      requestClose={this.toggleFitsModal(false)}
+                      width={'90%'}
+                      style={{ maxWidth: '704px' }}
+                      withLogo={false}
+                    >
+                      <ImagesSlider
+                        onLoadModel={setLoadingModel}
+                        squareArrows={true}
+                        leftSide={true}
+                        {...{
+                          images,
+                          moreImages
+                        }}
+                      />
+                    </Modal>
+                  )}
+                </RenderContainer>
               </ImagePreview>
               <ProductData>
                 <TitleRow>
@@ -419,6 +437,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 />
                 <Description>{description}</Description>
                 <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
+                <BannerMaterialSection>
+                  {bannerMaterials.map((banner: ProductFile) => (
+                    <BannerMaterial src={banner.url} />
+                  ))}
+                </BannerMaterialSection>
                 {collectionSelection}
                 {productInfo}
               </ProductData>
@@ -429,23 +452,26 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               />
             </Content>
           )}
-          {product && !!products.length && (
-            <RelatedProductsContainer>
-              <RelatedProducts
-                currentCurrency={currentCurrency || config.defaultCurrency}
-                {...{ products, history, formatMessage }}
-              />
-            </RelatedProductsContainer>
-          )}
-          <ReviewsHeader>
-            <FormattedMessage {...messages.reviews} />
-          </ReviewsHeader>
-          <YotpoReviews {...{ yotpoId }} />
+          <YotpoSection
+            {...{
+              yotpoId,
+              mediaFiles,
+              products,
+              moreTag,
+              name,
+              history,
+              formatMessage,
+              currentCurrency
+            }}
+          />
         </Container>
       </Layout>
     )
   }
-
+  toggleFitsModal = (showFits: boolean) => () => {
+    const { setFitsModal } = this.props
+    setFitsModal(showFits)
+  }
   handleSelectedFit = (fitStyle: SelectedType) => () => {
     const { setSelectedFitAction } = this.props
     setSelectedFitAction(fitStyle)
