@@ -156,7 +156,7 @@ pipelines:
           trigger: manual
           deployment: Staging
           script:
-            - export CI=false
+              - export CI=false
               - export BACK_URL=$(echo $BITBUCKET_BRANCH-api | awk '{gsub(/\//,"-")}1');
               - export GRAPHQL_URI_BASE=https://$BACK_URL-backend.$PROJECT_NAME.$DOMAIN/api/
               - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
