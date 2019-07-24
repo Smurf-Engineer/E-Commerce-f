@@ -152,7 +152,7 @@ pipelines:
           script:
             - echo Work in progress...
       - step:
-          name: Deploy to production
+          name: Deploy to release
           trigger: manual
           deployment: Staging
           script:
