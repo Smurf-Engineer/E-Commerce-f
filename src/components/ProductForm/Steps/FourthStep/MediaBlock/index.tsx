@@ -9,13 +9,12 @@ import {
   Container,
   ImageBox,
   DeleteFile,
-  DesktopImage,
   AddMaterial,
   SubLoader,
   Loader,
   VideoBox,
   Label,
-  MobileImage,
+  ImageContainer,
   Images
 } from './styledComponents'
 import messages from './messages'
@@ -57,10 +56,11 @@ class MediaBlock extends React.PureComponent<Props> {
         <Spin size="large" />
       </SubLoader>
     ) : (
-      <MobileImage
+      <ImageContainer
         data={{ index, isMobile: true }}
         customRequest={this.handleRequest}
         showUploadList={false}
+        mobile={true}
         beforeUpload={beforeUpload}
       >
         {urlMobile ? (
@@ -74,7 +74,7 @@ class MediaBlock extends React.PureComponent<Props> {
             </Label>
           </AddMaterial>
         )}
-      </MobileImage>
+      </ImageContainer>
     )
     return (
       <Container>
@@ -90,7 +90,7 @@ class MediaBlock extends React.PureComponent<Props> {
               <Spin size="large" />
             </Loader>
           ) : (
-            <DesktopImage
+            <ImageContainer
               data={{ index, isMobile: false }}
               customRequest={this.handleRequest}
               showUploadList={false}
@@ -107,7 +107,7 @@ class MediaBlock extends React.PureComponent<Props> {
                   </Label>
                 </AddMaterial>
               )}
-            </DesktopImage>
+            </ImageContainer>
           )}
           {!isVideo && subElementNode}
         </Images>

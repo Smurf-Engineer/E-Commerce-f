@@ -7,6 +7,7 @@ import Upload from 'antd/lib/upload'
 interface DivProps {
   clickable?: boolean
   maxWidth?: boolean
+  mobile?: boolean
 }
 
 export const Container = styled.div`
@@ -38,26 +39,12 @@ export const DeleteFile = styled.div`
   margin-right: 47%;
   display: inline-block;
 `
-export const DesktopImage = styled(Upload)`
+export const ImageContainer = styled(Upload)`
   border: 1px dashed #cccccc;
   padding: 5px 0;
-  flex: 2;
+  flex: ${({ mobile }: DivProps) => (mobile ? '1' : '2')};
+  margin-left: ${({ mobile }: DivProps) => (mobile ? '18px' : '0')};
   height: 220px;
-  align-items: center;
-  display: flex;
-  text-align: center;
-  .ant-upload {
-    width: 100%;
-    height: 100%;
-  }
-`
-
-export const MobileImage = styled(Upload)`
-  border: 1px dashed #cccccc;
-  margin-left: 18px;
-  padding: 5px 0;
-  height: 220px;
-  flex: 1;
   align-items: center;
   display: flex;
   text-align: center;
