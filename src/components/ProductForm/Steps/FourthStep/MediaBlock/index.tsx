@@ -19,7 +19,7 @@ import {
   Images
 } from './styledComponents'
 import messages from './messages'
-import { ProductFile } from '../../../../../types/common'
+import { ProductFile, UploadFile } from '../../../../../types/common'
 
 interface Props {
   mediaFile: ProductFile
@@ -27,7 +27,7 @@ interface Props {
   counter: number[]
   uploadMediaFile: (event: any) => void
   setMedia: (id: string, name: string, value: string) => void
-  beforeUpload: (file: any) => boolean
+  beforeUpload: (file: UploadFile) => boolean
   removeMediaFile: (index: number) => void
 }
 
