@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Upload from 'antd/lib/upload'
+import { MID_GRAY, GRAY } from '../../../../../theme/colors'
 
 interface DivProps {
   clickable?: boolean
@@ -13,7 +14,7 @@ interface DivProps {
 export const Container = styled.div`
   margin: 8px 0;
   padding: 8px;
-  border: 1px solid #cccccc;
+  border: 1px solid ${MID_GRAY};
   display: flex;
   flex-flow: column;
   cursor: grab;
@@ -40,7 +41,7 @@ export const DeleteFile = styled.div`
   display: inline-block;
 `
 export const ImageContainer = styled(Upload)`
-  border: 1px dashed #cccccc;
+  border: 1px dashed ${MID_GRAY};
   padding: 5px 0;
   flex: ${({ mobile }: DivProps) => (mobile ? '1' : '2')};
   margin-left: ${({ mobile }: DivProps) => (mobile ? '18px' : '0')};
@@ -63,7 +64,7 @@ export const AddMaterial = styled.div`
   flex-flow: column;
   font-size: 18px;
   padding-top: 38px;
-  color: #bebebe;
+  color: ${GRAY};
 `
 export const Label = styled.div`
   display: flex;
@@ -79,7 +80,7 @@ export const Loader = styled.div`
   flex: 2;
   height: 220px;
   display: inline-flex;
-  border: 1px dashed #cccccc;
+  border: 1px dashed ${MID_GRAY};
   justify-content: center;
   align-items: center;
 `
@@ -88,7 +89,7 @@ export const SubLoader = styled.div`
   height: 220px;
   display: inline-flex;
   margin-left: 18px;
-  border: 1px dashed #cccccc;
+  border: 1px dashed ${MID_GRAY};
   justify-content: center;
   align-items: center;
 `
