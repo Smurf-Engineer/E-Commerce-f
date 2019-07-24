@@ -35,8 +35,7 @@ import {
   REGULAR_CANVAS,
   PHONE_POSITION,
   HIGH_RESOLUTION_CANVAS,
-  MESH_NAME,
-  CANVAS_MESH
+  MESH_NAME
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
@@ -570,12 +569,12 @@ class Render3D extends PureComponent {
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
           }
+
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
           if (labelIndex >= 0) {
             object.children[labelIndex].material.color.set(WHITE)
           }
-
           const propelPalmsIndex = findIndex(
             children,
             ({ name }) => name === PROPEL_PALMS
@@ -636,7 +635,6 @@ class Render3D extends PureComponent {
             const childrenLength = children.length
             const canvasIndex = childrenLength - 1
             children[canvasIndex].material = canvasMaterial
-            children[canvasIndex].name = CANVAS_MESH
 
             if (design.canvas) {
               await this.loadCanvasTexture(design.canvas)

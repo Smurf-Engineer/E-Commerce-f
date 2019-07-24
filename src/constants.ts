@@ -22,7 +22,6 @@ export const REGULAR_CANVAS = 1024
 export const HIGH_RESOLUTION_CANVAS = 2048
 export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
-export const CANVAS_MESH = 'Canvas_Mesh'
 
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'
