@@ -46,7 +46,6 @@ import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
-import designSearch from '../screens/DesignSearch/reducer'
 import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
@@ -61,7 +60,6 @@ import {
 } from './constants'
 
 export interface ReducersObject {
-  designSearch: any
   customProductDetail: any
   warrantyProgram: any
   orderPlaced: any
@@ -178,7 +176,6 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
-  designSearch,
   customProductDetail,
   warrantyProgram,
   orderPlaced,

@@ -1273,7 +1273,7 @@ export interface SportType {
 export interface ProductInternal {
   id?: number
   internalId: number
-  productCode: number
+  productCode: string
   gender: string
   size: string
   fitStyle?: string
@@ -1327,15 +1327,10 @@ export interface BasicColor {
   id: number
   name: string
 }
-
-export interface ProductCode {
-  code: number
-}
-
 export interface ProductInternalsInfo {
   basicColors: BasicColor[]
   frontZipperColors: BasicColor[]
-  products: ProductCode[]
+  products: String[]
   genders: GenderType[]
   sizes: ProductSize[]
   fitStyles: FitStyle[]
