@@ -38,7 +38,6 @@ import {
   Message,
   QueryProps,
   BasicColor,
-  ProductCode,
   ProductInternalInput,
   MessagePayload
 } from '../../types/common'
@@ -53,7 +52,7 @@ interface Props {
   client: any
   internalId: number
   searchText: string
-  productCode: number
+  productCode: string
   data: Data
   gender: string
   size: string
@@ -89,7 +88,7 @@ interface Props {
 interface Data extends QueryProps {
   productInternalsInfo: {
     basicColors: BasicColor[]
-    products: ProductCode[]
+    products: String[]
   }
 }
 
@@ -163,6 +162,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
           handleOnSelectChange={onSelectChangeAction}
           onSave={this.handleOnSave}
           deleteProduct={this.handleOnDeleteProductInternal}
+          handleOnProductChange={this.handleOnProductChange}
           {...{
             formatMessage,
             internalId,
@@ -451,6 +451,13 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       return
     }
     setTextAction(id, value)
+  }
+  handleOnProductChange = (value: string) => {
+    const { setTextAction } = this.props
+    if (!isNumber(value) && value !== '') {
+      return
+    }
+    setTextAction('productCode', value)
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
