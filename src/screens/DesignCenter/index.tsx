@@ -798,7 +798,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         <Spin />
       </LoadingContainer>
     )
-
+    const showTeamStores = get(layout, 'showTeamStores', false)
     const isUserAuthenticated = !!user
     return (
       <Layout
@@ -816,7 +816,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <BackIcon src={backIcon} />
               </BackCircle>
             )}
-          {!isMobile && <Header {...{deliveryDays}} onPressBack={this.handleOnPressBack} />}
+          {!isMobile && (
+            <Header
+              {...{ deliveryDays }}
+              onPressBack={this.handleOnPressBack}
+            />
+          )}
           {!isMobile && (
             <Tabs
               currentTheme={themeId}
@@ -1015,6 +1020,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   openAddToStoreModal,
                   setItemToAddAction,
                   teamStoreId,
+                  showTeamStores,
                   editDesignAction,
                   formatMessage,
                   svgOutputUrl,

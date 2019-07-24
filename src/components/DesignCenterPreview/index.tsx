@@ -42,6 +42,7 @@ interface Props {
   productName: string
   product: Product
   openAddToStoreModal: boolean
+  showTeamStores: boolean
   teamStoreId: string
   svgOutputUrl: string
   savedDesign: SaveDesignData
@@ -89,6 +90,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       formatMessage,
       savedDesignId,
       productName,
+      showTeamStores,
       openAddToStoreModal,
       openAddToTeamStoreModalAction,
       setItemToAddAction,
@@ -124,11 +126,14 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
           <Render>
             <Render3D designId={shortId} />
             <BottomButtons>
-              <ButtonWrapper>
-                <Button onClick={this.openAddToStoreModal}>
-                  <FormattedMessage {...messages.addToTeam} />
-                </Button>
-              </ButtonWrapper>
+              {showTeamStores && (
+                <ButtonWrapper>
+                  <Button onClick={this.openAddToStoreModal}>
+                    <FormattedMessage {...messages.addToTeam} />
+                  </Button>
+                </ButtonWrapper>
+              )}
+
               <ButtonWrapper>
                 <AddToCartButton
                   orderDetails={true}

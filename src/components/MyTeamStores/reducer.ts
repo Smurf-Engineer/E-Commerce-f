@@ -12,7 +12,7 @@ export const initialState = fromJS({
   openDeleteModal: false,
   storeId: '',
   openShare: false,
-  currentPage: 1,
+  currentPage: 0,
   skip: 0,
   limit: TEAM_STORES_LIMIT
 })
