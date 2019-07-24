@@ -108,11 +108,17 @@ pipelines:
             - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
             # Deploy the image
             - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
-    DEPLOY TO PROD:
-      - step:
-          name: Deploy to Kubernetes
-          deployment: production
-          script:
+  branches:
+    master:
+    - step:
+        name: Test
+        script:
+          - echo Work in progress...
+    - step:
+        name: Deploy to production
+        trigger: manual
+        deployment: production
+        script:
             # install yarn and yarn build
             # - curl -o- -L https://yarnpkg.com/install.sh | bash
             # - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
