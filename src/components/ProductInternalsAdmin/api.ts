@@ -9,13 +9,24 @@ export const downloadCsv = () => {
       const response = await fetch(`${config.graphqlUriBase}download/csv`, {
         method: 'GET',
         headers: {
+          Accept: 'application/json',
           Authorization: `Bearer ${user.token}`
         }
       })
-      if (response.ok) {
-        const blobFile = await response.blob()
-        dispatch(setDownloadingFileAction(false))
-        return Promise.resolve(blobFile)
+      const data = await response.json()
+      if (data.file) {
+        const responseFile = await fetch(data.file, {
+          method: 'GET'
+        })
+        if (responseFile.ok) {
+          const blobFile = await responseFile.blob()
+          dispatch(setDownloadingFileAction(false))
+          const url = window.URL.createObjectURL(blobFile)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = data.filename
+          a.click()
+        }
       }
       dispatch(setDownloadingFileAction(false))
       return

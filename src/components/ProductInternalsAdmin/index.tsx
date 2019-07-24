@@ -195,15 +195,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
   handleDownloadCsv = async () => {
     const { formatMessage, downloadCsv } = this.props
     try {
-      const blobFile = await downloadCsv()
-      const url = window.URL.createObjectURL(blobFile)
-      const a = document.createElement('a')
-      const today = new Date()
-      const filename = `product_internals_${today.getDate()}-${today.getMonth() +
-        1}-${today.getFullYear()}-${today.getTime()}.csv`
-      a.href = url
-      a.download = filename
-      a.click()
+      downloadCsv()
     } catch (e) {
       message.error(formatMessage(messages.unexpectedError))
     }
