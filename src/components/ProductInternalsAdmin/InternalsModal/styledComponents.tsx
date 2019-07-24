@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Select from 'antd/lib/select'
 import Button from 'antd/lib/button'
+import Search from 'antd/lib/auto-complete'
 import { GRAY_LIGHTEST } from '../../../theme/colors'
 
 export const Container = styled.div`
@@ -36,6 +37,22 @@ export const Label = styled.p`
 
 export const StyledInput = styled(Input)`
   border-radius: 0;
+`
+
+export const StyledSearch = styled(Search)`
+  border-radius: 0;
+  max-height: 32px;
+  line-height: 0px;
+  font-size: 14px;
+  width: 96%;
+  & .ant-select-search__field {
+    border-radius: 0;
+    max-height: 32px;
+    font-size: 14px;
+  }
+  & .ant-select-search {
+    line-height: 0px;
+  }
 `
 
 export const StyledSelect = styled(Select)`
