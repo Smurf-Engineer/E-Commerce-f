@@ -15,13 +15,13 @@ import {
   Label,
   StyledButton,
   ButtonWrapper,
-  ButtonsContainer
+  ButtonsContainer,
+  StyledSearch
 } from './styledComponents'
 import closeIcon from '../../../assets/cancel-button.svg'
 import Select from 'antd/lib/select'
 import {
   ProductInternalsInfo,
-  ProductCode,
   GenderType,
   ProductSize,
   FitStyle,
@@ -36,7 +36,7 @@ interface Props {
   width?: string | number
   title?: string
   internalId: number
-  productCode: number
+  productCode: string
   loading: boolean
   productInternalsInfo: ProductInternalsInfo
   gender: string
@@ -55,6 +55,7 @@ interface Props {
   handleOnSelectChange: (value: string, id: string) => void
   onSave: () => void
   deleteProduct: () => void
+  handleOnProductChange: (value: string) => void
 }
 
 const { Option } = Select
@@ -81,13 +82,14 @@ const InternalsModal = ({
   bibBrace,
   collection,
   deleteProduct,
-  id
+  id,
+  handleOnProductChange
 }: Props) => {
-  const productsCodes = get(
+  const productsCodes = get<ProductInternalsInfo, 'products', String[]>(
     productInternalsInfo,
     'products',
     []
-  ) as ProductCode[]
+  )
   const genders = get<ProductInternalsInfo, 'genders', GenderType[]>(
     productInternalsInfo,
     'genders',
@@ -128,6 +130,7 @@ const InternalsModal = ({
 
   const handleOnSelect = (fieldId: string) => (value: string) =>
     handleOnSelectChange(value, fieldId)
+
   return (
     <Container>
       <Modal
@@ -154,16 +157,14 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.productCode)}</Label>
-            <StyledSelect
-              onSelect={handleOnSelect('productCode')}
-              defaultValue={productCode}
+            <StyledSearch
+              onChange={handleOnProductChange}
+              dataSource={productsCodes}
+              filterOption={true}
+              value={productCode}
             >
-              {productsCodes.map(({ code }) => (
-                <Option key={code} value={code}>
-                  {code}
-                </Option>
-              ))}
-            </StyledSelect>
+              <StyledInput maxLength={3} />
+            </StyledSearch>
           </Column>
           <Column>
             <Label>{formatMessage(messages.gender)}</Label>
