@@ -1,5 +1,6 @@
 import config from '../../config'
 import { setDownloadingFileAction } from './actions'
+import message from 'antd/lib/message'
 
 export const downloadCsv = () => {
   return async (dispatch: any) => {
@@ -29,10 +30,9 @@ export const downloadCsv = () => {
         }
       }
       dispatch(setDownloadingFileAction(false))
-      return
     } catch (e) {
       dispatch(setDownloadingFileAction(false))
-      return e
+      message.error('Oops! Something went wrong')
     }
   }
 }

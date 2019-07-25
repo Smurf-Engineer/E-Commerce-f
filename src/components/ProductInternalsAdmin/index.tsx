@@ -132,7 +132,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       modalOpen,
       loading,
       id,
-      downloading
+      downloading,
+      downloadCsv
     } = this.props
 
     return (
@@ -182,24 +183,14 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
           }}
         />
         <BottomContainer>
-          <DownloadButton
-            loading={downloading}
-            onClick={this.handleDownloadCsv}
-          >
+          <DownloadButton loading={downloading} onClick={downloadCsv}>
             {formatMessage(messages.download)}
           </DownloadButton>
         </BottomContainer>
       </Container>
     )
   }
-  handleDownloadCsv = async () => {
-    const { formatMessage, downloadCsv } = this.props
-    try {
-      downloadCsv()
-    } catch (e) {
-      message.error(formatMessage(messages.unexpectedError))
-    }
-  }
+
   handleOnSave = async () => {
     const {
       id,
