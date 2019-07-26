@@ -160,14 +160,14 @@ interface OwnProps {
 const TeamStoresListEnhance = compose(
   graphql(GetTeamStoresQuery, {
     options: ({
-      currentPage,
+      currentPage = 0,
       orderBy,
       sort,
       customLimit,
       searchText
     }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : TEAM_STORES_LIMIT
-      const offset = currentPage ? (currentPage - 1) * limit : 0
+      const offset = (currentPage - 1) * limit
       return {
         variables: {
           limit,

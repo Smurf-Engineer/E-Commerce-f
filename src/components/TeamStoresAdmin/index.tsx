@@ -111,10 +111,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       sort,
       searchText,
       formatMessage,
-      currentPage
+      currentPage = 0
     } = this.props
     try {
-      const offset = currentPage ? (currentPage - 1) * TEAM_STORES_LIMIT : 0
+      const offset = (currentPage - 1) * TEAM_STORES_LIMIT
 
       await setTeamStoreFeatured({
         variables: { id },
