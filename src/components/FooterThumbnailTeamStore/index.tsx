@@ -14,7 +14,7 @@ import {
   Label,
   PricesContainer,
   PriceLabel,
-  RedPriceLabel,
+  BluePriceLabel,
   ProgressWrapper,
   ProgressText
 } from './styledComponents'
@@ -25,6 +25,7 @@ interface Props {
   description: string
   progress: number
   targetRange?: Filter
+  onDemandMode?: boolean
   targetPrice: number
   currentPrice: number
 }
@@ -34,6 +35,7 @@ const FooterThumbnailTeamStore = ({
   name,
   description,
   progress,
+  onDemandMode,
   targetRange,
   targetPrice,
   currentPrice
@@ -47,26 +49,32 @@ const FooterThumbnailTeamStore = ({
     <Footer>
       <Type>{name}</Type>
       <Description>{description}</Description>
+      {!onDemandMode && (
+        <PricesContainer>
+          <Label>
+            <FormattedMessage {...messages.estimatedPrice} />
+          </Label>
+          <PriceLabel>{`$${targetPrice}`}</PriceLabel>
+        </PricesContainer>
+      )}
       <PricesContainer>
         <Label>
-          <FormattedMessage {...messages.estimatedPrice} />
+          <FormattedMessage
+            {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
+          />
         </Label>
-        <PriceLabel>{`$${targetPrice}`}</PriceLabel>
+        <BluePriceLabel>{`$${currentPrice}`}</BluePriceLabel>
       </PricesContainer>
-      <PricesContainer>
-        <Label>
-          <FormattedMessage {...messages.currentPrice} />
-        </Label>
-        <RedPriceLabel>{`$${currentPrice}`}</RedPriceLabel>
-      </PricesContainer>
-      <Bottom>
-        <ProgressWrapper>
-          <ProgressText>{`${progress}/${
-            targetRange ? targetRange.name.split('-')[0] : 0
-          }`}</ProgressText>
-          <Progress percent={percentage < 100 ? percentage : 100} />
-        </ProgressWrapper>
-      </Bottom>
+      {!onDemandMode && (
+        <Bottom>
+          <ProgressWrapper>
+            <ProgressText>{`${progress}/${
+              targetRange ? targetRange.name.split('-')[0] : 0
+            }`}</ProgressText>
+            <Progress percent={percentage < 100 ? percentage : 100} />
+          </ProgressWrapper>
+        </Bottom>
+      )}
     </Footer>
   )
 }
