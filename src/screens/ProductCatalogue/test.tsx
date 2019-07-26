@@ -9,7 +9,6 @@ import { SET_SELECTED_FILTERS } from './constants'
 describe(' ProductCatalog Screen', () => {
   describe('Actions', () => {
     it('setSelectedFilters', () => {
-      // function from the actios.ts file.
       const type = SET_SELECTED_FILTERS
       const collectionFiltersCustom = {
         type: 'TYPE',
@@ -24,7 +23,6 @@ describe(' ProductCatalog Screen', () => {
   })
 
   describe('Reducer', () => {
-    // Test redux actions
     describe('INITIAL_STATE', () => {
       it('Should not have initial state undefined', () => {
         expect(initialState).toBeDefined()
