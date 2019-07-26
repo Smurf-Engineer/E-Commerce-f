@@ -318,7 +318,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 </PriceDescription>
               </Description>
             ) : (
-              <div>
+              <React.Fragment>
                 <PriceTitle>
                   <FormattedMessage {...messages.priceDropTitle} />
                 </PriceTitle>
@@ -331,7 +331,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 <PriceDescription>
                   <FormattedMessage {...messages.finalPricing} />
                 </PriceDescription>
-              </div>
+              </React.Fragment>
             )}
           </Content>
           <SideBar>
