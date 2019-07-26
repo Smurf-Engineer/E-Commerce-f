@@ -4,7 +4,9 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
-
+type DivProps = {
+  onDemandMode?: boolean
+}
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,7 +23,12 @@ export const SideBar = styled.div`
   padding-top: 36px;
   padding-right: 32px;
 `
-
+export const Description = styled.div`
+  text-align: center;
+  width: 100vw;
+  margin-left: -36px;
+  padding: 0 8px;
+`
 export const Title = styled.div`
   color: #5f6062;
   font-size: 24px;
@@ -221,7 +228,7 @@ export const DatesContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   flex-flow: row wrap;
-  padding-top: 20px;
+  padding-top: ${({ onDemandMode }: DivProps) => (onDemandMode ? '0' : '20px')};
   align-items: right;
   justify-content: flex-end;
 `

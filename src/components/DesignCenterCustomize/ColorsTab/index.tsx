@@ -53,7 +53,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   onSelectColorBlock: (index: number) => void
-  onSelectColor: (color: string) => void
+  onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
@@ -269,7 +269,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
     this.setState(({ names }: State) => {
       const { onSelectColor, colorBlock } = this.props
       const updatedNames = [...names]
-      onSelectColor(color)
+      onSelectColor(color, name)
       updatedNames[colorBlock] = name
       return { names: updatedNames }
     })

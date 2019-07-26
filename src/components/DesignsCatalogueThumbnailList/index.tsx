@@ -53,6 +53,7 @@ interface Props {
   data: Data
   history: any
   currentPage: number
+  onDemandMode?: boolean
   limit?: number
   teamStoreShortId?: string
   designs?: TeamStoreItemtype[]
@@ -75,6 +76,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       data,
       teamStoreShortId,
       designs,
+      onDemandMode,
       withoutPadding,
       targetRange,
       currentRange
@@ -116,7 +118,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 yotpoId={product.yotpoId}
                 footer={
                   <FooterThumbnailTeamStore
-                    {...{ id, name, targetRange }}
+                    {...{ id, name, targetRange, onDemandMode }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
                     targetPrice={targetPriceValue.price}

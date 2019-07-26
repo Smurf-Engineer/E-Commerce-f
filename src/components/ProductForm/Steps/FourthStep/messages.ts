@@ -36,5 +36,13 @@ export default defineMessages({
   delete: {
     id: 'components.FourthStep.delete',
     defaultMessage: 'Delete'
+  },
+  addImages: {
+    id: 'components.FourthStep.addImages',
+    defaultMessage: '+ ADD IMAGES'
+  },
+  addVideos: {
+    id: 'components.FourthStep.addVideos',
+    defaultMessage: '+ ADD VIDEOS'
   }
 })

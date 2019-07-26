@@ -10,13 +10,14 @@ export const categoriesQuery = gql`
       id
       name: gender
     }
-    categories {
+    sports(navbarSports: true, withCategories: true) {
       id
       name
-    }
-    sports {
-      id
-      name
+      route
+      categories {
+        id
+        name
+      }
     }
   }
 `

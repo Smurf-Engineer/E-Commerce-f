@@ -117,9 +117,9 @@ export interface Product {
   isTopProduct: boolean
   relatedItemTag?: string
   categoryName?: string
-  details: string
+  details: string | string[]
   specs: string
-  materials?: string
+  materials?: string | string[]
   season?: string
   name: string
   customizable: boolean
@@ -256,6 +256,27 @@ export type TeamStoreType = {
   created_at: string
   items: TeamStoreItemtype[]
   priceRanges: ItemDetailType[]
+}
+
+export type TeamStoreAdminResultType = {
+  fullCount: number
+  teamStores: TeamStoreAdminType[]
+}
+
+export type TeamStoreAdminType = {
+  id: number
+  name: string
+  cutoffDate: DateObjectType
+  deliveryDate: DateObjectType
+  private: boolean
+  createdAt: string
+  items: TeamStoreItemtype[]
+  priceRanges: ItemDetailType[]
+  featured: boolean
+  userFirstName: string
+  userLastName: string
+  onDemand: boolean
+  cutOffDateString: string
 }
 
 export type DateObjectType = {
@@ -478,6 +499,8 @@ export type ProductImage = {
 export type ProductFile = {
   id: number
   url?: string
+  urlMobile?: string
+  isVideo?: boolean
   active?: boolean
   toUpload?: Blob | boolean
   extension?: string
@@ -1170,6 +1193,11 @@ export interface ProductColors {
   image: string
 }
 
+export interface ProductSize {
+  id: number
+  name: string
+}
+
 export interface Colors {
   colors: string
   stitchingColors: string
@@ -1225,7 +1253,100 @@ export interface DesignSearchCode {
   code: string
 }
 
+export interface NavbarSports {
+  name: string
+  menuOpen: boolean
+  route: string
+}
 export interface SimpleCart {
   id: number
   quantity: number
+}
+
+export interface SportType {
+  id: number
+  name: string
+  active: boolean
+  catalogue: boolean
+  route: string
+  navbar: boolean
+}
+
+export interface ProductInternal {
+  id?: number
+  internalId: number
+  productCode: string
+  gender: string
+  size: string
+  fitStyle?: string
+  color?: string
+  frontZipper?: string
+  pocketZipper?: string
+  binding?: string
+  bibBrace?: string
+  collection?: string
+}
+
+export interface ProductInternalInput {
+  id?: number
+  internal_id: number
+  product_code: number
+  gender: string
+  size: string
+  fit_style?: string
+  color?: string
+  front_zipper?: string
+  pocket_zipper?: string
+  binding?: string
+  bib_brace?: string
+  collection?: string
+}
+export interface HeaderImagePlaceHolder {
+  id?: number
+  desktopImage?: string
+  mobileImage?: string
+  url?: string
+  sport_id?: string | null
+}
+
+export interface HeadeImageResponse {
+  id?: number
+  image?: string
+  image_mobile: string
+  link?: string
+  sport_id?: string
+}
+
+export interface ProductTilePlaceHolder {
+  id?: number
+  title?: string
+  contentTile?: string
+  image?: string
+  sport_id?: string | null
+}
+
+export interface BasicColor {
+  id: number
+  name: string
+}
+export interface ProductInternalsInfo {
+  basicColors: BasicColor[]
+  frontZipperColors: BasicColor[]
+  products: String[]
+  genders: GenderType[]
+  sizes: ProductSize[]
+  fitStyles: FitStyle[]
+  colors: ProductColors[]
+  collections: CollectionType[]
+}
+
+export interface CollectionType {
+  name: string
+}
+
+export interface HomepageImagesType {
+  id: number
+  desktopImage: string
+  mobileImage: string
+  url: string
 }

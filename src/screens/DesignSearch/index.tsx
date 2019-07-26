@@ -125,13 +125,11 @@ export class DesignSearch extends React.Component<Props, {}> {
     }
     const fontList = get(fontsData, 'fonts', [])
 
-    const fonts = fontList.reduce(
-      (fontObject: any, { family }: Font) => {
-        fontObject.push({ font: family })
-        return fontObject
-      },
-      []
-    )
+    const fonts = fontList.reduce((fontObject: any, { family }: Font) => {
+      fontObject.push({ font: family })
+      return fontObject
+      // tslint:disable-next-line: align
+    }, [])
     const orderContent = order && (
       <OrderFiles
         {...{

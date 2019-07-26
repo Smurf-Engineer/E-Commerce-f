@@ -16,27 +16,14 @@ interface Props {
   mpn: string
   id: number
   text?: string
-  onPressDelete: (index: number, id: number) => void
+  featuredId?: number
+  onPressDelete: (index: number, id?: number) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 class ProductRow extends React.PureComponent<Props, {}> {
   render() {
-    const {
-      id,
-      index,
-      image,
-      name,
-      type,
-      code,
-      mpn,
-      onPressDelete,
-      formatMessage
-    } = this.props
-
-    const handleOnClick = () => {
-      onPressDelete(index, id)
-    }
+    const { image, name, type, code, mpn, formatMessage } = this.props
 
     const renderView = (
       <Row>
@@ -56,7 +43,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
           <Description>{`${type}`}</Description>
         </Cell>
         <Cell>
-          <DeleteButton onClick={handleOnClick}>
+          <DeleteButton onClick={this.handleOnClick}>
             {formatMessage(messages.delete)}
           </DeleteButton>
         </Cell>
@@ -64,6 +51,10 @@ class ProductRow extends React.PureComponent<Props, {}> {
     )
 
     return <div>{renderView}</div>
+  }
+  handleOnClick = () => {
+    const { onPressDelete, featuredId, index } = this.props
+    onPressDelete(index, featuredId)
   }
 }
 

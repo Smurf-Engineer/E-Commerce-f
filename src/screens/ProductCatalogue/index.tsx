@@ -29,7 +29,7 @@ import {
 } from './styledComponents'
 import { QueryProps, ClickParam, Filter } from '../../types/common'
 import { GetFiltersQuery } from './data'
-import { filtersNames } from './constants'
+import { filtersNames, ALL_GENDERS } from './constants'
 
 import config from '../../config/index'
 import { RED } from '../../theme/colors'
@@ -81,11 +81,13 @@ interface Props extends RouteComponentProps<any> {
   openSidebarMobile: (open: boolean) => void
   setHomeSelectedFilters: () => void
   resetReducerAction: () => void
+  setAllGendersAction: () => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
   state = {
     showTypeFilters: false,
+    showcollectionFilters: true,
     filters: []
   }
 
@@ -103,7 +105,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       location: { search, state },
       setSelectedFilters,
       clearFiltersAction,
-      setHomeSelectedFilters
+      setHomeSelectedFilters,
+      setAllGendersAction
     } = this.props
 
     const { gender, category, sport, filter } = queryString.parse(search)
@@ -120,12 +123,16 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
     if (gender && !filter) {
       this.setState({ showgenderFilters: true } as any)
-      const filterObject = {
-        type: 'genderFilters',
-        name: upperFirst(gender),
-        firstGenderSet: true
+      if (gender === ALL_GENDERS) {
+        setAllGendersAction()
+      } else {
+        const filterObject = {
+          type: 'genderFilters',
+          name: upperFirst(gender),
+          firstGenderSet: true
+        }
+        setSelectedFilters(filterObject)
       }
-      setSelectedFilters(filterObject)
     }
 
     if (category && !filter) {

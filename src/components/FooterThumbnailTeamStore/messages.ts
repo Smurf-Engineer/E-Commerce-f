@@ -16,5 +16,9 @@ export default defineMessages({
   currentPrice: {
     id: 'components.FooterThumbnailTeamStore.currentPrice',
     defaultMessage: 'Current price'
+  },
+  teamPrice: {
+    id: 'components.FooterThumbnailTeamStore.teamPrice',
+    defaultMessage: 'Team price'
   }
 })

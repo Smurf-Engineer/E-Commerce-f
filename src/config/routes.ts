@@ -1,5 +1,4 @@
 /* Routes */
-import DesignSearch from '../screens/DesignSearch'
 import CustomProductDetail from '../screens/CustomProductDetail'
 import FitAndSizing from '../screens/FitAndSizing'
 import WorkAtJakroo from '../screens/WorkAtJakroo'
@@ -39,11 +38,6 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: Admin
-  },
-  {
-    path: '/design-search',
-    name: 'designSearch',
-    component: DesignSearch
   },
   {
     path: '/custom-product',
@@ -203,7 +197,7 @@ const routes = [
     component: NotFound
   },
   {
-    path: '/:region',
+    path: '/:sportRoute?/:region',
     name: 'home',
     exact: true,
     component: Home

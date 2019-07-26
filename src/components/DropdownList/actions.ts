@@ -4,9 +4,11 @@
 import {
   SET_MENU_GENDER_SELECTED,
   SET_MENU_SPORT_SELECTED,
-  SET_GENDER_SPORT_SELECTED
+  SET_GENDER_SPORT_SELECTED,
+  SET_SPORTS
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { Option } from './index'
+import { AnyAction, Filter } from '../../types/common'
 
 export const setMenuGenderSelectedAction = (
   index: number,
@@ -29,4 +31,13 @@ export const setMenuSportSelectedAction = (
 export const setGenderSportAction = (sport: number): AnyAction => ({
   type: SET_GENDER_SPORT_SELECTED,
   sport
+})
+
+export const setSportsAction = (
+  sportOptions: Option[],
+  sportsData: Filter[]
+): AnyAction => ({
+  type: SET_SPORTS,
+  sportOptions,
+  sportsData
 })
