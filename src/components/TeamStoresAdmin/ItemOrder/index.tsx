@@ -14,9 +14,10 @@ interface Props {
   userLastName: string
   onDemand: boolean
   cutOffDateString?: string
+  shortId: string
   formatMessage: (messageDescriptor: any) => string
   onSetFeatured: (id: number) => void
-  onClickRow: (id: number) => void
+  onClickRow: (id: string) => void
 }
 
 const ItemOrder = ({
@@ -29,7 +30,8 @@ const ItemOrder = ({
   formatMessage,
   cutOffDateString,
   onSetFeatured,
-  onClickRow
+  onClickRow,
+  shortId
 }: Props) => {
   const stopPropagation = (event: any) => {
     if (event) {
@@ -37,7 +39,7 @@ const ItemOrder = ({
     }
   }
   const handleOnClick = () => {
-    onClickRow(id)
+    onClickRow(shortId)
   }
   const handleOnSetFeatured = () => {
     onSetFeatured(id)
