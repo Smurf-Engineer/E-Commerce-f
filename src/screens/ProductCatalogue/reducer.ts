@@ -3,7 +3,6 @@
  */
 import { fromJS } from 'immutable'
 import {
-  DEFAULT_ACTION,
   SELECTED_FILTER,
   SHOW_TYPE_FILTER,
   SET_SELECTED_FILTERS,
@@ -40,8 +39,6 @@ export const initialState = fromJS({
 
 const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state.set('someKey', action.someValue)
     case SELECTED_FILTER: {
       return state.merge({
         typeOfFilter: action.id,
@@ -63,9 +60,8 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         })
       }
       return state
-        .updateIn(
-          [type, name],
-          (value: any) => (firstGenderSet ? true : !!!value)
+        .updateIn([type, name], (value: any) =>
+          firstGenderSet ? true : !!!value
         )
         .merge({ skip: 0, currentPage: 1 })
     case ORDERBY_SELECTED:
