@@ -188,5 +188,21 @@ export default defineMessages({
   errorUpdating: {
     id: 'components.ProductDetailAdmin.errorUpdating',
     defaultMessage: 'Error creating/updating product.'
+  },
+  areYouSure: {
+    id: 'components.ProductDetailAdmin.areYouSure',
+    defaultMessage: 'Do you want to continue?'
+  },
+  cancel: {
+    id: 'components.ProductDetailAdmin.cancel',
+    defaultMessage: 'Cancel'
+  },
+  outWithoutSave: {
+    id: 'components.ProductDetailAdmin.outWithoutSave',
+    defaultMessage: `Any change won't be saved, Do you want to exit?`
+  },
+  success: {
+    id: 'components.ProductDetailAdmin.success',
+    defaultMessage: 'Product information saved!'
   }
 })

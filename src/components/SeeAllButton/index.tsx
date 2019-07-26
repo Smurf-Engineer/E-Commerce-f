@@ -7,21 +7,24 @@ import nextIcon from '../../assets/rightarrow.svg'
 import messages from './messages'
 
 interface Props {
+  sportName?: string
   withFilterWord?: boolean
   onClick?: (event: React.MouseEvent<EventTarget>) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, params: {}) => string
 }
 
 const SeeAllButton = ({
   onClick,
   withFilterWord = false,
-  formatMessage
+  formatMessage,
+  sportName
 }: Props) => {
   return (
     <Container {...{ onClick }}>
       <Text>
         {formatMessage(
-          withFilterWord ? messages.seeAllFilters : messages.seeAll
+          withFilterWord ? messages.seeAllFilters : messages.seeAll,
+          { sportName }
         )}
       </Text>
       <NextIcon src={nextIcon} />

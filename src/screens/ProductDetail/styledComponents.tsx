@@ -6,6 +6,7 @@ import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
 import { RED, BLACK, BLUE_DARK } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 interface StyledProps {
   selected?: boolean
@@ -18,21 +19,27 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  padding: 0px 32px 50px 32px;
-
+  max-width: 1658px;
+  margin: 0 auto;
+  margin-bottom: 36px;
   @media (min-width: 320px) and (max-width: 480px) {
     display: block;
-    padding: 0px 12px 50px 12px;
   }
 
   @media (min-width: 1440px) {
     justify-content: center;
   }
 `
-
+export const MenIcon = styled(Icon)`
+  margin-left: 8px;
+  color: #2196f3;
+`
+export const WomenIcon = styled(Icon)`
+  margin-left: 8px;
+  color: deeppink;
+`
 export const ImagePreview = styled.div`
   width: 50%;
-  padding: 70px 50px 0px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -40,7 +47,6 @@ export const ImagePreview = styled.div`
   }
 
   @media (min-width: 481px) and (max-width: 768px) {
-    padding: 0 20px 0 0;
     width: 100%;
   }
 
@@ -50,11 +56,10 @@ export const ImagePreview = styled.div`
 `
 
 export const ProductData = styled.div`
-  padding-top: 70px;
+  padding: 18px;
   width: 50%;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    padding-top: 16px;
     width: 100%;
   }
 `
@@ -67,6 +72,42 @@ export const Title = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 18px;
   }
+`
+
+export const HowItFits = styled.div`
+  margin: 16px 0;
+  margin-bottom: 16px;
+  height: 40px;
+  width: 190px;
+  color: white;
+  border: 2px solid #dcdcdc;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  z-index: 2;
+  background: #2b2b2c73;
+  cursor: pointer;
+  &:hover {
+    background: gainsboro;
+    color: #2b2b2c;
+    font-weight: bold;
+  }
+`
+export const BannerMaterialSection = styled.div`
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 8px;
+`
+
+export const BannerMaterial = styled.img`
+  max-width: 85px;
+  object-fit: cover;
+  max-height: 85px;
+  margin-right: 8px;
+  border-radius: 3px;
 `
 
 export const Subtitle = styled.div`
@@ -90,9 +131,10 @@ export const StyledLink = styled.a`
 export const ModelContainer = styled.div`
   background: #2b2b2c;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   text-align: center;
+  flex-flow: column;
   border-radius: 3px;
 `
 
@@ -157,38 +199,90 @@ export const StyledButtonWrapper = styled.div`
     border-color: ${BLUE_DARK};
   }
 `
+export const SlideImage = styled.img`
+  width: 100%;
+`
 
-export const StyledButton = styled(Button)`
+export const SlideVideo = styled.video`
+  width: 100%;
+`
+
+export const SlideImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+`
+
+export const Separator = styled.div`
+  text-align: center;
+  margin: 48px 10% 28px 10%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dcdcdc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.93px;
+  line-height: 18px;
+`
+
+export const TitleName = styled.div`
+  margin-right: 8px;
+`
+
+export const StyledButton = styled.div`
   height: 50px;
-  width: 221px;
+  width: 277px;
+  border: 1px solid #4a90e2;
   border-radius: 2px;
-
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: #4a90e2;
+  font-size: 16px;
+  display: flex;
+  transition: all 0.2s;
+  justify-content: center;
+  align-items: center;
   @media (min-width: 320px) and (max-width: 480px) {
     display: none;
   }
+  &:hover {
+    background: #4a90e2;
+    color: white;
+  }
+`
+
+export const ColorWheel = styled.img`
+  width: 20px;
+  margin-right: 12px;
 `
 
 export const MobileButtonWrapper = styled.div`
-  padding-top: 8px;
-  .ant-btn-primary  {
-    background-color: ${BLUE_DARK};
-    border-color: ${BLUE_DARK};
-  }
-  .ant-btn-primary:hover {
-    background-color: ${BLUE_DARK};
-    border-color: ${BLUE_DARK};
-  }
+  width: 100%;
 `
 
-export const MobileButton = styled(Button)`
+export const MobileButton = styled.div`
   display: none;
   height: 50px;
   width: 100%;
-  border: 2px solid #e61737;
+  margin-bottom: 16px;
+  border: 1px solid #4a90e2;
   border-radius: 2px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: #4a90e2;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    display: block;
+    display: flex;
   }
 `
 
@@ -353,14 +447,6 @@ export const DownloadTemplateContainer = styled.div`
 `
 export const DownloadAnchor = styled.a`
   display: flex;
-`
-export const AvailableLabel = styled.div`
-  margin-top: 15px;
-  height: 22px;
-  color: #5f6062;
-  font-size: 16px;
-  font-style: italic;
-  line-height: 22px;
 `
 
 export const DownloadImg = styled.img`

@@ -46,10 +46,12 @@ import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
-import designSearch from '../screens/DesignSearch/reducer'
 import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
+import productInternalsAdmin from '../components/ProductInternalsAdmin/reducer'
+import teamStoresAdmin from '../components/TeamStoresAdmin/reducer'
+
 import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
@@ -58,7 +60,6 @@ import {
 } from './constants'
 
 export interface ReducersObject {
-  designSearch: any
   customProductDetail: any
   warrantyProgram: any
   orderPlaced: any
@@ -109,6 +110,8 @@ export interface ReducersObject {
   fitAndSizing: any
   admin: any
   adminLayout: any
+  productInternalsAdmin: any
+  teamStoresAdmin: any
 }
 
 const appInitialState = fromJS({
@@ -173,7 +176,6 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
-  designSearch,
   customProductDetail,
   warrantyProgram,
   orderPlaced,
@@ -221,7 +223,9 @@ const rootReducer = combineReducers({
   app: appReducer,
   admin,
   adminLayout,
-  usersAdmin
+  usersAdmin,
+  productInternalsAdmin,
+  teamStoresAdmin
 })
 
 export default rootReducer

@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 12/02/18.
  */
 import styled, { keyframes } from 'styled-components'
+import Icon from 'antd/lib/icon'
 
 interface StyleProps {
   withBorder?: boolean
@@ -89,11 +90,26 @@ export const Type = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 220px;
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
 `
+export const MenIcon = styled(Icon)`
+  color: #2196f3;
+`
+export const WomenIcon = styled(Icon)`
+  color: deeppink;
+`
+
+export const GendersContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 export const Description = styled.div`
   user-select: none;
   color: #8c8c8c;

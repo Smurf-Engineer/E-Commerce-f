@@ -2,8 +2,9 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
 export const getHomepageInfo = gql`
-  query getHomepageContent {
-    getHomepageContent {
+  query getHomepageContent($route: String) {
+    getHomepageContent(sportRoute: $route) {
+      id
       headerImageMobile: header_image_mobile
       headerImage: header_image
       headerImageLink: header_image_link
@@ -20,6 +21,7 @@ export const getHomepageInfo = gql`
         custom: design_center
         description: short_description
         shortDescription: short_description
+        featuredId: featured_id
         mpn
         images: pictures {
           front: front_image
@@ -38,14 +40,16 @@ export const getHomepageInfo = gql`
 export const setMainHeaderMutation = graphql(
   gql`
     mutation setMainHeader(
-      $headerImage: String!
-      $headerImageMobile: String!
-      $headerImageLink: String!
+      $headerImage: String
+      $headerImageMobile: String
+      $headerImageLink: String
+      $homePageImageId: Int
     ) {
       setMainHeader(
         headerImage: $headerImage
         headerImageMobile: $headerImageMobile
         headerImageLink: $headerImageLink
+        id: $homePageImageId
       ) {
         message
       }
@@ -58,7 +62,10 @@ export const setSecondaryHeaderMutation = graphql(
   gql`
     mutation setSecondaryHeader($homepageImages: [HomePageImageInput]) {
       setSecondaryHeader(homepageImages: $homepageImages) {
-        message
+        id
+        image
+        image_mobile
+        link
       }
     }
   `,
@@ -87,8 +94,8 @@ export const productsQuery = gql`
 
 export const setFeaturedProductsMutation = graphql(
   gql`
-    mutation setFeaturedProducts($products: [Int]) {
-      setFeaturedProducts(products: $products) {
+    mutation setFeaturedProducts($products: [Int], $sportId: Int) {
+      setFeaturedProducts(products: $products, sportId: $sportId) {
         message
       }
     }
@@ -111,7 +118,10 @@ export const updateProductTilesMutation = graphql(
   gql`
     mutation updateProductTiles($products: [ProductTilesInput]) {
       updateProductTiles(products: $products) {
-        message
+        id
+        title
+        contentTile: content_tile
+        image
       }
     }
   `,

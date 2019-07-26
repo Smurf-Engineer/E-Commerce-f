@@ -2,14 +2,19 @@ import { fromJS } from 'immutable'
 import {
   OPEN_DELETE_MODAL,
   OPEN_SHARE_MODAL,
-  SET_STOREID_TO_DELETE
+  SET_STOREID_TO_DELETE,
+  TEAM_STORES_LIMIT,
+  SET_SKIP_VALUE
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   openDeleteModal: false,
   storeId: '',
-  openShare: false
+  openShare: false,
+  currentPage: 0,
+  skip: 0,
+  limit: TEAM_STORES_LIMIT
 })
 
 const myTeamStoresReducer: Reducer<any> = (state = initialState, action) => {
@@ -18,6 +23,11 @@ const myTeamStoresReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         openDeleteModal: action.open,
         deleteStoreId: action.storeId
+      })
+    case SET_SKIP_VALUE:
+      return state.merge({
+        skip: action.skip,
+        currentPage: action.currentPage
       })
     case OPEN_SHARE_MODAL:
       return state.merge({

@@ -13,21 +13,29 @@ import {
   SET_GENDERS,
   SET_CURRENCIES,
   REMOVE_MATERIAL,
+  MOVE_MATERIAL,
   SET_FILE_FIELD,
   SET_COLORS,
   ADD_MATERIAL,
+  MOVE_BANNER,
   ADD_BANNER,
+  SET_SPEC,
+  SET_MATERIAL,
   SET_SPORT,
   ENABLE_SPORT,
-  SET_BANNERS_LOADING,
   SET_DESIGN_CENTER,
+  ADD_MEDIA,
+  REMOVE_MEDIA,
+  SET_MEDIA,
   SAVED_PRODUCT,
+  SET_PROMPT,
   REMOVE_BANNER
 } from './constants'
-import { getFileExtension, getFileName } from '../../utils/utilsFiles'
+import { getFileExtension } from '../../utils/utilsFiles'
 import { Reducer, ProductPicture } from '../../types/common'
 import { currencies, quantities } from './Steps/ThirdStep/constants'
 import omitDeep from 'omit-deep'
+import { MP4_EXTENSION } from '../../constants'
 
 export const initialState = fromJS({
   product: {},
@@ -37,13 +45,20 @@ export const initialState = fromJS({
   newSport: '',
   newSportEnabled: false,
   bannersLoading: false,
-  dataExtra: {}
+  dataExtra: {},
+  openPrompt: false,
+  specDetail: '',
+  materialDetail: ''
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case RESET_DATA:
       return initialState
+    case SET_MATERIAL:
+      return state.set('materialDetail', action.value)
+    case SET_SPEC:
+      return state.set('specDetail', action.value)
     case SET_PRODUCT_DATA: {
       // TODO: Refactor all of the incoming data logic
       const { product, extraData } = action
@@ -54,10 +69,14 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         fitStyles,
         sports,
         genders,
+        details,
+        materials,
         colors,
         productMaterials,
         pictures
       } = product
+      const specDetails = details ? details.split(',') : []
+      const materialsValue = materials ? materials.split('-') : []
       const { bannerMaterials } = extraData
       const gendersSelected = genders
         ? genders.reduce((obj, { id, name }) => {
@@ -90,9 +109,9 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const mediaFilesDetailed = mediaFiles
         ? mediaFiles.map((file: any, index: number) => ({
             url: file.url,
+            urlMobile: file.urlMobile,
             id: index,
-            extension: getFileExtension(file.url),
-            name: getFileName(file.url)
+            isVideo: getFileExtension(file.url) === MP4_EXTENSION
           }))
         : []
       const detailedBanners = bannerMaterials.map((banner: any) => ({
@@ -147,6 +166,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const detailedProduct = {
         ...product,
         sports: sportsProduct,
+        details: specDetails,
+        materials: materialsValue,
         sizeRange: sizeRangeDet,
         fitStyles: fitStylesDet,
         genders: gendersSelected,
@@ -165,6 +186,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         loading: false
       })
     }
+    case SET_PROMPT:
+      return state.set('openPrompt', action.value)
     case SET_CURRENCIES:
       return state.setIn(['product', 'priceRange'], action.currencies)
     case SET_LOADING:
@@ -177,6 +200,20 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         ['product', action.selected, action.id],
         action.checked
       )
+    case ADD_MEDIA: {
+      const { value } = action
+      const oldList = state.getIn(['product', 'mediaFiles'])
+      return state.setIn(['product', 'mediaFiles'], oldList.push(fromJS(value)))
+    }
+    case REMOVE_MEDIA: {
+      const { index } = action
+      const oldList = state.getIn(['product', 'mediaFiles'])
+      return state.setIn(['product', 'mediaFiles'], oldList.remove(index))
+    }
+    case SET_MEDIA: {
+      const { id, name, value } = action
+      return state.setIn(['product', 'mediaFiles', id, name], value)
+    }
     case REMOVE_MATERIAL: {
       const { index, array } = action
       const oldList = state.getIn(['product', array])
@@ -190,10 +227,24 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const { item, array } = action
       const oldList = state.getIn(['product', array])
       return state.withMutations((map: any) => {
-        map.setIn(['product', array], oldList.push(item))
-        map.set('bannersLoading', false)
+        map.setIn(['product', array], oldList.push(fromJS(item)))
+        map.merge({ bannersLoading: false, specDetail: '', materialDetail: '' })
         return map
       })
+    }
+    case MOVE_MATERIAL: {
+      const { indexTo, array, index } = action
+      const oldList = state.getIn(['product', array])
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.setIn(['product', array], newList)
+    }
+    case MOVE_BANNER: {
+      const { indexTo, index } = action
+      const oldList = state.get('bannerMaterials')
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.set('bannerMaterials', newList)
     }
     case SET_FILE_FIELD: {
       const { selected, id, name, value } = action
@@ -208,8 +259,6 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const { index, field, value } = action
       return state.setIn(['bannerMaterials', index, field], value)
     }
-    case SET_BANNERS_LOADING:
-      return state.set('bannersLoading', action.value)
     case REMOVE_BANNER: {
       const { index } = action
       const oldList = state.get('bannerMaterials')

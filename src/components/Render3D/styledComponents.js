@@ -17,7 +17,7 @@ export const Container = styled.div`
 
 export const Render = styled.div`
   height: ${({ customProduct, designSearch }) =>
-    customProduct || designSearch ? '535px' : '90vh'};
+    customProduct || designSearch ? '515px' : '90vh'};
   width: 100%;
   cursor: grab;
   @media (max-width: 375px) {
@@ -99,7 +99,7 @@ export const DragText = styled.div`
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 19%;
+  bottom: ${({ isProduct }) => (isProduct ? '0' : '19%')};
   left: 50%;
   transform: translate(-50%, -50%);
 

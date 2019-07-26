@@ -64,14 +64,14 @@ interface Props {
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
-  constructor(props: Props) {
-    super(props)
-    this.state = { code: props.productCode }
+  state = {
+    code: ''
   }
   render() {
     const {
       themeImage,
       themeName,
+      productCode,
       designName,
       productData,
       selectedTheme,
@@ -140,7 +140,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           </Row>
           <InputContainer>
             <Input
-              value={code}
+              value={code || productCode}
               onChange={this.handleOnUpdateProductCode}
               placeholder="Product Code"
               onSearch={this.handleOnSearch}

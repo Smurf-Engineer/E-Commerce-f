@@ -61,7 +61,7 @@ const ColorList = ({
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []
 
-  arrayColors.forEach(({ value, type }: Color, index: number) => {
+  arrayColors.forEach(({ value, type, name }: Color, index: number) => {
     if (type) {
       const node = (
         <Col key={index} className="custom-tooltip">

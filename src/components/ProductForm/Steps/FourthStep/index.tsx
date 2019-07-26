@@ -4,27 +4,18 @@
 import * as React from 'react'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
-import Spin from 'antd/lib/spin'
-import { Icon, message, Upload, Checkbox } from 'antd'
+import { Icon, message, Upload } from 'antd'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 import {
   Container,
   Separator,
-  ImageBox,
   RowInput,
-  MediaDiv,
   AddMaterial,
-  MediaFooter,
-  FileName,
-  MaterialDiv,
-  MaterialImage,
-  MaterialButtons,
-  MaterialButton,
-  FileExtension,
-  DeleteFile,
   MediaSection,
-  LoaderBox,
   Label,
-  InputDiv
+  InputDiv,
+  AddButton
 } from './styledComponents'
 import GenderBlock from './GenderBlock'
 import { uploadFile } from '../../api'
@@ -33,9 +24,10 @@ import {
   TypePicture,
   ItemDetailType
 } from '../../../../types/common'
-import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
-import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
-const Dragger = Upload.Dragger
+import { validTypes } from '../../constants'
+import MediaBlock from './MediaBlock'
+import BannerBlock from './BannerBlock'
+import Draggable from '../../../Draggable'
 interface Props {
   productMaterials: ProductFile[]
   mediaFiles: ProductFile[]
@@ -43,10 +35,13 @@ interface Props {
   colorsProducts: object
   genders: ItemDetailType[]
   colors: ItemDetailType[]
-  bannersLoading: boolean
   customizable: boolean
-  setBannersLoading: (value: boolean) => void
   removeBanner: (index: number) => void
+  uploadMediaFile: (event: any) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
+  moveFile: (array: string, index: number, indexTo: number) => void
+  moveBanner: (index: number, indexTo: number) => void
   addBanner: (item: any) => void
   setBanner: (index: number, field: string, value: any) => void
   removeFile: (array: string, index: number) => void
@@ -71,9 +66,9 @@ export class FourthStep extends React.Component<Props, {}> {
       selectedGenders,
       customizable,
       genders,
+      uploadMediaFile,
       colors,
       colorsProducts,
-      bannersLoading,
       bannerMaterials
     } = this.props
     let productsImagesForm
@@ -122,6 +117,22 @@ export class FourthStep extends React.Component<Props, {}> {
         []
       )
     }
+    let videoCount = 1
+    let imageCount = 1
+    const counter = mediaFiles.reduce(
+      (count: number[], item: ProductFile, index: number) => {
+        if (item.isVideo) {
+          count[index] = videoCount
+          videoCount++
+        } else {
+          count[index] = imageCount
+          imageCount++
+        }
+        return count
+        // tslint:disable-next-line: align
+      },
+      []
+    )
     return (
       <Container>
         <Separator>
@@ -137,114 +148,91 @@ export class FourthStep extends React.Component<Props, {}> {
             beforeUpload={this.beforeUpload}
           />
         ))}
+        <Separator inline={true}>
+          <FormattedMessage {...messages.assetsOnPage} />
+        </Separator>
+        <RowInput>
+          <InputDiv flex={1}>
+            <Label>
+              <FormattedMessage {...messages.materialsBanner} />
+            </Label>
+            <InputDiv isFlex={true}>
+              {bannerMaterials.map(
+                (material: ProductFile, index: number) =>
+                  material.active && (
+                    <Draggable
+                      {...{ index }}
+                      key={index}
+                      id={material.id}
+                      section="banner"
+                      onDropRow={this.handleMoveBanner}
+                    >
+                      <BannerBlock
+                        {...{ index }}
+                        id={material.id}
+                        url={material.url}
+                        selected={productMaterials[material.id]}
+                        handleCheckMaterial={this.handleCheckMaterial}
+                        handleRemoveMaterial={this.handleRemoveMaterial}
+                      />
+                    </Draggable>
+                  )
+              )}
+              <Upload
+                listType="picture-card"
+                className="avatar-uploader"
+                customRequest={this.handleAddMaterial}
+                showUploadList={false}
+                beforeUpload={this.beforeUpload}
+              >
+                <AddMaterial>
+                  <Icon type={'plus'} />
+                  <Label marginTop="16px" className="ant-upload-text">
+                    <FormattedMessage {...messages.materialsBanner} />
+                  </Label>
+                </AddMaterial>
+              </Upload>
+            </InputDiv>
+          </InputDiv>
+        </RowInput>
         {customizable && (
           <div>
-            <Separator inline={true}>
-              <FormattedMessage {...messages.assetsOnPage} />
-            </Separator>
-            <RowInput>
-              <InputDiv flex={1}>
-                <Label>
-                  <FormattedMessage {...messages.materialsBanner} />
-                </Label>
-                <InputDiv isFlex={true}>
-                  {bannerMaterials.map(
-                    (material: any, index: number) =>
-                      material.active && (
-                        <MaterialDiv>
-                          <MaterialButtons>
-                            <MaterialButton
-                              onClick={this.handleRemoveMaterial(index)}
-                              type="close"
-                            />
-                            <Checkbox
-                              name={material.id}
-                              onChange={this.handleCheckMaterial}
-                              checked={productMaterials[material.id]}
-                            />
-                          </MaterialButtons>
-                          <MaterialImage src={material.url} alt="avatar" />
-                        </MaterialDiv>
-                      )
-                  )}
-                  <Upload
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    customRequest={this.handleAddMaterial}
-                    showUploadList={false}
-                    beforeUpload={this.beforeUpload}
-                  >
-                    <AddMaterial>
-                      <Icon type={'plus'} />
-                      <Label marginTop="16px" className="ant-upload-text">
-                        <FormattedMessage {...messages.materialsBanner} />
-                      </Label>
-                    </AddMaterial>
-                  </Upload>
-                </InputDiv>
-              </InputDiv>
-            </RowInput>
             <RowInput>
               <InputDiv flex={1}>
                 <Label>
                   <FormattedMessage {...messages.featuredImages} />
                 </Label>
-                <Dragger
-                  multiple={true}
-                  className="avatar-uploader"
-                  customRequest={this.handleSetMedia}
-                  showUploadList={false}
-                  beforeUpload={this.beforeUploadMedia}
-                >
-                  <Icon type="upload" />
-                  <p className="ant-upload-hint">20 MB max.</p>
-                  <p className="ant-upload-text">
-                    Click or drag images or videos to this area
-                  </p>
-                </Dragger>
+                <AddButton onClick={this.handleAddMediaBox(false)}>
+                  <FormattedMessage {...messages.addImages} />
+                </AddButton>
+                <AddButton onClick={this.handleAddMediaBox(true)}>
+                  <FormattedMessage {...messages.addVideos} />
+                </AddButton>
               </InputDiv>
             </RowInput>
-            {mediaFiles.length ? (
+            {!!mediaFiles.length && (
               <MediaSection>
-                {mediaFiles.map((mediaFile: any, index: number) => (
-                  <MediaDiv key={index}>
-                    <ImageBox
-                      onClick={this.openMedia(mediaFile)}
-                      clickable={!mediaFile.toUpload}
-                      src={
-                        mediaFile.extension === '.mp4'
-                          ? videoPlaceHolder
-                          : mediaFile.url
-                      }
-                      alt="avatar"
+                {mediaFiles.map((mediaFile: ProductFile, index: number) => (
+                  <Draggable
+                    {...{ index }}
+                    key={index}
+                    id={mediaFile.id}
+                    section="media"
+                    onDropRow={this.handleOnDropRow}
+                  >
+                    <MediaBlock
+                      {...{ index, mediaFile, counter, uploadMediaFile }}
+                      beforeUpload={this.beforeUploadMedia}
+                      removeMediaFile={this.removeMediaFile}
                     />
-                    <MediaFooter>
-                      <div>
-                        <FileName>{mediaFile.name}</FileName>
-                        <FileExtension>{mediaFile.extension}</FileExtension>
-                      </div>
-                      <DeleteFile onClick={this.removeMediaFile(index)}>
-                        <FormattedMessage {...messages.delete} />
-                      </DeleteFile>
-                    </MediaFooter>
-                  </MediaDiv>
+                  </Draggable>
                 ))}
               </MediaSection>
-            ) : (
-              <div />
-            )}
-            {bannersLoading && (
-              <LoaderBox>
-                <Spin size="large" />
-              </LoaderBox>
             )}
           </div>
         )}
       </Container>
     )
-  }
-  openMedia = ({ url }: ProductFile) => () => {
-    window.open(url)
   }
 
   handleCheckMaterial = (event: any) => {
@@ -255,7 +243,7 @@ export class FourthStep extends React.Component<Props, {}> {
     setCheck('productMaterials', name, checked)
   }
 
-  handleRemoveMaterial = (index: number) => () => {
+  handleRemoveMaterial = (index: number) => {
     const { removeBanner, setBanner, bannerMaterials, setCheck } = this.props
     setCheck('productMaterials', bannerMaterials[index].id, false)
     if (bannerMaterials[index].toUpload) {
@@ -283,21 +271,16 @@ export class FourthStep extends React.Component<Props, {}> {
     })
   }
 
-  removeMediaFile = (index: number) => () => {
-    const { removeFile } = this.props
-    removeFile('mediaFiles', index)
-  }
-
   beforeUpload = (file: any) => {
-    const isJPG = file.type === 'image/jpeg'
-    if (!isJPG) {
+    const isValidType = validTypes.includes(file.type)
+    if (!isValidType) {
       message.error('You can only upload JPG file!')
     }
     const isLt2M = file.size / 1024 / 1024 < 2
     if (!isLt2M) {
       message.error('Image must smaller than 2MB!')
     }
-    return isJPG && isLt2M
+    return isValidType && isLt2M
   }
 
   beforeUploadMedia = (file: any) => {
@@ -314,19 +297,15 @@ export class FourthStep extends React.Component<Props, {}> {
     return (isJPG || isPNG || isMP4) && isLt2M
   }
 
-  handleSetMedia = (event: any) => {
-    const { addFile, mediaFiles, setBannersLoading } = this.props
-    const { file } = event
+  removeMediaFile = (index: number) => {
+    const { removeMedia } = this.props
+    removeMedia(index)
+  }
+
+  handleAddMediaBox = (isVideo: boolean) => () => {
+    const { addMedia, mediaFiles } = this.props
     const id = mediaFiles.length + 1
-    setBannersLoading(true)
-    uploadFile(file, id.toString(), 'media').then(({ imageUri }) => {
-      addFile('mediaFiles', {
-        url: imageUri,
-        id,
-        name: getFileName(file.name),
-        extension: getFileExtension(file.name)
-      })
-    })
+    addMedia({ id, isVideo })
   }
 
   handleSetFile = (event: any) => {
@@ -337,10 +316,18 @@ export class FourthStep extends React.Component<Props, {}> {
     } = event
     const fileType = customizable ? 'genders' : 'colors'
     setFileField(fileType, fileId, name, 'loading')
-    uploadFile(file, fileId, name, 'picture').then(({ imageUri }) => {
+    uploadFile(file, fileId, 'picture', name).then(({ imageUri }) => {
       setFileField(fileType, fileId, name, imageUri)
     })
   }
+  handleOnDropRow = (dragIndex: number, dropIndex: number) => {
+    const { moveFile } = this.props
+    moveFile('mediaFiles', dragIndex, dropIndex)
+  }
+  handleMoveBanner = (dragIndex: number, dropIndex: number) => {
+    const { moveBanner } = this.props
+    moveBanner(dragIndex, dropIndex)
+  }
 }
 
-export default FourthStep
+export default DragDropContext(HTML5Backend)(FourthStep)
