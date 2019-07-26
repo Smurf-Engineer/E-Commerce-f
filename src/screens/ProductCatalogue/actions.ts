@@ -2,7 +2,6 @@
  * ProductCatalog  Actions - Created by cazarez on 27/02/18.
  */
 import {
-  DEFAULT_ACTION,
   SELECTED_FILTER,
   ORDERBY_SELECTED,
   SHOW_TYPE_FILTER,
@@ -14,11 +13,6 @@ import {
   SET_SELECTED_HOME_FILTERS
 } from './constants'
 import { AnyAction } from '../../types/common'
-
-export const defaultAction = (someValue: string): AnyAction => ({
-  type: DEFAULT_ACTION,
-  someValue
-})
 
 export const showTypeFilter = (showFilter: boolean): AnyAction => ({
   type: SHOW_TYPE_FILTER,
