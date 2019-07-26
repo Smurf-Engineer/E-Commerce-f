@@ -25,6 +25,25 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.priceDropSubTitle',
     defaultMessage: 'With JAKROO’s Dynamic Price Drop, everybody wins!'
   },
+  welcome: {
+    id: 'screens.StoreFrontContent.welcome',
+    defaultMessage: 'Welcome to'
+  },
+  store: {
+    id: 'screens.StoreFrontContent.store',
+    defaultMessage: 'store'
+  },
+  description: {
+    id: 'screens.StoreFrontContent.description',
+    defaultMessage:
+      'All orders are produced on-demand and shipped 7 days of order placement'
+  },
+  finalPricing: {
+    id: 'screens.StoreFrontContent.finalPricing',
+    defaultMessage:
+      // tslint:disable-next-line: max-line-length
+      'Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!'
+  },
   priceDropDescription: {
     id: 'screens.StoreFrontContent.priceDropDescription',
     defaultMessage:

@@ -45,7 +45,8 @@ import {
   FlexContainer,
   SliderWrapper,
   sliderStyle,
-  StyledSliderTitle
+  StyledSliderTitle,
+  Description
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -196,6 +197,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const teamStoreOwner = get(getTeamStore, 'owner', false)
     const cutOffDay = get(getTeamStore, 'cutoff_date.day', '0')
     const deliveryDay = get(getTeamStore, 'delivery_date.day', '0')
+    const onDemandMode = get(getTeamStore, 'onDemandMode', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
     const deliveryDayOrdinal = get(
       getTeamStore,
@@ -304,34 +306,56 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 </FlexContainer>
               </FlexContainer>
             </HeadersContainer>
-            <PriceTitle>
-              <FormattedMessage {...messages.priceDropTitle} />
-            </PriceTitle>
-            <PriceDescription>
-              <FormattedMessage {...messages.priceDropSubTitle} />
-            </PriceDescription>
-            <PriceDescription>
-              <FormattedMessage {...messages.priceDropDescription} />
-            </PriceDescription>
+            {onDemandMode ? (
+              <Description>
+                <PriceTitle>
+                  {`${formatMessage(
+                    messages.welcome
+                  )} ${teamStoreName} ${formatMessage(messages.store)}`}
+                </PriceTitle>
+                <PriceDescription>
+                  <FormattedMessage {...messages.description} />
+                </PriceDescription>
+              </Description>
+            ) : (
+              <React.Fragment>
+                <PriceTitle>
+                  <FormattedMessage {...messages.priceDropTitle} />
+                </PriceTitle>
+                <PriceDescription>
+                  <FormattedMessage {...messages.priceDropSubTitle} />
+                </PriceDescription>
+                <PriceDescription>
+                  <FormattedMessage {...messages.priceDropDescription} />
+                </PriceDescription>
+                <PriceDescription>
+                  <FormattedMessage {...messages.finalPricing} />
+                </PriceDescription>
+              </React.Fragment>
+            )}
           </Content>
           <SideBar>
-            <OrderTitle>
-              {`${formatMessage(
-                messages.orderTitle
-              )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
-                messages.orderTitle2
-              )} ${deliveryMonth} ${deliveryDayOrdinal}`}
-            </OrderTitle>
-            <DatesContainer>
-              <CalendarContainer>
-                <DatesTitle>
-                  <FormattedMessage {...messages.cutOff} />
-                </DatesTitle>
-                <CalendarView>
-                  <CalendarTitle>{cutOffMonth}</CalendarTitle>
-                  <CalendarDay>{cutOffDay}</CalendarDay>
-                </CalendarView>
-              </CalendarContainer>
+            {!onDemandMode && (
+              <OrderTitle>
+                {`${formatMessage(
+                  messages.orderTitle
+                )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
+                  messages.orderTitle2
+                )} ${deliveryMonth} ${deliveryDayOrdinal}`}
+              </OrderTitle>
+            )}
+            <DatesContainer {...{ onDemandMode }}>
+              {!onDemandMode && (
+                <CalendarContainer>
+                  <DatesTitle>
+                    <FormattedMessage {...messages.cutOff} />
+                  </DatesTitle>
+                  <CalendarView>
+                    <CalendarTitle>{cutOffMonth}</CalendarTitle>
+                    <CalendarDay>{cutOffDay}</CalendarDay>
+                  </CalendarView>
+                </CalendarContainer>
+              )}
               <CalendarContainer>
                 <DatesTitle>
                   <FormattedMessage {...messages.estimatedArrival} />
@@ -349,28 +373,30 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
           <ErrorTitle>{errorMessage}</ErrorTitle>
         ) : (
           <div>
-            <TierContainer>
-              <TierTitle>
-                {`${formatMessage(messages.tierTitle)} ${
-                  targetRange ? targetRange.name : 'Not selected'
-                }`}
-              </TierTitle>
-              <TierDescription>
-                <FormattedMessage {...messages.tierDescription} />
-              </TierDescription>
-              <SliderWrapper>
-                <StyledSlider
-                  marks={marksArray}
-                  disabled={true}
-                  value={sliderValue}
-                  min={0}
-                  max={249}
-                />
-              </SliderWrapper>
-            </TierContainer>
+            {!onDemandMode && (
+              <TierContainer>
+                <TierTitle>
+                  {`${formatMessage(messages.tierTitle)} ${
+                    targetRange ? targetRange.name : 'Not selected'
+                  }`}
+                </TierTitle>
+                <TierDescription>
+                  <FormattedMessage {...messages.tierDescription} />
+                </TierDescription>
+                <SliderWrapper>
+                  <StyledSlider
+                    marks={marksArray}
+                    disabled={true}
+                    value={sliderValue}
+                    min={0}
+                    max={249}
+                  />
+                </SliderWrapper>
+              </TierContainer>
+            )}
             <ListContainer>
               <ProductList
-                {...{ targetRange, formatMessage }}
+                {...{ targetRange, formatMessage, onDemandMode }}
                 withoutPadding={true}
                 openQuickView={this.handleOnOpenQuickView}
                 designs={items}
