@@ -81,6 +81,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
           onChangePage={this.handleOnChangePage}
           interactiveHeaders={true}
           onSetFeatured={this.handleOnSetFeatured}
+          onClickRow={this.handleGoToTeamStore}
         />
       </Container>
     )
