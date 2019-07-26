@@ -146,3 +146,8 @@ pipelines:
             - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:latest
             # Deploy the image
             - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT --record --namespace=production
+  pull-requests:
+    '**':
+      - step:
+          script:
+            - yarn test
