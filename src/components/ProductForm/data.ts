@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const getExtraData = gql`
-  query extraData {
-    extraData {
+  query extraData($id: Int) {
+    extraData(id: $id) {
       bannerMaterials {
         id
         url
@@ -60,6 +60,7 @@ export const getProductQuery = gql`
       mediaFiles: media_files {
         id
         url
+        urlMobile: url_mobile
       }
       obj
       bumpMap: bump_map

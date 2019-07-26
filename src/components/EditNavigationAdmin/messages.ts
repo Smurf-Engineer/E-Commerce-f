@@ -20,5 +20,9 @@ export default defineMessages({
   homepageLabel: {
     id: 'components.MainNavigationAdmin.homepageLabel',
     defaultMessage: 'Homepage'
+  },
+  catalogueFilterLabel: {
+    id: 'components.MainNavigation.catalogueFilterLabel',
+    defaultMessage: 'Catalogue Filter'
   }
 })

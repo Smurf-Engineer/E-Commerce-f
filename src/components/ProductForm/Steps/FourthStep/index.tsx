@@ -4,7 +4,6 @@
 import * as React from 'react'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
-import Spin from 'antd/lib/spin'
 import { Icon, message, Upload } from 'antd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -14,9 +13,9 @@ import {
   RowInput,
   AddMaterial,
   MediaSection,
-  LoaderBox,
   Label,
-  InputDiv
+  InputDiv,
+  AddButton
 } from './styledComponents'
 import GenderBlock from './GenderBlock'
 import { uploadFile } from '../../api'
@@ -25,12 +24,10 @@ import {
   TypePicture,
   ItemDetailType
 } from '../../../../types/common'
-import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
 import { validTypes } from '../../constants'
 import MediaBlock from './MediaBlock'
 import BannerBlock from './BannerBlock'
 import Draggable from '../../../Draggable'
-const Dragger = Upload.Dragger
 interface Props {
   productMaterials: ProductFile[]
   mediaFiles: ProductFile[]
@@ -38,10 +35,11 @@ interface Props {
   colorsProducts: object
   genders: ItemDetailType[]
   colors: ItemDetailType[]
-  bannersLoading: boolean
   customizable: boolean
-  setBannersLoading: (value: boolean) => void
   removeBanner: (index: number) => void
+  uploadMediaFile: (event: any) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
   moveFile: (array: string, index: number, indexTo: number) => void
   moveBanner: (index: number, indexTo: number) => void
   addBanner: (item: any) => void
@@ -68,9 +66,9 @@ export class FourthStep extends React.Component<Props, {}> {
       selectedGenders,
       customizable,
       genders,
+      uploadMediaFile,
       colors,
       colorsProducts,
-      bannersLoading,
       bannerMaterials
     } = this.props
     let productsImagesForm
@@ -119,6 +117,22 @@ export class FourthStep extends React.Component<Props, {}> {
         []
       )
     }
+    let videoCount = 1
+    let imageCount = 1
+    const counter = mediaFiles.reduce(
+      (count: number[], item: ProductFile, index: number) => {
+        if (item.isVideo) {
+          count[index] = videoCount
+          videoCount++
+        } else {
+          count[index] = imageCount
+          imageCount++
+        }
+        return count
+        // tslint:disable-next-line: align
+      },
+      []
+    )
     return (
       <Container>
         <Separator>
@@ -154,6 +168,7 @@ export class FourthStep extends React.Component<Props, {}> {
                       onDropRow={this.handleMoveBanner}
                     >
                       <BannerBlock
+                        {...{ index }}
                         id={material.id}
                         url={material.url}
                         selected={productMaterials[material.id]}
@@ -187,22 +202,15 @@ export class FourthStep extends React.Component<Props, {}> {
                 <Label>
                   <FormattedMessage {...messages.featuredImages} />
                 </Label>
-                <Dragger
-                  multiple={true}
-                  className="avatar-uploader"
-                  customRequest={this.handleSetMedia}
-                  showUploadList={false}
-                  beforeUpload={this.beforeUploadMedia}
-                >
-                  <Icon type="upload" />
-                  <p className="ant-upload-hint">20 MB max.</p>
-                  <p className="ant-upload-text">
-                    Click or drag images or videos to this area
-                  </p>
-                </Dragger>
+                <AddButton onClick={this.handleAddMediaBox(false)}>
+                  <FormattedMessage {...messages.addImages} />
+                </AddButton>
+                <AddButton onClick={this.handleAddMediaBox(true)}>
+                  <FormattedMessage {...messages.addVideos} />
+                </AddButton>
               </InputDiv>
             </RowInput>
-            {mediaFiles.length ? (
+            {!!mediaFiles.length && (
               <MediaSection>
                 {mediaFiles.map((mediaFile: ProductFile, index: number) => (
                   <Draggable
@@ -213,19 +221,13 @@ export class FourthStep extends React.Component<Props, {}> {
                     onDropRow={this.handleOnDropRow}
                   >
                     <MediaBlock
-                      {...{ index, mediaFile }}
+                      {...{ index, mediaFile, counter, uploadMediaFile }}
+                      beforeUpload={this.beforeUploadMedia}
                       removeMediaFile={this.removeMediaFile}
                     />
                   </Draggable>
                 ))}
               </MediaSection>
-            ) : (
-              <div />
-            )}
-            {bannersLoading && (
-              <LoaderBox>
-                <Spin size="large" />
-              </LoaderBox>
             )}
           </div>
         )}
@@ -269,11 +271,6 @@ export class FourthStep extends React.Component<Props, {}> {
     })
   }
 
-  removeMediaFile = (index: number) => {
-    const { removeFile } = this.props
-    removeFile('mediaFiles', index)
-  }
-
   beforeUpload = (file: any) => {
     const isValidType = validTypes.includes(file.type)
     if (!isValidType) {
@@ -300,19 +297,15 @@ export class FourthStep extends React.Component<Props, {}> {
     return (isJPG || isPNG || isMP4) && isLt2M
   }
 
-  handleSetMedia = (event: any) => {
-    const { addFile, mediaFiles, setBannersLoading } = this.props
-    const { file } = event
+  removeMediaFile = (index: number) => {
+    const { removeMedia } = this.props
+    removeMedia(index)
+  }
+
+  handleAddMediaBox = (isVideo: boolean) => () => {
+    const { addMedia, mediaFiles } = this.props
     const id = mediaFiles.length + 1
-    setBannersLoading(true)
-    uploadFile(file, id.toString(), 'media').then(({ imageUri }) => {
-      addFile('mediaFiles', {
-        url: imageUri,
-        id,
-        name: getFileName(file.name),
-        extension: getFileExtension(file.name)
-      })
-    })
+    addMedia({ id, isVideo })
   }
 
   handleSetFile = (event: any) => {
