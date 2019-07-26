@@ -94,7 +94,7 @@ export const ThumbnailButton = styled(AntdButton)`
 `
 
 export const DragText = styled.div`
-  color: #5f6062;
+  color: ${({ textColor }) => (textColor ? textColor : '#5f6062')};
   user-select: none;
   font-size: 14px;
   line-height: 23px;

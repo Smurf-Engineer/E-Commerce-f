@@ -280,6 +280,7 @@ class Render3D extends PureComponent {
       customProduct,
       designSearch,
       isProduct,
+      textColor,
       data: { loading, error }
     } = this.props
 
@@ -314,7 +315,7 @@ class Render3D extends PureComponent {
           )}
         </Render>
         {showDragmessage && !loading && (
-          <DragText>
+          <DragText {...{ textColor }}>
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}
