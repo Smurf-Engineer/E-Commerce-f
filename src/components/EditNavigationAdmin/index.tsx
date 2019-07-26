@@ -20,6 +20,7 @@ import {
   StyledSwitch
 } from './styledComponents'
 import { SportType } from '../../types/common'
+import { CATALOGUE_CONSTANT, NAVBAR_CONSTANT } from '../../constants'
 
 interface Data extends QueryProps {
   sports: [SportType]
@@ -30,34 +31,48 @@ interface Props {
   activateInMenu: (variables: {}) => void
 }
 
+const CYCLING = 'Cycling'
 class EditNavigationAdmin extends React.Component<Props, {}> {
   render() {
     const {
       data: { sports }
     } = this.props
 
-    const sportsList = sports.map(({ id, name, navbar, route }, index) => {
-      return (
-        <Row key={index}>
-          <SportTyle
-            fontSize={'16px'}
-            id={name}
-            onClick={this.handleRedirect(id, route)}
-          >
-            {name}
-          </SportTyle>
-          <ColumnTitle align="center">
-            <SwitchWrapper>
-              <StyledSwitch
-                key={id}
-                checked={navbar}
-                onChange={this.handleActivateSport(id)}
-              />
-            </SwitchWrapper>
-          </ColumnTitle>
-        </Row>
-      )
-    })
+    const sportsList = sports.map(
+      ({ id, name, navbar, route, catalogue }, index) => {
+        return (
+          <Row key={index}>
+            <SportTyle
+              fontSize={'16px'}
+              id={name}
+              onClick={this.handleRedirect(id, route)}
+            >
+              {name}
+            </SportTyle>
+            <ColumnTitle align="center">
+              {name !== CYCLING && (
+                <SwitchWrapper>
+                  <StyledSwitch
+                    key={id}
+                    checked={catalogue}
+                    onChange={this.handleActivateSport(id, CATALOGUE_CONSTANT)}
+                  />
+                </SwitchWrapper>
+              )}
+            </ColumnTitle>
+            <ColumnTitle align="center">
+              <SwitchWrapper>
+                <StyledSwitch
+                  key={id}
+                  checked={navbar}
+                  onChange={this.handleActivateSport(id, NAVBAR_CONSTANT)}
+                />
+              </SwitchWrapper>
+            </ColumnTitle>
+          </Row>
+        )
+      }
+    )
 
     return (
       <Container>
@@ -68,6 +83,9 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
           <Row color={DARKER_GRAY}>
             <ColumnTitle>
               <FormattedMessage {...messages.nameLabel} />
+            </ColumnTitle>
+            <ColumnTitle align="center">
+              <FormattedMessage {...messages.catalogueFilterLabel} />
             </ColumnTitle>
             <ColumnTitle align="center">
               <FormattedMessage {...messages.mainNavigationLabel} />
@@ -92,11 +110,11 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
     history.push(`/admin/homepage/${sportRoute || ''}`, { sportId, sportName })
   }
 
-  handleActivateSport = (id: number) => async () => {
+  handleActivateSport = (id: number, field: string) => async () => {
     try {
       const { activateInMenu } = this.props
       await activateInMenu({
-        variables: { id }
+        variables: { id, field }
       })
     } catch (error) {
       message.error(error.message)

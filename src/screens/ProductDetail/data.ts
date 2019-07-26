@@ -43,6 +43,7 @@ export const GetProductsByIdQuery = gql`
       mediaFiles: media_files {
         id
         url
+        urlMobile: url_mobile
       }
       bannerMaterials: banner_materials {
         id

@@ -27,6 +27,7 @@ export const GetDesignByIdQuery = gql`
         mediaFiles: media_files {
           id
           url
+          urlMobile: url_mobile
         }
         relatedProducts: related {
           id

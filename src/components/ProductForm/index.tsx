@@ -38,6 +38,7 @@ import {
   StyledButton,
   ModalMessage
 } from './styledComponents'
+import { uploadMediaAction } from './api'
 
 interface DataExtra extends QueryProps {
   categories: object[]
@@ -59,6 +60,9 @@ interface Props {
   specDetail: string
   materialDetail: string
   dataExtra: DataExtra
+  uploadMediaFile: (event: any) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
   resetData: () => void
   setSpec: (value: string) => void
   setMaterial: (value: string) => void
@@ -91,7 +95,6 @@ interface Props {
     name: string,
     value: string
   ) => void
-  setBannersLoading: (value: boolean) => void
   setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setCurrencies: (currencies: any) => void
@@ -122,6 +125,7 @@ export class ProductForm extends React.Component<Props, {}> {
     }
     const dataExtra = await query({
       query: getExtraData,
+      variables: { id },
       fetchPolicy: 'network-only'
     })
     const extraData = get(dataExtra, 'data.extraData', [])
@@ -146,7 +150,6 @@ export class ProductForm extends React.Component<Props, {}> {
       bannersLoading,
       newSport,
       newSportEnabled,
-      setBannersLoading,
       setSpec,
       specDetail,
       setMaterial,
@@ -158,6 +161,9 @@ export class ProductForm extends React.Component<Props, {}> {
       removeBanner,
       setColors,
       openPrompt,
+      uploadMediaFile,
+      addMedia,
+      removeMedia,
       moveFile,
       addBanner,
       setBanner,
@@ -263,13 +269,15 @@ export class ProductForm extends React.Component<Props, {}> {
           moveBanner,
           bannersLoading,
           setBanner,
+          uploadMediaFile,
+          addMedia,
+          removeMedia,
           customizable,
           moveFile,
           setCheck,
           genders,
           colors,
           pictures,
-          setBannersLoading,
           bannerMaterials,
           setValue,
           selectedGenders,
@@ -595,7 +603,7 @@ const ProductFormEnhance = compose(
   graphql(upsertProduct, { name: 'upsertProductAction' }),
   connect(
     mapStateToProps,
-    { ...ProductFormActions }
+    { ...ProductFormActions, uploadMediaFile: uploadMediaAction }
   )
 )(ProductForm)
 

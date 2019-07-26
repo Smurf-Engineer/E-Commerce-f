@@ -499,6 +499,8 @@ export type ProductImage = {
 export type ProductFile = {
   id: number
   url?: string
+  urlMobile?: string
+  isVideo?: boolean
   active?: boolean
   toUpload?: Blob | boolean
   extension?: string

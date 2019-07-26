@@ -7,6 +7,7 @@ import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
+import Pagination from 'antd/lib/pagination'
 import messages from './messages'
 import * as MyTeamStoresActions from './actions'
 import { GetTeamMyStoresQuery, DeleteTeamStoreMutation } from './data'
@@ -14,7 +15,8 @@ import {
   Container,
   AddTeamStoreButton,
   CreateTeamStoreLegend,
-  DeleteConfirmMessage
+  DeleteConfirmMessage,
+  PaginationRow
 } from './styledComponents'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
@@ -36,6 +38,9 @@ interface Props {
   openShare: boolean
   deleteLoading: boolean
   storeId: string
+  currentPage: number
+  limit: number
+  setSkipValueAction: (skip: number, limit: number) => void
   formatMessage: (messageDescriptor: any) => string
   deleteTeamStore: (variables: {}) => void
   openDeleteModalAction: (open: boolean, storeId?: string) => void
@@ -52,12 +57,14 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       deleteLoading,
       openShare,
       openDeleteModal,
+      currentPage,
       formatMessage,
       data: { myTeamstores }
     } = this.props
 
     const shareStoreUrl = `${config.baseUrl}store-front?storeId=${storeId}`
     const teamStores = get(myTeamstores, 'teamStores', false)
+    const fullCount = get(myTeamstores, 'fullCount', 0)
     let myTeamstoresList
     if (teamStores) {
       myTeamstoresList = teamStores.map((teamstore, key) => {
@@ -119,6 +126,13 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
           messageForShare={formatMessage(messages.shareTeamStoreMessage)}
           {...{ formatMessage }}
         />
+        <PaginationRow>
+          <Pagination
+            current={currentPage}
+            total={fullCount}
+            onChange={this.handleChangePage}
+          />
+        </PaginationRow>
       </Container>
     )
   }
@@ -171,14 +185,30 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     const { openShare, openShareModalAction } = this.props
     openShareModalAction(!openShare, id)
   }
+  handleChangePage = (pageNumber: number) => {
+    const { setSkipValueAction, limit } = this.props
+    const skip = (pageNumber - 1) * limit
+    setSkipValueAction(skip, pageNumber)
+  }
 }
 
 const mapstateToProps = (state: any) => state.get('myTeamStores').toJS()
 
+type OwnProps = {
+  limit?: number
+  skip?: number
+}
+
 const MyTeamStoresEnhanced = compose(
   graphql(GetTeamMyStoresQuery, {
-    options: {
-      fetchPolicy: 'network-only'
+    options: ({ limit, skip }: OwnProps) => {
+      return {
+        fetchPolicy: 'network-only',
+        variables: {
+          limit,
+          offset: skip
+        }
+      }
     }
   }),
   withLoading,

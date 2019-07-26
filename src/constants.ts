@@ -58,3 +58,7 @@ export const MP4_EXTENSION = '.mp4'
 
 /* Keys Constants */
 export const KEY_ENTER = 'Enter'
+
+/* Edit Main Navigation constants */
+export const CATALOGUE_CONSTANT = 'catalogue'
+export const NAVBAR_CONSTANT = 'navbar'
