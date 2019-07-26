@@ -37,6 +37,21 @@ export const Title = styled.div`
   line-height: 23px;
 `
 
+export const AddButton = styled.div`
+  height: 50px;
+  width: 223px;
+  border: 2px solid #e61737;
+  border-radius: 2px;
+  background-color: #ffffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  margin-right: 24px;
+  margin-top: 22px;
+  cursor: pointer;
+`
+
 export const Text = styled.div`
   color: #5f6062;
   font-family: 'Avenir Next';
@@ -152,10 +167,11 @@ export const EmptyBox = styled.div`
   color: #bebebe;
 `
 export const MediaSection = styled.div`
-  margin-top: 42px;
   display: inline-flex;
-  flex-flow: row;
+  flex-flow: column;
   justify-content: flex-start;
+  max-width: 850px;
+  width: 100%;
   flex-wrap: wrap;
 `
 export const MediaDiv = styled.div`

@@ -12,7 +12,10 @@ export const Container = styled.div`
 export const BottomButtons = styled.div`
   bottom: 7%;
   display: flex;
-  left: 50%;
+  left: 48%;
+  width: 260px;
+  align-items: center;
+  justify-content: space-between;
   position: absolute;
   transform: translate(-50%, -50%);
 `

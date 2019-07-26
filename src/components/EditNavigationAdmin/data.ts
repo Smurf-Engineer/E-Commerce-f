@@ -16,11 +16,12 @@ export const GetSportsQuery = gql`
 
 export const ActivateInNavbarMutation = graphql(
   gql`
-    mutation ActivateInNavbar($id: Int!) {
-      sportInNavbar(id: $id) {
+    mutation ActivateInNavbar($id: Int!, $field: String!) {
+      sportInNavbarOrCatalogue(id: $id, field: $field) {
         id
         name
         navbar
+        catalogue
       }
     }
   `,
