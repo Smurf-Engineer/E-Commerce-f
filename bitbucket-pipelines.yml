@@ -178,4 +178,6 @@ pipelines:
     '**':
       - step:
           script:
-            - yarn test
+            - npm install --production
+            - npm run lint
+            - npm run test
