@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import moment from 'moment'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
 import {
@@ -46,7 +47,8 @@ import {
   SliderWrapper,
   sliderStyle,
   StyledSliderTitle,
-  Description
+  Description,
+  StoreBox
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -176,7 +178,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       sendMessageLoadingAction,
       setPassCodeAction
     } = this.props
-
     const { showMuch, showCani, showLong, showWhen } = this.state
 
     const errorMessage = error
@@ -198,6 +199,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const cutOffDay = get(getTeamStore, 'cutoff_date.day', '0')
     const deliveryDay = get(getTeamStore, 'delivery_date.day', '0')
     const onDemandMode = get(getTeamStore, 'onDemandMode', false)
+    const featured = get(getTeamStore, 'featured', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
     const deliveryDayOrdinal = get(
       getTeamStore,
@@ -345,7 +347,13 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
               </OrderTitle>
             )}
             <DatesContainer {...{ onDemandMode }}>
-              {!onDemandMode && (
+              {onDemandMode ? (
+                <StoreBox open={featured}>
+                  {formatMessage(
+                    featured ? messages.storeOpen : messages.storeClosed
+                  )}
+                </StoreBox>
+              ) : (
                 <CalendarContainer>
                   <DatesTitle>
                     <FormattedMessage {...messages.cutOff} />
@@ -494,7 +502,12 @@ const StoreFrontContentEnhance = compose(
         fetchPolicy: 'network-only',
         variables: {
           teamStoreId,
-          passCode
+          passCode,
+          date: {
+            day: moment().date(),
+            month: moment().month(),
+            year: moment().year()
+          }
         }
       }
     }

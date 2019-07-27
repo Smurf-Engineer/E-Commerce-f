@@ -4,11 +4,16 @@
 import gql from 'graphql-tag'
 
 export const getSingleTeamStore = gql`
-  query getTeamStore($teamStoreId: String!, $passCode: String) {
+  query getTeamStore(
+    $teamStoreId: String!
+    $passCode: String
+    $date: HolyDate
+  ) {
     getTeamStore(
       teamStoreId: $teamStoreId
       passCode: $passCode
       storeFront: true
+      date: $date
     ) {
       id
       short_id
@@ -16,6 +21,7 @@ export const getSingleTeamStore = gql`
       banner
       private
       owner
+      featured
       owner_name
       onDemandMode: on_demand_mode
       team_size_id
