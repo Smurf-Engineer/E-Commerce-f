@@ -404,7 +404,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
             )}
             <ListContainer>
               <ProductList
-                {...{ targetRange, formatMessage, onDemandMode }}
+                {...{ targetRange, formatMessage, onDemandMode, featured }}
                 withoutPadding={true}
                 openQuickView={this.handleOnOpenQuickView}
                 designs={items}
@@ -506,7 +506,7 @@ const StoreFrontContentEnhance = compose(
           date: {
             day: moment().date(),
             month: moment().month(),
-            year: moment().year()
+            year: 2018
           }
         }
       }
