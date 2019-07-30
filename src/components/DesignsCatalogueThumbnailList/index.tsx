@@ -49,6 +49,7 @@ interface Props {
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
+  featured: boolean
   sortByLabel: string
   data: Data
   history: any
@@ -76,6 +77,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       data,
       teamStoreShortId,
       designs,
+      featured,
       onDemandMode,
       withoutPadding,
       targetRange,
@@ -126,18 +128,20 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                   />
                 }
                 labelButton={
-                  <AddToCartButton
-                    label={formatMessage(messages.addToCart)}
-                    renderForThumbnail={true}
-                    item={{ product }}
-                    {...{ formatMessage }}
-                    withoutTop={true}
-                    designId={shortId}
-                    designName={name}
-                    designImage={image}
-                    designCode={code}
-                    teamStoreId={teamStoreShortId}
-                  />
+                  featured && (
+                    <AddToCartButton
+                      label={formatMessage(messages.addToCart)}
+                      renderForThumbnail={true}
+                      item={{ product }}
+                      {...{ formatMessage }}
+                      withoutTop={true}
+                      designId={shortId}
+                      designName={name}
+                      designImage={image}
+                      designCode={code}
+                      teamStoreId={teamStoreShortId}
+                    />
+                  )
                 }
                 teamStoreShortId={teamStoreShortId || ''}
                 isTopProduct={product.isTopProduct}

@@ -154,6 +154,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const productId = get(design, 'product.id', '')
     const svgUrl = get(design, 'svg', '')
     const storeName = get(relatedItems, 'name', 'untitled')
+    const featured = get(relatedItems, 'featured', false)
     const name = get(design, 'product.name', '')
     const type = get(design, 'product.type', '')
     const description = get(design, 'product.description', '')
@@ -484,7 +485,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                 </EstimatePrice>
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
-                {collectionSelection}
+                {featured && collectionSelection}
                 {productInfo}
               </ProductData>
               <FitInfo
