@@ -13,6 +13,8 @@ describe('<ColorChartForm />', () => {
         open={true}
         handleClose={() => {}}
         formatMessage={() => ''}
+        loading={false}
+        onRequestColorChart={() => {}}
       />,
       div
     )

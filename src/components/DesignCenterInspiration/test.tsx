@@ -28,9 +28,9 @@ describe('<DesignCenterInspiration />', () => {
     ReactDOM.render(
       <DesignCenterInspiration
         {...{ designs, category, data, sportFilter }}
-        onPressSeeAll={() => {}}
-        onPressCustomize={() => {}}
-        onPressQuickView={() => {}}
+        setPaletteAction={() => {}}
+        hideBottomSheet={() => {}}
+        formatMessage={() => ''}
       />,
       div
     )
