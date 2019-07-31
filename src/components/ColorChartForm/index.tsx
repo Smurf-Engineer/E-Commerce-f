@@ -62,7 +62,7 @@ export class ColorChartForm extends React.Component<Props, State> {
   render() {
     const { open, handleClose, formatMessage, loading } = this.props
 
-    const fields = formConfig.reduce<ReactNodeArray[]>(
+    const fields = formConfig.reduce<JSX.Element[]>(
       (
         fieldsArray,
         { id, placeholder, type, singleColumn, required },
@@ -92,7 +92,11 @@ export class ColorChartForm extends React.Component<Props, State> {
           </div>
         )
         fieldsArray.push(
-          singleColumn ? <Field>{elements}</Field> : <Column>{elements}</Column>
+          singleColumn ? (
+            <Field key={index}>{elements}</Field>
+          ) : (
+            <Column key={index}>{elements}</Column>
+          )
         )
         return fieldsArray
       },

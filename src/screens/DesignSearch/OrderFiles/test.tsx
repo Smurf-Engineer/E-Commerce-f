@@ -3,18 +3,35 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import OrderFiles from './index'
+import { OrderFiles } from './index'
+import { OrderSearchResult } from '../../../types/common'
 
 describe('<OrderFiles />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const product: OrderSearchResult = jest.genMockFromModule(
+      './__mocks__/productMock'
+    )
     const order = {
-      code: '',
-      image: '',
-      status: '',
-      svgUrl: '',
-      assets: { files: [], svgs: [] }
+      ...product
     }
-    ReactDOM.render(<OrderFiles {...{ order }} />, div)
+    ReactDOM.render(
+      <OrderFiles
+        {...{ order }}
+        uploadingFile={false}
+        actualSvg={''}
+        uploadingThumbnail={false}
+        changes={false}
+        colorAccessories={{}}
+        downloadFile={() => {}}
+        onUploadFile={() => {}}
+        formatMessage={() => ''}
+        onSaveThumbnail={() => {}}
+        setUploadingThumbnailAction={() => {}}
+        onSelectStitchingColor={() => {}}
+        onSelectColor={() => {}}
+      />,
+      div
+    )
   })
 })

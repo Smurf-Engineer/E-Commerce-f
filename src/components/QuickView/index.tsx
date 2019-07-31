@@ -109,9 +109,9 @@ export class QuickView extends React.Component<Props, State> {
     // get prices from currency
     const currencyPrices = filter(priceRange, {
       abbreviation: currentCurrency || config.defaultCurrency
-    })
+    }) as PriceRange[]
 
-    const symbol = currencyPrices[0].shortName
+    const symbol = get(currencyPrices, '[0].shortName')
 
     const renderPrices =
       !loading &&
@@ -132,9 +132,9 @@ export class QuickView extends React.Component<Props, State> {
       <AvailablePrices>
         <PriceQuantity
           index={1}
-          price={getRetailPrice.price}
-          quantity={getRetailPrice.quantity}
-          symbol={getRetailPrice.shortName}
+          price={get(getRetailPrice, 'price')}
+          quantity={get(getRetailPrice, 'quantity')}
+          {...{ symbol }}
         />
       </AvailablePrices>
     )
@@ -162,7 +162,7 @@ export class QuickView extends React.Component<Props, State> {
 
     const productDetails = details ? details.split(',') : ['']
 
-    const detailsList = productDetails.map((detail, key) => (
+    const detailsList = productDetails.map((detail: string, key: string) => (
       <DetailsListItem {...{ key }}>{detail}</DetailsListItem>
     ))
 

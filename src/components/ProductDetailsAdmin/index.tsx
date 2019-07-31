@@ -47,9 +47,9 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  match?: any
+  match: any
   data: Data
-  history?: any
+  history: any
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
 }

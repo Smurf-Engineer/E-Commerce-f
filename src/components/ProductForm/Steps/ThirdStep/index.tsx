@@ -58,8 +58,8 @@ export class ThirdStep extends React.Component<Props, {}> {
               <FormattedMessage {...messages.currency} />
             </Label>
           </InputDiv>
-          {quantities.map(quantity => (
-            <InputDiv isFlex={true} flex={1}>
+          {quantities.map((quantity, index) => (
+            <InputDiv isFlex={true} flex={1} key={index}>
               <Label>{quantity}</Label>
             </InputDiv>
           ))}

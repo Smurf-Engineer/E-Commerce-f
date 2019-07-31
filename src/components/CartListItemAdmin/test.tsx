@@ -3,11 +3,11 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import CartListItem from './index'
+import CartListItemAdmin from './index'
 import { ItemDetailType } from '../../types/common'
 import { IntlProvider } from 'react-intl'
 
-describe('<CartListItem />', () => {
+describe('<CartListItemAdmin />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const format = (message: string) => 'string'
@@ -57,7 +57,8 @@ describe('<CartListItem />', () => {
     const itemIndex = 0
     const price = {
       price: 0,
-      quantity: '1'
+      quantity: '1',
+      shortName: ''
     }
     const item = {
       product: {
@@ -78,7 +79,8 @@ describe('<CartListItem />', () => {
         priceRange: [
           {
             quantity: '1',
-            price: 0
+            price: 0,
+            shortName: ''
           }
         ],
         collections: 0,
@@ -116,7 +118,14 @@ describe('<CartListItem />', () => {
         ],
         bodyChartId: 0,
         retailMen: false,
-        retailWomen: false
+        retailWomen: false,
+        active: false,
+        genderId: 0,
+        label: '',
+        flatlock: '',
+        bumpMap: '',
+        weight: 0,
+        relatedProducts: []
       },
       itemDetails: [
         {
@@ -127,22 +136,14 @@ describe('<CartListItem />', () => {
     const image = ''
     ReactDOM.render(
       <IntlProvider {...props}>
-        <CartListItem
+        <CartListItemAdmin
+          {...{ description, title, image, price, itemIndex }}
           formatMessage={format}
-          title={title}
-          description={description}
-          price={price}
-          image={image}
           cartItem={item}
           handleAddItemDetail={handleAdd}
-          handledeleteItemDetail={handleDelete}
-          itemIndex={itemIndex}
-          setLabelItemDetail={handleLabel}
-          setDetailQuantity={handleQuantity}
-          setDetailFit={handleFit}
-          setDetailGender={handleGender}
-          setDetailSize={handleSize}
-          removeItem={handleRemove}
+          openFitInfoAction={() => {}}
+          openFitInfo={false}
+          currentCurrency={''}
         />
       </IntlProvider>,
       div

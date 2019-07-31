@@ -39,14 +39,14 @@ class YotpoReviews extends React.Component<Props, any> {
 
   updateYotpoWidget = (id: string) => {
     try {
-      const yotpoReviews = ReactDOM.findDOMNode(this.yotpo)
+      const yotpoReviews = ReactDOM.findDOMNode(this.yotpo) as Element
       yotpoReviews.setAttribute('class', 'yotpo yotpo-main-widget')
       yotpoReviews.setAttribute('data-product-id', id)
       yotpoReviews.setAttribute('data-price', 'Product Price')
       yotpoReviews.setAttribute('data-currency', 'Price Currency')
       yotpoReviews.setAttribute('data-name', 'Product Title')
 
-      const yotpoCarousel = ReactDOM.findDOMNode(this.yotpoGallery)
+      const yotpoCarousel = ReactDOM.findDOMNode(this.yotpoGallery) as Element
       yotpoCarousel.setAttribute('class', 'yotpo yotpo-slider yotpo-size-7')
       yotpoCarousel.setAttribute('data-product-id', id)
       yotpoCarousel.setAttribute('data-yotpo-element-id', '3')

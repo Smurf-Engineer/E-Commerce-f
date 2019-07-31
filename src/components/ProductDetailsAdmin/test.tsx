@@ -3,18 +3,31 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { createMemoryHistory } from 'history'
 import { IntlProvider } from 'react-intl'
-import { OrderDetails } from './index'
+import { ProductDetailsAdmin } from './index'
+import { QueryProps, Product } from '../../types/common'
 
-describe('<OrderDetails />', () => {
+interface Data extends QueryProps {
+  product: Product
+}
+
+describe('<ProductDetailsAdmin />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const product: Product = jest.genMockFromModule('productMock')
+    const data: Data = {
+      product,
+      fetchMore: () => {}
+    }
+    const match = jest.fn()
+    const history = createMemoryHistory()
     ReactDOM.render(
       <IntlProvider locale="en">
-        <OrderDetails
-          onReturn={() => {}}
+        <ProductDetailsAdmin
+          {...{ data, match, history }}
+          setProductAction={() => {}}
           formatMessage={() => ''}
-          orderId="rkB_7fgV7"
         />
       </IntlProvider>,
       div
