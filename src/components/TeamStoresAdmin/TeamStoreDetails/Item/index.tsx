@@ -46,13 +46,15 @@ const RowItem = ({
   index,
   pricesByQuantity
 }: Props) => {
+  const onSetPrice = (currencyIndex: number) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value, id: inputId } = event.target
+    handleOnSetPrice(value, inputId, index, currencyIndex)
+  }
   const inputFields = currencies.map(
     ({ shortName, id: currencyId }, currencyIndex: number) => {
       console.log('prices ', priceRange)
-      const onSetPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, id: inputId } = event.target
-        handleOnSetPrice(value, inputId, index, currencyIndex)
-      }
       const price = get(
         find(
           pricesByQuantity[quantities[0]],
@@ -66,7 +68,7 @@ const RowItem = ({
           <StyledInput
             id={shortName}
             placeholder={shortName}
-            onChange={onSetPrice}
+            onChange={onSetPrice(currencyIndex)}
             value={price}
           />
         </Cell>

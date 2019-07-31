@@ -5,12 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import { RED, GRAY_DARK, BLUE_LIGHTEST } from '../../../../theme/colors'
 
-export const Container = styled.tr`
-  cursor: pointer;
-  &:hover {
-    background-color: #e6e6e5;
-  }
-`
+export const Container = styled.tr``
 
 interface CellProps {
   color?: string
