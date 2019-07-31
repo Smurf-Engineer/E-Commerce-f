@@ -39,6 +39,7 @@ class ColorTab extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return null
     }
+
     return (
       <Container>
         <ColorButtons
