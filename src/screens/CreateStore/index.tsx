@@ -450,7 +450,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     return (
       <Layout {...{ history, intl }}>
-        {!loading ? (
+        {loading ? (
+          <Loading>
+            <Spin />
+          </Loading>
+        ) : (
           <Container>
             <Title>
               <FormattedMessage {...messages.title} />
@@ -604,10 +608,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onAddItems={setItemsAddAction}
             />
           </Container>
-        ) : (
-          <Loading>
-            <Spin />
-          </Loading>
         )}
       </Layout>
     )

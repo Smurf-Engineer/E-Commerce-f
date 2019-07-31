@@ -285,7 +285,11 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     return (
       <Container>
-        {!loading ? (
+        {loading ? (
+          <Loading>
+            <Spin />
+          </Loading>
+        ) : (
           <React.Fragment>
             {!teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
             <HeadersContainer>
@@ -494,10 +498,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
               teamStoreId={teamStoreId}
             />
           </React.Fragment>
-        ) : (
-          <Loading>
-            <Spin />
-          </Loading>
         )}
       </Container>
     )
@@ -520,7 +520,7 @@ const StoreFrontContentEnhance = compose(
           date: {
             day: moment().date(),
             month: moment().month(),
-            year: 2018
+            year: moment().year()
           }
         }
       }
