@@ -64,7 +64,7 @@ export const InformationContainer = styled.div`
   margin-bottom: 15px;
 `
 
-export const Header = styled.p`
+export const ScreenHeader = styled.p`
   font-weight: 600;
   font-size: 17px;
 `
@@ -75,4 +75,33 @@ export const Text = styled.p`
 
 export const StyledSwitch = styled(Switch)`
   max-width: 44px;
+`
+
+export const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom 24px;
+`
+
+interface HeaderProps {
+  textAlign?: string
+}
+
+export const Header = styled.th`
+  border-bottom: 1px solid #818181;
+  text-align: left;
+  padding: 8px 0;
+  color: #5f6062;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  line-height: 23px;
+  text-align: ${({ textAlign }: HeaderProps) =>
+    textAlign ? textAlign : 'start'};
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    letter-spacing: 0.09px;
+    font-size: 12px;
+    line-height: 15px;
+  }
 `

@@ -11,3 +11,5 @@ export const SET_CURRENT_PAGE = `${namespace}/SET_CURRENT_PAGE`
 export const RESET_DATA = `${namespace}/RESET_DATA`
 export const SET_SEARCH_TEXT = `${namespace}/SET_SEARCH_TEXT`
 export const SET_LOADING = `${namespace}/SET_LOADING`
+export const SET_PRICE_ITEM = `${namespace}/SET_PRICE_ITEM`
+export const SET_TEAM_STORE_DATA = `${namespace}/SET_TEAM_STORE_DATA`

@@ -7,10 +7,23 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_SEARCH_TEXT,
-  SET_LOADING
+  SET_LOADING,
+  SET_PRICE_ITEM,
+  SET_TEAM_STORE_DATA
 } from './constants'
 
-import { AnyAction, sorts } from '../../types/common'
+import {
+  AnyAction,
+  sorts,
+  TeamStoreAdminType,
+  Currency
+} from '../../types/common'
+import { QueryProps } from 'react-apollo'
+
+interface TeamStoresData extends QueryProps {
+  teamStore: TeamStoreAdminType
+  currencies: Currency[]
+}
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
   type: SET_ORDER_BY,
@@ -35,4 +48,26 @@ export const setSearchTextAction = (searchText: string) => ({
 export const setLoadingAction = (loading: boolean) => ({
   type: SET_LOADING,
   loading
+})
+
+export const setPriceAction = (
+  value: string,
+  currency: string,
+  itemIndex: number,
+  currencyIndex: number
+) => ({
+  type: SET_PRICE_ITEM,
+  value,
+  currency,
+  itemIndex,
+  currencyIndex
+})
+
+export const setTeamStoreDataAction = ({
+  teamStore,
+  currencies
+}: TeamStoresData) => ({
+  type: SET_TEAM_STORE_DATA,
+  teamStore,
+  currencies
 })

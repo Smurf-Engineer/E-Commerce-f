@@ -40,5 +40,9 @@ export default defineMessages({
   featured: {
     id: 'components.TeamStoreDetails.featured',
     defaultMessage: 'Featured'
+  },
+  name: {
+    id: 'components.TeamStoreDetails.name',
+    defaultMessage: 'Name'
   }
 })

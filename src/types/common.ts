@@ -213,6 +213,8 @@ export type TeamStoreItemtype = {
   totalOrders: number
   itemOrder?: number
   team_store_name?: string
+  priceRange: PriceRange[]
+  pricesByQuantity?: any
 }
 
 export type LockerTableType = {

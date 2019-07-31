@@ -8,7 +8,9 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_SEARCH_TEXT,
-  SET_LOADING
+  SET_LOADING,
+  SET_PRICE_ITEM,
+  SET_TEAM_STORE_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -17,7 +19,10 @@ export const initialState = fromJS({
   orderBy: 'id',
   sort: 'desc',
   searchText: '',
-  teamStoreId: -1
+  teamStoreId: -1,
+  teamStore: {},
+  currencies: [],
+  loading: true
 })
 
 const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -32,6 +37,36 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ searchText: action.searchText, currentPage: 1 })
     case SET_LOADING:
       return state.set('loading', action.loading)
+    case SET_TEAM_STORE_DATA:
+      console.log(action)
+      return state.withMutations((tempState: any) => {
+        const teamStore = action.teamStore
+        const currencies = action.currencies
+        tempState.merge({ teamStore, currencies })
+        return tempState
+      })
+    case SET_PRICE_ITEM:
+      return state.updateIn(
+        ['teamStore', 'items', action.itemIndex],
+        (item: any) => {
+          return item.setIn(
+            ['priceRange', action.currencyIndex, 'price'],
+            action.value
+          )
+        }
+      )
+    /* return state.withMutations((tempState: any) => {
+        const initialLoadingValues = { desktopImage: false, mobileImage: false }
+        tempState.updateIn(
+          ['items'],
+          (items: []) =>
+            images.push(fromJS(action.imagePlaceholder))
+        )
+        tempState.updateIn(['secondaryHeaderLoading'], (loadings: [any]) =>
+          loadings.push(fromJS(initialLoadingValues))
+        )
+        return tempState
+      }) */
     default:
       return state
   }
