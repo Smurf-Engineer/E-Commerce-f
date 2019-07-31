@@ -20,7 +20,7 @@ import {
 import Modal from 'antd/lib/modal'
 
 import closeIcon from '../../assets/cancel-button.svg'
-import ColorChartImg from '../../assets/color-chart.png'
+import ColorChartImg from '../../assets/color-chart-98.jpg'
 import { FormattedMessage } from 'react-intl'
 
 interface Props {
@@ -79,7 +79,7 @@ export class ColorChart extends React.Component<Props> {
   handleDownloadLibrary = () => {
     const { handleClose } = this.props
     window.open(
-      'https://jakroo.storage.googleapis.com/screens/JAKROO%20COLOR%20SWATCH%20LIBRARY.zip'
+      'https://storage.googleapis.com/jakroo/screens/JAKROO_COLOR_SWATCH_LIBRARY.zip'
     )
     handleClose()
   }
