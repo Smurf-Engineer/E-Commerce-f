@@ -357,6 +357,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
   async componentDidMount() {
     const {
       setDataToEditAction,
+      setLoadingAction,
       location: { search },
       client: { query },
       teamStoreStatus,
@@ -381,6 +382,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
         .catch((err: any) => {
           console.error(err)
         })
+    } else {
+      setLoadingAction(false)
     }
   }
 
