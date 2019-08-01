@@ -15,7 +15,7 @@ interface Props {
 // TODO: EVERYTHING HARDCODED FOR THE MOMENT CHANGE  LATER
 class FeaturedCategory extends React.PureComponent<Props, {}> {
   render() {
-    const { browserName, productTiles } = this.props
+    const { browserName, productTiles = [] } = this.props
     const tiles = productTiles.map(
       ({ id, image, title, contentTile }: ProductTiles) => {
         if (image) {
@@ -36,9 +36,9 @@ class FeaturedCategory extends React.PureComponent<Props, {}> {
     return <Container {...{ browserName }}>{tiles}</Container>
   }
 
-  handleClick = (evt: any) => {
+  handleClick = (evt: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     const { history } = this.props
-    history.push(`/product-catalogue?contentTile=${evt.target.id}`)
+    history.push(`/product-catalogue?contentTile=${evt.currentTarget.id}`)
   }
 }
 

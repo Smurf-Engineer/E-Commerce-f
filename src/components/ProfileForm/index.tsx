@@ -63,7 +63,7 @@ const ProfileForm = ({
         id="firstName"
         value={firstName !== null ? firstName : firstNameUP}
         onChange={handleInputChange}
-        maxLength="50"
+        maxLength={50}
       />
     </Column>
   )
@@ -76,7 +76,7 @@ const ProfileForm = ({
         id="lastName"
         value={lastName !== null ? lastName : lastNameUP}
         onChange={handleInputChange}
-        maxLength="50"
+        maxLength={50}
       />
     </Column>
   )
@@ -103,7 +103,7 @@ const ProfileForm = ({
             id="email"
             value={email !== null ? email : emailUP}
             onChange={handleInputChange}
-            maxLength="50"
+            maxLength={50}
           />
         </Column>
       </Row>
@@ -116,7 +116,7 @@ const ProfileForm = ({
             id="phone"
             value={phone !== null ? phone : phoneUP}
             onChange={handleInputChange}
-            maxLength="50"
+            maxLength={50}
           />
         </Column>
       </Row>

@@ -19,7 +19,10 @@ describe('<FeaturedProducts />', () => {
     }
     const openQuickView = () => {}
     ReactDOM.render(
-      <FeaturedProducts {...{ formatMessage, data, history, openQuickView }} />,
+      <FeaturedProducts
+        {...{ formatMessage, data, history, openQuickView }}
+        featuredProducts={[]}
+      />,
       div
     )
   })

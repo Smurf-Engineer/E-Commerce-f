@@ -246,7 +246,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
     )
     let menAvailable = false
     let womenAvailable = false
-    if (!!product.genders) {
+    if (product && !!product.genders) {
       product.genders.forEach(gender => {
         if (gender.name === 'Men') {
           menAvailable = true
