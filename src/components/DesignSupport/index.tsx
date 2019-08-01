@@ -16,7 +16,7 @@ const DesignSupport = ({ formatMessage, history }: Props) => {
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
       <Text>
-        <UnderlinedLink link={'/artwork-specs'}>
+        <UnderlinedLink {...{ history }} link={'/artwork-specs'}>
           {formatMessage(messages.artwork)}
         </UnderlinedLink>
       </Text>
@@ -27,12 +27,12 @@ const DesignSupport = ({ formatMessage, history }: Props) => {
         </UnderlinedLink>
       </Text> */}
       <Text>
-        <UnderlinedLink link="/fit-and-sizing">
+        <UnderlinedLink {...{ history }} link="/fit-and-sizing">
           {formatMessage(messages.fit)}
         </UnderlinedLink>
       </Text>
       <Text>
-        <UnderlinedLink link="/technology">
+        <UnderlinedLink {...{ history }} link="/technology">
           {formatMessage(messages.technology)}
         </UnderlinedLink>
       </Text>

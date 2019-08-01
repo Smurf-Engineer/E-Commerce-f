@@ -4,8 +4,10 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
+import { GREEN, RED } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
+  open?: boolean
 }
 export const Container = styled.div`
   display: flex;
@@ -48,6 +50,25 @@ export const AboutTitle = styled.div`
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 30px;
+`
+
+export const StoreBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  width: 100%;
+  margin-right: 22px;
+  height: 51px;
+  border: 2px solid ${({ open }: DivProps) => (open ? GREEN : RED)};
+  border-radius: 2px;
+  color: ${({ open }: DivProps) => (open ? GREEN : RED)};
+  font-family: Avenir Next;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+  text-align: center;
 `
 
 export const ErrorTitle = styled.div`
@@ -229,8 +250,8 @@ export const DatesContainer = styled.div`
   flex-wrap: wrap;
   flex-flow: row wrap;
   padding-top: ${({ onDemandMode }: DivProps) => (onDemandMode ? '0' : '20px')};
-  align-items: right;
   justify-content: flex-end;
+  align-items: center;
 `
 
 export const FlexContainer = styled.div`

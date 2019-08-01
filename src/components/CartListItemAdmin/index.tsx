@@ -179,7 +179,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       ? priceRange.price * quantitySum
       : unitPrice || 0
     const total = productTotal || itemTotal
-    const unitaryPrice = unitPrice || priceRange.price
+    const unitaryPrice = unitPrice || get(priceRange, 'price')
 
     const nextPrice = currencyPrices.length
       ? this.getNextPrice(currencyPrices, quantitySum)
