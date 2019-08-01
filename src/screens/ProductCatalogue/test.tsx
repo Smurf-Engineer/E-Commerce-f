@@ -219,6 +219,371 @@ describe(' ProductCatalog Screen', () => {
         ])
         expect(!unisexFilterValue).toBeFalsy()
       })
+
+      // SPORTS FILTERS
+      it('Handles undefined value in sports filter', () => {
+        const sportFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Triathlon'
+        ])
+        expect(sportFilterInitialValue).toBeUndefined()
+
+        const activeFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Active'
+        ])
+        expect(activeFilterInitialValue).toBeUndefined()
+
+        const mountainBikeFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Mountain Bike'
+        ])
+        expect(mountainBikeFilterInitialValue).toBeUndefined()
+
+        const roadBikeFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Road Bike'
+        ])
+        expect(roadBikeFilterInitialValue).toBeUndefined()
+      })
+
+      it('Handles true value in sport filters (Triathlon, Active, Mountain Bike, Road Bike)', () => {
+        const sportFiltersTriathlon = {
+          type: 'sportFilters',
+          name: 'Triathlon'
+        }
+        const triathlonFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersTriathlon)
+        )
+        const triathlonFilterValue = triathlonFilterState.getIn([
+          sportFiltersTriathlon.type,
+          sportFiltersTriathlon.name
+        ])
+        expect(triathlonFilterValue).toBeTruthy()
+
+        const sportFiltersActive = {
+          type: 'sportFilters',
+          name: 'Active'
+        }
+
+        const activeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersActive)
+        )
+        const activeFilterValue = activeFilterState.getIn([
+          sportFiltersActive.type,
+          sportFiltersActive.name
+        ])
+        expect(activeFilterValue).toBeTruthy()
+
+        const sportFilterMountainBike = {
+          type: 'sportFilters',
+          name: 'Mountain Bike'
+        }
+        const mountainBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterMountainBike)
+        )
+        const mountainBikeFilterValue = mountainBikeFilterState.getIn([
+          sportFilterMountainBike.type,
+          sportFilterMountainBike.name
+        ])
+        expect(mountainBikeFilterValue).toBeTruthy()
+
+        const sportFilterRoadBike = {
+          type: 'sportFilters',
+          name: 'Road Bike'
+        }
+        const roadBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterRoadBike)
+        )
+        const roadBikeFilterValue = roadBikeFilterState.getIn([
+          sportFilterRoadBike.type,
+          sportFilterRoadBike.name
+        ])
+        expect(roadBikeFilterValue).toBeTruthy()
+      })
+
+      it('Handles false value for sport filters (Triarhlon, Active, Mountain Bike, Road Bike)', () => {
+        initialState.setIn(['sportFilters', 'Triathlon'], false)
+        const sportFiltersTriathlon = {
+          type: 'sportFilters',
+          name: 'Triathlon'
+        }
+        const triathlonFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersTriathlon)
+        )
+        const triathlonFilterValue = triathlonFilterState.getIn([
+          sportFiltersTriathlon.type,
+          sportFiltersTriathlon.name
+        ])
+        expect(!triathlonFilterValue).toBeFalsy()
+
+        const sportFiltersActive = {
+          type: 'sportFilters',
+          name: 'Active'
+        }
+
+        const activeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersActive)
+        )
+        const activeFilterValue = activeFilterState.getIn([
+          sportFiltersActive.type,
+          sportFiltersActive.name
+        ])
+        expect(!activeFilterValue).toBeFalsy()
+
+        const sportFilterMountainBike = {
+          type: 'sportFilters',
+          name: 'Mountain Bike'
+        }
+        const mountainBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterMountainBike)
+        )
+        const mountainBikeFilterValue = mountainBikeFilterState.getIn([
+          sportFilterMountainBike.type,
+          sportFilterMountainBike.name
+        ])
+        expect(!mountainBikeFilterValue).toBeFalsy()
+
+        const sportFilterRoadBike = {
+          type: 'sportFilters',
+          name: 'Road Bike'
+        }
+        const roadBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterRoadBike)
+        )
+        const roadBikeFilterValue = roadBikeFilterState.getIn([
+          sportFilterRoadBike.type,
+          sportFilterRoadBike.name
+        ])
+        expect(!roadBikeFilterValue).toBeFalsy()
+      })
+
+      // CATEGORY FILTERS
+      it('Handles undefined value for category filters', () => {
+        const categoryFiltersJerseyAndTops = initialState.getIn([
+          'categoryFiltes',
+          'Jerseys & Tops'
+        ])
+        expect(categoryFiltersJerseyAndTops).toBeUndefined()
+
+        const categoryFiltersShortsBibs = initialState.getIn([
+          'categoryFilters',
+          'Shorts & Bibs'
+        ])
+        expect(categoryFiltersShortsBibs).toBeUndefined()
+
+        const categoryFiltersSuits = initialState.getIn([
+          'categoryFilters',
+          'Suits'
+        ])
+        expect(categoryFiltersSuits).toBeUndefined()
+
+        const categoryFiltersAccessories = initialState.getIn([
+          'cagtegoryFilters',
+          'Accessories'
+        ])
+        expect(categoryFiltersAccessories).toBeUndefined()
+
+        const categoryFiltersOutwear = initialState.getIn([
+          'categoryFilters',
+          'Outwear'
+        ])
+        expect(categoryFiltersOutwear).toBeUndefined()
+
+        const categoryFiltersRaceSuits = initialState.getIn([
+          'categoryFilters',
+          'Racesuits'
+        ])
+        expect(categoryFiltersRaceSuits).toBeUndefined()
+      })
+
+      // tslint:disable-next-line
+      it('Handles true value in category filters (Jersey & Tops, Shorts & Bibs, Suits, Accessories, Outwear, Racesuits)', () => {
+        const categoryFiltersJerseyTops = {
+          type: 'categoryFilters',
+          name: 'Jerseys & Tops'
+        }
+        const jerseyTopsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersJerseyTops)
+        )
+        const jerseyTopsFilterValue = jerseyTopsFilterState.getIn([
+          categoryFiltersJerseyTops.type,
+          categoryFiltersJerseyTops.name
+        ])
+        expect(jerseyTopsFilterValue).toBeTruthy()
+
+        const categoryFiltersShortsBibs = {
+          type: 'categoryFilters',
+          name: 'Shorts & Bibs'
+        }
+        const shortBibsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersShortsBibs)
+        )
+        const shortBibsFilterValue = shortBibsFilterState.getIn([
+          categoryFiltersShortsBibs.type,
+          categoryFiltersShortsBibs.name
+        ])
+        expect(shortBibsFilterValue).toBeTruthy()
+
+        const categoryFiltersSuits = {
+          type: 'categoryFilters',
+          name: 'Suits'
+        }
+        const suitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersSuits)
+        )
+        const suitsFilterValue = suitsFilterState.getIn([
+          categoryFiltersSuits.type,
+          categoryFiltersSuits.name
+        ])
+        expect(suitsFilterValue).toBeTruthy()
+
+        const categoryFiltersAccessories = {
+          type: 'categoryFilters',
+          name: 'Accessories'
+        }
+        const accessoriesFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersAccessories)
+        )
+        const accessoriesFilterValue = accessoriesFilterState.getIn([
+          categoryFiltersAccessories.type,
+          categoryFiltersAccessories.name
+        ])
+        expect(accessoriesFilterValue).toBeTruthy()
+
+        const categoryFiltersOutwear = {
+          type: 'categoryFilters',
+          name: 'Outwear'
+        }
+        const outwearFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersOutwear)
+        )
+        const ourtwearFilterValue = outwearFilterState.getIn([
+          categoryFiltersOutwear.type,
+          categoryFiltersOutwear.name
+        ])
+        expect(ourtwearFilterValue).toBeTruthy()
+
+        const categoryFiltersRacesuits = {
+          type: 'categoryFilters',
+          name: 'Racesuits'
+        }
+        const racesuitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersRacesuits)
+        )
+        const racesuitsFilterValue = racesuitsFilterState.getIn([
+          categoryFiltersRacesuits.type,
+          categoryFiltersRacesuits.name
+        ])
+        expect(racesuitsFilterValue).toBeTruthy()
+      })
+
+      // tslint:disable-next-line
+      it('Handles false value in category filters (Jersey & Tops, Shorts & Bibs, Suits, Accessories, Outwear, Racesuits)', () => {
+        initialState.setIn(['categoryFilters', 'Jerseys & Tops'], true)
+        const categoryFiltersJerseyTops = {
+          type: 'categoryFilters',
+          name: 'Jerseys & Tops'
+        }
+        const jerseyTopsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersJerseyTops)
+        )
+        const jerseyTopsFilterValue = jerseyTopsFilterState.getIn([
+          categoryFiltersJerseyTops.type,
+          categoryFiltersJerseyTops.name
+        ])
+        expect(!jerseyTopsFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Shorts & Bibs'], true)
+        const categoryFiltersShortsBibs = {
+          type: 'categoryFilters',
+          name: 'Shorts & Bibs'
+        }
+        const shortBibsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersShortsBibs)
+        )
+        const shortBibsFilterValue = shortBibsFilterState.getIn([
+          categoryFiltersShortsBibs.type,
+          categoryFiltersShortsBibs.name
+        ])
+        expect(!shortBibsFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Suits'], true)
+        const categoryFiltersSuits = {
+          type: 'categoryFilters',
+          name: 'Suits'
+        }
+        const suitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersSuits)
+        )
+        const suitsFilterValue = suitsFilterState.getIn([
+          categoryFiltersSuits.type,
+          categoryFiltersSuits.name
+        ])
+        expect(!suitsFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Accessories'], true)
+        const categoryFiltersAccessories = {
+          type: 'categoryFilters',
+          name: 'Accessories'
+        }
+        const accessoriesFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersAccessories)
+        )
+        const accessoriesFilterValue = accessoriesFilterState.getIn([
+          categoryFiltersAccessories.type,
+          categoryFiltersAccessories.name
+        ])
+        expect(!accessoriesFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Outwear'], true)
+        const categoryFiltersOutwear = {
+          type: 'categoryFilters',
+          name: 'Outwear'
+        }
+        const outwearFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersOutwear)
+        )
+        const ourtwearFilterValue = outwearFilterState.getIn([
+          categoryFiltersOutwear.type,
+          categoryFiltersOutwear.name
+        ])
+        expect(!ourtwearFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Racesuits'], true)
+        const categoryFiltersRacesuits = {
+          type: 'categoryFilters',
+          name: 'Racesuits'
+        }
+        const racesuitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersRacesuits)
+        )
+        const racesuitsFilterValue = racesuitsFilterState.getIn([
+          categoryFiltersRacesuits.type,
+          categoryFiltersRacesuits.name
+        ])
+        expect(!racesuitsFilterValue).toBeFalsy()
+      })
     })
   })
 })

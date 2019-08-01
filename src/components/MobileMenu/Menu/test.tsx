@@ -4,6 +4,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl'
+import { ApolloProvider } from 'react-apollo'
+import { configureBrowserClient } from '../../../apollo'
+const client = configureBrowserClient()
 import Menu from './index'
 
 describe('<Menu />', () => {
@@ -16,16 +19,18 @@ describe('<Menu />', () => {
     }
     const formatMessage = () => ''
     ReactDOM.render(
-      <IntlProvider {...props}>
-        <Menu
-          {...{ formatMessage }}
-          history={{}}
-          loginButton={null}
-          menuOpen={false}
-          regionButton={null}
-          data={data}
-        />
-      </IntlProvider>,
+      <ApolloProvider {...{ client }}>
+        <IntlProvider {...props}>
+          <Menu
+            {...{ formatMessage }}
+            history={{}}
+            loginButton={null}
+            menuOpen={false}
+            regionButton={null}
+            data={data}
+          />
+        </IntlProvider>
+      </ApolloProvider>,
       div
     )
   })
