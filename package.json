@@ -9,6 +9,7 @@
     "generate": "plop --plopfile ./node_modules/react-components-generator/index.js",
     "test:dev": "jest --env jsdom --config ./jest.config.js --watch",
     "test": "jest --env jsdom --config ./jest.config.js",
+    "verify": "yarn lint && yarn test",
     "start:prod": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
@@ -122,6 +123,6 @@
     "zenscroll": "^4.0.0"
   },
   "pre-commit": [
-    "lint"
+    "verify"
   ]
 }
