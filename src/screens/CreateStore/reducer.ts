@@ -159,7 +159,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         endDate: '',
         endDateMoment: null,
         privateStore: true,
-        onDemand: false,
+        onDemand: true,
         passCode: '',
         openLocker: false,
         selectedItems: {},

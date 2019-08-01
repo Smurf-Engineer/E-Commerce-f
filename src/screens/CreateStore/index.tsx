@@ -407,7 +407,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       updateNameAction,
       updateStartDateAction,
       updateEndDateAction,
-      updateOnDemandAction,
+      // updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
       deleteItemSelectedAction,
@@ -564,14 +564,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
-              {storeId && (
+              {/* TODO: Hidding onDemand-FixedDate Switch until FixDate feature */}
+              {/* {storeId && (
                 <SwitchWithLabel
                   checked={onDemand}
                   onChange={updateOnDemandAction}
                   label={formatMessage(messages.onDemandLabel)}
                   message={formatMessage(messages.onDemandMessage)}
                 />
-              )}
+              )} */}
             </RowSwitch>
             {storeShortId ? (
               <ButtonOptionsWrapper>
