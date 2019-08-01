@@ -3,257 +3,815 @@
  */
 
 import productCatalogReducer, { initialState } from './reducer'
-import { defaultAction, setSelectedFilters } from './actions'
+import { setSelectedFilters } from './actions'
+import { SET_SELECTED_FILTERS } from './constants'
 
 describe(' ProductCatalog Screen', () => {
-  // Test redux actions
-  it('Return the default state for unknow action', () => {
-    let state = productCatalogReducer(initialState, { type: 'unknow' })
-    expect(state).toEqual(initialState)
+  describe('Actions', () => {
+    it('setSelectedFilters', () => {
+      const type = SET_SELECTED_FILTERS
+      const collectionFiltersCustom = {
+        type: 'TYPE',
+        name: 'NAME'
+      }
+
+      expect(setSelectedFilters(collectionFiltersCustom)).toEqual({
+        type,
+        filter: collectionFiltersCustom
+      })
+    })
   })
 
-  it('Update someKey correctly', () => {
-    const testValue = 'Test value'
-    const state = productCatalogReducer(initialState, defaultAction(testValue))
-    const someKey = state.get('someKey')
-    expect(someKey).toEqual(testValue)
-
-    const testValue2 = 'Test value 2'
-    const state2 = productCatalogReducer(
-      initialState,
-      defaultAction(testValue2)
-    )
-    const someKey2 = state2.get('someKey')
-    expect(someKey2).toEqual(testValue2)
-  })
-
-  describe('Test SET_SELECTED_FILTERS action', () => {
-    // SEASON FILTERS
-    it('Handles undefinde value in Season Filters', () => {
-      const springSummerInitialValue = initialState.getIn([
-        'seasonFilters',
-        'Spring/Summer'
-      ])
-      expect(springSummerInitialValue).toBeUndefined()
-
-      const fallWinterInitialValue = initialState.getIn([
-        'seasonFilters',
-        'Fall/Winter'
-      ])
-      expect(fallWinterInitialValue).toBeUndefined()
-
-      const allSeasonsInitialValue = initialState.getIn([
-        'seasonFilters',
-        'All Season'
-      ])
-      expect(allSeasonsInitialValue).toBeUndefined()
+  describe('Reducer', () => {
+    describe('INITIAL_STATE', () => {
+      it('Should not have initial state undefined', () => {
+        expect(initialState).toBeDefined()
+      })
+      it('Return the default state for unknow action', () => {
+        let state = productCatalogReducer(initialState, { type: 'unknow' })
+        expect(state).toEqual(initialState)
+      })
     })
+    describe('SET_SELECTED_FILTERS', () => {
+      it('Handle undefined initial value in collectionFilters', () => {
+        const customInitialValue = initialState.getIn([
+          'collectionFilters',
+          'Custom'
+        ])
+        expect(customInitialValue).toBeUndefined()
 
-    it('Handles true value in Season Filters (Spring/Summer, Fall/Winter, All Season)', () => {
-      const seasonFiltersSpringSummer = {
-        type: 'seasonFilters',
-        name: 'Spring/Summer'
-      }
+        const inlineInitialValue = initialState.getIn([
+          'collectionFilters',
+          'Inline'
+        ])
+        expect(inlineInitialValue).toBeUndefined()
+      })
 
-      const springSummerFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(seasonFiltersSpringSummer)
-      )
-      const springSummerFilterValue = springSummerFilterState.getIn([
-        seasonFiltersSpringSummer.type,
-        seasonFiltersSpringSummer.name
-      ])
-      expect(springSummerFilterValue).toBeTruthy()
+      it('Handles true value in Custom and Inline filters', () => {
+        const collectionFiltersCustom = {
+          type: 'collectionFilters',
+          name: 'Custom'
+        }
+        const customFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(collectionFiltersCustom)
+        )
+        const customFilterValue = customFilterState.getIn([
+          collectionFiltersCustom.type,
+          collectionFiltersCustom.name
+        ])
+        expect(customFilterValue).toBeTruthy()
 
-      const seasonFiltersFallWinter = {
-        type: 'seasonFilters',
-        name: 'Fall/Winter'
-      }
+        const collectionFiltersInline = {
+          type: 'collectionFilters',
+          name: 'Inline'
+        }
+        const inlineFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(collectionFiltersInline)
+        )
+        const inlineFilterValue = inlineFilterState.getIn([
+          collectionFiltersInline.type,
+          collectionFiltersInline.name
+        ])
+        expect(inlineFilterValue).toBeTruthy()
+      })
 
-      const fallWinterFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(seasonFiltersFallWinter)
-      )
-      const fallWinterFilterValue = fallWinterFilterState.getIn([
-        seasonFiltersFallWinter.type,
-        seasonFiltersFallWinter.name
-      ])
-      expect(fallWinterFilterValue).toBeTruthy()
+      it('Handles false value in Custom and Inline filters', () => {
+        initialState.setIn(['collectionFilters', 'Inline'], true)
+        const collectionFiltersCustom = {
+          type: 'collectionFilters',
+          name: 'Custom'
+        }
+        const customFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(collectionFiltersCustom)
+        )
+        const customFilterValue = customFilterState.getIn([
+          collectionFiltersCustom.type,
+          collectionFiltersCustom.name
+        ])
+        expect(!customFilterValue).toBeFalsy()
 
-      const seasonFiltersAllSeason = {
-        type: 'seasonFilters',
-        name: 'All Season'
-      }
-      const allSeasonFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(seasonFiltersAllSeason)
-      )
-      const allSeasonFilterValue = allSeasonFilterState.getIn([
-        seasonFiltersAllSeason.type,
-        seasonFiltersAllSeason.name
-      ])
-      expect(allSeasonFilterValue).toBeTruthy()
-    })
+        initialState.setIn(['collectionFilters', 'Inline'], true)
+        const collectionFiltersInline = {
+          type: 'collectionFilters',
+          name: 'Inline'
+        }
+        const inlineFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(collectionFiltersInline)
+        )
+        const inlineFilterValue = inlineFilterState.getIn([
+          collectionFiltersInline.type,
+          collectionFiltersInline.name
+        ])
+        expect(!inlineFilterValue).toBeFalsy()
+      })
 
-    it('Handles false value in Season Filters (Spring/Summer, Fall/Winter, All Season)', () => {
-      initialState.setIn(['seasonFilters', 'Spring/Summer'], true)
-      const seasonFiltersSpringSummer = {
-        type: 'seasonFilters',
-        name: 'Spring/Summer'
-      }
+      it('Handles undefined initial value in gender filters', () => {
+        const menFilterInitialValue = initialState.getIn([
+          'genderFilters',
+          'Men'
+        ])
+        expect(menFilterInitialValue).toBeUndefined()
 
-      const springSummerFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(seasonFiltersSpringSummer)
-      )
-      const springSummerFilterValue = springSummerFilterState.getIn([
-        seasonFiltersSpringSummer.type,
-        seasonFiltersSpringSummer.name
-      ])
-      expect(!springSummerFilterValue).toBeFalsy()
+        const womenFilterInitialValue = initialState.getIn([
+          'genderFilters',
+          'Women'
+        ])
+        expect(womenFilterInitialValue).toBeUndefined()
 
-      initialState.setIn(['seasonFilters', 'Fall/Winter'], true)
-      const seasonFiltersFallWinter = {
-        type: 'seasonFilters',
-        name: 'Fall/Winter'
-      }
+        const unisexFilterInitialValue = initialState.getIn([
+          'genderFilters',
+          'Unisex'
+        ])
+        expect(unisexFilterInitialValue).toBeUndefined()
+      })
 
-      const fallWinterFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(seasonFiltersFallWinter)
-      )
-      const fallWinterFilterValue = fallWinterFilterState.getIn([
-        seasonFiltersFallWinter.type,
-        seasonFiltersFallWinter.name
-      ])
-      expect(!fallWinterFilterValue).toBeFalsy()
+      it('Handles true value in gender filters (Men, Women, Unisex)', () => {
+        const genderFiltersMen = {
+          type: 'genderFilters',
+          name: 'Men'
+        }
+        const menFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(genderFiltersMen)
+        )
+        const menFilterValue = menFilterState.getIn([
+          genderFiltersMen.type,
+          genderFiltersMen.name
+        ])
+        expect(menFilterValue).toBeTruthy()
 
-      initialState.setIn(['seasonFilters', 'All Season'], true)
-      const seasonFiltersAllSeason = {
-        type: 'seasonFilters',
-        name: 'All Season'
-      }
-      const allSeasonFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(seasonFiltersAllSeason)
-      )
-      const allSeasonFilterValue = allSeasonFilterState.getIn([
-        seasonFiltersAllSeason.type,
-        seasonFiltersAllSeason.name
-      ])
-      expect(!allSeasonFilterValue).toBeFalsy()
-    })
+        const genderFiltersWomen = {
+          type: 'genderFilters',
+          name: 'Women'
+        }
+        const womenFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(genderFiltersWomen)
+        )
+        const womenFilterValue = womenFilterState.getIn([
+          genderFiltersWomen.type,
+          genderFiltersWomen.name
+        ])
+        expect(womenFilterValue).toBeTruthy()
 
-    // FIT STYLE FILTERS
-    it('Handles undefined value in Fit Style Filters', () => {
-      const standardFilterInitialValue = initialState.getIn([
-        'fit_styleFilters',
-        'Standard'
-      ])
-      expect(standardFilterInitialValue).toBeUndefined()
+        const genderFiltersUnisex = {
+          type: 'genderFilters',
+          name: 'Unisex'
+        }
+        const unisexFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(genderFiltersUnisex)
+        )
+        const unisexFilterValue = unisexFilterState.getIn([
+          genderFiltersUnisex.type,
+          genderFiltersUnisex.name
+        ])
+        expect(unisexFilterValue).toBeTruthy()
+      })
 
-      const relaxedFilterInitialValue = initialState.getIn([
-        'fit_styleFilters',
-        'Relaxed'
-      ])
-      expect(relaxedFilterInitialValue).toBeUndefined()
+      it('Handles false value in gender filters (Men, Women, Unisex)', () => {
+        initialState.setIn(['genderFilters', 'Men'], true)
+        const genderFiltersMen = {
+          type: 'genderFilters',
+          name: 'Men'
+        }
+        const menFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(genderFiltersMen)
+        )
+        const menFilterValue = menFilterState.getIn([
+          genderFiltersMen.type,
+          genderFiltersMen.name
+        ])
+        expect(!menFilterValue).toBeFalsy()
 
-      const slimFilterInitialValue = initialState.getIn([
-        'fit_styleFilters',
-        'Slim'
-      ])
-      expect(slimFilterInitialValue).toBeUndefined()
-    })
+        initialState.setIn(['genderFilters', 'Women'], true)
+        const genderFiltersWomen = {
+          type: 'genderFilters',
+          name: 'Women'
+        }
+        const womenFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(genderFiltersWomen)
+        )
+        const womenFilterValue = womenFilterState.getIn([
+          genderFiltersWomen.type,
+          genderFiltersWomen.name
+        ])
+        expect(!womenFilterValue).toBeFalsy()
 
-    it('Handles true value in Fit Style filters (Standard, Relaxed, Slim)', () => {
-      const fitStyleFiltersStandard = {
-        type: 'fit_styleFilters',
-        name: 'Standard'
-      }
-      const standardFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(fitStyleFiltersStandard)
-      )
-      const standardFilterValue = standardFilterState.getIn([
-        fitStyleFiltersStandard.type,
-        fitStyleFiltersStandard.name
-      ])
-      expect(standardFilterValue).toBeTruthy()
+        initialState.setIn(['genderFilters', 'Unisex'], true)
+        const genderFiltersUnisex = {
+          type: 'genderFilters',
+          name: 'Unisex'
+        }
+        const unisexFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(genderFiltersUnisex)
+        )
+        const unisexFilterValue = unisexFilterState.getIn([
+          genderFiltersUnisex.type,
+          genderFiltersUnisex.name
+        ])
+        expect(!unisexFilterValue).toBeFalsy()
+      })
 
-      const fitStyleFiltersRelaxed = {
-        type: 'fit_styleFilters',
-        name: 'Relaxed'
-      }
-      const relaxedFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(fitStyleFiltersRelaxed)
-      )
-      const relaxedFilterValue = relaxedFilterState.getIn([
-        fitStyleFiltersRelaxed.type,
-        fitStyleFiltersRelaxed.name
-      ])
-      expect(relaxedFilterValue).toBeTruthy()
+      // SPORTS FILTERS
+      it('Handles undefined value in sports filter', () => {
+        const sportFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Triathlon'
+        ])
+        expect(sportFilterInitialValue).toBeUndefined()
 
-      const fitStyleFiltersSlim = {
-        type: 'fit_styleFilters',
-        name: 'Slim'
-      }
-      const slimFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(fitStyleFiltersSlim)
-      )
-      const slimFilterValue = slimFilterState.getIn([
-        fitStyleFiltersSlim.type,
-        fitStyleFiltersSlim.name
-      ])
-      expect(slimFilterValue).toBeTruthy()
-    })
+        const activeFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Active'
+        ])
+        expect(activeFilterInitialValue).toBeUndefined()
 
-    it('Handles false value in Fit Style filters (Standard, Relaxed, Slim)', () => {
-      initialState.setIn(['fit_styleFilters', 'Standard'], true)
-      const fitStyleFiltersStandard = {
-        type: 'fit_styleFilters',
-        name: 'Standard'
-      }
-      const standardFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(fitStyleFiltersStandard)
-      )
-      const standardFilterValue = standardFilterState.getIn([
-        fitStyleFiltersStandard.type,
-        fitStyleFiltersStandard.name
-      ])
-      expect(!standardFilterValue).toBeFalsy()
+        const mountainBikeFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Mountain Bike'
+        ])
+        expect(mountainBikeFilterInitialValue).toBeUndefined()
 
-      initialState.setIn(['fit_styleFilters', 'Relaxed'], true)
-      const fitStyleFiltersRelaxed = {
-        type: 'fit_styleFilters',
-        name: 'Relaxed'
-      }
-      const relaxedFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(fitStyleFiltersRelaxed)
-      )
-      const relaxedFilterValue = relaxedFilterState.getIn([
-        fitStyleFiltersRelaxed.type,
-        fitStyleFiltersRelaxed.name
-      ])
-      expect(!relaxedFilterValue).toBeFalsy()
+        const roadBikeFilterInitialValue = initialState.getIn([
+          'sportFilters',
+          'Road Bike'
+        ])
+        expect(roadBikeFilterInitialValue).toBeUndefined()
+      })
 
-      initialState.setIn(['fit_styleFilters', 'Slim'], true)
-      const fitStyleFiltersSlim = {
-        type: 'fit_styleFilters',
-        name: 'Slim'
-      }
-      const slimFilterState = productCatalogReducer(
-        initialState,
-        setSelectedFilters(fitStyleFiltersSlim)
-      )
-      const slimFilterValue = slimFilterState.getIn([
-        fitStyleFiltersSlim.type,
-        fitStyleFiltersSlim.name
-      ])
-      expect(!slimFilterValue).toBeFalsy()
+      it('Handles true value in sport filters (Triathlon, Active, Mountain Bike, Road Bike)', () => {
+        const sportFiltersTriathlon = {
+          type: 'sportFilters',
+          name: 'Triathlon'
+        }
+        const triathlonFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersTriathlon)
+        )
+        const triathlonFilterValue = triathlonFilterState.getIn([
+          sportFiltersTriathlon.type,
+          sportFiltersTriathlon.name
+        ])
+        expect(triathlonFilterValue).toBeTruthy()
+
+        const sportFiltersActive = {
+          type: 'sportFilters',
+          name: 'Active'
+        }
+
+        const activeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersActive)
+        )
+        const activeFilterValue = activeFilterState.getIn([
+          sportFiltersActive.type,
+          sportFiltersActive.name
+        ])
+        expect(activeFilterValue).toBeTruthy()
+
+        const sportFilterMountainBike = {
+          type: 'sportFilters',
+          name: 'Mountain Bike'
+        }
+        const mountainBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterMountainBike)
+        )
+        const mountainBikeFilterValue = mountainBikeFilterState.getIn([
+          sportFilterMountainBike.type,
+          sportFilterMountainBike.name
+        ])
+        expect(mountainBikeFilterValue).toBeTruthy()
+
+        const sportFilterRoadBike = {
+          type: 'sportFilters',
+          name: 'Road Bike'
+        }
+        const roadBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterRoadBike)
+        )
+        const roadBikeFilterValue = roadBikeFilterState.getIn([
+          sportFilterRoadBike.type,
+          sportFilterRoadBike.name
+        ])
+        expect(roadBikeFilterValue).toBeTruthy()
+      })
+
+      it('Handles false value for sport filters (Triarhlon, Active, Mountain Bike, Road Bike)', () => {
+        initialState.setIn(['sportFilters', 'Triathlon'], false)
+        const sportFiltersTriathlon = {
+          type: 'sportFilters',
+          name: 'Triathlon'
+        }
+        const triathlonFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersTriathlon)
+        )
+        const triathlonFilterValue = triathlonFilterState.getIn([
+          sportFiltersTriathlon.type,
+          sportFiltersTriathlon.name
+        ])
+        expect(!triathlonFilterValue).toBeFalsy()
+
+        const sportFiltersActive = {
+          type: 'sportFilters',
+          name: 'Active'
+        }
+
+        const activeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFiltersActive)
+        )
+        const activeFilterValue = activeFilterState.getIn([
+          sportFiltersActive.type,
+          sportFiltersActive.name
+        ])
+        expect(!activeFilterValue).toBeFalsy()
+
+        const sportFilterMountainBike = {
+          type: 'sportFilters',
+          name: 'Mountain Bike'
+        }
+        const mountainBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterMountainBike)
+        )
+        const mountainBikeFilterValue = mountainBikeFilterState.getIn([
+          sportFilterMountainBike.type,
+          sportFilterMountainBike.name
+        ])
+        expect(!mountainBikeFilterValue).toBeFalsy()
+
+        const sportFilterRoadBike = {
+          type: 'sportFilters',
+          name: 'Road Bike'
+        }
+        const roadBikeFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(sportFilterRoadBike)
+        )
+        const roadBikeFilterValue = roadBikeFilterState.getIn([
+          sportFilterRoadBike.type,
+          sportFilterRoadBike.name
+        ])
+        expect(!roadBikeFilterValue).toBeFalsy()
+      })
+
+      // CATEGORY FILTERS
+      it('Handles undefined value for category filters', () => {
+        const categoryFiltersJerseyAndTops = initialState.getIn([
+          'categoryFiltes',
+          'Jerseys & Tops'
+        ])
+        expect(categoryFiltersJerseyAndTops).toBeUndefined()
+
+        const categoryFiltersShortsBibs = initialState.getIn([
+          'categoryFilters',
+          'Shorts & Bibs'
+        ])
+        expect(categoryFiltersShortsBibs).toBeUndefined()
+
+        const categoryFiltersSuits = initialState.getIn([
+          'categoryFilters',
+          'Suits'
+        ])
+        expect(categoryFiltersSuits).toBeUndefined()
+
+        const categoryFiltersAccessories = initialState.getIn([
+          'cagtegoryFilters',
+          'Accessories'
+        ])
+        expect(categoryFiltersAccessories).toBeUndefined()
+
+        const categoryFiltersOutwear = initialState.getIn([
+          'categoryFilters',
+          'Outwear'
+        ])
+        expect(categoryFiltersOutwear).toBeUndefined()
+
+        const categoryFiltersRaceSuits = initialState.getIn([
+          'categoryFilters',
+          'Racesuits'
+        ])
+        expect(categoryFiltersRaceSuits).toBeUndefined()
+      })
+
+      // tslint:disable-next-line
+      it('Handles true value in category filters (Jersey & Tops, Shorts & Bibs, Suits, Accessories, Outwear, Racesuits)', () => {
+        const categoryFiltersJerseyTops = {
+          type: 'categoryFilters',
+          name: 'Jerseys & Tops'
+        }
+        const jerseyTopsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersJerseyTops)
+        )
+        const jerseyTopsFilterValue = jerseyTopsFilterState.getIn([
+          categoryFiltersJerseyTops.type,
+          categoryFiltersJerseyTops.name
+        ])
+        expect(jerseyTopsFilterValue).toBeTruthy()
+
+        const categoryFiltersShortsBibs = {
+          type: 'categoryFilters',
+          name: 'Shorts & Bibs'
+        }
+        const shortBibsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersShortsBibs)
+        )
+        const shortBibsFilterValue = shortBibsFilterState.getIn([
+          categoryFiltersShortsBibs.type,
+          categoryFiltersShortsBibs.name
+        ])
+        expect(shortBibsFilterValue).toBeTruthy()
+
+        const categoryFiltersSuits = {
+          type: 'categoryFilters',
+          name: 'Suits'
+        }
+        const suitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersSuits)
+        )
+        const suitsFilterValue = suitsFilterState.getIn([
+          categoryFiltersSuits.type,
+          categoryFiltersSuits.name
+        ])
+        expect(suitsFilterValue).toBeTruthy()
+
+        const categoryFiltersAccessories = {
+          type: 'categoryFilters',
+          name: 'Accessories'
+        }
+        const accessoriesFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersAccessories)
+        )
+        const accessoriesFilterValue = accessoriesFilterState.getIn([
+          categoryFiltersAccessories.type,
+          categoryFiltersAccessories.name
+        ])
+        expect(accessoriesFilterValue).toBeTruthy()
+
+        const categoryFiltersOutwear = {
+          type: 'categoryFilters',
+          name: 'Outwear'
+        }
+        const outwearFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersOutwear)
+        )
+        const ourtwearFilterValue = outwearFilterState.getIn([
+          categoryFiltersOutwear.type,
+          categoryFiltersOutwear.name
+        ])
+        expect(ourtwearFilterValue).toBeTruthy()
+
+        const categoryFiltersRacesuits = {
+          type: 'categoryFilters',
+          name: 'Racesuits'
+        }
+        const racesuitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersRacesuits)
+        )
+        const racesuitsFilterValue = racesuitsFilterState.getIn([
+          categoryFiltersRacesuits.type,
+          categoryFiltersRacesuits.name
+        ])
+        expect(racesuitsFilterValue).toBeTruthy()
+      })
+
+      // tslint:disable-next-line
+      it('Handles false value in category filters (Jersey & Tops, Shorts & Bibs, Suits, Accessories, Outwear, Racesuits)', () => {
+        initialState.setIn(['categoryFilters', 'Jerseys & Tops'], true)
+        const categoryFiltersJerseyTops = {
+          type: 'categoryFilters',
+          name: 'Jerseys & Tops'
+        }
+        const jerseyTopsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersJerseyTops)
+        )
+        const jerseyTopsFilterValue = jerseyTopsFilterState.getIn([
+          categoryFiltersJerseyTops.type,
+          categoryFiltersJerseyTops.name
+        ])
+        expect(!jerseyTopsFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Shorts & Bibs'], true)
+        const categoryFiltersShortsBibs = {
+          type: 'categoryFilters',
+          name: 'Shorts & Bibs'
+        }
+        const shortBibsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersShortsBibs)
+        )
+        const shortBibsFilterValue = shortBibsFilterState.getIn([
+          categoryFiltersShortsBibs.type,
+          categoryFiltersShortsBibs.name
+        ])
+        expect(!shortBibsFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Suits'], true)
+        const categoryFiltersSuits = {
+          type: 'categoryFilters',
+          name: 'Suits'
+        }
+        const suitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersSuits)
+        )
+        const suitsFilterValue = suitsFilterState.getIn([
+          categoryFiltersSuits.type,
+          categoryFiltersSuits.name
+        ])
+        expect(!suitsFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Accessories'], true)
+        const categoryFiltersAccessories = {
+          type: 'categoryFilters',
+          name: 'Accessories'
+        }
+        const accessoriesFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersAccessories)
+        )
+        const accessoriesFilterValue = accessoriesFilterState.getIn([
+          categoryFiltersAccessories.type,
+          categoryFiltersAccessories.name
+        ])
+        expect(!accessoriesFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Outwear'], true)
+        const categoryFiltersOutwear = {
+          type: 'categoryFilters',
+          name: 'Outwear'
+        }
+        const outwearFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersOutwear)
+        )
+        const ourtwearFilterValue = outwearFilterState.getIn([
+          categoryFiltersOutwear.type,
+          categoryFiltersOutwear.name
+        ])
+        expect(!ourtwearFilterValue).toBeFalsy()
+
+        initialState.setIn(['categoryFilters', 'Racesuits'], true)
+        const categoryFiltersRacesuits = {
+          type: 'categoryFilters',
+          name: 'Racesuits'
+        }
+        const racesuitsFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(categoryFiltersRacesuits)
+        )
+        const racesuitsFilterValue = racesuitsFilterState.getIn([
+          categoryFiltersRacesuits.type,
+          categoryFiltersRacesuits.name
+        ])
+        expect(!racesuitsFilterValue).toBeFalsy()
+      })
+
+      // SEASON FILTERS
+      it('Handles undefinde value in Season Filters', () => {
+        const springSummerInitialValue = initialState.getIn([
+          'seasonFilters',
+          'Spring/Summer'
+        ])
+        expect(springSummerInitialValue).toBeUndefined()
+
+        const fallWinterInitialValue = initialState.getIn([
+          'seasonFilters',
+          'Fall/Winter'
+        ])
+        expect(fallWinterInitialValue).toBeUndefined()
+
+        const allSeasonsInitialValue = initialState.getIn([
+          'seasonFilters',
+          'All Season'
+        ])
+        expect(allSeasonsInitialValue).toBeUndefined()
+      })
+
+      it('Handles true value in Season Filters (Spring/Summer, Fall/Winter, All Season)', () => {
+        const seasonFiltersSpringSummer = {
+          type: 'seasonFilters',
+          name: 'Spring/Summer'
+        }
+
+        const springSummerFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(seasonFiltersSpringSummer)
+        )
+        const springSummerFilterValue = springSummerFilterState.getIn([
+          seasonFiltersSpringSummer.type,
+          seasonFiltersSpringSummer.name
+        ])
+        expect(springSummerFilterValue).toBeTruthy()
+
+        const seasonFiltersFallWinter = {
+          type: 'seasonFilters',
+          name: 'Fall/Winter'
+        }
+
+        const fallWinterFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(seasonFiltersFallWinter)
+        )
+        const fallWinterFilterValue = fallWinterFilterState.getIn([
+          seasonFiltersFallWinter.type,
+          seasonFiltersFallWinter.name
+        ])
+        expect(fallWinterFilterValue).toBeTruthy()
+
+        const seasonFiltersAllSeason = {
+          type: 'seasonFilters',
+          name: 'All Season'
+        }
+        const allSeasonFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(seasonFiltersAllSeason)
+        )
+        const allSeasonFilterValue = allSeasonFilterState.getIn([
+          seasonFiltersAllSeason.type,
+          seasonFiltersAllSeason.name
+        ])
+        expect(allSeasonFilterValue).toBeTruthy()
+      })
+
+      it('Handles false value in Season Filters (Spring/Summer, Fall/Winter, All Season)', () => {
+        initialState.setIn(['seasonFilters', 'Spring/Summer'], true)
+        const seasonFiltersSpringSummer = {
+          type: 'seasonFilters',
+          name: 'Spring/Summer'
+        }
+
+        const springSummerFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(seasonFiltersSpringSummer)
+        )
+        const springSummerFilterValue = springSummerFilterState.getIn([
+          seasonFiltersSpringSummer.type,
+          seasonFiltersSpringSummer.name
+        ])
+        expect(!springSummerFilterValue).toBeFalsy()
+
+        initialState.setIn(['seasonFilters', 'Fall/Winter'], true)
+        const seasonFiltersFallWinter = {
+          type: 'seasonFilters',
+          name: 'Fall/Winter'
+        }
+
+        const fallWinterFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(seasonFiltersFallWinter)
+        )
+        const fallWinterFilterValue = fallWinterFilterState.getIn([
+          seasonFiltersFallWinter.type,
+          seasonFiltersFallWinter.name
+        ])
+        expect(!fallWinterFilterValue).toBeFalsy()
+
+        initialState.setIn(['seasonFilters', 'All Season'], true)
+        const seasonFiltersAllSeason = {
+          type: 'seasonFilters',
+          name: 'All Season'
+        }
+        const allSeasonFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(seasonFiltersAllSeason)
+        )
+        const allSeasonFilterValue = allSeasonFilterState.getIn([
+          seasonFiltersAllSeason.type,
+          seasonFiltersAllSeason.name
+        ])
+        expect(!allSeasonFilterValue).toBeFalsy()
+      })
+
+      // FIT STYLE FILTERS
+      it('Handles undefined value in Fit Style Filters', () => {
+        const standardFilterInitialValue = initialState.getIn([
+          'fit_styleFilters',
+          'Standard'
+        ])
+        expect(standardFilterInitialValue).toBeUndefined()
+
+        const relaxedFilterInitialValue = initialState.getIn([
+          'fit_styleFilters',
+          'Relaxed'
+        ])
+        expect(relaxedFilterInitialValue).toBeUndefined()
+
+        const slimFilterInitialValue = initialState.getIn([
+          'fit_styleFilters',
+          'Slim'
+        ])
+        expect(slimFilterInitialValue).toBeUndefined()
+      })
+
+      it('Handles true value in Fit Style filters (Standard, Relaxed, Slim)', () => {
+        const fitStyleFiltersStandard = {
+          type: 'fit_styleFilters',
+          name: 'Standard'
+        }
+        const standardFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(fitStyleFiltersStandard)
+        )
+        const standardFilterValue = standardFilterState.getIn([
+          fitStyleFiltersStandard.type,
+          fitStyleFiltersStandard.name
+        ])
+        expect(standardFilterValue).toBeTruthy()
+
+        const fitStyleFiltersRelaxed = {
+          type: 'fit_styleFilters',
+          name: 'Relaxed'
+        }
+        const relaxedFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(fitStyleFiltersRelaxed)
+        )
+        const relaxedFilterValue = relaxedFilterState.getIn([
+          fitStyleFiltersRelaxed.type,
+          fitStyleFiltersRelaxed.name
+        ])
+        expect(relaxedFilterValue).toBeTruthy()
+
+        const fitStyleFiltersSlim = {
+          type: 'fit_styleFilters',
+          name: 'Slim'
+        }
+        const slimFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(fitStyleFiltersSlim)
+        )
+        const slimFilterValue = slimFilterState.getIn([
+          fitStyleFiltersSlim.type,
+          fitStyleFiltersSlim.name
+        ])
+        expect(slimFilterValue).toBeTruthy()
+      })
+
+      it('Handles false value in Fit Style filters (Standard, Relaxed, Slim)', () => {
+        initialState.setIn(['fit_styleFilters', 'Standard'], true)
+        const fitStyleFiltersStandard = {
+          type: 'fit_styleFilters',
+          name: 'Standard'
+        }
+        const standardFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(fitStyleFiltersStandard)
+        )
+        const standardFilterValue = standardFilterState.getIn([
+          fitStyleFiltersStandard.type,
+          fitStyleFiltersStandard.name
+        ])
+        expect(!standardFilterValue).toBeFalsy()
+
+        initialState.setIn(['fit_styleFilters', 'Relaxed'], true)
+        const fitStyleFiltersRelaxed = {
+          type: 'fit_styleFilters',
+          name: 'Relaxed'
+        }
+        const relaxedFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(fitStyleFiltersRelaxed)
+        )
+        const relaxedFilterValue = relaxedFilterState.getIn([
+          fitStyleFiltersRelaxed.type,
+          fitStyleFiltersRelaxed.name
+        ])
+        expect(!relaxedFilterValue).toBeFalsy()
+
+        initialState.setIn(['fit_styleFilters', 'Slim'], true)
+        const fitStyleFiltersSlim = {
+          type: 'fit_styleFilters',
+          name: 'Slim'
+        }
+        const slimFilterState = productCatalogReducer(
+          initialState,
+          setSelectedFilters(fitStyleFiltersSlim)
+        )
+        const slimFilterValue = slimFilterState.getIn([
+          fitStyleFiltersSlim.type,
+          fitStyleFiltersSlim.name
+        ])
+        expect(!slimFilterValue).toBeFalsy()
+      })
     })
   })
 })

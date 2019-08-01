@@ -10,17 +10,20 @@ interface ThumbnailProps {
 
 interface ContainerProps {
   design: boolean
+  leftSide?: boolean
 }
 
 export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
+  flex-flow: column;
+  margin-top: ${({ leftSide }: ContainerProps) => (leftSide ? '48px' : '0')};
   @media (min-width: 1440px) {
-    margin: 0 auto;
-    max-width: 600px;
-    max-height: 800px;
+    max-height: ${({ leftSide }: ContainerProps) =>
+      leftSide ? '570px' : '828px'};
+    flex-flow: ${({ leftSide }: ContainerProps) =>
+      leftSide ? 'row-reverse' : 'column'};
   }
 `
 
@@ -31,13 +34,30 @@ export const Text = styled.div`
 export const ImageThumbnails = styled.div`
   display: inline-block;
   overflow-x: auto;
+  flex-flow: row;
   white-space: nowrap;
+  margin-top: ${({ leftSide }: ContainerProps) => (leftSide ? '8px' : '0')};
+  max-width: ${({ leftSide }: ContainerProps) => (leftSide ? '100%' : 'unset')};
+  margin-right: 0px;
+  @media (min-width: 1440px) {
+    flex-flow: ${({ leftSide }: ContainerProps) =>
+      leftSide ? 'column' : 'row'};
+    max-width: ${({ leftSide }: ContainerProps) =>
+      leftSide ? '120px' : 'unset'};
+    display: ${({ leftSide }: ContainerProps) =>
+      leftSide ? 'inline-flex' : 'inline-block'};
+    margin-top: 0;
+    margin-right: 8px;
+  }
 `
 
 export const ThumbnailContainer = styled.div`
   display: inline-block;
   width: 25%;
   ${({ design }: ContainerProps) => (design ? 'height: 100%' : '')};
+  @media (min-width: 1440px) {
+    width: ${({ leftSide }: ContainerProps) => (leftSide ? '100%' : '25%')};
+  }
 `
 export const ThumbnailImg = styled.img`
   background-color: #f1f4f5;

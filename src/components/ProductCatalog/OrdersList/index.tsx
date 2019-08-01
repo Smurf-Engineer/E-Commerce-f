@@ -49,11 +49,6 @@ const OrdersList = ({
   if (!orders || !orders.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
-  const handleCheck = async (id: number) => {
-    await updateActiveProduct({
-      variables: { id }
-    })
-  }
   const header = (
     <MediaQuery maxWidth={768}>
       {matches => {
@@ -94,7 +89,7 @@ const OrdersList = ({
         <ItemOrder
           key={index}
           active={active}
-          onCheck={handleCheck}
+          onCheck={updateActiveProduct}
           disabled={!obj && !mtl && isCustom}
           image={get(images[0], 'front', jakrooLogo)}
           productType={formatMessage(

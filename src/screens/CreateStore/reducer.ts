@@ -41,7 +41,7 @@ export const initialState = fromJS({
   openLocker: false,
   selectedItems: {},
   items: [],
-  loading: false,
+  loading: true,
   banner: '',
   showTeamStores: null
 })
@@ -71,7 +71,11 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case UPDATE_PRIVATE_ACTION:
       return state.set('privateStore', action.active)
     case UPDATE_ON_DEMAND_ACTION:
-      return state.set('onDemand', action.active)
+      return state.merge({
+        onDemand: action.active,
+        teamSizeId: 1,
+        teamSizeRange: '2-5'
+      })
     case SET_TEAM_SIZE_ACTION:
       return state.merge({
         teamSizeId: action.id,
@@ -131,11 +135,12 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         storeShortId: shortId,
         name: name,
         startDate: startDate,
-        startDateMoment: moment(startDate),
+        startDateMoment: startDate ? moment(startDate) : null,
         endDate: endDate,
-        endDateMoment: moment(endDate),
+        endDateMoment: endDate ? moment(endDate) : null,
         teamSizeId: sizeId,
         teamSizeRange: size,
+        loading: false,
         items: items,
         privateStore: privateStore,
         onDemand: onDemand,
@@ -159,7 +164,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         openLocker: false,
         selectedItems: {},
         items: [],
-        loading: false,
+        loading: true,
         banner: ''
       })
     case SET_TEAM_STORE_STATUS:

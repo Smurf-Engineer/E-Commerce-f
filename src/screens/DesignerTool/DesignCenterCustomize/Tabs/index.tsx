@@ -328,7 +328,8 @@ const Tabs = ({
                 colorBlockHovered,
                 onHoverColorBlock,
                 onSelectColorBlock,
-                onUpdateColorIdeaName
+                onUpdateColorIdeaName,
+                formatMessage
               }}
             />
           </SwipeableViews>

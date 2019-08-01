@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.FirstStep.name',
     defaultMessage: 'Name'
   },
+  typeName: {
+    id: 'components.FirstStep.typeName',
+    defaultMessage: 'Type Name'
+  },
   contentTile: {
     id: 'components.FirstStep.contentTile',
     defaultMessage: 'Content Tile'
@@ -60,6 +64,10 @@ export default defineMessages({
   productDescriptor: {
     id: 'components.FirstStep.productDescriptor',
     defaultMessage: 'Product Descriptor'
+  },
+  other: {
+    id: 'components.FirstStep.other',
+    defaultMessage: 'Other'
   },
   yotpoId: {
     id: 'components.FirstStep.yotpoId',
@@ -119,7 +127,7 @@ export default defineMessages({
   },
   addMore: {
     id: 'components.FirstStep.addMore',
-    defaultMessage: 'Add More...'
+    defaultMessage: '+ Add More...'
   },
   materialInfo: {
     id: 'components.FirstStep.materialInfo',

@@ -468,10 +468,14 @@ class Render3D extends PureComponent {
         if (!!zipper) {
           const { white, black } = zipper
           this.zipper = {}
-          this.zipper.white = this.textureLoader.load(white)
-          this.zipper.black = this.textureLoader.load(black)
-          this.zipper.white.minFilter = THREE.LinearFilter
-          this.zipper.black.minFilter = THREE.LinearFilter
+          if (white) {
+            this.zipper.white = this.textureLoader.load(white)
+            this.zipper.white.minFilter = THREE.LinearFilter
+          }
+          if (black) {
+            this.zipper.black = this.textureLoader.load(black)
+            this.zipper.black.minFilter = THREE.LinearFilter
+          }
         }
         if (!!binding) {
           const { white, black } = binding
@@ -539,8 +543,12 @@ class Render3D extends PureComponent {
         }
       })
       if (this.zipper) {
-        this.zipper.white.dispose()
-        this.zipper.black.dispose()
+        if (this.zipper.white) {
+          this.zipper.white.dispose()
+        }
+        if (this.zipper.black) {
+          this.zipper.black.dispose()
+        }
         delete this.zipper
       }
       if (this.binding) {

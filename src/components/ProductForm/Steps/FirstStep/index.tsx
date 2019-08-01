@@ -13,10 +13,23 @@ import {
   InlineLabel,
   SwitchInput,
   RadioButton,
-  InputDiv
+  InputDiv,
+  SpecDetail,
+  SpecList,
+  RemoveDetail,
+  MoreIcon,
+  SpecName
 } from './styledComponents'
-import { Radio, Input, Select, AutoComplete } from 'antd'
+import Radio from 'antd/lib/radio'
+import Input from 'antd/lib/input'
+import Select from 'antd/lib/select'
+import AutoComplete from 'antd/lib/auto-complete'
 import { Product, ItemDetailType, GenderType } from '../../../../types/common'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import Draggable from '../../../Draggable'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import { KEY_ENTER } from '../../../../constants'
 const RadioGroup = Radio.Group
 const Option = Select.Option
 const { TextArea } = Input
@@ -29,9 +42,20 @@ interface Props {
   sports: ItemDetailType[]
   relatedTags: string[]
   seasons: string[]
+  newSport: string
+  newSportEnabled: boolean
+  specDetail: string
+  materialDetail: string
+  setMaterial: (value: string) => void
+  setSpec: (value: string) => void
+  removeFile: (array: string, index: number) => void
+  addFile: (array: string, item: any) => void
+  moveFile: (array: string, index: number, indexTo: number) => void
   setValue: (field: string, value: any) => void
+  enableNewSportAction: (value: boolean) => void
+  setNewSport: (value: string) => void
   setDesignCenter: (checked: boolean) => void
-  setGenderActions: (genders: any) => void
+  setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -42,9 +66,13 @@ export class FirstStep extends React.Component<Props, {}> {
       sports: sportsOptions,
       seasons,
       genders,
+      newSport,
+      specDetail: specDetailValue,
+      newSportEnabled,
       product,
       materials,
       formatMessage,
+      materialDetail,
       relatedTags
     } = this.props
     const {
@@ -70,9 +98,9 @@ export class FirstStep extends React.Component<Props, {}> {
       shortDescription
     } = product
     const searchValues = tags ? tags.split(', ') : []
-    const gendersValues = gendersProduct ? gendersProduct.map(e => e.id) : []
-    const materialsValue = materialsProduct ? materialsProduct.split('-') : []
-    const specDetails = details ? details.split(',') : []
+    const gendersValues = gendersProduct
+      ? Object.keys(gendersProduct).filter(id => gendersProduct[id].selected)
+      : []
     return (
       <Container>
         <Separator>
@@ -192,6 +220,19 @@ export class FirstStep extends React.Component<Props, {}> {
                 {sport.name}
               </CheckBox>
             ))}
+            <CheckBox
+              onChange={this.handleEnableNewSport}
+              checked={newSportEnabled}
+            >
+              {formatMessage(messages.other)}
+            </CheckBox>
+            <Input
+              size="large"
+              value={newSport}
+              disabled={!newSportEnabled}
+              onChange={this.handleChangeNewSport}
+              placeholder={formatMessage(messages.typeName)}
+            />
           </InputDiv>
           <InputDiv flex={1} />
         </RowInput>
@@ -266,14 +307,36 @@ export class FirstStep extends React.Component<Props, {}> {
             <Label>
               <FormattedMessage {...messages.specsDetails} />
             </Label>
-            <Select
-              mode="tags"
+            <Input
               size="large"
-              value={specDetails}
-              onChange={this.handleSpecDetails}
+              value={specDetailValue}
+              onChange={this.handleChangeSpec}
+              onPressEnter={this.handleSpecDetails}
               style={{ width: '100%' }}
               placeholder={formatMessage(messages.addMore)}
             />
+            {!!details.length && (
+              <SpecList>
+                {details.map((item: string, index: number) => (
+                  <Draggable
+                    {...{ index }}
+                    key={index}
+                    id={index}
+                    section="specs"
+                    onDropRow={this.handleMoveSpecs}
+                  >
+                    <SpecDetail>
+                      <MoreIcon type="ellipsis" />
+                      <SpecName>{item}</SpecName>
+                      <RemoveDetail
+                        onClick={this.handleRemoveSpec(index)}
+                        type="close"
+                      />
+                    </SpecDetail>
+                  </Draggable>
+                ))}
+              </SpecList>
+            )}
           </InputDiv>
         </RowInput>
         <RowInput>
@@ -281,20 +344,42 @@ export class FirstStep extends React.Component<Props, {}> {
             <Label>
               <FormattedMessage {...messages.materialInfo} />
             </Label>
-            <Select
-              mode="tags"
+            <AutoComplete
               size="large"
-              value={materialsValue}
+              value={materialDetail}
+              dataSource={materials}
+              onInputKeyDown={this.handleAddMaterial}
               style={{ width: '100%' }}
+              filterOption={(inputValue, option) =>
+                option.props.children
+                  .toUpperCase()
+                  .indexOf(inputValue.toUpperCase()) !== -1
+              }
               placeholder={formatMessage(messages.addMore)}
               onChange={this.handleMaterialChange}
-            >
-              {materials.map((material: string, index) => (
-                <Option key={index.toString()} value={material}>
-                  {material}
-                </Option>
-              ))}
-            </Select>
+            />
+            {materialsProduct && !!materialsProduct.length && (
+              <SpecList>
+                {materialsProduct.map((item: string, index: number) => (
+                  <Draggable
+                    {...{ index }}
+                    key={index}
+                    id={index}
+                    section="materials"
+                    onDropRow={this.handleMoveMaterials}
+                  >
+                    <SpecDetail>
+                      <MoreIcon type="ellipsis" />
+                      <SpecName>{item}</SpecName>
+                      <RemoveDetail
+                        onClick={this.handleRemoveMaterial(index)}
+                        type="close"
+                      />
+                    </SpecDetail>
+                  </Draggable>
+                ))}
+              </SpecList>
+            )}
           </InputDiv>
         </RowInput>
         <RowInput>
@@ -325,11 +410,12 @@ export class FirstStep extends React.Component<Props, {}> {
               mode="multiple"
               value={gendersValues}
               style={{ width: '100%' }}
+              onSelect={this.handleGenderChange(true)}
+              onDeselect={this.handleGenderChange(false)}
               placeholder={formatMessage(messages.genderHolder)}
-              onChange={this.handleGenderChange}
             >
               {genders.map((gender: any, index) => (
-                <Option key={index.toString()} value={gender.id}>
+                <Option key={index.toString()} value={gender.id.toString()}>
                   {gender.gender}
                 </Option>
               ))}
@@ -366,68 +452,133 @@ export class FirstStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleCheckChange = ({ target: { name, checked } }: any) => {
+  handleCheckChange = ({ target: { name, checked } }: CheckboxChangeEvent) => {
     const { setCheck } = this.props
     setCheck('sports', name, checked)
   }
-  handleGenderChange = (ids: any[]) => {
-    const {
-      setGenderActions,
-      genders,
-      product: { designCenter }
-    } = this.props
-    let value: GenderType[] = []
-    if (!designCenter && ids.length) {
-      value.push(genders.find(({ id }: GenderType) => id === ids[0]))
-    } else {
-      value = genders.filter(({ id }: GenderType) => ids.includes(id))
-    }
-    setGenderActions(value)
+
+  handleEnableNewSport = ({ target: { checked } }: CheckboxChangeEvent) => {
+    const { enableNewSportAction } = this.props
+    enableNewSportAction(checked)
   }
-  handleSearchTagChange = (value: any) => {
+
+  handleChangeNewSport = ({
+    target: { value }
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    const { setNewSport } = this.props
+    setNewSport(value)
+  }
+
+  handleGenderChange = (selected: boolean) => (selectedId: string) => {
+    const {
+      setGenderAction,
+      product: { designCenter, genders }
+    } = this.props
+    const idsSelected = Object.keys(genders).filter(
+      id => genders[id].selected && selectedId !== id
+    )
+    if (!(!designCenter && idsSelected.length > 0)) {
+      setGenderAction(selectedId, selected)
+    }
+  }
+
+  handleSearchTagChange = (value: string[]) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
       const fieldValue = value.join(', ')
       setValue('tags', fieldValue)
     }
   }
-  handleSpecDetails = (value: any) => {
-    const { setValue } = this.props
-    if (!value.find((str: string) => /[,\/]/g.test(str))) {
-      const fieldValue = value.join(', ')
-      setValue('details', fieldValue)
+
+  handleChangeSpec = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = event
+    const { setSpec } = this.props
+    setSpec(value.replace(/[,\/]/g, ''))
+  }
+
+  handleMoveSpecs = (dragIndex: number, dropIndex: number) => {
+    const { moveFile } = this.props
+    moveFile('details', dragIndex, dropIndex)
+  }
+
+  handleRemoveSpec = (index: number) => () => {
+    const { removeFile } = this.props
+    removeFile('details', index)
+  }
+
+  handleSpecDetails = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = event
+    const {
+      addFile,
+      product: { details }
+    } = this.props
+    if (!details.find((item: string) => item === value.trim())) {
+      addFile('details', value)
     }
   }
-  handleMaterialChange = (value: any) => {
-    const { setValue } = this.props
-    if (!value.find((str: string) => /[,\/]/g.test(str))) {
-      const fieldValue = value.join('-')
-      setValue('materials', fieldValue)
+
+  handleMoveMaterials = (dragIndex: number, dropIndex: number) => {
+    const { moveFile } = this.props
+    moveFile('materials', dragIndex, dropIndex)
+  }
+
+  handleRemoveMaterial = (index: number) => () => {
+    const { removeFile } = this.props
+    removeFile('materials', index)
+  }
+
+  handleMaterialChange = (value: string) => {
+    const { setMaterial } = this.props
+    setMaterial(value.replace(/[-\/]/g, ''))
+  }
+
+  handleAddMaterial = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = event
+    if (event.key === KEY_ENTER && value) {
+      const {
+        addFile,
+        product: { materials }
+      } = this.props
+      if (!materials.find((item: string) => item === value.trim())) {
+        addFile('materials', value)
+      }
     }
   }
-  handleRelatedChange = (value: any) => {
+
+  handleRelatedChange = (value: string[]) => {
     const { setValue } = this.props
     setValue('relatedItemTag', value)
   }
+
   handleChangeCategory = (value: string) => {
     const { setValue } = this.props
     setValue('categoryName', value)
   }
+
   handleSwitchActive = (value: boolean) => {
     const { setValue } = this.props
     setValue('active', value ? 'true' : 'false')
   }
+
   handleSwitchDesign = ({
     target: { value }
   }: React.ChangeEvent<HTMLInputElement>) => {
     const { setDesignCenter } = this.props
     setDesignCenter(value)
   }
-  handleSeason = (value: any) => {
+
+  handleSeason = (value: string) => {
     const { setValue } = this.props
     setValue('season', value)
   }
-  handleChangeCustom = (event: any) => {
+
+  handleChangeCustom = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { setValue } = this.props
     const {
       target: { value, name, type }
@@ -436,4 +587,4 @@ export class FirstStep extends React.Component<Props, {}> {
   }
 }
 
-export default FirstStep
+export default DragDropContext(HTML5Backend)(FirstStep)

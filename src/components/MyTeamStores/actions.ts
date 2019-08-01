@@ -2,7 +2,8 @@ import {
   OPEN_DELETE_MODAL,
   CLEAR_REDUCER,
   OPEN_SHARE_MODAL,
-  SET_STOREID_TO_DELETE
+  SET_STOREID_TO_DELETE,
+  SET_SKIP_VALUE
 } from './constants'
 
 import { AnyAction } from '../../types/common'
@@ -39,4 +40,13 @@ export const openShareModalAction = (
 export const setIdStoreAction = (storeId: string): AnyAction => ({
   type: SET_STOREID_TO_DELETE,
   storeId
+})
+
+export const setSkipValueAction = (
+  skip: number,
+  currentPage: number
+): AnyAction => ({
+  type: SET_SKIP_VALUE,
+  skip,
+  currentPage
 })

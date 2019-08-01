@@ -7,8 +7,9 @@ import { QuickView } from './index'
 import { Product, QueryProps } from '../../types/common'
 
 interface ProductPageTypes extends Product {
-  temperature: string
+  temperatures: string
   materials: string
+  intendedUse: string
 }
 
 interface Data extends QueryProps {
@@ -35,14 +36,19 @@ describe('<QuickView />', () => {
         genderId: 0,
         description: '',
         label: '',
-        priceRange: [],
+        priceRange: [
+          {
+            shortName: '',
+            price: 0,
+            quantity: ''
+          }
+        ],
         collections: 0,
         isTopProduct: false,
         details: '',
         specs: '',
         shortDescription: '',
         name: '',
-        temperature: '',
         materials: '',
         customizable: false,
         yotpoId: '',
@@ -75,19 +81,25 @@ describe('<QuickView />', () => {
         retailWomen: false,
         flatlock: '',
         bumpMap: '',
-        weight: 0
+        weight: 0,
+        active: true,
+        relatedProducts: [],
+        intendedUse: '',
+        temperatures: ''
       },
       fetchMore: () => {}
     }
     ReactDOM.render(
       <QuickView
         open={true}
-        data={data}
+        {...{ data }}
         handleClose={() => {}}
         productId={0}
         history={{}}
         yotpoId=""
         formatMessage={() => ''}
+        gender={1}
+        currentCurrency={''}
       />,
       div
     )

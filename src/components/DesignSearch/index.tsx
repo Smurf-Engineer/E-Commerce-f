@@ -32,14 +32,16 @@ import {
   UserType,
   StitchingColor,
   Font,
-  DesignSearchCode
+  DesignSearchCode,
+  MessagePayload
 } from '../../types/common'
 import {
   orderSearchQuery,
   uploadThumbnailMutation,
   updateDesignMutation,
   getDesignSearchCode,
-  getFonts
+  getFonts,
+  generatePdfMutation
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -68,6 +70,7 @@ interface Props {
   stitchingValue: string
   fontsData: any
   designSearchCodes: string[]
+  creatingPdf: boolean
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -84,8 +87,11 @@ interface Props {
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setColorAction: (color: string, id: string) => void
   updateDesign: (variables: {}) => Promise<Thumbnail>
+  generatePdf: (variables: {}) => Promise<MessagePayload>
   resetChangesAction: () => void
   setSearchCodesAction: (codes: DesignSearchCode) => void
+  creatingPdfAction: (creating: boolean) => void
+  setPdfAction: (url: string) => void
 }
 
 export class DesignSearchAdmin extends React.Component<Props, {}> {
@@ -120,7 +126,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       colorAccessories,
       setColorAction,
       fontsData,
-      designSearchCodes
+      designSearchCodes,
+      creatingPdf
     } = this.props
 
     let loadErrContent = <Spin />
@@ -136,7 +143,6 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       return fontObject
       // tslint:disable-next-line: align
     }, [])
-
     const orderContent = order && (
       <OrderFiles
         {...{
@@ -146,7 +152,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           uploadingThumbnail,
           setUploadingThumbnailAction,
           changes,
-          colorAccessories
+          colorAccessories,
+          creatingPdf
         }}
         onSelectStitchingColor={setStitchingColorAction}
         onSelectColor={setColorAction}
@@ -154,6 +161,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         downloadFile={this.downloadAllFiles}
         onUploadFile={uploadProDesignAction}
         onSaveThumbnail={this.saveDesign}
+        onGeneratePdf={this.handleGeneratePdf}
       />
     )
     const content =
@@ -299,6 +307,29 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       Message.error(error.message)
     }
   }
+
+  handleGeneratePdf = async () => {
+    const { order, generatePdf, creatingPdfAction, setPdfAction } = this.props
+    try {
+      creatingPdfAction(true)
+      const pdf = await generatePdf({
+        variables: {
+          code: get(order, 'code')
+        }
+      })
+      const url = get(pdf, 'data.generatePdf.message')
+      const a = document.createElement('a')
+      a.href = url
+      a.target = '_blank'
+      a.download = url
+      a.click()
+      setPdfAction(url)
+      creatingPdfAction(false)
+    } catch (error) {
+      creatingPdfAction(false)
+      Message.error(error.message)
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => {
@@ -311,6 +342,7 @@ const DesignSearchAdminEnhance = compose(
   injectIntl,
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
+  graphql(generatePdfMutation, { name: 'generatePdf' }),
   connect(
     mapStateToProps,
     {

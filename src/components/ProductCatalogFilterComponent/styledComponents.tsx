@@ -36,5 +36,5 @@ export const ItemRow = styled.div`
   margin-bottom: 5px;
 `
 export const AnimateHeightStyled = {
-  width: '150px'
+  width: '200px'
 }

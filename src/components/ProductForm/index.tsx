@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
+import Modal from 'antd/lib/modal/Modal'
 import { graphql, compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import {
@@ -20,8 +21,8 @@ import {
 } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
-import * as ApiActions from './api'
-import { QueryProps, Product } from '../../types/common'
+import ModalTitle from '../ModalTitle'
+import { QueryProps, Product, ProductFile } from '../../types/common'
 import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
   Container,
@@ -32,8 +33,13 @@ import {
   HeaderRow,
   FullLoader,
   LoadingMessage,
-  MainBody
+  MainBody,
+  StyledGhostButton,
+  StyledButton,
+  ModalMessage
 } from './styledComponents'
+import { uploadMediaAction } from './api'
+import { History } from 'history'
 
 interface DataExtra extends QueryProps {
   categories: object[]
@@ -43,14 +49,25 @@ interface DataExtra extends QueryProps {
 interface Props {
   bannerMaterials: any[]
   product: Product
-  history: any
+  history: History
+  newSport: string
+  newSportEnabled: boolean
   match: any
   client: any
-  fixed: boolean
+  bannersLoading: boolean
   loading: boolean
+  openPrompt: boolean
   loadingMessage: string
+  specDetail: string
+  materialDetail: string
   dataExtra: DataExtra
+  uploadMediaFile: (event: any) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
   resetData: () => void
+  setSpec: (value: string) => void
+  setMaterial: (value: string) => void
+  setPrompt: (value: boolean) => void
   uploadFilesAction: (
     formatMessage: (messageDescriptor: any) => string,
     productImages: any[],
@@ -58,26 +75,28 @@ interface Props {
     mediaFiles: any[],
     isCustom: boolean
   ) => Promise<any>
+  enableNewSportAction: (value: boolean) => void
+  setNewSport: (value: string) => void
   upsertProductAction: (variables: {}) => Promise<any>
   getDataProduct: (variables: {}) => Promise<any>
   getExtraDataAction: () => Promise<any>
   setValue: (field: string, value: any) => void
   removeBanner: (index: number) => void
   setDesignCenter: (checked: boolean) => void
-  setColors: () => void
+  setColors: (id: number, value: boolean) => void
   addBanner: (item: any) => void
-  addPicture: (index: number, item: any) => void
   setBanner: (index: number, field: string, value: any) => void
   removeFile: (array: string, index: number) => void
+  moveFile: (array: string, index: number, indexTo: number) => void
+  moveBanner: (index: number, indexTo: number) => void
   addFile: (array: string, item: any) => void
   setFileField: (
-    array: string,
-    index: number,
-    field: string,
-    value: any
+    selected: string,
+    id: string,
+    name: string,
+    value: string
   ) => void
-  setBannerActions: (banners: any) => void
-  setGenderActions: (genders: any) => void
+  setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setCurrencies: (currencies: any) => void
   setProductAction: (product: Product | {}, extraData: any) => void
@@ -107,13 +126,16 @@ export class ProductForm extends React.Component<Props, {}> {
     }
     const dataExtra = await query({
       query: getExtraData,
+      variables: { id },
       fetchPolicy: 'network-only'
     })
     const extraData = get(dataExtra, 'data.extraData', [])
+    window.onbeforeunload = () => true
     setProductAction(product, extraData)
   }
   componentWillUnmount() {
     const { resetData } = this.props
+    window.onbeforeunload = null
     resetData()
   }
   render() {
@@ -123,18 +145,31 @@ export class ProductForm extends React.Component<Props, {}> {
       match,
       dataExtra,
       bannerMaterials,
+      enableNewSportAction,
+      setNewSport,
       setCheck,
-      setBannerActions,
+      bannersLoading,
+      newSport,
+      newSportEnabled,
+      setSpec,
+      specDetail,
+      setMaterial,
+      materialDetail,
       removeFile,
+      moveBanner,
       addFile,
-      addPicture,
       setDesignCenter,
       removeBanner,
       setColors,
+      openPrompt,
+      uploadMediaFile,
+      addMedia,
+      removeMedia,
+      moveFile,
       addBanner,
       setBanner,
       setFileField,
-      setGenderActions,
+      setGenderAction,
       loadingMessage,
       product,
       loading,
@@ -154,7 +189,7 @@ export class ProductForm extends React.Component<Props, {}> {
     const mediaFiles = get(product, 'mediaFiles', [])
     const customizable = get(product, 'designCenter', null)
     const pictures = get(product, 'pictures', [])
-    const gendersArray = get(product, 'genders', [])
+    const selectedGenders = get(product, 'genders', {})
     const colorsProducts = get(product, 'colors', {})
     const screenSteps = [
       <FirstStep
@@ -164,8 +199,19 @@ export class ProductForm extends React.Component<Props, {}> {
           setValue,
           setDesignCenter,
           setCheck,
+          setSpec,
+          specDetail,
+          setMaterial,
+          materialDetail,
+          newSport,
+          newSportEnabled,
           seasons,
-          setGenderActions,
+          moveFile,
+          removeFile,
+          addFile,
+          enableNewSportAction,
+          setNewSport,
+          setGenderAction,
           product,
           materials,
           genders,
@@ -221,15 +267,21 @@ export class ProductForm extends React.Component<Props, {}> {
           colorsProducts,
           removeBanner,
           addBanner,
-          addPicture,
+          moveBanner,
+          bannersLoading,
           setBanner,
+          uploadMediaFile,
+          addMedia,
+          removeMedia,
           customizable,
+          moveFile,
           setCheck,
+          genders,
+          colors,
           pictures,
-          setBannerActions,
           bannerMaterials,
           setValue,
-          gendersArray,
+          selectedGenders,
           formatMessage
         }}
       />
@@ -243,7 +295,28 @@ export class ProductForm extends React.Component<Props, {}> {
             <LoadingMessage>{loadingMessage}</LoadingMessage>
           </FullLoader>
         )}
-        <BackLabel onClick={this.handleOnClickBack}>
+        <Modal
+          visible={openPrompt}
+          title={<ModalTitle title={formatMessage(messages.areYouSure)} />}
+          footer={[
+            <StyledGhostButton key="cancel" onClick={this.handlePrompt(false)}>
+              {formatMessage(messages.cancel)}
+            </StyledGhostButton>,
+            <StyledButton
+              key={'save'}
+              type="primary"
+              onClick={this.handleOnClickBack}
+            >
+              {formatMessage(messages.yes)}
+            </StyledButton>
+          ]}
+          closable={false}
+          maskClosable={false}
+          destroyOnClose={true}
+        >
+          <ModalMessage>{formatMessage(messages.outWithoutSave)}</ModalMessage>
+        </Modal>
+        <BackLabel onClick={this.handlePrompt(true)}>
           <Icon type="left" />
           <BackText>
             <FormattedMessage {...messages.backToProducts} />
@@ -262,14 +335,14 @@ export class ProductForm extends React.Component<Props, {}> {
                 )}
               </ScreenTitle>
               <Steps current={currentStep}>
-                {stepsArray.map(step => (
-                  <Step title={step.title} />
+                {stepsArray.map((step, index) => (
+                  <Step key={index} title={step.title} />
                 ))}
               </Steps>
               {screenSteps[currentStep]}
             </HeaderRow>
             <Stepper
-              {...{ currentStep, validNext }}
+              {...{ currentStep, validNext, customizable }}
               changeStep={this.changeStep}
               showMissingFields={this.showMissingFields}
               handleSave={this.handleSave}
@@ -285,7 +358,7 @@ export class ProductForm extends React.Component<Props, {}> {
   }
   validateFields = () => {
     const { currentStep } = this.state
-    const { product } = this.props
+    const { product, newSport, newSportEnabled } = this.props
     switch (currentStep) {
       case FIRST_STEP:
         const {
@@ -300,11 +373,13 @@ export class ProductForm extends React.Component<Props, {}> {
           code,
           categoryName,
           sports,
-          relatedItemTag,
           description,
           weight,
           shortDescription
         } = product
+        const hasNewSport = newSportEnabled && newSport
+        const sportSelected =
+          sports && Object.keys(sports).some(key => sports[key])
         return (
           name &&
           mpn &&
@@ -312,29 +387,25 @@ export class ProductForm extends React.Component<Props, {}> {
           season &&
           yotpoId &&
           code &&
-          details &&
+          details.length &&
           genders &&
+          Object.keys(genders).some(key => genders[key].selected) &&
           product.hasOwnProperty('designCenter') &&
-          genders.length &&
-          materials &&
+          materials.length &&
           categoryName &&
-          sports &&
-          Object.keys(sports).some(key => sports[key]) &&
-          relatedItemTag &&
+          (sportSelected || hasNewSport) &&
           description &&
           weight &&
           shortDescription
         )
       case SECOND_STEP:
-        const { sizeRange, fitStyles, colors, designCenter } = product
+        const { sizeRange, colors, designCenter } = product
         return (
           sizeRange &&
           Object.keys(sizeRange).some(key => sizeRange[key]) &&
-          fitStyles &&
-          Object.keys(fitStyles).some(key => fitStyles[key]) &&
           ((!designCenter &&
             colors &&
-            Object.keys(colors).some(key => colors[key])) ||
+            Object.keys(colors).some(key => colors[key].selected)) ||
             designCenter)
         )
       case THIRD_STEP:
@@ -347,30 +418,24 @@ export class ProductForm extends React.Component<Props, {}> {
     }
   }
   handleSave = (onlySave: boolean) => async () => {
-    const {
-      product: { pictures: productImages, mediaFiles, designCenter },
-      bannerMaterials,
-      formatMessage,
-      upsertProductAction,
-      uploadFilesAction,
-      setUploadingAction
-    } = this.props
+    const { setUploadingAction, formatMessage } = this.props
     try {
-      await uploadFilesAction(
-        formatMessage,
-        productImages || [],
-        bannerMaterials || [],
-        mediaFiles || [],
-        designCenter
-      )
-
-      const { product, history } = this.props
+      const {
+        product,
+        history,
+        bannerMaterials,
+        upsertProductAction,
+        newSport,
+        newSportEnabled
+      } = this.props
       const {
         sports,
         productMaterials,
         sizeRange,
         fitStyles,
         colors,
+        mediaFiles,
+        designCenter,
         id,
         code,
         name,
@@ -385,7 +450,6 @@ export class ProductForm extends React.Component<Props, {}> {
         genders,
         season,
         contentTile,
-        pictures,
         priceRange,
         retailMen,
         retailWomen,
@@ -395,6 +459,8 @@ export class ProductForm extends React.Component<Props, {}> {
         tags,
         active
       } = product
+      const specsDetails = details.join(', ')
+      const materialsDetails = materials.join('-')
       const sportsProduct = sports
         ? Object.keys(sports).reduce((arr: any[], sportId: string) => {
             if (sports[sportId]) {
@@ -404,18 +470,16 @@ export class ProductForm extends React.Component<Props, {}> {
             // tslint:disable-next-line: align
           }, [])
         : []
-      const productMaterialsDet = productMaterials
-        ? Object.keys(productMaterials).reduce(
-            (arr: any[], materialId: string) => {
-              if (productMaterials[materialId]) {
-                arr.push({ id: materialId })
-              }
-              return arr
-              // tslint:disable-next-line: align
-            },
-            []
-          )
-        : []
+      const productMaterialsDet = bannerMaterials.reduce(
+        (arr: any[], banner: ProductFile) => {
+          if (productMaterials[banner.id]) {
+            arr.push({ id: banner.id })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        },
+        []
+      )
       const sizeRangeDet = sizeRange
         ? Object.keys(sizeRange).reduce((arr: any[], sizeId: string) => {
             if (sizeRange[sizeId]) {
@@ -436,13 +500,32 @@ export class ProductForm extends React.Component<Props, {}> {
         : []
       const colorsDet = colors
         ? Object.keys(colors).reduce((arr: any[], colorId: string) => {
-            if (colors[colorId]) {
+            if (colors[colorId].selected) {
               arr.push({ id: colorId })
             }
             return arr
             // tslint:disable-next-line: align
           }, [])
         : []
+      const gendersDet = genders
+        ? Object.keys(genders).reduce((arr: any[], genderId: string) => {
+            if (genders[genderId].selected) {
+              arr.push({ id: genderId })
+            }
+            return arr
+            // tslint:disable-next-line: align
+          }, [])
+        : []
+      const arrayType = designCenter ? genders : colors
+      const picturesDet = Object.keys(arrayType).map((imageId: string) => ({
+        front_image: arrayType[imageId].front_image || '',
+        back_image: arrayType[imageId].back_image || '',
+        left_image: arrayType[imageId].left_image || '',
+        right_image: arrayType[imageId].right_image || '',
+        color_id: !designCenter ? imageId : null,
+        gender_id: designCenter ? imageId : gendersDet[0].id
+      }))
+
       const productToSave = {
         id,
         code,
@@ -455,12 +538,13 @@ export class ProductForm extends React.Component<Props, {}> {
         description,
         obj,
         mtl,
-        details,
-        materials,
-        genders,
+        details: specsDetails,
+        materials: materialsDetails,
+        genders: gendersDet,
         season,
+        new_sport: newSportEnabled ? newSport : '',
         content_tile: contentTile,
-        pictures,
+        pictures: picturesDet,
         price_range: priceRange,
         retail_men: retailMen,
         retail_women: retailWomen,
@@ -475,6 +559,7 @@ export class ProductForm extends React.Component<Props, {}> {
         colors: colorsDet,
         product_materials: productMaterialsDet
       }
+      setUploadingAction(true, formatMessage(messages.savingProduct))
       await upsertProductAction({
         variables: { body: productToSave, bannerMaterials }
       })
@@ -485,10 +570,15 @@ export class ProductForm extends React.Component<Props, {}> {
       } else {
         history.push('/admin/products')
       }
+      message.success(formatMessage(messages.success))
     } catch (error) {
       setUploadingAction(false, '')
       message.error(formatMessage(messages.errorUploading))
     }
+  }
+  handlePrompt = (value: boolean) => () => {
+    const { setPrompt } = this.props
+    setPrompt(value)
   }
   changeStep = (currentStep: Number) => () => {
     this.setState({ currentStep })
@@ -514,7 +604,7 @@ const ProductFormEnhance = compose(
   graphql(upsertProduct, { name: 'upsertProductAction' }),
   connect(
     mapStateToProps,
-    { ...ProductFormActions, ...ApiActions }
+    { ...ProductFormActions, uploadMediaFile: uploadMediaAction }
   )
 )(ProductForm)
 

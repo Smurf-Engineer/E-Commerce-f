@@ -12,6 +12,7 @@ export const UploadersContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 50px;
 `
 
 export const ButtonContainer = styled.div`
