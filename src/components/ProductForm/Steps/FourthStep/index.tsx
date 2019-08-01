@@ -109,7 +109,12 @@ export class FourthStep extends React.Component<Props, {}> {
                   label: 'Right',
                   src: arrayType[id].right_image || ''
                 }
-              ]
+              ],
+              thumbnail: {
+                name: 'thumbnail',
+                label: 'Thumbnail',
+                src: arrayType[id].thumbnail || ''
+              }
             })
           }
           return arr
