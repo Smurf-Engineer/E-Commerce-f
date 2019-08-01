@@ -45,7 +45,7 @@ const ColorList = ({
     // tslint:disable-next-line:curly
     if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
   }
-  let arrayColors: any
+  let arrayColors: any = []
 
   try {
     arrayColors = JSON.parse(

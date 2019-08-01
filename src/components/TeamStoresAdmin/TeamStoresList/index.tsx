@@ -42,9 +42,10 @@ interface Props {
   onSortClick: (label: string, sort: sorts) => void
   onSetFeatured: (id: number) => void
   onChangePage: (page: number) => void
+  onClickRow: (id: string) => void
 }
 
-const productHeaders = [
+const teamStoreHeaders = [
   { title: 'name', id: 'name' },
   { title: 'manager', id: 'first_name' },
   { title: 'type', id: 'on_demand_mode' },
@@ -63,7 +64,8 @@ const TeamStoresList = ({
   onSetFeatured,
   onChangePage,
   withPagination = true,
-  withoutPadding = false
+  withoutPadding = false,
+  onClickRow
 }: Props) => {
   const teamStores = get<
     TeamStoreAdminResultType,
@@ -76,11 +78,11 @@ const TeamStoresList = ({
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
 
-  const mobileHeaders = productHeaders.map(({ title, id }) => {
+  const mobileHeaders = teamStoreHeaders.map(({ title, id }) => {
     return <Header key={id}>{formatMessage(messages[title])}</Header>
   })
 
-  const headers = productHeaders.map(({ title, id }) => (
+  const headers = teamStoreHeaders.map(({ title, id }) => (
     <AdminTable
       key={id}
       label={formatMessage(messages[title])}
@@ -108,7 +110,8 @@ const TeamStoresList = ({
         userFirstName,
         userLastName,
         onDemand,
-        cutOffDateString
+        cutOffDateString,
+        shortId
       }: TeamStoreAdminType,
       index: number
     ) => {
@@ -124,7 +127,9 @@ const TeamStoresList = ({
             onDemand,
             formatMessage,
             cutOffDateString,
-            onSetFeatured
+            onSetFeatured,
+            onClickRow,
+            shortId
           }}
         />
       )

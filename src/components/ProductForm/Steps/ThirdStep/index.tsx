@@ -58,19 +58,19 @@ export class ThirdStep extends React.Component<Props, {}> {
               <FormattedMessage {...messages.currency} />
             </Label>
           </InputDiv>
-          {quantities.map(quantity => (
-            <InputDiv isFlex={true} flex={1}>
+          {quantities.map((quantity, index) => (
+            <InputDiv isFlex={true} flex={1} key={index}>
               <Label>{quantity}</Label>
             </InputDiv>
           ))}
         </RowInput>
         {currenciesValues.map((currencyItem, index) => (
-          <RowInput>
+          <RowInput key={index}>
             <InputDiv left={true} isFlex={true} flex={1}>
               <Label>{currencyItem.label}</Label>
             </InputDiv>
-            {currencyItem.amounts.map((amount: any) => (
-              <InputDiv isFlex={true} flex={1}>
+            {currencyItem.amounts.map((amount: any, amountIndex: number) => (
+              <InputDiv key={amountIndex} isFlex={true} flex={1}>
                 <NumberInput
                   name={`${currencyItem.label}@${
                     amount ? amount.quantity : ''
