@@ -1,20 +1,28 @@
-/**
- * OrderDetails Test - Created by jorge on 23/07/18.
- */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl'
-import { OrderDetails } from './index'
+import { OrderDetailsAdmin } from './index'
+import { OrderDetailsInfo } from '../../types/common'
 
-describe('<OrderDetails />', () => {
+describe('<OrderDetailsAdmin />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const orderQuery: OrderDetailsInfo = jest.genMockFromModule(
+      '../../../__mocks__/orderQueryMock'
+    )
+    const data = {
+      orderQuery,
+      fetchMore: () => {}
+    }
     ReactDOM.render(
       <IntlProvider locale="en">
-        <OrderDetails
+        <OrderDetailsAdmin
           onReturn={() => {}}
           formatMessage={() => ''}
           orderId="rkB_7fgV7"
+          {...{ data }}
+          from={''}
+          currentCurrency={''}
         />
       </IntlProvider>,
       div

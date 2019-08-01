@@ -41,6 +41,7 @@ import {
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
+import { History } from 'history'
 
 type Thumbnail = {
   style: {
@@ -49,7 +50,7 @@ type Thumbnail = {
 }
 
 interface Props {
-  history: any
+  history: History
   client: any
   loading: boolean
   order?: OrderSearchResult
