@@ -36,7 +36,7 @@ export const initialState = fromJS({
   endDate: '',
   endDateMoment: null,
   privateStore: true,
-  onDemand: false,
+  onDemand: true,
   passCode: '',
   openLocker: false,
   selectedItems: {},
