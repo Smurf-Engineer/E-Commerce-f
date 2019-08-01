@@ -29,5 +29,6 @@ module.exports = {
   flatlock: '',
   bumpMap: '',
   weight: 0,
-  relatedProducts: []
+  relatedProducts: [],
+  status: ''
 }

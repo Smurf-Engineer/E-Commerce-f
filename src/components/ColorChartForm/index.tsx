@@ -23,7 +23,6 @@ import closeIcon from '../../assets/cancel-button.svg'
 import { FormattedMessage } from 'react-intl'
 import formConfig from './formConfig'
 import { UserInfo } from '../../types/common'
-import { ReactNodeArray } from 'prop-types'
 
 interface State {
   name: string

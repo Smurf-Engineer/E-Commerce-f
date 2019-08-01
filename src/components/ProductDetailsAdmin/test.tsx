@@ -15,7 +15,9 @@ interface Data extends QueryProps {
 describe('<ProductDetailsAdmin />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    const product: Product = jest.genMockFromModule('productMock')
+    const product: Product = jest.genMockFromModule(
+      '../../../__mocks__/productMock'
+    )
     const data: Data = {
       product,
       fetchMore: () => {}
