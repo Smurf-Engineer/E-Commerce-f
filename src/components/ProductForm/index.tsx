@@ -521,6 +521,7 @@ export class ProductForm extends React.Component<Props, {}> {
         back_image: arrayType[imageId].back_image || '',
         left_image: arrayType[imageId].left_image || '',
         right_image: arrayType[imageId].right_image || '',
+        thumbnail: arrayType[imageId].thumbnail || '',
         color_id: !designCenter ? imageId : null,
         gender_id: designCenter ? imageId : gendersDet[0].id
       }))
