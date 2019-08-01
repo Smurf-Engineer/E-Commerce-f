@@ -44,5 +44,9 @@ export default defineMessages({
   addVideos: {
     id: 'components.FourthStep.addVideos',
     defaultMessage: '+ ADD VIDEOS'
+  },
+  thumbnails: {
+    id: 'components.FourthStep.thumbnails',
+    defaultMessage: 'Thumbnail images'
   }
 })
