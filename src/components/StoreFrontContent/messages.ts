@@ -33,6 +33,14 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.store',
     defaultMessage: 'store'
   },
+  storeOpen: {
+    id: 'screens.StoreFrontContent.storeOpen',
+    defaultMessage: 'STORE OPEN'
+  },
+  storeClosed: {
+    id: 'screens.StoreFrontContent.storeClosed',
+    defaultMessage: 'STORE CLOSED'
+  },
   description: {
     id: 'screens.StoreFrontContent.description',
     defaultMessage:

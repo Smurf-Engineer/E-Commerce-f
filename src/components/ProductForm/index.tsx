@@ -39,6 +39,7 @@ import {
   ModalMessage
 } from './styledComponents'
 import { uploadMediaAction } from './api'
+import { History } from 'history'
 
 interface DataExtra extends QueryProps {
   categories: object[]
@@ -48,7 +49,7 @@ interface DataExtra extends QueryProps {
 interface Props {
   bannerMaterials: any[]
   product: Product
-  history: any
+  history: History
   newSport: string
   newSportEnabled: boolean
   match: any
@@ -334,8 +335,8 @@ export class ProductForm extends React.Component<Props, {}> {
                 )}
               </ScreenTitle>
               <Steps current={currentStep}>
-                {stepsArray.map(step => (
-                  <Step title={step.title} />
+                {stepsArray.map((step, index) => (
+                  <Step key={index} title={step.title} />
                 ))}
               </Steps>
               {screenSteps[currentStep]}

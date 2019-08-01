@@ -173,6 +173,7 @@ export const GetTeamStoreItems = gql`
       id
       shortId: short_id
       name
+      featured
       items {
         expectedQty: expected_quantity
         design {
