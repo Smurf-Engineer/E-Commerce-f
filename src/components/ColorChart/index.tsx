@@ -2,7 +2,7 @@
  * ColorChart Component - Created by eduardoquintero on 19/03/18.
  */
 import * as React from 'react'
-
+import config from '../../config'
 import messages from './messages'
 import {
   Container,
@@ -78,9 +78,7 @@ export class ColorChart extends React.Component<Props> {
   }
   handleDownloadLibrary = () => {
     const { handleClose } = this.props
-    window.open(
-      'https://storage.googleapis.com/jakroo/screens/JAKROO_COLOR_SWATCH_LIBRARY.zip'
-    )
+    window.open(`${config.colorSwatchZip}`)
     handleClose()
   }
 }
