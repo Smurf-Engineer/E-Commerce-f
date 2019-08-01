@@ -8,6 +8,37 @@ import DiscountsModals from './index'
 describe('<DiscountsModals />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<DiscountsModals open={false} />, div)
+    const discountTypes = ['']
+    const couponCode = ''
+    const discountItemId = ''
+    const discountType = ''
+    const rate = 0
+    const discountActive = false
+    const expiry = ''
+    const loading = false
+    const open = false
+    ReactDOM.render(
+      <DiscountsModals
+        {...{
+          open,
+          loading,
+          expiry,
+          discountActive,
+          rate,
+          discountType,
+          discountItemId,
+          couponCode,
+          discountTypes
+        }}
+        formatMessage={() => ''}
+        handleOnInputChange={() => {}}
+        onSelectDiscountType={() => {}}
+        onChangeRate={() => {}}
+        onActivateDiscount={() => {}}
+        onSaveDiscount={() => {}}
+        onSelectDate={() => {}}
+      />,
+      div
+    )
   })
 })
