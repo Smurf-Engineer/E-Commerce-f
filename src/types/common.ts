@@ -1350,3 +1350,8 @@ export interface HomepageImagesType {
   mobileImage: string
   url: string
 }
+
+export type Color = {
+  name: string
+  value: string
+}
