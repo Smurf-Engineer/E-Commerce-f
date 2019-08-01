@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import Spin from 'antd/lib/spin'
 import moment from 'moment'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
@@ -48,7 +49,9 @@ import {
   sliderStyle,
   StyledSliderTitle,
   Description,
-  StoreBox
+  StoreBox,
+  Loading,
+  ButtonsContainer
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -164,7 +167,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
   render() {
     const {
-      data: { error, getTeamStore },
+      data: { error, getTeamStore, loading },
       teamStoreId,
       passCode,
       formatMessage,
@@ -282,209 +285,220 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     return (
       <Container>
-        {!teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
-        <HeadersContainer>
-          <Content>
-            <HeadersContainer>
-              <FlexContainer>
-                <Title>{teamStoreName}</Title>
-                <FlexContainer>
-                  <ButtonWrapper>
-                    <Button type="primary" onClick={this.handlShareClick}>
-                      <FormattedMessage {...messages.share} />
-                    </Button>
-                  </ButtonWrapper>
-                  {teamStoreOwner ? (
-                    <ButtonWrapper>
-                      <Button type="primary" onClick={this.handleOnPressEdit}>
-                        <FormattedMessage {...messages.edit} />
-                      </Button>
-                    </ButtonWrapper>
-                  ) : (
-                    <DefaultButton onClick={this.handlContactClick}>
-                      <FormattedMessage {...messages.contactManager} />
-                    </DefaultButton>
-                  )}
-                </FlexContainer>
-              </FlexContainer>
-            </HeadersContainer>
-            {onDemandMode ? (
-              <Description>
-                <PriceTitle>
-                  {`${formatMessage(
-                    messages.welcome
-                  )} ${teamStoreName} ${formatMessage(messages.store)}`}
-                </PriceTitle>
-                <PriceDescription>
-                  <FormattedMessage {...messages.description} />
-                </PriceDescription>
-              </Description>
-            ) : (
-              <React.Fragment>
-                <PriceTitle>
-                  <FormattedMessage {...messages.priceDropTitle} />
-                </PriceTitle>
-                <PriceDescription>
-                  <FormattedMessage {...messages.priceDropSubTitle} />
-                </PriceDescription>
-                <PriceDescription>
-                  <FormattedMessage {...messages.priceDropDescription} />
-                </PriceDescription>
-                <PriceDescription>
-                  <FormattedMessage {...messages.finalPricing} />
-                </PriceDescription>
-              </React.Fragment>
-            )}
-          </Content>
-          <SideBar>
-            {!onDemandMode && (
-              <OrderTitle>
-                {`${formatMessage(
-                  messages.orderTitle
-                )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
-                  messages.orderTitle2
-                )} ${deliveryMonth} ${deliveryDayOrdinal}`}
-              </OrderTitle>
-            )}
-            <DatesContainer {...{ onDemandMode }}>
-              {onDemandMode ? (
-                <StoreBox open={featured}>
-                  {formatMessage(
-                    featured ? messages.storeOpen : messages.storeClosed
-                  )}
-                </StoreBox>
-              ) : (
-                <CalendarContainer>
-                  <DatesTitle>
-                    <FormattedMessage {...messages.cutOff} />
-                  </DatesTitle>
-                  <CalendarView>
-                    <CalendarTitle>{cutOffMonth}</CalendarTitle>
-                    <CalendarDay>{cutOffDay}</CalendarDay>
-                  </CalendarView>
-                </CalendarContainer>
-              )}
-              <CalendarContainer>
-                <DatesTitle>
-                  <FormattedMessage {...messages.estimatedArrival} />
-                </DatesTitle>
-                <CalendarFinalView>
-                  <CalendarFinalTitle>{deliveryMonth}</CalendarFinalTitle>
-                  <CalendarDay>{deliveryDay}</CalendarDay>
-                </CalendarFinalView>
-              </CalendarContainer>
-            </DatesContainer>
-          </SideBar>
-        </HeadersContainer>
-
-        {errorMessage ? (
-          <ErrorTitle>{errorMessage}</ErrorTitle>
+        {loading ? (
+          <Loading>
+            <Spin />
+          </Loading>
         ) : (
-          <div>
-            {!onDemandMode && (
-              <TierContainer>
-                <TierTitle>
-                  {`${formatMessage(messages.tierTitle)} ${
-                    targetRange ? targetRange.name : 'Not selected'
-                  }`}
-                </TierTitle>
-                <TierDescription>
-                  <FormattedMessage {...messages.tierDescription} />
-                </TierDescription>
-                <SliderWrapper>
-                  <StyledSlider
-                    marks={marksArray}
-                    disabled={true}
-                    value={sliderValue}
-                    min={0}
-                    max={249}
+          <React.Fragment>
+            {!teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
+            <HeadersContainer>
+              <Content>
+                <HeadersContainer>
+                  <FlexContainer>
+                    <Title>{teamStoreName}</Title>
+                    <ButtonsContainer>
+                      <ButtonWrapper>
+                        <Button type="primary" onClick={this.handlShareClick}>
+                          <FormattedMessage {...messages.share} />
+                        </Button>
+                      </ButtonWrapper>
+                      {teamStoreOwner ? (
+                        <ButtonWrapper>
+                          <Button
+                            type="primary"
+                            onClick={this.handleOnPressEdit}
+                          >
+                            <FormattedMessage {...messages.edit} />
+                          </Button>
+                        </ButtonWrapper>
+                      ) : (
+                        <DefaultButton onClick={this.handlContactClick}>
+                          <FormattedMessage {...messages.contactManager} />
+                        </DefaultButton>
+                      )}
+                    </ButtonsContainer>
+                  </FlexContainer>
+                </HeadersContainer>
+                {onDemandMode ? (
+                  <Description>
+                    <PriceTitle>
+                      {`${formatMessage(
+                        messages.welcome
+                      )} ${teamStoreName} ${formatMessage(messages.store)}`}
+                    </PriceTitle>
+                    <PriceDescription>
+                      <FormattedMessage {...messages.description} />
+                    </PriceDescription>
+                  </Description>
+                ) : (
+                  <React.Fragment>
+                    <PriceTitle>
+                      <FormattedMessage {...messages.priceDropTitle} />
+                    </PriceTitle>
+                    <PriceDescription>
+                      <FormattedMessage {...messages.priceDropSubTitle} />
+                    </PriceDescription>
+                    <PriceDescription>
+                      <FormattedMessage {...messages.priceDropDescription} />
+                    </PriceDescription>
+                    <PriceDescription>
+                      <FormattedMessage {...messages.finalPricing} />
+                    </PriceDescription>
+                  </React.Fragment>
+                )}
+              </Content>
+              <SideBar>
+                {!onDemandMode && (
+                  <OrderTitle>
+                    {`${formatMessage(
+                      messages.orderTitle
+                    )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
+                      messages.orderTitle2
+                    )} ${deliveryMonth} ${deliveryDayOrdinal}`}
+                  </OrderTitle>
+                )}
+                <DatesContainer {...{ onDemandMode }}>
+                  {onDemandMode ? (
+                    <StoreBox open={featured}>
+                      {formatMessage(
+                        featured ? messages.storeOpen : messages.storeClosed
+                      )}
+                    </StoreBox>
+                  ) : (
+                    <CalendarContainer>
+                      <DatesTitle>
+                        <FormattedMessage {...messages.cutOff} />
+                      </DatesTitle>
+                      <CalendarView>
+                        <CalendarTitle>{cutOffMonth}</CalendarTitle>
+                        <CalendarDay>{cutOffDay}</CalendarDay>
+                      </CalendarView>
+                    </CalendarContainer>
+                  )}
+                  <CalendarContainer>
+                    <DatesTitle>
+                      <FormattedMessage {...messages.estimatedArrival} />
+                    </DatesTitle>
+                    <CalendarFinalView>
+                      <CalendarFinalTitle>{deliveryMonth}</CalendarFinalTitle>
+                      <CalendarDay>{deliveryDay}</CalendarDay>
+                    </CalendarFinalView>
+                  </CalendarContainer>
+                </DatesContainer>
+              </SideBar>
+            </HeadersContainer>
+
+            {errorMessage ? (
+              <ErrorTitle>{errorMessage}</ErrorTitle>
+            ) : (
+              <div>
+                {!onDemandMode && (
+                  <TierContainer>
+                    <TierTitle>
+                      {`${formatMessage(messages.tierTitle)} ${
+                        targetRange ? targetRange.name : 'Not selected'
+                      }`}
+                    </TierTitle>
+                    <TierDescription>
+                      <FormattedMessage {...messages.tierDescription} />
+                    </TierDescription>
+                    <SliderWrapper>
+                      <StyledSlider
+                        marks={marksArray}
+                        disabled={true}
+                        value={sliderValue}
+                        min={0}
+                        max={249}
+                      />
+                    </SliderWrapper>
+                  </TierContainer>
+                )}
+                <ListContainer>
+                  <ProductList
+                    {...{ targetRange, formatMessage, onDemandMode, featured }}
+                    withoutPadding={false}
+                    openQuickView={this.handleOnOpenQuickView}
+                    designs={items}
+                    teamStoreShortId={teamStoreShortId}
+                    targentPrice={targetRange.name}
+                    currentRange={markslider}
                   />
-                </SliderWrapper>
-              </TierContainer>
+                </ListContainer>
+              </div>
             )}
-            <ListContainer>
-              <ProductList
-                {...{ targetRange, formatMessage, onDemandMode, featured }}
-                withoutPadding={true}
-                openQuickView={this.handleOnOpenQuickView}
-                designs={items}
-                teamStoreShortId={teamStoreShortId}
-                targentPrice={targetRange.name}
-                currentRange={markslider}
-              />
-            </ListContainer>
-          </div>
+
+            <AboutContainer>
+              <AboutTitle>
+                <FormattedMessage {...messages.aboutOrdering} />
+              </AboutTitle>
+              <ProductInfo
+                id="Much"
+                title={formatMessage(messages.howMuchTitle)}
+                showContent={showMuch}
+                toggleView={this.toggleProductInfo}
+              >
+                <p>{formatMessage(messages.howMuchDesc)}</p>
+              </ProductInfo>
+
+              <ProductInfo
+                id="When"
+                title={formatMessage(messages.whenTitle)}
+                showContent={showWhen}
+                toggleView={this.toggleProductInfo}
+              >
+                <p>{formatMessage(messages.whenDesc)}</p>
+              </ProductInfo>
+
+              <ProductInfo
+                id="Long"
+                title={formatMessage(messages.howLongTitle)}
+                showContent={showLong}
+                toggleView={this.toggleProductInfo}
+              >
+                <p>{formatMessage(messages.howLongDesc)}</p>
+              </ProductInfo>
+              <ProductInfo
+                id="Cani"
+                title={formatMessage(messages.CanIORder)}
+                showContent={showCani}
+                toggleView={this.toggleProductInfo}
+              >
+                <p>{formatMessage(messages.CanIORderDesc)}</p>
+              </ProductInfo>
+            </AboutContainer>
+
+            <Share
+              open={openShare}
+              modalTitle={formatMessage(messages.shareModalTitle)}
+              requestClose={this.handleOpenShareModal}
+              url={shareStoreUrl}
+              {...{ formatMessage }}
+            />
+
+            <EmailContact
+              {...{ formatMessage }}
+              open={openEmailContact}
+              requestClose={this.closeEmailContactModal}
+              onSetEmail={setEmailContactAction}
+              onSetMesage={setEmailMessageAction}
+              teamStoreId={teamStoreShortId}
+              emailContact={emailContact}
+              emailMessage={emailMessage}
+              sendMessageLoading={sendMessageLoading}
+              setSendMessageLoading={sendMessageLoadingAction}
+              ownerName={ownerName}
+            />
+
+            <TeamPassCode
+              open={openModal}
+              requestClose={this.closePassCodeModal}
+              formatMessage={formatMessage}
+              setPassCode={setPassCodeAction}
+              teamStoreId={teamStoreId}
+            />
+          </React.Fragment>
         )}
-
-        <AboutContainer>
-          <AboutTitle>
-            <FormattedMessage {...messages.aboutOrdering} />
-          </AboutTitle>
-          <ProductInfo
-            id="Much"
-            title={formatMessage(messages.howMuchTitle)}
-            showContent={showMuch}
-            toggleView={this.toggleProductInfo}
-          >
-            <p>{formatMessage(messages.howMuchDesc)}</p>
-          </ProductInfo>
-
-          <ProductInfo
-            id="When"
-            title={formatMessage(messages.whenTitle)}
-            showContent={showWhen}
-            toggleView={this.toggleProductInfo}
-          >
-            <p>{formatMessage(messages.whenDesc)}</p>
-          </ProductInfo>
-
-          <ProductInfo
-            id="Long"
-            title={formatMessage(messages.howLongTitle)}
-            showContent={showLong}
-            toggleView={this.toggleProductInfo}
-          >
-            <p>{formatMessage(messages.howLongDesc)}</p>
-          </ProductInfo>
-          <ProductInfo
-            id="Cani"
-            title={formatMessage(messages.CanIORder)}
-            showContent={showCani}
-            toggleView={this.toggleProductInfo}
-          >
-            <p>{formatMessage(messages.CanIORderDesc)}</p>
-          </ProductInfo>
-        </AboutContainer>
-
-        <Share
-          open={openShare}
-          modalTitle={formatMessage(messages.shareModalTitle)}
-          requestClose={this.handleOpenShareModal}
-          url={shareStoreUrl}
-          {...{ formatMessage }}
-        />
-
-        <EmailContact
-          {...{ formatMessage }}
-          open={openEmailContact}
-          requestClose={this.closeEmailContactModal}
-          onSetEmail={setEmailContactAction}
-          onSetMesage={setEmailMessageAction}
-          teamStoreId={teamStoreShortId}
-          emailContact={emailContact}
-          emailMessage={emailMessage}
-          sendMessageLoading={sendMessageLoading}
-          setSendMessageLoading={sendMessageLoadingAction}
-          ownerName={ownerName}
-        />
-
-        <TeamPassCode
-          open={openModal}
-          requestClose={this.closePassCodeModal}
-          formatMessage={formatMessage}
-          setPassCode={setPassCodeAction}
-          teamStoreId={teamStoreId}
-        />
       </Container>
     )
   }
