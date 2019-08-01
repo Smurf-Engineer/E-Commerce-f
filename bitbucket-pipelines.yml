@@ -81,9 +81,10 @@ pipelines:
     - step:
         name: Test
         script:
-          - npm install --production
-          - npm run lint
-          - npm run test
+          - curl -o- -L https://yarnpkg.com/install.sh | bash
+          - yarn
+          - yarn lint
+          - yarn test
     - step:
         name: Deploy to production
         trigger: manual
@@ -120,9 +121,10 @@ pipelines:
       - step:
           name: Test
           script:
-            - npm install --production
-            - npm run lint
-            - npm run test
+            - curl -o- -L https://yarnpkg.com/install.sh | bash
+            - yarn
+            - yarn lint
+            - yarn test
       - step:
           name: Deploy to release
           trigger: manual
@@ -152,4 +154,5 @@ pipelines:
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
             - yarn
+            - yarn lint
             - yarn test
