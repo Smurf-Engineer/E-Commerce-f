@@ -14,8 +14,10 @@ interface Props {
   userLastName: string
   onDemand: boolean
   cutOffDateString?: string
+  shortId: string
   formatMessage: (messageDescriptor: any) => string
   onSetFeatured: (id: number) => void
+  onClickRow: (id: string) => void
 }
 
 const ItemOrder = ({
@@ -27,20 +29,30 @@ const ItemOrder = ({
   onDemand,
   formatMessage,
   cutOffDateString,
-  onSetFeatured
+  onSetFeatured,
+  onClickRow,
+  shortId
 }: Props) => {
+  const stopPropagation = (event: any) => {
+    if (event) {
+      event.stopPropagation()
+    }
+  }
+  const handleOnClick = () => {
+    onClickRow(shortId)
+  }
   const handleOnSetFeatured = () => {
     onSetFeatured(id)
   }
   return (
-    <Container>
+    <Container onClick={handleOnClick}>
       <Cell>{name}</Cell>
       <Cell>
         {userFirstName} {userLastName}
       </Cell>
       <Cell>{formatMessage(messages[onDemand ? 'onDemand' : 'fixed'])}</Cell>
       <Cell>{onDemand ? '-' : cutOffDateString}</Cell>
-      <Cell>
+      <Cell onClick={stopPropagation}>
         <Switch onChange={handleOnSetFeatured} checked={featured} />
       </Cell>
     </Container>
