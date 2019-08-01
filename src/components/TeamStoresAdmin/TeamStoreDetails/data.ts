@@ -13,8 +13,11 @@ export const getTeamStoreQuery = gql`
       banner
       private
       createdAd: created_at
-      firstName: first_name
-      lastName: last_name
+      managerName: user_name
+      name
+      email
+      featured
+      teamstoreType: teamstore_type
     }
   }
 `

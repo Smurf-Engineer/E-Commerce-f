@@ -2,7 +2,6 @@
  * TeamStoreDetails Component - Created by eduardoquintero on 25/07/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import { withRouter } from 'react-router-dom'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
@@ -16,7 +15,12 @@ import {
   ViewContainer,
   ScreenContent,
   ScreenTitle,
-  LoadingContainer
+  LoadingContainer,
+  TeamStoreInformation,
+  InformationContainer,
+  Header,
+  Text,
+  StyledSwitch
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -32,6 +36,15 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: number) => void
 }
+
+const teamStoreHeaderInformation = [
+  'managerName',
+  'email',
+  'teamstoreType',
+  'cutoffDate',
+  'deliveryDate',
+  'featured'
+]
 
 export class TeamStoreDetails extends React.Component<Props, {}> {
   render() {
@@ -58,6 +71,21 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       )
     }
 
+    const teamStoresInformation = teamStoreHeaderInformation.map(
+      (header: string, index: number) => {
+        return (
+          <InformationContainer key={index}>
+            <Header>{formatMessage(messages[header])}</Header>
+            {typeof data.teamStoreQuery[header] === 'boolean' ? (
+              <StyledSwitch />
+            ) : (
+              <Text>{data.teamStoreQuery[header] || '-'}</Text>
+            )}
+          </InformationContainer>
+        )
+      }
+    )
+
     return (
       <Container>
         <ViewContainer onClick={this.handleOnReturn}>
@@ -66,8 +94,9 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         </ViewContainer>
         <ScreenContent>
           <ScreenTitle>
-            <FormattedMessage {...messages.title} />
+            {`${data.teamStoreQuery.name} ${formatMessage(messages.title)}`}
           </ScreenTitle>
+          <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
         </ScreenContent>
       </Container>
     )

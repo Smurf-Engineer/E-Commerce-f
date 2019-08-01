@@ -2,6 +2,7 @@
  * Styled Components - Created by eduardoquintero on 25/07/18.
  */
 import styled from 'styled-components'
+import Switch from 'antd/lib/switch'
 import { GRAY_DARK, RED } from '../../../theme/colors'
 
 export const LoadingContainer = styled.div`
@@ -33,6 +34,7 @@ export const ScreenContent = styled.div`
   margin-bottom: 64px;
   margin-top: 48px;
   padding-right: 34px;
+  flex-direction: column;
 
   @media (max-width: 768px) and (min-width: 320px) {
     align-items: center;
@@ -46,4 +48,31 @@ export const ScreenTitle = styled.div`
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+  text-transform: uppercase;
+`
+
+export const TeamStoreInformation = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+`
+
+export const InformationContainer = styled.div`
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+`
+
+export const Header = styled.p`
+  font-weight: 600;
+  font-size: 17px;
+`
+
+export const Text = styled.p`
+  font-size: 17px;
+`
+
+export const StyledSwitch = styled(Switch)`
+  max-width: 44px;
 `
