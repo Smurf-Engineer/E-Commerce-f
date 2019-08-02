@@ -45,7 +45,7 @@ const ColorList = ({
     // tslint:disable-next-line:curly
     if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
   }
-  let arrayColors: any
+  let arrayColors: any = []
 
   try {
     arrayColors = JSON.parse(
@@ -61,7 +61,7 @@ const ColorList = ({
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []
 
-  arrayColors.forEach(({ value, type }: Color, index: number) => {
+  arrayColors.forEach(({ value, type, name }: Color, index: number) => {
     if (type) {
       const node = (
         <Col key={index} className="custom-tooltip">
@@ -96,11 +96,11 @@ const ColorList = ({
   return (
     <Container {...{ height }}>
       <Row>{regularColors.length && regularColors}</Row>
-      {!stitching && (
+      {!stitching && !!fluorescentColors.length && (
         <div>
           <ColorTitle>{formatMessage(messages.fluorescent)}</ColorTitle>
           <SyledDivider />
-          <Row>{fluorescentColors.length && fluorescentColors}</Row>
+          <Row>{fluorescentColors}</Row>
         </div>
       )}
     </Container>

@@ -17,12 +17,15 @@ import { Login } from './Login'
 import logo from '../../assets/jakroo_logo.svg'
 import AdminLayout from '../../components/AdminLayout'
 import ProductCatalog from '../../components/ProductCatalog'
+import ProductInternalsAdmin from '../../components/ProductInternalsAdmin'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
+import TeamStoresAdmin from '../../components/TeamStoresAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
 import DesignLabAdmin from '../../components/DesignLabAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
 import DesignSearchAdmin from '../../components/DesignSearch'
+import EditNavigationAdmin from '../../components/EditNavigationAdmin'
 
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
@@ -40,10 +43,10 @@ import {
   USERS,
   USERS_URL,
   DESIGN_URL,
-  HOMEPAGE_URL,
-  HOMEPAGE,
   DESIGN_LAB,
-  DESIGN_LAB_URL
+  DESIGN_LAB_URL,
+  EDIT_NAVIGATION,
+  EDIT_NAVIGATION_URL
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -118,8 +121,8 @@ export class Admin extends React.Component<Props, {}> {
         case USERS_URL:
           key = USERS
           break
-        case HOMEPAGE_URL:
-          key = HOMEPAGE
+        case EDIT_NAVIGATION_URL:
+          key = EDIT_NAVIGATION
           break
         case DESIGN_LAB_URL:
           key = DESIGN_LAB
@@ -189,6 +192,12 @@ export class Admin extends React.Component<Props, {}> {
           render={() => <ProductCatalog {...{ history, formatMessage }} />}
         />
         <Route
+          path="/admin/products-internal"
+          render={() => (
+            <ProductInternalsAdmin {...{ history, formatMessage }} />
+          )}
+        />
+        <Route
           path="/admin/design-lab"
           render={() => <DesignLabAdmin {...{ history, formatMessage }} />}
         />
@@ -197,12 +206,20 @@ export class Admin extends React.Component<Props, {}> {
           render={() => <DesignSearchAdmin {...{ history, formatMessage }} />}
         />
         <Route
-          path="/admin/homepage"
-          render={() => <HomepageAdmin {...{ history, formatMessage }} />}
+          path="/admin/edit-navigation"
+          render={() => <EditNavigationAdmin {...{ history }} />}
         />
         <Route
           path="/admin/users"
           render={() => <UsersAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/team-stores"
+          render={() => <TeamStoresAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/homepage/:sportName?"
+          render={() => <HomepageAdmin {...{ history, formatMessage }} />}
         />
       </AdminLayout>
     )

@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { IntlProvider } from 'react-intl'
 import AboutUs from './index'
 
@@ -13,7 +14,9 @@ describe('<AboutUs />', () => {
     const format = (message: string) => 'string'
     ReactDOM.render(
       <IntlProvider {...props}>
-        <AboutUs formatMessage={format} />
+        <BrowserRouter>
+          <AboutUs formatMessage={format} />
+        </BrowserRouter>
       </IntlProvider>,
       div
     )

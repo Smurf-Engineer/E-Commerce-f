@@ -6,20 +6,27 @@ import AntDivider from 'antd/lib/divider'
 
 export const Container = styled.div``
 export const Title = styled.div`
-  color: #5f6062;
-  font-size: 16px;
-  font-weight: 600;
-  height: 0.83%;
-  letter-spacing: 0.11px;
-  line-height: 22px;
-  width: 82.34%;
+  text-align: center;
+  margin-top: 48px;
+  padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.93px;
+  line-height: 18px;
 
   @media (min-width: 1440px) {
     padding: 0px 10%;
   }
 `
 export const Divider = styled(AntDivider)`
-  margin-top: 15px;
+  display: block;
+  margin: 8px 10%;
+  width: auto;
+  min-width: 20px;
 `
 export const ProductsContainer = styled.div`
   display: flex;

@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.OrderFiles.downloadAll',
     defaultMessage: 'Download All Files'
   },
+  generatePDF: {
+    id: 'components.OrderFiles.downloadAll',
+    defaultMessage: 'Generate PDF'
+  },
   uploadDesign: {
     id: 'components.OrderFiles.uploadDesign',
     defaultMessage: 'Upload Pro Design SVG'

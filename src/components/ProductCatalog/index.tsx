@@ -40,7 +40,7 @@ class ProductCatalog extends React.Component<Props, {}> {
   }
   addNewProduct = () => {
     const { history } = this.props
-    history.push('/admin/products/form/0')
+    history.push('/admin/products/form')
   }
 
   handleOnSortClick = (label: string, sort: sorts) => {
@@ -119,7 +119,7 @@ class ProductCatalog extends React.Component<Props, {}> {
           )}
         />
         <Route
-          path="/admin/products/form/:id"
+          path="/admin/products/form/:id?"
           render={() => (
             <div>
               <ProductForm {...{ formatMessage, history }} />

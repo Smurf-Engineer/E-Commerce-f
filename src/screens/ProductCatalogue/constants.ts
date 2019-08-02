@@ -3,7 +3,6 @@
  */
 const namespace = 'src/ProductCatalog'
 
-export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
 export const SELECTED_FILTER = `${namespace}/SELECTED_FILTER`
 export const ORDERBY_SELECTED = `${namespace}/SORTBY_SELECTED`
 export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_LIMIT`
@@ -16,6 +15,7 @@ export const OPEN_SIDEBAR_MOBILE = `${namespace}/OPEN_SIDEBAR_MOBILE`
 
 export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`
 export const CLEAR_FILTERS = `${namespace}/CLEAR_FILTERS`
+export const SET_ALL_GENDERS = `${namespace}/SET_ALL_GENDERS`
 
 export const INLINE_FILTER = 'Inline'
 export const CATEGORY_FILTER = 'Jerseys & Tops'
@@ -33,3 +33,5 @@ export enum filtersNames {
   SEASON = 'season',
   FITSTYLE = 'fit_style'
 }
+
+export const ALL_GENDERS = 'all'

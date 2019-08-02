@@ -49,10 +49,12 @@ interface Props {
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
+  featured: boolean
   sortByLabel: string
   data: Data
   history: any
   currentPage: number
+  onDemandMode?: boolean
   limit?: number
   teamStoreShortId?: string
   designs?: TeamStoreItemtype[]
@@ -75,6 +77,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       data,
       teamStoreShortId,
       designs,
+      featured,
+      onDemandMode,
       withoutPadding,
       targetRange,
       currentRange
@@ -116,7 +120,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 yotpoId={product.yotpoId}
                 footer={
                   <FooterThumbnailTeamStore
-                    {...{ id, name, targetRange }}
+                    {...{ id, name, targetRange, onDemandMode }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
                     targetPrice={targetPriceValue.price}
@@ -124,18 +128,20 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                   />
                 }
                 labelButton={
-                  <AddToCartButton
-                    label={formatMessage(messages.addToCart)}
-                    renderForThumbnail={true}
-                    item={{ product }}
-                    {...{ formatMessage }}
-                    withoutTop={true}
-                    designId={shortId}
-                    designName={name}
-                    designImage={image}
-                    designCode={code}
-                    teamStoreId={teamStoreShortId}
-                  />
+                  featured && (
+                    <AddToCartButton
+                      label={formatMessage(messages.addToCart)}
+                      renderForThumbnail={true}
+                      item={{ product }}
+                      {...{ formatMessage }}
+                      withoutTop={true}
+                      designId={shortId}
+                      designName={name}
+                      designImage={image}
+                      designCode={code}
+                      teamStoreId={teamStoreShortId}
+                    />
+                  )
                 }
                 teamStoreShortId={teamStoreShortId || ''}
                 isTopProduct={product.isTopProduct}

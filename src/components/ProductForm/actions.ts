@@ -6,23 +6,31 @@ import {
   SET_PRODUCT_DATA,
   CHANGE_VALUE,
   RESET_DATA,
-  SET_BANNERS,
   SET_LOADING,
   SET_GENDERS,
   SET_CURRENCIES,
   SET_CHECK,
   REMOVE_MATERIAL,
   ADD_MATERIAL,
+  MOVE_MATERIAL,
   SET_FILE_FIELD,
   SET_DESIGN_CENTER,
   SET_COLORS,
   REMOVE_BANNER,
   ADD_BANNER,
+  MOVE_BANNER,
   SET_BANNER,
-  ADD_PICTURE,
-  SAVED_PRODUCT
+  SAVED_PRODUCT,
+  ENABLE_SPORT,
+  SET_SPORT,
+  SET_PROMPT,
+  SET_SPEC,
+  SET_MATERIAL,
+  SET_MEDIA,
+  ADD_MEDIA,
+  REMOVE_MEDIA
 } from './constants'
-import { AnyAction, Product } from '../../types/common'
+import { AnyAction, Product, ProductFile } from '../../types/common'
 
 export const setProductAction = (
   product: Product,
@@ -52,14 +60,46 @@ export const savedProduct = (
   loadingMessage
 })
 
-export const setBannerActions = (banners: any): AnyAction => ({
-  type: SET_BANNERS,
-  banners
+export const setPrompt = (value: boolean): AnyAction => ({
+  type: SET_PROMPT,
+  value
 })
 
-export const setGenderActions = (genders: any): AnyAction => ({
+export const enableNewSportAction = (value: boolean): AnyAction => ({
+  type: ENABLE_SPORT,
+  value
+})
+
+export const setNewSport = (value: string): AnyAction => ({
+  type: SET_SPORT,
+  value
+})
+
+export const setGenderAction = (id: number, value: boolean): AnyAction => ({
   type: SET_GENDERS,
-  genders
+  id,
+  value
+})
+
+export const setMedia = (
+  id: string,
+  name: string,
+  value: string
+): AnyAction => ({
+  type: SET_MEDIA,
+  id,
+  name,
+  value
+})
+
+export const addMedia = (value: ProductFile): AnyAction => ({
+  type: ADD_MEDIA,
+  value
+})
+
+export const removeMedia = (index: number): AnyAction => ({
+  type: REMOVE_MEDIA,
+  index
 })
 
 export const setCheck = (
@@ -73,8 +113,10 @@ export const setCheck = (
   checked
 })
 
-export const setColors = (): AnyAction => ({
-  type: SET_COLORS
+export const setColors = (id: number, value: boolean): AnyAction => ({
+  type: SET_COLORS,
+  id,
+  value
 })
 
 export const removeFile = (array: string, index: number): AnyAction => ({
@@ -83,28 +125,50 @@ export const removeFile = (array: string, index: number): AnyAction => ({
   index
 })
 
+export const setSpec = (value: string): AnyAction => ({
+  type: SET_SPEC,
+  value
+})
+
+export const setMaterial = (value: string): AnyAction => ({
+  type: SET_MATERIAL,
+  value
+})
+
 export const addFile = (array: string, item: any): AnyAction => ({
   type: ADD_MATERIAL,
   array,
   item
 })
 
-export const setFileField = (
+export const moveFile = (
   array: string,
   index: number,
-  field: string,
-  value: any
+  indexTo: number
 ): AnyAction => ({
-  type: SET_FILE_FIELD,
+  type: MOVE_MATERIAL,
   array,
   index,
-  field,
-  value
+  indexTo
 })
-export const addPicture = (index: number, item: any): AnyAction => ({
-  type: ADD_PICTURE,
+
+export const moveBanner = (index: number, indexTo: number): AnyAction => ({
+  type: MOVE_BANNER,
   index,
-  item
+  indexTo
+})
+
+export const setFileField = (
+  selected: string,
+  id: string,
+  name: string,
+  value: string
+): AnyAction => ({
+  type: SET_FILE_FIELD,
+  selected,
+  id,
+  name,
+  value
 })
 
 export const removeBanner = (index: number): AnyAction => ({

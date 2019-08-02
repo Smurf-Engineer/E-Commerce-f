@@ -141,7 +141,7 @@ const MeasurementsForm = ({
           id="weight"
           value={weight !== null ? weight : weightMS}
           onChange={handleInputChange}
-          maxLength="50"
+          maxLength={50}
         />
         <LabeledInput
           style={labeledInputWithCustomWidth('20%')}
@@ -164,7 +164,7 @@ const MeasurementsForm = ({
               id="heightFirst"
               value={heightFirst !== null ? heightFirst : heightFirstMS}
               onChange={handleInputChange}
-              maxLength="50"
+              maxLength={50}
             />
             <LabeledInput
               style={labeledInputWithCustomWidth('40%')}
@@ -180,7 +180,7 @@ const MeasurementsForm = ({
               id="heightSecond"
               value={heightSecond !== null ? heightSecond : heightSecondMS}
               onChange={handleInputChange}
-              maxLength="50"
+              maxLength={50}
             />
             <LabeledInput
               style={labeledInputWithCustomWidth('40%')}
@@ -203,7 +203,7 @@ const MeasurementsForm = ({
           id="chestSize"
           value={chestSize !== null ? chestSize : chestSizeMS}
           onChange={handleInputChange}
-          maxLength="50"
+          maxLength={50}
         />
         <LabeledInput
           style={labeledInputStyle}
@@ -225,7 +225,7 @@ const MeasurementsForm = ({
           id="waistSize"
           value={waistSize !== null ? waistSize : waistSizeMS}
           onChange={handleInputChange}
-          maxLength="50"
+          maxLength={50}
         />
         <LabeledInput
           style={labeledInputStyle}
@@ -247,7 +247,7 @@ const MeasurementsForm = ({
           id="hipsSize"
           value={hipsSize !== null ? hipsSize : hipsSizeMS}
           onChange={handleInputChange}
-          maxLength="50"
+          maxLength={50}
         />
         <LabeledInput
           style={labeledInputStyle}
@@ -269,7 +269,7 @@ const MeasurementsForm = ({
           id="inseamSize"
           value={inseamSize !== null ? inseamSize : inseamSizeMS}
           onChange={handleInputChange}
-          maxLength="50"
+          maxLength={50}
         />
         <LabeledInput
           style={labeledInputStyle}
@@ -291,7 +291,7 @@ const MeasurementsForm = ({
           id="shouldersSize"
           value={shouldersSize !== null ? shouldersSize : shouldersSizeMS}
           onChange={handleInputChange}
-          maxLength="50"
+          maxLength={50}
         />
         <LabeledInput
           style={labeledInputStyle}
@@ -313,7 +313,7 @@ const MeasurementsForm = ({
           id="neckSize"
           value={neckSize !== null ? neckSize : neckSizeMS}
           onChange={handleInputChange}
-          maxLength="50"
+          maxLength={50}
         />
         <LabeledInput
           style={labeledInputStyle}

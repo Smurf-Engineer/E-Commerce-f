@@ -14,7 +14,9 @@ import {
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
   RESET_CHANGES_ACTION,
-  SET_SEARCH_CODES
+  SET_SEARCH_CODES,
+  SET_CREATING_PDF,
+  SET_PDF
 } from './constants'
 import {
   AnyAction,
@@ -84,4 +86,14 @@ export const resetChangesAction = () => ({
 export const setSearchCodesAction = (codes: DesignSearchCode[]) => ({
   type: SET_SEARCH_CODES,
   codes
+})
+
+export const creatingPdfAction = (creating: boolean) => ({
+  type: SET_CREATING_PDF,
+  creating
+})
+
+export const setPdfAction = (url: string) => ({
+  type: SET_PDF,
+  url
 })

@@ -10,6 +10,8 @@ export enum Sections {
   SECONDARY_HEADER = 'secondaryHeader',
   PRODUCT_TILES = 'productTiles'
 }
+
+export const HOMEPAGE_LABEL = 'Homepage'
 export enum ImageTypes {
   DESKTOP = 'desktopImage',
   MOBILE = 'mobileImage'
@@ -18,14 +20,15 @@ export const EMPTY_TILE = {
   image: '',
   contentTile: '',
   loading: false,
-  title: ''
+  title: '',
+  sport_id: ''
 }
 
 export const EMPTY_SECONDARY_HEADER = {
   desktopImage: '',
   mobileImage: '',
-  loading: false,
-  url: ''
+  url: '',
+  sport_id: ''
 }
 
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
@@ -48,3 +51,7 @@ export const SET_PRODUCT_TILE_LOADING = `${namespace}/SET_PRODUCT_TILE_LOADING`
 export const SET_TILES_TEXT = `${namespace}/SET_TILES_TEXT`
 export const REMOVE_TILE_DATA = `${namespace}/REMOVE_TILE_DATA`
 export const REMOVE_HEADER = `${namespace}/REMOVE_HEADER`
+export const ADD_MORE_IMAGES = `${namespace}/ADD_MORE_IMAGES`
+export const UPDATE_IMAGES_PLACEHOLDER_LIST = `${namespace}/UPDATE_IMAGES_PLACEHOLDER_LIST`
+export const ADD_MORE_TILES = `${namespace}/ADD_MORE_TILES`
+export const UPDATE_PRODUCT_TILES_LIST = `${namespace}/UPDATE_PRODUCT_TILES_LIST`

@@ -20,7 +20,7 @@ export const DPI = 96
 export const CM_PER_INCH = 2.54
 export const REGULAR_CANVAS = 1024
 export const HIGH_RESOLUTION_CANVAS = 2048
-
+export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
 
 /* Accesories color */
@@ -52,3 +52,13 @@ export const ERROR_STATUS = 'Error'
 
 /* Quantity */
 export const PERSONAL = 'Personal'
+
+/* Files Constants */
+export const MP4_EXTENSION = '.mp4'
+
+/* Keys Constants */
+export const KEY_ENTER = 'Enter'
+
+/* Edit Main Navigation constants */
+export const CATALOGUE_CONSTANT = 'catalogue'
+export const NAVBAR_CONSTANT = 'navbar'

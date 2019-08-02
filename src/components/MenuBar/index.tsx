@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl } from 'react-intl'
 import MediaQuery from 'react-responsive'
-
+import { graphql, compose } from 'react-apollo'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -20,6 +20,7 @@ import {
   TeamStoresMenuContainer,
   TeamStoresMenuTitle
 } from './styledComponents'
+import { regionsQuery } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -27,9 +28,18 @@ import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
 import Cart from '../CartForHeader'
-import { RegionConfig } from '../../types/common'
+import {
+  RegionConfig,
+  Region as RegionType,
+  QueryProps
+} from '../../types/common'
+
+interface RegionsData extends QueryProps {
+  regionsResult: RegionType[]
+}
 
 interface Props {
+  regionsData: RegionsData
   history: any
   searchFunc: (param: string) => void
   openLogin?: boolean
@@ -76,13 +86,23 @@ class MenuBar extends React.Component<Props, StateProps> {
 
   handleOnGoHome = () => {
     const {
-      history,
       currentCurrency,
-      currentRegion,
-      currentLanguage
+      currentRegion = '',
+      currentLanguage,
+      regionsData: { regionsResult }
     } = this.props
-    history.push(
-      `/${currentRegion}?lang=${currentLanguage}&currency=${currentCurrency}`
+    // TODO: temporal solution to avoid the site crashing when you
+    // click on Jakroo's logo in the menuBar from the product-catalogue screen
+    const regionsCodes =
+      regionsResult && regionsResult.map(region => region.code)
+
+    const regionCode = regionsCodes.includes(currentRegion)
+      ? currentRegion
+      : 'us'
+
+    window.location.replace(
+      `/${regionCode}?lang=${currentLanguage ||
+        'en'}&currency=${currentCurrency}`
     )
   }
 
@@ -128,8 +148,10 @@ class MenuBar extends React.Component<Props, StateProps> {
       openWithoutSaveModalAction,
       initialCountryCode,
       buyNowHeader,
-      saveAndBuy
+      saveAndBuy,
+      regionsData: { regionsResult, loading: loadingRegions }
     } = this.props
+
     let user: any
     if (typeof window !== 'undefined') {
       user = JSON.parse(localStorage.getItem('user') as string)
@@ -148,6 +170,9 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
+    const regionsCodes =
+      !loadingRegions && regionsResult.map(region => region.code)
+
     const menuRegion = (
       <MenuRegion
         {...{
@@ -155,7 +180,8 @@ class MenuBar extends React.Component<Props, StateProps> {
           currentRegion,
           currentLanguage,
           currentCurrency,
-          isMobile
+          isMobile,
+          regionsResult
         }}
       />
     )
@@ -175,7 +201,9 @@ class MenuBar extends React.Component<Props, StateProps> {
     ) : (
       <BottomRow>
         <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList {...{ history, formatMessage, currentCurrency }} />
+        <DropdownList
+          {...{ history, formatMessage, currentCurrency, regionsCodes }}
+        />
         <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
       </BottomRow>
     )
@@ -229,6 +257,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                       buyNowHeader,
                       saveAndBuy
                     }}
+                    handleOnGoHome={this.handleOnGoHome}
                     totalItems={itemsInCart}
                     hide={hideTop}
                     loginButton={loggedUser}
@@ -277,4 +306,13 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 }
 
-export default MenuBar
+const MenuBarEnhanced = compose(
+  graphql<RegionsData>(regionsQuery, {
+    name: 'regionsData',
+    options: () => ({
+      fetchPolicy: 'network-only',
+      variables: {}
+    })
+  })
+)(MenuBar)
+export default MenuBarEnhanced
