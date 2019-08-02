@@ -3,7 +3,13 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
-import { RED, GRAY_DARK, BLUE_LIGHTEST } from '../../../../theme/colors'
+import Button from 'antd/lib/button'
+import {
+  RED,
+  GRAY_DARK,
+  BLUE_LIGHTEST,
+  GRAY_LIGHTEST
+} from '../../../../theme/colors'
 
 export const Container = styled.tr``
 
@@ -76,4 +82,30 @@ export const RegularText = styled.p`
 export const StyledInput = styled(Input)`
   border-radius: 0;
   width: 55px;
+`
+
+export const StyledButton = styled(Button)`
+  background-color: ${({ disabled }: any) =>
+    disabled ? `${GRAY_LIGHTEST} !important` : ''};
+  border-color: ${({ disabled }: any) =>
+    disabled ? `${GRAY_LIGHTEST} !important` : ''};
+`
+
+type PropsButton = {
+  color: string
+}
+
+export const ButtonWrapper = styled.div`
+  margin-left: 10px;
+  .ant-btn-primary {
+    background-color: ${({ color }: PropsButton) => color};
+    border-color: ${({ color }: PropsButton) => color};
+    width: 100%;
+  }
+  .ant-btn-ghost:hover,
+  .ant-btn-ghost:focus,
+  .ant-btn-primary:hover {
+    background-color: ${({ color }: PropsButton) => color};
+    border-color: ${({ color }: PropsButton) => color};
+  }
 `

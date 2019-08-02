@@ -10,13 +10,15 @@ import {
   VerticalWrapper,
   HeavyText,
   RegularText,
-  StyledInput
+  StyledInput,
+  StyledButton,
+  ButtonWrapper
 } from './styledComponents'
-import find from 'lodash/find'
-import get from 'lodash/get'
-import { Currency, PriceRange } from '../../../../types/common'
-
-const quantities = ['Personal', '2-5', '6-24', '25-49', '50-99', '100-249']
+import some from 'lodash/some'
+import messages from '../messages'
+import { isNumber } from '../../../../utils/utilsFiles'
+import { BLUE } from '../../../../theme/colors'
+import { Currency, PriceRange, Message } from '../../../../types/common'
 
 interface Props {
   thumbnail: string
@@ -26,13 +28,10 @@ interface Props {
   currencies: Currency[]
   index: number
   priceRange: PriceRange[]
-  pricesByQuantity: any
-  handleOnSetPrice: (
-    value: string,
-    currency: string,
-    itemIndex: number,
-    currencyIndex: number
-  ) => void
+  pricesByCurrency: any
+  handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
+  handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
+  formatMessage: (messageDescriptor: Message) => string
 }
 
 const RowItem = ({
@@ -41,40 +40,31 @@ const RowItem = ({
   productName,
   productType,
   currencies,
-  priceRange,
   handleOnSetPrice,
   index,
-  pricesByQuantity
+  pricesByCurrency,
+  handleOnSave,
+  formatMessage
 }: Props) => {
-  const onSetPrice = (currencyIndex: number) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const onSetPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id: inputId } = event.target
-    handleOnSetPrice(value, inputId, index, currencyIndex)
-  }
-  const inputFields = currencies.map(
-    ({ shortName, id: currencyId }, currencyIndex: number) => {
-      console.log('prices ', priceRange)
-      const price = get(
-        find(
-          pricesByQuantity[quantities[0]],
-          (quantity: any) => quantity.short_name === shortName
-        ),
-        'price',
-        ''
-      )
-      return (
-        <Cell key={currencyId}>
-          <StyledInput
-            id={shortName}
-            placeholder={shortName}
-            onChange={onSetPrice(currencyIndex)}
-            value={price}
-          />
-        </Cell>
-      )
+    if (!isNumber(value) && value !== '') {
+      return
     }
-  )
+    handleOnSetPrice(Number(value), inputId, index)
+  }
+  const inputFields = currencies.map(({ shortName, id: currencyId }) => {
+    return (
+      <Cell key={currencyId}>
+        <StyledInput
+          id={shortName}
+          placeholder={shortName}
+          onChange={onSetPrice}
+          value={pricesByCurrency[shortName]}
+        />
+      </Cell>
+    )
+  })
   return (
     <Container>
       <Cell>
@@ -88,6 +78,21 @@ const RowItem = ({
         </HorizontalWrapper>
       </Cell>
       {inputFields}
+      <Cell>
+        <ButtonWrapper color={BLUE}>
+          <StyledButton
+            id={index}
+            disabled={some(
+              currencies.map(({ shortName }) => !pricesByCurrency[shortName])
+            )}
+            type="primary"
+            onClick={handleOnSave}
+            loading={false}
+          >
+            {formatMessage(messages.save)}
+          </StyledButton>
+        </ButtonWrapper>
+      </Cell>
     </Container>
   )
 }

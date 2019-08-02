@@ -7,7 +7,7 @@ import { compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
 import Item from './Item'
-import { TeamStoreAdminType, Currency } from '../../../types/common'
+import { TeamStoreAdminType, Currency, Message } from '../../../types/common'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import {
@@ -33,15 +33,13 @@ interface Props {
   teamStore: TeamStoreAdminType
   currencies: Currency[]
   loading: boolean
-  formatMessage: (messageDescriptor: any) => string
+  id: number
+  formatMessage: (messageDescriptor: Message) => string
   onReturn: (id: number) => void
-  handleOnSetPrice: (
-    value: string,
-    currency: string,
-    itemIndex: number,
-    currencyIndex: number
-  ) => void
+  handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
   getTeamStoreData: (teamStoreId: number) => void
+  handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
+  onSetFeatured: (id: number) => void
 }
 
 const teamStoreHeaderInformation = [
@@ -59,13 +57,22 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
     const teamStoreId = get(match, 'params.id', '')
     getTeamStoreData(teamStoreId)
   }
+  handleOnSetFeatured = () => {
+    const {
+      teamStore: { id },
+      onSetFeatured
+    } = this.props
+
+    onSetFeatured(id)
+  }
   render() {
     const {
       formatMessage,
       handleOnSetPrice,
       teamStore,
       currencies = [],
-      loading
+      loading,
+      handleOnSave
     } = this.props
     if (loading) {
       return (
@@ -98,7 +105,10 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         <InformationContainer key={index}>
           <ScreenHeader>{formatMessage(messages[header])}</ScreenHeader>
           {typeof teamStore[header] === 'boolean' ? (
-            <StyledSwitch />
+            <StyledSwitch
+              defaultChecked={teamStore.featured}
+              onChange={this.handleOnSetFeatured}
+            />
           ) : (
             <Text>{teamStore[header] || '-'}</Text>
           )}
@@ -114,7 +124,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
             product: { name: productName, description: productType }
           },
           priceRange,
-          pricesByQuantity
+          pricesByCurrency
         },
         index: number
       ) => (
@@ -129,7 +139,9 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
             handleOnSetPrice,
             index,
             priceRange,
-            pricesByQuantity
+            pricesByCurrency,
+            handleOnSave,
+            formatMessage
           }}
         />
       )
@@ -148,8 +160,11 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
           <Table>
             <thead>
-              <Header>{formatMessage(messages.name)}</Header>
-              {headers}
+              <tr>
+                <Header>{formatMessage(messages.name)}</Header>
+                {headers}
+                <Header>{''}</Header>
+              </tr>
             </thead>
             <tbody>{teamStoreItems}</tbody>
           </Table>

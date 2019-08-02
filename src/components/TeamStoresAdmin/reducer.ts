@@ -38,7 +38,6 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
     case SET_LOADING:
       return state.set('loading', action.loading)
     case SET_TEAM_STORE_DATA:
-      console.log(action)
       return state.withMutations((tempState: any) => {
         const teamStore = action.teamStore
         const currencies = action.currencies
@@ -49,10 +48,7 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.updateIn(
         ['teamStore', 'items', action.itemIndex],
         (item: any) => {
-          return item.setIn(
-            ['priceRange', action.currencyIndex, 'price'],
-            action.value
-          )
+          return item.setIn(['pricesByCurrency', action.currency], action.value)
         }
       )
     /* return state.withMutations((tempState: any) => {

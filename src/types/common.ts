@@ -214,7 +214,7 @@ export type TeamStoreItemtype = {
   itemOrder?: number
   team_store_name?: string
   priceRange: PriceRange[]
-  pricesByQuantity?: any
+  pricesByCurrency?: any
 }
 
 export type LockerTableType = {

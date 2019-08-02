@@ -9,7 +9,10 @@ import { compose, withApollo } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
-import { setTeamStoreFeaturedMutation } from './data'
+import {
+  setTeamStoreFeaturedMutation,
+  setTeamStorePricesMutation
+} from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import * as TeamStoresActions from './actions'
 import * as ThunkActions from './thunkActions'
@@ -52,13 +55,9 @@ interface Props {
   resetDataAction: () => void
   setSearchTextAction: (searchText: string) => void
   setTeamStoreFeatured: (variables: {}) => void
-  setPriceAction: (
-    value: string,
-    currency: string,
-    itemIndex: number,
-    currencyIndex: number
-  ) => void
+  setPriceAction: (value: number, currency: string, itemIndex: number) => void
   getTeamStore: (query: any, teamStoreId: number) => void
+  setTeamStorePrices: (variables: {}) => void
 }
 
 interface StateProps {
@@ -126,11 +125,32 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               {...{ formatMessage, history, teamStore, currencies, loading }}
               getTeamStoreData={this.handleGetTeamStoreDetails}
               handleOnSetPrice={setPriceAction}
+              handleOnSave={this.handleOnSaveItem}
+              onSetFeatured={this.handleOnSetFeatured}
             />
           )}
         />
       </div>
     )
+  }
+  handleOnSaveItem = async (event: React.MouseEvent<HTMLElement>) => {
+    const { id: index } = event.currentTarget
+    const { teamStore, setTeamStorePrices } = this.props
+
+    const teamStoreItem = teamStore.items[index]
+    const prices = Object.keys(teamStoreItem.pricesByCurrency).map(
+      currency => ({
+        shortName: currency,
+        price: teamStoreItem.pricesByCurrency[currency]
+      })
+    )
+    await setTeamStorePrices({
+      variables: {
+        teamStoreId: teamStore.id,
+        itemId: teamStoreItem.id,
+        prices
+      }
+    })
   }
   handleGetTeamStoreDetails = (teamStoreId: number) => {
     const {
@@ -209,6 +229,7 @@ const mapStateToProps = (state: any) => state.get('teamStoresAdmin').toJS()
 
 const TeamStoresAdminEnhance = compose(
   setTeamStoreFeaturedMutation,
+  setTeamStorePricesMutation,
   withApollo,
   connect(
     mapStateToProps,

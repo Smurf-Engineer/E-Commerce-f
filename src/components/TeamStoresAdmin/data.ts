@@ -24,3 +24,24 @@ export const setTeamStoreFeaturedMutation = graphql(
     name: 'setTeamStoreFeatured'
   }
 )
+
+export const setTeamStorePricesMutation = graphql(
+  gql`
+    mutation setTeamStorePrices(
+      $teamStoreId: Int!
+      $itemId: Int!
+      $prices: [ItemPriceInput]
+    ) {
+      teamStorePrices: setTeamStorePrices(
+        teamStoreId: $teamStoreId
+        itemId: $itemId
+        prices: $prices
+      ) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'setTeamStorePrices'
+  }
+)

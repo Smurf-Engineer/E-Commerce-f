@@ -51,16 +51,14 @@ export const setLoadingAction = (loading: boolean) => ({
 })
 
 export const setPriceAction = (
-  value: string,
+  value: number,
   currency: string,
-  itemIndex: number,
-  currencyIndex: number
+  itemIndex: number
 ) => ({
   type: SET_PRICE_ITEM,
   value,
   currency,
-  itemIndex,
-  currencyIndex
+  itemIndex
 })
 
 export const setTeamStoreDataAction = ({

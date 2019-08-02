@@ -44,5 +44,9 @@ export default defineMessages({
   name: {
     id: 'components.TeamStoreDetails.name',
     defaultMessage: 'Name'
+  },
+  save: {
+    id: 'components.TeamStoreDetails.save',
+    defaultMessage: 'Save'
   }
 })

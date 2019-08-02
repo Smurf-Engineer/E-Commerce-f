@@ -22,7 +22,7 @@ export const getTeamStoreQuery = gql`
         id
         priceRange {
           price
-          short_name
+          shortName: short_name
           quantity
           abbreviation
         }
