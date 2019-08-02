@@ -468,6 +468,7 @@ export type TypePicture = {
   id: string
   name: string
   images: BlockImage[]
+  thumbnail: BlockImage
 }
 export type FileUploaded = {
   id: string

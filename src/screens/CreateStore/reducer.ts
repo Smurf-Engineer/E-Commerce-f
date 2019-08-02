@@ -36,7 +36,7 @@ export const initialState = fromJS({
   endDate: '',
   endDateMoment: null,
   privateStore: true,
-  onDemand: false,
+  onDemand: true,
   passCode: '',
   openLocker: false,
   selectedItems: {},
@@ -150,23 +150,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case DELETE_BANNER_ON_EDIT:
       return state.merge({ banner: '' })
     case CLEAR_DATA:
-      return state.merge({
-        teamSizeId: 1,
-        teamSizeRange: '2-5',
-        name: '',
-        startDate: '',
-        startDateMoment: null,
-        endDate: '',
-        endDateMoment: null,
-        privateStore: true,
-        onDemand: false,
-        passCode: '',
-        openLocker: false,
-        selectedItems: {},
-        items: [],
-        loading: true,
-        banner: ''
-      })
+      return initialState
     case SET_TEAM_STORE_STATUS:
       return state.set('showTeamStores', action.show)
     default:

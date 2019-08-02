@@ -12,6 +12,7 @@ interface DivProps {
   big?: boolean
   maxWidth?: boolean
   marginBottom?: string
+  left?: boolean
 }
 interface InputDivProps {
   flex?: number
@@ -96,10 +97,10 @@ export const RadioButton = styled(RadioButtonComponent)`
 `
 
 export const RowInput = styled.div`
-  margin: 16px 0;
-  margin: 16px 0;
+  margin: ${({ inline }) => (inline ? '0' : '16px 0')};
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ left }: DivProps) =>
+    left ? 'flex-start' : 'space-between'};
 `
 export const InputDiv = styled.div`
   margin-right: 26px;
