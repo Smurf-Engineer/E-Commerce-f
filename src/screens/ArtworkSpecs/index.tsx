@@ -40,7 +40,11 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
     zenscroll.toY(0, 0)
   }
   render() {
-    const { intl, history } = this.props
+    const {
+      intl,
+      history,
+      intl: { formatMessage }
+    } = this.props
     return (
       <Layout {...{ intl, history }}>
         <Container>
@@ -84,7 +88,7 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
               <FormattedMessage {...messages.colorChart} />
             </ThirdTitle>
             <ColorWrapper>
-              <ColorList height={'100%'} />
+              <ColorList height={'100%'} {...{ formatMessage }} />
             </ColorWrapper>
           </ColorChartContainer>
           <LineCopy />

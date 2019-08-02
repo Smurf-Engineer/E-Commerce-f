@@ -1,0 +1,9 @@
+dependencies:
+- name: nginx-ingress
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.9.1
+- name: prisma
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.2.1
+digest: sha256:579ffee8a2e923fb4435eecccdd61dc7e14430b88dc760dfa31163fc9d75b34b
+generated: "2019-07-10T16:24:58.979049-06:00"

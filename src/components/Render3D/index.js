@@ -33,6 +33,7 @@ import {
   PROPEL_PALMS,
   GRIP_TAPE,
   REGULAR_CANVAS,
+  PHONE_POSITION,
   HIGH_RESOLUTION_CANVAS,
   MESH_NAME
 } from '../../constants'
@@ -73,7 +74,7 @@ class Render3D extends PureComponent {
       0.1,
       1000
     )
-    camera.position.z = phoneView ? 150 : 250
+    camera.position.z = phoneView ? 120 : 250
     if (designSearch) {
       camera.position.z = 150
     }
@@ -280,6 +281,7 @@ class Render3D extends PureComponent {
       customProduct,
       designSearch,
       isProduct,
+      textColor,
       data: { loading, error }
     } = this.props
 
@@ -314,7 +316,7 @@ class Render3D extends PureComponent {
           )}
         </Render>
         {showDragmessage && !loading && (
-          <DragText>
+          <DragText {...{ isProduct, textColor }}>
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}
@@ -322,7 +324,17 @@ class Render3D extends PureComponent {
     )
   }
   renderProduct = async product => {
-    const { obj, mtl, flatlock, zipper, bumpMap, binding, bibBrace } = product
+    const { phoneView } = this.props
+    const {
+      obj,
+      mtl,
+      flatlock,
+      zipper,
+      bumpMap,
+      binding,
+      bibBrace,
+      branding
+    } = product
     /* Object and MTL load */
     if (obj && mtl) {
       const mtlLoader = new THREE.MTLLoader()
@@ -358,7 +370,7 @@ class Render3D extends PureComponent {
             }
             /* Zipper */
             if (!!zipper) {
-              const texture = zipper[Object.keys(zipper)[0]]
+              const texture = zipper.black || zipper.white
               const zipperObj = textureLoader.load(texture)
               zipperObj.minFilter = THREE.LinearFilter
               const zipperIndex = getMeshIndex(ZIPPER)
@@ -424,7 +436,6 @@ class Render3D extends PureComponent {
             if (gripTapeIndex >= 0) {
               object.children[gripTapeIndex].material.color.set(WHITE)
             }
-
             /* Assign materials */
             const canvasObj = children[meshIndex].clone()
             object.add(canvasObj)
@@ -432,8 +443,25 @@ class Render3D extends PureComponent {
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
 
+            /* Branding */
+            if (!!branding) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const textureLoader = new THREE.TextureLoader()
+              const brandingTexture = textureLoader.load(branding)
+              brandingTexture.minFilter = THREE.LinearFilter
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                map: brandingTexture,
+                side: THREE.FrontSide,
+                bumpMap,
+                transparent: true
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
             /* Object Conig */
-            object.position.y = 0
+            const verticalPosition = phoneView ? PHONE_POSITION : 0
+            object.position.y = verticalPosition
             object.name = MESH_NAME
             this.scene.add(object)
 
@@ -453,7 +481,7 @@ class Render3D extends PureComponent {
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
 
-    const { stitchingValue } = this.props
+    const { stitchingValue, phoneView } = this.props
 
     const loadedTextures = await this.loadTextures(design, actualSvg, fromSvg)
     /* Object and MTL load */
@@ -561,7 +589,6 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-
           if (!proDesign && !fromSvg) {
             areas.forEach(
               (map, index) =>
@@ -634,7 +661,8 @@ class Render3D extends PureComponent {
           }
 
           /* Object Conig */
-          object.position.y = 0
+          const verticalPosition = phoneView ? PHONE_POSITION : 0
+          object.position.y = verticalPosition
           object.name = MESH_NAME
           this.scene.add(object)
           this.setState({ loadingModel: false, firstLoad: false })

@@ -2,7 +2,6 @@
  * ProductCatalog  Actions - Created by cazarez on 27/02/18.
  */
 import {
-  DEFAULT_ACTION,
   SELECTED_FILTER,
   ORDERBY_SELECTED,
   SHOW_TYPE_FILTER,
@@ -11,14 +10,10 @@ import {
   OPEN_SIDEBAR_MOBILE,
   RESET_REDUCER_DATA,
   CLEAR_FILTERS,
-  SET_SELECTED_HOME_FILTERS
+  SET_SELECTED_HOME_FILTERS,
+  SET_ALL_GENDERS
 } from './constants'
-import { AnyAction, Filter } from '../../types/common'
-
-export const defaultAction = (someValue: string): AnyAction => ({
-  type: DEFAULT_ACTION,
-  someValue
-})
+import { AnyAction } from '../../types/common'
 
 export const showTypeFilter = (showFilter: boolean): AnyAction => ({
   type: SHOW_TYPE_FILTER,
@@ -35,7 +30,7 @@ export const sortBySelected = (orderBy: string): AnyAction => ({
   orderBy
 })
 
-export const setSelectedFilters = (filter: Filter[]) => ({
+export const setSelectedFilters = (filter: object) => ({
   type: SET_SELECTED_FILTERS,
   filter
 })
@@ -61,4 +56,8 @@ export const clearFiltersAction = () => ({
 
 export const setHomeSelectedFilters = () => ({
   type: SET_SELECTED_HOME_FILTERS
+})
+
+export const setAllGendersAction = () => ({
+  type: SET_ALL_GENDERS
 })

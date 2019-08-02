@@ -14,6 +14,7 @@ interface Props {
   bibColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bindingColor?: AccesoryColor
+  allowZipperSelection: boolean
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
 }
@@ -25,7 +26,8 @@ const AccessoryColors = ({
   zipperColor,
   bindingColor,
   onSelectStitchingColor,
-  onSelectColor
+  onSelectColor,
+  allowZipperSelection
 }: Props) => {
   return (
     <div>
@@ -34,6 +36,7 @@ const AccessoryColors = ({
           id={AccessoryColorsConstants.Bib}
           name="Bib Brace Color"
           color={bibColor}
+          allowSelection={true}
           {...{ onSelectColor }}
         />
       )}
@@ -42,6 +45,7 @@ const AccessoryColors = ({
           id={AccessoryColorsConstants.Zipper}
           name="Zipper Color"
           color={zipperColor}
+          allowSelection={allowZipperSelection}
           {...{ onSelectColor }}
         />
       )}
@@ -50,6 +54,7 @@ const AccessoryColors = ({
           id={AccessoryColorsConstants.Binding}
           name="Binding Color"
           color={bindingColor}
+          allowSelection={true}
           {...{ onSelectColor }}
         />
       )}

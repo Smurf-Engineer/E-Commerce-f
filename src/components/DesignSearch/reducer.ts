@@ -15,7 +15,9 @@ import {
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
   RESET_CHANGES_ACTION,
-  SET_SEARCH_CODES
+  SET_SEARCH_CODES,
+  SET_CREATING_PDF,
+  SET_PDF
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -36,7 +38,8 @@ export const initialState = fromJS({
     bibColor: '',
     bindingColor: ''
   },
-  designSearchCodes: []
+  designSearchCodes: [],
+  creatingPdf: false
 })
 
 const designSearchAdminReducer: Reducer<any> = (
@@ -101,6 +104,10 @@ const designSearchAdminReducer: Reducer<any> = (
       return state.set('changes', false)
     case SET_SEARCH_CODES:
       return state.set('designSearchCodes', action.codes)
+    case SET_CREATING_PDF:
+      return state.set('creatingPdf', action.creating)
+    case SET_PDF:
+      return state.setIn(['order', 'pdfUrl'], action.url)
     default:
       return state
   }

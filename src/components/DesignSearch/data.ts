@@ -9,6 +9,10 @@ export const orderSearchQuery = gql`
     order: getDesignByCode(code: $code) {
       product {
         name
+        zipper {
+          white
+          black
+        }
       }
       code
       status: order_status
@@ -78,6 +82,14 @@ export const getDesignSearchCode = gql`
     getDesignSearchCode(pattern: $pattern) {
       id
       code
+    }
+  }
+`
+
+export const generatePdfMutation = gql`
+  mutation generatePdf($code: String!) {
+    generatePdf(code: $code) {
+      message
     }
   }
 `

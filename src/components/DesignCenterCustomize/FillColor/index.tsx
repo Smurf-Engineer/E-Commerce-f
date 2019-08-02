@@ -7,13 +7,18 @@ import { Container } from './styledComponents'
 
 interface Props {
   colorsList: any
+  formatMessage: (messageDescriptor: any) => string
   onSelectFill: (color: string) => void
 }
 
-const FillColor = ({ onSelectFill, colorsList }: Props) => {
+const FillColor = ({ onSelectFill, colorsList, formatMessage }: Props) => {
   return (
     <Container>
-      <ColorList onSelectColor={onSelectFill} height={52} {...{ colorsList }} />
+      <ColorList
+        onSelectColor={onSelectFill}
+        height={52}
+        {...{ colorsList, formatMessage }}
+      />
     </Container>
   )
 }

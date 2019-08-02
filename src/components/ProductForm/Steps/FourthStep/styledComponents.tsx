@@ -12,6 +12,7 @@ interface DivProps {
   big?: boolean
   maxWidth?: boolean
   marginBottom?: string
+  left?: boolean
 }
 interface InputDivProps {
   flex?: number
@@ -35,6 +36,21 @@ export const Title = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
+`
+
+export const AddButton = styled.div`
+  height: 50px;
+  width: 223px;
+  border: 2px solid #e61737;
+  border-radius: 2px;
+  background-color: #ffffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  margin-right: 24px;
+  margin-top: 22px;
+  cursor: pointer;
 `
 
 export const Text = styled.div`
@@ -81,10 +97,10 @@ export const RadioButton = styled(RadioButtonComponent)`
 `
 
 export const RowInput = styled.div`
-  margin: 16px 0;
-  margin: 16px 0;
+  margin: ${({ inline }) => (inline ? '0' : '16px 0')};
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ left }: DivProps) =>
+    left ? 'flex-start' : 'space-between'};
 `
 export const InputDiv = styled.div`
   margin-right: 26px;
@@ -152,10 +168,11 @@ export const EmptyBox = styled.div`
   color: #bebebe;
 `
 export const MediaSection = styled.div`
-  margin-top: 42px;
   display: inline-flex;
-  flex-flow: row;
+  flex-flow: column;
   justify-content: flex-start;
+  max-width: 850px;
+  width: 100%;
   flex-wrap: wrap;
 `
 export const MediaDiv = styled.div`
@@ -237,4 +254,11 @@ export const AddMaterial = styled.div`
 
 export const MaterialButton = styled(Icon)`
   cursor: pointer;
+`
+export const LoaderBox = styled.div`
+  width: 200px;
+  height: 200px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 `

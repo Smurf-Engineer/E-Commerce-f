@@ -41,6 +41,7 @@ import {
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
+import { History } from 'history'
 
 type Thumbnail = {
   style: {
@@ -49,7 +50,7 @@ type Thumbnail = {
 }
 
 interface Props {
-  history: any
+  history: History
   client: any
   loading: boolean
   order?: OrderSearchResult
@@ -125,13 +126,11 @@ export class DesignSearch extends React.Component<Props, {}> {
     }
     const fontList = get(fontsData, 'fonts', [])
 
-    const fonts = fontList.reduce(
-      (fontObject: any, { family }: Font) => {
-        fontObject.push({ font: family })
-        return fontObject
-      },
-      []
-    )
+    const fonts = fontList.reduce((fontObject: any, { family }: Font) => {
+      fontObject.push({ font: family })
+      return fontObject
+      // tslint:disable-next-line: align
+    }, [])
     const orderContent = order && (
       <OrderFiles
         {...{

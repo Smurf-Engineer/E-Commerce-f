@@ -22,22 +22,23 @@ interface Props {
 
 const ColorList = ({
   onSelectColor = () => {},
-  height,
-  stitching,
+  stitching = false,
   colorsList
 }: Props) => {
   const handleOnSelectColor = (color: string) => () => onSelectColor(color)
   let arrayColors: any = []
-  try {
-    arrayColors = JSON.parse(
-      get(
-        colorsList,
-        !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
-        []
+  if (colorsList) {
+    try {
+      arrayColors = JSON.parse(
+        get(
+          colorsList,
+          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+          []
+        )
       )
-    )
-  } catch (e) {
-    Message.error(e)
+    } catch (e) {
+      Message.error(e)
+    }
   }
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []
@@ -63,14 +64,15 @@ const ColorList = ({
       regularColors.push(node)
     }
   })
-
+  console.log(fluorescentColors)
+  console.log(regularColors)
   return (
-    <Container height={height}>
+    <Container>
       <Row>{regularColors.length && regularColors}</Row>
-      {!stitching && (
+      {!stitching && !!fluorescentColors.length && (
         <div>
           <Divider />
-          <Row>{fluorescentColors.length && fluorescentColors}</Row>
+          <Row>{fluorescentColors}</Row>
         </div>
       )}
     </Container>
