@@ -16,7 +16,8 @@ export const initialState = fromJS({
   currentPage: 1,
   orderBy: 'id',
   sort: 'desc',
-  searchText: ''
+  searchText: '',
+  teamStoreId: -1
 })
 
 const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {

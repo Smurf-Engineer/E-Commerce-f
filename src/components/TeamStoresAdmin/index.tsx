@@ -2,6 +2,7 @@
  * TeamStoresAdmin Component - Created by eduardoquintero on 15/07/19.
  */
 import * as React from 'react'
+import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { compose } from 'react-apollo'
@@ -9,6 +10,7 @@ import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
 import { setTeamStoreFeaturedMutation } from './data'
+import TeamStoreDetails from './TeamStoreDetails'
 import * as TeamStoresActions from './actions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './TeamStoresList'
@@ -63,29 +65,53 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
+    const {
+      currentPage,
+      orderBy,
+      sort,
+      formatMessage,
+      searchText,
+      history
+    } = this.props
 
     return (
-      <Container>
-        <ScreenTitle>
-          <FormattedMessage {...messages.title} />
-        </ScreenTitle>
-        <SearchInput
-          value={this.state.searchValue}
-          onChange={this.handleInputChange}
-          placeholder={formatMessage(messages.search)}
+      <div>
+        <Route
+          path="/admin/team-stores"
+          exact={true}
+          render={() => (
+            <Container>
+              <ScreenTitle>
+                <FormattedMessage {...messages.title} />
+              </ScreenTitle>
+              <SearchInput
+                value={this.state.searchValue}
+                onChange={this.handleInputChange}
+                placeholder={formatMessage(messages.search)}
+              />
+              <List
+                {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+                onSortClick={this.handleOnSortClick}
+                onChangePage={this.handleOnChangePage}
+                interactiveHeaders={true}
+                onSetFeatured={this.handleOnSetFeatured}
+                onClickRow={this.handleGoToTeamStore}
+              />
+            </Container>
+          )}
         />
-        <List
-          {...{ formatMessage, currentPage, orderBy, sort, searchText }}
-          onSortClick={this.handleOnSortClick}
-          onChangePage={this.handleOnChangePage}
-          interactiveHeaders={true}
-          onSetFeatured={this.handleOnSetFeatured}
+        <Route
+          path="/admin/team-stores/details/:id"
+          exact={true}
+          render={() => <TeamStoreDetails {...{ formatMessage, history }} />}
         />
-      </Container>
+      </div>
     )
   }
-
+  handleGoToTeamStore = (id: string) => {
+    const { history } = this.props
+    history.push(`/admin/team-stores/details/${id}`)
+  }
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props
     setOrderByAction(label, sort)

@@ -89,6 +89,7 @@ export const getProductQuery = gql`
         left_image
         right_image
         gender_id
+        thumbnail
         color_id
       }
       active

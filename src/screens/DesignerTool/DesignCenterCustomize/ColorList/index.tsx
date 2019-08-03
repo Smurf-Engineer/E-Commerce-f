@@ -22,7 +22,6 @@ interface Props {
 
 const ColorList = ({
   onSelectColor = () => {},
-  height,
   stitching = false,
   colorsList
 }: Props) => {
@@ -68,7 +67,7 @@ const ColorList = ({
   console.log(fluorescentColors)
   console.log(regularColors)
   return (
-    <Container tneheight={height}>
+    <Container>
       <Row>{regularColors.length && regularColors}</Row>
       {!stitching && !!fluorescentColors.length && (
         <div>

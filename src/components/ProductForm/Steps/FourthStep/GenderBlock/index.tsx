@@ -16,19 +16,27 @@ import { TypePicture, BlockImage } from '../../../../../types/common'
 
 interface Props {
   picture: TypePicture
+  isThumbnail?: boolean
   handleSetFile: (event: any) => void
   beforeUpload: (file: any) => boolean
 }
 
-const GenderBlock = ({ picture, handleSetFile, beforeUpload }: Props) => {
+const GenderBlock = ({
+  isThumbnail,
+  picture,
+  handleSetFile,
+  beforeUpload
+}: Props) => {
+  const { id, images, thumbnail, name } = picture
+  const imagesArray = isThumbnail ? [thumbnail] : images
   return (
     <Container>
-      <Label upperCase={true}>{picture.name}</Label>
+      <Label upperCase={true}>{name}</Label>
       <ImageBlock>
-        {picture.images.map((image: BlockImage, index: number) => (
+        {imagesArray.map((image: BlockImage, index: number) => (
           <Upload
             key={index}
-            data={{ id: picture.id, name: image.name }}
+            data={{ id, name: image.name }}
             listType="picture-card"
             className="avatar-uploader"
             customRequest={handleSetFile}
