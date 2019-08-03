@@ -14,6 +14,7 @@ export const GetProductsByIdQuery = gql`
       mpn
       flatlock
       branding
+      title
       bibBrace {
         white
         black

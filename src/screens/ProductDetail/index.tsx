@@ -138,6 +138,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
   componentWillUnmount() {
     const { resetReducerAction } = this.props
+
+    if (config.mainTitle) {
+      document.title = config.mainTitle
+    }
     resetReducerAction()
   }
 
@@ -224,7 +228,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       colors,
       relatedItemTag,
       fitStyles,
-      sizeRange
+      sizeRange,
+      title
     } = product
     const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag.replace(/_/g, ' ')
@@ -234,6 +239,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       location: { search }
     } = this.props
+    if (title) {
+      document.title = title
+    }
     const queryParams = queryString.parse(search)
 
     const yotpoId = queryParams.modelId || ''
