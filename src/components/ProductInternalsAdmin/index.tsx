@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
+import * as ApiActions from './api'
 import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
 import set from 'lodash/set'
@@ -19,7 +20,9 @@ import {
   Container,
   ScreenTitle,
   SearchInput,
-  AddInternalButton
+  AddInternalButton,
+  DownloadButton,
+  BottomContainer
 } from './styledComponents'
 import {
   getProductInternalsInfoQuery,
@@ -63,6 +66,7 @@ interface Props {
   id: number
   modalOpen: boolean
   loading: boolean
+  downloading: boolean
   formatMessage: (messageDescriptor: Message, params?: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -78,6 +82,7 @@ interface Props {
   updateProduct: (variables: {}) => Promise<ProductInternal>
   addProduct: (variables: {}) => Promise<ProductInternal>
   deleteProduct: (variables: {}) => Promise<MessagePayload>
+  downloadCsv: () => void
 }
 
 interface Data extends QueryProps {
@@ -126,7 +131,9 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       collection,
       modalOpen,
       loading,
-      id
+      id,
+      downloading,
+      downloadCsv
     } = this.props
 
     return (
@@ -175,9 +182,15 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
             id
           }}
         />
+        <BottomContainer>
+          <DownloadButton loading={downloading} onClick={downloadCsv}>
+            {formatMessage(messages.download)}
+          </DownloadButton>
+        </BottomContainer>
       </Container>
     )
   }
+
   handleOnSave = async () => {
     const {
       id,
@@ -454,7 +467,7 @@ const ProductInternalsAdminEnhance = compose(
   }),
   connect(
     mapStateToProps,
-    { ...ProductInternalActions }
+    { ...ProductInternalActions, ...ApiActions }
   )
 )(ProductInternalsAdmin)
 
