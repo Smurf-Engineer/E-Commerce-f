@@ -29,7 +29,7 @@ interface Props {
 export class RelatedProducts extends React.Component<Props, {}> {
   render() {
     const {
-      products,
+      products = [],
       phone,
       currentCurrency,
       formatMessage,

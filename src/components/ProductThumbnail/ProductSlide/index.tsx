@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import Responsive from 'react-responsive'
-import SwipeableViews from 'react-swipeable-views'
 import { FormattedMessage } from 'react-intl'
 import {
   ImageContainer,
@@ -11,17 +10,14 @@ import {
   TopContainer,
   TopText,
   Image,
-  Arrows,
-  Arrow,
   ButtonContainer,
-  CustomizeButton,
   Page,
   QuickView,
-  ProApproved
+  ProApproved,
+  ThumbnailImage
 } from './styledComponents'
 import messages from './messages'
-import backIcon from '../../../assets/leftarrow.svg'
-import nextIcon from '../../../assets/rightarrow.svg'
+import JackrooLogo from '../../../assets/Jackroologo.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
 import { ImageType } from '../../../types/common'
 
@@ -52,7 +48,7 @@ interface Props {
   onPressThumbnail: () => void
 }
 
-const imagesOrder = ['front', 'left', 'right', 'back']
+const imagesOrder = ['thumbnail', 'front', 'left', 'right', 'back']
 
 const ProductSlide = ({
   onMouseEnter,
@@ -122,28 +118,9 @@ const ProductSlide = ({
       </ImageContainer>
     )
   }
-
-  const imagePages = imagesOrder.map((key, index) => {
-    return (
-      <Page key={index}>
-        {!!images && (
-          // <a href={urlProduct}> TODO: WIP new way to right click
-          <Image src={images[key]} onClick={onPressThumbnail} />
-          // </a> TODO: WIP new way to right click
-        )}
-      </Page>
-    )
-  })
-
-  const buttonToRender = (
-    <ButtonContainer
-      {...{ myLockerList }}
-      onClick={customizable ? onPressCustomize : onPressThumbnail}
-    >
-      <CustomizeButton>{labelButton}</CustomizeButton>
-    </ButtonContainer>
-  )
-
+  let thumbnail = images
+    ? images[imagesOrder.find(key => images[key]) || 'thumbnail']
+    : JackrooLogo
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>
@@ -158,18 +135,7 @@ const ProductSlide = ({
           </TopContainer>
         )}
       </ImageTop>
-      <SwipeableViews index={currentImage} disabled={disableSlider}>
-        {imagePages}
-      </SwipeableViews>
-      <AboveTablet>
-        {isHovered && (
-          <Arrows>
-            <Arrow src={backIcon} onClick={onPressBack} />
-            <Arrow src={nextIcon} onClick={onPressNext} />
-          </Arrows>
-        )}
-        {isHovered && buttonToRender}
-      </AboveTablet>
+      <ThumbnailImage onClick={onPressThumbnail} src={thumbnail} />
     </ImageContainer>
   )
 }

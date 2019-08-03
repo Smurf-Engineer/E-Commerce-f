@@ -20,6 +20,7 @@ import ProductCatalog from '../../components/ProductCatalog'
 import ProductInternalsAdmin from '../../components/ProductInternalsAdmin'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
+import TeamStoresAdmin from '../../components/TeamStoresAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
 import DesignLabAdmin from '../../components/DesignLabAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
@@ -211,6 +212,10 @@ export class Admin extends React.Component<Props, {}> {
         <Route
           path="/admin/users"
           render={() => <UsersAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/team-stores"
+          render={() => <TeamStoresAdmin {...{ history, formatMessage }} />}
         />
         <Route
           path="/admin/homepage/:sportName?"

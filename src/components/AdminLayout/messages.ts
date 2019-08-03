@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.users',
     defaultMessage: 'USERS'
   },
+  teamStores: {
+    id: 'screens.AdminLayout.teamStores',
+    defaultMessage: 'TEAM STORES'
+  },
   logout: {
     id: 'screens.AdminLayout.logout',
     defaultMessage: 'LOGOUT'

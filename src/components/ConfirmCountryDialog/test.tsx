@@ -14,7 +14,8 @@ describe('<ConfirmCountryDialog />', () => {
         {
           id: 0,
           country: '',
-          subsidiary: 0
+          subsidiary: 0,
+          countryCode: ''
         }
       ],
       fetchMore: () => {}

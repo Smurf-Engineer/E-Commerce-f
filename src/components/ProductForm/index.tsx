@@ -38,6 +38,8 @@ import {
   StyledButton,
   ModalMessage
 } from './styledComponents'
+import { uploadMediaAction } from './api'
+import { History } from 'history'
 
 interface DataExtra extends QueryProps {
   categories: object[]
@@ -47,7 +49,7 @@ interface DataExtra extends QueryProps {
 interface Props {
   bannerMaterials: any[]
   product: Product
-  history: any
+  history: History
   newSport: string
   newSportEnabled: boolean
   match: any
@@ -59,6 +61,9 @@ interface Props {
   specDetail: string
   materialDetail: string
   dataExtra: DataExtra
+  uploadMediaFile: (event: any) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
   resetData: () => void
   setSpec: (value: string) => void
   setMaterial: (value: string) => void
@@ -91,7 +96,6 @@ interface Props {
     name: string,
     value: string
   ) => void
-  setBannersLoading: (value: boolean) => void
   setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setCurrencies: (currencies: any) => void
@@ -122,6 +126,7 @@ export class ProductForm extends React.Component<Props, {}> {
     }
     const dataExtra = await query({
       query: getExtraData,
+      variables: { id },
       fetchPolicy: 'network-only'
     })
     const extraData = get(dataExtra, 'data.extraData', [])
@@ -146,7 +151,6 @@ export class ProductForm extends React.Component<Props, {}> {
       bannersLoading,
       newSport,
       newSportEnabled,
-      setBannersLoading,
       setSpec,
       specDetail,
       setMaterial,
@@ -158,6 +162,9 @@ export class ProductForm extends React.Component<Props, {}> {
       removeBanner,
       setColors,
       openPrompt,
+      uploadMediaFile,
+      addMedia,
+      removeMedia,
       moveFile,
       addBanner,
       setBanner,
@@ -263,13 +270,15 @@ export class ProductForm extends React.Component<Props, {}> {
           moveBanner,
           bannersLoading,
           setBanner,
+          uploadMediaFile,
+          addMedia,
+          removeMedia,
           customizable,
           moveFile,
           setCheck,
           genders,
           colors,
           pictures,
-          setBannersLoading,
           bannerMaterials,
           setValue,
           selectedGenders,
@@ -326,8 +335,8 @@ export class ProductForm extends React.Component<Props, {}> {
                 )}
               </ScreenTitle>
               <Steps current={currentStep}>
-                {stepsArray.map(step => (
-                  <Step title={step.title} />
+                {stepsArray.map((step, index) => (
+                  <Step key={index} title={step.title} />
                 ))}
               </Steps>
               {screenSteps[currentStep]}
@@ -513,6 +522,7 @@ export class ProductForm extends React.Component<Props, {}> {
         back_image: arrayType[imageId].back_image || '',
         left_image: arrayType[imageId].left_image || '',
         right_image: arrayType[imageId].right_image || '',
+        thumbnail: arrayType[imageId].thumbnail || '',
         color_id: !designCenter ? imageId : null,
         gender_id: designCenter ? imageId : gendersDet[0].id
       }))
@@ -595,7 +605,7 @@ const ProductFormEnhance = compose(
   graphql(upsertProduct, { name: 'upsertProductAction' }),
   connect(
     mapStateToProps,
-    { ...ProductFormActions }
+    { ...ProductFormActions, uploadMediaFile: uploadMediaAction }
   )
 )(ProductForm)
 

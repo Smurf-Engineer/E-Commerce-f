@@ -3,17 +3,22 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { IntlProvider } from 'react-intl'
 import { ColorChart } from './index'
 
 describe('<ColorChart />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const props = { locale: 'en' }
     ReactDOM.render(
-      <ColorChart
-        open={true}
-        handleClose={() => {}}
-        formatMessage={() => ''}
-      />,
+      <IntlProvider {...props}>
+        <ColorChart
+          open={true}
+          handleClose={() => {}}
+          formatMessage={() => ''}
+          handleOpenForm={() => {}}
+        />
+      </IntlProvider>,
       div
     )
   })

@@ -27,6 +27,7 @@ interface ConfigType {
   googleFontsKey?: string
   googleFontsUrl?: string
   tutorialsTabActive?: string
+  colorSwatchZip?: string
   mainTitle?: string
 }
 
@@ -53,6 +54,7 @@ const config: ConfigType = {
   googleFontsKey: process.env.GOOGLE_FONTS_KEY,
   googleFontsUrl: process.env.GOOGLE_FONTS_URL,
   tutorialsTabActive: process.env.TUTORIALS_TAB_ACTIVE,
+  colorSwatchZip: process.env.COLOR_SWATCH_ZIP,
   mainTitle: process.env.MAIN_TITLE
 }
 

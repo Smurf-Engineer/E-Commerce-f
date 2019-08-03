@@ -13,7 +13,10 @@ import {
   Column,
   Error,
   Required,
-  inputStyle
+  inputStyle,
+  OnDemandLabel,
+  ShipLabel,
+  RightLabels
 } from './styledComponents'
 import { validateHolidayQuery } from './data'
 import messages from './messages'
@@ -23,6 +26,7 @@ interface Props {
   name: string
   startDate?: Moment
   endDate?: Moment
+  onDemand?: boolean
   validateHoliday: any
   onUpdateName: (name: string) => void
   onSelectStartDate: (dateMoment: Moment, date: string) => void
@@ -38,6 +42,7 @@ const StoreForm = ({
   name,
   startDate,
   endDate,
+  onDemand,
   formatMessage,
   validateHoliday
 }: Props) => {
@@ -137,44 +142,53 @@ const StoreForm = ({
           size="large"
           onChange={handleUpdateName}
         />
-        {hasError &&
-          !name && <Error>{formatMessage(messages.requiredFieldLabel)}</Error>}
+        {hasError && !name && (
+          <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+        )}
       </Column>
-      <Column>
-        <Label>
-          {formatMessage(messages.orderCutOffLabel)} <Required>*</Required>
-        </Label>
-        <DatePicker
-          value={startDate}
-          disabledDate={disabledStartDate}
-          onChange={handleOnSelectStart}
-          format="YYYY-MM-DD" // TODO: Change format
-          size="large"
-          style={inputStyle}
-        />
-        {hasError &&
-          !startDate && (
-            <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
-          )}
-      </Column>
-      <Column>
-        <Label>
-          {formatMessage(messages.desiredDeliveryLabel)} <Required>*</Required>
-        </Label>
-        <DatePicker
-          value={endDate}
-          disabledDate={disabledEndDate}
-          onChange={handleOnSelectEnd}
-          disabled={!startDate}
-          format="YYYY-MM-DD" // TODO: Change format
-          size="large"
-          style={inputStyle}
-        />
-        {hasError &&
-          !endDate && (
-            <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
-          )}
-      </Column>
+      {!onDemand ? (
+        <React.Fragment>
+          <Column>
+            <Label>
+              {formatMessage(messages.orderCutOffLabel)} <Required>*</Required>
+            </Label>
+            <DatePicker
+              value={startDate}
+              disabledDate={disabledStartDate}
+              onChange={handleOnSelectStart}
+              format="YYYY-MM-DD" // TODO: Change format
+              size="large"
+              style={inputStyle}
+            />
+            {hasError && !startDate && (
+              <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+            )}
+          </Column>
+          <Column>
+            <Label>
+              {formatMessage(messages.desiredDeliveryLabel)}{' '}
+              <Required>*</Required>
+            </Label>
+            <DatePicker
+              value={endDate}
+              disabledDate={disabledEndDate}
+              onChange={handleOnSelectEnd}
+              disabled={!startDate}
+              format="YYYY-MM-DD" // TODO: Change format
+              size="large"
+              style={inputStyle}
+            />
+            {hasError && !endDate && (
+              <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+            )}
+          </Column>
+        </React.Fragment>
+      ) : (
+        <RightLabels>
+          <ShipLabel>{formatMessage(messages.shipping)}</ShipLabel>
+          <OnDemandLabel>{formatMessage(messages.onDemandMode)}</OnDemandLabel>
+        </RightLabels>
+      )}
     </Container>
   )
 }

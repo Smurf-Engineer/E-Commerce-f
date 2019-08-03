@@ -2,6 +2,7 @@
  * Styled Components - Created by gustavomedina on 12/04/18.
  */
 import styled from 'styled-components'
+import { BLUE } from '../../theme/colors'
 
 export const Footer = styled.div`
   padding: 4px;
@@ -64,9 +65,9 @@ export const PriceLabel = styled.div`
   font-weight: bold;
 `
 
-export const RedPriceLabel = styled.div`
+export const BluePriceLabel = styled.div`
   user-select: none;
-  color: #e61737;
+  color: ${BLUE};
   padding: 4px 0px;
   font-size: 12px;
   line-height: 16px;
