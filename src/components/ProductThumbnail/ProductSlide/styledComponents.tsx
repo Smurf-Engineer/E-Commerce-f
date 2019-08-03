@@ -67,7 +67,8 @@ export const ImageTop = styled.div`
   justify-content: space-between;
   padding: 4px 8px;
   width: 100%;
-  cursor: @media (min-width: 320px) and (max-width: 480px) {
+  cursor: pointer;
+  @media (min-width: 320px) and (max-width: 480px) {
     width: 100px;
   }
 `
