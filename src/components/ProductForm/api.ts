@@ -3,6 +3,7 @@
  */
 import message from 'antd/lib/message'
 import config from '../../config/index'
+import { setMedia } from './actions'
 
 export const uploadFile = async (
   file: File,
@@ -28,5 +29,22 @@ export const uploadFile = async (
     return await response.json()
   } catch (e) {
     message.error(e.message)
+  }
+}
+
+export const uploadMediaAction = (event: any) => {
+  return async (dispatch: any) => {
+    try {
+      const {
+        file,
+        data: { index, isMobile }
+      } = event
+      const response = await uploadFile(file, index, 'media')
+      const { imageUri } = response
+      const urlField = isMobile ? 'urlMobile' : 'url'
+      dispatch(setMedia(index, urlField, imageUri))
+    } catch (e) {
+      message.error(e.message)
+    }
   }
 }
