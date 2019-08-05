@@ -140,6 +140,8 @@ export const CheckGroup = styled(CheckboxGroup)`
 `
 export const CheckBox = styled(Checkbox)`
   flex-basis: 165px;
+  max-width: 140px;
+  width: 100%;
   margin: 8px 0 !important;
 `
 export const SwitchInput = styled(Switch)`

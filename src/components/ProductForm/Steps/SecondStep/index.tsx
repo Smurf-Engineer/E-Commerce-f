@@ -88,6 +88,7 @@ export class SecondStep extends React.Component<Props, {}> {
               </Label>
               {colors.map((color: ProductColors, index) => (
                 <CheckBox
+                  large={true}
                   key={index}
                   id={color.id.toString()}
                   checked={

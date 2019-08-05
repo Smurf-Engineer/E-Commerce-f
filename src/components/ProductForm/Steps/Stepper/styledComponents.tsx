@@ -2,6 +2,9 @@
  * Styled Components - Created by Apodaca on 17/05/19.
  */
 import styled from 'styled-components'
+interface DivProps {
+  primary?: boolean
+}
 export const Container = styled.div`
   justify-content: flex-end;
   display: flex;
@@ -13,13 +16,14 @@ export const BackButton = styled.div`
   width: 165.9px;
   border-radius: 4px;
   cursor: pointer;
-  color: #4a90e2;
+  color: ${({ primary }: DivProps) => (primary ? '#4a90e2' : 'white')};
   border: 1px solid #4a90e2;
   height: 50px;
   justify-content: center;
   align-items: center;
   display: flex;
-  background-color: white;
+  background-color: ${({ primary }: DivProps) =>
+    primary ? 'white' : '#4a90e2'};
 `
 
 export const NextButton = styled.div`
