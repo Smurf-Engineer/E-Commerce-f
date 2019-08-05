@@ -13,7 +13,6 @@ export const ImageContainer = styled.div`
   cursor: pointer;
   ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? `background-color: ${backgroundColor}` : ''};
-  height: 214.13px;
   width: 100%;
   padding: ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? '10px' : '10px 0'};
@@ -65,9 +64,10 @@ export const ImageTop = styled.div`
   display: flex;
   flex-direction: row;
   position: absolute;
-  width: 100%;
   justify-content: space-between;
-
+  padding: 4px 8px;
+  width: 100%;
+  cursor: pointer;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100px;
   }
@@ -82,6 +82,13 @@ export const TopContainer = styled.div`
   align-items: center;
 `
 
+export const ThumbnailImage = styled.img`
+  width: 220px;
+  height: 212px;
+  object-fit: cover;
+  border-radius: 3px;
+`
+
 export const TopText = styled.div`
   user-select: none;
   color: #ffffff;
@@ -94,7 +101,11 @@ export const TopText = styled.div`
 
 export const QuickView = styled.div`
   z-index: 1;
-  cursor: pointer;
+  filter: drop-shadow(0px 0px 1px white);
+  transition: all 0.25s ease;
+  &:hover {
+    filter: drop-shadow(0px 0px 3px white);
+  }
 `
 
 export const Arrows = styled.div`

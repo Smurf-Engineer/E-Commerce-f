@@ -59,6 +59,7 @@ export const productsQuery = gql`
           left: left_image
           right: right_image
           genderId: gender_id
+          thumbnail
         }
         colors {
           name
