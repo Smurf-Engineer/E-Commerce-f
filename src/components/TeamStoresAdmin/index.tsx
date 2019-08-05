@@ -58,6 +58,7 @@ interface Props {
   setPriceAction: (value: number, currency: string, itemIndex: number) => void
   getTeamStore: (query: any, teamStoreId: number) => void
   setTeamStorePrices: (variables: {}) => void
+  setLoadingItemAction: (itemIndex: string, loading: boolean) => void
 }
 
 interface StateProps {
@@ -135,7 +136,12 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   }
   handleOnSaveItem = async (event: React.MouseEvent<HTMLElement>) => {
     const { id: index } = event.currentTarget
-    const { teamStore, setTeamStorePrices } = this.props
+    const {
+      teamStore,
+      setTeamStorePrices,
+      setLoadingItemAction,
+      formatMessage
+    } = this.props
 
     const teamStoreItem = teamStore.items[index]
     const prices = Object.keys(teamStoreItem.pricesByCurrency).map(
@@ -144,13 +150,20 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
         price: teamStoreItem.pricesByCurrency[currency]
       })
     )
-    await setTeamStorePrices({
-      variables: {
-        teamStoreId: teamStore.id,
-        itemId: teamStoreItem.id,
-        prices
-      }
-    })
+    setLoadingItemAction(index, true)
+    try {
+      await setTeamStorePrices({
+        variables: {
+          teamStoreId: teamStore.id,
+          itemId: teamStoreItem.id,
+          prices
+        }
+      })
+      message.success(formatMessage(messages.itemSaved))
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
+    setLoadingItemAction(index, false)
   }
   handleGetTeamStoreDetails = (teamStoreId: number) => {
     const {

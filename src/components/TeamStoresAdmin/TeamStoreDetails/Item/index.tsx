@@ -29,6 +29,7 @@ interface Props {
   index: number
   priceRange: PriceRange[]
   pricesByCurrency: any
+  loading: boolean
   handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
   handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
   formatMessage: (messageDescriptor: Message) => string
@@ -44,7 +45,8 @@ const RowItem = ({
   index,
   pricesByCurrency,
   handleOnSave,
-  formatMessage
+  formatMessage,
+  loading
 }: Props) => {
   const onSetPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id: inputId } = event.target
@@ -87,7 +89,7 @@ const RowItem = ({
             )}
             type="primary"
             onClick={handleOnSave}
-            loading={false}
+            {...{ loading }}
           >
             {formatMessage(messages.save)}
           </StyledButton>

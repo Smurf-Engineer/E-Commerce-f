@@ -124,7 +124,8 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
             product: { name: productName, description: productType }
           },
           priceRange,
-          pricesByCurrency
+          pricesByCurrency,
+          loading: loadingItem = false
         },
         index: number
       ) => (
@@ -143,6 +144,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
             handleOnSave,
             formatMessage
           }}
+          loading={loadingItem}
         />
       )
     )

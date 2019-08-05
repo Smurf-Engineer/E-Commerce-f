@@ -10,7 +10,8 @@ import {
   SET_SEARCH_TEXT,
   SET_LOADING,
   SET_PRICE_ITEM,
-  SET_TEAM_STORE_DATA
+  SET_TEAM_STORE_DATA,
+  SET_LOADING_ITEM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -50,6 +51,11 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         (item: any) => {
           return item.setIn(['pricesByCurrency', action.currency], action.value)
         }
+      )
+    case SET_LOADING_ITEM:
+      return state.updateIn(
+        ['teamStore', 'items', action.itemIndex],
+        (item: any) => item.set('loading', action.loading)
       )
     /* return state.withMutations((tempState: any) => {
         const initialLoadingValues = { desktopImage: false, mobileImage: false }

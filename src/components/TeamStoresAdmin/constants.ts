@@ -13,3 +13,4 @@ export const SET_SEARCH_TEXT = `${namespace}/SET_SEARCH_TEXT`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_PRICE_ITEM = `${namespace}/SET_PRICE_ITEM`
 export const SET_TEAM_STORE_DATA = `${namespace}/SET_TEAM_STORE_DATA`
+export const SET_LOADING_ITEM = `${namespace}/SET_LOADING_ITEM`

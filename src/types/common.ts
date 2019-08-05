@@ -215,6 +215,7 @@ export type TeamStoreItemtype = {
   team_store_name?: string
   priceRange: PriceRange[]
   pricesByCurrency?: any
+  loading?: boolean
 }
 
 export type LockerTableType = {

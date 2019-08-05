@@ -9,7 +9,8 @@ import {
   SET_SEARCH_TEXT,
   SET_LOADING,
   SET_PRICE_ITEM,
-  SET_TEAM_STORE_DATA
+  SET_TEAM_STORE_DATA,
+  SET_LOADING_ITEM
 } from './constants'
 
 import {
@@ -68,4 +69,10 @@ export const setTeamStoreDataAction = ({
   type: SET_TEAM_STORE_DATA,
   teamStore,
   currencies
+})
+
+export const setLoadingItemAction = (itemIndex: string, loading: boolean) => ({
+  type: SET_LOADING_ITEM,
+  itemIndex,
+  loading
 })
