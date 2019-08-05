@@ -57,18 +57,6 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         ['teamStore', 'items', action.itemIndex],
         (item: any) => item.set('loading', action.loading)
       )
-    /* return state.withMutations((tempState: any) => {
-        const initialLoadingValues = { desktopImage: false, mobileImage: false }
-        tempState.updateIn(
-          ['items'],
-          (items: []) =>
-            images.push(fromJS(action.imagePlaceholder))
-        )
-        tempState.updateIn(['secondaryHeaderLoading'], (loadings: [any]) =>
-          loadings.push(fromJS(initialLoadingValues))
-        )
-        return tempState
-      }) */
     default:
       return state
   }
