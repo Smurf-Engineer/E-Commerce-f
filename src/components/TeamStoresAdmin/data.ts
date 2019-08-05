@@ -27,16 +27,8 @@ export const setTeamStoreFeaturedMutation = graphql(
 
 export const setTeamStorePricesMutation = graphql(
   gql`
-    mutation setTeamStorePrices(
-      $teamStoreId: Int!
-      $itemId: Int!
-      $prices: [ItemPriceInput]
-    ) {
-      teamStorePrices: setTeamStorePrices(
-        teamStoreId: $teamStoreId
-        itemId: $itemId
-        prices: $prices
-      ) {
+    mutation setTeamStorePrices($itemId: Int!, $prices: [ItemPriceInput]) {
+      teamStorePrices: setTeamStorePrices(itemId: $itemId, prices: $prices) {
         message
       }
     }

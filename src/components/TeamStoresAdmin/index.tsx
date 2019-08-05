@@ -154,7 +154,6 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
     try {
       await setTeamStorePrices({
         variables: {
-          teamStoreId: teamStore.id,
           itemId: teamStoreItem.id,
           prices
         }
