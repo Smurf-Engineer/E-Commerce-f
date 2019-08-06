@@ -71,6 +71,7 @@ interface CartItem {
   designCode: string
   product: ProductCart
   itemDetails: CartItemDetail[]
+  teamStoreId?: string
 }
 
 interface CartItems {
@@ -78,6 +79,7 @@ interface CartItems {
   designCode: string
   product: Product
   itemDetails: CartItemDetail[]
+  teamStoreId?: string
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -770,7 +772,13 @@ class Checkout extends React.Component<Props, {}> {
       const shippingCarrier = get(shipping, 'carrier', null)
       const shippingAmount = get(shipping, 'total', '0')
       const sanitizedCart = shoppingCart.map(
-        ({ designCode, designId, product, itemDetails }: CartItems) => {
+        ({
+          designCode,
+          designId,
+          product,
+          itemDetails,
+          teamStoreId
+        }: CartItems) => {
           const item = { designCode, designId } as CartItem
           const productItem = {
             id: product.id,
@@ -779,6 +787,8 @@ class Checkout extends React.Component<Props, {}> {
             yotpoId: product.yotpoId
           }
           item.product = productItem
+          console.log('ID ', teamStoreId)
+          item.teamStoreId = teamStoreId
           item.itemDetails = itemDetails.map(
             ({ gender, quantity, size, fit, color }: CartItemDetail) => {
               const fitId = get(fit, 'id', 0)
