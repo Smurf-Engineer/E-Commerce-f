@@ -2,6 +2,7 @@
  * Styled Components - Created by Apodaca on 17/05/19.
  */
 import styled from 'styled-components'
+import { BLUE } from '../../../../theme/colors'
 interface DivProps {
   primary?: boolean
 }
@@ -16,14 +17,13 @@ export const BackButton = styled.div`
   width: 165.9px;
   border-radius: 4px;
   cursor: pointer;
-  color: ${({ primary }: DivProps) => (primary ? '#4a90e2' : 'white')};
-  border: 1px solid #4a90e2;
+  color: ${({ primary }: DivProps) => (primary ? BLUE : 'white')};
+  border: 1px solid ${BLUE};
   height: 50px;
   justify-content: center;
   align-items: center;
   display: flex;
-  background-color: ${({ primary }: DivProps) =>
-    primary ? 'white' : '#4a90e2'};
+  background-color: ${({ primary }: DivProps) => (primary ? 'white' : BLUE)};
 `
 
 export const NextButton = styled.div`
@@ -31,7 +31,7 @@ export const NextButton = styled.div`
   width: 165.9px;
   border-radius: 4px;
   cursor: ${({ enabled }: any) => (enabled ? 'pointer' : 'default')};
-  background-color: #4a90e2;
+  background-color: ${BLUE};
   transition: all 0.25s ease;
   height: 50px;
   opacity: ${({ enabled }: any) => (enabled ? 1 : 0.3)};
