@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import CartListItem from './index'
+import { CartListItem } from './index'
 import { ItemDetailType } from '../../types/common'
 import { IntlProvider } from 'react-intl'
 
@@ -57,7 +57,8 @@ describe('<CartListItem />', () => {
     const itemIndex = 0
     const price = {
       price: 0,
-      quantity: '1'
+      quantity: '1',
+      shortName: ''
     }
     const item = {
       product: {
@@ -78,7 +79,8 @@ describe('<CartListItem />', () => {
         priceRange: [
           {
             quantity: '1',
-            price: 0
+            price: 0,
+            shortName: ''
           }
         ],
         collections: 0,
@@ -116,7 +118,14 @@ describe('<CartListItem />', () => {
         ],
         bodyChartId: 0,
         retailMen: false,
-        retailWomen: false
+        retailWomen: false,
+        active: true,
+        genderId: 1,
+        label: '',
+        relatedProducts: [],
+        flatlock: '',
+        bumpMap: '',
+        weight: 10
       },
       itemDetails: [
         {
@@ -143,6 +152,9 @@ describe('<CartListItem />', () => {
           setDetailGender={handleGender}
           setDetailSize={handleSize}
           removeItem={handleRemove}
+          openFitInfoAction={() => {}}
+          currentCurrency={''}
+          openFitInfo={false}
         />
       </IntlProvider>,
       div

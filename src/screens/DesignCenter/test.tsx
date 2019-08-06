@@ -16,13 +16,15 @@ import {
   setLoadingModel,
   designResetAction,
   editDesignAction,
-  setSwipingTabAction
+  setSwipingTabAction,
+  setThemeAction
 } from './actions'
 import {
   YoutubePlaylistItemType,
   StitchingColor,
   AccesoryColor,
-  Palette
+  Palette,
+  Product
 } from '../../types/common'
 
 describe(' DesignCenter Screen', () => {
@@ -182,8 +184,8 @@ describe(' DesignCenter Screen', () => {
 
       it('Should update stitching color correctly', () => {
         const stitchingColorTest: StitchingColor = {
-          name: 'FSC-10',
-          value: '#000000'
+          name: 'FSC-11',
+          value: '#000011'
         }
         const state = designCenterReducer(
           initialState,
@@ -495,6 +497,22 @@ describe(' DesignCenter Screen', () => {
       })
     })
 
-    describe('SET_THEME_SELECTED_ACTION', () => {})
+    describe('SET_THEME_SELECTED_ACTION', () => {
+      const testId = 5
+      const productTest: Product = jest.genMockFromModule(
+        '../../../__mocks__/productMock'
+      )
+      const state = designCenterReducer(
+        initialState,
+        setThemeAction(testId, productTest)
+      )
+
+      it('Should update theme id correctly', () => {
+        const updatedId = state.get('themeId')
+        expect(updatedId).toEqual(testId)
+      })
+    })
+
+    describe('SET_STYLE_SELECTED_ACTION', () => {})
   })
 })

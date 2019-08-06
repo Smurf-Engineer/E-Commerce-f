@@ -4,7 +4,11 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
-
+import { GREEN, RED } from '../../theme/colors'
+type DivProps = {
+  onDemandMode?: boolean
+  open?: boolean
+}
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -14,14 +18,31 @@ export const Container = styled.div`
 export const HeadersContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 0;
+  @media (max-width: 425px) {
+    flex-flow: column;
+    margin: 16px 8px;
+  }
 `
 
 export const SideBar = styled.div`
   width: 30%;
   padding-top: 36px;
   padding-right: 32px;
+  @media (max-width: 425px) {
+    width: 100%;
+    padding: 0;
+  }
 `
-
+export const Description = styled.div`
+  text-align: center;
+  width: 100vw;
+  margin-left: -36px;
+  padding: 0 8px;
+  @media (max-width: 425px) {
+    margin-left: 0;
+  }
+`
 export const Title = styled.div`
   color: #5f6062;
   font-size: 24px;
@@ -30,6 +51,7 @@ export const Title = styled.div`
   line-height: 33px;
   text-transform: uppercase;
   padding-right: 10px;
+  text-align: center;
 `
 
 export const AboutTitle = styled.div`
@@ -41,6 +63,25 @@ export const AboutTitle = styled.div`
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 30px;
+`
+
+export const StoreBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  width: 100%;
+  margin-right: 22px;
+  height: 51px;
+  border: 2px solid ${({ open }: DivProps) => (open ? GREEN : RED)};
+  border-radius: 2px;
+  color: ${({ open }: DivProps) => (open ? GREEN : RED)};
+  font-family: Avenir Next;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+  text-align: center;
 `
 
 export const ErrorTitle = styled.div`
@@ -80,6 +121,10 @@ export const Content = styled.div`
   width: 70%;
   padding-top: 36px;
   padding-left: 36px;
+  @media (max-width: 425px) {
+    width: 100%;
+    padding: 0;
+  }
 `
 
 export const PriceTitle = styled.div`
@@ -221,9 +266,14 @@ export const DatesContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   flex-flow: row wrap;
-  padding-top: 20px;
-  align-items: right;
+  padding-top: ${({ onDemandMode }: DivProps) => (onDemandMode ? '0' : '20px')};
   justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  @media (max-width: 425px) {
+    justify-content: center;
+    margin-top: 18px;
+  }
 `
 
 export const FlexContainer = styled.div`
@@ -231,6 +281,10 @@ export const FlexContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   flex-flow: row wrap;
+  @media (max-width: 425px) {
+    flex-flow: column;
+    justify-content: center;
+  }
 `
 
 export const CalendarContainer = styled.div`
@@ -241,6 +295,7 @@ export const CalendarContainer = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
 `
 
 export const DatesTitle = styled.div`
@@ -255,7 +310,18 @@ export const ListContainer = styled.div`
   margin-top: 65px;
   padding-right: 32px;
   padding-left: 32px;
+  @media (max-width: 425px) {
+    margin: 0;
+  }
 `
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+`
+
 export const sliderStyle = {
   fontSize: '12px',
   letterSpacing: '0.15px',

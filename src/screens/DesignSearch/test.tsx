@@ -1,18 +1,10 @@
 /**
  * DesignSearch Test - Created by miguelcanobbio on 15/08/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import designSearchReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { DesignSearch } from './index'
 
 describe(' DesignSearch Screen', () => {
-  it('renders without exploding', () => {
-    const div = document.createElement('div')
-    // tslint:disable-next-line:no-empty
-    ReactDOM.render(<DesignSearch />, div)
-  })
   // Test redux actions
   it('Return the default state for unknow action', () => {
     let state = designSearchReducer(initialState, { type: 'unknow' })
