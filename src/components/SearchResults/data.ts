@@ -40,6 +40,7 @@ export const searchResultsQuery = gql`
         back: back_image
         left: left_image
         right: right_image
+        thumbnail
       }
       colors {
         id

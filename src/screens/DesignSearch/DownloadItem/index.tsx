@@ -9,7 +9,7 @@ interface Props {
   name?: string
 }
 
-const DownloadItem = ({ name, url }: Props) => {
+const DownloadItem = ({ name, url = '' }: Props) => {
   const completeName = String(url.split('/').pop())
   const fileName = name || completeName
   return (

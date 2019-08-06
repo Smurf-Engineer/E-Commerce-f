@@ -10,7 +10,9 @@ import {
   SlideImageContainer,
   SlideVideo,
   SlideImage,
-  RelatedProductsContainer
+  ImageContainer,
+  RelatedProductsContainer,
+  SlideImageMobile
 } from './styledComponents'
 import messages from './messages'
 import config from '../../config/index'
@@ -19,6 +21,7 @@ import { ProductFile, Product } from '../../types/common'
 import { getFileExtension } from '../../utils/utilsFiles'
 import { RelatedProducts } from '../RelatedProducts'
 import { MP4_EXTENSION } from '../../constants'
+import { History } from 'history'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -26,7 +29,7 @@ interface Props {
   mediaFiles: ProductFile[]
   products: Product[]
   name: string
-  history: any
+  history: History
   currentCurrency: string
   moreTag?: string
 }
@@ -56,7 +59,10 @@ const YotpoSection = ({
                     <source src={image.url} type="video/mp4" />
                   </SlideVideo>
                 ) : (
-                  <SlideImage src={image.url} />
+                  <ImageContainer>
+                    <SlideImage src={image.url} />
+                    <SlideImageMobile src={image.urlMobile} />
+                  </ImageContainer>
                 )}
               </SlideImageContainer>
             ))}
