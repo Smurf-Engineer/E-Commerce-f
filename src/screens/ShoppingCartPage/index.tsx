@@ -141,8 +141,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart
     } = this.props
     const isCustom = find(cart, 'designId')
+    const teamStore = find(cart, 'teamStoreId')
 
-    if (!!isCustom) {
+    if (!!isCustom && !teamStore) {
       if (showReviewDesignModal) {
         showReviewDesignModalAction(false)
         return
