@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'screens.CreateStore.priceDropTitle',
     defaultMessage: 'DYNAMIC PRICE DROP'
   },
+  passcode: {
+    id: 'screens.CreateStore.passcode',
+    defaultMessage: 'Access Code'
+  },
   onDemandTeamStore: {
     id: 'screens.CreateStore.onDemandTeamStore',
     defaultMessage: 'On-Demand Team Stores'
@@ -100,7 +104,7 @@ export default defineMessages({
   },
   bannerMessage: {
     id: 'screens.CreateStore.bannerMessage',
-    defaultMessage: 'Add a banner for your store'
+    defaultMessage: 'Add a header banner to your store'
   },
   optional: {
     id: 'screens.CreateStore.optional',
@@ -113,7 +117,7 @@ export default defineMessages({
   privateMessage: {
     id: 'screens.CreateStore.privateMessage',
     defaultMessage:
-      'Making the store private will allow people with direct link and access code to view your store.'
+      'Making your store private will allow ONLY people with the direct link and access code to view the store.'
   },
   onDemandLabel: {
     id: 'screens.CreateStore.onDemandLabel',

@@ -592,6 +592,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 withInput={true}
                 checked={privateStore}
                 onChange={this.handlePrivateSwitch}
+                placeholder={formatMessage(messages.passcode)}
                 label={formatMessage(messages.privateLabel)}
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
