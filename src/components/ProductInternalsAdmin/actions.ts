@@ -13,7 +13,8 @@ import {
   SELECT_CHANGE,
   RESET_MODAL,
   OPEN_MODAL,
-  SET_INTERNAL_TO_UPDATE
+  SET_INTERNAL_TO_UPDATE,
+  SET_DOWNLOADING_FILE
 } from './constants'
 
 import { AnyAction, sorts, ProductInternal } from '../../types/common'
@@ -72,4 +73,9 @@ export const resetModalAction = () => ({
 export const setInternalToUpdate = (internal: ProductInternal) => ({
   type: SET_INTERNAL_TO_UPDATE,
   internal
+})
+
+export const setDownloadingFileAction = (downloading: boolean) => ({
+  type: SET_DOWNLOADING_FILE,
+  downloading
 })

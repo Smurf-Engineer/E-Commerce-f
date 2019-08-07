@@ -109,7 +109,12 @@ export class FourthStep extends React.Component<Props, {}> {
                   label: 'Right',
                   src: arrayType[id].right_image || ''
                 }
-              ]
+              ],
+              thumbnail: {
+                name: 'thumbnail',
+                label: 'Thumbnail',
+                src: arrayType[id].thumbnail || ''
+              }
             })
           }
           return arr
@@ -136,6 +141,20 @@ export class FourthStep extends React.Component<Props, {}> {
     return (
       <Container>
         <Separator>
+          <FormattedMessage {...messages.thumbnails} />
+        </Separator>
+        <RowInput inline={true} left={true}>
+          {productsImagesForm.map((picture: TypePicture, index: number) => (
+            <GenderBlock
+              {...{ picture }}
+              key={index}
+              isThumbnail={true}
+              handleSetFile={this.handleSetFile}
+              beforeUpload={this.beforeUpload}
+            />
+          ))}
+        </RowInput>
+        <Separator inline={true}>
           <FormattedMessage
             {...(customizable ? messages.howItFits : messages.productImages)}
           />
