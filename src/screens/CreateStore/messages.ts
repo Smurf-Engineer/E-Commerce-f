@@ -22,6 +22,50 @@ export default defineMessages({
     id: 'screens.CreateStore.priceDropTitle',
     defaultMessage: 'DYNAMIC PRICE DROP'
   },
+  onDemandTeamStore: {
+    id: 'screens.CreateStore.onDemandTeamStore',
+    defaultMessage: 'On-Demand Team Stores'
+  },
+  pricingCheckout: {
+    id: 'screens.CreateStore.pricingCheckout',
+    defaultMessage: 'PRICING & CHECKOUT'
+  },
+  percent: {
+    id: 'screens.CreateStore.percent',
+    defaultMessage: 'save 20% on their order'
+  },
+  pricingCheckoutContent: {
+    id: 'screens.CreateStore.pricingCheckoutContent',
+    defaultMessage: `With {onDemandTeam}, deafult pricing is fixed and
+    all members {discount}, Regardless of the quantity of the ordered. 
+    Additional discount may be availabe through seasonal promotional offers.
+    Each member will be able to individually place their order and checkout using their preferred payment method. 
+    Orders are shipped directly to the member’s assignated shipping address.`
+  },
+  orderDays: {
+    id: 'screens.CreateStore.orderDays',
+    defaultMessage: '10 days'
+  },
+  shippingCompany: {
+    id: 'screens.CreateStore.shippingCompany',
+    defaultMessage: 'Fedex International Priority'
+  },
+  signature: {
+    id: 'screens.CreateStore.signature',
+    defaultMessage: 'signature required'
+  },
+  productionDeliveryContent: {
+    id: 'screens.CreateStore.productionDeliveryContent',
+    defaultMessage: `Each order is treated individually and enters the production 
+    process upon receipt delivery is within {orderDays} of order placement (excluding Federal Holidays and weekends).
+    All orders are shipped via {shippingCompany} with {signature} for the security of your order. 
+    In some cases, an alternative carrier such as UPS may be used, based on the shipping address. Members will receive 
+    a shipping notification once their order is picked up by the shipping carrier.`
+  },
+  productionDelivery: {
+    id: 'screens.CreateStore.productionDelivery',
+    defaultMessage: 'PRODUCTION & DELIVERY'
+  },
   priceDropMessageP1: {
     id: 'screens.CreateStore.priceDropMessageP1',
     defaultMessage: 'With JAKROO’s Dynamic Price Drop, everybody wins!'
@@ -95,7 +139,7 @@ export default defineMessages({
   },
   changeLabel: {
     id: 'components.StoreForm.changeLabel',
-    defaultMessage: 'Change'
+    defaultMessage: 'Edit'
   },
   deleteLabel: {
     id: 'componentes.StoreForm.deleteLabel',
