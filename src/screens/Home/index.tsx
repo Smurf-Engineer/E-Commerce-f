@@ -83,10 +83,13 @@ export class Home extends React.Component<Props, {}> {
       client: { query }
     } = this.props
     const { getHomepage } = thunkActions
-
     dispatch(getHomepage(query, params.sportRoute))
   }
-
+  componentWillUnmount() {
+    if (config.mainTitle) {
+      document.title = config.mainTitle
+    }
+  }
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
     const { dispatch } = this.props
     dispatch(openQuickViewAction(id, yotpoId, gender))

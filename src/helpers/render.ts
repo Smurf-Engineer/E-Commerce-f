@@ -44,7 +44,7 @@ const renderHtml = (styleTags: any, html: any) => {
            </script>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
-          <title>JAKROO.COM - Design your own Cycling, Triathlon and MTB Wear</title>
+          <title>Online Jersey Design Center - Designlab by Jakroo</title>
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
           ${
             assets.client.css

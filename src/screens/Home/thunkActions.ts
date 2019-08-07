@@ -14,6 +14,10 @@ export const getHomepage = (query: any, sportRoute: string) => {
       dispatch(
         setHomepageInfoAction(get(response, 'data.getHomepageContent', {}))
       )
+      const title = get(response, 'data.getHomepageContent.title', '')
+      if (title) {
+        document.title = title
+      }
     } catch (e) {
       message.error(e)
     }
