@@ -17,3 +17,4 @@ export const SELECT_CHANGE = `${namespace}/SELECT_CHANGE`
 export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
 export const RESET_MODAL = `${namespace}/RESET_MODAL`
 export const SET_INTERNAL_TO_UPDATE = `${namespace}/SET_INTERNAL_TO_UPDATE`
+export const SET_DOWNLOADING_FILE = `${namespace}/SET_DOWNLOADING_FILE`
