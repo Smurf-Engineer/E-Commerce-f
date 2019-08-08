@@ -57,7 +57,8 @@ import {
   OptionalLabel,
   ButtonOptionStyle,
   ButtonOptionsWrapper,
-  Loading
+  Loading,
+  TextBlock
 } from './styledComponents'
 import config from '../../config/index'
 
@@ -472,7 +473,39 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onSelectEndDate={updateEndDateAction}
               {...{ hasError }}
             />
-            {!onDemand && (
+            {onDemand ? (
+              <React.Fragment>
+                <TextBlock>
+                  <Subtitle>
+                    <FormattedMessage {...messages.pricingCheckout} />
+                  </Subtitle>
+                  <FormattedMessage
+                    {...messages.pricingCheckoutContent}
+                    values={{
+                      onDemandTeam: (
+                        <b>{formatMessage(messages.onDemandTeamStore)}</b>
+                      ),
+                      discount: <b>{formatMessage(messages.percent)}</b>
+                    }}
+                  />
+                </TextBlock>
+                <TextBlock>
+                  <Subtitle>
+                    <FormattedMessage {...messages.productionDelivery} />
+                  </Subtitle>
+                  <FormattedMessage
+                    {...messages.productionDeliveryContent}
+                    values={{
+                      orderDays: <b>{formatMessage(messages.orderDays)}</b>,
+                      shippingCompany: (
+                        <b>{formatMessage(messages.shippingCompany)}</b>
+                      ),
+                      signature: <b>{formatMessage(messages.signature)}</b>
+                    }}
+                  />
+                </TextBlock>
+              </React.Fragment>
+            ) : (
               <React.Fragment>
                 <Subtitle>
                   <FormattedMessage {...messages.teamSizeTitle} />
@@ -494,7 +527,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 </PriceMessage>
               </React.Fragment>
             )}
-
             <Subtitle>
               <div
                 ref={table => {
@@ -560,6 +592,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 withInput={true}
                 checked={privateStore}
                 onChange={this.handlePrivateSwitch}
+                placeholder={formatMessage(messages.passcode)}
                 label={formatMessage(messages.privateLabel)}
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}

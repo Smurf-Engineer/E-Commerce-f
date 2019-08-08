@@ -27,6 +27,8 @@ ARG YOUTUBE_ID
 ARG YOUTUBE_KEY
 ARG TUTORIALS_TAB_ACTIVE
 ARG COLOR_SWATCH_ZIP
+ARG MAIN_TITLE
+
 # RUN npm install pm2 -g
 
 # RUN curl -o- -L https://yarnpkg.com/install.sh | bash

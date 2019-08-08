@@ -177,7 +177,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const queryParams = queryString.parse(search)
     const yotpoId = queryParams.modelId || ''
     const storeId = queryParams.store || ''
-
     // TODO: Change to real priceRange and starting price when gets implemmented in the backq
     // const priceRange = get(design, 'product.priceRange', [])
     //  const startingPrice = this.getTierPrice(priceRange)
