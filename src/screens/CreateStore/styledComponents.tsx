@@ -52,6 +52,9 @@ export const DragMessage = styled.p`
   font-size: 16px;
   line-height: 22px;
 `
+export const TextBlock = styled.div`
+  margin: 18px 0;
+`
 
 export const DragTypes = styled.p`
   color: #bebebe;
@@ -156,4 +159,11 @@ export const OptionalLabel = styled.span`
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 12px;
   }
+`
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
 `

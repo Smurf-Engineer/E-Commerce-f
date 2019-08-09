@@ -12,7 +12,11 @@ describe('<TeamDragger />', () => {
     const props = { locale: 'en' }
     ReactDOM.render(
       <IntlProvider {...props}>
-        <TeamDragger onSelectImage={() => false} />
+        <TeamDragger
+          onSelectImage={() => false}
+          formatMessage={() => ''}
+          loading={false}
+        />
       </IntlProvider>,
       div
     )

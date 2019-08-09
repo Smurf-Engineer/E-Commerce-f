@@ -64,6 +64,7 @@ class EditInspiration extends React.PureComponent<Props, State> {
       colorsList,
       formatMessage
     } = this.props
+
     if (!colorIdea || !render) {
       return <div />
     }

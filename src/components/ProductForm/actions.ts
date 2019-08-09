@@ -20,15 +20,17 @@ import {
   ADD_BANNER,
   MOVE_BANNER,
   SET_BANNER,
-  SET_BANNERS_LOADING,
   SAVED_PRODUCT,
   ENABLE_SPORT,
   SET_SPORT,
   SET_PROMPT,
   SET_SPEC,
-  SET_MATERIAL
+  SET_MATERIAL,
+  SET_MEDIA,
+  ADD_MEDIA,
+  REMOVE_MEDIA
 } from './constants'
-import { AnyAction, Product } from '../../types/common'
+import { AnyAction, Product, ProductFile } from '../../types/common'
 
 export const setProductAction = (
   product: Product,
@@ -58,11 +60,6 @@ export const savedProduct = (
   loadingMessage
 })
 
-export const setBannersLoading = (value: boolean): AnyAction => ({
-  type: SET_BANNERS_LOADING,
-  value
-})
-
 export const setPrompt = (value: boolean): AnyAction => ({
   type: SET_PROMPT,
   value
@@ -82,6 +79,27 @@ export const setGenderAction = (id: number, value: boolean): AnyAction => ({
   type: SET_GENDERS,
   id,
   value
+})
+
+export const setMedia = (
+  id: string,
+  name: string,
+  value: string
+): AnyAction => ({
+  type: SET_MEDIA,
+  id,
+  name,
+  value
+})
+
+export const addMedia = (value: ProductFile): AnyAction => ({
+  type: ADD_MEDIA,
+  value
+})
+
+export const removeMedia = (index: number): AnyAction => ({
+  type: REMOVE_MEDIA,
+  index
 })
 
 export const setCheck = (

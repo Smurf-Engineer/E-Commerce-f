@@ -4,6 +4,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Modal from 'antd/lib/modal'
+import zenscroll from 'zenscroll'
 import find from 'lodash/find'
 import Pagination from 'antd/lib/pagination'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
@@ -44,15 +45,15 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     const { onSelectItem, designs } = this.props
     const selectedItem = Object.assign(
       {},
-      { visible: true },
-      { design: designs[index] }
+      { visible: true, design: designs[index] }
     )
     onSelectItem(selectedItem, checked)
   }
   onChangePage = (page: number) => {
     const { changePage } = this.props
     const node = ReactDOM.findDOMNode(this.listRef) as HTMLElement
-    node.scrollTop = 0
+    const modalScroller = zenscroll.createScroller(node, 0)
+    modalScroller.toY(0, 0)
     changePage(page)
   }
 

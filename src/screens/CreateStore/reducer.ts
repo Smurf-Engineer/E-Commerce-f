@@ -37,12 +37,12 @@ export const initialState = fromJS({
   endDate: '',
   endDateMoment: null,
   privateStore: true,
-  onDemand: false,
+  onDemand: true,
   passCode: '',
   openLocker: false,
   selectedItems: [],
   items: [],
-  loading: false,
+  loading: true,
   banner: '',
   showTeamStores: null,
   fullCount: '',
@@ -77,7 +77,11 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case UPDATE_PRIVATE_ACTION:
       return state.set('privateStore', action.active)
     case UPDATE_ON_DEMAND_ACTION:
-      return state.set('onDemand', action.active)
+      return state.merge({
+        onDemand: action.active,
+        teamSizeId: 1,
+        teamSizeRange: '2-5'
+      })
     case SET_TEAM_SIZE_ACTION:
       return state.merge({
         teamSizeId: action.id,
@@ -142,11 +146,12 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         storeShortId: shortId,
         name: name,
         startDate: startDate,
-        startDateMoment: moment(startDate),
+        startDateMoment: startDate ? moment(startDate) : null,
         endDate: endDate,
-        endDateMoment: moment(endDate),
+        endDateMoment: endDate ? moment(endDate) : null,
         teamSizeId: sizeId,
         teamSizeRange: size,
+        loading: false,
         items: items,
         privateStore: privateStore,
         onDemand: onDemand,
@@ -156,23 +161,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case DELETE_BANNER_ON_EDIT:
       return state.merge({ banner: '' })
     case CLEAR_DATA:
-      return state.merge({
-        teamSizeId: 1,
-        teamSizeRange: '2-5',
-        name: '',
-        startDate: '',
-        startDateMoment: null,
-        endDate: '',
-        endDateMoment: null,
-        privateStore: true,
-        onDemand: false,
-        passCode: '',
-        openLocker: false,
-        selectedItems: {},
-        items: [],
-        loading: false,
-        banner: ''
-      })
+      return initialState
     case SET_TEAM_STORE_STATUS:
       return state.set('showTeamStores', action.show)
     case SET_DESIGNS_DATA: {

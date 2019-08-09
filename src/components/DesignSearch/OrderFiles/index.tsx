@@ -52,7 +52,7 @@ interface Props {
   onSelectColor: (color: string, id: string) => void
   onGeneratePdf: () => void
 }
-class OrderFiles extends React.PureComponent<Props> {
+export class OrderFiles extends React.PureComponent<Props> {
   render3D: any
   render() {
     const {

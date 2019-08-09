@@ -23,6 +23,7 @@ interface Props {
   errorLabel?: string
   hasError?: boolean
   defaultChecked?: boolean
+  placeholder: string
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
 }
@@ -38,6 +39,7 @@ const SwitchWithLabel = ({
   errorLabel,
   hasError,
   defaultChecked,
+  placeholder,
   updatePassCodeAction = () => {}
 }: Props) => {
   const handleUpdatePassCode = (evnt: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +65,7 @@ const SwitchWithLabel = ({
         <Input
           disabled={!checked}
           value={passCode}
-          placeholder="Pass Code"
+          placeholder={placeholder}
           type="Password"
           size="large"
           onChange={handleUpdatePassCode}
