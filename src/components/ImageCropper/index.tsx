@@ -1,8 +1,9 @@
 /**
- * ImageCropper Component - Created by cazarez on 07/02/18.
+ * ImageCropper Component - Created by Jesus Apodaca on 08/08/19.
  */
 import * as React from 'react'
 import Cropper from 'react-easy-crop'
+import message from 'antd/lib/message'
 import { Location, Area } from 'react-easy-crop'
 import {
   SaveButton,
@@ -77,8 +78,12 @@ class ImageCropper extends React.Component<Props, {}> {
   cropImage = async () => {
     const { setImage, image } = this.props
     const { croppedAreaPixels } = this.state
-    const croppedImage = await getCroppedImg(image, croppedAreaPixels)
-    setImage(croppedImage)
+    try {
+      const croppedImage = await getCroppedImg(image, croppedAreaPixels)
+      setImage(croppedImage)
+    } catch (e) {
+      message.error('Error saving image:', e.message)
+    }
   }
 
   onCropChange = (crop: Location) => {

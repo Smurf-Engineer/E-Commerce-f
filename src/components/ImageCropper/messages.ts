@@ -1,5 +1,5 @@
 /**
- * Cropper - messages
+ * ImageCropper messages - Created by Jesus Apodaca on 08/08/19.
  */
 
 import { defineMessages } from 'react-intl'

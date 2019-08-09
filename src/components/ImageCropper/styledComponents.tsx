@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by cazarez on 07/02/18.
+ * ImageCropper Styled Components - Created by Jesus Apodaca on 08/08/19.
  */
 import styled from 'styled-components'
 import { BLUE } from '../../theme/colors'

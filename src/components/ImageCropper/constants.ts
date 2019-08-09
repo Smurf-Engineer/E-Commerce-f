@@ -1,5 +1,5 @@
 /**
- * HomepageAdminActions Types - Created by eduardoquintero on 30/05/19.
+ * ImageCropper constants - Created by Jesus Apodaca on 08/09/19.
  */
 
 export const aspectRatios = [
