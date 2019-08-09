@@ -152,6 +152,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       designImage={image}
                       designCode={code}
                       teamStoreId={teamStoreShortId}
+                      fixedPrices={priceRange}
                     />
                   )
                 }
