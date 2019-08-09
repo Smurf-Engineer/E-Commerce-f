@@ -94,11 +94,11 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   componentWillMount() {
     this.checkFilters()
   }
-
-  componentWillUnmount() {
-    const { resetReducerAction } = this.props
-    resetReducerAction()
-  }
+  // TODO: Remove later
+  // componentWillUnmount() {
+  //   const { resetReducerAction } = this.props
+  //   resetReducerAction()
+  // }
 
   checkFilters() {
     const {
