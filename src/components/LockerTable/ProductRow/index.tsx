@@ -15,7 +15,8 @@ import {
   Center,
   Name,
   Description,
-  Title
+  Title,
+  Price
 } from '../styledComponents'
 import { Align } from './styledComponents'
 import Checkbox from 'antd/lib/checkbox'
@@ -33,6 +34,7 @@ interface Props {
   totalOrders: number
   id?: number
   text?: string
+  fixedPrice?: string
   isDragging?: () => boolean
   connectDragSource?: any
   connectDropTarget?: any
@@ -90,10 +92,7 @@ interface Header {
 }
 
 const headerTitles: Header[] = [
-  { message: 'starting' },
-  { message: 'target' },
-  { message: 'orders' },
-  { message: 'current' },
+  { message: 'fixedPrice' },
   { message: 'visible' }
 ]
 
@@ -113,7 +112,8 @@ class ProductRow extends React.PureComponent<Props, {}> {
       onPressVisible,
       connectDragSource,
       connectDropTarget,
-      formatMessage
+      formatMessage,
+      fixedPrice
     } = this.props
 
     const handleOnClick = () => {
@@ -160,6 +160,9 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Row>{mobileTitles}</Row>
                 <Row noBorder={true} rowPadding={'0'}>
                   <Cell width={100}>
+                    <Price>{`$${fixedPrice}`}</Price>
+                  </Cell>
+                  <Cell width={100}>
                     <Align>
                       <Checkbox
                         checked={visible}
@@ -187,6 +190,9 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Cell width={25}>
                   <Name>{name}</Name>
                   <Description>{description}</Description>
+                </Cell>
+                <Cell>
+                  <Price>{`$${fixedPrice}`}</Price>
                 </Cell>
                 <Cell>
                   <Center>

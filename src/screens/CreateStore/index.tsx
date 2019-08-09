@@ -89,6 +89,7 @@ interface Props extends RouteComponentProps<any> {
   banner: string
   storeId: number
   showTeamStores: boolean
+  currentCurrency: string
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -426,7 +427,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       loading,
       banner,
       location: { search },
-      showTeamStores
+      showTeamStores,
+      currentCurrency
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -551,7 +553,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               <FormattedMessage {...messages.stock} />
             </Subtitle>
             <LockerTable
-              {...{ formatMessage, teamSizeRange }}
+              {...{ formatMessage, teamSizeRange, currentCurrency }}
               items={items}
               onPressDelete={this.handleOnDeleteItem}
               onPressQuickView={this.handleOnPressQuickView}
@@ -651,7 +653,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('createStore').toJS()
+const mapStateToProps = (state: any) => {
+  const createStore = state.get('createStore').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return { ...createStore, ...langProps }
+}
 
 const CreateStoreEnhance = compose(
   injectIntl,

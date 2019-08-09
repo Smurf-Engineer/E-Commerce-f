@@ -87,6 +87,7 @@ interface Props {
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
+  currentCurrency: string
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
@@ -179,7 +180,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       setEmailMessageAction,
       sendMessageLoading,
       sendMessageLoadingAction,
-      setPassCodeAction
+      setPassCodeAction,
+      currentCurrency
     } = this.props
     const { showMuch, showCani, showLong, showWhen } = this.state
 
@@ -416,7 +418,13 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 )}
                 <ListContainer>
                   <ProductList
-                    {...{ targetRange, formatMessage, onDemandMode, featured }}
+                    {...{
+                      targetRange,
+                      formatMessage,
+                      onDemandMode,
+                      featured,
+                      currentCurrency
+                    }}
                     withoutPadding={false}
                     openQuickView={this.handleOnOpenQuickView}
                     designs={items}

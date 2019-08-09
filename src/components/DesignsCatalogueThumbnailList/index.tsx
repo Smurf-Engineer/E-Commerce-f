@@ -9,6 +9,7 @@ import Pagination from 'antd/lib/pagination'
 import Menu from 'antd/lib/menu'
 import find from 'lodash/find'
 import messages from './messages'
+import config from '../../config/index'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
 import AddToCartButton from '../AddToCartButton'
@@ -63,6 +64,7 @@ interface Props {
   targetRange?: Filter
   currentRange: Filter
   targetPrice: string
+  currentCurrency: string
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -81,7 +83,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       onDemandMode,
       withoutPadding,
       targetRange,
-      currentRange
+      currentRange,
+      currentCurrency = config.defaultCurrency
     } = this.props
 
     let thumbnailsList
@@ -94,7 +97,11 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       total = designs.length.toString()
       thumbnailsList = designs.map(
         (
-          { design: { id, shortId, name, product, image, code }, totalOrders },
+          {
+            design: { id, shortId, name, product, image, code },
+            totalOrders,
+            priceRange
+          },
           index
         ) => {
           const targetPriceValue: any = targetRange
@@ -112,6 +119,11 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               }
             : { price: 0 }
 
+          const fixedPrice =
+            priceRange && priceRange.length
+              ? find(priceRange, ['abbreviation', currentCurrency])
+              : currentPriceValue
+
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -124,7 +136,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
                     targetPrice={targetPriceValue.price}
-                    currentPrice={currentPriceValue.price}
+                    currentPrice={fixedPrice.price}
                   />
                 }
                 labelButton={
@@ -166,7 +178,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           <Spin />
         </Loading>
       )
-
       const { loading: loadingData, products } = data
       loading = loadingData || false
       if (!products) {
