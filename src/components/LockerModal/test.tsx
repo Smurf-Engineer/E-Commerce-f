@@ -20,6 +20,8 @@ describe('<LockerModal />', () => {
         onSelectItem={() => {}}
         onUnselectItem={() => {}}
         onAddItems={() => {}}
+        currentPage={0}
+        limit={0}
       />,
       div
     )
