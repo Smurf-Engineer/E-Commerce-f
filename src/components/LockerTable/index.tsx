@@ -26,10 +26,6 @@ interface Header {
 
 const headerTitles: Header[] = [
   { message: '', width: 40 },
-  { message: 'starting' },
-  { message: 'target' },
-  { message: 'orders' },
-  { message: 'current' },
   { message: 'visible', width: 20 }
 ]
 

@@ -11,7 +11,6 @@ import ItemTypes from '../dndTypes'
 import {
   Row,
   Cell,
-  Price,
   DeleteButton,
   Center,
   Name,
@@ -29,10 +28,6 @@ interface Props {
   image: string
   name: string
   description: string
-  startingPrice: number
-  targetPrice: number
-  currentOrders: number
-  currentPrice: number
   visible: boolean
   yotpoId: string
   totalOrders: number
@@ -110,10 +105,6 @@ class ProductRow extends React.PureComponent<Props, {}> {
       image,
       name,
       description,
-      startingPrice,
-      targetPrice,
-      currentOrders,
-      currentPrice,
       visible,
       yotpoId,
       totalOrders,
@@ -169,18 +160,6 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Row>{mobileTitles}</Row>
                 <Row noBorder={true} rowPadding={'0'}>
                   <Cell width={100}>
-                    <Price>{`$${startingPrice}`}</Price>
-                  </Cell>
-                  <Cell width={100}>
-                    <Price>{`$${targetPrice}`}</Price>
-                  </Cell>
-                  <Cell width={100}>
-                    <Price>{currentOrders}</Price>
-                  </Cell>
-                  <Cell width={100}>
-                    <Price>{`$${currentPrice}`}</Price>
-                  </Cell>
-                  <Cell width={100}>
                     <Align>
                       <Checkbox
                         checked={visible}
@@ -208,18 +187,6 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Cell width={25}>
                   <Name>{name}</Name>
                   <Description>{description}</Description>
-                </Cell>
-                <Cell>
-                  <Price>{`$${startingPrice}`}</Price>
-                </Cell>
-                <Cell>
-                  <Price>{`$${targetPrice}`}</Price>
-                </Cell>
-                <Cell>
-                  <Price>{currentOrders}</Price>
-                </Cell>
-                <Cell>
-                  <Price>{`$${currentPrice}`}</Price>
                 </Cell>
                 <Cell>
                   <Center>

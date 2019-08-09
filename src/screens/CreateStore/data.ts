@@ -13,6 +13,12 @@ export const createStoreMutation = graphql(
           id
           visible
           totalOrders
+          priceRange {
+            price
+            shortName: short_name
+            quantity
+            abbreviation
+          }
           design {
             id
             code
