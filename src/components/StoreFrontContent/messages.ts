@@ -80,7 +80,6 @@ export default defineMessages({
       // tslint:disable-next-line:max-line-length
       'When ordering through the Jakroo Team Store portal, team members receive a 20% discount off the regular price of the product. Larger teams with 25 members or more, may be entitled to receive higher bulk pricing. Please contact a Jakroo representative tolearn more about bulk team store ordering. Additional discounts may be available through seasonal and special promotions using a promo code.'
   },
-
   whenTitle: {
     id: 'screens.StoreFrontContent.whenTitle',
     defaultMessage: 'When will payment be processed?'

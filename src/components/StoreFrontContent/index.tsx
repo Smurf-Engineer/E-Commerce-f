@@ -474,7 +474,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 showContent={showReturn}
                 toggleView={this.toggleProductInfo}
               >
-                <p>{formatMessage(messages.returnMessage)}</p>
+                <p>{formatMessage(messages.returnMessageDesc)}</p>
               </ProductInfo>
             </AboutContainer>
 
@@ -530,7 +530,7 @@ const StoreFrontContentEnhance = compose(
           date: {
             day: moment().date(),
             month: moment().month(),
-            year: 2018
+            year: moment().year()
           }
         }
       }
