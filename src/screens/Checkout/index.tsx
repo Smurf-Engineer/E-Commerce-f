@@ -787,7 +787,6 @@ class Checkout extends React.Component<Props, {}> {
             yotpoId: product.yotpoId
           }
           item.product = productItem
-          console.log('ID ', teamStoreId)
           item.teamStoreId = teamStoreId
           item.itemDetails = itemDetails.map(
             ({ gender, quantity, size, fit, color }: CartItemDetail) => {
