@@ -52,6 +52,9 @@ export const DragMessage = styled.p`
   font-size: 16px;
   line-height: 22px;
 `
+export const TextBlock = styled.div`
+  margin: 18px 0;
+`
 
 export const DragTypes = styled.p`
   color: #bebebe;
