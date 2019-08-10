@@ -214,7 +214,7 @@ export type TeamStoreItemtype = {
   itemOrder?: number
   team_store_name?: string
   priceRange: PriceRange[]
-  pricesByCurrency?: any
+  pricesByCurrency?: PricesByCurrency
   loading?: boolean
 }
 
@@ -1290,6 +1290,10 @@ export interface ProductInternal {
   binding?: string
   bibBrace?: string
   collection?: string
+}
+
+export interface PricesByCurrency {
+  [currency: string]: number
 }
 
 export interface ProductInternalInput {

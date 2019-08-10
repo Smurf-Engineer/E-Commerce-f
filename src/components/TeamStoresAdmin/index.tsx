@@ -143,15 +143,15 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       formatMessage
     } = this.props
 
-    const teamStoreItem = teamStore.items[index]
-    const prices = Object.keys(teamStoreItem.pricesByCurrency).map(
-      currency => ({
-        shortName: currency,
-        price: teamStoreItem.pricesByCurrency[currency]
-      })
-    )
     setLoadingItemAction(index, true)
     try {
+      const teamStoreItem = teamStore.items[index]
+      const prices = Object.keys(teamStoreItem.pricesByCurrency).map(
+        currency => ({
+          shortName: currency,
+          price: teamStoreItem.pricesByCurrency[currency]
+        })
+      )
       await setTeamStorePrices({
         variables: {
           itemId: teamStoreItem.id,

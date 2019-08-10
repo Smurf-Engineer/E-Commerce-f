@@ -18,7 +18,12 @@ import some from 'lodash/some'
 import messages from '../messages'
 import { isNumber } from '../../../../utils/utilsFiles'
 import { BLUE } from '../../../../theme/colors'
-import { Currency, PriceRange, Message } from '../../../../types/common'
+import {
+  Currency,
+  PriceRange,
+  Message,
+  PricesByCurrency
+} from '../../../../types/common'
 
 interface Props {
   thumbnail: string
@@ -28,7 +33,7 @@ interface Props {
   currencies: Currency[]
   index: number
   priceRange: PriceRange[]
-  pricesByCurrency: any
+  pricesByCurrency: PricesByCurrency
   loading: boolean
   handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
   handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
@@ -85,7 +90,8 @@ const RowItem = ({
           <StyledButton
             id={index}
             disabled={some(
-              currencies.map(({ shortName }) => !pricesByCurrency[shortName])
+              currencies,
+              ({ shortName }) => !pricesByCurrency[shortName]
             )}
             type="primary"
             onClick={handleOnSave}

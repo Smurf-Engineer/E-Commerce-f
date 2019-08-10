@@ -15,9 +15,10 @@ export const getTeamStore = (query: any, teamStoreId: string) => {
         variables: { teamStoreId },
         fetchPolicy: 'network-only'
       })
-      response.data.teamStore.items.map((item: TeamStoreItemtype) => {
+
+      response.data.teamStore.items.forEach((item: TeamStoreItemtype) => {
         item.pricesByCurrency = groupBy(item.priceRange, 'shortName')
-        Object.keys(item.pricesByCurrency).map(currency => {
+        Object.keys(item.pricesByCurrency).forEach(currency => {
           item.pricesByCurrency[currency] = get(
             head(item.pricesByCurrency[currency]),
             'price',
