@@ -12,7 +12,8 @@ import {
   QueryProps,
   DesignResultType,
   DesignType,
-  SelectedItem
+  SelectedItem,
+  SelectedDesignType
 } from '../../types/common'
 import { Title, List, modalStyle, PaginationRow } from './styledComponents'
 
@@ -23,7 +24,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   visible: boolean
-  selectedItems: any
+  selectedItems: SelectedDesignType
   tableItems: SelectedItem
   client: any
   offset: number
@@ -31,7 +32,7 @@ interface Props {
   limit: number
   fullCount: string
   designs: DesignType[]
-  onSelectItem: (item: any, checked: boolean) => void
+  onSelectItem: (item: SelectedDesignType, checked: boolean) => void
   onUnselectItem: (index: number) => void
   onRequestClose: () => void
   onAddItems: () => void

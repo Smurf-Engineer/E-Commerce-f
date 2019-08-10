@@ -1356,3 +1356,8 @@ export type Color = {
   name: string
   value: string
 }
+
+export interface SelectedDesignType {
+  design: DesignType
+  visible: boolean
+}
