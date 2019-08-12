@@ -287,19 +287,23 @@ export class CreateStore extends React.Component<Props, StateProps> {
     })
 
     try {
-      const formData = new FormData()
-      formData.append('file', file as any, 'banner.jpeg')
-      const user = JSON.parse(localStorage.getItem('user') || '')
+      let bannerResp = banner
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file as any, 'banner.jpeg')
+        const user = JSON.parse(localStorage.getItem('user') || '')
 
-      const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        body: formData
-      })
-      const bannerResp = await uploadResp.json()
+        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        })
+        const { image } = await uploadResp.json()
+        bannerResp = image
+      }
 
       const teamStore = {
         id: storeId,
@@ -312,7 +316,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         items,
         teamsizeId: teamSizeId,
         demandMode: onDemand,
-        banner: bannerResp.image || banner
+        banner: bannerResp
       }
 
       if (storeShortId) {
@@ -346,7 +350,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
         history.push(`/store-front?storeId=${shortId}`)
       }
     } catch (error) {
-      message.error('Something wrong happened. Please try again!')
+      message.error(
+        `Something wrong happened. Please try again! ${error.message}`
+      )
       setLoadingAction(false)
     }
   }

@@ -47,14 +47,15 @@ export const AspectSection = styled.div`
 export const AspectButton = styled.div`
   max-width: 50px;
   border: ${({ selected }: DivProps) =>
-    selected ? '1px solid lightslategray' : '1px solid transparent'};
+    selected ? '1px solid black' : '1px solid transparent'};
   margin-right: 8px;
   width: 100%;
   text-align: center;
   border-radius: 3px;
   padding: 1px 0;
-  color: lightslategray;
+  color: black;
   cursor: pointer;
+  background: #ffffff8c;
 `
 
 export const CropperContainer = styled.div`
