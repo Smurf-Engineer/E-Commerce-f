@@ -1364,3 +1364,8 @@ export type Color = {
   name: string
   value: string
 }
+
+export type AspectRatio = {
+  name: string
+  value: number
+}

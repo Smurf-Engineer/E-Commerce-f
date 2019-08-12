@@ -20,6 +20,7 @@ import {
   MOVE_ROW,
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
+  OPEN_MODAL,
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS
 } from './constants'
@@ -41,6 +42,11 @@ export const setTeamSizeAction = (id: number, range: string): AnyAction => ({
 export const updateNameAction = (name: string): AnyAction => ({
   type: UPDATE_NAME_ACTION,
   name
+})
+
+export const openModal = (open: boolean): AnyAction => ({
+  type: OPEN_MODAL,
+  open
 })
 
 export const setLoadingAction = (isLoading: boolean): AnyAction => ({
