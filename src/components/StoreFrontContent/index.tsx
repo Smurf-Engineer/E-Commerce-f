@@ -70,6 +70,7 @@ interface StateProps {
   showLong: boolean
   showCani: boolean
   showWhen: boolean
+  showReturn: boolean
 }
 
 interface Props {
@@ -98,7 +99,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     showMuch: false,
     showCani: false,
     showLong: false,
-    showWhen: false
+    showWhen: false,
+    showReturn: false
   }
 
   toggleProductInfo = (id: string) => {
@@ -181,7 +183,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       sendMessageLoadingAction,
       setPassCodeAction
     } = this.props
-    const { showMuch, showCani, showLong, showWhen } = this.state
+    const { showMuch, showCani, showLong, showWhen, showReturn } = this.state
 
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
@@ -465,6 +467,14 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 toggleView={this.toggleProductInfo}
               >
                 <p>{formatMessage(messages.CanIORderDesc)}</p>
+              </ProductInfo>
+              <ProductInfo
+                id="Return"
+                title={formatMessage(messages.returnMessage)}
+                showContent={showReturn}
+                toggleView={this.toggleProductInfo}
+              >
+                <p>{formatMessage(messages.returnMessageDesc)}</p>
               </ProductInfo>
             </AboutContainer>
 
