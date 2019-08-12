@@ -67,10 +67,12 @@ export const Icon = styled.img`
 `
 
 export const PreviewImage = styled.img`
-  width: 100%;
+  max-width: 100%;
   max-height: 300px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
   margin-bottom: 16px;
-  object-fit: cover;
 `
 
 export const Row = styled.div`

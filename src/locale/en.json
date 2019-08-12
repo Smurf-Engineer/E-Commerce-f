@@ -632,6 +632,8 @@
   "components.TemplateDownloadItem.downloadTemplate": "Download Template",
   "components.MyCardsList.emptyMessage": "There are no saved credit cards",
   "components.MyLocker.titleError": "Oops!",
+  "components.Image.cropper.scroll": "Scroll to zoom",
+  "components.Image.cropper.save": "Save",
   "components.MyLocker.message": "These are your saved designs",
   "components.MyLocker.messageError": "Something went wrong",
   "components.MyLocker.messageEmpty": "Your Locker is empty. Go to the design app and start an awesome design!",

@@ -61,6 +61,7 @@ import {
   TextBlock
 } from './styledComponents'
 import config from '../../config/index'
+import ImageCropper from '../../components/ImageCropper'
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
@@ -74,6 +75,7 @@ interface Props extends RouteComponentProps<any> {
   privateStore: boolean
   onDemand: boolean
   startDate: string
+  open: boolean
   startDateMoment?: Moment
   endDate: string
   endDateMoment?: Moment
@@ -106,6 +108,7 @@ interface Props extends RouteComponentProps<any> {
     yotpoId: string,
     hideSliderButtons?: boolean
   ) => void
+  openModal: (open: boolean) => void
   setItemVisibleAction: (index: number, visible: boolean) => void
   setLoadingAction: (loading: boolean) => void
   clearStoreAction: () => void
@@ -119,7 +122,7 @@ interface Props extends RouteComponentProps<any> {
 
 interface StateProps {
   hasError: boolean
-  file: string | null
+  file: Blob | null
   imagePreviewUrl: string | null
 }
 export class CreateStore extends React.Component<Props, StateProps> {
@@ -160,8 +163,17 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     return validForm
   }
-
+  closeModal = () => {
+    const { openModal } = this.props
+    openModal(false)
+  }
+  setImage = (file: Blob) => {
+    const { openModal } = this.props
+    this.setState({ file, imagePreviewUrl: URL.createObjectURL(file) })
+    openModal(false)
+  }
   beforeUpload = (file: any) => {
+    const { openModal } = this.props
     const reader = new FileReader()
 
     reader.onloadend = () => {
@@ -171,7 +183,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     if (file) {
       reader.readAsDataURL(file)
     }
-
+    openModal(true)
     return false
   }
 
@@ -275,20 +287,23 @@ export class CreateStore extends React.Component<Props, StateProps> {
     })
 
     try {
-      const formData = new FormData()
+      let bannerResp = banner
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file as any, 'banner.jpeg')
+        const user = JSON.parse(localStorage.getItem('user') || '')
 
-      formData.append('file', file as any)
-      const user = JSON.parse(localStorage.getItem('user') || '')
-
-      const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        body: formData
-      })
-      const bannerResp = await uploadResp.json()
+        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        })
+        const { image } = await uploadResp.json()
+        bannerResp = image
+      }
 
       const teamStore = {
         id: storeId,
@@ -301,7 +316,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         items,
         teamsizeId: teamSizeId,
         demandMode: onDemand,
-        banner: bannerResp.image || banner
+        banner: bannerResp
       }
 
       if (storeShortId) {
@@ -335,7 +350,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
         history.push(`/store-front?storeId=${shortId}`)
       }
     } catch (error) {
-      message.error('Something wrong happened. Please try again!')
+      message.error(
+        `Something wrong happened. Please try again! ${error.message}`
+      )
       setLoadingAction(false)
     }
   }
@@ -424,6 +441,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       items,
       teamSizeRange,
       loading,
+      open,
       banner,
       location: { search },
       showTeamStores
@@ -643,6 +661,12 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onSelectItem={setItemSelectedAction}
               onUnselectItem={deleteItemSelectedAction}
               onAddItems={setItemsAddAction}
+            />
+            <ImageCropper
+              {...{ formatMessage, open }}
+              requestClose={this.closeModal}
+              setImage={this.setImage}
+              image={imagePreviewUrl}
             />
           </Container>
         )}

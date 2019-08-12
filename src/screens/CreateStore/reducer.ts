@@ -23,6 +23,7 @@ import {
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
+  OPEN_MODAL,
   SET_TEAM_STORE_STATUS
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -42,6 +43,7 @@ export const initialState = fromJS({
   selectedItems: {},
   items: [],
   loading: true,
+  open: false,
   banner: '',
   showTeamStores: null
 })
@@ -50,6 +52,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state
+    case OPEN_MODAL:
+      return state.set('open', action.open)
     case SET_LOADING_ACTION:
       return state.set('loading', action.isLoading)
     case CREATE_STORE_SUCCESS:
