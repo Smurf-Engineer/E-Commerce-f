@@ -63,7 +63,6 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       myLockerList,
       orderDetails
     } = this.props
-    console.log('ITM ', item)
     const renderView = renderForThumbnail ? (
       <ButtonContainer {...{ myLockerList }} withoutTop={!!withoutTop}>
         <CustomizeButton onClick={this.addToCart}>{label}</CustomizeButton>
@@ -188,7 +187,6 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       quantity: 1
     }
     details.push(detail)
-    console.log(item)
     const itemToAdd = Object.assign(
       {},
       { product: item.product },
