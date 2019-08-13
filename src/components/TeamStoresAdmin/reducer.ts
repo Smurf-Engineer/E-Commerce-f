@@ -40,8 +40,7 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loading', action.loading)
     case SET_TEAM_STORE_DATA:
       return state.withMutations((tempState: any) => {
-        const teamStore = action.teamStore
-        const currencies = action.currencies
+        const { teamStore, currencies } = action
         tempState.merge({ teamStore, currencies })
         return tempState
       })
