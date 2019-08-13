@@ -16,5 +16,9 @@ export default defineMessages({
   unexpectedError: {
     id: 'components.TeamStoresAdmin.unexpectedError',
     defaultMessage: 'Oops! Something went wrong.'
+  },
+  itemSaved: {
+    id: 'components.TeamStoresAdmin.itemSaved',
+    defaultMessage: 'Prices updated successfully!'
   }
 })
