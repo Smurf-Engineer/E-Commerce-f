@@ -78,9 +78,8 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.howMuchDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'When ordering through the Jakroo Team Store portal, JAKROO’s dynamic price calculators track all orders being placed by individual team members and update the pricing on the site in real time. Team members can subscribe to Price drops alerts and will be notified each time the team achieves the next discount level. The price you pay will be based on the FINAL quantities ordered by the team and any additional qualifying volume discounts.'
+      'When ordering through the Jakroo Team Store portal, team members receive a 20% discount off the regular price of the product. Larger teams with 25 members or more, may be entitled to receive higher bulk pricing. Please contact a Jakroo representative tolearn more about bulk team store ordering. Additional discounts may be available through seasonal and special promotions using a promo code.'
   },
-
   whenTitle: {
     id: 'screens.StoreFrontContent.whenTitle',
     defaultMessage: 'When will payment be processed?'
@@ -89,7 +88,7 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.whenDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'With team ordering, payment method is validated at the time the order is placed. Payment, however, will be taken after the Team ordering period has closed and all discounts applied. This way, everyone pays the same low price, regardless of when the order was placed during the ordering period.'
+      'With team ordering, the payment method is validated and processed at the time the order is placed. Available payments for Team Store ordering may vary by region. Currently PayPal, Credit Card and in the case of Europe, IBAN, are the available options.'
   },
 
   howLongTitle: {
@@ -100,17 +99,27 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.howLongDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'Estimated delivery times for all orders are displayed on the Team Store and during checkout. Most orders are delivered within 2 weeks or less, based on the order cut-off date. In the case of large volume orders exceeding 100 pieces, delivery times may be longer. Contact our staff to confirm the delivery time of your order, if it exceeds 100 pieces. While we are committed to always meet delivery dates, delays beyond our direct control such as weather, force majeure, and customs may affect delivery. If you have a specific deadline for your delivery, we recommend factoring a few additional days into the ordering period.'
+      'Estimated delivery times for all orders are displayed on the Team Store and during checkout. Orders will enter the production process upon receipt and review and typicallyship out within 7 days from receipt. If you have ordered retail collection (non-customized) products together with customized products, all products will ship together. In the case of large volume orders exceeding 50 pieces, delivery times may be slightly longer. Contact our staff to confirm the delivery time of your order, if it exceeds 50 pieces. While we are committed to always meet delivery dates, delays beyond our directcontrol such as weather, force majeure, and customs clearance times may affect delivery. If you have a specific deadline for your delivery, we recommend factoring a fewadditional days into design and ordering period.'
   },
   CanIORder: {
     id: 'screens.StoreFrontContent.CanIORder',
-    defaultMessage: 'Can i reorder?'
+    defaultMessage: 'My Team Store is CLOSED. How do I order?'
   },
   CanIORderDesc: {
     id: 'screens.StoreFrontContent.CanIORderDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'You will always have the opportunity to reorder your products once your initial order period has passed and your Team Store has been reopened or switched to On-Demand Mode. Contact your Team Manager to request a store be reopened.'
+      'If your Team Store is closed, you can contact the Team Store Manager and request it to be reopened. You can use the message box at the top of the Team Store page to contact the person, or directly if you have their contact information.'
+  },
+  returnMessage: {
+    id: 'screens.StoreFrontContent.returnMessage',
+    defaultMessage: 'Can I return or exchange my product?'
+  },
+  returnMessageDesc: {
+    id: 'screens.StoreFrontContent.returnMessageDesc',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'All Jakroo products are covered by a limited 1 year manufacturer warranty covering defects in materials and workmanship. This warranty does not cover normal wear and tear. All custom products are made-to-order on demand and thus not returnable for reasons other than manufacturer defect. All retail collection items (non-customized) are returnable for a full refund or exchange, provided that the products are unworn and accompanied by the receipt. With our size exchange program, however, you have the option to keep your original item and order a different size at a cost of 50% of the original item price. Contact our customer service team for more details about warranty and exchange policy.'
   },
   share: {
     id: 'screens.StoreFrontContent.share',

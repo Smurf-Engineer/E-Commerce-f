@@ -117,7 +117,6 @@ export class StoreFront extends React.Component<Props, {}> {
     if (showTeamStores === false) {
       return <Redirect to={DEFAULT_ROUTE} />
     }
-
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
