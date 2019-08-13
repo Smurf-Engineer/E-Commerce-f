@@ -26,6 +26,7 @@ export interface DesignSaved {
   bindingColor?: string
   bibBraceColor?: string
   zipperColor?: string
+  colors?: string[]
 }
 
 export interface SelectedItem {

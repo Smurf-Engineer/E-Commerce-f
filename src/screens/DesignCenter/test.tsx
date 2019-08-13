@@ -1,7 +1,7 @@
 /**
  * DesignCenter Test - Created by david on 23/02/18.
  */
-import { Map } from 'immutable'
+import { Map, List, fromJS } from 'immutable'
 import designCenterReducer, { initialState } from './reducer'
 import {
   setCurrentTabAction,
@@ -17,14 +17,22 @@ import {
   designResetAction,
   editDesignAction,
   setSwipingTabAction,
-  setThemeAction
+  setThemeAction,
+  setStyleAction,
+  setStyleComplexity,
+  openShareModalAction,
+  openSaveDesignAction,
+  setAutomaticSave,
+  setDesignNameAction,
+  saveDesignIdAction
 } from './actions'
 import {
   YoutubePlaylistItemType,
   StitchingColor,
   AccesoryColor,
   Palette,
-  Product
+  Product,
+  DesignSaved
 } from '../../types/common'
 
 describe(' DesignCenter Screen', () => {
@@ -513,6 +521,207 @@ describe(' DesignCenter Screen', () => {
       })
     })
 
-    describe('SET_STYLE_SELECTED_ACTION', () => {})
+    describe('SET_STYLE_SELECTED_ACTION', () => {
+      const styleTest = {}
+      const indexTest = 0
+      const colorsTest = ['#FFF', '#000', '#FFGGAA']
+      const state = designCenterReducer(
+        initialState,
+        setStyleAction(styleTest, indexTest, colorsTest)
+      )
+
+      it('Should update currentTab to 2', () => {
+        const currentTab = state.get('currentTab')
+        expect(currentTab).toEqual(2)
+      })
+      it('Should update swipingView value to true', () => {
+        const swipingView = state.get('swipingView')
+        expect(swipingView).toBeTruthy()
+      })
+      it('Should update style correctly', () => {
+        const style = state.get('style')
+        expect(style).toEqual(Map(styleTest))
+      })
+      it('Should update styleIndex correctly', () => {
+        const styleIndex = state.get('styleIndex')
+        expect(styleIndex).toEqual(indexTest)
+      })
+      it('Should update colors correctly', () => {
+        const colors = state.get('colors')
+        expect(colors).toEqual(List.of(...colorsTest))
+      })
+      it('Should update designHasChanges value to false', () => {
+        const designHasChanges = state.get('designHasChanges')
+        expect(designHasChanges).toBeFalsy()
+      })
+      it('Should uptdate styleColors correctly', () => {
+        const styleColors = state.get('styleColors')
+        expect(styleColors).toEqual(List.of(...colorsTest))
+      })
+      it('Should update customize3dMounted value to false', () => {
+        const customize3dMounted = state.get('customize3dMounted')
+        expect(customize3dMounted).toBeFalsy()
+      })
+      it('Should update styleModalData correctly', () => {
+        const styleModalData = state.get('styleModalData')
+        expect(styleModalData).toEqual(
+          Map({
+            idStyle: undefined,
+            indexStyle: indexTest,
+            openNewStyleModal: false
+          })
+        )
+      })
+    })
+
+    describe('SET_STYLE_COMPLEXITY_ACTION', () => {
+      it('Complexity should not have undefined initial value', () => {
+        const complexity = initialState.get('complexity')
+        expect(complexity).toBeDefined()
+      })
+
+      it('Should update complexity correctly', () => {
+        const complexityTest = 1
+        const state = designCenterReducer(
+          initialState,
+          setStyleComplexity(complexityTest)
+        )
+        const complexity = state.get('complexity')
+        expect(complexity).toEqual(complexityTest)
+      })
+    })
+
+    describe('OPEN_SHARE_MODAL', () => {
+      it('Should update openShareModal value to true', () => {
+        const open = true
+        const state = designCenterReducer(
+          initialState,
+          openShareModalAction(open)
+        )
+        const openShareModal = state.get('openShareModal')
+        expect(openShareModal).toBeTruthy()
+      })
+      it('Should update openShareModal value to false', () => {
+        const open = false
+        const state = designCenterReducer(
+          initialState,
+          openShareModalAction(open)
+        )
+        const openShareModal = state.get('openShareModal')
+        expect(openShareModal).toBeFalsy()
+      })
+    })
+
+    describe('OPEN_SAVE_DESIGN_ACTION', () => {
+      const open = true
+      const designTest = {
+        designBase64: '',
+        canvasSvg: 'string',
+        canvasJson: 'string',
+        styleId: 0,
+        highResolution: true
+      }
+      const autoSave = true
+      const state = designCenterReducer(
+        initialState,
+        openSaveDesignAction(open, designTest, autoSave)
+      )
+      it('Should update openSaveDesign value to true', () => {
+        const openSaveDesign = state.get('openSaveDesign')
+        expect(openSaveDesign).toEqual(open)
+      })
+      it('Should update design correctly', () => {
+        const design = state.get('design')
+        expect(design).toEqual(Map(designTest))
+      })
+      it('Should update automaticSave correctly', () => {
+        const automaticSave = state.get('automaticSave')
+        expect(automaticSave).toEqual(autoSave)
+      })
+      it('Should update openSaveDesign value to false', () => {
+        const openTest = false
+        const saveDesignstate = designCenterReducer(
+          initialState,
+          openSaveDesignAction(openTest, designTest, autoSave)
+        )
+        const openSaveDesign = saveDesignstate.get('openSaveDesign')
+        expect(openSaveDesign).toEqual(openTest)
+      })
+    })
+
+    describe('SET_AUTOMATIC_SAVE', () => {
+      it('Should update automaticSave value to true', () => {
+        const autoSave = true
+        const state = designCenterReducer(
+          initialState,
+          setAutomaticSave(autoSave)
+        )
+        const automaticSave = state.get('automaticSave')
+        expect(automaticSave).toBeTruthy()
+      })
+
+      it('Should update automaticSAve valueto false', () => {
+        const autoSave = false
+        const state = designCenterReducer(
+          initialState,
+          setAutomaticSave(autoSave)
+        )
+        const automaticSAve = state.get('automaticSAve')
+        expect(automaticSAve).toBeFalsy()
+      })
+    })
+
+    describe('SET_DESIGN_NAME', () => {
+      it('Should not have undefined as initial value', () => {
+        const designName = initialState.get('designName')
+        expect(designName).toBeDefined()
+      })
+      it('Should update designName correctly', () => {
+        const designNameTest = 'My New Design'
+        const state = designCenterReducer(
+          initialState,
+          setDesignNameAction(designNameTest)
+        )
+        const designName = state.get('designName')
+        expect(designName).toBeDefined()
+        expect(designName).toEqual(designNameTest)
+      })
+    })
+
+    describe('SAVE_DESIGN_ID', () => {
+      const idTest = '1'
+      const svgUrl = ''
+      const designTest: DesignSaved = jest.genMockFromModule(
+        '../../../__mocks__/designMock'
+      )
+
+      const updateColorsTest = true
+      const state = designCenterReducer(
+        initialState,
+        saveDesignIdAction(idTest, svgUrl, designTest, updateColorsTest)
+      )
+      it('Should update savedDesignId', () => {
+        const savedDesignId = state.get('savedDesignId')
+        expect(savedDesignId).toEqual(idTest)
+      })
+      it('Should update designHasChange value to false', () => {
+        const designHasChanges = state.get('designHasChanges')
+        expect(designHasChanges).toBeFalsy()
+      })
+      it('Should update svgUrl correctly', () => {
+        const svgOutputUrl = state.get('svgOutputUrl')
+        expect(svgOutputUrl).toEqual(svgUrl)
+      })
+      it('Should update savedDesign correctly', () => {
+        const savedDesign = state.get('savedDesign')
+        expect(savedDesign).toEqual(fromJS(designTest))
+      })
+      // it('Should contain design.colors in style', () => {
+      //   const style = state.get('style')
+      //   const designColors = designTest.colors
+
+      //   expect(style).toContain(fromJS({ colors: designColors }))
+      // })
+    })
   })
 })
