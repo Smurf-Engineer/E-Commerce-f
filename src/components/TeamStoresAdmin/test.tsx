@@ -374,7 +374,6 @@ describe(' TeamStoresAdmin Screen', () => {
         )
 
         const teamStoreItems = itemState.getIn(['teamStore', 'items']).toJS()
-        console.log('TS D', teamStoreItems)
         const loadingValue = teamStoreItems[0].loading
         expect(loadingValue).toBeTruthy()
       })
