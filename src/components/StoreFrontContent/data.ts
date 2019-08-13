@@ -42,6 +42,7 @@ export const getSingleTeamStore = gql`
       items {
         expected_quantity
         visible
+        short_id
         design {
           id
           code

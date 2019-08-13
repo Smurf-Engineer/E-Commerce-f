@@ -208,6 +208,7 @@ export type TeamStoreItemtype = {
   team_store_id: number
   design_id: string
   design: DesignType
+  short_id: string
   expected_quantity: number
   visible: boolean
   totalOrders: number

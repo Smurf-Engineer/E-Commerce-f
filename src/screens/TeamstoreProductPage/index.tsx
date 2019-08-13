@@ -296,27 +296,30 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
 
     let availableFits
     if (design.product) {
-      availableFits = fitStyles[0].id ? (
-        fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
-          <div key={index}>
-            <SectionButton
-              id={String(id)}
-              selected={id === selectedFit.id}
-              onClick={this.handleSelectedFit({ id, name: fitName })}
-            >
-              {fitName}
-            </SectionButton>
-          </div>
-        ))
-      ) : (
-        <SectionButton
-          id={'1'}
-          selected={1 === selectedFit.id}
-          onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
-        >
-          {'Standard'}
-        </SectionButton>
-      )
+      availableFits =
+        fitStyles.length && fitStyles[0].id ? (
+          fitStyles.map(
+            ({ id, name: fitName }: SelectedType, index: number) => (
+              <div key={index}>
+                <SectionButton
+                  id={String(id)}
+                  selected={id === selectedFit.id}
+                  onClick={this.handleSelectedFit({ id, name: fitName })}
+                >
+                  {fitName}
+                </SectionButton>
+              </div>
+            )
+          )
+        ) : (
+          <SectionButton
+            id={'1'}
+            selected={1 === selectedFit.id}
+            onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
+          >
+            {'Standard'}
+          </SectionButton>
+        )
     }
 
     const gendersSection = (

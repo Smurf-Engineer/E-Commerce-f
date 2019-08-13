@@ -156,6 +156,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
 
     const designId = queryParams.id
+    const teamStore = queryParams.team
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
@@ -417,16 +418,22 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  {!proDesign ? (
-                    <EditDesignButton onClick={this.gotToEditDesign(designId)}>
-                      {formatMessage(messages.editDesign)}
-                    </EditDesignButton>
-                  ) : (
-                    <ProApproved>
-                      <ProApprovedLabel>
-                        {formatMessage(messages.approved)}
-                      </ProApprovedLabel>
-                    </ProApproved>
+                  {!teamStore && (
+                    <React.Fragment>
+                      {!proDesign ? (
+                        <EditDesignButton
+                          onClick={this.gotToEditDesign(designId)}
+                        >
+                          {formatMessage(messages.editDesign)}
+                        </EditDesignButton>
+                      ) : (
+                        <ProApproved>
+                          <ProApprovedLabel>
+                            {formatMessage(messages.approved)}
+                          </ProApprovedLabel>
+                        </ProApproved>
+                      )}
+                    </React.Fragment>
                   )}
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>

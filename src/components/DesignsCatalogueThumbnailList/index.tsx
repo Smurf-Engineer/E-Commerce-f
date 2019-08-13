@@ -94,7 +94,11 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       total = designs.length.toString()
       thumbnailsList = designs.map(
         (
-          { design: { id, shortId, name, product, image, code }, totalOrders },
+          {
+            design: { id, shortId, name, product, image, code },
+            short_id: itemShortId,
+            totalOrders
+          },
           index
         ) => {
           const targetPriceValue: any = targetRange
@@ -116,6 +120,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={shortId}
+                itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
                 footer={

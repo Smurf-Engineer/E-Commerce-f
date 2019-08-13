@@ -247,7 +247,7 @@
   "components.LockerTable.current": "Current Price",
   "components.LockerTable.visible": "Visible",
   "components.StoreForm.requiredFieldLabel": "This field is required",
-  "components.StoreForm.changeLabel": "Change",
+  "components.StoreForm.changeLabel": "Edit",
   "components.StoreForm.teamStoreName": "Team Store Name",
   "components.StoreForm.cutOff": "Cut Off Date",
   "components.StoreForm.deleteLabel": "Delete",

@@ -47,7 +47,7 @@ const SwitchWithLabel = ({
       target: { value }
     } = evnt
 
-    if (value.length > 15) {
+    if (value.length > 25) {
       return
     }
 
