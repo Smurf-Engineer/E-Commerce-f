@@ -9,33 +9,7 @@ module.exports = {
   designCode: 'JV2-2553-240-01',
   shared: null,
   createdAt: '12/08/2019',
-  colors: [
-    {
-      id: 16389,
-      color: '#13185C',
-      image: 'https://storage.googleapis.com/jakroo/3d_models/HJXPNB6c7-1.png'
-    },
-    {
-      id: 16390,
-      color: '#AB396A',
-      image: 'https://storage.googleapis.com/jakroo/3d_models/HJXPNB6c7-2.png'
-    },
-    {
-      id: 16392,
-      color: '#13185C',
-      image: 'https://storage.googleapis.com/jakroo/3d_models/HJXPNB6c7-3.png'
-    },
-    {
-      id: 16391,
-      color: '#83254C',
-      image: 'https://storage.googleapis.com/jakroo/3d_models/HJXPNB6c7-4.png'
-    },
-    {
-      id: 16393,
-      color: '#4E172C',
-      image: 'https://storage.googleapis.com/jakroo/3d_models/HJXPNB6c7-5.png'
-    }
-  ],
+  colors: ['#13185C', '#AB396A', '#13185C', '#83254C', '#4E172C'],
   flatlockColor: null,
   flatlockCode: null,
   bindingColor: null,

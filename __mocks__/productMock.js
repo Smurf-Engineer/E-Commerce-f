@@ -58,6 +58,6 @@ module.exports = {
   weight: 5,
   relatedProducts: [],
   isCustom: true,
-  colors: [],
+  colors: ['#13185C', '#AB396A', '#13185C', '#83254C', '#4E172C'],
   mpn: ' string'
 }

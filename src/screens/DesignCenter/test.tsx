@@ -8,6 +8,7 @@ import {
   clearStoreAction,
   setVideos,
   setColorBlockAction,
+  setColorAction,
   setHoverColorBlockAction,
   setStitchingColorAction,
   setAccessoryColorAction,
@@ -24,7 +25,13 @@ import {
   openSaveDesignAction,
   setAutomaticSave,
   setDesignNameAction,
-  saveDesignIdAction
+  saveDesignIdAction,
+  setCheckedTermsAction,
+  saveDesignLoadingAction,
+  saveDesignChangesLoadingAction,
+  clearDesignInfoAction,
+  setTextAction,
+  openAddToTeamStoreModalAction
 } from './actions'
 import {
   YoutubePlaylistItemType,
@@ -181,6 +188,61 @@ describe(' DesignCenter Screen', () => {
         )
         const updatedColorBlockHovered = state.get('colorBlockHovered')
         expect(colorBlockHoveredTest).toEqual(updatedColorBlockHovered)
+      })
+    })
+
+    describe('SET_COLOR_ACTION', () => {
+      const colorTest = '#FFF'
+      const previousState = designCenterReducer(
+        initialState,
+        setColorBlockAction(1)
+      )
+
+      it('Should update colors correctly', () => {
+        const state = designCenterReducer(
+          previousState,
+          setColorAction(colorTest)
+        )
+        const colors = state.get('colors')
+        expect(colors).toContain(colorTest)
+      })
+
+      it('Should update designHasChanges value to true', () => {
+        const state = designCenterReducer(
+          previousState,
+          setColorAction(colorTest)
+        )
+        const designHasChanges = state.get('designHasChanges')
+        expect(designHasChanges).toBeTruthy()
+      })
+
+      it('Should reset redoChanges', () => {
+        const state = designCenterReducer(
+          previousState,
+          setColorAction(colorTest)
+        )
+        const redoChanges = state.get('redoChanges')
+        expect(redoChanges).toBeDefined()
+        expect(redoChanges).toEqual(List([]))
+      })
+
+      it('Should update undoChanges with lastchange', () => {
+        const state = designCenterReducer(
+          previousState,
+          setColorAction(colorTest)
+        )
+        const undoChanges = state.get('undoChanges')
+        expect(undoChanges).toBeDefined()
+        expect(undoChanges).toEqual(
+          List.of({ state: List([]), type: 'colors' })
+        )
+      })
+
+      it('Should return initial state for colorBlock value  < 0', () => {
+        const colorBlock = initialState.get('colorBlock')
+        const state = designCenterReducer(initialState, setColorAction(''))
+        expect(colorBlock).toBeLessThan(0)
+        expect(state).toEqual(initialState)
       })
     })
 
@@ -519,6 +581,53 @@ describe(' DesignCenter Screen', () => {
         const updatedId = state.get('themeId')
         expect(updatedId).toEqual(testId)
       })
+
+      it('Should update swipingView value to true', () => {
+        const swipingView = state.get('swipingView')
+        expect(swipingView).toBeTruthy()
+      })
+
+      it('Should update currentTab value to 1', () => {
+        const currentTab = state.get('currentTab')
+        expect(currentTab).toEqual(1)
+      })
+
+      it('Should not update currentTab value to undefined', () => {
+        const currentTab = state.get('currentTab')
+        expect(currentTab).toBeDefined()
+      })
+
+      it('Should update themeModalData correctly', () => {
+        const themeModalData = state.get('themeModalData')
+        expect(themeModalData).toEqual(
+          Map({ openNewThemeModal: false, themeId: testId })
+        )
+      })
+
+      it('Should not update themeModalData to undefined', () => {
+        const themeModalData = state.get('themeModalData')
+        expect(themeModalData).toBeDefined()
+      })
+
+      it('Should update designHasChanges value to false', () => {
+        const designHasChanges = state.get('designHasChanges')
+        expect(designHasChanges).toBeFalsy()
+      })
+
+      it('Should update customize3dMounted value to false', () => {
+        const customize3dMounted = state.get('customize3dMounted')
+        expect(customize3dMounted).toBeFalsy()
+      })
+
+      it('Should update product correctly', () => {
+        const product = state.get('product')
+        expect(product).toEqual(fromJS(productTest))
+      })
+
+      it('Should not update product to undefined', () => {
+        const product = state.get('product')
+        expect(product).toBeDefined()
+      })
     })
 
     describe('SET_STYLE_SELECTED_ACTION', () => {
@@ -694,34 +803,154 @@ describe(' DesignCenter Screen', () => {
       const designTest: DesignSaved = jest.genMockFromModule(
         '../../../__mocks__/designMock'
       )
-
       const updateColorsTest = true
       const state = designCenterReducer(
         initialState,
         saveDesignIdAction(idTest, svgUrl, designTest, updateColorsTest)
       )
+
       it('Should update savedDesignId', () => {
         const savedDesignId = state.get('savedDesignId')
         expect(savedDesignId).toEqual(idTest)
       })
+
       it('Should update designHasChange value to false', () => {
         const designHasChanges = state.get('designHasChanges')
         expect(designHasChanges).toBeFalsy()
       })
+
       it('Should update svgUrl correctly', () => {
         const svgOutputUrl = state.get('svgOutputUrl')
         expect(svgOutputUrl).toEqual(svgUrl)
       })
+
       it('Should update savedDesign correctly', () => {
         const savedDesign = state.get('savedDesign')
         expect(savedDesign).toEqual(fromJS(designTest))
       })
-      // it('Should contain design.colors in style', () => {
-      //   const style = state.get('style')
-      //   const designColors = designTest.colors
 
-      //   expect(style).toContain(fromJS({ colors: designColors }))
-      // })
+      it('Should contain design.colors in style', () => {
+        const style = state.get('style')
+        const designColors = designTest.colors
+        expect(style).toEqual(fromJS({ colors: designColors }))
+      })
+    })
+
+    describe('SET_CHECKED_TERMS', () => {
+      it('Should update checkedTerms value to true', () => {
+        const checked = true
+        const state = designCenterReducer(
+          initialState,
+          setCheckedTermsAction(checked)
+        )
+        const checkedTerms = state.get('checkedTerms')
+        expect(checkedTerms).toBeTruthy()
+      })
+
+      it('Should update checkedTermsvalue to false', () => {
+        const checked = false
+        const state = designCenterReducer(
+          initialState,
+          setCheckedTermsAction(checked)
+        )
+        const checkedTerms = state.get('checkedTerms')
+        expect(checkedTerms).toBeFalsy()
+      })
+    })
+
+    describe('SAVE_DESIGN_LOADING', () => {
+      it('Should update saveDesignLoading value to true', () => {
+        const save = true
+        const state = designCenterReducer(
+          initialState,
+          saveDesignLoadingAction(save)
+        )
+        const saveDesignLoading = state.get('saveDesignLoading')
+        expect(saveDesignLoading).toBeTruthy()
+      })
+
+      it('Should update saveDesignLoading value to false', () => {
+        const save = false
+        const state = designCenterReducer(
+          initialState,
+          saveDesignLoadingAction(save)
+        )
+        const saveDesignLoading = state.get('saveDesignLoading')
+        expect(saveDesignLoading).toBeFalsy()
+      })
+    })
+
+    describe('SAVE_DESIGN_CHANGES_LOADING', () => {
+      it('Should update saveDesignChangesLoading value to true', () => {
+        const save = true
+        const state = designCenterReducer(
+          initialState,
+          saveDesignChangesLoadingAction(save)
+        )
+        const saveDesignChangesLoading = state.get('saveDesignChangesLoading')
+        expect(saveDesignChangesLoading).toBeTruthy()
+      })
+
+      it('Should update saveDesignChangesLoading value to false', () => {
+        const save = false
+        const state = designCenterReducer(
+          initialState,
+          saveDesignChangesLoadingAction(save)
+        )
+        const saveDesignChangesLoading = state.get('saveDesignChangesLoading')
+        expect(saveDesignChangesLoading).toBeFalsy()
+      })
+    })
+
+    describe('CLEAR_DESIGN_INFO', () => {
+      it('Should update checkedTerms value to false', () => {
+        const state = designCenterReducer(initialState, clearDesignInfoAction())
+        const checkedTerms = state.get('checkedTerms')
+        expect(checkedTerms).toBeFalsy()
+      })
+    })
+
+    describe('SET_TEXT_ACTION', () => {
+      it('Should not have undefined initial value for text', () => {
+        const text = initialState.get('text')
+        expect(text).toBeDefined()
+      })
+
+      it('Should update text value correctly', () => {
+        const textTest = 'Text for test'
+        const state = designCenterReducer(initialState, setTextAction(textTest))
+        const text = state.get('text')
+        expect(text).toEqual(textTest)
+      })
+
+      it('Should not update text value to undefined', () => {
+        const textTest = 'Text for test'
+        const state = designCenterReducer(initialState, setTextAction(textTest))
+        const text = state.get('text')
+        expect(text).toBeDefined()
+      })
+    })
+
+    describe('OPEN_ADD_TOTEAMSTORE', () => {
+      it('Should update openAddToStoreModal value to true', () => {
+        const open = true
+        const state = designCenterReducer(
+          initialState,
+          openAddToTeamStoreModalAction(open)
+        )
+        const openAddToStoreModal = state.get('openAddToStoreModal')
+        expect(openAddToStoreModal).toBeTruthy()
+      })
+
+      it('Should update openAddToStoreModal value to false', () => {
+        const open = false
+        const state = designCenterReducer(
+          initialState,
+          openAddToTeamStoreModalAction(open)
+        )
+        const openAddToStoreModal = state.get('openAddToStoreModal')
+        expect(openAddToStoreModal).toBeFalsy()
+      })
     })
   })
 })
