@@ -507,7 +507,6 @@ describe(' CreateStore Screen', () => {
             items: [],
             teamSize: { id: 1, size: '2-5' }
           }
-          console.log(data.id)
           const editDataState = createStoreReducer(
             initialState,
             setDataToEditAction(data)
