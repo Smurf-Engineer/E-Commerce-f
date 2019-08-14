@@ -20,18 +20,14 @@ import {
   MOVE_ROW,
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
+  OPEN_MODAL,
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS,
   SET_DESIGNS_DATA
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
-import {
-  AnyAction,
-  DesignType,
-  TeamstoreType,
-  DesignResultType
-} from '../../types/common'
+import { AnyAction, DesignType, TeamstoreType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -47,6 +43,11 @@ export const setTeamSizeAction = (id: number, range: string): AnyAction => ({
 export const updateNameAction = (name: string): AnyAction => ({
   type: UPDATE_NAME_ACTION,
   name
+})
+
+export const openModal = (open: boolean): AnyAction => ({
+  type: OPEN_MODAL,
+  open
 })
 
 export const setLoadingAction = (isLoading: boolean): AnyAction => ({
@@ -159,13 +160,8 @@ export const setTeamStoreStatusAction = (show: boolean) => ({
   show
 })
 
-export const setDesignsData = (
-  data: DesignResultType,
-  offset: number,
-  page: number
-) => ({
+export const setPaginationDataAction = (offset: number, page: number) => ({
   type: SET_DESIGNS_DATA,
-  data,
   offset,
   page
 })

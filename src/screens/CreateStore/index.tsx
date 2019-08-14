@@ -12,6 +12,7 @@ import get from 'lodash/get'
 import Button from 'antd/lib/button'
 import Spin from 'antd/lib/spin'
 import { DEFAULT_ROUTE } from '../../constants'
+import * as thunkActions from './thunkActions'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
 import message from 'antd/lib/message'
@@ -27,11 +28,9 @@ import TeamSizes from '../../components/TeamSizes'
 import {
   createStoreMutation,
   GetTeamStoreQuery,
-  updateStoreMutation,
-  desginsQuery
+  updateStoreMutation
 } from './data'
 import {
-  DesignType,
   SelectedItem,
   TeamstoreType,
   QueryProps,
@@ -62,6 +61,7 @@ import {
   TextBlock
 } from './styledComponents'
 import config from '../../config/index'
+import ImageCropper from '../../components/ImageCropper'
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
@@ -75,6 +75,7 @@ interface Props extends RouteComponentProps<any> {
   privateStore: boolean
   onDemand: boolean
   startDate: string
+  open: boolean
   startDateMoment?: Moment
   endDate: string
   endDateMoment?: Moment
@@ -93,8 +94,6 @@ interface Props extends RouteComponentProps<any> {
   limit: number
   offset: number
   currentPage: number
-  fullCount: string
-  designs: DesignType[]
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -112,6 +111,7 @@ interface Props extends RouteComponentProps<any> {
     yotpoId: string,
     hideSliderButtons?: boolean
   ) => void
+  openModal: (open: boolean) => void
   setItemVisibleAction: (index: number, visible: boolean) => void
   setLoadingAction: (loading: boolean) => void
   clearStoreAction: () => void
@@ -121,12 +121,12 @@ interface Props extends RouteComponentProps<any> {
   clearDataAction: () => void
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
-  setDesignsData: (data: DesignResultType, offset: number, page: number) => void
+  setPaginationData: (offset: number, page: number) => void
 }
 
 interface StateProps {
   hasError: boolean
-  file: string | null
+  file: Blob | null
   imagePreviewUrl: string | null
 }
 export class CreateStore extends React.Component<Props, StateProps> {
@@ -167,8 +167,17 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     return validForm
   }
-
+  closeModal = () => {
+    const { openModal } = this.props
+    openModal(false)
+  }
+  setImage = (file: Blob) => {
+    const { openModal } = this.props
+    this.setState({ file, imagePreviewUrl: URL.createObjectURL(file) })
+    openModal(false)
+  }
   beforeUpload = (file: any) => {
+    const { openModal } = this.props
     const reader = new FileReader()
 
     reader.onloadend = () => {
@@ -178,7 +187,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     if (file) {
       reader.readAsDataURL(file)
     }
-
+    openModal(true)
     return false
   }
 
@@ -229,13 +238,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
     return storeId
   }
 
-  fetchDesigns = async (offsetParam?: number, pageParam?: number) => {
+  changePage = async (pageParam: number = 1) => {
+    const { limit } = this.props
+    const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
     const {
-      client: { query },
       offset: offsetProp,
       currentPage: pageProp,
-      limit,
-      setDesignsData
+      setPaginationData
     } = this.props
     let offset = offsetParam !== undefined ? offsetParam : offsetProp
     let currentPage = pageParam !== undefined ? pageParam : pageProp
@@ -250,26 +259,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       }
     }
 
-    try {
-      const data = await query({
-        query: desginsQuery,
-        variables: { limit, offset },
-        fetchPolicy: 'network-only'
-      })
-      setDesignsData(data, offset, currentPage)
-    } catch (e) {
-      throw e
-    }
-  }
-
-  getDesigns = async (page: number = 1) => {
-    const { limit } = this.props
-    const offset = page > 1 ? (page - 1) * limit : 0
-    try {
-      this.fetchDesigns(offset, page)
-    } catch (e) {
-      console.error(e)
-    }
+    setPaginationData(offset, currentPage)
   }
 
   clearState = () => {
@@ -325,20 +315,23 @@ export class CreateStore extends React.Component<Props, StateProps> {
     })
 
     try {
-      const formData = new FormData()
+      let bannerResp = banner
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file as any, 'banner.jpeg')
+        const user = JSON.parse(localStorage.getItem('user') || '')
 
-      formData.append('file', file as any)
-      const user = JSON.parse(localStorage.getItem('user') || '')
-
-      const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        body: formData
-      })
-      const bannerResp = await uploadResp.json()
+        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        })
+        const { image } = await uploadResp.json()
+        bannerResp = image
+      }
 
       const teamStore = {
         id: storeId,
@@ -351,7 +344,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         items,
         teamsizeId: teamSizeId,
         demandMode: onDemand,
-        banner: bannerResp.image || banner
+        banner: bannerResp
       }
 
       if (storeShortId) {
@@ -385,7 +378,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
         history.push(`/store-front?storeId=${shortId}`)
       }
     } catch (error) {
-      message.error('Something wrong happened. Please try again!')
+      message.error(
+        `Something wrong happened. Please try again! ${error.message}`
+      )
       setLoadingAction(false)
     }
   }
@@ -420,7 +415,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
     setTeamStoreStatusAction(
       get(response, 'data.getTeamStoreStatus.showTeamStores', false)
     )
-    await this.getDesigns()
     if (storeId) {
       query({
         query: GetTeamStoreQuery,
@@ -474,13 +468,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
       items,
       teamSizeRange,
       loading,
+      open,
       banner,
       location: { search },
       showTeamStores,
-      designs,
       currentPage,
-      fullCount,
-      limit
+      limit,
+      offset
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -694,17 +688,22 @@ export class CreateStore extends React.Component<Props, StateProps> {
               {...{
                 selectedItems,
                 tableItems,
-                designs,
                 currentPage,
-                fullCount,
-                limit
+                limit,
+                offset
               }}
               visible={openLocker}
               onRequestClose={this.handleOnCloseLocker}
               onSelectItem={setItemSelectedAction}
               onUnselectItem={deleteItemSelectedAction}
               onAddItems={setItemsAddAction}
-              changePage={this.getDesigns}
+              changePage={this.changePage}
+            />
+            <ImageCropper
+              {...{ formatMessage, open }}
+              requestClose={this.closeModal}
+              setImage={this.setImage}
+              image={imagePreviewUrl}
             />
           </Container>
         )}
@@ -723,7 +722,7 @@ const CreateStoreEnhance = compose(
   getTeamStoreStatus,
   connect(
     mapStateToProps,
-    { ...createStoreActions }
+    { ...createStoreActions, ...thunkActions }
   )
 )(CreateStore)
 

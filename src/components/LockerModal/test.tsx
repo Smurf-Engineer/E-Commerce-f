@@ -8,9 +8,9 @@ import { LockerModal } from './index'
 describe('<LockerModal />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    const pagination = { fullCount: '0', designs: [] }
+    const designsResult = { fullCount: '0', designs: [] }
     const selectedItems = { 0: false }
-    const data = { pagination, fetchMore: () => {} }
+    const data = { designsResult, fetchMore: () => {} }
     ReactDOM.render(
       <LockerModal
         {...{ data, selectedItems }}

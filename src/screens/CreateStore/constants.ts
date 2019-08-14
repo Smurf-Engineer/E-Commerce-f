@@ -23,6 +23,7 @@ export const DELETE_BANNER_ON_EDIT = `${namespace}/DELETE_BANNER_ON_EDIT`
 export const CLEAR_DATA = `${namespace}/CLEAR_DATA`
 export const SET_DESIGNS_DATA = `${namespace}/SET_DESIGNS_DATA`
 export const SET_LOADING_ITEMS = `${namespace}/SET_LOADING_ITEMS`
+export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
 
 export const MOVE_ROW = `${namespace}/MOVE_ROW`
 

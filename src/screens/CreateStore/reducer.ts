@@ -24,7 +24,8 @@ import {
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS,
-  SET_DESIGNS_DATA
+  SET_DESIGNS_DATA,
+  OPEN_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -43,10 +44,9 @@ export const initialState = fromJS({
   selectedItems: [],
   items: [],
   loading: true,
+  open: false,
   banner: '',
   showTeamStores: null,
-  fullCount: '',
-  designs: [],
   limit: 12,
   offset: 0,
   currentPage: 1
@@ -56,6 +56,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state
+    case OPEN_MODAL:
+      return state.set('open', action.open)
     case SET_LOADING_ACTION:
       return state.set('loading', action.isLoading)
     case CREATE_STORE_SUCCESS:
@@ -165,14 +167,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case SET_TEAM_STORE_STATUS:
       return state.set('showTeamStores', action.show)
     case SET_DESIGNS_DATA: {
-      const {
-        data: {
-          designs: { designs, fullCount }
-        }
-      } = action.data
       return state.merge({
-        designs,
-        fullCount,
         offset: action.offset,
         currentPage: action.page,
         loading: false

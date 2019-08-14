@@ -1361,3 +1361,8 @@ export interface SelectedDesignType {
   design: DesignType
   visible: boolean
 }
+
+export type AspectRatio = {
+  name: string
+  value: number
+}

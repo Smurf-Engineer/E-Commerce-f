@@ -26,8 +26,9 @@ export const List = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
+  align-items: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
     height: auto;
