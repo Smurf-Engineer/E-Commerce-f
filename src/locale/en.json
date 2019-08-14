@@ -886,6 +886,7 @@
   "screens.CustomProductDetail.gender": "Gender",
   "screens.CustomProductDetail.size": "Size",
   "screens.CustomProductDetail.fit": "Fit",
+  "screens.CustomProductDetail.teamPrice": "Team Price",
   "screens.CustomProductDetail.addToCartButton": "ADD TO CART",
   "screens.CustomProductDetail.description": "Additional Product details",
   "screens.CustomProductDetail.specs": "Specs",

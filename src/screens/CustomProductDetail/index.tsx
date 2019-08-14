@@ -156,10 +156,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
 
     const designId = queryParams.id
-    const teamStore = queryParams.team
+    const teamStoreItem = queryParams.item
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
+    const teamPrice = get(design, 'teamPrice', '')
     const proDesign = get(design, 'proDesign', false)
     const {
       images: imagesArray,
@@ -182,10 +183,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag.replace(/_/, ' ')
-
+    const priceRange = teamStoreItem ? teamPrice : product.priceRange
     const currencyPrices =
       product &&
-      filter(product.priceRange, {
+      filter(priceRange, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
     let images = null
@@ -196,7 +197,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ genderId: imageGender }) => imageGender !== images.genderId
       )
     }
-    const symbol = currencyPrices ? currencyPrices[0].shortName : ''
+    const symbol = currencyPrices.length ? currencyPrices[0].shortName : ''
 
     const renderPrices =
       currencyPrices &&
@@ -205,7 +206,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ price, quantity }, index: number) =>
           index < MAX_AMOUNT_PRICES && (
             <AvailablePrices key={index}>
-              <PriceQuantity {...{ index, price, quantity, symbol }} />
+              <PriceQuantity
+                {...{ index, price, symbol }}
+                quantity={
+                  teamStoreItem ? formatMessage(messages.teamPrice) : quantity
+                }
+              />
             </AvailablePrices>
           )
       )
@@ -418,7 +424,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  {!teamStore && (
+                  {!teamStoreItem && (
                     <React.Fragment>
                       {!proDesign ? (
                         <EditDesignButton
@@ -575,7 +581,8 @@ const CustomProductDetailEnhance = compose(
       const queryParams = queryString.parse(search)
       return {
         variables: {
-          designId: queryParams ? queryParams.id : null
+          designId: queryParams ? queryParams.id : null,
+          teamStoreItem: queryParams ? queryParams.item : null
         },
         fetchPolicy: 'network-only'
       }

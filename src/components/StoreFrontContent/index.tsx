@@ -530,7 +530,7 @@ const StoreFrontContentEnhance = compose(
           date: {
             day: moment().date(),
             month: moment().month(),
-            year: 2018
+            year: moment().year()
           }
         }
       }
