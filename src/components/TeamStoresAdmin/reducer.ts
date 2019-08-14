@@ -8,7 +8,10 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_SEARCH_TEXT,
-  SET_LOADING
+  SET_LOADING,
+  SET_PRICE_ITEM,
+  SET_TEAM_STORE_DATA,
+  SET_LOADING_ITEM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -17,7 +20,10 @@ export const initialState = fromJS({
   orderBy: 'id',
   sort: 'desc',
   searchText: '',
-  teamStoreId: -1
+  teamStoreId: -1,
+  teamStore: {},
+  currencies: [],
+  loading: true
 })
 
 const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -32,6 +38,24 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ searchText: action.searchText, currentPage: 1 })
     case SET_LOADING:
       return state.set('loading', action.loading)
+    case SET_TEAM_STORE_DATA:
+      return state.withMutations((tempState: any) => {
+        const { teamStore, currencies } = action
+        tempState.merge({ teamStore, currencies })
+        return tempState
+      })
+    case SET_PRICE_ITEM:
+      return state.updateIn(
+        ['teamStore', 'items', action.itemIndex],
+        (item: any) => {
+          return item.setIn(['pricesByCurrency', action.currency], action.value)
+        }
+      )
+    case SET_LOADING_ITEM:
+      return state.updateIn(
+        ['teamStore', 'items', action.itemIndex],
+        (item: any) => item.set('loading', action.loading)
+      )
     default:
       return state
   }
