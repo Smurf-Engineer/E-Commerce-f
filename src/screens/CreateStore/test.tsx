@@ -23,7 +23,8 @@ import {
   deleteBannerOnEditAction,
   clearDataAction,
   setTeamStoreStatusAction,
-  setPaginationDataAction
+  setPaginationDataAction,
+  setOpenLockerAction
 } from './actions'
 import {
   SET_TEAM_SIZE_ACTION,
@@ -45,12 +46,12 @@ import {
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS,
-  SET_DESIGNS_DATA
+  SET_PAGINATION_DATA
 } from './constants'
 
 describe(' CreateStore Screen', () => {
   describe('Actions', () => {
-    it('setOrderByAction', () => {
+    it('setTeamSizeAction', () => {
       const type = SET_TEAM_SIZE_ACTION
       const id = 1
       const range = '2-5'
@@ -197,7 +198,7 @@ describe(' CreateStore Screen', () => {
         shortId: 'ID',
         name: 'NAME',
         banner: '',
-        private: false
+        privateStore: false
       }
       expect(setDataToEditAction(data)).toEqual({
         type,
@@ -225,7 +226,7 @@ describe(' CreateStore Screen', () => {
       })
     })
     it('setPaginationDataAction', () => {
-      const type = SET_DESIGNS_DATA
+      const type = SET_PAGINATION_DATA
       const offset = 0
       const page = 1
       expect(setPaginationDataAction(offset, page)).toEqual({
@@ -293,11 +294,11 @@ describe(' CreateStore Screen', () => {
         })
         it('Handles custom values in name', () => {
           const customValue = 'NAME'
-          const orderByState = createStoreReducer(
+          const nameState = createStoreReducer(
             initialState,
             updateNameAction(customValue)
           )
-          const customNameValue = orderByState.get('name')
+          const customNameValue = nameState.get('name')
           expect(customNameValue).toBe(customValue)
         })
       })
@@ -320,12 +321,14 @@ describe(' CreateStore Screen', () => {
           const startDate = '2019-01-01'
           const startDateMoment = moment(startDate)
 
-          const orderByState = createStoreReducer(
+          const startDateState = createStoreReducer(
             initialState,
             updateStartDateAction(startDateMoment, startDate)
           )
-          const customStartDateValue = orderByState.get('startDate')
-          const customStartDateMomentValue = orderByState.get('startDateMoment')
+          const customStartDateValue = startDateState.get('startDate')
+          const customStartDateMomentValue = startDateState.get(
+            'startDateMoment'
+          )
 
           expect(customStartDateValue).toBe(startDate)
           expect(customStartDateMomentValue).toBe(startDateMoment)
@@ -350,12 +353,12 @@ describe(' CreateStore Screen', () => {
           const endDate = '2019-01-01'
           const endDateMoment = moment(endDate)
 
-          const orderByState = createStoreReducer(
+          const endDateState = createStoreReducer(
             initialState,
             updateEndDateAction(endDateMoment, endDate)
           )
-          const customEndDateValue = orderByState.get('endDate')
-          const customEndDateMomentValue = orderByState.get('endDateMoment')
+          const customEndDateValue = endDateState.get('endDate')
+          const customEndDateMomentValue = endDateState.get('endDateMoment')
 
           expect(customEndDateValue).toBe(endDate)
           expect(customEndDateMomentValue).toBe(endDateMoment)
@@ -377,11 +380,11 @@ describe(' CreateStore Screen', () => {
           expect(customInitialValue).toBeFalsy()
         })
         it('Handles custom values in privateStore', () => {
-          const orderByState = createStoreReducer(
+          const privateStoreState = createStoreReducer(
             initialState,
             updatePrivateAction(false)
           )
-          const customPrivateStoreValue = orderByState.get('privateStore')
+          const customPrivateStoreValue = privateStoreState.get('privateStore')
 
           expect(customPrivateStoreValue).toBeFalsy()
         })
@@ -403,11 +406,11 @@ describe(' CreateStore Screen', () => {
         })
         it('Handles custom values in passCode', () => {
           const password = 'PASS'
-          const orderByState = createStoreReducer(
+          const passCodeState = createStoreReducer(
             initialState,
             updatePassCodeAction(password)
           )
-          const customPrivateStoreValue = orderByState.get('passCode')
+          const customPrivateStoreValue = passCodeState.get('passCode')
 
           expect(customPrivateStoreValue).toBe(password)
         })
@@ -426,6 +429,190 @@ describe(' CreateStore Screen', () => {
         it('Handles initial value in openLocker', () => {
           const customInitialValue = initialState.get('openLocker')
           expect(customInitialValue).toBeFalsy()
+        })
+        it('Handles custom values in openLocker', () => {
+          const openLockerState = createStoreReducer(
+            initialState,
+            setOpenLockerAction(true)
+          )
+          const customPrivateStoreValue = openLockerState.get('openLocker')
+
+          expect(customPrivateStoreValue).toBeTruthy()
+        })
+      })
+    })
+    describe('SET_ITEM_SELECTED_ACTION', () => {
+      describe('selectedItems', () => {
+        it('Handles undefined value in selectedItems', () => {
+          const customInitialValue = initialState.get('selectedItems')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial length in selectedItems', () => {
+          const customInitialValue = initialState.get('selectedItems')
+          expect(customInitialValue.size).toBe(0)
+        })
+        it('Handles custom values in selectedItems', () => {
+          const item = {
+            id: 1,
+            code: 'CODE',
+            name: 'NAME',
+            shared: true,
+            image: '',
+            proDesign: false
+          }
+          const checked = true
+          const selectedItemsState = createStoreReducer(
+            initialState,
+            setItemSelectedAction(item, checked)
+          )
+          const customSelectedItemsValue = selectedItemsState.get(
+            'selectedItems'
+          )
+          expect(customSelectedItemsValue.size).toBeGreaterThan(0)
+
+          const sharedValue = selectedItemsState.getIn([
+            'selectedItems',
+            0,
+            'shared'
+          ])
+          const proDesignValue = selectedItemsState.getIn([
+            'selectedItems',
+            0,
+            'proDesign'
+          ])
+          const nameValue = selectedItemsState.getIn([
+            'selectedItems',
+            0,
+            'name'
+          ])
+
+          expect(sharedValue).toBeTruthy()
+          expect(proDesignValue).toBeFalsy()
+          expect(nameValue).toBe(item.name)
+        })
+      })
+    })
+    describe('SET_STORE_DATA_TO_EDIT', () => {
+      describe('Edit data', () => {
+        it('Handles custom values', () => {
+          const data = {
+            id: 1,
+            shortId: 'ID',
+            name: 'NAME',
+            banner: '',
+            startDate: '2019-01-01',
+            endDate: '2019-30-01',
+            privateStore: false,
+            onDemand: true,
+            items: [],
+            teamSize: { id: 1, size: '2-5' }
+          }
+          console.log(data.id)
+          const editDataState = createStoreReducer(
+            initialState,
+            setDataToEditAction(data)
+          )
+          const storeIdValue = editDataState.get('storeId')
+          expect(storeIdValue).toBe(1)
+
+          const shortIdValue = editDataState.get('storeShortId')
+          expect(shortIdValue).toBe(data.shortId)
+
+          const bannerValue = editDataState.get('banner')
+          expect(bannerValue).toBe(data.banner)
+
+          const startDateValue = editDataState.get('startDate')
+          expect(startDateValue).toBe(data.startDate)
+
+          const endDateValue = editDataState.get('endDate')
+          expect(endDateValue).toBe(data.endDate)
+
+          const privateStoreValue = editDataState.get('privateStore')
+          expect(privateStoreValue).toBeFalsy()
+
+          const onDemandValue = editDataState.get('onDemand')
+          expect(onDemandValue).toBeTruthy()
+        })
+      })
+    })
+    describe('DELETE_BANNER_ON_EDIT', () => {
+      describe('banner', () => {
+        it('Handles undefined value in banner', () => {
+          const customInitialValue = initialState.get('banner')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in banner', () => {
+          const customInitialValue = initialState.get('banner')
+          expect(customInitialValue).toBe('')
+        })
+        it('Delete banner value in banner', () => {
+          const bannerState = initialState.set('banner', 'BANNER')
+          const deletedBannerState = createStoreReducer(
+            bannerState,
+            deleteBannerOnEditAction()
+          )
+          const bannerValue = deletedBannerState.get('banner')
+          expect(bannerValue).toBe('')
+        })
+      })
+    })
+    describe('SET_TEAM_STORE_STATUS', () => {
+      describe('showTeamStores', () => {
+        it('Handles undefined value in showTeamStores', () => {
+          const customInitialValue = initialState.get('showTeamStores')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in showTeamStores', () => {
+          const customInitialValue = initialState.get('showTeamStores')
+          expect(customInitialValue).toBeFalsy()
+        })
+        it('custom value in showTeamStores', () => {
+          const showTeamStoresState = createStoreReducer(
+            initialState,
+            setTeamStoreStatusAction(true)
+          )
+          const showTeamStoresValue = showTeamStoresState.get('showTeamStores')
+          expect(showTeamStoresValue).toBeTruthy()
+        })
+      })
+    })
+    describe('SET_DESIGNS_DATA', () => {
+      describe('offset', () => {
+        it('Handles undefined value in offset', () => {
+          const customInitialValue = initialState.get('offset')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in offset', () => {
+          const customInitialValue = initialState.get('offset')
+          expect(customInitialValue).toBe(0)
+        })
+        it('custom value in offset', () => {
+          const offset = 10
+          const showTeamStoresState = createStoreReducer(
+            initialState,
+            setPaginationDataAction(offset, 0)
+          )
+          const showTeamStoresValue = showTeamStoresState.get('offset')
+          expect(showTeamStoresValue).toBe(offset)
+        })
+      })
+      describe('currentPage', () => {
+        it('Handles undefined value in currentPage', () => {
+          const customInitialValue = initialState.get('currentPage')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in currentPage', () => {
+          const customInitialValue = initialState.get('currentPage')
+          expect(customInitialValue).toBe(1)
+        })
+        it('custom value in currentPage', () => {
+          const page = 2
+          const showTeamStoresState = createStoreReducer(
+            initialState,
+            setPaginationDataAction(0, page)
+          )
+          const showTeamStoresValue = showTeamStoresState.get('currentPage')
+          expect(showTeamStoresValue).toBe(page)
         })
       })
     })

@@ -23,7 +23,7 @@ import {
   OPEN_MODAL,
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS,
-  SET_DESIGNS_DATA
+  SET_PAGINATION_DATA
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
@@ -161,7 +161,7 @@ export const setTeamStoreStatusAction = (show: boolean) => ({
 })
 
 export const setPaginationDataAction = (offset: number, page: number) => ({
-  type: SET_DESIGNS_DATA,
+  type: SET_PAGINATION_DATA,
   offset,
   page
 })

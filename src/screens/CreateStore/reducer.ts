@@ -24,7 +24,7 @@ import {
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS,
-  SET_DESIGNS_DATA,
+  SET_PAGINATION_DATA,
   OPEN_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -166,7 +166,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       return initialState
     case SET_TEAM_STORE_STATUS:
       return state.set('showTeamStores', action.show)
-    case SET_DESIGNS_DATA: {
+    case SET_PAGINATION_DATA: {
       return state.merge({
         offset: action.offset,
         currentPage: action.page,
