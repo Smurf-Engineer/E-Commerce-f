@@ -6,7 +6,7 @@ import gql from 'graphql-tag'
 
 export const getTeamStoreQuery = gql`
   query GetTeamStore($teamStoreId: String!) {
-    teamStoreQuery: getTeamStoreAdmin(teamStoreId: $teamStoreId) {
+    teamStore: getTeamStoreAdmin(teamStoreId: $teamStoreId) {
       id
       shortId: short_id
       onDemandMode: on_demand_mode
@@ -18,6 +18,27 @@ export const getTeamStoreQuery = gql`
       email
       featured
       teamstoreType: teamstore_type
+      items {
+        id
+        priceRange {
+          price
+          shortName: short_name
+          quantity
+          abbreviation
+        }
+        design {
+          name
+          image
+          product {
+            name
+            description: short_description
+          }
+        }
+      }
+    }
+    currencies: getCurrencies {
+      id
+      shortName: short_name
     }
   }
 `

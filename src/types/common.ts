@@ -213,7 +213,9 @@ export type TeamStoreItemtype = {
   totalOrders: number
   itemOrder?: number
   team_store_name?: string
-  priceRange?: [Currency]
+  priceRange?: Currency[]
+  pricesByCurrency?: PricesByCurrency
+  loading?: boolean
 }
 
 export type LockerTableType = {
@@ -222,7 +224,7 @@ export type LockerTableType = {
   id?: number
   totalOrders: number
   visible: boolean
-  priceRange?: [Currency]
+  priceRange?: Currency[]
 }
 
 export type ProductTableType = {
@@ -1289,6 +1291,10 @@ export interface ProductInternal {
   binding?: string
   bibBrace?: string
   collection?: string
+}
+
+export interface PricesByCurrency {
+  [currency: string]: number
 }
 
 export interface ProductInternalInput {
