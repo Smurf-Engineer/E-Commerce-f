@@ -204,7 +204,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const cutOffDay = get(getTeamStore, 'cutoff_date.day', '0')
     const deliveryDay = get(getTeamStore, 'delivery_date.day', '0')
     const onDemandMode = get(getTeamStore, 'onDemandMode', false)
-    const featured = get(getTeamStore, 'featured', false)
+    const display = get(getTeamStore, 'display', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
     const deliveryDayOrdinal = get(
       getTeamStore,
@@ -362,9 +362,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 )}
                 <DatesContainer {...{ onDemandMode }}>
                   {onDemandMode ? (
-                    <StoreBox open={featured}>
+                    <StoreBox open={display}>
                       {formatMessage(
-                        featured ? messages.storeOpen : messages.storeClosed
+                        display ? messages.storeOpen : messages.storeClosed
                       )}
                     </StoreBox>
                   ) : (
@@ -418,7 +418,12 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 )}
                 <ListContainer>
                   <ProductList
-                    {...{ targetRange, formatMessage, onDemandMode, featured }}
+                    {...{
+                      targetRange,
+                      formatMessage,
+                      onDemandMode,
+                      display
+                    }}
                     withoutPadding={false}
                     openQuickView={this.handleOnOpenQuickView}
                     designs={items}
