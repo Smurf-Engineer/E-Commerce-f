@@ -5,18 +5,10 @@ import * as React from 'react'
 import Cropper from 'react-easy-crop'
 import message from 'antd/lib/message'
 import { Location, Area } from 'react-easy-crop'
-import {
-  SaveButton,
-  Text,
-  CropperContainer,
-  AspectSection,
-  AspectButton
-} from './styledComponents'
+import { SaveButton, Text, CropperContainer } from './styledComponents'
 import messages from './messages'
-import { aspectRatios } from './constants'
 import Modal from '../../components/Common/JakrooModal'
 import getCroppedImg from '../../utils/utilsFiles'
-import { AspectRatio } from '../../types/common'
 
 interface Props {
   image: string
@@ -29,7 +21,7 @@ class ImageCropper extends React.Component<Props, {}> {
   state = {
     crop: { x: 0, y: 0 },
     zoom: 1,
-    aspect: aspectRatios[0].value,
+    aspect: 4.59,
     croppedAreaPixels: null
   }
   render() {
@@ -43,16 +35,6 @@ class ImageCropper extends React.Component<Props, {}> {
         withLogo={false}
       >
         <CropperContainer>
-          <AspectSection>
-            {aspectRatios.map((aspectRatio: AspectRatio) => (
-              <AspectButton
-                onClick={this.changeAspect(aspectRatio.value)}
-                selected={aspect === aspectRatio.value}
-              >
-                {aspectRatio.name}
-              </AspectButton>
-            ))}
-          </AspectSection>
           <Cropper
             {...{ image, aspect, crop, zoom }}
             style={{
@@ -69,10 +51,6 @@ class ImageCropper extends React.Component<Props, {}> {
         </SaveButton>
       </Modal>
     )
-  }
-
-  changeAspect = (aspect: number) => () => {
-    this.setState({ aspect })
   }
 
   cropImage = async () => {
