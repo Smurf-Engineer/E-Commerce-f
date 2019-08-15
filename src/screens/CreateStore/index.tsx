@@ -35,7 +35,8 @@ import {
   TeamstoreType,
   QueryProps,
   DesignResultType,
-  LockerTableType
+  LockerTableType,
+  DesignType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -103,7 +104,7 @@ interface Props extends RouteComponentProps<any> {
   updateOnDemandAction: (active: boolean) => void
   updatePassCodeAction: (code: string) => void
   setOpenLockerAction: (open: boolean) => void
-  setItemSelectedAction: (item: any, checked: boolean) => void
+  setItemSelectedAction: (item: DesignType, checked: boolean) => void
   deleteItemSelectedAction: (index: number) => void
   setItemsAddAction: () => void
   openQuickViewAction: (
@@ -238,7 +239,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     return storeId
   }
 
-  changePage = async (pageParam: number = 1) => {
+  changePage = (pageParam: number = 1) => {
     const { limit } = this.props
     const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
     const {
