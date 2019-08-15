@@ -128,7 +128,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                id={product.id}
+                id={shortId}
                 itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
