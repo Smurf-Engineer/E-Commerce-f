@@ -27,7 +27,7 @@ interface Props {
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
 }
-
+const INPUT_MAX_LENGTH = 25
 const SwitchWithLabel = ({
   message,
   label,
@@ -47,7 +47,7 @@ const SwitchWithLabel = ({
       target: { value }
     } = evnt
 
-    if (value.length > 25) {
+    if (value.length > INPUT_MAX_LENGTH) {
       return
     }
 
