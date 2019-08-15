@@ -23,6 +23,7 @@ export const getSingleTeamStore = gql`
       owner
       featured
       owner_name
+      display
       onDemandMode: on_demand_mode
       team_size_id
       priceRanges {

@@ -15,8 +15,9 @@ interface Props {
   onDemand: boolean
   cutOffDateString?: string
   shortId: string
+  display: boolean
   formatMessage: (messageDescriptor: any) => string
-  onSetFeatured: (id: number) => void
+  onChangeSwitch: (id: number, fieldId: string) => void
   onClickRow: (id: string) => void
 }
 
@@ -29,9 +30,10 @@ const ItemOrder = ({
   onDemand,
   formatMessage,
   cutOffDateString,
-  onSetFeatured,
+  onChangeSwitch,
   onClickRow,
-  shortId
+  shortId,
+  display
 }: Props) => {
   const stopPropagation = (event: any) => {
     if (event) {
@@ -41,8 +43,8 @@ const ItemOrder = ({
   const handleOnClick = () => {
     onClickRow(shortId)
   }
-  const handleOnSetFeatured = () => {
-    onSetFeatured(id)
+  const handleOnSwitch = (fieldId: string) => () => {
+    onChangeSwitch(id, fieldId)
   }
   return (
     <Container onClick={handleOnClick}>
@@ -53,7 +55,10 @@ const ItemOrder = ({
       <Cell>{formatMessage(messages[onDemand ? 'onDemand' : 'fixed'])}</Cell>
       <Cell>{onDemand ? '-' : cutOffDateString}</Cell>
       <Cell onClick={stopPropagation}>
-        <Switch onChange={handleOnSetFeatured} checked={featured} />
+        <Switch onChange={handleOnSwitch('featured')} checked={featured} />
+      </Cell>
+      <Cell onClick={stopPropagation}>
+        <Switch onChange={handleOnSwitch('display')} checked={display} />
       </Cell>
     </Container>
   )

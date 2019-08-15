@@ -40,7 +40,7 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   onSortClick: (label: string, sort: sorts) => void
-  onSetFeatured: (id: number) => void
+  onChangeSwitch: (id: number, fieldId: string) => void
   onChangePage: (page: number) => void
   onClickRow: (id: string) => void
 }
@@ -50,7 +50,8 @@ const teamStoreHeaders = [
   { title: 'manager', id: 'first_name' },
   { title: 'type', id: 'on_demand_mode' },
   { title: 'cutoffDate', id: 'cutoff_date' },
-  { title: 'featured', id: 'featured' }
+  { title: 'featured', id: 'featured' },
+  { title: 'display', id: 'display' }
 ]
 
 const TeamStoresList = ({
@@ -61,7 +62,7 @@ const TeamStoresList = ({
   currentPage,
   data: { teamStoresList },
   onSortClick,
-  onSetFeatured,
+  onChangeSwitch,
   onChangePage,
   withPagination = true,
   withoutPadding = false,
@@ -111,7 +112,8 @@ const TeamStoresList = ({
         userLastName,
         onDemand,
         cutOffDateString,
-        shortId
+        shortId,
+        display
       }: TeamStoreAdminType,
       index: number
     ) => {
@@ -127,9 +129,10 @@ const TeamStoresList = ({
             onDemand,
             formatMessage,
             cutOffDateString,
-            onSetFeatured,
+            onChangeSwitch,
             onClickRow,
-            shortId
+            shortId,
+            display
           }}
         />
       )

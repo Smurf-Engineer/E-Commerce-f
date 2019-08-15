@@ -73,13 +73,6 @@ export class SearchTeamstores extends React.Component<Props, {}> {
       return <Redirect to={DEFAULT_ROUTE} />
     }
 
-    if (
-      typeof window !== 'undefined' &&
-      !JSON.parse(localStorage.getItem('user') as string)
-    ) {
-      return <Redirect to="/us?lang=en&currency=usd" />
-    }
-
     return (
       <Layout teamStoresHeader={true} {...{ intl, history }}>
         <Container>

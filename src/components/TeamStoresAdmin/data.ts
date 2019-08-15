@@ -17,6 +17,7 @@ export const setTeamStoreFeaturedMutation = graphql(
         userFirstName: first_name
         userLastName: last_name
         cutOffDateString
+        display
       }
     }
   `,
@@ -35,5 +36,26 @@ export const setTeamStorePricesMutation = graphql(
   `,
   {
     name: 'setTeamStorePrices'
+  }
+)
+
+export const setTeamStoreDisplayMutation = graphql(
+  gql`
+    mutation setTeamStoreDisplay($id: Int!) {
+      displayTeamStore: setDisplayTeamStore(id: $id) {
+        id
+        shortId: short_id
+        name
+        featured
+        onDemand: on_demand_mode
+        userFirstName: first_name
+        userLastName: last_name
+        cutOffDateString
+        display
+      }
+    }
+  `,
+  {
+    name: 'setTeamStoreDisplay'
   }
 )

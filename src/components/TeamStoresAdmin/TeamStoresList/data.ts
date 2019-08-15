@@ -31,6 +31,7 @@ export const GetTeamStoresQuery = gql`
         userFirstName: first_name
         userLastName: last_name
         cutOffDateString
+        display
       }
     }
   }

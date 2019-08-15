@@ -280,6 +280,7 @@ export type TeamStoreAdminType = {
   onDemand: boolean
   cutOffDateString: string
   shortId: string
+  display: boolean
 }
 
 export type DateObjectType = {
