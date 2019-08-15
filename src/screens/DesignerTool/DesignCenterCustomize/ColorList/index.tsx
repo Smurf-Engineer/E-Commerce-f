@@ -64,8 +64,6 @@ const ColorList = ({
       regularColors.push(node)
     }
   })
-  console.log(fluorescentColors)
-  console.log(regularColors)
   return (
     <Container>
       <Row>{regularColors.length && regularColors}</Row>

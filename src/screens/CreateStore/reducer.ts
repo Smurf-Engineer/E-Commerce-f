@@ -23,8 +23,9 @@ import {
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
-  OPEN_MODAL,
-  SET_TEAM_STORE_STATUS
+  SET_TEAM_STORE_STATUS,
+  SET_PAGINATION_DATA,
+  OPEN_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -40,12 +41,15 @@ export const initialState = fromJS({
   onDemand: true,
   passCode: '',
   openLocker: false,
-  selectedItems: {},
+  selectedItems: [],
   items: [],
   loading: true,
   open: false,
   banner: '',
-  showTeamStores: null
+  showTeamStores: null,
+  limit: 12,
+  offset: 0,
+  currentPage: 1
 })
 
 const createStoreReducer: Reducer<any> = (state = initialState, action) => {
@@ -88,9 +92,13 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case UPDATE_PASS_CODE_ACTION:
       return state.set('passCode', action.code)
     case SET_OPEN_LOCKER_ACTION:
-      return state.set('openLocker', action.isOpen)
-    case SET_ITEM_SELECTED_ACTION:
-      return state.setIn(['selectedItems', action.id], action.checked)
+      return state.merge({ openLocker: action.isOpen, selectedItems: [] })
+    case SET_ITEM_SELECTED_ACTION: {
+      const selectedItems = state.get('selectedItems')
+      const addItem = selectedItems.push(action.item)
+      const itemsMap = addItem.map((item: any) => fromJS(item))
+      return state.merge({ selectedItems: itemsMap })
+    }
     case DELETE_ITEM_SELECTED_ACTION: {
       const { index } = action
       const selectedItems = state.get('items')
@@ -99,7 +107,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_ITEMS_ADD_ACTION: {
       const items = state.get('items')
-      const addItem = items.push(...action.items)
+      const selectedItems = state.get('selectedItems')
+      const addItem = items.push(...selectedItems)
       const itemsMap = addItem.map((item: any) => fromJS(item))
       return state.merge({
         items: itemsMap,
@@ -157,6 +166,13 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       return initialState
     case SET_TEAM_STORE_STATUS:
       return state.set('showTeamStores', action.show)
+    case SET_PAGINATION_DATA: {
+      return state.merge({
+        offset: action.offset,
+        currentPage: action.page,
+        loading: false
+      })
+    }
     default:
       return state
   }

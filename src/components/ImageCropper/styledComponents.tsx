@@ -4,9 +4,6 @@
 import styled from 'styled-components'
 import { BLUE } from '../../theme/colors'
 
-interface DivProps {
-  selected?: boolean
-}
 export const Text = styled.div`
   font-size: 11px;
   color: darkgray;
@@ -32,30 +29,6 @@ export const SaveButton = styled.div`
     color: ${BLUE};
     background: white;
   }
-`
-
-export const AspectSection = styled.div`
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  flex-flow: row;
-  font-size: 10px;
-  width: 100%;
-  justify-content: center;
-`
-
-export const AspectButton = styled.div`
-  max-width: 50px;
-  border: ${({ selected }: DivProps) =>
-    selected ? '1px solid black' : '1px solid transparent'};
-  margin-right: 8px;
-  width: 100%;
-  text-align: center;
-  border-radius: 3px;
-  padding: 1px 0;
-  color: black;
-  cursor: pointer;
-  background: #ffffff8c;
 `
 
 export const CropperContainer = styled.div`

@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'screens.CreateStore.title',
-    defaultMessage: 'Let’s build a team store!'
+    defaultMessage: 'Let’s build your team store!'
   },
   teamSizeTitle: {
     id: 'screens.CreateStore.teamSizeTitle',

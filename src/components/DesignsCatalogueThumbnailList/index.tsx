@@ -63,6 +63,7 @@ interface Props {
   targetRange?: Filter
   currentRange: Filter
   targetPrice: string
+  display?: boolean
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -77,7 +78,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       data,
       teamStoreShortId,
       designs,
-      featured,
+      display,
       onDemandMode,
       withoutPadding,
       targetRange,
@@ -119,7 +120,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                id={shortId}
+                id={product.id}
                 itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
@@ -133,7 +134,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                   />
                 }
                 labelButton={
-                  featured && (
+                  display && (
                     <AddToCartButton
                       label={formatMessage(messages.addToCart)}
                       renderForThumbnail={true}
