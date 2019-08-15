@@ -36,5 +36,9 @@ export default defineMessages({
   fixed: {
     id: 'components.TeamStoresList.fixed',
     defaultMessage: 'Fixed Date'
+  },
+  display: {
+    id: 'components.TeamStoresList.display',
+    defaultMessage: 'Display'
   }
 })

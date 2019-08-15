@@ -11,7 +11,8 @@ import message from 'antd/lib/message'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
 import {
   setTeamStoreFeaturedMutation,
-  setTeamStorePricesMutation
+  setTeamStorePricesMutation,
+  setTeamStoreDisplayMutation
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import * as TeamStoresActions from './actions'
@@ -59,6 +60,7 @@ interface Props {
   getTeamStore: (query: any, teamStoreId: number) => void
   setTeamStorePrices: (variables: {}) => void
   setLoadingItemAction: (itemIndex: string, loading: boolean) => void
+  setTeamStoreDisplay: (variables: {}) => void
 }
 
 interface StateProps {
@@ -112,7 +114,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 onSortClick={this.handleOnSortClick}
                 onChangePage={this.handleOnChangePage}
                 interactiveHeaders={true}
-                onSetFeatured={this.handleOnSetFeatured}
+                onChangeSwitch={this.onChangeSwitch}
                 onClickRow={this.handleGoToTeamStore}
               />
             </Container>
@@ -193,6 +195,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       this.raiseSearchWhenUserStopsTyping()
     })
   }
+  onChangeSwitch = (id: number, fieldId: string) => {
+    fieldId === 'featured'
+      ? this.handleOnSetFeatured(id)
+      : this.handleOnSetDisplay(id)
+  }
   handleOnSetFeatured = async (id: number) => {
     const {
       setTeamStoreFeatured,
@@ -235,6 +242,48 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.unexpectedError))
     }
   }
+  handleOnSetDisplay = async (id: number) => {
+    const {
+      setTeamStoreDisplay,
+      orderBy,
+      sort,
+      searchText,
+      formatMessage,
+      currentPage = 0
+    } = this.props
+    try {
+      const offset = (currentPage - 1) * TEAM_STORES_LIMIT
+
+      await setTeamStoreDisplay({
+        variables: { id },
+        update: (store: any) => {
+          const storedData = store.readQuery({
+            query: GetTeamStoresQuery,
+            variables: {
+              limit: TEAM_STORES_LIMIT,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            }
+          })
+          store.writeQuery({
+            query: GetTeamStoresQuery,
+            variables: {
+              limit: TEAM_STORES_LIMIT,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            },
+            data: storedData
+          })
+        }
+      })
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => state.get('teamStoresAdmin').toJS()
@@ -242,6 +291,7 @@ const mapStateToProps = (state: any) => state.get('teamStoresAdmin').toJS()
 const TeamStoresAdminEnhance = compose(
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
+  setTeamStoreDisplayMutation,
   withApollo,
   connect(
     mapStateToProps,
