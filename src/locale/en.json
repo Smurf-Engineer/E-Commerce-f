@@ -222,7 +222,7 @@
   "screens.teamstoreProductPage.forEstimatePriceLabel": "Your team needs {quantity} more pcs till target pricing reach",
   "screens.teamstoreProductPage.gotItLabel": "Got it!",
   "screens.teamstoreProductPage.relatedProductsLabel": "Related Products",
-  "screens.CreateStore.title": "Let’s build a team store!",
+  "screens.CreateStore.title": "Let’s build your team store!",
   "screens.CreateStore.teamSizeTitle": "Estimated Team Size",
   "screens.CreateStore.teamSizeMessage": "Select estimated size of your team to display the estimated (target) pricing for each item.",
   "screens.CreateStore.priceDropTitle": "DYNAMIC PRICE DROP",
