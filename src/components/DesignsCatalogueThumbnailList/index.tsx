@@ -50,7 +50,6 @@ interface Props {
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
-  featured: boolean
   sortByLabel: string
   data: Data
   history: any
