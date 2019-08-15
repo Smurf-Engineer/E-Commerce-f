@@ -211,7 +211,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               <PriceQuantity
                 {...{ index, price, symbol }}
                 quantity={
-                  teamStoreItem ? formatMessage(messages.teamPrice) : quantity
+                  teamStoreItem && teamPrice
+                    ? formatMessage(messages.teamPrice)
+                    : quantity
                 }
               />
             </AvailablePrices>
