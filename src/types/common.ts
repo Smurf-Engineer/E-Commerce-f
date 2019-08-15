@@ -31,7 +31,6 @@ export interface DesignSaved {
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
-
 export interface Action {
   type: string
 }
@@ -282,6 +281,7 @@ export type TeamStoreAdminType = {
   onDemand: boolean
   cutOffDateString: string
   shortId: string
+  display: boolean
 }
 
 export type DateObjectType = {
@@ -1364,6 +1364,11 @@ export interface HomepageImagesType {
 export type Color = {
   name: string
   value: string
+}
+
+export interface SelectedDesignType {
+  design: DesignType
+  visible: boolean
 }
 
 export type AspectRatio = {

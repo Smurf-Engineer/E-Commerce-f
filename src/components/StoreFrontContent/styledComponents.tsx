@@ -210,8 +210,9 @@ export const DefaultButton = styled(AntdButton)`
 `
 
 export const ImageBanner = styled.img`
-  height: 30%;
   max-height: 300px;
+  max-width: 1452px;
+  margin: 0 auto;
   width: 100%;
   object-fit: cover;
 `

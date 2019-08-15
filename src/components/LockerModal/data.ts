@@ -1,11 +1,11 @@
 /**
- * Locker queries
+ * CreateStore queries
  */
 import gql from 'graphql-tag'
 
 export const desginsQuery = gql`
-  query GetDesigns {
-    pagination: myDesigns {
+  query GetDesigns($limit: Int, $offset: Int) {
+    designsResult: myDesigns(limit: $limit, offset: $offset) {
       fullCount
       designs {
         id

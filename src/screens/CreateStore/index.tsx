@@ -12,6 +12,7 @@ import get from 'lodash/get'
 import Button from 'antd/lib/button'
 import Spin from 'antd/lib/spin'
 import { DEFAULT_ROUTE } from '../../constants'
+import * as thunkActions from './thunkActions'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
 import message from 'antd/lib/message'
@@ -30,12 +31,12 @@ import {
   updateStoreMutation
 } from './data'
 import {
-  DesignType,
   SelectedItem,
   TeamstoreType,
   QueryProps,
   DesignResultType,
-  LockerTableType
+  LockerTableType,
+  DesignType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -92,6 +93,9 @@ interface Props extends RouteComponentProps<any> {
   storeId: number
   showTeamStores: boolean
   currentCurrency: string
+  limit: number
+  offset: number
+  currentPage: number
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -101,9 +105,9 @@ interface Props extends RouteComponentProps<any> {
   updateOnDemandAction: (active: boolean) => void
   updatePassCodeAction: (code: string) => void
   setOpenLockerAction: (open: boolean) => void
-  setItemSelectedAction: (id: number, checked: boolean) => void
+  setItemSelectedAction: (item: DesignType, checked: boolean) => void
   deleteItemSelectedAction: (index: number) => void
-  setItemsAddAction: (items: DesignType[]) => void
+  setItemsAddAction: () => void
   openQuickViewAction: (
     id: number,
     yotpoId: string,
@@ -119,6 +123,7 @@ interface Props extends RouteComponentProps<any> {
   clearDataAction: () => void
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
+  setPaginationData: (offset: number, page: number) => void
 }
 
 interface StateProps {
@@ -233,6 +238,30 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const { storeId } = queryString.parse(search)
 
     return storeId
+  }
+
+  changePage = (pageParam: number = 1) => {
+    const { limit } = this.props
+    const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
+    const {
+      offset: offsetProp,
+      currentPage: pageProp,
+      setPaginationData
+    } = this.props
+    let offset = offsetParam !== undefined ? offsetParam : offsetProp
+    let currentPage = pageParam !== undefined ? pageParam : pageProp
+
+    if (!offsetParam && !pageParam) {
+      const fullPage = !(offset % limit)
+      const maxPageNumber = offset / limit
+
+      if (fullPage && currentPage > maxPageNumber) {
+        currentPage--
+        offset = currentPage > 1 ? (currentPage - 1) * limit : 0
+      }
+    }
+
+    setPaginationData(offset, currentPage)
   }
 
   clearState = () => {
@@ -388,7 +417,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
     setTeamStoreStatusAction(
       get(response, 'data.getTeamStoreStatus.showTeamStores', false)
     )
-
     if (storeId) {
       query({
         query: GetTeamStoreQuery,
@@ -446,7 +474,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       banner,
       location: { search },
       showTeamStores,
-      currentCurrency
+      currentCurrency,
+      currentPage,
+      limit,
+      offset
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -657,12 +688,19 @@ export class CreateStore extends React.Component<Props, StateProps> {
               </ButtonBuildStyle>
             )}
             <LockerModal
-              {...{ selectedItems, tableItems }}
+              {...{
+                selectedItems,
+                tableItems,
+                currentPage,
+                limit,
+                offset
+              }}
               visible={openLocker}
               onRequestClose={this.handleOnCloseLocker}
               onSelectItem={setItemSelectedAction}
               onUnselectItem={deleteItemSelectedAction}
               onAddItems={setItemsAddAction}
+              changePage={this.changePage}
             />
             <ImageCropper
               {...{ formatMessage, open }}
@@ -691,7 +729,7 @@ const CreateStoreEnhance = compose(
   getTeamStoreStatus,
   connect(
     mapStateToProps,
-    { ...createStoreActions }
+    { ...createStoreActions, ...thunkActions }
   )
 )(CreateStore)
 
