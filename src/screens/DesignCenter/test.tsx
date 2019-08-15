@@ -362,13 +362,9 @@ describe(' DesignCenter Screen', () => {
     })
 
     describe('SET_PALETTE_ACTION', () => {
-      it('Should not have undefined initial value', () => {
-        const palettes = initialState.get('palettes')
-        expect(palettes).toBeDefined()
-      })
-
-      it('Should Update palettes colors correctly', () => {
-        const palettesTest: Palette[] = [
+      let palettesTest: Palette[]
+      beforeEach(() => {
+        palettesTest = [
           {
             name: 'My Palette',
             colors: ['#000000', '#000000', '#111111', '#FF2GG2', '#FFFFFF']
@@ -378,7 +374,14 @@ describe(' DesignCenter Screen', () => {
             colors: ['#000000', '#000000', '#111111', '#FF2GG2', '#FFFFFF']
           }
         ]
+      })
 
+      it('Should not have undefined initial value', () => {
+        const palettes = initialState.get('palettes')
+        expect(palettes).toBeDefined()
+      })
+
+      it('Should Update palettes colors correctly', () => {
         const state = designCenterReducer(
           initialState,
           setPalettesAction(palettesTest)
@@ -388,16 +391,6 @@ describe(' DesignCenter Screen', () => {
       })
 
       it('Should not update palettes to undefined', () => {
-        const palettesTest: Palette[] = [
-          {
-            name: 'My Palette',
-            colors: ['#000000', '#000000', '#111111', '#FF2GG2', '#FFFFFF']
-          },
-          {
-            name: 'Second palette',
-            colors: ['#000000', '#000000', '#111111', '#FF2GG2', '#FFFFFF']
-          }
-        ]
         const state = designCenterReducer(
           initialState,
           setPalettesAction(palettesTest)
