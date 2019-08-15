@@ -66,6 +66,12 @@ export const GetTeamStoreQuery = gql`
         visible
         design_id
         totalOrders
+        priceRange {
+          price
+          shortName: short_name
+          quantity
+          abbreviation
+        }
         design {
           id
           code

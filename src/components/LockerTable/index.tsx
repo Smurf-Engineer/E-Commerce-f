@@ -12,12 +12,14 @@ import {
   MobileEmtpytable
 } from './styledComponents'
 import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import MediaQuery from 'react-responsive'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import { PriceRange, LockerTableType } from '../../types/common'
 import Product from './ProductRow'
+import config from '../../config/index'
 
 interface Header {
   message: string
@@ -26,10 +28,7 @@ interface Header {
 
 const headerTitles: Header[] = [
   { message: '', width: 40 },
-  { message: 'starting' },
-  { message: 'target' },
-  { message: 'orders' },
-  { message: 'current' },
+  { message: 'fixedPrice', width: 10 },
   { message: 'visible', width: 20 }
 ]
 
@@ -37,6 +36,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   items: LockerTableType[]
   teamSizeRange: string
+  currentCurrency?: string
   onPressDelete: (index: number) => void
   onPressQuickView: (
     id: number,
@@ -66,7 +66,8 @@ class LockerTable extends React.PureComponent<Props, {}> {
       onPressDelete,
       onPressQuickView,
       onPressVisible,
-      teamSizeRange
+      teamSizeRange,
+      currentCurrency = config.defaultCurrency
     } = this.props
 
     const header = (
@@ -89,7 +90,10 @@ class LockerTable extends React.PureComponent<Props, {}> {
     )
 
     const itemsSelected = items.map(
-      ({ design, visible, totalOrders }: LockerTableType, index) => {
+      (
+        { design, visible, totalOrders, priceRange }: LockerTableType,
+        index
+      ) => {
         const name = get(design, 'name')
         const product = get(design, 'product')
         const pricesArray = get(product, 'priceRange')
@@ -101,6 +105,11 @@ class LockerTable extends React.PureComponent<Props, {}> {
         const productId = get(product, 'id')
         const yotpoId = get(product, 'yotpoId')
         const type = get(product, 'type')
+
+        const fixedPrice =
+          priceRange && priceRange.length
+            ? get(find(priceRange, ['abbreviation', currentCurrency]), 'price')
+            : startingPrice
         return (
           <Product
             {...{
@@ -109,7 +118,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
               name,
               description,
               productId,
-              startingPrice,
+              fixedPrice,
               targetPrice,
               onPressDelete,
               onPressQuickView,

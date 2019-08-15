@@ -42,6 +42,7 @@ export const HeaderRow = styled.div`
   border-bottom-color: #8c8c8c;
   border-bottom-style: solid;
   padding-bottom: 4px;
+  align-items: center;
 `
 
 export const Column = styled.td`

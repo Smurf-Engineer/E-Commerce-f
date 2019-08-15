@@ -33,6 +33,7 @@ interface Props extends RouteComponentProps<any> {
   emailMessage: string
   sendMessageLoading: boolean
   showTeamStores: boolean
+  currentCurrency: string
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -103,7 +104,8 @@ export class StoreFront extends React.Component<Props, {}> {
       openEmailContactDialogAction,
       openShareModalAction,
       openPassCodeDialogAction,
-      showTeamStores
+      showTeamStores,
+      currentCurrency
     } = this.props
 
     const {
@@ -136,7 +138,7 @@ export class StoreFront extends React.Component<Props, {}> {
             setEmailMessageAction={setEmailMessageAction}
             sendMessageLoadingAction={sendMessageLoadingAction}
             setPassCodeAction={setPassCodeAction}
-            {...{ history }}
+            {...{ history, currentCurrency }}
           />
         </Container>
       </TeamsLayout>
@@ -144,7 +146,11 @@ export class StoreFront extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('storeFront').toJS()
+const mapStateToProps = (state: any) => {
+  const storeFrontPops = state.get('storeFront').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return { ...storeFrontPops, ...langProps }
+}
 
 const StoreFrontEnhance = compose(
   injectIntl,

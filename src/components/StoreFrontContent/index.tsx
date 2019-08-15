@@ -88,6 +88,7 @@ interface Props {
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
+  currentCurrency: string
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
@@ -181,7 +182,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       setEmailMessageAction,
       sendMessageLoading,
       sendMessageLoadingAction,
-      setPassCodeAction
+      setPassCodeAction,
+      currentCurrency
     } = this.props
     const { showMuch, showCani, showLong, showWhen, showReturn } = this.state
 
@@ -422,6 +424,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                       targetRange,
                       formatMessage,
                       onDemandMode,
+                      featured,
+                      currentCurrency,
                       display
                     }}
                     withoutPadding={false}
