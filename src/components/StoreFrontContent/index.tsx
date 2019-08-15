@@ -424,7 +424,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                       targetRange,
                       formatMessage,
                       onDemandMode,
-                      featured,
                       currentCurrency,
                       display
                     }}
