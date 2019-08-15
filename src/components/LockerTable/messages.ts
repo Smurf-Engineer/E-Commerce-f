@@ -34,5 +34,9 @@ export default defineMessages({
     id: 'components.LockerTable.cannotDelete',
     defaultMessage:
       'During the ordering period, you cannot delete items with orders.'
+  },
+  fixedPrice: {
+    id: 'components.LockerTable.fixedPrice',
+    defaultMessage: 'Fixed Price'
   }
 })

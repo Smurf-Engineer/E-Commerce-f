@@ -43,6 +43,12 @@ export const getSingleTeamStore = gql`
       items {
         expected_quantity
         visible
+        priceRange {
+          price
+          shortName: short_name
+          quantity
+          abbreviation
+        }
         design {
           id
           code
