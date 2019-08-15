@@ -185,7 +185,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag.replace(/_/, ' ')
     const priceRange =
-      teamStoreItem && teamPrice ? teamPrice : product.priceRange
+      teamStoreItem && teamPrice.length ? teamPrice : product.priceRange
     const currencyPrices =
       product &&
       filter(priceRange, {
@@ -211,7 +211,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               <PriceQuantity
                 {...{ index, price, symbol }}
                 quantity={
-                  teamStoreItem && teamPrice
+                  teamStoreItem && teamPrice.length
                     ? formatMessage(messages.teamPrice)
                     : quantity
                 }
