@@ -427,7 +427,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
                   {!teamStoreItem && (
-                    <React.Fragment>
+                    <>
                       {!proDesign ? (
                         <EditDesignButton
                           onClick={this.gotToEditDesign(designId)}
@@ -441,7 +441,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                           </ProApprovedLabel>
                         </ProApproved>
                       )}
-                    </React.Fragment>
+                    </>
                   )}
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>

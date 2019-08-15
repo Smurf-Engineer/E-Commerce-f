@@ -127,8 +127,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       myLockerList,
       designId
     } = this.props
-    if (teamStoreShortId) {
-      return `/custom-product?${id && `id=${id}`}${itemId && `&item=${itemId}`}`
+    if (teamStoreShortId && id) {
+      return `/custom-product?id=${id}${itemId && `&item=${itemId}`}`
     }
     if (myLockerList) {
       return `/custom-product?${designId && `id=${designId}`}`
