@@ -9,6 +9,7 @@ export const GetDesignByIdQuery = gql`
       id
       name
       shortId: short_id
+      teamEnable: team_enable
       teamPrice: team_price {
         abbreviation
         shortName: short_name

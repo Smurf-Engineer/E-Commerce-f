@@ -161,6 +161,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
     const teamPrice = get(design, 'teamPrice', '')
+    const teamEnable = get(design, 'teamEnable', '')
     const proDesign = get(design, 'proDesign', false)
     const {
       images: imagesArray,
@@ -183,7 +184,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag.replace(/_/, ' ')
-    const priceRange = teamStoreItem ? teamPrice : product.priceRange
+    const priceRange =
+      teamStoreItem && teamPrice ? teamPrice : product.priceRange
     const currencyPrices =
       product &&
       filter(priceRange, {
@@ -455,7 +457,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <BannerMaterial src={banner.url} />
                   ))}
                 </BannerMaterialSection>
-                {collectionSelection}
+                {((teamStoreItem && teamEnable) || !teamStoreItem) &&
+                  collectionSelection}
                 {productInfo}
               </ProductData>
               <FitInfo
