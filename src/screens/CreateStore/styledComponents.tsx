@@ -68,6 +68,7 @@ export const Icon = styled.img`
 
 export const PreviewImage = styled.img`
   width: 100%;
+  max-width: 1452px;
   max-height: 300px;
   object-fit: cover;
   margin: 0 auto;
