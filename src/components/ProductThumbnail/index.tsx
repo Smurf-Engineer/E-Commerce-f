@@ -118,16 +118,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   getUrlProduct = () => {
-    const {
-      id,
-      yotpoId,
-      teamStoreShortId,
-      gender,
-      itemId,
-      myLockerList,
-      designId
-    } = this.props
-    if (teamStoreShortId && id) {
+    const { id, yotpoId, gender, itemId, myLockerList, designId } = this.props
+    if (id && itemId) {
       return `/custom-product?id=${id}${itemId && `&item=${itemId}`}`
     }
     if (myLockerList) {
