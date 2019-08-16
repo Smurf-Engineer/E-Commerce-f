@@ -100,7 +100,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           {
             design: { id, shortId, name, product, image, code },
             totalOrders,
-            priceRange
+            priceRange,
+            short_id: itemShortId
           },
           index
         ) => {
@@ -128,6 +129,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={product.id}
+                designId={shortId}
+                itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
                 footer={
