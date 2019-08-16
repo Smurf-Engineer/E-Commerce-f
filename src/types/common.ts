@@ -103,7 +103,7 @@ export interface Product {
   code: string
   shortId?: string
   images: ImageType[]
-
+  contentTile?: string
   type: string
   material_banner?: string
   pictures?: any[]
@@ -207,7 +207,6 @@ export type TeamStoreItemtype = {
   team_store_id: number
   design_id: string
   design: DesignType
-  short_id: string
   expected_quantity: number
   visible: boolean
   totalOrders: number
