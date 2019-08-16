@@ -70,7 +70,7 @@ describe(' DesignCenter Screen', () => {
         expect(swipingView).toBeFalsy()
       })
 
-      it('Handles customize3dMpunted initial value', () => {
+      it('Handles customize3dMounted initial value', () => {
         const customized3dMounted = initialState.get('customize3dMounted')
         expect(customized3dMounted).toBeFalsy()
       })
