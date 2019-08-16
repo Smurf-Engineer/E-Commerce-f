@@ -26,6 +26,7 @@ export interface DesignSaved {
   bindingColor?: string
   bibBraceColor?: string
   zipperColor?: string
+  colors?: string[]
 }
 
 export interface SelectedItem {
@@ -1351,6 +1352,48 @@ export interface HomepageImagesType {
   desktopImage: string
   mobileImage: string
   url: string
+}
+
+export interface YoutubePlaylistItemType {
+  contentDetails: YoutubeItemContentDetailsType
+  etag: string
+  id: string
+  kind: string
+  snippet: YoutubeItemSnippetType
+}
+
+export interface YoutubeItemContentDetailsType {
+  videoId: string
+  videoPublishedAt: string
+}
+
+export interface YoutubeItemSnippetType {
+  title: string
+  channelId: string
+  channelTitle: string
+  description: string
+  playlistId: string
+  position: number
+  publishedAt: string
+  resourceId: YoutubeItemResourceIdType
+  thumbnails: YoutubeItemThumbnailsType
+}
+
+export interface YoutubeItemResourceIdType {
+  kind: string
+  videoId: string
+}
+
+export interface YoutubeItemThumbnailsType {
+  default: YoutubeThumbnailsPropsType
+  high: YoutubeThumbnailsPropsType
+  medium: YoutubeThumbnailsPropsType
+}
+
+export interface YoutubeThumbnailsPropsType {
+  height: number
+  url: string
+  width: number
 }
 
 export type Color = {
