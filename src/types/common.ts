@@ -103,7 +103,7 @@ export interface Product {
   code: string
   shortId?: string
   images: ImageType[]
-  contentTile?: string
+
   type: string
   material_banner?: string
   pictures?: any[]
@@ -590,6 +590,7 @@ export interface CartItems {
   zipperColor?: string
   bindingColor?: string
   flatlock?: string
+  fixedPrices: PriceRange[]
 }
 
 export interface CreditCardData {

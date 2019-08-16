@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
 import find from 'lodash/find'
+import get from 'lodash/get'
 import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
 import FitInfo from '../../components/FitInfo'
@@ -47,7 +48,8 @@ import {
   Product,
   CartItemDetail,
   ItemDetailType,
-  ProductColors
+  ProductColors,
+  PriceRange
 } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
 import CustomModal from '../../components/Common/JakrooModal'
@@ -63,6 +65,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   teamStoreId?: string
+  fixedPrices: PriceRange[]
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -301,6 +304,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       currentCurrency || config.defaultCurrency
     )
+    console.log('Shoppingcart data ', shoppingCartData)
     const {
       total,
       totalWithoutDiscount,
@@ -318,9 +322,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       if (!this.isAllSetInProduct(cartItem)) {
         activeCheckout = false
       }
-
+      const productPriceRanges = get(
+        cartItem,
+        cartItem.fixedPrices.length ? 'fixedPrices' : 'product.priceRange',
+        []
+      )
       // get prices from currency
-      const currencyPrices = filter(cartItem.product.priceRange, {
+      const currencyPrices = filter(productPriceRanges, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
 

@@ -70,7 +70,8 @@ export class OrderSummary extends React.Component<Props, {}> {
     } = this.props
 
     const symbol = currencySymbol || '$'
-
+    console.log('Total sum ', totalSum)
+    console.log('Sub total ', subtotal)
     const netTotal =
       totalSum ||
       subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
