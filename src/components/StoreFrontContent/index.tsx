@@ -226,7 +226,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     }store-front?storeId=${teamStoreShortId}`
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
-
     // TODO: uncomment if return to old method
     // const maxValueOfY = items.length
     //   ? Math.max(...items.map(o => o.totalOrders))
@@ -432,7 +431,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     designs={items}
                     teamStoreShortId={teamStoreShortId}
                     targentPrice={targetRange.name}
-                    currentRange={markslider}
+                    currentRange={priceRanges[1]}
                   />
                 </ListContainer>
               </div>
