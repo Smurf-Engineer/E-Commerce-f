@@ -304,7 +304,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       currentCurrency || config.defaultCurrency
     )
-    console.log('Shoppingcart data ', shoppingCartData)
     const {
       total,
       totalWithoutDiscount,

@@ -113,7 +113,6 @@ export const getShoppingCartData = (
               !cartItem.teamStoreId ? currencyPrices.length - 1 : teamStoreRange
             ]
           : priceRange
-      console.log('PRR', priceRange)
       // increase the total
       totalSum = totalSum + priceRange.price * quantitySum
     })
