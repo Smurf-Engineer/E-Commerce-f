@@ -13,10 +13,10 @@ import {
   Bottom,
   Label,
   PricesContainer,
-  PriceLabel,
   BluePriceLabel,
   ProgressWrapper,
-  ProgressText
+  ProgressText,
+  BottomPrices
 } from './styledComponents'
 
 interface Props {
@@ -49,22 +49,23 @@ const FooterThumbnailTeamStore = ({
     <Footer>
       <Type>{name}</Type>
       <Description>{description}</Description>
-      {!onDemandMode && (
+      <BottomPrices>
         <PricesContainer>
           <Label>
-            <FormattedMessage {...messages.estimatedPrice} />
+            <FormattedMessage {...messages.regularPrice} />
           </Label>
-          <PriceLabel>{`$${targetPrice}`}</PriceLabel>
+          <BluePriceLabel>{`$${targetPrice}`}</BluePriceLabel>
         </PricesContainer>
-      )}
-      <PricesContainer>
-        <Label>
-          <FormattedMessage
-            {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
-          />
-        </Label>
-        <BluePriceLabel>{`$${currentPrice}`}</BluePriceLabel>
-      </PricesContainer>
+        <PricesContainer>
+          <Label>
+            <FormattedMessage
+              {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
+            />
+          </Label>
+          <BluePriceLabel>{`$${currentPrice}`}</BluePriceLabel>
+        </PricesContainer>
+      </BottomPrices>
+
       {!onDemandMode && (
         <Bottom>
           <ProgressWrapper>

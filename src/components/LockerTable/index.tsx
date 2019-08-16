@@ -13,6 +13,7 @@ import {
 } from './styledComponents'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
+import filter from 'lodash/filter'
 import MediaQuery from 'react-responsive'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -28,6 +29,7 @@ interface Header {
 
 const headerTitles: Header[] = [
   { message: '', width: 40 },
+  { message: 'regularPrice', width: 10 },
   { message: 'fixedPrice', width: 10 },
   { message: 'visible', width: 20 }
 ]
@@ -96,7 +98,10 @@ class LockerTable extends React.PureComponent<Props, {}> {
       ) => {
         const name = get(design, 'name')
         const product = get(design, 'product')
-        const pricesArray = get(product, 'priceRange')
+        const productPrices = get(product, 'priceRange')
+        const pricesArray = filter(productPrices, {
+          abbreviation: currentCurrency || config.defaultCurrency
+        })
         const startingPrice = this.getTierPrice(pricesArray)
         const targetPrice = this.getTierPrice(pricesArray, teamSizeRange)
         const image = get(design, 'image')
@@ -105,7 +110,13 @@ class LockerTable extends React.PureComponent<Props, {}> {
         const productId = get(product, 'id')
         const yotpoId = get(product, 'yotpoId')
         const type = get(product, 'type')
-
+        const regularPrice = get(
+          find(pricesArray, {
+            quantity: 'Personal'
+          }),
+          'price',
+          0
+        )
         const fixedPrice =
           priceRange && priceRange.length
             ? get(find(priceRange, ['abbreviation', currentCurrency]), 'price')
@@ -119,6 +130,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
               description,
               productId,
               fixedPrice,
+              regularPrice,
               targetPrice,
               onPressDelete,
               onPressQuickView,

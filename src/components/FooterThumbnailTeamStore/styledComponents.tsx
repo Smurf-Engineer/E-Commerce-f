@@ -96,6 +96,11 @@ export const Private = styled.span`
   font-size: 12px;
   line-height: 16px;
 `
+export const BottomPrices = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
 
 export const PricesContainer = styled.div`
   display: flex;

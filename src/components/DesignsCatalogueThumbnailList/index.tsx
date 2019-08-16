@@ -106,7 +106,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           index
         ) => {
           const targetPriceValue: any = targetRange
-            ? find(product.priceRange, { quantity: targetRange.name }) || {
+            ? find(product.priceRange, {
+                quantity: targetRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
+              }) || {
                 price: 0
               }
             : { price: 0 }
@@ -114,7 +117,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
                 quantity:
-                  currentRange.name === '0-0' ? 'Personal' : currentRange.name
+                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
               }) || {
                 price: 0
               }
