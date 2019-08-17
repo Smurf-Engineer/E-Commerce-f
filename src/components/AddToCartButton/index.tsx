@@ -18,7 +18,7 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
-import { Product, CartItemDetail, Currency } from '../../types/common'
+import { Product, CartItemDetail, PriceRange } from '../../types/common'
 
 interface CartItems {
   product: Product
@@ -48,7 +48,7 @@ interface Props {
   onClick: () => boolean
   myLockerList?: boolean
   orderDetails?: boolean
-  fixedPrices?: Currency[]
+  fixedPrices?: PriceRange[]
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -180,7 +180,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     designImage = '',
     designCode = '',
     itemProdPage: boolean,
-    fixedPrices: Currency[]
+    fixedPrices: PriceRange[]
   ) => {
     const details = [] as CartItemDetail[]
     const detail = {

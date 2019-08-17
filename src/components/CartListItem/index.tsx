@@ -101,7 +101,7 @@ interface Props {
 export class CartListItem extends React.Component<Props, {}> {
   getQuantity = (priceRange: PriceRange) => {
     let val = 0
-    if (priceRange.quantity === 'Personal') {
+    if (priceRange && priceRange.quantity === 'Personal') {
       val = 1
     } else if (priceRange.quantity) {
       val = parseInt(priceRange.quantity.split('-')[0], 10)
@@ -112,7 +112,7 @@ export class CartListItem extends React.Component<Props, {}> {
   getPriceRange(priceRanges: PriceRange[], totalItems: number) {
     const { price } = this.props
     let markslider = { quantity: '0', price: 0 }
-    if (price.quantity !== 'Personal') {
+    if (price && price.quantity !== 'Personal') {
       markslider = price
     } else {
       for (const priceRangeItem of priceRanges) {
@@ -134,7 +134,8 @@ export class CartListItem extends React.Component<Props, {}> {
     const priceRange = priceRanges[priceRanges.length - 1]
     let markslider = { items: 1, price: priceRange ? priceRange.price : 0 }
     const { price } = this.props
-    if (price.quantity !== 'Personal') {
+
+    if (price && price.quantity !== 'Personal') {
       let priceIndex = findIndex(
         priceRanges,
         pr => pr.quantity === price.quantity
@@ -215,7 +216,13 @@ export class CartListItem extends React.Component<Props, {}> {
       openFitInfo
     } = this.props
 
-    const { designId, designName, designImage, designCode } = cartItem
+    const {
+      designId,
+      designName,
+      designImage,
+      designCode,
+      fixedPrices = []
+    } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
@@ -223,7 +230,11 @@ export class CartListItem extends React.Component<Props, {}> {
 
     const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
-    const productPriceRanges = get(cartItem, 'product.priceRange', [])
+    const productPriceRanges = get(
+      cartItem,
+      fixedPrices.length ? 'fixedPrices' : 'product.priceRange',
+      []
+    )
     const mpnCode = get(cartItem, 'product.mpn', '')
 
     // get prices from currency
@@ -243,7 +254,6 @@ export class CartListItem extends React.Component<Props, {}> {
       : unitPrice || 0 * quantitySum
     const total = productTotal || itemTotal
     const unitaryPrice = unitPrice || get(priceRange, 'price')
-
     const nextPrice = currencyPrices.length
       ? this.getNextPrice(currencyPrices, quantitySum)
       : { items: 0, price: 0 }

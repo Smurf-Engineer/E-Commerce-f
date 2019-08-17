@@ -159,6 +159,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const designId = queryParams.id
     const teamStoreItem = queryParams.item
+    const teamStoreShortId = queryParams.team
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
@@ -354,6 +355,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           item={itemToAdd}
           itemProdPage={true}
           withoutTop={true}
+          teamStoreId={teamStoreShortId}
+          fixedPrices={teamPrice}
           {...{ designId, designName, designImage }}
         />
       </ButtonsRow>

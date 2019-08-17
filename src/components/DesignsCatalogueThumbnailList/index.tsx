@@ -86,7 +86,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       currentRange,
       currentCurrency = config.defaultCurrency
     } = this.props
-
     let thumbnailsList
     let total = ''
     let sortOptions = null
@@ -123,7 +122,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 price: 0
               }
             : { price: 0 }
-
           const fixedPrice =
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
@@ -210,6 +208,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 onPressQuickView={this.handlePressQuickView}
                 collections={product.collections}
                 images={productImages}
+                teamStoreShortId={teamStoreShortId}
                 priceRange={product.priceRange}
               />
             </ThumbnailListItem>
