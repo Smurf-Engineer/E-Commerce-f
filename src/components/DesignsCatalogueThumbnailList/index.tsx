@@ -86,7 +86,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       currentRange,
       currentCurrency = config.defaultCurrency
     } = this.props
-
     let thumbnailsList
     let total = ''
     let sortOptions = null
@@ -114,12 +113,12 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
                 quantity:
-                  currentRange.name === '0-0' ? 'Personal' : currentRange.name
+                  currentRange.name === '0-0' ? 'Personal' : currentRange.name,
+                abbreviation: currentCurrency
               }) || {
                 price: 0
               }
             : { price: 0 }
-
           const fixedPrice =
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
