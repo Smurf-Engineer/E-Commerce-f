@@ -39,6 +39,7 @@ import {
   NoResultsFound
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
+import { GRAY_LIGHTEST } from '../../theme/colors'
 
 interface Data extends QueryProps {
   products: ProductType
@@ -131,6 +132,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={product.id}
+                backgroundColor={GRAY_LIGHTEST}
                 designId={shortId}
                 itemId={itemShortId}
                 product={product}
@@ -199,6 +201,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={product.id}
+                backgroundColor={GRAY_LIGHTEST}
                 yotpoId={product.yotpoId}
                 type={product.type}
                 product={product}
