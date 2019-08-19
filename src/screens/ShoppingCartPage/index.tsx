@@ -348,7 +348,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
               : cartItem.product.shortDescription
           }
-          price={currencyPrices[priceRangeToApply]}
+          price={
+            currencyPrices[
+              cartItem.teamStoreId && !priceRangeToApply ? 1 : priceRangeToApply
+            ]
+          }
           image={
             cartItem.designId
               ? cartItem.designImage || ''

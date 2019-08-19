@@ -236,7 +236,7 @@ export class CartListItem extends React.Component<Props, {}> {
       []
     )
     const mpnCode = get(cartItem, 'product.mpn', '')
-
+    const isTeamStore = get(cartItem, 'teamStoreId', '')
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
       abbreviation: currentCurrency || config.defaultCurrency
@@ -309,7 +309,7 @@ export class CartListItem extends React.Component<Props, {}> {
               unitaryPrice || 0
             ).toFixed(2)}`}
           </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && designId && nextPrice.items > 0 ? (
+          {!onlyRead && !isTeamStore && designId && nextPrice.items > 0 ? (
             <ItemDetailsHeaderPriceDetail highlighted={true}>
               <FormattedMessage
                 {...messages.addMoreFor}
