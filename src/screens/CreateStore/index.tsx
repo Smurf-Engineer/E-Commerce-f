@@ -598,9 +598,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
             >
               {`+ ${formatMessage(messages.addItem)}`}
             </AddItem>
-            <Subtitle>
-              <FormattedMessage {...messages.stock} />
-            </Subtitle>
             <LockerTable
               {...{ formatMessage, teamSizeRange, currentCurrency }}
               items={items}
