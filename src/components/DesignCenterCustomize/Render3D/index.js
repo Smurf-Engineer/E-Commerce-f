@@ -14,6 +14,7 @@ import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
+import checkBoxIcon from '../../../assets/Checkbox.svg'
 import notification from 'antd/lib/notification'
 import Checkbox from 'antd/lib/checkbox'
 import {
@@ -40,9 +41,9 @@ import {
   HintIcon,
   TurnOffHintRow,
   MobileContainer,
-  MobileButton,
-  MobileButtonWrapper,
-  MobileHintIcon
+  Icon,
+  MobileHintIcon,
+  DesignCheckButton
 } from './styledComponents'
 import {
   viewPositions,
@@ -1231,6 +1232,11 @@ class Render3D extends PureComponent {
     }
   }
 
+  handleOnDesignCheck = () => {
+    const { openDesignCheckModal } = this.props
+    openDesignCheckModal()
+  }
+
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
     const {
@@ -1341,6 +1347,10 @@ class Render3D extends PureComponent {
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </Row>
         <ButtonWrapper>
+          <DesignCheckButton onClick={this.handleOnDesignCheck}>
+            {formatMessage(messages.designCheck)}
+            <Icon src={checkBoxIcon} />
+          </DesignCheckButton>
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>

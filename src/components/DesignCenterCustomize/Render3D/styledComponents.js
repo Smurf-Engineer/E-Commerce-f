@@ -270,3 +270,14 @@ export const MobileHintIcon = styled.img`
   top: 62px;
   cursor: pointer;
 `
+
+export const DesignCheckButton = styled(AntdButton)`
+  height: 40px;
+  width: 138px;
+  display: flex;
+  align-items: center;
+`
+
+export const Icon = styled.img`
+  margin-left: 5px;
+`
