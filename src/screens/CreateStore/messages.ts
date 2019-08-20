@@ -40,9 +40,9 @@ export default defineMessages({
   },
   pricingCheckoutContent: {
     id: 'screens.CreateStore.pricingCheckoutContent',
-    defaultMessage: `With {onDemandTeam}, deafult pricing is fixed and
-    all members {discount}, Regardless of the quantity of the ordered. 
-    Additional discount may be availabe through seasonal promotional offers.
+    defaultMessage: `With {onDemandTeam}, default pricing is fixed and all members
+    {discount}, regardless of the quantity ordered. 
+    Additional discounts may be available through seasonal promotional offers.
     Each member will be able to individually place their order and checkout using their preferred payment method. 
     Orders are shipped directly to the member’s assignated shipping address.`
   },
