@@ -232,7 +232,7 @@ export class CartListItem extends React.Component<Props, {}> {
 
     const productPriceRanges = get(
       cartItem,
-      fixedPrices.length ? 'fixedPrices' : 'product.priceRange',
+      fixedPrices && fixedPrices.length ? 'fixedPrices' : 'product.priceRange',
       []
     )
     const mpnCode = get(cartItem, 'product.mpn', '')

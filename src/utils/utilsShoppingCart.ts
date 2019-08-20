@@ -53,7 +53,9 @@ export const getShoppingCartData = (
       // Check for fixed prices
       const productPriceRanges = get(
         cartItem,
-        cartItem.fixedPrices.length ? 'fixedPrices' : 'product.priceRange',
+        cartItem.fixedPrices && cartItem.fixedPrices.length
+          ? 'fixedPrices'
+          : 'product.priceRange',
         []
       )
       // get prices from currency
@@ -78,14 +80,17 @@ export const getShoppingCartData = (
     }
 
     shoppingCart.map(cartItem => {
-      const teamStoreRange = cartItem.fixedPrices.length ? 0 : 1
+      const teamStoreRange =
+        cartItem.fixedPrices && cartItem.fixedPrices.length ? 0 : 1
       const quantities = cartItem.itemDetails.map(itemDetail => {
         return itemDetail.quantity
       })
       const quantitySum = quantities.reduce((a, b) => a + b, 0)
       const productPriceRanges = get(
         cartItem,
-        cartItem.fixedPrices.length ? 'fixedPrices' : 'product.priceRange',
+        cartItem.fixedPrices && cartItem.fixedPrices.length
+          ? 'fixedPrices'
+          : 'product.priceRange',
         []
       )
 

@@ -120,7 +120,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       data: { design, error },
-      designsData: { myDesigns },
+      designsData,
       selectedGender,
       selectedSize,
       selectedFit,
@@ -138,11 +138,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const shortId = get(design, 'shortId', '')
     const product = get(design, 'product', null)
     const productPriceRange = get(product, 'priceRange', null)
-    const designs = get(myDesigns, 'designs', [] as DesignType[])
+    const teamStoreItem = queryParams.item
+    const designs = get(designsData, 'designs.myDesigns', [] as DesignType[])
 
-    const ownedDesign = designs && designs.find(d => d.shortId === shortId)
+    const ownedDesign =
+      !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
 
-    if (!product || error || (!shared && !ownedDesign)) {
+    if (!product || error || (!shared && !ownedDesign && !teamStoreItem)) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -158,7 +160,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
 
     const designId = queryParams.id
-    const teamStoreItem = queryParams.item
     const teamStoreShortId = queryParams.team
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
@@ -581,12 +582,17 @@ type OwnProps = {
 const CustomProductDetailEnhance = compose(
   injectIntl,
   graphql<any>(designsQuery, {
-    options: () => {
+    options: (ownprops: OwnProps) => {
+      const {
+        location: { search }
+      } = ownprops
+      const queryParams = queryString.parse(search)
       return {
         variables: {
           limit: 12,
           offset: 0
         },
+        skip: !!queryParams.item,
         fetchPolicy: 'network-only'
       }
     },
