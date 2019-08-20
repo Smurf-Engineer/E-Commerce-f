@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import Progress from 'antd/lib/progress'
 import messages from './messages'
 import { Filter } from '../../types/common'
+import { BLUE } from '../../theme/colors'
 import {
   Footer,
   Type,
@@ -13,7 +14,7 @@ import {
   Bottom,
   Label,
   PricesContainer,
-  BluePriceLabel,
+  PriceLabel,
   ProgressWrapper,
   ProgressText,
   BottomPrices
@@ -26,8 +27,8 @@ interface Props {
   progress: number
   targetRange?: Filter
   onDemandMode?: boolean
-  targetPrice: number
-  currentPrice: number
+  targetPrice: number | string
+  currentPrice: number | string
 }
 
 const FooterThumbnailTeamStore = ({
@@ -54,7 +55,7 @@ const FooterThumbnailTeamStore = ({
           <Label>
             <FormattedMessage {...messages.regularPrice} />
           </Label>
-          <BluePriceLabel>{`$${targetPrice}`}</BluePriceLabel>
+          <PriceLabel>{targetPrice}</PriceLabel>
         </PricesContainer>
         <PricesContainer>
           <Label>
@@ -62,7 +63,7 @@ const FooterThumbnailTeamStore = ({
               {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
             />
           </Label>
-          <BluePriceLabel>{`$${currentPrice}`}</BluePriceLabel>
+          <PriceLabel color={BLUE}>{currentPrice}</PriceLabel>
         </PricesContainer>
       </BottomPrices>
 

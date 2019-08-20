@@ -123,11 +123,16 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 price: 0
               }
             : { price: 0 }
-          const fixedPrice =
+          const fixedPriceValue =
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
               : currentPriceValue
-
+          const currentPrice = `${fixedPriceValue.shortName} ${
+            fixedPriceValue.price
+          }`
+          const targetPrice = `${targetPriceValue.shortName} ${
+            targetPriceValue.price
+          }`
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -139,11 +144,16 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 yotpoId={product.yotpoId}
                 footer={
                   <FooterThumbnailTeamStore
-                    {...{ id, name, targetRange, onDemandMode }}
+                    {...{
+                      id,
+                      name,
+                      targetRange,
+                      onDemandMode,
+                      targetPrice,
+                      currentPrice
+                    }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
-                    targetPrice={targetPriceValue.price}
-                    currentPrice={fixedPrice.price}
                   />
                 }
                 labelButton={
