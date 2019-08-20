@@ -60,8 +60,8 @@ export default defineMessages({
   },
   productionDeliveryContent: {
     id: 'screens.CreateStore.productionDeliveryContent',
-    defaultMessage: `Each order is treated individually and enters the production 
-    process upon receipt delivery is within {orderDays} of order placement (excluding Federal Holidays and weekends).
+    defaultMessage: `Each order is treated individually and enters the production process upon receip. 
+    Delivery is within {orderDays} of order placement (excluding Federal Holidays and weekends).
     All orders are shipped via {shippingCompany} with {signature} for the security of your order. 
     In some cases, an alternative carrier such as UPS may be used, based on the shipping address. Members will receive 
     a shipping notification once their order is picked up by the shipping carrier.`
