@@ -1,7 +1,7 @@
 /*
  * MainLayout ThunkActions
  */
-import { SET_USER_ACTION } from '../../store/constants'
+import { SET_USER_ACTION, SET_PRO_DESIGN } from '../../store/constants'
 
 export const restoreUserSession = () => {
   return async (dispatch: any) => {
@@ -35,6 +35,19 @@ export const saveUserSession = (user: object) => {
         localStorage.setItem('user', JSON.stringify(user))
       }
       dispatch({ type: SET_USER_ACTION, user })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+}
+
+export const getCheckDesign = () => {
+  return async (dispatch: any) => {
+    try {
+      if (typeof window !== 'undefined') {
+        const proDesign = JSON.parse(localStorage.getItem('checkDesign') || '')
+        dispatch({ type: SET_PRO_DESIGN, proDesign })
+      }
     } catch (e) {
       console.error(e)
     }

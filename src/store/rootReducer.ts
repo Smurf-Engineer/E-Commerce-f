@@ -54,7 +54,8 @@ import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
   SET_USER_AGENT_ACTION,
-  SET_COUNTRY_CODE
+  SET_COUNTRY_CODE,
+  SET_PRO_DESIGN
 } from './constants'
 
 export interface ReducersObject {
@@ -127,6 +128,8 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
       })
     case SET_COUNTRY_CODE:
       return state.set('initialCountryCode', action.country)
+    case SET_PRO_DESIGN:
+      return state.set('proDesign', action.proDesign)
     default:
       return state
   }

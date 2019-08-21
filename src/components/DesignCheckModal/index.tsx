@@ -22,7 +22,7 @@ interface Props {
   visible: boolean
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
-  handleContinue: () => void
+  handleActionButton: () => void
 }
 
 export class DesignCheckModal extends React.Component<Props, {}> {
@@ -32,15 +32,15 @@ export class DesignCheckModal extends React.Component<Props, {}> {
   }
   addDesignCheck = () => {
     addDesignCheckToLocalStorage(true)
-    this.handleContinue()
+    this.handleActionButton()
   }
   removeDesignCheck = () => {
     addDesignCheckToLocalStorage(false)
-    this.handleContinue()
+    this.handleActionButton()
   }
-  handleContinue = () => {
-    const { handleContinue } = this.props
-    handleContinue()
+  handleActionButton = () => {
+    const { handleActionButton } = this.props
+    handleActionButton()
   }
   render() {
     const { formatMessage, visible } = this.props

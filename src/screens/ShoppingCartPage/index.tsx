@@ -369,7 +369,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const designReviewModal = (
       <DesignCheckModal
         requestClose={showReviewDesignModalAction}
-        handleContinue={this.handleCheckout()}
+        handleActionButton={this.handleCheckout()}
         visible={showReviewDesignModal}
         {...{ formatMessage }}
       />

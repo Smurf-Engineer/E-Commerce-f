@@ -1123,7 +1123,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         </Container>
         <DesignCheckModal
           requestClose={openDesignCheckModalAction}
-          handleContinue={openDesignCheckModalAction}
+          handleActionButton={openDesignCheckModalAction}
           visible={designCheckModalOpen}
           {...{ formatMessage }}
         />

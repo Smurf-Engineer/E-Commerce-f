@@ -984,6 +984,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const { deliveryDays, tutorialPlaylist } = action.data
       return state.merge({ deliveryDays, tutorialPlaylist })
     }
+    // TODO: Add Test when merge 'test.tsx'
     case OPEN_DESIGN_CHECK_MODAL:
       return state.set(
         'designCheckModalOpen',

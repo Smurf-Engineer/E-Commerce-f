@@ -88,6 +88,7 @@ interface Props extends RouteComponentProps<any> {
   setTeamStoreStatusAction: (show: boolean) => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
+  getCheckDesign: () => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -116,7 +117,8 @@ class MainLayout extends React.Component<Props, {}> {
       teamStoreStatus,
       setTeamStoreStatusAction,
       getFontsData,
-      setInstalledFontsAction
+      setInstalledFontsAction,
+      getCheckDesign
     } = this.props
 
     const { login } = queryString.parse(search)
@@ -134,7 +136,7 @@ class MainLayout extends React.Component<Props, {}> {
     setTeamStoreStatusAction(
       get(response, 'data.getTeamStoreStatus.showTeamStores', false)
     )
-
+    getCheckDesign()
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
     const fonts: SimpleFont[] = []
