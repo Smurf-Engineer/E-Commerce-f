@@ -98,10 +98,6 @@ export default defineMessages({
     id: 'screens.CreateStore.addItem',
     defaultMessage: 'ADD ITEM'
   },
-  stock: {
-    id: 'screens.CreateStore.stock',
-    defaultMessage: 'Let’s organize your stock'
-  },
   bannerMessage: {
     id: 'screens.CreateStore.bannerMessage',
     defaultMessage: 'Add a header banner to your store'

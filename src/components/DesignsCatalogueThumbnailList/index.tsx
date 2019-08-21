@@ -39,6 +39,7 @@ import {
   NoResultsFound
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
+import { GRAY_LIGHTEST } from '../../theme/colors'
 
 interface Data extends QueryProps {
   products: ProductType
@@ -105,7 +106,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           index
         ) => {
           const targetPriceValue: any = targetRange
-            ? find(product.priceRange, { quantity: targetRange.name }) || {
+            ? find(product.priceRange, {
+                quantity: targetRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
+              }) || {
                 price: 0
               }
             : { price: 0 }
@@ -113,32 +117,43 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
                 quantity:
-                  currentRange.name === '0-0' ? 'Personal' : currentRange.name,
-                abbreviation: currentCurrency
+                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
               }) || {
                 price: 0
               }
             : { price: 0 }
-          const fixedPrice =
+          const fixedPriceValue =
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
               : currentPriceValue
-
+          const currentPrice = `${fixedPriceValue.shortName} ${
+            fixedPriceValue.price
+          }`
+          const targetPrice = `${targetPriceValue.shortName} ${
+            targetPriceValue.price
+          }`
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={product.id}
+                backgroundColor={GRAY_LIGHTEST}
                 designId={shortId}
                 itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
                 footer={
                   <FooterThumbnailTeamStore
-                    {...{ id, name, targetRange, onDemandMode }}
+                    {...{
+                      id,
+                      name,
+                      targetRange,
+                      onDemandMode,
+                      targetPrice,
+                      currentPrice
+                    }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
-                    targetPrice={targetPriceValue.price}
-                    currentPrice={fixedPrice.price}
                   />
                 }
                 labelButton={
@@ -196,6 +211,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={product.id}
+                backgroundColor={GRAY_LIGHTEST}
                 yotpoId={product.yotpoId}
                 type={product.type}
                 product={product}
@@ -205,6 +221,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 onPressQuickView={this.handlePressQuickView}
                 collections={product.collections}
                 images={productImages}
+                teamStoreShortId={teamStoreShortId}
                 priceRange={product.priceRange}
               />
             </ThumbnailListItem>

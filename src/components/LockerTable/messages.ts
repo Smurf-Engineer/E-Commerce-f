@@ -38,5 +38,9 @@ export default defineMessages({
   fixedPrice: {
     id: 'components.LockerTable.fixedPrice',
     defaultMessage: 'Fixed Price'
+  },
+  regularPrice: {
+    id: 'components.LockerTable.regularPrice',
+    defaultMessage: 'Regular Price'
   }
 })

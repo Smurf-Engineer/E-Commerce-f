@@ -70,8 +70,10 @@ import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
 import { ProductGenders } from '../ProductDetail/constants'
 import YotpoSection from '../../components/YotpoSection'
+import { BLUE, GRAY_DARK } from '../../theme/colors'
 
 const MAX_AMOUNT_PRICES = 4
+const teamStoreLabels = ['regularPrice', 'teamPrice']
 const { Men, Women, Unisex } = ProductGenders
 
 interface MyDesignsData extends QueryProps {
@@ -118,7 +120,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       data: { design, error },
-      designsData: { myDesigns },
+      designsData,
       selectedGender,
       selectedSize,
       selectedFit,
@@ -135,12 +137,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const shared = get(design, 'shared', false)
     const shortId = get(design, 'shortId', '')
     const product = get(design, 'product', null)
+    const productPriceRange = get(product, 'priceRange', null)
+    const teamStoreItem = queryParams.item
+    const designs = get(designsData, 'designs.myDesigns', [] as DesignType[])
 
-    const designs = get(myDesigns, 'designs', [] as DesignType[])
+    const ownedDesign =
+      !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
 
-    const ownedDesign = designs && designs.find(d => d.shortId === shortId)
-
-    if (!product || error || (!shared && !ownedDesign)) {
+    if (!product || error || (!shared && !ownedDesign && !teamStoreItem)) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -156,7 +160,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
 
     const designId = queryParams.id
-    const teamStoreItem = queryParams.item
+    const teamStoreShortId = queryParams.team
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
@@ -184,13 +188,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag.replace(/_/, ' ')
-    const priceRange =
-      teamStoreItem && teamPrice.length ? teamPrice : product.priceRange
-    const currencyPrices =
-      product &&
-      filter(priceRange, {
-        abbreviation: currentCurrency || config.defaultCurrency
-      })
+    const isTeamStore = teamStoreItem && teamPrice.length
     let images = null
     let moreImages = []
     if (!!imagesArray) {
@@ -199,8 +197,22 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ genderId: imageGender }) => imageGender !== images.genderId
       )
     }
-    const symbol = currencyPrices.length ? currencyPrices[0].shortName : ''
 
+    const regularPrices = filter(productPriceRange, {
+      quantity: 'Personal'
+    })
+
+    const priceRange = isTeamStore
+      ? [...regularPrices, ...teamPrice]
+      : productPriceRange
+
+    const currencyPrices =
+      product &&
+      filter(priceRange, {
+        abbreviation: currentCurrency || config.defaultCurrency
+      })
+
+    const symbol = currencyPrices.length ? currencyPrices[0].shortName : ''
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
@@ -209,10 +221,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           index < MAX_AMOUNT_PRICES && (
             <AvailablePrices key={index}>
               <PriceQuantity
-                {...{ index, price, symbol }}
+                {...{ index, price, symbol, isTeamStore }}
+                priceColor={index > 0 && isTeamStore ? BLUE : GRAY_DARK}
                 quantity={
-                  teamStoreItem && teamPrice.length
-                    ? formatMessage(messages.teamPrice)
+                  isTeamStore
+                    ? formatMessage(messages[teamStoreLabels[index]])
                     : quantity
                 }
               />
@@ -343,6 +356,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           item={itemToAdd}
           itemProdPage={true}
           withoutTop={true}
+          teamStoreId={teamStoreShortId}
+          fixedPrices={teamPrice}
           {...{ designId, designName, designImage }}
         />
       </ButtonsRow>
@@ -567,12 +582,17 @@ type OwnProps = {
 const CustomProductDetailEnhance = compose(
   injectIntl,
   graphql<any>(designsQuery, {
-    options: () => {
+    options: (ownprops: OwnProps) => {
+      const {
+        location: { search }
+      } = ownprops
+      const queryParams = queryString.parse(search)
       return {
         variables: {
           limit: 12,
           offset: 0
         },
+        skip: !!queryParams.item,
         fetchPolicy: 'network-only'
       }
     },

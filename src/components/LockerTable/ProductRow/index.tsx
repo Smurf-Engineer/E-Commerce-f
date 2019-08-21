@@ -34,6 +34,7 @@ interface Props {
   totalOrders: number
   id?: number
   text?: string
+  regularPrice?: string
   fixedPrice?: string
   isDragging?: () => boolean
   connectDragSource?: any
@@ -92,6 +93,7 @@ interface Header {
 }
 
 const headerTitles: Header[] = [
+  { message: 'regularPrice' },
   { message: 'fixedPrice' },
   { message: 'visible' }
 ]
@@ -113,6 +115,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
       connectDragSource,
       connectDropTarget,
       formatMessage,
+      regularPrice,
       fixedPrice
     } = this.props
 
@@ -190,6 +193,9 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Cell width={25}>
                   <Name>{name}</Name>
                   <Description>{description}</Description>
+                </Cell>
+                <Cell>
+                  <Price>{`$${regularPrice}`}</Price>
                 </Cell>
                 <Cell>
                   <Price>{`$${fixedPrice}`}</Price>

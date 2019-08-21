@@ -10,6 +10,7 @@ interface Props {
   index: number
   symbol: string
   priceColor?: string
+  isTeamStore?: boolean
 }
 
 const PriceQuantity = ({
@@ -17,12 +18,15 @@ const PriceQuantity = ({
   quantity,
   index,
   symbol,
+  isTeamStore,
   priceColor = ''
 }: Props) => {
   return (
     <Container>
       <PriceLabel {...{ priceColor }}>{`${symbol} ${price}`}</PriceLabel>
-      <QuantityLabel>{`${quantity} ${index > 0 ? 'pcs' : ''}`}</QuantityLabel>
+      <QuantityLabel>{`${quantity} ${
+        index > 0 && !isTeamStore ? 'pcs' : ''
+      }`}</QuantityLabel>
     </Container>
   )
 }
