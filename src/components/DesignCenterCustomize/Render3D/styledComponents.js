@@ -276,6 +276,7 @@ export const DesignCheckButton = styled(AntdButton)`
   width: 138px;
   display: flex;
   align-items: center;
+  margin-right: 10px;
 `
 
 export const Icon = styled.img`

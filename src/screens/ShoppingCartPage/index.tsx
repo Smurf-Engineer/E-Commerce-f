@@ -11,6 +11,7 @@ import find from 'lodash/find'
 import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
 import FitInfo from '../../components/FitInfo'
+import DesignCheckModal from '../../components/DesignCheckModal'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
 import messages from './messages'
@@ -30,13 +31,6 @@ import {
   StyledEmptyButton,
   AddOneMoreMessage,
   DeleteConfirmMessage,
-  ProReviewTitle,
-  OptionalLabel,
-  PleaseReadLabel,
-  ProDesignReviewContent,
-  ModalButtonsWrapper,
-  ReviewButton,
-  ContinueButton,
   Bold
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
@@ -50,7 +44,6 @@ import {
   ProductColors
 } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
-import CustomModal from '../../components/Common/JakrooModal'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
@@ -114,8 +107,9 @@ interface Props extends RouteComponentProps<any> {
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
-  showReviewDesignModalAction: (open: boolean) => void
+  showReviewDesignModalAction: () => void
   openFitInfoAction: (open: boolean, selectedIndex?: number) => void
+  getDesignCheck: () => boolean
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -124,30 +118,23 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     history.push('/product-catalogue')
   }
 
-  handleCheckout = (proDesign = false) => () => {
-    const { history, cart } = this.props
+  handleCheckout = () => () => {
+    const { history, cart, showReviewDesignModalAction } = this.props
+    showReviewDesignModalAction()
     const userLogged = !!localStorage.getItem('user')
     if (!userLogged) {
       window.location.replace('/shopping-cart?login=open')
     } else {
-      history.push('/checkout', { cart, proDesign })
+      history.push('/checkout', { cart })
     }
   }
 
-  onCheckoutClick = () => {
-    const {
-      showReviewDesignModalAction,
-      showReviewDesignModal,
-      cart
-    } = this.props
+  onCheckoutClick = async () => {
+    const { showReviewDesignModalAction, cart, getDesignCheck } = this.props
     const isCustom = find(cart, 'designId')
-
-    if (!!isCustom) {
-      if (showReviewDesignModal) {
-        showReviewDesignModalAction(false)
-        return
-      }
-      showReviewDesignModalAction(true)
+    const proDesign = await getDesignCheck()
+    if (!!isCustom && !proDesign) {
+      showReviewDesignModalAction()
     } else {
       this.handleCheckout()()
     }
@@ -289,6 +276,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       showDeleteLastItemModal,
       showReviewDesignModal,
+      showReviewDesignModalAction,
       currentCurrency,
       openFitInfoAction,
       openFitInfo,
@@ -379,35 +367,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     ) : null
 
     const designReviewModal = (
-      <CustomModal
-        open={showReviewDesignModal}
-        withLogo={false}
-        width={'684px'}
-        requestClose={this.onCheckoutClick}
-      >
-        <ProReviewTitle>
-          {formatMessage(messages.proDesignerReviewLabel)}
-          <OptionalLabel>{` (${formatMessage(
-            messages.optionalLabel
-          )})`}</OptionalLabel>
-        </ProReviewTitle>
-        <PleaseReadLabel>
-          {formatMessage(messages.pleaseReadLabel)}
-        </PleaseReadLabel>
-        <ProDesignReviewContent
-          dangerouslySetInnerHTML={{
-            __html: formatMessage(messages.reviewDesignModalText)
-          }}
-        />
-        <ModalButtonsWrapper>
-          <ReviewButton type="primary" onClick={this.handleCheckout(true)}>
-            {formatMessage(messages.reviewMyOrderLabel)}
-          </ReviewButton>
-          <ContinueButton key="review" onClick={this.handleCheckout()}>
-            {formatMessage(messages.dontReview)}
-          </ContinueButton>
-        </ModalButtonsWrapper>
-      </CustomModal>
+      <DesignCheckModal
+        requestClose={showReviewDesignModalAction}
+        handleContinue={this.handleCheckout()}
+        visible={showReviewDesignModal}
+        {...{ formatMessage }}
+      />
     )
 
     return (

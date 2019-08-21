@@ -103,6 +103,7 @@ import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
+import DesignCheckModal from '../../components/DesignCheckModal'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -185,6 +186,7 @@ interface Props extends RouteComponentProps<any> {
   colorChartModalFormOpen: boolean
   deliveryDays: number
   tutorialPlaylist: string
+  designCheckModalOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -292,6 +294,7 @@ interface Props extends RouteComponentProps<any> {
   onOpenColorChartAction: (open: boolean) => void
   onOpenColorChartFormAction: (open: boolean) => void
   setDesignLabAction: (data: any) => void
+  openDesignCheckModalAction: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -649,7 +652,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       colorChartModalOpen,
       colorChartModalFormOpen,
       deliveryDays,
-      tutorialPlaylist
+      tutorialPlaylist,
+      openDesignCheckModalAction,
+      designCheckModalOpen
     } = this.props
 
     const { formatMessage } = intl
@@ -816,7 +821,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <BackIcon src={backIcon} />
               </BackCircle>
             )}
-          {!isMobile && <Header {...{deliveryDays}} onPressBack={this.handleOnPressBack} />}
+          {!isMobile && (
+            <Header
+              {...{ deliveryDays }}
+              onPressBack={this.handleOnPressBack}
+            />
+          )}
           {!isMobile && (
             <Tabs
               currentTheme={themeId}
@@ -994,6 +1004,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onCloseColorChartForm={this.handleOnCloseColorChartForm}
                 onOpenFormChart={this.handleOnOpenFormChart}
                 onOpenColorChart={this.handleOnOpenColorChart}
+                openDesignCheckModal={openDesignCheckModalAction}
               />
             )}
             {!isMobile ? (
@@ -1110,6 +1121,12 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
           ) : null}
         </Container>
+        <DesignCheckModal
+          requestClose={openDesignCheckModalAction}
+          handleContinue={openDesignCheckModalAction}
+          visible={designCheckModalOpen}
+          {...{ formatMessage }}
+        />
         <Modal
           visible={openOutWithoutSaveModal}
           title={

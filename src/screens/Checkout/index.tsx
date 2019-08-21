@@ -330,9 +330,12 @@ class Checkout extends React.Component<Props, {}> {
       />
     ))
 
-    const {
-      state: { proDesign }
-    } = location
+    let proDesign
+    try {
+      proDesign = JSON.parse(localStorage.getItem('checkDesign') || '')
+    } catch (e) {
+      console.error(e)
+    }
 
     const proDesignReview = proDesign ? DESIGNREVIEWFEE : 0
 
@@ -729,8 +732,14 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const {
-      state: { cart, proDesign }
+      state: { cart }
     } = location
+    let proDesign
+    try {
+      proDesign = JSON.parse(localStorage.getItem('checkDesign') || '')
+    } catch (e) {
+      console.error(e)
+    }
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
     const cardId = selectedCard && selectedCard.id
