@@ -40,9 +40,9 @@ export default defineMessages({
   },
   pricingCheckoutContent: {
     id: 'screens.CreateStore.pricingCheckoutContent',
-    defaultMessage: `With {onDemandTeam}, deafult pricing is fixed and
-    all members {discount}, Regardless of the quantity of the ordered. 
-    Additional discount may be availabe through seasonal promotional offers.
+    defaultMessage: `With {onDemandTeam}, default pricing is fixed and all members
+    {discount}, regardless of the quantity ordered. 
+    Additional discounts may be available through seasonal promotional offers.
     Each member will be able to individually place their order and checkout using their preferred payment method. 
     Orders are shipped directly to the member’s assignated shipping address.`
   },
@@ -60,8 +60,8 @@ export default defineMessages({
   },
   productionDeliveryContent: {
     id: 'screens.CreateStore.productionDeliveryContent',
-    defaultMessage: `Each order is treated individually and enters the production 
-    process upon receipt delivery is within {orderDays} of order placement (excluding Federal Holidays and weekends).
+    defaultMessage: `Each order is treated individually and enters the production process upon receipt. 
+    Delivery is within {orderDays} of order placement (excluding Federal Holidays and weekends).
     All orders are shipped via {shippingCompany} with {signature} for the security of your order. 
     In some cases, an alternative carrier such as UPS may be used, based on the shipping address. Members will receive 
     a shipping notification once their order is picked up by the shipping carrier.`
