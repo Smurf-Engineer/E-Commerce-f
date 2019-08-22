@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.ProductDetailAdmin.backToProducts',
     defaultMessage: 'Back to Product list'
   },
+  backToDetails: {
+    id: 'components.ProductDetailAdmin.backToDetails',
+    defaultMessage: 'Back to Product details'
+  },
   missingFields: {
     id: 'components.ProductDetailAdmin.missingFields',
     defaultMessage: 'One or more empty field(s)'

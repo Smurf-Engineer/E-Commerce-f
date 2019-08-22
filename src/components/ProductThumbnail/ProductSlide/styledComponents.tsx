@@ -19,7 +19,6 @@ export const ImageContainer = styled.div`
   text-align: center;
 
   @media (min-width: 321px) and (max-width: 480px) {
-    height: 200px;
     width: 100%;
     margin: 0;
   }
@@ -83,7 +82,8 @@ export const TopContainer = styled.div`
 `
 
 export const ThumbnailImage = styled.img`
-  width: 220px;
+  width: 100%;
+  max-width: 220px;
   height: 212px;
   object-fit: cover;
   border-radius: 3px;

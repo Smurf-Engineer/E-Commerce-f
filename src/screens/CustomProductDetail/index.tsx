@@ -174,10 +174,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       materials,
       mediaFiles,
       bannerMaterials,
-      averageScore: rating,
       relatedItemTag
     } = product
     const totalReviews = get(yotpoAverageScore, 'total', 0)
+    const rating = get(yotpoAverageScore, 'averageScore', 0)
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag.replace(/_/, ' ')

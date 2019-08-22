@@ -4,7 +4,6 @@
 import * as React from 'react'
 import { Icon, Steps } from 'antd'
 import { connect } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
 import { withRouter } from 'react-router-dom'
 import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
@@ -319,7 +318,9 @@ export class ProductForm extends React.Component<Props, {}> {
         <BackLabel onClick={this.handlePrompt(true)}>
           <Icon type="left" />
           <BackText>
-            <FormattedMessage {...messages.backToProducts} />
+            {formatMessage(
+              productId ? messages.backToDetails : messages.backToProducts
+            )}
           </BackText>
         </BackLabel>
         {loading && !loadingMessage ? (
