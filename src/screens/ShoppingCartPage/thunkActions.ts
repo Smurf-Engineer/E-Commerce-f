@@ -88,16 +88,3 @@ const setItemDetails = (cartItem: CartItems) => {
   }
   return cartItem
 }
-
-export const getDesignCheck = () => {
-  return async () => {
-    try {
-      if (typeof window !== 'undefined') {
-        return JSON.parse(localStorage.getItem('checkDesign') || '')
-      }
-    } catch (e) {
-      console.error(e)
-      return false
-    }
-  }
-}

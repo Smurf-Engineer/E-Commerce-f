@@ -109,7 +109,6 @@ interface Props extends RouteComponentProps<any> {
   saveToStorage: (cart: CartItems[]) => void
   showReviewDesignModalAction: () => void
   openFitInfoAction: (open: boolean, selectedIndex?: number) => void
-  getDesignCheck: () => boolean
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -130,9 +129,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   onCheckoutClick = async () => {
-    const { showReviewDesignModalAction, cart, getDesignCheck } = this.props
+    const { showReviewDesignModalAction, cart, proDesign } = this.props
     const isCustom = find(cart, 'designId')
-    const proDesign = await getDesignCheck()
     if (!!isCustom && !proDesign) {
       showReviewDesignModalAction()
     } else {
@@ -462,9 +460,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const shoppingProps = state.get('shoppingCartPage').toJS()
   const langProps = state.get('languageProvider').toJS()
+  const appProps = state.get('app').toJS()
   return {
     ...shoppingProps,
-    ...langProps
+    ...langProps,
+    ...appProps
   }
 }
 
