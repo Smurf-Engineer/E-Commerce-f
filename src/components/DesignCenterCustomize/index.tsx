@@ -116,7 +116,7 @@ interface Props {
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
-  onSelectColor: (color: string) => void
+  onSelectColor: (color: string, name: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void

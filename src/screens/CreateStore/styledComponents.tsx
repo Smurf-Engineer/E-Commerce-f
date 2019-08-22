@@ -157,3 +157,10 @@ export const OptionalLabel = styled.span`
     font-size: 12px;
   }
 `
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+`

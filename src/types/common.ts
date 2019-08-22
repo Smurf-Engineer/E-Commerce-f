@@ -26,6 +26,7 @@ export interface DesignSaved {
   bindingColor?: string
   bibBraceColor?: string
   zipperColor?: string
+  colors?: string[]
 }
 
 export interface SelectedItem {
@@ -258,6 +259,28 @@ export type TeamStoreType = {
   priceRanges: ItemDetailType[]
 }
 
+export type TeamStoreAdminResultType = {
+  fullCount: number
+  teamStores: TeamStoreAdminType[]
+}
+
+export type TeamStoreAdminType = {
+  id: number
+  name: string
+  cutoffDate: DateObjectType
+  deliveryDate: DateObjectType
+  private: boolean
+  createdAt: string
+  items: TeamStoreItemtype[]
+  priceRanges: ItemDetailType[]
+  featured: boolean
+  userFirstName: string
+  userLastName: string
+  onDemand: boolean
+  cutOffDateString: string
+  shortId: string
+}
+
 export type DateObjectType = {
   day: string
   dayOrdinal: string
@@ -444,6 +467,7 @@ export type TypePicture = {
   id: string
   name: string
   images: BlockImage[]
+  thumbnail: BlockImage
 }
 export type FileUploaded = {
   id: string
@@ -478,6 +502,8 @@ export type ProductImage = {
 export type ProductFile = {
   id: number
   url?: string
+  urlMobile?: string
+  isVideo?: boolean
   active?: boolean
   toUpload?: Blob | boolean
   extension?: string
@@ -1252,7 +1278,7 @@ export interface SportType {
 export interface ProductInternal {
   id?: number
   internalId: number
-  productCode: number
+  productCode: string
   gender: string
   size: string
   fitStyle?: string
@@ -1306,15 +1332,10 @@ export interface BasicColor {
   id: number
   name: string
 }
-
-export interface ProductCode {
-  code: number
-}
-
 export interface ProductInternalsInfo {
   basicColors: BasicColor[]
   frontZipperColors: BasicColor[]
-  products: ProductCode[]
+  products: String[]
   genders: GenderType[]
   sizes: ProductSize[]
   fitStyles: FitStyle[]
@@ -1331,4 +1352,51 @@ export interface HomepageImagesType {
   desktopImage: string
   mobileImage: string
   url: string
+}
+
+export interface YoutubePlaylistItemType {
+  contentDetails: YoutubeItemContentDetailsType
+  etag: string
+  id: string
+  kind: string
+  snippet: YoutubeItemSnippetType
+}
+
+export interface YoutubeItemContentDetailsType {
+  videoId: string
+  videoPublishedAt: string
+}
+
+export interface YoutubeItemSnippetType {
+  title: string
+  channelId: string
+  channelTitle: string
+  description: string
+  playlistId: string
+  position: number
+  publishedAt: string
+  resourceId: YoutubeItemResourceIdType
+  thumbnails: YoutubeItemThumbnailsType
+}
+
+export interface YoutubeItemResourceIdType {
+  kind: string
+  videoId: string
+}
+
+export interface YoutubeItemThumbnailsType {
+  default: YoutubeThumbnailsPropsType
+  high: YoutubeThumbnailsPropsType
+  medium: YoutubeThumbnailsPropsType
+}
+
+export interface YoutubeThumbnailsPropsType {
+  height: number
+  url: string
+  width: number
+}
+
+export type Color = {
+  name: string
+  value: string
 }

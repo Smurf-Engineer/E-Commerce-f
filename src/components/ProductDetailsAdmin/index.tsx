@@ -368,9 +368,10 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                 <Separator>
                   <FormattedMessage {...messages.productImages} />
                 </Separator>
-                {productImages.map((picture: ProductImage, index: number) => (
-                  <ProductImageBox key={index} {...{ picture }} />
-                ))}
+                {productImages &&
+                  productImages.map((picture: ProductImage, index: number) => (
+                    <ProductImageBox key={index} {...{ picture }} />
+                  ))}
                 <Separator>
                   <FormattedMessage {...messages.threeDModel} />
                 </Separator>
