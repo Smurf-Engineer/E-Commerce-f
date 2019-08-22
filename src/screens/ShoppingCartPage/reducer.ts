@@ -122,7 +122,10 @@ const shoppingCartPageReducer: Reducer<any> = (
     case RESET_REDUCER_DATA:
       return initialState
     case SHOW_REVIEW_DESIGN_MODAL:
-      return state.set('showReviewDesignModal', action.show)
+      return state.set(
+        'showReviewDesignModal',
+        !state.get('showReviewDesignModal')
+      )
     case OPEN_FITINFO:
       return state.merge({
         openFitInfo: action.open,

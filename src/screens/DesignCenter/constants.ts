@@ -83,6 +83,8 @@ export const SET_SENDING_CHART = `${namespace}/SET_SENDING_CHART`
 export const ON_OPEN_COLOR_CHART = `${namespace}/ON_OPEN_COLOR_CHART`
 export const ON_OPEN_COLOR_CHART_FORM = `${namespace}/ON_OPEN_COLOR_CHART_FORM`
 
+export const OPEN_DESIGN_CHECK_MODAL = `${namespace}/OPEN_DESIGN_CHECK_MODAL`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,

@@ -79,7 +79,7 @@ export default defineMessages({
   },
   proDesigner: {
     id: 'screens.ShoppingCartPage.proDesigner',
-    defaultMessage: 'Pro Designer Review'
+    defaultMessage: 'Design Check'
   },
   couponApplied: {
     id: 'screens.Checkout.couponApplied',

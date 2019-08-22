@@ -135,6 +135,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   couponCode?: CouponCode
   openCurrencyWarning: boolean
+  proDesign: boolean
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setStripeIbanDataAction: (iban: IbanData) => void
@@ -256,7 +257,8 @@ class Checkout extends React.Component<Props, {}> {
       couponCode,
       setCouponCodeAction,
       deleteCouponCodeAction,
-      openCurrencyWarning
+      openCurrencyWarning,
+      proDesign
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -329,10 +331,6 @@ class Checkout extends React.Component<Props, {}> {
         onClick={this.handleOnStepClick(index)}
       />
     ))
-
-    const {
-      state: { proDesign }
-    } = location
 
     const proDesignReview = proDesign ? DESIGNREVIEWFEE : 0
 
@@ -690,7 +688,8 @@ class Checkout extends React.Component<Props, {}> {
       ibanData = {},
       client: { query },
       currentCurrency,
-      couponCode: couponObject
+      couponCode: couponObject,
+      proDesign
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -729,8 +728,9 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const {
-      state: { cart, proDesign }
+      state: { cart }
     } = location
+
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
     const cardId = selectedCard && selectedCard.id
@@ -842,9 +842,12 @@ class Checkout extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const checkoutProps = state.get('checkout').toJS()
   const langProps = state.get('languageProvider').toJS()
+  const appProps = state.get('app').toJS()
+
   return {
     ...checkoutProps,
-    ...langProps
+    ...langProps,
+    ...appProps
   }
 }
 

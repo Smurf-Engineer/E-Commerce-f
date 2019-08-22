@@ -70,7 +70,8 @@ import {
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
   ON_OPEN_COLOR_CHART_FORM,
-  SET_DATA_LAB_INFO
+  SET_DATA_LAB_INFO,
+  OPEN_DESIGN_CHECK_MODAL
 } from './constants'
 import {
   AnyAction,
@@ -524,4 +525,8 @@ export const onOpenColorChartFormAction = (open: boolean) => ({
 export const setDesignLabAction = (data: any) => ({
   type: SET_DATA_LAB_INFO,
   data
+})
+
+export const openDesignCheckModalAction = () => ({
+  type: OPEN_DESIGN_CHECK_MODAL
 })
