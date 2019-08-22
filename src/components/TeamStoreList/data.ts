@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const GetTeamStoresQuery = gql`
   query GetTeamStoresList {
-    teamStoresList {
+    teamStoresList(withPrivates: true) {
       teamStores {
         id
         shortId: short_id
