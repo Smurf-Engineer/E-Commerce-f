@@ -379,15 +379,17 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                       </CalendarView>
                     </CalendarContainer>
                   )}
-                  <CalendarContainer>
-                    <DatesTitle>
-                      <FormattedMessage {...messages.estimatedArrival} />
-                    </DatesTitle>
-                    <CalendarFinalView>
-                      <CalendarFinalTitle>{deliveryMonth}</CalendarFinalTitle>
-                      <CalendarDay>{deliveryDay}</CalendarDay>
-                    </CalendarFinalView>
-                  </CalendarContainer>
+                  {display && (
+                    <CalendarContainer>
+                      <DatesTitle>
+                        <FormattedMessage {...messages.estimatedArrival} />
+                      </DatesTitle>
+                      <CalendarFinalView>
+                        <CalendarFinalTitle>{deliveryMonth}</CalendarFinalTitle>
+                        <CalendarDay>{deliveryDay}</CalendarDay>
+                      </CalendarFinalView>
+                    </CalendarContainer>
+                  )}
                 </DatesContainer>
               </SideBar>
             </HeadersContainer>
