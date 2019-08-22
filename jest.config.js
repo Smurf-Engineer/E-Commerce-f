@@ -15,6 +15,8 @@ module.exports = {
   setupTestFrameworkScriptFile: './src/setupTests.js',
   moduleNameMapper: {
     '^.+\\.svg?$': '<rootDir>/__mocks__/svgTransform.js',
-    '^.+\\.jpg?$': '<rootDir>/__mocks__/jpgTransform.js'
+    '^.+\\.jpg?$': '<rootDir>/__mocks__/jpgTransform.js',
+    '^.+\\.png?$': '<rootDir>/__mocks__/pngTransform.js',
+    '\\.(css|less|ant)$': 'identity-obj-proxy'
   }
 }

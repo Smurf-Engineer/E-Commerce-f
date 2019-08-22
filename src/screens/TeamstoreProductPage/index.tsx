@@ -154,6 +154,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const productId = get(design, 'product.id', '')
     const svgUrl = get(design, 'svg', '')
     const storeName = get(relatedItems, 'name', 'untitled')
+    const featured = get(relatedItems, 'featured', false)
     const name = get(design, 'product.name', '')
     const type = get(design, 'product.type', '')
     const description = get(design, 'product.description', '')
@@ -176,7 +177,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const queryParams = queryString.parse(search)
     const yotpoId = queryParams.modelId || ''
     const storeId = queryParams.store || ''
-
     // TODO: Change to real priceRange and starting price when gets implemmented in the backq
     // const priceRange = get(design, 'product.priceRange', [])
     //  const startingPrice = this.getTierPrice(priceRange)
@@ -484,7 +484,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                 </EstimatePrice>
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
-                {collectionSelection}
+                {featured && collectionSelection}
                 {productInfo}
               </ProductData>
               <FitInfo

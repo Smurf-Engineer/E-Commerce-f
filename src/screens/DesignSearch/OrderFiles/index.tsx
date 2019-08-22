@@ -48,7 +48,7 @@ interface Props {
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
 }
-class OrderFiles extends React.PureComponent<Props> {
+export class OrderFiles extends React.PureComponent<Props> {
   render3D: any
   render() {
     const {

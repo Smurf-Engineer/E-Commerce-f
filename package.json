@@ -1,14 +1,15 @@
 {
   "name": "jackroo-web",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "license": "MIT",
   "scripts": {
     "start": "razzle start",
     "build": "razzle build",
     "lint": "tslint --project . -c tslint.json",
     "generate": "plop --plopfile ./node_modules/react-components-generator/index.js",
-    "test:dev": "razzle test --env=jsdom",
-    "test": "jest --config ./jest.config.js",
+    "test:dev": "jest --env jsdom --config ./jest.config.js --watch",
+    "test": "jest --env jsdom --config ./jest.config.js",
+    "verify": "yarn lint && yarn test",
     "start:prod": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
@@ -60,6 +61,7 @@
     "google-map-react": "^1.0.4",
     "graphql": "^0.12.3",
     "graphql-tag": "^2.6.1",
+    "identity-obj-proxy": "^3.0.0",
     "immutable": "^3.8.2",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
@@ -121,29 +123,6 @@
     "zenscroll": "^4.0.0"
   },
   "pre-commit": [
-    "lint"
-  ],
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js",
-      "^.+\\.css$": "<rootDir>/node_modules/razzle/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/node_modules/razzle/config/jest/fileTransform.js"
-    },
-    "testMatch": [
-      "<rootDir>/__tests__/**/*.(ts|js)?(x)",
-      "<rootDir>/src/**/?(*.)(spec|test).(ts|js)?(x)"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.svg?$": "<rootDir>/__mocks__/svgTransform.js"
-    }
-  }
+    "verify"
+  ]
 }

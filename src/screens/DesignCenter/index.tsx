@@ -16,8 +16,6 @@ import Modal from 'antd/lib/modal/Modal'
 import { saveAndBuyAction } from '../../components/MainLayout/actions'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
-import find from 'lodash/find'
-import colorList from '../DesignerTool/DesignCenterCustomize/ColorList/colors'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
 import {
@@ -489,13 +487,8 @@ export class DesignCenter extends React.Component<Props, {}> {
     setPaletteAction(colors)
   }
 
-  setColorEvent = (color: string) => {
+  setColorEvent = (color: string, colorName: string) => {
     const { setColorAction, style } = this.props
-    const colorName = get(
-      find(colorList, colorObject => colorObject.value === color),
-      'name',
-      ''
-    )
     window.dataLayer.push({
       event: SELECTED_COLOR,
       label: colorName,
@@ -803,7 +796,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         <Spin />
       </LoadingContainer>
     )
-
+    const showTeamStores = get(layout, 'showTeamStores', false)
     const isUserAuthenticated = !!user
     return (
       <Layout
@@ -1026,6 +1019,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   openAddToStoreModal,
                   setItemToAddAction,
                   teamStoreId,
+                  showTeamStores,
                   editDesignAction,
                   formatMessage,
                   svgOutputUrl,

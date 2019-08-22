@@ -91,10 +91,10 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     filters: []
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.checkFilters()
   }
-
+  // TODO: Remove later
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
@@ -102,7 +102,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
   checkFilters() {
     const {
-      location: { search, state },
+      location: { search },
       setSelectedFilters,
       clearFiltersAction,
       setHomeSelectedFilters,
@@ -156,9 +156,10 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       setSelectedFilters(filterObject)
     }
 
-    if (state) {
-      state.forced = false
-    }
+    // TODO: Remove later
+    // if (state) {
+    //   state.forced = false
+    // }
   }
 
   render() {
@@ -189,17 +190,18 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     }
 
     const {
-      location: { search, state }
+      location: { search }
     } = history
 
     const queryParams = queryString.parse(search)
     const { contentTile } = queryParams
 
-    const forced = get(state, 'forced', false)
+    // TODO: Remove later
+    // const forced = get(state, 'forced', false)
 
-    if (forced) {
-      this.checkFilters()
-    }
+    // if (forced) {
+    //   this.checkFilters()
+    // }
 
     switch (orderBy) {
       case 'pricelow':

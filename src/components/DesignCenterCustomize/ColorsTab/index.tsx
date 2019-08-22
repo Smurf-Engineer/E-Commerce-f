@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
 import isEqual from 'lodash/isEqual'
 import {
@@ -17,14 +18,14 @@ import {
 import SwipeableViews from 'react-swipeable-views'
 import BaseColors from '../BaseColors'
 import SelectColors from '../SelectColors'
-import baseColors from '../ColorList/colors'
 import {
   Palette,
   MyPaletteDesignCenterModals,
   StitchingColor,
   AccesoryColor,
   Product,
-  UserInfo
+  UserInfo,
+  Color
 } from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
@@ -53,7 +54,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   onSelectColorBlock: (index: number) => void
-  onSelectColor: (color: string) => void
+  onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
@@ -81,8 +82,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
   }
 
   componentWillReceiveProps({ colors }: Props) {
-    const { names } = this.state
-    this.prepareColorNames(colors, names)
+    const { colors: oldColors } = this.props
+    if (!isEqual(colors, oldColors)) {
+      const { names } = this.state
+      this.prepareColorNames(colors, names)
+    }
   }
 
   handleOnBack = () => this.setState(({ index }) => ({ index: index - 1 }))
@@ -256,12 +260,25 @@ class ColorsTab extends React.PureComponent<Props, State> {
   }
 
   prepareColorNames = (colors: string[], oldNames: string[]) => {
-    const names = colors.map(color => {
-      const index = findIndex(baseColors, o => o.value === color)
-      return !!baseColors[index] ? baseColors[index].name : ''
-    })
-    if (!isEqual(oldNames, names)) {
-      this.setState({ names })
+    const { colorsList } = this.props
+    let baseColors: Color[]
+    const colorsResponse = get(colorsList, 'colorsResult.colors', [])
+    if (colorsResponse.length) {
+      try {
+        baseColors = JSON.parse(colorsResponse)
+        const names = colors.map(color => {
+          const index = findIndex(
+            baseColors,
+            baseColor => baseColor.value === color
+          )
+          return !!baseColors[index] ? baseColors[index].name : ''
+        })
+        if (!isEqual(oldNames, names)) {
+          this.setState({ names })
+        }
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 
@@ -269,7 +286,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
     this.setState(({ names }: State) => {
       const { onSelectColor, colorBlock } = this.props
       const updatedNames = [...names]
-      onSelectColor(color)
+      onSelectColor(color, name)
       updatedNames[colorBlock] = name
       return { names: updatedNames }
     })

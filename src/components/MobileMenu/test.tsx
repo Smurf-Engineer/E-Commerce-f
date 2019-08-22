@@ -15,7 +15,6 @@ describe('<MobileMenu />', () => {
         history={{}}
         data={{} as any}
         loginButton={null}
-        regionButton={null}
       />,
       div
     )

@@ -19,6 +19,7 @@ export const EDIT_CONTENT = 'editContent'
 export const HOMEPAGE = 'homepage'
 export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
+export const TEAM_STORES = 'teamStores'
 export const LOGOUT_MENU = 'logout'
 export const EDIT_NAVIGATION = 'editNavigation'
 
@@ -37,6 +38,10 @@ export const options = [
   },
   {
     title: USERS,
+    options: []
+  },
+  {
+    title: TEAM_STORES,
     options: []
   }
 ]

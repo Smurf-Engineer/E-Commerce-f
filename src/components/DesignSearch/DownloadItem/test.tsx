@@ -8,6 +8,6 @@ import DownloadItem from './index'
 describe('<DownloadItem />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<DownloadItem  />, div)
+    ReactDOM.render(<DownloadItem url={''} />, div)
   })
 })

@@ -98,7 +98,7 @@ interface Props {
   openFitInfo: boolean
 }
 
-class CartListItem extends React.Component<Props, {}> {
+export class CartListItem extends React.Component<Props, {}> {
   getQuantity = (priceRange: PriceRange) => {
     let val = 0
     if (priceRange.quantity === 'Personal') {
@@ -242,7 +242,7 @@ class CartListItem extends React.Component<Props, {}> {
       ? priceRange.price * quantitySum
       : unitPrice || 0 * quantitySum
     const total = productTotal || itemTotal
-    const unitaryPrice = unitPrice || priceRange.price
+    const unitaryPrice = unitPrice || get(priceRange, 'price')
 
     const nextPrice = currencyPrices.length
       ? this.getNextPrice(currencyPrices, quantitySum)
