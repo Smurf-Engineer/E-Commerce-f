@@ -14,7 +14,7 @@ import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
-import checkBoxIcon from '../../../assets/Checkbox.svg'
+import checkBoxIcon from '../../../assets/checkbox.svg'
 import notification from 'antd/lib/notification'
 import Checkbox from 'antd/lib/checkbox'
 import {

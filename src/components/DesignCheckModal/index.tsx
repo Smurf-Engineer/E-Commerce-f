@@ -16,7 +16,7 @@ import {
   Icon
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
-import checkBoxIcon from '../../assets/Checkbox.svg'
+import checkBoxIcon from '../../assets/checkbox.svg'
 
 interface Props {
   visible: boolean
