@@ -58,6 +58,9 @@ export const ProgressProduct = styled(AntdProgress)`
   top: 30%;
   right: 0;
   left: 0;
+  .ant-progress-text {
+    color: white;
+  }
 `
 
 export const Loading = styled(Spin)`

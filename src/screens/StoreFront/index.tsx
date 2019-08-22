@@ -35,7 +35,7 @@ interface Props extends RouteComponentProps<any> {
   showTeamStores: boolean
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
-  openQuickViewAction: (id: number, yotpoId: string | null) => void
+  openQuickView: (id: number, yotpoId: string | null) => void
   openPassCodeDialogAction: (open: boolean) => void
   setPassCodeAction: (passCode: string) => void
   openEmailContactDialogAction: (open: boolean) => void
@@ -95,6 +95,7 @@ export class StoreFront extends React.Component<Props, {}> {
       openEmailContact,
       emailContact,
       emailMessage,
+      openQuickView,
       setEmailContactAction,
       setEmailMessageAction,
       sendMessageLoading,
@@ -121,7 +122,7 @@ export class StoreFront extends React.Component<Props, {}> {
         <Container>
           <StoreFrontContent
             formatMessage={intl.formatMessage}
-            openQuickViewAction={openQuickViewAction}
+            openQuickViewAction={openQuickView}
             openEmailContactDialogAction={openEmailContactDialogAction}
             openShareModalAction={openShareModalAction}
             openShare={openShare}
@@ -151,7 +152,7 @@ const StoreFrontEnhance = compose(
   getTeamStoreStatus,
   connect(
     mapStateToProps,
-    { ...storeFrontActions, openQuickViewAction }
+    { ...storeFrontActions, openQuickView: openQuickViewAction }
   )
 )(StoreFront)
 

@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'components.ProductDetailAdmin.saveAndContinue',
     defaultMessage: 'Save and Continue later'
   },
+  save: {
+    id: 'components.ProductDetailAdmin.save',
+    defaultMessage: 'Save product'
+  },
   submit: {
     id: 'components.ProductDetailAdmin.submit',
     defaultMessage: 'Proceed with 3D model'

@@ -25,17 +25,18 @@ const Stepper = ({
 }: Props) => (
   <Container>
     {currentStep > 0 && (
-      <BackButton onClick={changeStep(currentStep - 1)}>
+      <BackButton primary={true} onClick={changeStep(currentStep - 1)}>
         <Icon type="left" />
         <FormattedMessage {...messages.back} />
       </BackButton>
     )}
     {currentStep === 3 && (
-      <BackButton onClick={handleSave(true)}>
-        <FormattedMessage {...messages.saveAndContinue} />
+      <BackButton primary={customizable} onClick={handleSave(true)}>
+        <FormattedMessage
+          {...(customizable ? messages.saveAndContinue : messages.save)}
+        />
       </BackButton>
     )}
-
     {currentStep < 3 && (
       <NextButton
         enabled={validNext}
