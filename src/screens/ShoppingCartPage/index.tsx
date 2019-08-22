@@ -128,7 +128,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     }
   }
 
-  onCheckoutClick = async () => {
+  onCheckoutClick = () => {
     const { showReviewDesignModalAction, cart, proDesign } = this.props
     const isCustom = find(cart, 'designId')
     if (!!isCustom && !proDesign) {
