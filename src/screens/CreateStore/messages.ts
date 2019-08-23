@@ -44,7 +44,7 @@ export default defineMessages({
     {discount}, regardless of the quantity ordered. 
     Additional discounts may be available through seasonal promotional offers.
     Each member will be able to individually place their order and checkout using their preferred payment method. 
-    Orders are shipped directly to the member’s assignated shipping address.`
+    Orders are shipped directly to the member’s designated shipping address.`
   },
   orderDays: {
     id: 'screens.CreateStore.orderDays',
@@ -61,10 +61,11 @@ export default defineMessages({
   productionDeliveryContent: {
     id: 'screens.CreateStore.productionDeliveryContent',
     defaultMessage: `Each order is treated individually and enters the production process upon receipt. 
-    Delivery is within {orderDays} of order placement (excluding Federal Holidays and weekends).
-    All orders are shipped via {shippingCompany} with {signature} for the security of your order. 
-    In some cases, an alternative carrier such as UPS may be used, based on the shipping address. Members will receive 
-    a shipping notification once their order is picked up by the shipping carrier.`
+    Delivery to your designated address is typically within {orderDays} days of order placement 
+    (excluding Federal Holidays and weekends).
+    For the security of your order, all orders are shipped via {shippingCompany} with signature required.
+    In some cases, when products are shipped from multiple facilities, a secondary carrier such as UPS may be used.
+    Members will receive a shipping notification once their order is picked up by the shipping carrier.`
   },
   productionDelivery: {
     id: 'screens.CreateStore.productionDelivery',
