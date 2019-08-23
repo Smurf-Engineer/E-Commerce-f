@@ -29,7 +29,8 @@ import {
   PriceRange,
   ItemDetailType,
   CartItems,
-  ProductColors
+  ProductColors,
+  Message
 } from '../../types/common'
 import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
@@ -37,7 +38,7 @@ import AddToCartButton from '../AddToCartButton'
 import config from '../../config/index'
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
   handleAddItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number
@@ -96,6 +97,11 @@ interface Props {
   currencySymbol?: string
   history?: any
   openFitInfo: boolean
+}
+
+interface MessagePrice {
+  symbol: string
+  price: string
 }
 
 export class CartListItem extends React.Component<Props, {}> {
@@ -311,12 +317,16 @@ export class CartListItem extends React.Component<Props, {}> {
             {`${symbol} ${(total || 0).toFixed(2)}`}
           </ItemDetailsHeaderPrice>
           <ItemDetailsHeaderPriceDetail highlighted={true}>
-            {`${formatMessage(
-              !isTeamStore ? messages.unitPrice : messages.teamPrice
-            )} ${symbol} ${(unitaryPrice || 0).toFixed(2)}`}
+            {formatMessage(
+              !isTeamStore ? messages.unitPrice : messages.teamPrice,
+              { symbol, price: (unitaryPrice || 0).toFixed(2) }
+            )}
           </ItemDetailsHeaderPriceDetail>
           <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.startPrice)} ${symbol} ${personalPrice}`}
+            {formatMessage(messages.startPrice, {
+              symbol,
+              price: personalPrice
+            })}
           </ItemDetailsHeaderPriceDetail>
           <HeaderPriceDetailEmpty />
         </PriceContainer>
