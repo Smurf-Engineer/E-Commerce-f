@@ -532,7 +532,6 @@ const StoreFrontContentEnhance = compose(
   graphql<Data>(getSingleTeamStore, {
     options: ({ teamStoreId, passCode }: OwnProps) => {
       return {
-        fetchPolicy: 'network-only',
         variables: {
           teamStoreId,
           passCode,
