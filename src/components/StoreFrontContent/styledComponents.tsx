@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
-import { GREEN, RED } from '../../theme/colors'
+import { GREEN, BLACK_LIGHT, WHITE } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
   open?: boolean
@@ -73,9 +73,10 @@ export const StoreBox = styled.div`
   width: 100%;
   margin-right: 22px;
   height: 51px;
-  border: 2px solid ${({ open }: DivProps) => (open ? GREEN : RED)};
+  border: 2px solid ${({ open }: DivProps) => (open ? GREEN : BLACK_LIGHT)};
+  background-color: ${({ open }: DivProps) => (open ? WHITE : BLACK_LIGHT)};
   border-radius: 2px;
-  color: ${({ open }: DivProps) => (open ? GREEN : RED)};
+  color: ${({ open }: DivProps) => (open ? GREEN : WHITE)};
   font-family: Avenir Next;
   font-size: 18px;
   font-weight: bold;
