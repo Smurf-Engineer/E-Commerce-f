@@ -91,6 +91,10 @@ export const RowButtons = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 0;
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 16px;
+  }
 `
 
 export const RowSwitch = styled.div`
