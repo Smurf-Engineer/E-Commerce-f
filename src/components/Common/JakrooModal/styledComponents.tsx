@@ -35,6 +35,6 @@ export const Title = styled.div`
   font-weight: bold;
   line-height: 27px;
   @media (max-width: 425px) {
-    font-size: 16px;
+    font-size: 14px;
   }
 `
