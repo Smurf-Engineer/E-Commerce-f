@@ -13,6 +13,14 @@ export default defineMessages({
     id: 'components.ProductInfo.unitPrice',
     defaultMessage: 'Unit price:'
   },
+  startPrice: {
+    id: 'components.ProductInfo.startPrice',
+    defaultMessage: 'Start price:'
+  },
+  teamPrice: {
+    id: 'components.ProductInfo.teamPrice',
+    defaultMessage: 'Team price:'
+  },
   addMore: {
     id: 'components.ProductInfo.addMore',
     defaultMessage: '+ Add More'

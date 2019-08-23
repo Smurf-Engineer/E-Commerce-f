@@ -109,7 +109,7 @@ export const YouSavedOrderItem = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-top: ${({ onlyRead }: TotalProps) => (onlyRead ? '10px' : '0')};
   color: ${RED};
   font-size: 16px;

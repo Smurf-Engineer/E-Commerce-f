@@ -14,7 +14,6 @@ import {
   HeaderPriceDetailEmpty
 } from './styledComponents'
 import messages from '../../ProductInfo/messages'
-import { FormattedMessage } from 'react-intl'
 
 interface Props {
   title: string
@@ -23,9 +22,6 @@ interface Props {
   mpnCode: string
   symbol: string
   total: number
-  onlyRead: boolean | undefined
-  designId: string | undefined
-  nextPrice: any
   unitaryPrice: number
   formatMessage: (messageDescriptor: any) => string
 }
@@ -36,14 +32,11 @@ class ItemDetails extends React.Component<Props, {}> {
       formatMessage,
       title,
       description,
-      onlyRead,
       total,
       designCode,
       mpnCode,
       symbol,
-      unitaryPrice,
-      designId,
-      nextPrice
+      unitaryPrice
     } = this.props
     return (
       <ItemDetailsHeader>
@@ -63,21 +56,7 @@ class ItemDetails extends React.Component<Props, {}> {
               unitaryPrice || 0
             ).format('0,0.00')}`}
           </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && designId && nextPrice.items > 0 ? (
-            <ItemDetailsHeaderPriceDetail highlighted={true}>
-              <FormattedMessage
-                {...messages.addMoreFor}
-                values={{
-                  price: `${symbol}  ${numeral(nextPrice.price).format(
-                    '0,0.00'
-                  )}`,
-                  products: nextPrice.items
-                }}
-              />
-            </ItemDetailsHeaderPriceDetail>
-          ) : (
-            <HeaderPriceDetailEmpty />
-          )}
+          <HeaderPriceDetailEmpty />
         </PriceContainer>
       </ItemDetailsHeader>
     )

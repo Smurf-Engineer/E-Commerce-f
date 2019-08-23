@@ -29,7 +29,6 @@ import {
   EmptyTitle,
   EmptyDescription,
   StyledEmptyButton,
-  AddOneMoreMessage,
   DeleteConfirmMessage,
   ProReviewTitle,
   OptionalLabel,
@@ -37,8 +36,7 @@ import {
   ProDesignReviewContent,
   ModalButtonsWrapper,
   ReviewButton,
-  ContinueButton,
-  Bold
+  ContinueButton
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -308,7 +306,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       total,
       totalWithoutDiscount,
       priceRangeToApply,
-      show25PercentMessage,
       nameOfFirstProduct,
       numberOfProducts
     } = shoppingCartData
@@ -377,21 +374,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       )
     })
 
-    const sideHeaderMessage = show25PercentMessage ? (
-      <AddOneMoreMessage>
-        <Bold>{formatMessage(messages.saveMore)}</Bold>
-        <FormattedMessage
-          id={messages.addOneMoreMessage.id}
-          defaultMessage={messages.addOneMoreMessage.defaultMessage}
-          values={{
-            any: <Bold>{formatMessage(messages.any)}</Bold>,
-            percent: <Bold>{formatMessage(messages.percent)}</Bold>,
-            entireOrder: <Bold>{formatMessage(messages.entireOrder)}</Bold>
-          }}
-        />
-      </AddOneMoreMessage>
-    ) : null
-
     const designReviewModal = (
       <CustomModal
         open={showReviewDesignModal}
@@ -447,7 +429,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           ) : (
             <Container>
               <SideBar>
-                {sideHeaderMessage}
                 <Ordersummary
                   subtotal={total}
                   currencySymbol={symbol}

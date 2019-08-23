@@ -3,14 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import {
-  GREEN_LIGHT,
-  RED,
-  GRAY_DARK,
-  GRAY_LIGHT,
-  BLUE,
-  BLACK
-} from '../../theme/colors'
+import { RED, GRAY_DARK, GRAY_LIGHT, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -50,27 +43,6 @@ export const SideBar = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
-`
-
-export const AddOneMoreMessage = styled.div`
-  color: ${BLACK};
-  background-color: ${GREEN_LIGHT};
-  font-size: 12px;
-  letter-spacing: 0.15px;
-  margin-bottom: 8px;
-  padding: 15px;
-  font-size: 13px;
-  line-height: 20px;
-  text-align: center;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    font-size: 19px;
-  }
-`
-
-export const Bold = styled.div`
-  font-weight: 600;
-  display: inline-block;
 `
 
 export const EmptyTitle = styled.div`
