@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import MediaQuery from 'react-responsive'
 import {
   Container,
@@ -28,16 +29,16 @@ import {
   PriceRange,
   ItemDetailType,
   CartItems,
-  ProductColors
+  ProductColors,
+  Message
 } from '../../types/common'
 import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
-import { FormattedMessage } from 'react-intl'
 import AddToCartButton from '../AddToCartButton'
 import config from '../../config/index'
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
   handleAddItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number
@@ -96,6 +97,11 @@ interface Props {
   currencySymbol?: string
   history?: any
   openFitInfo: boolean
+}
+
+interface MessagePrice {
+  symbol: string
+  price: string
 }
 
 export class CartListItem extends React.Component<Props, {}> {
@@ -244,6 +250,15 @@ export class CartListItem extends React.Component<Props, {}> {
 
     let priceRange = this.getPriceRange(currencyPrices, quantitySum)
 
+    const personalPrice = get(
+      find(cartItem.product.priceRange, {
+        quantity: 'Personal',
+        abbreviation: currentCurrency || config.defaultCurrency
+      }),
+      'price',
+      0
+    )
+
     priceRange =
       priceRange && priceRange.price === 0
         ? currencyPrices[currencyPrices.length - 1]
@@ -254,9 +269,6 @@ export class CartListItem extends React.Component<Props, {}> {
       : unitPrice || 0 * quantitySum
     const total = productTotal || itemTotal
     const unitaryPrice = unitPrice || get(priceRange, 'price')
-    const nextPrice = currencyPrices.length
-      ? this.getNextPrice(currencyPrices, quantitySum)
-      : { items: 0, price: 0 }
 
     const symbol = currencySymbol || '$'
 
@@ -304,24 +316,19 @@ export class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderPrice>
             {`${symbol} ${(total || 0).toFixed(2)}`}
           </ItemDetailsHeaderPrice>
-          <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${symbol} ${(
-              unitaryPrice || 0
-            ).toFixed(2)}`}
+          <ItemDetailsHeaderPriceDetail highlighted={true}>
+            {formatMessage(
+              !isTeamStore ? messages.unitPrice : messages.teamPrice,
+              { symbol, price: (unitaryPrice || 0).toFixed(2) }
+            )}
           </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && !isTeamStore && designId && nextPrice.items > 0 ? (
-            <ItemDetailsHeaderPriceDetail highlighted={true}>
-              <FormattedMessage
-                {...messages.addMoreFor}
-                values={{
-                  price: `${symbol} ${nextPrice.price.toFixed(2)}`,
-                  products: nextPrice.items
-                }}
-              />
-            </ItemDetailsHeaderPriceDetail>
-          ) : (
-            <HeaderPriceDetailEmpty />
-          )}
+          <ItemDetailsHeaderPriceDetail>
+            {formatMessage(messages.startPrice, {
+              symbol,
+              price: personalPrice
+            })}
+          </ItemDetailsHeaderPriceDetail>
+          <HeaderPriceDetailEmpty />
         </PriceContainer>
       </ItemDetailsHeader>
     )
