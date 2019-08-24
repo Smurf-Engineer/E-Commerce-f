@@ -14,10 +14,16 @@ export const Text = styled.div`
 export const ShareLinkRow = styled.div`
   display: flex;
   margin-bottom: 20px;
+  flex-flow: row;
+  @media (max-width: 425px) {
+    flex-flow: column;
+    align-items: center;
+  }
 `
 
 export const ShareLinkContainer = styled.div`
   flex: 2;
+  width: 100%;
 `
 
 export const Title = styled.div`
@@ -60,6 +66,11 @@ export const InputWrapper = styled.div`
 
 export const ShareSocialMediaContainer = styled.div`
   margin-left: 27px;
+  margin-top: 0;
+  @media (max-width: 425px) {
+    margin-left: 0;
+    margin-top: 22px;
+  }
 `
 export const ShareByMailRow = styled.div``
 

@@ -56,7 +56,8 @@ import {
   SelectedType,
   ItemDetailType,
   CartItemDetail,
-  ProductFile
+  ProductFile,
+  PriceRange
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -188,7 +189,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag.replace(/_/, ' ')
-    const isTeamStore = teamStoreItem && teamPrice.length
     let images = null
     let moreImages = []
     if (!!imagesArray) {
@@ -198,13 +198,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       )
     }
 
-    const regularPrices = filter(productPriceRange, {
-      quantity: 'Personal'
-    })
-
-    const priceRange = isTeamStore
-      ? [...regularPrices, ...teamPrice]
-      : productPriceRange
+    const hasFixedPrices = teamPrice && teamPrice.length
+    let priceRange: PriceRange[] = []
+    if (teamStoreItem) {
+      const regularPrices = filter(
+        productPriceRange,
+        ({ quantity }) =>
+          quantity === 'Personal' || (quantity === '2-5' && !hasFixedPrices)
+      )
+      priceRange = [...regularPrices, ...teamPrice]
+    } else {
+      priceRange = productPriceRange
+    }
 
     const currencyPrices =
       product &&
@@ -221,10 +226,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           index < MAX_AMOUNT_PRICES && (
             <AvailablePrices key={index}>
               <PriceQuantity
-                {...{ index, price, symbol, isTeamStore }}
-                priceColor={index > 0 && isTeamStore ? BLUE : GRAY_DARK}
+                {...{ index, price, symbol, teamStoreItem }}
+                priceColor={index > 0 && teamStoreItem ? BLUE : GRAY_DARK}
                 quantity={
-                  isTeamStore
+                  teamStoreItem
                     ? formatMessage(messages[teamStoreLabels[index]])
                     : quantity
                 }
