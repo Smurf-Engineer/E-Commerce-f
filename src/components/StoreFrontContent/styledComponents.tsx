@@ -229,7 +229,6 @@ export const CalendarView = styled.div`
 
 export const CalendarFinalView = styled.div`
   height: 78px;
-  width: 81px;
   margin-right: 5px;
   margin-left: 5px;
   border: 2px solid #e61737;
@@ -247,11 +246,12 @@ export const CalendarTitle = styled.div`
 
 export const CalendarFinalTitle = styled.div`
   text-align: center;
-  width: 100%;
-  height: 20px;
+  height: 22px;
   color: #ffffff;
   background-color: #e61737;
   text-transform: uppercase;
+  padding: 4px 8px;
+  font-size: 12px;
 `
 
 export const CalendarDay = styled.div`

@@ -15,8 +15,8 @@ export default defineMessages({
   },
   createTeamStoreText: {
     id: 'components.MyTeamStores.createTeamStoreText',
-    defaultMessage:
-      'Creating a team store enables your team memebers to place their orders separately for team kits.'
+    defaultMessage: `Creating a team store enables your team members 
+    to individually checkout and designate their own shipping address.`
   },
   titleDeleteModal: {
     id: 'components.MyTeamStores.titleDeleteModal',

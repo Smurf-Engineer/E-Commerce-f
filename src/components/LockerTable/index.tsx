@@ -39,6 +39,7 @@ interface Props {
   items: LockerTableType[]
   teamSizeRange: string
   currentCurrency?: string
+  hideQuickView?: boolean
   onPressDelete: (index: number) => void
   onPressQuickView: (
     id: number,
@@ -65,6 +66,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
     const {
       formatMessage,
       items,
+      hideQuickView,
       onPressDelete,
       onPressQuickView,
       onPressVisible,
@@ -128,6 +130,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
               image,
               name,
               description,
+              hideQuickView,
               productId,
               fixedPrice,
               regularPrice,

@@ -221,9 +221,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const teamSizeId = get(getTeamStore, 'team_size_id', 0)
     const priceRanges = getTeamStore ? getTeamStore.priceRanges || [] : []
 
-    const shareStoreUrl = `${
-      config.baseUrl
-    }store-front?storeId=${teamStoreShortId}`
+    const shareStoreUrl = `${config.baseUrl}store-front?storeId=${teamStoreShortId}`
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
     // TODO: uncomment if return to old method
