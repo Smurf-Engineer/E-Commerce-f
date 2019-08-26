@@ -14,8 +14,7 @@ import {
   Page,
   QuickView,
   ProApproved,
-  ThumbnailImage,
-  CustomizeButton
+  ThumbnailImage
 } from './styledComponents'
 import messages from './messages'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
@@ -119,14 +118,6 @@ const ProductSlide = ({
       </ImageContainer>
     )
   }
-  const buttonToRender = (
-    <ButtonContainer
-      {...{ myLockerList }}
-      onClick={customizable ? onPressCustomize : onPressThumbnail}
-    >
-      <CustomizeButton>{labelButton}</CustomizeButton>
-    </ButtonContainer>
-  )
   let thumbnail = images
     ? images[imagesOrder.find(key => images[key]) || 'thumbnail']
     : JackrooLogo
@@ -145,7 +136,6 @@ const ProductSlide = ({
         )}
       </ImageTop>
       <ThumbnailImage onClick={onPressThumbnail} src={thumbnail} />
-      {isHovered && buttonToRender}
     </ImageContainer>
   )
 }
