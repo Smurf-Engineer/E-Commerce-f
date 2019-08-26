@@ -13,16 +13,19 @@ import {
 
 interface Props {
   image?: string
+  hideQuickView?: boolean
   onPressQuickView: () => void
 }
 
-const ProductSlide = ({ image, onPressQuickView }: Props) => {
+const ProductSlide = ({ image, onPressQuickView, hideQuickView }: Props) => {
   return (
     <ImageContainer>
       <ImageTop>
-        <QuickView onClick={onPressQuickView}>
-          <img src={quickViewIcon} />
-        </QuickView>
+        {!hideQuickView && (
+          <QuickView onClick={onPressQuickView}>
+            <img src={quickViewIcon} />
+          </QuickView>
+        )}
       </ImageTop>
       <Page>
         <Image src={image} />

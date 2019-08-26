@@ -94,16 +94,16 @@ export class TeamPassCode extends React.Component<Props, {}> {
     const { passCode } = this.state
 
     return (
-      <Container>
-        <Modal
-          visible={open}
-          footer={null}
-          closable={false}
-          maskClosable={true}
-          width={'30%'}
-          destroyOnClose={true}
-          onCancel={this.handleCancel}
-        >
+      <Modal
+        visible={open}
+        footer={null}
+        closable={false}
+        maskClosable={true}
+        destroyOnClose={true}
+        width="328px"
+        onCancel={this.handleCancel}
+      >
+        <Container>
           <Title>
             <FormattedMessage {...messages.modalTitle} />
           </Title>
@@ -121,8 +121,8 @@ export class TeamPassCode extends React.Component<Props, {}> {
               <FormattedMessage {...messages.save} />
             </Button>
           </ButtonWrapper>
-        </Modal>
-      </Container>
+        </Container>
+      </Modal>
     )
   }
 }

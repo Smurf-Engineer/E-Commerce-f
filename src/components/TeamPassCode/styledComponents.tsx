@@ -6,7 +6,7 @@ import Input from 'antd/lib/input'
 import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div`
-  background-color: #222;
+  width: 100%;
 `
 
 export const Title = styled.div`

@@ -127,12 +127,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
               : currentPriceValue
-          const currentPrice = `${fixedPriceValue.shortName} ${
-            fixedPriceValue.price
-          }`
-          const targetPrice = `${targetPriceValue.shortName} ${
-            targetPriceValue.price
-          }`
+          const currentPrice = `${fixedPriceValue.shortName} ${fixedPriceValue.price}`
+          const targetPrice = `${targetPriceValue.shortName} ${targetPriceValue.price}`
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -142,6 +138,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
+                hideQuickView={true}
                 footer={
                   <FooterThumbnailTeamStore
                     {...{
@@ -256,7 +253,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     return (
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
-          <TotalItems>{`${total} Items`}</TotalItems>
+          <TotalItems>{`${total} ${formatMessage(
+            total > 1 ? messages.manyItems : messages.oneItem
+          )}`}</TotalItems>
           {sortOptions && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
