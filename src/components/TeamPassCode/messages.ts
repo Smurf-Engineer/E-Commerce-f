@@ -15,7 +15,8 @@ export default defineMessages({
   },
   modalText: {
     id: 'components.TeamPassCode.modalText',
-    defaultMessage: 'Please enter the pass code'
+    defaultMessage:
+      'Access code must be between 4-10 characters and can only contain alphanumeric characters'
   },
   modalSaveAsNewDesign: {
     id: 'components.TeamPassCode.modalSaveAsNewDesign',

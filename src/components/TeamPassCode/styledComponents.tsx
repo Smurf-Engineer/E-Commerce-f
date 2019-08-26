@@ -17,12 +17,10 @@ export const Title = styled.div`
 `
 
 export const Text = styled.div`
-  height: 42px;
-  width: 303.78px;
   color: #8c8c8c;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 21px;
-  margin-top: 10px;
+  margin: 12px 0;
 `
 
 export const StyledInput = styled(Input)`

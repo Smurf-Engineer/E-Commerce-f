@@ -1011,7 +1011,7 @@
   "components.Review.edit": "Edit",
   "components.Shippping.tittle": "Shipping Address",
   "components.TeamPassCode.modalTitle": "This team store is private",
-  "components.TeamPassCode.modalText": "Please enter the pass code",
+  "components.TeamPassCode.modalText": "Access code must be between 4-10 characters and can only contain alphanumeric characters",
   "components.TeamPassCode.modalSaveAsNewDesign": "Save as new design",
   "components.TeamPassCode.invalidNameMessage": "Invalid pass code value",
   "screen.TeamPassCode.passcodeNeeded": "Passcode needed.",
