@@ -95,7 +95,6 @@ class Review extends React.PureComponent<Props, {}> {
           const rangeToUse =
             fixedPrices && fixedPrices.length ? fixedPrices : priceRange
           const currencyPrices = filter(rangeToUse, { abbreviation: currency })
-          console.log('Subtotal ', currencyPrices)
 
           const itemImage = designId ? designImage || '' : images[0].front
           const itemTitle = designId ? designName || '' : name
