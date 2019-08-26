@@ -233,7 +233,7 @@ export class CartListItem extends React.Component<Props, {}> {
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
     })
-
+    console.log('Quantities ', quantities)
     const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
     const productPriceRanges = get(
@@ -258,18 +258,18 @@ export class CartListItem extends React.Component<Props, {}> {
       'price',
       0
     )
-
+    console.log('Personal price ', personalPrice)
     priceRange =
       priceRange && priceRange.price === 0
         ? currencyPrices[currencyPrices.length - 1]
         : priceRange
+    console.log('Price range ', priceRange)
 
     const itemTotal = priceRange
       ? priceRange.price * quantitySum
       : unitPrice || 0 * quantitySum
     const total = productTotal || itemTotal
     const unitaryPrice = unitPrice || get(priceRange, 'price')
-
     const symbol = currencySymbol || '$'
 
     const table = (
@@ -323,7 +323,7 @@ export class CartListItem extends React.Component<Props, {}> {
             )}
           </ItemDetailsHeaderPriceDetail>
           <ItemDetailsHeaderPriceDetail>
-            {formatMessage(messages.startPrice, {
+            {formatMessage(messages.regularPrice, {
               symbol,
               price: personalPrice
             })}

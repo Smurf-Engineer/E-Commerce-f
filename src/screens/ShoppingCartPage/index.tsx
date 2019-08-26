@@ -309,7 +309,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       nameOfFirstProduct,
       numberOfProducts
     } = shoppingCartData
-
+    console.log('priceRangeToApply ', shoppingCartData)
     let symbol = '$'
 
     const cartItems = cart || []

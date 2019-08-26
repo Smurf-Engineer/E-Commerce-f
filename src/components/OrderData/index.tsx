@@ -155,7 +155,6 @@ class OrderData extends React.Component<Props, {}> {
             unitPrice
           } = cartItem
           subtotal += productTotal || 0
-
           const priceRange = {
             quantity: '0',
             price: 0,
