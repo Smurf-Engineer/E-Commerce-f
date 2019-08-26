@@ -73,7 +73,8 @@ const orderHistoryAdminReducer: Reducer<any> = (
         rate: 1,
         discountActive: false,
         expiry: '',
-        loading: false
+        loading: false,
+        discountId: -1
       })
     }
     case ON_SELECT_DATE:
