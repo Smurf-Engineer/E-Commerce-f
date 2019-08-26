@@ -33,12 +33,8 @@ export default defineMessages({
     id: 'components.DesignsCatalogueThumbnailList.addToCart',
     defaultMessage: 'ADD TO CART'
   },
-  oneItem: {
-    id: 'components.DesignsCatalogueThumbnailList.oneItem',
-    defaultMessage: 'Item'
-  },
-  manyItems: {
-    id: 'components.DesignsCatalogueThumbnailList.manyItems',
-    defaultMessage: 'Items'
+  items: {
+    id: 'components.DesignsCatalogueThumbnailList.items',
+    defaultMessage: '{total, plural, one {1 item} other {{total} items}}'
   }
 })

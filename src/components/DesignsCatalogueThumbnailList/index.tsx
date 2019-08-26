@@ -40,6 +40,7 @@ import {
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
+import { FormattedMessage } from 'react-intl'
 
 interface Data extends QueryProps {
   products: ProductType
@@ -253,9 +254,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     return (
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
-          <TotalItems>{`${total} ${formatMessage(
-            total > 1 ? messages.manyItems : messages.oneItem
-          )}`}</TotalItems>
+          <TotalItems>
+            <FormattedMessage {...messages.items} values={{ total }} />
+          </TotalItems>
           {sortOptions && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>

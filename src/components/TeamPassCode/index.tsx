@@ -17,7 +17,7 @@ import {
   Button
 } from './styledComponents'
 import { getTeamStore } from './data'
-const passwordRegex = /^[a-zA-Z0-9]*$/g
+const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 interface Props {
   open: boolean
   teamStoreId: string
@@ -58,15 +58,7 @@ export class TeamPassCode extends React.Component<Props, {}> {
       getTeamStoreMutation
     } = this.props
     const { passCode } = this.state
-    let passCodeValid = false
-    if (
-      passCode.length < 10 &&
-      passCode.length > 4 &&
-      passwordRegex.test(passCode)
-    ) {
-      passCodeValid = true
-    }
-    if (passCode && passCodeValid) {
+    if (passCode && passwordRegex.test(passCode)) {
       try {
         const response = await getTeamStoreMutation({
           variables: { teamStoreId, passCode }
