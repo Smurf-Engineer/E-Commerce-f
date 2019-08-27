@@ -20,8 +20,8 @@ export default defineMessages({
   },
   passFormat: {
     id: 'screens.CreateStore.passFormat',
-    defaultMessage:
-      'Access code must be between 4-10 characters and can only contain numbers and letters'
+    defaultMessage: `Access codes must be between 4-10 characters and can only contain numbers and letters and 
+      are not case sensitive and cannot contain special characters (#+&@)`
   },
   priceDropTitle: {
     id: 'screens.CreateStore.priceDropTitle',
