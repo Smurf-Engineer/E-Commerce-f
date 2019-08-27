@@ -36,6 +36,7 @@ import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
 import AddToCartButton from '../AddToCartButton'
 import config from '../../config/index'
+import { CardNumberElement } from 'react-stripe-elements'
 
 interface Props {
   formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
@@ -115,7 +116,7 @@ export class CartListItem extends React.Component<Props, {}> {
     return val
   }
 
-  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+  getPriceRange(priceRanges: PriceRange[], totalItems: CardNumberElement) {
     const { price } = this.props
     let markslider = { quantity: '0', price: 0 }
     if (price && price.quantity !== 'Personal') {
@@ -247,8 +248,6 @@ export class CartListItem extends React.Component<Props, {}> {
       abbreviation: currentCurrency || config.defaultCurrency
     })
 
-    let priceRange = this.getPriceRange(currencyPrices, quantitySum)
-
     const personalPrice = get(
       find(cartItem.product.priceRange, {
         quantity: 'Personal',
@@ -257,6 +256,17 @@ export class CartListItem extends React.Component<Props, {}> {
       'price',
       0
     )
+
+    const teamStorePrice = find(cartItem.product.priceRange, {
+      quantity: '2-5',
+      abbreviation: currentCurrency || config.defaultCurrency
+    })
+    console.log(isTeamStore, fixedPrices)
+    let priceRange =
+      !isTeamStore || fixedPrices.length
+        ? this.getPriceRange(currencyPrices, quantitySum)
+        : teamStorePrice
+
     priceRange =
       priceRange && priceRange.price === 0
         ? currencyPrices[currencyPrices.length - 1]
@@ -267,6 +277,7 @@ export class CartListItem extends React.Component<Props, {}> {
       : unitPrice || 0 * quantitySum
     const total = productTotal || itemTotal
     const unitaryPrice = unitPrice || get(priceRange, 'price')
+
     const symbol = currencySymbol || '$'
 
     const table = (

@@ -150,16 +150,12 @@ class OrderData extends React.Component<Props, {}> {
             designId,
             designImage,
             designName,
-            product: { images, name, shortDescription },
+            product: { images, name, shortDescription, priceRange },
             productTotal,
             unitPrice
           } = cartItem
+
           subtotal += productTotal || 0
-          const priceRange = {
-            quantity: '0',
-            price: 0,
-            shortName: ''
-          }
 
           const itemImage = designId ? designImage || '' : images[0].front
           const itemTitle = designId ? designName || '' : name

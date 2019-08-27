@@ -14,6 +14,7 @@ import {
   HeaderPriceDetailEmpty
 } from './styledComponents'
 import messages from '../../ProductInfo/messages'
+import { Message } from '../../../types/common'
 
 interface Props {
   title: string
@@ -23,9 +24,13 @@ interface Props {
   symbol: string
   total: number
   unitaryPrice: number
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
 }
 
+interface MessagePrice {
+  symbol: string
+  price: string
+}
 class ItemDetails extends React.Component<Props, {}> {
   render() {
     const {
@@ -52,9 +57,10 @@ class ItemDetails extends React.Component<Props, {}> {
             {`${symbol} ${numeral(total || 0).format('0,0.00')}`}
           </ItemDetailsHeaderPrice>
           <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${symbol} ${numeral(
-              unitaryPrice || 0
-            ).format('0,0.00')}`}
+            {formatMessage(messages.unitPrice, {
+              symbol,
+              price: numeral(unitaryPrice || 0).format('0,0.00')
+            })}
           </ItemDetailsHeaderPriceDetail>
           <HeaderPriceDetailEmpty />
         </PriceContainer>

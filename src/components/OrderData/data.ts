@@ -49,6 +49,12 @@ export const getOrderQuery = gql`
           images: pictures {
             front: front_image
           }
+          priceRange {
+            quantity
+            price
+            abbreviation
+            shortName: short_name
+          }
         }
         itemDetails {
           label
