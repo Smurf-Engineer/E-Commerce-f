@@ -16,7 +16,6 @@ export const getShoppingCartData = (
   let maxquantity = 0
   let numberOfProducts = 0
   let nameOfFirstProduct = ''
-  let quantifiableItems = 0
   let symbol = '$'
   if (shoppingCart) {
     shoppingCart.map((cartItem, index) => {
@@ -24,6 +23,7 @@ export const getShoppingCartData = (
         return itemDetail.quantity
       })
       const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
       weightSum += get(cartItem, 'product.weight', 0) * quantitySum
       // increase number of products in cart
       numberOfProducts = numberOfProducts + quantitySum
@@ -39,25 +39,12 @@ export const getShoppingCartData = (
         justOneOfEveryItem = false
       }
 
-      // Get items that are not from a team store
-      if (!cartItem.teamStoreId) {
-        quantifiableItems += 1
-      }
-      // filter(cart)
-
-      // Get the maxquantity of articles of a product
-      if (quantitySum > maxquantity && !cartItem.teamStoreId) {
+      if (quantitySum > maxquantity) {
         maxquantity = quantitySum
       }
 
       // Check for fixed prices
-      const productPriceRanges = get(
-        cartItem,
-        cartItem.fixedPrices && cartItem.fixedPrices.length
-          ? 'fixedPrices'
-          : 'product.priceRange',
-        []
-      )
+      const productPriceRanges = get(cartItem, 'product.priceRange', [])
       // get prices from currency
       const currencyPrices = filter(productPriceRanges, {
         abbreviation: currency
@@ -72,7 +59,7 @@ export const getShoppingCartData = (
         totalWithoutDiscount + quantitySum * currencyPrices[0].price
     })
     if (justOneOfEveryItem && shoppingCart.length) {
-      priceRangeToApply = getPriceRangeToApply(quantifiableItems)
+      priceRangeToApply = getPriceRangeToApply(shoppingCart.length)
     } else {
       if (shoppingCart.length) {
         priceRangeToApply = getPriceRangeToApply(maxquantity)

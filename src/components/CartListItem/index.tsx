@@ -36,6 +36,7 @@ import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
 import AddToCartButton from '../AddToCartButton'
 import config from '../../config/index'
+import { CardNumberElement } from 'react-stripe-elements'
 
 interface Props {
   formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
@@ -115,7 +116,7 @@ export class CartListItem extends React.Component<Props, {}> {
     return val
   }
 
-  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+  getPriceRange(priceRanges: PriceRange[], totalItems: CardNumberElement) {
     const { price } = this.props
     let markslider = { quantity: '0', price: 0 }
     if (price && price.quantity !== 'Personal') {
@@ -195,6 +196,14 @@ export class CartListItem extends React.Component<Props, {}> {
     history.push(productUrl)
   }
 
+  getPriceRangeByQuantity = (quantity: string) => {
+    const { cartItem, currentCurrency } = this.props
+    return find(cartItem.product.priceRange, {
+      quantity,
+      abbreviation: currentCurrency || config.defaultCurrency
+    })
+  }
+
   render() {
     const {
       formatMessage,
@@ -233,7 +242,6 @@ export class CartListItem extends React.Component<Props, {}> {
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
     })
-
     const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
     const productPriceRanges = get(
@@ -248,16 +256,16 @@ export class CartListItem extends React.Component<Props, {}> {
       abbreviation: currentCurrency || config.defaultCurrency
     })
 
-    let priceRange = this.getPriceRange(currencyPrices, quantitySum)
-
     const personalPrice = get(
-      find(cartItem.product.priceRange, {
-        quantity: 'Personal',
-        abbreviation: currentCurrency || config.defaultCurrency
-      }),
+      this.getPriceRangeByQuantity('Personal'),
       'price',
       0
     )
+
+    let priceRange =
+      !isTeamStore || fixedPrices.length
+        ? this.getPriceRange(currencyPrices, quantitySum)
+        : this.getPriceRangeByQuantity('2-5')
 
     priceRange =
       priceRange && priceRange.price === 0
@@ -323,7 +331,7 @@ export class CartListItem extends React.Component<Props, {}> {
             )}
           </ItemDetailsHeaderPriceDetail>
           <ItemDetailsHeaderPriceDetail>
-            {formatMessage(messages.startPrice, {
+            {formatMessage(messages.regularPrice, {
               symbol,
               price: personalPrice
             })}

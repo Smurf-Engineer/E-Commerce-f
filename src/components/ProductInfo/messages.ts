@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'components.ProductInfo.unitPrice',
     defaultMessage: 'Unit price: {symbol} {price}'
   },
-  startPrice: {
-    id: 'components.ProductInfo.startPrice',
-    defaultMessage: 'Start price: {symbol} {price}'
+  regularPrice: {
+    id: 'components.ProductInfo.regularPrice',
+    defaultMessage: 'Regular price: {symbol} {price}'
   },
   teamPrice: {
     id: 'components.ProductInfo.teamPrice',

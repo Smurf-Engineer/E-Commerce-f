@@ -307,7 +307,7 @@
   "components.ProductInfo.unitPrice": "Unit price: {symbol} {price}",
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
-  "components.ProductInfo.startPrice": "Start price: {symbol} {price}",
+  "components.ProductInfo.regularPrice": "Regular price: {symbol} {price}",
   "components.ProductInfo.teamPrice": "Team price: {symbol} {price}",
   "components.ProductInfo.addMoreFor": "Add {products} more for {price}",
   "components.AddToTeamStore.tittle": "ADD TO TEAM STORE",

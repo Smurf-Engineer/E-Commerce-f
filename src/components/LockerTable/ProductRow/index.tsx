@@ -130,10 +130,6 @@ class ProductRow extends React.PureComponent<Props, {}> {
     }
     const handleOnClickView = () => onPressQuickView(productId, yotpoId, true)
     const handleOnClickVisible = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (totalOrders) {
-        screenMessage.error(formatMessage(messages.cannotHide))
-        return
-      }
       const checked = e.target.checked
       onPressVisible(index, checked)
     }
