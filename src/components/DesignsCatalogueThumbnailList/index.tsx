@@ -40,6 +40,7 @@ import {
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
+import { FormattedMessage } from 'react-intl'
 
 interface Data extends QueryProps {
   products: ProductType
@@ -127,12 +128,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
               : currentPriceValue
-          const currentPrice = `${fixedPriceValue.shortName} ${
-            fixedPriceValue.price
-          }`
-          const targetPrice = `${targetPriceValue.shortName} ${
-            targetPriceValue.price
-          }`
+          const currentPrice = `${fixedPriceValue.shortName} ${fixedPriceValue.price}`
+          const targetPrice = `${targetPriceValue.shortName} ${targetPriceValue.price}`
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -142,6 +139,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
+                hideQuickView={true}
                 footer={
                   <FooterThumbnailTeamStore
                     {...{
@@ -256,7 +254,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     return (
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
-          <TotalItems>{`${total} Items`}</TotalItems>
+          <TotalItems>
+            <FormattedMessage {...messages.items} values={{ total }} />
+          </TotalItems>
           {sortOptions && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>

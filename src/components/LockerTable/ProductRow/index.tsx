@@ -35,6 +35,7 @@ interface Props {
   id?: number
   text?: string
   regularPrice?: string
+  hideQuickView?: boolean
   fixedPrice?: string
   isDragging?: () => boolean
   connectDragSource?: any
@@ -116,7 +117,8 @@ class ProductRow extends React.PureComponent<Props, {}> {
       connectDropTarget,
       formatMessage,
       regularPrice,
-      fixedPrice
+      fixedPrice,
+      hideQuickView
     } = this.props
 
     const handleOnClick = () => {
@@ -182,7 +184,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
               <Row>
                 <Cell width={15}>
                   <Thumbnail
-                    {...{ image }}
+                    {...{ image, hideQuickView }}
                     onPressQuickView={handleOnClickView}
                   />
                 </Cell>

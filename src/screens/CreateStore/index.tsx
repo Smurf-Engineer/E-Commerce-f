@@ -601,6 +601,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <LockerTable
               {...{ formatMessage, teamSizeRange, currentCurrency }}
               items={items}
+              hideQuickView={true}
               onPressDelete={this.handleOnDeleteItem}
               onPressQuickView={this.handleOnPressQuickView}
               onPressVisible={this.handleOnPressVisible}
