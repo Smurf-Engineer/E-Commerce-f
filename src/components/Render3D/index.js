@@ -157,7 +157,7 @@ class Render3D extends PureComponent {
           proDesign,
           outputSvg
         } = design
-        const { colorAccessories } = this.props
+        const { colorAccessories, phoneView } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -210,7 +210,7 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign || (outputSvg && fromSvg)) {
+        if (proDesign || (outputSvg && fromSvg) || phoneView) {
           const imageCanvas = document.createElement('canvas')
           canvg(
             imageCanvas,
@@ -482,7 +482,9 @@ class Render3D extends PureComponent {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
 
     const { stitchingValue, phoneView } = this.props
-
+    if (design.canvas && phoneView) {
+      await this.getFontsFromCanvas(design.canvas)
+    }
     const loadedTextures = await this.loadTextures(design, actualSvg, fromSvg)
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
@@ -564,7 +566,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign && !fromSvg) {
+          if (!proDesign && !fromSvg && !phoneView) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -589,7 +591,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-          if (!proDesign && !fromSvg) {
+          if (!proDesign && !fromSvg && !phoneView) {
             areas.forEach(
               (map, index) =>
                 (children[
@@ -609,7 +611,7 @@ class Render3D extends PureComponent {
               : REGULAR_CANVAS
             canvas.width = CANVAS_SIZE
             canvas.height = CANVAS_SIZE
-
+            console.log('todo mal')
             this.canvasTexture = new fabric.StaticCanvas(canvas, {
               width: CANVAS_SIZE,
               height: CANVAS_SIZE,
@@ -618,6 +620,7 @@ class Render3D extends PureComponent {
               crossOrigin: 'Anonymous'
             })
             const canvasTexture = new THREE.CanvasTexture(canvas)
+
             canvasTexture.minFilter = THREE.LinearFilter
             this.canvasTexture.on(
               'after:render',
@@ -755,6 +758,30 @@ class Render3D extends PureComponent {
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
       return false
+    }
+  }
+
+  getFontsFromCanvas = async object => {
+    try {
+      const fonts = []
+      const { objects } = JSON.parse(object)
+      objects.forEach(el => {
+        switch (el.type) {
+          case CanvasElements.Text: {
+            fonts.push(el.fontFamily)
+            break
+          }
+          default:
+            break
+        }
+      })
+      const fontsPromises = fonts.map(font => {
+        const fontObserver = new FontFaceObserver(font)
+        return fontObserver.load()
+      })
+      await Promise.all(fontsPromises)
+    } catch (e) {
+      console.error('Error loading canvas object: ', e.message)
     }
   }
 

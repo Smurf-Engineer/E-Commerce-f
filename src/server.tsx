@@ -42,6 +42,7 @@ server
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
     const client = configureServerClient()
+    console.log(req.url)
     const location = req.url
     const context = {}
     const store = configureStore()
