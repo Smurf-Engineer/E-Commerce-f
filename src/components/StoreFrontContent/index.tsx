@@ -509,7 +509,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
           </React.Fragment>
         )}
         <TeamPassCode
-          open={true}
+          open={openModal}
           requestClose={this.closePassCodeModal}
           formatMessage={formatMessage}
           setPassCode={setPassCodeAction}
