@@ -148,7 +148,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
     passCode: string,
     onDemand: boolean
   ) => {
-    const { privateStore } = this.props
+    const {
+      privateStore,
+      intl: { formatMessage }
+    } = this.props
     let validForm = true
     if (!name || ((!startDate || !endDate) && !onDemand)) {
       this.setState({
@@ -158,7 +161,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       zenscroll.toY(0)
     } else if (items.length < 1) {
       zenscroll.to(this.lockerTable)
-      message.warning('you need to add Items to your store!')
+      message.warning(formatMessage(messages.emptyList))
       validForm = false
     } else if (privateStore && (!passCode || !passwordRegex.test(passCode))) {
       this.setState({

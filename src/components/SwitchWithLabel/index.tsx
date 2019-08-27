@@ -50,7 +50,7 @@ const SwitchWithLabel = ({
       target: { value }
     } = evnt
     if (value.length <= INPUT_MAX_LENGTH) {
-      updatePassCodeAction(value)
+      updatePassCodeAction(value.toLowerCase())
     }
   }
 

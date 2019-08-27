@@ -158,5 +158,9 @@ export default defineMessages({
   cancel: {
     id: 'componentes.StoreForm.cancel',
     defaultMessage: 'Cancel'
+  },
+  emptyList: {
+    id: 'componentes.StoreForm.emptyList',
+    defaultMessage: 'You need to add items to your store!'
   }
 })
