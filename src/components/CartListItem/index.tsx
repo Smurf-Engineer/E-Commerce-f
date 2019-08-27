@@ -196,6 +196,14 @@ export class CartListItem extends React.Component<Props, {}> {
     history.push(productUrl)
   }
 
+  getPriceRangeByQuantity = (quantity: string) => {
+    const { cartItem, currentCurrency } = this.props
+    return find(cartItem.product.priceRange, {
+      quantity,
+      abbreviation: currentCurrency || config.defaultCurrency
+    })
+  }
+
   render() {
     const {
       formatMessage,
@@ -249,22 +257,15 @@ export class CartListItem extends React.Component<Props, {}> {
     })
 
     const personalPrice = get(
-      find(cartItem.product.priceRange, {
-        quantity: 'Personal',
-        abbreviation: currentCurrency || config.defaultCurrency
-      }),
+      this.getPriceRangeByQuantity('Personal'),
       'price',
       0
     )
 
-    const teamStoreRange = find(cartItem.product.priceRange, {
-      quantity: '2-5',
-      abbreviation: currentCurrency || config.defaultCurrency
-    })
     let priceRange =
       !isTeamStore || fixedPrices.length
         ? this.getPriceRange(currencyPrices, quantitySum)
-        : teamStoreRange
+        : this.getPriceRangeByQuantity('2-5')
 
     priceRange =
       priceRange && priceRange.price === 0
