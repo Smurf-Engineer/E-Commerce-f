@@ -2,7 +2,6 @@
  * SwitchWithLabel Component - Created by david on 10/04/18.
  */
 import * as React from 'react'
-import Switch from 'antd/lib/switch'
 import Input from 'antd/lib/input'
 import {
   Container,
@@ -10,7 +9,9 @@ import {
   Message,
   Row,
   inputStyle,
-  Error
+  Error,
+  SwitchInput,
+  SubLabel
 } from './styledComponents'
 
 interface Props {
@@ -24,6 +25,7 @@ interface Props {
   hasError?: boolean
   defaultChecked?: boolean
   placeholder: string
+  subLabel?: string
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
 }
@@ -40,25 +42,23 @@ const SwitchWithLabel = ({
   hasError,
   defaultChecked,
   placeholder,
+  subLabel,
   updatePassCodeAction = () => {}
 }: Props) => {
   const handleUpdatePassCode = (evnt: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value }
     } = evnt
-
-    if (value.length > INPUT_MAX_LENGTH) {
-      return
+    if (value.length <= INPUT_MAX_LENGTH) {
+      updatePassCodeAction(value)
     }
-
-    updatePassCodeAction(value)
   }
 
   return (
     <Container {...{ width }}>
       <Row>
         <Label>{label}</Label>
-        <Switch {...{ defaultChecked, onChange, checked }} />
+        <SwitchInput {...{ defaultChecked, onChange, checked }} />
       </Row>
       <Message>{message}</Message>
       {withInput && (
@@ -72,7 +72,8 @@ const SwitchWithLabel = ({
           style={inputStyle}
         />
       )}
-      {hasError && (!passCode && checked) && <Error>{errorLabel}</Error>}
+      {subLabel && <SubLabel>{subLabel}</SubLabel>}
+      {hasError && checked && <Error>{errorLabel}</Error>}
     </Container>
   )
 }

@@ -139,6 +139,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
           endDate,
           privateStore,
           onDemand,
+          passCode,
           items,
           teamSize: { id: sizeId, size }
         }
@@ -147,6 +148,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         storeId: id,
         storeShortId: shortId,
         name: name,
+        passCode,
         startDate: startDate,
         startDateMoment: startDate ? moment(startDate) : null,
         endDate: endDate,
