@@ -257,15 +257,14 @@ export class CartListItem extends React.Component<Props, {}> {
       0
     )
 
-    const teamStorePrice = find(cartItem.product.priceRange, {
+    const teamStoreRange = find(cartItem.product.priceRange, {
       quantity: '2-5',
       abbreviation: currentCurrency || config.defaultCurrency
     })
-    console.log(isTeamStore, fixedPrices)
     let priceRange =
       !isTeamStore || fixedPrices.length
         ? this.getPriceRange(currencyPrices, quantitySum)
-        : teamStorePrice
+        : teamStoreRange
 
     priceRange =
       priceRange && priceRange.price === 0
