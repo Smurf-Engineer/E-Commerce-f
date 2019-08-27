@@ -49,7 +49,7 @@ export class TeamPassCode extends React.Component<Props, {}> {
     this.setState({ passCode: value })
   }
   handleClose = () => {
-    history.back()
+    location.replace('/search-teamstores')
   }
   handleEnter = async (evt: React.MouseEvent<EventTarget>) => {
     const {
