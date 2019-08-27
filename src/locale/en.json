@@ -270,6 +270,8 @@
   "screen.MyTeamStores.errorMessage": "Something wrong happened. Please try again!",
   "screen.MyTeamStores.deleteModalLabel": "Delete",
   "screen.MyTeamStores.shareTeamStoreMessage": "Check out this awesome teamstore!",
+  "screen.MyTeamStores.teamStoreConcept": "Team Stores are a fast and convenient option for teams, groups or event organizers expecting {members}, to place orders without the hassle of a single person having to collect size and payment from each individual.",
+  "screen.MyTeamStores.members": "2 or more members",
   "components.TeamStoreItem.editButtonLabel": "Edit",
   "components.TeamStoreItem.deleteButtonLabel": "Delete",
   "components.TeamStoreItem.shareButtonLabel": "Share",
