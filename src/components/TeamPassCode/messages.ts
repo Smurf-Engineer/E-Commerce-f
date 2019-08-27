@@ -58,5 +58,9 @@ export default defineMessages({
   passcodeNeeded: {
     id: 'screen.TeamPassCode.passcodeNeeded',
     defaultMessage: 'Passcode needed.'
+  },
+  cancel: {
+    id: 'screen.TeamPassCode.cancel',
+    defaultMessage: 'Cancel'
   }
 })

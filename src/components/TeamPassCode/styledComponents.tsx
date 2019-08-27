@@ -36,10 +36,10 @@ export const StyledSaveAs = styled.div`
 export const Button = styled(AntdButton)`
   height: 40px;
   width: 100%;
+  margin-top: 8px;
 `
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: 10px;
   .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;

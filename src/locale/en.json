@@ -1018,6 +1018,7 @@
   "components.TeamPassCode.invalidNameMessage": "Invalid pass code value",
   "screen.TeamPassCode.passcodeNeeded": "Passcode needed.",
   "screen.TeamPassCode.invalidPass": "Invalid passcode value.",
+  "screen.TeamPassCode.cancel": "Cancel",
   "components.TeamPassCode.save": "Enter",
   "components.TeamStoreList.notFoundMessage": "No results or the team is private",
   "components.LogoutModal.title": "Log Out",

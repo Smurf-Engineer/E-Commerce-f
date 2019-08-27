@@ -286,7 +286,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     return (
       <Container>
-        {loading ? (
+        {loading || openModal ? (
           <Loading>
             <Spin />
           </Loading>
@@ -506,16 +506,15 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
               setSendMessageLoading={sendMessageLoadingAction}
               ownerName={ownerName}
             />
-
-            <TeamPassCode
-              open={openModal}
-              requestClose={this.closePassCodeModal}
-              formatMessage={formatMessage}
-              setPassCode={setPassCodeAction}
-              teamStoreId={teamStoreId}
-            />
           </React.Fragment>
         )}
+        <TeamPassCode
+          open={true}
+          requestClose={this.closePassCodeModal}
+          formatMessage={formatMessage}
+          setPassCode={setPassCodeAction}
+          teamStoreId={teamStoreId}
+        />
       </Container>
     )
   }
