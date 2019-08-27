@@ -256,7 +256,7 @@
   "components.StoreForm.teamStoreName": "Team Store Name",
   "components.StoreForm.cutOff": "Cut Off Date",
   "components.StoreForm.deleteLabel": "Delete",
-  "components.StoreForm.shipping": "Orders ship within 7 days of receipt.",
+  "components.StoreForm.shipping": "Orders ship within 7 days of receipt of order.",
   "components.StoreForm.onDemandMode": "ON DEMAND MODE",
   "components.StoreForm.desiredDeliveryLabel": "Desired Delivery Date",
   "components.StoreForm.deliveryErrorLabel": "Delivery date cannot be on a Sunday or Federal Holiday'",
