@@ -157,7 +157,7 @@ class Render3D extends PureComponent {
           proDesign,
           outputSvg
         } = design
-        const { colorAccessories, phoneView } = this.props
+        const { colorAccessories, isPhone } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -210,7 +210,7 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign || (outputSvg && fromSvg) || phoneView) {
+        if (proDesign || (outputSvg && fromSvg) || isPhone) {
           const imageCanvas = document.createElement('canvas')
           canvg(
             imageCanvas,
@@ -481,8 +481,8 @@ class Render3D extends PureComponent {
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
 
-    const { stitchingValue, phoneView } = this.props
-    if (design.canvas && phoneView) {
+    const { stitchingValue, phoneView, isPhone } = this.props
+    if (design.canvas && isPhone) {
       await this.getFontsFromCanvas(design.canvas)
     }
     const loadedTextures = await this.loadTextures(design, actualSvg, fromSvg)
@@ -566,7 +566,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign && !fromSvg && !phoneView) {
+          if (!proDesign && !fromSvg && !isPhone) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -591,7 +591,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-          if (!proDesign && !fromSvg && !phoneView) {
+          if (!proDesign && !fromSvg && !isPhone) {
             areas.forEach(
               (map, index) =>
                 (children[
