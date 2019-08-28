@@ -125,6 +125,10 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.share',
     defaultMessage: 'Share'
   },
+  typeCode: {
+    id: 'screens.StoreFrontContent.typeCode',
+    defaultMessage: 'Please enter the team store code to get access'
+  },
   edit: {
     id: 'screens.StoreFrontContent.edit',
     defaultMessage: 'Edit'

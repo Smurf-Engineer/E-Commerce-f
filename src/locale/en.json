@@ -335,6 +335,7 @@
   "screens.StoreFrontContent.returnMessageDesc": "All Jakroo products are covered by a limited 1 year manufacturer warranty covering defects in materials and workmanship. This warranty does not cover normal wear and tear. All custom products are made-to-order on demand and thus not returnable for reasons other than manufacturer defect. All retail collection items (non-customized) are returnable for a full refund or exchange, provided that the products are unworn and accompanied by the receipt. With our size exchange program, however, you have the option to keep your original item and order a different size at a cost of 50% of the original item price. Contact our customer service team for more details about warranty and exchange policy.",
   "screens.StoreFrontContent.share": "Share",
   "screens.StoreFrontContent.edit": "Edit",
+  "screens.StoreFrontContent.typeCode": "Please enter the team store code to get access",
   "screens.StoreFrontContent.cutOff": "Cut-off date",
   "screens.StoreFrontContent.estimatedArrival": "Estimated arrival",
   "screen.StoreFrontContent.shareModalTitle": "SHARE YOUR TEAMSTORE!",
