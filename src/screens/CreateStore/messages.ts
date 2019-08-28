@@ -18,6 +18,11 @@ export default defineMessages({
     defaultMessage:
       'Select estimated size of your team to display the estimated (target) pricing for each item.'
   },
+  passFormat: {
+    id: 'screens.CreateStore.passFormat',
+    defaultMessage: `Access codes must be between 4-10 characters and can only contain numbers and letters and 
+      are not case sensitive and cannot contain special characters (#+&@)`
+  },
   priceDropTitle: {
     id: 'screens.CreateStore.priceDropTitle',
     defaultMessage: 'DYNAMIC PRICE DROP'
@@ -136,7 +141,7 @@ export default defineMessages({
   },
   requiredFieldLabel: {
     id: 'components.StoreForm.requiredFieldLabel',
-    defaultMessage: 'This field is required'
+    defaultMessage: 'This field is required or has invalid value'
   },
   changeLabel: {
     id: 'components.StoreForm.changeLabel',
@@ -148,10 +153,14 @@ export default defineMessages({
   },
   save: {
     id: 'componentes.StoreForm.save',
-    defaultMessage: 'Save'
+    defaultMessage: 'Save Changes'
   },
   cancel: {
     id: 'componentes.StoreForm.cancel',
     defaultMessage: 'Cancel'
+  },
+  emptyList: {
+    id: 'componentes.StoreForm.emptyList',
+    defaultMessage: 'You need to add items to your store!'
   }
 })

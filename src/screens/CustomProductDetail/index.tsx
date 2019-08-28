@@ -592,9 +592,7 @@ const CustomProductDetailEnhance = compose(
   ),
   graphql<any>(designsQuery, {
     options: ({ user, location: { search } }: OwnProps) => {
-      console.log(user)
       const queryParams = queryString.parse(search)
-      console.log(!user)
       return {
         variables: {
           limit: 12,

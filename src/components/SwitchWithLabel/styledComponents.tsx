@@ -2,6 +2,8 @@
  * Styled Components - Created by david on 10/04/18.
  */
 import styled from 'styled-components'
+import Switch from 'antd/lib/switch'
+import { BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   width: 25%;
@@ -15,6 +17,11 @@ export const Container = styled.div`
 
   @media (min-width: 481px) and (max-width: 1024px) {
     width: 45%;
+  }
+`
+export const SwitchInput = styled(Switch)`
+  &.ant-switch-checked {
+    background: ${BLUE};
   }
 `
 
@@ -40,6 +47,13 @@ export const Message = styled.div`
   color: #8c8c8c;
   font-size: 14px;
   line-height: 21px;
+`
+
+export const SubLabel = styled.div`
+  color: #8c8c8c;
+  font-size: 12px;
+  font-size: 12px;
+  margin: 6px 4px 0;
 `
 
 export const inputStyle = {

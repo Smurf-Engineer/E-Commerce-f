@@ -53,16 +53,17 @@ import {
   RowSwitch,
   ButtonDelete,
   AddItem,
-  ButtonBuildStyle,
   BannerTitleContainer,
   OptionalLabel,
   ButtonOptionStyle,
   ButtonOptionsWrapper,
   Loading,
-  TextBlock
+  TextBlock,
+  SaveButton
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
+const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
@@ -147,9 +148,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
     passCode: string,
     onDemand: boolean
   ) => {
-    const { privateStore } = this.props
+    const {
+      privateStore,
+      intl: { formatMessage }
+    } = this.props
     let validForm = true
-
     if (!name || ((!startDate || !endDate) && !onDemand)) {
       this.setState({
         hasError: !name || !startDate || !endDate || !items.length
@@ -158,9 +161,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
       zenscroll.toY(0)
     } else if (items.length < 1) {
       zenscroll.to(this.lockerTable)
-      message.warning('you need to add Items to your store!')
+      message.warning(formatMessage(messages.emptyList))
       validForm = false
-    } else if (privateStore && !passCode) {
+    } else if (privateStore && (!passCode || !passwordRegex.test(passCode))) {
       this.setState({
         hasError: true
       })
@@ -302,7 +305,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       passCode,
       onDemand
     )
-
     if (!validForm) {
       return
     }
@@ -643,6 +645,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 onChange={this.handlePrivateSwitch}
                 placeholder={formatMessage(messages.passcode)}
                 label={formatMessage(messages.privateLabel)}
+                subLabel={formatMessage(messages.passFormat)}
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
@@ -660,30 +663,29 @@ export class CreateStore extends React.Component<Props, StateProps> {
               <ButtonOptionsWrapper>
                 <ButtonOptionStyle
                   {...{ loading }}
-                  type="primary"
-                  size="large"
-                  onClick={this.handleBuildTeamStore}
-                >
-                  {formatMessage(messages.save)}
-                </ButtonOptionStyle>
-                <ButtonOptionStyle
-                  {...{ loading }}
-                  type="primary"
                   size="large"
                   onClick={this.handleCancelTeamStore}
                 >
                   {formatMessage(messages.cancel)}
                 </ButtonOptionStyle>
+                <SaveButton
+                  {...{ loading }}
+                  size="large"
+                  onClick={this.handleBuildTeamStore}
+                >
+                  {formatMessage(messages.save)}
+                </SaveButton>
               </ButtonOptionsWrapper>
             ) : (
-              <ButtonBuildStyle
+              <SaveButton
                 {...{ loading }}
                 type="primary"
+                width="25%"
                 size="large"
                 onClick={this.handleBuildTeamStore}
               >
                 {formatMessage(messages.buttonBuild)}
-              </ButtonBuildStyle>
+              </SaveButton>
             )}
             <LockerModal
               {...{

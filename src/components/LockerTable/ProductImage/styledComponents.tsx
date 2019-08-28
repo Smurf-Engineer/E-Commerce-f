@@ -29,7 +29,7 @@ export const Image = styled.img`
   user-select: none;
   height: 132px;
   width: 172px;
-
+  object-fit: cover;
   @media (min-width: 321px) and (max-width: 480px) {
     height: 100%;
     width: 100%;
