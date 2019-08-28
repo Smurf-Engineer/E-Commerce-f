@@ -29,6 +29,7 @@ interface CartItems {
   designImage?: string
   designCode?: string
   teamStoreId?: string
+  teamStoreItem?: string
   shortId?: string
 }
 
@@ -43,6 +44,7 @@ interface Props {
   designImage?: string
   designCode?: string
   teamStoreId?: string
+  teamStoreItem?: string
   withoutTop?: boolean
   itemProdPage?: boolean
   onClick: () => boolean
@@ -92,6 +94,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       item,
       designId,
       teamStoreId,
+      teamStoreItem,
       designName,
       designImage,
       designCode,
@@ -104,6 +107,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
         item,
         designId,
         teamStoreId,
+        teamStoreItem,
         designName,
         designImage,
         designCode,
@@ -131,6 +135,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
                   i,
                   i.designId,
                   i.teamStoreId,
+                  i.teamStoreItem,
                   i.designName,
                   i.designImage,
                   i.designCode,
@@ -144,6 +149,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
               item,
               designId,
               teamStoreId,
+              teamStoreItem,
               designName,
               designImage,
               designCode,
@@ -160,6 +166,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
               item,
               item.shortId,
               item.teamStoreId,
+              item.teamStoreItem,
               item.designName,
               item.designImage,
               item.designCode,
@@ -176,6 +183,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     item: CartItems,
     designId = '',
     teamStoreId = '',
+    teamStoreItem = '',
     designName = '',
     designImage = '',
     designCode = '',
@@ -198,6 +206,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       { designImage },
       { designCode },
       { teamStoreId },
+      { teamStoreItem },
       { fixedPrices }
     )
     return itemToAdd

@@ -363,7 +363,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           withoutTop={true}
           teamStoreId={teamStoreShortId}
           fixedPrices={teamPrice}
-          {...{ designId, designName, designImage }}
+          {...{ designId, designName, designImage, teamStoreItem }}
         />
       </ButtonsRow>
     )
