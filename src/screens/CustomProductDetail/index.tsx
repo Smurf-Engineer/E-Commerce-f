@@ -57,8 +57,7 @@ import {
   ItemDetailType,
   CartItemDetail,
   ProductFile,
-  PriceRange,
-  UserType
+  PriceRange
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -583,7 +582,6 @@ const mapStateToProps = (state: any) => {
 
 type OwnProps = {
   location?: any
-  user?: UserType
 }
 
 const CustomProductDetailEnhance = compose(
@@ -591,17 +589,15 @@ const CustomProductDetailEnhance = compose(
   graphql<any>(designsQuery, {
     options: (ownprops: OwnProps) => {
       const {
-        location: { search },
-        user
+        location: { search }
       } = ownprops
       const queryParams = queryString.parse(search)
-      console.log(queryParams.item, user)
       return {
         variables: {
           limit: 12,
           offset: 0
         },
-        skip: !user,
+        skip: !!queryParams.item,
         fetchPolicy: 'network-only'
       }
     },

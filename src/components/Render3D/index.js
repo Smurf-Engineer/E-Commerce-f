@@ -611,7 +611,6 @@ class Render3D extends PureComponent {
               : REGULAR_CANVAS
             canvas.width = CANVAS_SIZE
             canvas.height = CANVAS_SIZE
-            console.log('todo mal')
             this.canvasTexture = new fabric.StaticCanvas(canvas, {
               width: CANVAS_SIZE,
               height: CANVAS_SIZE,
