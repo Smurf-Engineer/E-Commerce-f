@@ -192,13 +192,11 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         error.message ||
         null
       : null
-
     const openModal =
       getTeamStore &&
       (getTeamStore.id === -1 || getTeamStore.id === -2) &&
       !errorMessage &&
       !passCode
-
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
     const teamStoreName = get(getTeamStore, 'name', '')
@@ -286,7 +284,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     return (
       <Container>
-        {loading ? (
+        {loading || openModal ? (
           <Loading>
             <Spin />
           </Loading>
@@ -506,16 +504,15 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
               setSendMessageLoading={sendMessageLoadingAction}
               ownerName={ownerName}
             />
-
-            <TeamPassCode
-              open={openModal}
-              requestClose={this.closePassCodeModal}
-              formatMessage={formatMessage}
-              setPassCode={setPassCodeAction}
-              teamStoreId={teamStoreId}
-            />
           </React.Fragment>
         )}
+        <TeamPassCode
+          open={openModal}
+          requestClose={this.closePassCodeModal}
+          formatMessage={formatMessage}
+          setPassCode={setPassCodeAction}
+          teamStoreId={teamStoreId}
+        />
       </Container>
     )
   }

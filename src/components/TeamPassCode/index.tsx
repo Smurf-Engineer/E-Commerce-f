@@ -48,7 +48,9 @@ export class TeamPassCode extends React.Component<Props, {}> {
     evt.persist()
     this.setState({ passCode: value })
   }
-
+  handleClose = () => {
+    location.replace('/search-teamstores')
+  }
   handleEnter = async (evt: React.MouseEvent<EventTarget>) => {
     const {
       formatMessage,
@@ -117,6 +119,9 @@ export class TeamPassCode extends React.Component<Props, {}> {
           <ButtonWrapper>
             <Button type="primary" onClick={this.handleEnter}>
               <FormattedMessage {...messages.save} />
+            </Button>
+            <Button onClick={this.handleClose}>
+              <FormattedMessage {...messages.cancel} />
             </Button>
           </ButtonWrapper>
         </Container>
