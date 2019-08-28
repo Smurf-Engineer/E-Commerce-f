@@ -15,8 +15,8 @@ export default defineMessages({
   },
   modalText: {
     id: 'components.TeamPassCode.modalText',
-    defaultMessage:
-      'Access code must be between 4-10 characters and can only contain alphanumeric characters'
+    defaultMessage: `Access codes must be between 4-10 characters and can only contain numbers and letters and 
+      are not case sensitive and cannot contain special characters (#+&@)`
   },
   modalSaveAsNewDesign: {
     id: 'components.TeamPassCode.modalSaveAsNewDesign',

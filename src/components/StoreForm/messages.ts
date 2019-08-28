@@ -35,7 +35,7 @@ export default defineMessages({
   },
   shipping: {
     id: 'components.StoreForm.shipping',
-    defaultMessage: 'Orders ship within 7 days of receipt.'
+    defaultMessage: 'Orders ship within 7 days of receipt of order.'
   },
   onDemandMode: {
     id: 'components.StoreForm.onDemandMode',

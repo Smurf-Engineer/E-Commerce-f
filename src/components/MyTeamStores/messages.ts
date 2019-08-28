@@ -40,6 +40,16 @@ export default defineMessages({
   },
   shareTeamStoreMessage: {
     id: 'screen.MyTeamStores.shareTeamStoreMessage',
-    defatulMessage: 'Check out this awesome teamstore!'
+    defaultMessage: 'Check out this awesome teamstore!'
+  },
+  teamStoreConcept: {
+    id: 'screen.MyTeamStores.teamStoreConcept',
+    defaultMessage: `Team Stores are a fast and convenient option for teams, groups or event 
+    organizers expecting {members}, to place orders without the hassle of a single person 
+    having to collect size and payment from each individual.`
+  },
+  members: {
+    id: 'screen.MyTeamStores.members',
+    defaultMessage: '2 or more members'
   }
 })

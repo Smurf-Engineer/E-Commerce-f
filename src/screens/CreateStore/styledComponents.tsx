@@ -3,6 +3,11 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { BLUE, FACEBOOKBLUE } from '../../theme/colors'
+
+interface DivProps {
+  width?: string
+}
 
 export const Container = styled.div`
   background-color: #fff;
@@ -122,15 +127,6 @@ export const AddItem = styled(Button)`
   margin: 16px 0px;
 `
 
-export const ButtonBuildStyle = styled(Button)`
-  width: 25%;
-  margin: 16px 0px;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
-  }
-`
-
 export const ButtonOptionsWrapper = styled.div`
   width: 25%;
   margin: 16px 0px;
@@ -148,6 +144,21 @@ export const ButtonOptionStyle = styled(Button)`
   width: 45%;
   margin: 16px 0px;
 
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
+`
+export const SaveButton = styled(Button)`
+  width: ${({ width }: DivProps) => (width ? width : '45%')};
+  margin: 16px 0px;
+  color: white;
+  background: ${BLUE};
+  border: none;
+  &:hover {
+    color: white;
+    background: ${FACEBOOKBLUE};
+    border: none;
+  }
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
