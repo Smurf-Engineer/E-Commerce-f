@@ -585,6 +585,7 @@ export interface CartItems {
   designImage?: string
   designCode?: string
   teamStoreId?: string
+  teamStoreItem?: string
   bibBraceColor?: string
   flatlockCode?: string
   zipperColor?: string

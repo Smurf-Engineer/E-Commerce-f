@@ -177,6 +177,8 @@ export class CartListItem extends React.Component<Props, {}> {
     const {
       cartItem: {
         designId,
+        teamStoreId,
+        teamStoreItem,
         product: { id, yotpoId }
       },
       history,
@@ -189,7 +191,9 @@ export class CartListItem extends React.Component<Props, {}> {
 
     let productUrl = `/product?id=${id}&modelId=${yotpoId}`
 
-    if (designId) {
+    if (designId && teamStoreItem && teamStoreId) {
+      productUrl = `/custom-product?id=${designId}&item=${teamStoreItem}&team=${teamStoreId}`
+    } else if (designId) {
       productUrl = `/custom-product?id=${designId}`
     }
 
