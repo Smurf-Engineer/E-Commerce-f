@@ -97,6 +97,7 @@ interface Props extends RouteComponentProps<any> {
   showSpecs: boolean
   currentCurrency: string
   showFitsModal: boolean
+  user: any
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
@@ -403,12 +404,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         </ProductInfo>
       </div>
     )
-
+    const { user } = this.props
     return (
       <Layout {...{ history, intl }}>
         <Container>
           {design && (
             <Content>
+              <pre>{JSON.stringify(user)}</pre>
               <ImagePreview>
                 <RenderContainer>
                   <Render3D
@@ -448,23 +450,21 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  {!teamStoreItem && (
-                    <>
-                      {!proDesign ? (
-                        <EditDesignButton
-                          onClick={this.gotToEditDesign(designId)}
-                        >
-                          {formatMessage(messages.editDesign)}
-                        </EditDesignButton>
-                      ) : (
-                        <ProApproved>
-                          <ProApprovedLabel>
-                            {formatMessage(messages.approved)}
-                          </ProApprovedLabel>
-                        </ProApproved>
-                      )}
-                    </>
-                  )}
+                  {!teamStoreItem &&
+                    ownedDesign &&
+                    (!proDesign ? (
+                      <EditDesignButton
+                        onClick={this.gotToEditDesign(designId)}
+                      >
+                        {formatMessage(messages.editDesign)}
+                      </EditDesignButton>
+                    ) : (
+                      <ProApproved>
+                        <ProApprovedLabel>
+                          {formatMessage(messages.approved)}
+                        </ProApprovedLabel>
+                      </ProApproved>
+                    ))}
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings
@@ -576,28 +576,28 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const productDetail = state.get('customProductDetail').toJS()
   const langProps = state.get('languageProvider').toJS()
-  const app = state.get('responsive').toJS()
-  return { ...productDetail, ...langProps, ...app }
+  const responsive = state.get('responsive').toJS()
+  const app = state.get('app').toJS()
+  return { ...productDetail, ...langProps, ...responsive, ...app }
 }
 
 type OwnProps = {
   location?: any
+  user?: any
 }
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
   graphql<any>(designsQuery, {
     options: (ownprops: OwnProps) => {
-      const {
-        location: { search }
-      } = ownprops
-      const queryParams = queryString.parse(search)
+      const { user } = ownprops
+      // const queryParams = queryString.parse(search)
       return {
         variables: {
           limit: 12,
           offset: 0
         },
-        skip: !!queryParams.item,
+        skip: !user,
         fetchPolicy: 'network-only'
       }
     },
