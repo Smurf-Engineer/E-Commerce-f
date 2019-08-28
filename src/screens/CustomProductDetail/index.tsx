@@ -136,7 +136,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
-    const shared = get(design, 'shared', false)
     const shortId = get(design, 'shortId', '')
     const product = get(design, 'product', null)
     const productPriceRange = get(product, 'priceRange', null)
@@ -146,7 +145,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const ownedDesign =
       !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
 
-    if (!product || error || (!shared && !ownedDesign && !teamStoreItem)) {
+    if (!product || error) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -601,7 +600,7 @@ const CustomProductDetailEnhance = compose(
           limit: 12,
           offset: 0
         },
-        skip: !user || !!queryParams.item,
+        skip: !user || !!queryParams.item,
         fetchPolicy: 'network-only'
       }
     },
