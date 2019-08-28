@@ -14,13 +14,6 @@ export const Container = styled.div`
   flex-direction: column;
   background-color: #fff;
 `
-export const MessageContainer = styled.div`
-  height: 512px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-`
 
 export const HeadersContainer = styled.div`
   display: flex;
