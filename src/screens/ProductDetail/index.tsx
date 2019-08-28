@@ -113,6 +113,7 @@ interface Props extends RouteComponentProps<any> {
   itemToAddCart: any
   currentCurrency: string
   loadingImage: boolean
+  phone: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -185,7 +186,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       loadingImage,
       setLoadingImageAction,
       currentCurrency,
-      data: { product, error, loading }
+      data: { product, error, loading },
+      phone
     } = this.props
 
     const { formatMessage } = intl
@@ -514,6 +516,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           phoneView={true}
                           textColor="white"
                           isProduct={true}
+                          isPhone={phone}
                           {...{ product }}
                         />
                         <HowItFits onClick={this.toggleFitsModal(true)}>
@@ -727,7 +730,14 @@ const mapStateToProps = (state: any) => {
   const menu = state.get('menu').toJS()
   const menuSports = state.get('menuSports').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...productDetail, ...menu, ...menuSports, ...langProps }
+  const responsive = state.get('responsive').toJS()
+  return {
+    ...productDetail,
+    ...menu,
+    ...menuSports,
+    ...langProps,
+    ...responsive
+  }
 }
 
 type OwnProps = {
