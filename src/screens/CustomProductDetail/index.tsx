@@ -57,7 +57,8 @@ import {
   ItemDetailType,
   CartItemDetail,
   ProductFile,
-  PriceRange
+  PriceRange,
+  UserType
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -97,7 +98,6 @@ interface Props extends RouteComponentProps<any> {
   showSpecs: boolean
   currentCurrency: string
   showFitsModal: boolean
-  user: any
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
@@ -141,7 +141,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const product = get(design, 'product', null)
     const productPriceRange = get(product, 'priceRange', null)
     const teamStoreItem = queryParams.item
-    const designs = get(designsData, 'designs.myDesigns', [] as DesignType[])
+    const designs = get(designsData, 'myDesigns.designs', [] as DesignType[])
 
     const ownedDesign =
       !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
@@ -404,13 +404,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         </ProductInfo>
       </div>
     )
-    const { user } = this.props
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
           {design && (
             <Content>
-              <pre>{JSON.stringify(user)}</pre>
               <ImagePreview>
                 <RenderContainer>
                   <Render3D
@@ -583,21 +582,26 @@ const mapStateToProps = (state: any) => {
 
 type OwnProps = {
   location?: any
-  user?: any
+  user?: UserType
 }
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
+  connect(
+    mapStateToProps,
+    { ...customProductDetailActions }
+  ),
   graphql<any>(designsQuery, {
-    options: (ownprops: OwnProps) => {
-      const { user } = ownprops
-      // const queryParams = queryString.parse(search)
+    options: ({ user, location: { search } }: OwnProps) => {
+      console.log(user)
+      const queryParams = queryString.parse(search)
+      console.log(!user)
       return {
         variables: {
           limit: 12,
           offset: 0
         },
-        skip: !user,
+        skip: !user || !!queryParams.item,
         fetchPolicy: 'network-only'
       }
     },
@@ -618,11 +622,7 @@ const CustomProductDetailEnhance = compose(
       }
     }
   }),
-  withLoading,
-  connect(
-    mapStateToProps,
-    { ...customProductDetailActions }
-  )
+  withLoading
 )(CustomProductDetail)
 
 export default CustomProductDetailEnhance
