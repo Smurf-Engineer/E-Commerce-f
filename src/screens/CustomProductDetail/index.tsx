@@ -57,7 +57,8 @@ import {
   ItemDetailType,
   CartItemDetail,
   ProductFile,
-  PriceRange
+  PriceRange,
+  UserType
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -135,17 +136,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
-    const shared = get(design, 'shared', false)
     const shortId = get(design, 'shortId', '')
     const product = get(design, 'product', null)
     const productPriceRange = get(product, 'priceRange', null)
     const teamStoreItem = queryParams.item
-    const designs = get(designsData, 'designs.myDesigns', [] as DesignType[])
+    const designs = get(designsData, 'myDesigns.designs', [] as DesignType[])
 
     const ownedDesign =
       !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
 
-    if (!product || error || (!shared && !ownedDesign && !teamStoreItem)) {
+    if (!product || error) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -448,23 +448,21 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  {!teamStoreItem && (
-                    <>
-                      {!proDesign ? (
-                        <EditDesignButton
-                          onClick={this.gotToEditDesign(designId)}
-                        >
-                          {formatMessage(messages.editDesign)}
-                        </EditDesignButton>
-                      ) : (
-                        <ProApproved>
-                          <ProApprovedLabel>
-                            {formatMessage(messages.approved)}
-                          </ProApprovedLabel>
-                        </ProApproved>
-                      )}
-                    </>
-                  )}
+                  {!teamStoreItem &&
+                    ownedDesign &&
+                    (!proDesign ? (
+                      <EditDesignButton
+                        onClick={this.gotToEditDesign(designId)}
+                      >
+                        {formatMessage(messages.editDesign)}
+                      </EditDesignButton>
+                    ) : (
+                      <ProApproved>
+                        <ProApprovedLabel>
+                          {formatMessage(messages.approved)}
+                        </ProApprovedLabel>
+                      </ProApproved>
+                    ))}
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings
@@ -576,28 +574,31 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const productDetail = state.get('customProductDetail').toJS()
   const langProps = state.get('languageProvider').toJS()
-  const app = state.get('responsive').toJS()
-  return { ...productDetail, ...langProps, ...app }
+  const responsive = state.get('responsive').toJS()
+  const app = state.get('app').toJS()
+  return { ...productDetail, ...langProps, ...responsive, ...app }
 }
 
 type OwnProps = {
   location?: any
+  user?: UserType
 }
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
+  connect(
+    mapStateToProps,
+    { ...customProductDetailActions }
+  ),
   graphql<any>(designsQuery, {
-    options: (ownprops: OwnProps) => {
-      const {
-        location: { search }
-      } = ownprops
+    options: ({ user, location: { search } }: OwnProps) => {
       const queryParams = queryString.parse(search)
       return {
         variables: {
           limit: 12,
           offset: 0
         },
-        skip: !!queryParams.item,
+        skip: !user || !!queryParams.item,
         fetchPolicy: 'network-only'
       }
     },
@@ -618,11 +619,7 @@ const CustomProductDetailEnhance = compose(
       }
     }
   }),
-  withLoading,
-  connect(
-    mapStateToProps,
-    { ...customProductDetailActions }
-  )
+  withLoading
 )(CustomProductDetail)
 
 export default CustomProductDetailEnhance
