@@ -8,6 +8,7 @@ import { desginsQuery } from './data'
 import { graphql, compose } from 'react-apollo'
 import zenscroll from 'zenscroll'
 import find from 'lodash/find'
+import findIndex from 'lodash/findIndex'
 import Pagination from 'antd/lib/pagination'
 import Spin from 'antd/lib/spin'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
@@ -27,7 +28,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   visible: boolean
-  selectedItems: SelectedDesignType
+  selectedItems: SelectedDesignType[]
   tableItems: SelectedItem
   client: any
   offset: number
@@ -46,6 +47,8 @@ export class LockerModal extends React.PureComponent<Props, {}> {
   handleOnItemSelect = (index: number, checked: boolean) => {
     const {
       onSelectItem,
+      selectedItems,
+      onUnselectItem,
       data: {
         designsResult: { designs }
       }
@@ -54,7 +57,14 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       {},
       { visible: true, design: designs[index] }
     )
-    onSelectItem(selectedItem, checked)
+    console.log(designs[index])
+    const selectedItemIndex = findIndex(
+      selectedItems,
+      item => item.design.id === designs[index].id
+    )
+    selectedItemIndex < 0
+      ? onSelectItem(selectedItem, checked)
+      : onUnselectItem(selectedItemIndex)
   }
   onChangePage = (page: number) => {
     const { changePage } = this.props

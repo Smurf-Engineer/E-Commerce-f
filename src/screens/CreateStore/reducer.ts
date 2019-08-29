@@ -25,7 +25,8 @@ import {
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS,
   SET_PAGINATION_DATA,
-  OPEN_MODAL
+  OPEN_MODAL,
+  ON_UNSELECT_ITEM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -99,6 +100,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       const itemsMap = addItem.map((item: any) => fromJS(item))
       return state.merge({ selectedItems: itemsMap })
     }
+    case ON_UNSELECT_ITEM:
+      return state.deleteIn(['selectedItems', action.index])
     case DELETE_ITEM_SELECTED_ACTION: {
       const { index } = action
       const selectedItems = state.get('items')

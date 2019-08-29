@@ -268,6 +268,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
   }
   handleOnSelectItem = (item: any, checked: boolean) => {
     const { setItemSelectedAction, deleteItemSelectedAction } = this.props
+    console.log(item, checked)
     if (!checked) {
       return deleteItemSelectedAction(item.product.id)
     }

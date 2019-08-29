@@ -125,6 +125,7 @@ interface Props extends RouteComponentProps<any> {
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
   setPaginationData: (offset: number, page: number) => void
+  onUnselectItemAction: (index: number) => void
 }
 
 interface StateProps {
@@ -459,7 +460,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       // updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
-      deleteItemSelectedAction,
       setItemsAddAction,
       moveRowAction,
       name,
@@ -479,7 +479,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       currentCurrency,
       currentPage,
       limit,
-      offset
+      offset,
+      onUnselectItemAction
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -698,7 +699,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               visible={openLocker}
               onRequestClose={this.handleOnCloseLocker}
               onSelectItem={setItemSelectedAction}
-              onUnselectItem={deleteItemSelectedAction}
+              onUnselectItem={onUnselectItemAction}
               onAddItems={setItemsAddAction}
               changePage={this.changePage}
             />
