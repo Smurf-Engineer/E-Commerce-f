@@ -26,7 +26,6 @@ import TeamStore from '../../components/TeamStoreItem'
 import ShareTeamStore from '../../components/ShareDesignModal'
 import ModalTitle from '../ModalTitle'
 import ModalFooter from '../ModalFooter'
-import { FormattedMessage } from 'react-intl'
 
 interface Data extends QueryProps {
   myTeamstores: TeamstoreResult
@@ -93,15 +92,11 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
         <AddTeamStoreButton onClick={this.addNewTeamStore}>
           {formatMessage(messages.addTeamstoreLabel)}
         </AddTeamStoreButton>
-        <CreateTeamStoreLegend>
-          <FormattedMessage
-            {...messages.teamStoreConcept}
-            values={{ members: <b>{formatMessage(messages.members)}</b> }}
-          />
-        </CreateTeamStoreLegend>
-        <CreateTeamStoreLegend>
-          {formatMessage(messages.createTeamStoreText)}
-        </CreateTeamStoreLegend>
+        <CreateTeamStoreLegend
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.teamStoreConcept)
+          }}
+        />
         <div>{myTeamstoresList}</div>
         <Modal
           visible={openDeleteModal}
