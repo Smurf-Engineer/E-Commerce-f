@@ -57,7 +57,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       {},
       { visible: true, design: designs[index] }
     )
-    console.log(designs[index])
     const selectedItemIndex = findIndex(
       selectedItems,
       item => item.design.id === designs[index].id
