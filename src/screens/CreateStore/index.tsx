@@ -31,12 +31,12 @@ import {
   updateStoreMutation
 } from './data'
 import {
-  SelectedItem,
   TeamstoreType,
   QueryProps,
   DesignResultType,
   LockerTableType,
-  DesignType
+  DesignType,
+  SelectedDesignObjectType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -83,7 +83,7 @@ interface Props extends RouteComponentProps<any> {
   endDateMoment?: Moment
   passCode: string
   openLocker: boolean
-  selectedItems: SelectedItem
+  selectedItems: SelectedDesignObjectType
   items: LockerTableType[]
   teamSizeRange: string
   createStore: any
