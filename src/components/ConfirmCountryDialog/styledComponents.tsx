@@ -14,13 +14,12 @@ export const Text = styled.div`
 `
 
 export const Title = styled.div`
-  height: 44px;
-  width: 298px;
   color: #5f6062;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.18px;
   line-height: 22px;
+  margin-right: 24px;
 `
 
 export const ModalContent = styled.div`
@@ -31,7 +30,7 @@ export const ModalContent = styled.div`
 
 export const StyledSelect = styled(Select)`
   margin-top: 39px;
-  width: 200px;
+  width: 100%;
   align-self: center;
 `
 
@@ -48,6 +47,7 @@ export const ButtonWrapper = styled.div`
     background-color: #4a90e2;
     border-color: #4a90e2;
     width: 93px;
+    color: white;
   }
   .ant-btn-primary:hover {
     background-color: #4a90e2;

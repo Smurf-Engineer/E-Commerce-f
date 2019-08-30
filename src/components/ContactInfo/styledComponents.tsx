@@ -24,12 +24,10 @@ export const Title = styled.div`
   margin-bottom: 15px;
 `
 
-export const Text = styled.div`
-  margin-bottom: 15px;
+export const AddressText = styled.div`
+  font-weight: 400;
 `
-export const Phone = styled.div`
-  margin-bottom: 15px;
-`
-export const Email = styled.div`
+
+export const ContactLabel = styled.div`
   margin-bottom: 15px;
 `

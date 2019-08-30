@@ -94,9 +94,9 @@ interface Header {
 }
 
 const headerTitles: Header[] = [
-  { message: 'regularPrice' },
-  { message: 'fixedPrice' },
-  { message: 'visible' }
+  { message: 'regularPrice', width: 30 },
+  { message: 'fixedPrice', width: 42 },
+  { message: 'visible', width: 28 }
 ]
 
 class ProductRow extends React.PureComponent<Props, {}> {
@@ -160,11 +160,14 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 </Row>
                 <Row>{mobileTitles}</Row>
                 <Row noBorder={true} rowPadding={'0'}>
-                  <Cell width={100}>
+                  <Cell width={30}>
+                    <Price>{`$${regularPrice}`}</Price>
+                  </Cell>
+                  <Cell width={30}>
                     <Price>{`$${fixedPrice}`}</Price>
                   </Cell>
-                  <Cell width={100}>
-                    <Align>
+                  <Cell width={40}>
+                    <Align align="center">
                       <Checkbox
                         checked={visible}
                         onChange={handleOnClickVisible}
@@ -182,23 +185,23 @@ class ProductRow extends React.PureComponent<Props, {}> {
           } else {
             return (
               <Row>
-                <Cell width={15}>
+                <Cell width={15} tabletWidth={25}>
                   <Thumbnail
                     {...{ image, hideQuickView }}
                     onPressQuickView={handleOnClickView}
                   />
                 </Cell>
-                <Cell width={25}>
+                <Cell width={15} tabletWidth={20}>
                   <Name>{name}</Name>
                   <Description>{description}</Description>
                 </Cell>
-                <Cell>
+                <Cell width={15} tabletWidth={15}>
                   <Price>{`$${regularPrice}`}</Price>
                 </Cell>
-                <Cell>
+                <Cell width={15} tabletWidth={15}>
                   <Price>{`$${fixedPrice}`}</Price>
                 </Cell>
-                <Cell>
+                <Cell width={20} tabletWidth={10}>
                   <Center>
                     <Checkbox
                       checked={visible}

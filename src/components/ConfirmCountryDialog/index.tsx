@@ -68,7 +68,7 @@ export class ConfirmCountryDialog extends React.Component<Props, {}> {
     )
 
     return (
-      <Modal {...{ open, requestClose }} width={'25%'} withLogo={false}>
+      <Modal {...{ open, requestClose }} width="382px" withLogo={false}>
         <ModalContent>
           <Title>{formatMessage(messages.title)}</Title>
           <StyledSelect

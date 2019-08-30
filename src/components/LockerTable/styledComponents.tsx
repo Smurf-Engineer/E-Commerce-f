@@ -52,9 +52,13 @@ export const Column = styled.td`
 
 interface CellProps {
   width?: number
+  tabletWidth?: number
 }
 export const Cell = styled.div`
  width ${({ width }: CellProps) => (width ? width : 10)}%;
+ @media (min-width: 425px) and (max-width: 768px) {
+  width ${({ tabletWidth }: CellProps) => (tabletWidth ? tabletWidth : 10)}%;
+}
 `
 
 interface TitleProps {

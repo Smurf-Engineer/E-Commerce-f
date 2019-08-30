@@ -17,9 +17,7 @@ import {
 } from '../../types/common'
 import {
   Container,
-  HeadersContainer,
   SideBar,
-  Content,
   Title,
   OrderTitle,
   PriceDescription,
@@ -51,7 +49,8 @@ import {
   Description,
   StoreBox,
   Loading,
-  ButtonsContainer
+  ButtonsContainer,
+  TopContainer
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -291,62 +290,29 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         ) : (
           <React.Fragment>
             {!teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
-            <HeadersContainer>
-              <Content>
-                <HeadersContainer>
-                  <FlexContainer>
-                    <Title>{teamStoreName}</Title>
-                    <ButtonsContainer>
-                      <ButtonWrapper>
-                        <Button type="primary" onClick={this.handlShareClick}>
-                          <FormattedMessage {...messages.share} />
-                        </Button>
-                      </ButtonWrapper>
-                      {teamStoreOwner ? (
-                        <ButtonWrapper>
-                          <Button
-                            type="primary"
-                            onClick={this.handleOnPressEdit}
-                          >
-                            <FormattedMessage {...messages.edit} />
-                          </Button>
-                        </ButtonWrapper>
-                      ) : (
-                        <DefaultButton onClick={this.handlContactClick}>
-                          <FormattedMessage {...messages.contactManager} />
-                        </DefaultButton>
-                      )}
-                    </ButtonsContainer>
-                  </FlexContainer>
-                </HeadersContainer>
-                {onDemandMode ? (
-                  <Description>
-                    <PriceTitle>
-                      {`${formatMessage(
-                        messages.welcome
-                      )} ${teamStoreName} ${formatMessage(messages.store)}`}
-                    </PriceTitle>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.description} />
-                    </PriceDescription>
-                  </Description>
-                ) : (
-                  <React.Fragment>
-                    <PriceTitle>
-                      <FormattedMessage {...messages.priceDropTitle} />
-                    </PriceTitle>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.priceDropSubTitle} />
-                    </PriceDescription>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.priceDropDescription} />
-                    </PriceDescription>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.finalPricing} />
-                    </PriceDescription>
-                  </React.Fragment>
-                )}
-              </Content>
+            <TopContainer>
+              <FlexContainer>
+                <Title>{teamStoreName}</Title>
+                <ButtonsContainer>
+                  <ButtonWrapper>
+                    <Button type="primary" onClick={this.handlShareClick}>
+                      <FormattedMessage {...messages.share} />
+                    </Button>
+                  </ButtonWrapper>
+                  {teamStoreOwner ? (
+                    <ButtonWrapper>
+                      <Button type="primary" onClick={this.handleOnPressEdit}>
+                        <FormattedMessage {...messages.edit} />
+                      </Button>
+                    </ButtonWrapper>
+                  ) : (
+                    <DefaultButton onClick={this.handlContactClick}>
+                      <FormattedMessage {...messages.contactManager} />
+                    </DefaultButton>
+                  )}
+                </ButtonsContainer>
+              </FlexContainer>
+
               <SideBar>
                 {!onDemandMode && (
                   <OrderTitle>
@@ -388,8 +354,34 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   )}
                 </DatesContainer>
               </SideBar>
-            </HeadersContainer>
-
+            </TopContainer>
+            {onDemandMode ? (
+              <Description>
+                <PriceTitle>
+                  {`${formatMessage(
+                    messages.welcome
+                  )} ${teamStoreName} ${formatMessage(messages.store)}`}
+                </PriceTitle>
+                <PriceDescription>
+                  <FormattedMessage {...messages.description} />
+                </PriceDescription>
+              </Description>
+            ) : (
+              <React.Fragment>
+                <PriceTitle>
+                  <FormattedMessage {...messages.priceDropTitle} />
+                </PriceTitle>
+                <PriceDescription>
+                  <FormattedMessage {...messages.priceDropSubTitle} />
+                </PriceDescription>
+                <PriceDescription>
+                  <FormattedMessage {...messages.priceDropDescription} />
+                </PriceDescription>
+                <PriceDescription>
+                  <FormattedMessage {...messages.finalPricing} />
+                </PriceDescription>
+              </React.Fragment>
+            )}
             {errorMessage ? (
               <ErrorTitle>{errorMessage}</ErrorTitle>
             ) : (
