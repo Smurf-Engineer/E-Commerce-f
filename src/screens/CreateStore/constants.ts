@@ -26,5 +26,3 @@ export const SET_LOADING_ITEMS = `${namespace}/SET_LOADING_ITEMS`
 export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
 
 export const MOVE_ROW = `${namespace}/MOVE_ROW`
-
-export const SET_TEAM_STORE_STATUS = `${namespace}/SET_TEAM_STORE_STATUS`

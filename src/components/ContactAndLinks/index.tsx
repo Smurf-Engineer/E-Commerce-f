@@ -23,15 +23,9 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   fakeWidth: number
   history?: any
-  showTeamStores?: boolean
 }
 
-const ContactAndLinks = ({
-  formatMessage,
-  fakeWidth,
-  history,
-  showTeamStores
-}: Props) => {
+const ContactAndLinks = ({ formatMessage, fakeWidth, history }: Props) => {
   return (
     <MediaQuery
       minWidth={768}
@@ -45,7 +39,7 @@ const ContactAndLinks = ({
               <CustomerSupport {...{ history, formatMessage }} />
               <DesignSupport {...{ history, formatMessage }} />
               <AboutUs {...{ history, formatMessage }} />
-              {showTeamStores && <Teams {...{ history, formatMessage }} />}
+              <Teams {...{ history, formatMessage }} />
               <ComplianceLogos>
                 <a href="/compliance">
                   <StyledImg alt="logo" src={BSCILogo} />

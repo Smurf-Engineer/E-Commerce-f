@@ -6,8 +6,7 @@ import {
   DEFAULT_ACTION,
   SET_SEARCH_PARAM,
   OPEN_SHARE_MODAL,
-  CLEAR_REDUCER,
-  SET_TEAM_STORE_STATUS
+  CLEAR_REDUCER
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -15,8 +14,7 @@ export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   searchString: '',
   openShare: false,
-  storeId: '',
-  showTeamStores: null
+  storeId: ''
 })
 
 const teamstoresReducer: Reducer<any> = (state = initialState, action) => {
@@ -36,8 +34,6 @@ const teamstoresReducer: Reducer<any> = (state = initialState, action) => {
         openShare: false,
         storeId: ''
       })
-    case SET_TEAM_STORE_STATUS:
-      return state.set('showTeamStores', action.show)
     default:
       return state
   }

@@ -3,13 +3,11 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
-import { getTeamStoreStatus } from './data'
-import { DEFAULT_ROUTE } from '../../constants'
 import * as storeFrontActions from './actions'
 import { QueryProps } from '../../types/common'
 import { Container } from './styledComponents'
@@ -32,7 +30,6 @@ interface Props extends RouteComponentProps<any> {
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
-  showTeamStores: boolean
   currentCurrency: string
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
@@ -43,21 +40,12 @@ interface Props extends RouteComponentProps<any> {
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
-  teamStoreStatus: () => Promise<any>
-  setTeamStoreStatusAction: (show: boolean) => void
 }
 
 export class StoreFront extends React.Component<Props, {}> {
   state = {
     showDetails: true,
     showSpecs: true
-  }
-  async componentDidMount() {
-    const { teamStoreStatus, setTeamStoreStatusAction } = this.props
-    const response = await teamStoreStatus()
-    setTeamStoreStatusAction(
-      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
-    )
   }
 
   getData = async (params: Params) => {
@@ -104,7 +92,6 @@ export class StoreFront extends React.Component<Props, {}> {
       openEmailContactDialogAction,
       openShareModalAction,
       openPassCodeDialogAction,
-      showTeamStores,
       currentCurrency
     } = this.props
 
@@ -115,9 +102,6 @@ export class StoreFront extends React.Component<Props, {}> {
 
     const storeId = queryParams ? queryParams.storeId || '' : ''
 
-    if (showTeamStores === false) {
-      return <Redirect to={DEFAULT_ROUTE} />
-    }
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
@@ -154,7 +138,6 @@ const mapStateToProps = (state: any) => {
 
 const StoreFrontEnhance = compose(
   injectIntl,
-  getTeamStoreStatus,
   connect(
     mapStateToProps,
     { ...storeFrontActions, openQuickView: openQuickViewAction }
