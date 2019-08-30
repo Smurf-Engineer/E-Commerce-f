@@ -16,7 +16,8 @@ import {
   DesignResultType,
   DesignType,
   SelectedItem,
-  SelectedDesignType
+  SelectedDesignType,
+  SelectedDesignObjectType
 } from '../../types/common'
 import { Title, List, modalStyle, PaginationRow } from './styledComponents'
 
@@ -27,7 +28,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   visible: boolean
-  selectedItems: SelectedDesignType[]
+  selectedItems: SelectedDesignObjectType
   tableItems: SelectedItem
   client: any
   offset: number
