@@ -7,8 +7,7 @@ import Modal from 'antd/lib/modal'
 import { desginsQuery } from './data'
 import { graphql, compose } from 'react-apollo'
 import zenscroll from 'zenscroll'
-import find from 'lodash/find'
-import findIndex from 'lodash/findIndex'
+import get from 'lodash/get'
 import Pagination from 'antd/lib/pagination'
 import Spin from 'antd/lib/spin'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
@@ -35,7 +34,7 @@ interface Props {
   currentPage: number
   limit: number
   onSelectItem: (item: SelectedDesignType, checked: boolean) => void
-  onUnselectItem: (index: number) => void
+  onUnselectItem: (keyName: string) => void
   onRequestClose: () => void
   onAddItems: () => void
   setDesignsData: (data: DesignResultType, offset: number, page: number) => void
@@ -57,13 +56,12 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       {},
       { visible: true, design: designs[index] }
     )
-    const selectedItemIndex = findIndex(
-      selectedItems,
-      item => item.design.id === designs[index].id
-    )
-    selectedItemIndex < 0
-      ? onSelectItem(selectedItem, checked)
-      : onUnselectItem(selectedItemIndex)
+    const designId = get(designs[index], 'id', -1)
+    if (selectedItems[designId]) {
+      onUnselectItem(`${designId}`)
+    } else {
+      onSelectItem(selectedItem, checked)
+    }
   }
   onChangePage = (page: number) => {
     const { changePage } = this.props
@@ -88,7 +86,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       limit,
       data
     } = this.props
-
     let screen
     if (!data.loading) {
       const { designs = [] } = data.designsResult
@@ -107,12 +104,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         ) => (
           <ProductThumbnail
             key={id}
-            checked={
-              find(
-                selectedItems,
-                selectedItem => selectedItem.design.id === id
-              ) || tableItems[id]
-            }
+            checked={selectedItems[id] || tableItems[id]}
             disabled={tableItems[id]}
             id={index}
             product={product}

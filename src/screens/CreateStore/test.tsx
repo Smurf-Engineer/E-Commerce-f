@@ -239,10 +239,10 @@ describe(' CreateStore Screen', () => {
     })
     it('onUnselectItemAction', () => {
       const type = ON_UNSELECT_ITEM
-      const index = 1
-      expect(onUnselectItemAction(index)).toEqual({
+      const keyName = '1'
+      expect(onUnselectItemAction(keyName)).toEqual({
         type,
-        index
+        keyName
       })
     })
   })
@@ -463,42 +463,37 @@ describe(' CreateStore Screen', () => {
         })
         it('Handles custom values in selectedItems', () => {
           const item = {
-            id: 1,
-            code: 'CODE',
-            name: 'NAME',
-            shared: true,
-            image: '',
-            proDesign: false
+            design: {
+              id: 1,
+              code: 'CODE',
+              name: 'NAME',
+              shared: true,
+              image: '',
+              proDesign: false
+            },
+            visible: true
           }
           const checked = true
           const selectedItemsState = createStoreReducer(
             initialState,
             setItemSelectedAction(item, checked)
           )
-          const customSelectedItemsValue = selectedItemsState.get(
-            'selectedItems'
+
+          const checkedValue = selectedItemsState.getIn(
+            ['selectedItems', '1'],
+            'checked'
           )
-          expect(customSelectedItemsValue.size).toBeGreaterThan(0)
-
-          const sharedValue = selectedItemsState.getIn([
-            'selectedItems',
-            0,
-            'shared'
-          ])
-          const proDesignValue = selectedItemsState.getIn([
-            'selectedItems',
-            0,
-            'proDesign'
-          ])
-          const nameValue = selectedItemsState.getIn([
-            'selectedItems',
-            0,
-            'name'
-          ])
-
-          expect(sharedValue).toBeTruthy()
-          expect(proDesignValue).toBeFalsy()
-          expect(nameValue).toBe(item.name)
+          const design = selectedItemsState.getIn(
+            ['selectedItems', '1'],
+            'design'
+          )
+          const visible = selectedItemsState.getIn(
+            ['selectedItems', '1'],
+            'visible'
+          )
+          expect(checkedValue).toBeTruthy()
+          expect(design.get('proDesign')).toBeFalsy()
+          expect(visible).toBeTruthy()
         })
       })
     })
@@ -629,22 +624,26 @@ describe(' CreateStore Screen', () => {
       describe('selectedItems', () => {
         it('Handles custom values in selectedItems', () => {
           const item = {
-            id: 1,
-            code: 'CODE',
-            name: 'NAME',
-            shared: true,
-            image: '',
-            proDesign: false
+            design: {
+              id: 1,
+              code: 'CODE',
+              name: 'NAME',
+              shared: true,
+              image: '',
+              proDesign: false
+            },
+            visible: true
           }
+
           const checked = true
           const selectedItemsState = createStoreReducer(
             initialState,
             setItemSelectedAction(item, checked)
           )
-          const indexToDelete = 0
+          const keyName = '1'
           const unselectedItemsState = createStoreReducer(
             selectedItemsState,
-            onUnselectItemAction(indexToDelete)
+            onUnselectItemAction(keyName)
           )
           const selectedItemsValue = unselectedItemsState.get('selectedItems')
 

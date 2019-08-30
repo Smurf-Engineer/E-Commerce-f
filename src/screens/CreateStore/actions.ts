@@ -167,7 +167,7 @@ export const setPaginationDataAction = (offset: number, page: number) => ({
   page
 })
 
-export const onUnselectItemAction = (index: number) => ({
+export const onUnselectItemAction = (keyName: string) => ({
   type: ON_UNSELECT_ITEM,
-  index
+  keyName
 })

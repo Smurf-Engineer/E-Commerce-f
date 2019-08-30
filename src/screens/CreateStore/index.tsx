@@ -125,7 +125,7 @@ interface Props extends RouteComponentProps<any> {
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
   setPaginationData: (offset: number, page: number) => void
-  onUnselectItemAction: (index: number) => void
+  onUnselectItemAction: (keyName: string) => void
 }
 
 interface StateProps {
