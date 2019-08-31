@@ -25,13 +25,15 @@ import config from '../../config/index'
 interface Header {
   message: string
   width?: number
+  tabletWidth?: number
 }
 
 const headerTitles: Header[] = [
-  { message: '', width: 40 },
-  { message: 'regularPrice', width: 10 },
-  { message: 'fixedPrice', width: 10 },
-  { message: 'visible', width: 20 }
+  { message: '', width: 30, tabletWidth: 45 },
+  { message: 'regularPrice', width: 15, tabletWidth: 15 },
+  { message: 'fixedPrice', width: 15, tabletWidth: 15 },
+  { message: 'visible', width: 20, tabletWidth: 10 },
+  { message: '', width: 2, tabletWidth: 15 }
 ]
 
 interface Props {
@@ -78,13 +80,15 @@ class LockerTable extends React.PureComponent<Props, {}> {
       <MediaQuery minDeviceWidth={480}>
         {matches => {
           if (matches) {
-            const head = headerTitles.map(({ width, message }, key) => (
-              <Cell {...{ key, width }}>
-                <Title>
-                  {message ? formatMessage(messsages[message]) : ''}
-                </Title>
-              </Cell>
-            ))
+            const head = headerTitles.map(
+              ({ width, tabletWidth, message }, key) => (
+                <Cell {...{ key, width, tabletWidth }}>
+                  <Title>
+                    {message ? formatMessage(messsages[message]) : ''}
+                  </Title>
+                </Cell>
+              )
+            )
             return head
           } else {
             return null

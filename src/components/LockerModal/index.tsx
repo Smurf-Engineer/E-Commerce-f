@@ -7,7 +7,7 @@ import Modal from 'antd/lib/modal'
 import { desginsQuery } from './data'
 import { graphql, compose } from 'react-apollo'
 import zenscroll from 'zenscroll'
-import find from 'lodash/find'
+import get from 'lodash/get'
 import Pagination from 'antd/lib/pagination'
 import Spin from 'antd/lib/spin'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
@@ -16,7 +16,8 @@ import {
   DesignResultType,
   DesignType,
   SelectedItem,
-  SelectedDesignType
+  SelectedDesignType,
+  SelectedDesignObjectType
 } from '../../types/common'
 import { Title, List, modalStyle, PaginationRow } from './styledComponents'
 
@@ -27,14 +28,14 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   visible: boolean
-  selectedItems: SelectedDesignType
+  selectedItems: SelectedDesignObjectType
   tableItems: SelectedItem
   client: any
   offset: number
   currentPage: number
   limit: number
   onSelectItem: (item: SelectedDesignType, checked: boolean) => void
-  onUnselectItem: (index: number) => void
+  onUnselectItem: (keyName: string) => void
   onRequestClose: () => void
   onAddItems: () => void
   setDesignsData: (data: DesignResultType, offset: number, page: number) => void
@@ -46,6 +47,8 @@ export class LockerModal extends React.PureComponent<Props, {}> {
   handleOnItemSelect = (index: number, checked: boolean) => {
     const {
       onSelectItem,
+      selectedItems,
+      onUnselectItem,
       data: {
         designsResult: { designs }
       }
@@ -54,7 +57,12 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       {},
       { visible: true, design: designs[index] }
     )
-    onSelectItem(selectedItem, checked)
+    const designId = get(designs[index], 'id', -1)
+    if (selectedItems[designId]) {
+      onUnselectItem(`${designId}`)
+    } else {
+      onSelectItem(selectedItem, checked)
+    }
   }
   onChangePage = (page: number) => {
     const { changePage } = this.props
@@ -79,7 +87,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       limit,
       data
     } = this.props
-
     let screen
     if (!data.loading) {
       const { designs = [] } = data.designsResult
@@ -98,12 +105,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         ) => (
           <ProductThumbnail
             key={id}
-            checked={
-              find(
-                selectedItems,
-                selectedItem => selectedItem.design.id === id
-              ) || tableItems[id]
-            }
+            checked={selectedItems[id] || tableItems[id]}
             disabled={tableItems[id]}
             id={index}
             product={product}

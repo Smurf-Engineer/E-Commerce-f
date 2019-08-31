@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
+interface DivProps {
+  isTeamStore?: boolean
+}
+
 export const Container = styled.div`
   background-color: #fff;
 `
@@ -168,14 +172,15 @@ export const PricesRow = styled.div`
   margin-top: 20px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    justify-content: space-between;
+    justify-content: ${({ isTeamStore }: DivProps) =>
+      isTeamStore ? 'flex-start' : 'space-between'};
   }
 `
 export const AvailablePrices = styled.div`
   margin-right: 30px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    margin: 0;
+    margin-right: 12px;
   }
 
   @media (min-width: 481px) and (max-width: 768px) {

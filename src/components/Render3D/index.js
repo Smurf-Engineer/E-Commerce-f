@@ -54,7 +54,7 @@ class Render3D extends PureComponent {
   }
 
   async componentDidMount() {
-    const { phoneView, designSearch } = this.props
+    const { zoomedIn, designSearch } = this.props
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const precision = 'highp'
@@ -74,7 +74,7 @@ class Render3D extends PureComponent {
       0.1,
       1000
     )
-    camera.position.z = phoneView ? 120 : 250
+    camera.position.z = zoomedIn ? 120 : 250
     if (designSearch) {
       camera.position.z = 150
     }
@@ -324,7 +324,7 @@ class Render3D extends PureComponent {
     )
   }
   renderProduct = async product => {
-    const { phoneView } = this.props
+    const { zoomedIn } = this.props
     const {
       obj,
       mtl,
@@ -460,7 +460,7 @@ class Render3D extends PureComponent {
               children[brandingIndex].material = brandingMaterial
             }
             /* Object Conig */
-            const verticalPosition = phoneView ? PHONE_POSITION : 0
+            const verticalPosition = zoomedIn ? PHONE_POSITION : 0
             object.position.y = verticalPosition
             object.name = MESH_NAME
             this.scene.add(object)
@@ -481,7 +481,7 @@ class Render3D extends PureComponent {
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
 
-    const { stitchingValue, phoneView, isPhone } = this.props
+    const { stitchingValue, zoomedIn, isPhone } = this.props
     if (design.canvas && isPhone) {
       await this.getFontsFromCanvas(design.canvas)
     }
@@ -663,7 +663,7 @@ class Render3D extends PureComponent {
           }
 
           /* Object Conig */
-          const verticalPosition = phoneView ? PHONE_POSITION : 0
+          const verticalPosition = zoomedIn ? PHONE_POSITION : 0
           object.position.y = verticalPosition
           object.name = MESH_NAME
           this.scene.add(object)

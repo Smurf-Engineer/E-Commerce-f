@@ -23,7 +23,8 @@ import {
   deleteBannerOnEditAction,
   clearDataAction,
   setPaginationDataAction,
-  setOpenLockerAction
+  setOpenLockerAction,
+  onUnselectItemAction
 } from './actions'
 import {
   SET_TEAM_SIZE_ACTION,
@@ -44,7 +45,8 @@ import {
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
-  SET_PAGINATION_DATA
+  SET_PAGINATION_DATA,
+  ON_UNSELECT_ITEM
 } from './constants'
 
 describe(' CreateStore Screen', () => {
@@ -223,6 +225,14 @@ describe(' CreateStore Screen', () => {
         type,
         offset,
         page
+      })
+    })
+    it('onUnselectItemAction', () => {
+      const type = ON_UNSELECT_ITEM
+      const keyName = '1'
+      expect(onUnselectItemAction(keyName)).toEqual({
+        type,
+        keyName
       })
     })
   })
@@ -443,42 +453,37 @@ describe(' CreateStore Screen', () => {
         })
         it('Handles custom values in selectedItems', () => {
           const item = {
-            id: 1,
-            code: 'CODE',
-            name: 'NAME',
-            shared: true,
-            image: '',
-            proDesign: false
+            design: {
+              id: 1,
+              code: 'CODE',
+              name: 'NAME',
+              shared: true,
+              image: '',
+              proDesign: false
+            },
+            visible: true
           }
           const checked = true
           const selectedItemsState = createStoreReducer(
             initialState,
             setItemSelectedAction(item, checked)
           )
-          const customSelectedItemsValue = selectedItemsState.get(
-            'selectedItems'
+
+          const checkedValue = selectedItemsState.getIn(
+            ['selectedItems', '1'],
+            'checked'
           )
-          expect(customSelectedItemsValue.size).toBeGreaterThan(0)
-
-          const sharedValue = selectedItemsState.getIn([
-            'selectedItems',
-            0,
-            'shared'
-          ])
-          const proDesignValue = selectedItemsState.getIn([
-            'selectedItems',
-            0,
-            'proDesign'
-          ])
-          const nameValue = selectedItemsState.getIn([
-            'selectedItems',
-            0,
-            'name'
-          ])
-
-          expect(sharedValue).toBeTruthy()
-          expect(proDesignValue).toBeFalsy()
-          expect(nameValue).toBe(item.name)
+          const design = selectedItemsState.getIn(
+            ['selectedItems', '1'],
+            'design'
+          )
+          const visible = selectedItemsState.getIn(
+            ['selectedItems', '1'],
+            'visible'
+          )
+          expect(checkedValue).toBeTruthy()
+          expect(design.get('proDesign')).toBeFalsy()
+          expect(visible).toBeTruthy()
         })
       })
     })
@@ -582,6 +587,37 @@ describe(' CreateStore Screen', () => {
           )
           const showTeamStoresValue = showTeamStoresState.get('currentPage')
           expect(showTeamStoresValue).toBe(page)
+        })
+      })
+    })
+    describe('ON_UNSELECT_ITEM', () => {
+      describe('selectedItems', () => {
+        it('Handles custom values in selectedItems', () => {
+          const item = {
+            design: {
+              id: 1,
+              code: 'CODE',
+              name: 'NAME',
+              shared: true,
+              image: '',
+              proDesign: false
+            },
+            visible: true
+          }
+
+          const checked = true
+          const selectedItemsState = createStoreReducer(
+            initialState,
+            setItemSelectedAction(item, checked)
+          )
+          const keyName = '1'
+          const unselectedItemsState = createStoreReducer(
+            selectedItemsState,
+            onUnselectItemAction(keyName)
+          )
+          const selectedItemsValue = unselectedItemsState.get('selectedItems')
+
+          expect(selectedItemsValue.size).toBeLessThanOrEqual(0)
         })
       })
     })

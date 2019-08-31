@@ -14,8 +14,6 @@ import {
   SearchBarContent,
   SearchBackground,
   TeamStoreText,
-  ButtonRow,
-  StyledButton,
   ResultContainer,
   TitleContainer,
   Title,
@@ -26,7 +24,7 @@ import Layout from '../../components/MainLayout'
 import SearchBar from '../../components/SearchBar'
 import TeamStoreList from '../../components/TeamStoreList'
 import Share from '../../components/ShareDesignModal'
-import teamstoreImage from '../../assets/uhc_ladies.jpg'
+import teamstoreImage from '../../assets/teamStoreSearch.jpg'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -65,11 +63,6 @@ export class SearchTeamstores extends React.Component<Props, {}> {
                 searchWidth={'100%'}
                 placeHolderLabel={formatMessage(messages.searchPlaceHolder)}
               />
-              <ButtonRow>
-                <StyledButton>
-                  {formatMessage(messages.myTeamsButtonLabel)}
-                </StyledButton>
-              </ButtonRow>
             </SearchBarContent>
           </Content>
           <ResultContainer>

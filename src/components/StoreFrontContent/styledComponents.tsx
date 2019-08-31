@@ -15,29 +15,26 @@ export const Container = styled.div`
   background-color: #fff;
 `
 
-export const HeadersContainer = styled.div`
+export const TopContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 0;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px 46px 0;
+  @media (min-width: 425px) and (max-width: 768px) {
+    flex-flow: row;
+    align-items: flex-start;
+  }
   @media (max-width: 425px) {
     flex-flow: column;
-    margin: 16px 8px;
+    align-items: center;
+    margin: 18px 14px 0;
   }
 `
+export const SideBar = styled.div``
 
-export const SideBar = styled.div`
-  width: 30%;
-  padding-top: 36px;
-  padding-right: 32px;
-  @media (max-width: 425px) {
-    width: 100%;
-    padding: 0;
-  }
-`
 export const Description = styled.div`
   text-align: center;
-  width: 100vw;
-  margin-left: -36px;
   padding: 0 8px;
   @media (max-width: 425px) {
     margin-left: 0;
@@ -52,6 +49,10 @@ export const Title = styled.div`
   text-transform: uppercase;
   padding-right: 10px;
   text-align: center;
+  margin-bottom: 0;
+  @media (max-width: 800px) {
+    margin-bottom: 8px;
+  }
 `
 
 export const AboutTitle = styled.div`
@@ -69,8 +70,7 @@ export const StoreBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 200px;
-  width: 100%;
+  width: 200px;
   margin-right: 22px;
   height: 51px;
   border: 2px solid ${({ open }: DivProps) => (open ? GREEN : BLACK_LIGHT)};
@@ -118,18 +118,8 @@ export const OrderTitle = styled.div`
   text-align: right;
 `
 
-export const Content = styled.div`
-  width: 70%;
-  padding-top: 36px;
-  padding-left: 36px;
-  @media (max-width: 425px) {
-    width: 100%;
-    padding: 0;
-  }
-`
-
 export const PriceTitle = styled.div`
-  padding-top: 27px;
+  padding-top: 18px;
   color: #5f6062;
   font-size: 16px;
   font-weight: 600;
@@ -265,9 +255,7 @@ export const CalendarDay = styled.div`
 
 export const DatesContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  flex-flow: row wrap;
+  flex-flow: row;
   padding-top: ${({ onDemandMode }: DivProps) => (onDemandMode ? '0' : '20px')};
   justify-content: flex-end;
   align-items: center;
@@ -281,9 +269,7 @@ export const DatesContainer = styled.div`
 export const FlexContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  flex-flow: row wrap;
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     flex-flow: column;
     justify-content: center;
   }
@@ -309,12 +295,9 @@ export const DatesTitle = styled.div`
 `
 
 export const ListContainer = styled.div`
-  margin-top: 65px;
+  margin-top: 28px;
   padding-right: 32px;
   padding-left: 32px;
-  @media (max-width: 425px) {
-    margin: 0;
-  }
 `
 
 export const Loading = styled.div`

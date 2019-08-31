@@ -128,15 +128,16 @@ export const AddItem = styled(Button)`
 `
 
 export const ButtonOptionsWrapper = styled.div`
-  width: 25%;
+  width: 100%;
+  max-width: 316px;
   margin: 16px 0px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-
   @media (max-width: 480px) {
     width: 100%;
+    max-width: 100%;
   }
 `
 
@@ -161,6 +162,7 @@ export const SaveButton = styled(Button)`
   }
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
+    margin-top: 0;
   }
 `
 

@@ -417,7 +417,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     customProduct={true}
                     textColor="white"
                     {...{ designId }}
-                    phoneView={true}
+                    zoomedIn={true}
                     isPhone={phone}
                   />
                   <HowItFits onClick={this.toggleFitsModal(true)}>
@@ -467,7 +467,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                       </ProApproved>
                     ))}
                 </TitleRow>
-                <PricesRow>{renderPrices}</PricesRow>
+                <PricesRow isTeamStore={!!teamStoreItem}>
+                  {renderPrices}
+                </PricesRow>
                 <Ratings
                   stars={5}
                   starDimension={'15px'}
