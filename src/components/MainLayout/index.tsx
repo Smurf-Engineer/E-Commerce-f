@@ -30,7 +30,7 @@ import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
 import Intercom from 'react-intercom'
 import { IntercomAPI } from 'react-intercom'
-import { getTeamStoreStatus, getFonts } from './data'
+import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
@@ -75,7 +75,6 @@ interface Props extends RouteComponentProps<any> {
   openLogoutModal: boolean
   initialCountryCode: string
   buyNowHeader: boolean
-  showTeamStores: boolean
   fontsData: any
   fonts: []
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
@@ -84,8 +83,6 @@ interface Props extends RouteComponentProps<any> {
   saveUserSession: (user: object) => void
   openLogoutModalAction: (open: boolean) => void
   saveAndBuyAction: (buy: boolean) => void
-  teamStoreStatus: () => Promise<any>
-  setTeamStoreStatusAction: (show: boolean) => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
 }
@@ -113,8 +110,6 @@ class MainLayout extends React.Component<Props, {}> {
         location: { search, pathname }
       },
       user,
-      teamStoreStatus,
-      setTeamStoreStatusAction,
       getFontsData,
       setInstalledFontsAction
     } = this.props
@@ -129,11 +124,6 @@ class MainLayout extends React.Component<Props, {}> {
     ) {
       openLoginAction(true)
     }
-    const response = await teamStoreStatus()
-
-    setTeamStoreStatusAction(
-      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
-    )
 
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
@@ -213,7 +203,6 @@ class MainLayout extends React.Component<Props, {}> {
       initialCountryCode,
       buyNowHeader,
       saveAndBuyAction,
-      showTeamStores,
       fonts
     } = this.props
     const { formatMessage } = intl
@@ -289,9 +278,7 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks
-              {...{ history, formatMessage, fakeWidth, showTeamStores }}
-            />
+            <ContactAndLinks {...{ history, formatMessage, fakeWidth }} />
             <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}
@@ -358,7 +345,6 @@ const mapStateToProps = (state: any) => {
 
 const LayoutEnhance = compose(
   withApollo,
-  getTeamStoreStatus,
   getFonts,
   connect(
     mapStateToProps,

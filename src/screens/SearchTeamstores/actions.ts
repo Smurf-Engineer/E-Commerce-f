@@ -5,8 +5,7 @@ import {
   DEFAULT_ACTION,
   SET_SEARCH_PARAM,
   OPEN_SHARE_MODAL,
-  CLEAR_REDUCER,
-  SET_TEAM_STORE_STATUS
+  CLEAR_REDUCER
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -34,9 +33,4 @@ export const openShareModalAction = (
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
-})
-
-export const setTeamStoreStatusAction = (show: boolean) => ({
-  type: SET_TEAM_STORE_STATUS,
-  show
 })

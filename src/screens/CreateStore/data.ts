@@ -102,14 +102,3 @@ export const GetTeamStoreQuery = gql`
     }
   }
 `
-
-export const getTeamStoreStatus = graphql(
-  gql`
-    mutation getTeamStoreStatus {
-      getTeamStoreStatus {
-        showTeamStores: show_team_stores
-      }
-    }
-  `,
-  { name: 'teamStoreStatus' }
-)

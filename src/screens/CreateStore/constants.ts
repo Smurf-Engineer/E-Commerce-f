@@ -27,5 +27,3 @@ export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
 export const ON_UNSELECT_ITEM = `${namespace}/ON_UNSELECT_ITEM`
 
 export const MOVE_ROW = `${namespace}/MOVE_ROW`
-
-export const SET_TEAM_STORE_STATUS = `${namespace}/SET_TEAM_STORE_STATUS`

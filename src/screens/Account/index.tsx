@@ -5,7 +5,6 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
-import remove from 'lodash/remove'
 import { RouteComponentProps } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
 import Drawer from 'rc-drawer'
@@ -67,7 +66,6 @@ interface Props extends RouteComponentProps<any> {
   client: any
   openShareModal: boolean
   currentCurrency: string
-  showTeamStores: boolean
   // Redux actions
   logoutAction: () => void
   setOpenKeysAction: (keys: string[]) => void
@@ -163,7 +161,6 @@ export class Account extends React.Component<Props, {}> {
       history,
       openQuickViewAction: openQuickView,
       currentCurrency,
-      showTeamStores,
       setCurrentShare
     } = this.props
     switch (screen) {
@@ -184,9 +181,7 @@ export class Account extends React.Component<Props, {}> {
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, formatMessage }} />
       case TEAMSTORES:
-        return (
-          showTeamStores && <MyTeamStores {...{ history, formatMessage }} />
-        )
+        return <MyTeamStores {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return (
           <MyLocker
@@ -209,14 +204,10 @@ export class Account extends React.Component<Props, {}> {
       defaultScreen,
       fakeWidth,
       openSidebar,
-      showTeamStores,
       openShareModal,
       savedDesignId
     } = this.props
-    remove(
-      options,
-      (option: any) => option.title === TEAMSTORES && showTeamStores === false
-    )
+
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length ? (
         <SubMenu

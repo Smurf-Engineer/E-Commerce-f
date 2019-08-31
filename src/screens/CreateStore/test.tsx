@@ -22,7 +22,6 @@ import {
   setDataToEditAction,
   deleteBannerOnEditAction,
   clearDataAction,
-  setTeamStoreStatusAction,
   setPaginationDataAction,
   setOpenLockerAction,
   onUnselectItemAction
@@ -46,7 +45,6 @@ import {
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
-  SET_TEAM_STORE_STATUS,
   SET_PAGINATION_DATA,
   ON_UNSELECT_ITEM
 } from './constants'
@@ -217,14 +215,6 @@ describe(' CreateStore Screen', () => {
       const type = CLEAR_DATA
       expect(clearDataAction()).toEqual({
         type
-      })
-    })
-    it('setTeamStoreStatusAction', () => {
-      const type = SET_TEAM_STORE_STATUS
-      const show = false
-      expect(setTeamStoreStatusAction(show)).toEqual({
-        type,
-        show
       })
     })
     it('setPaginationDataAction', () => {
@@ -557,26 +547,6 @@ describe(' CreateStore Screen', () => {
           )
           const bannerValue = deletedBannerState.get('banner')
           expect(bannerValue).toBe('')
-        })
-      })
-    })
-    describe('SET_TEAM_STORE_STATUS', () => {
-      describe('showTeamStores', () => {
-        it('Handles undefined value in showTeamStores', () => {
-          const customInitialValue = initialState.get('showTeamStores')
-          expect(customInitialValue).not.toBeUndefined()
-        })
-        it('Handles initial value in showTeamStores', () => {
-          const customInitialValue = initialState.get('showTeamStores')
-          expect(customInitialValue).toBeFalsy()
-        })
-        it('custom value in showTeamStores', () => {
-          const showTeamStoresState = createStoreReducer(
-            initialState,
-            setTeamStoreStatusAction(true)
-          )
-          const showTeamStoresValue = showTeamStoresState.get('showTeamStores')
-          expect(showTeamStoresValue).toBeTruthy()
         })
       })
     })

@@ -7,11 +7,9 @@ import { compose, withApollo } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
-import { getTeamStoreStatus } from './data'
 import get from 'lodash/get'
 import Button from 'antd/lib/button'
 import Spin from 'antd/lib/spin'
-import { DEFAULT_ROUTE } from '../../constants'
 import * as thunkActions from './thunkActions'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
@@ -92,7 +90,6 @@ interface Props extends RouteComponentProps<any> {
   client: any
   banner: string
   storeId: number
-  showTeamStores: boolean
   currentCurrency: string
   limit: number
   offset: number
@@ -122,8 +119,6 @@ interface Props extends RouteComponentProps<any> {
   setDataToEditAction: (data: TeamstoreType) => void
   deleteBannerOnEditAction: () => void
   clearDataAction: () => void
-  teamStoreStatus: () => Promise<any>
-  setTeamStoreStatusAction: (show: boolean) => void
   setPaginationData: (offset: number, page: number) => void
   onUnselectItemAction: (keyName: string) => void
 }
@@ -410,16 +405,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       setDataToEditAction,
       setLoadingAction,
       location: { search },
-      client: { query },
-      teamStoreStatus,
-      setTeamStoreStatusAction
+      client: { query }
     } = this.props
     const { storeId } = queryString.parse(search)
 
-    const response = await teamStoreStatus()
-    setTeamStoreStatusAction(
-      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
-    )
     if (storeId) {
       query({
         query: GetTeamStoreQuery,
@@ -475,7 +464,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       open,
       banner,
       location: { search },
-      showTeamStores,
       currentCurrency,
       currentPage,
       limit,
@@ -484,9 +472,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
-    if (showTeamStores === false) {
-      return <Redirect to={DEFAULT_ROUTE} />
-    }
 
     if (
       typeof window !== 'undefined' &&
@@ -727,7 +712,6 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
-  getTeamStoreStatus,
   connect(
     mapStateToProps,
     { ...createStoreActions, ...thunkActions }

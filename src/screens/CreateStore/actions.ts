@@ -22,7 +22,6 @@ import {
   DELETE_BANNER_ON_EDIT,
   OPEN_MODAL,
   CLEAR_DATA,
-  SET_TEAM_STORE_STATUS,
   SET_PAGINATION_DATA,
   ON_UNSELECT_ITEM
 } from './constants'
@@ -154,11 +153,6 @@ export const deleteBannerOnEditAction = () => ({
 
 export const clearDataAction = () => ({
   type: CLEAR_DATA
-})
-
-export const setTeamStoreStatusAction = (show: boolean) => ({
-  type: SET_TEAM_STORE_STATUS,
-  show
 })
 
 export const setPaginationDataAction = (offset: number, page: number) => ({

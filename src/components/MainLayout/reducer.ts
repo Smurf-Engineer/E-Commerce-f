@@ -9,7 +9,6 @@ import {
   GET_TOTAL_CART_ITEMS,
   OPEN_LOGOUT_MODAL,
   SAVE_AND_BUY,
-  SET_TEAM_STORE_STATUS,
   SET_INSTALLED_FONTS_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -28,7 +27,6 @@ export const initialState = fromJS({
   currentLanguage: 'en',
   callback: false,
   saveAndBuy: false,
-  showTeamStores: false,
   fonts: {}
 })
 
@@ -79,8 +77,6 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case SAVE_AND_BUY: {
       return state.set('saveAndBuy', action.buy)
     }
-    case SET_TEAM_STORE_STATUS:
-      return state.set('showTeamStores', action.show)
     case SET_INSTALLED_FONTS_ACTION:
       return state.set('fonts', fromJS(action.fonts))
     default:

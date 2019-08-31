@@ -10,8 +10,7 @@ import {
   OPEN_EMAIL_CONTACT,
   SET_EMAIL_CONTACT,
   SET_EMAIL_MESSAGE,
-  SEND_MESSAGE_LOADING,
-  SET_TEAM_STORE_STATUS
+  SEND_MESSAGE_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -48,8 +47,6 @@ const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('emailMessage', action.param)
     case SEND_MESSAGE_LOADING:
       return state.set('sendMessageLoading', action.loading)
-    case SET_TEAM_STORE_STATUS:
-      return state.set('showTeamStores', action.show)
     default:
       return state
   }

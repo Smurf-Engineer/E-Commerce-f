@@ -2,14 +2,11 @@
  * Teamstores Screen - Created by cazarez on 10/04/18.
  */
 import * as React from 'react'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as teamstoresActions from './actions'
-import { getTeamStoreStatus } from './data'
-import get from 'lodash/get'
-import { DEFAULT_ROUTE } from '../../constants'
 import messages from './messages'
 import {
   Container,
@@ -34,42 +31,21 @@ interface Props extends RouteComponentProps<any> {
   searchString: string
   openShare: boolean
   storeId: string
-  showTeamStores: boolean
   openShareModalAction: (open: boolean, id?: string) => void
   setSearchParamAction: (param: string) => void
   clearReducerAction: () => void
-  teamStoreStatus: () => Promise<any>
-  setTeamStoreStatusAction: (show: boolean) => void
 }
 
 export class SearchTeamstores extends React.Component<Props, {}> {
-  async componentDidMount() {
-    const { teamStoreStatus, setTeamStoreStatusAction } = this.props
-    const response = await teamStoreStatus()
-    setTeamStoreStatusAction(
-      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
-    )
-  }
-
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
   }
 
   render() {
-    const {
-      history,
-      intl,
-      searchString,
-      openShare,
-      storeId,
-      showTeamStores
-    } = this.props
+    const { history, intl, searchString, openShare, storeId } = this.props
     const { formatMessage } = intl
     const shareStoreUrl = `${config.baseUrl}store-front?storeId=${storeId}`
-    if (showTeamStores === false) {
-      return <Redirect to={DEFAULT_ROUTE} />
-    }
 
     return (
       <Layout teamStoresHeader={true} {...{ intl, history }}>
@@ -130,7 +106,6 @@ const mapStateToProps = (state: any) => state.get('searchTeamstores').toJS()
 
 const TeamstoresEnhance = compose(
   injectIntl,
-  getTeamStoreStatus,
   connect(
     mapStateToProps,
     { ...teamstoresActions }
