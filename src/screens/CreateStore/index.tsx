@@ -681,7 +681,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               <SaveButton
                 {...{ loading }}
                 type="primary"
-                width="25%"
+                width="316px"
                 size="large"
                 onClick={this.handleBuildTeamStore}
               >

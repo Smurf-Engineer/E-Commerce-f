@@ -513,7 +513,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                         <Render3D
                           customProduct={true}
                           designId={0}
-                          phoneView={true}
+                          zoomedIn={true}
                           textColor="white"
                           isProduct={true}
                           isPhone={phone}
