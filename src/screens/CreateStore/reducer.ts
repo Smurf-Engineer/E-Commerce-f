@@ -25,7 +25,8 @@ import {
   CLEAR_DATA,
   SET_TEAM_STORE_STATUS,
   SET_PAGINATION_DATA,
-  OPEN_MODAL
+  OPEN_MODAL,
+  ON_UNSELECT_ITEM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -41,7 +42,7 @@ export const initialState = fromJS({
   onDemand: true,
   passCode: '',
   openLocker: false,
-  selectedItems: [],
+  selectedItems: {},
   items: [],
   loading: true,
   open: false,
@@ -94,10 +95,16 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case SET_OPEN_LOCKER_ACTION:
       return state.merge({ openLocker: action.isOpen, selectedItems: [] })
     case SET_ITEM_SELECTED_ACTION: {
-      const selectedItems = state.get('selectedItems')
-      const addItem = selectedItems.push(action.item)
-      const itemsMap = addItem.map((item: any) => fromJS(item))
-      return state.merge({ selectedItems: itemsMap })
+      const {
+        design: { id }
+      } = action.item
+      const selectedItems = state.get('selectedItems').toJS()
+      return state.merge({
+        selectedItems: { [id]: action.item, ...selectedItems }
+      })
+    }
+    case ON_UNSELECT_ITEM: {
+      return state.removeIn(['selectedItems', action.keyName])
     }
     case DELETE_ITEM_SELECTED_ACTION: {
       const { index } = action
@@ -106,12 +113,11 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('items', updatedSelectedItems)
     }
     case SET_ITEMS_ADD_ACTION: {
-      const items = state.get('items')
+      const items = state.get('items').toJS()
       const selectedItems = state.get('selectedItems')
-      const addItem = items.push(...selectedItems)
-      const itemsMap = addItem.map((item: any) => fromJS(item))
+      const itemsMap = selectedItems.valueSeq((item: any) => item)
       return state.merge({
-        items: itemsMap,
+        items: [...items, ...itemsMap],
         openLocker: false,
         selectedItems: {}
       })

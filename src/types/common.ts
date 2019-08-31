@@ -1373,6 +1373,9 @@ export interface SelectedDesignType {
   visible: boolean
 }
 
+export interface SelectedDesignObjectType {
+  [designId: number]: SelectedDesignType[]
+}
 export type AspectRatio = {
   name: string
   value: number

@@ -31,12 +31,12 @@ import {
   updateStoreMutation
 } from './data'
 import {
-  SelectedItem,
   TeamstoreType,
   QueryProps,
   DesignResultType,
   LockerTableType,
-  DesignType
+  DesignType,
+  SelectedDesignObjectType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -83,7 +83,7 @@ interface Props extends RouteComponentProps<any> {
   endDateMoment?: Moment
   passCode: string
   openLocker: boolean
-  selectedItems: SelectedItem
+  selectedItems: SelectedDesignObjectType
   items: LockerTableType[]
   teamSizeRange: string
   createStore: any
@@ -125,6 +125,7 @@ interface Props extends RouteComponentProps<any> {
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
   setPaginationData: (offset: number, page: number) => void
+  onUnselectItemAction: (keyName: string) => void
 }
 
 interface StateProps {
@@ -459,7 +460,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       // updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
-      deleteItemSelectedAction,
       setItemsAddAction,
       moveRowAction,
       name,
@@ -479,7 +479,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       currentCurrency,
       currentPage,
       limit,
-      offset
+      offset,
+      onUnselectItemAction
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -698,7 +699,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               visible={openLocker}
               onRequestClose={this.handleOnCloseLocker}
               onSelectItem={setItemSelectedAction}
-              onUnselectItem={deleteItemSelectedAction}
+              onUnselectItem={onUnselectItemAction}
               onAddItems={setItemsAddAction}
               changePage={this.changePage}
             />
