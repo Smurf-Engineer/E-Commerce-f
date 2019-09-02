@@ -8,6 +8,7 @@ import debounce from 'lodash/debounce'
 
 interface Props {
   search: any
+  manualMode?: boolean
   onHeader?: boolean
   searchWidth?: string | undefined
   resetInput?: boolean | undefined
@@ -65,9 +66,12 @@ class SearchBar extends React.Component<Props, StateProps> {
   }
 
   showInput = () => {
-    const { onHeader } = this.props
-    if (onHeader) {
+    const { onHeader, search, manualMode } = this.props
+    const { searchValue } = this.state
+    if (onHeader && !manualMode) {
       this.setState({ width: 'auto' })
+    } else if (manualMode) {
+      search(searchValue)
     }
   }
 
@@ -89,12 +93,17 @@ class SearchBar extends React.Component<Props, StateProps> {
   }
 
   handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { manualMode, search } = this.props
     const {
       currentTarget: { value }
     } = evt
 
     this.setState({ searchValue: value }, () => {
-      this.raiseSearchWhenUserStopsTyping()
+      if (manualMode && !value) {
+        search('')
+      } else {
+        this.raiseSearchWhenUserStopsTyping()
+      }
     })
   }
 }
