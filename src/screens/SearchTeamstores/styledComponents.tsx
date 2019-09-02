@@ -62,7 +62,7 @@ export const ResultContainer = styled.div`
     padding: 80px 10px 90px 10px;
   }
 `
-
+export const PaginationRow = styled.div``
 export const TitleContainer = styled.div``
 export const Title = styled.div`
   height: 33px;

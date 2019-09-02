@@ -18,6 +18,8 @@ export const TeamStoresList = styled.ul`
   padding: 0;
 `
 
+export const PaginationRow = styled.div``
+
 export const LoadingContainer = styled.div`
   height: 256px;
   display: flex;

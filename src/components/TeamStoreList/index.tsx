@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
+import Pagination from 'antd/lib/pagination'
 import messages from './messages'
 import { GetTeamStoresQuery, SearchStoresQuery } from './data'
 import {
@@ -14,7 +15,8 @@ import {
   FoundStoreItem,
   FeaturedStoreItem,
   Notfound,
-  LoadingContainer
+  LoadingContainer,
+  PaginationRow
 } from './styledComponents'
 
 import { TeamstoreResult } from '../../types/common'
@@ -25,6 +27,9 @@ interface Props extends RouteComponentProps<any> {
   featuredStores?: TeamstoreResult
   foundStores?: TeamstoreResult
   searchString?: string
+  currentPage: number
+  limit: number
+  setSkipValueAction: (skip: number, limit: number) => void
   formatMessage: (messageDescriptor: any) => string
   openShareModalAction?: () => string
 }
@@ -36,6 +41,7 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
       featuredStores,
       foundStores,
       searchString,
+      currentPage,
       openShareModalAction
     } = this.props
 
@@ -66,6 +72,7 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
       'searchTeamStores.teamStores',
       []
     )
+    const fullCount = get(foundStores, 'searchTeamStores.fullCount', [])
     const loadingFound = get(foundStores, 'loading', false)
     const loadingFeatured = get(featuredStores, 'loading', false)
     const foundStoresList = foundTeamStoresArray.length ? (
@@ -99,12 +106,25 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
             <Spin size="large" />
           </LoadingContainer>
         ) : (
-          renderStores
+          <React.Fragment>
+            {renderStores}
+            <PaginationRow>
+              <Pagination
+                current={currentPage}
+                total={fullCount}
+                onChange={this.handleChangePage}
+              />
+            </PaginationRow>
+          </React.Fragment>
         )}
       </Container>
     )
   }
-
+  handleChangePage = (pageNumber: number) => {
+    const { setSkipValueAction, limit } = this.props
+    const skip = (pageNumber - 1) * limit
+    setSkipValueAction(skip, pageNumber)
+  }
   gotoStore = (storeId: string) => () => {
     const { history } = this.props
 
@@ -113,20 +133,23 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
 }
 interface OwnProps {
   searchString?: string
+  limit?: number
+  skip?: number
 }
 
 const TeamStoreListEnhance = compose(
   graphql(GetTeamStoresQuery, {
     name: 'featuredStores',
-    options: ({ searchString }: OwnProps) => ({
-      skip: searchString !== ''
+    options: ({ searchString, limit, skip }: OwnProps) => ({
+      skip: searchString !== '',
+      variables: { limit, offset: skip }
     })
   }),
   graphql(SearchStoresQuery, {
     name: 'foundStores',
-    options: ({ searchString }: OwnProps) => ({
+    options: ({ searchString, limit, skip }: OwnProps) => ({
       skip: searchString === '',
-      variables: { searchString }
+      variables: { searchString, limit, offset: skip }
     })
   })
 )(TeamStoreList)
