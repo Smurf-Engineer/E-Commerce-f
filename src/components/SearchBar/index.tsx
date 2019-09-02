@@ -68,10 +68,10 @@ class SearchBar extends React.Component<Props, StateProps> {
   showInput = () => {
     const { onHeader, search, manualMode } = this.props
     const { searchValue } = this.state
-    if (onHeader && !manualMode) {
-      this.setState({ width: 'auto' })
-    } else if (manualMode) {
+    if (manualMode) {
       search(searchValue)
+    } else if (onHeader) {
+      this.setState({ width: 'auto' })
     }
   }
 
