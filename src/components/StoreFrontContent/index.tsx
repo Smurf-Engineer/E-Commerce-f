@@ -13,7 +13,9 @@ import { getSingleTeamStore } from './data'
 import {
   QueryProps,
   TeamStoreResultType,
-  TeamStoreType
+  TeamStoreType,
+  UserType,
+  ContactInformation
 } from '../../types/common'
 import {
   Container,
@@ -88,10 +90,13 @@ interface Props {
   emailMessage: string
   sendMessageLoading: boolean
   currentCurrency: string
+  user: UserType
+  contactInfo: ContactInformation
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
   setPassCodeAction: (passCode: string) => void
+  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export class StoreFrontContent extends React.Component<Props, StateProps> {
@@ -182,7 +187,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       sendMessageLoading,
       sendMessageLoadingAction,
       setPassCodeAction,
-      currentCurrency
+      currentCurrency,
+      user,
+      handleInputChange,
+      contactInfo
     } = this.props
     const { showMuch, showCani, showLong, showWhen, showReturn } = this.state
 
@@ -484,7 +492,12 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
             />
 
             <EmailContact
-              {...{ formatMessage }}
+              {...{
+                formatMessage,
+                user,
+                handleInputChange,
+                contactInfo
+              }}
               open={openEmailContact}
               requestClose={this.closeEmailContactModal}
               onSetEmail={setEmailContactAction}

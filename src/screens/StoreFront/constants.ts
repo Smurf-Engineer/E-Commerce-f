@@ -18,3 +18,5 @@ export const SET_EMAIL_CONTACT = `${namespace}/SET_EMAIL_CONTACT`
 export const SET_EMAIL_MESSAGE = `${namespace}/SET_EMAIL_MESSAGE`
 
 export const SEND_MESSAGE_LOADING = `${namespace}/SEND_MESSAGE_LOADING`
+
+export const SET_CONTACT_FIELD = `${namespace}/SET_CONTACT_FIELD`
