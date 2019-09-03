@@ -121,7 +121,6 @@ server
       const finalState = store.getState()
 
       const html = <Html {...{ content, state }} reduxState={finalState} />
-
       const htmlString = renderHtml(styleTags, html, helmet)
       res.status(200)
       res.send(htmlString)
