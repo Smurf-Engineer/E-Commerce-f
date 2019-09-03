@@ -9,7 +9,8 @@ import {
   OPEN_EMAIL_CONTACT,
   SET_EMAIL_CONTACT,
   SET_EMAIL_MESSAGE,
-  SEND_MESSAGE_LOADING
+  SEND_MESSAGE_LOADING,
+  SET_CONTACT_FIELD
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -63,4 +64,10 @@ export const setEmailMessageAction = (param: string): AnyAction => {
 export const sendMessageLoadingAction = (loading: boolean): AnyAction => ({
   type: SEND_MESSAGE_LOADING,
   loading
+})
+
+export const setContactFieldAction = (field: string, value: string) => ({
+  type: SET_CONTACT_FIELD,
+  field,
+  value
 })

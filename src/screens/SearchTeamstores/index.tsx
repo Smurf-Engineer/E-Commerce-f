@@ -8,6 +8,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import zenscroll from 'zenscroll'
 import * as teamstoresActions from './actions'
+import { SCREEN_TITLE } from './constants'
 import messages from './messages'
 import {
   Container,
@@ -26,6 +27,7 @@ import SearchBar from '../../components/SearchBar'
 import TeamStoreList from '../../components/TeamStoreList'
 import Share from '../../components/ShareDesignModal'
 import teamstoreImage from '../../assets/teamStoreSearch.jpg'
+import Helmet from 'react-helmet'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -47,7 +49,6 @@ export class SearchTeamstores extends React.Component<Props, {}> {
     const { clearReducerAction } = this.props
     clearReducerAction()
   }
-
   render() {
     const {
       history,
@@ -65,6 +66,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
 
     return (
       <Layout teamStoresHeader={true} {...{ intl, history }}>
+        <Helmet title={SCREEN_TITLE} />
         <Container>
           <Content>
             <SearchBackground src={teamstoreImage} />
