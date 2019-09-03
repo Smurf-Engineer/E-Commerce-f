@@ -563,7 +563,7 @@ export class FirstStep extends React.Component<Props, {}> {
 
   handleSwitchActive = (value: boolean) => {
     const { setValue } = this.props
-    setValue('active', value ? 'true' : 'false')
+    setValue('active', value)
   }
 
   handleSwitchDesign = ({
