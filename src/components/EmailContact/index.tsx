@@ -87,11 +87,13 @@ export class EmailContact extends React.Component<Props, {}> {
       return
     }
 
-    const email = get(user, 'email', contactInfo.email)
-    const name = user
-      ? `${get(user, 'name')} ${get(user, 'lastName')}`
-      : contactInfo.name
-    const phone = contactInfo.phone
+    let { email, phone, name } = contactInfo
+
+    if (user) {
+      const { email: userEmail, name: firstName, lastName } = user
+      email = userEmail
+      name = `${firstName} ${lastName}`
+    }
 
     if (!email.length || !name.length) {
       message.error(formatMessage(messages.fillFields))
