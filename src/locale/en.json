@@ -998,7 +998,7 @@
   "components.CartListItemTable.labelPlaceholder": "Label",
   "components.CartListItemTable.color": "Color",
   "components.EmailContact.tittle": "CONTACT STORE MANAGER",
-  "components.EmailContact.email": "Email {required}:",
+  "components.EmailContact.email": "Email:",
   "components.EmailContact.send": "Send",
   "components.EmailContact.askMe": "Ask me anything",
   "components.EmailContact.nameLabel": "Write message to ",
