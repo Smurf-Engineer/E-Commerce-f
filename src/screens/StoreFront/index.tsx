@@ -9,7 +9,8 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import * as storeFrontActions from './actions'
-import { QueryProps } from '../../types/common'
+import { isNumber } from '../../utils/utilsFiles'
+import { QueryProps, UserType, ContactInformation } from '../../types/common'
 import { Container } from './styledComponents'
 import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
@@ -31,6 +32,8 @@ interface Props extends RouteComponentProps<any> {
   emailMessage: string
   sendMessageLoading: boolean
   currentCurrency: string
+  user: UserType
+  contactInfo: ContactInformation
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -40,6 +43,7 @@ interface Props extends RouteComponentProps<any> {
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
+  setContactFieldAction: (field: string, value: string) => void
 }
 
 export class StoreFront extends React.Component<Props, {}> {
@@ -73,6 +77,16 @@ export class StoreFront extends React.Component<Props, {}> {
     const { openPassCodeDialogAction } = this.props
     openPassCodeDialogAction(true)
   }
+  handleOnContactFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { setContactFieldAction } = this.props
+    const {
+      currentTarget: { id, value }
+    } = event
+    if (id === 'phone' && !isNumber(value) && value !== '') {
+      return
+    }
+    setContactFieldAction(id, value)
+  }
 
   render() {
     const {
@@ -92,7 +106,9 @@ export class StoreFront extends React.Component<Props, {}> {
       openEmailContactDialogAction,
       openShareModalAction,
       openPassCodeDialogAction,
-      currentCurrency
+      currentCurrency,
+      user,
+      contactInfo
     } = this.props
 
     const {
@@ -122,7 +138,8 @@ export class StoreFront extends React.Component<Props, {}> {
             setEmailMessageAction={setEmailMessageAction}
             sendMessageLoadingAction={sendMessageLoadingAction}
             setPassCodeAction={setPassCodeAction}
-            {...{ history, currentCurrency }}
+            handleInputChange={this.handleOnContactFieldChange}
+            {...{ history, currentCurrency, user, contactInfo }}
           />
         </Container>
       </TeamsLayout>
@@ -133,7 +150,7 @@ export class StoreFront extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const storeFrontPops = state.get('storeFront').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...storeFrontPops, ...langProps }
+  return { ...storeFrontPops, ...langProps, user: state.get('app').get('user') }
 }
 
 const StoreFrontEnhance = compose(

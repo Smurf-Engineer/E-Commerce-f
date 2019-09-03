@@ -178,7 +178,6 @@ export const SliderWrapper = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: 10px;
   padding-right: 10px;
   .ant-btn-primary {
     background-color: #4a90e2;
@@ -269,6 +268,7 @@ export const DatesContainer = styled.div`
 export const FlexContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   @media (max-width: 768px) {
     flex-flow: column;
     justify-content: center;

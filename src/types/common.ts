@@ -1380,3 +1380,9 @@ export type AspectRatio = {
   name: string
   value: number
 }
+
+export type ContactInformation = {
+  name: string
+  email: string
+  phone: string
+}
