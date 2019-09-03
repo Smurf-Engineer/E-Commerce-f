@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import zenscroll from 'zenscroll'
 import * as teamstoresActions from './actions'
 import messages from './messages'
 import {
@@ -37,6 +38,7 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class SearchTeamstores extends React.Component<Props, {}> {
+  private teamList: any
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
@@ -57,6 +59,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
                 {formatMessage(messages.teamStoresLegend)}
               </TeamStoreText>
               <SearchBar
+                manualMode={true}
                 resetInput={false}
                 search={this.onSearch}
                 formatMessage={intl.formatMessage}
@@ -74,6 +77,11 @@ export class SearchTeamstores extends React.Component<Props, {}> {
                 </GetSponsored>
               </TitleContainer>
             )}
+            <div
+              ref={list => {
+                this.teamList = list
+              }}
+            />
             <TeamStoreList
               openShareModalAction={this.handleOpenShareModal}
               {...{ formatMessage, searchString, history }}
@@ -93,6 +101,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
 
   onSearch = (value: string) => {
     const { setSearchParamAction } = this.props
+    zenscroll.to(this.teamList)
     setSearchParamAction(value)
   }
 

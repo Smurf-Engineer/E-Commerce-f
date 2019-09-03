@@ -5,6 +5,7 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
+import Spin from 'antd/lib/spin'
 import messages from './messages'
 import { GetTeamStoresQuery, SearchStoresQuery } from './data'
 import {
@@ -12,7 +13,8 @@ import {
   TeamStoresList,
   FoundStoreItem,
   FeaturedStoreItem,
-  Notfound
+  Notfound,
+  LoadingContainer
 } from './styledComponents'
 
 import { TeamstoreResult } from '../../types/common'
@@ -64,7 +66,8 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
       'searchTeamStores.teamStores',
       []
     )
-
+    const loadingFound = get(foundStores, 'loading', false)
+    const loadingFeatured = get(featuredStores, 'loading', false)
     const foundStoresList = foundTeamStoresArray.length ? (
       foundTeamStoresArray.map((store: any, index: number) => (
         <FoundStoreItem key={index}>
@@ -89,7 +92,17 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
       <TeamStoresList>{foundStoresList}</TeamStoresList>
     )
 
-    return <Container>{renderStores}</Container>
+    return (
+      <Container>
+        {loadingFound || loadingFeatured ? (
+          <LoadingContainer>
+            <Spin size="large" />
+          </LoadingContainer>
+        ) : (
+          renderStores
+        )}
+      </Container>
+    )
   }
 
   gotoStore = (storeId: string) => () => {

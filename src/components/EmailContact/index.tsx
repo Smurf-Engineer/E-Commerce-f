@@ -87,7 +87,7 @@ export class EmailContact extends React.Component<Props, {}> {
       return
     }
 
-    let { email, phone, name } = contactInfo
+    let { email, name } = contactInfo
 
     if (user) {
       const { email: userEmail, name: firstName, lastName } = user
@@ -99,6 +99,7 @@ export class EmailContact extends React.Component<Props, {}> {
       message.error(formatMessage(messages.fillFields))
       return
     }
+    const { phone } = contactInfo
     try {
       setSendMessageLoading(true)
       const response = await contactManagerMutation({
