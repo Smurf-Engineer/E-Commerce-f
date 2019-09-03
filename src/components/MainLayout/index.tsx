@@ -34,6 +34,7 @@ import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
+import Helmet from 'react-helmet'
 
 const { Content } = Layout
 
@@ -237,6 +238,7 @@ class MainLayout extends React.Component<Props, {}> {
     return (
       <Layout>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
+        <Helmet defaultTitle={config.mainTitle} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
