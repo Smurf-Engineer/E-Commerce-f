@@ -5,7 +5,6 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Input from 'antd/lib/input'
 import get from 'lodash/get'
-import includes from 'lodash/includes'
 import message from 'antd/lib/message'
 import { compose } from 'react-apollo'
 import messages from './messages'
@@ -42,11 +41,11 @@ interface Props {
   contactInfo: ContactInformation
 }
 
-const fields = [
-  { id: 'name', required: true, length: 50 },
-  { id: 'email', required: true, length: 50 },
-  { id: 'phone', required: false, length: 10 }
-]
+const fields = {
+  name: { required: true, length: 50 },
+  email: { required: true, length: 50 },
+  phone: { required: false, length: 10 }
+}
 export class EmailContact extends React.Component<Props, {}> {
   handleCancel = () => {
     const { requestClose } = this.props
@@ -140,27 +139,25 @@ export class EmailContact extends React.Component<Props, {}> {
       contactInfo
     } = this.props
 
-    let fieldsToRender = ['phone']
+    const fieldsToRender = []
     if (!user) {
-      fieldsToRender = [...fieldsToRender, 'email', 'name']
+      fieldsToRender.push('name', 'email')
     }
-    const extraFields = fields.map(
-      (field, index) =>
-        includes(fieldsToRender, field.id) && (
-          <FieldContainer>
-            <Label required={field.required}>
-              {formatMessage(messages[field.id])}
-            </Label>
-            <Input
-              key={index}
-              id={field.id}
-              maxLength={field.length}
-              onChange={handleInputChange}
-              value={contactInfo[field.id]}
-            />
-          </FieldContainer>
-        )
-    )
+    fieldsToRender.push('phone')
+    const extraFields = fieldsToRender.map((field, index) => (
+      <FieldContainer>
+        <Label required={fields[field].required}>
+          {formatMessage(messages[field])}
+        </Label>
+        <Input
+          key={index}
+          id={field}
+          maxLength={fields[field].length}
+          onChange={handleInputChange}
+          value={contactInfo[field]}
+        />
+      </FieldContainer>
+    ))
     return (
       <Container>
         <Modal
@@ -170,7 +167,7 @@ export class EmailContact extends React.Component<Props, {}> {
           withLogo={false}
         >
           <Title>{formatMessage(messages.title)}</Title>
-          {extraFields && <ExtraFields>{extraFields}</ExtraFields>}
+          {<ExtraFields>{extraFields}</ExtraFields>}
           <TitleLabel>{`${formatMessage(messages.nameLabel)} ${ownerName ||
             formatMessage(messages.storeManager)}`}</TitleLabel>
           <TextArea
