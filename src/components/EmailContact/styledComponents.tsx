@@ -57,10 +57,13 @@ export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   margin-top: 15px;
   text-align: right;
+
   .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;
     width: 150px;
+    display: inline-flex;
+    justify-content: space-evenly;
   }
   .ant-btn-primary:hover {
     background-color: #4a90e2;

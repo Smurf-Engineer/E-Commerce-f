@@ -43,7 +43,7 @@ interface Props {
 }
 
 const fields = [
-  { id: 'name', required: false, length: 50 },
+  { id: 'name', required: true, length: 50 },
   { id: 'email', required: true, length: 50 },
   { id: 'phone', required: false, length: 10 }
 ]
@@ -93,7 +93,7 @@ export class EmailContact extends React.Component<Props, {}> {
       : contactInfo.name
     const phone = contactInfo.phone
 
-    if (!email.length) {
+    if (!email.length || !name.length) {
       message.error(formatMessage(messages.fillFields))
       return
     }
@@ -136,7 +136,7 @@ export class EmailContact extends React.Component<Props, {}> {
       handleInputChange,
       contactInfo
     } = this.props
-    // const email = get(user, 'email', '')
+
     let fieldsToRender = ['phone']
     if (!user) {
       fieldsToRender = [...fieldsToRender, 'email', 'name']
