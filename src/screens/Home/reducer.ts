@@ -49,7 +49,6 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
         homepageImages,
         title
       } = action.data
-      console.log(action.data)
       return state.merge({
         headerImageMobile,
         headerImage,
