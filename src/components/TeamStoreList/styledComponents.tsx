@@ -9,7 +9,6 @@ export const Container = styled.div`
   justify-content: space-evenly;
   margin-top: 42px;
   flex-wrap: wrap;
-  padding: 0 10%;
 `
 
 export const Text = styled.div`
@@ -17,6 +16,13 @@ export const Text = styled.div`
 `
 export const TeamStoresList = styled.ul`
   padding: 0;
+`
+
+export const LoadingContainer = styled.div`
+  height: 256px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const FoundStoreItem = styled.li`
