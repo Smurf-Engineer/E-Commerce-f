@@ -9,3 +9,7 @@ export const SET_SEARCH_PARAM = `${namespace}/SET_SEARCH_PARAM`
 export const OPEN_SHARE_MODAL = `${namespace}/OPEN_SHARE_MODAL`
 
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
+
+export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_VALUE`
+
+export const TEAM_STORES_LIMIT = 10
