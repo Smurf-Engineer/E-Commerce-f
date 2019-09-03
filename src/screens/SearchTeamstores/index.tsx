@@ -7,6 +7,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as teamstoresActions from './actions'
+import { SCREEN_TITLE } from './constants'
 import messages from './messages'
 import {
   Container,
@@ -37,8 +38,14 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class SearchTeamstores extends React.Component<Props, {}> {
+  componentDidMount() {
+    document.title = SCREEN_TITLE
+  }
   componentWillUnmount() {
     const { clearReducerAction } = this.props
+    if (config.mainTitle) {
+      document.title = config.mainTitle
+    }
     clearReducerAction()
   }
 
