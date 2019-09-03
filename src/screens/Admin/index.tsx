@@ -60,6 +60,8 @@ import {
   LoadingContainer
 } from './styledComponents'
 import { UserType } from '../../types/common'
+import Helmet from 'react-helmet'
+import config from '../../config'
 
 // const { SubMenu } = Menu
 
@@ -166,6 +168,7 @@ export class Admin extends React.Component<Props, {}> {
     if (!user || !user.administrator) {
       return (
         <Content>
+          <Helmet defaultTitle={config.mainTitle} />
           <Login
             {...{ formatMessage, forgotPasswordOpen, loading }}
             login={this.handleLogin}

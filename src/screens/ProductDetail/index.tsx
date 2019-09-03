@@ -83,6 +83,7 @@ import {
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
+import Helmet from 'react-helmet'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -139,10 +140,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
   componentWillUnmount() {
     const { resetReducerAction } = this.props
-
-    if (config.mainTitle) {
-      document.title = config.mainTitle
-    }
     resetReducerAction()
   }
 
@@ -231,7 +228,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       relatedItemTag,
       fitStyles,
       sizeRange,
-      title
+      title = config.mainTitle
     } = product
     const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag.replace(/_/g, ' ')
@@ -241,9 +238,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       location: { search }
     } = this.props
-    if (title) {
-      document.title = title
-    }
+
     const queryParams = queryString.parse(search)
 
     const yotpoId = queryParams.modelId || ''
@@ -498,6 +493,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     return (
       <Layout {...{ history, intl }}>
+        <Helmet {...{ title }} />
         <Container>
           {product && (
             <Content>

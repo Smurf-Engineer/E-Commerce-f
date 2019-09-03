@@ -15,9 +15,12 @@ export const SearchBarContent = styled.div`
   align-self: center;
   display: inline-flex;
   flex-flow: column;
-  padding: 0 12px;
-  max-width: 496px;
+  max-width: 942px;
   width: 100%;
+  @media (max-width: 1440px) {
+    max-width: 498px;
+    padding: 0 16px;
+  }
 `
 
 export const Text = styled.div`
@@ -29,6 +32,7 @@ export const SearchBackground = styled.img`
   height: 100%;
   width: 100%;
   object-fit: cover;
+  object-position: 50% 20%;
   filter: brightness(0.6);
   @media (max-width: 425px) {
     width: unset;

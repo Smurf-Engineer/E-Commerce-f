@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import zenscroll from 'zenscroll'
 import * as teamstoresActions from './actions'
 import { SCREEN_TITLE } from './constants'
 import messages from './messages'
@@ -26,6 +27,7 @@ import SearchBar from '../../components/SearchBar'
 import TeamStoreList from '../../components/TeamStoreList'
 import Share from '../../components/ShareDesignModal'
 import teamstoreImage from '../../assets/teamStoreSearch.jpg'
+import Helmet from 'react-helmet'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -38,17 +40,11 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class SearchTeamstores extends React.Component<Props, {}> {
-  componentDidMount() {
-    document.title = SCREEN_TITLE
-  }
+  private teamList: any
   componentWillUnmount() {
     const { clearReducerAction } = this.props
-    if (config.mainTitle) {
-      document.title = config.mainTitle
-    }
     clearReducerAction()
   }
-
   render() {
     const { history, intl, searchString, openShare, storeId } = this.props
     const { formatMessage } = intl
@@ -56,6 +52,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
 
     return (
       <Layout teamStoresHeader={true} {...{ intl, history }}>
+        <Helmet title={SCREEN_TITLE} />
         <Container>
           <Content>
             <SearchBackground src={teamstoreImage} />
@@ -64,6 +61,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
                 {formatMessage(messages.teamStoresLegend)}
               </TeamStoreText>
               <SearchBar
+                manualMode={true}
                 resetInput={false}
                 search={this.onSearch}
                 formatMessage={intl.formatMessage}
@@ -81,6 +79,11 @@ export class SearchTeamstores extends React.Component<Props, {}> {
                 </GetSponsored>
               </TitleContainer>
             )}
+            <div
+              ref={list => {
+                this.teamList = list
+              }}
+            />
             <TeamStoreList
               openShareModalAction={this.handleOpenShareModal}
               {...{ formatMessage, searchString, history }}
@@ -100,6 +103,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
 
   onSearch = (value: string) => {
     const { setSearchParamAction } = this.props
+    zenscroll.to(this.teamList)
     setSearchParamAction(value)
   }
 
