@@ -14,6 +14,7 @@ import { InjectedIntl, FormattedMessage } from 'react-intl'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { UserType, Font, SimpleFont } from '../../types/common'
+import config from '../../config/index'
 import { getTeamStoreStatus, getFonts } from './data'
 import * as adminLayoutActions from './api'
 import {
@@ -35,6 +36,7 @@ import {
   Content,
   LogoutButton
 } from './styledComponents'
+import Helmet from 'react-helmet'
 
 const { SubMenu } = Menu
 
@@ -154,6 +156,7 @@ class AdminLayout extends React.Component<Props, {}> {
     return (
       <Container>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
+        <Helmet defaultTitle={config.mainTitle} />
         <SideBar>
           <Menu
             selectedKeys={[screen]}
