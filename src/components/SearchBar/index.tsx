@@ -99,10 +99,10 @@ class SearchBar extends React.Component<Props, StateProps> {
     } = evt
 
     this.setState({ searchValue: value }, () => {
-      if (manualMode && !value) {
-        search('')
-      } else {
+      if (!manualMode) {
         this.raiseSearchWhenUserStopsTyping()
+      } else if (!value) {
+        search('')
       }
     })
   }
