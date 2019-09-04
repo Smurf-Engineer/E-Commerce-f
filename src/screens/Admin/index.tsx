@@ -14,6 +14,7 @@ import {
   deleteUserSession
 } from '../../components/MainLayout/api'
 import { Login } from './Login'
+import { MAIN_TITLE } from '../../constants'
 import logo from '../../assets/jakroo_logo.svg'
 import AdminLayout from '../../components/AdminLayout'
 import ProductCatalog from '../../components/ProductCatalog'
@@ -61,7 +62,6 @@ import {
 } from './styledComponents'
 import { UserType } from '../../types/common'
 import Helmet from 'react-helmet'
-import config from '../../config'
 
 // const { SubMenu } = Menu
 
@@ -168,7 +168,7 @@ export class Admin extends React.Component<Props, {}> {
     if (!user || !user.administrator) {
       return (
         <Content>
-          <Helmet defaultTitle={config.mainTitle} />
+          <Helmet defaultTitle={MAIN_TITLE} />
           <Login
             {...{ formatMessage, forgotPasswordOpen, loading }}
             login={this.handleLogin}
