@@ -157,7 +157,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         </ViewContainer>
         <ScreenContent>
           <ScreenTitle>
-            {`${name} ${formatMessage(messages.title)}`}
+            {`${teamStore.name} ${formatMessage(messages.title)}`}
           </ScreenTitle>
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
           <Table>

@@ -4,11 +4,17 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
+import { WHITE } from '../DesignerTool/constants'
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${WHITE};
+  @media (min-width: 1452px) {
+    border-top: 1px solid #dcdcdc;
+    margin-top: 10px;
+    background: #f9f9f9;
+  }
 `
 
 export const HeadersContainer = styled.div`
