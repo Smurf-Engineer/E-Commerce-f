@@ -9,6 +9,7 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
+import { MAIN_TITLE } from '../../constants'
 import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
 import * as LayoutActions from './actions'
@@ -238,7 +239,7 @@ class MainLayout extends React.Component<Props, {}> {
     return (
       <Layout>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
-        <Helmet defaultTitle={config.mainTitle} />
+        <Helmet defaultTitle={MAIN_TITLE} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}

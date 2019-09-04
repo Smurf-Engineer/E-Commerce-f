@@ -63,6 +63,7 @@ import {
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
+import { MAIN_TITLE } from '../../constants'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import Render3D from '../../components/Render3D'
@@ -228,7 +229,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       relatedItemTag,
       fitStyles,
       sizeRange,
-      title = config.mainTitle
+      title = MAIN_TITLE
     } = product
     const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag.replace(/_/g, ' ')

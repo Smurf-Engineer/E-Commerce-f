@@ -26,6 +26,7 @@ import {
   SubText
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
+import { MAIN_TITLE } from '../../constants'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
@@ -138,7 +139,7 @@ export class Home extends React.Component<Props, {}> {
       productTiles,
       featuredProducts,
       homepageImages,
-      title = config.mainTitle
+      title = MAIN_TITLE
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
