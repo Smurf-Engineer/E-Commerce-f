@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import * as storeFrontActions from './actions'
-import { isNumber } from '../../utils/utilsFiles'
+import { isPhoneNumber } from '../../utils/utilsFiles'
 import { QueryProps, UserType, ContactInformation } from '../../types/common'
 import { Container } from './styledComponents'
 import TeamsLayout from '../../components/MainLayout'
@@ -82,7 +82,8 @@ export class StoreFront extends React.Component<Props, {}> {
     const {
       currentTarget: { id, value }
     } = event
-    if (id === 'phone' && !isNumber(value) && value !== '') {
+
+    if (id === 'phone' && !isPhoneNumber(value) && value !== '') {
       return
     }
     setContactFieldAction(id, value)

@@ -17,7 +17,10 @@ export const isNumber = (fileName: string) => {
   const numbersRegex = /^\d+$/
   return numbersRegex.test(fileName)
 }
-
+export const isPhoneNumber = (value: string) => {
+  const regex = /^[0-9 ()+-]+$/
+  return regex.test(value)
+}
 const createImage = (url: string) =>
   new Promise((resolve, reject) => {
     const image = new Image()

@@ -44,7 +44,7 @@ interface Props {
 const fields = {
   name: { required: true, length: 50 },
   email: { required: true, length: 50 },
-  phone: { required: false, length: 10 }
+  phone: { required: false, length: 20 }
 }
 export class EmailContact extends React.Component<Props, {}> {
   handleCancel = () => {
