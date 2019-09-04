@@ -5,7 +5,8 @@ import {
   DEFAULT_ACTION,
   SET_SEARCH_PARAM,
   OPEN_SHARE_MODAL,
-  CLEAR_REDUCER
+  CLEAR_REDUCER,
+  SET_SKIP_VALUE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -33,4 +34,13 @@ export const openShareModalAction = (
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
+})
+
+export const setSkipValueAction = (
+  skip: number,
+  currentPage: number
+): AnyAction => ({
+  type: SET_SKIP_VALUE,
+  skip,
+  currentPage
 })

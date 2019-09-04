@@ -34,6 +34,10 @@ interface Props extends RouteComponentProps<any> {
   searchString: string
   openShare: boolean
   storeId: string
+  currentPage: number
+  limit: number
+  skip: number
+  setSkipValueAction: (skip: number, limit: number) => void
   openShareModalAction: (open: boolean, id?: string) => void
   setSearchParamAction: (param: string) => void
   clearReducerAction: () => void
@@ -46,7 +50,17 @@ export class SearchTeamstores extends React.Component<Props, {}> {
     clearReducerAction()
   }
   render() {
-    const { history, intl, searchString, openShare, storeId } = this.props
+    const {
+      history,
+      intl,
+      searchString,
+      openShare,
+      storeId,
+      skip,
+      currentPage,
+      limit,
+      setSkipValueAction
+    } = this.props
     const { formatMessage } = intl
     const shareStoreUrl = `${config.baseUrl}store-front?storeId=${storeId}`
 
@@ -86,7 +100,15 @@ export class SearchTeamstores extends React.Component<Props, {}> {
             />
             <TeamStoreList
               openShareModalAction={this.handleOpenShareModal}
-              {...{ formatMessage, searchString, history }}
+              {...{
+                formatMessage,
+                searchString,
+                history,
+                setSkipValueAction,
+                skip,
+                currentPage,
+                limit
+              }}
             />
           </ResultContainer>
         </Container>
@@ -103,7 +125,9 @@ export class SearchTeamstores extends React.Component<Props, {}> {
 
   onSearch = (value: string) => {
     const { setSearchParamAction } = this.props
-    zenscroll.to(this.teamList)
+    if (value) {
+      zenscroll.to(this.teamList)
+    }
     setSearchParamAction(value)
   }
 
