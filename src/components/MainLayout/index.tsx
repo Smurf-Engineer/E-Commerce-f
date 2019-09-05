@@ -34,6 +34,7 @@ import { getTeamStoreStatus, getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
+import { setDefaultScreenAction } from '../../screens/Account/actions'
 
 const { Content } = Layout
 
@@ -78,6 +79,7 @@ interface Props extends RouteComponentProps<any> {
   showTeamStores: boolean
   fontsData: any
   fonts: []
+  setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
@@ -214,7 +216,8 @@ class MainLayout extends React.Component<Props, {}> {
       buyNowHeader,
       saveAndBuyAction,
       showTeamStores,
-      fonts
+      fonts,
+      setAccountScreen
     } = this.props
     const { formatMessage } = intl
     let numberOfProducts = 0
@@ -267,7 +270,8 @@ class MainLayout extends React.Component<Props, {}> {
               initialCountryCode,
               currentRegion,
               currentLanguage,
-              buyNowHeader
+              buyNowHeader,
+              setAccountScreen
             }}
             saveAndBuy={saveAndBuyAction}
             saveUserToLocal={this.handleOnLogin}
@@ -366,7 +370,8 @@ const LayoutEnhance = compose(
       ...LayoutActions,
       ...LocaleActions,
       ...mainLayoutActions,
-      openWithoutSaveModalAction: openOutWithoutSaveModalAction
+      openWithoutSaveModalAction: openOutWithoutSaveModalAction,
+      setAccountScreen: setDefaultScreenAction
     }
   )
 )(MainLayout)

@@ -166,6 +166,7 @@ export class Account extends React.Component<Props, {}> {
       showTeamStores,
       setCurrentShare
     } = this.props
+    console.log('screen:', screen)
     switch (screen) {
       case OVERVIEW:
         return (
