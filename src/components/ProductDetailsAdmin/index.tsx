@@ -272,6 +272,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                 <Row>
                   <RowField
                     label={formatMessage(messages.seasons)}
+                    marginRight="8px"
                     value={season}
                   />
                   <RowField

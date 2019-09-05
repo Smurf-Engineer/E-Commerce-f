@@ -9,6 +9,7 @@ interface ContainerProps {
   flex?: string
   textAlign?: string
   paddingTop?: string
+  marginRight?: string
 }
 export const Container = styled.div`
   flex: ${({ flex }: ContainerProps) => (flex ? flex : '1')};
@@ -16,7 +17,8 @@ export const Container = styled.div`
     textAlign ? textAlign : 'left'};
   padding-top: ${({ paddingTop }: ContainerProps) =>
     paddingTop ? paddingTop : 'unset'};
-
+  margin-right: ${({ marginRight }: ContainerProps) =>
+    marginRight ? marginRight : '16px'};
   @media (min-width: 320px) and (max-width: 480px) {
     height: 132px;
   }
