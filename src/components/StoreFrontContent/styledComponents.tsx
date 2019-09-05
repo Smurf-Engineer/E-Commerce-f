@@ -12,7 +12,9 @@ type DivProps = {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${WHITE};
+  max-width: 1452px;
+  margin: 0 auto;
 `
 
 export const TopContainer = styled.div`
