@@ -12,7 +12,9 @@ interface DivProps {
 export const Container = styled.div`
   background-color: #fff;
   padding: 40px 32px 90px 32px;
-
+  max-width: 1452px;
+  margin: 0 auto;
+  width: 100%;
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 40px 10px 90px 10px;
   }

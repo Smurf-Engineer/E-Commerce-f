@@ -6,10 +6,11 @@ import Icon from 'antd/lib/icon'
 
 interface StyleProps {
   withBorder?: boolean
+  withMargin?: boolean
 }
 
 export const Container = styled.section`
-  margin: 0px 16px;
+  margin: ${({ withMargin }: StyleProps) => (withMargin ? '0px 16px' : '0')};
   width: 220px;
 
   @media (min-width: 320px) and (max-width: 480px) {
