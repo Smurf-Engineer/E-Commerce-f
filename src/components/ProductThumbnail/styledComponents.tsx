@@ -88,7 +88,7 @@ export const Type = styled.div`
   line-height: 19px;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 220px;
+  width: 212px;
   display: flex;
   align-items: center;
   justify-content: space-between;

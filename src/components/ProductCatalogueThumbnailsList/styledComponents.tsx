@@ -6,9 +6,6 @@ import styled from 'styled-components'
 export const Container = styled.div``
 export const Content = styled.div`
   overflow: scroll;
-  @media (min-width: 320px) and (max-width: 767px) {
-    overflow: hidden;
-  }
 `
 
 export const Text = styled.div`

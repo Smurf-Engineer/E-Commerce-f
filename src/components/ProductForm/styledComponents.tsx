@@ -9,6 +9,7 @@ export const Container = styled.div`
   padding-bottom: 36px;
   padding-right: 48px;
   width: 100%;
+  max-width: 1024px;
 `
 export const ScreenTitle = styled.div`
   color: #5f6062;

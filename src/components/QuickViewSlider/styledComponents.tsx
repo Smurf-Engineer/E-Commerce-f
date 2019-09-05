@@ -18,9 +18,12 @@ export const StyledButton = styled(Button)`
   border: 2px solid #f5222d;
   width: 220px;
   height: 50px;
-
+  margin-top: 14px;
+  transition: all 0.2s ease;
   &:hover {
-    color: #fff
+    span {
+      color: #ffff;
+    }
     background-color: #f5222d;
   }
 

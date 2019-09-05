@@ -16,6 +16,7 @@ export const Text = styled.div`
 `
 export const Container = styled.div`
   margin-bottom: 30px;
+  max-width: 1024px;
 `
 export const Label = styled.div`
   margin-top: ${({ marginTop }: DivProps) => (marginTop ? marginTop : 'unset')};
