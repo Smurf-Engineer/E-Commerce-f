@@ -14,7 +14,6 @@ export const Container = styled.section`
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
-    margin-left: 0;
   }
 `
 

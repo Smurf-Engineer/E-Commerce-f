@@ -33,6 +33,7 @@ interface Props extends RouteComponentProps<any> {
   // openQuickViewAction: (index: number) => void
   loadingModel: boolean
   fontsData: any
+  phone: boolean
   // Redux actions
   setLoadingAction: (loading: boolean) => void
 }
@@ -53,7 +54,7 @@ export class Designs extends React.Component<Props, {}> {
   // }
 
   render() {
-    const { location, fontsData } = this.props
+    const { location, fontsData, phone } = this.props
 
     const { search } = location
     const queryParams = queryString.parse(search)
@@ -77,14 +78,20 @@ export class Designs extends React.Component<Props, {}> {
         {installedFonts.length ? (
           <GoogleFontLoader fonts={installedFonts} />
         ) : null}
-        <ThreeD {...{ designId }} />
+        <ThreeD {...{ designId }} isPhone={phone} />
       </Container>
     )
   }
 }
 
-const mapStateToProps = (state: any) => state.get('designs').toJS()
-
+const mapStateToProps = (state: any) => {
+  const designs = state.get('designs').toJS()
+  const responsive = state.get('responsive').toJS()
+  return {
+    ...designs,
+    ...responsive
+  }
+}
 const DesignsEnhance = compose(
   injectIntl,
   getFonts,

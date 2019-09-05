@@ -42,6 +42,7 @@ interface Props {
   priceRange?: PriceRange[]
   labelButton?: string | React.ReactNode
   isTopProduct: boolean
+  itemId?: string
   collections?: number
   footer?: React.ReactNode
   gender?: number
@@ -120,13 +121,14 @@ class ProductThumbnail extends React.Component<Props, {}> {
     const {
       id,
       yotpoId,
-      teamStoreShortId,
       gender,
+      itemId,
       myLockerList,
-      designId
+      designId,
+      teamStoreShortId
     } = this.props
-    if (teamStoreShortId) {
-      return `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&modelId=${yotpoId}`
+    if (designId && itemId && teamStoreShortId) {
+      return `/custom-product?id=${designId}&item=${itemId}&team=${teamStoreShortId}`
     }
     if (myLockerList) {
       return `/custom-product?${designId && `id=${designId}`}`

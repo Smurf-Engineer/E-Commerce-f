@@ -39,13 +39,12 @@ export const PaginationRow = styled.div`
 `
 
 export const CreateTeamStoreLegend = styled.div`
-  height: 46px;
-  width: 464px;
+  max-width: 658px;
   color: #5f6062;
-  font-size: 16px;
+  font-size: 15px;
   letter-spacing: 0.11px;
   line-height: 23px;
-  margin: 34px 0 23px;
+  margin: 24px 0;
 
   @media (max-width: 480px) {
     width: auto;

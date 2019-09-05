@@ -13,11 +13,15 @@ import {
   Title,
   Button,
   ButtonWrapper,
-  TitleLabel
+  TitleLabel,
+  ExtraFields,
+  FieldContainer,
+  Label
 } from './styledComponents'
 const { TextArea } = Input
 import { contactManager } from './data'
 import Modal from '../Common/JakrooModal'
+import { UserType, ContactInformation } from '../../types/common'
 
 interface Props {
   requestClose: () => void
@@ -26,14 +30,22 @@ interface Props {
   onSetMesage: (message: string) => void
   contactManagerMutation: (variables: {}) => void
   setSendMessageLoading: (loading: boolean) => void
+  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   open: boolean
   teamStoreId: string
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
   ownerName: string
+  user: UserType
+  contactInfo: ContactInformation
 }
 
+const fields = {
+  name: { required: true, length: 50 },
+  email: { required: true, length: 50 },
+  phone: { required: false, length: 20 }
+}
 export class EmailContact extends React.Component<Props, {}> {
   handleCancel = () => {
     const { requestClose } = this.props
@@ -65,18 +77,32 @@ export class EmailContact extends React.Component<Props, {}> {
       requestClose,
       teamStoreId,
       setSendMessageLoading,
-      formatMessage
+      formatMessage,
+      contactInfo,
+      user
     } = this.props
-
     if (!emailMessage) {
       message.error(formatMessage(messages.invalidMessage))
       return
     }
 
+    let { email, name } = contactInfo
+
+    if (user) {
+      const { email: userEmail, name: firstName, lastName } = user
+      email = userEmail
+      name = `${firstName} ${lastName}`
+    }
+
+    if (!email.length || !name.length) {
+      message.error(formatMessage(messages.fillFields))
+      return
+    }
+    const { phone } = contactInfo
     try {
       setSendMessageLoading(true)
       const response = await contactManagerMutation({
-        variables: { teamStoreId, text: emailMessage }
+        variables: { teamStoreId, text: emailMessage, name, phone, email }
       })
       setSendMessageLoading(false)
       const data = get(response, 'data.contactEmail', false)
@@ -107,9 +133,31 @@ export class EmailContact extends React.Component<Props, {}> {
       formatMessage,
       emailMessage,
       sendMessageLoading,
-      ownerName
+      ownerName,
+      user,
+      handleInputChange,
+      contactInfo
     } = this.props
 
+    const fieldsToRender = []
+    if (!user) {
+      fieldsToRender.push('name', 'email')
+    }
+    fieldsToRender.push('phone')
+    const extraFields = fieldsToRender.map((field, index) => (
+      <FieldContainer>
+        <Label required={fields[field].required}>
+          {formatMessage(messages[field])}
+        </Label>
+        <Input
+          key={index}
+          id={field}
+          maxLength={fields[field].length}
+          onChange={handleInputChange}
+          value={contactInfo[field]}
+        />
+      </FieldContainer>
+    ))
     return (
       <Container>
         <Modal
@@ -119,6 +167,7 @@ export class EmailContact extends React.Component<Props, {}> {
           withLogo={false}
         >
           <Title>{formatMessage(messages.title)}</Title>
+          {<ExtraFields>{extraFields}</ExtraFields>}
           <TitleLabel>{`${formatMessage(messages.nameLabel)} ${ownerName ||
             formatMessage(messages.storeManager)}`}</TitleLabel>
           <TextArea

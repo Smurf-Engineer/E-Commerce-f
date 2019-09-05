@@ -4,11 +4,17 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
+import { GRAY_LIGHT, WHITE, WHITE_SMOKE } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${WHITE};
+  @media (min-width: 1452px) {
+    border-top: 1px solid ${GRAY_LIGHT};
+    margin-top: 10px;
+    background: ${WHITE_SMOKE};
+  }
 `
 
 export const HeadersContainer = styled.div`

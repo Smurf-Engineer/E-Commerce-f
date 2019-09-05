@@ -5,17 +5,27 @@ import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
-import { setTeamStoreFeaturedMutation } from './data'
+import {
+  setTeamStoreFeaturedMutation,
+  setTeamStorePricesMutation,
+  setTeamStoreDisplayMutation
+} from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import * as TeamStoresActions from './actions'
+import * as ThunkActions from './thunkActions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './TeamStoresList'
 import messages from './messages'
-import { sorts, Message } from '../../types/common'
+import {
+  sorts,
+  Message,
+  Currency,
+  TeamStoreAdminType
+} from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
 
 interface Props {
@@ -38,13 +48,19 @@ interface Props {
   id: number
   modalOpen: boolean
   loading: boolean
+  teamStore: TeamStoreAdminType
+  currencies: Currency[]
   formatMessage: (messageDescriptor: Message, params?: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
   setSearchTextAction: (searchText: string) => void
-  setLoadingAction: (loading: boolean) => void
   setTeamStoreFeatured: (variables: {}) => void
+  setPriceAction: (value: number, currency: string, itemIndex: number) => void
+  getTeamStore: (query: any, teamStoreId: number) => void
+  setTeamStorePrices: (variables: {}) => void
+  setLoadingItemAction: (itemIndex: string, loading: boolean) => void
+  setTeamStoreDisplay: (variables: {}) => void
 }
 
 interface StateProps {
@@ -71,7 +87,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       sort,
       formatMessage,
       searchText,
-      history
+      history,
+      setPriceAction,
+      teamStore,
+      currencies,
+      loading
     } = this.props
 
     return (
@@ -94,7 +114,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 onSortClick={this.handleOnSortClick}
                 onChangePage={this.handleOnChangePage}
                 interactiveHeaders={true}
-                onSetFeatured={this.handleOnSetFeatured}
+                onChangeSwitch={this.onChangeSwitch}
                 onClickRow={this.handleGoToTeamStore}
               />
             </Container>
@@ -103,10 +123,55 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
         <Route
           path="/admin/team-stores/details/:id"
           exact={true}
-          render={() => <TeamStoreDetails {...{ formatMessage, history }} />}
+          render={() => (
+            <TeamStoreDetails
+              {...{ formatMessage, history, teamStore, currencies, loading }}
+              getTeamStoreData={this.handleGetTeamStoreDetails}
+              handleOnSetPrice={setPriceAction}
+              handleOnSave={this.handleOnSaveItem}
+              onSetFeatured={this.handleOnSetFeatured}
+            />
+          )}
         />
       </div>
     )
+  }
+  handleOnSaveItem = async (event: React.MouseEvent<HTMLElement>) => {
+    const { id: index } = event.currentTarget
+    const {
+      teamStore,
+      setTeamStorePrices,
+      setLoadingItemAction,
+      formatMessage
+    } = this.props
+
+    setLoadingItemAction(index, true)
+    try {
+      const teamStoreItem = teamStore.items[index]
+      const prices = Object.keys(teamStoreItem.pricesByCurrency).map(
+        currency => ({
+          shortName: currency,
+          price: teamStoreItem.pricesByCurrency[currency]
+        })
+      )
+      await setTeamStorePrices({
+        variables: {
+          itemId: teamStoreItem.id,
+          prices
+        }
+      })
+      message.success(formatMessage(messages.itemSaved))
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
+    setLoadingItemAction(index, false)
+  }
+  handleGetTeamStoreDetails = (teamStoreId: number) => {
+    const {
+      getTeamStore,
+      client: { query }
+    } = this.props
+    getTeamStore(query, teamStoreId)
   }
   handleGoToTeamStore = (id: string) => {
     const { history } = this.props
@@ -129,6 +194,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
     this.setState({ searchValue: value }, () => {
       this.raiseSearchWhenUserStopsTyping()
     })
+  }
+  onChangeSwitch = (id: number, fieldId: string) => {
+    fieldId === 'featured'
+      ? this.handleOnSetFeatured(id)
+      : this.handleOnSetDisplay(id)
   }
   handleOnSetFeatured = async (id: number) => {
     const {
@@ -172,15 +242,60 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.unexpectedError))
     }
   }
+  handleOnSetDisplay = async (id: number) => {
+    const {
+      setTeamStoreDisplay,
+      orderBy,
+      sort,
+      searchText,
+      formatMessage,
+      currentPage = 0
+    } = this.props
+    try {
+      const offset = (currentPage - 1) * TEAM_STORES_LIMIT
+
+      await setTeamStoreDisplay({
+        variables: { id },
+        update: (store: any) => {
+          const storedData = store.readQuery({
+            query: GetTeamStoresQuery,
+            variables: {
+              limit: TEAM_STORES_LIMIT,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            }
+          })
+          store.writeQuery({
+            query: GetTeamStoresQuery,
+            variables: {
+              limit: TEAM_STORES_LIMIT,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            },
+            data: storedData
+          })
+        }
+      })
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => state.get('teamStoresAdmin').toJS()
 
 const TeamStoresAdminEnhance = compose(
   setTeamStoreFeaturedMutation,
+  setTeamStorePricesMutation,
+  setTeamStoreDisplayMutation,
+  withApollo,
   connect(
     mapStateToProps,
-    { ...TeamStoresActions }
+    { ...TeamStoresActions, ...ThunkActions }
   )
 )(TeamStoresAdmin)
 

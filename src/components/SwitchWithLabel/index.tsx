@@ -2,7 +2,6 @@
  * SwitchWithLabel Component - Created by david on 10/04/18.
  */
 import * as React from 'react'
-import Switch from 'antd/lib/switch'
 import Input from 'antd/lib/input'
 import {
   Container,
@@ -10,7 +9,9 @@ import {
   Message,
   Row,
   inputStyle,
-  Error
+  Error,
+  SwitchInput,
+  SubLabel
 } from './styledComponents'
 
 interface Props {
@@ -23,10 +24,12 @@ interface Props {
   errorLabel?: string
   hasError?: boolean
   defaultChecked?: boolean
+  placeholder: string
+  subLabel?: string
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
 }
-
+const INPUT_MAX_LENGTH = 25
 const SwitchWithLabel = ({
   message,
   label,
@@ -38,39 +41,39 @@ const SwitchWithLabel = ({
   errorLabel,
   hasError,
   defaultChecked,
+  placeholder,
+  subLabel,
   updatePassCodeAction = () => {}
 }: Props) => {
   const handleUpdatePassCode = (evnt: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value }
     } = evnt
-
-    if (value.length > 15) {
-      return
+    if (value.length <= INPUT_MAX_LENGTH) {
+      updatePassCodeAction(value.toLowerCase())
     }
-
-    updatePassCodeAction(value)
   }
 
   return (
     <Container {...{ width }}>
       <Row>
         <Label>{label}</Label>
-        <Switch {...{ defaultChecked, onChange, checked }} />
+        <SwitchInput {...{ defaultChecked, onChange, checked }} />
       </Row>
       <Message>{message}</Message>
       {withInput && (
         <Input
           disabled={!checked}
           value={passCode}
-          placeholder="Pass Code"
+          placeholder={placeholder}
           type="Password"
           size="large"
           onChange={handleUpdatePassCode}
           style={inputStyle}
         />
       )}
-      {hasError && (!passCode && checked) && <Error>{errorLabel}</Error>}
+      {subLabel && <SubLabel>{subLabel}</SubLabel>}
+      {hasError && checked && <Error>{errorLabel}</Error>}
     </Container>
   )
 }

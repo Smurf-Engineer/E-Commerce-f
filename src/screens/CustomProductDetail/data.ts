@@ -1,11 +1,21 @@
 import gql from 'graphql-tag'
 
 export const GetDesignByIdQuery = gql`
-  query GetDesignByID($designId: String!) {
-    design: sharedDesignShortId(designId: $designId) {
+  query GetDesignByID($designId: String!, $teamStoreItem: String) {
+    design: sharedDesignShortId(
+      designId: $designId
+      teamStoreItem: $teamStoreItem
+    ) {
       id
       name
       shortId: short_id
+      teamEnable: team_enable
+      teamPrice: team_price {
+        abbreviation
+        shortName: short_name
+        quantity
+        price
+      }
       product {
         id
         productId: id

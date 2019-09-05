@@ -16,12 +16,8 @@ import {
   SummaryContainer,
   OrderNumberContainer,
   StyledText,
-  StyledDropText,
   TitleStyled,
   CartList,
-  StyledCheckbox,
-  ContainerCheckBox,
-  StyledEmailPhoneText,
   Title,
   Content
 } from './styledComponents'
@@ -136,8 +132,6 @@ class OrderData extends React.Component<Props, {}> {
           discount
         }
       },
-      sendEmailAlert,
-      sendSmsAlert,
       currentCurrency
     } = this.props
 
@@ -149,12 +143,6 @@ class OrderData extends React.Component<Props, {}> {
         <StyledImage src={iconPaypal} />
       )
 
-    const isThereTeamstoreProduct = cart.some(c => !!c.teamStoreId)
-
-    const orderMessage = isThereTeamstoreProduct
-      ? messages.messageTeamstore
-      : messages.messageRetail
-
     let subtotal = 0
     const renderList = cart
       ? cart.map((cartItem, index) => {
@@ -162,18 +150,12 @@ class OrderData extends React.Component<Props, {}> {
             designId,
             designImage,
             designName,
-            product: { images, name, shortDescription },
+            product: { images, name, shortDescription, priceRange },
             productTotal,
             unitPrice
           } = cartItem
 
           subtotal += productTotal || 0
-
-          const priceRange = {
-            quantity: '0',
-            price: 0,
-            shortName: ''
-          }
 
           const itemImage = designId ? designImage || '' : images[0].front
           const itemTitle = designId ? designName || '' : name
@@ -220,7 +202,7 @@ class OrderData extends React.Component<Props, {}> {
               <StyledText>{estimatedDate}</StyledText>
             </OrderNumberContainer>
             <StyledText>
-              <FormattedHTMLMessage {...orderMessage} />
+              <FormattedHTMLMessage {...messages.messageRetail} />
             </StyledText>
             <ShippingBillingContainer>
               <div>
@@ -252,13 +234,14 @@ class OrderData extends React.Component<Props, {}> {
             </ShippingBillingContainer>
             <TitleStyled>{formatMessage(messages.items)}</TitleStyled>
             <CartList>{renderList}</CartList>
-            {isThereTeamstoreProduct ? (
+            {/* TODO: For fixed price teamstores
+              isThereTeamstoreProduct ? (
               <div>
                 <SubTitle>{formatMessage(messages.priceDropAlert)}</SubTitle>
                 <StyledDropText>
                   {formatMessage(messages.priceDropMessage)}
                 </StyledDropText>
-                {/* TODO: Add button to save these alerts settings*/}
+                // TODO: Add button to save these alerts settings 
                 <ContainerCheckBox>
                   <StyledCheckbox
                     checked={sendEmailAlert}
@@ -266,7 +249,7 @@ class OrderData extends React.Component<Props, {}> {
                   >
                     {formatMessage(messages.sendEmail)}
                   </StyledCheckbox>
-                  {/* TODO: get real email*/}
+                  // TODO: get real email
                   <StyledEmailPhoneText>joe@smith.com</StyledEmailPhoneText>
                 </ContainerCheckBox>
                 <ContainerCheckBox>
@@ -276,11 +259,11 @@ class OrderData extends React.Component<Props, {}> {
                   >
                     {formatMessage(messages.sendSms)}
                   </StyledCheckbox>
-                  {/* TODO: get real phone*/}
+                  // TODO: get real phone
                   <StyledEmailPhoneText> 111-111-1111</StyledEmailPhoneText>
                 </ContainerCheckBox>
               </div>
-            ) : null}
+              ) : null */}
           </InfoContainer>
           <SummaryContainer>
             <OrderSummary

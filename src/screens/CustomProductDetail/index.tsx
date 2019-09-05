@@ -56,7 +56,9 @@ import {
   SelectedType,
   ItemDetailType,
   CartItemDetail,
-  ProductFile
+  ProductFile,
+  PriceRange,
+  UserType
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -70,8 +72,10 @@ import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
 import { ProductGenders } from '../ProductDetail/constants'
 import YotpoSection from '../../components/YotpoSection'
+import { BLUE, GRAY_DARK } from '../../theme/colors'
 
 const MAX_AMOUNT_PRICES = 4
+const teamStoreLabels = ['regularPrice', 'teamPrice']
 const { Men, Women, Unisex } = ProductGenders
 
 interface MyDesignsData extends QueryProps {
@@ -94,6 +98,7 @@ interface Props extends RouteComponentProps<any> {
   showSpecs: boolean
   currentCurrency: string
   showFitsModal: boolean
+  phone: boolean
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
@@ -118,7 +123,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       data: { design, error },
-      designsData: { myDesigns },
+      designsData,
       selectedGender,
       selectedSize,
       selectedFit,
@@ -126,21 +131,23 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       setLoadingModel,
       showDetails,
       currentCurrency,
-      showFitsModal
+      showFitsModal,
+      phone
     } = this.props
     const { formatMessage } = intl
 
     const queryParams = queryString.parse(search)
 
-    const shared = get(design, 'shared', false)
     const shortId = get(design, 'shortId', '')
     const product = get(design, 'product', null)
+    const productPriceRange = get(product, 'priceRange', null)
+    const teamStoreItem = queryParams.item
+    const designs = get(designsData, 'myDesigns.designs', [] as DesignType[])
 
-    const designs = get(myDesigns, 'designs', [] as DesignType[])
+    const ownedDesign =
+      !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
 
-    const ownedDesign = designs && designs.find(d => d.shortId === shortId)
-
-    if (!product || error || (!shared && !ownedDesign)) {
+    if (!product || error) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -156,9 +163,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
 
     const designId = queryParams.id
+    const teamStoreShortId = queryParams.team
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
+    const teamPrice = get(design, 'teamPrice', '')
+    const teamEnable = get(design, 'teamEnable', '')
     const proDesign = get(design, 'proDesign', false)
     const {
       images: imagesArray,
@@ -181,12 +191,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag.replace(/_/, ' ')
-
-    const currencyPrices =
-      product &&
-      filter(product.priceRange, {
-        abbreviation: currentCurrency || config.defaultCurrency
-      })
     let images = null
     let moreImages = []
     if (!!imagesArray) {
@@ -195,8 +199,27 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ genderId: imageGender }) => imageGender !== images.genderId
       )
     }
-    const symbol = currencyPrices ? currencyPrices[0].shortName : ''
 
+    const hasFixedPrices = teamPrice && teamPrice.length
+    let priceRange: PriceRange[] = []
+    if (teamStoreItem) {
+      const regularPrices = filter(
+        productPriceRange,
+        ({ quantity }) =>
+          quantity === 'Personal' || (quantity === '2-5' && !hasFixedPrices)
+      )
+      priceRange = [...regularPrices, ...teamPrice]
+    } else {
+      priceRange = productPriceRange
+    }
+
+    const currencyPrices =
+      product &&
+      filter(priceRange, {
+        abbreviation: currentCurrency || config.defaultCurrency
+      })
+
+    const symbol = currencyPrices.length ? currencyPrices[0].shortName : ''
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
@@ -204,7 +227,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ price, quantity }, index: number) =>
           index < MAX_AMOUNT_PRICES && (
             <AvailablePrices key={index}>
-              <PriceQuantity {...{ index, price, quantity, symbol }} />
+              <PriceQuantity
+                {...{ index, price, symbol, teamStoreItem }}
+                priceColor={index > 0 && teamStoreItem ? BLUE : GRAY_DARK}
+                quantity={
+                  teamStoreItem
+                    ? formatMessage(messages[teamStoreLabels[index]])
+                    : quantity
+                }
+              />
             </AvailablePrices>
           )
       )
@@ -332,7 +363,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           item={itemToAdd}
           itemProdPage={true}
           withoutTop={true}
-          {...{ designId, designName, designImage }}
+          teamStoreId={teamStoreShortId}
+          fixedPrices={teamPrice}
+          {...{ designId, designName, designImage, teamStoreItem }}
         />
       </ButtonsRow>
     )
@@ -384,7 +417,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     customProduct={true}
                     textColor="white"
                     {...{ designId }}
-                    phoneView={true}
+                    zoomedIn={true}
+                    isPhone={phone}
                   />
                   <HowItFits onClick={this.toggleFitsModal(true)}>
                     <FormattedMessage {...messages.howItFits} />
@@ -417,19 +451,25 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  {!proDesign ? (
-                    <EditDesignButton onClick={this.gotToEditDesign(designId)}>
-                      {formatMessage(messages.editDesign)}
-                    </EditDesignButton>
-                  ) : (
-                    <ProApproved>
-                      <ProApprovedLabel>
-                        {formatMessage(messages.approved)}
-                      </ProApprovedLabel>
-                    </ProApproved>
-                  )}
+                  {!teamStoreItem &&
+                    ownedDesign &&
+                    (!proDesign ? (
+                      <EditDesignButton
+                        onClick={this.gotToEditDesign(designId)}
+                      >
+                        {formatMessage(messages.editDesign)}
+                      </EditDesignButton>
+                    ) : (
+                      <ProApproved>
+                        <ProApprovedLabel>
+                          {formatMessage(messages.approved)}
+                        </ProApprovedLabel>
+                      </ProApproved>
+                    ))}
                 </TitleRow>
-                <PricesRow>{renderPrices}</PricesRow>
+                <PricesRow isTeamStore={!!teamStoreItem}>
+                  {renderPrices}
+                </PricesRow>
                 <Ratings
                   stars={5}
                   starDimension={'15px'}
@@ -442,7 +482,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <BannerMaterial src={banner.url} />
                   ))}
                 </BannerMaterialSection>
-                {collectionSelection}
+                {((teamStoreItem && teamEnable) || !teamStoreItem) &&
+                  collectionSelection}
                 {productInfo}
               </ProductData>
               <FitInfo
@@ -538,23 +579,31 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const productDetail = state.get('customProductDetail').toJS()
   const langProps = state.get('languageProvider').toJS()
-  const app = state.get('responsive').toJS()
-  return { ...productDetail, ...langProps, ...app }
+  const responsive = state.get('responsive').toJS()
+  const app = state.get('app').toJS()
+  return { ...productDetail, ...langProps, ...responsive, ...app }
 }
 
 type OwnProps = {
   location?: any
+  user?: UserType
 }
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
+  connect(
+    mapStateToProps,
+    { ...customProductDetailActions }
+  ),
   graphql<any>(designsQuery, {
-    options: () => {
+    options: ({ user, location: { search } }: OwnProps) => {
+      const queryParams = queryString.parse(search)
       return {
         variables: {
           limit: 12,
           offset: 0
         },
+        skip: !user || !!queryParams.item,
         fetchPolicy: 'network-only'
       }
     },
@@ -568,17 +617,14 @@ const CustomProductDetailEnhance = compose(
       const queryParams = queryString.parse(search)
       return {
         variables: {
-          designId: queryParams ? queryParams.id : null
+          designId: queryParams ? queryParams.id : null,
+          teamStoreItem: queryParams ? queryParams.item : null
         },
         fetchPolicy: 'network-only'
       }
     }
   }),
-  withLoading,
-  connect(
-    mapStateToProps,
-    { ...customProductDetailActions }
-  )
+  withLoading
 )(CustomProductDetail)
 
 export default CustomProductDetailEnhance

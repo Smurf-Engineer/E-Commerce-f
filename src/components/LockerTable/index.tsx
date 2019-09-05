@@ -12,31 +12,36 @@ import {
   MobileEmtpytable
 } from './styledComponents'
 import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
+import filter from 'lodash/filter'
 import MediaQuery from 'react-responsive'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import { PriceRange, LockerTableType } from '../../types/common'
 import Product from './ProductRow'
+import config from '../../config/index'
 
 interface Header {
   message: string
   width?: number
+  tabletWidth?: number
 }
 
 const headerTitles: Header[] = [
-  { message: '', width: 40 },
-  { message: 'starting' },
-  { message: 'target' },
-  { message: 'orders' },
-  { message: 'current' },
-  { message: 'visible', width: 20 }
+  { message: '', width: 30, tabletWidth: 45 },
+  { message: 'regularPrice', width: 15, tabletWidth: 15 },
+  { message: 'fixedPrice', width: 15, tabletWidth: 15 },
+  { message: 'visible', width: 20, tabletWidth: 10 },
+  { message: '', width: 2, tabletWidth: 15 }
 ]
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   items: LockerTableType[]
   teamSizeRange: string
+  currentCurrency?: string
+  hideQuickView?: boolean
   onPressDelete: (index: number) => void
   onPressQuickView: (
     id: number,
@@ -63,23 +68,27 @@ class LockerTable extends React.PureComponent<Props, {}> {
     const {
       formatMessage,
       items,
+      hideQuickView,
       onPressDelete,
       onPressQuickView,
       onPressVisible,
-      teamSizeRange
+      teamSizeRange,
+      currentCurrency = config.defaultCurrency
     } = this.props
 
     const header = (
       <MediaQuery minDeviceWidth={480}>
         {matches => {
           if (matches) {
-            const head = headerTitles.map(({ width, message }, key) => (
-              <Cell {...{ key, width }}>
-                <Title>
-                  {message ? formatMessage(messsages[message]) : ''}
-                </Title>
-              </Cell>
-            ))
+            const head = headerTitles.map(
+              ({ width, tabletWidth, message }, key) => (
+                <Cell {...{ key, width, tabletWidth }}>
+                  <Title>
+                    {message ? formatMessage(messsages[message]) : ''}
+                  </Title>
+                </Cell>
+              )
+            )
             return head
           } else {
             return null
@@ -89,10 +98,16 @@ class LockerTable extends React.PureComponent<Props, {}> {
     )
 
     const itemsSelected = items.map(
-      ({ design, visible, totalOrders }: LockerTableType, index) => {
+      (
+        { design, visible, totalOrders, priceRange }: LockerTableType,
+        index
+      ) => {
         const name = get(design, 'name')
         const product = get(design, 'product')
-        const pricesArray = get(product, 'priceRange')
+        const productPrices = get(product, 'priceRange')
+        const pricesArray = filter(productPrices, {
+          abbreviation: currentCurrency || config.defaultCurrency
+        })
         const startingPrice = this.getTierPrice(pricesArray)
         const targetPrice = this.getTierPrice(pricesArray, teamSizeRange)
         const image = get(design, 'image')
@@ -101,6 +116,17 @@ class LockerTable extends React.PureComponent<Props, {}> {
         const productId = get(product, 'id')
         const yotpoId = get(product, 'yotpoId')
         const type = get(product, 'type')
+        const regularPrice = get(
+          find(pricesArray, {
+            quantity: 'Personal'
+          }),
+          'price',
+          0
+        )
+        const fixedPrice =
+          priceRange && priceRange.length
+            ? get(find(priceRange, ['abbreviation', currentCurrency]), 'price')
+            : startingPrice
         return (
           <Product
             {...{
@@ -108,8 +134,10 @@ class LockerTable extends React.PureComponent<Props, {}> {
               image,
               name,
               description,
+              hideQuickView,
               productId,
-              startingPrice,
+              fixedPrice,
+              regularPrice,
               targetPrice,
               onPressDelete,
               onPressQuickView,

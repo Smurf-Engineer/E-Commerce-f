@@ -39,13 +39,14 @@ export const getShoppingCartData = (
         justOneOfEveryItem = false
       }
 
-      // Get the maxquantity of articles of a product
       if (quantitySum > maxquantity) {
         maxquantity = quantitySum
       }
 
+      // Check for fixed prices
+      const productPriceRanges = get(cartItem, 'product.priceRange', [])
       // get prices from currency
-      const currencyPrices = filter(cartItem.product.priceRange, {
+      const currencyPrices = filter(productPriceRanges, {
         abbreviation: currency
       })
 
@@ -57,7 +58,6 @@ export const getShoppingCartData = (
       totalWithoutDiscount =
         totalWithoutDiscount + quantitySum * currencyPrices[0].price
     })
-
     if (justOneOfEveryItem && shoppingCart.length) {
       priceRangeToApply = getPriceRangeToApply(shoppingCart.length)
     } else {
@@ -67,12 +67,19 @@ export const getShoppingCartData = (
     }
 
     shoppingCart.map(cartItem => {
+      const teamStoreRange =
+        cartItem.fixedPrices && cartItem.fixedPrices.length ? 0 : 1
       const quantities = cartItem.itemDetails.map(itemDetail => {
         return itemDetail.quantity
       })
       const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-      const productPriceRanges = get(cartItem, 'product.priceRange', [])
+      const productPriceRanges = get(
+        cartItem,
+        cartItem.fixedPrices && cartItem.fixedPrices.length
+          ? 'fixedPrices'
+          : 'product.priceRange',
+        []
+      )
 
       // get prices from currency
       const currencyPrices = filter(productPriceRanges, {
@@ -86,16 +93,18 @@ export const getShoppingCartData = (
         priceRange = currencyPrices[priceRangeRetails]
       } else {
         priceRange =
-          priceRangeToApply !== 0
-            ? currencyPrices[priceRangeToApply]
+          priceRangeToApply !== 0 || cartItem.teamStoreId
+            ? currencyPrices[
+                !cartItem.teamStoreId ? priceRangeToApply : teamStoreRange
+              ]
             : getPriceRange(currencyPrices, quantitySum)
       }
-
       priceRange =
-        priceRange.price === 0
-          ? currencyPrices[currencyPrices.length - 1]
+        (priceRange && priceRange.price === 0) || cartItem.teamStoreId
+          ? currencyPrices[
+              !cartItem.teamStoreId ? currencyPrices.length - 1 : teamStoreRange
+            ]
           : priceRange
-
       // increase the total
       totalSum = totalSum + priceRange.price * quantitySum
     })

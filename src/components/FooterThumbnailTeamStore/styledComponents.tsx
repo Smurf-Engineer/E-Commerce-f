@@ -2,7 +2,6 @@
  * Styled Components - Created by gustavomedina on 12/04/18.
  */
 import styled from 'styled-components'
-import { BLUE } from '../../theme/colors'
 
 export const Footer = styled.div`
   padding: 4px;
@@ -51,29 +50,20 @@ export const Label = styled.div`
   padding: 4px 0px;
   font-size: 12px;
   line-height: 16px;
-  text-align: right;
+  text-align: left;
+  width: 82px;
 `
 
 export const PriceLabel = styled.div`
   user-select: none;
-  color: #5f6062;
+  color: ${({ color }) => (color ? color : '#5f6062')};
   padding: 4px 0px;
   font-size: 12px;
   line-height: 16px;
-  text-align: right;
+  text-align: left;
   margin-left: 5px;
   font-weight: bold;
-`
-
-export const BluePriceLabel = styled.div`
-  user-select: none;
-  color: ${BLUE};
-  padding: 4px 0px;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: right;
-  margin-left: 5px;
-  font-weight: bold;
+  width: 62px;
 `
 
 export const Price = styled.div`
@@ -95,6 +85,11 @@ export const Private = styled.span`
   color: #8c8c8c;
   font-size: 12px;
   line-height: 16px;
+`
+export const BottomPrices = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 export const PricesContainer = styled.div`

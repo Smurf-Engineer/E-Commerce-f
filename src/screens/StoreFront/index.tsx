@@ -3,15 +3,14 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
-import { getTeamStoreStatus } from './data'
-import { DEFAULT_ROUTE } from '../../constants'
 import * as storeFrontActions from './actions'
-import { QueryProps } from '../../types/common'
+import { isPhoneNumber } from '../../utils/utilsFiles'
+import { QueryProps, UserType, ContactInformation } from '../../types/common'
 import { Container } from './styledComponents'
 import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
@@ -32,7 +31,9 @@ interface Props extends RouteComponentProps<any> {
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
-  showTeamStores: boolean
+  currentCurrency: string
+  user: UserType
+  contactInfo: ContactInformation
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -42,21 +43,13 @@ interface Props extends RouteComponentProps<any> {
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
-  teamStoreStatus: () => Promise<any>
-  setTeamStoreStatusAction: (show: boolean) => void
+  setContactFieldAction: (field: string, value: string) => void
 }
 
 export class StoreFront extends React.Component<Props, {}> {
   state = {
     showDetails: true,
     showSpecs: true
-  }
-  async componentDidMount() {
-    const { teamStoreStatus, setTeamStoreStatusAction } = this.props
-    const response = await teamStoreStatus()
-    setTeamStoreStatusAction(
-      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
-    )
   }
 
   getData = async (params: Params) => {
@@ -84,6 +77,17 @@ export class StoreFront extends React.Component<Props, {}> {
     const { openPassCodeDialogAction } = this.props
     openPassCodeDialogAction(true)
   }
+  handleOnContactFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { setContactFieldAction } = this.props
+    const {
+      currentTarget: { id, value }
+    } = event
+
+    if (id === 'phone' && !isPhoneNumber(value) && value !== '') {
+      return
+    }
+    setContactFieldAction(id, value)
+  }
 
   render() {
     const {
@@ -103,7 +107,9 @@ export class StoreFront extends React.Component<Props, {}> {
       openEmailContactDialogAction,
       openShareModalAction,
       openPassCodeDialogAction,
-      showTeamStores
+      currentCurrency,
+      user,
+      contactInfo
     } = this.props
 
     const {
@@ -112,10 +118,6 @@ export class StoreFront extends React.Component<Props, {}> {
     const queryParams = queryString.parse(search)
 
     const storeId = queryParams ? queryParams.storeId || '' : ''
-
-    if (showTeamStores === false) {
-      return <Redirect to={DEFAULT_ROUTE} />
-    }
 
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
@@ -137,7 +139,8 @@ export class StoreFront extends React.Component<Props, {}> {
             setEmailMessageAction={setEmailMessageAction}
             sendMessageLoadingAction={sendMessageLoadingAction}
             setPassCodeAction={setPassCodeAction}
-            {...{ history }}
+            handleInputChange={this.handleOnContactFieldChange}
+            {...{ history, currentCurrency, user, contactInfo }}
           />
         </Container>
       </TeamsLayout>
@@ -145,11 +148,14 @@ export class StoreFront extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('storeFront').toJS()
+const mapStateToProps = (state: any) => {
+  const storeFrontPops = state.get('storeFront').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return { ...storeFrontPops, ...langProps, user: state.get('app').get('user') }
+}
 
 const StoreFrontEnhance = compose(
   injectIntl,
-  getTeamStoreStatus,
   connect(
     mapStateToProps,
     { ...storeFrontActions, openQuickView: openQuickViewAction }

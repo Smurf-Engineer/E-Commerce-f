@@ -1,8 +1,9 @@
 import gql from 'graphql-tag'
 
 export const GetTeamStoresQuery = gql`
-  query GetTeamStoresList {
-    teamStoresList {
+  query GetTeamStoresList($limit: Int, $offset: Int) {
+    teamStoresList(limit: $limit, offset: $offset, withPrivates: true) {
+      fullCount
       teamStores {
         id
         shortId: short_id
@@ -14,8 +15,12 @@ export const GetTeamStoresQuery = gql`
 `
 
 export const SearchStoresQuery = gql`
-  query SearchTeamStore($searchString: String!) {
-    searchTeamStores(searchParam: $searchString) {
+  query SearchTeamStore($searchString: String!, $limit: Int, $offset: Int) {
+    searchTeamStores(
+      searchParam: $searchString
+      limit: $limit
+      offset: $offset
+    ) {
       fullCount
       teamStores {
         id

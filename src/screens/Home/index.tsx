@@ -26,6 +26,7 @@ import {
   SubText
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
+import { MAIN_TITLE } from '../../constants'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
@@ -41,6 +42,7 @@ import {
   Product,
   HomepageImagesType
 } from '../../types/common'
+import { Helmet } from 'react-helmet'
 
 interface Data extends QueryProps {
   files: any
@@ -67,6 +69,7 @@ interface Props extends RouteComponentProps<any> {
   productTiles: ProductTiles[]
   featuredProducts: Product[]
   homepageImages: HomepageImagesType[]
+  title: string
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -85,11 +88,7 @@ export class Home extends React.Component<Props, {}> {
     const { getHomepage } = thunkActions
     dispatch(getHomepage(query, params.sportRoute))
   }
-  componentWillUnmount() {
-    if (config.mainTitle) {
-      document.title = config.mainTitle
-    }
-  }
+
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
     const { dispatch } = this.props
     dispatch(openQuickViewAction(id, yotpoId, gender))
@@ -139,7 +138,8 @@ export class Home extends React.Component<Props, {}> {
       headerImage,
       productTiles,
       featuredProducts,
-      homepageImages
+      homepageImages,
+      title = MAIN_TITLE
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
@@ -166,6 +166,7 @@ export class Home extends React.Component<Props, {}> {
     )
     return (
       <Layout {...{ history, intl }}>
+        <Helmet {...{ title }} />
         <Container>
           <SearchContainer>
             <MediaQuery maxWidth={640}>
