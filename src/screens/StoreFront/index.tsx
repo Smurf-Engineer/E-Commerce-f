@@ -51,7 +51,9 @@ export class StoreFront extends React.Component<Props, {}> {
     showDetails: true,
     showSpecs: true
   }
-
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
   getData = async (params: Params) => {
     const { teamStoreQuery } = this.props
     const response = await teamStoreQuery({

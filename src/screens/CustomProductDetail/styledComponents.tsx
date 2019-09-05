@@ -3,13 +3,18 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { BLACK, WHITE } from '../../theme/colors'
 
 interface DivProps {
   isTeamStore?: boolean
 }
 
 export const Container = styled.div`
-  background-color: #fff;
+  background-color: ${WHITE};
+  max-width: 1452px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 9px -5px ${BLACK};
 `
 export const Content = styled.div`
   display: flex;
