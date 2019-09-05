@@ -90,13 +90,11 @@ const TeamStoreItem = ({
           {image ? (
             <StyledImg src={image} onClick={onItemClick} />
           ) : (
-            <TitleName>{name}</TitleName>
+            <TitleName onClick={onItemClick}>{name}</TitleName>
           )}
           {showNameStore && (
             <BottomContainer>
-              <CardTitle onClick={!image ? onItemClick : () => {}}>
-                {name}
-              </CardTitle>
+              <CardTitle>{name}</CardTitle>
               <MediaQuery minWidth={480}>{buttons}</MediaQuery>
             </BottomContainer>
           )}
