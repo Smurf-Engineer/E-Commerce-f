@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
+import { BLACK } from '../../screens/DesignCenter/constants'
 
 const Search = Input.Search
 
@@ -45,6 +46,7 @@ export const Text = styled.div`
 `
 export const SearchInput = styled(Search)`
   height: 50px;
+  border-radius: 3px;
   background-color: #fff;
 
   &:focus {
@@ -53,9 +55,9 @@ export const SearchInput = styled(Search)`
 
   input {
     width: ${(props: any) => props.width};
-    border-radius: 0px;
+    border-radius: 3px;
     border: 0;
-    color: #bebebe;
+    color: ${BLACK};
     font-size: 16px;
     line-height: 22px;
   }

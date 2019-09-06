@@ -15,7 +15,8 @@ export default defineMessages({
   },
   modalText: {
     id: 'components.TeamPassCode.modalText',
-    defaultMessage: 'Please enter the pass code'
+    defaultMessage: `Access codes must be between 4-10 characters and can only contain numbers and letters and 
+      are not case sensitive and cannot contain special characters (#+&@)`
   },
   modalSaveAsNewDesign: {
     id: 'components.TeamPassCode.modalSaveAsNewDesign',
@@ -57,5 +58,9 @@ export default defineMessages({
   passcodeNeeded: {
     id: 'screen.TeamPassCode.passcodeNeeded',
     defaultMessage: 'Passcode needed.'
+  },
+  cancel: {
+    id: 'screen.TeamPassCode.cancel',
+    defaultMessage: 'Cancel'
   }
 })

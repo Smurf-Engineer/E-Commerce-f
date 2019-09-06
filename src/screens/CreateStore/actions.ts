@@ -20,8 +20,10 @@ import {
   MOVE_ROW,
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
+  OPEN_MODAL,
   CLEAR_DATA,
-  SET_TEAM_STORE_STATUS
+  SET_PAGINATION_DATA,
+  ON_UNSELECT_ITEM
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
@@ -41,6 +43,11 @@ export const setTeamSizeAction = (id: number, range: string): AnyAction => ({
 export const updateNameAction = (name: string): AnyAction => ({
   type: UPDATE_NAME_ACTION,
   name
+})
+
+export const openModal = (open: boolean): AnyAction => ({
+  type: OPEN_MODAL,
+  open
 })
 
 export const setLoadingAction = (isLoading: boolean): AnyAction => ({
@@ -87,11 +94,11 @@ export const setOpenLockerAction = (isOpen: boolean): AnyAction => ({
 })
 
 export const setItemSelectedAction = (
-  id: number,
+  item: DesignType,
   checked: boolean
 ): AnyAction => ({
   type: SET_ITEM_SELECTED_ACTION,
-  id,
+  item,
   checked
 })
 
@@ -100,9 +107,8 @@ export const deleteItemSelectedAction = (index: number): AnyAction => ({
   index
 })
 
-export const setItemsAddAction = (items: DesignType[]): AnyAction => ({
-  type: SET_ITEMS_ADD_ACTION,
-  items
+export const setItemsAddAction = (): AnyAction => ({
+  type: SET_ITEMS_ADD_ACTION
 })
 
 export const clearStoreAction = (): AnyAction => ({
@@ -149,7 +155,13 @@ export const clearDataAction = () => ({
   type: CLEAR_DATA
 })
 
-export const setTeamStoreStatusAction = (show: boolean) => ({
-  type: SET_TEAM_STORE_STATUS,
-  show
+export const setPaginationDataAction = (offset: number, page: number) => ({
+  type: SET_PAGINATION_DATA,
+  offset,
+  page
+})
+
+export const onUnselectItemAction = (keyName: string) => ({
+  type: ON_UNSELECT_ITEM,
+  keyName
 })

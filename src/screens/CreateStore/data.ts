@@ -66,6 +66,12 @@ export const GetTeamStoreQuery = gql`
         visible
         design_id
         totalOrders
+        priceRange {
+          price
+          shortName: short_name
+          quantity
+          abbreviation
+        }
         design {
           id
           code
@@ -96,14 +102,3 @@ export const GetTeamStoreQuery = gql`
     }
   }
 `
-
-export const getTeamStoreStatus = graphql(
-  gql`
-    mutation getTeamStoreStatus {
-      getTeamStoreStatus {
-        showTeamStores: show_team_stores
-      }
-    }
-  `,
-  { name: 'teamStoreStatus' }
-)

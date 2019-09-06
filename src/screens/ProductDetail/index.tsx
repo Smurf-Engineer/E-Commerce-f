@@ -63,6 +63,7 @@ import {
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
+import { MAIN_TITLE } from '../../constants'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import Render3D from '../../components/Render3D'
@@ -83,6 +84,7 @@ import {
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
+import Helmet from 'react-helmet'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -113,6 +115,7 @@ interface Props extends RouteComponentProps<any> {
   itemToAddCart: any
   currentCurrency: string
   loadingImage: boolean
+  phone: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -138,10 +141,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
   componentWillUnmount() {
     const { resetReducerAction } = this.props
-
-    if (config.mainTitle) {
-      document.title = config.mainTitle
-    }
     resetReducerAction()
   }
 
@@ -185,7 +184,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       loadingImage,
       setLoadingImageAction,
       currentCurrency,
-      data: { product, error, loading }
+      data: { product, error, loading },
+      phone
     } = this.props
 
     const { formatMessage } = intl
@@ -229,7 +229,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       relatedItemTag,
       fitStyles,
       sizeRange,
-      title
+      title = MAIN_TITLE
     } = product
     const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag.replace(/_/g, ' ')
@@ -239,9 +239,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       location: { search }
     } = this.props
-    if (title) {
-      document.title = title
-    }
+
     const queryParams = queryString.parse(search)
 
     const yotpoId = queryParams.modelId || ''
@@ -496,6 +494,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     return (
       <Layout {...{ history, intl }}>
+        <Helmet {...{ title }} />
         <Container>
           {product && (
             <Content>
@@ -511,9 +510,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                         <Render3D
                           customProduct={true}
                           designId={0}
-                          phoneView={true}
+                          zoomedIn={true}
                           textColor="white"
                           isProduct={true}
+                          isPhone={phone}
                           {...{ product }}
                         />
                         <HowItFits onClick={this.toggleFitsModal(true)}>
@@ -727,7 +727,14 @@ const mapStateToProps = (state: any) => {
   const menu = state.get('menu').toJS()
   const menuSports = state.get('menuSports').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...productDetail, ...menu, ...menuSports, ...langProps }
+  const responsive = state.get('responsive').toJS()
+  return {
+    ...productDetail,
+    ...menu,
+    ...menuSports,
+    ...langProps,
+    ...responsive
+  }
 }
 
 type OwnProps = {

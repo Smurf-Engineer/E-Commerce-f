@@ -286,16 +286,23 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                 </Separator>
                 <Row>
                   <RowField
+                    marginRight="8px"
                     value={formatMessage(messages.productDescription)}
                   />
                   <RowField flex="2" label={description} />
                 </Row>
                 <Row>
-                  <RowField value={formatMessage(messages.specDetails)} />
+                  <RowField
+                    marginRight="8px"
+                    value={formatMessage(messages.specDetails)}
+                  />
                   <RowField flex="2" label={details} />
                 </Row>
                 <Row>
-                  <RowField value={formatMessage(messages.materialInfo)} />
+                  <RowField
+                    marginRight="8px"
+                    value={formatMessage(messages.materialInfo)}
+                  />
                   <RowField flex="2" label={materials} />
                 </Row>
                 <Separator>

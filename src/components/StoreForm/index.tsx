@@ -33,7 +33,7 @@ interface Props {
   onSelectEndDate: (dateMoment: Moment, date: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
-
+const INPUT_MAX_LENGTH = 25
 const StoreForm = ({
   hasError = false,
   onUpdateName,
@@ -51,7 +51,7 @@ const StoreForm = ({
       target: { value }
     } = evnt
 
-    if (value.length > 15) {
+    if (value.length > INPUT_MAX_LENGTH) {
       return
     }
 

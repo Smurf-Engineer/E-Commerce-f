@@ -22,10 +22,10 @@ const Teams = ({ formatMessage, history }: Props) => {
       <Text onClick={goTo('search-teamstores')}>
         <Span>{formatMessage(messages.stores)}</Span>
       </Text>
+      {/* TODO: Remove after verify it wount be needed 
       <Text onClick={goTo('team-kits')}>
         <Span>{formatMessage(messages.kits)}</Span>
       </Text>
-      {/* TODO: Remove after verify it wount be needed 
       <Text>
         <Span link="https://www.jakroo.com/us/get-sponsored.html">
           {formatMessage(messages.sponsor)}

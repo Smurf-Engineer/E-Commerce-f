@@ -18,6 +18,7 @@ describe('<EmailContact />', () => {
     const contactManagerMutation = (variables: any) => {}
     const div = document.createElement('div')
     const ownerName = ''
+    const contactInfo = { name: '', phone: '', email: '' }
     ReactDOM.render(
       <EmailContact
         open={false}
@@ -32,6 +33,7 @@ describe('<EmailContact />', () => {
         setSendMessageLoading={setSendMessageLoading}
         contactManagerMutation={contactManagerMutation}
         ownerName={ownerName}
+        contactInfo={contactInfo}
       />,
       div
     )

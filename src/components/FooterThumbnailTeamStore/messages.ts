@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'components.FooterThumbnailTeamStore.tittle',
     defaultMessage: 'FooterThumbnailTeamStore'
   },
-  estimatedPrice: {
-    id: 'components.FooterThumbnailTeamStore.estimatedPrice',
-    defaultMessage: 'Estimated price'
+  regularPrice: {
+    id: 'components.FooterThumbnailTeamStore.regularPrice',
+    defaultMessage: 'Regular price'
   },
   currentPrice: {
     id: 'components.FooterThumbnailTeamStore.currentPrice',

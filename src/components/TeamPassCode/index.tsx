@@ -17,7 +17,7 @@ import {
   Button
 } from './styledComponents'
 import { getTeamStore } from './data'
-
+const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 interface Props {
   open: boolean
   teamStoreId: string
@@ -48,7 +48,9 @@ export class TeamPassCode extends React.Component<Props, {}> {
     evt.persist()
     this.setState({ passCode: value })
   }
-
+  handleClose = () => {
+    location.replace('/search-teamstores')
+  }
   handleEnter = async (evt: React.MouseEvent<EventTarget>) => {
     const {
       formatMessage,
@@ -58,11 +60,7 @@ export class TeamPassCode extends React.Component<Props, {}> {
       getTeamStoreMutation
     } = this.props
     const { passCode } = this.state
-
-    if (!passCode) {
-      message.error(formatMessage(messages.invalidNameMessage))
-      return
-    } else {
+    if (passCode && passwordRegex.test(passCode)) {
       try {
         const response = await getTeamStoreMutation({
           variables: { teamStoreId, passCode }
@@ -86,6 +84,8 @@ export class TeamPassCode extends React.Component<Props, {}> {
         message.error(errorMessage)
         console.error(error)
       }
+    } else {
+      message.error(formatMessage(messages.invalidNameMessage))
     }
   }
 
@@ -94,16 +94,16 @@ export class TeamPassCode extends React.Component<Props, {}> {
     const { passCode } = this.state
 
     return (
-      <Container>
-        <Modal
-          visible={open}
-          footer={null}
-          closable={false}
-          maskClosable={true}
-          width={'30%'}
-          destroyOnClose={true}
-          onCancel={this.handleCancel}
-        >
+      <Modal
+        visible={open}
+        footer={null}
+        closable={false}
+        maskClosable={true}
+        destroyOnClose={true}
+        width="328px"
+        onCancel={this.handleCancel}
+      >
+        <Container>
           <Title>
             <FormattedMessage {...messages.modalTitle} />
           </Title>
@@ -120,9 +120,12 @@ export class TeamPassCode extends React.Component<Props, {}> {
             <Button type="primary" onClick={this.handleEnter}>
               <FormattedMessage {...messages.save} />
             </Button>
+            <Button onClick={this.handleClose}>
+              <FormattedMessage {...messages.cancel} />
+            </Button>
           </ButtonWrapper>
-        </Modal>
-      </Container>
+        </Container>
+      </Modal>
     )
   }
 }

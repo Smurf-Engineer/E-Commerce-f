@@ -3,11 +3,11 @@
  */
 import * as React from 'react'
 import { withRouter } from 'react-router-dom'
-import { graphql, compose } from 'react-apollo'
+import { compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { QueryProps, TeamStoreAdminType } from '../../../types/common'
-import { getTeamStoreQuery } from './data'
+import Item from './Item'
+import { TeamStoreAdminType, Currency, Message } from '../../../types/common'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import {
@@ -18,23 +18,28 @@ import {
   LoadingContainer,
   TeamStoreInformation,
   InformationContainer,
+  ScreenHeader,
   Header,
   Text,
-  StyledSwitch
+  StyledSwitch,
+  Table
 } from './styledComponents'
-
-interface Data extends QueryProps {
-  teamStoreQuery: TeamStoreAdminType
-}
 
 interface Props {
   history: any
-  data?: Data
   from: string
   currentCurrency: string
   match: any
-  formatMessage: (messageDescriptor: any) => string
+  teamStore: TeamStoreAdminType
+  currencies: Currency[]
+  loading: boolean
+  id: number
+  formatMessage: (messageDescriptor: Message) => string
   onReturn: (id: number) => void
+  handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
+  getTeamStoreData: (teamStoreId: number) => void
+  handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
+  onSetFeatured: (id: number) => void
 }
 
 const teamStoreHeaderInformation = [
@@ -47,9 +52,29 @@ const teamStoreHeaderInformation = [
 ]
 
 export class TeamStoreDetails extends React.Component<Props, {}> {
+  componentDidMount() {
+    const { getTeamStoreData, match } = this.props
+    const teamStoreId = get(match, 'params.id', '')
+    getTeamStoreData(teamStoreId)
+  }
+  handleOnSetFeatured = () => {
+    const {
+      teamStore: { id },
+      onSetFeatured
+    } = this.props
+
+    onSetFeatured(id)
+  }
   render() {
-    const { data, formatMessage } = this.props
-    if ((data && data.loading) || !data) {
+    const {
+      formatMessage,
+      handleOnSetPrice,
+      teamStore,
+      currencies = [],
+      loading,
+      handleOnSave
+    } = this.props
+    if (loading) {
       return (
         <LoadingContainer>
           <Spin />
@@ -57,7 +82,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       )
     }
 
-    if (data && data.error) {
+    if (!loading && !teamStore) {
       return (
         <Container>
           <ViewContainer onClick={this.handleOnReturn}>
@@ -71,19 +96,57 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       )
     }
 
+    const headers = currencies.map(({ id, shortName }) => (
+      <Header key={id}>{shortName}</Header>
+    ))
+
     const teamStoresInformation = teamStoreHeaderInformation.map(
-      (header: string, index: number) => {
-        return (
-          <InformationContainer key={index}>
-            <Header>{formatMessage(messages[header])}</Header>
-            {typeof data.teamStoreQuery[header] === 'boolean' ? (
-              <StyledSwitch />
-            ) : (
-              <Text>{data.teamStoreQuery[header] || '-'}</Text>
-            )}
-          </InformationContainer>
-        )
-      }
+      (header: string, index: number) => (
+        <InformationContainer key={index}>
+          <ScreenHeader>{formatMessage(messages[header])}</ScreenHeader>
+          {typeof teamStore[header] === 'boolean' ? (
+            <StyledSwitch
+              defaultChecked={teamStore.featured}
+              onChange={this.handleOnSetFeatured}
+            />
+          ) : (
+            <Text>{teamStore[header] || '-'}</Text>
+          )}
+        </InformationContainer>
+      )
+    )
+    const teamStoreItems = teamStore.items.map(
+      (
+        {
+          design: {
+            image: thumbnail,
+            name: designName,
+            product: { name: productName, description: productType }
+          },
+          priceRange,
+          pricesByCurrency,
+          loading: loadingItem = false
+        },
+        index: number
+      ) => (
+        <Item
+          key={index}
+          {...{
+            thumbnail,
+            designName,
+            productName,
+            productType,
+            currencies,
+            handleOnSetPrice,
+            index,
+            priceRange,
+            pricesByCurrency,
+            handleOnSave,
+            formatMessage
+          }}
+          loading={loadingItem}
+        />
+      )
     )
 
     return (
@@ -94,9 +157,19 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         </ViewContainer>
         <ScreenContent>
           <ScreenTitle>
-            {`${data.teamStoreQuery.name} ${formatMessage(messages.title)}`}
+            {`${teamStore.name} ${formatMessage(messages.title)}`}
           </ScreenTitle>
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
+          <Table>
+            <thead>
+              <tr>
+                <Header>{formatMessage(messages.name)}</Header>
+                {headers}
+                <Header>{''}</Header>
+              </tr>
+            </thead>
+            <tbody>{teamStoreItems}</tbody>
+          </Table>
         </ScreenContent>
       </Container>
     )
@@ -108,22 +181,6 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
   }
 }
 
-interface OwnProps {
-  match?: any
-}
-
-const TeamStoreDetailsEnhance = compose(
-  withRouter,
-  graphql(getTeamStoreQuery, {
-    options: ({ match }: OwnProps) => {
-      const teamStoreId = get(match, 'params.id', '')
-      return {
-        skip: !teamStoreId,
-        variables: { teamStoreId },
-        notifyOnNetworkStatusChange: true
-      }
-    }
-  })
-)(TeamStoreDetails)
+const TeamStoreDetailsEnhance = compose(withRouter)(TeamStoreDetails)
 
 export default TeamStoreDetailsEnhance

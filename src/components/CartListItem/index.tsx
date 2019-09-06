@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import MediaQuery from 'react-responsive'
 import {
   Container,
@@ -28,16 +29,17 @@ import {
   PriceRange,
   ItemDetailType,
   CartItems,
-  ProductColors
+  ProductColors,
+  Message
 } from '../../types/common'
 import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
-import { FormattedMessage } from 'react-intl'
 import AddToCartButton from '../AddToCartButton'
 import config from '../../config/index'
+import { CardNumberElement } from 'react-stripe-elements'
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
   handleAddItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number
@@ -98,10 +100,15 @@ interface Props {
   openFitInfo: boolean
 }
 
+interface MessagePrice {
+  symbol: string
+  price: string
+}
+
 export class CartListItem extends React.Component<Props, {}> {
   getQuantity = (priceRange: PriceRange) => {
     let val = 0
-    if (priceRange.quantity === 'Personal') {
+    if (priceRange && priceRange.quantity === 'Personal') {
       val = 1
     } else if (priceRange.quantity) {
       val = parseInt(priceRange.quantity.split('-')[0], 10)
@@ -109,10 +116,10 @@ export class CartListItem extends React.Component<Props, {}> {
     return val
   }
 
-  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+  getPriceRange(priceRanges: PriceRange[], totalItems: CardNumberElement) {
     const { price } = this.props
     let markslider = { quantity: '0', price: 0 }
-    if (price.quantity !== 'Personal') {
+    if (price && price.quantity !== 'Personal') {
       markslider = price
     } else {
       for (const priceRangeItem of priceRanges) {
@@ -134,7 +141,8 @@ export class CartListItem extends React.Component<Props, {}> {
     const priceRange = priceRanges[priceRanges.length - 1]
     let markslider = { items: 1, price: priceRange ? priceRange.price : 0 }
     const { price } = this.props
-    if (price.quantity !== 'Personal') {
+
+    if (price && price.quantity !== 'Personal') {
       let priceIndex = findIndex(
         priceRanges,
         pr => pr.quantity === price.quantity
@@ -169,6 +177,8 @@ export class CartListItem extends React.Component<Props, {}> {
     const {
       cartItem: {
         designId,
+        teamStoreId,
+        teamStoreItem,
         product: { id, yotpoId }
       },
       history,
@@ -181,11 +191,21 @@ export class CartListItem extends React.Component<Props, {}> {
 
     let productUrl = `/product?id=${id}&modelId=${yotpoId}`
 
-    if (designId) {
+    if (designId && teamStoreItem && teamStoreId) {
+      productUrl = `/custom-product?id=${designId}&item=${teamStoreItem}&team=${teamStoreId}`
+    } else if (designId) {
       productUrl = `/custom-product?id=${designId}`
     }
 
     history.push(productUrl)
+  }
+
+  getPriceRangeByQuantity = (quantity: string) => {
+    const { cartItem, currentCurrency } = this.props
+    return find(cartItem.product.priceRange, {
+      quantity,
+      abbreviation: currentCurrency || config.defaultCurrency
+    })
   }
 
   render() {
@@ -215,23 +235,41 @@ export class CartListItem extends React.Component<Props, {}> {
       openFitInfo
     } = this.props
 
-    const { designId, designName, designImage, designCode } = cartItem
+    const {
+      designId,
+      designName,
+      designImage,
+      designCode,
+      fixedPrices = []
+    } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
     })
-
     const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
-    const productPriceRanges = get(cartItem, 'product.priceRange', [])
+    const productPriceRanges = get(
+      cartItem,
+      fixedPrices && fixedPrices.length ? 'fixedPrices' : 'product.priceRange',
+      []
+    )
     const mpnCode = get(cartItem, 'product.mpn', '')
-
+    const isTeamStore = get(cartItem, 'teamStoreId', '')
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
       abbreviation: currentCurrency || config.defaultCurrency
     })
 
-    let priceRange = this.getPriceRange(currencyPrices, quantitySum)
+    const personalPrice = get(
+      this.getPriceRangeByQuantity('Personal'),
+      'price',
+      0
+    )
+
+    let priceRange =
+      !isTeamStore || fixedPrices.length
+        ? this.getPriceRange(currencyPrices, quantitySum)
+        : this.getPriceRangeByQuantity('2-5')
 
     priceRange =
       priceRange && priceRange.price === 0
@@ -243,10 +281,6 @@ export class CartListItem extends React.Component<Props, {}> {
       : unitPrice || 0 * quantitySum
     const total = productTotal || itemTotal
     const unitaryPrice = unitPrice || get(priceRange, 'price')
-
-    const nextPrice = currencyPrices.length
-      ? this.getNextPrice(currencyPrices, quantitySum)
-      : { items: 0, price: 0 }
 
     const symbol = currencySymbol || '$'
 
@@ -294,24 +328,19 @@ export class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderPrice>
             {`${symbol} ${(total || 0).toFixed(2)}`}
           </ItemDetailsHeaderPrice>
-          <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${symbol} ${(
-              unitaryPrice || 0
-            ).toFixed(2)}`}
+          <ItemDetailsHeaderPriceDetail highlighted={true}>
+            {formatMessage(
+              !isTeamStore ? messages.unitPrice : messages.teamPrice,
+              { symbol, price: (unitaryPrice || 0).toFixed(2) }
+            )}
           </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && designId && nextPrice.items > 0 ? (
-            <ItemDetailsHeaderPriceDetail highlighted={true}>
-              <FormattedMessage
-                {...messages.addMoreFor}
-                values={{
-                  price: `${symbol} ${nextPrice.price.toFixed(2)}`,
-                  products: nextPrice.items
-                }}
-              />
-            </ItemDetailsHeaderPriceDetail>
-          ) : (
-            <HeaderPriceDetailEmpty />
-          )}
+          <ItemDetailsHeaderPriceDetail>
+            {formatMessage(messages.regularPrice, {
+              symbol,
+              price: personalPrice
+            })}
+          </ItemDetailsHeaderPriceDetail>
+          <HeaderPriceDetailEmpty />
         </PriceContainer>
       </ItemDetailsHeader>
     )

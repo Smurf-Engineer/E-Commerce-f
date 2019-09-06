@@ -6,7 +6,7 @@ import Input from 'antd/lib/input'
 import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div`
-  background-color: #222;
+  width: 100%;
 `
 
 export const Title = styled.div`
@@ -17,12 +17,10 @@ export const Title = styled.div`
 `
 
 export const Text = styled.div`
-  height: 42px;
-  width: 303.78px;
   color: #8c8c8c;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 21px;
-  margin-top: 10px;
+  margin: 12px 0;
 `
 
 export const StyledInput = styled(Input)`
@@ -38,10 +36,10 @@ export const StyledSaveAs = styled.div`
 export const Button = styled(AntdButton)`
   height: 40px;
   width: 100%;
+  margin-top: 8px;
 `
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: 10px;
   .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;

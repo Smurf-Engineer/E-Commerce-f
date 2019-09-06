@@ -88,10 +88,13 @@ class Review extends React.PureComponent<Props, {}> {
             designId,
             designImage,
             designName,
+            teamStoreId,
+            fixedPrices,
             product: { images, name, shortDescription, priceRange }
           } = cartItem
-
-          const currencyPrices = filter(priceRange, { abbreviation: currency })
+          const rangeToUse =
+            fixedPrices && fixedPrices.length ? fixedPrices : priceRange
+          const currencyPrices = filter(rangeToUse, { abbreviation: currency })
 
           const itemImage = designId ? designImage || '' : images[0].front
           const itemTitle = designId ? designName || '' : name
@@ -106,7 +109,11 @@ class Review extends React.PureComponent<Props, {}> {
               title={itemTitle}
               image={itemImage}
               description={itemDescription}
-              price={currencyPrices[priceRangeToApply]}
+              price={
+                currencyPrices[
+                  teamStoreId && !priceRangeToApply ? 1 : priceRangeToApply
+                ]
+              }
               itemIndex={index}
               onlyRead={true}
               currencySymbol={currencyPrices[0].shortName}

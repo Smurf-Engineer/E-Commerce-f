@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
-import { GREEN, RED } from '../../theme/colors'
+import { GREEN, BLACK_LIGHT, WHITE } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
   open?: boolean
@@ -12,32 +12,32 @@ type DivProps = {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${WHITE};
+  max-width: 1452px;
+  width: 100%;
+  margin: 0 auto;
 `
 
-export const HeadersContainer = styled.div`
+export const TopContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 0;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px 46px 0;
+  @media (min-width: 425px) and (max-width: 768px) {
+    flex-flow: row;
+    align-items: flex-start;
+  }
   @media (max-width: 425px) {
     flex-flow: column;
-    margin: 16px 8px;
+    align-items: center;
+    margin: 18px 14px 0;
   }
 `
+export const SideBar = styled.div``
 
-export const SideBar = styled.div`
-  width: 30%;
-  padding-top: 36px;
-  padding-right: 32px;
-  @media (max-width: 425px) {
-    width: 100%;
-    padding: 0;
-  }
-`
 export const Description = styled.div`
   text-align: center;
-  width: 100vw;
-  margin-left: -36px;
   padding: 0 8px;
   @media (max-width: 425px) {
     margin-left: 0;
@@ -52,6 +52,10 @@ export const Title = styled.div`
   text-transform: uppercase;
   padding-right: 10px;
   text-align: center;
+  margin-bottom: 0;
+  @media (max-width: 800px) {
+    margin-bottom: 8px;
+  }
 `
 
 export const AboutTitle = styled.div`
@@ -69,13 +73,13 @@ export const StoreBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 200px;
-  width: 100%;
+  width: 200px;
   margin-right: 22px;
   height: 51px;
-  border: 2px solid ${({ open }: DivProps) => (open ? GREEN : RED)};
+  border: 2px solid ${({ open }: DivProps) => (open ? GREEN : BLACK_LIGHT)};
+  background-color: ${({ open }: DivProps) => (open ? WHITE : BLACK_LIGHT)};
   border-radius: 2px;
-  color: ${({ open }: DivProps) => (open ? GREEN : RED)};
+  color: ${({ open }: DivProps) => (open ? GREEN : WHITE)};
   font-family: Avenir Next;
   font-size: 18px;
   font-weight: bold;
@@ -117,18 +121,8 @@ export const OrderTitle = styled.div`
   text-align: right;
 `
 
-export const Content = styled.div`
-  width: 70%;
-  padding-top: 36px;
-  padding-left: 36px;
-  @media (max-width: 425px) {
-    width: 100%;
-    padding: 0;
-  }
-`
-
 export const PriceTitle = styled.div`
-  padding-top: 27px;
+  padding-top: 18px;
   color: #5f6062;
   font-size: 16px;
   font-weight: 600;
@@ -187,7 +181,6 @@ export const SliderWrapper = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: 10px;
   padding-right: 10px;
   .ant-btn-primary {
     background-color: #4a90e2;
@@ -210,8 +203,9 @@ export const DefaultButton = styled(AntdButton)`
 `
 
 export const ImageBanner = styled.img`
-  height: 30%;
   max-height: 300px;
+  max-width: 1452px;
+  margin: 0 auto;
   width: 100%;
   object-fit: cover;
 `
@@ -227,7 +221,6 @@ export const CalendarView = styled.div`
 
 export const CalendarFinalView = styled.div`
   height: 78px;
-  width: 81px;
   margin-right: 5px;
   margin-left: 5px;
   border: 2px solid #e61737;
@@ -245,11 +238,12 @@ export const CalendarTitle = styled.div`
 
 export const CalendarFinalTitle = styled.div`
   text-align: center;
-  width: 100%;
-  height: 20px;
+  height: 22px;
   color: #ffffff;
   background-color: #e61737;
   text-transform: uppercase;
+  padding: 4px 8px;
+  font-size: 12px;
 `
 
 export const CalendarDay = styled.div`
@@ -263,9 +257,7 @@ export const CalendarDay = styled.div`
 
 export const DatesContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  flex-flow: row wrap;
+  flex-flow: row;
   padding-top: ${({ onDemandMode }: DivProps) => (onDemandMode ? '0' : '20px')};
   justify-content: flex-end;
   align-items: center;
@@ -279,9 +271,8 @@ export const DatesContainer = styled.div`
 export const FlexContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  flex-flow: row wrap;
-  @media (max-width: 425px) {
+  align-items: center;
+  @media (max-width: 768px) {
     flex-flow: column;
     justify-content: center;
   }
@@ -307,12 +298,12 @@ export const DatesTitle = styled.div`
 `
 
 export const ListContainer = styled.div`
-  margin-top: 65px;
   padding-right: 32px;
   padding-left: 32px;
-  @media (max-width: 425px) {
-    margin: 0;
-  }
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 28px;
 `
 
 export const Loading = styled.div`

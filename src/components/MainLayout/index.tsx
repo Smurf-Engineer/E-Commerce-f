@@ -9,6 +9,7 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
+import { MAIN_TITLE } from '../../constants'
 import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
 import * as LayoutActions from './actions'
@@ -30,12 +31,12 @@ import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
 import Intercom from 'react-intercom'
 import { IntercomAPI } from 'react-intercom'
-import { getTeamStoreStatus, getFonts } from './data'
+import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
 import { setDefaultScreenAction } from '../../screens/Account/actions'
-
+import Helmet from 'react-helmet'
 const { Content } = Layout
 
 interface Props extends RouteComponentProps<any> {
@@ -76,7 +77,6 @@ interface Props extends RouteComponentProps<any> {
   openLogoutModal: boolean
   initialCountryCode: string
   buyNowHeader: boolean
-  showTeamStores: boolean
   fontsData: any
   fonts: []
   setAccountScreen: (screen: string, openCreations?: boolean) => void
@@ -86,8 +86,6 @@ interface Props extends RouteComponentProps<any> {
   saveUserSession: (user: object) => void
   openLogoutModalAction: (open: boolean) => void
   saveAndBuyAction: (buy: boolean) => void
-  teamStoreStatus: () => Promise<any>
-  setTeamStoreStatusAction: (show: boolean) => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
 }
@@ -115,8 +113,6 @@ class MainLayout extends React.Component<Props, {}> {
         location: { search, pathname }
       },
       user,
-      teamStoreStatus,
-      setTeamStoreStatusAction,
       getFontsData,
       setInstalledFontsAction
     } = this.props
@@ -131,11 +127,6 @@ class MainLayout extends React.Component<Props, {}> {
     ) {
       openLoginAction(true)
     }
-    const response = await teamStoreStatus()
-
-    setTeamStoreStatusAction(
-      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
-    )
 
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
@@ -215,7 +206,6 @@ class MainLayout extends React.Component<Props, {}> {
       initialCountryCode,
       buyNowHeader,
       saveAndBuyAction,
-      showTeamStores,
       fonts,
       setAccountScreen
     } = this.props
@@ -251,6 +241,7 @@ class MainLayout extends React.Component<Props, {}> {
     return (
       <Layout>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
+        <Helmet defaultTitle={MAIN_TITLE} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
@@ -293,9 +284,7 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks
-              {...{ history, formatMessage, fakeWidth, showTeamStores }}
-            />
+            <ContactAndLinks {...{ history, formatMessage, fakeWidth }} />
             <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}
@@ -362,7 +351,6 @@ const mapStateToProps = (state: any) => {
 
 const LayoutEnhance = compose(
   withApollo,
-  getTeamStoreStatus,
   getFonts,
   connect(
     mapStateToProps,

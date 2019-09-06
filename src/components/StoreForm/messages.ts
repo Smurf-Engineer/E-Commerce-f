@@ -30,15 +30,15 @@ export default defineMessages({
     defaultMessage: 'Delivery date cannot be on a Sunday or Federal Holiday'
   },
   errorMsg: {
-    id: 'components.storeForm.errorMsg',
+    id: 'components.StoreForm.errorMsg',
     defaultMessage: 'Something wrong happened. Please try again!'
   },
   shipping: {
-    id: 'components.storeForm.shipping',
-    defaultMessage: 'Order ships in 7 days after receipts'
+    id: 'components.StoreForm.shipping',
+    defaultMessage: 'Orders ship within 7 days of receipt of order.'
   },
   onDemandMode: {
-    id: 'components.storeForm.onDemandMode',
+    id: 'components.StoreForm.onDemandMode',
     defaultMessage: 'ON DEMAND MODE'
   }
 })

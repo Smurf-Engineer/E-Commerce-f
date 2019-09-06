@@ -10,7 +10,7 @@ import {
   SET_EMAIL_CONTACT,
   SET_EMAIL_MESSAGE,
   SEND_MESSAGE_LOADING,
-  SET_TEAM_STORE_STATUS
+  SET_CONTACT_FIELD
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -66,7 +66,8 @@ export const sendMessageLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
-export const setTeamStoreStatusAction = (show: boolean) => ({
-  type: SET_TEAM_STORE_STATUS,
-  show
+export const setContactFieldAction = (field: string, value: string) => ({
+  type: SET_CONTACT_FIELD,
+  field,
+  value
 })

@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
 import find from 'lodash/find'
+import get from 'lodash/get'
 import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
 import FitInfo from '../../components/FitInfo'
@@ -28,7 +29,6 @@ import {
   EmptyTitle,
   EmptyDescription,
   StyledEmptyButton,
-  AddOneMoreMessage,
   DeleteConfirmMessage,
   ProReviewTitle,
   OptionalLabel,
@@ -36,8 +36,7 @@ import {
   ProDesignReviewContent,
   ModalButtonsWrapper,
   ReviewButton,
-  ContinueButton,
-  Bold
+  ContinueButton
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -47,7 +46,8 @@ import {
   Product,
   CartItemDetail,
   ItemDetailType,
-  ProductColors
+  ProductColors,
+  PriceRange
 } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
 import CustomModal from '../../components/Common/JakrooModal'
@@ -63,6 +63,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   teamStoreId?: string
+  fixedPrices: PriceRange[]
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -141,8 +142,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart
     } = this.props
     const isCustom = find(cart, 'designId')
+    const teamStore = find(cart, 'teamStoreId')
 
-    if (!!isCustom) {
+    if (!!isCustom && !teamStore) {
       if (showReviewDesignModal) {
         showReviewDesignModalAction(false)
         return
@@ -304,7 +306,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       total,
       totalWithoutDiscount,
       priceRangeToApply,
-      show25PercentMessage,
       nameOfFirstProduct,
       numberOfProducts
     } = shoppingCartData
@@ -317,9 +318,15 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       if (!this.isAllSetInProduct(cartItem)) {
         activeCheckout = false
       }
-
+      const productPriceRanges = get(
+        cartItem,
+        cartItem.fixedPrices && cartItem.fixedPrices.length
+          ? 'fixedPrices'
+          : 'product.priceRange',
+        []
+      )
       // get prices from currency
-      const currencyPrices = filter(cartItem.product.priceRange, {
+      const currencyPrices = filter(productPriceRanges, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
 
@@ -340,7 +347,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
               : cartItem.product.shortDescription
           }
-          price={currencyPrices[priceRangeToApply]}
+          price={
+            currencyPrices[
+              cartItem.teamStoreId && !priceRangeToApply ? 1 : priceRangeToApply
+            ]
+          }
           image={
             cartItem.designId
               ? cartItem.designImage || ''
@@ -362,21 +373,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
         />
       )
     })
-
-    const sideHeaderMessage = show25PercentMessage ? (
-      <AddOneMoreMessage>
-        <Bold>{formatMessage(messages.saveMore)}</Bold>
-        <FormattedMessage
-          id={messages.addOneMoreMessage.id}
-          defaultMessage={messages.addOneMoreMessage.defaultMessage}
-          values={{
-            any: <Bold>{formatMessage(messages.any)}</Bold>,
-            percent: <Bold>{formatMessage(messages.percent)}</Bold>,
-            entireOrder: <Bold>{formatMessage(messages.entireOrder)}</Bold>
-          }}
-        />
-      </AddOneMoreMessage>
-    ) : null
 
     const designReviewModal = (
       <CustomModal
@@ -433,7 +429,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           ) : (
             <Container>
               <SideBar>
-                {sideHeaderMessage}
                 <Ordersummary
                   subtotal={total}
                   currencySymbol={symbol}

@@ -32,7 +32,6 @@ export const TeamstoresListContainer = styled.div`
 
 export const ListItem = styled.div`
   height: 23px;
-  width: 121px;
   color: ${({ selected }: ContainerProps) =>
     selected ? '#e61737' : '#5f6062'};
   font-size: 16px;

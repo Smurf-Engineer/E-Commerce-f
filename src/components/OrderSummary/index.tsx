@@ -4,8 +4,8 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
-import Message from 'antd/lib/message'
-import { CouponCode } from '../../types/common'
+import message from 'antd/lib/message'
+import { CouponCode, Message } from '../../types/common'
 import { applyPromoCodeMutation } from './data'
 import messages from './messages'
 import {
@@ -41,11 +41,15 @@ interface Props {
   currencySymbol?: string
   showCouponInput?: boolean
   couponCode?: CouponCode
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: PercentParams) => string
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
   // mutations
   applyPromoCode: (variables: {}) => Promise<any>
+}
+
+interface PercentParams {
+  percent: number
 }
 
 const InputSearch = Input.Search
@@ -66,11 +70,12 @@ export class OrderSummary extends React.Component<Props, {}> {
       youSaved = 0,
       shippingTotal = 0,
       discount = 0,
-      totalSum = 0
+      totalSum = 0,
+      totalWithoutDiscount = 0
     } = this.props
 
     const symbol = currencySymbol || '$'
-
+    const savedPercent = Math.round((youSaved * 100) / totalWithoutDiscount)
     const netTotal =
       totalSum ||
       subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
@@ -86,6 +91,18 @@ export class OrderSummary extends React.Component<Props, {}> {
         <SummaryTitle>
           <FormattedMessage {...messages.summaryTitle} />
         </SummaryTitle>
+        {totalWithoutDiscount > 0 && (
+          <OrderItem>
+            <FormattedMessage {...messages.total} />
+            <div>{`${symbol} ${totalWithoutDiscount.toFixed(2)}`}</div>
+          </OrderItem>
+        )}
+        {youSaved > 0 ? (
+          <YouSavedOrderItem {...{ onlyRead }}>
+            {formatMessage(messages.youSaved, { percent: savedPercent })}
+            <div>{`${symbol} ${youSaved.toFixed(2)}`}</div>
+          </YouSavedOrderItem>
+        ) : null}
         <OrderItem>
           <FormattedMessage {...messages.subtotal} />
           <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
@@ -161,12 +178,6 @@ export class OrderSummary extends React.Component<Props, {}> {
           <FormattedMessage {...messages.total} />
           <div>{`${symbol} ${netTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
-        {youSaved > 0 ? (
-          <YouSavedOrderItem {...{ onlyRead }}>
-            <FormattedMessage {...messages.youSaved} />
-            <div>{`${symbol} ${youSaved.toFixed(2)}`}</div>
-          </YouSavedOrderItem>
-        ) : null}
       </Container>
     )
   }
@@ -188,16 +199,16 @@ export class OrderSummary extends React.Component<Props, {}> {
       } = data
       if (couponCode) {
         setCouponCodeAction(couponCode)
-        Message.success(formatMessage(messages.couponApplied))
+        message.success(formatMessage(messages.couponApplied))
       } else {
         deleteCouponCodeAction()
-        Message.error(formatMessage(messages.couponError))
+        message.error(formatMessage(messages.couponError))
       }
     } catch (error) {
       deleteCouponCodeAction()
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
-      Message.error(errorMessage)
+      message.error(errorMessage)
     }
   }
 

@@ -137,8 +137,7 @@ module.exports = {
         'YOUTUBE_ID',
         'YOUTUBE_KEY',
         'TUTORIALS_TAB_ACTIVE',
-        'COLOR_SWATCH_ZIP',
-        'MAIN_TITLE'
+        'COLOR_SWATCH_ZIP'
       ])
     )
 
