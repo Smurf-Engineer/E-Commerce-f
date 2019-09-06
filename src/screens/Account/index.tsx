@@ -163,7 +163,7 @@ export class Account extends React.Component<Props, {}> {
       currentCurrency,
       setCurrentShare
     } = this.props
-    console.log('screen:', screen)
+
     switch (screen) {
       case OVERVIEW:
         return (
