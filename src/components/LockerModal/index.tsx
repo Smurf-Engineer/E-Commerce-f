@@ -19,7 +19,13 @@ import {
   SelectedDesignType,
   SelectedDesignObjectType
 } from '../../types/common'
-import { Title, List, modalStyle, PaginationRow } from './styledComponents'
+import {
+  Title,
+  List,
+  modalStyle,
+  PaginationRow,
+  bodyStyle
+} from './styledComponents'
 
 interface Data extends QueryProps {
   designsResult: DesignResultType
@@ -121,7 +127,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
 
     return (
       <Modal
-        {...{ visible }}
+        {...{ visible, bodyStyle }}
         closable={false}
         onOk={this.handleOnAddItems}
         onCancel={onRequestClose}

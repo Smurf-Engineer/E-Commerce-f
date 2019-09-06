@@ -14,6 +14,7 @@ export const Container = styled.div`
   flex-direction: column;
   background-color: ${WHITE};
   max-width: 1452px;
+  width: 100%;
   margin: 0 auto;
 `
 

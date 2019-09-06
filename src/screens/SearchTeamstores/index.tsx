@@ -45,6 +45,9 @@ interface Props extends RouteComponentProps<any> {
 
 export class SearchTeamstores extends React.Component<Props, {}> {
   private teamList: any
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
