@@ -60,6 +60,8 @@ export const Message = styled.div`
 
 export const modalStyle = { top: 20 }
 
+export const bodyStyle = { padding: '12px' }
+
 export const PaginationRow = styled.div`
   text-align: right;
   padding-right: 2%;

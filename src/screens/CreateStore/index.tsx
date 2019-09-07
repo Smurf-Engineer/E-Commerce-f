@@ -424,6 +424,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     } else {
       setLoadingAction(false)
     }
+    window.scrollTo(0, 0)
   }
 
   componentWillUnmount() {

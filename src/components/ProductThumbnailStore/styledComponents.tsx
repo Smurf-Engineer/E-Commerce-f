@@ -8,10 +8,10 @@ export const Container = styled.div`
   display: inline-block;
   width: calc(100% / 2);
   margin-bottom: 25px;
-
+  padding: 0px 4px;
   @media (min-width: 320px) and (max-width: 480px) {
     width: calc(95% / 2);
-    margin-left: 0;
+    margin-left: 6px;
   }
 `
 

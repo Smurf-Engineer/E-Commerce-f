@@ -53,6 +53,7 @@ interface Props {
   history: any
   isStoreThumbnail?: boolean
   teamStoreShortId?: string
+  withMargin?: boolean
   customizable?: boolean
   customizableLabel?: string
   myLockerList?: boolean
@@ -181,6 +182,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
       labelButton,
       image,
       product,
+      withMargin,
       hideCustomButton,
       hideQuickView,
       customizable,
@@ -259,7 +261,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
       })
     }
     return (
-      <Container>
+      <Container {...{ withMargin }}>
         <ImageSlide
           {...{
             isTopProduct,

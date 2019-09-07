@@ -28,7 +28,7 @@ export const TitleName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: default;
+  cursor: pointer;
   background: ${GRAY};
   color: ${GRAY_STRONG};
   font-size: 22px;
@@ -56,6 +56,7 @@ export const CardContent = styled.div`
 `
 
 export const CardTitle = styled.div`
+  cursor: text;
   text-shadow: 0px 2px 4px ${GRAY_DARK};
 `
 
