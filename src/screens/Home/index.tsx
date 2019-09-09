@@ -23,7 +23,12 @@ import {
   SearchBarContent,
   PropositionTilesContainer,
   PropositionTile,
-  SubText
+  SubText,
+  LoadingContainer,
+  ImageSkeleton,
+  Spinner,
+  ImageRow,
+  SkeletonDiv
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
 import { MAIN_TITLE } from '../../constants'
@@ -52,6 +57,7 @@ interface Props extends RouteComponentProps<any> {
   someKey?: string
   client: any
   productId: number
+  loading: boolean
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -138,6 +144,7 @@ export class Home extends React.Component<Props, {}> {
       headerImage,
       productTiles,
       featuredProducts,
+      loading,
       homepageImages,
       title = MAIN_TITLE
     } = this.props
@@ -167,7 +174,7 @@ export class Home extends React.Component<Props, {}> {
     return (
       <Layout {...{ history, intl }}>
         <Helmet {...{ title }} />
-        <Container>
+        <Container {...{ loading }}>
           <SearchContainer>
             <MediaQuery maxWidth={640}>
               {matches => {
@@ -229,6 +236,17 @@ export class Home extends React.Component<Props, {}> {
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
           <YotpoHome />
         </Container>
+        <LoadingContainer {...{ loading }}>
+          <Spinner size="large" />
+          <ImageSkeleton fullSize={true} />
+          <SkeletonDiv title={false} />
+          <SkeletonDiv />
+          <ImageRow>
+            <ImageSkeleton />
+            <ImageSkeleton />
+          </ImageRow>
+          <SkeletonDiv title={false} />
+        </LoadingContainer>
       </Layout>
     )
   }
