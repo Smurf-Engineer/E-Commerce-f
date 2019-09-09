@@ -8,7 +8,13 @@ import toUpper from 'lodash/toUpper'
 import { FormattedMessage } from 'react-intl'
 import MediaQuery from 'react-responsive'
 import messages from './messages'
-import { Container, Text, menuStyle, Icon } from './styledComponents'
+import {
+  Container,
+  Text,
+  menuStyle,
+  Icon,
+  OverviewStyle
+} from './styledComponents'
 import {
   SCREEN_LOCKER,
   PROFILE_SETTINGS,
@@ -28,10 +34,6 @@ const Logout = ({ title, logout, goTo }: Props) => {
     } else {
       goTo(key)
     }
-  }
-
-  const goToMyAccount = () => {
-    goTo(OVERVIEW)
   }
 
   const logoutMenu = (
@@ -64,7 +66,11 @@ const Logout = ({ title, logout, goTo }: Props) => {
           return (
             <Container>
               <Icon type="user" />
-              <Text onClick={goToMyAccount}>{toUpper(title)}</Text>
+              <Text>
+                <Menu onClick={handleOnClick} style={OverviewStyle}>
+                  <Menu.Item key={OVERVIEW}>{toUpper(title)}</Menu.Item>
+                </Menu>
+              </Text>
             </Container>
           )
         }
