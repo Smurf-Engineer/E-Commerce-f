@@ -2,6 +2,8 @@
  * Styled Components - Created by miguelcanobbio on 18/07/18.
  */
 import styled from 'styled-components'
+import Icon from 'antd/lib/icon'
+
 interface DivProps {
   capitalize?: boolean
   upperCase?: boolean
@@ -47,7 +49,8 @@ export const EmptyBox = styled.div`
   flex-flow: column;
   font-size: 18px;
   padding-top: 38px;
-  color: #bebebe;`
+  color: #bebebe;
+`
 
 export const Loader = styled.div`
   width: 200px;
@@ -55,4 +58,22 @@ export const Loader = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+`
+
+export const UploadContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  position: relative;
+`
+
+export const StyledIcon = styled(Icon)`
+  width: 18px;
+  right: 22px;
+  top: 14px;
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  color: white;
+  filter: drop-shadow(0px 0px 1px gray);
 `
