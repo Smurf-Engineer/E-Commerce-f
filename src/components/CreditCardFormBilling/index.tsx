@@ -68,7 +68,6 @@ interface Props {
 }
 
 class CreditCardFormBilling extends React.Component<Props, {}> {
-
   render() {
     const {
       formatMessage,
@@ -171,17 +170,12 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                   value={cardHolderName}
                   onChange={this.handleInputChange}
                 />
-                {!cardHolderName &&
-                  hasError && (
-                    <ErrorMsg>
-                      {formatMessage(messages.requiredField)}
-                    </ErrorMsg>
-                  )}
+                {!cardHolderName && hasError && (
+                  <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+                )}
               </Column>
             </Row>
-
           </AnimateHeight>
-
         </div>
         <ContainerBilling>
           <Title>{formatMessage(messages.billingAddress)}</Title>
@@ -239,7 +233,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         firstName,
         lastName,
         street,
-        apartment,
+        // apartment,
         country,
         stateProvince,
         city,
@@ -272,20 +266,27 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       invalidBillingFormAction(true)
       return
     }
-    const stripeTokenData = {
+    /* const stripeTokenData = {
       name: cardHolderName,
-      address_line1: `${street}`,
-      address_line2: `${apartment}`,
-      address_city: `${city}`,
-      address_state: `${stateProvince}`,
-      address_zip: `${zipCode}`,
-      address_country: `${country}`
-    }
+      address: {
+        line1: `${street}`,
+        line2: `${apartment}`,
+        city: `${city}`,
+        state: `${stateProvince}`,
+        postal_code: `${zipCode}`,
+        country: `${country}`
+      }
+    } */
     setLoadingBillingAction(true)
-
     const stripeResponse = !selectedCardId
-      ? await stripe.createToken(stripeTokenData)
+      ? /* await stripe.createToken(stripeTokenData) */ await stripe.createPaymentMethod(
+          'card',
+          null,
+          { billing_details: { name: cardHolderName } }
+        )
       : {}
+
+    console.log('stripe response ', stripeResponse)
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
