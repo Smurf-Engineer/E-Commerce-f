@@ -16,6 +16,7 @@ export const designQuery = gql`
       proDesign: pro_design
       outputSvg: output_svg
       highResolution: high_resolution
+      outputPng: output_png
       colors {
         id
         color

@@ -155,7 +155,8 @@ class Render3D extends PureComponent {
           colors,
           style: { brandingPng },
           proDesign,
-          outputSvg
+          outputSvg,
+          outputPng
         } = design
         const { colorAccessories, isPhone } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
@@ -211,14 +212,18 @@ class Render3D extends PureComponent {
         loadedTextures.colors = []
 
         if (proDesign || (outputSvg && fromSvg) || isPhone) {
-          const imageCanvas = document.createElement('canvas')
-          canvg(
-            imageCanvas,
-            `${actualSvg || outputSvg}?p=${Math.random()
-              .toString(36)
-              .substr(2, 5)}`
-          )
-          loadedTextures.texture = new THREE.Texture(imageCanvas)
+          const cacheQuery = `?p=${Math.random()
+            .toString(36)
+            .substr(2, 5)}`
+          if (!outputPng) {
+            const imageCanvas = document.createElement('canvas')
+            canvg(imageCanvas, `${actualSvg || outputSvg}${cacheQuery}`)
+            loadedTextures.texture = new THREE.Texture(imageCanvas)
+          } else {
+            loadedTextures.texture = new THREE.TextureLoader().load(
+              `${outputPng}${cacheQuery}`
+            )
+          }
           loadedTextures.texture.needsUpdate = true
         } else {
           const reversedAreas = reverse(sanitizedColors)
