@@ -38,7 +38,7 @@ const GenderBlock = ({
       <Label upperCase={true}>{name}</Label>
       <ImageBlock>
         {imagesArray.map((image: BlockImage, index: number) => (
-          <UploadContainer>
+          <UploadContainer key={index}>
             {image.src && image.src !== 'loading' && (
               <StyledIcon
                 type="close"
@@ -46,7 +46,6 @@ const GenderBlock = ({
               />
             )}
             <Upload
-              key={index}
               data={{ id, name: image.name }}
               listType="picture-card"
               className="avatar-uploader"
