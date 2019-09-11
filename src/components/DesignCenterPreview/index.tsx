@@ -90,7 +90,6 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       formatMessage,
       savedDesignId,
       productName,
-      showTeamStores,
       openAddToStoreModal,
       openAddToTeamStoreModalAction,
       setItemToAddAction,
@@ -126,14 +125,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
           <Render>
             <Render3D designId={shortId} />
             <BottomButtons>
-              {showTeamStores && (
-                <ButtonWrapper>
-                  <Button onClick={this.openAddToStoreModal}>
-                    <FormattedMessage {...messages.addToTeam} />
-                  </Button>
-                </ButtonWrapper>
-              )}
-
+              <ButtonWrapper>
+                <Button onClick={this.openAddToStoreModal}>
+                  <FormattedMessage {...messages.addToTeam} />
+                </Button>
+              </ButtonWrapper>
               <ButtonWrapper>
                 <AddToCartButton
                   orderDetails={true}

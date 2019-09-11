@@ -137,8 +137,11 @@ const CheckoutSummary = ({
   )
 
   // calculate youSaved amount
-  const youSaved = totalWithoutDiscount - (subtotal + proDesignFee - discount)
-
+  let youSaved = totalWithoutDiscount - (subtotal + proDesignFee - discount)
+  if (youSaved >= totalWithoutDiscount) {
+    youSaved = totalWithoutDiscount
+    subtotal = 0
+  }
   let totalSum = 0
   // calculate totalSum
   if (taxVat) {
