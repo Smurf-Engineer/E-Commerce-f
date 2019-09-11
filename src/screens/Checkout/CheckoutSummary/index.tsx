@@ -140,7 +140,7 @@ const CheckoutSummary = ({
   let youSaved = totalWithoutDiscount - (subtotal + proDesignFee - discount)
   if (youSaved >= totalWithoutDiscount) {
     youSaved = totalWithoutDiscount
-    subtotal = 0
+    subtotal = shippingTotal
   }
   let totalSum = 0
   // calculate totalSum
