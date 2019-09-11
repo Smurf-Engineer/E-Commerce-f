@@ -101,6 +101,7 @@ import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
+import moment from 'moment'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -181,7 +182,7 @@ interface Props extends RouteComponentProps<any> {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
-  deliveryDays: number
+  deliveryDays: string
   tutorialPlaylist: string
   // Redux Actions
   clearStoreAction: () => void
@@ -325,7 +326,14 @@ export class DesignCenter extends React.Component<Props, {}> {
     try {
       const response = await query({
         query: getDesignLabInfo,
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
+        variables: {
+          date: {
+            day: moment().date(),
+            month: moment().month(),
+            year: moment().year()
+          }
+        }
       })
       setDesignLabAction(response.data.getDesignLabInfo)
     } catch (e) {
