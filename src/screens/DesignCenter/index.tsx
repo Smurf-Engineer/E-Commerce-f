@@ -819,7 +819,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             )}
           {!isMobile && (
             <Header
-              {...{ deliveryDays }}
+              deliveryDays={moment(deliveryDays).format('MMMM DD')}
               onPressBack={this.handleOnPressBack}
             />
           )}
