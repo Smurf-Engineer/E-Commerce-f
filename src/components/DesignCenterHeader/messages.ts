@@ -11,6 +11,6 @@ export default defineMessages({
   },
   date: {
     id: 'components.DesignCenterHeader.date',
-    defaultMessage: 'Estimated Delivery Date: {date}'
+    defaultMessage: 'Estimated Delivery Date: {deliveryDays}'
   }
 })

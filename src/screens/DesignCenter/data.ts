@@ -148,7 +148,7 @@ export const requestColorChartMutation = gql`
 
 export const getDesignLabInfo = gql`
   query getDesignLabInfo {
-    getDesignLabInfo {
+    designInfo: getDesignLabInfo {
       deliveryDays: delivery_days
       tutorialPlaylist: tutorial_playlist
     }
