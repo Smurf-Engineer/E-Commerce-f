@@ -85,7 +85,8 @@ import {
   SaveDesignData,
   Message as MessageType,
   MessagePayload,
-  UserInfo
+  UserInfo,
+  DesignLabInfo
 } from '../../types/common'
 import {
   getProductQuery,
@@ -101,6 +102,7 @@ import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
+import moment from 'moment'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -110,9 +112,14 @@ interface DataDesign extends QueryProps {
   designData?: DesignType
 }
 
+interface DataDesignLabInfo extends QueryProps {
+  designInfo?: DesignLabInfo
+}
+
 interface Props extends RouteComponentProps<any> {
   dataProduct?: DataProduct
   dataDesign?: DataDesign
+  dataDesignLabInfo?: DataDesignLabInfo
   intl: InjectedIntl
   client: any
   currentTab: number
@@ -181,8 +188,6 @@ interface Props extends RouteComponentProps<any> {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
-  deliveryDays: number
-  tutorialPlaylist: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -289,7 +294,6 @@ interface Props extends RouteComponentProps<any> {
   setSendingColorChartAction: (sending: boolean) => void
   onOpenColorChartAction: (open: boolean) => void
   onOpenColorChartFormAction: (open: boolean) => void
-  setDesignLabAction: (data: any) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -306,9 +310,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       designHasChanges,
       responsive,
-      intl: { formatMessage },
-      client: { query },
-      setDesignLabAction
+      intl: { formatMessage }
     } = this.props
     if (
       responsive.tablet &&
@@ -321,15 +323,6 @@ export class DesignCenter extends React.Component<Props, {}> {
         return 'Changes you made may not be saved.'
       }
       return null
-    }
-    try {
-      const response = await query({
-        query: getDesignLabInfo,
-        fetchPolicy: 'network-only'
-      })
-      setDesignLabAction(response.data.getDesignLabInfo)
-    } catch (e) {
-      console.error(e)
     }
   }
 
@@ -641,8 +634,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       colorChartSending,
       colorChartModalOpen,
       colorChartModalFormOpen,
-      deliveryDays,
-      tutorialPlaylist
+      dataDesignLabInfo
     } = this.props
 
     const { formatMessage } = intl
@@ -664,7 +656,19 @@ export class DesignCenter extends React.Component<Props, {}> {
     if (!queryParams.id && !queryParams.designId) {
       return redirect
     }
-
+    const deliveryDaysResponse = get(
+      dataDesignLabInfo,
+      'designInfo.deliveryDays',
+      ''
+    )
+    const deliveryDays = deliveryDaysResponse
+      ? moment(deliveryDaysResponse).format('MMMM DD')
+      : ''
+    const tutorialPlaylist = get(
+      dataDesignLabInfo,
+      'designInfo.tutorialPlaylist',
+      ''
+    )
     const productQueryWithError = !!dataProduct && !!dataProduct.error
     const designQueryWithError = !!dataDesign && !!dataDesign.error
     if (productQueryWithError || designQueryWithError) {
@@ -711,7 +715,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     const productName =
       get(dataProduct, 'product.name') ||
       get(dataDesign, 'designData.product.name', '')
-
     const canvasJson = get(dataDesign, 'designData.canvas')
     const styleId = get(dataDesign, 'designData.styleId')
     const highResolution = get(dataDesign, 'designData.highResolution')
@@ -1247,6 +1250,19 @@ const DesignCenterEnhance = compose(
       }
     },
     name: 'dataProduct'
+  }),
+  graphql<DataDesign>(getDesignLabInfo, {
+    options: () => ({
+      fetchPolicy: 'network-only',
+      variables: {
+        date: {
+          day: moment().date(),
+          month: moment().month(),
+          year: moment().year()
+        }
+      }
+    }),
+    name: 'dataDesignLabInfo'
   }),
   graphql<DataDesign>(getDesignQuery, {
     options: ({ location }: OwnProps) => {

@@ -62,5 +62,6 @@ export const KEY_ENTER = 'Enter'
 /* Edit Main Navigation constants */
 export const CATALOGUE_CONSTANT = 'catalogue'
 export const NAVBAR_CONSTANT = 'navbar'
+export const ACTIVE_CONSTANT = 'active'
 
 export const MAIN_TITLE = 'Online Jersey Design Center - Designlab by Jakroo'

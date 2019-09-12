@@ -24,5 +24,9 @@ export default defineMessages({
   catalogueFilterLabel: {
     id: 'components.MainNavigation.catalogueFilterLabel',
     defaultMessage: 'Catalogue Filter'
+  },
+  activeLabel: {
+    id: 'components.MainNavigation.activeLabel',
+    defaultMessage: 'Active'
   }
 })
