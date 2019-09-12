@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
+import { GRAY } from '../../../../../theme/colors'
 
 interface DivProps {
   capitalize?: boolean
@@ -49,7 +50,7 @@ export const EmptyBox = styled.div`
   flex-flow: column;
   font-size: 18px;
   padding-top: 38px;
-  color: #bebebe;
+  color: ${GRAY};
 `
 
 export const Loader = styled.div`
@@ -75,5 +76,5 @@ export const StyledIcon = styled(Icon)`
   z-index: 2;
   cursor: pointer;
   color: white;
-  filter: drop-shadow(0px 0px 1px gray);
+  filter: drop-shadow(0px 0px 2px ${GRAY});
 `
