@@ -19,7 +19,7 @@ import {
   StyledSearch
 } from './styledComponents'
 import closeIcon from '../../../assets/cancel-button.svg'
-import Select from 'antd/lib/select'
+import Select, { SelectValue } from 'antd/lib/select'
 import {
   ProductInternalsInfo,
   GenderType,
@@ -49,13 +49,14 @@ interface Props {
   bibBrace: string
   collection: string
   id: number
+  model: string
   requestClose?: () => void
   formatMessage: (messageDescriptor: Message) => string
   handleOnInputChange: (event: any) => void
   handleOnSelectChange: (value: string, id: string) => void
   onSave: () => void
   deleteProduct: () => void
-  handleOnProductChange: (value: string) => void
+  handleOnProductChange: (value: SelectValue) => void
 }
 
 const { Option } = Select
@@ -68,7 +69,6 @@ const InternalsModal = ({
   handleOnInputChange,
   internalId,
   handleOnSelectChange,
-  productCode,
   onSave,
   loading,
   productInternalsInfo,
@@ -83,9 +83,10 @@ const InternalsModal = ({
   collection,
   deleteProduct,
   id,
-  handleOnProductChange
+  handleOnProductChange,
+  model
 }: Props) => {
-  const productsCodes = get<ProductInternalsInfo, 'products', String[]>(
+  const productsModels = get<ProductInternalsInfo, 'products', string[]>(
     productInternalsInfo,
     'products',
     []
@@ -159,9 +160,9 @@ const InternalsModal = ({
             <Label>{formatMessage(messages.productCode)}</Label>
             <StyledSearch
               onChange={handleOnProductChange}
-              dataSource={productsCodes}
               filterOption={true}
-              value={productCode}
+              dataSource={productsModels}
+              value={model}
             >
               <StyledInput maxLength={3} />
             </StyledSearch>
@@ -296,7 +297,7 @@ const InternalsModal = ({
 
           <ButtonWrapper color={BLUE}>
             <StyledButton
-              disabled={!internalId || !productCode}
+              disabled={!internalId || !model}
               type="primary"
               onClick={onSave}
               loading={loading}

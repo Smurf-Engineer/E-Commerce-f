@@ -23,7 +23,6 @@ export const getProductInternalsQuery = gql`
       internals {
         id
         internalId: internal_id
-        productCode: product_code
         gender
         size
         fitStyle: fit_style
@@ -33,6 +32,7 @@ export const getProductInternalsQuery = gql`
         binding
         bibBrace: bib_brace
         collection
+        model: yotpo_id
       }
     }
   }

@@ -67,6 +67,7 @@ interface Props {
   modalOpen: boolean
   loading: boolean
   downloading: boolean
+  model: string
   formatMessage: (messageDescriptor: Message, params?: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -133,7 +134,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       loading,
       id,
       downloading,
-      downloadCsv
+      downloadCsv,
+      model
     } = this.props
 
     return (
@@ -179,7 +181,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
             binding,
             bibBrace,
             collection,
-            id
+            id,
+            model
           }}
         />
         <BottomContainer>
@@ -195,7 +198,6 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
     const {
       id,
       internalId,
-      productCode,
       gender,
       size,
       fitStyle,
@@ -206,14 +208,14 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       bibBrace,
       collection,
       formatMessage,
-      setLoadingAction
+      setLoadingAction,
+      model
     } = this.props
 
     const isUpdating = id !== -1
     const productInternal = {
       id: isUpdating ? id : undefined,
       internal_id: internalId,
-      product_code: productCode,
       gender,
       size,
       fit_style: fitStyle,
@@ -222,7 +224,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       front_zipper: frontZipper,
       binding,
       bib_brace: bibBrace,
-      collection
+      collection,
+      model
     }
     setLoadingAction(true)
     try {
@@ -437,10 +440,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
   }
   handleOnProductChange = (value: string) => {
     const { setTextAction } = this.props
-    if (!isNumber(value) && value !== '') {
-      return
-    }
-    setTextAction('productCode', value)
+    setTextAction('model', value)
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
