@@ -149,6 +149,7 @@ export class FourthStep extends React.Component<Props, {}> {
               {...{ picture }}
               key={index}
               isThumbnail={true}
+              remove={this.handleRemovePicture}
               handleSetFile={this.handleSetFile}
               beforeUpload={this.beforeUpload}
             />
@@ -163,6 +164,7 @@ export class FourthStep extends React.Component<Props, {}> {
           <GenderBlock
             {...{ picture }}
             key={index}
+            remove={this.handleRemovePicture}
             handleSetFile={this.handleSetFile}
             beforeUpload={this.beforeUpload}
           />
@@ -325,6 +327,13 @@ export class FourthStep extends React.Component<Props, {}> {
     const { addMedia, mediaFiles } = this.props
     const id = mediaFiles.length + 1
     addMedia({ id, isVideo })
+  }
+
+  handleRemovePicture = (image: TypePicture) => () => {
+    const { setFileField, customizable } = this.props
+    const { id, name } = image
+    const fileType = customizable ? 'genders' : 'colors'
+    setFileField(fileType, id, name, '')
   }
 
   handleSetFile = (event: any) => {
