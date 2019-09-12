@@ -33,6 +33,7 @@ export const getProductInternalsQuery = gql`
         bibBrace: bib_brace
         collection
         model: yotpo_id
+        productCode: product_code
       }
     }
   }

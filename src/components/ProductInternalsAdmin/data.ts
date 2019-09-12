@@ -50,6 +50,7 @@ export const updateProductInternal = graphql(
         bibBrace: bib_brace
         collection
         model: yotpo_id
+        productCode: product_code
       }
     }
   `,
@@ -73,6 +74,8 @@ export const addProductInternal = graphql(
         binding
         bibBrace: bib_brace
         collection
+        model: yotpo_id
+        productCode: product_code
       }
     }
   `,

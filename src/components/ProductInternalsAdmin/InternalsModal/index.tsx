@@ -157,7 +157,7 @@ const InternalsModal = ({
         />
         <Row>
           <Column>
-            <Label>{formatMessage(messages.productCode)}</Label>
+            <Label>{formatMessage(messages.modelID)}</Label>
             <StyledSearch
               onChange={handleOnProductChange}
               filterOption={true}
