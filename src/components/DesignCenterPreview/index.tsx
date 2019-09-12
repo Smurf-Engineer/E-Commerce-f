@@ -42,7 +42,6 @@ interface Props {
   productName: string
   product: Product
   openAddToStoreModal: boolean
-  showTeamStores: boolean
   teamStoreId: string
   svgOutputUrl: string
   savedDesign: SaveDesignData

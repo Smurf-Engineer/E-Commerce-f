@@ -149,7 +149,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Row>
                   <Cell width={45}>
                     <Thumbnail
-                      {...{ image }}
+                      {...{ image, hideQuickView }}
                       onPressQuickView={handleOnClickView}
                     />
                   </Cell>

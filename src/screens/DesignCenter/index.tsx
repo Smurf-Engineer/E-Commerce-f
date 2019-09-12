@@ -794,7 +794,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         <Spin />
       </LoadingContainer>
     )
-    const showTeamStores = get(layout, 'showTeamStores', false)
+
     const isUserAuthenticated = !!user
     return (
       <Layout
@@ -1016,7 +1016,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                   openAddToStoreModal,
                   setItemToAddAction,
                   teamStoreId,
-                  showTeamStores,
                   editDesignAction,
                   formatMessage,
                   svgOutputUrl,
