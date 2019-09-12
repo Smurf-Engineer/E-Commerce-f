@@ -1,21 +1,17 @@
 /**
- * AddressData Component - Created by miguelcanobbio on 18/07/18.
+ * GenderImageBlock Component - Created by Jesús Apodaca on 13/06/19.
  */
 import * as React from 'react'
 import Upload from 'antd/lib/upload'
-import Spin from 'antd/lib/spin'
 import {
   Container,
   Label,
   ImageBlock,
-  ImageBox,
-  Loader,
-  EmptyBox,
   StyledIcon,
-  UploadContainer,
-  AddIcon
+  UploadContainer
 } from './styledComponents'
 import { TypePicture, BlockImage } from '../../../../../types/common'
+import ImageContent from './ImageContent'
 
 interface Props {
   picture: TypePicture
@@ -34,14 +30,6 @@ const GenderBlock = ({
 }: Props) => {
   const { id, images, thumbnail, name } = picture
   const imagesArray = isThumbnail ? [thumbnail] : images
-  const getContent = (src: string) =>
-    src === 'loading' ? (
-      <Loader>
-        <Spin size="large" />
-      </Loader>
-    ) : (
-      <ImageBox src={src} alt="avatar" />
-    )
   return (
     <Container>
       <Label upperCase={true}>{name}</Label>
@@ -62,16 +50,7 @@ const GenderBlock = ({
               showUploadList={false}
               beforeUpload={beforeUpload}
             >
-              {image.src ? (
-                getContent(image.src)
-              ) : (
-                <EmptyBox>
-                  <AddIcon type={'plus'} />
-                  <Label marginTop="16px" className="ant-upload-text">
-                    {image.label}
-                  </Label>
-                </EmptyBox>
-              )}
+              <ImageContent src={image.src} label={image.label} />
             </Upload>
           </UploadContainer>
         ))}
