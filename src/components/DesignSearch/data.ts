@@ -7,6 +7,7 @@ import { graphql } from 'react-apollo'
 export const orderSearchQuery = gql`
   query getOrderFiles($code: String!) {
     order: getDesignByCode(code: $code) {
+      name
       product {
         name
         zipper {
