@@ -164,7 +164,7 @@ const InternalsModal = ({
               dataSource={productsModels}
               value={model}
             >
-              <StyledInput maxLength={3} />
+              <StyledInput />
             </StyledSearch>
           </Column>
           <Column>

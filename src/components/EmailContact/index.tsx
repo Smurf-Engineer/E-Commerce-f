@@ -162,7 +162,7 @@ export class EmailContact extends React.Component<Props, {}> {
       <Container>
         <Modal
           open={open}
-          width={'60%'}
+          width="512px"
           requestClose={this.handleCancel}
           withLogo={false}
         >

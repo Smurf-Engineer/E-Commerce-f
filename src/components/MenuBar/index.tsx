@@ -33,6 +33,7 @@ import {
   Region as RegionType,
   QueryProps
 } from '../../types/common'
+import { OVERVIEW } from '../../screens/Account/constants'
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
@@ -43,6 +44,7 @@ interface Props {
   history: any
   searchFunc: (param: string) => void
   openLogin?: boolean
+  setAccountScreen: (screen: string, openCreations?: boolean) => void
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
   saveUserToLocal: (user: object) => void
@@ -110,12 +112,17 @@ class MenuBar extends React.Component<Props, StateProps> {
     this.handleOnGoTo(path)
   }
 
-  handleOnGoTo = (route: string) => {
+  handleOnGoTo = (key: string) => {
     const {
       history: { location, push },
       designHasChanges,
+      setAccountScreen,
       openWithoutSaveModalAction
     } = this.props
+    let route = 'account'
+    if (key !== OVERVIEW) {
+      route = route.concat(`?option=${key}`)
+    }
     if (
       (location.pathname as String).includes('design-center') &&
       designHasChanges
@@ -123,6 +130,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       openWithoutSaveModalAction(true, route)
       return
     }
+    setAccountScreen(key)
     push(route)
   }
 
