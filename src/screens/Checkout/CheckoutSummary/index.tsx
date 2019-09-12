@@ -124,7 +124,7 @@ const CheckoutSummary = ({
     taxFee,
     taxVat,
     taxVatTotal,
-    discount
+    discount: discountValue
   } = getTaxesAndDiscount(
     countrySubsidiary,
     shippingAddressCountry,
@@ -135,13 +135,14 @@ const CheckoutSummary = ({
     taxRates,
     country
   )
-
-  // calculate youSaved amount
-  let youSaved = totalWithoutDiscount - (subtotal + proDesignFee - discount)
-  if (youSaved >= totalWithoutDiscount) {
-    youSaved = totalWithoutDiscount
-    subtotal = shippingTotal
+  let discount = discountValue
+  const priceToApply = subtotal + proDesignFee
+  if (discountValue > priceToApply) {
+    discount = priceToApply
   }
+  // calculate youSaved amount
+  const youSaved = totalWithoutDiscount - (priceToApply - discount)
+
   let totalSum = 0
   // calculate totalSum
   if (taxVat) {

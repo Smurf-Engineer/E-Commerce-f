@@ -77,11 +77,9 @@ export class OrderSummary extends React.Component<Props, {}> {
     const symbol = currencySymbol || '$'
     const savedPercent = Math.round((youSaved * 100) / totalWithoutDiscount)
     let netTotal =
-      totalSum ||
-      subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
-    if (netTotal < 0) {
-      netTotal = 0
-    }
+      totalSum || discount
+        ? totalSum
+        : subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
     const amountsDivider =
       !!proDesignReview ||
       !!taxFee ||
