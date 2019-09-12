@@ -2,7 +2,7 @@
  * AddressData Component - Created by miguelcanobbio on 18/07/18.
  */
 import * as React from 'react'
-import { Icon, Upload } from 'antd'
+import Upload from 'antd/lib/upload'
 import Spin from 'antd/lib/spin'
 import {
   Container,
@@ -12,7 +12,8 @@ import {
   Loader,
   EmptyBox,
   StyledIcon,
-  UploadContainer
+  UploadContainer,
+  AddIcon
 } from './styledComponents'
 import { TypePicture, BlockImage } from '../../../../../types/common'
 
@@ -33,6 +34,14 @@ const GenderBlock = ({
 }: Props) => {
   const { id, images, thumbnail, name } = picture
   const imagesArray = isThumbnail ? [thumbnail] : images
+  const getContent = (src: string) =>
+    src === 'loading' ? (
+      <Loader>
+        <Spin size="large" />
+      </Loader>
+    ) : (
+      <ImageBox src={src} alt="avatar" />
+    )
   return (
     <Container>
       <Label upperCase={true}>{name}</Label>
@@ -54,19 +63,10 @@ const GenderBlock = ({
               beforeUpload={beforeUpload}
             >
               {image.src ? (
-                <div>
-                  {image.src !== 'loading' ? (
-                    <ImageBox src={image.src} alt="avatar" />
-                  ) : (
-                    <Loader>
-                      <Spin size="large" />
-                    </Loader>
-                  )}
-                </div>
+                getContent(image.src)
               ) : (
                 <EmptyBox>
-                  <div />
-                  <Icon type={'plus'} />
+                  <AddIcon type={'plus'} />
                   <Label marginTop="16px" className="ant-upload-text">
                     {image.label}
                   </Label>

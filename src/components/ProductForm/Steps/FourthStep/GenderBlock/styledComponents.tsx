@@ -78,3 +78,10 @@ export const StyledIcon = styled(Icon)`
   color: white;
   filter: drop-shadow(0px 0px 2px ${GRAY});
 `
+
+export const AddIcon = styled(Icon)`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`
