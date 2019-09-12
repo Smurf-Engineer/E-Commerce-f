@@ -23,7 +23,8 @@ export const initialState = fromJS({
   productTiles: [],
   featuredProducts: [],
   homepageImages: [],
-  title: ''
+  title: '',
+  loading: true
 })
 
 const homeReducer: Reducer<any> = (state = initialState, action) => {
@@ -56,7 +57,8 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
         productTiles,
         featuredProducts,
         homepageImages,
-        title
+        title,
+        loading: false
       })
     }
     default:

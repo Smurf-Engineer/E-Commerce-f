@@ -15,7 +15,6 @@ export const Text = styled.div`
 `
 
 export const Title = styled.div`
-  height: 27px;
   color: #5f6062;
   font-size: 20px;
   font-weight: bold;

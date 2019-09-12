@@ -8,10 +8,17 @@ import toUpper from 'lodash/toUpper'
 import { FormattedMessage } from 'react-intl'
 import MediaQuery from 'react-responsive'
 import messages from './messages'
-import { Container, Text, menuStyle, Icon } from './styledComponents'
+import {
+  Container,
+  Text,
+  menuStyle,
+  Icon,
+  OverviewStyle
+} from './styledComponents'
 import {
   SCREEN_LOCKER,
-  PROFILE_SETTINGS
+  PROFILE_SETTINGS,
+  OVERVIEW
 } from '../../screens/Account/constants'
 
 interface Props {
@@ -22,37 +29,22 @@ interface Props {
 
 const Logout = ({ title, logout, goTo }: Props) => {
   const handleOnClick = ({ key }: any) => {
-    switch (key) {
-      case 'logout':
-        logout()
-        break
-      case 'account':
-        goTo('account')
-        break
-      case 'locker':
-        goTo(`/account?option=${SCREEN_LOCKER}`)
-        break
-      case 'settings':
-        goTo(`/account?option=${PROFILE_SETTINGS}`)
-        break
-      default:
-        break
+    if (key === 'logout') {
+      logout()
+    } else {
+      goTo(key)
     }
-  }
-
-  const goToMyAccount = () => {
-    goTo('account')
   }
 
   const logoutMenu = (
     <Menu onClick={handleOnClick} style={menuStyle}>
-      <Menu.Item key="locker">
+      <Menu.Item key={SCREEN_LOCKER}>
         <FormattedMessage {...messages.myLockerLabel} />
       </Menu.Item>
-      <Menu.Item key="account">
+      <Menu.Item key={OVERVIEW}>
         <FormattedMessage {...messages.myAccountLabel} />
       </Menu.Item>
-      <Menu.Item key="settings">
+      <Menu.Item key={PROFILE_SETTINGS}>
         <FormattedMessage {...messages.profileSettingsLabel} />
       </Menu.Item>
       <Menu.Item key="logout">
@@ -74,7 +66,11 @@ const Logout = ({ title, logout, goTo }: Props) => {
           return (
             <Container>
               <Icon type="user" />
-              <Text onClick={goToMyAccount}>{toUpper(title)}</Text>
+              <Text>
+                <Menu onClick={handleOnClick} style={OverviewStyle}>
+                  <Menu.Item key={OVERVIEW}>{toUpper(title)}</Menu.Item>
+                </Menu>
+              </Text>
             </Container>
           )
         }
