@@ -28,7 +28,8 @@ import {
   SET_MATERIAL,
   SET_MEDIA,
   ADD_MEDIA,
-  REMOVE_MEDIA
+  REMOVE_MEDIA,
+  SET_MODEL_SIZE
 } from './constants'
 import { AnyAction, Product, ProductFile } from '../../types/common'
 
@@ -128,6 +129,11 @@ export const removeFile = (array: string, index: number): AnyAction => ({
 export const setSpec = (value: string): AnyAction => ({
   type: SET_SPEC,
   value
+})
+
+export const setModelSize = (size: string): AnyAction => ({
+  type: SET_MODEL_SIZE,
+  size
 })
 
 export const setMaterial = (value: string): AnyAction => ({

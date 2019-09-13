@@ -229,6 +229,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       relatedItemTag,
       fitStyles,
       sizeRange,
+      modelSize,
       title = MAIN_TITLE
     } = product
     const isRetail = retailMen || retailWomen || !customizable
@@ -510,11 +511,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                         <Render3D
                           customProduct={true}
                           designId={0}
-                          zoomedIn={true}
                           textColor="white"
                           isProduct={true}
                           isPhone={phone}
-                          {...{ product }}
+                          {...{ product, modelSize }}
                         />
                         <HowItFits onClick={this.toggleFitsModal(true)}>
                           <FormattedMessage {...messages.howItFits} />

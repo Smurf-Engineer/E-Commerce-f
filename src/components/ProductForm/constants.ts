@@ -28,6 +28,7 @@ export const SET_MATERIAL = `${namespace}/SET_MATERIAL`
 export const SET_MEDIA = `${namespace}/SET_MEDIA`
 export const ADD_MEDIA = `${namespace}/ADD_MEDIA`
 export const REMOVE_MEDIA = `${namespace}/REMOVE_MEDIA`
+export const SET_MODEL_SIZE = `${namespace}/SET_MODEL_SIZE`
 
 export const CHANGE_VALUE = `${namespace}/CHANGE_VALUE`
 export const RESET_DATA = `${namespace}/RESET_DATA`

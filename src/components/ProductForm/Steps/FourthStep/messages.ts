@@ -48,5 +48,25 @@ export default defineMessages({
   thumbnails: {
     id: 'components.FourthStep.thumbnails',
     defaultMessage: 'Thumbnail images'
+  },
+  choose3DSize: {
+    id: 'components.FourthStep.choose3DSize',
+    defaultMessage: 'Choose 3D Model Size'
+  },
+  small: {
+    id: 'components.FourthStep.small',
+    defaultMessage: 'Ex.Accesories, shorts'
+  },
+  medium: {
+    id: 'components.FourthStep.medium',
+    defaultMessage: 'Ex. Jersey and Tops'
+  },
+  large: {
+    id: 'components.FourthStep.large',
+    defaultMessage: 'Ex. Suits, bibrace shorts'
+  },
+  xLarge: {
+    id: 'components.FourthStep.xLarge',
+    defaultMessage: 'Ex. Big Suits, bibrace shorts'
   }
 })
