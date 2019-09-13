@@ -146,6 +146,15 @@ export class FourthStep extends React.Component<Props, {}> {
       },
       []
     )
+    const sizeBoxes = Object.keys(MODEL_SIZES).map((size: string) => (
+      <SizeBox
+        onClick={this.handleSetModelSize(size)}
+        selected={modelSize === size}
+      >
+        <SizeLabel>{size}</SizeLabel>
+        <SizeDescription>{formatMessage(messages[size])}</SizeDescription>
+      </SizeBox>
+    ))
     return (
       <Container>
         <Separator>
@@ -261,19 +270,7 @@ export class FourthStep extends React.Component<Props, {}> {
             <Separator>
               <FormattedMessage {...messages.choose3DSize} />
             </Separator>
-            <RowInput left={true}>
-              {Object.keys(MODEL_SIZES).map((size: string) => (
-                <SizeBox
-                  onClick={this.handleSetModelSize(size)}
-                  selected={modelSize === size}
-                >
-                  <SizeLabel>{size}</SizeLabel>
-                  <SizeDescription>
-                    {formatMessage(messages[size])}
-                  </SizeDescription>
-                </SizeBox>
-              ))}
-            </RowInput>
+            <RowInput left={true}>{sizeBoxes}</RowInput>
           </React.Fragment>
         )}
       </Container>
