@@ -58,7 +58,7 @@ export default defineMessages({
     defaultMessage: 'No product internals yet'
   },
   edit: {
-    id: 'components.InternalsList.emptyMessage',
+    id: 'components.InternalsList.edit',
     defaultMessage: 'Edit'
   }
 })
