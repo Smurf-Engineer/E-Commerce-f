@@ -156,6 +156,7 @@ export interface Product {
   isCustom?: boolean
   colors?: ProductColors[]
   mpn?: string
+  modelSize?: string
 }
 
 export type DesignType = {

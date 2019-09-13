@@ -65,3 +65,11 @@ export const NAVBAR_CONSTANT = 'navbar'
 export const ACTIVE_CONSTANT = 'active'
 
 export const MAIN_TITLE = 'Online Jersey Design Center - Designlab by Jakroo'
+
+/* Zoom Size Products */
+export const MODEL_SIZES = {
+  small: 120,
+  medium: 140,
+  large: 170,
+  xLarge: 200
+}

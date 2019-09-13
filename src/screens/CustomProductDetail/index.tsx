@@ -183,6 +183,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       relatedProducts: products,
       materials,
       mediaFiles,
+      modelSize,
       bannerMaterials,
       relatedItemTag
     } = product
@@ -416,7 +417,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   <Render3D
                     customProduct={true}
                     textColor="white"
-                    {...{ designId }}
+                    {...{ designId, modelSize }}
                     zoomedIn={true}
                     isPhone={phone}
                   />

@@ -82,6 +82,7 @@ export const getProductQuery = gql`
       category_id
       categoryName: category_name
       tags
+      modelSize: model_size
       season
       pictures {
         front_image
