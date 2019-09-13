@@ -61,7 +61,7 @@ interface Props {
   bannerMaterials: any[]
   setValue: (field: string, value: any) => void
   formatMessage: (messageDescriptor: any) => string
-  setModelSize: (size: string) => string
+  setModelSize: (size: string) => void
 }
 
 export class FourthStep extends React.Component<Props, {}> {
