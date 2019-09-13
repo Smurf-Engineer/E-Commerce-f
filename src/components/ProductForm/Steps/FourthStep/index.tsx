@@ -15,7 +15,10 @@ import {
   MediaSection,
   Label,
   InputDiv,
-  AddButton
+  AddButton,
+  SizeBox,
+  SizeLabel,
+  SizeDescription
 } from './styledComponents'
 import GenderBlock from './GenderBlock'
 import { uploadFile } from '../../api'
@@ -28,6 +31,7 @@ import { validTypes } from '../../constants'
 import MediaBlock from './MediaBlock'
 import BannerBlock from './BannerBlock'
 import Draggable from '../../../Draggable'
+import { MODEL_SIZES } from '../../../../constants'
 interface Props {
   productMaterials: ProductFile[]
   mediaFiles: ProductFile[]
@@ -36,6 +40,7 @@ interface Props {
   genders: ItemDetailType[]
   colors: ItemDetailType[]
   customizable: boolean
+  modelSize: string
   removeBanner: (index: number) => void
   uploadMediaFile: (event: any) => void
   addMedia: (value: ProductFile) => void
@@ -56,6 +61,7 @@ interface Props {
   bannerMaterials: any[]
   setValue: (field: string, value: any) => void
   formatMessage: (messageDescriptor: any) => string
+  setModelSize: (size: string) => string
 }
 
 export class FourthStep extends React.Component<Props, {}> {
@@ -69,7 +75,9 @@ export class FourthStep extends React.Component<Props, {}> {
       uploadMediaFile,
       colors,
       colorsProducts,
-      bannerMaterials
+      modelSize,
+      bannerMaterials,
+      formatMessage
     } = this.props
     let productsImagesForm
     const names = (customizable ? genders : colors).reduce(
@@ -217,7 +225,7 @@ export class FourthStep extends React.Component<Props, {}> {
           </InputDiv>
         </RowInput>
         {customizable && (
-          <div>
+          <React.Fragment>
             <RowInput>
               <InputDiv flex={1}>
                 <Label>
@@ -250,10 +258,31 @@ export class FourthStep extends React.Component<Props, {}> {
                 ))}
               </MediaSection>
             )}
-          </div>
+            <Separator>
+              <FormattedMessage {...messages.choose3DSize} />
+            </Separator>
+            <RowInput left={true}>
+              {Object.keys(MODEL_SIZES).map((size: string) => (
+                <SizeBox
+                  onClick={this.handleSetModelSize(size)}
+                  selected={modelSize === size}
+                >
+                  <SizeLabel>{size}</SizeLabel>
+                  <SizeDescription>
+                    {formatMessage(messages[size])}
+                  </SizeDescription>
+                </SizeBox>
+              ))}
+            </RowInput>
+          </React.Fragment>
         )}
       </Container>
     )
+  }
+
+  handleSetModelSize = (size: string) => () => {
+    const { setModelSize } = this.props
+    setModelSize(size)
   }
 
   handleCheckMaterial = (event: any) => {
