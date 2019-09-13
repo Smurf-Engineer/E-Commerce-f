@@ -10,6 +10,7 @@ import Menu from 'antd/lib/menu'
 import isEmpty from 'lodash/isEmpty'
 import messages from './messages'
 import { connect } from 'react-redux'
+import { MAIN_TITLE } from '../../constants'
 import { InjectedIntl, FormattedMessage } from 'react-intl'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
@@ -35,6 +36,7 @@ import {
   Content,
   LogoutButton
 } from './styledComponents'
+import Helmet from 'react-helmet'
 
 const { SubMenu } = Menu
 
@@ -154,6 +156,7 @@ class AdminLayout extends React.Component<Props, {}> {
     return (
       <Container>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
+        <Helmet defaultTitle={MAIN_TITLE} />
         <SideBar>
           <Menu
             selectedKeys={[screen]}

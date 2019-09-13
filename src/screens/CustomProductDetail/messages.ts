@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.femaleGenderLabel',
     defaultMessage: 'Available for Women'
   },
+  teamPrice: {
+    id: 'screens.CustomProductDetail.teamPrice',
+    defaultMessage: 'Team Price'
+  },
+  regularPrice: {
+    id: 'screens.CustomProductDetail.regularPrice',
+    defaultMessage: 'Regular Price'
+  },
   maleGenderLabel: {
     id: 'screens.CustomProductDetail.maleGenderLabel',
     defaultMessage: 'Available for Men'

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { WHITE, RED, GRAY_DARK, GRAY_STRONG, GRAY } from '../../theme/colors'
 
 export const Container = styled.div`
   margin-bottom: 30px;
@@ -17,9 +18,22 @@ export const Text = styled.div`
 
 export const StyledImg = styled.img`
   width: 100%;
-  height: 172px;
-  object-fit: contain;
+  height: 100%;
+  max-height: 143px;
+  object-fit: cover;
 `
+
+export const TitleName = styled.div`
+  height: 143px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: ${GRAY};
+  color: ${GRAY_STRONG};
+  font-size: 22px;
+  font-weight: bold;
+}`
 
 export const TeamStoreCard = styled.div`
   width: 658px;
@@ -38,27 +52,33 @@ export const TeamStoreCard = styled.div`
 export const CardContent = styled.div`
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 #dcdcdc;
-`
-export const TeamCardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
+  position: relative;
 `
 
 export const CardTitle = styled.div`
-  height: 25px;
-  width: 100%;
-  color: #5f6062;
+  cursor: text;
+  text-shadow: 0px 2px 4px ${GRAY_DARK};
+`
+
+export const BottomContainer = styled.div`
+  color: ${WHITE};
   font-size: 18px;
+  width: 100%;
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+  position: absolute;
+  bottom: 0px;
+  background: linear-gradient(0deg, #54545494, #54545400);
+  padding: 4px 8px;
+  display: flex;
+  justify-content: space-between;
 `
 
 export const ShareButton = styled(Button)`
   height: 24px;
   border: 1px solid #dcdcdc;
-  border-radius: 0;
+  border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   margin-left: 10px;
@@ -93,7 +113,12 @@ export const ButtonsContainer = styled.div`
 export const DeleteLabel = styled.span`
   display: flex;
   align-items: center;
-  color: #e61737;
+  color: ${WHITE};
+  font-size: 14px;
+  font-weight: normal;
+  background: ${RED};
+  padding: 0px 8px;
+  border-radius: 2px;
   margin-left: 10px;
   @media (max-width: 480px) {
     margin-left: 0;

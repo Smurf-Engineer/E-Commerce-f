@@ -3,9 +3,18 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { BLACK, WHITE } from '../../theme/colors'
+
+interface DivProps {
+  isTeamStore?: boolean
+}
 
 export const Container = styled.div`
-  background-color: #fff;
+  background-color: ${WHITE};
+  max-width: 1452px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 9px -5px ${BLACK};
 `
 export const Content = styled.div`
   display: flex;
@@ -168,14 +177,15 @@ export const PricesRow = styled.div`
   margin-top: 20px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    justify-content: space-between;
+    justify-content: ${({ isTeamStore }: DivProps) =>
+      isTeamStore ? 'flex-start' : 'space-between'};
   }
 `
 export const AvailablePrices = styled.div`
   margin-right: 30px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    margin: 0;
+    margin-right: 12px;
   }
 
   @media (min-width: 481px) and (max-width: 768px) {

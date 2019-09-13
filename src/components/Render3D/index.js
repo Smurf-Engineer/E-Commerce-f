@@ -54,7 +54,7 @@ class Render3D extends PureComponent {
   }
 
   async componentDidMount() {
-    const { phoneView, designSearch } = this.props
+    const { zoomedIn, designSearch } = this.props
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const precision = 'highp'
@@ -74,7 +74,7 @@ class Render3D extends PureComponent {
       0.1,
       1000
     )
-    camera.position.z = phoneView ? 120 : 250
+    camera.position.z = zoomedIn ? 120 : 250
     if (designSearch) {
       camera.position.z = 150
     }
@@ -155,9 +155,10 @@ class Render3D extends PureComponent {
           colors,
           style: { brandingPng },
           proDesign,
-          outputSvg
+          outputSvg,
+          outputPng
         } = design
-        const { colorAccessories } = this.props
+        const { colorAccessories, isPhone } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -210,15 +211,19 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign || (outputSvg && fromSvg)) {
-          const imageCanvas = document.createElement('canvas')
-          canvg(
-            imageCanvas,
-            `${actualSvg || outputSvg}?p=${Math.random()
-              .toString(36)
-              .substr(2, 5)}`
-          )
-          loadedTextures.texture = new THREE.Texture(imageCanvas)
+        if (proDesign || (outputSvg && fromSvg) || isPhone) {
+          const cacheQuery = `?p=${Math.random()
+            .toString(36)
+            .substr(2, 5)}`
+          if (!outputPng) {
+            const imageCanvas = document.createElement('canvas')
+            canvg(imageCanvas, `${actualSvg || outputSvg}${cacheQuery}`)
+            loadedTextures.texture = new THREE.Texture(imageCanvas)
+          } else {
+            loadedTextures.texture = new THREE.TextureLoader().load(
+              `${outputPng}${cacheQuery}`
+            )
+          }
           loadedTextures.texture.needsUpdate = true
         } else {
           const reversedAreas = reverse(sanitizedColors)
@@ -324,7 +329,7 @@ class Render3D extends PureComponent {
     )
   }
   renderProduct = async product => {
-    const { phoneView } = this.props
+    const { zoomedIn } = this.props
     const {
       obj,
       mtl,
@@ -460,7 +465,7 @@ class Render3D extends PureComponent {
               children[brandingIndex].material = brandingMaterial
             }
             /* Object Conig */
-            const verticalPosition = phoneView ? PHONE_POSITION : 0
+            const verticalPosition = zoomedIn ? PHONE_POSITION : 0
             object.position.y = verticalPosition
             object.name = MESH_NAME
             this.scene.add(object)
@@ -481,8 +486,10 @@ class Render3D extends PureComponent {
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
 
-    const { stitchingValue, phoneView } = this.props
-
+    const { stitchingValue, zoomedIn, isPhone } = this.props
+    if (design.canvas && isPhone) {
+      await this.getFontsFromCanvas(design.canvas)
+    }
     const loadedTextures = await this.loadTextures(design, actualSvg, fromSvg)
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
@@ -564,7 +571,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign && !fromSvg) {
+          if (!proDesign && !fromSvg && !isPhone) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -589,7 +596,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-          if (!proDesign && !fromSvg) {
+          if (!proDesign && !fromSvg && !isPhone) {
             areas.forEach(
               (map, index) =>
                 (children[
@@ -609,7 +616,6 @@ class Render3D extends PureComponent {
               : REGULAR_CANVAS
             canvas.width = CANVAS_SIZE
             canvas.height = CANVAS_SIZE
-
             this.canvasTexture = new fabric.StaticCanvas(canvas, {
               width: CANVAS_SIZE,
               height: CANVAS_SIZE,
@@ -618,6 +624,7 @@ class Render3D extends PureComponent {
               crossOrigin: 'Anonymous'
             })
             const canvasTexture = new THREE.CanvasTexture(canvas)
+
             canvasTexture.minFilter = THREE.LinearFilter
             this.canvasTexture.on(
               'after:render',
@@ -661,7 +668,7 @@ class Render3D extends PureComponent {
           }
 
           /* Object Conig */
-          const verticalPosition = phoneView ? PHONE_POSITION : 0
+          const verticalPosition = zoomedIn ? PHONE_POSITION : 0
           object.position.y = verticalPosition
           object.name = MESH_NAME
           this.scene.add(object)
@@ -755,6 +762,30 @@ class Render3D extends PureComponent {
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
       return false
+    }
+  }
+
+  getFontsFromCanvas = async object => {
+    try {
+      const fonts = []
+      const { objects } = JSON.parse(object)
+      objects.forEach(el => {
+        switch (el.type) {
+          case CanvasElements.Text: {
+            fonts.push(el.fontFamily)
+            break
+          }
+          default:
+            break
+        }
+      })
+      const fontsPromises = fonts.map(font => {
+        const fontObserver = new FontFaceObserver(font)
+        return fontObserver.load()
+      })
+      await Promise.all(fontsPromises)
+    } catch (e) {
+      console.error('Error loading canvas object: ', e.message)
     }
   }
 

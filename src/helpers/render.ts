@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import config from '../config'
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
 
-const renderHtml = (styleTags: any, html: any) => {
+const renderHtml = (styleTags: any, html: any, helmet: any) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -44,13 +44,11 @@ const renderHtml = (styleTags: any, html: any) => {
            </script>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
-          <title>Online Jersey Design Center - Designlab by Jakroo</title>
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+          ${helmet.title.toString()}
           ${
             assets.client.css
-              ? `<link rel="stylesheet" type="text/css" href="${
-                  assets.client.css
-                }">`
+              ? `<link rel="stylesheet" type="text/css" href="${assets.client.css}">`
               : ''
           }
           ${

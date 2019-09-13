@@ -7,7 +7,8 @@ import {
   SET_SEARCH_PARAM,
   OPEN_SHARE_MODAL,
   CLEAR_REDUCER,
-  SET_TEAM_STORE_STATUS
+  SET_SKIP_VALUE,
+  TEAM_STORES_LIMIT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -16,7 +17,9 @@ export const initialState = fromJS({
   searchString: '',
   openShare: false,
   storeId: '',
-  showTeamStores: null
+  currentPage: 0,
+  skip: 0,
+  limit: TEAM_STORES_LIMIT
 })
 
 const teamstoresReducer: Reducer<any> = (state = initialState, action) => {
@@ -30,14 +33,17 @@ const teamstoresReducer: Reducer<any> = (state = initialState, action) => {
         openShare: action.open,
         storeId: action.storeId
       })
+    case SET_SKIP_VALUE:
+      return state.merge({
+        skip: action.skip,
+        currentPage: action.currentPage
+      })
     case CLEAR_REDUCER:
       return state.merge({
         searchString: '',
         openShare: false,
         storeId: ''
       })
-    case SET_TEAM_STORE_STATUS:
-      return state.set('showTeamStores', action.show)
     default:
       return state
   }

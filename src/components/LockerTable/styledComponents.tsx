@@ -42,6 +42,7 @@ export const HeaderRow = styled.div`
   border-bottom-color: #8c8c8c;
   border-bottom-style: solid;
   padding-bottom: 4px;
+  align-items: center;
 `
 
 export const Column = styled.td`
@@ -51,9 +52,13 @@ export const Column = styled.td`
 
 interface CellProps {
   width?: number
+  tabletWidth?: number
 }
 export const Cell = styled.div`
  width ${({ width }: CellProps) => (width ? width : 10)}%;
+ @media (min-width: 425px) and (max-width: 768px) {
+  width ${({ tabletWidth }: CellProps) => (tabletWidth ? tabletWidth : 10)}%;
+}
 `
 
 interface TitleProps {

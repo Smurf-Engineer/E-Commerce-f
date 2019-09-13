@@ -75,7 +75,6 @@ import {
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
   ON_OPEN_COLOR_CHART_FORM,
-  SET_DATA_LAB_INFO,
   OPEN_DESIGN_CHECK_MODAL
 } from './constants'
 import { Reducer, Change } from '../../types/common'
@@ -980,10 +979,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('colorChartModalOpen', action.open)
     case ON_OPEN_COLOR_CHART_FORM:
       return state.set('colorChartModalFormOpen', action.open)
-    case SET_DATA_LAB_INFO: {
-      const { deliveryDays, tutorialPlaylist } = action.data
-      return state.merge({ deliveryDays, tutorialPlaylist })
-    }
     // TODO: Add Test when merge 'test.tsx'
     case OPEN_DESIGN_CHECK_MODAL:
       return state.set(

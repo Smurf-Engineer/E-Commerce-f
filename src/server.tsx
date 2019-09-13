@@ -3,6 +3,7 @@ import * as express from 'express'
 import { setMobileDetect, mobileParser } from 'react-responsive-redux'
 import { ApolloProvider, getDataFromTree } from 'react-apollo'
 import { Provider } from 'react-redux'
+import { Helmet } from 'react-helmet'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
@@ -70,9 +71,7 @@ server
       console.error(error)
     }
 
-    const redirectUrl = `/${locale.code}?lang=${locale.lang}&currency=${
-      locale.currency
-    }`
+    const redirectUrl = `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
     if (location === '/') {
       res.redirect(redirectUrl)
       return
@@ -103,7 +102,6 @@ server
         currency: currencyFound
       })
     )
-
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
       const jsx = sheet.collectStyles(
@@ -117,12 +115,13 @@ server
       )
 
       const content = renderToString(jsx)
+      const helmet = Helmet.renderStatic()
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
       const finalState = store.getState()
 
       const html = <Html {...{ content, state }} reduxState={finalState} />
-      const htmlString = renderHtml(styleTags, html)
+      const htmlString = renderHtml(styleTags, html, helmet)
       res.status(200)
       res.send(htmlString)
       res.end()

@@ -8,8 +8,7 @@ export default defineMessages({
   reviewDesignModalText: {
     id: 'components.DesignCheckModal.reviewDesignModalText',
     defaultMessage: `
-      <p class=\"important\">For an additional charge of $15, 
-      your order can be reviewed by a Pro Designer at Jakroo.</p>
+      <p class=\"important\">For an additional charge of $15, your order can be review by a Pro Designer at Jakroo.</p>
       <p class=\"no-margin\"><strong>Services Include:</strong></p>
       <ul>
         <li>- Color consistency throughout design and ordered products </li>
@@ -18,11 +17,7 @@ export default defineMessages({
         <li>- Any other unforeseen potential issues </li>
       </ul>
       <div class=\"smaller-text\">
-        <p class=\"important no-margin\">! IMPORTANT ! PLEASE READ ! </p>
-        <p> If you choose <span>not</span> to have a Design Check, please understand that YOU are the designer
-        and that no one at Jakroo will be reviewing, cleaning up or checking your design for errors before sending to print.</p>
-        <p class=\"no-margin\"> Please ensure that all of your graphics are clear, aligned and centered.</p>
-        <p>Your design on screen is how it will print - what you see is what you get. </p>
+        <p class=\"important no-margin\">This service is optional and can be added to an order during checkout.</p>
       </div>`
   },
   proDesignerReviewLabel: {
@@ -36,7 +31,7 @@ export default defineMessages({
   },
   optionalLabel: {
     id: 'components.DesignCheckModal.optionalLabel',
-    defaultMessage: 'Optional'
+    defaultMessage: 'Optional During Checkout'
   },
   pleaseReadLabel: {
     id: 'components.DesignCheckModal.pleaseReadLabel',
@@ -48,6 +43,6 @@ export default defineMessages({
   },
   dontReview: {
     id: 'components.DesignCheckModal.dontReview',
-    defaultMessage: 'No Thanks'
+    defaultMessage: 'Ok, Thanks!'
   }
 })

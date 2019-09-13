@@ -22,7 +22,7 @@ export const Title = styled.div`
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: 33% 33% 34%;
+  grid-template-columns: 25% 25% 25% 25%;
   padding: 30px 0;
   border-bottom: 1px solid ${({ color }: StyleProps) => color || GRAY_LIGHT};
 `

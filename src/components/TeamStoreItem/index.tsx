@@ -8,13 +8,14 @@ import {
   Container,
   TeamStoreCard,
   CardContent,
-  TeamCardHeader,
   StyledImg,
   CardTitle,
   ShareButton,
   EditButton,
   ButtonsContainer,
-  DeleteLabel
+  DeleteLabel,
+  BottomContainer,
+  TitleName
 } from './styledComponents'
 
 interface Props {
@@ -85,17 +86,18 @@ const TeamStoreItem = ({
   return (
     <Container>
       <TeamStoreCard>
-        <TeamCardHeader>
-          {showNameStore && (
-            <CardTitle onClick={!image ? onItemClick : () => {}}>
-              {name}
-            </CardTitle>
-          )}
-          <MediaQuery minWidth={481}>{buttons}</MediaQuery>
-        </TeamCardHeader>
-
         <CardContent>
-          {image && <StyledImg src={image} onClick={onItemClick} />}
+          {image ? (
+            <StyledImg src={image} onClick={onItemClick} />
+          ) : (
+            <TitleName onClick={onItemClick}>{name}</TitleName>
+          )}
+          {showNameStore && (
+            <BottomContainer>
+              <CardTitle>{name}</CardTitle>
+              <MediaQuery minWidth={480}>{buttons}</MediaQuery>
+            </BottomContainer>
+          )}
         </CardContent>
       </TeamStoreCard>
       <MediaQuery maxWidth={480}>{buttons}</MediaQuery>

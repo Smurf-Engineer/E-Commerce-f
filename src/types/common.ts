@@ -29,10 +29,14 @@ export interface DesignSaved {
   colors?: string[]
 }
 
+export interface DesignLabInfo {
+  deliveryDays?: string
+  tutorialPlaylist?: string
+}
+
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
-
 export interface Action {
   type: string
 }
@@ -214,6 +218,9 @@ export type TeamStoreItemtype = {
   totalOrders: number
   itemOrder?: number
   team_store_name?: string
+  priceRange?: Currency[]
+  pricesByCurrency?: PricesByCurrency
+  loading?: boolean
 }
 
 export type LockerTableType = {
@@ -222,6 +229,7 @@ export type LockerTableType = {
   id?: number
   totalOrders: number
   visible: boolean
+  priceRange?: Currency[]
 }
 
 export type ProductTableType = {
@@ -279,6 +287,7 @@ export type TeamStoreAdminType = {
   onDemand: boolean
   cutOffDateString: string
   shortId: string
+  display: boolean
 }
 
 export type DateObjectType = {
@@ -582,11 +591,13 @@ export interface CartItems {
   designImage?: string
   designCode?: string
   teamStoreId?: string
+  teamStoreItem?: string
   bibBraceColor?: string
   flatlockCode?: string
   zipperColor?: string
   bindingColor?: string
   flatlock?: string
+  fixedPrices: PriceRange[]
 }
 
 export interface CreditCardData {
@@ -1290,6 +1301,10 @@ export interface ProductInternal {
   collection?: string
 }
 
+export interface PricesByCurrency {
+  [currency: string]: number
+}
+
 export interface ProductInternalInput {
   id?: number
   internal_id: number
@@ -1399,4 +1414,23 @@ export interface YoutubeThumbnailsPropsType {
 export type Color = {
   name: string
   value: string
+}
+
+export interface SelectedDesignType {
+  design: DesignType
+  visible: boolean
+}
+
+export interface SelectedDesignObjectType {
+  [designId: number]: SelectedDesignType[]
+}
+export type AspectRatio = {
+  name: string
+  value: number
+}
+
+export type ContactInformation = {
+  name: string
+  email: string
+  phone: string
 }

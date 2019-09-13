@@ -8,8 +8,7 @@ import {
   SET_SELECTED_GENDER,
   SET_SELECTED_SIZE,
   SET_SELECTED_FIT,
-  OPEN_DYNAMIC_PRICE_MODAL,
-  SET_TEAM_STORE_STATUS
+  OPEN_DYNAMIC_PRICE_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -19,8 +18,7 @@ export const initialState = fromJS({
   selectedGender: {},
   selectedSize: {},
   selectedFit: {},
-  showDynamicPrice: false,
-  showTeamStores: null
+  showDynamicPrice: false
 })
 
 const teamstoreProductPageReducer: Reducer<any> = (
@@ -40,8 +38,6 @@ const teamstoreProductPageReducer: Reducer<any> = (
       return state.set('selectedFit', action.selected)
     case OPEN_DYNAMIC_PRICE_MODAL:
       return state.set('showDynamicPrice', action.open)
-    case SET_TEAM_STORE_STATUS:
-      return state.set('showTeamStores', action.show)
     default:
       return state
   }

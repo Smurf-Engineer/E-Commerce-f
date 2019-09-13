@@ -3,11 +3,18 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { BLUE, FACEBOOKBLUE } from '../../theme/colors'
+
+interface DivProps {
+  width?: string
+}
 
 export const Container = styled.div`
   background-color: #fff;
   padding: 40px 32px 90px 32px;
-
+  max-width: 1452px;
+  margin: 0 auto;
+  width: 100%;
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 40px 10px 90px 10px;
   }
@@ -52,6 +59,9 @@ export const DragMessage = styled.p`
   font-size: 16px;
   line-height: 22px;
 `
+export const TextBlock = styled.div`
+  margin: 18px 0;
+`
 
 export const DragTypes = styled.p`
   color: #bebebe;
@@ -65,9 +75,12 @@ export const Icon = styled.img`
 
 export const PreviewImage = styled.img`
   width: 100%;
+  max-width: 1452px;
   max-height: 300px;
-  margin-bottom: 16px;
   object-fit: cover;
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 16px;
 `
 
 export const Row = styled.div`
@@ -85,6 +98,10 @@ export const RowButtons = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 0;
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 16px;
+  }
 `
 
 export const RowSwitch = styled.div`
@@ -112,25 +129,17 @@ export const AddItem = styled(Button)`
   margin: 16px 0px;
 `
 
-export const ButtonBuildStyle = styled(Button)`
-  width: 25%;
-  margin: 16px 0px;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
-  }
-`
-
 export const ButtonOptionsWrapper = styled.div`
-  width: 25%;
+  width: 100%;
+  max-width: 316px;
   margin: 16px 0px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-
   @media (max-width: 480px) {
     width: 100%;
+    max-width: 100%;
   }
 `
 
@@ -140,6 +149,22 @@ export const ButtonOptionStyle = styled(Button)`
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
+  }
+`
+export const SaveButton = styled(Button)`
+  width: ${({ width }: DivProps) => (width ? width : '45%')};
+  margin: 16px 0px;
+  color: white;
+  background: ${BLUE};
+  border: none;
+  &:hover {
+    color: white;
+    background: ${FACEBOOKBLUE};
+    border: none;
+  }
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    margin-top: 0;
   }
 `
 

@@ -23,9 +23,15 @@ import {
   SearchBarContent,
   PropositionTilesContainer,
   PropositionTile,
-  SubText
+  SubText,
+  LoadingContainer,
+  ImageSkeleton,
+  Spinner,
+  ImageRow,
+  SkeletonDiv
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
+import { MAIN_TITLE } from '../../constants'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
@@ -41,6 +47,7 @@ import {
   Product,
   HomepageImagesType
 } from '../../types/common'
+import { Helmet } from 'react-helmet'
 
 interface Data extends QueryProps {
   files: any
@@ -50,6 +57,7 @@ interface Props extends RouteComponentProps<any> {
   someKey?: string
   client: any
   productId: number
+  loading: boolean
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -67,6 +75,7 @@ interface Props extends RouteComponentProps<any> {
   productTiles: ProductTiles[]
   featuredProducts: Product[]
   homepageImages: HomepageImagesType[]
+  title: string
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -85,11 +94,7 @@ export class Home extends React.Component<Props, {}> {
     const { getHomepage } = thunkActions
     dispatch(getHomepage(query, params.sportRoute))
   }
-  componentWillUnmount() {
-    if (config.mainTitle) {
-      document.title = config.mainTitle
-    }
-  }
+
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
     const { dispatch } = this.props
     dispatch(openQuickViewAction(id, yotpoId, gender))
@@ -139,7 +144,9 @@ export class Home extends React.Component<Props, {}> {
       headerImage,
       productTiles,
       featuredProducts,
-      homepageImages
+      loading,
+      homepageImages,
+      title = MAIN_TITLE
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
@@ -166,7 +173,8 @@ export class Home extends React.Component<Props, {}> {
     )
     return (
       <Layout {...{ history, intl }}>
-        <Container>
+        <Helmet {...{ title }} />
+        <Container {...{ loading }}>
           <SearchContainer>
             <MediaQuery maxWidth={640}>
               {matches => {
@@ -228,6 +236,17 @@ export class Home extends React.Component<Props, {}> {
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
           <YotpoHome />
         </Container>
+        <LoadingContainer {...{ loading }}>
+          <Spinner size="large" />
+          <ImageSkeleton fullSize={true} />
+          <SkeletonDiv title={false} />
+          <SkeletonDiv />
+          <ImageRow>
+            <ImageSkeleton />
+            <ImageSkeleton />
+          </ImageRow>
+          <SkeletonDiv title={false} />
+        </LoadingContainer>
       </Layout>
     )
   }

@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { GRAY_DARK, WHITE, BLUE, RED } from '../../theme/colors'
+import { GRAY_DARK, RED } from '../../theme/colors'
 
 export const Container = styled.div``
 
@@ -66,45 +66,26 @@ export const Paragraph = styled.div`
 
 export const ModalButtonsWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   grid-gap: 25px;
-  grid-template-areas: '. continue review';
+  grid-template-areas: 'continue';
+  justify-items: center;
 
   @media (max-width: 550px) {
     grid-template-columns: 1fr;
-    grid-template-areas: 'review' 'continue';
+    grid-template-areas: 'continue';
   }
 `
 
 export const ContinueButton = styled(Button)`
-  grid-area: continue;
   height: 50px;
-  width: 220px;
-  font-size: 16px;
+  width: 221px;
+  border: 2px solid ${RED};
+  border-radius: 2px;
+  color: ${RED};
 
-  @media (max-width: 550px) {
-    width: 100%;
-  }
-`
-
-export const ReviewButton = styled(Button)`
-  grid-area: review;
-  height: 50px;
-  width: 220px;
-  font-size: 16px;
-  font-weight: 300;
-  background-color: ${BLUE};
-  color: ${WHITE};
-  border-radius: 5px;
-
-  &:hover {
-    background-color: ${BLUE};
-    color: ${WHITE};
-    border-color: ${BLUE};
-  }
-
-  @media (max-width: 550px) {
+  @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
 `

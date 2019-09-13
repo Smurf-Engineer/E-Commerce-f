@@ -9,6 +9,7 @@ import Pagination from 'antd/lib/pagination'
 import Menu from 'antd/lib/menu'
 import find from 'lodash/find'
 import messages from './messages'
+import config from '../../config/index'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
 import AddToCartButton from '../AddToCartButton'
@@ -38,6 +39,8 @@ import {
   NoResultsFound
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
+import { GRAY_LIGHTEST } from '../../theme/colors'
+import { FormattedMessage } from 'react-intl'
 
 interface Data extends QueryProps {
   products: ProductType
@@ -49,7 +52,6 @@ interface Props {
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
-  featured: boolean
   sortByLabel: string
   data: Data
   history: any
@@ -63,6 +65,8 @@ interface Props {
   targetRange?: Filter
   currentRange: Filter
   targetPrice: string
+  currentCurrency: string
+  display?: boolean
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -77,13 +81,13 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       data,
       teamStoreShortId,
       designs,
-      featured,
+      display,
       onDemandMode,
       withoutPadding,
       targetRange,
-      currentRange
+      currentRange,
+      currentCurrency = config.defaultCurrency
     } = this.props
-
     let thumbnailsList
     let total = ''
     let sortOptions = null
@@ -94,11 +98,19 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       total = designs.length.toString()
       thumbnailsList = designs.map(
         (
-          { design: { id, shortId, name, product, image, code }, totalOrders },
+          {
+            design: { id, shortId, name, product, image, code },
+            totalOrders,
+            priceRange,
+            short_id: itemShortId
+          },
           index
         ) => {
           const targetPriceValue: any = targetRange
-            ? find(product.priceRange, { quantity: targetRange.name }) || {
+            ? find(product.priceRange, {
+                quantity: targetRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
+              }) || {
                 price: 0
               }
             : { price: 0 }
@@ -106,29 +118,44 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
                 quantity:
-                  currentRange.name === '0-0' ? 'Personal' : currentRange.name
+                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
               }) || {
                 price: 0
               }
             : { price: 0 }
-
+          const fixedPriceValue =
+            priceRange && priceRange.length
+              ? find(priceRange, ['abbreviation', currentCurrency])
+              : currentPriceValue
+          const currentPrice = `${fixedPriceValue.shortName} ${fixedPriceValue.price}`
+          const targetPrice = `${targetPriceValue.shortName} ${targetPriceValue.price}`
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={product.id}
+                backgroundColor={GRAY_LIGHTEST}
+                designId={shortId}
+                itemId={itemShortId}
                 product={product}
                 yotpoId={product.yotpoId}
+                hideQuickView={true}
                 footer={
                   <FooterThumbnailTeamStore
-                    {...{ id, name, targetRange, onDemandMode }}
+                    {...{
+                      id,
+                      name,
+                      targetRange,
+                      onDemandMode,
+                      targetPrice,
+                      currentPrice
+                    }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
-                    targetPrice={targetPriceValue.price}
-                    currentPrice={currentPriceValue.price}
                   />
                 }
                 labelButton={
-                  featured && (
+                  display && (
                     <AddToCartButton
                       label={formatMessage(messages.addToCart)}
                       renderForThumbnail={true}
@@ -139,7 +166,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       designName={name}
                       designImage={image}
                       designCode={code}
+                      teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}
+                      fixedPrices={priceRange}
                     />
                   )
                 }
@@ -166,7 +195,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           <Spin />
         </Loading>
       )
-
       const { loading: loadingData, products } = data
       loading = loadingData || false
       if (!products) {
@@ -182,6 +210,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={product.id}
+                backgroundColor={GRAY_LIGHTEST}
                 yotpoId={product.yotpoId}
                 type={product.type}
                 product={product}
@@ -191,6 +220,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 onPressQuickView={this.handlePressQuickView}
                 collections={product.collections}
                 images={productImages}
+                teamStoreShortId={teamStoreShortId}
                 priceRange={product.priceRange}
               />
             </ThumbnailListItem>
@@ -225,7 +255,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     return (
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
-          <TotalItems>{`${total} Items`}</TotalItems>
+          <TotalItems>
+            <FormattedMessage {...messages.items} values={{ total }} />
+          </TotalItems>
           {sortOptions && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>

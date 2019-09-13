@@ -20,7 +20,11 @@ import {
   StyledSwitch
 } from './styledComponents'
 import { SportType } from '../../types/common'
-import { CATALOGUE_CONSTANT, NAVBAR_CONSTANT } from '../../constants'
+import {
+  CATALOGUE_CONSTANT,
+  NAVBAR_CONSTANT,
+  ACTIVE_CONSTANT
+} from '../../constants'
 
 interface Data extends QueryProps {
   sports: [SportType]
@@ -39,7 +43,7 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
     } = this.props
 
     const sportsList = sports.map(
-      ({ id, name, navbar, route, catalogue }, index) => {
+      ({ id, name, navbar, route, catalogue, active }, index) => {
         return (
           <Row key={index}>
             <SportTyle
@@ -49,6 +53,17 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
             >
               {name}
             </SportTyle>
+            <ColumnTitle align="center">
+              {name !== CYCLING && (
+                <SwitchWrapper>
+                  <StyledSwitch
+                    key={id}
+                    checked={active}
+                    onChange={this.handleActivateSport(id, ACTIVE_CONSTANT)}
+                  />
+                </SwitchWrapper>
+              )}
+            </ColumnTitle>
             <ColumnTitle align="center">
               {name !== CYCLING && (
                 <SwitchWrapper>
@@ -83,6 +98,9 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
           <Row color={DARKER_GRAY}>
             <ColumnTitle>
               <FormattedMessage {...messages.nameLabel} />
+            </ColumnTitle>
+            <ColumnTitle align="center">
+              <FormattedMessage {...messages.activeLabel} />
             </ColumnTitle>
             <ColumnTitle align="center">
               <FormattedMessage {...messages.catalogueFilterLabel} />

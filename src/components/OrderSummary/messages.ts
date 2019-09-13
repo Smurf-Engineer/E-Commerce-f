@@ -75,7 +75,7 @@ export default defineMessages({
   },
   youSaved: {
     id: 'screens.ShoppingCartPage.youSaved',
-    defaultMessage: 'You Saved'
+    defaultMessage: 'You Saved {percent}%'
   },
   proDesigner: {
     id: 'screens.ShoppingCartPage.proDesigner',

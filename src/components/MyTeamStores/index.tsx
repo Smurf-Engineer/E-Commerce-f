@@ -92,9 +92,11 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
         <AddTeamStoreButton onClick={this.addNewTeamStore}>
           {formatMessage(messages.addTeamstoreLabel)}
         </AddTeamStoreButton>
-        <CreateTeamStoreLegend>
-          {formatMessage(messages.createTeamStoreText)}
-        </CreateTeamStoreLegend>
+        <CreateTeamStoreLegend
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.teamStoreConcept)
+          }}
+        />
         <div>{myTeamstoresList}</div>
         <Modal
           visible={openDeleteModal}

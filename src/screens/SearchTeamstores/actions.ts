@@ -6,7 +6,7 @@ import {
   SET_SEARCH_PARAM,
   OPEN_SHARE_MODAL,
   CLEAR_REDUCER,
-  SET_TEAM_STORE_STATUS
+  SET_SKIP_VALUE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -36,7 +36,11 @@ export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
 })
 
-export const setTeamStoreStatusAction = (show: boolean) => ({
-  type: SET_TEAM_STORE_STATUS,
-  show
+export const setSkipValueAction = (
+  skip: number,
+  currentPage: number
+): AnyAction => ({
+  type: SET_SKIP_VALUE,
+  skip,
+  currentPage
 })

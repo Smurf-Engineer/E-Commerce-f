@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'components.EmailContact.tittle',
     defaultMessage: 'CONTACT STORE MANAGER'
   },
-  email: {
-    id: 'components.EmailContact.email',
-    defaultMessage: 'Email'
-  },
   send: {
     id: 'components.EmailContact.send',
     defaultMessage: 'Send'
@@ -32,5 +28,21 @@ export default defineMessages({
   storeManager: {
     id: 'components.EmailContact.storeManager',
     defaultMessage: 'store manager'
+  },
+  name: {
+    id: 'components.EmailContact.name',
+    defaultMessage: 'Your name:'
+  },
+  email: {
+    id: 'components.EmailContact.email',
+    defaultMessage: 'Email:'
+  },
+  phone: {
+    id: 'components.EmailContact.phone',
+    defaultMessage: 'Phone:'
+  },
+  fillFields: {
+    id: 'components.EmailContact.fillFields',
+    defaultMessage: 'Please fill the required fields'
   }
 })

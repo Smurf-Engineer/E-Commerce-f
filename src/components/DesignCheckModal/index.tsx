@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { addDesignCheckToLocalStorage } from './thunkActions'
 import {
   Container,
   Paragraph,
@@ -11,7 +10,6 @@ import {
   OptionalLabel,
   ProDesignReviewContent,
   ModalButtonsWrapper,
-  ReviewButton,
   ContinueButton,
   Icon
 } from './styledComponents'
@@ -22,28 +20,11 @@ interface Props {
   visible: boolean
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
-  handleActionButton: () => void
 }
 
 export class DesignCheckModal extends React.Component<Props, {}> {
-  handleCancel = () => {
-    const { requestClose } = this.props
-    requestClose()
-  }
-  addDesignCheck = () => {
-    addDesignCheckToLocalStorage(true)
-    this.handleActionButton()
-  }
-  removeDesignCheck = () => {
-    addDesignCheckToLocalStorage(false)
-    this.handleActionButton()
-  }
-  handleActionButton = () => {
-    const { handleActionButton } = this.props
-    handleActionButton()
-  }
   render() {
-    const { formatMessage, visible } = this.props
+    const { formatMessage, visible, requestClose } = this.props
 
     return (
       <Container>
@@ -51,7 +32,7 @@ export class DesignCheckModal extends React.Component<Props, {}> {
           open={visible}
           withLogo={false}
           width={'684px'}
-          requestClose={this.handleCancel}
+          requestClose={requestClose}
         >
           <ProReviewTitle>
             {formatMessage(messages.proDesignerReviewLabel)}
@@ -71,12 +52,9 @@ export class DesignCheckModal extends React.Component<Props, {}> {
             }}
           />
           <ModalButtonsWrapper>
-            <ContinueButton key="review" onClick={this.removeDesignCheck}>
+            <ContinueButton key="review" onClick={requestClose}>
               {formatMessage(messages.dontReview)}
             </ContinueButton>
-            <ReviewButton onClick={this.addDesignCheck}>
-              {formatMessage(messages.reviewMyOrderLabel)}
-            </ReviewButton>
           </ModalButtonsWrapper>
         </CustomModal>
       </Container>

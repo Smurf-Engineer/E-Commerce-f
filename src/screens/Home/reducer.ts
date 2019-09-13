@@ -22,7 +22,9 @@ export const initialState = fromJS({
   headerImageLink: '',
   productTiles: [],
   featuredProducts: [],
-  homepageImages: []
+  homepageImages: [],
+  title: '',
+  loading: true
 })
 
 const homeReducer: Reducer<any> = (state = initialState, action) => {
@@ -45,7 +47,8 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
         headerImageLink,
         productTiles,
         featuredProducts,
-        homepageImages
+        homepageImages,
+        title
       } = action.data
       return state.merge({
         headerImageMobile,
@@ -53,7 +56,9 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
         headerImageLink,
         productTiles,
         featuredProducts,
-        homepageImages
+        homepageImages,
+        title,
+        loading: false
       })
     }
     default:

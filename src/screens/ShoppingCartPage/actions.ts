@@ -147,8 +147,9 @@ export const showDeleteLastItemModalAction = (show: boolean): AnyAction => ({
   show
 })
 
-export const showReviewDesignModalAction = (): AnyAction => ({
-  type: SHOW_REVIEW_DESIGN_MODAL
+export const showReviewDesignModalAction = (show: boolean): AnyAction => ({
+  type: SHOW_REVIEW_DESIGN_MODAL,
+  show
 })
 
 export const openFitInfoAction = (open: boolean, selectedIndex: number) => ({

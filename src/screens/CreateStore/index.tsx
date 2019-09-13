@@ -7,11 +7,10 @@ import { compose, withApollo } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
-import { getTeamStoreStatus } from './data'
 import get from 'lodash/get'
 import Button from 'antd/lib/button'
 import Spin from 'antd/lib/spin'
-import { DEFAULT_ROUTE } from '../../constants'
+import * as thunkActions from './thunkActions'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
 import message from 'antd/lib/message'
@@ -30,12 +29,12 @@ import {
   updateStoreMutation
 } from './data'
 import {
-  DesignType,
-  SelectedItem,
   TeamstoreType,
   QueryProps,
   DesignResultType,
-  LockerTableType
+  LockerTableType,
+  DesignType,
+  SelectedDesignObjectType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -52,14 +51,17 @@ import {
   RowSwitch,
   ButtonDelete,
   AddItem,
-  ButtonBuildStyle,
   BannerTitleContainer,
   OptionalLabel,
   ButtonOptionStyle,
   ButtonOptionsWrapper,
-  Loading
+  Loading,
+  TextBlock,
+  SaveButton
 } from './styledComponents'
 import config from '../../config/index'
+import ImageCropper from '../../components/ImageCropper'
+const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
@@ -73,12 +75,13 @@ interface Props extends RouteComponentProps<any> {
   privateStore: boolean
   onDemand: boolean
   startDate: string
+  open: boolean
   startDateMoment?: Moment
   endDate: string
   endDateMoment?: Moment
   passCode: string
   openLocker: boolean
-  selectedItems: SelectedItem
+  selectedItems: SelectedDesignObjectType
   items: LockerTableType[]
   teamSizeRange: string
   createStore: any
@@ -87,7 +90,10 @@ interface Props extends RouteComponentProps<any> {
   client: any
   banner: string
   storeId: number
-  showTeamStores: boolean
+  currentCurrency: string
+  limit: number
+  offset: number
+  currentPage: number
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -97,14 +103,15 @@ interface Props extends RouteComponentProps<any> {
   updateOnDemandAction: (active: boolean) => void
   updatePassCodeAction: (code: string) => void
   setOpenLockerAction: (open: boolean) => void
-  setItemSelectedAction: (id: number, checked: boolean) => void
+  setItemSelectedAction: (item: DesignType, checked: boolean) => void
   deleteItemSelectedAction: (index: number) => void
-  setItemsAddAction: (items: DesignType[]) => void
+  setItemsAddAction: () => void
   openQuickViewAction: (
     id: number,
     yotpoId: string,
     hideSliderButtons?: boolean
   ) => void
+  openModal: (open: boolean) => void
   setItemVisibleAction: (index: number, visible: boolean) => void
   setLoadingAction: (loading: boolean) => void
   clearStoreAction: () => void
@@ -112,13 +119,13 @@ interface Props extends RouteComponentProps<any> {
   setDataToEditAction: (data: TeamstoreType) => void
   deleteBannerOnEditAction: () => void
   clearDataAction: () => void
-  teamStoreStatus: () => Promise<any>
-  setTeamStoreStatusAction: (show: boolean) => void
+  setPaginationData: (offset: number, page: number) => void
+  onUnselectItemAction: (keyName: string) => void
 }
 
 interface StateProps {
   hasError: boolean
-  file: string | null
+  file: Blob | null
   imagePreviewUrl: string | null
 }
 export class CreateStore extends React.Component<Props, StateProps> {
@@ -137,9 +144,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
     passCode: string,
     onDemand: boolean
   ) => {
-    const { privateStore } = this.props
+    const {
+      privateStore,
+      intl: { formatMessage }
+    } = this.props
     let validForm = true
-
     if (!name || ((!startDate || !endDate) && !onDemand)) {
       this.setState({
         hasError: !name || !startDate || !endDate || !items.length
@@ -148,9 +157,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
       zenscroll.toY(0)
     } else if (items.length < 1) {
       zenscroll.to(this.lockerTable)
-      message.warning('you need to add Items to your store!')
+      message.warning(formatMessage(messages.emptyList))
       validForm = false
-    } else if (privateStore && !passCode) {
+    } else if (privateStore && (!passCode || !passwordRegex.test(passCode))) {
       this.setState({
         hasError: true
       })
@@ -159,8 +168,17 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     return validForm
   }
-
+  closeModal = () => {
+    const { openModal } = this.props
+    openModal(false)
+  }
+  setImage = (file: Blob) => {
+    const { openModal } = this.props
+    this.setState({ file, imagePreviewUrl: URL.createObjectURL(file) })
+    openModal(false)
+  }
   beforeUpload = (file: any) => {
+    const { openModal } = this.props
     const reader = new FileReader()
 
     reader.onloadend = () => {
@@ -170,7 +188,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     if (file) {
       reader.readAsDataURL(file)
     }
-
+    openModal(true)
     return false
   }
 
@@ -221,6 +239,30 @@ export class CreateStore extends React.Component<Props, StateProps> {
     return storeId
   }
 
+  changePage = (pageParam: number = 1) => {
+    const { limit } = this.props
+    const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
+    const {
+      offset: offsetProp,
+      currentPage: pageProp,
+      setPaginationData
+    } = this.props
+    let offset = offsetParam !== undefined ? offsetParam : offsetProp
+    let currentPage = pageParam !== undefined ? pageParam : pageProp
+
+    if (!offsetParam && !pageParam) {
+      const fullPage = !(offset % limit)
+      const maxPageNumber = offset / limit
+
+      if (fullPage && currentPage > maxPageNumber) {
+        currentPage--
+        offset = currentPage > 1 ? (currentPage - 1) * limit : 0
+      }
+    }
+
+    setPaginationData(offset, currentPage)
+  }
+
   clearState = () => {
     this.setState({
       file: null,
@@ -259,7 +301,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       passCode,
       onDemand
     )
-
     if (!validForm) {
       return
     }
@@ -274,20 +315,23 @@ export class CreateStore extends React.Component<Props, StateProps> {
     })
 
     try {
-      const formData = new FormData()
+      let bannerResp = banner
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file as any, 'banner.jpeg')
+        const user = JSON.parse(localStorage.getItem('user') || '')
 
-      formData.append('file', file as any)
-      const user = JSON.parse(localStorage.getItem('user') || '')
-
-      const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        body: formData
-      })
-      const bannerResp = await uploadResp.json()
+        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        })
+        const { image } = await uploadResp.json()
+        bannerResp = image
+      }
 
       const teamStore = {
         id: storeId,
@@ -300,7 +344,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         items,
         teamsizeId: teamSizeId,
         demandMode: onDemand,
-        banner: bannerResp.image || banner
+        banner: bannerResp
       }
 
       if (storeShortId) {
@@ -334,7 +378,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
         history.push(`/store-front?storeId=${shortId}`)
       }
     } catch (error) {
-      message.error('Something wrong happened. Please try again!')
+      message.error(
+        `Something wrong happened. Please try again! ${error.message}`
+      )
       setLoadingAction(false)
     }
   }
@@ -359,16 +405,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
       setDataToEditAction,
       setLoadingAction,
       location: { search },
-      client: { query },
-      teamStoreStatus,
-      setTeamStoreStatusAction
+      client: { query }
     } = this.props
     const { storeId } = queryString.parse(search)
-
-    const response = await teamStoreStatus()
-    setTeamStoreStatusAction(
-      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
-    )
 
     if (storeId) {
       query({
@@ -385,6 +424,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     } else {
       setLoadingAction(false)
     }
+    window.scrollTo(0, 0)
   }
 
   componentWillUnmount() {
@@ -410,7 +450,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       // updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
-      deleteItemSelectedAction,
       setItemsAddAction,
       moveRowAction,
       name,
@@ -423,15 +462,17 @@ export class CreateStore extends React.Component<Props, StateProps> {
       items,
       teamSizeRange,
       loading,
+      open,
       banner,
       location: { search },
-      showTeamStores
+      currentCurrency,
+      currentPage,
+      limit,
+      offset,
+      onUnselectItemAction
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
-    if (showTeamStores === false) {
-      return <Redirect to={DEFAULT_ROUTE} />
-    }
 
     if (
       typeof window !== 'undefined' &&
@@ -472,7 +513,39 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onSelectEndDate={updateEndDateAction}
               {...{ hasError }}
             />
-            {!onDemand && (
+            {onDemand ? (
+              <React.Fragment>
+                <TextBlock>
+                  <Subtitle>
+                    <FormattedMessage {...messages.pricingCheckout} />
+                  </Subtitle>
+                  <FormattedMessage
+                    {...messages.pricingCheckoutContent}
+                    values={{
+                      onDemandTeam: (
+                        <b>{formatMessage(messages.onDemandTeamStore)}</b>
+                      ),
+                      discount: <b>{formatMessage(messages.percent)}</b>
+                    }}
+                  />
+                </TextBlock>
+                <TextBlock>
+                  <Subtitle>
+                    <FormattedMessage {...messages.productionDelivery} />
+                  </Subtitle>
+                  <FormattedMessage
+                    {...messages.productionDeliveryContent}
+                    values={{
+                      orderDays: <b>{formatMessage(messages.orderDays)}</b>,
+                      shippingCompany: (
+                        <b>{formatMessage(messages.shippingCompany)}</b>
+                      ),
+                      signature: <b>{formatMessage(messages.signature)}</b>
+                    }}
+                  />
+                </TextBlock>
+              </React.Fragment>
+            ) : (
               <React.Fragment>
                 <Subtitle>
                   <FormattedMessage {...messages.teamSizeTitle} />
@@ -494,7 +567,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 </PriceMessage>
               </React.Fragment>
             )}
-
             <Subtitle>
               <div
                 ref={table => {
@@ -515,12 +587,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
             >
               {`+ ${formatMessage(messages.addItem)}`}
             </AddItem>
-            <Subtitle>
-              <FormattedMessage {...messages.stock} />
-            </Subtitle>
             <LockerTable
-              {...{ formatMessage, teamSizeRange }}
+              {...{ formatMessage, teamSizeRange, currentCurrency }}
               items={items}
+              hideQuickView={true}
               onPressDelete={this.handleOnDeleteItem}
               onPressQuickView={this.handleOnPressQuickView}
               onPressVisible={this.handleOnPressVisible}
@@ -560,7 +630,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 withInput={true}
                 checked={privateStore}
                 onChange={this.handlePrivateSwitch}
+                placeholder={formatMessage(messages.passcode)}
                 label={formatMessage(messages.privateLabel)}
+                subLabel={formatMessage(messages.passFormat)}
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
@@ -578,38 +650,50 @@ export class CreateStore extends React.Component<Props, StateProps> {
               <ButtonOptionsWrapper>
                 <ButtonOptionStyle
                   {...{ loading }}
-                  type="primary"
-                  size="large"
-                  onClick={this.handleBuildTeamStore}
-                >
-                  {formatMessage(messages.save)}
-                </ButtonOptionStyle>
-                <ButtonOptionStyle
-                  {...{ loading }}
-                  type="primary"
                   size="large"
                   onClick={this.handleCancelTeamStore}
                 >
                   {formatMessage(messages.cancel)}
                 </ButtonOptionStyle>
+                <SaveButton
+                  {...{ loading }}
+                  size="large"
+                  onClick={this.handleBuildTeamStore}
+                >
+                  {formatMessage(messages.save)}
+                </SaveButton>
               </ButtonOptionsWrapper>
             ) : (
-              <ButtonBuildStyle
+              <SaveButton
                 {...{ loading }}
                 type="primary"
+                width="316px"
                 size="large"
                 onClick={this.handleBuildTeamStore}
               >
                 {formatMessage(messages.buttonBuild)}
-              </ButtonBuildStyle>
+              </SaveButton>
             )}
             <LockerModal
-              {...{ selectedItems, tableItems }}
+              {...{
+                selectedItems,
+                tableItems,
+                currentPage,
+                limit,
+                offset
+              }}
               visible={openLocker}
               onRequestClose={this.handleOnCloseLocker}
               onSelectItem={setItemSelectedAction}
-              onUnselectItem={deleteItemSelectedAction}
+              onUnselectItem={onUnselectItemAction}
               onAddItems={setItemsAddAction}
+              changePage={this.changePage}
+            />
+            <ImageCropper
+              {...{ formatMessage, open }}
+              requestClose={this.closeModal}
+              setImage={this.setImage}
+              image={imagePreviewUrl}
             />
           </Container>
         )}
@@ -618,17 +702,20 @@ export class CreateStore extends React.Component<Props, StateProps> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('createStore').toJS()
+const mapStateToProps = (state: any) => {
+  const createStore = state.get('createStore').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return { ...createStore, ...langProps }
+}
 
 const CreateStoreEnhance = compose(
   injectIntl,
   withApollo,
   createStoreMutation,
   updateStoreMutation,
-  getTeamStoreStatus,
   connect(
     mapStateToProps,
-    { ...createStoreActions }
+    { ...createStoreActions, ...thunkActions }
   )
 )(CreateStore)
 

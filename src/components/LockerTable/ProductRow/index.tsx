@@ -11,12 +11,12 @@ import ItemTypes from '../dndTypes'
 import {
   Row,
   Cell,
-  Price,
   DeleteButton,
   Center,
   Name,
   Description,
-  Title
+  Title,
+  Price
 } from '../styledComponents'
 import { Align } from './styledComponents'
 import Checkbox from 'antd/lib/checkbox'
@@ -29,15 +29,14 @@ interface Props {
   image: string
   name: string
   description: string
-  startingPrice: number
-  targetPrice: number
-  currentOrders: number
-  currentPrice: number
   visible: boolean
   yotpoId: string
   totalOrders: number
   id?: number
   text?: string
+  regularPrice?: string
+  hideQuickView?: boolean
+  fixedPrice?: string
   isDragging?: () => boolean
   connectDragSource?: any
   connectDropTarget?: any
@@ -95,11 +94,9 @@ interface Header {
 }
 
 const headerTitles: Header[] = [
-  { message: 'starting' },
-  { message: 'target' },
-  { message: 'orders' },
-  { message: 'current' },
-  { message: 'visible' }
+  { message: 'regularPrice', width: 30 },
+  { message: 'fixedPrice', width: 42 },
+  { message: 'visible', width: 28 }
 ]
 
 class ProductRow extends React.PureComponent<Props, {}> {
@@ -110,10 +107,6 @@ class ProductRow extends React.PureComponent<Props, {}> {
       image,
       name,
       description,
-      startingPrice,
-      targetPrice,
-      currentOrders,
-      currentPrice,
       visible,
       yotpoId,
       totalOrders,
@@ -122,7 +115,10 @@ class ProductRow extends React.PureComponent<Props, {}> {
       onPressVisible,
       connectDragSource,
       connectDropTarget,
-      formatMessage
+      formatMessage,
+      regularPrice,
+      fixedPrice,
+      hideQuickView
     } = this.props
 
     const handleOnClick = () => {
@@ -134,10 +130,6 @@ class ProductRow extends React.PureComponent<Props, {}> {
     }
     const handleOnClickView = () => onPressQuickView(productId, yotpoId, true)
     const handleOnClickVisible = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (totalOrders) {
-        screenMessage.error(formatMessage(messages.cannotHide))
-        return
-      }
       const checked = e.target.checked
       onPressVisible(index, checked)
     }
@@ -157,7 +149,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Row>
                   <Cell width={45}>
                     <Thumbnail
-                      {...{ image }}
+                      {...{ image, hideQuickView }}
                       onPressQuickView={handleOnClickView}
                     />
                   </Cell>
@@ -168,20 +160,14 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 </Row>
                 <Row>{mobileTitles}</Row>
                 <Row noBorder={true} rowPadding={'0'}>
-                  <Cell width={100}>
-                    <Price>{`$${startingPrice}`}</Price>
+                  <Cell width={30}>
+                    <Price>{`$${regularPrice}`}</Price>
                   </Cell>
-                  <Cell width={100}>
-                    <Price>{`$${targetPrice}`}</Price>
+                  <Cell width={30}>
+                    <Price>{`$${fixedPrice}`}</Price>
                   </Cell>
-                  <Cell width={100}>
-                    <Price>{currentOrders}</Price>
-                  </Cell>
-                  <Cell width={100}>
-                    <Price>{`$${currentPrice}`}</Price>
-                  </Cell>
-                  <Cell width={100}>
-                    <Align>
+                  <Cell width={40}>
+                    <Align align="center">
                       <Checkbox
                         checked={visible}
                         onChange={handleOnClickVisible}
@@ -199,29 +185,23 @@ class ProductRow extends React.PureComponent<Props, {}> {
           } else {
             return (
               <Row>
-                <Cell width={15}>
+                <Cell width={15} tabletWidth={25}>
                   <Thumbnail
-                    {...{ image }}
+                    {...{ image, hideQuickView }}
                     onPressQuickView={handleOnClickView}
                   />
                 </Cell>
-                <Cell width={25}>
+                <Cell width={15} tabletWidth={20}>
                   <Name>{name}</Name>
                   <Description>{description}</Description>
                 </Cell>
-                <Cell>
-                  <Price>{`$${startingPrice}`}</Price>
+                <Cell width={15} tabletWidth={15}>
+                  <Price>{`$${regularPrice}`}</Price>
                 </Cell>
-                <Cell>
-                  <Price>{`$${targetPrice}`}</Price>
+                <Cell width={15} tabletWidth={15}>
+                  <Price>{`$${fixedPrice}`}</Price>
                 </Cell>
-                <Cell>
-                  <Price>{currentOrders}</Price>
-                </Cell>
-                <Cell>
-                  <Price>{`$${currentPrice}`}</Price>
-                </Cell>
-                <Cell>
+                <Cell width={20} tabletWidth={10}>
                   <Center>
                     <Checkbox
                       checked={visible}

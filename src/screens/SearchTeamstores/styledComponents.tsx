@@ -2,19 +2,25 @@
  * Styled Components - Created by cazarez on 10/04/18.
  */
 import styled from 'styled-components'
-import Button from 'antd/lib/button'
 
 export const Container = styled.div``
 export const Content = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 60vh;
 `
 
 export const SearchBarContent = styled.div`
   position: absolute;
   align-self: center;
+  display: inline-flex;
+  flex-flow: column;
+  max-width: 942px;
+  width: 100%;
+  @media (max-width: 1440px) {
+    max-width: 498px;
+    padding: 0 16px;
+  }
 `
 
 export const Text = styled.div`
@@ -22,52 +28,31 @@ export const Text = styled.div`
 `
 
 export const SearchBackground = styled.img`
+  max-height: 512px;
+  height: 100%;
   width: 100%;
-  object-fit: fill;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    object-fit: cover;
-  }
-
-  @media (min-width: 768px) and (max-width: 1024px) {
-  }
-
-  @media (min-width: 481px) and (max-width: 767px) {
+  object-fit: cover;
+  object-position: 50% 20%;
+  filter: brightness(0.6);
+  @media (max-width: 425px) {
+    width: unset;
+    max-height: 368px;
   }
 `
 
 export const TeamStoreText = styled.div`
-  height: 44px;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 22px;
   text-align: center;
+  margin-bottom: 12px;
+  padding: 0 8px;
+  @media (max-width: 425px) {
+    font-size: 14px;
+  }
 `
 export const SearchContainer = styled.div`
   position: absolute;
-`
-
-export const ButtonRow = styled.div`
-  margin-top: 21px;
-  text-align: right;
-
-  span {
-    height: 22px;
-    width: 100.9px;
-    color: #5f6062;
-    font-size: 16px;
-    line-height: 22px;
-    text-align: center;
-  }
-`
-export const StyledButton = styled(Button)`
-  border-radius: 0;
-  height: 40px;
-  width: 165.28px;
-  border: 1px solid #dcdcdc;
-  background-color: #ffffff;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 `
 
 export const ResultContainer = styled.div`
@@ -78,7 +63,7 @@ export const ResultContainer = styled.div`
     padding: 80px 10px 90px 10px;
   }
 `
-
+export const PaginationRow = styled.div``
 export const TitleContainer = styled.div``
 export const Title = styled.div`
   height: 33px;

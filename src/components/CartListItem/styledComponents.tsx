@@ -2,7 +2,7 @@
  * Styled Components - Created by gustavomedina on 04/05/18.
  */
 import styled from 'styled-components'
-import { GREEN, GRAY_DARK } from '../../theme/colors'
+import { GREEN, GRAY } from '../../theme/colors'
 
 type StyleProps = {
   onlyRead?: boolean
@@ -91,7 +91,7 @@ interface ItemDetailsHeaderProps {
 
 export const ItemDetailsHeaderPriceDetail = styled.div`
   color: ${({ highlighted }: ItemDetailsHeaderProps) =>
-    highlighted ? GREEN : GRAY_DARK};
+    highlighted ? GREEN : GRAY};
   font-size: 12px;
   letter-spacing: 0.13px;
   line-height: 14px;

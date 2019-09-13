@@ -6,28 +6,50 @@ import styled from 'styled-components'
 export const Container = styled.div`
   background-color: #fff;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   margin-top: 42px;
+  flex-flow: column;
+  align-items: center;
   flex-wrap: wrap;
-  padding: 0 10%;
 `
 
 export const Text = styled.div`
   color: #fff;
 `
-export const TeamStoresList = styled.ul`
-  padding: 0;
+
+export const ListContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1382px;
+  @media (max-width: 1375px) {
+    justify-content: center;
+  }
 `
 
-export const FoundStoreItem = styled.li`
-  list-style-type: none;
-  padding: 0;
+export const PaginationRow = styled.div`
+  margin-top: 24px;
 `
 
-export const FeaturedStoreItem = styled.div``
+export const LoadingContainer = styled.div`
+  height: 256px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const TeamStoreContainer = styled.div`
+  width: auto;
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+`
 
 export const Notfound = styled.div`
   height: 45px;
+  width: 100%;
   color: #5f6062;
   font-size: 18px;
   font-weight: 600;

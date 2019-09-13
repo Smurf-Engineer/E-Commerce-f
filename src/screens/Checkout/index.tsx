@@ -71,6 +71,7 @@ interface CartItem {
   designCode: string
   product: ProductCart
   itemDetails: CartItemDetail[]
+  teamStoreId?: string
 }
 
 interface CartItems {
@@ -78,6 +79,7 @@ interface CartItems {
   designCode: string
   product: Product
   itemDetails: CartItemDetail[]
+  teamStoreId?: string
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -135,7 +137,6 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   couponCode?: CouponCode
   openCurrencyWarning: boolean
-  proDesign: boolean
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setStripeIbanDataAction: (iban: IbanData) => void
@@ -257,8 +258,7 @@ class Checkout extends React.Component<Props, {}> {
       couponCode,
       setCouponCodeAction,
       deleteCouponCodeAction,
-      openCurrencyWarning,
-      proDesign
+      openCurrencyWarning
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -331,6 +331,10 @@ class Checkout extends React.Component<Props, {}> {
         onClick={this.handleOnStepClick(index)}
       />
     ))
+
+    const {
+      state: { proDesign }
+    } = location
 
     const proDesignReview = proDesign ? DESIGNREVIEWFEE : 0
 
@@ -688,8 +692,7 @@ class Checkout extends React.Component<Props, {}> {
       ibanData = {},
       client: { query },
       currentCurrency,
-      couponCode: couponObject,
-      proDesign
+      couponCode: couponObject
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -728,9 +731,8 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const {
-      state: { cart }
+      state: { cart, proDesign }
     } = location
-
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
     const cardId = selectedCard && selectedCard.id
@@ -770,7 +772,13 @@ class Checkout extends React.Component<Props, {}> {
       const shippingCarrier = get(shipping, 'carrier', null)
       const shippingAmount = get(shipping, 'total', '0')
       const sanitizedCart = shoppingCart.map(
-        ({ designCode, designId, product, itemDetails }: CartItems) => {
+        ({
+          designCode,
+          designId,
+          product,
+          itemDetails,
+          teamStoreId
+        }: CartItems) => {
           const item = { designCode, designId } as CartItem
           const productItem = {
             id: product.id,
@@ -779,6 +787,7 @@ class Checkout extends React.Component<Props, {}> {
             yotpoId: product.yotpoId
           }
           item.product = productItem
+          item.teamStoreId = teamStoreId
           item.itemDetails = itemDetails.map(
             ({ gender, quantity, size, fit, color }: CartItemDetail) => {
               const fitId = get(fit, 'id', 0)
@@ -842,12 +851,9 @@ class Checkout extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const checkoutProps = state.get('checkout').toJS()
   const langProps = state.get('languageProvider').toJS()
-  const appProps = state.get('app').toJS()
-
   return {
     ...checkoutProps,
-    ...langProps,
-    ...appProps
+    ...langProps
   }
 }
 
