@@ -88,7 +88,6 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
-  getCheckDesign: () => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -128,6 +127,7 @@ class MainLayout extends React.Component<Props, {}> {
     ) {
       openLoginAction(true)
     }
+
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
     const fonts: SimpleFont[] = []

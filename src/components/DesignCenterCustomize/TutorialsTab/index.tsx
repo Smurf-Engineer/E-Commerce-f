@@ -15,10 +15,9 @@ import {
 } from './styledComponents'
 import get from 'lodash/get'
 import { getVideos } from './api'
-import { YoutubePlaylistItemType } from '../../../types/common'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  videos: YoutubePlaylistItemType[]
+  videos: object[]
   tutorialPlaylist: string
   setVideos: (videos: object[]) => void
 }

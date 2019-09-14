@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import routes from '../../config/routes'
 import LanguageProvider from '../../screens/LanguageProvider'
 import LogRocket from 'logrocket'
@@ -15,8 +15,8 @@ LogRocket.init(config.logrocketId || '')
 const App = (props: any) => (
   <LanguageProvider messages={translationMessages}>
     <Switch>
-      {routes.map(({ name, path, component }) => (
-        <Route key={name} component={withRouter(component)} {...{ path }} />
+      {routes.map(route => (
+        <Route key={route.name} {...route} />
       ))}
     </Switch>
   </LanguageProvider>

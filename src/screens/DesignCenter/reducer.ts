@@ -163,8 +163,6 @@ export const initialState = fromJS({
   colorChartSending: false,
   colorChartModalOpen: false,
   colorChartModalFormOpen: false,
-  deliveryDays: 10,
-  tutorialPlaylist: '',
   designCheckModalOpen: false
 })
 
