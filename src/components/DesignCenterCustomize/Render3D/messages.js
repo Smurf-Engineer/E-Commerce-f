@@ -88,5 +88,9 @@ export default defineMessages({
     id: 'components.Render3D.modalResetPlaceholderTitle',
     defaultMessage:
       'Are you sure? This will remove all text and symbol content from the current design.'
+  },
+  designCheck: {
+    id: 'components.Render3D.designCheck',
+    defaultMessage: 'Design Check'
   }
 })
