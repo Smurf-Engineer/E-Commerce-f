@@ -135,13 +135,13 @@ const CheckoutSummary = ({
     taxRates,
     country
   )
-  let discount = discountValue
-  const priceToApply = subtotal + proDesignFee
-  if (discountValue > priceToApply) {
-    discount = priceToApply
-  }
+  const discount =
+    discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
   // calculate youSaved amount
-  const youSaved = totalWithoutDiscount - (priceToApply - discount)
+  const youSaved =
+    discount >= totalWithoutDiscount
+      ? totalWithoutDiscount
+      : totalWithoutDiscount - (totalWithoutDiscount - discount)
 
   let totalSum = 0
   // calculate totalSum
