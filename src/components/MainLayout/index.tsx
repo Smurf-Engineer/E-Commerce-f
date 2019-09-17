@@ -29,14 +29,14 @@ import QuickView from '../../components/QuickView'
 import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
-import Intercom from 'react-intercom'
-import { IntercomAPI } from 'react-intercom'
 import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
 import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
+import Intercom from '../../intercom.js'
+
 const { Content } = Layout
 
 interface Props extends RouteComponentProps<any> {
@@ -54,7 +54,7 @@ interface Props extends RouteComponentProps<any> {
     gender: number
   ) => void
   openLoginAction: (open: boolean, callback?: boolean) => void
-  saveUserToLocal: (user: object) => void
+  saveUserToLocal: (user: UserType) => void
   logoutAction: () => void
   showSearchResults: boolean
   searchParam: string
@@ -83,7 +83,7 @@ interface Props extends RouteComponentProps<any> {
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
-  saveUserSession: (user: object) => void
+  saveUserSession: (user: UserType) => void
   openLogoutModalAction: (open: boolean) => void
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
@@ -133,6 +133,15 @@ class MainLayout extends React.Component<Props, {}> {
     const fonts: SimpleFont[] = []
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
+    Intercom(config.intercomKey)
+    window.Intercom('boot', { app_id: config.intercomKey })
+    if (user) {
+      this.setIntercomUser(user)
+    }
+  }
+
+  componentWillUnmount() {
+    window.Intercom('shutdown')
   }
 
   onSearch = (value: string) => {
@@ -167,8 +176,7 @@ class MainLayout extends React.Component<Props, {}> {
     } = this.props
     client.resetStore()
     deleteUserSession()
-    // https://developers.intercom.com/installing-intercom/docs/intercom-javascript#section-intercomshutdown
-    IntercomAPI('shutdown')
+    window.Intercom('update', { name: '', email: null, user_id: null })
     if (REDIRECT_ROUTES.includes(pathname)) {
       window.location.replace('/')
     }
@@ -200,7 +208,6 @@ class MainLayout extends React.Component<Props, {}> {
       shoppingCart,
       designCenter: { designHasChanges },
       openWithoutSaveModalAction,
-      user,
       openLogoutModal,
       openLogoutModalAction,
       initialCountryCode,
@@ -228,15 +235,6 @@ class MainLayout extends React.Component<Props, {}> {
     const numberOfProductsInCart = shoppingCart.cart
       ? numberOfProducts
       : itemsInCart
-
-    let userData = {}
-    if (!!user) {
-      userData = {
-        user_id: user.id,
-        email: user.email,
-        name: `${user.name} ${user.lastName}`
-      }
-    }
 
     return (
       <Layout>
@@ -301,22 +299,30 @@ class MainLayout extends React.Component<Props, {}> {
           onLogout={this.onLogout}
           {...{ openLogoutModalAction, formatMessage }}
         />
-        <div className="app">
-          <Intercom appID={config.intercomKey} {...userData} />
-        </div>
       </Layout>
     )
   }
 
-  handleOnLogin = (user: object) => {
+  setIntercomUser = (user: UserType) => {
+    const userData = {
+      user_id: user.id,
+      email: user.email,
+      name: `${user.name} ${user.lastName}`
+    }
+    window.Intercom('update', { app_id: config.intercomKey, ...userData })
+  }
+
+  handleOnLogin = (user: UserType) => {
     const { saveUserSession } = this.props
     saveUserSession(user)
+    this.setIntercomUser(user)
   }
 
   closeResults = () => {
     const { showSearchResultsAction } = this.props
     showSearchResultsAction(false)
   }
+
   openResults = () => {
     const { showSearchResultsAction } = this.props
     showSearchResultsAction(true)
@@ -326,6 +332,7 @@ class MainLayout extends React.Component<Props, {}> {
     const { openQuickViewAction } = this.props
     openQuickViewAction(id, yotpoId, gender)
   }
+
   onCloseModal = () => {
     const { openQuickViewAction } = this.props
     openQuickViewAction(0, '', 0)
