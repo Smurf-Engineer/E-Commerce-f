@@ -44,7 +44,7 @@ class ItemOrder extends React.PureComponent<Props, State> {
       this.setState({ loading: false })
     } catch (e) {
       this.setState({ loading: false })
-      message.error(e.message)
+      message.error(e.graphQLErrors.map((x: Error) => x.message).join(', '))
     }
   }
   render() {

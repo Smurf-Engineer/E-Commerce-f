@@ -29,7 +29,8 @@ import {
   SET_MEDIA,
   SAVED_PRODUCT,
   SET_PROMPT,
-  REMOVE_BANNER
+  REMOVE_BANNER,
+  SET_MODEL_SIZE
 } from './constants'
 import { getFileExtension } from '../../utils/utilsFiles'
 import { Reducer, ProductPicture } from '../../types/common'
@@ -249,6 +250,10 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
     case SET_FILE_FIELD: {
       const { selected, id, name, value } = action
       return state.setIn(['product', selected, id, name], value)
+    }
+    case SET_MODEL_SIZE: {
+      const { size } = action
+      return state.setIn(['product', 'modelSize'], size)
     }
     case ADD_BANNER: {
       const { item } = action

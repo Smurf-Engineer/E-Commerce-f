@@ -22,6 +22,7 @@ export const ActivateInNavbarMutation = graphql(
         name
         navbar
         catalogue
+        active
       }
     }
   `,
