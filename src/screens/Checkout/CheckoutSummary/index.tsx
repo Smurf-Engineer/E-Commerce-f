@@ -137,12 +137,6 @@ const CheckoutSummary = ({
   )
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
-  // calculate youSaved amount
-  const youSaved =
-    discount >= totalWithoutDiscount
-      ? totalWithoutDiscount
-      : totalWithoutDiscount - (totalWithoutDiscount - discount)
-
   let totalSum = 0
   // calculate totalSum
   if (taxVat) {
@@ -196,6 +190,7 @@ const CheckoutSummary = ({
       <OrderSummary
         weight={weight.toString()}
         showCouponInput={true}
+        youSaved={discount}
         {...{
           subtotal,
           formatMessage,
@@ -211,8 +206,7 @@ const CheckoutSummary = ({
           taxGst,
           taxPst,
           taxVat,
-          totalSum,
-          youSaved
+          totalSum
         }}
       />
       <MediaQuery minWidth={481}>{orderButton}</MediaQuery>
