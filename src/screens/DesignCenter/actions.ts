@@ -69,6 +69,7 @@ import {
   OPEN_RESET_PLACEHOLDER_MODAL,
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
+  OPEN_DESIGN_CHECK_MODAL,
   ON_OPEN_COLOR_CHART_FORM
 } from './constants'
 import {
@@ -518,4 +519,8 @@ export const onOpenColorChartAction = (open: boolean) => ({
 export const onOpenColorChartFormAction = (open: boolean) => ({
   type: ON_OPEN_COLOR_CHART_FORM,
   open
+})
+
+export const openDesignCheckModalAction = () => ({
+  type: OPEN_DESIGN_CHECK_MODAL
 })

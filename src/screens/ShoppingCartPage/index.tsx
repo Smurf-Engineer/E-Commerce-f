@@ -12,6 +12,7 @@ import get from 'lodash/get'
 import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
 import FitInfo from '../../components/FitInfo'
+import CheckoutDesignCheckModal from '../../components/CheckoutDesignCheckModal'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
 import messages from './messages'
@@ -29,14 +30,7 @@ import {
   EmptyTitle,
   EmptyDescription,
   StyledEmptyButton,
-  DeleteConfirmMessage,
-  ProReviewTitle,
-  OptionalLabel,
-  PleaseReadLabel,
-  ProDesignReviewContent,
-  ModalButtonsWrapper,
-  ReviewButton,
-  ContinueButton
+  DeleteConfirmMessage
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -50,7 +44,6 @@ import {
   PriceRange
 } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
-import CustomModal from '../../components/Common/JakrooModal'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
@@ -375,35 +368,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     })
 
     const designReviewModal = (
-      <CustomModal
-        open={showReviewDesignModal}
-        withLogo={false}
-        width={'684px'}
+      <CheckoutDesignCheckModal
         requestClose={this.onCheckoutClick}
-      >
-        <ProReviewTitle>
-          {formatMessage(messages.proDesignerReviewLabel)}
-          <OptionalLabel>{` (${formatMessage(
-            messages.optionalLabel
-          )})`}</OptionalLabel>
-        </ProReviewTitle>
-        <PleaseReadLabel>
-          {formatMessage(messages.pleaseReadLabel)}
-        </PleaseReadLabel>
-        <ProDesignReviewContent
-          dangerouslySetInnerHTML={{
-            __html: formatMessage(messages.reviewDesignModalText)
-          }}
-        />
-        <ModalButtonsWrapper>
-          <ReviewButton type="primary" onClick={this.handleCheckout(true)}>
-            {formatMessage(messages.reviewMyOrderLabel)}
-          </ReviewButton>
-          <ContinueButton key="review" onClick={this.handleCheckout()}>
-            {formatMessage(messages.dontReview)}
-          </ContinueButton>
-        </ModalButtonsWrapper>
-      </CustomModal>
+        handleContinue={this.handleCheckout()}
+        handleAccept={this.handleCheckout(true)}
+        visible={showReviewDesignModal}
+        {...{ formatMessage }}
+      />
     )
 
     return (
@@ -492,9 +463,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const shoppingProps = state.get('shoppingCartPage').toJS()
   const langProps = state.get('languageProvider').toJS()
+  const appProps = state.get('app').toJS()
   return {
     ...shoppingProps,
-    ...langProps
+    ...langProps,
+    ...appProps
   }
 }
 

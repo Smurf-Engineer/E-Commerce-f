@@ -108,6 +108,7 @@
   "components.Logout.profileSettingsLabel": "Profile Settings",
   "components.Logout.logoutLabel": "Log out",
   "components.Render3D.saveButton": "Save",
+  "components.Render3D.designCheck": "Design Check",
   "components.Render3D.drag": "Drag to rotate",
   "components.Render3D.productOnly": "Product Only",
   "components.Render3D.withAvatar": "With Avatar",
@@ -1065,5 +1066,18 @@
   "components.SocialMedia.tailrecursive": "Developed by Tail Recursive",
   "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2019",
   "components.FacebookGmailLogin.userExistsError": "An account for this email already exists, please log in with your email",
-  "screens.AdminLayout.editNavigation": "Edit Main Navigation"
+  "screens.AdminLayout.editNavigation": "Edit Main Navigation",
+  "components.CheckoutDesignCheckModal.proDesignerReviewLabel": "DESIGN CHECK",
+  "components.CheckoutDesignCheckModal.optionalLabel": "Optional",
+  "components.CheckoutDesignCheckModal.pleaseReadLabel": "PLEASE READ",
+  "components.CheckoutDesignCheckModal.reviewMyOrderLabel": "REVIEW MY ORDER",
+  "components.CheckoutDesignCheckModal.dontReview": "Continue without review",
+  "components.CheckoutDesignCheckModal.reviewDesignModalText": "<p class=\"important\"><strong>PLEASE READ.</strong></p> <p>Before continuing to checkout, please understand that YOU are the designer and that no one at Jakroo will be reviewing, cleaning up or checking your design for errors before sending to print. Please ensure that all your graphics are clear, aligned and centered.</p> <p class=\"important italic\">For an additional charge of $15, your order can be reviewed by a Pro Designer at Jakroo.</p> <p>Services include:<p/> <ul> <li>- Color consistency throughout design and ordered products </li> <li>- Center alignment and adjustment to graphics/text </li > <li>- Any other unforeseen potential issues </li> </ul> <p>Your design on screen is how it will print - what you see is what you get. </p> </div>",
+  "components.DesignCheckModal.proDesignerReviewLabel": "DESIGN CHECK",
+  "components.DesignCheckModal.helpLabel": "<strong>Having some trouble? We´re here to help!</strong> It´s important to us that every design turns out perfect.",
+  "components.DesignCheckModal.optionalLabel": "Optional During Checkout",
+  "components.DesignCheckModal.pleaseReadLabel": "PLEASE READ",
+  "components.DesignCheckModal.reviewMyOrderLabel": "Add to Cart",
+  "components.DesignCheckModal.dontReview": "Ok, Thanks!",
+  "components.DesignCheckModal.reviewDesignModalText": "<p class=\"important\">For an additional charge of $15, your order can be review by a Pro Designer at Jakroo.</p><p class=\"no-margin\"><strong>Services Include:</strong></p><ul><li>- Color consistency throughout design and ordered products </li><li>- Center alignment and adjustment to graphics/text </li><li>- Resolution quality review for any uploaded raster images </li><li>- Any other unforeseen potential issues </li></ul><div class=\"smaller-text\"><p class=\"important no-margin\">This service is optional and can be added to an order during checkout.</p></div>"
 }
