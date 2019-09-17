@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'Download All Files'
   },
   generatePDF: {
-    id: 'components.OrderFiles.downloadAll',
+    id: 'components.OrderFiles.generatePDF',
     defaultMessage: 'Generate PDF'
   },
   uploadDesign: {
@@ -48,5 +48,9 @@ export default defineMessages({
   modelNameLabel: {
     id: 'screens.DesignSearch.modelNameLabel',
     defaultMessage: 'Model Name: {modelName}'
+  },
+  designNameLabel: {
+    id: 'screens.DesignSearch.designNameLabel',
+    defaultMessage: 'Design Name: {name}'
   }
 })

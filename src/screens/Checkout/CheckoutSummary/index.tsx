@@ -124,7 +124,7 @@ const CheckoutSummary = ({
     taxFee,
     taxVat,
     taxVatTotal,
-    discount
+    discount: discountValue
   } = getTaxesAndDiscount(
     countrySubsidiary,
     shippingAddressCountry,
@@ -135,10 +135,8 @@ const CheckoutSummary = ({
     taxRates,
     country
   )
-
-  // calculate youSaved amount
-  const youSaved = totalWithoutDiscount - (subtotal + proDesignFee - discount)
-
+  const discount =
+    discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
   let totalSum = 0
   // calculate totalSum
   if (taxVat) {
@@ -192,6 +190,7 @@ const CheckoutSummary = ({
       <OrderSummary
         weight={weight.toString()}
         showCouponInput={true}
+        youSaved={discount}
         {...{
           subtotal,
           formatMessage,
@@ -207,8 +206,7 @@ const CheckoutSummary = ({
           taxGst,
           taxPst,
           taxVat,
-          totalSum,
-          youSaved
+          totalSum
         }}
       />
       <MediaQuery minWidth={481}>{orderButton}</MediaQuery>
