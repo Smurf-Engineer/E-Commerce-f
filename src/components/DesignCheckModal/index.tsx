@@ -38,9 +38,7 @@ export class DesignCheckModal extends React.Component<Props, {}> {
             {formatMessage(messages.proDesignerReviewLabel)}
             <Icon src={checkBoxIcon} />
           </ProReviewTitle>
-          <OptionalLabel>{` (${formatMessage(
-            messages.optionalLabel
-          )})`}</OptionalLabel>
+          <OptionalLabel>{formatMessage(messages.optionalLabel)}</OptionalLabel>
           <Paragraph
             dangerouslySetInnerHTML={{
               __html: formatMessage(messages.helpLabel)
