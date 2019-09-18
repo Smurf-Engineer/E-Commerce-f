@@ -134,8 +134,7 @@ class MainLayout extends React.Component<Props, {}> {
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
     Intercom(config.intercomKey)
-    window.Intercom('boot', { app_id: config.intercomKey })
-    if (user) {
+    if (user && typeof window.Intercom === 'function') {
       this.setIntercomUser(user)
     }
   }

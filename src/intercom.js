@@ -21,6 +21,7 @@ export default function(appId) {
       s.src = 'https://widget.intercom.io/widget/' + appId
       var x = d.getElementsByTagName('script')[0]
       x.parentNode.insertBefore(s, x)
+      w.Intercom('boot', { app_id: appId })
     }
     if (document.readyState === 'complete') {
       l()
