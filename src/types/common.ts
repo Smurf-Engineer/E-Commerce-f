@@ -1160,6 +1160,7 @@ export interface Inspiration {
 
 export interface OrderSearchResult {
   code: string
+  name?: string
   image: string
   status: string
   svgUrl: string
