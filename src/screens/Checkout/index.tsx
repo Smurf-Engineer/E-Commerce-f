@@ -84,6 +84,7 @@ interface CartItems {
 
 interface Props extends RouteComponentProps<any> {
   client: any
+  stripe: any
   intl: InjectedIntl
   firstName: string
   lastName: string
@@ -182,6 +183,9 @@ interface Props extends RouteComponentProps<any> {
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
+  state = {
+    stripe: null
+  }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
@@ -422,6 +426,7 @@ class Checkout extends React.Component<Props, {}> {
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
                   nextStep={this.nextStep}
+                  setStripeAction={this.setStripe}
                 />
                 <Review
                   {...{
@@ -834,6 +839,12 @@ class Checkout extends React.Component<Props, {}> {
         variables: { orderObj }
       })
       const orderId = get(response, 'data.charge.short_id', '')
+      // const clientSecret = get(response, 'data.charge.client_secret', '')
+      // const { stripe } = this.state
+      /* const cardPayment = await stripe.handleCardPayment(
+        clientSecret,
+        CardElement
+      ) */
       localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
       getTotalItemsIncartAction()
@@ -845,6 +856,11 @@ class Checkout extends React.Component<Props, {}> {
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
     }
+  }
+  setStripe = async (stripe: any) => {
+    this.setState({
+      stripe
+    })
   }
 }
 

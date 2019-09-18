@@ -233,7 +233,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         firstName,
         lastName,
         street,
-        // apartment,
+        apartment,
         country,
         stateProvince,
         city,
@@ -266,7 +266,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       invalidBillingFormAction(true)
       return
     }
-    /* const stripeTokenData = {
+    const stripeTokenData = {
       name: cardHolderName,
       address: {
         line1: `${street}`,
@@ -276,27 +276,30 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         postal_code: `${zipCode}`,
         country: `${country}`
       }
-    } */
+    }
     setLoadingBillingAction(true)
     const stripeResponse = !selectedCardId
-      ? /* await stripe.createToken(stripeTokenData) */ await stripe.createPaymentMethod(
+      ? await stripe.createToken(
+          stripeTokenData
+        ) /*await stripe.createPaymentMethod(
           'card',
           null,
           { billing_details: { name: cardHolderName } }
-        )
+        )*/
       : {}
 
-    console.log('stripe response ', stripeResponse)
-    if (stripeResponse && stripeResponse.error) {
+    const paymentMethod = await stripe.createPaymentMethod('card', CardElement)
+
+    if (paymentMethod && paymentMethod.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
       if (!selectedCardId) {
         const {
-          token: {
+          paymentMethod: {
             id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }
-        } = stripeResponse
+        } = paymentMethod
 
         const cardData: CreditCardData = {
           id,

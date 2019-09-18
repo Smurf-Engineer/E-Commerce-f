@@ -21,6 +21,7 @@ export const PlaceOrderMutation = graphql(
         id
         short_id
         created_at
+        client_secret
       }
     }
   `,

@@ -65,6 +65,7 @@ interface Props {
   ) => void
   saveCountryAction: (countryCode: string | null) => void
   setStripeIbanDataAction: (iban: IbanData) => void
+  setStripeAction: (stripe: any) => void
 }
 
 interface MyWindow extends Window {
@@ -164,7 +165,6 @@ class Payment extends React.PureComponent<Props, {}> {
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
-      setStripeCardDataAction,
       nextStep,
       showContent,
       showCardForm,
@@ -205,7 +205,6 @@ class Payment extends React.PureComponent<Props, {}> {
             sameBillingAndAddressCheckedAction,
             sameBillingAndAddressUncheckedAction,
             invalidBillingFormAction,
-            setStripeCardDataAction,
             nextStep,
             showCardForm,
             selectedCard,
@@ -220,6 +219,7 @@ class Payment extends React.PureComponent<Props, {}> {
             showBillingForm,
             showBillingAddressFormAction
           }}
+          setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
           inputChangeAction={this.handleOnChangeInput}
         />
@@ -301,6 +301,12 @@ class Payment extends React.PureComponent<Props, {}> {
     const { selectDropdownAction } = this.props
     const customId = 'billing' + upperFirst(id)
     selectDropdownAction(customId, value)
+  }
+  setStripeCardData = (cardData: CreditCardData) => {
+    const { setStripeAction, setStripeCardDataAction } = this.props
+    const { stripe } = this.state
+    setStripeCardDataAction(cardData)
+    setStripeAction(stripe)
   }
 }
 
