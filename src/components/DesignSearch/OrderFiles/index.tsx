@@ -69,6 +69,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         shortId,
         image,
         pdfUrl,
+        name,
         product: { name: modelName, zipper }
       },
       uploadingFile,
@@ -90,6 +91,9 @@ export class OrderFiles extends React.PureComponent<Props> {
     return (
       <Container>
         <RenderLayout>
+          <ModelNameContainer>
+            <Code>{formatMessage(messages.designNameLabel, { name })}</Code>
+          </ModelNameContainer>
           <ModelNameContainer>
             <Code>{formatMessage(messages.modelNameLabel, { modelName })}</Code>
           </ModelNameContainer>

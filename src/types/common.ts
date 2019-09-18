@@ -28,11 +28,6 @@ export interface DesignSaved {
   zipperColor?: string
 }
 
-export interface DesignLabInfo {
-  deliveryDays?: string
-  tutorialPlaylist?: string
-}
-
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
@@ -1165,6 +1160,7 @@ export interface Inspiration {
 
 export interface OrderSearchResult {
   code: string
+  name?: string
   image: string
   status: string
   svgUrl: string
