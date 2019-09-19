@@ -220,7 +220,7 @@ class Render3D extends PureComponent {
             canvg(imageCanvas, `${actualSvg || outputSvg}${cacheQuery}`)
             loadedTextures.texture = new THREE.Texture(imageCanvas)
           } else {
-            loadedTextures.texture = new THREE.TextureLoader().load(
+            loadedTextures.texture = textureLoader.load(
               `${outputPng}${cacheQuery}`
             )
           }
