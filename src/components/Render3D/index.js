@@ -215,9 +215,9 @@ class Render3D extends PureComponent {
           const cacheQuery = `?p=${Math.random()
             .toString(36)
             .substr(2, 5)}`
-          if (!isPhone && actualSvg) {
+          if ((actualSvg || (outputSvg && !outputPng)) && !isPhone) {
             const imageCanvas = document.createElement('canvas')
-            canvg(imageCanvas, `${actualSvg}${cacheQuery}`)
+            canvg(imageCanvas, `${actualSvg || outputSvg}${cacheQuery}`)
             loadedTextures.texture = new THREE.Texture(imageCanvas)
           } else {
             loadedTextures.texture = new THREE.TextureLoader().load(
