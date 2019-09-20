@@ -60,5 +60,13 @@ export default defineMessages({
   editNavigation: {
     id: 'screens.AdminLayout.editNavigation',
     defaultMessage: 'Edit Main Navigation'
+  },
+  publishingTool: {
+    id: 'screens.AdminLayout.publishingTool',
+    defaultMessage: 'PUBLISHING TOOL'
+  },
+  proDesign: {
+    id: 'screens.AdminLayout.proDesign',
+    defaultMessage: 'Add Pro Design'
   }
 })

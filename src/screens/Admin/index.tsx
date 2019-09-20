@@ -47,7 +47,8 @@ import {
   DESIGN_LAB,
   DESIGN_LAB_URL,
   EDIT_NAVIGATION,
-  EDIT_NAVIGATION_URL
+  EDIT_NAVIGATION_URL,
+  PRO_DESIGN
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -128,6 +129,9 @@ export class Admin extends React.Component<Props, {}> {
           break
         case DESIGN_LAB_URL:
           key = DESIGN_LAB
+          break
+        case PRO_DESIGN:
+          key = PRO_DESIGN
           break
         default:
           break

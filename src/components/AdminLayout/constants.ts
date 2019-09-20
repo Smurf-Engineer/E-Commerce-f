@@ -22,6 +22,8 @@ export const USERS = 'users'
 export const TEAM_STORES = 'teamStores'
 export const LOGOUT_MENU = 'logout'
 export const EDIT_NAVIGATION = 'editNavigation'
+export const PUBLISHING_TOOL = 'publishingTool'
+export const PRO_DESIGN = 'proDesign'
 
 export const options = [
   {
@@ -43,5 +45,9 @@ export const options = [
   {
     title: TEAM_STORES,
     options: []
+  },
+  {
+    title: PUBLISHING_TOOL,
+    options: [PRO_DESIGN]
   }
 ]
