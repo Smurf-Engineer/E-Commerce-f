@@ -62,6 +62,7 @@ interface Props extends RouteComponentProps<any> {
   openLogin: boolean
   currentRegion: string
   currentLanguage: string
+  style: object
   currentCurrency: string
   yotpoId: string
   productGender: number
@@ -212,6 +213,7 @@ class MainLayout extends React.Component<Props, {}> {
       initialCountryCode,
       buyNowHeader,
       saveAndBuyAction,
+      style,
       fonts,
       setAccountScreen
     } = this.props
@@ -236,7 +238,7 @@ class MainLayout extends React.Component<Props, {}> {
       : itemsInCart
 
     return (
-      <Layout>
+      <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         <Helmet defaultTitle={MAIN_TITLE} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
