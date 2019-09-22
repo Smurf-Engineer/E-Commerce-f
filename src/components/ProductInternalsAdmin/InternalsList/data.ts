@@ -33,6 +33,7 @@ export const getProductInternalsQuery = gql`
         binding
         bibBrace: bib_brace
         collection
+        model
       }
     }
   }
