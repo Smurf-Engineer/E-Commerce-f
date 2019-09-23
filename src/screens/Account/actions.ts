@@ -79,3 +79,4 @@ export const setItemToAddAction = (
   teamStoreItem,
   teamStoreId
 })
+// TODO: Add these 2 last functions to the unit tests once it's merged with release/sprint-19082019
