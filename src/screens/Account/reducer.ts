@@ -35,7 +35,9 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_ADD_TOTEAMSTORE:
       return state.merge({
         openAddToStoreModal: action.open,
-        savedDesignId: action.id
+        savedDesignId: action.id,
+        itemToAdd: {},
+        teamStoreId: ''
       })
     case SET_ITEM_TOADD:
       return state.merge({
