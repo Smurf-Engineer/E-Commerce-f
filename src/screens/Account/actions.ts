@@ -9,9 +9,11 @@ import {
   CLEAR_REDUCER,
   SET_IS_MOBILE,
   OPEN_SIDEBAR_MOBILE,
-  SET_CURRENT_SHARE
+  SET_CURRENT_SHARE,
+  OPEN_ADD_TOTEAMSTORE,
+  SET_ITEM_TOADD
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, TeamStoreItemtype } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -58,4 +60,22 @@ export const setIsMobileAction = (isMobile: boolean): AnyAction => ({
 export const openSidebarMobile = (open: boolean) => ({
   type: OPEN_SIDEBAR_MOBILE,
   open
+})
+
+export const openAddToTeamStoreModalAction = (
+  open: boolean,
+  id: string
+): AnyAction => ({
+  type: OPEN_ADD_TOTEAMSTORE,
+  open,
+  id
+})
+
+export const setItemToAddAction = (
+  teamStoreItem: TeamStoreItemtype,
+  teamStoreId: string
+): AnyAction => ({
+  type: SET_ITEM_TOADD,
+  teamStoreItem,
+  teamStoreId
 })

@@ -9,7 +9,9 @@ import {
   CLEAR_REDUCER,
   SET_IS_MOBILE,
   SET_CURRENT_SHARE,
-  OPEN_SIDEBAR_MOBILE
+  OPEN_SIDEBAR_MOBILE,
+  OPEN_ADD_TOTEAMSTORE,
+  SET_ITEM_TOADD
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -19,6 +21,10 @@ export const initialState = fromJS({
   defaultScreen: '',
   isMobile: false,
   openShareModal: false,
+  openAddToStoreModal: false,
+  teamStoreId: '',
+  savedDesignId: '',
+  itemToAdd: {},
   openSidebar: false
 })
 
@@ -26,6 +32,16 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_OPEN_KEYS:
       return state.set('openKeys', action.keys)
+    case OPEN_ADD_TOTEAMSTORE:
+      return state.merge({
+        openAddToStoreModal: action.open,
+        savedDesignId: action.id
+      })
+    case SET_ITEM_TOADD:
+      return state.merge({
+        teamStoreId: action.teamStoreId,
+        itemToAdd: action.teamStoreItem
+      })
     case SET_DEFAULT_SCREEN: {
       const { screen, openCreations } = action
       if (openCreations) {
