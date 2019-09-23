@@ -5,12 +5,12 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  color: {
-    id: 'components.designCenterCustomize.Tab.color',
-    defaultMessage: 'Color'
+  upload: {
+    id: 'screens.designCenterCustomize.upload',
+    defaultMessage: 'Upload'
   },
-  text: {
-    id: 'components.designCenterCustomize.Tab.text',
-    defaultMessage: 'Text'
+  color: {
+    id: 'screens.designCenterCustomize.back',
+    defaultMessage: 'Color'
   }
 })

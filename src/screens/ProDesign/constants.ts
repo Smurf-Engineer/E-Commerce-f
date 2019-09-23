@@ -3,4 +3,8 @@
  */
 const namespace = 'src/ProDesign'
 
-export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
+// Tabs Key
+export const UPLOAD = 'upload'
+export const COLOR = 'color'
+
+export const ON_TAB_CLICK = `${namespace}/ON_TAB_CLICK`

@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by david on 26/02/18.
+ * Styled Components - Created by eduardoquintero on 19/09/19.
  */
 import styled from 'styled-components'
 import { GRAY_DARK } from '../../../theme/colors'
@@ -16,14 +16,5 @@ export const Text = styled.div`
   line-height: 19px;
   margin-top: 4px;
   text-align: center;
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    font-size: 10px;
-  }
 `
-export const Icon = styled.img`
-  @media (min-width: 768px) and (max-width: 991px) {
-    align-self: center;
-    max-width: 25px;
-  }
-`
+export const Icon = styled.img``

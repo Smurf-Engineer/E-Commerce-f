@@ -1,5 +1,5 @@
 /**
- * Tab Component - Created by david on 26/02/18.
+ * Tab Component - Created by eduardoquintero on 19/09/19.
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
