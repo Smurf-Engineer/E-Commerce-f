@@ -53,7 +53,7 @@ import {
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
-import { TeamStoreItemtype } from '../../types/common'
+import { TeamStoreItemtype, MessagePayload } from '../../types/common'
 import get from 'lodash/get'
 
 const { SubMenu } = Menu
@@ -72,8 +72,9 @@ interface Props extends RouteComponentProps<any> {
   openAddToStoreModal: boolean
   teamStoreId: string
   savedDesignId: string
-  addItemToStore: any
   itemToAdd: TeamStoreItemtype
+  // Mutation action
+  addItemToStore: (variables: {}) => Promise<MessagePayload>
   // Redux actions
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
