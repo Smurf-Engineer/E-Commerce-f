@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo'
 
 export const getDesignLabInfo = gql`
   query getDesignLabInfo {
-    getDesignLabInfo {
+    getDesignLabInfo(onlyData: true) {
       deliveryDays: delivery_days
       tutorialPlaylist: tutorial_playlist
     }
