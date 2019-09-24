@@ -40,7 +40,6 @@ export const updateProductInternal = graphql(
       updateProductInternal(productInternal: $productInternal) {
         id
         internalId: internal_id
-        productCode: product_code
         gender
         size
         fitStyle: fit_style
@@ -50,6 +49,8 @@ export const updateProductInternal = graphql(
         binding
         bibBrace: bib_brace
         collection
+        model: yotpo_id
+        productCode: product_code
       }
     }
   `,
@@ -64,7 +65,6 @@ export const addProductInternal = graphql(
       addProductInternal(productInternal: $productInternal) {
         id
         internalId: internal_id
-        productCode: product_code
         gender
         size
         fitStyle: fit_style
@@ -74,6 +74,8 @@ export const addProductInternal = graphql(
         binding
         bibBrace: bib_brace
         collection
+        model: yotpo_id
+        productCode: product_code
       }
     }
   `,

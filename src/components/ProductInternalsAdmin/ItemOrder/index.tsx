@@ -21,6 +21,7 @@ interface Props {
   binding?: string
   bibBrace?: string
   collection: string
+  model?: string
   onInternalClick: (internal: ProductInternal) => void
 }
 
@@ -37,7 +38,8 @@ const ItemOrder = ({
   binding,
   bibBrace,
   collection,
-  onInternalClick
+  onInternalClick,
+  model
 }: Props) => {
   const handleOnClick = () => {
     const internal = {
@@ -52,7 +54,8 @@ const ItemOrder = ({
       pocketZipper,
       binding,
       bibBrace,
-      collection
+      collection,
+      model
     }
     onInternalClick(internal)
   }
@@ -61,6 +64,7 @@ const ItemOrder = ({
     <Container>
       <Cell>{internalId}</Cell>
       <Cell>{productCode}</Cell>
+      <Cell>{model}</Cell>
       <Cell>{gender}</Cell>
       <Cell>{size}</Cell>
       <Cell>{fitStyle}</Cell>

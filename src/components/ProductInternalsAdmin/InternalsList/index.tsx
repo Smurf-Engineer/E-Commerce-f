@@ -42,6 +42,7 @@ interface Props {
 const productHeaders = [
   { title: 'internalId', id: 'internal_id' },
   { title: 'productCode', id: 'product_code' },
+  { title: 'modelId', id: 'model' },
   { title: 'gender', id: 'gender' },
   { title: 'size', id: 'size' },
   { title: 'fitStyle', id: 'fit_style' },
@@ -130,7 +131,8 @@ const InternalsList = ({
         pocketZipper,
         binding,
         bibBrace,
-        collection
+        collection,
+        model
       }: ProductInternal,
       index: number
     ) => {
@@ -150,7 +152,8 @@ const InternalsList = ({
             binding,
             bibBrace,
             collection,
-            onInternalClick
+            onInternalClick,
+            model
           }}
         />
       )
