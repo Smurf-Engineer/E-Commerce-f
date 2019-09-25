@@ -3,6 +3,7 @@
  */
 import { Radio, Checkbox, Switch, Icon } from 'antd'
 import styled from 'styled-components'
+import { GRAY, GRAY_LIGHT, WHITE, RED } from '../../../../theme/colors'
 interface DivProps {
   capitalize?: boolean
   upperCase?: boolean
@@ -13,6 +14,7 @@ interface DivProps {
   maxWidth?: boolean
   marginBottom?: string
   left?: boolean
+  selected?: boolean
 }
 interface InputDivProps {
   flex?: number
@@ -217,7 +219,7 @@ export const MaterialDiv = styled.div`
   flex-flow: column;
   justify-content: space-evenly;
   align-items: center;
-  border: 0.5px solid #bebebe;
+  border: 0.5px solid ${GRAY};
   border-radius: 2px;
   height: 138px;
   width: 120px;
@@ -249,7 +251,7 @@ export const AddMaterial = styled.div`
   flex-flow: column;
   font-size: 18px;
   padding-top: 38px;
-  color: #bebebe;
+  color: ${GRAY};
 `
 
 export const MaterialButton = styled(Icon)`
@@ -261,4 +263,28 @@ export const LoaderBox = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+`
+export const SizeBox = styled.div`
+  height: 86px;
+  width: 172px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  border: ${({ selected }: DivProps) =>
+    selected ? `2px solid ${RED}` : `0.5px solid ${GRAY_LIGHT}`};
+  border-radius: 2px;
+  background-color: ${WHITE};
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  padding: 8px;
+  margin-right: 26px;
+  cursor: pointer;
+`
+export const SizeLabel = styled.div`
+  text-transform: capitalize;
+`
+export const SizeDescription = styled.div`
+  color: ${GRAY};
+  font-size: 12px;
+  line-height: 24px;
 `

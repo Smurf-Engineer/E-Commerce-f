@@ -47,7 +47,8 @@ import {
   RenderContainer,
   PrivateSubtitle,
   ProApproved,
-  ProApprovedLabel
+  ProApprovedLabel,
+  layoutStyle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -183,6 +184,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       relatedProducts: products,
       materials,
       mediaFiles,
+      modelSize,
       bannerMaterials,
       relatedItemTag
     } = product
@@ -407,7 +409,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     )
 
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} style={layoutStyle}>
         <Container>
           {design && (
             <Content>
@@ -416,7 +418,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   <Render3D
                     customProduct={true}
                     textColor="white"
-                    {...{ designId }}
+                    {...{ designId, modelSize }}
                     zoomedIn={true}
                     isPhone={phone}
                   />

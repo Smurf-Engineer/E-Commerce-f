@@ -32,15 +32,16 @@ export const TeamstoresListContainer = styled.div`
 
 export const ListItem = styled.div`
   height: 23px;
-  width: 121px;
   color: ${({ selected }: ContainerProps) =>
     selected ? '#e61737' : '#5f6062'};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
-
+  cursor: pointer;
+  transition: all 0.25s ease;
   &:hover {
-    cursor: pointer;
+    text-decoration: ${({ selected }: ContainerProps) =>
+      selected ? 'none' : 'underline'};
   }
 `
 

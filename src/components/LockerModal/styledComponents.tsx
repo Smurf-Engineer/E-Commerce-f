@@ -58,7 +58,7 @@ export const Message = styled.div`
   text-align: center;
 `
 
-export const modalStyle = { top: 20 }
+export const modalStyle = { top: 20, paddingBottom: '96px' }
 
 export const bodyStyle = { padding: '12px' }
 

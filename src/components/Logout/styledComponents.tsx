@@ -36,3 +36,5 @@ export const menuStyle = {
   borderRadius: 0,
   paddingBottom: 20
 }
+
+export const OverviewStyle = { border: 'none' }

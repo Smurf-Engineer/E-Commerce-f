@@ -188,6 +188,7 @@ interface Props {
   onCloseColorChartForm: () => void
   onOpenFormChart: () => void
   onOpenColorChart: () => void
+  openDesignCheckModal: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -311,7 +312,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCloseColorChartForm,
       onOpenFormChart,
       onOpenColorChart,
-      tutorialPlaylist
+      tutorialPlaylist,
+      openDesignCheckModal
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -464,7 +466,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               isUserAuthenticated,
               responsive,
               placeholders,
-              openResetPlaceholderModal
+              openResetPlaceholderModal,
+              openDesignCheckModal
             }}
           />
         ) : (

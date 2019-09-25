@@ -32,7 +32,6 @@ export const SET_TEXT_FORMAT_ACTION = `${namespace}/SET_TEXT_FORMAT_ACTION`
 export const SET_ART_FORMAT_ACTION = `${namespace}/SET_ART_FORMAT_ACTION`
 export const SET_CUSTOMIZE_3D_MOUNTED = `${namespace}/SET_CUSTOMIZE_3D_MOUNTED`
 export const SET_CANVAS_JSON_ACTION = `${namespace}/SET_CANVAS_JSON_ACTION`
-export const SET_DATA_LAB_INFO = `${namespace}/SET_DATA_LAB_INFO`
 
 export const OPEN_SHARE_MODAL = `${namespace}/OPEN_SHARE_MODAL`
 export const OPEN_SAVE_DESIGN_ACTION = `${namespace}/OPEN_SAVE_DESIGN_ACTION`
@@ -82,6 +81,8 @@ export const OPEN_RESET_PLACEHOLDER_MODAL = `${namespace}/OPEN_RESET_PLACEHOLDER
 export const SET_SENDING_CHART = `${namespace}/SET_SENDING_CHART`
 export const ON_OPEN_COLOR_CHART = `${namespace}/ON_OPEN_COLOR_CHART`
 export const ON_OPEN_COLOR_CHART_FORM = `${namespace}/ON_OPEN_COLOR_CHART_FORM`
+
+export const OPEN_DESIGN_CHECK_MODAL = `${namespace}/OPEN_DESIGN_CHECK_MODAL`
 
 export enum DesignTabs {
   ThemeTab = 0,

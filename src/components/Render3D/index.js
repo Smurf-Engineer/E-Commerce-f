@@ -35,7 +35,8 @@ import {
   REGULAR_CANVAS,
   PHONE_POSITION,
   HIGH_RESOLUTION_CANVAS,
-  MESH_NAME
+  MESH_NAME,
+  MODEL_SIZES
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
@@ -54,7 +55,7 @@ class Render3D extends PureComponent {
   }
 
   async componentDidMount() {
-    const { zoomedIn, designSearch } = this.props
+    const { modelSize, designSearch } = this.props
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const precision = 'highp'
@@ -74,7 +75,7 @@ class Render3D extends PureComponent {
       0.1,
       1000
     )
-    camera.position.z = zoomedIn ? 120 : 250
+    camera.position.z = MODEL_SIZES[modelSize] || 160
     if (designSearch) {
       camera.position.z = 150
     }
@@ -82,7 +83,7 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
 
     controls.enableKeys = false
-    controls.minDistance = 100
+    controls.minDistance = 80
     controls.maxDistance = 350
     controls.enableZoom = true
     /* Scene and light */
@@ -329,7 +330,7 @@ class Render3D extends PureComponent {
     )
   }
   renderProduct = async product => {
-    const { zoomedIn } = this.props
+    const { isPhone } = this.props
     const {
       obj,
       mtl,
@@ -465,7 +466,7 @@ class Render3D extends PureComponent {
               children[brandingIndex].material = brandingMaterial
             }
             /* Object Conig */
-            const verticalPosition = zoomedIn ? PHONE_POSITION : 0
+            const verticalPosition = isPhone ? PHONE_POSITION : 0
             object.position.y = verticalPosition
             object.name = MESH_NAME
             this.scene.add(object)
@@ -486,7 +487,7 @@ class Render3D extends PureComponent {
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
 
-    const { stitchingValue, zoomedIn, isPhone } = this.props
+    const { stitchingValue, isPhone } = this.props
     if (design.canvas && isPhone) {
       await this.getFontsFromCanvas(design.canvas)
     }
@@ -668,7 +669,7 @@ class Render3D extends PureComponent {
           }
 
           /* Object Conig */
-          const verticalPosition = zoomedIn ? PHONE_POSITION : 0
+          const verticalPosition = isPhone ? PHONE_POSITION : 0
           object.position.y = verticalPosition
           object.name = MESH_NAME
           this.scene.add(object)

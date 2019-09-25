@@ -40,9 +40,9 @@ import {
   HintIcon,
   TurnOffHintRow,
   MobileContainer,
-  MobileButton,
-  MobileButtonWrapper,
-  MobileHintIcon
+  Icon,
+  MobileHintIcon,
+  DesignCheckButton
 } from './styledComponents'
 import {
   viewPositions,
@@ -122,6 +122,8 @@ import hintImg from '../../../assets/designCenterhelpHint.jpg'
 import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
 import config from '../../../config'
+import checkBoxIcon from '../../../assets/checkbox.svg'
+
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const { info } = Modal
 
@@ -1230,7 +1232,10 @@ class Render3D extends PureComponent {
       )
     }
   }
-
+  handleOnDesignCheck = () => {
+    const { openDesignCheckModal } = this.props
+    openDesignCheckModal()
+  }
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
     const {
@@ -1341,6 +1346,10 @@ class Render3D extends PureComponent {
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </Row>
         <ButtonWrapper>
+          <DesignCheckButton onClick={this.handleOnDesignCheck}>
+            {formatMessage(messages.designCheck)}
+            <Icon src={checkBoxIcon} />
+          </DesignCheckButton>
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>

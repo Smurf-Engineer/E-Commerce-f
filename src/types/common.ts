@@ -1160,6 +1160,7 @@ export interface Inspiration {
 
 export interface OrderSearchResult {
   code: string
+  name?: string
   image: string
   status: string
   svgUrl: string
@@ -1293,6 +1294,7 @@ export interface ProductInternal {
   binding?: string
   bibBrace?: string
   collection?: string
+  model?: string
 }
 
 export interface PricesByCurrency {
@@ -1312,6 +1314,7 @@ export interface ProductInternalInput {
   binding?: string
   bib_brace?: string
   collection?: string
+  model?: string
 }
 export interface HeaderImagePlaceHolder {
   id?: number

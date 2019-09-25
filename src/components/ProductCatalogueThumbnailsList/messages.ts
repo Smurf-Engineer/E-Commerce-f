@@ -56,5 +56,9 @@ export default defineMessages({
   preview: {
     id: 'components.ProductCatalogueThumbnailsList.preview',
     defaultMessage: 'PREVIEW'
+  },
+  addToStore: {
+    id: 'components.ProductCatalogueThumbnailsList.addToStore',
+    defaultMessage: 'ADD TO STORE'
   }
 })

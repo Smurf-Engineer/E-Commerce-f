@@ -10,6 +10,7 @@ interface Props {
   style?: object
   flex?: string
   textAlign?: string
+  marginRight?: string
   paddingTop?: string
   subLabel?: React.ReactNode
   children?: React.ReactNode
@@ -23,10 +24,11 @@ const RowField = ({
   flex,
   textAlign,
   paddingTop,
+  marginRight,
   children
 }: Props) => {
   return (
-    <Container {...{ flex, textAlign, paddingTop }}>
+    <Container {...{ flex, textAlign, paddingTop, marginRight }}>
       {label && <Title>{label}</Title>}
       {subLabel && subLabel}
       {value && !children ? (

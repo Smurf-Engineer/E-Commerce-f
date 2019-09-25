@@ -52,5 +52,9 @@ export default defineMessages({
   filtersTitle: {
     id: 'screens.Account.submenu.filtersTitle',
     defaultMessage: 'MY ACCOUNT '
+  },
+  addedToStore: {
+    id: 'screens.Account.addedToStore',
+    defaultMessage: 'Design added to "{storeName}"'
   }
 })

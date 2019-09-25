@@ -29,13 +29,13 @@ import QuickView from '../../components/QuickView'
 import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
-import Intercom from 'react-intercom'
-import { IntercomAPI } from 'react-intercom'
 import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
+import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
+import Intercom from '../../intercom.js'
 
 const { Content } = Layout
 
@@ -54,7 +54,7 @@ interface Props extends RouteComponentProps<any> {
     gender: number
   ) => void
   openLoginAction: (open: boolean, callback?: boolean) => void
-  saveUserToLocal: (user: object) => void
+  saveUserToLocal: (user: UserType) => void
   logoutAction: () => void
   showSearchResults: boolean
   searchParam: string
@@ -62,6 +62,7 @@ interface Props extends RouteComponentProps<any> {
   openLogin: boolean
   currentRegion: string
   currentLanguage: string
+  style: object
   currentCurrency: string
   yotpoId: string
   productGender: number
@@ -79,10 +80,11 @@ interface Props extends RouteComponentProps<any> {
   buyNowHeader: boolean
   fontsData: any
   fonts: []
+  setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
-  saveUserSession: (user: object) => void
+  saveUserSession: (user: UserType) => void
   openLogoutModalAction: (open: boolean) => void
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
@@ -132,6 +134,14 @@ class MainLayout extends React.Component<Props, {}> {
     const fonts: SimpleFont[] = []
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
+    Intercom(config.intercomKey)
+    if (user && typeof window.Intercom === 'function') {
+      this.setIntercomUser(user)
+    }
+  }
+
+  componentWillUnmount() {
+    window.Intercom('shutdown')
   }
 
   onSearch = (value: string) => {
@@ -166,8 +176,7 @@ class MainLayout extends React.Component<Props, {}> {
     } = this.props
     client.resetStore()
     deleteUserSession()
-    // https://developers.intercom.com/installing-intercom/docs/intercom-javascript#section-intercomshutdown
-    IntercomAPI('shutdown')
+    window.Intercom('update', { name: '', email: null, user_id: null })
     if (REDIRECT_ROUTES.includes(pathname)) {
       window.location.replace('/')
     }
@@ -199,13 +208,14 @@ class MainLayout extends React.Component<Props, {}> {
       shoppingCart,
       designCenter: { designHasChanges },
       openWithoutSaveModalAction,
-      user,
       openLogoutModal,
       openLogoutModalAction,
       initialCountryCode,
       buyNowHeader,
       saveAndBuyAction,
-      fonts
+      style,
+      fonts,
+      setAccountScreen
     } = this.props
     const { formatMessage } = intl
     let numberOfProducts = 0
@@ -227,17 +237,8 @@ class MainLayout extends React.Component<Props, {}> {
       ? numberOfProducts
       : itemsInCart
 
-    let userData = {}
-    if (!!user) {
-      userData = {
-        user_id: user.id,
-        email: user.email,
-        name: `${user.name} ${user.lastName}`
-      }
-    }
-
     return (
-      <Layout>
+      <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         <Helmet defaultTitle={MAIN_TITLE} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
@@ -259,7 +260,8 @@ class MainLayout extends React.Component<Props, {}> {
               initialCountryCode,
               currentRegion,
               currentLanguage,
-              buyNowHeader
+              buyNowHeader,
+              setAccountScreen
             }}
             saveAndBuy={saveAndBuyAction}
             saveUserToLocal={this.handleOnLogin}
@@ -298,22 +300,30 @@ class MainLayout extends React.Component<Props, {}> {
           onLogout={this.onLogout}
           {...{ openLogoutModalAction, formatMessage }}
         />
-        <div className="app">
-          <Intercom appID={config.intercomKey} {...userData} />
-        </div>
       </Layout>
     )
   }
 
-  handleOnLogin = (user: object) => {
+  setIntercomUser = (user: UserType) => {
+    const userData = {
+      user_id: user.id,
+      email: user.email,
+      name: `${user.name} ${user.lastName}`
+    }
+    window.Intercom('update', { app_id: config.intercomKey, ...userData })
+  }
+
+  handleOnLogin = (user: UserType) => {
     const { saveUserSession } = this.props
     saveUserSession(user)
+    this.setIntercomUser(user)
   }
 
   closeResults = () => {
     const { showSearchResultsAction } = this.props
     showSearchResultsAction(false)
   }
+
   openResults = () => {
     const { showSearchResultsAction } = this.props
     showSearchResultsAction(true)
@@ -323,6 +333,7 @@ class MainLayout extends React.Component<Props, {}> {
     const { openQuickViewAction } = this.props
     openQuickViewAction(id, yotpoId, gender)
   }
+
   onCloseModal = () => {
     const { openQuickViewAction } = this.props
     openQuickViewAction(0, '', 0)
@@ -355,7 +366,8 @@ const LayoutEnhance = compose(
       ...LayoutActions,
       ...LocaleActions,
       ...mainLayoutActions,
-      openWithoutSaveModalAction: openOutWithoutSaveModalAction
+      openWithoutSaveModalAction: openOutWithoutSaveModalAction,
+      setAccountScreen: setDefaultScreenAction
     }
   )
 )(MainLayout)

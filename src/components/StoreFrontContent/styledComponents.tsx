@@ -298,9 +298,12 @@ export const DatesTitle = styled.div`
 `
 
 export const ListContainer = styled.div`
-  margin-top: 28px;
   padding-right: 32px;
   padding-left: 32px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 28px;
 `
 
 export const Loading = styled.div`

@@ -59,7 +59,8 @@ import {
   MobileButtonWrapper,
   StyledButtonWrapper,
   MenIcon,
-  WomenIcon
+  WomenIcon,
+  layoutStyle
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
@@ -229,6 +230,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       relatedItemTag,
       fitStyles,
       sizeRange,
+      modelSize,
       title = MAIN_TITLE
     } = product
     const isRetail = retailMen || retailWomen || !customizable
@@ -493,7 +495,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
 
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
         <Container>
           {product && (
@@ -510,11 +512,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                         <Render3D
                           customProduct={true}
                           designId={0}
-                          zoomedIn={true}
                           textColor="white"
                           isProduct={true}
                           isPhone={phone}
-                          {...{ product }}
+                          {...{ product, modelSize }}
                         />
                         <HowItFits onClick={this.toggleFitsModal(true)}>
                           <FormattedMessage {...messages.howItFits} />

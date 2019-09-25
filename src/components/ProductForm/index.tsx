@@ -101,6 +101,7 @@ interface Props {
   setProductAction: (product: Product | {}, extraData: any) => void
   formatMessage: (messageDescriptor: any) => string
   setUploadingAction: (loading: boolean, loadingMessage: string) => void
+  setModelSize: (size: string) => void
 }
 const Step = Steps.Step
 export class ProductForm extends React.Component<Props, {}> {
@@ -172,7 +173,8 @@ export class ProductForm extends React.Component<Props, {}> {
       loadingMessage,
       product,
       loading,
-      setValue
+      setValue,
+      setModelSize
     } = this.props
     const productId = get(match, 'params.id', '')
     const categories = get(dataExtra, 'categories', [])
@@ -190,6 +192,7 @@ export class ProductForm extends React.Component<Props, {}> {
     const pictures = get(product, 'pictures', [])
     const selectedGenders = get(product, 'genders', {})
     const colorsProducts = get(product, 'colors', {})
+    const modelSize = get(product, 'modelSize', '')
     const screenSteps = [
       <FirstStep
         key={0}
@@ -281,7 +284,9 @@ export class ProductForm extends React.Component<Props, {}> {
           bannerMaterials,
           setValue,
           selectedGenders,
-          formatMessage
+          formatMessage,
+          modelSize,
+          setModelSize
         }}
       />
     ]
@@ -458,6 +463,7 @@ export class ProductForm extends React.Component<Props, {}> {
         weight,
         mpn,
         tags,
+        modelSize,
         active
       } = product
       const specsDetails = details.join(', ')
@@ -554,6 +560,7 @@ export class ProductForm extends React.Component<Props, {}> {
         weight,
         mpn,
         tags,
+        model_size: modelSize,
         active,
         sports: sportsProduct,
         fit_styles: fitStylesDet,
