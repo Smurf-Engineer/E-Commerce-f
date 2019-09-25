@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const GetProductsByIdQuery = gql`
-  query GetProductByID($id: Int!) {
-    product(id: $id) {
+  query GetProductByID($code: String!) {
+    productFromCode(code: $code) {
       id
       code
       modelSize: model_size

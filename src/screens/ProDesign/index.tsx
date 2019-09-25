@@ -5,13 +5,15 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import * as proDesignActions from './actions'
 import colorIcon from '../../assets/color_white.svg'
+import get from 'lodash/get'
 import uploadIcon from '../../assets/upload_white.svg'
 import Render3D from '../../components/Render3D'
+import { GetProductsByIdQuery } from './data'
 import messages from './messages'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from './Tab'
 import { connect } from 'react-redux'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import {
   Container,
   Header,
@@ -30,14 +32,26 @@ import backIcon from '../../assets/rightarrow.svg'
 import UploadTab from './UploadTab'
 import ColorTab from './ColorTab'
 import { UPLOAD, COLOR } from './constants'
-import { ProductSearchResult } from '../../types/common'
+import { ProductSearchResult, Product, QueryProps } from '../../types/common'
 
 const { TabPane } = AntdTabs
 
+interface ProductTypes extends Product {
+  intendedUse: string
+  temperatures: string
+  materials: string
+}
+
+interface Data extends QueryProps {
+  productFromCode: ProductTypes
+  match: object
+}
 interface Props {
   intl: InjectedIntl
   selectedKey: string
   productSearchResults: ProductSearchResult[]
+  data: Data
+  productCode: string
   onTabClickAction: (selectedKey: string) => void
   setSearchProductAction: (product: ProductSearchResult[]) => void
   setProductCodeAction: (productCode: string) => void
@@ -54,9 +68,13 @@ export class ProDesign extends React.Component<Props, {}> {
       selectedKey,
       setSearchProductAction,
       productSearchResults,
-      setProductCodeAction
+      setProductCodeAction,
+      data
     } = this.props
     const { formatMessage } = intl
+    const product = get(data, 'productFromCode')
+    const loading = get(data, 'loading')
+
     const tabs = (
       <StyledTabs activeKey={selectedKey} onTabClick={onTabClickAction}>
         <TabPane tab={<Tab label={UPLOAD} icon={uploadIcon} />} key={UPLOAD}>
@@ -86,12 +104,15 @@ export class ProDesign extends React.Component<Props, {}> {
         <Layout>
           {tabs}
           <Render3DContainer>
-            <Render3D
-              loading={false}
-              designId={'B1ISp0PPS'}
-              isProduct={false}
-              ref={(render3D: any) => (this.render3D = render3D)}
-            />
+            {product && !loading && (
+              <Render3D
+                customProduct={true}
+                isProduct={true}
+                designId={0}
+                {...{ product }}
+                ref={(render3D: any) => (this.render3D = render3D)}
+              />
+            )}
           </Render3DContainer>
         </Layout>
       </Container>
@@ -106,6 +127,10 @@ const mapStateToProps = (state: any) => {
   }
 }
 
+type OwnProps = {
+  productCode?: string
+}
+
 const ProDesignEnhance = compose(
   withApollo,
   injectIntl,
@@ -114,7 +139,19 @@ const ProDesignEnhance = compose(
     {
       ...proDesignActions
     }
-  )
+  ),
+  graphql<Data>(GetProductsByIdQuery, {
+    options: (ownprops: OwnProps) => {
+      const { productCode } = ownprops
+      return {
+        variables: {
+          code: productCode
+        },
+        skip: !productCode,
+        fetchPolicy: 'network-only'
+      }
+    }
+  })
 )(ProDesign)
 
 export default ProDesignEnhance

@@ -11,10 +11,11 @@ import {
   SearchButton,
   SearchInput,
   Content,
-  StyledSearch
+  StyledSearch,
+  Label
 } from './styledComponents'
 import Icon from 'antd/lib/icon'
-import { containsNumber } from '../../../utils/utilsFiles'
+import { containsNumberAndLetters } from '../../../utils/utilsFiles'
 import AntdMessage from 'antd/lib/message'
 import messages from './messages'
 import { Message, ProductSearchResult } from '../../../types/common'
@@ -38,7 +39,7 @@ export class UploadTab extends React.Component<Props, {}> {
     } = this.props
     try {
       const parsedValue = value.toString()
-      if (parsedValue.length > 1 && !containsNumber(parsedValue)) {
+      if (containsNumberAndLetters(parsedValue)) {
         const { data } = await query({
           query: getProducts,
           variables: { pattern: parsedValue.trim() },
@@ -57,11 +58,8 @@ export class UploadTab extends React.Component<Props, {}> {
 
   handleOnSelect = async (value: SelectValue) => {
     const { setProductCode } = this.props
-    const parsedValue = value.toString()
-    const productCode = parsedValue
-      .trim()
-      .split('-')
-      .reverse()[0]
+    const parsedValue = value.toString().replace(/ /g, '')
+    const productCode = parsedValue.split('-').reverse()[0]
     setProductCode(productCode)
   }
 
@@ -71,10 +69,12 @@ export class UploadTab extends React.Component<Props, {}> {
       <Container>
         <Header>{formatMessage(messages.title)}</Header>
         <Content>
+          <Label>{formatMessage(messages.selectBase)}</Label>
           <StyledSearch
             onChange={this.debounceSearchProduct}
             dataSource={productSearchResults}
             onSelect={this.handleOnSelect}
+            placeholder={formatMessage(messages.productCode)}
           >
             <SearchInput
               suffix={

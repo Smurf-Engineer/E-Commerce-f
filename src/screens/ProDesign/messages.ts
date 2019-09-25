@@ -12,5 +12,9 @@ export default defineMessages({
   back: {
     id: 'screens.ProDesign.back',
     defaultMessage: 'Back to admin panel'
+  },
+  productNotFound: {
+    id: 'screens.ProDesign.productNotFound',
+    defaultMessage: 'Error: Product not found.'
   }
 })

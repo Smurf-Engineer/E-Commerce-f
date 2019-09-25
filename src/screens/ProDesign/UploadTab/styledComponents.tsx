@@ -16,6 +16,8 @@ export const Container = styled.div`
 export const Content = styled.div`
   padding: 15px;
   display: flex;
+  flex-direction: column;
+  align-items: start;
 `
 
 export const Header = styled.div`
@@ -41,4 +43,8 @@ export const SearchInput = styled(Input)`
 
 export const StyledSearch = styled(Search)`
   width: 100%;
+`
+
+export const Label = styled.p`
+  font-weight: 600;
 `
