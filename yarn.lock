@@ -8104,13 +8104,6 @@ promise@^8.0.1:
   dependencies:
     asap "~2.0.6"
 
-prop-types@15.5.8:
-  version "15.5.8"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
-  integrity sha1-a3suFBCDvjjIWVqlH8VXdccZk5Q=
-  dependencies:
-    fbjs "^0.8.9"
-
 prop-types@15.x, prop-types@^15.3.0, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
@@ -8960,13 +8953,6 @@ react-helmet@^5.2.1:
     prop-types "^15.5.4"
     react-fast-compare "^2.0.2"
     react-side-effect "^1.1.0"
-
-react-intercom@^1.0.15:
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/react-intercom/-/react-intercom-1.0.15.tgz#29180aca961a319eaab88a66126e484e1abd428b"
-  integrity sha512-e4NhmearKjdxmu6EjiA0d29FqEXJUvWtyxo4ioipNsKBD7gZgvtyJMty9UhNRSf9RoPqtSX2Fw4ooy6Ld86ddw==
-  dependencies:
-    prop-types "15.5.8"
 
 react-intl@^2.4.0:
   version "2.8.0"
