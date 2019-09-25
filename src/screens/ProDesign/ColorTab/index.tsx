@@ -3,11 +3,22 @@
  */
 import * as React from 'react'
 
-interface Props {}
+import { Container, Header } from './styledComponents'
+import messages from './messages'
+import { Message } from '../../../types/common'
+
+interface Props {
+  formatMessage: (messageDescriptor: Message) => string
+}
 
 export class ColorTab extends React.Component<Props, {}> {
   render() {
-    return <div />
+    const { formatMessage } = this.props
+    return (
+      <Container>
+        <Header>{formatMessage(messages.title)}</Header>
+      </Container>
+    )
   }
 }
 

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import { GRAY_LIGHT, WHITE } from '../../theme/colors'
+import AntdTabs from 'antd/lib/tabs'
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -54,4 +55,13 @@ export const TopMenu = styled.div`
 
 export const Layout = styled.div`
   display: flex;
+`
+
+export const StyledTabs = styled(AntdTabs)`
+  flex: 1;
+  text-align: center;
+`
+
+export const Render3DContainer = styled.div`
+  flex: 2;
 `

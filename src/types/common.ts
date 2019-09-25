@@ -1387,3 +1387,8 @@ export type ContactInformation = {
   email: string
   phone: string
 }
+
+export interface ProductSearchResult {
+  name: string
+  code: string
+}

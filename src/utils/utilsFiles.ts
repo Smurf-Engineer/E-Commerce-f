@@ -21,6 +21,8 @@ export const isPhoneNumber = (value: string) => {
   const regex = /^[0-9 ()+-]+$/
   return regex.test(value)
 }
+export const containsNumber = (value: string) => /\d/.test(value)
+
 const createImage = (url: string) =>
   new Promise((resolve, reject) => {
     const image = new Image()

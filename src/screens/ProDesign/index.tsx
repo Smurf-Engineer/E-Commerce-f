@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import * as proDesignActions from './actions'
 import colorIcon from '../../assets/color_white.svg'
 import uploadIcon from '../../assets/upload_white.svg'
+import Render3D from '../../components/Render3D'
 import messages from './messages'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from './Tab'
@@ -20,37 +21,55 @@ import {
   BackButton,
   Back,
   TopMenu,
-  Layout
+  Layout,
+  StyledTabs,
+  Render3DContainer
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import UploadTab from './UploadTab'
 import ColorTab from './ColorTab'
 import { UPLOAD, COLOR } from './constants'
+import { ProductSearchResult } from '../../types/common'
 
 const { TabPane } = AntdTabs
 
 interface Props {
   intl: InjectedIntl
   selectedKey: string
+  productSearchResults: ProductSearchResult[]
   onTabClickAction: (selectedKey: string) => void
+  setSearchProductAction: (product: ProductSearchResult[]) => void
+  setProductCodeAction: (productCode: string) => void
 }
 export class ProDesign extends React.Component<Props, {}> {
+  render3D: any
   handleOnPressBack = () => {
     window.location.replace('/admin')
   }
   render() {
-    const { intl, onTabClickAction, selectedKey } = this.props
+    const {
+      intl,
+      onTabClickAction,
+      selectedKey,
+      setSearchProductAction,
+      productSearchResults,
+      setProductCodeAction
+    } = this.props
     const { formatMessage } = intl
     const tabs = (
-      <AntdTabs activeKey={selectedKey} onTabClick={onTabClickAction}>
+      <StyledTabs activeKey={selectedKey} onTabClick={onTabClickAction}>
         <TabPane tab={<Tab label={UPLOAD} icon={uploadIcon} />} key={UPLOAD}>
-          <UploadTab />
+          <UploadTab
+            {...{ formatMessage, productSearchResults }}
+            setSearchProduct={setSearchProductAction}
+            setProductCode={setProductCodeAction}
+          />
         </TabPane>
         <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
-          <ColorTab />
+          <ColorTab {...{ formatMessage }} />
         </TabPane>
-      </AntdTabs>
+      </StyledTabs>
     )
     return (
       <Container>
@@ -64,7 +83,17 @@ export class ProDesign extends React.Component<Props, {}> {
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
         </TopMenu>
-        <Layout>{tabs}</Layout>
+        <Layout>
+          {tabs}
+          <Render3DContainer>
+            <Render3D
+              loading={false}
+              designId={'B1ISp0PPS'}
+              isProduct={false}
+              ref={(render3D: any) => (this.render3D = render3D)}
+            />
+          </Render3DContainer>
+        </Layout>
       </Container>
     )
   }

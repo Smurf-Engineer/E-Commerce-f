@@ -8,3 +8,5 @@ export const UPLOAD = 'upload'
 export const COLOR = 'color'
 
 export const ON_TAB_CLICK = `${namespace}/ON_TAB_CLICK`
+export const SET_SEARCH_PRODUCT = `${namespace}/SET_SEARCH_PRODUCT`
+export const SET_PRODUCT_CODE = `${namespace}/SET_PRODUCT_CODE`
