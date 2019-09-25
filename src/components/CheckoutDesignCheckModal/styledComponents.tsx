@@ -109,3 +109,11 @@ export const Icon = styled.img`
   width: 35px;
   margin-left: 10px;
 `
+
+export const Paragraph = styled.div`
+  margin-top: 20px;
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+`
