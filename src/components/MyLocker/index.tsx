@@ -262,6 +262,10 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     }
   }
 
+  componentWillUnmount() {
+    this.cancelModal()
+  }
+
   render() {
     const {
       history,
