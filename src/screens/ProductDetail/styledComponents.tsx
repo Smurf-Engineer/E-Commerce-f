@@ -18,7 +18,6 @@ export const Container = styled.div`
   max-width: 1452px;
   width: 100%;
   margin: 0 auto;
-  box-shadow: 1px 1px 9px -5px ${BLACK};
 `
 
 export const Content = styled.div`
@@ -490,3 +489,7 @@ export const Loading = styled.div`
   height: 100vh;
   align-items: center;
 `
+
+export const layoutStyle = {
+  backgroundColor: WHITE
+}
