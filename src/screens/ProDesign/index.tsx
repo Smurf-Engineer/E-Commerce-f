@@ -14,6 +14,7 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from './Tab'
 import { connect } from 'react-redux'
 import { compose, withApollo, graphql } from 'react-apollo'
+import { uploadProDesign } from './api'
 import {
   Container,
   Header,
@@ -55,6 +56,7 @@ interface Props {
   onTabClickAction: (selectedKey: string) => void
   setSearchProductAction: (product: ProductSearchResult[]) => void
   setProductCodeAction: (productCode: string) => void
+  uploadProDesignAction: (file: any) => void
 }
 export class ProDesign extends React.Component<Props, {}> {
   render3D: any
@@ -69,7 +71,9 @@ export class ProDesign extends React.Component<Props, {}> {
       setSearchProductAction,
       productSearchResults,
       setProductCodeAction,
-      data
+      data,
+      productCode,
+      uploadProDesignAction
     } = this.props
     const { formatMessage } = intl
     const product = get(data, 'productFromCode')
@@ -79,9 +83,10 @@ export class ProDesign extends React.Component<Props, {}> {
       <StyledTabs activeKey={selectedKey} onTabClick={onTabClickAction}>
         <TabPane tab={<Tab label={UPLOAD} icon={uploadIcon} />} key={UPLOAD}>
           <UploadTab
-            {...{ formatMessage, productSearchResults }}
+            {...{ formatMessage, productSearchResults, productCode }}
             setSearchProduct={setSearchProductAction}
             setProductCode={setProductCodeAction}
+            onUploadFile={uploadProDesignAction}
           />
         </TabPane>
         <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
@@ -137,7 +142,8 @@ const ProDesignEnhance = compose(
   connect(
     mapStateToProps,
     {
-      ...proDesignActions
+      ...proDesignActions,
+      uploadProDesignAction: uploadProDesign
     }
   ),
   graphql<Data>(GetProductsByIdQuery, {

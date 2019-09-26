@@ -63,5 +63,5 @@ export const StyledTabs = styled(AntdTabs)`
 `
 
 export const Render3DContainer = styled.div`
-  flex: 2;
+  flex: 3;
 `

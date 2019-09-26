@@ -10,3 +10,5 @@ export const COLOR = 'color'
 export const ON_TAB_CLICK = `${namespace}/ON_TAB_CLICK`
 export const SET_SEARCH_PRODUCT = `${namespace}/SET_SEARCH_PRODUCT`
 export const SET_PRODUCT_CODE = `${namespace}/SET_PRODUCT_CODE`
+export const UPLOAD_FILE_ACTION_SUCCESS = `${namespace}/UPLOAD_FILE_ACTION_SUCCESS`
+export const SET_UPLOADING_FILE_ACTION = `${namespace}/SET_UPLOADING_FILE_ACTION`

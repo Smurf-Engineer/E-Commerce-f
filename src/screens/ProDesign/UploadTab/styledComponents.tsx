@@ -47,4 +47,30 @@ export const StyledSearch = styled(Search)`
 
 export const Label = styled.p`
   font-weight: 600;
+  &.uploadTitle {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+`
+
+export const ButtonContainer = styled.div`
+  display: inline-block;
+  margin-left: 8px;
+`
+
+export const UploadContainer = styled.div`
+  width: 100%;
+  text-align: left;
+  & > .upload > div:first-child {
+    height: 30px;
+    margin-top: 10px;
+    width: 100%;
+    text-align: left;
+    & button {
+      width: 100%;
+    }
+    & .ant-upload {
+      padding: 0;
+    }
+  }
 `
