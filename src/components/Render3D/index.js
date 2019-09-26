@@ -460,7 +460,7 @@ class Render3D extends PureComponent {
               const brandingMaterial = new THREE.MeshPhongMaterial({
                 map: brandingTexture,
                 side: THREE.FrontSide,
-                bumpMap,
+                bumpMap: bumpMapObj,
                 transparent: true
               })
               children[brandingIndex].material = brandingMaterial
