@@ -3,8 +3,9 @@
  */
 import * as React from 'react'
 import { withRouter } from 'react-router'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import Message from 'antd/lib/message'
 import filter from 'lodash/filter'
 import get from 'lodash/get'
 import {
@@ -19,10 +20,12 @@ import {
   Label,
   Price,
   BuyNow,
+  BuyLoader,
   ImgIcon,
   RetailColors
 } from './styledComponents'
 import messages from './messages'
+import { getProductQuery } from './data'
 import { Product } from '../../types/common'
 import ImageSlide from './ProductSlide'
 import { saveInLocalStorage } from './api'
@@ -43,12 +46,12 @@ interface Props {
   labelButton?: string | React.ReactNode
   isTopProduct: boolean
   itemId?: string
-  collections?: number
   footer?: React.ReactNode
   gender?: number
   hideCustomButton?: boolean
   hideQuickView?: boolean
   yotpoId: string
+  client: any
   designId?: string
   history: any
   isStoreThumbnail?: boolean
@@ -68,9 +71,10 @@ interface Props {
   onPressThumbnail: () => void
 }
 
-class ProductThumbnail extends React.Component<Props, {}> {
+export class ProductThumbnail extends React.Component<Props, {}> {
   state = {
     isHovered: false,
+    loading: false,
     currentImage: 0
   }
 
@@ -146,30 +150,51 @@ class ProductThumbnail extends React.Component<Props, {}> {
     }
     history.push(this.getUrlProduct())
   }
+
   handleOnBuyNow = async () => {
-    const { product, history } = this.props
-    const details = [
-      {
-        fit: get(product, 'fitStyles[0]', ''),
-        size: get(product, 'sizeRange[0]', ''),
-        gender: get(product, 'genders[0]', ''),
-        color: get(product, 'colors[0]', ''),
-        quantity: 1
-      }
-    ]
-    const itemToAdd = Object.assign(
-      {},
-      { product },
-      {
-        itemDetails: details
-      },
-      { designId: '' },
-      { designName: '' },
-      { designImage: '' },
-      { designCode: '' },
-      { teamStoreId: '' }
-    )
-    await saveInLocalStorage(itemToAdd, history)
+    const {
+      product: thumbnailProduct,
+      history,
+      client: { query }
+    } = this.props
+    try {
+      this.setState({ loading: true })
+      const result = await query({
+        query: getProductQuery,
+        fetchPolicy: 'network-only',
+        variables: {
+          id: thumbnailProduct.id
+        }
+      })
+      const resultProduct = get(result, 'data.product', {})
+      const product = { ...thumbnailProduct, ...resultProduct }
+      const details = [
+        {
+          fit: get(product, 'fitStyles[0]', ''),
+          size: get(product, 'sizeRange[0]', ''),
+          gender: get(product, 'genders[0]', ''),
+          color: get(product, 'colors[0]', ''),
+          quantity: 1
+        }
+      ]
+      const itemToAdd = Object.assign(
+        {},
+        { product },
+        {
+          itemDetails: details
+        },
+        { designId: '' },
+        { designName: '' },
+        { designImage: '' },
+        { designCode: '' },
+        { teamStoreId: '' }
+      )
+      this.setState({ loading: false })
+      await saveInLocalStorage(itemToAdd, history)
+    } catch (e) {
+      Message.error(e.message)
+      this.setState({ loading: false })
+    }
   }
   render() {
     const {
@@ -195,7 +220,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
       reversePriceRange,
       proDesign
     } = this.props
-    const { isHovered, currentImage } = this.state
+    const { isHovered, currentImage, loading } = this.state
 
     const currencyPrices =
       priceRange &&
@@ -243,9 +268,13 @@ class ProductThumbnail extends React.Component<Props, {}> {
     ) : (
       <RetailColors>
         {colorList}
-        <BuyNow onClick={this.handleOnBuyNow}>
-          <FormattedMessage {...messages.buyNow} />
-        </BuyNow>
+        {loading ? (
+          <BuyLoader size="small" />
+        ) : (
+          <BuyNow onClick={this.handleOnBuyNow}>
+            <FormattedMessage {...messages.buyNow} />
+          </BuyNow>
+        )}
       </RetailColors>
     )
     let menAvailable = false
@@ -311,4 +340,9 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 }
 
-export default compose(withRouter)(ProductThumbnail)
+const ProductThumbnailEnhance = compose(
+  withRouter,
+  withApollo
+)(ProductThumbnail)
+
+export default ProductThumbnailEnhance
