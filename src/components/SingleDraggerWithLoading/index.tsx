@@ -3,15 +3,20 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import Spin from 'antd/lib/spin'
 import messages from './messages'
-import { DragTypes, Container, StyledDragger } from './styledComponents'
+import {
+  DragTypes,
+  Container,
+  StyledDragger,
+  StyledSpin
+} from './styledComponents'
 
 interface Props {
   loading: boolean
   extensions?: string[]
-  onSelectImage: (file: any) => boolean
   className?: string
+  fileName?: string
+  onSelectImage: (file: any) => boolean
   formatMessage: (messageDescriptor: any, extensions: any) => string
 }
 
@@ -20,7 +25,7 @@ class SingleDraggerWithLoading extends React.PureComponent<Props, {}> {
     extensions: ['.png']
   }
   render() {
-    const { onSelectImage, loading, className } = this.props
+    const { onSelectImage, loading, className, fileName } = this.props
     return (
       <StyledDragger
         beforeUpload={onSelectImage}
@@ -32,12 +37,12 @@ class SingleDraggerWithLoading extends React.PureComponent<Props, {}> {
       >
         {loading ? (
           <Container>
-            <Spin />
+            <StyledSpin />
           </Container>
         ) : (
           <div>
             <DragTypes>
-              <FormattedMessage {...messages.title} />
+              {fileName || <FormattedMessage {...messages.title} />}
             </DragTypes>
           </div>
         )}

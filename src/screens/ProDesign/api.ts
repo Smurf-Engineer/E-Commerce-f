@@ -2,7 +2,7 @@ import config from '../../config'
 import message from 'antd/lib/message'
 import { uploadFileSuccessAction, setUploadingAction } from './actions'
 
-export const uploadProDesign = (file: any) => {
+export const uploadProDesign = (file: any, name: string) => {
   return async (dispatch: any) => {
     try {
       dispatch(setUploadingAction(true))
@@ -22,7 +22,8 @@ export const uploadProDesign = (file: any) => {
       )
       const data = await response.json()
       console.log(data)
-      dispatch(uploadFileSuccessAction(data))
+      console.log('Name ', name)
+      dispatch(uploadFileSuccessAction(data, name))
       message.success('Your file has been successfully uploaded!')
       dispatch(setUploadingAction(false))
     } catch (e) {

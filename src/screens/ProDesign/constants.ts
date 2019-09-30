@@ -12,3 +12,10 @@ export const SET_SEARCH_PRODUCT = `${namespace}/SET_SEARCH_PRODUCT`
 export const SET_PRODUCT_CODE = `${namespace}/SET_PRODUCT_CODE`
 export const UPLOAD_FILE_ACTION_SUCCESS = `${namespace}/UPLOAD_FILE_ACTION_SUCCESS`
 export const SET_UPLOADING_FILE_ACTION = `${namespace}/SET_UPLOADING_FILE_ACTION`
+export const GO_TO_COLOR_SECTION = `${namespace}/GO_TO_COLOR_SECTION`
+export const SET_STITCHING_COLOR_ACTION = `${namespace}/SET_STITCHING_COLOR_ACTION`
+export const SET_COLOR_ACTION = `${namespace}/SET_COLOR_ACTION`
+
+// Color Tabs
+export const MAIN_SECTION = 0
+export const STITCHING_SECTION = 1

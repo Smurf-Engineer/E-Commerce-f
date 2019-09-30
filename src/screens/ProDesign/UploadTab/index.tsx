@@ -34,10 +34,12 @@ interface Props {
   client: any
   productSearchResults: ProductSearchResult[]
   productCode: string
+  uploadingFile: boolean
+  fileName: string
   formatMessage: (messageDescriptor: Message) => string
   setSearchProduct: (products: ProductSearchResult[]) => void
   setProductCode: (productCode: string) => void
-  onUploadFile: (file: any) => void
+  onUploadFile: (file: any, name: string) => void
 }
 
 export class UploadTab extends React.Component<Props, {}> {
@@ -88,13 +90,19 @@ export class UploadTab extends React.Component<Props, {}> {
         message.error(formatMessage(messages.imageExtensionError))
         return false
       }
-      onUploadFile(file)
+      onUploadFile(file, name)
     }
     return false
   }
 
   render() {
-    const { formatMessage, productSearchResults, productCode } = this.props
+    const {
+      formatMessage,
+      productSearchResults,
+      productCode,
+      uploadingFile,
+      fileName
+    } = this.props
     return (
       <Container>
         <Header>{formatMessage(messages.title)}</Header>
@@ -121,10 +129,11 @@ export class UploadTab extends React.Component<Props, {}> {
               </Label>
               <SingleDraggerWithLoading
                 className="upload"
-                loading={false}
+                loading={uploadingFile}
                 onSelectImage={this.beforeUpload}
                 formatMessage={formatMessage}
                 extensions={['.png']}
+                {...{ fileName }}
               >
                 <Button>
                   <ButtonContainer>

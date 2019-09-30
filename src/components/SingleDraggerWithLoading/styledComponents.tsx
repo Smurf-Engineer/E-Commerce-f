@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Upload from 'antd/lib/upload'
+import Spin from 'antd/lib/spin'
 
 const { Dragger } = Upload
 
@@ -36,4 +37,9 @@ export const StyledDragger = styled(Dragger)`
   width: 100%;
   height: 30px;
 `
+
+export const StyledSpin = styled(Spin)`
+  height: 20px;
+`
+
 export const draggerStyle = { padding: '30px 0px' }

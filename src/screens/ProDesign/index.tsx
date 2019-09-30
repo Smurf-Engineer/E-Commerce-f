@@ -26,14 +26,22 @@ import {
   TopMenu,
   Layout,
   StyledTabs,
-  Render3DContainer
+  Render3DContainer,
+  StyledButton,
+  ButtonWrapper
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import UploadTab from './UploadTab'
 import ColorTab from './ColorTab'
 import { UPLOAD, COLOR } from './constants'
-import { ProductSearchResult, Product, QueryProps } from '../../types/common'
+import {
+  ProductSearchResult,
+  Product,
+  QueryProps,
+  StitchingColor,
+  ColorAccessories
+} from '../../types/common'
 
 const { TabPane } = AntdTabs
 
@@ -45,18 +53,26 @@ interface ProductTypes extends Product {
 
 interface Data extends QueryProps {
   productFromCode: ProductTypes
-  match: object
 }
+
 interface Props {
   intl: InjectedIntl
   selectedKey: string
   productSearchResults: ProductSearchResult[]
   data: Data
   productCode: string
+  actualImage: string
+  uploadingFile: boolean
+  fileName: string
+  colorSectionIndex: number
+  colorAccessories: ColorAccessories
   onTabClickAction: (selectedKey: string) => void
   setSearchProductAction: (product: ProductSearchResult[]) => void
   setProductCodeAction: (productCode: string) => void
-  uploadProDesignAction: (file: any) => void
+  uploadProDesignAction: (file: any, name: string) => void
+  goToColorSectionAction: (index: number) => void
+  setStitchingColorAction: (stitchingColor: StitchingColor) => void
+  setColorAction: (color: string, id: string) => void
 }
 export class ProDesign extends React.Component<Props, {}> {
   render3D: any
@@ -73,24 +89,52 @@ export class ProDesign extends React.Component<Props, {}> {
       setProductCodeAction,
       data,
       productCode,
-      uploadProDesignAction
+      uploadProDesignAction,
+      actualImage,
+      uploadingFile,
+      fileName,
+      colorSectionIndex,
+      goToColorSectionAction,
+      setStitchingColorAction,
+      colorAccessories,
+      colorAccessories: { stitching },
+      setColorAction
     } = this.props
     const { formatMessage } = intl
     const product = get(data, 'productFromCode')
     const loading = get(data, 'loading')
+    const colorsResult = get(data, 'colorsResult', '')
+    const saveDisabled = !product || !actualImage
 
     const tabs = (
       <StyledTabs activeKey={selectedKey} onTabClick={onTabClickAction}>
         <TabPane tab={<Tab label={UPLOAD} icon={uploadIcon} />} key={UPLOAD}>
           <UploadTab
-            {...{ formatMessage, productSearchResults, productCode }}
+            {...{
+              formatMessage,
+              productSearchResults,
+              productCode,
+              uploadingFile,
+              fileName
+            }}
             setSearchProduct={setSearchProductAction}
             setProductCode={setProductCodeAction}
             onUploadFile={uploadProDesignAction}
           />
         </TabPane>
         <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
-          <ColorTab {...{ formatMessage }} />
+          <ColorTab
+            index={colorSectionIndex}
+            {...{
+              formatMessage,
+              colorsResult,
+              colorAccessories,
+              product
+            }}
+            goToColorSection={goToColorSectionAction}
+            onSelectStitchingColor={setStitchingColorAction}
+            onSelectColor={setColorAction}
+          />
         </TabPane>
       </StyledTabs>
     )
@@ -114,11 +158,17 @@ export class ProDesign extends React.Component<Props, {}> {
                 customProduct={true}
                 isProduct={true}
                 designId={0}
-                {...{ product }}
+                {...{ product, actualImage, colorAccessories }}
+                stitchingValue={stitching}
                 ref={(render3D: any) => (this.render3D = render3D)}
               />
             )}
           </Render3DContainer>
+          <ButtonWrapper disabled={saveDisabled}>
+            <StyledButton type="primary" disabled={saveDisabled}>
+              {formatMessage(messages.saveDesign)}
+            </StyledButton>
+          </ButtonWrapper>
         </Layout>
       </Container>
     )

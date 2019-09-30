@@ -1394,3 +1394,11 @@ export interface ProductSearchResult {
   name: string
   code: string
 }
+
+export interface ColorAccessories {
+  stitching: string
+  stitchingName: string
+  zipperColor: AccesoryColor
+  bibColor: AccesoryColor
+  bindingColor: AccesoryColor
+}
