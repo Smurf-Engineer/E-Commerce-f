@@ -62,6 +62,8 @@ import {
 } from './styledComponents'
 import { UserType } from '../../types/common'
 import Helmet from 'react-helmet'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 // const { SubMenu } = Menu
 
@@ -90,6 +92,7 @@ interface Props extends RouteComponentProps<any> {
 export class Admin extends React.Component<Props, {}> {
   componentDidMount() {
     const { setLoadingAction } = this.props
+    LoadScripts(threeDScripts)
     setLoadingAction(false)
   }
   componentWillUnmount() {
