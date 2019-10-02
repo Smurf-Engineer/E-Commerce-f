@@ -35,5 +35,20 @@ describe(' ProductCatalog Screen', () => {
         expect(selectedKeyState.get('selectedKey')).toEqual(COLOR)
       })
     })
+    describe('SET_SEARCH_PRODUCT', () => {
+      it('Should not have initial state undefined', () => {
+        expect(initialState.get('productSearchResults')).toBeDefined()
+      })
+      it('productSearchResults shouldn´t have length on init', () => {
+        expect(initialState.get('productSearchResults').size).toEqual(0)
+      })
+      /* it('productSearchResults shouldn´t have length', () => {
+        const selectedKeyState = proDesignReducer(
+          initialState,
+          onTabClickAction(COLOR)
+        )
+        expect(selectedKeyState.get('selectedKey')).toEqual(COLOR)
+      }) */
+    })
   })
 })

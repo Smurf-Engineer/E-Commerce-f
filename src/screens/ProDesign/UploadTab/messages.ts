@@ -6,19 +6,19 @@ import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'screens.ProDesign.title',
+    id: 'screens.UploadTab.title',
     defaultMessage: 'Model and Design'
   },
   baseProduct: {
-    id: 'screens.ProDesign.baseProduct',
+    id: 'screens.UploadTab.baseProduct',
     defaultMessage: 'Select base product'
   },
   productCode: {
-    id: 'screens.ProDesign.productCode',
+    id: 'screens.UploadTab.productCode',
     defaultMessage: 'Product code or product name'
   },
   selectBase: {
-    id: 'screens.ProDesign.selectBase',
+    id: 'screens.UploadTab.selectBase',
     defaultMessage: 'Select base product'
   }
 })

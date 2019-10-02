@@ -1144,5 +1144,11 @@
   "screens.proDesignTab.upload": "Upload",
   "screens.proDesignTab.color": "Color",
   "screens.ProDesign.title": "PRO Design Publishing",
-  "screens.ProDesign.back": "Back to admin panel"
+  "screens.ProDesign.back": "Back to admin panel",
+  "screens.ProDesign.productNotFound": "Error: Product not found.",
+  "screens.ColorTab.title": "Color Settings",
+  "screens.UploadTab.title": "Model and Design",
+  "screens.UploadTab.baseProduct": "Select base product",
+  "screens.UploadTab.productCode": "Product code or product name",
+  "screens.UploadTab.selectBase": "Select base product"
 }
