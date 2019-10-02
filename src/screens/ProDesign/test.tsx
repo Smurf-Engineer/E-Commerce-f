@@ -2,9 +2,9 @@
  * ProDesign Test - Created by eduardoquintero on 30/09/19.
  */
 
-import { initialState } from './reducer'
+import proDesignReducer, { initialState } from './reducer'
 import { onTabClickAction } from './actions'
-import { ON_TAB_CLICK, UPLOAD } from './constants'
+import { ON_TAB_CLICK, UPLOAD, COLOR } from './constants'
 
 describe(' ProductCatalog Screen', () => {
   describe('Actions', () => {
@@ -26,6 +26,13 @@ describe(' ProductCatalog Screen', () => {
       })
       it('Should be init with UPLOAD tab key', () => {
         expect(initialState.get('selectedKey')).toEqual(UPLOAD)
+      })
+      it('Should be init with UPLOAD tab key', () => {
+        const selectedKeyState = proDesignReducer(
+          initialState,
+          onTabClickAction(COLOR)
+        )
+        expect(selectedKeyState.get('selectedKey')).toEqual(COLOR)
       })
     })
   })
