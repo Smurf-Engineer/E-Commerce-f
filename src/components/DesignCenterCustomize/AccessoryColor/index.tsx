@@ -31,7 +31,7 @@ const AccessoryColor = ({
   name,
   stitchingColor,
   goToStitching,
-  colorSelected = WHITE,
+  colorSelected = BLACK,
   onAccessoryColorSelected = () => {}
 }: Props) => {
   // tslint:disable:curly

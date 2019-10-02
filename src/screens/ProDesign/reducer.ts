@@ -11,11 +11,24 @@ import {
   UPLOAD_FILE_ACTION_SUCCESS,
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
-  SET_COLOR_ACTION
+  SET_COLOR_ACTION,
+  SET_USERS,
+  SET_SELECTED_USER,
+  SET_INPUT_VALUE,
+  OPEN_MODAL,
+  SET_SAVING_DESIGN
 } from './constants'
 import { Reducer } from '../../types/common'
 import { BLACK, WHITE } from '../DesignCenter/constants'
 import { BLACK as BLACK_COLOR } from '../../theme/colors'
+
+const colorAccessories = {
+  stitching: BLACK_COLOR,
+  stitchingName: 'FSC-10',
+  zipperColor: BLACK,
+  bibColor: WHITE,
+  bindingColor: BLACK
+}
 
 export const initialState = fromJS({
   selectedKey: UPLOAD,
@@ -25,13 +38,13 @@ export const initialState = fromJS({
   uploadingFile: false,
   fileName: '',
   colorSectionIndex: 0,
-  colorAccessories: {
-    stitching: BLACK_COLOR,
-    stitchingName: 'FSC-10',
-    zipperColor: BLACK,
-    bibColor: WHITE,
-    bindingColor: BLACK
-  }
+  colorAccessories,
+  users: [],
+  selectedUser: '',
+  designName: '',
+  legacyNumber: '',
+  saveModalOpen: false,
+  savingDesign: false
 })
 
 const proDesignReducer: Reducer<any> = (state = initialState, action) => {
@@ -44,7 +57,8 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         productCode: action.productCode,
         actualImage: '',
-        fileName: ''
+        fileName: '',
+        colorAccessories
       })
     case SET_UPLOADING_FILE_ACTION:
       return state.set('uploadingFile', action.isUploading)
@@ -60,8 +74,8 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
         stitchingColor: { value, name }
       } = action
       return state.withMutations((map: any) => {
-        map.update('colorAccessories', (colorAccessories: any) => {
-          return colorAccessories.merge({
+        map.update('colorAccessories', (colorAccessoriesObj: any) => {
+          return colorAccessoriesObj.merge({
             stitching: value,
             stitchingName: name
           })
@@ -71,6 +85,21 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_COLOR_ACTION:
       return state.setIn(['colorAccessories', action.id], action.color)
+    case SET_USERS:
+      const { users } = action
+      return state.merge({ users })
+    case SET_SELECTED_USER:
+      const { email } = action
+      return state.set('selectedUser', email)
+    case SET_INPUT_VALUE: {
+      const { id, value } = action
+      return state.set(id, value)
+    }
+    case OPEN_MODAL:
+      return state.set('saveModalOpen', !state.get('saveModalOpen'))
+    case SET_SAVING_DESIGN:
+      const { saving } = action
+      return state.set('savingDesign', saving)
     default:
       return state
   }

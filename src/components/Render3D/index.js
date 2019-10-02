@@ -396,6 +396,7 @@ class Render3D extends PureComponent {
               const zipperColor = zipper.black || zipper.white
               const hasZipperColor =
                 has(colorAccessories, 'zipperColor') &&
+                colorAccessories.zipperColor &&
                 colorAccessories.zipperColor.length
 
               const texture =
@@ -438,7 +439,7 @@ class Render3D extends PureComponent {
               const hasBibColor =
                 has(colorAccessories, 'bibColor') &&
                 colorAccessories.bibColor.length
-              console.log('Has bib ', hasBibColor)
+
               const texture =
                 bibBrace[
                   hasBibColor
@@ -901,10 +902,13 @@ class Render3D extends PureComponent {
     }
   }
 
-  takeScreenshot = () =>
+  takeScreenshot = (type = 'webp') =>
     new Promise(resolve => {
       setTimeout(() => {
-        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.3)
+        const thumbnail = this.renderer.domElement.toDataURL(
+          `image/${type}`,
+          0.3
+        )
         resolve(thumbnail)
       }, 800)
     })
@@ -919,6 +923,15 @@ class Render3D extends PureComponent {
     } catch (error) {
       console.error(error)
       onUploadingThumbnail(false)
+    }
+  }
+  saveProDesignThumbnail = async () => {
+    this.setFrontFaceModel()
+    try {
+      const thumbnail = await this.takeScreenshot('png')
+      return thumbnail
+    } catch (error) {
+      console.error(error)
     }
   }
 }
