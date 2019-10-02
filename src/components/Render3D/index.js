@@ -216,12 +216,12 @@ class Render3D extends PureComponent {
           const cacheQuery = `?p=${Math.random()
             .toString(36)
             .substr(2, 5)}`
-          if (!outputPng) {
+          if ((actualSvg || (outputSvg && !outputPng)) && !isPhone) {
             const imageCanvas = document.createElement('canvas')
             canvg(imageCanvas, `${actualSvg || outputSvg}${cacheQuery}`)
             loadedTextures.texture = new THREE.Texture(imageCanvas)
           } else {
-            loadedTextures.texture = new THREE.TextureLoader().load(
+            loadedTextures.texture = textureLoader.load(
               `${outputPng}${cacheQuery}`
             )
           }
@@ -460,7 +460,7 @@ class Render3D extends PureComponent {
               const brandingMaterial = new THREE.MeshPhongMaterial({
                 map: brandingTexture,
                 side: THREE.FrontSide,
-                bumpMap,
+                bumpMap: bumpMapObj,
                 transparent: true
               })
               children[brandingIndex].material = brandingMaterial

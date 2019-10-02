@@ -11,7 +11,8 @@ import {
   ModalButtonsWrapper,
   ReviewButton,
   ContinueButton,
-  Icon
+  Icon,
+  Paragraph
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
 import checkBoxIcon from '../../assets/checkbox.svg'
@@ -47,6 +48,11 @@ export class CheckoutDesignCheckModal extends React.Component<Props, {}> {
             <Icon src={checkBoxIcon} />
           </ProReviewTitle>
           <OptionalLabel>{formatMessage(messages.optionalLabel)}</OptionalLabel>
+          <Paragraph
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.helpLabel)
+            }}
+          />
           <ProDesignReviewContent
             dangerouslySetInnerHTML={{
               __html: formatMessage(messages.reviewDesignModalText)

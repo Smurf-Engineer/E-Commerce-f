@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'components.InternalsModal.internalId',
     defaultMessage: 'Internal ID'
   },
-  productCode: {
-    id: 'components.InternalsModal.productCode',
-    defaultMessage: 'Product Code'
+  modelID: {
+    id: 'components.InternalsModal.modelID',
+    defaultMessage: 'Model ID'
   },
   gender: {
     id: 'components.InternalsModal.gender',

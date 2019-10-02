@@ -47,7 +47,8 @@ import {
   RenderContainer,
   PrivateSubtitle,
   ProApproved,
-  ProApprovedLabel
+  ProApprovedLabel,
+  layoutStyle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -408,7 +409,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     )
 
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} style={layoutStyle}>
         <Container>
           {design && (
             <Content>

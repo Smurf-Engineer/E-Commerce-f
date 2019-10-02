@@ -37,9 +37,11 @@ export const ListItem = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
-
+  cursor: pointer;
+  transition: all 0.25s ease;
   &:hover {
-    cursor: pointer;
+    text-decoration: ${({ selected }: ContainerProps) =>
+      selected ? 'none' : 'underline'};
   }
 `
 

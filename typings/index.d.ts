@@ -148,17 +148,3 @@ declare module 'react-paypal-express-checkout-authorize' {
 declare module 'omit-deep' {
   export default function omitDeep(object: any, keys: any): any
 }
-
-declare module 'react-intercom' {
-  interface Props {
-    appID?: string
-    user_id?: string
-    email?: string
-    name?: string
-  }
-
-  class Intercom extends React.Component<Props, any> {}
-  export function IntercomAPI(method: string): void
-
-  export default Intercom
-}
