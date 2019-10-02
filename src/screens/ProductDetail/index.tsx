@@ -59,7 +59,8 @@ import {
   MobileButtonWrapper,
   StyledButtonWrapper,
   MenIcon,
-  WomenIcon
+  WomenIcon,
+  layoutStyle
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
@@ -494,7 +495,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
 
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
         <Container>
           {product && (

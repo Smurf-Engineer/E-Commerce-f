@@ -2,8 +2,8 @@
  * Styled Components - Created by eduardoquintero on 19/09/19.
  */
 import styled from 'styled-components'
-import { GRAY_LIGHT, WHITE } from '../../theme/colors'
 import AntdTabs from 'antd/lib/tabs'
+import { GRAY_LIGHT, WHITE, GRAY_DARK } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -43,7 +43,7 @@ export const BackButton = styled.div`
 `
 
 export const Back = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 19px;
 `

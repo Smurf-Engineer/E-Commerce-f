@@ -54,3 +54,5 @@ export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
 export const SET_IS_MOBILE = `${namespace}/SET_IS_MOBILE`
 export const OPEN_SIDEBAR_MOBILE = `${namespace}/OPEN_SIDEBAR_MOBILE`
 export const SET_CURRENT_SHARE = `${namespace}/SET_CURRENT_SHARE`
+export const OPEN_ADD_TOTEAMSTORE = `${namespace}/ADD_TOTEAMSTORE`
+export const SET_ITEM_TOADD = `${namespace}/SET_ITEM_TOADD`

@@ -32,7 +32,8 @@ const modalData = {
   bibBrace: null,
   collection: null,
   loading: false,
-  downloading: false
+  downloading: false,
+  model: null
 }
 
 export const initialState = fromJS({

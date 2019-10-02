@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.InternalsList.productCode',
     defaultMessage: 'Product Code'
   },
+  modelId: {
+    id: 'components.InternalsList.modelId',
+    defaultMessage: 'Model ID'
+  },
   gender: {
     id: 'components.InternalsList.gender',
     defaultMessage: 'Gender'
@@ -54,7 +58,7 @@ export default defineMessages({
     defaultMessage: 'No product internals yet'
   },
   edit: {
-    id: 'components.InternalsList.emptyMessage',
+    id: 'components.InternalsList.edit',
     defaultMessage: 'Edit'
   }
 })
