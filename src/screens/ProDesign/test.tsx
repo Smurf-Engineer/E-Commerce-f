@@ -10,14 +10,20 @@ import {
   setUploadingAction,
   uploadFileSuccessAction,
   goToColorSectionAction,
-  setStitchingColorAction
+  setStitchingColorAction,
+  setColorAction
 } from './actions'
 import {
   ON_TAB_CLICK,
   UPLOAD,
   COLOR,
   SET_SEARCH_PRODUCT,
-  SET_PRODUCT_CODE
+  SET_PRODUCT_CODE,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION,
+  GO_TO_COLOR_SECTION,
+  SET_STITCHING_COLOR_ACTION,
+  SET_COLOR_ACTION
 } from './constants'
 
 describe(' ProductCatalog Screen', () => {
@@ -47,6 +53,55 @@ describe(' ProductCatalog Screen', () => {
       expect(setProductCodeAction(productCode)).toEqual({
         type,
         productCode
+      })
+    })
+    it('uploadFileSuccessAction', () => {
+      const type = UPLOAD_FILE_ACTION_SUCCESS
+      const url = { fileUrl: 'image.png' }
+      const fileName = 'image'
+
+      expect(uploadFileSuccessAction(url, fileName)).toEqual({
+        type,
+        url,
+        fileName
+      })
+    })
+    it('setUploadingAction', () => {
+      const type = SET_UPLOADING_FILE_ACTION
+      const isUploading = true
+
+      expect(setUploadingAction(isUploading)).toEqual({
+        type,
+        isUploading
+      })
+    })
+    it('goToColorSectionAction', () => {
+      const type = GO_TO_COLOR_SECTION
+      const index = 1
+
+      expect(goToColorSectionAction(index)).toEqual({
+        type,
+        index
+      })
+    })
+    it('setStitchingColorAction', () => {
+      const type = SET_STITCHING_COLOR_ACTION
+      const stitchingColor = { name: 'FSC-10', value: '#000' }
+
+      expect(setStitchingColorAction(stitchingColor)).toEqual({
+        type,
+        stitchingColor
+      })
+    })
+    it('setColorAction', () => {
+      const type = SET_COLOR_ACTION
+      const color = 'black'
+      const id = 'zipperColor'
+
+      expect(setColorAction(color, id)).toEqual({
+        type,
+        color,
+        id
       })
     })
   })
@@ -199,6 +254,50 @@ describe(' ProductCatalog Screen', () => {
         expect(
           customValueState.getIn(['colorAccessories', 'stitchingName'])
         ).toEqual(stitching.name)
+      })
+    })
+    describe('SET_COLOR_ACTION', () => {
+      it('zipperColor Should be a string', () => {
+        expect(
+          typeof initialState.getIn(['colorAccessories', 'zipperColor'])
+        ).toBe('string')
+      })
+      it('bibColor Should be a string', () => {
+        expect(
+          typeof initialState.getIn(['colorAccessories', 'bibColor'])
+        ).toBe('string')
+      })
+      it('bindingColor Should be a string', () => {
+        expect(
+          typeof initialState.getIn(['colorAccessories', 'bindingColor'])
+        ).toBe('string')
+      })
+      it('Handles custom value type in zipperColor', () => {
+        const color = 'black'
+        const id = 'zipperColor'
+        const customValueState = proDesignReducer(
+          initialState,
+          setColorAction(color, id)
+        )
+        expect(customValueState.getIn(['colorAccessories', id])).toEqual(color)
+      })
+      it('Handles custom value type in bindingColor', () => {
+        const color = 'black'
+        const id = 'bindingColor'
+        const customValueState = proDesignReducer(
+          initialState,
+          setColorAction(color, id)
+        )
+        expect(customValueState.getIn(['colorAccessories', id])).toEqual(color)
+      })
+      it('Handles custom value type in bibColor', () => {
+        const color = 'black'
+        const id = 'bibColor'
+        const customValueState = proDesignReducer(
+          initialState,
+          setColorAction(color, id)
+        )
+        expect(customValueState.getIn(['colorAccessories', id])).toEqual(color)
       })
     })
   })
