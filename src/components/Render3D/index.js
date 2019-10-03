@@ -902,13 +902,10 @@ class Render3D extends PureComponent {
     }
   }
 
-  takeScreenshot = (type = 'webp') =>
+  takeScreenshot = () =>
     new Promise(resolve => {
       setTimeout(() => {
-        const thumbnail = this.renderer.domElement.toDataURL(
-          `image/${type}`,
-          0.3
-        )
+        const thumbnail = this.renderer.domElement.toDataURL(`image/webp`, 0.3)
         resolve(thumbnail)
       }, 800)
     })
@@ -928,7 +925,7 @@ class Render3D extends PureComponent {
   saveProDesignThumbnail = async () => {
     this.setFrontFaceModel()
     try {
-      const thumbnail = await this.takeScreenshot('png')
+      const thumbnail = await this.takeScreenshot()
       return thumbnail
     } catch (error) {
       console.error(error)

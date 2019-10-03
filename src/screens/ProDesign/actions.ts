@@ -11,11 +11,12 @@ import {
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
-  SET_USERS,
   SET_SELECTED_USER,
   SET_INPUT_VALUE,
   OPEN_MODAL,
-  SET_SAVING_DESIGN
+  SET_SAVING_DESIGN,
+  SAVE_DESIGN_SUCCESS,
+  SET_USER_TO_SEARCH
 } from './constants'
 
 import {
@@ -24,7 +25,6 @@ import {
   StitchingColor,
   UserFiles
 } from '../../types/common'
-import { SET_SAVING_DESIGN } from '../DesignerTool/constants'
 
 export const onTabClickAction = (selectedKey: string): AnyAction => ({
   type: ON_TAB_CLICK,
@@ -70,11 +70,6 @@ export const setColorAction = (color: string, id: string) => ({
   id
 })
 
-export const setUsersAction = (users: string[]) => ({
-  type: SET_USERS,
-  users
-})
-
 export const setSelectedUserAction = (email: string) => ({
   type: SET_SELECTED_USER,
   email
@@ -93,4 +88,13 @@ export const setSaveModalOpenAction = () => ({
 export const setSavingDesignAction = (saving: boolean) => ({
   type: SET_SAVING_DESIGN,
   saving
+})
+
+export const setSavingDesignSuccessAction = () => ({
+  type: SAVE_DESIGN_SUCCESS
+})
+
+export const setUserToSearchAction = (value: string) => ({
+  type: SET_USER_TO_SEARCH,
+  value
 })

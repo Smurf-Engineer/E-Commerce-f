@@ -12,11 +12,11 @@ import {
   goToColorSectionAction,
   setStitchingColorAction,
   setColorAction,
-  setUsersAction,
   setSelectedUserAction,
   setInputValueAction,
   setSaveModalOpenAction,
-  setSavingDesignAction
+  setSavingDesignAction,
+  setUserToSearchAction
 } from './actions'
 import {
   ON_TAB_CLICK,
@@ -29,7 +29,6 @@ import {
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
-  SET_USERS,
   SET_SELECTED_USER,
   SET_INPUT_VALUE,
   OPEN_MODAL,
@@ -112,15 +111,6 @@ describe(' ProductCatalog Screen', () => {
         type,
         color,
         id
-      })
-    })
-    it('setUsersAction', () => {
-      const type = SET_USERS
-      const users = ['John']
-
-      expect(setUsersAction(users)).toEqual({
-        type,
-        users
       })
     })
     it('setSelectedUserAction', () => {
@@ -353,22 +343,6 @@ describe(' ProductCatalog Screen', () => {
         )
         expect(customValueState.getIn(['colorAccessories', id])).toEqual(color)
       })
-      describe('SET_USERS', () => {
-        it('Should not have initial state undefined', () => {
-          expect(initialState.get('users')).toBeDefined()
-        })
-        it('users shouldn´t have length on init', () => {
-          expect(initialState.get('users').size).toEqual(0)
-        })
-        it('Handles custom values in users', () => {
-          const searchResults = ['John']
-          const searchResultsState = proDesignReducer(
-            initialState,
-            setUsersAction(searchResults)
-          )
-          expect(searchResultsState.get('users').size).toEqual(1)
-        })
-      })
       describe('SET_SELECTED_USER', () => {
         it('Should not have initial state undefined', () => {
           expect(initialState.get('selectedUser')).not.toBeUndefined()
@@ -453,6 +427,22 @@ describe(' ProductCatalog Screen', () => {
             setSavingDesignAction(true)
           )
           expect(customValueState.get('savingDesign')).toBeTruthy()
+        })
+      })
+      describe('SET_USER_TO_SEARCH', () => {
+        it('Should not have initial state undefined', () => {
+          expect(initialState.get('userToSearch')).not.toBeUndefined()
+        })
+        it('userToSearch should be tring', () => {
+          expect(typeof initialState.get('userToSearch')).toBe('string')
+        })
+        it('Handles custom values in users', () => {
+          const user = 'john'
+          const selectedUserState = proDesignReducer(
+            initialState,
+            setUserToSearchAction(user)
+          )
+          expect(selectedUserState.get('userToSearch')).toBe(user)
         })
       })
     })

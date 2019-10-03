@@ -69,12 +69,12 @@ interface Props {
   fileName: string
   colorSectionIndex: number
   colorAccessories: ColorAccessories
-  users: string[]
   designName: string
   legacyNumber: string
   selectedUser: string
   saveModalOpen: boolean
   savingDesign: boolean
+  userToSearch: string
   onTabClickAction: (selectedKey: string) => void
   setSearchProductAction: (product: ProductSearchResult[]) => void
   setProductCodeAction: (productCode: string) => void
@@ -82,12 +82,13 @@ interface Props {
   goToColorSectionAction: (index: number) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setColorAction: (color: string, id: string) => void
-  setUsersAction: (users: string[]) => void
   setSelectedUserAction: (email: string) => void
   setInputValueAction: (id: string, value: string) => void
   saveDesign: (variables: {}) => void
   setSaveModalOpenAction: () => void
   setSavingDesignAction: (saving: boolean) => void
+  setSavingDesignSuccessAction: () => void
+  setUserToSearchAction: (value: string) => void
 }
 export class ProDesign extends React.Component<Props, {}> {
   render3D: any
@@ -108,7 +109,7 @@ export class ProDesign extends React.Component<Props, {}> {
       designName,
       legacyNumber,
       productCode,
-      setSaveModalOpenAction,
+      setSavingDesignSuccessAction,
       setSavingDesignAction,
       actualImage,
       data
@@ -139,8 +140,7 @@ export class ProDesign extends React.Component<Props, {}> {
           variables: { design }
         })
       }
-      setSavingDesignAction(false)
-      setSaveModalOpenAction()
+      setSavingDesignSuccessAction()
     } catch (error) {
       message.error(error.message)
       setSavingDesignAction(false)
@@ -166,8 +166,6 @@ export class ProDesign extends React.Component<Props, {}> {
       colorAccessories,
       colorAccessories: { stitching },
       setColorAction,
-      setUsersAction,
-      users,
       setSelectedUserAction,
       setInputValueAction,
       designName,
@@ -175,7 +173,9 @@ export class ProDesign extends React.Component<Props, {}> {
       selectedUser,
       setSaveModalOpenAction,
       saveModalOpen,
-      savingDesign
+      savingDesign,
+      setUserToSearchAction,
+      userToSearch
     } = this.props
     const { formatMessage } = intl
     const product = get(data, 'productFromCode')
@@ -216,24 +216,6 @@ export class ProDesign extends React.Component<Props, {}> {
       </StyledTabs>
     )
 
-    const addProDesignModal = (
-      <AddProDesignModal
-        visible={saveModalOpen}
-        {...{
-          formatMessage,
-          users,
-          designName,
-          legacyNumber,
-          selectedUser,
-          savingDesign
-        }}
-        setUsers={setUsersAction}
-        setSelectedUser={setSelectedUserAction}
-        handleOnInputChange={setInputValueAction}
-        onSaveDesign={this.saveDesign}
-        requestClose={setSaveModalOpenAction}
-      />
-    )
     return (
       <Container>
         <Helmet title={formatMessage(messages.title)} />
@@ -271,7 +253,22 @@ export class ProDesign extends React.Component<Props, {}> {
             </StyledButton>
           </ButtonWrapper>
         </Layout>
-        {addProDesignModal}
+        <AddProDesignModal
+          visible={saveModalOpen}
+          {...{
+            formatMessage,
+            designName,
+            legacyNumber,
+            selectedUser,
+            savingDesign,
+            userToSearch
+          }}
+          setSelectedUser={setSelectedUserAction}
+          handleOnInputChange={setInputValueAction}
+          onSaveDesign={this.saveDesign}
+          requestClose={setSaveModalOpenAction}
+          setUserToSearch={setUserToSearchAction}
+        />
       </Container>
     )
   }

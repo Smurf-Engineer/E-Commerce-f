@@ -12,11 +12,12 @@ import {
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
-  SET_USERS,
   SET_SELECTED_USER,
   SET_INPUT_VALUE,
   OPEN_MODAL,
-  SET_SAVING_DESIGN
+  SET_SAVING_DESIGN,
+  SAVE_DESIGN_SUCCESS,
+  SET_USER_TO_SEARCH
 } from './constants'
 import { Reducer } from '../../types/common'
 import { BLACK, WHITE } from '../DesignCenter/constants'
@@ -39,12 +40,12 @@ export const initialState = fromJS({
   fileName: '',
   colorSectionIndex: 0,
   colorAccessories,
-  users: [],
   selectedUser: '',
   designName: '',
   legacyNumber: '',
   saveModalOpen: false,
-  savingDesign: false
+  savingDesign: false,
+  userToSearch: ''
 })
 
 const proDesignReducer: Reducer<any> = (state = initialState, action) => {
@@ -85,9 +86,6 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_COLOR_ACTION:
       return state.setIn(['colorAccessories', action.id], action.color)
-    case SET_USERS:
-      const { users } = action
-      return state.merge({ users })
     case SET_SELECTED_USER:
       const { email } = action
       return state.set('selectedUser', email)
@@ -100,6 +98,16 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SAVING_DESIGN:
       const { saving } = action
       return state.set('savingDesign', saving)
+    case SAVE_DESIGN_SUCCESS:
+      return state.merge({
+        savingDesign: false,
+        saveModalOpen: false,
+        selectedUser: '',
+        designName: '',
+        legacyNumber: ''
+      })
+    case SET_USER_TO_SEARCH:
+      return state.set('userToSearch', action.value)
     default:
       return state
   }

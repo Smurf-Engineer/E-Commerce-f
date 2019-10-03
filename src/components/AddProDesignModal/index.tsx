@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import debounce from 'lodash/debounce'
-import { withApollo, compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { getUsers } from './data'
 import message from 'antd/lib/message'
 import messages from './messages'
@@ -19,49 +19,39 @@ import {
 } from './styledComponents'
 import Icon from 'antd/lib/icon'
 import CustomModal from '../Common/JakrooModal'
-import { Message, UserSearchResult } from '../../types/common'
+import { Message, UserSearchResult, QueryProps } from '../../types/common'
 import { SelectValue } from 'antd/lib/select'
 import { containsNumberAndLetters, containSpaces } from '../../utils/utilsFiles'
 
 interface Props {
-  client: any
   visible: boolean
-  users: string[]
   designName: string
   legacyNumber: string
   selectedUser: string
   savingDesign: boolean
+  userToSearch: string
+  data: any
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   requestClose: () => void
-  setUsers: (users: string[]) => void
   setSelectedUser: (email: string) => void
   handleOnInputChange: (id: string, value: string) => void
   onSaveDesign: () => void
+  setUserToSearch: (value: string) => void
 }
 
+interface Data extends QueryProps {
+  userSearch: UserSearchResult[]
+}
 export class AddProDesignModal extends React.Component<Props, {}> {
   debounceSearchProduct = debounce(value => this.handleOnChange(value), 300)
 
   handleOnChange = async (value: SelectValue) => {
-    const {
-      client: { query },
-      setUsers
-    } = this.props
+    const { setUserToSearch } = this.props
     try {
       const parsedValue = value.toString()
 
       if (containsNumberAndLetters(parsedValue)) {
-        const { data } = await query({
-          query: getUsers,
-          variables: { pattern: parsedValue.trim() },
-          fetchPolicy: 'network-only'
-        })
-
-        const users = data.getUserSearch.map(
-          (item: UserSearchResult) =>
-            `${item.id} - ${item.name} - ${item.email}`
-        )
-        setUsers(users)
+        setUserToSearch(parsedValue.trim())
       }
     } catch (error) {
       message.error(error.message)
@@ -90,14 +80,20 @@ export class AddProDesignModal extends React.Component<Props, {}> {
       formatMessage,
       visible,
       requestClose,
-      users,
       designName,
       legacyNumber,
       selectedUser,
       onSaveDesign,
-      savingDesign
+      savingDesign,
+      data
     } = this.props
     const saveDisabled = !designName || !legacyNumber || !selectedUser
+    const searchResults =
+      data &&
+      !data.loading &&
+      data.userSearch.map(
+        (item: UserSearchResult) => `${item.id} - ${item.name} - ${item.email}`
+      )
     return (
       <Container>
         <CustomModal
@@ -124,7 +120,7 @@ export class AddProDesignModal extends React.Component<Props, {}> {
           <Label>{formatMessage(messages.selectUser)}</Label>
           <StyledSearch
             onChange={this.debounceSearchProduct}
-            dataSource={users}
+            dataSource={searchResults}
             onSelect={this.handleOnSelect}
             placeholder={formatMessage(messages.searchBy)}
           >
@@ -152,6 +148,23 @@ export class AddProDesignModal extends React.Component<Props, {}> {
   }
 }
 
-const AddProDesignModalEnhance = compose(withApollo)(AddProDesignModal)
+type OwnProps = {
+  userToSearch?: string
+}
+
+const AddProDesignModalEnhance = compose(
+  graphql<Data>(getUsers, {
+    options: (ownprops: OwnProps) => {
+      const { userToSearch } = ownprops
+      return {
+        variables: {
+          pattern: userToSearch
+        },
+        skip: !userToSearch,
+        fetchPolicy: 'network-only'
+      }
+    }
+  })
+)(AddProDesignModal)
 
 export default AddProDesignModalEnhance
