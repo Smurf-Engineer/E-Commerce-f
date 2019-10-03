@@ -8,9 +8,9 @@ export const uploadProDesign = (file: any, name: string) => {
       dispatch(setUploadingAction(true))
       const user = JSON.parse(localStorage.getItem('user') || '')
       const formData = new FormData()
-      formData.append('file', file, `pro-design-output.png`)
+      formData.append('file', file, 'pro-output.png')
       const response = await fetch(
-        `${config.graphqlUriBase}upload/pro-design/file/pro-design`,
+        `${config.graphqlUriBase}upload/pro-design/file/pro-output`,
         {
           method: 'POST',
           headers: {
