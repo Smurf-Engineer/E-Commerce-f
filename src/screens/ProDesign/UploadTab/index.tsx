@@ -2,7 +2,7 @@
  * UploadTab - Created by eduardoquintero on 19/09/19.
  */
 import * as React from 'react'
-import { withApollo, compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import debounce from 'lodash/debounce'
 import { getProducts } from './data'
 import indexOf from 'lodash/indexOf'
@@ -27,42 +27,35 @@ import {
 } from '../../../utils/utilsFiles'
 import AntdMessage from 'antd/lib/message'
 import messages from './messages'
-import { Message, ProductSearchResult } from '../../../types/common'
+import { Message, ProductSearchResult, QueryProps } from '../../../types/common'
 import { SelectValue } from 'antd/lib/select'
 
+interface Data extends QueryProps {
+  getProductSearch: ProductSearchResult[]
+}
 interface Props {
   client: any
   productSearchResults: ProductSearchResult[]
   productCode: string
   uploadingFile: boolean
   fileName: string
+  productToSearch: string
+  data: Data
   formatMessage: (messageDescriptor: Message) => string
-  setSearchProduct: (products: ProductSearchResult[]) => void
   setProductCode: (productCode: string) => void
   onUploadFile: (file: any, name: string) => void
+  setProductToSearch: (value: string) => void
 }
 
 export class UploadTab extends React.Component<Props, {}> {
   debounceSearchProduct = debounce(value => this.handleOnChange(value), 300)
 
   handleOnChange = async (value: SelectValue) => {
-    const {
-      client: { query },
-      setSearchProduct
-    } = this.props
+    const { setProductToSearch } = this.props
     try {
       const parsedValue = value.toString()
       if (containsNumberAndLetters(parsedValue)) {
-        const { data } = await query({
-          query: getProducts,
-          variables: { pattern: parsedValue.trim() },
-          fetchPolicy: 'network-only'
-        })
-
-        const searchCodes = data.getProductSearch.map(
-          (item: ProductSearchResult) => `${item.name} - ${item.code}`
-        )
-        setSearchProduct(searchCodes)
+        setProductToSearch(parsedValue.trim())
       }
     } catch (error) {
       AntdMessage.error(error.message)
@@ -98,11 +91,18 @@ export class UploadTab extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
-      productSearchResults,
       productCode,
       uploadingFile,
-      fileName
+      fileName,
+      data
     } = this.props
+
+    const searchCodes =
+      data &&
+      !data.loading &&
+      data.getProductSearch.map(
+        (item: ProductSearchResult) => `${item.name} - ${item.code}`
+      )
     return (
       <Container>
         <Header>{formatMessage(messages.title)}</Header>
@@ -110,7 +110,7 @@ export class UploadTab extends React.Component<Props, {}> {
           <Label>{formatMessage(messages.selectBase)}</Label>
           <StyledSearch
             onChange={this.debounceSearchProduct}
-            dataSource={productSearchResults}
+            dataSource={searchCodes}
             onSelect={this.handleOnSelect}
             placeholder={formatMessage(messages.productCode)}
           >
@@ -150,6 +150,23 @@ export class UploadTab extends React.Component<Props, {}> {
   }
 }
 
-const UploadTabEnhance = compose(withApollo)(UploadTab)
+type OwnProps = {
+  productToSearch?: string
+}
+
+const UploadTabEnhance = compose(
+  graphql<Data>(getProducts, {
+    options: (ownprops: OwnProps) => {
+      const { productToSearch } = ownprops
+      return {
+        variables: {
+          pattern: productToSearch
+        },
+        skip: !productToSearch,
+        fetchPolicy: 'network-only'
+      }
+    }
+  })
+)(UploadTab)
 
 export default UploadTabEnhance

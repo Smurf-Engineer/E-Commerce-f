@@ -36,7 +36,6 @@ import UploadTab from './UploadTab'
 import ColorTab from './ColorTab'
 import { UPLOAD, COLOR } from './constants'
 import {
-  ProductSearchResult,
   Product,
   QueryProps,
   StitchingColor,
@@ -58,7 +57,6 @@ interface Data extends QueryProps {
 interface Props {
   intl: InjectedIntl
   selectedKey: string
-  productSearchResults: ProductSearchResult[]
   data: Data
   productCode: string
   actualImage: string
@@ -66,13 +64,14 @@ interface Props {
   fileName: string
   colorSectionIndex: number
   colorAccessories: ColorAccessories
+  productToSearch: string
   onTabClickAction: (selectedKey: string) => void
-  setSearchProductAction: (product: ProductSearchResult[]) => void
   setProductCodeAction: (productCode: string) => void
   uploadProDesignAction: (file: any, name: string) => void
   goToColorSectionAction: (index: number) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setColorAction: (color: string, id: string) => void
+  setProductToSearchAction: (value: string) => void
 }
 export class ProDesign extends React.Component<Props, {}> {
   render3D: any
@@ -84,8 +83,6 @@ export class ProDesign extends React.Component<Props, {}> {
       intl,
       onTabClickAction,
       selectedKey,
-      setSearchProductAction,
-      productSearchResults,
       setProductCodeAction,
       data,
       productCode,
@@ -98,7 +95,9 @@ export class ProDesign extends React.Component<Props, {}> {
       setStitchingColorAction,
       colorAccessories,
       colorAccessories: { stitching },
-      setColorAction
+      setColorAction,
+      setProductToSearchAction,
+      productToSearch
     } = this.props
     const { formatMessage } = intl
     const product = get(data, 'productFromCode')
@@ -112,14 +111,14 @@ export class ProDesign extends React.Component<Props, {}> {
           <UploadTab
             {...{
               formatMessage,
-              productSearchResults,
               productCode,
               uploadingFile,
               fileName
             }}
-            setSearchProduct={setSearchProductAction}
-            setProductCode={setProductCodeAction}
             onUploadFile={uploadProDesignAction}
+            {...{ formatMessage, productToSearch }}
+            setProductCode={setProductCodeAction}
+            setProductToSearch={setProductToSearchAction}
           />
         </TabPane>
         <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>

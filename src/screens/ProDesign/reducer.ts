@@ -5,13 +5,13 @@ import { fromJS } from 'immutable'
 import {
   ON_TAB_CLICK,
   UPLOAD,
-  SET_SEARCH_PRODUCT,
   SET_PRODUCT_CODE,
   SET_UPLOADING_FILE_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
-  SET_COLOR_ACTION
+  SET_COLOR_ACTION,
+  SET_PRODUCT_TO_SEARCH
 } from './constants'
 import { Reducer } from '../../types/common'
 import { BLACK, WHITE } from '../DesignCenter/constants'
@@ -31,15 +31,14 @@ export const initialState = fromJS({
     zipperColor: BLACK,
     bibColor: WHITE,
     bindingColor: BLACK
-  }
+  },
+  productToSearch: ''
 })
 
 const proDesignReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case ON_TAB_CLICK:
       return state.set('selectedKey', action.selectedKey)
-    case SET_SEARCH_PRODUCT:
-      return state.merge({ productSearchResults: action.products })
     case SET_PRODUCT_CODE:
       return state.merge({
         productCode: action.productCode,
@@ -71,6 +70,8 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_COLOR_ACTION:
       return state.setIn(['colorAccessories', action.id], action.color)
+    case SET_PRODUCT_TO_SEARCH:
+      return state.set('productToSearch', action.value)
     default:
       return state
   }

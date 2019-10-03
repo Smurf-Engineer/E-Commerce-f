@@ -4,31 +4,20 @@
 
 import {
   ON_TAB_CLICK,
-  SET_SEARCH_PRODUCT,
   SET_PRODUCT_CODE,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
-  SET_COLOR_ACTION
+  SET_COLOR_ACTION,
+  SET_PRODUCT_TO_SEARCH
 } from './constants'
 
-import {
-  AnyAction,
-  ProductSearchResult,
-  StitchingColor
-} from '../../types/common'
+import { AnyAction, StitchingColor, UserFiles } from '../../types/common'
 
 export const onTabClickAction = (selectedKey: string): AnyAction => ({
   type: ON_TAB_CLICK,
   selectedKey
-})
-
-export const setSearchProductAction = (
-  products: ProductSearchResult[]
-): AnyAction => ({
-  type: SET_SEARCH_PRODUCT,
-  products
 })
 
 export const setProductCodeAction = (productCode: string): AnyAction => ({
@@ -36,7 +25,7 @@ export const setProductCodeAction = (productCode: string): AnyAction => ({
   productCode
 })
 
-export const uploadFileSuccessAction = (url: string, fileName: string) => ({
+export const uploadFileSuccessAction = (url: UserFiles, fileName: string) => ({
   type: UPLOAD_FILE_ACTION_SUCCESS,
   url,
   fileName
@@ -61,4 +50,9 @@ export const setColorAction = (color: string, id: string) => ({
   type: SET_COLOR_ACTION,
   color,
   id
+})
+
+export const setProductToSearchAction = (value: string): AnyAction => ({
+  type: SET_PRODUCT_TO_SEARCH,
+  value
 })
