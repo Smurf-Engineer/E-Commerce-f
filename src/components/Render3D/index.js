@@ -438,7 +438,7 @@ class Render3D extends PureComponent {
               const hasBibColor =
                 has(colorAccessories, 'bibColor') &&
                 colorAccessories.bibColor.length
-              console.log('Has bib ', hasBibColor)
+
               const texture =
                 bibBrace[
                   hasBibColor
