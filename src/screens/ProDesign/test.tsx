@@ -8,17 +8,41 @@ import {
   setSearchProductAction,
   setProductCodeAction
 } from './actions'
-import { ON_TAB_CLICK, UPLOAD, COLOR } from './constants'
+import {
+  ON_TAB_CLICK,
+  UPLOAD,
+  COLOR,
+  SET_SEARCH_PRODUCT,
+  SET_PRODUCT_CODE
+} from './constants'
 
 describe(' ProductCatalog Screen', () => {
   describe('Actions', () => {
-    it('setSelectedFilters', () => {
+    it('onTabClickAction', () => {
       const type = ON_TAB_CLICK
       const selectedKey = 'color'
 
       expect(onTabClickAction(selectedKey)).toEqual({
         type,
         selectedKey
+      })
+    })
+    it('setSearchProductAction', () => {
+      const type = SET_SEARCH_PRODUCT
+      const products = [{ name: 'Name', code: '4040' }]
+
+      expect(setSearchProductAction(products)).toEqual({
+        type,
+        products
+      })
+    })
+    it('setProductCodeAction', () => {
+      const type = SET_PRODUCT_CODE
+      const productCode = '005'
+
+      expect(setProductCodeAction(productCode)).toEqual({
+        type,
+        productCode
       })
     })
   })
