@@ -8,7 +8,7 @@ import { ON_TAB_CLICK, UPLOAD, COLOR } from './constants'
 
 describe(' ProductCatalog Screen', () => {
   describe('Actions', () => {
-    it('setSelectedFilters', () => {
+    it('onTabClickAction', () => {
       const type = ON_TAB_CLICK
       const selectedKey = 'color'
 
