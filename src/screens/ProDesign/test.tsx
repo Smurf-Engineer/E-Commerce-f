@@ -6,7 +6,8 @@ import proDesignReducer, { initialState } from './reducer'
 import {
   onTabClickAction,
   setSearchProductAction,
-  setProductCodeAction
+  setProductCodeAction,
+  setUploadingAction
 } from './actions'
 import {
   ON_TAB_CLICK,
@@ -94,6 +95,26 @@ describe(' ProductCatalog Screen', () => {
           setProductCodeAction(customValue)
         )
         expect(customValueState.get('productCode')).toEqual(customValue)
+      })
+    })
+    describe('SET_UPLOADING_FILE_ACTION', () => {
+      it('Should have empty value on init', () => {
+        expect(initialState.get('uploadingFile')).not.toBeUndefined()
+      })
+      it('Should be false on init', () => {
+        expect(initialState.get('uploadingFile')).toBeFalsy()
+      })
+      it('Handles value type in uploadingFile', () => {
+        const customInitialValue = initialState.get('uploadingFile')
+        expect(typeof customInitialValue).toBe('boolean')
+      })
+      it('Handles custom value type in uploadingFile', () => {
+        const customValue = true
+        const customValueState = proDesignReducer(
+          initialState,
+          setUploadingAction(customValue)
+        )
+        expect(customValueState.get('uploadingFile')).toBeTruthy()
       })
     })
   })

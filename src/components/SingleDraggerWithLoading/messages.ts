@@ -6,7 +6,7 @@ import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'components.SingleDraggerWithLoading.tittle',
+    id: 'components.SingleDraggerWithLoading.title',
     defaultMessage: '+ PNG File (.png)'
   },
   size: {

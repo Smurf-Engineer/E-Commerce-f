@@ -1147,9 +1147,21 @@
   "screens.ProDesign.title": "PRO Design Publishing",
   "screens.ProDesign.back": "Back to admin panel",
   "screens.ProDesign.productNotFound": "Error: Product not found.",
+  "screens.ProDesign.saveDesign": "Save Design",
   "screens.ColorTab.title": "Color Settings",
+  "components.ColorTab.SelectColors.stitching": "Stitching",
+  "components.ColorTab.SelectColors.binding": "Binding",
+  "components.ColorTab.SelectColors.zipper": "Zipper",
+  "components.ColorTab.SelectColors.bibColor": "Bib brace color",
+  "components.ColorTab.SelectColors.noProductSelected": "You must select a product first",
   "screens.UploadTab.title": "Model and Design",
   "screens.UploadTab.baseProduct": "Select base product",
   "screens.UploadTab.productCode": "Product code or product name",
-  "screens.UploadTab.selectBase": "Select base product"
+  "screens.UploadTab.selectBase": "Select base product",
+  "components.ProDesign.uploadDesign": "Upload Pro Design SVG",
+  "components.ProDesign.addDesignPNG": "Add Design PNG File",
+  "components.ProDesign.imageSizeError": "Oh no! Max file size is limited to 20MB",
+  "components.ProDesign.imageExtensionError": "Oh no! Your file has to be a png",
+  "components.SingleDraggerWithLoading.title": "+ PNG File (.png)",
+  "components.SingleDraggerWithLoading.size": "20 MB max"
 }
