@@ -7,7 +7,10 @@ import {
   onTabClickAction,
   setSearchProductAction,
   setProductCodeAction,
-  setUploadingAction
+  setUploadingAction,
+  uploadFileSuccessAction,
+  goToColorSectionAction,
+  setStitchingColorAction
 } from './actions'
 import {
   ON_TAB_CLICK,
@@ -115,6 +118,87 @@ describe(' ProductCatalog Screen', () => {
           setUploadingAction(customValue)
         )
         expect(customValueState.get('uploadingFile')).toBeTruthy()
+      })
+    })
+    describe('UPLOAD_FILE_ACTION_SUCCESS', () => {
+      it('Should have empty value on init', () => {
+        expect(initialState.get('fileName')).not.toBeUndefined()
+      })
+      it('Handles value type in fileName', () => {
+        const customInitialValue = initialState.get('fileName')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('actualImage should have empty value on init', () => {
+        expect(initialState.get('actualImage')).not.toBeUndefined()
+      })
+      it('Handles value type in actualImage', () => {
+        const customInitialValue = initialState.get('actualImage')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles custom value type in fileName & actualImage', () => {
+        const url = { fileUrl: 'image.png' }
+        const fileName = 'image'
+        const customValueState = proDesignReducer(
+          initialState,
+          uploadFileSuccessAction(url, fileName)
+        )
+        expect(customValueState.get('fileName')).toEqual(fileName)
+        expect(customValueState.get('actualImage')).toEqual(url.fileUrl)
+      })
+    })
+    describe('GO_TO_COLOR_SECTION', () => {
+      it('Should have empty value on init', () => {
+        expect(initialState.get('colorSectionIndex')).not.toBeUndefined()
+      })
+      it('Should be 0 on init', () => {
+        expect(initialState.get('colorSectionIndex')).toEqual(0)
+      })
+      it('Handles value type in colorSectionIndex', () => {
+        const customInitialValue = initialState.get('colorSectionIndex')
+        expect(typeof customInitialValue).toBe('number')
+      })
+      it('Handles custom value type in colorSectionIndex', () => {
+        const customValue = 1
+        const customValueState = proDesignReducer(
+          initialState,
+          goToColorSectionAction(customValue)
+        )
+        expect(customValueState.get('colorSectionIndex')).toEqual(customValue)
+      })
+    })
+    describe('SET_STITCHING_COLOR_ACTION', () => {
+      it('stitching Should have empty value on init', () => {
+        expect(
+          initialState.getIn(['colorAccessories', 'stitching'])
+        ).not.toBeUndefined()
+      })
+      it('stitching Should be string', () => {
+        expect(
+          typeof initialState.getIn(['colorAccessories', 'stitching'])
+        ).toBe('string')
+      })
+      it('stitchingName Should have empty value on init', () => {
+        expect(
+          initialState.getIn(['colorAccessories', 'stitchingName'])
+        ).not.toBeUndefined()
+      })
+      it('stitchingName Should be string', () => {
+        expect(
+          typeof initialState.getIn(['colorAccessories', 'stitchingName'])
+        ).toBe('string')
+      })
+      it('Handles custom value type in stitching & stitchingName', () => {
+        const stitching = { name: 'FSC-10', value: '#000' }
+        const customValueState = proDesignReducer(
+          initialState,
+          setStitchingColorAction(stitching)
+        )
+        expect(
+          customValueState.getIn(['colorAccessories', 'stitching'])
+        ).toEqual(stitching.value)
+        expect(
+          customValueState.getIn(['colorAccessories', 'stitchingName'])
+        ).toEqual(stitching.name)
       })
     })
   })
