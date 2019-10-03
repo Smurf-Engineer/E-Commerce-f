@@ -32,7 +32,7 @@ import backIcon from '../../assets/rightarrow.svg'
 import UploadTab from './UploadTab'
 import ColorTab from './ColorTab'
 import { UPLOAD, COLOR } from './constants'
-import { ProductSearchResult, Product, QueryProps } from '../../types/common'
+import { Product, QueryProps } from '../../types/common'
 
 const { TabPane } = AntdTabs
 
@@ -49,12 +49,12 @@ interface Data extends QueryProps {
 interface Props {
   intl: InjectedIntl
   selectedKey: string
-  productSearchResults: ProductSearchResult[]
   data: Data
   productCode: string
+  productToSearch: string
   onTabClickAction: (selectedKey: string) => void
-  setSearchProductAction: (product: ProductSearchResult[]) => void
   setProductCodeAction: (productCode: string) => void
+  setProductToSearchAction: (value: string) => void
 }
 export class ProDesign extends React.Component<Props, {}> {
   render3D: any
@@ -66,10 +66,10 @@ export class ProDesign extends React.Component<Props, {}> {
       intl,
       onTabClickAction,
       selectedKey,
-      setSearchProductAction,
-      productSearchResults,
       setProductCodeAction,
-      data
+      data,
+      setProductToSearchAction,
+      productToSearch
     } = this.props
     const { formatMessage } = intl
     const product = get(data, 'productFromCode')
@@ -79,9 +79,9 @@ export class ProDesign extends React.Component<Props, {}> {
       <StyledTabs activeKey={selectedKey} onTabClick={onTabClickAction}>
         <TabPane tab={<Tab label={UPLOAD} icon={uploadIcon} />} key={UPLOAD}>
           <UploadTab
-            {...{ formatMessage, productSearchResults }}
-            setSearchProduct={setSearchProductAction}
+            {...{ formatMessage, productToSearch }}
             setProductCode={setProductCodeAction}
+            setProductToSearch={setProductToSearchAction}
           />
         </TabPane>
         <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
