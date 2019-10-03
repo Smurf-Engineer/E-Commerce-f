@@ -3,7 +3,11 @@
  */
 
 import proDesignReducer, { initialState } from './reducer'
-import { onTabClickAction, setSearchProductAction } from './actions'
+import {
+  onTabClickAction,
+  setSearchProductAction,
+  setProductCodeAction
+} from './actions'
 import { ON_TAB_CLICK, UPLOAD, COLOR } from './constants'
 
 describe(' ProductCatalog Screen', () => {
@@ -48,8 +52,24 @@ describe(' ProductCatalog Screen', () => {
           initialState,
           setSearchProductAction(searchResults)
         )
-        console.log(selectedKeyState.get('productSearchResults').size)
         expect(selectedKeyState.get('productSearchResults').size).toEqual(1)
+      })
+    })
+    describe('SET_PRODUCT_CODE', () => {
+      it('Should have empty value on init', () => {
+        expect(initialState.get('productCode')).not.toBeUndefined()
+      })
+      it('Handles value type in productCode', () => {
+        const customInitialValue = initialState.get('productCode')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles custom value type in productCode', () => {
+        const customValue = '005'
+        const customValueState = proDesignReducer(
+          initialState,
+          setProductCodeAction(customValue)
+        )
+        expect(customValueState.get('productCode')).toEqual(customValue)
       })
     })
   })
