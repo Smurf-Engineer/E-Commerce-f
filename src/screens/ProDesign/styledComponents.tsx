@@ -2,7 +2,13 @@
  * Styled Components - Created by eduardoquintero on 19/09/19.
  */
 import styled from 'styled-components'
-import { GRAY_LIGHT, WHITE, BLUE, WHITE_SMOKE } from '../../theme/colors'
+import {
+  GRAY_LIGHT,
+  WHITE,
+  BLUE,
+  WHITE_SMOKE,
+  GRAY_DARK
+} from '../../theme/colors'
 import AntdTabs from 'antd/lib/tabs'
 import AntdButton from 'antd/lib/button'
 
@@ -44,7 +50,7 @@ export const BackButton = styled.div`
 `
 
 export const Back = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 19px;
 `

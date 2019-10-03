@@ -21,7 +21,8 @@ import {
 import {
   AnyAction,
   ProductSearchResult,
-  StitchingColor
+  StitchingColor,
+  UserFiles
 } from '../../types/common'
 import { SET_SAVING_DESIGN } from '../DesignerTool/constants'
 
@@ -42,7 +43,7 @@ export const setProductCodeAction = (productCode: string): AnyAction => ({
   productCode
 })
 
-export const uploadFileSuccessAction = (url: string, fileName: string) => ({
+export const uploadFileSuccessAction = (url: UserFiles, fileName: string) => ({
   type: UPLOAD_FILE_ACTION_SUCCESS,
   url,
   fileName

@@ -14,27 +14,27 @@ export default defineMessages({
     defaultMessage: 'Save Design'
   },
   searchBy: {
-    id: 'screens.ProDesign.searchBy',
+    id: 'screens.AddProDesignModal.searchBy',
     defaultMessage: 'Name, Email or Client ID'
   },
   selectUser: {
-    id: 'screens.ProDesign.selectUser',
+    id: 'screens.AddProDesignModal.selectUser',
     defaultMessage: 'Select User to Assign Design'
   },
   designName: {
-    id: 'screens.ProDesign.designName',
+    id: 'screens.AddProDesignModal.designName',
     defaultMessage: 'Design Name'
   },
   name: {
-    id: 'screens.ProDesign.name',
+    id: 'screens.AddProDesignModal.name',
     defaultMessage: 'Name'
   },
   legacyNumber: {
-    id: 'screens.ProDesign.legacyNumber',
+    id: 'screens.AddProDesignModal.legacyNumber',
     defaultMessage: 'Legacy Number'
   },
   legacySample: {
-    id: 'screens.ProDesign.legacySample',
+    id: 'screens.AddProDesignModal.legacySample',
     defaultMessage: 'Ex. BRBR-123456789'
   }
 })

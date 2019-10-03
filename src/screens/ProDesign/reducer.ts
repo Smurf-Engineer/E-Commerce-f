@@ -52,7 +52,7 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
     case ON_TAB_CLICK:
       return state.set('selectedKey', action.selectedKey)
     case SET_SEARCH_PRODUCT:
-      return state.set('productSearchResults', action.products)
+      return state.merge({ productSearchResults: action.products })
     case SET_PRODUCT_CODE:
       return state.merge({
         productCode: action.productCode,
