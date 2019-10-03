@@ -394,14 +394,9 @@ class Render3D extends PureComponent {
             /* Zipper */
             if (!!zipper) {
               const zipperColor = zipper.black || zipper.white
-              const hasZipperColor =
-                has(colorAccessories, 'zipperColor') &&
-                colorAccessories.zipperColor.length
 
               const texture =
-                zipper[
-                  hasZipperColor ? colorAccessories.zipperColor : zipperColor
-                ]
+                zipper[colorAccessories.zipperColor || zipperColor]
 
               const zipperObj = textureLoader.load(texture)
               zipperObj.minFilter = THREE.LinearFilter
@@ -413,15 +408,9 @@ class Render3D extends PureComponent {
             }
             /* Binding */
             if (!!binding) {
-              const hasBindingColor =
-                has(colorAccessories, 'bindingColor') &&
-                colorAccessories.bindingColor.length
-
               const texture =
                 binding[
-                  hasBindingColor
-                    ? colorAccessories.bindingColor
-                    : Object.keys(binding)[0]
+                  colorAccessories.bindingColor || Object.keys(binding)[0]
                 ]
 
               const bindingObj = textureLoader.load(texture)
@@ -435,16 +424,8 @@ class Render3D extends PureComponent {
 
             /* Bib Brace */
             if (!!bibBrace) {
-              const hasBibColor =
-                has(colorAccessories, 'bibColor') &&
-                colorAccessories.bibColor.length
-
               const texture =
-                bibBrace[
-                  hasBibColor
-                    ? colorAccessories.bibColor
-                    : Object.keys(bibBrace)[0]
-                ]
+                bibBrace[colorAccessories.bibColor || Object.keys(bibBrace)[0]]
               const bibBraceObj = textureLoader.load(texture)
               bibBraceObj.minFilter = THREE.LinearFilter
               const bibBraceIndex = getMeshIndex(BIB_BRACE)
