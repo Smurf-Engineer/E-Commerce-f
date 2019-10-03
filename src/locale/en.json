@@ -1139,6 +1139,17 @@
   "screens.AdminLayout.logout": "LOGOUT",
   "screens.AdminLayout.editNavigation": "Edit Main Navigation",
   "screens.AdminLayout.publishingTool": "PUBLISHING TOOL",
-  "screens.AdminLayout.proDesign": "Add Pro Design",
-  "components.DesignCheckModal.reviewDesignModalText": "<p class=\"important\">For an additional fee of $15.00, <strong>all products </strong> on your order will be reviewed by a Pro Designer at Jakroo.</p><p>Review services include:<p/><ul><li>- Color consistency throughout design and ordered products. </li><li>- Center alignment and adjustment to graphics/text. </li ><li>- Resolution quality review for any uploaded raster images. </li><li>- Check for any other unforeseen issues. </li></ul><p>You will receive a review notification by email typically within 24 hours (excluding holidays/weekends) upon completion of your review. </p><div class=\"smaller-text\"><p class=\"important no-margin\">This service is optional and can be added to your order during checkout.</p></div>"
+  "screens.AdminLayout.proDesign": "PRO DESIGN",
+  "screens.AdminLayout.addProDesign": "Create and Assign to User",
+  "components.DesignCheckModal.reviewDesignModalText": "<p class=\"important\">For an additional fee of $15.00, <strong>all products </strong> on your order will be reviewed by a Pro Designer at Jakroo.</p><p>Review services include:<p/><ul><li>- Color consistency throughout design and ordered products. </li><li>- Center alignment and adjustment to graphics/text. </li ><li>- Resolution quality review for any uploaded raster images. </li><li>- Check for any other unforeseen issues. </li></ul><p>You will receive a review notification by email typically within 24 hours (excluding holidays/weekends) upon completion of your review. </p><div class=\"smaller-text\"><p class=\"important no-margin\">This service is optional and can be added to your order during checkout.</p></div>",
+  "screens.proDesignTab.upload": "Upload",
+  "screens.proDesignTab.color": "Color",
+  "screens.ProDesign.title": "PRO Design Publishing",
+  "screens.ProDesign.back": "Back to admin panel",
+  "screens.ProDesign.productNotFound": "Error: Product not found.",
+  "screens.ColorTab.title": "Color Settings",
+  "screens.UploadTab.title": "Model and Design",
+  "screens.UploadTab.baseProduct": "Select base product",
+  "screens.UploadTab.productCode": "Product code or product name",
+  "screens.UploadTab.selectBase": "Select base product"
 }
