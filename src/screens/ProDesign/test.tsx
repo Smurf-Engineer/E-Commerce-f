@@ -3,7 +3,7 @@
  */
 
 import proDesignReducer, { initialState } from './reducer'
-import { onTabClickAction } from './actions'
+import { onTabClickAction, setSearchProductAction } from './actions'
 import { ON_TAB_CLICK, UPLOAD, COLOR } from './constants'
 
 describe(' ProductCatalog Screen', () => {
@@ -42,13 +42,15 @@ describe(' ProductCatalog Screen', () => {
       it('productSearchResults shouldn´t have length on init', () => {
         expect(initialState.get('productSearchResults').size).toEqual(0)
       })
-      /* it('productSearchResults shouldn´t have length', () => {
+      it('Handles custom values in productSearchResults', () => {
+        const searchResults = [{ name: 'Name', code: '4040' }]
         const selectedKeyState = proDesignReducer(
           initialState,
-          onTabClickAction(COLOR)
+          setSearchProductAction(searchResults)
         )
-        expect(selectedKeyState.get('selectedKey')).toEqual(COLOR)
-      }) */
+        console.log(selectedKeyState.get('productSearchResults').size)
+        expect(selectedKeyState.get('productSearchResults').size).toEqual(1)
+      })
     })
   })
 })
