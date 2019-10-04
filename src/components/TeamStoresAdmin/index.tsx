@@ -15,9 +15,15 @@ import {
   setTeamStoreDisplayMutation
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
+import CreateStore from './CreateStore'
 import * as TeamStoresActions from './actions'
 import * as ThunkActions from './thunkActions'
-import { Container, ScreenTitle, SearchInput } from './styledComponents'
+import {
+  Container,
+  ScreenTitle,
+  SearchInput,
+  AddTeamStoreButton
+} from './styledComponents'
 import List from './TeamStoresList'
 import messages from './messages'
 import {
@@ -47,6 +53,9 @@ interface Props {
   collection: string
   id: number
   modalOpen: boolean
+  currentCurrency: string
+  teamSizeRange: string
+  openCropper: boolean
   loading: boolean
   teamStore: TeamStoreAdminType
   currencies: Currency[]
@@ -88,6 +97,9 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       formatMessage,
       searchText,
       history,
+      teamSizeRange,
+      currentCurrency,
+      openCropper,
       setPriceAction,
       teamStore,
       currencies,
@@ -104,6 +116,9 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               <ScreenTitle>
                 <FormattedMessage {...messages.title} />
               </ScreenTitle>
+              <AddTeamStoreButton onClick={this.handleGoToCreateStore}>
+                {`+ ${formatMessage(messages.addTeamStore)}`}
+              </AddTeamStoreButton>
               <SearchInput
                 value={this.state.searchValue}
                 onChange={this.handleInputChange}
@@ -130,6 +145,21 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               handleOnSetPrice={setPriceAction}
               handleOnSave={this.handleOnSaveItem}
               onSetFeatured={this.handleOnSetFeatured}
+            />
+          )}
+        />
+        <Route
+          path="/admin/team-stores/create"
+          exact={true}
+          render={() => (
+            <CreateStore
+              {...{
+                formatMessage,
+                history,
+                teamSizeRange,
+                currentCurrency,
+                openCropper
+              }}
             />
           )}
         />
@@ -172,6 +202,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       client: { query }
     } = this.props
     getTeamStore(query, teamStoreId)
+  }
+  handleGoToCreateStore = () => {
+    const { history } = this.props
+    history.push('/admin/team-stores/create')
   }
   handleGoToTeamStore = (id: string) => {
     const { history } = this.props
@@ -286,7 +320,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('teamStoresAdmin').toJS()
+const mapStateToProps = (state: any) => {
+  const teamStoresAdmin = state.get('teamStoresAdmin').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return { ...teamStoresAdmin, ...langProps }
+}
 
 const TeamStoresAdminEnhance = compose(
   setTeamStoreFeaturedMutation,

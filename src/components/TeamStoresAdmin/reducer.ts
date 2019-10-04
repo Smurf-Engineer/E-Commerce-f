@@ -23,6 +23,8 @@ export const initialState = fromJS({
   teamStoreId: -1,
   teamStore: {},
   currencies: [],
+  teamSizeRange: '2-5',
+  openCropper: false,
   loading: true
 })
 
