@@ -16,5 +16,9 @@ export default defineMessages({
   productNotFound: {
     id: 'screens.ProDesign.productNotFound',
     defaultMessage: 'Error: Product not found.'
+  },
+  saveDesign: {
+    id: 'screens.ProDesign.saveDesign',
+    defaultMessage: 'Save Design'
   }
 })

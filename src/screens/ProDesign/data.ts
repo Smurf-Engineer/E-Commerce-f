@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const GetProductsByIdQuery = gql`
   query GetProductByID($code: String!) {
@@ -27,3 +28,14 @@ export const GetProductsByIdQuery = gql`
     }
   }
 `
+
+export const saveProDesignMutation = graphql(
+  gql`
+    mutation saveProDesign($design: ProDesignInput) {
+      saveProDesign(design: $design) {
+        message
+      }
+    }
+  `,
+  { name: 'saveDesign' }
+)

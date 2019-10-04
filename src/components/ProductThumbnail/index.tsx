@@ -63,6 +63,7 @@ interface Props {
   backgroundColor?: string
   colors: ProductColors[]
   proDesign: boolean
+  proDesignAssigned?: boolean
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
@@ -193,7 +194,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       backgroundColor,
       colors,
       reversePriceRange,
-      proDesign
+      proDesign,
+      proDesignAssigned
     } = this.props
     const { isHovered, currentImage } = this.state
 
@@ -278,7 +280,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             disableSlider,
             customizable,
             backgroundColor,
-            proDesign
+            proDesign,
+            proDesignAssigned
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

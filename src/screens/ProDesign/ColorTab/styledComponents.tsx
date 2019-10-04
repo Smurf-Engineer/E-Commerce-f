@@ -2,7 +2,8 @@
  * Styled Components - Created by eduardoquintero on 19/09/19.
  */
 import styled from 'styled-components'
-import { GRAY_LIGHTEST } from '../../../theme/colors'
+import { GRAY_LIGHTEST, GRAY_DARK } from '../../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   display: flex;
@@ -16,5 +17,17 @@ export const Header = styled.div`
   text-align: center;
   padding: 10px;
   font-weight: 600;
+  position: relative;
 `
-export const Icon = styled.img``
+
+export const Arrow = styled(Icon)`
+  color: ${GRAY_DARK};
+  position: absolute;
+  left: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  top: 50%;
+  margin: -8px;
+`
+
+export const TabContent = styled.div``

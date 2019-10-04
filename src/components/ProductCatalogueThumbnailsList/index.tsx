@@ -95,7 +95,18 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     if (designs) {
       thumbnailsList = designs.map(
         (
-          { name, product, image, createdAt, shortId, shared, code, proDesign },
+          {
+            name,
+            product,
+            image,
+            createdAt,
+            shortId,
+            shared,
+            code,
+            proDesign,
+            outputSvg,
+            outputPng
+          },
           index
         ) => {
           const addToCartButton = (
@@ -163,6 +174,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 onPressQuickView={this.handlePressQuickView}
                 image={image}
                 proDesign={proDesign}
+                proDesignAssigned={outputPng && !outputSvg}
               />
             </ThumbnailListItem>
           )
