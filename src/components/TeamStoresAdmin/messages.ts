@@ -23,6 +23,6 @@ export default defineMessages({
   },
   addTeamStore: {
     id: 'components.TeamStoresAdmin.addTeamStore',
-    defaultMessage: 'Add Team Store'
+    defaultMessage: '+ Add Team Store'
   }
 })

@@ -117,7 +117,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 <FormattedMessage {...messages.title} />
               </ScreenTitle>
               <AddTeamStoreButton onClick={this.handleGoToCreateStore}>
-                {`+ ${formatMessage(messages.addTeamStore)}`}
+                <FormattedMessage {...messages.addTeamStore} />
               </AddTeamStoreButton>
               <SearchInput
                 value={this.state.searchValue}

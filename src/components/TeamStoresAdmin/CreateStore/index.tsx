@@ -22,13 +22,14 @@ import {
   UploadSection,
   BuildButton
 } from './styledComponents'
+import { History } from 'history'
 import LockerTable from '../../LockerTable'
 import Dragger from '../../TeamDragger'
 import ImageCropper from '../../ImageCropper'
 const Option = Select.Option
 
 interface Props {
-  history: any
+  history: History
   currentCurrency: string
   teamSizeRange: string
   openCropper: boolean

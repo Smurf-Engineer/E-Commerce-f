@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import InputComponent from 'antd/lib/input'
-import { GRAY_STRONG, BLUE, WHITE } from '../../../theme/colors'
+import { GRAY_STRONG, BLUE, WHITE, RED } from '../../../theme/colors'
 
 interface DivProps {
   fullSize?: boolean
@@ -75,7 +75,7 @@ export const UploadSection = styled.div`
 `
 
 export const ButtonDelete = styled.div`
-  color: #e61737;
+  color: ${RED};
   font-size: 14px;
   line-height: 19px;
   margin-left: 8px;

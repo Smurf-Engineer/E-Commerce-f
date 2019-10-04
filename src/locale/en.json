@@ -1130,7 +1130,7 @@
   "components.TeamStoresAdmin.search": "Search for a team store",
   "components.TeamStoresAdmin.unexpectedError": "Oops! Something went wrong.",
   "components.TeamStoresAdmin.itemSaved": "Prices updated successfully!",
-  "components.TeamStoresAdmin.addTeamStore": "Add Team Store",
+  "components.TeamStoresAdmin.addTeamStore": "+ Add Team Store",
   "components.CreateStoreAdmin.back": "Back to Team Stores List",
   "components.CreateStoreAdmin.teamStoreName": "Team Store Name",
   "components.CreateStoreAdmin.teamStoreNameHolder": "Enter a team store name",
