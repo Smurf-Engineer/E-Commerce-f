@@ -28,7 +28,7 @@ import {
   DESIGN_SEARCH,
   DESIGN_LAB,
   EDIT_NAVIGATION,
-  PRO_DESIGN
+  ADD_PRO_DESIGN
 } from './constants'
 import {
   SideBar,
@@ -119,7 +119,7 @@ class AdminLayout extends React.Component<Props, {}> {
       case DESIGN_LAB:
         history.push('/admin/design-lab')
         break
-      case PRO_DESIGN:
+      case ADD_PRO_DESIGN:
         history.push('/admin/add-pro-design')
         break
       default:
