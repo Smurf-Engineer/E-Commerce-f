@@ -4,7 +4,6 @@
 
 import {
   ON_TAB_CLICK,
-  SET_SEARCH_PRODUCT,
   SET_PRODUCT_CODE,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
@@ -16,26 +15,15 @@ import {
   OPEN_MODAL,
   SET_SAVING_DESIGN,
   SAVE_DESIGN_SUCCESS,
-  SET_USER_TO_SEARCH
+  SET_USER_TO_SEARCH,
+  SET_PRODUCT_TO_SEARCH
 } from './constants'
 
-import {
-  AnyAction,
-  ProductSearchResult,
-  StitchingColor,
-  UserFiles
-} from '../../types/common'
+import { AnyAction, StitchingColor, UserFiles } from '../../types/common'
 
 export const onTabClickAction = (selectedKey: string): AnyAction => ({
   type: ON_TAB_CLICK,
   selectedKey
-})
-
-export const setSearchProductAction = (
-  products: ProductSearchResult[]
-): AnyAction => ({
-  type: SET_SEARCH_PRODUCT,
-  products
 })
 
 export const setProductCodeAction = (productCode: string): AnyAction => ({
@@ -96,5 +84,10 @@ export const setSavingDesignSuccessAction = () => ({
 
 export const setUserToSearchAction = (value: string) => ({
   type: SET_USER_TO_SEARCH,
+  value
+})
+
+export const setProductToSearchAction = (value: string): AnyAction => ({
+  type: SET_PRODUCT_TO_SEARCH,
   value
 })

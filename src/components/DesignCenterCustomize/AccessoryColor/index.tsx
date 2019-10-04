@@ -23,6 +23,7 @@ interface Props {
   stitchingColor?: StitchingColor
   goToStitching?: () => void
   colorSelected?: AccesoryColor
+  allowSelection?: boolean
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
@@ -32,14 +33,17 @@ const AccessoryColor = ({
   stitchingColor,
   goToStitching,
   colorSelected = BLACK,
+  allowSelection = true,
   onAccessoryColorSelected = () => {}
 }: Props) => {
   // tslint:disable:curly
   const onSelectBlack = () => {
-    if (colorSelected !== BLACK) onAccessoryColorSelected(BLACK, id)
+    if (colorSelected !== BLACK && allowSelection)
+      onAccessoryColorSelected(BLACK, id)
   }
   const onSelectWhite = () => {
-    if (colorSelected !== WHITE) onAccessoryColorSelected(WHITE, id)
+    if (colorSelected !== WHITE && allowSelection)
+      onAccessoryColorSelected(WHITE, id)
   }
   // tslint:enable:curly
   const stitchingName = get(stitchingColor, 'name', '')

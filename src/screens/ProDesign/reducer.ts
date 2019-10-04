@@ -5,7 +5,6 @@ import { fromJS } from 'immutable'
 import {
   ON_TAB_CLICK,
   UPLOAD,
-  SET_SEARCH_PRODUCT,
   SET_PRODUCT_CODE,
   SET_UPLOADING_FILE_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
@@ -17,7 +16,8 @@ import {
   OPEN_MODAL,
   SET_SAVING_DESIGN,
   SAVE_DESIGN_SUCCESS,
-  SET_USER_TO_SEARCH
+  SET_USER_TO_SEARCH,
+  SET_PRODUCT_TO_SEARCH
 } from './constants'
 import { Reducer } from '../../types/common'
 import { BLACK, WHITE } from '../DesignCenter/constants'
@@ -45,15 +45,14 @@ export const initialState = fromJS({
   legacyNumber: '',
   saveModalOpen: false,
   savingDesign: false,
-  userToSearch: ''
+  userToSearch: '',
+  productToSearch: ''
 })
 
 const proDesignReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case ON_TAB_CLICK:
       return state.set('selectedKey', action.selectedKey)
-    case SET_SEARCH_PRODUCT:
-      return state.merge({ productSearchResults: action.products })
     case SET_PRODUCT_CODE:
       return state.merge({
         productCode: action.productCode,
@@ -108,6 +107,8 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_USER_TO_SEARCH:
       return state.set('userToSearch', action.value)
+    case SET_PRODUCT_TO_SEARCH:
+      return state.set('productToSearch', action.value)
     default:
       return state
   }

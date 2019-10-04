@@ -5,8 +5,6 @@
 import proDesignReducer, { initialState } from './reducer'
 import {
   onTabClickAction,
-  setSearchProductAction,
-  setProductCodeAction,
   setUploadingAction,
   uploadFileSuccessAction,
   goToColorSectionAction,
@@ -16,13 +14,14 @@ import {
   setInputValueAction,
   setSaveModalOpenAction,
   setSavingDesignAction,
-  setUserToSearchAction
+  setUserToSearchAction,
+  setProductToSearchAction,
+  setProductCodeAction
 } from './actions'
 import {
   ON_TAB_CLICK,
   UPLOAD,
   COLOR,
-  SET_SEARCH_PRODUCT,
   SET_PRODUCT_CODE,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
@@ -32,7 +31,8 @@ import {
   SET_SELECTED_USER,
   SET_INPUT_VALUE,
   OPEN_MODAL,
-  SET_SAVING_DESIGN
+  SET_SAVING_DESIGN,
+  SET_PRODUCT_TO_SEARCH
 } from './constants'
 
 describe(' ProductCatalog Screen', () => {
@@ -46,13 +46,13 @@ describe(' ProductCatalog Screen', () => {
         selectedKey
       })
     })
-    it('setSearchProductAction', () => {
-      const type = SET_SEARCH_PRODUCT
-      const products = [{ name: 'Name', code: '4040' }]
+    it('setProductToSearchAction', () => {
+      const type = SET_PRODUCT_TO_SEARCH
+      const value = 'velo'
 
-      expect(setSearchProductAction(products)).toEqual({
+      expect(setProductToSearchAction(value)).toEqual({
         type,
-        products
+        value
       })
     })
     it('setProductCodeAction', () => {
@@ -166,20 +166,20 @@ describe(' ProductCatalog Screen', () => {
         expect(selectedKeyState.get('selectedKey')).toEqual(COLOR)
       })
     })
-    describe('SET_SEARCH_PRODUCT', () => {
+    describe('SET_PRODUCT_TO_SEARCH', () => {
       it('Should not have initial state undefined', () => {
-        expect(initialState.get('productSearchResults')).toBeDefined()
+        expect(initialState.get('productToSearch')).not.toBeUndefined()
       })
-      it('productSearchResults shouldn´t have length on init', () => {
-        expect(initialState.get('productSearchResults').size).toEqual(0)
+      it('Handle value type of productToSearch', () => {
+        expect(typeof initialState.get('selectedKey')).toEqual('string')
       })
-      it('Handles custom values in productSearchResults', () => {
-        const searchResults = [{ name: 'Name', code: '4040' }]
-        const selectedKeyState = proDesignReducer(
+      it('Handle custom value for productToSearch', () => {
+        const value = 'velo'
+        const customValueState = proDesignReducer(
           initialState,
-          setSearchProductAction(searchResults)
+          setProductToSearchAction(value)
         )
-        expect(selectedKeyState.get('productSearchResults').size).toEqual(1)
+        expect(customValueState.get('productToSearch')).toEqual(value)
       })
     })
     describe('SET_PRODUCT_CODE', () => {
