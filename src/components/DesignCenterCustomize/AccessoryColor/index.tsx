@@ -32,7 +32,7 @@ const AccessoryColor = ({
   name,
   stitchingColor,
   goToStitching,
-  colorSelected = WHITE,
+  colorSelected = BLACK,
   allowSelection = true,
   onAccessoryColorSelected = () => {}
 }: Props) => {

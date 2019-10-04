@@ -175,6 +175,7 @@ export type DesignType = {
   canvas: string
   proDesign?: boolean
   highResolution?: boolean
+  outputPng?: string
 }
 
 export type SaveDesignType = {
@@ -1163,7 +1164,7 @@ export interface OrderSearchResult {
   name?: string
   image: string
   status: string
-  svgUrl: string
+  svgUrl?: string
   assets: FilesDownload
   bibColor?: AccesoryColor
   bindingColor?: AccesoryColor
@@ -1173,6 +1174,7 @@ export interface OrderSearchResult {
   shortId: string
   pdfUrl?: string
   product: Product
+  pngUrl?: string
 }
 
 export interface FilesDownload {
@@ -1401,4 +1403,10 @@ export interface ColorAccessories {
   zipperColor: AccesoryColor
   bibColor: AccesoryColor
   bindingColor: AccesoryColor
+}
+
+export interface UserSearchResult {
+  id: string
+  name: string
+  email: string
 }

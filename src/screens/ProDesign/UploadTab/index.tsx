@@ -29,6 +29,7 @@ import AntdMessage from 'antd/lib/message'
 import messages from './messages'
 import { Message, ProductSearchResult, QueryProps } from '../../../types/common'
 import { SelectValue } from 'antd/lib/select'
+import get from 'lodash/get'
 
 interface Data extends QueryProps {
   getProductSearch: ProductSearchResult[]
@@ -97,12 +98,10 @@ export class UploadTab extends React.Component<Props, {}> {
       data
     } = this.props
 
-    const searchCodes =
-      data &&
-      !data.loading &&
-      data.getProductSearch.map(
-        (item: ProductSearchResult) => `${item.name} - ${item.code}`
-      )
+    const searchCodesData = get(data, 'getProductSearch', [])
+    const searchCodes = searchCodesData.map(
+      (item: ProductSearchResult) => `${item.name} - ${item.code}`
+    )
     return (
       <Container>
         <Header>{formatMessage(messages.title)}</Header>

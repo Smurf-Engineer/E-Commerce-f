@@ -11,11 +11,25 @@ import {
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
+  SET_SELECTED_USER,
+  SET_INPUT_VALUE,
+  OPEN_MODAL,
+  SET_SAVING_DESIGN,
+  SAVE_DESIGN_SUCCESS,
+  SET_USER_TO_SEARCH,
   SET_PRODUCT_TO_SEARCH
 } from './constants'
 import { Reducer } from '../../types/common'
 import { BLACK, WHITE } from '../DesignCenter/constants'
 import { BLACK as BLACK_COLOR } from '../../theme/colors'
+
+const colorAccessories = {
+  stitching: BLACK_COLOR,
+  stitchingName: 'FSC-10',
+  zipperColor: BLACK,
+  bibColor: WHITE,
+  bindingColor: BLACK
+}
 
 export const initialState = fromJS({
   selectedKey: UPLOAD,
@@ -25,13 +39,13 @@ export const initialState = fromJS({
   uploadingFile: false,
   fileName: '',
   colorSectionIndex: 0,
-  colorAccessories: {
-    stitching: BLACK_COLOR,
-    stitchingName: 'FSC-10',
-    zipperColor: BLACK,
-    bibColor: WHITE,
-    bindingColor: BLACK
-  },
+  colorAccessories,
+  selectedUser: '',
+  designName: '',
+  legacyNumber: '',
+  saveModalOpen: false,
+  savingDesign: false,
+  userToSearch: '',
   productToSearch: ''
 })
 
@@ -43,7 +57,8 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         productCode: action.productCode,
         actualImage: '',
-        fileName: ''
+        fileName: '',
+        colorAccessories
       })
     case SET_UPLOADING_FILE_ACTION:
       return state.set('uploadingFile', action.isUploading)
@@ -59,8 +74,8 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
         stitchingColor: { value, name }
       } = action
       return state.withMutations((map: any) => {
-        map.update('colorAccessories', (colorAccessories: any) => {
-          return colorAccessories.merge({
+        map.update('colorAccessories', (colorAccessoriesObj: any) => {
+          return colorAccessoriesObj.merge({
             stitching: value,
             stitchingName: name
           })
@@ -70,6 +85,28 @@ const proDesignReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_COLOR_ACTION:
       return state.setIn(['colorAccessories', action.id], action.color)
+    case SET_SELECTED_USER:
+      const { email } = action
+      return state.set('selectedUser', email)
+    case SET_INPUT_VALUE: {
+      const { id, value } = action
+      return state.set(id, value)
+    }
+    case OPEN_MODAL:
+      return state.set('saveModalOpen', !state.get('saveModalOpen'))
+    case SET_SAVING_DESIGN:
+      const { saving } = action
+      return state.set('savingDesign', saving)
+    case SAVE_DESIGN_SUCCESS:
+      return state.merge({
+        savingDesign: false,
+        saveModalOpen: false,
+        selectedUser: '',
+        designName: '',
+        legacyNumber: ''
+      })
+    case SET_USER_TO_SEARCH:
+      return state.set('userToSearch', action.value)
     case SET_PRODUCT_TO_SEARCH:
       return state.set('productToSearch', action.value)
     default:

@@ -10,6 +10,11 @@ import {
   goToColorSectionAction,
   setStitchingColorAction,
   setColorAction,
+  setSelectedUserAction,
+  setInputValueAction,
+  setSaveModalOpenAction,
+  setSavingDesignAction,
+  setUserToSearchAction,
   setProductToSearchAction,
   setProductCodeAction
 } from './actions'
@@ -23,6 +28,10 @@ import {
   GO_TO_COLOR_SECTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
+  SET_SELECTED_USER,
+  SET_INPUT_VALUE,
+  OPEN_MODAL,
+  SET_SAVING_DESIGN,
   SET_PRODUCT_TO_SEARCH
 } from './constants'
 
@@ -102,6 +111,41 @@ describe(' ProductCatalog Screen', () => {
         type,
         color,
         id
+      })
+    })
+    it('setSelectedUserAction', () => {
+      const type = SET_SELECTED_USER
+      const email = 'john@tailrecursive.co'
+
+      expect(setSelectedUserAction(email)).toEqual({
+        type,
+        email
+      })
+    })
+    it('setInputValueAction', () => {
+      const type = SET_INPUT_VALUE
+      const id = 'designName'
+      const value = 'my design'
+
+      expect(setInputValueAction(id, value)).toEqual({
+        type,
+        id,
+        value
+      })
+    })
+    it('setSaveModalOpenAction', () => {
+      const type = OPEN_MODAL
+
+      expect(setSaveModalOpenAction()).toEqual({
+        type
+      })
+    })
+    it('setSavingDesignAction', () => {
+      const type = SET_SAVING_DESIGN
+      const saving = true
+      expect(setSavingDesignAction(saving)).toEqual({
+        type,
+        saving
       })
     })
   })
@@ -298,6 +342,108 @@ describe(' ProductCatalog Screen', () => {
           setColorAction(color, id)
         )
         expect(customValueState.getIn(['colorAccessories', id])).toEqual(color)
+      })
+      describe('SET_SELECTED_USER', () => {
+        it('Should not have initial state undefined', () => {
+          expect(initialState.get('selectedUser')).not.toBeUndefined()
+        })
+        it('email should be tring', () => {
+          expect(typeof initialState.get('selectedUser')).toBe('string')
+        })
+        it('Handles custom values in users', () => {
+          const email = 'john@tailrecursive.co'
+          const selectedUserState = proDesignReducer(
+            initialState,
+            setSelectedUserAction(email)
+          )
+          expect(selectedUserState.get('selectedUser')).toBe(email)
+        })
+      })
+      describe('SET_INPUT_VALUE', () => {
+        it('designName Should not have initial state undefined', () => {
+          expect(initialState.get('designName')).not.toBeUndefined()
+        })
+        it('designName should be tring', () => {
+          expect(typeof initialState.get('designName')).toBe('string')
+        })
+        it('Handles custom values in designName', () => {
+          const id = 'designName'
+          const designName = 'my design'
+          const designNameState = proDesignReducer(
+            initialState,
+            setInputValueAction(id, designName)
+          )
+          expect(designNameState.get(id)).toBe(designName)
+        })
+        it('legacyNumber Should not have initial state undefined', () => {
+          expect(initialState.get('legacyNumber')).not.toBeUndefined()
+        })
+        it('legacyNumber should be tring', () => {
+          expect(typeof initialState.get('legacyNumber')).toBe('string')
+        })
+        it('Handles custom values in legacyNumber', () => {
+          const id = 'legacyNumber'
+          const legacyNumber = '123-DESIGN'
+          const legacyNumberState = proDesignReducer(
+            initialState,
+            setInputValueAction(id, legacyNumber)
+          )
+          expect(legacyNumberState.get(id)).toBe(legacyNumber)
+        })
+      })
+      describe('OPEN_MODAL', () => {
+        it('Should have empty value on init', () => {
+          expect(initialState.get('saveModalOpen')).not.toBeUndefined()
+        })
+        it('Should be false on init', () => {
+          expect(initialState.get('saveModalOpen')).toBeFalsy()
+        })
+        it('Handles value type in saveModalOpen', () => {
+          const customInitialValue = initialState.get('saveModalOpen')
+          expect(typeof customInitialValue).toBe('boolean')
+        })
+        it('Handles custom value type in saveModalOpen', () => {
+          const customValueState = proDesignReducer(
+            initialState,
+            setSaveModalOpenAction()
+          )
+          expect(customValueState.get('saveModalOpen')).toBeTruthy()
+        })
+      })
+      describe('SET_SAVING_DESIGN', () => {
+        it('Should have empty value on init', () => {
+          expect(initialState.get('savingDesign')).not.toBeUndefined()
+        })
+        it('Should be false on init', () => {
+          expect(initialState.get('savingDesign')).toBeFalsy()
+        })
+        it('Handles value type in savingDesign', () => {
+          const customInitialValue = initialState.get('savingDesign')
+          expect(typeof customInitialValue).toBe('boolean')
+        })
+        it('Handles custom value type in savingDesign', () => {
+          const customValueState = proDesignReducer(
+            initialState,
+            setSavingDesignAction(true)
+          )
+          expect(customValueState.get('savingDesign')).toBeTruthy()
+        })
+      })
+      describe('SET_USER_TO_SEARCH', () => {
+        it('Should not have initial state undefined', () => {
+          expect(initialState.get('userToSearch')).not.toBeUndefined()
+        })
+        it('userToSearch should be tring', () => {
+          expect(typeof initialState.get('userToSearch')).toBe('string')
+        })
+        it('Handles custom values in users', () => {
+          const user = 'john'
+          const selectedUserState = proDesignReducer(
+            initialState,
+            setUserToSearchAction(user)
+          )
+          expect(selectedUserState.get('userToSearch')).toBe(user)
+        })
       })
     })
   })

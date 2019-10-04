@@ -42,6 +42,7 @@ interface Props {
   customizable?: boolean
   backgroundColor?: string
   proDesign: boolean
+  proDesignAssigned: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -72,7 +73,8 @@ const ProductSlide = ({
   disableSlider = false,
   customizable,
   backgroundColor,
-  proDesign
+  proDesign,
+  proDesignAssigned
 }: Props) => {
   if (image) {
     return (
@@ -86,8 +88,12 @@ const ProductSlide = ({
         }}
       >
         {proDesign && (
-          <ProApproved>
-            {<FormattedMessage {...messages.approved} />}
+          <ProApproved proAssigned={proDesignAssigned}>
+            {
+              <FormattedMessage
+                {...messages[proDesignAssigned ? 'proAssigned' : 'approved']}
+              />
+            }
           </ProApproved>
         )}
         <ImageTop>
