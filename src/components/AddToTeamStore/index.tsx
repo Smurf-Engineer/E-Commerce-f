@@ -102,8 +102,12 @@ export class AddToTeamStore extends React.PureComponent<Props, {}> {
   }
 }
 
-const AddToTeamStoreEmhance = compose(graphql(GetTeamMyStoresQuery))(
-  AddToTeamStore
-)
+const AddToTeamStoreEmhance = compose(
+  graphql(GetTeamMyStoresQuery, {
+    options: () => ({
+      fetchPolicy: 'network-only'
+    })
+  })
+)(AddToTeamStore)
 
 export default AddToTeamStoreEmhance
