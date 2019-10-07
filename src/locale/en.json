@@ -919,6 +919,7 @@
   "screens.CustomProductDetail.oops": "Oops!",
   "screens.CustomProductDetail.seemsPrivate": "Seems like this design is private or not available",
   "screens.CustomProductDetail.reviews": "Reviews",
+  "screens.CustomProductDetail.proAssigned": "PRODESIGN",
   "screens.Designs.errorTitle": "Oops",
   "screens.Designs.errorMessage": "Seems like the design was deleted or is not available",
   "screens.ProductDetail.customizeLabel": "START YOUR DESIGN",

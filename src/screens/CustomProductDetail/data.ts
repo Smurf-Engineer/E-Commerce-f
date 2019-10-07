@@ -8,6 +8,7 @@ export const GetDesignByIdQuery = gql`
     ) {
       id
       name
+      canEdit: can_edit
       shortId: short_id
       teamEnable: team_enable
       teamPrice: team_price {
@@ -136,16 +137,7 @@ export const GetDesignByIdQuery = gql`
       code
       createdAt: created_at
       proDesign: pro_design
-    }
-  }
-`
-export const designsQuery = gql`
-  query GetDesigns($limit: Int, $offset: Int) {
-    myDesigns: myDesigns(limit: $limit, offset: $offset) {
-      designs {
-        id
-        shortId: short_id
-      }
+      png: output_png
     }
   }
 `

@@ -117,7 +117,8 @@ export const DeleteLabel = styled.span`
   font-size: 14px;
   font-weight: normal;
   background: ${RED};
-  padding: 0px 8px;
+  justify-content: center;
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.18);
   border-radius: 2px;
   margin-left: 10px;
   @media (max-width: 480px) {

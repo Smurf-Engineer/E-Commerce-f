@@ -104,5 +104,9 @@ export default defineMessages({
   approved: {
     id: 'screens.CustomProductDetail.approved',
     defaultMessage: 'UPDATED'
+  },
+  proAssigned: {
+    id: 'screens.CustomProductDetail.proAssigned',
+    defaultMessage: 'PRODESIGN'
   }
 })
