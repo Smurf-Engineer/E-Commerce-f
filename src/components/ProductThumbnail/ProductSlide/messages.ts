@@ -11,6 +11,6 @@ export default defineMessages({
   },
   proAssigned: {
     id: 'components.ProductThumbnail.ProductSlide.proAssigned',
-    defaultMessage: 'PRO'
+    defaultMessage: 'PRODESIGN'
   }
 })

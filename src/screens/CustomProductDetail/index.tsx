@@ -147,7 +147,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const ownedDesign =
       !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
-
+    alert(ownedDesign)
     if (!product || error) {
       return (
         <Layout {...{ history, intl }}>
