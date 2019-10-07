@@ -8,7 +8,7 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
-
+import zenscroll from 'zenscroll'
 import * as myLockerActions from './actions'
 import messages from './messages'
 import {
@@ -204,6 +204,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     setLoadingAction(true)
     try {
       this.fetchDesigns(offset, page)
+      zenscroll.toY(0, 0)
     } catch (e) {
       setErrorAction(true)
     }
