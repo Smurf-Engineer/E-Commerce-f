@@ -4,7 +4,7 @@
 
 import gql from 'graphql-tag'
 
-export const GetTeamStoresQuery = gql`
+export const GetDesigns = gql`
   query GetTeamStoresList(
     $limit: Int
     $offset: Int

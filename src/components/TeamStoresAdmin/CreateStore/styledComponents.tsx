@@ -3,6 +3,9 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Select from 'antd/lib/select'
+import DatePicker from 'antd/lib/date-picker'
+import Switch from 'antd/lib/switch'
 import InputComponent from 'antd/lib/input'
 import { GRAY_STRONG, BLUE, WHITE, RED } from '../../../theme/colors'
 
@@ -39,6 +42,25 @@ export const InputDiv = styled.div`
 export const Input = styled(InputComponent)`
   border-radius: 0;
   margin-top: 6px;
+`
+
+export const StyledSelect = styled(Select)`
+  margin-top: 6px;
+  .ant-select-selection {
+    border-radius: 0;
+  }
+`
+
+export const StyledDatePicker = styled(DatePicker)`
+  margin-top: 6px;
+  width: 100%;
+  input {
+    border-radius: 0;
+  }
+`
+
+export const SwitchInput = styled(Switch)`
+  margin-top: 14px;
 `
 
 export const Label = styled.div`

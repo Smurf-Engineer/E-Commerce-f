@@ -40,6 +40,7 @@ interface Props {
   offset: number
   currentPage: number
   limit: number
+  proDesign?: boolean
   onSelectItem: (item: SelectedDesignType, checked: boolean) => void
   onUnselectItem: (keyName: string) => void
   onRequestClose: () => void
@@ -89,6 +90,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       onRequestClose,
       selectedItems,
       tableItems,
+      proDesign,
       currentPage,
       limit,
       data
@@ -116,7 +118,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
             id={index}
             product={product}
             onSelectItem={this.handleOnItemSelect}
-            {...{ name, image, productId, description, type }}
+            {...{ name, image, productId, description, type, proDesign }}
             date={createdAt}
           />
         )
@@ -165,13 +167,14 @@ interface OwnProps {
   offset?: number
   currentPage?: number
   limit?: number
+  userId?: string
 }
 
 const LockerModalDesignsEnhance = compose(
   graphql<Data>(desginsQuery, {
-    options: ({ currentPage, offset, limit }: OwnProps) => {
+    options: ({ currentPage, offset, limit, userId }: OwnProps) => {
       return {
-        variables: { limit, currentPage, offset }
+        variables: { limit, currentPage, offset, userId }
       }
     }
   })

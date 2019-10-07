@@ -10,14 +10,20 @@ import {
   SET_LOADING,
   SET_PRICE_ITEM,
   SET_TEAM_STORE_DATA,
-  SET_LOADING_ITEM
+  SET_LOADING_ITEM,
+  SET_OPEN_LOCKER_ACTION,
+  SET_ITEM_SELECTED_ACTION,
+  ON_UNSELECT_ITEM,
+  SET_ITEMS_ADD_ACTION,
+  SET_PAGINATION_DATA
 } from './constants'
 
 import {
   AnyAction,
   sorts,
   TeamStoreAdminType,
-  Currency
+  Currency,
+  DesignType
 } from '../../types/common'
 import { QueryProps } from 'react-apollo'
 
@@ -75,4 +81,33 @@ export const setLoadingItemAction = (itemIndex: string, loading: boolean) => ({
   type: SET_LOADING_ITEM,
   itemIndex,
   loading
+})
+
+export const setOpenLockerAction = (isOpen: boolean): AnyAction => ({
+  type: SET_OPEN_LOCKER_ACTION,
+  isOpen
+})
+
+export const setItemSelectedAction = (
+  item: DesignType,
+  checked: boolean
+): AnyAction => ({
+  type: SET_ITEM_SELECTED_ACTION,
+  item,
+  checked
+})
+
+export const onUnselectItemAction = (keyName: string) => ({
+  type: ON_UNSELECT_ITEM,
+  keyName
+})
+
+export const setItemsAddAction = (): AnyAction => ({
+  type: SET_ITEMS_ADD_ACTION
+})
+
+export const setPaginationData = (offset: number, page: number) => ({
+  type: SET_PAGINATION_DATA,
+  offset,
+  page
 })

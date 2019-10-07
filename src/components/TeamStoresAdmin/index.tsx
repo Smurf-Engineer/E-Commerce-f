@@ -30,7 +30,10 @@ import {
   sorts,
   Message,
   Currency,
-  TeamStoreAdminType
+  TeamStoreAdminType,
+  SelectedDesignObjectType,
+  LockerTableType,
+  DesignType
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
 
@@ -59,6 +62,17 @@ interface Props {
   loading: boolean
   teamStore: TeamStoreAdminType
   currencies: Currency[]
+  items: LockerTableType[]
+  limit: number
+  offset: number
+  currentPageModal: number
+  selectedItems: SelectedDesignObjectType
+  openLocker: boolean
+  setItemsAddAction: () => void
+  setPaginationData: (offset: number, page: number) => void
+  setItemSelectedAction: (item: DesignType, checked: boolean) => void
+  onUnselectItemAction: (keyName: string) => void
+  setOpenLockerAction: (open: boolean) => void
   formatMessage: (messageDescriptor: Message, params?: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -103,6 +117,17 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setPriceAction,
       teamStore,
       currencies,
+      setItemSelectedAction,
+      onUnselectItemAction,
+      selectedItems,
+      setItemsAddAction,
+      setPaginationData,
+      currentPageModal,
+      setOpenLockerAction,
+      limit,
+      openLocker,
+      offset,
+      items,
       loading
     } = this.props
 
@@ -156,6 +181,17 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               {...{
                 formatMessage,
                 history,
+                setOpenLockerAction,
+                selectedItems,
+                currentPageModal,
+                setPaginationData,
+                openLocker,
+                limit,
+                setItemsAddAction,
+                setItemSelectedAction,
+                onUnselectItemAction,
+                items,
+                offset,
                 teamSizeRange,
                 currentCurrency,
                 openCropper
