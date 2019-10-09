@@ -111,3 +111,4 @@ export const setPaginationData = (offset: number, page: number) => ({
   offset,
   page
 })
+// TODO: Add tests for the new actions once everything is complete and merged

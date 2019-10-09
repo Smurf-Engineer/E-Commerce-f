@@ -65,17 +65,11 @@ export class CreateStore extends React.Component<Props, {}> {
     history.push('/admin/team-stores')
   }
   changePage = (pageParam: number = 1) => {
-    const { limit } = this.props
-    const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
-    const {
-      offset: offsetProp,
-      currentPageModal: pageProp,
-      setPaginationData
-    } = this.props
-    let offset = offsetParam !== undefined ? offsetParam : offsetProp
-    let currentPage = pageParam !== undefined ? pageParam : pageProp
+    const { limit, setPaginationData } = this.props
+    let offset = pageParam > 1 ? (pageParam - 1) * limit : 0
+    let currentPage = pageParam
 
-    if (!offsetParam && !pageParam) {
+    if (!offset && !pageParam) {
       const fullPage = !(offset % limit)
       const maxPageNumber = offset / limit
 
@@ -84,7 +78,6 @@ export class CreateStore extends React.Component<Props, {}> {
         offset = currentPage > 1 ? (currentPage - 1) * limit : 0
       }
     }
-
     setPaginationData(offset, currentPage)
   }
 
@@ -155,12 +148,7 @@ export class CreateStore extends React.Component<Props, {}> {
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.teamStoreType} />
-            <StyledSelect
-              size="large"
-              value={''}
-              style={{ width: '100%' }}
-              onChange={() => {}}
-            >
+            <StyledSelect size="large" value={''} onChange={() => {}}>
               <Option value="onDemand">
                 <FormattedMessage {...messages.onDemand} />
               </Option>
@@ -246,7 +234,7 @@ export class CreateStore extends React.Component<Props, {}> {
             offset
           }}
           proDesign={true}
-          userId={''}
+          userId={'H1R0yFr0V'}
           currentPage={currentPageModal}
           visible={openLocker}
           onRequestClose={this.handleOnCloseLocker}
