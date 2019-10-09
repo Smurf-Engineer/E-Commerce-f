@@ -142,11 +142,6 @@ export class CreateStore extends React.Component<Props, {}> {
     }
   }
 
-  handleChangeFeatured = (checked: boolean) => {
-    const { setFeaturedAction } = this.props
-    setFeaturedAction(checked)
-  }
-
   handleOnDeleteImage = () => {
     const { setImage } = this.props
     setImage(null, '', false)
@@ -172,6 +167,7 @@ export class CreateStore extends React.Component<Props, {}> {
       limit,
       offset,
       items,
+      setFeaturedAction,
       currentPageModal,
       onUnselectItemAction,
       setItemSelectedAction,
@@ -251,10 +247,7 @@ export class CreateStore extends React.Component<Props, {}> {
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.featured} />
-            <SwitchInput
-              checked={featured}
-              onChange={this.handleChangeFeatured}
-            />
+            <SwitchInput checked={featured} onChange={setFeaturedAction} />
           </InputDiv>
         </RowInput>
         <Label>
