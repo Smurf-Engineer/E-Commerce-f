@@ -135,13 +135,15 @@ class MainLayout extends React.Component<Props, {}> {
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
     Intercom(config.intercomKey)
-    if (user && typeof window.Intercom === 'function') {
+    if (user) {
       this.setIntercomUser(user)
     }
   }
 
   componentWillUnmount() {
-    window.Intercom('shutdown')
+    if (typeof window.Intercom === 'function') {
+      window.Intercom('shutdown')
+    }
   }
 
   onSearch = (value: string) => {
@@ -176,7 +178,9 @@ class MainLayout extends React.Component<Props, {}> {
     } = this.props
     client.resetStore()
     deleteUserSession()
-    window.Intercom('update', { name: '', email: null, user_id: null })
+    if (typeof window.Intercom === 'function') {
+      window.Intercom('update', { name: '', email: null, user_id: null })
+    }
     if (REDIRECT_ROUTES.includes(pathname)) {
       window.location.replace('/')
     }
@@ -305,12 +309,14 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   setIntercomUser = (user: UserType) => {
-    const userData = {
-      user_id: user.id,
-      email: user.email,
-      name: `${user.name} ${user.lastName}`
+    if (typeof window.Intercom === 'function') {
+      const userData = {
+        user_id: user.id,
+        email: user.email,
+        name: `${user.name} ${user.lastName}`
+      }
+      window.Intercom('update', { app_id: config.intercomKey, ...userData })
     }
-    window.Intercom('update', { app_id: config.intercomKey, ...userData })
   }
 
   handleOnLogin = (user: UserType) => {
