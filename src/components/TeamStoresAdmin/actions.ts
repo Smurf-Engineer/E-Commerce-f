@@ -165,3 +165,4 @@ export const setImage = (
   imagePreviewUrl,
   opened
 })
+// TODO: Add tests for the new actions once everything is complete and merged
