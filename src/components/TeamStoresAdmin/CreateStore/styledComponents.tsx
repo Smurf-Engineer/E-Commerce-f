@@ -7,7 +7,7 @@ import Select from 'antd/lib/select'
 import DatePicker from 'antd/lib/date-picker'
 import Switch from 'antd/lib/switch'
 import InputComponent from 'antd/lib/input'
-import { GRAY_STRONG, BLUE, WHITE, RED } from '../../../theme/colors'
+import { GRAY_STRONG, BLUE, WHITE, RED, GRAY_DARK } from '../../../theme/colors'
 
 interface DivProps {
   fullSize?: boolean
@@ -129,3 +129,23 @@ export const BuildButton = styled.div`
   margin-top: 24px;
   cursor: pointer;
 `
+
+export const InfoTitle = styled.div`
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  color: ${GRAY_DARK};
+`
+
+export const InfoUser = styled.div`
+  margin-left: -36px;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  color: ${GRAY_DARK};
+`
+
+export const okButtonStyles = {
+  background: BLUE,
+  border: 'none',
+  borderRadius: '2px'
+}

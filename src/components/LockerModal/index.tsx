@@ -97,7 +97,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       proDesign,
       currentPage,
       limit,
-      userId,
       title,
       data
     } = this.props
@@ -145,34 +144,27 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         okText="ADD"
         cancelText="Cancel"
       >
-        {(proDesign && userId) || !proDesign ? (
-          <>
-            <Title>
-              {title ? title : <FormattedMessage {...messages.myLocker} />}
-            </Title>
-            <List
-              ref={(listObject: any) => {
-                this.listRef = listObject
-              }}
-            >
-              {screen}
-            </List>
-            <PaginationRow>
-              {!data.loading &&
-                Number(data.designsResult.fullCount) > limit && (
-                  <Pagination
-                    size="small"
-                    current={currentPage}
-                    onChange={this.onChangePage}
-                    total={Number(data.designsResult.fullCount)}
-                    pageSize={limit}
-                  />
-                )}
-            </PaginationRow>
-          </>
-        ) : (
-          <div>Pears</div>
-        )}
+        <Title>
+          {title ? title : <FormattedMessage {...messages.myLocker} />}
+        </Title>
+        <List
+          ref={(listObject: any) => {
+            this.listRef = listObject
+          }}
+        >
+          {screen}
+        </List>
+        <PaginationRow>
+          {!data.loading && Number(data.designsResult.fullCount) > limit && (
+            <Pagination
+              size="small"
+              current={currentPage}
+              onChange={this.onChangePage}
+              total={Number(data.designsResult.fullCount)}
+              pageSize={limit}
+            />
+          )}
+        </PaginationRow>
       </Modal>
     )
   }

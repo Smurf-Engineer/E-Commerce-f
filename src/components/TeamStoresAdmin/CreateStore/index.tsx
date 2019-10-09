@@ -7,6 +7,7 @@ import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import Select from 'antd/lib/select'
+import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
 import messages from './messages'
 import {
@@ -24,7 +25,10 @@ import {
   PreviewImage,
   UploadSection,
   StyledDatePicker,
-  SwitchInput
+  SwitchInput,
+  InfoTitle,
+  InfoUser,
+  okButtonStyles
 } from './styledComponents'
 import { History } from 'history'
 import LockerTable from '../../LockerTable'
@@ -55,6 +59,7 @@ interface Props {
   onDemand: boolean
   name: string
   featured: boolean
+  userId: string
   setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
   openModal: (opened: boolean) => void
   setFeaturedAction: (featured: boolean) => void
@@ -101,8 +106,28 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   handleOnAddItem = () => {
-    const { setOpenLockerAction } = this.props
-    setOpenLockerAction(true)
+    const { setOpenLockerAction, userId, formatMessage } = this.props
+    if (userId) {
+      setOpenLockerAction(true)
+    } else {
+      Modal.info({
+        title: (
+          <InfoTitle>
+            <FormattedMessage {...messages.noUserSelected} />
+          </InfoTitle>
+        ),
+        iconType: '',
+        icon: null,
+        width: 355,
+        okButtonProps: { style: okButtonStyles },
+        okText: formatMessage(messages.gotIt),
+        content: (
+          <InfoUser>
+            <FormattedMessage {...messages.userNotSelected} />
+          </InfoUser>
+        )
+      })
+    }
   }
 
   getCheckedItems = (items: LockerTableType[]) => {
