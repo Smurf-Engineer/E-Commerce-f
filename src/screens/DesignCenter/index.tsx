@@ -104,6 +104,8 @@ import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
 import DesignCheckModal from '../../components/DesignCheckModal'
 import moment from 'moment'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -317,6 +319,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       responsive,
       intl: { formatMessage }
     } = this.props
+    LoadScripts(threeDScripts)
     if (
       responsive.tablet &&
       window.matchMedia('(orientation: portrait)').matches
