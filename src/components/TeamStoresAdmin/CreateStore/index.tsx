@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
+import { RcFile } from 'antd/lib/upload/interface'
 import Select from 'antd/lib/select'
 import get from 'lodash/get'
 import messages from './messages'
@@ -113,7 +114,7 @@ export class CreateStore extends React.Component<Props, {}> {
     setOpenLockerAction(false)
   }
 
-  beforeUpload = (file: any) => {
+  beforeUpload = (file: RcFile) => {
     const { setImage } = this.props
     const reader = new FileReader()
     reader.onloadend = () => {
