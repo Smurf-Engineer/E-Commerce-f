@@ -16,7 +16,14 @@ import {
   SET_ITEM_SELECTED_ACTION,
   ON_UNSELECT_ITEM,
   SET_ITEMS_ADD_ACTION,
-  SET_PAGINATION_DATA
+  SET_PAGINATION_DATA,
+  DELETE_ITEM_SELECTED_ACTION,
+  SET_ITEM_VISIBLE_ACTION,
+  SET_NAME,
+  MOVE_ROW,
+  SET_FEATURED,
+  SET_OPEN_MODAL,
+  SET_IMAGE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -36,7 +43,12 @@ export const initialState = fromJS({
   offset: 0,
   items: [],
   openLocker: false,
-  loading: true
+  loading: true,
+  file: {},
+  imagePreviewUrl: '',
+  name: '',
+  onDemand: true,
+  featured: false
 })
 
 const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -45,6 +57,18 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
+    case SET_NAME:
+      return state.set('name', action.name)
+    case SET_FEATURED:
+      return state.set('featured', action.featured)
+    case SET_IMAGE:
+      return state.merge({
+        file: action.file,
+        imagePreviewUrl: action.imagePreviewUrl,
+        openCropper: action.opened
+      })
+    case SET_OPEN_MODAL:
+      return state.set('openCropper', action.opened)
     case RESET_DATA:
       return initialState
     case SET_OPEN_LOCKER_ACTION:
@@ -77,6 +101,21 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         currentPage: action.page,
         loading: false
       })
+    }
+    case DELETE_ITEM_SELECTED_ACTION: {
+      const { index } = action
+      const selectedItems = state.get('items')
+      return state.set('items', selectedItems.delete(index))
+    }
+    case SET_ITEM_VISIBLE_ACTION: {
+      const { index, visible } = action
+      return state.setIn(['items', index, 'visible'], visible)
+    }
+    case MOVE_ROW: {
+      const { index, hoverIndex, row } = action
+      const items = state.get('items')
+      const updatedItems = items.delete(index).insert(hoverIndex, row)
+      return state.set('items', updatedItems)
     }
     case SET_SEARCH_TEXT:
       return state.merge({ searchText: action.searchText, currentPage: 1 })

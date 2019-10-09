@@ -37,6 +37,7 @@ import {
   DesignType
 } from '../../../types/common'
 const Option = Select.Option
+const INPUT_MAX_LENGTH = 25
 
 interface Props {
   history: History
@@ -51,6 +52,16 @@ interface Props {
   openLocker: boolean
   imagePreviewUrl?: string
   banner?: string
+  onDemand: boolean
+  name: string
+  featured: boolean
+  setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
+  openModal: (opened: boolean) => void
+  setFeaturedAction: (featured: boolean) => void
+  setNameAction: (name: string) => void
+  deleteItemSelectedAction: (index: number) => void
+  setItemVisibleAction: (index: number, visible: boolean) => void
+  moveRowAction: (index: number, row: any) => void
   setItemsAddAction: () => void
   setPaginationData: (offset: number, page: number) => void
   onUnselectItemAction: (index: number) => void
@@ -64,6 +75,7 @@ export class CreateStore extends React.Component<Props, {}> {
     const { history } = this.props
     history.push('/admin/team-stores')
   }
+
   changePage = (pageParam: number = 1) => {
     const { limit } = this.props
     const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
@@ -92,10 +104,7 @@ export class CreateStore extends React.Component<Props, {}> {
     const { setOpenLockerAction } = this.props
     setOpenLockerAction(true)
   }
-  handleOnCloseLocker = () => {
-    const { setOpenLockerAction } = this.props
-    setOpenLockerAction(false)
-  }
+
   getCheckedItems = (items: LockerTableType[]) => {
     const checkedItems = items.reduce((obj, item) => {
       const itemId = get(item, 'design.id', item.id)
@@ -105,6 +114,54 @@ export class CreateStore extends React.Component<Props, {}> {
     }, {})
     return checkedItems
   }
+
+  handleOnCloseLocker = () => {
+    const { setOpenLockerAction } = this.props
+    setOpenLockerAction(false)
+  }
+
+  beforeUpload = (file: any) => {
+    const { setImage } = this.props
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setImage(file, reader.result, true)
+    }
+    if (file) {
+      reader.readAsDataURL(file)
+    }
+    return false
+  }
+
+  handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { setNameAction } = this.props
+    const {
+      target: { value }
+    } = event
+    if (value.length <= INPUT_MAX_LENGTH) {
+      setNameAction(value)
+    }
+  }
+
+  handleChangeFeatured = (checked: boolean) => {
+    const { setFeaturedAction } = this.props
+    setFeaturedAction(checked)
+  }
+
+  handleOnDeleteImage = () => {
+    const { setImage } = this.props
+    setImage(null, '', false)
+  }
+
+  closeModal = () => {
+    const { openModal } = this.props
+    openModal(false)
+  }
+
+  setImageAction = (file: Blob) => {
+    const { setImage } = this.props
+    setImage(file, URL.createObjectURL(file), false)
+  }
+
   render() {
     const {
       formatMessage,
@@ -121,7 +178,12 @@ export class CreateStore extends React.Component<Props, {}> {
       selectedItems,
       setItemsAddAction,
       openLocker,
-      banner
+      featured,
+      onDemand,
+      deleteItemSelectedAction,
+      setItemVisibleAction,
+      moveRowAction,
+      name
     } = this.props
     const tableItems = this.getCheckedItems(items)
     return (
@@ -135,9 +197,9 @@ export class CreateStore extends React.Component<Props, {}> {
             <FormattedMessage {...messages.teamStoreName} />
             <Input
               size="large"
-              value={''}
+              value={name}
               name="name"
-              onChange={() => {}}
+              onChange={this.handleChangeName}
               placeholder={formatMessage(messages.teamStoreNameHolder)}
             />
           </InputDiv>
@@ -157,14 +219,14 @@ export class CreateStore extends React.Component<Props, {}> {
             <FormattedMessage {...messages.teamStoreType} />
             <StyledSelect
               size="large"
-              value={''}
+              value={onDemand}
+              disabled={true}
               style={{ width: '100%' }}
-              onChange={() => {}}
             >
-              <Option value="onDemand">
+              <Option value={true}>
                 <FormattedMessage {...messages.onDemand} />
               </Option>
-              <Option value="fixedDate">
+              <Option value={false}>
                 <FormattedMessage {...messages.fixedDate} />
               </Option>
             </StyledSelect>
@@ -189,7 +251,10 @@ export class CreateStore extends React.Component<Props, {}> {
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.featured} />
-            <SwitchInput checked={true} onChange={() => {}} />
+            <SwitchInput
+              checked={featured}
+              onChange={this.handleChangeFeatured}
+            />
           </InputDiv>
         </RowInput>
         <Label>
@@ -206,10 +271,9 @@ export class CreateStore extends React.Component<Props, {}> {
         <LockerTable
           {...{ formatMessage, teamSizeRange, currentCurrency, items }}
           hideQuickView={true}
-          onPressDelete={() => {}}
-          onPressQuickView={() => {}}
-          onPressVisible={() => {}}
-          onMoveRow={() => {}}
+          onPressDelete={deleteItemSelectedAction}
+          onPressVisible={setItemVisibleAction}
+          onMoveRow={moveRowAction}
         />
         <UploadSection>
           <Label>
@@ -219,21 +283,21 @@ export class CreateStore extends React.Component<Props, {}> {
             </SubLabel>
           </Label>
           <Upload
-            beforeUpload={() => {}}
+            beforeUpload={this.beforeUpload}
             multiple={false}
             showUploadList={false}
             supportServerRender={true}
           >
             <Button>{formatMessage(messages.changeLabel)}</Button>
           </Upload>
-          <ButtonDelete onClick={() => {}}>
+          <ButtonDelete onClick={this.handleOnDeleteImage}>
             {formatMessage(messages.deleteLabel)}
           </ButtonDelete>
         </UploadSection>
-        {imagePreviewUrl || banner ? (
-          <PreviewImage src={imagePreviewUrl || banner} />
+        {imagePreviewUrl ? (
+          <PreviewImage src={imagePreviewUrl} />
         ) : (
-          <Dragger onSelectImage={() => {}} />
+          <Dragger onSelectImage={this.beforeUpload} />
         )}
         <BuildButton>
           <FormattedMessage {...messages.buildStore} />
@@ -246,7 +310,7 @@ export class CreateStore extends React.Component<Props, {}> {
             offset
           }}
           proDesign={true}
-          userId={''}
+          userId={'H1R0yFr0V'}
           currentPage={currentPageModal}
           visible={openLocker}
           onRequestClose={this.handleOnCloseLocker}
@@ -258,9 +322,9 @@ export class CreateStore extends React.Component<Props, {}> {
         <ImageCropper
           {...{ formatMessage }}
           open={openCropper}
-          requestClose={() => {}}
-          setImage={() => {}}
-          image={''}
+          requestClose={this.closeModal}
+          setImage={this.setImageAction}
+          image={imagePreviewUrl}
         />
       </Container>
     )

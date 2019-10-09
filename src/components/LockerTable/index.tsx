@@ -43,7 +43,7 @@ interface Props {
   currentCurrency?: string
   hideQuickView?: boolean
   onPressDelete: (index: number) => void
-  onPressQuickView: (
+  onPressQuickView?: (
     id: number,
     yotpoId: string,
     hideSliderButtons?: boolean

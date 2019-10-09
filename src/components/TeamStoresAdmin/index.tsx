@@ -68,6 +68,17 @@ interface Props {
   currentPageModal: number
   selectedItems: SelectedDesignObjectType
   openLocker: boolean
+  onDemand: boolean
+  name: string
+  featured: boolean
+  imagePreviewUrl: string
+  setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
+  openModal: (opened: boolean) => void
+  setFeaturedAction: (featured: boolean) => void
+  setNameAction: (name: string) => void
+  deleteItemSelectedAction: (index: number) => void
+  setItemVisibleAction: (index: number, visible: boolean) => void
+  moveRowAction: (index: number, row: any) => void
   setItemsAddAction: () => void
   setPaginationData: (offset: number, page: number) => void
   setItemSelectedAction: (item: DesignType, checked: boolean) => void
@@ -124,6 +135,17 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setPaginationData,
       currentPageModal,
       setOpenLockerAction,
+      deleteItemSelectedAction,
+      setNameAction,
+      setImage,
+      imagePreviewUrl,
+      setItemVisibleAction,
+      setFeaturedAction,
+      moveRowAction,
+      name,
+      onDemand,
+      featured,
+      openModal,
       limit,
       openLocker,
       offset,
@@ -187,9 +209,20 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 setPaginationData,
                 openLocker,
                 limit,
+                onDemand,
+                featured,
+                setNameAction,
+                name,
+                setImage,
+                openModal,
                 setItemsAddAction,
+                imagePreviewUrl,
                 setItemSelectedAction,
                 onUnselectItemAction,
+                deleteItemSelectedAction,
+                setItemVisibleAction,
+                setFeaturedAction,
+                moveRowAction,
                 items,
                 offset,
                 teamSizeRange,

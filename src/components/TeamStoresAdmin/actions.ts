@@ -15,7 +15,14 @@ import {
   SET_ITEM_SELECTED_ACTION,
   ON_UNSELECT_ITEM,
   SET_ITEMS_ADD_ACTION,
-  SET_PAGINATION_DATA
+  SET_PAGINATION_DATA,
+  DELETE_ITEM_SELECTED_ACTION,
+  SET_ITEM_VISIBLE_ACTION,
+  MOVE_ROW,
+  SET_NAME,
+  SET_FEATURED,
+  SET_OPEN_MODAL,
+  SET_IMAGE
 } from './constants'
 
 import {
@@ -110,4 +117,51 @@ export const setPaginationData = (offset: number, page: number) => ({
   type: SET_PAGINATION_DATA,
   offset,
   page
+})
+
+export const deleteItemSelectedAction = (index: number): AnyAction => ({
+  type: DELETE_ITEM_SELECTED_ACTION,
+  index
+})
+
+export const setItemVisibleAction = (
+  index: number,
+  visible: boolean
+): AnyAction => ({
+  type: SET_ITEM_VISIBLE_ACTION,
+  index,
+  visible
+})
+
+export const moveRowAction = (index: number, hoverIndex: number, row: any) => ({
+  type: MOVE_ROW,
+  index,
+  hoverIndex,
+  row
+})
+
+export const setNameAction = (name: string) => ({
+  type: SET_NAME,
+  name
+})
+
+export const setFeaturedAction = (featured: boolean) => ({
+  type: SET_FEATURED,
+  featured
+})
+
+export const openModal = (opened: boolean) => ({
+  type: SET_OPEN_MODAL,
+  opened
+})
+
+export const setImage = (
+  file: Blob,
+  imagePreviewUrl: string,
+  opened: boolean
+) => ({
+  type: SET_IMAGE,
+  file,
+  imagePreviewUrl,
+  opened
 })
