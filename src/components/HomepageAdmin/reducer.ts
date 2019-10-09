@@ -40,18 +40,9 @@ import {
 } from '../../types/common'
 
 export const initialState = fromJS({
-  mainHeader: {
-    [ImageTypes.DESKTOP]: '',
-    [ImageTypes.MOBILE]: '',
-    url: '',
-    loading: false,
-    id: null
-  },
+  mainHeader: [],
   secondaryHeader: [],
-  mainHeaderLoading: {
-    [ImageTypes.DESKTOP]: false,
-    [ImageTypes.MOBILE]: false
-  },
+  mainHeaderLoading: [],
   secondaryHeaderLoading: [],
   loaders: {
     [Sections.MAIN_CONTAINER]: true,
@@ -85,11 +76,8 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       )
     case SET_HOMEPAGE_INFO: {
       const {
-        id,
         homepageImages,
-        headerImageLink,
-        headerImage,
-        headerImageMobile,
+        mainHeaderImages,
         items,
         productTiles
       } = action.data
@@ -109,14 +97,19 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             )
           )
         )
-        map.update('mainHeader', (mainHeader: any) => {
-          return mainHeader.merge({
-            [ImageTypes.DESKTOP]: headerImage,
-            [ImageTypes.MOBILE]: headerImageMobile,
-            url: headerImageLink,
-            id
-          })
-        })
+        map.set('mainHeader', fromJS(mainHeaderImages))
+        map.set(
+          'mainHeaderLoading',
+          List.of(
+            ...fill(
+              Array(mainHeaderImages.length),
+              fromJS({
+                [ImageTypes.DESKTOP]: false,
+                [ImageTypes.MOBILE]: false
+              })
+            )
+          )
+        )
         return map
       })
     }

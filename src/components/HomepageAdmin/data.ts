@@ -5,9 +5,12 @@ export const getHomepageInfo = gql`
   query getHomepageContent($route: String) {
     getHomepageContent(sportRoute: $route) {
       id
-      headerImageMobile: header_image_mobile
-      headerImage: header_image
-      headerImageLink: header_image_link
+      mainHeaderImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
+      }
       homepageImages {
         id
         desktopImage: image

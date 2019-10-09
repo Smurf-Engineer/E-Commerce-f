@@ -83,3 +83,10 @@ export const InputContainer = styled.div`
 export const Title = styled.div`
   margin-bottom: 20px;
 `
+
+export const UploadersContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 50px;
+`
