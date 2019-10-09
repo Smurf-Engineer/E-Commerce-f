@@ -82,17 +82,11 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   changePage = (pageParam: number = 1) => {
-    const { limit } = this.props
-    const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
-    const {
-      offset: offsetProp,
-      currentPageModal: pageProp,
-      setPaginationData
-    } = this.props
-    let offset = offsetParam !== undefined ? offsetParam : offsetProp
-    let currentPage = pageParam !== undefined ? pageParam : pageProp
+    const { limit, setPaginationData } = this.props
+    let offset = pageParam > 1 ? (pageParam - 1) * limit : 0
+    let currentPage = pageParam
 
-    if (!offsetParam && !pageParam) {
+    if (!offset && !pageParam) {
       const fullPage = !(offset % limit)
       const maxPageNumber = offset / limit
 
@@ -101,7 +95,6 @@ export class CreateStore extends React.Component<Props, {}> {
         offset = currentPage > 1 ? (currentPage - 1) * limit : 0
       }
     }
-
     setPaginationData(offset, currentPage)
   }
 
@@ -238,12 +231,7 @@ export class CreateStore extends React.Component<Props, {}> {
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.teamStoreType} />
-            <StyledSelect
-              size="large"
-              value={onDemand}
-              disabled={true}
-              style={{ width: '100%' }}
-            >
+            <StyledSelect size="large" value={onDemand} disabled={true}>
               <Option value={true}>
                 <FormattedMessage {...messages.onDemand} />
               </Option>

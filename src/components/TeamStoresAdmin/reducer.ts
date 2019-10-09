@@ -98,7 +98,7 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
     case SET_PAGINATION_DATA: {
       return state.merge({
         offset: action.offset,
-        currentPage: action.page,
+        currentPageModal: action.page,
         loading: false
       })
     }

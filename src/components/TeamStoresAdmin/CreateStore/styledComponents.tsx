@@ -46,6 +46,7 @@ export const Input = styled(InputComponent)`
 
 export const StyledSelect = styled(Select)`
   margin-top: 6px;
+  width: 100%;
   .ant-select-selection {
     border-radius: 0;
   }
