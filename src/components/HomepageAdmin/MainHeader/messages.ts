@@ -31,6 +31,6 @@ export default defineMessages({
   },
   mainHeaderTitle: {
     id: 'components.MainHeader.mainHeaderTitle',
-    defaultMessage: 'Header 1'
+    defaultMessage: 'Header 1 Carousel'
   }
 })
