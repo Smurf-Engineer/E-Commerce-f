@@ -26,7 +26,8 @@ import {
   ADD_MORE_IMAGES,
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
-  UPDATE_PRODUCT_TILES_LIST
+  UPDATE_PRODUCT_TILES_LIST,
+  ADD_CAROUSEL_ITEM
 } from './constants'
 
 import {
@@ -189,6 +190,13 @@ export const addMoreImagesAction = (
   imagePlaceholder: HeaderImagePlaceHolder
 ) => ({
   type: ADD_MORE_IMAGES,
+  imagePlaceholder
+})
+
+export const addCarouselItemAction = (
+  imagePlaceholder: HeaderImagePlaceHolder
+) => ({
+  type: ADD_CAROUSEL_ITEM,
   imagePlaceholder
 })
 

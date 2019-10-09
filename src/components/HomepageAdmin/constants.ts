@@ -31,6 +31,17 @@ export const EMPTY_SECONDARY_HEADER = {
   sport_id: ''
 }
 
+export const EMPTY_MAIN_HEADER = {
+  desktopImage: '',
+  mobileImage: '',
+  url: '',
+  sport_id: '',
+  type: ''
+}
+
+export const VIDEO_TYPE = 'video'
+export const IMAGE_TYPE = 'image'
+
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
 export const SET_URL_IMAGE = `${namespace}/SET_URL_IMAGE`
 export const SET_LOADING = `${namespace}/SET_LOADING`
@@ -55,3 +66,4 @@ export const ADD_MORE_IMAGES = `${namespace}/ADD_MORE_IMAGES`
 export const UPDATE_IMAGES_PLACEHOLDER_LIST = `${namespace}/UPDATE_IMAGES_PLACEHOLDER_LIST`
 export const ADD_MORE_TILES = `${namespace}/ADD_MORE_TILES`
 export const UPDATE_PRODUCT_TILES_LIST = `${namespace}/UPDATE_PRODUCT_TILES_LIST`
+export const ADD_CAROUSEL_ITEM = `${namespace}/ADD_CAROUSEL_ITEM`

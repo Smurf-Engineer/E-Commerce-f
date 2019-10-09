@@ -32,5 +32,13 @@ export default defineMessages({
   mainHeaderTitle: {
     id: 'components.MainHeader.mainHeaderTitle',
     defaultMessage: 'Header 1 Carousel'
+  },
+  addImage: {
+    id: 'components.MainHeader.addImage',
+    defaultMessage: '+ ADD IMAGE SLIDE'
+  },
+  addVideo: {
+    id: 'components.MainHeader.addVideo',
+    defaultMessage: '+ ADD VIDEO SLIDE'
   }
 })

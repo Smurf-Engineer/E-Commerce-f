@@ -95,6 +95,7 @@ interface Props {
   addMoreTilesAction: (tilePlaceholder: ProductTilePlaceHolder) => void
   updatePlaceHolderListAction: (list: [HeaderImagePlaceHolder]) => void
   updateProductTilesListAction: (tilesList: [ProductTilePlaceHolder]) => void
+  addCarouselItemAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
@@ -351,6 +352,25 @@ class HomepageAdmin extends React.Component<Props, {}> {
     history.goBack()
   }
 
+  handleAddCarouselItem = (assetType: string) => {
+    const {
+      addCarouselItemAction,
+      mainHeader,
+      history: {
+        location: {
+          state: { sportId }
+        }
+      }
+    } = this.props
+    if (mainHeader.length < 5) {
+      const newPlaceholder = {
+        ...EMPTY_SECONDARY_HEADER,
+        sport_id: sportId || null
+      }
+      addCarouselItemAction(newPlaceholder)
+    }
+  }
+
   handleAddMoreImages = () => {
     const {
       addMoreImagesAction,
@@ -453,6 +473,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           setUrl={setUrlAction}
           onSaveHeader={this.handleOnSaveMainHeader}
           saving={mainHeaderLoader}
+          handleAddMoreImages={this.handleAddCarouselItem}
           {...{
             desktopImage,
             formatMessage,

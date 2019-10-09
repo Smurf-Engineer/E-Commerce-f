@@ -30,6 +30,7 @@ import {
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
+  ADD_CAROUSEL_ITEM,
   ImageTypes,
   Sections
 } from './constants'
@@ -40,7 +41,7 @@ import {
 } from '../../types/common'
 
 export const initialState = fromJS({
-  mainHeader: [],
+  c: [],
   secondaryHeader: [],
   mainHeaderLoading: [],
   secondaryHeaderLoading: [],
@@ -217,6 +218,17 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             images.push(fromJS(action.imagePlaceholder))
         )
         tempState.updateIn(['secondaryHeaderLoading'], (loadings: [any]) =>
+          loadings.push(fromJS(initialLoadingValues))
+        )
+        return tempState
+      })
+    case ADD_CAROUSEL_ITEM:
+      return state.withMutations((tempState: any) => {
+        const initialLoadingValues = { desktopImage: false, mobileImage: false }
+        tempState.updateIn(['mainHeader'], (images: [HeaderImagePlaceHolder]) =>
+          images.push(fromJS(action.imagePlaceholder))
+        )
+        tempState.updateIn(['mainHeaderLoading'], (loadings: [any]) =>
           loadings.push(fromJS(initialLoadingValues))
         )
         return tempState

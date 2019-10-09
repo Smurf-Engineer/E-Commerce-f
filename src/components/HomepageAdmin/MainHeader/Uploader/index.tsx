@@ -22,7 +22,7 @@ import { getFileExtension } from '../../../../utils/utilsFiles'
 import { ImageTypes, Sections } from '../../constants'
 
 const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
-const { SECONDARY_HEADER } = Sections
+const { MAIN_HEADER } = Sections
 interface Props {
   item: any
   loading: any
@@ -58,7 +58,7 @@ class Uploader extends React.Component<Props, {}> {
         message.error(formatMessage(messages.imageExtensionError))
         return false
       }
-      onUploadFile(file, SECONDARY_HEADER, imageType, index)
+      onUploadFile(file, MAIN_HEADER, imageType, index)
     }
     return false
   }

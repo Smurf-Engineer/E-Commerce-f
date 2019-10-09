@@ -4,12 +4,20 @@
 import * as React from 'react'
 import Divider from 'antd/lib/divider'
 import Uploader from './Uploader'
+import Button from 'antd/lib/button'
 import indexOf from 'lodash/indexOf'
+import AddMoreButton from '../../Button'
 import { getFileExtension } from '../../../utils/utilsFiles'
-import { Container, UploadersContainer, Title } from './styledComponents'
+import {
+  Container,
+  UploadersContainer,
+  Title,
+  ButtonContainer
+} from './styledComponents'
 import messages from './messages'
 import message from 'antd/lib/message'
 import { ImageTypes, Sections } from '../constants'
+import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
 
 const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
 const { MAIN_HEADER } = Sections
@@ -22,6 +30,8 @@ interface Props {
   onUploadFile: (file: any, section: string, imageType: string) => void
   setUrl: (value: string) => void
   onSaveHeader: () => void
+  handleAddMoreImages: (itemType: string) => void
+  removeImage: (index: number) => void
 }
 
 class MainHeader extends React.Component<Props, {}> {
@@ -58,8 +68,25 @@ class MainHeader extends React.Component<Props, {}> {
     const { setUrl } = this.props
     setUrl(event.target.value)
   }
+  handleAddImage = () => {
+    const { handleAddMoreImages } = this.props
+    handleAddMoreImages(IMAGE_TYPE)
+  }
+  handleAddVideo = () => {
+    const { handleAddMoreImages } = this.props
+    handleAddMoreImages(VIDEO_TYPE)
+  }
   render() {
-    const { mainHeader, loading, formatMessage } = this.props
+    const {
+      mainHeader,
+      loading,
+      formatMessage,
+      saving,
+      onSaveHeader,
+      removeImage,
+      setUrl,
+      onUploadFile
+    } = this.props
 
     const uploadItems = mainHeader.map((item: any, index: number) => (
       <Uploader
@@ -69,9 +96,9 @@ class MainHeader extends React.Component<Props, {}> {
           formatMessage,
           index,
           loading: loading[index],
-          onUploadFile: () => console.log('a'),
-          setUrl: () => console.log('a'),
-          removeImage: () => console.log('a')
+          onUploadFile,
+          setUrl,
+          removeImage
         }}
       />
     ))
@@ -79,7 +106,20 @@ class MainHeader extends React.Component<Props, {}> {
     return (
       <Container>
         <Title>{formatMessage(messages.mainHeaderTitle)}</Title>
+        <AddMoreButton
+          label={formatMessage(messages.addImage)}
+          onClick={this.handleAddImage}
+        />
+        <AddMoreButton
+          label={formatMessage(messages.addVideo)}
+          onClick={this.handleAddVideo}
+        />
         <UploadersContainer>{uploadItems}</UploadersContainer>
+        <ButtonContainer>
+          <Button loading={saving} onClick={onSaveHeader}>
+            {formatMessage(messages.saveChanges)}
+          </Button>
+        </ButtonContainer>
         <Divider />
       </Container>
     )
