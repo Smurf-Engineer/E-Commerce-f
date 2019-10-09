@@ -310,7 +310,7 @@ export class CreateStore extends React.Component<Props, {}> {
             offset
           }}
           proDesign={true}
-          userId={'H1R0yFr0V'}
+          userId={''}
           currentPage={currentPageModal}
           visible={openLocker}
           onRequestClose={this.handleOnCloseLocker}
