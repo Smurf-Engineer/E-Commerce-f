@@ -311,6 +311,7 @@ export class CreateStore extends React.Component<Props, {}> {
           }}
           proDesign={true}
           userId={''}
+          title={'0404 - John Doe Locker'}
           currentPage={currentPageModal}
           visible={openLocker}
           onRequestClose={this.handleOnCloseLocker}

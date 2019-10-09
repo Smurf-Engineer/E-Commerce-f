@@ -1148,5 +1148,7 @@
   "components.CreateStoreAdmin.deleteLabel": "Delete",
   "components.CreateStoreAdmin.buildStore": "Build Team Store",
   "components.CreateStoreAdmin.onDemand": "On Demand",
-  "components.CreateStoreAdmin.fixedDate": "Fixed Date"
+  "components.CreateStoreAdmin.fixedDate": "Fixed Date",
+  "components.LockerModal.title": "Locker Modal",
+  "components.LockerModal.myLocker": "My Locker"
 }

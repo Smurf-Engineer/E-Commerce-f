@@ -4,12 +4,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Modal from 'antd/lib/modal'
+import { FormattedMessage } from 'react-intl'
 import { desginsQuery } from './data'
 import { graphql, compose } from 'react-apollo'
 import zenscroll from 'zenscroll'
 import get from 'lodash/get'
 import Pagination from 'antd/lib/pagination'
 import Spin from 'antd/lib/spin'
+import messages from './messages'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
 import {
   QueryProps,
@@ -41,6 +43,8 @@ interface Props {
   currentPage: number
   limit: number
   proDesign?: boolean
+  title?: string
+  userId?: string
   onSelectItem: (item: SelectedDesignType, checked: boolean) => void
   onUnselectItem: (keyName: string) => void
   onRequestClose: () => void
@@ -93,6 +97,8 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       proDesign,
       currentPage,
       limit,
+      userId,
+      title,
       data
     } = this.props
     let screen
@@ -139,25 +145,34 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         okText="ADD"
         cancelText="Cancel"
       >
-        <Title>My Locker</Title>
-        <List
-          ref={(listObject: any) => {
-            this.listRef = listObject
-          }}
-        >
-          {screen}
-        </List>
-        <PaginationRow>
-          {!data.loading && Number(data.designsResult.fullCount) > limit && (
-            <Pagination
-              size="small"
-              current={currentPage}
-              onChange={this.onChangePage}
-              total={Number(data.designsResult.fullCount)}
-              pageSize={limit}
-            />
-          )}
-        </PaginationRow>
+        {(proDesign && userId) || !proDesign ? (
+          <>
+            <Title>
+              {title ? title : <FormattedMessage {...messages.myLocker} />}
+            </Title>
+            <List
+              ref={(listObject: any) => {
+                this.listRef = listObject
+              }}
+            >
+              {screen}
+            </List>
+            <PaginationRow>
+              {!data.loading &&
+                Number(data.designsResult.fullCount) > limit && (
+                  <Pagination
+                    size="small"
+                    current={currentPage}
+                    onChange={this.onChangePage}
+                    total={Number(data.designsResult.fullCount)}
+                    pageSize={limit}
+                  />
+                )}
+            </PaginationRow>
+          </>
+        ) : (
+          <div>Pears</div>
+        )}
       </Modal>
     )
   }
