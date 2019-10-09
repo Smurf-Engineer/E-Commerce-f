@@ -36,6 +36,7 @@ export const SearchBackground = styled.img`
   filter: brightness(0.6);
   @media (max-width: 425px) {
     width: unset;
+    max-width: 100%;
     max-height: 368px;
   }
 `

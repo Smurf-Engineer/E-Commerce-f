@@ -13,7 +13,7 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
-import { GetDesignByIdQuery, designsQuery } from './data'
+import { GetDesignByIdQuery } from './data'
 import {
   Container,
   Content,
@@ -79,10 +79,6 @@ const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
 const { Men, Women, Unisex } = ProductGenders
 
-interface MyDesignsData extends QueryProps {
-  myDesigns: { designs: DesignType[] }
-}
-
 interface Data extends QueryProps {
   design: DesignType
 }
@@ -90,7 +86,6 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
-  designsData: MyDesignsData
   selectedGender: SelectedType
   selectedSize: SelectedType
   selectedFit: SelectedType
@@ -124,7 +119,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       data: { design, error },
-      designsData,
       selectedGender,
       selectedSize,
       selectedFit,
@@ -139,14 +133,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
-    const shortId = get(design, 'shortId', '')
+    const ownedDesign = get(design, 'canEdit', false)
     const product = get(design, 'product', null)
     const productPriceRange = get(product, 'priceRange', null)
     const teamStoreItem = queryParams.item
-    const designs = get(designsData, 'myDesigns.designs', [] as DesignType[])
-
-    const ownedDesign =
-      !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
 
     if (!product || error) {
       return (
@@ -597,20 +587,6 @@ const CustomProductDetailEnhance = compose(
     mapStateToProps,
     { ...customProductDetailActions }
   ),
-  graphql<any>(designsQuery, {
-    options: ({ user, location: { search } }: OwnProps) => {
-      const queryParams = queryString.parse(search)
-      return {
-        variables: {
-          limit: 12,
-          offset: 0
-        },
-        skip: !user || !!queryParams.item,
-        fetchPolicy: 'network-only'
-      }
-    },
-    name: 'designsData'
-  }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {
