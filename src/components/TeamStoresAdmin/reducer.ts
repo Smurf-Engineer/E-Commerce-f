@@ -104,8 +104,7 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
     }
     case DELETE_ITEM_SELECTED_ACTION: {
       const { index } = action
-      const selectedItems = state.get('items')
-      return state.set('items', selectedItems.delete(index))
+      return state.deleteIn(['items', index])
     }
     case SET_ITEM_VISIBLE_ACTION: {
       const { index, visible } = action
