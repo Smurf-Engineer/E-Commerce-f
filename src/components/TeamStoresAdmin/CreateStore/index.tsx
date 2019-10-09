@@ -29,7 +29,8 @@ import {
   SwitchInput,
   InfoTitle,
   InfoUser,
-  okButtonStyles
+  okButtonStyles,
+  Loader
 } from './styledComponents'
 import { History } from 'history'
 import LockerTable from '../../LockerTable'
@@ -41,6 +42,7 @@ import {
   LockerTableType,
   DesignType
 } from '../../../types/common'
+import Spin from 'antd/lib/spin'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
 
@@ -61,6 +63,9 @@ interface Props {
   name: string
   featured: boolean
   userId: string
+  saving: boolean
+  resetDataAction: () => void
+  buildTeamStore: () => void
   setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
   openModal: (opened: boolean) => void
   setFeaturedAction: (featured: boolean) => void
@@ -77,6 +82,11 @@ interface Props {
 }
 
 export class CreateStore extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
+
   handleGoBack = () => {
     const { history } = this.props
     history.push('/admin/team-stores')
@@ -193,6 +203,9 @@ export class CreateStore extends React.Component<Props, {}> {
       selectedItems,
       setItemsAddAction,
       openLocker,
+      userId,
+      saving,
+      buildTeamStore,
       featured,
       onDemand,
       deleteItemSelectedAction,
@@ -306,7 +319,7 @@ export class CreateStore extends React.Component<Props, {}> {
         ) : (
           <Dragger onSelectImage={this.beforeUpload} />
         )}
-        <BuildButton>
+        <BuildButton disabled={!name || !userId} onClick={buildTeamStore}>
           <FormattedMessage {...messages.buildStore} />
         </BuildButton>
         <LockerModal
@@ -314,10 +327,10 @@ export class CreateStore extends React.Component<Props, {}> {
             selectedItems,
             tableItems,
             limit,
-            offset
+            offset,
+            userId
           }}
           proDesign={true}
-          userId={''}
           title={'0404 - John Doe Locker'}
           currentPage={currentPageModal}
           visible={openLocker}
@@ -334,6 +347,11 @@ export class CreateStore extends React.Component<Props, {}> {
           setImage={this.setImageAction}
           image={imagePreviewUrl}
         />
+        {saving && (
+          <Loader>
+            <Spin size="large" />
+          </Loader>
+        )}
       </Container>
     )
   }

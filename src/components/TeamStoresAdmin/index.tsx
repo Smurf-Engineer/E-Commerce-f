@@ -12,7 +12,8 @@ import { GetTeamStoresQuery } from './TeamStoresList/data'
 import {
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
-  setTeamStoreDisplayMutation
+  setTeamStoreDisplayMutation,
+  createStoreMutation
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import CreateStore from './CreateStore'
@@ -33,9 +34,11 @@ import {
   TeamStoreAdminType,
   SelectedDesignObjectType,
   LockerTableType,
-  DesignType
+  DesignType,
+  SelectedDesignType
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
+import config from '../../config'
 
 interface Props {
   history: any
@@ -72,6 +75,15 @@ interface Props {
   name: string
   featured: boolean
   imagePreviewUrl: string
+  userId: string
+  saving: boolean
+  file: Blob
+  cutoffDate: string
+  deliveryDate: string
+  resetForm: () => void
+  createStore: (variables: {}) => void
+  setSavingAction: (saving: boolean) => void
+  setLoading: (loading: boolean) => void
   setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
   openModal: (opened: boolean) => void
   setFeaturedAction: (featured: boolean) => void
@@ -142,6 +154,9 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setItemVisibleAction,
       setFeaturedAction,
       moveRowAction,
+      saving,
+      userId,
+      resetDataAction,
       name,
       onDemand,
       featured,
@@ -208,7 +223,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 currentPageModal,
                 setPaginationData,
                 openLocker,
+                resetDataAction,
                 limit,
+                userId,
+                saving,
                 onDemand,
                 featured,
                 setNameAction,
@@ -229,6 +247,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 currentCurrency,
                 openCropper
               }}
+              buildTeamStore={this.buildTeamStore}
             />
           )}
         />
@@ -345,6 +364,67 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.unexpectedError))
     }
   }
+
+  buildTeamStore = async () => {
+    const {
+      setSavingAction,
+      items,
+      file,
+      name,
+      onDemand,
+      userId,
+      history,
+      featured,
+      createStore,
+      cutoffDate,
+      deliveryDate
+    } = this.props
+    try {
+      let bannerResp = ''
+      const itemsToSave = items.map((item: SelectedDesignType) => ({
+        design_id: item.design.shortId,
+        visible: item.visible
+      }))
+      setSavingAction(true)
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file as any, 'banner.jpeg')
+        const user = JSON.parse(localStorage.getItem('user') || '')
+        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        })
+        const { image } = await uploadResp.json()
+        bannerResp = image
+      }
+      const teamStore = {
+        name,
+        featured,
+        cutoffDate,
+        deliveryDate,
+        teamsizeId: 1,
+        private: false,
+        user_id: userId,
+        items: itemsToSave,
+        banner: bannerResp,
+        demandMode: onDemand
+      }
+      await createStore({
+        variables: { teamStore }
+      })
+      history.push('/admin/team-stores')
+    } catch (error) {
+      message.error(
+        `Something wrong happened. Please try again! ${error.message}`
+      )
+      setSavingAction(false)
+    }
+  }
+
   handleOnSetDisplay = async (id: number) => {
     const {
       setTeamStoreDisplay,
@@ -399,6 +479,7 @@ const TeamStoresAdminEnhance = compose(
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
   setTeamStoreDisplayMutation,
+  createStoreMutation,
   withApollo,
   connect(
     mapStateToProps,

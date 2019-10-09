@@ -16,6 +16,7 @@ import {
   ON_UNSELECT_ITEM,
   SET_ITEMS_ADD_ACTION,
   SET_PAGINATION_DATA,
+  SET_SAVING_ACTION,
   DELETE_ITEM_SELECTED_ACTION,
   SET_ITEM_VISIBLE_ACTION,
   MOVE_ROW,
@@ -165,4 +166,9 @@ export const setImage = (
   imagePreviewUrl,
   opened
 })
-// TODO: Add tests for the new actions once everything is complete and merged
+
+export const setSavingAction = (saving: boolean) => ({
+  type: SET_SAVING_ACTION,
+  saving
+})
+// TODO: Add new tests for the new actions once everything is completed

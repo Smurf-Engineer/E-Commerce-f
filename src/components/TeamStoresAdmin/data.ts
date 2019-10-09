@@ -59,3 +59,38 @@ export const setTeamStoreDisplayMutation = graphql(
     name: 'setTeamStoreDisplay'
   }
 )
+
+export const createStoreMutation = graphql(
+  gql`
+    mutation createTeamStore($teamStore: TeamStoreInput!) {
+      store: createTeamStore(teamStore: $teamStore, isAdmin: true) {
+        shortId: short_id
+        items {
+          id
+          visible
+          totalOrders
+          design {
+            id
+            code
+            image
+            name
+            shortId: short_id
+            product {
+              id
+              type: name
+              description
+              yotpoId: yotpo_id
+              priceRange {
+                quantity
+                price
+                abbreviation
+                shortName: short_name
+              }
+            }
+          }
+        }
+      }
+    }
+  `,
+  { name: 'createStore' }
+)

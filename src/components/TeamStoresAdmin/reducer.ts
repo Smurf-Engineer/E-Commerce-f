@@ -23,7 +23,8 @@ import {
   MOVE_ROW,
   SET_FEATURED,
   SET_OPEN_MODAL,
-  SET_IMAGE
+  SET_IMAGE,
+  SET_SAVING_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -44,8 +45,12 @@ export const initialState = fromJS({
   items: [],
   openLocker: false,
   loading: true,
-  file: {},
+  file: null,
+  saving: false,
+  userId: '',
   imagePreviewUrl: '',
+  cutoffDate: '',
+  deliveryDate: '',
   name: '',
   onDemand: true,
   featured: false
@@ -61,6 +66,8 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('name', action.name)
     case SET_FEATURED:
       return state.set('featured', action.featured)
+    case SET_SAVING_ACTION:
+      return state.set('saving', action.saving)
     case SET_IMAGE:
       return state.merge({
         file: action.file,

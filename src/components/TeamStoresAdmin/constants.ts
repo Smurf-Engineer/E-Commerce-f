@@ -25,4 +25,5 @@ export const SET_NAME = `${namespace}/SET_NAME`
 export const SET_FEATURED = `${namespace}/SET_FEATURED`
 export const SET_OPEN_MODAL = `${namespace}/SET_OPEN_MODAL`
 export const SET_IMAGE = `${namespace}/SET_IMAGE`
+export const SET_SAVING_ACTION = `${namespace}/SET_SAVING_ACTION`
 export const MOVE_ROW = `${namespace}/MOVE_ROW`

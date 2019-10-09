@@ -7,10 +7,18 @@ import Select from 'antd/lib/select'
 import DatePicker from 'antd/lib/date-picker'
 import Switch from 'antd/lib/switch'
 import InputComponent from 'antd/lib/input'
-import { GRAY_STRONG, BLUE, WHITE, RED, GRAY_DARK } from '../../../theme/colors'
+import {
+  GRAY_STRONG,
+  BLUE,
+  WHITE,
+  RED,
+  GRAY_DARK,
+  GRAY_SKELETON
+} from '../../../theme/colors'
 
 interface DivProps {
   fullSize?: boolean
+  disabled?: boolean
 }
 
 export const Container = styled.div`
@@ -116,19 +124,22 @@ export const PreviewImage = styled.img`
   margin-bottom: 16px;
 `
 
-export const BuildButton = styled.div`
+export const BuildButton = styled.button`
   color: ${WHITE};
   font-family: 'Avenir Next';
   font-size: 16px;
   width: 220.37px;
+  transition: all 0.25s ease;
+  border: none;
   border-radius: 2px;
-  background-color: ${BLUE};
+  background-color: ${({ disabled }: DivProps) =>
+    disabled ? GRAY_SKELETON : BLUE};
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 24px;
-  cursor: pointer;
+  cursor: ${({ disabled }: DivProps) => (disabled ? 'not-allowed' : 'pointer')};
 `
 
 export const InfoTitle = styled.div`
@@ -143,6 +154,19 @@ export const InfoUser = styled.div`
   font-family: 'Avenir Next';
   font-size: 16px;
   color: ${GRAY_DARK};
+`
+
+export const Loader = styled.div`
+  height: 100vh;
+  position: fixed;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  background: #ffffff96;
 `
 
 export const okButtonStyles = {
