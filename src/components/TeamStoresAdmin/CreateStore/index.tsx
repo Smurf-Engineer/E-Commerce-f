@@ -66,7 +66,7 @@ interface Props {
   saving: boolean
   resetDataAction: () => void
   buildTeamStore: () => void
-  setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
+  setImage: (file: Blob, openModal: boolean) => void
   openModal: (opened: boolean) => void
   setFeaturedAction: (featured: boolean) => void
   setNameAction: (name: string) => void
@@ -151,12 +151,8 @@ export class CreateStore extends React.Component<Props, {}> {
 
   beforeUpload = (file: RcFile) => {
     const { setImage } = this.props
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setImage(file, reader.result, true)
-    }
     if (file) {
-      reader.readAsDataURL(file)
+      setImage(file, true)
     }
     return false
   }
@@ -173,7 +169,7 @@ export class CreateStore extends React.Component<Props, {}> {
 
   handleOnDeleteImage = () => {
     const { setImage } = this.props
-    setImage(null, '', false)
+    setImage(null, false)
   }
 
   closeModal = () => {
@@ -183,7 +179,7 @@ export class CreateStore extends React.Component<Props, {}> {
 
   setImageAction = (file: Blob) => {
     const { setImage } = this.props
-    setImage(file, URL.createObjectURL(file), false)
+    setImage(file, false)
   }
 
   render() {
@@ -341,7 +337,7 @@ export class CreateStore extends React.Component<Props, {}> {
           changePage={this.changePage}
         />
         <ImageCropper
-          {...{ formatMessage }}
+          {...{ formatMessage, saving }}
           open={openCropper}
           requestClose={this.closeModal}
           setImage={this.setImageAction}

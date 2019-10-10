@@ -45,7 +45,6 @@ export const initialState = fromJS({
   items: [],
   openLocker: false,
   loading: true,
-  file: null,
   saving: false,
   userId: '',
   imagePreviewUrl: '',
@@ -70,9 +69,9 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('saving', action.saving)
     case SET_IMAGE:
       return state.merge({
-        file: action.file,
         imagePreviewUrl: action.imagePreviewUrl,
-        openCropper: action.opened
+        openCropper: action.opened,
+        saving: false
       })
     case SET_OPEN_MODAL:
       return state.set('openCropper', action.opened)

@@ -156,13 +156,8 @@ export const openModal = (opened: boolean) => ({
   opened
 })
 
-export const setImage = (
-  file: Blob,
-  imagePreviewUrl: string,
-  opened: boolean
-) => ({
+export const setImage = (imagePreviewUrl: string, opened: boolean) => ({
   type: SET_IMAGE,
-  file,
   imagePreviewUrl,
   opened
 })

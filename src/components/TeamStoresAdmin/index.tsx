@@ -38,7 +38,6 @@ import {
   SelectedDesignType
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
-import config from '../../config'
 
 interface Props {
   history: any
@@ -77,14 +76,14 @@ interface Props {
   imagePreviewUrl: string
   userId: string
   saving: boolean
-  file: Blob
   cutoffDate: string
   deliveryDate: string
   resetForm: () => void
   createStore: (variables: {}) => void
   setSavingAction: (saving: boolean) => void
   setLoading: (loading: boolean) => void
-  setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
+  uploadBanner: (file: Blob, openModal: boolean) => void
+  setImage: (imagePreviewUrl: string, openModal: boolean) => void
   openModal: (opened: boolean) => void
   setFeaturedAction: (featured: boolean) => void
   setNameAction: (name: string) => void
@@ -149,7 +148,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setOpenLockerAction,
       deleteItemSelectedAction,
       setNameAction,
-      setImage,
+      uploadBanner,
       imagePreviewUrl,
       setItemVisibleAction,
       setFeaturedAction,
@@ -231,7 +230,6 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 featured,
                 setNameAction,
                 name,
-                setImage,
                 openModal,
                 setItemsAddAction,
                 imagePreviewUrl,
@@ -247,6 +245,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 currentCurrency,
                 openCropper
               }}
+              setImage={uploadBanner}
               buildTeamStore={this.buildTeamStore}
             />
           )}
@@ -369,7 +368,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
     const {
       setSavingAction,
       items,
-      file,
+      imagePreviewUrl,
       name,
       onDemand,
       userId,
@@ -380,27 +379,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       deliveryDate
     } = this.props
     try {
-      let bannerResp = ''
       const itemsToSave = items.map((item: SelectedDesignType) => ({
         design_id: item.design.shortId,
         visible: item.visible
       }))
       setSavingAction(true)
-      if (file) {
-        const formData = new FormData()
-        formData.append('file', file as any, 'banner.jpeg')
-        const user = JSON.parse(localStorage.getItem('user') || '')
-        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${user.token}`
-          },
-          body: formData
-        })
-        const { image } = await uploadResp.json()
-        bannerResp = image
-      }
       const teamStore = {
         name,
         featured,
@@ -410,7 +393,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
         private: false,
         user_id: userId,
         items: itemsToSave,
-        banner: bannerResp,
+        banner: imagePreviewUrl,
         demandMode: onDemand
       }
       await createStore({
