@@ -12,6 +12,11 @@ import {
   setProductTileLoading
 } from './actions'
 
+import { Sections, LoadingSections } from './constants'
+
+const { MAIN_HEADER } = Sections
+const { MAIN_HEADER_LOADING, SECONDARY_HEADER_LOADING } = LoadingSections
+
 export const uploadFileAction = (
   file: File,
   section: string,
@@ -20,8 +25,10 @@ export const uploadFileAction = (
 ) => {
   return async (dispatch: any) => {
     try {
+      const loadingSection =
+        section === MAIN_HEADER ? MAIN_HEADER_LOADING : SECONDARY_HEADER_LOADING
       if (index >= 0) {
-        dispatch(setLoadingListAction(imageType, true, index))
+        dispatch(setLoadingListAction(imageType, true, index, loadingSection))
       } else {
         dispatch(setLoadingAction(imageType, true))
       }
@@ -41,7 +48,8 @@ export const uploadFileAction = (
       )
       const imageObject = await response.json()
       if (index >= 0) {
-        dispatch(setLoadingListAction(imageType, false, index))
+        console.log(section)
+        dispatch(setLoadingListAction(imageType, false, index, loadingSection))
         return dispatch(
           setUrlImageList(imageObject.image, section, imageType, index)
         )

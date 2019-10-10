@@ -28,7 +28,7 @@ interface Props {
   saving: boolean
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any, section: string, imageType: string) => void
-  setUrl: (value: string) => void
+  setUrl: (value: string, index: number, section: string) => void
   onSaveHeader: () => void
   handleAddMoreImages: (itemType: string) => void
   removeImage: (index: number) => void
@@ -63,10 +63,6 @@ class MainHeader extends React.Component<Props, {}> {
   }
   uploadMobileImage = (file: any) => {
     this.beforeUpload(file, ImageTypes.MOBILE)
-  }
-  handleOnSetUrl = (event: any) => {
-    const { setUrl } = this.props
-    setUrl(event.target.value)
   }
   handleAddImage = () => {
     const { handleAddMoreImages } = this.props

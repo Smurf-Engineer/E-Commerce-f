@@ -8,7 +8,6 @@ import {
   SET_URL_IMAGE,
   SET_LOADING,
   SET_HOMEPAGE_INFO,
-  SET_URL,
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
   SET_LOADING_LIST,
@@ -114,24 +113,23 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         return map
       })
     }
-    case SET_URL:
-      return state.setIn(['mainHeader', 'url'], action.value)
     case SET_LOADERS:
       return state.setIn(['loaders', action.section], action.loading)
     case SET_URL_IMAGE_LIST: {
       return state.setIn(
-        ['secondaryHeader', action.index, action.imageType],
+        [action.section, action.index, action.imageType],
         action.url
       )
     }
     case SET_LOADING_LIST: {
+      console.log(action.section)
       return state.setIn(
-        ['secondaryHeaderLoading', action.index, action.imageType],
+        [action.section, action.index, action.imageType],
         action.loading
       )
     }
     case SET_URL_LIST:
-      return state.setIn(['secondaryHeader', action.index, 'url'], action.value)
+      return state.setIn([action.section, action.index, 'url'], action.value)
     case SET_PRODUCTS_DATA: {
       const {
         data: {

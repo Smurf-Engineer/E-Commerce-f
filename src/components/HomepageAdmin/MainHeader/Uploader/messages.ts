@@ -15,7 +15,7 @@ export default defineMessages({
   },
   clickToUpload: {
     id: 'components.SecondaryHeader.clickToUpload',
-    defaultMessage: 'Image {index}'
+    defaultMessage: '{type} {index}'
   },
   clickToUploadMobile: {
     id: 'components.SecondaryHeader.clickToUpload',

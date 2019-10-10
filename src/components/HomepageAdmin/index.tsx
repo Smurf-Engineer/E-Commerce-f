@@ -32,7 +32,12 @@ import {
   Goback
 } from './styledComponents'
 import messages from './messages'
-import { EMPTY_SECONDARY_HEADER, EMPTY_TILE, HOMEPAGE_LABEL } from './constants'
+import {
+  EMPTY_SECONDARY_HEADER,
+  EMPTY_TILE,
+  HOMEPAGE_LABEL,
+  EMPTY_MAIN_HEADER
+} from './constants'
 import {
   Product,
   ProductType,
@@ -72,10 +77,9 @@ interface Props {
   deleteItemSelectedAction: (id: number) => void
   setItemSelectedAction: (item: any, checked: boolean) => void
   setProductsData: (data: ProductType, offset: number, page: number) => void
-  setUrlAction: (value: string) => void
   setLoadersAction: (section: string, loading: boolean) => void
   setHomepageInfoAction: (data: any) => void
-  setUrlListAction: (value: string, index: number) => void
+  setUrlListAction: (value: string, index: number, section: string) => void
   uploadFileAction: (
     file: any,
     section: string,
@@ -364,8 +368,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
     } = this.props
     if (mainHeader.length < 5) {
       const newPlaceholder = {
-        ...EMPTY_SECONDARY_HEADER,
-        sport_id: sportId || null
+        ...EMPTY_MAIN_HEADER,
+        sport_id: sportId || null,
+        type: assetType
       }
       addCarouselItemAction(newPlaceholder)
     }
@@ -437,7 +442,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
       productsModalOpen,
       items,
       openModalAction,
-      setUrlAction,
       setUrlListAction,
       productTiles,
       setTilesTextAction,
@@ -470,10 +474,11 @@ class HomepageAdmin extends React.Component<Props, {}> {
         </ScreenTitle>
         <MainHeader
           onUploadFile={this.handleOnUploadFile}
-          setUrl={setUrlAction}
+          setUrl={setUrlListAction}
           onSaveHeader={this.handleOnSaveMainHeader}
           saving={mainHeaderLoader}
           handleAddMoreImages={this.handleAddCarouselItem}
+          removeImage={removeHeaderAction}
           {...{
             desktopImage,
             formatMessage,

@@ -23,6 +23,7 @@ import { ImageTypes, Sections } from '../../constants'
 
 const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
 const { SECONDARY_HEADER } = Sections
+
 interface Props {
   item: any
   loading: any
@@ -34,7 +35,7 @@ interface Props {
     imageType: string,
     index: number
   ) => void
-  setUrl: (value: string, index: number) => void
+  setUrl: (value: string, index: number, section: string) => void
   removeImage: (index: number) => void
 }
 
@@ -70,7 +71,7 @@ class Uploader extends React.Component<Props, {}> {
   }
   handleOnSetUrl = (event: any) => {
     const { setUrl, index } = this.props
-    setUrl(event.target.value, index)
+    setUrl(event.target.value, index, SECONDARY_HEADER)
   }
   handleRemoveImage = () => {
     const { index, removeImage } = this.props

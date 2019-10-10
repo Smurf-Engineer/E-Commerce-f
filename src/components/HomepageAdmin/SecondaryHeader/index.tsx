@@ -25,7 +25,7 @@ interface Props {
     imageType: string,
     index: number
   ) => void
-  setUrl: (value: string, index: number) => void
+  setUrl: (value: string, index: number, section: string) => void
   onSaveHeader: () => void
   removeImage: (index: number) => void
   handleAddMoreImages: () => void

@@ -4,6 +4,9 @@
 
 const namespace = 'src/OrderHistoryAdmin'
 
+export const VIDEO_TYPE = 'video'
+export const IMAGE_TYPE = 'image'
+
 export enum Sections {
   MAIN_CONTAINER = 'mainContainer',
   MAIN_HEADER = 'mainHeader',
@@ -11,6 +14,10 @@ export enum Sections {
   PRODUCT_TILES = 'productTiles'
 }
 
+export enum LoadingSections {
+  MAIN_HEADER_LOADING = 'mainHeaderLoading',
+  SECONDARY_HEADER_LOADING = 'secondaryHeaderLoading'
+}
 export const HOMEPAGE_LABEL = 'Homepage'
 export enum ImageTypes {
   DESKTOP = 'desktopImage',
@@ -36,17 +43,13 @@ export const EMPTY_MAIN_HEADER = {
   mobileImage: '',
   url: '',
   sport_id: '',
-  type: ''
+  type: IMAGE_TYPE
 }
-
-export const VIDEO_TYPE = 'video'
-export const IMAGE_TYPE = 'image'
 
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
 export const SET_URL_IMAGE = `${namespace}/SET_URL_IMAGE`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_HOMEPAGE_INFO = `${namespace}/SET_HOMEPAGE_INFO`
-export const SET_URL = `${namespace}/SET_URL`
 export const SET_LOADERS = `${namespace}/SET_LOADERS`
 export const SET_URL_IMAGE_LIST = `${namespace}/SET_URL_IMAGE_LIST`
 export const SET_LOADING_LIST = `${namespace}/SET_LOADING_LIST`

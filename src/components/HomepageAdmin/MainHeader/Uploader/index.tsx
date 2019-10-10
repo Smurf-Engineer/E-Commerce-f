@@ -13,16 +13,20 @@ import {
   StyledInput,
   ImagesContainer,
   InputContainer,
-  StyledButton
+  StyledButton,
+  UploadText,
+  VideoPreview
 } from './styledComponents'
 import messages from './messages'
 import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
 import { getFileExtension } from '../../../../utils/utilsFiles'
-import { ImageTypes, Sections } from '../../constants'
+import { ImageTypes, Sections, VIDEO_TYPE } from '../../constants'
 
-const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
+const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
+const videoFileExtensions = ['.mp4']
 const { MAIN_HEADER } = Sections
+
 interface Props {
   item: any
   loading: any
@@ -34,13 +38,14 @@ interface Props {
     imageType: string,
     index: number
   ) => void
-  setUrl: (value: string, index: number) => void
+  setUrl: (value: string, index: number, section: string) => void
   removeImage: (index: number) => void
 }
 
 class Uploader extends React.Component<Props, {}> {
   beforeUpload = (file: any, imageType: string) => {
-    const { formatMessage, onUploadFile, index } = this.props
+    const { formatMessage, onUploadFile, index, item } = this.props
+    const { type } = item
     if (file) {
       const { size, name } = file
       // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
@@ -51,7 +56,7 @@ class Uploader extends React.Component<Props, {}> {
       const fileExtension = getFileExtension(name)
       if (
         indexOf(
-          validFileExtensions,
+          type === VIDEO_TYPE ? videoFileExtensions : imageFileExtensions,
           (fileExtension as String).toLowerCase()
         ) === -1
       ) {
@@ -70,7 +75,7 @@ class Uploader extends React.Component<Props, {}> {
   }
   handleOnSetUrl = (event: any) => {
     const { setUrl, index } = this.props
-    setUrl(event.target.value, index)
+    setUrl(event.target.value, index, MAIN_HEADER)
   }
   handleRemoveImage = () => {
     const { index, removeImage } = this.props
@@ -78,17 +83,25 @@ class Uploader extends React.Component<Props, {}> {
   }
   render() {
     const { item, formatMessage, loading, index } = this.props
-    const { url } = item
+    const { url, type } = item
+    const isVideo = type === VIDEO_TYPE
     const uploadButton = (
       <UploadButton>
         <Icon type="upload" />
-        {formatMessage(messages.clickToUpload, { index: index + 1 })}
+        <UploadText>
+          {formatMessage(messages.clickToUpload, {
+            type,
+            index: index + 1
+          })}
+        </UploadText>
       </UploadButton>
     )
     const uploadButtonMobile = (
       <UploadButton>
         <Icon type="upload" />
-        {formatMessage(messages.clickToUploadMobile, { index: index + 1 })}
+        {formatMessage(messages.clickToUploadMobile, {
+          index: index + 1
+        })}
       </UploadButton>
     )
 
@@ -97,6 +110,13 @@ class Uploader extends React.Component<Props, {}> {
       <Spin />
     ) : (
       uploadButtonMobile
+    )
+    const preview = !isVideo ? (
+      <ImagePreview src={item[ImageTypes.DESKTOP]} />
+    ) : (
+      <VideoPreview autoPlay={true} loop={true}>
+        <source src={item[ImageTypes.DESKTOP]} />
+      </VideoPreview>
     )
     return (
       <Container>
@@ -114,26 +134,27 @@ class Uploader extends React.Component<Props, {}> {
             supportServerRender={true}
             showUploadList={false}
             beforeUpload={this.uploadDesktopImage}
+            {...{ isVideo }}
           >
-            {item[ImageTypes.DESKTOP] && !loading[ImageTypes.DESKTOP] ? (
-              <ImagePreview src={item[ImageTypes.DESKTOP]} />
-            ) : (
-              desktopView
-            )}
+            {item[ImageTypes.DESKTOP] && !loading[ImageTypes.DESKTOP]
+              ? preview
+              : desktopView}
           </StyledUpload>
-          <StyledUploadMobile
-            listType="picture-card"
-            multiple={false}
-            supportServerRender={true}
-            showUploadList={false}
-            beforeUpload={this.uploadMobileImage}
-          >
-            {item[ImageTypes.MOBILE] && !loading[ImageTypes.MOBILE] ? (
-              <ImagePreview src={item[ImageTypes.MOBILE]} />
-            ) : (
-              mobileView
-            )}
-          </StyledUploadMobile>
+          {!isVideo && (
+            <StyledUploadMobile
+              listType="picture-card"
+              multiple={false}
+              supportServerRender={true}
+              showUploadList={false}
+              beforeUpload={this.uploadMobileImage}
+            >
+              {item[ImageTypes.MOBILE] && !loading[ImageTypes.MOBILE] ? (
+                <ImagePreview src={item[ImageTypes.MOBILE]} />
+              ) : (
+                mobileView
+              )}
+            </StyledUploadMobile>
+          )}
         </ImagesContainer>
         <InputContainer>
           {formatMessage(messages.jakrooUrl)}

@@ -7,7 +7,6 @@ import {
   SET_URL_IMAGE,
   SET_LOADING,
   SET_HOMEPAGE_INFO,
-  SET_URL,
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
   SET_LOADING_LIST,
@@ -74,12 +73,14 @@ export const setLoadingAction = (imageType: string, loading: boolean) => ({
 export const setLoadingListAction = (
   imageType: string,
   loading: boolean,
-  index: number
+  index: number,
+  section: string
 ) => ({
   type: SET_LOADING_LIST,
   imageType,
   loading,
-  index
+  index,
+  section
 })
 export const setHomepageInfoAction = (data: any): AnyAction => {
   return {
@@ -88,18 +89,16 @@ export const setHomepageInfoAction = (data: any): AnyAction => {
   }
 }
 
-export const setUrlAction = (value: string): AnyAction => {
-  return {
-    type: SET_URL,
-    value
-  }
-}
-
-export const setUrlListAction = (value: string, index: number): AnyAction => {
+export const setUrlListAction = (
+  value: string,
+  index: number,
+  section: string
+): AnyAction => {
   return {
     type: SET_URL_LIST,
     value,
-    index
+    index,
+    section
   }
 }
 
