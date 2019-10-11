@@ -7,8 +7,11 @@ import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import { RcFile } from 'antd/lib/upload/interface'
-import Select from 'antd/lib/select'
+import Select, { SelectValue } from 'antd/lib/select'
 import Modal from 'antd/lib/modal'
+import message from 'antd/lib/message'
+import Spin from 'antd/lib/spin'
+import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import messages from './messages'
 import {
@@ -30,7 +33,9 @@ import {
   InfoTitle,
   InfoUser,
   okButtonStyles,
-  Loader
+  Loader,
+  StyledSearch,
+  SearchButton
 } from './styledComponents'
 import { History } from 'history'
 import LockerTable from '../../LockerTable'
@@ -42,7 +47,6 @@ import {
   LockerTableType,
   DesignType
 } from '../../../types/common'
-import Spin from 'antd/lib/spin'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
 
@@ -82,6 +86,8 @@ interface Props {
 }
 
 export class CreateStore extends React.Component<Props, {}> {
+  debounceSearchProduct = debounce(value => this.handleOnChange(value), 300)
+
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -167,6 +173,31 @@ export class CreateStore extends React.Component<Props, {}> {
     }
   }
 
+  handleOnChange = async (value: SelectValue) => {
+    // const { setUserToSearch } = this.props
+    try {
+      const parsedValue = value.toString()
+
+      // if (containsNumberAndLetters(parsedValue)) {
+      //   setUserToSearch(parsedValue.trim())
+      // }
+      console.log('parsedValue:', parsedValue)
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+
+  handleOnSelect = async (value: SelectValue) => {
+    // const { setSelectedUser } = this.props
+    const emailValue = value
+      .toString()
+      .split(' -')
+      .pop()
+    const parsedValue = emailValue.replace(/ /g, '')
+    // setSelectedUser(parsedValue)
+    console.log('parsedValue:', parsedValue)
+  }
+
   handleOnDeleteImage = () => {
     const { setImage } = this.props
     setImage(null, false)
@@ -209,6 +240,7 @@ export class CreateStore extends React.Component<Props, {}> {
       moveRowAction,
       name
     } = this.props
+    const searchResults = ['117 - John - Sierra Red']
     const tableItems = this.getCheckedItems(items)
     return (
       <Container>
@@ -231,13 +263,25 @@ export class CreateStore extends React.Component<Props, {}> {
         <RowInput>
           <InputDiv fullSize={true}>
             <FormattedMessage {...messages.selectUser} />
-            <Input
+            <StyledSearch
+              onChange={this.debounceSearchProduct}
+              dataSource={searchResults}
               size="large"
-              value={''}
-              name="name"
-              onChange={() => {}}
+              onSelect={this.handleOnSelect}
               placeholder={formatMessage(messages.selectUserHolder)}
-            />
+            >
+              <Input
+                suffix={
+                  <SearchButton
+                    className="search-btn"
+                    size="large"
+                    type="ghost"
+                  >
+                    <Icon type="search" />
+                  </SearchButton>
+                }
+              />
+            </StyledSearch>
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.teamStoreType} />
