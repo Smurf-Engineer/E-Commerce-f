@@ -240,7 +240,7 @@ export class CreateStore extends React.Component<Props, {}> {
       name
     } = this.props
     const searchResults = [
-      { text: '117 - John - Sierra Red', value: 'H3239GD' }
+      { text: '117 - John - Sierra Red', value: 'H1R0yFr0V' }
     ]
     const tableItems = this.getCheckedItems(items)
     return (
@@ -265,7 +265,7 @@ export class CreateStore extends React.Component<Props, {}> {
           <InputDiv fullSize={true}>
             <FormattedMessage {...messages.selectUser} />
             <StyledSearch
-              onChange={this.debounceSearchProduct}
+              onSearch={this.debounceSearchProduct}
               dataSource={searchResults}
               size="large"
               onSelect={this.handleOnSelect}

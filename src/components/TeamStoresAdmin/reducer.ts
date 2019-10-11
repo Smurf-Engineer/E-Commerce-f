@@ -67,9 +67,9 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
     case SET_NAME:
       return state.set('name', action.name)
     case SET_USER_TO_SEARCH:
-      return state.set('userToSearch', action.value)
+      return state.merge({ userToSearch: action.searchText, userId: '' })
     case SET_SELECTED_USER:
-      return state.set('userId', action.value)
+      return state.merge({ userId: action.user, userToSearch: '' })
     case SET_FEATURED:
       return state.set('featured', action.featured)
     case SET_SAVING_ACTION:
