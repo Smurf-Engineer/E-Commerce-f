@@ -79,6 +79,8 @@ interface Props {
   cutoffDate: string
   deliveryDate: string
   resetForm: () => void
+  setUserToSearch: (searchText: string) => void
+  setSelectedUser: (user: string) => void
   createStore: (variables: {}) => void
   setSavingAction: (saving: boolean) => void
   setLoading: (loading: boolean) => void
@@ -161,6 +163,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       featured,
       openModal,
       limit,
+      setUserToSearch,
+      setSelectedUser,
       openLocker,
       offset,
       items,
@@ -230,6 +234,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 featured,
                 setNameAction,
                 name,
+                setUserToSearch,
+                setSelectedUser,
                 openModal,
                 setItemsAddAction,
                 imagePreviewUrl,

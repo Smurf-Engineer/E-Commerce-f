@@ -24,7 +24,9 @@ import {
   SET_FEATURED,
   SET_OPEN_MODAL,
   SET_IMAGE,
-  SET_SAVING_ACTION
+  SET_SAVING_ACTION,
+  SET_USER_TO_SEARCH,
+  SET_SELECTED_USER
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -47,6 +49,7 @@ export const initialState = fromJS({
   loading: true,
   saving: false,
   userId: '',
+  userToSearch: '',
   imagePreviewUrl: '',
   cutoffDate: '',
   deliveryDate: '',
@@ -63,6 +66,10 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('currentPage', action.page)
     case SET_NAME:
       return state.set('name', action.name)
+    case SET_USER_TO_SEARCH:
+      return state.set('userToSearch', action.value)
+    case SET_SELECTED_USER:
+      return state.set('userId', action.value)
     case SET_FEATURED:
       return state.set('featured', action.featured)
     case SET_SAVING_ACTION:

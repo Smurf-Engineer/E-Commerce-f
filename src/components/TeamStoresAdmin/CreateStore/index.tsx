@@ -68,6 +68,8 @@ interface Props {
   featured: boolean
   userId: string
   saving: boolean
+  setUserToSearch: (searchText: string) => void
+  setSelectedUser: (user: string) => void
   resetDataAction: () => void
   buildTeamStore: () => void
   setImage: (file: Blob, openModal: boolean) => void
@@ -174,28 +176,25 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   handleOnChange = async (value: SelectValue) => {
-    // const { setUserToSearch } = this.props
+    const { setUserToSearch } = this.props
     try {
       const parsedValue = value.toString()
-
       // if (containsNumberAndLetters(parsedValue)) {
-      //   setUserToSearch(parsedValue.trim())
+      setUserToSearch(parsedValue.trim())
       // }
-      console.log('parsedValue:', parsedValue)
     } catch (error) {
       message.error(error.message)
     }
   }
 
   handleOnSelect = async (value: SelectValue) => {
-    // const { setSelectedUser } = this.props
+    const { setSelectedUser } = this.props
     const emailValue = value
       .toString()
       .split(' -')
       .pop()
     const parsedValue = emailValue.replace(/ /g, '')
-    // setSelectedUser(parsedValue)
-    console.log('parsedValue:', parsedValue)
+    setSelectedUser(parsedValue)
   }
 
   handleOnDeleteImage = () => {
@@ -240,7 +239,9 @@ export class CreateStore extends React.Component<Props, {}> {
       moveRowAction,
       name
     } = this.props
-    const searchResults = ['117 - John - Sierra Red']
+    const searchResults = [
+      { text: '117 - John - Sierra Red', value: 'H3239GD' }
+    ]
     const tableItems = this.getCheckedItems(items)
     return (
       <Container>
