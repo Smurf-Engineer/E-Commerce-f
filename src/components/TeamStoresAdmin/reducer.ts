@@ -67,7 +67,15 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
     case SET_NAME:
       return state.set('name', action.name)
     case SET_USER_TO_SEARCH:
-      return state.merge({ userToSearch: action.searchText, userId: '' })
+      return state.merge({
+        userToSearch: action.searchText,
+        userId: '',
+        items: [],
+        offset: 0,
+        currentPageModal: 1,
+        limit: 12,
+        selectedItems: {}
+      })
     case SET_SELECTED_USER:
       return state.merge({ userId: action.user, userToSearch: '' })
     case SET_FEATURED:

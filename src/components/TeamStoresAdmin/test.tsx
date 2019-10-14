@@ -23,7 +23,9 @@ import {
   setPaginationData,
   deleteItemSelectedAction,
   setItemVisibleAction,
-  moveRowAction
+  moveRowAction,
+  setUserToSearch,
+  setSelectedUser
 } from './actions'
 import {
   SET_ORDER_BY,
@@ -45,7 +47,9 @@ import {
   SET_PAGINATION_DATA,
   DELETE_ITEM_SELECTED_ACTION,
   SET_ITEM_VISIBLE_ACTION,
-  MOVE_ROW
+  MOVE_ROW,
+  SET_USER_TO_SEARCH,
+  SET_SELECTED_USER
 } from './constants'
 
 describe(' TeamStoresAdmin Screen', () => {
@@ -122,6 +126,24 @@ describe(' TeamStoresAdmin Screen', () => {
         type,
         itemIndex,
         loading
+      })
+    })
+    it('setUserToSearchAction', () => {
+      const type = SET_USER_TO_SEARCH
+      const searchText = 'USER'
+
+      expect(setUserToSearch(searchText)).toEqual({
+        type,
+        searchText
+      })
+    })
+    it('setSelectedUserAction', () => {
+      const type = SET_SELECTED_USER
+      const user = 'ID'
+
+      expect(setSelectedUser(user)).toEqual({
+        type,
+        user
       })
     })
     it('setNameAction', () => {
@@ -842,6 +864,77 @@ describe(' TeamStoresAdmin Screen', () => {
         )
         const idValue = itemValueState.getIn(['items', 0, 'design', 'id'])
         expect(idValue).toBe(2)
+      })
+    })
+  })
+  describe('SET_USER_TO_SEARCH', () => {
+    describe('Update user search value', () => {
+      it('Handles undefined value in userToSearch', () => {
+        const customInitialValue = initialState.get('userToSearch')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in userToSearch', () => {
+        const customInitialValue = initialState.get('userToSearch')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in userToSearch', () => {
+        const customInitialValue = initialState.get('userToSearch')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom values in userToSearch', () => {
+        const userToSearch = 'NAME'
+        const nameState = teamStoresAdminReducer(
+          initialState,
+          setUserToSearch(userToSearch)
+        )
+        const customNameValue = nameState.get('userToSearch')
+        expect(customNameValue).toBe(userToSearch)
+
+        const userIdValue = nameState.get('userId')
+        expect(userIdValue).toBe('')
+
+        const itemsValue = nameState.get('items')
+        expect(itemsValue.size).toBe(0)
+
+        const offsetValue = nameState.get('offset')
+        expect(offsetValue).toBe(0)
+
+        const currentPageModalValue = nameState.get('currentPageModal')
+        expect(currentPageModalValue).toBe(1)
+
+        const selectedItems = nameState.get('selectedItems')
+        expect(selectedItems.size).toBe(0)
+
+        const limit = nameState.get('limit')
+        expect(limit).toBe(12)
+      })
+    })
+  })
+  describe('SET_SELECTED_USER', () => {
+    describe('Update userId value', () => {
+      it('Handles undefined value in userId', () => {
+        const customInitialValue = initialState.get('userId')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in userId', () => {
+        const customInitialValue = initialState.get('userId')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in userId', () => {
+        const customInitialValue = initialState.get('userId')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom values in userId', () => {
+        const userId = 'ID'
+        const nameState = teamStoresAdminReducer(
+          initialState,
+          setSelectedUser(userId)
+        )
+        const customUserIdValue = nameState.get('userId')
+        expect(customUserIdValue).toBe(userId)
+
+        const userToSearchValue = nameState.get('userToSearch')
+        expect(userToSearchValue).toBe('')
       })
     })
   })
