@@ -234,7 +234,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       title = MAIN_TITLE
     } = product
     const isRetail = retailMen || retailWomen || !customizable
-    const moreTag = relatedItemTag.replace(/_/g, ' ')
+    const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
 
