@@ -1322,14 +1322,16 @@ export interface HeaderImagePlaceHolder {
   mobileImage?: string
   url?: string
   sport_id?: string | null
+  assetType?: string
 }
 
-export interface HeadeImageResponse {
+export interface HeaderImageResponse {
   id?: number
   image?: string
   image_mobile: string
   link?: string
   sport_id?: string
+  type?: string
 }
 
 export interface ProductTilePlaceHolder {

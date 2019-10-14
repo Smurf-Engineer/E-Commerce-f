@@ -43,7 +43,7 @@ export const EMPTY_MAIN_HEADER = {
   mobileImage: '',
   url: '',
   sport_id: '',
-  type: IMAGE_TYPE
+  assetType: IMAGE_TYPE
 }
 
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
@@ -70,3 +70,4 @@ export const UPDATE_IMAGES_PLACEHOLDER_LIST = `${namespace}/UPDATE_IMAGES_PLACEH
 export const ADD_MORE_TILES = `${namespace}/ADD_MORE_TILES`
 export const UPDATE_PRODUCT_TILES_LIST = `${namespace}/UPDATE_PRODUCT_TILES_LIST`
 export const ADD_CAROUSEL_ITEM = `${namespace}/ADD_CAROUSEL_ITEM`
+export const REMOVE_MAIN_HEADER = `${namespace}/REMOVE_MAIN_HEADER`

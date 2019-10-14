@@ -44,7 +44,7 @@ import {
   ProductTiles,
   MessagePayload,
   HeaderImagePlaceHolder,
-  HeadeImageResponse,
+  HeaderImageResponse,
   ProductTilePlaceHolder
 } from '../../types/common'
 import { History } from 'history'
@@ -94,10 +94,14 @@ interface Props {
   updateProductTiles: (variables: {}) => Promise<void>
   setTilesTextAction: (index: number, section: string, value: string) => void
   removeTileDataAction: (index: number) => void
+  removeMainHeaderAction: (index: number, type: string) => void
   removeHeaderAction: (index: number) => void
   addMoreImagesAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
   addMoreTilesAction: (tilePlaceholder: ProductTilePlaceHolder) => void
-  updatePlaceHolderListAction: (list: [HeaderImagePlaceHolder]) => void
+  updatePlaceHolderListAction: (
+    list: [HeaderImagePlaceHolder],
+    section: string
+  ) => void
   updateProductTilesListAction: (tilesList: [ProductTilePlaceHolder]) => void
   addCarouselItemAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
 }
@@ -161,17 +165,63 @@ class HomepageAdmin extends React.Component<Props, {}> {
 
   handleOnSaveMainHeader = async () => {
     try {
-      const { setMainHeader, mainHeader, setLoadersAction } = this.props
+      const {
+        setMainHeader,
+        mainHeader,
+        setLoadersAction,
+        updatePlaceHolderListAction,
+        formatMessage,
+        history: {
+          location: {
+            state: { sportId }
+          }
+        }
+      } = this.props
       setLoadersAction(Sections.MAIN_HEADER, true)
-      const response = await setMainHeader({
+      console.log(mainHeader)
+      const homepageImages = mainHeader
+        .filter(
+          (item: HeaderImagePlaceHolder) =>
+            item.id || item.desktopImage || item.mobileImage
+        )
+        .map((item: HeaderImagePlaceHolder) => ({
+          id: item.id,
+          image: item.desktopImage,
+          image_mobile: item.mobileImage,
+          link: item.url,
+          sport_id: sportId,
+          type: item.assetType
+        }))
+
+      const {
+        data: { setMainHeader: response }
+      } = await setMainHeader({
         variables: {
-          headerImage: mainHeader.desktopImage,
-          headerImageMobile: mainHeader.mobileImage,
-          headerImageLink: mainHeader.url,
-          homePageImageId: mainHeader.id
+          homepageImages
         }
       })
-      message.success(get(response, 'data.setMainHeader.message', ''))
+
+      const mainHeaderList = response.map(
+        ({
+          id,
+          sport_id,
+          image,
+          image_mobile,
+          link,
+          type
+        }: HeaderImageResponse) => {
+          return {
+            id,
+            sport_id,
+            desktopImage: image,
+            mobileImage: image_mobile,
+            url: link,
+            assetType: type
+          }
+        }
+      )
+      updatePlaceHolderListAction(mainHeaderList, Sections.MAIN_HEADER)
+      message.success(formatMessage(messages.updatedHeaderSuccess))
       setLoadersAction(Sections.MAIN_HEADER, false)
     } catch (e) {
       message.error(e.message)
@@ -211,7 +261,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       })
 
       const secondHeaderList = response.map(
-        ({ id, sport_id, image, image_mobile, link }: HeadeImageResponse) => {
+        ({ id, sport_id, image, image_mobile, link }: HeaderImageResponse) => {
           return {
             id,
             sport_id,
@@ -221,7 +271,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           }
         }
       )
-      updatePlaceHolderListAction(secondHeaderList)
+      updatePlaceHolderListAction(secondHeaderList, Sections.SECONDARY_HEADER)
       message.success(formatMessage(messages.updatedHeaderSuccess))
       setLoadersAction(Sections.SECONDARY_HEADER, false)
     } catch (e) {
@@ -370,7 +420,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const newPlaceholder = {
         ...EMPTY_MAIN_HEADER,
         sport_id: sportId || null,
-        type: assetType
+        assetType
       }
       addCarouselItemAction(newPlaceholder)
     }
@@ -447,6 +497,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setTilesTextAction,
       removeTileDataAction,
       removeHeaderAction,
+      removeMainHeaderAction,
       history: {
         location: {
           state: { sportName }
@@ -478,7 +529,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           onSaveHeader={this.handleOnSaveMainHeader}
           saving={mainHeaderLoader}
           handleAddMoreImages={this.handleAddCarouselItem}
-          removeImage={removeHeaderAction}
+          removeImage={removeMainHeaderAction}
           {...{
             desktopImage,
             formatMessage,

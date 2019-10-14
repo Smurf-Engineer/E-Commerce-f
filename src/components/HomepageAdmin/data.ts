@@ -10,6 +10,7 @@ export const getHomepageInfo = gql`
         desktopImage: image
         mobileImage: image_mobile
         url: link
+        assetType: type
       }
       homepageImages {
         id
@@ -42,19 +43,13 @@ export const getHomepageInfo = gql`
 
 export const setMainHeaderMutation = graphql(
   gql`
-    mutation setMainHeader(
-      $headerImage: String
-      $headerImageMobile: String
-      $headerImageLink: String
-      $homePageImageId: Int
-    ) {
-      setMainHeader(
-        headerImage: $headerImage
-        headerImageMobile: $headerImageMobile
-        headerImageLink: $headerImageLink
-        id: $homePageImageId
-      ) {
-        message
+    mutation setMainHeader($homepageImages: [HomePageImageInput]) {
+      setMainHeader(homepageImages: $homepageImages) {
+        id
+        image
+        image_mobile
+        link
+        type
       }
     }
   `,

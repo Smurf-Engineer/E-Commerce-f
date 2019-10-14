@@ -39,13 +39,13 @@ interface Props {
     index: number
   ) => void
   setUrl: (value: string, index: number, section: string) => void
-  removeImage: (index: number) => void
+  removeImage: (index: number, type: string) => void
 }
 
 class Uploader extends React.Component<Props, {}> {
   beforeUpload = (file: any, imageType: string) => {
     const { formatMessage, onUploadFile, index, item } = this.props
-    const { type } = item
+    const { assetType } = item
     if (file) {
       const { size, name } = file
       // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
@@ -56,7 +56,7 @@ class Uploader extends React.Component<Props, {}> {
       const fileExtension = getFileExtension(name)
       if (
         indexOf(
-          type === VIDEO_TYPE ? videoFileExtensions : imageFileExtensions,
+          assetType === VIDEO_TYPE ? videoFileExtensions : imageFileExtensions,
           (fileExtension as String).toLowerCase()
         ) === -1
       ) {
@@ -78,19 +78,20 @@ class Uploader extends React.Component<Props, {}> {
     setUrl(event.target.value, index, MAIN_HEADER)
   }
   handleRemoveImage = () => {
-    const { index, removeImage } = this.props
-    removeImage(index)
+    const { index, removeImage, item } = this.props
+    const { type } = item
+    removeImage(index, type)
   }
   render() {
     const { item, formatMessage, loading, index } = this.props
-    const { url, type } = item
-    const isVideo = type === VIDEO_TYPE
+    const { url, assetType } = item
+    const isVideo = assetType === VIDEO_TYPE
     const uploadButton = (
       <UploadButton>
         <Icon type="upload" />
         <UploadText>
           {formatMessage(messages.clickToUpload, {
-            type,
+            type: assetType,
             index: index + 1
           })}
         </UploadText>
@@ -121,13 +122,6 @@ class Uploader extends React.Component<Props, {}> {
     return (
       <Container>
         <ImagesContainer>
-          {(item[ImageTypes.DESKTOP] || item[ImageTypes.MOBILE]) && (
-            <StyledButton
-              shape="circle"
-              icon="delete"
-              onClick={this.handleRemoveImage}
-            />
-          )}
           <StyledUpload
             listType="picture-card"
             multiple={false}
@@ -154,6 +148,13 @@ class Uploader extends React.Component<Props, {}> {
                 mobileView
               )}
             </StyledUploadMobile>
+          )}
+          {(item[ImageTypes.DESKTOP] || item[ImageTypes.MOBILE]) && (
+            <StyledButton
+              shape="circle"
+              icon="delete"
+              onClick={this.handleRemoveImage}
+            />
           )}
         </ImagesContainer>
         <InputContainer>

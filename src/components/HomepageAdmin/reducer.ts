@@ -30,6 +30,8 @@ import {
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
   ADD_CAROUSEL_ITEM,
+  EMPTY_MAIN_HEADER,
+  REMOVE_MAIN_HEADER,
   ImageTypes,
   Sections
 } from './constants'
@@ -40,7 +42,6 @@ import {
 } from '../../types/common'
 
 export const initialState = fromJS({
-  c: [],
   secondaryHeader: [],
   mainHeaderLoading: [],
   secondaryHeaderLoading: [],
@@ -198,6 +199,18 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         return productTile.merge(EMPTY_TILE)
       })
     }
+    case REMOVE_MAIN_HEADER: {
+      const { index, assetType } = action
+      return state.updateIn(
+        [Sections.MAIN_HEADER, index],
+        (mainHeader: any) => {
+          return mainHeader.merge({
+            ...EMPTY_MAIN_HEADER,
+            assetType: assetType
+          })
+        }
+      )
+    }
     case REMOVE_HEADER: {
       const { index } = action
       return state.updateIn(
@@ -232,7 +245,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         return tempState
       })
     case UPDATE_IMAGES_PLACEHOLDER_LIST:
-      return state.set('secondaryHeader', action.list)
+      return state.merge({ [action.section]: action.list })
     case ADD_MORE_TILES:
       return state.updateIn(
         ['productTiles'],

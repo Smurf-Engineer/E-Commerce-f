@@ -40,5 +40,21 @@ export default defineMessages({
   addVideo: {
     id: 'components.MainHeader.addVideo',
     defaultMessage: '+ ADD VIDEO SLIDE'
+  },
+  sliderSettings: {
+    id: 'components.MainHeader.sliderSettings',
+    defaultMessage: 'Slider Settings'
+  },
+  animationType: {
+    id: 'components.MainHeader.animationType',
+    defaultMessage: 'Animation Type'
+  },
+  duration: {
+    id: 'components.MainHeader.duration',
+    defaultMessage: 'Duration'
+  },
+  preview: {
+    id: 'components.MainHeader.preview',
+    defaultMessage: 'View preview'
   }
 })

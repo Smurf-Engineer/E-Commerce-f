@@ -7,12 +7,20 @@ import Uploader from './Uploader'
 import Button from 'antd/lib/button'
 import indexOf from 'lodash/indexOf'
 import AddMoreButton from '../../Button'
+import Select from 'antd/lib/select'
 import { getFileExtension } from '../../../utils/utilsFiles'
 import {
   Container,
   UploadersContainer,
   Title,
-  ButtonContainer
+  ButtonContainer,
+  Subtitle,
+  SlideOptions,
+  SlideTitle,
+  OptionContainer,
+  SlideOptionsContainer,
+  ButtonWrapper,
+  StyledButton
 } from './styledComponents'
 import messages from './messages'
 import message from 'antd/lib/message'
@@ -21,6 +29,7 @@ import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
 
 const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
 const { MAIN_HEADER } = Sections
+const Option = Select.Option
 interface Props {
   desktopImage: string
   mainHeader: any
@@ -31,7 +40,7 @@ interface Props {
   setUrl: (value: string, index: number, section: string) => void
   onSaveHeader: () => void
   handleAddMoreImages: (itemType: string) => void
-  removeImage: (index: number) => void
+  removeImage: (index: number, type: string) => void
 }
 
 class MainHeader extends React.Component<Props, {}> {
@@ -111,6 +120,34 @@ class MainHeader extends React.Component<Props, {}> {
           onClick={this.handleAddVideo}
         />
         <UploadersContainer>{uploadItems}</UploadersContainer>
+        <SlideOptionsContainer>
+          <Subtitle>{formatMessage(messages.sliderSettings)}</Subtitle>
+          <SlideOptions>
+            <OptionContainer>
+              <SlideTitle>{formatMessage(messages.animationType)}</SlideTitle>
+              <Select>
+                <Option key={'1'}>//TODO Add options</Option>
+              </Select>
+            </OptionContainer>
+            <OptionContainer>
+              <SlideTitle>{formatMessage(messages.duration)}</SlideTitle>
+              <Select>
+                <Option key={'1'}>//TODO Add options</Option>
+              </Select>
+            </OptionContainer>
+            <OptionContainer>
+              <ButtonWrapper disabled={false}>
+                <StyledButton
+                  disabled={false}
+                  type="primary"
+                  onClick={this.openPreview}
+                >
+                  {formatMessage(messages.preview)}
+                </StyledButton>
+              </ButtonWrapper>
+            </OptionContainer>
+          </SlideOptions>
+        </SlideOptionsContainer>
         <ButtonContainer>
           <Button loading={saving} onClick={onSaveHeader}>
             {formatMessage(messages.saveChanges)}

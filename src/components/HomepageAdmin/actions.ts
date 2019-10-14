@@ -26,7 +26,8 @@ import {
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
-  ADD_CAROUSEL_ITEM
+  ADD_CAROUSEL_ITEM,
+  REMOVE_MAIN_HEADER
 } from './constants'
 
 import {
@@ -180,6 +181,11 @@ export const removeTileDataAction = (index: number) => ({
   index
 })
 
+export const removeMainHeaderAction = (index: number, assetType: string) => ({
+  type: REMOVE_MAIN_HEADER,
+  index,
+  assetType
+})
 export const removeHeaderAction = (index: number) => ({
   type: REMOVE_HEADER,
   index
@@ -207,10 +213,12 @@ export const addMoreTilesAction = (
 })
 
 export const updatePlaceHolderListAction = (
-  list: [HeaderImagePlaceHolder]
+  list: [HeaderImagePlaceHolder],
+  section: string
 ) => ({
   type: UPDATE_IMAGES_PLACEHOLDER_LIST,
-  list
+  list,
+  section
 })
 
 export const updateProductTilesListAction = (
