@@ -116,7 +116,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
     fileName: ''
   }
 
-  componentWillMount() {
+  componentDidMount() {
     zenscroll.toY(0, 0)
   }
 
@@ -333,12 +333,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                       onChange={this.handleInputChange}
                       maxLength="50"
                     />
-                    {!firstName &&
-                      hasError && (
-                        <ErrorMsg>
-                          <FormattedMessage {...messages.required} />
-                        </ErrorMsg>
-                      )}
+                    {!firstName && hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                   </SmallInputsContainer>
                   <SmallInputsContainer>
                     <InputTitleContainer>
@@ -351,12 +350,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                       onChange={this.handleInputChange}
                       maxLength="50"
                     />
-                    {!lastName &&
-                      hasError && (
-                        <ErrorMsg>
-                          <FormattedMessage {...messages.required} />
-                        </ErrorMsg>
-                      )}
+                    {!lastName && hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                   </SmallInputsContainer>
                 </TwoInputsContainer>
                 <FormInfo>
@@ -375,12 +373,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     onChange={this.handleInputChange}
                     maxLength="100"
                   />
-                  {(!email || !this.validateEmail(email)) &&
-                    hasError && (
-                      <ErrorMsg>
-                        <FormattedMessage {...messages.required} />
-                      </ErrorMsg>
-                    )}
+                  {(!email || !this.validateEmail(email)) && hasError && (
+                    <ErrorMsg>
+                      <FormattedMessage {...messages.required} />
+                    </ErrorMsg>
+                  )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.emailInfo} />
@@ -416,12 +413,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     onChange={this.handleInputChange}
                     maxLength="100"
                   />
-                  {!productsAffected &&
-                    hasError && (
-                      <ErrorMsg>
-                        <FormattedMessage {...messages.required} />
-                      </ErrorMsg>
-                    )}
+                  {!productsAffected && hasError && (
+                    <ErrorMsg>
+                      <FormattedMessage {...messages.required} />
+                    </ErrorMsg>
+                  )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.productsAffectedInfo} />
@@ -441,12 +437,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                       value={productIs}
                     />
                   </StyledRadioGroup>
-                  {!productIs &&
-                    hasError && (
-                      <ErrorMsg>
-                        <FormattedMessage {...messages.required} />
-                      </ErrorMsg>
-                    )}
+                  {!productIs && hasError && (
+                    <ErrorMsg>
+                      <FormattedMessage {...messages.required} />
+                    </ErrorMsg>
+                  )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -464,12 +459,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                         value={gender}
                       />
                     </StyledRadioGroup>
-                    {!gender &&
-                      hasError && (
-                        <ErrorMsg>
-                          <FormattedMessage {...messages.required} />
-                        </ErrorMsg>
-                      )}
+                    {!gender && hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                   </InputsContainer>
                   <InputsContainer>
                     <InputTitleContainer>
@@ -483,12 +477,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                         value={size}
                       />
                     </SizeStyledRadioGroup>
-                    {!size &&
-                      hasError && (
-                        <ErrorMsg>
-                          <FormattedMessage {...messages.required} />
-                        </ErrorMsg>
-                      )}
+                    {!size && hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                   </InputsContainer>
                 </GenderSizeContainer>
                 <FormInfo>
@@ -508,12 +501,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                       onChange={this.handleProblemsChange}
                     />
                   </StyledRadioGroup>
-                  {!problems.length &&
-                    hasError && (
-                      <ErrorMsg>
-                        <FormattedMessage {...messages.required} />
-                      </ErrorMsg>
-                    )}
+                  {!problems.length && hasError && (
+                    <ErrorMsg>
+                      <FormattedMessage {...messages.required} />
+                    </ErrorMsg>
+                  )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -529,12 +521,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     rows={7}
                     onChange={this.handleDescriptionChange}
                   />
-                  {!issueDescription &&
-                    hasError && (
-                      <ErrorMsg>
-                        <FormattedMessage {...messages.required} />
-                      </ErrorMsg>
-                    )}
+                  {!issueDescription && hasError && (
+                    <ErrorMsg>
+                      <FormattedMessage {...messages.required} />
+                    </ErrorMsg>
+                  )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.issueInfo} />
