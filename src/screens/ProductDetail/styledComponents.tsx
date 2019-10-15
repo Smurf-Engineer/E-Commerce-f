@@ -361,7 +361,6 @@ export const SectionRow = styled.div`
 `
 export const SectionButtonsContainer = styled.div`
   display: flex;
-
   @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
     justify-content: center;
