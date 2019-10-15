@@ -337,10 +337,11 @@ export const SectionButton = styled.div`
   display: flex;
   height: 50px;
   margin-right: 14px;
+  margin-top: 10px;
   padding: 14px;
   justify-content: center;
   width: ${({ large, oneSize }: ButtonProps) => {
-    let width = oneSize ? 'auto' : '55px'
+    let width = oneSize ? 'auto' : '70px'
     if (large) {
       width = '139px'
     }
@@ -361,13 +362,10 @@ export const SectionRow = styled.div`
 `
 export const SectionButtonsContainer = styled.div`
   display: flex;
-  @media (min-width: 320px) and (max-width: 768px) {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+  flex-wrap: wrap;
 
-  @media (min-width: 769px) and (max-width: 1023px) {
-    flex-wrap: wrap;
+  @media (min-width: 320px) and (max-width: 768px) {
+    justify-content: center;
   }
 `
 export const SizeRowTitleRow = styled.div`

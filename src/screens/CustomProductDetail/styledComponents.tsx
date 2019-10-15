@@ -224,14 +224,10 @@ export const SectionTitle = styled.div`
 `
 export const SectionButtonsContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
 
   @media (min-width: 320px) and (max-width: 768px) {
-    flex-wrap: wrap;
     justify-content: center;
-  }
-
-  @media (min-width: 769px) and (max-width: 1023px) {
-    flex-wrap: wrap;
   }
 `
 
@@ -250,9 +246,10 @@ export const SectionButton = styled.div`
   display: flex;
   height: 50px;
   margin-right: 14px;
+  margin-top: 10px;
   padding: 14px;
   justify-content: center;
-  width: ${({ large }: ButtonProps) => (large ? '139px;' : '55px;')};
+  width: ${({ large }: ButtonProps) => (large ? '139px;' : '70px;')};
 
   &:hover {
     cursor: pointer;
