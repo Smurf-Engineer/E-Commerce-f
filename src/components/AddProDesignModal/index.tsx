@@ -30,7 +30,7 @@ interface Props {
   selectedUser: string
   savingDesign: boolean
   userToSearch: string
-  data: any
+  data: Data
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   requestClose: () => void
   setSelectedUser: (email: string) => void
@@ -62,7 +62,9 @@ export class AddProDesignModal extends React.Component<Props, {}> {
     const emailValue = value
       .toString()
       .split(' -')
-      .reverse()[0]
+      .reverse()
+      .shift()
+    console.log(emailValue)
     const parsedValue = emailValue.replace(/ /g, '')
     setSelectedUser(parsedValue)
   }

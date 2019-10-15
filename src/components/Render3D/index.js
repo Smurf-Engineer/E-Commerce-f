@@ -885,7 +885,7 @@ class Render3D extends PureComponent {
   takeScreenshot = () =>
     new Promise(resolve => {
       setTimeout(() => {
-        const thumbnail = this.renderer.domElement.toDataURL(`image/webp`, 0.3)
+        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.3)
         resolve(thumbnail)
       }, 800)
     })

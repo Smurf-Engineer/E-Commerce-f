@@ -130,9 +130,8 @@ export class UploadTab extends React.Component<Props, {}> {
                 className="upload"
                 loading={uploadingFile}
                 onSelectImage={this.beforeUpload}
-                formatMessage={formatMessage}
                 extensions={['.png']}
-                {...{ fileName }}
+                {...{ fileName, formatMessage }}
               >
                 <Button>
                   <ButtonContainer>
