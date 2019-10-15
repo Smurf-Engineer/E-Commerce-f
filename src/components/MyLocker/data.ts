@@ -16,6 +16,8 @@ export const desginsQuery = gql`
         proDesign: pro_design
         shortId: short_id
         createdAt: created_at
+        outputSvg: output_svg
+        outputPng: output_png
         product {
           id
           code

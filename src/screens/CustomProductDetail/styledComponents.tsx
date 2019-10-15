@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT, GRAY_DARK } from '../../theme/colors'
 
 interface DivProps {
   isTeamStore?: boolean
@@ -154,11 +154,15 @@ export const EditDesignButton = styled(Button)`
   width: 120.79px;
 `
 
+interface ProApprovedProps {
+  proAssigned?: boolean
+}
+
 export const ProApproved = styled.div`
-  border: 2px solid #555555;
-  background-color: #555555;
+  background-color: ${({ proAssigned }: ProApprovedProps) =>
+    proAssigned ? GREEN_BRIGHT : GRAY_DARK};
+  color: ${WHITE};
   border-radius: 2px;
-  color: #fff;
   height: 40px;
   width: 120.79px;
   display: flex;

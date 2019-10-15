@@ -137,6 +137,7 @@ export const GetDesignByIdQuery = gql`
       code
       createdAt: created_at
       proDesign: pro_design
+      png: output_png
     }
   }
 `

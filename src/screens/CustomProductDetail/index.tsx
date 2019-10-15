@@ -136,8 +136,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const ownedDesign = get(design, 'canEdit', false)
     const product = get(design, 'product', null)
     const productPriceRange = get(product, 'priceRange', null)
+    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
     const teamStoreItem = queryParams.item
-
     if (!product || error) {
       return (
         <Layout {...{ history, intl }}>
@@ -452,9 +452,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                         {formatMessage(messages.editDesign)}
                       </EditDesignButton>
                     ) : (
-                      <ProApproved>
+                      <ProApproved proAssigned={proDesignAssigned}>
                         <ProApprovedLabel>
-                          {formatMessage(messages.approved)}
+                          {formatMessage(
+                            messages[
+                              proDesignAssigned ? 'proAssigned' : 'approved'
+                            ]
+                          )}
                         </ProApprovedLabel>
                       </ProApproved>
                     ))}

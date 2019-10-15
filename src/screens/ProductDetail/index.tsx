@@ -86,6 +86,8 @@ import {
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
 import Helmet from 'react-helmet'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -151,6 +153,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       // setSelectedFitAction, // TODO: refactor if needed
       setSelectedColorAction
     } = this.props
+    LoadScripts(threeDScripts)
     zenscroll.toY(0, 0)
     // const fitStyles = get(product, 'fitStyles', []) as SelectedType[] // TODO: refactor if needed
     const colors = get(product, 'colors', [] as ProductColors[])
