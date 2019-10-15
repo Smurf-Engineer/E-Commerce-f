@@ -67,7 +67,6 @@ export const ProductHorizontalList = ({
       description,
       priceRange,
       isTopProduct,
-      collections,
       yotpoId,
       customizable,
       colors
@@ -88,7 +87,6 @@ export const ProductHorizontalList = ({
           description,
           priceRange,
           isTopProduct,
-          collections,
           yotpoId,
           currentCurrency,
           customizable,

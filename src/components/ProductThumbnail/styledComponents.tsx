@@ -3,6 +3,7 @@
  */
 import styled, { keyframes } from 'styled-components'
 import Icon from 'antd/lib/icon'
+import Spin from 'antd/lib/spin'
 
 interface StyleProps {
   withBorder?: boolean
@@ -36,6 +37,15 @@ export const BuyNow = styled.div`
     color: white;
   }
 `
+
+export const BuyLoader = styled(Spin)`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-left: 16px;
+  margin-top: 4px;
+`
+
 export const ImageContainer = styled.div`
   user-select: none;
   cursor: pointer;

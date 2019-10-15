@@ -28,7 +28,8 @@ import {
   ImageSkeleton,
   Spinner,
   ImageRow,
-  SkeletonDiv
+  SkeletonDiv,
+  layoutStyle
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
 import { MAIN_TITLE } from '../../constants'
@@ -172,7 +173,7 @@ export class Home extends React.Component<Props, {}> {
       />
     )
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
         <Container {...{ loading }}>
           <SearchContainer>

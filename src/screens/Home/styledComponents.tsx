@@ -2,7 +2,13 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Spin from 'antd/lib/spin'
 import Skeleton from 'antd/lib/skeleton'
-import { WHITE, AUBERGINE, GRAY_SOFT, GRAY_SKELETON } from '../../theme/colors'
+import {
+  WHITE,
+  AUBERGINE,
+  GRAY_SOFT,
+  GRAY_SKELETON,
+  GRAY_HEADER
+} from '../../theme/colors'
 
 interface DivProps {
   loading?: boolean
@@ -141,3 +147,7 @@ export const SubText = styled.div`
   color: ${GRAY_SOFT};
   font-size: 14px;
 `
+
+export const layoutStyle = {
+  background: GRAY_HEADER
+}
