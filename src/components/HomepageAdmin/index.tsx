@@ -593,7 +593,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         <CarouselModal
           visible={previewOpen}
           items={mainHeader}
-          duration={Number(duration)}
+          duration={duration}
           requestClose={togglePreviewModalAction}
         />
       </Container>

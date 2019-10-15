@@ -18,7 +18,7 @@ import rightArrow from '../../assets/arrow.svg'
 interface Props {
   visible: boolean
   items: any
-  duration: number
+  duration: string
   requestClose: () => void
 }
 
@@ -83,7 +83,7 @@ export class CarouselModal extends React.Component<Props, {}> {
           requestClose={requestClose}
         >
           <CarouselContainer>
-            <Carousel {...settings} autoplaySpeed={duration}>
+            <Carousel {...settings} autoplaySpeed={Number(duration)}>
               {carouselItems}
             </Carousel>
           </CarouselContainer>

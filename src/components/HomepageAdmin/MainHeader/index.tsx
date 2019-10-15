@@ -42,6 +42,7 @@ interface Props {
   removeImage: (index: number, type: string) => void
   openPreview: () => void
   onSetDuration: (duration: string) => void
+  setTransition: (transition: string) => void
 }
 
 class MainHeader extends React.Component<Props, {}> {
@@ -113,6 +114,7 @@ class MainHeader extends React.Component<Props, {}> {
               <Select
                 style={{ width: '100%' }}
                 placeholder={formatMessage(messages.transition)}
+                onChange={this.setTransition}
               >
                 {animationTypes.map(value => {
                   return (
