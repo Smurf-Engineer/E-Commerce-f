@@ -27,7 +27,9 @@ import {
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
   ADD_CAROUSEL_ITEM,
-  REMOVE_MAIN_HEADER
+  REMOVE_MAIN_HEADER,
+  TOGGLE_PREVIEW_MODAL,
+  SET_DURATION
 } from './constants'
 
 import {
@@ -226,4 +228,13 @@ export const updateProductTilesListAction = (
 ) => ({
   type: UPDATE_PRODUCT_TILES_LIST,
   tilesList
+})
+
+export const togglePreviewModalAction = () => ({
+  type: TOGGLE_PREVIEW_MODAL
+})
+
+export const setDurationAction = (duration: string) => ({
+  type: SET_DURATION,
+  duration
 })

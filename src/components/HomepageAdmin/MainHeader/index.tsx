@@ -5,10 +5,9 @@ import * as React from 'react'
 import Divider from 'antd/lib/divider'
 import Uploader from './Uploader'
 import Button from 'antd/lib/button'
-import indexOf from 'lodash/indexOf'
+import Input from 'antd/lib/input'
 import AddMoreButton from '../../Button'
 import Select from 'antd/lib/select'
-import { getFileExtension } from '../../../utils/utilsFiles'
 import {
   Container,
   UploadersContainer,
@@ -23,56 +22,29 @@ import {
   StyledButton
 } from './styledComponents'
 import messages from './messages'
-import message from 'antd/lib/message'
-import { ImageTypes, Sections } from '../constants'
 import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
+import { isNumberValue } from '../../../utils/utilsAddressValidation'
 
-const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
-const { MAIN_HEADER } = Sections
+const animationTypes = ['slide', 'fade']
+
 const Option = Select.Option
 interface Props {
   desktopImage: string
   mainHeader: any
   loading: any
   saving: boolean
+  duration: string
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any, section: string, imageType: string) => void
   setUrl: (value: string, index: number, section: string) => void
   onSaveHeader: () => void
   handleAddMoreImages: (itemType: string) => void
   removeImage: (index: number, type: string) => void
+  openPreview: () => void
+  onSetDuration: (duration: string) => void
 }
 
 class MainHeader extends React.Component<Props, {}> {
-  beforeUpload = (file: any, imageType: string) => {
-    const { formatMessage, onUploadFile } = this.props
-    if (file) {
-      const { size, name } = file
-      // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
-      if (size / 1000000 > 20) {
-        message.error(formatMessage(messages.imageSizeError))
-        return false
-      }
-      const fileExtension = getFileExtension(name)
-      if (
-        indexOf(
-          validFileExtensions,
-          (fileExtension as String).toLowerCase()
-        ) === -1
-      ) {
-        message.error(formatMessage(messages.imageExtensionError))
-        return false
-      }
-      onUploadFile(file, MAIN_HEADER, imageType)
-    }
-    return false
-  }
-  uploadDesktopImage = (file: any) => {
-    this.beforeUpload(file, ImageTypes.DESKTOP)
-  }
-  uploadMobileImage = (file: any) => {
-    this.beforeUpload(file, ImageTypes.MOBILE)
-  }
   handleAddImage = () => {
     const { handleAddMoreImages } = this.props
     handleAddMoreImages(IMAGE_TYPE)
@@ -80,6 +52,17 @@ class MainHeader extends React.Component<Props, {}> {
   handleAddVideo = () => {
     const { handleAddMoreImages } = this.props
     handleAddMoreImages(VIDEO_TYPE)
+  }
+  setDuration = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { onSetDuration } = this.props
+    const {
+      currentTarget: { value }
+    } = event
+
+    if (value && !isNumberValue(value)) {
+      return
+    }
+    onSetDuration(value)
   }
   render() {
     const {
@@ -90,7 +73,9 @@ class MainHeader extends React.Component<Props, {}> {
       onSaveHeader,
       removeImage,
       setUrl,
-      onUploadFile
+      onUploadFile,
+      openPreview,
+      duration
     } = this.props
 
     const uploadItems = mainHeader.map((item: any, index: number) => (
@@ -125,22 +110,33 @@ class MainHeader extends React.Component<Props, {}> {
           <SlideOptions>
             <OptionContainer>
               <SlideTitle>{formatMessage(messages.animationType)}</SlideTitle>
-              <Select>
-                <Option key={'1'}>//TODO Add options</Option>
+              <Select
+                style={{ width: '100%' }}
+                placeholder={formatMessage(messages.transition)}
+              >
+                {animationTypes.map(value => {
+                  return (
+                    <Option key={value}>
+                      {formatMessage(messages[value])} 
+                    </Option>
+                  )
+                })}
               </Select>
             </OptionContainer>
             <OptionContainer>
               <SlideTitle>{formatMessage(messages.duration)}</SlideTitle>
-              <Select>
-                <Option key={'1'}>//TODO Add options</Option>
-              </Select>
+              <Input
+                value={duration}
+                onChange={this.setDuration}
+                suffix={'MS'}
+              />
             </OptionContainer>
             <OptionContainer>
               <ButtonWrapper disabled={false}>
                 <StyledButton
                   disabled={false}
                   type="primary"
-                  onClick={this.openPreview}
+                  onClick={openPreview}
                 >
                   {formatMessage(messages.preview)}
                 </StyledButton>

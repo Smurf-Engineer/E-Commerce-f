@@ -32,6 +32,8 @@ import {
   ADD_CAROUSEL_ITEM,
   EMPTY_MAIN_HEADER,
   REMOVE_MAIN_HEADER,
+  TOGGLE_PREVIEW_MODAL,
+  SET_DURATION,
   ImageTypes,
   Sections
 } from './constants'
@@ -59,7 +61,9 @@ export const initialState = fromJS({
   selectedItems: [],
   productsModalOpen: false,
   items: [],
-  productTiles: []
+  productTiles: [],
+  previewOpen: false,
+  duration: '500'
 })
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -206,7 +210,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         (mainHeader: any) => {
           return mainHeader.merge({
             ...EMPTY_MAIN_HEADER,
-            assetType: assetType
+            assetType
           })
         }
       )
@@ -254,6 +258,10 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       )
     case UPDATE_PRODUCT_TILES_LIST:
       return state.set('productTiles', action.tilesList)
+    case TOGGLE_PREVIEW_MODAL:
+      return state.set('previewOpen', !state.get('previewOpen'))
+    case SET_DURATION:
+      return state.set('duration', action.duration)
     default:
       return state
   }

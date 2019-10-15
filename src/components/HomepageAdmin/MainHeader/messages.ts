@@ -56,5 +56,17 @@ export default defineMessages({
   preview: {
     id: 'components.MainHeader.preview',
     defaultMessage: 'View preview'
+  },
+  slide: {
+    id: 'components.MainHeader.slide',
+    defaultMessage: 'Slide'
+  },
+  fade: {
+    id: 'components.MainHeader.fade',
+    defaultMessage: 'Fade'
+  },
+  transition: {
+    id: 'components.MainHeader.transition',
+    defaultMessage: 'Transition'
   }
 })

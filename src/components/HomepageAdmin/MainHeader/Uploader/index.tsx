@@ -60,7 +60,13 @@ class Uploader extends React.Component<Props, {}> {
           (fileExtension as String).toLowerCase()
         ) === -1
       ) {
-        message.error(formatMessage(messages.imageExtensionError))
+        message.error(
+          formatMessage(
+            assetType === VIDEO_TYPE
+              ? messages.videoExtensionError
+              : messages.imageExtensionError
+          )
+        )
         return false
       }
       onUploadFile(file, MAIN_HEADER, imageType, index)
@@ -79,8 +85,8 @@ class Uploader extends React.Component<Props, {}> {
   }
   handleRemoveImage = () => {
     const { index, removeImage, item } = this.props
-    const { type } = item
-    removeImage(index, type)
+    const { assetType } = item
+    removeImage(index, assetType)
   }
   render() {
     const { item, formatMessage, loading, index } = this.props

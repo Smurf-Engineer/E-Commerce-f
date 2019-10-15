@@ -18,6 +18,7 @@ import {
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { FormattedMessage } from 'react-intl'
+import CarouselModal from '../CarouselModal'
 import * as HomepageAdminActions from './actions'
 import { Sections } from './constants'
 import * as homepageAdminApiActions from './api'
@@ -67,6 +68,8 @@ interface Props {
   productsModalOpen: boolean
   items: any
   productTiles: ProductTiles[]
+  previewOpen: boolean
+  duration: string
   formatMessage: (messageDescriptor: any) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
@@ -104,6 +107,8 @@ interface Props {
   ) => void
   updateProductTilesListAction: (tilesList: [ProductTilePlaceHolder]) => void
   addCarouselItemAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
+  togglePreviewModalAction: () => void
+  setDurationAction: (duration: string) => void
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
@@ -498,6 +503,10 @@ class HomepageAdmin extends React.Component<Props, {}> {
       removeTileDataAction,
       removeHeaderAction,
       removeMainHeaderAction,
+      previewOpen,
+      togglePreviewModalAction,
+      setDurationAction,
+      duration,
       history: {
         location: {
           state: { sportName }
@@ -530,12 +539,15 @@ class HomepageAdmin extends React.Component<Props, {}> {
           saving={mainHeaderLoader}
           handleAddMoreImages={this.handleAddCarouselItem}
           removeImage={removeMainHeaderAction}
+          openPreview={togglePreviewModalAction}
+          onSetDuration={setDurationAction}
           {...{
             desktopImage,
             formatMessage,
             mainHeader,
             loading: mainHeaderLoading,
-            mainHeaderLoader
+            mainHeaderLoader,
+            duration
           }}
         />
         <SecondaryHeader
@@ -577,6 +589,12 @@ class HomepageAdmin extends React.Component<Props, {}> {
           onChangeText={setTilesTextAction}
           removeImage={removeTileDataAction}
           handleAddMoreTiles={this.handleAddMoreTiles}
+        />
+        <CarouselModal
+          visible={previewOpen}
+          items={mainHeader}
+          duration={Number(duration)}
+          requestClose={togglePreviewModalAction}
         />
       </Container>
     )

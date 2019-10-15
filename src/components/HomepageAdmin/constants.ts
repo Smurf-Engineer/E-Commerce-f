@@ -71,3 +71,5 @@ export const ADD_MORE_TILES = `${namespace}/ADD_MORE_TILES`
 export const UPDATE_PRODUCT_TILES_LIST = `${namespace}/UPDATE_PRODUCT_TILES_LIST`
 export const ADD_CAROUSEL_ITEM = `${namespace}/ADD_CAROUSEL_ITEM`
 export const REMOVE_MAIN_HEADER = `${namespace}/REMOVE_MAIN_HEADER`
+export const TOGGLE_PREVIEW_MODAL = `${namespace}/TOGGLE_PREVIEW_MODAL`
+export const SET_DURATION = `${namespace}/SET_DURATION`
