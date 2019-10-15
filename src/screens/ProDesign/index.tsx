@@ -190,7 +190,8 @@ export class ProDesign extends React.Component<Props, {}> {
               productCode,
               uploadingFile,
               fileName,
-              productToSearch
+              productToSearch,
+              formatMessage
             }}
             onUploadFile={uploadProDesignAction}
             setProductCode={setProductCodeAction}
