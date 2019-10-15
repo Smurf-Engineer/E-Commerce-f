@@ -187,13 +187,12 @@ export class ProDesign extends React.Component<Props, {}> {
         <TabPane tab={<Tab label={UPLOAD} icon={uploadIcon} />} key={UPLOAD}>
           <UploadTab
             {...{
-              formatMessage,
               productCode,
               uploadingFile,
-              fileName
+              fileName,
+              productToSearch
             }}
             onUploadFile={uploadProDesignAction}
-            {...{ formatMessage, productToSearch }}
             setProductCode={setProductCodeAction}
             setProductToSearch={setProductToSearchAction}
           />
