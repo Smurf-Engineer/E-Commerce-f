@@ -41,7 +41,12 @@ export const GetProductsQuery = gql`
           id
           name: gender
         }
-
+        priceRange {
+          quantity
+          price
+          abbreviation
+          shortName: short_name
+        }
         images: pictures {
           front: front_image
           genderId: gender_id
