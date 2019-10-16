@@ -45,11 +45,15 @@ import LockerModal from '../../LockerModal'
 import {
   SelectedDesignObjectType,
   LockerTableType,
-  DesignType
+  DesignType,
+  UserSearchResult,
+  QueryProps
 } from '../../../types/common'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
-
+interface Data extends QueryProps {
+  userSearch: UserSearchResult[]
+}
 interface Props {
   history: History
   currentCurrency: string
@@ -68,6 +72,7 @@ interface Props {
   featured: boolean
   userId: string
   saving: boolean
+  users: Data
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
   resetDataAction: () => void

@@ -5,7 +5,7 @@ import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
@@ -13,7 +13,8 @@ import {
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
   setTeamStoreDisplayMutation,
-  createStoreMutation
+  createStoreMutation,
+  getUsers
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import CreateStore from './CreateStore'
@@ -35,7 +36,9 @@ import {
   SelectedDesignObjectType,
   LockerTableType,
   DesignType,
-  SelectedDesignType
+  SelectedDesignType,
+  UserSearchResult,
+  QueryProps
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
 
@@ -78,6 +81,7 @@ interface Props {
   saving: boolean
   cutoffDate: string
   deliveryDate: string
+  users: Data
   resetForm: () => void
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
@@ -108,6 +112,10 @@ interface Props {
   setTeamStorePrices: (variables: {}) => void
   setLoadingItemAction: (itemIndex: string, loading: boolean) => void
   setTeamStoreDisplay: (variables: {}) => void
+}
+
+interface Data extends QueryProps {
+  userSearch: UserSearchResult[]
 }
 
 interface StateProps {
@@ -157,6 +165,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       moveRowAction,
       saving,
       userId,
+      users,
       resetDataAction,
       name,
       onDemand,
@@ -246,6 +255,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 setFeaturedAction,
                 moveRowAction,
                 items,
+                users,
                 offset,
                 teamSizeRange,
                 currentCurrency,
@@ -458,6 +468,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   }
 }
 
+type OwnProps = {
+  userToSearch?: string
+}
+
 const mapStateToProps = (state: any) => {
   const teamStoresAdmin = state.get('teamStoresAdmin').toJS()
   const langProps = state.get('languageProvider').toJS()
@@ -473,7 +487,20 @@ const TeamStoresAdminEnhance = compose(
   connect(
     mapStateToProps,
     { ...TeamStoresActions, ...ThunkActions }
-  )
+  ),
+  graphql<Data>(getUsers, {
+    options: (ownprops: OwnProps) => {
+      const { userToSearch } = ownprops
+      return {
+        variables: {
+          pattern: userToSearch
+        },
+        skip: !userToSearch,
+        fetchPolicy: 'network-only'
+      }
+    },
+    name: 'users'
+  })
 )(TeamStoresAdmin)
 
 export default TeamStoresAdminEnhance

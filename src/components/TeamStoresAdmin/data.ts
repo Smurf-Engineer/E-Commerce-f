@@ -70,3 +70,13 @@ export const createStoreMutation = graphql(
   `,
   { name: 'createStore' }
 )
+
+export const getUsers = gql`
+  query GetUsersNameQuery($pattern: String!) {
+    userSearch: getUserSearch(pattern: $pattern) {
+      id
+      name
+      email
+    }
+  }
+`
