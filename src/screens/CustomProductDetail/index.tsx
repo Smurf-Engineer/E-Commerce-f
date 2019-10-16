@@ -171,10 +171,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       sizeRange,
       fitStyles,
       details,
-      relatedProducts: products,
       materials,
       mediaFiles,
       modelSize,
+      id: productId,
       bannerMaterials,
       relatedItemTag
     } = product
@@ -493,7 +493,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             {...{
               yotpoId,
               mediaFiles,
-              products,
+              productId,
+              relatedItemTag,
               moreTag,
               name,
               history,

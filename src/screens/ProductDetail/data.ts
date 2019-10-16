@@ -95,35 +95,6 @@ export const GetProductsByIdQuery = gql`
       retailWomen: women_retail
       template
       relatedItemTag: related_item_tag
-      relatedProducts: related {
-        id
-        type: name
-        description: short_description
-        shortDescription: short_description
-        images: pictures {
-          front: front_image
-          back: back_image
-          left: left_image
-          right: right_image
-          genderId: gender_id
-        }
-        isTopProduct
-        customizable: design_center
-        genderId: gender_id
-        collections
-        yotpoId: yotpo_id
-        priceRange {
-          price
-          quantity
-          abbreviation
-          shortName: short_name
-        }
-        colors {
-          id
-          name
-          image
-        }
-      }
     }
   }
 `
