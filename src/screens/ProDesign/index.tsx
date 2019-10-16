@@ -44,6 +44,8 @@ import {
   StitchingColor,
   ColorAccessories
 } from '../../types/common'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 const { TabPane } = AntdTabs
 
@@ -91,6 +93,9 @@ interface Props {
 }
 export class ProDesign extends React.Component<Props, {}> {
   render3D: any
+  async componentDidMount() {
+    await LoadScripts(threeDScripts)
+  }
   handleOnPressBack = () => {
     window.location.replace('/admin')
   }
