@@ -10,6 +10,7 @@ export const LoadScripts = async (scriptObjects: ScriptObjType[], cb?: any) => {
     const isLoaded = document.getElementById(scriptId)
     if (!!!isLoaded) {
       const script = createScript(url, scriptId)
+      console.log(script)
       script.addEventListener('load', () => {
         counter++
         if (counter === scriptObjects.length && cb) {
