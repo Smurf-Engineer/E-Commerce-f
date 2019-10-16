@@ -350,7 +350,7 @@ class Render3D extends PureComponent {
     product,
     actualImage,
     fromImage = false,
-    colorAccessories
+    colorAccessories = {}
   ) => {
     const { stitchingValue, isPhone } = this.props
 
