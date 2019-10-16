@@ -145,7 +145,11 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         cancelText="Cancel"
       >
         <Title>
-          {title ? title : <FormattedMessage {...messages.myLocker} />}
+          {title ? (
+            <FormattedMessage {...messages.locker} values={{ title }} />
+          ) : (
+            <FormattedMessage {...messages.myLocker} />
+          )}
         </Title>
         <List
           ref={(listObject: any) => {

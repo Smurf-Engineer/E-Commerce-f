@@ -1392,6 +1392,7 @@ export type ContactInformation = {
 
 export interface UserSearchResult {
   id: string
+  shortId: string
   name: string
   email: string
 }

@@ -12,5 +12,9 @@ export default defineMessages({
   myLocker: {
     id: 'components.LockerModal.myLocker',
     defaultMessage: 'My Locker'
+  },
+  locker: {
+    id: 'components.LockerModal.locker',
+    defaultMessage: '{title} Locker'
   }
 })

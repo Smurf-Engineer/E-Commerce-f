@@ -82,6 +82,7 @@ interface Props {
   cutoffDate: string
   deliveryDate: string
   users: Data
+  title: string
   resetForm: () => void
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
@@ -159,6 +160,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       deleteItemSelectedAction,
       setNameAction,
       uploadBanner,
+      title,
       imagePreviewUrl,
       setItemVisibleAction,
       setFeaturedAction,
@@ -242,6 +244,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 onDemand,
                 featured,
                 setNameAction,
+                title,
                 name,
                 setUserToSearch,
                 setSelectedUser,

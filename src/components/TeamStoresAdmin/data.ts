@@ -75,6 +75,7 @@ export const getUsers = gql`
   query GetUsersNameQuery($pattern: String!) {
     userSearch: getUserSearch(pattern: $pattern) {
       id
+      shortId: short_id
       name
       email
     }

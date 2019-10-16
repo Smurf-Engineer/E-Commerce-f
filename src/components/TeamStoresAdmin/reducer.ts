@@ -48,6 +48,7 @@ export const initialState = fromJS({
   openLocker: false,
   loading: true,
   saving: false,
+  title: '',
   userId: '',
   userToSearch: '',
   imagePreviewUrl: '',
@@ -76,8 +77,12 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         limit: 12,
         selectedItems: {}
       })
-    case SET_SELECTED_USER:
-      return state.merge({ userId: action.user, userToSearch: '' })
+    case SET_SELECTED_USER: {
+      const values = action.user.split(',')
+      const userId = values.pop()
+      const title = values.shift()
+      return state.merge({ userId, userToSearch: '', title })
+    }
     case SET_FEATURED:
       return state.set('featured', action.featured)
     case SET_SAVING_ACTION:

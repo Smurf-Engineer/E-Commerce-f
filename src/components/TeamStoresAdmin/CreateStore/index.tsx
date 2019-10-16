@@ -73,6 +73,7 @@ interface Props {
   userId: string
   saving: boolean
   users: Data
+  title: string
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
   resetDataAction: () => void
@@ -184,9 +185,7 @@ export class CreateStore extends React.Component<Props, {}> {
     const { setUserToSearch } = this.props
     try {
       const parsedValue = value.toString()
-      // if (containsNumberAndLetters(parsedValue)) {
       setUserToSearch(parsedValue.trim())
-      // }
     } catch (error) {
       message.error(error.message)
     }
@@ -194,12 +193,7 @@ export class CreateStore extends React.Component<Props, {}> {
 
   handleOnSelect = async (value: SelectValue) => {
     const { setSelectedUser } = this.props
-    const emailValue = value
-      .toString()
-      .split(' -')
-      .pop()
-    const parsedValue = emailValue.replace(/ /g, '')
-    setSelectedUser(parsedValue)
+    setSelectedUser(value)
   }
 
   handleOnDeleteImage = () => {
@@ -236,6 +230,8 @@ export class CreateStore extends React.Component<Props, {}> {
       openLocker,
       userId,
       saving,
+      users,
+      title,
       buildTeamStore,
       featured,
       onDemand,
@@ -244,9 +240,13 @@ export class CreateStore extends React.Component<Props, {}> {
       moveRowAction,
       name
     } = this.props
-    const searchResults = [
-      { text: '117 - John - Sierra Red', value: 'H1R0yFr0V' }
-    ]
+    const searchResults =
+      users &&
+      !users.loading &&
+      users.userSearch.map((item: UserSearchResult) => ({
+        text: `${item.id} - ${item.name} - ${item.email}`,
+        value: `${item.id} - ${item.name},${item.shortId}`
+      }))
     const tableItems = this.getCheckedItems(items)
     return (
       <Container>
@@ -374,10 +374,10 @@ export class CreateStore extends React.Component<Props, {}> {
             tableItems,
             limit,
             offset,
+            title,
             userId
           }}
           proDesign={true}
-          title={''}
           currentPage={currentPageModal}
           visible={openLocker}
           onRequestClose={this.handleOnCloseLocker}
