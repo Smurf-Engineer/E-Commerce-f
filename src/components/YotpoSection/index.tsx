@@ -25,6 +25,7 @@ import { History } from 'history'
 import { compose, graphql } from 'react-apollo'
 import { getRelatedProducts } from './data'
 import { connect } from 'react-redux'
+import get from 'lodash/get'
 
 interface Data extends QueryProps {
   products: [Product]
@@ -41,61 +42,59 @@ interface Props {
   currentCurrency: string
   moreTag?: string
 }
-export class YotpoSection extends React.Component<Props, {}> {
-  render() {
-    const {
-      yotpoId,
-      mediaFiles,
-      data,
-      moreTag,
-      name,
-      history,
-      formatMessage,
-      dispatch,
-      currentCurrency
-    } = this.props
-    return (
-      <Container>
-        <YotpoReviews {...{ yotpoId }}>
-          {mediaFiles && !!mediaFiles.length && (
-            <div>
-              <Separator>
-                <TitleName>{name}</TitleName>
-                <FormattedMessage {...messages.featured} />
-              </Separator>
-              {mediaFiles.map(image => (
-                <SlideImageContainer>
-                  {getFileExtension(image.url) === MP4_EXTENSION ? (
-                    <SlideVideo controls={true}>
-                      <source src={image.url} type="video/mp4" />
-                    </SlideVideo>
-                  ) : (
-                    <ImageContainer>
-                      <SlideImage src={image.url} />
-                      <SlideImageMobile src={image.urlMobile} />
-                    </ImageContainer>
-                  )}
-                </SlideImageContainer>
-              ))}
-            </div>
-          )}
-          {data && data.products && data.products.length && (
-            <RelatedProductsContainer>
-              <RelatedProducts
-                products={data.products}
-                title={`${formatMessage(messages.more)} ${moreTag}`}
-                currentCurrency={currentCurrency || config.defaultCurrency}
-                {...{ history, formatMessage, dispatch }}
-              />
-            </RelatedProductsContainer>
-          )}
-          <Separator>
-            <FormattedMessage {...messages.customerReview} />
-          </Separator>
-        </YotpoReviews>
-      </Container>
-    )
-  }
+const YotpoSection = ({
+  yotpoId,
+  mediaFiles,
+  data,
+  moreTag,
+  name,
+  history,
+  formatMessage,
+  dispatch,
+  currentCurrency
+}: Props) => {
+  const products = get(data, 'products', [])
+  return (
+    <Container>
+      <YotpoReviews {...{ yotpoId }}>
+        {mediaFiles && !!mediaFiles.length && (
+          <div>
+            <Separator>
+              <TitleName>{name}</TitleName>
+              <FormattedMessage {...messages.featured} />
+            </Separator>
+            {mediaFiles.map(image => (
+              <SlideImageContainer>
+                {getFileExtension(image.url) === MP4_EXTENSION ? (
+                  <SlideVideo controls={true}>
+                    <source src={image.url} type="video/mp4" />
+                  </SlideVideo>
+                ) : (
+                  <ImageContainer>
+                    <SlideImage src={image.url} />
+                    <SlideImageMobile src={image.urlMobile} />
+                  </ImageContainer>
+                )}
+              </SlideImageContainer>
+            ))}
+          </div>
+        )}
+        {products.length && (
+          <RelatedProductsContainer>
+            <RelatedProducts
+              products={data.products}
+              title={`${formatMessage(messages.more)} ${moreTag}`}
+              currentCurrency={currentCurrency || config.defaultCurrency}
+              {...{ history, formatMessage, dispatch }}
+            />
+          </RelatedProductsContainer>
+        )}
+        <Separator>
+          <FormattedMessage {...messages.customerReview} />
+        </Separator>
+      </YotpoReviews>
+    </Container>
+  )
 }
 
 type OwnProps = {
