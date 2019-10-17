@@ -222,9 +222,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       retailMen,
       retailWomen,
       yotpoAverageScore: reviewsScore,
-      relatedProducts: products,
       mpn: mpnCode,
       obj,
+      id: productId,
       mtl,
       bannerMaterials,
       details: detailsOptions,
@@ -237,7 +237,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       title = MAIN_TITLE
     } = product
     const isRetail = retailMen || retailWomen || !customizable
-    const moreTag = relatedItemTag.replace(/_/g, ' ')
+    const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
 
@@ -632,7 +632,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             {...{
               yotpoId,
               mediaFiles,
-              products,
+              productId,
+              relatedItemTag,
               moreTag,
               name,
               history,

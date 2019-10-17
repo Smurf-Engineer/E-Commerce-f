@@ -41,33 +41,6 @@ export const GetDesignByIdQuery = gql`
           url
           urlMobile: url_mobile
         }
-        relatedProducts: related {
-          id
-          type: name
-          description: short_description
-          images: pictures {
-            front: front_image
-            back: back_image
-            left: left_image
-            right: right_image
-            genderId: gender_id
-          }
-          colors {
-            image
-            name
-          }
-          isTopProduct
-          customizable: design_center
-          genderId: gender_id
-          collections
-          yotpoId: yotpo_id
-          priceRange {
-            price
-            quantity
-            abbreviation
-            shortName: short_name
-          }
-        }
         genders {
           id
           name: gender
