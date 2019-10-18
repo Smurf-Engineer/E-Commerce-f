@@ -73,3 +73,4 @@ export const ADD_CAROUSEL_ITEM = `${namespace}/ADD_CAROUSEL_ITEM`
 export const REMOVE_MAIN_HEADER = `${namespace}/REMOVE_MAIN_HEADER`
 export const TOGGLE_PREVIEW_MODAL = `${namespace}/TOGGLE_PREVIEW_MODAL`
 export const SET_DURATION = `${namespace}/SET_DURATION`
+export const SET_TRANSITION = `${namespace}/SET_TRANSITION`

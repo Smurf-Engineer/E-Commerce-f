@@ -29,7 +29,8 @@ import {
   ADD_CAROUSEL_ITEM,
   REMOVE_MAIN_HEADER,
   TOGGLE_PREVIEW_MODAL,
-  SET_DURATION
+  SET_DURATION,
+  SET_TRANSITION
 } from './constants'
 
 import {
@@ -234,7 +235,14 @@ export const togglePreviewModalAction = () => ({
   type: TOGGLE_PREVIEW_MODAL
 })
 
-export const setDurationAction = (duration: string) => ({
+export const setDurationAction = (section: string, duration: string) => ({
   type: SET_DURATION,
+  section,
   duration
+})
+
+export const setTransitionAction = (section: string, transition: string) => ({
+  type: SET_TRANSITION,
+  section,
+  transition
 })

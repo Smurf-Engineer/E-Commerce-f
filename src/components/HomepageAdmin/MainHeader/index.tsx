@@ -24,6 +24,7 @@ import {
 import messages from './messages'
 import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
 import { isNumberValue } from '../../../utils/utilsAddressValidation'
+import { CarouselSettings } from '../../../types/common'
 
 const animationTypes = ['slide', 'fade']
 
@@ -33,7 +34,7 @@ interface Props {
   mainHeader: any
   loading: any
   saving: boolean
-  duration: string
+  carouselSettings: CarouselSettings
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any, section: string, imageType: string) => void
   setUrl: (value: string, index: number, section: string) => void
@@ -41,8 +42,8 @@ interface Props {
   handleAddMoreImages: (itemType: string) => void
   removeImage: (index: number, type: string) => void
   openPreview: () => void
-  onSetDuration: (duration: string) => void
-  setTransition: (transition: string) => void
+  onSetDuration: (section: string, duration: string) => void
+  setTransition: (section: string, transition: string) => void
 }
 
 class MainHeader extends React.Component<Props, {}> {
@@ -63,7 +64,11 @@ class MainHeader extends React.Component<Props, {}> {
     if (value && !isNumberValue(value)) {
       return
     }
-    onSetDuration(value)
+    onSetDuration('mainHeaderCarousel', value)
+  }
+  setTransition = (transition: string) => {
+    const { setTransition } = this.props
+    setTransition('mainHeaderCarousel', transition)
   }
   render() {
     const {
@@ -76,7 +81,7 @@ class MainHeader extends React.Component<Props, {}> {
       setUrl,
       onUploadFile,
       openPreview,
-      duration
+      carouselSettings: { transition, duration }
     } = this.props
 
     const uploadItems = mainHeader.map((item: any, index: number) => (
@@ -115,6 +120,7 @@ class MainHeader extends React.Component<Props, {}> {
                 style={{ width: '100%' }}
                 placeholder={formatMessage(messages.transition)}
                 onChange={this.setTransition}
+                value={transition}
               >
                 {animationTypes.map(value => {
                   return (
@@ -134,9 +140,9 @@ class MainHeader extends React.Component<Props, {}> {
               />
             </OptionContainer>
             <OptionContainer>
-              <ButtonWrapper disabled={false}>
+              <ButtonWrapper disabled={!transition}>
                 <StyledButton
-                  disabled={false}
+                  disabled={!transition}
                   type="primary"
                   onClick={openPreview}
                 >

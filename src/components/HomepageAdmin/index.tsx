@@ -46,7 +46,8 @@ import {
   MessagePayload,
   HeaderImagePlaceHolder,
   HeaderImageResponse,
-  ProductTilePlaceHolder
+  ProductTilePlaceHolder,
+  CarouselSettings
 } from '../../types/common'
 import { History } from 'history'
 
@@ -69,7 +70,8 @@ interface Props {
   items: any
   productTiles: ProductTiles[]
   previewOpen: boolean
-  duration: string
+  secondaryHeaderCarousel: CarouselSettings
+  mainHeaderCarousel: CarouselSettings
   formatMessage: (messageDescriptor: any) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
@@ -108,7 +110,8 @@ interface Props {
   updateProductTilesListAction: (tilesList: [ProductTilePlaceHolder]) => void
   addCarouselItemAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
   togglePreviewModalAction: () => void
-  setDurationAction: (duration: string) => void
+  setDurationAction: (section: string, duration: string) => void
+  setTransitionAction: (section: string, transition: string) => void
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
@@ -132,7 +135,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         featuredProducts,
         homepageImages,
         mainHeaderImages,
-        productTiles
+        productTiles,
+        carouselSettings
       } = response.data.getHomepageContent
       const items = featuredProducts.map((item: Product) => {
         return { visible: true, product: item }
@@ -145,7 +149,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
         headerImageLink: '',
         headerImage: '',
         headerImageMobile: '',
-        productTiles
+        productTiles,
+        duration: carouselSettings.slideDuration,
+        transition: carouselSettings.slideTransition
       }
       setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -176,6 +182,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         setLoadersAction,
         updatePlaceHolderListAction,
         formatMessage,
+        mainHeaderCarousel: { duration, transition },
         history: {
           location: {
             state: { sportId }
@@ -183,7 +190,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       } = this.props
       setLoadersAction(Sections.MAIN_HEADER, true)
-      console.log(mainHeader)
+
       const homepageImages = mainHeader
         .filter(
           (item: HeaderImagePlaceHolder) =>
@@ -202,7 +209,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
         data: { setMainHeader: response }
       } = await setMainHeader({
         variables: {
-          homepageImages
+          homepageImages,
+          duration,
+          transition
         }
       })
 
@@ -506,7 +515,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       previewOpen,
       togglePreviewModalAction,
       setDurationAction,
-      duration,
+      setTransitionAction,
+      mainHeaderCarousel,
+      secondaryHeaderCarousel,
       history: {
         location: {
           state: { sportName }
@@ -541,13 +552,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
           removeImage={removeMainHeaderAction}
           openPreview={togglePreviewModalAction}
           onSetDuration={setDurationAction}
+          setTransition={setTransitionAction}
+          carouselSettings={mainHeaderCarousel}
           {...{
             desktopImage,
             formatMessage,
             mainHeader,
             loading: mainHeaderLoading,
-            mainHeaderLoader,
-            duration
+            mainHeaderLoader
           }}
         />
         <SecondaryHeader
@@ -557,6 +569,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           saving={secondaryHeaderLoader}
           removeImage={removeHeaderAction}
           handleAddMoreImages={this.handleAddMoreImages}
+          carouselSettings={secondaryHeaderCarousel}
           {...{
             desktopImage,
             formatMessage,
@@ -593,7 +606,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         <CarouselModal
           visible={previewOpen}
           items={mainHeader}
-          duration={duration}
+          carouselSettings={mainHeaderCarousel}
           requestClose={togglePreviewModalAction}
         />
       </Container>

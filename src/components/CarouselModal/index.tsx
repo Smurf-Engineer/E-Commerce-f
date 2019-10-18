@@ -14,11 +14,12 @@ import Carousel from 'react-slick'
 import CustomModal from '../Common/JakrooModal'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
+import { CarouselSettings } from '../../types/common'
 
 interface Props {
   visible: boolean
   items: any
-  duration: string
+  carouselSettings: CarouselSettings
   requestClose: () => void
 }
 
@@ -62,7 +63,12 @@ const settings = {
 
 export class CarouselModal extends React.Component<Props, {}> {
   render() {
-    const { visible, requestClose, items, duration } = this.props
+    const {
+      visible,
+      requestClose,
+      items,
+      carouselSettings: { duration, transition }
+    } = this.props
     const carouselItems = items.map((item: any, index: number) => (
       <CarouselItem key={index}>
         {item.assetType !== 'video' ? (
@@ -83,7 +89,11 @@ export class CarouselModal extends React.Component<Props, {}> {
           requestClose={requestClose}
         >
           <CarouselContainer>
-            <Carousel {...settings} autoplaySpeed={Number(duration)}>
+            <Carousel
+              {...settings}
+              autoplaySpeed={Number(duration)}
+              fade={transition === 'fade'}
+            >
               {carouselItems}
             </Carousel>
           </CarouselContainer>

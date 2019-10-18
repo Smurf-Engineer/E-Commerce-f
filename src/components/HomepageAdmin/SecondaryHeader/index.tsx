@@ -13,11 +13,13 @@ import {
 import Uploader from './Uploader'
 import messages from './messages'
 import AddMoreButton from '../../Button'
+import { CarouselSettings } from '../../../types/common'
 
 interface Props {
   loading: any
   saving: boolean
   secondaryHeader: any
+  carouselSettings: CarouselSettings
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (
     file: any,

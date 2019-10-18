@@ -34,6 +34,7 @@ import {
   REMOVE_MAIN_HEADER,
   TOGGLE_PREVIEW_MODAL,
   SET_DURATION,
+  SET_TRANSITION,
   ImageTypes,
   Sections
 } from './constants'
@@ -63,7 +64,14 @@ export const initialState = fromJS({
   items: [],
   productTiles: [],
   previewOpen: false,
-  duration: '500'
+  mainHeaderCarousel: {
+    duration: '500',
+    transition: 'slide'
+  },
+  secondaryHeaderCarousel: {
+    duration: '500',
+    transition: 'slide'
+  }
 })
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -84,7 +92,9 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         homepageImages,
         mainHeaderImages,
         items,
-        productTiles
+        productTiles,
+        duration,
+        transition
       } = action.data
       return state.withMutations((map: any) => {
         map.set('items', fromJS(items))
@@ -115,6 +125,8 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             )
           )
         )
+        map.setIn(['mainHeaderCarousel', 'duration'], duration)
+        map.setIn(['mainHeaderCarousel', 'transition'], transition)
         return map
       })
     }
@@ -261,7 +273,10 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
     case TOGGLE_PREVIEW_MODAL:
       return state.set('previewOpen', !state.get('previewOpen'))
     case SET_DURATION:
-      return state.set('duration', action.duration)
+      console.log(action.section)
+      return state.setIn([action.section, 'duration'], action.duration)
+    case SET_TRANSITION:
+      return state.setIn([action.section, 'transition'], action.transition)
     default:
       return state
   }

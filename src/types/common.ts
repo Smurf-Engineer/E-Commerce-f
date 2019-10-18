@@ -1391,3 +1391,8 @@ export type ContactInformation = {
   email: string
   phone: string
 }
+
+export type CarouselSettings = {
+  duration: string
+  transition: string
+}

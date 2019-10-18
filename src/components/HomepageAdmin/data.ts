@@ -37,14 +37,26 @@ export const getHomepageInfo = gql`
         contentTile: content_tile
         image
       }
+      carouselSettings {
+        slideTransition: slide_transition
+        slideDuration: slide_duration
+      }
     }
   }
 `
 
 export const setMainHeaderMutation = graphql(
   gql`
-    mutation setMainHeader($homepageImages: [HomePageImageInput]) {
-      setMainHeader(homepageImages: $homepageImages) {
+    mutation setMainHeader(
+      $homepageImages: [HomePageImageInput]
+      $duration: Int
+      $transition: String
+    ) {
+      setMainHeader(
+        homepageImages: $homepageImages
+        duration: $duration
+        transition: $transition
+      ) {
         id
         image
         image_mobile
