@@ -29,6 +29,7 @@ export const getProductsQuery = gql`
           right: right_image
           genderId: gender_id
           colorId: color_id
+          thumbnail
         }
       }
     }

@@ -57,6 +57,7 @@ export const GetTeamStoreQuery = gql`
       shortId: short_id
       name
       banner
+      bulletin
       startDate: cutOffDateString
       endDate: deliveryDateString
       privateStore: private

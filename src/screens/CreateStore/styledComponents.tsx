@@ -122,7 +122,15 @@ export const ButtonDelete = styled.div`
   cursor: pointer;
 `
 
-export const Column = styled.div``
+export const RowColumn = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 54%;
+  @media (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 36px;
+  }
+`
 
 export const AddItem = styled(Button)`
   width: 221px;
@@ -173,6 +181,17 @@ export const draggerStyle = { padding: '30px 0px', marginBottom: 16 }
 export const BannerTitleContainer = styled.div`
   display: flex;
   align-items: center;
+`
+
+export const BulletinLabel = styled.div`
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  @media (max-width: 480px) {
+    flex-flow: column;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
 `
 
 export const OptionalLabel = styled.span`

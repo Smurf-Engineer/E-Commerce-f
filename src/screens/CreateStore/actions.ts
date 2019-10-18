@@ -23,7 +23,8 @@ import {
   OPEN_MODAL,
   CLEAR_DATA,
   SET_PAGINATION_DATA,
-  ON_UNSELECT_ITEM
+  ON_UNSELECT_ITEM,
+  CHANGE_BULLETIN
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
@@ -105,6 +106,11 @@ export const setItemSelectedAction = (
 export const deleteItemSelectedAction = (index: number): AnyAction => ({
   type: DELETE_ITEM_SELECTED_ACTION,
   index
+})
+
+export const changeBulletinAction = (value: string): AnyAction => ({
+  type: CHANGE_BULLETIN,
+  value
 })
 
 export const setItemsAddAction = (): AnyAction => ({
