@@ -25,9 +25,9 @@ import messages from './messages'
 import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
 import { isNumberValue } from '../../../utils/utilsAddressValidation'
 import { CarouselSettings } from '../../../types/common'
+import { animationTypes, Sections } from '../constants'
 
-const animationTypes = ['slide', 'fade']
-
+const { MAIN_HEADER } = Sections
 const Option = Select.Option
 interface Props {
   desktopImage: string
@@ -41,7 +41,7 @@ interface Props {
   onSaveHeader: () => void
   handleAddMoreImages: (itemType: string) => void
   removeImage: (index: number, type: string) => void
-  openPreview: () => void
+  openPreview: (section: string) => void
   onSetDuration: (section: string, duration: string) => void
   setTransition: (section: string, transition: string) => void
 }
@@ -70,6 +70,10 @@ class MainHeader extends React.Component<Props, {}> {
     const { setTransition } = this.props
     setTransition('mainHeaderCarousel', transition)
   }
+  handleOnPreview = () => {
+    const { openPreview } = this.props
+    openPreview(MAIN_HEADER)
+  }
   render() {
     const {
       mainHeader,
@@ -80,7 +84,6 @@ class MainHeader extends React.Component<Props, {}> {
       removeImage,
       setUrl,
       onUploadFile,
-      openPreview,
       carouselSettings: { transition, duration }
     } = this.props
 
@@ -144,7 +147,7 @@ class MainHeader extends React.Component<Props, {}> {
                 <StyledButton
                   disabled={!transition}
                   type="primary"
-                  onClick={openPreview}
+                  onClick={this.handleOnPreview}
                 >
                   {formatMessage(messages.preview)}
                 </StyledButton>

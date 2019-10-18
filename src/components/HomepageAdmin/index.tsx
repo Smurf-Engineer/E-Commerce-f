@@ -33,12 +33,7 @@ import {
   Goback
 } from './styledComponents'
 import messages from './messages'
-import {
-  EMPTY_SECONDARY_HEADER,
-  EMPTY_TILE,
-  HOMEPAGE_LABEL,
-  EMPTY_MAIN_HEADER
-} from './constants'
+import { EMPTY_TILE, HOMEPAGE_LABEL, EMPTY_HEADER } from './constants'
 import {
   Product,
   ProductType,
@@ -72,6 +67,7 @@ interface Props {
   previewOpen: boolean
   secondaryHeaderCarousel: CarouselSettings
   mainHeaderCarousel: CarouselSettings
+  currentPreview: string
   formatMessage: (messageDescriptor: any) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
@@ -100,7 +96,7 @@ interface Props {
   setTilesTextAction: (index: number, section: string, value: string) => void
   removeTileDataAction: (index: number) => void
   removeMainHeaderAction: (index: number, type: string) => void
-  removeHeaderAction: (index: number) => void
+  removeHeaderAction: (index: number, type: string) => void
   addMoreImagesAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
   addMoreTilesAction: (tilePlaceholder: ProductTilePlaceHolder) => void
   updatePlaceHolderListAction: (
@@ -109,7 +105,7 @@ interface Props {
   ) => void
   updateProductTilesListAction: (tilesList: [ProductTilePlaceHolder]) => void
   addCarouselItemAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
-  togglePreviewModalAction: () => void
+  togglePreviewModalAction: (section?: string) => void
   setDurationAction: (section: string, duration: string) => void
   setTransitionAction: (section: string, transition: string) => void
 }
@@ -150,8 +146,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
         headerImage: '',
         headerImageMobile: '',
         productTiles,
-        duration: carouselSettings.slideDuration,
-        transition: carouselSettings.slideTransition
+        mainHeaderCarousel: {
+          duration: carouselSettings.slideDuration,
+          transition: carouselSettings.slideTransition
+        },
+        secondaryHeaderCarousel: {
+          duration: carouselSettings.secondarySlideDuration,
+          transition: carouselSettings.secondarySlideTransition
+        }
       }
       setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -245,10 +247,11 @@ class HomepageAdmin extends React.Component<Props, {}> {
     try {
       const {
         setSecondaryHeader,
-        setLoadersAction,
         secondaryHeader,
-        formatMessage,
+        setLoadersAction,
         updatePlaceHolderListAction,
+        formatMessage,
+        secondaryHeaderCarousel: { duration, transition },
         history: {
           location: {
             state: { sportId }
@@ -256,36 +259,53 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
-      const homepageImages = secondaryHeader.map(
-        (item: HeaderImagePlaceHolder) => ({
+
+      const homepageImages = secondaryHeader
+        .filter(
+          (item: HeaderImagePlaceHolder) =>
+            item.id || item.desktopImage || item.mobileImage
+        )
+        .map((item: HeaderImagePlaceHolder) => ({
           id: item.id,
           image: item.desktopImage,
           image_mobile: item.mobileImage,
           link: item.url,
-          sport_id: sportId
-        })
-      )
+          sport_id: sportId,
+          type: item.assetType
+        }))
 
       const {
         data: { setSecondaryHeader: response }
       } = await setSecondaryHeader({
         variables: {
-          homepageImages
+          homepageImages,
+          duration,
+          transition
         }
       })
-
-      const secondHeaderList = response.map(
-        ({ id, sport_id, image, image_mobile, link }: HeaderImageResponse) => {
+      const secondaryHeaderList = response.map(
+        ({
+          id,
+          sport_id,
+          image,
+          image_mobile,
+          link,
+          type
+        }: HeaderImageResponse) => {
           return {
             id,
             sport_id,
             desktopImage: image,
             mobileImage: image_mobile,
-            url: link
+            url: link,
+            assetType: type
           }
         }
       )
-      updatePlaceHolderListAction(secondHeaderList, Sections.SECONDARY_HEADER)
+      updatePlaceHolderListAction(
+        secondaryHeaderList,
+        Sections.SECONDARY_HEADER
+      )
       message.success(formatMessage(messages.updatedHeaderSuccess))
       setLoadersAction(Sections.SECONDARY_HEADER, false)
     } catch (e) {
@@ -430,9 +450,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       }
     } = this.props
-    if (mainHeader.length < 5) {
+    if (mainHeader.length < 6) {
       const newPlaceholder = {
-        ...EMPTY_MAIN_HEADER,
+        ...EMPTY_HEADER,
         sport_id: sportId || null,
         assetType
       }
@@ -440,7 +460,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
     }
   }
 
-  handleAddMoreImages = () => {
+  handleAddMoreImages = (assetType: string) => {
     const {
       addMoreImagesAction,
       secondaryHeader,
@@ -452,8 +472,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
     } = this.props
     if (secondaryHeader.length < 6) {
       const newPlaceholder = {
-        ...EMPTY_SECONDARY_HEADER,
-        sport_id: sportId || null
+        ...EMPTY_HEADER,
+        sport_id: sportId || null,
+        assetType
       }
       addMoreImagesAction(newPlaceholder)
     }
@@ -518,6 +539,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setTransitionAction,
       mainHeaderCarousel,
       secondaryHeaderCarousel,
+      currentPreview,
       history: {
         location: {
           state: { sportName }
@@ -569,6 +591,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
           saving={secondaryHeaderLoader}
           removeImage={removeHeaderAction}
           handleAddMoreImages={this.handleAddMoreImages}
+          openPreview={togglePreviewModalAction}
+          onSetDuration={setDurationAction}
+          setTransition={setTransitionAction}
           carouselSettings={secondaryHeaderCarousel}
           {...{
             desktopImage,
@@ -605,8 +630,16 @@ class HomepageAdmin extends React.Component<Props, {}> {
         />
         <CarouselModal
           visible={previewOpen}
-          items={mainHeader}
-          carouselSettings={mainHeaderCarousel}
+          items={
+            currentPreview === Sections.MAIN_HEADER
+              ? mainHeader
+              : secondaryHeader
+          }
+          carouselSettings={
+            currentPreview === Sections.MAIN_HEADER
+              ? mainHeaderCarousel
+              : secondaryHeaderCarousel
+          }
           requestClose={togglePreviewModalAction}
         />
       </Container>

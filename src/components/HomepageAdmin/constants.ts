@@ -7,6 +7,8 @@ const namespace = 'src/OrderHistoryAdmin'
 export const VIDEO_TYPE = 'video'
 export const IMAGE_TYPE = 'image'
 
+export const animationTypes = ['slide', 'fade']
+
 export enum Sections {
   MAIN_CONTAINER = 'mainContainer',
   MAIN_HEADER = 'mainHeader',
@@ -31,14 +33,7 @@ export const EMPTY_TILE = {
   sport_id: ''
 }
 
-export const EMPTY_SECONDARY_HEADER = {
-  desktopImage: '',
-  mobileImage: '',
-  url: '',
-  sport_id: ''
-}
-
-export const EMPTY_MAIN_HEADER = {
+export const EMPTY_HEADER = {
   desktopImage: '',
   mobileImage: '',
   url: '',

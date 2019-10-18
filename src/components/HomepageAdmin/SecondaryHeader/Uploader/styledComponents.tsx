@@ -10,6 +10,10 @@ interface ImagePreviewProps {
   src: string
 }
 
+interface UploadProps {
+  isVideo: boolean
+}
+
 export const Container = styled.div`
   margin-bottom: 20px;
   width: 48%;
@@ -33,7 +37,8 @@ export const UploadButton = styled.div`
 `
 
 export const StyledUpload = styled(Upload)`
-  width: calc(70% - 5px);
+  width: ${({ isVideo }: UploadProps) =>
+    isVideo ? '100%' : 'calc(70% - 5px)'};
   border-radius: 0;
   & .ant-upload {
     border-radius: 0;
@@ -88,4 +93,13 @@ export const StyledButton = styled(Button)`
   position: absolute;
   right: 5px;
   top: 5px;
+`
+
+export const UploadText = styled.span`
+  text-transform: capitalize;
+`
+
+export const VideoPreview = styled.video`
+  max-height: 116px;
+  width: 100%;
 `

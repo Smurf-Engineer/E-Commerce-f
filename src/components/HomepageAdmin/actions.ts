@@ -189,9 +189,10 @@ export const removeMainHeaderAction = (index: number, assetType: string) => ({
   index,
   assetType
 })
-export const removeHeaderAction = (index: number) => ({
+export const removeHeaderAction = (index: number, assetType: string) => ({
   type: REMOVE_HEADER,
-  index
+  index,
+  assetType
 })
 
 export const addMoreImagesAction = (
@@ -231,8 +232,9 @@ export const updateProductTilesListAction = (
   tilesList
 })
 
-export const togglePreviewModalAction = () => ({
-  type: TOGGLE_PREVIEW_MODAL
+export const togglePreviewModalAction = (section: string = '') => ({
+  type: TOGGLE_PREVIEW_MODAL,
+  section
 })
 
 export const setDurationAction = (section: string, duration: string) => ({

@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.SecondaryHeader.imageExtensionError',
     defaultMessage: 'Oh no! Your file has to be an jpg, jpeg or png'
   },
+  videoExtensionError: {
+    id: 'components.SecondaryHeader.Uploader.videoExtensionError',
+    defaultMessage: 'Oh no! Your file has to be a mp4'
+  },
   clickToUpload: {
     id: 'components.SecondaryHeader.clickToUpload',
     defaultMessage: 'Image {index}'

@@ -24,13 +24,12 @@ import {
   REMOVE_TILE_DATA,
   REMOVE_HEADER,
   EMPTY_TILE,
-  EMPTY_SECONDARY_HEADER,
   ADD_MORE_IMAGES,
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
   ADD_CAROUSEL_ITEM,
-  EMPTY_MAIN_HEADER,
+  EMPTY_HEADER,
   REMOVE_MAIN_HEADER,
   TOGGLE_PREVIEW_MODAL,
   SET_DURATION,
@@ -71,7 +70,8 @@ export const initialState = fromJS({
   secondaryHeaderCarousel: {
     duration: '500',
     transition: 'slide'
-  }
+  },
+  currentPreview: ''
 })
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -93,8 +93,8 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         mainHeaderImages,
         items,
         productTiles,
-        duration,
-        transition
+        mainHeaderCarousel,
+        secondaryHeaderCarousel
       } = action.data
       return state.withMutations((map: any) => {
         map.set('items', fromJS(items))
@@ -125,8 +125,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             )
           )
         )
-        map.setIn(['mainHeaderCarousel', 'duration'], duration)
-        map.setIn(['mainHeaderCarousel', 'transition'], transition)
+        map.merge({ mainHeaderCarousel, secondaryHeaderCarousel })
         return map
       })
     }
@@ -139,7 +138,6 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       )
     }
     case SET_LOADING_LIST: {
-      console.log(action.section)
       return state.setIn(
         [action.section, action.index, action.imageType],
         action.loading
@@ -221,18 +219,18 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         [Sections.MAIN_HEADER, index],
         (mainHeader: any) => {
           return mainHeader.merge({
-            ...EMPTY_MAIN_HEADER,
+            ...EMPTY_HEADER,
             assetType
           })
         }
       )
     }
     case REMOVE_HEADER: {
-      const { index } = action
+      const { index, assetType } = action
       return state.updateIn(
         [Sections.SECONDARY_HEADER, index],
         (secondaryHeader: any) => {
-          return secondaryHeader.merge(EMPTY_SECONDARY_HEADER)
+          return secondaryHeader.merge({ ...EMPTY_HEADER, assetType })
         }
       )
     }
@@ -271,9 +269,11 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
     case UPDATE_PRODUCT_TILES_LIST:
       return state.set('productTiles', action.tilesList)
     case TOGGLE_PREVIEW_MODAL:
-      return state.set('previewOpen', !state.get('previewOpen'))
+      return state.merge({
+        previewOpen: !state.get('previewOpen'),
+        currentPreview: action.section
+      })
     case SET_DURATION:
-      console.log(action.section)
       return state.setIn([action.section, 'duration'], action.duration)
     case SET_TRANSITION:
       return state.setIn([action.section, 'transition'], action.transition)

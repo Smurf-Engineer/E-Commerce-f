@@ -25,7 +25,7 @@ type ImagePreviewProps = {
 export const ImagePreview = styled.div`
   width: 100%;
   background-image: url(${({ src }: ImagePreviewProps) => src || ''});
-  background-size: cover;
+  background-size: auto;
   background-repeat: no-repeat;
   height: 550px;
 `
