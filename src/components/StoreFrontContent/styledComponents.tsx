@@ -130,6 +130,15 @@ export const PriceTitle = styled.div`
   line-height: 23px;
 `
 
+export const Bulletin = styled.div`
+  font-size: 18px;
+  color: #4a90e2;
+  font-style: italic;
+  margin-top: 12px;
+  padding: 0 12px;
+  font-family: 'Avenir-Medium';
+`
+
 export const PriceDescription = styled.div`
   padding-top: 10px;
   color: #5f6062;

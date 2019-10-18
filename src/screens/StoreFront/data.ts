@@ -15,6 +15,7 @@ export const getSingleTeamStore = gql`
       short_id
       name
       banner
+      bulletin
       private
       owner
       cutoff_date {
