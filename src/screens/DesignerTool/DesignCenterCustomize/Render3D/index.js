@@ -49,6 +49,8 @@ import {
   Icon
 } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
+import { LoadScripts } from '../../../../utils/scriptLoader'
+import { threeDScripts } from '../../../../utils/scripts'
 
 const NONE = -1
 
@@ -125,6 +127,10 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
+    LoadScripts(threeDScripts, this.render3DConfig)
+  }
+
+  render3DConfig = () => {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const { files, design } = this.props

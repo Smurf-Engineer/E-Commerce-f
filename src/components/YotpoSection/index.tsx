@@ -17,18 +17,27 @@ import {
 import messages from './messages'
 import config from '../../config/index'
 import YotpoReviews from '../YotpoReviews'
-import { ProductFile, Product } from '../../types/common'
+import { ProductFile, Product, QueryProps } from '../../types/common'
 import { getFileExtension } from '../../utils/utilsFiles'
 import { RelatedProducts } from '../RelatedProducts'
 import { MP4_EXTENSION } from '../../constants'
 import { History } from 'history'
+import { compose, graphql } from 'react-apollo'
+import { getRelatedProducts } from './data'
+import { connect } from 'react-redux'
+import get from 'lodash/get'
+
+interface Data extends QueryProps {
+  products: [Product]
+}
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   yotpoId: string
   mediaFiles: ProductFile[]
-  products: Product[]
+  data: Data
   name: string
+  dispatch: any
   history: History
   currentCurrency: string
   moreTag?: string
@@ -36,13 +45,15 @@ interface Props {
 const YotpoSection = ({
   yotpoId,
   mediaFiles,
-  products,
+  data,
   moreTag,
   name,
   history,
   formatMessage,
+  dispatch,
   currentCurrency
 }: Props) => {
+  const products = get(data, 'products', [])
   return (
     <Container>
       <YotpoReviews {...{ yotpoId }}>
@@ -68,12 +79,13 @@ const YotpoSection = ({
             ))}
           </div>
         )}
-        {!!products.length && (
+        {products.length && (
           <RelatedProductsContainer>
             <RelatedProducts
+              products={data.products}
               title={`${formatMessage(messages.more)} ${moreTag}`}
               currentCurrency={currentCurrency || config.defaultCurrency}
-              {...{ products, history, formatMessage }}
+              {...{ history, formatMessage, dispatch }}
             />
           </RelatedProductsContainer>
         )}
@@ -85,4 +97,24 @@ const YotpoSection = ({
   )
 }
 
-export default YotpoSection
+type OwnProps = {
+  productId?: number
+  relatedItemTag?: string
+}
+
+const mapDispatchToProps = (dispatch: any) => ({ dispatch })
+
+const YotpoSectionEnhance = compose(
+  graphql<Data>(getRelatedProducts, {
+    options: ({ productId, relatedItemTag }: OwnProps) => ({
+      variables: {
+        productId,
+        relatedItemTag
+      },
+      skip: !productId || !relatedItemTag
+    })
+  }),
+  connect(mapDispatchToProps)
+)(YotpoSection)
+
+export default YotpoSectionEnhance
