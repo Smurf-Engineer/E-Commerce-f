@@ -197,7 +197,6 @@ export class Home extends React.Component<Props, {}> {
         {...{ history, featuredProducts }}
       />
     )
-    console.log(mainHeaderImages)
     const mainHeaderItems = mainHeaderImages.map(
       (item: HeaderImagePlaceHolder, index: number) => (
         <CarouselItem key={index} onClick={this.handleGoToUrl(item.url)}>

@@ -11,7 +11,6 @@ export const getHomepage = (query: any, sportRoute: string) => {
         variables: { sportRoute },
         fetchPolicy: 'network-only'
       })
-      console.log(response)
       dispatch(
         setHomepageInfoAction(get(response, 'data.getHomepageContent', {}))
       )
