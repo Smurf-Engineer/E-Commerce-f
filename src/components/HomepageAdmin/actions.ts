@@ -27,7 +27,6 @@ import {
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
   ADD_CAROUSEL_ITEM,
-  REMOVE_MAIN_HEADER,
   TOGGLE_PREVIEW_MODAL,
   SET_DURATION,
   SET_TRANSITION
@@ -184,15 +183,15 @@ export const removeTileDataAction = (index: number) => ({
   index
 })
 
-export const removeMainHeaderAction = (index: number, assetType: string) => ({
-  type: REMOVE_MAIN_HEADER,
-  index,
-  assetType
-})
-export const removeHeaderAction = (index: number, assetType: string) => ({
+export const removeHeaderAction = (
+  index: number,
+  assetType: string,
+  section: string
+) => ({
   type: REMOVE_HEADER,
   index,
-  assetType
+  assetType,
+  section
 })
 
 export const addMoreImagesAction = (
@@ -203,10 +202,12 @@ export const addMoreImagesAction = (
 })
 
 export const addCarouselItemAction = (
-  imagePlaceholder: HeaderImagePlaceHolder
+  imagePlaceholder: HeaderImagePlaceHolder,
+  section: string
 ) => ({
   type: ADD_CAROUSEL_ITEM,
-  imagePlaceholder
+  imagePlaceholder,
+  section
 })
 
 export const addMoreTilesAction = (

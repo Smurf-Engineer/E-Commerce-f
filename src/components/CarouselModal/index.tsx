@@ -14,11 +14,11 @@ import Carousel from 'react-slick'
 import CustomModal from '../Common/JakrooModal'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
-import { CarouselSettings } from '../../types/common'
+import { CarouselSettings, HeaderImagePlaceHolder } from '../../types/common'
 
 interface Props {
   visible: boolean
-  items: any
+  items: HeaderImagePlaceHolder[]
   carouselSettings: CarouselSettings
   requestClose: () => void
 }
@@ -36,7 +36,6 @@ const settings = {
   slidesToScroll: 1,
   prevArrow: arrowLeft,
   nextArrow: arrowRight,
-  autoplay: true,
   lazyLoad: true,
   pauseOnHover: false,
   responsive: [
@@ -69,17 +68,19 @@ export class CarouselModal extends React.Component<Props, {}> {
       items,
       carouselSettings: { duration, transition }
     } = this.props
-    const carouselItems = items.map((item: any, index: number) => (
-      <CarouselItem key={index}>
-        {item.assetType !== 'video' ? (
-          <ImagePreview src={item.desktopImage} />
-        ) : (
-          <VideoPreview autoPlay={true} loop={true}>
-            <source src={item.desktopImage} />
-          </VideoPreview>
-        )}
-      </CarouselItem>
-    ))
+    const carouselItems = items.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <CarouselItem key={index}>
+          {item.assetType !== 'video' ? (
+            <ImagePreview src={item.desktopImage} />
+          ) : (
+            <VideoPreview autoPlay={true} loop={true}>
+              <source src={item.desktopImage} />
+            </VideoPreview>
+          )}
+        </CarouselItem>
+      )
+    )
     return (
       <Container>
         <CustomModal
@@ -93,6 +94,7 @@ export class CarouselModal extends React.Component<Props, {}> {
               {...settings}
               autoplaySpeed={Number(duration)}
               fade={transition === 'fade'}
+              autoplay={true}
             >
               {carouselItems}
             </Carousel>

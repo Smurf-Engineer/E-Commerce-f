@@ -20,6 +20,12 @@ export enum LoadingSections {
   MAIN_HEADER_LOADING = 'mainHeaderLoading',
   SECONDARY_HEADER_LOADING = 'secondaryHeaderLoading'
 }
+
+export enum CarouselSections {
+  MAIN_HEADER_CAROUSEL = 'mainHeaderCarousel',
+  SECONDARY_HEADER_CAROUSEL = 'secondaryHeaderCarousel'
+}
+
 export const HOMEPAGE_LABEL = 'Homepage'
 export enum ImageTypes {
   DESKTOP = 'desktopImage',
@@ -65,7 +71,6 @@ export const UPDATE_IMAGES_PLACEHOLDER_LIST = `${namespace}/UPDATE_IMAGES_PLACEH
 export const ADD_MORE_TILES = `${namespace}/ADD_MORE_TILES`
 export const UPDATE_PRODUCT_TILES_LIST = `${namespace}/UPDATE_PRODUCT_TILES_LIST`
 export const ADD_CAROUSEL_ITEM = `${namespace}/ADD_CAROUSEL_ITEM`
-export const REMOVE_MAIN_HEADER = `${namespace}/REMOVE_MAIN_HEADER`
 export const TOGGLE_PREVIEW_MODAL = `${namespace}/TOGGLE_PREVIEW_MODAL`
 export const SET_DURATION = `${namespace}/SET_DURATION`
 export const SET_TRANSITION = `${namespace}/SET_TRANSITION`

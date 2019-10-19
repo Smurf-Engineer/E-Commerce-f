@@ -30,12 +30,12 @@ import {
   UPDATE_PRODUCT_TILES_LIST,
   ADD_CAROUSEL_ITEM,
   EMPTY_HEADER,
-  REMOVE_MAIN_HEADER,
   TOGGLE_PREVIEW_MODAL,
   SET_DURATION,
   SET_TRANSITION,
   ImageTypes,
-  Sections
+  Sections,
+  LoadingSections
 } from './constants'
 import {
   Reducer,
@@ -213,26 +213,11 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         return productTile.merge(EMPTY_TILE)
       })
     }
-    case REMOVE_MAIN_HEADER: {
-      const { index, assetType } = action
-      return state.updateIn(
-        [Sections.MAIN_HEADER, index],
-        (mainHeader: any) => {
-          return mainHeader.merge({
-            ...EMPTY_HEADER,
-            assetType
-          })
-        }
-      )
-    }
     case REMOVE_HEADER: {
-      const { index, assetType } = action
-      return state.updateIn(
-        [Sections.SECONDARY_HEADER, index],
-        (secondaryHeader: any) => {
-          return secondaryHeader.merge({ ...EMPTY_HEADER, assetType })
-        }
-      )
+      const { index, assetType, section } = action
+      return state.updateIn([section, index], (header: any) => {
+        return header.merge({ ...EMPTY_HEADER, assetType })
+      })
     }
     case ADD_MORE_IMAGES:
       return state.withMutations((tempState: any) => {
@@ -250,11 +235,18 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
     case ADD_CAROUSEL_ITEM:
       return state.withMutations((tempState: any) => {
         const initialLoadingValues = { desktopImage: false, mobileImage: false }
-        tempState.updateIn(['mainHeader'], (images: [HeaderImagePlaceHolder]) =>
-          images.push(fromJS(action.imagePlaceholder))
+        tempState.updateIn(
+          [action.section],
+          (images: [HeaderImagePlaceHolder]) =>
+            images.push(fromJS(action.imagePlaceholder))
         )
-        tempState.updateIn(['mainHeaderLoading'], (loadings: [any]) =>
-          loadings.push(fromJS(initialLoadingValues))
+        tempState.updateIn(
+          [
+            action.section === Sections.MAIN_HEADER
+              ? LoadingSections.MAIN_HEADER_LOADING
+              : LoadingSections.SECONDARY_HEADER_LOADING
+          ],
+          (loadings: [any]) => loadings.push(fromJS(initialLoadingValues))
         )
         return tempState
       })
