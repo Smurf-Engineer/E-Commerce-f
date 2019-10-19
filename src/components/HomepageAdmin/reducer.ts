@@ -64,11 +64,11 @@ export const initialState = fromJS({
   productTiles: [],
   previewOpen: false,
   mainHeaderCarousel: {
-    duration: '500',
+    duration: '1000',
     transition: 'slide'
   },
   secondaryHeaderCarousel: {
-    duration: '500',
+    duration: '1000',
     transition: 'slide'
   },
   currentPreview: ''

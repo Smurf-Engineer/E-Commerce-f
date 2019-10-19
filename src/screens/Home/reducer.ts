@@ -17,14 +17,18 @@ export const initialState = fromJS({
   showSearchResults: false,
   searchString: '',
   productId: 0,
-  headerImageMobile: '',
-  headerImage: '',
-  headerImageLink: '',
   productTiles: [],
   featuredProducts: [],
   homepageImages: [],
   title: '',
-  loading: true
+  loading: true,
+  mainHeaderImages: [],
+  carouselSettings: {
+    slideTransition: 'slide',
+    slideDuration: '1000',
+    secondarySlideTransition: 'slide',
+    secondarySlideDuration: '1000'
+  }
 })
 
 const homeReducer: Reducer<any> = (state = initialState, action) => {
@@ -42,21 +46,19 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('productId', action.id)
     case SET_HOMEPAGE_INFO: {
       const {
-        headerImageMobile,
-        headerImage,
-        headerImageLink,
+        mainHeaderImages,
         productTiles,
         featuredProducts,
         homepageImages,
+        carouselSettings,
         title
       } = action.data
       return state.merge({
-        headerImageMobile,
-        headerImage,
-        headerImageLink,
+        mainHeaderImages,
         productTiles,
         featuredProducts,
         homepageImages,
+        carouselSettings,
         title,
         loading: false
       })

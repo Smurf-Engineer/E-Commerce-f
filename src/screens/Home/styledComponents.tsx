@@ -151,3 +151,37 @@ export const SubText = styled.div`
 export const layoutStyle = {
   background: GRAY_HEADER
 }
+
+export const CarouselContainer = styled.div`
+  & .slick-prev {
+    margin-left: 30px;
+  }
+  & .slick-next {
+    margin-right: 20px;
+  }
+`
+
+export const CarouselItem = styled.div``
+
+export const ImagePreview = styled.img`
+  object-fit: cover;
+  width: 100%;
+  cursor: pointer;
+`
+
+export const VideoPreview = styled.video`
+  width: 100%;
+  object-fit: cover;
+  height: 550px;
+`
+
+export const Arrow = styled.img`
+  height: 60px !important;
+  width: 50px !important;
+  padding: 20px !important;
+  text-align: center !important;
+  z-index: 1 !important;
+  border: 0.2px solid rgba(220, 220, 220, 0.34) !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07) !important;
+`
