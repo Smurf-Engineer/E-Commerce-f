@@ -123,7 +123,6 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       )
     }
     case SET_LOADING_LIST: {
-      console.log(action.section)
       return state.setIn(
         [action.section, action.index, action.imageType],
         action.loading

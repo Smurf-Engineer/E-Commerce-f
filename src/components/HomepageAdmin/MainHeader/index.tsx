@@ -26,13 +26,14 @@ import messages from './messages'
 import message from 'antd/lib/message'
 import { ImageTypes, Sections } from '../constants'
 import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
+import { HeaderImagePlaceHolder } from '../../../types/common'
 
 const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
 const { MAIN_HEADER } = Sections
 const Option = Select.Option
 interface Props {
   desktopImage: string
-  mainHeader: any
+  mainHeader: HeaderImagePlaceHolder[]
   loading: any
   saving: boolean
   formatMessage: (messageDescriptor: any) => string
@@ -93,20 +94,22 @@ class MainHeader extends React.Component<Props, {}> {
       onUploadFile
     } = this.props
 
-    const uploadItems = mainHeader.map((item: any, index: number) => (
-      <Uploader
-        key={index}
-        {...{
-          item,
-          formatMessage,
-          index,
-          loading: loading[index],
-          onUploadFile,
-          setUrl,
-          removeImage
-        }}
-      />
-    ))
+    const uploadItems = mainHeader.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <Uploader
+          key={index}
+          {...{
+            item,
+            formatMessage,
+            index,
+            loading: loading[index],
+            onUploadFile,
+            setUrl,
+            removeImage
+          }}
+        />
+      )
+    )
 
     return (
       <Container>

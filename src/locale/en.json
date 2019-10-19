@@ -1173,5 +1173,18 @@
   "screens.ProDesign.name": "Name",
   "screens.ProDesign.legacyNumber": "Legacy Number",
   "screens.ProDesign.legacySample": "Ex. BRBR-123456789",
-  "components.ProductThumbnail.ProductSlide.proAssigned": "PRODESIGN"
+  "components.ProductThumbnail.ProductSlide.proAssigned": "PRODESIGN",
+  "components.MainHeader.imageSizeError": "Oh no! Max file size is limited to 20MB",
+  "components.MainHeader.imageExtensionError": "Oh no! Your file has to be an jpg, jpeg or png",
+  "components.MainHeader.clickToUpload": "{type} {index}",
+  "components.MainHeader.clickToUploadMobile": "Mobile {index}",
+  "components.MainHeader.destinationUrl": "Destination URL",
+  "components.MainHeader.jakrooUrl": "http://designlab.jakroo.com/",
+  "components.MainHeader.saveChanges": "Save Changes",
+  "components.MainHeader.addImage": "+ ADD IMAGE SLIDE",
+  "components.MainHeader.addVideo": "+ ADD VIDEO SLIDE",
+  "components.MainHeader.sliderSettings": "Slider Settings",
+  "components.MainHeader.animationType": "Animation Type",
+  "components.MainHeader.duration": "Duration",
+  "components.MainHeader.preview": "View preview"
 }

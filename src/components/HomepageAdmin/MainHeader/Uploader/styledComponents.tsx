@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Upload from 'antd/lib/upload'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import { GRAY_DARK } from '../../../../theme/colors'
 
 interface ImagePreviewProps {
   src: string
@@ -28,7 +29,7 @@ export const ImagesContainer = styled.div`
 `
 
 export const UploadButton = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;

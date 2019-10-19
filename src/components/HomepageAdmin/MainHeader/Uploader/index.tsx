@@ -22,18 +22,19 @@ import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
 import { getFileExtension } from '../../../../utils/utilsFiles'
 import { ImageTypes, Sections, VIDEO_TYPE } from '../../constants'
+import { HeaderImagePlaceHolder } from '../../../../types/common'
 
 const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
 const videoFileExtensions = ['.mp4']
 const { MAIN_HEADER } = Sections
 
 interface Props {
-  item: any
-  loading: any
+  item: HeaderImagePlaceHolder
+  loading: boolean
   index: number
   formatMessage: (messageDescriptor: any, params?: any) => string
   onUploadFile: (
-    file: any,
+    file: File,
     section: string,
     imageType: string,
     index: number
@@ -82,8 +83,8 @@ class Uploader extends React.Component<Props, {}> {
   }
   handleRemoveImage = () => {
     const { index, removeImage, item } = this.props
-    const { type } = item
-    removeImage(index, type)
+    const { assetType } = item
+    removeImage(index, assetType)
   }
   render() {
     const { item, formatMessage, loading, index } = this.props
