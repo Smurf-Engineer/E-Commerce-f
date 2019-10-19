@@ -1,14 +1,18 @@
 /**
- * SecondaryHeader Component - Created by eduardoquintero on 30/05/19.
+ * CarouselHeader Component - Created by eduardoquintero on 30/05/19.
  */
 import * as React from 'react'
-import Button from 'antd/lib/button'
 import Divider from 'antd/lib/divider'
+import Uploader from './Uploader'
+import Button from 'antd/lib/button'
+import Input from 'antd/lib/input'
+import AddMoreButton from '../../Button'
+import Select from 'antd/lib/select'
 import {
   Container,
-  ButtonContainer,
-  Title,
   UploadersContainer,
+  Title,
+  ButtonContainer,
   Subtitle,
   SlideOptions,
   SlideTitle,
@@ -17,49 +21,47 @@ import {
   ButtonWrapper,
   StyledButton
 } from './styledComponents'
-import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
-import Select from 'antd/lib/select'
-import Uploader from './Uploader'
 import messages from './messages'
-import Input from 'antd/lib/input'
-import AddMoreButton from '../../Button'
-import { CarouselSettings } from '../../../types/common'
-import { animationTypes, Sections } from '../constants'
+import { VIDEO_TYPE, IMAGE_TYPE } from '../constants'
 import { isNumberValue } from '../../../utils/utilsAddressValidation'
-const { SECONDARY_HEADER } = Sections
+import { CarouselSettings } from '../../../types/common'
+import { animationTypes, CarouselSections, Sections } from '../constants'
+import { HeaderImagePlaceHolder } from '../../../types/common'
 
+const Option = Select.Option
 interface Props {
+  section: string
+  desktopImage: string
+  items: HeaderImagePlaceHolder[]
   loading: any
   saving: boolean
-  secondaryHeader: any
   carouselSettings: CarouselSettings
   formatMessage: (messageDescriptor: any) => string
-  onUploadFile: (
-    file: any,
-    section: string,
-    imageType: string,
-    index: number
-  ) => void
+  onUploadFile: (file: File, section: string, imageType: string) => void
   setUrl: (value: string, index: number, section: string) => void
   onSaveHeader: () => void
-  removeImage: (index: number, type: string) => void
-  handleAddMoreImages: (itemType: string) => void
+  handleAddMoreImages: (itemType: string, section: string) => void
+  removeImage: (index: number, type: string, section: string) => void
   openPreview: (section: string) => void
   onSetDuration: (section: string, duration: string) => void
   setTransition: (section: string, transition: string) => void
 }
 
-class SecondaryHeader extends React.Component<Props, {}> {
+class CarouselHeader extends React.Component<Props, {}> {
   handleAddImage = () => {
-    const { handleAddMoreImages } = this.props
-    handleAddMoreImages(IMAGE_TYPE)
+    const { handleAddMoreImages, section } = this.props
+    handleAddMoreImages(IMAGE_TYPE, section)
   }
   handleAddVideo = () => {
-    const { handleAddMoreImages } = this.props
-    handleAddMoreImages(VIDEO_TYPE)
+    const { handleAddMoreImages, section } = this.props
+    handleAddMoreImages(VIDEO_TYPE, section)
   }
   setDuration = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { onSetDuration } = this.props
+    const { onSetDuration, section } = this.props
+    const carouselSection =
+      section === Sections.MAIN_HEADER
+        ? CarouselSections.MAIN_HEADER_CAROUSEL
+        : CarouselSections.SECONDARY_HEADER_CAROUSEL
     const {
       currentTarget: { value }
     } = event
@@ -67,48 +69,57 @@ class SecondaryHeader extends React.Component<Props, {}> {
     if (value && !isNumberValue(value)) {
       return
     }
-    onSetDuration('secondaryHeaderCarousel', value)
+    onSetDuration(carouselSection, value)
   }
   setTransition = (transition: string) => {
-    const { setTransition } = this.props
-    setTransition('secondaryHeaderCarousel', transition)
+    const { setTransition, section } = this.props
+    const carouselSection =
+      section === Sections.MAIN_HEADER
+        ? CarouselSections.MAIN_HEADER_CAROUSEL
+        : CarouselSections.SECONDARY_HEADER_CAROUSEL
+    setTransition(carouselSection, transition)
   }
   handleOnPreview = () => {
-    const { openPreview } = this.props
-    openPreview(SECONDARY_HEADER)
+    const { openPreview, section } = this.props
+    openPreview(section)
   }
   render() {
     const {
-      secondaryHeader,
+      items,
       loading,
       formatMessage,
-      onSaveHeader,
       saving,
-      onUploadFile,
-      setUrl,
+      onSaveHeader,
       removeImage,
-      carouselSettings: { transition, duration }
+      setUrl,
+      onUploadFile,
+      carouselSettings: { transition, duration },
+      section
     } = this.props
 
-    const uploadItems = secondaryHeader.map((item: any, index: number) => (
-      <Uploader
-        key={index}
-        {...{
-          item,
-          formatMessage,
-          index,
-          loading: loading[index],
-          onUploadFile,
-          setUrl,
-          removeImage
-        }}
-      />
-    ))
+    const uploadItems = items.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <Uploader
+          key={index}
+          {...{
+            item,
+            formatMessage,
+            index,
+            loading: loading[index],
+            onUploadFile,
+            setUrl,
+            removeImage,
+            section
+          }}
+        />
+      )
+    )
+
     return (
       <Container>
         <Title>{formatMessage(messages.mainHeaderTitle)}</Title>
         <AddMoreButton
-          label={formatMessage(messages.addMoreImagesLabel)}
+          label={formatMessage(messages.addImage)}
           onClick={this.handleAddImage}
         />
         <AddMoreButton
@@ -168,4 +179,4 @@ class SecondaryHeader extends React.Component<Props, {}> {
   }
 }
 
-export default SecondaryHeader
+export default CarouselHeader

@@ -22,8 +22,7 @@ import CarouselModal from '../CarouselModal'
 import * as HomepageAdminActions from './actions'
 import { Sections } from './constants'
 import * as homepageAdminApiActions from './api'
-import MainHeader from './MainHeader'
-import SecondaryHeader from './SecondaryHeader'
+import CarouselHeader from './CarouselHeader'
 import FeaturedProducts from './FeaturedProducts'
 import Tiles from './Tiles'
 import {
@@ -42,7 +41,8 @@ import {
   HeaderImagePlaceHolder,
   HeaderImageResponse,
   ProductTilePlaceHolder,
-  CarouselSettings
+  CarouselSettings,
+  Message
 } from '../../types/common'
 import { History } from 'history'
 
@@ -50,7 +50,7 @@ interface Props {
   history: History
   desktopImage: string
   client: any
-  mainHeader: any
+  mainHeader: HeaderImagePlaceHolder[]
   mainHeaderLoading: any
   secondaryHeaderLoading: any
   loaders: any
@@ -68,7 +68,7 @@ interface Props {
   secondaryHeaderCarousel: CarouselSettings
   mainHeaderCarousel: CarouselSettings
   currentPreview: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
   setFeaturedProducts: (variables: {}) => Promise<any>
@@ -82,7 +82,7 @@ interface Props {
   setHomepageInfoAction: (data: any) => void
   setUrlListAction: (value: string, index: number, section: string) => void
   uploadFileAction: (
-    file: any,
+    file: File,
     section: string,
     imageType: string,
     index: number
@@ -95,8 +95,7 @@ interface Props {
   updateProductTiles: (variables: {}) => Promise<void>
   setTilesTextAction: (index: number, section: string, value: string) => void
   removeTileDataAction: (index: number) => void
-  removeMainHeaderAction: (index: number, type: string) => void
-  removeHeaderAction: (index: number, type: string) => void
+  removeHeaderAction: (index: number, type: string, section: string) => void
   addMoreImagesAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
   addMoreTilesAction: (tilePlaceholder: ProductTilePlaceHolder) => void
   updatePlaceHolderListAction: (
@@ -104,7 +103,10 @@ interface Props {
     section: string
   ) => void
   updateProductTilesListAction: (tilesList: [ProductTilePlaceHolder]) => void
-  addCarouselItemAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
+  addCarouselItemAction: (
+    imagePlaceholder: HeaderImagePlaceHolder,
+    section: string
+  ) => void
   togglePreviewModalAction: (section?: string) => void
   setDurationAction: (section: string, duration: string) => void
   setTransitionAction: (section: string, transition: string) => void
@@ -163,7 +165,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
   }
 
   handleOnUploadFile = async (
-    file: any,
+    file: File,
     section: string,
     imageType: string,
     index: number = -1
@@ -440,29 +442,10 @@ class HomepageAdmin extends React.Component<Props, {}> {
     history.goBack()
   }
 
-  handleAddCarouselItem = (assetType: string) => {
+  handleAddCarouselItem = (assetType: string, section: string) => {
     const {
       addCarouselItemAction,
       mainHeader,
-      history: {
-        location: {
-          state: { sportId }
-        }
-      }
-    } = this.props
-    if (mainHeader.length < 6) {
-      const newPlaceholder = {
-        ...EMPTY_HEADER,
-        sport_id: sportId || null,
-        assetType
-      }
-      addCarouselItemAction(newPlaceholder)
-    }
-  }
-
-  handleAddMoreImages = (assetType: string) => {
-    const {
-      addMoreImagesAction,
       secondaryHeader,
       history: {
         location: {
@@ -470,13 +453,15 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       }
     } = this.props
-    if (secondaryHeader.length < 6) {
+    const currentSection =
+      section === Sections.MAIN_HEADER ? mainHeader : secondaryHeader
+    if (currentSection.length < 6) {
       const newPlaceholder = {
         ...EMPTY_HEADER,
         sport_id: sportId || null,
         assetType
       }
-      addMoreImagesAction(newPlaceholder)
+      addCarouselItemAction(newPlaceholder, section)
     }
   }
 
@@ -532,7 +517,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setTilesTextAction,
       removeTileDataAction,
       removeHeaderAction,
-      removeMainHeaderAction,
       previewOpen,
       togglePreviewModalAction,
       setDurationAction,
@@ -565,41 +549,42 @@ class HomepageAdmin extends React.Component<Props, {}> {
             }}
           />
         </ScreenTitle>
-        <MainHeader
+        <CarouselHeader
+          section={Sections.MAIN_HEADER}
           onUploadFile={this.handleOnUploadFile}
           setUrl={setUrlListAction}
           onSaveHeader={this.handleOnSaveMainHeader}
           saving={mainHeaderLoader}
           handleAddMoreImages={this.handleAddCarouselItem}
-          removeImage={removeMainHeaderAction}
+          removeImage={removeHeaderAction}
           openPreview={togglePreviewModalAction}
           onSetDuration={setDurationAction}
           setTransition={setTransitionAction}
           carouselSettings={mainHeaderCarousel}
+          items={mainHeader}
+          loading={mainHeaderLoading}
           {...{
             desktopImage,
-            formatMessage,
-            mainHeader,
-            loading: mainHeaderLoading,
-            mainHeaderLoader
+            formatMessage
           }}
         />
-        <SecondaryHeader
+        <CarouselHeader
+          section={Sections.SECONDARY_HEADER}
           onUploadFile={this.handleOnUploadFile}
           setUrl={setUrlListAction}
           onSaveHeader={this.handleOnSaveSecondaryHeader}
           saving={secondaryHeaderLoader}
+          handleAddMoreImages={this.handleAddCarouselItem}
           removeImage={removeHeaderAction}
-          handleAddMoreImages={this.handleAddMoreImages}
           openPreview={togglePreviewModalAction}
           onSetDuration={setDurationAction}
           setTransition={setTransitionAction}
           carouselSettings={secondaryHeaderCarousel}
+          items={secondaryHeader}
+          loading={secondaryHeaderLoading}
           {...{
             desktopImage,
-            formatMessage,
-            loading: secondaryHeaderLoading,
-            secondaryHeader
+            formatMessage
           }}
         />
         <FeaturedProducts

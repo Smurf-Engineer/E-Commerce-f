@@ -18,21 +18,13 @@ export const Arrow = styled.img`
 
 export const CarouselItem = styled.div``
 
-type ImagePreviewProps = {
-  src?: string
-}
-
-export const ImagePreview = styled.div`
+export const ImagePreview = styled.img`
   width: 100%;
-  background-image: url(${({ src }: ImagePreviewProps) => src || ''});
-  background-size: auto;
-  background-repeat: no-repeat;
-  height: 550px;
+  object-fit: auto;
 `
 
 export const VideoPreview = styled.video`
   width: 100%;
-  height: 550px;
 `
 
 export const CarouselContainer = styled.div`

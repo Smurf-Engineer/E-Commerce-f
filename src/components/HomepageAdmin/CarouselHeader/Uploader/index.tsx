@@ -21,30 +21,31 @@ import messages from './messages'
 import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
 import { getFileExtension } from '../../../../utils/utilsFiles'
-import { ImageTypes, Sections, VIDEO_TYPE } from '../../constants'
+import { ImageTypes, VIDEO_TYPE } from '../../constants'
+import { HeaderImagePlaceHolder } from '../../../../types/common'
 
 const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
 const videoFileExtensions = ['.mp4']
-const { SECONDARY_HEADER } = Sections
 
 interface Props {
-  item: any
-  loading: any
+  item: HeaderImagePlaceHolder
+  loading: boolean
   index: number
+  section: string
   formatMessage: (messageDescriptor: any, params?: any) => string
   onUploadFile: (
-    file: any,
+    file: File,
     section: string,
     imageType: string,
     index: number
   ) => void
   setUrl: (value: string, index: number, section: string) => void
-  removeImage: (index: number, type: string) => void
+  removeImage: (index: number, type: string, section: string) => void
 }
 
 class Uploader extends React.Component<Props, {}> {
-  beforeUpload = (file: any, imageType: string) => {
-    const { formatMessage, onUploadFile, index, item } = this.props
+  beforeUpload = (file: File, imageType: string) => {
+    const { formatMessage, onUploadFile, index, item, section } = this.props
     const { assetType } = item
     if (file) {
       const { size, name } = file
@@ -69,24 +70,27 @@ class Uploader extends React.Component<Props, {}> {
         )
         return false
       }
-      onUploadFile(file, SECONDARY_HEADER, imageType, index)
+      onUploadFile(file, section, imageType, index)
     }
     return false
   }
-  uploadDesktopImage = (file: any) => {
+  uploadDesktopImage = (file: File) => {
     this.beforeUpload(file, ImageTypes.DESKTOP)
   }
-  uploadMobileImage = (file: any) => {
+  uploadMobileImage = (file: File) => {
     this.beforeUpload(file, ImageTypes.MOBILE)
   }
-  handleOnSetUrl = (event: any) => {
-    const { setUrl, index } = this.props
-    setUrl(event.target.value, index, SECONDARY_HEADER)
+  handleOnSetUrl = (event: React.FormEvent<HTMLInputElement>) => {
+    const { setUrl, index, section } = this.props
+    const {
+      currentTarget: { value }
+    } = event
+    setUrl(value, index, section)
   }
   handleRemoveImage = () => {
-    const { index, removeImage, item } = this.props
+    const { index, removeImage, item, section } = this.props
     const { assetType } = item
-    removeImage(index, assetType)
+    removeImage(index, assetType, section)
   }
   render() {
     const { item, formatMessage, loading, index } = this.props

@@ -36,7 +36,6 @@ const settings = {
   slidesToScroll: 1,
   prevArrow: arrowLeft,
   nextArrow: arrowRight,
-  autoplay: true,
   lazyLoad: true,
   pauseOnHover: false,
   responsive: [
@@ -93,6 +92,7 @@ export class CarouselModal extends React.Component<Props, {}> {
               {...settings}
               autoplaySpeed={Number(duration)}
               fade={transition === 'fade'}
+              autoplay={true}
             >
               {carouselItems}
             </Carousel>
