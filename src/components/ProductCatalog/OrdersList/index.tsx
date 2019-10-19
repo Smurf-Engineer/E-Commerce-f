@@ -85,7 +85,10 @@ const OrdersList = ({
       { id, images, active, name, mpn, code, isCustom, obj, mtl }: Product,
       index: number
     ) => {
-      const image = images[0].thumbnail || images[0].front || jakrooLogo
+      const image =
+        get(images[0], 'thumbnail', '') ||
+        get(images[0], 'front', '') ||
+        jakrooLogo
       return (
         <ItemOrder
           key={index}
