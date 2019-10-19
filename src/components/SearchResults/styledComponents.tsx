@@ -28,9 +28,18 @@ export const CloseImg = styled.img`
 export const Results = styled.div`
   display: flex;
   flex-wrap: wrap;
+  @media (max-width: 480px) {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
 `
 
 export const EmptySearch = styled.div`
   color: #5f6062;
   line-height: 23px;
+`
+export const ResultDiv = styled.div`
+  margin-right: 16px;
+  width: 224px;
 `

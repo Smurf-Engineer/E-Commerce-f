@@ -45,7 +45,8 @@ import {
   MessagePayload,
   HeaderImagePlaceHolder,
   HeaderImageResponse,
-  ProductTilePlaceHolder
+  ProductTilePlaceHolder,
+  Message
 } from '../../types/common'
 import { History } from 'history'
 
@@ -53,7 +54,7 @@ interface Props {
   history: History
   desktopImage: string
   client: any
-  mainHeader: any
+  mainHeader: HeaderImagePlaceHolder[]
   mainHeaderLoading: any
   secondaryHeaderLoading: any
   loaders: any
@@ -67,7 +68,7 @@ interface Props {
   productsModalOpen: boolean
   items: any
   productTiles: ProductTiles[]
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
   setFeaturedProducts: (variables: {}) => Promise<any>
@@ -81,7 +82,7 @@ interface Props {
   setHomepageInfoAction: (data: any) => void
   setUrlListAction: (value: string, index: number, section: string) => void
   uploadFileAction: (
-    file: any,
+    file: File,
     section: string,
     imageType: string,
     index: number
@@ -150,7 +151,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
   }
 
   handleOnUploadFile = async (
-    file: any,
+    file: File,
     section: string,
     imageType: string,
     index: number = -1
@@ -178,7 +179,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       } = this.props
       setLoadersAction(Sections.MAIN_HEADER, true)
-      console.log(mainHeader)
       const homepageImages = mainHeader
         .filter(
           (item: HeaderImagePlaceHolder) =>

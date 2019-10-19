@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ProductThumbnail from './index'
+import { ProductThumbnail } from './index'
 import { MemoryRouter } from 'react-router-dom'
 
 describe('<ProductThumbnail />', () => {

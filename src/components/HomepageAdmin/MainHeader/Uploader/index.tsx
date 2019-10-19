@@ -43,7 +43,7 @@ interface Props {
 }
 
 class Uploader extends React.Component<Props, {}> {
-  beforeUpload = (file: any, imageType: string) => {
+  beforeUpload = (file: File, imageType: string) => {
     const { formatMessage, onUploadFile, index, item } = this.props
     const { assetType } = item
     if (file) {
@@ -67,15 +67,18 @@ class Uploader extends React.Component<Props, {}> {
     }
     return false
   }
-  uploadDesktopImage = (file: any) => {
+  uploadDesktopImage = (file: File) => {
     this.beforeUpload(file, ImageTypes.DESKTOP)
   }
-  uploadMobileImage = (file: any) => {
+  uploadMobileImage = (file: File) => {
     this.beforeUpload(file, ImageTypes.MOBILE)
   }
-  handleOnSetUrl = (event: any) => {
+  handleOnSetUrl = (event: React.FormEvent<HTMLInputElement>) => {
     const { setUrl, index } = this.props
-    setUrl(event.target.value, index, MAIN_HEADER)
+    const {
+      currentTarget: { value }
+    } = event
+    setUrl(value, index, MAIN_HEADER)
   }
   handleRemoveImage = () => {
     const { index, removeImage, item } = this.props

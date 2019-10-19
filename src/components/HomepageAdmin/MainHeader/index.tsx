@@ -36,7 +36,7 @@ interface Props {
   loading: any
   saving: boolean
   formatMessage: (messageDescriptor: any) => string
-  onUploadFile: (file: any, section: string, imageType: string) => void
+  onUploadFile: (file: File, section: string, imageType: string) => void
   setUrl: (value: string, index: number, section: string) => void
   onSaveHeader: () => void
   handleAddMoreImages: (itemType: string) => void
@@ -44,7 +44,7 @@ interface Props {
 }
 
 class MainHeader extends React.Component<Props, {}> {
-  beforeUpload = (file: any, imageType: string) => {
+  beforeUpload = (file: File, imageType: string) => {
     const { formatMessage, onUploadFile } = this.props
     if (file) {
       const { size, name } = file
@@ -67,10 +67,10 @@ class MainHeader extends React.Component<Props, {}> {
     }
     return false
   }
-  uploadDesktopImage = (file: any) => {
+  uploadDesktopImage = (file: File) => {
     this.beforeUpload(file, ImageTypes.DESKTOP)
   }
-  uploadMobileImage = (file: any) => {
+  uploadMobileImage = (file: File) => {
     this.beforeUpload(file, ImageTypes.MOBILE)
   }
   handleAddImage = () => {
