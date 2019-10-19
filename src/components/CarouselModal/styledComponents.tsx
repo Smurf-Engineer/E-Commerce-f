@@ -2,6 +2,7 @@
  * Styled Components - Created by eduardoquintero on 14/10/19.
  */
 import styled from 'styled-components'
+import { WHITE } from '../../theme/colors'
 
 export const Container = styled.div``
 
@@ -12,7 +13,7 @@ export const Arrow = styled.img`
   text-align: center !important;
   z-index: 1 !important;
   border: 0.2px solid rgba(220, 220, 220, 0.34) !important;
-  background-color: #ffffff !important;
+  background-color: ${WHITE} !important;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07) !important;
 `
 
