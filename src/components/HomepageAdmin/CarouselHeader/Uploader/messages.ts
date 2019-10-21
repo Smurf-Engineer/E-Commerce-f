@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: '{type} {index}'
   },
   clickToUploadMobile: {
-    id: 'components.CarouselHeader.Uploader.clickToUpload',
+    id: 'components.CarouselHeader.Uploader.clickToUploadMobile',
     defaultMessage: 'Mobile {index}'
   },
   destinationUrl: {

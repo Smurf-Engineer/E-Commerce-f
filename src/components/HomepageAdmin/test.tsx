@@ -1,6 +1,8 @@
 /**
  * HomepageAdmin Test - Created by eduardoquintero on 18/10/19.
  */
+// import homepageAdminReducer, { initialState } from './reducer'
+
 import {
   setUrlImage,
   setUrlImageList,
@@ -362,4 +364,21 @@ describe(' HomepageAdmin Screen', () => {
       })
     })
   })
+  /* describe('Reducer', () => {
+    describe('ON_TAB_CLICK', () => {
+      it('Should not have initial state undefined', () => {
+        expect(initialState.get('selectedKey')).toBeDefined()
+      })
+      it('Should be init with UPLOAD tab key', () => {
+        expect(initialState.get('selectedKey')).toEqual(UPLOAD)
+      })
+      it('Should be init with UPLOAD tab key', () => {
+        const selectedKeyState = homepageAdminReducer(
+          initialState,
+          onTabClickAction(COLOR)
+        )
+        expect(selectedKeyState.get('selectedKey')).toEqual(COLOR)
+      })
+    })
+  }) */
 })

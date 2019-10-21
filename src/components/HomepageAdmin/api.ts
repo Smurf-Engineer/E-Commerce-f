@@ -47,6 +47,7 @@ export const uploadFileAction = (
         }
       )
       const imageObject = await response.json()
+      console.log(index)
       if (index >= 0) {
         dispatch(setLoadingListAction(imageType, false, index, loadingSection))
         return dispatch(

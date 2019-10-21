@@ -77,8 +77,10 @@ export const initialState = fromJS({
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_URL_IMAGE:
+      console.log('y')
       return state.setIn([action.section, action.imageType], action.url)
     case SET_URL_IMAGE:
+      console.log('z')
       return state.merge({
         [action.section[action.imageType]]: action.url
       })
