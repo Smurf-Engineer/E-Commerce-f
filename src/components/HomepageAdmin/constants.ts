@@ -48,7 +48,6 @@ export const EMPTY_HEADER = {
 }
 
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
-export const SET_URL_IMAGE = `${namespace}/SET_URL_IMAGE`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_HOMEPAGE_INFO = `${namespace}/SET_HOMEPAGE_INFO`
 export const SET_LOADERS = `${namespace}/SET_LOADERS`

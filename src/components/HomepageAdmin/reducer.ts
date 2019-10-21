@@ -5,7 +5,6 @@
 import { fromJS, List } from 'immutable'
 import fill from 'lodash/fill'
 import {
-  SET_URL_IMAGE,
   SET_LOADING,
   SET_HOMEPAGE_INFO,
   SET_LOADERS,
@@ -76,12 +75,6 @@ export const initialState = fromJS({
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
-    case SET_URL_IMAGE:
-      return state.setIn([action.section, action.imageType], action.url)
-    case SET_URL_IMAGE:
-      return state.merge({
-        [action.section[action.imageType]]: action.url
-      })
     case SET_LOADING:
       return state.setIn(
         ['mainHeaderLoading', action.imageType],

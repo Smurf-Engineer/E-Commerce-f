@@ -4,7 +4,6 @@
 
 import {
   CLEAR_REDUCER,
-  SET_URL_IMAGE,
   SET_LOADING,
   SET_HOMEPAGE_INFO,
   SET_LOADERS,
@@ -41,17 +40,6 @@ import {
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
-})
-
-export const setUrlImage = (
-  url: string,
-  section: string,
-  imageType: string
-) => ({
-  type: SET_URL_IMAGE,
-  url,
-  section,
-  imageType
 })
 
 export const setUrlImageList = (

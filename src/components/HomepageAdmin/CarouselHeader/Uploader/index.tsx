@@ -125,8 +125,8 @@ class Uploader extends React.Component<Props, {}> {
     const preview = !isVideo ? (
       <ImagePreview src={item[ImageTypes.DESKTOP]} />
     ) : (
-      <VideoPreview autoPlay={true} loop={true}>
-        <source src={item[ImageTypes.DESKTOP]} />
+      <VideoPreview autoPlay={true} loop={true} muted={true}>
+        <source src={item[ImageTypes.DESKTOP]} type="video/mp4" />
       </VideoPreview>
     )
     return (

@@ -4,7 +4,6 @@
 import message from 'antd/lib/message'
 import config from '../../config/index'
 import {
-  setUrlImage,
   setLoadingAction,
   setUrlImageList,
   setLoadingListAction,
@@ -47,14 +46,10 @@ export const uploadFileAction = (
         }
       )
       const imageObject = await response.json()
-      if (index >= 0) {
-        dispatch(setLoadingListAction(imageType, false, index, loadingSection))
-        return dispatch(
-          setUrlImageList(imageObject.image, section, imageType, index)
-        )
-      }
-      dispatch(setLoadingAction(imageType, false))
-      return dispatch(setUrlImage(imageObject.image, section, imageType))
+      dispatch(setLoadingListAction(imageType, false, index, loadingSection))
+      return dispatch(
+        setUrlImageList(imageObject.image, section, imageType, index)
+      )
     } catch (e) {
       message.error(e.message)
       return false
