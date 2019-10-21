@@ -24,7 +24,8 @@ import {
   clearDataAction,
   setPaginationDataAction,
   setOpenLockerAction,
-  onUnselectItemAction
+  onUnselectItemAction,
+  changeBulletinAction
 } from './actions'
 import {
   SET_TEAM_SIZE_ACTION,
@@ -46,7 +47,8 @@ import {
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
   SET_PAGINATION_DATA,
-  ON_UNSELECT_ITEM
+  ON_UNSELECT_ITEM,
+  CHANGE_BULLETIN
 } from './constants'
 
 describe(' CreateStore Screen', () => {
@@ -235,6 +237,14 @@ describe(' CreateStore Screen', () => {
         keyName
       })
     })
+    it('changeBulletinAction', () => {
+      const type = CHANGE_BULLETIN
+      const value = 'Message'
+      expect(changeBulletinAction(value)).toEqual({
+        type,
+        value
+      })
+    })
   })
   describe('Reducer', () => {
     describe('INITIAL_STATE', () => {
@@ -259,6 +269,31 @@ describe(' CreateStore Screen', () => {
         it('Handles initial value in open', () => {
           const customInitialValue = initialState.get('open')
           expect(customInitialValue).toBeFalsy()
+        })
+      })
+    })
+    describe('CHANGE_BULLETIN', () => {
+      describe('Bulletin Message', () => {
+        it('Handles undefined value in bulletin', () => {
+          const customInitialValue = initialState.get('bulletin')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles value type in bulletin', () => {
+          const customInitialValue = initialState.get('bulletin')
+          expect(typeof customInitialValue).toBe('string')
+        })
+        it('Handles initial value in bulletin', () => {
+          const customInitialValue = initialState.get('bulletin')
+          expect(customInitialValue).toBe('')
+        })
+        it('Handles custom values in bulletin', () => {
+          const customValue = 'Message'
+          const nameState = createStoreReducer(
+            initialState,
+            changeBulletinAction(customValue)
+          )
+          const customNameValue = nameState.get('bulletin')
+          expect(customNameValue).toBe(customValue)
         })
       })
     })
