@@ -189,7 +189,8 @@ export const BulletinLabel = styled.div`
   align-items: center;
   @media (max-width: 480px) {
     flex-flow: column;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+    margin-top: 14px;
     align-items: flex-start;
   }
 `

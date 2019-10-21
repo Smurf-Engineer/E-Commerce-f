@@ -197,7 +197,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     openModal(true)
     return false
   }
-  handleOnBulletinChange = (event: any) => {
+  handleOnBulletinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { changeBulletinAction } = this.props
     const {
       target: { value }
