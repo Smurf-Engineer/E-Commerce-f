@@ -16,5 +16,9 @@ export default defineMessages({
   locker: {
     id: 'components.LockerModal.locker',
     defaultMessage: '{title} Locker'
+  },
+  noDesigns: {
+    id: 'components.LockerModal.noDesigns',
+    defaultMessage: 'No designs found.'
   }
 })

@@ -1154,5 +1154,6 @@
   "components.CreateStoreAdmin.userNotSelected": "To add items, you need to select a user first.",
   "components.LockerModal.title": "Locker Modal",
   "components.LockerModal.myLocker": "My Locker",
-  "components.LockerModal.locker": "{title} Locker"
+  "components.LockerModal.locker": "{title} Locker",
+  "components.LockerModal.noDesigns": "No designs found."
 }
