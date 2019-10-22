@@ -693,37 +693,12 @@ describe(' TeamStoresAdmin Screen', () => {
   })
   describe('SET_PAGINATION_DATA', () => {
     describe('Set pagination data action', () => {
-      it('Handles undefined value in offset, page and loading', () => {
+      it('Handles undefined value in offset', () => {
         const customInitialValue = initialState.get('offset')
         expect(customInitialValue).not.toBeUndefined()
-
-        const customPageValue = initialState.get('currentPageModal')
-        expect(customPageValue).not.toBeUndefined()
-
-        const customLoadingValue = initialState.get('loading')
-        expect(customLoadingValue).not.toBeUndefined()
-      })
-      it('Handles value type in offset, page and loading', () => {
-        const customInitialValue = initialState.get('offset')
         expect(typeof customInitialValue).toBe('number')
-
-        const customPageValue = initialState.get('currentPageModal')
-        expect(typeof customPageValue).toBe('number')
-
-        const customLoadingValue = initialState.get('loading')
-        expect(typeof customLoadingValue).toBe('boolean')
       })
-      it('Handles initial value in offset, page and loading', () => {
-        const customInitialValue = initialState.get('offset')
-        expect(customInitialValue).toBe(0)
-
-        const customPageValue = initialState.get('currentPageModal')
-        expect(customPageValue).toBe(1)
-
-        const customLoadingValue = initialState.get('loading')
-        expect(customLoadingValue).toBeTruthy()
-      })
-      it('Handles custom values in offset, page and loading', () => {
+      it('Handles custom values in offset', () => {
         const offset = 0
         const page = 1
         const nameState = teamStoresAdminReducer(
@@ -732,10 +707,37 @@ describe(' TeamStoresAdmin Screen', () => {
         )
         const customOffsetValue = nameState.get('offset')
         expect(customOffsetValue).toBe(offset)
-
+      })
+      it('Handles undefined value in page', () => {
+        const customPageValue = initialState.get('currentPageModal')
+        expect(customPageValue).not.toBeUndefined()
+        expect(typeof customPageValue).toBe('number')
+      })
+      it('Handles custom values in page', () => {
+        const offset = 0
+        const page = 1
+        const nameState = teamStoresAdminReducer(
+          initialState,
+          setPaginationData(offset, page)
+        )
         const customPageValue = nameState.get('currentPageModal')
         expect(customPageValue).toBe(page)
 
+        const customLoadingValue = nameState.get('loading')
+        expect(customLoadingValue).toBeFalsy()
+      })
+      it('Handles undefined value in page', () => {
+        const customLoadingValue = initialState.get('loading')
+        expect(customLoadingValue).not.toBeUndefined()
+        expect(typeof customLoadingValue).toBe('boolean')
+      })
+      it('Handles custom values in loading', () => {
+        const offset = 0
+        const page = 1
+        const nameState = teamStoresAdminReducer(
+          initialState,
+          setPaginationData(offset, page)
+        )
         const customLoadingValue = nameState.get('loading')
         expect(customLoadingValue).toBeFalsy()
       })
