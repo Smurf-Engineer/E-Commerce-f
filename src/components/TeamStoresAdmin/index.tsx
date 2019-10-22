@@ -225,8 +225,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
           )}
         />
         <Route
-          path="/admin/team-stores/create"
-          exact={true}
+          path={['/admin/team-stores/create', '/admin/team-stores/edit/:id']}
           render={() => (
             <CreateStore
               {...{

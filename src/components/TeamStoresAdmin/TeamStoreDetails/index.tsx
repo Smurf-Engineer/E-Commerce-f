@@ -22,7 +22,8 @@ import {
   Header,
   Text,
   StyledSwitch,
-  Table
+  Table,
+  EditButton
 } from './styledComponents'
 
 interface Props {
@@ -56,6 +57,13 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
     const { getTeamStoreData, match } = this.props
     const teamStoreId = get(match, 'params.id', '')
     getTeamStoreData(teamStoreId)
+  }
+  handleEditStore = () => {
+    const {
+      teamStore: { shortId },
+      history
+    } = this.props
+    history.push(`/admin/team-stores/edit/${shortId}`)
   }
   handleOnSetFeatured = () => {
     const {
@@ -158,6 +166,9 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         <ScreenContent>
           <ScreenTitle>
             {`${teamStore.name} ${formatMessage(messages.title)}`}
+            <EditButton onClick={this.handleEditStore}>
+              {formatMessage(messages.edit)}
+            </EditButton>
           </ScreenTitle>
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
           <Table>

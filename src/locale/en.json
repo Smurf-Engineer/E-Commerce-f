@@ -1155,5 +1155,17 @@
   "components.LockerModal.title": "Locker Modal",
   "components.LockerModal.myLocker": "My Locker",
   "components.LockerModal.locker": "{title} Locker",
-  "components.LockerModal.noDesigns": "No designs found."
+  "components.LockerModal.noDesigns": "No designs found.",
+  "components.TeamStoreDetails.title": "TEAMSTORE",
+  "components.TeamStoreDetails.backToHistory": "Back to Team Stores",
+  "components.TeamStoreDetails.notFound": "Team Store not found",
+  "components.TeamStoreDetails.managerName": "Manager Name",
+  "components.TeamStoreDetails.email": "Manager Email",
+  "components.TeamStoreDetails.teamstoreType": "Teamstore Type",
+  "components.TeamStoreDetails.cutoffDate": "Cut-off Date",
+  "components.TeamStoreDetails.deliveryDate": "Delivery Date",
+  "components.TeamStoreDetails.featured": "Featured",
+  "components.TeamStoreDetails.name": "Name",
+  "components.TeamStoreDetails.save": "Save",
+  "components.TeamStoreDetails.edit": "Edit"
 }
