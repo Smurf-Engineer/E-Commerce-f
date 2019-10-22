@@ -12,8 +12,8 @@ import {
 } from './styledComponents'
 import Carousel from 'react-slick'
 import CustomModal from '../Common/JakrooModal'
-import leftArrow from '../../assets/leftarrow.svg'
-import rightArrow from '../../assets/arrow.svg'
+import leftArrow from '../../assets/leftarrowwhite.svg'
+import rightArrow from '../../assets/rightarrowwhite.svg'
 import { CarouselSettings, HeaderImagePlaceHolder } from '../../types/common'
 
 interface Props {

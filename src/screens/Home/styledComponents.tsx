@@ -7,7 +7,8 @@ import {
   AUBERGINE,
   GRAY_SOFT,
   GRAY_SKELETON,
-  GRAY_HEADER
+  GRAY_HEADER,
+  BLACK
 } from '../../theme/colors'
 
 interface DivProps {
@@ -161,27 +162,17 @@ export const CarouselContainer = styled.div`
   }
 `
 
-export const CarouselItem = styled.div``
-
-export const ImagePreview = styled.img`
-  object-fit: cover;
-  width: 100%;
-  cursor: pointer;
-`
-
-export const VideoPreview = styled.video`
-  width: 100%;
-  object-fit: cover;
-  height: 550px;
-`
-
 export const Arrow = styled.img`
   height: 60px !important;
   width: 50px !important;
   padding: 20px !important;
   text-align: center !important;
   z-index: 1 !important;
-  border: 0.2px solid rgba(220, 220, 220, 0.34) !important;
-  background-color: ${WHITE} !important;
+  background-color: ${BLACK} !important;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07) !important;
+  &:hover {
+    opacity: 0.7;
+  }
 `

@@ -31,14 +31,11 @@ import {
   SkeletonDiv,
   layoutStyle,
   CarouselContainer,
-  CarouselItem,
-  ImagePreview,
-  VideoPreview,
   Arrow
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
-import leftArrow from '../../assets/leftarrow.svg'
-import rightArrow from '../../assets/arrow.svg'
+import leftArrow from '../../assets/leftarrowwhite.svg'
+import rightArrow from '../../assets/rightarrowwhite.svg'
 import { MAIN_TITLE } from '../../constants'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
@@ -47,7 +44,6 @@ import FeaturedProducts from '../../components/FeaturedProducts'
 import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
-import MediaQuery from 'react-responsive'
 import {
   QueryProps,
   ProductTiles,
@@ -57,6 +53,7 @@ import {
   HomepageCarousel
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
+import CarouselItem from '../../components/CarouselItem'
 
 interface Data extends QueryProps {
   files: any
@@ -199,42 +196,24 @@ export class Home extends React.Component<Props, {}> {
     )
     const mainHeaderItems = mainHeaderImages.map(
       (item: HeaderImagePlaceHolder, index: number) => (
-        <CarouselItem key={index} onClick={this.handleGoToUrl(item.url)}>
-          {item.assetType !== 'video' ? (
-            <MediaQuery maxWidth={640}>
-              {matches => {
-                if (matches) {
-                  return <ImagePreview src={item.mobileImage} />
-                }
-                return <ImagePreview src={item.desktopImage} />
-              }}
-            </MediaQuery>
-          ) : (
-            <VideoPreview autoPlay={true} loop={true} muted={true}>
-              <source src={item.desktopImage} type="video/mp4" />
-            </VideoPreview>
-          )}
-        </CarouselItem>
+        <div>
+          <CarouselItem
+            key={index}
+            onClick={this.handleGoToUrl(item.url)}
+            {...{ item }}
+          />
+        </div>
       )
     )
     const secondaryHeaderItems = homepageImages.map(
       (item: HeaderImagePlaceHolder, index: number) => (
-        <CarouselItem key={index} onClick={this.handleGoToUrl(item.url)}>
-          {item.assetType !== 'video' ? (
-            <MediaQuery maxWidth={640}>
-              {matches => {
-                if (matches) {
-                  return <ImagePreview src={item.mobileImage} />
-                }
-                return <ImagePreview src={item.desktopImage} />
-              }}
-            </MediaQuery>
-          ) : (
-            <VideoPreview autoPlay={true} loop={true} muted={true}>
-              <source src={item.desktopImage} type="video/mp4" />
-            </VideoPreview>
-          )}
-        </CarouselItem>
+        <div>
+          <CarouselItem
+            key={index}
+            onClick={this.handleGoToUrl(item.url)}
+            {...{ item }}
+          />
+        </div>
       )
     )
     return (
