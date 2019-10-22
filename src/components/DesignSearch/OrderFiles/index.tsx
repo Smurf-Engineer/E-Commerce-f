@@ -116,7 +116,7 @@ export class OrderFiles extends React.PureComponent<Props> {
             <Render3D
               designSearch={true}
               loading={uploadingFile}
-              actualSvg={actualSvg}
+              actualImage={actualSvg}
               designId={shortId}
               uploadingThumbnail={uploadingThumbnail}
               onSaveThumbnail={onSaveThumbnail}

@@ -64,7 +64,6 @@ export class AddProDesignModal extends React.Component<Props, {}> {
       .split(' -')
       .reverse()
       .shift()
-    console.log(emailValue)
     const parsedValue = emailValue.replace(/ /g, '')
     setSelectedUser(parsedValue)
   }
