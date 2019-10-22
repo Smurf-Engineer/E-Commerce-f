@@ -13,7 +13,8 @@ import {
   WHITE,
   RED,
   GRAY_DARK,
-  GRAY_SKELETON
+  GRAY_SKELETON,
+  WHITE_TRANSPARENT
 } from '../../../theme/colors'
 
 interface DivProps {
@@ -166,7 +167,7 @@ export const Loader = styled.div`
   left: 0;
   top: 0;
   z-index: 2;
-  background: #ffffff96;
+  background: ${WHITE_TRANSPARENT};
 `
 
 export const okButtonStyles = {
