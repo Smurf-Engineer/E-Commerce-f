@@ -115,12 +115,12 @@ export class Account extends React.Component<Props, {}> {
     setDefaultScreenAction(OVERVIEW)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { setIsMobileAction } = this.props
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
-    LoadScripts(threeDScripts)
+    await LoadScripts(threeDScripts)
     setIsMobileAction(isMobile)
   }
 
