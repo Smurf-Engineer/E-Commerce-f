@@ -210,8 +210,8 @@ export class Home extends React.Component<Props, {}> {
               }}
             </MediaQuery>
           ) : (
-            <VideoPreview autoPlay={true} loop={true}>
-              <source src={item.desktopImage} />
+            <VideoPreview autoPlay={true} loop={true} muted={true}>
+              <source src={item.desktopImage} type="video/mp4" />
             </VideoPreview>
           )}
         </CarouselItem>
@@ -230,8 +230,8 @@ export class Home extends React.Component<Props, {}> {
               }}
             </MediaQuery>
           ) : (
-            <VideoPreview autoPlay={true} loop={true}>
-              <source src={item.desktopImage} />
+            <VideoPreview autoPlay={true} loop={true} muted={true}>
+              <source src={item.desktopImage} type="video/mp4" />
             </VideoPreview>
           )}
         </CarouselItem>

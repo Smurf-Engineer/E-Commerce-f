@@ -48,8 +48,6 @@ export const EMPTY_HEADER = {
 }
 
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
-export const SET_URL_IMAGE = `${namespace}/SET_URL_IMAGE`
-export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_HOMEPAGE_INFO = `${namespace}/SET_HOMEPAGE_INFO`
 export const SET_LOADERS = `${namespace}/SET_LOADERS`
 export const SET_URL_IMAGE_LIST = `${namespace}/SET_URL_IMAGE_LIST`
@@ -66,7 +64,6 @@ export const SET_PRODUCT_TILE_LOADING = `${namespace}/SET_PRODUCT_TILE_LOADING`
 export const SET_TILES_TEXT = `${namespace}/SET_TILES_TEXT`
 export const REMOVE_TILE_DATA = `${namespace}/REMOVE_TILE_DATA`
 export const REMOVE_HEADER = `${namespace}/REMOVE_HEADER`
-export const ADD_MORE_IMAGES = `${namespace}/ADD_MORE_IMAGES`
 export const UPDATE_IMAGES_PLACEHOLDER_LIST = `${namespace}/UPDATE_IMAGES_PLACEHOLDER_LIST`
 export const ADD_MORE_TILES = `${namespace}/ADD_MORE_TILES`
 export const UPDATE_PRODUCT_TILES_LIST = `${namespace}/UPDATE_PRODUCT_TILES_LIST`

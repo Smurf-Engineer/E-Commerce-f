@@ -96,7 +96,6 @@ interface Props {
   setTilesTextAction: (index: number, section: string, value: string) => void
   removeTileDataAction: (index: number) => void
   removeHeaderAction: (index: number, type: string, section: string) => void
-  addMoreImagesAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
   addMoreTilesAction: (tilePlaceholder: ProductTilePlaceHolder) => void
   updatePlaceHolderListAction: (
     list: [HeaderImagePlaceHolder],
