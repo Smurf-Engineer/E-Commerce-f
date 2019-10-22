@@ -693,19 +693,23 @@ describe(' TeamStoresAdmin Screen', () => {
   })
   describe('SET_PAGINATION_DATA', () => {
     describe('Set pagination data action', () => {
+      const offset = 0
+      const page = 1
+      let state
+      beforeEach(() => {
+        state = teamStoresAdminReducer(
+          initialState,
+          setPaginationData(offset, page)
+        )
+      })
       it('Handles undefined value in offset', () => {
         const customInitialValue = initialState.get('offset')
         expect(customInitialValue).not.toBeUndefined()
         expect(typeof customInitialValue).toBe('number')
       })
       it('Handles custom values in offset', () => {
-        const offset = 0
-        const page = 1
-        const nameState = teamStoresAdminReducer(
-          initialState,
-          setPaginationData(offset, page)
-        )
-        const customOffsetValue = nameState.get('offset')
+        const customOffsetValue = state.get('offset')
+        expect(typeof customOffsetValue).toBe('number')
         expect(customOffsetValue).toBe(offset)
       })
       it('Handles undefined value in page', () => {
@@ -714,31 +718,18 @@ describe(' TeamStoresAdmin Screen', () => {
         expect(typeof customPageValue).toBe('number')
       })
       it('Handles custom values in page', () => {
-        const offset = 0
-        const page = 1
-        const nameState = teamStoresAdminReducer(
-          initialState,
-          setPaginationData(offset, page)
-        )
-        const customPageValue = nameState.get('currentPageModal')
+        const customPageValue = state.get('currentPageModal')
+        expect(typeof customPageValue).toBe('number')
         expect(customPageValue).toBe(page)
-
-        const customLoadingValue = nameState.get('loading')
-        expect(customLoadingValue).toBeFalsy()
       })
-      it('Handles undefined value in page', () => {
+      it('Handles undefined value in loading', () => {
         const customLoadingValue = initialState.get('loading')
         expect(customLoadingValue).not.toBeUndefined()
         expect(typeof customLoadingValue).toBe('boolean')
       })
       it('Handles custom values in loading', () => {
-        const offset = 0
-        const page = 1
-        const nameState = teamStoresAdminReducer(
-          initialState,
-          setPaginationData(offset, page)
-        )
-        const customLoadingValue = nameState.get('loading')
+        const customLoadingValue = state.get('loading')
+        expect(typeof customLoadingValue).toBe('boolean')
         expect(customLoadingValue).toBeFalsy()
       })
     })
@@ -871,44 +862,79 @@ describe(' TeamStoresAdmin Screen', () => {
   })
   describe('SET_USER_TO_SEARCH', () => {
     describe('Update user search value', () => {
-      it('Handles undefined value in userToSearch', () => {
-        const customInitialValue = initialState.get('userToSearch')
-        expect(customInitialValue).not.toBeUndefined()
-      })
-      it('Handles value type in userToSearch', () => {
-        const customInitialValue = initialState.get('userToSearch')
-        expect(typeof customInitialValue).toBe('string')
-      })
-      it('Handles initial value in userToSearch', () => {
-        const customInitialValue = initialState.get('userToSearch')
-        expect(customInitialValue).toBe('')
-      })
-      it('Handles custom values in userToSearch', () => {
-        const userToSearch = 'NAME'
-        const nameState = teamStoresAdminReducer(
+      const userToSearch = 'NAME'
+      let state
+      beforeEach(() => {
+        state = teamStoresAdminReducer(
           initialState,
           setUserToSearch(userToSearch)
         )
-        const customNameValue = nameState.get('userToSearch')
-        expect(customNameValue).toBe(userToSearch)
-
-        const userIdValue = nameState.get('userId')
-        expect(userIdValue).toBe('')
-
-        const itemsValue = nameState.get('items')
-        expect(itemsValue.size).toBe(0)
-
-        const offsetValue = nameState.get('offset')
-        expect(offsetValue).toBe(0)
-
-        const currentPageModalValue = nameState.get('currentPageModal')
-        expect(currentPageModalValue).toBe(1)
-
-        const selectedItems = nameState.get('selectedItems')
-        expect(selectedItems.size).toBe(0)
-
-        const limit = nameState.get('limit')
-        expect(limit).toBe(12)
+      })
+      it('Handles undefined value in userToSearch', () => {
+        const customInitialValue = initialState.get('userToSearch')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles custom value in userToSearch', () => {
+        const customValue = state.get('userToSearch')
+        expect(typeof customValue).toBe('string')
+        expect(customValue).toBe(userToSearch)
+      })
+      it('Handles undefined value in userId', () => {
+        const customInitialValue = initialState.get('userId')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles custom value in userId', () => {
+        const customValue = state.get('userId')
+        expect(typeof customValue).toBe('string')
+        expect(customValue).toBe('')
+      })
+      it('Handles undefined value in items', () => {
+        const customInitialValue = initialState.get('items')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles custom value in items', () => {
+        const customValue = state.get('items')
+        expect(customValue.size).toBe(0)
+      })
+      it('Handles undefined value in offset', () => {
+        const customInitialValue = initialState.get('offset')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('number')
+      })
+      it('Handles custom value in offset', () => {
+        const customValue = state.get('offset')
+        expect(typeof customValue).toBe('number')
+        expect(customValue).toBe(0)
+      })
+      it('Handles undefined value in currentPageModal', () => {
+        const customInitialValue = initialState.get('currentPageModal')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('number')
+      })
+      it('Handles custom value in currentPageModal', () => {
+        const customValue = state.get('currentPageModal')
+        expect(typeof customValue).toBe('number')
+        expect(customValue).toBe(1)
+      })
+      it('Handles undefined value in selectedItems', () => {
+        const customInitialValue = initialState.get('selectedItems')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles custom value in selectedItems', () => {
+        const customValue = state.get('selectedItems')
+        expect(customValue.size).toBe(0)
+      })
+      it('Handles undefined value in limit', () => {
+        const customInitialValue = initialState.get('limit')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('number')
+      })
+      it('Handles custom value in limit', () => {
+        const customValue = state.get('limit')
+        expect(typeof customValue).toBe('number')
+        expect(customValue).toBe(12)
       })
     })
   })
