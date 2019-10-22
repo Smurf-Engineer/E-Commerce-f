@@ -55,6 +55,8 @@ import MyFiles from '../../components/MyFiles'
 import config from '../../config'
 import { TeamStoreItemtype, MessagePayload } from '../../types/common'
 import get from 'lodash/get'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 const { SubMenu } = Menu
 
@@ -118,6 +120,7 @@ export class Account extends React.Component<Props, {}> {
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
+    LoadScripts(threeDScripts)
     setIsMobileAction(isMobile)
   }
 
