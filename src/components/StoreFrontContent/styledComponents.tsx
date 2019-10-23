@@ -4,10 +4,18 @@
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
-import { GREEN, BLACK_LIGHT, WHITE } from '../../theme/colors'
+import {
+  GREEN,
+  BLACK_LIGHT,
+  WHITE,
+  BLUE_BRIGHT,
+  GRAY_HEADER,
+  GRAY_SKELETON
+} from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
   open?: boolean
+  left?: boolean
 }
 export const Container = styled.div`
   display: flex;
@@ -131,12 +139,47 @@ export const PriceTitle = styled.div`
 `
 
 export const Bulletin = styled.div`
+  display: inline-flex;
+  max-width: 570px;
+  width: 100%;
+  background: ${GRAY_HEADER};
+  position: relative;
+  height: 70px;
+  justify-content: center;
+  align-items: center;
   font-size: 18px;
-  color: #4a90e2;
+  color: ${BLUE_BRIGHT};
   font-style: italic;
   margin-top: 12px;
-  padding: 0 12px;
   font-family: 'Avenir-Medium';
+  @media (max-width: 480px) {
+    width: auto;
+    height: auto;
+    margin: 12px;
+    padding: 8px;
+  }
+`
+
+export const Pin = styled.img`
+  transform: ${({ left }: DivProps) => (left ? 'scaleX(-1)' : 'none')};
+`
+
+export const PinDiv = styled.div`
+  position: absolute;
+  top: -7px;
+  width: 102%;
+  justify-content: space-between;
+  display: flex;
+`
+
+export const Corner = styled.div`
+  width: 0;
+  height: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  border-bottom: 16px solid ${WHITE};
+  border-left: 16px solid ${GRAY_SKELETON};
 `
 
 export const PriceDescription = styled.div`

@@ -53,8 +53,12 @@ import {
   Loading,
   ButtonsContainer,
   TopContainer,
-  Bulletin
+  Bulletin,
+  Corner,
+  PinDiv,
+  Pin
 } from './styledComponents'
+import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
 import ProductList from '../../components/DesignsCatalogueThumbnailList'
@@ -374,7 +378,16 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 <PriceDescription>
                   <FormattedMessage {...messages.description} />
                 </PriceDescription>
-                <Bulletin>{bulletin}</Bulletin>
+                {bulletin && (
+                  <Bulletin>
+                    <PinDiv>
+                      <Pin src={PinSVG} left={true} />
+                      <Pin src={PinSVG} />
+                    </PinDiv>
+                    {bulletin}
+                    <Corner />
+                  </Bulletin>
+                )}
               </Description>
             ) : (
               <React.Fragment>
