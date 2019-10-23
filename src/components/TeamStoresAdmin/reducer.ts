@@ -26,7 +26,8 @@ import {
   SET_IMAGE,
   SET_SAVING_ACTION,
   SET_USER_TO_SEARCH,
-  SET_SELECTED_USER
+  SET_SELECTED_USER,
+  SET_TEAM_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -48,6 +49,9 @@ export const initialState = fromJS({
   openLocker: false,
   loading: true,
   saving: false,
+  storeId: '',
+  storeShortId: '',
+  teamSizeId: 1,
   title: '',
   userId: '',
   userToSearch: '',
@@ -65,6 +69,36 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
+    case SET_TEAM_DATA: {
+      const {
+        data: {
+          id,
+          shortId,
+          name,
+          banner,
+          userId,
+          ownerName,
+          featured,
+          onDemand,
+          items,
+          teamSize: { id: sizeId, size }
+        }
+      } = action
+      return state.merge({
+        storeId: id,
+        storeShortId: shortId,
+        name,
+        userId,
+        featured,
+        title: ownerName,
+        teamSizeId: sizeId,
+        teamSizeRange: size,
+        loading: false,
+        items: items,
+        onDemand,
+        imagePreviewUrl: banner
+      })
+    }
     case SET_NAME:
       return state.set('name', action.name)
     case SET_USER_TO_SEARCH:

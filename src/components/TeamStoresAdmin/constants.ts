@@ -28,4 +28,5 @@ export const SET_IMAGE = `${namespace}/SET_IMAGE`
 export const SET_USER_TO_SEARCH = `${namespace}/SET_USER_TO_SEARCH`
 export const SET_SELECTED_USER = `${namespace}/SET_SELECTED_USER`
 export const SET_SAVING_ACTION = `${namespace}/SET_SAVING_ACTION`
+export const SET_TEAM_DATA = `${namespace}/SET_TEAM_DATA`
 export const MOVE_ROW = `${namespace}/MOVE_ROW`

@@ -38,7 +38,8 @@ import {
   DesignType,
   SelectedDesignType,
   UserSearchResult,
-  QueryProps
+  QueryProps,
+  TeamstoreType
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
 
@@ -84,6 +85,8 @@ interface Props {
   users: Data
   title: string
   resetForm: () => void
+  setTeamData: (data: TeamstoreType) => void
+  setLoadingAction: (loading: boolean) => void
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
   createStore: (variables: {}) => void
@@ -153,6 +156,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setItemSelectedAction,
       onUnselectItemAction,
       selectedItems,
+      setLoadingAction,
+      setTeamData,
       setItemsAddAction,
       setPaginationData,
       currentPageModal,
@@ -237,6 +242,9 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 setPaginationData,
                 openLocker,
                 resetDataAction,
+                setLoadingAction,
+                setTeamData,
+                loading,
                 limit,
                 userId,
                 saving,

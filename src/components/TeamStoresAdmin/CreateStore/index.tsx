@@ -13,6 +13,8 @@ import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
+import { withRouter } from 'react-router-dom'
+import { compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import {
   Container,
@@ -47,8 +49,10 @@ import {
   LockerTableType,
   DesignType,
   UserSearchResult,
-  QueryProps
+  QueryProps,
+  TeamstoreType
 } from '../../../types/common'
+import { GetTeamStoreQuery } from './data'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
 interface Data extends QueryProps {
@@ -74,6 +78,11 @@ interface Props {
   saving: boolean
   users: Data
   title: string
+  client: any
+  match: any
+  loading: boolean
+  setTeamData: (data: TeamstoreType) => void
+  setLoadingAction: (loading: boolean) => void
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
   resetDataAction: () => void
@@ -99,6 +108,32 @@ export class CreateStore extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
+  }
+
+  async componentDidMount() {
+    const {
+      setTeamData,
+      setLoadingAction,
+      match,
+      client: { query }
+    } = this.props
+    const id = get(match, 'params.id', '')
+    if (id) {
+      await query({
+        query: GetTeamStoreQuery,
+        variables: { teamStoreId: id },
+        fetchPolicy: 'network-only'
+      })
+        .then(({ data: { teamStore } }: any) => {
+          setTeamData(teamStore)
+        })
+        .catch((err: any) => {
+          console.error(err)
+        })
+    } else {
+      setLoadingAction(false)
+    }
+    window.scrollTo(0, 0)
   }
 
   handleGoBack = () => {
@@ -238,7 +273,8 @@ export class CreateStore extends React.Component<Props, {}> {
       deleteItemSelectedAction,
       setItemVisibleAction,
       moveRowAction,
-      name
+      name,
+      loading
     } = this.props
     const searchResults =
       users &&
@@ -272,6 +308,7 @@ export class CreateStore extends React.Component<Props, {}> {
             <StyledSearch
               onSearch={this.debounceSearchProduct}
               dataSource={searchResults}
+              defaultValue={title}
               size="large"
               onSelect={this.handleOnSelect}
               placeholder={formatMessage(messages.selectUserHolder)}
@@ -393,14 +430,20 @@ export class CreateStore extends React.Component<Props, {}> {
           setImage={this.setImageAction}
           image={imagePreviewUrl}
         />
-        {saving && (
-          <Loader>
-            <Spin size="large" />
-          </Loader>
-        )}
+        {saving ||
+          (loading && (
+            <Loader>
+              <Spin size="large" />
+            </Loader>
+          ))}
       </Container>
     )
   }
 }
 
-export default CreateStore
+const CreateStoreEnhance = compose(
+  withRouter,
+  withApollo
+)(CreateStore)
+
+export default CreateStoreEnhance

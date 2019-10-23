@@ -25,7 +25,8 @@ import {
   SET_OPEN_MODAL,
   SET_IMAGE,
   SET_SELECTED_USER,
-  SET_USER_TO_SEARCH
+  SET_USER_TO_SEARCH,
+  SET_TEAM_DATA
 } from './constants'
 
 import {
@@ -33,7 +34,8 @@ import {
   sorts,
   TeamStoreAdminType,
   Currency,
-  DesignType
+  DesignType,
+  TeamstoreType
 } from '../../types/common'
 import { QueryProps } from 'react-apollo'
 
@@ -65,6 +67,11 @@ export const setSearchTextAction = (searchText: string) => ({
 export const setLoadingAction = (loading: boolean) => ({
   type: SET_LOADING,
   loading
+})
+
+export const setTeamData = (data: TeamstoreType) => ({
+  type: SET_TEAM_DATA,
+  data
 })
 
 export const setPriceAction = (
