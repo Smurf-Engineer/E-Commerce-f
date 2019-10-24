@@ -70,6 +70,7 @@ const UsersList = ({
               <Header>{formatMessage(messages.accountType)}</Header>
               <Header>{formatMessage(messages.admin)}</Header>
               <Header>{formatMessage(messages.email)}</Header>
+              <Header>{formatMessage(messages.netsuiteId)}</Header>
             </Row>
           )
         }
@@ -105,6 +106,12 @@ const UsersList = ({
               sort={orderBy === 'email' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
+            <HeaderTable
+              id={'netsuite_internal'}
+              label={formatMessage(messages.netsuiteId)}
+              sort={orderBy === 'netsuite_internal' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
           </Row>
         )
       }}
@@ -112,7 +119,15 @@ const UsersList = ({
   )
   const userItems = users.map(
     (
-      { id, email, firstName, lastName, socialMethod, administrator }: User,
+      {
+        id,
+        email,
+        firstName,
+        lastName,
+        socialMethod,
+        administrator,
+        netsuiteId = ''
+      }: User,
       index: number
     ) => {
       return (
@@ -125,7 +140,8 @@ const UsersList = ({
             lastName,
             socialMethod,
             administrator,
-            onSetAdministrator
+            onSetAdministrator,
+            netsuiteId
           }}
         />
       )

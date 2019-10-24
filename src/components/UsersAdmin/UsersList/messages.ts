@@ -32,5 +32,9 @@ export default defineMessages({
   emptyMessage: {
     id: 'components.UsersList.emptyMessage',
     defaultMessage: 'No users yet'
+  },
+  netsuiteId: {
+    id: 'components.UsersList.netsuiteId',
+    defaultMessage: 'Netsuite ID'
   }
 })
