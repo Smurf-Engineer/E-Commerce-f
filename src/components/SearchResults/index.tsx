@@ -13,7 +13,8 @@ import {
   Text,
   TitleContainer,
   CloseImg,
-  Results
+  Results,
+  ResultDiv
 } from './styledComponents'
 import messages from './messages'
 import ProductThumbnail from '../ProductThumbnail'
@@ -66,7 +67,6 @@ export class SearchResults extends React.Component<Props, {}> {
           id,
           yotpoId,
           description,
-          collections,
           type,
           isTopProduct,
           customizable,
@@ -77,7 +77,7 @@ export class SearchResults extends React.Component<Props, {}> {
         // TODO: filter by gender
         const productImages = !!images ? images[0] : {}
         return (
-          <div {...{ key }}>
+          <ResultDiv {...{ key }}>
             <ProductThumbnail
               {...{
                 id,
@@ -85,7 +85,6 @@ export class SearchResults extends React.Component<Props, {}> {
                 description,
                 type,
                 isTopProduct,
-                collections,
                 currentCurrency,
                 customizable,
                 colors,
@@ -108,7 +107,7 @@ export class SearchResults extends React.Component<Props, {}> {
                 )
               }
             />
-          </div>
+          </ResultDiv>
         )
       })
     }

@@ -102,7 +102,10 @@ import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
+import DesignCheckModal from '../../components/DesignCheckModal'
 import moment from 'moment'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -188,6 +191,9 @@ interface Props extends RouteComponentProps<any> {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  deliveryDays: number
+  tutorialPlaylist: string
+  designCheckModalOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -294,6 +300,7 @@ interface Props extends RouteComponentProps<any> {
   setSendingColorChartAction: (sending: boolean) => void
   onOpenColorChartAction: (open: boolean) => void
   onOpenColorChartFormAction: (open: boolean) => void
+  openDesignCheckModalAction: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -312,6 +319,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       responsive,
       intl: { formatMessage }
     } = this.props
+    LoadScripts(threeDScripts)
     if (
       responsive.tablet &&
       window.matchMedia('(orientation: portrait)').matches
@@ -634,6 +642,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       colorChartSending,
       colorChartModalOpen,
       colorChartModalFormOpen,
+      openDesignCheckModalAction,
+      designCheckModalOpen,
       dataDesignLabInfo
     } = this.props
 
@@ -995,6 +1005,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onCloseColorChartForm={this.handleOnCloseColorChartForm}
                 onOpenFormChart={this.handleOnOpenFormChart}
                 onOpenColorChart={this.handleOnOpenColorChart}
+                openDesignCheckModal={openDesignCheckModalAction}
               />
             )}
             {!isMobile ? (
@@ -1111,6 +1122,11 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
           ) : null}
         </Container>
+        <DesignCheckModal
+          requestClose={openDesignCheckModalAction}
+          visible={designCheckModalOpen}
+          {...{ formatMessage }}
+        />
         <Modal
           visible={openOutWithoutSaveModal}
           title={

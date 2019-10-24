@@ -28,11 +28,6 @@ export interface DesignSaved {
   zipperColor?: string
 }
 
-export interface DesignLabInfo {
-  deliveryDays?: string
-  tutorialPlaylist?: string
-}
-
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
@@ -155,7 +150,6 @@ export interface Product {
   isCustom?: boolean
   colors?: ProductColors[]
   mpn?: string
-  modelSize?: string
 }
 
 export type DesignType = {
@@ -181,6 +175,7 @@ export type DesignType = {
   canvas: string
   proDesign?: boolean
   highResolution?: boolean
+  outputPng?: string
 }
 
 export type SaveDesignType = {
@@ -1166,9 +1161,10 @@ export interface Inspiration {
 
 export interface OrderSearchResult {
   code: string
+  name?: string
   image: string
   status: string
-  svgUrl: string
+  svgUrl?: string
   assets: FilesDownload
   bibColor?: AccesoryColor
   bindingColor?: AccesoryColor
@@ -1178,6 +1174,7 @@ export interface OrderSearchResult {
   shortId: string
   pdfUrl?: string
   product: Product
+  pngUrl?: string
 }
 
 export interface FilesDownload {
@@ -1299,6 +1296,7 @@ export interface ProductInternal {
   binding?: string
   bibBrace?: string
   collection?: string
+  model?: string
 }
 
 export interface PricesByCurrency {
@@ -1318,6 +1316,7 @@ export interface ProductInternalInput {
   binding?: string
   bib_brace?: string
   collection?: string
+  model?: string
 }
 export interface HeaderImagePlaceHolder {
   id?: number
@@ -1391,4 +1390,23 @@ export type ContactInformation = {
   name: string
   email: string
   phone: string
+}
+
+export interface ProductSearchResult {
+  name: string
+  code: string
+}
+
+export interface ColorAccessories {
+  stitching: string
+  stitchingName: string
+  zipperColor: AccesoryColor
+  bibColor: AccesoryColor
+  bindingColor: AccesoryColor
+}
+
+export interface UserSearchResult {
+  id: string
+  name: string
+  email: string
 }

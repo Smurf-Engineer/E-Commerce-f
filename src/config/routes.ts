@@ -32,8 +32,14 @@ import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 import Admin from '../screens/Admin'
+import ProDesign from '../screens/ProDesign'
 
 const routes = [
+  {
+    path: '/admin/add-pro-design',
+    name: 'proDesign',
+    component: ProDesign
+  },
   {
     path: '/admin',
     name: 'admin',

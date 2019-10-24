@@ -142,6 +142,8 @@ export const ButtonContainer = styled.div`
   display: flex !important;
   align-items: center;
   margin: 8px;
+  max-width: 119px;
+  width: 100%;
 `
 
 export const ActionButton = styled.div`
@@ -155,5 +157,5 @@ export const ActionButton = styled.div`
   align-items: center;
   border-radius: 2px;
   padding: 6px 16px;
-  width: 100px;
+  width: 100%;
 `

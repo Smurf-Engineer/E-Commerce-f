@@ -59,7 +59,8 @@ import {
   MobileButtonWrapper,
   StyledButtonWrapper,
   MenIcon,
-  WomenIcon
+  WomenIcon,
+  layoutStyle
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
@@ -85,6 +86,8 @@ import {
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
 import Helmet from 'react-helmet'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -150,6 +153,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       // setSelectedFitAction, // TODO: refactor if needed
       setSelectedColorAction
     } = this.props
+    LoadScripts(threeDScripts)
     zenscroll.toY(0, 0)
     // const fitStyles = get(product, 'fitStyles', []) as SelectedType[] // TODO: refactor if needed
     const colors = get(product, 'colors', [] as ProductColors[])
@@ -218,9 +222,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       retailMen,
       retailWomen,
       yotpoAverageScore: reviewsScore,
-      relatedProducts: products,
       mpn: mpnCode,
       obj,
+      id: productId,
       mtl,
       bannerMaterials,
       details: detailsOptions,
@@ -233,7 +237,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       title = MAIN_TITLE
     } = product
     const isRetail = retailMen || retailWomen || !customizable
-    const moreTag = relatedItemTag.replace(/_/g, ' ')
+    const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
 
@@ -494,7 +498,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
 
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
         <Container>
           {product && (
@@ -628,7 +632,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             {...{
               yotpoId,
               mediaFiles,
-              products,
+              productId,
+              relatedItemTag,
               moreTag,
               name,
               history,

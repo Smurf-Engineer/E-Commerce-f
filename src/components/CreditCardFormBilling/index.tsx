@@ -288,10 +288,17 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         )*/
       : {}
 
-    const paymentMethod = await stripe.createPaymentMethod('card', CardElement)
+    const paymentMethod = await stripe.createPaymentMethod(
+      'card',
+      stripeResponse,
+      {
+        billing_details: { name: 'Jenny Rosen' }
+      }
+    )
 
+    console.log(paymentMethod)
     if (paymentMethod && paymentMethod.error) {
-      setStripeErrorAction(stripeResponse.error.message)
+      setStripeErrorAction(paymentMethod.error.message)
     } else if (!emptyForm) {
       if (!selectedCardId) {
         const {

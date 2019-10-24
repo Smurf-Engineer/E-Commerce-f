@@ -17,7 +17,12 @@ import cloneDeep from 'lodash/cloneDeep'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
-import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
+import {
+  AddAddressMutation,
+  PlaceOrderMutation,
+  CurrencyQuery,
+  CreatePaymentIntentMutation
+} from './data'
 import { CheckoutTabs, PaymentOptions } from './constants'
 
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
@@ -178,6 +183,7 @@ interface Props extends RouteComponentProps<any> {
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
+  createPaymentIntent: () => Promise<any>
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -185,6 +191,11 @@ const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
   state = {
     stripe: null
+  }
+  async componentDidMount() {
+    const { createPaymentIntent } = this.props
+    const response = await createPaymentIntent()
+    console.log(response)
   }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -834,10 +845,12 @@ class Checkout extends React.Component<Props, {}> {
         weight: weightSum,
         couponCode
       }
+      console.log('aqui')
 
       const response = await placeOrder({
         variables: { orderObj }
       })
+      console.log(response)
       const orderId = get(response, 'data.charge.short_id', '')
       // const clientSecret = get(response, 'data.charge.client_secret', '')
       // const { stripe } = this.state
@@ -877,6 +890,7 @@ const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
   PlaceOrderMutation,
+  CreatePaymentIntentMutation,
   withApollo,
   connect(
     mapStateToProps,

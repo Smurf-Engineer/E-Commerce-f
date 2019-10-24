@@ -57,6 +57,7 @@ interface Props {
   currentPage: number
   limit?: number
   designs?: DesignType[]
+  openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
   onPressDelete?: (id: string, name: string) => void
@@ -94,7 +95,18 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     if (designs) {
       thumbnailsList = designs.map(
         (
-          { name, product, image, createdAt, shortId, shared, code, proDesign },
+          {
+            name,
+            product,
+            image,
+            createdAt,
+            shortId,
+            shared,
+            code,
+            proDesign,
+            outputSvg,
+            outputPng
+          },
           index
         ) => {
           const addToCartButton = (
@@ -150,10 +162,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       </ActionButton>
                     </ButtonContainer>
                     <ButtonContainer>
-                      <ActionButton
-                        onClick={this.setShare(shortId as string, true)}
-                      >
-                        {formatMessage(messages.share)}
+                      <ActionButton onClick={this.openAddStore(shortId)}>
+                        {formatMessage(messages.addToStore)}
                       </ActionButton>
                     </ButtonContainer>
                   </ButtonsContainer>
@@ -164,6 +174,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 onPressQuickView={this.handlePressQuickView}
                 image={image}
                 proDesign={proDesign}
+                proDesignAssigned={outputPng && !outputSvg}
               />
             </ThumbnailListItem>
           )
@@ -296,6 +307,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   gotoDesignCenter = (id: string) => {
     const { history } = this.props
     history.push(`/design-center?id=${id}`)
+  }
+
+  openAddStore = (id: string) => () => {
+    const { openAddToTeamStoreModalAction } = this.props
+    openAddToTeamStoreModalAction(true, id)
   }
 
   gotToEditDesign = (designId: string) => () => {

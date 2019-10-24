@@ -51,12 +51,14 @@ import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
 import productInternalsAdmin from '../components/ProductInternalsAdmin/reducer'
 import teamStoresAdmin from '../components/TeamStoresAdmin/reducer'
+import proDesign from '../screens/ProDesign/reducer'
 
 import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
   SET_USER_AGENT_ACTION,
-  SET_COUNTRY_CODE
+  SET_COUNTRY_CODE,
+  SET_PRO_DESIGN
 } from './constants'
 
 export interface ReducersObject {
@@ -112,6 +114,7 @@ export interface ReducersObject {
   adminLayout: any
   productInternalsAdmin: any
   teamStoresAdmin: any
+  proDesign: any
 }
 
 const appInitialState = fromJS({
@@ -130,6 +133,8 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
       })
     case SET_COUNTRY_CODE:
       return state.set('initialCountryCode', action.country)
+    case SET_PRO_DESIGN:
+      return state.set('proDesign', action.proDesign)
     default:
       return state
   }
@@ -225,7 +230,8 @@ const rootReducer = combineReducers({
   adminLayout,
   usersAdmin,
   productInternalsAdmin,
-  teamStoresAdmin
+  teamStoresAdmin,
+  proDesign
 })
 
 export default rootReducer

@@ -91,7 +91,6 @@
     "react-google-font-loader": "^1.0.5",
     "react-google-login": "^3.0.4",
     "react-helmet": "^5.2.1",
-    "react-intercom": "^1.0.15",
     "react-intl": "^2.4.0",
     "react-paypal-express-checkout-authorize": "^1.0.4",
     "react-rangeslider": "^2.2.0",

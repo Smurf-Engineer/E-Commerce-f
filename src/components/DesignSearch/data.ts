@@ -7,6 +7,7 @@ import { graphql } from 'react-apollo'
 export const orderSearchQuery = gql`
   query getOrderFiles($code: String!) {
     order: getDesignByCode(code: $code) {
+      name
       product {
         name
         zipper {
@@ -29,6 +30,7 @@ export const orderSearchQuery = gql`
       shortId: short_id
       svgUrl: output_svg
       pdfUrl: output_pdf
+      pngUrl: output_png
       stitchingValue: flatlock
       stitchingName: flatlock_code
       zipperColor: zipper_color

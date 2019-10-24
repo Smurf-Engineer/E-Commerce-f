@@ -9,9 +9,11 @@ import { RouteComponentProps } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
 import Drawer from 'rc-drawer'
 import Menu from 'antd/lib/menu'
+import Message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
 import queryString from 'query-string'
 import * as accountActions from './actions'
+import { addTeamStoreItemMutation } from './data'
 import {
   logoutAction,
   openQuickViewAction
@@ -51,6 +53,10 @@ import {
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
+import { TeamStoreItemtype, MessagePayload } from '../../types/common'
+import get from 'lodash/get'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 const { SubMenu } = Menu
 
@@ -58,7 +64,6 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   openKeys: string[]
   screen: string
-  savedDesignId: string
   defaultScreen: string
   isMobile: boolean
   fakeWidth: number
@@ -66,7 +71,15 @@ interface Props extends RouteComponentProps<any> {
   client: any
   openShareModal: boolean
   currentCurrency: string
+  openAddToStoreModal: boolean
+  teamStoreId: string
+  savedDesignId: string
+  itemToAdd: TeamStoreItemtype
+  // Mutation action
+  addItemToStore: (variables: {}) => Promise<MessagePayload>
   // Redux actions
+  setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
+  openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   logoutAction: () => void
   setOpenKeysAction: (keys: string[]) => void
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
@@ -102,11 +115,12 @@ export class Account extends React.Component<Props, {}> {
     setDefaultScreenAction(OVERVIEW)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { setIsMobileAction } = this.props
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
+    await LoadScripts(threeDScripts)
     setIsMobileAction(isMobile)
   }
 
@@ -118,6 +132,42 @@ export class Account extends React.Component<Props, {}> {
       setOpenKeysAction(openKeys)
     } else {
       setOpenKeysAction(keys)
+    }
+  }
+
+  addToStore = async () => {
+    const {
+      addItemToStore,
+      itemToAdd,
+      teamStoreId,
+      openAddToTeamStoreModalAction,
+      intl: { formatMessage }
+    } = this.props
+    const {
+      design_id,
+      team_store_id,
+      visible,
+      team_store_name: storeName
+    } = itemToAdd
+    try {
+      const { data } = await addItemToStore({
+        variables: {
+          teamStoreItem: {
+            design_id,
+            team_store_id,
+            visible
+          },
+          teamStoreId
+        }
+      })
+      const responseMessage = get(data, 'addTeamStoreItem.message')
+      if (responseMessage) {
+        Message.success(formatMessage(messages.addedToStore, { storeName }))
+      }
+      openAddToTeamStoreModalAction(false, '')
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
     }
   }
 
@@ -161,7 +211,12 @@ export class Account extends React.Component<Props, {}> {
       history,
       openQuickViewAction: openQuickView,
       currentCurrency,
-      setCurrentShare
+      setCurrentShare,
+      openAddToStoreModal,
+      teamStoreId,
+      savedDesignId,
+      setItemToAddAction,
+      openAddToTeamStoreModalAction
     } = this.props
 
     switch (screen) {
@@ -186,7 +241,18 @@ export class Account extends React.Component<Props, {}> {
       case SCREEN_LOCKER:
         return (
           <MyLocker
-            {...{ setCurrentShare, openQuickView, formatMessage, history }}
+            {...{
+              setCurrentShare,
+              openQuickView,
+              formatMessage,
+              history,
+              openAddToStoreModal,
+              teamStoreId,
+              savedDesignId,
+              setItemToAddAction,
+              openAddToTeamStoreModalAction
+            }}
+            addItemToStore={this.addToStore}
           />
         )
       case MY_FILES:
@@ -363,6 +429,7 @@ const mapStateToProps = (state: any) => {
 
 const AccountEnhance = compose(
   withApollo,
+  addTeamStoreItemMutation,
   injectIntl,
   connect(
     mapStateToProps,

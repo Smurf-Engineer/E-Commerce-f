@@ -8,7 +8,7 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
-
+import zenscroll from 'zenscroll'
 import * as myLockerActions from './actions'
 import messages from './messages'
 import {
@@ -20,6 +20,7 @@ import {
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
 import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
+import AddToTeamStore from '../AddToTeamStore'
 import EmptyContainer from '../EmptyContainer'
 import {
   Container,
@@ -53,6 +54,12 @@ interface Props {
   deleteModal: DeleteDesignModal
   renameModal: RenameDesignModal
   user: object
+  openAddToStoreModal: boolean
+  teamStoreId: string
+  savedDesignId: string
+  setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
+  addItemToStore: () => void
+  openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare?: (savedDesignId: string, openShareModal: boolean) => void
   openQuickView: (id: number, yotpoId: string | null) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
@@ -197,9 +204,15 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     setLoadingAction(true)
     try {
       this.fetchDesigns(offset, page)
+      zenscroll.toY(0, 0)
     } catch (e) {
       setErrorAction(true)
     }
+  }
+
+  cancelModal = () => {
+    const { openAddToTeamStoreModalAction } = this.props
+    openAddToTeamStoreModalAction(false, '')
   }
 
   handleOnOpenQuickView = (id: number, yotpoId: string) => {
@@ -250,6 +263,10 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     }
   }
 
+  componentWillUnmount() {
+    this.cancelModal()
+  }
+
   render() {
     const {
       history,
@@ -261,6 +278,12 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       currentPage,
       setCurrentShare,
       fullCount,
+      openAddToStoreModal,
+      teamStoreId,
+      savedDesignId,
+      setItemToAddAction,
+      addItemToStore,
+      openAddToTeamStoreModalAction,
       deleteModal: { modalLoading, openDeleteModal, designName },
       renameModal: {
         modalLoading: renameModalLoading,
@@ -301,7 +324,13 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         {alternativeContent}
         <PaginationRow>
           <ProductList
-            {...{ setCurrentShare, formatMessage, history, withoutPadding }}
+            {...{
+              setCurrentShare,
+              formatMessage,
+              history,
+              withoutPadding,
+              openAddToTeamStoreModalAction
+            }}
             onPressPrivate={this.handleOnPressPrivate}
             onPressDelete={this.handleOnPressDelete}
             onPressRename={this.handleOnPressRename}
@@ -366,6 +395,23 @@ export class MyLocker extends React.PureComponent<Props, {}> {
               maxLength={15}
             />
           </InputWrapper>
+        </Modal>
+        <Modal
+          visible={openAddToStoreModal}
+          footer={null}
+          maskClosable={true}
+          onCancel={this.cancelModal}
+        >
+          <AddToTeamStore
+            {...{
+              history,
+              savedDesignId,
+              openAddToTeamStoreModalAction,
+              setItemToAddAction,
+              teamStoreId,
+              addItemToStore
+            }}
+          />
         </Modal>
       </Container>
     )

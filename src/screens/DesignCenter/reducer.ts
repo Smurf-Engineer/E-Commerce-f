@@ -74,7 +74,8 @@ import {
   OPEN_RESET_PLACEHOLDER_MODAL,
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
-  ON_OPEN_COLOR_CHART_FORM
+  ON_OPEN_COLOR_CHART_FORM,
+  OPEN_DESIGN_CHECK_MODAL
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -161,7 +162,8 @@ export const initialState = fromJS({
   selectedTab: CustomizeTabs.ColorsTab,
   colorChartSending: false,
   colorChartModalOpen: false,
-  colorChartModalFormOpen: false
+  colorChartModalFormOpen: false,
+  designCheckModalOpen: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -975,6 +977,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('colorChartModalOpen', action.open)
     case ON_OPEN_COLOR_CHART_FORM:
       return state.set('colorChartModalFormOpen', action.open)
+    // TODO: Add Test when merge 'test.tsx'
+    case OPEN_DESIGN_CHECK_MODAL:
+      return state.set(
+        'designCheckModalOpen',
+        !state.get('designCheckModalOpen')
+      )
     default:
       return state
   }

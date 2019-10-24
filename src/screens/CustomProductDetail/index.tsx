@@ -13,7 +13,7 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
-import { GetDesignByIdQuery, designsQuery } from './data'
+import { GetDesignByIdQuery } from './data'
 import {
   Container,
   Content,
@@ -47,7 +47,8 @@ import {
   RenderContainer,
   PrivateSubtitle,
   ProApproved,
-  ProApprovedLabel
+  ProApprovedLabel,
+  layoutStyle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -78,10 +79,6 @@ const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
 const { Men, Women, Unisex } = ProductGenders
 
-interface MyDesignsData extends QueryProps {
-  myDesigns: { designs: DesignType[] }
-}
-
 interface Data extends QueryProps {
   design: DesignType
 }
@@ -89,7 +86,6 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
-  designsData: MyDesignsData
   selectedGender: SelectedType
   selectedSize: SelectedType
   selectedFit: SelectedType
@@ -123,7 +119,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       data: { design, error },
-      designsData,
       selectedGender,
       selectedSize,
       selectedFit,
@@ -138,15 +133,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
-    const shortId = get(design, 'shortId', '')
+    const ownedDesign = get(design, 'canEdit', false)
     const product = get(design, 'product', null)
     const productPriceRange = get(product, 'priceRange', null)
+    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
     const teamStoreItem = queryParams.item
-    const designs = get(designsData, 'myDesigns.designs', [] as DesignType[])
-
-    const ownedDesign =
-      !teamStoreItem && designs && designs.find(d => d.shortId === shortId)
-
     if (!product || error) {
       return (
         <Layout {...{ history, intl }}>
@@ -180,10 +171,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       sizeRange,
       fitStyles,
       details,
-      relatedProducts: products,
       materials,
       mediaFiles,
       modelSize,
+      id: productId,
       bannerMaterials,
       relatedItemTag
     } = product
@@ -191,7 +182,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const rating = get(yotpoAverageScore, 'averageScore', 0)
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
-    const moreTag = relatedItemTag.replace(/_/, ' ')
+    const moreTag = relatedItemTag ? relatedItemTag.replace(/_/, ' ') : ''
     let images = null
     let moreImages = []
     if (!!imagesArray) {
@@ -408,7 +399,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     )
 
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} style={layoutStyle}>
         <Container>
           {design && (
             <Content>
@@ -461,9 +452,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                         {formatMessage(messages.editDesign)}
                       </EditDesignButton>
                     ) : (
-                      <ProApproved>
+                      <ProApproved proAssigned={proDesignAssigned}>
                         <ProApprovedLabel>
-                          {formatMessage(messages.approved)}
+                          {formatMessage(
+                            messages[
+                              proDesignAssigned ? 'proAssigned' : 'approved'
+                            ]
+                          )}
                         </ProApprovedLabel>
                       </ProApproved>
                     ))}
@@ -498,7 +493,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             {...{
               yotpoId,
               mediaFiles,
-              products,
+              productId,
+              relatedItemTag,
               moreTag,
               name,
               history,
@@ -596,20 +592,6 @@ const CustomProductDetailEnhance = compose(
     mapStateToProps,
     { ...customProductDetailActions }
   ),
-  graphql<any>(designsQuery, {
-    options: ({ user, location: { search } }: OwnProps) => {
-      const queryParams = queryString.parse(search)
-      return {
-        variables: {
-          limit: 12,
-          offset: 0
-        },
-        skip: !user || !!queryParams.item,
-        fetchPolicy: 'network-only'
-      }
-    },
-    name: 'designsData'
-  }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {

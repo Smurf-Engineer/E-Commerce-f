@@ -8,6 +8,7 @@ export const GetDesignByIdQuery = gql`
     ) {
       id
       name
+      canEdit: can_edit
       shortId: short_id
       teamEnable: team_enable
       teamPrice: team_price {
@@ -39,33 +40,6 @@ export const GetDesignByIdQuery = gql`
           id
           url
           urlMobile: url_mobile
-        }
-        relatedProducts: related {
-          id
-          type: name
-          description: short_description
-          images: pictures {
-            front: front_image
-            back: back_image
-            left: left_image
-            right: right_image
-            genderId: gender_id
-          }
-          colors {
-            image
-            name
-          }
-          isTopProduct
-          customizable: design_center
-          genderId: gender_id
-          collections
-          yotpoId: yotpo_id
-          priceRange {
-            price
-            quantity
-            abbreviation
-            shortName: short_name
-          }
         }
         genders {
           id
@@ -136,16 +110,7 @@ export const GetDesignByIdQuery = gql`
       code
       createdAt: created_at
       proDesign: pro_design
-    }
-  }
-`
-export const designsQuery = gql`
-  query GetDesigns($limit: Int, $offset: Int) {
-    myDesigns: myDesigns(limit: $limit, offset: $offset) {
-      designs {
-        id
-        shortId: short_id
-      }
+      png: output_png
     }
   }
 `
