@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 
 export const createUser = graphql(
   gql`
-    mutation SignUp($user: UserInput!, $testNetsuite: Boolean) {
-      signUp(user: $user, testNetsuite: $testNetsuite) {
+    mutation SignUp($user: UserInput!) {
+      testSignup(user: $user) {
         user {
           id
           name: first_name

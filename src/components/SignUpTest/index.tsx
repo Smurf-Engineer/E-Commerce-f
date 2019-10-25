@@ -173,7 +173,7 @@ class SignUp extends React.Component<Props, StateProps> {
 
     try {
       const response = await signUpUser({
-        variables: { user, testNetsuite: true }
+        variables: { user }
       })
       const data = get(response, 'data.signUp', false)
       if (data) {
