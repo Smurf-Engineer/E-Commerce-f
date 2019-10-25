@@ -144,7 +144,9 @@ export const Bulletin = styled.div`
   width: 100%;
   background: ${GRAY_HEADER};
   position: relative;
-  height: 70px;
+  min-height: 57px;
+
+  padding: 14px 12px;
   justify-content: center;
   align-items: center;
   font-size: 18px;
@@ -153,11 +155,17 @@ export const Bulletin = styled.div`
   margin-top: 12px;
   font-family: 'Avenir-Medium';
   @media (max-width: 480px) {
-    width: auto;
     height: auto;
+    width: auto;
     margin: 12px;
-    padding: 8px;
+    min-width: 80%;
+    padding: 16px;
   }
+`
+
+export const BulletinLabel = styled.span`
+  white-space: pre-line;
+  text-align: center;
 `
 
 export const Pin = styled.img`

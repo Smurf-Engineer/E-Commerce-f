@@ -56,7 +56,8 @@ import {
   Bulletin,
   Corner,
   PinDiv,
-  Pin
+  Pin,
+  BulletinLabel
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
@@ -384,7 +385,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                       <Pin src={PinSVG} left={true} />
                       <Pin src={PinSVG} />
                     </PinDiv>
-                    {bulletin}
+                    <BulletinLabel>{bulletin}</BulletinLabel>
                     <Corner />
                   </Bulletin>
                 )}

@@ -8,11 +8,11 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
-import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import Upload from 'antd/lib/upload'
 import Spin from 'antd/lib/spin'
 import * as thunkActions from './thunkActions'
-import Upload from 'antd/lib/upload'
+import PinSVG from '../../assets/pin.svg'
 import { Moment } from 'moment'
 import message from 'antd/lib/message'
 import { RouteComponentProps } from 'react-router-dom'
@@ -60,7 +60,12 @@ import {
   TextBlock,
   SaveButton,
   RowColumn,
-  BulletinLabel
+  BulletinLabel,
+  Bulletin,
+  PinDiv,
+  Pin,
+  Corner,
+  BulletinInput
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
@@ -648,12 +653,20 @@ export class CreateStore extends React.Component<Props, StateProps> {
                   {`(${formatMessage(messages.optional)})`}
                 </OptionalLabel>
               </BulletinLabel>
-              <Input
-                value={bulletin}
-                placeholder={formatMessage(messages.bulletinPlaceholder)}
-                size="large"
-                onChange={this.handleOnBulletinChange}
-              />
+              <Bulletin>
+                <PinDiv>
+                  <Pin src={PinSVG} left={true} />
+                  <Pin src={PinSVG} />
+                </PinDiv>
+                <BulletinInput
+                  value={bulletin}
+                  autosize={true}
+                  placeholder={formatMessage(messages.bulletinPlaceholder)}
+                  size="large"
+                  onChange={this.handleOnBulletinChange}
+                />
+                <Corner />
+              </Bulletin>
             </RowColumn>
             <RowSwitch>
               <SwitchWithLabel
