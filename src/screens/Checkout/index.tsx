@@ -15,6 +15,7 @@ import unset from 'lodash/unset'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import * as checkoutActions from './actions'
+import * as thunkActions from './thunkActions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import {
@@ -184,6 +185,7 @@ interface Props extends RouteComponentProps<any> {
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
   createPaymentIntent: () => Promise<any>
+  savePaymentId: (paymentId: string) => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -193,8 +195,9 @@ class Checkout extends React.Component<Props, {}> {
     stripe: null
   }
   async componentDidMount() {
-    const { createPaymentIntent } = this.props
+    const { createPaymentIntent, savePaymentId } = this.props
     const response = await createPaymentIntent()
+    savePaymentId('hola')
     console.log(response)
   }
   componentWillUnmount() {
@@ -896,6 +899,7 @@ const CheckoutEnhance = compose(
     mapStateToProps,
     {
       ...checkoutActions,
+      ...thunkActions,
       getTotalItemsIncart
     }
   )

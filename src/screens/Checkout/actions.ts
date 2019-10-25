@@ -32,7 +32,8 @@ import {
   SET_SELECTED_CARD_TO_PAY,
   SET_COUPON_CODE,
   DELETE_COUPON_CODE,
-  OPEN_CURRENCY_WARNING
+  OPEN_CURRENCY_WARNING,
+  SET_PAYMENT_ID
 } from './constants'
 import {
   AnyAction,
@@ -151,9 +152,7 @@ export const setStripeCardDataAction = (
   stripeToken
 })
 
-export const setStripeIbanDataAction = (
-  iban: IbanData,
-): AnyAction => ({
+export const setStripeIbanDataAction = (iban: IbanData): AnyAction => ({
   type: SET_STRIPE_IBAN_DATA,
   iban
 })
@@ -223,4 +222,9 @@ export const deleteCouponCodeAction = (): AnyAction => ({
 export const openCurrencyWarningAction = (open: boolean): AnyAction => ({
   type: OPEN_CURRENCY_WARNING,
   open
+})
+
+export const satPaymentIdAction = (paymentId: string): AnyAction => ({
+  type: SET_PAYMENT_ID,
+  paymentId
 })
