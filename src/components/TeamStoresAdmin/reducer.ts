@@ -49,11 +49,11 @@ export const initialState = fromJS({
   openLocker: false,
   loading: true,
   saving: false,
-  storeId: '',
+  storeId: -1,
   storeShortId: '',
   teamSizeId: 1,
-  title: '',
   userId: '',
+  private: false,
   userToSearch: '',
   imagePreviewUrl: '',
   cutoffDate: '',
@@ -77,7 +77,9 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
           name,
           banner,
           userId,
-          ownerName,
+          cutoffDate,
+          deliveryDate,
+          privateStore,
           featured,
           onDemand,
           items,
@@ -90,7 +92,10 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         name,
         userId,
         featured,
-        title: ownerName,
+        cutoffDate,
+        deliveryDate,
+        private: privateStore,
+        userToSearch: userId,
         teamSizeId: sizeId,
         teamSizeRange: size,
         loading: false,
@@ -111,12 +116,8 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         limit: 12,
         selectedItems: {}
       })
-    case SET_SELECTED_USER: {
-      const values = action.user.split(',')
-      const userId = values.pop()
-      const title = values.shift()
-      return state.merge({ userId, userToSearch: '', title })
-    }
+    case SET_SELECTED_USER:
+      return state.set('userId', action.user)
     case SET_FEATURED:
       return state.set('featured', action.featured)
     case SET_SAVING_ACTION:
@@ -180,12 +181,14 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ searchText: action.searchText, currentPage: 1 })
     case SET_LOADING:
       return state.set('loading', action.loading)
-    case SET_TEAM_STORE_DATA:
-      return state.withMutations((tempState: any) => {
-        const { teamStore, currencies } = action
-        tempState.merge({ teamStore, currencies })
-        return tempState
+    case SET_TEAM_STORE_DATA: {
+      const { teamStore, currencies } = action
+      return state.merge({
+        teamStore,
+        currencies,
+        loading: false
       })
+    }
     case SET_PRICE_ITEM:
       return state.updateIn(
         ['teamStore', 'items', action.itemIndex],

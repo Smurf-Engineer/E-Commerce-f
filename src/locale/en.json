@@ -1151,6 +1151,8 @@
   "components.CreateStoreAdmin.fixedDate": "Fixed Date",
   "components.CreateStoreAdmin.noUserSelected": "NO USER SELECTED",
   "components.CreateStoreAdmin.gotIt": "Got it",
+  "components.CreateStoreAdmin.save": "Save Team Store",
+  "components.CreateStoreAdmin.backToDetail": "Back to Team details",
   "components.CreateStoreAdmin.userNotSelected": "To add items, you need to select a user first.",
   "components.LockerModal.title": "Locker Modal",
   "components.LockerModal.myLocker": "My Locker",

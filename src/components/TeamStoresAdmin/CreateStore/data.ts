@@ -48,7 +48,7 @@ export const GetTeamStoreQuery = gql`
       ownerName: owner_name
       userId: user_id
       startDate: cutOffDateString
-      endDate: deliveryDateString
+      deliveryDate: deliveryDateString
       privateStore: private
       created_at
       items {

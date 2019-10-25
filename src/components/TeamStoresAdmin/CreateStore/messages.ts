@@ -88,5 +88,13 @@ export default defineMessages({
   userNotSelected: {
     id: 'components.CreateStoreAdmin.userNotSelected',
     defaultMessage: 'To add items, you need to select a user first.'
+  },
+  backToDetail: {
+    id: 'components.CreateStoreAdmin.backToDetail',
+    defaultMessage: 'Back to Team details'
+  },
+  save: {
+    id: 'components.CreateStoreAdmin.save',
+    defaultMessage: 'Save Team Store'
   }
 })

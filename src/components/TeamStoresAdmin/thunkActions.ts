@@ -19,7 +19,7 @@ export const getTeamStore = (query: any, teamStoreId: string) => {
       const response = await query({
         query: getTeamStoreQuery,
         variables: { teamStoreId },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'no-cache'
       })
 
       response.data.teamStore.items.forEach((item: TeamStoreItemtype) => {
@@ -34,10 +34,9 @@ export const getTeamStore = (query: any, teamStoreId: string) => {
         return item.pricesByCurrency
       })
       dispatch(setTeamStoreDataAction(get(response, 'data', {})))
-      dispatch(setLoadingAction(false))
     } catch (e) {
-      dispatch(setLoadingAction(false))
       message.error(e)
+      dispatch(setLoadingAction(false))
     }
   }
 }

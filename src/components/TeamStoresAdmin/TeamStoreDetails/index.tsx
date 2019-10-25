@@ -82,7 +82,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       loading,
       handleOnSave
     } = this.props
-    if (loading) {
+    if (loading || !teamStore) {
       return (
         <LoadingContainer>
           <Spin />
