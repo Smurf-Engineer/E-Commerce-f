@@ -95,7 +95,6 @@ export class SearchResults extends React.Component<Props, {}> {
               images={productImages}
               product={product}
               onPressQuickView={quickViewAction}
-              reversePriceRange={true}
               customizableLabel={
                 <FormattedMessage {...messages.customizable} />
               }
