@@ -530,7 +530,6 @@ class Render3D extends PureComponent {
     fromImage = false
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
-
     const { stitchingValue, isPhone } = this.props
     if (design.canvas && isPhone) {
       await this.getFontsFromCanvas(design.canvas)
