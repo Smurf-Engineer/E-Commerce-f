@@ -112,7 +112,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             )
           )
         )
-        map.set('mainHeader', fromJS(mainHeaderImages))
+        map.merge({ mainHeader: mainHeaderImages })
         map.set(
           'mainHeaderLoading',
           List.of(

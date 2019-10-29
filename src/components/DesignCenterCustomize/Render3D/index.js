@@ -1542,6 +1542,7 @@ class Render3D extends PureComponent {
       img => {
         const imageEl = new fabric.Image(img, {
           id,
+          crossOrigin: 'Anonymous',
           hasRotatingPoint: false,
           ...position
         })
