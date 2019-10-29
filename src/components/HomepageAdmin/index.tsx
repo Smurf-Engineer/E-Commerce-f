@@ -197,7 +197,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
         []
       )
 
-      console.log(homepageImages)
       const {
         data: { setMainHeader: response }
       } = await setMainHeader({
