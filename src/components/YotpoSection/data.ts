@@ -15,6 +15,10 @@ export const getRelatedProducts = gql`
       customizable: design_center
       genderId: gender_id
       yotpoId: yotpo_id
+      genders {
+        id
+        name: gender
+      }
       priceRange {
         price
         quantity

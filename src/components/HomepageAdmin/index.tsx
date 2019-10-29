@@ -195,19 +195,22 @@ class HomepageAdmin extends React.Component<Props, {}> {
       } = this.props
       setLoadersAction(Sections.MAIN_HEADER, true)
 
-      const homepageImages = mainHeader
-        .filter(
-          (item: HeaderImagePlaceHolder) =>
-            item.id || item.desktopImage || item.mobileImage
-        )
-        .map((item: HeaderImagePlaceHolder) => ({
-          id: item.id,
-          image: item.desktopImage,
-          image_mobile: item.mobileImage,
-          link: item.url,
-          sport_id: sportId,
-          type: item.assetType
-        }))
+      const homepageImages = mainHeader.reduce(
+        (filtered: HeaderImagePlaceHolder[], item: HeaderImagePlaceHolder) => {
+          if (item.id || item.desktopImage || item.mobileImage) {
+            filtered.push({
+              id: item.id,
+              image: item.desktopImage,
+              image_mobile: item.mobileImage,
+              link: item.url,
+              sport_id: sportId,
+              type: item.assetType
+            })
+          }
+          return filtered
+        },
+        []
+      )
 
       const {
         data: { setMainHeader: response }

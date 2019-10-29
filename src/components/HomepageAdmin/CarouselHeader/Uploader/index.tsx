@@ -20,8 +20,13 @@ import {
 import messages from './messages'
 import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
+<<<<<<< HEAD:src/components/HomepageAdmin/CarouselHeader/Uploader/index.tsx
 import { getFileExtension } from '../../../../utils/utilsFiles'
 import { ImageTypes, VIDEO_TYPE } from '../../constants'
+=======
+import { getFileExtension, bytesToMb } from '../../../../utils/utilsFiles'
+import { ImageTypes, Sections, VIDEO_TYPE } from '../../constants'
+>>>>>>> f4e55a46af3d419566ed0c83bf9a7a5129003ab2:src/components/HomepageAdmin/MainHeader/Uploader/index.tsx
 import { HeaderImagePlaceHolder } from '../../../../types/common'
 
 const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
@@ -49,25 +54,20 @@ class Uploader extends React.Component<Props, {}> {
     const { assetType } = item
     if (file) {
       const { size, name } = file
-      // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
-      if (size / 1000000 > 20) {
+      const sizeLimit = VIDEO_TYPE ? 50 : 20
+      if (bytesToMb(size) > sizeLimit) {
         message.error(formatMessage(messages.imageSizeError))
         return false
       }
       const fileExtension = getFileExtension(name)
-      if (
+      const validateExtension =
         indexOf(
           assetType === VIDEO_TYPE ? videoFileExtensions : imageFileExtensions,
           (fileExtension as String).toLowerCase()
         ) === -1
-      ) {
-        message.error(
-          formatMessage(
-            assetType === VIDEO_TYPE
-              ? messages.videoExtensionError
-              : messages.imageExtensionError
-          )
-        )
+
+      if (validateExtension) {
+        message.error(formatMessage(messages.imageExtensionError))
         return false
       }
       onUploadFile(file, section, imageType, index)

@@ -24,6 +24,8 @@ export const isPhoneNumber = (value: string) => {
 export const containsNumberAndLetters = (value: string) =>
   /^[0-9a-zA-Z]+$/.test(value)
 
+export const bytesToMb = (size: number) => size / 1000000
+
 export const containSpaces = (value: string) => /\s/.test(value)
 
 const createImage = (url: string) =>
