@@ -92,6 +92,7 @@ interface Props {
   setLoadingAction: (loading: boolean) => void
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
+  getEditStore: (query: any, id: string) => void
   updateStore: (variables: {}) => Promise<any>
   createStore: (variables: {}) => Promise<any>
   setSavingAction: (saving: boolean) => void
@@ -278,6 +279,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 openCropper
               }}
               setImage={uploadBanner}
+              getEditStore={this.handleGetEditStore}
               buildTeamStore={this.buildTeamStore}
             />
           )}
@@ -329,6 +331,13 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   handleGoToTeamStore = (id: string) => {
     const { history } = this.props
     history.push(`/admin/team-stores/details/${id}`)
+  }
+  handleGetEditStore = (id: string) => {
+    const {
+      getEditStore,
+      client: { query }
+    } = this.props
+    getEditStore(query, id)
   }
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props

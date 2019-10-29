@@ -6,11 +6,13 @@ import {
   setTeamStoreDataAction,
   setLoadingAction,
   setImage,
-  setSavingAction
+  setSavingAction,
+  setTeamData
 } from './actions'
 import { getTeamStoreQuery } from './TeamStoreDetails/data'
 import { TeamStoreItemtype } from '../../types/common'
 import config from '../../config'
+import { getTeamStoreEdit } from './CreateStore/data'
 
 export const getTeamStore = (query: any, teamStoreId: string) => {
   return async (dispatch: any) => {
@@ -65,6 +67,24 @@ export const uploadBanner = (file: Blob, opened: boolean) => {
     } catch (e) {
       dispatch(setSavingAction(false))
       message.error(e)
+    }
+  }
+}
+
+export const getEditStore = (query: any, teamStoreId: string) => {
+  return async (dispatch: any) => {
+    dispatch(setLoadingAction(true))
+    try {
+      const response = await query({
+        query: getTeamStoreEdit,
+        variables: { teamStoreId },
+        fetchPolicy: 'no-cache'
+      })
+      const teamStore = get(response, 'data.teamStore', {})
+      dispatch(setTeamData(teamStore))
+    } catch (e) {
+      message.error(e)
+      dispatch(setLoadingAction(false))
     }
   }
 }

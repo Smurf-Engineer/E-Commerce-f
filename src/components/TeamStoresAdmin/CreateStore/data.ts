@@ -37,7 +37,7 @@ export const GetDesigns = gql`
   }
 `
 
-export const GetTeamStoreQuery = gql`
+export const getTeamStoreEdit = gql`
   query GetTeamStore($teamStoreId: String!) {
     teamStore: getTeamStore(teamStoreId: $teamStoreId) {
       id

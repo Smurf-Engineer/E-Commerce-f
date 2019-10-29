@@ -52,7 +52,6 @@ import {
   QueryProps,
   TeamstoreType
 } from '../../../types/common'
-import { GetTeamStoreQuery } from './data'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
 interface Data extends QueryProps {
@@ -82,6 +81,7 @@ interface Props {
   loading: boolean
   userToSearch: string
   storeShortId: string
+  getEditStore: (id: string) => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
   setUserToSearch: (searchText: string) => void
@@ -112,26 +112,10 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   async componentDidMount() {
-    const {
-      setTeamData,
-      setLoadingAction,
-      match,
-      client: { query }
-    } = this.props
+    const { match, getEditStore, setLoadingAction } = this.props
     const id = get(match, 'params.id', '')
-    setLoadingAction(true)
     if (id) {
-      await query({
-        query: GetTeamStoreQuery,
-        variables: { teamStoreId: id },
-        fetchPolicy: 'network-only'
-      })
-        .then(({ data: { teamStore } }: any) => {
-          setTeamData(teamStore)
-        })
-        .catch((err: any) => {
-          console.error(err)
-        })
+      getEditStore(id)
     } else {
       setLoadingAction(false)
     }
