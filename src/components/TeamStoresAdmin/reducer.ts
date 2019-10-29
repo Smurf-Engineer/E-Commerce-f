@@ -99,7 +99,7 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         teamSizeId: sizeId,
         teamSizeRange: size,
         loading: false,
-        items: items,
+        items,
         onDemand,
         imagePreviewUrl: banner
       })
