@@ -233,7 +233,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
           tiles.push(fromJS(action.tilePlaceholder))
       )
     case UPDATE_PRODUCT_TILES_LIST:
-      return state.set('productTiles', fromJS(action.tilesList))
+      return state.merge({ productTiles: action.tilesList })
     case TOGGLE_PREVIEW_MODAL:
       return state.merge({
         previewOpen: !state.get('previewOpen'),
