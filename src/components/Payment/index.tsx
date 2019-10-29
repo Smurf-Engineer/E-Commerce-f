@@ -42,10 +42,11 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  paymentClientSecret: string
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
-  setStripeCardDataAction: (card: CreditCardData) => void
+  setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   setIbanErrorAction: (isError: boolean) => void
@@ -66,6 +67,7 @@ interface Props {
   saveCountryAction: (countryCode: string | null) => void
   setStripeIbanDataAction: (iban: IbanData) => void
   setStripeAction: (stripe: any) => void
+  createPreOrder: () => void
 }
 
 interface MyWindow extends Window {
@@ -180,7 +182,9 @@ class Payment extends React.PureComponent<Props, {}> {
       setSkipValueAction,
       showBillingForm,
       showBillingAddressFormAction,
-      setStripeIbanDataAction
+      setStripeIbanDataAction,
+      paymentClientSecret,
+      createPreOrder
     } = this.props
     const { stripe, openConfirm, euStripe } = this.state
 
@@ -217,7 +221,9 @@ class Payment extends React.PureComponent<Props, {}> {
             limit,
             setSkipValueAction,
             showBillingForm,
-            showBillingAddressFormAction
+            showBillingAddressFormAction,
+            paymentClientSecret,
+            createPreOrder
           }}
           setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
@@ -302,10 +308,10 @@ class Payment extends React.PureComponent<Props, {}> {
     const customId = 'billing' + upperFirst(id)
     selectDropdownAction(customId, value)
   }
-  setStripeCardData = (cardData: CreditCardData) => {
+  setStripeCardData = (cardData: CreditCardData, stripeToken: string) => {
     const { setStripeAction, setStripeCardDataAction } = this.props
     const { stripe } = this.state
-    setStripeCardDataAction(cardData)
+    setStripeCardDataAction(cardData, stripeToken)
     setStripeAction(stripe)
   }
 }

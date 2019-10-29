@@ -597,7 +597,7 @@ export interface CartItems {
 
 export interface CreditCardData {
   id?: string
-  name: string
+  name?: string
   last4: string
   brand: string
   expMonth: number

@@ -65,9 +65,13 @@ interface Props {
     billing: boolean
   ) => void
   nextStep: () => void
+  createPreOrder: () => void
 }
 
 class CreditCardFormBilling extends React.Component<Props, {}> {
+  state = {
+    cardElement: null
+  }
   render() {
     const {
       formatMessage,
@@ -152,6 +156,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 </InputTitleContainer>
                 <ContainerInput>
                   <CardElement
+                    onReady={this.handleReady}
                     hidePostalCode={true}
                     style={StripeCardElement}
                   />
@@ -226,6 +231,10 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     )
   }
 
+  handleReady = (cardElement: stripe.elements.Element) => {
+    this.setState({ cardElement })
+  }
+
   handleOnContinue = async (ev: any) => {
     const {
       cardHolderName,
@@ -247,7 +256,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       setStripeCardDataAction,
       nextStep,
       selectedCard,
-      stripe
+      stripe,
+      createPreOrder
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
@@ -279,26 +289,13 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
     setLoadingBillingAction(true)
     const stripeResponse = !selectedCardId
-      ? await stripe.createToken(
-          stripeTokenData
-        ) /*await stripe.createPaymentMethod(
-          'card',
-          null,
-          { billing_details: { name: cardHolderName } }
-        )*/
+      ? await stripe.createPaymentMethod('card', this.state.cardElement, {
+          billing_details: stripeTokenData
+        })
       : {}
-
-    const paymentMethod = await stripe.createPaymentMethod(
-      'card',
-      stripeResponse,
-      {
-        billing_details: { name: 'Jenny Rosen' }
-      }
-    )
-
-    console.log(paymentMethod)
-    if (paymentMethod && paymentMethod.error) {
-      setStripeErrorAction(paymentMethod.error.message)
+    console.log(stripeResponse)
+    if (stripeResponse && stripeResponse.error) {
+      setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
       if (!selectedCardId) {
         const {
@@ -306,8 +303,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
             id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }
-        } = paymentMethod
-
+        } = stripeResponse
         const cardData: CreditCardData = {
           id,
           name,
@@ -316,8 +312,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           expYear: exp_year,
           brand
         }
-
         setStripeCardDataAction(cardData, tokenId)
+        createPreOrder()
       }
       nextStep()
     }

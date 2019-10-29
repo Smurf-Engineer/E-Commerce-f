@@ -18,7 +18,7 @@ export const CreatePaymentIntentMutation = graphql(
   gql`
     mutation createPaymentIntent {
       createPaymentIntent {
-        message
+        paymentClientSecret
       }
     }
   `,

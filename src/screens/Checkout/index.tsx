@@ -64,6 +64,7 @@ import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE } from '../../constants'
 import Spin from 'antd/lib/spin'
+import { message } from 'antd'
 
 type ProductCart = {
   id: number
@@ -144,6 +145,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   couponCode?: CouponCode
   openCurrencyWarning: boolean
+  paymentClientSecret: string
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setStripeIbanDataAction: (iban: IbanData) => void
@@ -196,9 +198,17 @@ class Checkout extends React.Component<Props, {}> {
   }
   async componentDidMount() {
     const { createPaymentIntent, savePaymentId } = this.props
-    const response = await createPaymentIntent()
-    savePaymentId('hola')
-    console.log(response)
+    try {
+      const response = await createPaymentIntent()
+      const paymentClientSecret = get(
+        response,
+        'data.createPaymentIntent.paymentClientSecret',
+        ''
+      )
+      await savePaymentId(paymentClientSecret)
+    } catch (e) {
+      message.error(e)
+    }
   }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -276,7 +286,8 @@ class Checkout extends React.Component<Props, {}> {
       couponCode,
       setCouponCodeAction,
       deleteCouponCodeAction,
-      openCurrencyWarning
+      openCurrencyWarning,
+      paymentClientSecret
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -433,7 +444,8 @@ class Checkout extends React.Component<Props, {}> {
                     limit,
                     setSkipValueAction,
                     showBillingForm,
-                    showBillingAddressFormAction
+                    showBillingAddressFormAction,
+                    paymentClientSecret
                   }}
                   showContent={currentStep === PaymentTab}
                   setSelectedAddress={this.handleOnSelectAddress}
@@ -441,6 +453,7 @@ class Checkout extends React.Component<Props, {}> {
                   hasError={billingHasError}
                   nextStep={this.nextStep}
                   setStripeAction={this.setStripe}
+                  createPreOrder={this.createPreOrder}
                 />
                 <Review
                   {...{
@@ -487,7 +500,7 @@ class Checkout extends React.Component<Props, {}> {
               />
             </SummaryContainer>
           </Content>
-          {loadingPlaceOrder && (
+          {(loadingPlaceOrder || !paymentClientSecret.length) && (
             <PlaceOrderLoading>
               <Spin />
             </PlaceOrderLoading>
@@ -711,7 +724,8 @@ class Checkout extends React.Component<Props, {}> {
       ibanData = {},
       client: { query },
       currentCurrency,
-      couponCode: couponObject
+      couponCode: couponObject,
+      paymentClientSecret
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -848,7 +862,11 @@ class Checkout extends React.Component<Props, {}> {
         weight: weightSum,
         couponCode
       }
-      console.log('aqui')
+
+      const { stripe } = this.state
+      await stripe.handleCardPayment(paymentClientSecret, {
+        payment_method: stripeToken
+      })
 
       const response = await placeOrder({
         variables: { orderObj }
@@ -856,11 +874,7 @@ class Checkout extends React.Component<Props, {}> {
       console.log(response)
       const orderId = get(response, 'data.charge.short_id', '')
       // const clientSecret = get(response, 'data.charge.client_secret', '')
-      // const { stripe } = this.state
-      /* const cardPayment = await stripe.handleCardPayment(
-        clientSecret,
-        CardElement
-      ) */
+
       localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
       getTotalItemsIncartAction()
@@ -868,6 +882,7 @@ class Checkout extends React.Component<Props, {}> {
       const { history } = this.props
       history.push(`/order-placed?orderId=${orderId}`)
     } catch (error) {
+      console.log('Error ', error)
       setLoadingPlaceOrderAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
@@ -877,6 +892,9 @@ class Checkout extends React.Component<Props, {}> {
     this.setState({
       stripe
     })
+  }
+  createPreOrder = async () => {
+    alert('a')
   }
 }
 
