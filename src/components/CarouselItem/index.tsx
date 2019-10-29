@@ -21,7 +21,15 @@ const CarouselItem = ({ item, onClick }: Props) => {
           }}
         </MediaQuery>
       ) : (
-        <VideoPreview autoPlay={true} loop={true} muted={true}>
+        <VideoPreview
+          autoPlay={true}
+          loop={true}
+          muted={true}
+          playsInline={true}
+          controls={true}
+          disablePictureInPicture={true}
+          controlsList="nofullscreen nodownload noremoteplayback"
+        >
           <source src={item.desktopImage} type="video/mp4" />
         </VideoPreview>
       )}
