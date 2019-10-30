@@ -1325,14 +1325,16 @@ export interface HeaderImagePlaceHolder {
   mobileImage?: string
   url?: string
   sport_id?: string | null
+  assetType?: string
 }
 
-export interface HeadeImageResponse {
+export interface HeaderImageResponse {
   id?: number
   image?: string
   image_mobile: string
   link?: string
   sport_id?: string
+  type?: string
 }
 
 export interface ProductTilePlaceHolder {
@@ -1393,6 +1395,11 @@ export type ContactInformation = {
   phone: string
 }
 
+export type CarouselSettings = {
+  duration: string
+  transition: string
+}
+
 export interface ProductSearchResult {
   name: string
   code: string
@@ -1411,4 +1418,11 @@ export interface UserSearchResult {
   shortId: string
   name: string
   email: string
+}
+
+export interface HomepageCarousel {
+  slideTransition: string
+  slideDuration: number
+  secondarySlideTransition: string
+  secondarySlideDuration: number
 }
