@@ -8,7 +8,6 @@ import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
 import {
   setMainHeaderMutation,
-  setSecondaryHeaderMutation,
   productsQuery,
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
@@ -96,7 +95,6 @@ interface Props {
   setTilesTextAction: (index: number, section: string, value: string) => void
   removeTileDataAction: (index: number) => void
   removeHeaderAction: (index: number, type: string, section: string) => void
-  addMoreImagesAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
   addMoreTilesAction: (tilePlaceholder: ProductTilePlaceHolder) => void
   updatePlaceHolderListAction: (
     list: [HeaderImagePlaceHolder],
@@ -218,7 +216,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         variables: {
           homepageImages,
           duration,
-          transition
+          transition,
+          mainHeader: true
         }
       })
 
@@ -251,7 +250,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
   handleOnSaveSecondaryHeader = async () => {
     try {
       const {
-        setSecondaryHeader,
+        setMainHeader,
         secondaryHeader,
         setLoadersAction,
         updatePlaceHolderListAction,
@@ -265,27 +264,31 @@ class HomepageAdmin extends React.Component<Props, {}> {
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
 
-      const homepageImages = secondaryHeader
-        .filter(
-          (item: HeaderImagePlaceHolder) =>
-            item.id || item.desktopImage || item.mobileImage
-        )
-        .map((item: HeaderImagePlaceHolder) => ({
-          id: item.id,
-          image: item.desktopImage,
-          image_mobile: item.mobileImage,
-          link: item.url,
-          sport_id: sportId,
-          type: item.assetType
-        }))
+      const homepageImages = secondaryHeader.reduce(
+        (filtered: HeaderImagePlaceHolder[], item: HeaderImagePlaceHolder) => {
+          if (item.id || item.desktopImage || item.mobileImage) {
+            filtered.push({
+              id: item.id,
+              image: item.desktopImage,
+              image_mobile: item.mobileImage,
+              link: item.url,
+              sport_id: sportId,
+              type: item.assetType
+            })
+          }
+          return filtered
+        },
+        []
+      )
 
       const {
-        data: { setSecondaryHeader: response }
-      } = await setSecondaryHeader({
+        data: { setMainHeader: response }
+      } = await setMainHeader({
         variables: {
           homepageImages,
           duration,
-          transition
+          transition,
+          mainHeader: false
         }
       })
       const secondaryHeaderList = response.map(
@@ -644,7 +647,6 @@ const mapDispatchToProps = {
 const HomepageAdminEnhance = compose(
   withApollo,
   setMainHeaderMutation,
-  setSecondaryHeaderMutation,
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
   updateProductTilesMutation,

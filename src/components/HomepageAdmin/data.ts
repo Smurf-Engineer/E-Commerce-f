@@ -54,11 +54,13 @@ export const setMainHeaderMutation = graphql(
       $homepageImages: [HomePageImageInput]
       $duration: Int
       $transition: String
+      $mainHeader: Boolean
     ) {
       setMainHeader(
         homepageImages: $homepageImages
         duration: $duration
         transition: $transition
+        mainHeader: $mainHeader
       ) {
         id
         image
@@ -69,29 +71,6 @@ export const setMainHeaderMutation = graphql(
     }
   `,
   { name: 'setMainHeader' }
-)
-
-export const setSecondaryHeaderMutation = graphql(
-  gql`
-    mutation setSecondaryHeader(
-      $homepageImages: [HomePageImageInput]
-      $duration: Int
-      $transition: String
-    ) {
-      setSecondaryHeader(
-        homepageImages: $homepageImages
-        duration: $duration
-        transition: $transition
-      ) {
-        id
-        image
-        image_mobile
-        link
-        type
-      }
-    }
-  `,
-  { name: 'setSecondaryHeader' }
 )
 
 export const productsQuery = gql`

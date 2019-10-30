@@ -20,13 +20,8 @@ import {
 import messages from './messages'
 import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
-<<<<<<< HEAD:src/components/HomepageAdmin/CarouselHeader/Uploader/index.tsx
-import { getFileExtension } from '../../../../utils/utilsFiles'
-import { ImageTypes, VIDEO_TYPE } from '../../constants'
-=======
 import { getFileExtension, bytesToMb } from '../../../../utils/utilsFiles'
-import { ImageTypes, Sections, VIDEO_TYPE } from '../../constants'
->>>>>>> f4e55a46af3d419566ed0c83bf9a7a5129003ab2:src/components/HomepageAdmin/MainHeader/Uploader/index.tsx
+import { ImageTypes, VIDEO_TYPE } from '../../constants'
 import { HeaderImagePlaceHolder } from '../../../../types/common'
 
 const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
@@ -65,9 +60,13 @@ class Uploader extends React.Component<Props, {}> {
           assetType === VIDEO_TYPE ? videoFileExtensions : imageFileExtensions,
           (fileExtension as String).toLowerCase()
         ) === -1
+      const messageToShow =
+        assetType === VIDEO_TYPE
+          ? messages.videoExtensionError
+          : messages.imageExtensionError
 
       if (validateExtension) {
-        message.error(formatMessage(messages.imageExtensionError))
+        message.error(formatMessage(messageToShow))
         return false
       }
       onUploadFile(file, section, imageType, index)
@@ -125,8 +124,16 @@ class Uploader extends React.Component<Props, {}> {
     const preview = !isVideo ? (
       <ImagePreview src={item[ImageTypes.DESKTOP]} />
     ) : (
-      <VideoPreview autoPlay={true} loop={true}>
-        <source src={item[ImageTypes.DESKTOP]} />
+      <VideoPreview
+        autoPlay={true}
+        loop={true}
+        muted={true}
+        playsInline={true}
+        controls={true}
+        disablePictureInPicture={true}
+        controlsList="nofullscreen nodownload noremoteplayback"
+      >
+        <source src={item[ImageTypes.DESKTOP]} type="video/mp4" />
       </VideoPreview>
     )
     return (

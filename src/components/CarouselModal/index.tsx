@@ -12,8 +12,8 @@ import {
 } from './styledComponents'
 import Carousel from 'react-slick'
 import CustomModal from '../Common/JakrooModal'
-import leftArrow from '../../assets/leftarrow.svg'
-import rightArrow from '../../assets/arrow.svg'
+import leftArrow from '../../assets/leftarrowwhite.svg'
+import rightArrow from '../../assets/rightarrowwhite.svg'
 import { CarouselSettings, HeaderImagePlaceHolder } from '../../types/common'
 
 interface Props {
@@ -74,8 +74,16 @@ export class CarouselModal extends React.Component<Props, {}> {
           {item.assetType !== 'video' ? (
             <ImagePreview src={item.desktopImage} />
           ) : (
-            <VideoPreview autoPlay={true} loop={true}>
-              <source src={item.desktopImage} />
+            <VideoPreview
+              autoPlay={true}
+              loop={true}
+              muted={true}
+              playsInline={true}
+              controls={true}
+              disablePictureInPicture={true}
+              controlsList="nofullscreen nodownload noremoteplayback"
+            >
+              <source src={item.desktopImage} type="video/mp4" />
             </VideoPreview>
           )}
         </CarouselItem>

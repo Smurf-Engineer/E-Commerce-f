@@ -1417,3 +1417,10 @@ export interface UserSearchResult {
   name: string
   email: string
 }
+
+export interface HomepageCarousel {
+  slideTransition: string
+  slideDuration: number
+  secondarySlideTransition: string
+  secondarySlideDuration: number
+}
