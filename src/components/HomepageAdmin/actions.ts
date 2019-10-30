@@ -4,7 +4,6 @@
 
 import {
   CLEAR_REDUCER,
-  SET_LOADING,
   SET_HOMEPAGE_INFO,
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
@@ -21,7 +20,6 @@ import {
   SET_TILES_TEXT,
   REMOVE_TILE_DATA,
   REMOVE_HEADER,
-  ADD_MORE_IMAGES,
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
@@ -53,12 +51,6 @@ export const setUrlImageList = (
   section,
   imageType,
   index
-})
-
-export const setLoadingAction = (imageType: string, loading: boolean) => ({
-  type: SET_LOADING,
-  imageType,
-  loading
 })
 
 export const setLoadingListAction = (
@@ -180,13 +172,6 @@ export const removeHeaderAction = (
   index,
   assetType,
   section
-})
-
-export const addMoreImagesAction = (
-  imagePlaceholder: HeaderImagePlaceHolder
-) => ({
-  type: ADD_MORE_IMAGES,
-  imagePlaceholder
 })
 
 export const addCarouselItemAction = (
