@@ -29,11 +29,11 @@ interface Header {
 }
 
 const headerTitles: Header[] = [
-  { message: '', width: 30, tabletWidth: 45 },
+  { message: '', width: 40, tabletWidth: 45 },
   { message: 'regularPrice', width: 15, tabletWidth: 15 },
   { message: 'fixedPrice', width: 15, tabletWidth: 15 },
-  { message: 'visible', width: 20, tabletWidth: 10 },
-  { message: '', width: 2, tabletWidth: 15 }
+  { message: 'visible', width: 15, tabletWidth: 15 },
+  { message: '', width: 15, tabletWidth: 10 }
 ]
 
 interface Props {
