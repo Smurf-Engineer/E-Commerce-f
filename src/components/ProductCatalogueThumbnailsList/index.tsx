@@ -140,7 +140,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       onPressDelete,
                       onPressRename,
                       formatMessage,
-                      addToCartButton
+                      addToCartButton,
+                      code
                     }}
                     id={shortId as string}
                     isPrivate={!shared}

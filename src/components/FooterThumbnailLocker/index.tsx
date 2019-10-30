@@ -22,6 +22,7 @@ interface Props {
   name: string
   description: string
   date: string
+  code: string
   isPrivate: boolean
   addToCartButton: React.ReactNode
   onPressPrivate: (id: string, isPrivate: boolean) => void
@@ -41,6 +42,7 @@ const FooterThumbnailLocker = ({
   name,
   description,
   date,
+  code,
   onPressPrivate,
   onPressDelete,
   formatMessage,
@@ -67,8 +69,8 @@ const FooterThumbnailLocker = ({
           </ActionButton>
         </ShareContainer>
       </Type>
-
       <Description>{description}</Description>
+      <Description>{code}</Description>
       <Label>{date}</Label>
       <Bottom>
         <Checkbox checked={isPrivate} onChange={handleOnPressPrivate}>

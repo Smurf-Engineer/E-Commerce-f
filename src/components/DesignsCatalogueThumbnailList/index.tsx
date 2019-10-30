@@ -147,6 +147,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       name,
                       targetRange,
                       onDemandMode,
+                      code,
                       targetPrice,
                       currentPrice
                     }}

@@ -25,6 +25,7 @@ interface Props {
   name: string
   description: string
   progress: number
+  code: string
   targetRange?: Filter
   onDemandMode?: boolean
   targetPrice: number | string
@@ -38,6 +39,7 @@ const FooterThumbnailTeamStore = ({
   progress,
   onDemandMode,
   targetRange,
+  code,
   targetPrice,
   currentPrice
 }: Props) => {
@@ -50,6 +52,7 @@ const FooterThumbnailTeamStore = ({
     <Footer>
       <Type>{name}</Type>
       <Description>{description}</Description>
+      <Description>{code}</Description>
       <BottomPrices>
         <PricesContainer>
           <Label>
