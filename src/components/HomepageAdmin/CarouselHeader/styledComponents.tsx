@@ -41,11 +41,15 @@ export const SlideOptionsContainer = styled.div`
 
 export const SlideOptions = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 500px;
 `
 
-export const OptionContainer = styled.div``
+export const OptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  margin-right: 30px
+}
+`
 
 interface ButtonWrapperProps {
   disabled: boolean

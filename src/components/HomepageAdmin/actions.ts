@@ -4,8 +4,6 @@
 
 import {
   CLEAR_REDUCER,
-  SET_URL_IMAGE,
-  SET_LOADING,
   SET_HOMEPAGE_INFO,
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
@@ -22,12 +20,13 @@ import {
   SET_TILES_TEXT,
   REMOVE_TILE_DATA,
   REMOVE_HEADER,
-  ADD_MORE_IMAGES,
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
   ADD_CAROUSEL_ITEM,
-  REMOVE_MAIN_HEADER
+  TOGGLE_PREVIEW_MODAL,
+  SET_DURATION,
+  SET_TRANSITION
 } from './constants'
 
 import {
@@ -41,17 +40,6 @@ export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
 })
 
-export const setUrlImage = (
-  url: string,
-  section: string,
-  imageType: string
-) => ({
-  type: SET_URL_IMAGE,
-  url,
-  section,
-  imageType
-})
-
 export const setUrlImageList = (
   url: string,
   section: string,
@@ -63,12 +51,6 @@ export const setUrlImageList = (
   section,
   imageType,
   index
-})
-
-export const setLoadingAction = (imageType: string, loading: boolean) => ({
-  type: SET_LOADING,
-  imageType,
-  loading
 })
 
 export const setLoadingListAction = (
@@ -181,28 +163,24 @@ export const removeTileDataAction = (index: number) => ({
   index
 })
 
-export const removeMainHeaderAction = (index: number, assetType: string) => ({
-  type: REMOVE_MAIN_HEADER,
-  index,
-  assetType
-})
-export const removeHeaderAction = (index: number) => ({
-  type: REMOVE_HEADER,
-  index
-})
-
-export const addMoreImagesAction = (
-  imagePlaceholder: HeaderImagePlaceHolder
+export const removeHeaderAction = (
+  index: number,
+  assetType: string,
+  section: string
 ) => ({
-  type: ADD_MORE_IMAGES,
-  imagePlaceholder
+  type: REMOVE_HEADER,
+  index,
+  assetType,
+  section
 })
 
 export const addCarouselItemAction = (
-  imagePlaceholder: HeaderImagePlaceHolder
+  imagePlaceholder: HeaderImagePlaceHolder,
+  section: string
 ) => ({
   type: ADD_CAROUSEL_ITEM,
-  imagePlaceholder
+  imagePlaceholder,
+  section
 })
 
 export const addMoreTilesAction = (
@@ -226,4 +204,21 @@ export const updateProductTilesListAction = (
 ) => ({
   type: UPDATE_PRODUCT_TILES_LIST,
   tilesList
+})
+
+export const togglePreviewModalAction = (section: string = '') => ({
+  type: TOGGLE_PREVIEW_MODAL,
+  section
+})
+
+export const setDurationAction = (section: string, duration: string) => ({
+  type: SET_DURATION,
+  section,
+  duration
+})
+
+export const setTransitionAction = (section: string, transition: string) => ({
+  type: SET_TRANSITION,
+  section,
+  transition
 })

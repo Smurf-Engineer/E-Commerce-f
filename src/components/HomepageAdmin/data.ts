@@ -17,6 +17,7 @@ export const getHomepageInfo = gql`
         desktopImage: image
         mobileImage: image_mobile
         url: link
+        assetType: type
       }
       featuredProducts {
         id
@@ -37,14 +38,30 @@ export const getHomepageInfo = gql`
         contentTile: content_tile
         image
       }
+      carouselSettings {
+        slideTransition: slide_transition
+        slideDuration: slide_duration
+        secondarySlideTransition: secondary_slide_transition
+        secondarySlideDuration: secondary_slide_duration
+      }
     }
   }
 `
 
 export const setMainHeaderMutation = graphql(
   gql`
-    mutation setMainHeader($homepageImages: [HomePageImageInput]) {
-      setMainHeader(homepageImages: $homepageImages) {
+    mutation setMainHeader(
+      $homepageImages: [HomePageImageInput]
+      $duration: Int
+      $transition: String
+      $mainHeader: Boolean
+    ) {
+      setMainHeader(
+        homepageImages: $homepageImages
+        duration: $duration
+        transition: $transition
+        mainHeader: $mainHeader
+      ) {
         id
         image
         image_mobile
@@ -54,20 +71,6 @@ export const setMainHeaderMutation = graphql(
     }
   `,
   { name: 'setMainHeader' }
-)
-
-export const setSecondaryHeaderMutation = graphql(
-  gql`
-    mutation setSecondaryHeader($homepageImages: [HomePageImageInput]) {
-      setSecondaryHeader(homepageImages: $homepageImages) {
-        id
-        image
-        image_mobile
-        link
-      }
-    }
-  `,
-  { name: 'setSecondaryHeader' }
 )
 
 export const productsQuery = gql`

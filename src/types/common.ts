@@ -1394,6 +1394,11 @@ export type ContactInformation = {
   phone: string
 }
 
+export type CarouselSettings = {
+  duration: string
+  transition: string
+}
+
 export interface ProductSearchResult {
   name: string
   code: string
@@ -1411,4 +1416,11 @@ export interface UserSearchResult {
   id: string
   name: string
   email: string
+}
+
+export interface HomepageCarousel {
+  slideTransition: string
+  slideDuration: number
+  secondarySlideTransition: string
+  secondarySlideDuration: number
 }

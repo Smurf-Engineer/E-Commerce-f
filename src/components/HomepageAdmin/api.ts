@@ -4,8 +4,6 @@
 import message from 'antd/lib/message'
 import config from '../../config/index'
 import {
-  setUrlImage,
-  setLoadingAction,
   setUrlImageList,
   setLoadingListAction,
   setProductTileImage,
@@ -27,11 +25,7 @@ export const uploadFileAction = (
     try {
       const loadingSection =
         section === MAIN_HEADER ? MAIN_HEADER_LOADING : SECONDARY_HEADER_LOADING
-      if (index >= 0) {
-        dispatch(setLoadingListAction(imageType, true, index, loadingSection))
-      } else {
-        dispatch(setLoadingAction(imageType, true))
-      }
+      dispatch(setLoadingListAction(imageType, true, index, loadingSection))
       const user = JSON.parse(localStorage.getItem('user') || '')
       const formData = new FormData()
       formData.append('file', file)
@@ -47,14 +41,10 @@ export const uploadFileAction = (
         }
       )
       const imageObject = await response.json()
-      if (index >= 0) {
-        dispatch(setLoadingListAction(imageType, false, index, loadingSection))
-        return dispatch(
-          setUrlImageList(imageObject.image, section, imageType, index)
-        )
-      }
-      dispatch(setLoadingAction(imageType, false))
-      return dispatch(setUrlImage(imageObject.image, section, imageType))
+      dispatch(setLoadingListAction(imageType, false, index, loadingSection))
+      return dispatch(
+        setUrlImageList(imageObject.image, section, imageType, index)
+      )
     } catch (e) {
       message.error(e.message)
       return false

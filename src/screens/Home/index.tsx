@@ -12,9 +12,9 @@ import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import * as homeActions from './actions'
 import Layout from '../../components/MainLayout'
+import Carousel from 'react-slick'
 import {
   Container,
-  SearchBackground,
   // TODO: Comented code to hide everything related with fitting widget, it'll be implemented in phase 2 of Jakroo
   //  HelpContainer,
   //  NeedHelp,
@@ -29,30 +29,39 @@ import {
   Spinner,
   ImageRow,
   SkeletonDiv,
-  layoutStyle
+  layoutStyle,
+  CarouselContainer,
+  Arrow
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
+import leftArrow from '../../assets/leftarrowwhite.svg'
+import rightArrow from '../../assets/rightarrowwhite.svg'
 import { MAIN_TITLE } from '../../constants'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
-import FeaturedContent from '../../components/FeaturedContent'
 import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
-import MediaQuery from 'react-responsive'
 import {
   QueryProps,
   ProductTiles,
   Product,
-  HomepageImagesType
+  HomepageImagesType,
+  HeaderImagePlaceHolder,
+  HomepageCarousel
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
+import CarouselItem from '../../components/CarouselItem'
 
 interface Data extends QueryProps {
   files: any
 }
+
+const arrowLeft = <Arrow src={leftArrow} />
+const arrowRight = <Arrow src={rightArrow} />
+
 interface Props extends RouteComponentProps<any> {
   data: Data
   someKey?: string
@@ -76,7 +85,9 @@ interface Props extends RouteComponentProps<any> {
   productTiles: ProductTiles[]
   featuredProducts: Product[]
   homepageImages: HomepageImagesType[]
+  mainHeaderImages: HomepageImagesType[]
   title: string
+  carouselSettings: HomepageCarousel
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -131,6 +142,12 @@ export class Home extends React.Component<Props, {}> {
       history.push(`/${headerImageLink}`)
     }
   }
+  handleGoToUrl = (link?: string) => () => {
+    const { history } = this.props
+    if (link) {
+      history.push(`/${link}`)
+    }
+  }
 
   render() {
     const {
@@ -141,12 +158,17 @@ export class Home extends React.Component<Props, {}> {
       fakeWidth,
       currentCurrency,
       clientInfo,
-      headerImageMobile,
-      headerImage,
+      mainHeaderImages,
       productTiles,
       featuredProducts,
       loading,
       homepageImages,
+      carouselSettings: {
+        slideTransition,
+        slideDuration,
+        secondarySlideTransition,
+        secondarySlideDuration
+      },
       title = MAIN_TITLE
     } = this.props
     const { formatMessage } = intl
@@ -172,29 +194,47 @@ export class Home extends React.Component<Props, {}> {
         {...{ history, featuredProducts }}
       />
     )
+    const mainHeaderItems = mainHeaderImages.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <div>
+          <CarouselItem
+            key={index}
+            onClick={this.handleGoToUrl(item.url)}
+            {...{ item }}
+          />
+        </div>
+      )
+    )
+    const secondaryHeaderItems = homepageImages.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <div>
+          <CarouselItem
+            key={index}
+            onClick={this.handleGoToUrl(item.url)}
+            {...{ item }}
+          />
+        </div>
+      )
+    )
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
         <Container {...{ loading }}>
           <SearchContainer>
-            <MediaQuery maxWidth={640}>
-              {matches => {
-                if (matches) {
-                  return (
-                    <SearchBackground
-                      src={headerImageMobile}
-                      onClick={this.handleGoTo}
-                    />
-                  )
-                }
-                return (
-                  <SearchBackground
-                    src={headerImage}
-                    onClick={this.handleGoTo}
-                  />
-                )
-              }}
-            </MediaQuery>
+            {mainHeaderItems.length && (
+              <CarouselContainer>
+                <Carousel
+                  autoplaySpeed={slideDuration}
+                  fade={slideTransition === 'fade'}
+                  prevArrow={arrowLeft}
+                  nextArrow={arrowRight}
+                  autoplay={true}
+                  pauseOnHover={false}
+                >
+                  {mainHeaderItems}
+                </Carousel>
+              </CarouselContainer>
+            )}
             <SearchBarContent>
               <SearchBar search={this.onSearch} {...{ formatMessage }} />
               {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
@@ -219,7 +259,20 @@ export class Home extends React.Component<Props, {}> {
             {searchResults}
           </div>
           {featured}
-          <FeaturedContent {...{ history }} featuredContent={homepageImages} />
+          {secondaryHeaderItems.length && (
+            <CarouselContainer>
+              <Carousel
+                autoplaySpeed={secondarySlideDuration}
+                fade={secondarySlideTransition === 'fade'}
+                prevArrow={arrowLeft}
+                nextArrow={arrowRight}
+                autoplay={true}
+                pauseOnHover={false}
+              >
+                {secondaryHeaderItems}
+              </Carousel>
+            </CarouselContainer>
+          )}
           <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />

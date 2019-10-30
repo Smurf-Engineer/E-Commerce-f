@@ -8,7 +8,6 @@ import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
 import {
   setMainHeaderMutation,
-  setSecondaryHeaderMutation,
   productsQuery,
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
@@ -18,11 +17,11 @@ import {
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { FormattedMessage } from 'react-intl'
+import CarouselModal from '../CarouselModal'
 import * as HomepageAdminActions from './actions'
 import { Sections } from './constants'
 import * as homepageAdminApiActions from './api'
-import MainHeader from './MainHeader'
-import SecondaryHeader from './SecondaryHeader'
+import CarouselHeader from './CarouselHeader'
 import FeaturedProducts from './FeaturedProducts'
 import Tiles from './Tiles'
 import {
@@ -32,12 +31,7 @@ import {
   Goback
 } from './styledComponents'
 import messages from './messages'
-import {
-  EMPTY_SECONDARY_HEADER,
-  EMPTY_TILE,
-  HOMEPAGE_LABEL,
-  EMPTY_MAIN_HEADER
-} from './constants'
+import { EMPTY_TILE, HOMEPAGE_LABEL, EMPTY_HEADER } from './constants'
 import {
   Product,
   ProductType,
@@ -46,6 +40,7 @@ import {
   HeaderImagePlaceHolder,
   HeaderImageResponse,
   ProductTilePlaceHolder,
+  CarouselSettings,
   Message
 } from '../../types/common'
 import { History } from 'history'
@@ -68,6 +63,10 @@ interface Props {
   productsModalOpen: boolean
   items: any
   productTiles: ProductTiles[]
+  previewOpen: boolean
+  secondaryHeaderCarousel: CarouselSettings
+  mainHeaderCarousel: CarouselSettings
+  currentPreview: string
   formatMessage: (messageDescriptor: Message) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
@@ -95,16 +94,20 @@ interface Props {
   updateProductTiles: (variables: {}) => Promise<void>
   setTilesTextAction: (index: number, section: string, value: string) => void
   removeTileDataAction: (index: number) => void
-  removeMainHeaderAction: (index: number, type: string) => void
-  removeHeaderAction: (index: number) => void
-  addMoreImagesAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
+  removeHeaderAction: (index: number, type: string, section: string) => void
   addMoreTilesAction: (tilePlaceholder: ProductTilePlaceHolder) => void
   updatePlaceHolderListAction: (
     list: [HeaderImagePlaceHolder],
     section: string
   ) => void
   updateProductTilesListAction: (tilesList: [ProductTilePlaceHolder]) => void
-  addCarouselItemAction: (imagePlaceholder: HeaderImagePlaceHolder) => void
+  addCarouselItemAction: (
+    imagePlaceholder: HeaderImagePlaceHolder,
+    section: string
+  ) => void
+  togglePreviewModalAction: (section?: string) => void
+  setDurationAction: (section: string, duration: string) => void
+  setTransitionAction: (section: string, transition: string) => void
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
@@ -128,7 +131,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         featuredProducts,
         homepageImages,
         mainHeaderImages,
-        productTiles
+        productTiles,
+        carouselSettings
       } = response.data.getHomepageContent
       const items = featuredProducts.map((item: Product) => {
         return { visible: true, product: item }
@@ -141,7 +145,15 @@ class HomepageAdmin extends React.Component<Props, {}> {
         headerImageLink: '',
         headerImage: '',
         headerImageMobile: '',
-        productTiles
+        productTiles,
+        mainHeaderCarousel: {
+          duration: carouselSettings.slideDuration,
+          transition: carouselSettings.slideTransition
+        },
+        secondaryHeaderCarousel: {
+          duration: carouselSettings.secondarySlideDuration,
+          transition: carouselSettings.secondarySlideTransition
+        }
       }
       setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -172,6 +184,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         setLoadersAction,
         updatePlaceHolderListAction,
         formatMessage,
+        mainHeaderCarousel: { duration, transition },
         history: {
           location: {
             state: { sportId }
@@ -201,7 +214,10 @@ class HomepageAdmin extends React.Component<Props, {}> {
         data: { setMainHeader: response }
       } = await setMainHeader({
         variables: {
-          homepageImages
+          homepageImages,
+          duration,
+          transition,
+          mainHeader: true
         }
       })
 
@@ -234,11 +250,12 @@ class HomepageAdmin extends React.Component<Props, {}> {
   handleOnSaveSecondaryHeader = async () => {
     try {
       const {
-        setSecondaryHeader,
-        setLoadersAction,
+        setMainHeader,
         secondaryHeader,
-        formatMessage,
+        setLoadersAction,
         updatePlaceHolderListAction,
+        formatMessage,
+        secondaryHeaderCarousel: { duration, transition },
         history: {
           location: {
             state: { sportId }
@@ -246,36 +263,57 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
-      const homepageImages = secondaryHeader.map(
-        (item: HeaderImagePlaceHolder) => ({
-          id: item.id,
-          image: item.desktopImage,
-          image_mobile: item.mobileImage,
-          link: item.url,
-          sport_id: sportId
-        })
+
+      const homepageImages = secondaryHeader.reduce(
+        (filtered: HeaderImagePlaceHolder[], item: HeaderImagePlaceHolder) => {
+          if (item.id || item.desktopImage || item.mobileImage) {
+            filtered.push({
+              id: item.id,
+              image: item.desktopImage,
+              image_mobile: item.mobileImage,
+              link: item.url,
+              sport_id: sportId,
+              type: item.assetType
+            })
+          }
+          return filtered
+        },
+        []
       )
 
       const {
-        data: { setSecondaryHeader: response }
-      } = await setSecondaryHeader({
+        data: { setMainHeader: response }
+      } = await setMainHeader({
         variables: {
-          homepageImages
+          homepageImages,
+          duration,
+          transition,
+          mainHeader: false
         }
       })
-
-      const secondHeaderList = response.map(
-        ({ id, sport_id, image, image_mobile, link }: HeaderImageResponse) => {
+      const secondaryHeaderList = response.map(
+        ({
+          id,
+          sport_id,
+          image,
+          image_mobile,
+          link,
+          type
+        }: HeaderImageResponse) => {
           return {
             id,
             sport_id,
             desktopImage: image,
             mobileImage: image_mobile,
-            url: link
+            url: link,
+            assetType: type
           }
         }
       )
-      updatePlaceHolderListAction(secondHeaderList, Sections.SECONDARY_HEADER)
+      updatePlaceHolderListAction(
+        secondaryHeaderList,
+        Sections.SECONDARY_HEADER
+      )
       message.success(formatMessage(messages.updatedHeaderSuccess))
       setLoadersAction(Sections.SECONDARY_HEADER, false)
     } catch (e) {
@@ -410,29 +448,10 @@ class HomepageAdmin extends React.Component<Props, {}> {
     history.goBack()
   }
 
-  handleAddCarouselItem = (assetType: string) => {
+  handleAddCarouselItem = (assetType: string, section: string) => {
     const {
       addCarouselItemAction,
       mainHeader,
-      history: {
-        location: {
-          state: { sportId }
-        }
-      }
-    } = this.props
-    if (mainHeader.length < 5) {
-      const newPlaceholder = {
-        ...EMPTY_MAIN_HEADER,
-        sport_id: sportId || null,
-        assetType
-      }
-      addCarouselItemAction(newPlaceholder)
-    }
-  }
-
-  handleAddMoreImages = () => {
-    const {
-      addMoreImagesAction,
       secondaryHeader,
       history: {
         location: {
@@ -440,12 +459,15 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       }
     } = this.props
-    if (secondaryHeader.length < 6) {
+    const currentSection =
+      section === Sections.MAIN_HEADER ? mainHeader : secondaryHeader
+    if (currentSection.length < 6) {
       const newPlaceholder = {
-        ...EMPTY_SECONDARY_HEADER,
-        sport_id: sportId || null
+        ...EMPTY_HEADER,
+        sport_id: sportId || null,
+        assetType
       }
-      addMoreImagesAction(newPlaceholder)
+      addCarouselItemAction(newPlaceholder, section)
     }
   }
 
@@ -501,7 +523,13 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setTilesTextAction,
       removeTileDataAction,
       removeHeaderAction,
-      removeMainHeaderAction,
+      previewOpen,
+      togglePreviewModalAction,
+      setDurationAction,
+      setTransitionAction,
+      mainHeaderCarousel,
+      secondaryHeaderCarousel,
+      currentPreview,
       history: {
         location: {
           state: { sportName }
@@ -527,33 +555,42 @@ class HomepageAdmin extends React.Component<Props, {}> {
             }}
           />
         </ScreenTitle>
-        <MainHeader
+        <CarouselHeader
+          section={Sections.MAIN_HEADER}
           onUploadFile={this.handleOnUploadFile}
           setUrl={setUrlListAction}
           onSaveHeader={this.handleOnSaveMainHeader}
           saving={mainHeaderLoader}
           handleAddMoreImages={this.handleAddCarouselItem}
-          removeImage={removeMainHeaderAction}
+          removeImage={removeHeaderAction}
+          openPreview={togglePreviewModalAction}
+          onSetDuration={setDurationAction}
+          setTransition={setTransitionAction}
+          carouselSettings={mainHeaderCarousel}
+          items={mainHeader}
+          loading={mainHeaderLoading}
           {...{
             desktopImage,
-            formatMessage,
-            mainHeader,
-            loading: mainHeaderLoading,
-            mainHeaderLoader
+            formatMessage
           }}
         />
-        <SecondaryHeader
+        <CarouselHeader
+          section={Sections.SECONDARY_HEADER}
           onUploadFile={this.handleOnUploadFile}
           setUrl={setUrlListAction}
           onSaveHeader={this.handleOnSaveSecondaryHeader}
           saving={secondaryHeaderLoader}
+          handleAddMoreImages={this.handleAddCarouselItem}
           removeImage={removeHeaderAction}
-          handleAddMoreImages={this.handleAddMoreImages}
+          openPreview={togglePreviewModalAction}
+          onSetDuration={setDurationAction}
+          setTransition={setTransitionAction}
+          carouselSettings={secondaryHeaderCarousel}
+          items={secondaryHeader}
+          loading={secondaryHeaderLoading}
           {...{
             desktopImage,
-            formatMessage,
-            loading: secondaryHeaderLoading,
-            secondaryHeader
+            formatMessage
           }}
         />
         <FeaturedProducts
@@ -582,6 +619,20 @@ class HomepageAdmin extends React.Component<Props, {}> {
           removeImage={removeTileDataAction}
           handleAddMoreTiles={this.handleAddMoreTiles}
         />
+        <CarouselModal
+          visible={previewOpen}
+          items={
+            currentPreview === Sections.MAIN_HEADER
+              ? mainHeader
+              : secondaryHeader
+          }
+          carouselSettings={
+            currentPreview === Sections.MAIN_HEADER
+              ? mainHeaderCarousel
+              : secondaryHeaderCarousel
+          }
+          requestClose={togglePreviewModalAction}
+        />
       </Container>
     )
   }
@@ -596,7 +647,6 @@ const mapDispatchToProps = {
 const HomepageAdminEnhance = compose(
   withApollo,
   setMainHeaderMutation,
-  setSecondaryHeaderMutation,
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
   updateProductTilesMutation,
