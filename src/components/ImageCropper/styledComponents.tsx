@@ -40,3 +40,16 @@ export const CropperContainer = styled.div`
   margin-top: 40px;
   border: 2px dashed #efefef;
 `
+
+export const Loader = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  background: #ffffffb0;
+`

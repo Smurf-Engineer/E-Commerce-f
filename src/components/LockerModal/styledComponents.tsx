@@ -72,3 +72,7 @@ export const PaginationRow = styled.div`
     text-align: center;
   }
 `
+
+export const NotFound = styled.div`
+  font-size: 18px;
+`
