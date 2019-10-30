@@ -9,9 +9,10 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import Button from 'antd/lib/button'
+import Upload from 'antd/lib/upload'
 import Spin from 'antd/lib/spin'
 import * as thunkActions from './thunkActions'
-import Upload from 'antd/lib/upload'
+import PinSVG from '../../assets/pin.svg'
 import { Moment } from 'moment'
 import message from 'antd/lib/message'
 import { RouteComponentProps } from 'react-router-dom'
@@ -57,11 +58,19 @@ import {
   ButtonOptionsWrapper,
   Loading,
   TextBlock,
-  SaveButton
+  SaveButton,
+  RowColumn,
+  BulletinLabel,
+  Bulletin,
+  PinDiv,
+  Pin,
+  Corner,
+  BulletinInput
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
+const BULLETIN_MAX_LENGTH = 100
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
@@ -94,9 +103,11 @@ interface Props extends RouteComponentProps<any> {
   limit: number
   offset: number
   currentPage: number
+  bulletin: string
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
+  changeBulletinAction: (value: string) => void
   updateStartDateAction: (dateMoment: Moment, date: string) => void
   updateEndDateAction: (dateMoment: Moment, date: string) => void
   updatePrivateAction: (active: boolean) => void
@@ -191,7 +202,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
     openModal(true)
     return false
   }
-
+  handleOnBulletinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { changeBulletinAction } = this.props
+    const {
+      target: { value }
+    } = event
+    if (value.length <= BULLETIN_MAX_LENGTH) {
+      changeBulletinAction(value)
+    }
+  }
   handleOnSelectRange = (id: number, range: string) => {
     const { setTeamSizeAction } = this.props
     setTeamSizeAction(id, range)
@@ -284,6 +303,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       startDate,
       endDate,
       privateStore,
+      bulletin,
       passCode,
       items: itemsSelected,
       setLoadingAction,
@@ -337,6 +357,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         id: storeId,
         short_id: storeShortId,
         name,
+        bulletin,
         cutoffDate: startDate,
         deliveryDate: endDate,
         private: privateStore,
@@ -461,6 +482,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       selectedItems,
       items,
       teamSizeRange,
+      bulletin,
       loading,
       open,
       banner,
@@ -622,6 +644,30 @@ export class CreateStore extends React.Component<Props, StateProps> {
               )}
             </Row>
             {bannerComponent}
+            <RowColumn>
+              <BulletinLabel>
+                <Subtitle>
+                  <FormattedMessage {...messages.bulletin} />
+                </Subtitle>
+                <OptionalLabel>
+                  {`(${formatMessage(messages.optional)})`}
+                </OptionalLabel>
+              </BulletinLabel>
+              <Bulletin>
+                <PinDiv>
+                  <Pin src={PinSVG} left={true} />
+                  <Pin src={PinSVG} />
+                </PinDiv>
+                <BulletinInput
+                  value={bulletin}
+                  autosize={true}
+                  placeholder={formatMessage(messages.bulletinPlaceholder)}
+                  size="large"
+                  onChange={this.handleOnBulletinChange}
+                />
+                <Corner />
+              </Bulletin>
+            </RowColumn>
             <RowSwitch>
               <SwitchWithLabel
                 hasError={hasError}

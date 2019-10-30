@@ -250,6 +250,8 @@
   "screens.CreateStore.buttonBuild": "Build Team Store",
   "screens.CreateStore.buttonSave": "Save Changes",
   "screens.CreateStore.passFormat": "Access codes must be between 4-10 characters and can only contain numbers and letters and are not case sensitive and cannot contain special characters (#+&@)",
+  "screens.CreateStore.bulletin": "Add a Bulletin or Important Message for your Team to see on the stores page",
+  "screens.CreateStore.bulletinPlaceholder": "Type your bulletin message...",
   "components.LockerTable.starting": "Starting Price",
   "components.LockerTable.target": "Target Price",
   "components.LockerTable.orders": "Current Orders",

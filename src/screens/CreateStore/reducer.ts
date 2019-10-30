@@ -25,7 +25,8 @@ import {
   CLEAR_DATA,
   SET_PAGINATION_DATA,
   OPEN_MODAL,
-  ON_UNSELECT_ITEM
+  ON_UNSELECT_ITEM,
+  CHANGE_BULLETIN
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -46,6 +47,7 @@ export const initialState = fromJS({
   loading: true,
   open: false,
   banner: '',
+  bulletin: '',
   showTeamStores: null,
   limit: 12,
   offset: 0,
@@ -56,6 +58,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state
+    case CHANGE_BULLETIN:
+      return state.set('bulletin', action.value)
     case OPEN_MODAL:
       return state.set('open', action.open)
     case SET_LOADING_ACTION:
@@ -144,6 +148,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
           endDate,
           privateStore,
           onDemand,
+          bulletin,
           passCode,
           items,
           teamSize: { id: sizeId, size }
@@ -154,6 +159,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         storeShortId: shortId,
         name: name,
         passCode,
+        bulletin,
         startDate: startDate,
         startDateMoment: startDate ? moment(startDate) : null,
         endDate: endDate,

@@ -3,11 +3,22 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { BLUE, FACEBOOKBLUE } from '../../theme/colors'
+import Input from 'antd/lib/input'
+import {
+  BLUE,
+  FACEBOOKBLUE,
+  WHITE,
+  GRAY_SKELETON,
+  BLUE_BRIGHT,
+  GRAY_HEADER
+} from '../../theme/colors'
 
 interface DivProps {
   width?: string
+  left?: boolean
+  value?: string
 }
+const TextArea = Input.TextArea
 
 export const Container = styled.div`
   background-color: #fff;
@@ -122,7 +133,15 @@ export const ButtonDelete = styled.div`
   cursor: pointer;
 `
 
-export const Column = styled.div``
+export const RowColumn = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 59%;
+  @media (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 36px;
+  }
+`
 
 export const AddItem = styled(Button)`
   width: 221px;
@@ -175,6 +194,18 @@ export const BannerTitleContainer = styled.div`
   align-items: center;
 `
 
+export const BulletinLabel = styled.div`
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  @media (max-width: 480px) {
+    flex-flow: column;
+    margin-bottom: 18px;
+    margin-top: 14px;
+    align-items: flex-start;
+  }
+`
+
 export const OptionalLabel = styled.span`
   margin-left: 10px;
 
@@ -188,4 +219,62 @@ export const Loading = styled.div`
   justify-content: center;
   height: 100vh;
   align-items: center;
+`
+
+export const Bulletin = styled.div`
+  display: inline-flex;
+  max-width: 570px;
+  width: 100%;
+  background: ${GRAY_HEADER};
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  font-family: 'Avenir-Medium';
+  @media (max-width: 480px) {
+    width: auto;
+    margin: 12px;
+    padding: 8px;
+  }
+`
+
+export const Pin = styled.img`
+  transform: ${({ left }: DivProps) => (left ? 'scaleX(-1)' : 'none')};
+`
+
+export const PinDiv = styled.div`
+  position: absolute;
+  top: -7px;
+  width: 102%;
+  justify-content: space-between;
+  display: flex;
+`
+
+export const Corner = styled.div`
+  width: 0;
+  height: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  border-bottom: 16px solid ${WHITE};
+  border-left: 16px solid ${GRAY_SKELETON};
+`
+
+export const BulletinInput = styled(TextArea)`
+  background: transparent;
+  border: none;
+  max-width: 570px;
+  transition: all 0.25s;
+  min-height: 57px !important;
+  width: 100%;
+  font-style: italic;
+  font-size: 18px;
+  text-align: center;
+  resize: none;
+  box-shadow: none;
+  padding: 14px 12px;
+  color: ${BLUE_BRIGHT};
+  &:focus {
+    box-shadow: none;
+  }
 `
