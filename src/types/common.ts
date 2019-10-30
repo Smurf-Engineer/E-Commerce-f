@@ -1414,6 +1414,7 @@ export interface ColorAccessories {
 
 export interface UserSearchResult {
   id: string
+  shortId: string
   name: string
   email: string
 }

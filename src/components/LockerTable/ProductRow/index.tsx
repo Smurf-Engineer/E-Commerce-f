@@ -16,7 +16,8 @@ import {
   Name,
   Description,
   Title,
-  Price
+  Price,
+  MoreIcon
 } from '../styledComponents'
 import { Align } from './styledComponents'
 import Checkbox from 'antd/lib/checkbox'
@@ -95,8 +96,8 @@ interface Header {
 
 const headerTitles: Header[] = [
   { message: 'regularPrice', width: 30 },
-  { message: 'fixedPrice', width: 42 },
-  { message: 'visible', width: 28 }
+  { message: 'fixedPrice', width: 30 },
+  { message: 'visible', width: 40 }
 ]
 
 class ProductRow extends React.PureComponent<Props, {}> {
@@ -160,19 +161,17 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 </Row>
                 <Row>{mobileTitles}</Row>
                 <Row noBorder={true} rowPadding={'0'}>
-                  <Cell width={30}>
+                  <Cell width={33}>
                     <Price>{`$${regularPrice}`}</Price>
                   </Cell>
-                  <Cell width={30}>
+                  <Cell width={40}>
                     <Price>{`$${fixedPrice}`}</Price>
                   </Cell>
                   <Cell width={40}>
-                    <Align align="center">
-                      <Checkbox
-                        checked={visible}
-                        onChange={handleOnClickVisible}
-                      />
-                    </Align>
+                    <Checkbox
+                      checked={visible}
+                      onChange={handleOnClickVisible}
+                    />
                   </Cell>
                 </Row>
                 <Row rowPadding={'0'}>
@@ -185,13 +184,17 @@ class ProductRow extends React.PureComponent<Props, {}> {
           } else {
             return (
               <Row>
+                <Cell width={5} tabletWidth={5}>
+                  <MoreIcon type="ellipsis" />
+                  <MoreIcon type="ellipsis" />
+                </Cell>
                 <Cell width={15} tabletWidth={25}>
                   <Thumbnail
                     {...{ image, hideQuickView }}
                     onPressQuickView={handleOnClickView}
                   />
                 </Cell>
-                <Cell width={15} tabletWidth={20}>
+                <Cell width={20} tabletWidth={15}>
                   <Name>{name}</Name>
                   <Description>{description}</Description>
                 </Cell>
@@ -201,7 +204,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <Cell width={15} tabletWidth={15}>
                   <Price>{`$${fixedPrice}`}</Price>
                 </Cell>
-                <Cell width={20} tabletWidth={10}>
+                <Cell width={15} tabletWidth={10}>
                   <Center>
                     <Checkbox
                       checked={visible}

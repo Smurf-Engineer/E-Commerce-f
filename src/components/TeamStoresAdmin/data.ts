@@ -59,3 +59,40 @@ export const setTeamStoreDisplayMutation = graphql(
     name: 'setTeamStoreDisplay'
   }
 )
+
+export const createStoreMutation = graphql(
+  gql`
+    mutation createTeamStore($teamStore: TeamStoreInput!) {
+      store: createTeamStore(teamStore: $teamStore, isAdmin: true) {
+        shortId: short_id
+      }
+    }
+  `,
+  { name: 'createStore' }
+)
+
+export const updateStoreMutation = graphql(
+  gql`
+    mutation updateTeamStore($teamStore: TeamStoreInput!, $file: Upload) {
+      store: updateTeamStore(
+        teamStore: $teamStore
+        file: $file
+        isAdmin: true
+      ) {
+        message
+      }
+    }
+  `,
+  { name: 'updateStore' }
+)
+
+export const getUsers = gql`
+  query GetUsersNameQuery($pattern: String!) {
+    userSearch: getUserSearch(pattern: $pattern) {
+      id
+      shortId: short_id
+      name
+      email
+    }
+  }
+`

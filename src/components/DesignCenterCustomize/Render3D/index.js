@@ -1562,7 +1562,6 @@ class Render3D extends PureComponent {
           imageEl.set({ scaleX, scaleY, fileId })
         }
         imageEl.setCoords()
-
         this.canvasTexture.add(imageEl)
 
         const el = {

@@ -108,6 +108,15 @@ export default defineMessages({
     id: 'screens.CreateStore.bannerMessage',
     defaultMessage: 'Add a header banner to your store'
   },
+  bulletin: {
+    id: 'screens.CreateStore.bulletin',
+    defaultMessage:
+      'Add a Bulletin or Important Message for your Team to see on the stores page'
+  },
+  bulletinPlaceholder: {
+    id: 'screens.CreateStore.bulletinPlaceholder',
+    defaultMessage: 'Type your bulletin message...'
+  },
   optional: {
     id: 'screens.CreateStore.optional',
     defaultMessage: 'Optional'

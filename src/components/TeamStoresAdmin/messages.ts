@@ -20,5 +20,9 @@ export default defineMessages({
   itemSaved: {
     id: 'components.TeamStoresAdmin.itemSaved',
     defaultMessage: 'Prices updated successfully!'
+  },
+  addTeamStore: {
+    id: 'components.TeamStoresAdmin.addTeamStore',
+    defaultMessage: '+ Add Team Store'
   }
 })
