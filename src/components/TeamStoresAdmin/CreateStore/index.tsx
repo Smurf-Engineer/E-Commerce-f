@@ -94,7 +94,11 @@ interface Props {
   setNameAction: (name: string) => void
   deleteItemSelectedAction: (index: number) => void
   setItemVisibleAction: (index: number, visible: boolean) => void
-  moveRowAction: (index: number, row: any) => void
+  moveRowAction: (
+    index: number,
+    hoverIndex: number,
+    row: LockerTableType
+  ) => void
   setItemsAddAction: () => void
   setPaginationData: (offset: number, page: number) => void
   onUnselectItemAction: (index: number) => void
@@ -112,13 +116,9 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   async componentDidMount() {
-    const { match, getEditStore, setLoadingAction } = this.props
+    const { match, getEditStore } = this.props
     const id = get(match, 'params.id', '')
-    if (id) {
-      getEditStore(id)
-    } else {
-      setLoadingAction(false)
-    }
+    getEditStore(id)
     window.scrollTo(0, 0)
   }
 

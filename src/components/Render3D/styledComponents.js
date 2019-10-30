@@ -59,8 +59,8 @@ export const Progress = styled(AntdProgress)`
 export const ProgressProduct = styled(AntdProgress)`
   position: absolute;
   top: 30%;
-  right: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   .ant-progress-text {
     color: white;
   }

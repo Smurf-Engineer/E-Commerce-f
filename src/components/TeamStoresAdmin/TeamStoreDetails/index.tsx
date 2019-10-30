@@ -35,6 +35,7 @@ interface Props {
   currencies: Currency[]
   loading: boolean
   id: number
+  resetDataAction: () => void
   formatMessage: (messageDescriptor: Message) => string
   onReturn: (id: number) => void
   handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
@@ -53,6 +54,10 @@ const teamStoreHeaderInformation = [
 ]
 
 export class TeamStoreDetails extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
   componentDidMount() {
     const { getTeamStoreData, match } = this.props
     const teamStoreId = get(match, 'params.id', '')
@@ -123,39 +128,41 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         </InformationContainer>
       )
     )
-    const teamStoreItems = teamStore.items.map(
-      (
-        {
-          design: {
-            image: thumbnail,
-            name: designName,
-            product: { name: productName, description: productType }
-          },
-          priceRange,
-          pricesByCurrency,
-          loading: loadingItem = false
-        },
-        index: number
-      ) => (
-        <Item
-          key={index}
-          {...{
-            thumbnail,
-            designName,
-            productName,
-            productType,
-            currencies,
-            handleOnSetPrice,
-            index,
+    const teamStoreItems =
+      teamStore.items &&
+      teamStore.items.map(
+        (
+          {
+            design: {
+              image: thumbnail,
+              name: designName,
+              product: { name: productName, description: productType }
+            },
             priceRange,
             pricesByCurrency,
-            handleOnSave,
-            formatMessage
-          }}
-          loading={loadingItem}
-        />
+            loading: loadingItem = false
+          },
+          index: number
+        ) => (
+          <Item
+            key={index}
+            {...{
+              thumbnail,
+              designName,
+              productName,
+              productType,
+              currencies,
+              handleOnSetPrice,
+              index,
+              priceRange,
+              pricesByCurrency,
+              handleOnSave,
+              formatMessage
+            }}
+            loading={loadingItem}
+          />
+        )
       )
-    )
 
     return (
       <Container>

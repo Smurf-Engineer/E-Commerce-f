@@ -59,7 +59,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       order: {
         code,
         status,
-        svgUrl,
+        svgUrl = '',
         assets,
         stitchingName,
         stitchingValue,
@@ -70,6 +70,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         image,
         pdfUrl,
         name,
+        pngUrl = '',
         product: { name: modelName, zipper }
       },
       uploadingFile,
@@ -115,7 +116,7 @@ export class OrderFiles extends React.PureComponent<Props> {
             <Render3D
               designSearch={true}
               loading={uploadingFile}
-              actualSvg={actualSvg}
+              actualImage={actualSvg}
               designId={shortId}
               uploadingThumbnail={uploadingThumbnail}
               onSaveThumbnail={onSaveThumbnail}
@@ -168,7 +169,10 @@ export class OrderFiles extends React.PureComponent<Props> {
             {pdfUrl && pdfUrl.length && (
               <DownloadItem url={pdfUrl} name="Final PDF" />
             )}
-            <DownloadItem url={actualSvg || svgUrl} name="Final SVG" />
+            {svgUrl && (
+              <DownloadItem url={actualSvg || svgUrl} name="Final SVG" />
+            )}
+            {pngUrl && <DownloadItem url={pngUrl} name="Final PNG" />}
           </FinalSvg>
           <AssetsLabel>
             <FormattedMessage {...messages.assets} />

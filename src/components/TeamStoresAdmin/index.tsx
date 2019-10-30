@@ -104,7 +104,11 @@ interface Props {
   setNameAction: (name: string) => void
   deleteItemSelectedAction: (index: number) => void
   setItemVisibleAction: (index: number, visible: boolean) => void
-  moveRowAction: (index: number, row: any) => void
+  moveRowAction: (
+    index: number,
+    hoverIndex: number,
+    row: LockerTableType
+  ) => void
   setItemsAddAction: () => void
   setPaginationData: (offset: number, page: number) => void
   setItemSelectedAction: (item: DesignType, checked: boolean) => void
@@ -227,7 +231,14 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
           exact={true}
           render={() => (
             <TeamStoreDetails
-              {...{ formatMessage, history, teamStore, currencies, loading }}
+              {...{
+                formatMessage,
+                resetDataAction,
+                history,
+                teamStore,
+                currencies,
+                loading
+              }}
               getTeamStoreData={this.handleGetTeamStoreDetails}
               handleOnSetPrice={setPriceAction}
               handleOnSave={this.handleOnSaveItem}

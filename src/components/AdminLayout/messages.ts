@@ -60,5 +60,13 @@ export default defineMessages({
   editNavigation: {
     id: 'screens.AdminLayout.editNavigation',
     defaultMessage: 'Edit Main Navigation'
+  },
+  proDesign: {
+    id: 'screens.AdminLayout.proDesign',
+    defaultMessage: 'PRO DESIGN'
+  },
+  addProDesign: {
+    id: 'screens.AdminLayout.addProDesign',
+    defaultMessage: 'Create and Assign to User'
   }
 })

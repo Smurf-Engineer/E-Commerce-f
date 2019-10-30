@@ -44,7 +44,6 @@ export class RelatedProducts extends React.Component<Props, {}> {
         images,
         priceRange,
         isTopProduct,
-        collections,
         customizable,
         yotpoId,
         genderId: gender = 0,
@@ -62,7 +61,6 @@ export class RelatedProducts extends React.Component<Props, {}> {
             description,
             priceRange,
             isTopProduct,
-            collections,
             yotpoId,
             gender,
             customizable,
@@ -111,13 +109,9 @@ export class RelatedProducts extends React.Component<Props, {}> {
 }
 
 const mapStateToProps = (state: any) => state.get('responsive').toJS()
-const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
-const RelatedProductsEnhance = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(RelatedProducts)
+const RelatedProductsEnhance = compose(connect(mapStateToProps))(
+  RelatedProducts
+)
 
 export default RelatedProductsEnhance

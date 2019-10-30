@@ -73,17 +73,20 @@ export const uploadBanner = (file: Blob, opened: boolean) => {
 
 export const getEditStore = (query: any, teamStoreId: string) => {
   return async (dispatch: any) => {
-    dispatch(setLoadingAction(true))
-    try {
-      const response = await query({
-        query: getTeamStoreEdit,
-        variables: { teamStoreId },
-        fetchPolicy: 'no-cache'
-      })
-      const teamStore = get(response, 'data.teamStore', {})
-      dispatch(setTeamData(teamStore))
-    } catch (e) {
-      message.error(e)
+    if (teamStoreId) {
+      try {
+        const response = await query({
+          query: getTeamStoreEdit,
+          variables: { teamStoreId },
+          fetchPolicy: 'no-cache'
+        })
+        const teamStore = get(response, 'data.teamStore', {})
+        dispatch(setTeamData(teamStore))
+      } catch (e) {
+        message.error(e)
+        dispatch(setLoadingAction(false))
+      }
+    } else {
       dispatch(setLoadingAction(false))
     }
   }

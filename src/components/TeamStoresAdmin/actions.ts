@@ -35,7 +35,8 @@ import {
   TeamStoreAdminType,
   Currency,
   DesignType,
-  TeamstoreType
+  TeamstoreType,
+  LockerTableType
 } from '../../types/common'
 import { QueryProps } from 'react-apollo'
 
@@ -143,7 +144,11 @@ export const setItemVisibleAction = (
   visible
 })
 
-export const moveRowAction = (index: number, hoverIndex: number, row: any) => ({
+export const moveRowAction = (
+  index: number,
+  hoverIndex: number,
+  row: LockerTableType
+) => ({
   type: MOVE_ROW,
   index,
   hoverIndex,
