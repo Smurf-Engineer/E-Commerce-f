@@ -5,8 +5,6 @@
 import { fromJS, List } from 'immutable'
 import fill from 'lodash/fill'
 import {
-  SET_URL_IMAGE,
-  SET_LOADING,
   SET_HOMEPAGE_INFO,
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
@@ -24,7 +22,6 @@ import {
   REMOVE_TILE_DATA,
   REMOVE_HEADER,
   EMPTY_TILE,
-  ADD_MORE_IMAGES,
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
@@ -44,6 +41,7 @@ import {
 } from '../../types/common'
 
 export const initialState = fromJS({
+  mainHeader: [],
   secondaryHeader: [],
   mainHeaderLoading: [],
   secondaryHeaderLoading: [],
@@ -64,11 +62,11 @@ export const initialState = fromJS({
   productTiles: [],
   previewOpen: false,
   mainHeaderCarousel: {
-    duration: '500',
+    duration: '1000',
     transition: 'slide'
   },
   secondaryHeaderCarousel: {
-    duration: '500',
+    duration: '1000',
     transition: 'slide'
   },
   currentPreview: ''
@@ -76,17 +74,6 @@ export const initialState = fromJS({
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
-    case SET_URL_IMAGE:
-      return state.setIn([action.section, action.imageType], action.url)
-    case SET_URL_IMAGE:
-      return state.merge({
-        [action.section[action.imageType]]: action.url
-      })
-    case SET_LOADING:
-      return state.setIn(
-        ['mainHeaderLoading', action.imageType],
-        action.loading
-      )
     case SET_HOMEPAGE_INFO: {
       const {
         homepageImages,
@@ -219,19 +206,6 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         return header.merge({ ...EMPTY_HEADER, assetType })
       })
     }
-    case ADD_MORE_IMAGES:
-      return state.withMutations((tempState: any) => {
-        const initialLoadingValues = { desktopImage: false, mobileImage: false }
-        tempState.updateIn(
-          ['secondaryHeader'],
-          (images: [HeaderImagePlaceHolder]) =>
-            images.push(fromJS(action.imagePlaceholder))
-        )
-        tempState.updateIn(['secondaryHeaderLoading'], (loadings: [any]) =>
-          loadings.push(fromJS(initialLoadingValues))
-        )
-        return tempState
-      })
     case ADD_CAROUSEL_ITEM:
       return state.withMutations((tempState: any) => {
         const initialLoadingValues = { desktopImage: false, mobileImage: false }
@@ -259,7 +233,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
           tiles.push(fromJS(action.tilePlaceholder))
       )
     case UPDATE_PRODUCT_TILES_LIST:
-      return state.set('productTiles', action.tilesList)
+      return state.merge({ productTiles: action.tilesList })
     case TOGGLE_PREVIEW_MODAL:
       return state.merge({
         previewOpen: !state.get('previewOpen'),
