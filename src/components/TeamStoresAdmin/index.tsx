@@ -14,7 +14,8 @@ import {
   setTeamStorePricesMutation,
   setTeamStoreDisplayMutation,
   createStoreMutation,
-  getUsers
+  getUsers,
+  updateStoreMutation
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import CreateStore from './CreateStore'
@@ -38,7 +39,8 @@ import {
   DesignType,
   SelectedDesignType,
   UserSearchResult,
-  QueryProps
+  QueryProps,
+  TeamstoreType
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
 
@@ -82,11 +84,17 @@ interface Props {
   cutoffDate: string
   deliveryDate: string
   users: Data
-  title: string
+  userToSearch: string
+  storeId: string
+  storeShortId: string
   resetForm: () => void
+  setTeamData: (data: TeamstoreType) => void
+  setLoadingAction: (loading: boolean) => void
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
-  createStore: (variables: {}) => void
+  getEditStore: (query: any, id: string) => void
+  updateStore: (variables: {}) => Promise<any>
+  createStore: (variables: {}) => Promise<any>
   setSavingAction: (saving: boolean) => void
   setLoading: (loading: boolean) => void
   uploadBanner: (file: Blob, openModal: boolean) => void
@@ -157,17 +165,20 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setItemSelectedAction,
       onUnselectItemAction,
       selectedItems,
+      setLoadingAction,
+      setTeamData,
       setItemsAddAction,
       setPaginationData,
       currentPageModal,
       setOpenLockerAction,
       deleteItemSelectedAction,
       setNameAction,
+      userToSearch,
       uploadBanner,
-      title,
       imagePreviewUrl,
       setItemVisibleAction,
       setFeaturedAction,
+      storeShortId,
       moveRowAction,
       saving,
       userId,
@@ -220,7 +231,14 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
           exact={true}
           render={() => (
             <TeamStoreDetails
-              {...{ formatMessage, history, teamStore, currencies, loading }}
+              {...{
+                formatMessage,
+                resetDataAction,
+                history,
+                teamStore,
+                currencies,
+                loading
+              }}
               getTeamStoreData={this.handleGetTeamStoreDetails}
               handleOnSetPrice={setPriceAction}
               handleOnSave={this.handleOnSaveItem}
@@ -229,8 +247,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
           )}
         />
         <Route
-          path="/admin/team-stores/create"
-          exact={true}
+          path={['/admin/team-stores/create', '/admin/team-stores/edit/:id']}
           render={() => (
             <CreateStore
               {...{
@@ -242,13 +259,15 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 setPaginationData,
                 openLocker,
                 resetDataAction,
+                setLoadingAction,
+                setTeamData,
+                loading,
                 limit,
                 userId,
                 saving,
                 onDemand,
                 featured,
                 setNameAction,
-                title,
                 name,
                 setUserToSearch,
                 setSelectedUser,
@@ -262,6 +281,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 setFeaturedAction,
                 moveRowAction,
                 items,
+                userToSearch,
+                storeShortId,
                 users,
                 offset,
                 teamSizeRange,
@@ -269,6 +290,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 openCropper
               }}
               setImage={uploadBanner}
+              getEditStore={this.handleGetEditStore}
               buildTeamStore={this.buildTeamStore}
             />
           )}
@@ -320,6 +342,13 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   handleGoToTeamStore = (id: string) => {
     const { history } = this.props
     history.push(`/admin/team-stores/details/${id}`)
+  }
+  handleGetEditStore = (id: string) => {
+    const {
+      getEditStore,
+      client: { query }
+    } = this.props
+    getEditStore(query, id)
   }
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props
@@ -397,6 +426,9 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       userId,
       history,
       featured,
+      storeId,
+      storeShortId,
+      updateStore,
       createStore,
       cutoffDate,
       deliveryDate
@@ -408,6 +440,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       }))
       setSavingAction(true)
       const teamStore = {
+        id: storeId,
+        short_id: storeShortId,
         name,
         featured,
         cutoffDate,
@@ -419,9 +453,23 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
         banner: imagePreviewUrl,
         demandMode: onDemand
       }
-      await createStore({
-        variables: { teamStore }
-      })
+      if (storeShortId) {
+        const response = await updateStore({
+          variables: { teamStore }
+        })
+        const {
+          data: {
+            store: { message: messageResp }
+          }
+        } = response
+        if (messageResp) {
+          message.success(messageResp)
+        }
+      } else {
+        await createStore({
+          variables: { teamStore }
+        })
+      }
       history.push('/admin/team-stores')
     } catch (error) {
       message.error(
@@ -490,6 +538,7 @@ const TeamStoresAdminEnhance = compose(
   setTeamStorePricesMutation,
   setTeamStoreDisplayMutation,
   createStoreMutation,
+  updateStoreMutation,
   withApollo,
   connect(
     mapStateToProps,

@@ -25,7 +25,8 @@ import {
   setItemVisibleAction,
   moveRowAction,
   setUserToSearch,
-  setSelectedUser
+  setSelectedUser,
+  setTeamData
 } from './actions'
 import {
   SET_ORDER_BY,
@@ -49,7 +50,8 @@ import {
   SET_ITEM_VISIBLE_ACTION,
   MOVE_ROW,
   SET_USER_TO_SEARCH,
-  SET_SELECTED_USER
+  SET_SELECTED_USER,
+  SET_TEAM_DATA
 } from './constants'
 
 describe(' TeamStoresAdmin Screen', () => {
@@ -241,6 +243,39 @@ describe(' TeamStoresAdmin Screen', () => {
         type,
         offset,
         page
+      })
+    })
+    it('setTeamData', () => {
+      const type = SET_TEAM_DATA
+      const data = {
+        id: 1,
+        shortId: 'ID',
+        name: 'NAME',
+        banner: '',
+        items: [
+          {
+            design: {
+              id: 1,
+              code: 'CODE',
+              name: 'NAME',
+              shared: true,
+              image: '',
+              proDesign: false
+            },
+            visible: true
+          }
+        ],
+        deliveryDate: '',
+        cutoffDate: '',
+        privateStore: false,
+        teamSize: {
+          id: 1,
+          size: '2-5'
+        }
+      }
+      expect(setTeamData(data)).toEqual({
+        type,
+        data
       })
     })
     it('deleteItemSelectedAction', () => {
@@ -688,6 +723,159 @@ describe(' TeamStoresAdmin Screen', () => {
         ])
         expect(checkedValue).toBeFalsy()
         expect(selectedItemsGet).toEqual(item.design.code)
+      })
+    })
+  })
+  describe('SET_TEAM_DATA', () => {
+    describe('Set team store data action', () => {
+      const id = 1
+      const shortId = 'ID'
+      const name = 'NAME'
+      const banner = ''
+      const items = [
+        {
+          design: {
+            id: 1,
+            code: 'CODE',
+            name: 'NAME',
+            shared: true,
+            image: '',
+            proDesign: false
+          },
+          visible: true
+        }
+      ]
+      const deliveryDate = ''
+      const cutoffDate = ''
+      const privateStore = false
+      const teamSize = {
+        id: 1,
+        size: '2-5'
+      }
+      let state
+      beforeEach(() => {
+        state = teamStoresAdminReducer(
+          initialState,
+          setTeamData({
+            id,
+            shortId,
+            name,
+            banner,
+            items,
+            deliveryDate,
+            cutoffDate,
+            privateStore,
+            teamSize
+          })
+        )
+      })
+      it('Handles undefined value in storeId', () => {
+        const customInitialValue = initialState.get('storeId')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('number')
+        expect(customInitialValue).toBe(-1)
+      })
+      it('Handles custom values in storeId', () => {
+        const customIdValue = state.get('storeId')
+        expect(typeof customIdValue).toBe('number')
+        expect(customIdValue).toBe(id)
+      })
+      it('Handles undefined value in storeShortId', () => {
+        const customInitialShortId = initialState.get('storeShortId')
+        expect(customInitialShortId).not.toBeUndefined()
+        expect(typeof customInitialShortId).toBe('string')
+        expect(customInitialShortId).toBe('')
+      })
+      it('Handles custom values in storeShortId', () => {
+        const customShortIdValue = state.get('storeShortId')
+        expect(typeof customShortIdValue).toBe('string')
+        expect(customShortIdValue).toBe(shortId)
+      })
+      it('Handles undefined value in name', () => {
+        const customInitialName = initialState.get('name')
+        expect(customInitialName).not.toBeUndefined()
+        expect(typeof customInitialName).toBe('string')
+        expect(customInitialName).toBe('')
+      })
+      it('Handles custom values in name', () => {
+        const customNameValue = state.get('name')
+        expect(typeof customNameValue).toBe('string')
+        expect(customNameValue).toBe(name)
+      })
+      it('Handles undefined value in banner', () => {
+        const customInitialBanner = initialState.get('imagePreviewUrl')
+        expect(customInitialBanner).not.toBeUndefined()
+        expect(typeof customInitialBanner).toBe('string')
+        expect(customInitialBanner).toBe('')
+      })
+      it('Handles custom values in banner', () => {
+        const customBannerValue = state.get('imagePreviewUrl')
+        expect(typeof customBannerValue).toBe('string')
+        expect(customBannerValue).toBe(banner)
+      })
+      it('Handles undefined value in items', () => {
+        const customInitialItems = initialState.get('items')
+        expect(customInitialItems).not.toBeUndefined()
+        expect(customInitialItems.size).toBe(0)
+      })
+      it('Handles custom values in items', () => {
+        const customItemsValue = state.get('items')
+        expect(customItemsValue.size).toBe(1)
+      })
+      it('Handles undefined value in deliveryDate', () => {
+        const customInitialDelivery = initialState.get('deliveryDate')
+        expect(customInitialDelivery).not.toBeUndefined()
+        expect(typeof customInitialDelivery).toBe('string')
+        expect(customInitialDelivery).toBe('')
+      })
+      it('Handles custom values in deliveryDate', () => {
+        const customDeliveryValue = state.get('deliveryDate')
+        expect(typeof customDeliveryValue).toBe('string')
+        expect(customDeliveryValue).toBe(deliveryDate)
+      })
+      it('Handles undefined value in cutoffDate', () => {
+        const customInitialCuttOff = initialState.get('cutoffDate')
+        expect(customInitialCuttOff).not.toBeUndefined()
+        expect(typeof customInitialCuttOff).toBe('string')
+        expect(customInitialCuttOff).toBe('')
+      })
+      it('Handles custom values in cutoffDate', () => {
+        const customCutOffValue = state.get('cutoffDate')
+        expect(typeof customCutOffValue).toBe('string')
+        expect(customCutOffValue).toBe(cutoffDate)
+      })
+      it('Handles undefined value in privateStore', () => {
+        const customInitialBanner = initialState.get('private')
+        expect(customInitialBanner).not.toBeUndefined()
+        expect(typeof customInitialBanner).toBe('boolean')
+        expect(customInitialBanner).toBeFalsy()
+      })
+      it('Handles custom values in privateStore', () => {
+        const customPrivateValue = state.get('private')
+        expect(typeof customPrivateValue).toBe('boolean')
+        expect(customPrivateValue).toBe(privateStore)
+      })
+      it('Handles undefined value in teamSizeId', () => {
+        const customInitialSizeId = initialState.get('teamSizeId')
+        expect(customInitialSizeId).not.toBeUndefined()
+        expect(typeof customInitialSizeId).toBe('number')
+        expect(customInitialSizeId).toBe(1)
+      })
+      it('Handles custom values in teamSizeId', () => {
+        const customSizeIdValue = state.get('teamSizeId')
+        expect(typeof customSizeIdValue).toBe('number')
+        expect(customSizeIdValue).toBe(teamSize.id)
+      })
+      it('Handles undefined value in teamSizeRange', () => {
+        const customInitialSizeId = initialState.get('teamSizeRange')
+        expect(customInitialSizeId).not.toBeUndefined()
+        expect(typeof customInitialSizeId).toBe('string')
+        expect(customInitialSizeId).toBe('2-5')
+      })
+      it('Handles custom values in teamSizeRange', () => {
+        const customSizeValue = state.get('teamSizeRange')
+        expect(typeof customSizeValue).toBe('string')
+        expect(customSizeValue).toBe(teamSize.size)
       })
     })
   })

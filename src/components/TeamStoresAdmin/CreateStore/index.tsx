@@ -13,6 +13,8 @@ import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
+import { withRouter } from 'react-router-dom'
+import { compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import {
   Container,
@@ -47,7 +49,8 @@ import {
   LockerTableType,
   DesignType,
   UserSearchResult,
-  QueryProps
+  QueryProps,
+  TeamstoreType
 } from '../../../types/common'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
@@ -73,7 +76,14 @@ interface Props {
   userId: string
   saving: boolean
   users: Data
-  title: string
+  client: any
+  match: any
+  loading: boolean
+  userToSearch: string
+  storeShortId: string
+  getEditStore: (id: string) => void
+  setTeamData: (data: TeamstoreType) => void
+  setLoadingAction: (loading: boolean) => void
   setUserToSearch: (searchText: string) => void
   setSelectedUser: (user: string) => void
   resetDataAction: () => void
@@ -98,16 +108,27 @@ interface Props {
 }
 
 export class CreateStore extends React.Component<Props, {}> {
-  debounceSearchProduct = debounce(value => this.handleOnChange(value), 300)
+  debounceSearchProduct = debounce(value => this.handleOnChange(value), 100)
 
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
   }
 
+  async componentDidMount() {
+    const { match, getEditStore } = this.props
+    const id = get(match, 'params.id', '')
+    getEditStore(id)
+    window.scrollTo(0, 0)
+  }
+
   handleGoBack = () => {
-    const { history } = this.props
-    history.push('/admin/team-stores')
+    const { history, storeShortId } = this.props
+    if (storeShortId) {
+      history.push(`/admin/team-stores/details/${storeShortId}`)
+    } else {
+      history.push('/admin/team-stores')
+    }
   }
 
   changePage = (pageParam: number = 1) => {
@@ -234,29 +255,41 @@ export class CreateStore extends React.Component<Props, {}> {
       openLocker,
       userId,
       saving,
+      userToSearch,
+      storeShortId,
       users,
-      title,
       buildTeamStore,
       featured,
       onDemand,
       deleteItemSelectedAction,
       setItemVisibleAction,
       moveRowAction,
-      name
+      name,
+      loading
     } = this.props
+    let selected = ''
+    let title = ''
     const searchResults =
       users &&
       !users.loading &&
-      users.userSearch.map((item: UserSearchResult) => ({
-        text: `${item.id} - ${item.name} - ${item.email}`,
-        value: `${item.id} - ${item.name},${item.shortId}`
-      }))
+      users.userSearch.map((item: UserSearchResult) => {
+        const text = `${item.id} - ${item.name} - ${item.email}`
+        const value = item.shortId
+        if (item.shortId === userId) {
+          selected = text
+          title = `${item.id} - ${item.name}`
+        }
+        return {
+          text,
+          value
+        }
+      })
     const tableItems = this.getCheckedItems(items)
     return (
       <Container>
         <BackButton onClick={this.handleGoBack}>
           <Icon type="left" />
-          <FormattedMessage {...messages.back} />
+          {formatMessage(storeShortId ? messages.backToDetail : messages.back)}
         </BackButton>
         <RowInput>
           <InputDiv fullSize={true}>
@@ -277,6 +310,7 @@ export class CreateStore extends React.Component<Props, {}> {
               onSearch={this.debounceSearchProduct}
               dataSource={searchResults}
               size="large"
+              value={selected || userToSearch}
               onSelect={this.handleOnSelect}
               placeholder={formatMessage(messages.selectUserHolder)}
             >
@@ -370,7 +404,7 @@ export class CreateStore extends React.Component<Props, {}> {
           <Dragger onSelectImage={this.beforeUpload} />
         )}
         <BuildButton disabled={!name || !userId} onClick={buildTeamStore}>
-          <FormattedMessage {...messages.buildStore} />
+          {formatMessage(storeShortId ? messages.save : messages.buildStore)}
         </BuildButton>
         <LockerModal
           {...{
@@ -397,7 +431,7 @@ export class CreateStore extends React.Component<Props, {}> {
           setImage={this.setImageAction}
           image={imagePreviewUrl}
         />
-        {saving && (
+        {(saving || loading) && (
           <Loader>
             <Spin size="large" />
           </Loader>
@@ -407,4 +441,9 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 }
 
-export default CreateStore
+const CreateStoreEnhance = compose(
+  withRouter,
+  withApollo
+)(CreateStore)
+
+export default CreateStoreEnhance

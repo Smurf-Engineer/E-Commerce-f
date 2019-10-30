@@ -6,11 +6,13 @@ import {
   setTeamStoreDataAction,
   setLoadingAction,
   setImage,
-  setSavingAction
+  setSavingAction,
+  setTeamData
 } from './actions'
 import { getTeamStoreQuery } from './TeamStoreDetails/data'
 import { TeamStoreItemtype } from '../../types/common'
 import config from '../../config'
+import { getTeamStoreEdit } from './CreateStore/data'
 
 export const getTeamStore = (query: any, teamStoreId: string) => {
   return async (dispatch: any) => {
@@ -19,7 +21,7 @@ export const getTeamStore = (query: any, teamStoreId: string) => {
       const response = await query({
         query: getTeamStoreQuery,
         variables: { teamStoreId },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'no-cache'
       })
 
       response.data.teamStore.items.forEach((item: TeamStoreItemtype) => {
@@ -34,10 +36,9 @@ export const getTeamStore = (query: any, teamStoreId: string) => {
         return item.pricesByCurrency
       })
       dispatch(setTeamStoreDataAction(get(response, 'data', {})))
-      dispatch(setLoadingAction(false))
     } catch (e) {
-      dispatch(setLoadingAction(false))
       message.error(e)
+      dispatch(setLoadingAction(false))
     }
   }
 }
@@ -66,6 +67,27 @@ export const uploadBanner = (file: Blob, opened: boolean) => {
     } catch (e) {
       dispatch(setSavingAction(false))
       message.error(e)
+    }
+  }
+}
+
+export const getEditStore = (query: any, teamStoreId: string) => {
+  return async (dispatch: any) => {
+    if (teamStoreId) {
+      try {
+        const response = await query({
+          query: getTeamStoreEdit,
+          variables: { teamStoreId },
+          fetchPolicy: 'no-cache'
+        })
+        const teamStore = get(response, 'data.teamStore', {})
+        dispatch(setTeamData(teamStore))
+      } catch (e) {
+        message.error(e)
+        dispatch(setLoadingAction(false))
+      }
+    } else {
+      dispatch(setLoadingAction(false))
     }
   }
 }

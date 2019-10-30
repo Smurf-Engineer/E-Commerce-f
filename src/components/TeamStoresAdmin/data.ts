@@ -71,6 +71,21 @@ export const createStoreMutation = graphql(
   { name: 'createStore' }
 )
 
+export const updateStoreMutation = graphql(
+  gql`
+    mutation updateTeamStore($teamStore: TeamStoreInput!, $file: Upload) {
+      store: updateTeamStore(
+        teamStore: $teamStore
+        file: $file
+        isAdmin: true
+      ) {
+        message
+      }
+    }
+  `,
+  { name: 'updateStore' }
+)
+
 export const getUsers = gql`
   query GetUsersNameQuery($pattern: String!) {
     userSearch: getUserSearch(pattern: $pattern) {

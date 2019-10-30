@@ -26,7 +26,8 @@ import {
   SET_IMAGE,
   SET_SAVING_ACTION,
   SET_USER_TO_SEARCH,
-  SET_SELECTED_USER
+  SET_SELECTED_USER,
+  SET_TEAM_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -48,8 +49,11 @@ export const initialState = fromJS({
   openLocker: false,
   loading: true,
   saving: false,
-  title: '',
+  storeId: -1,
+  storeShortId: '',
+  teamSizeId: 1,
   userId: '',
+  private: false,
   userToSearch: '',
   imagePreviewUrl: '',
   cutoffDate: '',
@@ -65,6 +69,41 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
+    case SET_TEAM_DATA: {
+      const {
+        data: {
+          id,
+          shortId,
+          name,
+          banner,
+          userId,
+          cutoffDate,
+          deliveryDate,
+          privateStore,
+          featured,
+          onDemand,
+          items,
+          teamSize: { id: sizeId, size }
+        }
+      } = action
+      return state.merge({
+        storeId: id,
+        storeShortId: shortId,
+        name,
+        userId,
+        featured,
+        cutoffDate,
+        deliveryDate,
+        private: privateStore,
+        userToSearch: userId,
+        teamSizeId: sizeId,
+        teamSizeRange: size,
+        loading: false,
+        items,
+        onDemand,
+        imagePreviewUrl: banner
+      })
+    }
     case SET_NAME:
       return state.set('name', action.name)
     case SET_USER_TO_SEARCH:
@@ -77,12 +116,8 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         limit: 12,
         selectedItems: {}
       })
-    case SET_SELECTED_USER: {
-      const values = action.user.split(',')
-      const userId = values.pop()
-      const title = values.shift()
-      return state.merge({ userId, userToSearch: '', title })
-    }
+    case SET_SELECTED_USER:
+      return state.set('userId', action.user)
     case SET_FEATURED:
       return state.set('featured', action.featured)
     case SET_SAVING_ACTION:
@@ -146,12 +181,14 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ searchText: action.searchText, currentPage: 1 })
     case SET_LOADING:
       return state.set('loading', action.loading)
-    case SET_TEAM_STORE_DATA:
-      return state.withMutations((tempState: any) => {
-        const { teamStore, currencies } = action
-        tempState.merge({ teamStore, currencies })
-        return tempState
+    case SET_TEAM_STORE_DATA: {
+      const { teamStore, currencies } = action
+      return state.merge({
+        teamStore,
+        currencies,
+        loading: false
       })
+    }
     case SET_PRICE_ITEM:
       return state.updateIn(
         ['teamStore', 'items', action.itemIndex],
