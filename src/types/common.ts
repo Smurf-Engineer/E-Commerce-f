@@ -1258,6 +1258,7 @@ export interface User {
   email: string
   socialMethod: string
   administrator: boolean
+  netsuiteId?: string
 }
 
 export interface DesignSearchCode {
