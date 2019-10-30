@@ -76,5 +76,17 @@ export default defineMessages({
   fixedDate: {
     id: 'components.CreateStoreAdmin.fixedDate',
     defaultMessage: 'On Demand'
+  },
+  noUserSelected: {
+    id: 'components.CreateStoreAdmin.noUserSelected',
+    defaultMessage: 'NO USER SELECTED'
+  },
+  gotIt: {
+    id: 'components.CreateStoreAdmin.gotIt',
+    defaultMessage: 'Got it'
+  },
+  userNotSelected: {
+    id: 'components.CreateStoreAdmin.userNotSelected',
+    defaultMessage: 'To add items, you need to select a user first.'
   }
 })

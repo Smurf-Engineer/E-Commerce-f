@@ -16,13 +16,16 @@ import {
   ON_UNSELECT_ITEM,
   SET_ITEMS_ADD_ACTION,
   SET_PAGINATION_DATA,
+  SET_SAVING_ACTION,
   DELETE_ITEM_SELECTED_ACTION,
   SET_ITEM_VISIBLE_ACTION,
   MOVE_ROW,
   SET_NAME,
   SET_FEATURED,
   SET_OPEN_MODAL,
-  SET_IMAGE
+  SET_IMAGE,
+  SET_SELECTED_USER,
+  SET_USER_TO_SEARCH
 } from './constants'
 
 import {
@@ -160,14 +163,24 @@ export const openModal = (opened: boolean) => ({
   opened
 })
 
-export const setImage = (
-  file: Blob,
-  imagePreviewUrl: string,
-  opened: boolean
-) => ({
+export const setImage = (imagePreviewUrl: string, opened: boolean) => ({
   type: SET_IMAGE,
-  file,
   imagePreviewUrl,
   opened
 })
-// TODO: Add tests for the new actions once everything is complete and merged
+
+export const setSavingAction = (saving: boolean) => ({
+  type: SET_SAVING_ACTION,
+  saving
+})
+
+export const setSelectedUser = (user: string) => ({
+  type: SET_SELECTED_USER,
+  user
+})
+
+export const setUserToSearch = (searchText: string) => ({
+  type: SET_USER_TO_SEARCH,
+  searchText
+})
+// TODO: Add new tests for the new actions once everything is completed

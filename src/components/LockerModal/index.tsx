@@ -4,12 +4,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Modal from 'antd/lib/modal'
+import { FormattedMessage } from 'react-intl'
 import { desginsQuery } from './data'
 import { graphql, compose } from 'react-apollo'
 import zenscroll from 'zenscroll'
 import get from 'lodash/get'
 import Pagination from 'antd/lib/pagination'
 import Spin from 'antd/lib/spin'
+import messages from './messages'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
 import {
   QueryProps,
@@ -24,7 +26,8 @@ import {
   List,
   modalStyle,
   PaginationRow,
-  bodyStyle
+  bodyStyle,
+  NotFound
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -41,6 +44,8 @@ interface Props {
   currentPage: number
   limit: number
   proDesign?: boolean
+  title?: string
+  userId?: string
   onSelectItem: (item: SelectedDesignType, checked: boolean) => void
   onUnselectItem: (keyName: string) => void
   onRequestClose: () => void
@@ -93,35 +98,41 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       proDesign,
       currentPage,
       limit,
+      title,
       data
     } = this.props
     let screen
     if (!data.loading) {
       const { designs = [] } = data.designsResult
-
-      screen = designs.map(
-        (
-          {
-            id,
-            name,
-            image,
-            createdAt,
-            product: { id: productId, description, type },
-            product
-          }: DesignType,
-          index
-        ) => (
-          <ProductThumbnail
-            key={id}
-            checked={selectedItems[id] || tableItems[id]}
-            disabled={tableItems[id]}
-            id={index}
-            product={product}
-            onSelectItem={this.handleOnItemSelect}
-            {...{ name, image, productId, description, type, proDesign }}
-            date={createdAt}
-          />
+      screen = designs.length ? (
+        designs.map(
+          (
+            {
+              id,
+              name,
+              image,
+              createdAt,
+              product: { id: productId, description, type },
+              product
+            }: DesignType,
+            index
+          ) => (
+            <ProductThumbnail
+              key={id}
+              checked={selectedItems[id] || tableItems[id]}
+              disabled={tableItems[id]}
+              id={index}
+              product={product}
+              onSelectItem={this.handleOnItemSelect}
+              {...{ name, image, productId, description, type, proDesign }}
+              date={createdAt}
+            />
+          )
         )
+      ) : (
+        <NotFound>
+          <FormattedMessage {...messages.noDesigns} />
+        </NotFound>
       )
     } else {
       screen = <Spin />
@@ -139,7 +150,13 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         okText="ADD"
         cancelText="Cancel"
       >
-        <Title>My Locker</Title>
+        <Title>
+          {title ? (
+            <FormattedMessage {...messages.locker} values={{ title }} />
+          ) : (
+            <FormattedMessage {...messages.myLocker} />
+          )}
+        </Title>
         <List
           ref={(listObject: any) => {
             this.listRef = listObject

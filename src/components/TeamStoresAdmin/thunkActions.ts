@@ -2,9 +2,15 @@ import get from 'lodash/get'
 import message from 'antd/lib/message'
 import groupBy from 'lodash/groupBy'
 import head from 'lodash/head'
-import { setTeamStoreDataAction, setLoadingAction } from './actions'
+import {
+  setTeamStoreDataAction,
+  setLoadingAction,
+  setImage,
+  setSavingAction
+} from './actions'
 import { getTeamStoreQuery } from './TeamStoreDetails/data'
 import { TeamStoreItemtype } from '../../types/common'
+import config from '../../config'
 
 export const getTeamStore = (query: any, teamStoreId: string) => {
   return async (dispatch: any) => {
@@ -31,6 +37,34 @@ export const getTeamStore = (query: any, teamStoreId: string) => {
       dispatch(setLoadingAction(false))
     } catch (e) {
       dispatch(setLoadingAction(false))
+      message.error(e)
+    }
+  }
+}
+
+export const uploadBanner = (file: Blob, opened: boolean) => {
+  return async (dispatch: any) => {
+    dispatch(setSavingAction(true))
+    try {
+      let bannerResp = ''
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file as any, 'banner.jpeg')
+        const user = JSON.parse(localStorage.getItem('user') || '')
+        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        })
+        const { image } = await uploadResp.json()
+        bannerResp = image
+      }
+      dispatch(setImage(bannerResp, opened))
+    } catch (e) {
+      dispatch(setSavingAction(false))
       message.error(e)
     }
   }
