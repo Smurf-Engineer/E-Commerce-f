@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
-import { GRAY_DARK, RED } from '../../../theme/colors'
+import { GRAY_DARK, RED, WHITE } from '../../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -42,6 +42,21 @@ export const ScreenContent = styled.div`
     padding-right: 0px;
   }
 `
+
+export const EditButton = styled.div`
+  padding: 4px 16px;
+  font-size: 14px;
+  border: 2px solid ${RED};
+  color: ${RED};
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  &:hover {
+    background: ${RED};
+    color: ${WHITE};
+  }
+`
+
 export const ScreenTitle = styled.div`
   color: #5f6062;
   font-size: 18px;
@@ -49,6 +64,8 @@ export const ScreenTitle = styled.div`
   letter-spacing: 0.23px;
   line-height: 25px;
   text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
 `
 
 export const TeamStoreInformation = styled.div`
