@@ -10,14 +10,33 @@ import {
   SET_LOADING,
   SET_PRICE_ITEM,
   SET_TEAM_STORE_DATA,
-  SET_LOADING_ITEM
+  SET_LOADING_ITEM,
+  SET_OPEN_LOCKER_ACTION,
+  SET_ITEM_SELECTED_ACTION,
+  ON_UNSELECT_ITEM,
+  SET_ITEMS_ADD_ACTION,
+  SET_PAGINATION_DATA,
+  SET_SAVING_ACTION,
+  DELETE_ITEM_SELECTED_ACTION,
+  SET_ITEM_VISIBLE_ACTION,
+  MOVE_ROW,
+  SET_NAME,
+  SET_FEATURED,
+  SET_OPEN_MODAL,
+  SET_IMAGE,
+  SET_SELECTED_USER,
+  SET_USER_TO_SEARCH,
+  SET_TEAM_DATA
 } from './constants'
 
 import {
   AnyAction,
   sorts,
   TeamStoreAdminType,
-  Currency
+  Currency,
+  DesignType,
+  TeamstoreType,
+  LockerTableType
 } from '../../types/common'
 import { QueryProps } from 'react-apollo'
 
@@ -51,6 +70,11 @@ export const setLoadingAction = (loading: boolean) => ({
   loading
 })
 
+export const setTeamData = (data: TeamstoreType) => ({
+  type: SET_TEAM_DATA,
+  data
+})
+
 export const setPriceAction = (
   value: number,
   currency: string,
@@ -76,3 +100,94 @@ export const setLoadingItemAction = (itemIndex: string, loading: boolean) => ({
   itemIndex,
   loading
 })
+
+export const setOpenLockerAction = (isOpen: boolean): AnyAction => ({
+  type: SET_OPEN_LOCKER_ACTION,
+  isOpen
+})
+
+export const setItemSelectedAction = (
+  item: DesignType,
+  checked: boolean
+): AnyAction => ({
+  type: SET_ITEM_SELECTED_ACTION,
+  item,
+  checked
+})
+
+export const onUnselectItemAction = (keyName: string) => ({
+  type: ON_UNSELECT_ITEM,
+  keyName
+})
+
+export const setItemsAddAction = (): AnyAction => ({
+  type: SET_ITEMS_ADD_ACTION
+})
+
+export const setPaginationData = (offset: number, page: number) => ({
+  type: SET_PAGINATION_DATA,
+  offset,
+  page
+})
+
+export const deleteItemSelectedAction = (index: number): AnyAction => ({
+  type: DELETE_ITEM_SELECTED_ACTION,
+  index
+})
+
+export const setItemVisibleAction = (
+  index: number,
+  visible: boolean
+): AnyAction => ({
+  type: SET_ITEM_VISIBLE_ACTION,
+  index,
+  visible
+})
+
+export const moveRowAction = (
+  index: number,
+  hoverIndex: number,
+  row: LockerTableType
+) => ({
+  type: MOVE_ROW,
+  index,
+  hoverIndex,
+  row
+})
+
+export const setNameAction = (name: string) => ({
+  type: SET_NAME,
+  name
+})
+
+export const setFeaturedAction = (featured: boolean) => ({
+  type: SET_FEATURED,
+  featured
+})
+
+export const openModal = (opened: boolean) => ({
+  type: SET_OPEN_MODAL,
+  opened
+})
+
+export const setImage = (imagePreviewUrl: string, opened: boolean) => ({
+  type: SET_IMAGE,
+  imagePreviewUrl,
+  opened
+})
+
+export const setSavingAction = (saving: boolean) => ({
+  type: SET_SAVING_ACTION,
+  saving
+})
+
+export const setSelectedUser = (user: string) => ({
+  type: SET_SELECTED_USER,
+  user
+})
+
+export const setUserToSearch = (searchText: string) => ({
+  type: SET_USER_TO_SEARCH,
+  searchText
+})
+// TODO: Add new tests for the new actions once everything is completed
