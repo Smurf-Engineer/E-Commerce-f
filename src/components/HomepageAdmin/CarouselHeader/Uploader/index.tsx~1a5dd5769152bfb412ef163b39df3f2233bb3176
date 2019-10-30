@@ -49,7 +49,7 @@ class Uploader extends React.Component<Props, {}> {
     const { assetType } = item
     if (file) {
       const { size, name } = file
-      const sizeLimit = VIDEO_TYPE ? 50 : 20
+      const sizeLimit = assetType === VIDEO_TYPE ? 50 : 20
       if (bytesToMb(size) > sizeLimit) {
         message.error(formatMessage(messages.imageSizeError))
         return false
@@ -60,9 +60,13 @@ class Uploader extends React.Component<Props, {}> {
           assetType === VIDEO_TYPE ? videoFileExtensions : imageFileExtensions,
           (fileExtension as String).toLowerCase()
         ) === -1
+      const messageToShow =
+        assetType === VIDEO_TYPE
+          ? messages.videoExtensionError
+          : messages.imageExtensionError
 
       if (validateExtension) {
-        message.error(formatMessage(messages.imageExtensionError))
+        message.error(formatMessage(messageToShow))
         return false
       }
       onUploadFile(file, section, imageType, index)
@@ -120,8 +124,16 @@ class Uploader extends React.Component<Props, {}> {
     const preview = !isVideo ? (
       <ImagePreview src={item[ImageTypes.DESKTOP]} />
     ) : (
-      <VideoPreview autoPlay={true} loop={true}>
-        <source src={item[ImageTypes.DESKTOP]} />
+      <VideoPreview
+        autoPlay={true}
+        loop={true}
+        muted={true}
+        playsInline={true}
+        controls={true}
+        disablePictureInPicture={true}
+        controlsList="nofullscreen nodownload noremoteplayback"
+      >
+        <source src={item[ImageTypes.DESKTOP]} type="video/mp4" />
       </VideoPreview>
     )
     return (
