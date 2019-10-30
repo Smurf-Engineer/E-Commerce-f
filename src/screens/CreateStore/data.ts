@@ -6,8 +6,8 @@ import gql from 'graphql-tag'
 
 export const createStoreMutation = graphql(
   gql`
-    mutation createTeamStore($teamStore: TeamStoreInput!, $file: Upload) {
-      store: createTeamStore(teamStore: $teamStore, file: $file) {
+    mutation createTeamStore($teamStore: TeamStoreInput!) {
+      store: createTeamStore(teamStore: $teamStore) {
         shortId: short_id
         items {
           id

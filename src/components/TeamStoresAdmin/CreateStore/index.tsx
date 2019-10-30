@@ -6,7 +6,12 @@ import { FormattedMessage } from 'react-intl'
 import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
-import Select from 'antd/lib/select'
+import { RcFile } from 'antd/lib/upload/interface'
+import Select, { SelectValue } from 'antd/lib/select'
+import Modal from 'antd/lib/modal'
+import message from 'antd/lib/message'
+import Spin from 'antd/lib/spin'
+import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import messages from './messages'
 import {
@@ -24,7 +29,13 @@ import {
   PreviewImage,
   UploadSection,
   StyledDatePicker,
-  SwitchInput
+  SwitchInput,
+  InfoTitle,
+  InfoUser,
+  okButtonStyles,
+  Loader,
+  StyledSearch,
+  SearchButton
 } from './styledComponents'
 import { History } from 'history'
 import LockerTable from '../../LockerTable'
@@ -34,10 +45,15 @@ import LockerModal from '../../LockerModal'
 import {
   SelectedDesignObjectType,
   LockerTableType,
-  DesignType
+  DesignType,
+  UserSearchResult,
+  QueryProps
 } from '../../../types/common'
 const Option = Select.Option
-
+const INPUT_MAX_LENGTH = 25
+interface Data extends QueryProps {
+  userSearch: UserSearchResult[]
+}
 interface Props {
   history: History
   currentCurrency: string
@@ -51,6 +67,28 @@ interface Props {
   openLocker: boolean
   imagePreviewUrl?: string
   banner?: string
+  onDemand: boolean
+  name: string
+  featured: boolean
+  userId: string
+  saving: boolean
+  users: Data
+  title: string
+  setUserToSearch: (searchText: string) => void
+  setSelectedUser: (user: string) => void
+  resetDataAction: () => void
+  buildTeamStore: () => void
+  setImage: (file: Blob, openModal: boolean) => void
+  openModal: (opened: boolean) => void
+  setFeaturedAction: (featured: boolean) => void
+  setNameAction: (name: string) => void
+  deleteItemSelectedAction: (index: number) => void
+  setItemVisibleAction: (index: number, visible: boolean) => void
+  moveRowAction: (
+    index: number,
+    hoverIndex: number,
+    row: LockerTableType
+  ) => void
   setItemsAddAction: () => void
   setPaginationData: (offset: number, page: number) => void
   onUnselectItemAction: (index: number) => void
@@ -60,10 +98,18 @@ interface Props {
 }
 
 export class CreateStore extends React.Component<Props, {}> {
+  debounceSearchProduct = debounce(value => this.handleOnChange(value), 300)
+
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
+
   handleGoBack = () => {
     const { history } = this.props
     history.push('/admin/team-stores')
   }
+
   changePage = (pageParam: number = 1) => {
     const { limit, setPaginationData } = this.props
     let offset = pageParam > 1 ? (pageParam - 1) * limit : 0
@@ -82,13 +128,30 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   handleOnAddItem = () => {
-    const { setOpenLockerAction } = this.props
-    setOpenLockerAction(true)
+    const { setOpenLockerAction, userId, formatMessage } = this.props
+    if (userId) {
+      setOpenLockerAction(true)
+    } else {
+      Modal.info({
+        title: (
+          <InfoTitle>
+            <FormattedMessage {...messages.noUserSelected} />
+          </InfoTitle>
+        ),
+        iconType: '',
+        icon: null,
+        width: 355,
+        okButtonProps: { style: okButtonStyles },
+        okText: formatMessage(messages.gotIt),
+        content: (
+          <InfoUser>
+            <FormattedMessage {...messages.userNotSelected} />
+          </InfoUser>
+        )
+      })
+    }
   }
-  handleOnCloseLocker = () => {
-    const { setOpenLockerAction } = this.props
-    setOpenLockerAction(false)
-  }
+
   getCheckedItems = (items: LockerTableType[]) => {
     const checkedItems = items.reduce((obj, item) => {
       const itemId = get(item, 'design.id', item.id)
@@ -98,6 +161,60 @@ export class CreateStore extends React.Component<Props, {}> {
     }, {})
     return checkedItems
   }
+
+  handleOnCloseLocker = () => {
+    const { setOpenLockerAction } = this.props
+    setOpenLockerAction(false)
+  }
+
+  beforeUpload = (file: RcFile) => {
+    const { setImage } = this.props
+    if (file) {
+      setImage(file, true)
+    }
+    return false
+  }
+
+  handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { setNameAction } = this.props
+    const {
+      target: { value }
+    } = event
+    if (value.length <= INPUT_MAX_LENGTH) {
+      setNameAction(value)
+    }
+  }
+
+  handleOnChange = async (value: SelectValue) => {
+    const { setUserToSearch } = this.props
+    try {
+      const parsedValue = value.toString()
+      setUserToSearch(parsedValue.trim())
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+
+  handleOnSelect = async (value: SelectValue) => {
+    const { setSelectedUser } = this.props
+    setSelectedUser(value)
+  }
+
+  handleOnDeleteImage = () => {
+    const { setImage } = this.props
+    setImage(null, false)
+  }
+
+  closeModal = () => {
+    const { openModal } = this.props
+    openModal(false)
+  }
+
+  setImageAction = (file: Blob) => {
+    const { setImage } = this.props
+    setImage(file, false)
+  }
+
   render() {
     const {
       formatMessage,
@@ -108,14 +225,32 @@ export class CreateStore extends React.Component<Props, {}> {
       limit,
       offset,
       items,
+      setFeaturedAction,
       currentPageModal,
       onUnselectItemAction,
       setItemSelectedAction,
       selectedItems,
       setItemsAddAction,
       openLocker,
-      banner
+      userId,
+      saving,
+      users,
+      title,
+      buildTeamStore,
+      featured,
+      onDemand,
+      deleteItemSelectedAction,
+      setItemVisibleAction,
+      moveRowAction,
+      name
     } = this.props
+    const searchResults =
+      users &&
+      !users.loading &&
+      users.userSearch.map((item: UserSearchResult) => ({
+        text: `${item.id} - ${item.name} - ${item.email}`,
+        value: `${item.id} - ${item.name},${item.shortId}`
+      }))
     const tableItems = this.getCheckedItems(items)
     return (
       <Container>
@@ -128,9 +263,9 @@ export class CreateStore extends React.Component<Props, {}> {
             <FormattedMessage {...messages.teamStoreName} />
             <Input
               size="large"
-              value={''}
+              value={name}
               name="name"
-              onChange={() => {}}
+              onChange={this.handleChangeName}
               placeholder={formatMessage(messages.teamStoreNameHolder)}
             />
           </InputDiv>
@@ -138,21 +273,33 @@ export class CreateStore extends React.Component<Props, {}> {
         <RowInput>
           <InputDiv fullSize={true}>
             <FormattedMessage {...messages.selectUser} />
-            <Input
+            <StyledSearch
+              onSearch={this.debounceSearchProduct}
+              dataSource={searchResults}
               size="large"
-              value={''}
-              name="name"
-              onChange={() => {}}
+              onSelect={this.handleOnSelect}
               placeholder={formatMessage(messages.selectUserHolder)}
-            />
+            >
+              <Input
+                suffix={
+                  <SearchButton
+                    className="search-btn"
+                    size="large"
+                    type="ghost"
+                  >
+                    <Icon type="search" />
+                  </SearchButton>
+                }
+              />
+            </StyledSearch>
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.teamStoreType} />
-            <StyledSelect size="large" value={''} onChange={() => {}}>
-              <Option value="onDemand">
+            <StyledSelect size="large" value={onDemand} disabled={true}>
+              <Option value={true}>
                 <FormattedMessage {...messages.onDemand} />
               </Option>
-              <Option value="fixedDate">
+              <Option value={false}>
                 <FormattedMessage {...messages.fixedDate} />
               </Option>
             </StyledSelect>
@@ -177,7 +324,7 @@ export class CreateStore extends React.Component<Props, {}> {
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.featured} />
-            <SwitchInput checked={true} onChange={() => {}} />
+            <SwitchInput checked={featured} onChange={setFeaturedAction} />
           </InputDiv>
         </RowInput>
         <Label>
@@ -194,10 +341,9 @@ export class CreateStore extends React.Component<Props, {}> {
         <LockerTable
           {...{ formatMessage, teamSizeRange, currentCurrency, items }}
           hideQuickView={true}
-          onPressDelete={() => {}}
-          onPressQuickView={() => {}}
-          onPressVisible={() => {}}
-          onMoveRow={() => {}}
+          onPressDelete={deleteItemSelectedAction}
+          onPressVisible={setItemVisibleAction}
+          onMoveRow={moveRowAction}
         />
         <UploadSection>
           <Label>
@@ -207,23 +353,23 @@ export class CreateStore extends React.Component<Props, {}> {
             </SubLabel>
           </Label>
           <Upload
-            beforeUpload={() => {}}
+            beforeUpload={this.beforeUpload}
             multiple={false}
             showUploadList={false}
             supportServerRender={true}
           >
             <Button>{formatMessage(messages.changeLabel)}</Button>
           </Upload>
-          <ButtonDelete onClick={() => {}}>
+          <ButtonDelete onClick={this.handleOnDeleteImage}>
             {formatMessage(messages.deleteLabel)}
           </ButtonDelete>
         </UploadSection>
-        {imagePreviewUrl || banner ? (
-          <PreviewImage src={imagePreviewUrl || banner} />
+        {imagePreviewUrl ? (
+          <PreviewImage src={imagePreviewUrl} />
         ) : (
-          <Dragger onSelectImage={() => {}} />
+          <Dragger onSelectImage={this.beforeUpload} />
         )}
-        <BuildButton>
+        <BuildButton disabled={!name || !userId} onClick={buildTeamStore}>
           <FormattedMessage {...messages.buildStore} />
         </BuildButton>
         <LockerModal
@@ -231,10 +377,11 @@ export class CreateStore extends React.Component<Props, {}> {
             selectedItems,
             tableItems,
             limit,
-            offset
+            offset,
+            title,
+            userId
           }}
           proDesign={true}
-          userId={'H1R0yFr0V'}
           currentPage={currentPageModal}
           visible={openLocker}
           onRequestClose={this.handleOnCloseLocker}
@@ -244,12 +391,17 @@ export class CreateStore extends React.Component<Props, {}> {
           changePage={this.changePage}
         />
         <ImageCropper
-          {...{ formatMessage }}
+          {...{ formatMessage, saving }}
           open={openCropper}
-          requestClose={() => {}}
-          setImage={() => {}}
-          image={''}
+          requestClose={this.closeModal}
+          setImage={this.setImageAction}
+          image={imagePreviewUrl}
         />
+        {saving && (
+          <Loader>
+            <Spin size="large" />
+          </Loader>
+        )}
       </Container>
     )
   }
