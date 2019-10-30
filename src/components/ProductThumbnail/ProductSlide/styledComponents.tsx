@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 12/02/18.
  */
 import styled from 'styled-components'
+import { GRAY_DARK, GREEN_BRIGHT, WHITE } from '../../../theme/colors'
 
 type StyledProps = {
   backgroundColor?: string
@@ -149,9 +150,14 @@ export const CustomizeButton = styled.div`
   padding: 6px 16px;
 `
 
+interface ProApprovedProps {
+  proAssigned?: boolean
+}
+
 export const ProApproved = styled.div`
-  background-color: #555555;
-  color: #fff;
+  background-color: ${({ proAssigned }: ProApprovedProps) =>
+    proAssigned ? GREEN_BRIGHT : GRAY_DARK};
+  color: ${WHITE};
   padding: 5px;
   position: absolute;
   top: 5px;

@@ -47,7 +47,8 @@ import {
   DESIGN_LAB,
   DESIGN_LAB_URL,
   EDIT_NAVIGATION,
-  EDIT_NAVIGATION_URL
+  EDIT_NAVIGATION_URL,
+  PRO_DESIGN
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -62,6 +63,8 @@ import {
 } from './styledComponents'
 import { UserType } from '../../types/common'
 import Helmet from 'react-helmet'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 // const { SubMenu } = Menu
 
@@ -90,6 +93,7 @@ interface Props extends RouteComponentProps<any> {
 export class Admin extends React.Component<Props, {}> {
   componentDidMount() {
     const { setLoadingAction } = this.props
+    LoadScripts(threeDScripts)
     setLoadingAction(false)
   }
   componentWillUnmount() {
@@ -128,6 +132,9 @@ export class Admin extends React.Component<Props, {}> {
           break
         case DESIGN_LAB_URL:
           key = DESIGN_LAB
+          break
+        case PRO_DESIGN:
+          key = PRO_DESIGN
           break
         default:
           break

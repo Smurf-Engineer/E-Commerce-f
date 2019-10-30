@@ -40,6 +40,9 @@ import {
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
+
 import '../../screens/App/theme.ant'
 
 /* eslint-disable */
@@ -55,97 +58,111 @@ class Render3D extends PureComponent {
   }
 
   async componentDidMount() {
-    const { modelSize, designSearch } = this.props
-    /* Renderer config */
-    const { clientWidth, clientHeight } = this.container
-    const precision = 'highp'
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      precision,
-      preserveDrawingBuffer: true
-    })
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor(0x000000, 0)
-    renderer.setSize(clientWidth, clientHeight)
-    /* Camera */
-    const camera = new THREE.PerspectiveCamera(
-      25,
-      clientWidth / clientHeight,
-      0.1,
-      1000
-    )
-    camera.position.z = MODEL_SIZES[modelSize] || 160
-    if (designSearch) {
-      camera.position.z = 150
+    await LoadScripts(threeDScripts)
+    if (this.container) {
+      const { modelSize, designSearch } = this.props
+      /* Renderer config */
+      const { clientWidth = 0, clientHeight = 0 } = this.container
+      const precision = 'highp'
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        precision,
+        preserveDrawingBuffer: true
+      })
+      renderer.setPixelRatio(window.devicePixelRatio)
+      renderer.setClearColor(0x000000, 0)
+      renderer.setSize(clientWidth, clientHeight)
+      /* Camera */
+      const camera = new THREE.PerspectiveCamera(
+        25,
+        clientWidth / clientHeight,
+        0.1,
+        1000
+      )
+      camera.position.z = MODEL_SIZES[modelSize] || 160
+      if (designSearch) {
+        camera.position.z = 150
+      }
+      const controls = new THREE.OrbitControls(camera, renderer.domElement)
+      controls.addEventListener('change', this.lightUpdate)
+
+      controls.enableKeys = false
+      controls.minDistance = 80
+      controls.maxDistance = 350
+      controls.enableZoom = true
+      /* Scene and light */
+      const scene = new THREE.Scene()
+      const ambient = new THREE.AmbientLight(0xffffff, 0.25)
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
+      directionalLight.position.copy(camera.position)
+
+      scene.add(camera)
+      scene.add(ambient)
+      scene.add(directionalLight)
+
+      this.scene = scene
+      this.camera = camera
+      this.renderer = renderer
+      this.controls = controls
+      this.directionalLight = directionalLight
+
+      this.container.appendChild(this.renderer.domElement)
+
+      this.start()
     }
-    const controls = new THREE.OrbitControls(camera, renderer.domElement)
-    controls.addEventListener('change', this.lightUpdate)
-
-    controls.enableKeys = false
-    controls.minDistance = 80
-    controls.maxDistance = 350
-    controls.enableZoom = true
-    /* Scene and light */
-    const scene = new THREE.Scene()
-    const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
-    directionalLight.position.copy(camera.position)
-
-    scene.add(camera)
-    scene.add(ambient)
-    scene.add(directionalLight)
-
-    this.scene = scene
-    this.camera = camera
-    this.renderer = renderer
-    this.controls = controls
-    this.directionalLight = directionalLight
-
-    this.container.appendChild(this.renderer.domElement)
-
-    this.start()
   }
 
   componentWillReceiveProps(nextProps) {
     const {
       data: { loading, error, design = {} },
-      actualSvg = '',
+      actualImage = '',
       colorAccessories
     } = nextProps
     const {
       product,
       isProduct,
       data: { design: oldDesign = {} },
-      actualSvg: oldSvg = '',
+      actualImage: oldImage = '',
       colorAccessories: oldColorAccessories
     } = this.props
+    const { firstLoad } = this.state
+    const imageChanged = !isEqual(actualImage, oldImage)
+    const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories)
+
     if (isProduct && product) {
-      this.renderProduct(product)
+      if (imageChanged || accessoriesChanged || firstLoad) {
+        setTimeout(() => {
+          this.renderProduct(
+            product,
+            actualImage,
+            imageChanged,
+            colorAccessories
+          )
+        }, 200)
+      }
     } else if (!isProduct) {
-      const svgChanged = !isEqual(actualSvg, oldSvg)
       const notEqual =
-        !isEqual(design, oldDesign) ||
-        svgChanged ||
-        !isEqual(colorAccessories, oldColorAccessories)
-      const { firstLoad } = this.state
+        !isEqual(design, oldDesign) || imageChanged || accessoriesChanged
       if (!error && (notEqual || (firstLoad && !loading))) {
         if (this.renderer) {
           this.removeObject()
         }
         setTimeout(() => {
-          this.renderModel(design, actualSvg, colorAccessories, svgChanged)
+          this.renderModel(design, actualImage, colorAccessories, imageChanged)
         }, 100)
       }
     }
   }
 
   componentWillUnmount() {
-    this.stop()
-    this.clearScene()
+    if (this.scene) {
+      this.stop()
+      this.clearScene()
+    }
   }
 
-  loadTextures = (design, actualSvg, fromSvg) =>
+  loadTextures = (design, actualImage, fromImage) =>
     new Promise((resolve, reject) => {
       try {
         const {
@@ -212,17 +229,17 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign || (outputSvg && fromSvg) || isPhone) {
-          const cacheQuery = `?p=${Math.random()
-            .toString(36)
-            .substr(2, 5)}`
-          if ((actualSvg || (outputSvg && !outputPng)) && !isPhone) {
+        if (proDesign || (outputSvg && fromImage) || isPhone) {
+          if ((actualImage || (outputSvg && !outputPng)) && !isPhone) {
             const imageCanvas = document.createElement('canvas')
-            canvg(imageCanvas, `${actualSvg || outputSvg}${cacheQuery}`)
+            canvg(
+              imageCanvas,
+              `${actualImage || outputSvg}${this.getCacheQuery()}`
+            )
             loadedTextures.texture = new THREE.Texture(imageCanvas)
           } else {
             loadedTextures.texture = textureLoader.load(
-              `${outputPng}${cacheQuery}`
+              `${outputPng}${this.getCacheQuery()}`
             )
           }
           loadedTextures.texture.needsUpdate = true
@@ -329,8 +346,14 @@ class Render3D extends PureComponent {
       </Container>
     )
   }
-  renderProduct = async product => {
-    const { isPhone } = this.props
+  renderProduct = async (
+    product,
+    actualImage,
+    fromImage = false,
+    colorAccessories = {}
+  ) => {
+    const { stitchingValue, isPhone } = this.props
+
     const {
       obj,
       mtl,
@@ -346,6 +369,7 @@ class Render3D extends PureComponent {
       const mtlLoader = new THREE.MTLLoader()
       mtlLoader.load(mtl, materials => {
         this.handleOnLoadModel(true)
+
         materials.preload()
         const objLoader = new THREE.OBJLoader()
         objLoader.setMaterials(materials)
@@ -359,6 +383,7 @@ class Render3D extends PureComponent {
               return index < 0 ? 0 : index
             }
             const meshIndex = getMeshIndex(MESH)
+
             const textureLoader = new THREE.TextureLoader()
 
             /* Stitching */
@@ -367,7 +392,7 @@ class Render3D extends PureComponent {
               const flatlockIndex = getMeshIndex(FLATLOCK)
               const flatlockMaterial = new THREE.MeshLambertMaterial({
                 alphaMap: flatlockObj,
-                color: '#000000'
+                color: stitchingValue || BLACK
               })
               flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
               flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
@@ -376,7 +401,11 @@ class Render3D extends PureComponent {
             }
             /* Zipper */
             if (!!zipper) {
-              const texture = zipper.black || zipper.white
+              const zipperColor = zipper.black || zipper.white
+
+              const texture =
+                zipper[colorAccessories.zipperColor || zipperColor]
+
               const zipperObj = textureLoader.load(texture)
               zipperObj.minFilter = THREE.LinearFilter
               const zipperIndex = getMeshIndex(ZIPPER)
@@ -387,7 +416,11 @@ class Render3D extends PureComponent {
             }
             /* Binding */
             if (!!binding) {
-              const texture = binding[Object.keys(binding)[0]]
+              const texture =
+                binding[
+                  colorAccessories.bindingColor || Object.keys(binding)[0]
+                ]
+
               const bindingObj = textureLoader.load(texture)
               bindingObj.minFilter = THREE.LinearFilter
               const bindingIndex = getMeshIndex(BINDING)
@@ -396,9 +429,11 @@ class Render3D extends PureComponent {
               })
               children[bindingIndex].material = bindingMaterial
             }
+
             /* Bib Brace */
             if (!!bibBrace) {
-              const texture = bibBrace[Object.keys(bibBrace)[0]]
+              const texture =
+                bibBrace[colorAccessories.bibColor || Object.keys(bibBrace)[0]]
               const bibBraceObj = textureLoader.load(texture)
               bibBraceObj.minFilter = THREE.LinearFilter
               const bibBraceIndex = getMeshIndex(BIB_BRACE)
@@ -414,8 +449,17 @@ class Render3D extends PureComponent {
               color: BLACK
             })
             const bumpMapObj = textureLoader.load(bumpMap)
+
+            let textureSvg
+            if (actualImage && fromImage) {
+              textureSvg = textureLoader.load(
+                `${actualImage}${this.getCacheQuery()}`
+              )
+            }
+
             const frontMaterial = new THREE.MeshPhongMaterial({
               color: 0xdbdde0,
+              map: textureSvg,
               side: THREE.FrontSide,
               bumpMap: bumpMapObj
             })
@@ -481,17 +525,20 @@ class Render3D extends PureComponent {
   }
   renderModel = async (
     design,
-    actualSvg,
+    actualImage,
     colorAccessories,
-    fromSvg = false
+    fromImage = false
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
-
     const { stitchingValue, isPhone } = this.props
     if (design.canvas && isPhone) {
       await this.getFontsFromCanvas(design.canvas)
     }
-    const loadedTextures = await this.loadTextures(design, actualSvg, fromSvg)
+    const loadedTextures = await this.loadTextures(
+      design,
+      actualImage,
+      fromImage
+    )
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
     mtlLoader.load(product.mtl, materials => {
@@ -572,7 +619,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign && !fromSvg && !isPhone) {
+          if (!proDesign && !fromImage && !isPhone) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -597,7 +644,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-          if (!proDesign && !fromSvg && !isPhone) {
+          if (!proDesign && !fromImage && !isPhone) {
             areas.forEach(
               (map, index) =>
                 (children[
@@ -812,6 +859,11 @@ class Render3D extends PureComponent {
     }
   }
 
+  getCacheQuery = () =>
+    `?p=${Math.random()
+      .toString(36)
+      .substr(2, 5)}`
+
   removeObject = () => {
     const object = this.scene.getObjectByName(MESH_NAME)
     if (!!object) {
@@ -857,12 +909,21 @@ class Render3D extends PureComponent {
       onUploadingThumbnail(false)
     }
   }
+  saveProDesignThumbnail = async () => {
+    this.setFrontFaceModel()
+    try {
+      const thumbnail = await this.takeScreenshot()
+      return thumbnail
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }
 
 const Render3DWithData = compose(
   graphql(designQuery, {
-    options: ({ designId, actualSvg }) => ({
-      variables: { designId, actualSvg },
+    options: ({ designId }) => ({
+      variables: { designId },
       fetchPolicy: 'network-only'
     }),
     withRef: true

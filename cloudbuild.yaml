@@ -1,11 +1,11 @@
 steps:
-- name: gcr.io/$PROJECT_ID/helm
-  args: ['upgrade','${_RELEASE_NAME}','--install', '.']
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CONTAINER_CLUSTER}'
+  - name: gcr.io/$PROJECT_ID/helm
+    args: ["install", "--name", "${_RELEASE_NAME}", "."]
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_CONTAINER_CLUSTER}"
 substitutions:
-    _RELEASE_NAME: test
-    _COMPUTE_ZONE: us-central1-f
-    _CONTAINER_CLUSTER: development
-logsBucket: 'gs://jv2-design-center_cloudbuild/'
+  _RELEASE_NAME: test
+  _COMPUTE_ZONE: us-central1-f
+  _CONTAINER_CLUSTER: development
+logsBucket: "gs://jv2-design-center_cloudbuild/"

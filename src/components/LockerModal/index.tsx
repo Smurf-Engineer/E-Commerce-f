@@ -98,7 +98,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     let screen
     if (!data.loading) {
       const { designs = [] } = data.designsResult
-
       screen = designs.map(
         (
           {
