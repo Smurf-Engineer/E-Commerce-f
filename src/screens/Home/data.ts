@@ -8,15 +8,26 @@ import gql from 'graphql-tag'
 export const getHomepageInfo = gql`
   query getHomepageContent($sportRoute: String) {
     getHomepageContent(sportRoute: $sportRoute) {
-      headerImageMobile: header_image_mobile
-      headerImage: header_image
-      headerImageLink: header_image_link
+      mainHeaderImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
+        assetType: type
+      }
+      carouselSettings {
+        slideTransition: slide_transition
+        slideDuration: slide_duration
+        secondarySlideTransition: secondary_slide_transition
+        secondarySlideDuration: secondary_slide_duration
+      }
       title
       homepageImages {
         id
         desktopImage: image
         mobileImage: image_mobile
         url: link
+        assetType: type
       }
       featuredProducts {
         id
