@@ -5,13 +5,15 @@ import * as React from 'react'
 import Cropper from 'react-easy-crop'
 import message from 'antd/lib/message'
 import { Location, Area } from 'react-easy-crop'
-import { SaveButton, Text, CropperContainer } from './styledComponents'
+import { SaveButton, Text, CropperContainer, Loader } from './styledComponents'
 import messages from './messages'
 import Modal from '../../components/Common/JakrooModal'
 import getCroppedImg from '../../utils/utilsFiles'
+import Spin from 'antd/lib/spin'
 
 interface Props {
   image: string
+  saving?: boolean
   setImage: (image: Blob) => void
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
@@ -25,7 +27,7 @@ class ImageCropper extends React.Component<Props, {}> {
     croppedAreaPixels: null
   }
   render() {
-    const { open, requestClose, image, formatMessage } = this.props
+    const { open, requestClose, image, formatMessage, saving } = this.props
     const { crop, zoom, aspect } = this.state
     return (
       <Modal
@@ -49,6 +51,11 @@ class ImageCropper extends React.Component<Props, {}> {
         <SaveButton onClick={this.cropImage}>
           {formatMessage(messages.save)}
         </SaveButton>
+        {saving && (
+          <Loader>
+            <Spin size="large" />
+          </Loader>
+        )}
       </Modal>
     )
   }

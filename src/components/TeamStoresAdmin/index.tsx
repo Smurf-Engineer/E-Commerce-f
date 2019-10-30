@@ -5,14 +5,16 @@ import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
 import {
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
-  setTeamStoreDisplayMutation
+  setTeamStoreDisplayMutation,
+  createStoreMutation,
+  getUsers
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import CreateStore from './CreateStore'
@@ -30,7 +32,13 @@ import {
   sorts,
   Message,
   Currency,
-  TeamStoreAdminType
+  TeamStoreAdminType,
+  SelectedDesignObjectType,
+  LockerTableType,
+  DesignType,
+  SelectedDesignType,
+  UserSearchResult,
+  QueryProps
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
 
@@ -59,6 +67,45 @@ interface Props {
   loading: boolean
   teamStore: TeamStoreAdminType
   currencies: Currency[]
+  items: LockerTableType[]
+  limit: number
+  offset: number
+  currentPageModal: number
+  selectedItems: SelectedDesignObjectType
+  openLocker: boolean
+  onDemand: boolean
+  name: string
+  featured: boolean
+  imagePreviewUrl: string
+  userId: string
+  saving: boolean
+  cutoffDate: string
+  deliveryDate: string
+  users: Data
+  title: string
+  resetForm: () => void
+  setUserToSearch: (searchText: string) => void
+  setSelectedUser: (user: string) => void
+  createStore: (variables: {}) => void
+  setSavingAction: (saving: boolean) => void
+  setLoading: (loading: boolean) => void
+  uploadBanner: (file: Blob, openModal: boolean) => void
+  setImage: (imagePreviewUrl: string, openModal: boolean) => void
+  openModal: (opened: boolean) => void
+  setFeaturedAction: (featured: boolean) => void
+  setNameAction: (name: string) => void
+  deleteItemSelectedAction: (index: number) => void
+  setItemVisibleAction: (index: number, visible: boolean) => void
+  moveRowAction: (
+    index: number,
+    hoverIndex: number,
+    row: LockerTableType
+  ) => void
+  setItemsAddAction: () => void
+  setPaginationData: (offset: number, page: number) => void
+  setItemSelectedAction: (item: DesignType, checked: boolean) => void
+  onUnselectItemAction: (keyName: string) => void
+  setOpenLockerAction: (open: boolean) => void
   formatMessage: (messageDescriptor: Message, params?: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -70,6 +117,10 @@ interface Props {
   setTeamStorePrices: (variables: {}) => void
   setLoadingItemAction: (itemIndex: string, loading: boolean) => void
   setTeamStoreDisplay: (variables: {}) => void
+}
+
+interface Data extends QueryProps {
+  userSearch: UserSearchResult[]
 }
 
 interface StateProps {
@@ -103,6 +154,35 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setPriceAction,
       teamStore,
       currencies,
+      setItemSelectedAction,
+      onUnselectItemAction,
+      selectedItems,
+      setItemsAddAction,
+      setPaginationData,
+      currentPageModal,
+      setOpenLockerAction,
+      deleteItemSelectedAction,
+      setNameAction,
+      uploadBanner,
+      title,
+      imagePreviewUrl,
+      setItemVisibleAction,
+      setFeaturedAction,
+      moveRowAction,
+      saving,
+      userId,
+      users,
+      resetDataAction,
+      name,
+      onDemand,
+      featured,
+      openModal,
+      limit,
+      setUserToSearch,
+      setSelectedUser,
+      openLocker,
+      offset,
+      items,
       loading
     } = this.props
 
@@ -156,10 +236,40 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               {...{
                 formatMessage,
                 history,
+                setOpenLockerAction,
+                selectedItems,
+                currentPageModal,
+                setPaginationData,
+                openLocker,
+                resetDataAction,
+                limit,
+                userId,
+                saving,
+                onDemand,
+                featured,
+                setNameAction,
+                title,
+                name,
+                setUserToSearch,
+                setSelectedUser,
+                openModal,
+                setItemsAddAction,
+                imagePreviewUrl,
+                setItemSelectedAction,
+                onUnselectItemAction,
+                deleteItemSelectedAction,
+                setItemVisibleAction,
+                setFeaturedAction,
+                moveRowAction,
+                items,
+                users,
+                offset,
                 teamSizeRange,
                 currentCurrency,
                 openCropper
               }}
+              setImage={uploadBanner}
+              buildTeamStore={this.buildTeamStore}
             />
           )}
         />
@@ -276,6 +386,51 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.unexpectedError))
     }
   }
+
+  buildTeamStore = async () => {
+    const {
+      setSavingAction,
+      items,
+      imagePreviewUrl,
+      name,
+      onDemand,
+      userId,
+      history,
+      featured,
+      createStore,
+      cutoffDate,
+      deliveryDate
+    } = this.props
+    try {
+      const itemsToSave = items.map((item: SelectedDesignType) => ({
+        design_id: item.design.shortId,
+        visible: item.visible
+      }))
+      setSavingAction(true)
+      const teamStore = {
+        name,
+        featured,
+        cutoffDate,
+        deliveryDate,
+        teamsizeId: 1,
+        private: false,
+        user_id: userId,
+        items: itemsToSave,
+        banner: imagePreviewUrl,
+        demandMode: onDemand
+      }
+      await createStore({
+        variables: { teamStore }
+      })
+      history.push('/admin/team-stores')
+    } catch (error) {
+      message.error(
+        `Something wrong happened. Please try again! ${error.message}`
+      )
+      setSavingAction(false)
+    }
+  }
+
   handleOnSetDisplay = async (id: number) => {
     const {
       setTeamStoreDisplay,
@@ -320,6 +475,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   }
 }
 
+type OwnProps = {
+  userToSearch?: string
+}
+
 const mapStateToProps = (state: any) => {
   const teamStoresAdmin = state.get('teamStoresAdmin').toJS()
   const langProps = state.get('languageProvider').toJS()
@@ -330,11 +489,25 @@ const TeamStoresAdminEnhance = compose(
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
   setTeamStoreDisplayMutation,
+  createStoreMutation,
   withApollo,
   connect(
     mapStateToProps,
     { ...TeamStoresActions, ...ThunkActions }
-  )
+  ),
+  graphql<Data>(getUsers, {
+    options: (ownprops: OwnProps) => {
+      const { userToSearch } = ownprops
+      return {
+        variables: {
+          pattern: userToSearch
+        },
+        skip: !userToSearch,
+        fetchPolicy: 'network-only'
+      }
+    },
+    name: 'users'
+  })
 )(TeamStoresAdmin)
 
 export default TeamStoresAdminEnhance

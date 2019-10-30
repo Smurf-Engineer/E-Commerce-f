@@ -3,11 +3,24 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Select from 'antd/lib/select'
+import DatePicker from 'antd/lib/date-picker'
+import Switch from 'antd/lib/switch'
+import Search from 'antd/lib/auto-complete'
 import InputComponent from 'antd/lib/input'
-import { GRAY_STRONG, BLUE, WHITE, RED } from '../../../theme/colors'
+import {
+  GRAY_STRONG,
+  BLUE,
+  WHITE,
+  RED,
+  GRAY_DARK,
+  GRAY_SKELETON,
+  WHITE_TRANSPARENT
+} from '../../../theme/colors'
 
 interface DivProps {
   fullSize?: boolean
+  disabled?: boolean
 }
 
 export const Container = styled.div`
@@ -39,6 +52,26 @@ export const InputDiv = styled.div`
 export const Input = styled(InputComponent)`
   border-radius: 0;
   margin-top: 6px;
+`
+
+export const StyledSelect = styled(Select)`
+  margin-top: 6px;
+  width: 100%;
+  .ant-select-selection {
+    border-radius: 0;
+  }
+`
+
+export const StyledDatePicker = styled(DatePicker)`
+  margin-top: 6px;
+  width: 100%;
+  input {
+    border-radius: 0;
+  }
+`
+
+export const SwitchInput = styled(Switch)`
+  margin-top: 14px;
 `
 
 export const Label = styled.div`
@@ -93,17 +126,66 @@ export const PreviewImage = styled.img`
   margin-bottom: 16px;
 `
 
-export const BuildButton = styled.div`
+export const BuildButton = styled.button`
   color: ${WHITE};
   font-family: 'Avenir Next';
   font-size: 16px;
   width: 220.37px;
+  transition: all 0.25s ease;
+  border: none;
   border-radius: 2px;
-  background-color: ${BLUE};
+  background-color: ${({ disabled }: DivProps) =>
+    disabled ? GRAY_SKELETON : BLUE};
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 24px;
-  cursor: pointer;
+  cursor: ${({ disabled }: DivProps) => (disabled ? 'not-allowed' : 'pointer')};
 `
+
+export const InfoTitle = styled.div`
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  color: ${GRAY_DARK};
+`
+
+export const InfoUser = styled.div`
+  margin-left: -36px;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  color: ${GRAY_DARK};
+`
+
+export const Loader = styled.div`
+  height: 100vh;
+  position: fixed;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  background: ${WHITE_TRANSPARENT};
+`
+
+export const StyledSearch = styled(Search)`
+  width: 100%;
+  .ant-select-selection__rendered {
+    line-height: 50px !important;
+  }
+`
+
+export const SearchButton = styled(Button)`
+  height: 100%;
+  border: none;
+  width: 35px;
+`
+
+export const okButtonStyles = {
+  background: BLUE,
+  border: 'none',
+  borderRadius: '2px'
+}

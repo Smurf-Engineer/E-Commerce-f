@@ -1196,5 +1196,12 @@
   "screens.ProDesign.name": "Name",
   "screens.ProDesign.legacyNumber": "Legacy Number",
   "screens.ProDesign.legacySample": "Ex. BRBR-123456789",
-  "components.ProductThumbnail.ProductSlide.proAssigned": "PRODESIGN"
+  "components.ProductThumbnail.ProductSlide.proAssigned": "PRODESIGN",
+  "components.CreateStoreAdmin.noUserSelected": "NO USER SELECTED",
+  "components.CreateStoreAdmin.gotIt": "Got it",
+  "components.CreateStoreAdmin.userNotSelected": "To add items, you need to select a user first.",
+  "components.LockerModal.title": "Locker Modal",
+  "components.LockerModal.myLocker": "My Locker",
+  "components.LockerModal.locker": "{title} Locker",
+  "components.LockerModal.noDesigns": "No designs found."
 }
