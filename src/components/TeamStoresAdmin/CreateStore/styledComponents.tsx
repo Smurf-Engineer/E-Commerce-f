@@ -6,6 +6,7 @@ import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
 import DatePicker from 'antd/lib/date-picker'
 import Switch from 'antd/lib/switch'
+import Search from 'antd/lib/auto-complete'
 import InputComponent from 'antd/lib/input'
 import {
   GRAY_STRONG,
@@ -166,8 +167,21 @@ export const Loader = styled.div`
   align-items: center;
   left: 0;
   top: 0;
-  z-index: 2;
+  z-index: 3;
   background: ${WHITE_TRANSPARENT};
+`
+
+export const StyledSearch = styled(Search)`
+  width: 100%;
+  .ant-select-selection__rendered {
+    line-height: 50px !important;
+  }
+`
+
+export const SearchButton = styled(Button)`
+  height: 100%;
+  border: none;
+  width: 35px;
 `
 
 export const okButtonStyles = {

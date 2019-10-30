@@ -26,7 +26,8 @@ import {
   List,
   modalStyle,
   PaginationRow,
-  bodyStyle
+  bodyStyle,
+  NotFound
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -103,30 +104,35 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     let screen
     if (!data.loading) {
       const { designs = [] } = data.designsResult
-
-      screen = designs.map(
-        (
-          {
-            id,
-            name,
-            image,
-            createdAt,
-            product: { id: productId, description, type },
-            product
-          }: DesignType,
-          index
-        ) => (
-          <ProductThumbnail
-            key={id}
-            checked={selectedItems[id] || tableItems[id]}
-            disabled={tableItems[id]}
-            id={index}
-            product={product}
-            onSelectItem={this.handleOnItemSelect}
-            {...{ name, image, productId, description, type, proDesign }}
-            date={createdAt}
-          />
+      screen = designs.length ? (
+        designs.map(
+          (
+            {
+              id,
+              name,
+              image,
+              createdAt,
+              product: { id: productId, description, type },
+              product
+            }: DesignType,
+            index
+          ) => (
+            <ProductThumbnail
+              key={id}
+              checked={selectedItems[id] || tableItems[id]}
+              disabled={tableItems[id]}
+              id={index}
+              product={product}
+              onSelectItem={this.handleOnItemSelect}
+              {...{ name, image, productId, description, type, proDesign }}
+              date={createdAt}
+            />
+          )
         )
+      ) : (
+        <NotFound>
+          <FormattedMessage {...messages.noDesigns} />
+        </NotFound>
       )
     } else {
       screen = <Spin />
@@ -145,7 +151,11 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         cancelText="Cancel"
       >
         <Title>
-          {title ? title : <FormattedMessage {...messages.myLocker} />}
+          {title ? (
+            <FormattedMessage {...messages.locker} values={{ title }} />
+          ) : (
+            <FormattedMessage {...messages.myLocker} />
+          )}
         </Title>
         <List
           ref={(listObject: any) => {

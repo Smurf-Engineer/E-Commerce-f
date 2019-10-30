@@ -5,7 +5,7 @@ import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
@@ -13,7 +13,8 @@ import {
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
   setTeamStoreDisplayMutation,
-  createStoreMutation
+  createStoreMutation,
+  getUsers
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import CreateStore from './CreateStore'
@@ -35,10 +36,11 @@ import {
   SelectedDesignObjectType,
   LockerTableType,
   DesignType,
-  SelectedDesignType
+  SelectedDesignType,
+  UserSearchResult,
+  QueryProps
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
-import config from '../../config'
 
 interface Props {
   history: any
@@ -77,14 +79,18 @@ interface Props {
   imagePreviewUrl: string
   userId: string
   saving: boolean
-  file: Blob
   cutoffDate: string
   deliveryDate: string
+  users: Data
+  title: string
   resetForm: () => void
+  setUserToSearch: (searchText: string) => void
+  setSelectedUser: (user: string) => void
   createStore: (variables: {}) => void
   setSavingAction: (saving: boolean) => void
   setLoading: (loading: boolean) => void
-  setImage: (file: Blob, imagePreviewUrl: string, openModal: boolean) => void
+  uploadBanner: (file: Blob, openModal: boolean) => void
+  setImage: (imagePreviewUrl: string, openModal: boolean) => void
   openModal: (opened: boolean) => void
   setFeaturedAction: (featured: boolean) => void
   setNameAction: (name: string) => void
@@ -107,6 +113,10 @@ interface Props {
   setTeamStorePrices: (variables: {}) => void
   setLoadingItemAction: (itemIndex: string, loading: boolean) => void
   setTeamStoreDisplay: (variables: {}) => void
+}
+
+interface Data extends QueryProps {
+  userSearch: UserSearchResult[]
 }
 
 interface StateProps {
@@ -149,19 +159,23 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       setOpenLockerAction,
       deleteItemSelectedAction,
       setNameAction,
-      setImage,
+      uploadBanner,
+      title,
       imagePreviewUrl,
       setItemVisibleAction,
       setFeaturedAction,
       moveRowAction,
       saving,
       userId,
+      users,
       resetDataAction,
       name,
       onDemand,
       featured,
       openModal,
       limit,
+      setUserToSearch,
+      setSelectedUser,
       openLocker,
       offset,
       items,
@@ -230,8 +244,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 onDemand,
                 featured,
                 setNameAction,
+                title,
                 name,
-                setImage,
+                setUserToSearch,
+                setSelectedUser,
                 openModal,
                 setItemsAddAction,
                 imagePreviewUrl,
@@ -242,11 +258,13 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 setFeaturedAction,
                 moveRowAction,
                 items,
+                users,
                 offset,
                 teamSizeRange,
                 currentCurrency,
                 openCropper
               }}
+              setImage={uploadBanner}
               buildTeamStore={this.buildTeamStore}
             />
           )}
@@ -369,7 +387,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
     const {
       setSavingAction,
       items,
-      file,
+      imagePreviewUrl,
       name,
       onDemand,
       userId,
@@ -380,27 +398,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       deliveryDate
     } = this.props
     try {
-      let bannerResp = ''
       const itemsToSave = items.map((item: SelectedDesignType) => ({
         design_id: item.design.shortId,
         visible: item.visible
       }))
       setSavingAction(true)
-      if (file) {
-        const formData = new FormData()
-        formData.append('file', file as any, 'banner.jpeg')
-        const user = JSON.parse(localStorage.getItem('user') || '')
-        const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${user.token}`
-          },
-          body: formData
-        })
-        const { image } = await uploadResp.json()
-        bannerResp = image
-      }
       const teamStore = {
         name,
         featured,
@@ -410,7 +412,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
         private: false,
         user_id: userId,
         items: itemsToSave,
-        banner: bannerResp,
+        banner: imagePreviewUrl,
         demandMode: onDemand
       }
       await createStore({
@@ -469,6 +471,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   }
 }
 
+type OwnProps = {
+  userToSearch?: string
+}
+
 const mapStateToProps = (state: any) => {
   const teamStoresAdmin = state.get('teamStoresAdmin').toJS()
   const langProps = state.get('languageProvider').toJS()
@@ -484,7 +490,20 @@ const TeamStoresAdminEnhance = compose(
   connect(
     mapStateToProps,
     { ...TeamStoresActions, ...ThunkActions }
-  )
+  ),
+  graphql<Data>(getUsers, {
+    options: (ownprops: OwnProps) => {
+      const { userToSearch } = ownprops
+      return {
+        variables: {
+          pattern: userToSearch
+        },
+        skip: !userToSearch,
+        fetchPolicy: 'network-only'
+      }
+    },
+    name: 'users'
+  })
 )(TeamStoresAdmin)
 
 export default TeamStoresAdminEnhance

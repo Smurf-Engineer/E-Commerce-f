@@ -23,7 +23,9 @@ import {
   SET_NAME,
   SET_FEATURED,
   SET_OPEN_MODAL,
-  SET_IMAGE
+  SET_IMAGE,
+  SET_SELECTED_USER,
+  SET_USER_TO_SEARCH
 } from './constants'
 
 import {
@@ -156,13 +158,8 @@ export const openModal = (opened: boolean) => ({
   opened
 })
 
-export const setImage = (
-  file: Blob,
-  imagePreviewUrl: string,
-  opened: boolean
-) => ({
+export const setImage = (imagePreviewUrl: string, opened: boolean) => ({
   type: SET_IMAGE,
-  file,
   imagePreviewUrl,
   opened
 })
@@ -170,5 +167,15 @@ export const setImage = (
 export const setSavingAction = (saving: boolean) => ({
   type: SET_SAVING_ACTION,
   saving
+})
+
+export const setSelectedUser = (user: string) => ({
+  type: SET_SELECTED_USER,
+  user
+})
+
+export const setUserToSearch = (searchText: string) => ({
+  type: SET_USER_TO_SEARCH,
+  searchText
 })
 // TODO: Add new tests for the new actions once everything is completed
