@@ -59,7 +59,8 @@ import {
   CartItemDetail,
   ProductFile,
   PriceRange,
-  UserType
+  UserType,
+  BreadRoute
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -74,6 +75,7 @@ import config from '../../config/index'
 import { ProductGenders } from '../ProductDetail/constants'
 import YotpoSection from '../../components/YotpoSection'
 import { BLUE, GRAY_DARK } from '../../theme/colors'
+import BreadCrumbs from '../../components/BreadCrumbs'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
@@ -160,6 +162,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designCode = get(design, 'code', '')
     const teamPrice = get(design, 'teamPrice', '')
     const teamEnable = get(design, 'teamEnable', '')
+    const teamName = get(design, 'teamName', '')
     const proDesign = get(design, 'proDesign', false)
     const {
       images: imagesArray,
@@ -397,10 +400,31 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         </ProductInfo>
       </div>
     )
-
+    const routes: BreadRoute[] = [
+      {
+        url: '/',
+        label: 'Home'
+      }
+    ]
+    if (teamStoreShortId) {
+      routes.push({
+        url: `/store-front?storeId=${teamStoreShortId}`,
+        label: teamName
+      })
+    } else if (ownedDesign) {
+      routes.push({
+        url: '/account?option=myLocker',
+        label: 'My Locker'
+      })
+    }
+    routes.push({
+      selected: true,
+      label: designName
+    })
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Container>
+          <BreadCrumbs {...{ history, formatMessage, routes }} />
           {design && (
             <Content>
               <ImagePreview>

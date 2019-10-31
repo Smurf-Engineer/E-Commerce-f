@@ -87,6 +87,13 @@ export interface GenderType {
   gender?: string
 }
 
+export type BreadRoute = {
+  label: string
+  url?: string
+  icon?: string
+  selected?: boolean
+}
+
 export type HomePageBatch = {
   method: string
   result: string

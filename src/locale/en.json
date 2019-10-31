@@ -943,6 +943,8 @@
   "screens.ProductDetail.femaleGenderLabel": "Available for Women",
   "screens.ProductDetail.maleGenderLabel": "Available for Men",
   "screens.ProductDetail.unisexGenderLabel": "Available for Men and Women",
+  "screens.ProductDetail.productCatalog": "Product Catalog",
+  "screens.ProductDetail.designCenter": "Design Center",
   "components.TeamDragger.tittle": "Click or drag files to this area",
   "components.TeamDragger.files": "Files in .eps .ai .svg .tiff .pdf .jpg",
   "components.TeamDragger.size": "20 MB max",

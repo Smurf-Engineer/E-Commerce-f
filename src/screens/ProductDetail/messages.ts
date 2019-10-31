@@ -104,5 +104,13 @@ export default defineMessages({
   unisexGenderLabel: {
     id: 'screens.ProductDetail.unisexGenderLabel',
     defaultMessage: 'Available for Men and Women'
+  },
+  productCatalog: {
+    id: 'screens.ProductDetail.productCatalog',
+    defaultMessage: 'Product Catalog'
+  },
+  designCenter: {
+    id: 'screens.ProductDetail.designCenter',
+    defaultMessage: 'Design Center'
   }
 })
