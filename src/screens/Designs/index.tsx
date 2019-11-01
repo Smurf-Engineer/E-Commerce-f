@@ -22,6 +22,8 @@ import {
   // Model,
   // QuickView
 } from './styledComponents'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 interface Data extends QueryProps {
   design: DesignSaved
@@ -39,6 +41,13 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class Designs extends React.Component<Props, {}> {
+  async componentDidMount() {
+    await LoadScripts(threeDScripts, this.handleModelLoaded)
+  }
+  handleModelLoaded = () => {
+    const { setLoadingAction } = this.props
+    setLoadingAction(false)
+  }
   handleOnPressBack = () => {
     window.location.replace('/')
   }
@@ -54,8 +63,7 @@ export class Designs extends React.Component<Props, {}> {
   // }
 
   render() {
-    const { location, fontsData, phone } = this.props
-
+    const { location, fontsData, phone, loadingModel } = this.props
     const { search } = location
     const queryParams = queryString.parse(search)
     const designId = queryParams.id || ''
@@ -78,7 +86,7 @@ export class Designs extends React.Component<Props, {}> {
         {installedFonts.length ? (
           <GoogleFontLoader fonts={installedFonts} />
         ) : null}
-        <ThreeD {...{ designId }} isPhone={phone} />
+        {!loadingModel && <ThreeD {...{ designId }} isPhone={phone} />}
       </Container>
     )
   }
