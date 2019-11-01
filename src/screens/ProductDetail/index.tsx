@@ -527,8 +527,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
-        <BreadCrumbs {...{ history, formatMessage, routes }} />
         <Container>
+          <BreadCrumbs {...{ history, formatMessage, routes }} />
           {product && (
             <Content>
               <ImagePreview>
