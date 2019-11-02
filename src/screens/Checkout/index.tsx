@@ -54,7 +54,8 @@ import {
   CreditCardData,
   TaxAddressObj,
   ItemDetailType,
-  CouponCode
+  CouponCode,
+  PaymentIntent
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -146,8 +147,9 @@ interface Props extends RouteComponentProps<any> {
   couponCode?: CouponCode
   openCurrencyWarning: boolean
   paymentClientSecret: string
+  intentId: string
   // Redux actions
-  setStripeCardDataAction: (card: CreditCardData) => void
+  setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setStripeIbanDataAction: (iban: IbanData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -186,8 +188,9 @@ interface Props extends RouteComponentProps<any> {
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
-  createPaymentIntent: () => Promise<any>
-  savePaymentId: (paymentId: string) => void
+  createPaymentIntent: (variables: {}) => Promise<any>
+  savePaymentId: (paymentIntent: PaymentIntent) => void
+  removeClientSecretAction: () => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -195,20 +198,6 @@ const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
   state = {
     stripe: null
-  }
-  async componentDidMount() {
-    const { createPaymentIntent, savePaymentId } = this.props
-    try {
-      const response = await createPaymentIntent()
-      const paymentClientSecret = get(
-        response,
-        'data.createPaymentIntent.paymentClientSecret',
-        ''
-      )
-      await savePaymentId(paymentClientSecret)
-    } catch (e) {
-      message.error(e)
-    }
   }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -267,7 +256,6 @@ class Checkout extends React.Component<Props, {}> {
       setStripeErrorAction,
       setIbanErrorAction,
       setLoadingBillingAction,
-      setStripeCardDataAction,
       setStripeIbanDataAction,
       setPaymentMethodAction,
       paymentMethod,
@@ -342,6 +330,10 @@ class Checkout extends React.Component<Props, {}> {
       shoppingCart,
       currentCurrency || config.defaultCurrency
     )
+    const paymentIntentLoading = /* paymentMethod === PaymentOptions.CREDITCARD &&
+      currentStep === 2 &&
+      !paymentClientSecret.length */ false
+
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
@@ -429,7 +421,6 @@ class Checkout extends React.Component<Props, {}> {
                     invalidBillingFormAction,
                     loadingBilling,
                     setLoadingBillingAction,
-                    setStripeCardDataAction,
                     setStripeIbanDataAction,
                     setPaymentMethodAction,
                     saveCountryAction,
@@ -447,13 +438,14 @@ class Checkout extends React.Component<Props, {}> {
                     showBillingAddressFormAction,
                     paymentClientSecret
                   }}
+                  setStripeCardDataAction={this.setStripeCardDataAction}
                   showContent={currentStep === PaymentTab}
                   setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
                   nextStep={this.nextStep}
                   setStripeAction={this.setStripe}
-                  createPreOrder={this.createPreOrder}
+                  createPaymentIntent={this.createPaymentIntent}
                 />
                 <Review
                   {...{
@@ -500,7 +492,8 @@ class Checkout extends React.Component<Props, {}> {
               />
             </SummaryContainer>
           </Content>
-          {(loadingPlaceOrder || !paymentClientSecret.length) && (
+
+          {(loadingPlaceOrder || paymentIntentLoading) && (
             <PlaceOrderLoading>
               <Spin />
             </PlaceOrderLoading>
@@ -560,9 +553,10 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   handleOnGoToStep = (step: number) => {
-    const { stepAdvanceAction } = this.props
+    const { stepAdvanceAction, removeClientSecretAction } = this.props
     stepAdvanceAction(step - 1)
     zenscroll.toY(0)
+    removeClientSecretAction()
   }
 
   verifyStepTwo = () => {
@@ -690,10 +684,82 @@ class Checkout extends React.Component<Props, {}> {
       return simpleCartItem
     })
   }
+  createPaymentIntent = async () => {
+    const { savePaymentId, createPaymentIntent } = this.props
+    try {
+      const orderObj = await this.getOrderObject()
+      const response = await createPaymentIntent({
+        variables: { orderObj }
+      })
+      const paymentIntent = get(response, 'data.createPaymentIntent', {})
+      await savePaymentId(paymentIntent)
+    } catch (e) {
+      message.error('Error generating payment')
+    }
+  }
+  setStripeCardDataAction = async (
+    card?: CreditCardData,
+    stripeToken?: string
+  ) => {
+    const { setStripeCardDataAction } = this.props
+    await this.createPaymentIntent()
+    if (card && stripeToken) {
+      setStripeCardDataAction(card, stripeToken)
+    }
+  }
   placeOrder = async (event: any, paypalObj?: object) => {
     const {
-      location,
       placeOrder,
+      setLoadingPlaceOrderAction,
+      getTotalItemsIncart: getTotalItemsIncartAction,
+      stripeToken,
+      paymentClientSecret,
+      selectedCard
+    } = this.props
+
+    try {
+      setLoadingPlaceOrderAction(true)
+
+      const orderObj = await this.getOrderObject(paypalObj)
+
+      const response = await placeOrder({
+        variables: { orderObj }
+      })
+
+      const orderId = get(response, 'data.charge.short_id', '')
+
+      const { stripe } = this.state
+      console.log(selectedCard.id)
+      const stripeResponse = await stripe.handleCardPayment(
+        paymentClientSecret,
+        {
+          payment_method: stripeToken || selectedCard.id
+        }
+      )
+
+      if (stripeResponse.error) {
+        message.error(stripeResponse.error.message)
+        setLoadingPlaceOrderAction(false)
+
+        return
+      }
+
+      localStorage.removeItem('cart')
+      setLoadingPlaceOrderAction(false)
+      getTotalItemsIncartAction()
+
+      const { history } = this.props
+      history.push(`/order-placed?orderId=${orderId}`)
+    } catch (error) {
+      console.log(error)
+      setLoadingPlaceOrderAction(false)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+    }
+  }
+  getOrderObject = async (paypalObj?: object) => {
+    const {
+      location,
       firstName,
       lastName,
       street,
@@ -715,8 +781,6 @@ class Checkout extends React.Component<Props, {}> {
       billingPhone,
       indexAddressSelected,
       sameBillingAndShipping,
-      setLoadingPlaceOrderAction,
-      getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
       stripeToken,
       selectedCard,
@@ -725,7 +789,7 @@ class Checkout extends React.Component<Props, {}> {
       client: { query },
       currentCurrency,
       couponCode: couponObject,
-      paymentClientSecret
+      intentId
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -784,7 +848,6 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     try {
-      setLoadingPlaceOrderAction(true)
       const taxResponse = await query({
         query: getTaxQuery,
         variables: {
@@ -845,7 +908,8 @@ class Checkout extends React.Component<Props, {}> {
         proDesign,
         paymentMethod,
         cardId,
-        tokenId: stripeToken,
+        tokenId:
+          paymentMethod === PaymentOptions.CREDITCARD ? intentId : stripeToken,
         sourceId: stripeSource,
         cart: sanitizedCart,
         shippingAddress,
@@ -862,28 +926,8 @@ class Checkout extends React.Component<Props, {}> {
         weight: weightSum,
         couponCode
       }
-
-      const { stripe } = this.state
-      await stripe.handleCardPayment(paymentClientSecret, {
-        payment_method: stripeToken
-      })
-
-      const response = await placeOrder({
-        variables: { orderObj }
-      })
-      console.log(response)
-      const orderId = get(response, 'data.charge.short_id', '')
-      // const clientSecret = get(response, 'data.charge.client_secret', '')
-
-      localStorage.removeItem('cart')
-      setLoadingPlaceOrderAction(false)
-      getTotalItemsIncartAction()
-
-      const { history } = this.props
-      history.push(`/order-placed?orderId=${orderId}`)
+      return orderObj
     } catch (error) {
-      console.log('Error ', error)
-      setLoadingPlaceOrderAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
     }
@@ -892,9 +936,6 @@ class Checkout extends React.Component<Props, {}> {
     this.setState({
       stripe
     })
-  }
-  createPreOrder = async () => {
-    alert('a')
   }
 }
 

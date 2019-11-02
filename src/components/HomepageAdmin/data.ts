@@ -5,14 +5,19 @@ export const getHomepageInfo = gql`
   query getHomepageContent($route: String) {
     getHomepageContent(sportRoute: $route) {
       id
-      headerImageMobile: header_image_mobile
-      headerImage: header_image
-      headerImageLink: header_image_link
+      mainHeaderImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
+        assetType: type
+      }
       homepageImages {
         id
         desktopImage: image
         mobileImage: image_mobile
         url: link
+        assetType: type
       }
       featuredProducts {
         id
@@ -33,6 +38,12 @@ export const getHomepageInfo = gql`
         contentTile: content_tile
         image
       }
+      carouselSettings {
+        slideTransition: slide_transition
+        slideDuration: slide_duration
+        secondarySlideTransition: secondary_slide_transition
+        secondarySlideDuration: secondary_slide_duration
+      }
     }
   }
 `
@@ -40,36 +51,26 @@ export const getHomepageInfo = gql`
 export const setMainHeaderMutation = graphql(
   gql`
     mutation setMainHeader(
-      $headerImage: String
-      $headerImageMobile: String
-      $headerImageLink: String
-      $homePageImageId: Int
+      $homepageImages: [HomePageImageInput]
+      $duration: Int
+      $transition: String
+      $mainHeader: Boolean
     ) {
       setMainHeader(
-        headerImage: $headerImage
-        headerImageMobile: $headerImageMobile
-        headerImageLink: $headerImageLink
-        id: $homePageImageId
+        homepageImages: $homepageImages
+        duration: $duration
+        transition: $transition
+        mainHeader: $mainHeader
       ) {
-        message
-      }
-    }
-  `,
-  { name: 'setMainHeader' }
-)
-
-export const setSecondaryHeaderMutation = graphql(
-  gql`
-    mutation setSecondaryHeader($homepageImages: [HomePageImageInput]) {
-      setSecondaryHeader(homepageImages: $homepageImages) {
         id
         image
         image_mobile
         link
+        type
       }
     }
   `,
-  { name: 'setSecondaryHeader' }
+  { name: 'setMainHeader' }
 )
 
 export const productsQuery = gql`

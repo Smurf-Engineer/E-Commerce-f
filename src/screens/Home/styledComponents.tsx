@@ -7,7 +7,8 @@ import {
   AUBERGINE,
   GRAY_SOFT,
   GRAY_SKELETON,
-  GRAY_HEADER
+  GRAY_HEADER,
+  BLACK
 } from '../../theme/colors'
 
 interface DivProps {
@@ -151,3 +152,27 @@ export const SubText = styled.div`
 export const layoutStyle = {
   background: GRAY_HEADER
 }
+
+export const CarouselContainer = styled.div`
+  & .slick-prev {
+    margin-left: 30px;
+  }
+  & .slick-next {
+    margin-right: 20px;
+  }
+`
+
+export const Arrow = styled.img`
+  height: 60px !important;
+  width: 50px !important;
+  padding: 20px !important;
+  text-align: center !important;
+  z-index: 1 !important;
+  background-color: ${BLACK} !important;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07) !important;
+  &:hover {
+    opacity: 0.7;
+  }
+`

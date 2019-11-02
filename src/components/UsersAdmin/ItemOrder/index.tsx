@@ -12,6 +12,7 @@ interface Props {
   administrator: boolean
   firstName: string
   lastName: string
+  netsuiteId: string
   onSetAdministrator: (id: number) => void
 }
 
@@ -22,6 +23,7 @@ const ItemOrder = ({
   administrator,
   firstName,
   lastName,
+  netsuiteId,
   onSetAdministrator
 }: Props) => {
   const handleOnSetAdministrator = () => {
@@ -36,6 +38,7 @@ const ItemOrder = ({
         <Switch onChange={handleOnSetAdministrator} checked={administrator} />
       </Cell>
       <Cell>{email}</Cell>
+      <Cell>{netsuiteId}</Cell>
     </Container>
   )
 }

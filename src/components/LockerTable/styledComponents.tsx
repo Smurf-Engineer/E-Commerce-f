@@ -7,6 +7,7 @@ interface RowProps {
 }
 
 import styled from 'styled-components'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div``
 
@@ -82,6 +83,12 @@ export const Price = styled.div`
   line-height: 43px;
   width: 58px;
   text-align: ${({ align }: TitleProps) => (align ? align : 'center')};
+`
+
+export const MoreIcon = styled(Icon)`
+  transform: rotate(90deg);
+  font-size: 30px;
+  margin-right: -19px;
 `
 
 export const DeleteButton = styled.div`

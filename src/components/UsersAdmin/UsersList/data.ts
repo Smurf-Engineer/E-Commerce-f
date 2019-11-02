@@ -27,6 +27,7 @@ export const getUsersQuery = gql`
         lastName: last_name
         socialMethod: social_method
         administrator
+        netsuiteId: netsuite_internal
       }
     }
   }

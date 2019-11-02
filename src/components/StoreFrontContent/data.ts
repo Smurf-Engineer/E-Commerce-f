@@ -20,6 +20,7 @@ export const getSingleTeamStore = gql`
       name
       banner
       private
+      bulletin
       owner
       featured
       owner_name

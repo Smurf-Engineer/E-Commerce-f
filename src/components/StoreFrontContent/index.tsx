@@ -52,8 +52,14 @@ import {
   StoreBox,
   Loading,
   ButtonsContainer,
-  TopContainer
+  TopContainer,
+  Bulletin,
+  Corner,
+  PinDiv,
+  Pin,
+  BulletinLabel
 } from './styledComponents'
+import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
 import ProductList from '../../components/DesignsCatalogueThumbnailList'
@@ -225,7 +231,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const totalItems = get(getTeamStore, 'totalItems', 0)
     const teamSizeId = get(getTeamStore, 'team_size_id', 0)
     const priceRanges = getTeamStore ? getTeamStore.priceRanges || [] : []
-
+    const bulletin = get(getTeamStore, 'bulletin', '')
     const shareStoreUrl = `${config.baseUrl}store-front?storeId=${teamStoreShortId}`
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
@@ -373,6 +379,16 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 <PriceDescription>
                   <FormattedMessage {...messages.description} />
                 </PriceDescription>
+                {bulletin && (
+                  <Bulletin>
+                    <PinDiv>
+                      <Pin src={PinSVG} left={true} />
+                      <Pin src={PinSVG} />
+                    </PinDiv>
+                    <BulletinLabel>{bulletin}</BulletinLabel>
+                    <Corner />
+                  </Bulletin>
+                )}
               </Description>
             ) : (
               <React.Fragment>

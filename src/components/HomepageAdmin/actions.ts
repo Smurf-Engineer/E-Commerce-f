@@ -4,10 +4,7 @@
 
 import {
   CLEAR_REDUCER,
-  SET_URL_IMAGE,
-  SET_LOADING,
   SET_HOMEPAGE_INFO,
-  SET_URL,
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
   SET_LOADING_LIST,
@@ -23,10 +20,13 @@ import {
   SET_TILES_TEXT,
   REMOVE_TILE_DATA,
   REMOVE_HEADER,
-  ADD_MORE_IMAGES,
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
-  UPDATE_PRODUCT_TILES_LIST
+  UPDATE_PRODUCT_TILES_LIST,
+  ADD_CAROUSEL_ITEM,
+  TOGGLE_PREVIEW_MODAL,
+  SET_DURATION,
+  SET_TRANSITION
 } from './constants'
 
 import {
@@ -38,17 +38,6 @@ import {
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
-})
-
-export const setUrlImage = (
-  url: string,
-  section: string,
-  imageType: string
-) => ({
-  type: SET_URL_IMAGE,
-  url,
-  section,
-  imageType
 })
 
 export const setUrlImageList = (
@@ -64,21 +53,17 @@ export const setUrlImageList = (
   index
 })
 
-export const setLoadingAction = (imageType: string, loading: boolean) => ({
-  type: SET_LOADING,
-  imageType,
-  loading
-})
-
 export const setLoadingListAction = (
   imageType: string,
   loading: boolean,
-  index: number
+  index: number,
+  section: string
 ) => ({
   type: SET_LOADING_LIST,
   imageType,
   loading,
-  index
+  index,
+  section
 })
 export const setHomepageInfoAction = (data: any): AnyAction => {
   return {
@@ -87,18 +72,16 @@ export const setHomepageInfoAction = (data: any): AnyAction => {
   }
 }
 
-export const setUrlAction = (value: string): AnyAction => {
-  return {
-    type: SET_URL,
-    value
-  }
-}
-
-export const setUrlListAction = (value: string, index: number): AnyAction => {
+export const setUrlListAction = (
+  value: string,
+  index: number,
+  section: string
+): AnyAction => {
   return {
     type: SET_URL_LIST,
     value,
-    index
+    index,
+    section
   }
 }
 
@@ -180,16 +163,24 @@ export const removeTileDataAction = (index: number) => ({
   index
 })
 
-export const removeHeaderAction = (index: number) => ({
+export const removeHeaderAction = (
+  index: number,
+  assetType: string,
+  section: string
+) => ({
   type: REMOVE_HEADER,
-  index
+  index,
+  assetType,
+  section
 })
 
-export const addMoreImagesAction = (
-  imagePlaceholder: HeaderImagePlaceHolder
+export const addCarouselItemAction = (
+  imagePlaceholder: HeaderImagePlaceHolder,
+  section: string
 ) => ({
-  type: ADD_MORE_IMAGES,
-  imagePlaceholder
+  type: ADD_CAROUSEL_ITEM,
+  imagePlaceholder,
+  section
 })
 
 export const addMoreTilesAction = (
@@ -200,10 +191,12 @@ export const addMoreTilesAction = (
 })
 
 export const updatePlaceHolderListAction = (
-  list: [HeaderImagePlaceHolder]
+  list: [HeaderImagePlaceHolder],
+  section: string
 ) => ({
   type: UPDATE_IMAGES_PLACEHOLDER_LIST,
-  list
+  list,
+  section
 })
 
 export const updateProductTilesListAction = (
@@ -211,4 +204,21 @@ export const updateProductTilesListAction = (
 ) => ({
   type: UPDATE_PRODUCT_TILES_LIST,
   tilesList
+})
+
+export const togglePreviewModalAction = (section: string = '') => ({
+  type: TOGGLE_PREVIEW_MODAL,
+  section
+})
+
+export const setDurationAction = (section: string, duration: string) => ({
+  type: SET_DURATION,
+  section,
+  duration
+})
+
+export const setTransitionAction = (section: string, transition: string) => ({
+  type: SET_TRANSITION,
+  section,
+  transition
 })

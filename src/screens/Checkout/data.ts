@@ -16,9 +16,10 @@ export const AddAddressMutation = graphql(
 
 export const CreatePaymentIntentMutation = graphql(
   gql`
-    mutation createPaymentIntent {
-      createPaymentIntent {
+    mutation createPaymentIntent($orderObj: OrderInput!) {
+      createPaymentIntent(order: $orderObj) {
         paymentClientSecret
+        intentId
       }
     }
   `,

@@ -65,7 +65,7 @@ interface Props {
     billing: boolean
   ) => void
   nextStep: () => void
-  createPreOrder: () => void
+  createPaymentIntent: () => void
 }
 
 class CreditCardFormBilling extends React.Component<Props, {}> {
@@ -231,9 +231,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     )
   }
 
-  handleReady = (cardElement: stripe.elements.Element) => {
+  handleReady = (cardElement: stripe.elements.Element) =>
     this.setState({ cardElement })
-  }
 
   handleOnContinue = async (ev: any) => {
     const {
@@ -257,7 +256,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       nextStep,
       selectedCard,
       stripe,
-      createPreOrder
+      createPaymentIntent
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
@@ -293,7 +292,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           billing_details: stripeTokenData
         })
       : {}
-    console.log(stripeResponse)
+
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
@@ -313,8 +312,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           brand
         }
         setStripeCardDataAction(cardData, tokenId)
-        createPreOrder()
       }
+      createPaymentIntent()
       nextStep()
     }
   }

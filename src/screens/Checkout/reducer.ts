@@ -36,6 +36,7 @@ import {
   OPEN_CURRENCY_WARNING,
   SET_SELECTED_ADDRESSES,
   SET_PAYMENT_ID,
+  REMOVE_CLIENT_SECRET,
   PaymentOptions
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -94,7 +95,8 @@ export const initialState = fromJS({
   openAddressesModal: false,
   couponCode: null,
   openCurrencyWarning: false,
-  paymentClientSecret: ''
+  paymentClientSecret: '',
+  intentId: ''
 })
 
 const checkoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -349,7 +351,10 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_CURRENCY_WARNING:
       return state.set('openCurrencyWarning', action.open)
     case SET_PAYMENT_ID:
-      return state.set('paymentClientSecret', action.paymentId)
+      const { paymentClientSecret, intentId } = action
+      return state.merge({ paymentClientSecret, intentId })
+    case REMOVE_CLIENT_SECRET:
+      return state.merge({ paymentClientSecret: '', intentId: '' })
     default:
       return state
   }

@@ -5,10 +5,7 @@
 import { fromJS, List } from 'immutable'
 import fill from 'lodash/fill'
 import {
-  SET_URL_IMAGE,
-  SET_LOADING,
   SET_HOMEPAGE_INFO,
-  SET_URL,
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
   SET_LOADING_LIST,
@@ -25,13 +22,17 @@ import {
   REMOVE_TILE_DATA,
   REMOVE_HEADER,
   EMPTY_TILE,
-  EMPTY_SECONDARY_HEADER,
-  ADD_MORE_IMAGES,
   ADD_MORE_TILES,
   UPDATE_IMAGES_PLACEHOLDER_LIST,
   UPDATE_PRODUCT_TILES_LIST,
+  ADD_CAROUSEL_ITEM,
+  EMPTY_HEADER,
+  TOGGLE_PREVIEW_MODAL,
+  SET_DURATION,
+  SET_TRANSITION,
   ImageTypes,
-  Sections
+  Sections,
+  LoadingSections
 } from './constants'
 import {
   Reducer,
@@ -40,18 +41,9 @@ import {
 } from '../../types/common'
 
 export const initialState = fromJS({
-  mainHeader: {
-    [ImageTypes.DESKTOP]: '',
-    [ImageTypes.MOBILE]: '',
-    url: '',
-    loading: false,
-    id: null
-  },
+  mainHeader: [],
   secondaryHeader: [],
-  mainHeaderLoading: {
-    [ImageTypes.DESKTOP]: false,
-    [ImageTypes.MOBILE]: false
-  },
+  mainHeaderLoading: [],
   secondaryHeaderLoading: [],
   loaders: {
     [Sections.MAIN_CONTAINER]: true,
@@ -67,31 +59,29 @@ export const initialState = fromJS({
   selectedItems: [],
   productsModalOpen: false,
   items: [],
-  productTiles: []
+  productTiles: [],
+  previewOpen: false,
+  mainHeaderCarousel: {
+    duration: '1000',
+    transition: 'slide'
+  },
+  secondaryHeaderCarousel: {
+    duration: '1000',
+    transition: 'slide'
+  },
+  currentPreview: ''
 })
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
-    case SET_URL_IMAGE:
-      return state.setIn([action.section, action.imageType], action.url)
-    case SET_URL_IMAGE:
-      return state.merge({
-        [action.section[action.imageType]]: action.url
-      })
-    case SET_LOADING:
-      return state.setIn(
-        ['mainHeaderLoading', action.imageType],
-        action.loading
-      )
     case SET_HOMEPAGE_INFO: {
       const {
-        id,
         homepageImages,
-        headerImageLink,
-        headerImage,
-        headerImageMobile,
+        mainHeaderImages,
         items,
-        productTiles
+        productTiles,
+        mainHeaderCarousel,
+        secondaryHeaderCarousel
       } = action.data
       return state.withMutations((map: any) => {
         map.set('items', fromJS(items))
@@ -109,35 +99,39 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             )
           )
         )
-        map.update('mainHeader', (mainHeader: any) => {
-          return mainHeader.merge({
-            [ImageTypes.DESKTOP]: headerImage,
-            [ImageTypes.MOBILE]: headerImageMobile,
-            url: headerImageLink,
-            id
-          })
-        })
+        map.merge({ mainHeader: mainHeaderImages })
+        map.set(
+          'mainHeaderLoading',
+          List.of(
+            ...fill(
+              Array(mainHeaderImages.length),
+              fromJS({
+                [ImageTypes.DESKTOP]: false,
+                [ImageTypes.MOBILE]: false
+              })
+            )
+          )
+        )
+        map.merge({ mainHeaderCarousel, secondaryHeaderCarousel })
         return map
       })
     }
-    case SET_URL:
-      return state.setIn(['mainHeader', 'url'], action.value)
     case SET_LOADERS:
       return state.setIn(['loaders', action.section], action.loading)
     case SET_URL_IMAGE_LIST: {
       return state.setIn(
-        ['secondaryHeader', action.index, action.imageType],
+        [action.section, action.index, action.imageType],
         action.url
       )
     }
     case SET_LOADING_LIST: {
       return state.setIn(
-        ['secondaryHeaderLoading', action.index, action.imageType],
+        [action.section, action.index, action.imageType],
         action.loading
       )
     }
     case SET_URL_LIST:
-      return state.setIn(['secondaryHeader', action.index, 'url'], action.value)
+      return state.setIn([action.section, action.index, 'url'], action.value)
     case SET_PRODUCTS_DATA: {
       const {
         data: {
@@ -207,29 +201,31 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case REMOVE_HEADER: {
-      const { index } = action
-      return state.updateIn(
-        [Sections.SECONDARY_HEADER, index],
-        (secondaryHeader: any) => {
-          return secondaryHeader.merge(EMPTY_SECONDARY_HEADER)
-        }
-      )
+      const { index, assetType, section } = action
+      return state.updateIn([section, index], (header: any) => {
+        return header.merge({ ...EMPTY_HEADER, assetType })
+      })
     }
-    case ADD_MORE_IMAGES:
+    case ADD_CAROUSEL_ITEM:
       return state.withMutations((tempState: any) => {
         const initialLoadingValues = { desktopImage: false, mobileImage: false }
         tempState.updateIn(
-          ['secondaryHeader'],
+          [action.section],
           (images: [HeaderImagePlaceHolder]) =>
             images.push(fromJS(action.imagePlaceholder))
         )
-        tempState.updateIn(['secondaryHeaderLoading'], (loadings: [any]) =>
-          loadings.push(fromJS(initialLoadingValues))
+        tempState.updateIn(
+          [
+            action.section === Sections.MAIN_HEADER
+              ? LoadingSections.MAIN_HEADER_LOADING
+              : LoadingSections.SECONDARY_HEADER_LOADING
+          ],
+          (loadings: [any]) => loadings.push(fromJS(initialLoadingValues))
         )
         return tempState
       })
     case UPDATE_IMAGES_PLACEHOLDER_LIST:
-      return state.set('secondaryHeader', action.list)
+      return state.merge({ [action.section]: action.list })
     case ADD_MORE_TILES:
       return state.updateIn(
         ['productTiles'],
@@ -237,7 +233,16 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
           tiles.push(fromJS(action.tilePlaceholder))
       )
     case UPDATE_PRODUCT_TILES_LIST:
-      return state.set('productTiles', action.tilesList)
+      return state.merge({ productTiles: action.tilesList })
+    case TOGGLE_PREVIEW_MODAL:
+      return state.merge({
+        previewOpen: !state.get('previewOpen'),
+        currentPreview: action.section
+      })
+    case SET_DURATION:
+      return state.setIn([action.section, 'duration'], action.duration)
+    case SET_TRANSITION:
+      return state.setIn([action.section, 'transition'], action.transition)
     default:
       return state
   }

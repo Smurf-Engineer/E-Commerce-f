@@ -33,7 +33,8 @@ import {
   SET_COUPON_CODE,
   DELETE_COUPON_CODE,
   OPEN_CURRENCY_WARNING,
-  SET_PAYMENT_ID
+  SET_PAYMENT_ID,
+  REMOVE_CLIENT_SECRET
 } from './constants'
 import {
   AnyAction,
@@ -224,7 +225,15 @@ export const openCurrencyWarningAction = (open: boolean): AnyAction => ({
   open
 })
 
-export const satPaymentIdAction = (paymentId: string): AnyAction => ({
+export const satPaymentIdAction = (
+  paymentClientSecret: string,
+  intentId: string
+): AnyAction => ({
   type: SET_PAYMENT_ID,
-  paymentId
+  paymentClientSecret,
+  intentId
+})
+
+export const removeClientSecretAction = (): AnyAction => ({
+  type: REMOVE_CLIENT_SECRET
 })

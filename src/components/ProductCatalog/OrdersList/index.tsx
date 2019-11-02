@@ -85,17 +85,20 @@ const OrdersList = ({
       { id, images, active, name, mpn, code, isCustom, obj, mtl }: Product,
       index: number
     ) => {
+      const image =
+        get(images[0], 'thumbnail', '') ||
+        get(images[0], 'front', '') ||
+        jakrooLogo
       return (
         <ItemOrder
           key={index}
           active={active}
           onCheck={updateActiveProduct}
           disabled={!obj && !mtl && isCustom}
-          image={get(images[0], 'front', jakrooLogo)}
           productType={formatMessage(
             isCustom ? messages.custom : messages.inline
           )}
-          {...{ id, name, mpn, code, isCustom, onProductClick }}
+          {...{ id, name, mpn, code, isCustom, onProductClick, image }}
         />
       )
     }

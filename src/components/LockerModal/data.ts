@@ -4,8 +4,8 @@
 import gql from 'graphql-tag'
 
 export const desginsQuery = gql`
-  query GetDesigns($limit: Int, $offset: Int) {
-    designsResult: myDesigns(limit: $limit, offset: $offset) {
+  query GetDesigns($limit: Int, $offset: Int, $userId: String) {
+    designsResult: myDesigns(limit: $limit, offset: $offset, userId: $userId) {
       fullCount
       designs {
         id

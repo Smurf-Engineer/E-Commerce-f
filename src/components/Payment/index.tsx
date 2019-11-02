@@ -67,7 +67,7 @@ interface Props {
   saveCountryAction: (countryCode: string | null) => void
   setStripeIbanDataAction: (iban: IbanData) => void
   setStripeAction: (stripe: any) => void
-  createPreOrder: () => void
+  createPaymentIntent: () => void
 }
 
 interface MyWindow extends Window {
@@ -84,11 +84,15 @@ class Payment extends React.PureComponent<Props, {}> {
   }
 
   componentDidMount() {
+    const { setStripeAction } = this.props
     if (window.Stripe) {
-      this.setState({
-        stripe: window.Stripe(config.pkStripeUS),
-        euStripe: window.Stripe(config.pkStripeEU)
-      })
+      this.setState(
+        {
+          stripe: window.Stripe(config.pkStripeUS),
+          euStripe: window.Stripe(config.pkStripeEU)
+        },
+        () => setStripeAction(this.state.stripe)
+      )
     } else {
       // this code is safe to server-side render.
       const stripeJs = document.createElement('script')
@@ -96,10 +100,13 @@ class Payment extends React.PureComponent<Props, {}> {
       stripeJs.async = true
       stripeJs.src = 'https://js.stripe.com/v3/'
       stripeJs.onload = () => {
-        this.setState({
-          stripe: window.Stripe(config.pkStripeUS),
-          euStripe: window.Stripe(config.pkStripeEU)
-        })
+        this.setState(
+          {
+            stripe: window.Stripe(config.pkStripeUS),
+            euStripe: window.Stripe(config.pkStripeEU)
+          },
+          () => setStripeAction(this.state.stripe)
+        )
       }
       // tslint:disable-next-line:no-unused-expression
       document.body && document.body.appendChild(stripeJs)
@@ -184,7 +191,7 @@ class Payment extends React.PureComponent<Props, {}> {
       showBillingAddressFormAction,
       setStripeIbanDataAction,
       paymentClientSecret,
-      createPreOrder
+      createPaymentIntent
     } = this.props
     const { stripe, openConfirm, euStripe } = this.state
 
@@ -223,7 +230,7 @@ class Payment extends React.PureComponent<Props, {}> {
             showBillingForm,
             showBillingAddressFormAction,
             paymentClientSecret,
-            createPreOrder
+            createPaymentIntent
           }}
           setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
@@ -309,10 +316,8 @@ class Payment extends React.PureComponent<Props, {}> {
     selectDropdownAction(customId, value)
   }
   setStripeCardData = (cardData: CreditCardData, stripeToken: string) => {
-    const { setStripeAction, setStripeCardDataAction } = this.props
-    const { stripe } = this.state
+    const { setStripeCardDataAction } = this.props
     setStripeCardDataAction(cardData, stripeToken)
-    setStripeAction(stripe)
   }
 }
 
