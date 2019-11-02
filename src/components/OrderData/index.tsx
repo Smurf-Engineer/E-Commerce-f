@@ -30,7 +30,7 @@ import withError from '..//WithError'
 import withLoading from '../WithLoading'
 
 import iconPaypal from '../../assets/Paypal.svg'
-import iconSepa from '../../assets/Sepa.svg'
+import iconSepa from '../../assets/sepa.svg'
 import { QueryProps, OrderDataInfo } from '../../types/common'
 import CartListItem from '../CartListItem'
 import { PaymentOptions } from '../../screens/Checkout/constants'
