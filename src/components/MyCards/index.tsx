@@ -172,12 +172,9 @@ class MyCards extends React.Component<Props, {}> {
     }
 
     const userCards = get(data, 'userCards', {})
-    console.log(data)
     const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
     const clientSecret = get(setupIntent, 'setupIntent.clientSecret', '')
-    console.log(clientSecret)
-    console.log('CARDS ', cards)
     return (
       <Container>
         {(listForMyAccount || !!cards.length) && (
@@ -315,7 +312,7 @@ class MyCards extends React.Component<Props, {}> {
       addNewCard,
       cardAsDefaultPayment
     } = this.props
-    console.log(stripeToken)
+
     await addNewCard({
       variables: {
         token: stripeToken,

@@ -168,7 +168,6 @@ class ModalCreditCard extends React.Component<Props, {}> {
         }
       }
     )
-    console.log('Response ', stripeResponse)
     const { error } = stripeResponse
     if (error) {
       setStripeErrorAction(error.message)

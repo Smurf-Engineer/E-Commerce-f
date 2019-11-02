@@ -729,7 +729,6 @@ class Checkout extends React.Component<Props, {}> {
       const orderId = get(response, 'data.charge.short_id', '')
 
       const { stripe } = this.state
-      console.log(selectedCard.id)
       const stripeResponse = await stripe.handleCardPayment(
         paymentClientSecret,
         {
@@ -751,7 +750,6 @@ class Checkout extends React.Component<Props, {}> {
       const { history } = this.props
       history.push(`/order-placed?orderId=${orderId}`)
     } catch (error) {
-      console.log(error)
       setLoadingPlaceOrderAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
