@@ -14,6 +14,8 @@ import { getFonts } from './data'
 import ThreeD from '../../components/Render3D'
 import * as designsActions from './actions'
 import { QueryProps, DesignSaved, Font } from '../../types/common'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
 import {
@@ -39,6 +41,13 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class Designs extends React.Component<Props, {}> {
+  async componentDidMount() {
+    await LoadScripts(threeDScripts, this.handleModelLoaded)
+  }
+  handleModelLoaded = () => {
+    const { setLoadingAction } = this.props
+    setLoadingAction(false)
+  }
   handleOnPressBack = () => {
     window.location.replace('/')
   }
@@ -54,7 +63,7 @@ export class Designs extends React.Component<Props, {}> {
   // }
 
   render() {
-    const { location, fontsData, phone } = this.props
+    const { location, fontsData, phone, loadingModel } = this.props
 
     const { search } = location
     const queryParams = queryString.parse(search)
@@ -78,7 +87,7 @@ export class Designs extends React.Component<Props, {}> {
         {installedFonts.length ? (
           <GoogleFontLoader fonts={installedFonts} />
         ) : null}
-        <ThreeD {...{ designId }} isPhone={phone} />
+        {!loadingModel && <ThreeD {...{ designId }} isPhone={phone} />}
       </Container>
     )
   }
