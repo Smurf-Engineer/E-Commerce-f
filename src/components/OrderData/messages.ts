@@ -35,7 +35,7 @@ export default defineMessages({
   },
   pendingTitle: {
     id: 'components.OrderData.pendingTitle',
-    defaultMessage: 'We are reviewing your payment'
+    defaultMessage: 'We are checking your payment'
   },
   messageRetail: {
     id: 'components.OrderData.messageRetail',

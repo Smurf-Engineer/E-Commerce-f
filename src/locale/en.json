@@ -318,7 +318,7 @@
   "components.OrderData.sendEmail": "Send alert via email",
   "components.OrderData.sendSms": "Send alert via SMS",
   "components.OrderData.estimatedDate": "Delivery Date",
-  "components.OrderData.pendingTitle": "We are reviewing your payment",
+  "components.OrderData.pendingTitle": "We are checking your payment",
   "screens.OrderPlaced.title": "YOUR ORDER HAS BEEN PLACED!",
   "components.ProductInfo.tittle": "YOUR ORDER HAS BEEN PLACED!",
   "components.ProductInfo.unitPrice": "Unit price: {symbol} {price}",
