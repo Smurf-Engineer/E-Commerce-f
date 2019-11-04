@@ -7,11 +7,10 @@ import { BreadRoute } from '../../types/common'
 
 interface Props {
   routes: BreadRoute[]
-  style?: any
 }
-const BreadCrumbs = ({ routes, style }: Props) => {
+const BreadCrumbs = ({ routes }: Props) => {
   return (
-    <Container {...{ style }}>
+    <Container>
       {routes.map(({ url, label, icon, selected }: any) => (
         <BreadItem href={url}>
           {icon && <BreadIcon type={icon} />}
