@@ -330,9 +330,10 @@ class Checkout extends React.Component<Props, {}> {
       shoppingCart,
       currentCurrency || config.defaultCurrency
     )
-    const paymentIntentLoading = /* paymentMethod === PaymentOptions.CREDITCARD &&
+    const paymentIntentLoading =
+      paymentMethod === PaymentOptions.CREDITCARD &&
       currentStep === 2 &&
-      !paymentClientSecret.length */ false
+      !paymentClientSecret.length
 
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
     const { Step } = Steps
@@ -694,6 +695,7 @@ class Checkout extends React.Component<Props, {}> {
       const paymentIntent = get(response, 'data.createPaymentIntent', {})
       await savePaymentId(paymentIntent)
     } catch (e) {
+      this.handleOnGoToStep(1)
       message.error('Error generating payment')
     }
   }

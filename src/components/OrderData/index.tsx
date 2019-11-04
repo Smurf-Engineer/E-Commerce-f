@@ -130,7 +130,8 @@ class OrderData extends React.Component<Props, {}> {
           taxVat,
           taxFee,
           total,
-          discount
+          discount,
+          confirmed
         }
       },
       currentCurrency
@@ -190,7 +191,9 @@ class OrderData extends React.Component<Props, {}> {
       : null
     return (
       <Container>
-        <Title>{title}</Title>
+        <Title>
+          {!confirmed ? title : formatMessage(messages.pendingTitle)}
+        </Title>
         <Content>
           <InfoContainer>
             <OrderNumberContainer>
