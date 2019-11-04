@@ -8,7 +8,7 @@ import { IntlProvider } from 'react-intl'
 import BreadCrumbs from './index'
 import { BreadRoute } from '../../types/common'
 
-describe('<AboutUs />', () => {
+describe('<BreadCrumbs />', () => {
   test('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')

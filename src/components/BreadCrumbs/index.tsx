@@ -11,7 +11,7 @@ interface Props {
 const BreadCrumbs = ({ routes }: Props) => {
   return (
     <Container>
-      {routes.map(({ url, label, icon, selected }: any) => (
+      {routes.map(({ url, label, icon, selected }: BreadRoute) => (
         <BreadItem href={url}>
           {icon && <BreadIcon type={icon} />}
           {label && <BreadLabel {...{ selected }}>{label}</BreadLabel>}
