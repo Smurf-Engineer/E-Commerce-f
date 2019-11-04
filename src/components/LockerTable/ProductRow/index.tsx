@@ -18,7 +18,8 @@ import {
   Price,
   MoreIcon,
   MobileLocker,
-  DesktopLocker
+  DesktopLocker,
+  DragCell
 } from '../styledComponents'
 import { Align } from './styledComponents'
 import Checkbox from 'antd/lib/checkbox'
@@ -178,8 +179,10 @@ class ProductRow extends React.PureComponent<Props, {}> {
         <DesktopLocker>
           <Row>
             <Cell width={5} tabletWidth={5}>
-              <MoreIcon type="ellipsis" />
-              <MoreIcon type="ellipsis" />
+              <DragCell>
+                <MoreIcon type="ellipsis" />
+                <MoreIcon type="ellipsis" />
+              </DragCell>
             </Cell>
             <Cell width={15} tabletWidth={25}>
               <Thumbnail

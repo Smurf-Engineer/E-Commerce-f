@@ -106,6 +106,13 @@ export const DesktopLocker = styled.div`
   }
 `
 
+export const DragCell = styled.div`
+  display: flex;
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`
+
 export const DeleteButton = styled.div`
   text-align: right;
   user-select: none;
