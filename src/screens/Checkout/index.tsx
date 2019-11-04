@@ -188,7 +188,7 @@ interface Props extends RouteComponentProps<any> {
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
-  createPaymentIntent: (variables: {}) => Promise<any>
+  createPaymentIntent: (variables: {}) => Promise<PaymentIntent>
   savePaymentId: (paymentIntent: PaymentIntent) => void
   removeClientSecretAction: () => void
 }

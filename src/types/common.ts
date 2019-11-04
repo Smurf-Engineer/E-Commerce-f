@@ -725,6 +725,7 @@ export interface OrderDataInfo {
   taxFee?: number
   total?: number
   discount?: number
+  confirmed?: boolean
 }
 
 export interface TextFormat {

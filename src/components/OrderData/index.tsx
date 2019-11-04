@@ -192,7 +192,7 @@ class OrderData extends React.Component<Props, {}> {
     return (
       <Container>
         <Title>
-          {!confirmed ? title : formatMessage(messages.pendingTitle)}
+          {confirmed ? title : formatMessage(messages.pendingTitle)}
         </Title>
         <Content>
           <InfoContainer>

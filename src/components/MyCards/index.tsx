@@ -41,6 +41,12 @@ interface Data extends QueryProps {
   }
 }
 
+interface SetupIntentData extends QueryProps {
+  setupIntent: {
+    clientSecret: string
+  }
+}
+
 interface Props {
   data: Data
   cardHolderName: string
@@ -58,7 +64,7 @@ interface Props {
   showCardForm: boolean
   listForMyAccount: boolean
   selectedCard: CreditCardData
-  setupIntent: any
+  setupIntent: SetupIntentData
   formatMessage: (messageDescriptor: any) => string
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
