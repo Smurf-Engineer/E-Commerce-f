@@ -136,7 +136,6 @@ export const ButtonDelete = styled.div`
 export const RowColumn = styled.div`
   display: flex;
   flex-flow: column;
-  width: 59%;
   @media (max-width: 480px) {
     width: 100%;
     margin-bottom: 36px;

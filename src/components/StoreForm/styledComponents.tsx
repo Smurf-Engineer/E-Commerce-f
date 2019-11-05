@@ -33,8 +33,8 @@ export const Required = styled.div`
 `
 
 export const Column = styled.div`
-  width: 32%;
-
+  width: 47%;
+  margin-right: 18px;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
     margin-bottom: 24px;
@@ -57,12 +57,12 @@ export const OnDemandLabel = styled.div`
   letter-spacing: 0.23px;
   line-height: 25px;
   text-align: center;
-  height: 50px;
+  height: 42px;
   max-width: 246px;
   align-items: center;
   display: inline-flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 12px;
   width: 100%;
 `
 
