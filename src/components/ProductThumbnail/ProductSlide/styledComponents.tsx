@@ -18,7 +18,8 @@ export const ImageContainer = styled.div`
   padding: ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? '10px' : '10px 0'};
   text-align: center;
-
+  border: ${({ backgroundColor }: StyledProps) =>
+    backgroundColor ? `1px solid ${WHITE}` : 'none'};
   @media (min-width: 321px) and (max-width: 480px) {
     width: 100%;
     margin: 0;

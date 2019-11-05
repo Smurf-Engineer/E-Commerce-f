@@ -72,3 +72,5 @@ export const DeleteConfirmMessage = styled.div`
   letter-spacing: 0.2px;
   line-height: 22px;
 `
+
+export const modalStyle = { top: 20, paddingBottom: '96px' }
