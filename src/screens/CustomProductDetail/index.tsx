@@ -116,7 +116,8 @@ interface Props extends RouteComponentProps<any> {
 
 export class CustomProductDetail extends React.Component<Props, {}> {
   async componentDidMount() {
-    await LoadScripts(threeDScripts, this.handleLoaded)
+    await LoadScripts(threeDScripts)
+    this.handleSetLoading(false)
   }
 
   componentWillUnmount() {
@@ -568,9 +569,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     setSelectedGenderAction(gender)
   }
 
-  handleLoaded = () => {
+  handleSetLoading = (loading: boolean) => {
     const { setLoadingAction } = this.props
-    setLoadingAction(false)
+    setLoadingAction(loading)
   }
 
   gotToEditDesign = (designId: string) => () => {
