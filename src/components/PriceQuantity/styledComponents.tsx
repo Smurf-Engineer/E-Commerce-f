@@ -19,8 +19,6 @@ export const AvailablePrices = styled.div`
 `
 
 export const PriceLabel = styled.div`
-  height: 25px;
-
   color: ${({ priceColor }: StyleProps) =>
     priceColor ? priceColor : '#5f6062'};
   font-size: 18px;
@@ -32,7 +30,6 @@ export const PriceLabel = styled.div`
   }
 `
 export const QuantityLabel = styled.div`
-  height: 16px;
   color: #5f6062;
   font-size: 12px;
   line-height: 16px;

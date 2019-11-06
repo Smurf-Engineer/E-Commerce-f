@@ -14,8 +14,6 @@ import { getFonts } from './data'
 import ThreeD from '../../components/Render3D'
 import * as designsActions from './actions'
 import { QueryProps, DesignSaved, Font } from '../../types/common'
-import { LoadScripts } from '../../utils/scriptLoader'
-import { threeDScripts } from '../../utils/scripts'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
 import {
@@ -24,6 +22,8 @@ import {
   // Model,
   // QuickView
 } from './styledComponents'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 interface Data extends QueryProps {
   design: DesignSaved
@@ -64,7 +64,6 @@ export class Designs extends React.Component<Props, {}> {
 
   render() {
     const { location, fontsData, phone, loadingModel } = this.props
-
     const { search } = location
     const queryParams = queryString.parse(search)
     const designId = queryParams.id || ''

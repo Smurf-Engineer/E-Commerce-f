@@ -85,7 +85,7 @@ export const ThumbnailListItem = styled.li`
     width: 50%;
   }
 
-  @media (min-width: 755px) {
+  @media (min-width: 698px) {
     width: calc(100% / 3);
   }
 

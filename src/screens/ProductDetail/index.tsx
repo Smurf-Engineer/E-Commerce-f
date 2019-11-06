@@ -81,13 +81,15 @@ import {
   PriceRange,
   ProductColors,
   ProductFile,
-  ItemDetailType
+  ItemDetailType,
+  BreadRoute
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
 import Helmet from 'react-helmet'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
+import BreadCrumbs from '../../components/BreadCrumbs'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -248,7 +250,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const queryParams = queryString.parse(search)
 
     const yotpoId = queryParams.modelId || ''
-
+    const previousRoute = queryParams.ps || ''
     const gender = queryParams.gender || 0
     const colorId = selectedColor && selectedColor.id
 
@@ -496,11 +498,37 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       })
     }
     const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
-
+    const routes: BreadRoute[] = [
+      {
+        url: '/',
+        label: 'Home'
+      }
+    ]
+    switch (previousRoute) {
+      case 'product-catalogue':
+        routes.push({
+          url: '/product-catalogue',
+          label: formatMessage(messages.productCatalog)
+        })
+        break
+      case 'design-center':
+        routes.push({
+          url: `/design-center?id=${productId}`,
+          label: formatMessage(messages.designCenter)
+        })
+        break
+      default:
+        break
+    }
+    routes.push({
+      selected: true,
+      label: name
+    })
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
         <Container>
+          <BreadCrumbs {...{ history, formatMessage, routes }} />
           {product && (
             <Content>
               <ImagePreview>

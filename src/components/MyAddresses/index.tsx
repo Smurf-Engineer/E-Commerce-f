@@ -14,7 +14,8 @@ import {
   StyledEmptyButton,
   ButtonWrapper,
   Title,
-  StyledCheckbox
+  StyledCheckbox,
+  modalStyle
 } from './styledComponents'
 import { QueryProps, AddressType } from '../../types/common'
 import messages from './messages'
@@ -145,9 +146,10 @@ class MyAddresses extends React.PureComponent<Props, {}> {
           okText={formatMessage(messages.saveAddress)}
           onOk={this.handleOnSaveAddress}
           confirmLoading={modalLoading}
+          style={modalStyle}
           onCancel={this.handleOnResetData}
           destroyOnClose={true}
-          width={'60%'}
+          width="864px"
         >
           <Title>{formatMessage(messages.modalTitle)}</Title>
           <ShippingAddressForm

@@ -79,7 +79,7 @@ const YotpoSection = ({
             ))}
           </div>
         )}
-        {products.length && (
+        {!!products.length && (
           <RelatedProductsContainer>
             <RelatedProducts
               products={data.products}
