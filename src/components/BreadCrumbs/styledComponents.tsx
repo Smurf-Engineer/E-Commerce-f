@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Icon from 'antd/lib/icon'
-import { RED } from '../../theme/colors'
+import { BLACK } from '../../theme/colors'
 
 interface ItemProps {
   selected?: boolean
@@ -28,5 +28,6 @@ export const BreadIcon = styled(Icon)`
 `
 
 export const BreadLabel = styled.span`
-  color: ${({ selected }: ItemProps) => (selected ? RED : 'auto')};
+  color: ${({ selected }: ItemProps) => (selected ? BLACK : 'auto')};
+  font-weight: ${({ selected }: ItemProps) => (selected ? 'bold' : 'normal')};
 `
