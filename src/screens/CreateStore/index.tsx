@@ -70,7 +70,7 @@ import {
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
-const BULLETIN_MAX_LENGTH = 100
+const BULLETIN_MAX_LENGTH = 120
 
 interface Data extends QueryProps {
   teamStore: DesignResultType

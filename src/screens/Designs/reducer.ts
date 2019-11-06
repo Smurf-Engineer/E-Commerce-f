@@ -6,7 +6,7 @@ import { SET_LOADING_ACTION } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
-  loadingModel: false
+  loadingModel: true
 })
 
 const designsReducer: Reducer<any> = (state = initialState, action) => {
