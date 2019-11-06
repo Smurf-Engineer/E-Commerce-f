@@ -96,15 +96,12 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case UPDATE_PASS_CODE_ACTION:
       return state.set('passCode', action.code)
     case SET_OPEN_LOCKER_ACTION:
-      return state.merge({ openLocker: action.isOpen, selectedItems: [] })
+      return state.merge({ openLocker: action.isOpen, selectedItems: {} })
     case SET_ITEM_SELECTED_ACTION: {
       const {
         design: { id }
       } = action.item
-      const selectedItems = state.get('selectedItems').toJS()
-      return state.merge({
-        selectedItems: { [id]: action.item, ...selectedItems }
-      })
+      return state.setIn(['selectedItems', id], action.item)
     }
     case ON_UNSELECT_ITEM: {
       return state.removeIn(['selectedItems', action.keyName])
@@ -132,9 +129,10 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ items: updatedItems })
     }
     case MOVE_ROW: {
-      const { index, hoverIndex, row } = action
+      const { index, hoverIndex } = action
       const items = state.get('items')
-      const updatedItems = items.splice(index, 1).insert(hoverIndex, row)
+      const oldItem = state.getIn(['items', index])
+      const updatedItems = items.delete(index).insert(hoverIndex, oldItem)
       return state.set('items', updatedItems)
     }
     case SET_STORE_DATA_TO_EDIT: {

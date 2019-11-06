@@ -76,27 +76,6 @@ class LockerTable extends React.PureComponent<Props, {}> {
       currentCurrency = config.defaultCurrency
     } = this.props
 
-    const header = (
-      <MediaQuery minDeviceWidth={480}>
-        {matches => {
-          if (matches) {
-            const head = headerTitles.map(
-              ({ width, tabletWidth, message }, key) => (
-                <Cell {...{ key, width, tabletWidth }}>
-                  <Title>
-                    {message ? formatMessage(messsages[message]) : ''}
-                  </Title>
-                </Cell>
-              )
-            )
-            return head
-          } else {
-            return null
-          }
-        }}
-      </MediaQuery>
-    )
-
     const itemsSelected = items.map(
       (
         { design, visible, totalOrders, priceRange }: LockerTableType,
@@ -167,7 +146,13 @@ class LockerTable extends React.PureComponent<Props, {}> {
       )
     return (
       <Table>
-        <HeaderRow>{header}</HeaderRow>
+        <HeaderRow>
+          {headerTitles.map(({ width, tabletWidth, message }, key) => (
+            <Cell {...{ key, width, tabletWidth }}>
+              <Title>{message ? formatMessage(messsages[message]) : ''}</Title>
+            </Cell>
+          ))}
+        </HeaderRow>
         {renderTable}
       </Table>
     )
