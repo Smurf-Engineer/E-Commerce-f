@@ -313,6 +313,15 @@ export const DetailsList = styled.ul`
 export const DetailsListItem = styled.li`
   margin-bottom: 15px;
 `
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+`
+
 export const PrivateContainer = styled.div`
   align-items: center;
   background-color: #fff;

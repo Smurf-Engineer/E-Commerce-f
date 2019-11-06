@@ -2,30 +2,47 @@
  * CustomProductDetail Test - Created by jorge on 03/08/18.
  */
 import customProductDetailReducer, { initialState } from './reducer'
-import { defaultAction } from './actions'
+import { setLoadingAction } from './actions'
+import { SET_LOADING_ACTION } from './constants'
 
 describe(' CustomProductDetail Screen', () => {
-  // Test redux actions
-  it('Return the default state for unknow action', () => {
-    let state = customProductDetailReducer(initialState, { type: 'unknow' })
-    expect(state).toEqual(initialState)
+  describe('Actions', () => {
+    it('setLoadingAction', () => {
+      const type = SET_LOADING_ACTION
+      const loading = false
+      expect(setLoadingAction(loading)).toEqual({
+        type,
+        loading
+      })
+    })
+    it('setLoadingAction', () => {
+      const type = SET_LOADING_ACTION
+      const loading = false
+      expect(setLoadingAction(loading)).toEqual({
+        type,
+        loading
+      })
+    })
   })
-
-  it('Update someKey correctly', () => {
-    const testValue = 'Test value'
-    const state = customProductDetailReducer(
-      initialState,
-      defaultAction(testValue)
-    )
-    const someKey = state.get('someKey')
-    expect(someKey).toEqual(testValue)
-
-    const testValue2 = 'Test value 2'
-    const state2 = customProductDetailReducer(
-      initialState,
-      defaultAction(testValue2)
-    )
-    const someKey2 = state2.get('someKey')
-    expect(someKey2).toEqual(testValue2)
+  describe('SET_LOADING_ACTION', () => {
+    describe('Loading action', () => {
+      it('Handles initial value in loading', () => {
+        const customInitialValue = initialState.get('loading')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('boolean')
+        expect(customInitialValue).toBeTruthy()
+      })
+      it('Handles custom value in loading', () => {
+        const loading = false
+        const loadingState = customProductDetailReducer(
+          initialState,
+          setLoadingAction(loading)
+        )
+        const customLoadingValue = loadingState.get('loading')
+        expect(typeof customLoadingValue).toBe('boolean')
+        expect(customLoadingValue).toBeFalsy()
+      })
+    })
   })
+  // TODO: Add the rest of the actions
 })

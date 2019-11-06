@@ -12,3 +12,4 @@ export const SET_SHOW_DETAILS = `${namespace}/SET_SHOW_DETAILS`
 export const SET_SHOW_SPECS = `${namespace}/SET_SHOW_SPECS`
 export const RESET_DATA = `${namespace}/RESET_DATA`
 export const SET_FITS_MODAL = `${namespace}/SET_FITS_MODAL`
+export const SET_LOADING_ACTION = `${namespace}/SET_LOADING_ACTION`

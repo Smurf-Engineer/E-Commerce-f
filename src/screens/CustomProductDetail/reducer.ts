@@ -11,7 +11,8 @@ import {
   OPEN_FITINFO,
   SET_SHOW_DETAILS,
   SET_SHOW_SPECS,
-  RESET_DATA
+  RESET_DATA,
+  SET_LOADING_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -20,6 +21,7 @@ export const initialState = fromJS({
   selectedGender: {},
   selectedSize: {},
   selectedFit: {},
+  loading: true,
   openFitInfo: false,
   showDetails: false,
   showSpecs: false,
@@ -47,6 +49,8 @@ const customProductDetailReducer: Reducer<any> = (
       return state.set('showDetails', action.show)
     case SET_SHOW_SPECS:
       return state.set('showSpecs', action.show)
+    case SET_LOADING_ACTION:
+      return state.set('loading', action.loading)
     case RESET_DATA:
       return initialState
     default:
