@@ -44,6 +44,9 @@ export const HeaderRow = styled.div`
   border-bottom-style: solid;
   padding-bottom: 4px;
   align-items: center;
+  @media (max-width: 480px) {
+    display: none;
+  }
 `
 
 export const Column = styled.td`
@@ -89,6 +92,25 @@ export const MoreIcon = styled(Icon)`
   transform: rotate(90deg);
   font-size: 30px;
   margin-right: -19px;
+`
+
+export const MobileLocker = styled.div`
+  @media (min-width: 480px) {
+    display: none;
+  }
+`
+
+export const DesktopLocker = styled.div`
+  @media (max-width: 480px) {
+    display: none;
+  }
+`
+
+export const DragCell = styled.div`
+  display: flex;
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `
 
 export const DeleteButton = styled.div`

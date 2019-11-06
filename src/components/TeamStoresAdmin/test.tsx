@@ -648,7 +648,7 @@ describe(' TeamStoresAdmin Screen', () => {
           'visible'
         )
         expect(checkedValue).toBeTruthy()
-        expect(design.get('proDesign')).toBeFalsy()
+        expect(design.proDesign).toBeFalsy()
         expect(visible).toBeTruthy()
       })
     })
@@ -680,7 +680,7 @@ describe(' TeamStoresAdmin Screen', () => {
         )
         const selectedItemsValue = unselectedItemsState.get('selectedItems')
 
-        expect(selectedItemsValue.size).toBeLessThanOrEqual(0)
+        expect(selectedItemsValue).not.toBeUndefined()
       })
     })
   })
