@@ -96,3 +96,16 @@ export const getUsers = gql`
     }
   }
 `
+
+export const deleteTeamStoreMutation = graphql(
+  gql`
+    mutation deleteTeamStore($shortId: String!) {
+      deleteTeamStore(teamStoreId: $shortId, isAdmin: true) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'deleteStore'
+  }
+)

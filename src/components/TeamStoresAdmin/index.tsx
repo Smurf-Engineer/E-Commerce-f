@@ -15,7 +15,8 @@ import {
   setTeamStoreDisplayMutation,
   createStoreMutation,
   getUsers,
-  updateStoreMutation
+  updateStoreMutation,
+  deleteTeamStoreMutation
 } from './data'
 import TeamStoreDetails from './TeamStoreDetails'
 import CreateStore from './CreateStore'
@@ -94,6 +95,7 @@ interface Props {
   setSelectedUser: (user: string) => void
   getEditStore: (query: any, id: string) => void
   updateStore: (variables: {}) => Promise<any>
+  deleteStore: (variables: {}) => Promise<any>
   createStore: (variables: {}) => Promise<any>
   setSavingAction: (saving: boolean) => void
   setLoading: (loading: boolean) => void
@@ -239,6 +241,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 currencies,
                 loading
               }}
+              handleDeleteStore={this.handleDeleteStore}
               getTeamStoreData={this.handleGetTeamStoreDetails}
               handleOnSetPrice={setPriceAction}
               handleOnSave={this.handleOnSaveItem}
@@ -416,6 +419,33 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
     }
   }
 
+  handleDeleteStore = async () => {
+    const {
+      history,
+      deleteStore,
+      setLoadingAction,
+      teamStore: { shortId }
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const response = await deleteStore({
+        variables: { shortId }
+      })
+      const {
+        data: {
+          deleteTeamStore: { message: messageResp }
+        }
+      } = response
+      message.success(messageResp)
+      history.push('/admin/team-stores')
+    } catch (error) {
+      message.error(
+        `Something wrong happened. Please try again! ${error.message}`
+      )
+      setLoadingAction(false)
+    }
+  }
+
   buildTeamStore = async () => {
     const {
       setSavingAction,
@@ -537,6 +567,7 @@ const TeamStoresAdminEnhance = compose(
   setTeamStoreFeaturedMutation,
   setTeamStorePricesMutation,
   setTeamStoreDisplayMutation,
+  deleteTeamStoreMutation,
   createStoreMutation,
   updateStoreMutation,
   withApollo,
