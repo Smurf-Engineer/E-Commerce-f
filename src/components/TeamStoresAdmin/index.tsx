@@ -438,10 +438,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       } = response
       message.success(messageResp)
       history.push('/admin/team-stores')
-    } catch (error) {
-      message.error(
-        `Something wrong happened. Please try again! ${error.message}`
-      )
+    } catch (err) {
+      const errorMessage =
+        err.graphQLErrors.map((x: any) => x.message) || err.message
+      message.error(errorMessage, 5)
       setLoadingAction(false)
     }
   }
