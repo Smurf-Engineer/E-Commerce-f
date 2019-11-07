@@ -10,6 +10,7 @@ import {
   SET_SHOW_DETAILS,
   SET_FITS_MODAL,
   SET_SHOW_SPECS,
+  SET_LOADING_ACTION,
   RESET_DATA
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
@@ -42,6 +43,11 @@ export const setSelectedFitAction = (selected: SelectedType) => ({
 export const openFitInfoAction = (open: boolean) => ({
   type: OPEN_FITINFO,
   open
+})
+
+export const setLoadingAction = (loading: boolean) => ({
+  type: SET_LOADING_ACTION,
+  loading
 })
 
 export const setShowDetailsAction = (show: boolean) => ({
