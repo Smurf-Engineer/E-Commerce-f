@@ -73,8 +73,6 @@ export class StoreFront extends React.Component<Props, {}> {
     openPassCodeDialogAction(false)
   }
 
-  handleIngressPassCode = async () => {}
-
   handleOpenPassCode = () => {
     const { openPassCodeDialogAction } = this.props
     openPassCodeDialogAction(true)
@@ -113,14 +111,17 @@ export class StoreFront extends React.Component<Props, {}> {
       user,
       contactInfo
     } = this.props
-
     const {
       location: { search }
     } = this.props
     const queryParams = queryString.parse(search)
-
     const storeId = queryParams ? queryParams.storeId || '' : ''
-
+    let storedCode = ''
+    const savedStores = sessionStorage.getItem('savedStores')
+    if (savedStores) {
+      const storeCodes = JSON.parse(savedStores)
+      storedCode = storeCodes[storeId]
+    }
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
@@ -131,7 +132,7 @@ export class StoreFront extends React.Component<Props, {}> {
             openShareModalAction={openShareModalAction}
             openShare={openShare}
             teamStoreId={storeId}
-            passCode={passCode}
+            passCode={passCode || storedCode}
             setOpenPassCodeDialog={openPassCodeDialogAction}
             openEmailContact={openEmailContact}
             emailContact={emailContact}
