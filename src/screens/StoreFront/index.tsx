@@ -117,7 +117,8 @@ export class StoreFront extends React.Component<Props, {}> {
     const queryParams = queryString.parse(search)
     const storeId = queryParams ? queryParams.storeId || '' : ''
     let storedCode = ''
-    const savedStores = sessionStorage.getItem('savedStores')
+    const savedStores =
+      typeof window !== 'undefined' && sessionStorage.getItem('savedStores')
     if (savedStores) {
       const storeCodes = JSON.parse(savedStores)
       storedCode = storeCodes[storeId]
