@@ -8,6 +8,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
+import * as thunkActions from './thunkActions'
 import * as storeFrontActions from './actions'
 import { isPhoneNumber } from '../../utils/utilsFiles'
 import { QueryProps, UserType, ContactInformation } from '../../types/common'
@@ -15,6 +16,7 @@ import { Container } from './styledComponents'
 import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import StoreFrontContent from '../../components/StoreFrontContent'
+import { getSessionCode } from './thunkActions'
 
 interface Params extends QueryProps {
   teamStoreId: String
@@ -34,6 +36,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   user: UserType
   contactInfo: ContactInformation
+
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -116,13 +119,7 @@ export class StoreFront extends React.Component<Props, {}> {
     } = this.props
     const queryParams = queryString.parse(search)
     const storeId = queryParams ? queryParams.storeId || '' : ''
-    let storedCode = ''
-    const savedStores =
-      typeof window !== 'undefined' && sessionStorage.getItem('savedStores')
-    if (savedStores) {
-      const storeCodes = JSON.parse(savedStores)
-      storedCode = storeCodes[storeId]
-    }
+    const storedCode = getSessionCode(storeId)
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
@@ -160,10 +157,11 @@ const mapStateToProps = (state: any) => {
 
 const StoreFrontEnhance = compose(
   injectIntl,
-  connect(
-    mapStateToProps,
-    { ...storeFrontActions, openQuickView: openQuickViewAction }
-  )
+  connect(mapStateToProps, {
+    ...storeFrontActions,
+    ...thunkActions,
+    openQuickView: openQuickViewAction
+  })
 )(StoreFront)
 
 export default StoreFrontEnhance

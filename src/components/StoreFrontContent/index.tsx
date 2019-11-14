@@ -7,6 +7,7 @@ import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import find from 'lodash/find'
 import Spin from 'antd/lib/spin'
+import message from 'antd/lib/message'
 import moment from 'moment'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
@@ -166,11 +167,15 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
   }
 
   handleAddCode = (passCode: string) => {
-    const { teamStoreId } = this.props
-    const savedStores = sessionStorage.getItem('savedStores')
-    const storeCodes = savedStores ? JSON.parse(savedStores) : {}
-    storeCodes[teamStoreId] = passCode
-    sessionStorage.setItem('savedStores', JSON.stringify(storeCodes))
+    try {
+      const { teamStoreId } = this.props
+      const savedStores = sessionStorage.getItem('savedStores')
+      const storeCodes = savedStores ? JSON.parse(savedStores) : {}
+      storeCodes[teamStoreId] = passCode
+      sessionStorage.setItem('savedStores', JSON.stringify(storeCodes))
+    } catch (error) {
+      message.error(error.message)
+    }
   }
 
   closeEmailContactModal = () => {
