@@ -148,3 +148,12 @@ export const Description = styled.div`
     width: 100%;
   }
 `
+export const MobileEmtpytable = styled.div`
+  padding: 50px 40px 50px;
+  border-bottom: 1px solid #dcdcdc;
+  color: #bebebe;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 21px;
+  text-align: center;
+`
