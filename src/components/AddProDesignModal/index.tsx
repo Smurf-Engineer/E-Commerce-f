@@ -72,7 +72,12 @@ export class AddProDesignModal extends React.Component<Props, {}> {
     const {
       currentTarget: { id, value }
     } = evt
-    if (!containSpaces(value)) {
+    console.log(id)
+    if (id !== 'designName') {
+      if (!containSpaces(value)) {
+        handleOnInputChange(id, value)
+      }
+    } else {
       handleOnInputChange(id, value)
     }
   }
