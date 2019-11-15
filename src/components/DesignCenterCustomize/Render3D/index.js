@@ -595,7 +595,6 @@ class Render3D extends PureComponent {
     } else {
       onLoadModel(true)
     }
-    console.log(product.obj)
     this.mtlLoader.load(product.mtl, materials => {
       materials.preload()
       this.objLoader.setMaterials(materials)
@@ -604,7 +603,6 @@ class Render3D extends PureComponent {
         object => {
           /* Object materials */
           const { children } = object
-          console.log('Children ', children)
           const objectChildCount = children.length
           const { width, height } = currentStyle
           const CANVAS_SIZE =
@@ -623,7 +621,6 @@ class Render3D extends PureComponent {
           const meshIndex = getMeshIndex(MESH)
 
           const { flatlock, areas, bumpMap, branding, colors } = loadedTextures
-          console.log(colors)
           /* Stitching */
           if (!!flatlock) {
             const color =
@@ -707,10 +704,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
-          // const ls = ['#FFFFFF']
-          console.log('Child count ', objectChildCount)
           const svgColors = designHasChanges ? areaColors : colors
-          console.log(svgColors)
           areas.forEach(
             (map, index) =>
               (children[
