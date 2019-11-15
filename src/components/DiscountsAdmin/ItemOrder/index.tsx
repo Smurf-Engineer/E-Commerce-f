@@ -17,6 +17,7 @@ interface Props {
   rate: number
   expiry: string
   active: boolean
+  restrictionType: string
   onDiscountClick: (discount: Discount) => void
   onChangeActive: (id: number) => void
 }
@@ -30,7 +31,8 @@ const ItemOrder = ({
   expiry,
   onDiscountClick,
   active,
-  onChangeActive
+  onChangeActive,
+  restrictionType
 }: Props) => {
   const handleOnClick = () => {
     const discount = {
@@ -40,7 +42,8 @@ const ItemOrder = ({
       type,
       rate,
       expiry,
-      active
+      active,
+      restrictionType
     }
     onDiscountClick(discount)
   }

@@ -12,6 +12,7 @@ export const addDiscountMutation = graphql(
         rate
         expiry
         active
+        restrictionType: restriction_type
       }
     }
   `,
@@ -30,6 +31,7 @@ export const updateDiscountMutation = graphql(
         rate
         expiry
         active
+        restrictionType: restriction_type
       }
     }
   `,
@@ -50,3 +52,14 @@ export const activateDiscountMutation = graphql(
     name: 'activateDiscount'
   }
 )
+
+export const getUsers = gql`
+  query GetUsersNameQuery($pattern: String!) {
+    userSearch: getUserSearch(pattern: $pattern) {
+      id
+      name
+      email
+      shortId: short_id
+    }
+  }
+`

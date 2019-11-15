@@ -13,11 +13,19 @@ import {
   ON_SELECT_DISCOUNT_TYPE,
   ON_CHANGE_RATE,
   ON_ACTIVATE_DISCOUNT,
-  OPEN_DISCOUNT_MODAL,
   RESET_DISCOUNT_DATA,
   SET_LOADING,
   ON_SELECT_DATE,
-  SET_DISCOUNT_TO_UPDATE
+  SET_DISCOUNT_TO_UPDATE,
+  SELECT_RESTRICTION,
+  ON_CHANGE_USER,
+  SET_SELECTED_USER,
+  SET_ITEM_SELECTED_ACTION,
+  SET_ITEMS_ADD_ACTION,
+  SET_OPEN_LOCKER_ACTION,
+  ON_UNSELECT_ITEM,
+  DELETE_ITEM_SELECTED_ACTION,
+  SET_PAGINATION_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -34,8 +42,16 @@ export const initialState = fromJS({
   expiry: '',
   rate: 1,
   discountActive: false,
-  discountModalOpen: false,
-  loading: false
+  loading: false,
+  restrictionType: '',
+  user: '',
+  selectedUser: '',
+  items: [],
+  openLocker: false,
+  selectedItems: {},
+  currentPageModal: 1,
+  limit: 12,
+  offset: 0
 })
 
 const orderHistoryAdminReducer: Reducer<any> = (
@@ -61,8 +77,6 @@ const orderHistoryAdminReducer: Reducer<any> = (
       return state.set('rate', action.value)
     case ON_ACTIVATE_DISCOUNT:
       return state.set('discountActive', action.checked)
-    case OPEN_DISCOUNT_MODAL:
-      return state.set('discountModalOpen', action.open)
     case SET_LOADING:
       return state.set('loading', action.loading)
     case RESET_DISCOUNT_DATA: {
@@ -74,7 +88,14 @@ const orderHistoryAdminReducer: Reducer<any> = (
         discountActive: false,
         expiry: '',
         loading: false,
-        discountId: -1
+        discountId: -1,
+        restrictionType: '',
+        user: '',
+        selectedUser: '',
+        items: [],
+        openLocker: false,
+        currentPageModal: 1,
+        offset: 0
       })
     }
     case ON_SELECT_DATE:
@@ -87,7 +108,8 @@ const orderHistoryAdminReducer: Reducer<any> = (
         type,
         rate,
         expiry,
-        active
+        active,
+        restrictionType
       } = action.discount
       return state.merge({
         discountId: id,
@@ -97,7 +119,45 @@ const orderHistoryAdminReducer: Reducer<any> = (
         rate,
         discountActive: active,
         expiry,
-        discountModalOpen: true
+        restrictionType
+      })
+    }
+    case SELECT_RESTRICTION:
+      return state.set('restrictionType', action.restriction)
+    case ON_CHANGE_USER:
+      return state.set('user', action.value)
+    case SET_SELECTED_USER:
+      return state.merge({ selectedUser: action.email, items: [] })
+    case SET_ITEM_SELECTED_ACTION: {
+      const {
+        design: { id }
+      } = action.item
+      return state.setIn(['selectedItems', id], action.item)
+    }
+    case SET_ITEMS_ADD_ACTION: {
+      const items = state.get('items').toJS()
+      const selectedItems = state.get('selectedItems')
+      const itemsMap = selectedItems.valueSeq((item: any) => item)
+      return state.merge({
+        items: [...items, ...itemsMap],
+        openLocker: false,
+        selectedItems: {}
+      })
+    }
+    case SET_OPEN_LOCKER_ACTION:
+      return state.merge({ openLocker: action.isOpen, selectedItems: {} })
+    case ON_UNSELECT_ITEM:
+      return state.update('selectedItems', (selectedItem: any) => {
+        return selectedItem.filter((item: any) => item.design.id !== action.id)
+      })
+    case DELETE_ITEM_SELECTED_ACTION:
+      const { index } = action
+      return state.deleteIn(['items', index])
+    case SET_PAGINATION_DATA: {
+      return state.merge({
+        offset: action.offset,
+        currentPageModal: action.page,
+        loading: false
       })
     }
     default:

@@ -640,6 +640,7 @@ export interface Discount {
   rate: number
   expiry: string
   active?: boolean
+  restrictionType: string
 }
 export interface FulfillmentNetsuite {
   packages: string

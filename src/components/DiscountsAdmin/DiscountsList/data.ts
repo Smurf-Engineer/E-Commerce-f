@@ -28,6 +28,7 @@ export const getDiscountsQuery = gql`
         rate
         expiry
         active
+        restrictionType: restriction_type
       }
     }
   }

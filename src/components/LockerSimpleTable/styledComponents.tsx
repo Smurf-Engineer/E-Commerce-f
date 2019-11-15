@@ -30,7 +30,6 @@ export const Row = styled.div`
   border-bottom: ${({ noBorder }: RowProps) =>
     noBorder ? 'none' : '1px solid #dcdcdc'};
   padding: ${({ rowPadding }) => (rowPadding ? rowPadding : '8px 0')};
-  cursor: move;
 
   @media (min-width: 320px) and (max-width: 480px) {
     justify-content: space-between;
@@ -147,4 +146,13 @@ export const Description = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
+`
+export const MobileEmtpytable = styled.div`
+  padding: 50px 40px 50px;
+  border-bottom: 1px solid #dcdcdc;
+  color: #bebebe;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 21px;
+  text-align: center;
 `
