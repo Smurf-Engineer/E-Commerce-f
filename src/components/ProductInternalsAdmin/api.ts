@@ -1,5 +1,9 @@
 import config from '../../config'
-import { setDownloadingFileAction } from './actions'
+import {
+  setDownloadingFileAction,
+  setLoadingAction,
+  resetDataAction
+} from './actions'
 import message from 'antd/lib/message'
 
 export const downloadCsv = () => {
@@ -33,6 +37,35 @@ export const downloadCsv = () => {
     } catch (e) {
       dispatch(setDownloadingFileAction(false))
       message.error('Oops! Something went wrong')
+    }
+  }
+}
+
+export const uploadCsv = (file: File) => {
+  return async (dispatch: any) => {
+    try {
+      dispatch(setLoadingAction(true))
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const formData = new FormData()
+      formData.append('file', file)
+      const response = await fetch(`${config.graphqlUriBase}upload/internals`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${user.token}`
+        },
+        body: formData
+      })
+      const res = await response.text()
+      if (response.ok) {
+        message.success(res)
+      } else {
+        message.warning(res)
+      }
+      dispatch(resetDataAction())
+    } catch (e) {
+      message.error(e.message)
+      dispatch(setLoadingAction(false))
     }
   }
 }

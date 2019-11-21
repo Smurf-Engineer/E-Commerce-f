@@ -1246,5 +1246,15 @@
   "components.TeamStoreDetails.featured": "Featured",
   "components.TeamStoreDetails.name": "Name",
   "components.TeamStoreDetails.save": "Save",
-  "components.TeamStoreDetails.edit": "Edit"
+  "components.TeamStoreDetails.edit": "Edit",
+  "components.ProductInternalsAdmin.title": "Product Internal List",
+  "components.ProductInternalsAdmin.search": "Search for a internal id or product code",
+  "components.ProductInternalsAdmin.addInternalLabel": "+ ADD NEW PRODUCT INTERNAL",
+  "components.ProductInternalsAdmin.download": "DOWNLOAD CSV",
+  "components.ProductInternalsAdmin.alreadyExist": "Product internal already exists.",
+  "components.ProductInternalsAdmin.unexpectedError": "Oops! Something went wrong.",
+  "components.ProductInternalsAdmin.confirmTitle": "Delete product internal",
+  "components.ProductInternalsAdmin.confirmMessage": "You are about to delete the internal ID no. {internalId}.",
+  "components.ProductInternalsAdmin.invalidFormat": "Invalid file format",
+  "components.ProductInternalsAdmin.uploadCsv": "Upload CSV"
 }
