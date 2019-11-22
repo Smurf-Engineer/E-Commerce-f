@@ -25,7 +25,10 @@ import {
   SET_OPEN_LOCKER_ACTION,
   ON_UNSELECT_ITEM,
   DELETE_ITEM_SELECTED_ACTION,
-  SET_PAGINATION_DATA
+  SET_PAGINATION_DATA,
+  LIST,
+  EDIT,
+  ON_ADD_USER
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -51,7 +54,9 @@ export const initialState = fromJS({
   selectedItems: {},
   currentPageModal: 1,
   limit: 12,
-  offset: 0
+  offset: 0,
+  discountPage: LIST,
+  selectedUsers: []
 })
 
 const orderHistoryAdminReducer: Reducer<any> = (
@@ -95,7 +100,9 @@ const orderHistoryAdminReducer: Reducer<any> = (
         items: [],
         openLocker: false,
         currentPageModal: 1,
-        offset: 0
+        offset: 0,
+        discountPage: LIST,
+        selectedUsers: []
       })
     }
     case ON_SELECT_DATE:
@@ -109,7 +116,11 @@ const orderHistoryAdminReducer: Reducer<any> = (
         rate,
         expiry,
         active,
-        restrictionType
+        restrictionType,
+        items,
+        selectedUser,
+        user,
+        selectedUsers
       } = action.discount
       return state.merge({
         discountId: id,
@@ -119,7 +130,12 @@ const orderHistoryAdminReducer: Reducer<any> = (
         rate,
         discountActive: active,
         expiry,
-        restrictionType
+        restrictionType,
+        items,
+        selectedUser,
+        user,
+        discountPage: EDIT,
+        selectedUsers
       })
     }
     case SELECT_RESTRICTION:
@@ -152,12 +168,21 @@ const orderHistoryAdminReducer: Reducer<any> = (
       })
     case DELETE_ITEM_SELECTED_ACTION:
       const { index } = action
-      return state.deleteIn(['items', index])
+      return state.deleteIn([action.section, index])
     case SET_PAGINATION_DATA: {
       return state.merge({
         offset: action.offset,
         currentPageModal: action.page,
         loading: false
+      })
+    }
+    case ON_ADD_USER: {
+      const { email } = action
+      const selectedUsers = state.get('selectedUsers')
+      const itemsMap = selectedUsers.valueSeq((item: any) => item)
+      return state.merge({
+        user: '',
+        selectedUsers: [...email, ...itemsMap]
       })
     }
     default:

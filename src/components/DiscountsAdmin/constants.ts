@@ -28,8 +28,13 @@ export const SET_OPEN_LOCKER_ACTION = `${namespace}/SET_OPEN_LOCKER_ACTION`
 export const ON_UNSELECT_ITEM = `${namespace}/ON_UNSELECT_ITEM`
 export const DELETE_ITEM_SELECTED_ACTION = `${namespace}/DELETE_ITEM_SELECTED_ACTION`
 export const SET_PAGINATION_DATA = `${namespace}/SET_PAGINATION_DATA`
+export const ON_ADD_USER = `${namespace}/ON_ADD_USER`
 
 // Discounts types
 export const USAGE = 'usage'
 export const PRODUCT = 'product'
 export const USERS = 'users'
+
+// Discounts pages
+export const LIST = 0
+export const EDIT = 1

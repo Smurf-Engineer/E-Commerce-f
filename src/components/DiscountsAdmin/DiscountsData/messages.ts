@@ -92,5 +92,13 @@ export default defineMessages({
   gotIt: {
     id: 'components.DiscountsData.gotIt',
     defaultMessage: 'Got it'
+  },
+  discountUser: {
+    id: 'components.DiscountsData.discountUser',
+    defaultMessage: 'Discount User List'
+  },
+  addUsers: {
+    id: 'components.DiscountsData.addUsers',
+    defaultMessage: 'Add Users'
   }
 })

@@ -29,6 +29,29 @@ export const getDiscountsQuery = gql`
         expiry
         active
         restrictionType: restriction_type
+        selectedUser: user_id
+        user
+        selectedUsers: users {
+          netsuiteId: netsuite_internal
+          firstName: first_name
+          lastName: last_name
+          email
+        }
+        items {
+          id
+          code
+          name
+          image
+          shortId: short_id
+          product {
+            id
+            code
+            yotpoId: yotpo_id
+            type: name
+            weight
+            description: short_description
+          }
+        }
       }
     }
   }

@@ -136,7 +136,11 @@ const DiscountsList = ({
         expiry,
         active,
         id,
-        restrictionType
+        items,
+        restrictionType,
+        selectedUser,
+        user,
+        selectedUsers
       }: Discount,
       index: number
     ) => {
@@ -153,7 +157,11 @@ const DiscountsList = ({
             active,
             onDiscountClick,
             onChangeActive,
-            restrictionType
+            restrictionType,
+            items,
+            selectedUser,
+            user,
+            selectedUsers
           }}
         />
       )

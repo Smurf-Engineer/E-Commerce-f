@@ -2,10 +2,8 @@
  * ProductRow Component - Created by david on 12/04/18.
  */
 import * as React from 'react'
-import screenMessage from 'antd/lib/message'
 import { Row, Cell, DeleteButton, Name, Description } from '../styledComponents'
 import Thumbnail from '../ProductImage'
-import messages from '../messages'
 
 interface Props {
   index: number
@@ -15,19 +13,17 @@ interface Props {
   description: string
   visible: boolean
   yotpoId: string
-  totalOrders: number
   id?: number
   text?: string
   regularPrice?: string
   hideQuickView?: boolean
-  onPressDelete: (index: number) => void
+  onPressDelete: (index: number, section: string) => void
   onPressQuickView: (
     id: number,
     yotpoId: string,
     hideSliderButtons?: boolean
   ) => void
   onPressVisible: (index: number, checked: boolean) => void
-  formatMessage: (messageDescriptor: any) => string
 }
 
 class ProductRow extends React.PureComponent<Props, {}> {
@@ -37,18 +33,12 @@ class ProductRow extends React.PureComponent<Props, {}> {
       image,
       name,
       description,
-      totalOrders,
       onPressDelete,
-      formatMessage,
       hideQuickView
     } = this.props
 
     const handleOnClick = () => {
-      if (totalOrders) {
-        screenMessage.error(formatMessage(messages.cannotDelete))
-        return
-      }
-      onPressDelete(index)
+      onPressDelete(index, 'items')
     }
 
     return (

@@ -32,7 +32,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   items: LockerTableType[]
   hideQuickView?: boolean
-  onPressDelete: (index: number) => void
+  onPressDelete: (index: number, section: string) => void
 }
 
 class LockerSimpleTable extends React.PureComponent<Props, {}> {

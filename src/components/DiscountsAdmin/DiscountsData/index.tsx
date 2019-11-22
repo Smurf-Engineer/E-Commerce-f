@@ -10,6 +10,7 @@ import debounce from 'lodash/debounce'
 import Modal from 'antd/lib/modal'
 import { USAGE, PRODUCT, USERS } from '../constants'
 import LockerSimpleTable from '../../LockerSimpleTable'
+import SimpleTable from '../../SimpleTable'
 import LockerModal from '../../LockerModal'
 import { BLUE } from '../../../theme/colors'
 import {
@@ -39,7 +40,8 @@ import moment, { Moment } from 'moment'
 import {
   LockerTableType,
   SelectedDesignObjectType,
-  DesignType
+  DesignType,
+  User
 } from '../../../types/common'
 
 interface Props {
@@ -63,7 +65,9 @@ interface Props {
   limit: number
   offset: number
   currentPageModal: number
-  goBack?: () => void
+  user: string
+  selectedUsers: User[]
+  goBack: () => void
   formatMessage: (messageDescriptor: any) => string
   handleOnInputChange: (event: any) => void
   onSelectDiscountType: (value: string) => void
@@ -78,62 +82,60 @@ interface Props {
   setItemsToAdd: () => void
   setOpenLocker: (open: boolean) => void
   onUnselectItem: (id: number) => void
-  onDeleteItem: (id: number) => void
+  onDeleteItem: (id: number, section: string) => void
   setPaginationData: (offset: number, page: number) => void
+  onAddUser: (email: string) => void
 }
 
 const { Option } = Select
 const discountRestrictionTypes = [PRODUCT, USERS, USAGE]
 
-const DiscountsData = ({
-  goBack,
-  formatMessage,
-  discountTypes,
-  handleOnInputChange,
-  couponCode,
-  discountItemId,
-  onSelectDiscountType,
-  discountType,
-  rate,
-  onChangeRate,
-  onActivateDiscount,
-  discountActive,
-  onSaveDiscount,
-  onSelectDate,
-  expiry,
-  loading,
-  restrictionType,
-  onSelectRestriction,
-  handleOnChange,
-  searchResults,
-  setSelectedUser,
-  items,
-  openLocker,
-  selectedItems,
-  setItemSelected,
-  setItemsToAdd,
-  selectedUser,
-  setOpenLocker,
-  onUnselectItem,
-  onDeleteItem,
-  selectTitle,
-  limit,
-  offset,
-  setPaginationData,
-  currentPageModal
-}: Props) => {
-  const debounceSearchProduct = debounce(value => handleOnChange(value), 300)
-  const handleOnSelect = async (value: SelectValue) => {
+interface StateProps {
+  searchValue: string
+}
+
+class DiscountsData extends React.Component<Props, StateProps> {
+  state = {
+    searchValue: '',
+    searchUserValue: ''
+  }
+  debounceSearchUser = debounce(
+    () => this.props.handleOnChange(this.state.searchValue),
+    300
+  )
+  debounceSearchUserTable = debounce(
+    () => this.props.handleOnChange(this.state.searchValue),
+    300
+  )
+  componentDidUpdate(prevProps: Props) {
+    const { user } = this.props
+    if (prevProps.user !== user) {
+      this.setState({ searchValue: user })
+    }
+  }
+  handleOnSelect = (value: SelectValue) => {
+    const { setSelectedUser } = this.props
+    const parsedValue = this.getParsedValue(value)
+    setSelectedUser(parsedValue)
+  }
+
+  handleOnSelectUser = (value: SelectValue) => {
+    console.log('aa')
+    const { onAddUser } = this.props
+    const parsedValue = this.getParsedValue(value)
+    onAddUser(parsedValue)
+  }
+
+  getParsedValue = (value: SelectValue) => {
     const emailValue = value
       .toString()
       .split(' -')
       .reverse()
       .shift()
-    const parsedValue = emailValue.replace(/ /g, '')
-    setSelectedUser(parsedValue)
+    return emailValue.replace(/ /g, '')
   }
 
-  const getCheckedItems = (lockerItems: LockerTableType[]) => {
+  getCheckedItems = (lockerItems: LockerTableType[]) => {
     const checkedItems = lockerItems.reduce((obj, item) => {
       const itemId = get(item, 'design.id', item.id)
       obj[itemId] = true
@@ -142,7 +144,8 @@ const DiscountsData = ({
     }, {})
     return checkedItems
   }
-  const handleOnAddItem = () => {
+  handleOnAddItem = () => {
+    const { selectedUser, formatMessage, setOpenLocker } = this.props
     if (selectedUser) {
       setOpenLocker(true)
     } else {
@@ -157,7 +160,8 @@ const DiscountsData = ({
       })
     }
   }
-  const changePage = (pageParam: number = 1) => {
+  changePage = (pageParam: number = 1) => {
+    const { limit, setPaginationData } = this.props
     let currentOffset = pageParam > 1 ? (pageParam - 1) * limit : 0
     let currentPage = pageParam
 
@@ -172,161 +176,261 @@ const DiscountsData = ({
     }
     setPaginationData(currentOffset, currentPage)
   }
-  const handleOnCloseLocker = () => setOpenLocker(false)
-  const tableItems = getCheckedItems(items)
-  return (
-    <Container>
-      <ViewContainer onClick={goBack}>
-        <Icon type="left" />
-        <span>{formatMessage(messages.back)}</span>
-      </ViewContainer>
-      <Title>{formatMessage(messages.newDiscount)}</Title>
-      <Row>
-        <Column>
-          <Label>{formatMessage(messages.restrictionType)}</Label>
-          <RestrictionContainer>
-            {discountRestrictionTypes.map(restriction => (
-              <SectionButton
-                id={restriction}
-                large={true}
-                selected={restriction === restrictionType}
-                onClick={onSelectRestriction(restriction)}
-              >
-                {formatMessage(messages[restriction])}
-              </SectionButton>
-            ))}
-          </RestrictionContainer>
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <Label>{formatMessage(messages.couponCode)}</Label>
-          <StyledInput
-            id={'couponCode'}
-            onChange={handleOnInputChange}
-            maxLength={15}
-            value={couponCode}
-          />
-        </Column>
-        <Column>
-          <Label>{formatMessage(messages.discountItemId)}</Label>
-          <StyledInput
-            id={'discountItemId'}
-            onChange={handleOnInputChange}
-            maxLength={7}
-            data-is-number={true}
-            value={discountItemId}
-          />
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <Label>{formatMessage(messages.discountType)}</Label>
-          <StyledSelect
-            onSelect={onSelectDiscountType}
-            defaultValue={discountType}
-            value={discountType}
-          >
-            {discountTypes.map(value => (
-              <Option key={value} value={value}>
-                {value}
-              </Option>
-            ))}
-          </StyledSelect>
-        </Column>
-        <Column>
-          <Label>{formatMessage(messages.rate)}</Label>
-          <StyledInputNumber
-            min={1}
-            step={0.1}
-            value={rate}
-            onChange={onChangeRate}
-          />
-        </Column>
-        <Column>
-          <Label>{formatMessage(messages.expiryDate)}</Label>
-          <StyledDatePicker
-            placeholder={''}
-            onChange={onSelectDate}
-            value={expiry && moment(expiry, 'DD-MM-YYYY')}
-          />
-        </Column>
-        <Column>
-          <Label>{formatMessage(messages.activateDiscount)}</Label>
-          <StyledSwitch
-            checked={discountActive}
-            onChange={onActivateDiscount}
-          />
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <Label>{formatMessage(messages.selectUser)}</Label>
-          <StyledSearch
-            onChange={debounceSearchProduct}
-            dataSource={searchResults}
-            onSelect={handleOnSelect}
-            placeholder={formatMessage(messages.searchBy)}
-          >
+  handleOnCloseLocker = () => this.props.setOpenLocker(false)
+
+  handleSearchInputChange = (value: string) =>
+    this.setState({ searchValue: value }, () => {
+      this.debounceSearchUser()
+    })
+  handleSearchUsersInputChange = (value: string) =>
+    this.setState({ searchValue: value }, () => {
+      this.debounceSearchUserTable()
+    })
+  goBack = () => {
+    const { goBack } = this.props
+    this.setState({ searchValue: '' }, () => {
+      goBack()
+    })
+  }
+
+  render() {
+    const tableItems = this.getCheckedItems(this.props.items)
+    const {
+      formatMessage,
+      discountTypes,
+      handleOnInputChange,
+      couponCode,
+      discountItemId,
+      onSelectDiscountType,
+      discountType,
+      rate,
+      onChangeRate,
+      onActivateDiscount,
+      discountActive,
+      onSaveDiscount,
+      onSelectDate,
+      expiry,
+      loading,
+      restrictionType,
+      onSelectRestriction,
+      searchResults,
+      items,
+      openLocker,
+      selectedItems,
+      setItemSelected,
+      setItemsToAdd,
+      onUnselectItem,
+      onDeleteItem,
+      selectTitle,
+      limit,
+      offset,
+      currentPageModal,
+      user,
+      selectedUsers
+    } = this.props
+    return (
+      <Container>
+        <ViewContainer onClick={this.goBack}>
+          <Icon type="left" />
+          <span>{formatMessage(messages.back)}</span>
+        </ViewContainer>
+        <Title>
+          {formatMessage(
+            discountItemId ? messages.editDiscount : messages.newDiscount
+          )}
+        </Title>
+        <Row>
+          <Column>
+            <Label>{formatMessage(messages.restrictionType)}</Label>
+            <RestrictionContainer>
+              {discountRestrictionTypes.map(restriction => (
+                <SectionButton
+                  id={restriction}
+                  large={true}
+                  selected={restriction === restrictionType}
+                  onClick={onSelectRestriction(restriction)}
+                >
+                  {formatMessage(messages[restriction])}
+                </SectionButton>
+              ))}
+            </RestrictionContainer>
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <Label>{formatMessage(messages.couponCode)}</Label>
             <StyledInput
-              suffix={
-                <SearchButton className="search-btn" size="large" type="ghost">
-                  <Icon type="search" />
-                </SearchButton>
-              }
+              id={'couponCode'}
+              onChange={handleOnInputChange}
+              maxLength={15}
+              value={couponCode}
             />
-          </StyledSearch>
-        </Column>
-      </Row>
-      <Title>{formatMessage(messages.addItems)}</Title>
-      <AddItemButton onClick={handleOnAddItem}>
-        {formatMessage(messages.addItem)}
-      </AddItemButton>
-      <LockerSimpleTable
-        {...{
-          formatMessage,
-          items
-        }}
-        hideQuickView={true}
-        onPressDelete={onDeleteItem}
-      />
-      <LockerModal
-        {...{
-          selectedItems,
-          tableItems,
-          limit,
-          offset,
-          title: selectTitle,
-          userId: selectedUser
-        }}
-        proDesign={false}
-        currentPage={currentPageModal}
-        visible={openLocker}
-        onRequestClose={handleOnCloseLocker}
-        onSelectItem={setItemSelected}
-        onUnselectItem={onUnselectItem}
-        onAddItems={setItemsToAdd}
-        changePage={changePage}
-      />
-      <ButtonsContainer>
-        <StyledButton disabled={loading} onClick={goBack}>
-          {formatMessage(messages.cancel)}
-        </StyledButton>
-        <ButtonWrapper color={BLUE}>
-          <StyledButton
-            disabled={
-              !couponCode.length || !discountItemId.length || !rate || !expiry
-            }
-            type="primary"
-            onClick={onSaveDiscount}
-            loading={loading}
-          >
-            {formatMessage(messages.save)}
+          </Column>
+          <Column>
+            <Label>{formatMessage(messages.discountItemId)}</Label>
+            <StyledInput
+              id={'discountItemId'}
+              onChange={handleOnInputChange}
+              maxLength={7}
+              data-is-number={true}
+              value={discountItemId}
+            />
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <Label>{formatMessage(messages.discountType)}</Label>
+            <StyledSelect
+              onSelect={onSelectDiscountType}
+              defaultValue={discountType}
+              value={discountType}
+            >
+              {discountTypes.map(value => (
+                <Option key={value} value={value}>
+                  {value}
+                </Option>
+              ))}
+            </StyledSelect>
+          </Column>
+          <Column>
+            <Label>{formatMessage(messages.rate)}</Label>
+            <StyledInputNumber
+              min={1}
+              step={0.1}
+              value={rate}
+              onChange={onChangeRate}
+            />
+          </Column>
+          <Column>
+            <Label>{formatMessage(messages.expiryDate)}</Label>
+            <StyledDatePicker
+              placeholder={''}
+              onChange={onSelectDate}
+              value={expiry && moment(expiry, 'DD-MM-YYYY')}
+            />
+          </Column>
+          <Column>
+            <Label>{formatMessage(messages.activateDiscount)}</Label>
+            <StyledSwitch
+              checked={discountActive}
+              onChange={onActivateDiscount}
+            />
+          </Column>
+        </Row>
+        {restrictionType === USERS && (
+          <div>
+            <Row>
+              <Column>
+                <Title>{formatMessage(messages.discountUser)}</Title>
+                <Label>{formatMessage(messages.addUsers)}</Label>
+                <StyledSearch
+                  onChange={this.handleSearchUsersInputChange}
+                  dataSource={searchResults}
+                  onSelect={this.handleOnSelectUser}
+                  value={this.state.searchValue}
+                  placeholder={formatMessage(messages.searchBy)}
+                >
+                  <StyledInput
+                    suffix={
+                      <SearchButton
+                        className="search-btn"
+                        size="large"
+                        type="ghost"
+                      >
+                        <Icon type="search" />
+                      </SearchButton>
+                    }
+                  />
+                </StyledSearch>
+              </Column>
+            </Row>
+            <SimpleTable
+              {...{
+                formatMessage,
+                users: selectedUsers
+              }}
+              onPressDelete={onDeleteItem}
+            />
+          </div>
+        )}
+        {restrictionType === PRODUCT && (
+          <div>
+            <Row>
+              <Column>
+                <Label>{formatMessage(messages.selectUser)}</Label>
+                <StyledSearch
+                  onChange={this.handleSearchInputChange}
+                  dataSource={searchResults}
+                  onSelect={this.handleOnSelect}
+                  value={this.state.searchValue}
+                  placeholder={formatMessage(messages.searchBy)}
+                >
+                  <StyledInput
+                    suffix={
+                      <SearchButton
+                        className="search-btn"
+                        size="large"
+                        type="ghost"
+                      >
+                        <Icon type="search" />
+                      </SearchButton>
+                    }
+                  />
+                </StyledSearch>
+              </Column>
+            </Row>
+            <Title>{formatMessage(messages.addItems)}</Title>
+            <AddItemButton onClick={this.handleOnAddItem}>
+              {formatMessage(messages.addItem)}
+            </AddItemButton>
+            <LockerSimpleTable
+              {...{
+                formatMessage,
+                items
+              }}
+              hideQuickView={true}
+              onPressDelete={onDeleteItem}
+            />
+            <LockerModal
+              {...{
+                selectedItems,
+                tableItems,
+                limit,
+                offset,
+                title: selectTitle,
+                userId: user
+              }}
+              proDesign={false}
+              currentPage={currentPageModal}
+              visible={openLocker}
+              onRequestClose={this.handleOnCloseLocker}
+              onSelectItem={setItemSelected}
+              onUnselectItem={onUnselectItem}
+              onAddItems={setItemsToAdd}
+              changePage={this.changePage}
+            />
+          </div>
+        )}
+        <ButtonsContainer>
+          <StyledButton disabled={loading} onClick={this.goBack}>
+            {formatMessage(messages.cancel)}
           </StyledButton>
-        </ButtonWrapper>
-      </ButtonsContainer>
-    </Container>
-  )
+          <ButtonWrapper color={BLUE}>
+            <StyledButton
+              disabled={
+                !couponCode.length || !discountItemId.length || !rate || !expiry
+              }
+              type="primary"
+              onClick={onSaveDiscount}
+              loading={loading}
+            >
+              {formatMessage(messages.save)}
+            </StyledButton>
+          </ButtonWrapper>
+        </ButtonsContainer>
+      </Container>
+    )
+  }
 }
 
 export default DiscountsData

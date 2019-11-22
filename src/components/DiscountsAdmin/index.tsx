@@ -61,6 +61,9 @@ interface Props {
   limit: number
   offset: number
   currentPageModal: number
+  user: string
+  discountPage: number
+  selectedUsers: []
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -85,8 +88,9 @@ interface Props {
   setItemsAddAction: () => void
   setOpenLockerAction: (open: boolean) => void
   onUnselectItemAction: (index: number) => void
-  deleteItemSelectedAction: (index: number) => void
+  deleteItemSelectedAction: (index: number, section: string) => void
   setPaginationData: (offset: number, page: number) => void
+  onAddUserAction: (email: string) => void
 }
 
 interface Data extends QueryProps {
@@ -132,7 +136,11 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       limit,
       offset,
       setPaginationData,
-      currentPageModal
+      currentPageModal,
+      user,
+      discountPage,
+      selectedUsers,
+      onAddUserAction
     } = this.props
     let selectedValue = ''
     let selectTitle = ''
@@ -140,6 +148,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       users &&
       !users.loading &&
       users.userSearch.map((item: UserSearchResult) => {
+        console.log('Item ', item)
         const text = `${item.id} - ${item.name} - ${item.email}`
         const value = item.shortId
         if (item.shortId === selectedUser) {
@@ -151,10 +160,11 @@ class DiscountsAdmin extends React.Component<Props, {}> {
           value
         }
       })
+
     return (
       <SwipeableViews
         onChangeIndex={this.handleOnChangeIndex}
-        index={!!couponCode.length ? 1 : 0}
+        index={discountPage}
       >
         <Container>
           <ScreenTitle>
@@ -193,6 +203,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
           setOpenLocker={setOpenLockerAction}
           onUnselectItem={onUnselectItemAction}
           onDeleteItem={deleteItemSelectedAction}
+          onAddUser={onAddUserAction}
           {...{
             formatMessage,
             discountTypes,
@@ -214,7 +225,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             limit,
             offset,
             setPaginationData,
-            currentPageModal
+            currentPageModal,
+            user,
+            selectedUsers
           }}
         />
       </SwipeableViews>
@@ -281,8 +294,19 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       discountId,
       expiry,
       formatMessage,
-      restrictionType
+      restrictionType,
+      selectedUser,
+      items
     } = this.props
+
+    const itemsIds = items.reduce(
+      (filtered: string[], item: LockerTableType) => {
+        const itemId = get(item, 'design.shortId')
+        filtered.push(itemId)
+        return filtered
+      },
+      []
+    )
 
     const isUpdatingDiscount = discountId !== -1
     const discount = {
@@ -293,7 +317,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       rate,
       expiry,
       active: discountActive,
-      restrictionType
+      restrictionType,
+      selectedUser,
+      items: itemsIds
     }
     setLoadingAction(true)
     try {
@@ -394,8 +420,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     resetDiscountDataAction()
   }
   handleOnAddNewDiscount = () => {
-    const { resetDiscountDataAction } = this.props
+    const { resetDiscountDataAction, setCurrentPageAction } = this.props
     resetDiscountDataAction()
+    setCurrentPageAction(2)
   }
 
   handleOnInputChange = (event: any) => {

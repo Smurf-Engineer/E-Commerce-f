@@ -7,7 +7,7 @@ import Switch from 'antd/lib/switch'
 import Button from 'antd/lib/button'
 import { FormattedMessage } from 'react-intl'
 import messages from '../DiscountsList/messages'
-import { Discount } from '../../../types/common'
+import { Discount, DesignType, User } from '../../../types/common'
 
 interface Props {
   id: number
@@ -18,6 +18,10 @@ interface Props {
   expiry: string
   active: boolean
   restrictionType: string
+  items: DesignType[]
+  selectedUser: string
+  user: string
+  selectedUsers: User[]
   onDiscountClick: (discount: Discount) => void
   onChangeActive: (id: number) => void
 }
@@ -32,9 +36,18 @@ const ItemOrder = ({
   onDiscountClick,
   active,
   onChangeActive,
-  restrictionType
+  restrictionType,
+  items,
+  selectedUser,
+  user,
+  selectedUsers
 }: Props) => {
   const handleOnClick = () => {
+    const designItems = items.map(item => ({
+      design: {
+        ...item
+      }
+    }))
     const discount = {
       id,
       code,
@@ -43,7 +56,11 @@ const ItemOrder = ({
       rate,
       expiry,
       active,
-      restrictionType
+      restrictionType,
+      items: designItems,
+      selectedUser,
+      user,
+      selectedUsers
     }
     onDiscountClick(discount)
   }

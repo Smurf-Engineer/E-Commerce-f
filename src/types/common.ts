@@ -641,6 +641,10 @@ export interface Discount {
   expiry: string
   active?: boolean
   restrictionType: string
+  selectedUser: string
+  items: number[]
+  user: string
+  selectedUsers: User[]
 }
 export interface FulfillmentNetsuite {
   packages: string

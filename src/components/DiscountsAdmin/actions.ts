@@ -24,7 +24,8 @@ import {
   SET_OPEN_LOCKER_ACTION,
   ON_UNSELECT_ITEM,
   DELETE_ITEM_SELECTED_ACTION,
-  SET_PAGINATION_DATA
+  SET_PAGINATION_DATA,
+  ON_ADD_USER
 } from './constants'
 
 import { AnyAction, sorts, Discount, DesignType } from '../../types/common'
@@ -132,13 +133,22 @@ export const onUnselectItemAction = (id: number) => ({
   id
 })
 
-export const deleteItemSelectedAction = (index: number): AnyAction => ({
+export const deleteItemSelectedAction = (
+  index: number,
+  section: string
+): AnyAction => ({
   type: DELETE_ITEM_SELECTED_ACTION,
-  index
+  index,
+  section
 })
 
 export const setPaginationData = (offset: number, page: number) => ({
   type: SET_PAGINATION_DATA,
   offset,
   page
+})
+
+export const onAddUserAction = (email: string) => ({
+  type: ON_ADD_USER,
+  email
 })
