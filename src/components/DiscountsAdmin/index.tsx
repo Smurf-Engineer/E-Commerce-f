@@ -157,7 +157,10 @@ class DiscountsAdmin extends React.Component<Props, {}> {
         }
         return {
           text,
-          value
+          value,
+          email: item.email,
+          netsuiteId: item.netsuiteId,
+          firstName: item.name
         }
       })
 

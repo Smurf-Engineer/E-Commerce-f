@@ -1430,6 +1430,7 @@ export interface UserSearchResult {
   shortId: string
   name: string
   email: string
+  netsuiteId?: string
 }
 
 export interface HomepageCarousel {

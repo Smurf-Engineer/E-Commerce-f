@@ -230,6 +230,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
     } = this.props
     return (
       <Container>
+        <pre>{JSON.stringify(searchResults)}</pre>
         <ViewContainer onClick={this.goBack}>
           <Icon type="left" />
           <span>{formatMessage(messages.back)}</span>
