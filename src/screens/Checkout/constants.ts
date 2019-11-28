@@ -40,6 +40,9 @@ export const SET_COUPON_CODE = `${namespace}/SET_COUPON_CODE`
 export const DELETE_COUPON_CODE = `${namespace}/DELETE_COUPON_CODE`
 export const OPEN_CURRENCY_WARNING = `${namespace}/OPEN_CURRENCY_WARNING`
 
+// DISCOUNT TYPES
+export const PRODUCT = 'product'
+
 export enum CheckoutTabs {
   ShippingTab = 0,
   PaymentTab = 1,

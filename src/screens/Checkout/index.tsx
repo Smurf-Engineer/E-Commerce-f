@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import sumBy from 'lodash/sumBy'
+import find from 'lodash/find'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import Steps from 'antd/lib/steps'
@@ -314,6 +315,7 @@ class Checkout extends React.Component<Props, {}> {
       currentCurrency || config.defaultCurrency
     )
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
+    console.log('Total ', shoppingCartData)
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
@@ -347,6 +349,7 @@ class Checkout extends React.Component<Props, {}> {
     const showOrderButton = currentStep === ReviewTab
 
     const simpleCart = this.getSimpleCart()
+    const designsPrices = this.getDesignsPrice()
 
     return (
       <Layout {...{ history, intl }}>
@@ -463,7 +466,8 @@ class Checkout extends React.Component<Props, {}> {
                   proDesignReview,
                   paymentMethod,
                   currentCurrency,
-                  simpleCart
+                  simpleCart,
+                  designsPrices
                 }}
               />
             </SummaryContainer>
@@ -656,6 +660,29 @@ class Checkout extends React.Component<Props, {}> {
         quantity: sumBy(itemDetails, 'quantity')
       }
       return simpleCartItem
+    })
+  }
+  getDesignsPrice = () => {
+    const {
+      location: {
+        state: { cart }
+      },
+      currentCurrency
+    } = this.props
+    return cart.map(({ product, designId, itemDetails }: CartItems) => {
+      // Check for fixed prices
+      const productPriceRanges = get(product, 'priceRange', [])
+      // get prices from currency
+      const currencyPrice = find(productPriceRanges, {
+        abbreviation: currentCurrency,
+        quantity: 'Personal'
+      })
+      const designsPrice = {
+        id: designId,
+        price: currencyPrice.price,
+        quantity: sumBy(itemDetails, 'quantity')
+      }
+      return designsPrice
     })
   }
   placeOrder = async (event: any, paypalObj?: object) => {

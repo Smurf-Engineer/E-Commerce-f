@@ -65,6 +65,9 @@ export const StyledButton = styled(Button)`
     disabled ? `${GRAY_LIGHTEST} !important` : ''};
   border-color: ${({ disabled }: any) =>
     disabled ? `${GRAY_LIGHTEST} !important` : ''};
+  border-radius: 0;
+  height: 40px;
+  width: 120px;
 `
 
 type PropsButton = {
@@ -84,12 +87,13 @@ export const ButtonWrapper = styled.div`
     background-color: ${({ color }: PropsButton) => color};
     border-color: ${({ color }: PropsButton) => color};
   }
+  width: 120px;
 `
 
 export const ButtonsContainer = styled.div`
   margin-top: 10px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: start;
   align-items: center;
 `
 
@@ -193,6 +197,18 @@ export const InfoUser = styled.div`
   font-family: 'Avenir Next';
   font-size: 16px;
   color: ${GRAY_DARK};
+`
+
+export const CheckboxContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+`
+
+export const CheckboxLabel = styled.p`
+  margin: 10px 0 10px 0;
+  display: inline-block;
 `
 
 export const okButtonStyles = {

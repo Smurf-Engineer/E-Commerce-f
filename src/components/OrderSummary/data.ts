@@ -9,6 +9,8 @@ export const applyPromoCodeMutation = graphql(
         discountAmount
         type
         rate
+        restrictionType
+        designs
       }
     }
   `,

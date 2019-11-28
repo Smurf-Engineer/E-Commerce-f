@@ -25,10 +25,19 @@ import {
   ON_UNSELECT_ITEM,
   DELETE_ITEM_SELECTED_ACTION,
   SET_PAGINATION_DATA,
-  ON_ADD_USER
+  ON_ADD_USER,
+  SET_DISCOUNT_PAGE,
+  ON_CHANGE_USAGE,
+  ON_CHECK_USAGE
 } from './constants'
 
-import { AnyAction, sorts, Discount, DesignType } from '../../types/common'
+import {
+  AnyAction,
+  sorts,
+  Discount,
+  DesignType,
+  UserDiscount
+} from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
   type: SET_ORDER_BY,
@@ -105,9 +114,9 @@ export const onChangeUserAction = (value: string) => ({
   value
 })
 
-export const setSelectedUserAction = (email: string) => ({
+export const setSelectedUserAction = (value: string) => ({
   type: SET_SELECTED_USER,
-  email
+  value
 })
 
 export const setItemSelectedAction = (
@@ -148,7 +157,22 @@ export const setPaginationData = (offset: number, page: number) => ({
   page
 })
 
-export const onAddUserAction = (email: string) => ({
+export const onAddUserAction = (user: UserDiscount) => ({
   type: ON_ADD_USER,
-  email
+  user
+})
+
+export const setDiscountPageAction = (page: number): AnyAction => ({
+  type: SET_DISCOUNT_PAGE,
+  page
+})
+
+export const onChangeUsageAction = (value: number): AnyAction => ({
+  type: ON_CHANGE_USAGE,
+  value
+})
+
+export const onCheckUsageAction = (checked: boolean): AnyAction => ({
+  type: ON_CHECK_USAGE,
+  checked
 })

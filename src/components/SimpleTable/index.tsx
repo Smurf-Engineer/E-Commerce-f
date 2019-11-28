@@ -32,23 +32,19 @@ class SimpleTable extends React.PureComponent<Props, {}> {
     const { formatMessage, users, onPressDelete } = this.props
 
     const itemsSelected = users.map(
-      ({ email, firstName, lastName, netsuiteId = '' }: User, index) => {
-        const name = `${firstName} ${lastName}`
-
-        return (
-          <Row
-            {...{
-              index,
-              name,
-              email,
-              formatMessage,
-              onPressDelete
-            }}
-            userId={netsuiteId}
-            key={index}
-          />
-        )
-      }
+      ({ email, name, netsuiteId = '' }: User, index) => (
+        <Row
+          {...{
+            index,
+            name,
+            email,
+            formatMessage,
+            onPressDelete
+          }}
+          userId={netsuiteId}
+          key={index}
+        />
+      )
     )
 
     const renderTable = users.length > 0 && itemsSelected

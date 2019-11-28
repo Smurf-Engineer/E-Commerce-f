@@ -29,13 +29,13 @@ export const getDiscountsQuery = gql`
         expiry
         active
         restrictionType: restriction_type
-        selectedUser: user_id
         user
+        usageNumber: usage_limit
         selectedUsers: users {
           netsuiteId: netsuite_internal
-          firstName: first_name
-          lastName: last_name
+          name: full_name
           email
+          value: short_id
         }
         items {
           id

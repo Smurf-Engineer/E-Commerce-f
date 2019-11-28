@@ -100,5 +100,17 @@ export default defineMessages({
   addUsers: {
     id: 'components.DiscountsData.addUsers',
     defaultMessage: 'Add Users'
+  },
+  userAlreadyAdded: {
+    id: 'components.DiscountsData.userAlreadyAdded',
+    defaultMessage: 'User already added'
+  },
+  discountUsage: {
+    id: 'components.DiscountsData.discountUsage',
+    defaultMessage: 'Discount Usage'
+  },
+  unlimitedUsages: {
+    id: 'components.DiscountsData.discountUsage',
+    defaultMessage: 'Unlimited Usage'
   }
 })

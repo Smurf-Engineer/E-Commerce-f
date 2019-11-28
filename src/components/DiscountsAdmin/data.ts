@@ -13,6 +13,29 @@ export const addDiscountMutation = graphql(
         expiry
         active
         restrictionType: restriction_type
+        user
+        usageNumber: usage_limit
+        selectedUsers: users {
+          netsuiteId: netsuite_internal
+          name: full_name
+          email
+          value: short_id
+        }
+        items {
+          id
+          code
+          name
+          image
+          shortId: short_id
+          product {
+            id
+            code
+            yotpoId: yotpo_id
+            type: name
+            weight
+            description: short_description
+          }
+        }
       }
     }
   `,
@@ -32,6 +55,28 @@ export const updateDiscountMutation = graphql(
         expiry
         active
         restrictionType: restriction_type
+        usageNumber: usage_limit
+        selectedUsers: users {
+          netsuiteId: netsuite_internal
+          name: full_name
+          email
+          value: short_id
+        }
+        items {
+          id
+          code
+          name
+          image
+          shortId: short_id
+          product {
+            id
+            code
+            yotpoId: yotpo_id
+            type: name
+            weight
+            description: short_description
+          }
+        }
       }
     }
   `,

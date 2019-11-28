@@ -198,6 +198,7 @@ export class OrderSummary extends React.Component<Props, {}> {
         data: { couponCode }
       } = data
       if (couponCode) {
+        console.log(couponCode)
         setCouponCodeAction(couponCode)
         message.success(formatMessage(messages.couponApplied))
       } else {

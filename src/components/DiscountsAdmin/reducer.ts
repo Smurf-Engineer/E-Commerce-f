@@ -28,7 +28,10 @@ import {
   SET_PAGINATION_DATA,
   LIST,
   EDIT,
-  ON_ADD_USER
+  ON_ADD_USER,
+  SET_DISCOUNT_PAGE,
+  ON_CHANGE_USAGE,
+  ON_CHECK_USAGE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -56,7 +59,9 @@ export const initialState = fromJS({
   limit: 12,
   offset: 0,
   discountPage: LIST,
-  selectedUsers: []
+  selectedUsers: [],
+  usageNumber: 0,
+  unlimitedUsage: false
 })
 
 const orderHistoryAdminReducer: Reducer<any> = (
@@ -118,9 +123,9 @@ const orderHistoryAdminReducer: Reducer<any> = (
         active,
         restrictionType,
         items,
-        selectedUser,
         user,
-        selectedUsers
+        selectedUsers,
+        usageNumber
       } = action.discount
       return state.merge({
         discountId: id,
@@ -132,18 +137,26 @@ const orderHistoryAdminReducer: Reducer<any> = (
         expiry,
         restrictionType,
         items,
-        selectedUser,
         user,
         discountPage: EDIT,
-        selectedUsers
+        selectedUsers,
+        usageNumber
       })
     }
     case SELECT_RESTRICTION:
-      return state.set('restrictionType', action.restriction)
+      return state.merge({
+        restrictionType: action.restriction,
+        selectedUsers: [],
+        items: [],
+        user: ''
+      })
     case ON_CHANGE_USER:
       return state.set('user', action.value)
     case SET_SELECTED_USER:
-      return state.merge({ selectedUser: action.email, items: [] })
+      return state.merge({
+        selectedUsers: [{ value: action.value }],
+        items: []
+      })
     case SET_ITEM_SELECTED_ACTION: {
       const {
         design: { id }
@@ -177,14 +190,21 @@ const orderHistoryAdminReducer: Reducer<any> = (
       })
     }
     case ON_ADD_USER: {
-      const { email } = action
+      const { user } = action
       const selectedUsers = state.get('selectedUsers')
       const itemsMap = selectedUsers.valueSeq((item: any) => item)
       return state.merge({
         user: '',
-        selectedUsers: [...email, ...itemsMap]
+        selectedUsers: [user, ...itemsMap]
       })
     }
+    case SET_DISCOUNT_PAGE:
+      console.log(action.page)
+      return state.set('discountPage', action.page)
+    case ON_CHANGE_USAGE:
+      return state.set('usageNumber', action.value)
+    case ON_CHECK_USAGE:
+      return state.set('unlimitedUsage', action.checked)
     default:
       return state
   }

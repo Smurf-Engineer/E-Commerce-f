@@ -29,6 +29,9 @@ export const ON_UNSELECT_ITEM = `${namespace}/ON_UNSELECT_ITEM`
 export const DELETE_ITEM_SELECTED_ACTION = `${namespace}/DELETE_ITEM_SELECTED_ACTION`
 export const SET_PAGINATION_DATA = `${namespace}/SET_PAGINATION_DATA`
 export const ON_ADD_USER = `${namespace}/ON_ADD_USER`
+export const SET_DISCOUNT_PAGE = `${namespace}/SET_DISCOUNT_PAGE`
+export const ON_CHANGE_USAGE = `${namespace}/ON_CHANGE_USAGE`
+export const ON_CHECK_USAGE = `${namespace}/ON_CHECK_USAGE`
 
 // Discounts types
 export const USAGE = 'usage'

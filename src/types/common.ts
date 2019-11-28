@@ -602,6 +602,11 @@ export interface CartItems {
   fixedPrices: PriceRange[]
 }
 
+export interface DesignPrice {
+  id: string
+  price: number
+  quantity: number
+}
 export interface CreditCardData {
   id?: string
   name: string
@@ -641,10 +646,10 @@ export interface Discount {
   expiry: string
   active?: boolean
   restrictionType: string
-  selectedUser: string
   items: number[]
   user: string
-  selectedUsers: User[]
+  selectedUsers: string[]
+  usageNumber: number
 }
 export interface FulfillmentNetsuite {
   packages: string
@@ -1230,6 +1235,8 @@ export interface CouponCode {
   type: couponType
   discountAmount?: string
   rate?: string
+  restrictionType?: string
+  designs?: string[]
 }
 
 export interface Message {
@@ -1438,4 +1445,12 @@ export interface HomepageCarousel {
   slideDuration: number
   secondarySlideTransition: string
   secondarySlideDuration: number
+}
+
+export interface UserDiscount {
+  text: string
+  value: string
+  email: string
+  netsuiteId: string
+  name: string
 }

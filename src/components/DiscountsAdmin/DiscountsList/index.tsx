@@ -138,9 +138,9 @@ const DiscountsList = ({
         id,
         items,
         restrictionType,
-        selectedUser,
         user,
-        selectedUsers
+        selectedUsers,
+        usageNumber
       }: Discount,
       index: number
     ) => {
@@ -159,9 +159,9 @@ const DiscountsList = ({
             onChangeActive,
             restrictionType,
             items,
-            selectedUser,
             user,
-            selectedUsers
+            selectedUsers,
+            usageNumber
           }}
         />
       )

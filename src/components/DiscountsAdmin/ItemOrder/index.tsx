@@ -22,6 +22,7 @@ interface Props {
   selectedUser: string
   user: string
   selectedUsers: User[]
+  usageNumber: number
   onDiscountClick: (discount: Discount) => void
   onChangeActive: (id: number) => void
 }
@@ -38,9 +39,9 @@ const ItemOrder = ({
   onChangeActive,
   restrictionType,
   items,
-  selectedUser,
   user,
-  selectedUsers
+  selectedUsers,
+  usageNumber
 }: Props) => {
   const handleOnClick = () => {
     const designItems = items.map(item => ({
@@ -58,9 +59,9 @@ const ItemOrder = ({
       active,
       restrictionType,
       items: designItems,
-      selectedUser,
       user,
-      selectedUsers
+      selectedUsers,
+      usageNumber
     }
     onDiscountClick(discount)
   }
