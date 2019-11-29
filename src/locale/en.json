@@ -1275,5 +1275,9 @@
   "components.DiscountsData.addUsers": "Add Users",
   "components.DiscountsData.userAlreadyAdded": "User already added",
   "components.DiscountsData.discountUsage": "Discount Usage",
-  "components.DiscountsData.unlimitedUsages": "Unlimited Usage"
+  "components.DiscountsData.unlimitedUsages": "Unlimited Usage",
+  "components.SimpleTable.name": "Name",
+  "components.SimpleTable.delete": "Delete",
+  "components.SimpleTable.clientId": "Client ID",
+  "components.SimpleTable.email": "Email"
 }
