@@ -33,11 +33,7 @@ import {
 } from './styledComponents'
 import Select, { SelectValue } from 'antd/lib/select'
 import moment, { Moment } from 'moment'
-import {
-  User,
-  UserDiscount,
-  Header
-} from '../../../types/common'
+import { User, UserDiscount, Header } from '../../../types/common'
 
 interface Props {
   title?: string
@@ -88,7 +84,7 @@ const usersHeader: Header[] = [
 ]
 
 const productsHeader: Header[] = [
-  { message: 'name', width: 40, tabletWidth: 40, fieldName: 'name' },
+  { message: 'name', width: 40, tabletWidth: 40, fieldName: 'name' }
 ]
 
 class DiscountsData extends React.Component<Props, StateProps> {
@@ -327,12 +323,16 @@ class DiscountsData extends React.Component<Props, StateProps> {
                   onChange={onChangeUsage}
                   disabled={unlimitedUsage}
                 />
-                
               </Column>
               <Column>
                 <CheckboxContainer>
-                  <Checkbox checked={unlimitedUsage} onChange={this.handleOnCheckUsage}>
-                    <CheckboxLabel>{formatMessage(messages.unlimitedUsages)}</CheckboxLabel>
+                  <Checkbox
+                    checked={unlimitedUsage}
+                    onChange={this.handleOnCheckUsage}
+                  >
+                    <CheckboxLabel>
+                      {formatMessage(messages.unlimitedUsages)}
+                    </CheckboxLabel>
                   </Checkbox>
                 </CheckboxContainer>
               </Column>
