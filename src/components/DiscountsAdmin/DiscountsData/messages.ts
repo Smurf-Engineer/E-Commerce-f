@@ -118,7 +118,7 @@ export default defineMessages({
     defaultMessage: 'Discount Usage'
   },
   unlimitedUsages: {
-    id: 'components.DiscountsData.discountUsage',
+    id: 'components.DiscountsData.unlimitedUsages',
     defaultMessage: 'Unlimited Usage'
   }
 })

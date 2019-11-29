@@ -1267,5 +1267,13 @@
   "components.DiscountsData.addItem": "+ ADD ITEM",
   "components.DiscountsData.noUserSelected": "NO USER SELECTED",
   "components.DiscountsData.userNotSelected": "To add items, you need to select a user first.",
-  "components.DiscountsData.gotIt": "Got it"
+  "components.DiscountsData.gotIt": "Got it",
+  "components.DiscountsData.searchByProduct": "Model ID",
+  "components.DiscountsData.addProduct": "Add Products",
+  "components.DiscountsData.discountUser": "Discount User List",
+  "components.DiscountsData.discountProduct": "Discount Product List",
+  "components.DiscountsData.addUsers": "Add Users",
+  "components.DiscountsData.userAlreadyAdded": "User already added",
+  "components.DiscountsData.discountUsage": "Discount Usage",
+  "components.DiscountsData.unlimitedUsages": "Unlimited Usage"
 }
