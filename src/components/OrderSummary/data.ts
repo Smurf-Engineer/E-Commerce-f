@@ -10,7 +10,7 @@ export const applyPromoCodeMutation = graphql(
         type
         rate
         restrictionType
-        designs
+        products
       }
     }
   `,

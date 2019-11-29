@@ -315,7 +315,6 @@ class Checkout extends React.Component<Props, {}> {
       currentCurrency || config.defaultCurrency
     )
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
-    console.log('Total ', shoppingCartData)
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
@@ -349,7 +348,7 @@ class Checkout extends React.Component<Props, {}> {
     const showOrderButton = currentStep === ReviewTab
 
     const simpleCart = this.getSimpleCart()
-    const designsPrices = this.getDesignsPrice()
+    const productsPrices = this.getProductsPrice()
 
     return (
       <Layout {...{ history, intl }}>
@@ -467,7 +466,7 @@ class Checkout extends React.Component<Props, {}> {
                   paymentMethod,
                   currentCurrency,
                   simpleCart,
-                  designsPrices
+                  productsPrices
                 }}
               />
             </SummaryContainer>
@@ -662,14 +661,14 @@ class Checkout extends React.Component<Props, {}> {
       return simpleCartItem
     })
   }
-  getDesignsPrice = () => {
+  getProductsPrice = () => {
     const {
       location: {
         state: { cart }
       },
       currentCurrency
     } = this.props
-    return cart.map(({ product, designId, itemDetails }: CartItems) => {
+    return cart.map(({ product, itemDetails }: CartItems) => {
       // Check for fixed prices
       const productPriceRanges = get(product, 'priceRange', [])
       // get prices from currency
@@ -678,7 +677,7 @@ class Checkout extends React.Component<Props, {}> {
         quantity: 'Personal'
       })
       const designsPrice = {
-        id: designId,
+        yotpoId: product.yotpoId,
         price: currencyPrice.price,
         quantity: sumBy(itemDetails, 'quantity')
       }

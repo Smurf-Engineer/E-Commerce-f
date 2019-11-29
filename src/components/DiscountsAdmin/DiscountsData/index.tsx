@@ -4,16 +4,12 @@
 import * as React from 'react'
 import { Container, Title } from './styledComponents'
 import messages from './messages'
-import get from 'lodash/get'
 import Icon from 'antd/lib/icon'
 import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import debounce from 'lodash/debounce'
-import Modal from 'antd/lib/modal'
 import { USAGE, PRODUCT, USERS } from '../constants'
-import LockerSimpleTable from '../../LockerSimpleTable'
 import SimpleTable from '../../SimpleTable'
-import LockerModal from '../../LockerModal'
 import { BLUE } from '../../../theme/colors'
 import {
   StyledInput,
@@ -32,21 +28,15 @@ import {
   StyledSwitch,
   StyledSearch,
   SearchButton,
-  AddItemButton,
-  InfoTitle,
-  InfoUser,
-  okButtonStyles,
   CheckboxContainer,
   CheckboxLabel
 } from './styledComponents'
 import Select, { SelectValue } from 'antd/lib/select'
 import moment, { Moment } from 'moment'
 import {
-  LockerTableType,
-  SelectedDesignObjectType,
-  DesignType,
   User,
-  UserDiscount
+  UserDiscount,
+  Header
 } from '../../../types/common'
 
 interface Props {
@@ -61,18 +51,11 @@ interface Props {
   loading: boolean
   restrictionType: string
   searchResults: string[]
-  items: LockerTableType[]
-  openLocker: boolean
-  selectedItems: SelectedDesignObjectType
-  selectedValue: string
-  selectTitle: string
-  limit: number
-  offset: number
-  currentPageModal: number
   user: string
   selectedUsers: User[]
   usageNumber: number
   unlimitedUsage: boolean
+  selectedProducts: string[]
   goBack: () => void
   formatMessage: (messageDescriptor: any) => string
   handleOnInputChange: (event: any) => void
@@ -83,13 +66,8 @@ interface Props {
   onSelectDate: (date: Moment, dateString: string) => void
   onSelectRestriction: (restriction: string) => () => void
   handleOnChange: (value: string) => void
-  setSelectedUser: (value: string) => void
-  setItemSelected: (item: DesignType, checked: boolean) => void
-  setItemsToAdd: () => void
-  setOpenLocker: (open: boolean) => void
-  onUnselectItem: (id: number) => void
+  onAddProduct: (value: string) => void
   onDeleteItem: (id: number, section: string) => void
-  setPaginationData: (offset: number, page: number) => void
   onAddUser: (user: UserDiscount) => void
   onChangeUsage: (value: number) => void
   onCheckUsage: (checked: boolean) => void
@@ -101,6 +79,17 @@ const discountRestrictionTypes = [PRODUCT, USERS, USAGE]
 interface StateProps {
   searchValue: string
 }
+
+const usersHeader: Header[] = [
+  { message: 'clientId', width: 25, tabletWidth: 20, fieldName: 'netsuiteId' },
+  { message: 'name', width: 40, tabletWidth: 40, fieldName: 'name' },
+  { message: 'email', width: 20, tabletWidth: 20, fieldName: 'email' },
+  { message: '', width: 15, tabletWidth: 15 }
+]
+
+const productsHeader: Header[] = [
+  { message: 'name', width: 40, tabletWidth: 40, fieldName: 'name' },
+]
 
 class DiscountsData extends React.Component<Props, StateProps> {
   state = {
@@ -116,10 +105,10 @@ class DiscountsData extends React.Component<Props, StateProps> {
       this.setState({ searchValue: user })
     }
   }
-  handleOnSelect = (value: SelectValue) => {
-    const { setSelectedUser } = this.props
-    const parsedValue = this.getParsedValue(value)
-    setSelectedUser(parsedValue)
+  handleOnSelectProduct = (value: SelectValue) => {
+    const { onAddProduct } = this.props
+    const parsedValue = value.toString()
+    onAddProduct(parsedValue)
   }
 
   handleOnSelectUser = (value: SelectValue) => {
@@ -144,58 +133,6 @@ class DiscountsData extends React.Component<Props, StateProps> {
     message.warning(formatMessage(messages.userAlreadyAdded))
   }
 
-  getParsedValue = (value: SelectValue) => {
-    const emailValue = value
-      .toString()
-      .split(' -')
-      .reverse()
-      .shift()
-    return emailValue.replace(/ /g, '')
-  }
-
-  getCheckedItems = (lockerItems: LockerTableType[]) => {
-    const checkedItems = lockerItems.reduce((obj, item) => {
-      const itemId = get(item, 'design.id', item.id)
-      obj[itemId] = true
-      return obj
-      // tslint:disable-next-line: align
-    }, {})
-    return checkedItems
-  }
-  handleOnAddItem = () => {
-    const { selectedUsers, formatMessage, setOpenLocker } = this.props
-    if (selectedUsers.length) {
-      setOpenLocker(true)
-    } else {
-      Modal.info({
-        title: <InfoTitle>{formatMessage(messages.noUserSelected)}</InfoTitle>,
-        iconType: '',
-        icon: null,
-        width: 355,
-        okButtonProps: { style: okButtonStyles },
-        okText: formatMessage(messages.gotIt),
-        content: <InfoUser>{formatMessage(messages.userNotSelected)}</InfoUser>
-      })
-    }
-  }
-  changePage = (pageParam: number = 1) => {
-    const { limit, setPaginationData } = this.props
-    let currentOffset = pageParam > 1 ? (pageParam - 1) * limit : 0
-    let currentPage = pageParam
-
-    if (!currentOffset && !pageParam) {
-      const fullPage = !(currentOffset % limit)
-      const maxPageNumber = currentOffset / limit
-
-      if (fullPage && currentPage > maxPageNumber) {
-        currentPage--
-        currentOffset = currentPage > 1 ? (currentPage - 1) * limit : 0
-      }
-    }
-    setPaginationData(currentOffset, currentPage)
-  }
-  handleOnCloseLocker = () => this.props.setOpenLocker(false)
-
   handleSearchInputChange = (value: string) =>
     this.setState({ searchValue: value }, () => {
       this.debounceSearchUser()
@@ -217,7 +154,6 @@ class DiscountsData extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const tableItems = this.getCheckedItems(this.props.items)
     const {
       formatMessage,
       discountTypes,
@@ -237,21 +173,12 @@ class DiscountsData extends React.Component<Props, StateProps> {
       restrictionType,
       onSelectRestriction,
       searchResults,
-      items,
-      openLocker,
-      selectedItems,
-      setItemSelected,
-      setItemsToAdd,
-      onUnselectItem,
       onDeleteItem,
-      selectTitle,
-      limit,
-      offset,
-      currentPageModal,
       selectedUsers,
       onChangeUsage,
       usageNumber,
-      unlimitedUsage
+      unlimitedUsage,
+      selectedProducts
     } = this.props
     const disableSave =
       !couponCode.length ||
@@ -259,7 +186,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
       !rate ||
       !expiry ||
       (restrictionType === USERS && !selectedUsers.length) ||
-      (restrictionType === PRODUCT && !items.length) ||
+      (restrictionType === PRODUCT && !selectedProducts.length) ||
       (restrictionType === USAGE && !unlimitedUsage && usageNumber <= 0)
     return (
       <Container>
@@ -379,9 +306,11 @@ class DiscountsData extends React.Component<Props, StateProps> {
             </Row>
             <SimpleTable
               {...{
-                formatMessage,
-                users: selectedUsers
+                formatMessage
               }}
+              data={selectedUsers}
+              headerTitles={usersHeader}
+              targetGroup={'selectedUsers'}
               onPressDelete={onDeleteItem}
             />
           </div>
@@ -414,13 +343,14 @@ class DiscountsData extends React.Component<Props, StateProps> {
           <div>
             <Row>
               <Column>
-                <Label>{formatMessage(messages.selectUser)}</Label>
+                <Title>{formatMessage(messages.discountProduct)}</Title>
+                <Label>{formatMessage(messages.addProduct)}</Label>
                 <StyledSearch
                   onChange={this.handleSearchInputChange}
                   dataSource={searchResults}
-                  onSelect={this.handleOnSelect}
+                  onSelect={this.handleOnSelectProduct}
                   value={this.state.searchValue}
-                  placeholder={formatMessage(messages.searchBy)}
+                  placeholder={formatMessage(messages.searchByProduct)}
                 >
                   <StyledInput
                     suffix={
@@ -436,35 +366,14 @@ class DiscountsData extends React.Component<Props, StateProps> {
                 </StyledSearch>
               </Column>
             </Row>
-            <Title>{formatMessage(messages.addItems)}</Title>
-            <AddItemButton onClick={this.handleOnAddItem}>
-              {formatMessage(messages.addItem)}
-            </AddItemButton>
-            <LockerSimpleTable
+            <SimpleTable
               {...{
-                formatMessage,
-                items
+                formatMessage
               }}
-              hideQuickView={true}
+              data={selectedProducts}
+              headerTitles={productsHeader}
+              targetGroup={'selectedProducts'}
               onPressDelete={onDeleteItem}
-            />
-            <LockerModal
-              {...{
-                selectedItems,
-                tableItems,
-                limit,
-                offset,
-                title: selectTitle,
-                userId: get(selectedUsers[0], 'value', '')
-              }}
-              proDesign={false}
-              currentPage={currentPageModal}
-              visible={openLocker}
-              onRequestClose={this.handleOnCloseLocker}
-              onSelectItem={setItemSelected}
-              onUnselectItem={onUnselectItem}
-              onAddItems={setItemsToAdd}
-              changePage={this.changePage}
             />
           </div>
         )}

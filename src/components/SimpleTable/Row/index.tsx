@@ -4,13 +4,13 @@
 import * as React from 'react'
 import { TableRow, Cell, DeleteButton } from '../styledComponents'
 import messages from '../messages'
-import { Message } from '../../../types/common'
+import { Message, Header } from '../../../types/common'
 
 interface Props {
   index: number
-  name: string
-  userId: string
-  email: string
+  item: any
+  headerTitles: Header[]
+  targetGroup: string
   onPressDelete: (index: number, section: string) => void
   formatMessage: (messageDescriptor: Message) => string
 }
@@ -19,23 +19,23 @@ class Row extends React.PureComponent<Props, {}> {
   render() {
     const {
       index,
-      name,
-      userId,
-      email,
       onPressDelete,
-      formatMessage
+      formatMessage,
+      item,
+      headerTitles,
+      targetGroup
     } = this.props
 
     const handleOnClick = () => {
-      onPressDelete(index, 'selectedUsers')
+      onPressDelete(index, targetGroup)
     }
 
     return (
       <div>
         <TableRow>
-          <Cell width={20}>{userId}</Cell>
-          <Cell width={40}>{name}</Cell>
-          <Cell width={20}>{email}</Cell>
+          {headerTitles.map((header) => header.fieldName &&
+            <Cell width={header.tabletWidth}>{item[header.fieldName] || item}</Cell>
+          )}
           <Cell>
             <DeleteButton onClick={handleOnClick}>
               {formatMessage(messages.delete)}

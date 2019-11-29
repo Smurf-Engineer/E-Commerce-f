@@ -19,13 +19,8 @@ import {
   SET_DISCOUNT_TO_UPDATE,
   SELECT_RESTRICTION,
   ON_CHANGE_USER,
-  SET_SELECTED_USER,
-  SET_ITEM_SELECTED_ACTION,
-  SET_ITEMS_ADD_ACTION,
-  SET_OPEN_LOCKER_ACTION,
-  ON_UNSELECT_ITEM,
+  ON_ADD_PRODUCT,
   DELETE_ITEM_SELECTED_ACTION,
-  SET_PAGINATION_DATA,
   LIST,
   EDIT,
   ON_ADD_USER,
@@ -52,16 +47,11 @@ export const initialState = fromJS({
   restrictionType: '',
   user: '',
   selectedUser: '',
-  items: [],
-  openLocker: false,
-  selectedItems: {},
-  currentPageModal: 1,
-  limit: 12,
-  offset: 0,
   discountPage: LIST,
-  selectedUsers: [],
+  selectedValues: [],
   usageNumber: 0,
-  unlimitedUsage: false
+  unlimitedUsage: false,
+  selectedProducts: []
 })
 
 const orderHistoryAdminReducer: Reducer<any> = (
@@ -102,12 +92,11 @@ const orderHistoryAdminReducer: Reducer<any> = (
         restrictionType: '',
         user: '',
         selectedUser: '',
-        items: [],
-        openLocker: false,
         currentPageModal: 1,
         offset: 0,
         discountPage: LIST,
-        selectedUsers: []
+        selectedUsers: [],
+        selectedProducts: []
       })
     }
     case ON_SELECT_DATE:
@@ -122,9 +111,9 @@ const orderHistoryAdminReducer: Reducer<any> = (
         expiry,
         active,
         restrictionType,
-        items,
         user,
         selectedUsers,
+        selectedProducts,
         usageNumber
       } = action.discount
       return state.merge({
@@ -136,59 +125,34 @@ const orderHistoryAdminReducer: Reducer<any> = (
         discountActive: active,
         expiry,
         restrictionType,
-        items,
         user,
         discountPage: EDIT,
         selectedUsers,
-        usageNumber
+        usageNumber,
+        selectedProducts
       })
     }
     case SELECT_RESTRICTION:
       return state.merge({
         restrictionType: action.restriction,
         selectedUsers: [],
-        items: [],
+        selectedProducts: [],
         user: ''
       })
     case ON_CHANGE_USER:
       return state.set('user', action.value)
-    case SET_SELECTED_USER:
+    case ON_ADD_PRODUCT: {
+      const { value } = action
+      const selectedProducts = state.get('selectedProducts')
+      const itemsMap = selectedProducts.valueSeq((item: any) => item)
       return state.merge({
-        selectedUsers: [{ value: action.value }],
-        items: []
-      })
-    case SET_ITEM_SELECTED_ACTION: {
-      const {
-        design: { id }
-      } = action.item
-      return state.setIn(['selectedItems', id], action.item)
-    }
-    case SET_ITEMS_ADD_ACTION: {
-      const items = state.get('items').toJS()
-      const selectedItems = state.get('selectedItems')
-      const itemsMap = selectedItems.valueSeq((item: any) => item)
-      return state.merge({
-        items: [...items, ...itemsMap],
-        openLocker: false,
-        selectedItems: {}
+        user: '',
+        selectedProducts: [value, ...itemsMap]
       })
     }
-    case SET_OPEN_LOCKER_ACTION:
-      return state.merge({ openLocker: action.isOpen, selectedItems: {} })
-    case ON_UNSELECT_ITEM:
-      return state.update('selectedItems', (selectedItem: any) => {
-        return selectedItem.filter((item: any) => item.design.id !== action.id)
-      })
     case DELETE_ITEM_SELECTED_ACTION:
       const { index } = action
       return state.deleteIn([action.section, index])
-    case SET_PAGINATION_DATA: {
-      return state.merge({
-        offset: action.offset,
-        currentPageModal: action.page,
-        loading: false
-      })
-    }
     case ON_ADD_USER: {
       const { user } = action
       const selectedUsers = state.get('selectedUsers')
@@ -199,7 +163,6 @@ const orderHistoryAdminReducer: Reducer<any> = (
       })
     }
     case SET_DISCOUNT_PAGE:
-      console.log(action.page)
       return state.set('discountPage', action.page)
     case ON_CHANGE_USAGE:
       return state.set('usageNumber', action.value)

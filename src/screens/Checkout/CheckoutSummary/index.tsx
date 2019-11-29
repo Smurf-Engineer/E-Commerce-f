@@ -21,7 +21,7 @@ import {
   AddressObj,
   TaxAddressObj,
   SimpleCart,
-  DesignPrice
+  ProductPrice
 } from '../../../types/common'
 import OrderSummary from '../../../components/OrderSummary'
 import config from '../../../config/index'
@@ -56,7 +56,7 @@ interface Props {
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
-  designsPrices: DesignPrice[]
+  productsPrices: ProductPrice[]
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
   onPaypalSuccess: (payment: any) => void
@@ -87,7 +87,7 @@ const CheckoutSummary = ({
   shipping,
   subsidiaryQuery,
   taxShipQuery,
-  designsPrices
+  productsPrices
 }: Props) => {
   let paypalClientId
   const subsidiary = get(subsidiaryQuery, 'subsidiary', 1)
@@ -121,8 +121,6 @@ const CheckoutSummary = ({
   // pro design fee
   const proDesignFee = proDesignReview || 0
 
-  console.log('SC ', designsPrices)
-  console.log('SCXXS ', couponCode)
   const {
     taxGst,
     taxPst,
@@ -139,7 +137,7 @@ const CheckoutSummary = ({
     couponCode,
     taxRates,
     country,
-    designsPrices
+    productsPrices
   )
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue

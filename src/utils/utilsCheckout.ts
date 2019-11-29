@@ -1,4 +1,4 @@
-import { CouponCode, NetsuiteTax, DesignPrice } from '../types/common'
+import { CouponCode, NetsuiteTax, ProductPrice } from '../types/common'
 import find from 'lodash/find'
 import {
   PERCENTAGE_PROMO,
@@ -21,7 +21,7 @@ export const getTaxesAndDiscount = (
   couponCode?: CouponCode,
   taxRates?: NetsuiteTax,
   country?: string,
-  designsPrices?: DesignPrice[]
+  productsPrices?: ProductPrice[]
 ) => {
   // get tax fee
   const taxesAmount = taxRates && taxRates.total
@@ -35,7 +35,7 @@ export const getTaxesAndDiscount = (
   let taxVatTotal = 0
 
   if (couponCode) {
-    const { type, rate, restrictionType, designs } = couponCode
+    const { type, rate, restrictionType, products } = couponCode
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
         if (restrictionType !== PRODUCT) {
@@ -50,9 +50,9 @@ export const getTaxesAndDiscount = (
             discount = (subtotal + proDesignFee) * (Number(rate) / 100)
           }
         } else {
-          discount = designs.reduce(
-            (totalDiscount: number, design) => {
-              const itemForDiscount = find(designsPrices, (designObject) => designObject.id === design)
+          discount = products.reduce(
+            (totalDiscount: number, product) => {
+              const itemForDiscount = find(productsPrices, (productObject) => productObject.yotpoId === product)
               let discountToApply = 0
               if (itemForDiscount) {
                 discountToApply = (itemForDiscount.price * (Number(rate) / 100)) * itemForDiscount.quantity
@@ -61,16 +61,15 @@ export const getTaxesAndDiscount = (
             },
             0
           )
-          console.log('DISC ', discount)
         }
         break
       case FLAT_PROMO: // 'flat
         if (restrictionType !== PRODUCT) {
           discount = Number(rate)
         } else {
-          discount = designs.reduce(
-            (totalDiscount: number, design) => {
-              const itemForDiscount = find(designsPrices, (designObject) => designObject.id === design)
+          discount = products.reduce(
+            (totalDiscount: number, product) => {
+              const itemForDiscount = find(productsPrices, (productObject) => productObject.yotpoId === product)
               let discountToApply = 0
               if (itemForDiscount) {
                 discountToApply = Number(rate) * itemForDiscount.quantity

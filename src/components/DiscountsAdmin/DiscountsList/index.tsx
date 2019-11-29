@@ -136,7 +136,7 @@ const DiscountsList = ({
         expiry,
         active,
         id,
-        items,
+        selectedProducts,
         restrictionType,
         user,
         selectedUsers,
@@ -158,7 +158,7 @@ const DiscountsList = ({
             onDiscountClick,
             onChangeActive,
             restrictionType,
-            items,
+            selectedProducts,
             user,
             selectedUsers,
             usageNumber

@@ -69,9 +69,13 @@ export default defineMessages({
     id: 'components.DiscountsData.searchBy',
     defaultMessage: 'Name, Email or Client ID'
   },
-  selectUser: {
-    id: 'components.DiscountsData.selectUser',
-    defaultMessage: 'Select User'
+  searchByProduct: {
+    id: 'components.DiscountsData.searchByProduct',
+    defaultMessage: 'Model ID'
+  },
+  addProduct: {
+    id: 'components.DiscountsData.addProduct',
+    defaultMessage: 'Add Products'
   },
   addItems: {
     id: 'components.DiscountsData.addItems',
@@ -96,6 +100,10 @@ export default defineMessages({
   discountUser: {
     id: 'components.DiscountsData.discountUser',
     defaultMessage: 'Discount User List'
+  },
+  discountProduct: {
+    id: 'components.DiscountsData.discountProduct',
+    defaultMessage: 'Discount Product List'
   },
   addUsers: {
     id: 'components.DiscountsData.addUsers',

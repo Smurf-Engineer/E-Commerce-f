@@ -18,13 +18,8 @@ import {
   SET_DISCOUNT_TO_UPDATE,
   SELECT_RESTRICTION,
   ON_CHANGE_USER,
-  SET_SELECTED_USER,
-  SET_ITEM_SELECTED_ACTION,
-  SET_ITEMS_ADD_ACTION,
-  SET_OPEN_LOCKER_ACTION,
-  ON_UNSELECT_ITEM,
+  ON_ADD_PRODUCT,
   DELETE_ITEM_SELECTED_ACTION,
-  SET_PAGINATION_DATA,
   ON_ADD_USER,
   SET_DISCOUNT_PAGE,
   ON_CHANGE_USAGE,
@@ -35,7 +30,6 @@ import {
   AnyAction,
   sorts,
   Discount,
-  DesignType,
   UserDiscount
 } from '../../types/common'
 
@@ -114,32 +108,9 @@ export const onChangeUserAction = (value: string) => ({
   value
 })
 
-export const setSelectedUserAction = (value: string) => ({
-  type: SET_SELECTED_USER,
+export const onAddProductAction = (value: string) => ({
+  type: ON_ADD_PRODUCT,
   value
-})
-
-export const setItemSelectedAction = (
-  item: DesignType,
-  checked: boolean
-): AnyAction => ({
-  type: SET_ITEM_SELECTED_ACTION,
-  item,
-  checked
-})
-
-export const setItemsAddAction = (): AnyAction => ({
-  type: SET_ITEMS_ADD_ACTION
-})
-
-export const setOpenLockerAction = (isOpen: boolean): AnyAction => ({
-  type: SET_OPEN_LOCKER_ACTION,
-  isOpen
-})
-
-export const onUnselectItemAction = (id: number) => ({
-  type: ON_UNSELECT_ITEM,
-  id
 })
 
 export const deleteItemSelectedAction = (
@@ -149,12 +120,6 @@ export const deleteItemSelectedAction = (
   type: DELETE_ITEM_SELECTED_ACTION,
   index,
   section
-})
-
-export const setPaginationData = (offset: number, page: number) => ({
-  type: SET_PAGINATION_DATA,
-  offset,
-  page
 })
 
 export const onAddUserAction = (user: UserDiscount) => ({

@@ -602,8 +602,8 @@ export interface CartItems {
   fixedPrices: PriceRange[]
 }
 
-export interface DesignPrice {
-  id: string
+export interface ProductPrice {
+  yotpoId: string
   price: number
   quantity: number
 }
@@ -646,7 +646,7 @@ export interface Discount {
   expiry: string
   active?: boolean
   restrictionType: string
-  items: number[]
+  selectedProducts: number[]
   user: string
   selectedUsers: string[]
   usageNumber: number
@@ -1236,7 +1236,7 @@ export interface CouponCode {
   discountAmount?: string
   rate?: string
   restrictionType?: string
-  designs?: string[]
+  products?: string[]
 }
 
 export interface Message {
@@ -1453,4 +1453,15 @@ export interface UserDiscount {
   email: string
   netsuiteId: string
   name: string
+}
+
+export interface ProductsCodes {
+  products: string[]
+}
+
+export interface Header {
+  message: string
+  width?: number
+  tabletWidth?: number
+  fieldName?: string
 }

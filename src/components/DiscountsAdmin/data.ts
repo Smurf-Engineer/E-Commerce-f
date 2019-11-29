@@ -21,21 +21,7 @@ export const addDiscountMutation = graphql(
           email
           value: short_id
         }
-        items {
-          id
-          code
-          name
-          image
-          shortId: short_id
-          product {
-            id
-            code
-            yotpoId: yotpo_id
-            type: name
-            weight
-            description: short_description
-          }
-        }
+        selectedProducts: items
       }
     }
   `,
@@ -62,21 +48,7 @@ export const updateDiscountMutation = graphql(
           email
           value: short_id
         }
-        items {
-          id
-          code
-          name
-          image
-          shortId: short_id
-          product {
-            id
-            code
-            yotpoId: yotpo_id
-            type: name
-            weight
-            description: short_description
-          }
-        }
+        selectedProducts: items
       }
     }
   `,
@@ -105,6 +77,14 @@ export const getUsers = gql`
       name
       email
       shortId: short_id
+    }
+  }
+`
+
+export const getProducts = gql`
+  query getProductInternalsInfo($text: String) {
+    productsSearch: getProductInternalsInfo(text: $text) {
+      products
     }
   }
 `
