@@ -9,7 +9,6 @@ import Icon from 'antd/lib/icon'
 import debounce from 'lodash/debounce'
 import Modal from 'antd/lib/modal'
 import { USAGE, PRODUCT, USERS } from '../constants'
-import LockerSimpleTable from '../../LockerSimpleTable'
 import LockerModal from '../../LockerModal'
 import { BLUE } from '../../../theme/colors'
 import {
@@ -282,14 +281,6 @@ const DiscountsData = ({
       <AddItemButton onClick={handleOnAddItem}>
         {formatMessage(messages.addItem)}
       </AddItemButton>
-      <LockerSimpleTable
-        {...{
-          formatMessage,
-          items
-        }}
-        hideQuickView={true}
-        onPressDelete={onDeleteItem}
-      />
       <LockerModal
         {...{
           selectedItems,

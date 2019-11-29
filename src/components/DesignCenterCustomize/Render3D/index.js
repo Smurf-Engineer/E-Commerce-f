@@ -595,6 +595,7 @@ class Render3D extends PureComponent {
     } else {
       onLoadModel(true)
     }
+
     this.mtlLoader.load(product.mtl, materials => {
       materials.preload()
       this.objLoader.setMaterials(materials)

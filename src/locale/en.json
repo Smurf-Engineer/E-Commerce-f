@@ -1267,6 +1267,5 @@
   "components.DiscountsData.addItem": "+ ADD ITEM",
   "components.DiscountsData.noUserSelected": "NO USER SELECTED",
   "components.DiscountsData.userNotSelected": "To add items, you need to select a user first.",
-  "components.DiscountsData.gotIt": "Got it",
-  "components.LockerSimpleTable.name": "Name"
+  "components.DiscountsData.gotIt": "Got it"
 }
