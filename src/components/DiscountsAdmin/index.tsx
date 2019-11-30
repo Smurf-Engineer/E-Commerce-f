@@ -18,8 +18,7 @@ import {
 import List from './DiscountsList'
 import get from 'lodash/get'
 import {
-  updateDiscountMutation,
-  addDiscountMutation,
+  upsertDiscountMutation,
   activateDiscountMutation,
   getUsers,
   getProducts
@@ -76,8 +75,7 @@ interface Props {
   onActivateDiscountAction: (checked: boolean) => void
   resetDiscountDataAction: () => void
   setLoadingAction: (loading: boolean) => void
-  updateDiscount: (variables: {}) => void
-  addNewDiscount: (variables: {}) => void
+  upsertDiscount: (variables: {}) => void
   activateDiscount: (variables: {}) => void
   onSelectDateAction: (date: string) => void
   setDiscountToUpdateAction: (discount: Discount) => void
@@ -340,8 +338,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     discount: Discount
   ) => {
     const {
-      updateDiscount,
-      addNewDiscount,
+      upsertDiscount,
       orderBy,
       sort,
       searchText,
@@ -353,10 +350,10 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     let responseId: number
     if (isUpdatingAddress) {
       const offset = currentPage ? (currentPage - 1) * DISCOUNTS_LIMIT : 0
-      await updateDiscount({
+      await upsertDiscount({
         variables: { discount },
         update: (store: any, dataDiscount: Discount) => {
-          const newDiscount = get(dataDiscount, 'data.updateDiscount')
+          const newDiscount = get(dataDiscount, 'data.discount')
           responseId = newDiscount.id
           if (!responseId) {
             return
@@ -385,7 +382,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
         }
       })
     } else {
-      await addNewDiscount({
+      await upsertDiscount({
         variables: { discount },
         update: (store: any, dataDiscount: Discount) => {
           const newDiscount = get(dataDiscount, 'data.discount')
@@ -473,8 +470,7 @@ type OwnProps = {
 }
 
 const DiscountsAdminEnhance = compose(
-  updateDiscountMutation,
-  addDiscountMutation,
+  upsertDiscountMutation,
   activateDiscountMutation,
   connect(
     mapStateToProps,
