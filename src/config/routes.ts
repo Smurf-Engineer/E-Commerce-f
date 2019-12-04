@@ -34,8 +34,14 @@ import ResetPassword from '../screens/ResetPassword'
 import Admin from '../screens/Admin'
 import ProDesign from '../screens/ProDesign'
 import SignUpTest from '../screens/HomeTest'
+import PublishingTool from '../screens/PublishingTool'
 
 const routes = [
+  {
+    path: '/admin/publishing-tool',
+    name: 'publishingTool',
+    component: PublishingTool
+  },
   {
     path: '/admin/add-pro-design',
     name: 'proDesign',

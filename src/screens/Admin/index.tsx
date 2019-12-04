@@ -48,7 +48,8 @@ import {
   DESIGN_LAB_URL,
   EDIT_NAVIGATION,
   EDIT_NAVIGATION_URL,
-  PRO_DESIGN
+  PRO_DESIGN,
+  PUBLISHING_TOOL
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -135,6 +136,9 @@ export class Admin extends React.Component<Props, {}> {
           break
         case PRO_DESIGN:
           key = PRO_DESIGN
+          break
+        case PUBLISHING_TOOL:
+          key = PUBLISHING_TOOL
           break
         default:
           break
@@ -314,15 +318,12 @@ const AdminEnhance = compose(
   withApollo,
   injectIntl,
   mailLogin,
-  connect(
-    mapStateToProps,
-    {
-      ...adminActions,
-      restoreUserSessionAction: restoreUserSession,
-      saveUserSessionAction: saveUserSession,
-      deleteUserSessionAction: deleteUserSession
-    }
-  )
+  connect(mapStateToProps, {
+    ...adminActions,
+    restoreUserSessionAction: restoreUserSession,
+    saveUserSessionAction: saveUserSession,
+    deleteUserSessionAction: deleteUserSession
+  })
 )(Admin)
 
 export default AdminEnhance

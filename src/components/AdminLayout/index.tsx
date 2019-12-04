@@ -28,7 +28,8 @@ import {
   DESIGN_SEARCH,
   DESIGN_LAB,
   EDIT_NAVIGATION,
-  ADD_PRO_DESIGN
+  ADD_PRO_DESIGN,
+  CREATE_DESIGNS
 } from './constants'
 import {
   SideBar,
@@ -122,6 +123,9 @@ class AdminLayout extends React.Component<Props, {}> {
       case ADD_PRO_DESIGN:
         history.push('/admin/add-pro-design')
         break
+      case CREATE_DESIGNS:
+        history.push('/admin/publishing-tool')
+        break
       default:
         break
     }
@@ -196,13 +200,10 @@ const LayoutEnhance = compose(
   withApollo,
   getTeamStoreStatus,
   getFonts,
-  connect(
-    mapStateToProps,
-    {
-      ...LayoutActions,
-      ...LocaleActions,
-      ...adminLayoutActions
-    }
-  )
+  connect(mapStateToProps, {
+    ...LayoutActions,
+    ...LocaleActions,
+    ...adminLayoutActions
+  })
 )(AdminLayout)
 export default LayoutEnhance

@@ -68,5 +68,17 @@ export default defineMessages({
   addProDesign: {
     id: 'screens.AdminLayout.addProDesign',
     defaultMessage: 'Create and Assign to User'
+  },
+  publishingTool: {
+    id: 'screens.AdminLayout.publishingTool',
+    defaultMessage: 'PUBLISHING TOOL'
+  },
+  createDesigns: {
+    id: 'screens.AdminLayout.createDesigns',
+    defaultMessage: 'Create and Edit Designs'
+  },
+  designLabTools: {
+    id: 'screens.AdminLayout.designLabTools',
+    defaultMessage: 'Edit Designlab Tools'
   }
 })
