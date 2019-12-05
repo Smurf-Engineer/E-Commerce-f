@@ -185,7 +185,6 @@ interface OwnProps {
   currentPage?: number
   limit?: number
   userId?: string
-  proDesign?: boolean
 }
 
 const LockerModalDesignsEnhance = compose(
@@ -196,8 +195,7 @@ const LockerModalDesignsEnhance = compose(
           limit,
           currentPage,
           offset,
-          userId,
-          proDesignOnly: proDesign
+          userId
         }
       }
     }
