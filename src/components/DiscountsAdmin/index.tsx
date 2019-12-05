@@ -97,25 +97,20 @@ interface ProductsData extends QueryProps {
   productsSearch: ProductsCodes
 }
 
-let selectedValue = ''
-let selectTitle = ''
 class DiscountsAdmin extends React.Component<Props, {}> {
-  
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
   }
 
   getUsersSearchResults = () => {
-    const { users, selectedUsers = [] } = this.props
-    if (users && !users.loading) {
-      return users.userSearch.map((item: UserSearchResult) => {
+    const { users = { loading: true } } = this.props
+    let usersResults
+    if (!users.loading) {
+      usersResults = users.userSearch.map((item: UserSearchResult) => {
         const text = `${item.id} - ${item.name} - ${item.email}`
         const value = item.shortId
-        if (item.shortId === get(selectedUsers[0], 'value', '')) {
-          selectedValue = text
-          selectTitle = `${item.id} - ${item.name}`
-        }
+
         return {
           text,
           value,
@@ -125,15 +120,18 @@ class DiscountsAdmin extends React.Component<Props, {}> {
         }
       })
     }
-    return
+    return usersResults
   }
 
   getProductsSearchResults = () => {
     const { products } = this.props
+    let productsResults
     if (products && !products.loading) {
-      return products.productsSearch.products.map((item: string) => item)
+      productsResults = products.productsSearch.products.map(
+        (item: string) => item
+      )
     }
-    return
+    return productsResults
   }
 
   render() {
@@ -169,7 +167,10 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       selectedProducts
     } = this.props
 
-    const searchResults = restrictionType === USERS ? this.getUsersSearchResults() : this.getProductsSearchResults()
+    const searchResults =
+      restrictionType === USERS
+        ? this.getUsersSearchResults()
+        : this.getProductsSearchResults()
 
     return (
       <SwipeableViews
@@ -224,8 +225,6 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             loading,
             restrictionType,
             searchResults,
-            selectedValue,
-            selectTitle,
             user,
             selectedUsers,
             usageNumber,
@@ -304,12 +303,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       unlimitedUsage
     } = this.props
 
-    const usersIds = selectedUsers.reduce(
-      (filtered: string[], user: any) => {
-        filtered.push(user.value)
-        return filtered
-      },
-      [])
+    const usersIds = selectedUsers.map(user => user.value)
 
     const isUpdatingDiscount = discountId !== -1
     const discount = {
@@ -433,7 +427,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     const acceptNumbersOnly = event.target.getAttribute('data-is-number')
     const { value, id } = event.target
     const { setDiscountTextAction } = this.props
-    if (acceptNumbersOnly && (!isNumber(value) && value !== '')) {
+    if (acceptNumbersOnly && !isNumber(value) && value !== '') {
       return
     }
     setDiscountTextAction(id, value)
@@ -472,10 +466,7 @@ type OwnProps = {
 const DiscountsAdminEnhance = compose(
   upsertDiscountMutation,
   activateDiscountMutation,
-  connect(
-    mapStateToProps,
-    { ...DiscountsActions }
-  ),
+  connect(mapStateToProps, { ...DiscountsActions }),
   graphql<Data>(getUsers, {
     options: (ownprops: OwnProps) => {
       const { user } = ownprops

@@ -184,6 +184,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
       (restrictionType === USERS && !selectedUsers.length) ||
       (restrictionType === PRODUCT && !selectedProducts.length) ||
       (restrictionType === USAGE && !unlimitedUsage && usageNumber <= 0)
+    const { searchValue } = this.state
     return (
       <Container>
         <ViewContainer onClick={this.goBack}>
@@ -241,11 +242,13 @@ class DiscountsData extends React.Component<Props, StateProps> {
               defaultValue={discountType}
               value={discountType}
             >
-              {discountTypes.map(value => (
-                <Option key={value} value={value}>
-                  {value}
-                </Option>
-              ))}
+              {discountTypes.map((value: string, index: number) => {
+                return (
+                  <Option key={`${index}`} value={value}>
+                    {value}
+                  </Option>
+                )
+              })}
             </StyledSelect>
           </Column>
           <Column>
@@ -283,7 +286,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
                   onChange={this.handleSearchInputChange}
                   dataSource={searchResults}
                   onSelect={this.handleOnSelectUser}
-                  value={this.state.searchValue}
+                  value={searchValue}
                   placeholder={formatMessage(messages.searchBy)}
                 >
                   <StyledInput
@@ -349,7 +352,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
                   onChange={this.handleSearchInputChange}
                   dataSource={searchResults}
                   onSelect={this.handleOnSelectProduct}
-                  value={this.state.searchValue}
+                  value={searchValue}
                   placeholder={formatMessage(messages.searchByProduct)}
                 >
                   <StyledInput
