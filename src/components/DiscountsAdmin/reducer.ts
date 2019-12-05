@@ -135,7 +135,7 @@ const orderHistoryAdminReducer: Reducer<any> = (
       return state.setIn(['selectedItems', id], action.item)
     }
     case SET_ITEMS_ADD_ACTION: {
-      const items = state.get('items').toJS()
+      const items = state.get('items')
       const selectedItems = state.get('selectedItems')
       const itemsMap = selectedItems.valueSeq((item: any) => item)
       return state.merge({

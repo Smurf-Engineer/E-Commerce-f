@@ -122,7 +122,7 @@ const DiscountsData = ({
   currentPageModal
 }: Props) => {
   const debounceSearchProduct = debounce(value => handleOnChange(value), 300)
-  const handleOnSelect = async (value: SelectValue) => {
+  const handleOnSelect = (value: SelectValue) => {
     const emailValue = value
       .toString()
       .split(' -')
@@ -184,8 +184,9 @@ const DiscountsData = ({
         <Column>
           <Label>{formatMessage(messages.restrictionType)}</Label>
           <RestrictionContainer>
-            {discountRestrictionTypes.map(restriction => (
+            {discountRestrictionTypes.map((restriction, index) => (
               <SectionButton
+                key={index}
                 id={restriction}
                 large={true}
                 selected={restriction === restrictionType}
@@ -288,16 +289,16 @@ const DiscountsData = ({
           limit,
           offset,
           title: selectTitle,
-          userId: selectedUser
+          userId: selectedUser,
+          changePage,
+          onUnselectItem
         }}
         proDesign={false}
         currentPage={currentPageModal}
         visible={openLocker}
         onRequestClose={handleOnCloseLocker}
         onSelectItem={setItemSelected}
-        onUnselectItem={onUnselectItem}
         onAddItems={setItemsToAdd}
-        changePage={changePage}
       />
       <ButtonsContainer>
         <StyledButton disabled={loading} onClick={goBack}>
