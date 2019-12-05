@@ -72,59 +72,9 @@ interface Props {
 const { Option } = Select
 const discountRestrictionTypes = [PRODUCT, USERS, USAGE]
 
-<<<<<<< HEAD
 interface StateProps {
   searchValue: string
 }
-=======
-const DiscountsData = ({
-  goBack,
-  formatMessage,
-  discountTypes,
-  handleOnInputChange,
-  couponCode,
-  discountItemId,
-  onSelectDiscountType,
-  discountType,
-  rate,
-  onChangeRate,
-  onActivateDiscount,
-  discountActive,
-  onSaveDiscount,
-  onSelectDate,
-  expiry,
-  loading,
-  restrictionType,
-  onSelectRestriction,
-  handleOnChange,
-  searchResults,
-  setSelectedUser,
-  items,
-  openLocker,
-  selectedItems,
-  setItemSelected,
-  setItemsToAdd,
-  selectedUser,
-  setOpenLocker,
-  onUnselectItem,
-  onDeleteItem,
-  selectTitle,
-  limit,
-  offset,
-  setPaginationData,
-  currentPageModal
-}: Props) => {
-  const debounceSearchProduct = debounce(value => handleOnChange(value), 300)
-  const handleOnSelect = (value: SelectValue) => {
-    const emailValue = value
-      .toString()
-      .split(' -')
-      .reverse()
-      .shift()
-    const parsedValue = emailValue.replace(/ /g, '')
-    setSelectedUser(parsedValue)
-  }
->>>>>>> a77344f94f239a54b28028f633a509cb67784b24
 
 const usersHeader: Header[] = [
   { message: 'clientId', width: 25, tabletWidth: 20, fieldName: 'netsuiteId' },
