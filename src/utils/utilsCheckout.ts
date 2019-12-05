@@ -50,34 +50,41 @@ export const getTaxesAndDiscount = (
             discount = (subtotal + proDesignFee) * (Number(rate) / 100)
           }
         } else {
-          discount = products.reduce(
-            (totalDiscount: number, product) => {
-              const itemForDiscount = find(productsPrices, (productObject) => productObject.yotpoId === product)
-              let discountToApply = 0
-              if (itemForDiscount) {
-                discountToApply = (itemForDiscount.price * (Number(rate) / 100)) * itemForDiscount.quantity
-              }
-              return totalDiscount + discountToApply
-            },
-            0
-          )
+          discount = products.reduce((totalDiscount: number, product) => {
+            const itemForDiscount = find(
+              productsPrices,
+              productObject => productObject.yotpoId === product
+            )
+            /* let discountToApply = 0
+            if (itemForDiscount) {
+              discountToApply =
+                itemForDiscount.price *
+                (Number(rate) / 100) *
+                itemForDiscount.quantity
+            } */
+            return (
+              totalDiscount +
+              itemForDiscount.price *
+                (Number(rate) / 100) *
+                itemForDiscount.quantity
+            )
+            // tslint:disable-next-line: align
+          }, 0)
         }
         break
       case FLAT_PROMO: // 'flat
         if (restrictionType !== PRODUCT) {
           discount = Number(rate)
         } else {
-          discount = products.reduce(
-            (totalDiscount: number, product) => {
-              const itemForDiscount = find(productsPrices, (productObject) => productObject.yotpoId === product)
-              let discountToApply = 0
-              if (itemForDiscount) {
-                discountToApply = Number(rate) * itemForDiscount.quantity
-              }
-              return totalDiscount + discountToApply
-            },
-            0
-          )
+          discount = products.reduce((totalDiscount: number, product) => {
+            const itemForDiscount = find(
+              productsPrices,
+              productObject => productObject.yotpoId === product
+            )
+
+            return totalDiscount + Number(rate) * itemForDiscount.quantity
+            // tslint:disable-next-line: align
+          }, 0)
         }
         break
       default:
