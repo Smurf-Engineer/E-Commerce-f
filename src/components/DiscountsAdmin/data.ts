@@ -13,7 +13,6 @@ export const upsertDiscountMutation = graphql(
         expiry
         active
         restrictionType: restriction_type
-        user
         usageNumber: usage_limit
         selectedUsers: users {
           netsuiteId: netsuite_internal
