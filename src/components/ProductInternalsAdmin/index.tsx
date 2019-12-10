@@ -42,7 +42,8 @@ import {
   QueryProps,
   BasicColor,
   ProductInternalInput,
-  MessagePayload
+  MessagePayload,
+  UploadFile
 } from '../../types/common'
 import { INTERNALS_LIMIT } from './constants'
 import Spin from 'antd/lib/spin'
@@ -217,7 +218,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
     )
   }
 
-  beforeUpload = (file: any) => {
+  beforeUpload = (file: UploadFile) => {
     const { formatMessage } = this.props
     if (file) {
       const { name } = file
