@@ -49,7 +49,8 @@ import {
   EDIT_NAVIGATION,
   EDIT_NAVIGATION_URL,
   PRO_DESIGN,
-  PUBLISHING_TOOL
+  PUBLISHING_TOOL,
+  DESIGN_TOOLS
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -139,6 +140,9 @@ export class Admin extends React.Component<Props, {}> {
           break
         case PUBLISHING_TOOL:
           key = PUBLISHING_TOOL
+          break
+        case DESIGN_TOOLS:
+          key = DESIGN_TOOLS
           break
         default:
           break

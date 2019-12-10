@@ -1,0 +1,151 @@
+/**
+ * Tabs Component - Created by david on 26/02/18.
+ */
+import * as React from 'react'
+import AntdTabs from 'antd/lib/tabs'
+import ColorTab from '../ColorTab'
+import SymbolTab from '../SymbolTab'
+import SymbolTabCustomize from '../../../components/DesignCenterCustomize/SymbolTab'
+import TextTab from '../../../components/DesignCenterCustomize/TextTab'
+import Tab from '../Tab'
+import FontTab from '../FontTab'
+import colorIcon from '../../../assets/color_white.svg'
+import fontIcon from '../../../assets/text_white.svg'
+import clipartsIcon from '../../../assets/image_white.svg'
+import { Container } from './styledComponents'
+import {
+  DesignConfig,
+  UploadFile,
+  ModelConfig,
+  DesignObject,
+  ModelDesign,
+  Theme,
+  Color,
+  CanvasType,
+  TextFormat,
+  SelectedAsset,
+  CanvasElement,
+  ClipArt
+} from '../../../types/common'
+import { CanvasElements } from '../../DesignCenter/constants'
+
+const COLOR_TAB = 'COLOR_TAB'
+const FONT_TAB = 'FONT_TAB'
+const SYMBOLS_TAB = 'SYMBOLS_TAB'
+
+const { TabPane } = AntdTabs
+
+interface Props {
+  colors: Color[]
+  stitchingColors: Color[]
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
+  colorsList: any
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
+  uploadingSymbol: boolean
+  searchClipParam: string
+  selectedTab: number
+  symbols: ClipArt[]
+  hiddenSymbols: { [id: string]: boolean }
+  selectedFonts: { [id: string]: boolean }
+  changeFont: (font: string, active: boolean) => void
+  formatMessage: (messageDescriptor: any) => string
+  setGoogleFontsList: (data: any) => void
+  hideSymbol: (id: string) => void
+  addFont: (font: string) => void
+  onUpdateSearchText: (text: string) => void
+  onUploadColorsList: (file: any, type: string) => void
+  onUploadFile: (file: UploadFile) => void
+  setSearchClipParamAction: (param: string) => void
+  getGoogleFonts: () => void
+  onTabClick: (selectedIndex: number) => void
+}
+
+const Tabs = ({
+  colors,
+  stitchingColors,
+  formatMessage,
+  setGoogleFontsList,
+  fonts,
+  symbols,
+  addFont,
+  selectedFonts,
+  changeFont,
+  hiddenSymbols,
+  hideSymbol,
+  visibleFonts,
+  onUpdateSearchText,
+  searchText,
+  onUploadColorsList,
+  colorsList,
+  uploadingColors,
+  uploadingStitchingColors,
+  onUploadFile,
+  uploadingSymbol,
+  searchClipParam,
+  setSearchClipParamAction,
+  getGoogleFonts,
+  selectedTab,
+  onTabClick
+}: Props) => {
+  return (
+    <Container>
+      <AntdTabs
+        activeKey={`${selectedTab}`}
+        size="large"
+        onTabClick={onTabClick}
+      >
+        <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
+          <ColorTab
+            {...{
+              formatMessage,
+              colorsList,
+              stitchingColors,
+              colors,
+              uploadingColors,
+              uploadingStitchingColors
+            }}
+            onUploadFile={onUploadColorsList}
+          />
+        </TabPane>
+        <TabPane key={FONT_TAB} tab={<Tab label="fonts" icon={fontIcon} />}>
+          <FontTab
+            {...{
+              setGoogleFontsList,
+              fonts,
+              addFont,
+              visibleFonts,
+              changeFont,
+              selectedFonts,
+              onUpdateSearchText,
+              searchText,
+              formatMessage,
+              getGoogleFonts
+            }}
+          />
+        </TabPane>
+        <TabPane
+          key={SYMBOLS_TAB}
+          tab={<Tab label="symbol" icon={clipartsIcon} />}
+        >
+          <SymbolTab
+            {...{
+              formatMessage,
+              onUploadFile,
+              symbols,
+              hiddenSymbols,
+              uploadingSymbol,
+              hideSymbol,
+              searchClipParam,
+              setSearchClipParamAction
+            }}
+          />
+        </TabPane>
+      </AntdTabs>
+    </Container>
+  )
+}
+
+export default Tabs

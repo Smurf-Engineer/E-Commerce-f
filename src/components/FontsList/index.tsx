@@ -21,7 +21,8 @@ interface Props {
   googleList: boolean
   visibleFonts: string[]
   searchText: string
-  onSelectFont?: (font: string) => void
+  selectedFonts: { [id: string]: boolean }
+  changeFont: (font: string, active: boolean) => void
   setGoogleFontsList: (data: any) => void
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
@@ -35,25 +36,17 @@ const Search = Input.Search
 
 class FontsList extends React.PureComponent<Props> {
   async componentDidMount() {
-    const {
-      googleList,
-      getGoogleFonts
-    } = this.props
+    const { googleList, getGoogleFonts } = this.props
     if (googleList) {
-      setTimeout(
-        async () => {
-          await getGoogleFonts()
-        },
-        200
-      )
+      setTimeout(async () => {
+        await getGoogleFonts()
+        // tslint:disable-next-line: align
+      }, 200)
     }
   }
-  installFont = (font: string) => async () => {
-    const { installFont, fontsData } = this.props
-    await installFont({
-      variables: { font }
-    })
-    fontsData.refetch()
+  changeFont = (font: string, active: boolean) => async () => {
+    const { changeFont } = this.props
+    changeFont(font, active)
   }
   loadFont = (font: string) => () => {
     const { addFont, visibleFonts } = this.props
@@ -77,25 +70,30 @@ class FontsList extends React.PureComponent<Props> {
       googleList,
       visibleFonts,
       searchText,
+      selectedFonts,
       formatMessage,
       fonts
     } = this.props
     let list
-    const fontList: Font[] = get(fontsData, 'fonts', [])
+    const originalFonts: Font[] = get(fontsData, 'fonts', [])
     let installedFonts: any = []
 
-    const activeFonts = fontList.reduce<string[]>(
+    const objectFonts = originalFonts.reduce(
       (fontObject, { active, family }) => {
-        if (active) {
-          fontObject.push(family)
-        }
+        fontObject[family] = active
         return fontObject
       },
-      []
+      {}
     )
+    console.log('objectFonts:', objectFonts)
+    const fontsSelected = { ...selectedFonts, ...objectFonts }
+    const fontList = Object.keys(fontsSelected).map((key: string) => ({
+      active: fontsSelected[key],
+      family: key
+    }))
 
     if (!googleList) {
-      installedFonts = fontList.reduce<{font: string}[]>(
+      installedFonts = fontList.reduce<{ font: string }[]>(
         (fontObject, { active, family }) => {
           if (active) {
             fontObject.push({ font: family })
@@ -115,7 +113,7 @@ class FontsList extends React.PureComponent<Props> {
           return (
             <Item
               key={index}
-              onClick={this.installFont(font.family)}
+              onClick={this.changeFont(font.family, false)}
               className={'active'}
             >
               <Text className={'white'} font={font.family}>
@@ -127,28 +125,30 @@ class FontsList extends React.PureComponent<Props> {
         return
       })
     } else {
-      list = fonts && fonts.map((font: string, index: number) => {
-        const active = includes(activeFonts, font)
-        if (
-          !searchText.length ||
-          (searchText.length &&
-            font.toLowerCase().search(searchText.toLowerCase()) !== -1)
-        ) {
-          return (
-            <Waypoint key={index} onEnter={this.loadFont(font)}>
-              <Item
-                onClick={this.installFont(font)}
-                className={active ? 'active' : ''}
-              >
-                <Text className={active ? 'white' : ''} font={font}>
-                  {font}
-                </Text>
-              </Item>
-            </Waypoint>
-          )
-        }
-        return
-      })
+      list =
+        fonts &&
+        fonts.map((font: string, index: number) => {
+          const active = fontsSelected[font]
+          if (
+            !searchText.length ||
+            (searchText.length &&
+              font.toLowerCase().search(searchText.toLowerCase()) !== -1)
+          ) {
+            return (
+              <Waypoint key={index} onEnter={this.loadFont(font)}>
+                <Item
+                  onClick={this.changeFont(font, true)}
+                  className={active ? 'active' : ''}
+                >
+                  <Text className={active ? 'white' : ''} font={font}>
+                    {font}
+                  </Text>
+                </Item>
+              </Waypoint>
+            )
+          }
+          return
+        })
     }
     return (
       <Container>
@@ -176,8 +176,5 @@ class FontsList extends React.PureComponent<Props> {
   }
 }
 
-const FontsListEnhance = compose(
-  addNewFont,
-  getFonts
-)(FontsList)
+const FontsListEnhance = compose(addNewFont, getFonts)(FontsList)
 export default FontsListEnhance

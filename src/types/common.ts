@@ -1381,6 +1381,7 @@ export interface HomepageImagesType {
 export type Color = {
   name: string
   value: string
+  type?: string
 }
 
 export interface SelectedDesignType {

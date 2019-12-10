@@ -946,7 +946,7 @@
   "screens.ProductDetail.productCatalog": "Product Catalog",
   "screens.ProductDetail.designCenter": "Design Center",
   "components.TeamDragger.tittle": "Click or drag files to this area",
-  "components.TeamDragger.files": "Files in .eps .ai .svg .tiff .pdf .jpg",
+  "components.TeamDragger.files": "Files in {extensions}",
   "components.TeamDragger.size": "20 MB max",
   "components.UploadTab.recommendationTitle": "Jakroo Recommends",
   "components.UploadTab.recommendationMessage": "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.",
@@ -1246,5 +1246,7 @@
   "components.TeamStoreDetails.featured": "Featured",
   "components.TeamStoreDetails.name": "Name",
   "components.TeamStoreDetails.save": "Save",
-  "components.TeamStoreDetails.edit": "Edit"
+  "components.TeamStoreDetails.edit": "Edit",
+  "screens.DesignTools.title": "Publishing Tool",
+  "screens.DesignTools.back": "Back to admin"
 }
