@@ -7,10 +7,10 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { FormattedMessage } from 'react-intl'
 import * as publishingToolActions from './actions'
 import Tab from '../../components/Tab'
-import { GetProductsByIdQuery } from './data'
+import Theme from './Theme'
 import messages from './messages'
 import { connect } from 'react-redux'
-import { compose, withApollo, graphql } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import {
   Container,
   Header,
@@ -22,28 +22,21 @@ import {
   TopMenu,
   Layout,
   View,
-  Tabs
+  NavbarTabs
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
-import { Product, QueryProps } from '../../types/common'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
-
-interface ProductTypes extends Product {
-  intendedUse: string
-  temperatures: string
-  materials: string
-}
-
-interface Data extends QueryProps {
-  productFromCode: ProductTypes
-}
 
 interface Props {
   intl: InjectedIntl
   productToSearch: string
+  productCode: string
+  selectedTheme: number
   onSelectTab: (index: number) => void
+  setProductCodeAction: (value: string) => void
+  onChangeThemeAction: (id: number) => void
 }
 
 const steps = ['theme', 'designCustomization']
@@ -58,7 +51,14 @@ export class PublishingTool extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, onSelectTab } = this.props
+    const {
+      intl,
+      onSelectTab,
+      productCode,
+      setProductCodeAction,
+      onChangeThemeAction,
+      selectedTheme
+    } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
     const tabs = steps.map((step, index) => {
@@ -88,10 +88,16 @@ export class PublishingTool extends React.Component<Props, {}> {
             <BackIcon src={backIcon} />
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
-          <Tabs>{tabs}</Tabs>
+          <NavbarTabs>{tabs}</NavbarTabs>
           <View />
         </TopMenu>
-        <Layout />
+        <Layout>
+          <Theme
+            {...{ formatMessage, productCode, selectedTheme }}
+            setProductCode={setProductCodeAction}
+            onChangeTheme={onChangeThemeAction}
+          />
+        </Layout>
       </Container>
     )
   }
@@ -104,27 +110,11 @@ const mapStateToProps = (state: any) => {
   }
 }
 
-type OwnProps = {
-  productCode?: string
-}
-
 const PublishingToolEnhance = compose(
   withApollo,
   injectIntl,
   connect(mapStateToProps, {
     ...publishingToolActions
-  }),
-  graphql<Data>(GetProductsByIdQuery, {
-    options: (ownprops: OwnProps) => {
-      const { productCode } = ownprops
-      return {
-        variables: {
-          code: productCode
-        },
-        skip: !productCode,
-        fetchPolicy: 'network-only'
-      }
-    }
   })
 )(PublishingTool)
 

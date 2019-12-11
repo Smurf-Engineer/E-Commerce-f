@@ -63,7 +63,7 @@ export const View = styled.div`
   flex: 1;
 `
 
-export const Tabs = styled.div`
+export const NavbarTabs = styled.div`
   display: flex;
   flex-direction: row;
   flex: 3;

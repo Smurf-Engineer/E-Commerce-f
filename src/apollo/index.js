@@ -20,19 +20,22 @@ const errorLink = onError(({ response, operation }) => {
   if (operation.operationName === 'GetProductFromCode' && !!response) {
     response.errors = null
   }
-  const errorMessage =
-    response.errors.length && head(response.errors.map(error => error.message))
+  if (response.errors) {
+    const errorMessage =
+      response.errors.length &&
+      head(response.errors.map(error => error.message))
 
-  if (errorMessage.length && unauthorizedExp.test(errorMessage)) {
-    message.error('User session has expired!')
-    setTimeout(() => {
-      try {
-        localStorage.removeItem('user')
-        window.location.replace('/')
-      } catch (e) {
-        console.error(e)
-      }
-    }, 1500)
+    if (errorMessage.length && unauthorizedExp.test(errorMessage)) {
+      message.error('User session has expired!')
+      setTimeout(() => {
+        try {
+          localStorage.removeItem('user')
+          window.location.replace('/')
+        } catch (e) {
+          console.error(e)
+        }
+      }, 1500)
+    }
   }
 })
 

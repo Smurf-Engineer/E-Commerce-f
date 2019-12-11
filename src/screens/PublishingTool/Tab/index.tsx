@@ -1,52 +1,23 @@
 /**
- * Tab Component - Created by eduardoquintero on 02/12/19.
+ * Tab Component - Created by eduardoquintero on 06/12/19.
  */
 import * as React from 'react'
-import {
-  Container,
-  Text,
-  Tab as TabContainer,
-  Divider,
-  OpeningShape,
-  ShapeContainer
-} from './styledComponents'
+import { FormattedMessage } from 'react-intl'
+import messages from './messages'
+import { Container, Text, Icon } from './styledComponents'
 
 interface Props {
-  children: React.ReactNode
-  selected?: boolean
-  activeOnClick: boolean
-  index: number
-  totalItems: number
-  onSelectTab: () => void
+  label: string
+  icon: string
 }
 
-const Tab = ({
-  index,
-  children,
-  selected = false,
-  onSelectTab,
-  activeOnClick,
-  totalItems
-}: Props) => {
-  const handleOnSelectTab = () => {
-    if (activeOnClick) {
-      onSelectTab()
-    }
-  }
+const Tab = ({ label, icon }: Props) => {
   return (
-    <Container onClick={handleOnSelectTab}>
-      {index === 0 && <Divider type="vertical" />}
-      <TabContainer {...{ selected, activeOnClick }}>
-        <Text {...{ selected, activeOnClick }}>
-          {React.Children.only(children)}
-        </Text>
-        {index < totalItems - 1 && (
-          <ShapeContainer>
-            <OpeningShape {...{ selected }} />
-          </ShapeContainer>
-        )}
-      </TabContainer>
-      {index === totalItems - 1 && <Divider type="vertical" />}
+    <Container>
+      <Icon src={icon} />
+      <Text>
+        <FormattedMessage {...messages[label]} />
+      </Text>
     </Container>
   )
 }
