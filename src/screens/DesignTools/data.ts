@@ -46,3 +46,25 @@ export const getFonts = gql`
     }
   }
 `
+
+export const saveDesignConfigMutation = gql`
+  mutation saveDesignConfig(
+    $colors: Color[],
+    $stitchingColors: Color[],
+    $symbolsToHide: String[],
+    $symbolsToAdd: Clipart[],
+    $fontsToUpdate: Font[],
+    $fontsToAdd: Font[]
+  ) {
+    saveDesignConfig(
+      colors: $colors,
+      stitchingColors: $stitchingColors,
+      symbolsToHide: $symbolsToHide,
+      symbolsToAdd: $symbolsToAdd,
+      fontsToUpdate: $fontsToUpdate,
+      fontsToAdd: $fontsToAdd
+    ) {
+      message
+    }
+  }
+`

@@ -16,7 +16,8 @@ import {
   SET_GOOGLE_FONTS,
   ADD_FONT_ACTION,
   UPDATE_SEARCH_TEXT_ACTION,
-  CHANGE_FONT_ACTION
+  CHANGE_FONT_ACTION,
+  SET_UPLOADING_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -31,6 +32,7 @@ export const initialState = fromJS({
   visibleFonts: [],
   searchText: '',
   uploadingColors: false,
+  loading: false,
   uploadingStitchingColors: false,
   uploadingSymbol: false,
   searchClipParam: '',
@@ -59,6 +61,8 @@ const designToolsReducer: Reducer<any> = (state = initialState, action) => {
       return state.setIn(['selectedFonts', action.font], action.active)
     case UPDATE_SEARCH_TEXT_ACTION:
       return state.set('searchText', action.text)
+    case SET_UPLOADING_ACTION:
+      return state.set('loading', action.isLoading)
     case ADD_FONT_ACTION: {
       return state.set(
         'visibleFonts',
