@@ -52,5 +52,18 @@ export default defineMessages({
   edit: {
     id: 'components.TeamStoreDetails.edit',
     defaultMessage: 'Edit'
+  },
+  delete: {
+    id: 'components.TeamStoreDetails.delete',
+    defaultMessage: 'Delete'
+  },
+  deleteDescription: {
+    id: 'components.TeamStoreDetails.deleteDescription',
+    defaultMessage: `This action will delete the team store including 
+    any information related to it only if there is no order in progress.`
+  },
+  deleteQuestion: {
+    id: 'components.TeamStoreDetails.deleteQuestion',
+    defaultMessage: 'Are you sure you want to delete?'
   }
 })

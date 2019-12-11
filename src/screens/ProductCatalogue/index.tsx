@@ -400,7 +400,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   handlechangePage = (pageNumber: number) => {
     const { setSkipValue, limit } = this.props
     const skip = (pageNumber - 1) * limit
-
+    window.scrollTo(0, 0)
     setSkipValue(skip, pageNumber)
   }
 

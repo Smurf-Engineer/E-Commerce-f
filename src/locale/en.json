@@ -1246,5 +1246,8 @@
   "components.TeamStoreDetails.featured": "Featured",
   "components.TeamStoreDetails.name": "Name",
   "components.TeamStoreDetails.save": "Save",
-  "components.TeamStoreDetails.edit": "Edit"
+  "components.TeamStoreDetails.edit": "Edit",
+  "components.TeamStoreDetails.delete": "Delete",
+  "components.TeamStoreDetails.deleteDescription": "This action will delete the team store including any information related to it only if there is no order in progress.",
+  "components.TeamStoreDetails.deleteQuestion": "Are you sure you want to delete?"
 }
