@@ -24,6 +24,7 @@ import {
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
+import moment from 'moment'
 
 interface Props {
   onlyRead?: boolean
@@ -191,8 +192,9 @@ export class OrderSummary extends React.Component<Props, {}> {
     } = this.props
 
     try {
+      const timeZone = moment().utcOffset()
       const data = await applyPromoCode({
-        variables: { code }
+        variables: { code, timeZone }
       })
       const {
         data: { couponCode }
