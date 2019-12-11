@@ -125,7 +125,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             <Render3D designId={shortId} />
             <BottomButtons>
               <ButtonWrapper>
-                <Button onClick={this.openAddToStoreModal(true)}>
+                <Button onClick={this.openAddToStoreModal}>
                   <FormattedMessage {...messages.addToTeam} />
                 </Button>
               </ButtonWrapper>
@@ -155,7 +155,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
         <Modal
           visible={openAddToStoreModal}
           footer={null}
-          onCancel={this.openAddToStoreModal(false)}
+          onCancel={this.closeAddToStoreModal}
           destroyOnClose={true}
           maskClosable={true}
         >
@@ -179,9 +179,14 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
     history.push('/product-catalogue')
   }
 
-  openAddToStoreModal = (open: boolean) => () => {
+  closeAddToStoreModal = () => {
     const { openAddToTeamStoreModalAction } = this.props
-    openAddToTeamStoreModalAction(open)
+    openAddToTeamStoreModalAction(false)
+  }
+
+  openAddToStoreModal = () => {
+    const { openAddToTeamStoreModalAction } = this.props
+    openAddToTeamStoreModalAction(true)
   }
 }
 
