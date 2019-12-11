@@ -381,7 +381,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       openOutWithoutSaveModalAction(true)
       return
     }
-    window.location.replace('/')
+    history.back()
   }
 
   handleOnCancelOutWithoutSaveModal = () => {
