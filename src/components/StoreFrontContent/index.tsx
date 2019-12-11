@@ -66,7 +66,9 @@ import ProductList from '../../components/DesignsCatalogueThumbnailList'
 import Share from '../../components/ShareDesignModal'
 import EmailContact from '../../components/EmailContact'
 import TeamPassCode from '../../components/TeamPassCode'
-
+const STORE_PRIVATE_CODE = -1
+const PASS_CODE_INVALID = -2
+const STORE_CLOSED_CODE = -3
 interface Data extends QueryProps {
   teamStores: TeamStoreResultType
   getTeamStore: TeamStoreType
@@ -207,7 +209,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       : null
     const openModal =
       getTeamStore &&
-      (getTeamStore.id === -1 || getTeamStore.id === -2) &&
+      (getTeamStore.id === STORE_PRIVATE_CODE ||
+        getTeamStore.id === PASS_CODE_INVALID) &&
       !errorMessage &&
       !passCode
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
@@ -303,7 +306,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
           </Loading>
         ) : (
           <React.Fragment>
-            {getTeamStore && getTeamStore.id === -3 ? (
+            {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
               <ErrorTitle>{formatMessage(messages.storeClosed)}</ErrorTitle>
             ) : (
               <>
@@ -337,7 +340,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                       )}
                     </ButtonsContainer>
                   </FlexContainer>
-
                   <SideBar>
                     {!onDemandMode && (
                       <OrderTitle>
