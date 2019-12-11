@@ -2,6 +2,7 @@
  * Styled Components - Created by Jesús Apodaca on 04/12/19.
  */
 import styled from 'styled-components'
+import AntdTabs from 'antd/lib/tabs'
 
 export const Container = styled.div`
   background-color: #fff;
@@ -13,4 +14,10 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #fff;
+`
+
+export const NavTabs = styled(AntdTabs)`
+  .ant-tabs-nav-scroll {
+    text-align: center;
+  }
 `

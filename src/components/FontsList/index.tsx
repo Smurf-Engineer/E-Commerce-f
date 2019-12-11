@@ -54,10 +54,6 @@ class FontsList extends React.PureComponent<Props> {
       addFont(font)
     }
   }
-  selectFont = (font: string) => () => {
-    const { selectFont } = this.props
-    selectFont(font)
-  }
   handleOnUpdateText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value: text } = e.target
     const { onUpdateSearchText } = this.props
@@ -75,22 +71,23 @@ class FontsList extends React.PureComponent<Props> {
       fonts
     } = this.props
     let list
-    const originalFonts: Font[] = get(fontsData, 'fonts', [])
+    const savedFonts: Font[] = get(fontsData, 'fonts', [])
     let installedFonts: any = []
 
-    const objectFonts = originalFonts.reduce(
-      (fontObject, { active, family }) => {
-        fontObject[family] = active
-        return fontObject
-      },
-      {}
-    )
-    console.log('objectFonts:', objectFonts)
-    const fontsSelected = { ...selectedFonts, ...objectFonts }
-    const fontList = Object.keys(fontsSelected).map((key: string) => ({
-      active: fontsSelected[key],
-      family: key
-    }))
+    const objectFonts = savedFonts.reduce((fontObject, { active, family }) => {
+      fontObject[family] = active
+      return fontObject
+      // tslint:disable-next-line: align
+    }, {})
+
+    const fontsSelected = { ...objectFonts, ...selectedFonts }
+
+    const fontList = Object.keys(fontsSelected)
+      .sort()
+      .map((key: string) => ({
+        active: fontsSelected[key],
+        family: key
+      }))
 
     if (!googleList) {
       installedFonts = fontList.reduce<{ font: string }[]>(

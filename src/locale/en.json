@@ -1247,6 +1247,8 @@
   "components.TeamStoreDetails.name": "Name",
   "components.TeamStoreDetails.save": "Save",
   "components.TeamStoreDetails.edit": "Edit",
+  "components.FontTab.Title": "Fonts Settings",
   "screens.DesignTools.title": "Publishing Tool",
-  "screens.DesignTools.back": "Back to admin"
+  "screens.DesignTools.back": "Back to admin",
+  "screens.DesignTools.update": "Update settings"
 }

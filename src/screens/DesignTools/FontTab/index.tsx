@@ -46,7 +46,7 @@ class FontTab extends React.PureComponent<Props> {
     return (
       <Container>
         <Top>
-          <FormattedMessage {...messages.selectColor} />
+          <FormattedMessage {...messages.title} />
         </Top>
         <TabsContainer>
           <AntdTabs defaultActiveKey={INSTALLED_FONTS} size="small">

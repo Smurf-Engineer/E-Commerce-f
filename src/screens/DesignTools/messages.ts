@@ -12,5 +12,9 @@ export default defineMessages({
   back: {
     id: 'screens.DesignTools.back',
     defaultMessage: 'Back to admin'
+  },
+  update: {
+    id: 'screens.DesignTools.update',
+    defaultMessage: 'Update settings'
   }
 })

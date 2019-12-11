@@ -12,7 +12,7 @@ import FontTab from '../FontTab'
 import colorIcon from '../../../assets/color_white.svg'
 import fontIcon from '../../../assets/text_white.svg'
 import clipartsIcon from '../../../assets/image_white.svg'
-import { Container } from './styledComponents'
+import { Container, NavTabs } from './styledComponents'
 import {
   DesignConfig,
   UploadFile,
@@ -92,7 +92,7 @@ const Tabs = ({
 }: Props) => {
   return (
     <Container>
-      <AntdTabs
+      <NavTabs
         activeKey={`${selectedTab}`}
         size="large"
         onTabClick={onTabClick}
@@ -143,7 +143,7 @@ const Tabs = ({
             }}
           />
         </TabPane>
-      </AntdTabs>
+      </NavTabs>
     </Container>
   )
 }

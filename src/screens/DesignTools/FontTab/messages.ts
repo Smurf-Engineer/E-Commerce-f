@@ -5,8 +5,8 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  selectColor: {
-    id: 'components.designCenterCustomize.ColorTab.selectColor',
-    defaultMessage: 'Colors'
+  title: {
+    id: 'components.FontTab.title',
+    defaultMessage: 'Fonts Settings'
   }
 })

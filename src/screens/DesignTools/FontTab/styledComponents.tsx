@@ -13,6 +13,7 @@ export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 8px 32px;
+  font-weight: bold;
   background-color: #eff2f4;
 `
 

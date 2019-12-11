@@ -73,14 +73,28 @@ interface Props {
   onTabClick: (selectedIndex: number) => void
 }
 export class DesignTools extends React.Component<Props, {}> {
-  render3D: any
-  async componentDidMount() {
-    await LoadScripts(threeDScripts)
-  }
   handleOnPressBack = () => {
     window.location.replace('/admin')
   }
-
+  saveSettings = () => {
+    const {
+      colors,
+      stitchingColors,
+      symbols,
+      hiddenSymbols,
+      selectedFonts
+    } = this.props
+    const symbolsToAdd = symbols.reduce((arr: ClipArt[], symbol) => {
+      if (!hiddenSymbols[symbol.id]) {
+        arr.push(symbol)
+      } else {
+        delete hiddenSymbols[symbol.id]
+      }
+      return arr
+      // tslint:disable-next-line: align
+    }, [])
+    console.log('hiddenSymbols:', symbolsToAdd)
+  }
   render() {
     const {
       intl,
@@ -157,7 +171,9 @@ export class DesignTools extends React.Component<Props, {}> {
             }}
           />
           <SaveContainer>
-            <SaveButton>Update settings</SaveButton>
+            <SaveButton onClick={this.saveSettings}>
+              {formatMessage(messages.update)}
+            </SaveButton>
             <Logo src={logo} />
           </SaveContainer>
         </Layout>
