@@ -2,17 +2,14 @@
  * FontsList Component - Created by david on 29/05/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
 import Input from 'antd/lib/input'
-import includes from 'lodash/includes'
 import find from 'lodash/find'
 import GoogleFontLoader from 'react-google-font-loader'
 import { Waypoint } from 'react-waypoint'
 import { Font, Message } from '../../types/common'
 import { Container, Text, Item, ScrollView } from './styledComponents'
-import { getFonts, addNewFont } from './data'
 import Spin from 'antd/lib/spin'
 
 interface Props {
@@ -27,7 +24,6 @@ interface Props {
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
   selectFont: (font: string) => void
-  installFont: (variables: {}) => void
   formatMessage: (messageDescriptor: Message) => string
   getGoogleFonts: () => void
 }
@@ -173,5 +169,4 @@ class FontsList extends React.PureComponent<Props> {
   }
 }
 
-const FontsListEnhance = compose(addNewFont, getFonts)(FontsList)
-export default FontsListEnhance
+export default FontsList

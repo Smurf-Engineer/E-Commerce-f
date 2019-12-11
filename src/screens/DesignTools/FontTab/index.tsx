@@ -15,6 +15,7 @@ interface Props {
   fonts: string[]
   visibleFonts: any[]
   searchText: string
+  fontsData: any
   selectedFonts: { [id: string]: boolean }
   changeFont: (font: string, active: boolean) => void
   setGoogleFontsList: (data: any) => void
@@ -37,6 +38,7 @@ class FontTab extends React.PureComponent<Props> {
       visibleFonts,
       addFont,
       selectedFonts,
+      fontsData,
       changeFont,
       onUpdateSearchText,
       searchText,
@@ -57,6 +59,7 @@ class FontTab extends React.PureComponent<Props> {
                   setGoogleFontsList,
                   fonts,
                   selectedFonts,
+                  fontsData,
                   changeFont,
                   visibleFonts,
                   onUpdateSearchText,
@@ -72,6 +75,7 @@ class FontTab extends React.PureComponent<Props> {
                   setGoogleFontsList,
                   fonts,
                   visibleFonts,
+                  fontsData,
                   selectedFonts,
                   changeFont,
                   addFont,

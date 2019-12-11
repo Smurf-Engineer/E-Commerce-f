@@ -36,3 +36,13 @@ export const getColorsQuery = gql`
     }
   }
 `
+
+export const getFonts = gql`
+  query GetFonts {
+    fonts: getFonts {
+      id
+      family
+      active
+    }
+  }
+`

@@ -42,6 +42,7 @@ interface Props {
   visibleFonts: any[]
   searchText: string
   colorsList: any
+  fontsData: any
   uploadingColors: boolean
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
@@ -69,6 +70,7 @@ const Tabs = ({
   formatMessage,
   setGoogleFontsList,
   fonts,
+  fontsData,
   symbols,
   addFont,
   selectedFonts,
@@ -116,6 +118,7 @@ const Tabs = ({
               setGoogleFontsList,
               fonts,
               addFont,
+              fontsData,
               visibleFonts,
               changeFont,
               selectedFonts,

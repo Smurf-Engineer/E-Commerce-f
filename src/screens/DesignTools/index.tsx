@@ -7,7 +7,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import * as publishingToolActions from './actions'
 import * as designToolApi from './api'
 import * as thunkActions from './thunkActions'
-import { GetProductsByIdQuery, getColorsQuery } from './data'
+import { getFonts, getColorsQuery } from './data'
 import messages from './messages'
 import { connect } from 'react-redux'
 import { compose, withApollo, graphql } from 'react-apollo'
@@ -37,8 +37,10 @@ import {
   CanvasElement,
   Color,
   UploadFile,
-  ClipArt
+  ClipArt,
+  Font
 } from '../../types/common'
+import get from 'lodash/get'
 
 interface Props {
   intl: InjectedIntl
@@ -48,6 +50,7 @@ interface Props {
   visibleFonts: any[]
   searchText: string
   colorsList: any
+  fontsData: any
   stitchingColors: Color[]
   uploadingColors: boolean
   uploadingStitchingColors: boolean
@@ -81,9 +84,11 @@ export class DesignTools extends React.Component<Props, {}> {
       colors,
       stitchingColors,
       symbols,
+      fontsData,
       hiddenSymbols,
       selectedFonts
     } = this.props
+    const savedFonts: Font[] = get(fontsData, 'fonts', [])
     const symbolsToAdd = symbols.reduce((arr: ClipArt[], symbol) => {
       if (!hiddenSymbols[symbol.id]) {
         arr.push(symbol)
@@ -93,7 +98,6 @@ export class DesignTools extends React.Component<Props, {}> {
       return arr
       // tslint:disable-next-line: align
     }, [])
-    console.log('hiddenSymbols:', symbolsToAdd)
   }
   render() {
     const {
@@ -102,6 +106,7 @@ export class DesignTools extends React.Component<Props, {}> {
       stitchingColors,
       setGoogleFontsList,
       fonts,
+      fontsData,
       addFont,
       selectedFonts,
       changeFont,
@@ -148,6 +153,7 @@ export class DesignTools extends React.Component<Props, {}> {
               setGoogleFontsList,
               fonts,
               addFont,
+              fontsData,
               hideSymbol,
               symbols,
               visibleFonts,
@@ -193,6 +199,7 @@ const DesignToolsEnhance = compose(
   withApollo,
   injectIntl,
   graphql(getColorsQuery, { name: 'colorsList' }),
+  graphql(getFonts, { name: 'fontsData' }),
   connect(mapStateToProps, {
     ...publishingToolActions,
     ...designToolApi,
