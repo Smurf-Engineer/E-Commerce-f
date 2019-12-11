@@ -7,6 +7,7 @@ import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import find from 'lodash/find'
 import Spin from 'antd/lib/spin'
+import message from 'antd/lib/message'
 import moment from 'moment'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
@@ -161,6 +162,24 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     setOpenPassCodeDialog(true)
   }
 
+  handleSetPassCode = (passCode: string) => {
+    const { setPassCodeAction } = this.props
+    setPassCodeAction(passCode)
+    this.handleAddCode(passCode)
+  }
+
+  handleAddCode = (passCode: string) => {
+    try {
+      const { teamStoreId } = this.props
+      const savedStores = sessionStorage.getItem('savedStores')
+      const storeCodes = savedStores ? JSON.parse(savedStores) : {}
+      storeCodes[teamStoreId] = passCode
+      sessionStorage.setItem('savedStores', JSON.stringify(storeCodes))
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+
   closeEmailContactModal = () => {
     const { openEmailContactDialogAction } = this.props
     openEmailContactDialogAction(false)
@@ -184,7 +203,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const {
       data: { error, getTeamStore, loading },
       teamStoreId,
-      passCode,
       formatMessage,
       openShare,
       openEmailContact,
@@ -194,7 +212,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       setEmailMessageAction,
       sendMessageLoading,
       sendMessageLoadingAction,
-      setPassCodeAction,
       currentCurrency,
       user,
       handleInputChange,
@@ -212,7 +229,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       (getTeamStore.id === STORE_PRIVATE_CODE ||
         getTeamStore.id === PASS_CODE_INVALID) &&
       !errorMessage &&
-      !passCode
+      (getTeamStore.id === -1 || getTeamStore.id === -2)
+
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
     const teamStoreName = get(getTeamStore, 'name', '')
@@ -548,7 +566,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
           open={openModal}
           requestClose={this.closePassCodeModal}
           formatMessage={formatMessage}
-          setPassCode={setPassCodeAction}
+          setPassCode={this.handleSetPassCode}
           teamStoreId={teamStoreId}
         />
       </Container>
