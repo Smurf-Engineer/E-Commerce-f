@@ -27,20 +27,17 @@ import {
 import { History } from 'history'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
-import Tabs from './Tabs'
 import { Font } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 
 interface Props {
   intl: InjectedIntl
-  selectedTab: number
   history: History
   loading: boolean
   onResetReducer: () => void
   saveDesignConfig: (variables: {}) => Promise<any>
   setUploadingAction: (isLoading: boolean) => void
-  onTabClick: (selectedIndex: number) => void
 }
 export class DesignTools extends React.Component<Props, {}> {
   componentWillUnmount() {
@@ -87,7 +84,7 @@ export class DesignTools extends React.Component<Props, {}> {
     }
   }
   render() {
-    const { intl, loading, selectedTab, onTabClick } = this.props
+    const { intl, loading } = this.props
     const { formatMessage } = intl
 
     return (
@@ -107,12 +104,6 @@ export class DesignTools extends React.Component<Props, {}> {
           <Spin size="large" />
         </Loading>
         <Layout>
-          <Tabs
-            {...{
-              selectedTab,
-              onTabClick
-            }}
-          />
           <SaveContainer>
             <SaveButton onClick={this.saveSettings}>
               {formatMessage(messages.update)}
