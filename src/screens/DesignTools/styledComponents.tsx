@@ -83,7 +83,7 @@ export const SaveButton = styled.div`
 
 export const Loading = styled.div`
   position: absolute;
-  height: 100vh;
+  height: calc(100vh - 109px);
   width: 100%;
   display: flex;
   justify-content: center;
