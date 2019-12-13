@@ -38,7 +38,6 @@ interface Props {
   intl: InjectedIntl
   colors: Color[]
   fonts: string[]
-  symbols: ClipArt[]
   visibleFonts: any[]
   searchText: string
   colorsList: any
@@ -46,13 +45,10 @@ interface Props {
   stitchingColors: Color[]
   uploadingColors: boolean
   uploadingStitchingColors: boolean
-  uploadingSymbol: boolean
-  searchClipParam: string
   installedFonts: Font[]
   selectedTab: number
   history: History
   loading: boolean
-  hiddenSymbols: { [id: string]: boolean }
   selectedFonts: { [id: string]: boolean }
   onResetReducer: () => void
   saveDesignConfig: (variables: {}) => Promise<any>
@@ -62,9 +58,6 @@ interface Props {
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
   onUploadColorsList: (file: any, type: string) => void
-  onUploadFile: (file: UploadFile) => void
-  hideSymbol: (url: string, id: string) => void
-  setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void
   onTabClick: (selectedIndex: number) => void
 }
@@ -80,9 +73,7 @@ export class DesignTools extends React.Component<Props, {}> {
     const {
       colors,
       stitchingColors,
-      symbols,
       fontsData,
-      hiddenSymbols,
       saveDesignConfig,
       selectedFonts,
       history,
@@ -92,15 +83,7 @@ export class DesignTools extends React.Component<Props, {}> {
       setUploadingAction(true)
       const savedFonts: Font[] = get(fontsData, 'fonts', [])
       // Check if the added symbols by the user are not in the hidden list
-      const symbolsToAdd = symbols.reduce((arr: String[], { id, url }) => {
-        if (hiddenSymbols[id]) {
-          delete hiddenSymbols[id]
-        } else {
-          arr.push(url)
-        }
-        return arr
-        // tslint:disable-next-line: align
-      }, [])
+      const symbolsToAdd: string[] = []
 
       // Check and separate the fonts updates
       // Note: This is to have a separated list for the updates and then a list for the to-add
@@ -123,7 +106,7 @@ export class DesignTools extends React.Component<Props, {}> {
       )
 
       // Create the hidden symbols list
-      const symbolsToHide = Object.keys(hiddenSymbols)
+      const symbolsToHide: string[] = []
       const colorsObject = {
         colors: colors.length ? JSON.stringify(colors) : '',
         stitching: stitchingColors.length ? JSON.stringify(stitchingColors) : ''
@@ -156,8 +139,6 @@ export class DesignTools extends React.Component<Props, {}> {
       addFont,
       selectedFonts,
       changeFont,
-      hiddenSymbols,
-      hideSymbol,
       visibleFonts,
       onUpdateSearchText,
       searchText,
@@ -165,14 +146,9 @@ export class DesignTools extends React.Component<Props, {}> {
       colorsList,
       uploadingColors,
       uploadingStitchingColors,
-      onUploadFile,
-      uploadingSymbol,
-      searchClipParam,
-      setSearchClipParamAction,
       getGoogleFonts,
       installedFonts,
       selectedTab,
-      symbols,
       onTabClick
     } = this.props
     const { formatMessage } = intl
@@ -203,22 +179,15 @@ export class DesignTools extends React.Component<Props, {}> {
               fonts,
               addFont,
               fontsData,
-              hideSymbol,
-              symbols,
               visibleFonts,
               selectedFonts,
               changeFont,
-              hiddenSymbols,
               onUpdateSearchText,
               searchText,
               onUploadColorsList,
               colorsList,
               uploadingColors,
               uploadingStitchingColors,
-              onUploadFile,
-              uploadingSymbol,
-              searchClipParam,
-              setSearchClipParamAction,
               getGoogleFonts,
               installedFonts,
               selectedTab,
