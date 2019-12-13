@@ -5,11 +5,10 @@ import * as React from 'react'
 import Helmet from 'react-helmet'
 import message from 'antd/lib/message'
 import * as designToolApi from './api'
-import * as thunkActions from './thunkActions'
 import * as publishingToolActions from './actions'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose, withApollo, graphql } from 'react-apollo'
-import { getFonts, getColorsQuery, saveDesignConfigMutation } from './data'
+import { getColorsQuery, saveDesignConfigMutation } from './data'
 import messages from './messages'
 import { connect } from 'react-redux'
 import {
@@ -37,11 +36,7 @@ import Spin from 'antd/lib/spin'
 interface Props {
   intl: InjectedIntl
   colors: Color[]
-  fonts: string[]
-  visibleFonts: any[]
-  searchText: string
   colorsList: any
-  fontsData: any
   stitchingColors: Color[]
   uploadingColors: boolean
   uploadingStitchingColors: boolean
@@ -49,16 +44,10 @@ interface Props {
   selectedTab: number
   history: History
   loading: boolean
-  selectedFonts: { [id: string]: boolean }
   onResetReducer: () => void
   saveDesignConfig: (variables: {}) => Promise<any>
   setUploadingAction: (isLoading: boolean) => void
-  changeFont: (font: string, active: boolean) => void
-  setGoogleFontsList: (data: any) => void
-  addFont: (font: string) => void
-  onUpdateSearchText: (text: string) => void
   onUploadColorsList: (file: any, type: string) => void
-  getGoogleFonts: () => void
   onTabClick: (selectedIndex: number) => void
 }
 export class DesignTools extends React.Component<Props, {}> {
@@ -73,37 +62,21 @@ export class DesignTools extends React.Component<Props, {}> {
     const {
       colors,
       stitchingColors,
-      fontsData,
       saveDesignConfig,
-      selectedFonts,
       history,
       setUploadingAction
     } = this.props
     try {
       setUploadingAction(true)
-      const savedFonts: Font[] = get(fontsData, 'fonts', [])
       // Check if the added symbols by the user are not in the hidden list
       const symbolsToAdd: string[] = []
 
       // Check and separate the fonts updates
       // Note: This is to have a separated list for the updates and then a list for the to-add
-      const fontsToUpdate = savedFonts.reduce((arr: Font[], { id, family }) => {
-        if (family in selectedFonts) {
-          arr.push({
-            id,
-            family,
-            active: selectedFonts[family]
-          })
-          delete selectedFonts[family]
-        }
-        return arr
-        // tslint:disable-next-line: align
-      }, [])
+      const fontsToUpdate: Font[] = []
 
       // Create the to-add fonts list only for those that are true
-      const fontsToAdd = Object.keys(selectedFonts).filter(
-        (key: string) => selectedFonts[key]
-      )
+      const fontsToAdd: string[] = []
 
       // Create the hidden symbols list
       const symbolsToHide: string[] = []
@@ -132,21 +105,11 @@ export class DesignTools extends React.Component<Props, {}> {
       intl,
       colors,
       stitchingColors,
-      setGoogleFontsList,
-      fonts,
-      fontsData,
       loading,
-      addFont,
-      selectedFonts,
-      changeFont,
-      visibleFonts,
-      onUpdateSearchText,
-      searchText,
       onUploadColorsList,
       colorsList,
       uploadingColors,
       uploadingStitchingColors,
-      getGoogleFonts,
       installedFonts,
       selectedTab,
       onTabClick
@@ -175,20 +138,10 @@ export class DesignTools extends React.Component<Props, {}> {
               colors,
               stitchingColors,
               formatMessage,
-              setGoogleFontsList,
-              fonts,
-              addFont,
-              fontsData,
-              visibleFonts,
-              selectedFonts,
-              changeFont,
-              onUpdateSearchText,
-              searchText,
               onUploadColorsList,
               colorsList,
               uploadingColors,
               uploadingStitchingColors,
-              getGoogleFonts,
               installedFonts,
               selectedTab,
               onTabClick
@@ -218,11 +171,9 @@ const DesignToolsEnhance = compose(
   injectIntl,
   graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(saveDesignConfigMutation, { name: 'saveDesignConfig' }),
-  graphql(getFonts, { name: 'fontsData' }),
   connect(mapStateToProps, {
     ...publishingToolActions,
-    ...designToolApi,
-    ...thunkActions
+    ...designToolApi
   })
 )(DesignTools)
 

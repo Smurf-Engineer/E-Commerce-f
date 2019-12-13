@@ -9,16 +9,6 @@ export const getColorsQuery = gql`
   }
 `
 
-export const getFonts = gql`
-  query GetFonts {
-    fonts: getFonts {
-      id
-      family
-      active
-    }
-  }
-`
-
 export const saveDesignConfigMutation = gql`
   mutation saveDesignConfig(
     $colors: InputColors
