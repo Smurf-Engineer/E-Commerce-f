@@ -30,7 +30,7 @@ import { History } from 'history'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import Tabs from './Tabs'
-import { Color, UploadFile, ClipArt, Font } from '../../types/common'
+import { Color, Font } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 
