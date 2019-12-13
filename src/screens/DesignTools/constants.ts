@@ -5,4 +5,11 @@ const namespace = 'src/DesignTools'
 
 export const ON_RESET_REDUCER = `${namespace}/ON_RESET_REDUCER`
 
+export const SET_UPLOADING_COLORS_ACTION = `${namespace}/SET_UPLOADING_COLORS_ACTION`
 export const SET_UPLOADING_ACTION = `${namespace}/SET_UPLOADING_ACTION`
+export const ON_TAB_CLICK_ACTION = `${namespace}/ON_TAB_CLICK_ACTION`
+export const SET_COLORS = `${namespace}/SET_COLORS`
+
+export enum CustomizeTabs {
+  ColorTab = 'COLOR_TAB'
+}

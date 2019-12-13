@@ -1,5 +1,14 @@
 import gql from 'graphql-tag'
 
+export const getColorsQuery = gql`
+  query GetColors {
+    colorsResult: getColors {
+      colors
+      stitchingColors: stitching_colors
+    }
+  }
+`
+
 export const saveDesignConfigMutation = gql`
   mutation saveDesignConfig(
     $colors: InputColors

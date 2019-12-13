@@ -4,10 +4,11 @@
 import * as React from 'react'
 import Helmet from 'react-helmet'
 import message from 'antd/lib/message'
+import * as designToolApi from './api'
 import * as publishingToolActions from './actions'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose, withApollo, graphql } from 'react-apollo'
-import { saveDesignConfigMutation } from './data'
+import { getColorsQuery, saveDesignConfigMutation } from './data'
 import messages from './messages'
 import { connect } from 'react-redux'
 import {
@@ -27,17 +28,27 @@ import {
 import { History } from 'history'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
-import { Font } from '../../types/common'
+import Tabs from './Tabs'
+import { Color, Font } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 
 interface Props {
   intl: InjectedIntl
+  colors: Color[]
+  colorsList: any
+  stitchingColors: Color[]
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
+  installedFonts: Font[]
+  selectedTab: number
   history: History
   loading: boolean
   onResetReducer: () => void
   saveDesignConfig: (variables: {}) => Promise<any>
   setUploadingAction: (isLoading: boolean) => void
+  onUploadColorsList: (file: any, type: string) => void
+  onTabClick: (selectedIndex: number) => void
 }
 export class DesignTools extends React.Component<Props, {}> {
   componentWillUnmount() {
@@ -48,7 +59,13 @@ export class DesignTools extends React.Component<Props, {}> {
     window.location.replace('/admin')
   }
   saveSettings = async () => {
-    const { saveDesignConfig, history, setUploadingAction } = this.props
+    const {
+      colors,
+      stitchingColors,
+      saveDesignConfig,
+      history,
+      setUploadingAction
+    } = this.props
     try {
       setUploadingAction(true)
       // Check if the added symbols by the user are not in the hidden list
@@ -64,8 +81,8 @@ export class DesignTools extends React.Component<Props, {}> {
       // Create the hidden symbols list
       const symbolsToHide: string[] = []
       const colorsObject = {
-        colors: '',
-        stitching: ''
+        colors: colors.length ? JSON.stringify(colors) : '',
+        stitching: stitchingColors.length ? JSON.stringify(stitchingColors) : ''
       }
       const response = await saveDesignConfig({
         variables: {
@@ -84,7 +101,19 @@ export class DesignTools extends React.Component<Props, {}> {
     }
   }
   render() {
-    const { intl, loading } = this.props
+    const {
+      intl,
+      colors,
+      stitchingColors,
+      loading,
+      onUploadColorsList,
+      colorsList,
+      uploadingColors,
+      uploadingStitchingColors,
+      installedFonts,
+      selectedTab,
+      onTabClick
+    } = this.props
     const { formatMessage } = intl
 
     return (
@@ -100,10 +129,24 @@ export class DesignTools extends React.Component<Props, {}> {
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
         </TopMenu>
-        <Loading active={loading}>
+        <Loading active={(colorsList && colorsList.loading) || loading}>
           <Spin size="large" />
         </Loading>
         <Layout>
+          <Tabs
+            {...{
+              colors,
+              stitchingColors,
+              formatMessage,
+              onUploadColorsList,
+              colorsList,
+              uploadingColors,
+              uploadingStitchingColors,
+              installedFonts,
+              selectedTab,
+              onTabClick
+            }}
+          />
           <SaveContainer>
             <SaveButton onClick={this.saveSettings}>
               {formatMessage(messages.update)}
@@ -126,9 +169,11 @@ const mapStateToProps = (state: any) => {
 const DesignToolsEnhance = compose(
   withApollo,
   injectIntl,
+  graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(saveDesignConfigMutation, { name: 'saveDesignConfig' }),
   connect(mapStateToProps, {
-    ...publishingToolActions
+    ...publishingToolActions,
+    ...designToolApi
   })
 )(DesignTools)
 
