@@ -9,8 +9,12 @@ import {
   UPDATE_SEARCH_TEXT_ACTION,
   SET_UPLOADING_COLORS_ACTION,
   SET_UPLOADING_ACTION,
+  SET_SEARCH_CLIPARTPARAM,
   ON_TAB_CLICK_ACTION,
   SET_COLORS,
+  UPLOADING_SYMBOL_ACTION,
+  ADD_SYMBOL_ACTION,
+  HIDE_SYMBOL_ACTION,
   CHANGE_FONT_ACTION
 } from './constants'
 
@@ -55,6 +59,11 @@ export const setUploadingAction = (isLoading: boolean): AnyAction => ({
   isLoading
 })
 
+export const setSearchClipParamAction = (param: string): AnyAction => ({
+  type: SET_SEARCH_CLIPARTPARAM,
+  param
+})
+
 export const onTabClick = (selectedIndex: number): AnyAction => ({
   type: ON_TAB_CLICK_ACTION,
   selectedIndex
@@ -67,4 +76,20 @@ export const setColorList = (
   type: SET_COLORS,
   listType,
   colors
+})
+
+export const setUploadingSymbolAction = (isLoading: boolean): AnyAction => ({
+  type: UPLOADING_SYMBOL_ACTION,
+  isLoading
+})
+
+export const addSymbolAction = (url: string): AnyAction => ({
+  type: ADD_SYMBOL_ACTION,
+  url
+})
+
+export const hideSymbol = (url: string, id: string): AnyAction => ({
+  type: HIDE_SYMBOL_ACTION,
+  url,
+  id
 })
