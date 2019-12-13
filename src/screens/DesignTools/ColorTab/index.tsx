@@ -8,7 +8,6 @@ import indexOf from 'lodash/indexOf'
 import Button from 'antd/lib/button'
 import { getFileExtension } from '../../../utils/utilsFiles'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
-import ColorList from '../ColorList'
 
 import messages from './messages'
 import { COLORS, STITCHING_COLORS } from './constants'
@@ -22,6 +21,7 @@ import {
   DraggerContainer
 } from './styledComponents'
 import { Message, Color, UploadFile } from '../../../types/common'
+import ColorList from '../../../components/DesignCenterCustomize/ColorList'
 
 interface Props {
   colorsList: any
@@ -53,6 +53,7 @@ class ColorTab extends React.PureComponent<Props> {
         </Top>
         <ColorList
           stitching={false}
+          wide={true}
           {...{ colors, formatMessage, colorsList }}
         />
         <DraggerContainer>
@@ -77,6 +78,7 @@ class ColorTab extends React.PureComponent<Props> {
         </Top>
         <ColorList
           stitching={true}
+          wide={true}
           colors={stitchingColors}
           {...{ colorsList, formatMessage }}
         />

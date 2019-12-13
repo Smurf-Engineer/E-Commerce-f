@@ -13,14 +13,8 @@ import Icon from 'antd/lib/icon'
 import { compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import WithError from '../../../components/WithError'
-import { CanvasElements } from '../../../screens/DesignCenter/constants'
-import Symbol from '../ClipArt'
-import {
-  QueryProps,
-  ClipArt,
-  CanvasElement,
-  MessagePayload
-} from '../../../types/common'
+import Symbol from '../../../components/DesignCenterCustomize/ClipArt'
+import { QueryProps, ClipArt, UploadFile } from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
 import backIcon from '../../../assets/leftarrow.svg'
@@ -52,10 +46,10 @@ interface Props {
   searchClipParam: string
   symbols: ClipArt[]
   hiddenSymbols: { [id: string]: boolean }
-  hideSymbol: (id: string) => void
+  hideSymbol: (url: string, id: string) => void
   formatMessage: (messageDescriptor: any) => string
   setSearchClipParamAction: (searchParam: string) => void
-  onUploadFile: (file: any) => void
+  onUploadFile: (file: UploadFile) => void
 }
 
 class SymbolTab extends React.PureComponent<Props, {}> {
@@ -89,20 +83,16 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         ({ id, url, hidden }: ClipArt) =>
           !(hiddenSymbols[id] || hidden) && (
             <Col key={id}>
-              <Symbol {...{ url, id }} onClickApply={hideSymbol} />
+              <Symbol
+                {...{ url, id }}
+                remove={true}
+                onClickApply={hideSymbol}
+              />
             </Col>
           )
       )
     ) : (
       <NotFound>{formatMessage(messages.notFoundSymbol)}</NotFound>
-    )
-
-    const symbolsList = !loading ? (
-      <RowList>{artList}</RowList>
-    ) : (
-      <Loading>
-        <Spin />
-      </Loading>
     )
 
     return (
@@ -120,7 +110,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
             <Input
               onChange={this.handleOnUpdateText}
               placeholder={formatMessage(messages.searchInputPlaceholder)}
-              addonAfter={<Button onClick={() => {}}>Search</Button>}
+              addonAfter={<Button>{formatMessage(messages.search)}</Button>}
             />
           </InputWrapper>
           <DraggerContainer>
@@ -138,7 +128,15 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               </Button>
             </DraggerWithLoading>
           </DraggerContainer>
-          <List>{symbolsList}</List>
+          <List>
+            {!loading ? (
+              <RowList>{artList}</RowList>
+            ) : (
+              <Loading>
+                <Spin />
+              </Loading>
+            )}
+          </List>
         </>
       </Container>
     )
@@ -155,7 +153,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
   changePage = (page: number, option: number) => () =>
     this.setState({ page, option })
 
-  beforeUpload = (file: any) => {
+  beforeUpload = (file: UploadFile) => {
     const { formatMessage, onUploadFile } = this.props
     if (file) {
       const { size, name } = file

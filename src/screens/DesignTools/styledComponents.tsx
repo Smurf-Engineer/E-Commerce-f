@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import { GRAY_LIGHT, WHITE, GRAY_DARK, GRAY_STRONG } from '../../theme/colors'
 
+interface LoadProps {
+  active: boolean
+}
+
 export const Container = styled.div`
   background-color: ${WHITE};
   width: 100%;
@@ -26,10 +30,6 @@ export const Title = styled.p`
 `
 
 export const BackIcon = styled.img`
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
   transform: rotate(180deg);
   margin-right: 10px;
 `
@@ -66,8 +66,6 @@ export const SaveContainer = styled.div`
   flex-flow: column;
 `
 
-export const JakrooLogo = styled.img``
-
 export const SaveButton = styled.div`
   border: 1px solid ${GRAY_LIGHT};
   border-radius: 2px;
@@ -81,4 +79,17 @@ export const SaveButton = styled.div`
   right: 16px;
   top: 16px;
   cursor: pointer;
+`
+
+export const Loading = styled.div`
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${WHITE};
+  transition: all 0.25s ease;
+  opacity: ${({ active }: LoadProps) => (active ? 1 : 0)};
+  z-index: ${({ active }: LoadProps) => (active ? 2 : 0)};
 `

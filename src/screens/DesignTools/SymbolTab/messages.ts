@@ -9,21 +9,13 @@ export default defineMessages({
     id: 'components.SymbolTab.addSymbol',
     defaultMessage: 'Add Symbol'
   },
-  editSymbol: {
-    id: 'components.SymbolTab.editSymbol',
-    defaultMessage: 'Edit Symbol'
-  },
-  fill: {
-    id: 'components.SymbolTab.fill',
-    defaultMessage: 'Fill'
-  },
-  outline: {
-    id: 'components.SymbolTab.outline',
-    defaultMessage: 'Outline'
-  },
   searchInputPlaceholder: {
     id: 'components.SymbolTab.searchInputPlaceholder',
     defaultMessage: 'Search Symbol Library'
+  },
+  search: {
+    id: 'components.SymbolTab.search',
+    defaultMessage: 'Search'
   },
   notFoundSymbol: {
     id: 'components.SymbolTab.notFoundSymbol',

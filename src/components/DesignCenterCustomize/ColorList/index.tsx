@@ -24,9 +24,11 @@ interface Props {
   onSelectStitchingColor?: (color: StitchingColor) => void
   formatMessage: (messageDescriptor: any) => string
   height?: number
+  wide?: boolean
   stitching?: boolean
   stitchingColor?: StitchingColor
   disableTooltip?: boolean
+  colors?: Color[]
   colorsList: any
 }
 
@@ -36,7 +38,9 @@ const ColorList = ({
   formatMessage,
   height = 40,
   stitching = false,
+  wide,
   stitchingColor = { value: '', name: '' },
+  colors = [],
   colorsList
 }: Props) => {
   const setColor = (color: string, name: string, index: number) => () =>
@@ -45,18 +49,20 @@ const ColorList = ({
     // tslint:disable-next-line:curly
     if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
   }
-  let arrayColors: any = []
+  let arrayColors: Color[] = colors
 
-  try {
-    arrayColors = JSON.parse(
-      get(
-        colorsList,
-        !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
-        []
+  if (!colors.length && colorsList && !colorsList.loading) {
+    try {
+      arrayColors = JSON.parse(
+        get(
+          colorsList,
+          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+          []
+        )
       )
-    )
-  } catch (e) {
-    Message.error(e)
+    } catch (e) {
+      Message.error(e)
+    }
   }
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []
@@ -94,7 +100,7 @@ const ColorList = ({
   })
 
   return (
-    <Container {...{ height }}>
+    <Container {...{ wide, height }}>
       <Row>{regularColors.length && regularColors}</Row>
       {!stitching && !!fluorescentColors.length && (
         <div>

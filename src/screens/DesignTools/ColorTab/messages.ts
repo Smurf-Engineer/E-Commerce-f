@@ -9,18 +9,6 @@ export default defineMessages({
     id: 'components.designCenterCustomize.ColorTab.selectColor',
     defaultMessage: 'Colors'
   },
-  myPalette: {
-    id: 'components.designCenterCustomize.ColorTab.myPalette',
-    defaultMessage: 'My Palette'
-  },
-  myPalettes: {
-    id: 'components.designCenterCustomize.ColorTab.myPalettes',
-    defaultMessage: 'My Palettes'
-  },
-  color: {
-    id: 'components.designCenterCustomize.ColorTab.color',
-    defaultMessage: 'Color {name}'
-  },
   fileSizeError: {
     id: 'components.designCenterCustomize.fileSizeError',
     defaultMessage: 'Oh no! Max file size is limited to 20MB'

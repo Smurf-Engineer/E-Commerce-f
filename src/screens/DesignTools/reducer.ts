@@ -4,7 +4,6 @@
 import { fromJS } from 'immutable'
 import {
   ON_RESET_REDUCER,
-  Mode,
   CustomizeTabs,
   SET_COLORS,
   ON_TAB_CLICK_ACTION,
@@ -21,13 +20,8 @@ import {
 } from './constants'
 import { Reducer } from '../../types/common'
 
-export const NONE = -1
-
 export const initialState = fromJS({
-  colorBlock: NONE,
-  colorBlockHovered: NONE,
   colors: [],
-  styleColors: [],
   fonts: [],
   visibleFonts: [],
   searchText: '',
@@ -36,9 +30,6 @@ export const initialState = fromJS({
   uploadingStitchingColors: false,
   uploadingSymbol: false,
   searchClipParam: '',
-  styleMode: Mode.Style,
-  selectedElement: '',
-  text: '',
   selectedTab: CustomizeTabs.ColorTab,
   symbols: [],
   stitchingColors: [],

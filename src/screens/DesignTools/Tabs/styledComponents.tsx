@@ -12,10 +12,6 @@ export const Container = styled.div`
   z-index: 1;
 `
 
-export const Text = styled.div`
-  color: #fff;
-`
-
 export const NavTabs = styled(AntdTabs)`
   .ant-tabs-nav-scroll {
     text-align: center;

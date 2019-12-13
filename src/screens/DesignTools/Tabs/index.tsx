@@ -5,29 +5,13 @@ import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
 import ColorTab from '../ColorTab'
 import SymbolTab from '../SymbolTab'
-import SymbolTabCustomize from '../../../components/DesignCenterCustomize/SymbolTab'
-import TextTab from '../../../components/DesignCenterCustomize/TextTab'
-import Tab from '../Tab'
 import FontTab from '../FontTab'
 import colorIcon from '../../../assets/color_white.svg'
 import fontIcon from '../../../assets/text_white.svg'
 import clipartsIcon from '../../../assets/image_white.svg'
 import { Container, NavTabs } from './styledComponents'
-import {
-  DesignConfig,
-  UploadFile,
-  ModelConfig,
-  DesignObject,
-  ModelDesign,
-  Theme,
-  Color,
-  CanvasType,
-  TextFormat,
-  SelectedAsset,
-  CanvasElement,
-  ClipArt
-} from '../../../types/common'
-import { CanvasElements } from '../../DesignCenter/constants'
+import { UploadFile, Color, ClipArt } from '../../../types/common'
+import Tab from '../../../components/DesignCenterCustomize/Tab'
 
 const COLOR_TAB = 'COLOR_TAB'
 const FONT_TAB = 'FONT_TAB'
@@ -54,10 +38,10 @@ interface Props {
   changeFont: (font: string, active: boolean) => void
   formatMessage: (messageDescriptor: any) => string
   setGoogleFontsList: (data: any) => void
-  hideSymbol: (id: string) => void
+  hideSymbol: (url: string, id: string) => void
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
-  onUploadColorsList: (file: any, type: string) => void
+  onUploadColorsList: (file: UploadFile, type: string) => void
   onUploadFile: (file: UploadFile) => void
   setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void

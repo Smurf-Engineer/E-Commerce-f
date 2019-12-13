@@ -2,15 +2,11 @@ import message from 'antd/lib/message'
 import {
   setUploadingColorsAction,
   setColorList,
-  setUploadingAction,
-  setUploadingSuccess,
   addSymbolAction,
   setUploadingSymbolAction
 } from './actions'
 import config from '../../config/index'
 import { UploadFile } from '../../types/common'
-const modelFiles = ['obj', 'mtl', 'bumpMap', 'label', 'config', 'branding']
-const FLATLOCK = 'flatlock'
 
 export const onUploadColorsList = (file: UploadFile, type: string) => {
   return async (dispatch: any) => {
@@ -32,7 +28,7 @@ export const onUploadColorsList = (file: UploadFile, type: string) => {
   }
 }
 
-export const onUploadFile = (file: any) => {
+export const onUploadFile = (file: UploadFile) => {
   return async (dispatch: any) => {
     try {
       dispatch(setUploadingSymbolAction(true))
@@ -52,50 +48,6 @@ export const onUploadFile = (file: any) => {
       dispatch(addSymbolAction(data.fileUrl))
     } catch (e) {
       dispatch(setUploadingSymbolAction(false))
-      message.error(e.message)
-    }
-  }
-}
-
-export const uploadFilesAction = (files: any, areas: any, extras: any) => {
-  return async (dispatch: any) => {
-    try {
-      dispatch(setUploadingAction(true))
-
-      const user = JSON.parse(localStorage.getItem('user') || '')
-      const formData = new FormData()
-
-      modelFiles.forEach(file => formData.append(file, files[file]))
-      areas.forEach((file: any, index: number) =>
-        formData.append(`colorBlock${index + 1}`, file)
-      )
-
-      const extraFiles = Object.keys(extras)
-      if (extraFiles.length) {
-        extraFiles.forEach(name => {
-          if (name === FLATLOCK) {
-            formData.append(name, extras[name])
-          } else {
-            formData.append(`${name}White`, extras[name].white)
-            formData.append(`${name}Black`, extras[name].black)
-          }
-        })
-      }
-
-      const response = await fetch(`${config.graphqlUriBase}upload/model`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        body: formData
-      })
-
-      const modelConfig = await response.json()
-
-      dispatch(setUploadingSuccess(modelConfig))
-    } catch (e) {
-      dispatch(setUploadingAction(false))
       message.error(e.message)
     }
   }

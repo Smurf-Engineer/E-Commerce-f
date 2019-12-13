@@ -7,16 +7,21 @@ import { Container, Icon, Button } from './styledComponents'
 interface Props {
   selected: boolean
   url: string
+  remove?: boolean
   id: number
   onClickApply: (url: string, id: number) => void
 }
 
 class ClipArt extends React.Component<Props, {}> {
   render() {
-    const { selected, url } = this.props
+    const { selected, url, remove } = this.props
     return (
       <Container {...{ selected }}>
-        <Button onClick={this.handleOnApplyArt} shape="circle" icon="plus" />
+        <Button
+          onClick={this.handleOnApplyArt}
+          shape="circle"
+          icon={remove ? 'close' : 'plus'}
+        />
         <Icon src={url} />
       </Container>
     )

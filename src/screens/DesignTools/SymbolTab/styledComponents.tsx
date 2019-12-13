@@ -8,9 +8,7 @@ import {
   GRAY_DARK,
   GRAY_LIGHT,
   BLUE,
-  WHITE,
-  GRAY,
-  TRANSPARENT
+  WHITE
 } from '../../../theme/colors'
 
 export const Container = styled.div``
@@ -77,10 +75,6 @@ export const Button = styled.div`
   user-select: none;
 `
 
-interface ListProps {
-  height: number
-}
-
 export const List = styled.div`
   height: calc(100vh - 486px);
   overflow: auto;
@@ -107,18 +101,6 @@ export const Col = styled.li`
   width: calc(100% / 4);
 `
 
-type ColProps = {
-  selected: boolean
-}
-
-export const Icon = styled.img`
-  border: 1px solid
-    ${({ selected }: ColProps) => (selected ? GRAY : TRANSPARENT)};
-  cursor: pointer;
-  height: 48px;
-  width: 48px;
-`
-
 export const NotFound = styled.div`
   margin-top: 40px;
   text-align: center;
@@ -132,13 +114,6 @@ export const Loading = styled.div`
   justify-content: center;
   text-align: center;
   width: 100%;
-`
-
-export const LockContainer = styled.div`
-  cursor: pointer;
-  padding: 2px;
-  display: inline-block;
-  font-size: 20px;
 `
 
 export const ButtonContainer = styled.div`

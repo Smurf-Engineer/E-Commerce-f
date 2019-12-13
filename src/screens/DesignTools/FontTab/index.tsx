@@ -5,9 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FontsList from '../../../components/FontsList'
 import AntdTabs from 'antd/lib/tabs'
-
 import messages from './messages'
-
 import { Container, Top, TabsContainer } from './styledComponents'
 import { Message } from '../../../types/common'
 

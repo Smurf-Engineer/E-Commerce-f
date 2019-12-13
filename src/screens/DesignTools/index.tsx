@@ -3,15 +3,15 @@
  */
 import * as React from 'react'
 import Helmet from 'react-helmet'
-import { injectIntl, InjectedIntl } from 'react-intl'
 import message from 'antd/lib/message'
-import * as publishingToolActions from './actions'
 import * as designToolApi from './api'
 import * as thunkActions from './thunkActions'
+import * as publishingToolActions from './actions'
+import { injectIntl, InjectedIntl } from 'react-intl'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { getFonts, getColorsQuery, saveDesignConfigMutation } from './data'
 import messages from './messages'
 import { connect } from 'react-redux'
-import { compose, withApollo, graphql } from 'react-apollo'
 import {
   Container,
   Header,
@@ -23,24 +23,16 @@ import {
   TopMenu,
   Layout,
   SaveContainer,
-  SaveButton
+  SaveButton,
+  Loading
 } from './styledComponents'
 import { History } from 'history'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import Tabs from './Tabs'
-import {
-  ModelDesign,
-  SelectedAsset,
-  CanvasType,
-  TextFormat,
-  CanvasElement,
-  Color,
-  UploadFile,
-  ClipArt,
-  Font
-} from '../../types/common'
+import { Color, UploadFile, ClipArt, Font } from '../../types/common'
 import get from 'lodash/get'
+import Spin from 'antd/lib/spin'
 
 interface Props {
   intl: InjectedIntl
@@ -56,29 +48,31 @@ interface Props {
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
-  styleColors: string[]
-  installedFonts: any
+  installedFonts: Font[]
   selectedTab: number
   history: History
+  loading: boolean
   hiddenSymbols: { [id: string]: boolean }
   selectedFonts: { [id: string]: boolean }
+  onResetReducer: () => void
   saveDesignConfig: (variables: {}) => Promise<any>
   setUploadingAction: (isLoading: boolean) => void
   changeFont: (font: string, active: boolean) => void
-  setColorList: (listType: string, colors: string[]) => void
   setGoogleFontsList: (data: any) => void
-  formatMessage: (messageDescriptor: any) => string
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
   onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: UploadFile) => void
-  addSymbolAction: (url: string) => void
-  hideSymbol: (id: string) => void
+  hideSymbol: (url: string, id: string) => void
   setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void
   onTabClick: (selectedIndex: number) => void
 }
 export class DesignTools extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { onResetReducer } = this.props
+    onResetReducer()
+  }
   handleOnPressBack = () => {
     window.location.replace('/admin')
   }
@@ -95,14 +89,14 @@ export class DesignTools extends React.Component<Props, {}> {
       setUploadingAction
     } = this.props
     try {
+      setUploadingAction(true)
       const savedFonts: Font[] = get(fontsData, 'fonts', [])
-
       // Check if the added symbols by the user are not in the hidden list
-      const symbolsToAdd = symbols.reduce((arr: ClipArt[], symbol) => {
-        if (hiddenSymbols[symbol.id]) {
-          delete hiddenSymbols[symbol.id]
+      const symbolsToAdd = symbols.reduce((arr: String[], { id, url }) => {
+        if (hiddenSymbols[id]) {
+          delete hiddenSymbols[id]
         } else {
-          arr.push(symbol)
+          arr.push(url)
         }
         return arr
         // tslint:disable-next-line: align
@@ -110,33 +104,33 @@ export class DesignTools extends React.Component<Props, {}> {
 
       // Check and separate the fonts updates
       // Note: This is to have a separated list for the updates and then a list for the to-add
-      const fontsToUpdate = savedFonts.reduce((arr: Font[], font) => {
-        if (font.family in selectedFonts) {
-          font.active = selectedFonts[font.family]
-          arr.push(font)
-          delete selectedFonts[font.family]
+      const fontsToUpdate = savedFonts.reduce((arr: Font[], { id, family }) => {
+        if (family in selectedFonts) {
+          arr.push({
+            id,
+            family,
+            active: selectedFonts[family]
+          })
+          delete selectedFonts[family]
         }
         return arr
         // tslint:disable-next-line: align
       }, [])
 
-      // Create the to-add fonts list
-      const fontsToAdd = Object.keys(selectedFonts).map(
-        (key: string, id: number) => ({
-          active: selectedFonts[key],
-          family: key,
-          id
-        })
+      // Create the to-add fonts list only for those that are true
+      const fontsToAdd = Object.keys(selectedFonts).filter(
+        (key: string) => selectedFonts[key]
       )
 
       // Create the hidden symbols list
       const symbolsToHide = Object.keys(hiddenSymbols)
-
-      setUploadingAction(true)
+      const colorsObject = {
+        colors: colors.length ? JSON.stringify(colors) : '',
+        stitching: stitchingColors.length ? JSON.stringify(stitchingColors) : ''
+      }
       const response = await saveDesignConfig({
         variables: {
-          colors,
-          stitchingColors,
+          colors: colorsObject,
           symbolsToHide,
           symbolsToAdd,
           fontsToUpdate,
@@ -147,7 +141,7 @@ export class DesignTools extends React.Component<Props, {}> {
       history.push('/admin')
     } catch (error) {
       setUploadingAction(false)
-      message.error('DAYUUUM')
+      message.error(error.message)
     }
   }
   render() {
@@ -158,6 +152,7 @@ export class DesignTools extends React.Component<Props, {}> {
       setGoogleFontsList,
       fonts,
       fontsData,
+      loading,
       addFont,
       selectedFonts,
       changeFont,
@@ -195,6 +190,9 @@ export class DesignTools extends React.Component<Props, {}> {
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
         </TopMenu>
+        <Loading active={(colorsList && colorsList.loading) || loading}>
+          <Spin size="large" />
+        </Loading>
         <Layout>
           <Tabs
             {...{
