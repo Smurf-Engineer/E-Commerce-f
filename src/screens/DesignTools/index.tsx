@@ -247,9 +247,19 @@ const mapStateToProps = (state: any) => {
 const DesignToolsEnhance = compose(
   withApollo,
   injectIntl,
-  graphql(getColorsQuery, { name: 'colorsList' }),
+  graphql(getColorsQuery, {
+    options: () => ({
+      fetchPolicy: 'network-only'
+    }),
+    name: 'colorsList'
+  }),
+  graphql(getFonts, {
+    options: () => ({
+      fetchPolicy: 'network-only'
+    }),
+    name: 'fontsData'
+  }),
   graphql(saveDesignConfigMutation, { name: 'saveDesignConfig' }),
-  graphql(getFonts, { name: 'fontsData' }),
   connect(mapStateToProps, {
     ...publishingToolActions,
     ...designToolApi,

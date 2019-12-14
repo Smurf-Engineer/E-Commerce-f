@@ -37,6 +37,7 @@ export const initialState = fromJS({
   selectedFonts: {}
 })
 
+// TODO: Add the unit tests for each case
 const designToolsReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case ON_RESET_REDUCER:
