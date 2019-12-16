@@ -69,10 +69,12 @@ export class PublishingTool extends React.Component<Props, {}> {
     setThemeToEditAction(null)
   }
   handleOnDeleteTheme = (id: number) => {
+    const {
+      intl: { formatMessage }
+    } = this.props
     confirm({
-      title: 'Are you sure?',
-      content:
-        'If you remove this theme, all designs linked to it will be delete too.',
+      title: formatMessage(messages.deleteThemeTitle),
+      content: formatMessage(messages.deleteTheme),
       onOk: async () => {
         try {
           const { deleteTheme, productCode } = this.props

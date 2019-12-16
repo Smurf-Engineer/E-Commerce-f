@@ -20,5 +20,14 @@ export default defineMessages({
   designCustomization: {
     id: 'screens.PublishingTool.designCustomization',
     defaultMessage: 'Design Customization'
+  },
+  deleteThemeTitle: {
+    id: 'screens.PublishingTool.deleteThemeTitle',
+    defaultMessage: 'Are you sure?'
+  },
+  deleteTheme: {
+    id: 'screens.PublishingTool.deleteTheme',
+    defaultMessage:
+      'If you remove this theme, all designs linked to it will be delete too.'
   }
 })
