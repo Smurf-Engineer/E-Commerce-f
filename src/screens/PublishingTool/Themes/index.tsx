@@ -108,7 +108,6 @@ export class Themes extends React.Component<Props, {}> {
         id,
         item_order: itemOrder
       }))
-
       await updateThemesOrder({
         variables: { themes: themesToSend },
         update: (store: any) => {
