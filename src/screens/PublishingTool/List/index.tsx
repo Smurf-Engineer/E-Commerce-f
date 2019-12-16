@@ -17,7 +17,6 @@ import {
 } from './styledComponents'
 import { DragDropContext } from 'react-dnd'
 import {
-  UploadFile,
   DesignItem as DesignItemType,
   Message,
   Theme
@@ -25,7 +24,6 @@ import {
 import HTML5Backend from 'react-dnd-html5-backend'
 
 interface Props {
-  themeImage?: UploadFile[]
   subtitle: string
   buttonLabel: string
   items: DesignItemType[]

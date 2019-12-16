@@ -128,12 +128,8 @@ export class Themes extends React.Component<Props, {}> {
               subtitle={formatMessage(messages.selectTheme)}
               buttonLabel={formatMessage(messages.addTheme)}
               items={themeItems}
-              itemName={'Name'}
               section={'theme'}
               {...{
-                onSelectImage: null,
-                themeImage: '',
-                onDeleteImage: null,
                 formatMessage
               }}
             />

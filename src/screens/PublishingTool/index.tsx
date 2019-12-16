@@ -158,6 +158,7 @@ export class PublishingTool extends React.Component<Props, {}> {
             onChangeTheme={onChangeThemeAction}
             onEditTheme={setThemeToEditAction}
             onDeleteTheme={this.handleOnDeleteTheme}
+            onDropRow={a => console.log('aa ', a)}
           />
         </Layout>
         <ThemeModal
