@@ -10,6 +10,7 @@ import Item from './Item'
 import { TeamStoreAdminType, Currency, Message } from '../../../types/common'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
+import Modal from 'antd/lib/modal'
 import {
   Container,
   ViewContainer,
@@ -24,9 +25,9 @@ import {
   StyledSwitch,
   NameLink,
   Table,
-  EditButton
+  EditButton,
+  DeleteButton
 } from './styledComponents'
-
 interface Props {
   history: any
   from: string
@@ -36,6 +37,7 @@ interface Props {
   currencies: Currency[]
   loading: boolean
   id: number
+  handleDeleteStore: () => void
   resetDataAction: () => void
   formatMessage: (messageDescriptor: Message) => string
   onReturn: (id: number) => void
@@ -44,7 +46,7 @@ interface Props {
   handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
   onSetFeatured: (id: number) => void
 }
-
+const confirm = Modal.confirm
 const teamStoreHeaderInformation = [
   'managerName',
   'email',
@@ -63,6 +65,14 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
     const { getTeamStoreData, match } = this.props
     const teamStoreId = get(match, 'params.id', '')
     getTeamStoreData(teamStoreId)
+  }
+  handleDeleteStore = () => {
+    const { handleDeleteStore, formatMessage } = this.props
+    confirm({
+      title: formatMessage(messages.deleteQuestion),
+      content: formatMessage(messages.deleteDescription),
+      onOk: handleDeleteStore
+    })
   }
   handleEditStore = () => {
     const {
@@ -174,11 +184,14 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         <ScreenContent>
           <ScreenTitle>
             <NameLink href={`/store-front?storeId=${teamStore.shortId}`}>
-              {`${teamStore.name} ${formatMessage(messages.title)}`}{' '}
+              {`${teamStore.name} ${formatMessage(messages.title)}`}
             </NameLink>
             <EditButton onClick={this.handleEditStore}>
               {formatMessage(messages.edit)}
             </EditButton>
+            <DeleteButton onClick={this.handleDeleteStore}>
+              {formatMessage(messages.delete)}
+            </DeleteButton>
           </ScreenTitle>
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
           <Table>

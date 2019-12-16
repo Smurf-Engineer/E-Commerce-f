@@ -30,6 +30,7 @@ export const ViewContainer = styled.div`
 `
 
 export const NameLink = styled.a`
+  flex: 1;
   color: ${FACEBOOKBLUE};
   text-decoration: underline;
 `
@@ -50,7 +51,7 @@ export const ScreenContent = styled.div`
 `
 
 export const EditButton = styled.div`
-  padding: 4px 16px;
+  padding: 4px 20px;
   font-size: 14px;
   border: 2px solid ${RED};
   color: ${RED};
@@ -98,6 +99,18 @@ export const Text = styled.p`
 
 export const StyledSwitch = styled(Switch)`
   max-width: 44px;
+`
+
+export const DeleteButton = styled.div`
+  margin-left: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 14px;
+  color: ${RED};
+  font-weight: normal;
+  cursor: pointer;
 `
 
 export const Table = styled.table`
