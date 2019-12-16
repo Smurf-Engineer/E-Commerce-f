@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const getProductFromCode = gql`
   query GetProductFromCode($code: String!) {
@@ -58,3 +59,22 @@ export const getProductFromCode = gql`
     }
   }
 `
+
+export const updateThemesOrderMutation = graphql(
+  gql`
+    mutation updateThemes($themes: [InputTheme]) {
+      updateThemesOrder(themes: $themes) {
+        fullCount
+        themes {
+          id
+          name
+          image
+          itemOrder: item_order
+        }
+      }
+    }
+  `,
+  {
+    name: 'updateThemesOrder'
+  }
+)

@@ -120,11 +120,6 @@ class List extends React.PureComponent<Props> {
     const id = Number(value)
     onSelectItem(id)
   }
-
-  handleOnDropRow = (dragIndex: number, dropIndex: number) => {
-    const { onDropRow } = this.props
-    onDropRow(dragIndex, dropIndex)
-  }
   handleOnAddNewTheme = () => {
     const { onAddNewTheme } = this.props
     const theme = { id: -1, name: '', image: '', itemOrder: 0, styles: [] }

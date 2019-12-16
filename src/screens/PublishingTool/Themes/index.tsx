@@ -5,8 +5,10 @@ import * as React from 'react'
 import messages from './messages'
 import get from 'lodash/get'
 import orderBy from 'lodash/orderBy'
-import { getProductFromCode } from './data'
+import cloneDeep from 'lodash/cloneDeep'
+import { getProductFromCode, updateThemesOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
+import message from 'antd/lib/message'
 import { compose, withApollo, graphql } from 'react-apollo'
 import {
   Container,
@@ -37,6 +39,7 @@ interface Props {
   onChangeTheme: (id: number) => void
   onEditTheme: (theme: Theme | null) => void
   onDeleteTheme: (id: number) => void
+  updateThemesOrder: (variables: {}) => Promise<any>
 }
 
 interface ProductData extends QueryProps {
@@ -77,6 +80,52 @@ export class Themes extends React.Component<Props, {}> {
   }
   handleAddNewModel = () => {
     // TODO: SEND TO MODEL PAGE
+  }
+  changeThemesPosition = async (dragIndex: number, dropIndex: number) => {
+    try {
+      const { updateThemesOrder, productData, productCode } = this.props
+      const themes = orderBy(
+        get(cloneDeep(productData), 'product.themes', []),
+        'itemOrder',
+        'asc'
+      )
+
+      themes.forEach(({ itemOrder }, index) => {
+        if (!itemOrder && index === 0) {
+          themes[index].itemOrder = 1
+        }
+        if (
+          themes[index - 1] &&
+          themes[index - 1].itemOrder !== itemOrder - 1
+        ) {
+          themes[index].itemOrder = themes[index - 1].itemOrder + 1
+        }
+      })
+      const temporalTheme = cloneDeep(themes[dragIndex])
+      themes[dragIndex].itemOrder = themes[dropIndex].itemOrder
+      themes[dropIndex].itemOrder = temporalTheme.itemOrder
+      const themesToSend = themes.map(({ id, itemOrder }) => ({
+        id,
+        item_order: itemOrder
+      }))
+
+      await updateThemesOrder({
+        variables: { themes: themesToSend },
+        update: (store: any) => {
+          const storeData = store.readQuery({
+            query: getProductFromCode,
+            variables: { code: productCode }
+          })
+          storeData.product.themes = themes
+          store.writeQuery({
+            query: getProductFromCode,
+            data: storeData
+          })
+        }
+      })
+    } catch (e) {
+      message.error(e.message)
+    }
   }
   render() {
     const { code } = this.state
@@ -129,6 +178,7 @@ export class Themes extends React.Component<Props, {}> {
               buttonLabel={formatMessage(messages.addTheme)}
               items={themeItems}
               section={'theme'}
+              onDropRow={this.changeThemesPosition}
               {...{
                 formatMessage
               }}
@@ -166,7 +216,8 @@ const ThemesEnhance = compose(
       }
     },
     name: 'productData'
-  })
+  }),
+  updateThemesOrderMutation
 )(Themes)
 
 export default ThemesEnhance
