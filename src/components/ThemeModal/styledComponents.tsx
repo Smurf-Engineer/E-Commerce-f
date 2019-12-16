@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 29/11/18.
  */
 import styled from 'styled-components'
+import { BLUE, GRAY_LIGHT } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ export const Image = styled.img`
 `
 
 export const Info = styled.div`
-  padding-left: 24px;
+  margin-right: 24px;
 `
 
 export const DraggerContainer = styled.div`
@@ -26,3 +27,13 @@ export const DraggerContainer = styled.div`
     padding: 8px;
   }
 `
+
+export const SaveButtonStyle = {
+  backgroundColor: `${BLUE}`,
+  borderColor: `${BLUE}`
+}
+
+export const DisableSaveStyle = {
+  backgroundColor: `${GRAY_LIGHT}`,
+  borderColor: `${GRAY_LIGHT}`
+}

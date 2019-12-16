@@ -1,10 +1,12 @@
 /**
- * Theme Component - Created by eduardoquintero on 06/12/19.
+ * Themes Component - Created by eduardoquintero on 06/12/19.
  */
 import * as React from 'react'
 import messages from './messages'
 import get from 'lodash/get'
-import { GetProductsByCodeQuery } from './data'
+import orderBy from 'lodash/orderBy'
+import { getProductFromCode } from './data'
+import Icon from 'antd/lib/icon'
 import { compose, withApollo, graphql } from 'react-apollo'
 import {
   Container,
@@ -13,9 +15,17 @@ import {
   Header,
   Title,
   Content,
-  Label
+  Label,
+  Button,
+  MissingModelContainer
 } from './styledComponents'
-import { Message, QueryProps, Product, DesignItem } from '../../../types/common'
+import {
+  Message,
+  QueryProps,
+  Product,
+  DesignItem,
+  Theme
+} from '../../../types/common'
 import List from '../List'
 
 interface Props {
@@ -25,13 +35,15 @@ interface Props {
   formatMessage: (messageDescriptor: Message) => string
   setProductCode: (value: string) => void
   onChangeTheme: (id: number) => void
+  onEditTheme: (theme: Theme | null) => void
+  onDeleteTheme: (id: number) => void
 }
 
 interface ProductData extends QueryProps {
   product: Product
 }
 
-export class Theme extends React.Component<Props, {}> {
+export class Themes extends React.Component<Props, {}> {
   state = {
     code: ''
   }
@@ -48,52 +60,44 @@ export class Theme extends React.Component<Props, {}> {
       setProductCode(code)
     }
   }
+  handleOnEditTheme = (index: number) => {
+    const { productData, onEditTheme } = this.props
+    if (productData) {
+      const {
+        product: { themes = [] }
+      } = productData
+      const orderedThemes = orderBy(themes, 'itemOrder', 'asc')
+      const theme = orderedThemes[index]
+      onEditTheme(theme)
+    }
+  }
+  handleAddNewTheme = (theme: Theme) => {
+    const { onEditTheme } = this.props
+    onEditTheme(theme)
+  }
+  handleAddNewModel = () => {
+    // TODO: SEND TO MODEL PAGE
+  }
   render() {
     const { code } = this.state
     const {
       formatMessage,
       productData,
       onChangeTheme,
-      selectedTheme
+      selectedTheme,
+      onDeleteTheme
     } = this.props
 
     const product = get(productData, 'product', false)
 
     let themeItems: DesignItem[] = []
-    // let styleItems: DesignItem[] = []
-    // let productHasAllFiles = false
     if (!!product) {
-      /* const { themes = [] } = product
-      const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
-      const currentTheme = themes[themeIndex] || {}
-      const themeStyles = currentTheme.styles || []
-      const { obj, mtl, label, bumpMap } = product
-      productHasAllFiles = !!obj && !!mtl && !!label && !!bumpMap
+      const { themes = [] } = product
       themeItems = orderBy(
         themes.map(({ id, name, itemOrder }) => ({ id, name, itemOrder })),
         'itemOrder',
-        'ASC'
+        'asc'
       )
-      styleItems = orderBy(
-        themeStyles.map(({ id, name, itemOrder }) => ({
-          id,
-          name,
-          itemOrder
-        })),
-        'itemOrder',
-        'ASC'
-      )
-      styleItems.map(({ itemOrder }, index) => {
-        if (!itemOrder) {
-          styleItems[index].itemOrder = 1
-        }
-        if (
-          styleItems[index - 1] &&
-          styleItems[index - 1].itemOrder !== itemOrder - 1
-        ) {
-          styleItems[index].itemOrder = styleItems[index - 1].itemOrder + 1
-        }
-      }) */
     }
     return (
       <Container>
@@ -112,21 +116,19 @@ export class Theme extends React.Component<Props, {}> {
               disabled={productData && productData.loading}
             />
           </InputContainer>
-          {!!product && (
+          {!!product && product.obj && (
             <List
               editable={true}
               onEditItem={this.handleOnEditTheme}
               withImageInput={true}
               selectedItem={selectedTheme}
               onSelectItem={onChangeTheme}
-              onDeleteItem={this.onDeleteTheme}
-              title="SELECT THEME"
-              subtitle="Select a theme"
+              onDeleteItem={onDeleteTheme}
+              onAddNewTheme={this.handleAddNewTheme}
+              subtitle={formatMessage(messages.selectTheme)}
               buttonLabel={formatMessage(messages.addTheme)}
               items={themeItems}
               itemName={'Name'}
-              onUpdateName={this.onUpdateThemeName}
-              onDropRow={this.changeThemesPosition}
               section={'theme'}
               {...{
                 onSelectImage: null,
@@ -135,6 +137,15 @@ export class Theme extends React.Component<Props, {}> {
                 formatMessage
               }}
             />
+          )}
+          {product && !product.obj && (
+            <MissingModelContainer>
+              <p>{formatMessage(messages.missingModel)}</p>
+              <Button onClick={this.handleAddNewModel}>
+                <Icon type="plus" />
+                {formatMessage(messages.addModel)}
+              </Button>
+            </MissingModelContainer>
           )}
         </Content>
       </Container>
@@ -146,21 +157,20 @@ type OwnProps = {
   productCode?: string
 }
 
-const ThemeEnhance = compose(
+const ThemesEnhance = compose(
   withApollo,
-  graphql<ProductData>(GetProductsByCodeQuery, {
+  graphql<ProductData>(getProductFromCode, {
     options: (ownprops: OwnProps) => {
       const { productCode } = ownprops
       return {
         variables: {
           code: productCode
         },
-        skip: !productCode,
-        fetchPolicy: 'no-cache'
+        skip: !productCode
       }
     },
     name: 'productData'
   })
-)(Theme)
+)(Themes)
 
-export default ThemeEnhance
+export default ThemesEnhance

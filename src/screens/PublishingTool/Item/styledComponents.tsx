@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import radioButton from 'antd/lib/radio/radioButton'
-import { GRAY_HEADER, GRAY_LIGHTEST, GRAY } from '../../../theme/colors'
+import { GRAY_HEADER, GRAY_LIGHTEST, GRAY, RED } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -42,8 +42,9 @@ export const DeleteButton = styled.div`
   cursor: pointer;
   color: #5f6062;
   font-size: 14px;
-  letter-spacing: 0.18px;
-  line-height: 19px;
+  color: ${RED};
+  display: flex;
+  align-items: center;
 `
 export const Buttons = styled.div`
   display: flex;
@@ -51,7 +52,7 @@ export const Buttons = styled.div`
 `
 
 export const EditButton = styled(Button)`
-  margin-left: 8px;
+  margin-right: 8px;
 `
 
 export const DragIcon = styled(Icon)`

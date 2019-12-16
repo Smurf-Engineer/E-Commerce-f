@@ -3,11 +3,13 @@
  */
 import styled from 'styled-components'
 import AntdInput from 'antd/lib/input'
+import AntdButton from 'antd/lib/button'
 import {
   BLUE,
   BLUE_BRIGHT,
   GRAY_LIGHTEST,
-  GRAY_DARK
+  GRAY_DARK,
+  WHITE
 } from '../../../theme/colors'
 
 const { Search } = AntdInput
@@ -65,4 +67,21 @@ export const Title = styled.p`
 export const Label = styled.p`
   margin-top: 20px;
   margin-bottom: 10px;
+`
+
+export const Button = styled(AntdButton)`
+  height: 50px;
+  border: 2px solid #e61737;
+  border-radius: 2px;
+  background-color: ${WHITE};
+  color: #e61737;
+  margin-right: 22px;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  text-align: center;
+`
+
+export const MissingModelContainer = styled.div`
+  text-align: center;
 `

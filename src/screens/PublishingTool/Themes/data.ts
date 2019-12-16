@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const GetProductsByCodeQuery = gql`
+export const getProductFromCode = gql`
   query GetProductFromCode($code: String!) {
     product: productFromCode(code: $code) {
       id

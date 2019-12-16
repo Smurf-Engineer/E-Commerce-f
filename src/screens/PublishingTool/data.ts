@@ -27,3 +27,11 @@ export const GetProductsByIdQuery = gql`
     }
   }
 `
+
+export const deleteThemeMutation = gql`
+  mutation deleteTheme($id: Int!) {
+    deleteTheme(themeId: $id) {
+      message
+    }
+  }
+`

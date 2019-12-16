@@ -2,7 +2,6 @@
  * Item - Created by eduardoquintero on 09/12/19.
  */
 import * as React from 'react'
-import Button from 'antd/lib/button'
 import RadioButton from 'antd/lib/radio/radio'
 import { compose } from 'react-apollo'
 import {
@@ -12,14 +11,17 @@ import {
   ConnectDragSource
 } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
+import messages from './messages'
 import {
   Container,
   Name,
   Row,
   Buttons,
   EditButton,
-  DragIcon
+  DragIcon,
+  DeleteButton
 } from './styledComponents'
+import { Message } from '../../../types/common'
 
 interface Props {
   id: number
@@ -35,6 +37,7 @@ interface Props {
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
   onDropRow: (dragIndex: number, dropIndex: number) => void
+  formatMessage: (messageDescriptor: Message) => string
 }
 
 const rowSource = {
@@ -93,7 +96,8 @@ class DesignItem extends React.PureComponent<Props> {
       editable = false,
       connectDragSource,
       connectDropTarget,
-      isOver
+      isOver,
+      formatMessage
     } = this.props
     const renderView = (
       <Container className={isOver ? 'over' : ''}>
@@ -104,14 +108,14 @@ class DesignItem extends React.PureComponent<Props> {
           <Name>{name}</Name>
         </Row>
         <Buttons>
-          <Button type="ghost" onClick={this.handleOnDelete}>
-            Delete
-          </Button>
           {editable && (
-            <EditButton type="primary" onClick={this.handleOnEdit}>
-              Edit
+            <EditButton type="ghost" onClick={this.handleOnEdit}>
+              {formatMessage(messages.edit)}
             </EditButton>
           )}
+          <DeleteButton onClick={this.handleOnDelete}>
+            {formatMessage(messages.delete)}
+          </DeleteButton>
         </Buttons>
       </Container>
     )
