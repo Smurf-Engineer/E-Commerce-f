@@ -22,6 +22,7 @@ import {
   Header,
   Text,
   StyledSwitch,
+  NameLink,
   Table,
   EditButton
 } from './styledComponents'
@@ -172,7 +173,9 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         </ViewContainer>
         <ScreenContent>
           <ScreenTitle>
-            {`${teamStore.name} ${formatMessage(messages.title)}`}
+            <NameLink href={`/store-front?storeId=${teamStore.shortId}`}>
+              {`${teamStore.name} ${formatMessage(messages.title)}`}{' '}
+            </NameLink>
             <EditButton onClick={this.handleEditStore}>
               {formatMessage(messages.edit)}
             </EditButton>

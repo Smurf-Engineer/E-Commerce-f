@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
-import { GRAY_DARK, RED, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, RED, WHITE, FACEBOOKBLUE } from '../../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -28,6 +28,12 @@ export const ViewContainer = styled.div`
     color: ${RED};
   }
 `
+
+export const NameLink = styled.a`
+  color: ${FACEBOOKBLUE};
+  text-decoration: underline;
+`
+
 export const ScreenContent = styled.div`
   display: flex;
   justify-content: space-between;
