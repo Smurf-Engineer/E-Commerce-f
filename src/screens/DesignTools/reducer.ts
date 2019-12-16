@@ -56,10 +56,9 @@ const designToolsReducer: Reducer<any> = (state = initialState, action) => {
     case SET_UPLOADING_ACTION:
       return state.set('loading', action.isLoading)
     case ADD_FONT_ACTION: {
-      return state.set(
-        'visibleFonts',
-        state.get('visibleFonts').push({ font: action.font })
-      )
+      const visibleFonts = state.get('visibleFonts')
+      visibleFonts.push({ font: action.font })
+      return state.set('visibleFonts', visibleFonts)
     }
     case ADD_SYMBOL_ACTION: {
       const symbols = state.get('symbols')
