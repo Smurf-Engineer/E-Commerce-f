@@ -11,7 +11,12 @@ import {
   changeFont,
   addFont,
   addSymbolAction,
-  hideSymbol
+  hideSymbol,
+  setUploadingSymbolAction,
+  onTabClick,
+  setSearchClipParamAction,
+  setColorList,
+  setUploadingColorsAction
 } from './actions'
 import {
   ADD_FONT_ACTION,
@@ -21,7 +26,13 @@ import {
   SET_UPLOADING_ACTION,
   UPDATE_SEARCH_TEXT_ACTION,
   ADD_SYMBOL_ACTION,
-  HIDE_SYMBOL_ACTION
+  HIDE_SYMBOL_ACTION,
+  UPLOADING_SYMBOL_ACTION,
+  ON_TAB_CLICK_ACTION,
+  CustomizeTabs,
+  SET_SEARCH_CLIPARTPARAM,
+  SET_COLORS,
+  SET_UPLOADING_COLORS_ACTION
 } from './constants'
 
 describe(' ProductCatalog Screen', () => {
@@ -34,9 +45,10 @@ describe(' ProductCatalog Screen', () => {
     })
     it('setGoogleFontsListAction', () => {
       const type = SET_GOOGLE_FONTS
-      const customValue = [{ family: 'Test' }]
-      expect(setGoogleFontsListAction(customValue)).toEqual({
-        type
+      const data = { items: [{ family: 'Test' }] }
+      expect(setGoogleFontsListAction(data)).toEqual({
+        type,
+        data
       })
     })
     it('changeFont', () => {
@@ -51,10 +63,10 @@ describe(' ProductCatalog Screen', () => {
     })
     it('onUpdateSearchText', () => {
       const type = UPDATE_SEARCH_TEXT_ACTION
-      const search = 'Test'
-      expect(onUpdateSearchText(search)).toEqual({
+      const text = 'Test'
+      expect(onUpdateSearchText(text)).toEqual({
         type,
-        search
+        text
       })
     })
     it('setUploadingAction', () => {
@@ -91,6 +103,55 @@ describe(' ProductCatalog Screen', () => {
         id
       })
     })
+    it('setUploadingSymbolAction', () => {
+      const type = UPLOADING_SYMBOL_ACTION
+      const isLoading = true
+      expect(setUploadingSymbolAction(isLoading)).toEqual({
+        type,
+        isLoading
+      })
+    })
+    it('onTabClick', () => {
+      const type = ON_TAB_CLICK_ACTION
+      const selectedIndex = CustomizeTabs.ColorTab
+      expect(onTabClick(selectedIndex)).toEqual({
+        type,
+        selectedIndex
+      })
+    })
+    it('setSearchClipParamAction', () => {
+      const type = SET_SEARCH_CLIPARTPARAM
+      const param = 'Test'
+      expect(setSearchClipParamAction(param)).toEqual({
+        type,
+        param
+      })
+    })
+    it('setColorList', () => {
+      const type = SET_COLORS
+      const listType = 'colors'
+      const colors = [
+        {
+          name: 'Test',
+          value: 'Color'
+        }
+      ]
+      expect(setColorList(listType, colors)).toEqual({
+        type,
+        listType,
+        colors
+      })
+    })
+    it('setUploadingColorsAction', () => {
+      const type = SET_UPLOADING_COLORS_ACTION
+      const listType = 'colors'
+      const isUploading = true
+      expect(setUploadingColorsAction(listType, isUploading)).toEqual({
+        type,
+        listType,
+        isUploading
+      })
+    })
   })
 
   describe('Reducer', () => {
@@ -117,13 +178,13 @@ describe(' ProductCatalog Screen', () => {
           expect(customInitialValue.size).toBe(0)
         })
         it('Handles custom values in fonts', () => {
-          const customValue = [{ family: 'Test' }]
+          const customValue = { items: [{ family: 'Test' }] }
           const designState = designToolsReducer(
             initialState,
             setGoogleFontsListAction(customValue)
           )
-          const customFontsValue = designState.getIn(['fonts', 0])
-          expect(customFontsValue).toBe(customValue[0].family)
+          const customFontsValue = designState.get('fonts')
+          expect(customFontsValue.size).toBe(1)
         })
       })
     })
@@ -228,7 +289,7 @@ describe(' ProductCatalog Screen', () => {
           const customValue = 'Test'
           const designState = designToolsReducer(
             initialState,
-            addFont(customValue)
+            addSymbolAction(customValue)
           )
           const customSymbolsValue = designState.get('symbols')
           expect(customSymbolsValue.size).toBe(1)
@@ -254,6 +315,169 @@ describe(' ProductCatalog Screen', () => {
           )
           const customSymbolsValue = designState.get('hiddenSymbols')
           expect(customSymbolsValue.size).toBe(1)
+        })
+      })
+    })
+    describe('UPLOADING_SYMBOL_ACTION', () => {
+      describe('Update symbol loading action', () => {
+        it('Handles undefined value in uploadingSymbol', () => {
+          const customInitialValue = initialState.get('uploadingSymbol')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in uploadingSymbol', () => {
+          const customInitialValue = initialState.get('uploadingSymbol')
+          expect(customInitialValue).toBeFalsy()
+        })
+        it('Handles custom values in uploadingSymbol', () => {
+          const isLoading = true
+          const designState = designToolsReducer(
+            initialState,
+            setUploadingSymbolAction(isLoading)
+          )
+          const customSymbolLoading = designState.get('uploadingSymbol')
+          expect(customSymbolLoading).toBeTruthy()
+        })
+      })
+    })
+    describe('ON_TAB_CLICK_ACTION', () => {
+      describe('Update tab index action', () => {
+        it('Handles undefined value in selectedTab', () => {
+          const customInitialValue = initialState.get('selectedTab')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in selectedTab', () => {
+          const customInitialValue = initialState.get('selectedTab')
+          expect(customInitialValue).toBe(CustomizeTabs.ColorTab)
+        })
+        it('Handles custom values in selectedTab', () => {
+          const selectedIndex = CustomizeTabs.SymbolTab
+          const designState = designToolsReducer(
+            initialState,
+            onTabClick(selectedIndex)
+          )
+          const customTabIndex = designState.get('selectedTab')
+          expect(customTabIndex).toBe(CustomizeTabs.SymbolTab)
+        })
+      })
+    })
+    describe('SET_SEARCH_CLIPARTPARAM', () => {
+      describe('Update search clip param action', () => {
+        it('Handles undefined value in searchClipParam', () => {
+          const customInitialValue = initialState.get('searchClipParam')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in searchClipParam', () => {
+          const customInitialValue = initialState.get('searchClipParam')
+          expect(customInitialValue).toBe('')
+        })
+        it('Handles custom values in searchClipParam', () => {
+          const searchParam = 'Test'
+          const designState = designToolsReducer(
+            initialState,
+            setSearchClipParamAction(searchParam)
+          )
+          const customSearchParam = designState.get('searchClipParam')
+          expect(customSearchParam).toBe(searchParam)
+        })
+      })
+    })
+    describe('SET_COLORS', () => {
+      describe('Update colors list action', () => {
+        it('Handles undefined value in colors', () => {
+          const customInitialValue = initialState.get('colors')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in colors', () => {
+          const customInitialValue = initialState.get('colors')
+          expect(customInitialValue.size).toBe(0)
+        })
+        it('Handles custom values in colors', () => {
+          const listType = 'colors'
+          const colors = [
+            {
+              name: 'Test',
+              value: 'Color'
+            }
+          ]
+          const designState = designToolsReducer(
+            initialState,
+            setColorList(listType, colors)
+          )
+          const customColorsValue = designState.get('colors')
+          expect(customColorsValue.size).toBe(1)
+        })
+      })
+      describe('Update stitchingColors list action', () => {
+        it('Handles undefined value in stitchingColors', () => {
+          const customInitialValue = initialState.get('stitchingColors')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in stitchingColors', () => {
+          const customInitialValue = initialState.get('stitchingColors')
+          expect(customInitialValue.size).toBe(0)
+        })
+        it('Handles custom values in stitchingColors', () => {
+          const listType = 'stitchingColors'
+          const stitchingColors = [
+            {
+              name: 'Test',
+              value: 'Color'
+            }
+          ]
+          const designState = designToolsReducer(
+            initialState,
+            setColorList(listType, stitchingColors)
+          )
+          const customStitchingColors = designState.get('stitchingColors')
+          expect(customStitchingColors.size).toBe(1)
+        })
+      })
+    })
+    describe('SET_UPLOADING_COLORS_ACTION', () => {
+      describe('Update color list uploading action', () => {
+        it('Handles undefined value in uploadingColors', () => {
+          const customInitialValue = initialState.get('uploadingColors')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in uploadingColors', () => {
+          const customInitialValue = initialState.get('uploadingColors')
+          expect(customInitialValue).toBeFalsy()
+        })
+        it('Handles custom values in uploadingColors', () => {
+          const listType = 'colors'
+          const isUploading = true
+          const designState = designToolsReducer(
+            initialState,
+            setUploadingColorsAction(listType, isUploading)
+          )
+          const customUploadingValue = designState.get('uploadingColors')
+          expect(customUploadingValue).toBe(isUploading)
+        })
+      })
+      describe('Update stitchingColor list uploading action', () => {
+        it('Handles undefined value in uploadingStitchingColors', () => {
+          const customInitialValue = initialState.get(
+            'uploadingStitchingColors'
+          )
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in uploadingStitchingColors', () => {
+          const customInitialValue = initialState.get(
+            'uploadingStitchingColors'
+          )
+          expect(customInitialValue).toBeFalsy()
+        })
+        it('Handles custom values in uploadingStitchingColors', () => {
+          const listType = 'stitchingColors'
+          const isUploading = true
+          const designState = designToolsReducer(
+            initialState,
+            setUploadingColorsAction(listType, isUploading)
+          )
+          const customUploadingValue = designState.get(
+            'uploadingStitchingColors'
+          )
+          expect(customUploadingValue).toBe(isUploading)
         })
       })
     })
