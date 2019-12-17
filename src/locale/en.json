@@ -1246,5 +1246,11 @@
   "components.TeamStoreDetails.featured": "Featured",
   "components.TeamStoreDetails.name": "Name",
   "components.TeamStoreDetails.save": "Save",
-  "components.TeamStoreDetails.edit": "Edit"
+  "components.TeamStoreDetails.edit": "Edit",
+  "screens.ProductModels.title": "Publishing Tool",
+  "screens.ProductModels.back": "Back to product information",
+  "screens.ProductModels.productNotFound": "Error: Product not found.",
+  "screens.ProductModels.saveDesign": "Save",
+  "screens.ProductModels.build3D": "Build 3D Model",
+  "screens.ProductModels.addModel": "+ Add New 3D Model Variant"
 }
