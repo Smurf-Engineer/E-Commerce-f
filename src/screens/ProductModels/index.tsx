@@ -6,6 +6,7 @@ import Helmet from 'react-helmet'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import * as productModelsActions from './actions'
 import messages from './messages'
+import FilesModal from './FilesModal'
 import { connect } from 'react-redux'
 import { compose, withApollo } from 'react-apollo'
 import {
@@ -31,6 +32,10 @@ import { threeDScripts } from '../../utils/scripts'
 
 interface Props {
   intl: InjectedIntl
+  openModal: boolean
+  icon: string
+  uploadingIcon: boolean
+  openModalAction: (open: boolean) => void
 }
 export class ProductModels extends React.Component<Props, {}> {
   render3D: any
@@ -40,9 +45,16 @@ export class ProductModels extends React.Component<Props, {}> {
   handleOnPressBack = () => {
     window.location.replace('/admin')
   }
-
+  handleCloseModal = () => {
+    const { openModalAction } = this.props
+    openModalAction(false)
+  }
+  handleOpenModal = () => {
+    const { openModalAction } = this.props
+    openModalAction(true)
+  }
   render() {
-    const { intl } = this.props
+    const { intl, openModal, icon, uploadingIcon } = this.props
     const { formatMessage } = intl
 
     return (
@@ -61,13 +73,19 @@ export class ProductModels extends React.Component<Props, {}> {
         <Layout>
           <Side>
             <TopMessage>{formatMessage(messages.build3D)}</TopMessage>
-            <AddModel>{formatMessage(messages.addModel)}</AddModel>
+            <AddModel onClick={this.handleOpenModal}>
+              {formatMessage(messages.addModel)}
+            </AddModel>
           </Side>
           <ModelContainer>
             <SaveButton>{formatMessage(messages.saveDesign)}</SaveButton>
             <Logo src={logo} />
           </ModelContainer>
         </Layout>
+        <FilesModal
+          {...{ openModal, formatMessage, icon, uploadingIcon }}
+          requestClose={this.handleCloseModal}
+        />
       </Container>
     )
   }
