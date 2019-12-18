@@ -28,5 +28,21 @@ export default defineMessages({
   addModel: {
     id: 'screens.ProductModels.addModel',
     defaultMessage: '+ Add New 3D Model Variant'
+  },
+  defaultModel: {
+    id: 'screens.ProductModels.defaultModel',
+    defaultMessage: 'Default 3D Model'
+  },
+  modelVariants: {
+    id: 'screens.ProductModels.modelVariants',
+    defaultMessage: '3D Model Variants'
+  },
+  edit: {
+    id: 'screens.ProductModels.edit',
+    defaultMessage: 'Edit'
+  },
+  delete: {
+    id: 'screens.ProductModels.delete',
+    defaultMessage: 'Delete'
   }
 })

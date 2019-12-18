@@ -3,8 +3,9 @@
  */
 const namespace = 'src/ProductModels'
 
-export const ON_TAB_CLICK = `${namespace}/ON_TAB_CLICK`
 export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
+export const EDIT_MODEL = `${namespace}/EDIT_MODEL`
+export const CHANGE_NAME = `${namespace}/CHANGE_NAME`
 
 export const files = [
   {

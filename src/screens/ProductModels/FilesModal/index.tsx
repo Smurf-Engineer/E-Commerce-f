@@ -15,29 +15,40 @@ import {
   IconInput,
   UploadContainer,
   ModelIcon,
-  Loading
+  Loading,
+  SaveSection,
+  SaveButton
 } from './styledComponents'
-import { Message } from '../../../types/common'
+import { Message, ModelVariant } from '../../../types/common'
 import messages from './messages'
 import FileSection from './FileSection'
 
 interface Props {
   openModal: boolean
-  icon: string
+  tempModel: ModelVariant
   uploadingIcon: boolean
+  changeNameAction: (name: string) => void
   requestClose: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
 }
 
 export class FilesModal extends React.Component<Props, {}> {
+  handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = event
+    const { changeNameAction } = this.props
+    changeNameAction(value)
+  }
   render() {
     const {
       openModal,
       formatMessage,
       requestClose,
-      icon,
+      tempModel,
       uploadingIcon
     } = this.props
+    const { icon, name } = tempModel
     return (
       <Modal
         visible={openModal}
@@ -53,7 +64,11 @@ export class FilesModal extends React.Component<Props, {}> {
           <RowInput>
             <NameInput>
               <Label>{formatMessage(messages.modelName)}</Label>
-              <Input placeholder={formatMessage(messages.namePlaceholder)} />
+              <Input
+                value={name}
+                onChange={this.handleChangeName}
+                placeholder={formatMessage(messages.namePlaceholder)}
+              />
             </NameInput>
             <IconInput>
               <Label>{formatMessage(messages.addIcon)}</Label>
@@ -75,6 +90,9 @@ export class FilesModal extends React.Component<Props, {}> {
             </IconInput>
           </RowInput>
           <FileSection {...{ formatMessage }} />
+          <SaveSection>
+            <SaveButton>{formatMessage(messages.saveModel)}</SaveButton>
+          </SaveSection>
         </FormContainer>
       </Modal>
     )

@@ -2,8 +2,16 @@
  * Styled Components - Created by Jesús Apodaca on 17/12/19.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, RED, GRAY } from '../../../theme/colors'
+import {
+  GRAY_DARK,
+  RED,
+  GRAY,
+  BLUE,
+  WHITE,
+  BLUE_SOFT
+} from '../../../theme/colors'
 import AntdInput from 'antd/lib/input'
+import AntdButton from 'antd/lib/button'
 import AntdModal from 'antd/lib/modal'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
@@ -101,6 +109,24 @@ export const ModelIcon = styled.img`
   width: 24px;
   max-height: 100%;
   object-fit: contain;
+`
+
+export const SaveSection = styled.div`
+  text-align: right;
+  margin-top: 28px;
+`
+
+export const SaveButton = styled(AntdButton)`
+  max-width: 224px;
+  border: none;
+  width: 100%;
+  height: 40px;
+  background: ${BLUE};
+  color: ${WHITE};
+  &:hover {
+    background: ${BLUE_SOFT};
+    color: ${WHITE};
+  }
 `
 
 export const maskStyles = {

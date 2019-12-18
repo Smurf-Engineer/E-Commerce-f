@@ -1253,6 +1253,10 @@
   "screens.ProductModels.saveDesign": "Save",
   "screens.ProductModels.build3D": "Build 3D Model",
   "screens.ProductModels.addModel": "+ Add New 3D Model Variant",
+  "screens.ProductModels.defaultModel": "Default 3D Model",
+  "screens.ProductModels.modelVariants": "3D Model Variants",
+  "screens.ProductModels.edit": "Edit",
+  "screens.ProductModels.delete": "Delete",
   "components.FilesModal.title": "EDIT 3D MODEL",
   "components.FilesModal.modelName": "3D Model name",
   "components.FilesModal.addIcon": "Add icon",
@@ -1277,5 +1281,6 @@
   "components.FilesModal.bindingBlack": "+ Binding Black File",
   "components.FilesModal.zipper": "Zipper",
   "components.FilesModal.zipperWhite": "+ Zipper White File",
-  "components.FilesModal.zipperBlack": "+ Zipper Black File"
+  "components.FilesModal.zipperBlack": "+ Zipper Black File",
+  "components.FilesModal.saveModel": "Save Model"
 }

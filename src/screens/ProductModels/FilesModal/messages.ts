@@ -104,5 +104,9 @@ export default defineMessages({
   zipperBlack: {
     id: 'components.FilesModal.zipperBlack',
     defaultMessage: '+ Zipper Black File'
+  },
+  saveModel: {
+    id: 'components.FilesModal.saveModel',
+    defaultMessage: 'Save Model'
   }
 })
