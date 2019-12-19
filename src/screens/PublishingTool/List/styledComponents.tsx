@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { WHITE, BLUE, BLUE_BRIGHT } from '../../../theme/colors'
+import { WHITE, BLUE, BLUE_BRIGHT, RED } from '../../../theme/colors'
 
 export const Container = styled.div``
 
@@ -26,15 +26,17 @@ export const Subtitle = styled.div`
 
 export const Button = styled(AntdButton)`
   height: 50px;
-  border: 2px solid #e61737;
+  border: 2px solid ${RED};
   border-radius: 2px;
   background-color: ${WHITE};
-  color: #e61737;
+  color: ${RED};
   margin-right: 22px;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
+  width: 100%;
+  margin-top: 20px;
 `
 
 export const Row = styled.div`
@@ -68,4 +70,10 @@ export const NextButton = styled(AntdButton)`
 export const NextButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+`
+
+export const LoadButton = styled(AntdButton)`
+  margin-top: 20px;
+  width: 100%;
+  height: 40px;
 `

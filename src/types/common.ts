@@ -369,6 +369,21 @@ export interface Style {
   canvas: string
 }
 
+export interface StyleConfig {
+  colorIdeas: Palette[]
+  config: ColorConfig
+  design: Palette
+}
+
+export interface ColorConfig {
+  areasPng: string[]
+  areasSvg: string[]
+  size: {
+    width: number
+    height: number
+  }
+}
+
 export interface Theme {
   id: number
   name: string

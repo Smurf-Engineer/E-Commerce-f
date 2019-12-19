@@ -78,3 +78,16 @@ export const updateThemesOrderMutation = graphql(
     name: 'updateThemesOrder'
   }
 )
+
+export const updateStylesOrderMutation = graphql(
+  gql`
+    mutation updateStyles($styles: [StyleToOrderInput]!, $themeId: Int) {
+      updateStylesOrder(styles: $styles, themeId: $themeId) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateStylesOrder'
+  }
+)

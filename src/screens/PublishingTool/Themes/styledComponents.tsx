@@ -9,7 +9,8 @@ import {
   BLUE_BRIGHT,
   GRAY_LIGHTEST,
   GRAY_DARK,
-  WHITE
+  WHITE,
+  RED
 } from '../../../theme/colors'
 
 const { Search } = AntdInput
@@ -29,7 +30,6 @@ export const Content = styled.div`
 
 export const InputContainer = styled.div`
   position: relative;
-  padding-bottom: 16px;
 `
 
 export const Input = styled(Search)`
@@ -71,10 +71,10 @@ export const Label = styled.p`
 
 export const Button = styled(AntdButton)`
   height: 50px;
-  border: 2px solid #e61737;
+  border: 2px solid ${RED};
   border-radius: 2px;
   background-color: ${WHITE};
-  color: #e61737;
+  color: ${RED};
   margin-right: 22px;
   font-size: 16px;
   letter-spacing: 0.11px;
@@ -83,5 +83,23 @@ export const Button = styled(AntdButton)`
 `
 
 export const MissingModelContainer = styled.div`
+  margin-top: 15px;
   text-align: center;
+`
+
+export const BackButton = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-direction: row;
+  margin-right: 40px;
+`
+
+export const BackIcon = styled.img`
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+  margin-right: 10px;
 `

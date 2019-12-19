@@ -21,13 +21,17 @@ export default defineMessages({
     id: 'screens.PublishingTool.designCustomization',
     defaultMessage: 'Design Customization'
   },
-  deleteThemeTitle: {
-    id: 'screens.PublishingTool.deleteThemeTitle',
+  deleteConfirmation: {
+    id: 'screens.PublishingTool.deleteConfirmation',
     defaultMessage: 'Are you sure?'
   },
   deleteTheme: {
     id: 'screens.PublishingTool.deleteTheme',
     defaultMessage:
       'If you remove this theme, all designs linked to it will be delete too.'
+  },
+  deleteDesign: {
+    id: 'screens.PublishingTool.deleteDesign',
+    defaultMessage: 'Design will be deleted.'
   }
 })

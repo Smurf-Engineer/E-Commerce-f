@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'screens.PublishingTool.Themes.addTheme',
     defaultMessage: 'Add New Theme'
   },
+  addDesign: {
+    id: 'screens.PublishingTool.Themes.addDesign',
+    defaultMessage: 'Add New Design'
+  },
   searchProduct: {
     id: 'screens.PublishingTool.Themes.searchProduct',
     defaultMessage: 'Search for a Product Code'
@@ -24,5 +28,9 @@ export default defineMessages({
   missingModel: {
     id: 'screens.PublishingTool.Themes.missingModel',
     defaultMessage: 'This product doesn´t have a 3d model assigned yet'
+  },
+  back: {
+    id: 'screens.PublishingTool.Themes.back',
+    defaultMessage: 'Back to theme list'
   }
 })

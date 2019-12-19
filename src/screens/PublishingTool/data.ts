@@ -35,3 +35,11 @@ export const deleteThemeMutation = gql`
     }
   }
 `
+
+export const deleteStyleMutation = gql`
+  mutation deleteStyle($id: Int!) {
+    deleteStyle(styleId: $id) {
+      message
+    }
+  }
+`

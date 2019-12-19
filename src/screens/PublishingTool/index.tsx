@@ -8,12 +8,15 @@ import { FormattedMessage } from 'react-intl'
 import Modal from 'antd/lib/modal'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
+import findIndex from 'lodash/findIndex'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
 import * as publishingToolActions from './actions'
+import * as publishingToolApi from './api'
 import Tab from '../../components/Tab'
 import ThemeModal from '../../components/ThemeModal'
-import { deleteThemeMutation } from './data'
+import DesignModal from '../../components/DesignModal'
+import { deleteThemeMutation, deleteStyleMutation } from './data'
 import { getProductFromCode } from './Themes/data'
 import Themes from './Themes'
 import messages from './messages'
@@ -36,7 +39,14 @@ import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
-import { Theme, MessagePayload } from '../../types/common'
+import {
+  Theme,
+  MessagePayload,
+  ModelConfig,
+  DesignObject,
+  ModelDesign
+} from '../../types/common'
+import { SETTINGS_TAB, Sections } from './constants'
 
 const { confirm } = Modal
 interface Props {
@@ -46,12 +56,28 @@ interface Props {
   selectedTheme: number
   editableTheme: Theme | null
   currentTab: number
+  currentPage: number
+  designModalOpen: boolean
+  designName: string
+  uploading: boolean
+  selectedDesign: number
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
-  onChangeThemeAction: (id: number) => void
+  onChangeThemeAction: (id: number, section: string) => void
   setThemeToEditAction: (theme: Theme | null) => void
   updateThemeNameAction: (name: string) => void
   deleteTheme: (variables: {}) => Promise<MessagePayload>
+  setCurrentPageAction: (page: number) => void
+  toggleAddDesignAction: () => void
+  updateDesignNameAction: (value: string) => void
+  uploadDesignAction: (areas: any, config: any) => void
+  setModelAction: (
+    config: ModelConfig,
+    colorIdeas: DesignObject[],
+    design: ModelDesign
+  ) => void
+  deleteStyle: (variables: {}) => Promise<MessagePayload>
+  unselectAction: (section: string) => void
 }
 
 const steps = ['theme', 'designCustomization']
@@ -70,10 +96,12 @@ export class PublishingTool extends React.Component<Props, {}> {
   }
   handleOnDeleteTheme = (id: number) => {
     const {
-      intl: { formatMessage }
+      intl: { formatMessage },
+      selectedTheme,
+      unselectAction
     } = this.props
     confirm({
-      title: formatMessage(messages.deleteThemeTitle),
+      title: formatMessage(messages.deleteConfirmation),
       content: formatMessage(messages.deleteTheme),
       onOk: async () => {
         try {
@@ -98,6 +126,59 @@ export class PublishingTool extends React.Component<Props, {}> {
               })
             }
           })
+          if (selectedTheme === id) {
+            unselectAction(Sections.Theme)
+          }
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+  handleOnDeleteDesign = async (id: number) => {
+    const {
+      intl: { formatMessage },
+      unselectAction
+    } = this.props
+    confirm({
+      title: formatMessage(messages.deleteConfirmation),
+      content: formatMessage(messages.deleteDesign),
+      onOk: async () => {
+        try {
+          const {
+            deleteStyle,
+            productCode,
+            selectedTheme,
+            selectedDesign
+          } = this.props
+          await deleteStyle({
+            variables: { id },
+            update: (store: any) => {
+              const data = store.readQuery({
+                query: getProductFromCode,
+                variables: { code: productCode }
+              })
+              const themes = get(data, 'product.themes', [])
+              const themeIndex = findIndex(
+                themes,
+                ({ id: themeId }) => themeId === selectedTheme
+              )
+              const { styles } = themes[themeIndex]
+              const updatedStyles = remove(
+                styles,
+                ({ id: styleId }) => styleId !== id
+              )
+              set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
+              store.writeQuery({
+                query: getProductFromCode,
+                data,
+                variables: { code: productCode }
+              })
+            }
+          })
+          if (selectedDesign === id) {
+            unselectAction(Sections.Design)
+          }
         } catch (e) {
           message.error(e.message)
         }
@@ -116,7 +197,17 @@ export class PublishingTool extends React.Component<Props, {}> {
       setThemeToEditAction,
       editableTheme,
       updateThemeNameAction,
-      currentTab
+      currentTab,
+      setCurrentPageAction,
+      currentPage,
+      toggleAddDesignAction,
+      designModalOpen,
+      designName,
+      updateDesignNameAction,
+      uploadDesignAction,
+      uploading,
+      selectedDesign,
+      setModelAction
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
@@ -126,7 +217,7 @@ export class PublishingTool extends React.Component<Props, {}> {
         <Tab
           {...{ index }}
           key={index}
-          activeOnClick={true}
+          activeOnClick={currentTab > SETTINGS_TAB}
           selected={currentTab === index}
           onSelectTab={handleOnSelectTab(index)}
           totalItems={steps.length}
@@ -153,11 +244,21 @@ export class PublishingTool extends React.Component<Props, {}> {
         </TopMenu>
         <Layout>
           <Themes
-            {...{ formatMessage, productCode, selectedTheme }}
+            {...{
+              formatMessage,
+              productCode,
+              selectedTheme,
+              currentPage,
+              selectedDesign
+            }}
             setProductCode={setProductCodeAction}
             onChangeTheme={onChangeThemeAction}
             onEditTheme={setThemeToEditAction}
             onDeleteTheme={this.handleOnDeleteTheme}
+            onDeleteDesign={this.handleOnDeleteDesign}
+            goToPage={setCurrentPageAction}
+            toggleAddDesign={toggleAddDesignAction}
+            onLoadDesign={setModelAction}
           />
         </Layout>
         <ThemeModal
@@ -166,24 +267,29 @@ export class PublishingTool extends React.Component<Props, {}> {
           onCancel={this.handleOnCancel}
           onUpdateName={updateThemeNameAction}
         />
+        <DesignModal
+          {...{ productCode, formatMessage, uploading }}
+          onCancel={toggleAddDesignAction}
+          onUpdateName={updateDesignNameAction}
+          open={designModalOpen}
+          name={designName}
+          onSave={uploadDesignAction}
+        />
       </Container>
     )
   }
 }
 
-const mapStateToProps = (state: any) => {
-  const publishingTool = state.get('publishingTool').toJS()
-  return {
-    ...publishingTool
-  }
-}
+const mapStateToProps = (state: any) => state.get('publishingTool').toJS()
 
 const PublishingToolEnhance = compose(
   withApollo,
   injectIntl,
   graphql(deleteThemeMutation, { name: 'deleteTheme' }),
+  graphql(deleteStyleMutation, { name: 'deleteStyle' }),
   connect(mapStateToProps, {
-    ...publishingToolActions
+    ...publishingToolActions,
+    ...publishingToolApi
   })
 )(PublishingTool)
 
