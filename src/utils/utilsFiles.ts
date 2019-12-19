@@ -13,6 +13,9 @@ export const getFileExtension = (fileName: string) => {
 export const getFileName = (url: string) => {
   return url.substring(url.lastIndexOf('/') + 1).split('.')[0]
 }
+export const getFileWithExtension = (url: string) => {
+  return `...${url.substring(url.length - 15)}`
+}
 export const isNumber = (fileName: string) => {
   const numbersRegex = /^\d+$/
   return numbersRegex.test(fileName)

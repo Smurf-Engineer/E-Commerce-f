@@ -170,6 +170,7 @@ export const Thumbnail = styled.img`
   max-width: 85px;
   width: 100%;
   max-height: 85px;
+  height: 100%;
   object-fit: contain;
   cursor: pointer;
 `

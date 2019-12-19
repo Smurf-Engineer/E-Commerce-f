@@ -5,6 +5,7 @@ import * as React from 'react'
 import Helmet from 'react-helmet'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import * as productModelsActions from './actions'
+import * as apiActions from './api'
 import messages from './messages'
 import FilesModal from './FilesModal'
 import { connect } from 'react-redux'
@@ -35,6 +36,7 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
+import jakrooLogo from '../../assets/Jackroologo.svg'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import { ModelVariant } from '../../types/common'
@@ -45,7 +47,11 @@ interface Props {
   tempModel: ModelVariant
   variants: ModelVariant[]
   defaultModelIndex: string
-  uploadingIcon: boolean
+  saveInfoAction: () => void
+  removeModelAction: (key: string) => void
+  setFileAction: (key: string, url: string) => void
+  uploadFile: (file: File, key: string) => void
+  uploadImageModel: (file: File) => void
   changeNameAction: (name: string) => void
   setEditModel: (id: string) => void
   openModalAction: (open: boolean) => void
@@ -70,15 +76,23 @@ export class ProductModels extends React.Component<Props, {}> {
     const { setEditModel } = this.props
     setEditModel(id)
   }
+  handleRemoveModel = (id: string) => () => {
+    const { removeModelAction } = this.props
+    removeModelAction(id)
+  }
   render() {
     const {
       intl,
       openModal,
       changeNameAction,
       variants,
+      uploadFile,
+      saveInfoAction,
+      removeModelAction,
+      setFileAction,
+      uploadImageModel,
       defaultModelIndex,
-      tempModel,
-      uploadingIcon
+      tempModel
     } = this.props
     const { formatMessage } = intl
     const defaultModel = variants[defaultModelIndex]
@@ -106,7 +120,7 @@ export class ProductModels extends React.Component<Props, {}> {
             <ModelsContainers>
               <TopMessage>{formatMessage(messages.defaultModel)}</TopMessage>
               <ModelBlock>
-                <Thumbnail src={defaultModel.icon} />
+                <Thumbnail src={defaultModel.icon || jakrooLogo} />
                 <Details>
                   <Name>{defaultModel.name}</Name>
                   <Buttons>
@@ -121,14 +135,14 @@ export class ProductModels extends React.Component<Props, {}> {
                 (id: string, index) =>
                   !variants[id].default && (
                     <ModelBlock key={index}>
-                      <Thumbnail src={variants[id].icon} />
+                      <Thumbnail src={variants[id].icon || jakrooLogo} />
                       <Details>
                         <Name>{variants[id].name}</Name>
                         <Buttons>
                           <EditButton onClick={this.handleEdit(id)}>
                             {formatMessage(messages.edit)}
                           </EditButton>
-                          <DeleteButton>
+                          <DeleteButton onClick={this.handleRemoveModel(id)}>
                             {formatMessage(messages.delete)}
                           </DeleteButton>
                         </Buttons>
@@ -146,10 +160,14 @@ export class ProductModels extends React.Component<Props, {}> {
         <FilesModal
           {...{
             openModal,
+            saveInfoAction,
+            setFileAction,
+            uploadFile,
+            removeModelAction,
+            uploadImageModel,
             changeNameAction,
             formatMessage,
-            tempModel,
-            uploadingIcon
+            tempModel
           }}
           requestClose={this.handleCloseModal}
         />
@@ -169,7 +187,8 @@ const ProductModelsEnhance = compose(
   withApollo,
   injectIntl,
   connect(mapStateToProps, {
-    ...productModelsActions
+    ...productModelsActions,
+    ...apiActions
   })
 )(ProductModels)
 

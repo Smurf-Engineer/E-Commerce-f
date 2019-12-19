@@ -83,7 +83,7 @@ export const UploadContainer = styled.div`
   position: relative;
   margin-top: 4px;
   .ant-upload-select-picture-card {
-    width: auto;
+    width: 40px;
     height: auto;
     margin: 0;
     background: none;

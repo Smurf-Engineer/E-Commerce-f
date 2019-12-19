@@ -6,6 +6,15 @@ const namespace = 'src/ProductModels'
 export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
 export const EDIT_MODEL = `${namespace}/EDIT_MODEL`
 export const CHANGE_NAME = `${namespace}/CHANGE_NAME`
+export const UPLOADING_IMAGE = `${namespace}/UPLOADING_IMAGE`
+export const SET_ICON = `${namespace}/SET_ICON`
+export const UPLOADING_FILE = `${namespace}/UPLOADING_FILE`
+export const SET_FILE = `${namespace}/SET_FILE`
+export const SAVE_INFO = `${namespace}/SAVE_INFO`
+export const REMOVE_MODEL = `${namespace}/REMOVE_MODEL`
+
+export const validIcons = ['image/jpeg', 'image/png']
+export const validModels = ['.svg', '.jpg', '.jpeg', '.png', '.obj', '.mtl']
 
 export const files = [
   {

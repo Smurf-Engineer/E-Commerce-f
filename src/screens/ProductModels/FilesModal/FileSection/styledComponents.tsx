@@ -75,6 +75,12 @@ export const Clip = styled(Icon)`
 
 export const Delete = styled(Icon)`
   color: ${MID_GRAY};
+  z-index: 3;
+  width: 26px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const StrongLabel = styled.div`
