@@ -199,7 +199,7 @@ export type ModelVariant = {
   icon: string
   default: boolean
   label: string
-  bumpmap: string
+  bumpMap: string
   obj: string
   mtl: string
   branding: string

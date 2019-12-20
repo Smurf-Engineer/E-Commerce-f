@@ -16,7 +16,8 @@ import {
   SET_VARIANTS,
   CHANGE_DEFAULT,
   CHANGE_MODEL_RENDER,
-  UPLOAD_COMPLETE
+  UPLOAD_COMPLETE,
+  RESET_REDUCER
 } from './constants'
 
 import { AnyAction, ModelVariant } from '../../types/common'
@@ -38,6 +39,10 @@ export const changeNameAction = (name: string): AnyAction => ({
 
 export const setUploadingImage = (): AnyAction => ({
   type: UPLOADING_IMAGE
+})
+
+export const resetReducer = (): AnyAction => ({
+  type: RESET_REDUCER
 })
 
 export const setIconAction = (icon: string): AnyAction => ({

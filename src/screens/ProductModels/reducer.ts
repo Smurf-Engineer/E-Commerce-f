@@ -16,7 +16,8 @@ import {
   SET_VARIANTS,
   CHANGE_DEFAULT,
   CHANGE_MODEL_RENDER,
-  UPLOAD_COMPLETE
+  UPLOAD_COMPLETE,
+  RESET_REDUCER
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -80,6 +81,8 @@ const productModelsReducer: Reducer<any> = (state = initialState, action) => {
         selected: '',
         modelRender: ''
       })
+    case RESET_REDUCER:
+      return initialState
     case CHANGE_MODEL_RENDER:
       return state.set('modelRender', action.id)
     case SET_LOADING:

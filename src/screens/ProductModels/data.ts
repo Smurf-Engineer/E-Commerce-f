@@ -8,7 +8,7 @@ export const getVariantsFromProduct = gql`
       name
       icon
       default: is_default
-      bumpmap
+      bumpMap: bumpmap
       obj
       label
       mtl

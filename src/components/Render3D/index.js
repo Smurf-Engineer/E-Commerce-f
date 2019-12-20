@@ -470,6 +470,7 @@ class Render3D extends PureComponent {
               children,
               ({ name }) => name === RED_TAG
             )
+            console.log('children:', children)
             if (labelIndex >= 0) {
               object.children[labelIndex].material.color.set(WHITE)
             }

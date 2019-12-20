@@ -17,6 +17,7 @@ export const SET_VARIANTS = `${namespace}/SET_VARIANTS`
 export const CHANGE_DEFAULT = `${namespace}/CHANGE_DEFAULT`
 export const CHANGE_MODEL_RENDER = `${namespace}/CHANGE_MODEL_RENDER`
 export const UPLOAD_COMPLETE = `${namespace}/UPLOAD_COMPLETE`
+export const RESET_REDUCER = `${namespace}/RESET_REDUCER`
 
 export const validIcons = ['image/jpeg', 'image/png']
 export const validModels = ['.svg', '.jpg', '.jpeg', '.png', '.obj', '.mtl']
@@ -38,7 +39,7 @@ export const files = [
     title: 'addBump',
     placeholder: 'bumpPlaceholder',
     extension: '.jpg',
-    key: 'bumpmap'
+    key: 'bumpMap'
   }
 ]
 

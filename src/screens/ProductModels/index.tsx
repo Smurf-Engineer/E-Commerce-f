@@ -5,6 +5,7 @@ import * as React from 'react'
 import Helmet from 'react-helmet'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
+import queryString from 'query-string'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import * as productModelsActions from './actions'
 import * as apiActions from './api'
@@ -56,7 +57,6 @@ import { saveProductsMutation, getProductQuery } from './data'
 interface Props {
   intl: InjectedIntl
   openModal: boolean
-  match: any
   history: any
   client: any
   loading: boolean
@@ -68,6 +68,7 @@ interface Props {
   data: any
   openSuccess: boolean
   saveInfoAction: () => void
+  resetReducer: () => void
   setLoadingAction: (loading: boolean) => void
   selectModelAction: (id: string) => void
   changeDefault: (checked: boolean) => void
@@ -88,14 +89,14 @@ export class ProductModels extends React.Component<Props, {}> {
     await LoadScripts(threeDScripts)
     const {
       getVariants,
-      client: { query },
-      match
+      client: { query }
     } = this.props
-    const id = get(match, 'params.id', '')
+    const { id } = queryString.parse(location.search)
     getVariants(query, id)
   }
-  handleOnPressBack = () => {
-    window.location.replace('/admin')
+  componentWillUnmount() {
+    const { resetReducer } = this.props
+    resetReducer()
   }
   handleCloseModal = () => {
     const { openModalAction } = this.props
@@ -123,17 +124,16 @@ export class ProductModels extends React.Component<Props, {}> {
         saveProductModels,
         uploadComplete,
         setLoadingAction,
-        variants,
-        match
+        variants
       } = this.props
       setLoadingAction(true)
-      const productId = get(match, 'params.id', '')
+      const { id: productId } = queryString.parse(location.search)
       const arrayVariants = Object.keys(variants).map((shortId: string) => {
         const {
           name,
           icon,
           default: isDefault,
-          bumpmap,
+          bumpMap,
           obj,
           label,
           mtl,
@@ -150,7 +150,7 @@ export class ProductModels extends React.Component<Props, {}> {
           name,
           icon,
           isDefault,
-          bumpmap,
+          bumpMap,
           obj,
           label,
           mtl,
@@ -185,8 +185,8 @@ export class ProductModels extends React.Component<Props, {}> {
     history.push(`/admin/publishing-tool/${code}`)
   }
   handleProductInfo = () => {
-    const { history, match } = this.props
-    const id = get(match, 'params.id', '')
+    const { history } = this.props
+    const { id } = queryString.parse(location.search)
     history.push(`/admin/products/details/${id}`)
   }
   render() {
@@ -245,7 +245,7 @@ export class ProductModels extends React.Component<Props, {}> {
           <Title>{formatMessage(messages.title)}</Title>
         </Header>
         <TopMenu>
-          <BackButton onClick={this.handleOnPressBack}>
+          <BackButton onClick={this.handleProductInfo}>
             <BackIcon src={backIcon} />
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
@@ -259,45 +259,59 @@ export class ProductModels extends React.Component<Props, {}> {
               {formatMessage(messages.addModel)}
             </AddModel>
             <ModelsContainers>
-              <TopMessage>{formatMessage(messages.defaultModel)}</TopMessage>
               {defaultModel && (
-                <ModelBlock active={modelRender === defaultModelIndex}>
-                  <Thumbnail
-                    onClick={this.selectModel(defaultModelIndex)}
-                    src={defaultModel.icon || jakrooLogo}
-                  />
-                  <Details>
-                    <Name>{defaultModel.name}</Name>
-                    <Buttons>
-                      <EditButton onClick={this.handleEdit(defaultModelIndex)}>
-                        {formatMessage(messages.edit)}
-                      </EditButton>
-                    </Buttons>
-                  </Details>
-                </ModelBlock>
+                <>
+                  <TopMessage>
+                    {formatMessage(messages.defaultModel)}
+                  </TopMessage>
+                  <ModelBlock active={modelRender === defaultModelIndex}>
+                    <Thumbnail
+                      onClick={this.selectModel(defaultModelIndex)}
+                      src={defaultModel.icon || jakrooLogo}
+                    />
+                    <Details>
+                      <Name>{defaultModel.name}</Name>
+                      <Buttons>
+                        <EditButton
+                          onClick={this.handleEdit(defaultModelIndex)}
+                        >
+                          {formatMessage(messages.edit)}
+                        </EditButton>
+                      </Buttons>
+                    </Details>
+                  </ModelBlock>
+                </>
               )}
-              <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
-              {Object.keys(variants).map(
-                (id: string, index) =>
-                  !variants[id].default && (
-                    <ModelBlock active={modelRender === id} key={index}>
-                      <Thumbnail
-                        onClick={this.selectModel(id)}
-                        src={variants[id].icon || jakrooLogo}
-                      />
-                      <Details>
-                        <Name>{variants[id].name}</Name>
-                        <Buttons>
-                          <EditButton onClick={this.handleEdit(id)}>
-                            {formatMessage(messages.edit)}
-                          </EditButton>
-                          <DeleteButton onClick={this.handleRemoveModel(id)}>
-                            {formatMessage(messages.delete)}
-                          </DeleteButton>
-                        </Buttons>
-                      </Details>
-                    </ModelBlock>
-                  )
+              {variants.length && (
+                <>
+                  <TopMessage>
+                    {formatMessage(messages.modelVariants)}
+                  </TopMessage>
+                  {Object.keys(variants).map(
+                    (id: string, index) =>
+                      !variants[id].default && (
+                        <ModelBlock active={modelRender === id} key={index}>
+                          <Thumbnail
+                            onClick={this.selectModel(id)}
+                            src={variants[id].icon || jakrooLogo}
+                          />
+                          <Details>
+                            <Name>{variants[id].name}</Name>
+                            <Buttons>
+                              <EditButton onClick={this.handleEdit(id)}>
+                                {formatMessage(messages.edit)}
+                              </EditButton>
+                              <DeleteButton
+                                onClick={this.handleRemoveModel(id)}
+                              >
+                                {formatMessage(messages.delete)}
+                              </DeleteButton>
+                            </Buttons>
+                          </Details>
+                        </ModelBlock>
+                      )
+                  )}
+                </>
               )}
             </ModelsContainers>
           </Side>
@@ -310,6 +324,9 @@ export class ProductModels extends React.Component<Props, {}> {
                 designId={0}
                 customProduct={true}
                 isProduct={true}
+                textColor="white"
+                isPhone={false}
+                modelSize={160}
                 {...{ product }}
               />
             ) : (
@@ -358,7 +375,7 @@ export class ProductModels extends React.Component<Props, {}> {
 }
 
 interface OwnProps {
-  match?: any
+  location?: any
 }
 
 const mapStateToProps = (state: any) => {
@@ -373,9 +390,13 @@ const ProductModelsEnhance = compose(
   injectIntl,
   saveProductsMutation,
   graphql(getProductQuery, {
-    options: ({ match }: OwnProps) => ({
-      variables: { id: get(match, 'params.id', '') }
-    })
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        variables: { id: queryParams.id }
+      }
+    }
   }),
   connect(mapStateToProps, {
     ...productModelsActions,
