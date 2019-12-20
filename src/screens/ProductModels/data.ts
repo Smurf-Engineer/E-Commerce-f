@@ -1,41 +1,39 @@
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
-export const GetProductsByIdQuery = gql`
-  query GetProductByID($code: String!) {
-    productFromCode(code: $code) {
-      id
-      code
-      modelSize: model_size
-      mpn
-      flatlock
-      branding
-      bibBrace {
-        white
-        black
-      }
-      binding {
-        white
-        black
-      }
-      zipper {
-        white
-        black
-      }
+export const getVariantsFromProduct = gql`
+  query getVariants($id: Int!) {
+    getVariants(id: $id) {
+      id: short_id
+      name
+      icon
+      default: is_default
+      bumpmap
       obj
+      label
       mtl
-      bumpMap: bump_map
+      branding
+      flatlock
+      bibraceWhite: bibrace_white
+      bibraceBlack: bibrace_black
+      zipperWhite: zipper_white
+      zipperBlack: zipper_black
+      bindingWhite: binding_white
+      bindingBlack: binding_black
     }
   }
 `
 
-export const saveProDesignMutation = graphql(
+export const saveProductsMutation = graphql(
   gql`
-    mutation saveProDesign($design: ProDesignInput) {
-      saveProDesign(design: $design) {
+    mutation saveProductModels(
+      $variants: [InputModelVariant]
+      $productId: Int
+    ) {
+      saveProductModels(variants: $variants, productId: $productId) {
         message
       }
     }
   `,
-  { name: 'saveDesign' }
+  { name: 'saveProductModels' }
 )

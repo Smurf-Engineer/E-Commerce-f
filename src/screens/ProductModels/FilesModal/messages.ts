@@ -69,6 +69,14 @@ export default defineMessages({
     id: 'components.FilesModal.flatlock',
     defaultMessage: '+ Flatlock File'
   },
+  labelTitle: {
+    id: 'components.FilesModal.labelTitle',
+    defaultMessage: 'Label'
+  },
+  label: {
+    id: 'components.FilesModal.label',
+    defaultMessage: '+ Label File'
+  },
   bibrace: {
     id: 'components.FilesModal.bibrace',
     defaultMessage: 'Bibrace'

@@ -3,9 +3,11 @@
  */
 import * as React from 'react'
 import Helmet from 'react-helmet'
+import message from 'antd/lib/message'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import * as productModelsActions from './actions'
 import * as apiActions from './api'
+import * as thunkActions from './thunkActions'
 import messages from './messages'
 import FilesModal from './FilesModal'
 import { connect } from 'react-redux'
@@ -32,22 +34,36 @@ import {
   Name,
   EditButton,
   Buttons,
-  DeleteButton
+  DeleteButton,
+  LoadingContainer
 } from './styledComponents'
+import Render3D from '../../components/Render3D'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import jakrooLogo from '../../assets/Jackroologo.svg'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import { ModelVariant } from '../../types/common'
+import get from 'lodash/get'
+import Spin from 'antd/lib/spin'
+import { saveProductsMutation } from './data'
 
 interface Props {
   intl: InjectedIntl
   openModal: boolean
+  match: any
+  client: any
+  loading: boolean
   tempModel: ModelVariant
-  variants: ModelVariant[]
+  variants: { [id: string]: ModelVariant }
   defaultModelIndex: string
+  selected: string
+  modelRender: string
   saveInfoAction: () => void
+  setLoadingAction: (loading: boolean) => void
+  selectModelAction: (id: string) => void
+  changeDefault: (checked: boolean) => void
+  getVariants: (query: any, id: number) => void
   removeModelAction: (key: string) => void
   setFileAction: (key: string, url: string) => void
   uploadFile: (file: File, key: string) => void
@@ -55,11 +71,20 @@ interface Props {
   changeNameAction: (name: string) => void
   setEditModel: (id: string) => void
   openModalAction: (open: boolean) => void
+  uploadComplete: () => void
+  saveProductModels: (variables: {}) => Promise<any>
 }
 export class ProductModels extends React.Component<Props, {}> {
   render3D: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
+    const {
+      getVariants,
+      client: { query },
+      match
+    } = this.props
+    const id = get(match, 'params.id', '')
+    getVariants(query, id)
   }
   handleOnPressBack = () => {
     window.location.replace('/admin')
@@ -80,6 +105,68 @@ export class ProductModels extends React.Component<Props, {}> {
     const { removeModelAction } = this.props
     removeModelAction(id)
   }
+  selectModel = (id: string) => () => {
+    const { selectModelAction } = this.props
+    selectModelAction(id)
+  }
+  saveProduct = async () => {
+    try {
+      const {
+        saveProductModels,
+        uploadComplete,
+        setLoadingAction,
+        variants,
+        match
+      } = this.props
+      setLoadingAction(true)
+      const productId = get(match, 'params.id', '')
+      const arrayVariants = Object.keys(variants).map((shortId: string) => {
+        const {
+          name,
+          icon,
+          default: isDefault,
+          bumpmap,
+          obj,
+          label,
+          mtl,
+          branding,
+          flatlock,
+          bibraceWhite,
+          bibraceBlack,
+          zipperWhite,
+          zipperBlack,
+          bindingWhite,
+          bindingBlack
+        } = variants[shortId]
+        return {
+          name,
+          icon,
+          isDefault,
+          bumpmap,
+          obj,
+          label,
+          mtl,
+          branding,
+          flatlock,
+          bibraceWhite,
+          bibraceBlack,
+          zipperWhite,
+          zipperBlack,
+          bindingWhite,
+          bindingBlack,
+          shortId,
+          productId
+        }
+      })
+      const response = await saveProductModels({
+        variables: { variants: arrayVariants, productId }
+      })
+      message.success(get(response, 'data.saveProductModels.message', ''))
+      uploadComplete()
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
   render() {
     const {
       intl,
@@ -87,6 +174,10 @@ export class ProductModels extends React.Component<Props, {}> {
       changeNameAction,
       variants,
       uploadFile,
+      loading,
+      selected,
+      modelRender,
+      changeDefault,
       saveInfoAction,
       removeModelAction,
       setFileAction,
@@ -96,6 +187,33 @@ export class ProductModels extends React.Component<Props, {}> {
     } = this.props
     const { formatMessage } = intl
     const defaultModel = variants[defaultModelIndex]
+    const selectedRender = variants[modelRender]
+    let product = {}
+    if (selectedRender) {
+      const {
+        bibraceWhite,
+        bibraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack
+      } = selectedRender
+      product = {
+        ...selectedRender,
+        bibBrace: (bibraceWhite || bibraceBlack) && {
+          white: bibraceWhite,
+          black: bibraceBlack
+        },
+        zipper: (zipperWhite || zipperBlack) && {
+          white: zipperWhite,
+          black: zipperBlack
+        },
+        binding: (bindingWhite || bindingBlack) && {
+          white: bindingWhite,
+          black: bindingBlack
+        }
+      }
+    }
     return (
       <Container>
         <Helmet title={formatMessage(messages.title)} />
@@ -119,23 +237,31 @@ export class ProductModels extends React.Component<Props, {}> {
             </AddModel>
             <ModelsContainers>
               <TopMessage>{formatMessage(messages.defaultModel)}</TopMessage>
-              <ModelBlock>
-                <Thumbnail src={defaultModel.icon || jakrooLogo} />
-                <Details>
-                  <Name>{defaultModel.name}</Name>
-                  <Buttons>
-                    <EditButton onClick={this.handleEdit(defaultModelIndex)}>
-                      {formatMessage(messages.edit)}
-                    </EditButton>
-                  </Buttons>
-                </Details>
-              </ModelBlock>
+              {defaultModel && (
+                <ModelBlock active={modelRender === defaultModelIndex}>
+                  <Thumbnail
+                    onClick={this.selectModel(defaultModelIndex)}
+                    src={defaultModel.icon || jakrooLogo}
+                  />
+                  <Details>
+                    <Name>{defaultModel.name}</Name>
+                    <Buttons>
+                      <EditButton onClick={this.handleEdit(defaultModelIndex)}>
+                        {formatMessage(messages.edit)}
+                      </EditButton>
+                    </Buttons>
+                  </Details>
+                </ModelBlock>
+              )}
               <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
               {Object.keys(variants).map(
                 (id: string, index) =>
                   !variants[id].default && (
-                    <ModelBlock key={index}>
-                      <Thumbnail src={variants[id].icon || jakrooLogo} />
+                    <ModelBlock active={modelRender === id} key={index}>
+                      <Thumbnail
+                        onClick={this.selectModel(id)}
+                        src={variants[id].icon || jakrooLogo}
+                      />
                       <Details>
                         <Name>{variants[id].name}</Name>
                         <Buttons>
@@ -153,14 +279,26 @@ export class ProductModels extends React.Component<Props, {}> {
             </ModelsContainers>
           </Side>
           <ModelContainer>
-            <SaveButton>{formatMessage(messages.saveDesign)}</SaveButton>
-            <Logo src={logo} />
+            <SaveButton onClick={this.saveProduct}>
+              {formatMessage(messages.saveDesign)}
+            </SaveButton>
+            {selectedRender ? (
+              <Render3D
+                designId={0}
+                customProduct={true}
+                isProduct={true}
+                {...{ product }}
+              />
+            ) : (
+              <Logo src={logo} />
+            )}
           </ModelContainer>
         </Layout>
         <FilesModal
           {...{
             openModal,
             saveInfoAction,
+            changeDefault,
             setFileAction,
             uploadFile,
             removeModelAction,
@@ -169,8 +307,12 @@ export class ProductModels extends React.Component<Props, {}> {
             formatMessage,
             tempModel
           }}
+          defaultVariant={defaultModelIndex === selected}
           requestClose={this.handleCloseModal}
         />
+        <LoadingContainer active={loading}>
+          <Spin size="large" />
+        </LoadingContainer>
       </Container>
     )
   }
@@ -186,8 +328,10 @@ const mapStateToProps = (state: any) => {
 const ProductModelsEnhance = compose(
   withApollo,
   injectIntl,
+  saveProductsMutation,
   connect(mapStateToProps, {
     ...productModelsActions,
+    ...thunkActions,
     ...apiActions
   })
 )(ProductModels)

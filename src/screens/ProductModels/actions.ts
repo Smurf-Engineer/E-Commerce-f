@@ -10,11 +10,16 @@ import {
   UPLOADING_IMAGE,
   UPLOADING_FILE,
   SET_FILE,
+  SET_LOADING,
   SAVE_INFO,
-  REMOVE_MODEL
+  REMOVE_MODEL,
+  SET_VARIANTS,
+  CHANGE_DEFAULT,
+  CHANGE_MODEL_RENDER,
+  UPLOAD_COMPLETE
 } from './constants'
 
-import { AnyAction } from '../../types/common'
+import { AnyAction, ModelVariant } from '../../types/common'
 
 export const openModalAction = (open: boolean): AnyAction => ({
   type: OPEN_MODAL,
@@ -58,4 +63,32 @@ export const saveInfoAction = (): AnyAction => ({
 export const removeModelAction = (key: string): AnyAction => ({
   type: REMOVE_MODEL,
   key
+})
+
+export const setLoadingAction = (loading: boolean): AnyAction => ({
+  type: SET_LOADING,
+  loading
+})
+
+export const setVariantsAction = (
+  variants: { [id: string]: ModelVariant },
+  defaultIndex: string
+): AnyAction => ({
+  type: SET_VARIANTS,
+  variants,
+  defaultIndex
+})
+
+export const changeDefault = (checked: boolean): AnyAction => ({
+  type: CHANGE_DEFAULT,
+  checked
+})
+
+export const selectModelAction = (id: string): AnyAction => ({
+  type: CHANGE_MODEL_RENDER,
+  id
+})
+
+export const uploadComplete = (): AnyAction => ({
+  type: UPLOAD_COMPLETE
 })

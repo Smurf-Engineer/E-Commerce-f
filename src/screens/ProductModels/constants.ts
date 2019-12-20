@@ -12,6 +12,11 @@ export const UPLOADING_FILE = `${namespace}/UPLOADING_FILE`
 export const SET_FILE = `${namespace}/SET_FILE`
 export const SAVE_INFO = `${namespace}/SAVE_INFO`
 export const REMOVE_MODEL = `${namespace}/REMOVE_MODEL`
+export const SET_LOADING = `${namespace}/SET_LOADING`
+export const SET_VARIANTS = `${namespace}/SET_VARIANTS`
+export const CHANGE_DEFAULT = `${namespace}/CHANGE_DEFAULT`
+export const CHANGE_MODEL_RENDER = `${namespace}/CHANGE_MODEL_RENDER`
+export const UPLOAD_COMPLETE = `${namespace}/UPLOAD_COMPLETE`
 
 export const validIcons = ['image/jpeg', 'image/png']
 export const validModels = ['.svg', '.jpg', '.jpeg', '.png', '.obj', '.mtl']
@@ -53,6 +58,15 @@ export const extraFiles = [
       {
         key: 'flatlock',
         extension: '.png'
+      }
+    ]
+  },
+  {
+    title: 'labelTitle',
+    options: [
+      {
+        key: 'label',
+        extension: '.jpg'
       }
     ]
   },

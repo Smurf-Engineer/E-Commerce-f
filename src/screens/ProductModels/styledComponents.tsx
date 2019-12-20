@@ -17,6 +17,7 @@ import AntdButton from 'antd/lib/button'
 
 interface DivProps {
   background?: boolean
+  active?: boolean
 }
 
 export const Container = styled.div`
@@ -162,8 +163,10 @@ export const ModelsContainers = styled.div`
 export const ModelBlock = styled.div`
   margin: 8px 28px;
   display: flex;
+  transition: all 0.7s;
+  border-bottom: ${({ active }: DivProps) =>
+    active ? `2px solid ${RED}` : `1px solid ${GRAY_LIGHT}`};
   padding-bottom: 12px;
-  border-bottom: 1px solid #dcdcdc;
 `
 
 export const Thumbnail = styled.img`
@@ -226,6 +229,21 @@ export const DeleteButton = styled.div`
   align-items: center;
   display: flex;
   cursor: pointer;
+`
+
+export const LoadingContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: ${({ active }: DivProps) => (active ? 2 : -1)};
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  transition: all 0.2s;
+  opacity: ${({ active }: DivProps) => (active ? 1 : 0)};
+  justify-content: center;
+  align-items: center;
 `
 
 interface ButtonWrapperProps {

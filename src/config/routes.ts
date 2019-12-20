@@ -54,7 +54,7 @@ const routes = [
     component: SignUpTest
   },
   {
-    path: '/admin/add-models',
+    path: '/admin/add-models/:id?',
     name: 'productModels',
     component: ProductModels
   },

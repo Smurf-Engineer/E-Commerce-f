@@ -1282,5 +1282,7 @@
   "components.FilesModal.zipper": "Zipper",
   "components.FilesModal.zipperWhite": "+ Zipper White File",
   "components.FilesModal.zipperBlack": "+ Zipper Black File",
-  "components.FilesModal.saveModel": "Save Model"
+  "components.FilesModal.saveModel": "Save Model",
+  "components.FilesModal.labelTitle": "Label",
+  "components.FilesModal.label": "+ Label File"
 }

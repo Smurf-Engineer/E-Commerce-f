@@ -11,28 +11,23 @@ import {
   UPLOADING_FILE,
   SET_FILE,
   SAVE_INFO,
-  REMOVE_MODEL
+  REMOVE_MODEL,
+  SET_LOADING,
+  SET_VARIANTS,
+  CHANGE_DEFAULT,
+  CHANGE_MODEL_RENDER,
+  UPLOAD_COMPLETE
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   openModal: false,
   tempModel: {},
-  selected: 0,
-  defaultModelIndex: 'test',
-  variants: {
-    test: {
-      name: 'This is a test',
-      default: true,
-      flatlock: 'flatlock.svg',
-      icon: ''
-    },
-    test2: {
-      name: 'This is normal model',
-      obj: 'OBJFile.obj',
-      icon: ''
-    }
-  }
+  selected: '',
+  modelRender: '',
+  loading: true,
+  defaultModelIndex: '',
+  variants: {}
 })
 
 const productModelsReducer: Reducer<any> = (state = initialState, action) => {
@@ -56,11 +51,38 @@ const productModelsReducer: Reducer<any> = (state = initialState, action) => {
     case SAVE_INFO: {
       const selected = state.get('selected')
       const tempModel = state.get('tempModel')
+      const isChecked = tempModel.get('default')
+      const defaultIndex = state.get('defaultModelIndex')
+      let newIndex = defaultIndex
+      if (isChecked) {
+        newIndex = selected
+      }
       return state.withMutations((map: any) => {
+        if (isChecked && defaultIndex) {
+          map.setIn(['variants', defaultIndex, 'default'], false)
+        }
+        map.set('defaultModelIndex', newIndex)
         map.set('openModal', false)
         map.setIn(['variants', selected], tempModel)
       })
     }
+    case SET_VARIANTS:
+      return state.merge({
+        loading: false,
+        variants: action.variants,
+        defaultModelIndex: action.defaultIndex
+      })
+    case UPLOAD_COMPLETE:
+      return state.merge({
+        loading: false,
+        openSuccess: true,
+        selected: '',
+        modelRender: ''
+      })
+    case CHANGE_MODEL_RENDER:
+      return state.set('modelRender', action.id)
+    case SET_LOADING:
+      return state.set('loading', action.loading)
     case REMOVE_MODEL:
       return state.deleteIn(['variants', action.key])
     case SET_FILE:
@@ -73,7 +95,8 @@ const productModelsReducer: Reducer<any> = (state = initialState, action) => {
       return state.setIn(['tempModel', 'icon'], 'loading')
     case CHANGE_NAME:
       return state.setIn(['tempModel', 'name'], action.name)
-
+    case CHANGE_DEFAULT:
+      return state.setIn(['tempModel', 'default'], action.checked)
     default:
       return state
   }

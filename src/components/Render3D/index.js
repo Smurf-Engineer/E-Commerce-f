@@ -364,6 +364,7 @@ class Render3D extends PureComponent {
       bibBrace,
       branding
     } = product
+
     /* Object and MTL load */
     if (obj && mtl) {
       const mtlLoader = new THREE.MTLLoader()

@@ -2,8 +2,9 @@
  * FilesModal Component - Created by Jesús Apodaca on 17/12/19.
  */
 import * as React from 'react'
-import Upload from 'antd/lib/upload'
+import Upload, { UploadChangeParam } from 'antd/lib/upload'
 import message from 'antd/lib/message'
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import {
   Title,
   FormContainer,
@@ -18,7 +19,8 @@ import {
   ModelIcon,
   Loading,
   SaveSection,
-  SaveButton
+  SaveButton,
+  DefaultButton
 } from './styledComponents'
 import { Message, ModelVariant } from '../../../types/common'
 import messages from './messages'
@@ -28,7 +30,9 @@ import { validIcons } from '../constants'
 interface Props {
   openModal: boolean
   tempModel: ModelVariant
+  defaultVariant: boolean
   saveInfoAction: () => void
+  changeDefault: (checked: boolean) => void
   setFileAction: (key: string, url: string) => void
   uploadFile: (file: File, key: string) => void
   uploadImageModel: (file: File) => void
@@ -56,10 +60,17 @@ export class FilesModal extends React.Component<Props, {}> {
     }
     return isValidType && isLt2M
   }
-  handleUploadIcon = async (event: any) => {
+  handleUploadIcon = async (event: UploadChangeParam) => {
     const { file } = event
     const { uploadImageModel } = this.props
     uploadImageModel(file)
+  }
+  handleCheck = (event: CheckboxChangeEvent) => {
+    const {
+      target: { checked }
+    } = event
+    const { changeDefault } = this.props
+    changeDefault(checked)
   }
   render() {
     const {
@@ -67,11 +78,12 @@ export class FilesModal extends React.Component<Props, {}> {
       formatMessage,
       uploadFile,
       setFileAction,
+      defaultVariant,
       saveInfoAction,
       requestClose,
       tempModel
     } = this.props
-    const { icon, name } = tempModel
+    const { icon, name, default: isDefault } = tempModel
     return (
       <Modal
         visible={openModal}
@@ -114,6 +126,13 @@ export class FilesModal extends React.Component<Props, {}> {
           <FileSection
             {...{ setFileAction, uploadFile, tempModel, formatMessage }}
           />
+          {!defaultVariant && (
+            <DefaultButton>
+              <Checkbox onChange={this.handleCheck} checked={isDefault}>
+                Set this as default
+              </Checkbox>
+            </DefaultButton>
+          )}
           <SaveSection onClick={saveInfoAction}>
             <SaveButton>{formatMessage(messages.saveModel)}</SaveButton>
           </SaveSection>
