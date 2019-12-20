@@ -219,6 +219,67 @@ export const EditButton = styled.div`
   }
 `
 
+export const TitleModal = styled.div`
+  color: ${GRAY_DARK};
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  margin-bottom: 14px;
+`
+
+export const Message = styled.div`
+  color: ${GRAY_DARK};
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-bottom: 32px;
+`
+
+export const AddDesigns = styled.div`
+  border-radius: 2px;
+  width: 100%;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  transition: all 0.25s;
+  background: ${BLUE};
+  color: ${WHITE};
+  &:hover {
+    background: ${BLUE_SOFT};
+    color: ${WHITE};
+  }
+`
+
+export const ProductInfo = styled.div`
+  border-radius: 2px;
+  margin-top: 16px;
+  border: 1px solid ${GRAY_LIGHT};
+  width: 100%;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  transition: all 0.25s;
+  &:hover {
+    background: ${BLUE_SOFT};
+    color: ${WHITE};
+  }
+`
+
 export const DeleteButton = styled.div`
   color: ${RED};
   font-family: 'Avenir Next';

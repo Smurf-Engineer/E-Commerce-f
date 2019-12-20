@@ -22,6 +22,7 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   openModal: false,
+  openSuccess: false,
   tempModel: {},
   selected: '',
   modelRender: '',

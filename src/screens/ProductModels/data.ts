@@ -37,3 +37,14 @@ export const saveProductsMutation = graphql(
   `,
   { name: 'saveProductModels' }
 )
+
+export const getProductQuery = gql`
+  query GetProductByID($id: Int!) {
+    product(id: $id, onlyActive: false) {
+      id
+      code
+      yotpoId: yotpo_id
+      name
+    }
+  }
+`

@@ -4,6 +4,7 @@
 import * as React from 'react'
 import Helmet from 'react-helmet'
 import message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import * as productModelsActions from './actions'
 import * as apiActions from './api'
@@ -11,7 +12,7 @@ import * as thunkActions from './thunkActions'
 import messages from './messages'
 import FilesModal from './FilesModal'
 import { connect } from 'react-redux'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import {
   Container,
   Header,
@@ -35,7 +36,11 @@ import {
   EditButton,
   Buttons,
   DeleteButton,
-  LoadingContainer
+  LoadingContainer,
+  Message,
+  AddDesigns,
+  ProductInfo,
+  TitleModal
 } from './styledComponents'
 import Render3D from '../../components/Render3D'
 import logo from '../../assets/jakroo_logo.svg'
@@ -46,12 +51,13 @@ import { threeDScripts } from '../../utils/scripts'
 import { ModelVariant } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
-import { saveProductsMutation } from './data'
+import { saveProductsMutation, getProductQuery } from './data'
 
 interface Props {
   intl: InjectedIntl
   openModal: boolean
   match: any
+  history: any
   client: any
   loading: boolean
   tempModel: ModelVariant
@@ -59,6 +65,8 @@ interface Props {
   defaultModelIndex: string
   selected: string
   modelRender: string
+  data: any
+  openSuccess: boolean
   saveInfoAction: () => void
   setLoadingAction: (loading: boolean) => void
   selectModelAction: (id: string) => void
@@ -167,6 +175,20 @@ export class ProductModels extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  handleAddDesigns = () => {
+    const {
+      data: {
+        product: { code }
+      },
+      history
+    } = this.props
+    history.push(`/admin/publishing-tool/${code}`)
+  }
+  handleProductInfo = () => {
+    const { history, match } = this.props
+    const id = get(match, 'params.id', '')
+    history.push(`/admin/products/details/${id}`)
+  }
   render() {
     const {
       intl,
@@ -174,6 +196,7 @@ export class ProductModels extends React.Component<Props, {}> {
       changeNameAction,
       variants,
       uploadFile,
+      openSuccess,
       loading,
       selected,
       modelRender,
@@ -310,12 +333,32 @@ export class ProductModels extends React.Component<Props, {}> {
           defaultVariant={defaultModelIndex === selected}
           requestClose={this.handleCloseModal}
         />
+        <Modal
+          width="412px"
+          visible={openSuccess}
+          footer={null}
+          closable={false}
+          destroyOnClose={true}
+        >
+          <TitleModal>{formatMessage(messages.modelSaved)}</TitleModal>
+          <Message>{formatMessage(messages.successQuestion)}</Message>
+          <AddDesigns onClick={this.handleAddDesigns}>
+            {formatMessage(messages.addNewDesigns)}
+          </AddDesigns>
+          <ProductInfo onClick={this.handleProductInfo}>
+            {formatMessage(messages.goToInfo)}
+          </ProductInfo>
+        </Modal>
         <LoadingContainer active={loading}>
           <Spin size="large" />
         </LoadingContainer>
       </Container>
     )
   }
+}
+
+interface OwnProps {
+  match?: any
 }
 
 const mapStateToProps = (state: any) => {
@@ -329,6 +372,11 @@ const ProductModelsEnhance = compose(
   withApollo,
   injectIntl,
   saveProductsMutation,
+  graphql(getProductQuery, {
+    options: ({ match }: OwnProps) => ({
+      variables: { id: get(match, 'params.id', '') }
+    })
+  }),
   connect(mapStateToProps, {
     ...productModelsActions,
     ...thunkActions,
