@@ -117,7 +117,8 @@ class Render3D extends PureComponent {
     const {
       data: { loading, error, design = {} },
       actualImage = '',
-      colorAccessories
+      colorAccessories,
+      product: newProduct
     } = nextProps
     const {
       product,
@@ -129,12 +130,17 @@ class Render3D extends PureComponent {
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
     const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories)
-
-    if (isProduct && product) {
-      if (imageChanged || accessoriesChanged || firstLoad) {
+    const productChanged =
+      product && newProduct && product.obj !== newProduct.obj
+    const productToRender = productChanged ? newProduct : product
+    if (productChanged && this.renderer) {
+      this.removeObject()
+    }
+    if (isProduct && productToRender) {
+      if (imageChanged || accessoriesChanged || firstLoad || productChanged) {
         setTimeout(() => {
           this.renderProduct(
-            product,
+            productToRender,
             actualImage,
             imageChanged,
             colorAccessories
@@ -470,7 +476,6 @@ class Render3D extends PureComponent {
               children,
               ({ name }) => name === RED_TAG
             )
-            console.log('children:', children)
             if (labelIndex >= 0) {
               object.children[labelIndex].material.color.set(WHITE)
             }

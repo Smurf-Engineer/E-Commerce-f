@@ -84,7 +84,6 @@ interface Props {
   saveProductModels: (variables: {}) => Promise<any>
 }
 export class ProductModels extends React.Component<Props, {}> {
-  render3D: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     const {
@@ -282,36 +281,28 @@ export class ProductModels extends React.Component<Props, {}> {
                   </ModelBlock>
                 </>
               )}
-              {variants.length && (
-                <>
-                  <TopMessage>
-                    {formatMessage(messages.modelVariants)}
-                  </TopMessage>
-                  {Object.keys(variants).map(
-                    (id: string, index) =>
-                      !variants[id].default && (
-                        <ModelBlock active={modelRender === id} key={index}>
-                          <Thumbnail
-                            onClick={this.selectModel(id)}
-                            src={variants[id].icon || jakrooLogo}
-                          />
-                          <Details>
-                            <Name>{variants[id].name}</Name>
-                            <Buttons>
-                              <EditButton onClick={this.handleEdit(id)}>
-                                {formatMessage(messages.edit)}
-                              </EditButton>
-                              <DeleteButton
-                                onClick={this.handleRemoveModel(id)}
-                              >
-                                {formatMessage(messages.delete)}
-                              </DeleteButton>
-                            </Buttons>
-                          </Details>
-                        </ModelBlock>
-                      )
-                  )}
-                </>
+              <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
+              {Object.keys(variants).map(
+                (id: string, index) =>
+                  !variants[id].default && (
+                    <ModelBlock active={modelRender === id} key={index}>
+                      <Thumbnail
+                        onClick={this.selectModel(id)}
+                        src={variants[id].icon || jakrooLogo}
+                      />
+                      <Details>
+                        <Name>{variants[id].name}</Name>
+                        <Buttons>
+                          <EditButton onClick={this.handleEdit(id)}>
+                            {formatMessage(messages.edit)}
+                          </EditButton>
+                          <DeleteButton onClick={this.handleRemoveModel(id)}>
+                            {formatMessage(messages.delete)}
+                          </DeleteButton>
+                        </Buttons>
+                      </Details>
+                    </ModelBlock>
+                  )
               )}
             </ModelsContainers>
           </Side>
@@ -321,12 +312,12 @@ export class ProductModels extends React.Component<Props, {}> {
             </SaveButton>
             {selectedRender ? (
               <Render3D
+                dynamic={true}
                 designId={0}
                 customProduct={true}
                 isProduct={true}
                 textColor="white"
                 isPhone={false}
-                modelSize={160}
                 {...{ product }}
               />
             ) : (
