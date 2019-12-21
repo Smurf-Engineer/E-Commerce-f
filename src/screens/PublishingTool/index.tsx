@@ -6,6 +6,7 @@ import Helmet from 'react-helmet'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { FormattedMessage } from 'react-intl'
 import Modal from 'antd/lib/modal'
+import PlaceholdersRender3D from '../../components/PlaceholdersRender3D'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
 import findIndex from 'lodash/findIndex'
@@ -16,12 +17,19 @@ import * as publishingToolApi from './api'
 import Tab from '../../components/Tab'
 import ThemeModal from '../../components/ThemeModal'
 import DesignModal from '../../components/DesignModal'
-import { deleteThemeMutation, deleteStyleMutation } from './data'
+import {
+  deleteThemeMutation,
+  deleteStyleMutation,
+  getColorsQuery,
+  uploadThumbnailMutation,
+  saveDesignMutation
+} from './data'
 import { getProductFromCode } from './Themes/data'
 import Themes from './Themes'
+import Design from './Design'
 import messages from './messages'
 import { connect } from 'react-redux'
-import { compose, withApollo, graphql } from 'react-apollo'
+import { compose, withApollo, graphql, QueryProps } from 'react-apollo'
 import {
   Container,
   Header,
@@ -44,11 +52,20 @@ import {
   MessagePayload,
   ModelConfig,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Colors,
+  CanvasType
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 
 const { confirm } = Modal
+
+type Thumbnail = {
+  style: {
+    image: string
+  }
+}
+
 interface Props {
   intl: InjectedIntl
   productToSearch: string
@@ -61,6 +78,18 @@ interface Props {
   designName: string
   uploading: boolean
   selectedDesign: number
+  colorIdeas: DesignObject[]
+  design: ModelDesign
+  colorIdeaItem: number
+  colorsList: Data
+  colorBlock: number
+  colorBlockHovered: number
+  colors: string[]
+  modelConfig: ModelConfig
+  canvas: CanvasType
+  selectedElement: string
+  loadingModel: boolean
+  uploadingThumbnail: boolean
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
   onChangeThemeAction: (id: number, section: string) => void
@@ -78,12 +107,32 @@ interface Props {
   ) => void
   deleteStyle: (variables: {}) => Promise<MessagePayload>
   unselectAction: (section: string) => void
+  setColorIdeaItemAction: (item: number) => void
+  setColorAction: (color: string) => void
+  setColorBlockAction: (index: number) => void
+  setHoverColorBlockAction: (index: number) => void
+  setColorIdeaNameAction: (
+    name: string,
+    updateColors: boolean,
+    item?: number
+  ) => void
+  setInspirationColorAction: (index: number) => void
+  setLoadingAction: (loading: boolean) => void
+  addColorIdeaAction: () => void
+  uploadThumbnail: (variables: {}) => Promise<Thumbnail>
+  setThumbnailAction: (item: number, thumbnail: string) => void
+  setUploadingThumbnailAction: (uploadingItem: boolean) => void
+  saveDesign: (variables: {}) => Promise<Design>
 }
 
 const steps = ['theme', 'designCustomization']
 
+interface Data extends QueryProps {
+  colorsResult: Colors
+}
+
 export class PublishingTool extends React.Component<Props, {}> {
-  render3D: any
+  render3DPlaceholder: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
   }
@@ -185,7 +234,26 @@ export class PublishingTool extends React.Component<Props, {}> {
       }
     })
   }
-
+  handleUploadThumbnail = async (item: number, image: string) => {
+    const {
+      uploadThumbnail,
+      setThumbnailAction,
+      setUploadingThumbnailAction
+    } = this.props
+    try {
+      const response = await uploadThumbnail({ variables: { image } })
+      const thumbnailUrl = get(response, 'data.style.image', '')
+      setThumbnailAction(item, thumbnailUrl)
+    } catch (e) {
+      setUploadingThumbnailAction(false)
+      message.error(e.message)
+    }
+  }
+  handleOnSaveThumbnail = (item: number, colors: string[]) => {
+    if (this.render3DPlaceholder) {
+      this.render3DPlaceholder.saveThumbnail(item, colors)
+    }
+  }
   render() {
     const {
       intl,
@@ -207,7 +275,28 @@ export class PublishingTool extends React.Component<Props, {}> {
       uploadDesignAction,
       uploading,
       selectedDesign,
-      setModelAction
+      setModelAction,
+      colorIdeas,
+      design,
+      setColorIdeaItemAction,
+      colorIdeaItem,
+      colorsList,
+      colorBlock,
+      setColorBlockAction,
+      setColorAction,
+      setHoverColorBlockAction,
+      colorBlockHovered,
+      setColorIdeaNameAction,
+      setInspirationColorAction,
+      colors,
+      canvas,
+      selectedElement,
+      setLoadingAction,
+      loadingModel,
+      modelConfig,
+      addColorIdeaAction,
+      setUploadingThumbnailAction,
+      uploadingThumbnail
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
@@ -243,23 +332,98 @@ export class PublishingTool extends React.Component<Props, {}> {
           <View />
         </TopMenu>
         <Layout>
-          <Themes
-            {...{
-              formatMessage,
-              productCode,
-              selectedTheme,
-              currentPage,
-              selectedDesign
-            }}
-            setProductCode={setProductCodeAction}
-            onChangeTheme={onChangeThemeAction}
-            onEditTheme={setThemeToEditAction}
-            onDeleteTheme={this.handleOnDeleteTheme}
-            onDeleteDesign={this.handleOnDeleteDesign}
-            goToPage={setCurrentPageAction}
-            toggleAddDesign={toggleAddDesignAction}
-            onLoadDesign={setModelAction}
-          />
+          {currentTab === SETTINGS_TAB ? (
+            <Themes
+              {...{
+                formatMessage,
+                productCode,
+                selectedTheme,
+                currentPage,
+                selectedDesign
+              }}
+              setProductCode={setProductCodeAction}
+              onChangeTheme={onChangeThemeAction}
+              onEditTheme={setThemeToEditAction}
+              onDeleteTheme={this.handleOnDeleteTheme}
+              onDeleteDesign={this.handleOnDeleteDesign}
+              goToPage={setCurrentPageAction}
+              toggleAddDesign={toggleAddDesignAction}
+              onLoadDesign={setModelAction}
+            />
+          ) : (
+            <Design
+              {...{
+                formatMessage,
+                colorIdeas,
+                design,
+                colorIdeaItem,
+                colorsList,
+                colorBlock,
+                colorBlockHovered,
+                colors,
+                uploadingThumbnail
+              }}
+              onEditColorIdea={setColorIdeaItemAction}
+              onSelectColorBlock={setColorBlockAction}
+              onSelectColor={setColorAction}
+              onHoverColor={setHoverColorBlockAction}
+              onUpdateColorIdeaName={setColorIdeaNameAction}
+              onSelectInspirationColor={setInspirationColorAction}
+              onAddColorIdea={addColorIdeaAction}
+              onSaveThumbnail={this.handleOnSaveThumbnail}
+            />
+          )}
+          {!!colors.length && (
+            <PlaceholdersRender3D
+              ref={placeHolder => (this.render3DPlaceholder = placeHolder)}
+              {...{
+                colors,
+                design,
+                colorBlockHovered,
+                styleColors: [],
+                onLoadModel: setLoadingAction,
+                loadingModel,
+                undoEnabled: false,
+                redoEnabled: false,
+                formatMessage,
+                currentStyle: design,
+                onApplyCanvasEl: null,
+                onSelectEl: null,
+                onRemoveEl: null,
+                onUnmountTab: null,
+                product: modelConfig,
+                stitchingColor: '#000',
+                bindingColor: 'black',
+                zipperColor: 'black',
+                bibColor: 'black',
+                onCanvasElementResized: null,
+                onCanvasElementDragged: null,
+                onCanvasElementRotated: null,
+                onCanvasElementTextChanged: null,
+                onReApplyImageEl: null,
+                onCanvasElementDuplicated: null,
+                designHasChanges: null,
+                canvas,
+                selectedElement,
+                onSetEditConfig: null,
+                onSetCanvasObject: null,
+                originalPaths: null,
+                onResetEditing: null,
+                onSelectedItem: null,
+                selectedItem: null,
+                redoChanges: null,
+                undoChanges: null,
+                saveStyleCanvas: null,
+                saveDesignLoading: null
+              }}
+              onSaveThumbnail={this.handleUploadThumbnail}
+              isMobile={false}
+              isUserAuthenticated={true}
+              responsive={false}
+              onUploadingThumbnail={setUploadingThumbnailAction}
+              onSaveDesign={() => alert('a')}
+            />
+          )}
         </Layout>
         <ThemeModal
           {...{ productCode, formatMessage }}
@@ -282,11 +446,26 @@ export class PublishingTool extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => state.get('publishingTool').toJS()
 
+type OwnProps = {
+  colorsList?: Data
+}
+
 const PublishingToolEnhance = compose(
   withApollo,
   injectIntl,
   graphql(deleteThemeMutation, { name: 'deleteTheme' }),
   graphql(deleteStyleMutation, { name: 'deleteStyle' }),
+  graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
+  graphql(saveDesignMutation, { name: 'saveDesign' }),
+  graphql<Data>(getColorsQuery, {
+    options: (ownprops: OwnProps) => {
+      const { colorsList } = ownprops
+      return {
+        skip: colorsList
+      }
+    },
+    name: 'colorsList'
+  }),
   connect(mapStateToProps, {
     ...publishingToolActions,
     ...publishingToolApi

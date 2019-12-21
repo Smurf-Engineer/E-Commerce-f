@@ -63,7 +63,8 @@ import {
   CAMERA_MAX_ZOOM,
   HIGH_RESOLUTION_CANVAS,
   REGULAR_CORNER_SIZE,
-  HIGH_RESOLUTION_CORNER_SIZE
+  HIGH_RESOLUTION_CORNER_SIZE,
+  modelPositions
 } from './config'
 import {
   MESH,
@@ -1195,7 +1196,8 @@ class Render3D extends PureComponent {
       formatMessage,
       canvas,
       selectedElement,
-      saveDesignLoading
+      saveDesignLoading,
+      onSaveDesign
     } = this.props
 
     let widthInCm = 0
@@ -1231,10 +1233,14 @@ class Render3D extends PureComponent {
 
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
-        <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
-          {formatMessage(messages.saveButton)}
-        </Button>
-        <ButtonWrapper />
+        <ButtonWrapper>
+          <Button type="ghost" onClick={onSaveDesign}>
+            {formatMessage(messages.saveAsNew)}
+          </Button>
+          <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
+            {formatMessage(messages.updateDesign)}
+          </Button>
+        </ButtonWrapper>
         {!!selectedGraphicElement && (
           <MeasurementBox>
             <MeasurementLabel>
@@ -2204,6 +2210,37 @@ class Render3D extends PureComponent {
     size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
     size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
     return size
+  }
+  setFrontFaceModel = () => {
+    if (this.camera) {
+      const {
+        front: { x, y, z }
+      } = modelPositions
+      this.camera.position.set(x, y, z)
+      this.controls.update()
+    }
+  }
+
+  takeScreenshot = () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.3)
+        resolve(thumbnail)
+      }, 800)
+    })
+  saveThumbnail = async (item, colors = []) => {
+    this.setFrontFaceModel()
+    const clonedColors = [...colors]
+    this.setupColors(clonedColors.reverse())
+    try {
+      const { onSaveThumbnail, onUploadingThumbnail } = this.props
+      onUploadingThumbnail(true)
+      const thumbnail = await this.takeScreenshot()
+      onSaveThumbnail(item, thumbnail)
+    } catch (error) {
+      console.error(error)
+      onUploadingThumbnail(false)
+    }
   }
 }
 

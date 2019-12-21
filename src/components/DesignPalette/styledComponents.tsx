@@ -11,6 +11,8 @@ export const SaveButton = styled(Button)`
 
 export const Container = styled.div`
   position: relative;
+  width: 100%;
+  padding: 10px;
 `
 
 export const Text = styled.div`
@@ -21,6 +23,8 @@ export const ColorButtons = styled.div`
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
+  margin-top: 10px;
+  width: 140%;
 `
 
 export const Name = styled.div`
@@ -55,8 +59,9 @@ export const Oval = styled.div`
 `
 
 export const Image = styled.img`
-  margin: 0 8px;
-  padding: 2px;
+  margin-bottom: 8px;
+  margin-top: 0;
+  margin-right: 10px;
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -66,17 +71,16 @@ export const Image = styled.img`
 export const Info = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `
 
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `
 
 export const Buttons = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: row;
 `

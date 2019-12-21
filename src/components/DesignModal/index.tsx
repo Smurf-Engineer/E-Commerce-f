@@ -29,6 +29,7 @@ interface Props {
   open: boolean
   name: string
   uploading: boolean
+  colorBlock: number
   onCancel: () => void
   onUpdateName: (name: string) => void
   addDesign: (variables: {}) => Promise<Style>

@@ -66,14 +66,14 @@ const PaletteCard = ({
         <Info>
           <Name>{name}</Name>
           <ColorButtons>{colorButtons}</ColorButtons>
-          <Buttons>
-            <Button onClick={handleOnEditIdea}>EDIT</Button>
-            <SaveButton disabled={loading} onClick={handleOnSelectPalette}>
-              {buttonLabel}
-            </SaveButton>
-          </Buttons>
         </Info>
       </InfoContainer>
+      <Buttons>
+        <Button onClick={handleOnEditIdea}>EDIT</Button>
+        <SaveButton disabled={loading} onClick={handleOnSelectPalette}>
+          {buttonLabel}
+        </SaveButton>
+      </Buttons>
       <Divider />
       {showDelete && (
         <DeleteButton onClick={handleOnDelete}>

@@ -17,6 +17,16 @@ export const SET_UPLOADING_DESIGN_SUCCESS = `${namespace}/SET_UPLOADING_DESIGN_S
 export const ON_SELECT_TAB = `${namespace}/ON_SELECT_TAB`
 export const SET_MODEL_ACTION = `${namespace}/SET_MODEL_ACTION`
 export const UNSELECT = `${namespace}/UNSELECT`
+export const EDIT_COLOR_IDEA_ACTION = `${namespace}/EDIT_COLOR_IDEA_ACTION`
+export const SET_COLOR_BLOCK_ACTION = `${namespace}/SET_COLOR_BLOCK_ACTION`
+export const SET_COLOR_ACTION = `${namespace}/SET_COLOR_ACTION`
+export const COLOR_BLOCK_HOVERED_ACTION = `${namespace}/COLOR_BLOCK_HOVERED_ACTION`
+export const UPDATE_COLOR_IDEA_NAME_ACTION = `${namespace}/UPDATE_COLOR_IDEA_NAME_ACTION`
+export const SET_INSPIRATION_COLOR_ACTION = `${namespace}/SET_INSPIRATION_COLOR_ACTION`
+export const SET_LOADING_MODEL = `${namespace}/SET_LOADING_MODEL`
+export const ADD_COLOR_IDEA_ACTION = `${namespace}/ADD_COLOR_IDEA_ACTION`
+export const SET_THUMBNAIL_ACTION = `${namespace}/SET_THUMBNAIL_ACTION`
+export const SET_UPLOADING_THUMBNAIL_ACTION = `${namespace}/SET_UPLOADING_THUMBNAIL_ACTION`
 
 export const THEME_PAGE = 0
 export const DESIGN_PAGE = 1
