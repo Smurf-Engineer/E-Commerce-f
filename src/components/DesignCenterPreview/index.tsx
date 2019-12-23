@@ -154,8 +154,9 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
         />
         <Modal
           visible={openAddToStoreModal}
-          closable={false}
           footer={null}
+          onCancel={this.closeAddToStoreModal}
+          destroyOnClose={true}
           maskClosable={true}
         >
           <AddToTeamStore
@@ -176,6 +177,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
   handleOnKeepShoping = () => {
     const { history } = this.props
     history.push('/product-catalogue')
+  }
+
+  closeAddToStoreModal = () => {
+    const { openAddToTeamStoreModalAction } = this.props
+    openAddToTeamStoreModalAction(false)
   }
 
   openAddToStoreModal = () => {
