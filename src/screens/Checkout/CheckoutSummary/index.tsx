@@ -139,7 +139,6 @@ const CheckoutSummary = ({
     country,
     productsPrices
   )
-
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
   let totalSum = 0

@@ -668,7 +668,6 @@ class Checkout extends React.Component<Props, {}> {
       },
       currentCurrency
     } = this.props
-
     const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
     const quantity = quantities[priceRangeToApply]
     return cart.map(({ product, itemDetails }: CartItems) => {
@@ -679,7 +678,6 @@ class Checkout extends React.Component<Props, {}> {
         abbreviation: currentCurrency,
         quantity
       })
-
       const designsPrice = {
         yotpoId: product.yotpoId,
         price: currencyPrice.price,
