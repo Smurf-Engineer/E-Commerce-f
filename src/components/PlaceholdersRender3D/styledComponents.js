@@ -21,7 +21,7 @@ export const fadeIn = keyframes`
 
 export const Container = styled.div`
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 106px);
   overflow: auto;
   position: relative;
   justify-content: center;

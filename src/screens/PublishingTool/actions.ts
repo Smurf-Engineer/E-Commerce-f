@@ -25,7 +25,8 @@ import {
   SET_LOADING_MODEL,
   ADD_COLOR_IDEA_ACTION,
   SET_THUMBNAIL_ACTION,
-  SET_UPLOADING_THUMBNAIL_ACTION
+  SET_UPLOADING_THUMBNAIL_ACTION,
+  OPEN_SAVE_DESIGN_ACTION
 } from './constants'
 
 import {
@@ -169,4 +170,9 @@ export const setUploadingThumbnailAction = (
 ): AnyAction => ({
   type: SET_UPLOADING_THUMBNAIL_ACTION,
   uploadingItem
+})
+
+export const openSaveDesignAction = (open: boolean) => ({
+  type: OPEN_SAVE_DESIGN_ACTION,
+  open
 })

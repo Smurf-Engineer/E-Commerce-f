@@ -17,6 +17,7 @@ import * as publishingToolApi from './api'
 import Tab from '../../components/Tab'
 import ThemeModal from '../../components/ThemeModal'
 import DesignModal from '../../components/DesignModal'
+import SaveModal from './SaveModal'
 import {
   deleteThemeMutation,
   deleteStyleMutation,
@@ -66,6 +67,12 @@ type Thumbnail = {
   }
 }
 
+type Design = {
+  design: {
+    message: string
+  }
+}
+
 interface Props {
   intl: InjectedIntl
   productToSearch: string
@@ -90,6 +97,7 @@ interface Props {
   selectedElement: string
   loadingModel: boolean
   uploadingThumbnail: boolean
+  openSaveDesign: boolean
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
   onChangeThemeAction: (id: number, section: string) => void
@@ -123,6 +131,7 @@ interface Props {
   setThumbnailAction: (item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploadingItem: boolean) => void
   saveDesign: (variables: {}) => Promise<Design>
+  openSaveDesignAction: (open: boolean) => void
 }
 
 const steps = ['theme', 'designCustomization']
@@ -254,6 +263,23 @@ export class PublishingTool extends React.Component<Props, {}> {
       this.render3DPlaceholder.saveThumbnail(item, colors)
     }
   }
+  handleOpenModal = () => {
+    const { openSaveDesignAction, productCode, modelConfig } = this.props
+    if (!productCode) {
+      message.error('Please enter a product code')
+      return
+    }
+    if (!modelConfig) {
+      message.error('Upload model files first')
+      return
+    }
+
+    openSaveDesignAction(true)
+  }
+  closeSaveDesignModal = () => {
+    const { openSaveDesignAction } = this.props
+    openSaveDesignAction(false)
+  }
   render() {
     const {
       intl,
@@ -296,7 +322,8 @@ export class PublishingTool extends React.Component<Props, {}> {
       modelConfig,
       addColorIdeaAction,
       setUploadingThumbnailAction,
-      uploadingThumbnail
+      uploadingThumbnail,
+      openSaveDesign
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
@@ -421,7 +448,7 @@ export class PublishingTool extends React.Component<Props, {}> {
               isUserAuthenticated={true}
               responsive={false}
               onUploadingThumbnail={setUploadingThumbnailAction}
-              onSaveDesign={() => alert('a')}
+              onSaveDesign={this.handleOpenModal}
             />
           )}
         </Layout>
@@ -438,6 +465,16 @@ export class PublishingTool extends React.Component<Props, {}> {
           open={designModalOpen}
           name={designName}
           onSave={uploadDesignAction}
+        />
+        <SaveModal
+          visible={openSaveDesign}
+          designName={design.name}
+          requestClose={this.closeSaveDesignModal}
+          onDesignName={this.onUpdateDesignName}
+          formatMessage={formatMessage}
+          saveDesign={this.onConfirmDesignToSave}
+          uploadingThumbnail={false}
+          saveDesignLoading={this.saveDesignLoading}
         />
       </Container>
     )

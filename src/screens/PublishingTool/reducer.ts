@@ -29,6 +29,7 @@ import {
   ADD_COLOR_IDEA_ACTION,
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
+  OPEN_SAVE_DESIGN_ACTION,
   Sections
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -67,7 +68,8 @@ export const initialState = fromJS({
   },
   selectedElement: '',
   loadingModel: false,
-  uploadingThumbnail: false
+  uploadingThumbnail: false,
+  openSaveDesign: false
 })
 
 const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -261,6 +263,8 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploadingItem)
+    case OPEN_SAVE_DESIGN_ACTION:
+      return state.set('openSaveDesign', action.open)
     default:
       return state
   }

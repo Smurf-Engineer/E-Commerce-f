@@ -27,6 +27,7 @@ export const SET_LOADING_MODEL = `${namespace}/SET_LOADING_MODEL`
 export const ADD_COLOR_IDEA_ACTION = `${namespace}/ADD_COLOR_IDEA_ACTION`
 export const SET_THUMBNAIL_ACTION = `${namespace}/SET_THUMBNAIL_ACTION`
 export const SET_UPLOADING_THUMBNAIL_ACTION = `${namespace}/SET_UPLOADING_THUMBNAIL_ACTION`
+export const OPEN_SAVE_DESIGN_ACTION = `${namespace}/OPEN_SAVE_DESIGN_ACTION`
 
 export const THEME_PAGE = 0
 export const DESIGN_PAGE = 1
