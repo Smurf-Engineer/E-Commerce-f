@@ -77,3 +77,12 @@ export const EU_SUBSIDIARY_COUNTRIES = [
   COUNTRY_CODE_IT,
   COUNTRY_CODE_FR
 ]
+
+export const quantities = [
+  'Personal',
+  '2-5',
+  '6-24',
+  '25-49',
+  '50-99',
+  '100-249'
+]

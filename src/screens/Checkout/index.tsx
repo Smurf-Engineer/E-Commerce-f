@@ -19,7 +19,7 @@ import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
-import { CheckoutTabs, PaymentOptions } from './constants'
+import { CheckoutTabs, PaymentOptions, quantities } from './constants'
 
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
@@ -668,14 +668,18 @@ class Checkout extends React.Component<Props, {}> {
       },
       currentCurrency
     } = this.props
+
+    const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
+    const quantity = quantities[priceRangeToApply]
     return cart.map(({ product, itemDetails }: CartItems) => {
       // Check for fixed prices
       const productPriceRanges = get(product, 'priceRange', [])
       // get prices from currency
       const currencyPrice = find(productPriceRanges, {
         abbreviation: currentCurrency,
-        quantity: 'Personal'
+        quantity
       })
+
       const designsPrice = {
         yotpoId: product.yotpoId,
         price: currencyPrice.price,
@@ -888,13 +892,10 @@ const CheckoutEnhance = compose(
   AddAddressMutation,
   PlaceOrderMutation,
   withApollo,
-  connect(
-    mapStateToProps,
-    {
-      ...checkoutActions,
-      getTotalItemsIncart
-    }
-  )
+  connect(mapStateToProps, {
+    ...checkoutActions,
+    getTotalItemsIncart
+  })
 )(Checkout)
 
 export default CheckoutEnhance

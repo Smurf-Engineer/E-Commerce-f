@@ -55,13 +55,6 @@ export const getTaxesAndDiscount = (
               productsPrices,
               productObject => productObject.yotpoId === product
             )
-            /* let discountToApply = 0
-            if (itemForDiscount) {
-              discountToApply =
-                itemForDiscount.price *
-                (Number(rate) / 100) *
-                itemForDiscount.quantity
-            } */
             return (
               totalDiscount +
               itemForDiscount.price *
