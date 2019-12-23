@@ -57,7 +57,7 @@
   "components.addToCartButton.validationMessage": "Please select gender, color, size and fit style!",
   "components.addToCartButton.validationMessageProdPage": "Please select gender, size and fit style!",
   "components.addToCartButton.successfulAddMessage": "{name} has been successfully added to cart!",
-  "components.DesignCenterHeader.back": "Back to Jakroo",
+  "components.DesignCenterHeader.back": "Back",
   "components.DesignCenterHeader.date": "Estimated Delivery Date: {deliveryDays}",
   "components.DesignCenterTabs.theme": "Collections",
   "components.DesignCenterTabs.style": "Design",
@@ -1279,5 +1279,8 @@
   "components.SimpleTable.name": "Name",
   "components.SimpleTable.delete": "Delete",
   "components.SimpleTable.clientId": "Client ID",
-  "components.SimpleTable.email": "Email"
+  "components.SimpleTable.email": "Email",
+  "components.TeamStoreDetails.delete": "Delete",
+  "components.TeamStoreDetails.deleteDescription": "This action will delete the team store including any information related to it only if there is no order in progress.",
+  "components.TeamStoreDetails.deleteQuestion": "Are you sure you want to delete?"
 }
