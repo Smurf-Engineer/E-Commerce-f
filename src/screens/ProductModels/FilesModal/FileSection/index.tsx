@@ -48,7 +48,7 @@ export class FileSection extends React.Component<Props, {}> {
     }
     return isValidType
   }
-  handleUploadFile = async (event: any) => {
+  handleUploadFile = (event: any) => {
     const {
       file,
       data: { key }

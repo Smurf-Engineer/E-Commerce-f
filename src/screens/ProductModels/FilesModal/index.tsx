@@ -60,7 +60,7 @@ export class FilesModal extends React.Component<Props, {}> {
     }
     return isValidType && isLt2M
   }
-  handleUploadIcon = async (event: UploadChangeParam) => {
+  handleUploadIcon = (event: UploadChangeParam) => {
     const { file } = event
     const { uploadImageModel } = this.props
     uploadImageModel(file)
