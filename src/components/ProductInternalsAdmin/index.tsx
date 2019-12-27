@@ -45,7 +45,7 @@ import {
   MessagePayload,
   UploadFile
 } from '../../types/common'
-import { INTERNALS_LIMIT } from './constants'
+import { INTERNALS_LIMIT, CSV_EXTENSION } from './constants'
 import Spin from 'antd/lib/spin'
 import Icon from 'antd/lib/icon'
 
@@ -159,7 +159,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
           </CsvLoader>
         ) : (
           <Upload
-            accept=".csv"
+            accept={CSV_EXTENSION}
             showUploadList={false}
             customRequest={this.uploadCsv}
             beforeUpload={this.beforeUpload}
@@ -223,7 +223,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
     if (file) {
       const { name } = file
       const fileExtension = getFileExtension(name)
-      if (fileExtension !== '.csv') {
+      if (fileExtension !== CSV_EXTENSION) {
         message.error(formatMessage(messages.invalidFormat))
         return false
       }
