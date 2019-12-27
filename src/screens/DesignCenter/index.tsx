@@ -107,6 +107,7 @@ import DesignCheckModal from '../../components/DesignCheckModal'
 import moment from 'moment'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
+import clone from 'lodash/clone'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -745,7 +746,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       !tabChanged && !dataProduct ? CustomizeTabIndex : currentTab
     let loadingData = true && !dataProduct
     let isEditing = !!dataDesign
-    let productConfig = product
+    let productConfig = clone(product)
     let currentStyle = style
     let proDesignModel
     if (dataDesign && dataDesign.designData) {
@@ -778,12 +779,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       }
       tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
-      if (selectedVariant !== -1) {
-        const { obj, mtl } = variants[selectedVariant]
-        designProduct.obj = obj
-        designProduct.mtl = mtl
-      }
-      productConfig = designProduct
+      productConfig = clone(designProduct)
       currentStyle = { ...designStyle }
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig

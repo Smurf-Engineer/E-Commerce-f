@@ -159,13 +159,14 @@ class Render3D extends PureComponent {
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
       bibColor: oldBibColor,
-      product: { obj: oldObj }
+      selectedVariant: oldSelected
     } = this.props
     const {
       colors: nextColors,
       styleColors,
       colorBlockHovered,
       stitchingColor,
+      selectedVariant,
       bindingColor,
       zipperColor,
       bibColor,
@@ -210,7 +211,9 @@ class Render3D extends PureComponent {
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
     }
-    if (oldObj !== newProduct.obj) {
+    console.log('selectedVariant:', selectedVariant)
+    console.log('oldSelected:', oldSelected)
+    if (selectedVariant !== oldSelected) {
       this.clearScene()
       this.render3DModel(newProduct)
     }
@@ -759,12 +762,12 @@ class Render3D extends PureComponent {
             }
           }
 
-            const canvasTexture = new THREE.CanvasTexture(this.canvasApplied)
-            canvasTexture.minFilter = THREE.LinearFilter
-            this.canvasTexture.on(
-              'after:render',
-              () => (canvasTexture.needsUpdate = true)
-            )
+          const canvasTexture = new THREE.CanvasTexture(this.canvasApplied)
+          canvasTexture.minFilter = THREE.LinearFilter
+          this.canvasTexture.on(
+            'after:render',
+            () => (canvasTexture.needsUpdate = true)
+          )
           const canvasMaterial = new THREE.MeshPhongMaterial({
             map: canvasTexture,
             side: THREE.FrontSide,
@@ -1218,8 +1221,13 @@ class Render3D extends PureComponent {
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
-    const { isUserAuthenticated, openLoginAction } = this.props
-
+    const {
+      isUserAuthenticated,
+      openLoginAction,
+      selectedVariant,
+      selectVariantAction
+    } = this.props
+    selectVariantAction(-1)
     if (!isUserAuthenticated) {
       openLoginAction(true)
       return
@@ -1237,23 +1245,25 @@ class Render3D extends PureComponent {
         this.canvasTexture.renderAll()
       }
       const highResolution = (isEditing && design.highResolution) || !isEditing
-
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
-        setTimeout(() => {
-          const designBase64 = this.renderer.domElement.toDataURL('image/png')
-          const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
-          const canvasJson = JSON.stringify(designCanvas)
-          const saveDesign = {
-            canvasJson,
-            designBase64,
-            styleId: currentStyle.id,
-            highResolution
-          }
-          onOpenSaveDesign(true, saveDesign, automaticSave)
-        }, 200)
+        setTimeout(
+          () => {
+            const designBase64 = this.renderer.domElement.toDataURL('image/png')
+            const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+            const canvasJson = JSON.stringify(designCanvas)
+            const saveDesign = {
+              canvasJson,
+              designBase64,
+              styleId: currentStyle.id,
+              highResolution
+            }
+            onOpenSaveDesign(true, saveDesign, automaticSave)
+          },
+          selectedVariant === -1 ? 200 : 800
+        )
       )
     }
   }
