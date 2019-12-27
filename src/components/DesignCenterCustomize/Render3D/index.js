@@ -211,8 +211,6 @@ class Render3D extends PureComponent {
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
     }
-    console.log('selectedVariant:', selectedVariant)
-    console.log('oldSelected:', oldSelected)
     if (selectedVariant !== oldSelected) {
       this.clearScene()
       this.render3DModel(newProduct)

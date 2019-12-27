@@ -812,7 +812,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       productConfig.obj = obj
       productConfig.mtl = mtl
     }
-    console.log('productConfig:', productConfig)
     const loadingView = (
       <LoadingContainer>
         <Spin />
