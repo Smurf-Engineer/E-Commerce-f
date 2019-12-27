@@ -41,6 +41,8 @@ import {
   TurnOffHintRow,
   MobileContainer,
   Icon,
+  Variants,
+  VariantButton,
   MobileHintIcon,
   DesignCheckButton
 } from './styledComponents'
@@ -111,6 +113,7 @@ import HelpModal from '../../Common/JakrooModal'
 import quickView from '../../../assets/quickview.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
+import JakrooLogo from '../../../assets/Jackroologo.svg'
 import top from '../../../assets/uparrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
@@ -146,7 +149,7 @@ class Render3D extends PureComponent {
     isFirstAdd: true,
     showHelpModal: true
   }
-
+  canvasApplied = null
   dragComponent = null
   componentWillReceiveProps(nextProps) {
     const {
@@ -155,7 +158,8 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bibColor: oldBibColor
+      bibColor: oldBibColor,
+      product: { obj: oldObj }
     } = this.props
     const {
       colors: nextColors,
@@ -165,7 +169,8 @@ class Render3D extends PureComponent {
       bindingColor,
       zipperColor,
       bibColor,
-      loadingModel
+      loadingModel,
+      product: newProduct
     } = nextProps
 
     if (loadingModel) {
@@ -204,6 +209,10 @@ class Render3D extends PureComponent {
     const colorBlockHasChange = oldColorBlockHovered !== colorBlockHovered
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
+    }
+    if (oldObj !== newProduct.obj) {
+      this.clearScene()
+      this.render3DModel(newProduct)
     }
   }
 
@@ -348,6 +357,11 @@ class Render3D extends PureComponent {
     this.mouse.set(point.x * 2 - 1, -(point.y * 2) + 1)
     this.raycaster.setFromCamera(this.mouse, this.camera)
     return this.raycaster.intersectObjects(objects, true)
+  }
+
+  handleSelectVariant(value) {
+    const { selectVariantAction } = this.props
+    selectVariantAction(value)
   }
 
   convertToFabricObjects = elements =>
@@ -567,13 +581,13 @@ class Render3D extends PureComponent {
     }
   }
 
-  render3DModel = async () => {
+  render3DModel = async newProduct => {
     /* Object and MTL load */
     const {
       onLoadModel,
       currentStyle,
       design,
-      product,
+      product: oldProduct,
       isEditing,
       onSetEditConfig,
       stitchingColor,
@@ -584,6 +598,7 @@ class Render3D extends PureComponent {
       designHasChanges,
       isMobile
     } = this.props
+    const product = newProduct || oldProduct
     const loadedTextures = await this.loadTextures(
       currentStyle,
       product,
@@ -720,28 +735,36 @@ class Render3D extends PureComponent {
           )
 
           /* Canvas */
-          const canvas = document.createElement('canvas')
-          canvas.width = CANVAS_SIZE
-          canvas.height = CANVAS_SIZE
-          const canvasConfig = {
-            width: CANVAS_SIZE,
-            height: CANVAS_SIZE,
-            crossOrigin: 'Anonymous',
-            selection: false,
-            skipTargetFind: true
-          }
-          if (isMobile) {
-            this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)
-          } else {
-            this.canvasTexture = new fabric.Canvas(canvas, canvasConfig)
+          if (!newProduct) {
+            this.canvasApplied = document.createElement('canvas')
+            this.canvasApplied.width = CANVAS_SIZE
+            this.canvasApplied.height = CANVAS_SIZE
+            const canvasConfig = {
+              width: CANVAS_SIZE,
+              height: CANVAS_SIZE,
+              crossOrigin: 'Anonymous',
+              selection: false,
+              skipTargetFind: true
+            }
+            if (isMobile) {
+              this.canvasTexture = new fabric.StaticCanvas(
+                this.canvasApplied,
+                canvasConfig
+              )
+            } else {
+              this.canvasTexture = new fabric.Canvas(
+                this.canvasApplied,
+                canvasConfig
+              )
+            }
           }
 
-          const canvasTexture = new THREE.CanvasTexture(canvas)
-          canvasTexture.minFilter = THREE.LinearFilter
-          this.canvasTexture.on(
-            'after:render',
-            () => (canvasTexture.needsUpdate = true)
-          )
+            const canvasTexture = new THREE.CanvasTexture(this.canvasApplied)
+            canvasTexture.minFilter = THREE.LinearFilter
+            this.canvasTexture.on(
+              'after:render',
+              () => (canvasTexture.needsUpdate = true)
+            )
           const canvasMaterial = new THREE.MeshPhongMaterial({
             map: canvasTexture,
             side: THREE.FrontSide,
@@ -904,10 +927,12 @@ class Render3D extends PureComponent {
       this.setupColors(colors)
     }
   }
+
   handleGoToTutorials = () => {
     const { onTabClick } = this.props
     onTabClick(CustomizeTabs.TutorialsTab)
   }
+
   handleOnPressLeft = () => {
     const { currentView } = this.state
     const nextView =
@@ -1245,6 +1270,8 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
+      selectedVariant,
+      variants,
       openResetDesignModal,
       designHasChanges,
       canvas,
@@ -1344,6 +1371,18 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
+          {variants.length && (
+            <Variants>
+              {variants.map((model, index) => (
+                <VariantButton
+                  key={index}
+                  onClick={() => this.handleSelectVariant(index)}
+                  selected={selectedVariant === index}
+                  src={model.icon || JakrooLogo}
+                />
+              ))}
+            </Variants>
+          )}
         </Row>
         <ButtonWrapper>
           <DesignCheckButton onClick={this.handleOnDesignCheck}>

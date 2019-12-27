@@ -94,7 +94,8 @@ import {
   getDesignQuery,
   getColorsQuery,
   requestColorChartMutation,
-  getDesignLabInfo
+  getDesignLabInfo,
+  getVariantsFromProduct
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -187,15 +188,18 @@ interface Props extends RouteComponentProps<any> {
   selectedTab: number
   colorsList: any
   navigation: any
+  dataVariants: any
   openResetPlaceholderModal: boolean
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   deliveryDays: number
+  selectedVariant: number
   tutorialPlaylist: string
   designCheckModalOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
+  selectVariantAction: (index: number) => void
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
@@ -618,6 +622,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       onCanvasElementRotatedAction,
       onCanvasElementTextChangedAction,
       user,
+      selectVariantAction,
+      selectedVariant,
+      dataVariants,
       responsive,
       onReApplyImageElementAction,
       onCanvasElementDuplicatedAction,
@@ -666,6 +673,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     if (!queryParams.id && !queryParams.designId) {
       return redirect
     }
+    const variants = get(dataVariants, 'getVariants', [])
     const deliveryDaysResponse = get(
       dataDesignLabInfo,
       'designInfo.deliveryDays',
@@ -770,6 +778,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       }
       tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
+      if (selectedVariant !== -1) {
+        const { obj, mtl } = variants[selectedVariant]
+        designProduct.obj = obj
+        designProduct.mtl = mtl
+      }
       productConfig = designProduct
       currentStyle = { ...designStyle }
       currentStyle.colors = designColors
@@ -798,7 +811,12 @@ export class DesignCenter extends React.Component<Props, {}> {
         tabSelected = PreviewTabIndex
       }
     }
-
+    if (selectedVariant !== -1) {
+      const { obj, mtl } = variants[selectedVariant]
+      productConfig.obj = obj
+      productConfig.mtl = mtl
+    }
+    console.log('productConfig:', productConfig)
     const loadingView = (
       <LoadingContainer>
         <Spin />
@@ -911,6 +929,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                   productName,
                   canvas,
                   selectedElement,
+                  selectVariantAction,
+                  selectedVariant,
+                  variants,
                   textFormat,
                   artFormat,
                   openPaletteModalAction,
@@ -1230,6 +1251,7 @@ export class DesignCenter extends React.Component<Props, {}> {
 
 interface OwnProps {
   location?: any
+  dataDesign?: any
 }
 
 const mapStateToProps = (state: any) => {
@@ -1245,16 +1267,13 @@ const DesignCenterEnhance = compose(
   injectIntl,
   addTeamStoreItemMutation,
   withApollo,
-  connect(
-    mapStateToProps,
-    {
-      ...designCenterActions,
-      ...designCenterApiActions,
-      openQuickViewAction,
-      openLoginAction,
-      saveAndBuyAction
-    }
-  ),
+  connect(mapStateToProps, {
+    ...designCenterActions,
+    ...designCenterApiActions,
+    openQuickViewAction,
+    openLoginAction,
+    saveAndBuyAction
+  }),
   graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
@@ -1291,6 +1310,21 @@ const DesignCenterEnhance = compose(
       }
     },
     name: 'dataDesign'
+  }),
+  graphql(getVariantsFromProduct, {
+    options: ({ dataDesign, location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      const productId = get(dataDesign, 'designData.product.id', queryParams.id)
+      return {
+        fetchPolicy: 'network-only',
+        skip: !productId,
+        variables: {
+          id: productId
+        }
+      }
+    },
+    name: 'dataVariants'
   }),
   graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(requestColorChartMutation, { name: 'requestColorChart' })

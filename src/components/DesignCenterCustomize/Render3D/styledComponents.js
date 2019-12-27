@@ -5,11 +5,13 @@ import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import AntdButton from 'antd/lib/button'
 import {
+  RED,
   BLUE,
   WHITE,
   GRAY_LIGHT,
   GRAY_DARK,
-  BLUE_DARK
+  BLUE_DARK,
+  GRAY_LIGHTEST
 } from '../../../theme/colors'
 
 export const fadeIn = keyframes`
@@ -253,7 +255,7 @@ export const HintModalImage = styled.img`
 export const HintIcon = styled.img`
   height: 90%;
   position: absolute;
-  left: 0;
+  left: 10px;
   top: 30px;
   cursor: pointer;
 `
@@ -281,4 +283,27 @@ export const DesignCheckButton = styled(AntdButton)`
 
 export const Icon = styled.img`
   margin-left: 5px;
+`
+
+export const Variants = styled.div`
+  position: absolute;
+  left: 0;
+  top: 70px;
+  display: flex;
+  flex-flow: column;
+`
+
+export const VariantButton = styled.img`
+  width: 40px;
+  object-fit: contain;
+  max-height: 40px;
+  border: 1px solid ${({ selected }) => (selected ? RED : GRAY_LIGHT)};
+  border-radius: 3px;
+  transition: all 0.25s;
+  padding: 5px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  &:hover {
+    background: ${GRAY_LIGHTEST};
+  }
 `
