@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Upload, Spin } from 'antd'
 import message from 'antd/lib/message'
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import {
   Container,
   StrongLabel,
@@ -13,7 +14,8 @@ import {
   Delete,
   PlaceHolder,
   ExtraFile,
-  ExtraFileSection
+  ExtraFileSection,
+  DefaultButton
 } from './styledComponents'
 import messages from '../messages'
 import { files, extraFiles, validModels } from '../../constants'
@@ -24,6 +26,9 @@ import indexOf from 'lodash/indexOf'
 import { getFileWithExtension } from '../../../../utils/utilsFiles'
 interface Props {
   tempModel: ModelVariant
+  isDefault: boolean
+  defaultVariant: boolean
+  handleCheck: (event: CheckboxChangeEvent) => void
   setFileAction: (key: string, url: string) => void
   uploadFile: (file: File, key: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
@@ -61,7 +66,13 @@ export class FileSection extends React.Component<Props, {}> {
     setFileAction(key, '')
   }
   render() {
-    const { formatMessage, tempModel } = this.props
+    const {
+      formatMessage,
+      tempModel,
+      handleCheck,
+      defaultVariant,
+      isDefault
+    } = this.props
     return (
       <Container>
         <StrongLabel>{formatMessage(messages.modelFiles)}</StrongLabel>
@@ -101,45 +112,58 @@ export class FileSection extends React.Component<Props, {}> {
             </Upload>
           </FileContainer>
         ))}
-        <StrongLabel>{formatMessage(messages.extraFiles)}</StrongLabel>
-        <ExtraFileSection bordered={false}>
-          {extraFiles.map(({ title, options }, index) => (
-            <ExtraFile header={formatMessage(messages[title])} key={index}>
-              {options.map(({ key, extension }) => (
-                <Upload
-                  data={{ key }}
-                  accept={extension}
-                  listType="picture-card"
-                  className="avatar-uploader"
-                  customRequest={this.handleUploadFile}
-                  showUploadList={false}
-                  beforeUpload={this.beforeUpload}
-                >
-                  {tempModel[key] ? (
-                    <CenterName>
-                      {tempModel[key] === 'loading' ? (
-                        <Spin size="small" />
+        {!defaultVariant && (
+          <DefaultButton>
+            <Checkbox onChange={handleCheck} checked={isDefault}>
+              Set this as default
+            </Checkbox>
+          </DefaultButton>
+        )}
+        {tempModel.default && (
+          <>
+            <StrongLabel>{formatMessage(messages.extraFiles)}</StrongLabel>
+            <ExtraFileSection bordered={false}>
+              {extraFiles.map(({ title, options }, index) => (
+                <ExtraFile header={formatMessage(messages[title])} key={index}>
+                  {options.map(({ key, extension }) => (
+                    <Upload
+                      data={{ key }}
+                      accept={extension}
+                      listType="picture-card"
+                      className="avatar-uploader"
+                      customRequest={this.handleUploadFile}
+                      showUploadList={false}
+                      beforeUpload={this.beforeUpload}
+                    >
+                      {tempModel[key] ? (
+                        <CenterName>
+                          {tempModel[key] === 'loading' ? (
+                            <Spin size="small" />
+                          ) : (
+                            <FileTag>
+                              <FileName>
+                                <Clip type="paper-clip" />
+                                {getFileWithExtension(tempModel[key])}
+                              </FileName>
+                              <Delete
+                                onClick={this.handleRemove(key)}
+                                type="close"
+                              />
+                            </FileTag>
+                          )}
+                        </CenterName>
                       ) : (
-                        <FileTag>
-                          <FileName>
-                            <Clip type="paper-clip" />
-                            {getFileWithExtension(tempModel[key])}
-                          </FileName>
-                          <Delete
-                            onClick={this.handleRemove(key)}
-                            type="close"
-                          />
-                        </FileTag>
+                        <PlaceHolder>
+                          {formatMessage(messages[key])}
+                        </PlaceHolder>
                       )}
-                    </CenterName>
-                  ) : (
-                    <PlaceHolder>{formatMessage(messages[key])}</PlaceHolder>
-                  )}
-                </Upload>
+                    </Upload>
+                  ))}
+                </ExtraFile>
               ))}
-            </ExtraFile>
-          ))}
-        </ExtraFileSection>
+            </ExtraFileSection>
+          </>
+        )}
       </Container>
     )
   }

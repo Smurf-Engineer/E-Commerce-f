@@ -4,7 +4,7 @@
 import * as React from 'react'
 import Upload, { UploadChangeParam } from 'antd/lib/upload'
 import message from 'antd/lib/message'
-import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import {
   Title,
   FormContainer,
@@ -19,8 +19,7 @@ import {
   ModelIcon,
   Loading,
   SaveSection,
-  SaveButton,
-  DefaultButton
+  SaveButton
 } from './styledComponents'
 import { Message, ModelVariant } from '../../../types/common'
 import messages from './messages'
@@ -124,15 +123,16 @@ export class FilesModal extends React.Component<Props, {}> {
             </IconInput>
           </RowInput>
           <FileSection
-            {...{ setFileAction, uploadFile, tempModel, formatMessage }}
+            handleCheck={this.handleCheck}
+            {...{
+              setFileAction,
+              uploadFile,
+              tempModel,
+              isDefault,
+              defaultVariant,
+              formatMessage
+            }}
           />
-          {!defaultVariant && (
-            <DefaultButton>
-              <Checkbox onChange={this.handleCheck} checked={isDefault}>
-                Set this as default
-              </Checkbox>
-            </DefaultButton>
-          )}
           <SaveSection onClick={saveInfoAction}>
             <SaveButton>{formatMessage(messages.saveModel)}</SaveButton>
           </SaveSection>

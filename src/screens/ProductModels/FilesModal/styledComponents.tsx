@@ -116,8 +116,6 @@ export const SaveSection = styled.div`
   margin-top: 28px;
 `
 
-export const DefaultButton = styled.div``
-
 export const SaveButton = styled(AntdButton)`
   max-width: 224px;
   border: none;
