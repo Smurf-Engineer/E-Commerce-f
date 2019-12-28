@@ -1379,7 +1379,7 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
-          {variants.length && (
+          {variants.length > 1 && (
             <Variants>
               {variants.map((model, index) => (
                 <VariantButton
