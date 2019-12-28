@@ -2,7 +2,11 @@ import message from 'antd/lib/message'
 import config from '../../config/index'
 import { setUploadingAction, setUploadingDesignSuccess } from './actions'
 
-export const uploadDesignAction = (files: any, json: any) => {
+export const uploadDesignAction = (
+  files: any,
+  json: any,
+  productId: number
+) => {
   return async (dispatch: any) => {
     try {
       if (files.length) {
@@ -14,17 +18,20 @@ export const uploadDesignAction = (files: any, json: any) => {
         files.forEach((file: any, index: number) =>
           formData.append(`colorBlock${index + 1}`, file)
         )
-
-        const response = await fetch(`${config.graphqlUriBase}upload/design`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${user.token}`
-          },
-          body: formData
-        })
+        const response = await fetch(
+          `${config.graphqlUriBase}upload/design/${productId}`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              Authorization: `Bearer ${user.token}`
+            },
+            body: formData
+          }
+        )
 
         const modelConfig = await response.json()
+        console.log(modelConfig)
         dispatch(setUploadingDesignSuccess(modelConfig))
       }
     } catch (e) {

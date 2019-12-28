@@ -30,6 +30,11 @@ import {
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
+  SET_SAVING_DESIGN,
+  UPDATE_COLOR_IDEAS_LIST,
+  SET_DESIGN_NAME_ACTION,
+  DELETE_COLOR_IDEA_ACTION,
+  SET_CANVAS_JSON_ACTION,
   Sections
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -69,7 +74,9 @@ export const initialState = fromJS({
   selectedElement: '',
   loadingModel: false,
   uploadingThumbnail: false,
-  openSaveDesign: false
+  openSaveDesign: false,
+  productId: -1,
+  saveDesignLoading: false
 })
 
 const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -91,7 +98,10 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_CURRENT_PAGE:
       return state.merge({ currentPage: action.page, selectedDesign: -1 })
     case TOGGLE_ADD_DESIGN:
-      return state.set('designModalOpen', !state.get('designModalOpen'))
+      return state.merge({
+        designModalOpen: !state.get('designModalOpen'),
+        productId: action.id
+      })
     case UPDATE_DESIGN_NAME:
       return state.set('designName', action.value)
     case UNSELECT: {
@@ -105,7 +115,20 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_UPLOADING_DESIGN_SUCCESS: {
       const { design } = action
       const { colorIdeas, config, design: updatedDesign } = design
-      const { areasPng, areasSvg, size } = config
+      updatedDesign.name = state.get('designName')
+      const {
+        areasPng,
+        areasSvg,
+        size,
+        obj,
+        mtl,
+        label,
+        flatlock,
+        bumpMap,
+        bibBrace,
+        zipper,
+        binding
+      } = config
 
       const modelConfig = state.get('modelConfig')
       if (isEmpty(updatedDesign)) {
@@ -115,7 +138,15 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
           size,
           colors: List.of(...defaultColors),
           areasSvg: List.of(...areasSvg),
-          areasPng: List.of(...areasPng)
+          areasPng: List.of(...areasPng),
+          obj,
+          mtl,
+          label,
+          flatlock,
+          bumpMap,
+          bibBrace,
+          zipper,
+          binding
         })
         return state.merge({
           uploading: false,
@@ -127,6 +158,7 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
         })
       }
       const colors = [...updatedDesign.colors]
+
       while (areasPng.length < 5) {
         areasPng.unshift('black')
       }
@@ -135,13 +167,22 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
         size,
         colors: List.of(...colors),
         areasSvg: List.of(...areasSvg),
-        areasPng: List.of(...areasPng)
+        areasPng: List.of(...areasPng),
+        obj,
+        mtl,
+        label,
+        flatlock,
+        bumpMap,
+        bibBrace,
+        zipper,
+        binding
       })
+
       return state.merge({
         uploading: false,
         design: updatedDesign,
         areas: List.of(...areasPng),
-        colorIdeas: fromJS(colorIdeas),
+        colorIdeas: colorIdeas,
         colors: List.of(...reverseColors),
         modelConfig: updatedModelConfig,
         designModalOpen: false,
@@ -157,7 +198,7 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
         design,
         modelConfig,
         uploading: false,
-        colorIdeas: fromJS(colorIdeas),
+        colorIdeas: colorIdeas,
         colors: List.of(...reverse(colors)),
         currentTab: 1
       })
@@ -166,16 +207,14 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
       const { item } = action
       if (item !== NONE) {
         const keyPath =
-          item !== DESIGN_COLORS
-            ? ['colorIdeas', item, 'colors']
-            : ['design', 'colors']
+          item !== DESIGN_COLORS ? ['colorIdeas', item] : ['design', 'colors']
+
         const colors = state.getIn(keyPath) || []
         return state.merge({
-          colors: colors.reverse(),
+          colors: item !== DESIGN_COLORS ? colors.colors : colors,
           colorIdeaItem: item
         })
       }
-
       return state.merge({
         colorBlock: NONE,
         colorIdeaItem: item,
@@ -265,6 +304,20 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('uploadingThumbnail', action.uploadingItem)
     case OPEN_SAVE_DESIGN_ACTION:
       return state.set('openSaveDesign', action.open)
+    case SET_SAVING_DESIGN:
+      return state.set('saveDesignLoading', action.saving)
+    case UPDATE_COLOR_IDEAS_LIST:
+      return state.set('colorIdeas', List.of(...action.colorIdeas))
+    case SET_DESIGN_NAME_ACTION:
+      return state.setIn(['design', 'name'], action.name)
+    case DELETE_COLOR_IDEA_ACTION: {
+      const { index } = action
+      const colorsIdeas = state.get('colorIdeas')
+      const colorIdeasUpdated = colorsIdeas.remove(index)
+      return state.set('colorIdeas', colorIdeasUpdated)
+    }
+    case SET_CANVAS_JSON_ACTION:
+      return state.setIn(['design', 'canvasJson'], action.canvas)
     default:
       return state
   }

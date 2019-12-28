@@ -26,7 +26,12 @@ import {
   ADD_COLOR_IDEA_ACTION,
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
-  OPEN_SAVE_DESIGN_ACTION
+  OPEN_SAVE_DESIGN_ACTION,
+  SET_SAVING_DESIGN,
+  UPDATE_COLOR_IDEAS_LIST,
+  SET_DESIGN_NAME_ACTION,
+  DELETE_COLOR_IDEA_ACTION,
+  SET_CANVAS_JSON_ACTION
 } from './constants'
 
 import {
@@ -71,8 +76,9 @@ export const setCurrentPageAction = (page: number): AnyAction => ({
   page
 })
 
-export const toggleAddDesignAction = (): AnyAction => ({
-  type: TOGGLE_ADD_DESIGN
+export const toggleAddDesignAction = (id?: number): AnyAction => ({
+  type: TOGGLE_ADD_DESIGN,
+  id
 })
 
 export const updateDesignNameAction = (value: string): AnyAction => ({
@@ -175,4 +181,29 @@ export const setUploadingThumbnailAction = (
 export const openSaveDesignAction = (open: boolean) => ({
   type: OPEN_SAVE_DESIGN_ACTION,
   open
+})
+
+export const setSavingDesign = (saving: boolean) => ({
+  type: SET_SAVING_DESIGN,
+  saving
+})
+
+export const updateColorIdeasListAction = (colorIdeas: DesignObject[]) => ({
+  type: UPDATE_COLOR_IDEAS_LIST,
+  colorIdeas
+})
+
+export const setDesignNameAction = (name: string): AnyAction => ({
+  type: SET_DESIGN_NAME_ACTION,
+  name
+})
+
+export const deleteColorIdeaAction = (index: number) => ({
+  type: DELETE_COLOR_IDEA_ACTION,
+  index
+})
+
+export const setCanvasJsonAction = (canvas: string) => ({
+  type: SET_CANVAS_JSON_ACTION,
+  canvas
 })

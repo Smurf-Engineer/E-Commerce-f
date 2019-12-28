@@ -47,6 +47,7 @@ interface Props {
   onSelectInspirationColor: (index: number) => void
   onAddColorIdea: () => void
   onSaveThumbnail: (item: number, colors: string[]) => void
+  onDeleteInspiration: (id: number, index: number) => void
 }
 
 interface ProductData extends QueryProps {
@@ -85,7 +86,8 @@ export class Design extends React.Component<Props, {}> {
       uploadingThumbnail,
       colors,
       onAddColorIdea,
-      onSaveThumbnail
+      onSaveThumbnail,
+      onDeleteInspiration
     } = this.props
     const { name, image, colors: designColors } = design
     let colorIdea: DesignObject | ModelDesign | null = null
@@ -105,7 +107,7 @@ export class Design extends React.Component<Props, {}> {
             key,
             formatMessage,
             onEditColorIdea,
-            onDeleteInspiration: null
+            onDeleteInspiration
           }}
           name={ideaName}
           image={thumbnail}

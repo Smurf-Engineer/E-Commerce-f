@@ -40,7 +40,7 @@ export const viewPositions = {
     // Front
     x: 1.4624917941275544,
     y: 2.3799584848944044,
-    z: 200
+    z: 150
   },
   3: {
     // Left

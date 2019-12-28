@@ -209,7 +209,7 @@ export const Measurement = styled.div`
 
 export const Button = styled(AntdButton)`
   height: 40px;
-  width: 165px;
+  width: 180px;
   margin-bottom: 10px;
 `
 

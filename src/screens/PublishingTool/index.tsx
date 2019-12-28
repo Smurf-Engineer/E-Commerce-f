@@ -6,6 +6,7 @@ import Helmet from 'react-helmet'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { FormattedMessage } from 'react-intl'
 import Modal from 'antd/lib/modal'
+import every from 'lodash/every'
 import PlaceholdersRender3D from '../../components/PlaceholdersRender3D'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
@@ -23,7 +24,8 @@ import {
   deleteStyleMutation,
   getColorsQuery,
   uploadThumbnailMutation,
-  saveDesignMutation
+  saveDesignMutation,
+  deleteInspirationMutation
 } from './data'
 import { getProductFromCode } from './Themes/data'
 import Themes from './Themes'
@@ -98,6 +100,8 @@ interface Props {
   loadingModel: boolean
   uploadingThumbnail: boolean
   openSaveDesign: boolean
+  productId: number
+  saveDesignLoading: boolean
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
   onChangeThemeAction: (id: number, section: string) => void
@@ -105,9 +109,9 @@ interface Props {
   updateThemeNameAction: (name: string) => void
   deleteTheme: (variables: {}) => Promise<MessagePayload>
   setCurrentPageAction: (page: number) => void
-  toggleAddDesignAction: () => void
+  toggleAddDesignAction: (id?: number) => void
   updateDesignNameAction: (value: string) => void
-  uploadDesignAction: (areas: any, config: any) => void
+  uploadDesignAction: (areas: any, config: any, productId: number) => void
   setModelAction: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
@@ -132,6 +136,12 @@ interface Props {
   setUploadingThumbnailAction: (uploadingItem: boolean) => void
   saveDesign: (variables: {}) => Promise<Design>
   openSaveDesignAction: (open: boolean) => void
+  setSavingDesign: (saving: boolean) => void
+  updateColorIdeasListAction: (colorIdeas: DesignObject[]) => void
+  setDesignNameAction: (name: string) => void
+  deleteInspiration: (variables: {}) => Promise<MessagePayload>
+  deleteColorIdeaAction: (index: number) => void
+  setCanvasJsonAction: (canvas: string) => void
 }
 
 const steps = ['theme', 'designCustomization']
@@ -280,6 +290,195 @@ export class PublishingTool extends React.Component<Props, {}> {
     const { openSaveDesignAction } = this.props
     openSaveDesignAction(false)
   }
+  handleSaveDesign = async () => {
+    const { setSavingDesign } = this.props
+    try {
+      const {
+        design,
+        saveDesign,
+        productCode,
+        modelConfig,
+        colorIdeas,
+        selectedTheme,
+        selectedDesign,
+        updateColorIdeasListAction
+      } = this.props
+
+      if (!productCode) {
+        message.error('Please enter a product code')
+        return
+      }
+
+      if (!modelConfig) {
+        message.error('Upload model files first')
+        return
+      }
+
+      if (!design.name) {
+        message.error('To proceed, enter design name first')
+        return
+      }
+
+      if (!design.image) {
+        message.error('To proceed, save design thumbnail first')
+        return
+      }
+
+      setSavingDesign(true)
+      const hasAllInspirationThumbnail = every(colorIdeas, 'image')
+      if (!hasAllInspirationThumbnail) {
+        message.error('Unable to find one or more color idea thumbnails')
+        return
+      }
+
+      const hasAllInspirationName = every(colorIdeas, 'name')
+      if (!hasAllInspirationName) {
+        message.error('To proceed, enter all the color idea name')
+        return
+      }
+      console.log('config ', modelConfig)
+      const {
+        obj,
+        mtl,
+        label,
+        bumpMap,
+        flatlock,
+        brandingPng,
+        brandingSvg,
+        areasSvg,
+        areasPng,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack,
+        size
+      } = modelConfig
+      const inspiration = colorIdeas.map(item => ({
+        id: item.id,
+        name: item.name,
+        colors: item.colors,
+        image: item.image
+      }))
+      const designs: any = []
+      const style = {
+        colors: design.colors,
+        image: design.image,
+        name: design.name,
+        branding: brandingSvg,
+        brandingPng,
+        svgs: areasSvg,
+        pngs: areasPng,
+        inspiration,
+        width: size.width,
+        height: size.height
+      }
+
+      designs.push(style)
+
+      const model = {
+        productCode,
+        label,
+        bumpMap,
+        flatLock: flatlock,
+        obj,
+        mtl,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack,
+        theme_id: selectedTheme,
+        styles: designs
+      }
+
+      const saveResponse = await saveDesign({
+        variables: { design: model },
+        refetchQueries: ({ data }: any) => {
+          const themes = get(data, 'design.product.themes', [])
+          const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
+          const { styles } = themes[themeIndex]
+          const styleIndex = findIndex(
+            styles,
+            ({ id: styleId }) => styleId === selectedDesign
+          )
+          const { colorIdeas: updatedColorIdeas } = styles[styleIndex]
+          updateColorIdeasListAction(updatedColorIdeas)
+          return [
+            { query: getProductFromCode, variables: { code: productCode } }
+          ]
+        }
+      })
+
+      const successMessage = get(saveResponse, 'data.design.message')
+      message.success(successMessage)
+      setSavingDesign(false)
+    } catch (e) {
+      setSavingDesign(false)
+      message.error(e.message)
+    }
+  }
+  handleOnDeleteInspiration = (id: number, index: number) => {
+    const {
+      intl: { formatMessage }
+    } = this.props
+    confirm({
+      title: formatMessage(messages.deleteConfirmation),
+      content: formatMessage(messages.deleteInspiration),
+      onOk: async () => {
+        const {
+          deleteInspiration,
+          productCode,
+          selectedTheme,
+          selectedDesign,
+          deleteColorIdeaAction
+        } = this.props
+        if (!!id) {
+          try {
+            await deleteInspiration({
+              variables: { id },
+              update: (store: any) => {
+                const data = store.readQuery({
+                  query: getProductFromCode,
+                  variables: { code: productCode }
+                })
+                const themes = get(data, 'product.themes', [])
+                const themeIndex = findIndex(
+                  themes,
+                  ({ id: themeId }) => themeId === selectedTheme
+                )
+                const { styles } = themes[themeIndex]
+                const styleIndex = findIndex(
+                  styles,
+                  ({ id: styleId }) => styleId === selectedDesign
+                )
+                const { colorIdeas } = styles[styleIndex]
+                const updatedInspiration = remove(
+                  colorIdeas,
+                  ({ id: inspirationId }) => inspirationId !== id
+                )
+                set(
+                  data,
+                  `product.themes[${themeIndex}].styles[${styleIndex}].colorIdeas`,
+                  updatedInspiration
+                )
+                store.writeQuery({
+                  query: getProductFromCode,
+                  data,
+                  variables: { code: productCode }
+                })
+              }
+            })
+          } catch (e) {
+            message.error(e.message)
+          }
+        }
+        deleteColorIdeaAction(index)
+      }
+    })
+  }
   render() {
     const {
       intl,
@@ -323,7 +522,11 @@ export class PublishingTool extends React.Component<Props, {}> {
       addColorIdeaAction,
       setUploadingThumbnailAction,
       uploadingThumbnail,
-      openSaveDesign
+      openSaveDesign,
+      productId,
+      saveDesignLoading,
+      setDesignNameAction,
+      setCanvasJsonAction
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
@@ -342,7 +545,6 @@ export class PublishingTool extends React.Component<Props, {}> {
         </Tab>
       )
     })
-
     return (
       <Container>
         <Helmet title={formatMessage(messages.title)} />
@@ -398,6 +600,7 @@ export class PublishingTool extends React.Component<Props, {}> {
               onSelectInspirationColor={setInspirationColorAction}
               onAddColorIdea={addColorIdeaAction}
               onSaveThumbnail={this.handleOnSaveThumbnail}
+              onDeleteInspiration={this.handleOnDeleteInspiration}
             />
           )}
           {!!colors.length && (
@@ -417,7 +620,7 @@ export class PublishingTool extends React.Component<Props, {}> {
                 onApplyCanvasEl: null,
                 onSelectEl: null,
                 onRemoveEl: null,
-                onUnmountTab: null,
+                onUnmountTab: setCanvasJsonAction,
                 product: modelConfig,
                 stitchingColor: '#000',
                 bindingColor: 'black',
@@ -441,7 +644,7 @@ export class PublishingTool extends React.Component<Props, {}> {
                 redoChanges: null,
                 undoChanges: null,
                 saveStyleCanvas: null,
-                saveDesignLoading: null
+                saveDesignLoading
               }}
               onSaveThumbnail={this.handleUploadThumbnail}
               isMobile={false}
@@ -449,6 +652,8 @@ export class PublishingTool extends React.Component<Props, {}> {
               responsive={false}
               onUploadingThumbnail={setUploadingThumbnailAction}
               onSaveDesign={this.handleOpenModal}
+              onUpdateDesign={this.handleSaveDesign}
+              canUpdate={selectedDesign > 0}
             />
           )}
         </Layout>
@@ -459,7 +664,7 @@ export class PublishingTool extends React.Component<Props, {}> {
           onUpdateName={updateThemeNameAction}
         />
         <DesignModal
-          {...{ productCode, formatMessage, uploading }}
+          {...{ productCode, formatMessage, uploading, productId }}
           onCancel={toggleAddDesignAction}
           onUpdateName={updateDesignNameAction}
           open={designModalOpen}
@@ -470,11 +675,11 @@ export class PublishingTool extends React.Component<Props, {}> {
           visible={openSaveDesign}
           designName={design.name}
           requestClose={this.closeSaveDesignModal}
-          onDesignName={this.onUpdateDesignName}
+          onDesignName={setDesignNameAction}
           formatMessage={formatMessage}
-          saveDesign={this.onConfirmDesignToSave}
+          saveDesign={this.handleSaveDesign}
           uploadingThumbnail={false}
-          saveDesignLoading={this.saveDesignLoading}
+          saveDesignLoading={saveDesignLoading}
         />
       </Container>
     )
@@ -494,6 +699,7 @@ const PublishingToolEnhance = compose(
   graphql(deleteStyleMutation, { name: 'deleteStyle' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(saveDesignMutation, { name: 'saveDesign' }),
+  graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
   graphql<Data>(getColorsQuery, {
     options: (ownprops: OwnProps) => {
       const { colorsList } = ownprops

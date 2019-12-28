@@ -66,7 +66,7 @@ interface Props {
   updateThemesOrder: (variables: {}) => Promise<any>
   goToPage: (page: number) => void
   updateStylesOrder: (variables: {}) => Promise<any>
-  toggleAddDesign: () => void
+  toggleAddDesign: (id: number) => void
   onLoadDesign: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
@@ -278,6 +278,7 @@ export class Themes extends React.Component<Props, {}> {
         areasPng,
         size
       }
+      console.log('Area Colors ', areaColors)
       const design = {
         name,
         colors: areaColors,
@@ -305,6 +306,12 @@ export class Themes extends React.Component<Props, {}> {
       onLoadDesign(modelConfig, colorIdeas, design)
     }
   }
+  handleToogleAddDesign = () => {
+    const { productData, toggleAddDesign } = this.props
+    const productId = get(productData, 'product.id', -1)
+
+    toggleAddDesign(productId)
+  }
   render() {
     const { code } = this.state
     const {
@@ -315,7 +322,6 @@ export class Themes extends React.Component<Props, {}> {
       onDeleteTheme,
       goToPage,
       currentPage,
-      toggleAddDesign,
       selectedDesign,
       onDeleteDesign
     } = this.props
@@ -400,11 +406,11 @@ export class Themes extends React.Component<Props, {}> {
                   : this.changeDesignsPosition
               }
               loadDesign={this.handleOnLoadDesign}
+              toggleAddDesign={this.handleToogleAddDesign}
               {...{
                 formatMessage,
                 goToPage,
                 currentPage,
-                toggleAddDesign,
                 selectedDesign
               }}
             />

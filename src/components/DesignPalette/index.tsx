@@ -14,7 +14,6 @@ import {
   InfoContainer,
   Buttons,
   SaveButton,
-  Delete,
   DeleteButton
 } from './styledComponents'
 
@@ -73,13 +72,11 @@ const PaletteCard = ({
         <SaveButton disabled={loading} onClick={handleOnSelectPalette}>
           {buttonLabel}
         </SaveButton>
+        {showDelete && (
+          <DeleteButton onClick={handleOnDelete}>Delete</DeleteButton>
+        )}
       </Buttons>
       <Divider />
-      {showDelete && (
-        <DeleteButton onClick={handleOnDelete}>
-          <Delete type="delete" />
-        </DeleteButton>
-      )}
     </Container>
   )
 }

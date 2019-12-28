@@ -33,5 +33,9 @@ export default defineMessages({
   deleteDesign: {
     id: 'screens.PublishingTool.deleteDesign',
     defaultMessage: 'Design will be deleted.'
+  },
+  deleteInspiration: {
+    id: 'screens.PublishingTool.deleteInspiration',
+    defaultMessage: 'Color idea will be deleted.'
   }
 })

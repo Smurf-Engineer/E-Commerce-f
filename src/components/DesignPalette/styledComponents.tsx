@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
+import { RED } from '../../theme/colors'
 
 export const SaveButton = styled(Button)`
   margin-left: 8px;
@@ -86,10 +87,11 @@ export const Buttons = styled.div`
 `
 
 export const DeleteButton = styled.div`
-  position: absolute;
-  top: 4px;
+  bottom: 4px;
   right: 12px;
   cursor: pointer;
+  color: ${RED};
+  margin-left: 100px;
 `
 
 export const Delete = styled(Icon)`
