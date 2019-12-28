@@ -23,10 +23,10 @@ import {
   Header,
   Text,
   StyledSwitch,
+  NameLink,
   Table,
   EditButton,
-  DeleteButton,
-  TeamName
+  DeleteButton
 } from './styledComponents'
 interface Props {
   history: any
@@ -183,9 +183,9 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
         </ViewContainer>
         <ScreenContent>
           <ScreenTitle>
-            <TeamName>
+            <NameLink href={`/store-front?storeId=${teamStore.shortId}`}>
               {`${teamStore.name} ${formatMessage(messages.title)}`}
-            </TeamName>
+            </NameLink>
             <EditButton onClick={this.handleEditStore}>
               {formatMessage(messages.edit)}
             </EditButton>
