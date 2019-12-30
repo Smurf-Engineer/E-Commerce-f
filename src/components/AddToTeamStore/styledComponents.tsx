@@ -25,7 +25,7 @@ export const Title = styled.div`
 export const TeamstoresListContainer = styled.div`
   height: 127px;
   padding: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
   border: 1px solid #f1f4f5;
   margin-bottom: 10px;
 `
