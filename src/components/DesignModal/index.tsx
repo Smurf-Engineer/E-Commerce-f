@@ -29,11 +29,13 @@ interface Props {
   open: boolean
   name: string
   uploading: boolean
+  colorBlock: number
+  productId: number
   onCancel: () => void
   onUpdateName: (name: string) => void
   addDesign: (variables: {}) => Promise<Style>
   formatMessage: (messageDescriptor: Message, params?: any) => string
-  onSave: (areas: any, config: any) => void
+  onSave: (areas: any, config: any, productId: number) => void
 }
 
 interface State {
@@ -125,9 +127,9 @@ class DesignModal extends React.PureComponent<Props, State> {
   handleOnSave = async () => {
     try {
       const { config, areas } = this.state
-      const { onSave } = this.props
+      const { onSave, productId } = this.props
 
-      onSave(areas, config)
+      await onSave(areas, config, productId)
     } catch (e) {
       message.error(e.message)
     }
