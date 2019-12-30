@@ -10,7 +10,13 @@ import {
   setUploadingImage,
   setIconAction,
   setFileAction,
-  saveInfoAction
+  saveInfoAction,
+  setVariantsAction,
+  removeModelAction,
+  setLoadingAction,
+  changeDefault,
+  selectModelAction,
+  uploadComplete
 } from './actions'
 import {
   OPEN_MODAL,
@@ -19,7 +25,13 @@ import {
   UPLOADING_IMAGE,
   SET_ICON,
   SET_FILE,
-  SAVE_INFO
+  SAVE_INFO,
+  REMOVE_MODEL,
+  SET_LOADING,
+  SET_VARIANTS,
+  CHANGE_DEFAULT,
+  CHANGE_MODEL_RENDER,
+  UPLOAD_COMPLETE
 } from './constants'
 
 describe(' TeamStoresAdmin Screen', () => {
@@ -75,6 +87,58 @@ describe(' TeamStoresAdmin Screen', () => {
     it('saveInfoAction', () => {
       const type = SAVE_INFO
       expect(saveInfoAction()).toEqual({
+        type
+      })
+    })
+    it('removeModelAction', () => {
+      const type = REMOVE_MODEL
+      const key = 'Test'
+      expect(removeModelAction(key)).toEqual({
+        type,
+        key
+      })
+    })
+    it('setLoadingAction', () => {
+      const type = SET_LOADING
+      const loading = true
+      expect(setLoadingAction(loading)).toEqual({
+        type,
+        loading
+      })
+    })
+    it('setVariantsAction', () => {
+      const type = SET_VARIANTS
+      const variants = {
+        Test: {
+          icon: 'testIcon'
+        }
+      }
+      const defaultIndex = 'Test'
+      expect(setVariantsAction(variants, defaultIndex)).toEqual({
+        type,
+        variants,
+        defaultIndex
+      })
+    })
+    it('changeDefault', () => {
+      const type = CHANGE_DEFAULT
+      const checked = true
+      expect(changeDefault(checked)).toEqual({
+        type,
+        checked
+      })
+    })
+    it('selectModelAction', () => {
+      const type = CHANGE_MODEL_RENDER
+      const id = 'Test'
+      expect(selectModelAction(id)).toEqual({
+        type,
+        id
+      })
+    })
+    it('uploadComplete', () => {
+      const type = UPLOAD_COMPLETE
+      expect(uploadComplete()).toEqual({
         type
       })
     })
@@ -229,28 +293,193 @@ describe(' TeamStoresAdmin Screen', () => {
         expect(customFileValue).toBe(url)
       })
     })
-    // describe('SAVE_INFO', () => {
-    //   it('Handles undefined value in tempModel', () => {
-    //     const customInitialValue = initialState.get('tempModel')
-    //     expect(customInitialValue).not.toBeUndefined()
-    //   })
-    //   it('Handles initial value in tempModel', () => {
-    //     const customInitialValue = initialState.get('tempModel')
-    //     expect(customInitialValue.size).toBe(0)
-    //   })
-    //   it('Handles custom value in file key', () => {
-    //     const id = 'Test'
-    //     const editedModelstate = productModelsReducer(
-    //       initialState,
-    //       setEditModel(id)
-    //     )
-    //     const productModelState = productModelsReducer(
-    //       editedModelstate,
-    //       saveInfoAction()
-    //     )
-    //     const customFileValue = productModelState.getIn(['variants', id])
-    //     expect(customFileValue).not.toBeUndefined()
-    //   })
-    // })
+    describe('SAVE_INFO', () => {
+      it('Handles undefined value in tempModel', () => {
+        const customInitialValue = initialState.get('tempModel')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in tempModel', () => {
+        const customInitialValue = initialState.get('tempModel')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom value in variants list', () => {
+        const variants = {
+          Test: {
+            icon: 'iconTest'
+          }
+        }
+        const id = 'Test'
+        const variantsState = productModelsReducer(
+          initialState,
+          setVariantsAction(variants, 'Test')
+        )
+        const editedModelstate = productModelsReducer(
+          variantsState,
+          setEditModel(id)
+        )
+        const tempModelState = productModelsReducer(
+          editedModelstate,
+          setUploadingImage()
+        )
+        const productModelState = productModelsReducer(
+          tempModelState,
+          saveInfoAction()
+        )
+        const customVariantsValue = productModelState.getIn(['variants', id])
+        expect(customVariantsValue).not.toBeUndefined()
+      })
+    })
+    describe('REMOVE_MODEL', () => {
+      it('Handles undefined value in variants', () => {
+        const customInitialValue = initialState.get('variants')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in variants', () => {
+        const customInitialValue = initialState.get('variants')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom value in variants list', () => {
+        const variants = {
+          Test: {
+            icon: 'iconTest'
+          }
+        }
+        const key = 'Test'
+        const variantsState = productModelsReducer(
+          initialState,
+          setVariantsAction(variants, 'Test')
+        )
+        const productModelState = productModelsReducer(
+          variantsState,
+          removeModelAction(key)
+        )
+        const customVariantsValue = productModelState.get('variants')
+        expect(customVariantsValue.size).toBe(0)
+      })
+    })
+    describe('SET_LOADING', () => {
+      it('Handles undefined value in loading', () => {
+        const customInitialValue = initialState.get('loading')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in loading', () => {
+        const customInitialValue = initialState.get('loading')
+        expect(customInitialValue).toBeTruthy()
+      })
+      it('Handles custom value in loading', () => {
+        const loading = false
+        const productModelState = productModelsReducer(
+          initialState,
+          setLoadingAction(loading)
+        )
+        const customLoadingValue = productModelState.get('loading')
+        expect(customLoadingValue).toBe(loading)
+      })
+    })
+    describe('SET_LOADING', () => {
+      it('Handles undefined value in loading', () => {
+        const customInitialValue = initialState.get('loading')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in loading', () => {
+        const customInitialValue = initialState.get('loading')
+        expect(customInitialValue).toBeTruthy()
+      })
+      it('Handles custom value in loading', () => {
+        const loading = false
+        const productModelState = productModelsReducer(
+          initialState,
+          setLoadingAction(loading)
+        )
+        const customLoadingValue = productModelState.get('loading')
+        expect(customLoadingValue).toBe(loading)
+      })
+    })
+    describe('SET_VARIANTS', () => {
+      it('Handles undefined value in variants', () => {
+        const customInitialValue = initialState.get('variants')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in variants', () => {
+        const customInitialValue = initialState.get('variants')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom value in variants', () => {
+        const variants = {
+          Test: {
+            icon: 'testIcon'
+          }
+        }
+        const defaultIndex = 'Test'
+        const productModelState = productModelsReducer(
+          initialState,
+          setVariantsAction(variants, defaultIndex)
+        )
+        const customVariantsValue = productModelState.get('variants')
+        expect(customVariantsValue.size).toBe(1)
+
+        const customDefaultIndex = productModelState.get('defaultModelIndex')
+        expect(customDefaultIndex).toBe(defaultIndex)
+      })
+    })
+    describe('CHANGE_DEFAULT', () => {
+      it('Handles undefined value in tempModel', () => {
+        const customInitialValue = initialState.get('tempModel')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in tempModel', () => {
+        const customInitialValue = initialState.get('tempModel')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom value in tempModel default checked', () => {
+        const checked = true
+        const productModelState = productModelsReducer(
+          initialState,
+          changeDefault(checked)
+        )
+        const customDefaultValue = productModelState.getIn([
+          'tempModel',
+          'default'
+        ])
+        expect(customDefaultValue).toBe(checked)
+      })
+    })
+    describe('CHANGE_MODEL_RENDER', () => {
+      it('Handles undefined value in modelRender', () => {
+        const customInitialValue = initialState.get('modelRender')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in modelRender', () => {
+        const customInitialValue = initialState.get('modelRender')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom value in modelRender', () => {
+        const id = 'Test'
+        const productModelState = productModelsReducer(
+          initialState,
+          selectModelAction(id)
+        )
+        const customModelRender = productModelState.get('modelRender')
+        expect(customModelRender).toBe(id)
+      })
+    })
+    describe('UPLOAD_COMPLETE', () => {
+      it('Handles undefined value in openSuccess', () => {
+        const customInitialValue = initialState.get('openSuccess')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in openSuccess', () => {
+        const customInitialValue = initialState.get('openSuccess')
+        expect(customInitialValue).toBeFalsy()
+      })
+      it('Handles custom value in openSuccess', () => {
+        const productModelState = productModelsReducer(
+          initialState,
+          uploadComplete()
+        )
+        const customSuccessValue = productModelState.get('openSuccess')
+        expect(customSuccessValue).toBeTruthy()
+      })
+    })
   })
 })
