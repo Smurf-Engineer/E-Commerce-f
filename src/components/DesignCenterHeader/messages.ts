@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   back: {
     id: 'components.DesignCenterHeader.back',
-    defaultMessage: 'Back to Jakroo'
+    defaultMessage: 'Back'
   },
   date: {
     id: 'components.DesignCenterHeader.date',
