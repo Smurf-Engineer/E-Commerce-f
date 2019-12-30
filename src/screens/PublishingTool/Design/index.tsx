@@ -5,12 +5,18 @@ import * as React from 'react'
 import messages from './messages'
 import { updateStylesOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
-import Divider from 'antd/lib/divider'
 import { compose, withApollo } from 'react-apollo'
 import Palette from '../../../components/DesignPalette'
 import SwipeableViews from 'react-swipeable-views'
 import EditInspiration from '../EditInspiration'
-import { Container, Header, Title, Content, Button } from './styledComponents'
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Subtitle
+} from './styledComponents'
 import {
   Message,
   QueryProps,
@@ -143,7 +149,7 @@ export class Design extends React.Component<Props, {}> {
                 buttonLabel="Save Thumbnail"
                 loading={uploadingThumbnail}
               />
-              <Divider>{formatMessage(messages.colorCombosList)}</Divider>
+              <Subtitle>{formatMessage(messages.colorCombosList)}</Subtitle>
               {colorIdeasList}
             </div>
             <EditInspiration

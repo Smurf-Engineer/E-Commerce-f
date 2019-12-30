@@ -46,3 +46,11 @@ export const Button = styled(AntdButton)`
   line-height: 22px;
   text-align: center;
 `
+
+export const Subtitle = styled.p`
+  color: ${GRAY_DARK};
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19px;
+  margin: 0 10px;
+`
