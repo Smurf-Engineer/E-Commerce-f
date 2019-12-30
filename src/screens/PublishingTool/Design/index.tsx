@@ -9,6 +9,7 @@ import Divider from 'antd/lib/divider'
 import { compose, withApollo } from 'react-apollo'
 import Palette from '../../../components/DesignPalette'
 import SwipeableViews from 'react-swipeable-views'
+import EditInspiration from '../EditInspiration'
 import { Container, Header, Title, Content, Button } from './styledComponents'
 import {
   Message,
@@ -21,7 +22,7 @@ import {
 const LIST_TAB = 0
 const EDIT_TAB = 1
 
-import { DESIGN_THUMBNAIL, DESIGN_COLORS } from '../reducer'
+import { DESIGN_THUMBNAIL, DESIGN_COLORS, NONE } from '../reducer'
 
 interface Props {
   productData: ProductData
@@ -71,15 +72,31 @@ export class Design extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
+      colorBlock,
       colorIdeas,
       design,
       onEditColorIdea,
+      colorIdeaItem,
+      colorsList,
+      onSelectColorBlock,
+      onSelectColor,
+      onHoverColorBlock,
+      colorBlockHovered,
+      onUpdateColorIdeaName,
       uploadingThumbnail,
+      colors,
       onAddColorIdea,
+      onSaveThumbnail,
       onDeleteInspiration
     } = this.props
     const { name, image, colors: designColors } = design
+    let colorIdea: DesignObject | ModelDesign | null = null
     let renderList = true
+    if (colorIdeaItem !== NONE) {
+      colorIdea =
+        colorIdeaItem === DESIGN_COLORS ? design : colorIdeas[colorIdeaItem]
+      renderList = false
+    }
 
     const colorIdeasList = colorIdeas.map(
       ({ id, name: ideaName, colors: ideaColors, image: thumbnail }, key) => (
@@ -129,6 +146,23 @@ export class Design extends React.Component<Props, {}> {
               <Divider>{formatMessage(messages.colorCombosList)}</Divider>
               {colorIdeasList}
             </div>
+            <EditInspiration
+              render={!renderList}
+              {...{
+                colors,
+                colorIdea,
+                colorBlock,
+                onSelectColor,
+                onEditColorIdea,
+                onSaveThumbnail,
+                colorsList,
+                colorBlockHovered,
+                onHoverColorBlock,
+                onSelectColorBlock,
+                onUpdateColorIdeaName,
+                formatMessage
+              }}
+            />
           </SwipeableViews>
         </Content>
       </Container>
