@@ -130,7 +130,6 @@ class DesignModal extends React.PureComponent<Props, State> {
       const { onSave, productId } = this.props
 
       await onSave(areas, config, productId)
-      console.log('Saved')
     } catch (e) {
       message.error(e.message)
     }

@@ -336,7 +336,6 @@ export class PublishingTool extends React.Component<Props, {}> {
         message.error('To proceed, enter all the color idea name')
         return
       }
-      console.log('config ', modelConfig)
       const {
         obj,
         mtl,

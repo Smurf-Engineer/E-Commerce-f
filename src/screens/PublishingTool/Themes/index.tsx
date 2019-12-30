@@ -278,7 +278,6 @@ export class Themes extends React.Component<Props, {}> {
         areasPng,
         size
       }
-      console.log('Area Colors ', areaColors)
       const design = {
         name,
         colors: areaColors,

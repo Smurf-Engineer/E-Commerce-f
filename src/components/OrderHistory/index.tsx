@@ -80,6 +80,7 @@ class OrderHistory extends React.Component<Props, {}> {
 
   handleOnChangePage = (page: number) => {
     const { setCurrentPageAction } = this.props
+    window.scrollTo(0, 0)
     setCurrentPageAction(page)
   }
 }
