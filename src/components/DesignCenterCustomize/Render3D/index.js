@@ -1318,6 +1318,18 @@ class Render3D extends PureComponent {
             )}
           </HelpModal>
           <MobileHintIcon src={helpTooltip} onClick={this.handleHelpModal} />
+          {variants.length > 1 && (
+            <Variants {...{ isMobile }}>
+              {variants.map((model, index) => (
+                <VariantButton
+                  key={index}
+                  onClick={() => this.handleSelectVariant(index)}
+                  selected={selectedVariant === index}
+                  src={model.icon || JakrooLogo}
+                />
+              ))}
+            </Variants>
+          )}
         </MobileContainer>
       )
     }

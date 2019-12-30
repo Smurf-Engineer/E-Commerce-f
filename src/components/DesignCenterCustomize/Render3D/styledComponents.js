@@ -287,8 +287,10 @@ export const Icon = styled.img`
 
 export const Variants = styled.div`
   position: absolute;
-  left: 0;
-  top: 70px;
+  left: ${({ isMobile }) => (isMobile ? 'unset' : '0')};
+  top: ${({ isMobile }) => (isMobile ? 'unset' : '70px')};
+  bottom: ${({ isMobile }) => (isMobile ? '0' : 'unset')};
+  right: ${({ isMobile }) => (isMobile ? '10px' : 'unset')};
   display: flex;
   flex-flow: column;
 `
