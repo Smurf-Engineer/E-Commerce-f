@@ -1,11 +1,13 @@
-import { CouponCode, NetsuiteTax } from '../types/common'
+import { CouponCode, NetsuiteTax, ProductPrice } from '../types/common'
+import find from 'lodash/find'
 import {
   PERCENTAGE_PROMO,
   FLAT_PROMO,
   COUNTRY_CODE_US,
   COUNTRY_CODE_CANADA,
   COUNTRY_CODE_AT,
-  COUNTRY_CODE_DE
+  COUNTRY_CODE_DE,
+  PRODUCT
 } from '../screens/Checkout/constants'
 
 const specialTaxes = [COUNTRY_CODE_AT, COUNTRY_CODE_DE]
@@ -18,7 +20,8 @@ export const getTaxesAndDiscount = (
   proDesignFee: number,
   couponCode?: CouponCode,
   taxRates?: NetsuiteTax,
-  country?: string
+  country?: string,
+  productsPrices?: ProductPrice[]
 ) => {
   // get tax fee
   const taxesAmount = taxRates && taxRates.total
@@ -32,22 +35,55 @@ export const getTaxesAndDiscount = (
   let taxVatTotal = 0
 
   if (couponCode) {
-    const { type, rate } = couponCode
+    const { type, rate, restrictionType, products } = couponCode
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
-        if (taxesAmount && applySpecialTaxes) {
-          taxVatTotal = taxesAmount / 100
-          const totalNet = subtotal / (1 + taxVatTotal)
-          // for Austria and Germany we calculate discount
-          // discount = (totalNet + proDesignReview) * percentageDiscount
-          discount = (totalNet + proDesignFee) * (Number(rate) / 100)
+        if (restrictionType !== PRODUCT) {
+          if (taxesAmount && applySpecialTaxes) {
+            taxVatTotal = taxesAmount / 100
+            const totalNet = subtotal / (1 + taxVatTotal)
+            // for Austria and Germany we calculate discount
+            // discount = (totalNet + proDesignReview) * percentageDiscount
+            discount = (totalNet + proDesignFee) * (Number(rate) / 100)
+          } else {
+            // calculate discount with (subtotal + proDesignFee) * percentageDiscount
+            discount = (subtotal + proDesignFee) * (Number(rate) / 100)
+          }
         } else {
-          // calculate discount with (subtotal + proDesignFee) * percentageDiscount
-          discount = (subtotal + proDesignFee) * (Number(rate) / 100)
+          discount = products.reduce((totalDiscount: number, product) => {
+            const itemForDiscount = find(
+              productsPrices,
+              productObject => productObject.yotpoId === product
+            )
+            if (itemForDiscount) {
+              return (
+                totalDiscount +
+                itemForDiscount.price *
+                  (Number(rate) / 100) *
+                  itemForDiscount.quantity
+              )
+            }
+            return totalDiscount
+            // tslint:disable-next-line: align
+          }, 0)
         }
         break
       case FLAT_PROMO: // 'flat
-        discount = Number(rate)
+        if (restrictionType !== PRODUCT) {
+          discount = Number(rate)
+        } else {
+          discount = products.reduce((totalDiscount: number, product) => {
+            const itemForDiscount = find(
+              productsPrices,
+              productObject => productObject.yotpoId === product
+            )
+            if (itemForDiscount) {
+              return totalDiscount + Number(rate) * itemForDiscount.quantity
+            }
+            return totalDiscount
+            // tslint:disable-next-line: align
+          }, 0)
+        }
         break
       default:
         break
