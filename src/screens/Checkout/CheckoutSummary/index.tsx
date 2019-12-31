@@ -162,7 +162,7 @@ const CheckoutSummary = ({
   }
 
   totalSum = roundDecimals(totalSum) // round to 2 decimals
-
+  const previousDiscount = totalWithoutDiscount - subtotal
   const currency = currentCurrency
     ? currentCurrency.toUpperCase()
     : config.defaultCurrency.toUpperCase()
@@ -194,7 +194,7 @@ const CheckoutSummary = ({
       <OrderSummary
         weight={weight.toString()}
         showCouponInput={true}
-        youSaved={discount}
+        youSaved={discount + previousDiscount}
         {...{
           subtotal,
           formatMessage,

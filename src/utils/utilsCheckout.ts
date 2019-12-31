@@ -55,19 +55,15 @@ export const getTaxesAndDiscount = (
               productsPrices,
               productObject => productObject.yotpoId === product
             )
-            /* let discountToApply = 0
             if (itemForDiscount) {
-              discountToApply =
+              return (
+                totalDiscount +
                 itemForDiscount.price *
-                (Number(rate) / 100) *
-                itemForDiscount.quantity
-            } */
-            return (
-              totalDiscount +
-              itemForDiscount.price *
-                (Number(rate) / 100) *
-                itemForDiscount.quantity
-            )
+                  (Number(rate) / 100) *
+                  itemForDiscount.quantity
+              )
+            }
+            return totalDiscount
             // tslint:disable-next-line: align
           }, 0)
         }
@@ -81,8 +77,10 @@ export const getTaxesAndDiscount = (
               productsPrices,
               productObject => productObject.yotpoId === product
             )
-
-            return totalDiscount + Number(rate) * itemForDiscount.quantity
+            if (itemForDiscount) {
+              return totalDiscount + Number(rate) * itemForDiscount.quantity
+            }
+            return totalDiscount
             // tslint:disable-next-line: align
           }, 0)
         }
