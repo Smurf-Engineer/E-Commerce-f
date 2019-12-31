@@ -82,7 +82,7 @@ export class Design extends React.Component<Props, {}> {
       colorIdeas
     } = this.props
 
-    const fileName = 'file'
+    const fileName = 'config'
     const inspiration = colorIdeas.map(
       ({ name: inspirationName, colors: inspirationColors }) => {
         return { name: inspirationName, colors: inspirationColors }
