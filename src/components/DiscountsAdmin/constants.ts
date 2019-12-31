@@ -21,15 +21,18 @@ export const ON_SELECT_DATE = `${namespace}/ON_SELECT_DATE`
 export const SET_DISCOUNT_TO_UPDATE = `${namespace}/SET_DISCOUNT_TO_UPDATE`
 export const SELECT_RESTRICTION = `${namespace}/SELECT_RESTRICTION`
 export const ON_CHANGE_USER = `${namespace}/ON_CHANGE_USER`
-export const SET_SELECTED_USER = `${namespace}/SET_SELECTED_USER`
-export const SET_ITEM_SELECTED_ACTION = `${namespace}/SET_ITEM_SELECTED_ACTION`
-export const SET_ITEMS_ADD_ACTION = `${namespace}/SET_ITEMS_ADD_ACTION`
-export const SET_OPEN_LOCKER_ACTION = `${namespace}/SET_OPEN_LOCKER_ACTION`
-export const ON_UNSELECT_ITEM = `${namespace}/ON_UNSELECT_ITEM`
+export const ON_ADD_PRODUCT = `${namespace}/ON_ADD_PRODUCT`
 export const DELETE_ITEM_SELECTED_ACTION = `${namespace}/DELETE_ITEM_SELECTED_ACTION`
-export const SET_PAGINATION_DATA = `${namespace}/SET_PAGINATION_DATA`
+export const ON_ADD_USER = `${namespace}/ON_ADD_USER`
+export const SET_DISCOUNT_PAGE = `${namespace}/SET_DISCOUNT_PAGE`
+export const ON_CHANGE_USAGE = `${namespace}/ON_CHANGE_USAGE`
+export const ON_CHECK_USAGE = `${namespace}/ON_CHECK_USAGE`
 
 // Discounts types
 export const USAGE = 'usage'
 export const PRODUCT = 'product'
 export const USERS = 'users'
+
+// Discounts pages
+export const LIST = 0
+export const EDIT = 1

@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl'
 import * as DiscountsActions from './actions'
 import SwipeableViews from 'react-swipeable-views'
 import message from 'antd/lib/message'
-import { DISCOUNTS_LIMIT } from './constants'
+import { DISCOUNTS_LIMIT, EDIT } from './constants'
 import {
   Container,
   ScreenTitle,
@@ -18,10 +18,10 @@ import {
 import List from './DiscountsList'
 import get from 'lodash/get'
 import {
-  updateDiscountMutation,
-  addDiscountMutation,
+  upsertDiscountMutation,
   activateDiscountMutation,
-  getUsers
+  getUsers,
+  getProducts
 } from './data'
 import { getDiscountsQuery } from './DiscountsList/data'
 import messages from './messages'
@@ -29,13 +29,14 @@ import {
   sorts,
   Discount,
   UserSearchResult,
-  LockerTableType,
   SelectedDesignObjectType,
-  DesignType
+  UserDiscount,
+  ProductsCodes
 } from '../../types/common'
 import DiscountsData from './DiscountsData'
 import { isNumber } from '../../utils/utilsFiles'
 import { Moment } from 'moment'
+import { USERS } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -53,14 +54,15 @@ interface Props {
   expiry: string
   loading: boolean
   restrictionType: string
-  selectedUser: string
-  items: LockerTableType[]
-  openLocker: boolean
   selectedItems: SelectedDesignObjectType
   users: Data
-  limit: number
-  offset: number
-  currentPageModal: number
+  products: ProductsData
+  user: string
+  discountPage: number
+  selectedUsers: []
+  usageNumber: number
+  unlimitedUsage: boolean
+  selectedProducts: string[]
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -73,29 +75,63 @@ interface Props {
   onActivateDiscountAction: (checked: boolean) => void
   resetDiscountDataAction: () => void
   setLoadingAction: (loading: boolean) => void
-  updateDiscount: (variables: {}) => void
-  addNewDiscount: (variables: {}) => void
+  upsertDiscount: (variables: {}) => void
   activateDiscount: (variables: {}) => void
   onSelectDateAction: (date: string) => void
   setDiscountToUpdateAction: (discount: Discount) => void
   selectRestrictionAction: (restriction: string) => void
   onChangeUserAction: (value: string) => void
-  setSelectedUserAction: (email: string) => void
-  setItemSelectedAction: (item: DesignType, checked: boolean) => void
-  setItemsAddAction: () => void
-  setOpenLockerAction: (open: boolean) => void
-  onUnselectItemAction: (index: number) => void
-  deleteItemSelectedAction: (index: number) => void
-  setPaginationData: (offset: number, page: number) => void
+  onAddProductAction: (value: string) => void
+  deleteItemSelectedAction: (index: number, section: string) => void
+  onAddUserAction: (user: UserDiscount) => void
+  setDiscountPageAction: (page: number) => void
+  onChangeUsageAction: (value: number) => void
+  onCheckUsageAction: (checked: boolean) => void
 }
 
 interface Data extends QueryProps {
   userSearch: UserSearchResult[]
 }
+
+interface ProductsData extends QueryProps {
+  productsSearch: ProductsCodes
+}
+
 class DiscountsAdmin extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
+  }
+
+  getUsersSearchResults = () => {
+    const { users = { loading: true } } = this.props
+    let usersResults
+    if (!users.loading) {
+      usersResults = users.userSearch.map((item: UserSearchResult) => {
+        const text = `${item.id} - ${item.name} - ${item.email}`
+        const value = item.shortId
+
+        return {
+          text,
+          value,
+          email: item.email,
+          netsuiteId: item.id,
+          name: item.name
+        }
+      })
+    }
+    return usersResults
+  }
+
+  getProductsSearchResults = () => {
+    const { products } = this.props
+    let productsResults
+    if (products && !products.loading) {
+      productsResults = products.productsSearch.products.map(
+        (item: string) => item
+      )
+    }
+    return productsResults
   }
 
   render() {
@@ -118,43 +154,28 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       loading,
       restrictionType,
       onChangeUserAction,
-      users,
-      setSelectedUserAction,
-      selectedUser,
-      items,
-      openLocker,
-      selectedItems,
-      setItemSelectedAction,
-      setItemsAddAction,
-      setOpenLockerAction,
-      onUnselectItemAction,
+      onAddProductAction,
       deleteItemSelectedAction,
-      limit,
-      offset,
-      setPaginationData,
-      currentPageModal
+      user,
+      discountPage,
+      selectedUsers = [],
+      onAddUserAction,
+      onChangeUsageAction,
+      usageNumber,
+      onCheckUsageAction,
+      unlimitedUsage,
+      selectedProducts
     } = this.props
-    let selectedValue = ''
-    let selectTitle = ''
+
     const searchResults =
-      users &&
-      !users.loading &&
-      users.userSearch.map((item: UserSearchResult) => {
-        const text = `${item.id} - ${item.name} - ${item.email}`
-        const value = item.shortId
-        if (item.shortId === selectedUser) {
-          selectedValue = text
-          selectTitle = `${item.id} - ${item.name}`
-        }
-        return {
-          text,
-          value
-        }
-      })
+      restrictionType === USERS
+        ? this.getUsersSearchResults()
+        : this.getProductsSearchResults()
+
     return (
       <SwipeableViews
         onChangeIndex={this.handleOnChangeIndex}
-        index={!!couponCode.length ? 1 : 0}
+        index={discountPage}
       >
         <Container>
           <ScreenTitle>
@@ -187,12 +208,11 @@ class DiscountsAdmin extends React.Component<Props, {}> {
           onSelectDate={this.onSelectDate}
           onSelectRestriction={this.handleOnSelectRestriction}
           handleOnChange={onChangeUserAction}
-          setSelectedUser={setSelectedUserAction}
-          setItemSelected={setItemSelectedAction}
-          setItemsToAdd={setItemsAddAction}
-          setOpenLocker={setOpenLockerAction}
-          onUnselectItem={onUnselectItemAction}
+          onAddProduct={onAddProductAction}
           onDeleteItem={deleteItemSelectedAction}
+          onAddUser={onAddUserAction}
+          onChangeUsage={onChangeUsageAction}
+          onCheckUsage={onCheckUsageAction}
           {...{
             formatMessage,
             discountTypes,
@@ -205,16 +225,11 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             loading,
             restrictionType,
             searchResults,
-            selectedUser,
-            items,
-            openLocker,
-            selectedItems,
-            selectedValue,
-            selectTitle,
-            limit,
-            offset,
-            setPaginationData,
-            currentPageModal
+            user,
+            selectedUsers,
+            usageNumber,
+            unlimitedUsage,
+            selectedProducts
           }}
         />
       </SwipeableViews>
@@ -281,8 +296,14 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       discountId,
       expiry,
       formatMessage,
-      restrictionType
+      restrictionType,
+      selectedProducts,
+      selectedUsers,
+      usageNumber,
+      unlimitedUsage
     } = this.props
+
+    const usersIds = selectedUsers.map(user => user.value)
 
     const isUpdatingDiscount = discountId !== -1
     const discount = {
@@ -293,8 +314,12 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       rate,
       expiry,
       active: discountActive,
-      restrictionType
+      restrictionType,
+      selectedUsers: usersIds,
+      items: selectedProducts,
+      usageNumber: !unlimitedUsage ? usageNumber : 0
     }
+
     setLoadingAction(true)
     try {
       await this.updateAddDiscount(isUpdatingDiscount, discount)
@@ -307,8 +332,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     discount: Discount
   ) => {
     const {
-      updateDiscount,
-      addNewDiscount,
+      upsertDiscount,
       orderBy,
       sort,
       searchText,
@@ -320,10 +344,10 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     let responseId: number
     if (isUpdatingAddress) {
       const offset = currentPage ? (currentPage - 1) * DISCOUNTS_LIMIT : 0
-      await updateDiscount({
+      await upsertDiscount({
         variables: { discount },
         update: (store: any, dataDiscount: Discount) => {
-          const newDiscount = get(dataDiscount, 'data.updateDiscount')
+          const newDiscount = get(dataDiscount, 'data.discount')
           responseId = newDiscount.id
           if (!responseId) {
             return
@@ -352,7 +376,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
         }
       })
     } else {
-      await addNewDiscount({
+      await upsertDiscount({
         variables: { discount },
         update: (store: any, dataDiscount: Discount) => {
           const newDiscount = get(dataDiscount, 'data.discount')
@@ -394,15 +418,16 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     resetDiscountDataAction()
   }
   handleOnAddNewDiscount = () => {
-    const { resetDiscountDataAction } = this.props
+    const { resetDiscountDataAction, setDiscountPageAction } = this.props
     resetDiscountDataAction()
+    setDiscountPageAction(EDIT)
   }
 
   handleOnInputChange = (event: any) => {
     const acceptNumbersOnly = event.target.getAttribute('data-is-number')
     const { value, id } = event.target
     const { setDiscountTextAction } = this.props
-    if (acceptNumbersOnly && (!isNumber(value) && value !== '')) {
+    if (acceptNumbersOnly && !isNumber(value) && value !== '') {
       return
     }
     setDiscountTextAction(id, value)
@@ -439,13 +464,9 @@ type OwnProps = {
 }
 
 const DiscountsAdminEnhance = compose(
-  updateDiscountMutation,
-  addDiscountMutation,
+  upsertDiscountMutation,
   activateDiscountMutation,
-  connect(
-    mapStateToProps,
-    { ...DiscountsActions }
-  ),
+  connect(mapStateToProps, { ...DiscountsActions }),
   graphql<Data>(getUsers, {
     options: (ownprops: OwnProps) => {
       const { user } = ownprops
@@ -458,6 +479,19 @@ const DiscountsAdminEnhance = compose(
       }
     },
     name: 'users'
+  }),
+  graphql<Data>(getProducts, {
+    options: (ownprops: OwnProps) => {
+      const { user } = ownprops
+      return {
+        variables: {
+          text: user
+        },
+        skip: !user,
+        fetchPolicy: 'network-only'
+      }
+    },
+    name: 'products'
   })
 )(DiscountsAdmin)
 

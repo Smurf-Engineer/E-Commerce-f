@@ -18,16 +18,20 @@ import {
   SET_DISCOUNT_TO_UPDATE,
   SELECT_RESTRICTION,
   ON_CHANGE_USER,
-  SET_SELECTED_USER,
-  SET_ITEM_SELECTED_ACTION,
-  SET_ITEMS_ADD_ACTION,
-  SET_OPEN_LOCKER_ACTION,
-  ON_UNSELECT_ITEM,
+  ON_ADD_PRODUCT,
   DELETE_ITEM_SELECTED_ACTION,
-  SET_PAGINATION_DATA
+  ON_ADD_USER,
+  SET_DISCOUNT_PAGE,
+  ON_CHANGE_USAGE,
+  ON_CHECK_USAGE
 } from './constants'
 
-import { AnyAction, sorts, Discount, DesignType } from '../../types/common'
+import {
+  AnyAction,
+  sorts,
+  Discount,
+  UserDiscount
+} from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
   type: SET_ORDER_BY,
@@ -104,41 +108,36 @@ export const onChangeUserAction = (value: string) => ({
   value
 })
 
-export const setSelectedUserAction = (email: string) => ({
-  type: SET_SELECTED_USER,
-  email
+export const onAddProductAction = (value: string) => ({
+  type: ON_ADD_PRODUCT,
+  value
 })
 
-export const setItemSelectedAction = (
-  item: DesignType,
-  checked: boolean
+export const deleteItemSelectedAction = (
+  index: number,
+  section: string
 ): AnyAction => ({
-  type: SET_ITEM_SELECTED_ACTION,
-  item,
-  checked
-})
-
-export const setItemsAddAction = (): AnyAction => ({
-  type: SET_ITEMS_ADD_ACTION
-})
-
-export const setOpenLockerAction = (isOpen: boolean): AnyAction => ({
-  type: SET_OPEN_LOCKER_ACTION,
-  isOpen
-})
-
-export const onUnselectItemAction = (id: number) => ({
-  type: ON_UNSELECT_ITEM,
-  id
-})
-
-export const deleteItemSelectedAction = (index: number): AnyAction => ({
   type: DELETE_ITEM_SELECTED_ACTION,
-  index
+  index,
+  section
 })
 
-export const setPaginationData = (offset: number, page: number) => ({
-  type: SET_PAGINATION_DATA,
-  offset,
+export const onAddUserAction = (user: UserDiscount) => ({
+  type: ON_ADD_USER,
+  user
+})
+
+export const setDiscountPageAction = (page: number): AnyAction => ({
+  type: SET_DISCOUNT_PAGE,
   page
+})
+
+export const onChangeUsageAction = (value: number): AnyAction => ({
+  type: ON_CHANGE_USAGE,
+  value
+})
+
+export const onCheckUsageAction = (checked: boolean): AnyAction => ({
+  type: ON_CHECK_USAGE,
+  checked
 })

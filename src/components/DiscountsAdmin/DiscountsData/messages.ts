@@ -69,9 +69,13 @@ export default defineMessages({
     id: 'components.DiscountsData.searchBy',
     defaultMessage: 'Name, Email or Client ID'
   },
-  selectUser: {
-    id: 'components.DiscountsData.selectUser',
-    defaultMessage: 'Select User'
+  searchByProduct: {
+    id: 'components.DiscountsData.searchByProduct',
+    defaultMessage: 'Model ID'
+  },
+  addProduct: {
+    id: 'components.DiscountsData.addProduct',
+    defaultMessage: 'Add Products'
   },
   addItems: {
     id: 'components.DiscountsData.addItems',
@@ -92,5 +96,29 @@ export default defineMessages({
   gotIt: {
     id: 'components.DiscountsData.gotIt',
     defaultMessage: 'Got it'
+  },
+  discountUser: {
+    id: 'components.DiscountsData.discountUser',
+    defaultMessage: 'Discount User List'
+  },
+  discountProduct: {
+    id: 'components.DiscountsData.discountProduct',
+    defaultMessage: 'Discount Product List'
+  },
+  addUsers: {
+    id: 'components.DiscountsData.addUsers',
+    defaultMessage: 'Add Users'
+  },
+  userAlreadyAdded: {
+    id: 'components.DiscountsData.userAlreadyAdded',
+    defaultMessage: 'User already added'
+  },
+  discountUsage: {
+    id: 'components.DiscountsData.discountUsage',
+    defaultMessage: 'Discount Usage'
+  },
+  unlimitedUsages: {
+    id: 'components.DiscountsData.unlimitedUsages',
+    defaultMessage: 'Unlimited Usage'
   }
 })

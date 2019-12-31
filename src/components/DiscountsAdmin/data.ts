@@ -1,10 +1,10 @@
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
-export const addDiscountMutation = graphql(
+export const upsertDiscountMutation = graphql(
   gql`
-    mutation createDiscount($discount: DiscountInput!) {
-      discount: createDiscount(discount: $discount) {
+    mutation upsertDiscount($discount: DiscountInput!) {
+      discount: upsertDiscount(discount: $discount) {
         id
         code: coupon_code
         discountItemId: discount_item_id
@@ -13,30 +13,19 @@ export const addDiscountMutation = graphql(
         expiry
         active
         restrictionType: restriction_type
+        usageNumber: usage_limit
+        selectedUsers: users {
+          netsuiteId: netsuite_internal
+          name: full_name
+          email
+          value: short_id
+        }
+        selectedProducts: items
       }
     }
   `,
   {
-    name: 'addNewDiscount'
-  }
-)
-export const updateDiscountMutation = graphql(
-  gql`
-    mutation updateDiscount($discount: DiscountInput!) {
-      updateDiscount(discount: $discount) {
-        id
-        code: coupon_code
-        discountItemId: discount_item_id
-        type: discount_type
-        rate
-        expiry
-        active
-        restrictionType: restriction_type
-      }
-    }
-  `,
-  {
-    name: 'updateDiscount'
+    name: 'upsertDiscount'
   }
 )
 
@@ -60,6 +49,14 @@ export const getUsers = gql`
       name
       email
       shortId: short_id
+    }
+  }
+`
+
+export const getProducts = gql`
+  query getProductInternalsInfo($text: String) {
+    productsSearch: getProductInternalsInfo(text: $text) {
+      products
     }
   }
 `

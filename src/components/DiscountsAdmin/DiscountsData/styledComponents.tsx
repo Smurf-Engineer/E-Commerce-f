@@ -9,7 +9,7 @@ import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
 import InputNumber from 'antd/lib/input-number'
 import DatePicker from 'antd/lib/date-picker'
-import { GRAY_LIGHTEST, GRAY_DARK, BLUE } from '../../../theme/colors'
+import { GRAY_LIGHTEST } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -26,6 +26,7 @@ export const Title = styled.div`
   font-weight: bold;
   line-height: 27px;
   margin-bottom: 10px;
+  margin-top: 20px;
 `
 
 export const Label = styled.p`
@@ -65,6 +66,9 @@ export const StyledButton = styled(Button)`
     disabled ? `${GRAY_LIGHTEST} !important` : ''};
   border-color: ${({ disabled }: any) =>
     disabled ? `${GRAY_LIGHTEST} !important` : ''};
+  border-radius: 0;
+  height: 40px;
+  width: 120px;
 `
 
 type PropsButton = {
@@ -84,12 +88,13 @@ export const ButtonWrapper = styled.div`
     background-color: ${({ color }: PropsButton) => color};
     border-color: ${({ color }: PropsButton) => color};
   }
+  width: 120px;
 `
 
 export const ButtonsContainer = styled.div`
   margin-top: 10px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: start;
   align-items: center;
 `
 
@@ -167,36 +172,14 @@ export const SearchButton = styled(Button)`
   width: 35px;
 `
 
-export const AddItemButton = styled(Button)`
-  height: 40px;
-  border: 2px solid #e61737;
-  border-radius: 2px;
-  background-color: #ffffff;
-  color: #e61737;
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 22px;
-  text-align: center;
-  width: 200px;
-  margin: 10px 0 15px 0;
+export const CheckboxContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
 `
 
-export const InfoTitle = styled.div`
-  font-family: 'Avenir Next';
-  font-size: 20px;
-  font-weight: bold;
-  color: ${GRAY_DARK};
+export const CheckboxLabel = styled.p`
+  margin: 10px 0 10px 0;
+  display: inline-block;
 `
-
-export const InfoUser = styled.div`
-  margin-left: -36px;
-  font-family: 'Avenir Next';
-  font-size: 16px;
-  color: ${GRAY_DARK};
-`
-
-export const okButtonStyles = {
-  background: BLUE,
-  border: 'none',
-  borderRadius: '2px'
-}
