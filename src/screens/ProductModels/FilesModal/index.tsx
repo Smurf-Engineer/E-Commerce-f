@@ -19,11 +19,13 @@ import {
   ModelIcon,
   Loading,
   SaveSection,
-  SaveButton
+  SaveButton,
+  CloseIcon
 } from './styledComponents'
 import { Message, ModelVariant } from '../../../types/common'
 import messages from './messages'
 import FileSection from './FileSection'
+import closeIcon from '../../../assets/cancel-button.svg'
 import { validIcons } from '../constants'
 
 interface Props {
@@ -89,10 +91,13 @@ export class FilesModal extends React.Component<Props, {}> {
         footer={null}
         closable={false}
         maskStyle={maskStyles}
-        maskClosable={true}
+        maskClosable={false}
         onCancel={requestClose}
       >
-        <Title>{formatMessage(messages.title)}</Title>
+        <Title>
+          {formatMessage(messages.title)}
+          <CloseIcon src={closeIcon} onClick={requestClose} />
+        </Title>
         <FormContainer>
           <RowInput>
             <NameInput>
