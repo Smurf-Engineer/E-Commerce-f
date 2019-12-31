@@ -51,13 +51,11 @@ export const initialState = fromJS({
   selectedValues: [],
   usageNumber: 0,
   unlimitedUsage: false,
-  selectedProducts: []
+  selectedProducts: [],
+  selectedUsers: []
 })
 
-const orderHistoryAdminReducer: Reducer<any> = (
-  state = initialState,
-  action
-) => {
+const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDER_BY:
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
@@ -173,4 +171,4 @@ const orderHistoryAdminReducer: Reducer<any> = (
   }
 }
 
-export default orderHistoryAdminReducer
+export default discountsAdminReducer
