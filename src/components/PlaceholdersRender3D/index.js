@@ -176,7 +176,6 @@ class Render3D extends PureComponent {
       if (this.renderer) {
         this.removeObject()
       }
-      console.log('CHANGED !')
       setTimeout(() => {
         this.render3DModel()
       }, 100)
@@ -460,8 +459,6 @@ class Render3D extends PureComponent {
         const { brandingPng, fullColors: colors } = design
 
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
-        console.log('Design ', design)
-        console.log('Product ', product)
         if (!!zipper) {
           const { white, black } = zipper
           this.zipper = {}
@@ -501,6 +498,7 @@ class Render3D extends PureComponent {
         if (!!flatlock) {
           loadedTextures.flatlock = this.textureLoader.load(flatlock)
         }
+        console.log('Brandingg png ',brandingPng)
         if (!!brandingPng) {
           loadedTextures.branding = this.textureLoader.load(brandingPng)
           loadedTextures.branding.minFilter = THREE.LinearFilter
@@ -512,7 +510,6 @@ class Render3D extends PureComponent {
          * the colors had a propert from apollo, that causes fail on
          * the lodash reverse function.
          */
-        console.log('colors are ', colors)
         const sanitizedColors = colors.map(({ color, image }) => ({
           color,
           image
@@ -531,16 +528,6 @@ class Render3D extends PureComponent {
         })
         loadedTextures.areas = loadedAreas
         resolve(loadedTextures)
-
-        /* loadedTextures.bumpMap = this.textureLoader.load(bumpMap)
-        const loadedAreas = areasPng.map(areaUri => {
-          console.log('Area uri', areaUri)
-          const areaTexture = this.textureLoader.load(areaUri)
-          areaTexture.minFilter = THREE.LinearFilter
-          return areaTexture
-        })
-        loadedTextures.areas = loadedAreas
-        resolve(loadedTextures) */
       } catch (e) {
         reject(e)
       }
@@ -603,15 +590,12 @@ class Render3D extends PureComponent {
       product,
       isEditing
     )
-    console.log('loaded')
     const { accessoriesColor, designId } = currentStyle
     if (isEditing) {
       onSetEditConfig(loadedTextures.colors, accessoriesColor || {}, designId)
     } else {
       onLoadModel(true)
     }
-    console.log(designId)
-    console.log('MTL ', product.mtl)
     this.mtlLoader.load(product.mtl, materials => {
       materials.preload()
       this.objLoader.setMaterials(materials)
@@ -772,7 +756,7 @@ class Render3D extends PureComponent {
           const canvasIndex = childrenLength - 1
           children[canvasIndex].material = canvasMaterial
           children[canvasIndex].name = CANVAS_MESH
-
+          console.log('Branding ', branding)
           /* Branding  */
           if (!!branding) {
             const brandingObj = children[meshIndex].clone()

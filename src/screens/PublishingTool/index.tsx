@@ -336,7 +336,6 @@ export class PublishingTool extends React.Component<Props, {}> {
         message.error('To proceed, enter all the color idea name')
         return
       }
-      console.log('config ', modelConfig)
       const {
         obj,
         mtl,
@@ -603,6 +602,7 @@ export class PublishingTool extends React.Component<Props, {}> {
               onDeleteInspiration={this.handleOnDeleteInspiration}
             />
           )}
+          {console.log('Colors ', colors)}
           {!!colors.length && (
             <PlaceholdersRender3D
               ref={placeHolder => (this.render3DPlaceholder = placeHolder)}

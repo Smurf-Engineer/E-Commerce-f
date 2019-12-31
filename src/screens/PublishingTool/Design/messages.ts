@@ -16,5 +16,9 @@ export default defineMessages({
   colorCombosList: {
     id: 'screens.PublishingTool.Design.colorCombosList',
     defaultMessage: 'Color Combos'
+  },
+  exportColors: {
+    id: 'screens.PublishingTool.Design.exportColors',
+    defaultMessage: 'Export colors'
   }
 })

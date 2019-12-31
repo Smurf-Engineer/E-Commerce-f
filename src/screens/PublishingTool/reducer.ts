@@ -207,11 +207,12 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
       const { item } = action
       if (item !== NONE) {
         const keyPath =
-          item !== DESIGN_COLORS ? ['colorIdeas', item] : ['design', 'colors']
-
+          item !== DESIGN_COLORS
+            ? ['colorIdeas', item, 'colors']
+            : ['design', 'colors']
         const colors = state.getIn(keyPath) || []
         return state.merge({
-          colors: item !== DESIGN_COLORS ? colors.colors : colors,
+          colors: colors.reverse(),
           colorIdeaItem: item
         })
       }

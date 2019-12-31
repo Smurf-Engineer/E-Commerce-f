@@ -8,7 +8,6 @@ export const GetProductsByIdQuery = gql`
       modelSize: model_size
       mpn
       flatlock
-      branding
       bibBrace {
         white
         black

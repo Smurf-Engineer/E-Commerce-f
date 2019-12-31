@@ -251,7 +251,6 @@ export class Themes extends React.Component<Props, {}> {
       const {
         name,
         image: styleImage,
-        branding = '',
         brandingPng,
         colors,
         size,
@@ -272,13 +271,10 @@ export class Themes extends React.Component<Props, {}> {
         label,
         flatlock,
         bumpMap,
-        brandingSvg: branding,
-        brandingPng,
         areasSvg,
         areasPng,
         size
       }
-      console.log('Area Colors ', areaColors)
       const design = {
         name,
         colors: areaColors,
@@ -286,7 +282,8 @@ export class Themes extends React.Component<Props, {}> {
         canvas,
         fullColors: colors,
         width: currentStyle.width,
-        height: currentStyle.height
+        height: currentStyle.height,
+        brandingPng
       }
 
       if (!size) {

@@ -31,7 +31,6 @@ export const uploadDesignAction = (
         )
 
         const modelConfig = await response.json()
-        console.log(modelConfig)
         dispatch(setUploadingDesignSuccess(modelConfig))
       }
     } catch (e) {

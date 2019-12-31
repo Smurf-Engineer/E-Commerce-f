@@ -15,7 +15,9 @@ import {
   Title,
   Content,
   Button,
-  Subtitle
+  Subtitle,
+  TopContainer,
+  ExportButton
 } from './styledComponents'
 import {
   Message,
@@ -73,6 +75,31 @@ export class Design extends React.Component<Props, {}> {
       modelColors = colorIdea.colors || []
     }
     onSaveThumbnail(item, modelColors)
+  }
+  downloadFile = async () => {
+    const {
+      design: { name, colors },
+      colorIdeas
+    } = this.props
+
+    const fileName = 'file'
+    const inspiration = colorIdeas.map(
+      ({ name: inspirationName, colors: inspirationColors }) => {
+        return { name: inspirationName, colors: inspirationColors }
+      }
+    )
+
+    const jsonObject = { name, colors, inspiration }
+
+    const json = JSON.stringify(jsonObject, null, '\t')
+    const blob = new Blob([json], { type: 'application/json' })
+    const href = await URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = href
+    link.download = fileName + '.json'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   render() {
@@ -149,7 +176,12 @@ export class Design extends React.Component<Props, {}> {
                 buttonLabel="Save Thumbnail"
                 loading={uploadingThumbnail}
               />
-              <Subtitle>{formatMessage(messages.colorCombosList)}</Subtitle>
+              <TopContainer>
+                <Subtitle>{formatMessage(messages.colorCombosList)}</Subtitle>
+                <ExportButton onClick={this.downloadFile}>
+                  {formatMessage(messages.exportColors)}
+                </ExportButton>
+              </TopContainer>
               {colorIdeasList}
             </div>
             <EditInspiration
