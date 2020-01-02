@@ -3,8 +3,12 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import { getFileExtension } from '../../../utils/utilsFiles'
 import { updateStylesOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
+import message from 'antd/lib/message'
+import Upload from 'antd/lib/upload'
+import Button from 'antd/lib/button'
 import { compose, withApollo } from 'react-apollo'
 import Palette from '../../../components/DesignPalette'
 import SwipeableViews from 'react-swipeable-views'
@@ -14,7 +18,7 @@ import {
   Header,
   Title,
   Content,
-  Button,
+  IdeasButton,
   Subtitle,
   TopContainer,
   ExportButton
@@ -29,6 +33,8 @@ import {
 
 const LIST_TAB = 0
 const EDIT_TAB = 1
+
+const jsonFileType = 'application/json'
 
 import { DESIGN_THUMBNAIL, DESIGN_COLORS, NONE } from '../reducer'
 
@@ -56,6 +62,10 @@ interface Props {
   onAddColorIdea: () => void
   onSaveThumbnail: (item: number, colors: string[]) => void
   onDeleteInspiration: (id: number, index: number) => void
+  updateColorIdeas: (
+    colorIdeas: DesignObject[],
+    modelDesign: ModelDesign
+  ) => void
 }
 
 interface ProductData extends QueryProps {
@@ -100,6 +110,39 @@ export class Design extends React.Component<Props, {}> {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+  }
+
+  beforeUploadJson = (file: any) => {
+    const { type, name } = file
+    const selectedFileExtension = type || getFileExtension(name)
+    if (selectedFileExtension !== jsonFileType) {
+      message.error(`Please select a valid ${jsonFileType} file`)
+    } else {
+      this.setState({ config: file })
+    }
+    const reader = new FileReader()
+
+    const { updateColorIdeas, formatMessage } = this.props
+    reader.onload = event => {
+      if (event.target) {
+        try {
+          const inspirationJson = JSON.parse(event.target.result)
+          const modelDesign = {
+            name: inspirationJson.name,
+            colors: inspirationJson.colors
+          }
+          const inspiration = inspirationJson.inspiration
+          updateColorIdeas(inspiration, modelDesign)
+          return
+        } catch (e) {
+          message.error(formatMessage(messages.wrongFormat))
+        }
+      }
+      message.error(formatMessage(messages.errorFile))
+    }
+    reader.readAsText(file)
+
+    return false
   }
 
   render() {
@@ -162,10 +205,10 @@ export class Design extends React.Component<Props, {}> {
             index={renderList ? LIST_TAB : EDIT_TAB}
           >
             <div>
-              <Button onClick={onAddColorIdea}>
+              <IdeasButton onClick={onAddColorIdea}>
                 <Icon type="plus" />
                 {formatMessage(messages.addColor)}
-              </Button>
+              </IdeasButton>
               <Palette
                 showDelete={false}
                 colors={designColors || []}
@@ -178,6 +221,9 @@ export class Design extends React.Component<Props, {}> {
               />
               <TopContainer>
                 <Subtitle>{formatMessage(messages.colorCombosList)}</Subtitle>
+                <Upload beforeUpload={this.beforeUploadJson} fileList={[]}>
+                  <Button>{formatMessage(messages.importColors)}</Button>
+                </Upload>
                 <ExportButton onClick={this.downloadFile}>
                   {formatMessage(messages.exportColors)}
                 </ExportButton>
@@ -208,6 +254,9 @@ export class Design extends React.Component<Props, {}> {
   }
 }
 
-const DesignEnhance = compose(withApollo, updateStylesOrderMutation)(Design)
+const DesignEnhance = compose(
+  withApollo,
+  updateStylesOrderMutation
+)(Design)
 
 export default DesignEnhance

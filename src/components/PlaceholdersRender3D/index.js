@@ -498,7 +498,6 @@ class Render3D extends PureComponent {
         if (!!flatlock) {
           loadedTextures.flatlock = this.textureLoader.load(flatlock)
         }
-        console.log('Brandingg png ',brandingPng)
         if (!!brandingPng) {
           loadedTextures.branding = this.textureLoader.load(brandingPng)
           loadedTextures.branding.minFilter = THREE.LinearFilter
@@ -756,7 +755,6 @@ class Render3D extends PureComponent {
           const canvasIndex = childrenLength - 1
           children[canvasIndex].material = canvasMaterial
           children[canvasIndex].name = CANVAS_MESH
-          console.log('Branding ', branding)
           /* Branding  */
           if (!!branding) {
             const brandingObj = children[meshIndex].clone()

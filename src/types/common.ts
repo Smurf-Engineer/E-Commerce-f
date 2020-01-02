@@ -571,7 +571,7 @@ export interface StripeCardData {
 
 export interface ModelDesign {
   name: string
-  image: string
+  image?: string
   colors: string[]
   canvas?: string
 }

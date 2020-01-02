@@ -35,6 +35,7 @@ import {
   SET_DESIGN_NAME_ACTION,
   DELETE_COLOR_IDEA_ACTION,
   SET_CANVAS_JSON_ACTION,
+  UPDATE_INSPIRATION_LIST,
   Sections
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -308,7 +309,17 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SAVING_DESIGN:
       return state.set('saveDesignLoading', action.saving)
     case UPDATE_COLOR_IDEAS_LIST:
-      return state.set('colorIdeas', List.of(...action.colorIdeas))
+      return state.merge({
+        colorIdeas: List.of(...action.colorIdeas)
+      })
+    case UPDATE_INSPIRATION_LIST: {
+      const { modelDesign, colorIdeas } = action
+      return state.withMutations((map: any) => {
+        map.setIn(['design', 'colors'], modelDesign.colors)
+        map.setIn(['design', 'image'], '')
+        map.merge({ colorIdeas })
+      })
+    }
     case SET_DESIGN_NAME_ACTION:
       return state.setIn(['design', 'name'], action.name)
     case DELETE_COLOR_IDEA_ACTION: {

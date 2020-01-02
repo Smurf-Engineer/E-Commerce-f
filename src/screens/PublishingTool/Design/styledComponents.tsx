@@ -40,7 +40,7 @@ export const Title = styled.p`
   margin: 0;
 `
 
-export const Button = styled(AntdButton)`
+export const IdeasButton = styled(AntdButton)`
   margin: 10px;
   width: 90%;
   height: 50px;

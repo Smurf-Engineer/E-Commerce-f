@@ -31,7 +31,8 @@ import {
   UPDATE_COLOR_IDEAS_LIST,
   SET_DESIGN_NAME_ACTION,
   DELETE_COLOR_IDEA_ACTION,
-  SET_CANVAS_JSON_ACTION
+  SET_CANVAS_JSON_ACTION,
+  UPDATE_INSPIRATION_LIST
 } from './constants'
 
 import {
@@ -191,6 +192,15 @@ export const setSavingDesign = (saving: boolean) => ({
 export const updateColorIdeasListAction = (colorIdeas: DesignObject[]) => ({
   type: UPDATE_COLOR_IDEAS_LIST,
   colorIdeas
+})
+
+export const updateInspirationAction = (
+  colorIdeas: DesignObject[],
+  modelDesign?: ModelDesign
+) => ({
+  type: UPDATE_INSPIRATION_LIST,
+  colorIdeas,
+  modelDesign
 })
 
 export const setDesignNameAction = (name: string): AnyAction => ({

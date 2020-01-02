@@ -138,6 +138,11 @@ interface Props {
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
   updateColorIdeasListAction: (colorIdeas: DesignObject[]) => void
+  updateInspirationAction: (
+    colorIdeas: DesignObject[],
+    modelDesign?: ModelDesign
+  ) => void
+
   setDesignNameAction: (name: string) => void
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   deleteColorIdeaAction: (index: number) => void
@@ -525,7 +530,8 @@ export class PublishingTool extends React.Component<Props, {}> {
       productId,
       saveDesignLoading,
       setDesignNameAction,
-      setCanvasJsonAction
+      setCanvasJsonAction,
+      updateInspirationAction
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
@@ -600,9 +606,9 @@ export class PublishingTool extends React.Component<Props, {}> {
               onAddColorIdea={addColorIdeaAction}
               onSaveThumbnail={this.handleOnSaveThumbnail}
               onDeleteInspiration={this.handleOnDeleteInspiration}
+              updateColorIdeas={updateInspirationAction}
             />
           )}
-          {console.log('Colors ', colors)}
           {!!colors.length && (
             <PlaceholdersRender3D
               ref={placeHolder => (this.render3DPlaceholder = placeHolder)}
@@ -709,10 +715,13 @@ const PublishingToolEnhance = compose(
     },
     name: 'colorsList'
   }),
-  connect(mapStateToProps, {
-    ...publishingToolActions,
-    ...publishingToolApi
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...publishingToolActions,
+      ...publishingToolApi
+    }
+  )
 )(PublishingTool)
 
 export default PublishingToolEnhance
