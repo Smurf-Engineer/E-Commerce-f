@@ -63,9 +63,10 @@ const designToolsReducer: Reducer<any> = (state = initialState, action) => {
     }
     case ADD_SYMBOL_ACTION: {
       const symbols = state.get('symbols')
-      const updatedSymbols = symbols.push(
-        fromJS({ url: action.url, id: `SYM${symbols.size}` })
-      )
+      const updatedSymbols = symbols.push({
+        url: action.url,
+        id: `SYM${symbols.size}`
+      })
       return state.merge({ symbols: updatedSymbols, uploadingSymbol: false })
     }
     case HIDE_SYMBOL_ACTION:

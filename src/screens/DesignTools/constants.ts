@@ -23,3 +23,5 @@ export enum CustomizeTabs {
   SymbolTab = 'SYMBOLS_TAB',
   TextTab = 'FONT_TAB'
 }
+
+export const ALLOWED_EXTENSIONS = ['.svg']
