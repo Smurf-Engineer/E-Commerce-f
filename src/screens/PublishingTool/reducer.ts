@@ -315,7 +315,7 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
     case UPDATE_INSPIRATION_LIST: {
       const { modelDesign, colorIdeas } = action
       return state.withMutations((map: any) => {
-        map.setIn(['design', 'colors'], modelDesign.colors)
+        map.setIn(['design', 'colors'], List.of(...modelDesign.colors))
         map.setIn(['design', 'image'], '')
         map.merge({ colorIdeas })
       })
