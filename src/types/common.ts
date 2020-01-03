@@ -1132,6 +1132,9 @@ export type CanvasDragged = {
   top: number
 }
 
+export type SelectedFonts = {
+  [id: string]: boolean
+}
 export type CanvasRotated = {
   id: string
   oldRotation: Rotation
