@@ -191,6 +191,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     const { setSkipValueAction, limit } = this.props
     const skip = (pageNumber - 1) * limit
     setSkipValueAction(skip, pageNumber)
+    window.scrollTo(0, 0)
   }
 }
 
@@ -202,24 +203,22 @@ type OwnProps = {
 }
 
 const MyTeamStoresEnhanced = compose(
-  graphql(GetTeamMyStoresQuery, {
-    options: ({ limit, skip }: OwnProps) => {
-      return {
-        fetchPolicy: 'network-only',
-        variables: {
-          limit,
-          offset: skip
-        }
-      }
-    }
-  }),
-  withLoading,
-  withError,
-  DeleteTeamStoreMutation,
   connect(
     mapstateToProps,
     { ...MyTeamStoresActions }
-  )
+  ),
+  graphql(GetTeamMyStoresQuery, {
+    options: ({ limit, skip }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      variables: {
+        limit,
+        offset: skip
+      }
+    })
+  }),
+  withLoading,
+  withError,
+  DeleteTeamStoreMutation
 )(MyTeamStores)
 
 export default MyTeamStoresEnhanced

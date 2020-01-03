@@ -35,10 +35,12 @@ export const BackIcon = styled.img`
 `
 
 export const BackButton = styled.div`
-  display: inline-flex;
+  display: flex;
+  align-items: center;
   cursor: pointer;
   flex-direction: row;
-  left: 32px;
+  margin-left: 32px;
+  margin-right: 40px;
 `
 
 export const Back = styled.div`
@@ -48,11 +50,22 @@ export const Back = styled.div`
 `
 
 export const TopMenu = styled.div`
-  padding: 10px;
   border-bottom: 1px solid ${GRAY_LIGHT};
+  display: flex;
 `
 
 export const Layout = styled.div`
   display: flex;
   position: relative;
+`
+
+export const View = styled.div`
+  flex: 1;
+`
+
+export const Tabs = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 3;
+  background-color: #d2d2dc;
 `
