@@ -13,6 +13,7 @@ import ReactDOM from 'react-dom'
 
 interface Props {
   yotpoId: string
+  name: string
   noCarousel?: boolean
 }
 
@@ -60,9 +61,9 @@ class YotpoReviews extends React.Component<Props, any> {
   }
 
   render() {
-    const { children } = this.props
+    const { children, name } = this.props
     return (
-      <Container>
+      <Container {...{ name }}>
         <YotpoCarouselContainer>
           <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
         </YotpoCarouselContainer>

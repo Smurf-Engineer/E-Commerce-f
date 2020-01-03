@@ -187,6 +187,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const {
       images: imagesArray,
       genders,
+      name,
       type,
       yotpoAverageScore,
       description,
@@ -637,10 +638,7 @@ type OwnProps = {
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
-  connect(
-    mapStateToProps,
-    { ...customProductDetailActions }
-  ),
+  connect(mapStateToProps, { ...customProductDetailActions }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {

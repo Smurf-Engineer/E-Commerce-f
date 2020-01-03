@@ -59,6 +59,7 @@ interface Props {
   orderId: string
   data?: Data
   from: string
+  history: History
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: string) => void
@@ -66,7 +67,13 @@ interface Props {
 
 export class OrderDetailsAdmin extends React.Component<Props, {}> {
   render() {
-    const { data, orderId, formatMessage, currentCurrency } = this.props
+    const {
+      data,
+      orderId,
+      history,
+      formatMessage,
+      currentCurrency
+    } = this.props
     if ((data && data.loading) || !data) {
       return (
         <LoadingContainer>
@@ -172,6 +179,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
               {...{
                 formatMessage,
                 productTotal,
+                history,
                 unitPrice,
                 cartItem,
                 currentCurrency
