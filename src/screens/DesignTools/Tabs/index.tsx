@@ -6,7 +6,7 @@ import AntdTabs from 'antd/lib/tabs'
 import ColorTab from '../ColorTab'
 import colorIcon from '../../../assets/color_white.svg'
 import { Container, NavTabs } from './styledComponents'
-import { UploadFile, Color } from '../../../types/common'
+import { UploadFile, Color, Message } from '../../../types/common'
 import Tab from '../../../components/DesignCenterCustomize/Tab'
 
 const COLOR_TAB = 'COLOR_TAB'
@@ -20,7 +20,7 @@ interface Props {
   uploadingColors: boolean
   uploadingStitchingColors: boolean
   selectedTab: number
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   onUploadColorsList: (file: UploadFile, type: string) => void
   onTabClick: (selectedIndex: number) => void
 }
