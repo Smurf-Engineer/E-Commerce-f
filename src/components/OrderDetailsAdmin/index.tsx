@@ -9,7 +9,8 @@ import messages from './messages'
 import {
   OrderDetailsInfo,
   QueryProps,
-  FulfillmentNetsuite
+  FulfillmentNetsuite,
+  Message
 } from '../../types/common'
 import { getOrderQuery } from './data'
 import Icon from 'antd/lib/icon'
@@ -61,7 +62,7 @@ interface Props {
   from: string
   history: History
   currentCurrency: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   onReturn: (id: string) => void
 }
 
