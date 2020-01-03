@@ -14,7 +14,13 @@ import { compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import WithError from '../../../components/WithError'
 import Symbol from '../../../components/DesignCenterCustomize/ClipArt'
-import { QueryProps, ClipArt, UploadFile } from '../../../types/common'
+import {
+  QueryProps,
+  ClipArt,
+  UploadFile,
+  HiddenSymbols,
+  Message
+} from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
 import backIcon from '../../../assets/leftarrow.svg'
@@ -35,6 +41,7 @@ import {
   ButtonContainer,
   DraggerContainer
 } from './styledComponents'
+import { ALLOWED_EXTENSIONS } from '../constants'
 
 interface Data extends QueryProps {
   clipArts: ClipArt[]
@@ -45,9 +52,9 @@ interface Props {
   uploadingSymbol: boolean
   searchClipParam: string
   symbols: ClipArt[]
-  hiddenSymbols: { [id: string]: boolean }
+  hiddenSymbols: HiddenSymbols
   hideSymbol: (url: string, id: string) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setSearchClipParamAction: (searchParam: string) => void
   onUploadFile: (file: UploadFile) => void
 }
@@ -119,7 +126,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               loading={uploadingSymbol}
               onSelectImage={this.beforeUpload}
               formatMessage={formatMessage}
-              extensions={['.svg']}
+              extensions={ALLOWED_EXTENSIONS}
             >
               <Button>
                 <ButtonContainer>
@@ -163,7 +170,10 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         return false
       }
       const fileExtension = getFileExtension(name)
-      if (indexOf(['.svg'], (fileExtension as String).toLowerCase()) === -1) {
+      if (
+        indexOf(ALLOWED_EXTENSIONS, (fileExtension as String).toLowerCase()) ===
+        -1
+      ) {
         message.error(formatMessage(messages.imageExtensionError))
         return false
       }
