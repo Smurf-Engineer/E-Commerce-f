@@ -295,6 +295,7 @@ export class PublishingTool extends React.Component<Props, {}> {
     try {
       const {
         design,
+        designName,
         saveDesign,
         productCode,
         modelConfig,
@@ -401,7 +402,9 @@ export class PublishingTool extends React.Component<Props, {}> {
           const { styles } = themes[themeIndex]
           const styleIndex = findIndex(
             styles,
-            ({ id: styleId }) => styleId === selectedDesign
+            ({ id: styleId, name }) =>
+              styleId === selectedDesign ||
+              (selectedDesign === -1 && designName === name)
           )
           const { colorIdeas: updatedColorIdeas } = styles[styleIndex]
           updateColorIdeasListAction(updatedColorIdeas)
