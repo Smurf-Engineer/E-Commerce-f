@@ -20,7 +20,8 @@ import {
   NetsuiteShipping,
   AddressObj,
   TaxAddressObj,
-  SimpleCart
+  SimpleCart,
+  ProductPrice
 } from '../../../types/common'
 import OrderSummary from '../../../components/OrderSummary'
 import config from '../../../config/index'
@@ -55,6 +56,7 @@ interface Props {
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
+  productsPrices: ProductPrice[]
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
   onPaypalSuccess: (payment: any) => void
@@ -84,7 +86,8 @@ const CheckoutSummary = ({
   onPlaceOrder,
   shipping,
   subsidiaryQuery,
-  taxShipQuery
+  taxShipQuery,
+  productsPrices
 }: Props) => {
   let paypalClientId
   const subsidiary = get(subsidiaryQuery, 'subsidiary', 1)
@@ -133,7 +136,8 @@ const CheckoutSummary = ({
     proDesignFee,
     couponCode,
     taxRates,
-    country
+    country,
+    productsPrices
   )
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
@@ -158,7 +162,7 @@ const CheckoutSummary = ({
   }
 
   totalSum = roundDecimals(totalSum) // round to 2 decimals
-
+  const previousDiscount = totalWithoutDiscount - subtotal
   const currency = currentCurrency
     ? currentCurrency.toUpperCase()
     : config.defaultCurrency.toUpperCase()
@@ -190,7 +194,7 @@ const CheckoutSummary = ({
       <OrderSummary
         weight={weight.toString()}
         showCouponInput={true}
-        youSaved={discount}
+        youSaved={discount + previousDiscount}
         {...{
           subtotal,
           formatMessage,
