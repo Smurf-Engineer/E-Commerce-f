@@ -4,3 +4,5 @@
 
 export const COLORS = `colors`
 export const STITCHING_COLORS = 'stitchingColors'
+
+export const ALLOWED_EXTENSIONS = ['.json']
