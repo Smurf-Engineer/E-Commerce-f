@@ -1288,5 +1288,22 @@
   "screens.PublishingTool.title": "Publishing Tool",
   "screens.PublishingTool.back": "Back to admin panel",
   "screens.PublishingTool.theme": "Theme and Design Settings",
-  "screens.PublishingTool.designCustomization": "Design Customization"
+  "screens.PublishingTool.designCustomization": "Design Customization",
+  "screens.PublishingTool.deleteThemeTitle": "Are you sure?",
+  "screens.PublishingTool.deleteTheme": "If you remove this theme, all designs linked to it will be delete too.",
+  "components.ThemeModal.themeUploaded": "Your theme was updated",
+  "components.ThemeModal.clickOrDrag": "Click or drag file to this area to upload",
+  "components.ThemeModal.imageInstruction": "302 x 302 px. Files jpg, jpeg, png.",
+  "components.ThemeModal.save": "Save",
+  "components.ThemeModal.editTheme": "Edit theme",
+  "components.ThemeModal.newTheme": "New theme",
+  "screens.PublishingTool.Item.delete": "Delete",
+  "screens.PublishingTool.Theme.edit": "Edit",
+  "screens.PublishingTool.List.next": "Next",
+  "screens.PublishingTool.Tabs.title": "Tabs",
+  "screens.PublishingTool.Themes.addTheme": "Add New Theme",
+  "screens.PublishingTool.Themes.searchProduct": "Search for a Product Code",
+  "screens.PublishingTool.Themes.selectTheme": "Select a theme",
+  "screens.PublishingTool.Themes.addModel": "ADD 3D MODEL",
+  "screens.PublishingTool.Themes.missingModel": "This product doesn´t have a 3d model assigned yet"
 }

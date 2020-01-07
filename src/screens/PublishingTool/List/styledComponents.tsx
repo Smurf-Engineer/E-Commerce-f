@@ -3,12 +3,12 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { WHITE, BLUE, BLUE_BRIGHT } from '../../../theme/colors'
+import { WHITE, BLUE, BLUE_BRIGHT, GRAY_DARK, RED } from '../../../theme/colors'
 
 export const Container = styled.div``
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.18px;
@@ -17,7 +17,7 @@ export const Title = styled.div`
 `
 
 export const Subtitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -26,10 +26,10 @@ export const Subtitle = styled.div`
 
 export const Button = styled(AntdButton)`
   height: 50px;
-  border: 2px solid #e61737;
+  border: 2px solid ${RED};
   border-radius: 2px;
   background-color: ${WHITE};
-  color: #e61737;
+  color: ${RED};
   margin-right: 22px;
   font-size: 16px;
   letter-spacing: 0.11px;
