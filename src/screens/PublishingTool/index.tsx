@@ -33,7 +33,7 @@ import {
   TopMenu,
   Layout,
   View,
-  NavbarTabs
+  Tabs
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
@@ -239,7 +239,7 @@ export class PublishingTool extends React.Component<Props, {}> {
             <BackIcon src={backIcon} />
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
-          <NavbarTabs>{tabs}</NavbarTabs>
+          <Tabs>{tabs}</Tabs>
           <View />
         </TopMenu>
         <Layout>

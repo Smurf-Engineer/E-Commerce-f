@@ -18,7 +18,7 @@ export default defineMessages({
     defaultMessage: 'Search for a Product Code'
   },
   selectTheme: {
-    id: 'screens.PublishingTool.Themes.addTheme',
+    id: 'screens.PublishingTool.Themes.selectTheme',
     defaultMessage: 'Select a theme'
   },
   addModel: {
