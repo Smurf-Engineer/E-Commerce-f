@@ -29,14 +29,18 @@ import { History } from 'history'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import Tabs from './Tabs'
-import { Color, Font } from '../../types/common'
+import { Color, Font, QueryProps, UploadFile, Colors } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
+
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
 
 interface Props {
   intl: InjectedIntl
   colors: Color[]
-  colorsList: any
+  colorsList: ColorsData
   stitchingColors: Color[]
   uploadingColors: boolean
   uploadingStitchingColors: boolean
@@ -47,7 +51,7 @@ interface Props {
   onResetReducer: () => void
   saveDesignConfig: (variables: {}) => Promise<any>
   setUploadingAction: (isLoading: boolean) => void
-  onUploadColorsList: (file: any, type: string) => void
+  onUploadColorsList: (file: UploadFile, type: string) => void
   onTabClick: (selectedIndex: number) => void
 }
 export class DesignTools extends React.Component<Props, {}> {

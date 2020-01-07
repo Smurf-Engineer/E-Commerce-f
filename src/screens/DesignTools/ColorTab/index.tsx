@@ -20,11 +20,21 @@ import {
   Icon,
   DraggerContainer
 } from './styledComponents'
-import { Message, Color, UploadFile } from '../../../types/common'
+import {
+  Message,
+  Color,
+  UploadFile,
+  QueryProps,
+  Colors
+} from '../../../types/common'
 import ColorList from '../../../components/DesignCenterCustomize/ColorList'
 
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
 interface Props {
-  colorsList: any
+  colorsList: ColorsData
   colors: Color[]
   stitchingColors: Color[]
   uploadingColors: boolean

@@ -714,6 +714,7 @@
   "components.SymbolTab.searchInputPlaceholder": "Search Symbol Library",
   "components.SymbolTab.notFoundSymbol": "Your search did not match with any available symbol",
   "components.Tabs.title": "Add Text",
+  "components.DesignTabs.title": "Tabs",
   "components.TextTab.title": "Add Text",
   "components.TextTab.font": "Font",
   "components.TextTab.fill": "Fill",
@@ -1252,5 +1253,10 @@
   "components.FontTab.Title": "Fonts Settings",
   "screens.DesignTools.title": "Publishing Tool",
   "screens.DesignTools.back": "Back to admin",
-  "screens.DesignTools.update": "Update settings"
+  "screens.DesignTools.update": "Update settings",
+  "components.DesignCenterTools.ColorTab.selectColor": "Colors",
+  "components.DesignCenterTools.fileSizeError": "Oh no! Max file size is limited to 20MB",
+  "components.DesignCenterTools.fileExtensionError": "Oh no! Your file has to be an json",
+  "components.DesignCenterTools.baseColors": "Base Colors",
+  "components.DesignCenterTools.stitchingColors": "Stitching Colors"
 }
