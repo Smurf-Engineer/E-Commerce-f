@@ -10,7 +10,7 @@ import colorIcon from '../../../assets/color_white.svg'
 import fontIcon from '../../../assets/text_white.svg'
 import clipartsIcon from '../../../assets/image_white.svg'
 import { Container, NavTabs } from './styledComponents'
-import { UploadFile, Color, ClipArt } from '../../../types/common'
+import { UploadFile, Color, ClipArt, Message } from '../../../types/common'
 import Tab from '../../../components/DesignCenterCustomize/Tab'
 
 const COLOR_TAB = 'COLOR_TAB'
@@ -36,7 +36,7 @@ interface Props {
   hiddenSymbols: { [id: string]: boolean }
   selectedFonts: { [id: string]: boolean }
   changeFont: (font: string, active: boolean) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setGoogleFontsList: (data: any) => void
   hideSymbol: (url: string, id: string) => void
   addFont: (font: string) => void
