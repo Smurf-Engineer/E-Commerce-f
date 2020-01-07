@@ -33,6 +33,7 @@ export const UPDATE_COLOR_IDEAS_LIST = `${namespace}/UPDATE_COLOR_IDEAS_LIST`
 export const SET_DESIGN_NAME_ACTION = `${namespace}/SET_DESIGN_NAME_ACTION`
 export const DELETE_COLOR_IDEA_ACTION = `${namespace}/DELETE_COLOR_IDEA_ACTION`
 export const SET_CANVAS_JSON_ACTION = `${namespace}/SET_CANVAS_JSON_ACTION`
+export const SET_CODE_SEARCH = `${namespace}/SET_CODE_SEARCH`
 
 export const THEME_PAGE = 0
 export const DESIGN_PAGE = 1

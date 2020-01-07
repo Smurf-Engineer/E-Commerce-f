@@ -31,7 +31,8 @@ import {
   UPDATE_COLOR_IDEAS_LIST,
   SET_DESIGN_NAME_ACTION,
   DELETE_COLOR_IDEA_ACTION,
-  SET_CANVAS_JSON_ACTION
+  SET_CANVAS_JSON_ACTION,
+  SET_CODE_SEARCH
 } from './constants'
 
 import {
@@ -83,6 +84,11 @@ export const toggleAddDesignAction = (id?: number): AnyAction => ({
 
 export const updateDesignNameAction = (value: string): AnyAction => ({
   type: UPDATE_DESIGN_NAME,
+  value
+})
+
+export const setCodeSearch = (value: string): AnyAction => ({
+  type: SET_CODE_SEARCH,
   value
 })
 
