@@ -4,7 +4,9 @@
 import * as React from 'react'
 import Helmet from 'react-helmet'
 import { injectIntl, InjectedIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import * as publishingToolActions from './actions'
+import Tab from '../../components/Tab'
 import { GetProductsByIdQuery } from './data'
 import messages from './messages'
 import { connect } from 'react-redux'
@@ -18,7 +20,9 @@ import {
   BackButton,
   Back,
   TopMenu,
-  Layout
+  Layout,
+  View,
+  Tabs
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
@@ -39,7 +43,11 @@ interface Data extends QueryProps {
 interface Props {
   intl: InjectedIntl
   productToSearch: string
+  onSelectTab: (index: number) => void
 }
+
+const steps = ['theme', 'designCustomization']
+
 export class PublishingTool extends React.Component<Props, {}> {
   render3D: any
   async componentDidMount() {
@@ -50,8 +58,23 @@ export class PublishingTool extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl } = this.props
+    const { intl, onSelectTab } = this.props
     const { formatMessage } = intl
+    const handleOnSelectTab = (index: number) => () => onSelectTab(index)
+    const tabs = steps.map((step, index) => {
+      return (
+        <Tab
+          {...{ index }}
+          key={index}
+          activeOnClick={true}
+          selected={false}
+          onSelectTab={handleOnSelectTab(index)}
+          totalItems={steps.length}
+        >
+          <FormattedMessage {...messages[step]} />
+        </Tab>
+      )
+    })
 
     return (
       <Container>
@@ -65,6 +88,8 @@ export class PublishingTool extends React.Component<Props, {}> {
             <BackIcon src={backIcon} />
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
+          <Tabs>{tabs}</Tabs>
+          <View />
         </TopMenu>
         <Layout />
       </Container>
