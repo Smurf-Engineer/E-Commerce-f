@@ -9,13 +9,14 @@ import {
   BLUE_BRIGHT,
   GRAY_LIGHTEST,
   GRAY_DARK,
-  WHITE
+  WHITE,
+  RED
 } from '../../../theme/colors'
 
 const { Search } = AntdInput
 
 export const Container = styled.div`
-  background-color: #fff;
+  background-color: ${WHITE};
   width: 400px;
   height: 100vh;
   overflow: auto;
@@ -71,10 +72,10 @@ export const Label = styled.p`
 
 export const Button = styled(AntdButton)`
   height: 50px;
-  border: 2px solid #e61737;
+  border: 2px solid ${RED};
   border-radius: 2px;
   background-color: ${WHITE};
-  color: #e61737;
+  color: ${RED};
   margin-right: 22px;
   font-size: 16px;
   letter-spacing: 0.11px;
