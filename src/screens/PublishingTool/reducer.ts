@@ -161,7 +161,7 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
       const colors = [...updatedDesign.colors]
 
       while (areasPng.length < 5) {
-        areasPng.unshift('black')
+        areasPng.push('black')
       }
       const reverseColors = reverse(colors)
       const updatedModelConfig = modelConfig.merge({
