@@ -181,7 +181,7 @@ export class ProductModels extends React.Component<Props, {}> {
       },
       history
     } = this.props
-    history.push(`/admin/publishing-tool/${code}`)
+    history.push(`/admin/publishing-tool?code=${code}`)
   }
   handleProductInfo = () => {
     const { history } = this.props
