@@ -8,7 +8,15 @@ import FontTab from '../FontTab'
 import colorIcon from '../../../assets/color_white.svg'
 import fontIcon from '../../../assets/text_white.svg'
 import { Container, NavTabs } from './styledComponents'
-import { UploadFile, Color, Message } from '../../../types/common'
+import {
+  UploadFile,
+  Color,
+  Message,
+  QueryProps,
+  Colors,
+  SelectedFonts,
+  Font
+} from '../../../types/common'
 import Tab from '../../../components/DesignCenterCustomize/Tab'
 
 const COLOR_TAB = 'COLOR_TAB'
@@ -16,18 +24,26 @@ const FONT_TAB = 'FONT_TAB'
 
 const { TabPane } = AntdTabs
 
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
+interface FontsData extends QueryProps {
+  fonts: Font[]
+}
+
 interface Props {
   colors: Color[]
   stitchingColors: Color[]
   fonts: string[]
-  visibleFonts: any[]
+  visibleFonts: string[]
   searchText: string
-  colorsList: any
-  fontsData: any
+  colorsList: ColorsData
+  fontsData: FontsData
   uploadingColors: boolean
   uploadingStitchingColors: boolean
   selectedTab: number
-  selectedFonts: { [id: string]: boolean }
+  selectedFonts: SelectedFonts
   changeFont: (font: string, active: boolean) => void
   formatMessage: (messageDescriptor: Message) => string
   setGoogleFontsList: (data: any) => void

@@ -495,7 +495,7 @@ export class FirstStep extends React.Component<Props, {}> {
       target: { value }
     } = event
     const { setSpec } = this.props
-    setSpec(value.replace(/[,\/]/g, ''))
+    setSpec(value.replace(/[,]/g, ''))
   }
 
   handleMoveSpecs = (dragIndex: number, dropIndex: number) => {

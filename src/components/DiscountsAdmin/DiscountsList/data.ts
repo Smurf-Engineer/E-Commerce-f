@@ -28,6 +28,15 @@ export const getDiscountsQuery = gql`
         rate
         expiry
         active
+        restrictionType: restriction_type
+        usageNumber: usage_limit
+        selectedUsers: users {
+          netsuiteId: netsuite_internal
+          name: full_name
+          email
+          value: short_id
+        }
+        selectedProducts: items
       }
     }
   }
