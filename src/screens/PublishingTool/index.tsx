@@ -44,7 +44,8 @@ import {
   MessagePayload,
   ModelConfig,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  UploadFile
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 
@@ -70,7 +71,11 @@ interface Props {
   setCurrentPageAction: (page: number) => void
   toggleAddDesignAction: () => void
   updateDesignNameAction: (value: string) => void
-  uploadDesignAction: (areas: any, config: any) => void
+  uploadDesignAction: (
+    areas: UploadFile[],
+    config: UploadFile,
+    productId: number
+  ) => void
   setModelAction: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
