@@ -10,7 +10,7 @@ import { getFileExtension } from '../../../utils/utilsFiles'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 
 import messages from './messages'
-import { COLORS, STITCHING_COLORS } from './constants'
+import { COLORS, STITCHING_COLORS, ALLOWED_EXTENSIONS } from './constants'
 
 import {
   Container,
@@ -20,11 +20,21 @@ import {
   Icon,
   DraggerContainer
 } from './styledComponents'
-import { Message, Color, UploadFile } from '../../../types/common'
+import {
+  Message,
+  Color,
+  UploadFile,
+  QueryProps,
+  Colors
+} from '../../../types/common'
 import ColorList from '../../../components/DesignCenterCustomize/ColorList'
 
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
 interface Props {
-  colorsList: any
+  colorsList: ColorsData
   colors: Color[]
   stitchingColors: Color[]
   uploadingColors: boolean
@@ -62,7 +72,7 @@ class ColorTab extends React.PureComponent<Props> {
             loading={uploadingColors}
             onSelectImage={this.beforeUploadColors}
             formatMessage={formatMessage}
-            extensions={['.json']}
+            extensions={ALLOWED_EXTENSIONS}
           >
             <Button>
               <ButtonContainer>
@@ -88,7 +98,7 @@ class ColorTab extends React.PureComponent<Props> {
             loading={uploadingStitchingColors}
             onSelectImage={this.beforeUploadStitchingColors}
             formatMessage={formatMessage}
-            extensions={['.json']}
+            extensions={ALLOWED_EXTENSIONS}
           >
             <Button>
               <ButtonContainer>
@@ -117,7 +127,10 @@ class ColorTab extends React.PureComponent<Props> {
         return false
       }
       const fileExtension = getFileExtension(name)
-      if (indexOf(['.json'], (fileExtension as String).toLowerCase()) === -1) {
+      if (
+        indexOf(ALLOWED_EXTENSIONS, (fileExtension as String).toLowerCase()) ===
+        -1
+      ) {
         message.error(formatMessage(messages.fileExtensionError))
         return false
       }

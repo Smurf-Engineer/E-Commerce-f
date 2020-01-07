@@ -12,5 +12,13 @@ export default defineMessages({
   back: {
     id: 'screens.PublishingTool.back',
     defaultMessage: 'Back to admin panel'
+  },
+  theme: {
+    id: 'screens.PublishingTool.theme',
+    defaultMessage: 'Theme and Design Settings'
+  },
+  designCustomization: {
+    id: 'screens.PublishingTool.designCustomization',
+    defaultMessage: 'Design Customization'
   }
 })

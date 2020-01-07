@@ -13,11 +13,20 @@ import {
   ON_SELECT_DISCOUNT_TYPE,
   ON_CHANGE_RATE,
   ON_ACTIVATE_DISCOUNT,
-  OPEN_DISCOUNT_MODAL,
   RESET_DISCOUNT_DATA,
   SET_LOADING,
   ON_SELECT_DATE,
-  SET_DISCOUNT_TO_UPDATE
+  SET_DISCOUNT_TO_UPDATE,
+  SELECT_RESTRICTION,
+  ON_CHANGE_USER,
+  ON_ADD_PRODUCT,
+  DELETE_ITEM_SELECTED_ACTION,
+  LIST,
+  EDIT,
+  ON_ADD_USER,
+  SET_DISCOUNT_PAGE,
+  ON_CHANGE_USAGE,
+  ON_CHECK_USAGE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -34,14 +43,19 @@ export const initialState = fromJS({
   expiry: '',
   rate: 1,
   discountActive: false,
-  discountModalOpen: false,
-  loading: false
+  loading: false,
+  restrictionType: '',
+  user: '',
+  selectedUser: '',
+  discountPage: LIST,
+  selectedValues: [],
+  usageNumber: 0,
+  unlimitedUsage: false,
+  selectedProducts: [],
+  selectedUsers: []
 })
 
-const orderHistoryAdminReducer: Reducer<any> = (
-  state = initialState,
-  action
-) => {
+const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDER_BY:
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
@@ -61,8 +75,6 @@ const orderHistoryAdminReducer: Reducer<any> = (
       return state.set('rate', action.value)
     case ON_ACTIVATE_DISCOUNT:
       return state.set('discountActive', action.checked)
-    case OPEN_DISCOUNT_MODAL:
-      return state.set('discountModalOpen', action.open)
     case SET_LOADING:
       return state.set('loading', action.loading)
     case RESET_DISCOUNT_DATA: {
@@ -74,7 +86,15 @@ const orderHistoryAdminReducer: Reducer<any> = (
         discountActive: false,
         expiry: '',
         loading: false,
-        discountId: -1
+        discountId: -1,
+        restrictionType: '',
+        user: '',
+        selectedUser: '',
+        currentPageModal: 1,
+        offset: 0,
+        discountPage: LIST,
+        selectedUsers: [],
+        selectedProducts: []
       })
     }
     case ON_SELECT_DATE:
@@ -87,7 +107,12 @@ const orderHistoryAdminReducer: Reducer<any> = (
         type,
         rate,
         expiry,
-        active
+        active,
+        restrictionType,
+        user,
+        selectedUsers,
+        selectedProducts,
+        usageNumber
       } = action.discount
       return state.merge({
         discountId: id,
@@ -97,12 +122,53 @@ const orderHistoryAdminReducer: Reducer<any> = (
         rate,
         discountActive: active,
         expiry,
-        discountModalOpen: true
+        restrictionType,
+        user,
+        discountPage: EDIT,
+        selectedUsers,
+        usageNumber,
+        selectedProducts
       })
     }
+    case SELECT_RESTRICTION:
+      return state.merge({
+        restrictionType: action.restriction,
+        selectedUsers: [],
+        selectedProducts: [],
+        user: ''
+      })
+    case ON_CHANGE_USER:
+      return state.set('user', action.value)
+    case ON_ADD_PRODUCT: {
+      const { value } = action
+      const selectedProducts = state.get('selectedProducts')
+      const itemsMap = selectedProducts.valueSeq((item: any) => item)
+      return state.merge({
+        user: '',
+        selectedProducts: [value, ...itemsMap]
+      })
+    }
+    case DELETE_ITEM_SELECTED_ACTION:
+      const { index } = action
+      return state.deleteIn([action.section, index])
+    case ON_ADD_USER: {
+      const { user } = action
+      const selectedUsers = state.get('selectedUsers')
+      const itemsMap = selectedUsers.valueSeq((item: any) => item)
+      return state.merge({
+        user: '',
+        selectedUsers: [user, ...itemsMap]
+      })
+    }
+    case SET_DISCOUNT_PAGE:
+      return state.set('discountPage', action.page)
+    case ON_CHANGE_USAGE:
+      return state.set('usageNumber', action.value)
+    case ON_CHECK_USAGE:
+      return state.set('unlimitedUsage', action.checked)
     default:
       return state
   }
 }
 
-export default orderHistoryAdminReducer
+export default discountsAdminReducer

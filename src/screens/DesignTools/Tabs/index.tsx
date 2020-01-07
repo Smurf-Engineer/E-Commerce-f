@@ -10,7 +10,17 @@ import colorIcon from '../../../assets/color_white.svg'
 import fontIcon from '../../../assets/text_white.svg'
 import clipartsIcon from '../../../assets/image_white.svg'
 import { Container, NavTabs } from './styledComponents'
-import { UploadFile, Color, ClipArt } from '../../../types/common'
+import {
+  UploadFile,
+  Color,
+  Message,
+  ClipArt,
+  QueryProps,
+  Colors,
+  SelectedFonts,
+  Font,
+  HiddenSymbols
+} from '../../../types/common'
 import Tab from '../../../components/DesignCenterCustomize/Tab'
 
 const COLOR_TAB = 'COLOR_TAB'
@@ -19,24 +29,32 @@ const SYMBOLS_TAB = 'SYMBOLS_TAB'
 
 const { TabPane } = AntdTabs
 
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
+interface FontsData extends QueryProps {
+  fonts: Font[]
+}
+
 interface Props {
   colors: Color[]
   stitchingColors: Color[]
   fonts: string[]
-  visibleFonts: any[]
+  visibleFonts: string[]
   searchText: string
-  colorsList: any
-  fontsData: any
+  colorsList: ColorsData
+  fontsData: FontsData
   uploadingColors: boolean
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
   selectedTab: number
   symbols: ClipArt[]
-  hiddenSymbols: { [id: string]: boolean }
-  selectedFonts: { [id: string]: boolean }
+  hiddenSymbols: HiddenSymbols
+  selectedFonts: SelectedFonts
   changeFont: (font: string, active: boolean) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setGoogleFontsList: (data: any) => void
   hideSymbol: (url: string, id: string) => void
   addFont: (font: string) => void

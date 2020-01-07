@@ -8,17 +8,21 @@ import Input from 'antd/lib/input'
 import find from 'lodash/find'
 import GoogleFontLoader from 'react-google-font-loader'
 import { Waypoint } from 'react-waypoint'
-import { Font, Message } from '../../types/common'
+import { Font, Message, SelectedFonts, QueryProps } from '../../types/common'
 import { Container, Text, Item, ScrollView } from './styledComponents'
 import Spin from 'antd/lib/spin'
 
+interface FontsData extends QueryProps {
+  fonts: Font[]
+}
+
 interface Props {
-  fontsData: any
+  fontsData: FontsData
   fonts: string[]
   googleList: boolean
   visibleFonts: string[]
   searchText: string
-  selectedFonts: { [id: string]: boolean }
+  selectedFonts: SelectedFonts
   changeFont: (font: string, active: boolean) => void
   setGoogleFontsList: (data: any) => void
   addFont: (font: string) => void
