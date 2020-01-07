@@ -30,19 +30,36 @@ import { History } from 'history'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import Tabs from './Tabs'
-import { Color, UploadFile, ClipArt, Font } from '../../types/common'
+import {
+  Color,
+  Font,
+  ClipArt,
+  QueryProps,
+  UploadFile,
+  Colors,
+  SelectedFonts,
+  HiddenSymbols
+} from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
+
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
+interface FontsData extends QueryProps {
+  fonts: Font[]
+}
 
 interface Props {
   intl: InjectedIntl
   colors: Color[]
   fonts: string[]
   symbols: ClipArt[]
-  visibleFonts: any[]
+  visibleFonts: string[]
   searchText: string
-  colorsList: any
-  fontsData: any
+  colorsList: ColorsData
+  fontsData: FontsData
   stitchingColors: Color[]
   uploadingColors: boolean
   uploadingStitchingColors: boolean
@@ -52,8 +69,8 @@ interface Props {
   selectedTab: number
   history: History
   loading: boolean
-  hiddenSymbols: { [id: string]: boolean }
-  selectedFonts: { [id: string]: boolean }
+  hiddenSymbols: HiddenSymbols
+  selectedFonts: SelectedFonts
   onResetReducer: () => void
   saveDesignConfig: (variables: {}) => Promise<any>
   setUploadingAction: (isLoading: boolean) => void
@@ -61,7 +78,7 @@ interface Props {
   setGoogleFontsList: (data: any) => void
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
-  onUploadColorsList: (file: any, type: string) => void
+  onUploadColorsList: (file: UploadFile, type: string) => void
   onUploadFile: (file: UploadFile) => void
   hideSymbol: (url: string, id: string) => void
   setSearchClipParamAction: (param: string) => void

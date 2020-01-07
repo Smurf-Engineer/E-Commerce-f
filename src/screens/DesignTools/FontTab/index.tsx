@@ -7,13 +7,17 @@ import FontsList from '../../../components/FontsList'
 import AntdTabs from 'antd/lib/tabs'
 import messages from './messages'
 import { Container, Top, TabsContainer } from './styledComponents'
-import { Message, SelectedFonts } from '../../../types/common'
+import { Message, SelectedFonts, QueryProps, Font } from '../../../types/common'
+
+interface FontsData extends QueryProps {
+  fonts: Font[]
+}
 
 interface Props {
   fonts: string[]
   visibleFonts: string[]
   searchText: string
-  fontsData: any
+  fontsData: FontsData
   selectedFonts: SelectedFonts
   changeFont: (font: string, active: boolean) => void
   setGoogleFontsList: (data: any) => void
