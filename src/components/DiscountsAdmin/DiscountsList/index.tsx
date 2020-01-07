@@ -128,7 +128,20 @@ const DiscountsList = ({
   )
   const orderItems = discounts.map(
     (
-      { code, discountItemId, type, rate, expiry, active, id }: Discount,
+      {
+        code,
+        discountItemId,
+        type,
+        rate,
+        expiry,
+        active,
+        id,
+        selectedProducts,
+        restrictionType,
+        user,
+        selectedUsers,
+        usageNumber
+      }: Discount,
       index: number
     ) => {
       return (
@@ -143,7 +156,12 @@ const DiscountsList = ({
             expiry,
             active,
             onDiscountClick,
-            onChangeActive
+            onChangeActive,
+            restrictionType,
+            selectedProducts,
+            user,
+            selectedUsers,
+            usageNumber
           }}
         />
       )

@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardoquintero on 02/12/19.
  */
 import styled from 'styled-components'
-import { GRAY_LIGHT, WHITE, GRAY_DARK } from '../../theme/colors'
+import { GRAY_LIGHT, WHITE, GRAY_DARK, GRAY_BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -67,5 +67,5 @@ export const Tabs = styled.div`
   display: flex;
   flex-direction: row;
   flex: 3;
-  background-color: #d2d2dc;
+  background-color: ${GRAY_BLUE};
 `
