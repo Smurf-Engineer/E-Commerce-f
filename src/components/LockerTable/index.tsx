@@ -4,17 +4,10 @@
 import * as React from 'react'
 import get from 'lodash/get'
 import messsages from './messages'
-import {
-  Table,
-  HeaderRow,
-  Cell,
-  Title,
-  MobileEmtpytable
-} from './styledComponents'
+import { Table, HeaderRow, Cell, Title } from './styledComponents'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
-import MediaQuery from 'react-responsive'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -136,14 +129,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
       }
     )
 
-    const renderTable =
-      items.length > 0 ? (
-        itemsSelected
-      ) : (
-        <MediaQuery maxDeviceWidth={480}>
-          <MobileEmtpytable>There are no items in your store</MobileEmtpytable>
-        </MediaQuery>
-      )
+    const renderTable = items.length > 0 && itemsSelected
     return (
       <Table>
         <HeaderRow>
