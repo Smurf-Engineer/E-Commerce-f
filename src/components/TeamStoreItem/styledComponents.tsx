@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, RED, GRAY_DARK, GRAY_STRONG, GRAY } from '../../theme/colors'
+import { WHITE, GRAY_DARK, GRAY_STRONG, GRAY } from '../../theme/colors'
 
 export const Container = styled.div`
   margin-bottom: 30px;
@@ -116,11 +116,12 @@ export const DeleteLabel = styled.span`
   color: ${WHITE};
   font-size: 14px;
   font-weight: normal;
-  background: ${RED};
+  background: #ef5350;
   justify-content: center;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.18);
   border-radius: 2px;
   margin-left: 10px;
+  padding: 0 12px;
   @media (max-width: 480px) {
     margin-left: 0;
     width: 76px;

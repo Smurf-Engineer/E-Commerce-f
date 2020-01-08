@@ -341,7 +341,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_ADDRESSES_MODAL:
       return state.set('openAddressesModal', action.open)
     case SET_COUPON_CODE:
-      return state.set('couponCode', action.couponCode)
+      return state.merge({ couponCode: {...action.couponCode }})
     case DELETE_COUPON_CODE:
       return state.set('couponCode', null)
     case OPEN_CURRENCY_WARNING:
