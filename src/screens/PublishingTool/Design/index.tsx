@@ -15,7 +15,8 @@ import {
   QueryProps,
   Product,
   ModelDesign,
-  DesignObject
+  DesignObject,
+  ColorsDataResult
 } from '../../../types/common'
 
 const LIST_TAB = 0
@@ -28,7 +29,7 @@ interface Props {
   design: ModelDesign
   colorIdeas: DesignObject[]
   colorIdeaItem: number
-  colorsList: any
+  colorsList: ColorsDataResult
   colorBlock: number
   colorBlockHovered: number
   colors: string[]

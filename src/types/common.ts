@@ -1480,3 +1480,7 @@ export interface Header {
   tabletWidth?: number
   fieldName?: string
 }
+
+export interface ColorsDataResult {
+  colorsResult: Colors
+}
