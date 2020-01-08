@@ -32,7 +32,7 @@ import Themes from './Themes'
 import Design from './Design'
 import messages from './messages'
 import { connect } from 'react-redux'
-import { compose, withApollo, graphql, QueryProps } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import {
   Container,
   Header,
@@ -56,9 +56,9 @@ import {
   ModelConfig,
   DesignObject,
   ModelDesign,
-  Colors,
   CanvasType,
-  UploadFile
+  UploadFile,
+  ColorsDataResult
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 
@@ -91,7 +91,7 @@ interface Props {
   colorIdeas: DesignObject[]
   design: ModelDesign
   colorIdeaItem: number
-  colorsList: Data
+  colorsList: ColorsDataResult
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
@@ -150,10 +150,6 @@ interface Props {
 }
 
 const steps = ['theme', 'designCustomization']
-
-interface Data extends QueryProps {
-  colorsResult: Colors
-}
 
 export class PublishingTool extends React.Component<Props, {}> {
   render3DPlaceholder: any
@@ -695,7 +691,7 @@ export class PublishingTool extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('publishingTool').toJS()
 
 type OwnProps = {
-  colorsList?: Data
+  colorsList?: ColorsDataResult
 }
 
 const PublishingToolEnhance = compose(
@@ -706,7 +702,7 @@ const PublishingToolEnhance = compose(
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(saveDesignMutation, { name: 'saveDesign' }),
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
-  graphql<Data>(getColorsQuery, {
+  graphql<ColorsDataResult>(getColorsQuery, {
     options: (ownprops: OwnProps) => {
       const { colorsList } = ownprops
       return {

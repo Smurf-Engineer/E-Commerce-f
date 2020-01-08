@@ -7,6 +7,7 @@ import Divider from 'antd/lib/divider'
 import get from 'lodash/get'
 import { Container, Color, Row, Col } from './styledComponents'
 import Message from 'antd/lib/message'
+import { ColorsDataResult } from '../../../types/common'
 
 interface Color {
   value: string
@@ -16,7 +17,7 @@ interface Color {
 interface Props {
   onSelectColor?: (color: string) => void
   height?: string
-  colorsList: any
+  colorsList: ColorsDataResult
   stitching: boolean
 }
 
@@ -26,7 +27,7 @@ const ColorList = ({
   colorsList
 }: Props) => {
   const handleOnSelectColor = (color: string) => () => onSelectColor(color)
-  let arrayColors: any = []
+  let arrayColors = []
   if (colorsList) {
     try {
       arrayColors = JSON.parse(

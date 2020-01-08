@@ -18,7 +18,12 @@ import {
 import { NONE } from '../reducer'
 import ColorButton from '../ColorButton'
 import ColorList from '../ColorList'
-import { DesignObject, ModelDesign, Message } from '../../../types/common'
+import {
+  DesignObject,
+  ModelDesign,
+  Message,
+  ColorsDataResult
+} from '../../../types/common'
 
 interface Props {
   colorIdea: DesignObject | ModelDesign | null
@@ -26,7 +31,7 @@ interface Props {
   colors: string[]
   colorBlock: number
   colorBlockHovered: number
-  colorsList: any
+  colorsList: ColorsDataResult
   onSelectColor: (color: string) => void
   onEditColorIdea: (item: number) => void
   onHoverColorBlock: (index: number) => void
