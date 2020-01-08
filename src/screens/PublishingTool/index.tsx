@@ -275,13 +275,18 @@ export class PublishingTool extends React.Component<Props, {}> {
     }
   }
   handleOpenModal = () => {
-    const { openSaveDesignAction, productCode, modelConfig } = this.props
+    const {
+      openSaveDesignAction,
+      productCode,
+      modelConfig,
+      intl: { formatMessage }
+    } = this.props
     if (!productCode) {
-      message.error('Please enter a product code')
+      message.error(formatMessage(messages.enterProductCode))
       return
     }
     if (!modelConfig) {
-      message.error('Upload model files first')
+      message.error(formatMessage(messages.uploaadModel))
       return
     }
 
@@ -302,39 +307,40 @@ export class PublishingTool extends React.Component<Props, {}> {
         colorIdeas,
         selectedTheme,
         selectedDesign,
-        updateColorIdeasListAction
+        updateColorIdeasListAction,
+        intl: { formatMessage }
       } = this.props
 
       if (!productCode) {
-        message.error('Please enter a product code')
+        message.error(formatMessage(messages.enterProductCode))
         return
       }
 
       if (!modelConfig) {
-        message.error('Upload model files first')
+        message.error(formatMessage(messages.uploaadModel))
         return
       }
 
       if (!design.name) {
-        message.error('To proceed, enter design name first')
+        message.error(formatMessage(messages.enterName))
         return
       }
 
       if (!design.image) {
-        message.error('To proceed, save design thumbnail first')
+        message.error(formatMessage(messages.saveDesignThumbnail))
         return
       }
 
       setSavingDesign(true)
       const hasAllInspirationThumbnail = every(colorIdeas, 'image')
       if (!hasAllInspirationThumbnail) {
-        message.error('Unable to find one or more color idea thumbnails')
+        message.error(formatMessage(messages.unableToFindThumbnails))
         return
       }
 
       const hasAllInspirationName = every(colorIdeas, 'name')
       if (!hasAllInspirationName) {
-        message.error('To proceed, enter all the color idea name')
+        message.error(formatMessage(messages.enterNames))
         return
       }
       const {
