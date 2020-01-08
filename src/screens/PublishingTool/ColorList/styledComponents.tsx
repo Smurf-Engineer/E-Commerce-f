@@ -1,7 +1,8 @@
 /**
- * Styled Components - Created by david on 26/02/18.
+ * Styled Components - Created by eduardoquintero on 30/12/19.
  */
 import styled from 'styled-components'
+import { GRAY, WHITE } from '../../../theme/colors'
 
 export const Container = styled.div`
   overflow: auto;
@@ -11,7 +12,7 @@ export const Container = styled.div`
 export const Dot = styled.div`
   height: 6px;
   width: 6px;
-  background-color: #ffffff;
+  background-color: ${WHITE};
 `
 
 interface ColorProps {
@@ -22,7 +23,7 @@ export const Color = styled.div`
   cursor: pointer;
   height: 32.28px;
   width: 32.28px;
-  border: 1px solid #bebebe;
+  border: 1px solid ${GRAY};
   background-color: ${({ color }: ColorProps) => color};
 `
 

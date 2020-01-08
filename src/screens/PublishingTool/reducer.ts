@@ -183,7 +183,7 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
         uploading: false,
         design: updatedDesign,
         areas: List.of(...areasPng),
-        colorIdeas: colorIdeas,
+        colorIdeas: fromJS(colorIdeas),
         colors: List.of(...reverseColors),
         modelConfig: updatedModelConfig,
         designModalOpen: false,
@@ -199,7 +199,7 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
         design,
         modelConfig,
         uploading: false,
-        colorIdeas: colorIdeas,
+        colorIdeas: fromJS(colorIdeas),
         colors: List.of(...reverse(colors)),
         currentTab: 1
       })

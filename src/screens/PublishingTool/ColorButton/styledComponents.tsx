@@ -1,7 +1,8 @@
 /**
- * Styled Components - Created by david on 26/02/18.
+ * Styled Components - Created by eduardoquintero on 30/12/19.
  */
 import styled from 'styled-components'
+import { GRAY_DARK, WHITE, RED } from '../../../theme/colors'
 
 interface OvalProps {
   currentColor?: string
@@ -19,7 +20,7 @@ export const Container = styled.div`
 `
 
 export const Text = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 12px;
   line-height: 16px;
   margin-top: 4px;
@@ -31,10 +32,10 @@ export const Oval = styled.div`
   border-radius: 50%;
   border: 1px solid
     ${({ currentColor }: OvalProps) =>
-      currentColor && currentColor.toLowerCase() !== '#ffffff'
+      currentColor && currentColor.toLowerCase() !== WHITE
         ? currentColor
-        : '#bebebe'};
-  background-color: ${({ currentColor }: OvalProps) => currentColor || '#fff'};
+        : GRAY};
+  background-color: ${({ currentColor }: OvalProps) => currentColor || WHITE};
   align-self: center;
 `
 
@@ -46,7 +47,6 @@ export const OvalSelected = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: 1px solid
-    ${({ selected }: OvalSelected) => (selected ? '#E61737' : '#fff')};
+  border: 1px solid ${({ selected }: OvalSelected) => (selected ? RED : WHITE)};
   align-self: center;
 `

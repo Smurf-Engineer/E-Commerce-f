@@ -1,25 +1,26 @@
 /**
- * Styled Components - Created by david on 13/11/18.
+ * Styled Components - Created by eduardoquintero on 30/12/19.
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
+import { WHITE, GRAY_DISABLE, GRAY_DARK } from '../../../theme/colors'
 
 export const Container = styled.div``
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 8px 32px;
-  background-color: #eff2f4;
+  background-color: ${GRAY_DISABLE};
   align-items: center;
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;

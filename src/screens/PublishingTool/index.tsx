@@ -32,7 +32,7 @@ import Themes from './Themes'
 import Design from './Design'
 import messages from './messages'
 import { connect } from 'react-redux'
-import { compose, withApollo, graphql, QueryProps } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import {
   Container,
   Header,
@@ -44,7 +44,7 @@ import {
   TopMenu,
   Layout,
   View,
-  NavbarTabs
+  Tabs
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
@@ -56,8 +56,9 @@ import {
   ModelConfig,
   DesignObject,
   ModelDesign,
-  Colors,
-  CanvasType
+  CanvasType,
+  UploadFile,
+  ColorsDataResult
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 
@@ -90,7 +91,7 @@ interface Props {
   colorIdeas: DesignObject[]
   design: ModelDesign
   colorIdeaItem: number
-  colorsList: Data
+  colorsList: ColorsDataResult
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
@@ -111,7 +112,11 @@ interface Props {
   setCurrentPageAction: (page: number) => void
   toggleAddDesignAction: (id?: number) => void
   updateDesignNameAction: (value: string) => void
-  uploadDesignAction: (areas: any, config: any, productId: number) => void
+  uploadDesignAction: (
+    areas: UploadFile[],
+    config: UploadFile,
+    productId: number
+  ) => void
   setModelAction: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
@@ -150,10 +155,6 @@ interface Props {
 }
 
 const steps = ['theme', 'designCustomization']
-
-interface Data extends QueryProps {
-  colorsResult: Colors
-}
 
 export class PublishingTool extends React.Component<Props, {}> {
   render3DPlaceholder: any
@@ -564,7 +565,7 @@ export class PublishingTool extends React.Component<Props, {}> {
             <BackIcon src={backIcon} />
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
-          <NavbarTabs>{tabs}</NavbarTabs>
+          <Tabs>{tabs}</Tabs>
           <View />
         </TopMenu>
         <Layout>
@@ -697,7 +698,7 @@ export class PublishingTool extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('publishingTool').toJS()
 
 type OwnProps = {
-  colorsList?: Data
+  colorsList?: ColorsDataResult
 }
 
 const PublishingToolEnhance = compose(
@@ -708,7 +709,7 @@ const PublishingToolEnhance = compose(
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(saveDesignMutation, { name: 'saveDesign' }),
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
-  graphql<Data>(getColorsQuery, {
+  graphql<ColorsDataResult>(getColorsQuery, {
     options: (ownprops: OwnProps) => {
       const { colorsList } = ownprops
       return {
