@@ -106,10 +106,17 @@ interface Props {
   setOpenLockerAction: (open: boolean) => void
   formatMessage: (messageDescriptor: any) => string
 }
-
-export class CreateStore extends React.Component<Props, {}> {
-  debounceSearchProduct = debounce(value => this.handleOnChange(value), 100)
-
+interface StateProps {
+  searchValue: string
+}
+export class CreateStore extends React.Component<Props, StateProps> {
+  debounceSearchProduct = debounce(
+    value => this.props.setUserToSearch(value.trim()),
+    200
+  )
+  state = {
+    searchValue: ''
+  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -207,10 +214,16 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   handleOnChange = async (value: SelectValue) => {
-    const { setUserToSearch } = this.props
     try {
       const parsedValue = value.toString()
-      setUserToSearch(parsedValue.trim())
+      this.setState(
+        {
+          searchValue: parsedValue
+        },
+        () => {
+          this.debounceSearchProduct(parsedValue)
+        }
+      )
     } catch (error) {
       message.error(error.message)
     }
@@ -255,7 +268,6 @@ export class CreateStore extends React.Component<Props, {}> {
       openLocker,
       userId,
       saving,
-      userToSearch,
       storeShortId,
       users,
       buildTeamStore,
@@ -267,6 +279,7 @@ export class CreateStore extends React.Component<Props, {}> {
       name,
       loading
     } = this.props
+    const { searchValue } = this.state
     let selected = ''
     let title = ''
     const searchResults =
@@ -307,10 +320,10 @@ export class CreateStore extends React.Component<Props, {}> {
           <InputDiv fullSize={true}>
             <FormattedMessage {...messages.selectUser} />
             <StyledSearch
-              onSearch={this.debounceSearchProduct}
+              onSearch={this.handleOnChange}
               dataSource={searchResults}
               size="large"
-              value={selected || userToSearch}
+              value={selected || searchValue}
               onSelect={this.handleOnSelect}
               placeholder={formatMessage(messages.selectUserHolder)}
             >
@@ -441,9 +454,6 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 }
 
-const CreateStoreEnhance = compose(
-  withRouter,
-  withApollo
-)(CreateStore)
+const CreateStoreEnhance = compose(withRouter, withApollo)(CreateStore)
 
 export default CreateStoreEnhance
