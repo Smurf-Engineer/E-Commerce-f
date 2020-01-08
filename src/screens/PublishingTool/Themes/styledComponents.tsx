@@ -16,7 +16,7 @@ import {
 const { Search } = AntdInput
 
 export const Container = styled.div`
-  background-color: #fff;
+  background-color: ${WHITE};
   width: 400px;
   height: calc(100vh - 106px);
   overflow-x: hidden;

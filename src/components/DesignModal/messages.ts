@@ -42,7 +42,7 @@ export default defineMessages({
     defaultMessage: 'Add color blocks'
   },
   addColorBlocksPlaceholder: {
-    id: 'components.DesignModal.addColorBlocks',
+    id: 'components.DesignModal.addColorBlocksPlaceholder',
     defaultMessage: '+ Color blocks (.svg)'
   }
 })

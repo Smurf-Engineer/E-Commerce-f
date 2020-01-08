@@ -1,10 +1,11 @@
 import message from 'antd/lib/message'
 import config from '../../config/index'
 import { setUploadingAction, setUploadingDesignSuccess } from './actions'
+import { UploadFile } from '../../types/common'
 
 export const uploadDesignAction = (
-  files: any,
-  json: any,
+  files: UploadFile[],
+  json: UploadFile,
   productId: number
 ) => {
   return async (dispatch: any) => {
@@ -15,7 +16,7 @@ export const uploadDesignAction = (
         const formData = new FormData()
 
         formData.append('config', json)
-        files.forEach((file: any, index: number) =>
+        files.forEach((file: UploadFile, index: number) =>
           formData.append(`colorBlock${index + 1}`, file)
         )
         const response = await fetch(
