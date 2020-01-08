@@ -35,7 +35,7 @@ interface Props {
   onUpdateName: (name: string) => void
   addDesign: (variables: {}) => Promise<Style>
   formatMessage: (messageDescriptor: Message, params?: any) => string
-  onSave: (areas: any, config: any, productId: number) => void
+  onSave: (areas: UploadFile[], config: UploadFile, productId: number) => void
 }
 
 interface State {
@@ -128,18 +128,17 @@ class DesignModal extends React.PureComponent<Props, State> {
     try {
       const { config, areas } = this.state
       const { onSave, productId } = this.props
-
       await onSave(areas, config, productId)
     } catch (e) {
       message.error(e.message)
     }
   }
 
-  beforeUploadAreas = (file: any) => {
+  beforeUploadAreas = (file: UploadFile) => {
     this.setState(({ areas }) => ({ areas: [...areas, file] }))
     return false
   }
-  beforeUploadJson = (file: any) => {
+  beforeUploadJson = (file: UploadFile) => {
     const { type, name } = file
     const selectedFileExtension = type || getFileExtension(name)
     if (selectedFileExtension !== Extension.Config) {

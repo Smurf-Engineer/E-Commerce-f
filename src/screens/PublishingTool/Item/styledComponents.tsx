@@ -5,7 +5,14 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import radioButton from 'antd/lib/radio/radioButton'
-import { GRAY_HEADER, GRAY_LIGHTEST, GRAY, RED } from '../../../theme/colors'
+import {
+  GRAY_HEADER,
+  GRAY_LIGHTEST,
+  GRAY,
+  RED,
+  GRAY_LIGHT,
+  GRAY_DARK
+} from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -17,7 +24,7 @@ export const Container = styled.div`
   transition: background-color 0.3s ease;
   border: 1px solid ${GRAY_LIGHTEST};
   &.over {
-    border-color: #d3d3d3;
+    border-color: ${GRAY_LIGHT};
     background-color: ${GRAY_HEADER};
   }
   margin-bottom: 10px;
@@ -31,7 +38,7 @@ export const Row = styled.div`
 `
 
 export const Name = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -40,7 +47,7 @@ export const Name = styled.div`
 
 export const DeleteButton = styled.div`
   cursor: pointer;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   color: ${RED};
   display: flex;

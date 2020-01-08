@@ -1,5 +1,5 @@
 /**
- * ColorButton Component - Created by david on 26/02/18.
+ * ColorButton Component - Created by eduardoquintero on 30/12/19.
  */
 import * as React from 'react'
 import { Container, Oval, OvalSelected, Text } from './styledComponents'

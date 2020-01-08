@@ -1,5 +1,5 @@
 /**
- * EditInspiration Component - Created by david on 13/11/18.
+ * EditInspiration Component - Created by eduardoquintero on 30/12/19.
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'

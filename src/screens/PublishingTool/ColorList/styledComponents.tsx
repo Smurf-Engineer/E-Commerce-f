@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by david on 26/02/18.
+ * Styled Components - Created by eduardoquintero on 30/12/19.
  */
 import styled from 'styled-components'
 

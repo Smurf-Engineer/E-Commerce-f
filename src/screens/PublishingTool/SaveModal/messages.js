@@ -18,11 +18,11 @@ export default defineMessages({
     defaultMessage: 'Design name'
   },
   save: {
-    id: 'components.SaveDesign.save',
+    id: 'components.SaveModal.save',
     defaultMessage: 'Save'
   },
   saveChanges: {
-    id: 'components.SaveDesign.saveChanges',
+    id: 'components.SaveModal.saveChanges',
     defaultMessage: 'Save changes'
   }
 })

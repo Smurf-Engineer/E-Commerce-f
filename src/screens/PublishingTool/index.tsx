@@ -44,7 +44,7 @@ import {
   TopMenu,
   Layout,
   View,
-  NavbarTabs
+  Tabs
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
@@ -57,7 +57,8 @@ import {
   DesignObject,
   ModelDesign,
   Colors,
-  CanvasType
+  CanvasType,
+  UploadFile
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 
@@ -111,7 +112,11 @@ interface Props {
   setCurrentPageAction: (page: number) => void
   toggleAddDesignAction: (id?: number) => void
   updateDesignNameAction: (value: string) => void
-  uploadDesignAction: (areas: any, config: any, productId: number) => void
+  uploadDesignAction: (
+    areas: UploadFile[],
+    config: UploadFile,
+    productId: number
+  ) => void
   setModelAction: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
@@ -558,7 +563,7 @@ export class PublishingTool extends React.Component<Props, {}> {
             <BackIcon src={backIcon} />
             <Back>{formatMessage(messages.back)}</Back>
           </BackButton>
-          <NavbarTabs>{tabs}</NavbarTabs>
+          <Tabs>{tabs}</Tabs>
           <View />
         </TopMenu>
         <Layout>
