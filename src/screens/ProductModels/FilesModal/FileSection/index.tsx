@@ -115,7 +115,7 @@ export class FileSection extends React.Component<Props, {}> {
         {!defaultVariant && (
           <DefaultButton>
             <Checkbox onChange={handleCheck} checked={isDefault}>
-              Set this as default
+              {formatMessage(messages.setDefault)}
             </Checkbox>
           </DefaultButton>
         )}

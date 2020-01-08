@@ -1288,5 +1288,6 @@
   "components.FilesModal.zipperBlack": "+ Zipper Black File",
   "components.FilesModal.saveModel": "Save Model",
   "components.FilesModal.labelTitle": "Label",
+  "components.FilesModal.setDefault": "Set this as default",
   "components.FilesModal.label": "+ Label File"
 }

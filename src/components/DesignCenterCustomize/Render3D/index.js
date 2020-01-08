@@ -360,7 +360,7 @@ class Render3D extends PureComponent {
     return this.raycaster.intersectObjects(objects, true)
   }
 
-  handleSelectVariant(value) {
+  handleSelectVariant = value => () => {
     const { selectVariantAction } = this.props
     selectVariantAction(value)
   }
@@ -1320,12 +1320,12 @@ class Render3D extends PureComponent {
           <MobileHintIcon src={helpTooltip} onClick={this.handleHelpModal} />
           {variants.length > 1 && (
             <Variants {...{ isMobile }}>
-              {variants.map((model, index) => (
+              {variants.map(({ icon }, index) => (
                 <VariantButton
                   key={index}
-                  onClick={() => this.handleSelectVariant(index)}
+                  onClick={this.handleSelectVariant(index)}
                   selected={selectedVariant === index}
-                  src={model.icon || JakrooLogo}
+                  src={icon || JakrooLogo}
                 />
               ))}
             </Variants>
@@ -1393,12 +1393,12 @@ class Render3D extends PureComponent {
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
           {variants.length > 1 && (
             <Variants>
-              {variants.map((model, index) => (
+              {variants.map(({ icon }, index) => (
                 <VariantButton
                   key={index}
-                  onClick={() => this.handleSelectVariant(index)}
+                  onClick={this.handleSelectVariant(index)}
                   selected={selectedVariant === index}
-                  src={model.icon || JakrooLogo}
+                  src={icon || JakrooLogo}
                 />
               ))}
             </Variants>
