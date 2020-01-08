@@ -33,25 +33,7 @@ import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
 import { mailLogin } from './data'
-import {
-  ORDER_STATUS,
-  DISCOUNTS,
-  PRODUCT_CATALOG,
-  DESIGN_SEARCH,
-  ROOT_URL,
-  DISCOUNTS_URL,
-  PRODUCT_URL,
-  USERS,
-  USERS_URL,
-  DESIGN_URL,
-  DESIGN_LAB,
-  DESIGN_LAB_URL,
-  EDIT_NAVIGATION,
-  EDIT_NAVIGATION_URL,
-  PRO_DESIGN,
-  PUBLISHING_TOOL,
-  PRO_DESIGN_URL
-} from './constants'
+import { keys } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
@@ -112,17 +94,6 @@ export class Admin extends React.Component<Props, {}> {
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
       restoreUserSessionAction()
-      const keys = {
-        [ROOT_URL]: ORDER_STATUS,
-        [DISCOUNTS_URL]: DISCOUNTS,
-        [PRODUCT_URL]: PRODUCT_CATALOG,
-        [DESIGN_URL]: DESIGN_SEARCH,
-        [USERS_URL]: USERS,
-        [EDIT_NAVIGATION_URL]: EDIT_NAVIGATION,
-        [DESIGN_LAB_URL]: DESIGN_LAB,
-        [PRO_DESIGN_URL]: PRO_DESIGN,
-        [PUBLISHING_TOOL]: PUBLISHING_TOOL
-      }
       setDefaultScreenAction(keys[pathname])
     }
   }
