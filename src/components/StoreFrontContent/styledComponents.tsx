@@ -106,6 +106,10 @@ export const ErrorTitle = styled.div`
   text-align: center;
   margin-top: 50px;
   margin-bottom: 50px;
+  height: 70vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 `
 
 export const AboutContainer = styled.div`
