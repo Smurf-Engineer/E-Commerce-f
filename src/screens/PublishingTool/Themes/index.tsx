@@ -88,17 +88,19 @@ export class Themes extends React.Component<Props, {}> {
       onDeleteTheme
     } = this.props
 
-    const product = get(productData, 'product', false)
+    const product = get(productData, 'product', {})
 
-    let themeItems: DesignItem[] = []
-    if (!!product) {
-      const { themes = [] } = product
-      themeItems = orderBy(
-        themes.map(({ id, name, itemOrder }) => ({ id, name, itemOrder })),
-        'itemOrder',
-        'asc'
-      )
-    }
+    const { themes = [] } = product
+    const themeItems = orderBy(
+      themes.map(({ id, name, itemOrder }: DesignItem) => ({
+        id,
+        name,
+        itemOrder
+      })),
+      'itemOrder',
+      'asc'
+    )
+
     return (
       <Container>
         <Header>
@@ -116,7 +118,7 @@ export class Themes extends React.Component<Props, {}> {
               disabled={productData && productData.loading}
             />
           </InputContainer>
-          {!!product && product.obj && (
+          {!!product && product.obj ? (
             <List
               editable={true}
               onEditItem={this.handleOnEditTheme}
@@ -133,8 +135,7 @@ export class Themes extends React.Component<Props, {}> {
                 formatMessage
               }}
             />
-          )}
-          {product && !product.obj && (
+          ) : (
             <MissingModelContainer>
               <p>{formatMessage(messages.missingModel)}</p>
               <Button onClick={this.handleAddNewModel}>

@@ -49,7 +49,8 @@ import {
   EDIT_NAVIGATION,
   EDIT_NAVIGATION_URL,
   PRO_DESIGN,
-  PUBLISHING_TOOL
+  PUBLISHING_TOOL,
+  PRO_DESIGN_URL
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -111,39 +112,18 @@ export class Admin extends React.Component<Props, {}> {
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
       restoreUserSessionAction()
-      let key = ''
-      switch (pathname) {
-        case ROOT_URL:
-          key = ORDER_STATUS
-          break
-        case DISCOUNTS_URL:
-          key = DISCOUNTS
-          break
-        case PRODUCT_URL:
-          key = PRODUCT_CATALOG
-          break
-        case DESIGN_URL:
-          key = DESIGN_SEARCH
-          break
-        case USERS_URL:
-          key = USERS
-          break
-        case EDIT_NAVIGATION_URL:
-          key = EDIT_NAVIGATION
-          break
-        case DESIGN_LAB_URL:
-          key = DESIGN_LAB
-          break
-        case PRO_DESIGN:
-          key = PRO_DESIGN
-          break
-        case PUBLISHING_TOOL:
-          key = PUBLISHING_TOOL
-          break
-        default:
-          break
+      const keys = {
+        [ROOT_URL]: ORDER_STATUS,
+        [DISCOUNTS_URL]: DISCOUNTS,
+        [PRODUCT_URL]: PRODUCT_CATALOG,
+        [DESIGN_URL]: DESIGN_SEARCH,
+        [USERS_URL]: USERS,
+        [EDIT_NAVIGATION_URL]: EDIT_NAVIGATION,
+        [DESIGN_LAB_URL]: DESIGN_LAB,
+        [PRO_DESIGN_URL]: PRO_DESIGN,
+        [PUBLISHING_TOOL]: PUBLISHING_TOOL
       }
-      setDefaultScreenAction(key)
+      setDefaultScreenAction(keys[pathname])
     }
   }
 
