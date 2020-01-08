@@ -224,7 +224,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
   handlechangePage = (pageNumber: number) => {
     const { setSkipValueAction, limit } = this.props
     const skip = (pageNumber - 1) * limit
-
+    window.scrollTo(0, 0)
     setSkipValueAction(skip, pageNumber)
   }
 

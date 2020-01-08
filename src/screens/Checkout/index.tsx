@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import sumBy from 'lodash/sumBy'
+import find from 'lodash/find'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import Steps from 'antd/lib/steps'
@@ -18,7 +19,7 @@ import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
-import { CheckoutTabs, PaymentOptions } from './constants'
+import { CheckoutTabs, PaymentOptions, quantities } from './constants'
 
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
@@ -347,6 +348,7 @@ class Checkout extends React.Component<Props, {}> {
     const showOrderButton = currentStep === ReviewTab
 
     const simpleCart = this.getSimpleCart()
+    const productsPrices = this.getProductsPrice()
 
     return (
       <Layout {...{ history, intl }}>
@@ -463,7 +465,8 @@ class Checkout extends React.Component<Props, {}> {
                   proDesignReview,
                   paymentMethod,
                   currentCurrency,
-                  simpleCart
+                  simpleCart,
+                  productsPrices
                 }}
               />
             </SummaryContainer>
@@ -656,6 +659,31 @@ class Checkout extends React.Component<Props, {}> {
         quantity: sumBy(itemDetails, 'quantity')
       }
       return simpleCartItem
+    })
+  }
+  getProductsPrice = () => {
+    const {
+      location: {
+        state: { cart }
+      },
+      currentCurrency
+    } = this.props
+    const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
+    const quantity = quantities[priceRangeToApply]
+    return cart.map(({ product, itemDetails }: CartItems) => {
+      // Check for fixed prices
+      const productPriceRanges = get(product, 'priceRange', [])
+      // get prices from currency
+      const currencyPrice = find(productPriceRanges, {
+        abbreviation: currentCurrency,
+        quantity
+      })
+      const designsPrice = {
+        yotpoId: product.yotpoId,
+        price: currencyPrice.price,
+        quantity: sumBy(itemDetails, 'quantity')
+      }
+      return designsPrice
     })
   }
   placeOrder = async (event: any, paypalObj?: object) => {
@@ -862,13 +890,10 @@ const CheckoutEnhance = compose(
   AddAddressMutation,
   PlaceOrderMutation,
   withApollo,
-  connect(
-    mapStateToProps,
-    {
-      ...checkoutActions,
-      getTotalItemsIncart
-    }
-  )
+  connect(mapStateToProps, {
+    ...checkoutActions,
+    getTotalItemsIncart
+  })
 )(Checkout)
 
 export default CheckoutEnhance
