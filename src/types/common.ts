@@ -1484,3 +1484,15 @@ export interface Header {
 export interface ColorsDataResult {
   colorsResult: Colors
 }
+
+export type Thumbnail = {
+  style: {
+    image: string
+  }
+}
+
+export type Design = {
+  design: {
+    message: string
+  }
+}

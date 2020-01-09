@@ -28,9 +28,10 @@ const ColorList = ({
 }: Props) => {
   const handleOnSelectColor = (color: string) => () => onSelectColor(color)
   let arrayColors = []
-  if (colorsList) {
+
+  const fillColors = () => {
     try {
-      arrayColors = JSON.parse(
+      return JSON.parse(
         get(
           colorsList,
           !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
@@ -40,6 +41,9 @@ const ColorList = ({
     } catch (e) {
       Message.error(e)
     }
+  }
+  if (colorsList) {
+    arrayColors = fillColors()
   }
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []

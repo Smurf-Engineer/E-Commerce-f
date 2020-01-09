@@ -37,5 +37,29 @@ export default defineMessages({
   deleteInspiration: {
     id: 'screens.PublishingTool.deleteInspiration',
     defaultMessage: 'Color idea will be deleted.'
+  },
+  enterProductCode: {
+    id: 'screens.PublishingTool.enterProductCode',
+    defaultMessage: 'Please enter a product code'
+  },
+  uploaadModel: {
+    id: 'screens.PublishingTool.uploaadModel',
+    defaultMessage: 'Upload model files first'
+  },
+  enterName: {
+    id: 'screens.PublishingTool.enterName',
+    defaultMessage: 'To proceed, enter design name first'
+  },
+  saveDesignThumbnail: {
+    id: 'screens.PublishingTool.saveDesignThumbnail',
+    defaultMessage: 'To proceed, save design thumbnail first'
+  },
+  unableToFindThumbnails: {
+    id: 'screens.PublishingTool.unableToFindThumbnails',
+    defaultMessage: 'Unable to find one or more color idea thumbnails'
+  },
+  enterNames: {
+    id: 'screens.PublishingTool.enterNames',
+    defaultMessage: 'To proceed, enter all the color idea name'
   }
 })

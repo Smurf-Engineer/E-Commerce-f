@@ -207,11 +207,13 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
       const { item } = action
       if (item !== NONE) {
         const keyPath =
-          item !== DESIGN_COLORS ? ['colorIdeas', item] : ['design', 'colors']
+          item !== DESIGN_COLORS
+            ? ['colorIdeas', item, 'colors']
+            : ['design', 'colors']
 
         const colors = state.getIn(keyPath) || []
         return state.merge({
-          colors: item !== DESIGN_COLORS ? colors.colors : colors,
+          colors,
           colorIdeaItem: item
         })
       }
@@ -236,18 +238,16 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
       const { name, updateColors } = action
       const colors = state.get('colors')
       const colorIdeaItem = state.get('colorIdeaItem')
-      const namePath =
-        colorIdeaItem === DESIGN_COLORS
-          ? ['design', 'name']
-          : ['colorIdeas', colorIdeaItem, 'name']
-      const imagePath =
-        colorIdeaItem === DESIGN_COLORS
-          ? ['design', 'image']
-          : ['colorIdeas', colorIdeaItem, 'image']
-      const colorPath =
-        colorIdeaItem === DESIGN_COLORS
-          ? ['design', 'colors']
-          : ['colorIdeas', colorIdeaItem, 'colors']
+      const designColors = colorIdeaItem === DESIGN_COLORS
+      const namePath = designColors
+        ? ['design', 'name']
+        : ['colorIdeas', colorIdeaItem, 'name']
+      const imagePath = designColors
+        ? ['design', 'image']
+        : ['colorIdeas', colorIdeaItem, 'image']
+      const colorPath = designColors
+        ? ['design', 'colors']
+        : ['colorIdeas', colorIdeaItem, 'colors']
 
       return state.withMutations((map: any) => {
         map.setIn(namePath, name)
