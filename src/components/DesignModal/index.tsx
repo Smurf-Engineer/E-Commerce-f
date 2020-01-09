@@ -138,6 +138,7 @@ class DesignModal extends React.PureComponent<Props, State> {
     this.setState(({ areas }) => ({ areas: [...areas, file] }))
     return false
   }
+
   beforeUploadJson = (file: UploadFile) => {
     const { type, name } = file
     const selectedFileExtension = type || getFileExtension(name)

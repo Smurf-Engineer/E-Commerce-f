@@ -33,6 +33,7 @@ const Tab = ({
       onSelectTab()
     }
   }
+  const TOTAL_ITEMS = totalItems - 1
   return (
     <Container onClick={handleOnSelectTab}>
       {index === 0 && <Divider type="vertical" />}
@@ -40,13 +41,13 @@ const Tab = ({
         <Text {...{ selected, activeOnClick }}>
           {React.Children.only(children)}
         </Text>
-        {index < totalItems - 1 && (
+        {index < TOTAL_ITEMS && (
           <ShapeContainer>
             <OpeningShape {...{ selected }} />
           </ShapeContainer>
         )}
       </TabContainer>
-      {index === totalItems - 1 && <Divider type="vertical" />}
+      {index === TOTAL_ITEMS && <Divider type="vertical" />}
     </Container>
   )
 }
