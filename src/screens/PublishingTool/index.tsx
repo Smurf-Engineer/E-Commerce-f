@@ -58,23 +58,13 @@ import {
   ModelDesign,
   CanvasType,
   UploadFile,
-  ColorsDataResult
+  ColorsDataResult,
+  Thumbnail,
+  Design as DeisgnType
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 
 const { confirm } = Modal
-
-type Thumbnail = {
-  style: {
-    image: string
-  }
-}
-
-type Design = {
-  design: {
-    message: string
-  }
-}
 
 interface Props {
   intl: InjectedIntl
@@ -139,7 +129,7 @@ interface Props {
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   setThumbnailAction: (item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploadingItem: boolean) => void
-  saveDesign: (variables: {}) => Promise<Design>
+  saveDesign: (variables: {}) => Promise<DeisgnType>
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
   updateColorIdeasListAction: (colorIdeas: DesignObject[]) => void
