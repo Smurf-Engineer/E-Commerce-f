@@ -153,7 +153,7 @@ class EditInspiration extends React.PureComponent<Props, State> {
       return {
         name: '',
         updateName: false,
-        updateColors
+        updateColors: false
       }
     })
   }
