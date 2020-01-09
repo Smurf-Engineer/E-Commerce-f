@@ -6,11 +6,11 @@ import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   upload: {
-    id: 'screens.ProDesignTab.upload',
+    id: 'screens.VariantsProduct.upload',
     defaultMessage: 'Upload'
   },
   color: {
-    id: 'screens.ProDesignTab.color',
+    id: 'screens.VariantsProduct.color',
     defaultMessage: 'Color'
   }
 })

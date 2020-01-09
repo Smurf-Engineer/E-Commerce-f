@@ -1174,6 +1174,8 @@
   "components.DesignCheckModal.reviewDesignModalText": "<p class=\"important\">For an additional fee of $15.00, <strong>all products </strong> on your order will be reviewed by a Pro Designer at Jakroo.</p><p>Review services include:<p/><ul><li>- Color consistency throughout design and ordered products. </li><li>- Center alignment and adjustment to graphics/text. </li ><li>- Resolution quality review for any uploaded raster images. </li><li>- Check for any other unforeseen issues. </li></ul><p>You will receive a review notification by email typically within 24 hours (excluding holidays/weekends) upon completion of your review. </p><div class=\"smaller-text\"><p class=\"important no-margin\">This service is optional and can be added to your order during checkout.</p></div>",
   "screens.ProDesignTab.upload": "Upload",
   "screens.ProDesignTab.color": "Color",
+  "screens.VariantsProduct.upload": "Upload",
+  "screens.VariantsProduct.color": "Color",
   "screens.ProDesign.title": "PRO Design Publishing",
   "screens.ProDesign.back": "Back to admin panel",
   "screens.ProDesign.productNotFound": "Error: Product not found.",
