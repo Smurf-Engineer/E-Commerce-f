@@ -67,7 +67,7 @@ export default defineMessages({
   },
   description: {
     id: 'screens.CustomProductDetail.description',
-    defaultMessage: 'Additional Product details'
+    defaultMessage: 'Additional Product Details'
   },
   specs: {
     id: 'screens.CustomProductDetail.specs',
