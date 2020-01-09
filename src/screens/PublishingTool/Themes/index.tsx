@@ -60,6 +60,8 @@ interface Props {
   selectedTheme: number
   currentPage: number
   selectedDesign: number
+  code: string
+  setCodeSearch: (value: string) => void
   formatMessage: (messageDescriptor: Message) => string
   setProductCode: (value: string) => void
   onChangeTheme: (id: number, section: string) => void
@@ -83,17 +85,15 @@ interface ProductData extends QueryProps {
 }
 
 export class Themes extends React.Component<Props, {}> {
-  state = {
-    code: ''
-  }
   handleOnUpdateProductCode = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
       currentTarget: { value }
     } = evt
-    this.setState({ code: value })
+    const { setCodeSearch } = this.props
+    setCodeSearch(value)
   }
   handleOnSearch = () => {
-    const { code } = this.state
+    const { code } = this.props
     if (!!code) {
       const { setProductCode } = this.props
       setProductCode(code)
@@ -299,7 +299,6 @@ export class Themes extends React.Component<Props, {}> {
     toggleAddDesign(productId)
   }
   render() {
-    const { code } = this.state
     const {
       formatMessage,
       productData,
@@ -308,6 +307,7 @@ export class Themes extends React.Component<Props, {}> {
       onDeleteTheme,
       goToPage,
       currentPage,
+      code,
       selectedDesign,
       onDeleteDesign
     } = this.props
@@ -336,8 +336,6 @@ export class Themes extends React.Component<Props, {}> {
       'itemOrder',
       'asc'
     )
-    console.log(product)
-    console.log(productEmpty)
     const isTheme = currentPage === THEME_PAGE
 
     return (

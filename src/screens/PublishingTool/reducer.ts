@@ -36,6 +36,7 @@ import {
   DELETE_COLOR_IDEA_ACTION,
   SET_CANVAS_JSON_ACTION,
   UPDATE_INSPIRATION_LIST,
+  SET_CODE_SEARCH,
   Sections
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -50,6 +51,7 @@ export const initialState = fromJS({
   selectedTheme: -1,
   currentTab: 0,
   currentPage: 0,
+  code: '',
   designModalOpen: false,
   designName: '',
   uploading: false,
@@ -84,8 +86,10 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case ON_RESET_REDUCER:
       return initialState
+    case SET_CODE_SEARCH:
+      return state.set('code', action.value)
     case SET_PRODUCT_CODE:
-      return state.set('productCode', action.value)
+      return state.merge({ productCode: action.value, code: action.value })
     case ON_CHANGE_THEME: {
       const { id, section } = action
       const selectedKey =

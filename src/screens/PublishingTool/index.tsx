@@ -10,6 +10,7 @@ import every from 'lodash/every'
 import PlaceholdersRender3D from '../../components/PlaceholdersRender3D'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
+import queryString from 'query-string'
 import findIndex from 'lodash/findIndex'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
@@ -77,6 +78,7 @@ interface Props {
   designModalOpen: boolean
   designName: string
   uploading: boolean
+  code: string
   selectedDesign: number
   colorIdeas: DesignObject[]
   design: ModelDesign
@@ -94,6 +96,7 @@ interface Props {
   productId: number
   saveDesignLoading: boolean
   history: any
+  setCodeSearch: (value: string) => void
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
   onChangeThemeAction: (id: number, section: string) => void
@@ -151,6 +154,14 @@ export class PublishingTool extends React.Component<Props, {}> {
   render3DPlaceholder: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
+    const {
+      setProductCodeAction,
+      location: { search }
+    } = this.props
+    const { code } = queryString.parse(search)
+    if (code) {
+      setProductCodeAction(code)
+    }
   }
   handleOnPressBack = () => {
     window.location.replace('/admin')
@@ -403,10 +414,11 @@ export class PublishingTool extends React.Component<Props, {}> {
           const themes = get(data, 'design.product.themes', [])
           const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
           const { styles } = themes[themeIndex]
+
           const styleIndex = findIndex(styles, ({ id: styleId, name }) =>
             selectedDesign === -1
-              ? styleId === selectedDesign
-              : designName === name
+              ? designName === name
+              : styleId === selectedDesign
           )
           const { colorIdeas: updatedColorIdeas } = styles[styleIndex]
           updateColorIdeasListAction(updatedColorIdeas)
@@ -456,7 +468,9 @@ export class PublishingTool extends React.Component<Props, {}> {
                 const { styles } = themes[themeIndex]
                 const styleIndex = findIndex(
                   styles,
-                  ({ id: styleId }) => styleId === selectedDesign
+                  ({ id: styleId, name }) =>
+                    styleId === selectedDesign ||
+                    (selectedDesign === -1 && designName === name)
                 )
                 const { colorIdeas } = styles[styleIndex]
                 const updatedInspiration = remove(
@@ -510,6 +524,8 @@ export class PublishingTool extends React.Component<Props, {}> {
       selectedDesign,
       setModelAction,
       colorIdeas,
+      setCodeSearch,
+      code,
       design,
       setColorIdeaItemAction,
       colorIdeaItem,
@@ -575,6 +591,8 @@ export class PublishingTool extends React.Component<Props, {}> {
               {...{
                 formatMessage,
                 productCode,
+                code,
+                setCodeSearch,
                 selectedTheme,
                 currentPage,
                 selectedDesign
