@@ -64,7 +64,7 @@ export class SymbolTab extends React.PureComponent<Props, {}> {
     param => this.props.setSearchClipParamAction(param),
     300
   )
-  async componentWillReceiveProps(nextProps: any) {
+  componentWillReceiveProps(nextProps: any) {
     const { uploadingSymbol } = nextProps
     const { uploadingSymbol: oldUploading } = this.props
     if (!uploadingSymbol && oldUploading) {
