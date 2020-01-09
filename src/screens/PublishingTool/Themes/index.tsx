@@ -5,6 +5,7 @@ import * as React from 'react'
 import messages from './messages'
 import get from 'lodash/get'
 import orderBy from 'lodash/orderBy'
+import isEmpty from 'lodash/isEmpty'
 import findIndex from 'lodash/findIndex'
 import cloneDeep from 'lodash/cloneDeep'
 import backIcon from '../../../assets/rightarrow.svg'
@@ -42,6 +43,7 @@ import {
 } from '../../../types/common'
 import List from '../List'
 import { THEME_PAGE, Sections } from '../constants'
+import { changePosition } from '../../../utils/utilsFunctions'
 
 const extraFiles = ['bibBrace', 'binding', 'zipper']
 const areas = [
@@ -73,6 +75,7 @@ interface Props {
     design: ModelDesign
   ) => void
   onDeleteDesign: (id: number) => void
+  addNewModel: (productId: number) => void
 }
 
 interface ProductData extends QueryProps {
@@ -112,7 +115,11 @@ export class Themes extends React.Component<Props, {}> {
     onEditTheme(theme)
   }
   handleAddNewModel = () => {
-    // TODO: SEND TO MODEL PAGE
+    const { addNewModel, productData } = this.props
+    const productId = get(productData, 'product.id', false)
+    if (productId) {
+      addNewModel(productId)
+    }
   }
   handleGoToThemes = () => {
     const { goToPage } = this.props
@@ -126,17 +133,8 @@ export class Themes extends React.Component<Props, {}> {
         'itemOrder',
         'asc'
       )
-
       themes.forEach(({ itemOrder }, index) => {
-        if (!itemOrder && index === 0) {
-          themes[index].itemOrder = 1
-        }
-        if (
-          themes[index - 1] &&
-          themes[index - 1].itemOrder !== itemOrder - 1
-        ) {
-          themes[index].itemOrder = themes[index - 1].itemOrder + 1
-        }
+        changePosition(itemOrder, themes, index)
       })
       const temporalTheme = cloneDeep(themes[dragIndex])
       themes[dragIndex].itemOrder = themes[dropIndex].itemOrder
@@ -187,15 +185,7 @@ export class Themes extends React.Component<Props, {}> {
         )
 
         designs.forEach(({ itemOrder }, index) => {
-          if (!itemOrder && index === 0) {
-            designs[index].itemOrder = 1
-          }
-          if (
-            designs[index - 1] &&
-            designs[index - 1].itemOrder !== itemOrder - 1
-          ) {
-            designs[index].itemOrder = designs[index - 1].itemOrder + 1
-          }
+          changePosition(itemOrder, designs, index)
         })
         const temporalDesign = cloneDeep(designs[dragIndex])
         designs[dragIndex].itemOrder = designs[dropIndex].itemOrder
@@ -232,7 +222,6 @@ export class Themes extends React.Component<Props, {}> {
       onLoadDesign
     } = this.props
     if (productData && productData.product) {
-      const product = get(productData, 'product')
       const {
         obj = '',
         mtl = '',
@@ -240,7 +229,7 @@ export class Themes extends React.Component<Props, {}> {
         flatlock = '',
         bumpMap = '',
         themes = []
-      } = product
+      } = productData.product
       const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
       const currentTheme = themes[themeIndex] || {}
       const styleIndex = findIndex(
@@ -294,7 +283,7 @@ export class Themes extends React.Component<Props, {}> {
       }
 
       extraFiles.forEach(key => {
-        const file = product[key]
+        const file = productData.product[key]
         if (file) {
           modelConfig[`${key}White`] = file.white
           modelConfig[`${key}Black`] = file.black
@@ -323,31 +312,34 @@ export class Themes extends React.Component<Props, {}> {
       onDeleteDesign
     } = this.props
 
-    const product = get(productData, 'product', false)
+    const product = get(productData, 'product', {})
+    const productEmpty = isEmpty(product)
+    const { themes = [] } = product
+    const themeItems = orderBy(
+      themes.map(({ id, name, itemOrder }: DesignItem) => ({
+        id,
+        name,
+        itemOrder
+      })),
+      'itemOrder',
+      'asc'
+    )
+    const currentThemeIndex =
+      themes.findIndex(theme => theme.id === selectedTheme) || -1
+    const themeStyles = get(themes[currentThemeIndex], 'styles', [])
+    const styleItems = orderBy(
+      themeStyles.map(({ id, name, itemOrder }: Style) => ({
+        id,
+        name,
+        itemOrder
+      })),
+      'itemOrder',
+      'asc'
+    )
+    console.log(product)
+    console.log(productEmpty)
+    const isTheme = currentPage === THEME_PAGE
 
-    let themeItems: DesignItem[] = []
-    let styleItems: DesignItem[] = []
-    if (!!product) {
-      const { themes = [] } = product
-      themeItems = orderBy(
-        themes.map(({ id, name, itemOrder }) => ({ id, name, itemOrder })),
-        'itemOrder',
-        'asc'
-      )
-      const currentThemeIndex = themes.findIndex(
-        theme => theme.id === selectedTheme
-      )
-      const themeStyles = get(themes[currentThemeIndex], 'styles', [])
-      styleItems = orderBy(
-        themeStyles.map(({ id, name, itemOrder }: Style) => ({
-          id,
-          name,
-          itemOrder
-        })),
-        'itemOrder',
-        'asc'
-      )
-    }
     return (
       <Container>
         <Header>
@@ -374,33 +366,23 @@ export class Themes extends React.Component<Props, {}> {
               />
             </InputContainer>
           )}
-          {!!product && product.obj && (
+          {!productEmpty && product.obj && (
             <List
               editable={true}
               onEditItem={this.handleOnEditTheme}
               withImageInput={true}
-              selectedItem={
-                currentPage === THEME_PAGE ? selectedTheme : selectedDesign
-              }
+              selectedItem={isTheme ? selectedTheme : selectedDesign}
               onSelectItem={onChangeTheme}
-              onDeleteItem={
-                currentPage === THEME_PAGE ? onDeleteTheme : onDeleteDesign
-              }
+              onDeleteItem={isTheme ? onDeleteTheme : onDeleteDesign}
               onAddNewTheme={this.handleAddNewTheme}
               subtitle={formatMessage(messages.selectTheme)}
               buttonLabel={formatMessage(
-                currentPage === THEME_PAGE
-                  ? messages.addTheme
-                  : messages.addDesign
+                isTheme ? messages.addTheme : messages.addDesign
               )}
-              items={currentPage === THEME_PAGE ? themeItems : styleItems}
-              section={
-                currentPage === THEME_PAGE ? Sections.Theme : Sections.Design
-              }
+              items={isTheme ? themeItems : styleItems}
+              section={isTheme ? Sections.Theme : Sections.Design}
               onDropRow={
-                currentPage === THEME_PAGE
-                  ? this.changeThemesPosition
-                  : this.changeDesignsPosition
+                isTheme ? this.changeThemesPosition : this.changeDesignsPosition
               }
               loadDesign={this.handleOnLoadDesign}
               toggleAddDesign={this.handleToogleAddDesign}
@@ -412,7 +394,7 @@ export class Themes extends React.Component<Props, {}> {
               }}
             />
           )}
-          {product && !product.obj && (
+          {!productEmpty && !product.obj ? (
             <MissingModelContainer>
               <p>{formatMessage(messages.missingModel)}</p>
               <Button onClick={this.handleAddNewModel}>
@@ -420,7 +402,7 @@ export class Themes extends React.Component<Props, {}> {
                 {formatMessage(messages.addModel)}
               </Button>
             </MissingModelContainer>
-          )}
+          ) : null}
         </Content>
       </Container>
     )

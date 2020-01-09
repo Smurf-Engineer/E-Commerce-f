@@ -152,7 +152,8 @@ class EditInspiration extends React.PureComponent<Props, State> {
       onUpdateColorIdeaName(temporalName || colorIdea!.name, updateColors)
       return {
         name: '',
-        updateName: false
+        updateName: false,
+        updateColors: false
       }
     })
   }

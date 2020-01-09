@@ -173,9 +173,7 @@ class Render3D extends PureComponent {
 
     const filesHasChange = isEqual(product, oldProduct)
     if (!filesHasChange) {
-      if (this.renderer) {
-        this.removeObject()
-      }
+      this.removeObject()
       setTimeout(() => {
         this.render3DModel()
       }, 100)
@@ -2274,18 +2272,20 @@ class Render3D extends PureComponent {
   }
 
   removeObject = () => {
-    const object = this.scene.getObjectByName(MESH_NAME)
-    if (!!object) {
-      object.children.forEach(({ material }) => {
-        if (!!material) {
-          const { map, bumpMap, alphaMap } = material
-          if (map && map.dispose) map.dispose()
-          if (bumpMap && bumpMap.dispose) bumpMap.dispose()
-          if (alphaMap && alphaMap.dispose) alphaMap.dispose()
-          if (material.dispose) material.dispose()
-        }
-      })
-      this.scene.remove(object)
+    if (this.renderer) {
+      const object = this.scene.getObjectByName(MESH_NAME)
+      if (!!object) {
+        object.children.forEach(({ material }) => {
+          if (!!material) {
+            const { map, bumpMap, alphaMap } = material
+            if (map && map.dispose) map.dispose()
+            if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+            if (alphaMap && alphaMap.dispose) alphaMap.dispose()
+            if (material.dispose) material.dispose()
+          }
+        })
+        this.scene.remove(object)
+      }
     }
   }
 }

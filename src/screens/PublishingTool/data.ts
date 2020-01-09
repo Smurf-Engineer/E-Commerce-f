@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { STYLE_FIELDS } from '../../apollo/fragments'
 
 export const GetProductsByIdQuery = gql`
   query GetProductByID($code: String!) {
@@ -71,36 +72,13 @@ export const saveDesignMutation = gql`
           image
           itemOrder: item_order
           styles {
-            id
-            name
-            image
-            width
-            height
-            branding
-            brandingPng: branding_png
-            colorblock1
-            colorblock2
-            colorblock3
-            colorblock4
-            colorblock5
-            colorIdeas: inspiration {
-              id
-              name
-              image
-              colors
-            }
-            colors: colorsBlocks {
-              id
-              color
-              image
-            }
-            itemOrder: item_order
-            canvas
+            ...styleFields
           }
         }
       }
     }
   }
+  ${STYLE_FIELDS}
 `
 
 export const deleteInspirationMutation = gql`
