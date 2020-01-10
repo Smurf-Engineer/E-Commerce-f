@@ -70,6 +70,10 @@ export class ProductModels extends React.Component<Props, {}> {
     const { setEditModel } = this.props
     setEditModel(id)
   }
+  editDefault = () => {
+    const { defaultModelIndex, setEditModel } = this.props
+    setEditModel(defaultModelIndex)
+  }
   render() {
     const {
       intl,
@@ -110,22 +114,24 @@ export class ProductModels extends React.Component<Props, {}> {
                 <Details>
                   <Name>{defaultModel.name}</Name>
                   <Buttons>
-                    <EditButton onClick={this.handleEdit(defaultModelIndex)}>
+                    <EditButton onClick={this.editDefault}>
                       {formatMessage(messages.edit)}
                     </EditButton>
                   </Buttons>
                 </Details>
               </ModelBlock>
               <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
-              {Object.keys(variants).map(
-                (id: string, index) =>
-                  !variants[id].default && (
+              {Object.keys(variants).map((id: string, index) => {
+                const edit = () => this.handleEdit(id)
+                const { icon, name, default: isDefault } = variants[id]
+                return (
+                  !isDefault && (
                     <ModelBlock key={index}>
-                      <Thumbnail src={variants[id].icon} />
+                      <Thumbnail src={icon} />
                       <Details>
-                        <Name>{variants[id].name}</Name>
+                        <Name>{name}</Name>
                         <Buttons>
-                          <EditButton onClick={this.handleEdit(id)}>
+                          <EditButton onClick={edit}>
                             {formatMessage(messages.edit)}
                           </EditButton>
                           <DeleteButton>
@@ -135,7 +141,8 @@ export class ProductModels extends React.Component<Props, {}> {
                       </Details>
                     </ModelBlock>
                   )
-              )}
+                )
+              })}
             </ModelsContainers>
           </Side>
           <ModelContainer>
