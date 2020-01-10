@@ -11,7 +11,7 @@ import {
   ColorTitle,
   SyledDivider
 } from './styledComponents'
-import { StitchingColor } from '../../../types/common'
+import { StitchingColor, QueryProps, Colors } from '../../../types/common'
 import messages from './messages'
 import Message from 'antd/lib/message'
 interface Color {
@@ -19,6 +19,11 @@ interface Color {
   name: string
   type?: string
 }
+
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
 interface Props {
   onSelectColor?: (color: string, name: string, index: number) => void
   onSelectStitchingColor?: (color: StitchingColor) => void
@@ -29,7 +34,7 @@ interface Props {
   stitchingColor?: StitchingColor
   disableTooltip?: boolean
   colors?: Color[]
-  colorsList: any
+  colorsList: ColorsData
 }
 
 const ColorList = ({
