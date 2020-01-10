@@ -1291,6 +1291,7 @@
   "components.FilesModal.saveModel": "Save Model",
   "components.FilesModal.labelTitle": "Label",
   "components.FilesModal.label": "+ Label File",
+  "components.FilesModal.fileError": "You can only upload SVG/PNG/JPEG/JPG file!",
   "components.DiscountsData.newDiscount": "New Discount",
   "components.DiscountsData.editDiscount": "Edit Discount",
   "components.DiscountsData.couponCode": "Coupon Code",
