@@ -105,15 +105,15 @@ export class ProductModels extends React.Component<Props, {}> {
     const { openModalAction } = this.props
     openModalAction(true)
   }
-  handleEdit = (id: string) => () => {
+  handleEdit = (id: string) => {
     const { setEditModel } = this.props
     setEditModel(id)
   }
-  handleRemoveModel = (id: string) => () => {
+  handleRemoveModel = (id: string) => {
     const { removeModelAction } = this.props
     removeModelAction(id)
   }
-  selectModel = (id: string) => () => {
+  selectModel = (id: string) => {
     const { selectModelAction } = this.props
     selectModelAction(id)
   }
@@ -187,6 +187,14 @@ export class ProductModels extends React.Component<Props, {}> {
     const { history } = this.props
     const { id } = queryString.parse(location.search)
     history.push(`/admin/products/details/${id}`)
+  }
+  editDefault = () => {
+    const { defaultModelIndex, setEditModel } = this.props
+    setEditModel(defaultModelIndex)
+  }
+  selectModelDefault = () => {
+    const { defaultModelIndex, selectModelAction } = this.props
+    selectModelAction(defaultModelIndex)
   }
   render() {
     const {
@@ -265,15 +273,13 @@ export class ProductModels extends React.Component<Props, {}> {
                   </TopMessage>
                   <ModelBlock active={modelRender === defaultModelIndex}>
                     <Thumbnail
-                      onClick={this.selectModel(defaultModelIndex)}
+                      onClick={this.selectModelDefault}
                       src={defaultModel.icon || jakrooLogo}
                     />
                     <Details>
                       <Name>{defaultModel.name}</Name>
                       <Buttons>
-                        <EditButton
-                          onClick={this.handleEdit(defaultModelIndex)}
-                        >
+                        <EditButton onClick={this.editDefault}>
                           {formatMessage(messages.edit)}
                         </EditButton>
                       </Buttons>
@@ -282,27 +288,33 @@ export class ProductModels extends React.Component<Props, {}> {
                 </>
               )}
               <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
-              {Object.keys(variants).map(
-                (id: string, index) =>
-                  !variants[id].default && (
+              {Object.keys(variants).map((id: string, index) => {
+                const edit = () => this.handleEdit(id)
+                const { icon, name, default: isDefault } = variants[id]
+                const selectModel = () => this.selectModel(id)
+                const remove = () => this.handleRemoveModel(id)
+                return (
+                  !isDefault && (
                     <ModelBlock active={modelRender === id} key={index}>
                       <Thumbnail
-                        onClick={this.selectModel(id)}
-                        src={variants[id].icon || jakrooLogo}
+                        onClick={selectModel}
+                        src={icon || jakrooLogo}
                       />
                       <Details>
-                        <Name>{variants[id].name}</Name>
+                        <Name>{name}</Name>
                         <Buttons>
-                          <EditButton onClick={this.handleEdit(id)}>
+                          <EditButton onClick={edit}>
                             {formatMessage(messages.edit)}
                           </EditButton>
-                          <DeleteButton onClick={this.handleRemoveModel(id)}>
+                          <DeleteButton onClick={remove}>
                             {formatMessage(messages.delete)}
                           </DeleteButton>
                         </Buttons>
                       </Details>
                     </ModelBlock>
                   )
+                )
+              })}
               )}
             </ModelsContainers>
           </Side>

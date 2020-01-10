@@ -120,5 +120,9 @@ export default defineMessages({
   saveModel: {
     id: 'components.FilesModal.saveModel',
     defaultMessage: 'Save Model'
+  },
+  fileError: {
+    id: 'components.FilesModal.fileError',
+    defaultMessage: 'Save Model'
   }
 })
