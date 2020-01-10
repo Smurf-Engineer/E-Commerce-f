@@ -70,7 +70,8 @@ import {
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
   OPEN_DESIGN_CHECK_MODAL,
-  ON_OPEN_COLOR_CHART_FORM
+  ON_OPEN_COLOR_CHART_FORM,
+  SELECT_VARIANT
 } from './constants'
 import {
   AnyAction,
@@ -208,6 +209,11 @@ export const setStyleComplexity = (index: number): AnyAction => ({
 export const openShareModalAction = (open: boolean): AnyAction => ({
   type: OPEN_SHARE_MODAL,
   open
+})
+
+export const selectVariantAction = (index: number): AnyAction => ({
+  type: SELECT_VARIANT,
+  index
 })
 
 export const saveDesignLoadingAction = (loading: boolean): AnyAction => ({

@@ -69,6 +69,10 @@ export default defineMessages({
     id: 'components.FilesModal.flatlock',
     defaultMessage: '+ Flatlock File'
   },
+  setDefault: {
+    id: 'components.FilesModal.setDefault',
+    defaultMessage: 'Set this as default'
+  },
   labelTitle: {
     id: 'components.FilesModal.labelTitle',
     defaultMessage: 'Label'

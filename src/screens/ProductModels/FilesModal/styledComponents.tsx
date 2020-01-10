@@ -58,6 +58,16 @@ export const Label = styled.div`
   line-height: 19px;
 `
 
+export const CloseIcon = styled.img`
+  position: absolute;
+  width: 20px;
+  right: 36px;
+  margin-top: 4px;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 export const IconInput = styled.div`
   display: flex;
   flex-flow: column;
@@ -115,8 +125,6 @@ export const SaveSection = styled.div`
   text-align: right;
   margin-top: 28px;
 `
-
-export const DefaultButton = styled.div``
 
 export const SaveButton = styled(AntdButton)`
   max-width: 224px;

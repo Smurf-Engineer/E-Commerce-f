@@ -75,7 +75,8 @@ import {
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
   ON_OPEN_COLOR_CHART_FORM,
-  OPEN_DESIGN_CHECK_MODAL
+  OPEN_DESIGN_CHECK_MODAL,
+  SELECT_VARIANT
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -102,6 +103,7 @@ export const initialState = fromJS({
   themeId: -1,
   styleIndex: -1,
   openShareModal: false,
+  selectedVariant: -1,
   openSaveDesign: false,
   checkedTerms: false,
   savedDesignId: '',
@@ -434,6 +436,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           return state
       }
     }
+    case SELECT_VARIANT:
+      return state.set('selectedVariant', action.index)
     case SET_PALETTE_NAME_ACTION:
       return state.set('paletteName', action.name)
     case SET_PALETTES_ACTION:
