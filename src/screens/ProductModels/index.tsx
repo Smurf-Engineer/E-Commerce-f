@@ -66,7 +66,7 @@ export class ProductModels extends React.Component<Props, {}> {
     const { openModalAction } = this.props
     openModalAction(true)
   }
-  handleEdit = (id: string) => () => {
+  handleEdit = (id: string) => {
     const { setEditModel } = this.props
     setEditModel(id)
   }
