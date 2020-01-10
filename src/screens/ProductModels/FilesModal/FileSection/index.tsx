@@ -50,7 +50,7 @@ export class FileSection extends React.Component<Props, {}> {
     const { uploadFile } = this.props
     uploadFile(file, key)
   }
-  handleRemove = (key: string) => () => {
+  handleRemove = (key: string) => {
     const { setFileAction } = this.props
     setFileAction(key, '')
   }
