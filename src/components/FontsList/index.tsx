@@ -8,7 +8,13 @@ import Input from 'antd/lib/input'
 import find from 'lodash/find'
 import GoogleFontLoader from 'react-google-font-loader'
 import { Waypoint } from 'react-waypoint'
-import { Font, Message, SelectedFonts, QueryProps } from '../../types/common'
+import {
+  Font,
+  Message,
+  SelectedFonts,
+  QueryProps,
+  SelectedItem
+} from '../../types/common'
 import { Container, Text, Item, ScrollView } from './styledComponents'
 import Spin from 'antd/lib/spin'
 
@@ -49,8 +55,8 @@ class FontsList extends React.PureComponent<Props> {
     changeFont(font, active)
   }
   loadFont = (font: string) => () => {
-    const { addFont, visibleFonts } = this.props
-    if (!find(visibleFonts, { font: font })) {
+    const { addFont, visibleFonts, googleList } = this.props
+    if (!find(visibleFonts, { font: font }) && googleList) {
       addFont(font)
     }
   }
@@ -58,6 +64,36 @@ class FontsList extends React.PureComponent<Props> {
     const { value: text } = e.target
     const { onUpdateSearchText } = this.props
     onUpdateSearchText(text)
+  }
+  getFontsList = (fontsSelected: SelectedItem, fontList: Font[]) => {
+    const { googleList, searchText, fonts } = this.props
+    const arrayFont = googleList ? fonts || [] : fontList
+    const list = arrayFont.map((font: Font | string, index: number) => {
+      const available = googleList ? fontsSelected[font] : font.active
+      const fontFamily = googleList ? font : font.family
+      const active = available || !googleList
+      if (
+        (available || googleList) &&
+        (!searchText.length ||
+          (searchText.length &&
+            fontFamily.toLowerCase().search(searchText.toLowerCase()) !== -1))
+      ) {
+        return (
+          <Waypoint key={index} onEnter={this.loadFont(fontFamily)}>
+            <Item
+              key={index}
+              onClick={this.changeFont(fontFamily, googleList)}
+              className={active ? 'active' : ''}
+            >
+              <Text className={active ? 'white' : ''} font={fontFamily}>
+                {fontFamily}
+              </Text>
+            </Item>
+          </Waypoint>
+        )
+      }
+    })
+    return list
   }
 
   render() {
@@ -70,10 +106,7 @@ class FontsList extends React.PureComponent<Props> {
       formatMessage,
       fonts
     } = this.props
-    let list
     const savedFonts: Font[] = get(fontsData, 'fonts', [])
-    let installedFonts: any = []
-
     const objectFonts = savedFonts.reduce((fontObject, { active, family }) => {
       fontObject[family] = active
       return fontObject
@@ -88,71 +121,24 @@ class FontsList extends React.PureComponent<Props> {
         active: fontsSelected[key],
         family: key
       }))
-
-    if (!googleList) {
-      installedFonts = fontList.reduce<{ font: string }[]>(
-        (fontObject, { active, family }) => {
-          if (active) {
-            fontObject.push({ font: family })
-          }
-          return fontObject
-        },
-        []
-      )
-      list = fontList.map((font: Font, index: number) => {
-        if (
-          font.active &&
-          (!searchText.length ||
-            (searchText.length &&
-              font.family.toLowerCase().search(searchText.toLowerCase()) !==
-                -1))
-        ) {
-          return (
-            <Item
-              key={index}
-              onClick={this.changeFont(font.family, false)}
-              className={'active'}
-            >
-              <Text className={'white'} font={font.family}>
-                {font.family}
-              </Text>
-            </Item>
-          )
-        }
-        return
-      })
-    } else {
-      list =
-        fonts &&
-        fonts.map((font: string, index: number) => {
-          const active = fontsSelected[font]
-          if (
-            !searchText.length ||
-            (searchText.length &&
-              font.toLowerCase().search(searchText.toLowerCase()) !== -1)
-          ) {
-            return (
-              <Waypoint key={index} onEnter={this.loadFont(font)}>
-                <Item
-                  onClick={this.changeFont(font, true)}
-                  className={active ? 'active' : ''}
-                >
-                  <Text className={active ? 'white' : ''} font={font}>
-                    {font}
-                  </Text>
-                </Item>
-              </Waypoint>
-            )
-          }
-          return
-        })
-    }
+    const installedFonts = !googleList
+      ? fontList.reduce<{ font: string }[]>(
+          (fontObject, { active, family }) => {
+            if (active) {
+              fontObject.push({ font: family })
+            }
+            return fontObject
+          },
+          []
+        )
+      : []
+    const list = this.getFontsList(fontsSelected, fontList)
     return (
       <Container>
         {googleList && !fonts.length ? (
           <Spin />
         ) : (
-          <div>
+          <>
             <Search
               value={searchText}
               onChange={this.handleOnUpdateText}
@@ -166,7 +152,7 @@ class FontsList extends React.PureComponent<Props> {
               ) : null}
               {list}
             </ScrollView>
-          </div>
+          </>
         )}
       </Container>
     )

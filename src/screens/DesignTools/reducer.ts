@@ -7,7 +7,11 @@ import {
   CustomizeTabs,
   SET_COLORS,
   ON_TAB_CLICK_ACTION,
+  SET_SEARCH_CLIPARTPARAM,
   SET_UPLOADING_COLORS_ACTION,
+  UPLOADING_SYMBOL_ACTION,
+  ADD_SYMBOL_ACTION,
+  HIDE_SYMBOL_ACTION,
   SET_GOOGLE_FONTS,
   ADD_FONT_ACTION,
   UPDATE_SEARCH_TEXT_ACTION,
@@ -25,11 +29,15 @@ export const initialState = fromJS({
   loading: false,
   uploadingStitchingColors: false,
   uploadingSymbol: false,
+  searchClipParam: '',
   selectedTab: CustomizeTabs.ColorTab,
+  symbols: [],
   stitchingColors: [],
+  hiddenSymbols: {},
   selectedFonts: {}
 })
 
+// TODO: Add the unit tests for each case
 const designToolsReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case ON_RESET_REDUCER:
@@ -48,13 +56,26 @@ const designToolsReducer: Reducer<any> = (state = initialState, action) => {
     case SET_UPLOADING_ACTION:
       return state.set('loading', action.isLoading)
     case ADD_FONT_ACTION: {
-      return state.set(
-        'visibleFonts',
-        state.get('visibleFonts').push({ font: action.font })
-      )
+      const visibleFonts = state.get('visibleFonts')
+      const newVisible = visibleFonts.push({ font: action.font })
+      return state.set('visibleFonts', newVisible)
     }
+    case ADD_SYMBOL_ACTION: {
+      const symbols = state.get('symbols')
+      const updatedSymbols = symbols.push({
+        url: action.url,
+        id: `SYM${symbols.size}`
+      })
+      return state.merge({ symbols: updatedSymbols, uploadingSymbol: false })
+    }
+    case HIDE_SYMBOL_ACTION:
+      return state.setIn(['hiddenSymbols', action.id], true)
+    case UPLOADING_SYMBOL_ACTION:
+      return state.set('uploadingSymbol', action.isLoading)
     case ON_TAB_CLICK_ACTION:
       return state.set('selectedTab', action.selectedIndex)
+    case SET_SEARCH_CLIPARTPARAM:
+      return state.set('searchClipParam', action.param)
     case SET_COLORS: {
       const keyName =
         action.listType === 'colors'

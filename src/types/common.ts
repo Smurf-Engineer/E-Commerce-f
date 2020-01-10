@@ -1049,6 +1049,10 @@ export type StitchingColor = {
   value: string
 }
 
+export type HiddenSymbols = {
+  [id: string]: boolean
+}
+
 export type AccesoryColor = 'black' | 'white'
 
 export type AccessoriesColor = {
