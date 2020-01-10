@@ -1335,5 +1335,12 @@
   "components.SaveModal.modalSaveAsNewDesign": "Change the name to save as new design",
   "components.SaveModal.placeholder": "Design name",
   "components.SaveModal.save": "Save",
-  "components.SaveModal.saveChanges": "Save changes"
+  "components.SaveModal.saveChanges": "Save changes",
+  "components.EditInspiration.title": "Edit color idea",
+  "components.EditInspiration.cancelButton": "Cancel",
+  "components.EditInspiration.doneButton": "Done",
+  "screens.PublishingTool.Design.exportColors": "Export colors",
+  "screens.PublishingTool.Design.importColors": "Import colors",
+  "screens.PublishingTool.Design.errorFile": "Error reading file",
+  "screens.PublishingTool.Design.wrongFormat": "Wrong format on JSON file"
 }

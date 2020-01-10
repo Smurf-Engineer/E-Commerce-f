@@ -10,6 +10,7 @@ import every from 'lodash/every'
 import PlaceholdersRender3D from '../../components/PlaceholdersRender3D'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
+import queryString from 'query-string'
 import findIndex from 'lodash/findIndex'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
@@ -77,6 +78,7 @@ interface Props {
   designModalOpen: boolean
   designName: string
   uploading: boolean
+  code: string
   selectedDesign: number
   colorIdeas: DesignObject[]
   design: ModelDesign
@@ -93,6 +95,8 @@ interface Props {
   openSaveDesign: boolean
   productId: number
   saveDesignLoading: boolean
+  history: any
+  setCodeSearch: (value: string) => void
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
   onChangeThemeAction: (id: number, section: string) => void
@@ -133,6 +137,11 @@ interface Props {
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
   updateColorIdeasListAction: (colorIdeas: DesignObject[]) => void
+  updateInspirationAction: (
+    colorIdeas: DesignObject[],
+    modelDesign?: ModelDesign
+  ) => void
+
   setDesignNameAction: (name: string) => void
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   deleteColorIdeaAction: (index: number) => void
@@ -145,6 +154,14 @@ export class PublishingTool extends React.Component<Props, {}> {
   render3DPlaceholder: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
+    const {
+      setProductCodeAction,
+      location: { search }
+    } = this.props
+    const { code } = queryString.parse(search)
+    if (code) {
+      setProductCodeAction(code)
+    }
   }
   handleOnPressBack = () => {
     window.location.replace('/admin')
@@ -291,6 +308,7 @@ export class PublishingTool extends React.Component<Props, {}> {
     try {
       const {
         design,
+        designName,
         saveDesign,
         productCode,
         modelConfig,
@@ -396,9 +414,11 @@ export class PublishingTool extends React.Component<Props, {}> {
           const themes = get(data, 'design.product.themes', [])
           const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
           const { styles } = themes[themeIndex]
-          const styleIndex = findIndex(
-            styles,
-            ({ id: styleId }) => styleId === selectedDesign
+
+          const styleIndex = findIndex(styles, ({ id: styleId, name }) =>
+            selectedDesign === -1
+              ? designName === name
+              : styleId === selectedDesign
           )
           const { colorIdeas: updatedColorIdeas } = styles[styleIndex]
           updateColorIdeasListAction(updatedColorIdeas)
@@ -448,7 +468,9 @@ export class PublishingTool extends React.Component<Props, {}> {
                 const { styles } = themes[themeIndex]
                 const styleIndex = findIndex(
                   styles,
-                  ({ id: styleId }) => styleId === selectedDesign
+                  ({ id: styleId, name }) =>
+                    styleId === selectedDesign ||
+                    (selectedDesign === -1 && designName === name)
                 )
                 const { colorIdeas } = styles[styleIndex]
                 const updatedInspiration = remove(
@@ -475,6 +497,10 @@ export class PublishingTool extends React.Component<Props, {}> {
       }
     })
   }
+  goToBuildModel = (productId: number) => {
+    const { history } = this.props
+    history.push(`/admin/add-models?id${productId}`)
+  }
   render() {
     const {
       intl,
@@ -498,6 +524,8 @@ export class PublishingTool extends React.Component<Props, {}> {
       selectedDesign,
       setModelAction,
       colorIdeas,
+      setCodeSearch,
+      code,
       design,
       setColorIdeaItemAction,
       colorIdeaItem,
@@ -522,7 +550,8 @@ export class PublishingTool extends React.Component<Props, {}> {
       productId,
       saveDesignLoading,
       setDesignNameAction,
-      setCanvasJsonAction
+      setCanvasJsonAction,
+      updateInspirationAction
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
@@ -562,6 +591,8 @@ export class PublishingTool extends React.Component<Props, {}> {
               {...{
                 formatMessage,
                 productCode,
+                code,
+                setCodeSearch,
                 selectedTheme,
                 currentPage,
                 selectedDesign
@@ -574,6 +605,7 @@ export class PublishingTool extends React.Component<Props, {}> {
               goToPage={setCurrentPageAction}
               toggleAddDesign={toggleAddDesignAction}
               onLoadDesign={setModelAction}
+              addNewModel={this.goToBuildModel}
             />
           ) : (
             <Design
@@ -597,6 +629,7 @@ export class PublishingTool extends React.Component<Props, {}> {
               onAddColorIdea={addColorIdeaAction}
               onSaveThumbnail={this.handleOnSaveThumbnail}
               onDeleteInspiration={this.handleOnDeleteInspiration}
+              updateColorIdeas={updateInspirationAction}
             />
           )}
           {!!colors.length && (

@@ -753,7 +753,6 @@ class Render3D extends PureComponent {
           const canvasIndex = childrenLength - 1
           children[canvasIndex].material = canvasMaterial
           children[canvasIndex].name = CANVAS_MESH
-
           /* Branding  */
           if (!!branding) {
             const brandingObj = children[meshIndex].clone()

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Divider from 'antd/lib/divider'
 import Icon from 'antd/lib/icon'
 import { RED } from '../../theme/colors'
 
@@ -14,6 +15,7 @@ export const Container = styled.div`
   position: relative;
   width: 100%;
   padding: 10px;
+  padding-bottom: 0;
 `
 
 export const Text = styled.div`
@@ -97,3 +99,5 @@ export const DeleteButton = styled.div`
 export const Delete = styled(Icon)`
   font-size: 18px;
 `
+
+export const StyledDivider = styled(Divider)``
