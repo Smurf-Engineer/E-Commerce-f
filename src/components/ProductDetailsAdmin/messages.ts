@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.ProductDetailAdmin.editProduct',
     defaultMessage: 'Edit'
   },
+  editModel: {
+    id: 'components.ProductDetailAdmin.editModel',
+    defaultMessage: 'Edit model'
+  },
   openPublishingTool: {
     id: 'components.ProductDetailAdmin.openPublishingTool',
     defaultMessage: 'Open on Publishing Tool'

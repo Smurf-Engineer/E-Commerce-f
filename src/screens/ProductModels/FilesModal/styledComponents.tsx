@@ -58,6 +58,16 @@ export const Label = styled.div`
   line-height: 19px;
 `
 
+export const CloseIcon = styled.img`
+  position: absolute;
+  width: 20px;
+  right: 36px;
+  margin-top: 4px;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 export const IconInput = styled.div`
   display: flex;
   flex-flow: column;
@@ -83,7 +93,7 @@ export const UploadContainer = styled.div`
   position: relative;
   margin-top: 4px;
   .ant-upload-select-picture-card {
-    width: auto;
+    width: 40px;
     height: auto;
     margin: 0;
     background: none;

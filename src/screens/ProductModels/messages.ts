@@ -44,5 +44,22 @@ export default defineMessages({
   delete: {
     id: 'screens.ProductModels.delete',
     defaultMessage: 'Delete'
+  },
+  modelSaved: {
+    id: 'screens.ProductModels.modelSaved',
+    defaultMessage: '3D Model Saved'
+  },
+  successQuestion: {
+    id: 'screens.ProductModels.successQuestion',
+    defaultMessage:
+      ' Would you like to proceed to add new designs to this product?'
+  },
+  addNewDesigns: {
+    id: 'screens.ProductModels.addNewDesigns',
+    defaultMessage: 'Add New Designs'
+  },
+  goToInfo: {
+    id: 'screens.ProductModels.goToInfo',
+    defaultMessage: 'Go to Product Information Overview'
   }
 })

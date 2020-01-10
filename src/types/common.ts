@@ -194,10 +194,12 @@ export type SaveDesignType = {
 }
 
 export type ModelVariant = {
+  id: string
   name: string
   icon: string
   default: boolean
-  bumpmap: string
+  label: string
+  bumpMap: string
   obj: string
   mtl: string
   branding: string

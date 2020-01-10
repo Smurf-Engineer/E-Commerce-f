@@ -29,7 +29,7 @@ export const Label = styled.div`
 `
 
 export const FileContainer = styled.div`
-  margin-top: 12px;
+  margin: 12px 0;
   .ant-upload-select-picture-card {
     width: 100%;
     height: 40px;
@@ -75,6 +75,12 @@ export const Clip = styled(Icon)`
 
 export const Delete = styled(Icon)`
   color: ${MID_GRAY};
+  z-index: 3;
+  width: 26px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const StrongLabel = styled.div`
@@ -87,6 +93,10 @@ export const StrongLabel = styled.div`
 `
 
 export const ExtraFileSection = styled(Collapse)``
+
+export const DefaultButton = styled.div`
+  margin: 18px 0;
+`
 
 export const ExtraFile = styled(Panel)`
   border: 0.5px solid ${GRAY_LIGHT};
