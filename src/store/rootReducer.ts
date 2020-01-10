@@ -51,6 +51,7 @@ import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
 import productInternalsAdmin from '../components/ProductInternalsAdmin/reducer'
 import teamStoresAdmin from '../components/TeamStoresAdmin/reducer'
+import productModels from '../screens/ProductModels/reducer'
 import proDesign from '../screens/ProDesign/reducer'
 import publishingTool from '../screens/PublishingTool/reducer'
 import designTools from '../screens/DesignTools/reducer'
@@ -94,6 +95,7 @@ export interface ReducersObject {
   productCatalogAdmin: any
   menuSports: any
   layout: any
+  productModels: any
   menu: any
   forgot: any
   quickView: any
@@ -193,6 +195,7 @@ const rootReducer = combineReducers({
   designerTool,
   shoppingCartPage,
   storeFront,
+  productModels,
   createStore,
   searchTeamstores,
   teamstoreProductPage,

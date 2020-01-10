@@ -28,6 +28,7 @@ import Designs from '../screens/Designs'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
+import ProductModels from '../screens/ProductModels'
 import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
@@ -57,6 +58,11 @@ const routes = [
     path: '/signup-test',
     name: 'signupTest',
     component: SignUpTest
+  },
+  {
+    path: '/admin/add-models',
+    name: 'productModels',
+    component: ProductModels
   },
   {
     path: '/admin',
