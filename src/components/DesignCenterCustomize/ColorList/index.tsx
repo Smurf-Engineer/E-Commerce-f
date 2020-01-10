@@ -11,7 +11,7 @@ import {
   ColorTitle,
   SyledDivider
 } from './styledComponents'
-import { StitchingColor } from '../../../types/common'
+import { StitchingColor, QueryProps, Colors } from '../../../types/common'
 import messages from './messages'
 import Message from 'antd/lib/message'
 interface Color {
@@ -19,15 +19,22 @@ interface Color {
   name: string
   type?: string
 }
+
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
 interface Props {
   onSelectColor?: (color: string, name: string, index: number) => void
   onSelectStitchingColor?: (color: StitchingColor) => void
   formatMessage: (messageDescriptor: any) => string
   height?: number
+  wide?: boolean
   stitching?: boolean
   stitchingColor?: StitchingColor
   disableTooltip?: boolean
-  colorsList: any
+  colors?: Color[]
+  colorsList: ColorsData
 }
 
 const ColorList = ({
@@ -36,7 +43,9 @@ const ColorList = ({
   formatMessage,
   height = 40,
   stitching = false,
+  wide,
   stitchingColor = { value: '', name: '' },
+  colors = [],
   colorsList
 }: Props) => {
   const setColor = (color: string, name: string, index: number) => () =>
@@ -45,18 +54,20 @@ const ColorList = ({
     // tslint:disable-next-line:curly
     if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
   }
-  let arrayColors: any = []
+  let arrayColors: Color[] = colors
 
-  try {
-    arrayColors = JSON.parse(
-      get(
-        colorsList,
-        !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
-        []
+  if (!colors.length && colorsList && !colorsList.loading) {
+    try {
+      arrayColors = JSON.parse(
+        get(
+          colorsList,
+          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+          []
+        )
       )
-    )
-  } catch (e) {
-    Message.error(e)
+    } catch (e) {
+      Message.error(e)
+    }
   }
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []
@@ -94,7 +105,7 @@ const ColorList = ({
   })
 
   return (
-    <Container {...{ height }}>
+    <Container {...{ wide, height }}>
       <Row>{regularColors.length && regularColors}</Row>
       {!stitching && !!fluorescentColors.length && (
         <div>

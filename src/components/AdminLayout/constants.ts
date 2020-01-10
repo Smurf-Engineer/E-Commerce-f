@@ -24,6 +24,9 @@ export const LOGOUT_MENU = 'logout'
 export const EDIT_NAVIGATION = 'editNavigation'
 export const PRO_DESIGN = 'proDesign'
 export const ADD_PRO_DESIGN = 'addProDesign'
+export const PUBLISHING_TOOL = 'publishingTool'
+export const CREATE_DESIGNS = 'createDesigns'
+export const DESIGN_LAB_TOOLS = 'designLabTools'
 
 export const options = [
   {
@@ -49,5 +52,9 @@ export const options = [
   {
     title: PRO_DESIGN,
     options: [ADD_PRO_DESIGN]
+  },
+  {
+    title: PUBLISHING_TOOL,
+    options: [CREATE_DESIGNS, DESIGN_LAB_TOOLS]
   }
 ]

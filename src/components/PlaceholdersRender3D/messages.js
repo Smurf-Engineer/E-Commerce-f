@@ -64,9 +64,13 @@ export default defineMessages({
     id: 'components.Render3D.rotationMessage',
     defaultMessage: 'Rotation'
   },
-  saveButton: {
-    id: 'components.Render3D.saveButton',
-    defaultMessage: 'Save'
+  saveAsNew: {
+    id: 'components.Render3D.saveAsNew',
+    defaultMessage: 'Save as a New Design'
+  },
+  updateDesign: {
+    id: 'components.Render3D.updateDesign',
+    defaultMessage: 'Update Design'
   },
   turOffHint: {
     id: 'components.Render3D.turOffHint',
