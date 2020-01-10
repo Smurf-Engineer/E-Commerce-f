@@ -193,6 +193,25 @@ export type SaveDesignType = {
   highResolution: boolean
 }
 
+export type ModelVariant = {
+  id: string
+  name: string
+  icon: string
+  default: boolean
+  label: string
+  bumpMap: string
+  obj: string
+  mtl: string
+  branding: string
+  flatlock: string
+  bibraceWhite: string
+  bibraceBlack: string
+  zipperWhite: string
+  zipperBlack: string
+  bindingWhite: string
+  bindingBlack: string
+}
+
 export interface SaveDesignData {
   createdAt: string
   designCode: string
@@ -367,6 +386,21 @@ export interface Style {
   styleId?: number
   thumbnail?: string
   canvas: string
+}
+
+export interface StyleConfig {
+  colorIdeas: Palette[]
+  config: ColorConfig
+  design: Palette
+}
+
+export interface ColorConfig {
+  areasPng: string[]
+  areasSvg: string[]
+  size: {
+    width: number
+    height: number
+  }
 }
 
 export interface Theme {
@@ -556,7 +590,7 @@ export interface StripeCardData {
 
 export interface ModelDesign {
   name: string
-  image: string
+  image?: string
   colors: string[]
   canvas?: string
 }
@@ -1049,6 +1083,10 @@ export type StitchingColor = {
   value: string
 }
 
+export type HiddenSymbols = {
+  [id: string]: boolean
+}
+
 export type AccesoryColor = 'black' | 'white'
 
 export type AccessoriesColor = {
@@ -1142,6 +1180,9 @@ export type CanvasDragged = {
   top: number
 }
 
+export type SelectedFonts = {
+  [id: string]: boolean
+}
 export type CanvasRotated = {
   id: string
   oldRotation: Rotation
@@ -1393,6 +1434,7 @@ export interface HomepageImagesType {
 export type Color = {
   name: string
   value: string
+  type?: string
 }
 
 export interface SelectedDesignType {
@@ -1464,4 +1506,20 @@ export interface Header {
   width?: number
   tabletWidth?: number
   fieldName?: string
+}
+
+export interface ColorsDataResult {
+  colorsResult: Colors
+}
+
+export type Thumbnail = {
+  style: {
+    image: string
+  }
+}
+
+export type Design = {
+  design: {
+    message: string
+  }
 }

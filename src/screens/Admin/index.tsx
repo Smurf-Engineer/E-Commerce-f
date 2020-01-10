@@ -33,23 +33,7 @@ import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
 import { mailLogin } from './data'
-import {
-  ORDER_STATUS,
-  DISCOUNTS,
-  PRODUCT_CATALOG,
-  DESIGN_SEARCH,
-  ROOT_URL,
-  DISCOUNTS_URL,
-  PRODUCT_URL,
-  USERS,
-  USERS_URL,
-  DESIGN_URL,
-  DESIGN_LAB,
-  DESIGN_LAB_URL,
-  EDIT_NAVIGATION,
-  EDIT_NAVIGATION_URL,
-  PRO_DESIGN
-} from './constants'
+import { keys } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
@@ -110,36 +94,7 @@ export class Admin extends React.Component<Props, {}> {
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
       restoreUserSessionAction()
-      let key = ''
-      switch (pathname) {
-        case ROOT_URL:
-          key = ORDER_STATUS
-          break
-        case DISCOUNTS_URL:
-          key = DISCOUNTS
-          break
-        case PRODUCT_URL:
-          key = PRODUCT_CATALOG
-          break
-        case DESIGN_URL:
-          key = DESIGN_SEARCH
-          break
-        case USERS_URL:
-          key = USERS
-          break
-        case EDIT_NAVIGATION_URL:
-          key = EDIT_NAVIGATION
-          break
-        case DESIGN_LAB_URL:
-          key = DESIGN_LAB
-          break
-        case PRO_DESIGN:
-          key = PRO_DESIGN
-          break
-        default:
-          break
-      }
-      setDefaultScreenAction(key)
+      setDefaultScreenAction(keys[pathname])
     }
   }
 
@@ -314,15 +269,12 @@ const AdminEnhance = compose(
   withApollo,
   injectIntl,
   mailLogin,
-  connect(
-    mapStateToProps,
-    {
-      ...adminActions,
-      restoreUserSessionAction: restoreUserSession,
-      saveUserSessionAction: saveUserSession,
-      deleteUserSessionAction: deleteUserSession
-    }
-  )
+  connect(mapStateToProps, {
+    ...adminActions,
+    restoreUserSessionAction: restoreUserSession,
+    saveUserSessionAction: saveUserSession,
+    deleteUserSessionAction: deleteUserSession
+  })
 )(Admin)
 
 export default AdminEnhance

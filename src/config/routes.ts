@@ -28,14 +28,27 @@ import Designs from '../screens/Designs'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
+import ProductModels from '../screens/ProductModels'
 import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 import Admin from '../screens/Admin'
 import ProDesign from '../screens/ProDesign'
 import SignUpTest from '../screens/HomeTest'
+import PublishingTool from '../screens/PublishingTool'
+import DesignTools from '../screens/DesignTools'
 
 const routes = [
+  {
+    path: '/admin/publishing-tool',
+    name: 'publishingTool',
+    component: PublishingTool
+  },
+  {
+    path: '/admin/design-tools',
+    name: 'designTools',
+    component: DesignTools
+  },
   {
     path: '/admin/add-pro-design',
     name: 'proDesign',
@@ -45,6 +58,11 @@ const routes = [
     path: '/signup-test',
     name: 'signupTest',
     component: SignUpTest
+  },
+  {
+    path: '/admin/add-models',
+    name: 'productModels',
+    component: ProductModels
   },
   {
     path: '/admin',

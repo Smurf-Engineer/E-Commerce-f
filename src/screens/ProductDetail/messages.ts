@@ -43,7 +43,7 @@ export default defineMessages({
   },
   detailsLabel: {
     id: 'screens.ProductDetail.detailsLabel',
-    defaultMessage: 'Additional Product details'
+    defaultMessage: 'Additional Product Details'
   },
   specsLabel: {
     id: 'screens.ProductDetail.specsLabel',
