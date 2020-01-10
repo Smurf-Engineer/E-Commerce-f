@@ -35,6 +35,8 @@ export const Button = styled(AntdButton)`
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
+  width: 100%;
+  margin-top: 20px;
 `
 
 export const Row = styled.div`
@@ -68,4 +70,10 @@ export const NextButton = styled(AntdButton)`
 export const NextButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+`
+
+export const LoadButton = styled(AntdButton)`
+  margin-top: 20px;
+  width: 100%;
+  height: 40px;
 `

@@ -14,7 +14,6 @@ import {
   InfoContainer,
   Buttons,
   SaveButton,
-  Delete,
   DeleteButton
 } from './styledComponents'
 
@@ -66,20 +65,18 @@ const PaletteCard = ({
         <Info>
           <Name>{name}</Name>
           <ColorButtons>{colorButtons}</ColorButtons>
-          <Buttons>
-            <Button onClick={handleOnEditIdea}>EDIT</Button>
-            <SaveButton disabled={loading} onClick={handleOnSelectPalette}>
-              {buttonLabel}
-            </SaveButton>
-          </Buttons>
         </Info>
       </InfoContainer>
+      <Buttons>
+        <Button onClick={handleOnEditIdea}>EDIT</Button>
+        <SaveButton disabled={loading} onClick={handleOnSelectPalette}>
+          {buttonLabel}
+        </SaveButton>
+        {showDelete && (
+          <DeleteButton onClick={handleOnDelete}>Delete</DeleteButton>
+        )}
+      </Buttons>
       <Divider />
-      {showDelete && (
-        <DeleteButton onClick={handleOnDelete}>
-          <Delete type="delete" />
-        </DeleteButton>
-      )}
     </Container>
   )
 }

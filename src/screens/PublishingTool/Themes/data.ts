@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
+import { STYLE_FIELDS } from '../../../apollo/fragments'
 
 export const getProductFromCode = gql`
   query GetProductFromCode($code: String!) {
@@ -23,41 +24,19 @@ export const getProductFromCode = gql`
         white
         black
       }
+      brandingPng: branding
       themes {
         id
         name
         image
         itemOrder: item_order
         styles {
-          id
-          name
-          image
-          width
-          height
-          branding
-          brandingPng: branding_png
-          colorblock1
-          colorblock2
-          colorblock3
-          colorblock4
-          colorblock5
-          colorIdeas: inspiration {
-            id
-            name
-            image
-            colors
-          }
-          colors: colorsBlocks {
-            id
-            color
-            image
-          }
-          itemOrder: item_order
-          canvas
+          ...styleFields
         }
       }
     }
   }
+  ${STYLE_FIELDS}
 `
 
 export const updateThemesOrderMutation = graphql(
@@ -76,5 +55,18 @@ export const updateThemesOrderMutation = graphql(
   `,
   {
     name: 'updateThemesOrder'
+  }
+)
+
+export const updateStylesOrderMutation = graphql(
+  gql`
+    mutation updateStyles($styles: [StyleToOrderInput]!, $themeId: Int) {
+      updateStylesOrder(styles: $styles, themeId: $themeId) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateStylesOrder'
   }
 )
