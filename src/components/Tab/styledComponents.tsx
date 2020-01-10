@@ -49,15 +49,19 @@ export const Tab = styled.div`
     activeOnClick ? 'pointer' : 'default'};
 
   &:hover {
-    & div:last-child {
-      background-color: ${GRAY_SNOW};
-    }
     background-color: ${({ activeOnClick, selected }: SelectedProps) => {
       if (selected) {
         return RED
       }
       return activeOnClick ? GRAY_SNOW : WHITE
     }};
+    & div:last-child {
+      background-color: ${({ activeOnClick, selected }: SelectedProps) => {
+        if (selected) {
+          return RED
+        }
+        return activeOnClick ? GRAY_SNOW : WHITE
+      }};
     }
   }
 `

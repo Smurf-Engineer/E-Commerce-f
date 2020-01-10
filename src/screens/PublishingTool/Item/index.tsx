@@ -10,6 +10,7 @@ import {
   ConnectDropTarget,
   ConnectDragSource
 } from 'react-dnd'
+import { Sections } from '../constants'
 import { findDOMNode } from 'react-dom'
 import messages from './messages'
 import {
@@ -97,7 +98,8 @@ class DesignItem extends React.PureComponent<Props> {
       connectDragSource,
       connectDropTarget,
       isOver,
-      formatMessage
+      formatMessage,
+      section
     } = this.props
     const renderView = (
       <Container className={isOver ? 'over' : ''}>
@@ -108,7 +110,7 @@ class DesignItem extends React.PureComponent<Props> {
           <Name>{name}</Name>
         </Row>
         <Buttons>
-          {editable && (
+          {editable && section === Sections.Theme && (
             <EditButton type="ghost" onClick={this.handleOnEdit}>
               {formatMessage(messages.edit)}
             </EditButton>

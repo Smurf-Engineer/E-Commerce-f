@@ -13,7 +13,8 @@ import {
   Button,
   ListContainer,
   NextButton,
-  NextButtonContainer
+  NextButtonContainer,
+  LoadButton
 } from './styledComponents'
 import { DragDropContext } from 'react-dnd'
 import {
@@ -22,6 +23,7 @@ import {
   Theme
 } from '../../../types/common'
 import HTML5Backend from 'react-dnd-html5-backend'
+import { DESIGN_PAGE, Sections } from '../constants'
 
 interface Props {
   subtitle: string
@@ -34,11 +36,14 @@ interface Props {
   editable?: boolean
   section: string
   onEditItem?: (id: number) => void
-  onSelectItem: (id: number) => void
+  onSelectItem: (id: number, section: string) => void
   onDeleteItem: (id: number) => void
   onDropRow: (dragIndex: number, dropIndex: number) => void
   formatMessage: (messageDescriptor: Message) => string
   onAddNewTheme: (theme: Theme | null) => void
+  goToPage: (page: number) => void
+  toggleAddDesign: () => void
+  loadDesign: () => void
 }
 
 class List extends React.PureComponent<Props> {
@@ -54,7 +59,9 @@ class List extends React.PureComponent<Props> {
       editable,
       onDropRow,
       section,
-      formatMessage
+      formatMessage,
+      toggleAddDesign,
+      loadDesign
     } = this.props
 
     const list = items.map(({ id, name }, index) => (
@@ -96,39 +103,60 @@ class List extends React.PureComponent<Props> {
     }
     return (
       <Container>
-        <Button onClick={this.handleOnAddNewTheme} type="ghost">
+        <Button
+          onClick={
+            section === Sections.Theme
+              ? this.handleOnAddNewTheme
+              : toggleAddDesign
+          }
+          type="ghost"
+        >
           <Icon type="plus" />
           {buttonLabel}
         </Button>
         {itemList}
-        <NextButtonContainer>
-          <NextButton type="primary" disabled={selectedItem < 0}>
-            {formatMessage(messages.next)}
-            <Icon type="right" />
-          </NextButton>
-        </NextButtonContainer>
+        {section === Sections.Theme && (
+          <NextButtonContainer>
+            <NextButton
+              onClick={this.goToDesigns}
+              type="primary"
+              disabled={selectedItem < 0}
+            >
+              {formatMessage(messages.next)}
+              <Icon type="right" />
+            </NextButton>
+          </NextButtonContainer>
+        )}
+        {section !== Sections.Theme && !!list.length && (
+          <LoadButton
+            onClick={loadDesign}
+            type="primary"
+            disabled={selectedItem < 0}
+          >
+            {formatMessage(messages.loadDesign)}
+          </LoadButton>
+        )}
       </Container>
     )
   }
 
   handleOnSelectItem = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { onSelectItem } = this.props
+    const { onSelectItem, section } = this.props
     const {
       target: { value }
     } = event
 
     const id = Number(value)
-    onSelectItem(id)
-  }
-
-  handleOnDropRow = (dragIndex: number, dropIndex: number) => {
-    const { onDropRow } = this.props
-    onDropRow(dragIndex, dropIndex)
+    onSelectItem(id, section)
   }
   handleOnAddNewTheme = () => {
     const { onAddNewTheme } = this.props
     const theme = { id: -1, name: '', image: '', itemOrder: 0, styles: [] }
     onAddNewTheme(theme)
+  }
+  goToDesigns = () => {
+    const { goToPage } = this.props
+    goToPage(DESIGN_PAGE)
   }
 }
 

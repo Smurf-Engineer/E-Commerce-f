@@ -21,7 +21,7 @@ export const fadeIn = keyframes`
 
 export const Container = styled.div`
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 106px);
   overflow: auto;
   position: relative;
   justify-content: center;
@@ -138,13 +138,13 @@ export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  right: 10px;
-  top: 10px;
+  top: 30px;
+  right: 20px;
+  flex-direction: column;
 
   .ant-btn-primary  {
     background-color: ${BLUE};
     border-color: ${BLUE};
-    width: 138px;
   }
   .ant-btn-primary:hover {
     background-color: ${BLUE};
@@ -208,12 +208,9 @@ export const Measurement = styled.div`
 `
 
 export const Button = styled(AntdButton)`
-  position: absolute;
   height: 40px;
-  bottom: 16px;
-  width: 138px;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 180px;
+  margin-bottom: 10px;
 `
 
 export const Loading = styled.div`

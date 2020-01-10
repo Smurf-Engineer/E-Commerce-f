@@ -18,8 +18,9 @@ const { Search } = AntdInput
 export const Container = styled.div`
   background-color: ${WHITE};
   width: 400px;
-  height: 100vh;
-  overflow: auto;
+  height: calc(100vh - 106px);
+  overflow-x: hidden;
+  overflow-y: auto;
   z-index: 1;
   box-shadow: 0 0 0px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.24);
 `
@@ -30,7 +31,6 @@ export const Content = styled.div`
 
 export const InputContainer = styled.div`
   position: relative;
-  padding-bottom: 16px;
 `
 
 export const Input = styled(Search)`
@@ -84,5 +84,23 @@ export const Button = styled(AntdButton)`
 `
 
 export const MissingModelContainer = styled.div`
+  margin-top: 15px;
   text-align: center;
+`
+
+export const BackButton = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-direction: row;
+  margin-right: 40px;
+`
+
+export const BackIcon = styled.img`
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+  margin-right: 10px;
 `

@@ -3,7 +3,9 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Divider from 'antd/lib/divider'
 import Icon from 'antd/lib/icon'
+import { RED } from '../../theme/colors'
 
 export const SaveButton = styled(Button)`
   margin-left: 8px;
@@ -11,6 +13,9 @@ export const SaveButton = styled(Button)`
 
 export const Container = styled.div`
   position: relative;
+  width: 100%;
+  padding: 10px;
+  padding-bottom: 0;
 `
 
 export const Text = styled.div`
@@ -21,6 +26,8 @@ export const ColorButtons = styled.div`
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
+  margin-top: 10px;
+  width: 140%;
 `
 
 export const Name = styled.div`
@@ -55,8 +62,9 @@ export const Oval = styled.div`
 `
 
 export const Image = styled.img`
-  margin: 0 8px;
-  padding: 2px;
+  margin-bottom: 8px;
+  margin-top: 0;
+  margin-right: 10px;
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -66,28 +74,30 @@ export const Image = styled.img`
 export const Info = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `
 
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `
 
 export const Buttons = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: row;
 `
 
 export const DeleteButton = styled.div`
-  position: absolute;
-  top: 4px;
+  bottom: 4px;
   right: 12px;
   cursor: pointer;
+  color: ${RED};
+  margin-left: 100px;
 `
 
 export const Delete = styled(Icon)`
   font-size: 18px;
 `
+
+export const StyledDivider = styled(Divider)``

@@ -63,7 +63,8 @@ import {
   CAMERA_MAX_ZOOM,
   HIGH_RESOLUTION_CANVAS,
   REGULAR_CORNER_SIZE,
-  HIGH_RESOLUTION_CORNER_SIZE
+  HIGH_RESOLUTION_CORNER_SIZE,
+  modelPositions
 } from './config'
 import {
   MESH,
@@ -129,7 +130,8 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bibColor: oldBibColor
+      bibColor: oldBibColor,
+      product: oldProduct
     } = this.props
     const {
       colors: nextColors,
@@ -139,7 +141,8 @@ class Render3D extends PureComponent {
       bindingColor,
       zipperColor,
       bibColor,
-      loadingModel
+      loadingModel,
+      product
     } = nextProps
 
     if (loadingModel) {
@@ -165,6 +168,15 @@ class Render3D extends PureComponent {
     if (!flatlockIsEqual) {
       const { value } = stitchingColor
       this.changeStitchingColor(value)
+      return
+    }
+
+    const filesHasChange = isEqual(product, oldProduct)
+    if (!filesHasChange) {
+      this.removeObject()
+      setTimeout(() => {
+        this.render3DModel()
+      }, 100)
       return
     }
 
@@ -443,6 +455,7 @@ class Render3D extends PureComponent {
       try {
         const loadedTextures = {}
         const { brandingPng, fullColors: colors } = design
+
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         if (!!zipper) {
           const { white, black } = zipper
@@ -459,18 +472,26 @@ class Render3D extends PureComponent {
         if (!!binding) {
           const { white, black } = binding
           this.binding = {}
-          this.binding.white = this.textureLoader.load(white)
-          this.binding.black = this.textureLoader.load(black)
-          this.binding.white.minFilter = THREE.LinearFilter
-          this.binding.black.minFilter = THREE.LinearFilter
+          if (white) {
+            this.binding.white = this.textureLoader.load(white)
+            this.binding.white.minFilter = THREE.LinearFilter
+          }
+          if (black) {
+            this.binding.black = this.textureLoader.load(black)
+            this.binding.black.minFilter = THREE.LinearFilter
+          }
         }
         if (!!bibBrace) {
           const { white, black } = bibBrace
           this.bibBrace = {}
-          this.bibBrace.white = this.textureLoader.load(white)
-          this.bibBrace.black = this.textureLoader.load(black)
-          this.bibBrace.white.minFilter = THREE.LinearFilter
-          this.bibBrace.black.minFilter = THREE.LinearFilter
+          if (white) {
+            this.bibBrace.white = this.textureLoader.load(white)
+            this.bibBrace.white.minFilter = THREE.LinearFilter
+          }
+          if (black) {
+            this.bibBrace.black = this.textureLoader.load(black)
+            this.bibBrace.black.minFilter = THREE.LinearFilter
+          }
         }
         if (!!flatlock) {
           loadedTextures.flatlock = this.textureLoader.load(flatlock)
@@ -572,7 +593,6 @@ class Render3D extends PureComponent {
     } else {
       onLoadModel(true)
     }
-
     this.mtlLoader.load(product.mtl, materials => {
       materials.preload()
       this.objLoader.setMaterials(materials)
@@ -683,6 +703,7 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
           const svgColors = designHasChanges ? areaColors : colors
+
           areas.forEach(
             (map, index) =>
               (children[
@@ -732,7 +753,6 @@ class Render3D extends PureComponent {
           const canvasIndex = childrenLength - 1
           children[canvasIndex].material = canvasMaterial
           children[canvasIndex].name = CANVAS_MESH
-
           /* Branding  */
           if (!!branding) {
             const brandingObj = children[meshIndex].clone()
@@ -1195,7 +1215,10 @@ class Render3D extends PureComponent {
       formatMessage,
       canvas,
       selectedElement,
-      saveDesignLoading
+      saveDesignLoading,
+      onSaveDesign,
+      onUpdateDesign,
+      canUpdate
     } = this.props
 
     let widthInCm = 0
@@ -1228,13 +1251,26 @@ class Render3D extends PureComponent {
         rotation = Math.round(activeEl.angle)
       }
     }
-
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
-        <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
-          {formatMessage(messages.saveButton)}
-        </Button>
-        <ButtonWrapper />
+        <ButtonWrapper>
+          <Button
+            type="ghost"
+            onClick={onSaveDesign}
+            loading={saveDesignLoading}
+          >
+            {formatMessage(messages.saveAsNew)}
+          </Button>
+          {canUpdate && (
+            <Button
+              type="primary"
+              onClick={onUpdateDesign}
+              loading={saveDesignLoading}
+            >
+              {formatMessage(messages.updateDesign)}
+            </Button>
+          )}
+        </ButtonWrapper>
         {!!selectedGraphicElement && (
           <MeasurementBox>
             <MeasurementLabel>
@@ -1267,11 +1303,11 @@ class Render3D extends PureComponent {
           </ModelType>
         </Dropdown>
         */}
-        {saveDesignLoading && (
+        {/* {saveDesignLoading && (
           <Loading>
             <Spin tip="Saving..." indicator={<Icon type="loading" />} />
           </Loading>
-        )}
+        )} */}
       </Container>
     )
   }
@@ -2204,6 +2240,53 @@ class Render3D extends PureComponent {
     size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
     size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
     return size
+  }
+  setFrontFaceModel = () => {
+    if (this.camera) {
+      const { x, y, z } = viewPositions[2]
+      this.camera.position.set(x, y, z)
+      this.controls.update()
+    }
+  }
+
+  takeScreenshot = () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.3)
+        resolve(thumbnail)
+      }, 800)
+    })
+  saveThumbnail = async (item, colors = []) => {
+    this.setFrontFaceModel()
+    const clonedColors = [...colors]
+    this.setupColors(clonedColors.reverse())
+    try {
+      const { onSaveThumbnail, onUploadingThumbnail } = this.props
+      onUploadingThumbnail(true)
+      const thumbnail = await this.takeScreenshot()
+      onSaveThumbnail(item, thumbnail)
+    } catch (error) {
+      console.error(error)
+      onUploadingThumbnail(false)
+    }
+  }
+
+  removeObject = () => {
+    if (this.renderer) {
+      const object = this.scene.getObjectByName(MESH_NAME)
+      if (!!object) {
+        object.children.forEach(({ material }) => {
+          if (!!material) {
+            const { map, bumpMap, alphaMap } = material
+            if (map && map.dispose) map.dispose()
+            if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+            if (alphaMap && alphaMap.dispose) alphaMap.dispose()
+            if (material.dispose) material.dispose()
+          }
+        })
+        this.scene.remove(object)
+      }
+    }
   }
 }
 
