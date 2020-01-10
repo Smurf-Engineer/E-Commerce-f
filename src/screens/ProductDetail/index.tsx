@@ -792,10 +792,7 @@ const ProductDetailEnhance = compose(
       }
     }
   }),
-  connect(
-    mapStateToProps,
-    { ...productDetailActions }
-  )
+  connect(mapStateToProps, { ...productDetailActions })
 )(ProductDetail)
 
 export default ProductDetailEnhance

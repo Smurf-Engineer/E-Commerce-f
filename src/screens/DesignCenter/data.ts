@@ -32,6 +32,29 @@ export const getProductQuery = gql`
   }
 `
 
+export const getVariantsFromProduct = gql`
+  query getVariants($id: Int!) {
+    getVariants(id: $id) {
+      id: short_id
+      name
+      icon
+      default: is_default
+      bumpMap: bumpmap
+      obj
+      label
+      mtl
+      branding
+      flatlock
+      bibraceWhite: bibrace_white
+      bibraceBlack: bibrace_black
+      zipperWhite: zipper_white
+      zipperBlack: zipper_black
+      bindingWhite: binding_white
+      bindingBlack: binding_black
+    }
+  }
+`
+
 export const addTeamStoreItemMutation = graphql(
   gql`
     mutation AddTeamStoreItem(

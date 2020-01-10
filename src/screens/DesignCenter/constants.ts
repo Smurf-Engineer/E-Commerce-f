@@ -81,6 +81,7 @@ export const OPEN_RESET_PLACEHOLDER_MODAL = `${namespace}/OPEN_RESET_PLACEHOLDER
 export const SET_SENDING_CHART = `${namespace}/SET_SENDING_CHART`
 export const ON_OPEN_COLOR_CHART = `${namespace}/ON_OPEN_COLOR_CHART`
 export const ON_OPEN_COLOR_CHART_FORM = `${namespace}/ON_OPEN_COLOR_CHART_FORM`
+export const SELECT_VARIANT = `${namespace}/SELECT_VARIANT`
 
 export const OPEN_DESIGN_CHECK_MODAL = `${namespace}/OPEN_DESIGN_CHECK_MODAL`
 
