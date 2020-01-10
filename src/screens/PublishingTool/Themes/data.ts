@@ -24,6 +24,7 @@ export const getProductFromCode = gql`
         white
         black
       }
+      brandingPng: branding
       themes {
         id
         name

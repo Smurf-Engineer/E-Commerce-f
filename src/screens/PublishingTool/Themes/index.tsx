@@ -5,6 +5,7 @@ import * as React from 'react'
 import messages from './messages'
 import get from 'lodash/get'
 import orderBy from 'lodash/orderBy'
+import isEmpty from 'lodash/isEmpty'
 import findIndex from 'lodash/findIndex'
 import cloneDeep from 'lodash/cloneDeep'
 import backIcon from '../../../assets/rightarrow.svg'
@@ -76,6 +77,7 @@ interface Props {
     design: ModelDesign
   ) => void
   onDeleteDesign: (id: number) => void
+  addNewModel: (productId: number) => void
 }
 
 interface ProductData extends QueryProps {
@@ -113,7 +115,11 @@ export class Themes extends React.Component<Props, {}> {
     onEditTheme(theme)
   }
   handleAddNewModel = () => {
-    // TODO: SEND TO MODEL PAGE
+    const { addNewModel, productData } = this.props
+    const productId = get(productData, 'product.id', false)
+    if (productId) {
+      addNewModel(productId)
+    }
   }
   handleGoToThemes = () => {
     const { goToPage } = this.props
@@ -234,7 +240,6 @@ export class Themes extends React.Component<Props, {}> {
       const {
         name,
         image: styleImage,
-        branding = '',
         brandingPng,
         colors,
         size,
@@ -255,8 +260,6 @@ export class Themes extends React.Component<Props, {}> {
         label,
         flatlock,
         bumpMap,
-        brandingSvg: branding,
-        brandingPng,
         areasSvg,
         areasPng,
         size
@@ -268,7 +271,8 @@ export class Themes extends React.Component<Props, {}> {
         canvas,
         fullColors: colors,
         width: currentStyle.width,
-        height: currentStyle.height
+        height: currentStyle.height,
+        brandingPng
       }
 
       if (!size) {
@@ -309,7 +313,7 @@ export class Themes extends React.Component<Props, {}> {
     } = this.props
 
     const product = get(productData, 'product', {})
-
+    const productEmpty = isEmpty(product)
     const { themes = [] } = product
     const themeItems = orderBy(
       themes.map(({ id, name, itemOrder }: DesignItem) => ({
@@ -333,6 +337,7 @@ export class Themes extends React.Component<Props, {}> {
       'asc'
     )
     const isTheme = currentPage === THEME_PAGE
+
     return (
       <Container>
         <Header>
@@ -359,7 +364,7 @@ export class Themes extends React.Component<Props, {}> {
               />
             </InputContainer>
           )}
-          {!!product && product.obj ? (
+          {!productEmpty && product.obj && (
             <List
               editable={true}
               onEditItem={this.handleOnEditTheme}
@@ -386,7 +391,8 @@ export class Themes extends React.Component<Props, {}> {
                 selectedDesign
               }}
             />
-          ) : (
+          )}
+          {!productEmpty && !product.obj ? (
             <MissingModelContainer>
               <p>{formatMessage(messages.missingModel)}</p>
               <Button onClick={this.handleAddNewModel}>
@@ -394,7 +400,7 @@ export class Themes extends React.Component<Props, {}> {
                 {formatMessage(messages.addModel)}
               </Button>
             </MissingModelContainer>
-          )}
+          ) : null}
         </Content>
       </Container>
     )

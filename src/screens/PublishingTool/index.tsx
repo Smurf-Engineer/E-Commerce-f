@@ -95,6 +95,7 @@ interface Props {
   openSaveDesign: boolean
   productId: number
   saveDesignLoading: boolean
+  history: any
   setCodeSearch: (value: string) => void
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
@@ -136,6 +137,11 @@ interface Props {
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
   updateColorIdeasListAction: (colorIdeas: DesignObject[]) => void
+  updateInspirationAction: (
+    colorIdeas: DesignObject[],
+    modelDesign?: ModelDesign
+  ) => void
+
   setDesignNameAction: (name: string) => void
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   deleteColorIdeaAction: (index: number) => void
@@ -408,10 +414,11 @@ export class PublishingTool extends React.Component<Props, {}> {
           const themes = get(data, 'design.product.themes', [])
           const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
           const { styles } = themes[themeIndex]
+
           const styleIndex = findIndex(styles, ({ id: styleId, name }) =>
             selectedDesign === -1
-              ? styleId === selectedDesign
-              : designName === name
+              ? designName === name
+              : styleId === selectedDesign
           )
           const { colorIdeas: updatedColorIdeas } = styles[styleIndex]
           updateColorIdeasListAction(updatedColorIdeas)
@@ -461,7 +468,9 @@ export class PublishingTool extends React.Component<Props, {}> {
                 const { styles } = themes[themeIndex]
                 const styleIndex = findIndex(
                   styles,
-                  ({ id: styleId }) => styleId === selectedDesign
+                  ({ id: styleId, name }) =>
+                    styleId === selectedDesign ||
+                    (selectedDesign === -1 && designName === name)
                 )
                 const { colorIdeas } = styles[styleIndex]
                 const updatedInspiration = remove(
@@ -487,6 +496,10 @@ export class PublishingTool extends React.Component<Props, {}> {
         deleteColorIdeaAction(index)
       }
     })
+  }
+  goToBuildModel = (productId: number) => {
+    const { history } = this.props
+    history.push(`/admin/add-models?id${productId}`)
   }
   render() {
     const {
@@ -537,7 +550,8 @@ export class PublishingTool extends React.Component<Props, {}> {
       productId,
       saveDesignLoading,
       setDesignNameAction,
-      setCanvasJsonAction
+      setCanvasJsonAction,
+      updateInspirationAction
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
@@ -591,6 +605,7 @@ export class PublishingTool extends React.Component<Props, {}> {
               goToPage={setCurrentPageAction}
               toggleAddDesign={toggleAddDesignAction}
               onLoadDesign={setModelAction}
+              addNewModel={this.goToBuildModel}
             />
           ) : (
             <Design
@@ -614,6 +629,7 @@ export class PublishingTool extends React.Component<Props, {}> {
               onAddColorIdea={addColorIdeaAction}
               onSaveThumbnail={this.handleOnSaveThumbnail}
               onDeleteInspiration={this.handleOnDeleteInspiration}
+              updateColorIdeas={updateInspirationAction}
             />
           )}
           {!!colors.length && (

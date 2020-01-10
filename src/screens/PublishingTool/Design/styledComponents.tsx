@@ -3,7 +3,14 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { GRAY_LIGHTEST, GRAY_DARK, WHITE, RED } from '../../../theme/colors'
+import {
+  GRAY_LIGHTEST,
+  GRAY_DARK,
+  WHITE,
+  RED,
+  BLUE,
+  BLUE_BRIGHT
+} from '../../../theme/colors'
 
 export const Container = styled.div`
   background-color: #fff;
@@ -33,7 +40,7 @@ export const Title = styled.p`
   margin: 0;
 `
 
-export const Button = styled(AntdButton)`
+export const IdeasButton = styled(AntdButton)`
   margin: 10px;
   width: 90%;
   height: 50px;
@@ -45,4 +52,33 @@ export const Button = styled(AntdButton)`
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
+`
+
+export const Subtitle = styled.p`
+  color: ${GRAY_DARK};
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19px;
+  margin: 0 10px;
+`
+
+export const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 30px;
+`
+
+export const ExportButton = styled(AntdButton)`
+  color: ${WHITE} !important;
+  background-color: ${BLUE};
+  border-color: ${BLUE};
+  &:hover,
+  :focus,
+  :active {
+    background-color: ${BLUE_BRIGHT};
+    border-color: ${BLUE_BRIGHT};
+  }
+  display: flex;
+  align-items: center;
 `
