@@ -7,13 +7,14 @@ import { WHITE, RED, GRAY } from '../../../theme/colors'
 
 interface ContainerProps {
   height: number
+  wide?: boolean
 }
 
 export const Container = styled.div`
-  height: ${({ height }: ContainerProps) => height}vh;
-  overflow: auto;
-  padding: 0px 32px 32px 32px;
-
+  height: ${({ height, wide }: ContainerProps) =>
+    wide ? 'auto' : `${height}vh`};
+  padding: ${({ wide }: ContainerProps) =>
+    wide ? '32px 32px 0 38px;' : '0px 32px 32px 32px'};
   @media (min-height: 800px) {
     height: 50vh;
   }

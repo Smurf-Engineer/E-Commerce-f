@@ -1049,6 +1049,10 @@ export type StitchingColor = {
   value: string
 }
 
+export type HiddenSymbols = {
+  [id: string]: boolean
+}
+
 export type AccesoryColor = 'black' | 'white'
 
 export type AccessoriesColor = {
@@ -1142,6 +1146,9 @@ export type CanvasDragged = {
   top: number
 }
 
+export type SelectedFonts = {
+  [id: string]: boolean
+}
 export type CanvasRotated = {
   id: string
   oldRotation: Rotation
@@ -1393,6 +1400,7 @@ export interface HomepageImagesType {
 export type Color = {
   name: string
   value: string
+  type?: string
 }
 
 export interface SelectedDesignType {

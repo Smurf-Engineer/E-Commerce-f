@@ -10,6 +10,7 @@ export const DESIGN_SEARCH = 'designSearch'
 export const HOMEPAGE = 'homepage'
 export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
+export const DESIGN_TOOLS = 'designTools'
 export const EDIT_NAVIGATION = 'editNavigation'
 export const PRO_DESIGN = 'proDesign'
 export const PUBLISHING_TOOL = 'publishingTool'
@@ -27,5 +28,6 @@ export const keys = {
   ['/admin/edit-navigation']: EDIT_NAVIGATION,
   ['/admin/design-lab']: DESIGN_LAB,
   ['/admin/add-pro-design']: PRO_DESIGN,
-  ['/admin/publishing-tool']: PUBLISHING_TOOL
+  ['/admin/publishing-tool']: PUBLISHING_TOOL,
+  ['/admin/design-tools']: DESIGN_TOOLS
 }

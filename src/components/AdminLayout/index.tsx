@@ -29,7 +29,8 @@ import {
   DESIGN_LAB,
   EDIT_NAVIGATION,
   ADD_PRO_DESIGN,
-  CREATE_DESIGNS
+  CREATE_DESIGNS,
+  DESIGN_LAB_TOOLS
 } from './constants'
 import {
   SideBar,
@@ -125,6 +126,9 @@ class AdminLayout extends React.Component<Props, {}> {
         break
       case CREATE_DESIGNS:
         history.push('/admin/publishing-tool')
+        break
+      case DESIGN_LAB_TOOLS:
+        history.push('/admin/design-tools')
         break
       default:
         break
