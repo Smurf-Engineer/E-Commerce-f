@@ -37,11 +37,16 @@ export class ThirdStep extends React.Component<Props, {}> {
     const currenciesValues = currencies.reduce((acc: any[], currency) => {
       acc.push({
         label: currency,
-        amounts: quantities.map(quantity =>
-          find(
-            priceRange,
-            item => item.quantity === quantity && item.shortName === currency
-          )
+        amounts: quantities.map(
+          quantity =>
+            find(
+              priceRange,
+              item => item.quantity === quantity && item.shortName === currency
+            ) || {
+              quantity,
+              price: 0,
+              shortName: currency
+            }
         )
       })
       return acc
@@ -111,7 +116,15 @@ export class ThirdStep extends React.Component<Props, {}> {
     const regex = new RegExp(/^-?(\d+)[\.]?(\d{0,3})$/g)
 
     if (regex.test(filteredValue.toString())) {
-      priceRange[index].price = filteredValue
+      if (index === -1) {
+        priceRange.push({
+          quantity,
+          shortName: currency,
+          price: filteredValue
+        })
+      } else {
+        priceRange[index].price = filteredValue
+      }
       setValue('priceRange', priceRange)
     }
   }
