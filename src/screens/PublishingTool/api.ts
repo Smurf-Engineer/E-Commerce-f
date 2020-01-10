@@ -12,7 +12,8 @@ export const uploadDesignAction = (
     try {
       if (files.length) {
         dispatch(setUploadingAction(true))
-        const user = JSON.parse(localStorage.getItem('user') || '')
+        const user = JSON.parse(localStorage.getItem('user') as any)
+        const token = user ? user.token : ''
         const formData = new FormData()
 
         formData.append('config', json)
@@ -25,7 +26,7 @@ export const uploadDesignAction = (
             method: 'POST',
             headers: {
               Accept: 'application/json',
-              Authorization: `Bearer ${user.token}`
+              Authorization: `Bearer ${token}`
             },
             body: formData
           }

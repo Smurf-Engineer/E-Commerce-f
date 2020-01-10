@@ -36,12 +36,18 @@ import Admin from '../screens/Admin'
 import ProDesign from '../screens/ProDesign'
 import SignUpTest from '../screens/HomeTest'
 import PublishingTool from '../screens/PublishingTool'
+import DesignTools from '../screens/DesignTools'
 
 const routes = [
   {
     path: '/admin/publishing-tool',
     name: 'publishingTool',
     component: PublishingTool
+  },
+  {
+    path: '/admin/design-tools',
+    name: 'designTools',
+    component: DesignTools
   },
   {
     path: '/admin/add-pro-design',

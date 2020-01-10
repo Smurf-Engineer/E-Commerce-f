@@ -54,6 +54,7 @@ import teamStoresAdmin from '../components/TeamStoresAdmin/reducer'
 import productModels from '../screens/ProductModels/reducer'
 import proDesign from '../screens/ProDesign/reducer'
 import publishingTool from '../screens/PublishingTool/reducer'
+import designTools from '../screens/DesignTools/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -119,6 +120,7 @@ export interface ReducersObject {
   teamStoresAdmin: any
   proDesign: any
   publishingTool: any
+  designTools: any
 }
 
 const appInitialState = fromJS({
@@ -237,7 +239,8 @@ const rootReducer = combineReducers({
   productInternalsAdmin,
   teamStoresAdmin,
   proDesign,
-  publishingTool
+  publishingTool,
+  designTools
 })
 
 export default rootReducer
