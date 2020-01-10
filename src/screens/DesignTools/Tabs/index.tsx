@@ -63,7 +63,7 @@ interface Props {
   onUploadFile: (file: UploadFile) => void
   setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void
-  onTabClick: (selectedIndex: number) => void
+  onTabClick: (selectedIndex: string) => void
 }
 
 const Tabs = ({

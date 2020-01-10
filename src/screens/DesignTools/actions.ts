@@ -18,7 +18,7 @@ import {
   CHANGE_FONT_ACTION
 } from './constants'
 
-import { AnyAction } from '../../types/common'
+import { AnyAction, Color } from '../../types/common'
 
 export const onResetReducer = (): AnyAction => ({
   type: ON_RESET_REDUCER
@@ -64,15 +64,12 @@ export const setSearchClipParamAction = (param: string): AnyAction => ({
   param
 })
 
-export const onTabClick = (selectedIndex: number): AnyAction => ({
+export const onTabClick = (selectedIndex: string): AnyAction => ({
   type: ON_TAB_CLICK_ACTION,
   selectedIndex
 })
 
-export const setColorList = (
-  listType: string,
-  colors: string[]
-): AnyAction => ({
+export const setColorList = (listType: string, colors: Color[]): AnyAction => ({
   type: SET_COLORS,
   listType,
   colors

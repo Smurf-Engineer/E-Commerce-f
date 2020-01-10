@@ -59,23 +59,21 @@ interface Props {
   onUploadFile: (file: UploadFile) => void
 }
 
-class SymbolTab extends React.PureComponent<Props, {}> {
+export class SymbolTab extends React.PureComponent<Props, {}> {
   searchrAfterTyping = debounce(
     param => this.props.setSearchClipParamAction(param),
     300
   )
-  state = {
-    page: 0
-  }
-  async componentWillReceiveProps(nextProps: any) {
-    if (!nextProps.uploadingSymbol) {
+  componentWillReceiveProps(nextProps: any) {
+    const { uploadingSymbol } = nextProps
+    const { uploadingSymbol: oldUploading } = this.props
+    if (!uploadingSymbol && oldUploading) {
       const { data } = this.props
       data.refetch()
     }
   }
 
   render() {
-    const { page } = this.state
     const {
       data: { loading, clipArts },
       formatMessage,
@@ -105,8 +103,8 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     return (
       <Container>
         <Header>
-          <Row onClick={this.changePage(0, 0)}>
-            {!!page && <ArrowIcon src={backIcon} />}
+          <Row>
+            <ArrowIcon src={backIcon} />
             <Title>
               <FormattedMessage {...messages.addSymbol} />
             </Title>
@@ -156,9 +154,6 @@ class SymbolTab extends React.PureComponent<Props, {}> {
 
     this.searchrAfterTyping(value)
   }
-
-  changePage = (page: number, option: number) => () =>
-    this.setState({ page, option })
 
   beforeUpload = (file: UploadFile) => {
     const { formatMessage, onUploadFile } = this.props

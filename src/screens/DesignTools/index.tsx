@@ -83,7 +83,7 @@ interface Props {
   hideSymbol: (url: string, id: string) => void
   setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void
-  onTabClick: (selectedIndex: number) => void
+  onTabClick: (selectedIndex: string) => void
 }
 export class DesignTools extends React.Component<Props, {}> {
   componentWillUnmount() {
