@@ -28,7 +28,6 @@ export const BuyNow = styled.div`
   color: #51ce04;
   padding: 2px 4px;
   margin-left: 2px;
-  width: 100%;
   letter-spacing: 1px;
   text-align: center;
   cursor: pointer;
