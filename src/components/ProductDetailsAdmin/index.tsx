@@ -215,9 +215,11 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <BlueButton onClick={this.handleOnClickEdit} size="large">
                     <FormattedMessage {...messages.editProduct} />
                   </BlueButton>
-                  <Button onClick={this.handlePublishing} size="large">
-                    <FormattedMessage {...messages.openPublishingTool} />
-                  </Button>
+                  {designCenter && (
+                    <Button onClick={this.handlePublishing} size="large">
+                      <FormattedMessage {...messages.openPublishingTool} />
+                    </Button>
+                  )}
                 </div>
               </HeaderRow>
               <FormBody>
@@ -420,7 +422,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     const { data, history } = this.props
     const code = get(data, 'product.code', '')
     if (code) {
-      history.push(`/publishing-tool?code=${code}`)
+      history.push(`/admin/publishing-tool?code=${code}`)
     }
   }
   editModels = () => {
