@@ -5,6 +5,7 @@ import * as React from 'react'
 import messages from './messages'
 import get from 'lodash/get'
 import orderBy from 'lodash/orderBy'
+import isEmpty from 'lodash/isEmpty'
 import findIndex from 'lodash/findIndex'
 import cloneDeep from 'lodash/cloneDeep'
 import backIcon from '../../../assets/rightarrow.svg'
@@ -59,6 +60,8 @@ interface Props {
   selectedTheme: number
   currentPage: number
   selectedDesign: number
+  code: string
+  setCodeSearch: (value: string) => void
   formatMessage: (messageDescriptor: Message) => string
   setProductCode: (value: string) => void
   onChangeTheme: (id: number, section: string) => void
@@ -67,13 +70,14 @@ interface Props {
   updateThemesOrder: (variables: {}) => Promise<any>
   goToPage: (page: number) => void
   updateStylesOrder: (variables: {}) => Promise<any>
-  toggleAddDesign: () => void
+  toggleAddDesign: (id: number) => void
   onLoadDesign: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
     design: ModelDesign
   ) => void
   onDeleteDesign: (id: number) => void
+  addNewModel: (productId: number) => void
 }
 
 interface ProductData extends QueryProps {
@@ -81,17 +85,15 @@ interface ProductData extends QueryProps {
 }
 
 export class Themes extends React.Component<Props, {}> {
-  state = {
-    code: ''
-  }
   handleOnUpdateProductCode = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
       currentTarget: { value }
     } = evt
-    this.setState({ code: value })
+    const { setCodeSearch } = this.props
+    setCodeSearch(value)
   }
   handleOnSearch = () => {
-    const { code } = this.state
+    const { code } = this.props
     if (!!code) {
       const { setProductCode } = this.props
       setProductCode(code)
@@ -113,7 +115,11 @@ export class Themes extends React.Component<Props, {}> {
     onEditTheme(theme)
   }
   handleAddNewModel = () => {
-    // TODO: SEND TO MODEL PAGE
+    const { addNewModel, productData } = this.props
+    const productId = get(productData, 'product.id', false)
+    if (productId) {
+      addNewModel(productId)
+    }
   }
   handleGoToThemes = () => {
     const { goToPage } = this.props
@@ -234,7 +240,6 @@ export class Themes extends React.Component<Props, {}> {
       const {
         name,
         image: styleImage,
-        branding = '',
         brandingPng,
         colors,
         size,
@@ -255,8 +260,6 @@ export class Themes extends React.Component<Props, {}> {
         label,
         flatlock,
         bumpMap,
-        brandingSvg: branding,
-        brandingPng,
         areasSvg,
         areasPng,
         size
@@ -268,7 +271,8 @@ export class Themes extends React.Component<Props, {}> {
         canvas,
         fullColors: colors,
         width: currentStyle.width,
-        height: currentStyle.height
+        height: currentStyle.height,
+        brandingPng
       }
 
       if (!size) {
@@ -288,8 +292,13 @@ export class Themes extends React.Component<Props, {}> {
       onLoadDesign(modelConfig, colorIdeas, design)
     }
   }
+  handleToogleAddDesign = () => {
+    const { productData, toggleAddDesign } = this.props
+    const productId = get(productData, 'product.id', -1)
+
+    toggleAddDesign(productId)
+  }
   render() {
-    const { code } = this.state
     const {
       formatMessage,
       productData,
@@ -298,13 +307,13 @@ export class Themes extends React.Component<Props, {}> {
       onDeleteTheme,
       goToPage,
       currentPage,
-      toggleAddDesign,
+      code,
       selectedDesign,
       onDeleteDesign
     } = this.props
 
     const product = get(productData, 'product', {})
-
+    const productEmpty = isEmpty(product)
     const { themes = [] } = product
     const themeItems = orderBy(
       themes.map(({ id, name, itemOrder }: DesignItem) => ({
@@ -328,6 +337,7 @@ export class Themes extends React.Component<Props, {}> {
       'asc'
     )
     const isTheme = currentPage === THEME_PAGE
+
     return (
       <Container>
         <Header>
@@ -354,7 +364,7 @@ export class Themes extends React.Component<Props, {}> {
               />
             </InputContainer>
           )}
-          {!!product && product.obj ? (
+          {!productEmpty && product.obj && (
             <List
               editable={true}
               onEditItem={this.handleOnEditTheme}
@@ -373,15 +383,16 @@ export class Themes extends React.Component<Props, {}> {
                 isTheme ? this.changeThemesPosition : this.changeDesignsPosition
               }
               loadDesign={this.handleOnLoadDesign}
+              toggleAddDesign={this.handleToogleAddDesign}
               {...{
                 formatMessage,
                 goToPage,
                 currentPage,
-                toggleAddDesign,
                 selectedDesign
               }}
             />
-          ) : (
+          )}
+          {!productEmpty && !product.obj ? (
             <MissingModelContainer>
               <p>{formatMessage(messages.missingModel)}</p>
               <Button onClick={this.handleAddNewModel}>
@@ -389,7 +400,7 @@ export class Themes extends React.Component<Props, {}> {
                 {formatMessage(messages.addModel)}
               </Button>
             </MissingModelContainer>
-          )}
+          ) : null}
         </Content>
       </Container>
     )

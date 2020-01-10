@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { STYLE_FIELDS } from '../../apollo/fragments'
 
 export const GetProductsByIdQuery = gql`
   query GetProductByID($code: String!) {
@@ -8,7 +9,6 @@ export const GetProductsByIdQuery = gql`
       modelSize: model_size
       mpn
       flatlock
-      branding
       bibBrace {
         white
         black
@@ -39,6 +39,51 @@ export const deleteThemeMutation = gql`
 export const deleteStyleMutation = gql`
   mutation deleteStyle($id: Int!) {
     deleteStyle(styleId: $id) {
+      message
+    }
+  }
+`
+
+export const getColorsQuery = gql`
+  query GetColors {
+    colorsResult: getColors {
+      colors
+      stitchingColors: stitching_colors
+    }
+  }
+`
+
+export const uploadThumbnailMutation = gql`
+  mutation SaveStyleImage($image: String!) {
+    style: saveStyleImage(image: $image) {
+      image
+    }
+  }
+`
+
+export const saveDesignMutation = gql`
+  mutation SaveStyle($design: StyleCreation!) {
+    design: newProductStyles(styleCreationData: $design) {
+      message
+      product {
+        themes {
+          id
+          name
+          image
+          itemOrder: item_order
+          styles {
+            ...styleFields
+          }
+        }
+      }
+    }
+  }
+  ${STYLE_FIELDS}
+`
+
+export const deleteInspirationMutation = gql`
+  mutation deleteInspiration($id: Int!) {
+    deleteInspiration(id: $id) {
       message
     }
   }

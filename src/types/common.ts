@@ -571,7 +571,7 @@ export interface StripeCardData {
 
 export interface ModelDesign {
   name: string
-  image: string
+  image?: string
   colors: string[]
   canvas?: string
 }
@@ -1479,4 +1479,20 @@ export interface Header {
   width?: number
   tabletWidth?: number
   fieldName?: string
+}
+
+export interface ColorsDataResult {
+  colorsResult: Colors
+}
+
+export type Thumbnail = {
+  style: {
+    image: string
+  }
+}
+
+export type Design = {
+  design: {
+    message: string
+  }
 }

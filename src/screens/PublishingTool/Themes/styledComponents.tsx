@@ -18,8 +18,9 @@ const { Search } = AntdInput
 export const Container = styled.div`
   background-color: ${WHITE};
   width: 400px;
-  height: 100vh;
-  overflow: auto;
+  height: calc(100vh - 106px);
+  overflow-x: hidden;
+  overflow-y: auto;
   z-index: 1;
   box-shadow: 0 0 0px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.24);
 `
