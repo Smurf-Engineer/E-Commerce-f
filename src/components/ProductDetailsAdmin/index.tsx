@@ -40,7 +40,9 @@ import {
   ScreenSubTitle,
   Row,
   DetailsContainer,
-  MainBody
+  MainBody,
+  EditModel,
+  Buttons
 } from './styledComponents'
 interface Data extends QueryProps {
   product: Product
@@ -385,17 +387,23 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                 </Separator>
                 {obj && mtl ? (
                   <RenderBackground {...{ openedModel }}>
-                    {openedModel ? (
+                    <Buttons>
+                      {!openedModel && (
+                        <Button onClick={this.handleOpenModel} size="large">
+                          <FormattedMessage {...messages.openModel} />
+                        </Button>
+                      )}
+                      <EditModel type="ghost" onClick={this.editModels}>
+                        <FormattedMessage {...messages.editModel} />
+                      </EditModel>
+                    </Buttons>
+                    {openedModel && (
                       <Render3D
                         customProduct={false}
                         designId={0}
                         isProduct={true}
                         {...{ product }}
                       />
-                    ) : (
-                      <Button onClick={this.handleOpenModel} size="large">
-                        <FormattedMessage {...messages.openModel} />
-                      </Button>
                     )}
                   </RenderBackground>
                 ) : (
@@ -414,6 +422,11 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     if (code) {
       history.push(`/publishing-tool?code=${code}`)
     }
+  }
+  editModels = () => {
+    const { history, match } = this.props
+    const productId = get(match, 'params.id', '')
+    history.push(`/admin/add-models?id=${productId}`)
   }
   handleOpenModel = () => {
     this.setState({ openedModel: true })
@@ -437,10 +450,7 @@ const mapStateToProps = (state: any) => state.get('productDetailAdmin').toJS()
 
 const ProductDetailsAdminEnhance = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    { ...ProductDetailsAdminActions }
-  ),
+  connect(mapStateToProps, { ...ProductDetailsAdminActions }),
   graphql(getProductQuery, {
     options: ({ match }: OwnProps) => ({
       variables: { id: get(match, 'params.id', '') }

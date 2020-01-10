@@ -2,8 +2,16 @@
  * Styled Components - Created by Jesús Apodaca on 17/12/19.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, RED, GRAY } from '../../../theme/colors'
+import {
+  GRAY_DARK,
+  RED,
+  GRAY,
+  BLUE,
+  WHITE,
+  BLUE_SOFT
+} from '../../../theme/colors'
 import AntdInput from 'antd/lib/input'
+import AntdButton from 'antd/lib/button'
 import AntdModal from 'antd/lib/modal'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
@@ -50,6 +58,16 @@ export const Label = styled.div`
   line-height: 19px;
 `
 
+export const CloseIcon = styled.img`
+  position: absolute;
+  width: 20px;
+  right: 36px;
+  margin-top: 4px;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 export const IconInput = styled.div`
   display: flex;
   flex-flow: column;
@@ -75,7 +93,7 @@ export const UploadContainer = styled.div`
   position: relative;
   margin-top: 4px;
   .ant-upload-select-picture-card {
-    width: auto;
+    width: 40px;
     height: auto;
     margin: 0;
     background: none;
@@ -101,6 +119,24 @@ export const ModelIcon = styled.img`
   width: 24px;
   max-height: 100%;
   object-fit: contain;
+`
+
+export const SaveSection = styled.div`
+  text-align: right;
+  margin-top: 28px;
+`
+
+export const SaveButton = styled(AntdButton)`
+  max-width: 224px;
+  border: none;
+  width: 100%;
+  height: 40px;
+  background: ${BLUE};
+  color: ${WHITE};
+  &:hover {
+    background: ${BLUE_SOFT};
+    color: ${WHITE};
+  }
 `
 
 export const maskStyles = {

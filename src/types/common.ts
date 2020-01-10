@@ -193,6 +193,25 @@ export type SaveDesignType = {
   highResolution: boolean
 }
 
+export type ModelVariant = {
+  id: string
+  name: string
+  icon: string
+  default: boolean
+  label: string
+  bumpMap: string
+  obj: string
+  mtl: string
+  branding: string
+  flatlock: string
+  bibraceWhite: string
+  bibraceBlack: string
+  zipperWhite: string
+  zipperBlack: string
+  bindingWhite: string
+  bindingBlack: string
+}
+
 export interface SaveDesignData {
   createdAt: string
   designCode: string

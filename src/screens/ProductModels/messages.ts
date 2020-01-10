@@ -28,5 +28,38 @@ export default defineMessages({
   addModel: {
     id: 'screens.ProductModels.addModel',
     defaultMessage: '+ Add New 3D Model Variant'
+  },
+  defaultModel: {
+    id: 'screens.ProductModels.defaultModel',
+    defaultMessage: 'Default 3D Model'
+  },
+  modelVariants: {
+    id: 'screens.ProductModels.modelVariants',
+    defaultMessage: '3D Model Variants'
+  },
+  edit: {
+    id: 'screens.ProductModels.edit',
+    defaultMessage: 'Edit'
+  },
+  delete: {
+    id: 'screens.ProductModels.delete',
+    defaultMessage: 'Delete'
+  },
+  modelSaved: {
+    id: 'screens.ProductModels.modelSaved',
+    defaultMessage: '3D Model Saved'
+  },
+  successQuestion: {
+    id: 'screens.ProductModels.successQuestion',
+    defaultMessage:
+      ' Would you like to proceed to add new designs to this product?'
+  },
+  addNewDesigns: {
+    id: 'screens.ProductModels.addNewDesigns',
+    defaultMessage: 'Add New Designs'
+  },
+  goToInfo: {
+    id: 'screens.ProductModels.goToInfo',
+    defaultMessage: 'Go to Product Information Overview'
   }
 })

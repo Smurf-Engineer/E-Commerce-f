@@ -31,7 +31,8 @@ import {
   SelectedAsset,
   Responsive,
   SimpleFont,
-  UserInfo
+  UserInfo,
+  ModelVariant
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -107,6 +108,8 @@ interface Props {
   selectedTab: number
   fonts: SimpleFont[]
   colorsList: any
+  selectedVariant: number
+  variants: ModelVariant[]
   placeholders: boolean
   openResetPlaceholderModal: boolean
   colorChartSending: boolean
@@ -114,6 +117,7 @@ interface Props {
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
   // Redux actions
+  selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
@@ -252,6 +256,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       textFormat,
       artFormat,
       design,
+      selectVariantAction,
       onSelectTextFormat,
       openPaletteModalAction,
       myPaletteModals,
@@ -271,6 +276,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       bibColor,
       onAccessoryColorSelected,
       onUploadFile,
+      selectedVariant,
       images,
       uploadingFile,
       searchClipParam,
@@ -301,6 +307,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onLockElement,
       openLoginModalAction,
       fonts,
+      variants,
       colorsList,
       placeholders,
       openResetPlaceholderModal,
@@ -315,7 +322,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       tutorialPlaylist,
       openDesignCheckModal
     } = this.props
-
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
     const loadingView = loadingData && (
       <LoadingContainer>
@@ -441,6 +447,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onUnmountTab,
               undoChanges,
               redoChanges,
+              selectVariantAction,
+              selectedVariant,
+              variants,
               product,
               stitchingColor,
               bindingColor,

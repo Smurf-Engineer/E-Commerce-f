@@ -69,6 +69,18 @@ export default defineMessages({
     id: 'components.FilesModal.flatlock',
     defaultMessage: '+ Flatlock File'
   },
+  setDefault: {
+    id: 'components.FilesModal.setDefault',
+    defaultMessage: 'Set this as default'
+  },
+  labelTitle: {
+    id: 'components.FilesModal.labelTitle',
+    defaultMessage: 'Label'
+  },
+  label: {
+    id: 'components.FilesModal.label',
+    defaultMessage: '+ Label File'
+  },
   bibrace: {
     id: 'components.FilesModal.bibrace',
     defaultMessage: 'Bibrace'
@@ -104,5 +116,13 @@ export default defineMessages({
   zipperBlack: {
     id: 'components.FilesModal.zipperBlack',
     defaultMessage: '+ Zipper Black File'
+  },
+  saveModel: {
+    id: 'components.FilesModal.saveModel',
+    defaultMessage: 'Save Model'
+  },
+  fileError: {
+    id: 'components.FilesModal.fileError',
+    defaultMessage: 'Save Model'
   }
 })
