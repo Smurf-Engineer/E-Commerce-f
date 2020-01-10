@@ -1,7 +1,8 @@
 /**
- * Styled Components - Created by david on 29/11/18.
+ * Styled Components - Created by eduardoquintero on 17/12/19.
  */
 import styled from 'styled-components'
+import Input from 'antd/lib/input'
 import { BLUE, GRAY_LIGHT } from '../../theme/colors'
 
 export const Container = styled.div`
@@ -11,21 +12,23 @@ export const Container = styled.div`
 
 export const Name = styled.div``
 
-export const Image = styled.img`
-  width: 302px;
-  height: 302px;
+export const Info = styled.div`
+  width: 100%;
 `
 
-export const Info = styled.div`
-  margin-right: 24px;
+export const Label = styled.p`
+  margin-bottom: 5px;
 `
 
 export const DraggerContainer = styled.div`
-  padding-top: 16px;
-
+  margin-bottom: 10px;
   .ant-upload.ant-upload-drag {
     padding: 8px;
   }
+`
+
+export const StyledInput = styled(Input)`
+  margin-bottom: 10px;
 `
 
 export const SaveButtonStyle = {

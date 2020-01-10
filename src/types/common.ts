@@ -388,6 +388,21 @@ export interface Style {
   canvas: string
 }
 
+export interface StyleConfig {
+  colorIdeas: Palette[]
+  config: ColorConfig
+  design: Palette
+}
+
+export interface ColorConfig {
+  areasPng: string[]
+  areasSvg: string[]
+  size: {
+    width: number
+    height: number
+  }
+}
+
 export interface Theme {
   id: number
   name: string
@@ -575,7 +590,7 @@ export interface StripeCardData {
 
 export interface ModelDesign {
   name: string
-  image: string
+  image?: string
   colors: string[]
   canvas?: string
 }
@@ -1491,4 +1506,20 @@ export interface Header {
   width?: number
   tabletWidth?: number
   fieldName?: string
+}
+
+export interface ColorsDataResult {
+  colorsResult: Colors
+}
+
+export type Thumbnail = {
+  style: {
+    image: string
+  }
+}
+
+export type Design = {
+  design: {
+    message: string
+  }
 }

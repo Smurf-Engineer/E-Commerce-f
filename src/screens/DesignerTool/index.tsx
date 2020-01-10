@@ -872,10 +872,11 @@ const DesignerToolEnhance = compose(
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
   graphql(saveStyleCanvas, { name: 'saveCanvas' }),
   graphql(getColorsQuery, { name: 'colorsList' }),
-  connect(
-    mapStateToProps,
-    { ...designerToolActions, ...designerToolApi, ...thunkActions }
-  ),
+  connect(mapStateToProps, {
+    ...designerToolActions,
+    ...designerToolApi,
+    ...thunkActions
+  }),
   getFonts
 )(DesignerTool)
 
