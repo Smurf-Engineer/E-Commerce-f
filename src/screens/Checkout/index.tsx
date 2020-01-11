@@ -133,6 +133,8 @@ interface Props extends RouteComponentProps<any> {
   limit: number
   currentPage: number
   skip: number
+  shippingSave: boolean
+  billingSave: boolean
   showCardForm: boolean
   selectedCard: CreditCardData
   currentCurrency: string
@@ -709,7 +711,8 @@ class Checkout extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       billingPhone,
-      indexAddressSelected,
+      shippingSave,
+      billingSave,
       sameBillingAndShipping,
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
@@ -748,12 +751,13 @@ class Checkout extends React.Component<Props, {}> {
       phone: billingPhone
     }
 
-    if (indexAddressSelected === -1) {
+    if (shippingSave) {
       this.saveAddress(shippingAddress)
     }
     if (
       paymentMethod === PaymentOptions.CREDITCARD &&
-      !sameBillingAndShipping
+      !sameBillingAndShipping &&
+      billingSave
     ) {
       this.saveAddress(billingAddress)
     }
