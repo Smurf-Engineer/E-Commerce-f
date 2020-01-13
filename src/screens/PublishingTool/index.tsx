@@ -499,7 +499,7 @@ export class PublishingTool extends React.Component<Props, {}> {
   }
   goToBuildModel = (productId: number) => {
     const { history } = this.props
-    history.push(`/admin/add-models?id${productId}`)
+    history.push(`/admin/add-models?id=${productId}`)
   }
   render() {
     const {
