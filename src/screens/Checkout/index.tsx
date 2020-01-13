@@ -799,18 +799,6 @@ class Checkout extends React.Component<Props, {}> {
       zipCode: billingZipCode,
       phone: billingPhone
     }
-
-    // if (shippingSave) {
-    //   this.saveAddress(shippingAddress)
-    // }
-    // if (
-    //   paymentMethod === PaymentOptions.CREDITCARD &&
-    //   !sameBillingAndShipping &&
-    //   billingSave
-    // ) {
-    //   this.saveAddress(billingAddress)
-    // }
-
     const {
       state: { cart, proDesign }
     } = location
