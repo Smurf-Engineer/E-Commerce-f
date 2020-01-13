@@ -315,7 +315,6 @@ export class ProductModels extends React.Component<Props, {}> {
                   )
                 )
               })}
-              )}
             </ModelsContainers>
           </Side>
           <ModelContainer>

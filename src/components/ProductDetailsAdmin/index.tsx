@@ -42,7 +42,8 @@ import {
   DetailsContainer,
   MainBody,
   EditModel,
-  Buttons
+  Buttons,
+  ModelSection
 } from './styledComponents'
 interface Data extends QueryProps {
   product: Product
@@ -382,13 +383,13 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   productImages.map((picture: ProductImage, index: number) => (
                     <ProductImageBox key={index} {...{ picture }} />
                   ))}
-                <Separator>
-                  <FormattedMessage {...messages.threeDModel} />
-                </Separator>
-                {obj && mtl ? (
-                  <RenderBackground {...{ openedModel }}>
+                {designCenter && (
+                  <ModelSection>
+                    <Separator>
+                      <FormattedMessage {...messages.threeDModel} />
+                    </Separator>
                     <Buttons>
-                      {!openedModel && (
+                      {!openedModel && obj && mtl && (
                         <Button onClick={this.handleOpenModel} size="large">
                           <FormattedMessage {...messages.openModel} />
                         </Button>
@@ -397,17 +398,21 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                         <FormattedMessage {...messages.editModel} />
                       </EditModel>
                     </Buttons>
-                    {openedModel && (
-                      <Render3D
-                        customProduct={false}
-                        designId={0}
-                        isProduct={true}
-                        {...{ product }}
-                      />
+                    {obj && mtl ? (
+                      <RenderBackground {...{ openedModel }}>
+                        {openedModel && (
+                          <Render3D
+                            customProduct={false}
+                            designId={0}
+                            isProduct={true}
+                            {...{ product }}
+                          />
+                        )}
+                      </RenderBackground>
+                    ) : (
+                      <FormattedMessage {...messages.modelNotFound} />
                     )}
-                  </RenderBackground>
-                ) : (
-                  <FormattedMessage {...messages.modelNotFound} />
+                  </ModelSection>
                 )}
               </FormBody>
             </DetailsContainer>

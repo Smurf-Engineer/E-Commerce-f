@@ -43,6 +43,9 @@ export const Buttons = styled.div`
   flex-flow: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
 `
 
 export const EditModel = styled(Button)`
@@ -121,4 +124,8 @@ export const RenderBackground = styled.div`
   background: ${({ openedModel }: any) => (openedModel ? '#f3f3f3' : 'white')};
   transition: all 0.25 ease;
   text-align: center;
+`
+
+export const ModelSection = styled.div`
+  position: relative;
 `
