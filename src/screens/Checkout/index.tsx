@@ -539,7 +539,41 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   verifyStepTwo = () => {
-    const { currentStep, stepAdvanceAction } = this.props
+    const {
+      currentStep,
+      stepAdvanceAction,
+      billingSave,
+      paymentMethod,
+      sameBillingAndShipping,
+      billingFirstName,
+      billingLastName,
+      billingStreet,
+      billingApartment,
+      billingCountry,
+      billingStateProvince,
+      billingCity,
+      billingZipCode,
+      billingPhone
+    } = this.props
+    if (
+      paymentMethod === PaymentOptions.CREDITCARD &&
+      !sameBillingAndShipping &&
+      billingSave
+    ) {
+      const billingAddress: AddressType = {
+        firstName: billingFirstName,
+        lastName: billingLastName,
+        street: billingStreet,
+        apartment: billingApartment,
+        country: billingCountry,
+        stateProvince: billingStateProvince,
+        stateProvinceCode: billingStateProvince,
+        city: billingCity,
+        zipCode: billingZipCode,
+        phone: billingPhone
+      }
+      this.saveAddress(billingAddress)
+    }
     stepAdvanceAction(currentStep + 1)
   }
 
@@ -554,7 +588,10 @@ class Checkout extends React.Component<Props, {}> {
       stateProvince,
       city,
       zipCode,
+      apartment,
+      stateProvinceCode,
       phone,
+      shippingSave,
       validFormAction
     } = this.props
 
@@ -573,6 +610,21 @@ class Checkout extends React.Component<Props, {}> {
     if (error) {
       validFormAction(error)
       return
+    }
+    if (shippingSave) {
+      const shippingAddress: AddressType = {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        stateProvinceCode,
+        city,
+        zipCode,
+        phone
+      }
+      this.saveAddress(shippingAddress)
     }
     stepAdvanceAction(currentStep + 1)
   }
@@ -711,9 +763,6 @@ class Checkout extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       billingPhone,
-      shippingSave,
-      billingSave,
-      sameBillingAndShipping,
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
@@ -751,16 +800,16 @@ class Checkout extends React.Component<Props, {}> {
       phone: billingPhone
     }
 
-    if (shippingSave) {
-      this.saveAddress(shippingAddress)
-    }
-    if (
-      paymentMethod === PaymentOptions.CREDITCARD &&
-      !sameBillingAndShipping &&
-      billingSave
-    ) {
-      this.saveAddress(billingAddress)
-    }
+    // if (shippingSave) {
+    //   this.saveAddress(shippingAddress)
+    // }
+    // if (
+    //   paymentMethod === PaymentOptions.CREDITCARD &&
+    //   !sameBillingAndShipping &&
+    //   billingSave
+    // ) {
+    //   this.saveAddress(billingAddress)
+    // }
 
     const {
       state: { cart, proDesign }
