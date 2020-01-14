@@ -103,7 +103,9 @@ export const getTaxesAndDiscount = (
       case COUNTRY_CODE_US:
         // for USA the tax is calculated with this formula (subtotal + proDesignReview - discountAmount) * taxRate%
         if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-          taxTotal = (subtotal + proDesignFee - discount) * (taxesAmount / 100) // calculate tax
+          taxTotal =
+            (subtotal + proDesignFee + shippingTotal - discount) *
+            (taxesAmount / 100) // calculate tax
           taxFee = roundDecimals(taxTotal) // round to 2 decimals
         }
         break
