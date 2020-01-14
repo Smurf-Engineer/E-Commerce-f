@@ -98,6 +98,10 @@ export default defineMessages({
     id: 'screens.FitAndSizing.xxl',
     defaultMessage: '2XL'
   },
+  xxxl: {
+    id: 'screens.FitAndSizing.xxxl',
+    defaultMessage: '·XL'
+  },
   age6: {
     id: 'screens.FitAndSizing.age6',
     defaultMessage: 'Age 6'
