@@ -8,14 +8,14 @@ export const charts = [
         headers: ['height', 'waist', 'chest', 'inseam'],
         height: {
           in: [
-            'under 5ft 5in ',
-            'under 5ft 5in ',
-            '5ft 4in - 5ft 8in ',
-            '5ft 7in - 5ft 11in ',
-            '5ft 10in - 6ft 2in ',
-            '6ft 1in - 6ft 4in ',
-            '6ft 3in +',
-            '6ft 3in +'
+            'under 5′ 5"',
+            'under 5′ 5"',
+            '5′ 4" - 5′ 8"',
+            '5′ 7" - 5′ 11" ',
+            '5′ 10" - 6′ 2" ',
+            '6′ 1" - 6′ 4" ',
+            '6′ 3" +',
+            '6′ 3" +'
           ],
           cm: [
             'under 165cm',
