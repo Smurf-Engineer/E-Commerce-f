@@ -7,24 +7,25 @@ import {
   Container,
   Paragraph,
   ProReviewTitle,
-  OptionalLabel,
   ProDesignReviewContent,
   ModalButtonsWrapper,
   ContinueButton,
-  Icon
+  Icon,
+  StatusLabel
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
 import checkBoxIcon from '../../assets/checkbox.svg'
 
 interface Props {
   visible: boolean
+  online: boolean
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
 }
 
 export class DesignCheckModal extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, visible, requestClose } = this.props
+    const { formatMessage, visible, requestClose, online } = this.props
 
     return (
       <Container>
@@ -38,7 +39,6 @@ export class DesignCheckModal extends React.Component<Props, {}> {
             {formatMessage(messages.proDesignerReviewLabel)}
             <Icon src={checkBoxIcon} />
           </ProReviewTitle>
-          <OptionalLabel>{formatMessage(messages.optionalLabel)}</OptionalLabel>
           <Paragraph
             dangerouslySetInnerHTML={{
               __html: formatMessage(messages.helpLabel)
@@ -51,9 +51,12 @@ export class DesignCheckModal extends React.Component<Props, {}> {
           />
           <ModalButtonsWrapper>
             <ContinueButton key="review" onClick={requestClose}>
-              {formatMessage(messages.dontReview)}
+              {formatMessage(messages.talkWithDesigner)}
             </ContinueButton>
           </ModalButtonsWrapper>
+          <StatusLabel {...{ online }}>
+            {formatMessage(online ? messages.online : messages.offline)}
+          </StatusLabel>
         </CustomModal>
       </Container>
     )

@@ -89,8 +89,8 @@ export default defineMessages({
     defaultMessage:
       'Are you sure? This will remove all text and symbol content from the current design.'
   },
-  designCheck: {
-    id: 'components.Render3D.designCheck',
-    defaultMessage: 'Design Check'
+  proAssist: {
+    id: 'components.Render3D.proAssist',
+    defaultMessage: 'Pro Assist'
   }
 })

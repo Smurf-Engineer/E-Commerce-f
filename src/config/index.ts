@@ -19,6 +19,7 @@ interface ConfigType {
   paypalClientIdCA?: string
   paypalClientIdEU?: string
   paypalEnv?: string
+  slaaskApiKey?: string
   googleMapKey?: string
   intercomKey?: string
   defaultCurrency?: string
@@ -37,6 +38,7 @@ const config: ConfigType = {
   facebookId: process.env.FACEBOOK_ID,
   graphqlUriBase: process.env.GRAPHQL_URI_BASE,
   baseUrl: process.env.BASE_URL,
+  slaaskApiKey: process.env.SLAASK_KEY,
   storageUrl: process.env.STORAGE_URL,
   pkStripeUS: process.env.PK_STRIPE_US,
   pkStripeEU: process.env.PK_STRIPE_EU,

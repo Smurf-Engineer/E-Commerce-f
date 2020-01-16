@@ -282,7 +282,9 @@ export const DesignCheckButton = styled(AntdButton)`
 `
 
 export const Icon = styled.img`
-  margin-left: 5px;
+  margin-right: 10px;
+  width: 18px;
+  margin-bottom: 2px;
 `
 
 export const Variants = styled.div`

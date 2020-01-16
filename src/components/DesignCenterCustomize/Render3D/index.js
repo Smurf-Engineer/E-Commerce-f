@@ -126,6 +126,7 @@ import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
 import config from '../../../config'
 import checkBoxIcon from '../../../assets/checkbox.svg'
+import { initSlaask, closeSlaask } from '../../../slaask'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const { info } = Modal
@@ -309,6 +310,16 @@ class Render3D extends PureComponent {
 
     this.controls = controls
     this.start()
+    if (typeof window.Intercom === 'function') {
+      window.Intercom('hide')
+      window.Intercom('update', { hide_default_launcher: true })
+    }
+    initSlaask({
+      id: 'JfdDz23X',
+      name: 'John Doe',
+      email: 'john@test.com',
+      designid: 'tVMcZ1Er'
+    })
   }
 
   componentWillUnmount() {
@@ -328,6 +339,10 @@ class Render3D extends PureComponent {
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
     }
+    if (typeof window.Intercom === 'function') {
+      window.Intercom('update', { hide_default_launcher: false })
+    }
+    closeSlaask()
   }
 
   configureEventListeners = () => {
@@ -1406,8 +1421,8 @@ class Render3D extends PureComponent {
         </Row>
         <ButtonWrapper>
           <DesignCheckButton onClick={this.handleOnDesignCheck}>
-            {formatMessage(messages.designCheck)}
             <Icon src={checkBoxIcon} />
+            {formatMessage(messages.proAssist)}
           </DesignCheckButton>
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}

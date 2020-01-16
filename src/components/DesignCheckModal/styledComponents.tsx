@@ -3,18 +3,13 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { GRAY_DARK, RED } from '../../theme/colors'
+import { GRAY_DARK, RED, GREEN } from '../../theme/colors'
+
+interface StatusProps {
+  online: boolean
+}
 
 export const Container = styled.div``
-
-export const OptionalLabel = styled.span`
-  color: ${GRAY_DARK};
-  font-size: 16px;
-  font-style: italic;
-  letter-spacing: 0.25px;
-  line-height: 22px;
-  font-weight: normal;
-`
 
 export const ProReviewTitle = styled.div`
   margin-top: 25px;
@@ -62,6 +57,12 @@ export const Paragraph = styled.div`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
+`
+
+export const StatusLabel = styled.div`
+  margin-top: 14px;
+  text-align: center;
+  color: ${({ online }: StatusProps) => (online ? GREEN : RED)};
 `
 
 export const ModalButtonsWrapper = styled.div`
