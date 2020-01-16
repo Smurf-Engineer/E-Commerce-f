@@ -242,7 +242,7 @@ export const charts = [
       {
         title: 'shoeCover',
         headers: ['mens', 'womens'],
-        size: ['xxs_xs', 's_m', 'l_xl', 'xxl', 'xxxl'],
+        size: ['xxs_xs', 's_m', 'l_xl', 'xxl'],
         mens: {
           in: ['5 - 6.5', '7 - 8.5', '9 - 11.5', '12 - 14'],
           cm: ['12.7 - 16.5', '17.7 - 21.5', '22.8 - 29.2', '30.4 - 35.5']
