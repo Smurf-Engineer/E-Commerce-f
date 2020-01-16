@@ -83,7 +83,7 @@ export const charts = [
     title: 'women',
     tables: [
       {
-        headers: ['height', 'waist', 'chest', 'hips', 'inseam'],
+        headers: ['height', 'waist', 'hips', 'bust', 'inseam'],
         height: {
           in: [
             'under 5′ 2"',
