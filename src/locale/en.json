@@ -1159,6 +1159,7 @@
   "screens.AdminLayout.aboutOrders": "ABOUT ORDERS",
   "screens.AdminLayout.orderStatus": "Order Status",
   "screens.AdminLayout.discounts": "Discounts",
+  "screens.AdminLayout.proAssist": "Pro Assist",
   "screens.AdminLayout.designSearch": "Design Search",
   "screens.AdminLayout.products": "PRODUCTS",
   "screens.AdminLayout.productCatalog": "Product Catalog",

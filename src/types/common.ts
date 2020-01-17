@@ -1523,3 +1523,7 @@ export type Design = {
     message: string
   }
 }
+
+export type ProAssist = {
+  shortId: string
+}

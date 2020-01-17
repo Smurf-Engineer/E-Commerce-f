@@ -30,7 +30,8 @@ import {
   EDIT_NAVIGATION,
   ADD_PRO_DESIGN,
   CREATE_DESIGNS,
-  DESIGN_LAB_TOOLS
+  DESIGN_LAB_TOOLS,
+  PRO_ASSIST
 } from './constants'
 import {
   SideBar,
@@ -99,6 +100,9 @@ class AdminLayout extends React.Component<Props, {}> {
         break
       case DISCOUNTS:
         history.push('/admin/discounts')
+        break
+      case PRO_ASSIST:
+        history.push('/admin/pro-assist')
         break
       case PRODUCT_CATALOG:
         history.push('/admin/products')

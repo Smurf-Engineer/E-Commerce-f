@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.discounts',
     defaultMessage: 'Discounts'
   },
+  proAssist: {
+    id: 'screens.AdminLayout.proAssist',
+    defaultMessage: 'Pro Assist'
+  },
   designSearch: {
     id: 'screens.AdminLayout.designSearch',
     defaultMessage: 'Design Search'

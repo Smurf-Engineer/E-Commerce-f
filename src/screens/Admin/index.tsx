@@ -27,6 +27,7 @@ import DesignLabAdmin from '../../components/DesignLabAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
 import DesignSearchAdmin from '../../components/DesignSearch'
 import EditNavigationAdmin from '../../components/EditNavigationAdmin'
+import ProAssist from '../../components/ProAssist'
 
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
@@ -151,6 +152,11 @@ export class Admin extends React.Component<Props, {}> {
           exact={true}
           path="/admin/discounts"
           render={() => <DiscountsAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          exact={true}
+          path="/admin/pro-assist"
+          render={() => <ProAssist {...{ history, formatMessage }} />}
         />
         <Route
           path="/admin/products"

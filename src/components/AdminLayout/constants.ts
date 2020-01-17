@@ -11,6 +11,7 @@ export const SET_INSTALLED_FONTS_ACTION = `${namespace}/SET_INSTALLED_FONTS_ACTI
 export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
+export const PRO_ASSIST = 'proAssist'
 export const PRODUCTS = 'products'
 export const PRODUCT_INTERNAL = 'productInternal'
 export const PRODUCT_CATALOG = 'productCatalog'
@@ -31,7 +32,7 @@ export const DESIGN_LAB_TOOLS = 'designLabTools'
 export const options = [
   {
     title: ORDERS,
-    options: [ORDER_STATUS, DISCOUNTS, DESIGN_SEARCH]
+    options: [ORDER_STATUS, DISCOUNTS, DESIGN_SEARCH, PRO_ASSIST]
   },
   {
     title: EDIT_CONTENT,
