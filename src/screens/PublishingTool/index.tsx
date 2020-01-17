@@ -64,6 +64,7 @@ import {
   Design as DeisgnType
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
+import { BLACK } from '../DesignCenter/constants'
 
 const { confirm } = Modal
 
@@ -651,10 +652,10 @@ export class PublishingTool extends React.Component<Props, {}> {
                 onRemoveEl: null,
                 onUnmountTab: setCanvasJsonAction,
                 product: modelConfig,
-                stitchingColor: '#000',
-                bindingColor: 'black',
-                zipperColor: 'black',
-                bibColor: 'black',
+                stitchingColor: { value: BLACK },
+                bindingColor: BLACK,
+                zipperColor: BLACK,
+                bibColor: BLACK,
                 onCanvasElementResized: null,
                 onCanvasElementDragged: null,
                 onCanvasElementRotated: null,
