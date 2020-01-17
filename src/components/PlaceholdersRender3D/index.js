@@ -624,7 +624,6 @@ class Render3D extends PureComponent {
             const color =
               (isEditing && accessoriesColor.flatlockColor) ||
               stitchingColor.value
-              console.log('color', color)
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,

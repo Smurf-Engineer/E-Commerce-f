@@ -40,6 +40,8 @@ import {
   Sections
 } from './constants'
 import { Reducer } from '../../types/common'
+import { BLACK, WHITE } from '../DesignCenter/constants'
+import { BLACK as BLACK_COLOR } from '../../theme/colors'
 
 export const NONE = -1
 export const NONE_ID = 0
@@ -79,7 +81,11 @@ export const initialState = fromJS({
   uploadingThumbnail: false,
   openSaveDesign: false,
   productId: -1,
-  saveDesignLoading: false
+  saveDesignLoading: false,
+  stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
+  bindingColor: BLACK,
+  zipperColor: BLACK,
+  bibColor: WHITE
 })
 
 const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
