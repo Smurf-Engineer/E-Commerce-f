@@ -20,6 +20,7 @@ import {
   SET_SWIPING_TAB_ACTION,
   SET_THEME_SELECTED_ACTION,
   SET_STYLE_SELECTED_ACTION,
+  SET_LOADING_PRO,
   OPEN_SHARE_MODAL,
   OPEN_SAVE_DESIGN_ACTION,
   SET_DESIGN_NAME,
@@ -114,6 +115,11 @@ export const setColorBlockAction = (index: number): AnyAction => ({
 export const setHoverColorBlockAction = (index: number): AnyAction => ({
   type: COLOR_BLOCK_HOVERED_ACTION,
   index
+})
+
+export const setLoadingPro = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_PRO,
+  loading
 })
 
 export const setColorAction = (color: string): AnyAction => ({

@@ -177,3 +177,22 @@ export const getDesignLabInfo = gql`
     }
   }
 `
+
+export const getProAssist = gql`
+  query proAssistData {
+    proAssistData: getProAssist {
+      proAssistId: short_id
+    }
+  }
+`
+
+export const getProTicket = graphql(
+  gql`
+    mutation newProAssist {
+      newProAssist {
+        ticket: short_id
+      }
+    }
+  `,
+  { name: 'getProTicketAction' }
+)

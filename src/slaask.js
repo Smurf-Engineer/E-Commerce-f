@@ -2,16 +2,17 @@ import config from './config'
 import { LoadScripts } from './utils/scriptLoader'
 
 export async function initSlaask(info) {
-  const { id, name, email, designid } = info
+  const { id, name, email, designId, userId } = info
   window._slaaskSettings = {
     identify: () => ({
       id,
       name,
+      userId,
       email,
-      designid
+      designId
     }),
     options: {
-      team_id: 56518
+      team_id: config.slaaskTeam
     },
     onInit: _slaask => {
       _slaask.on('ready', () => {

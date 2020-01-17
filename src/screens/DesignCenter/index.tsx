@@ -86,7 +86,9 @@ import {
   Message as MessageType,
   MessagePayload,
   UserInfo,
-  DesignLabInfo
+  DesignLabInfo,
+  ProAssistItem,
+  UserType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -95,7 +97,9 @@ import {
   getColorsQuery,
   requestColorChartMutation,
   getDesignLabInfo,
-  getVariantsFromProduct
+  getVariantsFromProduct,
+  getProAssist,
+  getProTicket
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -108,6 +112,7 @@ import moment from 'moment'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import clone from 'lodash/clone'
+import { initSlaask } from '../../slaask'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -119,6 +124,10 @@ interface DataDesign extends QueryProps {
 
 interface DataDesignLabInfo extends QueryProps {
   designInfo?: DesignLabInfo
+}
+
+interface ProAssistInfo extends QueryProps {
+  proAssist?: ProAssistItem
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -179,7 +188,7 @@ interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
   searchClipParam: string
   savedDesign: SaveDesignData
-  user: object
+  user: UserType
   responsive: Responsive
   originalPaths: any[]
   selectedItem: SelectedAsset
@@ -190,6 +199,8 @@ interface Props extends RouteComponentProps<any> {
   colorsList: any
   navigation: any
   dataVariants: any
+  loadingPro: boolean
+  proAssist: ProAssistInfo
   openResetPlaceholderModal: boolean
   colorChartSending: boolean
   colorChartModalOpen: boolean
@@ -263,6 +274,8 @@ interface Props extends RouteComponentProps<any> {
     idStyle?: number
   ) => void
   editDesignAction: () => void
+  setLoadingPro: (loading: boolean) => void
+  getProTicketAction: () => Promise<MessagePayload>
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
   setCanvasJsonAction: (canvas: string) => void
@@ -652,7 +665,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       colorChartModalFormOpen,
       openDesignCheckModalAction,
       designCheckModalOpen,
-      dataDesignLabInfo
+      loadingPro,
+      dataDesignLabInfo,
+      proAssist
     } = this.props
 
     const { formatMessage } = intl
@@ -929,6 +944,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   variants,
                   textFormat,
                   artFormat,
+                  proAssist,
                   openPaletteModalAction,
                   myPaletteModals,
                   openResetDesignModal,
@@ -971,6 +987,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   colorChartModalFormOpen,
                   tutorialPlaylist
                 }}
+                designId={get(dataDesign, 'designData.shortId', '')}
+                userEmail={get(user, 'email', '')}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
                 saveAndBuy={get(layout, 'saveAndBuy', false)}
@@ -1139,9 +1157,10 @@ export class DesignCenter extends React.Component<Props, {}> {
           ) : null}
         </Container>
         <DesignCheckModal
+          handleGetPro={this.handleGetPro}
           requestClose={openDesignCheckModalAction}
           visible={designCheckModalOpen}
-          {...{ formatMessage }}
+          {...{ formatMessage, loadingPro }}
         />
         <Modal
           visible={openOutWithoutSaveModal}
@@ -1198,6 +1217,33 @@ export class DesignCenter extends React.Component<Props, {}> {
       })
     }
   }
+
+  handleGetPro = async () => {
+    const { getProTicketAction, setLoadingPro, user, dataDesign } = this.props
+    if (user) {
+      try {
+        setLoadingPro(true)
+        const response = await getProTicketAction()
+        const id = get(response, 'data.newProAssist.ticket', '')
+        const designId = get(dataDesign, 'designData.shortId', '')
+        const { id: userId, name, email } = user
+        const info = {
+          id,
+          name,
+          userId,
+          email,
+          designId
+        }
+        console.log('info:', info)
+        initSlaask(info)
+      } catch (e) {
+        Message.error(e)
+      } finally {
+        setLoadingPro(false)
+      }
+    }
+  }
+
   handleOnGoBack = () => {
     const { setCurrentTabAction, currentTab, loadingModel } = this.props
     if (!loadingModel) {
@@ -1261,6 +1307,7 @@ const mapStateToProps = (state: any) => {
 const DesignCenterEnhance = compose(
   injectIntl,
   addTeamStoreItemMutation,
+  getProTicket,
   withApollo,
   connect(mapStateToProps, {
     ...designCenterActions,
@@ -1321,6 +1368,7 @@ const DesignCenterEnhance = compose(
     },
     name: 'dataVariants'
   }),
+  graphql(getProAssist, { name: 'proAssist' }),
   graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(requestColorChartMutation, { name: 'requestColorChart' })
 )(DesignCenter)

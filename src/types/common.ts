@@ -1078,6 +1078,10 @@ export type MessagePayload = {
   }
 }
 
+export type ProAssistItem = {
+  proAssistId: string
+}
+
 export type StitchingColor = {
   name: string
   value: string

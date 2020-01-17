@@ -19,13 +19,22 @@ import checkBoxIcon from '../../assets/checkbox.svg'
 interface Props {
   visible: boolean
   online: boolean
+  loadingPro: boolean
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
+  handleGetPro: () => void
 }
 
 export class DesignCheckModal extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, visible, requestClose, online } = this.props
+    const {
+      formatMessage,
+      visible,
+      requestClose,
+      online,
+      loadingPro,
+      handleGetPro
+    } = this.props
 
     return (
       <Container>
@@ -50,9 +59,13 @@ export class DesignCheckModal extends React.Component<Props, {}> {
             }}
           />
           <ModalButtonsWrapper>
-            <ContinueButton key="review" onClick={requestClose}>
-              {formatMessage(messages.talkWithDesigner)}
-            </ContinueButton>
+            {loadingPro ? (
+              <div>nigga you just asked me for my opinioonnnnndeeeuhhh</div>
+            ) : (
+              <ContinueButton key="review" onClick={handleGetPro}>
+                {formatMessage(messages.talkWithDesigner)}
+              </ContinueButton>
+            )}
           </ModalButtonsWrapper>
           <StatusLabel {...{ online }}>
             {formatMessage(online ? messages.online : messages.offline)}

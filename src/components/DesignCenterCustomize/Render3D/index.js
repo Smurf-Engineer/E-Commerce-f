@@ -224,7 +224,7 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { isEditing, design } = this.props
+    const { isEditing, design, proAssist, userEmail, designId, loggedUserId } = this.props
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CORNER_SIZE
@@ -314,12 +314,15 @@ class Render3D extends PureComponent {
       window.Intercom('hide')
       window.Intercom('update', { hide_default_launcher: true })
     }
-    initSlaask({
-      id: 'JfdDz23X',
-      name: 'John Doe',
-      email: 'john@test.com',
-      designid: 'tVMcZ1Er'
-    })
+    const proAssistId = get(proAssist, 'proAssistData.proAssistId', '')
+    if (proAssistId) {
+      initSlaask({
+        id: proAssistId,
+        userId: loggedUserId,
+        email: userEmail,
+        designId
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -1281,8 +1284,16 @@ class Render3D extends PureComponent {
     }
   }
   handleOnDesignCheck = () => {
-    const { openDesignCheckModal } = this.props
-    openDesignCheckModal()
+    const {
+      openDesignCheckModal,
+      openLoginAction,
+      isUserAuthenticated
+    } = this.props
+    if (isUserAuthenticated) {
+      openDesignCheckModal()
+    } else {
+      openLoginAction()
+    }
   }
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
@@ -1301,9 +1312,10 @@ class Render3D extends PureComponent {
       selectedElement,
       isMobile,
       openResetPlaceholderModal,
-      currentStyle
+      currentStyle,
+      proAssist
     } = this.props
-
+    const proAssistId = get(proAssist, 'proAssistData.proAssistId', '')
     if (isMobile) {
       return (
         <MobileContainer>
@@ -1420,10 +1432,10 @@ class Render3D extends PureComponent {
           )}
         </Row>
         <ButtonWrapper>
-          <DesignCheckButton onClick={this.handleOnDesignCheck}>
+          {!proAssistId && <DesignCheckButton onClick={this.handleOnDesignCheck}>
             <Icon src={checkBoxIcon} />
             {formatMessage(messages.proAssist)}
-          </DesignCheckButton>
+          </DesignCheckButton>}
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>

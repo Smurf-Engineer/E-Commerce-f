@@ -58,6 +58,7 @@ import {
   SAVE_DESIGN_CHANGES_LOADING,
   CANVAS_ELEMENT_DUPLICATED_ACTION,
   DESIGN_RESET_EDITING_ACTION,
+  SET_LOADING_PRO,
   SET_SELECTED_ITEM_ACTION,
   Changes,
   CanvasElements,
@@ -101,6 +102,7 @@ export const initialState = fromJS({
   redoChanges: [],
   swipingView: false,
   themeId: -1,
+  loadingPro: false,
   styleIndex: -1,
   openShareModal: false,
   selectedVariant: -1,
@@ -172,6 +174,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case CLEAR_STORE_ACTION:
       return initialState
+    case SET_LOADING_PRO:
+      return state.merge({
+        loadingPro: action.loading,
+        designCheckModalOpen: action.loading
+      })
     case SET_CURRENT_TAB_ACTION: {
       if (action.index === 2) {
         return state.merge({
