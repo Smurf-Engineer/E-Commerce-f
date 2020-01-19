@@ -22,6 +22,11 @@ export const getProAssistQuery = gql`
       fullCount
       proAssist {
         shortId: short_id
+        userId: user_id
+        firstName: first_name
+        lastName: last_name
+        date: created_at
+        status
       }
     }
   }

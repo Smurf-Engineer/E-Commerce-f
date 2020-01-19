@@ -5,24 +5,24 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  clientID: {
-    id: 'components.ProAssist.OrdersList.clientID',
+  ticketNo: {
+    id: 'components.ProAssist.OrdersList.ticketNo',
     defaultMessage: 'Ticket No.'
   },
-  name: {
-    id: 'components.ProAssist.OrdersList.name',
+  clientId: {
+    id: 'components.ProAssist.OrdersList.clientId',
     defaultMessage: 'Client ID'
   },
-  accountType: {
-    id: 'components.ProAssist.OrdersList.accountType',
+  user: {
+    id: 'components.ProAssist.OrdersList.user',
     defaultMessage: 'User'
   },
-  admin: {
-    id: 'components.ProAssist.OrdersList.admin',
+  date: {
+    id: 'components.ProAssist.OrdersList.date',
     defaultMessage: 'Date'
   },
-  email: {
-    id: 'components.ProAssist.OrdersList.email',
+  status: {
+    id: 'components.ProAssist.OrdersList.status',
     defaultMessage: 'Status'
   },
   emptyMessage: {

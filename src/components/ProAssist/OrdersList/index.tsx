@@ -63,43 +63,43 @@ const OrdersList = ({
         if (matches) {
           return (
             <Row>
-              <Header>{formatMessage(messages.clientID)}</Header>
-              <Header>{formatMessage(messages.name)}</Header>
-              <Header>{formatMessage(messages.accountType)}</Header>
-              <Header>{formatMessage(messages.admin)}</Header>
-              <Header>{formatMessage(messages.email)}</Header>
+              <Header>{formatMessage(messages.ticketNo)}</Header>
+              <Header>{formatMessage(messages.clientId)}</Header>
+              <Header>{formatMessage(messages.user)}</Header>
+              <Header>{formatMessage(messages.date)}</Header>
+              <Header>{formatMessage(messages.status)}</Header>
             </Row>
           )
         }
         return (
           <Row>
             <HeaderTable
-              id={'id'}
-              label={formatMessage(messages.clientID)}
-              sort={orderBy === 'id' ? sort : 'none'}
+              id={'pro_assist.id'}
+              label={formatMessage(messages.ticketNo)}
+              sort={orderBy === 'pro_assist.id' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
               id={'first_name'}
-              label={formatMessage(messages.name)}
+              label={formatMessage(messages.clientId)}
               sort={orderBy === 'first_name' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
               id={'social_method'}
-              label={formatMessage(messages.accountType)}
+              label={formatMessage(messages.user)}
               sort={orderBy === 'social_method' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
               id={'administrator'}
-              label={formatMessage(messages.admin)}
+              label={formatMessage(messages.date)}
               sort={orderBy === 'administrator' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
               id={'email'}
-              label={formatMessage(messages.email)}
+              label={formatMessage(messages.status)}
               sort={orderBy === 'email' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
@@ -108,21 +108,26 @@ const OrdersList = ({
       }}
     </MediaQuery>
   )
-  const userItems = proAssist.map(({ shortId }: ProAssist, index: number) => {
-    return (
-      <ItemOrder
-        key={index}
-        {...{
-          id: shortId,
-          email: '',
-          firstName: '',
-          lastName: '',
-          socialMethod: '',
-          onSetAdministrator: null
-        }}
-      />
-    )
-  })
+  const userItems = proAssist.map(
+    (
+      { shortId, userId, firstName, lastName, date, status }: ProAssist,
+      index: number
+    ) => {
+      return (
+        <ItemOrder
+          key={index}
+          {...{
+            id: shortId,
+            userId,
+            firstName,
+            lastName,
+            date,
+            status
+          }}
+        />
+      )
+    }
+  )
 
   return (
     <Container {...{ withoutPadding }}>

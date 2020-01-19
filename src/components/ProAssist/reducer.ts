@@ -14,7 +14,7 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   currentPage: 1,
-  orderBy: 'id',
+  orderBy: 'pro_assist.id',
   sort: 'desc',
   orderId: '',
   searchText: ''

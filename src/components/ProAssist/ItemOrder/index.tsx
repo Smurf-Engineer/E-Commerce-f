@@ -2,24 +2,33 @@
  * ItemOrder Component - Created by eduardoquintero on 16/01/20.
  */
 import * as React from 'react'
+import moment from 'moment'
 import { Container, Cell } from './styledComponents'
 
 interface Props {
   id: number
-  email: string
-  socialMethod: string
+  userId: string
+  date: string
   firstName: string
   lastName: string
+  status: string
 }
 
-const ItemOrder = ({ id, email, socialMethod, firstName, lastName }: Props) => {
+const ItemOrder = ({
+  id,
+  userId,
+  date,
+  status,
+  firstName,
+  lastName
+}: Props) => {
   return (
     <Container>
-      <Cell>JV2-{id}</Cell>
+      <Cell>{id}</Cell>
+      <Cell>JV2-{userId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
-      <Cell>{socialMethod}</Cell>
-      <Cell>{'s'}</Cell>
-      <Cell>{email}</Cell>
+      <Cell>{moment(date).format('DD/MM/YYYY')}</Cell>
+      <Cell>{status}</Cell>
     </Container>
   )
 }
