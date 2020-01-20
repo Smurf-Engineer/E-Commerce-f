@@ -615,6 +615,9 @@ export interface ModelConfig {
   bindingBlack?: string
   zipperWhite?: string
   zipperBlack?: string
+  bibBrace?: ExtraFile
+  binding?: ExtraFile
+  zipper?: ExtraFile
 }
 
 export interface CartItems {
