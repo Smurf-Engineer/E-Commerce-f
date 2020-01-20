@@ -68,7 +68,11 @@ class ProAssist extends React.Component<Props, StateProps> {
       </Container>
     )
   }
-  openSlack = (url: string) => window.open(url)
+  openSlack = (url: string) => {
+    if (url.length) {
+      window.open(url)
+    }
+  }
 
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props

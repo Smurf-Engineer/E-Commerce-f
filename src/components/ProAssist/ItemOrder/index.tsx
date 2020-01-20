@@ -28,9 +28,9 @@ const ItemOrder = ({
 }: Props) => {
   const handleOnClick = () => onRowClick(url)
   return (
-    <Container onClick={handleOnClick}>
+    <Container disabled={!url.length} onClick={handleOnClick}>
       <Cell>
-        <Link>{id}</Link>
+        <Link disabled={!url.length}>{id}</Link>
       </Cell>
       <Cell>JV2-{userId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>

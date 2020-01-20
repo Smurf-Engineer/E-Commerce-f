@@ -1526,4 +1526,10 @@ export type Design = {
 
 export type ProAssist = {
   shortId: string
+  userId: string
+  firstName: string
+  lastName: string
+  date: string
+  status: string
+  url: string
 }

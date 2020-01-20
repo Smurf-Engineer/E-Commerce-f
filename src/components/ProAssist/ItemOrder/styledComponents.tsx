@@ -9,10 +9,15 @@ import {
   GRAY_LIGHT
 } from '../../../theme/colors'
 
+interface LinkProps {
+  disabled?: boolean
+}
+
 export const Container = styled.tr`
-  cursor: pointer;
+  cursor: ${({ disabled }: LinkProps) => (!disabled ? 'pointer' : 'normal')};
   &:hover {
-    background-color: ${GRAY_SKELETON};
+    background-color: ${({ disabled }: LinkProps) =>
+      !disabled ? GRAY_SKELETON : ''};
   }
 `
 
@@ -46,6 +51,7 @@ export const Cell = styled.td`
 `
 
 export const Link = styled.p`
-  text-decoration: underline;
-  color: ${RED};
+  text-decoration: ${({ disabled }: LinkProps) =>
+    disabled ? 'none' : 'underline'};
+  color: ${({ disabled }: LinkProps) => (disabled ? GRAY_LIGHT : RED)};
 `
