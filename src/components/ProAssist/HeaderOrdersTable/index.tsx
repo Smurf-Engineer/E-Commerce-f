@@ -4,20 +4,20 @@
 import * as React from 'react'
 import { Container, Icon, IconsContainer, Header } from './styledComponents'
 import { sorts } from '../../../types/common'
+import { GRAY_DARK, WHITE, GRAY } from '../../../theme/colors'
 
 interface Props {
   label: string
   sort: sorts
   id: string
   justifyContent?: string
-  interactiveHeaders: boolean
   onSortClick: (id: string, sort: sorts) => void
 }
 
 const colors = {
-  asc: { upColor: '#5F6062', downColor: '#fff' },
-  desc: { upColor: '#fff', downColor: '#5F6062' },
-  none: { upColor: '#bebebe', downColor: '#bebebe' }
+  asc: { upColor: GRAY_DARK, downColor: WHITE },
+  desc: { upColor: WHITE, downColor: GRAY_DARK },
+  none: { upColor: GRAY, downColor: GRAY }
 }
 
 const HeaderOrdersTable = ({
@@ -25,14 +25,8 @@ const HeaderOrdersTable = ({
   label,
   sort,
   onSortClick,
-  justifyContent,
-  interactiveHeaders
+  justifyContent
 }: Props) => {
-  if (!interactiveHeaders) {
-    // const textAlign = justifyContent === 'flex-end' ? 'right' : 'left'
-    return <Header {...{ justifyContent }}>{label}</Header>
-  }
-
   const handleOnClick = () => {
     const sortToApply = sort === 'asc' ? 'desc' : 'asc'
     onSortClick(id, sortToApply)

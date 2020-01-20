@@ -27,7 +27,6 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   formatMessage: (messageDescriptor: any) => string
-  interactiveHeaders: boolean
   currentPage: number
   orderBy: string
   sort: sorts
@@ -36,11 +35,11 @@ interface Props {
   searchText: string
   onSortClick: (label: string, sort: sorts) => void
   onChangePage: (page: number) => void
+  onRowClick: (url: string) => void
 }
 
 const OrdersList = ({
   formatMessage,
-  interactiveHeaders,
   orderBy,
   sort,
   currentPage,
@@ -48,7 +47,8 @@ const OrdersList = ({
   onSortClick,
   onChangePage,
   withPagination = true,
-  withoutPadding = false
+  withoutPadding = false,
+  onRowClick
 }: Props) => {
   const proAssist = get(proAssistQuery, 'proAssist', []) as ProAssist[]
   const fullCount = get(proAssistQuery, 'fullCount', 0)
@@ -74,34 +74,34 @@ const OrdersList = ({
         return (
           <Row>
             <HeaderTable
-              id={'pro_assist.id'}
+              id={'pro_assist.short_id'}
               label={formatMessage(messages.ticketNo)}
-              sort={orderBy === 'pro_assist.id' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
+              sort={orderBy === 'pro_assist.short_id' ? sort : 'none'}
+              {...{ onSortClick }}
             />
             <HeaderTable
-              id={'first_name'}
+              id={'users.id'}
               label={formatMessage(messages.clientId)}
-              sort={orderBy === 'first_name' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
+              sort={orderBy === 'users.id' ? sort : 'none'}
+              {...{ onSortClick }}
             />
             <HeaderTable
-              id={'social_method'}
+              id={'users.first_name'}
               label={formatMessage(messages.user)}
-              sort={orderBy === 'social_method' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
+              sort={orderBy === 'users.first_name' ? sort : 'none'}
+              {...{ onSortClick }}
             />
             <HeaderTable
-              id={'administrator'}
+              id={'created_at'}
               label={formatMessage(messages.date)}
-              sort={orderBy === 'administrator' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
+              sort={orderBy === 'created_at' ? sort : 'none'}
+              {...{ onSortClick }}
             />
             <HeaderTable
-              id={'email'}
+              id={'status'}
               label={formatMessage(messages.status)}
-              sort={orderBy === 'email' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
+              sort={orderBy === 'status' ? sort : 'none'}
+              {...{ onSortClick }}
             />
           </Row>
         )
@@ -110,7 +110,7 @@ const OrdersList = ({
   )
   const userItems = proAssist.map(
     (
-      { shortId, userId, firstName, lastName, date, status }: ProAssist,
+      { shortId, userId, firstName, lastName, date, status, url }: ProAssist,
       index: number
     ) => {
       return (
@@ -122,7 +122,9 @@ const OrdersList = ({
             firstName,
             lastName,
             date,
-            status
+            status,
+            url,
+            onRowClick
           }}
         />
       )

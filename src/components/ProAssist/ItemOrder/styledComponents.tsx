@@ -2,12 +2,17 @@
  * Styled Components - Created by eduardoquintero on 16/01/20.
  */
 import styled from 'styled-components'
-import { RED } from '../../../theme/colors'
+import {
+  RED,
+  GRAY_DARK,
+  GRAY_SKELETON,
+  GRAY_LIGHT
+} from '../../../theme/colors'
 
 export const Container = styled.tr`
   cursor: pointer;
   &:hover {
-    background-color: #e6e6e5;
+    background-color: ${GRAY_SKELETON};
   }
 `
 
@@ -17,10 +22,10 @@ interface CellProps {
 }
 
 export const Cell = styled.td`
-  border-bottom: 1px solid #d7d7d7;
+  border-bottom: 1px solid ${GRAY_LIGHT};
   text-align: left;
   padding: 8px 0;
-  color: ${({ color }: CellProps) => (color ? color : '#5f6062')};
+  color: ${({ color }: CellProps) => (color ? color : GRAY_DARK)};
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 35px;
@@ -38,4 +43,9 @@ export const Cell = styled.td`
     letter-spacing: 0.09px;
     font-size: 11px;
   }
+`
+
+export const Link = styled.p`
+  text-decoration: underline;
+  color: ${RED};
 `

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import icon from 'antd/lib/icon'
+import { GRAY, GRAY_DARK, DARKER_GRAY } from '../../../theme/colors'
 
 interface ContainerProps {
   justifyContent?: string
@@ -23,7 +24,7 @@ interface IconProps {
 export const Icon = styled(icon)`
   margin-left: 6px;
   font-size: 11px;
-  color: ${({ color }: IconProps) => (color ? color : '#bebebe')};
+  color: ${({ color }: IconProps) => (color ? color : GRAY)};
 `
 
 export const IconsContainer = styled.div`
@@ -35,10 +36,10 @@ export const IconsContainer = styled.div`
 `
 
 export const Header = styled.th`
-  border-bottom: 1px solid #818181;
+  border-bottom: 1px solid ${DARKER_GRAY};
   text-align: left;
   padding: 8px 0;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;

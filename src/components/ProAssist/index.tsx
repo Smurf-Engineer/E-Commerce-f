@@ -63,11 +63,12 @@ class ProAssist extends React.Component<Props, StateProps> {
           {...{ formatMessage, currentPage, orderBy, sort, searchText }}
           onSortClick={this.handleOnSortClick}
           onChangePage={this.handleOnChangePage}
-          interactiveHeaders={true}
+          onRowClick={this.openSlack}
         />
       </Container>
     )
   }
+  openSlack = (url: string) => window.open(url)
 
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props

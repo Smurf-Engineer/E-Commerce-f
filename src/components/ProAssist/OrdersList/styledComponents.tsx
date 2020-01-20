@@ -2,6 +2,7 @@
  * Styled Components - Created by eduardoquintero on 16/01/20.
  */
 import styled from 'styled-components'
+import { GRAY_SOFT, GRAY_DARK } from '../../../theme/colors'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -27,21 +28,16 @@ export const Table = styled.table`
 
 export const Row = styled.tr``
 
-interface HeaderProps {
-  textAlign?: string
-}
-
 export const Header = styled.th`
-  border-bottom: 1px solid #818181;
+  border-bottom: 1px solid ${GRAY_SOFT};
   text-align: left;
   padding: 8px 0;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
-  text-align: ${({ textAlign }: HeaderProps) =>
-    textAlign ? textAlign : 'start'};
+  text-align: left;
 
   @media (min-width: 320px) and (max-width: 768px) {
     letter-spacing: 0.09px;

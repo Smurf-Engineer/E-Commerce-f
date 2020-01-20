@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import moment from 'moment'
-import { Container, Cell } from './styledComponents'
+import { Container, Cell, Link } from './styledComponents'
 
 interface Props {
   id: number
@@ -12,6 +12,8 @@ interface Props {
   firstName: string
   lastName: string
   status: string
+  url: string
+  onRowClick: (url: string) => void
 }
 
 const ItemOrder = ({
@@ -20,11 +22,16 @@ const ItemOrder = ({
   date,
   status,
   firstName,
-  lastName
+  lastName,
+  url,
+  onRowClick
 }: Props) => {
+  const handleOnClick = () => onRowClick(url)
   return (
-    <Container>
-      <Cell>{id}</Cell>
+    <Container onClick={handleOnClick}>
+      <Cell>
+        <Link>{id}</Link>
+      </Cell>
       <Cell>JV2-{userId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{moment(date).format('DD/MM/YYYY')}</Cell>

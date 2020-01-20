@@ -27,6 +27,7 @@ export const getProAssistQuery = gql`
         lastName: last_name
         date: created_at
         status
+        url: slack_url
       }
     }
   }
