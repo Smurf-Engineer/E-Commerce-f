@@ -2243,9 +2243,8 @@ class Render3D extends PureComponent {
   }
   setFrontFaceModel = () => {
     if (this.camera) {
-      const { x, y, z } = viewPositions[2]
-      this.camera.position.set(x, y, z)
-      this.controls.update()
+      this.camera.zoom = INITIAL_ZOOM
+      this.cameraUpdate(viewPositions[2])
     }
   }
 
