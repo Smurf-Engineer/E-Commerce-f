@@ -61,7 +61,8 @@ import {
   UploadFile,
   ColorsDataResult,
   Thumbnail,
-  Design as DeisgnType
+  Design as DeisgnType,
+  StitchingColor
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 
@@ -96,6 +97,10 @@ interface Props {
   productId: number
   saveDesignLoading: boolean
   history: any
+  stitchingColor: StitchingColor
+  bindingColor: string
+  zipperColor: string
+  bibColor: string
   setCodeSearch: (value: string) => void
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
@@ -551,11 +556,14 @@ export class PublishingTool extends React.Component<Props, {}> {
       saveDesignLoading,
       setDesignNameAction,
       setCanvasJsonAction,
-      updateInspirationAction
+      updateInspirationAction,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bibColor
     } = this.props
     const { formatMessage } = intl
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
-
     const tabs = steps.map((step, index) => {
       return (
         <Tab
@@ -651,10 +659,10 @@ export class PublishingTool extends React.Component<Props, {}> {
                 onRemoveEl: null,
                 onUnmountTab: setCanvasJsonAction,
                 product: modelConfig,
-                stitchingColor: '#000',
-                bindingColor: 'black',
-                zipperColor: 'black',
-                bibColor: 'black',
+                stitchingColor,
+                bindingColor,
+                zipperColor,
+                bibColor,
                 onCanvasElementResized: null,
                 onCanvasElementDragged: null,
                 onCanvasElementRotated: null,

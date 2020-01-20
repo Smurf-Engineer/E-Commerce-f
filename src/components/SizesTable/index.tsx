@@ -20,7 +20,7 @@ interface Props {
   table: SizesTableType
 }
 
-const staticSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl']
+const staticSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl']
 
 class SizesTable extends React.Component<Props, {}> {
   render() {
