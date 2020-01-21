@@ -32,9 +32,7 @@ import {
   Responsive,
   SimpleFont,
   UserInfo,
-  ModelVariant,
-  QueryProps,
-  ProAssistItem
+  ModelVariant
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -60,10 +58,6 @@ import messages from './messages'
 const SVG_FILE = 'image/svg+xml'
 const POSCRIPT_FILE = 'application/postscript'
 const PDF_FILE = 'application/pdf'
-
-interface ProAssistInfo extends QueryProps {
-  proAssist?: ProAssistItem
-}
 
 interface Props {
   colorBlock: number
@@ -115,8 +109,9 @@ interface Props {
   fonts: SimpleFont[]
   colorsList: any
   userEmail: string
+  name: string
   designId: string
-  proAssist: ProAssistInfo
+  proAssistId: string
   selectedVariant: number
   variants: ModelVariant[]
   placeholders: boolean
@@ -309,11 +304,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       responsive,
       handleOnGoBack,
       handleOnCloseInfo,
-      handleGetPro,
       userEmail,
+      name,
       designId,
       loggedUserId,
-      proAssist,
+      proAssistId,
       infoModalOpen,
       selectedTab,
       onTabClick,
@@ -435,8 +430,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               text,
               loggedUserId,
               designId,
-              proAssist,
+              proAssistId,
               userEmail,
+              name,
               colors,
               design,
               colorBlockHovered,

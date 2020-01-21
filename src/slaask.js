@@ -1,12 +1,13 @@
 import config from './config'
 import { LoadScripts } from './utils/scriptLoader'
 
-export async function initSlaask(info) {
+export function initSlaask(info) {
   const { id, name, email, designId, userId } = info
   window._slaaskSettings = {
     identify: () => ({
       id,
-      name,
+      name: `${name}-${id}`,
+      ticket: id,
       userId,
       email,
       designId
@@ -21,7 +22,7 @@ export async function initSlaask(info) {
     },
     key: config.slaaskApiKey
   }
-  await LoadScripts([
+  LoadScripts([
     { url: 'https://cdn.slaask.com/chat_loader.js', scriptId: 'slaask' }
   ])
 }

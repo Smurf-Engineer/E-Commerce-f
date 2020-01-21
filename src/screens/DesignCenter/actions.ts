@@ -72,7 +72,8 @@ import {
   ON_OPEN_COLOR_CHART,
   OPEN_DESIGN_CHECK_MODAL,
   ON_OPEN_COLOR_CHART_FORM,
-  SELECT_VARIANT
+  SELECT_VARIANT,
+  SET_TICKET
 } from './constants'
 import {
   AnyAction,
@@ -120,6 +121,11 @@ export const setHoverColorBlockAction = (index: number): AnyAction => ({
 export const setLoadingPro = (loading: boolean): AnyAction => ({
   type: SET_LOADING_PRO,
   loading
+})
+
+export const setTicketAction = (ticket: string): AnyAction => ({
+  type: SET_TICKET,
+  ticket
 })
 
 export const setColorAction = (color: string): AnyAction => ({

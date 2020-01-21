@@ -689,6 +689,7 @@
   "components.DesignCenterGrid.modalNewStyleConfirm": "Confirm",
   "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
   "screens.DesignCenter.title": "DesignCenter",
+  "screens.DesignCenter.loggedError": "You must be logged in.",
   "screens.DesignCenter.landscapeMessage": "Our design center is optimized for landscape mode, please rotate your device.",
   "screens.DesignCenter.inspirationTtitle": "VIEW MORE COLOR COMBOS",
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",

@@ -77,7 +77,8 @@ import {
   ON_OPEN_COLOR_CHART,
   ON_OPEN_COLOR_CHART_FORM,
   OPEN_DESIGN_CHECK_MODAL,
-  SELECT_VARIANT
+  SELECT_VARIANT,
+  SET_TICKET
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -159,6 +160,7 @@ export const initialState = fromJS({
   uploadingFile: false,
   images: [],
   searchClipParam: '',
+  ticket: '',
   savedDesign: {},
   selectedItem: {},
   infoModalOpen: false,
@@ -175,9 +177,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case CLEAR_STORE_ACTION:
       return initialState
     case SET_LOADING_PRO:
+      return state.set('loadingPro', action.loading)
+    case SET_TICKET:
       return state.merge({
-        loadingPro: action.loading,
-        designCheckModalOpen: action.loading
+        loadingPro: false,
+        designCheckModalOpen: false,
+        ticket: action.ticket
       })
     case SET_CURRENT_TAB_ACTION: {
       if (action.index === 2) {

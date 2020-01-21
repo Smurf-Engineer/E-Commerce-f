@@ -148,7 +148,8 @@ class Render3D extends PureComponent {
     scaleFactorX: 1,
     scaleFactorY: 1,
     isFirstAdd: true,
-    showHelpModal: true
+    showHelpModal: true,
+    openSlaask: true
   }
   canvasApplied = null
   dragComponent = null
@@ -172,9 +173,14 @@ class Render3D extends PureComponent {
       zipperColor,
       bibColor,
       loadingModel,
-      product: newProduct
+      product: newProduct,
+      proAssistId,
+      userEmail,
+      name,
+      designId,
+      loggedUserId
     } = nextProps
-
+    const { openSlaask } = this.state
     if (loadingModel) {
       return
     }
@@ -216,6 +222,20 @@ class Render3D extends PureComponent {
       this.clearScene()
       this.render3DModel(newProduct)
     }
+    if (openSlaask && proAssistId) {
+      if (typeof window.Intercom === 'function') {
+        window.Intercom('hide')
+        window.Intercom('update', { hide_default_launcher: true })
+      }
+      initSlaask({
+        id: proAssistId,
+        userId: loggedUserId,
+        email: userEmail,
+        designId,
+        name
+      })
+      this.setState({ openSlaask: false })
+    }
   }
 
   componentWillMount() {
@@ -224,7 +244,7 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { isEditing, design, proAssist, userEmail, designId, loggedUserId } = this.props
+    const { isEditing, design } = this.props
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CORNER_SIZE
@@ -310,19 +330,6 @@ class Render3D extends PureComponent {
 
     this.controls = controls
     this.start()
-    if (typeof window.Intercom === 'function') {
-      window.Intercom('hide')
-      window.Intercom('update', { hide_default_launcher: true })
-    }
-    const proAssistId = get(proAssist, 'proAssistData.proAssistId', '')
-    if (proAssistId) {
-      initSlaask({
-        id: proAssistId,
-        userId: loggedUserId,
-        email: userEmail,
-        designId
-      })
-    }
   }
 
   componentWillUnmount() {
@@ -1313,9 +1320,8 @@ class Render3D extends PureComponent {
       isMobile,
       openResetPlaceholderModal,
       currentStyle,
-      proAssist
+      proAssistId
     } = this.props
-    const proAssistId = get(proAssist, 'proAssistData.proAssistId', '')
     if (isMobile) {
       return (
         <MobileContainer>
@@ -1432,10 +1438,12 @@ class Render3D extends PureComponent {
           )}
         </Row>
         <ButtonWrapper>
-          {!proAssistId && <DesignCheckButton onClick={this.handleOnDesignCheck}>
-            <Icon src={checkBoxIcon} />
-            {formatMessage(messages.proAssist)}
-          </DesignCheckButton>}
+          {!proAssistId && (
+            <DesignCheckButton onClick={this.handleOnDesignCheck}>
+              <Icon src={checkBoxIcon} />
+              {formatMessage(messages.proAssist)}
+            </DesignCheckButton>
+          )}
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>

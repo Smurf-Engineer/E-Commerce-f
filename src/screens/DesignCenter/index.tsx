@@ -112,7 +112,6 @@ import moment from 'moment'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import clone from 'lodash/clone'
-import { initSlaask } from '../../slaask'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -200,6 +199,7 @@ interface Props extends RouteComponentProps<any> {
   navigation: any
   dataVariants: any
   loadingPro: boolean
+  ticket: string
   proAssist: ProAssistInfo
   openResetPlaceholderModal: boolean
   colorChartSending: boolean
@@ -275,6 +275,7 @@ interface Props extends RouteComponentProps<any> {
   ) => void
   editDesignAction: () => void
   setLoadingPro: (loading: boolean) => void
+  setTicketAction: (ticket: string) => void
   getProTicketAction: () => Promise<MessagePayload>
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
@@ -667,6 +668,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       designCheckModalOpen,
       loadingPro,
       dataDesignLabInfo,
+      ticket,
       proAssist
     } = this.props
 
@@ -752,6 +754,8 @@ export class DesignCenter extends React.Component<Props, {}> {
     const canvasJson = get(dataDesign, 'designData.canvas')
     const styleId = get(dataDesign, 'designData.styleId')
     const highResolution = get(dataDesign, 'designData.highResolution')
+    const proAssistId =
+      ticket || get(proAssist, 'proAssistData.proAssistId', '')
 
     let designObject = design
     if (canvasJson) {
@@ -944,7 +948,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   variants,
                   textFormat,
                   artFormat,
-                  proAssist,
+                  proAssistId,
                   openPaletteModalAction,
                   myPaletteModals,
                   openResetDesignModal,
@@ -989,6 +993,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 }}
                 designId={get(dataDesign, 'designData.shortId', '')}
                 userEmail={get(user, 'email', '')}
+                name={get(user, 'name', '')}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
                 saveAndBuy={get(layout, 'saveAndBuy', false)}
@@ -1219,28 +1224,25 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleGetPro = async () => {
-    const { getProTicketAction, setLoadingPro, user, dataDesign } = this.props
+    const {
+      getProTicketAction,
+      setLoadingPro,
+      user,
+      formatMessage,
+      setTicketAction
+    } = this.props
     if (user) {
       try {
         setLoadingPro(true)
         const response = await getProTicketAction()
-        const id = get(response, 'data.newProAssist.ticket', '')
-        const designId = get(dataDesign, 'designData.shortId', '')
-        const { id: userId, name, email } = user
-        const info = {
-          id,
-          name,
-          userId,
-          email,
-          designId
-        }
-        console.log('info:', info)
-        initSlaask(info)
+        const ticket = get(response, 'data.newProAssist.ticket', '')
+        setTicketAction(ticket)
       } catch (e) {
         Message.error(e)
-      } finally {
         setLoadingPro(false)
       }
+    } else {
+      Message.warning(formatMessage(messages.loggedError))
     }
   }
 

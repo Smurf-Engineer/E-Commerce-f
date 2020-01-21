@@ -15,10 +15,12 @@ import {
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
 import checkBoxIcon from '../../assets/checkbox.svg'
+import Spin from 'antd/lib/spin'
+import moment from 'moment'
+import { workingHours } from '../../screens/DesignCenter/constants'
 
 interface Props {
   visible: boolean
-  online: boolean
   loadingPro: boolean
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
@@ -31,11 +33,16 @@ export class DesignCheckModal extends React.Component<Props, {}> {
       formatMessage,
       visible,
       requestClose,
-      online,
       loadingPro,
       handleGetPro
     } = this.props
-
+    const { timeZone, start, end } = workingHours
+    const currentTime = moment().utcOffset(timeZone)
+    const startTime = moment(start, 'HH:mm:ss').utcOffset(timeZone, true)
+    const endTime = moment(end, 'HH:mm:ss').utcOffset(timeZone, true)
+    const online =
+      currentTime.isBetween(startTime, endTime, 'second') &&
+      currentTime.isoWeekday() < 7
     return (
       <Container>
         <CustomModal
@@ -60,7 +67,7 @@ export class DesignCheckModal extends React.Component<Props, {}> {
           />
           <ModalButtonsWrapper>
             {loadingPro ? (
-              <div>nigga you just asked me for my opinioonnnnndeeeuhhh</div>
+              <Spin size="large" />
             ) : (
               <ContinueButton key="review" onClick={handleGetPro}>
                 {formatMessage(messages.talkWithDesigner)}

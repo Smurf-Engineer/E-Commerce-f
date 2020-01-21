@@ -84,6 +84,7 @@ export const ON_OPEN_COLOR_CHART_FORM = `${namespace}/ON_OPEN_COLOR_CHART_FORM`
 export const SELECT_VARIANT = `${namespace}/SELECT_VARIANT`
 export const SET_LOADING_PRO = `${namespace}/SET_LOADING_PRO`
 export const OPEN_DESIGN_CHECK_MODAL = `${namespace}/OPEN_DESIGN_CHECK_MODAL`
+export const SET_TICKET = `${namespace}/SET_TICKET`
 
 export enum DesignTabs {
   ThemeTab = 0,
@@ -128,6 +129,12 @@ export enum AccessoryColors {
   Zipper = 'zipperColor',
   Bib = 'bibColor',
   Stitching = 'stitchingColor'
+}
+
+export const workingHours = {
+  start: '06:00:00',
+  end: '18:00:00',
+  timeZone: -480
 }
 
 export const ElementsToApplyScale = [CanvasElements.Image]
