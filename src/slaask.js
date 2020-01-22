@@ -14,7 +14,8 @@ export function initSlaask(info) {
       'User Locker': `${config.baseUrl}admin/users/${userId}`
     }),
     options: {
-      team_id: config.slaaskTeam
+      team_id: config.slaaskTeam,
+      pulse: true
     },
     onInit: _slaask => {
       _slaask.on('ready', () => {
