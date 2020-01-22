@@ -23,9 +23,13 @@ export function initSlaask(info) {
     },
     key: config.slaaskApiKey
   }
-  LoadScripts([
-    { url: 'https://cdn.slaask.com/chat_loader.js', scriptId: 'slaask' }
-  ])
+  if (window._slaask) {
+    window._slaask.identifyContact()
+  } else {
+    LoadScripts([
+      { url: 'https://cdn.slaask.com/chat_loader.js', scriptId: 'slaask' }
+    ])
+  }
 }
 
 export function closeSlaask() {
