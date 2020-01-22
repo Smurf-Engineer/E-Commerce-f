@@ -1370,7 +1370,10 @@ const DesignCenterEnhance = compose(
     },
     name: 'dataVariants'
   }),
-  graphql(getProAssist, { name: 'proAssist' }),
+  graphql(getProAssist, {
+    name: 'proAssist',
+    options: { fetchPolicy: 'network-only' }
+  }),
   graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(requestColorChartMutation, { name: 'requestColorChart' })
 )(DesignCenter)
