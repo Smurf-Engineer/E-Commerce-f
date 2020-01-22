@@ -67,7 +67,7 @@ export const MessageText = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
 `
 
 export const InputWrapper = styled.div`
@@ -93,4 +93,20 @@ export const StyledInput = styled(Input)`
   margin-top: 0px;
   border-radius: 0px;
   width: 100%;
+`
+
+export const BackLabel = styled.div`
+  height: 22px;
+  width: 203px;
+  cursor: pointer;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  margin-bottom: 15px;
+`
+export const BackText = styled.span`
+  display: inline-block;
+  margin-left: 6px;
 `

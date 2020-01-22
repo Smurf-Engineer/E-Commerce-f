@@ -8,6 +8,7 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
+import Icon from 'antd/lib/icon'
 import zenscroll from 'zenscroll'
 import * as myLockerActions from './actions'
 import messages from './messages'
@@ -31,7 +32,9 @@ import {
   MessageText,
   ConfirmMessage,
   InputWrapper,
-  StyledInput
+  StyledInput,
+  BackLabel,
+  BackText
 } from './styledComponents'
 import {
   DesignResultType,
@@ -57,6 +60,9 @@ interface Props {
   openAddToStoreModal: boolean
   teamStoreId: string
   savedDesignId: string
+  admin?: boolean
+  userId: string
+  userName: string
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   addItemToStore: () => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
@@ -73,6 +79,7 @@ interface Props {
   resetRenameDataAction: () => void
   onChangeDesignName: (name: string) => void
   setRenameModalLoadingAction: (loading: boolean) => void
+  onGoBack: (id: string) => void
 }
 
 export class MyLocker extends React.PureComponent<Props, {}> {
@@ -171,10 +178,15 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       offset: offsetProp,
       currentPage: pageProp,
       limit,
-      setDesignsData
+      setDesignsData,
+      user,
+      userId,
+      admin
     } = this.props
     let offset = offsetParam !== undefined ? offsetParam : offsetProp
     let currentPage = pageParam !== undefined ? pageParam : pageProp
+
+    const userShortId = admin ? userId : user.id
 
     if (!offsetParam && !pageParam) {
       const fullPage = !(offset % limit)
@@ -189,7 +201,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     try {
       const data = await query({
         query: desginsQuery,
-        variables: { limit, offset },
+        variables: { limit, offset, userId: userShortId },
         fetchPolicy: 'network-only'
       })
       setDesignsData(data, offset, currentPage)
@@ -212,7 +224,9 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
   cancelModal = () => {
     const { openAddToTeamStoreModalAction } = this.props
-    openAddToTeamStoreModalAction(false, '')
+    if (openAddToTeamStoreModalAction) {
+      openAddToTeamStoreModalAction(false, '')
+    }
   }
 
   handleOnOpenQuickView = (id: number, yotpoId: string) => {
@@ -254,12 +268,28 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     }
   }
 
+  handleOnGoBack = () => {
+    const { onGoBack } = this.props
+    onGoBack('')
+  }
+
   async componentDidMount() {
     const { setErrorAction } = this.props
     try {
       await this.fetchDesigns(0, 1)
     } catch (e) {
       setErrorAction(true)
+    }
+  }
+
+  async componentDidUpdate(prevProps: Props) {
+    const { userId, setErrorAction } = this.props
+    if (prevProps.userId !== userId) {
+      try {
+        await this.fetchDesigns(0, 1)
+      } catch (e) {
+        setErrorAction(true)
+      }
     }
   }
 
@@ -284,16 +314,19 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       setItemToAddAction,
       addItemToStore,
       openAddToTeamStoreModalAction,
-      deleteModal: { modalLoading, openDeleteModal, designName },
+      deleteModal: { modalLoading = false, openDeleteModal, designName },
       renameModal: {
-        modalLoading: renameModalLoading,
+        modalLoading: renameModalLoading = false,
         openRenameModal,
         designName: designToRename,
         newName
-      }
+      },
+      admin = false,
+      userName
     } = this.props
 
     let alternativeContent = null
+
     if (loading) {
       alternativeContent = (
         <LoadingContainer>
@@ -320,7 +353,17 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
-        <MessageText>{formatMessage(messages.message)}</MessageText>
+        {admin && (
+          <BackLabel onClick={this.handleOnGoBack}>
+            <Icon type="left" />
+            <BackText>{formatMessage(messages.backToList)}</BackText>
+          </BackLabel>
+        )}
+        <MessageText>
+          {admin
+            ? formatMessage(messages.userLocker, { userName })
+            : formatMessage(messages.message)}
+        </MessageText>
         {alternativeContent}
         <PaginationRow>
           <ProductList
@@ -336,6 +379,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             onPressRename={this.handleOnPressRename}
             openQuickView={this.handleOnOpenQuickView}
             designs={designs}
+            previewOnly={!!admin}
           />
           <Pagination
             current={currentPage}
@@ -426,10 +470,7 @@ const mapStateToProps = (state: any) => {
 
 const MyLockerEnhance = compose(
   withApollo,
-  connect(
-    mapStateToProps,
-    { ...myLockerActions }
-  )
+  connect(mapStateToProps, { ...myLockerActions })
 )(MyLocker)
 
 export default MyLockerEnhance

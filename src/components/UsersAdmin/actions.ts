@@ -7,7 +7,8 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_ORDER_ID,
-  SET_SEARCH_TEXT
+  SET_SEARCH_TEXT,
+  ON_SELECT_USER
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -35,4 +36,10 @@ export const setOrderIdAction = (orderId: string): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const onSelectUserAction = (id: number, name: string) => ({
+  type: ON_SELECT_USER,
+  id,
+  name
 })

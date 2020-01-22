@@ -457,7 +457,6 @@ class Render3D extends PureComponent {
         const { brandingPng, fullColors: colors } = design
 
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
-        console.log(product)
         if (!!zipper) {
           const { white, black } = zipper
           this.zipper = {}
@@ -661,13 +660,11 @@ class Render3D extends PureComponent {
             children[bindingIndex].material = bindingMaterial
             this.setState({ bindingIndex })
           }
-          console.log(this.bibBrace, 'wipa ')
 
           /* Bib Brace */
           if (!!this.bibBrace) {
             const color =
               (isEditing && accessoriesColor.bibBraceColor) || bibColor
-            console.log(bibColor)
             const bibBraceIndex = getMeshIndex(BIB_BRACE)
             const bibBraceMaterial = new THREE.MeshPhongMaterial({
               map: this.bibBrace[color]
@@ -825,6 +822,7 @@ class Render3D extends PureComponent {
 
   cameraUpdate = ({ x, y, z }) => {
     if (this.camera) {
+      this.camera.zoom = INITIAL_ZOOM
       this.camera.position.set(x, y, z)
       this.controls.target.set(0, 0, 0)
       this.controls.update()
@@ -2246,11 +2244,7 @@ class Render3D extends PureComponent {
     return size
   }
   setFrontFaceModel = () => {
-    if (this.camera) {
-      const { x, y, z } = viewPositions[2]
-      this.camera.position.set(x, y, z)
-      this.controls.update()
-    }
+    this.cameraUpdate(viewPositions[2])
   }
 
   takeScreenshot = () =>

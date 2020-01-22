@@ -6,15 +6,19 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { getUsersQuery } from './UsersList/data'
+import SwipeableViews from 'react-swipeable-views'
 import { FormattedMessage } from 'react-intl'
 import { setAdminUserMutation } from './data'
 import { USERS_LIMIT } from './constants'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 import * as UsersAdminActions from './actions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './UsersList'
 import messages from './messages'
 import message from 'antd/lib/message'
 import { sorts } from '../../types/common'
+import MyLocker from '../MyLocker'
 
 interface Props {
   history: any
@@ -22,6 +26,8 @@ interface Props {
   orderBy: string
   sort: sorts
   searchText: string
+  userId: string
+  userName: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -29,6 +35,7 @@ interface Props {
   setOrderIdAction: (orderId: string) => void
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
+  onSelectUserAction: (id: string, name: string) => void
 }
 interface StateProps {
   searchValue: string
@@ -44,31 +51,67 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       searchValue: ''
     }
   }
+  async componentDidMount() {
+    await LoadScripts(threeDScripts)
+  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
   }
 
   render() {
-    const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
+    const {
+      currentPage,
+      orderBy,
+      sort,
+      formatMessage,
+      searchText,
+      history,
+      userId,
+      onSelectUserAction,
+      userName
+    } = this.props
 
     return (
       <Container>
-        <ScreenTitle>
-          <FormattedMessage {...messages.title} />
-        </ScreenTitle>
-        <SearchInput
-          value={this.state.searchValue}
-          onChange={this.handleInputChange}
-          placeholder={formatMessage(messages.search)}
-        />
-        <List
-          {...{ formatMessage, currentPage, orderBy, sort, searchText }}
-          onSortClick={this.handleOnSortClick}
-          onChangePage={this.handleOnChangePage}
-          interactiveHeaders={true}
-          onSetAdministrator={this.handleOnSetAdministrator}
-        />
+        <SwipeableViews disabled={true} index={userId.length ? 1 : 0}>
+          <div>
+            <ScreenTitle>
+              <FormattedMessage {...messages.title} />
+            </ScreenTitle>
+            <SearchInput
+              value={this.state.searchValue}
+              onChange={this.handleInputChange}
+              placeholder={formatMessage(messages.search)}
+            />
+            <List
+              {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+              onSortClick={this.handleOnSortClick}
+              onChangePage={this.handleOnChangePage}
+              interactiveHeaders={true}
+              onSetAdministrator={this.handleOnSetAdministrator}
+              onSelectUser={onSelectUserAction}
+            />
+          </div>
+          <MyLocker
+            {...{
+              setCurrentShare: null,
+              openQuickView: null,
+              formatMessage,
+              history,
+              teamStoreId: null,
+              savedDesignId: null,
+              setItemToAddAction: null,
+              openAddToTeamStoreModalAction: null,
+              addItemToStore: null,
+              userId,
+              userName
+            }}
+            openAddToStoreModal={false}
+            onGoBack={onSelectUserAction}
+            admin={true}
+          />
+        </SwipeableViews>
       </Container>
     )
   }
@@ -126,10 +169,7 @@ const mapStateToProps = (state: any) => state.get('usersAdmin').toJS()
 
 const UsersAdminEnhance = compose(
   setAdminUserMutation,
-  connect(
-    mapStateToProps,
-    { ...UsersAdminActions }
-  )
+  connect(mapStateToProps, { ...UsersAdminActions })
 )(UsersAdmin)
 
 export default UsersAdminEnhance

@@ -37,6 +37,7 @@ interface Props {
   onSortClick: (label: string, sort: sorts) => void
   onChangePage: (page: number) => void
   onSetAdministrator: (id: number) => void
+  onSelectUser: (id: string, name: string) => void
 }
 
 const UsersList = ({
@@ -50,7 +51,8 @@ const UsersList = ({
   onChangePage,
   withPagination = true,
   withoutPadding = false,
-  onSetAdministrator
+  onSetAdministrator,
+  onSelectUser
 }: Props) => {
   const users = get(usersQuery, 'users', []) as User[]
   const fullCount = get(usersQuery, 'fullCount', 0)
@@ -126,7 +128,8 @@ const UsersList = ({
         lastName,
         socialMethod,
         administrator,
-        netsuiteId = ''
+        netsuiteId = '',
+        shortId
       }: User,
       index: number
     ) => {
@@ -141,7 +144,9 @@ const UsersList = ({
             socialMethod,
             administrator,
             onSetAdministrator,
-            netsuiteId
+            onSelectUser,
+            netsuiteId,
+            shortId
           }}
         />
       )
