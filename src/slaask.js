@@ -10,7 +10,8 @@ export function initSlaask(info) {
       ticket: id,
       userId,
       email,
-      designId
+      designId,
+      'User Locker': `${config.baseUrl}admin/users/${userId}`
     }),
     options: {
       team_id: config.slaaskTeam
