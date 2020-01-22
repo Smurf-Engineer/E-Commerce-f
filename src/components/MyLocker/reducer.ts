@@ -38,7 +38,8 @@ export const initialState = fromJS({
     currentDesignName: '',
     modalLoading: false,
     newName: ''
-  }
+  },
+  userName: ''
 })
 
 const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -52,12 +53,13 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
     case SET_DESIGNS_DATA: {
       const {
         data: {
-          designs: { designs, fullCount }
+          designs: { designs, fullCount, userName = '' }
         }
       } = action.data
       return state.merge({
         designs,
         fullCount,
+        userName,
         offset: action.offset,
         currentPage: action.page,
         loading: false

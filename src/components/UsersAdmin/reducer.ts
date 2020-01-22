@@ -8,8 +8,7 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_ORDER_ID,
-  SET_SEARCH_TEXT,
-  ON_SELECT_USER
+  SET_SEARCH_TEXT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -18,9 +17,7 @@ export const initialState = fromJS({
   orderBy: 'id',
   sort: 'desc',
   orderId: '',
-  searchText: '',
-  userId: '',
-  userName: ''
+  searchText: ''
 })
 
 const orderHistoryAdminReducer: Reducer<any> = (
@@ -38,10 +35,6 @@ const orderHistoryAdminReducer: Reducer<any> = (
       return initialState
     case SET_SEARCH_TEXT:
       return state.merge({ searchText: action.searchText, currentPage: 1 })
-    case ON_SELECT_USER: {
-      const { id, name } = action
-      return state.merge({ userId: id, userName: name })
-    }
     default:
       return state
   }

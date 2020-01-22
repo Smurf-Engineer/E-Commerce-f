@@ -6,7 +6,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { getUsersQuery } from './UsersList/data'
-import SwipeableViews from 'react-swipeable-views'
+import { Route } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { setAdminUserMutation } from './data'
 import { USERS_LIMIT } from './constants'
@@ -18,7 +18,7 @@ import List from './UsersList'
 import messages from './messages'
 import message from 'antd/lib/message'
 import { sorts } from '../../types/common'
-import MyLocker from '../MyLocker'
+import Options from './Options'
 
 interface Props {
   history: any
@@ -26,8 +26,6 @@ interface Props {
   orderBy: string
   sort: sorts
   searchText: string
-  userId: string
-  userName: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -35,7 +33,6 @@ interface Props {
   setOrderIdAction: (orderId: string) => void
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
-  onSelectUserAction: (id: string, name: string) => void
 }
 interface StateProps {
   searchValue: string
@@ -58,6 +55,10 @@ class UsersAdmin extends React.Component<Props, StateProps> {
     const { resetDataAction } = this.props
     resetDataAction()
   }
+  handleOnSelectUser = (id: string) => {
+    const { history } = this.props
+    history.push(`/admin/users/${id}`)
+  }
 
   render() {
     const {
@@ -66,52 +67,48 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       sort,
       formatMessage,
       searchText,
-      history,
-      userId,
-      onSelectUserAction,
-      userName
+      history
     } = this.props
 
     return (
       <Container>
-        <SwipeableViews disabled={true} index={userId.length ? 1 : 0}>
-          <div>
-            <ScreenTitle>
-              <FormattedMessage {...messages.title} />
-            </ScreenTitle>
-            <SearchInput
-              value={this.state.searchValue}
-              onChange={this.handleInputChange}
-              placeholder={formatMessage(messages.search)}
-            />
-            <List
-              {...{ formatMessage, currentPage, orderBy, sort, searchText }}
-              onSortClick={this.handleOnSortClick}
-              onChangePage={this.handleOnChangePage}
-              interactiveHeaders={true}
-              onSetAdministrator={this.handleOnSetAdministrator}
-              onSelectUser={onSelectUserAction}
-            />
-          </div>
-          <MyLocker
-            {...{
-              setCurrentShare: null,
-              openQuickView: null,
-              formatMessage,
-              history,
-              teamStoreId: null,
-              savedDesignId: null,
-              setItemToAddAction: null,
-              openAddToTeamStoreModalAction: null,
-              addItemToStore: null,
-              userId,
-              userName
-            }}
-            openAddToStoreModal={false}
-            onGoBack={onSelectUserAction}
-            admin={true}
-          />
-        </SwipeableViews>
+        <Route
+          path="/admin/users"
+          exact={true}
+          render={() => (
+            <div>
+              <ScreenTitle>
+                <FormattedMessage {...messages.title} />
+              </ScreenTitle>
+              <SearchInput
+                value={this.state.searchValue}
+                onChange={this.handleInputChange}
+                placeholder={formatMessage(messages.search)}
+              />
+              <List
+                {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+                onSortClick={this.handleOnSortClick}
+                onChangePage={this.handleOnChangePage}
+                interactiveHeaders={true}
+                onSetAdministrator={this.handleOnSetAdministrator}
+                onSelectUser={this.handleOnSelectUser}
+              />
+            </div>
+          )}
+        />
+        <Route
+          path="/admin/users/:id"
+          render={() => (
+            <div>
+              <Options
+                {...{
+                  formatMessage,
+                  history
+                }}
+              />
+            </div>
+          )}
+        />
       </Container>
     )
   }

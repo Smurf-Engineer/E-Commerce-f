@@ -68,7 +68,7 @@ export default defineMessages({
   },
   userLocker: {
     id: 'components.MyLocker.userLocker',
-    defaultMessage: '{userName}´s Locker'
+    defaultMessage: '{userName} Locker'
   },
   backToList: {
     id: 'components.MyLocker.backToList',

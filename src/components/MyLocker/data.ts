@@ -7,6 +7,7 @@ export const desginsQuery = gql`
   query GetDesigns($limit: Int, $offset: Int, $userId: String) {
     designs: myDesigns(limit: $limit, offset: $offset, userId: $userId) {
       fullCount
+      userName
       designs {
         id
         code
