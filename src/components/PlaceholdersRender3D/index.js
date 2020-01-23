@@ -457,7 +457,6 @@ class Render3D extends PureComponent {
         const { brandingPng, fullColors: colors } = design
 
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
-        console.log(product)
         if (!!zipper) {
           const { white, black } = zipper
           this.zipper = {}
@@ -661,13 +660,11 @@ class Render3D extends PureComponent {
             children[bindingIndex].material = bindingMaterial
             this.setState({ bindingIndex })
           }
-          console.log(this.bibBrace, 'wipa ')
 
           /* Bib Brace */
           if (!!this.bibBrace) {
             const color =
               (isEditing && accessoriesColor.bibBraceColor) || bibColor
-            console.log(bibColor)
             const bibBraceIndex = getMeshIndex(BIB_BRACE)
             const bibBraceMaterial = new THREE.MeshPhongMaterial({
               map: this.bibBrace[color]
