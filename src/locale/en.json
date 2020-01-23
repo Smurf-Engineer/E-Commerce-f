@@ -812,7 +812,7 @@
   "components.ImageItem.delete": "Delete",
   "components.ImagesList.emptyImages": "No files, yet",
   "components.MyFiles.emptyPalettes": "No palettes, yet",
-  "components.MyFiles.message": "These are the design assets that you have used or uploaded. You will be able to access them from within the design application, after selecting a product.",
+  "components.MyFiles.message": "These are the design assets that you have created or uploaded. You will be able to access them from within the design application, after selecting a product.",
   "components.MyFiles.myPalettes": "My Palettes",
   "components.MyFiles.uploadedImages": "Uploaded Files",
   "components.MyFiles.modalTitle": "ARE YOU SURE?",

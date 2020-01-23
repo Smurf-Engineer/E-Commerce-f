@@ -2,7 +2,7 @@ import config from './config'
 import { LoadScripts } from './utils/scriptLoader'
 
 export function initSlaask(info) {
-  const { id, name, email, designId, userId } = info
+  const { id, name, lastName, email, userId } = info
   window._slaaskSettings = {
     identify: () => ({
       id,
@@ -10,8 +10,9 @@ export function initSlaask(info) {
       ticket: id,
       userId,
       email,
-      designId,
-      'User Locker': `${config.baseUrl}admin/users/${userId}`
+      'User Locker': `${config.baseUrl}admin/users/${userId}`,
+      'First Name': name,
+      'Last Name': lastName
     }),
     options: {
       team_id: config.slaaskTeam,

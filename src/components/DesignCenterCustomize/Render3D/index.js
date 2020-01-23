@@ -177,6 +177,7 @@ class Render3D extends PureComponent {
       proAssistId,
       userEmail,
       name,
+      lastName,
       designId,
       loggedUserId
     } = nextProps
@@ -232,6 +233,7 @@ class Render3D extends PureComponent {
         userId: loggedUserId,
         email: userEmail,
         designId,
+        lastName,
         name
       })
       this.setState({ openSlaask: false })

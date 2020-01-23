@@ -110,6 +110,7 @@ interface Props {
   colorsList: any
   userEmail: string
   name: string
+  lastName: string
   designId: string
   proAssistId: string
   selectedVariant: number
@@ -306,6 +307,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       handleOnCloseInfo,
       userEmail,
       name,
+      lastName,
       designId,
       loggedUserId,
       proAssistId,
@@ -433,6 +435,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               proAssistId,
               userEmail,
               name,
+              lastName,
               colors,
               design,
               colorBlockHovered,

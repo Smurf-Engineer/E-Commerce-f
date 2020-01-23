@@ -994,6 +994,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 designId={get(dataDesign, 'designData.shortId', '')}
                 userEmail={get(user, 'email', '')}
                 name={get(user, 'name', '')}
+                lastName={get(user, 'lastName', '')}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
                 saveAndBuy={get(layout, 'saveAndBuy', false)}
