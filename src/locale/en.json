@@ -667,6 +667,8 @@
   "components.MyLocker.titleDeleteModal": "Are you sure?",
   "components.MyLocker.messageDeleteModal": "\"{designName}\" will be deleted from your locker",
   "components.MyLocker.designOnCartError": "You cannot delete designs that are on your cart",
+  "components.MyLocker.userLocker": "{userName} Locker",
+  "components.MyLocker.backToList": "Back to User List",
   "components.UploadTab.title": "Upload Logo and Images",
   "components.UploadTab.imageExtensionError": "Oh no! Your file has to be an eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd",
   "components.UploadTab.imageSizeError": "Oh no! Max file size is limited to 20MB",
@@ -1413,5 +1415,14 @@
   "screens.PublishingTool.Design.exportColors": "Export colors",
   "screens.PublishingTool.Design.importColors": "Import colors",
   "screens.PublishingTool.Design.errorFile": "Error reading file",
-  "screens.PublishingTool.Design.wrongFormat": "Wrong format on JSON file"
+  "screens.PublishingTool.Design.wrongFormat": "Wrong format on JSON file",
+  "components.ProAssist.OrdersList.ticketNo": "Ticket No.",
+  "components.ProAssist.OrdersList.clientId": "Client ID",
+  "components.ProAssist.OrdersList.user": "User",
+  "components.ProAssist.OrdersList.date": "Date",
+  "components.ProAssist.OrdersList.status": "Status",
+  "components.ProAssist.OrdersList.emptyMessage": "No orders yet",
+  "components.ProAssist.title": "Pro Assist Designs",
+  "components.ProAssist.search": "Search for a User Name or Ticket No.",
+  "components.ProAssist.unexpectedError": "Oops! Something went wrong."
 }

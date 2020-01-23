@@ -3,7 +3,7 @@
  */
 import styled, { keyframes } from 'styled-components'
 import Input from 'antd/lib/input'
-import { BLUE, BLUE_SHADOW } from '../../theme/colors'
+import { BLUE, BLUE_SHADOW, GRAY_DARK, WHITE } from '../../theme/colors'
 
 export const fadeIn = keyframes`
   to {
@@ -27,7 +27,7 @@ export const LoadingContainer = styled.div`
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const PaginationRow = styled.div`
@@ -41,7 +41,7 @@ export const PaginationRow = styled.div`
 `
 
 export const TitleError = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -55,7 +55,7 @@ export const MessageError = styled.div`
 `
 
 export const ConfirmMessage = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -63,7 +63,7 @@ export const ConfirmMessage = styled.div`
 
 export const MessageText = styled.div`
   max-width: 500px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -99,7 +99,7 @@ export const BackLabel = styled.div`
   height: 22px;
   width: 203px;
   cursor: pointer;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;

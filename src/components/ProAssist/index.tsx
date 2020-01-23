@@ -11,7 +11,7 @@ import * as ProAssistActions from './actions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
-import { sorts } from '../../types/common'
+import { sorts, Message } from '../../types/common'
 
 interface Props {
   history: any
@@ -19,11 +19,10 @@ interface Props {
   orderBy: string
   sort: sorts
   searchText: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setOrderIdAction: (orderId: string) => void
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
 }
