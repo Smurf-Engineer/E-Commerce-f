@@ -2,10 +2,11 @@
  * Styled Components - Created by eduardoquintero on 21/01/20.
  */
 import styled from 'styled-components'
+import { GRAY_DARK } from '../../../theme/colors'
 
 export const MessageText = styled.div`
   max-width: 500px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;

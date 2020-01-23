@@ -6,7 +6,6 @@ import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
   RESET_DATA,
-  SET_ORDER_ID,
   SET_SEARCH_TEXT
 } from './constants'
 
@@ -25,11 +24,6 @@ export const setCurrentPageAction = (page: number): AnyAction => ({
 
 export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
-})
-
-export const setOrderIdAction = (orderId: string): AnyAction => ({
-  type: SET_ORDER_ID,
-  orderId
 })
 
 export const setSearchTextAction = (searchText: string) => ({

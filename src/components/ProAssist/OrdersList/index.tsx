@@ -11,7 +11,7 @@ import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import { ORDERS_LIMIT } from '../constants'
 import EmptyContainer from '../../EmptyContainer'
-import { sorts, QueryProps, ProAssist } from '../../../types/common'
+import { sorts, QueryProps, ProAssist, Message } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getProAssistQuery } from './data'
@@ -26,7 +26,7 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   currentPage: number
   orderBy: string
   sort: sorts
