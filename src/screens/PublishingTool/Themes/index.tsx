@@ -228,7 +228,10 @@ export class Themes extends React.Component<Props, {}> {
         label = '',
         flatlock = '',
         bumpMap = '',
-        themes = []
+        themes = [],
+        bibBrace,
+        binding,
+        zipper
       } = productData.product
       const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
       const currentTheme = themes[themeIndex] || {}
@@ -262,7 +265,10 @@ export class Themes extends React.Component<Props, {}> {
         bumpMap,
         areasSvg,
         areasPng,
-        size
+        size,
+        bibBrace,
+        binding,
+        zipper
       }
       const design = {
         name,
