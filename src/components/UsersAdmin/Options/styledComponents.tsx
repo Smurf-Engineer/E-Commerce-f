@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Radio from 'antd/lib/radio'
-import { WHITE } from '../../../theme/colors'
+import { WHITE, GRAY_DARK } from '../../../theme/colors'
 const RadioButtonComponent = Radio.Button
 
 export const RadioButton = styled(RadioButtonComponent)`
@@ -23,7 +23,7 @@ export const BackLabel = styled.div`
   height: 22px;
   width: 203px;
   cursor: pointer;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
