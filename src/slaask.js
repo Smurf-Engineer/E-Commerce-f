@@ -6,7 +6,7 @@ export function initSlaask(info) {
   window._slaaskSettings = {
     identify: () => ({
       id,
-      name: `${name}-${id}`,
+      name: `JV2-PRO ASSIST-${id}`,
       ticket: id,
       userId,
       email,
