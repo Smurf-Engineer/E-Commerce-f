@@ -1413,5 +1413,14 @@
   "screens.PublishingTool.Design.exportColors": "Export colors",
   "screens.PublishingTool.Design.importColors": "Import colors",
   "screens.PublishingTool.Design.errorFile": "Error reading file",
-  "screens.PublishingTool.Design.wrongFormat": "Wrong format on JSON file"
+  "screens.PublishingTool.Design.wrongFormat": "Wrong format on JSON file",
+  "components.ProAssist.OrdersList.ticketNo": "Ticket No.",
+  "components.ProAssist.OrdersList.clientId": "Client ID",
+  "components.ProAssist.OrdersList.user": "User",
+  "components.ProAssist.OrdersList.date": "Date",
+  "components.ProAssist.OrdersList.status": "Status",
+  "components.ProAssist.OrdersList.emptyMessage": "No orders yet",
+  "components.ProAssist.title": "Pro Assist Designs",
+  "components.ProAssist.search": "Search for a User Name or Ticket No.",
+  "components.ProAssist.unexpectedError": "Oops! Something went wrong."
 }
