@@ -8,25 +8,27 @@ export default defineMessages({
   reviewDesignModalText: {
     id: 'components.DesignCheckModal.reviewDesignModalText',
     defaultMessage: `
-    <p class=\"important\">For an additional charge of $15.00, 
-    your order will be reviewed by a Pro Designer at Jakroo.</p>
-    <p><strong>Services included:</strong><p/>
+    <p><strong>SERVICES INCLUDE</strong></p>
     <ul>
-      <li>- Color consistency throughout design and ordered products. </li>
-      <li>- Center alignment and adjustment to graphics/text. </li >
-      <li>- Resolution quality review for any uploaded raster images. </li>
-      <li>- Any other unforeseen potential issues. </li>
+      <li>Minor logo adjustments (add/remove tag line, remove background, check color consistency)</li>
+      <li>Color consistency across graphics and multiple products</li >
+      <li>Logo and Text alignment</li>
+      <li>Resolution quality review for uploaded raster images</li>
+      <li>Review for any other unforeseen potential issues</li>
     </ul>
+    <p><i>*The basic ProAssist service is free of charge. However, requests for 
+    advanced artwork adjustments may require a small fee. Your Designer 
+    will advise you in advance in such cases.</i></p>
 `
   },
   proDesignerReviewLabel: {
     id: 'components.DesignCheckModal.proDesignerReviewLabel',
-    defaultMessage: 'PRO ASSIST'
+    defaultMessage: 'CHAT WITH A PRO DESIGNER'
   },
   helpLabel: {
     id: 'components.DesignCheckModal.helpLabel',
     defaultMessage:
-      '<strong>Having some trouble? We´re here to help!</strong> It´s important to us that every design turns perfect.'
+      '<p>Having some trouble getting your design just right? </p><strong>We´re here to help!</strong> It´s important to us that every design turns out great.'
   },
   optionalLabel: {
     id: 'components.DesignCheckModal.optionalLabel',
@@ -42,7 +44,7 @@ export default defineMessages({
   },
   talkWithDesigner: {
     id: 'components.DesignCheckModal.talkWithDesigner',
-    defaultMessage: 'TALK WITH A DESIGNER NOW'
+    defaultMessage: 'CHAT WITH A DESIGNER NOW'
   },
   online: {
     id: 'components.DesignCheckModal.online',

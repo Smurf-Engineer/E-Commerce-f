@@ -27,6 +27,7 @@ import {
   TutorialButton,
   TutorialIcon,
   DragText,
+  ProAssistText,
   ViewControls,
   ViewButton,
   ButtonWrapper,
@@ -125,7 +126,7 @@ import hintImg from '../../../assets/designCenterhelpHint.jpg'
 import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
 import config from '../../../config'
-import checkBoxIcon from '../../../assets/checkbox.svg'
+import PROAssistButton from '../../../assets/PROAssist-button.svg'
 import { initSlaask, closeSlaask } from '../../../slaask'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
@@ -1442,8 +1443,15 @@ class Render3D extends PureComponent {
         <ButtonWrapper>
           {!proAssistId && (
             <DesignCheckButton onClick={this.handleOnDesignCheck}>
-              <Icon src={checkBoxIcon} />
-              {formatMessage(messages.proAssist)}
+              <Icon src={PROAssistButton} />
+              <ProAssistText>
+                <FormattedMessage
+                  {...messages.proAssist}
+                  values={{
+                    proLabel: <b>{formatMessage(messages.proLabel)}</b>
+                  }}
+                />
+              </ProAssistText>
             </DesignCheckButton>
           )}
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>

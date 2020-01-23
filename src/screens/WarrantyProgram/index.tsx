@@ -586,10 +586,7 @@ const mapStateToProps = (state: any) => {
 const WarrantyProgramEnhance = compose(
   injectIntl,
   requestWarrantyMutation,
-  connect(
-    mapStateToProps,
-    { ...warrantyProgramActions }
-  )
+  connect(mapStateToProps, { ...warrantyProgramActions })
 )(WarrantyProgram)
 
 export default WarrantyProgramEnhance

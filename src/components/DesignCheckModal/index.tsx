@@ -11,10 +11,15 @@ import {
   ModalButtonsWrapper,
   ContinueButton,
   Icon,
-  StatusLabel
+  StatusLabel,
+  RightTitle,
+  Content,
+  DesignImage
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
-import checkBoxIcon from '../../assets/checkbox.svg'
+import ProAssistLogo from '../../assets/ProAssist-logo.svg'
+import ProAssistChat from '../../assets/PROAssist-2.svg'
+import designerImage from '../../assets/designer-guy.jpg'
 import Spin from 'antd/lib/spin'
 import moment from 'moment'
 import { workingHours } from '../../screens/DesignCenter/constants'
@@ -48,28 +53,39 @@ export class DesignCheckModal extends React.Component<Props, {}> {
         <CustomModal
           open={visible}
           withLogo={false}
-          width={'684px'}
+          width={'828px'}
           requestClose={requestClose}
         >
           <ProReviewTitle>
-            {formatMessage(messages.proDesignerReviewLabel)}
-            <Icon src={checkBoxIcon} />
+            <Icon src={ProAssistLogo} />
+            <RightTitle>
+              <Icon src={ProAssistChat} />
+              {formatMessage(messages.proDesignerReviewLabel)}
+            </RightTitle>
           </ProReviewTitle>
           <Paragraph
             dangerouslySetInnerHTML={{
               __html: formatMessage(messages.helpLabel)
             }}
           />
-          <ProDesignReviewContent
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.reviewDesignModalText)
-            }}
-          />
+          <Content>
+            <DesignImage src={designerImage} />
+            <ProDesignReviewContent
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.reviewDesignModalText)
+              }}
+            />
+          </Content>
+
           <ModalButtonsWrapper>
             {loadingPro ? (
               <Spin size="large" />
             ) : (
-              <ContinueButton key="review" onClick={handleGetPro}>
+              <ContinueButton
+                key="review"
+                disabled={!online}
+                onClick={handleGetPro}
+              >
                 {formatMessage(messages.talkWithDesigner)}
               </ContinueButton>
             )}

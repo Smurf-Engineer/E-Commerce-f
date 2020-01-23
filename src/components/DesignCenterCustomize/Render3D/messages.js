@@ -91,6 +91,10 @@ export default defineMessages({
   },
   proAssist: {
     id: 'components.Render3D.proAssist',
-    defaultMessage: 'Pro Assist'
+    defaultMessage: '{proLabel} ASSIST'
+  },
+  proLabel: {
+    id: 'components.Render3D.proLabel',
+    defaultMessage: 'PRO'
   }
 })
