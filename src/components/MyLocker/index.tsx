@@ -8,7 +8,6 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
-import Icon from 'antd/lib/icon'
 import zenscroll from 'zenscroll'
 import * as myLockerActions from './actions'
 import messages from './messages'
@@ -32,9 +31,7 @@ import {
   MessageText,
   ConfirmMessage,
   InputWrapper,
-  StyledInput,
-  BackLabel,
-  BackText
+  StyledInput
 } from './styledComponents'
 import {
   DesignResultType,
@@ -353,12 +350,6 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
-        {admin && (
-          <BackLabel onClick={this.handleOnGoBack}>
-            <Icon type="left" />
-            <BackText>{formatMessage(messages.backToList)}</BackText>
-          </BackLabel>
-        )}
         <MessageText>
           {admin
             ? formatMessage(messages.userLocker, { userName })

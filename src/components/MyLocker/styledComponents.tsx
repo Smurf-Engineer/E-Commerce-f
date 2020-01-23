@@ -94,19 +94,3 @@ export const StyledInput = styled(Input)`
   border-radius: 0px;
   width: 100%;
 `
-
-export const BackLabel = styled.div`
-  height: 22px;
-  width: 203px;
-  cursor: pointer;
-  color: #5f6062;
-  font-family: 'Avenir Next';
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 22px;
-  margin-bottom: 15px;
-`
-export const BackText = styled.span`
-  display: inline-block;
-  margin-left: 6px;
-`

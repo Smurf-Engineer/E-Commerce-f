@@ -26,6 +26,7 @@ interface Props {
   orderBy: string
   sort: sorts
   searchText: string
+  showLocker: boolean
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -33,6 +34,7 @@ interface Props {
   setOrderIdAction: (orderId: string) => void
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
+  onChangeSectionAction: (section: boolean) => void
 }
 interface StateProps {
   searchValue: string
@@ -67,7 +69,9 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       sort,
       formatMessage,
       searchText,
-      history
+      history,
+      showLocker,
+      onChangeSectionAction
     } = this.props
 
     return (
@@ -103,8 +107,10 @@ class UsersAdmin extends React.Component<Props, StateProps> {
               <Options
                 {...{
                   formatMessage,
-                  history
+                  history,
+                  showLocker
                 }}
+                onChangeSection={onChangeSectionAction}
               />
             </div>
           )}
