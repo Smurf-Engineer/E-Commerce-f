@@ -660,7 +660,6 @@ class Render3D extends PureComponent {
             children[bindingIndex].material = bindingMaterial
             this.setState({ bindingIndex })
           }
-
           /* Bib Brace */
           if (!!this.bibBrace) {
             const color =
