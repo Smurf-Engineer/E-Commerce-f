@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.ProAssist.title',
-    defaultMessage: 'Pro Assist Order'
+    defaultMessage: 'Pro Assist Designs'
   },
   search: {
     id: 'components.ProAssist.search',
