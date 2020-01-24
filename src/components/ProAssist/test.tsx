@@ -119,7 +119,7 @@ describe(' DiscountsAdmin Screen', () => {
     })
     describe('SET_SEARCH_TEXT', () => {
       describe('Search text', () => {
-        it('Handles undefined value in currentPage', () => {
+        it('Handles undefined value in searchText', () => {
           const customInitialValue = initialState.get('searchText')
           expect(customInitialValue).not.toBeUndefined()
         })
