@@ -96,7 +96,6 @@ export const ModalButtonsWrapper = styled.div`
 
 export const ContinueButton = styled(Button)`
   height: 50px;
-  width: 221px;
   border: 2px solid ${GREEN_BRIGHT};
   border-radius: 2px;
   color: ${GREEN_BRIGHT};
