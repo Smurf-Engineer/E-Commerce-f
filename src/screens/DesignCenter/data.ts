@@ -174,6 +174,11 @@ export const getDesignLabInfo = gql`
     designInfo: getDesignLabInfo(onlyData: false) {
       deliveryDays: delivery_days
       tutorialPlaylist: tutorial_playlist
+      workingHours {
+        start
+        end
+        timezone
+      }
     }
   }
 `

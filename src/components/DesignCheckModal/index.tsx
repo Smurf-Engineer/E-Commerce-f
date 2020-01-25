@@ -21,12 +21,13 @@ import ProAssistLogo from '../../assets/ProAssist-logo.svg'
 import ProAssistChat from '../../assets/PROAssist-2.svg'
 import designerImage from '../../assets/designer-guy.jpg'
 import Spin from 'antd/lib/spin'
-import moment from 'moment'
-import { workingHours } from '../../screens/DesignCenter/constants'
+import { isWorkingHour } from '../../utils/utilsFunctions'
+import { WorkHours } from '../../types/common'
 
 interface Props {
   visible: boolean
   loadingPro: boolean
+  workingHours: WorkHours
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
   handleGetPro: () => void
@@ -39,15 +40,10 @@ export class DesignCheckModal extends React.Component<Props, {}> {
       visible,
       requestClose,
       loadingPro,
+      workingHours,
       handleGetPro
     } = this.props
-    const { timeZone, start, end } = workingHours
-    const currentTime = moment().utcOffset(timeZone)
-    const startTime = moment(start, 'HH:mm:ss').utcOffset(timeZone, true)
-    const endTime = moment(end, 'HH:mm:ss').utcOffset(timeZone, true)
-    const online =
-      currentTime.isBetween(startTime, endTime, 'second') &&
-      currentTime.isoWeekday() < 7
+    const online = isWorkingHour(workingHours)
     return (
       <Container>
         <CustomModal

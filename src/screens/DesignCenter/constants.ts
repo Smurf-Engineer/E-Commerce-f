@@ -131,10 +131,4 @@ export enum AccessoryColors {
   Stitching = 'stitchingColor'
 }
 
-export const workingHours = {
-  start: '06:00:00',
-  end: '18:00:00',
-  timeZone: -480
-}
-
 export const ElementsToApplyScale = [CanvasElements.Image]
