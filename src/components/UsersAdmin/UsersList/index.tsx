@@ -89,6 +89,18 @@ const UsersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
+              id={'first_name'}
+              label={formatMessage(messages.name)}
+              sort={orderBy === 'first_name' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'first_name'}
+              label={formatMessage(messages.name)}
+              sort={orderBy === 'first_name' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
               id={'social_method'}
               label={formatMessage(messages.accountType)}
               sort={orderBy === 'social_method' ? sort : 'none'}

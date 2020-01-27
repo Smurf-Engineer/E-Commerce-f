@@ -33,6 +33,8 @@ const ItemOrder = ({
     <Container>
       <Cell>JV2-{id}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
+      <Cell>{`${firstName} ${lastName}`}</Cell>
+      <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>
       <Cell>
         <Switch onChange={handleOnSetAdministrator} checked={administrator} />
