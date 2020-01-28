@@ -756,7 +756,8 @@ export class DesignCenter extends React.Component<Props, {}> {
     const highResolution = get(dataDesign, 'designData.highResolution')
     const proAssistId =
       ticket || get(proAssist, 'proAssistData.proAssistId', '')
-
+    const { email, name: firstName, lastName, id: loggedUserId } = user || {}
+    const workingHours = get(dataDesignLabInfo, 'designInfo.workingHours', {})
     let designObject = design
     if (canvasJson) {
       designObject = { ...designObject, canvasJson, styleId, highResolution }
@@ -803,7 +804,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
       currentStyle.designId = designId
-
       const proDesign = get(designData, 'proDesign', false)
       if (proDesign) {
         proDesignModel = {
@@ -989,14 +989,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                   colorChartSending,
                   colorChartModalOpen,
                   colorChartModalFormOpen,
-                  tutorialPlaylist
+                  tutorialPlaylist,
+                  loggedUserId
                 }}
                 designId={get(dataDesign, 'designData.shortId', '')}
-                userEmail={get(user, 'email', '')}
-                name={get(user, 'name', '')}
-                lastName={get(user, 'lastName', '')}
+                userEmail={email}
+                name={firstName}
+                lastName={lastName}
                 callbackToSave={get(layout, 'callback', false)}
-                loggedUserId={get(user, 'id', '')}
                 saveAndBuy={get(layout, 'saveAndBuy', false)}
                 fonts={get(layout, 'fonts', {})}
                 handleOnSaveAndBuy={handleOnSaveAndBuy}
@@ -1166,7 +1166,7 @@ export class DesignCenter extends React.Component<Props, {}> {
           handleGetPro={this.handleGetPro}
           requestClose={openDesignCheckModalAction}
           visible={designCheckModalOpen}
-          {...{ formatMessage, loadingPro }}
+          {...{ formatMessage, loadingPro, workingHours }}
         />
         <Modal
           visible={openOutWithoutSaveModal}
