@@ -37,7 +37,8 @@ import {
 import {
   DesignResultType,
   DeleteDesignModal,
-  RenameDesignModal
+  RenameDesignModal,
+  UserType
 } from '../../types/common'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
@@ -92,7 +93,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         mutation: designAsPrivateMutation,
         variables: { designId: id, shared: !isPrivate }
       })
-      data.refetch()
+      await data.refetch()
     } catch (error) {
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
@@ -147,7 +148,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       })
       const { resetModalDataAction } = this.props
       resetModalDataAction()
-      data.refetch()
+      await data.refetch()
     } catch (e) {
       setDeleteModalLoadingAction(false)
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
@@ -233,8 +234,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         mutation: changeNameMutation,
         variables: { designId, name: newName }
       })
-      data.refetch()
       resetRenameDataAction()
+      await data.refetch()
     } catch (error) {
       setRenameModalLoadingAction(false)
       const errorMessage =
@@ -246,26 +247,6 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   handleOnGoBack = () => {
     const { onGoBack } = this.props
     onGoBack('')
-  }
-
-  async componentDidMount() {
-    const { setErrorAction, data } = this.props
-    try {
-      data.refetch()
-    } catch (e) {
-      setErrorAction(true)
-    }
-  }
-
-  async componentDidUpdate(prevProps: Props) {
-    const { userId, setErrorAction, data } = this.props
-    if (prevProps.userId !== userId) {
-      try {
-        data.refetch()
-      } catch (e) {
-        setErrorAction(true)
-      }
-    }
   }
 
   componentWillUnmount() {
@@ -293,11 +274,11 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         designName: designToRename,
         newName
       },
-      admin = false,
-      userName
+      admin = false
     } = this.props
 
     let alternativeContent = null
+    const userName = get(data, 'designsResults.userName', '')
     const designs = get(data, 'designsResults.designs', [])
     const fullCount = get(data, 'designsResults.fullCount', 0)
 
@@ -439,7 +420,7 @@ type OwnProps = {
   limit?: number
   offset?: number
   admin?: string
-  user?: object
+  user?: UserType
   userId?: string
   currentPage?: number
 }
