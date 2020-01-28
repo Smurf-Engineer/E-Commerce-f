@@ -8,10 +8,18 @@ import debounce from 'lodash/debounce'
 import { FormattedMessage } from 'react-intl'
 import { setAdminUserMutation } from './data'
 import * as ProAssistActions from './actions'
-import { Container, ScreenTitle, SearchInput } from './styledComponents'
+import {
+  Container,
+  ScreenTitle,
+  SearchInput,
+  ActiveLabel,
+  Header
+} from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
 import { sorts } from '../../types/common'
+import Switch from 'antd/lib/switch'
+import SwitchWithLabel from '../SwitchWithLabel'
 
 interface Props {
   history: any
@@ -47,17 +55,24 @@ class ProAssist extends React.Component<Props, StateProps> {
 
   render() {
     const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
-
+    const checked = true
+    const loading = true
     return (
       <Container>
         <ScreenTitle>
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
-        <SearchInput
-          value={this.state.searchValue}
-          onChange={this.handleInputChange}
-          placeholder={formatMessage(messages.search)}
-        />
+        <Header>
+          <SearchInput
+            value={this.state.searchValue}
+            onChange={this.handleInputChange}
+            placeholder={formatMessage(messages.search)}
+          />
+          <ActiveLabel>
+            <Switch {...{ checked, loading }} onChange={this.onChangeEnabled} />
+          </ActiveLabel>
+        </Header>
+
         <List
           {...{ formatMessage, currentPage, orderBy, sort, searchText }}
           onSortClick={this.handleOnSortClick}
@@ -71,6 +86,10 @@ class ProAssist extends React.Component<Props, StateProps> {
     if (url.length) {
       window.open(url)
     }
+  }
+
+  onChangeEnabled = () => {
+    console.log('pears')
   }
 
   handleOnSortClick = (label: string, sort: sorts) => {

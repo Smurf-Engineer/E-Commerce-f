@@ -33,3 +33,18 @@ export const SearchInput = styled(Search)`
     height: 48px;
   }
 `
+
+export const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-right: 34px;
+`
+
+export const ActiveLabel = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+`
