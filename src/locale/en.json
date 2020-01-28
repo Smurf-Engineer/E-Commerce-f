@@ -1212,6 +1212,8 @@
   "screens.ProDesign.legacySample": "Ex. BRBR-123456789",
   "components.ProductThumbnail.ProductSlide.proAssigned": "PRODESIGN",
   "components.UsersList.netsuiteId": "Netsuite ID",
+  "components.UsersList.billing": "Billing Country",
+  "components.UsersList.signUpDate": "Sign-Up Date",
   "components.CarouselHeader.Uploader.imageSizeError": "Oh no! Max file size is limited to 20MB",
   "components.CarouselHeader.Uploader.videoExtensionError": "Oh no! Your file has to be a mp4",
   "components.CarouselHeader.Uploader.imageExtensionError": "Oh no! Your file has to be an jpg, jpeg or png",
