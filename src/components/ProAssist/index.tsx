@@ -13,7 +13,8 @@ import {
   ScreenTitle,
   SearchInput,
   ActiveLabel,
-  Header
+  Header,
+  SwitchLabel
 } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
@@ -69,10 +70,10 @@ class ProAssist extends React.Component<Props, StateProps> {
             placeholder={formatMessage(messages.search)}
           />
           <ActiveLabel>
+            <SwitchLabel>{formatMessage(messages.enable)}</SwitchLabel>
             <Switch {...{ checked, loading }} onChange={this.onChangeEnabled} />
           </ActiveLabel>
         </Header>
-
         <List
           {...{ formatMessage, currentPage, orderBy, sort, searchText }}
           onSortClick={this.handleOnSortClick}

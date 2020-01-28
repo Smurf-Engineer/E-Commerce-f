@@ -48,3 +48,5 @@ export const ActiveLabel = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+export const SwitchLabel = styled.div``
