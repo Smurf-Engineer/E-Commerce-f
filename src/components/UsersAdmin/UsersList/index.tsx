@@ -66,6 +66,8 @@ const UsersList = ({
           return (
             <Row>
               <Header>{formatMessage(messages.clientID)}</Header>
+              <Header>{formatMessage(messages.billing)}</Header>
+              <Header>{formatMessage(messages.signUpDate)}</Header>
               <Header>{formatMessage(messages.name)}</Header>
               <Header>{formatMessage(messages.accountType)}</Header>
               <Header>{formatMessage(messages.admin)}</Header>
@@ -83,15 +85,15 @@ const UsersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'first_name'}
-              label={formatMessage(messages.name)}
-              sort={orderBy === 'first_name' ? sort : 'none'}
+              id={'billing_country'}
+              label={formatMessage(messages.billing)}
+              sort={orderBy === 'billing_country' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'first_name'}
-              label={formatMessage(messages.name)}
-              sort={orderBy === 'first_name' ? sort : 'none'}
+              id={'created_at'}
+              label={formatMessage(messages.signUpDate)}
+              sort={orderBy === 'created_at' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -138,7 +140,9 @@ const UsersList = ({
         lastName,
         socialMethod,
         administrator,
-        netsuiteId = ''
+        netsuiteId = '',
+        billingCountry,
+        createdAt
       }: User,
       index: number
     ) => {
@@ -153,7 +157,9 @@ const UsersList = ({
             socialMethod,
             administrator,
             onSetAdministrator,
-            netsuiteId
+            netsuiteId,
+            billingCountry,
+            createdAt
           }}
         />
       )

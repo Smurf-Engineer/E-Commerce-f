@@ -1322,6 +1322,8 @@ export interface User {
   socialMethod: string
   administrator: boolean
   netsuiteId?: string
+  billingCountry?: string
+  createdAt?: string
 }
 
 export interface DesignSearchCode {
