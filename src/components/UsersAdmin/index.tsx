@@ -4,16 +4,14 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import debounce from 'lodash/debounce'
 import { getUsersQuery } from './UsersList/data'
 import { Route } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
 import { setAdminUserMutation } from './data'
 import { USERS_LIMIT } from './constants'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import * as UsersAdminActions from './actions'
-import { Container, ScreenTitle, SearchInput } from './styledComponents'
+import { Container } from './styledComponents'
 import List from './UsersList'
 import messages from './messages'
 import message from 'antd/lib/message'
@@ -38,16 +36,6 @@ interface StateProps {
   searchValue: string
 }
 class UsersAdmin extends React.Component<Props, StateProps> {
-  raiseSearchWhenUserStopsTyping = debounce(
-    () => this.props.setSearchTextAction(this.state.searchValue),
-    600
-  )
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      searchValue: ''
-    }
-  }
   async componentDidMount() {
     await LoadScripts(threeDScripts)
   }
@@ -67,7 +55,8 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       sort,
       formatMessage,
       searchText,
-      history
+      history,
+      setSearchTextAction
     } = this.props
 
     return (
@@ -76,24 +65,14 @@ class UsersAdmin extends React.Component<Props, StateProps> {
           path="/admin/users"
           exact={true}
           render={() => (
-            <div>
-              <ScreenTitle>
-                <FormattedMessage {...messages.title} />
-              </ScreenTitle>
-              <SearchInput
-                value={this.state.searchValue}
-                onChange={this.handleInputChange}
-                placeholder={formatMessage(messages.search)}
-              />
-              <List
-                {...{ formatMessage, currentPage, orderBy, sort, searchText }}
-                onSortClick={this.handleOnSortClick}
-                onChangePage={this.handleOnChangePage}
-                interactiveHeaders={true}
-                onSetAdministrator={this.handleOnSetAdministrator}
-                onSelectUser={this.handleOnSelectUser}
-              />
-            </div>
+            <List
+              {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+              onSortClick={this.handleOnSortClick}
+              onChangePage={this.handleOnChangePage}
+              onSetAdministrator={this.handleOnSetAdministrator}
+              onSelectUser={this.handleOnSelectUser}
+              setSearchText={setSearchTextAction}
+            />
           )}
         />
         <Route
@@ -151,14 +130,6 @@ class UsersAdmin extends React.Component<Props, StateProps> {
   handleOnChangePage = (page: number) => {
     const { setCurrentPageAction } = this.props
     setCurrentPageAction(page)
-  }
-  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value }
-    } = evt
-    this.setState({ searchValue: value }, () => {
-      this.raiseSearchWhenUserStopsTyping()
-    })
   }
 }
 

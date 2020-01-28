@@ -2,9 +2,10 @@
  * MyLocker Component - Created by david on 06/04/18.
  */
 import * as React from 'react'
-import { withApollo, compose } from 'react-apollo'
+import { withApollo, compose, graphql, QueryProps } from 'react-apollo'
 import { connect } from 'react-redux'
 import Message from 'antd/lib/message'
+import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
@@ -38,7 +39,6 @@ import {
 } from './styledComponents'
 import {
   DesignResultType,
-  DesignType,
   DeleteDesignModal,
   RenameDesignModal
 } from '../../types/common'
@@ -51,9 +51,6 @@ interface Props {
   offset: number
   currentPage: number
   fullCount: string
-  designs: DesignType[]
-  loading: boolean
-  error: boolean
   deleteModal: DeleteDesignModal
   renameModal: RenameDesignModal
   user: object
@@ -63,13 +60,14 @@ interface Props {
   admin?: boolean
   userId: string
   userName: string
+  data: Data
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   addItemToStore: () => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare?: (savedDesignId: string, openShareModal: boolean) => void
   openQuickView: (id: number, yotpoId: string | null) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
-  setDesignsData: (data: DesignResultType, offset: number, page: number) => void
+  setPaginationValues: (offset: number, page: number) => void
   setLoadingAction: (loading: boolean) => void
   setErrorAction: (error: boolean) => void
   setDeleteModalDataAction: (payload: DeleteDesignModal) => void
@@ -82,17 +80,22 @@ interface Props {
   onGoBack: (id: string) => void
 }
 
+interface Data extends QueryProps {
+  designsResult: DesignResultType[]
+}
+
 export class MyLocker extends React.PureComponent<Props, {}> {
   handleOnPressPrivate = async (id: string, isPrivate: boolean) => {
     const {
-      client: { mutate }
+      client: { mutate },
+      data
     } = this.props
     try {
       await mutate({
         mutation: designAsPrivateMutation,
         variables: { designId: id, shared: !isPrivate }
       })
-      this.fetchDesigns()
+      data.refetch()
     } catch (error) {
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
@@ -136,7 +139,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     const {
       setDeleteModalLoadingAction,
       deleteModal: { designId },
-      client: { mutate }
+      client: { mutate },
+      data
     } = this.props
     try {
       setDeleteModalLoadingAction(true)
@@ -146,7 +150,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       })
       const { resetModalDataAction } = this.props
       resetModalDataAction()
-      this.fetchDesigns()
+      data.refetch()
     } catch (e) {
       setDeleteModalLoadingAction(false)
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
@@ -172,50 +176,23 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     onChangeDesignName(value)
   }
 
-  fetchDesigns = async (offsetParam?: number, pageParam?: number) => {
+  changePageValues = async (offsetParam?: number, pageParam?: number) => {
     const {
-      client: { query },
       offset: offsetProp,
       currentPage: pageProp,
-      limit,
-      setDesignsData,
-      user,
-      userId,
-      admin
+      setPaginationValues
     } = this.props
     let offset = offsetParam !== undefined ? offsetParam : offsetProp
     let currentPage = pageParam !== undefined ? pageParam : pageProp
 
-    const userShortId = admin ? userId : user.id
-
-    if (!offsetParam && !pageParam) {
-      const fullPage = !(offset % limit)
-      const maxPageNumber = offset / limit
-
-      if (fullPage && currentPage > maxPageNumber) {
-        currentPage--
-        offset = currentPage > 1 ? (currentPage - 1) * limit : 0
-      }
-    }
-
-    try {
-      const data = await query({
-        query: desginsQuery,
-        variables: { limit, offset, userId: userShortId },
-        fetchPolicy: 'network-only'
-      })
-      setDesignsData(data, offset, currentPage)
-    } catch (e) {
-      throw e
-    }
+    setPaginationValues(offset, currentPage)
   }
 
   handleOnChangePage = async (page: number) => {
-    const { setLoadingAction, limit, setErrorAction } = this.props
+    const { limit, setErrorAction } = this.props
     const offset = page > 1 ? (page - 1) * limit : 0
-    setLoadingAction(true)
     try {
-      this.fetchDesigns(offset, page)
+      this.changePageValues(offset, page)
       zenscroll.toY(0, 0)
     } catch (e) {
       setErrorAction(true)
@@ -241,7 +218,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       renameModal: { newName, designId },
       setRenameModalLoadingAction,
       resetRenameDataAction,
-      client: { mutate }
+      client: { mutate },
+      data
     } = this.props
     const isUserAuthenticated = !!user
     if (!newName) {
@@ -258,7 +236,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         mutation: changeNameMutation,
         variables: { designId, name: newName }
       })
-      this.fetchDesigns()
+      data.refetch()
       resetRenameDataAction()
     } catch (error) {
       setRenameModalLoadingAction(false)
@@ -274,19 +252,19 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   }
 
   async componentDidMount() {
-    const { setErrorAction } = this.props
+    const { setErrorAction, data } = this.props
     try {
-      await this.fetchDesigns(0, 1)
+      data.refetch()
     } catch (e) {
       setErrorAction(true)
     }
   }
 
   async componentDidUpdate(prevProps: Props) {
-    const { userId, setErrorAction } = this.props
+    const { userId, setErrorAction, data } = this.props
     if (prevProps.userId !== userId) {
       try {
-        await this.fetchDesigns(0, 1)
+        data.refetch()
       } catch (e) {
         setErrorAction(true)
       }
@@ -300,20 +278,17 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   render() {
     const {
       history,
-      loading,
-      error,
       formatMessage,
-      designs,
       limit,
       currentPage,
       setCurrentShare,
-      fullCount,
       openAddToStoreModal,
       teamStoreId,
       savedDesignId,
       setItemToAddAction,
       addItemToStore,
       openAddToTeamStoreModalAction,
+      data,
       deleteModal: { modalLoading = false, openDeleteModal, designName },
       renameModal: {
         modalLoading: renameModalLoading = false,
@@ -326,14 +301,16 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     } = this.props
 
     let alternativeContent = null
+    const designs = get(data, 'designsResults.designs', [])
+    const fullCount = get(data, 'designsResults.fullCount', 0)
 
-    if (loading) {
+    if (data.loading) {
       alternativeContent = (
         <LoadingContainer>
           <Spin />
         </LoadingContainer>
       )
-    } else if (error) {
+    } else if (data.error) {
       alternativeContent = (
         <LoadingContainer>
           <TitleError>{formatMessage(messages.titleError)}</TitleError>
@@ -350,7 +327,6 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     if (typeof window !== 'undefined') {
       withoutPadding = !window.matchMedia('(max-width: 768px)').matches
     }
-
     return (
       <Container>
         {admin && (
@@ -372,13 +348,13 @@ export class MyLocker extends React.PureComponent<Props, {}> {
               formatMessage,
               history,
               withoutPadding,
-              openAddToTeamStoreModalAction
+              openAddToTeamStoreModalAction,
+              designs
             }}
             onPressPrivate={this.handleOnPressPrivate}
             onPressDelete={this.handleOnPressDelete}
             onPressRename={this.handleOnPressRename}
             openQuickView={this.handleOnOpenQuickView}
-            designs={designs}
             previewOnly={!!admin}
           />
           <Pagination
@@ -468,9 +444,32 @@ const mapStateToProps = (state: any) => {
   return { ...myLocker, ...app }
 }
 
+type OwnProps = {
+  limit?: number
+  offset?: number
+  admin?: string
+  user?: object
+  userId?: string
+  currentPage?: number
+}
 const MyLockerEnhance = compose(
   withApollo,
-  connect(mapStateToProps, { ...myLockerActions })
+  connect(mapStateToProps, { ...myLockerActions }),
+  graphql<Data>(desginsQuery, {
+    options: (ownprops: OwnProps) => {
+      const { limit, offset, admin, userId, user } = ownprops
+      const userShortId = admin ? userId : user.id
+
+      return {
+        fetchPolicy: 'network-only',
+        variables: {
+          limit,
+          offset,
+          userId: userShortId
+        }
+      }
+    }
+  })
 )(MyLocker)
 
 export default MyLockerEnhance
