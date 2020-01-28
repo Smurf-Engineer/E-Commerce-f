@@ -2,11 +2,12 @@
  * ProAssist Component - Created by eduardoquintero on 16/01/20.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
+import message from 'antd/lib/message'
 import { FormattedMessage } from 'react-intl'
-import { setAdminUserMutation } from './data'
+import { toggleProAssist, getProStatus } from './data'
 import * as ProAssistActions from './actions'
 import {
   Container,
@@ -18,22 +19,29 @@ import {
 } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
-import { sorts } from '../../types/common'
+import { sorts, QueryProps, ProAssistStatus } from '../../types/common'
 import Switch from 'antd/lib/switch'
-import SwitchWithLabel from '../SwitchWithLabel'
+import get from 'lodash/get'
+
+interface Data extends QueryProps {
+  proAssistStatus: ProAssistStatus
+}
 
 interface Props {
   history: any
   currentPage: number
   orderBy: string
   sort: sorts
+  loading: boolean
+  data: Data
   searchText: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
   setSearchTextAction: (searchText: string) => void
-  setAdminUser: (variables: {}) => void
+  setLoading: (loading: boolean) => void
+  changeEnablePro: () => Promise<any>
 }
 interface StateProps {
   searchValue: string
@@ -55,9 +63,16 @@ class ProAssist extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
-    const checked = true
-    const loading = true
+    const {
+      currentPage,
+      orderBy,
+      sort,
+      formatMessage,
+      searchText,
+      loading,
+      data
+    } = this.props
+    const checked = get(data, 'proAssistStatus.enabled', false)
     return (
       <Container>
         <ScreenTitle>
@@ -89,8 +104,17 @@ class ProAssist extends React.Component<Props, StateProps> {
     }
   }
 
-  onChangeEnabled = () => {
-    console.log('pears')
+  onChangeEnabled = async () => {
+    const { changeEnablePro, data, setLoading, formatMessage } = this.props
+    try {
+      setLoading(true)
+      await changeEnablePro()
+      await data.refetch()
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    } finally {
+      setLoading(false)
+    }
   }
 
   handleOnSortClick = (label: string, sort: sorts) => {
@@ -115,7 +139,12 @@ class ProAssist extends React.Component<Props, StateProps> {
 const mapStateToProps = (state: any) => state.get('proAssist').toJS()
 
 const ProAssistEnhance = compose(
-  setAdminUserMutation,
+  toggleProAssist,
+  graphql(getProStatus, {
+    options: () => ({
+      fetchPolicy: 'network-only'
+    })
+  }),
   connect(mapStateToProps, { ...ProAssistActions })
 )(ProAssist)
 

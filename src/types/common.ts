@@ -258,6 +258,10 @@ export type ProductTableType = {
   visible: boolean
 }
 
+export type ProAssistStatus = {
+  enabled: boolean
+}
+
 export type ProductTiles = {
   id: number
   contentTile: string
