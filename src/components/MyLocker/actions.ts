@@ -4,7 +4,7 @@
 import {
   DEFAULT_ACTION,
   SET_LOADING,
-  SET_DESIGNS_DATA,
+  SET_PAGINATION_DATA,
   SET_ERROR,
   SET_DELETE_MODAL_DATA,
   SET_MODAL_LOADING,
@@ -16,7 +16,6 @@ import {
 } from './constants'
 import {
   AnyAction,
-  DesignResultType,
   DeleteDesignModal,
   RenameDesignModal
 } from '../../types/common'
@@ -26,13 +25,8 @@ export const defaultAction = (someValue: string): AnyAction => ({
   someValue
 })
 
-export const setDesignsData = (
-  data: DesignResultType,
-  offset: number,
-  page: number
-) => ({
-  type: SET_DESIGNS_DATA,
-  data,
+export const setPaginationValues = (offset: number, page: number) => ({
+  type: SET_PAGINATION_DATA,
   offset,
   page
 })

@@ -269,6 +269,7 @@ export type ProductTiles = {
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
+  userName?: string
 }
 
 export type TeamStoreResultType = {

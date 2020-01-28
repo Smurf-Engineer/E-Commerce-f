@@ -30,16 +30,13 @@ interface StateProps {
   searchValue: string
 }
 class ProAssist extends React.Component<Props, StateProps> {
+  state = {
+    searchValue: ''
+  }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchTextAction(this.state.searchValue),
     600
   )
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      searchValue: ''
-    }
-  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
