@@ -86,7 +86,9 @@ export class Designs extends React.Component<Props, {}> {
         {installedFonts.length ? (
           <GoogleFontLoader fonts={installedFonts} />
         ) : null}
-        {!loadingModel && <ThreeD {...{ designId }} isPhone={phone} />}
+        {!loadingModel && (
+          <ThreeD {...{ designId }} detailed={true} isPhone={phone} />
+        )}
       </Container>
     )
   }
@@ -103,10 +105,7 @@ const mapStateToProps = (state: any) => {
 const DesignsEnhance = compose(
   injectIntl,
   getFonts,
-  connect(
-    mapStateToProps,
-    { ...designsActions, openQuickViewAction }
-  )
+  connect(mapStateToProps, { ...designsActions, openQuickViewAction })
 )(Designs)
 
 export default DesignsEnhance

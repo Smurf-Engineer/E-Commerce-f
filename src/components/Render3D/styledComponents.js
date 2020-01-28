@@ -201,3 +201,38 @@ export const ContainerError = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+export const Details = styled.div`
+  position: absolute;
+  max-width: 320px;
+  top: 20px;
+  width: 100%;
+  align-items: flex-start;
+  display: flex;
+  flex-flow: column;
+  cursor: text;
+  background: #ffffffa3;
+  padding: 8px 0;
+  @media (max-width: 780px) {
+    margin-bottom: 40px;
+    position: relative;
+  }
+`
+
+export const Logo = styled.img`
+  max-width: 216px;
+  width: 100%;
+`
+
+export const DetailLabel = styled.div`
+  font-family: Avenir;
+  display: flex;
+  margin-top: 16px;
+  justify-content: flex-start;
+  align-items: center;
+`
+
+export const Property = styled.div`
+  font-weight: bold;
+  margin-right: 6px;
+`

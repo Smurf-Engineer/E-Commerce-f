@@ -18,6 +18,10 @@ import {
   DragText,
   Title,
   Message,
+  Logo,
+  Details,
+  Property,
+  DetailLabel,
   ContainerError,
   ProgressProduct,
   Loading
@@ -42,7 +46,7 @@ import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
-
+import JakrooLogo from '../../assets/jakroo_logo.svg'
 import '../../screens/App/theme.ant'
 
 /* eslint-disable */
@@ -310,10 +314,13 @@ class Render3D extends PureComponent {
       customProduct,
       designSearch,
       isProduct,
-      textColor,
-      data: { loading, error }
+      detailed,
+      data,
+      textColor
     } = this.props
-
+    const { loading, error, design } = data
+    const { code, name, product } = design || {}
+    const { name: productName } = product || {}
     if (error && !isProduct) {
       return (
         <ContainerError>
@@ -333,6 +340,29 @@ class Render3D extends PureComponent {
       <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
+        )}
+        {detailed && (
+          <Details>
+            <Logo src={JakrooLogo} />
+            <DetailLabel>
+              <Property>
+                <FormattedMessage {...messages.designName} />
+              </Property>
+              {name}
+            </DetailLabel>
+            <DetailLabel>
+              <Property>
+                <FormattedMessage {...messages.designCode} />
+              </Property>
+              {code}
+            </DetailLabel>
+            <DetailLabel>
+              <Property>
+                <FormattedMessage {...messages.productName} />
+              </Property>
+              {productName}
+            </DetailLabel>
+          </Details>
         )}
         <Render
           {...{ customProduct, designSearch }}
