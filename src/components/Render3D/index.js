@@ -314,6 +314,7 @@ class Render3D extends PureComponent {
       customProduct,
       designSearch,
       isProduct,
+      isAdmin,
       detailed,
       data,
       textColor
