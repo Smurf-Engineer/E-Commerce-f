@@ -7,10 +7,11 @@ import proAssistReducer, { initialState } from './reducer'
 import {
   setOrderByAction,
   setCurrentPageAction,
-  setSearchTextAction
+  setSearchTextAction,
+  setLoading
 } from './actions'
 
-import { SET_ORDER_BY, SET_CURRENT_PAGE, SET_SEARCH_TEXT } from './constants'
+import { SET_ORDER_BY, SET_CURRENT_PAGE, SET_SEARCH_TEXT, SET_LOADING } from './constants'
 
 describe(' DiscountsAdmin Screen', () => {
   describe('Actions', () => {
@@ -38,6 +39,14 @@ describe(' DiscountsAdmin Screen', () => {
       expect(setSearchTextAction(searchText)).toEqual({
         type,
         searchText
+      })
+    })
+    it('setLoading', () => {
+      const type = SET_LOADING
+      const loading = true
+      expect(setLoading(loading)).toEqual({
+        type,
+        loading
       })
     })
   })
@@ -142,5 +151,27 @@ describe(' DiscountsAdmin Screen', () => {
         })
       })
     })
+    describe('SET_LOADING', () => {
+      describe('Set loading switch action', () => {
+        it('Handles undefined value in loading', () => {
+          const customInitialValue = initialState.get('loading')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in loading', () => {
+          const customInitialValue = initialState.get('loading')
+          expect(customInitialValue).toBeFalsy()
+        })
+        it('Handles custom value in loading', () => {
+          const value = true
+          const loadingState = proAssistReducer(
+            initialState,
+            setLoading(value)
+          )
+          const customLoadingValue = loadingState.get('loading')
+          expect(customLoadingValue).toBe(value)
+        })
+      })
+    })
+  })
   })
 })

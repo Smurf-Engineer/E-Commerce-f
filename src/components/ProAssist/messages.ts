@@ -16,5 +16,9 @@ export default defineMessages({
   unexpectedError: {
     id: 'components.ProAssist.unexpectedError',
     defaultMessage: 'Oops! Something went wrong.'
+  },
+  enable: {
+    id: 'components.ProAssist.enable',
+    defaultMessage: 'Enable'
   }
 })
