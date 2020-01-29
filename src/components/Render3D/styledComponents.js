@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import Spin from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
+import { WHITE_TRANSPARENT } from '../../theme/colors'
 
 export const Container = styled.div`
   width: ${({ designSearch }) => (designSearch ? '600px' : '100%')};
@@ -211,7 +212,7 @@ export const Details = styled.div`
   display: flex;
   flex-flow: column;
   cursor: text;
-  background: #ffffffa3;
+  background: ${WHITE_TRANSPARENT};
   padding: 8px 0;
   @media (max-width: 780px) {
     margin-bottom: 40px;
