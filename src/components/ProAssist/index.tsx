@@ -19,7 +19,7 @@ import {
 } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
-import { sorts, QueryProps, ProAssistStatus } from '../../types/common'
+import { sorts, QueryProps, Message, ProAssistStatus } from '../../types/common'
 import Switch from 'antd/lib/switch'
 import get from 'lodash/get'
 
@@ -35,7 +35,7 @@ interface Props {
   loading: boolean
   data: Data
   searchText: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
@@ -47,16 +47,13 @@ interface StateProps {
   searchValue: string
 }
 class ProAssist extends React.Component<Props, StateProps> {
+  state = {
+    searchValue: ''
+  }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchTextAction(this.state.searchValue),
     600
   )
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      searchValue: ''
-    }
-  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()

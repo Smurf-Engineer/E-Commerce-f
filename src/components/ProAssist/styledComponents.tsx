@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
+import { GRAY_DARK } from '../../theme/colors'
 
 const Search = Input.Search
 
@@ -11,7 +12,7 @@ export const Container = styled.div`
   width: 100%;
 `
 export const ScreenTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   line-height: 27px;
