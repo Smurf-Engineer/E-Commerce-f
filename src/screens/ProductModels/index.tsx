@@ -186,7 +186,7 @@ export class ProductModels extends React.Component<Props, {}> {
   handleProductInfo = () => {
     const { history } = this.props
     const { id } = queryString.parse(location.search)
-    history.push(`/admin/products/details/${id}`)
+    history.push(`/admin/product?id=${id}`)
   }
   editDefault = () => {
     const { defaultModelIndex, setEditModel } = this.props

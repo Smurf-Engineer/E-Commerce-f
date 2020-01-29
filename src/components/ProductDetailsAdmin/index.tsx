@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import queryString from 'query-string'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import RowField from './RowField'
@@ -448,7 +449,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
 }
 
 interface OwnProps {
-  match?: any
+  location?: any
 }
 
 const mapStateToProps = (state: any) => state.get('productDetailAdmin').toJS()
@@ -457,9 +458,13 @@ const ProductDetailsAdminEnhance = compose(
   withRouter,
   connect(mapStateToProps, { ...ProductDetailsAdminActions }),
   graphql(getProductQuery, {
-    options: ({ match }: OwnProps) => ({
-      variables: { id: get(match, 'params.id', '') }
-    })
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        variables: { id: queryParams.id }
+      }
+    }
   })
 )(ProductDetailsAdmin)
 

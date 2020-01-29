@@ -73,6 +73,20 @@ export class FilesModal extends React.Component<Props, {}> {
     const { changeDefault } = this.props
     changeDefault(checked)
   }
+  validateFields = () => {
+    const {
+      tempModel: { obj, mtl, bumpMap, name }
+    } = this.props
+    return (
+      !obj ||
+      obj === 'loading' ||
+      !mtl ||
+      mtl === 'loading' ||
+      !bumpMap ||
+      bumpMap === 'loading' ||
+      !name
+    )
+  }
   render() {
     const {
       openModal,
@@ -85,6 +99,7 @@ export class FilesModal extends React.Component<Props, {}> {
       tempModel
     } = this.props
     const { icon, name, default: isDefault } = tempModel
+    const isDisabled = this.validateFields()
     return (
       <Modal
         visible={openModal}
@@ -138,8 +153,10 @@ export class FilesModal extends React.Component<Props, {}> {
               formatMessage
             }}
           />
-          <SaveSection onClick={saveInfoAction}>
-            <SaveButton>{formatMessage(messages.saveModel)}</SaveButton>
+          <SaveSection>
+            <SaveButton onClick={saveInfoAction} disabled={isDisabled}>
+              {formatMessage(messages.saveModel)}
+            </SaveButton>
           </SaveSection>
         </FormContainer>
       </Modal>
