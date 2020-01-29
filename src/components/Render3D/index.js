@@ -22,6 +22,8 @@ import {
   Details,
   Property,
   DetailLabel,
+  DetailProperties,
+  DetailHeader,
   ContainerError,
   ProgressProduct,
   Loading
@@ -46,7 +48,8 @@ import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
-import JakrooLogo from '../../assets/jakroo_logo.svg'
+import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
+import JakrooLogoWhite from '../../assets/jakroo_logo_white.svg'
 import '../../screens/App/theme.ant'
 
 /* eslint-disable */
@@ -344,25 +347,30 @@ class Render3D extends PureComponent {
         )}
         {detailed && (
           <Details>
-            <Logo src={JakrooLogo} />
-            <DetailLabel>
-              <Property>
-                <FormattedMessage {...messages.designName} />
-              </Property>
-              {name}
-            </DetailLabel>
-            <DetailLabel>
-              <Property>
-                <FormattedMessage {...messages.designCode} />
-              </Property>
-              {code}
-            </DetailLabel>
-            <DetailLabel>
-              <Property>
-                <FormattedMessage {...messages.productName} />
-              </Property>
-              {productName}
-            </DetailLabel>
+            <DetailHeader>
+              <Logo src={JakrooLogoWhite} />
+              <Logo src={OwnYourStyle} />
+            </DetailHeader>
+            <DetailProperties>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.designName} />
+                </Property>
+                {name}
+              </DetailLabel>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.designCode} />
+                </Property>
+                {code}
+              </DetailLabel>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.productName} />
+                </Property>
+                {productName}
+              </DetailLabel>
+            </DetailProperties>
           </Details>
         )}
         <Render

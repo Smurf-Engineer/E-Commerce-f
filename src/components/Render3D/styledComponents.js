@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import Spin from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
-import { WHITE_TRANSPARENT } from '../../theme/colors'
+import { BLACK, WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
   width: ${({ designSearch }) => (designSearch ? '600px' : '100%')};
@@ -204,36 +204,61 @@ export const ContainerError = styled.div`
 `
 
 export const Details = styled.div`
-  position: absolute;
-  max-width: 320px;
-  top: 20px;
+  position: relative;
+  top: 0;
+  left: 0;
   width: 100%;
   align-items: flex-start;
   display: flex;
-  flex-flow: column;
   cursor: text;
-  background: ${WHITE_TRANSPARENT};
-  padding: 8px 0;
+  flex-flow: column;
+  background: ${BLACK};
+  padding: 12px 32px;
   @media (max-width: 780px) {
-    margin-bottom: 40px;
-    position: relative;
+    padding: 8px;
   }
 `
 
 export const Logo = styled.img`
   max-width: 216px;
   width: 100%;
+  @media (max-width: 768px) {
+    max-width: 156px;
+  }
 `
 
 export const DetailLabel = styled.div`
   font-family: Avenir;
   display: flex;
-  margin-top: 16px;
+  margin: 0 22px;
   justify-content: flex-start;
   align-items: center;
+  @media (max-width: 768px) {
+    margin: 4px;
+  }
 `
 
 export const Property = styled.div`
   font-weight: bold;
   margin-right: 6px;
+`
+
+export const DetailHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+`
+
+export const DetailProperties = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid ${WHITE};
+  color: ${WHITE};
+  @media (max-width: 768px) {
+    flex-flow: column;
+  }
 `
