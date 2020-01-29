@@ -41,7 +41,7 @@ interface Props {
   resetDataAction: () => void
   setSearchTextAction: (searchText: string) => void
   setLoading: (loading: boolean) => void
-  changeEnablePro: () => Promise<any>
+  changeEnablePro: () => Promise<Data>
 }
 interface StateProps {
   searchValue: string
