@@ -6,7 +6,13 @@ import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { Container, Header, Row, Table } from './styledComponents'
+import {
+  Container,
+  Header,
+  Row,
+  Table,
+  AddInternalButton
+} from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import { USERS_LIMIT } from '../constants'
@@ -150,6 +156,9 @@ const UsersList = ({
 
   return (
     <Container {...{ withoutPadding }}>
+      <AddInternalButton onClick={this.handleOnAddUser}>
+        {formatMessage(messages.addUser)}
+      </AddInternalButton>
       <Table>
         <thead>{header}</thead>
         <tbody>{userItems}</tbody>

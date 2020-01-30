@@ -15,6 +15,7 @@ import List from './UsersList'
 import messages from './messages'
 import message from 'antd/lib/message'
 import { sorts } from '../../types/common'
+import SignupModal from './SignupModal'
 
 interface Props {
   history: any
@@ -22,6 +23,9 @@ interface Props {
   orderBy: string
   sort: sorts
   searchText: string
+  name: string
+  lastName: string
+  email: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -29,6 +33,7 @@ interface Props {
   setOrderIdAction: (orderId: string) => void
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
+  onInputChangeAction: (id: string, value: string) => void
 }
 interface StateProps {
   searchValue: string
@@ -50,7 +55,17 @@ class UsersAdmin extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
+    const {
+      currentPage,
+      orderBy,
+      sort,
+      formatMessage,
+      searchText,
+      name,
+      lastName,
+      email,
+      onInputChangeAction
+    } = this.props
 
     return (
       <Container>
@@ -68,6 +83,12 @@ class UsersAdmin extends React.Component<Props, StateProps> {
           onChangePage={this.handleOnChangePage}
           interactiveHeaders={true}
           onSetAdministrator={this.handleOnSetAdministrator}
+        />
+        <SignupModal
+          {...{ formatMessage, name, lastName, email }}
+          onSaveUser={this.handleOnSaveUser}
+          handleOnInputChange={onInputChangeAction}
+          open={true}
         />
       </Container>
     )
@@ -103,6 +124,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.unexpectedError))
     }
   }
+  handleOnSaveUser = () => {}
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props
     setOrderByAction(label, sort)
@@ -126,10 +148,7 @@ const mapStateToProps = (state: any) => state.get('usersAdmin').toJS()
 
 const UsersAdminEnhance = compose(
   setAdminUserMutation,
-  connect(
-    mapStateToProps,
-    { ...UsersAdminActions }
-  )
+  connect(mapStateToProps, { ...UsersAdminActions })
 )(UsersAdmin)
 
 export default UsersAdminEnhance

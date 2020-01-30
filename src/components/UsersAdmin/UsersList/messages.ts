@@ -36,5 +36,9 @@ export default defineMessages({
   netsuiteId: {
     id: 'components.UsersList.netsuiteId',
     defaultMessage: 'Netsuite ID'
+  },
+  addUser: {
+    id: 'components.UsersList.addUser',
+    defaultMessage: '+ ADD NEW USER'
   }
 })

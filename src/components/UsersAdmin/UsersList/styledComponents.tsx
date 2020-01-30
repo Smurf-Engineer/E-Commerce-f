@@ -2,6 +2,8 @@
  * Styled Components - Created by eduardoquintero on 29/05/19.
  */
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
+import { RED, WHITE } from '../../../theme/colors'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -48,4 +50,17 @@ export const Header = styled.th`
     font-size: 12px;
     line-height: 15px;
   }
+`
+
+export const AddInternalButton = styled(Button)`
+  height: 50px;
+  border: 2px solid ${RED};
+  border-radius: 2px;
+  background-color: ${WHITE};
+  color: ${RED};
+  margin-right: 22px;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  text-align: center;
 `
