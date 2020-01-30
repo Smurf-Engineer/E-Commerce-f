@@ -206,7 +206,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const { callbackToSave, loggedUserId, isUserAuthenticated } = nextProps
     if (
       callbackToSave &&
-      loggedUserId.length &&
+      loggedUserId &&
       loggedUserId !== this.props.loggedUserId &&
       isUserAuthenticated
     ) {
