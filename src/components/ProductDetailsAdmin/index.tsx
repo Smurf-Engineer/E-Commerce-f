@@ -51,7 +51,6 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  match: any
   data: Data
   history: any
   setProductAction: (product: Product) => void
@@ -430,9 +429,12 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     }
   }
   editModels = () => {
-    const { history, match } = this.props
-    const productId = get(match, 'params.id', '')
-    history.push(`/admin/add-models?id=${productId}`)
+    const {
+      history,
+      location: { search }
+    } = this.props
+    const { id } = queryString.parse(search)
+    history.push(`/admin/add-models?id=${id}`)
   }
   handleOpenModel = () => {
     this.setState({ openedModel: true })
@@ -442,9 +444,12 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     history.push('/admin/products')
   }
   handleOnClickEdit = () => {
-    const { history, match } = this.props
-    const productId = get(match, 'params.id', '')
-    history.push(`/admin/products/form/${productId}`)
+    const {
+      history,
+      location: { search }
+    } = this.props
+    const { id } = queryString.parse(search)
+    history.push(`/admin/products/form/${id}`)
   }
 }
 
