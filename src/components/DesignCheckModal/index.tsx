@@ -11,48 +11,80 @@ import {
   ModalButtonsWrapper,
   ContinueButton,
   Icon,
-  StatusLabel
+  StatusLabel,
+  RightTitle,
+  Content,
+  DesignImage
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
-import checkBoxIcon from '../../assets/checkbox.svg'
+import ProAssistLogo from '../../assets/ProAssist-logo.svg'
+import ProAssistChat from '../../assets/PROAssist-2.svg'
+import designerImage from '../../assets/designer-guy.jpg'
+import Spin from 'antd/lib/spin'
+import { isWorkingHour } from '../../utils/utilsFunctions'
+import { WorkHours } from '../../types/common'
 
 interface Props {
   visible: boolean
-  online: boolean
+  loadingPro: boolean
+  workingHours: WorkHours
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
+  handleGetPro: () => void
 }
 
 export class DesignCheckModal extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, visible, requestClose, online } = this.props
-
+    const {
+      formatMessage,
+      visible,
+      requestClose,
+      loadingPro,
+      workingHours,
+      handleGetPro
+    } = this.props
+    const online = isWorkingHour(workingHours)
     return (
       <Container>
         <CustomModal
           open={visible}
           withLogo={false}
-          width={'684px'}
+          width={'828px'}
           requestClose={requestClose}
         >
           <ProReviewTitle>
-            {formatMessage(messages.proDesignerReviewLabel)}
-            <Icon src={checkBoxIcon} />
+            <Icon src={ProAssistLogo} />
+            <RightTitle>
+              <Icon src={ProAssistChat} />
+              {formatMessage(messages.proDesignerReviewLabel)}
+            </RightTitle>
           </ProReviewTitle>
           <Paragraph
             dangerouslySetInnerHTML={{
               __html: formatMessage(messages.helpLabel)
             }}
           />
-          <ProDesignReviewContent
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.reviewDesignModalText)
-            }}
-          />
+          <Content>
+            <DesignImage src={designerImage} />
+            <ProDesignReviewContent
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.reviewDesignModalText)
+              }}
+            />
+          </Content>
+
           <ModalButtonsWrapper>
-            <ContinueButton key="review" onClick={requestClose}>
-              {formatMessage(messages.talkWithDesigner)}
-            </ContinueButton>
+            {loadingPro ? (
+              <Spin size="large" />
+            ) : (
+              <ContinueButton
+                key="review"
+                disabled={!online}
+                onClick={handleGetPro}
+              >
+                {formatMessage(messages.talkWithDesigner)}
+              </ContinueButton>
+            )}
           </ModalButtonsWrapper>
           <StatusLabel {...{ online }}>
             {formatMessage(online ? messages.online : messages.offline)}

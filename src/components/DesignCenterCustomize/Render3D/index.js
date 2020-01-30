@@ -27,6 +27,7 @@ import {
   TutorialButton,
   TutorialIcon,
   DragText,
+  ProAssistText,
   ViewControls,
   ViewButton,
   ButtonWrapper,
@@ -125,7 +126,7 @@ import hintImg from '../../../assets/designCenterhelpHint.jpg'
 import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
 import config from '../../../config'
-import checkBoxIcon from '../../../assets/checkbox.svg'
+import PROAssistButton from '../../../assets/PROAssist-button.svg'
 import { initSlaask, closeSlaask } from '../../../slaask'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
@@ -148,7 +149,8 @@ class Render3D extends PureComponent {
     scaleFactorX: 1,
     scaleFactorY: 1,
     isFirstAdd: true,
-    showHelpModal: true
+    showHelpModal: true,
+    openSlaask: true
   }
   canvasApplied = null
   dragComponent = null
@@ -172,9 +174,15 @@ class Render3D extends PureComponent {
       zipperColor,
       bibColor,
       loadingModel,
-      product: newProduct
+      product: newProduct,
+      proAssistId,
+      userEmail,
+      name,
+      lastName,
+      designId,
+      loggedUserId
     } = nextProps
-
+    const { openSlaask } = this.state
     if (loadingModel) {
       return
     }
@@ -215,6 +223,21 @@ class Render3D extends PureComponent {
     if (selectedVariant !== oldSelected) {
       this.clearScene()
       this.render3DModel(newProduct)
+    }
+    if (openSlaask && proAssistId) {
+      if (typeof window.Intercom === 'function') {
+        window.Intercom('hide')
+        window.Intercom('update', { hide_default_launcher: true })
+      }
+      initSlaask({
+        id: proAssistId,
+        userId: loggedUserId,
+        email: userEmail,
+        designId,
+        lastName,
+        name
+      })
+      this.setState({ openSlaask: false })
     }
   }
 
@@ -310,16 +333,6 @@ class Render3D extends PureComponent {
 
     this.controls = controls
     this.start()
-    if (typeof window.Intercom === 'function') {
-      window.Intercom('hide')
-      window.Intercom('update', { hide_default_launcher: true })
-    }
-    initSlaask({
-      id: 'JfdDz23X',
-      name: 'John Doe',
-      email: 'john@test.com',
-      designid: 'tVMcZ1Er'
-    })
   }
 
   componentWillUnmount() {
@@ -1281,8 +1294,16 @@ class Render3D extends PureComponent {
     }
   }
   handleOnDesignCheck = () => {
-    const { openDesignCheckModal } = this.props
-    openDesignCheckModal()
+    const {
+      openDesignCheckModal,
+      openLoginAction,
+      isUserAuthenticated
+    } = this.props
+    if (isUserAuthenticated) {
+      openDesignCheckModal()
+    } else {
+      openLoginAction()
+    }
   }
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
@@ -1301,9 +1322,9 @@ class Render3D extends PureComponent {
       selectedElement,
       isMobile,
       openResetPlaceholderModal,
-      currentStyle
+      currentStyle,
+      proAssistId
     } = this.props
-
     if (isMobile) {
       return (
         <MobileContainer>
@@ -1420,10 +1441,19 @@ class Render3D extends PureComponent {
           )}
         </Row>
         <ButtonWrapper>
-          <DesignCheckButton onClick={this.handleOnDesignCheck}>
-            <Icon src={checkBoxIcon} />
-            {formatMessage(messages.proAssist)}
-          </DesignCheckButton>
+          {!proAssistId && (
+            <DesignCheckButton onClick={this.handleOnDesignCheck}>
+              <Icon src={PROAssistButton} />
+              <ProAssistText>
+                <FormattedMessage
+                  {...messages.proAssist}
+                  values={{
+                    proLabel: <b>{formatMessage(messages.proLabel)}</b>
+                  }}
+                />
+              </ProAssistText>
+            </DesignCheckButton>
+          )}
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>

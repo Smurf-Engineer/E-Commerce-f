@@ -1,17 +1,22 @@
 import config from './config'
 import { LoadScripts } from './utils/scriptLoader'
 
-export async function initSlaask(info) {
-  const { id, name, email, designid } = info
+export function initSlaask(info) {
+  const { id, name, lastName, email, userId } = info
   window._slaaskSettings = {
     identify: () => ({
       id,
-      name,
+      name: `JV2-PRO ASSIST-${id}`,
+      ticket: id,
+      userId,
       email,
-      designid
+      'User Locker': `${config.baseUrl}admin/users/${userId}`,
+      'First Name': name,
+      'Last Name': lastName
     }),
     options: {
-      team_id: 56518
+      team_id: config.slaaskTeam,
+      pulse: true
     },
     onInit: _slaask => {
       _slaask.on('ready', () => {
@@ -20,9 +25,13 @@ export async function initSlaask(info) {
     },
     key: config.slaaskApiKey
   }
-  await LoadScripts([
-    { url: 'https://cdn.slaask.com/chat_loader.js', scriptId: 'slaask' }
-  ])
+  if (window._slaask) {
+    window._slaask.identifyContact()
+  } else {
+    LoadScripts([
+      { url: 'https://cdn.slaask.com/chat_loader.js', scriptId: 'slaask' }
+    ])
+  }
 }
 
 export function closeSlaask() {
