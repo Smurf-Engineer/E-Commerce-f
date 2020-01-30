@@ -56,6 +56,7 @@ import proDesign from '../screens/ProDesign/reducer'
 import publishingTool from '../screens/PublishingTool/reducer'
 import designTools from '../screens/DesignTools/reducer'
 import proAssist from '../components/ProAssist/reducer'
+import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -123,6 +124,7 @@ export interface ReducersObject {
   publishingTool: any
   designTools: any
   proAssist: any
+  userFiles: any
 }
 
 const appInitialState = fromJS({
@@ -243,7 +245,8 @@ const rootReducer = combineReducers({
   proDesign,
   publishingTool,
   designTools,
-  proAssist
+  proAssist,
+  userFiles
 })
 
 export default rootReducer

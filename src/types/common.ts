@@ -258,6 +258,10 @@ export type ProductTableType = {
   visible: boolean
 }
 
+export type ProAssistStatus = {
+  enabled: boolean
+}
+
 export type ProductTiles = {
   id: number
   contentTile: string
@@ -269,6 +273,7 @@ export type ProductTiles = {
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
+  userName?: string
 }
 
 export type TeamStoreResultType = {
@@ -1322,6 +1327,7 @@ export interface User {
   socialMethod: string
   administrator: boolean
   netsuiteId?: string
+  shortId?: string
 }
 
 export interface DesignSearchCode {

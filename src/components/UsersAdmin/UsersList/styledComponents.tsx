@@ -2,7 +2,9 @@
  * Styled Components - Created by eduardoquintero on 29/05/19.
  */
 import styled from 'styled-components'
+import Input from 'antd/lib/input'
 
+const Search = Input.Search
 interface ContainerProps {
   withoutPadding?: boolean
 }
@@ -10,7 +12,7 @@ interface ContainerProps {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   padding-right: ${({ withoutPadding }: ContainerProps) =>
     withoutPadding ? '0' : '32px'};
   @media (min-width: 320px) and (max-width: 768px) {
@@ -47,5 +49,29 @@ export const Header = styled.th`
     letter-spacing: 0.09px;
     font-size: 12px;
     line-height: 15px;
+  }
+`
+
+export const ScreenTitle = styled.div`
+  color: #5f6062;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  margin-bottom: 26px;
+  @media (max-width: 768px) and (min-width: 320px) {
+    margin-bottom: 24px;
+  }
+`
+
+export const SearchInput = styled(Search)`
+  margin-bottom: 20px;
+  margin-top: 0px;
+  border-radius: 0;
+  margin-left: 4px;
+  width: 500px;
+  & input {
+    border-radius: 0;
+    padding: 7px;
+    height: 48px;
   }
 `
