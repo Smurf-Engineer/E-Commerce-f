@@ -75,3 +75,14 @@ export default async function getCroppedImg(imageSrc: any, pixelCrop: Area) {
     }, 'image/jpeg')
   })
 }
+
+export const getFileNameFromUrl = (url: string): string => {
+  const completeName = url.split('/').pop() || ''
+  const fileName = completeName.split('-').pop() || ''
+  const name = fileName
+    .split('.')
+    .slice(0, -1)
+    .join('.')
+
+  return name || ''
+}

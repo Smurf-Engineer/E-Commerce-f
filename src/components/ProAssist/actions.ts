@@ -6,6 +6,7 @@ import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
   RESET_DATA,
+  SET_LOADING,
   SET_SEARCH_TEXT
 } from './constants'
 
@@ -29,4 +30,9 @@ export const resetDataAction = (): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const setLoading = (loading: boolean) => ({
+  type: SET_LOADING,
+  loading
 })
