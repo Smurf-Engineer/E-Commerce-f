@@ -7,7 +7,8 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_ORDER_ID,
-  SET_SEARCH_TEXT
+  SET_SEARCH_TEXT,
+  ON_CHANGE_SECTION
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -35,4 +36,9 @@ export const setOrderIdAction = (orderId: string): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const onChangeSectionAction = (section: boolean) => ({
+  type: ON_CHANGE_SECTION,
+  section
 })

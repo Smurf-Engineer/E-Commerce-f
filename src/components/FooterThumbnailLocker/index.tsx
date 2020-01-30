@@ -25,6 +25,7 @@ interface Props {
   code: string
   isPrivate: boolean
   addToCartButton: React.ReactNode
+  canShare: boolean
   onPressPrivate: (id: string, isPrivate: boolean) => void
   onPressDelete: (id: string, name: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -49,7 +50,8 @@ const FooterThumbnailLocker = ({
   isPrivate,
   addToCartButton,
   onPressRename,
-  setShare
+  setShare,
+  canShare = true
 }: Props) => {
   const handleOnPressPrivate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -63,11 +65,13 @@ const FooterThumbnailLocker = ({
     <Footer>
       <Type>
         {name}
-        <ShareContainer>
-          <ActionButton onClick={setShare}>
-            <FormattedMessage {...messages.share} />
-          </ActionButton>
-        </ShareContainer>
+        {canShare && (
+          <ShareContainer>
+            <ActionButton onClick={setShare}>
+              <FormattedMessage {...messages.share} />
+            </ActionButton>
+          </ShareContainer>
+        )}
       </Type>
       <Description>{description}</Description>
       <Description>{code}</Description>

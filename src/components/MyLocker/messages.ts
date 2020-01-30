@@ -66,4 +66,8 @@ export default defineMessages({
     id: 'components.MyLocker.saveSuccess',
     defaultMessage: '"{designName}" has been renamed successfully'
   },
+  userLocker: {
+    id: 'components.MyLocker.userLocker',
+    defaultMessage: '{userName} Locker'
+  }
 })

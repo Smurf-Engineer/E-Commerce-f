@@ -28,6 +28,7 @@ export const getUsersQuery = gql`
         socialMethod: social_method
         administrator
         netsuiteId: netsuite_internal
+        shortId: short_id
       }
     }
   }
