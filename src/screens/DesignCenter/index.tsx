@@ -1296,6 +1296,7 @@ export class DesignCenter extends React.Component<Props, {}> {
 interface OwnProps {
   location?: any
   dataDesign?: any
+  user?: UserType
 }
 
 const mapStateToProps = (state: any) => {
@@ -1373,7 +1374,10 @@ const DesignCenterEnhance = compose(
   }),
   graphql(getProAssist, {
     name: 'proAssist',
-    options: { fetchPolicy: 'network-only' }
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    })
   }),
   graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(requestColorChartMutation, { name: 'requestColorChart' })
