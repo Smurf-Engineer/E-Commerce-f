@@ -159,7 +159,7 @@ export class Admin extends React.Component<Props, {}> {
           render={() => <ProAssist {...{ history, formatMessage }} />}
         />
         <Route
-          path="/admin/products"
+          path={['/admin/products', '/admin/product']}
           render={() => <ProductCatalog {...{ history, formatMessage }} />}
         />
         <Route
