@@ -3,35 +3,32 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { GRAY_DARK, RED } from '../../theme/colors'
+import { GRAY_DARK, RED, GREEN, GREEN_BRIGHT } from '../../theme/colors'
+
+interface StatusProps {
+  online: boolean
+}
 
 export const Container = styled.div``
 
-export const OptionalLabel = styled.span`
-  color: ${GRAY_DARK};
-  font-size: 16px;
-  font-style: italic;
-  letter-spacing: 0.25px;
-  line-height: 22px;
-  font-weight: normal;
-`
-
 export const ProReviewTitle = styled.div`
-  margin-top: 25px;
   color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-top: 36px;
+  margin-right: 32px;
 `
 
 export const ProDesignReviewContent = styled.div`
-  margin: 20px 0 55px;
   color: ${GRAY_DARK};
   font-size: 16px;
-  letter-spacing: 0.2px;
-  line-height: 22px;
+  margin-left: 16px;
+  letter-spacing: 0.11px;
+  line-height: 18px;
 
   .important {
     color: ${RED};
@@ -46,13 +43,24 @@ export const ProDesignReviewContent = styled.div`
       text-decoration: underline;
     }
   }
-  ul {
-    margin-bottom: 20px;
+  p {
+    margin-bottom: 8px;
   }
-  ul,
-  ul > li {
-    list-style: none;
+  ul {
+    margin-bottom: 12px;
+    list-style: disc;
     padding-left: 0;
+    padding-inline-start: 18px;
+  }
+  li {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  i {
+    font-size: 12px;
+    font-style: italic;
+    letter-spacing: 0.09px;
+    line-height: 18px;
   }
 `
 
@@ -60,8 +68,16 @@ export const Paragraph = styled.div`
   margin-top: 20px;
   color: ${GRAY_DARK};
   font-size: 16px;
-  letter-spacing: 0.2px;
-  line-height: 22px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+`
+
+export const StatusLabel = styled.div`
+  margin-top: 14px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  text-align: center;
+  color: ${({ online }: StatusProps) => (online ? GREEN : RED)};
 `
 
 export const ModalButtonsWrapper = styled.div`
@@ -80,17 +96,31 @@ export const ModalButtonsWrapper = styled.div`
 
 export const ContinueButton = styled(Button)`
   height: 50px;
-  width: 221px;
-  border: 2px solid ${RED};
+  border: 2px solid ${GREEN_BRIGHT};
   border-radius: 2px;
-  color: ${RED};
+  color: ${GREEN_BRIGHT};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
 `
 
-export const Icon = styled.img`
-  width: 35px;
-  margin-left: 10px;
+export const Icon = styled.img``
+
+export const RightTitle = styled.div`
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  width: 328px;
+`
+
+export const Content = styled.div`
+  display: flex;
+  margin: 24px 0;
+  justify-content: space-between;
+  align-items: flex-start;
+`
+
+export const DesignImage = styled.img`
+  max-width: 385px;
 `

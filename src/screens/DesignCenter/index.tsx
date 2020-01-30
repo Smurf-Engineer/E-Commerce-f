@@ -86,7 +86,9 @@ import {
   Message as MessageType,
   MessagePayload,
   UserInfo,
-  DesignLabInfo
+  DesignLabInfo,
+  ProAssistItem,
+  UserType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -95,7 +97,9 @@ import {
   getColorsQuery,
   requestColorChartMutation,
   getDesignLabInfo,
-  getVariantsFromProduct
+  getVariantsFromProduct,
+  getProAssist,
+  getProTicket
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -119,6 +123,10 @@ interface DataDesign extends QueryProps {
 
 interface DataDesignLabInfo extends QueryProps {
   designInfo?: DesignLabInfo
+}
+
+interface ProAssistInfo extends QueryProps {
+  proAssist?: ProAssistItem
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -179,7 +187,7 @@ interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
   searchClipParam: string
   savedDesign: SaveDesignData
-  user: object
+  user: UserType
   responsive: Responsive
   originalPaths: any[]
   selectedItem: SelectedAsset
@@ -190,6 +198,9 @@ interface Props extends RouteComponentProps<any> {
   colorsList: any
   navigation: any
   dataVariants: any
+  loadingPro: boolean
+  ticket: string
+  proAssist: ProAssistInfo
   openResetPlaceholderModal: boolean
   colorChartSending: boolean
   colorChartModalOpen: boolean
@@ -263,6 +274,9 @@ interface Props extends RouteComponentProps<any> {
     idStyle?: number
   ) => void
   editDesignAction: () => void
+  setLoadingPro: (loading: boolean) => void
+  setTicketAction: (ticket: string) => void
+  getProTicketAction: () => Promise<MessagePayload>
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
   setCanvasJsonAction: (canvas: string) => void
@@ -652,7 +666,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       colorChartModalFormOpen,
       openDesignCheckModalAction,
       designCheckModalOpen,
-      dataDesignLabInfo
+      loadingPro,
+      dataDesignLabInfo,
+      ticket,
+      proAssist
     } = this.props
 
     const { formatMessage } = intl
@@ -737,7 +754,10 @@ export class DesignCenter extends React.Component<Props, {}> {
     const canvasJson = get(dataDesign, 'designData.canvas')
     const styleId = get(dataDesign, 'designData.styleId')
     const highResolution = get(dataDesign, 'designData.highResolution')
-
+    const proAssistId =
+      ticket || get(proAssist, 'proAssistData.proAssistId', '')
+    const { email, name: firstName, lastName, id: loggedUserId } = user || {}
+    const workingHours = get(dataDesignLabInfo, 'designInfo.workingHours', {})
     let designObject = design
     if (canvasJson) {
       designObject = { ...designObject, canvasJson, styleId, highResolution }
@@ -784,7 +804,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
       currentStyle.designId = designId
-
       const proDesign = get(designData, 'proDesign', false)
       if (proDesign) {
         proDesignModel = {
@@ -929,6 +948,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   variants,
                   textFormat,
                   artFormat,
+                  proAssistId,
                   openPaletteModalAction,
                   myPaletteModals,
                   openResetDesignModal,
@@ -969,10 +989,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                   colorChartSending,
                   colorChartModalOpen,
                   colorChartModalFormOpen,
-                  tutorialPlaylist
+                  tutorialPlaylist,
+                  loggedUserId
                 }}
+                designId={get(dataDesign, 'designData.shortId', '')}
+                userEmail={email}
+                name={firstName}
+                lastName={lastName}
                 callbackToSave={get(layout, 'callback', false)}
-                loggedUserId={get(user, 'id', '')}
                 saveAndBuy={get(layout, 'saveAndBuy', false)}
                 fonts={get(layout, 'fonts', {})}
                 handleOnSaveAndBuy={handleOnSaveAndBuy}
@@ -1139,9 +1163,10 @@ export class DesignCenter extends React.Component<Props, {}> {
           ) : null}
         </Container>
         <DesignCheckModal
+          handleGetPro={this.handleGetPro}
           requestClose={openDesignCheckModalAction}
           visible={designCheckModalOpen}
-          {...{ formatMessage }}
+          {...{ formatMessage, loadingPro, workingHours }}
         />
         <Modal
           visible={openOutWithoutSaveModal}
@@ -1198,6 +1223,30 @@ export class DesignCenter extends React.Component<Props, {}> {
       })
     }
   }
+
+  handleGetPro = async () => {
+    const {
+      getProTicketAction,
+      setLoadingPro,
+      user,
+      formatMessage,
+      setTicketAction
+    } = this.props
+    if (user) {
+      try {
+        setLoadingPro(true)
+        const response = await getProTicketAction()
+        const ticket = get(response, 'data.newProAssist.ticket', '')
+        setTicketAction(ticket)
+      } catch (e) {
+        Message.error(e)
+        setLoadingPro(false)
+      }
+    } else {
+      Message.warning(formatMessage(messages.loggedError))
+    }
+  }
+
   handleOnGoBack = () => {
     const { setCurrentTabAction, currentTab, loadingModel } = this.props
     if (!loadingModel) {
@@ -1261,6 +1310,7 @@ const mapStateToProps = (state: any) => {
 const DesignCenterEnhance = compose(
   injectIntl,
   addTeamStoreItemMutation,
+  getProTicket,
   withApollo,
   connect(mapStateToProps, {
     ...designCenterActions,
@@ -1320,6 +1370,10 @@ const DesignCenterEnhance = compose(
       }
     },
     name: 'dataVariants'
+  }),
+  graphql(getProAssist, {
+    name: 'proAssist',
+    options: { fetchPolicy: 'network-only' }
   }),
   graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(requestColorChartMutation, { name: 'requestColorChart' })

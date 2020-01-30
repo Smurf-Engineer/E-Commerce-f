@@ -131,6 +131,8 @@ module.exports = {
         'INTERCOM_KEY',
         'DEFAULT_CURRENCY',
         'GOOGLE_TAG_MANAGER_ID',
+        'SLAASK_KEY',
+        'SLAASK_TEAM',
         'LOG_ROCKET_KEY',
         'GOOGLE_FONTS_KEY',
         'GOOGLE_FONTS_URL',

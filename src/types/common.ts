@@ -81,6 +81,12 @@ export type PriceRange = {
   shortName: string
 }
 
+export type WorkHours = {
+  start: string
+  end: string
+  timezone: number
+}
+
 export interface GenderType {
   id: number
   name?: string
@@ -1079,6 +1085,10 @@ export type MessagePayload = {
   data: {
     message: string
   }
+}
+
+export type ProAssistItem = {
+  proAssistId: string
 }
 
 export type StitchingColor = {

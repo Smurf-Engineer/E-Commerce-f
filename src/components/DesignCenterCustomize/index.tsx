@@ -108,6 +108,11 @@ interface Props {
   selectedTab: number
   fonts: SimpleFont[]
   colorsList: any
+  userEmail: string
+  name: string
+  lastName: string
+  designId: string
+  proAssistId: string
   selectedVariant: number
   variants: ModelVariant[]
   placeholders: boolean
@@ -300,6 +305,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       responsive,
       handleOnGoBack,
       handleOnCloseInfo,
+      userEmail,
+      name,
+      lastName,
+      designId,
+      loggedUserId,
+      proAssistId,
       infoModalOpen,
       selectedTab,
       onTabClick,
@@ -419,6 +430,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             openLoginAction={this.handleOnOpenLogin}
             {...{
               text,
+              loggedUserId,
+              designId,
+              proAssistId,
+              userEmail,
+              name,
+              lastName,
               colors,
               design,
               colorBlockHovered,
