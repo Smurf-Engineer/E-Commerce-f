@@ -1228,8 +1228,9 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       getProTicketAction,
       setLoadingPro,
+      openLoginAction: openLoginModalAction,
       user,
-      formatMessage,
+      intl: { formatMessage },
       setTicketAction
     } = this.props
     if (user) {
@@ -1244,6 +1245,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       }
     } else {
       Message.warning(formatMessage(messages.loggedError))
+      openLoginModalAction(true, true)
     }
   }
 
