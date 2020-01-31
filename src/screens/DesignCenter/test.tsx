@@ -31,9 +31,11 @@ describe(' DesignCenter Screen', () => {
     it('setTicketAction', () => {
       const type = SET_TICKET
       const ticket = 'Test'
-      expect(setTicketAction(ticket)).toEqual({
+      const userId = 0
+      expect(setTicketAction(ticket, userId)).toEqual({
         type,
-        ticket
+        ticket,
+        userId
       })
     })
   })
@@ -82,9 +84,10 @@ describe(' DesignCenter Screen', () => {
       })
       it('Handles custom value in ticket', () => {
         const ticket = 'Test'
+        const userId = 1
         const ticketState = designCenterReducer(
           initialState,
-          setTicketAction(ticket)
+          setTicketAction(ticket, userId)
         )
         const customTicketValue = ticketState.get('ticket')
         expect(customTicketValue).toBe(ticket)
@@ -94,6 +97,9 @@ describe(' DesignCenter Screen', () => {
 
         const customLoadingProValue = ticketState.get('loadingPro')
         expect(customLoadingProValue).toBeFalsy()
+
+        const customUserValue = ticketState.get('userId')
+        expect(customUserValue).toBe(userId)
       })
     })
   })

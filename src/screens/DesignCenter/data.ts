@@ -187,6 +187,9 @@ export const getProAssist = gql`
   query proAssistData {
     proAssistData: getProAssist {
       proAssistId: short_id
+      user {
+        id
+      }
     }
   }
 `
@@ -196,6 +199,9 @@ export const getProTicket = graphql(
     mutation newProAssist {
       newProAssist {
         ticket: short_id
+        user {
+          id
+        }
       }
     }
   `,

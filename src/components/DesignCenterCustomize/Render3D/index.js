@@ -180,7 +180,8 @@ class Render3D extends PureComponent {
       name,
       lastName,
       designId,
-      loggedUserId
+      loggedUserId,
+      userCode
     } = nextProps
     const { openSlaask } = this.state
     if (loadingModel) {
@@ -233,6 +234,7 @@ class Render3D extends PureComponent {
         id: proAssistId,
         userId: loggedUserId,
         email: userEmail,
+        userCode,
         designId,
         lastName,
         name
