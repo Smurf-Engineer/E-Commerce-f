@@ -51,7 +51,7 @@ class ProductCatalog extends React.Component<Props, {}> {
   handleOnProductClick = (productId: string, screen = 'details') => {
     const { history } = this.props
     if (screen === 'details') {
-      history.push(`/admin/products/details/${productId}`)
+      history.push(`/admin/product?id=${productId}`)
     } else {
       history.push('/admin/products')
     }
@@ -111,7 +111,7 @@ class ProductCatalog extends React.Component<Props, {}> {
           )}
         />
         <Route
-          path="/admin/products/details/:id"
+          path="/admin/product"
           render={() => (
             <div>
               <ProductDetailsAdmin {...{ formatMessage, history }} />
@@ -134,10 +134,7 @@ class ProductCatalog extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('productCatalogAdmin').toJS()
 
 const ProductCatalogEnhance = compose(
-  connect(
-    mapStateToProps,
-    { ...OrderHistoryAdminActions }
-  )
+  connect(mapStateToProps, { ...OrderHistoryAdminActions })
 )(ProductCatalog)
 
 export default ProductCatalogEnhance

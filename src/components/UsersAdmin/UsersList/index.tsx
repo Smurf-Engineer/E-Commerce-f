@@ -11,8 +11,13 @@ import {
   Header,
   Row,
   Table,
-  AddInternalButton
+  AddInternalButton,
+  ScreenTitle,
+  SearchInput,
+  OptionsContainer
 } from './styledComponents'
+
+import debounce from 'lodash/debounce'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import { USERS_LIMIT } from '../constants'
@@ -33,7 +38,6 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   formatMessage: (messageDescriptor: any) => string
-  interactiveHeaders: boolean
   currentPage: number
   orderBy: string
   sort: sorts
@@ -43,136 +47,175 @@ interface Props {
   onSortClick: (label: string, sort: sorts) => void
   onChangePage: (page: number) => void
   onSetAdministrator: (id: number) => void
+  onSelectUser: (id: string, name: string) => void
+  setSearchText: (searchText: string) => void
+  onAddNewUser: () => void
+}
+interface StateProps {
+  searchValue: string
 }
 
-const UsersList = ({
-  formatMessage,
-  interactiveHeaders,
-  orderBy,
-  sort,
-  currentPage,
-  data: { usersQuery },
-  onSortClick,
-  onChangePage,
-  withPagination = true,
-  withoutPadding = false,
-  onSetAdministrator
-}: Props) => {
-  const users = get(usersQuery, 'users', []) as User[]
-  const fullCount = get(usersQuery, 'fullCount', 0)
-
-  if (!users || !users.length) {
-    return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+class UsersList extends React.Component<Props, StateProps> {
+  state = {
+    searchValue: ''
   }
+  raiseSearchWhenUserStopsTyping = debounce(
+    () => this.props.setSearchText(this.state.searchValue),
+    600
+  )
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.setState({ searchValue: value }, () => {
+      this.raiseSearchWhenUserStopsTyping()
+    })
+  }
+  render() {
+    const {
+      formatMessage,
+      orderBy,
+      sort,
+      currentPage,
+      data: { usersQuery },
+      onSortClick,
+      onChangePage,
+      withPagination = true,
+      withoutPadding = false,
+      onSetAdministrator,
+      onSelectUser,
+      searchText,
+      onAddNewUser
+    } = this.props
 
-  const header = (
-    <MediaQuery maxWidth={768}>
-      {matches => {
-        if (matches) {
+    const users = get(usersQuery, 'users', []) as User[]
+    const fullCount = get(usersQuery, 'fullCount', 0)
+
+    if (!users || !users.length) {
+      return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+    }
+
+    const header = (
+      <MediaQuery maxWidth={768}>
+        {matches => {
+          if (matches) {
+            return (
+              <Row>
+                <Header>{formatMessage(messages.clientID)}</Header>
+                <Header>{formatMessage(messages.name)}</Header>
+                <Header>{formatMessage(messages.accountType)}</Header>
+                <Header>{formatMessage(messages.admin)}</Header>
+                <Header>{formatMessage(messages.email)}</Header>
+                <Header>{formatMessage(messages.netsuiteId)}</Header>
+              </Row>
+            )
+          }
           return (
             <Row>
-              <Header>{formatMessage(messages.clientID)}</Header>
-              <Header>{formatMessage(messages.name)}</Header>
-              <Header>{formatMessage(messages.accountType)}</Header>
-              <Header>{formatMessage(messages.admin)}</Header>
-              <Header>{formatMessage(messages.email)}</Header>
-              <Header>{formatMessage(messages.netsuiteId)}</Header>
+              <HeaderTable
+                id={'id'}
+                label={formatMessage(messages.clientID)}
+                sort={orderBy === 'id' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'first_name'}
+                label={formatMessage(messages.name)}
+                sort={orderBy === 'first_name' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'social_method'}
+                label={formatMessage(messages.accountType)}
+                sort={orderBy === 'social_method' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'administrator'}
+                label={formatMessage(messages.admin)}
+                sort={orderBy === 'administrator' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'email'}
+                label={formatMessage(messages.email)}
+                sort={orderBy === 'email' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'netsuite_internal'}
+                label={formatMessage(messages.netsuiteId)}
+                sort={orderBy === 'netsuite_internal' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
             </Row>
           )
-        }
+        }}
+      </MediaQuery>
+    )
+    const userItems = users.map(
+      (
+        {
+          id,
+          email,
+          firstName,
+          lastName,
+          socialMethod,
+          administrator,
+          netsuiteId = '',
+          shortId
+        }: User,
+        index: number
+      ) => {
         return (
-          <Row>
-            <HeaderTable
-              id={'id'}
-              label={formatMessage(messages.clientID)}
-              sort={orderBy === 'id' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'first_name'}
-              label={formatMessage(messages.name)}
-              sort={orderBy === 'first_name' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'social_method'}
-              label={formatMessage(messages.accountType)}
-              sort={orderBy === 'social_method' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'administrator'}
-              label={formatMessage(messages.admin)}
-              sort={orderBy === 'administrator' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'email'}
-              label={formatMessage(messages.email)}
-              sort={orderBy === 'email' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'netsuite_internal'}
-              label={formatMessage(messages.netsuiteId)}
-              sort={orderBy === 'netsuite_internal' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-          </Row>
+          <ItemOrder
+            key={index}
+            {...{
+              id,
+              email,
+              firstName,
+              lastName,
+              socialMethod,
+              administrator,
+              onSetAdministrator,
+              onSelectUser,
+              netsuiteId,
+              shortId
+            }}
+          />
         )
-      }}
-    </MediaQuery>
-  )
-  const userItems = users.map(
-    (
-      {
-        id,
-        email,
-        firstName,
-        lastName,
-        socialMethod,
-        administrator,
-        netsuiteId = ''
-      }: User,
-      index: number
-    ) => {
-      return (
-        <ItemOrder
-          key={index}
-          {...{
-            id,
-            email,
-            firstName,
-            lastName,
-            socialMethod,
-            administrator,
-            onSetAdministrator,
-            netsuiteId
-          }}
-        />
-      )
-    }
-  )
+      }
+    )
 
-  return (
-    <Container {...{ withoutPadding }}>
-      <AddInternalButton onClick={this.handleOnAddUser}>
-        {formatMessage(messages.addUser)}
-      </AddInternalButton>
-      <Table>
-        <thead>{header}</thead>
-        <tbody>{userItems}</tbody>
-      </Table>
-      {withPagination ? (
-        <Pagination
-          current={currentPage}
-          pageSize={USERS_LIMIT}
-          total={Number(fullCount)}
-          onChange={onChangePage}
-        />
-      ) : null}
-    </Container>
-  )
+    return (
+      <Container {...{ withoutPadding }}>
+        <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>
+        <OptionsContainer>
+          <AddInternalButton onClick={onAddNewUser}>
+            {formatMessage(messages.addUser)}
+          </AddInternalButton>
+          <SearchInput
+            value={this.state.searchValue || searchText}
+            onChange={this.handleInputChange}
+            placeholder={formatMessage(messages.search)}
+            autoFocus={true}
+          />
+        </OptionsContainer>
+        <Table>
+          <thead>{header}</thead>
+          <tbody>{userItems}</tbody>
+        </Table>
+        {withPagination ? (
+          <Pagination
+            current={currentPage}
+            pageSize={USERS_LIMIT}
+            total={Number(fullCount)}
+            onChange={onChangePage}
+          />
+        ) : null}
+      </Container>
+    )
+  }
 }
 
 interface OwnProps {

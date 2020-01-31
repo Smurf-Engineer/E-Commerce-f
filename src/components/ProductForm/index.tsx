@@ -598,7 +598,7 @@ export class ProductForm extends React.Component<Props, {}> {
     const { history, match } = this.props
     const productId = get(match, 'params.id', '')
     if (parseInt(productId, 10)) {
-      history.push(`/admin/products/details/${productId}`)
+      history.push(`/admin/product?id=${productId}`)
     } else {
       history.push(`/admin/products`)
     }
@@ -611,10 +611,10 @@ const ProductFormEnhance = compose(
   withRouter,
   withApollo,
   graphql(upsertProduct, { name: 'upsertProductAction' }),
-  connect(
-    mapStateToProps,
-    { ...ProductFormActions, uploadMediaFile: uploadMediaAction }
-  )
+  connect(mapStateToProps, {
+    ...ProductFormActions,
+    uploadMediaFile: uploadMediaAction
+  })
 )(ProductForm)
 
 export default ProductFormEnhance

@@ -81,6 +81,12 @@ export type PriceRange = {
   shortName: string
 }
 
+export type WorkHours = {
+  start: string
+  end: string
+  timezone: number
+}
+
 export interface GenderType {
   id: number
   name?: string
@@ -258,6 +264,10 @@ export type ProductTableType = {
   visible: boolean
 }
 
+export type ProAssistStatus = {
+  enabled: boolean
+}
+
 export type ProductTiles = {
   id: number
   contentTile: string
@@ -269,6 +279,7 @@ export type ProductTiles = {
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
+  userName?: string
 }
 
 export type TeamStoreResultType = {
@@ -1081,6 +1092,10 @@ export type MessagePayload = {
   }
 }
 
+export type ProAssistItem = {
+  proAssistId: string
+}
+
 export type StitchingColor = {
   name: string
   value: string
@@ -1322,6 +1337,7 @@ export interface User {
   socialMethod: string
   administrator: boolean
   netsuiteId?: string
+  shortId?: string
 }
 
 export interface DesignSearchCode {
@@ -1525,4 +1541,14 @@ export type Design = {
   design: {
     message: string
   }
+}
+
+export type ProAssist = {
+  shortId: string
+  userId: string
+  firstName: string
+  lastName: string
+  date: string
+  status: string
+  url: string
 }

@@ -17,17 +17,14 @@ interface Props {
   name: string
   lastName: string
   email: string
+  loading: boolean
   formatMessage: (messageDescriptor: Message) => string
   onSaveUser: () => void
   handleOnInputChange: (id: string, value: string) => void
+  onClose: () => void
 }
 
 export class SignupModal extends React.Component<Props, {}> {
-  handleCancel = () => {
-    // const { requestClose } = this.props
-    // requestClose()
-    alert('a')
-  }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { handleOnInputChange } = this.props
     const {
@@ -37,7 +34,16 @@ export class SignupModal extends React.Component<Props, {}> {
   }
 
   render() {
-    const { open, formatMessage, name, lastName, email } = this.props
+    const {
+      open,
+      formatMessage,
+      name,
+      lastName,
+      email,
+      onSaveUser,
+      onClose,
+      loading
+    } = this.props
 
     return (
       <div>
@@ -45,8 +51,8 @@ export class SignupModal extends React.Component<Props, {}> {
           {...{ open }}
           withLogo={false}
           title={formatMessage(messages.newUser)}
-          requestClose={this.handleCancel}
-          onCancel={this.handleCancel}
+          requestClose={onClose}
+          onCancel={onClose}
         >
           <FormContainer>
             <StyledInput
@@ -70,10 +76,10 @@ export class SignupModal extends React.Component<Props, {}> {
           </FormContainer>
           <ButtonWrapper disabled={false}>
             <StyledButton
-              loading={false}
+              {...{ loading }}
               disabled={false}
               type="primary"
-              onClick={this.onSaveDesign}
+              onClick={onSaveUser}
             >
               {formatMessage(messages.add)}
             </StyledButton>

@@ -9,7 +9,11 @@ import {
   RESET_DATA,
   SET_ORDER_ID,
   SET_SEARCH_TEXT,
-  ON_INPUT_CHANGE
+  ON_INPUT_CHANGE,
+  ON_CHANGE_SECTION,
+  ON_TOGGLE_MODAL,
+  ON_RESET_MODAL,
+  SET_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -21,7 +25,10 @@ export const initialState = fromJS({
   searchText: '',
   name: '',
   lastName: '',
-  email: ''
+  email: '',
+  showLocker: true,
+  openModal: false,
+  loading: false
 })
 
 const orderHistoryAdminReducer: Reducer<any> = (
@@ -43,6 +50,20 @@ const orderHistoryAdminReducer: Reducer<any> = (
       const { id, value } = action
       return state.set(id, value)
     }
+    case ON_CHANGE_SECTION:
+      return state.set('showLocker', action.section)
+    case ON_TOGGLE_MODAL:
+      return state.set('openModal', !state.get('openModal'))
+    case ON_RESET_MODAL:
+      return state.merge({
+        openModal: false,
+        name: '',
+        lastName: '',
+        email: '',
+        loading: false
+      })
+    case SET_LOADING:
+      return state.set('loading', action.loading)
     default:
       return state
   }

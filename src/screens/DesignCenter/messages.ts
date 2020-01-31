@@ -68,5 +68,9 @@ export default defineMessages({
   colorChartRequestFailed: {
     id: 'screens.DesignCenter.colorChartRequestFailed',
     defaultMessage: 'Error requesting chart, please try again.'
+  },
+  loggedError: {
+    id: 'screens.DesignCenter.loggedError',
+    defaultMessage: 'You must be logged in.'
   }
 })

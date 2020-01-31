@@ -8,10 +8,12 @@ import {
   RED,
   BLUE,
   WHITE,
+  GREEN_BRIGHT,
   GRAY_LIGHT,
   GRAY_DARK,
   BLUE_DARK,
-  GRAY_LIGHTEST
+  GRAY_LIGHTEST,
+  WHITE_SMOKE
 } from '../../../theme/colors'
 
 export const fadeIn = keyframes`
@@ -279,10 +281,22 @@ export const DesignCheckButton = styled(AntdButton)`
   display: flex;
   align-items: center;
   margin-right: 10px;
+  border: 1px solid ${GREEN_BRIGHT};
+  border-radius: 2px;
+  &:hover {
+    border: 1px solid ${GREEN_BRIGHT};
+    background: ${WHITE_SMOKE};
+  }
+`
+
+export const ProAssistText = styled.span`
+  color: ${GREEN_BRIGHT};
 `
 
 export const Icon = styled.img`
-  margin-left: 5px;
+  margin-right: 8px;
+  width: 22px;
+  margin-bottom: 2px;
 `
 
 export const Variants = styled.div`

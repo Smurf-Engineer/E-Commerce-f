@@ -5,6 +5,7 @@ const namespace = 'src/Admin'
 
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
+export const PRO_ASSIST = 'proAssist'
 export const PRODUCT_CATALOG = 'productCatalog'
 export const DESIGN_SEARCH = 'designSearch'
 export const HOMEPAGE = 'homepage'
@@ -22,6 +23,7 @@ export const OPEN_FORGOT_PASSWORD = `${namespace}/OPEN_FORGOT_PASSWORD`
 export const keys = {
   ['/admin/']: ORDER_STATUS,
   ['/admin/discounts']: DISCOUNTS,
+  ['/admin/proAssist']: PRO_ASSIST,
   ['/admin/design-search']: PRODUCT_CATALOG,
   ['/admin/products']: DESIGN_SEARCH,
   ['/admin/users']: USERS,

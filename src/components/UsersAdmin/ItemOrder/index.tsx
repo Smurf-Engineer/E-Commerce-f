@@ -13,7 +13,9 @@ interface Props {
   firstName: string
   lastName: string
   netsuiteId: string
+  shortId: string
   onSetAdministrator: (id: number) => void
+  onSelectUser: (id: string, name: string) => void
 }
 
 const ItemOrder = ({
@@ -24,13 +26,15 @@ const ItemOrder = ({
   firstName,
   lastName,
   netsuiteId,
-  onSetAdministrator
+  onSetAdministrator,
+  onSelectUser,
+  shortId
 }: Props) => {
-  const handleOnSetAdministrator = () => {
-    onSetAdministrator(id)
-  }
+  const handleOnSetAdministrator = () => onSetAdministrator(id)
+  const handleOnSelectUser = () =>
+    onSelectUser(shortId, `${firstName} ${lastName}`)
   return (
-    <Container>
+    <Container onClick={handleOnSelectUser}>
       <Cell>JV2-{id}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>

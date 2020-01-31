@@ -8,7 +8,11 @@ import {
   RESET_DATA,
   SET_ORDER_ID,
   SET_SEARCH_TEXT,
-  ON_INPUT_CHANGE
+  ON_INPUT_CHANGE,
+  ON_CHANGE_SECTION,
+  ON_TOGGLE_MODAL,
+  ON_RESET_MODAL,
+  SET_LOADING
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -42,4 +46,22 @@ export const onInputChangeAction = (id: string, value: string) => ({
   type: ON_INPUT_CHANGE,
   id,
   value
+})
+
+export const onChangeSectionAction = (section: boolean) => ({
+  type: ON_CHANGE_SECTION,
+  section
+})
+
+export const onToggleModalAction = () => ({
+  type: ON_TOGGLE_MODAL
+})
+
+export const onResetModalAction = () => ({
+  type: ON_RESET_MODAL
+})
+
+export const setLoadingAction = (loading: boolean) => ({
+  type: SET_LOADING,
+  loading
 })

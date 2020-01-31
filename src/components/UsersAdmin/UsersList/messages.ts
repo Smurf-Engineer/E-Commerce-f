@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.UsersList.title',
-    defaultMessage: 'Recent Orders'
+    defaultMessage: 'Users List'
   },
   clientID: {
     id: 'components.UsersList.clientID',
@@ -40,5 +40,9 @@ export default defineMessages({
   addUser: {
     id: 'components.UsersList.addUser',
     defaultMessage: '+ ADD NEW USER'
+  },
+  search: {
+    id: 'components.UsersList.search',
+    defaultMessage: 'Search for a user'
   }
 })

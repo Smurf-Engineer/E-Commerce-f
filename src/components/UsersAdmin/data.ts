@@ -14,15 +14,18 @@ export const setAdminUserMutation = graphql(
   }
 )
 
-export const createUser = graphql(
+export const createUserMutation = graphql(
   gql`
     mutation createUserFromAdmin($user: ShortUserInput!) {
       createUserFromAdmin(user: $user) {
-        user {
-          id
-          name: first_name
-          lastName: last_name
-        }
+        id
+        email
+        firstName: first_name
+        lastName: last_name
+        socialMethod: social_method
+        administrator
+        netsuiteId: netsuite_internal
+        shortId: short_id
       }
     }
   `,

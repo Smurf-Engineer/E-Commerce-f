@@ -6,7 +6,7 @@ import {
   DEFAULT_ACTION,
   SET_LOADING,
   SET_ERROR,
-  SET_DESIGNS_DATA,
+  SET_PAGINATION_DATA,
   SET_DELETE_MODAL_DATA,
   SET_MODAL_LOADING,
   RESET_MODAL_DATA,
@@ -21,8 +21,6 @@ export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   loading: true,
   error: false,
-  fullCount: '',
-  designs: [],
   limit: 12,
   offset: 0,
   currentPage: 1,
@@ -38,7 +36,8 @@ export const initialState = fromJS({
     currentDesignName: '',
     modalLoading: false,
     newName: ''
-  }
+  },
+  userName: ''
 })
 
 const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -49,18 +48,10 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loading', action.loading)
     case SET_ERROR:
       return state.merge({ error: action.error, loading: false })
-    case SET_DESIGNS_DATA: {
-      const {
-        data: {
-          designs: { designs, fullCount }
-        }
-      } = action.data
+    case SET_PAGINATION_DATA: {
       return state.merge({
-        designs,
-        fullCount,
         offset: action.offset,
-        currentPage: action.page,
-        loading: false
+        currentPage: action.page
       })
     }
     case SET_DELETE_MODAL_DATA:
