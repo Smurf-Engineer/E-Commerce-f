@@ -161,6 +161,7 @@ export const initialState = fromJS({
   images: [],
   searchClipParam: '',
   ticket: '',
+  userId: 0,
   savedDesign: {},
   selectedItem: {},
   infoModalOpen: false,
@@ -182,7 +183,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         loadingPro: false,
         designCheckModalOpen: false,
-        ticket: action.ticket
+        ticket: action.ticket,
+        userId: action.userId
       })
     case SET_CURRENT_TAB_ACTION: {
       if (action.index === 2) {

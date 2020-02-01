@@ -180,7 +180,8 @@ class Render3D extends PureComponent {
       name,
       lastName,
       designId,
-      loggedUserId
+      loggedUserId,
+      userCode
     } = nextProps
     const { openSlaask } = this.state
     if (loadingModel) {
@@ -233,6 +234,7 @@ class Render3D extends PureComponent {
         id: proAssistId,
         userId: loggedUserId,
         email: userEmail,
+        userCode,
         designId,
         lastName,
         name
@@ -1293,18 +1295,6 @@ class Render3D extends PureComponent {
       )
     }
   }
-  handleOnDesignCheck = () => {
-    const {
-      openDesignCheckModal,
-      openLoginAction,
-      isUserAuthenticated
-    } = this.props
-    if (isUserAuthenticated) {
-      openDesignCheckModal()
-    } else {
-      openLoginAction()
-    }
-  }
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
     const {
@@ -1323,6 +1313,7 @@ class Render3D extends PureComponent {
       isMobile,
       openResetPlaceholderModal,
       currentStyle,
+      openDesignCheckModal,
       proAssistId
     } = this.props
     if (isMobile) {
@@ -1442,7 +1433,7 @@ class Render3D extends PureComponent {
         </Row>
         <ButtonWrapper>
           {!proAssistId && (
-            <DesignCheckButton onClick={this.handleOnDesignCheck}>
+            <DesignCheckButton onClick={openDesignCheckModal}>
               <Icon src={PROAssistButton} />
               <ProAssistText>
                 <FormattedMessage

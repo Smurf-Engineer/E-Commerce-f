@@ -123,9 +123,10 @@ export const setLoadingPro = (loading: boolean): AnyAction => ({
   loading
 })
 
-export const setTicketAction = (ticket: string): AnyAction => ({
+export const setTicketAction = (ticket: string, userId: number): AnyAction => ({
   type: SET_TICKET,
-  ticket
+  ticket,
+  userId
 })
 
 export const setColorAction = (color: string): AnyAction => ({

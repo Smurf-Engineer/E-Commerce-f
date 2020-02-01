@@ -195,6 +195,7 @@ interface Props extends RouteComponentProps<any> {
   infoModalOpen: boolean
   automaticSave: boolean
   selectedTab: number
+  userId: number
   colorsList: any
   navigation: any
   dataVariants: any
@@ -275,7 +276,7 @@ interface Props extends RouteComponentProps<any> {
   ) => void
   editDesignAction: () => void
   setLoadingPro: (loading: boolean) => void
-  setTicketAction: (ticket: string) => void
+  setTicketAction: (ticket: string, userId: number) => void
   getProTicketAction: () => Promise<MessagePayload>
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
@@ -669,6 +670,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       loadingPro,
       dataDesignLabInfo,
       ticket,
+      userId,
       proAssist
     } = this.props
 
@@ -756,6 +758,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const highResolution = get(dataDesign, 'designData.highResolution')
     const proAssistId =
       ticket || get(proAssist, 'proAssistData.proAssistId', '')
+    const userCode = userId || get(proAssist, 'proAssistData.user.id', '')
     const { email, name: firstName, lastName, id: loggedUserId } = user || {}
     const workingHours = get(dataDesignLabInfo, 'designInfo.workingHours', {})
     let designObject = design
@@ -990,7 +993,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   colorChartModalOpen,
                   colorChartModalFormOpen,
                   tutorialPlaylist,
-                  loggedUserId
+                  loggedUserId,
+                  userCode
                 }}
                 designId={get(dataDesign, 'designData.shortId', '')}
                 userEmail={email}
@@ -1228,8 +1232,9 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       getProTicketAction,
       setLoadingPro,
+      openLoginAction: openLoginModalAction,
       user,
-      formatMessage,
+      intl: { formatMessage },
       setTicketAction
     } = this.props
     if (user) {
@@ -1237,13 +1242,15 @@ export class DesignCenter extends React.Component<Props, {}> {
         setLoadingPro(true)
         const response = await getProTicketAction()
         const ticket = get(response, 'data.newProAssist.ticket', '')
-        setTicketAction(ticket)
+        const userId = get(response, 'data.newProAssist.user.id', '')
+        setTicketAction(ticket, userId)
       } catch (e) {
         Message.error(e)
         setLoadingPro(false)
       }
     } else {
       Message.warning(formatMessage(messages.loggedError))
+      openLoginModalAction(true, true)
     }
   }
 
