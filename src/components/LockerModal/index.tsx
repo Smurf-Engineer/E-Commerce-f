@@ -185,18 +185,19 @@ interface OwnProps {
   currentPage?: number
   limit?: number
   userId?: string
+  proDesign?: boolean
 }
 
 const LockerModalDesignsEnhance = compose(
   graphql<Data>(desginsQuery, {
-    options: ({ currentPage, offset, limit, userId }: OwnProps) => {
+    options: ({ currentPage, offset, limit, userId, proDesign }: OwnProps) => {
       return {
         variables: {
           limit,
           currentPage,
           offset,
           userId,
-          proDesign: true
+          proDesign
         }
       }
     }
