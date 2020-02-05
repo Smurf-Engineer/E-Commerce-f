@@ -683,6 +683,7 @@ class Render3D extends PureComponent {
           object.add(...areasLayers)
 
           children[meshIndex].material = insideMaterial
+          console.log('Children ',children)
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
           if (labelIndex >= 0) {
