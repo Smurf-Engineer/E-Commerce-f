@@ -130,7 +130,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       if (data) {
         message.success(
           formatMessage(messages.userAdded, {
-            name: get(data, 'firstName', '')
+            name
           })
         )
       }
