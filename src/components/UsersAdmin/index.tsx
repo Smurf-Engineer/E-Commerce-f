@@ -38,7 +38,6 @@ interface Props {
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setOrderIdAction: (orderId: string) => void
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
   onInputChangeAction: (id: string, value: string) => void

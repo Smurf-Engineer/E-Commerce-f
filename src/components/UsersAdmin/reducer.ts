@@ -7,7 +7,6 @@ import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
   RESET_DATA,
-  SET_ORDER_ID,
   SET_SEARCH_TEXT,
   ON_INPUT_CHANGE,
   ON_CHANGE_SECTION,
@@ -21,8 +20,8 @@ export const initialState = fromJS({
   currentPage: 1,
   orderBy: 'id',
   sort: 'desc',
-  orderId: '',
   searchText: '',
+  firstName: '',
   name: '',
   lastName: '',
   email: '',
@@ -31,17 +30,12 @@ export const initialState = fromJS({
   loading: false
 })
 
-const orderHistoryAdminReducer: Reducer<any> = (
-  state = initialState,
-  action
-) => {
+const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDER_BY:
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
-    case SET_ORDER_ID:
-      return state.set('orderId', action.orderId)
     case RESET_DATA:
       return initialState
     case SET_SEARCH_TEXT:
@@ -69,4 +63,4 @@ const orderHistoryAdminReducer: Reducer<any> = (
   }
 }
 
-export default orderHistoryAdminReducer
+export default usersAdminReducer
