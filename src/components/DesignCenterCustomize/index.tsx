@@ -121,6 +121,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
+  userCode: string
   // Redux actions
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
@@ -254,6 +255,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUpdateText,
       productName,
       canvas,
+      userCode,
       onSelectEl,
       onRemoveEl,
       onApplyCanvasEl,
@@ -468,6 +470,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               selectedVariant,
               variants,
               product,
+              userCode,
               stitchingColor,
               bindingColor,
               zipperColor,

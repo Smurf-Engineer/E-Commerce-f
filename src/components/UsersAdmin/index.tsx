@@ -16,7 +16,7 @@ import { Container } from './styledComponents'
 import List from './UsersList'
 import messages from './messages'
 import message from 'antd/lib/message'
-import { sorts, User } from '../../types/common'
+import { sorts, User, Message } from '../../types/common'
 import SignupModal from './SignupModal'
 import { validateEmail } from '../../utils/utilsFunctions'
 import Options from './Options'
@@ -34,7 +34,7 @@ interface Props {
   initialCountryCode: string
   openModal: boolean
   loading: boolean
-  formatMessage: (messageDescriptor: any, params?: object) => string
+  formatMessage: (messageDescriptor: Message, params?: object) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void

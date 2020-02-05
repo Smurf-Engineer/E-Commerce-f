@@ -30,6 +30,11 @@ const ItemOrder = ({
   onSelectUser,
   shortId
 }: Props) => {
+  const stopPropagation = (event: React.MouseEvent) => {
+    if (event) {
+      event.stopPropagation()
+    }
+  }
   const handleOnSetAdministrator = () => onSetAdministrator(id)
   const handleOnSelectUser = () =>
     onSelectUser(shortId, `${firstName} ${lastName}`)
@@ -38,7 +43,7 @@ const ItemOrder = ({
       <Cell>JV2-{id}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>
-      <Cell>
+      <Cell onClick={stopPropagation}>
         <Switch onChange={handleOnSetAdministrator} checked={administrator} />
       </Cell>
       <Cell>{email}</Cell>
