@@ -33,9 +33,6 @@ export const uploadDesignAction = (
         )
 
         const modelConfig = await response.json()
-        // modelConfig.config.binding = null
-        // modelConfig.config.bibBrace = null
-        // modelConfig.config.zipper = null
         dispatch(setUploadingDesignSuccess(modelConfig))
       }
     } catch (e) {
