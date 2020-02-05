@@ -30,6 +30,7 @@ export const getUsersQuery = gql`
         netsuiteId: netsuite_internal
         billingCountry: billing_country
         createdAt: created_at
+        shortId: short_id
       }
     }
   }

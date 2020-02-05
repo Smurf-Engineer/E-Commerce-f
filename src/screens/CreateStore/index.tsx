@@ -35,7 +35,8 @@ import {
   DesignResultType,
   LockerTableType,
   DesignType,
-  SelectedDesignObjectType
+  SelectedDesignObjectType,
+  UserType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -104,6 +105,7 @@ interface Props extends RouteComponentProps<any> {
   offset: number
   currentPage: number
   bulletin: string
+  user: UserType
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -491,7 +493,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       currentPage,
       limit,
       offset,
-      onUnselectItemAction
+      onUnselectItemAction,
+      user
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -734,6 +737,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onUnselectItem={onUnselectItemAction}
               onAddItems={setItemsAddAction}
               changePage={this.changePage}
+              proDesign={false}
+              userId={user.id}
             />
             <ImageCropper
               {...{ formatMessage, open }}
@@ -751,7 +756,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
 const mapStateToProps = (state: any) => {
   const createStore = state.get('createStore').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...createStore, ...langProps }
+  const app = state.get('app').toJS()
+  return { ...createStore, ...langProps, ...app }
 }
 
 const CreateStoreEnhance = compose(
@@ -759,10 +765,7 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
-  connect(
-    mapStateToProps,
-    { ...createStoreActions, ...thunkActions }
-  )
+  connect(mapStateToProps, { ...createStoreActions, ...thunkActions })
 )(CreateStore)
 
 export default CreateStoreEnhance

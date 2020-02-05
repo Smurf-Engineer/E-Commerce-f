@@ -131,6 +131,11 @@ export class OrderSummary extends React.Component<Props, {}> {
               </DiscountAmout>
             </OrderItem>
           )}
+          {/* shipping */}
+          <OrderItem hide={!shippingTotal}>
+            <FormattedMessage {...messages.shipping} />
+            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+          </OrderItem>
           {/* taxes */}
           <OrderItem hide={!taxFee}>
             <FormattedMessage {...messages.taxes} />
@@ -147,11 +152,6 @@ export class OrderSummary extends React.Component<Props, {}> {
           <OrderItem hide={!taxVat}>
             <FormattedMessage {...messages.taxesVat} />
             <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>
-          </OrderItem>
-          {/* shipping */}
-          <OrderItem hide={!shippingTotal}>
-            <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
           </OrderItem>
         </CalculationsWrapper>
         {amountsDivider && <Divider />}

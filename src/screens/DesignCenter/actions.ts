@@ -20,6 +20,7 @@ import {
   SET_SWIPING_TAB_ACTION,
   SET_THEME_SELECTED_ACTION,
   SET_STYLE_SELECTED_ACTION,
+  SET_LOADING_PRO,
   OPEN_SHARE_MODAL,
   OPEN_SAVE_DESIGN_ACTION,
   SET_DESIGN_NAME,
@@ -71,7 +72,8 @@ import {
   ON_OPEN_COLOR_CHART,
   OPEN_DESIGN_CHECK_MODAL,
   ON_OPEN_COLOR_CHART_FORM,
-  SELECT_VARIANT
+  SELECT_VARIANT,
+  SET_TICKET
 } from './constants'
 import {
   AnyAction,
@@ -114,6 +116,17 @@ export const setColorBlockAction = (index: number): AnyAction => ({
 export const setHoverColorBlockAction = (index: number): AnyAction => ({
   type: COLOR_BLOCK_HOVERED_ACTION,
   index
+})
+
+export const setLoadingPro = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_PRO,
+  loading
+})
+
+export const setTicketAction = (ticket: string, userId: number): AnyAction => ({
+  type: SET_TICKET,
+  ticket,
+  userId
 })
 
 export const setColorAction = (color: string): AnyAction => ({

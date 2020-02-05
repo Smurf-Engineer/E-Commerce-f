@@ -174,6 +174,36 @@ export const getDesignLabInfo = gql`
     designInfo: getDesignLabInfo(onlyData: false) {
       deliveryDays: delivery_days
       tutorialPlaylist: tutorial_playlist
+      workingHours {
+        start
+        end
+        timezone
+      }
     }
   }
 `
+
+export const getProAssist = gql`
+  query proAssistData {
+    proAssistData: getProAssist {
+      proAssistId: short_id
+      user {
+        id
+      }
+    }
+  }
+`
+
+export const getProTicket = graphql(
+  gql`
+    mutation newProAssist {
+      newProAssist {
+        ticket: short_id
+        user {
+          id
+        }
+      }
+    }
+  `,
+  { name: 'getProTicketAction' }
+)

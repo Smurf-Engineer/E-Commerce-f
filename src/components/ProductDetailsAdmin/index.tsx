@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import queryString from 'query-string'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import RowField from './RowField'
@@ -50,7 +51,6 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  match: any
   data: Data
   history: any
   setProductAction: (product: Product) => void
@@ -429,9 +429,12 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     }
   }
   editModels = () => {
-    const { history, match } = this.props
-    const productId = get(match, 'params.id', '')
-    history.push(`/admin/add-models?id=${productId}`)
+    const {
+      history,
+      location: { search }
+    } = this.props
+    const { id } = queryString.parse(search)
+    history.push(`/admin/add-models?id=${id}`)
   }
   handleOpenModel = () => {
     this.setState({ openedModel: true })
@@ -441,14 +444,17 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     history.push('/admin/products')
   }
   handleOnClickEdit = () => {
-    const { history, match } = this.props
-    const productId = get(match, 'params.id', '')
-    history.push(`/admin/products/form/${productId}`)
+    const {
+      history,
+      location: { search }
+    } = this.props
+    const { id } = queryString.parse(search)
+    history.push(`/admin/products/form/${id}`)
   }
 }
 
 interface OwnProps {
-  match?: any
+  location?: any
 }
 
 const mapStateToProps = (state: any) => state.get('productDetailAdmin').toJS()
@@ -457,9 +463,13 @@ const ProductDetailsAdminEnhance = compose(
   withRouter,
   connect(mapStateToProps, { ...ProductDetailsAdminActions }),
   graphql(getProductQuery, {
-    options: ({ match }: OwnProps) => ({
-      variables: { id: get(match, 'params.id', '') }
-    })
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        variables: { id: queryParams.id }
+      }
+    }
   })
 )(ProductDetailsAdmin)
 

@@ -10,7 +10,6 @@ interface Props {
   sort: sorts
   id: string
   justifyContent?: string
-  interactiveHeaders: boolean
   onSortClick: (id: string, sort: sorts) => void
 }
 
@@ -25,14 +24,8 @@ const HeaderOrdersTable = ({
   label,
   sort,
   onSortClick,
-  justifyContent,
-  interactiveHeaders
+  justifyContent
 }: Props) => {
-  if (!interactiveHeaders) {
-    // const textAlign = justifyContent === 'flex-end' ? 'right' : 'left'
-    return <Header {...{ justifyContent }}>{label}</Header>
-  }
-
   const handleOnClick = () => {
     const sortToApply = sort === 'asc' ? 'desc' : 'asc'
     onSortClick(id, sortToApply)

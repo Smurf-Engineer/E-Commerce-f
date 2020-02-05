@@ -108,6 +108,11 @@ interface Props {
   selectedTab: number
   fonts: SimpleFont[]
   colorsList: any
+  userEmail: string
+  name: string
+  lastName: string
+  designId: string
+  proAssistId: string
   selectedVariant: number
   variants: ModelVariant[]
   placeholders: boolean
@@ -116,6 +121,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
+  userCode: string
   // Redux actions
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
@@ -201,7 +207,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const { callbackToSave, loggedUserId, isUserAuthenticated } = nextProps
     if (
       callbackToSave &&
-      loggedUserId.length &&
+      loggedUserId &&
       loggedUserId !== this.props.loggedUserId &&
       isUserAuthenticated
     ) {
@@ -249,6 +255,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUpdateText,
       productName,
       canvas,
+      userCode,
       onSelectEl,
       onRemoveEl,
       onApplyCanvasEl,
@@ -300,6 +307,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       responsive,
       handleOnGoBack,
       handleOnCloseInfo,
+      userEmail,
+      name,
+      lastName,
+      designId,
+      loggedUserId,
+      proAssistId,
       infoModalOpen,
       selectedTab,
       onTabClick,
@@ -419,6 +432,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             openLoginAction={this.handleOnOpenLogin}
             {...{
               text,
+              loggedUserId,
+              designId,
+              proAssistId,
+              userEmail,
+              name,
+              lastName,
               colors,
               design,
               colorBlockHovered,
@@ -451,6 +470,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               selectedVariant,
               variants,
               product,
+              userCode,
               stitchingColor,
               bindingColor,
               zipperColor,
