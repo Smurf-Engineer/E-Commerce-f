@@ -2,6 +2,7 @@
  * Styled Components - Created by cazarez on 14/03/18.
  */
 import styled from 'styled-components'
+import { AVENIR_NEXT_W01 } from '../../theme/fonts'
 
 interface DivProps {
   name: string
@@ -23,7 +24,7 @@ export const Container = styled.div`
   content: 'THE ${({ name }: DivProps) => name} IN ACTION';
   text-align: center;
   font-size: 13px;
-  font-family: 'Avenir Next W01';
+  font-family: ${AVENIR_NEXT_W01};
   text-transform: uppercase;
   font-weight: 500;
   letter-spacing: 0.93px;
