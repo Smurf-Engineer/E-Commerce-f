@@ -97,10 +97,17 @@ class UsersAdmin extends React.Component<Props, StateProps> {
 
     try {
       setLoadingAction(true)
-      const response = await addUser({
+      await addUser({
         variables: { user },
         update: (store: any, userData: User) => {
           const newUser = get(userData, 'data.createUserFromAdmin')
+          if (newUser) {
+            message.success(
+              formatMessage(messages.userAdded, {
+                name
+              })
+            )
+          }
           const storedData = store.readQuery({
             query: getUsersQuery,
             variables: {
@@ -126,14 +133,6 @@ class UsersAdmin extends React.Component<Props, StateProps> {
           })
         }
       })
-      const data = get(response, 'data.createUserFromAdmin', false)
-      if (data) {
-        message.success(
-          formatMessage(messages.userAdded, {
-            name
-          })
-        )
-      }
       onResetModalAction()
     } catch (error) {
       setLoadingAction(false)
