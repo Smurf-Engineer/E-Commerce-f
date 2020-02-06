@@ -141,15 +141,17 @@ class UserFiles extends React.Component<Props> {
         onSelectImage={this.beforeUpload}
       />
     )
-    const images = userFiles.images.map((image, index) => (
-      <ImageContainer
-        key={index}
-        fileUrl={image.fileUrl}
-        onDeleteImage={this.handleOnDelete}
-        id={image.id}
-        {...{ formatMessage }}
-      />
-    ))
+    const images =
+      userFiles &&
+      userFiles.images.map((image, index) => (
+        <ImageContainer
+          key={index}
+          fileUrl={image.fileUrl}
+          onDeleteImage={this.handleOnDelete}
+          id={image.id}
+          {...{ formatMessage }}
+        />
+      ))
     return (
       <Container>
         <MessageText>

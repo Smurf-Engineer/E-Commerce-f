@@ -84,7 +84,8 @@ class UsersList extends React.Component<Props, StateProps> {
       withoutPadding = false,
       onSetAdministrator,
       onAddNewUser,
-      searchText
+      searchText,
+      onSelectUser
     } = this.props
 
     const users = get(usersQuery, 'users', []) as User[]
@@ -178,7 +179,8 @@ class UsersList extends React.Component<Props, StateProps> {
           administrator,
           netsuiteId = '',
           billingCountry,
-          createdAt
+          createdAt,
+          shortId
         }: User,
         index: number
       ) => {
@@ -195,7 +197,9 @@ class UsersList extends React.Component<Props, StateProps> {
               onSetAdministrator,
               netsuiteId,
               billingCountry,
-              createdAt
+              createdAt,
+              onSelectUser,
+              shortId
             }}
           />
         )
