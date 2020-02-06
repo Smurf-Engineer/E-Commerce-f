@@ -2,8 +2,9 @@
  * Styled Components - Created by miguelcanobbio on 16/08/18.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHTEST, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHTEST, WHITE, RED } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
+import Checkbox from 'antd/lib/checkbox/Checkbox'
 
 export const Container = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ export const StatusContainer = styled.div`
 
 export const Label = styled.div`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 0.11px;
 `
 
@@ -121,4 +122,28 @@ export const MessageContainer = styled.div`
 
 export const ModelNameContainer = styled.div`
   margin-bottom: 15px;
+`
+
+export const PreflightDiv = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px 0 16px;
+  font-weight: bold;
+`
+
+export const WarningIcon = styled(Icon)`
+  font-size: 18px;
+  color: ${RED};
+  margin: 0;
+  margin-left: -26px;
+`
+
+export const PreflightCheckbox = styled(Checkbox)`
+  display: flex;
+  flex-flow: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  span {
+    padding: 0;
+  }
 `

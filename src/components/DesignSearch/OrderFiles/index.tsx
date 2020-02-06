@@ -27,7 +27,10 @@ import {
   ThumbnailLabel,
   ChangesContainer,
   MessageContainer,
-  ModelNameContainer
+  ModelNameContainer,
+  PreflightDiv,
+  WarningIcon,
+  PreflightCheckbox
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import { OrderSearchResult, StitchingColor } from '../../../types/common'
@@ -43,6 +46,7 @@ interface Props {
   changes: boolean
   colorAccessories: any
   creatingPdf: boolean
+  checkPreflight: () => void
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any, params?: any) => string
@@ -66,6 +70,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         bibColor,
         zipperColor,
         bindingColor,
+        preflightCheck,
         shortId,
         image,
         pdfUrl,
@@ -84,6 +89,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       colorAccessories,
       onSelectColor,
       onGeneratePdf,
+      checkPreflight,
       creatingPdf
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
@@ -113,7 +119,7 @@ export class OrderFiles extends React.PureComponent<Props> {
             bindingColor={colorAccessories.bindingColor || bindingColor}
           />
           <RenderContainer>
-            <Render3D
+            {/* <Render3D
               designSearch={true}
               loading={uploadingFile}
               actualImage={actualSvg}
@@ -124,11 +130,17 @@ export class OrderFiles extends React.PureComponent<Props> {
               colorAccessories={colorAccessories}
               ref={(render3D: any) => (this.render3D = render3D)}
               {...{ stitchingValue }}
-            />
+            /> */}
           </RenderContainer>
         </RenderLayout>
         <Data>
           <Code>{code}</Code>
+          <PreflightDiv>
+            {!preflightCheck && <WarningIcon type="warning" theme="filled" />}
+            <PreflightCheckbox onChange={checkPreflight}>
+              <FormattedMessage {...messages.preflight} />
+            </PreflightCheckbox>
+          </PreflightDiv>
           <StatusContainer>
             <Label>
               <FormattedMessage {...messages.status} />

@@ -1243,6 +1243,7 @@ export interface OrderSearchResult {
   image: string
   status: string
   svgUrl?: string
+  preflightCheck?: boolean
   assets: FilesDownload
   bibColor?: AccesoryColor
   bindingColor?: AccesoryColor
