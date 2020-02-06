@@ -9,7 +9,8 @@ import messages from './messages'
 import {
   OrderDetailsInfo,
   QueryProps,
-  FulfillmentNetsuite
+  FulfillmentNetsuite,
+  Message
 } from '../../types/common'
 import { getOrderQuery } from './data'
 import Icon from 'antd/lib/icon'
@@ -59,14 +60,21 @@ interface Props {
   orderId: string
   data?: Data
   from: string
+  history: History
   currentCurrency: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   onReturn: (id: string) => void
 }
 
 export class OrderDetailsAdmin extends React.Component<Props, {}> {
   render() {
-    const { data, orderId, formatMessage, currentCurrency } = this.props
+    const {
+      data,
+      orderId,
+      history,
+      formatMessage,
+      currentCurrency
+    } = this.props
     if ((data && data.loading) || !data) {
       return (
         <LoadingContainer>
@@ -172,6 +180,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
               {...{
                 formatMessage,
                 productTotal,
+                history,
                 unitPrice,
                 cartItem,
                 currentCurrency

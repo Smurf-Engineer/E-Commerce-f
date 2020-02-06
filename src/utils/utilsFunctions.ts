@@ -29,3 +29,9 @@ export const isWorkingHour = ({ timezone, start, end }: WorkHours) => {
     return false
   }
 }
+
+export const validateEmail = (email: string) => {
+  // tslint:disable-next-line:max-line-length
+  const emailPattern = /[a-z0-9!#$%&'*+\=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+  return emailPattern.test(email)
+}

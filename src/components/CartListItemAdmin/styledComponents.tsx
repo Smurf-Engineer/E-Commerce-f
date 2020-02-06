@@ -38,6 +38,7 @@ export const Image = styled.img`
   object-fit: cover;
   user-select: none;
   height: 200.29px;
+  cursor: pointer;
   width: 180.44px;
   background-color: ${GRAY_LIGHTEST};
   ${({ onlyRead }: StyleProps) => (!onlyRead ? 'cursor: pointer' : '')};

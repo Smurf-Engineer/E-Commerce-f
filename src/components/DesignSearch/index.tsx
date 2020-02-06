@@ -6,6 +6,7 @@ import { withApollo, compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
+import queryString from 'query-string'
 import GoogleFontLoader from 'react-google-font-loader'
 import message from 'antd/lib/message'
 import Search from 'antd/lib/auto-complete'
@@ -103,7 +104,18 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       restoreUserSessionAction()
     }
   }
-
+  componentDidMount() {
+    const {
+      history: {
+        location: { search }
+      }
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { code } = queryParams
+    if (code) {
+      this.handleOnSearch(code)
+    }
+  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -343,14 +355,11 @@ const DesignSearchAdminEnhance = compose(
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
   graphql(generatePdfMutation, { name: 'generatePdf' }),
-  connect(
-    mapStateToProps,
-    {
-      ...designSearchActions,
-      uploadProDesignAction: uploadProDesign,
-      restoreUserSessionAction: restoreUserSession
-    }
-  ),
+  connect(mapStateToProps, {
+    ...designSearchActions,
+    uploadProDesignAction: uploadProDesign,
+    restoreUserSessionAction: restoreUserSession
+  }),
   getFonts,
   withApollo
 )(DesignSearchAdmin)

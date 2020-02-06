@@ -11,9 +11,12 @@ import {
   Header,
   Row,
   Table,
+  AddInternalButton,
   ScreenTitle,
-  SearchInput
+  SearchInput,
+  OptionsContainer
 } from './styledComponents'
+
 import debounce from 'lodash/debounce'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
@@ -46,6 +49,7 @@ interface Props {
   onSetAdministrator: (id: number) => void
   onSelectUser: (id: string, name: string) => void
   setSearchText: (searchText: string) => void
+  onAddNewUser: () => void
 }
 interface StateProps {
   searchValue: string
@@ -79,8 +83,9 @@ class UsersList extends React.Component<Props, StateProps> {
       withPagination = true,
       withoutPadding = false,
       onSetAdministrator,
-      onSelectUser,
-      searchText
+      onAddNewUser,
+      searchText,
+      onSelectUser
     } = this.props
 
     const users = get(usersQuery, 'users', []) as User[]
@@ -97,6 +102,8 @@ class UsersList extends React.Component<Props, StateProps> {
             return (
               <Row>
                 <Header>{formatMessage(messages.clientID)}</Header>
+                <Header>{formatMessage(messages.billing)}</Header>
+                <Header>{formatMessage(messages.signUpDate)}</Header>
                 <Header>{formatMessage(messages.name)}</Header>
                 <Header>{formatMessage(messages.accountType)}</Header>
                 <Header>{formatMessage(messages.admin)}</Header>
@@ -111,6 +118,18 @@ class UsersList extends React.Component<Props, StateProps> {
                 id={'id'}
                 label={formatMessage(messages.clientID)}
                 sort={orderBy === 'id' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'billing_country'}
+                label={formatMessage(messages.billing)}
+                sort={orderBy === 'billing_country' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'created_at'}
+                label={formatMessage(messages.signUpDate)}
+                sort={orderBy === 'created_at' ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
@@ -148,6 +167,7 @@ class UsersList extends React.Component<Props, StateProps> {
         }}
       </MediaQuery>
     )
+
     const userItems = users.map(
       (
         {
@@ -158,6 +178,8 @@ class UsersList extends React.Component<Props, StateProps> {
           socialMethod,
           administrator,
           netsuiteId = '',
+          billingCountry,
+          createdAt,
           shortId
         }: User,
         index: number
@@ -173,8 +195,10 @@ class UsersList extends React.Component<Props, StateProps> {
               socialMethod,
               administrator,
               onSetAdministrator,
-              onSelectUser,
               netsuiteId,
+              billingCountry,
+              createdAt,
+              onSelectUser,
               shortId
             }}
           />
@@ -185,12 +209,17 @@ class UsersList extends React.Component<Props, StateProps> {
     return (
       <Container {...{ withoutPadding }}>
         <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>
-        <SearchInput
-          value={this.state.searchValue || searchText}
-          onChange={this.handleInputChange}
-          placeholder={formatMessage(messages.search)}
-          autoFocus={true}
-        />
+        <OptionsContainer>
+          <AddInternalButton onClick={onAddNewUser}>
+            {formatMessage(messages.addUser)}
+          </AddInternalButton>
+          <SearchInput
+            value={this.state.searchValue || searchText}
+            onChange={this.handleInputChange}
+            placeholder={formatMessage(messages.search)}
+            autoFocus={true}
+          />
+        </OptionsContainer>
         <Table>
           <thead>{header}</thead>
           <tbody>{userItems}</tbody>

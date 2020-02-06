@@ -51,6 +51,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
       currentPage,
       orderBy,
       sort,
+      history,
       formatMessage,
       orderId,
       searchText
@@ -81,7 +82,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
         <OrderDetailsAdmin
           onReturn={this.handleOnOrderClick}
           from={ORDER_STATUS}
-          {...{ orderId, formatMessage }}
+          {...{ orderId, formatMessage, history }}
         />
       </SwipeableViews>
     )

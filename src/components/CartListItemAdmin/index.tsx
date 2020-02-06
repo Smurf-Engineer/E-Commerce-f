@@ -113,22 +113,14 @@ class CartListItemAdmin extends React.Component<Props, {}> {
     const {
       cartItem: {
         designId,
+        designCode,
         product: { id, yotpoId }
       },
-      history,
-      onlyRead
+      history
     } = this.props
-
-    if (onlyRead) {
-      return
-    }
-
-    let productUrl = `/product?id=${id}&modelId=${yotpoId}`
-
-    if (designId) {
-      productUrl = `/custom-product?id=${designId}`
-    }
-
+    const productUrl = designId
+      ? `/admin/design-search?code=${designCode}`
+      : `/product?id=${id}&modelId=${yotpoId}`
     history.push(productUrl)
   }
 
