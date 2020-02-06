@@ -40,6 +40,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
       currentPage,
       orderBy,
       sort,
+      history,
       formatMessage,
       orderId,
       searchText
@@ -70,7 +71,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
         <OrderDetailsAdmin
           onReturn={this.handleOnOrderClick}
           from={ORDER_STATUS}
-          {...{ orderId, formatMessage }}
+          {...{ orderId, formatMessage, history }}
         />
       </SwipeableViews>
     )
@@ -109,10 +110,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('orderHistoryAdmin').toJS()
 
 const OrderHistoryAdminEnhance = compose(
-  connect(
-    mapStateToProps,
-    { ...OrderHistoryAdminActions }
-  )
+  connect(mapStateToProps, { ...OrderHistoryAdminActions })
 )(OrderHistoryAdmin)
 
 export default OrderHistoryAdminEnhance

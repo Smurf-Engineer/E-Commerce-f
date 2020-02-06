@@ -141,6 +141,10 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
         binding
       } = config
 
+      const bindingColor = !isEmpty(binding) && (binding.black || binding.white)
+      const bibColor = !isEmpty(bibBrace) && (bibBrace.black || bibBrace.white)
+      const zipperColor = !isEmpty(zipper) && (zipper.black || zipper.white)
+
       const modelConfig = state.get('modelConfig')
       if (isEmpty(updatedDesign)) {
         const defaultColors = fill(Array(config.areasPng.length), 'black')
@@ -155,9 +159,9 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
           label,
           flatlock,
           bumpMap,
-          bibBrace,
-          zipper,
-          binding
+          bibBrace: bibColor,
+          zipper: zipperColor,
+          binding: bindingColor
         })
         return state.merge({
           uploading: false,
@@ -184,9 +188,9 @@ const publishingToolReducer: Reducer<any> = (state = initialState, action) => {
         label,
         flatlock,
         bumpMap,
-        bibBrace,
-        zipper,
-        binding
+        bibBrace: bibColor,
+        zipper: zipperColor,
+        binding: bindingColor
       })
 
       return state.merge({

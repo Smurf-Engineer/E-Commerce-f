@@ -41,6 +41,14 @@ export default defineMessages({
     id: 'components.UsersList.addUser',
     defaultMessage: '+ ADD NEW USER'
   },
+  billing: {
+    id: 'components.UsersList.billing',
+    defaultMessage: 'Billing Country'
+  },
+  signUpDate: {
+    id: 'components.UsersList.signUpDate',
+    defaultMessage: 'Sign-Up Date'
+  },
   search: {
     id: 'components.UsersList.search',
     defaultMessage: 'Search for a user'

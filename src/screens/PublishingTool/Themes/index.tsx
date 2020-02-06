@@ -319,8 +319,10 @@ export class Themes extends React.Component<Props, {}> {
     } = this.props
 
     const product = get(productData, 'product', {})
+    const themes = get(product, 'themes', [])
+
     const productEmpty = isEmpty(product)
-    const { themes = [] } = product
+
     const themeItems = orderBy(
       themes.map(({ id, name, itemOrder }: DesignItem) => ({
         id,

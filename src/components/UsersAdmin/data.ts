@@ -26,6 +26,8 @@ export const createUserMutation = graphql(
         administrator
         netsuiteId: netsuite_internal
         shortId: short_id
+        billingCountry: billing_country
+        createdAt: created_at
       }
     }
   `,

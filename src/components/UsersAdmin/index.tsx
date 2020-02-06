@@ -101,13 +101,13 @@ class UsersAdmin extends React.Component<Props, StateProps> {
         variables: { user },
         update: (store: any, userData: User) => {
           const newUser = get(userData, 'data.createUserFromAdmin')
-          if (newUser) {
+          /* if (newUser) {
             message.success(
               formatMessage(messages.userAdded, {
                 name
               })
             )
-          }
+          } */
           const storedData = store.readQuery({
             query: getUsersQuery,
             variables: {
