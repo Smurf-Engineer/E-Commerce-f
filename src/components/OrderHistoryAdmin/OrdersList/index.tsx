@@ -106,6 +106,13 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
+              id={'pending_checks'}
+              justifyContent={'center'}
+              label={formatMessage(messages.preflight)}
+              sort={orderBy === 'pending_checks' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
               id={'status'}
               label={formatMessage(messages.status)}
               justifyContent={'flex-end'}
@@ -124,6 +131,7 @@ const OrdersList = ({
         date,
         clientId,
         status,
+        pendingChecks,
         netsuite,
         netsuiteAttempts,
         firstName,
@@ -152,6 +160,7 @@ const OrdersList = ({
             date,
             clientId,
             firstName,
+            pendingChecks,
             lastName,
             onOrderClick,
             trackingNumber

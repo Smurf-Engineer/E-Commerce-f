@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import { RED } from '../../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.tr`
   cursor: pointer;
@@ -38,4 +39,9 @@ export const Cell = styled.td`
     letter-spacing: 0.09px;
     font-size: 11px;
   }
+`
+
+export const WarningIcon = styled(Icon)`
+  font-size: 18px;
+  color: ${RED};
 `

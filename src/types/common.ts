@@ -678,6 +678,7 @@ export interface OrderHistory {
   date: string
   estimatedDate?: string
   status: string
+  pendingChecks: number
   netsuite?: NetsuiteObject
   clientId?: string
   firstName?: string

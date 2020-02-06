@@ -768,6 +768,7 @@
   "components.OrdersList.trackingNumber": "Tracking Number",
   "components.OrdersList.tracking": "Tracking",
   "components.OrdersList.status": "Status",
+  "components.OrdersList.preflight": "Preflight",
   "components.OrdersList.emptyMessage": "No orders yet",
   "components.Overview.title": "OVERVIEW",
   "components.Overview.headerTitle": "Recent Orders",
