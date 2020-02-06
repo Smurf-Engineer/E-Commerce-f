@@ -11,9 +11,12 @@ import {
   Header,
   Row,
   Table,
+  AddInternalButton,
   ScreenTitle,
-  SearchInput
+  SearchInput,
+  OptionsContainer
 } from './styledComponents'
+
 import debounce from 'lodash/debounce'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
@@ -46,6 +49,7 @@ interface Props {
   onSetAdministrator: (id: number) => void
   onSelectUser: (id: string, name: string) => void
   setSearchText: (searchText: string) => void
+  onAddNewUser: () => void
 }
 interface StateProps {
   searchValue: string
@@ -79,7 +83,9 @@ class UsersList extends React.Component<Props, StateProps> {
       withPagination = true,
       withoutPadding = false,
       onSetAdministrator,
-      searchText
+      onAddNewUser,
+      searchText,
+      onSelectUser
     } = this.props
 
     const users = get(usersQuery, 'users', []) as User[]
@@ -173,7 +179,8 @@ class UsersList extends React.Component<Props, StateProps> {
           administrator,
           netsuiteId = '',
           billingCountry,
-          createdAt
+          createdAt,
+          shortId
         }: User,
         index: number
       ) => {
@@ -190,7 +197,9 @@ class UsersList extends React.Component<Props, StateProps> {
               onSetAdministrator,
               netsuiteId,
               billingCountry,
-              createdAt
+              createdAt,
+              onSelectUser,
+              shortId
             }}
           />
         )
@@ -200,12 +209,17 @@ class UsersList extends React.Component<Props, StateProps> {
     return (
       <Container {...{ withoutPadding }}>
         <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>
-        <SearchInput
-          value={this.state.searchValue || searchText}
-          onChange={this.handleInputChange}
-          placeholder={formatMessage(messages.search)}
-          autoFocus={true}
-        />
+        <OptionsContainer>
+          <AddInternalButton onClick={onAddNewUser}>
+            {formatMessage(messages.addUser)}
+          </AddInternalButton>
+          <SearchInput
+            value={this.state.searchValue || searchText}
+            onChange={this.handleInputChange}
+            placeholder={formatMessage(messages.search)}
+            autoFocus={true}
+          />
+        </OptionsContainer>
         <Table>
           <thead>{header}</thead>
           <tbody>{userItems}</tbody>

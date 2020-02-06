@@ -1447,5 +1447,14 @@
   "components.UserdsAdmin.UserFiles.modalTitle": "ARE YOU SURE",
   "components.UserdsAdmin.UserFiles.imageMessage": "You're about to delete this image",
   "components.UserdsAdmin.UserFiles.imageSizeError": "Oh no! Max file size is limited to 20MB",
-  "components.UserdsAdmin.UserFiles.imageExtensionError": "Oh no! Your file has to be an eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd"
+  "components.UserdsAdmin.UserFiles.imageExtensionError": "Oh no! Your file has to be an eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd",
+  "components.signupModal.firstNameLabel": "First Name",
+  "components.signupModal.lastNameLabel": "Last Name",
+  "components.signupModal.emailLabel": "E-Mail",
+  "components.signupModal.newUser": "New User",
+  "components.signupModal.add": "Add User",
+  "components.UsersList.addUser": "+ ADD NEW USER",
+  "components.UsersAdmin.requiredFieldsError": "All fields are required!.",
+  "components.UsersAdmin.userAdded": "{name} added!.",
+  "components.UsersAdmin.invalidEmail": "Invalid email, please verify."
 }

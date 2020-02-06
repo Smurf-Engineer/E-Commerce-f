@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'components.UsersList.netsuiteId',
     defaultMessage: 'Netsuite ID'
   },
+  addUser: {
+    id: 'components.UsersList.addUser',
+    defaultMessage: '+ ADD NEW USER'
+  },
   billing: {
     id: 'components.UsersList.billing',
     defaultMessage: 'Billing Country'
