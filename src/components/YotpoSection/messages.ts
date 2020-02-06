@@ -5,9 +5,9 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  featured: {
-    id: 'screens.YotpoSection.featured',
-    defaultMessage: ' FEATURED'
+  features: {
+    id: 'screens.YotpoSection.features',
+    defaultMessage: '{name} FEATURES'
   },
   more: {
     id: 'screens.YotpoSection.more',
