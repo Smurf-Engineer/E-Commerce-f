@@ -18,6 +18,12 @@ import {
   DragText,
   Title,
   Message,
+  Logo,
+  Details,
+  Property,
+  DetailLabel,
+  DetailProperties,
+  DetailHeader,
   ContainerError,
   ProgressProduct,
   Loading
@@ -42,7 +48,8 @@ import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
-
+import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
+import JakrooLogoWhite from '../../assets/jakroo_logo_white.svg'
 import '../../screens/App/theme.ant'
 
 /* eslint-disable */
@@ -310,10 +317,14 @@ class Render3D extends PureComponent {
       customProduct,
       designSearch,
       isProduct,
-      textColor,
-      data: { loading, error }
+      isAdmin,
+      detailed,
+      data,
+      textColor
     } = this.props
-
+    const { loading, error, design } = data
+    const { code, name, product } = design || {}
+    const { name: productName } = product || {}
     if (error && !isProduct) {
       return (
         <ContainerError>
@@ -333,6 +344,34 @@ class Render3D extends PureComponent {
       <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
+        )}
+        {detailed && (
+          <Details>
+            <DetailHeader>
+              <Logo src={JakrooLogoWhite} />
+              <Logo src={OwnYourStyle} />
+            </DetailHeader>
+            <DetailProperties>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.designName} />
+                </Property>
+                {name}
+              </DetailLabel>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.designCode} />
+                </Property>
+                {code}
+              </DetailLabel>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.productName} />
+                </Property>
+                {productName}
+              </DetailLabel>
+            </DetailProperties>
+          </Details>
         )}
         <Render
           {...{ customProduct, designSearch }}

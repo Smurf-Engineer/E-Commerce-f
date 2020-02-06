@@ -9,6 +9,18 @@ export default defineMessages({
     id: 'components.Render3D.drag',
     defaultMessage: 'Drag to rotate'
   },
+  designName: {
+    id: 'components.Render3D.designName',
+    defaultMessage: 'Design Name:'
+  },
+  designCode: {
+    id: 'components.Render3D.designCode',
+    defaultMessage: 'Design#:'
+  },
+  productName: {
+    id: 'components.Render3D.productName',
+    defaultMessage: 'Product:'
+  },
   productOnly: {
     id: 'components.Render3D.productOnly',
     defaultMessage: 'Product Only'
