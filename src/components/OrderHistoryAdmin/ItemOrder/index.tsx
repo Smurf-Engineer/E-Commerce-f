@@ -11,7 +11,7 @@ interface Props {
   trackingNumber?: string
   status: string
   shortId: string
-  pendingChecks: number
+  pendingCheck: boolean
   statusError?: boolean
   firstName: string
   lastName: string
@@ -24,7 +24,7 @@ const ItemOrder = ({
   status,
   shortId,
   onOrderClick,
-  pendingChecks,
+  pendingCheck,
   statusError,
   firstName,
   lastName
@@ -39,7 +39,7 @@ const ItemOrder = ({
       <Cell>JV2-{clientId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell textAlign={'center'}>
-        {!!pendingChecks && <WarningIcon type="warning" theme="filled" />}
+        {pendingCheck && <WarningIcon type="warning" theme="filled" />}
       </Cell>
       <Cell textAlign={'right'} className={statusError ? 'error' : ''}>
         {upperFirst(status)}

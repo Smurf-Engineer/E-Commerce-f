@@ -154,6 +154,7 @@ const OrdersList = ({
         <ItemOrder
           key={index}
           statusError={errorStatus}
+          pendingCheck={pendingChecks > 0 && !netsuiteStatus}
           status={errorStatus || netsuiteStatus || status}
           {...{
             shortId,
