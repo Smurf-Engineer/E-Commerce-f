@@ -28,6 +28,8 @@ export const getUsersQuery = gql`
         socialMethod: social_method
         administrator
         netsuiteId: netsuite_internal
+        billingCountry: billing_country
+        createdAt: created_at
         shortId: short_id
       }
     }

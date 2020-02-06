@@ -79,7 +79,6 @@ class UsersList extends React.Component<Props, StateProps> {
       withPagination = true,
       withoutPadding = false,
       onSetAdministrator,
-      onSelectUser,
       searchText
     } = this.props
 
@@ -97,6 +96,8 @@ class UsersList extends React.Component<Props, StateProps> {
             return (
               <Row>
                 <Header>{formatMessage(messages.clientID)}</Header>
+                <Header>{formatMessage(messages.billing)}</Header>
+                <Header>{formatMessage(messages.signUpDate)}</Header>
                 <Header>{formatMessage(messages.name)}</Header>
                 <Header>{formatMessage(messages.accountType)}</Header>
                 <Header>{formatMessage(messages.admin)}</Header>
@@ -111,6 +112,18 @@ class UsersList extends React.Component<Props, StateProps> {
                 id={'id'}
                 label={formatMessage(messages.clientID)}
                 sort={orderBy === 'id' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'billing_country'}
+                label={formatMessage(messages.billing)}
+                sort={orderBy === 'billing_country' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'created_at'}
+                label={formatMessage(messages.signUpDate)}
+                sort={orderBy === 'created_at' ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
@@ -148,6 +161,7 @@ class UsersList extends React.Component<Props, StateProps> {
         }}
       </MediaQuery>
     )
+
     const userItems = users.map(
       (
         {
@@ -158,7 +172,8 @@ class UsersList extends React.Component<Props, StateProps> {
           socialMethod,
           administrator,
           netsuiteId = '',
-          shortId
+          billingCountry,
+          createdAt
         }: User,
         index: number
       ) => {
@@ -173,9 +188,9 @@ class UsersList extends React.Component<Props, StateProps> {
               socialMethod,
               administrator,
               onSetAdministrator,
-              onSelectUser,
               netsuiteId,
-              shortId
+              billingCountry,
+              createdAt
             }}
           />
         )

@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Switch from 'antd/lib/switch'
+import moment from 'moment'
 import { Container, Cell } from './styledComponents'
 
 interface Props {
@@ -13,6 +14,8 @@ interface Props {
   firstName: string
   lastName: string
   netsuiteId: string
+  billingCountry: string
+  createdAt: string
   shortId: string
   onSetAdministrator: (id: number) => void
   onSelectUser: (id: string, name: string) => void
@@ -27,6 +30,8 @@ const ItemOrder = ({
   lastName,
   netsuiteId,
   onSetAdministrator,
+  billingCountry,
+  createdAt,
   onSelectUser,
   shortId
 }: Props) => {
@@ -36,6 +41,8 @@ const ItemOrder = ({
   return (
     <Container onClick={handleOnSelectUser}>
       <Cell>JV2-{id}</Cell>
+      <Cell>{billingCountry}</Cell>
+      <Cell>{moment(createdAt).format('DD-MM-YYYY')}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>
       <Cell>
