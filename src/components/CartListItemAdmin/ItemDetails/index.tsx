@@ -11,7 +11,8 @@ import {
   ItemDetailsHeaderPriceDetail,
   NameContainer,
   PriceContainer,
-  HeaderPriceDetailEmpty
+  HeaderPriceDetailEmpty,
+  WarningIcon
 } from './styledComponents'
 import messages from '../../ProductInfo/messages'
 import { Message } from '../../../types/common'
@@ -22,6 +23,7 @@ interface Props {
   designCode: string | undefined
   mpnCode: string
   symbol: string
+  preflightCheck: boolean
   total: number
   unitaryPrice: number
   formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
@@ -40,13 +42,17 @@ class ItemDetails extends React.Component<Props, {}> {
       total,
       designCode,
       mpnCode,
+      preflightCheck,
       symbol,
       unitaryPrice
     } = this.props
     return (
       <ItemDetailsHeader>
         <NameContainer>
-          <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
+          <ItemDetailsHeaderName>
+            {title}
+            {!preflightCheck && <WarningIcon type="warning" theme="filled" />}
+          </ItemDetailsHeaderName>
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>

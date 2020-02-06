@@ -647,6 +647,7 @@ export interface CartItems {
   zipperColor?: string
   bindingColor?: string
   flatlock?: string
+  preflightCheck?: boolean
   fixedPrices: PriceRange[]
 }
 
