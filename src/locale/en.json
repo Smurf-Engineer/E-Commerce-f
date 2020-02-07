@@ -1097,7 +1097,7 @@
   "components.FourthStep.xLarge": "Ex. Big Suits, bibrace shorts",
   "components.ImageList.size": "Max. size {width} cm x {height} cm",
   "components.SocialMedia.tailrecursive": "Developed by Tail Recursive",
-  "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2019",
+  "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO {year}",
   "components.FacebookGmailLogin.userExistsError": "An account for this email already exists, please log in with your email",
   "components.InternalsList.modelId": "Model ID",
   "components.InternalsList.internalId": "Internal ID",
