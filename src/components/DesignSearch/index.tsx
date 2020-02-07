@@ -73,7 +73,7 @@ interface Props {
   fontsData: any
   designSearchCodes: string[]
   creatingPdf: boolean
-  preflight: boolean
+  loadingPreflight: boolean
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -82,6 +82,7 @@ interface Props {
   uploadProDesignAction: (file: any, code: string) => void
   resetDataAction: () => void
   setLoadingAction: () => void
+  setLoadingPreflight: (loading: boolean) => void
   setNotFoundAction: (admin?: boolean) => void
   setOrderAction: (order: OrderSearchResult) => void
   setPreflightAction: (checked: boolean) => void
@@ -130,8 +131,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loading,
       notFound,
       order,
+      loadingPreflight,
       noAdmin,
-      preflight,
       uploadProDesignAction,
       uploadingFile,
       intl: { formatMessage },
@@ -169,10 +170,11 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           uploadingThumbnail,
           setUploadingThumbnailAction,
           changes,
-          preflight,
+          loadingPreflight,
           colorAccessories,
           creatingPdf
         }}
+        checkPreflight={this.handleCheckPreflight}
         onSelectStitchingColor={setStitchingColorAction}
         onSelectColor={setColorAction}
         formatMessage={formatMessage}
@@ -304,20 +306,19 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
   handleCheckPreflight = async () => {
     const {
       order: { shortId },
-      setNotFoundAction,
-      setLoadingAction,
+      setLoadingPreflight,
       setPreflightAction,
       checkPreflightAction
     } = this.props
     try {
-      setLoadingAction()
+      setLoadingPreflight(true)
       const checkResponse = await checkPreflightAction({
         variables: { shortId }
       })
-      const checked = get(checkResponse, 'checked', false)
+      const checked = get(checkResponse, 'data.design.checked', false)
       setPreflightAction(checked)
     } catch (e) {
-      setNotFoundAction()
+      setLoadingPreflight(false)
       message.error(e.message)
     }
   }

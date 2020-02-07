@@ -46,7 +46,7 @@ interface Props {
   changes: boolean
   colorAccessories: any
   creatingPdf: boolean
-  preflight: boolean
+  loadingPreflight: boolean
   checkPreflight: () => void
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
@@ -82,6 +82,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       uploadingFile,
       formatMessage,
       actualSvg,
+      loadingPreflight,
       preflight,
       onSaveThumbnail,
       uploadingThumbnail,
@@ -96,7 +97,6 @@ export class OrderFiles extends React.PureComponent<Props> {
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
-    const checked = preflight || preflightCheck
     return (
       <Container>
         <RenderLayout>
@@ -138,8 +138,16 @@ export class OrderFiles extends React.PureComponent<Props> {
         <Data>
           <Code>{code}</Code>
           <PreflightDiv>
-            {!checked && <WarningIcon type="warning" theme="filled" />}
-            <PreflightCheckbox checked={checked} onChange={checkPreflight}>
+            <WarningIcon
+              enable={!preflightCheck}
+              type="warning"
+              theme="filled"
+            />
+            <PreflightCheckbox
+              disabled={loadingPreflight}
+              checked={preflightCheck}
+              onChange={checkPreflight}
+            >
               <FormattedMessage {...messages.preflight} />
             </PreflightCheckbox>
           </PreflightDiv>

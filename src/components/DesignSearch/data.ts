@@ -50,8 +50,8 @@ export const uploadThumbnailMutation = gql`
 `
 
 export const togglePreflight = gql`
-  mutation togglePreflight($designId: String!) {
-    design: togglePreflight($designId: $$designId) {
+  mutation togglePreflight($shortId: String!) {
+    design: togglePreflight(designId: $shortId) {
       checked: preflight_check
     }
   }

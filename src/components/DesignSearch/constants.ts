@@ -19,3 +19,4 @@ export const SET_SEARCH_CODES = `${namespace}/SET_SEARCH_CODES`
 export const SET_CREATING_PDF = `${namespace}/SET_CREATING_PDF`
 export const SET_PDF = `${namespace}/SET_PDF`
 export const SET_PREFLIGHT = `${namespace}/SET_PREFLIGHT`
+export const SET_LOADING_PREFLIGHT = `${namespace}/SET_LOADING_PREFLIGHT`

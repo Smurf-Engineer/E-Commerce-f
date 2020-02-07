@@ -320,6 +320,7 @@ const OrderDetailsAdminEnhance = compose(
     options: ({ orderId }: OwnProps) => ({
       skip: !orderId,
       variables: { orderId, global: true },
+      fetchPolicy: 'network-only',
       notifyOnNetworkStatusChange: true
     })
   })

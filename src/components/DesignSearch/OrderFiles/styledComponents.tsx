@@ -6,6 +6,10 @@ import { GRAY_DARK, GRAY_LIGHTEST, WHITE, RED } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 
+interface DivProps {
+  enable: boolean
+}
+
 export const Container = styled.div`
   display: flex;
   align-items: flex-start;
@@ -135,6 +139,8 @@ export const WarningIcon = styled(Icon)`
   font-size: 18px;
   color: ${RED};
   margin-left: -26px;
+  transition: all 0.25s;
+  opacity: ${({ enable }: DivProps) => (enable ? 1 : 0)};
 `
 
 export const PreflightCheckbox = styled(Checkbox)`
@@ -142,6 +148,7 @@ export const PreflightCheckbox = styled(Checkbox)`
   flex-flow: row-reverse;
   align-items: center;
   font-size: 16px;
+  transition: all 0.5s;
   justify-content: space-between;
   span {
     padding: 0;
