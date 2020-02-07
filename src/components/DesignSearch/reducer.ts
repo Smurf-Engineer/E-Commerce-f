@@ -26,9 +26,7 @@ import { Reducer } from '../../types/common'
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   loading: false,
-  order: {
-    preflightCheck: false
-  },
+  order: null,
   notFound: false,
   loadingPreflight: false,
   noAdmin: false,

@@ -6,7 +6,8 @@ import designSearchAdminReducer, { initialState } from './reducer'
 import {
   setLoadingAction,
   setPreflightAction,
-  setLoadingPreflight
+  setLoadingPreflight,
+  setOrderAction
 } from './actions'
 import { SET_LOADING, SET_PREFLIGHT, SET_LOADING_PREFLIGHT } from './constants'
 
@@ -62,14 +63,18 @@ describe('Design Search Admin Screen', () => {
         })
         it('Handles custom values in order', () => {
           const checked = true
+          const order = {
+            code: 'Test'
+          }
           const designState = designSearchAdminReducer(
             initialState,
+            setOrderAction(order)
+          )
+          const orderState = designSearchAdminReducer(
+            designState,
             setPreflightAction(checked)
           )
-          const customOrderValue = designState.getIn([
-            'order',
-            'preflightCheck'
-          ])
+          const customOrderValue = orderState.getIn(['order', 'preflightCheck'])
           expect(customOrderValue).toBe(checked)
         })
       })
