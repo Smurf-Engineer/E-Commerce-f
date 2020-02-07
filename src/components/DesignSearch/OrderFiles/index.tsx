@@ -83,7 +83,6 @@ export class OrderFiles extends React.PureComponent<Props> {
       formatMessage,
       actualSvg,
       loadingPreflight,
-      preflight,
       onSaveThumbnail,
       uploadingThumbnail,
       setUploadingThumbnailAction,
@@ -121,7 +120,7 @@ export class OrderFiles extends React.PureComponent<Props> {
             bindingColor={colorAccessories.bindingColor || bindingColor}
           />
           <RenderContainer>
-            {/* <Render3D
+            <Render3D
               designSearch={true}
               loading={uploadingFile}
               actualImage={actualSvg}
@@ -132,7 +131,7 @@ export class OrderFiles extends React.PureComponent<Props> {
               colorAccessories={colorAccessories}
               ref={(render3D: any) => (this.render3D = render3D)}
               {...{ stitchingValue }}
-            /> */}
+            />
           </RenderContainer>
         </RenderLayout>
         <Data>
