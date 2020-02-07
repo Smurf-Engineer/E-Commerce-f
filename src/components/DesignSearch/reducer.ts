@@ -17,7 +17,8 @@ import {
   RESET_CHANGES_ACTION,
   SET_SEARCH_CODES,
   SET_CREATING_PDF,
-  SET_PDF
+  SET_PDF,
+  SET_PREFLIGHT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -49,6 +50,11 @@ const designSearchAdminReducer: Reducer<any> = (
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
+    case SET_PREFLIGHT:
+      return state.merge({
+        loading: false,
+        preflight: action.checked
+      })
     case SET_LOADING:
       return state.merge({
         order: null,

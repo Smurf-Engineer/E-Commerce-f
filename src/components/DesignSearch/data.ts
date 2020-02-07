@@ -49,6 +49,14 @@ export const uploadThumbnailMutation = gql`
   }
 `
 
+export const togglePreflight = gql`
+  mutation togglePreflight($designId: String!) {
+    design: togglePreflight($designId: $$designId) {
+      checked: preflight_check
+    }
+  }
+`
+
 export const updateDesignMutation = gql`
   mutation updateDesign(
     $code: String!

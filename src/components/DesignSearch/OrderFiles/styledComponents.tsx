@@ -134,7 +134,6 @@ export const PreflightDiv = styled.div`
 export const WarningIcon = styled(Icon)`
   font-size: 18px;
   color: ${RED};
-  margin: 0;
   margin-left: -26px;
 `
 
@@ -142,8 +141,11 @@ export const PreflightCheckbox = styled(Checkbox)`
   display: flex;
   flex-flow: row-reverse;
   align-items: center;
+  font-size: 16px;
   justify-content: space-between;
   span {
     padding: 0;
+    margin-right: 10px;
+    margin-bottom: 2px;
   }
 `
