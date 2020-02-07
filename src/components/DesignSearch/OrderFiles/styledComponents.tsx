@@ -2,9 +2,9 @@
  * Styled Components - Created by miguelcanobbio on 16/08/18.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHTEST, WHITE, RED } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
+import { GRAY_DARK, GRAY_LIGHTEST, WHITE, RED } from '../../../theme/colors'
 
 interface DivProps {
   enable: boolean
