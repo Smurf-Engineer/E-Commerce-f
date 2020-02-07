@@ -7,6 +7,6 @@ export default defineMessages({
   },
   jakrooCopyright: {
     id: 'components.SocialMedia.jakrooCopyright',
-    defaultMessage: '© Copyright JAKROO 2020'
+    defaultMessage: '© Copyright JAKROO {year}'
   }
 })
