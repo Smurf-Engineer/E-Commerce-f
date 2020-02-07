@@ -183,7 +183,8 @@ type OwnProps = {
 const SymbolTabEnhance = compose(
   graphql(clipArtsQuery, {
     options: ({ searchClipParam }: OwnProps) => ({
-      variables: { query: searchClipParam }
+      variables: { query: searchClipParam },
+      fetchPolicy: 'network-only'
     })
   }),
   WithError
