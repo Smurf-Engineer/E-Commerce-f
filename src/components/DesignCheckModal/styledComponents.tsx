@@ -72,6 +72,11 @@ export const Paragraph = styled.div`
   line-height: 23px;
 `
 
+export const HoursLabel = styled.div`
+  margin-top: 14px;
+  text-align: center;
+`
+
 export const StatusLabel = styled.div`
   margin-top: 14px;
   margin-bottom: 8px;

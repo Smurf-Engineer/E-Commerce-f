@@ -14,7 +14,8 @@ import {
   StatusLabel,
   RightTitle,
   Content,
-  DesignImage
+  DesignImage,
+  HoursLabel
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
 import ProAssistLogo from '../../assets/ProAssist-logo.svg'
@@ -23,6 +24,7 @@ import designerImage from '../../assets/designer-guy.jpg'
 import Spin from 'antd/lib/spin'
 import { isWorkingHour } from '../../utils/utilsFunctions'
 import { WorkHours } from '../../types/common'
+import moment from 'moment'
 
 interface Props {
   visible: boolean
@@ -44,6 +46,9 @@ export class DesignCheckModal extends React.Component<Props, {}> {
       handleGetPro
     } = this.props
     const online = isWorkingHour(workingHours)
+    const startHour = moment(workingHours.start, 'HH:mm:ss').format('LT')
+    const endHour = moment(workingHours.end, 'HH:mm:ss').format('LT')
+    const hours = `MON-FRI ${startHour} - ${endHour} (PST)`
     return (
       <Container>
         <CustomModal
@@ -86,6 +91,7 @@ export class DesignCheckModal extends React.Component<Props, {}> {
               </ContinueButton>
             )}
           </ModalButtonsWrapper>
+          <HoursLabel>{hours}</HoursLabel>
           <StatusLabel {...{ online }}>
             {formatMessage(online ? messages.online : messages.offline)}
           </StatusLabel>
