@@ -226,10 +226,6 @@ class Render3D extends PureComponent {
       this.render3DModel(newProduct)
     }
     if (openSlaask && proAssistId) {
-      if (typeof window.Intercom === 'function') {
-        window.Intercom('hide')
-        window.Intercom('update', { hide_default_launcher: true })
-      }
       initSlaask({
         id: proAssistId,
         userId: loggedUserId,
@@ -353,9 +349,6 @@ class Render3D extends PureComponent {
       }
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
-    }
-    if (typeof window.Intercom === 'function') {
-      window.Intercom('update', { hide_default_launcher: false })
     }
     closeSlaask()
   }
