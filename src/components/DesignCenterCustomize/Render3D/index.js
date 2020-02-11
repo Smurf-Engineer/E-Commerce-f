@@ -90,7 +90,9 @@ import {
   CM_PER_INCH,
   PROPEL_PALMS,
   GRIP_TAPE,
-  DEFAULT_COLOR
+  DEFAULT_COLOR,
+  AMBIENT_LIGHT_INTENSITY,
+  DIRECTIONAL_LIGHT_INTENSITY
 } from '../../../constants'
 import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
 import {
@@ -281,8 +283,8 @@ class Render3D extends PureComponent {
 
     /* Scene and light */
     const scene = new THREE.Scene()
-    const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
+    const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, DIRECTIONAL_LIGHT_INTENSITY)
     directionalLight.position.copy(camera.position)
 
     scene.add(camera)

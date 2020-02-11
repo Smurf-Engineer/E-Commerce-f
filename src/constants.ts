@@ -22,6 +22,8 @@ export const REGULAR_CANVAS = 1024
 export const HIGH_RESOLUTION_CANVAS = 2048
 export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
+export const AMBIENT_LIGHT_INTENSITY = 0.45
+export const DIRECTIONAL_LIGHT_INTENSITY = 0.8
 
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'

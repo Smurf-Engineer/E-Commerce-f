@@ -27,6 +27,10 @@ import {
 import { jerseyTextures } from './config'
 import arrowDown from '../../../assets/downarrow.svg'
 import messages from './messages'
+import {
+  AMBIENT_LIGHT_INTENSITY,
+  DIRECTIONAL_LIGHT_INTENSITY
+} from '../../../constants'
 
 const { Item } = Menu
 
@@ -89,8 +93,11 @@ class Render3D extends PureComponent {
 
     /* Scene and light */
     const scene = new THREE.Scene()
-    const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.78)
+    const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
+    const directionalLight = new THREE.DirectionalLight(
+      0xffffff,
+      DIRECTIONAL_LIGHT_INTENSITY
+    )
     directionalLight.position.copy(camera.position)
 
     const mtlLoader = new THREE.MTLLoader()
