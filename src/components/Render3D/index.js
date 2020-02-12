@@ -69,7 +69,7 @@ class Render3D extends PureComponent {
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (this.container) {
-      const { modelSize, designSearch } = this.props
+      const { modelSize } = this.props
       /* Renderer config */
       const { clientWidth = 0, clientHeight = 0 } = this.container
       const precision = 'highp'
@@ -90,9 +90,7 @@ class Render3D extends PureComponent {
         1000
       )
       camera.position.z = MODEL_SIZES[modelSize] || 160
-      if (designSearch) {
-        camera.position.z = 150
-      }
+
       const controls = new THREE.OrbitControls(camera, renderer.domElement)
       controls.addEventListener('change', this.lightUpdate)
 
