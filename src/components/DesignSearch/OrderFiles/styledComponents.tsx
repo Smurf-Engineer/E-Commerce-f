@@ -133,12 +133,14 @@ export const PreflightDiv = styled.div`
   align-items: center;
   margin: 10px 0 16px;
   font-weight: bold;
+  position: relative;
 `
 
 export const WarningIcon = styled(Icon)`
   font-size: 18px;
   color: ${RED};
-  margin-left: -26px;
+  position: absolute;
+  left: -28px;
   transition: all 0.25s;
   opacity: ${({ enable }: DivProps) => (enable ? 1 : 0)};
 `
@@ -154,5 +156,9 @@ export const PreflightCheckbox = styled(Checkbox)`
     padding: 0;
     margin-right: 10px;
     margin-bottom: 2px;
+  }
+  .ant-checkbox {
+    margin-top: 2px;
+    margin-bottom: 0;
   }
 `
