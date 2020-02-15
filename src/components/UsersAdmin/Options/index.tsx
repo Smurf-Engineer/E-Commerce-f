@@ -5,12 +5,26 @@ import * as React from 'react'
 import get from 'lodash/get'
 import { compose } from 'react-apollo'
 import Icon from 'antd/lib/icon'
+import Modal from 'antd/lib/modal'
 import { withRouter } from 'react-router-dom'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
 import messages from './messages'
 import UserFiles from '../UserFiles'
-import { RadioButton, BackLabel, BackText } from './styledComponents'
+import {
+  RadioButton,
+  BackLabel,
+  BackText,
+  CloseIcon,
+  ModalContainer,
+  Title,
+  SubTitle,
+  ButtonContainer,
+  SaveButton
+} from './styledComponents'
 import MyLocker from '../../MyLocker'
+import closeIcon from '../../../assets/cancel-button.svg'
+import { FormattedMessage } from 'react-intl'
+import TextArea from 'antd/lib/input/TextArea'
 
 const RadioGroup = Radio.Group
 
@@ -31,6 +45,7 @@ class Options extends React.Component<Props> {
     const { onChangeSection } = this.props
     onChangeSection(e.target.value)
   }
+  handleClose = () => {}
   render() {
     const { formatMessage, history, match, showLocker } = this.props
 
@@ -76,6 +91,29 @@ class Options extends React.Component<Props> {
         ) : (
           <UserFiles {...{ userId, formatMessage }} />
         )}
+        <Modal
+          visible={true}
+          footer={null}
+          closable={false}
+          width={'800px'}
+          destroyOnClose={true}
+        >
+          <ModalContainer>
+            <CloseIcon src={closeIcon} onClick={this.handleClose} />
+            <Title>
+              <FormattedMessage {...messages.proAssistNotes} />
+            </Title>
+            <SubTitle>
+              <FormattedMessage {...messages.addNote} />
+            </SubTitle>
+            <TextArea autosize={{ minRows: 5, maxRows: 8 }} rows={4} />
+            <ButtonContainer>
+              <SaveButton>
+                <FormattedMessage {...messages.add} />
+              </SaveButton>
+            </ButtonContainer>
+          </ModalContainer>
+        </Modal>
       </div>
     )
   }

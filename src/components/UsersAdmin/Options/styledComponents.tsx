@@ -3,7 +3,8 @@
  */
 import styled from 'styled-components'
 import Radio from 'antd/lib/radio'
-import { WHITE, GRAY_DARK } from '../../../theme/colors'
+import Button from 'antd/lib/button'
+import { WHITE, GRAY_DARK, BLUE } from '../../../theme/colors'
 const RadioButtonComponent = Radio.Button
 
 export const RadioButton = styled(RadioButtonComponent)`
@@ -33,4 +34,47 @@ export const BackLabel = styled.div`
 export const BackText = styled.span`
   display: inline-block;
   margin-left: 6px;
+`
+
+export const CloseIcon = styled.img`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const ModalContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+`
+
+export const Title = styled.div`
+  font-size: 22px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: left;
+`
+
+export const SubTitle = styled.div`
+  font-size: 14px;
+  margin: 22px 0 15px;
+  text-align: left;
+`
+
+export const ButtonContainer = styled.div`
+  margin-top: 34px;
+  text-align: right;
+`
+
+export const SaveButton = styled(Button)`
+  border-radius: 2px;
+  height: 40px;
+  padding: 0 27px;
+  background: ${BLUE};
+  color: ${WHITE};
 `

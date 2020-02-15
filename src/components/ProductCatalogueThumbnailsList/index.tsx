@@ -58,6 +58,7 @@ interface Props {
   limit?: number
   designs?: DesignType[]
   previewOnly?: boolean
+  openAssist: (shortId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
@@ -174,11 +175,21 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                         </ButtonContainer>
                       </div>
                     ) : (
-                      <ButtonContainer>
-                        <ActionButton onClick={this.openPreview(shortId)}>
-                          {formatMessage(messages.preview)}
-                        </ActionButton>
-                      </ButtonContainer>
+                      <>
+                        <ButtonContainer>
+                          <ActionButton onClick={this.openPreview(shortId)}>
+                            {formatMessage(messages.preview)}
+                          </ActionButton>
+                        </ButtonContainer>
+                        <ButtonContainer>
+                          <ActionButton
+                            secondary={true}
+                            onClick={this.openAssistModal(shortId)}
+                          >
+                            {formatMessage(messages.proassist)}
+                          </ActionButton>
+                        </ButtonContainer>
+                      </>
                     )}
                   </ButtonsContainer>
                 }
@@ -344,6 +355,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
   openPreview = (designId: string) => () => {
     window.open(`/designs?id=${designId}`)
+  }
+
+  openAssistModal = (designId: string) => () => {
+    const { openAssist } = this.props
+    openAssist(designId)
   }
 
   // TODO: Handle add to cart

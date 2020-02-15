@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'components.ProductCatalogueThumbnailsList.preview',
     defaultMessage: 'PREVIEW'
   },
+  proassist: {
+    id: 'components.ProductCatalogueThumbnailsList.proassist',
+    defaultMessage: 'PROASSIST NOTES'
+  },
   addToStore: {
     id: 'components.ProductCatalogueThumbnailsList.addToStore',
     defaultMessage: 'ADD TO STORE'

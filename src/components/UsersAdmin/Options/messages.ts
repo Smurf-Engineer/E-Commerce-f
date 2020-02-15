@@ -20,5 +20,17 @@ export default defineMessages({
   files: {
     id: 'components.UsersAdmin.Options.files',
     defaultMessage: 'Files'
+  },
+  proAssistNotes: {
+    id: 'components.UsersAdmin.Options.proAssistNotes',
+    defaultMessage: 'PRO ASSIST NOTES'
+  },
+  addNote: {
+    id: 'components.UsersAdmin.Options.addNote',
+    defaultMessage: 'Add a Note'
+  },
+  add: {
+    id: 'components.UsersAdmin.Options.add',
+    defaultMessage: 'Add'
   }
 })
