@@ -58,7 +58,7 @@ interface Props {
   limit?: number
   designs?: DesignType[]
   previewOnly?: boolean
-  openAssist: (shortId: string) => void
+  setDesignSelected: (shortId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
@@ -358,8 +358,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   }
 
   openAssistModal = (designId: string) => () => {
-    const { openAssist } = this.props
-    openAssist(designId)
+    const { setDesignSelected } = this.props
+    setDesignSelected(designId)
   }
 
   // TODO: Handle add to cart

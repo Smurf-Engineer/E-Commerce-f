@@ -34,6 +34,8 @@ interface Props {
   initialCountryCode: string
   openModal: boolean
   loading: boolean
+  designSelected: string
+  setDesignSelected: (designId: string) => void
   formatMessage: (messageDescriptor: Message, params?: object) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -150,6 +152,8 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       sort,
       formatMessage,
       searchText,
+      designSelected,
+      setDesignSelected,
       name,
       lastName,
       email,
@@ -189,6 +193,8 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                 {...{
                   formatMessage,
                   history,
+                  designSelected,
+                  setDesignSelected,
                   showLocker
                 }}
                 onChangeSection={onChangeSectionAction}

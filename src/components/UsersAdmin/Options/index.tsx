@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import get from 'lodash/get'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import Icon from 'antd/lib/icon'
 import Modal from 'antd/lib/modal'
 import { withRouter } from 'react-router-dom'
@@ -19,19 +19,34 @@ import {
   Title,
   SubTitle,
   ButtonContainer,
-  SaveButton
+  SaveButton,
+  NoteContainer,
+  NoteTitle,
+  NoteText
 } from './styledComponents'
 import MyLocker from '../../MyLocker'
 import closeIcon from '../../../assets/cancel-button.svg'
 import { FormattedMessage } from 'react-intl'
 import TextArea from 'antd/lib/input/TextArea'
+import { QueryProps, DesignNote } from '../../../types/common'
+import { GetDesignNotes } from '../data'
+import Spin from 'antd/lib/spin'
+import moment from 'moment'
+import { NOTE_FORMAT } from '../constants'
 
 const RadioGroup = Radio.Group
+
+interface Data extends QueryProps {
+  designNotes: DesignNote[]
+}
 
 interface Props {
   history: any
   match: any
+  data: Data
   showLocker: boolean
+  designSelected: string
+  setDesignSelected: (designId: string) => void
   onChangeSection: (value: boolean) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -45,12 +60,22 @@ class Options extends React.Component<Props> {
     const { onChangeSection } = this.props
     onChangeSection(e.target.value)
   }
-  handleClose = () => {}
+  handleClose = () => {
+    const { setDesignSelected } = this.props
+    setDesignSelected('')
+  }
   render() {
-    const { formatMessage, history, match, showLocker } = this.props
-
+    const {
+      formatMessage,
+      history,
+      match,
+      showLocker,
+      data,
+      designSelected,
+      setDesignSelected
+    } = this.props
     const userId = get(match, 'params.id', '')
-
+    const { loading, designNotes = [] } = data || {}
     return (
       <div>
         <BackLabel onClick={this.handleOnGoBack}>
@@ -82,6 +107,7 @@ class Options extends React.Component<Props> {
               setItemToAddAction: null,
               openAddToTeamStoreModalAction: null,
               addItemToStore: null,
+              setDesignSelected,
               userId
             }}
             openAddToStoreModal={false}
@@ -92,7 +118,7 @@ class Options extends React.Component<Props> {
           <UserFiles {...{ userId, formatMessage }} />
         )}
         <Modal
-          visible={true}
+          visible={!!designSelected}
           footer={null}
           closable={false}
           width={'800px'}
@@ -103,6 +129,20 @@ class Options extends React.Component<Props> {
             <Title>
               <FormattedMessage {...messages.proAssistNotes} />
             </Title>
+            {loading ? (
+              <Spin />
+            ) : (
+              designNotes.map(
+                ({ createdAt, text, user }: DesignNote, index: number) => (
+                  <NoteContainer key={index}>
+                    <NoteTitle>{`${moment(createdAt).format(
+                      NOTE_FORMAT
+                    )} - ${user}`}</NoteTitle>
+                    <NoteText>{text}</NoteText>
+                  </NoteContainer>
+                )
+              )
+            )}
             <SubTitle>
               <FormattedMessage {...messages.addNote} />
             </SubTitle>
@@ -118,5 +158,24 @@ class Options extends React.Component<Props> {
     )
   }
 }
-const OptionsEnhance = compose(withRouter)(Options)
+
+type OwnProps = {
+  designSelected?: string
+}
+
+const OptionsEnhance = compose(
+  withRouter,
+  graphql<Data>(GetDesignNotes, {
+    options: (ownprops: OwnProps) => {
+      const { designSelected } = ownprops
+      return {
+        variables: {
+          designId: designSelected
+        },
+        skip: !designSelected,
+        fetchPolicy: 'network-only'
+      }
+    }
+  })
+)(Options)
 export default OptionsEnhance

@@ -191,6 +191,12 @@ export type DesignType = {
   outputPng?: string
 }
 
+export type DesignNote = {
+  createdAt: string
+  user: string
+  text: string
+}
+
 export type SaveDesignType = {
   designBase64: string
   canvasSvg: string

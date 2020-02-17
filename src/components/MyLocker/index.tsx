@@ -61,7 +61,7 @@ interface Props {
   data: Data
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   addItemToStore: () => void
-  openAssist?: (shortId: string) => void
+  setDesignSelected?: (shortId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare?: (savedDesignId: string, openShareModal: boolean) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -266,7 +266,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       savedDesignId,
       setItemToAddAction,
       addItemToStore,
-      openAssist,
+      setDesignSelected,
       openAddToTeamStoreModalAction,
       data,
       deleteModal: { modalLoading = false, openDeleteModal, designName },
@@ -323,7 +323,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
               history,
               withoutPadding,
               openAddToTeamStoreModalAction,
-              openAssist,
+              setDesignSelected,
               designs
             }}
             onPressPrivate={this.handleOnPressPrivate}
