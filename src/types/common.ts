@@ -1257,6 +1257,7 @@ export interface OrderSearchResult {
   pdfUrl?: string
   product: Product
   pngUrl?: string
+  notes?: DesignNote[]
 }
 
 export interface FilesDownload {

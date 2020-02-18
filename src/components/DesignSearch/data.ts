@@ -36,6 +36,11 @@ export const orderSearchQuery = gql`
       zipperColor: zipper_color
       bindingColor: binding_color
       bibColor: bib_brace_color
+      notes {
+        text
+        user
+        createdAt: created_at
+      }
     }
   }
 `

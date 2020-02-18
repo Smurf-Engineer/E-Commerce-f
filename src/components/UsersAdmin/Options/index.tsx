@@ -5,6 +5,7 @@ import * as React from 'react'
 import get from 'lodash/get'
 import { compose, graphql } from 'react-apollo'
 import Icon from 'antd/lib/icon'
+import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import { withRouter } from 'react-router-dom'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
@@ -28,11 +29,12 @@ import MyLocker from '../../MyLocker'
 import closeIcon from '../../../assets/cancel-button.svg'
 import { FormattedMessage } from 'react-intl'
 import TextArea from 'antd/lib/input/TextArea'
-import { QueryProps, DesignNote } from '../../../types/common'
+import { QueryProps, DesignNote, MessagePayload } from '../../../types/common'
 import { GetDesignNotes } from '../data'
 import Spin from 'antd/lib/spin'
 import moment from 'moment'
 import { NOTE_FORMAT } from '../constants'
+import { addNoteMutation } from '../../ProAssist/data'
 
 const RadioGroup = Radio.Group
 
@@ -46,7 +48,12 @@ interface Props {
   data: Data
   showLocker: boolean
   designSelected: string
-  setDesignSelected: (designId: string) => void
+  note: string
+  loading: boolean
+  setLoadingAction: (loading: boolean) => void
+  addNoteAction: (variables: {}) => Promise<MessagePayload>
+  setNoteText: (text: string) => void
+  setDesignSelected: (designId?: string) => void
   onChangeSection: (value: boolean) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -62,7 +69,37 @@ class Options extends React.Component<Props> {
   }
   handleClose = () => {
     const { setDesignSelected } = this.props
-    setDesignSelected('')
+    setDesignSelected()
+  }
+  handleChangeNote = (evt: React.FormEvent<HTMLTextAreaElement>) => {
+    const { setNoteText } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    setNoteText(value)
+  }
+  saveNote = async () => {
+    const {
+      addNoteAction,
+      note,
+      setDesignSelected,
+      designSelected,
+      setLoadingAction
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const response = await addNoteAction({
+        variables: {
+          designId: designSelected,
+          text: note
+        }
+      })
+      setDesignSelected()
+      message.success(get(response, 'data.addDesignNote.message', ''))
+    } catch (e) {
+      setLoadingAction(false)
+      message.error(e.message)
+    }
   }
   render() {
     const {
@@ -70,12 +107,14 @@ class Options extends React.Component<Props> {
       history,
       match,
       showLocker,
+      note,
+      loading,
       data,
       designSelected,
       setDesignSelected
     } = this.props
     const userId = get(match, 'params.id', '')
-    const { loading, designNotes = [] } = data || {}
+    const { loading: loadingData, designNotes = [] } = data || {}
     return (
       <div>
         <BackLabel onClick={this.handleOnGoBack}>
@@ -129,7 +168,7 @@ class Options extends React.Component<Props> {
             <Title>
               <FormattedMessage {...messages.proAssistNotes} />
             </Title>
-            {loading ? (
+            {loadingData ? (
               <Spin />
             ) : (
               designNotes.map(
@@ -146,9 +185,18 @@ class Options extends React.Component<Props> {
             <SubTitle>
               <FormattedMessage {...messages.addNote} />
             </SubTitle>
-            <TextArea autosize={{ minRows: 5, maxRows: 8 }} rows={4} />
+            <TextArea
+              value={note}
+              onChange={this.handleChangeNote}
+              autosize={{ minRows: 5, maxRows: 8 }}
+              rows={4}
+            />
             <ButtonContainer>
-              <SaveButton>
+              <SaveButton
+                {...{ loading }}
+                disabled={!note}
+                onClick={this.saveNote}
+              >
                 <FormattedMessage {...messages.add} />
               </SaveButton>
             </ButtonContainer>
@@ -165,6 +213,7 @@ type OwnProps = {
 
 const OptionsEnhance = compose(
   withRouter,
+  graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {
     options: (ownprops: OwnProps) => {
       const { designSelected } = ownprops

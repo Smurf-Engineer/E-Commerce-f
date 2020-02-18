@@ -13,7 +13,8 @@ import {
   ON_TOGGLE_MODAL,
   ON_RESET_MODAL,
   SET_LOADING,
-  SET_DESIGN
+  SET_DESIGN,
+  CHANGE_NOTE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -25,6 +26,7 @@ export const initialState = fromJS({
   firstName: '',
   name: '',
   designSelected: '',
+  note: '',
   lastName: '',
   email: '',
   showLocker: true,
@@ -38,8 +40,14 @@ const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
+    case CHANGE_NOTE:
+      return state.set('note', action.text)
     case SET_DESIGN:
-      return state.set('designSelected', action.designId)
+      return state.merge({
+        designSelected: action.designId,
+        note: '',
+        loading: false
+      })
     case RESET_DATA:
       return initialState
     case SET_SEARCH_TEXT:
