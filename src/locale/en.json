@@ -167,6 +167,7 @@
   "components.ProductCatalogueThumbnailsList.preview": "PREVIEW",
   "components.ProductCatalogueThumbnailsList.proassist": "PROASSIST NOTES",
   "components.ProductCatalogueThumbnailsList.addToStore": "ADD TO STORE",
+  "components.ProductCatalogueThumbnailsList.makeCopy": "MAKE A COPY",
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",

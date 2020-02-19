@@ -76,6 +76,14 @@ export const deleteDesignMutation = gql`
   }
 `
 
+export const duplicateDesignMutation = gql`
+  mutation duplicateDesign($designId: String!) {
+    duplicateDesign(designId: $designId) {
+      message
+    }
+  }
+`
+
 export const changeNameMutation = gql`
   mutation changeDesignName($designId: String!, $name: String!) {
     changeDesignName(designId: $designId, name: $name) {
