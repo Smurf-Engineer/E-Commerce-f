@@ -40,5 +40,9 @@ export default defineMessages({
   onDemandMode: {
     id: 'components.StoreForm.onDemandMode',
     defaultMessage: 'ON DEMAND MODE'
+  },
+  fixedMode: {
+    id: 'components.StoreForm.fixedMode',
+    defaultMessage: 'FIXED DATE'
   }
 })

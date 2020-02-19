@@ -70,6 +70,7 @@ import {
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
+import { FIXED_TEAMSTORE, ON_DEMAND_TEAMSTORE } from './constants'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
@@ -260,6 +261,21 @@ export class CreateStore extends React.Component<Props, StateProps> {
     return storeId
   }
 
+  isOnDemand = () => {
+    const {
+      location: { search }
+    } = this.props
+    const { type, storeId } = queryString.parse(search)
+    if (storeId) {
+      const { onDemand } = this.props
+      return onDemand
+    }
+    if (type !== FIXED_TEAMSTORE && type !== ON_DEMAND_TEAMSTORE) {
+      return true
+    }
+    return type === ON_DEMAND_TEAMSTORE
+  }
+
   changePage = (pageParam: number = 1) => {
     const { limit } = this.props
     const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
@@ -354,7 +370,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         const { image } = await uploadResp.json()
         bannerResp = image
       }
-
+      console.log('Cut off date ', startDate)
       const teamStore = {
         id: storeId,
         short_id: storeShortId,
@@ -366,7 +382,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         passcode: passCode,
         items,
         teamsizeId: teamSizeId,
-        demandMode: onDemand,
+        demandMode: this.isOnDemand(),
         banner: bannerResp
       }
 
@@ -516,6 +532,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const tableItems = this.getCheckedItems(items)
 
     const storeShortId = this.getStoreId()
+    const isOnDemand = this.isOnDemand()
 
     return (
       <Layout {...{ history, intl }}>
@@ -529,13 +546,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
               <FormattedMessage {...messages.title} />
             </Title>
             <StoreForm
-              {...{ formatMessage, onDemand }}
+              {...{ formatMessage }}
               name={name}
               startDate={startDateMoment}
               endDate={endDateMoment}
               onUpdateName={updateNameAction}
               onSelectStartDate={updateStartDateAction}
               onSelectEndDate={updateEndDateAction}
+              onDemand={isOnDemand}
               {...{ hasError }}
             />
             {onDemand ? (

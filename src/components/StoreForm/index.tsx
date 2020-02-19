@@ -14,9 +14,10 @@ import {
   Error,
   Required,
   inputStyle,
-  OnDemandLabel,
+  TeamStoreTypeLabel,
   ShipLabel,
-  RightLabels
+  RightLabels,
+  Fields
 } from './styledComponents'
 import { validateHolidayQuery } from './data'
 import messages from './messages'
@@ -132,63 +133,67 @@ const StoreForm = ({
 
   return (
     <Container>
-      <Column>
-        <Label>
-          {formatMessage(messages.teamStoreName)} <Required>*</Required>
-        </Label>
-        <Input
-          value={name}
-          placeholder="Store Name"
-          size="large"
-          onChange={handleUpdateName}
-        />
-        {hasError && !name && (
-          <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+      <RightLabels>
+        {onDemand && <ShipLabel>{formatMessage(messages.shipping)}</ShipLabel>}
+        <TeamStoreTypeLabel>
+          {formatMessage(onDemand ? messages.onDemandMode : messages.fixedMode)}
+        </TeamStoreTypeLabel>
+      </RightLabels>
+      <Fields>
+        <Column>
+          <Label>
+            {formatMessage(messages.teamStoreName)} <Required>*</Required>
+          </Label>
+          <Input
+            value={name}
+            placeholder="Store Name"
+            size="large"
+            onChange={handleUpdateName}
+          />
+          {hasError && !name && (
+            <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+          )}
+        </Column>
+        {!onDemand && (
+          <React.Fragment>
+            <Column>
+              <Label>
+                {formatMessage(messages.orderCutOffLabel)}
+                <Required>*</Required>
+              </Label>
+              <DatePicker
+                value={startDate}
+                disabledDate={disabledStartDate}
+                onChange={handleOnSelectStart}
+                format="YYYY-MM-DD" // TODO: Change format
+                size="large"
+                style={inputStyle}
+              />
+              {hasError && !startDate && (
+                <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+              )}
+            </Column>
+            <Column>
+              <Label>
+                {formatMessage(messages.desiredDeliveryLabel)}
+                <Required>*</Required>
+              </Label>
+              <DatePicker
+                value={endDate}
+                disabledDate={disabledEndDate}
+                onChange={handleOnSelectEnd}
+                disabled={!startDate}
+                format="YYYY-MM-DD" // TODO: Change format
+                size="large"
+                style={inputStyle}
+              />
+              {hasError && !endDate && (
+                <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+              )}
+            </Column>
+          </React.Fragment>
         )}
-      </Column>
-      {!onDemand ? (
-        <React.Fragment>
-          <Column>
-            <Label>
-              {formatMessage(messages.orderCutOffLabel)} <Required>*</Required>
-            </Label>
-            <DatePicker
-              value={startDate}
-              disabledDate={disabledStartDate}
-              onChange={handleOnSelectStart}
-              format="YYYY-MM-DD" // TODO: Change format
-              size="large"
-              style={inputStyle}
-            />
-            {hasError && !startDate && (
-              <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
-            )}
-          </Column>
-          <Column>
-            <Label>
-              {formatMessage(messages.desiredDeliveryLabel)}{' '}
-              <Required>*</Required>
-            </Label>
-            <DatePicker
-              value={endDate}
-              disabledDate={disabledEndDate}
-              onChange={handleOnSelectEnd}
-              disabled={!startDate}
-              format="YYYY-MM-DD" // TODO: Change format
-              size="large"
-              style={inputStyle}
-            />
-            {hasError && !endDate && (
-              <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
-            )}
-          </Column>
-        </React.Fragment>
-      ) : (
-        <RightLabels>
-          <ShipLabel>{formatMessage(messages.shipping)}</ShipLabel>
-          <OnDemandLabel>{formatMessage(messages.onDemandMode)}</OnDemandLabel>
-        </RightLabels>
-      )}
+      </Fields>
     </Container>
   )
 }

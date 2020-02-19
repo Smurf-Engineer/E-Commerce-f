@@ -164,7 +164,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
 
   editTeamStore = (storeId: string) => () => {
     const { history } = this.props
-    history.push(`/create-store?storeId=${storeId}`)
+    history.push(`/create-store/form?storeId=${storeId}`)
   }
 
   gotoTeamStore = (storeId: string) => () => {
@@ -203,10 +203,7 @@ type OwnProps = {
 }
 
 const MyTeamStoresEnhanced = compose(
-  connect(
-    mapstateToProps,
-    { ...MyTeamStoresActions }
-  ),
+  connect(mapstateToProps, { ...MyTeamStoresActions }),
   graphql(GetTeamMyStoresQuery, {
     options: ({ limit, skip }: OwnProps) => ({
       fetchPolicy: 'network-only',

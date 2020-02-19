@@ -129,7 +129,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     } = this.props
 
     const storeShortId = get(getTeamStore, 'short_id', '')
-    history.push(`/create-store?storeId=${storeShortId}`)
+    history.push(`/create-store/form?storeId=${storeShortId}`)
   }
 
   handleOnOpenQuickView = (id: number, yotpoId: string) => {
