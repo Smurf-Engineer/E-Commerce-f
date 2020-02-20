@@ -42,7 +42,8 @@ import {
   updateDesignMutation,
   getDesignSearchCode,
   getFonts,
-  generatePdfMutation
+  generatePdfMutation,
+  addNoteMutation
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -72,7 +73,14 @@ interface Props {
   fontsData: any
   designSearchCodes: string[]
   creatingPdf: boolean
+  openNotes: boolean
+  addingNote: boolean
+  note: string
   // redux actions
+  addNoteAction: (variables: {}) => Promise<MessagePayload>
+  setNoteAction: (text: string) => void
+  openNoteAction: (openNotes: boolean) => void
+  setLoadingNote: (loading: boolean) => void
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
   restoreUserSessionAction: () => void
@@ -136,6 +144,11 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       changes,
       setStitchingColorAction,
       colorAccessories,
+      openNotes,
+      addingNote,
+      note,
+      setNoteAction,
+      openNoteAction,
       setColorAction,
       fontsData,
       designSearchCodes,
@@ -164,9 +177,15 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           uploadingThumbnail,
           setUploadingThumbnailAction,
           changes,
+          openNotes,
+          addingNote,
+          note,
+          setNoteAction,
+          openNoteAction,
           colorAccessories,
           creatingPdf
         }}
+        handleSaveNote={this.saveNote}
         onSelectStitchingColor={setStitchingColorAction}
         onSelectColor={setColorAction}
         formatMessage={formatMessage}
@@ -212,6 +231,29 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         </Content>
       </Container>
     )
+  }
+
+  saveNote = async () => {
+    const {
+      addNoteAction,
+      note,
+      order: { shortId, code },
+      setLoadingNote
+    } = this.props
+    try {
+      setLoadingNote(true)
+      const response = await addNoteAction({
+        variables: {
+          designId: shortId,
+          text: note
+        }
+      })
+      this.handleOnSearch(code)
+      message.success(get(response, 'data.addDesignNote.message', ''))
+    } catch (e) {
+      setLoadingNote(false)
+      message.error(e.message)
+    }
   }
 
   goToDesignerTool = () => {
@@ -352,6 +394,7 @@ const mapStateToProps = (state: any) => {
 
 const DesignSearchAdminEnhance = compose(
   injectIntl,
+  graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
   graphql(generatePdfMutation, { name: 'generatePdf' }),

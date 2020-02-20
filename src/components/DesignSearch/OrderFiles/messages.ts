@@ -56,5 +56,9 @@ export default defineMessages({
   proAssistNotes: {
     id: 'screens.DesignSearch.proAssistNotes',
     defaultMessage: 'PROASSIST NOTES'
+  },
+  add: {
+    id: 'screens.DesignSearch.add',
+    defaultMessage: 'ADD +'
   }
 })
