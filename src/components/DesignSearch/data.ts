@@ -36,6 +36,7 @@ export const orderSearchQuery = gql`
       zipperColor: zipper_color
       bindingColor: binding_color
       bibColor: bib_brace_color
+      preflightCheck: preflight_check
     }
   }
 `
@@ -44,6 +45,14 @@ export const uploadThumbnailMutation = gql`
   mutation saveStyleImage($image: String!) {
     style: saveStyleImage(image: $image) {
       image
+    }
+  }
+`
+
+export const togglePreflight = gql`
+  mutation togglePreflight($shortId: String!) {
+    design: togglePreflight(designId: $shortId) {
+      checked: preflight_check
     }
   }
 `

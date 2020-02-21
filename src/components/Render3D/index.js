@@ -345,7 +345,7 @@ class Render3D extends PureComponent {
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
         )}
-        {detailed && (
+        {detailed && window.location === window.parent.location && (
           <Details>
             <DetailHeader>
               <Logo src={JakrooLogoWhite} />
