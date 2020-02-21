@@ -16,7 +16,8 @@ import {
   TeamStoreResultType,
   TeamStoreType,
   UserType,
-  ContactInformation
+  ContactInformation,
+  Message
 } from '../../types/common'
 import {
   Container,
@@ -25,12 +26,8 @@ import {
   OrderTitle,
   PriceDescription,
   PriceTitle,
-  TierTitle,
-  TierDescription,
   AboutContainer,
   AboutTitle,
-  TierContainer,
-  StyledSlider,
   ButtonWrapper,
   Button,
   ImageBanner,
@@ -46,9 +43,6 @@ import {
   DefaultButton,
   ErrorTitle,
   FlexContainer,
-  SliderWrapper,
-  sliderStyle,
-  StyledSliderTitle,
   Description,
   StoreBox,
   Loading,
@@ -58,7 +52,9 @@ import {
   Corner,
   PinDiv,
   Pin,
-  BulletinLabel
+  BulletinLabel,
+  Dates,
+  FlexColumnContainer
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
@@ -85,7 +81,7 @@ interface StateProps {
 
 interface Props {
   history: any
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: any) => string
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   openEmailContactDialogAction: (open: boolean) => void
   openShareModalAction: (open: boolean, id?: string) => void
@@ -249,7 +245,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const cutOffMonth = get(getTeamStore, 'cutoff_date.month', 'month')
     const deliveryMonth = get(getTeamStore, 'delivery_date.month', 'month')
     const items = getTeamStore ? getTeamStore.items || [] : []
-    const totalItems = get(getTeamStore, 'totalItems', 0)
+    // const totalItems = get(getTeamStore, 'totalItems', 0)
     const teamSizeId = get(getTeamStore, 'team_size_id', 0)
     const priceRanges = getTeamStore ? getTeamStore.priceRanges || [] : []
     const bulletin = get(getTeamStore, 'bulletin', '')
@@ -260,61 +256,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     // const maxValueOfY = items.length
     //   ? Math.max(...items.map(o => o.totalOrders))
     //   : 0
-
-    let markslider = { name: '0-0' }
-    for (const priceRangeItem of priceRanges) {
-      if (!totalItems) {
-        break
-      }
-      let val = 0
-      if (priceRangeItem.name === 'Personal') {
-        val = 1
-      } else {
-        val = parseInt(priceRangeItem.name.split('-')[1], 10)
-      }
-
-      if (val >= totalItems) {
-        markslider = priceRangeItem
-        break
-      }
-    }
-
-    let marksArray: any = {}
-    priceRanges.map((priceRange, index) => {
-      if (index === 0) {
-        marksArray[1] = {
-          style: sliderStyle,
-          label: <p>1</p>
-        }
-        return
-      }
-
-      marksArray[priceRange.name.split('-')[1]] = {
-        style: sliderStyle,
-        label: (
-          <p>
-            {priceRange.name}
-            <br />
-            10% OFF
-            {priceRange.id === teamSizeId ? (
-              <div>
-                <StyledSliderTitle>
-                  {formatMessage(messages.targetPrice)}
-                </StyledSliderTitle>
-              </div>
-            ) : (
-              <div />
-            )}
-          </p>
-        )
-      }
-      return
-    })
-
-    const sliderValue =
-      markslider.name === 'Personal'
-        ? 1
-        : parseInt(markslider.name.split('-')[1], 10)
 
     return (
       <Container>
@@ -334,136 +275,139 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   <ImageBanner src={teamStoreBanner} />
                 )}
                 <TopContainer>
-                  <FlexContainer>
-                    <Title>{teamStoreName}</Title>
-                    <ButtonsContainer>
-                      <ButtonWrapper>
-                        <Button type="primary" onClick={this.handlShareClick}>
-                          <FormattedMessage {...messages.share} />
-                        </Button>
-                      </ButtonWrapper>
-                      {teamStoreOwner ? (
+                  <FlexColumnContainer>
+                    <FlexContainer>
+                      <Title>{teamStoreName}</Title>
+                      <ButtonsContainer>
                         <ButtonWrapper>
-                          <Button
-                            type="primary"
-                            onClick={this.handleOnPressEdit}
-                          >
-                            <FormattedMessage {...messages.edit} />
+                          <Button type="primary" onClick={this.handlShareClick}>
+                            <FormattedMessage {...messages.share} />
                           </Button>
                         </ButtonWrapper>
-                      ) : (
-                        <DefaultButton onClick={this.handlContactClick}>
-                          <FormattedMessage {...messages.contactManager} />
-                        </DefaultButton>
-                      )}
-                    </ButtonsContainer>
-                  </FlexContainer>
-                  <SideBar>
+                        {teamStoreOwner ? (
+                          <ButtonWrapper>
+                            <Button
+                              type="primary"
+                              onClick={this.handleOnPressEdit}
+                            >
+                              <FormattedMessage {...messages.edit} />
+                            </Button>
+                          </ButtonWrapper>
+                        ) : (
+                          <DefaultButton onClick={this.handlContactClick}>
+                            <FormattedMessage {...messages.contactManager} />
+                          </DefaultButton>
+                        )}
+                      </ButtonsContainer>
+                    </FlexContainer>
                     {!onDemandMode && (
-                      <OrderTitle>
-                        {`${formatMessage(
-                          messages.orderTitle
-                        )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
-                          messages.orderTitle2
-                        )} ${deliveryMonth} ${deliveryDayOrdinal}`}
-                      </OrderTitle>
+                      <React.Fragment>
+                        <PriceTitle>
+                          <FormattedMessage {...messages.priceDropTitle} />
+                        </PriceTitle>
+                        <PriceDescription>
+                          <FormattedMessage {...messages.priceDropSubTitle} />
+                        </PriceDescription>
+                        <PriceDescription>
+                          <FormattedMessage
+                            {...messages.priceDropDescription}
+                            values={{
+                              Bold: (
+                                <strong>
+                                  {formatMessage(messages.priceDropImportant)}
+                                </strong>
+                              )
+                            }}
+                          />
+                        </PriceDescription>
+                        <PriceDescription>
+                          <FormattedMessage
+                            {...messages.finalPricing}
+                            values={{
+                              Bold: (
+                                <strong>
+                                  {formatMessage(
+                                    messages.finalPricingImportant
+                                  )}
+                                </strong>
+                              )
+                            }}
+                          />
+                        </PriceDescription>
+                      </React.Fragment>
                     )}
+                  </FlexColumnContainer>
+                  <SideBar>
                     <DatesContainer {...{ onDemandMode }}>
-                      {onDemandMode ? (
-                        <StoreBox open={display}>
-                          {formatMessage(
-                            display ? messages.storeOpen : messages.storeClosed
-                          )}
-                        </StoreBox>
-                      ) : (
-                        <CalendarContainer>
-                          <DatesTitle>
-                            <FormattedMessage {...messages.cutOff} />
-                          </DatesTitle>
-                          <CalendarView>
-                            <CalendarTitle>{cutOffMonth}</CalendarTitle>
-                            <CalendarDay>{cutOffDay}</CalendarDay>
-                          </CalendarView>
-                        </CalendarContainer>
+                      <StoreBox open={display}>
+                        {formatMessage(
+                          display ? messages.storeOpen : messages.storeClosed
+                        )}
+                      </StoreBox>
+                      {!onDemandMode && (
+                        <OrderTitle>
+                          {`${formatMessage(
+                            messages.orderTitle
+                          )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
+                            messages.orderTitle2
+                          )} ${deliveryMonth} ${deliveryDayOrdinal}`}
+                        </OrderTitle>
                       )}
-                      {display && (
-                        <CalendarContainer>
-                          <DatesTitle>
-                            <FormattedMessage {...messages.estimatedArrival} />
-                          </DatesTitle>
-                          <CalendarFinalView>
-                            <CalendarFinalTitle>
-                              {deliveryMonth}
-                            </CalendarFinalTitle>
-                            <CalendarDay>{deliveryDay}</CalendarDay>
-                          </CalendarFinalView>
-                        </CalendarContainer>
-                      )}
+                      <Dates>
+                        {!onDemandMode && (
+                          <CalendarContainer>
+                            <DatesTitle>
+                              <FormattedMessage {...messages.cutOff} />
+                            </DatesTitle>
+                            <CalendarView>
+                              <CalendarTitle>{cutOffMonth}</CalendarTitle>
+                              <CalendarDay>{cutOffDay}</CalendarDay>
+                            </CalendarView>
+                          </CalendarContainer>
+                        )}
+                        {display && (
+                          <CalendarContainer>
+                            <DatesTitle>
+                              <FormattedMessage
+                                {...messages.estimatedArrival}
+                              />
+                            </DatesTitle>
+                            <CalendarFinalView>
+                              <CalendarFinalTitle>
+                                {deliveryMonth}
+                              </CalendarFinalTitle>
+                              <CalendarDay>{deliveryDay}</CalendarDay>
+                            </CalendarFinalView>
+                          </CalendarContainer>
+                        )}
+                      </Dates>
                     </DatesContainer>
                   </SideBar>
                 </TopContainer>
-                {onDemandMode ? (
+                <PriceTitle>
+                  {formatMessage(messages.welcome, { teamStoreName })}
+                </PriceTitle>
+                {onDemandMode && (
                   <Description>
-                    <PriceTitle>
-                      {`${formatMessage(
-                        messages.welcome
-                      )} ${teamStoreName} ${formatMessage(messages.store)}`}
-                    </PriceTitle>
                     <PriceDescription>
                       <FormattedMessage {...messages.description} />
                     </PriceDescription>
-                    {bulletin && (
-                      <Bulletin>
-                        <PinDiv>
-                          <Pin src={PinSVG} left={true} />
-                          <Pin src={PinSVG} />
-                        </PinDiv>
-                        <BulletinLabel>{bulletin}</BulletinLabel>
-                        <Corner />
-                      </Bulletin>
-                    )}
                   </Description>
-                ) : (
-                  <React.Fragment>
-                    <PriceTitle>
-                      <FormattedMessage {...messages.priceDropTitle} />
-                    </PriceTitle>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.priceDropSubTitle} />
-                    </PriceDescription>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.priceDropDescription} />
-                    </PriceDescription>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.finalPricing} />
-                    </PriceDescription>
-                  </React.Fragment>
+                )}
+                {bulletin && (
+                  <Bulletin>
+                    <PinDiv>
+                      <Pin src={PinSVG} left={true} />
+                      <Pin src={PinSVG} />
+                    </PinDiv>
+                    <BulletinLabel>{bulletin}</BulletinLabel>
+                    <Corner />
+                  </Bulletin>
                 )}
                 {errorMessage ? (
                   <ErrorTitle>{errorMessage}</ErrorTitle>
                 ) : (
                   <div>
-                    {!onDemandMode && (
-                      <TierContainer>
-                        <TierTitle>
-                          {`${formatMessage(messages.tierTitle)} ${
-                            targetRange ? targetRange.name : 'Not selected'
-                          }`}
-                        </TierTitle>
-                        <TierDescription>
-                          <FormattedMessage {...messages.tierDescription} />
-                        </TierDescription>
-                        <SliderWrapper>
-                          <StyledSlider
-                            marks={marksArray}
-                            disabled={true}
-                            value={sliderValue}
-                            min={0}
-                            max={249}
-                          />
-                        </SliderWrapper>
-                      </TierContainer>
-                    )}
                     <ListContainer>
                       <ProductList
                         {...{

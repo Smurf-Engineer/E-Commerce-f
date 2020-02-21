@@ -370,7 +370,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
         const { image } = await uploadResp.json()
         bannerResp = image
       }
-      console.log('Cut off date ', startDate)
       const teamStore = {
         id: storeId,
         short_id: storeShortId,

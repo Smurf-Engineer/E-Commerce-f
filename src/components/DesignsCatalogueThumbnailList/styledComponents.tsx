@@ -56,10 +56,7 @@ export const ThumbnailsList = styled.ul`
   width: 100%;
   align-items: center;
   justify-content: center;
-
-  @media (min-width: 320px) and (max-width: 1024px) {
-    padding: 0;
-  }
+  padding: 0;
 
   margin-left: ${({ withoutPadding }: HeadRowProps) =>
     withoutPadding ? '-54px' : '0'};

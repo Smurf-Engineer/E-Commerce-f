@@ -43,10 +43,10 @@ const FooterThumbnailTeamStore = ({
   targetPrice,
   currentPrice
 }: Props) => {
-  const totalPercentage: number = targetRange
+  /* const totalPercentage: number = targetRange
     ? parseInt(targetRange.name.split('-')[0], 10)
-    : 0
-  const percentage = progress / (totalPercentage / 100)
+    : 0 */
+  const percentage = 38
 
   return (
     <Footer>
@@ -73,9 +73,7 @@ const FooterThumbnailTeamStore = ({
       {!onDemandMode && (
         <Bottom>
           <ProgressWrapper>
-            <ProgressText>{`${progress}/${
-              targetRange ? targetRange.name.split('-')[0] : 0
-            }`}</ProgressText>
+            <ProgressText>{progress}</ProgressText>
             <Progress percent={percentage < 100 ? percentage : 100} />
           </ProgressWrapper>
         </Bottom>

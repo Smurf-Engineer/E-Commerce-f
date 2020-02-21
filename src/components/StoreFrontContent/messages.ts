@@ -27,11 +27,7 @@ export default defineMessages({
   },
   welcome: {
     id: 'screens.StoreFrontContent.welcome',
-    defaultMessage: 'Welcome to'
-  },
-  store: {
-    id: 'screens.StoreFrontContent.store',
-    defaultMessage: 'store'
+    defaultMessage: 'Welcome to {teamStoreName} store'
   },
   storeOpen: {
     id: 'screens.StoreFrontContent.storeOpen',
@@ -50,12 +46,22 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.finalPricing',
     defaultMessage:
       // tslint:disable-next-line: max-line-length
-      'Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!'
+      'Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period {Bold}'
+  },
+  finalPricingImportant: {
+    id: 'screens.StoreFrontContent.finalPricingImportant',
+    defaultMessage:
+      'so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!'
   },
   priceDropDescription: {
     id: 'screens.StoreFrontContent.priceDropDescription',
     defaultMessage:
-      'As team members place their orders and reach the next discount level, the price automatically drops for everyone, even for those who placed their order before the drop. Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!' // tslint:disable-line:max-line-length
+      'As team members place their orders and reach the next discount level, {Bold}' // tslint:disable-line:max-line-length
+  },
+  priceDropImportant: {
+    id: 'screens.StoreFrontContent.priceDropImportant',
+    defaultMessage:
+      'the price automatically drops for everyone, even for those who placed their order before the drop.'
   },
   tierTitle: {
     id: 'screens.StoreFrontContent.tierTitle',
