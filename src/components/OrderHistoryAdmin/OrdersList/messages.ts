@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'components.OrdersList.status',
     defaultMessage: 'Status'
   },
+  preflight: {
+    id: 'components.OrdersList.preflight',
+    defaultMessage: 'Preflight'
+  },
   emptyMessage: {
     id: 'components.OrdersList.emptyMessage',
     defaultMessage: 'No orders yet'

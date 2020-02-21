@@ -647,6 +647,7 @@ export interface CartItems {
   zipperColor?: string
   bindingColor?: string
   flatlock?: string
+  preflightCheck?: boolean
   fixedPrices: PriceRange[]
 }
 
@@ -678,6 +679,7 @@ export interface OrderHistory {
   date: string
   estimatedDate?: string
   status: string
+  pendingChecks: number
   netsuite?: NetsuiteObject
   clientId?: string
   firstName?: string
@@ -1241,6 +1243,7 @@ export interface OrderSearchResult {
   image: string
   status: string
   svgUrl?: string
+  preflightCheck?: boolean
   assets: FilesDownload
   bibColor?: AccesoryColor
   bindingColor?: AccesoryColor
