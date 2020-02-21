@@ -23,7 +23,7 @@ export const isWorkingHour = ({ timezone, start, end }: WorkHours) => {
     const endTime = moment(end, 'HH:mm:ss').utcOffset(timezone, true)
     const isAvailable =
       currentTime.isBetween(startTime, endTime, 'second') &&
-      currentTime.isoWeekday() < 7
+      currentTime.isoWeekday() < 6
     return isAvailable
   } else {
     return false
