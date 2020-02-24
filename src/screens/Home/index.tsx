@@ -278,10 +278,10 @@ export class Home extends React.Component<Props, {}> {
               <FormattedMessage {...messages.flexibleLabel} />
               <SubText>{formatMessage(messages.collectionOrCustom)}</SubText>
             </PropositionTile>
-            <PropositionTile>
+            {/* <PropositionTile>
               <FormattedMessage {...messages.fastDeliveryLabel} />
               <SubText>{formatMessage(messages.twoWeeksOrLess)}</SubText>
-            </PropositionTile>
+            </PropositionTile> */}
             <PropositionTile>
               <FormattedMessage {...messages.easyLabel} />
               <SubText>{formatMessage(messages.priceDrop)}</SubText>
@@ -319,10 +319,7 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(Home)
 
 export default HomeEnhance
