@@ -32,7 +32,8 @@ import {
   Responsive,
   SimpleFont,
   UserInfo,
-  ModelVariant
+  ModelVariant,
+  PositionSize
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -401,6 +402,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onOpenColorChart,
               tutorialPlaylist
             }}
+            onPositionChange={this.handleApplyPosition}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
             onApplyImage={this.handleOnApplyImage}
@@ -592,6 +594,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         fileId
       })
       onSelectedItem({ id: fileId, type: CanvasElements.Path }, name || '')
+    }
+  }
+
+  handleApplyPosition = (data: PositionSize) => {
+    const { selectedElement } = this.props
+    if (selectedElement) {
+      this.render3D.applyPosition(data)
     }
   }
 }

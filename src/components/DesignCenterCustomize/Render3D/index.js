@@ -280,7 +280,10 @@ class Render3D extends PureComponent {
     /* Scene and light */
     const scene = new THREE.Scene()
     const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, DIRECTIONAL_LIGHT_INTENSITY)
+    const directionalLight = new THREE.DirectionalLight(
+      0xffffff,
+      DIRECTIONAL_LIGHT_INTENSITY
+    )
     directionalLight.position.copy(camera.position)
 
     scene.add(camera)
@@ -1563,6 +1566,10 @@ class Render3D extends PureComponent {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('disableDesignCenterHint')
     }
+  }
+
+  applyPosition = data => {
+    console.log('🔵data:', data)
   }
 
   applyCanvasEl = canvasEl => {

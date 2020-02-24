@@ -26,6 +26,7 @@ import {
   ButtonWrapper,
   LockContainer
 } from './styledComponents'
+import { PositionResize } from '../PositionResize'
 
 const SELECT_FONT = 0
 const SELECT_FILL = 1
@@ -195,6 +196,7 @@ export class TextTab extends React.PureComponent<Props, State> {
                 />
               }
             />
+            {selectedElement && <PositionResize />}
           </div>
           <TextEditor
             {...{ option, formatMessage, colorsList, fonts }}

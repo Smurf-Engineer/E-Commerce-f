@@ -27,7 +27,8 @@ import {
   CanvasElement,
   SelectedAsset,
   SimpleFont,
-  UserInfo
+  UserInfo,
+  PositionSize
 } from '../../../types/common'
 import { Container } from './styledComponents'
 import config from '../../../config'
@@ -69,6 +70,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
+  onPositionChange: (data: PositionSize) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -159,6 +161,7 @@ const Tabs = ({
   onCloseColorChart,
   onCloseColorChartForm,
   onOpenFormChart,
+  onPositionChange,
   onOpenColorChart,
   tutorialPlaylist
 }: Props) => {
@@ -217,6 +220,7 @@ const Tabs = ({
               textFormat,
               onSelectTextFormat,
               onLockElement,
+              onPositionChange,
               fonts,
               colorsList
             }}

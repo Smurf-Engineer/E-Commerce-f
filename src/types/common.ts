@@ -100,6 +100,14 @@ export type BreadRoute = {
   selected?: boolean
 }
 
+export type PositionSize = {
+  width: number
+  height: number
+  rotation: number
+  horizontal: number
+  vertical: number
+}
+
 export type HomePageBatch = {
   method: string
   result: string
