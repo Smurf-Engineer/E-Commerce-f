@@ -342,6 +342,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         <Spin />
       </LoadingContainer>
     )
+    const activeEl = this.getActiveElement()
     return (
       <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
@@ -349,6 +350,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             {...{
               palettes,
               colorBlock,
+              activeEl,
               colorBlockHovered,
               onSelectColorBlock,
               onHoverColorBlock,
@@ -536,6 +538,24 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       </Container>
     )
   }
+
+  getActiveElement = () => {
+    const { selectedElement } = this.props
+    let activeEl = {}
+    if (selectedElement && this.render3D) {
+      const active = this.render3D.getElementById(selectedElement)
+      const { scaleX, scaleY, top, left, angle, width, height } = active || {}
+      activeEl = {
+        height: height * scaleY,
+        width: width * scaleX,
+        horizontal: left,
+        vertical: top,
+        rotation: angle
+      }
+    }
+    return activeEl
+  }
+
   handleOnSave = () => {
     this.render3D.takeDesignPicture()
   }
@@ -599,8 +619,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
 
   handleApplyPosition = (data: PositionSize) => {
     const { selectedElement } = this.props
-    if (selectedElement) {
+    if (selectedElement && this.render3D) {
       this.render3D.applyPosition(data)
+      this.forceUpdate()
     }
   }
 }

@@ -13,7 +13,12 @@ import InputNumber from 'antd/lib/input-number'
 import backIcon from '../../../assets/leftarrow.svg'
 import TextEditor from '../TextEditor'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
-import { TextFormat, CanvasElement, SimpleFont } from '../../../types/common'
+import {
+  TextFormat,
+  CanvasElement,
+  SimpleFont,
+  PositionSize
+} from '../../../types/common'
 import {
   Container,
   Header,
@@ -43,6 +48,8 @@ interface Props {
   disableTooltip: boolean
   fonts: SimpleFont[]
   colorsList: any
+  activeEl: PositionSize
+  onPositionChange: (data: PositionSize) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
@@ -76,6 +83,8 @@ export class TextTab extends React.PureComponent<Props, State> {
       productName,
       textFormat,
       selectedElement,
+      activeEl,
+      onPositionChange,
       elements,
       fonts,
       colorsList
@@ -196,7 +205,12 @@ export class TextTab extends React.PureComponent<Props, State> {
                 />
               }
             />
-            {selectedElement && <PositionResize />}
+            {selectedElement && (
+              <PositionResize
+                {...{ activeEl }}
+                handleChange={onPositionChange}
+              />
+            )}
           </div>
           <TextEditor
             {...{ option, formatMessage, colorsList, fonts }}

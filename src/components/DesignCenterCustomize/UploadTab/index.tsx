@@ -18,7 +18,12 @@ import { userfilesQuery, deleteFileMutation } from './data'
 import Dragger from '../../DraggerWithLoading'
 import ImageList from '../ImageList'
 import messages from './messages'
-import { ImageFile, QueryProps, CanvasElement } from '../../../types/common'
+import {
+  ImageFile,
+  QueryProps,
+  CanvasElement,
+  PositionSize
+} from '../../../types/common'
 import {
   Container,
   Header,
@@ -31,6 +36,7 @@ import {
   CustomButton
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
+import PositionResize from '../PositionResize'
 
 const { confirm } = Modal
 
@@ -60,6 +66,8 @@ interface Props {
   isUserAuthenticated: boolean
   selectedItem: number
   selectedElement: CanvasElement
+  activeEl: PositionSize
+  onPositionChange: (data: PositionSize) => void
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
@@ -86,6 +94,8 @@ class UploadTab extends React.PureComponent<Props, State> {
       uploadingFile,
       isUserAuthenticated,
       selectedItem,
+      activeEl,
+      onPositionChange,
       formatMessage,
       selectedElement
     } = this.props
@@ -137,14 +147,20 @@ class UploadTab extends React.PureComponent<Props, State> {
             </LockContainer>
           )}
         </Header>
-        <ImageList
-          onClickImage={this.handleOnAddImage}
-          images={imagesData}
-          onClickDelete={this.handleOnDelete}
-          currentSelected={selectedItem}
-          {...{ formatMessage }}
-        />
-        <DraggerBottom>{dragger}</DraggerBottom>
+        {selectedElement ? (
+          <PositionResize {...{ activeEl }} handleChange={onPositionChange} />
+        ) : (
+          <>
+            <ImageList
+              onClickImage={this.handleOnAddImage}
+              images={imagesData}
+              onClickDelete={this.handleOnDelete}
+              currentSelected={selectedItem}
+              {...{ formatMessage }}
+            />
+            <DraggerBottom>{dragger}</DraggerBottom>
+          </>
+        )}
         <Recommendation color={RED}>
           <FormattedMessage {...messages.recommendationTitle} />
         </Recommendation>

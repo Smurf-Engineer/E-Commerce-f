@@ -1386,8 +1386,8 @@ class Render3D extends PureComponent {
       canvas.image[selectedElement] ||
       canvas.path[selectedElement] ||
       canvas.text[selectedElement]
-    if (!!selectedGraphicElement && this.canvasTexture) {
-      const activeEl = this.getElementById(selectedElement)
+    const activeEl = this.getElementById(selectedElement)
+    if (!!selectedGraphicElement && this.canvasTexture && activeEl) {
       if (selectedGraphicElement.imageSize) {
         const { width, height } = this.getSizeInCentimeters(
           selectedGraphicElement
@@ -1569,7 +1569,28 @@ class Render3D extends PureComponent {
   }
 
   applyPosition = data => {
-    console.log('🔵data:', data)
+    const activeEl = this.canvasTexture.getActiveObject()
+    if (activeEl) {
+      const { width, height } = activeEl
+      const {
+        width: pixelWidth,
+        height: pixelHeight,
+        rotation,
+        horizontal,
+        vertical
+      } = data
+      activeEl
+        .set({
+          left: horizontal,
+          top: vertical,
+          angle: rotation,
+          scaleX: pixelWidth / width,
+          scaleY: pixelHeight / height
+        })
+        .setCoords()
+      this.canvasTexture.renderAll()
+      this.forceUpdate()
+    }
   }
 
   applyCanvasEl = canvasEl => {
@@ -1979,8 +2000,11 @@ class Render3D extends PureComponent {
   }
 
   getElementById = id => {
-    const objects = this.canvasTexture.getObjects()
-    return find(objects, { id })
+    if (this.canvasTexture) {
+      const objects = this.canvasTexture.getObjects()
+      return find(objects, { id })
+    }
+    return {}
   }
 
   deleteElementById = id => {

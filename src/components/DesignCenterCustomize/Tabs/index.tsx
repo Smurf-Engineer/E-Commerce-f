@@ -70,6 +70,7 @@ interface Props {
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
+  activeEl: PositionSize
   onPositionChange: (data: PositionSize) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -126,6 +127,7 @@ const Tabs = ({
   productName,
   canvas,
   selectedElement,
+  activeEl,
   textFormat,
   artFormat,
   onSelectTextFormat,
@@ -219,6 +221,7 @@ const Tabs = ({
               selectedElement,
               textFormat,
               onSelectTextFormat,
+              activeEl,
               onLockElement,
               onPositionChange,
               fonts,
@@ -234,6 +237,8 @@ const Tabs = ({
               formatMessage,
               onSelectArtFormat,
               searchClipParam,
+              activeEl,
+              onPositionChange,
               setSearchClipParamAction,
               onLockElement,
               colorsList
@@ -251,6 +256,8 @@ const Tabs = ({
               onApplyImage,
               onUploadFile,
               images,
+              activeEl,
+              onPositionChange,
               uploadingFile,
               isUserAuthenticated,
               onLockElement,

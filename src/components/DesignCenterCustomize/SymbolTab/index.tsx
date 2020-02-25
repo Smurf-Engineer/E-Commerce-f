@@ -15,7 +15,12 @@ import OptionText from '../../OptionText'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import TextEditor from '../TextEditor'
 import Symbol from '../ClipArt'
-import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
+import {
+  QueryProps,
+  ClipArt,
+  CanvasElement,
+  PositionSize
+} from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
 import backIcon from '../../../assets/leftarrow.svg'
@@ -35,6 +40,7 @@ import {
   NotFound,
   LockContainer
 } from './styledComponents'
+import PositionResize from '../PositionResize'
 
 interface Data extends QueryProps {
   clipArts: ClipArt[]
@@ -46,6 +52,8 @@ interface Props {
   selectedItem: number
   disableTooltip: boolean
   colorsList: any
+  activeEl: PositionSize
+  onPositionChange: (data: PositionSize) => void
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (
     url: string,
@@ -74,6 +82,8 @@ class SymbolTab extends React.PureComponent<Props, {}> {
       data: { loading, clipArts },
       selectedElement,
       formatMessage,
+      activeEl,
+      onPositionChange,
       selectedItem,
       colorsList
     } = this.props
@@ -131,6 +141,10 @@ class SymbolTab extends React.PureComponent<Props, {}> {
                 title={formatMessage(messages.outline)}
                 color={selectedElement.stroke}
                 selected={!!selectedElement.strokeWidth}
+              />
+              <PositionResize
+                {...{ activeEl }}
+                handleChange={onPositionChange}
               />
             </div>
             <TextEditor

@@ -14,17 +14,66 @@ import {
   SmallIcon,
   LockIcon
 } from './styledComponents'
+import { PositionSize } from '../../../types/common'
 
 interface Props {
-  text?: string
-  value: number
-  handleChange: (value: number) => void
+  activeEl: PositionSize
+  handleChange: (data: PositionSize) => void
 }
 
-export class PositionResize extends React.PureComponent<Props, {}> {
+interface State {
+  aspectLock: boolean
+}
+
+export class PositionResize extends React.PureComponent<Props, State> {
+  state = {
+    aspectLock: false
+  }
+
+  changeValue = (value: number | undefined, name: string) => {
+    console.log('value:', value)
+    if (!isNaN(value)) {
+      const { handleChange, activeEl } = this.props
+      handleChange({ ...activeEl, [name]: value })
+    }
+  }
+
+  changeWidth = (value: number | undefined) => {
+    if (value) {
+      const { aspectLock } = this.state
+      const { handleChange, activeEl } = this.props
+      const { height: originalHeight, width: originalWidth } = activeEl
+      let height = originalHeight
+      if (aspectLock) {
+        height = value * (height / originalWidth)
+      }
+      handleChange({ ...activeEl, height, width: value })
+    }
+  }
+
+  changeHeight = (value: number | undefined) => {
+    if (value) {
+      const { aspectLock } = this.state
+      const { handleChange, activeEl } = this.props
+      const { height: originalHeight, width: originalWidth } = activeEl
+      let width = originalWidth
+      if (aspectLock) {
+        width = value * (width / originalHeight)
+      }
+      handleChange({ ...activeEl, width, height: value })
+    }
+  }
+
+  changeLock = () => {
+    this.setState(({ aspectLock }) => ({
+      aspectLock: !aspectLock
+    }))
+  }
+
   render() {
-    const { data, handleChange } = this.props
-    const { width, height, horizontal, vertical, rotation } = data
+    const { aspectLock } = this.state
+    const { activeEl } = this.props
+    const { width, height, horizontal, vertical, rotation } = activeEl || {}
     return (
       <Container>
         <Title>
@@ -39,11 +88,10 @@ export class PositionResize extends React.PureComponent<Props, {}> {
             <NumberInput
               value={horizontal}
               formatter={rawValue => `${rawValue} px`}
-              parser={valueParse => valueParse && valueParse.replace('-', '-0')}
-              min={-20}
-              max={100}
+              parser={value => value.replace(' px', '')}
               step={1}
-              onChange={handleChange}
+              precision={1}
+              onChange={val => this.changeValue(val, 'horizontal')}
             />
           </InputBlock>
           <InputBlock>
@@ -54,11 +102,10 @@ export class PositionResize extends React.PureComponent<Props, {}> {
             <NumberInput
               value={vertical}
               formatter={rawValue => `${rawValue} px`}
-              parser={valueParse => valueParse && valueParse.replace('-', '-0')}
-              min={-20}
-              max={100}
+              parser={value => value.replace(' px', '')}
               step={1}
-              onChange={handleChange}
+              precision={1}
+              onChange={val => this.changeValue(val, 'vertical')}
             />
           </InputBlock>
           <InputBlock maxWidth={true}>
@@ -67,12 +114,13 @@ export class PositionResize extends React.PureComponent<Props, {}> {
             </Subtitle>
             <NumberInput
               value={rotation}
+              min={0}
+              max={360}
               formatter={rawValue => `${rawValue}º`}
-              parser={valueParse => valueParse && valueParse.replace('-', '-0')}
-              min={-20}
-              max={100}
-              step={1}
-              onChange={handleChange}
+              parser={value => value.replace('º', '')}
+              step={0.5}
+              precision={1}
+              onChange={val => this.changeValue(val, 'rotation')}
             />
           </InputBlock>
         </InputContainer>
@@ -84,14 +132,17 @@ export class PositionResize extends React.PureComponent<Props, {}> {
             <NumberInput
               value={width}
               formatter={rawValue => `${rawValue} px`}
-              parser={valueParse => valueParse && valueParse.replace('-', '-0')}
-              min={-20}
-              max={100}
-              step={1}
-              onChange={handleChange}
+              parser={value => value.replace(' px', '')}
+              step={0.1}
+              precision={1}
+              onChange={this.changeWidth}
             />
           </InputBlock>
-          <LockIcon enabled={true} type="lock" />
+          <LockIcon
+            enabled={aspectLock}
+            type={aspectLock ? 'lock' : 'unlock'}
+            onClick={this.changeLock}
+          />
           <InputBlock>
             <Subtitle>
               <FormattedMessage {...messages.height} />
@@ -99,11 +150,10 @@ export class PositionResize extends React.PureComponent<Props, {}> {
             <NumberInput
               value={height}
               formatter={rawValue => `${rawValue} px`}
-              parser={valueParse => valueParse && valueParse.replace('-', '-0')}
-              min={-20}
-              max={100}
-              step={1}
-              onChange={handleChange}
+              parser={value => value.replace(' px', '')}
+              step={0.1}
+              precision={1}
+              onChange={this.changeHeight}
             />
           </InputBlock>
         </InputContainer>
