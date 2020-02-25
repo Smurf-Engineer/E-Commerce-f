@@ -1554,3 +1554,11 @@ export type ProAssist = {
   status: string
   url: string
 }
+
+export type PriceRangeProgress = {
+  minQuantity: number
+  maxQuantity: number
+  range: number
+  index: number
+  price: number
+}

@@ -384,7 +384,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     </DatesContainer>
                   </SideBar>
                 </TopContainer>
-                <PriceTitle>
+                <PriceTitle center={true}>
                   {formatMessage(messages.welcome, { teamStoreName })}
                 </PriceTitle>
                 {onDemandMode && (

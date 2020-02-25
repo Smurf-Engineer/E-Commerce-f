@@ -5,7 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Progress from 'antd/lib/progress'
 import messages from './messages'
-import { Filter } from '../../types/common'
+import { Filter, PriceRange, PriceRangeProgress } from '../../types/common'
 import { BLUE } from '../../theme/colors'
 import {
   Footer,
@@ -20,6 +20,8 @@ import {
   BottomPrices
 } from './styledComponents'
 
+const MAX_PERCENT = 100
+
 interface Props {
   id: number
   name: string
@@ -30,6 +32,8 @@ interface Props {
   onDemandMode?: boolean
   targetPrice: number | string
   currentPrice: number | string
+  priceRange?: PriceRange[]
+  currentRangeAttributes?: PriceRangeProgress
 }
 
 const FooterThumbnailTeamStore = ({
@@ -41,12 +45,31 @@ const FooterThumbnailTeamStore = ({
   targetRange,
   code,
   targetPrice,
-  currentPrice
+  currentPrice,
+  priceRange = [],
+  currentRangeAttributes
 }: Props) => {
-  /* const totalPercentage: number = targetRange
-    ? parseInt(targetRange.name.split('-')[0], 10)
-    : 0 */
-  const percentage = 38
+  let realPercent = 0
+
+  if (!onDemandMode && currentRangeAttributes) {
+    const totalPercentBySection = MAX_PERCENT / (priceRange.length - 1)
+    const percentAmount = MAX_PERCENT / currentRangeAttributes.range
+    let relativePercent =
+      ((progress - currentRangeAttributes.minQuantity) /
+        currentRangeAttributes.range) *
+      MAX_PERCENT
+
+    relativePercent =
+      relativePercent === MAX_PERCENT
+        ? (relativePercent -= percentAmount)
+        : relativePercent
+    realPercent = Math.round(
+      (relativePercent * totalPercentBySection) / MAX_PERCENT +
+        currentRangeAttributes.index * totalPercentBySection
+    )
+  }
+  console.log('Progress ', progress)
+  console.log('Real percent ', realPercent)
 
   return (
     <Footer>
@@ -74,7 +97,7 @@ const FooterThumbnailTeamStore = ({
         <Bottom>
           <ProgressWrapper>
             <ProgressText>{progress}</ProgressText>
-            <Progress percent={percentage < 100 ? percentage : 100} />
+            <Progress percent={realPercent} />
           </ProgressWrapper>
         </Bottom>
       )}

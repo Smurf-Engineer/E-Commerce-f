@@ -54,7 +54,7 @@ export const Description = styled.div`
   }
 `
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -129,6 +129,10 @@ export const OrderTitle = styled.div`
   max-width: 267px;
 `
 
+type TitleProps = {
+  center?: boolean
+}
+
 export const PriceTitle = styled.div`
   padding-top: 18px;
   color: ${GRAY_DARK};
@@ -137,7 +141,7 @@ export const PriceTitle = styled.div`
   letter-spacing: 0.11px;
   line-height: 23px;
   text-transform: uppercase;
-  text-align: center;
+  text-align: ${({ center }: TitleProps) => (center ? 'center' : 'left')};
 `
 
 export const Bulletin = styled.div`

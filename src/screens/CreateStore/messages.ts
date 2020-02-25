@@ -84,7 +84,7 @@ export default defineMessages({
     id: 'screens.CreateStore.priceDropMessageP2',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'As team members place their orders and reach the next discount level, the price automatically drops for everyone, even for those who placed their order before the drop.'
+      'The starting discount level for all team members is 20%. As team members place their orders and reach the next quantity discount level, the price automatically drops for everyone, even for those who placed their order before the price drop.'
   },
   priceDropMessageP3: {
     id: 'screens.CreateStore.priceDropMessageP3',

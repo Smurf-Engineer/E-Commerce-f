@@ -241,7 +241,7 @@
   "screens.CreateStore.teamSizeMessage": "Select estimated size of your team to display the estimated (target) pricing for each item.",
   "screens.CreateStore.priceDropTitle": "DYNAMIC PRICE DROP",
   "screens.CreateStore.priceDropMessageP1": "With JAKROO’s Dynamic Price Drop, everybody wins!",
-  "screens.CreateStore.priceDropMessageP2": "As team members place their orders and reach the next discount level, the price automatically drops for everyone, even for those who placed their order before the drop.",
+  "screens.CreateStore.priceDropMessageP2": "The starting discount level for all team members is 20%. As team members place their orders and reach the next quantity discount level, the price automatically drops for everyone, even for those who placed their order before the price drop.",
   "screens.CreateStore.priceDropMessageP3": "Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!",
   "screens.CreateStore.storeItemsTitle": "Add Store Items",
   "screens.CreateStore.storeItemsMessage": "Select designs from your Locker",

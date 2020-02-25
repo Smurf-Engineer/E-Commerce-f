@@ -23,7 +23,6 @@ import LockerModal from '../../components/LockerModal'
 import SwitchWithLabel from '../../components/SwitchWithLabel'
 import Dragger from '../../components/TeamDragger'
 import StoreForm from '../../components/StoreForm'
-import TeamSizes from '../../components/TeamSizes'
 import {
   createStoreMutation,
   GetTeamStoreQuery,
@@ -44,7 +43,6 @@ import {
   Container,
   Title,
   Subtitle,
-  Message,
   PriceMessage,
   LockerMessage,
   PreviewImage,
@@ -480,7 +478,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const {
       intl,
       history,
-      teamSizeId,
       openLocker,
       updateNameAction,
       updateStartDateAction,
@@ -494,7 +491,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       startDateMoment,
       endDateMoment,
       privateStore,
-      onDemand,
       passCode,
       selectedItems,
       items,
@@ -555,7 +551,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onDemand={isOnDemand}
               {...{ hasError }}
             />
-            {onDemand ? (
+            {isOnDemand ? (
               <React.Fragment>
                 <TextBlock>
                   <Subtitle>
@@ -589,16 +585,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Subtitle>
-                  <FormattedMessage {...messages.teamSizeTitle} />
-                </Subtitle>
-                <Message>
-                  <FormattedMessage {...messages.teamSizeMessage} />
-                </Message>
-                <TeamSizes
-                  currentSelected={teamSizeId}
-                  onSelectRange={this.handleOnSelectRange}
-                />
                 <Subtitle>
                   <FormattedMessage {...messages.priceDropTitle} />
                 </Subtitle>

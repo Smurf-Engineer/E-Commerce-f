@@ -20,7 +20,9 @@ import {
   DesignType,
   TeamStoreItemtype,
   Filter,
-  ClickParam
+  ClickParam,
+  PriceRange,
+  PriceRangeProgress
 } from '../../types/common'
 import {
   Container,
@@ -41,6 +43,7 @@ import {
 import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import { FormattedMessage } from 'react-intl'
+import filter from 'lodash/filter'
 
 interface Data extends QueryProps {
   products: ProductType
@@ -94,6 +97,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
+
     if (designs) {
       total = designs.length.toString()
       thumbnailsList = designs.map(
@@ -114,7 +118,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 price: 0
               }
             : { price: 0 }
-
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
                 quantity:
@@ -128,8 +131,44 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
               : currentPriceValue
-          const currentPrice = `${fixedPriceValue.shortName} ${fixedPriceValue.price}`
-          const targetPrice = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const priceRanges = filter(product.priceRange, [
+            'abbreviation',
+            currentCurrency || config.defaultCurrency
+          ])
+
+          const currentRangeAttributes: PriceRangeProgress = {
+            minQuantity: 0,
+            maxQuantity: 0,
+            range: 0,
+            index: 0,
+            price: 0
+          }
+
+          priceRanges.some((current: PriceRange, rangeIndex: number) => {
+            const quantities = current.quantity.split('-')
+            const maxQuantity = parseInt(quantities[1], 10)
+
+            if (totalOrders === 0 && current.quantity === 'Personal') {
+              currentRangeAttributes.price = fixedPriceValue.price
+              return true
+            }
+            if (totalOrders <= maxQuantity) {
+              const minQuantity =
+                rangeIndex <= 1 ? 1 : parseInt(quantities[0], 10)
+              currentRangeAttributes.maxQuantity = maxQuantity
+              currentRangeAttributes.minQuantity = minQuantity
+              currentRangeAttributes.range = maxQuantity - minQuantity
+              currentRangeAttributes.index = rangeIndex
+              currentRangeAttributes.price = current.price
+              return true
+            }
+          })
+
+          const currentPrice = onDemandMode
+            ? fixedPriceValue.price
+            : currentRangeAttributes.price
+          const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -148,11 +187,13 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       targetRange,
                       onDemandMode,
                       code,
-                      targetPrice,
-                      currentPrice
+                      currentRangeAttributes
                     }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
+                    priceRange={priceRanges}
+                    currentPrice={currentPriceText}
+                    targetPrice={targetPriceText}
                   />
                 }
                 labelButton={
