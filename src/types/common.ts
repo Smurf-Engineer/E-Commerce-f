@@ -683,6 +683,8 @@ export interface OrderHistory {
   netsuite?: NetsuiteObject
   clientId?: string
   firstName?: string
+  total?: number
+  currency?: Currency
   lastName?: string
   netsuiteAttempts: number
 }

@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'components.OrdersList.title',
     defaultMessage: 'Recent Orders'
   },
+  total: {
+    id: 'components.OrdersList.total',
+    defaultMessage: 'Total'
+  },
   orderNumber: {
     id: 'components.OrdersList.orderNumber',
     defaultMessage: 'Order Number'
