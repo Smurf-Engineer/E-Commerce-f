@@ -24,6 +24,7 @@ import {
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
+import moment from 'moment'
 
 interface Props {
   onlyRead?: boolean
@@ -130,6 +131,11 @@ export class OrderSummary extends React.Component<Props, {}> {
               </DiscountAmout>
             </OrderItem>
           )}
+          {/* shipping */}
+          <OrderItem hide={!shippingTotal}>
+            <FormattedMessage {...messages.shipping} />
+            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+          </OrderItem>
           {/* taxes */}
           <OrderItem hide={!taxFee}>
             <FormattedMessage {...messages.taxes} />
@@ -146,11 +152,6 @@ export class OrderSummary extends React.Component<Props, {}> {
           <OrderItem hide={!taxVat}>
             <FormattedMessage {...messages.taxesVat} />
             <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>
-          </OrderItem>
-          {/* shipping */}
-          <OrderItem hide={!shippingTotal}>
-            <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
           </OrderItem>
         </CalculationsWrapper>
         {amountsDivider && <Divider />}
@@ -191,8 +192,9 @@ export class OrderSummary extends React.Component<Props, {}> {
     } = this.props
 
     try {
+      const timeZone = moment().utcOffset()
       const data = await applyPromoCode({
-        variables: { code }
+        variables: { code, timeZone }
       })
       const {
         data: { couponCode }

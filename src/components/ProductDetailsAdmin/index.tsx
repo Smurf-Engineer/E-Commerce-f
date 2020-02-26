@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import queryString from 'query-string'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import RowField from './RowField'
@@ -40,14 +41,16 @@ import {
   ScreenSubTitle,
   Row,
   DetailsContainer,
-  MainBody
+  MainBody,
+  EditModel,
+  Buttons,
+  ModelSection
 } from './styledComponents'
 interface Data extends QueryProps {
   product: Product
 }
 
 interface Props {
-  match: any
   data: Data
   history: any
   setProductAction: (product: Product) => void
@@ -213,9 +216,11 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <BlueButton onClick={this.handleOnClickEdit} size="large">
                     <FormattedMessage {...messages.editProduct} />
                   </BlueButton>
-                  <Button onClick={this.handlePublishing} size="large">
-                    <FormattedMessage {...messages.openPublishingTool} />
-                  </Button>
+                  {designCenter && (
+                    <Button onClick={this.handlePublishing} size="large">
+                      <FormattedMessage {...messages.openPublishingTool} />
+                    </Button>
+                  )}
                 </div>
               </HeaderRow>
               <FormBody>
@@ -380,26 +385,36 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   productImages.map((picture: ProductImage, index: number) => (
                     <ProductImageBox key={index} {...{ picture }} />
                   ))}
-                <Separator>
-                  <FormattedMessage {...messages.threeDModel} />
-                </Separator>
-                {obj && mtl ? (
-                  <RenderBackground {...{ openedModel }}>
-                    {openedModel ? (
-                      <Render3D
-                        customProduct={false}
-                        designId={0}
-                        isProduct={true}
-                        {...{ product }}
-                      />
+                {designCenter && (
+                  <ModelSection>
+                    <Separator>
+                      <FormattedMessage {...messages.threeDModel} />
+                    </Separator>
+                    <Buttons>
+                      {!openedModel && obj && mtl && (
+                        <Button onClick={this.handleOpenModel} size="large">
+                          <FormattedMessage {...messages.openModel} />
+                        </Button>
+                      )}
+                      <EditModel type="ghost" onClick={this.editModels}>
+                        <FormattedMessage {...messages.editModel} />
+                      </EditModel>
+                    </Buttons>
+                    {obj && mtl ? (
+                      <RenderBackground {...{ openedModel }}>
+                        {openedModel && (
+                          <Render3D
+                            customProduct={false}
+                            designId={0}
+                            isProduct={true}
+                            {...{ product }}
+                          />
+                        )}
+                      </RenderBackground>
                     ) : (
-                      <Button onClick={this.handleOpenModel} size="large">
-                        <FormattedMessage {...messages.openModel} />
-                      </Button>
+                      <FormattedMessage {...messages.modelNotFound} />
                     )}
-                  </RenderBackground>
-                ) : (
-                  <FormattedMessage {...messages.modelNotFound} />
+                  </ModelSection>
                 )}
               </FormBody>
             </DetailsContainer>
@@ -412,8 +427,16 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     const { data, history } = this.props
     const code = get(data, 'product.code', '')
     if (code) {
-      history.push(`/publishing-tool?code=${code}`)
+      history.push(`/admin/publishing-tool?code=${code}`)
     }
+  }
+  editModels = () => {
+    const {
+      history,
+      location: { search }
+    } = this.props
+    const { id } = queryString.parse(search)
+    history.push(`/admin/add-models?id=${id}`)
   }
   handleOpenModel = () => {
     this.setState({ openedModel: true })
@@ -423,28 +446,32 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     history.push('/admin/products')
   }
   handleOnClickEdit = () => {
-    const { history, match } = this.props
-    const productId = get(match, 'params.id', '')
-    history.push(`/admin/products/form/${productId}`)
+    const {
+      history,
+      location: { search }
+    } = this.props
+    const { id } = queryString.parse(search)
+    history.push(`/admin/products/form/${id}`)
   }
 }
 
 interface OwnProps {
-  match?: any
+  location?: any
 }
 
 const mapStateToProps = (state: any) => state.get('productDetailAdmin').toJS()
 
 const ProductDetailsAdminEnhance = compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    { ...ProductDetailsAdminActions }
-  ),
+  connect(mapStateToProps, { ...ProductDetailsAdminActions }),
   graphql(getProductQuery, {
-    options: ({ match }: OwnProps) => ({
-      variables: { id: get(match, 'params.id', '') }
-    })
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        variables: { id: queryParams.id }
+      }
+    }
   })
 )(ProductDetailsAdmin)
 

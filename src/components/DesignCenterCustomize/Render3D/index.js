@@ -27,6 +27,7 @@ import {
   TutorialButton,
   TutorialIcon,
   DragText,
+  ProAssistText,
   ViewControls,
   ViewButton,
   ButtonWrapper,
@@ -41,6 +42,8 @@ import {
   TurnOffHintRow,
   MobileContainer,
   Icon,
+  Variants,
+  VariantButton,
   MobileHintIcon,
   DesignCheckButton
 } from './styledComponents'
@@ -87,7 +90,9 @@ import {
   CM_PER_INCH,
   PROPEL_PALMS,
   GRIP_TAPE,
-  DEFAULT_COLOR
+  DEFAULT_COLOR,
+  AMBIENT_LIGHT_INTENSITY,
+  DIRECTIONAL_LIGHT_INTENSITY
 } from '../../../constants'
 import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
 import {
@@ -111,6 +116,7 @@ import HelpModal from '../../Common/JakrooModal'
 import quickView from '../../../assets/quickview.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
+import JakrooLogo from '../../../assets/Jackroologo.svg'
 import top from '../../../assets/uparrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
@@ -122,7 +128,8 @@ import hintImg from '../../../assets/designCenterhelpHint.jpg'
 import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
 import config from '../../../config'
-import checkBoxIcon from '../../../assets/checkbox.svg'
+import PROAssistButton from '../../../assets/PROAssist-button.svg'
+import { initSlaask, closeSlaask } from '../../../slaask'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const { info } = Modal
@@ -144,9 +151,10 @@ class Render3D extends PureComponent {
     scaleFactorX: 1,
     scaleFactorY: 1,
     isFirstAdd: true,
-    showHelpModal: true
+    showHelpModal: true,
+    openSlaask: true
   }
-
+  canvasApplied = null
   dragComponent = null
   componentWillReceiveProps(nextProps) {
     const {
@@ -155,19 +163,29 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bibColor: oldBibColor
+      bibColor: oldBibColor,
+      selectedVariant: oldSelected
     } = this.props
     const {
       colors: nextColors,
       styleColors,
       colorBlockHovered,
       stitchingColor,
+      selectedVariant,
       bindingColor,
       zipperColor,
       bibColor,
-      loadingModel
+      loadingModel,
+      product: newProduct,
+      proAssistId,
+      userEmail,
+      name,
+      lastName,
+      designId,
+      loggedUserId,
+      userCode
     } = nextProps
-
+    const { openSlaask } = this.state
     if (loadingModel) {
       return
     }
@@ -204,6 +222,22 @@ class Render3D extends PureComponent {
     const colorBlockHasChange = oldColorBlockHovered !== colorBlockHovered
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
+    }
+    if (selectedVariant !== oldSelected) {
+      this.clearScene()
+      this.render3DModel(newProduct)
+    }
+    if (openSlaask && proAssistId) {
+      initSlaask({
+        id: proAssistId,
+        userId: loggedUserId,
+        email: userEmail,
+        userCode,
+        designId,
+        lastName,
+        name
+      })
+      this.setState({ openSlaask: false })
     }
   }
 
@@ -245,8 +279,8 @@ class Render3D extends PureComponent {
 
     /* Scene and light */
     const scene = new THREE.Scene()
-    const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
+    const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, DIRECTIONAL_LIGHT_INTENSITY)
     directionalLight.position.copy(camera.position)
 
     scene.add(camera)
@@ -318,6 +352,7 @@ class Render3D extends PureComponent {
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
     }
+    closeSlaask()
   }
 
   configureEventListeners = () => {
@@ -348,6 +383,11 @@ class Render3D extends PureComponent {
     this.mouse.set(point.x * 2 - 1, -(point.y * 2) + 1)
     this.raycaster.setFromCamera(this.mouse, this.camera)
     return this.raycaster.intersectObjects(objects, true)
+  }
+
+  handleSelectVariant = value => () => {
+    const { selectVariantAction } = this.props
+    selectVariantAction(value)
   }
 
   convertToFabricObjects = elements =>
@@ -567,13 +607,13 @@ class Render3D extends PureComponent {
     }
   }
 
-  render3DModel = async () => {
+  render3DModel = async newProduct => {
     /* Object and MTL load */
     const {
       onLoadModel,
       currentStyle,
       design,
-      product,
+      product: oldProduct,
       isEditing,
       onSetEditConfig,
       stitchingColor,
@@ -584,6 +624,7 @@ class Render3D extends PureComponent {
       designHasChanges,
       isMobile
     } = this.props
+    const product = newProduct || oldProduct
     const loadedTextures = await this.loadTextures(
       currentStyle,
       product,
@@ -720,23 +761,31 @@ class Render3D extends PureComponent {
           )
 
           /* Canvas */
-          const canvas = document.createElement('canvas')
-          canvas.width = CANVAS_SIZE
-          canvas.height = CANVAS_SIZE
-          const canvasConfig = {
-            width: CANVAS_SIZE,
-            height: CANVAS_SIZE,
-            crossOrigin: 'Anonymous',
-            selection: false,
-            skipTargetFind: true
-          }
-          if (isMobile) {
-            this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)
-          } else {
-            this.canvasTexture = new fabric.Canvas(canvas, canvasConfig)
+          if (!newProduct) {
+            this.canvasApplied = document.createElement('canvas')
+            this.canvasApplied.width = CANVAS_SIZE
+            this.canvasApplied.height = CANVAS_SIZE
+            const canvasConfig = {
+              width: CANVAS_SIZE,
+              height: CANVAS_SIZE,
+              crossOrigin: 'Anonymous',
+              selection: false,
+              skipTargetFind: true
+            }
+            if (isMobile) {
+              this.canvasTexture = new fabric.StaticCanvas(
+                this.canvasApplied,
+                canvasConfig
+              )
+            } else {
+              this.canvasTexture = new fabric.Canvas(
+                this.canvasApplied,
+                canvasConfig
+              )
+            }
           }
 
-          const canvasTexture = new THREE.CanvasTexture(canvas)
+          const canvasTexture = new THREE.CanvasTexture(this.canvasApplied)
           canvasTexture.minFilter = THREE.LinearFilter
           this.canvasTexture.on(
             'after:render',
@@ -904,10 +953,12 @@ class Render3D extends PureComponent {
       this.setupColors(colors)
     }
   }
+
   handleGoToTutorials = () => {
     const { onTabClick } = this.props
     onTabClick(CustomizeTabs.TutorialsTab)
   }
+
   handleOnPressLeft = () => {
     const { currentView } = this.state
     const nextView =
@@ -1193,8 +1244,13 @@ class Render3D extends PureComponent {
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
-    const { isUserAuthenticated, openLoginAction } = this.props
-
+    const {
+      isUserAuthenticated,
+      openLoginAction,
+      selectedVariant,
+      selectVariantAction
+    } = this.props
+    selectVariantAction(-1)
     if (!isUserAuthenticated) {
       openLoginAction(true)
       return
@@ -1212,29 +1268,27 @@ class Render3D extends PureComponent {
         this.canvasTexture.renderAll()
       }
       const highResolution = (isEditing && design.highResolution) || !isEditing
-
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
-        setTimeout(() => {
-          const designBase64 = this.renderer.domElement.toDataURL('image/png')
-          const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
-          const canvasJson = JSON.stringify(designCanvas)
-          const saveDesign = {
-            canvasJson,
-            designBase64,
-            styleId: currentStyle.id,
-            highResolution
-          }
-          onOpenSaveDesign(true, saveDesign, automaticSave)
-        }, 200)
+        setTimeout(
+          () => {
+            const designBase64 = this.renderer.domElement.toDataURL('image/png')
+            const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+            const canvasJson = JSON.stringify(designCanvas)
+            const saveDesign = {
+              canvasJson,
+              designBase64,
+              styleId: currentStyle.id,
+              highResolution
+            }
+            onOpenSaveDesign(true, saveDesign, automaticSave)
+          },
+          selectedVariant === -1 ? 200 : 800
+        )
       )
     }
-  }
-  handleOnDesignCheck = () => {
-    const { openDesignCheckModal } = this.props
-    openDesignCheckModal()
   }
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
@@ -1245,15 +1299,18 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
+      selectedVariant,
+      variants,
       openResetDesignModal,
       designHasChanges,
       canvas,
       selectedElement,
       isMobile,
       openResetPlaceholderModal,
-      currentStyle
+      currentStyle,
+      openDesignCheckModal,
+      proAssistId
     } = this.props
-
     if (isMobile) {
       return (
         <MobileContainer>
@@ -1283,6 +1340,18 @@ class Render3D extends PureComponent {
             )}
           </HelpModal>
           <MobileHintIcon src={helpTooltip} onClick={this.handleHelpModal} />
+          {variants.length > 1 && (
+            <Variants {...{ isMobile }}>
+              {variants.map(({ icon }, index) => (
+                <VariantButton
+                  key={index}
+                  onClick={this.handleSelectVariant(index)}
+                  selected={selectedVariant === index}
+                  src={icon || JakrooLogo}
+                />
+              ))}
+            </Variants>
+          )}
         </MobileContainer>
       )
     }
@@ -1344,12 +1413,33 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
+          {variants.length > 1 && (
+            <Variants>
+              {variants.map(({ icon }, index) => (
+                <VariantButton
+                  key={index}
+                  onClick={this.handleSelectVariant(index)}
+                  selected={selectedVariant === index}
+                  src={icon || JakrooLogo}
+                />
+              ))}
+            </Variants>
+          )}
         </Row>
         <ButtonWrapper>
-          <DesignCheckButton onClick={this.handleOnDesignCheck}>
-            {formatMessage(messages.designCheck)}
-            <Icon src={checkBoxIcon} />
-          </DesignCheckButton>
+          {!proAssistId && (
+            <DesignCheckButton onClick={openDesignCheckModal}>
+              <Icon src={PROAssistButton} />
+              <ProAssistText>
+                <FormattedMessage
+                  {...messages.proAssist}
+                  values={{
+                    proLabel: <b>{formatMessage(messages.proLabel)}</b>
+                  }}
+                />
+              </ProAssistText>
+            </DesignCheckButton>
+          )}
           <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>

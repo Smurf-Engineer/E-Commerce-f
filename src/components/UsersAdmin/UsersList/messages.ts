@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.UsersList.title',
-    defaultMessage: 'Recent Orders'
+    defaultMessage: 'Users List'
   },
   clientID: {
     id: 'components.UsersList.clientID',
@@ -36,5 +36,21 @@ export default defineMessages({
   netsuiteId: {
     id: 'components.UsersList.netsuiteId',
     defaultMessage: 'Netsuite ID'
+  },
+  addUser: {
+    id: 'components.UsersList.addUser',
+    defaultMessage: '+ ADD NEW USER'
+  },
+  billing: {
+    id: 'components.UsersList.billing',
+    defaultMessage: 'Billing Country'
+  },
+  signUpDate: {
+    id: 'components.UsersList.signUpDate',
+    defaultMessage: 'Sign-Up Date'
+  },
+  search: {
+    id: 'components.UsersList.search',
+    defaultMessage: 'Search for a user'
   }
 })

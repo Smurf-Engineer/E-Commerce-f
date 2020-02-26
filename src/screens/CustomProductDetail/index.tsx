@@ -48,7 +48,8 @@ import {
   PrivateSubtitle,
   ProApproved,
   ProApprovedLabel,
-  layoutStyle
+  layoutStyle,
+  LoadingContainer
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -59,7 +60,8 @@ import {
   CartItemDetail,
   ProductFile,
   PriceRange,
-  UserType
+  UserType,
+  BreadRoute
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -69,11 +71,14 @@ import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
 import ProductInfo from '../../components/ProductInfo'
-import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
 import { ProductGenders } from '../ProductDetail/constants'
 import YotpoSection from '../../components/YotpoSection'
 import { BLUE, GRAY_DARK } from '../../theme/colors'
+import BreadCrumbs from '../../components/BreadCrumbs'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
+import Spin from 'antd/lib/spin'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
@@ -95,6 +100,8 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   showFitsModal: boolean
   phone: boolean
+  loading: boolean
+  setLoadingAction: (loading: boolean) => void
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
@@ -108,6 +115,11 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class CustomProductDetail extends React.Component<Props, {}> {
+  async componentDidMount() {
+    await LoadScripts(threeDScripts)
+    this.handleSetLoading(false)
+  }
+
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -118,7 +130,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       intl,
       history,
       location: { search },
-      data: { design, error },
+      data: { design, error, loading: dataLoading },
       selectedGender,
       selectedSize,
       selectedFit,
@@ -127,6 +139,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       showDetails,
       currentCurrency,
       showFitsModal,
+      loading,
       phone
     } = this.props
     const { formatMessage } = intl
@@ -138,6 +151,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const productPriceRange = get(product, 'priceRange', null)
     const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
     const teamStoreItem = queryParams.item
+
+    if (loading || dataLoading) {
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
+    }
+
     if (!product || error) {
       return (
         <Layout {...{ history, intl }}>
@@ -160,10 +182,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designCode = get(design, 'code', '')
     const teamPrice = get(design, 'teamPrice', '')
     const teamEnable = get(design, 'teamEnable', '')
+    const teamName = get(design, 'teamName', '')
     const proDesign = get(design, 'proDesign', false)
     const {
       images: imagesArray,
       genders,
+      name,
       type,
       yotpoAverageScore,
       description,
@@ -397,11 +421,32 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         </ProductInfo>
       </div>
     )
-
+    const routes: BreadRoute[] = [
+      {
+        url: '/',
+        label: 'Home'
+      }
+    ]
+    if (teamStoreShortId) {
+      routes.push({
+        url: `/store-front?storeId=${teamStoreShortId}`,
+        label: teamName
+      })
+    } else if (ownedDesign) {
+      routes.push({
+        url: '/account?option=myLocker',
+        label: 'My Locker'
+      })
+    }
+    routes.push({
+      selected: true,
+      label: designName
+    })
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Container>
-          {design && (
+          <BreadCrumbs {...{ history, formatMessage, routes }} />
+          {design && !loading && (
             <Content>
               <ImagePreview>
                 <RenderContainer>
@@ -525,6 +570,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     setSelectedGenderAction(gender)
   }
 
+  handleSetLoading = (loading: boolean) => {
+    const { setLoadingAction } = this.props
+    setLoadingAction(loading)
+  }
+
   gotToEditDesign = (designId: string) => () => {
     const { history } = this.props
     history.push(`/design-center?designId=${designId}`)
@@ -588,10 +638,7 @@ type OwnProps = {
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
-  connect(
-    mapStateToProps,
-    { ...customProductDetailActions }
-  ),
+  connect(mapStateToProps, { ...customProductDetailActions }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {
@@ -606,8 +653,7 @@ const CustomProductDetailEnhance = compose(
         fetchPolicy: 'network-only'
       }
     }
-  }),
-  withLoading
+  })
 )(CustomProductDetail)
 
 export default CustomProductDetailEnhance

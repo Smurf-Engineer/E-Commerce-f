@@ -12,8 +12,9 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import { getFonts } from './data'
 import ThreeD from '../../components/Render3D'
+import { restoreUserSession } from '../../components/MainLayout/api'
 import * as designsActions from './actions'
-import { QueryProps, DesignSaved, Font } from '../../types/common'
+import { QueryProps, DesignSaved, Font, UserType } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
 import {
@@ -22,6 +23,8 @@ import {
   // Model,
   // QuickView
 } from './styledComponents'
+import { LoadScripts } from '../../utils/scriptLoader'
+import { threeDScripts } from '../../utils/scripts'
 
 interface Data extends QueryProps {
   design: DesignSaved
@@ -30,15 +33,31 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
+  user: UserType
   // openQuickViewAction: (index: number) => void
   loadingModel: boolean
   fontsData: any
   phone: boolean
   // Redux actions
+  restoreUserSessionAction: () => void
   setLoadingAction: (loading: boolean) => void
 }
 
 export class Designs extends React.Component<Props, {}> {
+  componentWillMount() {
+    const { user } = this.props
+    if (typeof window !== 'undefined' && !user) {
+      const { restoreUserSessionAction } = this.props
+      restoreUserSessionAction()
+    }
+  }
+  async componentDidMount() {
+    await LoadScripts(threeDScripts, this.handleModelLoaded)
+  }
+  handleModelLoaded = () => {
+    const { setLoadingAction } = this.props
+    setLoadingAction(false)
+  }
   handleOnPressBack = () => {
     window.location.replace('/')
   }
@@ -54,8 +73,7 @@ export class Designs extends React.Component<Props, {}> {
   // }
 
   render() {
-    const { location, fontsData, phone } = this.props
-
+    const { location, fontsData, phone, loadingModel, user } = this.props
     const { search } = location
     const queryParams = queryString.parse(search)
     const designId = queryParams.id || ''
@@ -78,7 +96,13 @@ export class Designs extends React.Component<Props, {}> {
         {installedFonts.length ? (
           <GoogleFontLoader fonts={installedFonts} />
         ) : null}
-        <ThreeD {...{ designId }} isPhone={phone} />
+        {!loadingModel && (
+          <ThreeD
+            {...{ designId }}
+            detailed={user && user.administrator}
+            isPhone={phone}
+          />
+        )}
       </Container>
     )
   }
@@ -87,7 +111,9 @@ export class Designs extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const designs = state.get('designs').toJS()
   const responsive = state.get('responsive').toJS()
+  const app = state.get('app').toJS()
   return {
+    ...app,
     ...designs,
     ...responsive
   }
@@ -95,10 +121,11 @@ const mapStateToProps = (state: any) => {
 const DesignsEnhance = compose(
   injectIntl,
   getFonts,
-  connect(
-    mapStateToProps,
-    { ...designsActions, openQuickViewAction }
-  )
+  connect(mapStateToProps, {
+    ...designsActions,
+    openQuickViewAction,
+    restoreUserSessionAction: restoreUserSession
+  })
 )(Designs)
 
 export default DesignsEnhance

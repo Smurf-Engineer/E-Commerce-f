@@ -4,12 +4,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div``
-export const Content = styled.div`
-  overflow: scroll;
-  @media (min-width: 320px) and (max-width: 767px) {
-    overflow: hidden;
-  }
-`
+export const Content = styled.div``
 
 export const Text = styled.div`
   color: #5f6062;
@@ -85,7 +80,7 @@ export const ThumbnailListItem = styled.li`
     width: 50%;
   }
 
-  @media (min-width: 755px) {
+  @media (min-width: 698px) {
     width: calc(100% / 3);
   }
 

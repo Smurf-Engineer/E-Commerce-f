@@ -42,6 +42,9 @@ export const OPEN_CURRENCY_WARNING = `${namespace}/OPEN_CURRENCY_WARNING`
 export const SET_PAYMENT_ID = `${namespace}/SET_PAYMENT_ID`
 export const REMOVE_CLIENT_SECRET = `${namespace}/REMOVE_CLIENT_SECRET`
 
+// DISCOUNT TYPES
+export const PRODUCT = 'product'
+
 export enum CheckoutTabs {
   ShippingTab = 0,
   PaymentTab = 1,
@@ -75,4 +78,13 @@ export const EU_SUBSIDIARY_COUNTRIES = [
   COUNTRY_CODE_ES,
   COUNTRY_CODE_IT,
   COUNTRY_CODE_FR
+]
+
+export const quantities = [
+  'Personal',
+  '2-5',
+  '6-24',
+  '25-49',
+  '50-99',
+  '100-249'
 ]

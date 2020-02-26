@@ -32,6 +32,29 @@ export const getProductQuery = gql`
   }
 `
 
+export const getVariantsFromProduct = gql`
+  query getVariants($id: Int!) {
+    getVariants(id: $id) {
+      id: short_id
+      name
+      icon
+      default: is_default
+      bumpMap: bumpmap
+      obj
+      label
+      mtl
+      branding
+      flatlock
+      bibraceWhite: bibrace_white
+      bibraceBlack: bibrace_black
+      zipperWhite: zipper_white
+      zipperBlack: zipper_black
+      bindingWhite: binding_white
+      bindingBlack: binding_black
+    }
+  }
+`
+
 export const addTeamStoreItemMutation = graphql(
   gql`
     mutation AddTeamStoreItem(
@@ -151,6 +174,36 @@ export const getDesignLabInfo = gql`
     designInfo: getDesignLabInfo(onlyData: false) {
       deliveryDays: delivery_days
       tutorialPlaylist: tutorial_playlist
+      workingHours {
+        start
+        end
+        timezone
+      }
     }
   }
 `
+
+export const getProAssist = gql`
+  query proAssistData {
+    proAssistData: getProAssist {
+      proAssistId: short_id
+      user {
+        id
+      }
+    }
+  }
+`
+
+export const getProTicket = graphql(
+  gql`
+    mutation newProAssist {
+      newProAssist {
+        ticket: short_id
+        user {
+          id
+        }
+      }
+    }
+  `,
+  { name: 'getProTicketAction' }
+)

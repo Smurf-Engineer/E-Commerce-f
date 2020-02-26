@@ -13,6 +13,9 @@ export const getFileExtension = (fileName: string) => {
 export const getFileName = (url: string) => {
   return url.substring(url.lastIndexOf('/') + 1).split('.')[0]
 }
+export const getFileWithExtension = (url: string) => {
+  return `...${url.substring(url.length - 15)}`
+}
 export const isNumber = (fileName: string) => {
   const numbersRegex = /^\d+$/
   return numbersRegex.test(fileName)
@@ -71,4 +74,15 @@ export default async function getCroppedImg(imageSrc: any, pixelCrop: Area) {
       // tslint:disable-next-line: align
     }, 'image/jpeg')
   })
+}
+
+export const getFileNameFromUrl = (url: string): string => {
+  const completeName = url.split('/').pop() || ''
+  const fileName = completeName.split('-').pop() || ''
+  const name = fileName
+    .split('.')
+    .slice(0, -1)
+    .join('.')
+
+  return name || ''
 }

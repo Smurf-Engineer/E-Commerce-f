@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.designCenterCustomize.Tab.upload',
     defaultMessage: 'Upload'
   },
+  fonts: {
+    id: 'components.designCenterCustomize.Tab.fonts',
+    defaultMessage: 'Fonts'
+  },
   tutorials: {
     id: 'components.designCenterCustomize.Tab.tutorials',
     defaultMessage: 'Tutorials'

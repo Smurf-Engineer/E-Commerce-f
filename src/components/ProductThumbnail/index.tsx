@@ -53,6 +53,7 @@ interface Props {
   yotpoId: string
   client: any
   designId?: string
+  match: any
   history: any
   isStoreThumbnail?: boolean
   teamStoreShortId?: string
@@ -141,7 +142,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     }
     return `/product?id=${id}&modelId=${yotpoId}${
       gender ? `&gender=${gender}` : ''
-    }`
+    }&ps=${location.pathname.replace('/', '')}`
   }
 
   handlePressThumbnail = () => {

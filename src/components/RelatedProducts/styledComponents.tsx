@@ -46,9 +46,5 @@ export const ProductsContainer = styled.div`
     section {
       width: 220px;
     }
-
-    section div:last-child {
-      width: 150px;
-    }
   }
 `

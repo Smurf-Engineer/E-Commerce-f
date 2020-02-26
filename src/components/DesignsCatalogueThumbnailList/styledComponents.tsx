@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div``
-export const Content = styled.div`
-  overflow: scroll;
-`
+export const Content = styled.div``
 
 export const Text = styled.div`
   color: #5f6062;
@@ -59,13 +57,8 @@ export const ThumbnailsList = styled.ul`
   align-items: center;
   justify-content: center;
 
-  @media (min-width: 768px) and (max-width: 1024px) {
+  @media (min-width: 320px) and (max-width: 1024px) {
     padding: 0;
-  }
-
-  @media (min-width: 320px) and (max-width: 767px) {
-    padding: 0;
-    justify-content: space-between;
   }
 
   margin-left: ${({ withoutPadding }: HeadRowProps) =>
@@ -80,12 +73,11 @@ export const ThumbnailListItem = styled.li`
   padding-bottom: 20px;
   align-items: center;
   justify-content: center;
-
   @media (min-width: 481px) and (max-width: 1024px) {
     width: calc(100% / 3);
   }
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 714px) {
     width: calc(95% / 2);
   }
 `

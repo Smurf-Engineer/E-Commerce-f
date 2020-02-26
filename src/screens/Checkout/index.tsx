@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import sumBy from 'lodash/sumBy'
+import find from 'lodash/find'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import Steps from 'antd/lib/steps'
@@ -24,7 +25,7 @@ import {
   CurrencyQuery,
   CreatePaymentIntentMutation
 } from './data'
-import { CheckoutTabs, PaymentOptions } from './constants'
+import { CheckoutTabs, PaymentOptions, quantities } from './constants'
 
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
@@ -141,6 +142,8 @@ interface Props extends RouteComponentProps<any> {
   limit: number
   currentPage: number
   skip: number
+  shippingSave: boolean
+  billingSave: boolean
   showCardForm: boolean
   selectedCard: CreditCardData
   currentCurrency: string
@@ -369,6 +372,7 @@ class Checkout extends React.Component<Props, {}> {
     const showOrderButton = currentStep === ReviewTab
 
     const simpleCart = this.getSimpleCart()
+    const productsPrices = this.getProductsPrice()
 
     return (
       <Layout {...{ history, intl }}>
@@ -488,7 +492,8 @@ class Checkout extends React.Component<Props, {}> {
                   proDesignReview,
                   paymentMethod,
                   currentCurrency,
-                  simpleCart
+                  simpleCart,
+                  productsPrices
                 }}
               />
             </SummaryContainer>
@@ -561,7 +566,41 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   verifyStepTwo = () => {
-    const { currentStep, stepAdvanceAction } = this.props
+    const {
+      currentStep,
+      stepAdvanceAction,
+      billingSave,
+      paymentMethod,
+      sameBillingAndShipping,
+      billingFirstName,
+      billingLastName,
+      billingStreet,
+      billingApartment,
+      billingCountry,
+      billingStateProvince,
+      billingCity,
+      billingZipCode,
+      billingPhone
+    } = this.props
+    if (
+      paymentMethod === PaymentOptions.CREDITCARD &&
+      !sameBillingAndShipping &&
+      billingSave
+    ) {
+      const billingAddress: AddressType = {
+        firstName: billingFirstName,
+        lastName: billingLastName,
+        street: billingStreet,
+        apartment: billingApartment,
+        country: billingCountry,
+        stateProvince: billingStateProvince,
+        stateProvinceCode: billingStateProvince,
+        city: billingCity,
+        zipCode: billingZipCode,
+        phone: billingPhone
+      }
+      this.saveAddress(billingAddress)
+    }
     stepAdvanceAction(currentStep + 1)
   }
 
@@ -576,7 +615,10 @@ class Checkout extends React.Component<Props, {}> {
       stateProvince,
       city,
       zipCode,
+      apartment,
+      stateProvinceCode,
       phone,
+      shippingSave,
       validFormAction
     } = this.props
 
@@ -595,6 +637,21 @@ class Checkout extends React.Component<Props, {}> {
     if (error) {
       validFormAction(error)
       return
+    }
+    if (shippingSave) {
+      const shippingAddress: AddressType = {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        stateProvinceCode,
+        city,
+        zipCode,
+        phone
+      }
+      this.saveAddress(shippingAddress)
     }
     stepAdvanceAction(currentStep + 1)
   }
@@ -709,6 +766,31 @@ class Checkout extends React.Component<Props, {}> {
       setStripeCardDataAction(card, stripeToken)
     }
   }
+  getProductsPrice = () => {
+    const {
+      location: {
+        state: { cart }
+      },
+      currentCurrency
+    } = this.props
+    const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
+    const quantity = quantities[priceRangeToApply]
+    return cart.map(({ product, itemDetails }: CartItems) => {
+      // Check for fixed prices
+      const productPriceRanges = get(product, 'priceRange', [])
+      // get prices from currency
+      const currencyPrice = find(productPriceRanges, {
+        abbreviation: currentCurrency,
+        quantity
+      })
+      const designsPrice = {
+        yotpoId: product.yotpoId,
+        price: currencyPrice.price,
+        quantity: sumBy(itemDetails, 'quantity')
+      }
+      return designsPrice
+    })
+  }
   placeOrder = async (event: any, paypalObj?: object) => {
     const {
       placeOrder,
@@ -779,8 +861,6 @@ class Checkout extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       billingPhone,
-      indexAddressSelected,
-      sameBillingAndShipping,
       paymentMethod,
       stripeToken,
       selectedCard,
@@ -816,17 +896,6 @@ class Checkout extends React.Component<Props, {}> {
       zipCode: billingZipCode,
       phone: billingPhone
     }
-
-    if (indexAddressSelected === -1) {
-      this.saveAddress(shippingAddress)
-    }
-    if (
-      paymentMethod === PaymentOptions.CREDITCARD &&
-      !sameBillingAndShipping
-    ) {
-      this.saveAddress(billingAddress)
-    }
-
     const {
       state: { cart, proDesign }
     } = location
@@ -954,14 +1023,11 @@ const CheckoutEnhance = compose(
   PlaceOrderMutation,
   CreatePaymentIntentMutation,
   withApollo,
-  connect(
-    mapStateToProps,
-    {
-      ...checkoutActions,
-      ...thunkActions,
-      getTotalItemsIncart
-    }
-  )
+  connect(mapStateToProps, {
+    ...checkoutActions,
+    ...thunkActions,
+    getTotalItemsIncart
+  })
 )(Checkout)
 
 export default CheckoutEnhance

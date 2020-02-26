@@ -5,23 +5,24 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import queryString from 'query-string'
 import * as OrderHistoryAdminActions from './actions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
-import { sorts } from '../../types/common'
+import { sorts, Message } from '../../types/common'
 import OrderDetailsAdmin from '../OrderDetailsAdmin'
 import SwipeableViews from 'react-swipeable-views'
 import { ORDER_STATUS } from '../../screens/Admin/constants'
 
 interface Props {
-  history: any
+  history: History
   currentPage: number
   orderBy: string
   sort: sorts
   orderId: string
   searchText: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
@@ -34,12 +35,23 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
     const { resetDataAction } = this.props
     resetDataAction()
   }
+  componentDidMount() {
+    const {
+      setOrderIdAction,
+      history: { location }
+    } = this.props
+    const { order } = queryString.parse(location.search)
+    if (order) {
+      setOrderIdAction(order)
+    }
+  }
 
   render() {
     const {
       currentPage,
       orderBy,
       sort,
+      history,
       formatMessage,
       orderId,
       searchText
@@ -70,7 +82,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
         <OrderDetailsAdmin
           onReturn={this.handleOnOrderClick}
           from={ORDER_STATUS}
-          {...{ orderId, formatMessage }}
+          {...{ orderId, formatMessage, history }}
         />
       </SwipeableViews>
     )
@@ -109,10 +121,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('orderHistoryAdmin').toJS()
 
 const OrderHistoryAdminEnhance = compose(
-  connect(
-    mapStateToProps,
-    { ...OrderHistoryAdminActions }
-  )
+  connect(mapStateToProps, { ...OrderHistoryAdminActions })
 )(OrderHistoryAdmin)
 
 export default OrderHistoryAdminEnhance

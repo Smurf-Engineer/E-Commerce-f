@@ -7,53 +7,94 @@ import {
   Container,
   Paragraph,
   ProReviewTitle,
-  OptionalLabel,
   ProDesignReviewContent,
   ModalButtonsWrapper,
   ContinueButton,
-  Icon
+  Icon,
+  StatusLabel,
+  RightTitle,
+  Content,
+  DesignImage,
+  HoursLabel
 } from './styledComponents'
 import CustomModal from '../Common/JakrooModal'
-import checkBoxIcon from '../../assets/checkbox.svg'
+import ProAssistLogo from '../../assets/ProAssist-logo.svg'
+import ProAssistChat from '../../assets/PROAssist-2.svg'
+import designerImage from '../../assets/designer-guy.jpg'
+import Spin from 'antd/lib/spin'
+import { isWorkingHour } from '../../utils/utilsFunctions'
+import { WorkHours } from '../../types/common'
+import moment from 'moment'
 
 interface Props {
   visible: boolean
+  loadingPro: boolean
+  workingHours: WorkHours
   formatMessage: (messageDescriptor: any, values?: {}) => string
   requestClose: () => void
+  handleGetPro: () => void
 }
 
 export class DesignCheckModal extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, visible, requestClose } = this.props
-
+    const {
+      formatMessage,
+      visible,
+      requestClose,
+      loadingPro,
+      workingHours,
+      handleGetPro
+    } = this.props
+    const online = isWorkingHour(workingHours)
+    const startHour = moment(workingHours.start, 'HH:mm:ss').format('LT')
+    const endHour = moment(workingHours.end, 'HH:mm:ss').format('LT')
+    const hours = `MON-FRI ${startHour} - ${endHour} (PST)`
     return (
       <Container>
         <CustomModal
           open={visible}
           withLogo={false}
-          width={'684px'}
+          width={'828px'}
           requestClose={requestClose}
         >
           <ProReviewTitle>
-            {formatMessage(messages.proDesignerReviewLabel)}
-            <Icon src={checkBoxIcon} />
+            <Icon src={ProAssistLogo} />
+            <RightTitle>
+              <Icon src={ProAssistChat} />
+              {formatMessage(messages.proDesignerReviewLabel)}
+            </RightTitle>
           </ProReviewTitle>
-          <OptionalLabel>{formatMessage(messages.optionalLabel)}</OptionalLabel>
           <Paragraph
             dangerouslySetInnerHTML={{
               __html: formatMessage(messages.helpLabel)
             }}
           />
-          <ProDesignReviewContent
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.reviewDesignModalText)
-            }}
-          />
+          <Content>
+            <DesignImage src={designerImage} />
+            <ProDesignReviewContent
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.reviewDesignModalText)
+              }}
+            />
+          </Content>
+
           <ModalButtonsWrapper>
-            <ContinueButton key="review" onClick={requestClose}>
-              {formatMessage(messages.dontReview)}
-            </ContinueButton>
+            {loadingPro ? (
+              <Spin size="large" />
+            ) : (
+              <ContinueButton
+                key="review"
+                disabled={!online}
+                onClick={handleGetPro}
+              >
+                {formatMessage(messages.talkWithDesigner)}
+              </ContinueButton>
+            )}
           </ModalButtonsWrapper>
+          <HoursLabel>{hours}</HoursLabel>
+          <StatusLabel {...{ online }}>
+            {formatMessage(online ? messages.online : messages.offline)}
+          </StatusLabel>
         </CustomModal>
       </Container>
     )

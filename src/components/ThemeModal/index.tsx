@@ -6,25 +6,36 @@ import Modal from 'antd/lib/modal'
 import Input from 'antd/lib/input'
 import Icon from 'antd/lib/icon'
 import message from 'antd/lib/message'
+import messages from './messages'
 import findIndex from 'lodash/findIndex'
 import get from 'lodash/get'
 import set from 'lodash/set'
-import { Theme } from '../../types/common'
+import { Theme, Message } from '../../types/common'
 import Upload from 'antd/lib/upload'
 import { compose, graphql } from 'react-apollo'
-import { Container, Image, Info, DraggerContainer } from './styledComponents'
+import {
+  Container,
+  Image,
+  Info,
+  DraggerContainer,
+  SaveButtonStyle,
+  DisableSaveStyle
+} from './styledComponents'
 import { uploadThemeImage } from '../../screens/DesignerTool/api'
-import { updateThemeMutation } from './data'
-import { getProductFromCode } from '../../screens/DesignerTool/DesignCenterCustomize/data'
+import { upsertThemeMutation } from './data'
+import { getProductFromCode } from '../../screens/PublishingTool/Themes/data'
 
 const { Dragger } = Upload
+
+const NEW_THEME = -1
 
 interface Props {
   theme: Theme | null
   productCode: number
   onCancel: () => void
   onUpdateName: (name: string) => void
-  updateTheme: (variables: {}) => Promise<Theme>
+  upsertTheme: (variables: {}) => Promise<Theme>
+  formatMessage: (messageDescriptor: Message, params?: any) => string
 }
 
 interface State {
@@ -42,14 +53,13 @@ class ThemeModal extends React.PureComponent<Props, State> {
     imagePreview: ''
   }
   render() {
-    const { theme } = this.props
+    const { theme, formatMessage } = this.props
     const { imagePreview, loading } = this.state
     const open = !!theme
     let content = null
     if (open) {
       content = (
         <Container>
-          <Image src={imagePreview || theme!.image} />
           <Info>
             <Input value={theme!.name} onChange={this.handleOnUpdateName} />
             <DraggerContainer>
@@ -62,23 +72,36 @@ class ThemeModal extends React.PureComponent<Props, State> {
                   <Icon style={{ fontSize: 24 }} type="upload" />
                 </p>
                 <p className="ant-upload-text">
-                  Click or drag file to this area to upload
+                  {formatMessage(messages.clickOrDrag)}
                 </p>
                 <p className="ant-upload-hint">
-                  302 x 302 px. Files jpg, jpeg, png.
+                  {formatMessage(messages.imageInstruction)}
                 </p>
               </Dragger>
             </DraggerContainer>
           </Info>
+          {(imagePreview || theme!.image) && (
+            <Image src={imagePreview || theme!.image} />
+          )}
         </Container>
       )
     }
+    const disabledSave =
+      !theme || (!theme.name && (!imagePreview || !theme!.image))
     return (
       <Modal
-        okText="Save"
+        okText={formatMessage(messages.save)}
+        okButtonProps={{
+          style: disabledSave ? DisableSaveStyle : SaveButtonStyle,
+          disabled: disabledSave
+        }}
         width={'50%'}
         visible={open}
-        title="Edit theme"
+        title={
+          theme && theme.id > 0
+            ? formatMessage(messages.editTheme)
+            : formatMessage(messages.newTheme)
+        }
         destroyOnClose={true}
         onOk={this.handleOnSave}
         confirmLoading={loading}
@@ -98,7 +121,7 @@ class ThemeModal extends React.PureComponent<Props, State> {
   handleOnSave = async () => {
     try {
       const { file } = this.state
-      const { theme, updateTheme, productCode } = this.props
+      const { theme, upsertTheme, productCode, formatMessage } = this.props
       const { id, name } = theme!
       this.setState({ loading: true })
       let image = theme!.image
@@ -111,26 +134,37 @@ class ThemeModal extends React.PureComponent<Props, State> {
         image,
         name
       }
-      await updateTheme({
+      await upsertTheme({
         variables: { theme: updatedTheme },
-        update: (store: any) => {
+        update: (store: any, insertedThemeData: Theme) => {
           const data = store.readQuery({
             query: getProductFromCode,
             variables: { code: productCode }
           })
           const themes = get(data, 'product.themes', [])
-          const themeIndex = findIndex(
-            themes,
-            ({ id: themeId }) => id === themeId
-          )
-          set(data, `product.themes[${themeIndex}].name`, name)
-          set(data, `product.themes[${themeIndex}].image`, image)
+          if (updatedTheme.id !== NEW_THEME) {
+            const themeIndex = findIndex(
+              themes,
+              ({ id: themeId }) => id === themeId
+            )
+            set(data, `product.themes[${themeIndex}].name`, name)
+            set(data, `product.themes[${themeIndex}].image`, image)
+          } else {
+            const insertedTheme = get(insertedThemeData, 'data.theme', {})
+            if (insertedTheme) {
+              themes.push({
+                ...insertedTheme,
+                styles: [],
+                itemOrder: null
+              })
+            }
+          }
           store.writeQuery({
             data,
             query: getProductFromCode,
             variables: { code: productCode }
           })
-          message.success('Your theme was updated')
+          message.success(formatMessage(messages.themeUpdated))
           this.handleOnCancel()
         }
       })
@@ -165,7 +199,7 @@ class ThemeModal extends React.PureComponent<Props, State> {
 }
 
 const ThemeModalEnhance = compose(
-  graphql(updateThemeMutation, { name: 'updateTheme' })
+  graphql(upsertThemeMutation, { name: 'upsertTheme' })
 )(ThemeModal)
 
 export default ThemeModalEnhance

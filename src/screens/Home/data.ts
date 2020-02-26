@@ -63,6 +63,7 @@ export const getHomepageInfo = gql`
           left: left_image
           right: right_image
           genderId: gender_id
+          thumbnail
         }
         sizeRange: size_range {
           id

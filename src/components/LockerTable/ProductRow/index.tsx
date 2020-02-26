@@ -4,7 +4,6 @@
 import * as React from 'react'
 import { findDOMNode } from 'react-dom'
 import { compose } from 'react-apollo'
-import MediaQuery from 'react-responsive'
 import { DragSource, DropTarget } from 'react-dnd'
 import screenMessage from 'antd/lib/message'
 import ItemTypes from '../dndTypes'
@@ -17,7 +16,10 @@ import {
   Description,
   Title,
   Price,
-  MoreIcon
+  MoreIcon,
+  MobileLocker,
+  DesktopLocker,
+  DragCell
 } from '../styledComponents'
 import { Align } from './styledComponents'
 import Checkbox from 'antd/lib/checkbox'
@@ -142,84 +144,73 @@ class ProductRow extends React.PureComponent<Props, {}> {
     ))
 
     const renderView = (
-      <MediaQuery maxDeviceWidth={480}>
-        {match => {
-          if (match) {
-            return (
-              <div>
-                <Row>
-                  <Cell width={45}>
-                    <Thumbnail
-                      {...{ image, hideQuickView }}
-                      onPressQuickView={handleOnClickView}
-                    />
-                  </Cell>
-                  <Cell width={45}>
-                    <Name>{name}</Name>
-                    <Description>{description}</Description>
-                  </Cell>
-                </Row>
-                <Row>{mobileTitles}</Row>
-                <Row noBorder={true} rowPadding={'0'}>
-                  <Cell width={33}>
-                    <Price>{`$${regularPrice}`}</Price>
-                  </Cell>
-                  <Cell width={40}>
-                    <Price>{`$${fixedPrice}`}</Price>
-                  </Cell>
-                  <Cell width={40}>
-                    <Checkbox
-                      checked={visible}
-                      onChange={handleOnClickVisible}
-                    />
-                  </Cell>
-                </Row>
-                <Row rowPadding={'0'}>
-                  <Align align="right" componentWidth={'100%'}>
-                    <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
-                  </Align>
-                </Row>
-              </div>
-            )
-          } else {
-            return (
-              <Row>
-                <Cell width={5} tabletWidth={5}>
-                  <MoreIcon type="ellipsis" />
-                  <MoreIcon type="ellipsis" />
-                </Cell>
-                <Cell width={15} tabletWidth={25}>
-                  <Thumbnail
-                    {...{ image, hideQuickView }}
-                    onPressQuickView={handleOnClickView}
-                  />
-                </Cell>
-                <Cell width={20} tabletWidth={15}>
-                  <Name>{name}</Name>
-                  <Description>{description}</Description>
-                </Cell>
-                <Cell width={15} tabletWidth={15}>
-                  <Price>{`$${regularPrice}`}</Price>
-                </Cell>
-                <Cell width={15} tabletWidth={15}>
-                  <Price>{`$${fixedPrice}`}</Price>
-                </Cell>
-                <Cell width={15} tabletWidth={10}>
-                  <Center>
-                    <Checkbox
-                      checked={visible}
-                      onChange={handleOnClickVisible}
-                    />
-                  </Center>
-                </Cell>
-                <Cell>
-                  <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
-                </Cell>
-              </Row>
-            )
-          }
-        }}
-      </MediaQuery>
+      <>
+        <MobileLocker>
+          <Row>
+            <Cell width={45}>
+              <Thumbnail
+                {...{ image, hideQuickView }}
+                onPressQuickView={handleOnClickView}
+              />
+            </Cell>
+            <Cell width={45}>
+              <Name>{name}</Name>
+              <Description>{description}</Description>
+            </Cell>
+          </Row>
+          <Row>{mobileTitles}</Row>
+          <Row noBorder={true} rowPadding={'0'}>
+            <Cell width={33}>
+              <Price>{`$${regularPrice}`}</Price>
+            </Cell>
+            <Cell width={40}>
+              <Price>{`$${fixedPrice}`}</Price>
+            </Cell>
+            <Cell width={40}>
+              <Checkbox checked={visible} onChange={handleOnClickVisible} />
+            </Cell>
+          </Row>
+          <Row rowPadding={'0'}>
+            <Align align="right" componentWidth={'100%'}>
+              <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
+            </Align>
+          </Row>
+        </MobileLocker>
+        <DesktopLocker>
+          <Row>
+            <Cell width={5} tabletWidth={5}>
+              <DragCell>
+                <MoreIcon type="ellipsis" />
+                <MoreIcon type="ellipsis" />
+              </DragCell>
+            </Cell>
+            <Cell width={15} tabletWidth={25}>
+              <Thumbnail
+                {...{ image, hideQuickView }}
+                onPressQuickView={handleOnClickView}
+              />
+            </Cell>
+            <Cell width={20} tabletWidth={15}>
+              <Name>{name}</Name>
+              <Description>{description}</Description>
+            </Cell>
+            <Cell width={15} tabletWidth={15}>
+              <Price>{`$${regularPrice}`}</Price>
+            </Cell>
+            <Cell width={15} tabletWidth={15}>
+              <Price>{`$${fixedPrice}`}</Price>
+            </Cell>
+            <Cell width={15} tabletWidth={10}>
+              <Center>
+                <Checkbox checked={visible} onChange={handleOnClickVisible} />
+              </Center>
+            </Cell>
+            <Cell>
+              <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
+            </Cell>
+          </Row>
+        </DesktopLocker>
+      </>
     )
     return connectDragSource(connectDropTarget(<div>{renderView}</div>))
   }

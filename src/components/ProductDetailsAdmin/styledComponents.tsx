@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { BLUE } from '../../theme/colors'
 interface RowProps {
   margin?: string
   borderBottom?: string
@@ -33,8 +34,26 @@ export const ScreenSubTitle = styled.div`
 export const BlueButton = styled(Button)`
   padding: 0 34px;
   color: white;
-  background-color: #4a90e2;
+  background-color: ${BLUE};
   margin-right: 20px;
+`
+
+export const Buttons = styled.div`
+  display: inline-flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+`
+
+export const EditModel = styled(Button)`
+  padding: 9px 28px;
+  color: white;
+  height: auto;
+  background-color: ${BLUE};
+  margin-top: 8px;
 `
 
 export const BackLabel = styled.div`
@@ -105,4 +124,8 @@ export const RenderBackground = styled.div`
   background: ${({ openedModel }: any) => (openedModel ? '#f3f3f3' : 'white')};
   transition: all 0.25 ease;
   text-align: center;
+`
+
+export const ModelSection = styled.div`
+  position: relative;
 `

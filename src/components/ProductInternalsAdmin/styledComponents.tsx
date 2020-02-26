@@ -27,12 +27,12 @@ export const SearchInput = styled(Search)`
   margin-bottom: 20px;
   margin-top: 0px;
   border-radius: 0;
-  margin-left: 4px;
+  margin-left: 22px;
   width: 500px;
   & input {
     border-radius: 0;
     padding: 7px;
-    height: 48px;
+    height: 50px;
   }
 `
 
@@ -54,6 +54,30 @@ export const BottomContainer = styled.div`
   justify-content: flex-end;
   margin-top: 20px;
   padding-right: 32px;
+`
+
+export const UploadButton = styled.div`
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #e61737;
+  padding: 5px 12px;
+  color: #e61737;
+  font-size: 16px;
+  height: 50px;
+  width: 140px;
+  vertical-align: middle;
+  margin-bottom: 4px;
+  cursor: pointer;
+`
+
+export const CsvLoader = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 140px;
+  vertical-align: middle;
 `
 
 export const DownloadButton = styled(Button)`

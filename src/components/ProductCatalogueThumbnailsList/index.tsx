@@ -57,6 +57,7 @@ interface Props {
   currentPage: number
   limit?: number
   designs?: DesignType[]
+  previewOnly?: boolean
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
@@ -83,7 +84,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       onPressRename = () => {},
       withoutPadding,
       currentCurrency,
-      genderFilters
+      genderFilters,
+      previewOnly = false
     } = this.props
 
     let thumbnailsList
@@ -140,32 +142,44 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       onPressDelete,
                       onPressRename,
                       formatMessage,
-                      addToCartButton
+                      addToCartButton,
+                      code
                     }}
                     id={shortId as string}
                     isPrivate={!shared}
                     description={`${product.type} ${product.description}`}
                     date={createdAt}
                     setShare={this.setShare(shortId as string, true)}
+                    canShare={!previewOnly}
                   />
                 }
                 labelButton={
                   <ButtonsContainer>
-                    {addToCartButton}
-                    <ButtonContainer>
-                      <ActionButton
-                        onClick={this.gotToEditDesign(shortId || '')}
-                      >
-                        {formatMessage(
-                          !proDesign ? messages.edit : messages.preview
-                        )}
-                      </ActionButton>
-                    </ButtonContainer>
-                    <ButtonContainer>
-                      <ActionButton onClick={this.openAddStore(shortId)}>
-                        {formatMessage(messages.addToStore)}
-                      </ActionButton>
-                    </ButtonContainer>
+                    {!previewOnly ? (
+                      <div>
+                        {addToCartButton}
+                        <ButtonContainer>
+                          <ActionButton
+                            onClick={this.gotToEditDesign(shortId || '')}
+                          >
+                            {formatMessage(
+                              !proDesign ? messages.edit : messages.preview
+                            )}
+                          </ActionButton>
+                        </ButtonContainer>
+                        <ButtonContainer>
+                          <ActionButton onClick={this.openAddStore(shortId)}>
+                            {formatMessage(messages.addToStore)}
+                          </ActionButton>
+                        </ButtonContainer>
+                      </div>
+                    ) : (
+                      <ButtonContainer>
+                        <ActionButton onClick={this.openPreview(shortId)}>
+                          {formatMessage(messages.preview)}
+                        </ActionButton>
+                      </ButtonContainer>
+                    )}
                   </ButtonsContainer>
                 }
                 myLockerList={true}
@@ -175,6 +189,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 image={image}
                 proDesign={proDesign}
                 proDesignAssigned={outputPng && !outputSvg}
+                hideQuickView={previewOnly}
               />
             </ThumbnailListItem>
           )
@@ -325,6 +340,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   handlePressQuickView = (id: number, yotpoId: string) => {
     const { openQuickView } = this.props
     openQuickView(id, yotpoId)
+  }
+
+  openPreview = (designId: string) => () => {
+    window.open(`/designs?id=${designId}`)
   }
 
   // TODO: Handle add to cart

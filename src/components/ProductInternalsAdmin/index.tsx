@@ -7,11 +7,12 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import * as ApiActions from './api'
 import Modal from 'antd/lib/modal'
+import Upload from 'antd/lib/upload'
 import get from 'lodash/get'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
 import { getProductInternalsQuery } from './InternalsList/data'
-import { isNumber } from '../../utils/utilsFiles'
+import { isNumber, getFileExtension } from '../../utils/utilsFiles'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
 import InternalsModal from './InternalsModal'
@@ -22,7 +23,9 @@ import {
   SearchInput,
   AddInternalButton,
   DownloadButton,
-  BottomContainer
+  BottomContainer,
+  UploadButton,
+  CsvLoader
 } from './styledComponents'
 import {
   getProductInternalsInfoQuery,
@@ -39,9 +42,12 @@ import {
   QueryProps,
   BasicColor,
   ProductInternalInput,
-  MessagePayload
+  MessagePayload,
+  UploadFile
 } from '../../types/common'
-import { INTERNALS_LIMIT } from './constants'
+import { INTERNALS_LIMIT, CSV_EXTENSION } from './constants'
+import Spin from 'antd/lib/spin'
+import Icon from 'antd/lib/icon'
 
 const { confirm } = Modal
 interface Props {
@@ -84,6 +90,7 @@ interface Props {
   addProduct: (variables: {}) => Promise<ProductInternal>
   deleteProduct: (variables: {}) => Promise<MessagePayload>
   downloadCsv: () => void
+  uploadCsv: (file: [File]) => void
 }
 
 interface Data extends QueryProps {
@@ -146,6 +153,23 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
         <AddInternalButton onClick={this.handleOnAddInternal}>
           {formatMessage(messages.addInternalLabel)}
         </AddInternalButton>
+        {loading ? (
+          <CsvLoader>
+            <Spin size="large" />
+          </CsvLoader>
+        ) : (
+          <Upload
+            accept={CSV_EXTENSION}
+            showUploadList={false}
+            customRequest={this.uploadCsv}
+            beforeUpload={this.beforeUpload}
+          >
+            <UploadButton>
+              <Icon type="upload" />
+              <FormattedMessage {...messages.uploadCsv} />
+            </UploadButton>
+          </Upload>
+        )}
         <SearchInput
           value={this.state.searchValue}
           onChange={this.handleInputChange}
@@ -192,6 +216,26 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
         </BottomContainer>
       </Container>
     )
+  }
+
+  beforeUpload = (file: UploadFile) => {
+    const { formatMessage } = this.props
+    if (file) {
+      const { name } = file
+      const fileExtension = getFileExtension(name)
+      if (fileExtension !== CSV_EXTENSION) {
+        message.error(formatMessage(messages.invalidFormat))
+        return false
+      }
+      return true
+    }
+    return false
+  }
+
+  uploadCsv = (event: any) => {
+    const { uploadCsv } = this.props
+    const { file } = event
+    uploadCsv(file)
   }
 
   handleOnSave = async () => {
@@ -433,7 +477,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
     } = event
     const { setTextAction } = this.props
     const acceptNumbersOnly = currentTarget.getAttribute('data-is-number')
-    if (acceptNumbersOnly && (!isNumber(value) && value !== '')) {
+    if (acceptNumbersOnly && !isNumber(value) && value !== '') {
       return
     }
     setTextAction(id, value)
@@ -465,10 +509,7 @@ const ProductInternalsAdminEnhance = compose(
       fetchPolicy: 'network-only'
     }
   }),
-  connect(
-    mapStateToProps,
-    { ...ProductInternalActions, ...ApiActions }
-  )
+  connect(mapStateToProps, { ...ProductInternalActions, ...ApiActions })
 )(ProductInternalsAdmin)
 
 export default ProductInternalsAdminEnhance

@@ -58,6 +58,10 @@ export default defineMessages({
     id: 'screens.FitAndSizing.chest',
     defaultMessage: 'Chest'
   },
+  bust: {
+    id: 'screens.FitAndSizing.bust',
+    defaultMessage: 'Bust'
+  },
   inseam: {
     id: 'screens.FitAndSizing.inseam',
     defaultMessage: 'Inseam'
@@ -97,6 +101,10 @@ export default defineMessages({
   xxl: {
     id: 'screens.FitAndSizing.xxl',
     defaultMessage: '2XL'
+  },
+  xxxl: {
+    id: 'screens.FitAndSizing.xxxl',
+    defaultMessage: '3XL'
   },
   age6: {
     id: 'screens.FitAndSizing.age6',

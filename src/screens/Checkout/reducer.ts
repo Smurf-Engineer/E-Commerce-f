@@ -73,6 +73,8 @@ export const initialState = fromJS({
   billingCountry: '',
   billingStateProvince: '',
   billingCity: '',
+  shippingSave: false,
+  billingSave: false,
   billingZipCode: '',
   billingPhone: '',
   billingHasError: false,
@@ -152,9 +154,11 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
           billingPhone: phone
         }
       }
+      const addressType = billing ? 'billingSave' : 'shippingSave'
       return state.merge({
         ...selected,
         indexAddressSelected: index,
+        [addressType]: index === -1,
         showForm: false
       })
     }
@@ -240,6 +244,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
           city: '',
           zipCode: '',
           phone: '',
+          shippingSave: true,
           hasError: false,
           indexAddressSelected: -1
         })
@@ -259,6 +264,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
           billingCity: '',
           billingZipCode: '',
           billingPhone: '',
+          billingSave: true,
           hasError: false,
           indexAddressSelected: -1
         })
@@ -345,7 +351,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_ADDRESSES_MODAL:
       return state.set('openAddressesModal', action.open)
     case SET_COUPON_CODE:
-      return state.set('couponCode', action.couponCode)
+      return state.merge({ couponCode: { ...action.couponCode } })
     case DELETE_COUPON_CODE:
       return state.set('couponCode', null)
     case OPEN_CURRENCY_WARNING:

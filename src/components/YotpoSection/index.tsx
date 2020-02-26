@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl'
 import {
   Container,
   Separator,
-  TitleName,
   SlideImageContainer,
   SlideVideo,
   SlideImage,
@@ -56,12 +55,11 @@ const YotpoSection = ({
   const products = get(data, 'products', [])
   return (
     <Container>
-      <YotpoReviews {...{ yotpoId }}>
+      <YotpoReviews {...{ yotpoId, name }}>
         {mediaFiles && !!mediaFiles.length && (
           <div>
             <Separator>
-              <TitleName>{name}</TitleName>
-              <FormattedMessage {...messages.featured} />
+              <FormattedMessage {...messages.features} values={{ name }} />
             </Separator>
             {mediaFiles.map(image => (
               <SlideImageContainer>
@@ -79,7 +77,7 @@ const YotpoSection = ({
             ))}
           </div>
         )}
-        {products.length && (
+        {!!products.length && (
           <RelatedProductsContainer>
             <RelatedProducts
               products={data.products}

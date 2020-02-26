@@ -9,6 +9,7 @@ export const designQuery = gql`
     design: sharedDesignShortId(designId: $designId) {
       id
       name
+      code
       flatlockColor: flatlock
       bindingColor: binding_color
       bibBraceColor: bib_brace_color

@@ -31,7 +31,8 @@ import {
   SelectedAsset,
   Responsive,
   SimpleFont,
-  UserInfo
+  UserInfo,
+  ModelVariant
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -107,13 +108,22 @@ interface Props {
   selectedTab: number
   fonts: SimpleFont[]
   colorsList: any
+  userEmail: string
+  name: string
+  lastName: string
+  designId: string
+  proAssistId: string
+  selectedVariant: number
+  variants: ModelVariant[]
   placeholders: boolean
   openResetPlaceholderModal: boolean
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
+  userCode: string
   // Redux actions
+  selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
@@ -197,7 +207,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const { callbackToSave, loggedUserId, isUserAuthenticated } = nextProps
     if (
       callbackToSave &&
-      loggedUserId.length &&
+      loggedUserId &&
       loggedUserId !== this.props.loggedUserId &&
       isUserAuthenticated
     ) {
@@ -245,6 +255,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUpdateText,
       productName,
       canvas,
+      userCode,
       onSelectEl,
       onRemoveEl,
       onApplyCanvasEl,
@@ -252,6 +263,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       textFormat,
       artFormat,
       design,
+      selectVariantAction,
       onSelectTextFormat,
       openPaletteModalAction,
       myPaletteModals,
@@ -271,6 +283,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       bibColor,
       onAccessoryColorSelected,
       onUploadFile,
+      selectedVariant,
       images,
       uploadingFile,
       searchClipParam,
@@ -294,6 +307,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       responsive,
       handleOnGoBack,
       handleOnCloseInfo,
+      userEmail,
+      name,
+      lastName,
+      designId,
+      loggedUserId,
+      proAssistId,
       infoModalOpen,
       selectedTab,
       onTabClick,
@@ -301,6 +320,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onLockElement,
       openLoginModalAction,
       fonts,
+      variants,
       colorsList,
       placeholders,
       openResetPlaceholderModal,
@@ -315,7 +335,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       tutorialPlaylist,
       openDesignCheckModal
     } = this.props
-
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
     const loadingView = loadingData && (
       <LoadingContainer>
@@ -413,6 +432,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             openLoginAction={this.handleOnOpenLogin}
             {...{
               text,
+              loggedUserId,
+              designId,
+              proAssistId,
+              userEmail,
+              name,
+              lastName,
               colors,
               design,
               colorBlockHovered,
@@ -441,7 +466,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onUnmountTab,
               undoChanges,
               redoChanges,
+              selectVariantAction,
+              selectedVariant,
+              variants,
               product,
+              userCode,
               stitchingColor,
               bindingColor,
               zipperColor,

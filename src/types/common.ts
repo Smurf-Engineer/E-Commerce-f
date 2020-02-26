@@ -81,10 +81,23 @@ export type PriceRange = {
   shortName: string
 }
 
+export type WorkHours = {
+  start: string
+  end: string
+  timezone: number
+}
+
 export interface GenderType {
   id: number
   name?: string
   gender?: string
+}
+
+export type BreadRoute = {
+  label: string
+  url?: string
+  icon?: string
+  selected?: boolean
 }
 
 export type HomePageBatch = {
@@ -186,6 +199,25 @@ export type SaveDesignType = {
   highResolution: boolean
 }
 
+export type ModelVariant = {
+  id: string
+  name: string
+  icon: string
+  default: boolean
+  label: string
+  bumpMap: string
+  obj: string
+  mtl: string
+  branding: string
+  flatlock: string
+  bibraceWhite: string
+  bibraceBlack: string
+  zipperWhite: string
+  zipperBlack: string
+  bindingWhite: string
+  bindingBlack: string
+}
+
 export interface SaveDesignData {
   createdAt: string
   designCode: string
@@ -232,6 +264,10 @@ export type ProductTableType = {
   visible: boolean
 }
 
+export type ProAssistStatus = {
+  enabled: boolean
+}
+
 export type ProductTiles = {
   id: number
   contentTile: string
@@ -243,6 +279,7 @@ export type ProductTiles = {
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
+  userName?: string
 }
 
 export type TeamStoreResultType = {
@@ -360,6 +397,21 @@ export interface Style {
   styleId?: number
   thumbnail?: string
   canvas: string
+}
+
+export interface StyleConfig {
+  colorIdeas: Palette[]
+  config: ColorConfig
+  design: Palette
+}
+
+export interface ColorConfig {
+  areasPng: string[]
+  areasSvg: string[]
+  size: {
+    width: number
+    height: number
+  }
 }
 
 export interface Theme {
@@ -549,7 +601,7 @@ export interface StripeCardData {
 
 export interface ModelDesign {
   name: string
-  image: string
+  image?: string
   colors: string[]
   canvas?: string
 }
@@ -574,6 +626,9 @@ export interface ModelConfig {
   bindingBlack?: string
   zipperWhite?: string
   zipperBlack?: string
+  bibBrace?: ExtraFile
+  binding?: ExtraFile
+  zipper?: ExtraFile
 }
 
 export interface CartItems {
@@ -592,9 +647,15 @@ export interface CartItems {
   zipperColor?: string
   bindingColor?: string
   flatlock?: string
+  preflightCheck?: boolean
   fixedPrices: PriceRange[]
 }
 
+export interface ProductPrice {
+  yotpoId: string
+  price: number
+  quantity: number
+}
 export interface CreditCardData {
   id?: string
   name?: string
@@ -618,6 +679,7 @@ export interface OrderHistory {
   date: string
   estimatedDate?: string
   status: string
+  pendingChecks: number
   netsuite?: NetsuiteObject
   clientId?: string
   firstName?: string
@@ -633,6 +695,11 @@ export interface Discount {
   rate: number
   expiry: string
   active?: boolean
+  restrictionType: string
+  selectedProducts: number[]
+  user: string
+  selectedUsers: string[]
+  usageNumber: number
 }
 export interface FulfillmentNetsuite {
   packages: string
@@ -1028,9 +1095,17 @@ export type MessagePayload = {
   }
 }
 
+export type ProAssistItem = {
+  proAssistId: string
+}
+
 export type StitchingColor = {
   name: string
   value: string
+}
+
+export type HiddenSymbols = {
+  [id: string]: boolean
 }
 
 export type AccesoryColor = 'black' | 'white'
@@ -1126,6 +1201,9 @@ export type CanvasDragged = {
   top: number
 }
 
+export type SelectedFonts = {
+  [id: string]: boolean
+}
 export type CanvasRotated = {
   id: string
   oldRotation: Rotation
@@ -1166,6 +1244,7 @@ export interface OrderSearchResult {
   image: string
   status: string
   svgUrl?: string
+  preflightCheck?: boolean
   assets: FilesDownload
   bibColor?: AccesoryColor
   bindingColor?: AccesoryColor
@@ -1219,6 +1298,8 @@ export interface CouponCode {
   type: couponType
   discountAmount?: string
   rate?: string
+  restrictionType?: string
+  products?: string[]
 }
 
 export interface Message {
@@ -1260,6 +1341,9 @@ export interface User {
   socialMethod: string
   administrator: boolean
   netsuiteId?: string
+  billingCountry?: string
+  createdAt?: string
+  shortId?: string
 }
 
 export interface DesignSearchCode {
@@ -1375,6 +1459,7 @@ export interface HomepageImagesType {
 export type Color = {
   name: string
   value: string
+  type?: string
 }
 
 export interface SelectedDesignType {
@@ -1419,6 +1504,7 @@ export interface UserSearchResult {
   shortId: string
   name: string
   email: string
+  netsuiteId?: string
 }
 
 export interface HomepageCarousel {
@@ -1428,7 +1514,52 @@ export interface HomepageCarousel {
   secondarySlideDuration: number
 }
 
+<<<<<<< HEAD
 export interface PaymentIntent {
   paymentClientSecret: string
   intentId: string
+=======
+export interface UserDiscount {
+  text: string
+  value: string
+  email: string
+  netsuiteId: string
+  name: string
+}
+
+export interface ProductsCodes {
+  products: string[]
+}
+
+export interface Header {
+  message: string
+  width?: number
+  tabletWidth?: number
+  fieldName?: string
+}
+
+export interface ColorsDataResult {
+  colorsResult: Colors
+}
+
+export type Thumbnail = {
+  style: {
+    image: string
+  }
+}
+
+export type Design = {
+  design: {
+    message: string
+  }
+}
+
+export type ProAssist = {
+  shortId: string
+  userId: string
+  firstName: string
+  lastName: string
+  date: string
+  status: string
+  url: string
 }

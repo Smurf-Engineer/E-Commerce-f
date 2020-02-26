@@ -9,7 +9,7 @@ export default defineMessages({
     id: 'components.MyFiles.message',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'These are the design assets that you have used or uploaded. You will be able to access them from within the design application, after selecting a product.'
+      'These are the design assets that you have created or uploaded. You will be able to access them from within the design application, after selecting a product.'
   },
   myPalettes: {
     id: 'components.MyFiles.myPalettes',

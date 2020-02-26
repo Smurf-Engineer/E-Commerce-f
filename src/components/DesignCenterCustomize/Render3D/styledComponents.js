@@ -5,11 +5,15 @@ import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import AntdButton from 'antd/lib/button'
 import {
+  RED,
   BLUE,
   WHITE,
+  GREEN_BRIGHT,
   GRAY_LIGHT,
   GRAY_DARK,
-  BLUE_DARK
+  BLUE_DARK,
+  GRAY_LIGHTEST,
+  WHITE_SMOKE
 } from '../../../theme/colors'
 
 export const fadeIn = keyframes`
@@ -253,7 +257,7 @@ export const HintModalImage = styled.img`
 export const HintIcon = styled.img`
   height: 90%;
   position: absolute;
-  left: 0;
+  left: 10px;
   top: 30px;
   cursor: pointer;
 `
@@ -277,8 +281,45 @@ export const DesignCheckButton = styled(AntdButton)`
   display: flex;
   align-items: center;
   margin-right: 10px;
+  border: 1px solid ${GREEN_BRIGHT};
+  border-radius: 2px;
+  &:hover {
+    border: 1px solid ${GREEN_BRIGHT};
+    background: ${WHITE_SMOKE};
+  }
+`
+
+export const ProAssistText = styled.span`
+  color: ${GREEN_BRIGHT};
 `
 
 export const Icon = styled.img`
-  margin-left: 5px;
+  margin-right: 8px;
+  width: 22px;
+  margin-bottom: 2px;
+`
+
+export const Variants = styled.div`
+  position: absolute;
+  left: ${({ isMobile }) => (isMobile ? 'unset' : '0')};
+  top: ${({ isMobile }) => (isMobile ? 'unset' : '70px')};
+  bottom: ${({ isMobile }) => (isMobile ? '0' : 'unset')};
+  right: ${({ isMobile }) => (isMobile ? '10px' : 'unset')};
+  display: flex;
+  flex-flow: column;
+`
+
+export const VariantButton = styled.img`
+  width: 40px;
+  object-fit: contain;
+  max-height: 40px;
+  border: 1px solid ${({ selected }) => (selected ? RED : GRAY_LIGHT)};
+  border-radius: 3px;
+  transition: all 0.25s;
+  padding: 5px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  &:hover {
+    background: ${GRAY_LIGHTEST};
+  }
 `

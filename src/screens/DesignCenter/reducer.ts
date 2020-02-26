@@ -58,6 +58,7 @@ import {
   SAVE_DESIGN_CHANGES_LOADING,
   CANVAS_ELEMENT_DUPLICATED_ACTION,
   DESIGN_RESET_EDITING_ACTION,
+  SET_LOADING_PRO,
   SET_SELECTED_ITEM_ACTION,
   Changes,
   CanvasElements,
@@ -75,7 +76,9 @@ import {
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
   ON_OPEN_COLOR_CHART_FORM,
-  OPEN_DESIGN_CHECK_MODAL
+  OPEN_DESIGN_CHECK_MODAL,
+  SELECT_VARIANT,
+  SET_TICKET
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -100,8 +103,10 @@ export const initialState = fromJS({
   redoChanges: [],
   swipingView: false,
   themeId: -1,
+  loadingPro: false,
   styleIndex: -1,
   openShareModal: false,
+  selectedVariant: -1,
   openSaveDesign: false,
   checkedTerms: false,
   savedDesignId: '',
@@ -155,6 +160,8 @@ export const initialState = fromJS({
   uploadingFile: false,
   images: [],
   searchClipParam: '',
+  ticket: '',
+  userId: 0,
   savedDesign: {},
   selectedItem: {},
   infoModalOpen: false,
@@ -170,6 +177,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case CLEAR_STORE_ACTION:
       return initialState
+    case SET_LOADING_PRO:
+      return state.set('loadingPro', action.loading)
+    case SET_TICKET:
+      return state.merge({
+        loadingPro: false,
+        designCheckModalOpen: false,
+        ticket: action.ticket,
+        userId: action.userId
+      })
     case SET_CURRENT_TAB_ACTION: {
       if (action.index === 2) {
         return state.merge({
@@ -434,6 +450,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           return state
       }
     }
+    case SELECT_VARIANT:
+      return state.set('selectedVariant', action.index)
     case SET_PALETTE_NAME_ACTION:
       return state.set('paletteName', action.name)
     case SET_PALETTES_ACTION:

@@ -18,6 +18,12 @@ import {
   DragText,
   Title,
   Message,
+  Logo,
+  Details,
+  Property,
+  DetailLabel,
+  DetailProperties,
+  DetailHeader,
   ContainerError,
   ProgressProduct,
   Loading
@@ -36,13 +42,16 @@ import {
   PHONE_POSITION,
   HIGH_RESOLUTION_CANVAS,
   MESH_NAME,
-  MODEL_SIZES
+  MODEL_SIZES,
+  AMBIENT_LIGHT_INTENSITY,
+  DIRECTIONAL_LIGHT_INTENSITY
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
-
+import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
+import JakrooLogoWhite from '../../assets/jakroo_logo_white.svg'
 import '../../screens/App/theme.ant'
 
 /* eslint-disable */
@@ -60,7 +69,7 @@ class Render3D extends PureComponent {
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (this.container) {
-      const { modelSize, designSearch } = this.props
+      const { modelSize } = this.props
       /* Renderer config */
       const { clientWidth = 0, clientHeight = 0 } = this.container
       const precision = 'highp'
@@ -81,9 +90,7 @@ class Render3D extends PureComponent {
         1000
       )
       camera.position.z = MODEL_SIZES[modelSize] || 160
-      if (designSearch) {
-        camera.position.z = 150
-      }
+
       const controls = new THREE.OrbitControls(camera, renderer.domElement)
       controls.addEventListener('change', this.lightUpdate)
 
@@ -93,8 +100,11 @@ class Render3D extends PureComponent {
       controls.enableZoom = true
       /* Scene and light */
       const scene = new THREE.Scene()
-      const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
+      const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
+      const directionalLight = new THREE.DirectionalLight(
+        0xffffff,
+        DIRECTIONAL_LIGHT_INTENSITY
+      )
       directionalLight.position.copy(camera.position)
 
       scene.add(camera)
@@ -117,7 +127,8 @@ class Render3D extends PureComponent {
     const {
       data: { loading, error, design = {} },
       actualImage = '',
-      colorAccessories
+      colorAccessories,
+      product: newProduct
     } = nextProps
     const {
       product,
@@ -129,12 +140,17 @@ class Render3D extends PureComponent {
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
     const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories)
-
-    if (isProduct && product) {
-      if (imageChanged || accessoriesChanged || firstLoad) {
+    const productChanged =
+      product && newProduct && product.obj !== newProduct.obj
+    const productToRender = productChanged ? newProduct : product
+    if (productChanged && this.renderer) {
+      this.removeObject()
+    }
+    if (isProduct && productToRender) {
+      if (imageChanged || accessoriesChanged || firstLoad || productChanged) {
         setTimeout(() => {
           this.renderProduct(
-            product,
+            productToRender,
             actualImage,
             imageChanged,
             colorAccessories
@@ -304,10 +320,14 @@ class Render3D extends PureComponent {
       customProduct,
       designSearch,
       isProduct,
-      textColor,
-      data: { loading, error }
+      isAdmin,
+      detailed,
+      data,
+      textColor
     } = this.props
-
+    const { loading, error, design } = data
+    const { code, name, product } = design || {}
+    const { name: productName } = product || {}
     if (error && !isProduct) {
       return (
         <ContainerError>
@@ -327,6 +347,34 @@ class Render3D extends PureComponent {
       <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
+        )}
+        {detailed && window.location === window.parent.location && (
+          <Details>
+            <DetailHeader>
+              <Logo src={JakrooLogoWhite} />
+              <Logo src={OwnYourStyle} />
+            </DetailHeader>
+            <DetailProperties>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.designName} />
+                </Property>
+                {name}
+              </DetailLabel>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.designCode} />
+                </Property>
+                {code}
+              </DetailLabel>
+              <DetailLabel>
+                <Property>
+                  <FormattedMessage {...messages.productName} />
+                </Property>
+                {productName}
+              </DetailLabel>
+            </DetailProperties>
+          </Details>
         )}
         <Render
           {...{ customProduct, designSearch }}
@@ -364,6 +412,7 @@ class Render3D extends PureComponent {
       bibBrace,
       branding
     } = product
+
     /* Object and MTL load */
     if (obj && mtl) {
       const mtlLoader = new THREE.MTLLoader()

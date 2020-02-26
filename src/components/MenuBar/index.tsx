@@ -119,7 +119,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       setAccountScreen,
       openWithoutSaveModalAction
     } = this.props
-    let route = 'account'
+    let route = '/account'
     if (key !== OVERVIEW) {
       route = route.concat(`?option=${key}`)
     }

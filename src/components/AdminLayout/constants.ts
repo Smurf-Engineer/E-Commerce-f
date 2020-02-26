@@ -11,6 +11,7 @@ export const SET_INSTALLED_FONTS_ACTION = `${namespace}/SET_INSTALLED_FONTS_ACTI
 export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
+export const PRO_ASSIST = 'proAssist'
 export const PRODUCTS = 'products'
 export const PRODUCT_INTERNAL = 'productInternal'
 export const PRODUCT_CATALOG = 'productCatalog'
@@ -24,11 +25,14 @@ export const LOGOUT_MENU = 'logout'
 export const EDIT_NAVIGATION = 'editNavigation'
 export const PRO_DESIGN = 'proDesign'
 export const ADD_PRO_DESIGN = 'addProDesign'
+export const PUBLISHING_TOOL = 'publishingTool'
+export const CREATE_DESIGNS = 'createDesigns'
+export const DESIGN_LAB_TOOLS = 'designLabTools'
 
 export const options = [
   {
     title: ORDERS,
-    options: [ORDER_STATUS, DISCOUNTS, DESIGN_SEARCH]
+    options: [ORDER_STATUS, DISCOUNTS, DESIGN_SEARCH, PRO_ASSIST]
   },
   {
     title: EDIT_CONTENT,
@@ -49,5 +53,9 @@ export const options = [
   {
     title: PRO_DESIGN,
     options: [ADD_PRO_DESIGN]
+  },
+  {
+    title: PUBLISHING_TOOL,
+    options: [CREATE_DESIGNS, DESIGN_LAB_TOOLS]
   }
 ]

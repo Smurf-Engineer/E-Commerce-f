@@ -16,7 +16,9 @@ import {
   RESET_CHANGES_ACTION,
   SET_SEARCH_CODES,
   SET_CREATING_PDF,
-  SET_PDF
+  SET_PDF,
+  SET_PREFLIGHT,
+  SET_LOADING_PREFLIGHT
 } from './constants'
 import {
   AnyAction,
@@ -32,6 +34,16 @@ export const defaultAction = (someValue: string): AnyAction => ({
 
 export const setLoadingAction = (): AnyAction => ({
   type: SET_LOADING
+})
+
+export const setPreflightAction = (checked: boolean): AnyAction => ({
+  type: SET_PREFLIGHT,
+  checked
+})
+
+export const setLoadingPreflight = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_PREFLIGHT,
+  loading
 })
 
 export const setOrderAction = (order: OrderSearchResult): AnyAction => ({

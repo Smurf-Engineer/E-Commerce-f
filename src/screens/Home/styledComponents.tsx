@@ -126,7 +126,7 @@ export const PropositionTilesContainer = styled.div`
   background-color: ${AUBERGINE};
   color: ${WHITE};
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   padding: 21px 0 29px;
 
   @media (min-width: 320px) and (max-width: 767px) {

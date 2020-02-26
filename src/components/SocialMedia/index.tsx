@@ -18,9 +18,10 @@ import instagramLogo from '../../assets/instagram.svg'
 import intagramLogoHover from '../../assets/instagram_hover.svg'
 import youtubeLogo from '../../assets/youtube.svg'
 import youtubeLogoHover from '../../assets/youtube_hover.svg'
+import { Message } from '../../types/common'
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, pararms?: any) => string
 }
 
 class SocialMedia extends React.Component<Props, {}> {
@@ -69,7 +70,11 @@ class SocialMedia extends React.Component<Props, {}> {
         <TailRecursiveURL href="https://www.tailrecursive.co">
           {formatMessage(messages.tailrecursive)}
         </TailRecursiveURL>
-        <Text>{formatMessage(messages.jakrooCopyright)}</Text>
+        <Text>
+          {formatMessage(messages.jakrooCopyright, {
+            year: new Date().getFullYear()
+          })}
+        </Text>
       </Container>
     )
   }

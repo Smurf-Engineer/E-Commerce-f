@@ -15,11 +15,9 @@ export const Separator = styled.div`
   justify-content: center;
   font-size: 13px;
   font-weight: 500;
+  text-transform: uppercase;
   letter-spacing: 0.93px;
   line-height: 18px;
-`
-export const TitleName = styled.div`
-  margin-right: 8px;
 `
 export const SlideImage = styled.img`
   width: 100%;
