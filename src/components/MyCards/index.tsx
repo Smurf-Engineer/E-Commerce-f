@@ -20,7 +20,8 @@ import {
   cardsQuery,
   addCardMutation,
   updateCardMutation,
-  deleteCardMutation
+  deleteCardMutation,
+  setupIntentQuery
 } from './data'
 import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
@@ -37,6 +38,12 @@ interface Data extends QueryProps {
   userCards: {
     cards: CreditCardData[]
     default: string
+  }
+}
+
+interface SetupIntentData extends QueryProps {
+  setupIntent: {
+    clientSecret: string
   }
 }
 
@@ -57,6 +64,7 @@ interface Props {
   showCardForm: boolean
   listForMyAccount: boolean
   selectedCard: CreditCardData
+  setupIntent: SetupIntentData
   formatMessage: (messageDescriptor: any) => string
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
@@ -153,7 +161,8 @@ class MyCards extends React.Component<Props, {}> {
       listForMyAccount,
       setStripeCardDataAction,
       selectCardToPayAction,
-      selectedCard
+      selectedCard,
+      setupIntent
     } = this.props
 
     const { stripe } = this.state
@@ -171,7 +180,7 @@ class MyCards extends React.Component<Props, {}> {
     const userCards = get(data, 'userCards', {})
     const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
-
+    const clientSecret = get(setupIntent, 'setupIntent.clientSecret', '')
     return (
       <Container>
         {(listForMyAccount || !!cards.length) && (
@@ -196,7 +205,8 @@ class MyCards extends React.Component<Props, {}> {
                 validFormAction,
                 setModalLoadingAction,
                 setDefaultPaymentCheckedAction,
-                cardAsDefaultPayment
+                cardAsDefaultPayment,
+                clientSecret
               }}
               saveAddress={this.handleOnSaveCard}
               visible={showCardModal}
@@ -308,6 +318,7 @@ class MyCards extends React.Component<Props, {}> {
       addNewCard,
       cardAsDefaultPayment
     } = this.props
+
     await addNewCard({
       variables: {
         token: stripeToken,
@@ -342,7 +353,8 @@ class MyCards extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
 const MyCardsEnhance = compose(
-  graphql(cardsQuery),
+  graphql(cardsQuery, { name: 'data' }),
+  graphql(setupIntentQuery, { name: 'setupIntent' }),
   withLoading,
   withError,
   addCardMutation,

@@ -35,6 +35,7 @@ interface Props {
   image: string
   cartItem: CartItems
   itemIndex: number
+  preflightCheck: boolean
   onlyRead?: boolean
   currentCurrency: string
   currencySymbol?: string
@@ -133,6 +134,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
+      preflightCheck,
       productTotal,
       unitPrice,
       currentCurrency,
@@ -209,6 +211,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
           mpnCode,
           symbol,
           total,
+          preflightCheck,
           onlyRead,
           designId,
           nextPrice,

@@ -78,6 +78,7 @@ interface Props extends RouteComponentProps<any> {
   openLogoutModal: boolean
   initialCountryCode: string
   buyNowHeader: boolean
+  disableIntercom: boolean
   fontsData: any
   fonts: []
   setAccountScreen: (screen: string, openCreations?: boolean) => void
@@ -110,6 +111,7 @@ class MainLayout extends React.Component<Props, {}> {
   async componentDidMount() {
     const {
       openLoginAction,
+      disableIntercom,
       history: {
         location: { search, pathname }
       },
@@ -134,9 +136,11 @@ class MainLayout extends React.Component<Props, {}> {
     const fonts: SimpleFont[] = []
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
-    Intercom(config.intercomKey)
-    if (user) {
-      this.setIntercomUser(user)
+    if (!disableIntercom) {
+      Intercom(config.intercomKey)
+      if (user) {
+        this.setIntercomUser(user)
+      }
     }
   }
 
@@ -366,15 +370,12 @@ const mapStateToProps = (state: any) => {
 const LayoutEnhance = compose(
   withApollo,
   getFonts,
-  connect(
-    mapStateToProps,
-    {
-      ...LayoutActions,
-      ...LocaleActions,
-      ...mainLayoutActions,
-      openWithoutSaveModalAction: openOutWithoutSaveModalAction,
-      setAccountScreen: setDefaultScreenAction
-    }
-  )
+  connect(mapStateToProps, {
+    ...LayoutActions,
+    ...LocaleActions,
+    ...mainLayoutActions,
+    openWithoutSaveModalAction: openOutWithoutSaveModalAction,
+    setAccountScreen: setDefaultScreenAction
+  })
 )(MainLayout)
 export default LayoutEnhance

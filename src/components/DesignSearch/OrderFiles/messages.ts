@@ -52,5 +52,9 @@ export default defineMessages({
   designNameLabel: {
     id: 'screens.DesignSearch.designNameLabel',
     defaultMessage: 'Design Name: {name}'
+  },
+  preflight: {
+    id: 'screens.DesignSearch.preflight',
+    defaultMessage: 'Pre Flight check'
   }
 })

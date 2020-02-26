@@ -65,10 +65,13 @@ interface Props {
     billing: boolean
   ) => void
   nextStep: () => void
+  createPaymentIntent: () => void
 }
 
 class CreditCardFormBilling extends React.Component<Props, {}> {
-
+  state = {
+    cardElement: null
+  }
   render() {
     const {
       formatMessage,
@@ -153,6 +156,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 </InputTitleContainer>
                 <ContainerInput>
                   <CardElement
+                    onReady={this.handleReady}
                     hidePostalCode={true}
                     style={StripeCardElement}
                   />
@@ -171,17 +175,12 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                   value={cardHolderName}
                   onChange={this.handleInputChange}
                 />
-                {!cardHolderName &&
-                  hasError && (
-                    <ErrorMsg>
-                      {formatMessage(messages.requiredField)}
-                    </ErrorMsg>
-                  )}
+                {!cardHolderName && hasError && (
+                  <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+                )}
               </Column>
             </Row>
-
           </AnimateHeight>
-
         </div>
         <ContainerBilling>
           <Title>{formatMessage(messages.billingAddress)}</Title>
@@ -232,6 +231,9 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     )
   }
 
+  handleReady = (cardElement: stripe.elements.Element) =>
+    this.setState({ cardElement })
+
   handleOnContinue = async (ev: any) => {
     const {
       cardHolderName,
@@ -253,7 +255,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       setStripeCardDataAction,
       nextStep,
       selectedCard,
-      stripe
+      stripe,
+      createPaymentIntent
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
@@ -274,29 +277,32 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
     const stripeTokenData = {
       name: cardHolderName,
-      address_line1: `${street}`,
-      address_line2: `${apartment}`,
-      address_city: `${city}`,
-      address_state: `${stateProvince}`,
-      address_zip: `${zipCode}`,
-      address_country: `${country}`
+      address: {
+        line1: `${street}`,
+        line2: `${apartment}`,
+        city: `${city}`,
+        state: `${stateProvince}`,
+        postal_code: `${zipCode}`,
+        country: `${country}`
+      }
     }
     setLoadingBillingAction(true)
-
     const stripeResponse = !selectedCardId
-      ? await stripe.createToken(stripeTokenData)
+      ? await stripe.createPaymentMethod('card', this.state.cardElement, {
+          billing_details: stripeTokenData
+        })
       : {}
+
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
       if (!selectedCardId) {
         const {
-          token: {
+          paymentMethod: {
             id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }
         } = stripeResponse
-
         const cardData: CreditCardData = {
           id,
           name,
@@ -305,9 +311,9 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           expYear: exp_year,
           brand
         }
-
         setStripeCardDataAction(cardData, tokenId)
       }
+      createPaymentIntent()
       nextStep()
     }
   }

@@ -87,6 +87,7 @@ export const getOrderQuery = gql`
       taxPst: tax_pst
       taxGst: tax_gst
       taxVat: tax_vat
+      confirmed: payment_confirmed
     }
   }
 `

@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'components.OrderData.items',
     defaultMessage: 'Items'
   },
+  pendingTitle: {
+    id: 'components.OrderData.pendingTitle',
+    defaultMessage: 'We are checking your payment'
+  },
   messageRetail: {
     id: 'components.OrderData.messageRetail',
     defaultMessage:

@@ -647,6 +647,7 @@ export interface CartItems {
   zipperColor?: string
   bindingColor?: string
   flatlock?: string
+  preflightCheck?: boolean
   fixedPrices: PriceRange[]
 }
 
@@ -657,7 +658,7 @@ export interface ProductPrice {
 }
 export interface CreditCardData {
   id?: string
-  name: string
+  name?: string
   last4: string
   brand: string
   expMonth: number
@@ -678,6 +679,7 @@ export interface OrderHistory {
   date: string
   estimatedDate?: string
   status: string
+  pendingChecks: number
   netsuite?: NetsuiteObject
   clientId?: string
   firstName?: string
@@ -790,6 +792,7 @@ export interface OrderDataInfo {
   taxFee?: number
   total?: number
   discount?: number
+  confirmed?: boolean
 }
 
 export interface TextFormat {
@@ -1241,6 +1244,7 @@ export interface OrderSearchResult {
   image: string
   status: string
   svgUrl?: string
+  preflightCheck?: boolean
   assets: FilesDownload
   bibColor?: AccesoryColor
   bindingColor?: AccesoryColor
@@ -1510,6 +1514,11 @@ export interface HomepageCarousel {
   secondarySlideDuration: number
 }
 
+<<<<<<< HEAD
+export interface PaymentIntent {
+  paymentClientSecret: string
+  intentId: string
+=======
 export interface UserDiscount {
   text: string
   value: string

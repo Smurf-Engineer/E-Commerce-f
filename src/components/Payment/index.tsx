@@ -42,10 +42,11 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  paymentClientSecret: string
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
-  setStripeCardDataAction: (card: CreditCardData) => void
+  setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   setIbanErrorAction: (isError: boolean) => void
@@ -65,6 +66,8 @@ interface Props {
   ) => void
   saveCountryAction: (countryCode: string | null) => void
   setStripeIbanDataAction: (iban: IbanData) => void
+  setStripeAction: (stripe: any) => void
+  createPaymentIntent: () => void
 }
 
 interface MyWindow extends Window {
@@ -81,11 +84,15 @@ class Payment extends React.PureComponent<Props, {}> {
   }
 
   componentDidMount() {
+    const { setStripeAction } = this.props
     if (window.Stripe) {
-      this.setState({
-        stripe: window.Stripe(config.pkStripeUS),
-        euStripe: window.Stripe(config.pkStripeEU)
-      })
+      this.setState(
+        {
+          stripe: window.Stripe(config.pkStripeUS),
+          euStripe: window.Stripe(config.pkStripeEU)
+        },
+        () => setStripeAction(this.state.stripe)
+      )
     } else {
       // this code is safe to server-side render.
       const stripeJs = document.createElement('script')
@@ -93,10 +100,13 @@ class Payment extends React.PureComponent<Props, {}> {
       stripeJs.async = true
       stripeJs.src = 'https://js.stripe.com/v3/'
       stripeJs.onload = () => {
-        this.setState({
-          stripe: window.Stripe(config.pkStripeUS),
-          euStripe: window.Stripe(config.pkStripeEU)
-        })
+        this.setState(
+          {
+            stripe: window.Stripe(config.pkStripeUS),
+            euStripe: window.Stripe(config.pkStripeEU)
+          },
+          () => setStripeAction(this.state.stripe)
+        )
       }
       // tslint:disable-next-line:no-unused-expression
       document.body && document.body.appendChild(stripeJs)
@@ -164,7 +174,6 @@ class Payment extends React.PureComponent<Props, {}> {
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
-      setStripeCardDataAction,
       nextStep,
       showContent,
       showCardForm,
@@ -180,7 +189,9 @@ class Payment extends React.PureComponent<Props, {}> {
       setSkipValueAction,
       showBillingForm,
       showBillingAddressFormAction,
-      setStripeIbanDataAction
+      setStripeIbanDataAction,
+      paymentClientSecret,
+      createPaymentIntent
     } = this.props
     const { stripe, openConfirm, euStripe } = this.state
 
@@ -205,7 +216,6 @@ class Payment extends React.PureComponent<Props, {}> {
             sameBillingAndAddressCheckedAction,
             sameBillingAndAddressUncheckedAction,
             invalidBillingFormAction,
-            setStripeCardDataAction,
             nextStep,
             showCardForm,
             selectedCard,
@@ -218,8 +228,11 @@ class Payment extends React.PureComponent<Props, {}> {
             limit,
             setSkipValueAction,
             showBillingForm,
-            showBillingAddressFormAction
+            showBillingAddressFormAction,
+            paymentClientSecret,
+            createPaymentIntent
           }}
+          setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
           inputChangeAction={this.handleOnChangeInput}
         />
@@ -301,6 +314,10 @@ class Payment extends React.PureComponent<Props, {}> {
     const { selectDropdownAction } = this.props
     const customId = 'billing' + upperFirst(id)
     selectDropdownAction(customId, value)
+  }
+  setStripeCardData = (cardData: CreditCardData, stripeToken: string) => {
+    const { setStripeCardDataAction } = this.props
+    setStripeCardDataAction(cardData, stripeToken)
   }
 }
 

@@ -126,6 +126,7 @@ export const getOrderQuery = gql`
         designCode
         bibBraceColor
         flatlock
+        preflightCheck
         flatlockCode
         zipperColor
         bindingColor
