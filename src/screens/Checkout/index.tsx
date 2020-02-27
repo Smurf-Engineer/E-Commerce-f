@@ -744,6 +744,7 @@ class Checkout extends React.Component<Props, {}> {
   }
   createPaymentIntent = async () => {
     const { savePaymentId, createPaymentIntent } = this.props
+
     try {
       const orderObj = await this.getOrderObject()
       const response = await createPaymentIntent({

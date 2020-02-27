@@ -243,10 +243,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
 const AddToCartEnhanced = compose(
   injectIntl,
-  connect(
-    null,
-    { getTotalItemsIncart }
-  )
+  connect(null, { getTotalItemsIncart })
 )(AddToCartButton)
 
 export default AddToCartEnhanced
