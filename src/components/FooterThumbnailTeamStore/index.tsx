@@ -68,8 +68,6 @@ const FooterThumbnailTeamStore = ({
         currentRangeAttributes.index * totalPercentBySection
     )
   }
-  console.log('Progress ', progress)
-  console.log('Real percent ', realPercent)
 
   return (
     <Footer>
