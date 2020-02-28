@@ -183,6 +183,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const teamPrice = get(design, 'teamPrice', '')
     const teamEnable = get(design, 'teamEnable', '')
     const teamName = get(design, 'teamName', '')
+    const onDemand = get(design, 'teamOnDemand', true)
     const proDesign = get(design, 'proDesign', false)
     const {
       images: imagesArray,
@@ -381,7 +382,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           withoutTop={true}
           teamStoreId={teamStoreShortId}
           fixedPrices={teamPrice}
-          {...{ designId, designName, designImage, teamStoreItem }}
+          {...{ designId, designName, designImage, teamStoreItem, onDemand }}
         />
       </ButtonsRow>
     )

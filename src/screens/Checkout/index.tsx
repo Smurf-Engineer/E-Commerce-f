@@ -23,7 +23,8 @@ import {
   AddAddressMutation,
   PlaceOrderMutation,
   CurrencyQuery,
-  CreatePaymentIntentMutation
+  CreatePaymentIntentMutation,
+  AddCardMutation
 } from './data'
 import { CheckoutTabs, PaymentOptions, quantities } from './constants'
 
@@ -194,6 +195,7 @@ interface Props extends RouteComponentProps<any> {
   createPaymentIntent: (variables: {}) => Promise<PaymentIntent>
   savePaymentId: (paymentIntent: PaymentIntent) => void
   removeClientSecretAction: () => void
+  addNewCard: (variables: {}) => Promise<any>
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -761,10 +763,11 @@ class Checkout extends React.Component<Props, {}> {
     card?: CreditCardData,
     stripeToken?: string
   ) => {
-    const { setStripeCardDataAction } = this.props
-    await this.createPaymentIntent()
+    const { setStripeCardDataAction, addNewCard } = this.props
+    // await this.createPaymentIntent()
     if (card && stripeToken) {
       setStripeCardDataAction(card, stripeToken)
+      await addNewCard({ variables: { token: stripeToken } })
     }
   }
   getProductsPrice = () => {
@@ -1023,6 +1026,7 @@ const CheckoutEnhance = compose(
   AddAddressMutation,
   PlaceOrderMutation,
   CreatePaymentIntentMutation,
+  AddCardMutation,
   withApollo,
   connect(mapStateToProps, {
     ...checkoutActions,
