@@ -31,8 +31,8 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   background: ${WHITE};
-  height: 400px;
-  width: 300px;
+  height: 648px;
+  width: 360px;
   &:last-child {
     margin-left: 30px;
   }
@@ -41,7 +41,7 @@ export const Card = styled.div`
   position: relative;
 `
 
-export const CardTitle = styled.p`
+export const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
@@ -57,7 +57,9 @@ export const TeamStoreCardsContainer = styled.div`
   justify-content: center;
 `
 
-export const List = styled.ul``
+export const List = styled.ul`
+  margin-right: 28px;
+`
 
 export const Item = styled.li`
   margin-bottom: 10px;
@@ -65,11 +67,13 @@ export const Item = styled.li`
 
 export const PaymentIcons = styled.div`
   display: flex;
-  margin-left: 30px;
+  justify-content: space-between;
+  margin: 0 30px;
 `
 
 export const Icon = styled.img`
-  margin-right: 10px;
+  width: 100%;
+  max-width: 90px;
 `
 
 export const SelectTeamStoreButton = styled(Button)`
@@ -88,4 +92,18 @@ export const SelectTeamStoreButton = styled(Button)`
   right: 0;
   margin: auto;
   bottom 40px;
+`
+
+export const TeamBanner = styled.img`
+  max-width: 150px;
+  width: 100%;
+  margin-bottom: 4px;
+`
+
+export const TeamImage = styled.img`
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 24px;
+  height: 200px;
+  object-position: 0 20%;
 `
