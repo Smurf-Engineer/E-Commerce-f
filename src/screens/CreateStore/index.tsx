@@ -619,6 +619,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               {...{ formatMessage, teamSizeRange, currentCurrency }}
               items={items}
               hideQuickView={true}
+              isFixed={!isOnDemand}
               onPressDelete={this.handleOnDeleteItem}
               onPressQuickView={this.handleOnPressQuickView}
               onPressVisible={this.handleOnPressVisible}

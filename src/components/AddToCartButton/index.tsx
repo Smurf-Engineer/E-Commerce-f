@@ -28,6 +28,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   shortId?: string
@@ -43,6 +44,7 @@ interface Props {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   withoutTop?: boolean
@@ -93,6 +95,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       intl,
       item,
       designId,
+      isFixed,
       teamStoreId,
       teamStoreItem,
       designName,
@@ -106,6 +109,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       const itemToAdd = this.getItemWithDetails(
         item,
         designId,
+        isFixed,
         teamStoreId,
         teamStoreItem,
         designName,
@@ -134,6 +138,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
                 this.getItemWithDetails(
                   i,
                   i.designId,
+                  i.isFixed,
                   i.teamStoreId,
                   i.teamStoreItem,
                   i.designName,
@@ -148,6 +153,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             const itemToAdd = this.getItemWithDetails(
               item,
               designId,
+              isFixed,
               teamStoreId,
               teamStoreItem,
               designName,
@@ -165,6 +171,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             this.getItemWithDetails(
               item,
               item.shortId,
+              item.isFixed,
               item.teamStoreId,
               item.teamStoreItem,
               item.designName,
@@ -182,6 +189,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   getItemWithDetails = (
     item: CartItems,
     designId = '',
+    isFixed = false,
     teamStoreId = '',
     teamStoreItem = '',
     designName = '',
@@ -205,6 +213,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       { designName },
       { designImage },
       { designCode },
+      { isFixed },
       { teamStoreId },
       { teamStoreItem },
       { fixedPrices }
@@ -243,10 +252,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
 const AddToCartEnhanced = compose(
   injectIntl,
-  connect(
-    null,
-    { getTotalItemsIncart }
-  )
+  connect(null, { getTotalItemsIncart })
 )(AddToCartButton)
 
 export default AddToCartEnhanced
