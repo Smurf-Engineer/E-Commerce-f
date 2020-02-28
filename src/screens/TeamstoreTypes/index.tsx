@@ -69,7 +69,7 @@ class TeamstoreTypes extends React.Component<Props, {}> {
         <Container>
           <Title>{formatMessage(messages.title)}</Title>
           <TeamStoreCardsContainer>
-            <Card>
+            <Card id="fixed" onClick={this.goTo}>
               <CardTitle>
                 <TeamBanner src={onDemandBanner} />
               </CardTitle>
@@ -95,7 +95,7 @@ class TeamstoreTypes extends React.Component<Props, {}> {
                 {formatMessage(messages.select)}
               </SelectTeamStoreButton>
             </Card>
-            <Card>
+            <Card id="demand" onClick={this.goTo}>
               <CardTitle>
                 <TeamBanner src={scheduledBanner} />
               </CardTitle>

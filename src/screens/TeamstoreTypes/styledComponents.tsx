@@ -25,6 +25,9 @@ export const Title = styled.p`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
+  @media (min-width: 320px) and (max-width: 748px) {
+    margin: 40px 20px;
+  }
 `
 
 export const Card = styled.div`
@@ -33,8 +36,19 @@ export const Card = styled.div`
   background: ${WHITE};
   height: 648px;
   width: 360px;
+  transition: all 0.25s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 3px 11px 1px rgba(0, 0, 0, 0.15);
+  }
   &:last-child {
     margin-left: 30px;
+  }
+  @media (min-width: 320px) and (max-width: 748px) {
+    &:last-child {
+      margin-left: 0px;
+      margin-top: 32px;
+    }
   }
   border: 1px solid ${GRAY_LIGHT};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
@@ -55,6 +69,10 @@ export const TeamStoreCardsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  @media (min-width: 320px) and (max-width: 748px) {
+    flex-flow: column;
+  }
 `
 
 export const List = styled.ul`
