@@ -1020,7 +1020,7 @@
   "screens.ShoppingCartPage.taxesPst": "PST",
   "screens.ShoppingCartPage.taxesVat": "VAT",
   "screens.ShoppingCartPage.differentStore": "DIFFERENT STORE ITEMS",
-  "screens.ShoppingCartPage.differentBody": "Seems like there are items from different stores in your cart, you can only by from one teamstore at a time.",
+  "screens.ShoppingCartPage.differentBody": "Seems like there are items from different stores in your cart, you can only buy from one teamstore at a time.",
   "screens.ShoppingCartPage.gotIt": "Got it!",
   "screens.ShoppingCartPage.terms": "I agree with the Terms & Conditions",
   "screens.ShoppingCartPage.continue": "Continue",
