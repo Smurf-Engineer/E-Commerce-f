@@ -328,7 +328,7 @@ export class ProductModels extends React.Component<Props, {}> {
                 customProduct={true}
                 isProduct={true}
                 textColor="white"
-                isPhone={false}
+                asImage={false}
                 {...{ product }}
               />
             ) : (
