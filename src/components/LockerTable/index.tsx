@@ -4,10 +4,20 @@
 import * as React from 'react'
 import get from 'lodash/get'
 import messsages from './messages'
-import { Table, HeaderRow, Cell, Title } from './styledComponents'
+import {
+  Table,
+  HeaderRow,
+  Cell,
+  Title,
+  Question,
+  ModalTitle,
+  buttonStyle,
+  InfoBody
+} from './styledComponents'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
+import Modal from 'antd/lib/modal'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -15,16 +25,19 @@ import { PriceRange, LockerTableType } from '../../types/common'
 import Product from './ProductRow'
 import config from '../../config/index'
 
+const { info } = Modal
+
 interface Header {
   message: string
   width?: number
+  withHelp?: boolean
   tabletWidth?: number
 }
 
 const headerTitles: Header[] = [
   { message: '', width: 40, tabletWidth: 45 },
   { message: 'regularPrice', width: 15, tabletWidth: 15 },
-  { message: 'fixedPrice', width: 15, tabletWidth: 15 },
+  { message: 'fixedPrice', width: 15, tabletWidth: 15, withHelp: true },
   { message: 'visible', width: 15, tabletWidth: 15 },
   { message: '', width: 15, tabletWidth: 10 }
 ]
@@ -35,6 +48,7 @@ interface Props {
   teamSizeRange: string
   currentCurrency?: string
   hideQuickView?: boolean
+  isFixed?: boolean
   onPressDelete: (index: number) => void
   onPressQuickView?: (
     id: number,
@@ -57,10 +71,24 @@ class LockerTable extends React.PureComponent<Props, {}> {
     onMoveRow(dragIndex, hoverIndex, dragRow)
   }
 
+  openInfo = () => {
+    const { formatMessage } = this.props
+    info({
+      title: <ModalTitle>{formatMessage(messsages.aboutTeam)}</ModalTitle>,
+      icon: ' ',
+      okText: formatMessage(messsages.gotIt),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: <InfoBody>{formatMessage(messsages.aboutTeamInfo)}</InfoBody>
+    })
+  }
+
   render() {
     const {
       formatMessage,
       items,
+      isFixed,
       hideQuickView,
       onPressDelete,
       onPressQuickView,
@@ -133,11 +161,18 @@ class LockerTable extends React.PureComponent<Props, {}> {
     return (
       <Table>
         <HeaderRow>
-          {headerTitles.map(({ width, tabletWidth, message }, key) => (
-            <Cell {...{ key, width, tabletWidth }}>
-              <Title>{message ? formatMessage(messsages[message]) : ''}</Title>
-            </Cell>
-          ))}
+          {headerTitles.map(
+            ({ width, tabletWidth, message, withHelp }, key) => (
+              <Cell {...{ key, width, tabletWidth }}>
+                <Title>
+                  {message ? formatMessage(messsages[message]) : ''}
+                </Title>
+                {withHelp && isFixed && (
+                  <Question onClick={this.openInfo} type="question-circle" />
+                )}
+              </Cell>
+            )
+          )}
         </HeaderRow>
         {renderTable}
       </Table>

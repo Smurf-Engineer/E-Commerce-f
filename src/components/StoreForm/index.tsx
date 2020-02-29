@@ -6,6 +6,7 @@ import { compose } from 'react-apollo'
 import Input from 'antd/lib/input'
 import message from 'antd/lib/message'
 import DatePicker from 'antd/lib/date-picker'
+import Modal from 'antd/lib/modal'
 import moment, { Moment } from 'moment'
 import {
   Container,
@@ -17,10 +18,16 @@ import {
   TeamStoreTypeLabel,
   ShipLabel,
   RightLabels,
-  Fields
+  Fields,
+  Question,
+  ModalTitle,
+  InfoBody,
+  buttonStyle
 } from './styledComponents'
 import { validateHolidayQuery } from './data'
 import messages from './messages'
+
+const { info } = Modal
 
 interface Props {
   hasError?: boolean
@@ -131,6 +138,18 @@ const StoreForm = ({
     onSelectEndDate(date, dateString)
   }
 
+  const openInfo = () => {
+    info({
+      title: <ModalTitle>{formatMessage(messages.aboutCutOff)}</ModalTitle>,
+      icon: ' ',
+      okText: formatMessage(messages.gotIt),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: <InfoBody>{formatMessage(messages.aboutCutOffInfo)}</InfoBody>
+    })
+  }
+
   return (
     <Container>
       <RightLabels>
@@ -160,6 +179,7 @@ const StoreForm = ({
               <Label>
                 {formatMessage(messages.orderCutOffLabel)}
                 <Required>*</Required>
+                <Question onClick={openInfo} type="question-circle" />
               </Label>
               <DatePicker
                 value={startDate}

@@ -44,5 +44,19 @@ export default defineMessages({
   fixedMode: {
     id: 'components.StoreForm.fixedMode',
     defaultMessage: 'FIXED DATE'
+  },
+  gotIt: {
+    id: 'components.StoreForm.gotIt',
+    defaultMessage: 'Got it!'
+  },
+  aboutCutOff: {
+    id: 'components.StoreForm.aboutCutOff',
+    defaultMessage: 'ABOUT CUT-OFF DATE'
+  },
+  aboutCutOffInfo: {
+    id: 'components.StoreForm.aboutCutOffInfo',
+    defaultMessage: `The order cut-off date can not be greater 
+    than 14 days from the current date. You will have the option, 
+    if necessary, to extend your Cut-Off date once up to a maximum of +3 days.`
   }
 })

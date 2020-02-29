@@ -28,6 +28,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   shortId?: string
@@ -43,6 +44,7 @@ interface Props {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   withoutTop?: boolean
@@ -51,7 +53,6 @@ interface Props {
   myLockerList?: boolean
   orderDetails?: boolean
   fixedPrices?: PriceRange[]
-  onDemand?: boolean
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -94,6 +95,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       intl,
       item,
       designId,
+      isFixed,
       teamStoreId,
       teamStoreItem,
       designName,
@@ -101,21 +103,20 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       designCode,
       items,
       itemProdPage = false,
-      fixedPrices = [],
-      onDemand = null
+      fixedPrices = []
     } = this.props
     if (renderForThumbnail && item) {
       const itemToAdd = this.getItemWithDetails(
         item,
         designId,
+        isFixed,
         teamStoreId,
         teamStoreItem,
         designName,
         designImage,
         designCode,
         itemProdPage,
-        fixedPrices,
-        onDemand
+        fixedPrices
       )
       this.saveInLocalStorage(itemToAdd)
     } else {
@@ -137,14 +138,14 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
                 this.getItemWithDetails(
                   i,
                   i.designId,
+                  i.isFixed,
                   i.teamStoreId,
                   i.teamStoreItem,
                   i.designName,
                   i.designImage,
                   i.designCode,
                   itemProdPage,
-                  fixedPrices,
-                  onDemand
+                  fixedPrices
                 )
               )
             )
@@ -152,14 +153,14 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             const itemToAdd = this.getItemWithDetails(
               item,
               designId,
+              isFixed,
               teamStoreId,
               teamStoreItem,
               designName,
               designImage,
               designCode,
               itemProdPage,
-              fixedPrices,
-              onDemand
+              fixedPrices
             )
             this.saveInLocalStorage(itemToAdd)
           }
@@ -170,14 +171,14 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             this.getItemWithDetails(
               item,
               item.shortId,
+              item.isFixed,
               item.teamStoreId,
               item.teamStoreItem,
               item.designName,
               item.designImage,
               item.designCode,
               false,
-              fixedPrices,
-              onDemand
+              fixedPrices
             )
           )
         }
@@ -188,14 +189,14 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   getItemWithDetails = (
     item: CartItems,
     designId = '',
+    isFixed = false,
     teamStoreId = '',
     teamStoreItem = '',
     designName = '',
     designImage = '',
     designCode = '',
     itemProdPage: boolean,
-    fixedPrices: PriceRange[],
-    onDemand: boolean | null
+    fixedPrices: PriceRange[]
   ) => {
     const details = [] as CartItemDetail[]
     const detail = {
@@ -212,10 +213,10 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       { designName },
       { designImage },
       { designCode },
+      { isFixed },
       { teamStoreId },
       { teamStoreItem },
-      { fixedPrices },
-      { onDemand }
+      { fixedPrices }
     )
     return itemToAdd
   }

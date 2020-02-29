@@ -68,6 +68,7 @@ import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE } from '../../constants'
 import Spin from 'antd/lib/spin'
 import { message } from 'antd'
+import some from 'lodash/some'
 
 type ProductCart = {
   id: number
@@ -329,6 +330,8 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const { cart } = stateLocation
+    const isFixedTeamstore = some(cart, 'isFixed')
+
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
     const shoppingCartData = getShoppingCartData(
@@ -443,7 +446,8 @@ class Checkout extends React.Component<Props, {}> {
                     setSkipValueAction,
                     showBillingForm,
                     showBillingAddressFormAction,
-                    paymentClientSecret
+                    paymentClientSecret,
+                    isFixedTeamstore
                   }}
                   setStripeCardDataAction={this.setStripeCardDataAction}
                   showContent={currentStep === PaymentTab}
@@ -763,7 +767,14 @@ class Checkout extends React.Component<Props, {}> {
     card?: CreditCardData,
     stripeToken?: string
   ) => {
-    const { setStripeCardDataAction, addNewCard } = this.props
+    const {
+      setStripeCardDataAction,
+      addNewCard,
+      location: {
+        state: { cart }
+      }
+    } = this.props
+    console.log('Cart ', cart)
     // await this.createPaymentIntent()
     if (card && stripeToken) {
       setStripeCardDataAction(card, stripeToken)

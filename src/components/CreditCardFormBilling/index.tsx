@@ -46,6 +46,7 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  isFixedTeamstore: boolean
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -102,7 +103,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       currentPage,
       indexAddressSelected,
       showBillingForm,
-      showBillingAddressFormAction
+      showBillingAddressFormAction,
+      isFixedTeamstore
     } = this.props
 
     const renderAddresses = (
@@ -143,7 +145,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 showCardFormAction,
                 showCardForm,
                 selectCardToPayAction,
-                selectedCard
+                selectedCard,
+                isFixedTeamstore
               }}
             />
           </MyCardsRow>

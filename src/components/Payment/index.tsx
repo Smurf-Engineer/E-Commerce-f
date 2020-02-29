@@ -43,6 +43,7 @@ interface Props {
   limit: number
   showBillingForm: boolean
   paymentClientSecret: string
+  isFixedTeamstore: boolean
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -191,7 +192,8 @@ class Payment extends React.PureComponent<Props, {}> {
       showBillingAddressFormAction,
       setStripeIbanDataAction,
       paymentClientSecret,
-      createPaymentIntent
+      createPaymentIntent,
+      isFixedTeamstore
     } = this.props
     const { stripe, openConfirm, euStripe } = this.state
 
@@ -230,7 +232,8 @@ class Payment extends React.PureComponent<Props, {}> {
             showBillingForm,
             showBillingAddressFormAction,
             paymentClientSecret,
-            createPaymentIntent
+            createPaymentIntent,
+            isFixedTeamstore
           }}
           setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}

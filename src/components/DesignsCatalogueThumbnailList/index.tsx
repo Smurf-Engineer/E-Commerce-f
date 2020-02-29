@@ -208,10 +208,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       designName={name}
                       designImage={image}
                       designCode={code}
+                      isFixed={!onDemandMode}
                       teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}
                       fixedPrices={priceRange}
-                      onDemand={onDemandMode}
                     />
                   )
                 }

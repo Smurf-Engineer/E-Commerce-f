@@ -66,6 +66,7 @@ interface Props {
   selectedCard: CreditCardData
   setupIntent: SetupIntentData
   formatMessage: (messageDescriptor: any) => string
+  isFixedTeamstore: boolean
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
   inputChangeAction: (id: string, value: string) => void
@@ -162,7 +163,8 @@ class MyCards extends React.Component<Props, {}> {
       setStripeCardDataAction,
       selectCardToPayAction,
       selectedCard,
-      setupIntent
+      setupIntent,
+      isFixedTeamstore
     } = this.props
 
     const { stripe } = this.state
@@ -214,20 +216,22 @@ class MyCards extends React.Component<Props, {}> {
             />
           </Elements>
         </StripeProvider>
-        <MyCardsList
-          items={cards}
-          {...{
-            formatMessage,
-            idDefaultCard,
-            paymentsRender,
-            listForMyAccount,
-            setStripeCardDataAction,
-            selectCardToPayAction,
-            selectedCard
-          }}
-          showConfirmDelete={this.handleOnShowDeleteCardConfirm}
-          selectCardAsDefault={this.handleOnSelectCardAsDefault}
-        />
+        {!isFixedTeamstore && (
+          <MyCardsList
+            items={cards}
+            {...{
+              formatMessage,
+              idDefaultCard,
+              paymentsRender,
+              listForMyAccount,
+              setStripeCardDataAction,
+              selectCardToPayAction,
+              selectedCard
+            }}
+            showConfirmDelete={this.handleOnShowDeleteCardConfirm}
+            selectCardAsDefault={this.handleOnSelectCardAsDefault}
+          />
+        )}
         <Modal
           visible={showDeleteCardConfirm}
           confirmLoading={deleteLoading}
@@ -360,10 +364,7 @@ const MyCardsEnhance = compose(
   addCardMutation,
   updateCardMutation,
   deleteCardMutation,
-  connect(
-    mapStateToProps,
-    { ...MyCardsActions }
-  )
+  connect(mapStateToProps, { ...MyCardsActions })
 )(MyCards)
 
 export default MyCardsEnhance
