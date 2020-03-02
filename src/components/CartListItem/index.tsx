@@ -93,6 +93,7 @@ interface Props {
   cartItem: CartItems
   itemIndex: number
   onlyRead?: boolean
+  isFixed?: boolean
   canReorder?: boolean
   currentCurrency: string
   currencySymbol?: string
@@ -111,7 +112,7 @@ export class CartListItem extends React.Component<Props, {}> {
     if (priceRange && priceRange.quantity === 'Personal') {
       val = 1
     } else if (priceRange.quantity) {
-      val = parseInt(priceRange.quantity.split('-')[0], 10)
+      val = parseInt(priceRange.quantity.split('-')[1], 10)
     }
     return val
   }
@@ -217,6 +218,7 @@ export class CartListItem extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
+      isFixed,
       canReorder,
       productTotal,
       unitPrice,
@@ -239,6 +241,7 @@ export class CartListItem extends React.Component<Props, {}> {
       designId,
       designName,
       designImage,
+      totalOrder,
       designCode,
       fixedPrices = []
     } = cartItem
@@ -267,8 +270,8 @@ export class CartListItem extends React.Component<Props, {}> {
     )
 
     let priceRange =
-      !isTeamStore || fixedPrices.length
-        ? this.getPriceRange(currencyPrices, quantitySum)
+      !isTeamStore || fixedPrices.length || (isTeamStore && isFixed)
+        ? this.getPriceRange(currencyPrices, quantitySum + totalOrder)
         : this.getPriceRangeByQuantity('2-5')
 
     priceRange =
