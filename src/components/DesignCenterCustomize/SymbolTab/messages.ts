@@ -28,5 +28,21 @@ export default defineMessages({
   notFoundSymbol: {
     id: 'components.SymbolTab.notFoundSymbol',
     defaultMessage: 'Your search did not match with any available symbol'
+  },
+  addClipart: {
+    id: 'components.SymbolTab.addClipart',
+    defaultMessage: '+ ADD CLIPART'
+  },
+  clipartLayers: {
+    id: 'components.SymbolTab.clipartLayers',
+    defaultMessage: 'Clipart Layers'
+  },
+  delete: {
+    id: 'components.SymbolTab.delete',
+    defaultMessage: 'Delete'
+  },
+  edit: {
+    id: 'components.SymbolTab.edit',
+    defaultMessage: 'Edit'
   }
 })

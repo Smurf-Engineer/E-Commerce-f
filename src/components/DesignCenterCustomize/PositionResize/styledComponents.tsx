@@ -14,6 +14,7 @@ interface IconProps {
 interface DivProps {
   maxWidth?: boolean
   alignStart?: boolean
+  noMargin?: boolean
 }
 
 export const Container = styled.div`
@@ -38,16 +39,16 @@ export const InputContainer = styled.div`
   margin-top: 12px;
   display: flex;
   align-items: center;
-  justify-content: ${({ alignStart }: DivProps) =>
-    alignStart ? 'flex-start' : 'space-between'};
+  justify-content: flex-start;
 `
 
 export const InputBlock = styled.div`
   display: flex;
   flex-flow: column;
+  margin-right: ${({ noMargin }: DivProps) => (noMargin ? '0' : '20px')};
   justify-content: flex-start;
   align-items: flex-start;
-  max-width: ${({ maxWidth }: DivProps) => (maxWidth ? '94px' : '74px')};
+  max-width: ${({ maxWidth }: DivProps) => (maxWidth ? '94px' : '80px')};
   width: 100%;
 `
 

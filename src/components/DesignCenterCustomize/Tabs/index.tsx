@@ -71,6 +71,8 @@ interface Props {
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
   activeEl: PositionSize
+  onDeleteLayer: (id: string) => void
+  onSelectEl: (id: string, typeEl: string) => void
   onPositionChange: (data: PositionSize) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -133,6 +135,8 @@ const Tabs = ({
   onSelectTextFormat,
   openPaletteModalAction,
   myPaletteModals,
+  onSelectEl,
+  onDeleteLayer,
   onSelectArtFormat,
   onSelectStitchingColor,
   stitchingColor,
@@ -218,6 +222,8 @@ const Tabs = ({
               onApplyText,
               formatMessage,
               productName,
+              onDeleteLayer,
+              onSelectEl,
               selectedElement,
               textFormat,
               onSelectTextFormat,
@@ -237,12 +243,15 @@ const Tabs = ({
               formatMessage,
               onSelectArtFormat,
               searchClipParam,
+              onDeleteLayer,
+              onSelectEl,
               activeEl,
               onPositionChange,
               setSearchClipParamAction,
               onLockElement,
               colorsList
             }}
+            elements={canvas.path}
             selectedElement={canvas.path[selectedElement]}
             selectedItem={
               selectedItem.type === CanvasElements.Path && selectedItem.id

@@ -404,6 +404,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onOpenColorChart,
               tutorialPlaylist
             }}
+            onDeleteLayer={this.onDeleteLayer}
+            onSelectEl={this.setSelectedLayer}
             onPositionChange={this.handleApplyPosition}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
@@ -614,6 +616,18 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         fileId
       })
       onSelectedItem({ id: fileId, type: CanvasElements.Path }, name || '')
+    }
+  }
+
+  setSelectedLayer = (id: string, type: string) => {
+    if (this.render3D) {
+      this.render3D.setSelectedLayer(id, type)
+    }
+  }
+
+  onDeleteLayer = (id: string) => {
+    if (this.render3D) {
+      this.render3D.deleteLayer(id)
     }
   }
 

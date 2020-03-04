@@ -27,11 +27,10 @@ interface State {
 
 export class PositionResize extends React.PureComponent<Props, State> {
   state = {
-    aspectLock: false
+    aspectLock: true
   }
 
   changeValue = (value: number | undefined, name: string) => {
-    console.log('value:', value)
     if (!isNaN(value)) {
       const { handleChange, activeEl } = this.props
       handleChange({ ...activeEl, [name]: value })
@@ -86,6 +85,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               <SmallIcon type="arrows-alt" />
             </Subtitle>
             <NumberInput
+              size="large"
               value={horizontal}
               formatter={rawValue => `${rawValue} px`}
               parser={value => value.replace(' px', '')}
@@ -100,6 +100,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               <SmallIcon invert={true} type="arrows-alt" />
             </Subtitle>
             <NumberInput
+              size="large"
               value={vertical}
               formatter={rawValue => `${rawValue} px`}
               parser={value => value.replace(' px', '')}
@@ -108,11 +109,12 @@ export class PositionResize extends React.PureComponent<Props, State> {
               onChange={val => this.changeValue(val, 'vertical')}
             />
           </InputBlock>
-          <InputBlock maxWidth={true}>
+          <InputBlock noMargin={true} maxWidth={true}>
             <Subtitle>
               <FormattedMessage {...messages.rotation} />
             </Subtitle>
             <NumberInput
+              size="large"
               value={rotation}
               min={0}
               max={360}
@@ -124,12 +126,13 @@ export class PositionResize extends React.PureComponent<Props, State> {
             />
           </InputBlock>
         </InputContainer>
-        <InputContainer alignStart={true}>
-          <InputBlock>
+        <InputContainer>
+          <InputBlock noMargin={true}>
             <Subtitle>
               <FormattedMessage {...messages.width} />
             </Subtitle>
             <NumberInput
+              size="large"
               value={width}
               formatter={rawValue => `${rawValue} px`}
               parser={value => value.replace(' px', '')}
@@ -143,11 +146,12 @@ export class PositionResize extends React.PureComponent<Props, State> {
             type={aspectLock ? 'lock' : 'unlock'}
             onClick={this.changeLock}
           />
-          <InputBlock>
+          <InputBlock noMargin={true}>
             <Subtitle>
               <FormattedMessage {...messages.height} />
             </Subtitle>
             <NumberInput
+              size="large"
               value={height}
               formatter={rawValue => `${rawValue} px`}
               parser={value => value.replace(' px', '')}

@@ -29,7 +29,14 @@ import {
   Row,
   ArrowIcon,
   ButtonWrapper,
-  LockContainer
+  LockContainer,
+  AddTextButton,
+  LayersText,
+  Layers,
+  LayerBlock,
+  TitleLayer,
+  DeleteLayer,
+  EditLayer
 } from './styledComponents'
 import { PositionResize } from '../PositionResize'
 
@@ -49,6 +56,8 @@ interface Props {
   fonts: SimpleFont[]
   colorsList: any
   activeEl: PositionSize
+  onDeleteLayer: (id: string) => void
+  onSelectEl: (id: string, typeEl: string) => void
   onPositionChange: (data: PositionSize) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
@@ -110,7 +119,31 @@ export class TextTab extends React.PureComponent<Props, State> {
             </LockContainer>
           )}
         </Header>
-        <SwipeableViews disabled={true} index={page}>
+        <SwipeableViews
+          disabled={true}
+          index={selectedElement && !page ? 1 : page}
+        >
+          <div>
+            <AddTextButton onClick={this.changePage(1, 0)}>
+              {formatMessage(messages.addTextHeader)}
+            </AddTextButton>
+            <LayersText>{formatMessage(messages.textLayers)}</LayersText>
+            <Layers>
+              {Object.keys(elements).map((id, index) => (
+                <LayerBlock key={index}>
+                  <TitleLayer {...elements[id].textFormat}>
+                    {elements[id].text}
+                  </TitleLayer>
+                  <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                    {formatMessage(messages.delete)}
+                  </DeleteLayer>
+                  <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                    {formatMessage(messages.edit)}
+                  </EditLayer>
+                </LayerBlock>
+              ))}
+            </Layers>
+          </div>
           <div>
             <InputWrapper disabled={!text}>
               <Input
@@ -126,17 +159,17 @@ export class TextTab extends React.PureComponent<Props, State> {
               </ButtonWrapper>
             </InputWrapper>
             <OptionText
-              onClick={this.changePage(1, 0)}
+              onClick={this.changePage(2, 0)}
               title={formatMessage(messages.font)}
               option={!!textFormat && textFormat.fontFamily}
             />
             <OptionText
-              onClick={this.changePage(1, 1)}
+              onClick={this.changePage(2, 1)}
               title={formatMessage(messages.fill)}
               color={!!textFormat && textFormat.fill}
             />
             <OptionText
-              onClick={this.changePage(1, 2)}
+              onClick={this.changePage(2, 2)}
               title={formatMessage(messages.outline)}
               color={!!textFormat && textFormat.stroke}
               selected={!!textFormat.strokeWidth}
@@ -227,7 +260,7 @@ export class TextTab extends React.PureComponent<Props, State> {
   }
 
   getHeaderTitle = (option: number, page: number): string => {
-    if (page === 0) {
+    if (page === 0 || page === 1) {
       return 'title'
     }
 
@@ -247,6 +280,22 @@ export class TextTab extends React.PureComponent<Props, State> {
       default:
         return 'title'
     }
+  }
+
+  onSelectLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onSelectEl } = this.props
+    onSelectEl(id, 'text')
+  }
+
+  onDeleteLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onDeleteLayer } = this.props
+    onDeleteLayer(id)
   }
 
   handleOnUpdateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -276,7 +325,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       newTextFormat.fontFamily = fontFamily
       onApplyText(text, newTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('fontFamily', fontFamily, true)
   }
@@ -294,7 +343,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       updatedTextFormat.fill = fill
       onApplyText(text, updatedTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('fill', fill, false)
   }
@@ -328,7 +377,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       updatedTextFormat.stroke = stroke
       onApplyText(text, updatedTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('stroke', stroke, false)
   }
@@ -349,7 +398,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       updatedTextFormat.textAlign = alignment
       onApplyText(text, updatedTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('textAlign', alignment, false)
   }
@@ -368,7 +417,7 @@ export class TextTab extends React.PureComponent<Props, State> {
         updatedTextFormat.charSpacing = spacing * 10
         onApplyText(text, updatedTextFormat)
       } else {
-        this.setState({ page: 0 })
+        this.setState({ page: 1 })
       }
       onSelectTextFormat('charSpacing', spacing * 10, false)
     }
@@ -388,7 +437,7 @@ export class TextTab extends React.PureComponent<Props, State> {
         updatedTextFormat.fontSize = size
         onApplyText(text, updatedTextFormat)
       } else {
-        this.setState({ page: 0 })
+        this.setState({ page: 1 })
       }
       onSelectTextFormat('fontSize', size, false)
     }
@@ -408,7 +457,7 @@ export class TextTab extends React.PureComponent<Props, State> {
         updatedTextFormat.lineHeight = spacing
         onApplyText(text, updatedTextFormat)
       } else {
-        this.setState({ page: 0 })
+        this.setState({ page: 1 })
       }
       onSelectTextFormat('lineHeight', spacing, false)
     }

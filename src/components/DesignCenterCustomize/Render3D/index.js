@@ -1568,10 +1568,25 @@ class Render3D extends PureComponent {
     }
   }
 
+  setSelectedLayer = (id, type) => {
+    const { onSelectEl } = this.props
+    onSelectEl(id, type)
+    const el = this.getElementById(id)
+    this.controls.enabled = false
+    this.canvasTexture.setActiveObject(el)
+    this.canvasTexture.renderAll()
+  }
+
+  deleteLayer = id => {
+    const el = this.getElementById(id)
+    this.deleteElement(el)
+    this.canvasTexture.renderAll()
+  }
+
   applyPosition = data => {
     const activeEl = this.canvasTexture.getActiveObject()
     if (activeEl) {
-      const { width, height } = activeEl
+      const { width, height, angle } = activeEl
       const {
         width: pixelWidth,
         height: pixelHeight,
@@ -1579,15 +1594,26 @@ class Render3D extends PureComponent {
         horizontal,
         vertical
       } = data
-      activeEl
-        .set({
-          left: horizontal,
-          top: vertical,
-          angle: rotation,
-          scaleX: pixelWidth / width,
-          scaleY: pixelHeight / height
-        })
-        .setCoords()
+      const constraintPosition = activeEl.translateToOriginPoint(
+        activeEl.getCenterPoint(),
+        CENTER_ORIGIN,
+        CENTER_ORIGIN
+      )
+      activeEl.set({
+        left: horizontal,
+        top: vertical,
+        angle: rotation,
+        scaleX: pixelWidth / width,
+        scaleY: pixelHeight / height
+      })
+      if (angle !== rotation) {
+        activeEl.setPositionByOrigin(
+          constraintPosition,
+          CENTER_ORIGIN,
+          CENTER_ORIGIN
+        )
+      }
+      activeEl.setCoords()
       this.canvasTexture.renderAll()
       this.forceUpdate()
     }
@@ -1839,6 +1865,7 @@ class Render3D extends PureComponent {
 
         const el = {
           id,
+          src,
           fill: BLACK,
           stroke: BLACK,
           strokeWidth: 0,

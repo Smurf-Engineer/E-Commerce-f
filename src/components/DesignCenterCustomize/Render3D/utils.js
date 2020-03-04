@@ -80,9 +80,10 @@ export const getTextCanvasElement = el => {
 }
 
 export const getClipArtCanvasElement = el => {
-  const { id, fill, stroke, strokeWidth } = el
+  const { id, fill, stroke, strokeWidth, fileUrl } = el
   const element = {
     id,
+    src: fileUrl,
     fill: fill || BLACK,
     stroke: stroke || BLACK,
     strokeWidth: strokeWidth || 0
