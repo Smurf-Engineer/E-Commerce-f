@@ -109,7 +109,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       <Container>
         <Header>
           <Row onClick={this.changePage(0, 0)}>
-            {!!page && <ArrowIcon src={backIcon} />}
+            {!!page && !selectedElement && <ArrowIcon src={backIcon} />}
             <Title>
               <FormattedMessage {...messages[headerTitle]} />
             </Title>
