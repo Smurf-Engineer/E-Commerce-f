@@ -120,7 +120,7 @@ class OrderData extends React.Component<Props, {}> {
           billingCountry,
           billingApartment,
           shippingAmount,
-          payment: { stripeCharge },
+          payment,
           cart,
           paymentMethod,
           currency,
@@ -137,7 +137,7 @@ class OrderData extends React.Component<Props, {}> {
       currentCurrency
     } = this.props
 
-    const card = get(stripeCharge, 'cardData')
+    const card = get(payment, 'stripeCharge.cardData', {})
 
     const paymentMethodInfo =
       paymentMethod === PaymentOptions.CREDITCARD ? (

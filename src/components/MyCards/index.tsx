@@ -178,7 +178,6 @@ class MyCards extends React.Component<Props, {}> {
         </Container>
       )
     }
-
     const userCards = get(data, 'userCards', {})
     const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
@@ -356,8 +355,19 @@ class MyCards extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
+type OwnProps = {
+  isFixedTeamstore?: boolean
+}
 const MyCardsEnhance = compose(
-  graphql(cardsQuery, { name: 'data' }),
+  graphql(cardsQuery, {
+    name: 'data',
+    options: (ownprops: OwnProps) => {
+      const { isFixedTeamstore } = ownprops
+      return {
+        skip: isFixedTeamstore
+      }
+    }
+  }),
   graphql(setupIntentQuery, { name: 'setupIntent' }),
   withLoading,
   withError,

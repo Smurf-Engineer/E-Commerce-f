@@ -270,18 +270,22 @@ class Payment extends React.PureComponent<Props, {}> {
           >
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          <MethodButton
-            selected={paymentMethod === IBAN}
-            onClick={this.handleIbanClick}
-          >
-            {formatMessage(messages.methodIban)}
-          </MethodButton>
-          <MethodButton
-            selected={paymentMethod === PAYPAL}
-            onClick={this.handlePaypalClick}
-          >
-            {formatMessage(messages.methodPaypal)}
-          </MethodButton>
+          {!isFixedTeamstore && (
+            <MethodButton
+              selected={paymentMethod === IBAN}
+              onClick={this.handleIbanClick}
+            >
+              {formatMessage(messages.methodIban)}
+            </MethodButton>
+          )}
+          {!isFixedTeamstore && (
+            <MethodButton
+              selected={paymentMethod === PAYPAL}
+              onClick={this.handlePaypalClick}
+            >
+              {formatMessage(messages.methodPaypal)}
+            </MethodButton>
+          )}
         </ContainerMethods>
 
         {paymentMethod === CREDITCARD && (

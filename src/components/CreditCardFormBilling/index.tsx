@@ -259,7 +259,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       nextStep,
       selectedCard,
       stripe,
-      createPaymentIntent
+      createPaymentIntent,
+      isFixedTeamstore
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
@@ -291,31 +292,45 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
     setLoadingBillingAction(true)
 
-    /* const stripeResponse = !selectedCardId
-      ? await stripe.createPaymentMethod('card', this.state.cardElement, {
-          billing_details: stripeTokenData
-        })
-      : {} */
-    const stripeResponse = !selectedCardId
-      ? await stripe.createToken(stripeTokenData)
-      : {}
+    let stripeResponse = {}
+    if (!selectedCardId) {
+      stripeResponse = isFixedTeamstore
+        ? await stripe.createToken(stripeTokenData)
+        : await stripe.createPaymentMethod('card', this.state.cardElement, {
+            billing_details: stripeTokenData
+          })
+    }
 
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
       if (!selectedCardId) {
-        /* const {
-          paymentMethod: {
-            id: tokenId,
-            card: { id, name, brand, last4, exp_month, exp_year }
-          }
-        } = stripeResponse */
         const {
-          token: {
+          [isFixedTeamstore ? 'token' : 'paymentMethod']: {
             id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }
         } = stripeResponse
+
+        /* isFixedTeamstore
+          ? {
+              paymentMethod: {
+                id: tokenId,
+                card: { id, name, brand, last4, exp_month, exp_year }
+              }
+            } = stripeResponse
+          : {
+              token: {
+                id: tokenId,
+                card: { id, name, brand, last4, exp_month, exp_year }
+              }
+            } = stripeResponse */
+        /* const {
+          token: {
+            id: tokenId,
+            card: { id, name, brand, last4, exp_month, exp_year }
+          }
+        } = stripeResponse */
 
         const cardData: CreditCardData = {
           id,

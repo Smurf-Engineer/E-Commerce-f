@@ -341,7 +341,7 @@ class Checkout extends React.Component<Props, {}> {
     const paymentIntentLoading =
       paymentMethod === PaymentOptions.CREDITCARD &&
       currentStep === 2 &&
-      !paymentClientSecret.length
+      !paymentClientSecret.length && !isFixedTeamstore
 
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
     const { Step } = Steps
@@ -775,8 +775,13 @@ class Checkout extends React.Component<Props, {}> {
       }
     } = this.props
     console.log('Cart ', cart)
-    // await this.createPaymentIntent()
+    const isFixedTeamstore = some(cart, 'isFixed')
+
+    if (!isFixedTeamstore) {
+      await this.createPaymentIntent()
+    }
     if (card && stripeToken) {
+      console.log('entrando')
       setStripeCardDataAction(card, stripeToken)
       await addNewCard({ variables: { token: stripeToken } })
     }
@@ -827,19 +832,22 @@ class Checkout extends React.Component<Props, {}> {
 
       const orderId = get(response, 'data.charge.short_id', '')
 
-      const { stripe } = this.state
-      const stripeResponse = await stripe.handleCardPayment(
-        paymentClientSecret,
-        {
-          payment_method: stripeToken || selectedCard.id
+      if (!orderObj.isFixedTeamstore) {
+        const { stripe } = this.state
+
+        const stripeResponse = await stripe.handleCardPayment(
+          paymentClientSecret,
+          {
+            payment_method: stripeToken || selectedCard.id
+          }
+        )
+
+        if (stripeResponse.error) {
+          message.error(stripeResponse.error.message)
+          setLoadingPlaceOrderAction(false)
+
+          return
         }
-      )
-
-      if (stripeResponse.error) {
-        message.error(stripeResponse.error.message)
-        setLoadingPlaceOrderAction(false)
-
-        return
       }
 
       localStorage.removeItem('cart')
@@ -931,6 +939,8 @@ class Checkout extends React.Component<Props, {}> {
       zipCode: shippingAddress.zipCode
     }
 
+    const isFixedTeamstore = some(cart, 'isFixed')
+
     try {
       const taxResponse = await query({
         query: getTaxQuery,
@@ -988,6 +998,7 @@ class Checkout extends React.Component<Props, {}> {
         }
       )
       const couponCode = couponObject && couponObject.code
+
       const orderObj = {
         proDesign,
         paymentMethod,
@@ -1008,7 +1019,8 @@ class Checkout extends React.Component<Props, {}> {
         shippingAmount: shippingAmount || '0',
         currency: currentCurrency || config.defaultCurrency,
         weight: weightSum,
-        couponCode
+        couponCode,
+        isFixedTeamstore
       }
       return orderObj
     } catch (error) {
