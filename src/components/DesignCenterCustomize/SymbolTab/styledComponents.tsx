@@ -239,6 +239,15 @@ export const ClipartPrev = styled.img`
 export const ClipartLeft = styled.div`
   flex: 1;
   text-align: center;
-  background: ${({ stroke }: ClipartProps) =>
-    `linear-gradient(90deg, transparent, ${stroke}75, transparent)`};
+  filter: ${({ stroke }: ClipartProps) => `drop-shadow(0px 0px 3px ${stroke})`};
+`
+
+export const EmptyElements = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+  text-align: center;
+  padding: 16px;
 `

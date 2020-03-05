@@ -266,12 +266,15 @@ const Tabs = ({
               onUploadFile,
               images,
               activeEl,
+              onDeleteLayer,
+              onSelectEl,
               onPositionChange,
               uploadingFile,
               isUserAuthenticated,
               onLockElement,
               openLoginModalAction
             }}
+            elements={canvas.image}
             selectedElement={canvas.image[selectedElement]}
             selectedItem={
               selectedItem.type === CanvasElements.Image && selectedItem.id

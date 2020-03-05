@@ -207,3 +207,13 @@ export const EditLayer = styled.div`
     color: ${WHITE};
   }
 `
+
+export const EmptyElements = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+  text-align: center;
+  padding: 16px;
+`

@@ -80,5 +80,10 @@ export default defineMessages({
   edit: {
     id: 'components.TextTab.edit',
     defaultMessage: 'Edit'
+  },
+  empty: {
+    id: 'components.TextTab.empty',
+    defaultMessage: `Here are going to appear your text layers on your design.
+    Add your first text layer.`
   }
 })

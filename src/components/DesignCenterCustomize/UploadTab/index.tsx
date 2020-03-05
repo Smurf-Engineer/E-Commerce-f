@@ -13,6 +13,7 @@ import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import withError from '../../WithError'
 import { compose, graphql } from 'react-apollo'
+import backIcon from '../../../assets/leftarrow.svg'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import { userfilesQuery, deleteFileMutation } from './data'
 import Dragger from '../../DraggerWithLoading'
@@ -33,7 +34,18 @@ import {
   EmptyContainer,
   LoginMessage,
   LockContainer,
-  CustomButton
+  CustomButton,
+  AddTextButton,
+  LayersText,
+  ImageLayers,
+  Layer,
+  ImageLeft,
+  ImageClip,
+  DeleteLayer,
+  EditLayer,
+  ArrowIcon,
+  LowerContainer,
+  EmptyElements
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
@@ -67,6 +79,11 @@ interface Props {
   selectedItem: number
   selectedElement: CanvasElement
   activeEl: PositionSize
+  elements: {
+    [id: string]: CanvasElement
+  }
+  onDeleteLayer: (id: string) => void
+  onSelectEl: (id: string, typeEl: string) => void
   onPositionChange: (data: PositionSize) => void
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
@@ -78,9 +95,14 @@ interface Props {
 
 interface State {
   file: any
+  addImage: boolean
 }
 
 class UploadTab extends React.PureComponent<Props, State> {
+  state = {
+    file: {},
+    addImage: false
+  }
   componentWillReceiveProps(nextProps: Props) {
     const { uploadingFile: oldUploadingFile, data } = this.props
     const { uploadingFile } = nextProps
@@ -95,10 +117,12 @@ class UploadTab extends React.PureComponent<Props, State> {
       isUserAuthenticated,
       selectedItem,
       activeEl,
+      elements,
       onPositionChange,
       formatMessage,
       selectedElement
     } = this.props
+    const { addImage } = this.state
     if (!isUserAuthenticated) {
       return (
         <Container>
@@ -135,9 +159,13 @@ class UploadTab extends React.PureComponent<Props, State> {
         onSelectImage={this.beforeUpload}
       />
     )
+    const arrayElements = Object.keys(elements || {})
     return (
       <Container>
         <Header>
+          {!selectedElement && addImage && (
+            <ArrowIcon onClick={this.goBackToLayer} src={backIcon} />
+          )}
           <Title>
             <FormattedMessage {...messages.title} />
           </Title>
@@ -150,25 +178,81 @@ class UploadTab extends React.PureComponent<Props, State> {
         {selectedElement ? (
           <PositionResize {...{ activeEl }} handleChange={onPositionChange} />
         ) : (
-          <>
-            <ImageList
-              onClickImage={this.handleOnAddImage}
-              images={imagesData}
-              onClickDelete={this.handleOnDelete}
-              currentSelected={selectedItem}
-              {...{ formatMessage }}
-            />
-            <DraggerBottom>{dragger}</DraggerBottom>
-          </>
+          <LowerContainer>
+            {addImage ? (
+              <>
+                <ImageList
+                  onClickImage={this.handleOnAddImage}
+                  images={imagesData}
+                  onClickDelete={this.handleOnDelete}
+                  currentSelected={selectedItem}
+                  {...{ formatMessage }}
+                />
+                <DraggerBottom>{dragger}</DraggerBottom>
+                <Recommendation color={RED}>
+                  <FormattedMessage {...messages.recommendationTitle} />
+                </Recommendation>
+                <Recommendation>
+                  <FormattedMessage {...messages.recommendationMessage} />
+                </Recommendation>
+              </>
+            ) : (
+              <>
+                <AddTextButton onClick={this.addImage}>
+                  {formatMessage(messages.uploadFile)}
+                </AddTextButton>
+                <LayersText>{formatMessage(messages.uploadLayers)}</LayersText>
+                <ImageLayers>
+                  {arrayElements.length ? (
+                    arrayElements.map((id: string, index: number) => (
+                      <Layer key={index}>
+                        <ImageLeft>
+                          <ImageClip src={elements[id].src} />
+                        </ImageLeft>
+                        <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                          {formatMessage(messages.delete)}
+                        </DeleteLayer>
+                        <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                          {formatMessage(messages.edit)}
+                        </EditLayer>
+                      </Layer>
+                    ))
+                  ) : (
+                    <EmptyElements>
+                      {formatMessage(messages.empty)}
+                    </EmptyElements>
+                  )}
+                </ImageLayers>
+              </>
+            )}
+          </LowerContainer>
         )}
-        <Recommendation color={RED}>
-          <FormattedMessage {...messages.recommendationTitle} />
-        </Recommendation>
-        <Recommendation>
-          <FormattedMessage {...messages.recommendationMessage} />
-        </Recommendation>
       </Container>
     )
+  }
+
+  onSelectLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onSelectEl } = this.props
+    onSelectEl(id, 'image')
+  }
+
+  onDeleteLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onDeleteLayer } = this.props
+    onDeleteLayer(id)
+  }
+
+  addImage = () => {
+    this.setState({ addImage: true })
+  }
+
+  goBackToLayer = () => {
+    this.setState({ addImage: false })
   }
 
   handleOnLogin = () => {

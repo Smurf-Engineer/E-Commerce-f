@@ -36,7 +36,8 @@ import {
   LayerBlock,
   TitleLayer,
   DeleteLayer,
-  EditLayer
+  EditLayer,
+  EmptyElements
 } from './styledComponents'
 import { PositionResize } from '../PositionResize'
 
@@ -103,7 +104,7 @@ export class TextTab extends React.PureComponent<Props, State> {
     const RadioButton = Radio.Button
     const RadioGroup = Radio.Group
     const element = elements[selectedElement]
-
+    const arrayElements = Object.keys(elements || {})
     return (
       <Container>
         <Header>
@@ -129,19 +130,23 @@ export class TextTab extends React.PureComponent<Props, State> {
             </AddTextButton>
             <LayersText>{formatMessage(messages.textLayers)}</LayersText>
             <Layers>
-              {Object.keys(elements).map((id, index) => (
-                <LayerBlock key={index}>
-                  <TitleLayer {...elements[id].textFormat}>
-                    {elements[id].text}
-                  </TitleLayer>
-                  <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
-                    {formatMessage(messages.delete)}
-                  </DeleteLayer>
-                  <EditLayer {...{ id }} onClick={this.onSelectLayer}>
-                    {formatMessage(messages.edit)}
-                  </EditLayer>
-                </LayerBlock>
-              ))}
+              {arrayElements.length ? (
+                arrayElements.map((id, index) => (
+                  <LayerBlock key={index}>
+                    <TitleLayer {...elements[id].textFormat}>
+                      {elements[id].text}
+                    </TitleLayer>
+                    <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                      {formatMessage(messages.delete)}
+                    </DeleteLayer>
+                    <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                      {formatMessage(messages.edit)}
+                    </EditLayer>
+                  </LayerBlock>
+                ))
+              ) : (
+                <EmptyElements>{formatMessage(messages.empty)}</EmptyElements>
+              )}
             </Layers>
           </div>
           <div>

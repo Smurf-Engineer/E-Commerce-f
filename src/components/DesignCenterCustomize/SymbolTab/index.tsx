@@ -46,7 +46,8 @@ import {
   EditLayer,
   Layer,
   ClipartPrev,
-  ClipartLeft
+  ClipartLeft,
+  EmptyElements
 } from './styledComponents'
 import PositionResize from '../PositionResize'
 
@@ -125,7 +126,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         <Spin />
       </Loading>
     )
-
+    const arrayElements = Object.keys(elements || {})
     return (
       <Container>
         <Header>
@@ -192,19 +193,25 @@ class SymbolTab extends React.PureComponent<Props, {}> {
                 </AddTextButton>
                 <LayersText>{formatMessage(messages.clipartLayers)}</LayersText>
                 <ClipartsLayers>
-                  {Object.keys(elements).map((id, index) => (
-                    <Layer key={index}>
-                      <ClipartLeft stroke={elements[id].fill}>
-                        <ClipartPrev src={elements[id].src} />
-                      </ClipartLeft>
-                      <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
-                        {formatMessage(messages.delete)}
-                      </DeleteLayer>
-                      <EditLayer {...{ id }} onClick={this.onSelectLayer}>
-                        {formatMessage(messages.edit)}
-                      </EditLayer>
-                    </Layer>
-                  ))}
+                  {arrayElements.length ? (
+                    arrayElements.map((id, index) => (
+                      <Layer key={index}>
+                        <ClipartLeft stroke={elements[id].fill}>
+                          <ClipartPrev src={elements[id].src} />
+                        </ClipartLeft>
+                        <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                          {formatMessage(messages.delete)}
+                        </DeleteLayer>
+                        <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                          {formatMessage(messages.edit)}
+                        </EditLayer>
+                      </Layer>
+                    ))
+                  ) : (
+                    <EmptyElements>
+                      {formatMessage(messages.empty)}
+                    </EmptyElements>
+                  )}
                 </ClipartsLayers>
               </>
             )}
@@ -227,7 +234,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
       currentTarget: { id }
     } = event
     const { onSelectEl } = this.props
-    onSelectEl(id, 'text')
+    onSelectEl(id, 'path')
   }
 
   onDeleteLayer = (event: React.MouseEvent<EventTarget>) => {

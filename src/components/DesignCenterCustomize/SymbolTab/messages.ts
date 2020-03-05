@@ -44,5 +44,10 @@ export default defineMessages({
   edit: {
     id: 'components.SymbolTab.edit',
     defaultMessage: 'Edit'
+  },
+  empty: {
+    id: 'components.SymbolTab.empty',
+    defaultMessage: `Here are going to appear your clipart layers on your design.
+    Add your first Clipart layer.`
   }
 })
