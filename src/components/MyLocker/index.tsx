@@ -41,7 +41,8 @@ import {
   DeleteDesignModal,
   RenameDesignModal,
   UserType,
-  MessagePayload
+  MessagePayload,
+  DesignCopyResult
 } from '../../types/common'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
@@ -216,14 +217,47 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   }
 
   handleMakeCopy = async (designId: string) => {
-    const { setLoadingAction, duplicateDesign, data } = this.props
+    const {
+      setLoadingAction,
+      duplicateDesign,
+      offset,
+      user,
+      admin,
+      userId,
+      limit
+    } = this.props
     try {
       setLoadingAction(true)
-      const response = await duplicateDesign({
-        variables: { designId }
+      await duplicateDesign({
+        variables: { designId },
+        update: (store: any, dataInternal: DesignCopyResult) => {
+          const design = get(dataInternal, 'data.duplicateDesign.design')
+          if (!design) {
+            return
+          }
+          const userShortId = admin ? userId : user.id
+          const storedData = store.readQuery({
+            query: desginsQuery,
+            variables: {
+              limit,
+              offset,
+              userId: userShortId
+            }
+          })
+          const designList = get(storedData, 'designsResults.designs')
+          designList.push(design)
+          store.writeQuery({
+            query: desginsQuery,
+            variables: {
+              limit,
+              offset,
+              userId: userShortId
+            },
+            data: storedData
+          })
+          Message.success(get(dataInternal, 'data.duplicateDesign.message', ''))
+        }
       })
-      Message.success(get(response, 'data.duplicateDesign.message', ''))
-      await data.refetch()
     } catch (e) {
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
