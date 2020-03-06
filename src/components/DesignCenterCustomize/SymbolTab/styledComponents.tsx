@@ -209,7 +209,7 @@ export const DeleteLayer = styled.div`
   text-align: center;
   transition: all 0.2s;
   border-radius: 2px;
-  padding: 1px 7px;
+  padding: 7px;
   &:hover {
     background: ${RED};
     color: ${WHITE};
@@ -221,6 +221,7 @@ export const EditLayer = styled.div`
   border: 1px solid ${GRAY_LIGHT};
   border-radius: 2px;
   text-align: center;
+  padding: 7px;
   cursor: pointer;
   color: ${GRAY_DARK};
   font-family: ${AVENIR_NEXT};
@@ -246,6 +247,7 @@ export const ClipartPrev = styled.div`
 export const ClipartLeft = styled.div`
   flex: 1;
   text-align: center;
+  margin-right: 8px;
   background: ${GRAY_LIGHTEST};
   border-radius: 2px;
 `
