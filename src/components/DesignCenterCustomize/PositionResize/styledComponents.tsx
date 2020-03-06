@@ -48,8 +48,11 @@ export const InputBlock = styled.div`
   margin-right: ${({ noMargin }: DivProps) => (noMargin ? '0' : '20px')};
   justify-content: flex-start;
   align-items: flex-start;
-  max-width: ${({ maxWidth }: DivProps) => (maxWidth ? '94px' : '80px')};
+  max-width: 130px;
   width: 100%;
+  &:last-child {
+    margin-right: 0px;
+  }
 `
 
 export const Subtitle = styled.div`
@@ -68,7 +71,7 @@ export const SmallIcon = styled(Icon)`
 `
 
 export const LockIcon = styled(Icon)`
-  margin: 16px 4px 0;
+  margin: 16px 5px 0;
   cursor: pointer;
   font-size: 12px;
   color: ${({ enabled }: IconProps) => (enabled ? RED : GRAY)};

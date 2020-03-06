@@ -197,6 +197,9 @@ export const ImageClip = styled.img`
 export const ImageLeft = styled.div`
   flex: 1;
   text-align: center;
+  background: ${GRAY_LIGHTEST};
+  padding: 4px 8px;
+  border-radius: 2px;
 `
 
 export const ArrowIcon = styled.img`

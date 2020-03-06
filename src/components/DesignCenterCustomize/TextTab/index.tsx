@@ -107,19 +107,21 @@ export class TextTab extends React.PureComponent<Props, State> {
     const arrayElements = Object.keys(elements || {})
     return (
       <Container>
-        <Header>
-          <Row onClick={this.changePage(0, 0)}>
-            {!!page && !selectedElement && <ArrowIcon src={backIcon} />}
-            <Title>
-              <FormattedMessage {...messages[headerTitle]} />
-            </Title>
-          </Row>
-          {selectedElement && !isEmpty(element) && !!textFormat && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={element.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
-        </Header>
+        {(!!page || selectedElement) && (
+          <Header>
+            <Row onClick={this.changePage(0, 0)}>
+              {!!page && !selectedElement && <ArrowIcon src={backIcon} />}
+              <Title>
+                <FormattedMessage {...messages[headerTitle]} />
+              </Title>
+            </Row>
+            {selectedElement && !isEmpty(element) && !!textFormat && (
+              <LockContainer onClick={this.handleOnLockElement}>
+                <Icon type={element.lock ? 'lock' : 'unlock'} />
+              </LockContainer>
+            )}
+          </Header>
+        )}
         <SwipeableViews
           disabled={true}
           index={selectedElement && !page ? 1 : page}

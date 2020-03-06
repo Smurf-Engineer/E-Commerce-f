@@ -169,6 +169,9 @@ export const LayerBlock = styled.div`
 export const TitleLayer = styled.div`
   flex: 1;
   font-size: 18px;
+  background: ${GRAY_LIGHTEST};
+  padding: 4px 8px;
+  border-radius: 2px;
   -webkit-text-stroke-width: ${({ strokeWidth }: TextFormat) => strokeWidth}px;
   -webkit-text-stroke-color: ${({ stroke }: TextFormat) => stroke};
   color: ${({ fill }: TextFormat) => fill};

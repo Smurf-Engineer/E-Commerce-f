@@ -83,7 +83,6 @@ export default defineMessages({
   },
   empty: {
     id: 'components.TextTab.empty',
-    defaultMessage: `Here are going to appear your text layers on your design.
-    Add your first text layer.`
+    defaultMessage: `Here is where your text layers will appear. Click the button above to add a layer.`
   }
 })

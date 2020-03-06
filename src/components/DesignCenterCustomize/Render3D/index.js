@@ -110,6 +110,7 @@ import {
   clickOnCorner,
   getTextCanvasElement,
   getClipArtCanvasElement,
+  downloadSVG,
   getImageCanvas
 } from './utils'
 import HelpModal from '../../Common/JakrooModal'
@@ -424,7 +425,8 @@ class Render3D extends PureComponent {
       const fonts = []
       const indexes = {}
       const { objects } = JSON.parse(object)
-      objects.forEach((el, index) => {
+      let index = 0
+      for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
         el.hasRotatingPoint = false
@@ -439,7 +441,7 @@ class Render3D extends PureComponent {
           }
           case CanvasElements.Group: {
             if (el.isClipArtGroup) {
-              const element = getClipArtCanvasElement(el)
+              const element = await getClipArtCanvasElement(el)
               canvas.path[elId] = element
               paths.push(el)
             } else {
@@ -450,7 +452,7 @@ class Render3D extends PureComponent {
             break
           }
           case CanvasElements.Path: {
-            const element = getClipArtCanvasElement(el)
+            const element = await getClipArtCanvasElement(el)
             canvas.path[elId] = element
             paths.push(el)
             break
@@ -465,7 +467,8 @@ class Render3D extends PureComponent {
           default:
             break
         }
-      })
+        index++
+      }
       elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
@@ -1862,28 +1865,30 @@ class Render3D extends PureComponent {
           shape.forEachObject(o => o.set({ ...style }))
         }
         this.canvasTexture.add(shape)
-
-        const el = {
-          id,
-          src,
-          fill: BLACK,
-          stroke: BLACK,
-          strokeWidth: 0,
-          ...style,
-          lock: false
-        }
-        position.scaleX = scaleX
-        position.scaleY = scaleY
-        if (!idElement) {
-          onApplyCanvasEl(el, CanvasElements.Path, false, {
+        downloadSVG(src).then(svg => {
+          const el = {
+            id,
             src,
-            style,
-            position,
-            fileId
-          })
-          this.canvasTexture.setActiveObject(shape)
-        }
-        this.canvasTexture.renderAll()
+            svg,
+            fill: BLACK,
+            stroke: BLACK,
+            strokeWidth: 0,
+            ...style,
+            lock: false
+          }
+          position.scaleX = scaleX
+          position.scaleY = scaleY
+          if (!idElement) {
+            onApplyCanvasEl(el, CanvasElements.Path, false, {
+              src,
+              style,
+              position,
+              fileId
+            })
+            this.canvasTexture.setActiveObject(shape)
+          }
+          this.canvasTexture.renderAll()
+        })
       })
     }
   }

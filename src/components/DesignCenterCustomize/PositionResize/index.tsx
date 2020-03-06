@@ -109,7 +109,9 @@ export class PositionResize extends React.PureComponent<Props, State> {
               onChange={val => this.changeValue(val, 'vertical')}
             />
           </InputBlock>
-          <InputBlock noMargin={true} maxWidth={true}>
+        </InputContainer>
+        <InputContainer>
+          <InputBlock>
             <Subtitle>
               <FormattedMessage {...messages.rotation} />
             </Subtitle>

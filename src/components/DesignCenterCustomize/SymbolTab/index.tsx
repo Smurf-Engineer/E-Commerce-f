@@ -126,26 +126,49 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         <Spin />
       </Loading>
     )
-    const arrayElements = Object.keys(elements || {})
+    const arrayElements = Object.keys(elements || {}).map((id, index) => {
+      const { fill, stroke, strokeWidth, svg } = elements[id]
+      return (
+        <Layer key={index}>
+          <ClipartLeft>
+            <ClipartPrev
+              {...{ fill, stroke, strokeWidth }}
+              dangerouslySetInnerHTML={{
+                __html: svg
+              }}
+            />
+          </ClipartLeft>
+          <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+            {formatMessage(messages.delete)}
+          </DeleteLayer>
+          <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+            {formatMessage(messages.edit)}
+          </EditLayer>
+        </Layer>
+      )
+    })
+
     return (
       <Container>
-        <Header>
-          <Row onClick={this.changePage(0, 0)}>
-            {(!!page || (addSymbol && !selectedElement)) && (
-              <ArrowIcon src={backIcon} />
+        {(!!page || selectedElement || addSymbol) && (
+          <Header>
+            <Row onClick={this.changePage(0, 0)}>
+              {(!!page || (addSymbol && !selectedElement)) && (
+                <ArrowIcon src={backIcon} />
+              )}
+              <Title>
+                <FormattedMessage
+                  {...messages[selectedElement ? 'editSymbol' : 'addSymbol']}
+                />
+              </Title>
+            </Row>
+            {selectedElement && (
+              <LockContainer onClick={this.handleOnLockElement}>
+                <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
+              </LockContainer>
             )}
-            <Title>
-              <FormattedMessage
-                {...messages[selectedElement ? 'editSymbol' : 'addSymbol']}
-              />
-            </Title>
-          </Row>
-          {selectedElement && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
-        </Header>
+          </Header>
+        )}
         {selectedElement ? (
           <SwipeableViews disabled={true} index={page}>
             <div>
@@ -194,19 +217,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
                 <LayersText>{formatMessage(messages.clipartLayers)}</LayersText>
                 <ClipartsLayers>
                   {arrayElements.length ? (
-                    arrayElements.map((id, index) => (
-                      <Layer key={index}>
-                        <ClipartLeft stroke={elements[id].fill}>
-                          <ClipartPrev src={elements[id].src} />
-                        </ClipartLeft>
-                        <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
-                          {formatMessage(messages.delete)}
-                        </DeleteLayer>
-                        <EditLayer {...{ id }} onClick={this.onSelectLayer}>
-                          {formatMessage(messages.edit)}
-                        </EditLayer>
-                      </Layer>
-                    ))
+                    arrayElements
                   ) : (
                     <EmptyElements>
                       {formatMessage(messages.empty)}

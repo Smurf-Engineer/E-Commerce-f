@@ -16,7 +16,9 @@ import {
 import { AVENIR_NEXT } from '../../../theme/fonts'
 
 interface ClipartProps {
-  stroke?: string
+  stroke: string
+  fill: string
+  strokeWidth: number
 }
 
 export const Container = styled.div``
@@ -230,16 +232,22 @@ export const EditLayer = styled.div`
   }
 `
 
-export const ClipartPrev = styled.img`
-  max-width: 58px;
-  max-height: 58px;
-  object-fit: contain;
+export const ClipartPrev = styled.div`
+  text-align: center;
+  svg {
+    width: 60px;
+    height: 68px;
+    fill: ${({ fill }: ClipartProps) => fill};
+    stroke: ${({ stroke }: ClipartProps) => stroke};
+    stroke-width: ${({ strokeWidth }: ClipartProps) => strokeWidth}px;
+  }
 `
 
 export const ClipartLeft = styled.div`
   flex: 1;
   text-align: center;
-  filter: ${({ stroke }: ClipartProps) => `drop-shadow(0px 0px 3px ${stroke})`};
+  background: ${GRAY_LIGHTEST};
+  border-radius: 2px;
 `
 
 export const EmptyElements = styled.div`

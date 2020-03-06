@@ -162,19 +162,21 @@ class UploadTab extends React.PureComponent<Props, State> {
     const arrayElements = Object.keys(elements || {})
     return (
       <Container>
-        <Header>
-          {!selectedElement && addImage && (
-            <ArrowIcon onClick={this.goBackToLayer} src={backIcon} />
-          )}
-          <Title>
-            <FormattedMessage {...messages.title} />
-          </Title>
-          {selectedElement && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
-        </Header>
+        {(selectedElement || addImage) && (
+          <Header>
+            {!selectedElement && addImage && (
+              <ArrowIcon onClick={this.goBackToLayer} src={backIcon} />
+            )}
+            <Title>
+              <FormattedMessage {...messages.title} />
+            </Title>
+            {selectedElement && (
+              <LockContainer onClick={this.handleOnLockElement}>
+                <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
+              </LockContainer>
+            )}
+          </Header>
+        )}
         {selectedElement ? (
           <PositionResize {...{ activeEl }} handleChange={onPositionChange} />
         ) : (
