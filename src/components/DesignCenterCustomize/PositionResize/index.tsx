@@ -15,6 +15,7 @@ import {
   LockIcon
 } from './styledComponents'
 import { PositionSize } from '../../../types/common'
+const DECIMAL_REGEX = /[^0-9.]/g
 
 interface Props {
   activeEl: PositionSize
@@ -33,34 +34,32 @@ export class PositionResize extends React.PureComponent<Props, State> {
   changeValue = (value: number | undefined, name: string) => {
     if (!isNaN(value)) {
       const { handleChange, activeEl } = this.props
-      handleChange({ ...activeEl, [name]: value })
+      handleChange({ ...activeEl, [name]: value || 0.0 })
     }
   }
 
   changeWidth = (value: number | undefined) => {
-    if (value) {
-      const { aspectLock } = this.state
-      const { handleChange, activeEl } = this.props
-      const { height: originalHeight, width: originalWidth } = activeEl
-      let height = originalHeight
-      if (aspectLock) {
-        height = value * (height / originalWidth)
-      }
-      handleChange({ ...activeEl, height, width: value })
+    const width = value > 0 ? value : 0.1
+    const { aspectLock } = this.state
+    const { handleChange, activeEl } = this.props
+    const { height: originalHeight, width: originalWidth } = activeEl
+    let height = originalHeight
+    if (aspectLock) {
+      height = width * (height / originalWidth)
     }
+    handleChange({ ...activeEl, height, width })
   }
 
   changeHeight = (value: number | undefined) => {
-    if (value) {
-      const { aspectLock } = this.state
-      const { handleChange, activeEl } = this.props
-      const { height: originalHeight, width: originalWidth } = activeEl
-      let width = originalWidth
-      if (aspectLock) {
-        width = value * (width / originalHeight)
-      }
-      handleChange({ ...activeEl, width, height: value })
+    const height = value > 0 ? value : 0.1
+    const { aspectLock } = this.state
+    const { handleChange, activeEl } = this.props
+    const { height: originalHeight, width: originalWidth } = activeEl
+    let width = originalWidth
+    if (aspectLock) {
+      width = height * (width / originalHeight)
     }
+    handleChange({ ...activeEl, width, height })
   }
 
   changeLock = () => {
@@ -88,7 +87,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               size="large"
               value={horizontal}
               formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
               step={1}
               precision={1}
               onChange={val => this.changeValue(val, 'horizontal')}
@@ -103,7 +102,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               size="large"
               value={vertical}
               formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
               step={1}
               precision={1}
               onChange={val => this.changeValue(val, 'vertical')}
@@ -137,8 +136,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
               size="large"
               value={width}
               formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
-              step={0.1}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
+              step={1}
               precision={1}
               onChange={this.changeWidth}
             />
@@ -156,8 +155,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
               size="large"
               value={height}
               formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
-              step={0.1}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
+              step={1}
               precision={1}
               onChange={this.changeHeight}
             />
