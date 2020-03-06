@@ -270,6 +270,11 @@ export type ProductTableType = {
   visible: boolean
 }
 
+export type DesignCopyResult = {
+  id: number
+  design: DesignType
+}
+
 export type ProAssistStatus = {
   enabled: boolean
 }

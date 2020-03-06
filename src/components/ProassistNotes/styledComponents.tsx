@@ -5,14 +5,6 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import { BLUE, DARKER_GRAY, WHITE } from '../../theme/colors'
 
-export const Container = styled.div`
-  background-color: #222;
-`
-
-export const Text = styled.div`
-  color: #fff;
-`
-
 export const ModalContainer = styled.div`
   display: flex;
   justify-content: center;

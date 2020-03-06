@@ -80,6 +80,54 @@ export const duplicateDesignMutation = gql`
   mutation duplicateDesign($designId: String!) {
     duplicateDesign(designId: $designId) {
       message
+      design {
+        id
+        code
+        name
+        image
+        shared
+        proDesign: pro_design
+        shortId: short_id
+        createdAt: created_at
+        outputSvg: output_svg
+        outputPng: output_png
+        product {
+          id
+          code
+          yotpoId: yotpo_id
+          name
+          type: name
+          description: short_description
+          shortDescription: short_description
+          collections
+          isTopProduct
+          weight
+          priceRange {
+            quantity
+            price
+            abbreviation
+            shortName: short_name
+          }
+          genders {
+            id
+            name: gender
+          }
+          fitStyles {
+            id
+            name: description
+          }
+          sizeRange: size_range {
+            id
+            name
+          }
+          images: pictures {
+            front: front_image
+            back: back_image
+            left: left_image
+            right: right_image
+          }
+        }
+      }
     }
   }
 `
