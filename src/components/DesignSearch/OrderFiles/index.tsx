@@ -104,7 +104,20 @@ export class OrderFiles extends React.PureComponent<Props> {
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
-
+    const notesElements =
+      notes && notes.length
+        ? notes.map(({ createdAt, text, user }: DesignNote, index: number) => {
+            const createdLabel = `${moment(createdAt).format(
+              NOTE_FORMAT
+            )} - ${user}`
+            return (
+              <NoteContainer key={index}>
+                <NoteTitle>{createdLabel}</NoteTitle>
+                <NoteText>{text}</NoteText>
+              </NoteContainer>
+            )
+          })
+        : null
     return (
       <Container>
         <FlexContainer>
@@ -128,24 +141,13 @@ export class OrderFiles extends React.PureComponent<Props> {
             </StatusContainer>
           </SideData>
         </FlexContainer>
-        {notes && !!notes.length && (
+        {notes && notes.length && (
           <ProAssistNotes>
             <ProAssistTitle>
               <FormattedMessage {...messages.proAssistNotes} />
               <Icon type="form" />
             </ProAssistTitle>
-            <ProAssistBackground>
-              {notes.map(
-                ({ createdAt, text, user }: DesignNote, index: number) => (
-                  <NoteContainer key={index}>
-                    <NoteTitle>{`${moment(createdAt).format(
-                      NOTE_FORMAT
-                    )} - ${user}`}</NoteTitle>
-                    <NoteText>{text}</NoteText>
-                  </NoteContainer>
-                )
-              )}
-            </ProAssistBackground>
+            <ProAssistBackground>{notesElements}</ProAssistBackground>
           </ProAssistNotes>
         )}
         <FlexContainer>
