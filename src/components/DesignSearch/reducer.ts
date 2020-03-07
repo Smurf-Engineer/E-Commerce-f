@@ -20,7 +20,9 @@ import {
   SET_PDF,
   SET_NOTE,
   OPEN_NOTES,
-  SET_LOADING_NOTE
+  SET_LOADING_NOTE,
+  SET_PREFLIGHT,
+  SET_LOADING_PREFLIGHT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -29,6 +31,7 @@ export const initialState = fromJS({
   loading: false,
   order: null,
   notFound: false,
+  loadingPreflight: false,
   noAdmin: false,
   uploadingFile: false,
   note: '',
@@ -55,6 +58,13 @@ const designSearchAdminReducer: Reducer<any> = (
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
+    case SET_LOADING_PREFLIGHT:
+      return state.set('loadingPreflight', action.loading)
+    case SET_PREFLIGHT:
+      return state.withMutations((map: any) => {
+        map.setIn(['order', 'preflightCheck'], action.checked)
+        map.set('loadingPreflight', false)
+      })
     case SET_LOADING:
       return state.merge({
         order: null,

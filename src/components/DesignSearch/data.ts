@@ -41,6 +41,7 @@ export const orderSearchQuery = gql`
         user
         createdAt: created_at
       }
+      preflightCheck: preflight_check
     }
   }
 `
@@ -49,6 +50,14 @@ export const uploadThumbnailMutation = gql`
   mutation saveStyleImage($image: String!) {
     style: saveStyleImage(image: $image) {
       image
+    }
+  }
+`
+
+export const togglePreflight = gql`
+  mutation togglePreflight($shortId: String!) {
+    design: togglePreflight(designId: $shortId) {
+      checked: preflight_check
     }
   }
 `

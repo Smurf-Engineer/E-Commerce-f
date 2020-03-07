@@ -43,6 +43,7 @@ import {
   getDesignSearchCode,
   getFonts,
   generatePdfMutation,
+  togglePreflight,
   addNoteMutation
 } from './data'
 import { downloadFile } from './api'
@@ -76,6 +77,7 @@ interface Props {
   openNotes: boolean
   addingNote: boolean
   note: string
+  loadingPreflight: boolean
   // redux actions
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteAction: (text: string) => void
@@ -88,8 +90,11 @@ interface Props {
   uploadProDesignAction: (file: any, code: string) => void
   resetDataAction: () => void
   setLoadingAction: () => void
+  setLoadingPreflight: (loading: boolean) => void
   setNotFoundAction: (admin?: boolean) => void
   setOrderAction: (order: OrderSearchResult) => void
+  setPreflightAction: (checked: boolean) => void
+  checkPreflightAction: (variables: {}) => Promise<MessagePayload>
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   setUploadingThumbnailAction: (uploading: boolean) => void
   updateThumbnailAction: (thumbnail: string) => void
@@ -134,6 +139,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loading,
       notFound,
       order,
+      loadingPreflight,
       noAdmin,
       uploadProDesignAction,
       uploadingFile,
@@ -183,8 +189,10 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           setNoteAction,
           openNoteAction,
           colorAccessories,
-          creatingPdf
+          creatingPdf,
+          loadingPreflight
         }}
+        checkPreflight={this.handleCheckPreflight}
         handleSaveNote={this.saveNote}
         onSelectStitchingColor={setStitchingColorAction}
         onSelectColor={setColorAction}
@@ -337,7 +345,25 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
-
+  handleCheckPreflight = async () => {
+    const {
+      order: { shortId },
+      setLoadingPreflight,
+      setPreflightAction,
+      checkPreflightAction
+    } = this.props
+    try {
+      setLoadingPreflight(true)
+      const checkResponse = await checkPreflightAction({
+        variables: { shortId }
+      })
+      const checked = get(checkResponse, 'data.design.checked', false)
+      setPreflightAction(checked)
+    } catch (e) {
+      setLoadingPreflight(false)
+      message.error(e.message)
+    }
+  }
   handleOnchange = async (value: SelectValue) => {
     const {
       client: { query },
@@ -395,6 +421,7 @@ const mapStateToProps = (state: any) => {
 const DesignSearchAdminEnhance = compose(
   injectIntl,
   graphql(addNoteMutation, { name: 'addNoteAction' }),
+  graphql(togglePreflight, { name: 'checkPreflightAction' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
   graphql(generatePdfMutation, { name: 'generatePdf' }),

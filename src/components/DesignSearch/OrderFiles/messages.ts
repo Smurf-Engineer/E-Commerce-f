@@ -60,5 +60,9 @@ export default defineMessages({
   add: {
     id: 'screens.DesignSearch.add',
     defaultMessage: 'ADD +'
+  },
+  preflight: {
+    id: 'screens.DesignSearch.preflight',
+    defaultMessage: 'Pre Flight check'
   }
 })

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { RED, BLUE, WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -20,9 +21,15 @@ export const Text = styled.div`
 export const StyledButton = styled(Button)`
   height: 50px;
   width: 221px;
-  border: 2px solid #e61737;
+  border: 2px solid ${RED};
   border-radius: 2px;
-
+  text-transform: uppercase;
+  color: ${RED};
+  transition: all 0.25s;
+  &:hover {
+    color: ${WHITE};
+    background: ${RED};
+  }
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
@@ -61,8 +68,8 @@ export const CustomizeButton = styled.div`
 
   @media (min-width: 320px) and (max-width: 768px) {
     background-color: #fff;
-    color: #e61737;
-    border: 1px solid #e61737;
+    color: ${RED};
+    border: 1px solid ${RED};
     width: 100%;
   }
 `
@@ -84,12 +91,12 @@ export const ButtonWrapper = styled.span`
   }
 
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
 `
 export const ReorderButton = styled(Button)`

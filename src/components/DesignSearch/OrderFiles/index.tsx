@@ -37,7 +37,10 @@ import {
   SideData,
   FlexContainer,
   ProAssistBackground,
-  AddNote
+  AddNote,
+  PreflightDiv,
+  WarningIcon,
+  PreflightCheckbox
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import {
@@ -63,9 +66,11 @@ interface Props {
   openNotes: boolean
   addingNote: boolean
   note: string
+  loadingPreflight: boolean
   handleSaveNote: () => void
   setNoteAction: (text: string) => void
   openNoteAction: (openNotes: boolean) => void
+  checkPreflight: () => void
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any, params?: any) => string
@@ -89,6 +94,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         bibColor,
         zipperColor,
         bindingColor,
+        preflightCheck,
         shortId,
         image,
         pdfUrl,
@@ -105,6 +111,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       addingNote,
       formatMessage,
       actualSvg,
+      loadingPreflight,
       onSaveThumbnail,
       uploadingThumbnail,
       setUploadingThumbnailAction,
@@ -113,6 +120,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       colorAccessories,
       onSelectColor,
       onGeneratePdf,
+      checkPreflight,
       creatingPdf
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
@@ -151,20 +159,34 @@ export class OrderFiles extends React.PureComponent<Props> {
               </Label>
               <Status>{statusOrder}</Status>
             </StatusContainer>
+            <PreflightDiv>
+              <WarningIcon
+                enable={!preflightCheck}
+                type="warning"
+                theme="filled"
+              />
+              <PreflightCheckbox
+                disabled={loadingPreflight}
+                checked={preflightCheck}
+                onChange={checkPreflight}
+              >
+                <FormattedMessage {...messages.preflight} />
+              </PreflightCheckbox>
+            </PreflightDiv>
           </SideData>
         </FlexContainer>
-        {notes && notes.length && (
-          <ProAssistNotes>
-            <ProAssistTitle>
-              <FormattedMessage {...messages.proAssistNotes} />
-              <Icon type="form" />
-              <AddNote onClick={this.handleOpenNotes}>
-                <FormattedMessage {...messages.add} />
-              </AddNote>
-            </ProAssistTitle>
+        <ProAssistNotes>
+          <ProAssistTitle>
+            <FormattedMessage {...messages.proAssistNotes} />
+            <Icon type="form" />
+            <AddNote onClick={this.handleOpenNotes}>
+              <FormattedMessage {...messages.add} />
+            </AddNote>
+          </ProAssistTitle>
+          {notes && notes.length && (
             <ProAssistBackground>{notesElements}</ProAssistBackground>
-          </ProAssistNotes>
-        )}
+          )}
+        </ProAssistNotes>
         <FlexContainer>
           <RenderLayout>
             <AccessoryColors

@@ -21,5 +21,7 @@ export const SET_PDF = `${namespace}/SET_PDF`
 export const SET_NOTE = `${namespace}/SET_NOTE`
 export const OPEN_NOTES = `${namespace}/OPEN_NOTES`
 export const SET_LOADING_NOTE = `${namespace}/SET_LOADING_NOTE`
+export const SET_PREFLIGHT = `${namespace}/SET_PREFLIGHT`
+export const SET_LOADING_PREFLIGHT = `${namespace}/SET_LOADING_PREFLIGHT`
 
 export const NOTE_FORMAT = 'MM/DD/YYYY'

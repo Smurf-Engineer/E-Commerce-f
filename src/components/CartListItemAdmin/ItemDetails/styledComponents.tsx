@@ -2,7 +2,8 @@
  * Styled Components - Created by eduardoquintero on 13/05/19.
  */
 import styled from 'styled-components'
-import { GREEN, GRAY_DARK } from '../../../theme/colors'
+import { GREEN, GRAY_DARK, RED } from '../../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const NameContainer = styled.div`
   display: flex;
@@ -78,4 +79,10 @@ export const ItemDetailsHeader = styled.div`
     flex-direction: column;
     justify-content: space-around;
   }
+`
+
+export const WarningIcon = styled(Icon)`
+  font-size: 18px;
+  color: ${RED};
+  margin-left: 14px;
 `

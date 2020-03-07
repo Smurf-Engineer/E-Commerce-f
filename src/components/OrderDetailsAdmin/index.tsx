@@ -159,6 +159,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
             designName = '',
             product: { images, name, shortDescription },
             productTotal,
+            preflightCheck,
             unitPrice
           } = cartItem
 
@@ -183,6 +184,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 history,
                 unitPrice,
                 cartItem,
+                preflightCheck,
                 currentCurrency
               }}
               currencySymbol={currency.shortName}
@@ -318,6 +320,7 @@ const OrderDetailsAdminEnhance = compose(
     options: ({ orderId }: OwnProps) => ({
       skip: !orderId,
       variables: { orderId, global: true },
+      fetchPolicy: 'network-only',
       notifyOnNetworkStatusChange: true
     })
   })

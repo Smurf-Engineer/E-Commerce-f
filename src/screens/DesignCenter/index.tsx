@@ -846,6 +846,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         {...{ history, intl }}
         hideTopHeader={responsive.tablet}
         hideBottomHeader={true}
+        disableIntercom={true}
         hideFooter={true}
         buyNowHeader={isMobile && tabSelected > DesignTabs.StyleTab}
       >

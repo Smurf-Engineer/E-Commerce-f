@@ -6,11 +6,17 @@ import {
   GRAY_DARK,
   GRAY_LIGHTEST,
   WHITE,
+  RED,
   DARKER_GRAY,
   GRAY_SNOW
 } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
 import { BLACK } from '../../../screens/DesignerTool/constants'
+import Checkbox from 'antd/lib/checkbox/Checkbox'
+
+interface DivProps {
+  enable: boolean
+}
 
 export const Container = styled.div`
   display: flex;
@@ -46,7 +52,7 @@ export const StatusContainer = styled.div`
 
 export const Label = styled.div`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 0.11px;
 `
 
@@ -185,5 +191,40 @@ export const AddNote = styled.div`
   transition: all 0.25s;
   &:hover {
     background: ${GRAY_LIGHTEST};
+  }
+`
+
+export const PreflightDiv = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px 0 16px;
+  font-weight: bold;
+  position: relative;
+`
+
+export const WarningIcon = styled(Icon)`
+  font-size: 18px;
+  color: ${RED};
+  position: absolute;
+  left: -28px;
+  transition: all 0.25s;
+  opacity: ${({ enable }: DivProps) => (enable ? 1 : 0)};
+`
+
+export const PreflightCheckbox = styled(Checkbox)`
+  display: flex;
+  flex-flow: row-reverse;
+  align-items: center;
+  font-size: 16px;
+  transition: all 0.5s;
+  justify-content: space-between;
+  span {
+    padding: 0;
+    margin-right: 10px;
+    margin-bottom: 2px;
+  }
+  .ant-checkbox {
+    margin-top: 2px;
+    margin-bottom: 0;
   }
 `
