@@ -25,6 +25,7 @@ interface HeadRowProps {
 
 interface ButtonProps {
   secondary?: boolean
+  maxMargin?: boolean
 }
 
 export const HeadRow = styled.div`
@@ -146,7 +147,7 @@ export const ButtonContainer = styled.div`
   user-select: none;
   display: flex !important;
   align-items: center;
-  margin: 8px;
+  margin: ${({ maxMargin }: ButtonProps) => (maxMargin ? '8px' : '4px')};
   max-width: 140px;
   width: 100%;
 `
@@ -156,6 +157,20 @@ export const ActionButton = styled.div`
   background-color: ${({ secondary }: ButtonProps) =>
     secondary ? RED_TRANSPARENT : WHITE_TRANSPARENT};
   color: ${({ secondary }: ButtonProps) => (secondary ? WHITE : GRAY_DARK)};
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  padding: 6px 16px;
+  width: 100%;
+`
+
+export const CopyButton = styled.div`
+  user-select: none;
+  background-color: #00000075;
+  color: ${WHITE};
   font-size: 12px;
   line-height: 16px;
   display: flex;

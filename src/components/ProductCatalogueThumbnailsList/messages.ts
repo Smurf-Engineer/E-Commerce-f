@@ -64,5 +64,9 @@ export default defineMessages({
   addToStore: {
     id: 'components.ProductCatalogueThumbnailsList.addToStore',
     defaultMessage: 'ADD TO STORE'
+  },
+  makeCopy: {
+    id: 'components.ProductCatalogueThumbnailsList.makeCopy',
+    defaultMessage: 'MAKE A COPY'
   }
 })

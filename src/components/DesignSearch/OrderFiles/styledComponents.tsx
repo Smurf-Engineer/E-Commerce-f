@@ -10,6 +10,7 @@ import {
   GRAY_SNOW
 } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
+import { BLACK } from '../../../screens/DesignerTool/constants'
 
 export const Container = styled.div`
   display: flex;
@@ -151,7 +152,7 @@ export const NoteText = styled.div``
 export const ProAssistTitle = styled.div`
   display: flex;
   font-weight: bold;
-  max-width: 160px;
+  max-width: 246px;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
@@ -174,4 +175,15 @@ export const FlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`
+
+export const AddNote = styled.div`
+  border: 1px solid ${BLACK};
+  padding: 4px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.25s;
+  &:hover {
+    background: ${GRAY_LIGHTEST};
+  }
 `
