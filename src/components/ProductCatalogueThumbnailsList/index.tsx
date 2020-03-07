@@ -36,7 +36,8 @@ import {
   NoResultsFound,
   ButtonContainer,
   ActionButton,
-  ButtonsContainer
+  ButtonsContainer,
+  CopyButton
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 
@@ -58,6 +59,7 @@ interface Props {
   limit?: number
   designs?: DesignType[]
   previewOnly?: boolean
+  makeCopy: (shortId: string) => void
   setDesignSelected: (shortId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
@@ -159,7 +161,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                     {!previewOnly ? (
                       <div>
                         {addToCartButton}
-                        <ButtonContainer>
+                        <ButtonContainer maxMargin={true}>
                           <ActionButton
                             onClick={this.gotToEditDesign(shortId || '')}
                           >
@@ -168,7 +170,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                             )}
                           </ActionButton>
                         </ButtonContainer>
-                        <ButtonContainer>
+                        <ButtonContainer maxMargin={true}>
                           <ActionButton onClick={this.openAddStore(shortId)}>
                             {formatMessage(messages.addToStore)}
                           </ActionButton>
@@ -176,6 +178,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       </div>
                     ) : (
                       <>
+                        <ButtonContainer>
+                          <CopyButton onClick={this.handleMakeCopy(shortId)}>
+                            {formatMessage(messages.makeCopy)}
+                          </CopyButton>
+                        </ButtonContainer>
                         <ButtonContainer>
                           <ActionButton onClick={this.openPreview(shortId)}>
                             {formatMessage(messages.preview)}
@@ -355,6 +362,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
   openPreview = (designId: string) => () => {
     window.open(`/designs?id=${designId}`)
+  }
+
+  handleMakeCopy = (designId: string) => () => {
+    const { makeCopy } = this.props
+    makeCopy(designId)
   }
 
   openAssistModal = (designId: string) => () => {

@@ -15,4 +15,6 @@ export const ON_TOGGLE_MODAL = `${namespace}/ON_TOGGLE_MODAL`
 export const ON_RESET_MODAL = `${namespace}/ON_RESET_MODAL`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_DESIGN = `${namespace}/SET_DESIGN`
+export const CHANGE_NOTE = `${namespace}/CHANGE_NOTE`
+
 export const NOTE_FORMAT = 'MM/DD/YYYY'

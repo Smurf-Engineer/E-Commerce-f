@@ -39,7 +39,7 @@ export const DesignerLink = styled.div`
 `
 
 export const Content = styled.div`
-  width: 70%;
+  width: 100%;
   max-width: 900px;
   display: flex;
   flex: 1;

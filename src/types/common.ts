@@ -270,6 +270,11 @@ export type ProductTableType = {
   visible: boolean
 }
 
+export type DesignCopyResult = {
+  id: number
+  design: DesignType
+}
+
 export type ProAssistStatus = {
   enabled: boolean
 }
@@ -1257,6 +1262,7 @@ export interface OrderSearchResult {
   pdfUrl?: string
   product: Product
   pngUrl?: string
+  notes?: DesignNote[]
 }
 
 export interface FilesDownload {

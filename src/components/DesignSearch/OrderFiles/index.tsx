@@ -27,13 +27,30 @@ import {
   ThumbnailLabel,
   ChangesContainer,
   MessageContainer,
-  ModelNameContainer
+  ModelNameContainer,
+  ProAssistNotes,
+  NoteContainer,
+  NoteTitle,
+  NoteText,
+  ProAssistTitle,
+  DataContainer,
+  SideData,
+  FlexContainer,
+  ProAssistBackground,
+  AddNote
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
-import { OrderSearchResult, StitchingColor } from '../../../types/common'
+import {
+  OrderSearchResult,
+  StitchingColor,
+  DesignNote
+} from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
+import moment from 'moment'
+import { NOTE_FORMAT } from '../constants'
+import ProassistNotes from '../../ProassistNotes'
 
 interface Props {
   order: OrderSearchResult
@@ -43,6 +60,12 @@ interface Props {
   changes: boolean
   colorAccessories: any
   creatingPdf: boolean
+  openNotes: boolean
+  addingNote: boolean
+  note: string
+  handleSaveNote: () => void
+  setNoteAction: (text: string) => void
+  openNoteAction: (openNotes: boolean) => void
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any, params?: any) => string
@@ -70,10 +93,16 @@ export class OrderFiles extends React.PureComponent<Props> {
         image,
         pdfUrl,
         name,
+        notes = [],
         pngUrl = '',
         product: { name: modelName, zipper }
       },
       uploadingFile,
+      openNotes,
+      setNoteAction,
+      handleSaveNote,
+      note,
+      addingNote,
       formatMessage,
       actualSvg,
       onSaveThumbnail,
@@ -88,119 +117,170 @@ export class OrderFiles extends React.PureComponent<Props> {
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
-
+    const notesElements = notes.map(
+      ({ createdAt, text, user }: DesignNote, index: number) => {
+        const createdLabel = `${moment(createdAt).format(
+          NOTE_FORMAT
+        )} - ${user}`
+        return (
+          <NoteContainer key={index}>
+            <NoteTitle>{createdLabel}</NoteTitle>
+            <NoteText>{text}</NoteText>
+          </NoteContainer>
+        )
+      }
+    )
     return (
       <Container>
-        <RenderLayout>
-          <ModelNameContainer>
-            <Code>{formatMessage(messages.designNameLabel, { name })}</Code>
-          </ModelNameContainer>
-          <ModelNameContainer>
-            <Code>{formatMessage(messages.modelNameLabel, { modelName })}</Code>
-          </ModelNameContainer>
-          <AccessoryColors
-            {...{
-              bibColor,
-              bindingColor,
-              onSelectStitchingColor,
-              onSelectColor,
-              allowZipperSelection
-            }}
-            stitchingValue={colorAccessories.stitching || stitchingValue}
-            stitchingName={colorAccessories.stitchingName || stitchingName}
-            zipperColor={colorAccessories.zipperColor || zipperColor}
-            bibColor={colorAccessories.bibColor || bibColor}
-            bindingColor={colorAccessories.bindingColor || bindingColor}
-          />
-          <RenderContainer>
-            <Render3D
-              designSearch={true}
-              loading={uploadingFile}
-              actualImage={actualSvg}
-              designId={shortId}
-              uploadingThumbnail={uploadingThumbnail}
-              onSaveThumbnail={onSaveThumbnail}
-              onUploadingThumbnail={setUploadingThumbnailAction}
-              colorAccessories={colorAccessories}
-              ref={(render3D: any) => (this.render3D = render3D)}
-              {...{ stitchingValue }}
+        <FlexContainer>
+          <DataContainer>
+            <ModelNameContainer>
+              <Code>{formatMessage(messages.designNameLabel, { name })}</Code>
+            </ModelNameContainer>
+            <ModelNameContainer>
+              <Code>
+                {formatMessage(messages.modelNameLabel, { modelName })}
+              </Code>
+            </ModelNameContainer>
+          </DataContainer>
+          <SideData>
+            <Code>{code}</Code>
+            <StatusContainer>
+              <Label>
+                <FormattedMessage {...messages.status} />
+              </Label>
+              <Status>{statusOrder}</Status>
+            </StatusContainer>
+          </SideData>
+        </FlexContainer>
+        {notes && notes.length && (
+          <ProAssistNotes>
+            <ProAssistTitle>
+              <FormattedMessage {...messages.proAssistNotes} />
+              <Icon type="form" />
+              <AddNote onClick={this.handleOpenNotes}>
+                <FormattedMessage {...messages.add} />
+              </AddNote>
+            </ProAssistTitle>
+            <ProAssistBackground>{notesElements}</ProAssistBackground>
+          </ProAssistNotes>
+        )}
+        <FlexContainer>
+          <RenderLayout>
+            <AccessoryColors
+              {...{
+                bibColor,
+                bindingColor,
+                onSelectStitchingColor,
+                onSelectColor,
+                allowZipperSelection
+              }}
+              stitchingValue={colorAccessories.stitching || stitchingValue}
+              stitchingName={colorAccessories.stitchingName || stitchingName}
+              zipperColor={colorAccessories.zipperColor || zipperColor}
+              bibColor={colorAccessories.bibColor || bibColor}
+              bindingColor={colorAccessories.bindingColor || bindingColor}
             />
-          </RenderContainer>
-        </RenderLayout>
-        <Data>
-          <Code>{code}</Code>
-          <StatusContainer>
-            <Label>
-              <FormattedMessage {...messages.status} />
-            </Label>
-            <Status>{statusOrder}</Status>
-          </StatusContainer>
-          <Button
-            loading={creatingPdf}
-            disabled={creatingPdf}
-            onClick={onGeneratePdf}
-            icon="download"
-          >
-            <ButtonContainer>
-              <FormattedMessage {...messages.generatePDF} />
-            </ButtonContainer>
-          </Button>
-          <Divider />
-          <Button onClick={this.onDownload} icon="download">
-            <ButtonContainer>
-              <FormattedMessage {...messages.downloadAll} />
-            </ButtonContainer>
-          </Button>
-          <DraggerWithLoading
-            className="upload"
-            loading={uploadingFile}
-            onSelectImage={this.beforeUpload}
-            formatMessage={formatMessage}
-            extensions={['.svg']}
-          >
-            <Button>
+            <RenderContainer>
+              <Render3D
+                designSearch={true}
+                loading={uploadingFile}
+                actualImage={actualSvg}
+                designId={shortId}
+                uploadingThumbnail={uploadingThumbnail}
+                onSaveThumbnail={onSaveThumbnail}
+                onUploadingThumbnail={setUploadingThumbnailAction}
+                colorAccessories={colorAccessories}
+                ref={(render3D: any) => (this.render3D = render3D)}
+                {...{ stitchingValue }}
+              />
+            </RenderContainer>
+          </RenderLayout>
+          <Data>
+            <Button
+              loading={creatingPdf}
+              disabled={creatingPdf}
+              onClick={onGeneratePdf}
+              icon="download"
+            >
               <ButtonContainer>
-                <Icon type="upload" />
-                <FormattedMessage {...messages.uploadDesign} />
+                <FormattedMessage {...messages.generatePDF} />
               </ButtonContainer>
             </Button>
-          </DraggerWithLoading>
-          <FinalSvg>
-            {pdfUrl && pdfUrl.length && (
-              <DownloadItem url={pdfUrl} name="Final PDF" />
-            )}
-            {svgUrl && (
-              <DownloadItem url={actualSvg || svgUrl} name="Final SVG" />
-            )}
-            {pngUrl && <DownloadItem url={pngUrl} name="Final PNG" />}
-          </FinalSvg>
-          <AssetsLabel>
-            <FormattedMessage {...messages.assets} />
-          </AssetsLabel>
-          <FilesList {...{ assets }} />
-          <ThumbnailLabel>
-            <FormattedMessage {...messages.thumbnail} />
-          </ThumbnailLabel>
-          <DownloadItem url={image} />
-        </Data>
-        <ChangesContainer className={changes ? 'show' : ''}>
-          <MessageContainer>
-            <FormattedMessage {...messages.changesMessage} />
-          </MessageContainer>
-          <Button
-            onClick={this.onSaveChanges}
-            type="primary"
-            loading={uploadingThumbnail}
-            disabled={uploadingThumbnail}
-            icon="save"
-          >
-            <ButtonContainer>
-              <FormattedMessage {...messages.saveChanges} />
-            </ButtonContainer>
-          </Button>
-        </ChangesContainer>
+            <Divider />
+            <Button onClick={this.onDownload} icon="download">
+              <ButtonContainer>
+                <FormattedMessage {...messages.downloadAll} />
+              </ButtonContainer>
+            </Button>
+            <DraggerWithLoading
+              className="upload"
+              loading={uploadingFile}
+              onSelectImage={this.beforeUpload}
+              formatMessage={formatMessage}
+              extensions={['.svg']}
+            >
+              <Button>
+                <ButtonContainer>
+                  <Icon type="upload" />
+                  <FormattedMessage {...messages.uploadDesign} />
+                </ButtonContainer>
+              </Button>
+            </DraggerWithLoading>
+            <FinalSvg>
+              {pdfUrl && pdfUrl.length && (
+                <DownloadItem url={pdfUrl} name="Final PDF" />
+              )}
+              {svgUrl && (
+                <DownloadItem url={actualSvg || svgUrl} name="Final SVG" />
+              )}
+              {pngUrl && <DownloadItem url={pngUrl} name="Final PNG" />}
+            </FinalSvg>
+            <AssetsLabel>
+              <FormattedMessage {...messages.assets} />
+            </AssetsLabel>
+            <FilesList {...{ assets }} />
+            <ThumbnailLabel>
+              <FormattedMessage {...messages.thumbnail} />
+            </ThumbnailLabel>
+            <DownloadItem url={image} />
+          </Data>
+          <ChangesContainer className={changes ? 'show' : ''}>
+            <MessageContainer>
+              <FormattedMessage {...messages.changesMessage} />
+            </MessageContainer>
+            <Button
+              onClick={this.onSaveChanges}
+              type="primary"
+              loading={uploadingThumbnail}
+              disabled={uploadingThumbnail}
+              icon="save"
+            >
+              <ButtonContainer>
+                <FormattedMessage {...messages.saveChanges} />
+              </ButtonContainer>
+            </Button>
+          </ChangesContainer>
+        </FlexContainer>
+        <ProassistNotes
+          {...{ note }}
+          visible={openNotes}
+          loading={addingNote}
+          designNotes={notes}
+          saveNote={handleSaveNote}
+          setNoteText={setNoteAction}
+          handleClose={this.handleClose}
+        />
       </Container>
     )
+  }
+  handleOpenNotes = () => {
+    const { openNoteAction } = this.props
+    openNoteAction(true)
+  }
+  handleClose = () => {
+    const { openNoteAction } = this.props
+    openNoteAction(false)
   }
   onDownload = () => {
     const {

@@ -17,7 +17,10 @@ import {
   RESET_CHANGES_ACTION,
   SET_SEARCH_CODES,
   SET_CREATING_PDF,
-  SET_PDF
+  SET_PDF,
+  SET_NOTE,
+  OPEN_NOTES,
+  SET_LOADING_NOTE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -28,6 +31,9 @@ export const initialState = fromJS({
   notFound: false,
   noAdmin: false,
   uploadingFile: false,
+  note: '',
+  openNotes: false,
+  addingNote: false,
   actualSvg: '',
   uploadingThumbnail: false,
   changes: false,
@@ -75,6 +81,16 @@ const designSearchAdminReducer: Reducer<any> = (
         loading: false
       })
     }
+    case SET_NOTE:
+      return state.set('note', action.text)
+    case SET_LOADING_NOTE:
+      return state.set('addingNote', action.loading)
+    case OPEN_NOTES:
+      return state.merge({
+        note: '',
+        addingNote: false,
+        openNotes: action.openNotes
+      })
     case SET_UPLOADING_FILE_ACTION:
       return state.set('uploadingFile', action.isUploading)
     case RESET_DATA:

@@ -12,7 +12,8 @@ import {
   ON_CHANGE_SECTION,
   ON_TOGGLE_MODAL,
   ON_RESET_MODAL,
-  SET_LOADING
+  SET_LOADING,
+  CHANGE_NOTE
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -40,6 +41,11 @@ export const setSearchTextAction = (searchText: string) => ({
 export const setDesignSelected = (designId: string) => ({
   type: SET_DESIGN,
   designId
+})
+
+export const setNoteText = (text: string) => ({
+  type: CHANGE_NOTE,
+  text
 })
 
 export const onInputChangeAction = (id: string, value: string) => ({
