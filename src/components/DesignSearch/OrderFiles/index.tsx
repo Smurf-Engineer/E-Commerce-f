@@ -85,7 +85,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         image,
         pdfUrl,
         name,
-        notes,
+        notes = [],
         pngUrl = '',
         product: { name: modelName, zipper }
       },
@@ -104,20 +104,19 @@ export class OrderFiles extends React.PureComponent<Props> {
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
-    const notesElements =
-      notes && notes.length
-        ? notes.map(({ createdAt, text, user }: DesignNote, index: number) => {
-            const createdLabel = `${moment(createdAt).format(
-              NOTE_FORMAT
-            )} - ${user}`
-            return (
-              <NoteContainer key={index}>
-                <NoteTitle>{createdLabel}</NoteTitle>
-                <NoteText>{text}</NoteText>
-              </NoteContainer>
-            )
-          })
-        : null
+    const notesElements = notes.map(
+      ({ createdAt, text, user }: DesignNote, index: number) => {
+        const createdLabel = `${moment(createdAt).format(
+          NOTE_FORMAT
+        )} - ${user}`
+        return (
+          <NoteContainer key={index}>
+            <NoteTitle>{createdLabel}</NoteTitle>
+            <NoteText>{text}</NoteText>
+          </NoteContainer>
+        )
+      }
+    )
     return (
       <Container>
         <FlexContainer>
