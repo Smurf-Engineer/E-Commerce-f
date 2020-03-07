@@ -100,3 +100,11 @@ export const generatePdfMutation = gql`
     }
   }
 `
+
+export const addNoteMutation = gql`
+  mutation addDesignNote($designId: String!, $text: String!) {
+    addDesignNote(designId: $designId, text: $text) {
+      message
+    }
+  }
+`

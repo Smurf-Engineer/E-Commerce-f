@@ -6,35 +6,15 @@ import get from 'lodash/get'
 import { compose, graphql } from 'react-apollo'
 import Icon from 'antd/lib/icon'
 import message from 'antd/lib/message'
-import Modal from 'antd/lib/modal'
 import { withRouter } from 'react-router-dom'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
 import messages from './messages'
 import UserFiles from '../UserFiles'
-import {
-  RadioButton,
-  BackLabel,
-  BackText,
-  CloseIcon,
-  ModalContainer,
-  Title,
-  SubTitle,
-  ButtonContainer,
-  SaveButton,
-  NoteContainer,
-  NoteTitle,
-  NoteText
-} from './styledComponents'
+import { RadioButton, BackLabel, BackText } from './styledComponents'
 import MyLocker from '../../MyLocker'
-import closeIcon from '../../../assets/cancel-button.svg'
-import { FormattedMessage } from 'react-intl'
-import TextArea from 'antd/lib/input/TextArea'
 import { QueryProps, DesignNote, MessagePayload } from '../../../types/common'
-import { GetDesignNotes } from '../data'
-import Spin from 'antd/lib/spin'
-import moment from 'moment'
-import { NOTE_FORMAT } from '../constants'
-import { addNoteMutation } from '../../ProAssist/data'
+import { GetDesignNotes, addNoteMutation } from '../data'
+import ProassistNotes from '../../ProassistNotes'
 
 const RadioGroup = Radio.Group
 
@@ -71,13 +51,6 @@ class Options extends React.Component<Props> {
     const { setDesignSelected } = this.props
     setDesignSelected()
   }
-  handleChangeNote = (evt: React.FormEvent<HTMLTextAreaElement>) => {
-    const { setNoteText } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    setNoteText(value)
-  }
   saveNote = async () => {
     const {
       addNoteAction,
@@ -109,6 +82,7 @@ class Options extends React.Component<Props> {
       showLocker,
       note,
       loading,
+      setNoteText,
       data,
       designSelected,
       setDesignSelected
@@ -156,52 +130,12 @@ class Options extends React.Component<Props> {
         ) : (
           <UserFiles {...{ userId, formatMessage }} />
         )}
-        <Modal
+        <ProassistNotes
+          {...{ loadingData, loading, note, designNotes, setNoteText }}
           visible={!!designSelected}
-          footer={null}
-          closable={false}
-          width={'800px'}
-          destroyOnClose={true}
-        >
-          <ModalContainer>
-            <CloseIcon src={closeIcon} onClick={this.handleClose} />
-            <Title>
-              <FormattedMessage {...messages.proAssistNotes} />
-            </Title>
-            {loadingData ? (
-              <Spin />
-            ) : (
-              designNotes.map(
-                ({ createdAt, text, user }: DesignNote, index: number) => (
-                  <NoteContainer key={index}>
-                    <NoteTitle>{`${moment(createdAt).format(
-                      NOTE_FORMAT
-                    )} - ${user}`}</NoteTitle>
-                    <NoteText>{text}</NoteText>
-                  </NoteContainer>
-                )
-              )
-            )}
-            <SubTitle>
-              <FormattedMessage {...messages.addNote} />
-            </SubTitle>
-            <TextArea
-              value={note}
-              onChange={this.handleChangeNote}
-              autosize={{ minRows: 5, maxRows: 8 }}
-              rows={4}
-            />
-            <ButtonContainer>
-              <SaveButton
-                {...{ loading }}
-                disabled={!note}
-                onClick={this.saveNote}
-              >
-                <FormattedMessage {...messages.add} />
-              </SaveButton>
-            </ButtonContainer>
-          </ModalContainer>
-        </Modal>
+          saveNote={this.saveNote}
+          handleClose={this.handleClose}
+        />
       </div>
     )
   }

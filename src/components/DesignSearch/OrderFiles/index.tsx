@@ -36,7 +36,8 @@ import {
   DataContainer,
   SideData,
   FlexContainer,
-  ProAssistBackground
+  ProAssistBackground,
+  AddNote
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import {
@@ -49,6 +50,7 @@ import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
 import { NOTE_FORMAT } from '../constants'
+import ProassistNotes from '../../ProassistNotes'
 
 interface Props {
   order: OrderSearchResult
@@ -58,6 +60,12 @@ interface Props {
   changes: boolean
   colorAccessories: any
   creatingPdf: boolean
+  openNotes: boolean
+  addingNote: boolean
+  note: string
+  handleSaveNote: () => void
+  setNoteAction: (text: string) => void
+  openNoteAction: (openNotes: boolean) => void
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any, params?: any) => string
@@ -90,6 +98,11 @@ export class OrderFiles extends React.PureComponent<Props> {
         product: { name: modelName, zipper }
       },
       uploadingFile,
+      openNotes,
+      setNoteAction,
+      handleSaveNote,
+      note,
+      addingNote,
       formatMessage,
       actualSvg,
       onSaveThumbnail,
@@ -146,6 +159,9 @@ export class OrderFiles extends React.PureComponent<Props> {
             <ProAssistTitle>
               <FormattedMessage {...messages.proAssistNotes} />
               <Icon type="form" />
+              <AddNote onClick={this.handleOpenNotes}>
+                <FormattedMessage {...messages.add} />
+              </AddNote>
             </ProAssistTitle>
             <ProAssistBackground>{notesElements}</ProAssistBackground>
           </ProAssistNotes>
@@ -247,8 +263,25 @@ export class OrderFiles extends React.PureComponent<Props> {
             </Button>
           </ChangesContainer>
         </FlexContainer>
+        <ProassistNotes
+          {...{ note }}
+          visible={openNotes}
+          loading={addingNote}
+          designNotes={notes}
+          saveNote={handleSaveNote}
+          setNoteText={setNoteAction}
+          handleClose={this.handleClose}
+        />
       </Container>
     )
+  }
+  handleOpenNotes = () => {
+    const { openNoteAction } = this.props
+    openNoteAction(true)
+  }
+  handleClose = () => {
+    const { openNoteAction } = this.props
+    openNoteAction(false)
   }
   onDownload = () => {
     const {
