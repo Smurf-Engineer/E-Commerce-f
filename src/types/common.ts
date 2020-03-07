@@ -191,6 +191,12 @@ export type DesignType = {
   outputPng?: string
 }
 
+export type DesignNote = {
+  createdAt: string
+  user: string
+  text: string
+}
+
 export type SaveDesignType = {
   designBase64: string
   canvasSvg: string
@@ -262,6 +268,11 @@ export type LockerTableType = {
 export type ProductTableType = {
   product: Product
   visible: boolean
+}
+
+export type DesignCopyResult = {
+  id: number
+  design: DesignType
 }
 
 export type ProAssistStatus = {
@@ -1254,6 +1265,7 @@ export interface OrderSearchResult {
   pdfUrl?: string
   product: Product
   pngUrl?: string
+  notes?: DesignNote[]
 }
 
 export interface FilesDownload {
