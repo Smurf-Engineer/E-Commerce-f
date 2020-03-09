@@ -19,6 +19,7 @@ import {
 import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
 import { Product, CartItemDetail, PriceRange } from '../../types/common'
+import find from 'lodash/find'
 
 interface CartItems {
   product: Product
@@ -28,6 +29,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   shortId?: string
@@ -43,6 +45,7 @@ interface Props {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   withoutTop?: boolean
@@ -93,6 +96,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       intl,
       item,
       designId,
+      isFixed,
       teamStoreId,
       teamStoreItem,
       designName,
@@ -106,6 +110,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       const itemToAdd = this.getItemWithDetails(
         item,
         designId,
+        isFixed,
         teamStoreId,
         teamStoreItem,
         designName,
@@ -134,6 +139,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
                 this.getItemWithDetails(
                   i,
                   i.designId,
+                  i.isFixed,
                   i.teamStoreId,
                   i.teamStoreItem,
                   i.designName,
@@ -148,6 +154,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             const itemToAdd = this.getItemWithDetails(
               item,
               designId,
+              isFixed,
               teamStoreId,
               teamStoreItem,
               designName,
@@ -165,6 +172,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             this.getItemWithDetails(
               item,
               item.shortId,
+              item.isFixed,
               item.teamStoreId,
               item.teamStoreItem,
               item.designName,
@@ -182,6 +190,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   getItemWithDetails = (
     item: CartItems,
     designId = '',
+    isFixed = false,
     teamStoreId = '',
     teamStoreItem = '',
     designName = '',
@@ -205,6 +214,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       { designName },
       { designImage },
       { designCode },
+      { isFixed },
       { teamStoreId },
       { teamStoreItem },
       { fixedPrices }
@@ -224,10 +234,16 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
     if (typeof window !== 'undefined') {
       const cartList = JSON.parse(localStorage.getItem('cart') as any)
-
       if (cartList) {
-        cartList.push(item)
-        localStorage.setItem('cart', JSON.stringify(cartList))
+        const { teamStoreId, designId } = item
+        const sameDesign = find(cartList, ['designId', designId])
+        if (sameDesign && sameDesign.teamStoreId !== teamStoreId) {
+          Message.warning(intl.formatMessage(messages.cantMix))
+          return
+        } else {
+          cartList.push(item)
+          localStorage.setItem('cart', JSON.stringify(cartList))
+        }
       } else {
         const myItems = []
         myItems.push(item)
@@ -243,10 +259,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
 const AddToCartEnhanced = compose(
   injectIntl,
-  connect(
-    null,
-    { getTotalItemsIncart }
-  )
+  connect(null, { getTotalItemsIncart })
 )(AddToCartButton)
 
 export default AddToCartEnhanced
