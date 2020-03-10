@@ -52,7 +52,7 @@
   "components.PositionResize.rotation": "Rotation",
   "components.PositionResize.width": "Width",
   "components.PositionResize.height": "Height",
-  "components.PositionResize.flip": "Flip",
+  "components.PositionResize.mirror": "Mirror",
   "components.footer.teams.title": "TEAMS",
   "components.footer.aboutUs.title": "ABOUT US",
   "components.footer.aboutUs.company": "Company",

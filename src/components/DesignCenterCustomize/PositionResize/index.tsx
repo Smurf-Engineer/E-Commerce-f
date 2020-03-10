@@ -137,7 +137,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
           </InputBlock>
           <InputBlock>
             <Subtitle>
-              <FormattedMessage {...messages.flip} />
+              <FormattedMessage {...messages.mirror} />
             </Subtitle>
             <MirrorButton onClick={this.horizontalMirror} src={mirrorButton} />
           </InputBlock>
