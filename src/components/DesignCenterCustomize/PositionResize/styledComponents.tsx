@@ -33,6 +33,9 @@ export const Title = styled.div`
 export const NumberInput = styled(InputNumber)`
   width: 100%;
   margin-top: 4px;
+  .ant-input-number-handler-wrap {
+    opacity: 1;
+  }
 `
 
 export const InputContainer = styled.div`
