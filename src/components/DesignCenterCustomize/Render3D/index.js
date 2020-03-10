@@ -1573,10 +1573,14 @@ class Render3D extends PureComponent {
 
   setSelectedLayer = (id, type) => {
     const { onSelectEl } = this.props
+    if (id) {
+      const el = this.getElementById(id)
+      this.controls.enabled = false
+      this.canvasTexture.setActiveObject(el)
+    } else {
+      this.canvasTexture.discardActiveObject()
+    }
     onSelectEl(id, type)
-    const el = this.getElementById(id)
-    this.controls.enabled = false
-    this.canvasTexture.setActiveObject(el)
     this.canvasTexture.renderAll()
   }
 

@@ -63,5 +63,9 @@ export default defineMessages({
   empty: {
     id: 'components.UploadTab.empty',
     defaultMessage: `Here is where your upload layers will appear. Click the button above to add a layer.`
+  },
+  backToLayers: {
+    id: 'components.UploadTab.backToLayers',
+    defaultMessage: `Back to layers`
   }
 })

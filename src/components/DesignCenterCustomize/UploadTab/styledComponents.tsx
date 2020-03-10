@@ -61,6 +61,12 @@ export const Header = styled.div`
   align-items: center;
 `
 
+export const Row = styled.div`
+  width: 100%;
+  display: flex;
+  cursor: pointer;
+`
+
 export const Title = styled.div`
   color: ${GRAY_DARK};
   font-size: 14px;

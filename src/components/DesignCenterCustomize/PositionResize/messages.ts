@@ -28,5 +28,9 @@ export default defineMessages({
   height: {
     id: 'components.PositionResize.height',
     defaultMessage: 'Height'
+  },
+  flip: {
+    id: 'components.PositionResize.flip',
+    defaultMessage: 'Flip'
   }
 })

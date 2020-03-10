@@ -72,7 +72,7 @@ interface Props {
   tutorialPlaylist: string
   activeEl: PositionSize
   onDeleteLayer: (id: string) => void
-  onSelectEl: (id: string, typeEl: string) => void
+  onSelectEl: (id: string, typeEl?: string) => void
   onPositionChange: (data: PositionSize) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void

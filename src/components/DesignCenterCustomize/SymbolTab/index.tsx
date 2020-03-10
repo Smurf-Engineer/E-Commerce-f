@@ -66,7 +66,7 @@ interface Props {
   }
   activeEl: PositionSize
   onDeleteLayer: (id: string) => void
-  onSelectEl: (id: string, typeEl: string) => void
+  onSelectEl: (id: string, typeEl?: string) => void
   onPositionChange: (data: PositionSize) => void
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (
@@ -96,7 +96,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     const {
       data: { loading, clipArts },
       selectedElement,
-      elements,
+      elements = {},
       formatMessage,
       activeEl,
       onPositionChange,
@@ -126,7 +126,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         <Spin />
       </Loading>
     )
-    const arrayElements = Object.keys(elements || {}).map((id, index) => {
+    const arrayElements = Object.keys(elements).map((id, index) => {
       const { fill, stroke, strokeWidth, svg } = elements[id]
       return (
         <Layer key={index}>
@@ -150,15 +150,13 @@ class SymbolTab extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
-        {(!!page || selectedElement || addSymbol) && (
+        {(selectedElement || (!page && addSymbol)) && (
           <Header>
             <Row onClick={this.changePage(0, 0)}>
-              {(!!page || (addSymbol && !selectedElement)) && (
-                <ArrowIcon src={backIcon} />
-              )}
+              <ArrowIcon src={backIcon} />
               <Title>
                 <FormattedMessage
-                  {...messages[selectedElement ? 'editSymbol' : 'addSymbol']}
+                  {...messages[page ? 'editSymbol' : 'backToLayers']}
                 />
               </Title>
             </Row>
@@ -264,8 +262,14 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     this.searchrAfterTyping(value)
   }
 
-  changePage = (page: number, option: number) => () =>
+  changePage = (page: number, option: number) => () => {
+    const { page: oldPage } = this.state
+    if (!page && !oldPage) {
+      const { onSelectEl } = this.props
+      onSelectEl('', 'path')
+    }
     this.setState({ page, option, addSymbol: false })
+  }
 
   handleOnSelectFill = (fillColor: string) => {
     const { selectedElement, onSelectArtFormat, onApplyArt } = this.props

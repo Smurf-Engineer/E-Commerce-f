@@ -619,7 +619,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     }
   }
 
-  setSelectedLayer = (id: string, type: string) => {
+  setSelectedLayer = (id: string, type?: string) => {
     if (this.render3D) {
       this.render3D.setSelectedLayer(id, type)
     }

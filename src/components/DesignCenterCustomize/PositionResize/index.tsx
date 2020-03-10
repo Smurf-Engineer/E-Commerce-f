@@ -12,9 +12,12 @@ import {
   Subtitle,
   Title,
   SmallIcon,
-  LockIcon
+  LockIcon,
+  MirrorButton
 } from './styledComponents'
 import { PositionSize } from '../../../types/common'
+import mirrorButton from '../../../assets/mirrorbutton.svg'
+
 const DECIMAL_REGEX = /[^0-9.]/g
 
 interface Props {
@@ -60,6 +63,12 @@ export class PositionResize extends React.PureComponent<Props, State> {
       width = height * (width / originalHeight)
     }
     handleChange({ ...activeEl, width, height })
+  }
+
+  horizontalMirror = () => {
+    const { activeEl, handleChange } = this.props
+    const { width } = activeEl
+    handleChange({ ...activeEl, width: width * -1 })
   }
 
   changeLock = () => {
@@ -125,6 +134,12 @@ export class PositionResize extends React.PureComponent<Props, State> {
               precision={1}
               onChange={val => this.changeValue(val, 'rotation')}
             />
+          </InputBlock>
+          <InputBlock>
+            <Subtitle>
+              <FormattedMessage {...messages.flip} />
+            </Subtitle>
+            <MirrorButton onClick={this.horizontalMirror} src={mirrorButton} />
           </InputBlock>
         </InputContainer>
         <InputContainer>

@@ -48,5 +48,9 @@ export default defineMessages({
   empty: {
     id: 'components.SymbolTab.empty',
     defaultMessage: `Here is where your clipart layers will appear. Click the button above to add a layer.`
+  },
+  backToLayers: {
+    id: 'components.SymbolTab.backToLayers',
+    defaultMessage: `Back to layers`
   }
 })

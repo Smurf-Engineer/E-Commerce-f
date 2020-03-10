@@ -45,7 +45,8 @@ import {
   EditLayer,
   ArrowIcon,
   LowerContainer,
-  EmptyElements
+  EmptyElements,
+  Row
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
@@ -83,7 +84,7 @@ interface Props {
     [id: string]: CanvasElement
   }
   onDeleteLayer: (id: string) => void
-  onSelectEl: (id: string, typeEl: string) => void
+  onSelectEl: (id: string, typeEl?: string) => void
   onPositionChange: (data: PositionSize) => void
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
@@ -117,7 +118,7 @@ class UploadTab extends React.PureComponent<Props, State> {
       isUserAuthenticated,
       selectedItem,
       activeEl,
-      elements,
+      elements = {},
       onPositionChange,
       formatMessage,
       selectedElement
@@ -159,17 +160,17 @@ class UploadTab extends React.PureComponent<Props, State> {
         onSelectImage={this.beforeUpload}
       />
     )
-    const arrayElements = Object.keys(elements || {})
+    const arrayElements = Object.keys(elements)
     return (
       <Container>
         {(selectedElement || addImage) && (
           <Header>
-            {!selectedElement && addImage && (
-              <ArrowIcon onClick={this.goBackToLayer} src={backIcon} />
-            )}
-            <Title>
-              <FormattedMessage {...messages.title} />
-            </Title>
+            <Row onClick={this.goBackToLayer}>
+              <ArrowIcon src={backIcon} />
+              <Title>
+                <FormattedMessage {...messages.backToLayers} />
+              </Title>
+            </Row>
             {selectedElement && (
               <LockContainer onClick={this.handleOnLockElement}>
                 <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
@@ -254,7 +255,9 @@ class UploadTab extends React.PureComponent<Props, State> {
   }
 
   goBackToLayer = () => {
+    const { onSelectEl } = this.props
     this.setState({ addImage: false })
+    onSelectEl('', 'image')
   }
 
   handleOnLogin = () => {

@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import InputNumber from 'antd/lib/input-number'
 import Icon from 'antd/lib/icon'
-import { GRAY_DARK, RED, GRAY } from '../../../theme/colors'
+import { GRAY_DARK, RED, GRAY, GRAY_LIGHTEST } from '../../../theme/colors'
 
 interface IconProps {
   invert?: boolean
@@ -75,4 +75,18 @@ export const LockIcon = styled(Icon)`
   cursor: pointer;
   font-size: 12px;
   color: ${({ enabled }: IconProps) => (enabled ? RED : GRAY)};
+`
+
+export const MirrorButton = styled.img`
+  max-width: 38px;
+  height: 39px;
+  margin-top: 3px;
+  padding: 8px;
+  border: 1px solid ${GRAY};
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background: ${GRAY_LIGHTEST};
+  }
 `

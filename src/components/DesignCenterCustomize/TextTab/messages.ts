@@ -84,5 +84,9 @@ export default defineMessages({
   empty: {
     id: 'components.TextTab.empty',
     defaultMessage: `Here is where your text layers will appear. Click the button above to add a layer.`
+  },
+  backToLayers: {
+    id: 'components.TextTab.backToLayers',
+    defaultMessage: `Back to layers`
   }
 })

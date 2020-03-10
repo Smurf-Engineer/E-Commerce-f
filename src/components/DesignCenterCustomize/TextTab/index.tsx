@@ -58,7 +58,7 @@ interface Props {
   colorsList: any
   activeEl: PositionSize
   onDeleteLayer: (id: string) => void
-  onSelectEl: (id: string, typeEl: string) => void
+  onSelectEl: (id: string, typeEl?: string) => void
   onPositionChange: (data: PositionSize) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
@@ -109,8 +109,8 @@ export class TextTab extends React.PureComponent<Props, State> {
       <Container>
         {(!!page || selectedElement) && (
           <Header>
-            <Row onClick={this.changePage(0, 0)}>
-              {!!page && !selectedElement && <ArrowIcon src={backIcon} />}
+            <Row onClick={this.changePage(page === 2 ? 1 : 0, 0)}>
+              <ArrowIcon src={backIcon} />
               <Title>
                 <FormattedMessage {...messages[headerTitle]} />
               </Title>
@@ -267,8 +267,8 @@ export class TextTab extends React.PureComponent<Props, State> {
   }
 
   getHeaderTitle = (option: number, page: number): string => {
-    if (page === 0 || page === 1) {
-      return 'title'
+    if (page !== 2) {
+      return page ? 'backToLayers' : 'title'
     }
 
     switch (option) {
@@ -476,8 +476,13 @@ export class TextTab extends React.PureComponent<Props, State> {
     this.forceUpdate()
   }
 
-  changePage = (page: number, option: number) => () =>
+  changePage = (page: number, option: number) => () => {
+    const { selectedElement, onSelectEl } = this.props
+    if (!page && selectedElement) {
+      onSelectEl('', 'text')
+    }
     this.setState({ page, option })
+  }
 }
 
 export default TextTab
