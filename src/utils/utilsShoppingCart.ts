@@ -76,7 +76,8 @@ export const getShoppingCartData = (
         teamStoreRange = 0
       } else if (cartItem.isFixed && cartItem.teamStoreItem) {
         const totalOrder = cartItem.totalOrder + quantitySum
-        teamStoreRange = getPriceRangeToApply(totalOrder)
+        const rangeTeam = getPriceRangeToApply(totalOrder)
+        teamStoreRange = rangeTeam || 1
       }
       const productPriceRanges = get(
         cartItem,

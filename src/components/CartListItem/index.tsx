@@ -118,7 +118,7 @@ export class CartListItem extends React.Component<Props, {}> {
   }
 
   getPriceRange(priceRanges: PriceRange[], totalItems: CardNumberElement) {
-    const { price } = this.props
+    const { price, teamStoreItem } = this.props
     let markslider = { quantity: '0', price: 0 }
     if (price && price.quantity !== 'Personal') {
       markslider = price
@@ -134,6 +134,9 @@ export class CartListItem extends React.Component<Props, {}> {
           break
         }
       }
+    }
+    if (teamStoreItem && markslider.quantity === 'Personal') {
+      markslider = priceRanges[1]
     }
     return markslider
   }
