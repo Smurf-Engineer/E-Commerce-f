@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
@@ -38,6 +38,7 @@ import {
   UserType
 } from '../../types/common'
 import * as createStoreActions from './actions'
+import { cutoffDateSettingsQuery } from './data'
 import messages from './messages'
 import {
   Container,
@@ -68,12 +69,20 @@ import {
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
-import { FIXED_TEAMSTORE, ON_DEMAND_TEAMSTORE } from './constants'
+import {
+  FIXED_TEAMSTORE,
+  ON_DEMAND_TEAMSTORE,
+  DEFAULT_CUTOFF_DAYS
+} from './constants'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
+}
+
+interface CutoffData extends QueryProps {
+  cutoffDays: number
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -105,6 +114,7 @@ interface Props extends RouteComponentProps<any> {
   currentPage: number
   bulletin: string
   user: UserType
+  cutoffSettings: CutoffData
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -505,7 +515,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       limit,
       offset,
       onUnselectItemAction,
-      user
+      user,
+      cutoffSettings
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -528,6 +539,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     const storeShortId = this.getStoreId()
     const isOnDemand = this.isOnDemand()
+    const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
 
     return (
       <Layout {...{ history, intl }}>
@@ -549,7 +561,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onSelectStartDate={updateStartDateAction}
               onSelectEndDate={updateEndDateAction}
               onDemand={isOnDemand}
-              {...{ hasError }}
+              {...{ hasError, cutoffDays }}
             />
             {isOnDemand ? (
               <React.Fragment>
@@ -769,6 +781,12 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
+  graphql(cutoffDateSettingsQuery, {
+    name: 'cutoffSettings',
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
   connect(mapStateToProps, { ...createStoreActions, ...thunkActions })
 )(CreateStore)
 

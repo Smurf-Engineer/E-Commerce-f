@@ -103,3 +103,9 @@ export const GetTeamStoreQuery = gql`
     }
   }
 `
+
+export const cutoffDateSettingsQuery = gql`
+  query getCutoffConfig {
+    cutoffDays: getCutoffConfig
+  }
+`

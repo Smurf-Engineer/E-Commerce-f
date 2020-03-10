@@ -281,7 +281,7 @@
   "components.StoreForm.shipping": "Orders ship within 7 days of receipt of order.",
   "components.StoreForm.onDemandMode": "ON DEMAND MODE",
   "components.StoreForm.desiredDeliveryLabel": "Desired Delivery Date",
-  "components.StoreForm.deliveryErrorLabel": "Delivery date cannot be on a Sunday or Federal Holiday'",
+  "components.StoreForm.deliveryErrorLabel": "Delivery date cannot be on a Saturday or Sunday",
   "components.StoreForm.errorMsg": "Something wrong happened. Please try again!",
   "components.MyTeamStores.tittle": "My TeamStores",
   "components.MyTeamStores.addTeamstoreLabel": "+ ADD NEW TEAM STORE",

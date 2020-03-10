@@ -27,7 +27,7 @@ export default defineMessages({
   },
   deliveryErrorLabel: {
     id: 'components.StoreForm.deliveryErrorLabel',
-    defaultMessage: 'Delivery date cannot be on a Sunday or Federal Holiday'
+    defaultMessage: 'Delivery date cannot be on a Saturday or Sunday'
   },
   errorMsg: {
     id: 'components.StoreForm.errorMsg',
@@ -58,5 +58,13 @@ export default defineMessages({
     defaultMessage: `The order cut-off date can not be greater 
     than 14 days from the current date. You will have the option, 
     if necessary, to extend your Cut-Off date once up to a maximum of +3 days.`
+  },
+  aboutDelivery: {
+    id: 'components.StoreForm.aboutDelivery',
+    defaultMessage: 'ABOUT DELIVERY DATE'
+  },
+  aboutDeliveryInfo: {
+    id: 'components.StoreForm.aboutDeliveryInfo',
+    defaultMessage: `Delivery day exclude federal holidays and weekends.`
   }
 })
