@@ -267,8 +267,9 @@ export class TextTab extends React.PureComponent<Props, State> {
   }
 
   getHeaderTitle = (option: number, page: number): string => {
+    const { selectedElement } = this.props
     if (page !== 2) {
-      return page ? 'backToLayers' : 'title'
+      return page || selectedElement ? 'backToLayers' : 'title'
     }
 
     switch (option) {
