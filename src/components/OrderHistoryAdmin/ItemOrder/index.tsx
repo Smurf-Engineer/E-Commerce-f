@@ -15,6 +15,7 @@ interface Props {
   statusError?: boolean
   firstName: string
   lastName: string
+  source: string
   onOrderClick: (shortId: string) => void
 }
 
@@ -27,7 +28,8 @@ const ItemOrder = ({
   pendingCheck,
   statusError,
   firstName,
-  lastName
+  lastName,
+  source
 }: Props) => {
   const handleOnClick = () => {
     onOrderClick(shortId)
@@ -35,6 +37,7 @@ const ItemOrder = ({
   return (
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
+      <Cell>{source}</Cell>
       <Cell>{date}</Cell>
       <Cell>JV2-{clientId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>

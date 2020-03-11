@@ -88,6 +88,12 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
+              id={'source'}
+              label={formatMessage(messages.source)}
+              sort={orderBy === 'source' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
               id={'created_at'}
               label={formatMessage(messages.date)}
               sort={orderBy === 'created_at' ? sort : 'none'}
@@ -135,7 +141,8 @@ const OrdersList = ({
         netsuite,
         netsuiteAttempts,
         firstName,
-        lastName
+        lastName,
+        source
       }: OrderHistory,
       index: number
     ) => {
@@ -164,7 +171,8 @@ const OrdersList = ({
             pendingChecks,
             lastName,
             onOrderClick,
-            trackingNumber
+            trackingNumber,
+            source
           }}
         />
       )

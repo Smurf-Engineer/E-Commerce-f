@@ -775,6 +775,7 @@
   "components.OrdersList.status": "Status",
   "components.OrdersList.preflight": "Preflight",
   "components.OrdersList.emptyMessage": "No orders yet",
+  "components.OrdersList.source": "Order Point",
   "components.Overview.title": "OVERVIEW",
   "components.Overview.headerTitle": "Recent Orders",
   "components.Overview.profile": "Profile",

@@ -696,6 +696,7 @@ export interface OrderHistory {
   firstName?: string
   lastName?: string
   netsuiteAttempts: number
+  source?: string
 }
 
 export interface Discount {

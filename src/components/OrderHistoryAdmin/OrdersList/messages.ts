@@ -48,5 +48,9 @@ export default defineMessages({
   emptyMessage: {
     id: 'components.OrdersList.emptyMessage',
     defaultMessage: 'No orders yet'
+  },
+  source: {
+    id: 'components.OrdersList.source',
+    defaultMessage: 'Order Point'
   }
 })

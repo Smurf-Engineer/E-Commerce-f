@@ -30,6 +30,7 @@ export const getOrdersQuery = gql`
         firstName: first_name
         lastName: last_name
         pendingChecks: pending_checks
+        source
         netsuite: netsuit_order {
           orderStatus {
             orderStatus
