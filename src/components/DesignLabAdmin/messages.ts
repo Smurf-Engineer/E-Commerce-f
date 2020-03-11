@@ -28,5 +28,13 @@ export default defineMessages({
   tutorialPlaylist: {
     id: 'components.DesignLabAdmin.tutorialPlaylist',
     defaultMessage: 'Tutorial playlist'
+  },
+  cutOffDays: {
+    id: 'components.DesignLabAdmin.cutOffDays',
+    defaultMessage: 'Cut Off Days'
+  },
+  currentCutOffDays: {
+    id: 'components.DesignLabAdmin.currentCutOffDays',
+    defaultMessage: 'Current Cut Off Days'
   }
 })

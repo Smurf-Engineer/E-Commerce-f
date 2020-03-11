@@ -67,6 +67,7 @@ const StoreForm = ({
   }
 
   const disabledStartDate = (current: any) => {
+    console.log(current)
     if (!current) {
       return false
     }
@@ -76,6 +77,7 @@ const StoreForm = ({
     date.minute(0)
     date.second(0)
 
+    date.add('1', 'days')
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
 
     date.add(cutoffDays, 'days')
