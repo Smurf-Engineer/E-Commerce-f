@@ -649,6 +649,7 @@ export interface CartItems {
   flatlock?: string
   preflightCheck?: boolean
   fixedPrices: PriceRange[]
+  teamStoreName?: string
 }
 
 export interface ProductPrice {
@@ -793,6 +794,8 @@ export interface OrderDataInfo {
   total?: number
   discount?: number
   confirmed?: boolean
+  status?: string
+  lastDrop?: string
 }
 
 export interface TextFormat {

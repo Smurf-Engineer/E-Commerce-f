@@ -384,6 +384,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           teamStoreId={teamStoreShortId}
           fixedPrices={teamPrice}
           {...{ designId, designName, designImage, teamStoreItem }}
+          teamStoreName={teamName}
         />
       </ButtonsRow>
     )

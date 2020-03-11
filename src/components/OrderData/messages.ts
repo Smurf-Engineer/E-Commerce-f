@@ -70,5 +70,17 @@ export default defineMessages({
   estimatedDate: {
     id: 'components.OrderData.estimatedDate',
     defaultMessage: 'Delivery Date'
+  },
+  waiting: {
+    id: 'components.OrderData.waiting',
+    defaultMessage: 'Waiting for cut off date'
+  },
+  teamStatus: {
+    id: 'components.OrderData.teamStatus',
+    defaultMessage: 'Team Order Status'
+  },
+  lastUpdated: {
+    id: 'components.OrderData.lastUpdated',
+    defaultMessage: 'Last Updated'
   }
 })

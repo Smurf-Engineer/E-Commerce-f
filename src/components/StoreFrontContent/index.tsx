@@ -415,7 +415,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           formatMessage,
                           onDemandMode,
                           currentCurrency,
-                          display
+                          display,
+                          teamStoreName
                         }}
                         withoutPadding={false}
                         openQuickView={this.handleOnOpenQuickView}

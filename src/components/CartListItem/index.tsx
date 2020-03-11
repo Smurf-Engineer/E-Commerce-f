@@ -20,7 +20,8 @@ import {
   DeleteItem,
   BottomDivider,
   FooterItem,
-  HeaderPriceDetailEmpty
+  HeaderPriceDetailEmpty,
+  FromTeamStore
 } from './styledComponents'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
@@ -39,7 +40,10 @@ import config from '../../config/index'
 import { CardNumberElement } from 'react-stripe-elements'
 
 interface Props {
-  formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
+  formatMessage: (
+    messageDescriptor: Message,
+    params?: MessagePrice | TeamStoreName
+  ) => string
   handleAddItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number
@@ -103,6 +107,10 @@ interface Props {
 interface MessagePrice {
   symbol: string
   price: string
+}
+
+interface TeamStoreName {
+  teamStoreName: string
 }
 
 export class CartListItem extends React.Component<Props, {}> {
@@ -240,7 +248,8 @@ export class CartListItem extends React.Component<Props, {}> {
       designName,
       designImage,
       designCode,
-      fixedPrices = []
+      fixedPrices = [],
+      teamStoreName = ''
     } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -299,7 +308,8 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailGender,
           setDetailSize,
           openFitInfoAction,
-          openFitInfo
+          openFitInfo,
+          teamStoreName
         }}
       />
     )
@@ -319,6 +329,11 @@ export class CartListItem extends React.Component<Props, {}> {
       <ItemDetailsHeader>
         <NameContainer>
           <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
+          {!!teamStoreName && (
+            <FromTeamStore>
+              {formatMessage(messages.from, { teamStoreName })}
+            </FromTeamStore>
+          )}
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>

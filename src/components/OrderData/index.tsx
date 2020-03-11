@@ -6,6 +6,7 @@ import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import head from 'lodash/head'
 import messages from './messages'
+import moment from 'moment'
 import { FormattedHTMLMessage } from 'react-intl'
 import {
   Container,
@@ -23,7 +24,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE } from '../../constants'
+import { PURCHASE, PENDING_APPROVAL } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -131,7 +132,9 @@ class OrderData extends React.Component<Props, {}> {
           taxFee,
           total,
           discount,
-          confirmed
+          confirmed,
+          status,
+          lastDrop
         }
       },
       currentCurrency
@@ -207,6 +210,20 @@ class OrderData extends React.Component<Props, {}> {
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
               <StyledText>{estimatedDate}</StyledText>
+            </OrderNumberContainer>
+            <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
+              <StyledText>
+                {status === PENDING_APPROVAL
+                  ? formatMessage(messages.waiting)
+                  : status}
+              </StyledText>
+            </OrderNumberContainer>
+            <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.lastUpdated)}</TitleStyled>
+              <StyledText>
+                {moment(lastDrop).format('DD/MM/YYYY HH:mm')}
+              </StyledText>
             </OrderNumberContainer>
             <StyledText>
               <FormattedHTMLMessage {...messages.messageRetail} />
