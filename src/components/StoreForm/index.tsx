@@ -93,11 +93,10 @@ const StoreForm = ({
     let isLessThanDeliveryDate = false
     let isGreaterThanTwentyDays = false
     if (startDate) {
-      const cutOffDate = startDate.clone()
       const maxEndDate = startDate.clone()
-      cutOffDate.add(15, 'days')
-      isLessThanDeliveryDate = current.valueOf() < cutOffDate.valueOf()
-      maxEndDate.add(20, 'days')
+      maxEndDate.add(15, 'days')
+      isLessThanDeliveryDate = current.valueOf() < maxEndDate.valueOf()
+      maxEndDate.add(6, 'days')
       isGreaterThanTwentyDays = current.valueOf() > maxEndDate.valueOf()
     }
 
