@@ -212,7 +212,7 @@ class OrderData extends React.Component<Props, {}> {
               <StyledText>{estimatedDate}</StyledText>
             </OrderNumberContainer>
             <OrderNumberContainer>
-              <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
+              <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
               <StyledText>
                 {status === PENDING_APPROVAL
                   ? formatMessage(messages.waiting)
@@ -222,7 +222,7 @@ class OrderData extends React.Component<Props, {}> {
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.lastUpdated)}</TitleStyled>
               <StyledText>
-                {moment(lastDrop).format('DD/MM/YYYY HH:mm')}
+                {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
               </StyledText>
             </OrderNumberContainer>
             <StyledText>

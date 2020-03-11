@@ -82,5 +82,9 @@ export default defineMessages({
   lastUpdated: {
     id: 'components.OrderData.lastUpdated',
     defaultMessage: 'Last Updated'
+  },
+  orderStatus: {
+    id: 'components.OrderData.orderStatus',
+    defaultMessage: 'Order Status'
   }
 })
