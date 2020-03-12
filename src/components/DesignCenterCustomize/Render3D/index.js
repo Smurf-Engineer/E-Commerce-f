@@ -1382,37 +1382,6 @@ class Render3D extends PureComponent {
     )*/
     }
 
-    let widthInCm = 0
-    let heightInCm = 0
-    let rotation = 0
-    const selectedGraphicElement =
-      canvas.image[selectedElement] ||
-      canvas.path[selectedElement] ||
-      canvas.text[selectedElement]
-    const activeEl = this.getElementById(selectedElement)
-    if (!!selectedGraphicElement && this.canvasTexture && activeEl) {
-      if (selectedGraphicElement.imageSize) {
-        const { width, height } = this.getSizeInCentimeters(
-          selectedGraphicElement
-        )
-        widthInCm = width
-        heightInCm = height
-      } else {
-        const { width, height } = this.getSizeInCentimeters({
-          imageSize: { width: activeEl.width, height: activeEl.height },
-          scaleX: activeEl.scaleX,
-          scaleY: activeEl.scaleY
-        })
-        widthInCm = width
-        heightInCm = height
-      }
-      if (activeEl.angle > 180) {
-        rotation = Math.round(activeEl.angle - 360)
-      } else {
-        rotation = Math.round(activeEl.angle)
-      }
-    }
-
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
         <Row>
@@ -1450,18 +1419,6 @@ class Render3D extends PureComponent {
             {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>
-        {!!selectedGraphicElement && (
-          <MeasurementBox>
-            <MeasurementLabel>
-              <FormattedMessage {...messages.sizeMessage} />
-            </MeasurementLabel>
-            <Measurement>{`${widthInCm} x ${heightInCm} cm`}</Measurement>
-            <MeasurementLabel>
-              <FormattedMessage {...messages.rotationMessage} />
-            </MeasurementLabel>
-            <Measurement>{`${rotation}º`}</Measurement>
-          </MeasurementBox>
-        )}
         <Render
           id="render-3d"
           innerRef={container => (this.container = container)}
@@ -1593,25 +1550,45 @@ class Render3D extends PureComponent {
   applyPosition = data => {
     const activeEl = this.canvasTexture.getActiveObject()
     if (activeEl) {
-      const { width, height, angle } = activeEl
+      const { selectedElement, canvas } = this.props
+      const selectedGraphicElement =
+        canvas.image[selectedElement] ||
+        canvas.path[selectedElement] ||
+        canvas.text[selectedElement]
+      const { width: elmWidth, height: elmHeight, angle } = activeEl
+      let width = elmWidth
+      let height = elmHeight
+      if (selectedGraphicElement && selectedGraphicElement.imageSize) {
+        const {
+          imageSize: { width: imageWidth, height: imageHeight }
+        } = selectedGraphicElement
+        width = imageWidth
+        height = imageHeight
+      }
       const {
-        width: pixelWidth,
-        height: pixelHeight,
+        width: cmWidth,
+        height: cmHeight,
         rotation,
         horizontal,
         vertical
       } = data
+      const { scaleX, scaleY } = this.getSizeInPixels(
+        cmWidth,
+        cmHeight,
+        width,
+        height
+      )
       const constraintPosition = activeEl.translateToOriginPoint(
         activeEl.getCenterPoint(),
         CENTER_ORIGIN,
         CENTER_ORIGIN
       )
       activeEl.set({
+        scaleX,
+        scaleY,
         left: horizontal,
         top: vertical,
-        angle: rotation,
-        scaleX: pixelWidth / width,
-        scaleY: pixelHeight / height
+        angle: rotation
       })
       if (angle !== rotation) {
         activeEl.setPositionByOrigin(
@@ -2035,10 +2012,26 @@ class Render3D extends PureComponent {
     this.canvasTexture.remove(el)
   }
 
-  getElementById = id => {
+  getElementById = (id, inCentimeters) => {
     if (this.canvasTexture) {
       const objects = this.canvasTexture.getObjects()
-      return find(objects, { id })
+      const element = find(objects, { id })
+      if (inCentimeters) {
+        const { canvas } = this.props
+        const selectedGraphicElement =
+          canvas.image[id] || canvas.path[id] || canvas.text[id] || {}
+        const imageSize = selectedGraphicElement.imageSize || {
+          width: element.width,
+          height: element.height
+        }
+        const { width, height } = this.getSizeInCentimeters({
+          imageSize,
+          scaleX: element.scaleX,
+          scaleY: element.scaleY
+        })
+        return { ...element, width, height }
+      }
+      return element
     }
     return {}
   }
@@ -2550,9 +2543,20 @@ class Render3D extends PureComponent {
     const scaleYTemp = scaleY / scaleFactorY
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
-    size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
-    size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
+    size.width = (scaledWidth * CM_PER_INCH) / DPI
+    size.height = (scaledHeight * CM_PER_INCH) / DPI
     return size
+  }
+
+  getSizeInPixels = (cmWidth, cmHeight, width, height) => {
+    const { scaleFactorX, scaleFactorY } = this.state
+    const scaledWidth = ((cmWidth || 1) * DPI) / CM_PER_INCH
+    const scaleXTemp = scaledWidth / width
+    const scaleX = scaleFactorX * scaleXTemp
+    const scaledHeight = ((cmHeight || 1) * DPI) / CM_PER_INCH
+    const scaleYTemp = scaledHeight / height
+    const scaleY = scaleFactorY * scaleYTemp
+    return { scaleX, scaleY }
   }
 }
 

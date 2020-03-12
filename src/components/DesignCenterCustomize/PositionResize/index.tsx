@@ -18,7 +18,7 @@ import {
 import { PositionSize } from '../../../types/common'
 import mirrorButton from '../../../assets/mirrorbutton.svg'
 
-const DECIMAL_REGEX = /[^0-9.]/g
+const DECIMAL_REGEX = /\D/g
 
 interface Props {
   activeEl: PositionSize
@@ -34,15 +34,14 @@ export class PositionResize extends React.PureComponent<Props, State> {
     aspectLock: true
   }
 
-  changeValue = (value: number | undefined, name: string) => {
+  changeValue = (value: number | undefined = 0, name: string) => {
     if (!isNaN(value)) {
       const { handleChange, activeEl } = this.props
-      handleChange({ ...activeEl, [name]: value || 0.0 })
+      handleChange({ ...activeEl, [name]: value })
     }
   }
 
-  changeWidth = (value: number | undefined) => {
-    const width = value > 0 ? value : 0.1
+  changeWidth = (width: number | undefined = 1) => {
     const { aspectLock } = this.state
     const { handleChange, activeEl } = this.props
     const { height: originalHeight, width: originalWidth } = activeEl
@@ -53,8 +52,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
     handleChange({ ...activeEl, height, width })
   }
 
-  changeHeight = (value: number | undefined) => {
-    const height = value > 0 ? value : 0.1
+  changeHeight = (height: number | undefined = 1) => {
     const { aspectLock } = this.state
     const { handleChange, activeEl } = this.props
     const { height: originalHeight, width: originalWidth } = activeEl
@@ -95,10 +93,9 @@ export class PositionResize extends React.PureComponent<Props, State> {
             <NumberInput
               size="large"
               value={horizontal}
-              formatter={rawValue => `${rawValue} px`}
+              formatter={rawValue => `${Math.round(rawValue)} px`}
               parser={value => value.replace(DECIMAL_REGEX, '')}
-              step={1}
-              precision={1}
+              precision={0}
               onChange={val => this.changeValue(val, 'horizontal')}
             />
           </InputBlock>
@@ -110,10 +107,9 @@ export class PositionResize extends React.PureComponent<Props, State> {
             <NumberInput
               size="large"
               value={vertical}
-              formatter={rawValue => `${rawValue} px`}
+              formatter={rawValue => `${Math.round(rawValue)} px`}
               parser={value => value.replace(DECIMAL_REGEX, '')}
-              step={1}
-              precision={1}
+              precision={0}
               onChange={val => this.changeValue(val, 'vertical')}
             />
           </InputBlock>
@@ -130,8 +126,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               max={360}
               formatter={rawValue => `${rawValue}º`}
               parser={value => value.replace('º', '')}
-              step={0.5}
-              precision={1}
+              precision={0}
               onChange={val => this.changeValue(val, 'rotation')}
             />
           </InputBlock>
@@ -150,9 +145,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
             <NumberInput
               size="large"
               value={width}
-              formatter={rawValue => `${rawValue} px`}
+              formatter={rawValue => `${rawValue} cm`}
               parser={value => value.replace(DECIMAL_REGEX, '')}
-              step={1}
               precision={1}
               onChange={this.changeWidth}
             />
@@ -169,9 +163,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
             <NumberInput
               size="large"
               value={height}
-              formatter={rawValue => `${rawValue} px`}
+              formatter={rawValue => `${rawValue} cm`}
               parser={value => value.replace(DECIMAL_REGEX, '')}
-              step={1}
               precision={1}
               onChange={this.changeHeight}
             />

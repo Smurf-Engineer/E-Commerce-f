@@ -545,11 +545,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const { selectedElement } = this.props
     let activeEl = {}
     if (selectedElement && this.render3D) {
-      const active = this.render3D.getElementById(selectedElement)
-      const { scaleX, scaleY, top, left, angle, width, height } = active || {}
+      const active = this.render3D.getElementById(selectedElement, true)
+      const { top = 0, left = 0, angle = 0, width = 1, height = 1 } =
+        active || {}
       activeEl = {
-        height: height * scaleY,
-        width: width * scaleX,
+        height,
+        width,
         horizontal: left,
         vertical: top,
         rotation: angle
