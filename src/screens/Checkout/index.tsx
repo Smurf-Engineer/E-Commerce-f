@@ -341,7 +341,8 @@ class Checkout extends React.Component<Props, {}> {
     const paymentIntentLoading =
       paymentMethod === PaymentOptions.CREDITCARD &&
       currentStep === 2 &&
-      !paymentClientSecret.length && !isFixedTeamstore
+      !paymentClientSecret.length &&
+      !isFixedTeamstore
 
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
     const { Step } = Steps
@@ -774,14 +775,13 @@ class Checkout extends React.Component<Props, {}> {
         state: { cart }
       }
     } = this.props
-    console.log('Cart ', cart)
+
     const isFixedTeamstore = some(cart, 'isFixed')
 
     if (!isFixedTeamstore) {
       await this.createPaymentIntent()
     }
     if (card && stripeToken) {
-      console.log('entrando')
       setStripeCardDataAction(card, stripeToken)
       await addNewCard({ variables: { token: stripeToken } })
     }

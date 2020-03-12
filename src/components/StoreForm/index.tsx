@@ -51,7 +51,6 @@ const StoreForm = ({
   endDate,
   onDemand,
   formatMessage,
-  validateHoliday,
   cutoffDays
 }: Props) => {
   const handleUpdateName = (evnt: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +66,6 @@ const StoreForm = ({
   }
 
   const disabledStartDate = (current: any) => {
-    console.log(current)
     if (!current) {
       return false
     }
@@ -80,7 +78,7 @@ const StoreForm = ({
     date.add('1', 'days')
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
 
-    date.add(cutoffDays, 'days')
+    date.add('14', 'days')
     const isGreaterThanFourteenDays = current.valueOf() > date.valueOf()
 
     return isBeforeOfCurrentDay || isGreaterThanFourteenDays
@@ -94,7 +92,7 @@ const StoreForm = ({
     let isGreaterThanTwentyDays = false
     if (startDate) {
       const maxEndDate = startDate.clone()
-      maxEndDate.add(15, 'days')
+      maxEndDate.add(cutoffDays, 'days')
       isLessThanDeliveryDate = current.valueOf() < maxEndDate.valueOf()
       maxEndDate.add(6, 'days')
       isGreaterThanTwentyDays = current.valueOf() > maxEndDate.valueOf()
