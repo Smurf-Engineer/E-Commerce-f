@@ -88,10 +88,7 @@ class OrderHistory extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('orderHistory').toJS()
 
 const OrderHistoryEnhance = compose(
-  connect(
-    mapStateToProps,
-    { ...OrderHistoryActions }
-  )
+  connect(mapStateToProps, { ...OrderHistoryActions })
 )(OrderHistory)
 
 export default OrderHistoryEnhance
