@@ -22,7 +22,6 @@ import ProAssistLogo from '../../assets/ProAssist-logo.svg'
 import ProAssistChat from '../../assets/PROAssist-2.svg'
 import designerImage from '../../assets/designer-guy.jpg'
 import Spin from 'antd/lib/spin'
-import { isWorkingHour } from '../../utils/utilsFunctions'
 import { WorkHours } from '../../types/common'
 import moment from 'moment'
 
@@ -45,9 +44,9 @@ export class DesignCheckModal extends React.Component<Props, {}> {
       workingHours,
       handleGetPro
     } = this.props
-    const online = isWorkingHour(workingHours)
-    const startHour = moment(workingHours.start, 'HH:mm:ss').format('LT')
-    const endHour = moment(workingHours.end, 'HH:mm:ss').format('LT')
+    const { start, end, open } = workingHours
+    const startHour = moment(start, 'HH:mm:ss').format('LT')
+    const endHour = moment(end, 'HH:mm:ss').format('LT')
     const hours = `MON-FRI ${startHour} - ${endHour} (PST)`
     return (
       <Container>
@@ -84,7 +83,7 @@ export class DesignCheckModal extends React.Component<Props, {}> {
             ) : (
               <ContinueButton
                 key="review"
-                disabled={!online}
+                disabled={!open}
                 onClick={handleGetPro}
               >
                 {formatMessage(messages.talkWithDesigner)}
@@ -92,8 +91,8 @@ export class DesignCheckModal extends React.Component<Props, {}> {
             )}
           </ModalButtonsWrapper>
           <HoursLabel>{hours}</HoursLabel>
-          <StatusLabel {...{ online }}>
-            {formatMessage(online ? messages.online : messages.offline)}
+          <StatusLabel {...{ open }}>
+            {formatMessage(open ? messages.online : messages.offline)}
           </StatusLabel>
         </CustomModal>
       </Container>

@@ -177,7 +177,7 @@ export const getDesignLabInfo = gql`
       workingHours {
         start
         end
-        timezone
+        open
       }
     }
   }
