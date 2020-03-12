@@ -40,8 +40,6 @@ export class RegionSelect extends React.Component<Props, {}> {
 
   render() {
     const { data, region, formatMessage, disabled, countryName } = this.props
-    console.log('data', countryName)
-    console.log(data)
     let dropdownOptions: any = []
     if (data && data.regions) {
       dropdownOptions = data.regions.length ? (
