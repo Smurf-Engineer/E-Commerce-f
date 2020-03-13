@@ -157,7 +157,8 @@ export class OrderDetails extends React.Component<Props, {}> {
             designName,
             product: { images, name, shortDescription },
             productTotal,
-            unitPrice
+            unitPrice,
+            teamStoreId
           } = cartItem
 
           subtotal += productTotal || 0
@@ -180,7 +181,8 @@ export class OrderDetails extends React.Component<Props, {}> {
                 productTotal,
                 unitPrice,
                 cartItem,
-                currentCurrency
+                currentCurrency,
+                teamStoreId
               }}
               currencySymbol={currency.shortName}
               key={index}

@@ -249,7 +249,8 @@ export class CartListItem extends React.Component<Props, {}> {
       designImage,
       designCode,
       fixedPrices = [],
-      teamStoreName = ''
+      teamStoreName = '',
+      teamStoreId
     } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -365,7 +366,8 @@ export class CartListItem extends React.Component<Props, {}> {
         label={formatMessage(cartListItemMsgs.reorder)}
         renderForThumbnail={false}
         item={cartItem}
-        {...{ formatMessage, designId, designName, designImage }}
+        {...{ formatMessage, designId, designName, designImage, teamStoreId }}
+        teamStoreName={'nomi'}
         withoutTop={true}
         myLockerList={false}
         itemProdPage={true}

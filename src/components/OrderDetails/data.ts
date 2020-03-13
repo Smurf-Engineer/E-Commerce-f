@@ -124,6 +124,7 @@ export const getOrderQuery = gql`
         designName
         designImage
         designCode
+        teamStoreId
       }
       status
       shippingAmount: shipping_amount
