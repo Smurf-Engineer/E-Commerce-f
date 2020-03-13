@@ -164,6 +164,7 @@ export const LayerBlock = styled.div`
   padding: 16px;
   border-bottom: 1px solid ${GRAY_LIGHT};
   align-items: center;
+  cursor: move;
 `
 
 export const TitleLayer = styled.div`
@@ -221,4 +222,9 @@ export const EmptyElements = styled.div`
   line-height: 16px;
   text-align: center;
   padding: 16px;
+`
+
+export const DragIcon = styled.img`
+  max-width: 8px;
+  margin-right: 8px;
 `

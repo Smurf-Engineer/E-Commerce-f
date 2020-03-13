@@ -33,6 +33,8 @@ import {
 import { Container } from './styledComponents'
 import config from '../../../config'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
+import HTML5Backend from 'react-dnd-html5-backend'
+import { DragDropContext } from 'react-dnd'
 
 const { TabPane } = AntdTabs
 
@@ -50,7 +52,7 @@ interface Props {
   bibColor?: AccesoryColor
   text: string
   productName: string
-  canvas: CanvasType
+  layers: CanvasType
   selectedElement: string
   textFormat: TextFormat
   artFormat: ArtFormat
@@ -71,6 +73,7 @@ interface Props {
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
   activeEl: PositionSize
+  moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
   onPositionChange: (data: PositionSize) => void
@@ -127,7 +130,7 @@ const Tabs = ({
   formatMessage,
   videos,
   productName,
-  canvas,
+  moveLayer,
   selectedElement,
   activeEl,
   textFormat,
@@ -169,7 +172,8 @@ const Tabs = ({
   onOpenFormChart,
   onPositionChange,
   onOpenColorChart,
-  tutorialPlaylist
+  tutorialPlaylist,
+  layers
 }: Props) => {
   return (
     <Container>
@@ -214,13 +218,14 @@ const Tabs = ({
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
           <TextTab
-            elements={canvas.text}
+            elements={layers.text}
             {...{
               disableTooltip,
               text,
               onUpdateText,
               onApplyText,
               formatMessage,
+              moveLayer,
               productName,
               onDeleteLayer,
               onSelectEl,
@@ -243,6 +248,7 @@ const Tabs = ({
               formatMessage,
               onSelectArtFormat,
               searchClipParam,
+              moveLayer,
               onDeleteLayer,
               onSelectEl,
               activeEl,
@@ -251,8 +257,8 @@ const Tabs = ({
               onLockElement,
               colorsList
             }}
-            elements={canvas.path}
-            selectedElement={canvas.path[selectedElement]}
+            elements={layers.path}
+            selectedElement={layers.path[selectedElement]}
             selectedItem={
               selectedItem.type === CanvasElements.Path && selectedItem.id
             }
@@ -267,6 +273,7 @@ const Tabs = ({
               images,
               activeEl,
               onDeleteLayer,
+              moveLayer,
               onSelectEl,
               onPositionChange,
               uploadingFile,
@@ -274,8 +281,8 @@ const Tabs = ({
               onLockElement,
               openLoginModalAction
             }}
-            elements={canvas.image}
-            selectedElement={canvas.image[selectedElement]}
+            elements={layers.image}
+            selectedElement={layers.image[selectedElement]}
             selectedItem={
               selectedItem.type === CanvasElements.Image && selectedItem.id
             }
@@ -293,4 +300,4 @@ const Tabs = ({
   )
 }
 
-export default Tabs
+export default DragDropContext(HTML5Backend)(Tabs)

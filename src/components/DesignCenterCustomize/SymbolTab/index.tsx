@@ -23,6 +23,7 @@ import {
 } from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
+import dragDropIcon from '../../../assets/dragdrop.svg'
 import backIcon from '../../../assets/leftarrow.svg'
 import {
   Container,
@@ -47,9 +48,12 @@ import {
   Layer,
   ClipartPrev,
   ClipartLeft,
-  EmptyElements
+  EmptyElements,
+  DragIcon
 } from './styledComponents'
 import PositionResize from '../PositionResize'
+import orderBy from 'lodash/orderBy'
+import Draggable from '../../Draggable'
 
 interface Data extends QueryProps {
   clipArts: ClipArt[]
@@ -65,6 +69,7 @@ interface Props {
     [id: string]: CanvasElement
   }
   activeEl: PositionSize
+  moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
   onPositionChange: (data: PositionSize) => void
@@ -126,27 +131,37 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         <Spin />
       </Loading>
     )
-    const arrayElements = Object.keys(elements).map((id, index) => {
-      const { fill, stroke, strokeWidth, svg } = elements[id]
-      return (
-        <Layer key={index}>
-          <ClipartLeft>
-            <ClipartPrev
-              {...{ fill, stroke, strokeWidth }}
-              dangerouslySetInnerHTML={{
-                __html: svg
-              }}
-            />
-          </ClipartLeft>
-          <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
-            {formatMessage(messages.delete)}
-          </DeleteLayer>
-          <EditLayer {...{ id }} onClick={this.onSelectLayer}>
-            {formatMessage(messages.edit)}
-          </EditLayer>
-        </Layer>
+    const layersArray = Object.keys(elements).map((id: string) => elements[id])
+    const elementsOrdered = orderBy(layersArray, ['index'], ['desc'])
+    const arrayElements = elementsOrdered.map(
+      ({ fill, stroke, strokeWidth, svg, id }, index) => (
+        <Draggable
+          {...{ id, index }}
+          index={id}
+          key={index}
+          section="clipartLayers"
+          onDropRow={this.handleMoveLayer}
+        >
+          <Layer key={index}>
+            <DragIcon src={dragDropIcon} />
+            <ClipartLeft>
+              <ClipartPrev
+                {...{ fill, stroke, strokeWidth }}
+                dangerouslySetInnerHTML={{
+                  __html: svg
+                }}
+              />
+            </ClipartLeft>
+            <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+              {formatMessage(messages.delete)}
+            </DeleteLayer>
+            <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+              {formatMessage(messages.edit)}
+            </EditLayer>
+          </Layer>
+        </Draggable>
       )
-    })
+    )
 
     return (
       <Container>
@@ -228,6 +243,12 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         )}
       </Container>
     )
+  }
+
+  handleMoveLayer = (dragId: string, dropId: string) => {
+    const { elements, moveLayer } = this.props
+    const { index } = elements[dropId]
+    moveLayer(dragId, index)
   }
 
   addSymbol = () => {

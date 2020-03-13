@@ -7,10 +7,12 @@ import SwipeableViews from 'react-swipeable-views'
 import messages from './messages'
 import isEmpty from 'lodash/isEmpty'
 import OptionText from '../../OptionText'
+import Draggable from '../../Draggable'
 import Radio from 'antd/lib/radio'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
 import backIcon from '../../../assets/leftarrow.svg'
+import dragDropIcon from '../../../assets/dragdrop.svg'
 import TextEditor from '../TextEditor'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import {
@@ -37,9 +39,11 @@ import {
   TitleLayer,
   DeleteLayer,
   EditLayer,
-  EmptyElements
+  EmptyElements,
+  DragIcon
 } from './styledComponents'
-import { PositionResize } from '../PositionResize'
+import PositionResize from '../PositionResize'
+import orderBy from 'lodash/orderBy'
 
 const SELECT_FONT = 0
 const SELECT_FILL = 1
@@ -57,6 +61,7 @@ interface Props {
   fonts: SimpleFont[]
   colorsList: any
   activeEl: PositionSize
+  moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
   onPositionChange: (data: PositionSize) => void
@@ -95,7 +100,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       selectedElement,
       activeEl,
       onPositionChange,
-      elements,
+      elements = {},
       fonts,
       colorsList
     } = this.props
@@ -104,7 +109,8 @@ export class TextTab extends React.PureComponent<Props, State> {
     const RadioButton = Radio.Button
     const RadioGroup = Radio.Group
     const element = elements[selectedElement]
-    const arrayElements = Object.keys(elements || {})
+    const layersArray = Object.keys(elements).map((id: string) => elements[id])
+    const arrayElements = orderBy(layersArray, ['index'], ['desc'])
     return (
       <Container>
         {(!!page || selectedElement) && (
@@ -133,19 +139,28 @@ export class TextTab extends React.PureComponent<Props, State> {
             <LayersText>{formatMessage(messages.textLayers)}</LayersText>
             <Layers>
               {arrayElements.length ? (
-                arrayElements.map((id, index) => (
-                  <LayerBlock key={index}>
-                    <TitleLayer {...elements[id].textFormat}>
-                      {elements[id].text}
-                    </TitleLayer>
-                    <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
-                      {formatMessage(messages.delete)}
-                    </DeleteLayer>
-                    <EditLayer {...{ id }} onClick={this.onSelectLayer}>
-                      {formatMessage(messages.edit)}
-                    </EditLayer>
-                  </LayerBlock>
-                ))
+                arrayElements.map(
+                  ({ id, textFormat: textFormatEl, text: textEl }, index) => (
+                    <Draggable
+                      {...{ id, index }}
+                      index={id}
+                      key={index}
+                      section="textLayers"
+                      onDropRow={this.handleMoveLayer}
+                    >
+                      <LayerBlock key={index}>
+                        <DragIcon src={dragDropIcon} />
+                        <TitleLayer {...textFormatEl}>{textEl}</TitleLayer>
+                        <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                          {formatMessage(messages.delete)}
+                        </DeleteLayer>
+                        <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                          {formatMessage(messages.edit)}
+                        </EditLayer>
+                      </LayerBlock>
+                    </Draggable>
+                  )
+                )
               ) : (
                 <EmptyElements>{formatMessage(messages.empty)}</EmptyElements>
               )}
@@ -288,6 +303,12 @@ export class TextTab extends React.PureComponent<Props, State> {
       default:
         return 'title'
     }
+  }
+
+  handleMoveLayer = (dragId: string, dropId: string) => {
+    const { elements, moveLayer } = this.props
+    const { index } = elements[dropId]
+    moveLayer(dragId, index)
   }
 
   onSelectLayer = (event: React.MouseEvent<EventTarget>) => {
