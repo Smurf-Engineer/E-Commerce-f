@@ -915,7 +915,7 @@ class Render3D extends PureComponent {
   }
 
   changeLayerIndex = (id, index) => {
-    if (index && this.canvasTexture) {
+    if (this.canvasTexture) {
       find(this.canvasTexture.getObjects(), obj => obj.id === id).moveTo(index)
       this.canvasTexture.renderAll()
     }

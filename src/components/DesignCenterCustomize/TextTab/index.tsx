@@ -89,7 +89,12 @@ export class TextTab extends React.PureComponent<Props, State> {
     option: 0,
     page: 0
   }
-
+  componentWillReceiveProps({ selectedElement: newElement }: Props) {
+    const { selectedElement } = this.props
+    if (selectedElement !== newElement) {
+      this.setState({ option: 0, page: 0 })
+    }
+  }
   render() {
     const { page, option } = this.state
     const {
@@ -142,13 +147,13 @@ export class TextTab extends React.PureComponent<Props, State> {
                 arrayElements.map(
                   ({ id, textFormat: textFormatEl, text: textEl }, index) => (
                     <Draggable
-                      {...{ id, index }}
+                      {...{ id }}
                       index={id}
                       key={index}
                       section="textLayers"
                       onDropRow={this.handleMoveLayer}
                     >
-                      <LayerBlock key={index}>
+                      <LayerBlock>
                         <DragIcon src={dragDropIcon} />
                         <TitleLayer {...textFormatEl}>{textEl}</TitleLayer>
                         <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>

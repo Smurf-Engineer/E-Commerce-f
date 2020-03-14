@@ -165,6 +165,7 @@ export const LayerBlock = styled.div`
   border-bottom: 1px solid ${GRAY_LIGHT};
   align-items: center;
   cursor: move;
+  background: ${WHITE};
 `
 
 export const TitleLayer = styled.div`
