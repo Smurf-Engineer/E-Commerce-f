@@ -405,6 +405,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onOpenColorChart,
               tutorialPlaylist
             }}
+            hoverBlurLayer={this.hoverBlurLayer}
             moveLayer={this.moveLayer}
             onDeleteLayer={this.onDeleteLayer}
             onSelectEl={this.setSelectedLayer}
@@ -558,6 +559,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       }
     }
     return activeEl
+  }
+
+  hoverBlurLayer = (id: string, hover: boolean) => {
+    if (this.render3D) {
+      this.render3D.hoverBlur(id, hover)
+      this.forceUpdate()
+    }
   }
 
   moveLayer = (id: string, index: number) => {

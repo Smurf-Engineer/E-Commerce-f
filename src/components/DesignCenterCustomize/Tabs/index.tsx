@@ -73,6 +73,7 @@ interface Props {
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
   activeEl: PositionSize
+  hoverBlurLayer: (id: string, hover: boolean) => void
   moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
@@ -157,6 +158,7 @@ const Tabs = ({
   selectedItem,
   disableTooltip = false,
   selectedTab,
+  hoverBlurLayer,
   onTabClick,
   setVideos,
   onLockElement,
@@ -229,6 +231,7 @@ const Tabs = ({
               productName,
               onDeleteLayer,
               onSelectEl,
+              hoverBlurLayer,
               selectedElement,
               textFormat,
               onSelectTextFormat,
@@ -249,6 +252,7 @@ const Tabs = ({
               onSelectArtFormat,
               searchClipParam,
               moveLayer,
+              hoverBlurLayer,
               onDeleteLayer,
               onSelectEl,
               activeEl,
@@ -272,6 +276,7 @@ const Tabs = ({
               onUploadFile,
               images,
               activeEl,
+              hoverBlurLayer,
               onDeleteLayer,
               moveLayer,
               onSelectEl,

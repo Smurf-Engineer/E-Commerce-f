@@ -69,6 +69,7 @@ interface Props {
     [id: string]: CanvasElement
   }
   activeEl: PositionSize
+  hoverBlurLayer: (id: string, hover: boolean) => void
   moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
@@ -142,7 +143,11 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           section="clipartLayers"
           onDropRow={this.handleMoveLayer}
         >
-          <Layer key={index}>
+          <Layer
+            {...{ id }}
+            onMouseEnter={this.hoverLayer}
+            onMouseLeave={this.blurLayer}
+          >
             <DragIcon src={dragDropIcon} />
             <ClipartLeft>
               <ClipartPrev
@@ -257,6 +262,22 @@ class SymbolTab extends React.PureComponent<Props, {}> {
 
   goBackToLayer = () => {
     this.setState({ addSymbol: false })
+  }
+
+  hoverLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, true)
+  }
+
+  blurLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, false)
   }
 
   onSelectLayer = (event: React.MouseEvent<EventTarget>) => {

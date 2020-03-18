@@ -1563,6 +1563,14 @@ class Render3D extends PureComponent {
     this.canvasTexture.renderAll()
   }
 
+  hoverBlur = (id, hover) => {
+    const el = this.getElementById(id)
+    const opacity = hover ? 0.5 : 1
+    const backgroundColor = hover ? '#ff000061' : null
+    el.set({ opacity, backgroundColor })
+    this.canvasTexture.renderAll()
+  }
+
   deleteLayer = id => {
     const el = this.getElementById(id)
     this.deleteElement(el)
@@ -1793,7 +1801,7 @@ class Render3D extends PureComponent {
       if (activeEl && activeEl.type === CanvasElements.Text) {
         activeElementId = activeEl.id
       }
-
+      console.log('style:', style)
       if (!idElement) {
         const el = {
           id: activeElementId || txtEl.id,

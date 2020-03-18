@@ -61,6 +61,7 @@ interface Props {
   fonts: SimpleFont[]
   colorsList: any
   activeEl: PositionSize
+  hoverBlurLayer: (id: string, hover: boolean) => void
   moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
@@ -153,7 +154,11 @@ export class TextTab extends React.PureComponent<Props, State> {
                       section="textLayers"
                       onDropRow={this.handleMoveLayer}
                     >
-                      <LayerBlock>
+                      <LayerBlock
+                        {...{ id }}
+                        onMouseEnter={this.hoverLayer}
+                        onMouseLeave={this.blurLayer}
+                      >
                         <DragIcon src={dragDropIcon} />
                         <TitleLayer {...textFormatEl}>{textEl}</TitleLayer>
                         <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
@@ -322,6 +327,22 @@ export class TextTab extends React.PureComponent<Props, State> {
     } = event
     const { onSelectEl } = this.props
     onSelectEl(id, 'text')
+  }
+
+  hoverLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, true)
+  }
+
+  blurLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, false)
   }
 
   onDeleteLayer = (event: React.MouseEvent<EventTarget>) => {

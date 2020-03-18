@@ -87,6 +87,7 @@ interface Props {
   elements: {
     [id: string]: CanvasElement
   }
+  hoverBlurLayer: (id: string, hover: boolean) => void
   moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
@@ -221,7 +222,11 @@ class UploadTab extends React.PureComponent<Props, State> {
                         section="imageLayers"
                         onDropRow={this.handleMoveLayer}
                       >
-                        <Layer key={index}>
+                        <Layer
+                          {...{ id }}
+                          onMouseEnter={this.hoverLayer}
+                          onMouseLeave={this.blurLayer}
+                        >
                           <DragIcon src={dragDropIcon} />
                           <ImageLeft>
                             <ImageClip {...{ src }} />
@@ -247,6 +252,22 @@ class UploadTab extends React.PureComponent<Props, State> {
         )}
       </Container>
     )
+  }
+
+  hoverLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, true)
+  }
+
+  blurLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, false)
   }
 
   handleMoveLayer = (dragId: string, dropId: string) => {
