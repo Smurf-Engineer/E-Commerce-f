@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
+import { RED } from '../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -206,4 +207,20 @@ export const Annotation = styled.div`
 `
 export const Date = styled.span`
   margin-left: 5px;
+`
+
+export const OrderActions = styled.div`
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+`
+
+export const DeleteButton = styled(AntdButton)`
+  height: 40px;
+  width: 93px;
+  border: none;
+  color: ${RED};
+  box-shadow: none;
 `

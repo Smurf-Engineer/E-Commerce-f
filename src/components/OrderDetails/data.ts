@@ -1,7 +1,7 @@
 /**
  * Account-OrderDetails Queries
  */
-
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const getOrderQuery = gql`
@@ -135,6 +135,20 @@ export const getOrderQuery = gql`
       taxPst: tax_pst
       taxGst: tax_gst
       taxVat: tax_vat
+      teamStoreId: teamstore_id
     }
   }
 `
+
+export const deleteOrderMutation = graphql(
+  gql`
+    mutation cancelOrder($orderId: String!) {
+      cancelOrder(orderId: $orderId) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'deleteOrder'
+  }
+)

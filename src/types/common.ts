@@ -758,6 +758,7 @@ export interface OrderDetailsInfo {
   taxFee?: number
   total?: number
   discount?: number
+  teamStoreId?: string
 }
 
 export interface OrderDataInfo {

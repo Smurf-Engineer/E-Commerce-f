@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import message from 'antd/lib/message'
 import get from 'lodash/get'
 import messages from './messages'
 import {
@@ -11,7 +12,7 @@ import {
   QueryProps,
   FulfillmentNetsuite
 } from '../../types/common'
-import { getOrderQuery } from './data'
+import { getOrderQuery, deleteOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import {
@@ -40,7 +41,9 @@ import {
   StyledImage,
   Annotation,
   Date,
-  LoadingContainer
+  LoadingContainer,
+  OrderActions,
+  DeleteButton
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -51,6 +54,7 @@ import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
+import { PENDING_APPROVAL } from '../../constants'
 
 const PRO_DESIGN_FEE = 15
 
@@ -65,6 +69,7 @@ interface Props {
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: string) => void
+  deleteOrder: (variables: {}) => Promise<any>
 }
 
 export class OrderDetails extends React.Component<Props, {}> {
@@ -132,7 +137,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       taxVat,
       taxFee,
       total,
-      discount
+      discount,
+      teamStoreId
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -157,15 +163,16 @@ export class OrderDetails extends React.Component<Props, {}> {
             designName,
             product: { images, name, shortDescription },
             productTotal,
-            unitPrice,
-            teamStoreId
+            unitPrice
           } = cartItem
 
           subtotal += productTotal || 0
-
+          cartItem.isFixed = true
+          cartItem.teamStoreItem = 'SylqiLq0S8'
+          cartItem.teamStoreName = 'aa'
           const priceRange = {
             quantity: '0',
-            price: 0,
+            price: 100,
             shortName: ''
           }
 
@@ -181,8 +188,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 productTotal,
                 unitPrice,
                 cartItem,
-                currentCurrency,
-                teamStoreId
+                currentCurrency
               }}
               currencySymbol={currency.shortName}
               key={index}
@@ -192,7 +198,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               price={priceRange}
               itemIndex={index}
               onlyRead={true}
-              canReorder={true}
+              canReorder={!teamStoreId && true}
             />
           )
         })
@@ -318,9 +324,44 @@ export class OrderDetails extends React.Component<Props, {}> {
             {paymentMethodInfo}
           </ShippingBillingCard>
         </ShippingBillingContainer>
-        <Annotation>{formatMessage(messages.annotation)}</Annotation>
+        {teamStoreId && status === PENDING_APPROVAL ? (
+          <OrderActions>
+            <AddToCartButton
+              label={formatMessage(messages.reorder)}
+              renderForThumbnail={false}
+              items={cart}
+              {...{ formatMessage }}
+              withoutTop={true}
+              myLockerList={false}
+              itemProdPage={true}
+              orderDetails={true}
+              onClick={() => true}
+            />
+            <DeleteButton onClick={this.deleteOrder}>
+              {formatMessage(messages.deleteOrder)}
+            </DeleteButton>
+          </OrderActions>
+        ) : (
+          <Annotation>{formatMessage(messages.annotation)}</Annotation>
+        )}
       </Container>
     )
+  }
+
+  deleteOrder = async () => {
+    const { deleteOrder, data, onReturn } = this.props
+    const { shortId } = data.orderQuery
+    try {
+      const response = await deleteOrder({
+        variables: { orderId: shortId }
+      })
+      const responseMessage = get(response, 'data.cancelOrder.message', '')
+      message.success(responseMessage)
+      onReturn('')
+    } catch (e) {
+      console.log(e)
+      message.error(e.message)
+    }
   }
 
   handleOnClickReceipt = () => {
@@ -338,7 +379,8 @@ const OrderDetailsEnhance = compose(
       skip: !orderId,
       variables: { orderId }
     })
-  })
+  }),
+  deleteOrderMutation
 )(OrderDetails)
 
 export default OrderDetailsEnhance

@@ -89,5 +89,13 @@ export default defineMessages({
     id: 'components.OrderDetails.annotation',
     defaultMessage:
       '* For order cancellations or information on refunds, please contact Customer Service.'
+  },
+  deleteOrder: {
+    id: 'components.OrderDetails.deleteOrder',
+    defaultMessage: 'Delete Order'
+  },
+  reorder: {
+    id: 'components.OrderDetails.reorder',
+    defaultMessage: 'Reorder'
   }
 })
