@@ -35,10 +35,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
   }
 
   changeValue = (value: number | undefined = 0, name: string) => {
-    if (!isNaN(value)) {
-      const { handleChange, activeEl } = this.props
-      handleChange({ ...activeEl, [name]: value })
-    }
+    const { handleChange, activeEl } = this.props
+    handleChange({ ...activeEl, [name]: value })
   }
 
   changeWidth = (width: number | undefined = 1) => {

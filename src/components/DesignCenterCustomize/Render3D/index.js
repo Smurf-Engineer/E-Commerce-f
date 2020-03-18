@@ -435,13 +435,13 @@ class Render3D extends PureComponent {
           case CanvasElements.Text: {
             elements.push(el)
             fonts.push(el.fontFamily)
-            const element = getTextCanvasElement(el, index)
+            const element = getTextCanvasElement(el)
             canvas.text[elId] = element
             break
           }
           case CanvasElements.Group: {
             if (el.isClipArtGroup) {
-              const element = await getClipArtCanvasElement(el, index)
+              const element = await getClipArtCanvasElement(el)
               canvas.path[elId] = element
               paths.push(el)
             } else {
@@ -452,13 +452,13 @@ class Render3D extends PureComponent {
             break
           }
           case CanvasElements.Path: {
-            const element = await getClipArtCanvasElement(el, index)
+            const element = await getClipArtCanvasElement(el)
             canvas.path[elId] = element
             paths.push(el)
             break
           }
           case CanvasElements.Image: {
-            const element = getImageCanvas(el, index)
+            const element = getImageCanvas(el)
             canvas.image[elId] = element
             imagesElements.push(el)
             imagesPromises.push(this.loadFabricImage(el.src))
@@ -902,14 +902,12 @@ class Render3D extends PureComponent {
   getLayersIndexed = canvas => {
     if (canvas && this.canvasTexture) {
       const objects = this.canvasTexture.getObjects() || []
-      let index = 0
-      for (const obj of objects) {
+      objects.forEach((obj, index) => {
         const { type, id } = obj
         if (canvas[type][id]) {
           canvas[type][id].index = index
         }
-        index++
-      }
+      })
     }
     return canvas
   }
