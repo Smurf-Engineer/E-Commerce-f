@@ -1,8 +1,7 @@
 /**
  * AddToCartButton Component - Created by cazarez on 02/05/18.
  */
-import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
@@ -36,7 +35,6 @@ interface CartItems {
 }
 
 interface Props {
-  intl: InjectedIntl
   label: string
   renderForThumbnail?: boolean
   item?: CartItems
@@ -55,11 +53,13 @@ interface Props {
   orderDetails?: boolean
   fixedPrices?: PriceRange[]
   teamStoreName?: string
+  hide?: boolean
+  addToCart: () => void
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
 }
 
-export class AddToCartButton extends React.PureComponent<Props, {}> {
+export class AddToCartButton extends PureComponent<Props, {}> {
   render() {
     const {
       item,
@@ -67,7 +67,8 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       renderForThumbnail,
       withoutTop,
       myLockerList,
-      orderDetails
+      orderDetails,
+      hide
     } = this.props
     const renderView = renderForThumbnail ? (
       <ButtonContainer {...{ myLockerList }} withoutTop={!!withoutTop}>
@@ -76,7 +77,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     ) : (
       <Container>
         {orderDetails ? (
-          <ButtonWrapper individual={!!item}>
+          <ButtonWrapper individual={!!item} {...{ hide }}>
             <ReorderButton type="primary" onClick={this.addToCart}>
               {label}
             </ReorderButton>
@@ -94,7 +95,6 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     const {
       onClick,
       renderForThumbnail,
-      intl,
       item,
       designId,
       isFixed,
@@ -106,7 +106,8 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       items,
       itemProdPage = false,
       fixedPrices = [],
-      teamStoreName
+      teamStoreName,
+      formatMessage
     } = this.props
     if (renderForThumbnail && item) {
       const itemToAdd = this.getItemWithDetails(
@@ -127,7 +128,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       const canAddToStore = onClick()
       if (!canAddToStore) {
         Message.warning(
-          intl.formatMessage(
+          formatMessage(
             designId
               ? messages.validationMessageProdPage
               : messages.validationMessage
@@ -232,9 +233,9 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
   saveInLocalStorage = (item: CartItems) => {
     const {
-      intl,
       renderForThumbnail,
-      getTotalItemsIncart: countCartItems
+      getTotalItemsIncart: countCartItems,
+      formatMessage
     } = this.props
     const productName = renderForThumbnail
       ? get(item, 'product.name')
@@ -253,15 +254,14 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       }
       countCartItems()
       Message.success(
-        intl.formatMessage(messages.successfulAddMessage, { name: productName })
+        formatMessage(messages.successfulAddMessage, { name: productName })
       )
     }
   }
 }
 
 const AddToCartEnhanced = compose(
-  injectIntl,
-  connect(null, { getTotalItemsIncart })
+  connect(null, { getTotalItemsIncart }, null, { withRef: true })
 )(AddToCartButton)
 
 export default AddToCartEnhanced

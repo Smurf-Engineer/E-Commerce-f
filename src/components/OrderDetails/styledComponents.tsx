@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { RED } from '../../theme/colors'
+import { RED, BLUE } from '../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -54,12 +54,12 @@ export const ButtonWrapper = styled.span`
   line-height: 22px;
 
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
 `
 export const Button = styled(AntdButton)`

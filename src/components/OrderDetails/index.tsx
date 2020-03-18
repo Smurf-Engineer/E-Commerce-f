@@ -12,16 +12,18 @@ import {
   QueryProps,
   FulfillmentNetsuite
 } from '../../types/common'
+import Modal from 'antd/lib/modal'
 import { getOrderQuery, deleteOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
+import Button from 'antd/lib/button'
 import {
   Container,
   ViewContainer,
   Div,
   ScreenTitle,
   // TODO: Commented to hide the receipt button until green light to continue with this implementation
-  // ButtonWrapper,
+  ButtonWrapper,
   // Button,
   OrderInfo,
   OrderDelivery,
@@ -72,7 +74,10 @@ interface Props {
   deleteOrder: (variables: {}) => Promise<any>
 }
 
+const { confirm } = Modal
+
 export class OrderDetails extends React.Component<Props, {}> {
+  editOrderButton: any
   render() {
     const {
       data,
@@ -163,16 +168,18 @@ export class OrderDetails extends React.Component<Props, {}> {
             designName,
             product: { images, name, shortDescription },
             productTotal,
-            unitPrice
+            unitPrice,
+            teamStoreItem,
+            teamStoreName
           } = cartItem
 
           subtotal += productTotal || 0
           cartItem.isFixed = true
-          cartItem.teamStoreItem = 'SylqiLq0S8'
-          cartItem.teamStoreName = 'aa'
+          cartItem.teamStoreItem = teamStoreItem
+          cartItem.teamStoreName = teamStoreName
           const priceRange = {
             quantity: '0',
-            price: 100,
+            price: 0,
             shortName: ''
           }
 
@@ -276,20 +283,22 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderSummaryContainer>
         </OrderInfo>
         <Items>
-          <TitleStyled>
-            {formatMessage(messages.items)}
-            <AddToCartButton
-              label={formatMessage(messages.reorderAll)}
-              renderForThumbnail={false}
-              items={cart}
-              {...{ formatMessage }}
-              withoutTop={true}
-              myLockerList={false}
-              itemProdPage={true}
-              orderDetails={true}
-              onClick={() => true}
-            />
-          </TitleStyled>
+          {!teamStoreId && (
+            <TitleStyled>
+              {formatMessage(messages.items)}
+              <AddToCartButton
+                label={formatMessage(messages.reorderAll)}
+                renderForThumbnail={false}
+                items={cart}
+                {...{ formatMessage }}
+                withoutTop={true}
+                myLockerList={false}
+                itemProdPage={true}
+                orderDetails={true}
+                onClick={() => true}
+              />
+            </TitleStyled>
+          )}
           <CartList>{renderItemList}</CartList>
         </Items>
         <ShippingBillingContainer>
@@ -324,20 +333,29 @@ export class OrderDetails extends React.Component<Props, {}> {
             {paymentMethodInfo}
           </ShippingBillingCard>
         </ShippingBillingContainer>
+        <AddToCartButton
+          ref={(addToCartButton: any) =>
+            (this.editOrderButton = addToCartButton)
+          }
+          label={formatMessage(messages.edit)}
+          renderForThumbnail={false}
+          items={cart}
+          {...{ formatMessage }}
+          withoutTop={true}
+          myLockerList={false}
+          itemProdPage={true}
+          orderDetails={true}
+          onClick={() => true}
+          hide={true}
+        />
         {teamStoreId && status === PENDING_APPROVAL ? (
           <OrderActions>
-            <AddToCartButton
-              label={formatMessage(messages.reorder)}
-              renderForThumbnail={false}
-              items={cart}
-              {...{ formatMessage }}
-              withoutTop={true}
-              myLockerList={false}
-              itemProdPage={true}
-              orderDetails={true}
-              onClick={() => true}
-            />
-            <DeleteButton onClick={this.deleteOrder}>
+            <ButtonWrapper>
+              <Button type="primary" onClick={this.handleOnEditOrder}>
+                {formatMessage(messages.edit)}
+              </Button>
+            </ButtonWrapper>
+            <DeleteButton onClick={this.handleOnDeleteOrder}>
               {formatMessage(messages.deleteOrder)}
             </DeleteButton>
           </OrderActions>
@@ -348,8 +366,42 @@ export class OrderDetails extends React.Component<Props, {}> {
     )
   }
 
+  handleOnEditOrder = () => {
+    const { formatMessage } = this.props
+    confirm({
+      title: formatMessage(messages.editOrderTitle),
+      content: formatMessage(messages.editOrderMessage),
+      okText: formatMessage(messages.proceed),
+      onOk: async () => {
+        try {
+          await this.deleteOrder()
+          this.editOrderButton.getWrappedInstance().addToCart()
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+
+  handleOnDeleteOrder = () => {
+    const { formatMessage, onReturn } = this.props
+    confirm({
+      title: formatMessage(messages.deleteTeamstoreTitle),
+      content: formatMessage(messages.deleteTeamstoreMessage),
+      okText: formatMessage(messages.delete),
+      onOk: async () => {
+        try {
+          await this.deleteOrder()
+          onReturn('')
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+
   deleteOrder = async () => {
-    const { deleteOrder, data, onReturn } = this.props
+    const { deleteOrder, data } = this.props
     const { shortId } = data.orderQuery
     try {
       const response = await deleteOrder({
@@ -357,7 +409,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       })
       const responseMessage = get(response, 'data.cancelOrder.message', '')
       message.success(responseMessage)
-      onReturn('')
     } catch (e) {
       console.log(e)
       message.error(e.message)
@@ -374,13 +425,13 @@ interface OwnProps {
 }
 
 const OrderDetailsEnhance = compose(
+  deleteOrderMutation,
   graphql(getOrderQuery, {
     options: ({ orderId }: OwnProps) => ({
       skip: !orderId,
       variables: { orderId }
     })
-  }),
-  deleteOrderMutation
+  })
 )(OrderDetails)
 
 export default OrderDetailsEnhance

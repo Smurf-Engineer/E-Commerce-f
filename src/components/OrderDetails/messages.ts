@@ -94,8 +94,34 @@ export default defineMessages({
     id: 'components.OrderDetails.deleteOrder',
     defaultMessage: 'Delete Order'
   },
-  reorder: {
-    id: 'components.OrderDetails.reorder',
-    defaultMessage: 'Reorder'
+  edit: {
+    id: 'components.OrderDetails.edit',
+    defaultMessage: 'Edit Order'
+  },
+  editOrderTitle: {
+    id: 'components.OrderDetails.editOrderTitle',
+    defaultMessage: 'ARE YOU SURE?'
+  },
+  editOrderMessage: {
+    id: 'components.OrderDetails.editOrderMessage',
+    defaultMessage:
+      'By editing your order, your items will automatically go to your cart and this previous order will be deleted'
+  },
+  proceed: {
+    id: 'components.OrderDetails.proceed',
+    defaultMessage: 'Yes, Proceed'
+  },
+  deleteTeamstoreTitle: {
+    id: 'components.OrderDetails.deleteTeamstoreTitle',
+    defaultMessage: 'DELETE TEAMSTORE ORDER'
+  },
+  deleteTeamstoreMessage: {
+    id: 'components.OrderDetails.deleteTeamstoreMessage',
+    defaultMessage:
+      'By deleting your order, you will no longer be counted on the team´s order list'
+  },
+  delete: {
+    id: 'components.OrderDetails.delete',
+    defaultMessage: 'Yes, Delete'
   }
 })
