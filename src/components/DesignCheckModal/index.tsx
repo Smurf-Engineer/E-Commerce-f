@@ -44,10 +44,10 @@ export class DesignCheckModal extends React.Component<Props, {}> {
       workingHours,
       handleGetPro
     } = this.props
-    const { start, end, open } = workingHours
+    const { start, end, open, timeZone } = workingHours
     const startHour = moment(start, 'HH:mm:ss').format('LT')
     const endHour = moment(end, 'HH:mm:ss').format('LT')
-    const hours = `MON-FRI ${startHour} - ${endHour} (PST)`
+    const hours = `MON-FRI ${startHour} - ${endHour} (${timeZone})`
     return (
       <Container>
         <CustomModal

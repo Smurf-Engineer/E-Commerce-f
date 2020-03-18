@@ -85,6 +85,7 @@ export type WorkHours = {
   start: string
   end: string
   open: boolean
+  timeZone: string
 }
 
 export interface GenderType {

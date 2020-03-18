@@ -178,6 +178,7 @@ export const getDesignLabInfo = gql`
         start
         end
         open
+        timeZone
       }
     }
   }
