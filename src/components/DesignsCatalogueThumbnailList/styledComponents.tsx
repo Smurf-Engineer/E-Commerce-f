@@ -54,7 +54,7 @@ export const ThumbnailsList = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 0;
 

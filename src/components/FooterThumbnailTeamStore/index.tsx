@@ -17,7 +17,8 @@ import {
   PriceLabel,
   ProgressWrapper,
   ProgressText,
-  BottomPrices
+  BottomPrices,
+  SaveText
 } from './styledComponents'
 
 const MAX_PERCENT = 100
@@ -34,6 +35,7 @@ interface Props {
   currentPrice: number | string
   priceRange?: PriceRange[]
   currentRangeAttributes?: PriceRangeProgress
+  suggestedSaveText?: string
 }
 
 const FooterThumbnailTeamStore = ({
@@ -47,7 +49,8 @@ const FooterThumbnailTeamStore = ({
   targetPrice,
   currentPrice,
   priceRange = [],
-  currentRangeAttributes
+  currentRangeAttributes,
+  suggestedSaveText
 }: Props) => {
   let realPercent = 0
 
@@ -92,12 +95,15 @@ const FooterThumbnailTeamStore = ({
       </BottomPrices>
 
       {!onDemandMode && (
-        <Bottom>
-          <ProgressWrapper>
-            <ProgressText>{progress}</ProgressText>
-            <Progress percent={realPercent} />
-          </ProgressWrapper>
-        </Bottom>
+        <div>
+          <Bottom>
+            <ProgressWrapper>
+              <ProgressText>{progress}</ProgressText>
+              <Progress percent={realPercent} />
+            </ProgressWrapper>
+          </Bottom>
+          <SaveText dangerouslySetInnerHTML={{ __html: suggestedSaveText }} />
+        </div>
       )}
     </Footer>
   )

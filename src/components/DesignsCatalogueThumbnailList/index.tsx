@@ -22,7 +22,8 @@ import {
   Filter,
   ClickParam,
   PriceRange,
-  PriceRangeProgress
+  PriceRangeProgress,
+  Message
 } from '../../types/common'
 import {
   Container,
@@ -50,7 +51,7 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: any) => string
   openQuickView: (id: number) => void
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
@@ -143,7 +144,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             index: 0,
             price: 0
           }
-
           priceRanges.some((current: PriceRange, rangeIndex: number) => {
             const quantities = current.quantity.split('-')
             const maxQuantity = parseInt(quantities[1], 10)
@@ -160,6 +160,23 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               currentRangeAttributes.range = maxQuantity - minQuantity
               currentRangeAttributes.index = rangeIndex
               currentRangeAttributes.price = current.price
+
+              const nextPriceRange = priceRanges[rangeIndex + 1]
+              if (nextPriceRange) {
+                const nextMinQuantity = parseInt(
+                  nextPriceRange.quantity.split('-')[0],
+                  10
+                )
+                if (totalOrders + 2 >= nextMinQuantity) {
+                  const save = targetPriceValue.price - nextPriceRange.price
+                  const percent = Math.round(
+                    (save * 100) / targetPriceValue.price
+                  )
+                  currentRangeAttributes.itemsLeft =
+                    nextMinQuantity - totalOrders
+                  currentRangeAttributes.percentToSave = percent
+                }
+              }
               return true
             }
           })
@@ -169,6 +186,12 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             : currentRangeAttributes.price
           const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
           const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const suggestedSaveText = currentRangeAttributes.percentToSave
+            ? formatMessage(messages.suggestedSave, {
+                itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
+                percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
+              })
+            : ''
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -187,7 +210,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       targetRange,
                       onDemandMode,
                       code,
-                      currentRangeAttributes
+                      currentRangeAttributes,
+                      suggestedSaveText
                     }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
