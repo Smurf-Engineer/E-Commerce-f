@@ -53,6 +53,14 @@ export default defineMessages({
     id: 'screens.AdminLayout.users',
     defaultMessage: 'USERS'
   },
+  usersList: {
+    id: 'screens.AdminLayout.usersList',
+    defaultMessage: 'User List'
+  },
+  roleManagement: {
+    id: 'screens.AdminLayout.roleManagement',
+    defaultMessage: 'Role Management'
+  },
   teamStores: {
     id: 'screens.AdminLayout.teamStores',
     defaultMessage: 'TEAM STORES'

@@ -1355,6 +1355,7 @@ export interface User {
   billingCountry?: string
   createdAt?: string
   shortId?: string
+  role?: string
 }
 
 export interface DesignSearchCode {

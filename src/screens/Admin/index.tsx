@@ -21,6 +21,7 @@ import ProductCatalog from '../../components/ProductCatalog'
 import ProductInternalsAdmin from '../../components/ProductInternalsAdmin'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
+import RoleList from '../../components/RoleList'
 import TeamStoresAdmin from '../../components/TeamStoresAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
 import DesignLabAdmin from '../../components/DesignLabAdmin'
@@ -183,6 +184,10 @@ export class Admin extends React.Component<Props, {}> {
         <Route
           path="/admin/users"
           render={() => <UsersAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/roles"
+          render={() => <RoleList {...{ history, formatMessage }} />}
         />
         <Route
           path="/admin/team-stores"

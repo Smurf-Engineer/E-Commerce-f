@@ -57,6 +57,7 @@ import publishingTool from '../screens/PublishingTool/reducer'
 import designTools from '../screens/DesignTools/reducer'
 import proAssist from '../components/ProAssist/reducer'
 import userFiles from '../components/UsersAdmin/UserFiles/reducer'
+import roleCatalog from '../components/RoleList/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -77,6 +78,7 @@ export interface ReducersObject {
   storeFront: any
   createStore: any
   designSearchAdmin: any
+  roleCatalog: any
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
@@ -218,6 +220,7 @@ const rootReducer = combineReducers({
   menu,
   forgot,
   home,
+  roleCatalog,
   reset,
   menuGender,
   menuSports,
