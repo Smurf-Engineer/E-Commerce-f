@@ -6,7 +6,6 @@ import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import head from 'lodash/head'
 import messages from './messages'
-import moment from 'moment'
 import { FormattedHTMLMessage } from 'react-intl'
 import {
   Container,
@@ -134,7 +133,8 @@ class OrderData extends React.Component<Props, {}> {
           discount,
           confirmed,
           status,
-          lastDrop
+          teamStoreName,
+          teamStoreId
         }
       },
       currentCurrency
@@ -200,6 +200,12 @@ class OrderData extends React.Component<Props, {}> {
         <Content>
           <InfoContainer>
             <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.orderPoint)}</TitleStyled>
+              <StyledText>
+                {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+              </StyledText>
+            </OrderNumberContainer>
+            <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
               <StyledText>{orderId}</StyledText>
             </OrderNumberContainer>
@@ -219,14 +225,12 @@ class OrderData extends React.Component<Props, {}> {
                   : status}
               </StyledText>
             </OrderNumberContainer>
-            <OrderNumberContainer>
-              <TitleStyled>{formatMessage(messages.lastUpdated)}</TitleStyled>
-              <StyledText>
-                {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
-              </StyledText>
-            </OrderNumberContainer>
             <StyledText>
-              <FormattedHTMLMessage {...messages.messageRetail} />
+              <FormattedHTMLMessage
+                {...messages[
+                  teamStoreId ? 'messageTeamstore' : 'messageRetail'
+                ]}
+              />
             </StyledText>
             <ShippingBillingContainer>
               <div>

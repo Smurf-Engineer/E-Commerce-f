@@ -4,14 +4,12 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import { FormattedHTMLMessage } from 'react-intl'
 import message from 'antd/lib/message'
+import moment from 'moment'
 import get from 'lodash/get'
 import messages from './messages'
-import {
-  OrderDetailsInfo,
-  QueryProps,
-  FulfillmentNetsuite
-} from '../../types/common'
+import { OrderDetailsInfo, QueryProps } from '../../types/common'
 import Modal from 'antd/lib/modal'
 import { getOrderQuery, deleteOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
@@ -27,7 +25,6 @@ import {
   // Button,
   OrderInfo,
   OrderDelivery,
-  DeliveryDate,
   DeliveryInfo,
   DeliveryLabels,
   DeliveryLabel,
@@ -42,10 +39,10 @@ import {
   SubTitle,
   StyledImage,
   Annotation,
-  Date,
   LoadingContainer,
   OrderActions,
-  DeleteButton
+  DeleteButton,
+  StyledText
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -143,21 +140,14 @@ export class OrderDetails extends React.Component<Props, {}> {
       taxFee,
       total,
       discount,
-      teamStoreId
+      teamStoreId,
+      lastDrop,
+      teamStoreName
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
-    const fulfillments = get(
-      netsuiteObject,
-      'fulfillments',
-      [] as FulfillmentNetsuite[]
-    )
 
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
-
-    const packages = get(fulfillments, '[0].packages')
-
-    const trackingNumber = packages && packages.replace('<BR>', ', ')
 
     let subtotal = 0
     const renderItemList = cart
@@ -169,8 +159,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             product: { images, name, shortDescription },
             productTotal,
             unitPrice,
-            teamStoreItem,
-            teamStoreName
+            teamStoreItem
           } = cartItem
 
           subtotal += productTotal || 0
@@ -218,7 +207,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       ) : (
         <StyledImage src={iconPaypal} />
       )
-
+    console.log('AAa ', teamStoreName)
     return (
       <Container>
         <ViewContainer onClick={handleOnReturn}>
@@ -238,12 +227,11 @@ export class OrderDetails extends React.Component<Props, {}> {
         </Div>
         <OrderInfo>
           <OrderDelivery>
-            <DeliveryDate>
-              <span>{formatMessage(messages.deliveryDate)}</span>
-              <Date>{` ${estimatedDate}`}</Date>
-            </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
+                <DeliveryLabel>
+                  {formatMessage(messages.orderPoint)}
+                </DeliveryLabel>
                 <DeliveryLabel>
                   {formatMessage(messages.orderNumber)}
                 </DeliveryLabel>
@@ -251,18 +239,32 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {formatMessage(messages.orderDate)}
                 </DeliveryLabel>
                 <DeliveryLabel>
-                  {formatMessage(messages.trackingNumber)}
+                  {formatMessage(messages.deliveryDate)}
                 </DeliveryLabel>
                 <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
+                <DeliveryLabel>
+                  {formatMessage(messages.lastUpdated)}
+                </DeliveryLabel>
               </DeliveryLabels>
               <DeliveryData>
+                <Info>
+                  {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+                </Info>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
-                <Info tracking={true}>{trackingNumber || '-'}</Info>
+                <Info>{estimatedDate}</Info>
                 <Info>{netsuiteStatus || status}</Info>
+                <Info>
+                  {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
+                </Info>
               </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>
+          <StyledText>
+            <FormattedHTMLMessage
+              {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
+            />
+          </StyledText>
           <OrderSummaryContainer>
             <OrderSummary
               onlyRead={true}

@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { RED, BLUE } from '../../theme/colors'
+import { RED, BLUE, GRAY_DARK } from '../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -71,6 +71,7 @@ export const OrderInfo = styled.div`
   justify-content: space-between;
   margin-top: 42px;
   padding-right: 34px;
+  flex-direction: column;
 
   @media (max-width: 658px) and (min-width: 320px) {
     display: block;
@@ -104,13 +105,13 @@ export const DeliveryInfo = styled.div`
   }
 `
 export const DeliveryLabels = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   display: inline-block;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
-  width: 137px;
+  width: 202px;
 `
 export const DeliveryLabel = styled.div`
   margin-bottom: 12px;
@@ -205,9 +206,6 @@ export const Annotation = styled.div`
     margin-bottom: 58px;
   }
 `
-export const Date = styled.span`
-  margin-left: 5px;
-`
 
 export const OrderActions = styled.div`
   margin: 20px 0;
@@ -223,4 +221,11 @@ export const DeleteButton = styled(AntdButton)`
   border: none;
   color: ${RED};
   box-shadow: none;
+`
+
+export const StyledText = styled.div`
+  color: ${GRAY_DARK};
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  font-size: 16px;
 `

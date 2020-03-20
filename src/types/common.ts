@@ -759,6 +759,8 @@ export interface OrderDetailsInfo {
   total?: number
   discount?: number
   teamStoreId?: string
+  lastDrop?: boolean
+  teamStoreName?: string
 }
 
 export interface OrderDataInfo {
@@ -797,6 +799,8 @@ export interface OrderDataInfo {
   confirmed?: boolean
   status?: string
   lastDrop?: string
+  teamStoreName?: string
+  teamStoreId?: string
 }
 
 export interface TextFormat {

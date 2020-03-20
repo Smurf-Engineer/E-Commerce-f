@@ -91,6 +91,7 @@ export const getOrderQuery = gql`
       confirmed: payment_confirmed
       teamStoreId: teamstore_id
       lastDrop: last_drop
+      teamStoreName: teamstore_name
     }
   }
 `
