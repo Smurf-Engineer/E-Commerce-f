@@ -169,6 +169,15 @@ export const Bulletin = styled.div`
   }
 `
 
+export const PricesButton = styled.div`
+  color: ${BLUE};
+  width: 200px;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+  margin: 10px auto 0px;
+`
+
 export const BulletinLabel = styled.span`
   white-space: pre-line;
   text-align: center;
@@ -349,4 +358,9 @@ export const Loading = styled.div`
   justify-content: center;
   height: 100vh;
   align-items: center;
+`
+
+export const DynamicDropLogo = styled.img`
+  width: 190px;
+  margin: 15px 0;
 `

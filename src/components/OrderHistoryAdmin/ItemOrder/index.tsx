@@ -15,6 +15,7 @@ interface Props {
   statusError?: boolean
   firstName: string
   lastName: string
+  cutoffDate?: string
   onOrderClick: (shortId: string) => void
 }
 
@@ -27,7 +28,8 @@ const ItemOrder = ({
   pendingCheck,
   statusError,
   firstName,
-  lastName
+  lastName,
+  cutoffDate
 }: Props) => {
   const handleOnClick = () => {
     onOrderClick(shortId)
@@ -36,6 +38,7 @@ const ItemOrder = ({
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
       <Cell>{date}</Cell>
+      <Cell>{cutoffDate}</Cell>
       <Cell>JV2-{clientId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell textAlign={'center'}>

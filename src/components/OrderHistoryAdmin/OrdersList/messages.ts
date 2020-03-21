@@ -19,7 +19,7 @@ export default defineMessages({
   },
   date: {
     id: 'components.OrdersList.date',
-    defaultMessage: 'Date'
+    defaultMessage: 'Order Date'
   },
   clientId: {
     id: 'components.OrdersList.clientId',
@@ -48,5 +48,9 @@ export default defineMessages({
   emptyMessage: {
     id: 'components.OrdersList.emptyMessage',
     defaultMessage: 'No orders yet'
+  },
+  cutoffDate: {
+    id: 'components.OrdersList.cutoffDate',
+    defaultMessage: 'Order Cut-Off'
   }
 })

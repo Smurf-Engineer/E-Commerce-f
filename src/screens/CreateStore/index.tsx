@@ -5,6 +5,7 @@ import * as React from 'react'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
 import { compose, withApollo, graphql } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
+import { FormattedHTMLMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
@@ -39,6 +40,7 @@ import {
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import { cutoffDateSettingsQuery } from './data'
+import dropLogo from '../../assets/dynamic_drop.png'
 import messages from './messages'
 import {
   Container,
@@ -65,7 +67,8 @@ import {
   PinDiv,
   Pin,
   Corner,
-  BulletinInput
+  BulletinInput,
+  DynamicDropLogo
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
@@ -597,13 +600,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Subtitle>
-                  <FormattedMessage {...messages.priceDropTitle} />
-                </Subtitle>
+                <DynamicDropLogo src={dropLogo} />
                 <PriceMessage>
-                  <p>{formatMessage(messages.priceDropMessageP1)}</p>
-                  <p>{formatMessage(messages.priceDropMessageP2)}</p>
-                  <p>{formatMessage(messages.priceDropMessageP3)}</p>
+                  <FormattedHTMLMessage {...messages.priceDropMessage} />
                 </PriceMessage>
               </React.Fragment>
             )}

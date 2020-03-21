@@ -39,6 +39,7 @@ export const getOrdersQuery = gql`
           }
         }
         netsuiteAttempts: netsuite_attempts
+        cutoffDate: cutoff_date
       }
     }
   }

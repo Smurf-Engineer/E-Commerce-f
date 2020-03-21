@@ -2,7 +2,7 @@
  * StoreFrontContent Component - Created by gustavomedina on 18/04/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import find from 'lodash/find'
@@ -54,15 +54,19 @@ import {
   Pin,
   BulletinLabel,
   Dates,
-  FlexColumnContainer
+  FlexColumnContainer,
+  DynamicDropLogo,
+  PricesButton
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
 import ProductList from '../../components/DesignsCatalogueThumbnailList'
 import Share from '../../components/ShareDesignModal'
+import dropLogo from '../../assets/dynamic_drop.png'
 import EmailContact from '../../components/EmailContact'
 import TeamPassCode from '../../components/TeamPassCode'
+import DropPricingModal from '../../components/DropPricingModal'
 const STORE_PRIVATE_CODE = -1
 const PASS_CODE_INVALID = -2
 const STORE_CLOSED_CODE = -3
@@ -110,7 +114,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     showCani: false,
     showLong: false,
     showWhen: false,
-    showReturn: false
+    showReturn: false,
+    pricingModalOpen: false
   }
 
   toggleProductInfo = (id: string) => {
@@ -195,6 +200,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     )
   }
 
+  onTogglePriceModal = () => {
+    this.setState({ pricingModalOpen: !this.state.pricingModalOpen } as any)
+  }
+
   render() {
     const {
       data: { error, getTeamStore, loading },
@@ -213,7 +222,14 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       handleInputChange,
       contactInfo
     } = this.props
-    const { showMuch, showCani, showLong, showWhen, showReturn } = this.state
+    const {
+      showMuch,
+      showCani,
+      showLong,
+      showWhen,
+      showReturn,
+      pricingModalOpen
+    } = this.state
 
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
@@ -302,36 +318,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     </FlexContainer>
                     {!onDemandMode && (
                       <React.Fragment>
-                        <PriceTitle>
-                          <FormattedMessage {...messages.priceDropTitle} />
-                        </PriceTitle>
+                        <DynamicDropLogo src={dropLogo} />
                         <PriceDescription>
-                          <FormattedMessage {...messages.priceDropSubTitle} />
-                        </PriceDescription>
-                        <PriceDescription>
-                          <FormattedMessage
-                            {...messages.priceDropDescription}
-                            values={{
-                              Bold: (
-                                <strong>
-                                  {formatMessage(messages.priceDropImportant)}
-                                </strong>
-                              )
-                            }}
-                          />
-                        </PriceDescription>
-                        <PriceDescription>
-                          <FormattedMessage
-                            {...messages.finalPricing}
-                            values={{
-                              Bold: (
-                                <strong>
-                                  {formatMessage(
-                                    messages.finalPricingImportant
-                                  )}
-                                </strong>
-                              )
-                            }}
+                          <FormattedHTMLMessage
+                            {...messages.priceDropMessage}
                           />
                         </PriceDescription>
                       </React.Fragment>
@@ -403,6 +393,11 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     <BulletinLabel>{bulletin}</BulletinLabel>
                     <Corner />
                   </Bulletin>
+                )}
+                {!onDemandMode && (
+                  <PricesButton onClick={this.onTogglePriceModal}>
+                    {formatMessage(messages.quantityPrice)}
+                  </PricesButton>
                 )}
                 {errorMessage ? (
                   <ErrorTitle>{errorMessage}</ErrorTitle>
@@ -513,6 +508,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
           formatMessage={formatMessage}
           setPassCode={this.handleSetPassCode}
           teamStoreId={teamStoreId}
+        />
+        <DropPricingModal
+          toggleModal={this.onTogglePriceModal}
+          {...{ formatMessage, pricingModalOpen }}
         />
       </Container>
     )

@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.priceDropTitle',
     defaultMessage: 'DYNAMIC PRICE DROP'
   },
-  priceDropSubTitle: {
-    id: 'screens.StoreFrontContent.priceDropSubTitle',
-    defaultMessage: 'With JAKROO’s Dynamic Price Drop, everybody wins!'
-  },
   welcome: {
     id: 'screens.StoreFrontContent.welcome',
     defaultMessage: 'Welcome to {teamStoreName} store'
@@ -37,31 +33,11 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.storeClosed',
     defaultMessage: 'STORE CLOSED'
   },
-  description: {
-    id: 'screens.StoreFrontContent.description',
+  priceDropMessage: {
+    id: 'screens.StoreFrontContent.priceDropMessage',
     defaultMessage:
-      'All orders are produced on-demand and shipped 7 days of order placement'
-  },
-  finalPricing: {
-    id: 'screens.StoreFrontContent.finalPricing',
-    defaultMessage:
-      // tslint:disable-next-line: max-line-length
-      'Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period {Bold}'
-  },
-  finalPricingImportant: {
-    id: 'screens.StoreFrontContent.finalPricingImportant',
-    defaultMessage:
-      'so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!'
-  },
-  priceDropDescription: {
-    id: 'screens.StoreFrontContent.priceDropDescription',
-    defaultMessage:
-      'As team members place their orders and reach the next discount level, {Bold}' // tslint:disable-line:max-line-length
-  },
-  priceDropImportant: {
-    id: 'screens.StoreFrontContent.priceDropImportant',
-    defaultMessage:
-      'the price automatically drops for everyone, even for those who placed their order before the drop.'
+      // tslint:disable-next-line:max-line-length
+      '<p>With JAKROO’s Dynamic Price Drop, everyone wins!</p> <p>The starting discount level for all team members is 20%.  As team members place their orders and reach the next discount level, <strong>the price automatically drops for everyone, even for those who placed their order before the drop.</strong></p> <p>Final pricing for each item will be based on the highest discount level achieved for that item. Payment is processed after the close of the order period so <strong>everyone receives the same low price, regardless of when your order was placed.</strong> Yes, its that cool!</p>'
   },
   tierTitle: {
     id: 'screens.StoreFrontContent.tierTitle',
@@ -162,5 +138,9 @@ export default defineMessages({
   targetPrice: {
     id: 'screen.StoreFrontContent.targetPrice',
     defaultMessage: 'Target Price'
+  },
+  quantityPrice: {
+    id: 'screen.StoreFrontContent.quantityPrice',
+    defaultMessage: 'Quantity Price Schedule'
   }
 })

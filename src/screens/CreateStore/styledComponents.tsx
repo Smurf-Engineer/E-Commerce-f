@@ -277,3 +277,8 @@ export const BulletinInput = styled(TextArea)`
     box-shadow: none;
   }
 `
+
+export const DynamicDropLogo = styled.img`
+  width: 190px;
+  margin: 15px 0;
+`
