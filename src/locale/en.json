@@ -1207,6 +1207,7 @@
   "components.RoleCatalog.title": "Role Management",
   "components.RoleCatalog.filterBy": "Filter by",
   "components.RoleCatalog.search": "Search for a user",
+  "components.RoleCatalog.filterPlaceholder": "User Role",
   "components.RoleTable.clientId": "Client ID",
   "components.RoleTable.name": "Name",
   "components.RoleTable.account": "Account Type",

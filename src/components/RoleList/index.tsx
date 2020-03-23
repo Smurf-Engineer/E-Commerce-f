@@ -2,24 +2,37 @@
  * RolesCatalog Component - Created by Jesús Apodaca on 19/03/20.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import * as OrderHistoryAdminActions from './actions'
-import { Container, ScreenTitle, SearchInput } from './styledComponents'
+import {
+  Container,
+  ScreenTitle,
+  SearchInput,
+  HeaderList,
+  FilterDiv,
+  Subtitle,
+  FilterSelect,
+  RoleOption
+} from './styledComponents'
 import List from './ListRole'
 import messages from './messages'
-import { sorts } from '../../types/common'
+import { QueryProps, Role } from '../../types/common'
+import { getRoles } from './ListRole/data'
+import { Spin } from 'antd'
+
+interface DataRoles extends QueryProps {
+  roles: Role[]
+}
 interface Props {
   history: any
   currentPage: number
-  orderBy: string
-  screen: string
-  sort: sorts
-  productId: string
+  filter: string
+  rolesQuery: DataRoles
   searchText: string
+  setFilterAction: (filter: string) => void
   formatMessage: (messageDescriptor: any) => string
-  setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
   setSearchTextAction: (searchText: string) => void
@@ -36,6 +49,11 @@ class RolesCatalog extends React.Component<Props, {}> {
     setCurrentPageAction(page)
   }
 
+  handleFilterChange = (value: string) => {
+    const { setFilterAction } = this.props
+    setFilterAction(value)
+  }
+
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { setSearchTextAction } = this.props
     const {
@@ -45,19 +63,45 @@ class RolesCatalog extends React.Component<Props, {}> {
     setSearchTextAction(value)
   }
   render() {
-    const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
+    const {
+      currentPage,
+      formatMessage,
+      filter,
+      searchText,
+      rolesQuery: { loading, roles }
+    } = this.props
     return (
       <Container>
         <ScreenTitle>
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
-        <SearchInput
-          value={searchText}
-          onChange={this.handleInputChange}
-          placeholder={formatMessage(messages.search)}
-        />
+        <HeaderList>
+          <SearchInput
+            value={searchText}
+            onChange={this.handleInputChange}
+            placeholder={formatMessage(messages.search)}
+          />
+          <FilterDiv>
+            <Subtitle>
+              <FormattedMessage {...messages.filterBy} />
+            </Subtitle>
+            {loading ? (
+              <Spin />
+            ) : (
+              <FilterSelect
+                allowClear={true}
+                onChange={this.handleFilterChange}
+                placeholder={formatMessage(messages.filterPlaceholder)}
+              >
+                {roles.map(({ id, name }: Role) => (
+                  <RoleOption value={id}>{name}</RoleOption>
+                ))}
+              </FilterSelect>
+            )}
+          </FilterDiv>
+        </HeaderList>
         <List
-          {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+          {...{ formatMessage, currentPage, searchText, filter, roles }}
           onChangePage={this.handleOnChangePage}
         />
       </Container>
@@ -68,6 +112,12 @@ class RolesCatalog extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('roleCatalog').toJS()
 
 const RolesCatalogEnhance = compose(
+  graphql(getRoles, {
+    name: 'rolesQuery',
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
   connect(mapStateToProps, { ...OrderHistoryAdminActions })
 )(RolesCatalog)
 

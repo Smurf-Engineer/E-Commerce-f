@@ -32,11 +32,21 @@ export const getUserRolesQuery = gql`
     }
   }
 `
-export const changeActiveProduct = gql`
-  mutation toggleActive($id: Int!) {
-    productResult: toggleActive(id: $id) {
+
+export const getRoles = gql`
+  query getRoles {
+    roles: getRoles {
+      id: short_id
+      name
+    }
+  }
+`
+
+export const changeRoleMutation = gql`
+  mutation changeRoleUser($userId: Int!, $roleId: String!) {
+    userResult: changeRoleUser(userId: $userId, roleId: $roleId) {
       id
-      active
+      role
     }
   }
 `

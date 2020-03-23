@@ -16,5 +16,9 @@ export default defineMessages({
   filterBy: {
     id: 'components.RoleCatalog.filterBy',
     defaultMessage: 'Filter by'
+  },
+  filterPlaceholder: {
+    id: 'components.RoleCatalog.filterPlaceholder',
+    defaultMessage: 'User Role'
   }
 })

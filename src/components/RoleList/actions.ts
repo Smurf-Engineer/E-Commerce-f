@@ -3,17 +3,16 @@
  */
 
 import {
-  SET_ORDER_BY,
+  SET_FILTER,
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_SEARCH_TEXT
 } from './constants'
-import { AnyAction, sorts } from '../../types/common'
+import { AnyAction } from '../../types/common'
 
-export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
-  type: SET_ORDER_BY,
-  orderBy,
-  sort
+export const setFilterAction = (filter: string): AnyAction => ({
+  type: SET_FILTER,
+  filter
 })
 
 export const setCurrentPageAction = (page: number): AnyAction => ({
