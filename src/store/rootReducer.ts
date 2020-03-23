@@ -58,6 +58,7 @@ import designTools from '../screens/DesignTools/reducer'
 import proAssist from '../components/ProAssist/reducer'
 import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 import roleCatalog from '../components/RoleList/reducer'
+import salesRep from '../components/SalesRep/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -79,6 +80,7 @@ export interface ReducersObject {
   createStore: any
   designSearchAdmin: any
   roleCatalog: any
+  salesRep: any
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
@@ -219,6 +221,7 @@ const rootReducer = combineReducers({
   languageProvider,
   menu,
   forgot,
+  salesRep,
   home,
   roleCatalog,
   reset,

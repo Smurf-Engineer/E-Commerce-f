@@ -32,7 +32,8 @@ import {
   DESIGN_LAB_TOOLS,
   PRO_ASSIST,
   USER_LIST,
-  ROLE_MANAGEMENT
+  ROLE_MANAGEMENT,
+  SALES_REP
 } from './constants'
 import {
   SideBar,
@@ -119,6 +120,9 @@ class AdminLayout extends React.Component<Props, {}> {
         break
       case ROLE_MANAGEMENT:
         history.push('/admin/roles')
+        break
+      case SALES_REP:
+        history.push('/admin/reps')
         break
       case TEAM_STORES:
         history.push('/admin/team-stores')
