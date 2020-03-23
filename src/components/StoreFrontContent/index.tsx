@@ -43,7 +43,6 @@ import {
   DefaultButton,
   ErrorTitle,
   FlexContainer,
-  Description,
   StoreBox,
   Loading,
   ButtonsContainer,
@@ -377,13 +376,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 <PriceTitle center={true}>
                   {formatMessage(messages.welcome, { teamStoreName })}
                 </PriceTitle>
-                {onDemandMode && (
-                  <Description>
-                    <PriceDescription>
-                      <FormattedMessage {...messages.description} />
-                    </PriceDescription>
-                  </Description>
-                )}
                 {bulletin && (
                   <Bulletin>
                     <PinDiv>
