@@ -5,8 +5,9 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import CustomInput from '../Common/CustomInput'
-import { GRAY_DARK, BLUE } from '../../theme/colors'
+import { GRAY_DARK, BLUE, RED } from '../../theme/colors'
 import { WHITE } from '../../screens/DesignerTool/constants'
+import Spin from 'antd/lib/spin'
 
 const Search = Input.Search
 
@@ -76,4 +77,28 @@ export const SaveButton = styled(Button)`
 export const CancelButton = styled(Button)`
   width: 116px;
   height: 36px;
+`
+
+export const AddButton = styled.div`
+  border: 2px solid ${RED};
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 170px;
+  background: ${WHITE};
+  transition: all 0.2s;
+  margin-right: 24px;
+  color: ${RED};
+  cursor: pointer;
+  &:hover {
+    background: ${RED};
+    color: ${WHITE};
+  }
+`
+
+export const SpinLoader = styled(Spin)`
+  margin-left: 52px;
+  margin-top: 22px;
+  margin-bottom: 6px;
 `

@@ -16,7 +16,7 @@ import { Reducer } from '../../types/common'
 export const initialState = fromJS({
   currentPage: 1,
   name: '',
-  open: true,
+  open: false,
   loading: false,
   lastName: '',
   searchText: ''
@@ -27,7 +27,12 @@ const salesRepReducer: Reducer<any> = (state = initialState, action) => {
     case SET_LOADING:
       return state.set('loading', action.loading)
     case SET_OPEN_MODAL:
-      return state.set('open', action.open)
+      return state.merge({
+        open: action.open,
+        name: '',
+        lastName: '',
+        loading: false
+      })
     case SET_NAME:
       return state.set(action.field, action.value)
     case SET_CURRENT_PAGE:

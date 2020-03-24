@@ -21,8 +21,7 @@ import withLoading from '../../WithLoading'
 import { getRepUsers } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
-
-const REPS_LIMIT = 12
+import { REPS_LIMIT } from '../constants'
 
 interface Data extends QueryProps {
   repUsers: UsersResult

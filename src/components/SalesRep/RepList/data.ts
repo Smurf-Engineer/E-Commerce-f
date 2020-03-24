@@ -21,7 +21,10 @@ export const getRepUsers = gql`
 export const addRepUserMutation = gql`
   mutation addRepUser($firstName: String!, $lastName: String!) {
     userResult: addRepUser(firstName: $firstName, lastName: $lastName) {
-      id: short_id
+      id
+      shortId: short_id
+      firstName: first_name
+      lastName: last_name
     }
   }
 `

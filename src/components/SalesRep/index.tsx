@@ -16,15 +16,18 @@ import {
   SaveButton,
   CancelButton,
   Buttons,
-  Title
+  Title,
+  AddButton,
+  SpinLoader
 } from './styledComponents'
 import List from './RepList'
 import messages from './messages'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
-import { addRepUserMutation } from './RepList/data'
+import { addRepUserMutation, getRepUsers } from './RepList/data'
 import { User } from '../../types/common'
-import Spin from 'antd/lib/spin'
+import get from 'lodash/get'
+import { REPS_LIMIT } from './constants'
 
 interface Props {
   history: any
@@ -83,14 +86,49 @@ class SalesRep extends React.Component<Props, {}> {
   }
 
   saveUser = async () => {
-    const { name: firstName, lastName, setLoading, addRepUser } = this.props
+    const {
+      name: firstName,
+      lastName,
+      setLoading,
+      addRepUser,
+      currentPage,
+      searchText,
+      formatMessage,
+      setOpenModal
+    } = this.props
     try {
       setLoading(true)
       await addRepUser({
-        variables: { firstName, lastName }
+        variables: { firstName, lastName },
+        update: (store: any, dataInternal: User) => {
+          const user = get(dataInternal, 'data.userResult', {})
+          if (user) {
+            const offset = currentPage ? (currentPage - 1) * REPS_LIMIT : 0
+            const storedData = store.readQuery({
+              query: getRepUsers,
+              variables: {
+                limit: REPS_LIMIT,
+                offset,
+                text: searchText
+              }
+            })
+            const users = get(storedData, 'repUsers.users', []) as User[]
+            users.unshift(user)
+            store.writeQuery({
+              query: getRepUsers,
+              variables: {
+                limit: REPS_LIMIT,
+                offset,
+                text: searchText
+              },
+              data: storedData
+            })
+            setOpenModal(false)
+            Message.success(formatMessage(messages.added))
+          }
+        }
       })
     } catch (e) {
-      console.log('e:', e)
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
     } finally {
@@ -114,6 +152,9 @@ class SalesRep extends React.Component<Props, {}> {
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
         <HeaderList>
+          <AddButton onClick={this.onOpen}>
+            {formatMessage(messages.addRep)}
+          </AddButton>
           <SearchInput
             value={searchText}
             onChange={this.handleInputChange}
@@ -141,7 +182,7 @@ class SalesRep extends React.Component<Props, {}> {
             />
           </FormContainer>
           {loading ? (
-            <Spin />
+            <SpinLoader />
           ) : (
             <Buttons>
               <SaveButton disabled={!name || !lastName} onClick={this.saveUser}>

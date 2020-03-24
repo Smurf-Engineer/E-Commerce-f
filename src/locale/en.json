@@ -1056,6 +1056,7 @@
   "components.SalesRep.lastNameLabel": "Last Name",
   "components.SalesRep.save": "Save",
   "components.SalesRep.cancel": "Cancel",
+  "components.SalesRep.added": "Sales Rep Added",
   "components.SalesRepList.firstName": "First Name",
   "components.SalesRepList.lastName": "Last Name",
   "components.SalesRepList.empty": "No sales rep users added",

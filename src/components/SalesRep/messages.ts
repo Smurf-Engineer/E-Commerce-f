@@ -36,5 +36,9 @@ export default defineMessages({
   cancel: {
     id: 'components.SalesRep.cancel',
     defaultMessage: 'Cancel'
+  },
+  added: {
+    id: 'components.SalesRep.added',
+    defaultMessage: 'Sales Rep Added'
   }
 })
