@@ -84,7 +84,8 @@ export type PriceRange = {
 export type WorkHours = {
   start: string
   end: string
-  timezone: number
+  open: boolean
+  timeZone: string
 }
 
 export interface GenderType {
