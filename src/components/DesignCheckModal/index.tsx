@@ -25,6 +25,8 @@ import Spin from 'antd/lib/spin'
 import { WorkHours } from '../../types/common'
 import moment from 'moment'
 
+const FORMAT_12 = 'LT'
+
 interface Props {
   visible: boolean
   loadingPro: boolean
@@ -45,8 +47,8 @@ export class DesignCheckModal extends React.Component<Props, {}> {
       handleGetPro
     } = this.props
     const { start, end, open, timeZone } = workingHours
-    const startHour = moment(start, 'HH:mm:ss').format('LT')
-    const endHour = moment(end, 'HH:mm:ss').format('LT')
+    const startHour = moment(start, 'HH:mm:ss').format(FORMAT_12)
+    const endHour = moment(end, 'HH:mm:ss').format(FORMAT_12)
     const hours = `MON-FRI ${startHour} - ${endHour} (${timeZone})`
     return (
       <Container>
