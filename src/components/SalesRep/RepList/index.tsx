@@ -5,13 +5,22 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { Container, Header, Row, Table, RepDiv, Cell } from './styledComponents'
+import {
+  Container,
+  Header,
+  Row,
+  Table,
+  RepDiv,
+  Cell,
+  LoadingContainer
+} from './styledComponents'
 import EmptyContainer from '../../EmptyContainer'
 import { User, UsersResult, QueryProps } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getRepUsers, changeRoleMutation } from './data'
+import { getRepUsers } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
+import Spin from 'antd/lib/spin'
 
 const REPS_LIMIT = 12
 
@@ -33,33 +42,39 @@ class RepList extends React.Component<Props, {}> {
     const {
       formatMessage,
       currentPage,
-      data: { repUsers },
+      data: { repUsers, loading },
       onChangePage
     } = this.props
     const users = get(repUsers, 'users', []) as User[]
     const fullCount = get(repUsers, 'fullCount', 0)
     return (
       <Container>
-        <Table>
-          <thead>
-            <Row>
-              <Header>{formatMessage(messages.firstName)}</Header>
-              <Header>{formatMessage(messages.lastName)}</Header>
-            </Row>
-          </thead>
-          <tbody>
-            {users.length ? (
-              users.map(({ firstName, lastName }: User, index: number) => (
-                <RepDiv key={index}>
-                  <Cell width="256px">{firstName}</Cell>
-                  <Cell>{lastName}</Cell>
-                </RepDiv>
-              ))
-            ) : (
-              <EmptyContainer message={formatMessage(messages.empty)} />
-            )}
-          </tbody>
-        </Table>
+        {loading ? (
+          <LoadingContainer>
+            <Spin size="large" />
+          </LoadingContainer>
+        ) : (
+          <Table>
+            <thead>
+              <Row>
+                <Header>{formatMessage(messages.firstName)}</Header>
+                <Header>{formatMessage(messages.lastName)}</Header>
+              </Row>
+            </thead>
+            <tbody>
+              {users.length ? (
+                users.map(({ firstName, lastName }: User, index: number) => (
+                  <RepDiv key={index}>
+                    <Cell width="256px">{firstName}</Cell>
+                    <Cell>{lastName}</Cell>
+                  </RepDiv>
+                ))
+              ) : (
+                <EmptyContainer message={formatMessage(messages.empty)} />
+              )}
+            </tbody>
+          </Table>
+        )}
         <Pagination
           current={currentPage}
           pageSize={REPS_LIMIT}
@@ -77,7 +92,6 @@ interface OwnProps {
 }
 
 const RepListEnhance = compose(
-  graphql(changeRoleMutation, { name: 'roleChangeMutation' }),
   graphql(getRepUsers, {
     options: ({ currentPage, searchText }: OwnProps) => {
       const offset = currentPage ? (currentPage - 1) * REPS_LIMIT : 0

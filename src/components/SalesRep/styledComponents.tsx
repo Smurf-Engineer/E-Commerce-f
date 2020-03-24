@@ -3,7 +3,10 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
-import { GRAY_DARK } from '../../theme/colors'
+import Button from 'antd/lib/button'
+import CustomInput from '../Common/CustomInput'
+import { GRAY_DARK, BLUE } from '../../theme/colors'
+import { WHITE } from '../../screens/DesignerTool/constants'
 
 const Search = Input.Search
 
@@ -37,4 +40,40 @@ export const HeaderList = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+`
+
+export const Title = styled.div`
+  margin-bottom: 24px;
+  font-weight: 800;
+  font-size: 16px;
+`
+
+export const FormContainer = styled.div``
+
+export const StyledInput = styled(CustomInput)`
+  margin-bottom: 20px;
+  border-radius: 0px;
+`
+
+export const Buttons = styled.div`
+  margin-top: 18px;
+`
+
+export const SaveButton = styled(Button)`
+  background: ${BLUE};
+  color: ${WHITE};
+  margin-right: 18px;
+  width: 116px;
+  transition: all 0.25s;
+  height: 36px;
+  &:hover {
+    border: 1px solid ${BLUE};
+    background: ${WHITE};
+    color: ${BLUE};
+  }
+`
+
+export const CancelButton = styled(Button)`
+  width: 116px;
+  height: 36px;
 `

@@ -80,3 +80,11 @@ export const Cell = styled.td`
     color: ${RED};
   }
 `
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  height: 416px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
