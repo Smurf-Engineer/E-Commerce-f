@@ -52,6 +52,7 @@ export const PURCHASE = 'purchase'
 export const PAID_STATUS = 'Paid'
 export const ERROR_STATUS = 'Error'
 export const PENDING_APPROVAL = 'Pending Approval'
+export const PREORDER = 'Pre-Order'
 
 /* Quantity */
 export const PERSONAL = 'Personal'

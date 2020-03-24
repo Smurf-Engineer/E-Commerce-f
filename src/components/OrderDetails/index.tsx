@@ -53,7 +53,7 @@ import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
-import { PENDING_APPROVAL } from '../../constants'
+import { PREORDER } from '../../constants'
 
 const PRO_DESIGN_FEE = 15
 
@@ -349,7 +349,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           onClick={() => true}
           hide={true}
         />
-        {teamStoreId && status === PENDING_APPROVAL ? (
+        {teamStoreId && status === PREORDER ? (
           <OrderActions>
             <ButtonWrapper>
               <Button type="primary" onClick={this.handleOnEditOrder}>

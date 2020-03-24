@@ -23,7 +23,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE, PENDING_APPROVAL } from '../../constants'
+import { PURCHASE, PENDING_APPROVAL, PREORDER } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -220,7 +220,7 @@ class OrderData extends React.Component<Props, {}> {
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
               <StyledText>
-                {status === PENDING_APPROVAL
+                {status === PENDING_APPROVAL || PREORDER
                   ? formatMessage(messages.waiting)
                   : status}
               </StyledText>
