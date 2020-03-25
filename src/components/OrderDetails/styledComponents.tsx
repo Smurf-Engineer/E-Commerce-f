@@ -71,7 +71,7 @@ export const OrderInfo = styled.div`
   justify-content: space-between;
   margin-top: 42px;
   padding-right: 34px;
-  flex-direction: column;
+  flex-direction: row;
 
   @media (max-width: 658px) and (min-width: 320px) {
     display: block;
