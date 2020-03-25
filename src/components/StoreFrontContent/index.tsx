@@ -107,6 +107,8 @@ interface Props {
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
+const invalidDateExp = /\bInvalid date\b/
+
 export class StoreFrontContent extends React.Component<Props, StateProps> {
   state = {
     showMuch: false,
@@ -252,8 +254,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const display = get(getTeamStore, 'display', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
     const closed = get(getTeamStore, 'closed', false)
-    const isThereCutoffDate = get(getTeamStore, 'cutoff_date', false)
-    console.log(isThereCutoffDate)
+
+    const isThereCutoffDate = !invalidDateExp.test(cutOffDay)
 
     const deliveryDayOrdinal = get(
       getTeamStore,
