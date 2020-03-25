@@ -252,7 +252,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const display = get(getTeamStore, 'display', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
     const closed = get(getTeamStore, 'closed', false)
-    const isThereCutoffDate = get(getTeamStore, 'cutOffDate', false)
+    const isThereCutoffDate = get(getTeamStore, 'cutoff_date', false)
+    console.log(isThereCutoffDate)
 
     const deliveryDayOrdinal = get(
       getTeamStore,
