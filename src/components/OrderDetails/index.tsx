@@ -259,11 +259,6 @@ export class OrderDetails extends React.Component<Props, {}> {
               </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>
-          <StyledText>
-            <FormattedHTMLMessage
-              {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
-            />
-          </StyledText>
           <OrderSummaryContainer>
             <OrderSummary
               onlyRead={true}
@@ -283,6 +278,11 @@ export class OrderDetails extends React.Component<Props, {}> {
             />
           </OrderSummaryContainer>
         </OrderInfo>
+        <StyledText>
+          <FormattedHTMLMessage
+            {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
+          />
+        </StyledText>
         <Items>
           {!teamStoreId && (
             <TitleStyled>
