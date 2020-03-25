@@ -416,6 +416,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         }
 
         history.push(`/store-front?storeId=${storeShortId}`)
+        this.forceUpdate()
       } else {
         const {
           data: { store }
@@ -495,7 +496,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       updateNameAction,
       updateStartDateAction,
       updateEndDateAction,
-      // updateOnDemandAction,
+      updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
       setItemsAddAction,
@@ -519,7 +520,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       offset,
       onUnselectItemAction,
       user,
-      cutoffSettings
+      cutoffSettings,
+      onDemand
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -701,14 +703,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
               {/* TODO: Hidding onDemand-FixedDate Switch until FixDate feature */}
-              {/* {storeId && (
+              {storeId && (
                 <SwitchWithLabel
                   checked={onDemand}
                   onChange={updateOnDemandAction}
                   label={formatMessage(messages.onDemandLabel)}
                   message={formatMessage(messages.onDemandMessage)}
                 />
-              )} */}
+              )}
             </RowSwitch>
             {storeShortId ? (
               <ButtonOptionsWrapper>

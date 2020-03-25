@@ -251,6 +251,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const onDemandMode = get(getTeamStore, 'onDemandMode', false)
     const display = get(getTeamStore, 'display', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
+    const closed = get(getTeamStore, 'closed', false)
+    const isThereCutoffDate = get(getTeamStore, 'cutOffDate', false)
+
     const deliveryDayOrdinal = get(
       getTeamStore,
       'delivery_date.dayOrdinal',
@@ -299,7 +302,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                             <FormattedMessage {...messages.share} />
                           </Button>
                         </ButtonWrapper>
-                        {teamStoreOwner ? (
+                        {teamStoreOwner && !closed ? (
                           <ButtonWrapper>
                             <Button
                               type="primary"
@@ -309,9 +312,11 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                             </Button>
                           </ButtonWrapper>
                         ) : (
-                          <DefaultButton onClick={this.handlContactClick}>
-                            <FormattedMessage {...messages.contactManager} />
-                          </DefaultButton>
+                          !closed && (
+                            <DefaultButton onClick={this.handlContactClick}>
+                              <FormattedMessage {...messages.contactManager} />
+                            </DefaultButton>
+                          )
                         )}
                       </ButtonsContainer>
                     </FlexContainer>
@@ -328,9 +333,11 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   </FlexColumnContainer>
                   <SideBar>
                     <DatesContainer {...{ onDemandMode }}>
-                      <StoreBox open={display}>
+                      <StoreBox open={display && !closed}>
                         {formatMessage(
-                          display ? messages.storeOpen : messages.storeClosed
+                          display && !closed
+                            ? messages.storeOpen
+                            : messages.storeClosed
                         )}
                       </StoreBox>
                       {!onDemandMode && (
@@ -343,7 +350,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                         </OrderTitle>
                       )}
                       <Dates>
-                        {!onDemandMode && (
+                        {!onDemandMode && isThereCutoffDate && (
                           <CalendarContainer>
                             <DatesTitle>
                               <FormattedMessage {...messages.cutOff} />
@@ -403,7 +410,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           onDemandMode,
                           currentCurrency,
                           display,
-                          teamStoreName
+                          teamStoreName,
+                          closed
                         }}
                         withoutPadding={false}
                         openQuickView={this.handleOnOpenQuickView}
