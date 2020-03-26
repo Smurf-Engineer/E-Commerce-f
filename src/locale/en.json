@@ -106,7 +106,7 @@
   "components.signUp.createAccountError": "Yikes, something went wrong. Please try again!",
   "components.Logout.myLockerLabel": "My Locker",
   "components.Logout.myAccountLabel": "My Account",
-  "components.Logout.profileSettingsLabel": "Profile Settings",
+  "components.Logout.myTeamStoresLabel": "My Team Stores",
   "components.Logout.logoutLabel": "Log out",
   "components.Render3D.saveAsNew": "Save as a New Design",
   "components.Render3D.proAssist": "{proLabel} ASSIST",
