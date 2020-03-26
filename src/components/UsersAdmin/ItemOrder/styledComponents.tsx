@@ -2,7 +2,9 @@
  * Styled Components - Created by eduardoquintero on 29/05/19.
  */
 import styled from 'styled-components'
+import Select from 'antd/lib/select'
 import { RED } from '../../../theme/colors'
+import Tooltip from 'antd/lib/tooltip'
 
 export const Container = styled.tr`
   cursor: pointer;
@@ -38,4 +40,17 @@ export const Cell = styled.td`
     letter-spacing: 0.09px;
     font-size: 11px;
   }
+`
+
+export const Mail = styled(Tooltip)`
+  width: 128px;
+  display: block;
+  margin-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+export const StyledSelect = styled(Select)`
+  width: 140px;
+  margin-right: 8px;
 `

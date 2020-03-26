@@ -1361,6 +1361,8 @@ export interface User {
   createdAt?: string
   shortId?: string
   role?: string
+  salesRep?: User
+  accountManager?: User
 }
 
 export interface Role {
