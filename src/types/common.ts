@@ -1270,6 +1270,8 @@ export interface OrderSearchResult {
   pdfUrl?: string
   product: Product
   pngUrl?: string
+  salesRep?: User
+  accountManager?: User
   notes?: DesignNote[]
 }
 

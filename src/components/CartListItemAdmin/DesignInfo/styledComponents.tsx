@@ -24,3 +24,10 @@ export const DesignInfoTitle = styled.div``
 export const DesignInfoSubtitle = styled.div`
   font-weight: 600;
 `
+
+export const NamesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 8px 16px;
+  justify-content: flex-start;
+`
