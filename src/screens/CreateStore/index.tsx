@@ -702,10 +702,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
-              {/* TODO: Hidding onDemand-FixedDate Switch until FixDate feature */}
               {storeId && (
                 <SwitchWithLabel
                   checked={onDemand}
+                  disabled={isOnDemand}
                   onChange={updateOnDemandAction}
                   label={formatMessage(messages.onDemandLabel)}
                   message={formatMessage(messages.onDemandMessage)}

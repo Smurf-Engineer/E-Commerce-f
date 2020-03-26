@@ -26,6 +26,7 @@ interface Props {
   defaultChecked?: boolean
   placeholder: string
   subLabel?: string
+  disabled?: boolean
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
 }
@@ -43,6 +44,7 @@ const SwitchWithLabel = ({
   defaultChecked,
   placeholder,
   subLabel,
+  disabled = false,
   updatePassCodeAction = () => {}
 }: Props) => {
   const handleUpdatePassCode = (evnt: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +60,7 @@ const SwitchWithLabel = ({
     <Container {...{ width }}>
       <Row>
         <Label>{label}</Label>
-        <SwitchInput {...{ defaultChecked, onChange, checked }} />
+        <SwitchInput {...{ defaultChecked, onChange, checked, disabled }} />
       </Row>
       <Message>{message}</Message>
       {withInput && (
