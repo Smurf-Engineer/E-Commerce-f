@@ -94,7 +94,11 @@ import {
   AMBIENT_LIGHT_INTENSITY,
   DIRECTIONAL_LIGHT_INTENSITY
 } from '../../../constants'
-import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
+import {
+  BLACK,
+  SELECTION_3D_AREA,
+  RED_TRANSPARENT
+} from '../../../theme/colors'
 import {
   Changes,
   CustomizeTabs,
@@ -1564,7 +1568,7 @@ class Render3D extends PureComponent {
   hoverBlur = (id, hover) => {
     const el = this.getElementById(id)
     const opacity = hover ? 0.5 : 1
-    const backgroundColor = hover ? '#ff000061' : null
+    const backgroundColor = hover ? RED_TRANSPARENT : null
     el.set({ opacity, backgroundColor })
     this.canvasTexture.renderAll()
   }
@@ -1799,7 +1803,7 @@ class Render3D extends PureComponent {
       if (activeEl && activeEl.type === CanvasElements.Text) {
         activeElementId = activeEl.id
       }
-      console.log('style:', style)
+
       if (!idElement) {
         const el = {
           id: activeElementId || txtEl.id,

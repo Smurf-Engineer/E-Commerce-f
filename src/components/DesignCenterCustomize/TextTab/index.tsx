@@ -90,9 +90,9 @@ export class TextTab extends React.PureComponent<Props, State> {
     option: 0,
     page: 0
   }
-  componentWillReceiveProps({ selectedElement: newElement }: Props) {
+  componentDidUpdate({ selectedElement: oldElement }: Props) {
     const { selectedElement } = this.props
-    if (selectedElement !== newElement) {
+    if (selectedElement !== oldElement) {
       this.setState({ option: 0, page: 0 })
     }
   }
