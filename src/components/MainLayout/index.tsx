@@ -78,7 +78,7 @@ interface Props extends RouteComponentProps<any> {
   openLogoutModal: boolean
   initialCountryCode: string
   buyNowHeader: boolean
-  disableIntercom: boolean
+  disableAssist: boolean
   fontsData: any
   fonts: []
   setAccountScreen: (screen: string, openCreations?: boolean) => void
@@ -111,7 +111,7 @@ class MainLayout extends React.Component<Props, {}> {
   async componentDidMount() {
     const {
       openLoginAction,
-      disableIntercom,
+      disableAssist,
       history: {
         location: { search, pathname }
       },
@@ -136,7 +136,7 @@ class MainLayout extends React.Component<Props, {}> {
     const fonts: SimpleFont[] = []
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
-    if (!disableIntercom) {
+    if (!disableAssist) {
       Intercom(config.intercomKey)
       if (user) {
         this.setIntercomUser(user)

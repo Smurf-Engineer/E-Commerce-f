@@ -64,7 +64,7 @@ export const CustomizeButton = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 2px;
-  padding: 6px 16px;
+  padding: 6px 19px;
 
   @media (min-width: 320px) and (max-width: 768px) {
     background-color: #fff;
