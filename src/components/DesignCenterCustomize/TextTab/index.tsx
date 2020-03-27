@@ -104,7 +104,7 @@ export class TextTab extends React.PureComponent<Props, State> {
               <FormattedMessage {...messages[headerTitle]} />
             </Title>
           </Row>
-          {selectedElement && !isEmpty(element) && !!textFormat && (
+          {!!selectedElement && !isEmpty(element) && !!textFormat && (
             <LockContainer onClick={this.handleOnLockElement}>
               <Icon type={element.lock ? 'lock' : 'unlock'} />
             </LockContainer>
@@ -205,7 +205,7 @@ export class TextTab extends React.PureComponent<Props, State> {
                 />
               }
             />
-            {selectedElement && (
+            {!!selectedElement && (
               <PositionResize
                 {...{ activeEl }}
                 handleChange={onPositionChange}
