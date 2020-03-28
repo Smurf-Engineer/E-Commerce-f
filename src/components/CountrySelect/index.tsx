@@ -19,16 +19,22 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   selectedCountry: string
-  handleCountryChange: (value: any, countryId: string) => void
+  handleCountryChange: (
+    value: string,
+    countryId: string,
+    countryName: string
+  ) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class CountrySelect extends React.Component<Props, {}> {
-  handleSelectChange = async (value: any) => {
+  handleSelectChange = async (value: string, label: React.ReactPortal) => {
     const { handleCountryChange } = this.props
+    const countryName = label.props.children
     handleCountryChange(
       value.substr(0, value.indexOf('-')),
-      value.substr(value.indexOf('-') + 1, value.length)
+      value.substr(value.indexOf('-') + 1, value.length),
+      countryName
     )
   }
 

@@ -16,7 +16,8 @@ import {
   desginsQuery,
   designAsPrivateMutation,
   deleteDesignMutation,
-  changeNameMutation
+  changeNameMutation,
+  duplicateDesignMutation
 } from './data'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
 import ModalFooter from '../ModalFooter'
@@ -32,13 +33,16 @@ import {
   MessageText,
   ConfirmMessage,
   InputWrapper,
-  StyledInput
+  StyledInput,
+  TransparentLoader
 } from './styledComponents'
 import {
   DesignResultType,
   DeleteDesignModal,
   RenameDesignModal,
-  UserType
+  UserType,
+  MessagePayload,
+  DesignCopyResult
 } from '../../types/common'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
@@ -59,8 +63,11 @@ interface Props {
   userId: string
   userName: string
   data: Data
+  loading: boolean
+  duplicateDesign: (variables: {}) => Promise<MessagePayload>
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   addItemToStore: () => void
+  setDesignSelected?: (shortId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare?: (savedDesignId: string, openShareModal: boolean) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -209,6 +216,56 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     openQuickView(id, yotpoId)
   }
 
+  handleMakeCopy = async (designId: string) => {
+    const {
+      setLoadingAction,
+      duplicateDesign,
+      offset,
+      user,
+      admin,
+      userId,
+      limit
+    } = this.props
+    try {
+      setLoadingAction(true)
+      await duplicateDesign({
+        variables: { designId },
+        update: (store: any, dataInternal: DesignCopyResult) => {
+          const design = get(dataInternal, 'data.duplicateDesign.design')
+          if (!design) {
+            return
+          }
+          const userShortId = admin ? userId : user.id
+          const storedData = store.readQuery({
+            query: desginsQuery,
+            variables: {
+              limit,
+              offset,
+              userId: userShortId
+            }
+          })
+          const designList = get(storedData, 'designsResults.designs')
+          designList.push(design)
+          store.writeQuery({
+            query: desginsQuery,
+            variables: {
+              limit,
+              offset,
+              userId: userShortId
+            },
+            data: storedData
+          })
+          Message.success(get(dataInternal, 'data.duplicateDesign.message', ''))
+        }
+      })
+    } catch (e) {
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+
   handleOnSaveName = async () => {
     const {
       formatMessage,
@@ -258,6 +315,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       history,
       formatMessage,
       limit,
+      loading,
       currentPage,
       setCurrentShare,
       openAddToStoreModal,
@@ -265,6 +323,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       savedDesignId,
       setItemToAddAction,
       addItemToStore,
+      setDesignSelected,
       openAddToTeamStoreModalAction,
       data,
       deleteModal: { modalLoading = false, openDeleteModal, designName },
@@ -307,6 +366,11 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     }
     return (
       <Container>
+        {loading && (
+          <TransparentLoader>
+            <Spin size="large" />
+          </TransparentLoader>
+        )}
         <MessageText>
           {admin
             ? formatMessage(messages.userLocker, { userName })
@@ -321,8 +385,10 @@ export class MyLocker extends React.PureComponent<Props, {}> {
               history,
               withoutPadding,
               openAddToTeamStoreModalAction,
+              setDesignSelected,
               designs
             }}
+            makeCopy={this.handleMakeCopy}
             onPressPrivate={this.handleOnPressPrivate}
             onPressDelete={this.handleOnPressDelete}
             onPressRename={this.handleOnPressRename}
@@ -427,6 +493,7 @@ type OwnProps = {
 const MyLockerEnhance = compose(
   withApollo,
   connect(mapStateToProps, { ...myLockerActions }),
+  graphql(duplicateDesignMutation, { name: 'duplicateDesign' }),
   graphql<Data>(desginsQuery, {
     options: (ownprops: OwnProps) => {
       const { limit, offset, admin, userId, user } = ownprops

@@ -545,7 +545,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           designId={0}
                           textColor="white"
                           isProduct={true}
-                          isPhone={phone}
+                          asImage={phone}
                           {...{ product, modelSize }}
                         />
                         <HowItFits onClick={this.toggleFitsModal(true)}>
