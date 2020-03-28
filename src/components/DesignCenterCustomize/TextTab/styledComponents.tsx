@@ -164,11 +164,17 @@ export const LayerBlock = styled.div`
   padding: 16px;
   border-bottom: 1px solid ${GRAY_LIGHT};
   align-items: center;
+  cursor: move;
+  background: ${WHITE};
 `
 
 export const TitleLayer = styled.div`
   flex: 1;
   font-size: 18px;
+  background: ${GRAY_LIGHTEST};
+  padding: 4px 8px;
+  border-radius: 2px;
+  margin-right: 8px;
   -webkit-text-stroke-width: ${({ strokeWidth }: TextFormat) => strokeWidth}px;
   -webkit-text-stroke-color: ${({ stroke }: TextFormat) => stroke};
   color: ${({ fill }: TextFormat) => fill};
@@ -183,9 +189,9 @@ export const DeleteLayer = styled.div`
   cursor: pointer;
   margin-right: 8px;
   text-align: center;
+  padding: 7px;
   transition: all 0.2s;
   border-radius: 2px;
-  padding: 1px 7px;
   &:hover {
     background: ${RED};
     color: ${WHITE};
@@ -197,6 +203,7 @@ export const EditLayer = styled.div`
   border: 1px solid ${GRAY_LIGHT};
   border-radius: 2px;
   text-align: center;
+  padding: 7px;
   cursor: pointer;
   color: ${GRAY_DARK};
   font-family: ${AVENIR_NEXT};
@@ -206,4 +213,19 @@ export const EditLayer = styled.div`
     background: ${GRAY_DARK};
     color: ${WHITE};
   }
+`
+
+export const EmptyElements = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+  text-align: center;
+  padding: 16px;
+`
+
+export const DragIcon = styled.img`
+  max-width: 8px;
+  margin-right: 8px;
 `
