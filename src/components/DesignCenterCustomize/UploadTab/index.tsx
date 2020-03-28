@@ -13,6 +13,8 @@ import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import withError from '../../WithError'
 import { compose, graphql } from 'react-apollo'
+import dragDropIcon from '../../../assets/dragdrop.svg'
+import backIcon from '../../../assets/leftarrow.svg'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import { userfilesQuery, deleteFileMutation } from './data'
 import Dragger from '../../DraggerWithLoading'
@@ -33,10 +35,25 @@ import {
   EmptyContainer,
   LoginMessage,
   LockContainer,
-  CustomButton
+  CustomButton,
+  AddTextButton,
+  LayersText,
+  ImageLayers,
+  Layer,
+  ImageLeft,
+  ImageClip,
+  DeleteLayer,
+  EditLayer,
+  ArrowIcon,
+  LowerContainer,
+  EmptyElements,
+  Row,
+  DragIcon
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
+import orderBy from 'lodash/orderBy'
+import Draggable from '../../Draggable'
 
 const { confirm } = Modal
 
@@ -67,7 +84,14 @@ interface Props {
   selectedItem: number
   selectedElement: CanvasElement
   activeEl: PositionSize
-  onPositionChange: (data: PositionSize) => void
+  elements: {
+    [id: string]: CanvasElement
+  }
+  hoverBlurLayer: (id: string, hover: boolean) => void
+  moveLayer: (id: string, index: number) => void
+  onDeleteLayer: (id: string) => void
+  onSelectEl: (id: string, typeEl?: string) => void
+  onPositionChange: (data: PositionSize, type: string) => void
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
@@ -78,9 +102,14 @@ interface Props {
 
 interface State {
   file: any
+  addImage: boolean
 }
 
 class UploadTab extends React.PureComponent<Props, State> {
+  state = {
+    file: {},
+    addImage: false
+  }
   componentWillReceiveProps(nextProps: Props) {
     const { uploadingFile: oldUploadingFile, data } = this.props
     const { uploadingFile } = nextProps
@@ -95,10 +124,12 @@ class UploadTab extends React.PureComponent<Props, State> {
       isUserAuthenticated,
       selectedItem,
       activeEl,
+      elements = {},
       onPositionChange,
       formatMessage,
       selectedElement
     } = this.props
+    const { addImage } = this.state
     if (!isUserAuthenticated) {
       return (
         <Container>
@@ -135,40 +166,140 @@ class UploadTab extends React.PureComponent<Props, State> {
         onSelectImage={this.beforeUpload}
       />
     )
+    const layersArray = Object.keys(elements).map((id: string) => elements[id])
+    const arrayElements = orderBy(layersArray, ['index'], ['desc'])
     return (
       <Container>
-        <Header>
-          <Title>
-            <FormattedMessage {...messages.title} />
-          </Title>
-          {selectedElement && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
-        </Header>
+        {(selectedElement || addImage) && (
+          <Header>
+            <Row onClick={this.goBackToLayer}>
+              <ArrowIcon src={backIcon} />
+              <Title>
+                <FormattedMessage {...messages.backToLayers} />
+              </Title>
+            </Row>
+            {selectedElement && (
+              <LockContainer onClick={this.handleOnLockElement}>
+                <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
+              </LockContainer>
+            )}
+          </Header>
+        )}
         {selectedElement ? (
           <PositionResize {...{ activeEl }} handleChange={onPositionChange} />
         ) : (
-          <>
-            <ImageList
-              onClickImage={this.handleOnAddImage}
-              images={imagesData}
-              onClickDelete={this.handleOnDelete}
-              currentSelected={selectedItem}
-              {...{ formatMessage }}
-            />
-            <DraggerBottom>{dragger}</DraggerBottom>
-          </>
+          <LowerContainer>
+            {addImage ? (
+              <>
+                <ImageList
+                  onClickImage={this.handleOnAddImage}
+                  images={imagesData}
+                  onClickDelete={this.handleOnDelete}
+                  currentSelected={selectedItem}
+                  {...{ formatMessage }}
+                />
+                <DraggerBottom>{dragger}</DraggerBottom>
+                <Recommendation color={RED}>
+                  <FormattedMessage {...messages.recommendationTitle} />
+                </Recommendation>
+                <Recommendation>
+                  <FormattedMessage {...messages.recommendationMessage} />
+                </Recommendation>
+              </>
+            ) : (
+              <>
+                <AddTextButton onClick={this.addImage}>
+                  {formatMessage(messages.uploadFile)}
+                </AddTextButton>
+                <LayersText>{formatMessage(messages.uploadLayers)}</LayersText>
+                <ImageLayers>
+                  {arrayElements.length ? (
+                    arrayElements.map(({ id, src }, index: number) => (
+                      <Draggable
+                        {...{ id, index }}
+                        index={id}
+                        key={index}
+                        section="imageLayers"
+                        onDropRow={this.handleMoveLayer}
+                      >
+                        <Layer
+                          {...{ id }}
+                          onMouseEnter={this.hoverLayer}
+                          onMouseLeave={this.blurLayer}
+                        >
+                          <DragIcon src={dragDropIcon} />
+                          <ImageLeft>
+                            <ImageClip {...{ src }} />
+                          </ImageLeft>
+                          <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                            {formatMessage(messages.delete)}
+                          </DeleteLayer>
+                          <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                            {formatMessage(messages.edit)}
+                          </EditLayer>
+                        </Layer>
+                      </Draggable>
+                    ))
+                  ) : (
+                    <EmptyElements>
+                      {formatMessage(messages.empty)}
+                    </EmptyElements>
+                  )}
+                </ImageLayers>
+              </>
+            )}
+          </LowerContainer>
         )}
-        <Recommendation color={RED}>
-          <FormattedMessage {...messages.recommendationTitle} />
-        </Recommendation>
-        <Recommendation>
-          <FormattedMessage {...messages.recommendationMessage} />
-        </Recommendation>
       </Container>
     )
+  }
+
+  hoverLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, true)
+  }
+
+  blurLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, false)
+  }
+
+  handleMoveLayer = (dragId: string, dropId: string) => {
+    const { elements, moveLayer } = this.props
+    const { index } = elements[dropId]
+    moveLayer(dragId, index)
+  }
+
+  onSelectLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onSelectEl } = this.props
+    onSelectEl(id, 'image')
+  }
+
+  onDeleteLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onDeleteLayer } = this.props
+    onDeleteLayer(id)
+  }
+
+  addImage = () => {
+    this.setState({ addImage: true })
+  }
+
+  goBackToLayer = () => {
+    const { onSelectEl } = this.props
+    this.setState({ addImage: false })
+    onSelectEl('', 'image')
   }
 
   handleOnLogin = () => {

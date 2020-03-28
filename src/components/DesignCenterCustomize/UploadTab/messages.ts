@@ -43,5 +43,29 @@ export default defineMessages({
   login: {
     id: 'components.UploadTab.login',
     defaultMessage: `Log in / Sign up`
+  },
+  uploadFile: {
+    id: 'components.UploadTab.uploadFile',
+    defaultMessage: `+ UPLOAD FILE`
+  },
+  uploadLayers: {
+    id: 'components.UploadTab.uploadLayers',
+    defaultMessage: `Upload Layers`
+  },
+  edit: {
+    id: 'components.UploadTab.edit',
+    defaultMessage: `Edit`
+  },
+  delete: {
+    id: 'components.UploadTab.delete',
+    defaultMessage: `Delete`
+  },
+  empty: {
+    id: 'components.UploadTab.empty',
+    defaultMessage: `Here is where your upload layers will appear. Click the button above to add a layer.`
+  },
+  backToLayers: {
+    id: 'components.UploadTab.backToLayers',
+    defaultMessage: `Back to layers`
   }
 })

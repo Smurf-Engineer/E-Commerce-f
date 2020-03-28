@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import InputNumber from 'antd/lib/input-number'
 import Icon from 'antd/lib/icon'
-import { GRAY_DARK, RED, GRAY } from '../../../theme/colors'
+import { GRAY_DARK, RED, GRAY, GRAY_LIGHTEST } from '../../../theme/colors'
 
 interface IconProps {
   invert?: boolean
@@ -14,6 +14,7 @@ interface IconProps {
 interface DivProps {
   maxWidth?: boolean
   alignStart?: boolean
+  noMargin?: boolean
 }
 
 export const Container = styled.div`
@@ -32,23 +33,29 @@ export const Title = styled.div`
 export const NumberInput = styled(InputNumber)`
   width: 100%;
   margin-top: 4px;
+  .ant-input-number-handler-wrap {
+    opacity: 1;
+  }
 `
 
 export const InputContainer = styled.div`
   margin-top: 12px;
   display: flex;
   align-items: center;
-  justify-content: ${({ alignStart }: DivProps) =>
-    alignStart ? 'flex-start' : 'space-between'};
+  justify-content: flex-start;
 `
 
 export const InputBlock = styled.div`
   display: flex;
   flex-flow: column;
+  margin-right: ${({ noMargin }: DivProps) => (noMargin ? '0' : '20px')};
   justify-content: flex-start;
   align-items: flex-start;
-  max-width: ${({ maxWidth }: DivProps) => (maxWidth ? '94px' : '74px')};
+  max-width: 130px;
   width: 100%;
+  &:last-child {
+    margin-right: 0px;
+  }
 `
 
 export const Subtitle = styled.div`
@@ -67,8 +74,22 @@ export const SmallIcon = styled(Icon)`
 `
 
 export const LockIcon = styled(Icon)`
-  margin: 16px 4px 0;
+  margin: 16px 5px 0;
   cursor: pointer;
   font-size: 12px;
   color: ${({ enabled }: IconProps) => (enabled ? RED : GRAY)};
+`
+
+export const MirrorButton = styled.img`
+  max-width: 38px;
+  height: 39px;
+  margin-top: 3px;
+  padding: 8px;
+  border: 1px solid ${GRAY};
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background: ${GRAY_LIGHTEST};
+  }
 `

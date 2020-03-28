@@ -12,13 +12,18 @@ import {
   Subtitle,
   Title,
   SmallIcon,
-  LockIcon
+  LockIcon,
+  MirrorButton
 } from './styledComponents'
 import { PositionSize } from '../../../types/common'
+import mirrorButton from '../../../assets/mirrorbutton.svg'
+import { SCALE_ACTION, ROTATE_ACTION, DRAG_ACTION } from '../Render3D/config'
+
+const DECIMAL_REGEX = /\D/g
 
 interface Props {
   activeEl: PositionSize
-  handleChange: (data: PositionSize) => void
+  handleChange: (data: PositionSize, type: string) => void
 }
 
 interface State {
@@ -27,40 +32,42 @@ interface State {
 
 export class PositionResize extends React.PureComponent<Props, State> {
   state = {
-    aspectLock: false
+    aspectLock: true
   }
 
-  changeValue = (name: string) => (value: number | undefined) => {
-    if (!isNaN(value)) {
-      const { handleChange, activeEl } = this.props
-      handleChange({ ...activeEl, [name]: value })
-    }
+  changeValue = (name: string, type: string) => (
+    value: number | undefined = 0
+  ) => {
+    const { handleChange, activeEl } = this.props
+    handleChange({ ...activeEl, [name]: value }, type)
   }
 
-  changeWidth = (value: number | undefined) => {
-    if (value) {
-      const { aspectLock } = this.state
-      const { handleChange, activeEl } = this.props
-      const { height: originalHeight, width: originalWidth } = activeEl
-      let height = originalHeight
-      if (aspectLock) {
-        height = value * (height / originalWidth)
-      }
-      handleChange({ ...activeEl, height, width: value })
+  changeWidth = (width: number | undefined = 1) => {
+    const { aspectLock } = this.state
+    const { handleChange, activeEl } = this.props
+    const { height: originalHeight, width: originalWidth } = activeEl
+    let height = originalHeight
+    if (aspectLock) {
+      height = width * (height / originalWidth)
     }
+    handleChange({ ...activeEl, height, width }, SCALE_ACTION)
   }
 
-  changeHeight = (value: number | undefined) => {
-    if (value) {
-      const { aspectLock } = this.state
-      const { handleChange, activeEl } = this.props
-      const { height: originalHeight, width: originalWidth } = activeEl
-      let width = originalWidth
-      if (aspectLock) {
-        width = value * (width / originalHeight)
-      }
-      handleChange({ ...activeEl, width, height: value })
+  changeHeight = (height: number | undefined = 1) => {
+    const { aspectLock } = this.state
+    const { handleChange, activeEl } = this.props
+    const { height: originalHeight, width: originalWidth } = activeEl
+    let width = originalWidth
+    if (aspectLock) {
+      width = height * (width / originalHeight)
     }
+    handleChange({ ...activeEl, width, height }, SCALE_ACTION)
+  }
+
+  horizontalMirror = () => {
+    const { activeEl, handleChange } = this.props
+    const { width } = activeEl
+    handleChange({ ...activeEl, width: width * -1 }, SCALE_ACTION)
   }
 
   changeLock = () => {
@@ -85,12 +92,12 @@ export class PositionResize extends React.PureComponent<Props, State> {
               <SmallIcon type="arrows-alt" />
             </Subtitle>
             <NumberInput
+              size="large"
               value={horizontal}
-              formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
-              step={1}
-              precision={1}
-              onChange={this.changeValue('horizontal')}
+              formatter={rawValue => `${Math.round(rawValue)} px`}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
+              precision={0}
+              onChange={this.changeValue('horizontal', DRAG_ACTION)}
             />
           </InputBlock>
           <InputBlock>
@@ -99,40 +106,48 @@ export class PositionResize extends React.PureComponent<Props, State> {
               <SmallIcon invert={true} type="arrows-alt" />
             </Subtitle>
             <NumberInput
+              size="large"
               value={vertical}
-              formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
-              step={1}
-              precision={1}
-              onChange={this.changeValue('vertical')}
+              formatter={rawValue => `${Math.round(rawValue)} px`}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
+              precision={0}
+              onChange={this.changeValue('vertical', DRAG_ACTION)}
             />
           </InputBlock>
-          <InputBlock maxWidth={true}>
+        </InputContainer>
+        <InputContainer>
+          <InputBlock>
             <Subtitle>
               <FormattedMessage {...messages.rotation} />
             </Subtitle>
             <NumberInput
+              size="large"
               value={rotation}
               min={0}
               max={360}
               formatter={rawValue => `${rawValue}º`}
               parser={value => value.replace('º', '')}
-              step={0.5}
-              precision={1}
-              onChange={this.changeValue('rotation')}
+              precision={0}
+              onChange={this.changeValue('rotation', ROTATE_ACTION)}
             />
           </InputBlock>
-        </InputContainer>
-        <InputContainer alignStart={true}>
           <InputBlock>
+            <Subtitle>
+              <FormattedMessage {...messages.mirror} />
+            </Subtitle>
+            <MirrorButton onClick={this.horizontalMirror} src={mirrorButton} />
+          </InputBlock>
+        </InputContainer>
+        <InputContainer>
+          <InputBlock noMargin={true}>
             <Subtitle>
               <FormattedMessage {...messages.width} />
             </Subtitle>
             <NumberInput
+              size="large"
               value={width}
-              formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
-              step={0.1}
+              formatter={rawValue => `${rawValue} cm`}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
               precision={1}
               onChange={this.changeWidth}
             />
@@ -142,15 +157,15 @@ export class PositionResize extends React.PureComponent<Props, State> {
             type={aspectLock ? 'lock' : 'unlock'}
             onClick={this.changeLock}
           />
-          <InputBlock>
+          <InputBlock noMargin={true}>
             <Subtitle>
               <FormattedMessage {...messages.height} />
             </Subtitle>
             <NumberInput
+              size="large"
               value={height}
-              formatter={rawValue => `${rawValue} px`}
-              parser={value => value.replace(' px', '')}
-              step={0.1}
+              formatter={rawValue => `${rawValue} cm`}
+              parser={value => value.replace(DECIMAL_REGEX, '')}
               precision={1}
               onChange={this.changeHeight}
             />

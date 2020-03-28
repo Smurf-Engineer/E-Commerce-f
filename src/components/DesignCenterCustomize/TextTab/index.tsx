@@ -7,10 +7,12 @@ import SwipeableViews from 'react-swipeable-views'
 import messages from './messages'
 import isEmpty from 'lodash/isEmpty'
 import OptionText from '../../OptionText'
+import Draggable from '../../Draggable'
 import Radio from 'antd/lib/radio'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
 import backIcon from '../../../assets/leftarrow.svg'
+import dragDropIcon from '../../../assets/dragdrop.svg'
 import TextEditor from '../TextEditor'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import {
@@ -29,9 +31,19 @@ import {
   Row,
   ArrowIcon,
   ButtonWrapper,
-  LockContainer
+  LockContainer,
+  AddTextButton,
+  LayersText,
+  Layers,
+  LayerBlock,
+  TitleLayer,
+  DeleteLayer,
+  EditLayer,
+  EmptyElements,
+  DragIcon
 } from './styledComponents'
-import { PositionResize } from '../PositionResize'
+import PositionResize from '../PositionResize'
+import orderBy from 'lodash/orderBy'
 
 const SELECT_FONT = 0
 const SELECT_FILL = 1
@@ -49,7 +61,11 @@ interface Props {
   fonts: SimpleFont[]
   colorsList: any
   activeEl: PositionSize
-  onPositionChange: (data: PositionSize) => void
+  hoverBlurLayer: (id: string, hover: boolean) => void
+  moveLayer: (id: string, index: number) => void
+  onDeleteLayer: (id: string) => void
+  onSelectEl: (id: string, typeEl?: string) => void
+  onPositionChange: (data: PositionSize, type: string) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
@@ -74,7 +90,12 @@ export class TextTab extends React.PureComponent<Props, State> {
     option: 0,
     page: 0
   }
-
+  componentDidUpdate({ selectedElement: oldElement }: Props) {
+    const { selectedElement } = this.props
+    if (selectedElement !== oldElement) {
+      this.setState({ option: 0, page: 0 })
+    }
+  }
   render() {
     const { page, option } = this.state
     const {
@@ -85,7 +106,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       selectedElement,
       activeEl,
       onPositionChange,
-      elements,
+      elements = {},
       fonts,
       colorsList
     } = this.props
@@ -94,23 +115,67 @@ export class TextTab extends React.PureComponent<Props, State> {
     const RadioButton = Radio.Button
     const RadioGroup = Radio.Group
     const element = elements[selectedElement]
-
+    const layersArray = Object.keys(elements).map((id: string) => elements[id])
+    const arrayElements = orderBy(layersArray, ['index'], ['desc'])
     return (
       <Container>
-        <Header>
-          <Row onClick={this.changePage(0, 0)}>
-            {!!page && <ArrowIcon src={backIcon} />}
-            <Title>
-              <FormattedMessage {...messages[headerTitle]} />
-            </Title>
-          </Row>
-          {!!selectedElement && !isEmpty(element) && !!textFormat && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={element.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
-        </Header>
-        <SwipeableViews disabled={true} index={page}>
+        {(!!page || selectedElement) && (
+          <Header>
+            <Row onClick={this.changePage(page === 2 ? 1 : 0, 0)}>
+              <ArrowIcon src={backIcon} />
+              <Title>
+                <FormattedMessage {...messages[headerTitle]} />
+              </Title>
+            </Row>
+            {selectedElement && !isEmpty(element) && !!textFormat && (
+              <LockContainer onClick={this.handleOnLockElement}>
+                <Icon type={element.lock ? 'lock' : 'unlock'} />
+              </LockContainer>
+            )}
+          </Header>
+        )}
+        <SwipeableViews
+          disabled={true}
+          index={selectedElement && !page ? 1 : page}
+        >
+          <div>
+            <AddTextButton onClick={this.changePage(1, 0)}>
+              {formatMessage(messages.addTextHeader)}
+            </AddTextButton>
+            <LayersText>{formatMessage(messages.textLayers)}</LayersText>
+            <Layers>
+              {arrayElements.length ? (
+                arrayElements.map(
+                  ({ id, textFormat: textFormatEl, text: textEl }, index) => (
+                    <Draggable
+                      {...{ id }}
+                      index={id}
+                      key={index}
+                      section="textLayers"
+                      onDropRow={this.handleMoveLayer}
+                    >
+                      <LayerBlock
+                        {...{ id }}
+                        onMouseEnter={this.hoverLayer}
+                        onMouseLeave={this.blurLayer}
+                      >
+                        <DragIcon src={dragDropIcon} />
+                        <TitleLayer {...textFormatEl}>{textEl}</TitleLayer>
+                        <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                          {formatMessage(messages.delete)}
+                        </DeleteLayer>
+                        <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                          {formatMessage(messages.edit)}
+                        </EditLayer>
+                      </LayerBlock>
+                    </Draggable>
+                  )
+                )
+              ) : (
+                <EmptyElements>{formatMessage(messages.empty)}</EmptyElements>
+              )}
+            </Layers>
+          </div>
           <div>
             <InputWrapper disabled={!text}>
               <Input
@@ -126,17 +191,17 @@ export class TextTab extends React.PureComponent<Props, State> {
               </ButtonWrapper>
             </InputWrapper>
             <OptionText
-              onClick={this.changePage(1, 0)}
+              onClick={this.changePage(2, 0)}
               title={formatMessage(messages.font)}
               option={!!textFormat && textFormat.fontFamily}
             />
             <OptionText
-              onClick={this.changePage(1, 1)}
+              onClick={this.changePage(2, 1)}
               title={formatMessage(messages.fill)}
               color={!!textFormat && textFormat.fill}
             />
             <OptionText
-              onClick={this.changePage(1, 2)}
+              onClick={this.changePage(2, 2)}
               title={formatMessage(messages.outline)}
               color={!!textFormat && textFormat.stroke}
               selected={!!textFormat.strokeWidth}
@@ -227,8 +292,9 @@ export class TextTab extends React.PureComponent<Props, State> {
   }
 
   getHeaderTitle = (option: number, page: number): string => {
-    if (page === 0) {
-      return 'title'
+    const { selectedElement } = this.props
+    if (page !== 2) {
+      return page || selectedElement ? 'backToLayers' : 'title'
     }
 
     switch (option) {
@@ -247,6 +313,44 @@ export class TextTab extends React.PureComponent<Props, State> {
       default:
         return 'title'
     }
+  }
+
+  handleMoveLayer = (dragId: string, dropId: string) => {
+    const { elements, moveLayer } = this.props
+    const { index } = elements[dropId]
+    moveLayer(dragId, index)
+  }
+
+  onSelectLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onSelectEl } = this.props
+    onSelectEl(id, 'text')
+  }
+
+  hoverLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, true)
+  }
+
+  blurLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, false)
+  }
+
+  onDeleteLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onDeleteLayer } = this.props
+    onDeleteLayer(id)
   }
 
   handleOnUpdateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -276,7 +380,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       newTextFormat.fontFamily = fontFamily
       onApplyText(text, newTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('fontFamily', fontFamily, true)
   }
@@ -294,7 +398,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       updatedTextFormat.fill = fill
       onApplyText(text, updatedTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('fill', fill, false)
   }
@@ -328,7 +432,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       updatedTextFormat.stroke = stroke
       onApplyText(text, updatedTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('stroke', stroke, false)
   }
@@ -349,7 +453,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       updatedTextFormat.textAlign = alignment
       onApplyText(text, updatedTextFormat)
     } else {
-      this.setState({ page: 0 })
+      this.setState({ page: 1 })
     }
     onSelectTextFormat('textAlign', alignment, false)
   }
@@ -368,7 +472,7 @@ export class TextTab extends React.PureComponent<Props, State> {
         updatedTextFormat.charSpacing = spacing * 10
         onApplyText(text, updatedTextFormat)
       } else {
-        this.setState({ page: 0 })
+        this.setState({ page: 1 })
       }
       onSelectTextFormat('charSpacing', spacing * 10, false)
     }
@@ -388,7 +492,7 @@ export class TextTab extends React.PureComponent<Props, State> {
         updatedTextFormat.fontSize = size
         onApplyText(text, updatedTextFormat)
       } else {
-        this.setState({ page: 0 })
+        this.setState({ page: 1 })
       }
       onSelectTextFormat('fontSize', size, false)
     }
@@ -408,7 +512,7 @@ export class TextTab extends React.PureComponent<Props, State> {
         updatedTextFormat.lineHeight = spacing
         onApplyText(text, updatedTextFormat)
       } else {
-        this.setState({ page: 0 })
+        this.setState({ page: 1 })
       }
       onSelectTextFormat('lineHeight', spacing, false)
     }
@@ -420,8 +524,13 @@ export class TextTab extends React.PureComponent<Props, State> {
     this.forceUpdate()
   }
 
-  changePage = (page: number, option: number) => () =>
+  changePage = (page: number, option: number) => () => {
+    const { selectedElement, onSelectEl } = this.props
+    if (!page && selectedElement) {
+      onSelectEl('', 'text')
+    }
     this.setState({ page, option })
+  }
 }
 
 export default TextTab
