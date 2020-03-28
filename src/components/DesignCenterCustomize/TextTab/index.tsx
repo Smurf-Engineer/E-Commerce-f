@@ -270,7 +270,7 @@ export class TextTab extends React.PureComponent<Props, State> {
                 />
               }
             />
-            {selectedElement && (
+            {!!selectedElement && (
               <PositionResize
                 {...{ activeEl }}
                 handleChange={onPositionChange}
