@@ -13,6 +13,7 @@ import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import withError from '../../WithError'
 import { compose, graphql } from 'react-apollo'
+import dragDropIcon from '../../../assets/dragdrop.svg'
 import backIcon from '../../../assets/leftarrow.svg'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import { userfilesQuery, deleteFileMutation } from './data'
@@ -46,10 +47,13 @@ import {
   ArrowIcon,
   LowerContainer,
   EmptyElements,
-  Row
+  Row,
+  DragIcon
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
+import orderBy from 'lodash/orderBy'
+import Draggable from '../../Draggable'
 
 const { confirm } = Modal
 
@@ -83,9 +87,11 @@ interface Props {
   elements: {
     [id: string]: CanvasElement
   }
+  hoverBlurLayer: (id: string, hover: boolean) => void
+  moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
-  onPositionChange: (data: PositionSize) => void
+  onPositionChange: (data: PositionSize, type: string) => void
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
@@ -160,7 +166,8 @@ class UploadTab extends React.PureComponent<Props, State> {
         onSelectImage={this.beforeUpload}
       />
     )
-    const arrayElements = Object.keys(elements)
+    const layersArray = Object.keys(elements).map((id: string) => elements[id])
+    const arrayElements = orderBy(layersArray, ['index'], ['desc'])
     return (
       <Container>
         {(selectedElement || addImage) && (
@@ -207,18 +214,31 @@ class UploadTab extends React.PureComponent<Props, State> {
                 <LayersText>{formatMessage(messages.uploadLayers)}</LayersText>
                 <ImageLayers>
                   {arrayElements.length ? (
-                    arrayElements.map((id: string, index: number) => (
-                      <Layer key={index}>
-                        <ImageLeft>
-                          <ImageClip src={elements[id].src} />
-                        </ImageLeft>
-                        <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
-                          {formatMessage(messages.delete)}
-                        </DeleteLayer>
-                        <EditLayer {...{ id }} onClick={this.onSelectLayer}>
-                          {formatMessage(messages.edit)}
-                        </EditLayer>
-                      </Layer>
+                    arrayElements.map(({ id, src }, index: number) => (
+                      <Draggable
+                        {...{ id, index }}
+                        index={id}
+                        key={index}
+                        section="imageLayers"
+                        onDropRow={this.handleMoveLayer}
+                      >
+                        <Layer
+                          {...{ id }}
+                          onMouseEnter={this.hoverLayer}
+                          onMouseLeave={this.blurLayer}
+                        >
+                          <DragIcon src={dragDropIcon} />
+                          <ImageLeft>
+                            <ImageClip {...{ src }} />
+                          </ImageLeft>
+                          <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                            {formatMessage(messages.delete)}
+                          </DeleteLayer>
+                          <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                            {formatMessage(messages.edit)}
+                          </EditLayer>
+                        </Layer>
+                      </Draggable>
                     ))
                   ) : (
                     <EmptyElements>
@@ -232,6 +252,28 @@ class UploadTab extends React.PureComponent<Props, State> {
         )}
       </Container>
     )
+  }
+
+  hoverLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, true)
+  }
+
+  blurLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, false)
+  }
+
+  handleMoveLayer = (dragId: string, dropId: string) => {
+    const { elements, moveLayer } = this.props
+    const { index } = elements[dropId]
+    moveLayer(dragId, index)
   }
 
   onSelectLayer = (event: React.MouseEvent<EventTarget>) => {

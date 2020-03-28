@@ -343,6 +343,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       </LoadingContainer>
     )
     const activeEl = this.getActiveElement()
+    const layers = this.getLayers()
     return (
       <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
@@ -367,7 +368,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onUpdateText,
               formatMessage,
               productName,
-              canvas,
+              layers,
               selectedElement,
               textFormat,
               artFormat,
@@ -404,6 +405,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onOpenColorChart,
               tutorialPlaylist
             }}
+            hoverBlurLayer={this.hoverBlurLayer}
+            moveLayer={this.moveLayer}
             onDeleteLayer={this.onDeleteLayer}
             onSelectEl={this.setSelectedLayer}
             onPositionChange={this.handleApplyPosition}
@@ -545,17 +548,43 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const { selectedElement } = this.props
     let activeEl = {}
     if (selectedElement && this.render3D) {
-      const active = this.render3D.getElementById(selectedElement)
-      const { scaleX, scaleY, top, left, angle, width, height } = active || {}
+      const active = this.render3D.getElementById(selectedElement, true)
+      const { top = 0, left = 0, angle = 0, width = 1, height = 1 } = active
       activeEl = {
-        height: height * scaleY,
-        width: width * scaleX,
+        height,
+        width,
         horizontal: left,
         vertical: top,
         rotation: angle
       }
     }
     return activeEl
+  }
+
+  hoverBlurLayer = (id: string, hover: boolean) => {
+    if (this.render3D) {
+      this.render3D.hoverBlur(id, hover)
+      this.forceUpdate()
+    }
+  }
+
+  moveLayer = (id: string, index: number) => {
+    if (this.render3D) {
+      this.render3D.changeLayerIndex(id, index)
+      this.forceUpdate()
+    }
+  }
+
+  getLayers = () => {
+    const { canvas } = this.props
+    const layers = this.render3D
+      ? this.render3D.getLayersIndexed(canvas)
+      : {
+          image: {},
+          path: {},
+          text: {}
+        }
+    return layers
   }
 
   handleOnSave = () => {
@@ -631,10 +660,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     }
   }
 
-  handleApplyPosition = (data: PositionSize) => {
+  handleApplyPosition = (data: PositionSize, type: string) => {
     const { selectedElement } = this.props
     if (selectedElement && this.render3D) {
-      this.render3D.applyPosition(data)
+      this.render3D.applyPosition(data, type)
       this.forceUpdate()
     }
   }
