@@ -660,10 +660,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     }
   }
 
-  handleApplyPosition = (data: PositionSize) => {
+  handleApplyPosition = (data: PositionSize, type: string) => {
     const { selectedElement } = this.props
     if (selectedElement && this.render3D) {
-      this.render3D.applyPosition(data)
+      this.render3D.applyPosition(data, type)
       this.forceUpdate()
     }
   }

@@ -17,12 +17,13 @@ import {
 } from './styledComponents'
 import { PositionSize } from '../../../types/common'
 import mirrorButton from '../../../assets/mirrorbutton.svg'
+import { SCALE_ACTION, ROTATE_ACTION, DRAG_ACTION } from '../Render3D/config'
 
 const DECIMAL_REGEX = /\D/g
 
 interface Props {
   activeEl: PositionSize
-  handleChange: (data: PositionSize) => void
+  handleChange: (data: PositionSize, type: string) => void
 }
 
 interface State {
@@ -34,9 +35,11 @@ export class PositionResize extends React.PureComponent<Props, State> {
     aspectLock: true
   }
 
-  changeValue = (value: number | undefined = 0, name: string) => {
+  changeValue = (name: string, type: string) => (
+    value: number | undefined = 0
+  ) => {
     const { handleChange, activeEl } = this.props
-    handleChange({ ...activeEl, [name]: value })
+    handleChange({ ...activeEl, [name]: value }, type)
   }
 
   changeWidth = (width: number | undefined = 1) => {
@@ -47,7 +50,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
     if (aspectLock) {
       height = width * (height / originalWidth)
     }
-    handleChange({ ...activeEl, height, width })
+    handleChange({ ...activeEl, height, width }, SCALE_ACTION)
   }
 
   changeHeight = (height: number | undefined = 1) => {
@@ -58,13 +61,13 @@ export class PositionResize extends React.PureComponent<Props, State> {
     if (aspectLock) {
       width = height * (width / originalHeight)
     }
-    handleChange({ ...activeEl, width, height })
+    handleChange({ ...activeEl, width, height }, SCALE_ACTION)
   }
 
   horizontalMirror = () => {
     const { activeEl, handleChange } = this.props
     const { width } = activeEl
-    handleChange({ ...activeEl, width: width * -1 })
+    handleChange({ ...activeEl, width: width * -1 }, SCALE_ACTION)
   }
 
   changeLock = () => {
@@ -94,7 +97,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               formatter={rawValue => `${Math.round(rawValue)} px`}
               parser={value => value.replace(DECIMAL_REGEX, '')}
               precision={0}
-              onChange={val => this.changeValue(val, 'horizontal')}
+              onChange={this.changeValue('horizontal', DRAG_ACTION)}
             />
           </InputBlock>
           <InputBlock>
@@ -108,7 +111,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               formatter={rawValue => `${Math.round(rawValue)} px`}
               parser={value => value.replace(DECIMAL_REGEX, '')}
               precision={0}
-              onChange={val => this.changeValue(val, 'vertical')}
+              onChange={this.changeValue('vertical', DRAG_ACTION)}
             />
           </InputBlock>
         </InputContainer>
@@ -125,7 +128,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               formatter={rawValue => `${rawValue}º`}
               parser={value => value.replace('º', '')}
               precision={0}
-              onChange={val => this.changeValue(val, 'rotation')}
+              onChange={this.changeValue('rotation', ROTATE_ACTION)}
             />
           </InputBlock>
           <InputBlock>

@@ -77,7 +77,7 @@ interface Props {
   moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
-  onPositionChange: (data: PositionSize) => void
+  onPositionChange: (data: PositionSize, type: string) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void

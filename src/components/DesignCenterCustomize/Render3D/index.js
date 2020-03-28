@@ -1158,12 +1158,43 @@ class Render3D extends PureComponent {
     }
   }
 
+  rotateByAngle = (newAngle, idElement) => {
+    const element = this.getElementById(idElement)
+    const constraintPosition = element.translateToOriginPoint(
+      element.getCenterPoint(),
+      CENTER_ORIGIN,
+      CENTER_ORIGIN
+    )
+    element.set({
+      angle: newAngle
+    })
+    element.setPositionByOrigin(
+      constraintPosition,
+      CENTER_ORIGIN,
+      CENTER_ORIGIN
+    )
+    element.setCoords()
+  }
+
   rotateCanvasElement = (canvasElement, applyNewRotation = false) => {
     const {
-      state: { id, oldRotation, newRotation, currentTransform }
+      state: {
+        id,
+        fromTool,
+        oldAngle,
+        angle,
+        oldRotation,
+        newRotation,
+        currentTransform
+      }
     } = canvasElement
-    const { x, y } = applyNewRotation ? newRotation : oldRotation
-    this.rotateObject(x, y, currentTransform, id)
+    if (fromTool) {
+      const newAngle = applyNewRotation ? angle : oldAngle
+      this.rotateByAngle(newAngle, id)
+    } else {
+      const { x, y } = applyNewRotation ? newRotation : oldRotation
+      this.rotateObject(x, y, currentTransform, id)
+    }
   }
 
   styleCanvasElement = (canvasElement, newStyle = false) => {
@@ -1190,14 +1221,14 @@ class Render3D extends PureComponent {
     if (element) {
       let scaleX = oldScaleX
       let scaleY = oldScaleY
-      if (newScale) {
+      if (newScale || newScaleX < 0) {
         scaleX = newScaleX
         scaleY = newScaleY
       }
       element
         .set({
-          scaleX: Math.max(0, scaleX),
-          scaleY: Math.max(0, scaleY)
+          scaleX,
+          scaleY
         })
         .setCoords()
       this.canvasTexture.renderAll()
@@ -1579,9 +1610,25 @@ class Render3D extends PureComponent {
     this.canvasTexture.renderAll()
   }
 
-  applyPosition = data => {
+  applyPosition = (data, type) => {
     const activeEl = this.canvasTexture.getActiveObject()
     if (activeEl) {
+      const {
+        left: oldLeft,
+        top: oldTop,
+        scaleX: oldScaleX,
+        scaleY: oldScaleY,
+        flipX: oldFlipX,
+        angle: oldAngle
+      } = activeEl
+      const oldValues = {
+        oldAngle,
+        oldLeft,
+        oldTop,
+        oldScaleX,
+        oldScaleY,
+        oldFlipX
+      }
       const { selectedElement, canvas } = this.props
       const selectedGraphicElement =
         canvas.image[selectedElement] ||
@@ -1631,7 +1678,7 @@ class Render3D extends PureComponent {
       }
       activeEl.setCoords()
       this.canvasTexture.renderAll()
-      this.forceUpdate()
+      this.storeAction(type, oldValues)
     }
   }
 
@@ -2106,6 +2153,67 @@ class Render3D extends PureComponent {
 
   setLayerElement = el => {
     this.canvasTexture.bringToFront(el)
+  }
+
+  storeAction = (action, oldValues) => {
+    const activeEl = this.canvasTexture.getActiveObject()
+    const { id } = activeEl
+    switch (action) {
+      case SCALE_ACTION:
+        const {
+          scaleX: newScaleX,
+          flipX,
+          scaleY,
+          type,
+          isClipArtGroup
+        } = activeEl
+        const { oldScaleX: scaleXOld, oldScaleY, oldFlipX } = oldValues
+        const canvasType =
+          type === CanvasElements.Group && !isClipArtGroup
+            ? CanvasElements.Image
+            : type
+        const oldScaleX = oldFlipX ? scaleXOld * -1 : scaleXOld
+        const scaleX = flipX ? newScaleX * -1 : newScaleX
+        if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
+          const { onCanvasElementResized } = this.props
+          onCanvasElementResized({
+            id,
+            elementType: canvasType,
+            oldScaleX,
+            oldScaleY,
+            scaleX,
+            scaleY
+          })
+        }
+        break
+      case DRAG_ACTION:
+        const { left, top } = activeEl
+        const { oldLeft, oldTop } = oldValues
+        if (left !== oldLeft || top !== oldTop) {
+          const { onCanvasElementDragged } = this.props
+          onCanvasElementDragged({
+            id,
+            oldLeft,
+            oldTop,
+            left,
+            top
+          })
+        }
+        break
+      case ROTATE_ACTION:
+        const { oldAngle } = oldValues
+        const { angle } = activeEl
+        const { onCanvasElementRotated } = this.props
+        if (oldAngle != angle) {
+          onCanvasElementRotated({
+            id,
+            fromTool: true,
+            oldAngle,
+            angle
+          })
+        }
+        break
+    }
   }
 
   onMouseUp = evt => {

@@ -73,7 +73,7 @@ interface Props {
   moveLayer: (id: string, index: number) => void
   onDeleteLayer: (id: string) => void
   onSelectEl: (id: string, typeEl?: string) => void
-  onPositionChange: (data: PositionSize) => void
+  onPositionChange: (data: PositionSize, type: string) => void
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (
     url: string,
