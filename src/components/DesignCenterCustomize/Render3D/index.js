@@ -1589,7 +1589,6 @@ class Render3D extends PureComponent {
         })
         .setCoords()
       this.canvasTexture.renderAll()
-      this.forceUpdate()
     }
   }
 

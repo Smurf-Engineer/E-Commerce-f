@@ -30,8 +30,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
     aspectLock: false
   }
 
-  changeValue = (value: number | undefined, name: string) => {
-    console.log('value:', value)
+  changeValue = (name: string) => (value: number | undefined) => {
     if (!isNaN(value)) {
       const { handleChange, activeEl } = this.props
       handleChange({ ...activeEl, [name]: value })
@@ -91,7 +90,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               parser={value => value.replace(' px', '')}
               step={1}
               precision={1}
-              onChange={val => this.changeValue(val, 'horizontal')}
+              onChange={this.changeValue('horizontal')}
             />
           </InputBlock>
           <InputBlock>
@@ -105,7 +104,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               parser={value => value.replace(' px', '')}
               step={1}
               precision={1}
-              onChange={val => this.changeValue(val, 'vertical')}
+              onChange={this.changeValue('vertical')}
             />
           </InputBlock>
           <InputBlock maxWidth={true}>
@@ -120,7 +119,7 @@ export class PositionResize extends React.PureComponent<Props, State> {
               parser={value => value.replace('º', '')}
               step={0.5}
               precision={1}
-              onChange={val => this.changeValue(val, 'rotation')}
+              onChange={this.changeValue('rotation')}
             />
           </InputBlock>
         </InputContainer>
