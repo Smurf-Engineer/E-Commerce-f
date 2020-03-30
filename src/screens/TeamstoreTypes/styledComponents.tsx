@@ -34,8 +34,8 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   background: ${WHITE};
-  height: 648px;
-  width: 360px;
+  height: 608px;
+  width: 380px;
   transition: all 0.25s;
   cursor: pointer;
   &:hover {
@@ -76,7 +76,8 @@ export const TeamStoreCardsContainer = styled.div`
 `
 
 export const List = styled.ul`
-  margin-right: 28px;
+  padding: 0;
+  margin: 0 28px;
   list-style: none;
   text-align: center;
 `
