@@ -14,10 +14,11 @@ import {
   Icon,
   SelectTeamStoreButton,
   TeamBanner,
-  TeamImage
+  TeamImage,
+  PaymentMethodsText
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
-import creditCard from '../../assets/Stripe.png'
+import creditCard from '../../assets/creditcard_color.png'
 import sepa from '../../assets/sepa.png'
 import onDemandImage from '../../assets/OnDemand-Guys.jpg'
 import ScheduledImage from '../../assets/Scheduled-Team.jpg'
@@ -35,19 +36,17 @@ interface Props {
 }
 
 const onDemandMessages = [
-  'ordersCanBePlaced',
-  'ordersShips',
-  'individualCheckOut',
-  'orderDate',
-  'acceptedPayment'
+  'idealForSmall',
+  'fastTurnaround',
+  'saveWithFixed',
+  'onDemandProduction'
 ]
 
 const fixedDateMessages = [
-  'setCutOff',
-  'extendedOrdering',
-  'quantityDiscounts',
-  'bulk',
-  'acceptedPayment'
+  'idealForLarger',
+  'saveWithGroup',
+  'turnaroundDays',
+  'bulk'
 ]
 
 class TeamstoreTypes extends React.Component<Props, {}> {
@@ -86,6 +85,9 @@ class TeamstoreTypes extends React.Component<Props, {}> {
                   />
                 ))}
               </List>
+              <PaymentMethodsText>
+                {formatMessage(messages.acceptedPayment)}
+              </PaymentMethodsText>
               <PaymentIcons>
                 <Icon src={creditCard} />
                 <Icon src={paypal} />
@@ -112,6 +114,9 @@ class TeamstoreTypes extends React.Component<Props, {}> {
                   />
                 ))}
               </List>
+              <PaymentMethodsText>
+                {formatMessage(messages.acceptedPayment)}
+              </PaymentMethodsText>
               <PaymentIcons>
                 <Icon src={creditCard} />
               </PaymentIcons>

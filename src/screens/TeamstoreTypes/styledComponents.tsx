@@ -77,6 +77,8 @@ export const TeamStoreCardsContainer = styled.div`
 
 export const List = styled.ul`
   margin-right: 28px;
+  list-style: none;
+  text-align: center;
 `
 
 export const Item = styled.li`
@@ -113,7 +115,7 @@ export const SelectTeamStoreButton = styled(Button)`
 `
 
 export const TeamBanner = styled.img`
-  max-width: 150px;
+  max-width: 220px;
   width: 100%;
   margin-bottom: 4px;
 `
@@ -124,4 +126,9 @@ export const TeamImage = styled.img`
   margin-bottom: 24px;
   height: 200px;
   object-position: 0 20%;
+`
+
+export const PaymentMethodsText = styled.div`
+  padding-inline-start: 30px;
+  margin-bottom: 10px;
 `
