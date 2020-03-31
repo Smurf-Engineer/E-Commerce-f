@@ -35,7 +35,7 @@ import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
 import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
-import Intercom from '../../intercom.js'
+import { initSlaask, closeSlaask } from '../../slaask'
 
 const { Content } = Layout
 
@@ -111,7 +111,6 @@ class MainLayout extends React.Component<Props, {}> {
   async componentDidMount() {
     const {
       openLoginAction,
-      disableAssist,
       history: {
         location: { search, pathname }
       },
@@ -136,18 +135,31 @@ class MainLayout extends React.Component<Props, {}> {
     const fonts: SimpleFont[] = []
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
+  }
+
+  componentDidUpdate() {
+    const { user, disableAssist } = this.props
     if (!disableAssist) {
-      Intercom(config.intercomKey)
-      if (user) {
-        this.setIntercomUser(user)
+      let id = sessionStorage.getItem('slaaskSupportId')
+      if (!id) {
+        const slaaskId = Math.floor(Math.random() * 1001).toString()
+        sessionStorage.setItem('slaaskSupportId', slaaskId)
+        id = slaaskId
       }
+      const { email, name, lastName, id: userId } = user || {}
+      const info = {
+        id,
+        email,
+        userId,
+        name,
+        lastName
+      }
+      initSlaask(info, true)
     }
   }
 
   componentWillUnmount() {
-    if (typeof window.Intercom === 'function') {
-      window.Intercom('shutdown')
-    }
+    closeSlaask()
   }
 
   onSearch = (value: string) => {
@@ -312,21 +324,9 @@ class MainLayout extends React.Component<Props, {}> {
     )
   }
 
-  setIntercomUser = (user: UserType) => {
-    if (typeof window.Intercom === 'function') {
-      const userData = {
-        user_id: user.id,
-        email: user.email,
-        name: `${user.name} ${user.lastName}`
-      }
-      window.Intercom('update', { app_id: config.intercomKey, ...userData })
-    }
-  }
-
   handleOnLogin = (user: UserType) => {
     const { saveUserSession } = this.props
     saveUserSession(user)
-    this.setIntercomUser(user)
   }
 
   closeResults = () => {
