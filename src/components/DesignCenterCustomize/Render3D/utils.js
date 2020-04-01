@@ -103,13 +103,13 @@ export const getClipArtCanvasElement = async el => {
 }
 
 export const getImageCanvas = el => {
-  const { id, scaleX, scaleY, width, height, src } = el
+  const { id, scaleX, scaleY, width, height, src: srcImage, fileUrl } = el
   const element = {
     id,
     scaleX,
     scaleY,
     imageSize: { width, height },
-    src
+    src: srcImage || fileUrl
   }
   return element
 }
