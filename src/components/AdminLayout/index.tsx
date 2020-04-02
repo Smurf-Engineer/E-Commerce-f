@@ -54,7 +54,7 @@ interface Props extends RouteComponentProps<any> {
   openKeys: string[]
   screen: string
   onLogout: () => void
-  restoreUserSession: () => void
+  restoreUserSession: (client: any) => void
   deleteUserSession: () => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
@@ -64,10 +64,10 @@ interface Props extends RouteComponentProps<any> {
 
 class AdminLayout extends React.Component<Props, {}> {
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSession } = this.props
-      restoreUserSession()
+      restoreUserSession(client)
     }
   }
 

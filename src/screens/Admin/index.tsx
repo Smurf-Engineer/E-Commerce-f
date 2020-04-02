@@ -66,8 +66,8 @@ interface Props extends RouteComponentProps<any> {
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
   setCurrentScreenAction: (screen: string) => void
   clearReducerAction: () => void
-  restoreUserSessionAction: () => void
-  saveUserSessionAction: (user: object) => void
+  restoreUserSessionAction: (client: any) => void
+  saveUserSessionAction: (user: object, client: any) => void
   deleteUserSessionAction: () => void
   requestClose: () => void
   loginWithEmail: (variables: {}) => void
@@ -89,12 +89,13 @@ export class Admin extends React.Component<Props, {}> {
   componentWillMount() {
     const {
       user,
+      client,
       setDefaultScreenAction,
       location: { pathname }
     } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
-      restoreUserSessionAction()
+      restoreUserSessionAction(client)
       setDefaultScreenAction(keys[pathname])
     }
   }
@@ -108,7 +109,8 @@ export class Admin extends React.Component<Props, {}> {
     deleteUserSessionAction()
   }
   login = async (user: any) => {
-    await saveUserSession(user)
+    const { client } = this.props
+    await saveUserSession(user, client)
   }
 
   getScreenComponent = (screen: string) => {
@@ -196,13 +198,14 @@ export class Admin extends React.Component<Props, {}> {
     )
   }
   handleLogin = (userData: any) => {
-    const { saveUserSessionAction, setLoadingAction } = this.props
-    saveUserSessionAction(userData)
+    const { saveUserSessionAction, setLoadingAction, client } = this.props
+    saveUserSessionAction(userData, client)
     setLoadingAction(false)
   }
   handleMailLogin = async (email: string, password: string) => {
     const {
       loginWithEmail,
+      client,
       intl: { formatMessage },
       saveUserSessionAction,
       setLoadingAction
@@ -227,7 +230,7 @@ export class Admin extends React.Component<Props, {}> {
             }),
             5
           )
-          saveUserSessionAction(userData)
+          saveUserSessionAction(userData, client)
         } else {
           message.error(formatMessage(messages.forbidden))
         }

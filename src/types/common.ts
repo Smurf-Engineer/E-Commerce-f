@@ -1482,6 +1482,16 @@ export type Color = {
   type?: string
 }
 
+export type RolePermission = {
+  page: string
+  edit: boolean
+  view: boolean
+}
+
+export type UserPermissions = {
+  [page: string]: RolePermission
+}
+
 export interface SelectedDesignType {
   design: DesignType
   visible: boolean

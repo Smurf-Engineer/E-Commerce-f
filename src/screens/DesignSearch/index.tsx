@@ -69,7 +69,7 @@ interface Props {
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
-  restoreUserSessionAction: () => void
+  restoreUserSessionAction: (client: any) => void
   formatMessage: (messageDescriptor: any) => string
   uploadProDesignAction: (file: any, code: string) => void
   resetDataAction: () => void
@@ -87,10 +87,10 @@ interface Props {
 
 export class DesignSearch extends React.Component<Props, {}> {
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
-      restoreUserSessionAction()
+      restoreUserSessionAction(client)
     }
   }
 
@@ -280,14 +280,11 @@ const DesignSearchEnhance = compose(
   injectIntl,
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
-  connect(
-    mapStateToProps,
-    {
-      ...designSearchActions,
-      uploadProDesignAction: uploadProDesign,
-      restoreUserSessionAction: restoreUserSession
-    }
-  ),
+  connect(mapStateToProps, {
+    ...designSearchActions,
+    uploadProDesignAction: uploadProDesign,
+    restoreUserSessionAction: restoreUserSession
+  }),
   getFonts,
   withApollo
 )(DesignSearch)

@@ -85,7 +85,7 @@ interface Props {
   setLoadingNote: (loading: boolean) => void
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
-  restoreUserSessionAction: () => void
+  restoreUserSessionAction: (client: any) => void
   formatMessage: (messageDescriptor: any) => string
   uploadProDesignAction: (file: any, code: string) => void
   resetDataAction: () => void
@@ -111,10 +111,10 @@ interface Props {
 export class DesignSearchAdmin extends React.Component<Props, {}> {
   debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
-      restoreUserSessionAction()
+      restoreUserSessionAction(client)
     }
   }
   componentDidMount() {
