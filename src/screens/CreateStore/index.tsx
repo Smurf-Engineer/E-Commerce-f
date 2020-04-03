@@ -124,6 +124,7 @@ interface Props extends RouteComponentProps<any> {
   user: UserType
   cutoffSettings: CutoffData
   datesEdited: boolean
+  datesEditedTemporal: boolean
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -356,7 +357,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       teamSizeId,
       onDemand,
       banner,
-      datesEdited
+      datesEditedTemporal
     } = this.props
     const { file } = this.state
     const validForm = this.validateForm(
@@ -411,7 +412,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         teamsizeId: teamSizeId,
         demandMode: this.isOnDemand(),
         banner: bannerResp,
-        datesEdited
+        datesEdited: datesEditedTemporal
       }
 
       if (storeShortId) {

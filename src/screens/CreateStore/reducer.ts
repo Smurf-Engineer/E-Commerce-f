@@ -52,7 +52,8 @@ export const initialState = fromJS({
   limit: 12,
   offset: 0,
   currentPage: 1,
-  datesEdited: false
+  datesEdited: false,
+  datesEditedTemporal: false
 })
 
 const createStoreReducer: Reducer<any> = (state = initialState, action) => {
@@ -75,13 +76,13 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         startDateMoment: action.dateMoment,
         endDate: '',
         endDateMoment: null,
-        datesEdited: action.datesEdited
+        datesEditedTemporal: action.datesEdited
       })
     case UPDATE_END_DATE_ACTION:
       return state.merge({
         endDate: action.date,
         endDateMoment: action.dateMoment,
-        datesEdited: action.datesEdited
+        datesEditedTemporal: action.datesEdited
       })
     case UPDATE_PRIVATE_ACTION:
       return state.set('privateStore', action.active)
@@ -174,7 +175,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         privateStore: privateStore,
         onDemand: onDemand,
         banner: banner,
-        datesEdited
+        datesEdited,
+        datesEditedTemporal: datesEdited
       })
     }
     case DELETE_BANNER_ON_EDIT:
