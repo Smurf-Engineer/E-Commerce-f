@@ -99,6 +99,11 @@ export const Icon = styled(icon)`
   margin-right: 8px;
 `
 
+export const NoteIcon = styled(icon)`
+  margin-right: 16px;
+  margin-left: 12px;
+`
+
 export const RenderLayout = styled.div``
 
 export const ThumbnailLabel = styled.div`
@@ -160,7 +165,6 @@ export const ProAssistTitle = styled.div`
   font-weight: bold;
   max-width: 246px;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 14px;
 `
 

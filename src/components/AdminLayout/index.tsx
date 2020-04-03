@@ -14,7 +14,7 @@ import { MAIN_TITLE } from '../../constants'
 import { InjectedIntl, FormattedMessage } from 'react-intl'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { UserType, Font, SimpleFont } from '../../types/common'
+import { UserType, Font, SimpleFont, UserPermissions } from '../../types/common'
 import { getTeamStoreStatus, getFonts } from './data'
 import * as adminLayoutActions from './api'
 import {
@@ -53,6 +53,7 @@ interface Props extends RouteComponentProps<any> {
   fonts: []
   openKeys: string[]
   screen: string
+  permissions: UserPermissions
   onLogout: () => void
   restoreUserSession: (client: any) => void
   deleteUserSession: () => void
@@ -141,23 +142,38 @@ class AdminLayout extends React.Component<Props, {}> {
   }
 
   render() {
-    const { children, fonts, intl, openKeys, screen, onLogout } = this.props
+    const {
+      children,
+      fonts,
+      intl,
+      openKeys,
+      screen,
+      onLogout,
+      permissions
+    } = this.props
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length ? (
         <SubMenu
           key={title}
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
         >
-          {submenus.map(label => (
-            <Menu.Item key={label} active={true}>
-              {<FormattedMessage {...messages[label]} />}
-            </Menu.Item>
-          ))}
+          {submenus.map(
+            label =>
+              permissions[label] &&
+              permissions[label].view && (
+                <Menu.Item key={label} active={true}>
+                  {<FormattedMessage {...messages[label]} />}
+                </Menu.Item>
+              )
+          )}
         </SubMenu>
       ) : (
-        <Menu.Item className="ant-menu-item-custom" key={title}>
-          <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-        </Menu.Item>
+        permissions[title] &&
+        permissions[title].view && (
+          <Menu.Item className="ant-menu-item-custom" key={title}>
+            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+          </Menu.Item>
+        )
       )
     )
 

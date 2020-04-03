@@ -26,6 +26,8 @@ import {
   InfoText
 } from './styledComponents'
 import messages from './messages'
+import { UserPermissions } from '../../types/common'
+import { DESIGN_LAB } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -36,6 +38,7 @@ interface Props {
   deliveryDays: number
   deliveryDaysChanges: boolean
   tutorialPlaylistChanged: boolean
+  permissions: UserPermissions
   formatMessage: (messageDescriptor: any) => string
   setDataAction: (data: any) => void
   setDeliveryDaysAction: (value: number) => void
@@ -90,11 +93,15 @@ class DesignLabAdmin extends React.Component<Props, {}> {
       loading,
       tutorialPlaylist,
       deliveryDays,
+      permissions,
       tutorialPlaylistChanged,
       deliveryDaysChanges,
       setDeliveryDaysAction
     } = this.props
-
+    const access = permissions[DESIGN_LAB] || {}
+    if (!access.view) {
+      return null
+    }
     return loading ? (
       <SpinContainer>
         <Spin />
@@ -106,12 +113,13 @@ class DesignLabAdmin extends React.Component<Props, {}> {
           <InfoText>{formatMessage(messages.currentDeliveryDate)}</InfoText>
           <StyledInputNumber
             onChange={setDeliveryDaysAction}
+            disabled={!access.edit}
             value={deliveryDays}
           />
           <ButtonWrapper color={BLUE}>
             <StyledButton
               type="primary"
-              disabled={!deliveryDaysChanges}
+              disabled={!deliveryDaysChanges || !access.edit}
               onClick={this.saveDeliveryDays}
               loading={loading}
             >
@@ -124,12 +132,13 @@ class DesignLabAdmin extends React.Component<Props, {}> {
           <InfoText>{formatMessage(messages.tutorialPlaylist)}</InfoText>
           <StyledInput
             onChange={this.handleChangeText}
+            disabled={!access.edit}
             value={tutorialPlaylist}
           />
           <ButtonWrapper color={BLUE}>
             <StyledButton
               type="primary"
-              disabled={!tutorialPlaylistChanged}
+              disabled={!tutorialPlaylistChanged || !access.edit}
               onClick={this.savePlaylist}
               loading={loading}
             >
@@ -148,10 +157,7 @@ const DesignLabAdminEnhance = compose(
   withApollo,
   setDeliveryDaysMutation,
   setPlaylistMutation,
-  connect(
-    mapStateToProps,
-    { ...DesignLabActions }
-  )
+  connect(mapStateToProps, { ...DesignLabActions })
 )(DesignLabAdmin)
 
 export default DesignLabAdminEnhance

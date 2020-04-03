@@ -143,26 +143,38 @@ export class Admin extends React.Component<Props, {}> {
         </Content>
       )
     }
+    const { permissions = {} } = user
     return (
-      <AdminLayout {...{ history, intl, screen }} onLogout={this.onLogout}>
+      <AdminLayout
+        {...{ history, intl, screen, permissions }}
+        onLogout={this.onLogout}
+      >
         <Route
           exact={true}
           path="/admin"
-          render={() => <OrderHistoryAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <OrderHistoryAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           exact={true}
           path="/admin/discounts"
-          render={() => <DiscountsAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <DiscountsAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           exact={true}
           path="/admin/pro-assist"
-          render={() => <ProAssist {...{ history, formatMessage }} />}
+          render={() => (
+            <ProAssist {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path={['/admin/products', '/admin/product']}
-          render={() => <ProductCatalog {...{ history, formatMessage }} />}
+          render={() => (
+            <ProductCatalog {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/products-internal"
@@ -172,15 +184,19 @@ export class Admin extends React.Component<Props, {}> {
         />
         <Route
           path="/admin/design-lab"
-          render={() => <DesignLabAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <DesignLabAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/design-search"
-          render={() => <DesignSearchAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <DesignSearchAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/edit-navigation"
-          render={() => <EditNavigationAdmin {...{ history }} />}
+          render={() => <EditNavigationAdmin {...{ history, permissions }} />}
         />
         <Route
           path="/admin/users"

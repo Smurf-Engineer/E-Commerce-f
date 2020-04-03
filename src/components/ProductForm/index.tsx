@@ -60,6 +60,7 @@ interface Props {
   specDetail: string
   materialDetail: string
   dataExtra: DataExtra
+  canEdit: boolean
   uploadMediaFile: (event: any) => void
   addMedia: (value: ProductFile) => void
   removeMedia: (index: number) => void
@@ -144,6 +145,7 @@ export class ProductForm extends React.Component<Props, {}> {
       formatMessage,
       match,
       dataExtra,
+      canEdit,
       bannerMaterials,
       enableNewSportAction,
       setNewSport,
@@ -176,6 +178,9 @@ export class ProductForm extends React.Component<Props, {}> {
       setValue,
       setModelSize
     } = this.props
+    if (!canEdit) {
+      return null
+    }
     const productId = get(match, 'params.id', '')
     const categories = get(dataExtra, 'categories', [])
     const sports = get(dataExtra, 'sports', [])
