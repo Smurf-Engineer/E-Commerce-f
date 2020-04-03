@@ -35,7 +35,7 @@ export default defineMessages({
   },
   fixed: {
     id: 'components.TeamStoresList.fixed',
-    defaultMessage: 'Fixed Date'
+    defaultMessage: 'Batch Order'
   },
   display: {
     id: 'components.TeamStoresList.display',

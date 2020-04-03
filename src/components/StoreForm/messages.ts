@@ -43,7 +43,7 @@ export default defineMessages({
   },
   fixedMode: {
     id: 'components.StoreForm.fixedMode',
-    defaultMessage: 'FIXED DATE'
+    defaultMessage: 'BATCH ORDER'
   },
   gotIt: {
     id: 'components.StoreForm.gotIt',

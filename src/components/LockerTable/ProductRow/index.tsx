@@ -228,8 +228,5 @@ const DropTargetHOC = DropTarget(ItemTypes.ROW, rowTarget, connect => ({
   connectDropTarget: connect.dropTarget()
 }))
 
-const ProductRowEnhance = compose(
-  DragSourceHOC,
-  DropTargetHOC
-)(ProductRow)
+const ProductRowEnhance = compose(DragSourceHOC, DropTargetHOC)(ProductRow)
 export default ProductRowEnhance

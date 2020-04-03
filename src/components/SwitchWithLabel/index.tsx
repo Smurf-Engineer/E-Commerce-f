@@ -11,7 +11,8 @@ import {
   inputStyle,
   Error,
   SwitchInput,
-  SubLabel
+  SubLabel,
+  Question
 } from './styledComponents'
 
 interface Props {
@@ -27,8 +28,10 @@ interface Props {
   placeholder: string
   subLabel?: string
   disabled?: boolean
+  infoIcon?: boolean
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
+  handleOpenInfo?: () => void
 }
 const INPUT_MAX_LENGTH = 25
 const SwitchWithLabel = ({
@@ -45,7 +48,9 @@ const SwitchWithLabel = ({
   placeholder,
   subLabel,
   disabled = false,
-  updatePassCodeAction = () => {}
+  infoIcon = false,
+  updatePassCodeAction = () => {},
+  handleOpenInfo = () => {}
 }: Props) => {
   const handleUpdatePassCode = (evnt: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -57,9 +62,12 @@ const SwitchWithLabel = ({
   }
 
   return (
-    <Container {...{ width }}>
+    <Container {...{ width, infoIcon }}>
       <Row>
         <Label>{label}</Label>
+        {infoIcon && (
+          <Question onClick={handleOpenInfo} type="question-circle" />
+        )}
         <SwitchInput {...{ defaultChecked, onChange, checked, disabled }} />
       </Row>
       <Message>{message}</Message>

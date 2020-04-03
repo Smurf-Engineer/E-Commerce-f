@@ -51,7 +51,7 @@ export default defineMessages({
   },
   fixedDate: {
     id: 'screens.TeamstoreTypes.fixedDate',
-    defaultMessage: 'FIXED DATE'
+    defaultMessage: 'BATCH ORDER'
   },
   select: {
     id: 'screens.TeamstoreTypes.select',
