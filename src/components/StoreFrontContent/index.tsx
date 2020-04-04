@@ -114,6 +114,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     showMuch: false,
     showCani: false,
     showLong: false,
+    showChange: false,
     showWhen: false,
     showReturn: false,
     pricingModalOpen: false
@@ -227,6 +228,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       showMuch,
       showCani,
       showLong,
+      showChange,
       showWhen,
       showReturn,
       pricingModalOpen
@@ -437,7 +439,15 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     showContent={showMuch}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.howMuchDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.howMuchDesc
+                            : messages.howMuchDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
 
                   <ProductInfo
@@ -446,8 +456,30 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     showContent={showWhen}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.whenDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.whenDesc
+                            : messages.whenDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
+                  {!onDemandMode && (
+                    <ProductInfo
+                      id="Change"
+                      title={formatMessage(messages.changeOrderTitle)}
+                      showContent={showChange}
+                      toggleView={this.toggleProductInfo}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.changeOrderDesc)
+                        }}
+                      />
+                    </ProductInfo>
+                  )}
 
                   <ProductInfo
                     id="Long"
@@ -455,15 +487,31 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     showContent={showLong}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.howLongDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.howLongDesc
+                            : messages.howLongDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
                   <ProductInfo
                     id="Cani"
-                    title={formatMessage(messages.CanIORder)}
+                    title={formatMessage(messages.canIORder)}
                     showContent={showCani}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.CanIORderDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.canIORderDesc
+                            : messages.canIORderDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
                   <ProductInfo
                     id="Return"

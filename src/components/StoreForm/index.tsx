@@ -15,7 +15,6 @@ import {
   Required,
   inputStyle,
   TeamStoreTypeLabel,
-  ShipLabel,
   RightLabels,
   Fields,
   Question,
@@ -177,7 +176,6 @@ const StoreForm = ({
   return (
     <Container>
       <RightLabels>
-        {onDemand && <ShipLabel>{formatMessage(messages.shipping)}</ShipLabel>}
         <TeamStoreTypeLabel>
           {formatMessage(onDemand ? messages.onDemandMode : messages.fixedMode)}
         </TeamStoreTypeLabel>

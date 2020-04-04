@@ -361,6 +361,6 @@ export const Loading = styled.div`
 `
 
 export const DynamicDropLogo = styled.img`
-  width: 190px;
+  width: 150px;
   margin: 15px 0;
 `

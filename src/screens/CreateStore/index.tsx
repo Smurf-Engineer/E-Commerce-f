@@ -525,11 +525,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
         style: buttonStyle
       },
       content: (
-        <InfoBody>
-          {formatMessage(
-            onDemand ? messages.batchOrderContent : messages.omDemandContent
-          )}
-        </InfoBody>
+        <InfoBody
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(
+              onDemand ? messages.batchOrderContent : messages.omDemandContent
+            )
+          }}
+        />
       )
     })
   }

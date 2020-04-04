@@ -174,7 +174,7 @@ export default defineMessages({
     id: 'components.StoreForm.batchOrderContent',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'When you set your store to Batch Order Mode, pricing for all items becomes dynamic. Members can save between 20-40% based on the quantity ordered. Payment is taken at the end of the order period and the estimated delivery is 14 days.'
+      'Batch Order stores are ideal for groups with <b>more than 5 members</b>. When you switch your store to Batch Order Mode, you set up a specific ordering window for the team to place their orders and pricing for all items becomes dynamic. Members can save between 20-40% based on the quantity ordered. Payment is taken at the end of the order period and the estimated delivery is 14 days.'
   },
   switchToBatch: {
     id: 'components.StoreForm.switchToBatch',
@@ -188,7 +188,7 @@ export default defineMessages({
     id: 'components.StoreForm.omDemandContent',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'When you set your store to On-Demand mode, pricing for all items is fixed and members save 20%. Payment is taken at the time the order is placed. Orders enter the productionprocess upon receipt and are delivered in 10 days.'
+      'When you set your store to On-Demand mode, pricing for all items is fixed and members save 20%. Payment is taken at the time the order is placed. Orders enter the production process upon receipt and are delivered in 10 days.'
   },
   switchToDemand: {
     id: 'components.StoreForm.switchToDemand',
