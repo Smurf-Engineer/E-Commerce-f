@@ -11,7 +11,7 @@ import { RouteComponentProps, Route } from 'react-router-dom'
 import {
   restoreUserSession,
   saveUserSession,
-  deleteUserSession
+  deleteUserSession,
 } from '../../components/MainLayout/api'
 import { Login } from './Login'
 import { MAIN_TITLE } from '../../constants'
@@ -44,7 +44,7 @@ import {
   LogoIcon,
   DesignerLink,
   Content,
-  LoadingContainer
+  LoadingContainer,
 } from './styledComponents'
 import { UserType } from '../../types/common'
 import Helmet from 'react-helmet'
@@ -91,7 +91,7 @@ export class Admin extends React.Component<Props, {}> {
       user,
       client,
       setDefaultScreenAction,
-      location: { pathname }
+      location: { pathname },
     } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
@@ -103,7 +103,7 @@ export class Admin extends React.Component<Props, {}> {
   onLogout = () => {
     const {
       client: { cache },
-      deleteUserSessionAction
+      deleteUserSessionAction,
     } = this.props
     cache.reset()
     deleteUserSessionAction()
@@ -121,7 +121,7 @@ export class Admin extends React.Component<Props, {}> {
       intl,
       history,
       loading,
-      forgotPasswordOpen
+      forgotPasswordOpen,
     } = this.props
     if (loading) {
       return (
@@ -179,7 +179,9 @@ export class Admin extends React.Component<Props, {}> {
         <Route
           path="/admin/products-internal"
           render={() => (
-            <ProductInternalsAdmin {...{ history, formatMessage }} />
+            <ProductInternalsAdmin
+              {...{ history, formatMessage, permissions }}
+            />
           )}
         />
         <Route
@@ -200,15 +202,21 @@ export class Admin extends React.Component<Props, {}> {
         />
         <Route
           path="/admin/users"
-          render={() => <UsersAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <UsersAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/team-stores"
-          render={() => <TeamStoresAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <TeamStoresAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/homepage/:sportName?"
-          render={() => <HomepageAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <HomepageAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
       </AdminLayout>
     )
@@ -224,7 +232,7 @@ export class Admin extends React.Component<Props, {}> {
       client,
       intl: { formatMessage },
       saveUserSessionAction,
-      setLoadingAction
+      setLoadingAction,
     } = this.props
     setLoadingAction(true)
     try {
@@ -237,12 +245,12 @@ export class Admin extends React.Component<Props, {}> {
           name: get(data, 'user.name', ''),
           lastName: get(data, 'user.lastName'),
           email: get(data, 'user.email'),
-          administrator: get(data, 'user.administrator', false)
+          administrator: get(data, 'user.administrator', false),
         }
         if (data.user.administrator) {
           message.success(
             formatMessage(messages.welcomeMessage, {
-              name: get(data, 'user.name', '')
+              name: get(data, 'user.name', ''),
             }),
             5
           )
@@ -286,7 +294,7 @@ const mapStateToProps = (state: any) => {
   const app = state.get('app').toJS()
   return {
     ...app,
-    ...admin
+    ...admin,
   }
 }
 
@@ -298,7 +306,7 @@ const AdminEnhance = compose(
     ...adminActions,
     restoreUserSessionAction: restoreUserSession,
     saveUserSessionAction: saveUserSession,
-    deleteUserSessionAction: deleteUserSession
+    deleteUserSessionAction: deleteUserSession,
   })
 )(Admin)
 

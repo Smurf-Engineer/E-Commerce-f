@@ -31,14 +31,14 @@ import {
   ADD_PRO_DESIGN,
   CREATE_DESIGNS,
   DESIGN_LAB_TOOLS,
-  PRO_ASSIST
+  PRO_ASSIST,
 } from './constants'
 import {
   SideBar,
   Container,
   OptionMenu,
   Content,
-  LogoutButton
+  LogoutButton,
 } from './styledComponents'
 import Helmet from 'react-helmet'
 
@@ -78,7 +78,7 @@ class AdminLayout extends React.Component<Props, {}> {
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
     const fonts: SimpleFont[] = fontsList.map((font: Font) => ({
-      font: font.family
+      font: font.family,
     }))
     setInstalledFontsAction(fonts)
   }
@@ -149,16 +149,21 @@ class AdminLayout extends React.Component<Props, {}> {
       openKeys,
       screen,
       onLogout,
-      permissions
+      permissions,
     } = this.props
+    const isHidden = options.reduce((obj, { title, options: submenus }) => {
+      obj[title] = submenus.every((label) => !permissions[label].view)
+      return obj
+      // tslint:disable-next-line: align
+    }, {})
     const menuOptions = options.map(({ title, options: submenus }) =>
-      submenus.length ? (
+      submenus.length && !isHidden[title] ? (
         <SubMenu
           key={title}
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
         >
           {submenus.map(
-            label =>
+            (label) =>
               permissions[label] &&
               permissions[label].view && (
                 <Menu.Item key={label} active={true}>
@@ -216,7 +221,7 @@ const mapStateToProps = (state: any) => {
     ...layoutProps,
     ...responsive,
     ...adminLayout,
-    ...app
+    ...app,
   }
 }
 
@@ -227,7 +232,7 @@ const LayoutEnhance = compose(
   connect(mapStateToProps, {
     ...LayoutActions,
     ...LocaleActions,
-    ...adminLayoutActions
+    ...adminLayoutActions,
   })
 )(AdminLayout)
 export default LayoutEnhance

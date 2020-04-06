@@ -81,6 +81,7 @@ interface Props {
   loading: boolean
   userToSearch: string
   storeShortId: string
+  canEdit: boolean
   getEditStore: (id: string) => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
@@ -271,6 +272,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       storeShortId,
       users,
       buildTeamStore,
+      canEdit,
       featured,
       onDemand,
       deleteItemSelectedAction,
@@ -279,6 +281,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
       name,
       loading
     } = this.props
+    if (!canEdit) {
+      return null
+    }
     const { searchValue } = this.state
     let selected = ''
     let title = ''

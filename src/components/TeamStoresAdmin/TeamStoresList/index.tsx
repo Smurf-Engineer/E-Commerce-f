@@ -39,6 +39,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  canEdit: boolean
   onSortClick: (label: string, sort: sorts) => void
   onChangeSwitch: (id: number, fieldId: string) => void
   onChangePage: (page: number) => void
@@ -66,6 +67,7 @@ const TeamStoresList = ({
   onChangePage,
   withPagination = true,
   withoutPadding = false,
+  canEdit,
   onClickRow
 }: Props) => {
   const teamStores = get<
@@ -127,6 +129,7 @@ const TeamStoresList = ({
             userFirstName,
             userLastName,
             onDemand,
+            canEdit,
             formatMessage,
             cutOffDateString,
             onChangeSwitch,

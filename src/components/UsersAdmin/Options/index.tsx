@@ -30,6 +30,7 @@ interface Props {
   designSelected: string
   note: string
   loading: boolean
+  canEdit: boolean
   setLoadingAction: (loading: boolean) => void
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteText: (text: string) => void
@@ -57,15 +58,15 @@ class Options extends React.Component<Props> {
       note,
       setDesignSelected,
       designSelected,
-      setLoadingAction
+      setLoadingAction,
     } = this.props
     try {
       setLoadingAction(true)
       const response = await addNoteAction({
         variables: {
           designId: designSelected,
-          text: note
-        }
+          text: note,
+        },
       })
       setDesignSelected()
       message.success(get(response, 'data.addDesignNote.message', ''))
@@ -83,10 +84,14 @@ class Options extends React.Component<Props> {
       note,
       loading,
       setNoteText,
+      canEdit,
       data,
       designSelected,
-      setDesignSelected
+      setDesignSelected,
     } = this.props
+    if (!canEdit) {
+      return null
+    }
     const userId = get(match, 'params.id', '')
     const { loading: loadingData, designNotes = [] } = data || {}
     return (
@@ -121,7 +126,7 @@ class Options extends React.Component<Props> {
               openAddToTeamStoreModalAction: null,
               addItemToStore: null,
               setDesignSelected,
-              userId
+              userId,
             }}
             openAddToStoreModal={false}
             onGoBack={this.handleOnGoBack}
@@ -153,12 +158,12 @@ const OptionsEnhance = compose(
       const { designSelected } = ownprops
       return {
         variables: {
-          designId: designSelected
+          designId: designSelected,
         },
         skip: !designSelected,
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       }
-    }
+    },
   })
 )(Options)
 export default OptionsEnhance

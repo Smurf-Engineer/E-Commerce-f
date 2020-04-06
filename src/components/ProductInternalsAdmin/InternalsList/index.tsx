@@ -34,6 +34,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  canEdit: boolean
   onSortClick: (label: string, sort: sorts) => void
   onInternalClick: (internal: ProductInternal) => void
   onChangePage: (page: number) => void
@@ -64,6 +65,7 @@ const InternalsList = ({
   onSortClick,
   onInternalClick,
   onChangePage,
+  canEdit,
   withPagination = true,
   withoutPadding = false
 }: Props) => {
@@ -106,12 +108,14 @@ const InternalsList = ({
         return (
           <Row>
             {headers}
-            <HeaderTable
-              id={'edit'}
-              label={''}
-              interactiveHeaders={false}
-              {...{ onSortClick }}
-            />
+            {canEdit && (
+              <HeaderTable
+                id={'edit'}
+                label={''}
+                interactiveHeaders={false}
+                {...{ onSortClick }}
+              />
+            )}
           </Row>
         )
       }}
@@ -147,6 +151,7 @@ const InternalsList = ({
             size,
             fitStyle,
             color,
+            canEdit,
             frontZipper,
             pocketZipper,
             binding,
