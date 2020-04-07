@@ -16,6 +16,7 @@ interface Props {
   firstName: string
   lastName: string
   cutoffDate?: string
+  estimatedDate?: string
   onOrderClick: (shortId: string) => void
 }
 
@@ -26,10 +27,11 @@ const ItemOrder = ({
   shortId,
   onOrderClick,
   pendingCheck,
+  estimatedDate,
   statusError,
   firstName,
   lastName,
-  cutoffDate
+  cutoffDate,
 }: Props) => {
   const handleOnClick = () => {
     onOrderClick(shortId)
@@ -39,6 +41,7 @@ const ItemOrder = ({
       <Cell>{shortId}</Cell>
       <Cell>{date}</Cell>
       <Cell>{cutoffDate}</Cell>
+      <Cell>{estimatedDate}</Cell>
       <Cell>JV2-{clientId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell textAlign={'center'}>

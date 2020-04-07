@@ -7,50 +7,54 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.OrdersList.title',
-    defaultMessage: 'Recent Orders'
+    defaultMessage: 'Recent Orders',
   },
   orderNumber: {
     id: 'components.OrdersList.orderNumber',
-    defaultMessage: 'Order Number'
+    defaultMessage: 'Order Number',
   },
   orderNo: {
     id: 'components.OrdersList.orderNo',
-    defaultMessage: 'Order No.'
+    defaultMessage: 'Order No.',
   },
   date: {
     id: 'components.OrdersList.date',
-    defaultMessage: 'Order Date'
+    defaultMessage: 'Order Date',
   },
   clientId: {
     id: 'components.OrdersList.clientId',
-    defaultMessage: 'Client ID'
+    defaultMessage: 'Client ID',
   },
   clientName: {
     id: 'components.OrdersList.clientName',
-    defaultMessage: 'Client Name'
+    defaultMessage: 'Client Name',
   },
   trackingNumber: {
     id: 'components.OrdersList.trackingNumber',
-    defaultMessage: 'Tracking Number'
+    defaultMessage: 'Tracking Number',
   },
   tracking: {
     id: 'components.OrdersList.tracking',
-    defaultMessage: 'Tracking'
+    defaultMessage: 'Tracking',
   },
   status: {
     id: 'components.OrdersList.status',
-    defaultMessage: 'Status'
+    defaultMessage: 'Status',
   },
   preflight: {
     id: 'components.OrdersList.preflight',
-    defaultMessage: 'Preflight'
+    defaultMessage: 'Preflight',
   },
   emptyMessage: {
     id: 'components.OrdersList.emptyMessage',
-    defaultMessage: 'No orders yet'
+    defaultMessage: 'No orders yet',
   },
   cutoffDate: {
     id: 'components.OrdersList.cutoffDate',
-    defaultMessage: 'Order Cut-Off'
-  }
+    defaultMessage: 'Order Cut-Off',
+  },
+  estimatedDate: {
+    id: 'components.OrdersList.estimatedDate',
+    defaultMessage: 'Est. Delivery Date',
+  },
 })

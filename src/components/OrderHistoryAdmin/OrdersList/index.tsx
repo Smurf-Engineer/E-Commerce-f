@@ -14,7 +14,7 @@ import {
   OrderHistory,
   sorts,
   QueryProps,
-  FulfillmentNetsuite
+  FulfillmentNetsuite,
 } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
@@ -55,7 +55,7 @@ const OrdersList = ({
   onOrderClick,
   onChangePage,
   withPagination = true,
-  withoutPadding = false
+  withoutPadding = false,
 }: Props) => {
   const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
   const fullCount = get(ordersQuery, 'fullCount', 0)
@@ -66,7 +66,7 @@ const OrdersList = ({
 
   const header = (
     <MediaQuery maxWidth={768}>
-      {matches => {
+      {(matches) => {
         if (matches) {
           return (
             <Row>
@@ -97,6 +97,12 @@ const OrdersList = ({
               id={'orders.cutoff_date'}
               label={formatMessage(messages.cutoffDate)}
               sort={orderBy === 'orders.cutoff_date' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'estimated_date'}
+              label={formatMessage(messages.estimatedDate)}
+              sort={orderBy === 'estimated_date' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -142,7 +148,8 @@ const OrdersList = ({
         netsuiteAttempts,
         firstName,
         lastName,
-        cutoffDate
+        estimatedDate,
+        cutoffDate,
       }: OrderHistory,
       index: number
     ) => {
@@ -169,10 +176,11 @@ const OrdersList = ({
             clientId,
             firstName,
             pendingChecks,
+            estimatedDate,
             lastName,
             onOrderClick,
             trackingNumber,
-            cutoffDate
+            cutoffDate,
           }}
         />
       )
@@ -214,7 +222,7 @@ const OrdersListEnhance = compose(
       orderBy,
       sort,
       customLimit,
-      searchText
+      searchText,
     }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : ORDERS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
@@ -224,11 +232,11 @@ const OrdersListEnhance = compose(
           offset,
           order: orderBy,
           orderAs: sort,
-          searchText
+          searchText,
         },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       }
-    }
+    },
   }),
   withError,
   withLoading
