@@ -132,11 +132,11 @@ export const DeliveryData = styled.div`
 `
 
 interface InfoProps {
-  tracking?: boolean
+  redColor?: boolean
 }
 
 export const Info = styled.div`
-  color: ${({ tracking }: InfoProps) => (tracking ? '#e61737' : '#5f6062')};
+  color: ${({ redColor }: InfoProps) => (redColor ? RED : GRAY_DARK)};
   height: 22px;
   margin-bottom: 12px;
 `

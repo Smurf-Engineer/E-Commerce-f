@@ -55,7 +55,8 @@ import {
   Dates,
   FlexColumnContainer,
   DynamicDropLogo,
-  PricesButton
+  PricesButton,
+  MainContainer
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
@@ -291,40 +292,39 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
             {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
               <ErrorTitle>{formatMessage(messages.storeClosed)}</ErrorTitle>
             ) : (
-              <>
+              <MainContainer>
                 {!teamStoreBanner ? (
                   <div />
                 ) : (
                   <ImageBanner src={teamStoreBanner} />
                 )}
+                <FlexContainer>
+                  <Title>
+                    {formatMessage(messages.welcome, { teamStoreName })}
+                  </Title>
+                  <ButtonsContainer>
+                    <ButtonWrapper>
+                      <Button type="primary" onClick={this.handlShareClick}>
+                        <FormattedMessage {...messages.share} />
+                      </Button>
+                    </ButtonWrapper>
+                    {teamStoreOwner && !closed ? (
+                      <ButtonWrapper>
+                        <Button type="primary" onClick={this.handleOnPressEdit}>
+                          <FormattedMessage {...messages.edit} />
+                        </Button>
+                      </ButtonWrapper>
+                    ) : (
+                      !closed && (
+                        <DefaultButton onClick={this.handlContactClick}>
+                          <FormattedMessage {...messages.contactManager} />
+                        </DefaultButton>
+                      )
+                    )}
+                  </ButtonsContainer>
+                </FlexContainer>
                 <TopContainer>
                   <FlexColumnContainer>
-                    <FlexContainer>
-                      <Title>{teamStoreName}</Title>
-                      <ButtonsContainer>
-                        <ButtonWrapper>
-                          <Button type="primary" onClick={this.handlShareClick}>
-                            <FormattedMessage {...messages.share} />
-                          </Button>
-                        </ButtonWrapper>
-                        {teamStoreOwner && !closed ? (
-                          <ButtonWrapper>
-                            <Button
-                              type="primary"
-                              onClick={this.handleOnPressEdit}
-                            >
-                              <FormattedMessage {...messages.edit} />
-                            </Button>
-                          </ButtonWrapper>
-                        ) : (
-                          !closed && (
-                            <DefaultButton onClick={this.handlContactClick}>
-                              <FormattedMessage {...messages.contactManager} />
-                            </DefaultButton>
-                          )
-                        )}
-                      </ButtonsContainer>
-                    </FlexContainer>
                     {!onDemandMode && (
                       <React.Fragment>
                         <DynamicDropLogo src={dropLogo} />
@@ -549,7 +549,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   setSendMessageLoading={sendMessageLoadingAction}
                   ownerName={ownerName}
                 />
-              </>
+              </MainContainer>
             )}
           </React.Fragment>
         )}

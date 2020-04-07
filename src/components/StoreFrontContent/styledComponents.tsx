@@ -18,6 +18,13 @@ type DivProps = {
   open?: boolean
   left?: boolean
 }
+
+export const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+`
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,6 +33,9 @@ export const Container = styled.div`
   width: 100%;
   margin: 0 auto;
   padding: 10px 50px 0;
+  @media (min-width: 320px) and (max-width: 748px) {
+    padding: 0;
+  }
 `
 
 export const TopContainer = styled.div`
@@ -33,15 +43,13 @@ export const TopContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
   @media (min-width: 425px) and (max-width: 768px) {
     flex-flow: row;
     align-items: flex-start;
   }
   @media (max-width: 425px) {
-    flex-flow: column;
+    flex-flow: column-reverse;
     align-items: center;
-    margin: 18px 14px 0;
   }
 `
 export const SideBar = styled.div``
@@ -64,7 +72,7 @@ export const Title = styled.div`
   text-align: center;
   margin-bottom: 0;
   @media (max-width: 800px) {
-    margin-bottom: 8px;
+    margin-top: 8px;
   }
 `
 
@@ -314,7 +322,7 @@ export const FlexContainer = styled.div`
   flex-direction: row;
   align-items: center;
   @media (max-width: 768px) {
-    flex-flow: column;
+    flex-flow: column-reverse;
     justify-content: center;
   }
 `
@@ -323,6 +331,7 @@ export const FlexColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 800px;
+  padding: 10px;
 `
 
 export const CalendarContainer = styled.div`
@@ -345,12 +354,15 @@ export const DatesTitle = styled.div`
 `
 
 export const ListContainer = styled.div`
-  padding-right: 32px;
+  padding-right: 0;
   padding-left: 32px;
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   margin-top: 28px;
+  @media (min-width: 320px) and (max-width: 748px) {
+    padding-left: 0;
+  }
 `
 
 export const Loading = styled.div`

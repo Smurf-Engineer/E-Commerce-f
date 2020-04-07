@@ -53,7 +53,7 @@ import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
-import { PREORDER } from '../../constants'
+import { PREORDER, PAYMENT_ISSUE } from '../../constants'
 
 const PRO_DESIGN_FEE = 15
 
@@ -252,7 +252,9 @@ export class OrderDetails extends React.Component<Props, {}> {
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
                 <Info>{estimatedDate}</Info>
-                <Info>{netsuiteStatus || status}</Info>
+                <Info redColor={status === PAYMENT_ISSUE}>
+                  {netsuiteStatus || status}
+                </Info>
                 <Info>
                   {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                 </Info>
@@ -405,6 +407,12 @@ export class OrderDetails extends React.Component<Props, {}> {
     const { deleteOrder, data } = this.props
     const { shortId } = data.orderQuery
     try {
+      if (typeof window !== 'undefined') {
+        const cartList = JSON.parse(localStorage.getItem('cart') as any)
+        if (cartList) {
+          localStorage.removeItem('cart')
+        }
+      }
       const response = await deleteOrder({
         variables: { orderId: shortId }
       })

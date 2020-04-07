@@ -23,7 +23,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE } from '../../constants'
+import { PURCHASE, PAYMENT_ISSUE } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -219,7 +219,9 @@ class OrderData extends React.Component<Props, {}> {
             </OrderNumberContainer>
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
-              <StyledText>{status}</StyledText>
+              <StyledText redColor={status === PAYMENT_ISSUE}>
+                {status}
+              </StyledText>
             </OrderNumberContainer>
             <StyledText>
               <FormattedHTMLMessage

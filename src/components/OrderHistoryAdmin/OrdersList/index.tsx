@@ -20,7 +20,7 @@ import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getOrdersQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
-import { PAID_STATUS, ERROR_STATUS } from '../../../constants'
+import { PAID_STATUS, ERROR_STATUS, PAYMENT_ISSUE } from '../../../constants'
 
 interface Data extends QueryProps {
   ordersQuery: {
@@ -160,7 +160,7 @@ const OrdersList = ({
       return (
         <ItemOrder
           key={index}
-          statusError={errorStatus}
+          statusError={!!errorStatus || status === PAYMENT_ISSUE}
           pendingCheck={pendingChecks > 0 && !netsuiteStatus}
           status={errorStatus || netsuiteStatus || status}
           {...{

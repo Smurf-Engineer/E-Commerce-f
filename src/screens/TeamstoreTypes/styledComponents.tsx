@@ -25,6 +25,8 @@ export const Title = styled.p`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
+  text-align: center;
+
   @media (min-width: 320px) and (max-width: 748px) {
     margin: 40px 20px;
   }
@@ -34,7 +36,7 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   background: ${WHITE};
-  height: 608px;
+  min-height: 608px;
   width: 380px;
   transition: all 0.25s;
   cursor: pointer;
@@ -90,6 +92,7 @@ export const PaymentIcons = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 30px;
+  height: 40px;
 `
 
 export const Icon = styled.img`
