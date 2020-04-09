@@ -397,6 +397,7 @@ class Render3D extends PureComponent {
             }
             break
           }
+          case CanvasElements.Polygon:
           case CanvasElements.Path: {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
@@ -1164,7 +1165,7 @@ class Render3D extends PureComponent {
 
   handleOnClickClear = () => this.props.onClearAction()
 
-  handleOnChange3DModel = () => {}
+  handleOnChange3DModel = () => { }
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = () => {
@@ -1366,6 +1367,7 @@ class Render3D extends PureComponent {
           this.applyGroup(src, position, id, rotation)
           break
         }
+      case CanvasElements.Polygon:
       case CanvasElements.Path:
         const source = src || fileUrl
         this.applyClipArt(source, style, position, id, fileId, rotation)
@@ -1697,6 +1699,7 @@ class Render3D extends PureComponent {
           }
           break
         }
+      case CanvasElements.Polygon:
       case CanvasElements.Path:
         {
           const { fill, stroke, strokeWidth, fileId, fileUrl } = el
@@ -1925,6 +1928,7 @@ class Render3D extends PureComponent {
             case CanvasElements.Group:
               this.applyGroup(el.file, { left, top })
               break
+            case CanvasElements.Polygon:
             case CanvasElements.Path:
               this.applyClipArt(
                 el.url,
