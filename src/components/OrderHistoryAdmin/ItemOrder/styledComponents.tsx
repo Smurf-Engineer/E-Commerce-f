@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import { RED } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
+import Select from 'antd/lib/select'
 
 export const Container = styled.tr`
   cursor: pointer;
@@ -45,4 +46,12 @@ export const WarningIcon = styled(Icon)`
   font-size: 18px;
   color: ${RED};
   margin-right: 8px;
+`
+
+export const StyledSelect = styled(Select)`
+  width: 160px;
+  margin-left: 15px;
+  & .ant-select-selection {
+    border-radius: 0;
+  }
 `

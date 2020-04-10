@@ -1194,7 +1194,7 @@
   "components.CreateStoreAdmin.deleteLabel": "Delete",
   "components.CreateStoreAdmin.buildStore": "Build Team Store",
   "components.CreateStoreAdmin.onDemand": "On Demand",
-  "components.CreateStoreAdmin.fixedDate": "Batch Order",
+  "components.CreateStoreAdmin.batchOrder": "Batch Order",
   "screens.AdminLayout.aboutOrders": "ABOUT ORDERS",
   "screens.AdminLayout.orderStatus": "Order Status",
   "screens.AdminLayout.discounts": "Discounts",

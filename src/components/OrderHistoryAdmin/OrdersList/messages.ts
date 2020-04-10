@@ -52,5 +52,17 @@ export default defineMessages({
   cutoffDate: {
     id: 'components.OrdersList.cutoffDate',
     defaultMessage: 'Order Cut-Off'
+  },
+  confirmTitle: {
+    id: 'components.OrdersList.confirmTitle',
+    defaultMessage: 'UPDATE ORDER STATUS'
+  },
+  confirmMessage: {
+    id: 'components.OrdersList.confirmMessage',
+    defaultMessage: 'Do you want to update status of the order to: {status}?'
+  },
+  statusUpdated: {
+    id: 'components.OrdersList.statusUpdated',
+    defaultMessage: 'Status updated!'
   }
 })

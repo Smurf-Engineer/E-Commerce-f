@@ -26,7 +26,8 @@ import {
   NameLink,
   Table,
   EditButton,
-  DeleteButton
+  DeleteButton,
+  PricesContainer
 } from './styledComponents'
 interface Props {
   history: any
@@ -123,7 +124,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
     const headers = currencies.map(({ id, shortName }) => (
       <Header key={id}>{shortName}</Header>
     ))
-
+    console.log(teamStore)
     const teamStoresInformation = teamStoreHeaderInformation.map(
       (header: string, index: number) => (
         <InformationContainer key={index}>
@@ -195,14 +196,18 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
           </ScreenTitle>
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
           <Table>
-            <thead>
-              <tr>
-                <Header>{formatMessage(messages.name)}</Header>
-                {headers}
-                <Header>{''}</Header>
-              </tr>
-            </thead>
-            <tbody>{teamStoreItems}</tbody>
+            {teamStore.onDemand && (
+              <PricesContainer>
+                <thead>
+                  <tr>
+                    <Header>{formatMessage(messages.name)}</Header>
+                    {headers}
+                    <Header>{''}</Header>
+                  </tr>
+                </thead>
+                <tbody>{teamStoreItems}</tbody>
+              </PricesContainer>
+            )}
           </Table>
         </ScreenContent>
       </Container>

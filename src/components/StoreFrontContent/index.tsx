@@ -345,7 +345,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                             : messages.storeClosed
                         )}
                       </StoreBox>
-                      {!onDemandMode && (
+                      {!onDemandMode && !closed && (
                         <OrderTitle>
                           {`${formatMessage(
                             messages.orderTitle
@@ -354,34 +354,36 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           )} ${deliveryMonth} ${deliveryDayOrdinal}`}
                         </OrderTitle>
                       )}
-                      <Dates>
-                        {!onDemandMode && isThereCutoffDate && (
-                          <CalendarContainer>
-                            <DatesTitle>
-                              <FormattedMessage {...messages.cutOff} />
-                            </DatesTitle>
-                            <CalendarView>
-                              <CalendarTitle>{cutOffMonth}</CalendarTitle>
-                              <CalendarDay>{cutOffDay}</CalendarDay>
-                            </CalendarView>
-                          </CalendarContainer>
-                        )}
-                        {display && (
-                          <CalendarContainer>
-                            <DatesTitle>
-                              <FormattedMessage
-                                {...messages.estimatedArrival}
-                              />
-                            </DatesTitle>
-                            <CalendarFinalView>
-                              <CalendarFinalTitle>
-                                {deliveryMonth}
-                              </CalendarFinalTitle>
-                              <CalendarDay>{deliveryDay}</CalendarDay>
-                            </CalendarFinalView>
-                          </CalendarContainer>
-                        )}
-                      </Dates>
+                      {!closed && (
+                        <Dates>
+                          {!onDemandMode && isThereCutoffDate && (
+                            <CalendarContainer>
+                              <DatesTitle>
+                                <FormattedMessage {...messages.cutOff} />
+                              </DatesTitle>
+                              <CalendarView>
+                                <CalendarTitle>{cutOffMonth}</CalendarTitle>
+                                <CalendarDay>{cutOffDay}</CalendarDay>
+                              </CalendarView>
+                            </CalendarContainer>
+                          )}
+                          {display && (
+                            <CalendarContainer>
+                              <DatesTitle>
+                                <FormattedMessage
+                                  {...messages.estimatedArrival}
+                                />
+                              </DatesTitle>
+                              <CalendarFinalView>
+                                <CalendarFinalTitle>
+                                  {deliveryMonth}
+                                </CalendarFinalTitle>
+                                <CalendarDay>{deliveryDay}</CalendarDay>
+                              </CalendarFinalView>
+                            </CalendarContainer>
+                          )}
+                        </Dates>
+                      )}
                     </DatesContainer>
                   </SideBar>
                 </TopContainer>

@@ -49,6 +49,7 @@ interface Props {
   currentCurrency?: string
   hideQuickView?: boolean
   isFixed?: boolean
+  onDemand?: boolean
   onPressDelete: (index: number) => void
   onPressQuickView?: (
     id: number,
@@ -94,7 +95,8 @@ class LockerTable extends React.PureComponent<Props, {}> {
       onPressQuickView,
       onPressVisible,
       teamSizeRange,
-      currentCurrency = config.defaultCurrency
+      currentCurrency = config.defaultCurrency,
+      onDemand = true
     } = this.props
 
     const itemsSelected = items.map(
@@ -127,6 +129,25 @@ class LockerTable extends React.PureComponent<Props, {}> {
           priceRange && priceRange.length
             ? get(find(priceRange, ['abbreviation', currentCurrency]), 'price')
             : startingPrice
+
+        let currentRangePrice = 0
+
+        pricesArray.some((current: PriceRange, rangeIndex: number) => {
+          const quantities = current.quantity.split('-')
+          const maxQuantity = parseInt(quantities[1], 10)
+
+          if (totalOrders === 0 && current.quantity === 'Personal') {
+            currentRangePrice = fixedPrice
+            return true
+          }
+          if (totalOrders <= maxQuantity) {
+            currentRangePrice = current.price
+            return true
+          }
+        })
+
+        const currentPrice = onDemand ? fixedPrice : currentRangePrice
+
         return (
           <Product
             {...{
@@ -144,12 +165,13 @@ class LockerTable extends React.PureComponent<Props, {}> {
               onPressVisible,
               yotpoId,
               totalOrders,
-              formatMessage
+              formatMessage,
+              onDemand
             }}
             key={index}
             description={`${type} ${description}`}
             currentOrders={totalOrders}
-            currentPrice={startingPrice}
+            fixedPrice={currentPrice}
             visible={visible}
             moveRow={this.moveRow}
           />

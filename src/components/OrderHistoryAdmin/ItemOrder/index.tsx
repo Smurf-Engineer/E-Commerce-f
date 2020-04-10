@@ -2,8 +2,10 @@
  * ItemOrder Component - Created by miguelcanobbio on 13/07/18.
  */
 import * as React from 'react'
-import { Container, Cell, WarningIcon } from './styledComponents'
+import { Container, Cell, WarningIcon, StyledSelect } from './styledComponents'
+import Select from 'antd/lib/select'
 import upperFirst from 'lodash/upperFirst'
+import { PAID_STATUS, PENDING_APPROVAL, PURGED } from '../../../constants'
 
 interface Props {
   date: string
@@ -17,8 +19,12 @@ interface Props {
   lastName: string
   cutoffDate?: string
   onOrderClick: (shortId: string) => void
+  handleOnUpdateStatus: (status: string, orderId: string) => void
 }
 
+const Option = Select.Option
+
+const options = [PAID_STATUS, PENDING_APPROVAL, PURGED]
 const ItemOrder = ({
   date,
   clientId,
@@ -29,11 +35,25 @@ const ItemOrder = ({
   statusError,
   firstName,
   lastName,
-  cutoffDate
+  cutoffDate,
+  handleOnUpdateStatus
 }: Props) => {
   const handleOnClick = () => {
     onOrderClick(shortId)
   }
+  const stopPropagation = (event: React.MouseEvent) => {
+    if (event) {
+      event.stopPropagation()
+    }
+  }
+  const onSelectStatus = (selectedStatus: string) =>
+    handleOnUpdateStatus(selectedStatus, shortId)
+
+  const selectOptions = options.map((option, index) => (
+    <Option key={index} value={option}>
+      {option}
+    </Option>
+  ))
   return (
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
@@ -44,8 +64,19 @@ const ItemOrder = ({
       <Cell textAlign={'center'}>
         {pendingCheck && <WarningIcon type="warning" theme="filled" />}
       </Cell>
-      <Cell textAlign={'right'} className={statusError ? 'error' : ''}>
+      <Cell
+        textAlign={'right'}
+        className={statusError ? 'error' : ''}
+        onClick={stopPropagation}
+      >
         {upperFirst(status)}
+        <StyledSelect
+          onChange={onSelectStatus}
+          showSearch={false}
+          value={status}
+        >
+          {selectOptions}
+        </StyledSelect>
       </Cell>
     </Container>
   )
