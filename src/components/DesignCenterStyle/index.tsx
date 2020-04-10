@@ -8,7 +8,6 @@ import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import reverse from 'lodash/reverse'
 import withLoading from '../WithLoadingData'
-import withError from '../WithError'
 import { SELECTED_DESIGN } from '../../constants'
 import { QueryProps, StyleModalType, Style } from '../../types/common'
 import { stylesQuery } from './data'
@@ -40,6 +39,7 @@ interface Props {
   themeId: number
   complexity: number
   isMobile: boolean
+  design?: string
   onSelectStyle: (style: DesignStyle, index: number, colors: string[]) => void
   onSelectStyleComplexity: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -50,7 +50,17 @@ interface Props {
   ) => void
 }
 
-export class DesignCenterStyle extends React.PureComponent<Props, {}> {
+export class DesignCenterStyle extends React.Component<Props, {}> {
+  selectStyleByName() {
+    const { design, data, styleIndex } = this.props
+    if (design && data && !data.loading && data.styles && styleIndex === -1) {
+      const index = data.styles.findIndex(elem => elem.name.toLowerCase() === design.toLowerCase())
+      if (index !== -1) {
+        const { id } = data.styles[index]
+        this.handleOnSelectStyle(id, index)
+      }
+    }
+  }
   handleOnSelectStyle = (id: number, index: any) => {
     const {
       styleIndex,
@@ -97,6 +107,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
       styleModalData: { openNewStyleModal },
       isMobile
     } = this.props
+    this.selectStyleByName()
     if (!styles.length) {
       return (
         <Container>
@@ -156,7 +167,6 @@ const DesignCenterStyleWithData = compose(
       variables: { productId, themeId }
     })
   }),
-  withError,
   withLoading
 )(DesignCenterStyle)
 
