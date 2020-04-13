@@ -345,7 +345,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                             : messages.storeClosed
                         )}
                       </StoreBox>
-                      {!onDemandMode && !closed && (
+                      {!onDemandMode && !closed && isThereCutoffDate && (
                         <OrderTitle>
                           {`${formatMessage(
                             messages.orderTitle
