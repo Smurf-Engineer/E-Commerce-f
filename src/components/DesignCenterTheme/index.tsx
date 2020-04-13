@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
+import queryString from 'query-string'
 import messages from './messages'
 import withLoading from '../WithLoadingData'
 import { QueryProps, ThemeModalType, Theme } from '../../types/common'
@@ -25,6 +26,7 @@ interface Props {
   loadingModel: boolean
   designHasChanges: boolean
   productId: number
+  history: History
   isMobile: boolean
   style?: string
   onSelectTheme: (id: number, name?: string) => void
@@ -36,7 +38,10 @@ export class DesignCenterGrid extends React.Component<Props, {}> {
   componentDidUpdate() {
     const { style, data, onSelectTheme, currentTheme } = this.props
     if (style && data && data.themes && currentTheme === -1) {
-      const theme = find(data.themes, elem => elem.name.toLowerCase() === style.toLowerCase())
+      const theme = find(
+        data.themes,
+        elem => elem.name.toLowerCase() === style.toLowerCase()
+      )
       if (theme) {
         const { id, name } = theme
         onSelectTheme(id, name)
@@ -44,11 +49,21 @@ export class DesignCenterGrid extends React.Component<Props, {}> {
     }
   }
   selectTheme = () => {
-    const { onSelectTheme, themeModalData: { themeId } } = this.props
+    const {
+      onSelectTheme,
+      themeModalData: { themeId }
+    } = this.props
     onSelectTheme(themeId)
   }
   handleOnSelectTheme = (id: number) => {
-    const { data, currentTheme, onSelectTheme, designHasChanges, openNewThemeModalAction } = this.props
+    const {
+      data,
+      history,
+      currentTheme,
+      onSelectTheme,
+      designHasChanges,
+      openNewThemeModalAction
+    } = this.props
     if (currentTheme !== -1 && designHasChanges) {
       openNewThemeModalAction(true, id)
       return
@@ -58,6 +73,12 @@ export class DesignCenterGrid extends React.Component<Props, {}> {
       'name',
       ''
     )
+    const {
+      location: { pathname, search }
+    } = history
+    const { id: designId } = queryString.parse(search)
+    const themeParam = encodeURIComponent(themeName)
+    history.push(`${pathname}?id=${designId}&style=${themeParam}`)
     onSelectTheme(id, themeName)
   }
   cancelReselectTheme = () => {
@@ -68,7 +89,7 @@ export class DesignCenterGrid extends React.Component<Props, {}> {
     const {
       data,
       formatMessage,
-      themeModalData: { openNewThemeModal },
+      themeModalData: { openNewThemeModal }
     } = this.props
     if (data.error) {
       // TODO: Handle error.

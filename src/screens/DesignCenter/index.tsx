@@ -893,6 +893,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   style={queryParams.style}
                   {...{
                     loadingModel,
+                    history,
                     themeModalData,
                     openNewThemeModalAction,
                     designHasChanges,
@@ -922,6 +923,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     openNewStyleModalAction,
                     designHasChanges,
                     formatMessage,
+                    history,
                     styleIndex,
                     productId,
                     themeId,
@@ -1095,8 +1097,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 addItemToStore={this.saveItemToStore}
               />
             ) : (
-                <div />
-              )}
+              <div />
+            )}
           </SwipeableViews>
           <SaveDesign
             {...{
@@ -1153,21 +1155,21 @@ export class DesignCenter extends React.Component<Props, {}> {
               </SwipeableBottomSheet>
             </BottomSheetWrapper>
           ) : (
-              <div />
-            )}
+            <div />
+          )}
           {tabSelected === CustomizeTabIndex &&
-            !loadingData &&
-            isMobile &&
-            !swipingView &&
-            !loadingModel ? (
-              <MobileDesignCenterInspiration
-                styleId={currentStyle.id}
-                open={openBottomSheet}
-                setPaletteAction={this.setPaletteEvent}
-                {...{ formatMessage }}
-                hideList={this.toggleBottomSheet}
-              />
-            ) : null}
+          !loadingData &&
+          isMobile &&
+          !swipingView &&
+          !loadingModel ? (
+            <MobileDesignCenterInspiration
+              styleId={currentStyle.id}
+              open={openBottomSheet}
+              setPaletteAction={this.setPaletteEvent}
+              {...{ formatMessage }}
+              hideList={this.toggleBottomSheet}
+            />
+          ) : null}
         </Container>
         <DesignCheckModal
           handleGetPro={this.handleGetPro}
@@ -1323,13 +1325,16 @@ const DesignCenterEnhance = compose(
   addTeamStoreItemMutation,
   getProTicket,
   withApollo,
-  connect(mapStateToProps, {
-    ...designCenterActions,
-    ...designCenterApiActions,
-    openQuickViewAction,
-    openLoginAction,
-    saveAndBuyAction
-  }),
+  connect(
+    mapStateToProps,
+    {
+      ...designCenterActions,
+      ...designCenterApiActions,
+      openQuickViewAction,
+      openLoginAction,
+      saveAndBuyAction
+    }
+  ),
   graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
