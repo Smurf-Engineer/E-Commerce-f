@@ -136,6 +136,10 @@ export default defineMessages({
     id: 'components.OrderDetails.cart',
     defaultMessage: 'Cart'
   },
+  updatePayment: {
+    id: 'components.OrderDetails.updatePayment',
+    defaultMessage: 'Update your payment information'
+  },
   messageRetail: {
     id: 'components.OrderDetails.messageRetail',
     defaultMessage:

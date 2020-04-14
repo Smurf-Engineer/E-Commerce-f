@@ -69,6 +69,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: string) => void
   deleteOrder: (variables: {}) => Promise<any>
+  goToCart: () => void
 }
 
 const { confirm } = Modal
@@ -350,12 +351,17 @@ export class OrderDetails extends React.Component<Props, {}> {
           orderDetails={true}
           onClick={() => true}
           hide={true}
+          fixedCart={status === PAYMENT_ISSUE}
         />
-        {teamStoreId && status === PREORDER ? (
+        {teamStoreId && (status === PREORDER || status === PAYMENT_ISSUE) ? (
           <OrderActions>
             <ButtonWrapper>
               <Button type="primary" onClick={this.handleOnEditOrder}>
-                {formatMessage(messages.edit)}
+                {formatMessage(
+                  status === PAYMENT_ISSUE
+                    ? messages.updatePayment
+                    : messages.edit
+                )}
               </Button>
             </ButtonWrapper>
             <DeleteButton onClick={this.handleOnDeleteOrder}>
@@ -370,7 +376,7 @@ export class OrderDetails extends React.Component<Props, {}> {
   }
 
   handleOnEditOrder = () => {
-    const { formatMessage } = this.props
+    const { formatMessage, goToCart } = this.props
     confirm({
       title: formatMessage(messages.editOrderTitle),
       content: formatMessage(messages.editOrderMessage),
@@ -379,6 +385,7 @@ export class OrderDetails extends React.Component<Props, {}> {
         try {
           await this.deleteOrder()
           this.editOrderButton.getWrappedInstance().addToCart()
+          goToCart()
         } catch (e) {
           message.error(e.message)
         }

@@ -250,7 +250,8 @@ export class CartListItem extends React.Component<Props, {}> {
       designCode,
       fixedPrices = [],
       teamStoreName = '',
-      teamStoreId
+      teamStoreId,
+      fixedCart = false
     } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -390,7 +391,7 @@ export class CartListItem extends React.Component<Props, {}> {
                 <ItemDetails>
                   {itemDetailsHeader}
                   {table}
-                  {!onlyRead && footer}
+                  {!onlyRead && !fixedCart && footer}
                   {canReorder && renderAddToCartButton}
                 </ItemDetails>
               </Container>
@@ -408,7 +409,7 @@ export class CartListItem extends React.Component<Props, {}> {
                 </ItemDetails>
                 <div>
                   {table}
-                  {!onlyRead && footer}
+                  {!onlyRead && !fixedCart && footer}
                   {canReorder && renderAddToCartButton}
                 </div>
               </Container>

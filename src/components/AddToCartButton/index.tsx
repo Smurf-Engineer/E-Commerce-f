@@ -54,6 +54,7 @@ interface Props {
   fixedPrices?: PriceRange[]
   teamStoreName?: string
   hide?: boolean
+  fixedCart?: boolean
   addToCart: () => void
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
@@ -107,7 +108,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       itemProdPage = false,
       fixedPrices = [],
       teamStoreName,
-      formatMessage
+      formatMessage,
+      fixedCart = false
     } = this.props
     if (renderForThumbnail && item) {
       const itemToAdd = this.getItemWithDetails(
@@ -121,7 +123,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         designCode,
         itemProdPage,
         fixedPrices,
-        teamStoreName
+        teamStoreName,
+        fixedCart
       )
       this.saveInLocalStorage(itemToAdd)
     } else {
@@ -151,7 +154,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
                   i.designCode,
                   itemProdPage,
                   fixedPrices,
-                  i.teamStoreName
+                  i.teamStoreName,
+                  fixedCart
                 )
               )
             )
@@ -167,7 +171,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               designCode,
               itemProdPage,
               fixedPrices,
-              teamStoreName
+              teamStoreName,
+              fixedCart
             )
             this.saveInLocalStorage(itemToAdd)
           }
@@ -186,7 +191,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               item.designCode,
               false,
               fixedPrices,
-              item.teamStoreName
+              item.teamStoreName,
+              fixedCart
             )
           )
         }
@@ -205,7 +211,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     designCode = '',
     itemProdPage: boolean,
     fixedPrices: PriceRange[],
-    teamStoreName = ''
+    teamStoreName = '',
+    fixedCart: boolean = false
   ) => {
     const details = [] as CartItemDetail[]
     const detail = {
@@ -226,7 +233,8 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       { teamStoreId },
       { teamStoreItem },
       { fixedPrices },
-      { teamStoreName }
+      { teamStoreName },
+      { fixedCart }
     )
     return itemToAdd
   }

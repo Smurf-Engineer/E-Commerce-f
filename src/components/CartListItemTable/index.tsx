@@ -279,6 +279,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   optionFilterProp="children"
                   value={gender ? gender.name : undefined}
                   selectWidth={genderSelectWidth}
+                  disabled={cartItem.fixedCart}
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -289,6 +290,7 @@ class CartListItemTable extends React.Component<Props, State> {
                     selectedColor={colorObject.id}
                     onSelectColor={e => this.handleColorChange(e, index)}
                     productColors={colors}
+                    disabled={cartItem.fixedCart}
                   />
                 </Cell>
               )}
@@ -301,6 +303,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   value={size ? size.name : undefined}
                   disabled={!sizes.length}
                   selectWidth={fitSelectWidth}
+                  disabled={cartItem.fixedCart}
                 >
                   {sizeOptions}
                 </StyledSelect>
@@ -314,6 +317,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   disabled={!fits}
                   value={fit ? fit.name : undefined}
                   selectWidth={fitSelectWidth}
+                  disabled={cartItem.fixedCart}
                 >
                   {fitOptions}
                 </StyledSelect>
@@ -334,12 +338,15 @@ class CartListItemTable extends React.Component<Props, State> {
                   min={1}
                   max={99}
                   value={quantity || undefined}
+                  disabled={cartItem.fixedCart}
                 />
-                <DeleteItem
-                  onClick={e => this.handleRemove(e, itemIndex, index)}
-                >
-                  —
-                </DeleteItem>
+                {!cartItem.fixedCart && (
+                  <DeleteItem
+                    onClick={e => this.handleRemove(e, itemIndex, index)}
+                  >
+                    —
+                  </DeleteItem>
+                )}
               </Cell>
             </Row>
           ) : (

@@ -650,6 +650,7 @@ export interface CartItems {
   preflightCheck?: boolean
   fixedPrices: PriceRange[]
   teamStoreName?: string
+  fixedCart?: boolean
 }
 
 export interface ProductPrice {
