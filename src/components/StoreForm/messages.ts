@@ -55,10 +55,9 @@ export default defineMessages({
   },
   aboutCutOffInfo: {
     id: 'components.StoreForm.aboutCutOffInfo',
-    defaultMessage: `The maximum order cut-off date is 15 days from the current date.
-    You will have the option, if necessary, to extend your Cut-Off date 1X once up to a maximum of +3 days
-    or to an earlier date from your original cut-off date in the case you’ve collected all the
-    orders and wish to go to production sooner.`
+    defaultMessage: `Team pricing on batch order stores starts at the 20% discount tier. The price will
+    Automatically drop for each item as members place orders and reach the next discount tier.
+    `
   },
   aboutDelivery: {
     id: 'components.StoreForm.aboutDelivery',
@@ -66,9 +65,9 @@ export default defineMessages({
   },
   aboutDeliveryInfo: {
     id: 'components.StoreForm.aboutDeliveryInfo',
-    defaultMessage: `You can set a delivery date anytime between14-19 days after the cut-off date.
-    If you set your delivery date on a Federal holiday, your order may be delivered the next available
-    business day so plan accordingly. We recommend setting a delivery date 2-3 days in advance of
-    any specific event date you may have to allow for any unforeseen delays in transit.`
+    defaultMessage: `You can set a delivery date anytime between 14-19 days after the order cut-off date.
+    If you set your delivery date on a Federal holiday, your order will be delivered the next available business
+    day so plan accordingly. We recommend setting a delivery date 2-3 days in advance of any specific event date
+    you may have to allow for any unforeseen delays in transit.`
   }
 })
