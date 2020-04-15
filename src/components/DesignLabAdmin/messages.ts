@@ -31,7 +31,7 @@ export default defineMessages({
   },
   cutOffDays: {
     id: 'components.DesignLabAdmin.cutOffDays',
-    defaultMessage: 'Scheduled Store'
+    defaultMessage: 'Batch Order Store'
   },
   currentCutOffDays: {
     id: 'components.DesignLabAdmin.currentCutOffDays',
