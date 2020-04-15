@@ -762,6 +762,7 @@ export interface OrderDetailsInfo {
   teamStoreId?: string
   lastDrop?: boolean
   teamStoreName?: string
+  canUpdatePayment?: boolean
 }
 
 export interface OrderDataInfo {

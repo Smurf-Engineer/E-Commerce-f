@@ -143,7 +143,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       discount,
       teamStoreId,
       lastDrop,
-      teamStoreName
+      teamStoreName,
+      canUpdatePayment
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -353,7 +354,9 @@ export class OrderDetails extends React.Component<Props, {}> {
           hide={true}
           fixedCart={status === PAYMENT_ISSUE}
         />
-        {teamStoreId && (status === PREORDER || status === PAYMENT_ISSUE) ? (
+        {teamStoreId &&
+        (status === PREORDER ||
+          (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
           <OrderActions>
             <ButtonWrapper>
               <Button type="primary" onClick={this.handleOnEditOrder}>
