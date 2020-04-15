@@ -2,6 +2,7 @@
  * Styled Components - Created by cazarez on 10/04/18.
  */
 import styled from 'styled-components'
+import { WHITE } from '../DesignerTool/constants'
 
 export const Container = styled.div``
 export const Content = styled.div`
@@ -70,7 +71,7 @@ export const Title = styled.div`
   height: 33px;
   text-align: center;
   color: #5f6062;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   line-height: 33px;
 
@@ -92,3 +93,18 @@ export const GetSponsored = styled.div`
   font-size: 12px;
   line-height: 16px;
 `
+
+export const TeamTitle = styled.div`
+padding: 28px;
+    background: ${WHITE};
+`
+
+export const PaySection = styled.div``
+
+export const PayIcons = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+`
+
+export const Icon = styled.img``

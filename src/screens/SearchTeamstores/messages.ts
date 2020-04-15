@@ -29,5 +29,9 @@ export default defineMessages({
   searchPlaceHolder: {
     id: 'screen.Teamstores.searchPlaceHolder',
     defaultMessage: 'Search for a store'
+  },
+  teamTitle: {
+    id: 'screen.Teamstores.teamTitle',
+    defaultMessage: 'CUSTOM STORES FOR TEAMS, CLUBS & INDIVIDUALS'
   }
 })

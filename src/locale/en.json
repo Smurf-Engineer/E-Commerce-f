@@ -320,6 +320,7 @@
   "screen.Teamstores.featuredTeamStoresLabel": "FEATURED TEAM STORES",
   "screen.Teamstores.searchPlaceHolder": "Search for a store",
   "screen.Teamstores.errorMessage": "Something wrong happened. Please try again!",
+  "screen.Teamstores.teamTitle": "CUSTOM STORES FOR TEAMS, CLUBS & INDIVIDUALS",
   "components.OrderData.shippingAddress": "Shipping Address",
   "components.OrderData.billingAddress": "Billing Address",
   "components.OrderData.payment": "Payment",
