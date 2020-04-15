@@ -280,14 +280,11 @@ const DesignSearchEnhance = compose(
   injectIntl,
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
-  connect(
-    mapStateToProps,
-    {
-      ...designSearchActions,
-      uploadProDesignAction: uploadProDesign,
-      restoreUserSessionAction: restoreUserSession
-    }
-  ),
+  connect(mapStateToProps, {
+    ...designSearchActions,
+    uploadProDesignAction: uploadProDesign,
+    restoreUserSessionAction: restoreUserSession
+  }),
   getFonts,
   withApollo
 )(DesignSearch)

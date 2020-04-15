@@ -7,6 +7,8 @@ import Button from 'antd/lib/button'
 import messages from './messages'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
+import find from 'lodash/find'
+import get from 'lodash/get'
 import Divider from 'antd/lib/divider'
 import indexOf from 'lodash/indexOf'
 import message from 'antd/lib/message'
@@ -40,7 +42,11 @@ import {
   AddNote,
   PreflightDiv,
   WarningIcon,
-  PreflightCheckbox
+  PreflightCheckbox,
+  Colors,
+  Color,
+  ColorContainer,
+  ColorName
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import {
@@ -67,6 +73,7 @@ interface Props {
   addingNote: boolean
   note: string
   loadingPreflight: boolean
+  colorList: string
   handleSaveNote: () => void
   setNoteAction: (text: string) => void
   openNoteAction: (openNotes: boolean) => void
@@ -101,7 +108,8 @@ export class OrderFiles extends React.PureComponent<Props> {
         name,
         notes = [],
         pngUrl = '',
-        product: { name: modelName, zipper }
+        product: { name: modelName, zipper },
+        colors = []
       },
       uploadingFile,
       openNotes,
@@ -121,9 +129,16 @@ export class OrderFiles extends React.PureComponent<Props> {
       onSelectColor,
       onGeneratePdf,
       checkPreflight,
-      creatingPdf
+      creatingPdf,
+      colorList
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
+    let colorsObject = []
+    try {
+      colorsObject = JSON.parse(colorList)
+    } catch (e) {
+      console.error(e)
+    }
     const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
     const notesElements = notes.map(
       ({ createdAt, text, user }: DesignNote, index: number) => {
@@ -175,6 +190,20 @@ export class OrderFiles extends React.PureComponent<Props> {
             </PreflightDiv>
           </SideData>
         </FlexContainer>
+        <Colors>
+          <Code>Colors:</Code>
+          {colors.map(({ color }, index) => {
+            console.log(colorsObject)
+            return (
+              <ColorContainer key={index}>
+                <Color color={color} />
+                <ColorName>
+                  {get(find(colorsObject, ['value', color]), 'name', color)}
+                </ColorName>
+              </ColorContainer>
+            )
+          })}
+        </Colors>
         <ProAssistNotes>
           <ProAssistTitle>
             <FormattedMessage {...messages.proAssistNotes} />
@@ -183,7 +212,7 @@ export class OrderFiles extends React.PureComponent<Props> {
               <FormattedMessage {...messages.add} />
             </AddNote>
           </ProAssistTitle>
-          {notes && notes.length && (
+          {notes && !!notes.length && (
             <ProAssistBackground>{notesElements}</ProAssistBackground>
           )}
         </ProAssistNotes>

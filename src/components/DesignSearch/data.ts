@@ -36,6 +36,10 @@ export const orderSearchQuery = gql`
       zipperColor: zipper_color
       bindingColor: binding_color
       bibColor: bib_brace_color
+      colors {
+        id
+        color
+      }
       notes {
         text
         user
@@ -114,6 +118,14 @@ export const addNoteMutation = gql`
   mutation addDesignNote($designId: String!, $text: String!) {
     addDesignNote(designId: $designId, text: $text) {
       message
+    }
+  }
+`
+
+export const getColorsQuery = gql`
+  query GetColors {
+    colorsResult: getColors {
+      colors
     }
   }
 `

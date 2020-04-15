@@ -2,7 +2,7 @@
  * DesignSearch Screen - Created by miguelcanobbio on 15/08/18.
  */
 import * as React from 'react'
-import { withApollo, compose, graphql } from 'react-apollo'
+import { withApollo, compose, graphql, QueryProps } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
@@ -34,7 +34,8 @@ import {
   StitchingColor,
   Font,
   DesignSearchCode,
-  MessagePayload
+  MessagePayload,
+  Colors
 } from '../../types/common'
 import {
   orderSearchQuery,
@@ -44,7 +45,8 @@ import {
   getFonts,
   generatePdfMutation,
   togglePreflight,
-  addNoteMutation
+  addNoteMutation,
+  getColorsQuery
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -53,6 +55,10 @@ type Thumbnail = {
   style: {
     image: string
   }
+}
+
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
 }
 
 interface Props {
@@ -78,6 +84,7 @@ interface Props {
   addingNote: boolean
   note: string
   loadingPreflight: boolean
+  colorsList: ColorsData
   // redux actions
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteAction: (text: string) => void
@@ -158,7 +165,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       setColorAction,
       fontsData,
       designSearchCodes,
-      creatingPdf
+      creatingPdf,
+      colorsList
     } = this.props
 
     let loadErrContent = <Spin />
@@ -168,6 +176,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
+    const colors = get(colorsList, 'colorsResult.colors', [])
 
     const fonts = fontList.reduce((fontObject: any, { family }: Font) => {
       fontObject.push({ font: family })
@@ -201,6 +210,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         onUploadFile={uploadProDesignAction}
         onSaveThumbnail={this.saveDesign}
         onGeneratePdf={this.handleGeneratePdf}
+        colorList={colors}
       />
     )
     const content =
@@ -425,6 +435,7 @@ const DesignSearchAdminEnhance = compose(
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
   graphql(generatePdfMutation, { name: 'generatePdf' }),
+  graphql(getColorsQuery, { name: 'colorsList' }),
   connect(mapStateToProps, {
     ...designSearchActions,
     uploadProDesignAction: uploadProDesign,
