@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import get from 'lodash/get'
+import { DropPricingModal } from '../DropPricingModal'
 import messsages from './messages'
 import {
   Table,
@@ -60,9 +61,14 @@ interface Props {
 }
 
 class LockerTable extends React.PureComponent<Props, {}> {
+  state = { pricingModalOpen: false }
   getTierPrice = (prices: PriceRange[], range = '2-5'): number => {
     const index = findIndex(prices, ({ quantity }) => quantity === range)
     return index < 0 ? prices[prices.length - 1].price : prices[index].price
+  }
+
+  onTogglePriceModal = () => {
+    this.setState({ pricingModalOpen: !this.state.pricingModalOpen } as any)
   }
 
   moveRow = (dragIndex: number, hoverIndex: number) => {
@@ -168,13 +174,20 @@ class LockerTable extends React.PureComponent<Props, {}> {
                   {message ? formatMessage(messsages[message]) : ''}
                 </Title>
                 {withHelp && isFixed && (
-                  <Question onClick={this.openInfo} type="question-circle" />
+                  <Question
+                    onClick={this.onTogglePriceModal}
+                    type="question-circle"
+                  />
                 )}
               </Cell>
             )
           )}
         </HeaderRow>
         {renderTable}
+        <DropPricingModal
+          toggleModal={this.onTogglePriceModal}
+          {...{ formatMessage, pricingModalOpen: this.state.pricingModalOpen }}
+        />
       </Table>
     )
   }

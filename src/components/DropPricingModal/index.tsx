@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { Container, Title } from './styledComponents'
+import { Container, Title, ModalTitle, ModalMessage } from './styledComponents'
 import { Modal, Table } from 'antd'
 import { Message } from '../../types/common'
 
@@ -62,6 +62,8 @@ export class DropPricingModal extends React.Component<Props, {}> {
         onCancel={toggleModal}
       >
         <Container>
+          <ModalTitle>{formatMessage(messages.aboutTeamPricing)}</ModalTitle>
+          <ModalMessage>{formatMessage(messages.teamPricing)}</ModalMessage>
           <Title>{formatMessage(messages.title)}</Title>
           <Table
             pagination={{ hideOnSinglePage: true }}
