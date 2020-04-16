@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import { WHITE } from '../DesignerTool/constants'
+import { GRAY_DARK } from '../../theme/colors'
 
 export const Container = styled.div``
 export const Content = styled.div`
@@ -25,7 +26,7 @@ export const SearchBarContent = styled.div`
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const SearchBackground = styled.img`
@@ -43,7 +44,7 @@ export const SearchBackground = styled.img`
 `
 
 export const TeamStoreText = styled.div`
-  color: #ffffff;
+  color: ${WHITE};
   font-size: 15px;
   font-weight: 600;
   text-align: center;
@@ -58,11 +59,11 @@ export const SearchContainer = styled.div`
 `
 
 export const ResultContainer = styled.div`
-  padding: 80px 30px 90px 30px;
+  padding: 44px 30px 90px 30px;
   background-color: #fff;
 
   @media (max-width: 480px) {
-    padding: 80px 10px 90px 10px;
+    padding: 44px 10px 90px 10px;
   }
 `
 export const PaginationRow = styled.div``
@@ -70,7 +71,7 @@ export const TitleContainer = styled.div``
 export const Title = styled.div`
   height: 33px;
   text-align: center;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: bold;
   line-height: 33px;
@@ -95,16 +96,36 @@ export const GetSponsored = styled.div`
 `
 
 export const TeamTitle = styled.div`
-padding: 28px;
-    background: ${WHITE};
+  padding: 28px;
+  background: ${WHITE};
 `
 
-export const PaySection = styled.div``
+export const TitleText = styled.div`
+  text-align: center;
+  color: ${GRAY_DARK};
+  font-size: 20px;
+  font-weight: bold;
+`
+
+export const PaySection = styled.div`
+  padding: 32px 0;
+`
 
 export const PayIcons = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 18px;
 `
 
-export const Icon = styled.img``
+export const Icon = styled.img`
+  max-width: 85px;
+  object-fit: contain;
+  height: 28px;
+  margin-right: 13px;
+  @media (max-width: 480px) {
+    object-fit: contain;
+    height: 14px;
+    margin-right: 4px;
+  }
+`

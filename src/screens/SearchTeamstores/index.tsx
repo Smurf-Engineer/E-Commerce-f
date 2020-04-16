@@ -23,7 +23,8 @@ import {
   TeamTitle,
   PaySection,
   PayIcons,
-  Icon
+  Icon,
+  TitleText
 } from './styledComponents'
 import config from '../../config/index'
 import Layout from '../../components/MainLayout'
@@ -75,7 +76,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
       <Layout teamStoresHeader={true} {...{ intl, history }}>
         <Helmet title={SCREEN_TITLE} />
         <TeamTitle>
-          <Title>{formatMessage(messages.teamTitle)}</Title>
+          <TitleText>{formatMessage(messages.teamTitle)}</TitleText>
         </TeamTitle>
         <Container>
           <Content>
@@ -95,7 +96,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
             </SearchBarContent>
           </Content>
           <PaySection>
-            <Title>{formatMessage(messages.teamTitle)}</Title>
+            <Title>{formatMessage(messages.payInfo)}</Title>
             <PayIcons>
               {paymentIcons.map((src: string, key: number) =>
                 <Icon {...{ src, key }} />

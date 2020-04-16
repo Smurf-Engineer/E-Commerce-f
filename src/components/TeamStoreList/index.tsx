@@ -66,37 +66,38 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
             <Spin size="large" />
           </LoadingContainer>
         ) : (
-          <React.Fragment>
-            <ListContainer>
-              {arrayList.length ? (
-                arrayList.map((store: any, index: number) => (
-                  <TeamStoreContainer key={index}>
-                    <TeamStoreItem
-                      showNameStore={true}
-                      image={store.banner}
-                      name={store.name}
-                      withShareButton={true}
-                      onItemClick={this.gotoStore(store.shortId)}
-                      idStore={store.shortId}
-                      {...{ formatMessage, openShareModalAction }}
-                    />
-                  </TeamStoreContainer>
-                ))
-              ) : (
-                <Notfound>{formatMessage(messages.notFoundMessage)}</Notfound>
+            <React.Fragment>
+              <ListContainer>
+                {arrayList.length ? (
+                  arrayList.map((store: any, index: number) => (
+                    <TeamStoreContainer key={index}>
+                      <TeamStoreItem
+                        small={true}
+                        showNameStore={true}
+                        image={store.banner}
+                        name={store.name}
+                        withShareButton={true}
+                        onItemClick={this.gotoStore(store.shortId)}
+                        idStore={store.shortId}
+                        {...{ formatMessage, openShareModalAction }}
+                      />
+                    </TeamStoreContainer>
+                  ))
+                ) : (
+                    <Notfound>{formatMessage(messages.notFoundMessage)}</Notfound>
+                  )}
+              </ListContainer>
+              {fullCount > 0 && (
+                <PaginationRow>
+                  <Pagination
+                    current={currentPage}
+                    total={fullCount}
+                    onChange={this.handleChangePage}
+                  />
+                </PaginationRow>
               )}
-            </ListContainer>
-            {fullCount > 0 && (
-              <PaginationRow>
-                <Pagination
-                  current={currentPage}
-                  total={fullCount}
-                  onChange={this.handleChangePage}
-                />
-              </PaginationRow>
-            )}
-          </React.Fragment>
-        )}
+            </React.Fragment>
+          )}
       </Container>
     )
   }

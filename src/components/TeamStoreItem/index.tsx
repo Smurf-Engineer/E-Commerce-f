@@ -22,6 +22,7 @@ interface Props {
   image: string
   idStore?: string
   name?: string
+  small?: boolean
   showNameStore?: boolean
   withShareButton?: boolean
   withEditButton?: boolean
@@ -39,6 +40,7 @@ const TeamStoreItem = ({
   name,
   formatMessage,
   openShareModalAction,
+  small = false,
   showNameStore = false,
   withEditButton = false,
   withShareButton = false,
@@ -85,13 +87,13 @@ const TeamStoreItem = ({
 
   return (
     <Container>
-      <TeamStoreCard>
+      <TeamStoreCard {...{ small }}>
         <CardContent>
           {image ? (
             <StyledImg src={image} onClick={onItemClick} />
           ) : (
-            <TitleName onClick={onItemClick}>{name}</TitleName>
-          )}
+              <TitleName onClick={onItemClick}>{name}</TitleName>
+            )}
           {showNameStore && (
             <BottomContainer>
               <CardTitle>{name}</CardTitle>
