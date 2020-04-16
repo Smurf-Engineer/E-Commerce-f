@@ -19,7 +19,6 @@ import {
   ResultContainer,
   TitleContainer,
   Title,
-  GetSponsored,
   TeamTitle,
   PaySection,
   PayIcons,
@@ -107,9 +106,6 @@ export class SearchTeamstores extends React.Component<Props, {}> {
             {!searchString && (
               <TitleContainer>
                 <Title>{formatMessage(messages.featuredTeamStoresLabel)}</Title>
-                <GetSponsored>
-                  {formatMessage(messages.getSponsoredLabel)}
-                </GetSponsored>
               </TitleContainer>
             )}
             <div
