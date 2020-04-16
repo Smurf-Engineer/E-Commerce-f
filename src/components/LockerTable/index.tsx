@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import get from 'lodash/get'
+import { DropPricingModal } from '../DropPricingModal'
 import messsages from './messages'
 import {
   Table,
@@ -35,10 +36,14 @@ interface Header {
 }
 
 const headerTitles: Header[] = [
-  { message: '', width: 40, tabletWidth: 45 },
-  { message: 'regularPrice', width: 15, tabletWidth: 15 },
-  { message: 'fixedPrice', width: 15, tabletWidth: 15, withHelp: true },
-  { message: 'visible', width: 15, tabletWidth: 15 },
+  { message: '', width: 5, tabletWidth: 5 },
+  { message: '', width: 20, tabletWidth: 20 },
+  { message: '', width: 10, tabletWidth: 10 },
+  { message: '', width: 10, tabletWidth: 10 },
+  { message: 'regularPrice', width: 10, tabletWidth: 10 },
+  { message: 'fixedPrice', width: 10, tabletWidth: 10, withHelp: true },
+  { message: 'quantity', width: 10, tabletWidth: 10 },
+  { message: 'visible', width: 10, tabletWidth: 10 },
   { message: '', width: 15, tabletWidth: 10 }
 ]
 
@@ -61,9 +66,14 @@ interface Props {
 }
 
 class LockerTable extends React.PureComponent<Props, {}> {
+  state = { pricingModalOpen: false }
   getTierPrice = (prices: PriceRange[], range = '2-5'): number => {
     const index = findIndex(prices, ({ quantity }) => quantity === range)
     return index < 0 ? prices[prices.length - 1].price : prices[index].price
+  }
+
+  onTogglePriceModal = () => {
+    this.setState({ pricingModalOpen: !this.state.pricingModalOpen } as any)
   }
 
   moveRow = (dragIndex: number, hoverIndex: number) => {
@@ -190,13 +200,20 @@ class LockerTable extends React.PureComponent<Props, {}> {
                   {message ? formatMessage(messsages[message]) : ''}
                 </Title>
                 {withHelp && isFixed && (
-                  <Question onClick={this.openInfo} type="question-circle" />
+                  <Question
+                    onClick={this.onTogglePriceModal}
+                    type="question-circle"
+                  />
                 )}
               </Cell>
             )
           )}
         </HeaderRow>
         {renderTable}
+        <DropPricingModal
+          toggleModal={this.onTogglePriceModal}
+          {...{ formatMessage, pricingModalOpen: this.state.pricingModalOpen }}
+        />
       </Table>
     )
   }

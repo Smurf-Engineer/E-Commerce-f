@@ -138,7 +138,7 @@ export default defineMessages({
   },
   updatePayment: {
     id: 'components.OrderDetails.updatePayment',
-    defaultMessage: 'Update your payment information'
+    defaultMessage: 'Edit Order'
   },
   messageRetail: {
     id: 'components.OrderDetails.messageRetail',
@@ -151,5 +151,11 @@ export default defineMessages({
     defaultMessage:
       // tslint:disable-next-line:max-line-length
       '<p>We’ve received your team store order and are working on it now. All customized items are made to order and cannot be changed once the ordering period has closed and your order enters the production process. However, if necessary, you have the opportunity to edit your order during the ordering period. Please note that removing items from your order may affect the pricing for others. Please contact our customer service team with any questions. </p> <p>When ordering on a team store, payment method is validated at the time the order is placed.  Payment, however, will be taken after the ordering period has closed and all eligible discounts have been applied. This way, everyone gets the same low price regardless of when they placed their order during the ordering period.</p> <p>All orders will be shipped via FedEx International Priority. A signature is required by default for the security of your order. We will send you a fulfillment notice with tracking about 2-3 days prior to your estimated delivery date.</p>'
+  },
+  paymentIssue: {
+    id: 'components.OrderDetails.paymentIssue',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'We encountered a problem when attemping to process your payment. Use the <strong>EDIT</strong> button below to update your payment information and complete the checkout once again'
   }
 })

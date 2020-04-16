@@ -64,5 +64,9 @@ export default defineMessages({
   statusUpdated: {
     id: 'components.OrdersList.statusUpdated',
     defaultMessage: 'Status updated!'
+  },
+  estimatedDate: {
+    id: 'components.OrdersList.estimatedDate',
+    defaultMessage: 'Est. Delivery Date'
   }
 })

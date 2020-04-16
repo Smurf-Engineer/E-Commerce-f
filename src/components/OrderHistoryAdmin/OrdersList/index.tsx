@@ -111,6 +111,12 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
+              id={'estimated_date'}
+              label={formatMessage(messages.estimatedDate)}
+              sort={orderBy === 'estimated_date' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
               id={'users.id'}
               label={formatMessage(messages.clientId)}
               sort={orderBy === 'users.id' ? sort : 'none'}
@@ -199,6 +205,7 @@ const OrdersList = ({
         netsuiteAttempts,
         firstName,
         lastName,
+        estimatedDate,
         cutoffDate
       }: OrderHistory,
       index: number
@@ -226,6 +233,7 @@ const OrdersList = ({
             clientId,
             firstName,
             pendingChecks,
+            estimatedDate,
             lastName,
             onOrderClick,
             trackingNumber,

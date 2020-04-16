@@ -42,7 +42,9 @@ import {
   LoadingContainer,
   OrderActions,
   DeleteButton,
-  StyledText
+  StyledText,
+  ErrorMessage,
+  Paragraph
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -211,6 +213,15 @@ export class OrderDetails extends React.Component<Props, {}> {
       )
     return (
       <Container>
+        {status === PAYMENT_ISSUE && (
+          <ErrorMessage>
+            <Paragraph
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.paymentIssue)
+              }}
+            />
+          </ErrorMessage>
+        )}
         <ViewContainer onClick={handleOnReturn}>
           <Icon type="left" />
           <span>{formatMessage(getBackMessage)}</span>
