@@ -1535,11 +1535,10 @@ export interface HomepageCarousel {
   secondarySlideDuration: number
 }
 
-<<<<<<< HEAD
 export interface PaymentIntent {
   paymentClientSecret: string
   intentId: string
-=======
+}
 export interface UserDiscount {
   text: string
   value: string
