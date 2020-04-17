@@ -137,6 +137,7 @@ export interface Product {
   collections: number
   isTopProduct: boolean
   relatedItemTag?: string
+  customLink?: string
   categoryName?: string
   details: string | string[]
   specs: string
