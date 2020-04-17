@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="20px" viewBox="0 0 12 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Icon/ DragDrop</title>
+    <desc>Created with Sketch.</desc>
+    <g id="2.-DesignLAB" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2.-DesignLAB--Text" transform="translate(-23.000000, -366.000000)" fill="#8C8C8C">
+            <g id="Side-menu" transform="translate(0.000000, 119.000000)">
+                <g id="Drag-and-drop-layer" transform="translate(17.000000, 217.000000)">
+                    <path d="M8,46 C9.105,46 10,46.895 10,48 C10,49.105 9.105,50 8,50 C6.895,50 6,49.105 6,48 C6,46.895 6.895,46 8,46 Z M16,46 C17.105,46 18,46.895 18,48 C18,49.105 17.105,50 16,50 C14.895,50 14,49.105 14,48 C14,46.895 14.895,46 16,46 Z M8,38 C9.105,38 10,38.895 10,40 C10,41.105 9.105,42 8,42 C6.895,42 6,41.105 6,40 C6,38.895 6.895,38 8,38 Z M16,38 C17.105,38 18,38.895 18,40 C18,41.105 17.105,42 16,42 C14.895,42 14,41.105 14,40 C14,38.895 14.895,38 16,38 Z M8,30 C9.105,30 10,30.895 10,32 C10,33.105 9.105,34 8,34 C6.895,34 6,33.105 6,32 C6,30.895 6.895,30 8,30 Z M16,30 C17.105,30 18,30.895 18,32 C18,33.105 17.105,34 16,34 C14.895,34 14,33.105 14,32 C14,30.895 14.895,30 16,30 Z" id="Icon/-DragDrop"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
