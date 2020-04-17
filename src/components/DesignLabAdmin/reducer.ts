@@ -4,28 +4,21 @@
 
 import { fromJS } from 'immutable'
 import { Reducer } from '../../types/common'
-import {
-  SET_DATA,
-  SET_DELIVERY_DAYS,
-  SET_PLAYLIST,
-  SET_CUTOFF_DAYS
-} from './constants'
+import { SET_DATA, SET_DELIVERY_DAYS, SET_PLAYLIST } from './constants'
 
 export const initialState = fromJS({
   loading: false,
   tutorialPlaylistChanged: false,
   deliveryDaysChanges: false,
   tutorialPlaylist: '',
-  deliveryDays: 0,
-  cutOffDays: 0,
-  cutOffDaysChanges: false
+  deliveryDays: 0
 })
 
 const designLabAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_DATA:
-      const { deliveryDays, tutorialPlaylist, cutOffDays } = action.data
-      return state.merge({ deliveryDays, tutorialPlaylist, cutOffDays })
+      const { deliveryDays, tutorialPlaylist } = action.data
+      return state.merge({ deliveryDays, tutorialPlaylist })
     case SET_DELIVERY_DAYS:
       return state.merge({
         deliveryDays: action.value,
@@ -35,11 +28,6 @@ const designLabAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         tutorialPlaylist: action.value,
         tutorialPlaylistChanged: true
-      })
-    case SET_CUTOFF_DAYS:
-      return state.merge({
-        cutOffDays: action.value,
-        cutOffDaysChanges: true
       })
     default:
       return state
