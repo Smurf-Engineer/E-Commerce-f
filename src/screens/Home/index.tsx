@@ -252,7 +252,7 @@ export class Home extends React.Component<Props, {}> {
             </SearchBarContent>
           </SearchContainer>
           <div
-            ref={(input) => {
+            ref={input => {
               this.stepInput = input
             }}
           >
@@ -319,10 +319,7 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(Home)
 
 export default HomeEnhance

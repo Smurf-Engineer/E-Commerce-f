@@ -109,7 +109,7 @@ interface Props {
 }
 
 export class DesignSearchAdmin extends React.Component<Props, {}> {
-  debounceSearchCode = debounce((value) => this.handleOnchange(value), 300)
+  debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
   componentWillMount() {
     const { user } = this.props
     if (typeof window !== 'undefined' && !user) {
@@ -425,14 +425,11 @@ const DesignSearchAdminEnhance = compose(
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
   graphql(generatePdfMutation, { name: 'generatePdf' }),
-  connect(
-    mapStateToProps,
-    {
-      ...designSearchActions,
-      uploadProDesignAction: uploadProDesign,
-      restoreUserSessionAction: restoreUserSession
-    }
-  ),
+  connect(mapStateToProps, {
+    ...designSearchActions,
+    uploadProDesignAction: uploadProDesign,
+    restoreUserSessionAction: restoreUserSession
+  }),
   getFonts,
   withApollo
 )(DesignSearchAdmin)
