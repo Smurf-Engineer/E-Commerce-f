@@ -110,6 +110,7 @@ interface Props {
   setTransitionAction: (section: string, transition: string) => void
 }
 
+const MAX_ITEMS = 8
 class HomepageAdmin extends React.Component<Props, {}> {
   async componentDidMount() {
     const {
@@ -461,7 +462,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
     } = this.props
     const currentSection =
       section === Sections.MAIN_HEADER ? mainHeader : secondaryHeader
-    if (currentSection.length < 6) {
+    if (currentSection.length < MAX_ITEMS) {
       const newPlaceholder = {
         ...EMPTY_HEADER,
         sport_id: sportId || null,
@@ -650,10 +651,7 @@ const HomepageAdminEnhance = compose(
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
   updateProductTilesMutation,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(HomepageAdmin)
 
 export default HomepageAdminEnhance

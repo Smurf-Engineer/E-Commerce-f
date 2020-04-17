@@ -79,10 +79,22 @@ export const getTextCanvasElement = el => {
   return element
 }
 
-export const getClipArtCanvasElement = el => {
-  const { id, fill, stroke, strokeWidth } = el
+export const downloadSVG = async url => {
+  const response = await fetch(url)
+  if (response.ok) {
+    const svg = await response.text()
+    return svg
+  }
+  return ''
+}
+
+export const getClipArtCanvasElement = async el => {
+  const { id, fill, stroke, strokeWidth, fileUrl } = el
+  const svg = await downloadSVG(fileUrl)
   const element = {
     id,
+    src: fileUrl,
+    svg,
     fill: fill || BLACK,
     stroke: stroke || BLACK,
     strokeWidth: strokeWidth || 0
@@ -91,13 +103,13 @@ export const getClipArtCanvasElement = el => {
 }
 
 export const getImageCanvas = el => {
-  const { id, scaleX, scaleY, width, height, src } = el
+  const { id, scaleX, scaleY, width, height, src: srcImage, fileUrl } = el
   const element = {
     id,
     scaleX,
     scaleY,
     imageSize: { width, height },
-    src
+    src: srcImage || fileUrl
   }
   return element
 }

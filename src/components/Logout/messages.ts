@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'components.Logout.myAccountLabel',
     defaultMessage: 'My Account'
   },
-  profileSettingsLabel: {
-    id: 'components.Logout.profileSettingsLabel',
-    defaultMessage: 'Profile Settings'
+  myTeamStoresLabel: {
+    id: 'components.Logout.myTeamStoresLabel',
+    defaultMessage: 'My Team Stores'
   },
   logoutLabel: {
     id: 'components.Logout.logoutLabel',

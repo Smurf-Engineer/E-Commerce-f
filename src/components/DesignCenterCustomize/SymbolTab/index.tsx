@@ -15,9 +15,15 @@ import OptionText from '../../OptionText'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import TextEditor from '../TextEditor'
 import Symbol from '../ClipArt'
-import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
+import {
+  QueryProps,
+  ClipArt,
+  CanvasElement,
+  PositionSize
+} from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
+import dragDropIcon from '../../../assets/dragdrop.svg'
 import backIcon from '../../../assets/leftarrow.svg'
 import {
   Container,
@@ -33,8 +39,21 @@ import {
   List,
   Loading,
   NotFound,
-  LockContainer
+  LockContainer,
+  AddTextButton,
+  LayersText,
+  ClipartsLayers,
+  DeleteLayer,
+  EditLayer,
+  Layer,
+  ClipartPrev,
+  ClipartLeft,
+  EmptyElements,
+  DragIcon
 } from './styledComponents'
+import PositionResize from '../PositionResize'
+import orderBy from 'lodash/orderBy'
+import Draggable from '../../Draggable'
 
 interface Data extends QueryProps {
   clipArts: ClipArt[]
@@ -46,6 +65,15 @@ interface Props {
   selectedItem: number
   disableTooltip: boolean
   colorsList: any
+  elements: {
+    [id: string]: CanvasElement
+  }
+  activeEl: PositionSize
+  hoverBlurLayer: (id: string, hover: boolean) => void
+  moveLayer: (id: string, index: number) => void
+  onDeleteLayer: (id: string) => void
+  onSelectEl: (id: string, typeEl?: string) => void
+  onPositionChange: (data: PositionSize, type: string) => void
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (
     url: string,
@@ -65,15 +93,19 @@ class SymbolTab extends React.PureComponent<Props, {}> {
   )
   state = {
     option: 0,
-    page: 0
+    page: 0,
+    addSymbol: false
   }
 
   render() {
-    const { page, option } = this.state
+    const { page, option, addSymbol } = this.state
     const {
       data: { loading, clipArts },
       selectedElement,
+      elements = {},
       formatMessage,
+      activeEl,
+      onPositionChange,
       selectedItem,
       colorsList
     } = this.props
@@ -100,24 +132,61 @@ class SymbolTab extends React.PureComponent<Props, {}> {
         <Spin />
       </Loading>
     )
+    const layersArray = Object.keys(elements).map((id: string) => elements[id])
+    const elementsOrdered = orderBy(layersArray, ['index'], ['desc'])
+    const arrayElements = elementsOrdered.map(
+      ({ fill, stroke, strokeWidth, svg, id }, index) => (
+        <Draggable
+          {...{ id, index }}
+          index={id}
+          key={index}
+          section="clipartLayers"
+          onDropRow={this.handleMoveLayer}
+        >
+          <Layer
+            {...{ id }}
+            onMouseEnter={this.hoverLayer}
+            onMouseLeave={this.blurLayer}
+          >
+            <DragIcon src={dragDropIcon} />
+            <ClipartLeft>
+              <ClipartPrev
+                {...{ fill, stroke, strokeWidth }}
+                dangerouslySetInnerHTML={{
+                  __html: svg
+                }}
+              />
+            </ClipartLeft>
+            <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+              {formatMessage(messages.delete)}
+            </DeleteLayer>
+            <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+              {formatMessage(messages.edit)}
+            </EditLayer>
+          </Layer>
+        </Draggable>
+      )
+    )
 
     return (
       <Container>
-        <Header>
-          <Row onClick={this.changePage(0, 0)}>
-            {!!page && <ArrowIcon src={backIcon} />}
-            <Title>
-              <FormattedMessage
-                {...messages[selectedElement ? 'editSymbol' : 'addSymbol']}
-              />
-            </Title>
-          </Row>
-          {selectedElement && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
-        </Header>
+        {(selectedElement || (!page && addSymbol)) && (
+          <Header>
+            <Row onClick={this.changePage(0, 0)}>
+              <ArrowIcon src={backIcon} />
+              <Title>
+                <FormattedMessage
+                  {...messages[page ? 'editSymbol' : 'backToLayers']}
+                />
+              </Title>
+            </Row>
+            {selectedElement && (
+              <LockContainer onClick={this.handleOnLockElement}>
+                <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
+              </LockContainer>
+            )}
+          </Header>
+        )}
         {selectedElement ? (
           <SwipeableViews disabled={true} index={page}>
             <div>
@@ -132,6 +201,10 @@ class SymbolTab extends React.PureComponent<Props, {}> {
                 color={selectedElement.stroke}
                 selected={!!selectedElement.strokeWidth}
               />
+              <PositionResize
+                {...{ activeEl }}
+                handleChange={onPositionChange}
+              />
             </div>
             <TextEditor
               {...{ option, formatMessage, colorsList }}
@@ -143,18 +216,84 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           </SwipeableViews>
         ) : (
           <div>
-            <InputWrapper>
-              <Input
-                onChange={this.handleOnUpdateText}
-                placeholder={formatMessage(messages.searchInputPlaceholder)}
-                addonAfter={<Button onClick={() => {}}>Search</Button>}
-              />
-            </InputWrapper>
-            <List height={50}>{symbolsList}</List>
+            {addSymbol ? (
+              <>
+                <InputWrapper>
+                  <Input
+                    onChange={this.handleOnUpdateText}
+                    placeholder={formatMessage(messages.searchInputPlaceholder)}
+                    addonAfter={<Button onClick={() => {}}>Search</Button>}
+                  />
+                </InputWrapper>
+                <List height={50}>{symbolsList}</List>
+              </>
+            ) : (
+              <>
+                <AddTextButton onClick={this.addSymbol}>
+                  {formatMessage(messages.addClipart)}
+                </AddTextButton>
+                <LayersText>{formatMessage(messages.clipartLayers)}</LayersText>
+                <ClipartsLayers>
+                  {arrayElements.length ? (
+                    arrayElements
+                  ) : (
+                    <EmptyElements>
+                      {formatMessage(messages.empty)}
+                    </EmptyElements>
+                  )}
+                </ClipartsLayers>
+              </>
+            )}
           </div>
         )}
       </Container>
     )
+  }
+
+  handleMoveLayer = (dragId: string, dropId: string) => {
+    const { elements, moveLayer } = this.props
+    const { index } = elements[dropId]
+    moveLayer(dragId, index)
+  }
+
+  addSymbol = () => {
+    this.setState({ addSymbol: true })
+  }
+
+  goBackToLayer = () => {
+    this.setState({ addSymbol: false })
+  }
+
+  hoverLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, true)
+  }
+
+  blurLayer = (evt: React.MouseEvent<EventTarget>) => {
+    const { hoverBlurLayer } = this.props
+    const {
+      currentTarget: { id }
+    } = evt
+    hoverBlurLayer(id, false)
+  }
+
+  onSelectLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onSelectEl } = this.props
+    onSelectEl(id, 'path')
+  }
+
+  onDeleteLayer = (event: React.MouseEvent<EventTarget>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { onDeleteLayer } = this.props
+    onDeleteLayer(id)
   }
 
   handleOnUpdateText = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -165,8 +304,14 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     this.searchrAfterTyping(value)
   }
 
-  changePage = (page: number, option: number) => () =>
-    this.setState({ page, option })
+  changePage = (page: number, option: number) => () => {
+    const { page: oldPage } = this.state
+    if (!page && !oldPage) {
+      const { onSelectEl } = this.props
+      onSelectEl('', 'path')
+    }
+    this.setState({ page, option, addSymbol: false })
+  }
 
   handleOnSelectFill = (fillColor: string) => {
     const { selectedElement, onSelectArtFormat, onApplyArt } = this.props

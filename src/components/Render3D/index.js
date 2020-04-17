@@ -5,6 +5,8 @@ import Icon from 'antd/lib/icon'
 import FontFaceObserver from 'fontfaceobserver'
 import isEqual from 'lodash/isEqual'
 import has from 'lodash/has'
+import cloneDeep from 'lodash/cloneDeep'
+import find from 'lodash/find'
 import get from 'lodash/get'
 import reverse from 'lodash/reverse'
 import shortid from 'shortid'
@@ -192,7 +194,7 @@ class Render3D extends PureComponent {
           outputSvg,
           outputPng
         } = design
-        const { colorAccessories, isPhone } = this.props
+        const { colorAccessories, asImage } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -245,8 +247,8 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign || (outputSvg && fromImage) || isPhone) {
-          if ((actualImage || (outputSvg && !outputPng)) && !isPhone) {
+        if (proDesign || (outputSvg && fromImage) || asImage) {
+          if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
             const imageCanvas = document.createElement('canvas')
             canvg(
               imageCanvas,
@@ -400,7 +402,7 @@ class Render3D extends PureComponent {
     fromImage = false,
     colorAccessories = {}
   ) => {
-    const { stitchingValue, isPhone } = this.props
+    const { stitchingValue, asImage } = this.props
 
     const {
       obj,
@@ -559,7 +561,7 @@ class Render3D extends PureComponent {
               children[brandingIndex].material = brandingMaterial
             }
             /* Object Conig */
-            const verticalPosition = isPhone ? PHONE_POSITION : 0
+            const verticalPosition = asImage ? PHONE_POSITION : 0
             object.position.y = verticalPosition
             object.name = MESH_NAME
             this.scene.add(object)
@@ -579,8 +581,8 @@ class Render3D extends PureComponent {
     fromImage = false
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
-    const { stitchingValue, isPhone } = this.props
-    if (design.canvas && isPhone) {
+    const { stitchingValue, asImage } = this.props
+    if (design.canvas && asImage) {
       await this.getFontsFromCanvas(design.canvas)
     }
     const loadedTextures = await this.loadTextures(
@@ -668,7 +670,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign && !fromImage && !isPhone) {
+          if (!proDesign && !fromImage && !asImage) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -693,7 +695,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-          if (!proDesign && !fromImage && !isPhone) {
+          if (!proDesign && !fromImage && !asImage) {
             areas.forEach(
               (map, index) =>
                 (children[
@@ -765,7 +767,7 @@ class Render3D extends PureComponent {
           }
 
           /* Object Conig */
-          const verticalPosition = isPhone ? PHONE_POSITION : 0
+          const verticalPosition = asImage ? PHONE_POSITION : 0
           object.position.y = verticalPosition
           object.name = MESH_NAME
           this.scene.add(object)
@@ -851,8 +853,11 @@ class Render3D extends PureComponent {
       await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
-      this.canvasTexture.getObjects().forEach(el => {
-        el.moveTo(indexes[el.id])
+      const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
+      temporalCanvasTexture.forEach(el => {
+        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(
+          indexes[el.id]
+        )
       })
       this.canvasTexture.renderAll()
       return true
