@@ -21,6 +21,12 @@ export const ProReviewTitle = styled.div`
   justify-content: space-between;
   margin-top: 36px;
   margin-right: 32px;
+  @media (max-width: 480px) {
+    flex-flow: column;
+    margin-top: 0px;
+    margin-right: 0px;
+    align-items: flex-start;
+  }
 `
 
 export const ProDesignReviewContent = styled.div`
@@ -110,13 +116,25 @@ export const ContinueButton = styled(Button)`
   }
 `
 
-export const Icon = styled.img``
+export const Icon = styled.img`
+@media (max-width: 480px) {
+  max-width: 123px;
+  height: 24px;
+  object-fit: contain;
+}
+`
 
 export const RightTitle = styled.div`
   justify-content: space-between;
   display: flex;
   align-items: center;
   width: 328px;
+  @media (max-width: 480px) {
+    font-size: 14px;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 18px;
+  }
 `
 
 export const Content = styled.div`
@@ -124,8 +142,16 @@ export const Content = styled.div`
   margin: 24px 0;
   justify-content: space-between;
   align-items: flex-start;
+  @media (max-width: 480px) {
+    flex-flow: column;
+  }
 `
 
 export const DesignImage = styled.img`
   max-width: 385px;
+  width: 100%;
+  @media (max-width: 480px) {
+    flex-flow: column;
+    margin-bottom: 28px;
+  }
 `
