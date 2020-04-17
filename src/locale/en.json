@@ -1525,7 +1525,5 @@
   "components.UsersAdmin.userAdded": "{name} added!.",
   "components.UsersAdmin.invalidEmail": "Invalid email, please verify.",
   "screens.TeamstoreTypes.creditCard": "Credit Card as payment method.",
-  "components.StoreForm.fixedMode": "FIXED DATE",
-  "components.DesignLabAdmin.cutOffDays": "Scheduled Store",
-  "components.DesignLabAdmin.currentCutOffDays": "Delivery days"
+  "components.StoreForm.fixedMode": "FIXED DATE"
 }
