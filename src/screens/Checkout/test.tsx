@@ -5,12 +5,16 @@ import checkoutReducer, { initialState } from './reducer'
 import {
   setSelectedAddressAction,
   showAddressFormAction,
-  showBillingAddressFormAction
+  showBillingAddressFormAction,
+  satPaymentIdAction,
+  removeClientSecretAction
 } from './actions'
 import {
   SET_SELECTED_ADDRESS,
   SHOW_ADDRESS_FORM,
-  SHOW_BILLING_ADDRESS_FORM
+  SHOW_BILLING_ADDRESS_FORM,
+  SET_PAYMENT_ID,
+  REMOVE_CLIENT_SECRET
 } from './constants'
 
 describe(' Checkout Screen', () => {
@@ -51,6 +55,22 @@ describe(' Checkout Screen', () => {
       expect(showBillingAddressFormAction(show)).toEqual({
         type,
         show
+      })
+    })
+    it('satPaymentIdAction', () => {
+      const type = SET_PAYMENT_ID
+      const paymentClientSecret = 'payment_client'
+      const intentId = 'intent_id'
+      expect(satPaymentIdAction(paymentClientSecret, intentId)).toEqual({
+        type,
+        paymentClientSecret,
+        intentId
+      })
+    })
+    it('removeClientSecretAction', () => {
+      const type = REMOVE_CLIENT_SECRET
+      expect(removeClientSecretAction()).toEqual({
+        type
       })
     })
   })
@@ -146,6 +166,60 @@ describe(' Checkout Screen', () => {
 
       const billingSaveValue = checkoutState.get('billingSave')
       expect(billingSaveValue).toBeTruthy()
+    })
+  })
+  describe('SET_PAYMENT_ID', () => {
+    it('Handles undefined value in paymentClientSecret', () => {
+      const customInitialValue = initialState.get('paymentClientSecret')
+      expect(customInitialValue).not.toBeUndefined()
+    })
+    it('Handles initial value in paymentClientSecret', () => {
+      const customInitialValue = initialState.get('paymentClientSecret')
+      expect(customInitialValue).toBe('')
+    })
+    it('Handles undefined value in intentId', () => {
+      const customInitialValue = initialState.get('intentId')
+      expect(customInitialValue).not.toBeUndefined()
+    })
+    it('Handles initial value in intentId', () => {
+      const customInitialValue = initialState.get('intentId')
+      expect(customInitialValue).toBe('')
+    })
+    it('Handles custom value in paymentClientSecret and intentId', () => {
+      const paymentClientSecret = 'payment_client'
+      const intentId = 'intent_id'
+      const checkoutState = checkoutReducer(
+        initialState,
+        satPaymentIdAction(paymentClientSecret, intentId)
+      )
+      const customPaymentClientValue = checkoutState.get('paymentClientSecret')
+      const customIntentIdValue = checkoutState.get('intentId')
+
+      expect(customPaymentClientValue).toBe(paymentClientSecret)
+      expect(customIntentIdValue).toBe(intentId)
+    })
+  })
+  describe('REMOVE_CLIENT_SECRET', () => {
+    it('Handles custom value in paymentClientSecret and intentId', () => {
+      const paymentClientSecret = 'payment_client'
+      const intentId = 'intent_id'
+      const checkoutState = checkoutReducer(
+        initialState,
+        satPaymentIdAction(paymentClientSecret, intentId)
+      )
+
+      const removedClientState = checkoutReducer(
+        checkoutState,
+        removeClientSecretAction()
+      )
+
+      const customPaymentClientValue = removedClientState.get(
+        'paymentClientSecret'
+      )
+      const customIntentIdValue = removedClientState.get('intentId')
+
+      expect(customPaymentClientValue).toBe('')
+      expect(customIntentIdValue).toBe('')
     })
   })
 })
