@@ -53,6 +53,14 @@ export default defineMessages({
     id: 'screens.DesignSearch.designNameLabel',
     defaultMessage: 'Design Name: {name}'
   },
+  proAssistNotes: {
+    id: 'screens.DesignSearch.proAssistNotes',
+    defaultMessage: 'PROASSIST NOTES'
+  },
+  add: {
+    id: 'screens.DesignSearch.add',
+    defaultMessage: 'ADD +'
+  },
   preflight: {
     id: 'screens.DesignSearch.preflight',
     defaultMessage: 'Pre Flight check'

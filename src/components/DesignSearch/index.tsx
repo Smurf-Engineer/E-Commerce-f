@@ -42,8 +42,9 @@ import {
   updateDesignMutation,
   getDesignSearchCode,
   getFonts,
+  generatePdfMutation,
   togglePreflight,
-  generatePdfMutation
+  addNoteMutation
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -73,8 +74,15 @@ interface Props {
   fontsData: any
   designSearchCodes: string[]
   creatingPdf: boolean
+  openNotes: boolean
+  addingNote: boolean
+  note: string
   loadingPreflight: boolean
   // redux actions
+  addNoteAction: (variables: {}) => Promise<MessagePayload>
+  setNoteAction: (text: string) => void
+  openNoteAction: (openNotes: boolean) => void
+  setLoadingNote: (loading: boolean) => void
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
   restoreUserSessionAction: () => void
@@ -101,7 +109,7 @@ interface Props {
 }
 
 export class DesignSearchAdmin extends React.Component<Props, {}> {
-  debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
+  debounceSearchCode = debounce((value) => this.handleOnchange(value), 300)
   componentWillMount() {
     const { user } = this.props
     if (typeof window !== 'undefined' && !user) {
@@ -142,6 +150,11 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       changes,
       setStitchingColorAction,
       colorAccessories,
+      openNotes,
+      addingNote,
+      note,
+      setNoteAction,
+      openNoteAction,
       setColorAction,
       fontsData,
       designSearchCodes,
@@ -170,11 +183,17 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           uploadingThumbnail,
           setUploadingThumbnailAction,
           changes,
-          loadingPreflight,
+          openNotes,
+          addingNote,
+          note,
+          setNoteAction,
+          openNoteAction,
           colorAccessories,
-          creatingPdf
+          creatingPdf,
+          loadingPreflight
         }}
         checkPreflight={this.handleCheckPreflight}
+        handleSaveNote={this.saveNote}
         onSelectStitchingColor={setStitchingColorAction}
         onSelectColor={setColorAction}
         formatMessage={formatMessage}
@@ -220,6 +239,29 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         </Content>
       </Container>
     )
+  }
+
+  saveNote = async () => {
+    const {
+      addNoteAction,
+      note,
+      order: { shortId, code },
+      setLoadingNote
+    } = this.props
+    try {
+      setLoadingNote(true)
+      const response = await addNoteAction({
+        variables: {
+          designId: shortId,
+          text: note
+        }
+      })
+      this.handleOnSearch(code)
+      message.success(get(response, 'data.addDesignNote.message', ''))
+    } catch (e) {
+      setLoadingNote(false)
+      message.error(e.message)
+    }
   }
 
   goToDesignerTool = () => {
@@ -378,15 +420,19 @@ const mapStateToProps = (state: any) => {
 
 const DesignSearchAdminEnhance = compose(
   injectIntl,
+  graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql(togglePreflight, { name: 'checkPreflightAction' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
   graphql(generatePdfMutation, { name: 'generatePdf' }),
-  connect(mapStateToProps, {
-    ...designSearchActions,
-    uploadProDesignAction: uploadProDesign,
-    restoreUserSessionAction: restoreUserSession
-  }),
+  connect(
+    mapStateToProps,
+    {
+      ...designSearchActions,
+      uploadProDesignAction: uploadProDesign,
+      restoreUserSessionAction: restoreUserSession
+    }
+  ),
   getFonts,
   withApollo
 )(DesignSearchAdmin)

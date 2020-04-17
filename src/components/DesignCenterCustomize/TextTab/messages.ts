@@ -64,5 +64,29 @@ export default defineMessages({
   leadingSpacing: {
     id: 'components.TextTab.leadingSpacing',
     defaultMessage: 'Line Spacing'
+  },
+  addTextHeader: {
+    id: 'components.TextTab.addTextHeader',
+    defaultMessage: '+ ADD TEXT'
+  },
+  textLayers: {
+    id: 'components.TextTab.textLayers',
+    defaultMessage: 'Text Layers'
+  },
+  delete: {
+    id: 'components.TextTab.delete',
+    defaultMessage: 'Delete'
+  },
+  edit: {
+    id: 'components.TextTab.edit',
+    defaultMessage: 'Edit'
+  },
+  empty: {
+    id: 'components.TextTab.empty',
+    defaultMessage: `Here is where your text layers will appear. Click the button above to add a layer.`
+  },
+  backToLayers: {
+    id: 'components.TextTab.backToLayers',
+    defaultMessage: `Back to layers`
   }
 })

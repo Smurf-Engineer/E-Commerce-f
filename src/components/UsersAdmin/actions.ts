@@ -8,10 +8,12 @@ import {
   RESET_DATA,
   SET_SEARCH_TEXT,
   ON_INPUT_CHANGE,
+  SET_DESIGN,
   ON_CHANGE_SECTION,
   ON_TOGGLE_MODAL,
   ON_RESET_MODAL,
-  SET_LOADING
+  SET_LOADING,
+  CHANGE_NOTE
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -34,6 +36,16 @@ export const resetDataAction = (): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const setDesignSelected = (designId: string) => ({
+  type: SET_DESIGN,
+  designId
+})
+
+export const setNoteText = (text: string) => ({
+  type: CHANGE_NOTE,
+  text
 })
 
 export const onInputChangeAction = (id: string, value: string) => ({

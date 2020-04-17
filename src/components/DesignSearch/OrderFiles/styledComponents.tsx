@@ -2,9 +2,17 @@
  * Styled Components - Created by miguelcanobbio on 16/08/18.
  */
 import styled from 'styled-components'
+import {
+  GRAY_DARK,
+  GRAY_LIGHTEST,
+  WHITE,
+  RED,
+  DARKER_GRAY,
+  GRAY_SNOW
+} from '../../../theme/colors'
 import icon from 'antd/lib/icon'
+import { BLACK } from '../../../screens/DesignerTool/constants'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
-import { GRAY_DARK, GRAY_LIGHTEST, WHITE, RED } from '../../../theme/colors'
 
 interface DivProps {
   enable: boolean
@@ -16,6 +24,7 @@ export const Container = styled.div`
   flex: 1;
   padding-top: 48px;
   margin-bottom: 10vh;
+  flex-flow: column;
 `
 export const RenderContainer = styled.div`
   width: 600px;
@@ -126,6 +135,63 @@ export const MessageContainer = styled.div`
 
 export const ModelNameContainer = styled.div`
   margin-bottom: 15px;
+`
+
+export const ProAssistNotes = styled.div`
+  width: 100%;
+  margin-bottom: 18px;
+`
+
+export const NoteContainer = styled.div`
+  text-align: left;
+  margin-bottom: 12px;
+`
+
+export const NoteTitle = styled.div`
+  font-style: italic;
+  font-size: 13px;
+  color: ${DARKER_GRAY};
+`
+
+export const NoteText = styled.div``
+
+export const ProAssistTitle = styled.div`
+  display: flex;
+  font-weight: bold;
+  max-width: 246px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+`
+
+export const DataContainer = styled.div``
+
+export const SideData = styled.div`
+  width: 268px;
+`
+
+export const ProAssistBackground = styled.div`
+  max-height: 190px;
+  overflow-y: scroll;
+  padding: 8px 8px 0;
+  background: ${GRAY_SNOW};
+`
+
+export const FlexContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`
+
+export const AddNote = styled.div`
+  border: 1px solid ${BLACK};
+  padding: 4px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.25s;
+  &:hover {
+    background: ${GRAY_LIGHTEST};
+  }
 `
 
 export const PreflightDiv = styled.div`

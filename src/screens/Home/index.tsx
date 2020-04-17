@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { compose, withApollo } from 'react-apollo'
 import get from 'lodash/get'
 import * as thunkActions from './thunkActions'
-import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import * as homeActions from './actions'
@@ -21,9 +21,9 @@ import {
   //  GetStartedButton,
   SearchContainer,
   SearchBarContent,
-  PropositionTilesContainer,
-  PropositionTile,
-  SubText,
+  // PropositionTilesContainer,
+  // PropositionTile,
+  // SubText,
   LoadingContainer,
   ImageSkeleton,
   Spinner,
@@ -41,7 +41,7 @@ import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
-import messages from './messages'
+// import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import {
@@ -252,7 +252,7 @@ export class Home extends React.Component<Props, {}> {
             </SearchBarContent>
           </SearchContainer>
           <div
-            ref={input => {
+            ref={(input) => {
               this.stepInput = input
             }}
           >
@@ -273,20 +273,20 @@ export class Home extends React.Component<Props, {}> {
               </Carousel>
             </CarouselContainer>
           )}
-          <PropositionTilesContainer>
+          {/* <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />
               <SubText>{formatMessage(messages.collectionOrCustom)}</SubText>
             </PropositionTile>
-            {/* <PropositionTile>
+            <PropositionTile>
               <FormattedMessage {...messages.fastDeliveryLabel} />
               <SubText>{formatMessage(messages.twoWeeksOrLess)}</SubText>
-            </PropositionTile> */}
+            </PropositionTile>
             <PropositionTile>
               <FormattedMessage {...messages.easyLabel} />
               <SubText>{formatMessage(messages.priceDrop)}</SubText>
             </PropositionTile>
-          </PropositionTilesContainer>
+          </PropositionTilesContainer> */}
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
           <YotpoHome />
         </Container>
@@ -319,7 +319,10 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Home)
 
 export default HomeEnhance
