@@ -6,7 +6,7 @@ import Button from 'antd/lib/button'
 import { GRAY_DARK, RED, GREEN, GREEN_BRIGHT } from '../../theme/colors'
 
 interface StatusProps {
-  online: boolean
+  open: boolean
 }
 
 export const Container = styled.div``
@@ -82,7 +82,7 @@ export const StatusLabel = styled.div`
   margin-bottom: 8px;
   font-size: 16px;
   text-align: center;
-  color: ${({ online }: StatusProps) => (online ? GREEN : RED)};
+  color: ${({ open }: StatusProps) => (open ? GREEN : RED)};
 `
 
 export const ModalButtonsWrapper = styled.div`

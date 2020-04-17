@@ -2,6 +2,12 @@
  * Styled Components - Created by cazarez on 01/03/18.
  */
 import styled from 'styled-components'
+import {
+  WHITE_TRANSPARENT,
+  GRAY_DARK,
+  RED_TRANSPARENT,
+  WHITE
+} from '../../theme/colors'
 
 export const Container = styled.div``
 export const Content = styled.div``
@@ -15,6 +21,11 @@ export const Text = styled.div`
 
 interface HeadRowProps {
   withoutPadding?: boolean
+}
+
+interface ButtonProps {
+  secondary?: boolean
+  maxMargin?: boolean
 }
 
 export const HeadRow = styled.div`
@@ -136,15 +147,30 @@ export const ButtonContainer = styled.div`
   user-select: none;
   display: flex !important;
   align-items: center;
-  margin: 8px;
-  max-width: 119px;
+  margin: ${({ maxMargin }: ButtonProps) => (maxMargin ? '8px' : '4px')};
+  max-width: 140px;
   width: 100%;
 `
 
 export const ActionButton = styled.div`
   user-select: none;
-  background-color: #ffffffb3;
-  color: #5f6062;
+  background-color: ${({ secondary }: ButtonProps) =>
+    secondary ? RED_TRANSPARENT : WHITE_TRANSPARENT};
+  color: ${({ secondary }: ButtonProps) => (secondary ? WHITE : GRAY_DARK)};
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  padding: 6px 16px;
+  width: 100%;
+`
+
+export const CopyButton = styled.div`
+  user-select: none;
+  background-color: #00000075;
+  color: ${WHITE};
   font-size: 12px;
   line-height: 16px;
   display: flex;

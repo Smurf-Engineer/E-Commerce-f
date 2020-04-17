@@ -524,7 +524,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           openSaveDesign: action.open,
           design: action.design,
-          automaticSave: action.automaticSave
+          automaticSave: action.automaticSave,
+          selectedElement: ''
         })
       }
 

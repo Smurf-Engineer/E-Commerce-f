@@ -36,6 +36,11 @@ export const orderSearchQuery = gql`
       zipperColor: zipper_color
       bindingColor: binding_color
       bibColor: bib_brace_color
+      notes {
+        text
+        user
+        createdAt: created_at
+      }
       preflightCheck: preflight_check
     }
   }
@@ -100,6 +105,14 @@ export const getDesignSearchCode = gql`
 export const generatePdfMutation = gql`
   mutation generatePdf($code: String!) {
     generatePdf(code: $code) {
+      message
+    }
+  }
+`
+
+export const addNoteMutation = gql`
+  mutation addDesignNote($designId: String!, $text: String!) {
+    addDesignNote(designId: $designId, text: $text) {
       message
     }
   }

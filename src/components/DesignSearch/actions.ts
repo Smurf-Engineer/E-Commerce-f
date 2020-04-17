@@ -17,6 +17,9 @@ import {
   SET_SEARCH_CODES,
   SET_CREATING_PDF,
   SET_PDF,
+  SET_NOTE,
+  OPEN_NOTES,
+  SET_LOADING_NOTE,
   SET_PREFLIGHT,
   SET_LOADING_PREFLIGHT
 } from './constants'
@@ -49,6 +52,21 @@ export const setLoadingPreflight = (loading: boolean): AnyAction => ({
 export const setOrderAction = (order: OrderSearchResult): AnyAction => ({
   type: SET_ORDER,
   order
+})
+
+export const setNoteAction = (text: string): AnyAction => ({
+  type: SET_NOTE,
+  text
+})
+
+export const openNoteAction = (openNotes: boolean): AnyAction => ({
+  type: OPEN_NOTES,
+  openNotes
+})
+
+export const setLoadingNote = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_NOTE,
+  loading
 })
 
 export const setNotFoundAction = (noAdmin?: boolean): AnyAction => ({
