@@ -83,7 +83,8 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       selectedCountry,
       selectedRegion,
       selectedCountryId,
-      selectedRegionCode
+      selectedRegionCode,
+      selectedCountryName
     } = this.state
 
     return (
@@ -179,6 +180,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               {...{ formatMessage }}
               disabled={!country}
               country={selectedCountryId}
+              countryName={selectedCountryName}
               region={
                 selectedRegion
                   ? `${selectedRegion}-${selectedRegionCode}`
@@ -246,11 +248,16 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     return isPoBox(street) || isApoCity(city)
   }
 
-  handleCountryChange = (value: any, countryId: string) => {
+  handleCountryChange = (
+    value: any,
+    countryId: string,
+    countryName: string
+  ) => {
     const { inputChangeAction } = this.props
     this.setState({
       selectedCountry: value,
       selectedCountryId: countryId,
+      selectedCountryName: countryName,
       selectedRegion: '',
       selectedCity: ''
     })

@@ -312,26 +312,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           }
         } = stripeResponse
 
-        /* isFixedTeamstore
-          ? {
-              paymentMethod: {
-                id: tokenId,
-                card: { id, name, brand, last4, exp_month, exp_year }
-              }
-            } = stripeResponse
-          : {
-              token: {
-                id: tokenId,
-                card: { id, name, brand, last4, exp_month, exp_year }
-              }
-            } = stripeResponse */
-        /* const {
-          token: {
-            id: tokenId,
-            card: { id, name, brand, last4, exp_month, exp_year }
-          }
-        } = stripeResponse */
-
         const cardData: CreditCardData = {
           id,
           name,

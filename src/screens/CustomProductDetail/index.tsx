@@ -458,7 +458,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     textColor="white"
                     {...{ designId, modelSize }}
                     zoomedIn={true}
-                    isPhone={phone}
+                    asImage={phone}
                   />
                   <HowItFits onClick={this.toggleFitsModal(true)}>
                     <FormattedMessage {...messages.howItFits} />

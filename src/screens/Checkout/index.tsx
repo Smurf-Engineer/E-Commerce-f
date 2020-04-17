@@ -89,6 +89,7 @@ interface CartItems {
   designId: string
   designCode: string
   product: Product
+  totalOrder?: number
   itemDetails: CartItemDetail[]
   teamStoreId?: string
 }

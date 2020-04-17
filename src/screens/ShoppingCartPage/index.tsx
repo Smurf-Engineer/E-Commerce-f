@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
@@ -75,6 +75,7 @@ interface CartItems {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   cart: CartItems[]
+  client: any
   showDeleteLastItemModal: boolean
   showReviewDesignModal: boolean
   currentCurrency: string
@@ -121,7 +122,7 @@ interface Props extends RouteComponentProps<any> {
     detailIndex: number,
     quantity: number
   ) => void
-  setInitialData: () => void
+  setInitialData: (query: any) => void
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
@@ -209,8 +210,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   componentDidMount() {
-    const { setInitialData } = this.props
-    setInitialData()
+    const {
+      setInitialData,
+      client: { query }
+    } = this.props
+    setInitialData(query)
   }
 
   componentWillUnmount() {
@@ -386,7 +390,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       })
 
       symbol = currencyPrices[0].shortName
-
+      const teamStoreRange = cartItem.teamStoreId && cartItem.isFixed ? 0 : 1
       return (
         <CartItem
           currentCurrency={currentCurrency || config.defaultCurrency}
@@ -404,7 +408,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           }
           price={
             currencyPrices[
-              cartItem.teamStoreId && !priceRangeToApply ? 1 : priceRangeToApply
+              cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
             ]
           }
           image={
@@ -414,6 +418,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           }
           currencySymbol={symbol}
           cartItem={cartItem}
+          isFixed={cartItem.isFixed}
+          teamStoreItem={cartItem.teamStoreItem}
           handleAddItemDetail={this.handleAddItemDetail}
           handledeleteItemDetail={this.handledeleteItemDetail}
           itemIndex={index}
@@ -562,6 +568,7 @@ const mapStateToProps = (state: any) => {
 }
 
 const ShoppingCartPageEnhance = compose(
+  withApollo,
   injectIntl,
   connect(mapStateToProps, { ...shoppingCartPageActions, ...thunkActions })
 )(ShoppingCartPage)

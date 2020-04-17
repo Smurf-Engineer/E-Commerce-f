@@ -11,7 +11,9 @@ import {
   setLoadingAction,
   onInputChangeAction,
   onChangeSectionAction,
-  onToggleModalAction
+  onToggleModalAction,
+  setNoteText,
+  setDesignSelected
 } from './actions'
 
 import {
@@ -21,7 +23,9 @@ import {
   SET_LOADING,
   ON_INPUT_CHANGE,
   ON_CHANGE_SECTION,
-  ON_TOGGLE_MODAL
+  ON_TOGGLE_MODAL,
+  CHANGE_NOTE,
+  SET_DESIGN
 } from './constants'
 
 describe(' DiscountsAdmin Screen', () => {
@@ -84,6 +88,22 @@ describe(' DiscountsAdmin Screen', () => {
 
       expect(onToggleModalAction()).toEqual({
         type
+      })
+    })
+    it('setNoteText', () => {
+      const type = CHANGE_NOTE
+      const text = 'Test'
+      expect(setNoteText(text)).toEqual({
+        type,
+        text
+      })
+    })
+    it('setDesignSelected', () => {
+      const type = SET_DESIGN
+      const designId = 'Test'
+      expect(setDesignSelected(designId)).toEqual({
+        type,
+        designId
       })
     })
   })
@@ -321,6 +341,48 @@ describe(' DiscountsAdmin Screen', () => {
             )
             const customSectionValue = openModalState.get('openModal')
             expect(customSectionValue).toBe(!value)
+          })
+        })
+      })
+      describe('CHANGE_NOTE', () => {
+        describe('Set note text action', () => {
+          it('Handles undefined value in note', () => {
+            const customInitialValue = initialState.get('note')
+            expect(customInitialValue).not.toBeUndefined()
+          })
+          it('Handles initial value in note', () => {
+            const customInitialValue = initialState.get('note')
+            expect(customInitialValue).toBe('')
+          })
+          it('Handles custom value in note', () => {
+            const value = 'Test'
+            const noteState = usersAdminReducer(
+              initialState,
+              setNoteText(value)
+            )
+            const customNoteValue = noteState.get('note')
+            expect(customNoteValue).toBe(value)
+          })
+        })
+      })
+      describe('SET_DESIGN', () => {
+        describe('Set designId selected action', () => {
+          it('Handles undefined value in designSelected', () => {
+            const customInitialValue = initialState.get('designSelected')
+            expect(customInitialValue).not.toBeUndefined()
+          })
+          it('Handles initial value in designSelected', () => {
+            const customInitialValue = initialState.get('designSelected')
+            expect(customInitialValue).toBe('')
+          })
+          it('Handles custom value in designSelected', () => {
+            const value = 'Test'
+            const noteState = usersAdminReducer(
+              initialState,
+              setDesignSelected(value)
+            )
+            const customDesignValue = noteState.get('designSelected')
+            expect(customDesignValue).toBe(value)
           })
         })
       })

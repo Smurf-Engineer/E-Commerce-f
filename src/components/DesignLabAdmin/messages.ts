@@ -7,11 +7,11 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   deliveryDates: {
     id: 'components.DesignLabAdmin.deliveryDates',
-    defaultMessage: 'On Demand Store'
+    defaultMessage: 'Delivery Dates'
   },
   currentDeliveryDate: {
     id: 'components.DesignLabAdmin.currentDeliveryDate',
-    defaultMessage: 'Delivery days'
+    defaultMessage: 'Current delivery date'
   },
   businessDays: {
     id: 'components.DesignLabAdmin.businessDays',
@@ -28,13 +28,5 @@ export default defineMessages({
   tutorialPlaylist: {
     id: 'components.DesignLabAdmin.tutorialPlaylist',
     defaultMessage: 'Tutorial playlist'
-  },
-  cutOffDays: {
-    id: 'components.DesignLabAdmin.cutOffDays',
-    defaultMessage: 'Scheduled Store'
-  },
-  currentCutOffDays: {
-    id: 'components.DesignLabAdmin.currentCutOffDays',
-    defaultMessage: 'Delivery days'
   }
 })

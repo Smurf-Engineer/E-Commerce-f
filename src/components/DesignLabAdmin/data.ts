@@ -6,7 +6,6 @@ export const getDesignLabInfo = gql`
     getDesignLabInfo {
       deliveryDays: delivery_days
       tutorialPlaylist: tutorial_playlist
-      cutOffDays: cutoff_settings
     }
   }
 `
@@ -31,15 +30,4 @@ export const setPlaylistMutation = graphql(
     }
   `,
   { name: 'setPlaylist' }
-)
-
-export const setCutOffDaysMutation = graphql(
-  gql`
-    mutation setCutOffDays($cutOffDays: Int!) {
-      setCutOffDays(cutOffDays: $cutOffDays) {
-        message
-      }
-    }
-  `,
-  { name: 'setCutOffDays' }
 )
