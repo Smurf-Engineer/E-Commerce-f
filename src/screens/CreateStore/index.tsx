@@ -7,6 +7,7 @@ import { compose, withApollo, graphql } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { FormattedHTMLMessage } from 'react-intl'
 import { connect } from 'react-redux'
+import Modal from 'antd/lib/modal'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import Button from 'antd/lib/button'
@@ -68,7 +69,11 @@ import {
   Pin,
   Corner,
   BulletinInput,
-  DynamicDropLogo
+  DynamicDropLogo,
+  TitleContainer,
+  ModalTitle,
+  InfoBody,
+  buttonStyle
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
@@ -118,12 +123,22 @@ interface Props extends RouteComponentProps<any> {
   bulletin: string
   user: UserType
   cutoffSettings: CutoffData
+  datesEdited: boolean
+  datesEditedTemporal: boolean
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
   changeBulletinAction: (value: string) => void
-  updateStartDateAction: (dateMoment: Moment, date: string) => void
-  updateEndDateAction: (dateMoment: Moment, date: string) => void
+  updateStartDateAction: (
+    dateMoment: Moment,
+    date: string,
+    datesEdited: boolean
+  ) => void
+  updateEndDateAction: (
+    dateMoment: Moment,
+    date: string,
+    datesEdited: boolean
+  ) => void
   updatePrivateAction: (active: boolean) => void
   updateOnDemandAction: (active: boolean) => void
   updatePassCodeAction: (code: string) => void
@@ -147,6 +162,8 @@ interface Props extends RouteComponentProps<any> {
   setPaginationData: (offset: number, page: number) => void
   onUnselectItemAction: (keyName: string) => void
 }
+
+const { info } = Modal
 
 interface StateProps {
   hasError: boolean
@@ -339,7 +356,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       history,
       teamSizeId,
       onDemand,
-      banner
+      banner,
+      datesEditedTemporal
     } = this.props
     const { file } = this.state
     const validForm = this.validateForm(
@@ -393,7 +411,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
         items,
         teamsizeId: teamSizeId,
         demandMode: this.isOnDemand(),
-        banner: bannerResp
+        banner: bannerResp,
+        datesEdited: datesEditedTemporal
       }
 
       if (storeShortId) {
@@ -416,6 +435,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         }
 
         history.push(`/store-front?storeId=${storeShortId}`)
+        this.forceUpdate()
       } else {
         const {
           data: { store }
@@ -486,6 +506,36 @@ export class CreateStore extends React.Component<Props, StateProps> {
     clearDataAction()
   }
 
+  openInfo = () => {
+    const {
+      intl: { formatMessage },
+      onDemand
+    } = this.props
+    info({
+      title: (
+        <ModalTitle>
+          {formatMessage(
+            onDemand ? messages.batchOrderTitle : messages.onDemandTitle
+          )}
+        </ModalTitle>
+      ),
+      icon: ' ',
+      okText: formatMessage(messages.gotIt),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: (
+        <InfoBody
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(
+              onDemand ? messages.batchOrderContent : messages.omDemandContent
+            )
+          }}
+        />
+      )
+    })
+  }
+
   render() {
     const { imagePreviewUrl, hasError } = this.state
     const {
@@ -495,7 +545,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       updateNameAction,
       updateStartDateAction,
       updateEndDateAction,
-      // updateOnDemandAction,
+      updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
       setItemsAddAction,
@@ -519,7 +569,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       offset,
       onUnselectItemAction,
       user,
-      cutoffSettings
+      cutoffSettings,
+      onDemand,
+      startDate,
+      datesEdited
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -552,9 +605,25 @@ export class CreateStore extends React.Component<Props, StateProps> {
           </Loading>
         ) : (
           <Container>
-            <Title>
-              <FormattedMessage {...messages.title} />
-            </Title>
+            <TitleContainer>
+              <Title>
+                <FormattedMessage {...messages.title} />
+              </Title>
+              {storeId && (isOnDemand || !startDate) && (
+                <SwitchWithLabel
+                  checked={onDemand}
+                  onChange={updateOnDemandAction}
+                  label={formatMessage(
+                    isOnDemand
+                      ? messages.switchToBatch
+                      : messages.switchToDemand
+                  )}
+                  message={''}
+                  infoIcon={true}
+                  handleOpenInfo={this.openInfo}
+                />
+              )}
+            </TitleContainer>
             <StoreForm
               {...{ formatMessage }}
               name={name}
@@ -564,7 +633,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               onSelectStartDate={updateStartDateAction}
               onSelectEndDate={updateEndDateAction}
               onDemand={isOnDemand}
-              {...{ hasError, cutoffDays }}
+              {...{ hasError, cutoffDays, storeId, datesEdited }}
             />
             {isOnDemand ? (
               <React.Fragment>
@@ -700,15 +769,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
-              {/* TODO: Hidding onDemand-FixedDate Switch until FixDate feature */}
-              {/* {storeId && (
-                <SwitchWithLabel
-                  checked={onDemand}
-                  onChange={updateOnDemandAction}
-                  label={formatMessage(messages.onDemandLabel)}
-                  message={formatMessage(messages.onDemandMessage)}
-                />
-              )} */}
             </RowSwitch>
             {storeShortId ? (
               <ButtonOptionsWrapper>
