@@ -777,6 +777,7 @@ class Checkout extends React.Component<Props, {}> {
     } = this.props
 
     const isFixedTeamstore = some(cart, 'isFixed')
+
     if (!isFixedTeamstore) {
       await this.createPaymentIntent()
     }
