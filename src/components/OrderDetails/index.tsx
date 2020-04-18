@@ -410,7 +410,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       const responseMessage = get(response, 'data.cancelOrder.message', '')
       message.success(responseMessage)
     } catch (e) {
-      console.log(e)
       message.error(e.message)
     }
   }
