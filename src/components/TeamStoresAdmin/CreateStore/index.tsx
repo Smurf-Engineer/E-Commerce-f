@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
+import moment, { Moment } from 'moment'
 import { RcFile } from 'antd/lib/upload/interface'
 import Select, { SelectValue } from 'antd/lib/select'
 import Modal from 'antd/lib/modal'
@@ -14,7 +15,7 @@ import Spin from 'antd/lib/spin'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import { withRouter } from 'react-router-dom'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import messages from './messages'
 import {
   Container,
@@ -52,11 +53,18 @@ import {
   QueryProps,
   TeamstoreType
 } from '../../../types/common'
+import { cutoffDateSettingsQuery } from './data'
+import { DEFAULT_CUTOFF_DAYS } from '../../../screens/CreateStore/constants'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
 interface Data extends QueryProps {
   userSearch: UserSearchResult[]
 }
+
+interface CutoffData extends QueryProps {
+  cutoffDays: number
+}
+
 interface Props {
   history: History
   currentCurrency: string
@@ -81,6 +89,9 @@ interface Props {
   loading: boolean
   userToSearch: string
   storeShortId: string
+  startDate?: Moment
+  endDate?: Moment
+  cutoffSettings: CutoffData
   getEditStore: (id: string) => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
@@ -105,6 +116,9 @@ interface Props {
   setItemSelectedAction: (item: DesignType, checked: boolean) => void
   setOpenLockerAction: (open: boolean) => void
   formatMessage: (messageDescriptor: any) => string
+  onSelectStartDate: (dateMoment: Moment, date: string) => void
+  onSelectEndDate: (dateMoment: Moment | null, date: string) => void
+  onChangeTeamStoreType: (onDemand: boolean) => void
 }
 interface StateProps {
   searchValue: string
@@ -249,6 +263,79 @@ export class CreateStore extends React.Component<Props, StateProps> {
     setImage(file, false)
   }
 
+  disabledStartDate = (current: any) => {
+    if (!current) {
+      return false
+    }
+    const { startDate, storeShortId } = this.props
+    const date = moment()
+    date.hour(0)
+    date.minute(0)
+    date.second(0)
+
+    date.add('1', 'days')
+    const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
+
+    date.add('14', 'days')
+
+    let momentStartDate
+    if (storeShortId) {
+      momentStartDate = moment(startDate)
+      momentStartDate.add('17', 'days')
+    }
+    const isGreaterThanFourteenDays = current.valueOf() > date.valueOf()
+
+    return isBeforeOfCurrentDay || isGreaterThanFourteenDays
+  }
+
+  handleOnSelectStart = (date: Moment, dateString: string) => {
+    const { onSelectStartDate } = this.props
+    onSelectStartDate(date, dateString)
+  }
+
+  handleOnSelectEnd = async (date: Moment, dateString: string) => {
+    const { formatMessage, onSelectEndDate } = this.props
+
+    if (date) {
+      if (date && (date.weekday() === 0 || date.weekday() === 6)) {
+        message.warning(formatMessage(messages.deliveryErrorLabel))
+        onSelectEndDate(null, '')
+        return
+      }
+    }
+    onSelectEndDate(date, dateString)
+  }
+
+  disabledEndDate = (current: any) => {
+    if (!current) {
+      return false
+    }
+    const { startDate, cutoffSettings } = this.props
+
+    const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
+    let isLessThanDeliveryDate = false
+    let isGreaterThanTwentyDays = false
+    if (startDate) {
+      const maxEndDate = startDate.clone()
+      maxEndDate.add(cutoffDays, 'days')
+      isLessThanDeliveryDate = current.valueOf() < maxEndDate.valueOf()
+      maxEndDate.add(6, 'days')
+      isGreaterThanTwentyDays = current.valueOf() > maxEndDate.valueOf()
+    }
+
+    const date = moment()
+    date.hour(0)
+    date.minute(0)
+    date.second(0)
+
+    const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
+    date.add(15, 'days')
+
+    return (
+      isBeforeOfCurrentDay || isLessThanDeliveryDate || isGreaterThanTwentyDays
+    )
+  }
+
   render() {
     const {
       formatMessage,
@@ -277,9 +364,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
       setItemVisibleAction,
       moveRowAction,
       name,
-      loading
+      loading,
+      startDate,
+      endDate,
+      onChangeTeamStoreType
     } = this.props
     const { searchValue } = this.state
+
     let selected = ''
     let title = ''
     const searchResults =
@@ -326,6 +417,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               value={selected || searchValue}
               onSelect={this.handleOnSelect}
               placeholder={formatMessage(messages.selectUserHolder)}
+              disabled={!!storeShortId}
             >
               <Input
                 suffix={
@@ -333,6 +425,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                     className="search-btn"
                     size="large"
                     type="ghost"
+                    disabled={!!storeShortId}
                   >
                     <Icon type="search" />
                   </SearchButton>
@@ -342,12 +435,16 @@ export class CreateStore extends React.Component<Props, StateProps> {
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.teamStoreType} />
-            <StyledSelect size="large" value={onDemand} disabled={true}>
+            <StyledSelect
+              size="large"
+              value={onDemand}
+              onChange={onChangeTeamStoreType}
+            >
               <Option value={true}>
                 <FormattedMessage {...messages.onDemand} />
               </Option>
               <Option value={false}>
-                <FormattedMessage {...messages.fixedDate} />
+                <FormattedMessage {...messages.batchOrder} />
               </Option>
             </StyledSelect>
           </InputDiv>
@@ -357,16 +454,22 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <FormattedMessage {...messages.cutOffDate} />
             <StyledDatePicker
               size="large"
-              dateFormat="YYYY-MM-DD"
-              disabled={true}
+              value={startDate}
+              disabledDate={this.disabledStartDate}
+              disabled={onDemand}
+              onChange={this.handleOnSelectStart}
+              format="YYYY-MM-DD" // TODO: Change format
             />
           </InputDiv>
           <InputDiv>
             <FormattedMessage {...messages.desiredDate} />
             <StyledDatePicker
+              value={endDate}
+              disabledDate={this.disabledEndDate}
+              onChange={this.handleOnSelectEnd}
+              disabled={!startDate || onDemand}
+              format="YYYY-MM-DD" // TODO: Change format
               size="large"
-              dateFormat="YYYY-MM-DD"
-              disabled={true}
             />
           </InputDiv>
           <InputDiv>
@@ -386,7 +489,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
           {`+ ${formatMessage(messages.addItem)}`}
         </AddItem>
         <LockerTable
-          {...{ formatMessage, teamSizeRange, currentCurrency, items }}
+          {...{
+            formatMessage,
+            teamSizeRange,
+            currentCurrency,
+            items,
+            onDemand
+          }}
           hideQuickView={true}
           onPressDelete={deleteItemSelectedAction}
           onPressVisible={setItemVisibleAction}
@@ -454,6 +563,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
   }
 }
 
-const CreateStoreEnhance = compose(withRouter, withApollo)(CreateStore)
+const CreateStoreEnhance = compose(
+  withRouter,
+  withApollo,
+  graphql(cutoffDateSettingsQuery, {
+    name: 'cutoffSettings',
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
+)(CreateStore)
 
 export default CreateStoreEnhance
