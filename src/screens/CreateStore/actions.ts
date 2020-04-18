@@ -58,24 +58,20 @@ export const setLoadingAction = (isLoading: boolean): AnyAction => ({
 
 export const updateStartDateAction = (
   dateMoment: Moment,
-  date: string,
-  datesEdited: boolean
+  date: string
 ): AnyAction => ({
   type: UPDATE_START_DATE_ACTION,
   dateMoment,
-  date,
-  datesEdited
+  date
 })
 
 export const updateEndDateAction = (
   dateMoment: Moment,
-  date: string,
-  datesEdited: boolean
+  date: string
 ): AnyAction => ({
   type: UPDATE_END_DATE_ACTION,
   dateMoment,
-  date,
-  datesEdited
+  date
 })
 
 export const updatePrivateAction = (active: boolean): AnyAction => ({

@@ -10,10 +10,8 @@ import {
   WHITE,
   GRAY_SKELETON,
   BLUE_BRIGHT,
-  GRAY_HEADER,
-  GRAY_DARK
+  GRAY_HEADER
 } from '../../theme/colors'
-import { AVENIR_NEXT } from '../../theme/fonts'
 
 interface DivProps {
   width?: string
@@ -279,38 +277,3 @@ export const BulletinInput = styled(TextArea)`
     box-shadow: none;
   }
 `
-
-export const DynamicDropLogo = styled.img`
-  width: 150px;
-  margin: 15px 0;
-`
-
-export const TitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
-export const ModalTitle = styled.div`
-  color: ${GRAY_DARK};
-  font-family: ${AVENIR_NEXT};
-  font-size: 20px;
-  font-weight: bold;
-  letter-spacing: 0.25px;
-  line-height: 27px;
-`
-
-export const InfoBody = styled.div`
-  color: ${GRAY_DARK};
-  font-family: ${AVENIR_NEXT};
-  font-size: 16px;
-  letter-spacing: 0.2px;
-  line-height: 22px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  margin-left: -38px;
-`
-
-export const buttonStyle = {
-  background: BLUE,
-  border: 'none'
-}
