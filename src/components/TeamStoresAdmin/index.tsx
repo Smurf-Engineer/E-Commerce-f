@@ -8,7 +8,6 @@ import debounce from 'lodash/debounce'
 import { compose, withApollo, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
-import { Moment } from 'moment'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
 import {
   setTeamStoreFeaturedMutation,
@@ -89,10 +88,6 @@ interface Props {
   userToSearch: string
   storeId: string
   storeShortId: string
-  startDateMoment: Moment
-  endDateMoment: Moment
-  startDate: string
-  endDate: string
   resetForm: () => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
@@ -132,9 +127,6 @@ interface Props {
   setTeamStorePrices: (variables: {}) => void
   setLoadingItemAction: (itemIndex: string, loading: boolean) => void
   setTeamStoreDisplay: (variables: {}) => void
-  updateStartDateAction: (dateMoment: Moment, date: string) => void
-  updateEndDateAction: (dateMoment: Moment, date: string) => void
-  updateTeamStoreTypeAction: (onDemand: boolean) => void
 }
 
 interface Data extends QueryProps {
@@ -204,12 +196,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       openLocker,
       offset,
       items,
-      loading,
-      updateStartDateAction,
-      startDateMoment,
-      endDateMoment,
-      updateEndDateAction,
-      updateTeamStoreTypeAction
+      loading
     } = this.props
 
     return (
@@ -308,11 +295,6 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               setImage={uploadBanner}
               getEditStore={this.handleGetEditStore}
               buildTeamStore={this.buildTeamStore}
-              onSelectStartDate={updateStartDateAction}
-              startDate={startDateMoment}
-              endDate={endDateMoment}
-              onSelectEndDate={updateEndDateAction}
-              onChangeTeamStoreType={updateTeamStoreTypeAction}
             />
           )}
         />
@@ -478,8 +460,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       storeShortId,
       updateStore,
       createStore,
-      startDate,
-      endDate
+      cutoffDate,
+      deliveryDate
     } = this.props
     try {
       const itemsToSave = items.map((item: SelectedDesignType) => ({
@@ -487,14 +469,13 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
         visible: item.visible
       }))
       setSavingAction(true)
-
       const teamStore = {
         id: storeId,
         short_id: storeShortId,
         name,
         featured,
-        cutoffDate: startDate,
-        deliveryDate: endDate,
+        cutoffDate,
+        deliveryDate,
         teamsizeId: 1,
         private: false,
         user_id: userId,
@@ -590,7 +571,10 @@ const TeamStoresAdminEnhance = compose(
   createStoreMutation,
   updateStoreMutation,
   withApollo,
-  connect(mapStateToProps, { ...TeamStoresActions, ...ThunkActions }),
+  connect(
+    mapStateToProps,
+    { ...TeamStoresActions, ...ThunkActions }
+  ),
   graphql<Data>(getUsers, {
     options: (ownprops: OwnProps) => {
       const { userToSearch } = ownprops

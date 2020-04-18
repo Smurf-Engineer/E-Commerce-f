@@ -26,12 +26,8 @@ import {
   SET_IMAGE,
   SET_SELECTED_USER,
   SET_USER_TO_SEARCH,
-  SET_TEAM_DATA,
-  UPDATE_START_DATE_ACTION,
-  UPDATE_END_DATE_ACTION,
-  UPDATE_TEAMSTORE_TYPE
+  SET_TEAM_DATA
 } from './constants'
-import { Moment } from 'moment'
 
 import {
   AnyAction,
@@ -194,25 +190,4 @@ export const setUserToSearch = (searchText: string) => ({
   type: SET_USER_TO_SEARCH,
   searchText
 })
-export const updateStartDateAction = (
-  dateMoment: Moment,
-  date: string
-): AnyAction => ({
-  type: UPDATE_START_DATE_ACTION,
-  dateMoment,
-  date
-})
-
-export const updateEndDateAction = (
-  dateMoment: Moment,
-  date: string
-): AnyAction => ({
-  type: UPDATE_END_DATE_ACTION,
-  dateMoment,
-  date
-})
-
-export const updateTeamStoreTypeAction = (onDemand: boolean): AnyAction => ({
-  type: UPDATE_TEAMSTORE_TYPE,
-  onDemand
-})
+// TODO: Add new tests for the new actions once everything is completed

@@ -3,7 +3,6 @@
  */
 
 import { fromJS } from 'immutable'
-import moment from 'moment'
 import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
@@ -28,10 +27,7 @@ import {
   SET_SAVING_ACTION,
   SET_USER_TO_SEARCH,
   SET_SELECTED_USER,
-  SET_TEAM_DATA,
-  UPDATE_START_DATE_ACTION,
-  UPDATE_END_DATE_ACTION,
-  UPDATE_TEAMSTORE_TYPE
+  SET_TEAM_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -64,11 +60,7 @@ export const initialState = fromJS({
   deliveryDate: '',
   name: '',
   onDemand: true,
-  featured: false,
-  startDate: '',
-  startDateMoment: null,
-  endDate: '',
-  endDateMoment: null
+  featured: false
 })
 
 const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -85,7 +77,7 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
           name,
           banner,
           userId,
-          startDate,
+          cutoffDate,
           deliveryDate,
           privateStore,
           featured,
@@ -94,18 +86,15 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
           teamSize: { id: sizeId, size }
         }
       } = action
-      console.log(action)
       return state.merge({
         storeId: id,
         storeShortId: shortId,
         name,
         userId,
         featured,
-        startDate,
-        endDate: deliveryDate,
+        cutoffDate,
+        deliveryDate,
         private: privateStore,
-        startDateMoment: startDate ? moment(startDate) : null,
-        endDateMoment: deliveryDate ? moment(deliveryDate) : null,
         userToSearch: userId,
         teamSizeId: sizeId,
         teamSizeRange: size,
@@ -210,20 +199,6 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         ['teamStore', 'items', action.itemIndex],
         (item: any) => item.set('loading', action.loading)
       )
-    case UPDATE_START_DATE_ACTION:
-      return state.merge({
-        startDate: action.date,
-        startDateMoment: action.dateMoment,
-        endDate: '',
-        endDateMoment: null
-      })
-    case UPDATE_END_DATE_ACTION:
-      return state.merge({
-        endDate: action.date,
-        endDateMoment: action.dateMoment
-      })
-    case UPDATE_TEAMSTORE_TYPE:
-      return state.set('onDemand', action.onDemand)
     default:
       return state
   }
