@@ -68,7 +68,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     let myTeamstoresList
     if (teamStores) {
       myTeamstoresList = teamStores.map((teamstore, key) => {
-        const { shortId, closed } = teamstore
+        const { shortId } = teamstore
         return (
           <TeamStore
             name={teamstore.name}
@@ -81,7 +81,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
             onDeleteClick={this.openDeleteModal(shortId)}
             openShareModalAction={this.handleOpenShareModal(shortId)}
             onItemClick={this.gotoTeamStore(shortId)}
-            {...{ key, formatMessage, closed }}
+            {...{ key, formatMessage }}
           />
         )
       })

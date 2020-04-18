@@ -76,21 +76,11 @@ export default defineMessages({
     id: 'screens.CreateStore.productionDelivery',
     defaultMessage: 'PRODUCTION & DELIVERY'
   },
-  priceDropMessageP1: {
-    id: 'screens.CreateStore.priceDropMessageP1',
-    defaultMessage: 'With JAKROO’s Dynamic Price Drop, everybody wins!'
-  },
-  priceDropMessageP2: {
-    id: 'screens.CreateStore.priceDropMessageP2',
+  priceDropMessage: {
+    id: 'screens.CreateStore.priceDropMessage',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'The starting discount level for all team members is 20%. As team members place their orders and reach the next quantity discount level, the price automatically drops for everyone, even for those who placed their order before the price drop.'
-  },
-  priceDropMessageP3: {
-    id: 'screens.CreateStore.priceDropMessageP3',
-    defaultMessage:
-      // tslint:disable-next-line:max-line-length
-      'Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!'
+      '<p>With JAKROO’s Dynamic Price Drop, everyone wins!</p> <p>The starting discount level for all team members is 20%.  As team members place their orders and reach the next discount level, <strong>the price automatically drops for everyone, even for those who placed their order before the drop.</strong></p> <p>Final pricing for each item will be based on the highest discount level achieved for that item. Payment is processed after the close of the order period so <strong>everyone receives the same low price, regardless of when your order was placed.</strong> Yes, its that cool!</p>'
   },
   storeItemsTitle: {
     id: 'screens.CreateStore.storeItemsTitle',
