@@ -121,9 +121,10 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       )
     }
 
-    const headers = currencies.map(({ id, shortName }) => (
-      <Header key={id}>{shortName}</Header>
-    ))
+    const headers = currencies.map(
+      ({ id, shortName }) =>
+        shortName !== 'CHF' && <Header key={id}>{shortName}</Header>
+    )
 
     const teamStoresInformation = teamStoreHeaderInformation.map(
       (header: string, index: number) => (

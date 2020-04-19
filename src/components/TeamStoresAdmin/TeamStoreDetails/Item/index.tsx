@@ -62,14 +62,16 @@ const RowItem = ({
   }
   const inputFields = currencies.map(({ shortName, id: currencyId }) => {
     return (
-      <Cell key={currencyId}>
-        <StyledInput
-          id={shortName}
-          placeholder={shortName}
-          onChange={onSetPrice}
-          value={pricesByCurrency[shortName]}
-        />
-      </Cell>
+      shortName !== 'CHF' && (
+        <Cell key={currencyId}>
+          <StyledInput
+            id={shortName}
+            placeholder={shortName}
+            onChange={onSetPrice}
+            value={pricesByCurrency[shortName]}
+          />
+        </Cell>
+      )
     )
   })
   return (
