@@ -236,7 +236,7 @@ class CartListItemTable extends React.Component<Props, State> {
     })
 
     const fitStyles: FitStyle[] = get(cartItem, 'product.fitStyles', [])
-    const fitOptions = fitStyles.map(fs => {
+    const fitOptions = fitStyles.map((fs) => {
       return (
         <Option key={fs.id} value={fs.name}>
           {fs.name}
@@ -247,7 +247,7 @@ class CartListItemTable extends React.Component<Props, State> {
     const fits = get(cartItem, 'product.fitStyles[0].id', null)
 
     const genders: Filter[] = get(cartItem, 'product.genders', [])
-    const genderOptions = genders.map(gender => {
+    const genderOptions = genders.map((gender) => {
       return (
         <Option key={gender.id} value={gender.name}>
           {gender.name}
@@ -256,7 +256,7 @@ class CartListItemTable extends React.Component<Props, State> {
     })
 
     const sizes: SizeFilter[] = get(cartItem, 'product.sizeRange', [])
-    const sizeOptions = sizes.map(size => {
+    const sizeOptions = sizes.map((size) => {
       return (
         <Option key={size.id} value={size.name}>
           {size.name}
@@ -273,7 +273,7 @@ class CartListItemTable extends React.Component<Props, State> {
             <Row key={index} withColor={withColorColumn}>
               <Cell>
                 <StyledSelect
-                  onChange={e => this.handleGenderChange(e, index)}
+                  onChange={(e) => this.handleGenderChange(e, index)}
                   showSearch={false}
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
@@ -288,7 +288,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 <Cell>
                   <ColorPicker
                     selectedColor={colorObject.id}
-                    onSelectColor={e => this.handleColorChange(e, index)}
+                    onSelectColor={(e) => this.handleColorChange(e, index)}
                     productColors={colors}
                     disabled={cartItem.fixedCart}
                   />
@@ -296,7 +296,7 @@ class CartListItemTable extends React.Component<Props, State> {
               )}
               <Cell>
                 <StyledSelect
-                  onChange={e => this.handleSizeChange(e, index)}
+                  onChange={(e) => this.handleSizeChange(e, index)}
                   showSearch={false}
                   placeholder={formatMessage(messages.sizePlaceholder)}
                   optionFilterProp="children"
@@ -310,7 +310,7 @@ class CartListItemTable extends React.Component<Props, State> {
               </Cell>
               <Cell>
                 <StyledSelect
-                  onChange={e => this.handleFitChange(e, index)}
+                  onChange={(e) => this.handleFitChange(e, index)}
                   showSearch={false}
                   placeholder={formatMessage(messages.fitPlaceholder)}
                   optionFilterProp="children"
@@ -334,7 +334,7 @@ class CartListItemTable extends React.Component<Props, State> {
               <Cell>
                 <StyledInputNumber
                   key={index}
-                  onChange={e => this.handleQuantityChange(e, index)}
+                  onChange={(e) => this.handleQuantityChange(e, index)}
                   min={1}
                   max={99}
                   value={quantity || undefined}
@@ -342,7 +342,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 />
                 {!cartItem.fixedCart && (
                   <DeleteItem
-                    onClick={e => this.handleRemove(e, itemIndex, index)}
+                    onClick={(e) => this.handleRemove(e, itemIndex, index)}
                   >
                     —
                   </DeleteItem>
