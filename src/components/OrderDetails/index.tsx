@@ -207,6 +207,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       ) : (
         <StyledImage src={iconPaypal} />
       )
+
     return (
       <Container>
         <ViewContainer onClick={handleOnReturn}>
