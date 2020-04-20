@@ -152,9 +152,9 @@ export const getManagers = gql`
   }
 `
 
-export const assignRepDesignMutation = gql`
-  mutation assignRepDesign($designId: String!, $repUser: String) {
-    assignRepDesign(designId: $designId, repUser: $repUser) {
+export const setRepDesignMutation = gql`
+  mutation setRepDesign($designId: String!, $repUser: String) {
+    setRepDesign(designId: $designId, repUser: $repUser) {
       message
     }
   }

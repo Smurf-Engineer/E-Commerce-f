@@ -49,7 +49,7 @@ import {
   addNoteMutation,
   getManagers,
   getRepUsers,
-  assignRepDesignMutation,
+  setRepDesignMutation,
   assignManagerDesignMutation
 } from './data'
 import { downloadFile } from './api'
@@ -62,7 +62,7 @@ type Thumbnail = {
 }
 
 interface Data extends QueryProps {
-  usersQuery: {
+  repUsers: {
     users: User[]
   }
 }
@@ -100,7 +100,7 @@ interface Props {
   // redux actions
   setUserRepAction: (userRep: User) => void
   setManagerAction: (userRep: User) => void
-  assignRepDesign: (variables: {}) => Promise<MessagePayload>
+  setRepDesign: (variables: {}) => Promise<MessagePayload>
   assignManager: (variables: {}) => Promise<MessagePayload>
   setSearchRep: (value: string) => void
   setSearchManager: (value: string) => void
@@ -195,8 +195,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
-    const salesRepUsers = get(salesRep, 'repUsers.users', []) as User[]
-    const managersUsers = get(managers, 'managersQuery', []) as User[]
+    const salesRepUsers = get<Data, 'repUsers.users', User[]>(salesRep, 'repUsers.users', [])
+    const managersUsers = get<ManagersData, 'managersQuery', User[]>(managers, 'managersQuery', [])
     const fonts = fontList.reduce((fontObject: any, { family }: Font) => {
       fontObject.push({ font: family })
       return fontObject
@@ -241,8 +241,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loading || notFound || noAdmin ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
       ) : (
-        orderContent
-      )
+          orderContent
+        )
 
     return (
       <Container>
@@ -310,13 +310,13 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
     const {
       order: { shortId },
       setUserRepAction,
-      assignRepDesign
+      setRepDesign
     } = this.props
     try {
-      const response = await assignRepDesign({
+      const response = await setRepDesign({
         variables: { designId: shortId, repUser }
       })
-      const responseMessage = get(response, 'data.assignRepDesign.message', '')
+      const responseMessage = get(response, 'data.setRepDesign.message', '')
       message.success(responseMessage)
       let userRep = null
       if (option) {
@@ -545,7 +545,7 @@ const DesignSearchAdminEnhance = compose(
     restoreUserSessionAction: restoreUserSession
   }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
-  graphql(assignRepDesignMutation, { name: 'assignRepDesign' }),
+  graphql(setRepDesignMutation, { name: 'setRepDesign' }),
   graphql(assignManagerDesignMutation, { name: 'assignManager' }),
   graphql(togglePreflight, { name: 'checkPreflightAction' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
