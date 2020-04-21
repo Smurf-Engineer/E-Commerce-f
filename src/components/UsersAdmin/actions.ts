@@ -74,12 +74,12 @@ export const setLoadingAction = (loading: boolean) => ({
   loading
 })
 
-export const setSearchRep = (value: boolean) => ({
+export const setSearchRep = (value: string) => ({
   type: SET_SEARCH,
   value
 })
 
-export const setSearchManager = (value: boolean) => ({
+export const setSearchManager = (value: string) => ({
   type: SET_SEARCH_MANAGER,
   value
 })
