@@ -17,7 +17,7 @@ import {
 } from './styledComponents'
 import {
   SCREEN_LOCKER,
-  PROFILE_SETTINGS,
+  TEAMSTORES,
   OVERVIEW
 } from '../../screens/Account/constants'
 
@@ -44,8 +44,8 @@ const Logout = ({ title, logout, goTo }: Props) => {
       <Menu.Item key={OVERVIEW}>
         <FormattedMessage {...messages.myAccountLabel} />
       </Menu.Item>
-      <Menu.Item key={PROFILE_SETTINGS}>
-        <FormattedMessage {...messages.profileSettingsLabel} />
+      <Menu.Item key={TEAMSTORES}>
+        <FormattedMessage {...messages.myTeamStoresLabel} />
       </Menu.Item>
       <Menu.Item key="logout">
         <FormattedMessage {...messages.logoutLabel} />

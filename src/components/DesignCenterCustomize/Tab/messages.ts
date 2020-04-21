@@ -15,7 +15,7 @@ export default defineMessages({
   },
   symbol: {
     id: 'components.designCenterCustomize.Tab.symbol',
-    defaultMessage: 'Symbol'
+    defaultMessage: 'Clipart'
   },
   upload: {
     id: 'components.designCenterCustomize.Tab.upload',
