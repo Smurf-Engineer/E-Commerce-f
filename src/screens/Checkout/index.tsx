@@ -969,6 +969,7 @@ class Checkout extends React.Component<Props, {}> {
           teamStoreId
         }: CartItems) => {
           const item = { designCode, designId } as CartItem
+          console.log('ITem ', item)
           const productItem = {
             id: product.id,
             code: product.code,
@@ -1050,11 +1051,14 @@ const CheckoutEnhance = compose(
   CreatePaymentIntentMutation,
   AddCardMutation,
   withApollo,
-  connect(mapStateToProps, {
-    ...checkoutActions,
-    ...thunkActions,
-    getTotalItemsIncart
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...checkoutActions,
+      ...thunkActions,
+      getTotalItemsIncart
+    }
+  )
 )(Checkout)
 
 export default CheckoutEnhance
