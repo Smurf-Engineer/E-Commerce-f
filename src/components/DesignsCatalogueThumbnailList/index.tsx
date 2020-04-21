@@ -45,7 +45,7 @@ import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import { FormattedMessage } from 'react-intl'
 import filter from 'lodash/filter'
-
+const LIMIT_FIRST_RANGE = 2
 interface Data extends QueryProps {
   products: ProductType
 }
@@ -167,7 +167,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                   nextPriceRange.quantity.split('-')[0],
                   10
                 )
-                if (totalOrders + 2 >= nextMinQuantity) {
+                if (totalOrders + LIMIT_FIRST_RANGE >= nextMinQuantity) {
                   const save = targetPriceValue.price - nextPriceRange.price
                   const percent = Math.round(
                     (save * 100) / targetPriceValue.price
