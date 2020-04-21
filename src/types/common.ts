@@ -759,6 +759,7 @@ export interface OrderDetailsInfo {
   total?: number
   discount?: number
   teamStoreId?: string
+  onDemand?: boolean
 }
 
 export interface OrderDataInfo {

@@ -138,6 +138,7 @@ export const getOrderQuery = gql`
       taxGst: tax_gst
       taxVat: tax_vat
       teamStoreId: teamstore_id
+      onDemand: on_demand_mode
     }
   }
 `
