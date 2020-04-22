@@ -91,6 +91,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       currentRange,
       currentCurrency = config.defaultCurrency
     } = this.props
+    const LAST_ITEM = 1
+
     let thumbnailsList
     let total = ''
     let sortOptions = null
@@ -146,7 +148,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
 
           priceRanges.some((current: PriceRange, rangeIndex: number) => {
             const quantities = current.quantity.split('-')
-            const maxQuantity = parseInt(quantities[1], 10)
+            const maxQuantity = parseInt(quantities[LAST_ITEM], 10)
 
             if (totalOrders === 0 && current.quantity === 'Personal') {
               currentRangeAttributes.price = fixedPriceValue.price
@@ -154,7 +156,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             }
             if (totalOrders <= maxQuantity) {
               const minQuantity =
-                rangeIndex <= 1 ? 1 : parseInt(quantities[0], 10)
+                rangeIndex <= LAST_ITEM
+                  ? LAST_ITEM
+                  : parseInt(quantities[0], 10)
               currentRangeAttributes.maxQuantity = maxQuantity
               currentRangeAttributes.minQuantity = minQuantity
               currentRangeAttributes.range = maxQuantity - minQuantity
@@ -167,8 +171,12 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPrice = onDemandMode
             ? fixedPriceValue.price
             : currentRangeAttributes.price
-          const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const currentPriceText = `${
+            fixedPriceValue.shortName
+          } ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName} ${
+            targetPriceValue.price
+          }`
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
