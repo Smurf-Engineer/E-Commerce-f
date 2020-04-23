@@ -35,6 +35,8 @@ interface Header {
   tabletWidth?: number
 }
 
+const PERSONAL = 'Personal'
+
 const headerTitles: Header[] = [
   { message: '', width: 5, tabletWidth: 5 },
   { message: '', width: 20, tabletWidth: 20 },
@@ -130,7 +132,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
         const type = get(product, 'type')
         const regularPrice = get(
           find(pricesArray, {
-            quantity: 'Personal'
+            quantity: PERSONAL
           }),
           'price',
           0
@@ -146,7 +148,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
           const quantities = current.quantity.split('-')
           const maxQuantity = parseInt(quantities[1], 10)
 
-          if (totalOrders === 0 && current.quantity === 'Personal') {
+          if (totalOrders === 0 && current.quantity === PERSONAL) {
             currentRangePrice = fixedPrice
             return true
           }
