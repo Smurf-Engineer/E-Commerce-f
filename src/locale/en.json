@@ -1495,5 +1495,6 @@
   "components.UsersList.addUser": "+ ADD NEW USER",
   "components.UsersAdmin.requiredFieldsError": "All fields are required!.",
   "components.UsersAdmin.userAdded": "{name} added!.",
-  "components.UsersAdmin.invalidEmail": "Invalid email, please verify."
+  "components.UsersAdmin.invalidEmail": "Invalid email, please verify.",
+  "components.TeamStoresList.deliveryDate": "Delivery Date"
 }
