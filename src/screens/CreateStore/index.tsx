@@ -374,7 +374,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
-    const items = itemsSelected.map(item => {
+    const items = itemsSelected.map((item) => {
       return {
         design_id: get(item, 'design.shortId'),
         visible: get(item, 'visible')
@@ -434,8 +434,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
           message.success(messageResp)
         }
 
-        history.push(`/store-front?storeId=${storeShortId}`)
-        this.forceUpdate()
+        window.location.replace(`/store-front?storeId=${storeShortId}`)
       } else {
         const {
           data: { store }
@@ -677,7 +676,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
             )}
             <Subtitle>
               <div
-                ref={table => {
+                ref={(table) => {
                   this.lockerTable = table
                 }}
               >
@@ -846,7 +845,10 @@ const CreateStoreEnhance = compose(
       fetchPolicy: 'network-only'
     }
   }),
-  connect(mapStateToProps, { ...createStoreActions, ...thunkActions })
+  connect(
+    mapStateToProps,
+    { ...createStoreActions, ...thunkActions }
+  )
 )(CreateStore)
 
 export default CreateStoreEnhance
