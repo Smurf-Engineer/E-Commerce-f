@@ -92,6 +92,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       currentRange,
       currentCurrency = config.defaultCurrency
     } = this.props
+    const LAST_ITEM = 1
+
     let thumbnailsList
     let total = ''
     let sortOptions = null
@@ -113,20 +115,20 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         ) => {
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, {
-                quantity: targetRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity: targetRange.name,
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
-                quantity:
-                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity:
+                currentRange.name === '0-0' ? '2-5' : currentRange.name,
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
           const fixedPriceValue =
             priceRange && priceRange.length
@@ -146,7 +148,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           }
           priceRanges.some((current: PriceRange, rangeIndex: number) => {
             const quantities = current.quantity.split('-')
-            const maxQuantity = parseInt(quantities[1], 10)
+            const maxQuantity = parseInt(quantities[LAST_ITEM], 10)
 
             if (totalOrders === 0 && current.quantity === 'Personal') {
               currentRangeAttributes.price = fixedPriceValue.price
@@ -154,7 +156,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             }
             if (totalOrders <= maxQuantity) {
               const minQuantity =
-                rangeIndex <= 1 ? 1 : parseInt(quantities[0], 10)
+                rangeIndex <= LAST_ITEM
+                  ? LAST_ITEM
+                  : parseInt(quantities[0], 10)
               currentRangeAttributes.maxQuantity = maxQuantity
               currentRangeAttributes.minQuantity = minQuantity
               currentRangeAttributes.range = maxQuantity - minQuantity
@@ -188,9 +192,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
-                itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
-                percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
-              })
+              itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
+              percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
+            })
             : ''
           return (
             <ThumbnailListItem key={index}>
@@ -298,10 +302,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-          <NoResultsFound>
-            {formatMessage(messages.emptyResults)}
-          </NoResultsFound>
-        )
+            <NoResultsFound>
+              {formatMessage(messages.emptyResults)}
+            </NoResultsFound>
+          )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -361,7 +365,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => {}
+  handleOnPressAddToCart = (id: number) => { }
 }
 
 type OwnProps = {

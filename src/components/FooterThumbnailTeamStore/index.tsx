@@ -22,6 +22,7 @@ import {
 } from './styledComponents'
 
 const MAX_PERCENT = 100
+const PERCENT_BY_SECTION = 20 // Result of 100 (max percent of bar) / 5 (Sections of tier pricing)
 
 interface Props {
   id: number
@@ -44,7 +45,6 @@ const FooterThumbnailTeamStore = ({
   description,
   progress,
   onDemandMode,
-  targetRange,
   code,
   targetPrice,
   currentPrice,
@@ -53,23 +53,26 @@ const FooterThumbnailTeamStore = ({
   suggestedSaveText
 }: Props) => {
   let realPercent = 0
-
+  const getRealPercent = (
+    relativePercentParam: number,
+    percentAmount: number
+  ) => {
+    if (relativePercentParam !== MAX_PERCENT) {
+      return Math.round(
+        (relativePercentParam * PERCENT_BY_SECTION) / MAX_PERCENT +
+        currentRangeAttributes.index * PERCENT_BY_SECTION
+      )
+    }
+    return (relativePercentParam -= percentAmount)
+  }
   if (!onDemandMode && currentRangeAttributes) {
-    const totalPercentBySection = MAX_PERCENT / (priceRange.length - 1)
     const percentAmount = MAX_PERCENT / currentRangeAttributes.range
     let relativePercent =
       ((progress - currentRangeAttributes.minQuantity) /
         currentRangeAttributes.range) *
       MAX_PERCENT
 
-    relativePercent =
-      relativePercent === MAX_PERCENT
-        ? (relativePercent -= percentAmount)
-        : relativePercent
-    realPercent = Math.round(
-      (relativePercent * totalPercentBySection) / MAX_PERCENT +
-        currentRangeAttributes.index * totalPercentBySection
-    )
+    realPercent = getRealPercent(relativePercent, percentAmount)
   }
 
   return (
