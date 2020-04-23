@@ -57,6 +57,11 @@ import { cutoffDateSettingsQuery } from './data'
 import { DEFAULT_CUTOFF_DAYS } from '../../../screens/CreateStore/constants'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
+const FOURTEEN_DAYS = 14
+const ONE_DAY = 1
+const SEVENTEEN_DAYS = 17
+const SIX_DAYS = 6
+
 interface Data extends QueryProps {
   userSearch: UserSearchResult[]
 }
@@ -273,15 +278,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
     date.minute(0)
     date.second(0)
 
-    date.add('1', 'days')
+    date.add(ONE_DAY, 'days')
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
 
-    date.add('14', 'days')
+    date.add(FOURTEEN_DAYS, 'days')
 
     let momentStartDate
     if (storeShortId) {
       momentStartDate = moment(startDate)
-      momentStartDate.add('17', 'days')
+      momentStartDate.add(SEVENTEEN_DAYS, 'days')
     }
     const isGreaterThanFourteenDays = current.valueOf() > date.valueOf()
 
@@ -319,7 +324,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       const maxEndDate = startDate.clone()
       maxEndDate.add(cutoffDays, 'days')
       isLessThanDeliveryDate = current.valueOf() < maxEndDate.valueOf()
-      maxEndDate.add(6, 'days')
+      maxEndDate.add(SIX_DAYS, 'days')
       isGreaterCutOffDays = current.valueOf() > maxEndDate.valueOf()
     }
 
