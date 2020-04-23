@@ -125,7 +125,7 @@ interface StateProps {
 }
 export class CreateStore extends React.Component<Props, StateProps> {
   debounceSearchProduct = debounce(
-    value => this.props.setUserToSearch(value.trim()),
+    (value) => this.props.setUserToSearch(value.trim()),
     200
   )
   state = {
@@ -297,7 +297,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const { formatMessage, onSelectEndDate } = this.props
 
     if (date) {
-      if (date && (date.weekday() === 0 || date.weekday() === 6)) {
+      if (date.weekday() === 0 || date.weekday() === 6) {
         message.warning(formatMessage(messages.deliveryErrorLabel))
         onSelectEndDate(null, '')
         return
@@ -314,13 +314,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
     let isLessThanDeliveryDate = false
-    let isGreaterThanTwentyDays = false
+    let isGreaterCutOffDays = false
     if (startDate) {
       const maxEndDate = startDate.clone()
       maxEndDate.add(cutoffDays, 'days')
       isLessThanDeliveryDate = current.valueOf() < maxEndDate.valueOf()
       maxEndDate.add(6, 'days')
-      isGreaterThanTwentyDays = current.valueOf() > maxEndDate.valueOf()
+      isGreaterCutOffDays = current.valueOf() > maxEndDate.valueOf()
     }
 
     const date = moment()
@@ -329,11 +329,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
     date.second(0)
 
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
-    date.add(15, 'days')
 
-    return (
-      isBeforeOfCurrentDay || isLessThanDeliveryDate || isGreaterThanTwentyDays
-    )
+    return isBeforeOfCurrentDay || isLessThanDeliveryDate || isGreaterCutOffDays
   }
 
   render() {
