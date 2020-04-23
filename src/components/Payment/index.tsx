@@ -241,7 +241,7 @@ class Payment extends React.PureComponent<Props, {}> {
           setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
           inputChangeAction={this.handleOnChangeInput}
-          euSubsidiary={europeStripeAccount}
+          isEuSubsidiary={europeStripeAccount}
         />
       ) : (
         <IbanForm

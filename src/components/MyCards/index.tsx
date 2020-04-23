@@ -66,7 +66,7 @@ interface Props {
   selectedCard: CreditCardData
   setupIntent: SetupIntentData
   formatMessage: (messageDescriptor: any) => string
-  euSubsidiary?: boolean
+  isEuSubsidiary?: boolean
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
   inputChangeAction: (id: string, value: string) => void
@@ -164,7 +164,7 @@ class MyCards extends React.Component<Props, {}> {
       selectCardToPayAction,
       selectedCard,
       setupIntent,
-      euSubsidiary
+      isEuSubsidiary
     } = this.props
 
     const { stripe } = this.state
@@ -215,7 +215,7 @@ class MyCards extends React.Component<Props, {}> {
             />
           </Elements>
         </StripeProvider>
-        {!euSubsidiary && (
+        {!isEuSubsidiary && (
           <MyCardsList
             items={cards}
             {...{
