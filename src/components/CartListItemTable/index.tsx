@@ -177,10 +177,8 @@ class CartListItemTable extends React.Component<Props, State> {
     setDetailFit(itemIndex, detail, selectedfit)
   }
 
-  handleRemove = (
-    event: React.MouseEvent<EventTarget>,
-    itemIndex: number,
-    index: number
+  handleRemove = (itemIndex: number, index: number) => (
+    event: React.MouseEvent<EventTarget>
   ) => {
     const { handledeleteItemDetail, cartItem } = this.props
 
@@ -341,9 +339,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   disabled={cartItem.fixedCart}
                 />
                 {!cartItem.fixedCart && (
-                  <DeleteItem
-                    onClick={(e) => this.handleRemove(e, itemIndex, index)}
-                  >
+                  <DeleteItem onClick={this.handleRemove(itemIndex, index)}>
                     —
                   </DeleteItem>
                 )}
