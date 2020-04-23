@@ -91,14 +91,12 @@ const StoreForm = ({
 
     date.add('14', 'days')
 
-    let momentStartDate
+    let momentStartDate = date.valueOf()
     if (storeId && !datesEdited) {
       momentStartDate = moment(startDate)
       momentStartDate.add('17', 'days')
     }
-    const isGreaterThanFourteenDays =
-      current.valueOf() >
-      (storeId && !datesEdited ? momentStartDate : date.valueOf())
+    const isGreaterThanFourteenDays = current.valueOf() > momentStartDate
 
     return isBeforeOfCurrentDay || isGreaterThanFourteenDays
   }
