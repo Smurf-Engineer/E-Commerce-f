@@ -12,6 +12,7 @@ type StyleProps = {
 
 export const Container = styled.div`
   margin-right: 10%;
+  margin-bottom: 20px;
 
   @media (max-width: 700px) {
     margin-right: 0;

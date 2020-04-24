@@ -29,6 +29,7 @@ import {
   DeleteButton,
   PricesContainer
 } from './styledComponents'
+import { CHF_CURRENCY } from '../constants'
 interface Props {
   history: any
   from: string
@@ -121,9 +122,10 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       )
     }
 
-    const headers = currencies.map(({ id, shortName }) => (
-      <Header key={id}>{shortName}</Header>
-    ))
+    const headers = currencies.map(
+      ({ id, shortName }) =>
+        shortName !== CHF_CURRENCY && <Header key={id}>{shortName}</Header>
+    )
 
     const teamStoresInformation = teamStoreHeaderInformation.map(
       (header: string, index: number) => (
