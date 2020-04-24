@@ -10,7 +10,7 @@ import {
   OrderDetailsInfo,
   QueryProps,
   FulfillmentNetsuite,
-  Message,
+  Message
 } from '../../types/common'
 import { getOrderQuery } from './data'
 import Icon from 'antd/lib/icon'
@@ -38,13 +38,13 @@ import {
   ShippingBillingCard,
   SubTitle,
   StyledImage,
-  LoadingContainer,
+  LoadingContainer
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItemAdmin from '../CartListItemAdmin'
 import MyAddress from '../MyAddress'
 
-import iconPaypal from '../../assets/Paypal.svg'
+import iconPaypal from '../../assets/paypal.svg'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 import moment from 'moment'
@@ -72,7 +72,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       orderId,
       history,
       formatMessage,
-      currentCurrency,
+      currentCurrency
     } = this.props
     if ((data && data.loading) || !data) {
       return (
@@ -136,7 +136,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       discount,
       teamStoreId,
       lastDrop,
-      teamStoreName,
+      teamStoreName
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -162,7 +162,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
             product: { images, name, shortDescription },
             productTotal,
             preflightCheck,
-            unitPrice,
+            unitPrice
           } = cartItem
 
           subtotal += productTotal || 0
@@ -170,7 +170,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
           const priceRange = {
             quantity: '0',
             price: 0,
-            shortName: '',
+            shortName: ''
           }
 
           const itemImage = designId ? designImage : images[0].front
@@ -187,7 +187,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 unitPrice,
                 cartItem,
                 preflightCheck,
-                currentCurrency,
+                currentCurrency
               }}
               currencySymbol={currency.shortName}
               key={index}
@@ -274,7 +274,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 taxVat,
                 taxFee,
                 discount,
-                subtotal,
+                subtotal
               }}
             />
           </OrderSummaryContainer>
@@ -335,8 +335,8 @@ const OrderDetailsAdminEnhance = compose(
       skip: !orderId,
       variables: { orderId, global: true },
       fetchPolicy: 'network-only',
-      notifyOnNetworkStatusChange: true,
-    }),
+      notifyOnNetworkStatusChange: true
+    })
   })
 )(OrderDetailsAdmin)
 

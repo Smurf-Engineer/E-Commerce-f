@@ -51,7 +51,7 @@ import CartListItem from '../CartListItem'
 import MyAddress from '../MyAddress'
 import AddToCartButton from '../AddToCartButton'
 
-import iconPaypal from '../../assets/Paypal.svg'
+import iconPaypal from '../../assets/paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
