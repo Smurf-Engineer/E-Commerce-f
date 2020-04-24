@@ -9,7 +9,7 @@ export const getTeamStoreQuery = gql`
     teamStore: getTeamStoreAdmin(teamStoreId: $teamStoreId) {
       id
       shortId: short_id
-      onDemandMode: on_demand_mode
+      onDemand: on_demand_mode
       banner
       private
       createdAd: created_at
@@ -18,6 +18,8 @@ export const getTeamStoreQuery = gql`
       email
       featured
       teamstoreType: teamstore_type
+      cutoffDate: cutOffDateString
+      deliveryDate: deliveryDateString
       items {
         id
         priceRange {

@@ -71,16 +71,16 @@ class Overview extends React.Component<Props, {}> {
     const contentAddress = addresses.length ? (
       <AddressData address={addresses[0]} {...{ formatMessage }} />
     ) : (
-        <EmptyContainer message={formatMessage(messages.emptyAddress)} />
-      )
+      <EmptyContainer message={formatMessage(messages.emptyAddress)} />
+    )
 
     const { cards } = payment
     const contentPayment =
       cards && cards.length ? (
         <PaymentData card={cards[0]} />
       ) : (
-          <EmptyContainer message={formatMessage(messages.emptyPayment)} />
-        )
+        <EmptyContainer message={formatMessage(messages.emptyPayment)} />
+      )
 
     const profileHeader = (
       <OverviewHeader
@@ -108,7 +108,7 @@ class Overview extends React.Component<Props, {}> {
     )
     const profileView = (
       <MediaQuery maxWidth={768}>
-        {matches => {
+        {(matches) => {
           if (matches) {
             return (
               <div>
