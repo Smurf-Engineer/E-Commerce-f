@@ -34,6 +34,7 @@ export const getOrderQuery = gql`
       currency {
         shortName: short_name
       }
+      lastDrop: last_drop
       orderDate: created_at
       estimatedDate: estimated_date
       netsuite: netsuit_order {
@@ -138,6 +139,8 @@ export const getOrderQuery = gql`
       taxGst: tax_gst
       taxVat: tax_vat
       teamStoreId: teamstore_id
+      teamStoreName: teamstore_name
+      canUpdatePayment
       onDemand: on_demand_mode
     }
   }

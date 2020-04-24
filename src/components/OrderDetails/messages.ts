@@ -23,7 +23,7 @@ export default defineMessages({
   },
   deliveryDate: {
     id: 'components.OrderDetails.deliveryDate',
-    defaultMessage: 'Estimated delivery date'
+    defaultMessage: 'Estimated Delivery Date'
   },
   orderNumber: {
     id: 'components.OrderDetails.orderNumber',
@@ -39,7 +39,7 @@ export default defineMessages({
   },
   status: {
     id: 'components.OrderDetails.status',
-    defaultMessage: 'Status'
+    defaultMessage: 'Order Status'
   },
   orderSummary: {
     id: 'components.OrderDetails.orderSummary',
@@ -105,7 +105,8 @@ export default defineMessages({
   editOrderMessage: {
     id: 'components.OrderDetails.editOrderMessage',
     defaultMessage:
-      'By editing your order, your items will automatically go to your cart and this previous order will be deleted'
+      // tslint:disable-next-line:max-line-length
+      'By editing your order, all items will be added to your cart so you can update your payment information and complete the checkout. In doing so, this previous order will be cancelled.'
   },
   proceed: {
     id: 'components.OrderDetails.proceed',
@@ -123,5 +124,39 @@ export default defineMessages({
   delete: {
     id: 'components.OrderDetails.delete',
     defaultMessage: 'Yes, Delete'
+  },
+  lastUpdated: {
+    id: 'components.OrderDetails.lastUpdated',
+    defaultMessage: 'Last Updated'
+  },
+  orderPoint: {
+    id: 'components.OrderDetails.orderPoint',
+    defaultMessage: 'Order Point'
+  },
+  cart: {
+    id: 'components.OrderDetails.cart',
+    defaultMessage: 'Cart'
+  },
+  updatePayment: {
+    id: 'components.OrderDetails.updatePayment',
+    defaultMessage: 'Edit Order'
+  },
+  messageRetail: {
+    id: 'components.OrderDetails.messageRetail',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>We’ve received your order and are working on it now. Every detail matters to us. All customized items are made to order and cannot be changed once your order enters the production process. Please double check your order and let us know immediately of any problems or concerns. If you requested a Pro Review, the production process will begin once the Review process has been completed.</p> <p>If you only ordered inline collections items together with customized items, all items will ship together based on the published delivery date. If you only ordered retail collection items, those items typically ship within 2 business days. All orders will be shipped via FedEx International Priority. A signature is required by default for the security of your order. We will send you a fulfillment notice with tracking about 3-4 days prior to your estimated delivery date.</p>'
+  },
+  messageTeamstore: {
+    id: 'components.OrderDetails.messageTeamstore',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>We’ve received your team store order and are working on it now. All customized items are made to order and cannot be changed once the ordering period has closed and your order enters the production process. However, if necessary, you have the opportunity to edit your order during the ordering period. Please note that removing items from your order may affect the pricing for others. Please contact our customer service team with any questions. </p> <p>When ordering on a team store, payment method is validated at the time the order is placed.  Payment, however, will be taken after the ordering period has closed and all eligible discounts have been applied. This way, everyone gets the same low price regardless of when they placed their order during the ordering period.</p> <p>All orders will be shipped via FedEx International Priority. A signature is required by default for the security of your order. We will send you a fulfillment notice with tracking about 2-3 days prior to your estimated delivery date.</p>'
+  },
+  paymentIssue: {
+    id: 'components.OrderDetails.paymentIssue',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'We encountered a problem when attemping to process your payment. Use the <strong>EDIT</strong> button below to update your payment information and complete the checkout once again'
   }
 })

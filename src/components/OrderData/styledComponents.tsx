@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
+import { GRAY_DARK, RED } from '../../theme/colors'
 
 export const Container = styled.div``
 
@@ -95,8 +96,12 @@ export const TitleStyled = styled.div`
   }
 `
 
+interface TextProps {
+  redColor?: boolean
+}
+
 export const StyledText = styled.div`
-  color: #5f6062;
+  color: ${({ redColor }: TextProps) => (redColor ? RED : GRAY_DARK)};
   letter-spacing: 0.11px;
   line-height: 23px;
   font-size: 16px;

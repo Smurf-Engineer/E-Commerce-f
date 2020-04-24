@@ -33,17 +33,13 @@ export default defineMessages({
     id: 'components.StoreForm.errorMsg',
     defaultMessage: 'Something wrong happened. Please try again!'
   },
-  shipping: {
-    id: 'components.StoreForm.shipping',
-    defaultMessage: 'Orders ship within 7 days of receipt of order.'
-  },
   onDemandMode: {
     id: 'components.StoreForm.onDemandMode',
     defaultMessage: 'ON DEMAND MODE'
   },
   fixedMode: {
     id: 'components.StoreForm.fixedMode',
-    defaultMessage: 'FIXED DATE'
+    defaultMessage: 'BATCH ORDER MODE'
   },
   gotIt: {
     id: 'components.StoreForm.gotIt',
@@ -51,13 +47,13 @@ export default defineMessages({
   },
   aboutCutOff: {
     id: 'components.StoreForm.aboutCutOff',
-    defaultMessage: 'ABOUT CUT-OFF DATE'
+    defaultMessage: 'ABOUT CUT-OFF DATES'
   },
   aboutCutOffInfo: {
     id: 'components.StoreForm.aboutCutOffInfo',
-    defaultMessage: `The order cut-off date can not be greater 
-    than 14 days from the current date. You will have the option, 
-    if necessary, to extend your Cut-Off date once up to a maximum of +3 days.`
+    defaultMessage: `Team pricing on batch order stores starts at the 20% discount tier. The price will
+    Automatically drop for each item as members place orders and reach the next discount tier.
+    `
   },
   aboutDelivery: {
     id: 'components.StoreForm.aboutDelivery',
@@ -65,6 +61,9 @@ export default defineMessages({
   },
   aboutDeliveryInfo: {
     id: 'components.StoreForm.aboutDeliveryInfo',
-    defaultMessage: `Delivery day exclude federal holidays and weekends.`
+    defaultMessage: `You can set a delivery date anytime between 14-19 days after the order cut-off date.
+    If you set your delivery date on a Federal holiday, your order will be delivered the next available business
+    day so plan accordingly. We recommend setting a delivery date 2-3 days in advance of any specific event date
+    you may have to allow for any unforeseen delays in transit.`
   }
 })
