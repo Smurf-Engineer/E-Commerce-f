@@ -535,7 +535,8 @@ describe(' CreateStore Screen', () => {
             privateStore: false,
             onDemand: true,
             items: [],
-            teamSize: { id: 1, size: '2-5' }
+            teamSize: { id: 1, size: '2-5' },
+            datesEdited: true
           }
           const editDataState = createStoreReducer(
             initialState,
@@ -561,6 +562,9 @@ describe(' CreateStore Screen', () => {
 
           const onDemandValue = editDataState.get('onDemand')
           expect(onDemandValue).toBeTruthy()
+
+          const datesEditedValue = editDataState.get('datesEdited')
+          expect(datesEditedValue).toBeTruthy()
         })
       })
     })

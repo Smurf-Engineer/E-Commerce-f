@@ -3,6 +3,7 @@
  */
 
 import teamStoresAdminReducer, { initialState } from './reducer'
+import moment from 'moment'
 import {
   setOrderByAction,
   setCurrentPageAction,
@@ -26,7 +27,9 @@ import {
   moveRowAction,
   setUserToSearch,
   setSelectedUser,
-  setTeamData
+  setTeamData,
+  updateStartDateAction,
+  updateEndDateAction
 } from './actions'
 import {
   SET_ORDER_BY,
@@ -51,7 +54,9 @@ import {
   MOVE_ROW,
   SET_USER_TO_SEARCH,
   SET_SELECTED_USER,
-  SET_TEAM_DATA
+  SET_TEAM_DATA,
+  UPDATE_START_DATE_ACTION,
+  UPDATE_END_DATE_ACTION
 } from './constants'
 
 describe(' TeamStoresAdmin Screen', () => {
@@ -155,6 +160,26 @@ describe(' TeamStoresAdmin Screen', () => {
       expect(setNameAction(name)).toEqual({
         type,
         name
+      })
+    })
+    it('updateStartDateAction', () => {
+      const type = UPDATE_START_DATE_ACTION
+      const date = '2019-01-01'
+      const dateMoment = moment(date)
+      expect(updateStartDateAction(dateMoment, date)).toEqual({
+        type,
+        dateMoment,
+        date
+      })
+    })
+    it('updateEndDateAction', () => {
+      const type = UPDATE_END_DATE_ACTION
+      const date = '2019-01-01'
+      const dateMoment = moment(date)
+      expect(updateEndDateAction(dateMoment, date)).toEqual({
+        type,
+        dateMoment,
+        date
       })
     })
     it('setFeaturedAction', () => {
@@ -460,6 +485,68 @@ describe(' TeamStoresAdmin Screen', () => {
         )
         const customNameValue = nameState.get('name')
         expect(customNameValue).toBe(customValue)
+      })
+    })
+  })
+  describe('UPDATE_START_DATE_ACTION', () => {
+    describe('Update teamstore startDate', () => {
+      it('Handles undefined value in startDate', () => {
+        const customInitialValue = initialState.get('startDate')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in startDate', () => {
+        const customInitialValue = initialState.get('startDate')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in startDate', () => {
+        const customInitialValue = initialState.get('startDate')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom values in startDate', () => {
+        const startDate = '2019-01-01'
+        const startDateMoment = moment(startDate)
+
+        const startDateState = teamStoresAdminReducer(
+          initialState,
+          updateStartDateAction(startDateMoment, startDate)
+        )
+        const customStartDateValue = startDateState.get('startDate')
+        const customStartDateMomentValue = startDateState.get(
+          'startDateMoment'
+        )
+
+        expect(customStartDateValue).toBe(startDate)
+        expect(customStartDateMomentValue).toBe(startDateMoment)
+      })
+    })
+  })
+  describe('UPDATE_END_DATE_ACTION', () => {
+    describe('Update teamstore endDate', () => {
+      it('Handles undefined value in endDate', () => {
+        const customInitialValue = initialState.get('endDate')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in endDate', () => {
+        const customInitialValue = initialState.get('endDate')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in endDate', () => {
+        const customInitialValue = initialState.get('endDate')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom values in endDate', () => {
+        const endDate = '2019-01-01'
+        const endDateMoment = moment(endDate)
+
+        const endDateState = teamStoresAdminReducer(
+          initialState,
+          updateEndDateAction(endDateMoment, endDate)
+        )
+        const customEndDateValue = endDateState.get('endDate')
+        const customEndDateMomentValue = endDateState.get('endDateMoment')
+
+        expect(customEndDateValue).toBe(endDate)
+        expect(customEndDateMomentValue).toBe(endDateMoment)
       })
     })
   })

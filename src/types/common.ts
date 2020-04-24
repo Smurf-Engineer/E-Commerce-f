@@ -650,6 +650,7 @@ export interface CartItems {
   preflightCheck?: boolean
   fixedPrices: PriceRange[]
   teamStoreName?: string
+  fixedCart?: boolean
 }
 
 export interface ProductPrice {
@@ -761,6 +762,7 @@ export interface OrderDetailsInfo {
   teamStoreId?: string
   lastDrop?: boolean
   teamStoreName?: string
+  canUpdatePayment?: boolean
 }
 
 export interface OrderDataInfo {
