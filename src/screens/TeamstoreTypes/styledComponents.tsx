@@ -25,6 +25,8 @@ export const Title = styled.p`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
+  text-align: center;
+
   @media (min-width: 320px) and (max-width: 748px) {
     margin: 40px 20px;
   }
@@ -34,8 +36,8 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   background: ${WHITE};
-  height: 648px;
-  width: 360px;
+  min-height: 608px;
+  width: 380px;
   transition: all 0.25s;
   cursor: pointer;
   &:hover {
@@ -76,7 +78,10 @@ export const TeamStoreCardsContainer = styled.div`
 `
 
 export const List = styled.ul`
-  margin-right: 28px;
+  padding: 0;
+  margin: 0 28px;
+  list-style: none;
+  text-align: center;
 `
 
 export const Item = styled.li`
@@ -87,6 +92,7 @@ export const PaymentIcons = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 30px;
+  height: 40px;
 `
 
 export const Icon = styled.img`
@@ -113,7 +119,7 @@ export const SelectTeamStoreButton = styled(Button)`
 `
 
 export const TeamBanner = styled.img`
-  max-width: 150px;
+  max-width: 220px;
   width: 100%;
   margin-bottom: 4px;
 `
@@ -124,4 +130,9 @@ export const TeamImage = styled.img`
   margin-bottom: 24px;
   height: 200px;
   object-position: 0 20%;
+`
+
+export const PaymentMethodsText = styled.div`
+  padding-inline-start: 30px;
+  margin-bottom: 10px;
 `

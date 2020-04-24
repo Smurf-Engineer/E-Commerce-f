@@ -184,28 +184,33 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <MoreIcon type="ellipsis" />
               </DragCell>
             </Cell>
-            <Cell width={15} tabletWidth={25}>
+            <Cell width={20} tabletWidth={20}>
               <Thumbnail
                 {...{ image, hideQuickView }}
                 onPressQuickView={handleOnClickView}
               />
             </Cell>
-            <Cell width={20} tabletWidth={15}>
+            <Cell width={10} tabletWidth={10}>
               <Name>{name}</Name>
+            </Cell>
+            <Cell width={10} tabletWidth={10}>
               <Description>{description}</Description>
             </Cell>
-            <Cell width={15} tabletWidth={15}>
+            <Cell width={10} tabletWidth={10}>
               <Price>{`$${regularPrice}`}</Price>
             </Cell>
-            <Cell width={15} tabletWidth={15}>
+            <Cell width={10} tabletWidth={10}>
               <Price>{`$${fixedPrice}`}</Price>
             </Cell>
-            <Cell width={15} tabletWidth={10}>
+            <Cell width={10} tabletWidth={10}>
+              <Price>{totalOrders}</Price>
+            </Cell>
+            <Cell width={10} tabletWidth={10}>
               <Center>
                 <Checkbox checked={visible} onChange={handleOnClickVisible} />
               </Center>
             </Cell>
-            <Cell>
+            <Cell width={14} tabletWidth={15}>
               <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
             </Cell>
           </Row>

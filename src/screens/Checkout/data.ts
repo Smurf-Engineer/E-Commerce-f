@@ -62,3 +62,9 @@ export const AddCardMutation = graphql(
     name: 'addNewCard'
   }
 )
+
+export const getSubsidiaryQuery = gql`
+  query subsidiaryByCountryCode($code: String!) {
+    subsidiary: subsidiaryByCountryCode(code: $code)
+  }
+`
