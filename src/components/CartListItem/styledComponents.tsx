@@ -166,3 +166,7 @@ export const BottomDivider = styled.div`
   margin-right: 16px;
   margin-bottom: 30px;
 `
+
+export const FromTeamStore = styled.div`
+  margin-bottom: 10px;
+`

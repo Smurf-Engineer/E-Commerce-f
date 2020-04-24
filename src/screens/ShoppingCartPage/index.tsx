@@ -3,12 +3,13 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
 import find from 'lodash/find'
 import get from 'lodash/get'
+import every from 'lodash/every'
 import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
 import FitInfo from '../../components/FitInfo'
@@ -30,7 +31,14 @@ import {
   EmptyTitle,
   EmptyDescription,
   StyledEmptyButton,
-  DeleteConfirmMessage
+  DeleteConfirmMessage,
+  ModalHeader,
+  InfoBody,
+  buttonStyle,
+  CloseIcon,
+  StoreInfo,
+  ButtonContainer,
+  ContinueButton
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -44,9 +52,13 @@ import {
   PriceRange
 } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
+import Checkbox from 'antd/lib/checkbox'
+import closeIcon from '../../assets/cancel-button.svg'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
+
+const { warning } = Modal
 
 interface CartItems {
   product: Product
@@ -55,6 +67,7 @@ interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  isFixed?: boolean
   teamStoreId?: string
   fixedPrices: PriceRange[]
 }
@@ -62,11 +75,16 @@ interface CartItems {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   cart: CartItems[]
+  client: any
   showDeleteLastItemModal: boolean
   showReviewDesignModal: boolean
   currentCurrency: string
   openFitInfo: boolean
+  storeTerms: boolean
+  openStoreInfo: boolean
   selectedIndex: number
+  openStoreInfoAction: (open: boolean) => void
+  setStoreTerms: (checked: boolean) => void
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -104,7 +122,7 @@ interface Props extends RouteComponentProps<any> {
     detailIndex: number,
     quantity: number
   ) => void
-  setInitialData: () => void
+  setInitialData: (query: any) => void
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
@@ -128,7 +146,23 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     }
   }
 
-  onCheckoutClick = () => {
+  showFixedError = () => {
+    const {
+      intl: { formatMessage }
+    } = this.props
+    warning({
+      title: (
+        <ModalHeader>{formatMessage(messages.differentStore)}</ModalHeader>
+      ),
+      okText: formatMessage(messages.gotIt),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: <InfoBody>{formatMessage(messages.differentBody)}</InfoBody>
+    })
+  }
+
+  proceedCheckout = () => {
     const {
       showReviewDesignModalAction,
       showReviewDesignModal,
@@ -136,7 +170,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     } = this.props
     const isCustom = find(cart, 'designId')
     const teamStore = find(cart, 'teamStoreId')
-
     if (!!isCustom && !teamStore) {
       if (showReviewDesignModal) {
         showReviewDesignModalAction(false)
@@ -148,9 +181,40 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     }
   }
 
+  handleCheckStore = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { checked }
+    } = event
+    const { setStoreTerms } = this.props
+    setStoreTerms(checked)
+  }
+
+  onCheckoutClick = () => {
+    const { openStoreInfoAction, cart } = this.props
+    const fixedItem = find(cart, 'isFixed')
+    if (fixedItem) {
+      const sameTeam = every(cart, ['teamStoreId', fixedItem.teamStoreId])
+      if (sameTeam) {
+        openStoreInfoAction(true)
+      } else {
+        this.showFixedError()
+      }
+      return
+    }
+    this.proceedCheckout()
+  }
+
+  handleCloseStoreInfo = () => {
+    const { openStoreInfoAction } = this.props
+    openStoreInfoAction(false)
+  }
+
   componentDidMount() {
-    const { setInitialData } = this.props
-    setInitialData()
+    const {
+      setInitialData,
+      client: { query }
+    } = this.props
+    setInitialData(query)
   }
 
   componentWillUnmount() {
@@ -282,6 +346,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       intl,
       history,
       cart,
+      openStoreInfo,
+      storeTerms,
       showDeleteLastItemModal,
       showReviewDesignModal,
       currentCurrency,
@@ -295,6 +361,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       currentCurrency || config.defaultCurrency
     )
+
     const {
       total,
       totalWithoutDiscount,
@@ -324,7 +391,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       })
 
       symbol = currencyPrices[0].shortName
-
+      const teamStoreRange = cartItem.teamStoreId && cartItem.isFixed ? 0 : 1
       return (
         <CartItem
           currentCurrency={currentCurrency || config.defaultCurrency}
@@ -342,7 +409,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           }
           price={
             currencyPrices[
-              cartItem.teamStoreId && !priceRangeToApply ? 1 : priceRangeToApply
+              cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
             ]
           }
           image={
@@ -352,6 +419,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           }
           currencySymbol={symbol}
           cartItem={cartItem}
+          isFixed={cartItem.isFixed}
+          teamStoreItem={cartItem.teamStoreItem}
           handleAddItemDetail={this.handleAddItemDetail}
           handledeleteItemDetail={this.handledeleteItemDetail}
           itemIndex={index}
@@ -362,6 +431,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
           removeItem={this.handleRemoveItem}
+          disable={cartItem.fixedCart}
           {...{ history, openFitInfoAction, openFitInfo }}
         />
       )
@@ -445,6 +515,34 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               />
             </DeleteConfirmMessage>
           </Modal>
+          <Modal
+            visible={openStoreInfo}
+            width="682px"
+            closable={false}
+            footer={null}
+            destroyOnClose={true}
+          >
+            <ModalHeader>
+              {formatMessage(messages.aboutStoreInfo)}
+              <CloseIcon src={closeIcon} onClick={this.handleCloseStoreInfo} />
+            </ModalHeader>
+            <StoreInfo
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.storeInfoText)
+              }}
+            />
+            <Checkbox checked={storeTerms} onChange={this.handleCheckStore}>
+              {formatMessage(messages.terms)}
+            </Checkbox>
+            <ButtonContainer>
+              <ContinueButton
+                onClick={this.proceedCheckout}
+                disabled={!storeTerms}
+              >
+                {formatMessage(messages.continue)}
+              </ContinueButton>
+            </ButtonContainer>
+          </Modal>
         </PageContent>
         {designReviewModal}
         {cart && cart.length && (
@@ -472,11 +570,9 @@ const mapStateToProps = (state: any) => {
 }
 
 const ShoppingCartPageEnhance = compose(
+  withApollo,
   injectIntl,
-  connect(
-    mapStateToProps,
-    { ...shoppingCartPageActions, ...thunkActions }
-  )
+  connect(mapStateToProps, { ...shoppingCartPageActions, ...thunkActions })
 )(ShoppingCartPage)
 
 export default ShoppingCartPageEnhance

@@ -44,7 +44,8 @@ import {
   MainBody,
   EditModel,
   Buttons,
-  ModelSection
+  ModelSection,
+  RowLink
 } from './styledComponents'
 interface Data extends QueryProps {
   product: Product
@@ -95,6 +96,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
       tags,
       active,
       designCenter,
+      customLink,
       season,
       materials,
       details,
@@ -314,6 +316,17 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   />
                   <RowField flex="2" label={materials} />
                 </Row>
+                {!designCenter && customLink && (
+                  <Row>
+                    <RowField
+                      marginRight="8px"
+                      value={formatMessage(messages.customizeLink)}
+                    />
+                    <RowLink href={customLink} target="_blank">
+                      {customLink}
+                    </RowLink>
+                  </Row>
+                )}
                 <Separator>
                   <FormattedMessage {...messages.fitSizing} />
                 </Separator>
@@ -469,7 +482,10 @@ const mapStateToProps = (state: any) => state.get('productDetailAdmin').toJS()
 
 const ProductDetailsAdminEnhance = compose(
   withRouter,
-  connect(mapStateToProps, { ...ProductDetailsAdminActions }),
+  connect(
+    mapStateToProps,
+    { ...ProductDetailsAdminActions }
+  ),
   graphql(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''

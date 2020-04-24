@@ -5,12 +5,13 @@ import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
-import { RED, BLACK, BLUE_DARK, WHITE } from '../../theme/colors'
+import { RED, BLACK, BLUE_DARK, WHITE, BLUE } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 interface StyledProps {
   selected?: boolean
   withBorder?: boolean
+  marginLeft?: string
 }
 
 export const Container = styled.div`
@@ -190,6 +191,9 @@ export const ButtonsRow = styled.div`
     line-height: 22px;
     text-align: center;
   }
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-flow: column;
+  }
 `
 
 export const StyledButtonWrapper = styled.div`
@@ -201,6 +205,10 @@ export const StyledButtonWrapper = styled.div`
     background-color: ${BLUE_DARK};
     border-color: ${BLUE_DARK};
   }
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 18px 0 0;
+  }
+  margin-left: ${({ marginLeft }: StyledProps) => marginLeft || '0px'};
 `
 export const SlideImage = styled.img`
   width: 100%;
@@ -238,13 +246,13 @@ export const TitleName = styled.div`
 export const StyledButton = styled.div`
   height: 50px;
   width: 277px;
-  border: 1px solid #4a90e2;
+  border: 1px solid ${BLUE};
   border-radius: 2px;
   cursor: pointer;
   font-weight: 600;
-  background-color: #ffffff;
+  background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-  color: #4a90e2;
+  color: ${BLUE};
   font-size: 16px;
   display: flex;
   transition: all 0.2s;
@@ -254,8 +262,32 @@ export const StyledButton = styled.div`
     display: none;
   }
   &:hover {
-    background: #4a90e2;
+    background: ${BLUE};
     color: white;
+  }
+`
+
+export const CustomizeButton = styled.a`
+  height: 50px;
+  width: 256px;
+  border: 1px solid ${BLUE};
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: ${WHITE};
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: ${BLUE};
+  font-size: 16px;
+  display: flex;
+  transition: all 0.2s;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background: ${BLUE};
+    color: white;
+  }
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
   }
 `
 
@@ -273,13 +305,13 @@ export const MobileButton = styled.div`
   height: 50px;
   width: 100%;
   margin-bottom: 16px;
-  border: 1px solid #4a90e2;
+  border: 1px solid ${BLUE};
   border-radius: 2px;
   cursor: pointer;
   font-weight: 600;
-  background-color: #ffffff;
+  background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-  color: #4a90e2;
+  color: ${BLUE};
   font-size: 16px;
   justify-content: center;
   align-items: center;
@@ -329,7 +361,7 @@ interface ButtonProps {
 
 export const SectionButton = styled.div`
   align-content: center;
-  background-color: #ffffff;
+  background-color: ${WHITE};
   border: ${({ selected }: ButtonProps) =>
     selected ? '2px solid #e61737' : '0.5px solid #dcdcdc'};
   border-radius: 2px;
@@ -404,14 +436,14 @@ export const AddToCartButton = styled(Button)`
   height: 40px;
   width: 138.23px;
   border-radius: 2px;
-  background-color: #4a90e2;
+  background-color: ${BLUE};
   color: #fff;
   margin-left: 26px;
 
   &:hover {
-    background-color: #4a90e2;
+    background-color: ${BLUE};
     color: #fff;
-    border-color: #4a90e2;
+    border-color: ${BLUE};
   }
 `
 export const RelatedProductsContainer = styled.div`

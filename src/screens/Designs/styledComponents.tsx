@@ -50,3 +50,8 @@ export const QuickView = styled.img`
   cursor: pointer;
   margin-left: 8px;
 `
+
+export const RenderContainer = styled.div`
+  width: 600px;
+  position: relative;
+`

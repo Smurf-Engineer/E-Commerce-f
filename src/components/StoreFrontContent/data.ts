@@ -27,6 +27,7 @@ export const getSingleTeamStore = gql`
       display
       onDemandMode: on_demand_mode
       team_size_id
+      closed
       priceRanges {
         id
         name: quantity_description

@@ -79,6 +79,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
               onSortClick={this.handleOnSortClick}
               onOrderClick={this.handleOnOrderClick}
               onChangePage={this.handleOnChangePage}
+              canEdit={access.edit}
               interactiveHeaders={true}
             />
           </Container>

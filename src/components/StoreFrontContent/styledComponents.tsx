@@ -2,7 +2,6 @@
  * Styled Components - Created by gustavomedina on 18/04/18.
  */
 import styled from 'styled-components'
-import Slider from 'antd/lib/slider'
 import AntdButton from 'antd/lib/button'
 import {
   GREEN,
@@ -10,13 +9,22 @@ import {
   WHITE,
   BLUE_BRIGHT,
   GRAY_HEADER,
-  GRAY_SKELETON
+  GRAY_SKELETON,
+  BLUE,
+  GRAY_DARK
 } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
   open?: boolean
   left?: boolean
 }
+
+export const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+`
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,6 +32,10 @@ export const Container = styled.div`
   max-width: 1452px;
   width: 100%;
   margin: 0 auto;
+  padding: 10px 50px 0;
+  @media (min-width: 320px) and (max-width: 748px) {
+    padding: 0;
+  }
 `
 
 export const TopContainer = styled.div`
@@ -31,15 +43,13 @@ export const TopContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 32px 46px 0;
   @media (min-width: 425px) and (max-width: 768px) {
     flex-flow: row;
     align-items: flex-start;
   }
   @media (max-width: 425px) {
-    flex-flow: column;
+    flex-flow: column-reverse;
     align-items: center;
-    margin: 18px 14px 0;
   }
 `
 export const SideBar = styled.div``
@@ -52,7 +62,7 @@ export const Description = styled.div`
   }
 `
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -62,7 +72,7 @@ export const Title = styled.div`
   text-align: center;
   margin-bottom: 0;
   @media (max-width: 800px) {
-    margin-bottom: 8px;
+    margin-top: 8px;
   }
 `
 
@@ -82,7 +92,7 @@ export const StoreBox = styled.div`
   align-items: center;
   justify-content: center;
   width: 200px;
-  margin-right: 22px;
+  margin-bottom: 12px;
   height: 51px;
   border: 2px solid ${({ open }: DivProps) => (open ? GREEN : BLACK_LIGHT)};
   background-color: ${({ open }: DivProps) => (open ? WHITE : BLACK_LIGHT)};
@@ -116,30 +126,30 @@ export const AboutContainer = styled.div`
   padding: 30px;
 `
 
-export const StyledSliderTitle = styled.strong`
-  color: #f50;
-`
-
-export const TierContainer = styled.div`
-  padding-top: 40px;
-`
-
 export const OrderTitle = styled.div`
   color: #5f6062;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 19px;
-  text-align: right;
+  text-align: center;
+  margin-bottom: 10px;
+  max-width: 267px;
 `
+
+type TitleProps = {
+  center?: boolean
+}
 
 export const PriceTitle = styled.div`
   padding-top: 18px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 23px;
+  text-transform: uppercase;
+  text-align: ${({ center }: TitleProps) => (center ? 'center' : 'left')};
 `
 
 export const Bulletin = styled.div`
@@ -149,6 +159,7 @@ export const Bulletin = styled.div`
   background: ${GRAY_HEADER};
   position: relative;
   min-height: 57px;
+  margin: 12px auto 0;
 
   padding: 14px 12px;
   justify-content: center;
@@ -156,7 +167,6 @@ export const Bulletin = styled.div`
   font-size: 18px;
   color: ${BLUE_BRIGHT};
   font-style: italic;
-  margin-top: 12px;
   font-family: 'Avenir-Medium';
   @media (max-width: 480px) {
     height: auto;
@@ -165,6 +175,15 @@ export const Bulletin = styled.div`
     min-width: 80%;
     padding: 16px;
   }
+`
+
+export const PricesButton = styled.div`
+  color: ${BLUE};
+  width: 200px;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+  margin: 10px auto 0px;
 `
 
 export const BulletinLabel = styled.span`
@@ -202,58 +221,20 @@ export const PriceDescription = styled.div`
   line-height: 23px;
 `
 
-export const TierTitle = styled.div`
-  color: #5f6062;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0.11px;
-  line-height: 23px;
-  text-align: center;
-`
-
-export const TierDescription = styled.div`
-  padding-top: 5px;
-  color: #5f6062;
-  font-size: 12px;
-  letter-spacing: 0.15px;
-  line-height: 16px;
-  text-align: center;
-`
-
 export const Text = styled.div`
   color: #fff;
-`
-
-export const StyledSlider = styled(Slider)`
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 80%;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: 80%;
-  }
-`
-
-export const SliderWrapper = styled.div`
-  .ant-slider-track {
-    background-color: #91d5ff !important;
-  }
-  .ant-slider-handle {
-    border-color: #4a90e2 !important;
-  }
 `
 
 export const ButtonWrapper = styled.div`
   padding-right: 10px;
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
     width: 70px;
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
 `
 
@@ -269,7 +250,7 @@ export const DefaultButton = styled(AntdButton)`
 export const ImageBanner = styled.img`
   max-height: 300px;
   max-width: 1452px;
-  margin: 0 auto;
+  margin: 0 auto 10px;
   width: 100%;
   object-fit: cover;
 `
@@ -321,7 +302,7 @@ export const CalendarDay = styled.div`
 
 export const DatesContainer = styled.div`
   display: flex;
-  flex-flow: row;
+  flex-flow: column;
   padding-top: ${({ onDemandMode }: DivProps) => (onDemandMode ? '0' : '20px')};
   justify-content: flex-end;
   align-items: center;
@@ -332,14 +313,25 @@ export const DatesContainer = styled.div`
   }
 `
 
+export const Dates = styled.div`
+  display: flex;
+  flex-flow: row;
+`
 export const FlexContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   @media (max-width: 768px) {
-    flex-flow: column;
+    flex-flow: column-reverse;
     justify-content: center;
   }
+`
+
+export const FlexColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  padding: 10px;
 `
 
 export const CalendarContainer = styled.div`
@@ -362,12 +354,15 @@ export const DatesTitle = styled.div`
 `
 
 export const ListContainer = styled.div`
-  padding-right: 32px;
+  padding-right: 0;
   padding-left: 32px;
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   margin-top: 28px;
+  @media (min-width: 320px) and (max-width: 748px) {
+    padding-left: 0;
+  }
 `
 
 export const Loading = styled.div`
@@ -377,8 +372,7 @@ export const Loading = styled.div`
   align-items: center;
 `
 
-export const sliderStyle = {
-  fontSize: '12px',
-  letterSpacing: '0.15px',
-  lineHeight: '16px'
-}
+export const DynamicDropLogo = styled.img`
+  width: 150px;
+  margin: 15px 0;
+`

@@ -24,6 +24,7 @@ import {
   Message,
   PricesByCurrency
 } from '../../../../types/common'
+import { CHF_CURRENCY } from '../../constants'
 
 interface Props {
   thumbnail: string
@@ -64,15 +65,17 @@ const RowItem = ({
   }
   const inputFields = currencies.map(({ shortName, id: currencyId }) => {
     return (
-      <Cell key={currencyId}>
-        <StyledInput
-          id={shortName}
-          disabled={!canEdit}
-          placeholder={shortName}
-          onChange={onSetPrice}
-          value={pricesByCurrency[shortName]}
-        />
-      </Cell>
+      shortName !== CHF_CURRENCY && (
+        <Cell key={currencyId}>
+          <StyledInput
+            id={shortName}
+            disabled={!canEdit}
+            placeholder={shortName}
+            onChange={onSetPrice}
+            value={pricesByCurrency[shortName]}
+          />
+        </Cell>
+      )
     )
   })
   return (
