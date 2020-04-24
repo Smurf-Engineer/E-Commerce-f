@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { RED, BLUE, GRAY_DARK } from '../../theme/colors'
+import { RED, BLUE, GRAY_DARK, RED_TRANSPARENT } from '../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -12,7 +12,9 @@ export const LoadingContainer = styled.div`
   min-height: 35em;
 `
 
-export const Container = styled.div``
+export const Container = styled.div`
+  position: relative;
+`
 
 export const ViewContainer = styled.div`
   display: flex;
@@ -23,7 +25,6 @@ export const ViewContainer = styled.div`
   line-height: 22px;
   text-align: right;
   cursor: pointer;
-
   &:hover {
     color: #e61737;
   }
@@ -229,3 +230,22 @@ export const StyledText = styled.div`
   line-height: 23px;
   font-size: 16px;
 `
+
+export const ErrorMessage = styled.div`
+  position: absolute;
+  top: 0;
+  border: 1px solid ${RED};
+  background: ${RED_TRANSPARENT};
+  right: 20px;
+  padding: 20px;
+  color: ${RED};
+  width: 495px;
+  text-align: center;
+  @media (min-width: 320px) and (max-width: 800px) {
+    position: relative;
+    width: 100%;
+    right: 0;
+  }
+`
+
+export const Paragraph = styled.div``

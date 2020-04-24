@@ -35,11 +35,17 @@ interface Header {
   tabletWidth?: number
 }
 
+const PERSONAL = 'Personal'
+
 const headerTitles: Header[] = [
-  { message: '', width: 40, tabletWidth: 45 },
-  { message: 'regularPrice', width: 15, tabletWidth: 15 },
-  { message: 'fixedPrice', width: 15, tabletWidth: 15, withHelp: true },
-  { message: 'visible', width: 15, tabletWidth: 15 },
+  { message: '', width: 5, tabletWidth: 5 },
+  { message: '', width: 20, tabletWidth: 20 },
+  { message: '', width: 10, tabletWidth: 10 },
+  { message: '', width: 10, tabletWidth: 10 },
+  { message: 'regularPrice', width: 10, tabletWidth: 10 },
+  { message: 'fixedPrice', width: 10, tabletWidth: 10, withHelp: true },
+  { message: 'quantity', width: 10, tabletWidth: 10 },
+  { message: 'visible', width: 10, tabletWidth: 10 },
   { message: '', width: 15, tabletWidth: 10 }
 ]
 
@@ -50,6 +56,7 @@ interface Props {
   currentCurrency?: string
   hideQuickView?: boolean
   isFixed?: boolean
+  onDemand?: boolean
   onPressDelete: (index: number) => void
   onPressQuickView?: (
     id: number,
@@ -100,7 +107,8 @@ class LockerTable extends React.PureComponent<Props, {}> {
       onPressQuickView,
       onPressVisible,
       teamSizeRange,
-      currentCurrency = config.defaultCurrency
+      currentCurrency = config.defaultCurrency,
+      onDemand = true
     } = this.props
 
     const itemsSelected = items.map(
@@ -124,7 +132,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
         const type = get(product, 'type')
         const regularPrice = get(
           find(pricesArray, {
-            quantity: 'Personal'
+            quantity: PERSONAL
           }),
           'price',
           0
@@ -133,6 +141,25 @@ class LockerTable extends React.PureComponent<Props, {}> {
           priceRange && priceRange.length
             ? get(find(priceRange, ['abbreviation', currentCurrency]), 'price')
             : startingPrice
+
+        let currentRangePrice = 0
+
+        pricesArray.some((current: PriceRange, rangeIndex: number) => {
+          const quantities = current.quantity.split('-')
+          const maxQuantity = parseInt(quantities[1], 10)
+
+          if (totalOrders === 0 && current.quantity === PERSONAL) {
+            currentRangePrice = fixedPrice
+            return true
+          }
+          if (totalOrders <= maxQuantity) {
+            currentRangePrice = current.price
+            return true
+          }
+        })
+
+        const currentPrice = onDemand ? fixedPrice : currentRangePrice
+
         return (
           <Product
             {...{
@@ -150,12 +177,13 @@ class LockerTable extends React.PureComponent<Props, {}> {
               onPressVisible,
               yotpoId,
               totalOrders,
-              formatMessage
+              formatMessage,
+              onDemand
             }}
             key={index}
             description={`${type} ${description}`}
             currentOrders={totalOrders}
-            currentPrice={startingPrice}
+            fixedPrice={currentPrice}
             visible={visible}
             moveRow={this.moveRow}
           />

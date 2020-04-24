@@ -53,6 +53,7 @@ export const PAYMENT_ISSUE = 'Payment Issue'
 export const PAID_STATUS = 'Paid'
 export const ERROR_STATUS = 'Error'
 export const PENDING_APPROVAL = 'Pending Approval'
+export const PURGED = 'Purged'
 export const PREORDER = 'Pre-Order'
 
 /* Quantity */

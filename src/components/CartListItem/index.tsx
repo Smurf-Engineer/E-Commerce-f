@@ -153,7 +153,7 @@ export class CartListItem extends React.Component<Props, {}> {
     if (price && price.quantity !== 'Personal') {
       let priceIndex = findIndex(
         priceRanges,
-        pr => pr.quantity === price.quantity
+        (pr) => pr.quantity === price.quantity
       )
       priceIndex =
         priceIndex !== priceRanges.length - 1 ? priceIndex + 1 : priceIndex
@@ -317,10 +317,10 @@ export class CartListItem extends React.Component<Props, {}> {
 
     const footer = (
       <FooterItem>
-        <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
+        <AddMore onClick={(e) => handleAddItemDetail(e, itemIndex)}>
           {formatMessage(messages.addMore)}
         </AddMore>
-        <DeleteItem onClick={e => removeItem(e, itemIndex)}>
+        <DeleteItem onClick={(e) => removeItem(e, itemIndex)}>
           {formatMessage(messages.delete)}
         </DeleteItem>
       </FooterItem>
@@ -378,7 +378,7 @@ export class CartListItem extends React.Component<Props, {}> {
 
     const renderView = (
       <MediaQuery minWidth={'641px'}>
-        {matches => {
+        {(matches) => {
           if (matches) {
             return (
               <Container>
