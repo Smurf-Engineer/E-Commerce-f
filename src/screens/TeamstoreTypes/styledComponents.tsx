@@ -25,23 +25,39 @@ export const Title = styled.p`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
+  text-align: center;
+
+  @media (min-width: 320px) and (max-width: 748px) {
+    margin: 40px 20px;
+  }
 `
 
 export const Card = styled.div`
   display: flex;
   flex-direction: column;
   background: ${WHITE};
-  height: 400px;
-  width: 300px;
+  min-height: 608px;
+  width: 380px;
+  transition: all 0.25s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 3px 11px 1px rgba(0, 0, 0, 0.15);
+  }
   &:last-child {
     margin-left: 30px;
+  }
+  @media (min-width: 320px) and (max-width: 748px) {
+    &:last-child {
+      margin-left: 0px;
+      margin-top: 32px;
+    }
   }
   border: 1px solid ${GRAY_LIGHT};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   position: relative;
 `
 
-export const CardTitle = styled.p`
+export const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
@@ -55,9 +71,18 @@ export const TeamStoreCardsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  @media (min-width: 320px) and (max-width: 748px) {
+    flex-flow: column;
+  }
 `
 
-export const List = styled.ul``
+export const List = styled.ul`
+  padding: 0;
+  margin: 0 28px;
+  list-style: none;
+  text-align: center;
+`
 
 export const Item = styled.li`
   margin-bottom: 10px;
@@ -65,11 +90,14 @@ export const Item = styled.li`
 
 export const PaymentIcons = styled.div`
   display: flex;
-  margin-left: 30px;
+  justify-content: space-between;
+  margin: 0 30px;
+  height: 40px;
 `
 
 export const Icon = styled.img`
-  margin-right: 10px;
+  width: 100%;
+  max-width: 90px;
 `
 
 export const SelectTeamStoreButton = styled(Button)`
@@ -88,4 +116,23 @@ export const SelectTeamStoreButton = styled(Button)`
   right: 0;
   margin: auto;
   bottom 40px;
+`
+
+export const TeamBanner = styled.img`
+  max-width: 220px;
+  width: 100%;
+  margin-bottom: 4px;
+`
+
+export const TeamImage = styled.img`
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 24px;
+  height: 200px;
+  object-position: 0 20%;
+`
+
+export const PaymentMethodsText = styled.div`
+  padding-inline-start: 30px;
+  margin-bottom: 10px;
 `

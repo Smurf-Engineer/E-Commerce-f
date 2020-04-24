@@ -13,6 +13,7 @@ export const GetDesignByIdQuery = gql`
       teamEnable: team_enable
       teamOnDemand: team_on_demand_mode
       teamName: team_name
+      teamOnDemand: team_on_demand_mode
       teamPrice: team_price {
         abbreviation
         shortName: short_name

@@ -20,7 +20,8 @@ import {
   DeleteItem,
   BottomDivider,
   FooterItem,
-  HeaderPriceDetailEmpty
+  HeaderPriceDetailEmpty,
+  FromTeamStore
 } from './styledComponents'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
@@ -39,7 +40,10 @@ import config from '../../config/index'
 import { CardNumberElement } from 'react-stripe-elements'
 
 interface Props {
-  formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
+  formatMessage: (
+    messageDescriptor: Message,
+    params?: MessagePrice | TeamStoreName
+  ) => string
   handleAddItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number
@@ -106,6 +110,10 @@ interface MessagePrice {
   price: string
 }
 
+interface TeamStoreName {
+  teamStoreName: string
+}
+
 export class CartListItem extends React.Component<Props, {}> {
   getQuantity = (priceRange: PriceRange) => {
     let val = 0
@@ -149,7 +157,7 @@ export class CartListItem extends React.Component<Props, {}> {
     if (price && price.quantity !== 'Personal') {
       let priceIndex = findIndex(
         priceRanges,
-        pr => pr.quantity === price.quantity
+        (pr) => pr.quantity === price.quantity
       )
       priceIndex =
         priceIndex !== priceRanges.length - 1 ? priceIndex + 1 : priceIndex
@@ -246,7 +254,9 @@ export class CartListItem extends React.Component<Props, {}> {
       designImage,
       totalOrder,
       designCode,
-      fixedPrices = []
+      fixedPrices = [],
+      teamStoreName = '',
+      teamStoreId
     } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -305,17 +315,18 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailGender,
           setDetailSize,
           openFitInfoAction,
-          openFitInfo
+          openFitInfo,
+          teamStoreName
         }}
       />
     )
 
     const footer = (
       <FooterItem>
-        <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
+        <AddMore onClick={(e) => handleAddItemDetail(e, itemIndex)}>
           {formatMessage(messages.addMore)}
         </AddMore>
-        <DeleteItem onClick={e => removeItem(e, itemIndex)}>
+        <DeleteItem onClick={(e) => removeItem(e, itemIndex)}>
           {formatMessage(messages.delete)}
         </DeleteItem>
       </FooterItem>
@@ -325,6 +336,11 @@ export class CartListItem extends React.Component<Props, {}> {
       <ItemDetailsHeader>
         <NameContainer>
           <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
+          {!!teamStoreName && (
+            <FromTeamStore>
+              {formatMessage(messages.from, { teamStoreName })}
+            </FromTeamStore>
+          )}
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>
@@ -356,7 +372,8 @@ export class CartListItem extends React.Component<Props, {}> {
         label={formatMessage(cartListItemMsgs.reorder)}
         renderForThumbnail={false}
         item={cartItem}
-        {...{ formatMessage, designId, designName, designImage }}
+        {...{ formatMessage, designId, designName, designImage, teamStoreId }}
+        teamStoreName={teamStoreName}
         withoutTop={true}
         myLockerList={false}
         itemProdPage={true}
@@ -367,7 +384,7 @@ export class CartListItem extends React.Component<Props, {}> {
 
     const renderView = (
       <MediaQuery minWidth={'641px'}>
-        {matches => {
+        {(matches) => {
           if (matches) {
             return (
               <Container>

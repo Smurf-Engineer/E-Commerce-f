@@ -17,12 +17,7 @@ import * as designsActions from './actions'
 import { QueryProps, DesignSaved, Font, UserType } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
-import {
-  Container
-  // Row,
-  // Model,
-  // QuickView
-} from './styledComponents'
+import { Container } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 

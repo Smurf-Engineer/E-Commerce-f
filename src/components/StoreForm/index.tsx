@@ -2,7 +2,6 @@
  * StoreForm Component - Created by david on 09/04/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
 import Input from 'antd/lib/input'
 import message from 'antd/lib/message'
 import DatePicker from 'antd/lib/date-picker'
@@ -16,7 +15,6 @@ import {
   Required,
   inputStyle,
   TeamStoreTypeLabel,
-  ShipLabel,
   RightLabels,
   Fields,
   Question,
@@ -24,7 +22,6 @@ import {
   InfoBody,
   buttonStyle
 } from './styledComponents'
-import { validateHolidayQuery } from './data'
 import messages from './messages'
 
 const { info } = Modal
@@ -36,9 +33,20 @@ interface Props {
   endDate?: Moment
   onDemand?: boolean
   validateHoliday: any
+  cutoffDays: number
+  storeId: string
+  datesEdited: boolean
   onUpdateName: (name: string) => void
-  onSelectStartDate: (dateMoment: Moment, date: string) => void
-  onSelectEndDate: (dateMoment: Moment, date: string) => void
+  onSelectStartDate: (
+    dateMoment: Moment,
+    date: string,
+    datesEdited: boolean
+  ) => void
+  onSelectEndDate: (
+    dateMoment: Moment | null,
+    date: string,
+    datesEdited: boolean
+  ) => void
   formatMessage: (messageDescriptor: any) => string
 }
 const INPUT_MAX_LENGTH = 25
@@ -52,7 +60,9 @@ const StoreForm = ({
   endDate,
   onDemand,
   formatMessage,
-  validateHoliday
+  cutoffDays,
+  storeId,
+  datesEdited
 }: Props) => {
   const handleUpdateName = (evnt: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -75,19 +85,34 @@ const StoreForm = ({
     date.hour(0)
     date.minute(0)
     date.second(0)
-    return current.valueOf() < date.valueOf()
+
+    date.add('1', 'days')
+    const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
+
+    date.add('14', 'days')
+
+    let momentStartDate = date.valueOf()
+    if (storeId && !datesEdited) {
+      momentStartDate = moment(startDate)
+      momentStartDate.add('17', 'days')
+    }
+    const isGreaterThanFourteenDays = current.valueOf() > momentStartDate
+
+    return isBeforeOfCurrentDay || isGreaterThanFourteenDays
   }
 
   const disabledEndDate = (current: any) => {
     if (!current) {
       return false
     }
-
     let isLessThanDeliveryDate = false
+    let isGreaterThanTwentyDays = false
     if (startDate) {
-      const cutOffDate = startDate.clone()
-      cutOffDate.add(15, 'days')
-      isLessThanDeliveryDate = current.valueOf() < cutOffDate.valueOf()
+      const maxEndDate = startDate.clone()
+      maxEndDate.add(cutoffDays, 'days')
+      isLessThanDeliveryDate = current.valueOf() < maxEndDate.valueOf()
+      maxEndDate.add(6, 'days')
+      isGreaterThanTwentyDays = current.valueOf() > maxEndDate.valueOf()
     }
 
     const date = moment()
@@ -97,45 +122,29 @@ const StoreForm = ({
 
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
     date.add(15, 'days')
-    const isLessThanFourteenDays = current.valueOf() < date.valueOf()
-    date.add(45, 'days')
-    const isGreaterThanSixtyDays = current.valueOf() > date.valueOf()
 
     return (
-      isBeforeOfCurrentDay ||
-      isLessThanFourteenDays ||
-      isGreaterThanSixtyDays ||
-      isLessThanDeliveryDate
+      isBeforeOfCurrentDay || isLessThanDeliveryDate || isGreaterThanTwentyDays
     )
   }
 
   const handleOnSelectStart = (date: Moment, dateString: string) => {
-    onSelectStartDate(date, dateString)
+    onSelectStartDate(date, dateString, !!storeId)
   }
 
   const handleOnSelectEnd = async (date: Moment, dateString: string) => {
     if (date) {
-      const dateObj = {
-        day: parseInt(date.format('D'), 10),
-        month: parseInt(date.format('M'), 10),
-        year: parseInt(date.format('YYYY'), 10)
-      }
       try {
-        const {
-          data: { isHoliday }
-        } = await validateHoliday({
-          variables: { date: dateObj }
-        })
-
-        if ((date && date.weekday() === 0) || isHoliday) {
+        if (date && (date.weekday() === 0 || date.weekday() === 6)) {
           message.warning(formatMessage(messages.deliveryErrorLabel))
+          onSelectEndDate(null, '', !!storeId)
           return
         }
       } catch (error) {
         message.error(formatMessage(messages.errorMsg))
       }
     }
-    onSelectEndDate(date, dateString)
+    onSelectEndDate(date, dateString, !!storeId)
   }
 
   const openInfo = () => {
@@ -150,10 +159,21 @@ const StoreForm = ({
     })
   }
 
+  const openDeliveryInfo = () => {
+    info({
+      title: <ModalTitle>{formatMessage(messages.aboutDelivery)}</ModalTitle>,
+      icon: ' ',
+      okText: formatMessage(messages.gotIt),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: <InfoBody>{formatMessage(messages.aboutDeliveryInfo)}</InfoBody>
+    })
+  }
+
   return (
     <Container>
       <RightLabels>
-        {onDemand && <ShipLabel>{formatMessage(messages.shipping)}</ShipLabel>}
         <TeamStoreTypeLabel>
           {formatMessage(onDemand ? messages.onDemandMode : messages.fixedMode)}
         </TeamStoreTypeLabel>
@@ -188,6 +208,7 @@ const StoreForm = ({
                 format="YYYY-MM-DD" // TODO: Change format
                 size="large"
                 style={inputStyle}
+                disabled={datesEdited}
               />
               {hasError && !startDate && (
                 <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
@@ -197,12 +218,13 @@ const StoreForm = ({
               <Label>
                 {formatMessage(messages.desiredDeliveryLabel)}
                 <Required>*</Required>
+                <Question onClick={openDeliveryInfo} type="question-circle" />
               </Label>
               <DatePicker
                 value={endDate}
                 disabledDate={disabledEndDate}
                 onChange={handleOnSelectEnd}
-                disabled={!startDate}
+                disabled={datesEdited || !startDate}
                 format="YYYY-MM-DD" // TODO: Change format
                 size="large"
                 style={inputStyle}
@@ -218,5 +240,4 @@ const StoreForm = ({
   )
 }
 
-const StoreFormEnhance = compose(validateHolidayQuery)(StoreForm)
-export default StoreFormEnhance
+export default StoreForm

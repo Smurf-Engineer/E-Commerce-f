@@ -361,6 +361,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       currentCurrency || config.defaultCurrency
     )
+
     const {
       total,
       totalWithoutDiscount,
@@ -430,6 +431,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
           removeItem={this.handleRemoveItem}
+          disable={cartItem.fixedCart}
           {...{ history, openFitInfoAction, openFitInfo }}
         />
       )

@@ -6,7 +6,8 @@ import {
   CLEAR_REDUCER,
   SET_DATA,
   SET_DELIVERY_DAYS,
-  SET_PLAYLIST
+  SET_PLAYLIST,
+  SET_CUTOFF_DAYS
 } from './constants'
 
 import { AnyAction } from '../../types/common'
@@ -27,5 +28,10 @@ export const setDeliveryDaysAction = (value: number): AnyAction => ({
 
 export const setPlaylistAction = (value: string): AnyAction => ({
   type: SET_PLAYLIST,
+  value
+})
+
+export const setCutoffDaysAction = (value: number): AnyAction => ({
+  type: SET_CUTOFF_DAYS,
   value
 })

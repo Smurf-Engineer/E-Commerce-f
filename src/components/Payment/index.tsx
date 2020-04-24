@@ -43,6 +43,7 @@ interface Props {
   limit: number
   showBillingForm: boolean
   paymentClientSecret: string
+  isFixedTeamstore: boolean
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -66,7 +67,7 @@ interface Props {
   ) => void
   saveCountryAction: (countryCode: string | null) => void
   setStripeIbanDataAction: (iban: IbanData) => void
-  setStripeAction: (stripe: any) => void
+  setStripeAction: (stripe: any, euStripe: any) => void
   createPaymentIntent: () => void
 }
 
@@ -91,7 +92,7 @@ class Payment extends React.PureComponent<Props, {}> {
           stripe: window.Stripe(config.pkStripeUS),
           euStripe: window.Stripe(config.pkStripeEU)
         },
-        () => setStripeAction(this.state.stripe)
+        () => setStripeAction(this.state.stripe, this.state.euStripe)
       )
     } else {
       // this code is safe to server-side render.
@@ -105,7 +106,7 @@ class Payment extends React.PureComponent<Props, {}> {
             stripe: window.Stripe(config.pkStripeUS),
             euStripe: window.Stripe(config.pkStripeEU)
           },
-          () => setStripeAction(this.state.stripe)
+          () => setStripeAction(this.state.stripe, this.state.euStripe)
         )
       }
       // tslint:disable-next-line:no-unused-expression
@@ -191,19 +192,22 @@ class Payment extends React.PureComponent<Props, {}> {
       showBillingAddressFormAction,
       setStripeIbanDataAction,
       paymentClientSecret,
-      createPaymentIntent
+      createPaymentIntent,
+      isFixedTeamstore
     } = this.props
     const { stripe, openConfirm, euStripe } = this.state
 
     if (!showContent) {
       return <div />
     }
+    const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
+      billingAddress.country.toLowerCase()
+    )
 
     const paymentForm =
       paymentMethod === CREDITCARD ? (
         <CreditCardForm
           {...{
-            stripe,
             formatMessage,
             cardHolderName,
             billingAddress,
@@ -230,11 +234,14 @@ class Payment extends React.PureComponent<Props, {}> {
             showBillingForm,
             showBillingAddressFormAction,
             paymentClientSecret,
-            createPaymentIntent
+            createPaymentIntent,
+            isFixedTeamstore
           }}
+          stripe={europeStripeAccount ? euStripe : stripe}
           setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
           inputChangeAction={this.handleOnChangeInput}
+          isEuSubsidiary={europeStripeAccount}
         />
       ) : (
         <IbanForm
@@ -267,18 +274,22 @@ class Payment extends React.PureComponent<Props, {}> {
           >
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          <MethodButton
-            selected={paymentMethod === IBAN}
-            onClick={this.handleIbanClick}
-          >
-            {formatMessage(messages.methodIban)}
-          </MethodButton>
-          <MethodButton
-            selected={paymentMethod === PAYPAL}
-            onClick={this.handlePaypalClick}
-          >
-            {formatMessage(messages.methodPaypal)}
-          </MethodButton>
+          {!isFixedTeamstore && (
+            <MethodButton
+              selected={paymentMethod === IBAN}
+              onClick={this.handleIbanClick}
+            >
+              {formatMessage(messages.methodIban)}
+            </MethodButton>
+          )}
+          {!isFixedTeamstore && (
+            <MethodButton
+              selected={paymentMethod === PAYPAL}
+              onClick={this.handlePaypalClick}
+            >
+              {formatMessage(messages.methodPaypal)}
+            </MethodButton>
+          )}
         </ContainerMethods>
 
         {paymentMethod === CREDITCARD && (

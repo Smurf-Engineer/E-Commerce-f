@@ -78,14 +78,6 @@ export const TeamStoreTypeLabel = styled.div`
   padding: 10px;
 `
 
-export const ShipLabel = styled.div`
-  color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
-  font-size: 14px;
-  letter-spacing: 0.18px;
-  line-height: 19px;
-`
-
 export const RightLabels = styled.div`
   align-self: flex-end;
   text-align: center;

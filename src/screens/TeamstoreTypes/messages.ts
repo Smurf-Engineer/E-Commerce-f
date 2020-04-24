@@ -9,39 +9,41 @@ export default defineMessages({
     id: 'screens.TeamstoreTypes.title',
     defaultMessage: 'What type of team store do you want to build?'
   },
-  ordersCanBePlaced: {
-    id: 'screens.TeamstoreTypes.ordersCanBePlaced',
-    defaultMessage: 'Orders can be placed anytime 24/7.'
+  idealForSmall: {
+    id: 'screens.TeamstoreTypes.idealForSmall',
+    defaultMessage: 'Ideal for small groups less than 6 members'
   },
-  ordersShips: {
-    id: 'screens.TeamstoreTypes.ordersShips',
-    defaultMessage: 'Orders ships within {dayNumber} days of receipt.'
+  fastTurnaround: {
+    id: 'screens.TeamstoreTypes.fastTurnaround',
+    defaultMessage: '<b>Fast 10 Day Turnaround</b>'
   },
-  individualCheckOut: {
-    id: 'screens.TeamstoreTypes.individualCheckOut',
-    defaultMessage: 'Individual check out for each customer.'
+  saveWithFixed: {
+    id: 'screens.TeamstoreTypes.saveWithFixed',
+    defaultMessage: 'Save 20% with fixed team pricing'
+  },
+  onDemandProduction: {
+    id: 'screens.TeamstoreTypes.onDemandProduction',
+    defaultMessage: 'On-Demand Production'
   },
   acceptedPayment: {
     id: 'screens.TeamstoreTypes.acceptedPayment',
-    defaultMessage:
-      'Accepted payment methods available: Credit Card, Paypal and IBAN.'
+    defaultMessage: 'Accepted payment methods available:'
   },
-  setCutOff: {
-    id: 'screens.TeamstoreTypes.setCutOff',
-    defaultMessage: 'Set your own order cut-off and delivery dates.'
+  idealForLarger: {
+    id: 'screens.TeamstoreTypes.idealForLarger',
+    defaultMessage: 'Ideal for larger groups with 6 or more members'
   },
-  extendedOrdering: {
-    id: 'screens.TeamstoreTypes.extendedOrdering',
-    defaultMessage: 'Extended Ordering periods up to 2 weeks.'
+  saveWithGroup: {
+    id: 'screens.TeamstoreTypes.saveWithGroup',
+    defaultMessage: '<b>Save 20-40% with group buying power</b>'
   },
-  quantityDiscounts: {
-    id: 'screens.TeamstoreTypes.quantityDiscounts',
-    defaultMessage:
-      'Quantity discounts with dynamic price drop so everyone gets the same price.'
+  turnaroundDays: {
+    id: 'screens.TeamstoreTypes.turnaroundDays',
+    defaultMessage: '{dayNumber} Day Turnaround'
   },
-  creditCard: {
-    id: 'screens.TeamstoreTypes.creditCard',
-    defaultMessage: 'Credit Card as payment method.'
+  bulk: {
+    id: 'screens.TeamstoreTypes.bulk',
+    defaultMessage: 'Bulk Production'
   },
   onDemand: {
     id: 'screens.TeamstoreTypes.onDemand',
@@ -49,7 +51,7 @@ export default defineMessages({
   },
   fixedDate: {
     id: 'screens.TeamstoreTypes.fixedDate',
-    defaultMessage: 'FIXED DATE'
+    defaultMessage: 'BATCH ORDER'
   },
   select: {
     id: 'screens.TeamstoreTypes.select',

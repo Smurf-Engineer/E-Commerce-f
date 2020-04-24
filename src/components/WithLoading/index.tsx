@@ -13,7 +13,7 @@ const Loading = () => (
 )
 
 const displayLoadingState = branch(
-  ({ data: { loading } }: any) => loading,
+  ({ data }: any) => (data ? data.loading : false),
   renderComponent(Loading)
 )
 
