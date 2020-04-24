@@ -44,7 +44,7 @@ import OrderSummary from '../OrderSummary'
 import CartListItemAdmin from '../CartListItemAdmin'
 import MyAddress from '../MyAddress'
 
-import iconPaypal from '../../assets/paypal.svg'
+import iconPaypal from '../../assets/Paypal.svg'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 import moment from 'moment'

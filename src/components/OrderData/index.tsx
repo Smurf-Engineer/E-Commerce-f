@@ -29,7 +29,7 @@ import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
 import withLoading from '../WithLoading'
 
-import iconPaypal from '../../assets/paypal.svg'
+import iconPaypal from '../../assets/Paypal.svg'
 import iconSepa from '../../assets/Sepa.svg'
 import { QueryProps, OrderDataInfo } from '../../types/common'
 import CartListItem from '../CartListItem'
