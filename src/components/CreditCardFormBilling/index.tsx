@@ -68,6 +68,7 @@ interface Props {
   createPaymentIntent: () => void
 }
 
+const PAYMENT_TYPE_CARD = 'card'
 class CreditCardFormBilling extends React.Component<Props, {}> {
   state = {
     cardElement: null
@@ -288,9 +289,13 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
     setLoadingBillingAction(true)
     const stripeResponse = !selectedCardId
-      ? await stripe.createPaymentMethod('card', this.state.cardElement, {
-          billing_details: stripeTokenData
-        })
+      ? await stripe.createPaymentMethod(
+          PAYMENT_TYPE_CARD,
+          this.state.cardElement,
+          {
+            billing_details: stripeTokenData
+          }
+        )
       : {}
 
     if (stripeResponse && stripeResponse.error) {

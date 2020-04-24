@@ -158,7 +158,7 @@ class ModalCreditCard extends React.Component<Props, {}> {
     } else {
       setModalLoadingAction(true)
     }
-    // const stripeResponse = await stripe.createToken({ name: cardHolderName })
+
     const stripeResponse = await stripe.handleCardSetup(
       clientSecret,
       this.state.cardElement,
