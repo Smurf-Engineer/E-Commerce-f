@@ -67,7 +67,7 @@ interface Props {
   ) => void
   saveCountryAction: (countryCode: string | null) => void
   setStripeIbanDataAction: (iban: IbanData) => void
-  setStripeAction: (stripe: any) => void
+  setStripeAction: (stripe: any, euStripe: any) => void
   createPaymentIntent: () => void
 }
 
@@ -92,7 +92,7 @@ class Payment extends React.PureComponent<Props, {}> {
           stripe: window.Stripe(config.pkStripeUS),
           euStripe: window.Stripe(config.pkStripeEU)
         },
-        () => setStripeAction(this.state.stripe)
+        () => setStripeAction(this.state.stripe, this.state.euStripe)
       )
     } else {
       // this code is safe to server-side render.
@@ -106,7 +106,7 @@ class Payment extends React.PureComponent<Props, {}> {
             stripe: window.Stripe(config.pkStripeUS),
             euStripe: window.Stripe(config.pkStripeEU)
           },
-          () => setStripeAction(this.state.stripe)
+          () => setStripeAction(this.state.stripe, this.state.euStripe)
         )
       }
       // tslint:disable-next-line:no-unused-expression
@@ -200,12 +200,14 @@ class Payment extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return <div />
     }
+    const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
+      billingAddress.country.toLowerCase()
+    )
 
     const paymentForm =
       paymentMethod === CREDITCARD ? (
         <CreditCardForm
           {...{
-            stripe,
             formatMessage,
             cardHolderName,
             billingAddress,
@@ -235,9 +237,11 @@ class Payment extends React.PureComponent<Props, {}> {
             createPaymentIntent,
             isFixedTeamstore
           }}
+          stripe={europeStripeAccount ? euStripe : stripe}
           setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
           inputChangeAction={this.handleOnChangeInput}
+          isEuSubsidiary={europeStripeAccount}
         />
       ) : (
         <IbanForm

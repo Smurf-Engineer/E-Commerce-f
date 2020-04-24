@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.TeamStoresList.cutoffDate',
     defaultMessage: 'Cut-off Date'
   },
+  deliveryDate: {
+    id: 'components.TeamStoresList.deliveryDate',
+    defaultMessage: 'Delivery Date'
+  },
   featured: {
     id: 'components.TeamStoresList.featured',
     defaultMessage: 'Featured'

@@ -163,7 +163,7 @@ interface Props extends RouteComponentProps<any> {
   onUnselectItemAction: (keyName: string) => void
 }
 
-const { info } = Modal
+const { info, confirm } = Modal
 
 interface StateProps {
   hasError: boolean
@@ -359,6 +359,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       banner,
       datesEditedTemporal
     } = this.props
+
     const { file } = this.state
     const validForm = this.validateForm(
       name,
@@ -532,6 +533,32 @@ export class CreateStore extends React.Component<Props, StateProps> {
           }}
         />
       )
+    })
+  }
+
+  openEditDatesInfo = () => {
+    const {
+      intl: { formatMessage },
+      endDateMoment,
+      startDateMoment
+    } = this.props
+    confirm({
+      title: formatMessage(messages.editDatesTitle),
+      okText: formatMessage(messages.proceed),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: formatMessage(messages.editDatesMessage, {
+        cutOff: startDateMoment.format('DD-MM-YYYY'),
+        delivery: endDateMoment.format('DD-MM-YYYY')
+      }),
+      onOk: async () => {
+        try {
+          await this.handleBuildTeamStore()
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
     })
   }
 
@@ -781,7 +808,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 <SaveButton
                   {...{ loading }}
                   size="large"
-                  onClick={this.handleBuildTeamStore}
+                  onClick={
+                    !datesEdited
+                      ? this.openEditDatesInfo
+                      : this.handleBuildTeamStore
+                  }
                 >
                   {formatMessage(messages.save)}
                 </SaveButton>

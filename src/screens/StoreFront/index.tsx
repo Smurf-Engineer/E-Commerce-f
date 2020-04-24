@@ -56,7 +56,6 @@ export class StoreFront extends React.Component<Props, {}> {
   }
   componentDidMount() {
     window.scrollTo(0, 0)
-    this.forceUpdate()
   }
   getData = async (params: Params) => {
     const { teamStoreQuery } = this.props
@@ -158,11 +157,14 @@ const mapStateToProps = (state: any) => {
 
 const StoreFrontEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, {
-    ...storeFrontActions,
-    ...thunkActions,
-    openQuickView: openQuickViewAction
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...storeFrontActions,
+      ...thunkActions,
+      openQuickView: openQuickViewAction
+    }
+  )
 )(StoreFront)
 
 export default StoreFrontEnhance

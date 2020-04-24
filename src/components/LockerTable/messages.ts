@@ -55,5 +55,9 @@ export default defineMessages({
     id: 'components.LockerTable.aboutTeamInfo',
     defaultMessage: `Team pricing starts at the 20% discount off 
     the regular price. The price will automatically drop as members reach the next discount level.`
+  },
+  quantity: {
+    id: 'components.LockerTable.quantity',
+    defaultMessage: 'QTY Ordered'
   }
 })
