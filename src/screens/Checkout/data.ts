@@ -49,3 +49,22 @@ export const CurrencyQuery = gql`
     currency: currencyByCountryCode(code: $countryCode)
   }
 `
+
+export const AddCardMutation = graphql(
+  gql`
+    mutation addCardSourceStripeCustomer($token: String!) {
+      addCardSourceStripeCustomer(token: $token) {
+        id
+      }
+    }
+  `,
+  {
+    name: 'addNewCard'
+  }
+)
+
+export const getSubsidiaryQuery = gql`
+  query subsidiaryByCountryCode($code: String!) {
+    subsidiary: subsidiaryByCountryCode(code: $code)
+  }
+`

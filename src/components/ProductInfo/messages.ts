@@ -52,5 +52,9 @@ export default defineMessages({
   bibbraceColor: {
     id: 'components.CartListItem.bibbraceColor',
     defaultMessage: 'Bib Brace Color'
+  },
+  from: {
+    id: 'components.CartListItem.from',
+    defaultMessage: 'From {teamStoreName}'
   }
 })

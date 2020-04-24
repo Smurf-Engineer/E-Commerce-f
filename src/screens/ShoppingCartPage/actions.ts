@@ -19,7 +19,9 @@ import {
   SET_COLOR_ITEM_DETAIL_ACTION,
   RESET_REDUCER_DATA,
   SHOW_REVIEW_DESIGN_MODAL,
-  OPEN_FITINFO
+  OPEN_FITINFO,
+  OPEN_STORE_INFO,
+  SET_STORE_TERMS
 } from './constants'
 import {
   AnyAction,
@@ -41,6 +43,16 @@ export const setItemsAction = (items: CartItems[]): AnyAction => ({
 export const addItemDetailAction = (index: number): AnyAction => ({
   type: ADD_ITEM_DETAIL_ACTION,
   index
+})
+
+export const openStoreInfoAction = (open: boolean): AnyAction => ({
+  type: OPEN_STORE_INFO,
+  open
+})
+
+export const setStoreTerms = (checked: boolean): AnyAction => ({
+  type: SET_STORE_TERMS,
+  checked
 })
 
 export const deleteItemDetailAction = (

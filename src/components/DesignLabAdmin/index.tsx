@@ -10,7 +10,8 @@ import { BLUE } from '../../theme/colors'
 import {
   getDesignLabInfo,
   setDeliveryDaysMutation,
-  setPlaylistMutation
+  setPlaylistMutation,
+  setCutOffDaysMutation
 } from './data'
 import Spin from 'antd/lib/spin'
 import * as DesignLabActions from './actions'
@@ -35,13 +36,17 @@ interface Props {
   tutorialPlaylist: string
   deliveryDays: number
   deliveryDaysChanges: boolean
+  cutOffDays: number
   tutorialPlaylistChanged: boolean
+  cutOffDaysChanges: boolean
   formatMessage: (messageDescriptor: any) => string
   setDataAction: (data: any) => void
   setDeliveryDaysAction: (value: number) => void
   setPlaylistAction: (value: string) => void
   setDeliveryDays: (variables: {}) => Promise<any>
   setPlaylist: (variables: {}) => Promise<any>
+  setCutoffDaysAction: (value: number) => void
+  setCutOffDays: (variables: {}) => Promise<any>
 }
 
 class DesignLabAdmin extends React.Component<Props, {}> {
@@ -73,6 +78,15 @@ class DesignLabAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  saveCutOffDays = async () => {
+    const { setCutOffDays, cutOffDays } = this.props
+    try {
+      const response = await setCutOffDays({ variables: { cutOffDays } })
+      message.success(get(response, 'data.setCutOffDays.message', ''))
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
   savePlaylist = async () => {
     const { tutorialPlaylist, setPlaylist } = this.props
     try {
@@ -92,7 +106,10 @@ class DesignLabAdmin extends React.Component<Props, {}> {
       deliveryDays,
       tutorialPlaylistChanged,
       deliveryDaysChanges,
-      setDeliveryDaysAction
+      setDeliveryDaysAction,
+      setCutoffDaysAction,
+      cutOffDaysChanges,
+      cutOffDays
     } = this.props
 
     return loading ? (
@@ -113,6 +130,24 @@ class DesignLabAdmin extends React.Component<Props, {}> {
               type="primary"
               disabled={!deliveryDaysChanges}
               onClick={this.saveDeliveryDays}
+              loading={loading}
+            >
+              {formatMessage(messages.update)}
+            </StyledButton>
+          </ButtonWrapper>
+        </BoxContainer>
+        <ScreenTitle>{formatMessage(messages.cutOffDays)}</ScreenTitle>
+        <BoxContainer>
+          <InfoText>{formatMessage(messages.currentCutOffDays)}</InfoText>
+          <StyledInputNumber
+            onChange={setCutoffDaysAction}
+            value={cutOffDays}
+          />
+          <ButtonWrapper color={BLUE}>
+            <StyledButton
+              type="primary"
+              disabled={!cutOffDaysChanges}
+              onClick={this.saveCutOffDays}
               loading={loading}
             >
               {formatMessage(messages.update)}
@@ -147,11 +182,9 @@ const mapStateToProps = (state: any) => state.get('designLabAdmin').toJS()
 const DesignLabAdminEnhance = compose(
   withApollo,
   setDeliveryDaysMutation,
+  setCutOffDaysMutation,
   setPlaylistMutation,
-  connect(
-    mapStateToProps,
-    { ...DesignLabActions }
-  )
+  connect(mapStateToProps, { ...DesignLabActions })
 )(DesignLabAdmin)
 
 export default DesignLabAdminEnhance
