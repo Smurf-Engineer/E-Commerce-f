@@ -94,7 +94,7 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
           teamSize: { id: sizeId, size }
         }
       } = action
-      console.log(action)
+
       return state.merge({
         storeId: id,
         storeShortId: shortId,

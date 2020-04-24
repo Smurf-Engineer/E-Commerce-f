@@ -157,7 +157,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
           datesEdited
         }
       } = action
-      console.log(' DATEDDDD ', datesEdited)
+
       return state.merge({
         storeId: id,
         storeShortId: shortId,

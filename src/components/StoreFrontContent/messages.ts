@@ -121,7 +121,7 @@ export default defineMessages({
       '<p>If your Team Store is closed, you can contact the Team Store Manager and request it to be reopened. You can use the message box at the top of the Team Store page to contact the person, or directly if you have their contact information.</p>'
   },
   canIORderDescBatch: {
-    id: 'screens.StoreFrontContent.canIORderDesc',
+    id: 'screens.StoreFrontContent.canIORderDescBatch',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
       '<p>If your Team Store is closed, you can contact the Team Store Manager and request it to be reopened. You can use the message box at the top of the Team Store page to contact the person, or directly if you have their contact information.</p>'

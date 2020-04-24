@@ -42,7 +42,9 @@ import {
   LoadingContainer,
   OrderActions,
   DeleteButton,
-  StyledText
+  StyledText,
+  ErrorMessage,
+  Paragraph
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -144,7 +146,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       teamStoreId,
       lastDrop,
       teamStoreName,
-      canUpdatePayment
+      canUpdatePayment,
+      onDemand
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -165,7 +168,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           } = cartItem
 
           subtotal += productTotal || 0
-          cartItem.isFixed = true
+          cartItem.isFixed = onDemand === false
           cartItem.teamStoreItem = teamStoreItem
           cartItem.teamStoreName = teamStoreName
           const priceRange = {
@@ -209,8 +212,18 @@ export class OrderDetails extends React.Component<Props, {}> {
       ) : (
         <StyledImage src={iconPaypal} />
       )
+
     return (
       <Container>
+        {status === PAYMENT_ISSUE && (
+          <ErrorMessage>
+            <Paragraph
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.paymentIssue)
+              }}
+            />
+          </ErrorMessage>
+        )}
         <ViewContainer onClick={handleOnReturn}>
           <Icon type="left" />
           <span>{formatMessage(getBackMessage)}</span>
@@ -353,6 +366,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           onClick={() => true}
           hide={true}
           fixedCart={status === PAYMENT_ISSUE}
+          replaceOrder={shortId}
         />
         {teamStoreId &&
         (status === PREORDER ||

@@ -57,6 +57,11 @@ import { cutoffDateSettingsQuery } from './data'
 import { DEFAULT_CUTOFF_DAYS } from '../../../screens/CreateStore/constants'
 const Option = Select.Option
 const INPUT_MAX_LENGTH = 25
+const FOURTEEN_DAYS = 14
+const ONE_DAY = 1
+const SEVENTEEN_DAYS = 17
+const SIX_DAYS = 6
+
 interface Data extends QueryProps {
   userSearch: UserSearchResult[]
 }
@@ -125,7 +130,7 @@ interface StateProps {
 }
 export class CreateStore extends React.Component<Props, StateProps> {
   debounceSearchProduct = debounce(
-    value => this.props.setUserToSearch(value.trim()),
+    (value) => this.props.setUserToSearch(value.trim()),
     200
   )
   state = {
@@ -273,15 +278,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
     date.minute(0)
     date.second(0)
 
-    date.add('1', 'days')
+    date.add(ONE_DAY, 'days')
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
 
-    date.add('14', 'days')
+    date.add(FOURTEEN_DAYS, 'days')
 
     let momentStartDate
     if (storeShortId) {
       momentStartDate = moment(startDate)
-      momentStartDate.add('17', 'days')
+      momentStartDate.add(SEVENTEEN_DAYS, 'days')
     }
     const isGreaterThanFourteenDays = current.valueOf() > date.valueOf()
 
@@ -297,7 +302,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const { formatMessage, onSelectEndDate } = this.props
 
     if (date) {
-      if (date && (date.weekday() === 0 || date.weekday() === 6)) {
+      if (date.weekday() === 0 || date.weekday() === 6) {
         message.warning(formatMessage(messages.deliveryErrorLabel))
         onSelectEndDate(null, '')
         return
@@ -314,13 +319,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
     let isLessThanDeliveryDate = false
-    let isGreaterThanTwentyDays = false
+    let isGreaterCutOffDays = false
     if (startDate) {
       const maxEndDate = startDate.clone()
       maxEndDate.add(cutoffDays, 'days')
       isLessThanDeliveryDate = current.valueOf() < maxEndDate.valueOf()
-      maxEndDate.add(6, 'days')
-      isGreaterThanTwentyDays = current.valueOf() > maxEndDate.valueOf()
+      maxEndDate.add(SIX_DAYS, 'days')
+      isGreaterCutOffDays = current.valueOf() > maxEndDate.valueOf()
     }
 
     const date = moment()
@@ -329,11 +334,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
     date.second(0)
 
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
-    date.add(15, 'days')
 
-    return (
-      isBeforeOfCurrentDay || isLessThanDeliveryDate || isGreaterThanTwentyDays
-    )
+    return isBeforeOfCurrentDay || isLessThanDeliveryDate || isGreaterCutOffDays
   }
 
   render() {
@@ -370,7 +372,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       onChangeTeamStoreType
     } = this.props
     const { searchValue } = this.state
-    console.log('items ', items)
+
     let selected = ''
     let title = ''
     const searchResults =
