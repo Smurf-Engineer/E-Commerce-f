@@ -146,7 +146,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       teamStoreId,
       lastDrop,
       teamStoreName,
-      canUpdatePayment
+      canUpdatePayment,
+      onDemand
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -167,7 +168,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           } = cartItem
 
           subtotal += productTotal || 0
-          cartItem.isFixed = true
+          cartItem.isFixed = onDemand === false
           cartItem.teamStoreItem = teamStoreItem
           cartItem.teamStoreName = teamStoreName
           const priceRange = {
