@@ -3,9 +3,11 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
+import { FormattedHTMLMessage } from 'react-intl'
 import { connect } from 'react-redux'
+import Modal from 'antd/lib/modal'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import Button from 'antd/lib/button'
@@ -23,7 +25,6 @@ import LockerModal from '../../components/LockerModal'
 import SwitchWithLabel from '../../components/SwitchWithLabel'
 import Dragger from '../../components/TeamDragger'
 import StoreForm from '../../components/StoreForm'
-import TeamSizes from '../../components/TeamSizes'
 import {
   createStoreMutation,
   GetTeamStoreQuery,
@@ -39,12 +40,13 @@ import {
   UserType
 } from '../../types/common'
 import * as createStoreActions from './actions'
+import { cutoffDateSettingsQuery } from './data'
+import dropLogo from '../../assets/dynamic_drop.png'
 import messages from './messages'
 import {
   Container,
   Title,
   Subtitle,
-  Message,
   PriceMessage,
   LockerMessage,
   PreviewImage,
@@ -66,15 +68,29 @@ import {
   PinDiv,
   Pin,
   Corner,
-  BulletinInput
+  BulletinInput,
+  DynamicDropLogo,
+  TitleContainer,
+  ModalTitle,
+  InfoBody,
+  buttonStyle
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
+import {
+  FIXED_TEAMSTORE,
+  ON_DEMAND_TEAMSTORE,
+  DEFAULT_CUTOFF_DAYS
+} from './constants'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
+}
+
+interface CutoffData extends QueryProps {
+  cutoffDays: number
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -106,12 +122,23 @@ interface Props extends RouteComponentProps<any> {
   currentPage: number
   bulletin: string
   user: UserType
+  cutoffSettings: CutoffData
+  datesEdited: boolean
+  datesEditedTemporal: boolean
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
   changeBulletinAction: (value: string) => void
-  updateStartDateAction: (dateMoment: Moment, date: string) => void
-  updateEndDateAction: (dateMoment: Moment, date: string) => void
+  updateStartDateAction: (
+    dateMoment: Moment,
+    date: string,
+    datesEdited: boolean
+  ) => void
+  updateEndDateAction: (
+    dateMoment: Moment,
+    date: string,
+    datesEdited: boolean
+  ) => void
   updatePrivateAction: (active: boolean) => void
   updateOnDemandAction: (active: boolean) => void
   updatePassCodeAction: (code: string) => void
@@ -135,6 +162,8 @@ interface Props extends RouteComponentProps<any> {
   setPaginationData: (offset: number, page: number) => void
   onUnselectItemAction: (keyName: string) => void
 }
+
+const { info, confirm } = Modal
 
 interface StateProps {
   hasError: boolean
@@ -260,6 +289,21 @@ export class CreateStore extends React.Component<Props, StateProps> {
     return storeId
   }
 
+  isOnDemand = () => {
+    const {
+      location: { search }
+    } = this.props
+    const { type, storeId } = queryString.parse(search)
+    if (storeId) {
+      const { onDemand } = this.props
+      return onDemand
+    }
+    if (type !== FIXED_TEAMSTORE && type !== ON_DEMAND_TEAMSTORE) {
+      return true
+    }
+    return type === ON_DEMAND_TEAMSTORE
+  }
+
   changePage = (pageParam: number = 1) => {
     const { limit } = this.props
     const offsetParam = pageParam > 1 ? (pageParam - 1) * limit : 0
@@ -312,8 +356,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       history,
       teamSizeId,
       onDemand,
-      banner
+      banner,
+      datesEditedTemporal
     } = this.props
+
     const { file } = this.state
     const validForm = this.validateForm(
       name,
@@ -329,7 +375,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
-    const items = itemsSelected.map(item => {
+    const items = itemsSelected.map((item) => {
       return {
         design_id: get(item, 'design.shortId'),
         visible: get(item, 'visible')
@@ -354,7 +400,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
         const { image } = await uploadResp.json()
         bannerResp = image
       }
-
       const teamStore = {
         id: storeId,
         short_id: storeShortId,
@@ -366,8 +411,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
         passcode: passCode,
         items,
         teamsizeId: teamSizeId,
-        demandMode: onDemand,
-        banner: bannerResp
+        demandMode: this.isOnDemand(),
+        banner: bannerResp,
+        datesEdited: datesEditedTemporal
       }
 
       if (storeShortId) {
@@ -389,7 +435,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
           message.success(messageResp)
         }
 
-        history.push(`/store-front?storeId=${storeShortId}`)
+        window.location.replace(`/store-front?storeId=${storeShortId}`)
       } else {
         const {
           data: { store }
@@ -460,17 +506,72 @@ export class CreateStore extends React.Component<Props, StateProps> {
     clearDataAction()
   }
 
+  openInfo = () => {
+    const {
+      intl: { formatMessage },
+      onDemand
+    } = this.props
+    info({
+      title: (
+        <ModalTitle>
+          {formatMessage(
+            onDemand ? messages.batchOrderTitle : messages.onDemandTitle
+          )}
+        </ModalTitle>
+      ),
+      icon: ' ',
+      okText: formatMessage(messages.gotIt),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: (
+        <InfoBody
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(
+              onDemand ? messages.batchOrderContent : messages.omDemandContent
+            )
+          }}
+        />
+      )
+    })
+  }
+
+  openEditDatesInfo = () => {
+    const {
+      intl: { formatMessage },
+      endDateMoment,
+      startDateMoment
+    } = this.props
+    confirm({
+      title: formatMessage(messages.editDatesTitle),
+      okText: formatMessage(messages.proceed),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: formatMessage(messages.editDatesMessage, {
+        cutOff: startDateMoment.format('DD-MM-YYYY'),
+        delivery: endDateMoment.format('DD-MM-YYYY')
+      }),
+      onOk: async () => {
+        try {
+          await this.handleBuildTeamStore()
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+
   render() {
     const { imagePreviewUrl, hasError } = this.state
     const {
       intl,
       history,
-      teamSizeId,
       openLocker,
       updateNameAction,
       updateStartDateAction,
       updateEndDateAction,
-      // updateOnDemandAction,
+      updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
       setItemsAddAction,
@@ -479,7 +580,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       startDateMoment,
       endDateMoment,
       privateStore,
-      onDemand,
       passCode,
       selectedItems,
       items,
@@ -494,7 +594,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
       limit,
       offset,
       onUnselectItemAction,
-      user
+      user,
+      cutoffSettings,
+      onDemand,
+      startDate,
+      datesEdited
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -516,6 +620,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const tableItems = this.getCheckedItems(items)
 
     const storeShortId = this.getStoreId()
+    const isOnDemand = this.isOnDemand()
+    const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
 
     return (
       <Layout {...{ history, intl }}>
@@ -525,20 +631,37 @@ export class CreateStore extends React.Component<Props, StateProps> {
           </Loading>
         ) : (
           <Container>
-            <Title>
-              <FormattedMessage {...messages.title} />
-            </Title>
+            <TitleContainer>
+              <Title>
+                <FormattedMessage {...messages.title} />
+              </Title>
+              {storeId && (isOnDemand || !startDate) && (
+                <SwitchWithLabel
+                  checked={onDemand}
+                  onChange={updateOnDemandAction}
+                  label={formatMessage(
+                    isOnDemand
+                      ? messages.switchToBatch
+                      : messages.switchToDemand
+                  )}
+                  message={''}
+                  infoIcon={true}
+                  handleOpenInfo={this.openInfo}
+                />
+              )}
+            </TitleContainer>
             <StoreForm
-              {...{ formatMessage, onDemand }}
+              {...{ formatMessage }}
               name={name}
               startDate={startDateMoment}
               endDate={endDateMoment}
               onUpdateName={updateNameAction}
               onSelectStartDate={updateStartDateAction}
               onSelectEndDate={updateEndDateAction}
-              {...{ hasError }}
+              onDemand={isOnDemand}
+              {...{ hasError, cutoffDays, storeId, datesEdited }}
             />
-            {onDemand ? (
+            {isOnDemand ? (
               <React.Fragment>
                 <TextBlock>
                   <Subtitle>
@@ -572,29 +695,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Subtitle>
-                  <FormattedMessage {...messages.teamSizeTitle} />
-                </Subtitle>
-                <Message>
-                  <FormattedMessage {...messages.teamSizeMessage} />
-                </Message>
-                <TeamSizes
-                  currentSelected={teamSizeId}
-                  onSelectRange={this.handleOnSelectRange}
-                />
-                <Subtitle>
-                  <FormattedMessage {...messages.priceDropTitle} />
-                </Subtitle>
+                <DynamicDropLogo src={dropLogo} />
                 <PriceMessage>
-                  <p>{formatMessage(messages.priceDropMessageP1)}</p>
-                  <p>{formatMessage(messages.priceDropMessageP2)}</p>
-                  <p>{formatMessage(messages.priceDropMessageP3)}</p>
+                  <FormattedHTMLMessage {...messages.priceDropMessage} />
                 </PriceMessage>
               </React.Fragment>
             )}
             <Subtitle>
               <div
-                ref={table => {
+                ref={(table) => {
                   this.lockerTable = table
                 }}
               >
@@ -616,6 +725,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               {...{ formatMessage, teamSizeRange, currentCurrency }}
               items={items}
               hideQuickView={true}
+              isFixed={!isOnDemand}
               onPressDelete={this.handleOnDeleteItem}
               onPressQuickView={this.handleOnPressQuickView}
               onPressVisible={this.handleOnPressVisible}
@@ -685,15 +795,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 message={formatMessage(messages.privateMessage)}
                 errorLabel={formatMessage(messages.requiredFieldLabel)}
               />
-              {/* TODO: Hidding onDemand-FixedDate Switch until FixDate feature */}
-              {/* {storeId && (
-                <SwitchWithLabel
-                  checked={onDemand}
-                  onChange={updateOnDemandAction}
-                  label={formatMessage(messages.onDemandLabel)}
-                  message={formatMessage(messages.onDemandMessage)}
-                />
-              )} */}
             </RowSwitch>
             {storeShortId ? (
               <ButtonOptionsWrapper>
@@ -707,7 +808,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 <SaveButton
                   {...{ loading }}
                   size="large"
-                  onClick={this.handleBuildTeamStore}
+                  onClick={
+                    !datesEdited
+                      ? this.openEditDatesInfo
+                      : this.handleBuildTeamStore
+                  }
                 >
                   {formatMessage(messages.save)}
                 </SaveButton>
@@ -765,7 +870,16 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
-  connect(mapStateToProps, { ...createStoreActions, ...thunkActions })
+  graphql(cutoffDateSettingsQuery, {
+    name: 'cutoffSettings',
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
+  connect(
+    mapStateToProps,
+    { ...createStoreActions, ...thunkActions }
+  )
 )(CreateStore)
 
 export default CreateStoreEnhance

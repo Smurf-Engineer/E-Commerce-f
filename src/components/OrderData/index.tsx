@@ -23,13 +23,14 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE } from '../../constants'
+import { PURCHASE, PAYMENT_ISSUE } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
 import withLoading from '../WithLoading'
 
 import iconPaypal from '../../assets/Paypal.svg'
+import iconSepa from '../../assets/sepa.svg'
 import { QueryProps, OrderDataInfo } from '../../types/common'
 import CartListItem from '../CartListItem'
 import { PaymentOptions } from '../../screens/Checkout/constants'
@@ -119,7 +120,7 @@ class OrderData extends React.Component<Props, {}> {
           billingCountry,
           billingApartment,
           shippingAmount,
-          payment: { stripeCharge },
+          payment,
           cart,
           paymentMethod,
           currency,
@@ -129,18 +130,24 @@ class OrderData extends React.Component<Props, {}> {
           taxVat,
           taxFee,
           total,
-          discount
+          discount,
+          status,
+          teamStoreName,
+          teamStoreId
         }
       },
       currentCurrency
     } = this.props
 
-    const card = get(stripeCharge, 'cardData')
+    const card = get(payment, 'stripeCharge.cardData', {})
+
     const paymentMethodInfo =
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
       ) : (
-        <StyledImage src={iconPaypal} />
+        <StyledImage
+          src={paymentMethod === PaymentOptions.PAYPAL ? iconPaypal : iconSepa}
+        />
       )
 
     let subtotal = 0
@@ -190,6 +197,12 @@ class OrderData extends React.Component<Props, {}> {
         <Content>
           <InfoContainer>
             <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.orderPoint)}</TitleStyled>
+              <StyledText>
+                {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+              </StyledText>
+            </OrderNumberContainer>
+            <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
               <StyledText>{orderId}</StyledText>
             </OrderNumberContainer>
@@ -201,8 +214,18 @@ class OrderData extends React.Component<Props, {}> {
               <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
               <StyledText>{estimatedDate}</StyledText>
             </OrderNumberContainer>
+            <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
+              <StyledText redColor={status === PAYMENT_ISSUE}>
+                {status}
+              </StyledText>
+            </OrderNumberContainer>
             <StyledText>
-              <FormattedHTMLMessage {...messages.messageRetail} />
+              <FormattedHTMLMessage
+                {...messages[
+                  teamStoreId ? 'messageTeamstore' : 'messageRetail'
+                ]}
+              />
             </StyledText>
             <ShippingBillingContainer>
               <div>

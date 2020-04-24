@@ -46,6 +46,7 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  isEuSubsidiary: boolean
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -65,10 +66,14 @@ interface Props {
     billing: boolean
   ) => void
   nextStep: () => void
+  createPaymentIntent: () => void
 }
 
+const PAYMENT_TYPE_CARD = 'card'
 class CreditCardFormBilling extends React.Component<Props, {}> {
-
+  state = {
+    cardElement: null
+  }
   render() {
     const {
       formatMessage,
@@ -99,7 +104,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       currentPage,
       indexAddressSelected,
       showBillingForm,
-      showBillingAddressFormAction
+      showBillingAddressFormAction,
+      isEuSubsidiary
     } = this.props
 
     const renderAddresses = (
@@ -140,7 +146,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 showCardFormAction,
                 showCardForm,
                 selectCardToPayAction,
-                selectedCard
+                selectedCard,
+                isEuSubsidiary
               }}
             />
           </MyCardsRow>
@@ -153,6 +160,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 </InputTitleContainer>
                 <ContainerInput>
                   <CardElement
+                    onReady={this.handleReady}
                     hidePostalCode={true}
                     style={StripeCardElement}
                   />
@@ -171,17 +179,12 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                   value={cardHolderName}
                   onChange={this.handleInputChange}
                 />
-                {!cardHolderName &&
-                  hasError && (
-                    <ErrorMsg>
-                      {formatMessage(messages.requiredField)}
-                    </ErrorMsg>
-                  )}
+                {!cardHolderName && hasError && (
+                  <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+                )}
               </Column>
             </Row>
-
           </AnimateHeight>
-
         </div>
         <ContainerBilling>
           <Title>{formatMessage(messages.billingAddress)}</Title>
@@ -232,6 +235,9 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     )
   }
 
+  handleReady = (cardElement: stripe.elements.Element) =>
+    this.setState({ cardElement })
+
   handleOnContinue = async (ev: any) => {
     const {
       cardHolderName,
@@ -253,7 +259,9 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       setStripeCardDataAction,
       nextStep,
       selectedCard,
-      stripe
+      stripe,
+      createPaymentIntent,
+      isEuSubsidiary
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
@@ -274,24 +282,32 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
     const stripeTokenData = {
       name: cardHolderName,
-      address_line1: `${street}`,
-      address_line2: `${apartment}`,
-      address_city: `${city}`,
-      address_state: `${stateProvince}`,
-      address_zip: `${zipCode}`,
-      address_country: `${country}`
+      address: {
+        line1: `${street}`,
+        line2: `${apartment}`,
+        city: `${city}`,
+        state: `${stateProvince}`,
+        postal_code: `${zipCode}`,
+        country: `${country}`
+      }
     }
     setLoadingBillingAction(true)
-
     const stripeResponse = !selectedCardId
-      ? await stripe.createToken(stripeTokenData)
+      ? await stripe.createPaymentMethod(
+          PAYMENT_TYPE_CARD,
+          this.state.cardElement,
+          {
+            billing_details: stripeTokenData
+          }
+        )
       : {}
+
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
       if (!selectedCardId) {
         const {
-          token: {
+          [!isEuSubsidiary ? 'token' : 'paymentMethod']: {
             id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }
@@ -305,8 +321,9 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           expYear: exp_year,
           brand
         }
-
         setStripeCardDataAction(cardData, tokenId)
+      } else {
+        createPaymentIntent()
       }
       nextStep()
     }

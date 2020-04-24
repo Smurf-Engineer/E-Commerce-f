@@ -14,6 +14,20 @@ export const AddAddressMutation = graphql(
   }
 )
 
+export const CreatePaymentIntentMutation = graphql(
+  gql`
+    mutation createPaymentIntent($orderObj: OrderInput!) {
+      createPaymentIntent(order: $orderObj) {
+        paymentClientSecret
+        intentId
+      }
+    }
+  `,
+  {
+    name: 'createPaymentIntent'
+  }
+)
+
 export const PlaceOrderMutation = graphql(
   gql`
     mutation charge($orderObj: OrderInput!) {
@@ -21,6 +35,7 @@ export const PlaceOrderMutation = graphql(
         id
         short_id
         created_at
+        client_secret
       }
     }
   `,
@@ -32,5 +47,24 @@ export const PlaceOrderMutation = graphql(
 export const CurrencyQuery = gql`
   query currency($countryCode: String!) {
     currency: currencyByCountryCode(code: $countryCode)
+  }
+`
+
+export const AddCardMutation = graphql(
+  gql`
+    mutation addCardSourceStripeCustomer($token: String!) {
+      addCardSourceStripeCustomer(token: $token) {
+        id
+      }
+    }
+  `,
+  {
+    name: 'addNewCard'
+  }
+)
+
+export const getSubsidiaryQuery = gql`
+  query subsidiaryByCountryCode($code: String!) {
+    subsidiary: subsidiaryByCountryCode(code: $code)
   }
 `

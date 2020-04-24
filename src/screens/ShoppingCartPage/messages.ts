@@ -101,5 +101,43 @@ export default defineMessages({
   saveMore: {
     id: 'screens.ShoppingCartPage.saveMore',
     defaultMessage: 'SAVE MORE ON YOUR ORDER'
+  },
+  differentStore: {
+    id: 'screens.ShoppingCartPage.differentStore',
+    defaultMessage: 'DIFFERENT STORE ITEMS'
+  },
+  differentBody: {
+    id: 'screens.ShoppingCartPage.differentBody',
+    defaultMessage: `Seems like there are items from different 
+    stores in your cart, you can only buy from one teamstore at a time.`
+  },
+  gotIt: {
+    id: 'screens.ShoppingCartPage.gotIt',
+    defaultMessage: 'Got it!'
+  },
+  aboutStoreInfo: {
+    id: 'screens.ShoppingCartPage.aboutStoreInfo',
+    defaultMessage: 'ABOUT TEAM STORE ORDERING'
+  },
+  storeInfoText: {
+    id: 'components.CheckoutDesignCheckModal.storeInfoText',
+    defaultMessage: `
+    <p>With Jakroo’s Dynamic Price Drop, final pricing is based on the highest 
+    discount level achieved by the team during the ordering period so no matter 
+    when you place your order, you will receive the same low price as everyone else.</p>
+    <p>Your order reflects the team discount available to you at the time the order has 
+    been placed. If a greater discount is achieved by the team, your order will be updated 
+    to reflect the lower pricing.</p>
+    <p>Please note that payment for your order will be taken after close of 
+    the ordering period, defined by the Order Cut-off date. </p>
+    <p>By placing your order, you agree to the terms and conditions of Jakroo’s Team Store ordering policy.</p>`
+  },
+  terms: {
+    id: 'screens.ShoppingCartPage.terms',
+    defaultMessage: 'I agree with the Terms & Conditions'
+  },
+  continue: {
+    id: 'screens.ShoppingCartPage.continue',
+    defaultMessage: 'Continue'
   }
 })

@@ -157,11 +157,14 @@ const mapStateToProps = (state: any) => {
 
 const StoreFrontEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, {
-    ...storeFrontActions,
-    ...thunkActions,
-    openQuickView: openQuickViewAction
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...storeFrontActions,
+      ...thunkActions,
+      openQuickView: openQuickViewAction
+    }
+  )
 )(StoreFront)
 
 export default StoreFrontEnhance
