@@ -68,10 +68,13 @@ server
       )
       locale = await resultFetch.json()
     } catch (error) {
+      locale.code = 'us'
       console.error(error)
     }
 
-    const redirectUrl = `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
+    const redirectUrl = `/${locale.code}?lang=${locale.lang}&currency=${
+      locale.currency
+    }`
     if (location === '/') {
       res.redirect(redirectUrl)
       return

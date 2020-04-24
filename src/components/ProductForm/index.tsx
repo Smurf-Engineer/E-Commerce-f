@@ -447,6 +447,7 @@ export class ProductForm extends React.Component<Props, {}> {
         colors,
         mediaFiles,
         designCenter,
+        customLink,
         id,
         code,
         name,
@@ -548,6 +549,7 @@ export class ProductForm extends React.Component<Props, {}> {
         media_files: mediaFiles,
         category_name: categoryName,
         design_center: designCenter,
+        custom_link: customLink,
         description,
         obj,
         mtl,
@@ -616,10 +618,13 @@ const ProductFormEnhance = compose(
   withRouter,
   withApollo,
   graphql(upsertProduct, { name: 'upsertProductAction' }),
-  connect(mapStateToProps, {
-    ...ProductFormActions,
-    uploadMediaFile: uploadMediaAction
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...ProductFormActions,
+      uploadMediaFile: uploadMediaAction
+    }
+  )
 )(ProductForm)
 
 export default ProductFormEnhance

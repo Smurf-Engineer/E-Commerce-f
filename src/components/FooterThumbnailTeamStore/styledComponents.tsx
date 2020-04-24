@@ -2,6 +2,7 @@
  * Styled Components - Created by gustavomedina on 12/04/18.
  */
 import styled from 'styled-components'
+import { GREEN_TRANSPARENT, GREEN } from '../../theme/colors'
 
 export const Footer = styled.div`
   padding: 4px;
@@ -42,6 +43,7 @@ export const Bottom = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  position: relative;
 `
 
 export const Label = styled.div`
@@ -101,9 +103,12 @@ export const PricesContainer = styled.div`
 
 export const ProgressWrapper = styled.div`
   width: 100%;
+  position: relative;
+  margin-top: 10px;
   .ant-progress-bg {
-    height: 13px !important;
-    background-color: #94d6fd;
+    height: 25px !important;
+    background-color: ${GREEN_TRANSPARENT};
+    border-radius: 3px !important;
   }
 
   .ant-progress-outer {
@@ -111,17 +116,34 @@ export const ProgressWrapper = styled.div`
     padding-right: 0;
   }
 
+  .ant-progress-inner {
+    border-radius: 3px !important;
+  }
+
   .ant-progress-text {
     overflow: hidden;
     color: transparent;
     display: none;
   }
+  margin-bottom: 10px;
 `
 
 export const ProgressText = styled.div`
-  font-size: 10px;
+  font-size: 13px;
+  font-weight: 600;
   position: absolute;
   z-index: 1;
-  margin-top: 6px;
-  margin-left: 4px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 6px;
+  bottom: 0;
+  text-align: center !important;
+`
+
+export const SaveText = styled.div`
+  bottom: 0px;
+  font-size: 12px;
+  text-align: center;
+  color: ${GREEN};
 `
