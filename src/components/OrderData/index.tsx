@@ -23,7 +23,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE, PENDING_APPROVAL, PREORDER } from '../../constants'
+import { PURCHASE, PAYMENT_ISSUE } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -131,7 +131,6 @@ class OrderData extends React.Component<Props, {}> {
           taxFee,
           total,
           discount,
-          confirmed,
           status,
           teamStoreName,
           teamStoreId
@@ -194,9 +193,7 @@ class OrderData extends React.Component<Props, {}> {
       : null
     return (
       <Container>
-        <Title>
-          {confirmed ? title : formatMessage(messages.pendingTitle)}
-        </Title>
+        <Title>{title}</Title>
         <Content>
           <InfoContainer>
             <OrderNumberContainer>
@@ -219,10 +216,8 @@ class OrderData extends React.Component<Props, {}> {
             </OrderNumberContainer>
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
-              <StyledText>
-                {status === PENDING_APPROVAL || PREORDER
-                  ? formatMessage(messages.waiting)
-                  : status}
+              <StyledText redColor={status === PAYMENT_ISSUE}>
+                {status}
               </StyledText>
             </OrderNumberContainer>
             <StyledText>

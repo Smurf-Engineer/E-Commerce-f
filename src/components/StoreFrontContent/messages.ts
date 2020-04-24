@@ -60,7 +60,13 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.howMuchDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'When ordering through the Jakroo Team Store portal, team members receive a 20% discount off the regular price of the product. Larger teams with 25 members or more, may be entitled to receive higher bulk pricing. Please contact a Jakroo representative tolearn more about bulk team store ordering. Additional discounts may be available through seasonal and special promotions using a promo code.'
+      '<p>When ordering through the Jakroo Team Store portal, team members receive a 20% discount off the regular price of the product. Larger teams with 25 members or more, may be entitled to receive higher bulk pricing. Please contact a Jakroo representative tolearn more about bulk team store ordering. Additional discounts may be available through seasonal and special promotions using a promo code.</p>'
+  },
+  howMuchDescBatch: {
+    id: 'screens.StoreFrontContent.howMuchDescBatch',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>When ordering from a JAKROO Batch Order Team Store, members will save a minimum of 20% off the regular price the items. With Dynamic Price Drop, the price you pay at the time of placing your order will be displayed as the ‘current price’.  However, as other members place orders for the same items, the total quantity ordered increases and higher discount levels are achieved. Pricing is automatically adjusted for everyone. </p> <p>The final price for any item is based on the highest discount level achieved at the time the Team Store closes. All orders are updated to ensure everyone gets the same low price, regardless of when they placed their order.</p>'
   },
   whenTitle: {
     id: 'screens.StoreFrontContent.whenTitle',
@@ -70,9 +76,24 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.whenDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'With team ordering, the payment method is validated and processed at the time the order is placed. Available payments for Team Store ordering may vary by region. Currently PayPal, Credit Card and in the case of Europe, IBAN, are the available options.'
+      '<p>With team ordering, the payment method is validated and processed at the time the order is placed. Available payments for Team Store ordering may vary by region. Currently PayPal, Credit Card and in the case of Europe, IBAN, are the available options.</p>'
   },
-
+  whenDescBatch: {
+    id: 'screens.StoreFrontContent.whenDescBatch',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>When ordering through a Team Store with a defined ordering period, the payment method is only validated at the time the order is placed. Once the ordering period for the store closes, payment is processed through a secure and encrypted processor. We do NOT store any credit card information on our servers. If a card is declined for any reason, you will receive a notification to re-enter your payment information and complete the checkout process.</p>'
+  },
+  changeOrderTitle: {
+    id: 'screens.StoreFrontContent.changeOrderTitle',
+    defaultMessage: 'Can I change or cancel my order?'
+  },
+  changeOrderDesc: {
+    id: 'screens.StoreFrontContent.changeOrderDesc',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>All items on Team Stores are custom made to order and therefore cannot be cancelled after the order enters the production cycle. However, you can cancel or change your order <b>during the ordering period</b> by logging into your Jakroo account and going to the order page. Once the ordering period has closed, however, you will not be able to make any changes. Please note that since your order is part of the team bulk order, changing or canceling it may affect the quantity discount achieved for the rest of the team.</p>'
+  },
   howLongTitle: {
     id: 'screens.StoreFrontContent.howLongTitle',
     defaultMessage: 'How long will it take to receive my order?'
@@ -81,17 +102,29 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.howLongDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'Estimated delivery times for all orders are displayed on the Team Store and during checkout. Orders will enter the production process upon receipt and review and typicallyship out within 7 days from receipt. If you have ordered retail collection (non-customized) products together with customized products, all products will ship together. In the case of large volume orders exceeding 50 pieces, delivery times may be slightly longer. Contact our staff to confirm the delivery time of your order, if it exceeds 50 pieces. While we are committed to always meet delivery dates, delays beyond our directcontrol such as weather, force majeure, and customs clearance times may affect delivery. If you have a specific deadline for your delivery, we recommend factoring a fewadditional days into design and ordering period.'
+      '<p>Estimated delivery times for all orders are displayed on the Team Store and during checkout. Orders will enter the production process upon receipt and review and typicallyship out within 7 days from receipt. If you have ordered retail collection (non-customized) products together with customized products, all products will ship together. In the case of large volume orders exceeding 50 pieces, delivery times may be slightly longer. Contact our staff to confirm the delivery time of your order, if it exceeds 50 pieces. While we are committed to always meet delivery dates, delays beyond our directcontrol such as weather, force majeure, and customs clearance times may affect delivery. If you have a specific deadline for your delivery, we recommend factoring a fewadditional days into design and ordering period.</p>'
   },
-  CanIORder: {
-    id: 'screens.StoreFrontContent.CanIORder',
-    defaultMessage: 'My Team Store is CLOSED. How do I order?'
-  },
-  CanIORderDesc: {
-    id: 'screens.StoreFrontContent.CanIORderDesc',
+  howLongDescBatch: {
+    id: 'screens.StoreFrontContent.howLongDescBatch',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'If your Team Store is closed, you can contact the Team Store Manager and request it to be reopened. You can use the message box at the top of the Team Store page to contact the person, or directly if you have their contact information.'
+      '<p>Estimated delivery times for all orders are displayed on the Team Store page (right side) and during checkout. Final delivery date will be set at the close of the ordering period. Orders will enter the production process upon receipt and review and typically ship out within 10-12 days from receipt. In the case of large volume orders exceeding 100 pieces, delivery times may be slightly longer. Contact our staff to confirm the delivery time of your order, if it exceeds 100 pieces.</p> <p>While we are committed to always meet delivery dates, delays beyond our direct control such as weather, force majeure, and customs clearance times may affect delivery. <b>If you have a specific deadline for your delivery, we recommend factoring a 2-3 additional days into the desired delivery date.</b></p>'
+  },
+  canIORder: {
+    id: 'screens.StoreFrontContent.canIORder',
+    defaultMessage: 'My Team Store is CLOSED. How do I order?'
+  },
+  canIORderDesc: {
+    id: 'screens.StoreFrontContent.canIORderDesc',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>If your Team Store is closed, you can contact the Team Store Manager and request it to be reopened. You can use the message box at the top of the Team Store page to contact the person, or directly if you have their contact information.</p>'
+  },
+  canIORderDescBatch: {
+    id: 'screens.StoreFrontContent.canIORderDescBatch',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>If your Team Store is closed, you can contact the Team Store Manager and request it to be reopened. You can use the message box at the top of the Team Store page to contact the person, or directly if you have their contact information.</p>'
   },
   returnMessage: {
     id: 'screens.StoreFrontContent.returnMessage',

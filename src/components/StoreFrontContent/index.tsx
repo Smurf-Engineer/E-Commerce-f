@@ -55,7 +55,8 @@ import {
   Dates,
   FlexColumnContainer,
   DynamicDropLogo,
-  PricesButton
+  PricesButton,
+  MainContainer
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
@@ -107,11 +108,14 @@ interface Props {
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
+const invalidDateExp = /\bInvalid date\b/
+
 export class StoreFrontContent extends React.Component<Props, StateProps> {
   state = {
     showMuch: false,
     showCani: false,
     showLong: false,
+    showChange: false,
     showWhen: false,
     showReturn: false,
     pricingModalOpen: false
@@ -225,6 +229,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       showMuch,
       showCani,
       showLong,
+      showChange,
       showWhen,
       showReturn,
       pricingModalOpen
@@ -251,6 +256,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const onDemandMode = get(getTeamStore, 'onDemandMode', false)
     const display = get(getTeamStore, 'display', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
+    const closed = get(getTeamStore, 'closed', false)
+
+    const isThereCutoffDate = !invalidDateExp.test(cutOffDay)
+
     const deliveryDayOrdinal = get(
       getTeamStore,
       'delivery_date.dayOrdinal',
@@ -264,7 +273,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const teamSizeId = get(getTeamStore, 'team_size_id', 0)
     const priceRanges = getTeamStore ? getTeamStore.priceRanges || [] : []
     const bulletin = get(getTeamStore, 'bulletin', '')
-    const shareStoreUrl = `${config.baseUrl}store-front?storeId=${teamStoreShortId}`
+    const shareStoreUrl = `${
+      config.baseUrl
+    }store-front?storeId=${teamStoreShortId}`
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
     // TODO: uncomment if return to old method
@@ -283,38 +294,39 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
             {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
               <ErrorTitle>{formatMessage(messages.storeClosed)}</ErrorTitle>
             ) : (
-              <>
+              <MainContainer>
                 {!teamStoreBanner ? (
                   <div />
                 ) : (
                   <ImageBanner src={teamStoreBanner} />
                 )}
+                <FlexContainer>
+                  <Title>
+                    {formatMessage(messages.welcome, { teamStoreName })}
+                  </Title>
+                  <ButtonsContainer>
+                    <ButtonWrapper>
+                      <Button type="primary" onClick={this.handlShareClick}>
+                        <FormattedMessage {...messages.share} />
+                      </Button>
+                    </ButtonWrapper>
+                    {teamStoreOwner && !closed ? (
+                      <ButtonWrapper>
+                        <Button type="primary" onClick={this.handleOnPressEdit}>
+                          <FormattedMessage {...messages.edit} />
+                        </Button>
+                      </ButtonWrapper>
+                    ) : (
+                      !closed && (
+                        <DefaultButton onClick={this.handlContactClick}>
+                          <FormattedMessage {...messages.contactManager} />
+                        </DefaultButton>
+                      )
+                    )}
+                  </ButtonsContainer>
+                </FlexContainer>
                 <TopContainer>
                   <FlexColumnContainer>
-                    <FlexContainer>
-                      <Title>{teamStoreName}</Title>
-                      <ButtonsContainer>
-                        <ButtonWrapper>
-                          <Button type="primary" onClick={this.handlShareClick}>
-                            <FormattedMessage {...messages.share} />
-                          </Button>
-                        </ButtonWrapper>
-                        {teamStoreOwner ? (
-                          <ButtonWrapper>
-                            <Button
-                              type="primary"
-                              onClick={this.handleOnPressEdit}
-                            >
-                              <FormattedMessage {...messages.edit} />
-                            </Button>
-                          </ButtonWrapper>
-                        ) : (
-                          <DefaultButton onClick={this.handlContactClick}>
-                            <FormattedMessage {...messages.contactManager} />
-                          </DefaultButton>
-                        )}
-                      </ButtonsContainer>
-                    </FlexContainer>
                     {!onDemandMode && (
                       <React.Fragment>
                         <DynamicDropLogo src={dropLogo} />
@@ -328,12 +340,14 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   </FlexColumnContainer>
                   <SideBar>
                     <DatesContainer {...{ onDemandMode }}>
-                      <StoreBox open={display}>
+                      <StoreBox open={display && !closed}>
                         {formatMessage(
-                          display ? messages.storeOpen : messages.storeClosed
+                          display && !closed
+                            ? messages.storeOpen
+                            : messages.storeClosed
                         )}
                       </StoreBox>
-                      {!onDemandMode && (
+                      {!onDemandMode && !closed && isThereCutoffDate && (
                         <OrderTitle>
                           {`${formatMessage(
                             messages.orderTitle
@@ -342,34 +356,36 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           )} ${deliveryMonth} ${deliveryDayOrdinal}`}
                         </OrderTitle>
                       )}
-                      <Dates>
-                        {!onDemandMode && (
-                          <CalendarContainer>
-                            <DatesTitle>
-                              <FormattedMessage {...messages.cutOff} />
-                            </DatesTitle>
-                            <CalendarView>
-                              <CalendarTitle>{cutOffMonth}</CalendarTitle>
-                              <CalendarDay>{cutOffDay}</CalendarDay>
-                            </CalendarView>
-                          </CalendarContainer>
-                        )}
-                        {display && (
-                          <CalendarContainer>
-                            <DatesTitle>
-                              <FormattedMessage
-                                {...messages.estimatedArrival}
-                              />
-                            </DatesTitle>
-                            <CalendarFinalView>
-                              <CalendarFinalTitle>
-                                {deliveryMonth}
-                              </CalendarFinalTitle>
-                              <CalendarDay>{deliveryDay}</CalendarDay>
-                            </CalendarFinalView>
-                          </CalendarContainer>
-                        )}
-                      </Dates>
+                      {!closed && (
+                        <Dates>
+                          {!onDemandMode && isThereCutoffDate && (
+                            <CalendarContainer>
+                              <DatesTitle>
+                                <FormattedMessage {...messages.cutOff} />
+                              </DatesTitle>
+                              <CalendarView>
+                                <CalendarTitle>{cutOffMonth}</CalendarTitle>
+                                <CalendarDay>{cutOffDay}</CalendarDay>
+                              </CalendarView>
+                            </CalendarContainer>
+                          )}
+                          {display && (
+                            <CalendarContainer>
+                              <DatesTitle>
+                                <FormattedMessage
+                                  {...messages.estimatedArrival}
+                                />
+                              </DatesTitle>
+                              <CalendarFinalView>
+                                <CalendarFinalTitle>
+                                  {deliveryMonth}
+                                </CalendarFinalTitle>
+                                <CalendarDay>{deliveryDay}</CalendarDay>
+                              </CalendarFinalView>
+                            </CalendarContainer>
+                          )}
+                        </Dates>
+                      )}
                     </DatesContainer>
                   </SideBar>
                 </TopContainer>
@@ -403,7 +419,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           onDemandMode,
                           currentCurrency,
                           display,
-                          teamStoreName
+                          teamStoreName,
+                          closed
                         }}
                         withoutPadding={false}
                         openQuickView={this.handleOnOpenQuickView}
@@ -426,7 +443,15 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     showContent={showMuch}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.howMuchDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.howMuchDesc
+                            : messages.howMuchDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
 
                   <ProductInfo
@@ -435,8 +460,30 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     showContent={showWhen}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.whenDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.whenDesc
+                            : messages.whenDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
+                  {!onDemandMode && (
+                    <ProductInfo
+                      id="Change"
+                      title={formatMessage(messages.changeOrderTitle)}
+                      showContent={showChange}
+                      toggleView={this.toggleProductInfo}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.changeOrderDesc)
+                        }}
+                      />
+                    </ProductInfo>
+                  )}
 
                   <ProductInfo
                     id="Long"
@@ -444,15 +491,31 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                     showContent={showLong}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.howLongDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.howLongDesc
+                            : messages.howLongDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
                   <ProductInfo
                     id="Cani"
-                    title={formatMessage(messages.CanIORder)}
+                    title={formatMessage(messages.canIORder)}
                     showContent={showCani}
                     toggleView={this.toggleProductInfo}
                   >
-                    <p>{formatMessage(messages.CanIORderDesc)}</p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(
+                          onDemandMode
+                            ? messages.canIORderDesc
+                            : messages.canIORderDescBatch
+                        )
+                      }}
+                    />
                   </ProductInfo>
                   <ProductInfo
                     id="Return"
@@ -490,7 +553,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   setSendMessageLoading={sendMessageLoadingAction}
                   ownerName={ownerName}
                 />
-              </>
+              </MainContainer>
             )}
           </React.Fragment>
         )}

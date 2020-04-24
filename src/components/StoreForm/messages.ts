@@ -33,17 +33,13 @@ export default defineMessages({
     id: 'components.StoreForm.errorMsg',
     defaultMessage: 'Something wrong happened. Please try again!'
   },
-  shipping: {
-    id: 'components.StoreForm.shipping',
-    defaultMessage: 'Orders ship within 7 days of receipt of order.'
-  },
   onDemandMode: {
     id: 'components.StoreForm.onDemandMode',
     defaultMessage: 'ON DEMAND MODE'
   },
   fixedMode: {
     id: 'components.StoreForm.fixedMode',
-    defaultMessage: 'FIXED DATE'
+    defaultMessage: 'BATCH ORDER MODE'
   },
   gotIt: {
     id: 'components.StoreForm.gotIt',

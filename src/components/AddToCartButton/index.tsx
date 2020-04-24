@@ -54,6 +54,8 @@ interface Props {
   fixedPrices?: PriceRange[]
   teamStoreName?: string
   hide?: boolean
+  fixedCart?: boolean
+  replaceOrder?: string
   addToCart: () => void
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
@@ -107,7 +109,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       itemProdPage = false,
       fixedPrices = [],
       teamStoreName,
-      formatMessage
+      formatMessage,
+      fixedCart = false,
+      replaceOrder = ''
     } = this.props
     if (renderForThumbnail && item) {
       const itemToAdd = this.getItemWithDetails(
@@ -121,7 +125,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         designCode,
         itemProdPage,
         fixedPrices,
-        teamStoreName
+        teamStoreName,
+        fixedCart,
+        replaceOrder
       )
       this.saveInLocalStorage(itemToAdd)
     } else {
@@ -138,7 +144,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       } else {
         if (itemProdPage) {
           if (!item && items && !!items.length) {
-            items.map(i =>
+            items.map((i) =>
               this.saveInLocalStorage(
                 this.getItemWithDetails(
                   i,
@@ -151,7 +157,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
                   i.designCode,
                   itemProdPage,
                   fixedPrices,
-                  i.teamStoreName
+                  i.teamStoreName,
+                  fixedCart,
+                  replaceOrder
                 )
               )
             )
@@ -167,7 +175,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               designCode,
               itemProdPage,
               fixedPrices,
-              teamStoreName
+              teamStoreName,
+              fixedCart,
+              replaceOrder
             )
             this.saveInLocalStorage(itemToAdd)
           }
@@ -186,7 +196,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               item.designCode,
               false,
               fixedPrices,
-              item.teamStoreName
+              item.teamStoreName,
+              fixedCart,
+              replaceOrder
             )
           )
         }
@@ -205,7 +217,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     designCode = '',
     itemProdPage: boolean,
     fixedPrices: PriceRange[],
-    teamStoreName = ''
+    teamStoreName = '',
+    fixedCart: boolean = false,
+    replaceOrder: string = ''
   ) => {
     const details = [] as CartItemDetail[]
     const detail = {
@@ -226,7 +240,9 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       { teamStoreId },
       { teamStoreItem },
       { fixedPrices },
-      { teamStoreName }
+      { teamStoreName },
+      { fixedCart },
+      { replaceOrder }
     )
     return itemToAdd
   }
@@ -261,7 +277,12 @@ export class AddToCartButton extends PureComponent<Props, {}> {
 }
 
 const AddToCartEnhanced = compose(
-  connect(null, { getTotalItemsIncart }, null, { withRef: true })
+  connect(
+    null,
+    { getTotalItemsIncart },
+    null,
+    { withRef: true }
+  )
 )(AddToCartButton)
 
 export default AddToCartEnhanced

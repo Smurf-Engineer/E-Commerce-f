@@ -3,11 +3,17 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
+import Icon from 'antd/lib/icon'
 import { BLUE } from '../../theme/colors'
+
+interface ContainerProps {
+  infoIcon?: boolean
+}
 
 export const Container = styled.div`
   width: 25%;
   margin-right: 10%;
+  margin-right: ${({ infoIcon }: ContainerProps) => (!infoIcon ? '10%' : '0')};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -66,4 +72,10 @@ export const Error = styled.div`
   font-size: 12px;
   line-height: 16px;
   padding: 4px;
+`
+
+export const Question = styled(Icon)`
+  margin-top: 2px;
+  margin-left: 8px;
+  cursor: pointer;
 `

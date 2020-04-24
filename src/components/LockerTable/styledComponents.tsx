@@ -139,6 +139,7 @@ export const Name = styled.div`
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+  margin-right: 20px;
 `
 
 export const Description = styled.div`
