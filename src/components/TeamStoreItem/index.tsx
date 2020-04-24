@@ -15,7 +15,8 @@ import {
   ButtonsContainer,
   DeleteLabel,
   BottomContainer,
-  TitleName
+  TitleName,
+  StoreType
 } from './styledComponents'
 
 interface Props {
@@ -23,7 +24,9 @@ interface Props {
   idStore?: string
   name?: string
   showNameStore?: boolean
+  fixedDate?: boolean
   closed?: boolean
+  cutOffDate?: string
   withShareButton?: boolean
   withEditButton?: boolean
   withDeleteButton?: boolean
@@ -47,8 +50,13 @@ const TeamStoreItem = ({
   onItemClick,
   onEditClick,
   onDeleteClick,
-  closed = false
+  closed = false,
+  fixedDate = false
 }: Props) => {
+  const closedMessage =
+    fixedDate && closed ? formatMessage(messages.closedForOrder) : ''
+
+  console.log('Fixed date ', fixedDate)
   const handleClickShare = () => {
     if (openShareModalAction) {
       openShareModalAction(idStore)
@@ -88,7 +96,7 @@ const TeamStoreItem = ({
   return (
     <Container>
       <TeamStoreCard>
-        <CardContent>
+        <CardContent {...{ closedMessage }}>
           {image ? (
             <StyledImg src={image} onClick={onItemClick} />
           ) : (
@@ -97,6 +105,9 @@ const TeamStoreItem = ({
           {showNameStore && (
             <BottomContainer>
               <CardTitle>{name}</CardTitle>
+              <StoreType>
+                {formatMessage(messages[fixedDate ? 'batchOrder' : 'onDemand'])}
+              </StoreType>
               <MediaQuery minWidth={480}>{buttons}</MediaQuery>
             </BottomContainer>
           )}
