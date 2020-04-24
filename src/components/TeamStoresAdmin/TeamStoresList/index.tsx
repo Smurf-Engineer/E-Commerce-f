@@ -50,6 +50,7 @@ const teamStoreHeaders = [
   { title: 'manager', id: 'first_name' },
   { title: 'type', id: 'on_demand_mode' },
   { title: 'cutoffDate', id: 'cutoff_date' },
+  { title: 'deliveryDate', id: 'delivery_date' },
   { title: 'featured', id: 'featured' },
   { title: 'display', id: 'display' }
 ]
@@ -94,7 +95,7 @@ const TeamStoresList = ({
 
   const header = (
     <MediaQuery maxWidth={768}>
-      {matches => {
+      {(matches) => {
         if (matches) {
           return <Row>{mobileHeaders}</Row>
         }
@@ -112,6 +113,7 @@ const TeamStoresList = ({
         userLastName,
         onDemand,
         cutOffDateString,
+        deliveryDate,
         shortId,
         display
       }: TeamStoreAdminType,
@@ -129,6 +131,7 @@ const TeamStoresList = ({
             onDemand,
             formatMessage,
             cutOffDateString,
+            deliveryDate,
             onChangeSwitch,
             onClickRow,
             shortId,

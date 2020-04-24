@@ -109,7 +109,7 @@ export const DeliveryLabels = styled.div`
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
-  width: 137px;
+  width: 187px;
 `
 export const DeliveryLabel = styled.div`
   margin-bottom: 12px;

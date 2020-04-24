@@ -4,27 +4,27 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import { FormattedHTMLMessage } from 'react-intl'
+import message from 'antd/lib/message'
+import moment from 'moment'
 import get from 'lodash/get'
 import messages from './messages'
-import {
-  OrderDetailsInfo,
-  QueryProps,
-  FulfillmentNetsuite
-} from '../../types/common'
-import { getOrderQuery } from './data'
+import { OrderDetailsInfo, QueryProps } from '../../types/common'
+import Modal from 'antd/lib/modal'
+import { getOrderQuery, deleteOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
+import Button from 'antd/lib/button'
 import {
   Container,
   ViewContainer,
   Div,
   ScreenTitle,
   // TODO: Commented to hide the receipt button until green light to continue with this implementation
-  // ButtonWrapper,
+  ButtonWrapper,
   // Button,
   OrderInfo,
   OrderDelivery,
-  DeliveryDate,
   DeliveryInfo,
   DeliveryLabels,
   DeliveryLabel,
@@ -39,8 +39,12 @@ import {
   SubTitle,
   StyledImage,
   Annotation,
-  Date,
-  LoadingContainer
+  LoadingContainer,
+  OrderActions,
+  DeleteButton,
+  StyledText,
+  ErrorMessage,
+  Paragraph
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -51,6 +55,7 @@ import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
+import { PREORDER, PAYMENT_ISSUE } from '../../constants'
 
 const PRO_DESIGN_FEE = 15
 
@@ -65,9 +70,14 @@ interface Props {
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: string) => void
+  deleteOrder: (variables: {}) => Promise<any>
+  goToCart: () => void
 }
 
+const { confirm } = Modal
+
 export class OrderDetails extends React.Component<Props, {}> {
+  editOrderButton: any
   render() {
     const {
       data,
@@ -132,21 +142,17 @@ export class OrderDetails extends React.Component<Props, {}> {
       taxVat,
       taxFee,
       total,
-      discount
+      discount,
+      teamStoreId,
+      lastDrop,
+      teamStoreName,
+      canUpdatePayment,
+      onDemand
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
-    const fulfillments = get(
-      netsuiteObject,
-      'fulfillments',
-      [] as FulfillmentNetsuite[]
-    )
 
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
-
-    const packages = get(fulfillments, '[0].packages')
-
-    const trackingNumber = packages && packages.replace('<BR>', ', ')
 
     let subtotal = 0
     const renderItemList = cart
@@ -157,11 +163,14 @@ export class OrderDetails extends React.Component<Props, {}> {
             designName,
             product: { images, name, shortDescription },
             productTotal,
-            unitPrice
+            unitPrice,
+            teamStoreItem
           } = cartItem
 
           subtotal += productTotal || 0
-
+          cartItem.isFixed = onDemand === false
+          cartItem.teamStoreItem = teamStoreItem
+          cartItem.teamStoreName = teamStoreName
           const priceRange = {
             quantity: '0',
             price: 0,
@@ -190,7 +199,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               price={priceRange}
               itemIndex={index}
               onlyRead={true}
-              canReorder={true}
+              canReorder={!teamStoreId && true}
             />
           )
         })
@@ -206,6 +215,15 @@ export class OrderDetails extends React.Component<Props, {}> {
 
     return (
       <Container>
+        {status === PAYMENT_ISSUE && (
+          <ErrorMessage>
+            <Paragraph
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.paymentIssue)
+              }}
+            />
+          </ErrorMessage>
+        )}
         <ViewContainer onClick={handleOnReturn}>
           <Icon type="left" />
           <span>{formatMessage(getBackMessage)}</span>
@@ -223,12 +241,11 @@ export class OrderDetails extends React.Component<Props, {}> {
         </Div>
         <OrderInfo>
           <OrderDelivery>
-            <DeliveryDate>
-              <span>{formatMessage(messages.deliveryDate)}</span>
-              <Date>{` ${estimatedDate}`}</Date>
-            </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
+                <DeliveryLabel>
+                  {formatMessage(messages.orderPoint)}
+                </DeliveryLabel>
                 <DeliveryLabel>
                   {formatMessage(messages.orderNumber)}
                 </DeliveryLabel>
@@ -236,15 +253,26 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {formatMessage(messages.orderDate)}
                 </DeliveryLabel>
                 <DeliveryLabel>
-                  {formatMessage(messages.trackingNumber)}
+                  {formatMessage(messages.deliveryDate)}
                 </DeliveryLabel>
                 <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
+                <DeliveryLabel>
+                  {formatMessage(messages.lastUpdated)}
+                </DeliveryLabel>
               </DeliveryLabels>
               <DeliveryData>
+                <Info>
+                  {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+                </Info>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
-                <Info tracking={true}>{trackingNumber || '-'}</Info>
-                <Info>{netsuiteStatus || status}</Info>
+                <Info>{estimatedDate}</Info>
+                <Info redColor={status === PAYMENT_ISSUE}>
+                  {netsuiteStatus || status}
+                </Info>
+                <Info>
+                  {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
+                </Info>
               </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>
@@ -267,21 +295,28 @@ export class OrderDetails extends React.Component<Props, {}> {
             />
           </OrderSummaryContainer>
         </OrderInfo>
+        <StyledText>
+          <FormattedHTMLMessage
+            {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
+          />
+        </StyledText>
         <Items>
-          <TitleStyled>
-            {formatMessage(messages.items)}
-            <AddToCartButton
-              label={formatMessage(messages.reorderAll)}
-              renderForThumbnail={false}
-              items={cart}
-              {...{ formatMessage }}
-              withoutTop={true}
-              myLockerList={false}
-              itemProdPage={true}
-              orderDetails={true}
-              onClick={() => true}
-            />
-          </TitleStyled>
+          {!teamStoreId && (
+            <TitleStyled>
+              {formatMessage(messages.items)}
+              <AddToCartButton
+                label={formatMessage(messages.reorderAll)}
+                renderForThumbnail={false}
+                items={cart}
+                {...{ formatMessage }}
+                withoutTop={true}
+                myLockerList={false}
+                itemProdPage={true}
+                orderDetails={true}
+                onClick={() => true}
+              />
+            </TitleStyled>
+          )}
           <CartList>{renderItemList}</CartList>
         </Items>
         <ShippingBillingContainer>
@@ -316,9 +351,100 @@ export class OrderDetails extends React.Component<Props, {}> {
             {paymentMethodInfo}
           </ShippingBillingCard>
         </ShippingBillingContainer>
-        <Annotation>{formatMessage(messages.annotation)}</Annotation>
+        <AddToCartButton
+          ref={(addToCartButton: any) =>
+            (this.editOrderButton = addToCartButton)
+          }
+          label={formatMessage(messages.edit)}
+          renderForThumbnail={false}
+          items={cart}
+          {...{ formatMessage }}
+          withoutTop={true}
+          myLockerList={false}
+          itemProdPage={true}
+          orderDetails={true}
+          onClick={() => true}
+          hide={true}
+          fixedCart={status === PAYMENT_ISSUE}
+          replaceOrder={shortId}
+        />
+        {teamStoreId &&
+        (status === PREORDER ||
+          (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
+          <OrderActions>
+            <ButtonWrapper>
+              <Button type="primary" onClick={this.handleOnEditOrder}>
+                {formatMessage(
+                  status === PAYMENT_ISSUE
+                    ? messages.updatePayment
+                    : messages.edit
+                )}
+              </Button>
+            </ButtonWrapper>
+            <DeleteButton onClick={this.handleOnDeleteOrder}>
+              {formatMessage(messages.deleteOrder)}
+            </DeleteButton>
+          </OrderActions>
+        ) : (
+          <Annotation>{formatMessage(messages.annotation)}</Annotation>
+        )}
       </Container>
     )
+  }
+
+  handleOnEditOrder = () => {
+    const { formatMessage, goToCart } = this.props
+    confirm({
+      title: formatMessage(messages.editOrderTitle),
+      content: formatMessage(messages.editOrderMessage),
+      okText: formatMessage(messages.proceed),
+      onOk: async () => {
+        try {
+          await this.deleteOrder()
+          this.editOrderButton.getWrappedInstance().addToCart()
+          goToCart()
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+
+  handleOnDeleteOrder = () => {
+    const { formatMessage, onReturn } = this.props
+    confirm({
+      title: formatMessage(messages.deleteTeamstoreTitle),
+      content: formatMessage(messages.deleteTeamstoreMessage),
+      okText: formatMessage(messages.delete),
+      onOk: async () => {
+        try {
+          await this.deleteOrder()
+          onReturn('')
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+
+  deleteOrder = async () => {
+    const { deleteOrder, data } = this.props
+    const { shortId } = data.orderQuery
+    try {
+      if (typeof window !== 'undefined') {
+        const cartList = JSON.parse(localStorage.getItem('cart') as any)
+        if (cartList) {
+          localStorage.removeItem('cart')
+        }
+      }
+      const response = await deleteOrder({
+        variables: { orderId: shortId }
+      })
+      const responseMessage = get(response, 'data.cancelOrder.message', '')
+      message.success(responseMessage)
+    } catch (e) {
+      message.error(e.message)
+    }
   }
 
   handleOnClickReceipt = () => {
@@ -331,6 +457,7 @@ interface OwnProps {
 }
 
 const OrderDetailsEnhance = compose(
+  deleteOrderMutation,
   graphql(getOrderQuery, {
     options: ({ orderId }: OwnProps) => ({
       skip: !orderId,

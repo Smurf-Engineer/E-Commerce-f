@@ -44,6 +44,7 @@ export const getProductQuery = gql`
       }
       active
       designCenter: design_center
+      customLink: custom_link
       sport_id
       mpn
       colors {

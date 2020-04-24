@@ -137,6 +137,7 @@ export interface Product {
   collections: number
   isTopProduct: boolean
   relatedItemTag?: string
+  customLink?: string
   categoryName?: string
   details: string | string[]
   specs: string
@@ -669,6 +670,8 @@ export interface CartItems {
   flatlock?: string
   preflightCheck?: boolean
   fixedPrices: PriceRange[]
+  teamStoreName?: string
+  fixedCart?: boolean
 }
 
 export interface ProductPrice {
@@ -678,7 +681,7 @@ export interface ProductPrice {
 }
 export interface CreditCardData {
   id?: string
-  name: string
+  name?: string
   last4: string
   brand: string
   expMonth: number
@@ -777,6 +780,11 @@ export interface OrderDetailsInfo {
   taxFee?: number
   total?: number
   discount?: number
+  teamStoreId?: string
+  lastDrop?: boolean
+  teamStoreName?: string
+  canUpdatePayment?: boolean
+  onDemand?: boolean
 }
 
 export interface OrderDataInfo {
@@ -812,6 +820,11 @@ export interface OrderDataInfo {
   taxFee?: number
   total?: number
   discount?: number
+  confirmed?: boolean
+  status?: string
+  lastDrop?: string
+  teamStoreName?: string
+  teamStoreId?: string
 }
 
 export interface TextFormat {
@@ -1544,6 +1557,11 @@ export interface HomepageCarousel {
   secondarySlideDuration: number
 }
 
+export interface PaymentIntent {
+  paymentClientSecret: string
+  intentId: string
+}
+
 export interface UserDiscount {
   text: string
   value: string
@@ -1587,4 +1605,12 @@ export type ProAssist = {
   date: string
   status: string
   url: string
+}
+
+export type PriceRangeProgress = {
+  minQuantity: number
+  maxQuantity: number
+  range: number
+  index: number
+  price: number
 }
