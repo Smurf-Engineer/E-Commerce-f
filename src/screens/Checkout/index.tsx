@@ -329,10 +329,10 @@ class Checkout extends React.Component<Props, {}> {
     const taxAddress: TaxAddressObj = shippingAddress.country &&
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
-        country: shippingAddress.country,
-        state: shippingAddress.stateProvinceCode,
-        zipCode: shippingAddress.zipCode
-      }
+      country: shippingAddress.country,
+      state: shippingAddress.stateProvinceCode,
+      zipCode: shippingAddress.zipCode
+    }
 
     const { state: stateLocation } = location
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
