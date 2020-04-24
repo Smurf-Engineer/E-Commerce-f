@@ -156,5 +156,9 @@ export default defineMessages({
   openModel: {
     id: 'components.ProductDetailAdmin.openModel',
     defaultMessage: 'Open model'
+  },
+  customizeLink: {
+    id: 'components.ProductDetailAdmin.customizeLink',
+    defaultMessage: 'Customize Link'
   }
 })

@@ -19,6 +19,7 @@ export const getOrdersQuery = gql`
         date: created_at
         estimatedDate: estimated_date
         status
+        teamstoreId: teamstore_id
         netsuite: netsuit_order {
           orderStatus {
             orderStatus

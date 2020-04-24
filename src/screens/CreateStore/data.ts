@@ -100,6 +100,13 @@ export const GetTeamStoreQuery = gql`
         size
       }
       owner
+      datesEdited: dates_edited
     }
+  }
+`
+
+export const cutoffDateSettingsQuery = gql`
+  query getCutoffConfig {
+    cutoffDays: getCutoffConfig
   }
 `
