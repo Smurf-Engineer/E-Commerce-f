@@ -364,6 +364,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           onClick={() => true}
           hide={true}
           fixedCart={status === PAYMENT_ISSUE}
+          replaceOrder={shortId}
         />
         {teamStoreId &&
         (status === PREORDER ||

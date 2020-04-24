@@ -163,7 +163,7 @@ interface Props extends RouteComponentProps<any> {
   onUnselectItemAction: (keyName: string) => void
 }
 
-const { info } = Modal
+const { info, confirm } = Modal
 
 interface StateProps {
   hasError: boolean
@@ -359,6 +359,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       banner,
       datesEditedTemporal
     } = this.props
+
     const { file } = this.state
     const validForm = this.validateForm(
       name,
@@ -374,7 +375,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
-    const items = itemsSelected.map(item => {
+    const items = itemsSelected.map((item) => {
       return {
         design_id: get(item, 'design.shortId'),
         visible: get(item, 'visible')
@@ -434,8 +435,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
           message.success(messageResp)
         }
 
-        history.push(`/store-front?storeId=${storeShortId}`)
-        this.forceUpdate()
+        window.location.replace(`/store-front?storeId=${storeShortId}`)
       } else {
         const {
           data: { store }
@@ -533,6 +533,32 @@ export class CreateStore extends React.Component<Props, StateProps> {
           }}
         />
       )
+    })
+  }
+
+  openEditDatesInfo = () => {
+    const {
+      intl: { formatMessage },
+      endDateMoment,
+      startDateMoment
+    } = this.props
+    confirm({
+      title: formatMessage(messages.editDatesTitle),
+      okText: formatMessage(messages.proceed),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: formatMessage(messages.editDatesMessage, {
+        cutOff: startDateMoment.format('DD-MM-YYYY'),
+        delivery: endDateMoment.format('DD-MM-YYYY')
+      }),
+      onOk: async () => {
+        try {
+          await this.handleBuildTeamStore()
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
     })
   }
 
@@ -677,7 +703,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
             )}
             <Subtitle>
               <div
-                ref={table => {
+                ref={(table) => {
                   this.lockerTable = table
                 }}
               >
@@ -782,7 +808,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 <SaveButton
                   {...{ loading }}
                   size="large"
-                  onClick={this.handleBuildTeamStore}
+                  onClick={
+                    !datesEdited
+                      ? this.openEditDatesInfo
+                      : this.handleBuildTeamStore
+                  }
                 >
                   {formatMessage(messages.save)}
                 </SaveButton>
@@ -846,7 +876,10 @@ const CreateStoreEnhance = compose(
       fetchPolicy: 'network-only'
     }
   }),
-  connect(mapStateToProps, { ...createStoreActions, ...thunkActions })
+  connect(
+    mapStateToProps,
+    { ...createStoreActions, ...thunkActions }
+  )
 )(CreateStore)
 
 export default CreateStoreEnhance

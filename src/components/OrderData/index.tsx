@@ -131,7 +131,6 @@ class OrderData extends React.Component<Props, {}> {
           taxFee,
           total,
           discount,
-          confirmed,
           status,
           teamStoreName,
           teamStoreId
@@ -194,9 +193,7 @@ class OrderData extends React.Component<Props, {}> {
       : null
     return (
       <Container>
-        <Title>
-          {confirmed ? title : formatMessage(messages.pendingTitle)}
-        </Title>
+        <Title>{title}</Title>
         <Content>
           <InfoContainer>
             <OrderNumberContainer>

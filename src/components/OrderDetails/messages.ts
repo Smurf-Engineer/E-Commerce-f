@@ -105,7 +105,8 @@ export default defineMessages({
   editOrderMessage: {
     id: 'components.OrderDetails.editOrderMessage',
     defaultMessage:
-      'By editing your order, your items will automatically go to your cart and this previous order will be deleted'
+      // tslint:disable-next-line:max-line-length
+      'By editing your order, all items will be added to your cart so you can update your payment information and complete the checkout. In doing so, this previous order will be cancelled.'
   },
   proceed: {
     id: 'components.OrderDetails.proceed',

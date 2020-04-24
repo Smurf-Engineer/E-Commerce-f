@@ -193,5 +193,18 @@ export default defineMessages({
   switchToDemand: {
     id: 'components.StoreForm.switchToDemand',
     defaultMessage: 'Switch to On-Demand Mode'
+  },
+  editDatesTitle: {
+    id: 'components.StoreForm.editDatesTitle',
+    defaultMessage: 'ARE YOU SURE?'
+  },
+  editDatesMessage: {
+    id: 'components.StoreForm.editDatesMessage',
+    defaultMessage:
+      'You have selected {cutOff} date for the order cut-off and {delivery} for the delivery date.'
+  },
+  proceed: {
+    id: 'components.StoreForm.proceed',
+    defaultMessage: 'Yes, proceed.'
   }
 })
