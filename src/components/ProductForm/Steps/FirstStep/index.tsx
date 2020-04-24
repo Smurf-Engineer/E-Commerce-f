@@ -85,6 +85,7 @@ export class FirstStep extends React.Component<Props, {}> {
       season,
       yotpoId,
       designCenter,
+      customLink,
       genders: gendersProduct,
       details,
       contentTile,
@@ -205,6 +206,22 @@ export class FirstStep extends React.Component<Props, {}> {
             />
           </InputDiv>
         </RowInput>
+        {!designCenter && (
+          <RowInput>
+            <InputDiv flex={1}>
+              <Label>
+                <FormattedMessage {...messages.customLink} />
+              </Label>
+              <Input
+                size="large"
+                value={customLink}
+                name="customLink"
+                onChange={this.handleChangeCustom}
+                placeholder={formatMessage(messages.customLinkPlaceholder)}
+              />
+            </InputDiv>
+          </RowInput>
+        )}
         <RowInput>
           <InputDiv flex={1}>
             <Label>

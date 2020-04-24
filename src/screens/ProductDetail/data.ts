@@ -40,6 +40,7 @@ export const GetProductsByIdQuery = gql`
       gender_id
       retail_version
       customizable: design_center
+      customLink: custom_link
       description
       details
       mediaFiles: media_files {

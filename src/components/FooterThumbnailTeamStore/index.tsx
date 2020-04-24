@@ -60,19 +60,29 @@ const FooterThumbnailTeamStore = ({
     if (relativePercentParam !== MAX_PERCENT) {
       return Math.round(
         (relativePercentParam * PERCENT_BY_SECTION) / MAX_PERCENT +
-        currentRangeAttributes.index * PERCENT_BY_SECTION
+          currentRangeAttributes.index * PERCENT_BY_SECTION
+      )
+    } else {
+      return (
+        (relativePercentParam -= percentAmount) / currentRangeAttributes.index
       )
     }
-    return (relativePercentParam -= percentAmount)
   }
+
   if (!onDemandMode && currentRangeAttributes) {
     const percentAmount = MAX_PERCENT / currentRangeAttributes.range
+    console.log(
+      progress,
+      currentRangeAttributes.minQuantity,
+      currentRangeAttributes.range
+    )
     let relativePercent =
       ((progress - currentRangeAttributes.minQuantity) /
         currentRangeAttributes.range) *
       MAX_PERCENT
-
+    console.log(relativePercent)
     realPercent = getRealPercent(relativePercent, percentAmount)
+    console.log(realPercent)
   }
 
   return (

@@ -119,20 +119,20 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         ) => {
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, {
-              quantity: targetRange.name,
-              abbreviation: currentCurrency || config.defaultCurrency
-            }) || {
-              price: 0
-            }
+                quantity: targetRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
+              }) || {
+                price: 0
+              }
             : { price: 0 }
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
-              quantity:
-                currentRange.name === '0-0' ? '2-5' : currentRange.name,
-              abbreviation: currentCurrency || config.defaultCurrency
-            }) || {
-              price: 0
-            }
+                quantity:
+                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
+                abbreviation: currentCurrency || config.defaultCurrency
+              }) || {
+                price: 0
+              }
             : { price: 0 }
           const fixedPriceValue =
             priceRange && priceRange.length
@@ -188,17 +188,26 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               return true
             }
           })
+          console.log(currentRangeAttributes)
 
           const currentPrice = onDemandMode
             ? fixedPriceValue.price
             : currentRangeAttributes.price
-          const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const currentPriceText = `${
+            fixedPriceValue.shortName
+          } ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName} ${
+            targetPriceValue.price
+          }`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
-              itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
-              percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
-            })
+                itemsLeft: `<strong>${
+                  currentRangeAttributes.itemsLeft
+                } more</strong>`,
+                percent: `<strong>${
+                  currentRangeAttributes.percentToSave
+                }%</strong>`
+              })
             : ''
           return (
             <ThumbnailListItem key={index}>
@@ -308,10 +317,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-            <NoResultsFound>
-              {formatMessage(messages.emptyResults)}
-            </NoResultsFound>
-          )
+          <NoResultsFound>
+            {formatMessage(messages.emptyResults)}
+          </NoResultsFound>
+        )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -371,7 +380,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => { }
+  handleOnPressAddToCart = (id: number) => {}
 }
 
 type OwnProps = {
