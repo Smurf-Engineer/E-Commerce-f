@@ -100,6 +100,7 @@ export const GetTeamStoreQuery = gql`
         size
       }
       owner
+      datesEdited: dates_edited
     }
   }
 `

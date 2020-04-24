@@ -80,6 +80,10 @@ export const EU_SUBSIDIARY_COUNTRIES = [
   COUNTRY_CODE_FR
 ]
 
+export const EUROPE = 9
+export const STRIPE = 'stripe'
+export const EU_STRIPE = 'suStripe'
+
 export const quantities = [
   'Personal',
   '2-5',

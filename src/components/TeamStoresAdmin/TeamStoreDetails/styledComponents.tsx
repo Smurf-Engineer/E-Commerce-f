@@ -134,3 +134,8 @@ export const Header = styled.th`
     line-height: 15px;
   }
 `
+
+export const PricesContainer = styled.div`
+  width: 100%;
+  display: inline-table;
+`
