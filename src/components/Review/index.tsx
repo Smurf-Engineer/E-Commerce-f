@@ -24,7 +24,7 @@ import {
 import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
 import CartListItem from '../../components/CartListItem'
-import iconPaypal from '../../assets/Paypal.svg'
+import iconPaypal from '../../assets/paypal.svg'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 
