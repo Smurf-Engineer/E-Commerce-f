@@ -2,7 +2,7 @@
  * Styled Components - Created by gustavomedina on 12/04/18.
  */
 import styled from 'styled-components'
-import { GREEN_TRANSPARENT } from '../../theme/colors'
+import { GREEN_TRANSPARENT, GREEN } from '../../theme/colors'
 
 export const Footer = styled.div`
   padding: 4px;
@@ -43,6 +43,7 @@ export const Bottom = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  position: relative;
 `
 
 export const Label = styled.div`
@@ -124,6 +125,7 @@ export const ProgressWrapper = styled.div`
     color: transparent;
     display: none;
   }
+  margin-bottom: 10px;
 `
 
 export const ProgressText = styled.div`
@@ -137,4 +139,11 @@ export const ProgressText = styled.div`
   top: 6px;
   bottom: 0;
   text-align: center !important;
+`
+
+export const SaveText = styled.div`
+  bottom: 0px;
+  font-size: 12px;
+  text-align: center;
+  color: ${GREEN};
 `

@@ -11,37 +11,42 @@ export default defineMessages({
   },
   ordersCanBePlaced: {
     id: 'screens.TeamstoreTypes.ordersCanBePlaced',
-    defaultMessage: 'Orders can be placed anytime 24/7.'
+    defaultMessage:
+      'Ideal for individual or small groups of <b>less than 6 members</b>'
   },
   ordersShips: {
     id: 'screens.TeamstoreTypes.ordersShips',
-    defaultMessage: 'Orders ships within {dayNumber} days of receipt.'
+    defaultMessage: 'Anytime ordering 24/7 with fixed pricing'
   },
   individualCheckOut: {
     id: 'screens.TeamstoreTypes.individualCheckOut',
-    defaultMessage: 'Individual check out for each customer.'
+    defaultMessage: 'Convenient and easy checkout for each customer'
+  },
+  orderDate: {
+    id: 'screens.TeamstoreTypes.orderDate',
+    defaultMessage: 'Orders prodced on-demand with a {dayNumber} day turnaround'
   },
   acceptedPayment: {
     id: 'screens.TeamstoreTypes.acceptedPayment',
-    defaultMessage:
-      'Accepted payment methods available: Credit Card, Paypal and IBAN.'
+    defaultMessage: 'Accepted payment methods available:'
   },
   setCutOff: {
     id: 'screens.TeamstoreTypes.setCutOff',
-    defaultMessage: 'Set your own order cut-off and delivery dates.'
+    defaultMessage:
+      'Ideal for teams, clubs or large groups with <b>6 or more members</b>'
   },
   extendedOrdering: {
     id: 'screens.TeamstoreTypes.extendedOrdering',
-    defaultMessage: 'Extended Ordering periods up to 2 weeks.'
+    defaultMessage:
+      'Flexible scheduled ordering periods up to 2 weeks in duration'
   },
   quantityDiscounts: {
     id: 'screens.TeamstoreTypes.quantityDiscounts',
-    defaultMessage:
-      'Quantity discounts with dynamic price drop so everyone gets the same price.'
+    defaultMessage: 'Large group quantity discounts with Dynamic Price Drop©'
   },
-  creditCard: {
-    id: 'screens.TeamstoreTypes.creditCard',
-    defaultMessage: 'Credit Card as payment method.'
+  bulk: {
+    id: 'screens.TeamstoreTypes.bulk',
+    defaultMessage: 'Bulk production with {dayNumber} day turnaround'
   },
   onDemand: {
     id: 'screens.TeamstoreTypes.onDemand',

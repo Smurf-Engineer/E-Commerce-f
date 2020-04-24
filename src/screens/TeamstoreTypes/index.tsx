@@ -12,12 +12,18 @@ import {
   Item,
   PaymentIcons,
   Icon,
-  SelectTeamStoreButton
+  SelectTeamStoreButton,
+  TeamBanner,
+  TeamImage
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
-import creditCard from '../../assets/creditcard.svg'
-import iban from '../../assets/iban.svg'
-import paypal from '../../assets/paypal_card.svg'
+import creditCard from '../../assets/Stripe.png'
+import sepa from '../../assets/sepa.png'
+import onDemandImage from '../../assets/OnDemand-Guys.jpg'
+import ScheduledImage from '../../assets/Scheduled-Team.jpg'
+import onDemandBanner from '../../assets/OnDemand.png'
+import scheduledBanner from '../../assets/Scheduled.png'
+import paypal from '../../assets/Paypal.png'
 import { compose } from 'react-apollo'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import messages from './messages'
@@ -32,6 +38,7 @@ const onDemandMessages = [
   'ordersCanBePlaced',
   'ordersShips',
   'individualCheckOut',
+  'orderDate',
   'acceptedPayment'
 ]
 
@@ -39,8 +46,8 @@ const fixedDateMessages = [
   'setCutOff',
   'extendedOrdering',
   'quantityDiscounts',
-  'ordersShips',
-  'creditCard'
+  'bulk',
+  'acceptedPayment'
 ]
 
 class TeamstoreTypes extends React.Component<Props, {}> {
@@ -62,35 +69,47 @@ class TeamstoreTypes extends React.Component<Props, {}> {
         <Container>
           <Title>{formatMessage(messages.title)}</Title>
           <TeamStoreCardsContainer>
-            <Card>
-              <CardTitle>{formatMessage(messages.onDemand)}</CardTitle>
+            <Card id="fixed" onClick={this.goTo}>
+              <CardTitle>
+                <TeamBanner src={onDemandBanner} />
+              </CardTitle>
+              <TeamImage src={onDemandImage} />
               <List>
                 {onDemandMessages.map((item: string, index: number) => (
-                  <Item key={index}>
-                    {formatMessage(messages[item], {
-                      dayNumber: ON_DEMAND_DAYS
-                    })}
-                  </Item>
+                  <Item
+                    key={index}
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages[item], {
+                        dayNumber: ON_DEMAND_DAYS
+                      })
+                    }}
+                  />
                 ))}
               </List>
               <PaymentIcons>
                 <Icon src={creditCard} />
                 <Icon src={paypal} />
-                <Icon src={iban} />
+                <Icon src={sepa} />
               </PaymentIcons>
               <SelectTeamStoreButton id="demand" onClick={this.goTo}>
                 {formatMessage(messages.select)}
               </SelectTeamStoreButton>
             </Card>
-            <Card>
-              <CardTitle>{formatMessage(messages.fixedDate)}</CardTitle>
+            <Card id="demand" onClick={this.goTo}>
+              <CardTitle>
+                <TeamBanner src={scheduledBanner} />
+              </CardTitle>
+              <TeamImage src={ScheduledImage} />
               <List>
                 {fixedDateMessages.map((item: string, index: number) => (
-                  <Item key={index}>
-                    {formatMessage(messages[item], {
-                      dayNumber: FIXED_DATE_DAYS
-                    })}
-                  </Item>
+                  <Item
+                    key={index}
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages[item], {
+                        dayNumber: FIXED_DATE_DAYS
+                      })
+                    }}
+                  />
                 ))}
               </List>
               <PaymentIcons>

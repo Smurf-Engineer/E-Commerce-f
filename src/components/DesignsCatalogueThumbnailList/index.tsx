@@ -22,7 +22,8 @@ import {
   Filter,
   ClickParam,
   PriceRange,
-  PriceRangeProgress
+  PriceRangeProgress,
+  Message
 } from '../../types/common'
 import {
   Container,
@@ -44,13 +45,13 @@ import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import { FormattedMessage } from 'react-intl'
 import filter from 'lodash/filter'
-
+const LIMIT_FIRST_RANGE = 2
 interface Data extends QueryProps {
   products: ProductType
 }
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: any) => string
   openQuickView: (id: number) => void
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
@@ -114,20 +115,20 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         ) => {
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, {
-                quantity: targetRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity: targetRange.name,
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
-                quantity:
-                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity:
+                currentRange.name === '0-0' ? '2-5' : currentRange.name,
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
           const fixedPriceValue =
             priceRange && priceRange.length
@@ -145,7 +146,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             index: 0,
             price: 0
           }
-
           priceRanges.some((current: PriceRange, rangeIndex: number) => {
             const quantities = current.quantity.split('-')
             const maxQuantity = parseInt(quantities[LAST_ITEM], 10)
@@ -164,6 +164,23 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               currentRangeAttributes.range = maxQuantity - minQuantity
               currentRangeAttributes.index = rangeIndex
               currentRangeAttributes.price = current.price
+
+              const nextPriceRange = priceRanges[rangeIndex + 1]
+              if (nextPriceRange) {
+                const nextMinQuantity = parseInt(
+                  nextPriceRange.quantity.split('-')[0],
+                  10
+                )
+                if (totalOrders + LIMIT_FIRST_RANGE >= nextMinQuantity) {
+                  const save = targetPriceValue.price - nextPriceRange.price
+                  const percent = Math.round(
+                    (save * 100) / targetPriceValue.price
+                  )
+                  currentRangeAttributes.itemsLeft =
+                    nextMinQuantity - totalOrders
+                  currentRangeAttributes.percentToSave = percent
+                }
+              }
               return true
             }
           })
@@ -171,12 +188,14 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPrice = onDemandMode
             ? fixedPriceValue.price
             : currentRangeAttributes.price
-          const currentPriceText = `${
-            fixedPriceValue.shortName
-          } ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${
-            targetPriceValue.price
-          }`
+          const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const suggestedSaveText = currentRangeAttributes.percentToSave
+            ? formatMessage(messages.suggestedSave, {
+              itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
+              percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
+            })
+            : ''
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -195,7 +214,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       targetRange,
                       onDemandMode,
                       code,
-                      currentRangeAttributes
+                      currentRangeAttributes,
+                      suggestedSaveText
                     }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
@@ -282,10 +302,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-          <NoResultsFound>
-            {formatMessage(messages.emptyResults)}
-          </NoResultsFound>
-        )
+            <NoResultsFound>
+              {formatMessage(messages.emptyResults)}
+            </NoResultsFound>
+          )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -345,7 +365,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => {}
+  handleOnPressAddToCart = (id: number) => { }
 }
 
 type OwnProps = {

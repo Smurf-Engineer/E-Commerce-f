@@ -17,7 +17,8 @@ import {
   PriceLabel,
   ProgressWrapper,
   ProgressText,
-  BottomPrices
+  BottomPrices,
+  SaveText
 } from './styledComponents'
 
 const MAX_PERCENT = 100
@@ -35,6 +36,7 @@ interface Props {
   currentPrice: number | string
   priceRange?: PriceRange[]
   currentRangeAttributes?: PriceRangeProgress
+  suggestedSaveText?: string
 }
 
 const FooterThumbnailTeamStore = ({
@@ -46,7 +48,9 @@ const FooterThumbnailTeamStore = ({
   code,
   targetPrice,
   currentPrice,
-  currentRangeAttributes
+  priceRange = [],
+  currentRangeAttributes,
+  suggestedSaveText
 }: Props) => {
   let realPercent = 0
   const getRealPercent = (
@@ -56,7 +60,7 @@ const FooterThumbnailTeamStore = ({
     if (relativePercentParam !== MAX_PERCENT) {
       return Math.round(
         (relativePercentParam * PERCENT_BY_SECTION) / MAX_PERCENT +
-          currentRangeAttributes.index * PERCENT_BY_SECTION
+        currentRangeAttributes.index * PERCENT_BY_SECTION
       )
     }
     return (relativePercentParam -= percentAmount)
@@ -94,12 +98,15 @@ const FooterThumbnailTeamStore = ({
       </BottomPrices>
 
       {!onDemandMode && (
-        <Bottom>
-          <ProgressWrapper>
-            <ProgressText>{progress}</ProgressText>
-            <Progress percent={realPercent} />
-          </ProgressWrapper>
-        </Bottom>
+        <div>
+          <Bottom>
+            <ProgressWrapper>
+              <ProgressText>{progress}</ProgressText>
+              <Progress percent={realPercent} />
+            </ProgressWrapper>
+          </Bottom>
+          <SaveText dangerouslySetInnerHTML={{ __html: suggestedSaveText }} />
+        </div>
       )}
     </Footer>
   )
