@@ -66,6 +66,7 @@ interface Props {
   selectedCard: CreditCardData
   setupIntent: SetupIntentData
   formatMessage: (messageDescriptor: any) => string
+  isEuSubsidiary?: boolean
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
   inputChangeAction: (id: string, value: string) => void
@@ -162,7 +163,8 @@ class MyCards extends React.Component<Props, {}> {
       setStripeCardDataAction,
       selectCardToPayAction,
       selectedCard,
-      setupIntent
+      setupIntent,
+      isEuSubsidiary
     } = this.props
 
     const { stripe } = this.state
@@ -176,7 +178,6 @@ class MyCards extends React.Component<Props, {}> {
         </Container>
       )
     }
-
     const userCards = get(data, 'userCards', {})
     const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
@@ -214,20 +215,22 @@ class MyCards extends React.Component<Props, {}> {
             />
           </Elements>
         </StripeProvider>
-        <MyCardsList
-          items={cards}
-          {...{
-            formatMessage,
-            idDefaultCard,
-            paymentsRender,
-            listForMyAccount,
-            setStripeCardDataAction,
-            selectCardToPayAction,
-            selectedCard
-          }}
-          showConfirmDelete={this.handleOnShowDeleteCardConfirm}
-          selectCardAsDefault={this.handleOnSelectCardAsDefault}
-        />
+        {!isEuSubsidiary && (
+          <MyCardsList
+            items={cards}
+            {...{
+              formatMessage,
+              idDefaultCard,
+              paymentsRender,
+              listForMyAccount,
+              setStripeCardDataAction,
+              selectCardToPayAction,
+              selectedCard
+            }}
+            showConfirmDelete={this.handleOnShowDeleteCardConfirm}
+            selectCardAsDefault={this.handleOnSelectCardAsDefault}
+          />
+        )}
         <Modal
           visible={showDeleteCardConfirm}
           confirmLoading={deleteLoading}
@@ -297,13 +300,15 @@ class MyCards extends React.Component<Props, {}> {
       cardIdToMutate,
       deleteCard,
       setDeleteLoadingAction,
-      resetReducerDataAction
+      resetReducerDataAction,
+      data: { refetch }
     } = this.props
     setDeleteLoadingAction(true)
     await deleteCard({
       variables: { cardId: cardIdToMutate },
       refetchQueries: [{ query: cardsQuery }]
     })
+    await refetch()
     resetReducerDataAction()
   }
 
@@ -316,9 +321,9 @@ class MyCards extends React.Component<Props, {}> {
     const {
       resetReducerDataAction,
       addNewCard,
-      cardAsDefaultPayment
+      cardAsDefaultPayment,
+      data: { refetch }
     } = this.props
-
     await addNewCard({
       variables: {
         token: stripeToken,
@@ -326,6 +331,7 @@ class MyCards extends React.Component<Props, {}> {
       },
       refetchQueries: [{ query: cardsQuery }]
     })
+    await refetch()
     resetReducerDataAction()
   }
 
@@ -352,8 +358,19 @@ class MyCards extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
+type OwnProps = {
+  isFixedTeamstore?: boolean
+}
 const MyCardsEnhance = compose(
-  graphql(cardsQuery, { name: 'data' }),
+  graphql(cardsQuery, {
+    name: 'data',
+    options: (ownprops: OwnProps) => {
+      const { isFixedTeamstore } = ownprops
+      return {
+        skip: isFixedTeamstore
+      }
+    }
+  }),
   graphql(setupIntentQuery, { name: 'setupIntent' }),
   withLoading,
   withError,

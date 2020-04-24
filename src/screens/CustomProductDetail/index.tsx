@@ -182,6 +182,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designCode = get(design, 'code', '')
     const teamPrice = get(design, 'teamPrice', '')
     const teamEnable = get(design, 'teamEnable', '')
+    const teamOnDemand = get(design, 'teamOnDemand', '')
     const teamName = get(design, 'teamName', '')
     const proDesign = get(design, 'proDesign', false)
     const {
@@ -379,9 +380,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           item={itemToAdd}
           itemProdPage={true}
           withoutTop={true}
+          isFixed={!teamOnDemand}
           teamStoreId={teamStoreShortId}
           fixedPrices={teamPrice}
           {...{ designId, designName, designImage, teamStoreItem }}
+          teamStoreName={teamName}
         />
       </ButtonsRow>
     )

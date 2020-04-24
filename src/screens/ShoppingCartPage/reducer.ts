@@ -20,7 +20,9 @@ import {
   SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA,
   SHOW_REVIEW_DESIGN_MODAL,
-  OPEN_FITINFO
+  OPEN_FITINFO,
+  OPEN_STORE_INFO,
+  SET_STORE_TERMS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -30,6 +32,8 @@ export const initialState = fromJS({
   subtotal: 0,
   total: 0,
   shipping: 0,
+  openStoreInfo: false,
+  storeTerms: false,
   showDeleteLastItemModal: false,
   showReviewDesignModal: false,
   openFitInfo: false,
@@ -53,6 +57,10 @@ const shoppingCartPageReducer: Reducer<any> = (
         (itemDetails: any) => itemDetails.push(fromJS({ color, quantity: 1 }))
       )
     }
+    case SET_STORE_TERMS:
+      return state.set('storeTerms', action.checked)
+    case OPEN_STORE_INFO:
+      return state.set('openStoreInfo', action.open)
     case DELETE_ITEM_DETAIL_ACTION:
       return state.updateIn(
         ['cart', action.index, 'itemDetails'],

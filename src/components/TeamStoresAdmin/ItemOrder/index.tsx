@@ -14,6 +14,7 @@ interface Props {
   userLastName: string
   onDemand: boolean
   cutOffDateString?: string
+  deliveryDate?: string
   shortId: string
   display: boolean
   formatMessage: (messageDescriptor: any) => string
@@ -30,6 +31,7 @@ const ItemOrder = ({
   onDemand,
   formatMessage,
   cutOffDateString,
+  deliveryDate,
   onChangeSwitch,
   onClickRow,
   shortId,
@@ -54,6 +56,7 @@ const ItemOrder = ({
       </Cell>
       <Cell>{formatMessage(messages[onDemand ? 'onDemand' : 'fixed'])}</Cell>
       <Cell>{onDemand ? '-' : cutOffDateString}</Cell>
+      <Cell>{onDemand ? '-' : deliveryDate}</Cell>
       <Cell onClick={stopPropagation}>
         <Switch onChange={handleOnSwitch('featured')} checked={featured} />
       </Cell>

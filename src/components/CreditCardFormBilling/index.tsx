@@ -46,6 +46,7 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  isEuSubsidiary: boolean
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -102,7 +103,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       currentPage,
       indexAddressSelected,
       showBillingForm,
-      showBillingAddressFormAction
+      showBillingAddressFormAction,
+      isEuSubsidiary
     } = this.props
 
     const renderAddresses = (
@@ -143,7 +145,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 showCardFormAction,
                 showCardForm,
                 selectCardToPayAction,
-                selectedCard
+                selectedCard,
+                isEuSubsidiary
               }}
             />
           </MyCardsRow>
@@ -256,7 +259,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       nextStep,
       selectedCard,
       stripe,
-      createPaymentIntent
+      createPaymentIntent,
+      isEuSubsidiary
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
@@ -287,22 +291,27 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       }
     }
     setLoadingBillingAction(true)
-    const stripeResponse = !selectedCardId
-      ? await stripe.createPaymentMethod('card', this.state.cardElement, {
-          billing_details: stripeTokenData
-        })
-      : {}
+
+    let stripeResponse = {}
+    if (!selectedCardId) {
+      stripeResponse = !isEuSubsidiary
+        ? await stripe.createToken(stripeTokenData)
+        : await stripe.createPaymentMethod('card', this.state.cardElement, {
+            billing_details: stripeTokenData
+          })
+    }
 
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else if (!emptyForm) {
       if (!selectedCardId) {
         const {
-          paymentMethod: {
+          [!isEuSubsidiary ? 'token' : 'paymentMethod']: {
             id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }
         } = stripeResponse
+
         const cardData: CreditCardData = {
           id,
           name,

@@ -26,8 +26,10 @@ import {
   NameLink,
   Table,
   EditButton,
-  DeleteButton
+  DeleteButton,
+  PricesContainer
 } from './styledComponents'
+import { CHF_CURRENCY } from '../constants'
 interface Props {
   history: any
   from: string
@@ -120,9 +122,10 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       )
     }
 
-    const headers = currencies.map(({ id, shortName }) => (
-      <Header key={id}>{shortName}</Header>
-    ))
+    const headers = currencies.map(
+      ({ id, shortName }) =>
+        shortName !== CHF_CURRENCY && <Header key={id}>{shortName}</Header>
+    )
 
     const teamStoresInformation = teamStoreHeaderInformation.map(
       (header: string, index: number) => (
@@ -195,14 +198,18 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
           </ScreenTitle>
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
           <Table>
-            <thead>
-              <tr>
-                <Header>{formatMessage(messages.name)}</Header>
-                {headers}
-                <Header>{''}</Header>
-              </tr>
-            </thead>
-            <tbody>{teamStoreItems}</tbody>
+            {teamStore.onDemand && (
+              <PricesContainer>
+                <thead>
+                  <tr>
+                    <Header>{formatMessage(messages.name)}</Header>
+                    {headers}
+                    <Header>{''}</Header>
+                  </tr>
+                </thead>
+                <tbody>{teamStoreItems}</tbody>
+              </PricesContainer>
+            )}
           </Table>
         </ScreenContent>
       </Container>

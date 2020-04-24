@@ -62,7 +62,7 @@ interface Props {
   onPaypalSuccess: (payment: any) => void
   onPaypalCancel: (data: AnalyserNode) => void
   onPaypalError: (err: any) => void
-  onPlaceOrder: (event: any) => void
+  onPlaceOrder: (event: any, subsidiary?: number) => void
 }
 
 const CheckoutSummary = ({
@@ -167,6 +167,7 @@ const CheckoutSummary = ({
     ? currentCurrency.toUpperCase()
     : config.defaultCurrency.toUpperCase()
 
+  const handleOnPlaceOrder = (event) => onPlaceOrder(event, subsidiary)
   const orderButtonComponent =
     paymentMethod === PaymentOptions.PAYPAL ? (
       <PaypalExpressBtn
@@ -182,7 +183,7 @@ const CheckoutSummary = ({
         {...{ currency }}
       />
     ) : (
-      <PlaceOrderButton onClick={onPlaceOrder}>
+      <PlaceOrderButton onClick={handleOnPlaceOrder}>
         {formatMessage(messages.placeOrder)}
       </PlaceOrderButton>
     )

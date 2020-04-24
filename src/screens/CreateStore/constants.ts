@@ -31,3 +31,5 @@ export const MOVE_ROW = `${namespace}/MOVE_ROW`
 
 export const FIXED_TEAMSTORE = 'fixed'
 export const ON_DEMAND_TEAMSTORE = 'demand'
+
+export const DEFAULT_CUTOFF_DAYS = 14

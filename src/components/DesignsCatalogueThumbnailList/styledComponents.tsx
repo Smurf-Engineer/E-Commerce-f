@@ -30,6 +30,10 @@ export const TotalItems = styled.div`
   color: #5f6062;
   font-size: 16px;
   line-height: 23px;
+  @media (min-width: 320px) and (max-width: 748px) {
+    text-align: center;
+    width: 100%;
+  }
 `
 
 export const SortOptions = styled.div`
