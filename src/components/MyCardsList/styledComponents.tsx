@@ -10,6 +10,7 @@ export const Container = styled.div`
 export const CardsList = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 
   @media (max-width: 425px) {
     display: grid;

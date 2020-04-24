@@ -70,6 +70,8 @@ interface Props {
   targetPrice: string
   currentCurrency: string
   display?: boolean
+  teamStoreName?: string
+  closed?: boolean
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -89,7 +91,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       withoutPadding,
       targetRange,
       currentRange,
-      currentCurrency = config.defaultCurrency
+      currentCurrency = config.defaultCurrency,
+      teamStoreName,
+      closed
     } = this.props
     let thumbnailsList
     let total = ''
@@ -197,12 +201,13 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                   />
                 }
                 labelButton={
-                  display && (
+                  display &&
+                  !closed && (
                     <AddToCartButton
                       label={formatMessage(messages.addToCart)}
                       renderForThumbnail={true}
                       item={{ product }}
-                      {...{ formatMessage }}
+                      {...{ formatMessage, teamStoreName }}
                       withoutTop={true}
                       designId={shortId}
                       designName={name}

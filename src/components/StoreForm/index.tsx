@@ -15,7 +15,6 @@ import {
   Required,
   inputStyle,
   TeamStoreTypeLabel,
-  ShipLabel,
   RightLabels,
   Fields,
   Question,
@@ -35,9 +34,19 @@ interface Props {
   onDemand?: boolean
   validateHoliday: any
   cutoffDays: number
+  storeId: string
+  datesEdited: boolean
   onUpdateName: (name: string) => void
-  onSelectStartDate: (dateMoment: Moment, date: string) => void
-  onSelectEndDate: (dateMoment: Moment | null, date: string) => void
+  onSelectStartDate: (
+    dateMoment: Moment,
+    date: string,
+    datesEdited: boolean
+  ) => void
+  onSelectEndDate: (
+    dateMoment: Moment | null,
+    date: string,
+    datesEdited: boolean
+  ) => void
   formatMessage: (messageDescriptor: any) => string
 }
 const INPUT_MAX_LENGTH = 25
@@ -51,7 +60,9 @@ const StoreForm = ({
   endDate,
   onDemand,
   formatMessage,
-  cutoffDays
+  cutoffDays,
+  storeId,
+  datesEdited
 }: Props) => {
   const handleUpdateName = (evnt: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -79,7 +90,13 @@ const StoreForm = ({
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
 
     date.add('14', 'days')
-    const isGreaterThanFourteenDays = current.valueOf() > date.valueOf()
+
+    let momentStartDate = date.valueOf()
+    if (storeId && !datesEdited) {
+      momentStartDate = moment(startDate)
+      momentStartDate.add('17', 'days')
+    }
+    const isGreaterThanFourteenDays = current.valueOf() > momentStartDate
 
     return isBeforeOfCurrentDay || isGreaterThanFourteenDays
   }
@@ -112,7 +129,7 @@ const StoreForm = ({
   }
 
   const handleOnSelectStart = (date: Moment, dateString: string) => {
-    onSelectStartDate(date, dateString)
+    onSelectStartDate(date, dateString, !!storeId)
   }
 
   const handleOnSelectEnd = async (date: Moment, dateString: string) => {
@@ -120,14 +137,14 @@ const StoreForm = ({
       try {
         if (date && (date.weekday() === 0 || date.weekday() === 6)) {
           message.warning(formatMessage(messages.deliveryErrorLabel))
-          onSelectEndDate(null, '')
+          onSelectEndDate(null, '', !!storeId)
           return
         }
       } catch (error) {
         message.error(formatMessage(messages.errorMsg))
       }
     }
-    onSelectEndDate(date, dateString)
+    onSelectEndDate(date, dateString, !!storeId)
   }
 
   const openInfo = () => {
@@ -157,7 +174,6 @@ const StoreForm = ({
   return (
     <Container>
       <RightLabels>
-        {onDemand && <ShipLabel>{formatMessage(messages.shipping)}</ShipLabel>}
         <TeamStoreTypeLabel>
           {formatMessage(onDemand ? messages.onDemandMode : messages.fixedMode)}
         </TeamStoreTypeLabel>
@@ -192,6 +208,7 @@ const StoreForm = ({
                 format="YYYY-MM-DD" // TODO: Change format
                 size="large"
                 style={inputStyle}
+                disabled={datesEdited}
               />
               {hasError && !startDate && (
                 <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
@@ -207,7 +224,7 @@ const StoreForm = ({
                 value={endDate}
                 disabledDate={disabledEndDate}
                 onChange={handleOnSelectEnd}
-                disabled={!startDate}
+                disabled={datesEdited || !startDate}
                 format="YYYY-MM-DD" // TODO: Change format
                 size="large"
                 style={inputStyle}
