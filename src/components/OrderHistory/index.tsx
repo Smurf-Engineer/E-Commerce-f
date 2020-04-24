@@ -56,12 +56,17 @@ class OrderHistory extends React.Component<Props, {}> {
         <OrderDetails
           onReturn={this.handleOnOrderClick}
           from={ORDER_HISTORY}
+          goToCart={this.goToCart}
           {...{ orderId, formatMessage }}
         />
       </SwipeableViews>
     )
   }
 
+  goToCart = () => {
+    const { history } = this.props
+    history.push('/shopping-cart')
+  }
   handleOnChangeIndex = (index: number) => {
     if (index === 0) {
       this.handleOnOrderClick('')
@@ -88,10 +93,7 @@ class OrderHistory extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('orderHistory').toJS()
 
 const OrderHistoryEnhance = compose(
-  connect(
-    mapStateToProps,
-    { ...OrderHistoryActions }
-  )
+  connect(mapStateToProps, { ...OrderHistoryActions })
 )(OrderHistory)
 
 export default OrderHistoryEnhance

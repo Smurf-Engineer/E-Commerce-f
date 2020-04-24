@@ -9,44 +9,41 @@ export default defineMessages({
     id: 'screens.TeamstoreTypes.title',
     defaultMessage: 'What type of team store do you want to build?'
   },
-  ordersCanBePlaced: {
-    id: 'screens.TeamstoreTypes.ordersCanBePlaced',
-    defaultMessage:
-      'Ideal for individual or small groups of <b>less than 6 members</b>'
+  idealForSmall: {
+    id: 'screens.TeamstoreTypes.idealForSmall',
+    defaultMessage: 'Ideal for small groups less than 6 members'
   },
-  ordersShips: {
-    id: 'screens.TeamstoreTypes.ordersShips',
-    defaultMessage: 'Anytime ordering 24/7 with fixed pricing'
+  fastTurnaround: {
+    id: 'screens.TeamstoreTypes.fastTurnaround',
+    defaultMessage: '<b>Fast 10 Day Turnaround</b>'
   },
-  individualCheckOut: {
-    id: 'screens.TeamstoreTypes.individualCheckOut',
-    defaultMessage: 'Convenient and easy checkout for each customer'
+  saveWithFixed: {
+    id: 'screens.TeamstoreTypes.saveWithFixed',
+    defaultMessage: 'Save 20% with fixed team pricing'
   },
-  orderDate: {
-    id: 'screens.TeamstoreTypes.orderDate',
-    defaultMessage: 'Orders prodced on-demand with a {dayNumber} day turnaround'
+  onDemandProduction: {
+    id: 'screens.TeamstoreTypes.onDemandProduction',
+    defaultMessage: 'On-Demand Production'
   },
   acceptedPayment: {
     id: 'screens.TeamstoreTypes.acceptedPayment',
     defaultMessage: 'Accepted payment methods available:'
   },
-  setCutOff: {
-    id: 'screens.TeamstoreTypes.setCutOff',
-    defaultMessage:
-      'Ideal for teams, clubs or large groups with <b>6 or more members</b>'
+  idealForLarger: {
+    id: 'screens.TeamstoreTypes.idealForLarger',
+    defaultMessage: 'Ideal for larger groups with 6 or more members'
   },
-  extendedOrdering: {
-    id: 'screens.TeamstoreTypes.extendedOrdering',
-    defaultMessage:
-      'Flexible scheduled ordering periods up to 2 weeks in duration'
+  saveWithGroup: {
+    id: 'screens.TeamstoreTypes.saveWithGroup',
+    defaultMessage: '<b>Save 20-40% with group buying power</b>'
   },
-  quantityDiscounts: {
-    id: 'screens.TeamstoreTypes.quantityDiscounts',
-    defaultMessage: 'Large group quantity discounts with Dynamic Price Drop©'
+  turnaroundDays: {
+    id: 'screens.TeamstoreTypes.turnaroundDays',
+    defaultMessage: '{dayNumber} Day Turnaround'
   },
   bulk: {
     id: 'screens.TeamstoreTypes.bulk',
-    defaultMessage: 'Bulk production with {dayNumber} day turnaround'
+    defaultMessage: 'Bulk Production'
   },
   onDemand: {
     id: 'screens.TeamstoreTypes.onDemand',
@@ -54,7 +51,7 @@ export default defineMessages({
   },
   fixedDate: {
     id: 'screens.TeamstoreTypes.fixedDate',
-    defaultMessage: 'FIXED DATE'
+    defaultMessage: 'BATCH ORDER'
   },
   select: {
     id: 'screens.TeamstoreTypes.select',

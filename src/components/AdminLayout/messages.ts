@@ -39,7 +39,7 @@ export default defineMessages({
   },
   editContent: {
     id: 'screens.AdminLayout.editContent',
-    defaultMessage: 'EDIT CONTENT'
+    defaultMessage: 'SETTINGS'
   },
   homepage: {
     id: 'screens.AdminLayout.homepage',
@@ -47,7 +47,7 @@ export default defineMessages({
   },
   designLab: {
     id: 'screens.AdminLayout.designLab',
-    defaultMessage: 'Design Lab'
+    defaultMessage: 'Preferences'
   },
   users: {
     id: 'screens.AdminLayout.users',

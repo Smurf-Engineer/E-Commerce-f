@@ -6,7 +6,6 @@ import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import head from 'lodash/head'
 import messages from './messages'
-import moment from 'moment'
 import { FormattedHTMLMessage } from 'react-intl'
 import {
   Container,
@@ -24,7 +23,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE, PENDING_APPROVAL } from '../../constants'
+import { PURCHASE, PAYMENT_ISSUE } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -132,9 +131,9 @@ class OrderData extends React.Component<Props, {}> {
           taxFee,
           total,
           discount,
-          confirmed,
           status,
-          lastDrop
+          teamStoreName,
+          teamStoreId
         }
       },
       currentCurrency
@@ -194,11 +193,15 @@ class OrderData extends React.Component<Props, {}> {
       : null
     return (
       <Container>
-        <Title>
-          {confirmed ? title : formatMessage(messages.pendingTitle)}
-        </Title>
+        <Title>{title}</Title>
         <Content>
           <InfoContainer>
+            <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.orderPoint)}</TitleStyled>
+              <StyledText>
+                {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+              </StyledText>
+            </OrderNumberContainer>
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
               <StyledText>{orderId}</StyledText>
@@ -213,20 +216,16 @@ class OrderData extends React.Component<Props, {}> {
             </OrderNumberContainer>
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
-              <StyledText>
-                {status === PENDING_APPROVAL
-                  ? formatMessage(messages.waiting)
-                  : status}
-              </StyledText>
-            </OrderNumberContainer>
-            <OrderNumberContainer>
-              <TitleStyled>{formatMessage(messages.lastUpdated)}</TitleStyled>
-              <StyledText>
-                {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
+              <StyledText redColor={status === PAYMENT_ISSUE}>
+                {status}
               </StyledText>
             </OrderNumberContainer>
             <StyledText>
-              <FormattedHTMLMessage {...messages.messageRetail} />
+              <FormattedHTMLMessage
+                {...messages[
+                  teamStoreId ? 'messageTeamstore' : 'messageRetail'
+                ]}
+              />
             </StyledText>
             <ShippingBillingContainer>
               <div>

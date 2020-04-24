@@ -46,7 +46,7 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
-  isFixedTeamstore: boolean
+  isEuSubsidiary: boolean
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -104,7 +104,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       indexAddressSelected,
       showBillingForm,
       showBillingAddressFormAction,
-      isFixedTeamstore
+      isEuSubsidiary
     } = this.props
 
     const renderAddresses = (
@@ -146,7 +146,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 showCardForm,
                 selectCardToPayAction,
                 selectedCard,
-                isFixedTeamstore
+                isEuSubsidiary
               }}
             />
           </MyCardsRow>
@@ -260,7 +260,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       selectedCard,
       stripe,
       createPaymentIntent,
-      isFixedTeamstore
+      isEuSubsidiary
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
@@ -294,7 +294,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
 
     let stripeResponse = {}
     if (!selectedCardId) {
-      stripeResponse = isFixedTeamstore
+      stripeResponse = !isEuSubsidiary
         ? await stripe.createToken(stripeTokenData)
         : await stripe.createPaymentMethod('card', this.state.cardElement, {
             billing_details: stripeTokenData
@@ -306,7 +306,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     } else if (!emptyForm) {
       if (!selectedCardId) {
         const {
-          [isFixedTeamstore ? 'token' : 'paymentMethod']: {
+          [!isEuSubsidiary ? 'token' : 'paymentMethod']: {
             id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }

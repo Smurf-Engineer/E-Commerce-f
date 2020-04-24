@@ -149,8 +149,7 @@ class ModalCreditCard extends React.Component<Props, {}> {
       setStripeErrorAction,
       validFormAction,
       setModalLoadingAction,
-      saveAddress,
-      clientSecret
+      saveAddress
     } = this.props
 
     if (!cardHolderName) {
@@ -158,16 +157,7 @@ class ModalCreditCard extends React.Component<Props, {}> {
     } else {
       setModalLoadingAction(true)
     }
-    // const stripeResponse = await stripe.createToken({ name: cardHolderName })
-    const stripeResponse = await stripe.handleCardSetup(
-      clientSecret,
-      this.state.cardElement,
-      {
-        payment_method_data: {
-          billing_details: { name: cardHolderName }
-        }
-      }
-    )
+    const stripeResponse = await stripe.createToken({ name: cardHolderName })
     const { error } = stripeResponse
     if (error) {
       setStripeErrorAction(error.message)
@@ -177,7 +167,7 @@ class ModalCreditCard extends React.Component<Props, {}> {
         return
       }
       const {
-        setupIntent: { payment_method: id }
+        token: { id }
       } = stripeResponse
       saveAddress(id)
     }
