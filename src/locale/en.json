@@ -280,6 +280,9 @@
   "components.StoreForm.desiredDeliveryLabel": "Desired Delivery Date",
   "components.StoreForm.deliveryErrorLabel": "Delivery date cannot be on a Saturday or Sunday",
   "components.StoreForm.errorMsg": "Something wrong happened. Please try again!",
+  "components.StoreForm.editDatesTitle": "ARE YOU SURE?",
+  "components.StoreForm.editDatesMessage": "You have selected {cutOff} date for the order cut-off and {delivery} for the delivery date.",
+  "components.StoreForm.proceed": "Yes, proceed.",
   "components.MyTeamStores.tittle": "My TeamStores",
   "components.MyTeamStores.addTeamstoreLabel": "+ ADD NEW TEAM STORE",
   "components.MyTeamStores.createTeamStoreText": "Creating a team store enables your team members to individually checkout and designate their own shipping address.",
@@ -818,6 +821,7 @@
   "components.OrderDetails.updatePayment": "Edit Order",
   "components.OrderDetails.paymentIssue": "We encountered a problem when attemping to process your payment. Use the <strong>EDIT</strong> button below to update your payment information and complete the checkout once again",
   "components.OrderHistory.title": "ORDER HISTORY",
+  "components.OrderDetails.editOrderMessage": "By editing your order, all items will be added to your cart so you can update your payment information and complete the checkout. In doing so, this previous order will be cancelled.",
   "components.CartListItem.reorder": "Reorder",
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
@@ -1204,6 +1208,7 @@
   "components.CreateStoreAdmin.buildStore": "Build Team Store",
   "components.CreateStoreAdmin.onDemand": "On Demand",
   "components.CreateStoreAdmin.batchOrder": "Batch Order",
+  "components.CreateStoreAdmin.deliveryErrorLabel": "Delivery date cannot be on a Saturday or Sunday",
   "screens.AdminLayout.aboutOrders": "ABOUT ORDERS",
   "screens.AdminLayout.orderStatus": "Order Status",
   "screens.AdminLayout.discounts": "Discounts",
@@ -1494,5 +1499,6 @@
   "components.UsersList.addUser": "+ ADD NEW USER",
   "components.UsersAdmin.requiredFieldsError": "All fields are required!.",
   "components.UsersAdmin.userAdded": "{name} added!.",
-  "components.UsersAdmin.invalidEmail": "Invalid email, please verify."
+  "components.UsersAdmin.invalidEmail": "Invalid email, please verify.",
+  "components.TeamStoresList.deliveryDate": "Delivery Date"
 }

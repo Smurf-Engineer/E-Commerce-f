@@ -30,3 +30,8 @@ export const SET_SELECTED_USER = `${namespace}/SET_SELECTED_USER`
 export const SET_SAVING_ACTION = `${namespace}/SET_SAVING_ACTION`
 export const SET_TEAM_DATA = `${namespace}/SET_TEAM_DATA`
 export const MOVE_ROW = `${namespace}/MOVE_ROW`
+export const UPDATE_START_DATE_ACTION = `${namespace}/UPDATE_START_DATE_ACTION`
+export const UPDATE_END_DATE_ACTION = `${namespace}/UPDATE_END_DATE_ACTION`
+export const UPDATE_TEAMSTORE_TYPE = `${namespace}/UPDATE_TEAMSTORE_TYPE`
+
+export const CHF_CURRENCY = 'CHF'
