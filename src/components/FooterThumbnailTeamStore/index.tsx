@@ -5,7 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Progress from 'antd/lib/progress'
 import messages from './messages'
-import { Filter } from '../../types/common'
+import { Filter, PriceRange, PriceRangeProgress } from '../../types/common'
 import { BLUE } from '../../theme/colors'
 import {
   Footer,
@@ -17,8 +17,12 @@ import {
   PriceLabel,
   ProgressWrapper,
   ProgressText,
-  BottomPrices
+  BottomPrices,
+  SaveText
 } from './styledComponents'
+
+const MAX_PERCENT = 100
+const PERCENT_BY_SECTION = 20 // Result of 100 (max percent of bar) / 5 (Sections of tier pricing)
 
 interface Props {
   id: number
@@ -30,6 +34,9 @@ interface Props {
   onDemandMode?: boolean
   targetPrice: number | string
   currentPrice: number | string
+  priceRange?: PriceRange[]
+  currentRangeAttributes?: PriceRangeProgress
+  suggestedSaveText?: string
 }
 
 const FooterThumbnailTeamStore = ({
@@ -38,15 +45,38 @@ const FooterThumbnailTeamStore = ({
   description,
   progress,
   onDemandMode,
-  targetRange,
   code,
   targetPrice,
-  currentPrice
+  currentPrice,
+  priceRange = [],
+  currentRangeAttributes,
+  suggestedSaveText
 }: Props) => {
-  const totalPercentage: number = targetRange
-    ? parseInt(targetRange.name.split('-')[0], 10)
-    : 0
-  const percentage = progress / (totalPercentage / 100)
+  let realPercent = 0
+  const getRealPercent = (
+    relativePercentParam: number,
+    percentAmount: number
+  ) => {
+    if (relativePercentParam !== MAX_PERCENT) {
+      return Math.round(
+        (relativePercentParam * PERCENT_BY_SECTION) / MAX_PERCENT +
+          currentRangeAttributes.index * PERCENT_BY_SECTION
+      )
+    } else {
+      return (
+        (relativePercentParam -= percentAmount) / currentRangeAttributes.index
+      )
+    }
+  }
+
+  if (!onDemandMode && currentRangeAttributes) {
+    const percentAmount = MAX_PERCENT / currentRangeAttributes.range
+    let relativePercent =
+      ((progress - currentRangeAttributes.minQuantity) /
+        currentRangeAttributes.range) *
+      MAX_PERCENT
+    realPercent = getRealPercent(relativePercent, percentAmount)
+  }
 
   return (
     <Footer>
@@ -71,14 +101,15 @@ const FooterThumbnailTeamStore = ({
       </BottomPrices>
 
       {!onDemandMode && (
-        <Bottom>
-          <ProgressWrapper>
-            <ProgressText>{`${progress}/${
-              targetRange ? targetRange.name.split('-')[0] : 0
-            }`}</ProgressText>
-            <Progress percent={percentage < 100 ? percentage : 100} />
-          </ProgressWrapper>
-        </Bottom>
+        <div>
+          <Bottom>
+            <ProgressWrapper>
+              <ProgressText>{progress}</ProgressText>
+              <Progress percent={realPercent} />
+            </ProgressWrapper>
+          </Bottom>
+          <SaveText dangerouslySetInnerHTML={{ __html: suggestedSaveText }} />
+        </div>
       )}
     </Footer>
   )

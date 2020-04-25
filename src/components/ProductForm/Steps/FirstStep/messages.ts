@@ -73,6 +73,14 @@ export default defineMessages({
     id: 'components.FirstStep.yotpoId',
     defaultMessage: 'Yotpo ID / Model'
   },
+  customLink: {
+    id: 'components.FirstStep.customLink',
+    defaultMessage: 'Customize Link'
+  },
+  customLinkPlaceholder: {
+    id: 'components.FirstStep.customLinkPlaceholder',
+    defaultMessage: 'https://designlab.jakroo.com...'
+  },
   productCodeHolder: {
     id: 'components.FirstStep.productCodeHolder',
     defaultMessage: '000'

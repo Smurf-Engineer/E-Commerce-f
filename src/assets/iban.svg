@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="61px" height="33px" viewBox="0 0 61 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>B0895D38-E4B7-4CCF-9695-B42F9D0E6D07</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="4.-Team-Store" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.-Fixed-Date-Team-Store" transform="translate(-291.000000, -707.000000)">
+            <g id="On-Demand" transform="translate(114.000000, 249.000000)">
+                <g id="iban" transform="translate(177.000000, 458.000000)">
+                    <rect id="Rectangle" stroke="#DCDCDC" stroke-width="0.5" fill="#FFFFFF" x="0.25" y="0.25" width="60.5" height="32.5" rx="2"></rect>
+                    <text id="IBAN" font-family="AvenirNext-DemiBold, Avenir Next" font-size="11" font-weight="500" letter-spacing="0.1396825" fill="#8C8C8C">
+                        <tspan x="16.938135" y="20">IBAN</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

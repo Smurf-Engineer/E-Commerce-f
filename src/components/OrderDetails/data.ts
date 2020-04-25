@@ -1,7 +1,7 @@
 /**
  * Account-OrderDetails Queries
  */
-
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const getOrderQuery = gql`
@@ -34,6 +34,7 @@ export const getOrderQuery = gql`
       currency {
         shortName: short_name
       }
+      lastDrop: last_drop
       orderDate: created_at
       estimatedDate: estimated_date
       netsuite: netsuit_order {
@@ -124,6 +125,9 @@ export const getOrderQuery = gql`
         designName
         designImage
         designCode
+        teamStoreId
+        teamStoreItem
+        teamStoreName
       }
       status
       shippingAmount: shipping_amount
@@ -134,6 +138,23 @@ export const getOrderQuery = gql`
       taxPst: tax_pst
       taxGst: tax_gst
       taxVat: tax_vat
+      teamStoreId: teamstore_id
+      teamStoreName: teamstore_name
+      canUpdatePayment
+      onDemand: on_demand_mode
     }
   }
 `
+
+export const deleteOrderMutation = graphql(
+  gql`
+    mutation cancelOrder($orderId: String!) {
+      cancelOrder(orderId: $orderId) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'deleteOrder'
+  }
+)

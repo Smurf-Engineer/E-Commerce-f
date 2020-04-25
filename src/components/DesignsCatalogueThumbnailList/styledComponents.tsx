@@ -30,6 +30,10 @@ export const TotalItems = styled.div`
   color: #5f6062;
   font-size: 16px;
   line-height: 23px;
+  @media (min-width: 320px) and (max-width: 748px) {
+    text-align: center;
+    width: 100%;
+  }
 `
 
 export const SortOptions = styled.div`
@@ -54,12 +58,9 @@ export const ThumbnailsList = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-
-  @media (min-width: 320px) and (max-width: 1024px) {
-    padding: 0;
-  }
+  padding: 0;
 
   margin-left: ${({ withoutPadding }: HeadRowProps) =>
     withoutPadding ? '-54px' : '0'};

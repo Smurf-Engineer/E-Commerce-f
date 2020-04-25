@@ -76,9 +76,11 @@ export const CustomizeButton = styled.div`
 
 interface Prop {
   individual?: boolean
+  hide?: boolean
 }
 
 export const ButtonWrapper = styled.span`
+  display: ${({ hide }: Prop) => (hide ? 'none' : 'flex')};
   align-self: flex-end;
   font-size: 16px;
   letter-spacing: 0.11px;

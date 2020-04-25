@@ -20,7 +20,10 @@ import {
   DesignType,
   TeamStoreItemtype,
   Filter,
-  ClickParam
+  ClickParam,
+  PriceRange,
+  PriceRangeProgress,
+  Message
 } from '../../types/common'
 import {
   Container,
@@ -41,13 +44,14 @@ import {
 import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import { FormattedMessage } from 'react-intl'
-
+import filter from 'lodash/filter'
+const LIMIT_FIRST_RANGE = 2
 interface Data extends QueryProps {
   products: ProductType
 }
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, params?: any) => string
   openQuickView: (id: number) => void
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
@@ -67,6 +71,8 @@ interface Props {
   targetPrice: string
   currentCurrency: string
   display?: boolean
+  teamStoreName?: string
+  closed?: boolean
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -86,14 +92,19 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       withoutPadding,
       targetRange,
       currentRange,
-      currentCurrency = config.defaultCurrency
+      currentCurrency = config.defaultCurrency,
+      teamStoreName,
+      closed
     } = this.props
+    const LAST_ITEM = 1
+
     let thumbnailsList
     let total = ''
     let sortOptions = null
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
+
     if (designs) {
       total = designs.length.toString()
       thumbnailsList = designs.map(
@@ -114,7 +125,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 price: 0
               }
             : { price: 0 }
-
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
                 quantity:
@@ -128,8 +138,68 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
               : currentPriceValue
-          const currentPrice = `${fixedPriceValue.shortName} ${fixedPriceValue.price}`
-          const targetPrice = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const priceRanges = filter(product.priceRange, [
+            'abbreviation',
+            currentCurrency || config.defaultCurrency
+          ])
+
+          const currentRangeAttributes: PriceRangeProgress = {
+            minQuantity: 0,
+            maxQuantity: 0,
+            range: 0,
+            index: 0,
+            price: 0
+          }
+          priceRanges.some((current: PriceRange, rangeIndex: number) => {
+            const quantities = current.quantity.split('-')
+            const maxQuantity = parseInt(quantities[LAST_ITEM], 10)
+
+            if (totalOrders === 0 && current.quantity === 'Personal') {
+              currentRangeAttributes.price = fixedPriceValue.price
+              return true
+            }
+            if (totalOrders <= maxQuantity) {
+              const minQuantity =
+                rangeIndex <= LAST_ITEM
+                  ? LAST_ITEM
+                  : parseInt(quantities[0], 10)
+              currentRangeAttributes.maxQuantity = maxQuantity
+              currentRangeAttributes.minQuantity = minQuantity
+              currentRangeAttributes.range = maxQuantity - minQuantity
+              currentRangeAttributes.index = rangeIndex
+              currentRangeAttributes.price = current.price
+
+              const nextPriceRange = priceRanges[rangeIndex + 1]
+              if (nextPriceRange) {
+                const nextMinQuantity = parseInt(
+                  nextPriceRange.quantity.split('-')[0],
+                  10
+                )
+                if (totalOrders + LIMIT_FIRST_RANGE >= nextMinQuantity) {
+                  const save = targetPriceValue.price - nextPriceRange.price
+                  const percent = Math.round(
+                    (save * 100) / targetPriceValue.price
+                  )
+                  currentRangeAttributes.itemsLeft =
+                    nextMinQuantity - totalOrders
+                  currentRangeAttributes.percentToSave = percent
+                }
+              }
+              return true
+            }
+          })
+
+          const currentPrice = onDemandMode
+            ? fixedPriceValue.price
+            : currentRangeAttributes.price
+          const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const suggestedSaveText = currentRangeAttributes.percentToSave
+            ? formatMessage(messages.suggestedSave, {
+                itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
+                percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
+              })
+            : ''
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -148,25 +218,30 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       targetRange,
                       onDemandMode,
                       code,
-                      targetPrice,
-                      currentPrice
+                      currentRangeAttributes,
+                      suggestedSaveText
                     }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
+                    priceRange={priceRanges}
+                    currentPrice={currentPriceText}
+                    targetPrice={targetPriceText}
                   />
                 }
                 labelButton={
-                  display && (
+                  display &&
+                  !closed && (
                     <AddToCartButton
                       label={formatMessage(messages.addToCart)}
                       renderForThumbnail={true}
                       item={{ product }}
-                      {...{ formatMessage }}
+                      {...{ formatMessage, teamStoreName }}
                       withoutTop={true}
                       designId={shortId}
                       designName={name}
                       designImage={image}
                       designCode={code}
+                      isFixed={!onDemandMode}
                       teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}
                       fixedPrices={priceRange}
