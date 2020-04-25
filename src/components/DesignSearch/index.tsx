@@ -2,7 +2,7 @@
  * DesignSearch Screen - Created by miguelcanobbio on 15/08/18.
  */
 import * as React from 'react'
-import { withApollo, compose, graphql } from 'react-apollo'
+import { withApollo, compose, graphql, QueryProps } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
@@ -35,8 +35,8 @@ import {
   Font,
   DesignSearchCode,
   MessagePayload,
+  Colors,
   UserPermissions,
-  QueryProps,
   User
 } from '../../types/common'
 import {
@@ -48,6 +48,7 @@ import {
   generatePdfMutation,
   togglePreflight,
   addNoteMutation,
+  getColorsQuery,
   getManagers,
   getRepUsers,
   setRepDesignMutation,
@@ -63,6 +64,9 @@ type Thumbnail = {
   }
 }
 
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
 interface Data extends QueryProps {
   repUsers: {
     users: User[]
@@ -99,6 +103,7 @@ interface Props {
   salesRep: Data
   repSearchText: string
   loadingPreflight: boolean
+  colorsList: ColorsData
   permissions: UserPermissions
   // redux actions
   setUserRepAction: (userRep: User) => void
@@ -137,7 +142,7 @@ interface Props {
 }
 
 export class DesignSearchAdmin extends React.Component<Props, {}> {
-  debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
+  debounceSearchCode = debounce((value) => this.handleOnchange(value), 300)
   componentWillMount() {
     const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
@@ -189,7 +194,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       permissions,
       fontsData,
       designSearchCodes,
-      creatingPdf
+      creatingPdf,
+      colorsList
     } = this.props
 
     const access = permissions[DESIGN_SEARCH] || {}
@@ -201,8 +207,18 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
-    const salesRepUsers = get<Data, 'repUsers.users', User[]>(salesRep, 'repUsers.users', [])
-    const managersUsers = get<ManagersData, 'managersQuery', User[]>(managers, 'managersQuery', [])
+    const colors = get(colorsList, 'colorsResult.colors', [])
+
+    const salesRepUsers = get<Data, 'repUsers.users', User[]>(
+      salesRep,
+      'repUsers.users',
+      []
+    )
+    const managersUsers = get<ManagersData, 'managersQuery', User[]>(
+      managers,
+      'managersQuery',
+      []
+    )
     const fonts = fontList.reduce((fontObject: any, { family }: Font) => {
       fontObject.push({ font: family })
       return fontObject
@@ -243,14 +259,15 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         onUploadFile={uploadProDesignAction}
         onSaveThumbnail={this.saveDesign}
         onGeneratePdf={this.handleGeneratePdf}
+        colorList={colors}
       />
     )
     const content =
       loading || notFound || noAdmin ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
       ) : (
-          orderContent
-        )
+        orderContent
+      )
 
     return (
       <Container>
@@ -559,6 +576,7 @@ const DesignSearchAdminEnhance = compose(
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(updateDesignMutation, { name: 'updateDesign' }),
   graphql(generatePdfMutation, { name: 'generatePdf' }),
+  graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(getRepUsers, {
     name: 'salesRep',
     options: ({ repSearchText }: OwnProps) => ({

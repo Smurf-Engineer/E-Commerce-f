@@ -8,7 +8,8 @@ import {
   WHITE,
   RED,
   DARKER_GRAY,
-  GRAY_SNOW
+  GRAY_SNOW,
+  GRAY
 } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
 import { BLACK } from '../../../screens/DesignerTool/constants'
@@ -43,7 +44,6 @@ export const Code = styled.div`
   font-weight: bold;
   letter-spacing: 0.23px;
   line-height: 25px;
-  margin-bottom: 4px;
 `
 
 export const StatusContainer = styled.div`
@@ -230,6 +230,36 @@ export const PreflightCheckbox = styled(Checkbox)`
     margin-top: 2px;
     margin-bottom: 0;
   }
+`
+
+export const Colors = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`
+
+interface ColorProps {
+  color?: string
+}
+
+export const Color = styled.div`
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 1px solid
+    ${({ color }: ColorProps) =>
+      color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
+  background-color: ${({ color }: ColorProps) => color || WHITE};
+  align-self: center;
+`
+
+export const ColorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+`
+export const ColorName = styled.p`
+  margin: 5px 0 0 0;
 `
 
 export const RepsDiv = styled.div`

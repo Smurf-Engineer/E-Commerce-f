@@ -7,6 +7,8 @@ import Button from 'antd/lib/button'
 import messages from './messages'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
+import find from 'lodash/find'
+import get from 'lodash/get'
 import Select, { OptionProps } from 'antd/lib/select'
 import Divider from 'antd/lib/divider'
 import indexOf from 'lodash/indexOf'
@@ -42,6 +44,10 @@ import {
   PreflightDiv,
   WarningIcon,
   PreflightCheckbox,
+  Colors,
+  Color,
+  ColorContainer,
+  ColorName,
   NoteIcon,
   RepsDiv,
   StyledSelect,
@@ -77,6 +83,7 @@ interface Props {
   addingNote: boolean
   note: string
   loadingPreflight: boolean
+  colorList: string
   canEdit: boolean
   accessAssets: RolePermission
   salesRepUsers: User[]
@@ -127,7 +134,8 @@ export class OrderFiles extends React.PureComponent<Props> {
         name,
         notes = [],
         pngUrl = '',
-        product: { name: modelName, zipper }
+        product: { name: modelName, zipper },
+        colors = []
       },
       uploadingFile,
       openNotes,
@@ -153,10 +161,18 @@ export class OrderFiles extends React.PureComponent<Props> {
       onSelectColor,
       onGeneratePdf,
       checkPreflight,
+      colorList,
       accessAssets,
       canEdit,
       creatingPdf
     } = this.props
+
+    let colorsObject = []
+    try {
+      colorsObject = JSON.parse(colorList)
+    } catch (e) {
+      console.error(e)
+    }
     const statusOrder = status.replace(/_/g, ' ')
     const selectedRep = salesRep
       ? `${salesRep.firstName} ${salesRep.lastName}`
@@ -265,6 +281,19 @@ export class OrderFiles extends React.PureComponent<Props> {
             </Selectable>
           </RepsDiv>
         </FlexContainer>
+        <Colors>
+          <Code>Colors:</Code>
+          {colors.map(({ color }, index) => {
+            return (
+              <ColorContainer key={index}>
+                <Color color={color} />
+                <ColorName>
+                  {get(find(colorsObject, ['value', color]), 'name', color)}
+                </ColorName>
+              </ColorContainer>
+            )
+          })}
+        </Colors>
         <ProAssistNotes>
           <ProAssistTitle>
             <FormattedMessage {...messages.proAssistNotes} />
