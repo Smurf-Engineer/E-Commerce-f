@@ -715,6 +715,7 @@ export interface OrderHistory {
   currency?: Currency
   lastName?: string
   netsuiteAttempts: number
+  source?: string
 }
 
 export interface Discount {

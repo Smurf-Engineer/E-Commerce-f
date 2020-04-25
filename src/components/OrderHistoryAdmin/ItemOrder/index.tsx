@@ -19,6 +19,7 @@ interface Props {
   currency?: string
   firstName: string
   lastName: string
+  source: string
   cutoffDate?: string
   estimatedDate?: string
   onOrderClick: (shortId: string) => void
@@ -41,6 +42,7 @@ const ItemOrder = ({
   statusError,
   firstName,
   lastName,
+  source,
   cutoffDate,
   handleOnUpdateStatus
 }: Props) => {
@@ -63,6 +65,7 @@ const ItemOrder = ({
   return (
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
+      <Cell>{source}</Cell>
       <Cell>
         {total} {currency}
       </Cell>

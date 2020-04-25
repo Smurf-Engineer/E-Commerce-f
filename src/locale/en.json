@@ -829,6 +829,7 @@
   "components.OrdersList.status": "Status",
   "components.OrdersList.preflight": "Preflight",
   "components.OrdersList.emptyMessage": "No orders yet",
+  "components.OrdersList.source": "Order Point",
   "components.OrdersList.confirmTitle": "UPDATE ORDER STATUS",
   "components.OrdersList.confirmMessage": "Do you want to update status of the order to: {status}?",
   "components.OrdersList.statusUpdated": "Status updated!",

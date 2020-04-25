@@ -77,7 +77,7 @@ const OrdersList = ({
 
   const header = (
     <MediaQuery maxWidth={768}>
-      {matches => {
+      {(matches) => {
         if (matches) {
           return (
             <Row>
@@ -98,6 +98,12 @@ const OrdersList = ({
               sort={orderBy === 'id' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
+            <HeaderTable
+              id={'source'}
+              label={formatMessage(messages.source)}
+              sort={orderBy === 'source' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+              />
             <HeaderTable
               id={'total_amount'}
               label={formatMessage(messages.total)}
@@ -214,6 +220,7 @@ const OrdersList = ({
         currency,
         lastName
         lastName,
+        source,
         estimatedDate,
         cutoffDate
       }: OrderHistory,
@@ -248,6 +255,7 @@ const OrdersList = ({
             lastName,
             onOrderClick,
             trackingNumber,
+            source,
             cutoffDate,
             handleOnUpdateStatus
           }}

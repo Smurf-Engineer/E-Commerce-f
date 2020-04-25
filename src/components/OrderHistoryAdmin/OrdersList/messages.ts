@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'components.OrdersList.emptyMessage',
     defaultMessage: 'No orders yet'
   },
+  source: {
+    id: 'components.OrdersList.source',
+    defaultMessage: 'Order Point'
+  },
   cutoffDate: {
     id: 'components.OrdersList.cutoffDate',
     defaultMessage: 'Order Cut-Off'
