@@ -24,6 +24,7 @@ interface Props {
   name?: string
   small?: boolean
   showNameStore?: boolean
+  closed?: boolean
   withShareButton?: boolean
   withEditButton?: boolean
   withDeleteButton?: boolean
@@ -47,7 +48,8 @@ const TeamStoreItem = ({
   withDeleteButton = false,
   onItemClick,
   onEditClick,
-  onDeleteClick
+  onDeleteClick,
+  closed = false
 }: Props) => {
   const handleClickShare = () => {
     if (openShareModalAction) {
@@ -67,17 +69,17 @@ const TeamStoreItem = ({
 
   const buttons = (
     <ButtonsContainer>
-      {withEditButton && (
+      {withEditButton && !closed && (
         <EditButton onClick={handleClickEdit}>
           {formatMessage(messages.editButtonLabel)}
         </EditButton>
       )}
-      {withShareButton && (
+      {withShareButton && !closed && (
         <ShareButton onClick={handleClickShare}>
           {formatMessage(messages.shareButtonLabel)}
         </ShareButton>
       )}
-      {withDeleteButton && (
+      {withDeleteButton && !closed && (
         <DeleteLabel onClick={handleClickDelete}>
           {formatMessage(messages.deleteButtonLabel)}
         </DeleteLabel>

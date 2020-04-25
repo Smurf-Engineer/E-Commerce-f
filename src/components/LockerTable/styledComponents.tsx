@@ -8,6 +8,8 @@ interface RowProps {
 
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
+import { GRAY_DARK, BLUE } from '../../theme/colors'
+import { AVENIR_NEXT } from '../../theme/fonts'
 
 export const Container = styled.div``
 
@@ -59,6 +61,8 @@ interface CellProps {
   tabletWidth?: number
 }
 export const Cell = styled.div`
+display: flex;
+    align-items: center;
  width ${({ width }: CellProps) => (width ? width : 10)}%;
  @media (min-width: 425px) and (max-width: 768px) {
   width ${({ tabletWidth }: CellProps) => (tabletWidth ? tabletWidth : 10)}%;
@@ -135,6 +139,7 @@ export const Name = styled.div`
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+  margin-right: 20px;
 `
 
 export const Description = styled.div`
@@ -157,3 +162,33 @@ export const MobileEmtpytable = styled.div`
   line-height: 21px;
   text-align: center;
 `
+
+export const Question = styled(Icon)`
+  font-size: 16px;
+  cursor: pointer;
+`
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+`
+
+export const buttonStyle = {
+  background: BLUE,
+  border: 'none'
+}

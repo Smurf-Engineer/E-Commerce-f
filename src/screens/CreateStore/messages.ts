@@ -76,21 +76,11 @@ export default defineMessages({
     id: 'screens.CreateStore.productionDelivery',
     defaultMessage: 'PRODUCTION & DELIVERY'
   },
-  priceDropMessageP1: {
-    id: 'screens.CreateStore.priceDropMessageP1',
-    defaultMessage: 'With JAKROO’s Dynamic Price Drop, everybody wins!'
-  },
-  priceDropMessageP2: {
-    id: 'screens.CreateStore.priceDropMessageP2',
+  priceDropMessage: {
+    id: 'screens.CreateStore.priceDropMessage',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'As team members place their orders and reach the next discount level, the price automatically drops for everyone, even for those who placed their order before the drop.'
-  },
-  priceDropMessageP3: {
-    id: 'screens.CreateStore.priceDropMessageP3',
-    defaultMessage:
-      // tslint:disable-next-line:max-line-length
-      'Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!'
+      '<p>With JAKROO’s Dynamic Price Drop, everyone wins!</p> <p>The starting discount level for all team members is 20%.  As team members place their orders and reach the next discount level, <strong>the price automatically drops for everyone, even for those who placed their order before the drop.</strong></p> <p>Final pricing for each item will be based on the highest discount level achieved for that item. Payment is processed after the close of the order period so <strong>everyone receives the same low price, regardless of when your order was placed.</strong> Yes, its that cool!</p>'
   },
   storeItemsTitle: {
     id: 'screens.CreateStore.storeItemsTitle',
@@ -171,5 +161,50 @@ export default defineMessages({
   emptyList: {
     id: 'componentes.StoreForm.emptyList',
     defaultMessage: 'You need to add items to your store!'
+  },
+  gotIt: {
+    id: 'components.StoreForm.gotIt',
+    defaultMessage: 'Got it!'
+  },
+  batchOrderTitle: {
+    id: 'components.StoreForm.batchOrderTitle',
+    defaultMessage: 'Batch Order Mode'
+  },
+  batchOrderContent: {
+    id: 'components.StoreForm.batchOrderContent',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'Batch Order stores are ideal for groups with <b>more than 5 members</b>. When you switch your store to Batch Order Mode, you set up a specific ordering window for the team to place their orders and pricing for all items becomes dynamic. Members can save between 20-40% based on the quantity ordered. Payment is taken at the end of the order period and the estimated delivery is 14 days.'
+  },
+  switchToBatch: {
+    id: 'components.StoreForm.switchToBatch',
+    defaultMessage: 'Switch to Batch Order Mode'
+  },
+  onDemandTitle: {
+    id: 'components.StoreForm.onDemandTitle',
+    defaultMessage: 'On-Demand Store Mode'
+  },
+  omDemandContent: {
+    id: 'components.StoreForm.omDemandContent',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'When you set your store to On-Demand mode, pricing for all items is fixed and members save 20%. Payment is taken at the time the order is placed. Orders enter the production process upon receipt and are delivered in 10 days.'
+  },
+  switchToDemand: {
+    id: 'components.StoreForm.switchToDemand',
+    defaultMessage: 'Switch to On-Demand Mode'
+  },
+  editDatesTitle: {
+    id: 'components.StoreForm.editDatesTitle',
+    defaultMessage: 'ARE YOU SURE?'
+  },
+  editDatesMessage: {
+    id: 'components.StoreForm.editDatesMessage',
+    defaultMessage:
+      'You have selected {cutOff} date for the order cut-off and {delivery} for the delivery date.'
+  },
+  proceed: {
+    id: 'components.StoreForm.proceed',
+    defaultMessage: 'Yes, proceed.'
   }
 })

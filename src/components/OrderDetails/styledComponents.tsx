@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
+import { RED, BLUE, GRAY_DARK, RED_TRANSPARENT_LIGHT } from '../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -11,7 +12,9 @@ export const LoadingContainer = styled.div`
   min-height: 35em;
 `
 
-export const Container = styled.div``
+export const Container = styled.div`
+  position: relative;
+`
 
 export const ViewContainer = styled.div`
   display: flex;
@@ -22,7 +25,6 @@ export const ViewContainer = styled.div`
   line-height: 22px;
   text-align: right;
   cursor: pointer;
-
   &:hover {
     color: #e61737;
   }
@@ -53,12 +55,12 @@ export const ButtonWrapper = styled.span`
   line-height: 22px;
 
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
 `
 export const Button = styled(AntdButton)`
@@ -70,6 +72,7 @@ export const OrderInfo = styled.div`
   justify-content: space-between;
   margin-top: 42px;
   padding-right: 34px;
+  flex-direction: row;
 
   @media (max-width: 658px) and (min-width: 320px) {
     display: block;
@@ -103,13 +106,13 @@ export const DeliveryInfo = styled.div`
   }
 `
 export const DeliveryLabels = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   display: inline-block;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
-  width: 137px;
+  width: 202px;
 `
 export const DeliveryLabel = styled.div`
   margin-bottom: 12px;
@@ -130,11 +133,11 @@ export const DeliveryData = styled.div`
 `
 
 interface InfoProps {
-  tracking?: boolean
+  redColor?: boolean
 }
 
 export const Info = styled.div`
-  color: ${({ tracking }: InfoProps) => (tracking ? '#e61737' : '#5f6062')};
+  color: ${({ redColor }: InfoProps) => (redColor ? RED : GRAY_DARK)};
   height: 22px;
   margin-bottom: 12px;
 `
@@ -204,6 +207,45 @@ export const Annotation = styled.div`
     margin-bottom: 58px;
   }
 `
-export const Date = styled.span`
-  margin-left: 5px;
+
+export const OrderActions = styled.div`
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
 `
+
+export const DeleteButton = styled(AntdButton)`
+  height: 40px;
+  width: 93px;
+  border: none;
+  color: ${RED};
+  box-shadow: none;
+`
+
+export const StyledText = styled.div`
+  color: ${GRAY_DARK};
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  font-size: 16px;
+`
+
+export const ErrorMessage = styled.div`
+  position: absolute;
+  top: 0;
+  border: 1px solid ${RED};
+  background: ${RED_TRANSPARENT_LIGHT};
+  right: 20px;
+  padding: 20px;
+  color: ${RED};
+  width: 495px;
+  text-align: center;
+  @media (min-width: 320px) and (max-width: 800px) {
+    position: relative;
+    width: 100%;
+    right: 0;
+  }
+`
+
+export const Paragraph = styled.div``
