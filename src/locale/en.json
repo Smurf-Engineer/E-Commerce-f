@@ -817,6 +817,7 @@
   "components.ShippingAddressForm.zipCodeLabel": "ZIP / Postal Code",
   "components.ShippingAddressForm.phoneLabel": "Phone",
   "components.OrdersList.title": "Recent Orders",
+  "components.OrdersList.total": "Total",
   "components.OrdersList.orderNumber": "Order Number",
   "components.OrdersList.orderNo": "Order No.",
   "components.OrdersList.date": "Order Date",
