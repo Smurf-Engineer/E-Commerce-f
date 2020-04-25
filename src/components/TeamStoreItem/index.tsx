@@ -15,7 +15,8 @@ import {
   ButtonsContainer,
   DeleteLabel,
   BottomContainer,
-  TitleName
+  TitleName,
+  StoreType
 } from './styledComponents'
 
 interface Props {
@@ -24,10 +25,13 @@ interface Props {
   name?: string
   small?: boolean
   showNameStore?: boolean
+  fixedDate?: boolean
   closed?: boolean
+  cutOffDate?: string
   withShareButton?: boolean
   withEditButton?: boolean
   withDeleteButton?: boolean
+  owner?: boolean
   formatMessage: (messageDescriptor: any) => string
   openShareModalAction?: (id?: string) => void
   onItemClick?: () => void
@@ -49,8 +53,13 @@ const TeamStoreItem = ({
   onItemClick,
   onEditClick,
   onDeleteClick,
-  closed = false
+  closed = false,
+  fixedDate = false,
+  owner = false
 }: Props) => {
+  const closedMessage =
+    owner && fixedDate && closed ? formatMessage(messages.closedForOrder) : ''
+
   const handleClickShare = () => {
     if (openShareModalAction) {
       openShareModalAction(idStore)
@@ -90,15 +99,22 @@ const TeamStoreItem = ({
   return (
     <Container>
       <TeamStoreCard {...{ small }}>
-        <CardContent>
+        <CardContent {...{ closedMessage }}>
           {image ? (
             <StyledImg src={image} onClick={onItemClick} />
           ) : (
-              <TitleName onClick={onItemClick}>{name}</TitleName>
-            )}
+            <TitleName onClick={onItemClick}>{name}</TitleName>
+          )}
           {showNameStore && (
             <BottomContainer>
               <CardTitle>{name}</CardTitle>
+              {owner && (
+                <StoreType>
+                  {formatMessage(
+                    messages[fixedDate ? 'batchOrder' : 'onDemand']
+                  )}
+                </StoreType>
+              )}
               <MediaQuery minWidth={480}>{buttons}</MediaQuery>
             </BottomContainer>
           )}

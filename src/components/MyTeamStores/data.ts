@@ -10,6 +10,7 @@ export const GetTeamMyStoresQuery = gql`
         name
         banner
         closed
+        isOnDemand: on_demand_mode
       }
       fullCount
     }
