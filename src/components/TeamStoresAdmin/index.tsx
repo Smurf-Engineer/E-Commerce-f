@@ -42,9 +42,11 @@ import {
   SelectedDesignType,
   UserSearchResult,
   QueryProps,
-  TeamstoreType
+  TeamstoreType,
+  UserPermissions
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
+import { TEAM_STORES } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -89,6 +91,7 @@ interface Props {
   userToSearch: string
   storeId: string
   storeShortId: string
+  permissions: UserPermissions
   startDateMoment: Moment
   endDateMoment: Moment
   startDate: string
@@ -199,6 +202,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       featured,
       openModal,
       limit,
+      permissions,
       setUserToSearch,
       setSelectedUser,
       openLocker,
@@ -211,7 +215,10 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       updateEndDateAction,
       updateTeamStoreTypeAction
     } = this.props
-
+    const access = permissions[TEAM_STORES] || {}
+    if (!access.view) {
+      return null
+    }
     return (
       <div>
         <Route
@@ -222,9 +229,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               <ScreenTitle>
                 <FormattedMessage {...messages.title} />
               </ScreenTitle>
-              <AddTeamStoreButton onClick={this.handleGoToCreateStore}>
-                <FormattedMessage {...messages.addTeamStore} />
-              </AddTeamStoreButton>
+              {access.edit && (
+                <AddTeamStoreButton onClick={this.handleGoToCreateStore}>
+                  <FormattedMessage {...messages.addTeamStore} />
+                </AddTeamStoreButton>
+              )}
               <SearchInput
                 value={this.state.searchValue}
                 onChange={this.handleInputChange}
@@ -235,6 +244,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 onSortClick={this.handleOnSortClick}
                 onChangePage={this.handleOnChangePage}
                 interactiveHeaders={true}
+                canEdit={access.edit}
                 onChangeSwitch={this.onChangeSwitch}
                 onClickRow={this.handleGoToTeamStore}
               />
@@ -254,6 +264,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 currencies,
                 loading
               }}
+              canEdit={access.edit}
               handleDeleteStore={this.handleDeleteStore}
               getTeamStoreData={this.handleGetTeamStoreDetails}
               handleOnSetPrice={setPriceAction}
@@ -306,6 +317,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 openCropper
               }}
               setImage={uploadBanner}
+              canEdit={access.edit}
               getEditStore={this.handleGetEditStore}
               buildTeamStore={this.buildTeamStore}
               onSelectStartDate={updateStartDateAction}

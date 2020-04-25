@@ -17,6 +17,7 @@ interface Props {
   billingCountry: string
   createdAt: string
   shortId: string
+  canEdit: boolean
   onSetAdministrator: (id: number) => void
   onSelectUser: (id: string, name: string) => void
 }
@@ -32,8 +33,9 @@ const ItemOrder = ({
   onSetAdministrator,
   billingCountry,
   createdAt,
+  canEdit,
   onSelectUser,
-  shortId
+  shortId,
 }: Props) => {
   const stopPropagation = (event: React.MouseEvent) => {
     if (event) {
@@ -51,7 +53,11 @@ const ItemOrder = ({
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>
       <Cell onClick={stopPropagation}>
-        <Switch onChange={handleOnSetAdministrator} checked={administrator} />
+        <Switch
+          disabled={!canEdit}
+          onChange={handleOnSetAdministrator}
+          checked={administrator}
+        />
       </Cell>
       <Cell>{email}</Cell>
       <Cell>{netsuiteId}</Cell>

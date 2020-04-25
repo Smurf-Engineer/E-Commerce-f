@@ -27,7 +27,6 @@ export const SearchInput = styled(Search)`
   margin-bottom: 20px;
   margin-top: 0px;
   border-radius: 0;
-  margin-left: 22px;
   width: 500px;
   & input {
     border-radius: 0;
@@ -68,6 +67,7 @@ export const UploadButton = styled.div`
   width: 140px;
   vertical-align: middle;
   margin-bottom: 4px;
+  margin-right: 22px;
   cursor: pointer;
 `
 
