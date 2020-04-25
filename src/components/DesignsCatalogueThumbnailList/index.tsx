@@ -188,25 +188,16 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               return true
             }
           })
-          console.log(currentRangeAttributes)
 
           const currentPrice = onDemandMode
             ? fixedPriceValue.price
             : currentRangeAttributes.price
-          const currentPriceText = `${
-            fixedPriceValue.shortName
-          } ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${
-            targetPriceValue.price
-          }`
+          const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
-                itemsLeft: `<strong>${
-                  currentRangeAttributes.itemsLeft
-                } more</strong>`,
-                percent: `<strong>${
-                  currentRangeAttributes.percentToSave
-                }%</strong>`
+                itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
+                percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
               })
             : ''
           return (

@@ -181,7 +181,9 @@ class MyCards extends React.Component<Props, {}> {
     const userCards = get(data, 'userCards', {})
     const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
-    const clientSecret = get(setupIntent, 'setupIntent.clientSecret', '')
+    const clientSecret = isEuSubsidiary
+      ? get(setupIntent, 'setupIntent.clientSecret', '')
+      : ''
     return (
       <Container>
         {(listForMyAccount || !!cards.length) && (
@@ -360,14 +362,15 @@ const mapStateToProps = (state: any) => state.get('cards').toJS()
 
 type OwnProps = {
   isFixedTeamstore?: boolean
+  isEuSubsidiary?: boolean
 }
 const MyCardsEnhance = compose(
   graphql(cardsQuery, {
     name: 'data',
     options: (ownprops: OwnProps) => {
-      const { isFixedTeamstore } = ownprops
+      const { isFixedTeamstore, isEuSubsidiary } = ownprops
       return {
-        skip: isFixedTeamstore
+        skip: isFixedTeamstore && !isEuSubsidiary
       }
     }
   }),
@@ -377,10 +380,7 @@ const MyCardsEnhance = compose(
   addCardMutation,
   updateCardMutation,
   deleteCardMutation,
-  connect(
-    mapStateToProps,
-    { ...MyCardsActions }
-  )
+  connect(mapStateToProps, { ...MyCardsActions })
 )(MyCards)
 
 export default MyCardsEnhance

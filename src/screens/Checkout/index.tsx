@@ -330,10 +330,10 @@ class Checkout extends React.Component<Props, {}> {
     const taxAddress: TaxAddressObj = shippingAddress.country &&
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
-      country: shippingAddress.country,
-      state: shippingAddress.stateProvinceCode,
-      zipCode: shippingAddress.zipCode
-    }
+        country: shippingAddress.country,
+        state: shippingAddress.stateProvinceCode,
+        zipCode: shippingAddress.zipCode
+      }
 
     const { state: stateLocation } = location
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
@@ -775,7 +775,6 @@ class Checkout extends React.Component<Props, {}> {
   ) => {
     const {
       setStripeCardDataAction,
-      addNewCard,
       billingCountry,
       client: { query },
       location: {
@@ -788,12 +787,12 @@ class Checkout extends React.Component<Props, {}> {
       fetchPolicy: 'network-only'
     })
     const isFixedTeamstore = some(cart, 'isFixed')
+
     if (data.subsidiary === EUROPE && !isFixedTeamstore) {
       await this.createPaymentIntent()
     }
     if (card && stripeToken) {
       setStripeCardDataAction(card, stripeToken)
-      await addNewCard({ variables: { token: stripeToken } })
     }
   }
   getProductsPrice = () => {
@@ -833,8 +832,7 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       stripeToken,
-      paymentClientSecret,
-      selectedCard
+      paymentClientSecret
     } = this.props
 
     try {
@@ -842,7 +840,7 @@ class Checkout extends React.Component<Props, {}> {
 
       const stripeAccount = this.getStripeAccount(subsidiary)
 
-      const orderObj = await this.getOrderObject(paypalObj)
+      const orderObj = await this.getOrderObject(paypalObj, stripeAccount)
 
       const response = await placeOrder({
         variables: { orderObj }
@@ -851,11 +849,11 @@ class Checkout extends React.Component<Props, {}> {
       const orderId = get(response, 'data.charge.short_id', '')
 
       if (stripeAccount === EU_STRIPE && !orderObj.isFixedTeamstore) {
-        const { euStripe } = this.state
-        const stripeResponse = await euStripe.handleCardPayment(
+        const { stripe } = this.state
+        const stripeResponse = await stripe.handleCardPayment(
           paymentClientSecret,
           {
-            payment_method: stripeToken || selectedCard.id
+            payment_method: stripeToken
           }
         )
 
@@ -879,7 +877,10 @@ class Checkout extends React.Component<Props, {}> {
       Message.error(errorMessage, 5)
     }
   }
-  getOrderObject = async (paypalObj?: object) => {
+  getOrderObject = async (
+    paypalObj?: object,
+    stripeAccount: string = STRIPE
+  ) => {
     const {
       location,
       firstName,
@@ -1021,8 +1022,7 @@ class Checkout extends React.Component<Props, {}> {
         proDesign,
         paymentMethod,
         cardId,
-        tokenId:
-          paymentMethod === PaymentOptions.CREDITCARD ? intentId : stripeToken,
+        tokenId: stripeAccount === EU_STRIPE ? intentId : stripeToken,
         sourceId: stripeSource,
         cart: sanitizedCart,
         shippingAddress,
@@ -1071,14 +1071,11 @@ const CheckoutEnhance = compose(
   CreatePaymentIntentMutation,
   AddCardMutation,
   withApollo,
-  connect(
-    mapStateToProps,
-    {
-      ...checkoutActions,
-      ...thunkActions,
-      getTotalItemsIncart
-    }
-  )
+  connect(mapStateToProps, {
+    ...checkoutActions,
+    ...thunkActions,
+    getTotalItemsIncart
+  })
 )(Checkout)
 
 export default CheckoutEnhance

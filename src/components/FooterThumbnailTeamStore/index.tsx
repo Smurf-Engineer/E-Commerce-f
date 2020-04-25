@@ -71,18 +71,11 @@ const FooterThumbnailTeamStore = ({
 
   if (!onDemandMode && currentRangeAttributes) {
     const percentAmount = MAX_PERCENT / currentRangeAttributes.range
-    console.log(
-      progress,
-      currentRangeAttributes.minQuantity,
-      currentRangeAttributes.range
-    )
     let relativePercent =
       ((progress - currentRangeAttributes.minQuantity) /
         currentRangeAttributes.range) *
       MAX_PERCENT
-    console.log(relativePercent)
     realPercent = getRealPercent(relativePercent, percentAmount)
-    console.log(realPercent)
   }
 
   return (
