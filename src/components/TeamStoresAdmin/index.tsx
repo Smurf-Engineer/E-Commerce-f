@@ -8,6 +8,7 @@ import debounce from 'lodash/debounce'
 import { compose, withApollo, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
+import { Moment } from 'moment'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
 import {
   setTeamStoreFeaturedMutation,
@@ -41,9 +42,11 @@ import {
   SelectedDesignType,
   UserSearchResult,
   QueryProps,
-  TeamstoreType
+  TeamstoreType,
+  UserPermissions
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
+import { TEAM_STORES } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -88,6 +91,11 @@ interface Props {
   userToSearch: string
   storeId: string
   storeShortId: string
+  permissions: UserPermissions
+  startDateMoment: Moment
+  endDateMoment: Moment
+  startDate: string
+  endDate: string
   resetForm: () => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
@@ -127,6 +135,9 @@ interface Props {
   setTeamStorePrices: (variables: {}) => void
   setLoadingItemAction: (itemIndex: string, loading: boolean) => void
   setTeamStoreDisplay: (variables: {}) => void
+  updateStartDateAction: (dateMoment: Moment, date: string) => void
+  updateEndDateAction: (dateMoment: Moment, date: string) => void
+  updateTeamStoreTypeAction: (onDemand: boolean) => void
 }
 
 interface Data extends QueryProps {
@@ -191,14 +202,23 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       featured,
       openModal,
       limit,
+      permissions,
       setUserToSearch,
       setSelectedUser,
       openLocker,
       offset,
       items,
-      loading
+      loading,
+      updateStartDateAction,
+      startDateMoment,
+      endDateMoment,
+      updateEndDateAction,
+      updateTeamStoreTypeAction
     } = this.props
-
+    const access = permissions[TEAM_STORES] || {}
+    if (!access.view) {
+      return null
+    }
     return (
       <div>
         <Route
@@ -209,9 +229,11 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
               <ScreenTitle>
                 <FormattedMessage {...messages.title} />
               </ScreenTitle>
-              <AddTeamStoreButton onClick={this.handleGoToCreateStore}>
-                <FormattedMessage {...messages.addTeamStore} />
-              </AddTeamStoreButton>
+              {access.edit && (
+                <AddTeamStoreButton onClick={this.handleGoToCreateStore}>
+                  <FormattedMessage {...messages.addTeamStore} />
+                </AddTeamStoreButton>
+              )}
               <SearchInput
                 value={this.state.searchValue}
                 onChange={this.handleInputChange}
@@ -222,6 +244,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 onSortClick={this.handleOnSortClick}
                 onChangePage={this.handleOnChangePage}
                 interactiveHeaders={true}
+                canEdit={access.edit}
                 onChangeSwitch={this.onChangeSwitch}
                 onClickRow={this.handleGoToTeamStore}
               />
@@ -241,6 +264,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 currencies,
                 loading
               }}
+              canEdit={access.edit}
               handleDeleteStore={this.handleDeleteStore}
               getTeamStoreData={this.handleGetTeamStoreDetails}
               handleOnSetPrice={setPriceAction}
@@ -293,8 +317,14 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 openCropper
               }}
               setImage={uploadBanner}
+              canEdit={access.edit}
               getEditStore={this.handleGetEditStore}
               buildTeamStore={this.buildTeamStore}
+              onSelectStartDate={updateStartDateAction}
+              startDate={startDateMoment}
+              endDate={endDateMoment}
+              onSelectEndDate={updateEndDateAction}
+              onChangeTeamStoreType={updateTeamStoreTypeAction}
             />
           )}
         />
@@ -460,8 +490,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       storeShortId,
       updateStore,
       createStore,
-      cutoffDate,
-      deliveryDate
+      startDate,
+      endDate
     } = this.props
     try {
       const itemsToSave = items.map((item: SelectedDesignType) => ({
@@ -469,13 +499,14 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
         visible: item.visible
       }))
       setSavingAction(true)
+
       const teamStore = {
         id: storeId,
         short_id: storeShortId,
         name,
         featured,
-        cutoffDate,
-        deliveryDate,
+        cutoffDate: startDate,
+        deliveryDate: endDate,
         teamsizeId: 1,
         private: false,
         user_id: userId,
@@ -571,10 +602,7 @@ const TeamStoresAdminEnhance = compose(
   createStoreMutation,
   updateStoreMutation,
   withApollo,
-  connect(
-    mapStateToProps,
-    { ...TeamStoresActions, ...ThunkActions }
-  ),
+  connect(mapStateToProps, { ...TeamStoresActions, ...ThunkActions }),
   graphql<Data>(getUsers, {
     options: (ownprops: OwnProps) => {
       const { userToSearch } = ownprops

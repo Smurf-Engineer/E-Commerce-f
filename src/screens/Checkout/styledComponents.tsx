@@ -153,3 +153,9 @@ export const PlaceOrderLoading = styled.div`
   align-items: center;
   z-index: 100;
 `
+
+export const okButtonStyles = {
+  background: BLUE,
+  border: 'none',
+  borderRadius: '2px'
+}

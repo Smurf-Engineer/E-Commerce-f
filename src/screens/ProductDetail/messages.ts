@@ -112,5 +112,9 @@ export default defineMessages({
   designCenter: {
     id: 'screens.ProductDetail.designCenter',
     defaultMessage: 'Design Center'
+  },
+  customize: {
+    id: 'screens.ProductDetail.customize',
+    defaultMessage: 'Customize'
   }
 })

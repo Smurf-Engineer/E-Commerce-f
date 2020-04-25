@@ -16,7 +16,7 @@ export default defineMessages({
   },
   featuredTeamStoresLabel: {
     id: 'screens.Teamstores.featuredTeamStoresLabel',
-    defaultMessage: 'FEATURED TEAM STORES'
+    defaultMessage: 'FEATURED STORES'
   },
   getSponsoredLabel: {
     id: 'screens.Teamstores.getSponsoredLabel',
@@ -29,5 +29,13 @@ export default defineMessages({
   searchPlaceHolder: {
     id: 'screen.Teamstores.searchPlaceHolder',
     defaultMessage: 'Search for a store'
+  },
+  teamTitle: {
+    id: 'screen.Teamstores.teamTitle',
+    defaultMessage: 'CUSTOM STORES FOR TEAMS, CLUBS & INDIVIDUALS'
+  },
+  payInfo: {
+    id: 'screen.Teamstores.payInfo',
+    defaultMessage: 'FLEXIBLE. CONVENIENT. SAFE'
   }
 })

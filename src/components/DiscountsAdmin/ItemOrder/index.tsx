@@ -17,6 +17,7 @@ interface Props {
   rate: number
   expiry: string
   active: boolean
+  canEdit: boolean
   restrictionType: string
   selectedProducts: string[]
   selectedUser: string
@@ -37,6 +38,7 @@ const ItemOrder = ({
   onDiscountClick,
   active,
   onChangeActive,
+  canEdit,
   restrictionType,
   selectedProducts,
   user,
@@ -70,14 +72,18 @@ const ItemOrder = ({
       <Cell>{type}</Cell>
       <Cell>{rate}</Cell>
       <Cell>{expiry}</Cell>
-      <Cell>
-        <Switch onChange={handleOnChangeActive} checked={active} />
-      </Cell>
-      <Cell>
-        <Button onClick={handleOnClick}>
-          <FormattedMessage {...messages.edit} />
-        </Button>
-      </Cell>
+      {canEdit && (
+        <>
+          <Cell>
+            <Switch onChange={handleOnChangeActive} checked={active} />
+          </Cell>
+          <Cell>
+            <Button onClick={handleOnClick}>
+              <FormattedMessage {...messages.edit} />
+            </Button>
+          </Cell>
+        </>
+      )}
     </Container>
   )
 }

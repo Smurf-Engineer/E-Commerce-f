@@ -137,6 +137,7 @@ export interface Product {
   collections: number
   isTopProduct: boolean
   relatedItemTag?: string
+  customLink?: string
   categoryName?: string
   details: string | string[]
   specs: string
@@ -447,6 +448,11 @@ export interface ThemeResult {
   themes: Theme[]
 }
 
+export interface UsersResult {
+  fullCount: string
+  users: User[]
+}
+
 export interface ColorBlock {
   image: string
   color: string
@@ -500,6 +506,7 @@ export interface UserType {
   token: string
   email: string
   administrator: boolean
+  permissions: UserPermissions
 }
 
 export interface AntColumns {
@@ -669,6 +676,8 @@ export interface CartItems {
   flatlock?: string
   preflightCheck?: boolean
   fixedPrices: PriceRange[]
+  teamStoreName?: string
+  fixedCart?: boolean
 }
 
 export interface ProductPrice {
@@ -678,7 +687,7 @@ export interface ProductPrice {
 }
 export interface CreditCardData {
   id?: string
-  name: string
+  name?: string
   last4: string
   brand: string
   expMonth: number
@@ -703,8 +712,12 @@ export interface OrderHistory {
   netsuite?: NetsuiteObject
   clientId?: string
   firstName?: string
+  total?: number
+  currency?: Currency
   lastName?: string
   netsuiteAttempts: number
+  source?: string
+  cutoffDate?: string
 }
 
 export interface Discount {
@@ -777,6 +790,11 @@ export interface OrderDetailsInfo {
   taxFee?: number
   total?: number
   discount?: number
+  teamStoreId?: string
+  lastDrop?: boolean
+  teamStoreName?: string
+  canUpdatePayment?: boolean
+  onDemand?: boolean
 }
 
 export interface OrderDataInfo {
@@ -812,6 +830,11 @@ export interface OrderDataInfo {
   taxFee?: number
   total?: number
   discount?: number
+  confirmed?: boolean
+  status?: string
+  lastDrop?: string
+  teamStoreName?: string
+  teamStoreId?: string
 }
 
 export interface TextFormat {
@@ -1274,6 +1297,8 @@ export interface OrderSearchResult {
   pdfUrl?: string
   product: Product
   pngUrl?: string
+  salesRep?: User
+  accountManager?: User
   notes?: DesignNote[]
 }
 
@@ -1364,6 +1389,14 @@ export interface User {
   billingCountry?: string
   createdAt?: string
   shortId?: string
+  role?: string
+  salesRep?: User
+  accountManager?: User
+}
+
+export interface Role {
+  id: string
+  name: string
 }
 
 export interface DesignSearchCode {
@@ -1482,6 +1515,16 @@ export type Color = {
   type?: string
 }
 
+export type RolePermission = {
+  page: string
+  edit: boolean
+  view: boolean
+}
+
+export type UserPermissions = {
+  [page: string]: RolePermission
+}
+
 export interface SelectedDesignType {
   design: DesignType
   visible: boolean
@@ -1534,6 +1577,11 @@ export interface HomepageCarousel {
   secondarySlideDuration: number
 }
 
+export interface PaymentIntent {
+  paymentClientSecret: string
+  intentId: string
+}
+
 export interface UserDiscount {
   text: string
   value: string
@@ -1577,4 +1625,12 @@ export type ProAssist = {
   date: string
   status: string
   url: string
+}
+
+export type PriceRangeProgress = {
+  minQuantity: number
+  maxQuantity: number
+  range: number
+  index: number
+  price: number
 }

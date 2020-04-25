@@ -13,7 +13,7 @@ import Search from 'antd/lib/auto-complete'
 import Button from 'antd/lib/button'
 import Input from 'antd/lib/input'
 import Icon from 'antd/lib/icon'
-import { SelectValue } from 'antd/lib/select'
+import { SelectValue, OptionProps } from 'antd/lib/select'
 import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
 import { restoreUserSession } from '../MainLayout/api'
@@ -35,7 +35,9 @@ import {
   Font,
   DesignSearchCode,
   MessagePayload,
-  Colors
+  Colors,
+  UserPermissions,
+  User
 } from '../../types/common'
 import {
   orderSearchQuery,
@@ -46,10 +48,15 @@ import {
   generatePdfMutation,
   togglePreflight,
   addNoteMutation,
-  getColorsQuery
+  getColorsQuery,
+  getManagers,
+  getRepUsers,
+  setRepDesignMutation,
+  assignManagerDesignMutation
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
+import { DESIGN_SEARCH, DESIGN_SEARCH_ASSETS } from '../AdminLayout/constants'
 
 type Thumbnail = {
   style: {
@@ -59,6 +66,15 @@ type Thumbnail = {
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
+}
+interface Data extends QueryProps {
+  repUsers: {
+    users: User[]
+  }
+}
+
+interface ManagersData extends QueryProps {
+  managersQuery: User[]
 }
 
 interface Props {
@@ -83,16 +99,26 @@ interface Props {
   openNotes: boolean
   addingNote: boolean
   note: string
+  managers: ManagersData
+  salesRep: Data
+  repSearchText: string
   loadingPreflight: boolean
   colorsList: ColorsData
+  permissions: UserPermissions
   // redux actions
+  setUserRepAction: (userRep: User) => void
+  setManagerAction: (userRep: User) => void
+  setRepDesign: (variables: {}) => Promise<MessagePayload>
+  assignManager: (variables: {}) => Promise<MessagePayload>
+  setSearchRep: (value: string) => void
+  setSearchManager: (value: string) => void
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteAction: (text: string) => void
   openNoteAction: (openNotes: boolean) => void
   setLoadingNote: (loading: boolean) => void
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
-  restoreUserSessionAction: () => void
+  restoreUserSessionAction: (client: any) => void
   formatMessage: (messageDescriptor: any) => string
   uploadProDesignAction: (file: any, code: string) => void
   resetDataAction: () => void
@@ -116,12 +142,12 @@ interface Props {
 }
 
 export class DesignSearchAdmin extends React.Component<Props, {}> {
-  debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
+  debounceSearchCode = debounce((value) => this.handleOnchange(value), 300)
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
-      restoreUserSessionAction()
+      restoreUserSessionAction(client)
     }
   }
   componentDidMount() {
@@ -158,26 +184,41 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       setStitchingColorAction,
       colorAccessories,
       openNotes,
+      salesRep,
+      managers,
       addingNote,
       note,
       setNoteAction,
       openNoteAction,
       setColorAction,
+      permissions,
       fontsData,
       designSearchCodes,
       creatingPdf,
       colorsList
     } = this.props
 
+    const access = permissions[DESIGN_SEARCH] || {}
+    const accessAssets = permissions[DESIGN_SEARCH_ASSETS] || {}
     let loadErrContent = <Spin />
     if (notFound) {
       loadErrContent = <FormattedMessage {...messages.notFound} />
-    } else if (noAdmin) {
+    } else if (noAdmin || !access.view) {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
     const colors = get(colorsList, 'colorsResult.colors', [])
 
+    const salesRepUsers = get<Data, 'repUsers.users', User[]>(
+      salesRep,
+      'repUsers.users',
+      []
+    )
+    const managersUsers = get<ManagersData, 'managersQuery', User[]>(
+      managers,
+      'managersQuery',
+      []
+    )
     const fonts = fontList.reduce((fontObject: any, { family }: Font) => {
       fontObject.push({ font: family })
       return fontObject
@@ -192,6 +233,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           uploadingThumbnail,
           setUploadingThumbnailAction,
           changes,
+          salesRepUsers,
+          managersUsers,
           openNotes,
           addingNote,
           note,
@@ -199,8 +242,14 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           openNoteAction,
           colorAccessories,
           creatingPdf,
+          accessAssets,
           loadingPreflight
         }}
+        canEdit={access.edit}
+        changeUserRep={this.changeUserRep}
+        changeManager={this.changeManager}
+        searchReps={this.searchReps}
+        searchManagers={this.searchManagers}
         checkPreflight={this.handleCheckPreflight}
         handleSaveNote={this.saveNote}
         onSelectStitchingColor={setStitchingColorAction}
@@ -277,6 +326,84 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
   goToDesignerTool = () => {
     const { history } = this.props
     history.push('designer-tool')
+  }
+
+  changeUserRep = async (
+    repUser: string,
+    option: React.ReactElement<OptionProps>
+  ) => {
+    const {
+      order: { shortId },
+      setUserRepAction,
+      setRepDesign
+    } = this.props
+    try {
+      const response = await setRepDesign({
+        variables: { designId: shortId, repUser }
+      })
+      const responseMessage = get(response, 'data.setRepDesign.message', '')
+      message.success(responseMessage)
+      let userRep = null
+      if (option) {
+        const {
+          props: { children }
+        } = option
+        userRep = {
+          shortId: repUser,
+          firstName: children[0],
+          lastName: children[2]
+        }
+      }
+      setUserRepAction(userRep)
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
+
+  changeManager = async (
+    managerId: string,
+    option: React.ReactElement<OptionProps>
+  ) => {
+    const {
+      order: { shortId },
+      setManagerAction,
+      assignManager
+    } = this.props
+    try {
+      const response = await assignManager({
+        variables: { designId: shortId, managerId }
+      })
+      const responseMessage = get(
+        response,
+        'data.assignManagerDesign.message',
+        ''
+      )
+      message.success(responseMessage)
+      let managerUser = null
+      if (option) {
+        const {
+          props: { children }
+        } = option
+        managerUser = {
+          shortId: managerId,
+          firstName: children[0],
+          lastName: children[2]
+        }
+      }
+      setManagerAction(managerUser)
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
+
+  searchReps = (value: string) => {
+    const { setSearchRep } = this.props
+    setSearchRep(value)
+  }
+
+  searchManagers = (value: string) => {
+    const { setSearchManager } = this.props
+    setSearchManager(value)
   }
 
   handleOnSearch = async (productCode: SelectValue) => {
@@ -428,21 +555,46 @@ const mapStateToProps = (state: any) => {
   return { ...designSearch, ...app }
 }
 
+interface OwnProps {
+  repSearchText?: string
+  managerSearchText?: string
+}
+
 const DesignSearchAdminEnhance = compose(
   injectIntl,
-  graphql(addNoteMutation, { name: 'addNoteAction' }),
-  graphql(togglePreflight, { name: 'checkPreflightAction' }),
-  graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
-  graphql(updateDesignMutation, { name: 'updateDesign' }),
-  graphql(generatePdfMutation, { name: 'generatePdf' }),
-  graphql(getColorsQuery, { name: 'colorsList' }),
+  getFonts,
+  withApollo,
   connect(mapStateToProps, {
     ...designSearchActions,
     uploadProDesignAction: uploadProDesign,
     restoreUserSessionAction: restoreUserSession
   }),
-  getFonts,
-  withApollo
+  graphql(addNoteMutation, { name: 'addNoteAction' }),
+  graphql(setRepDesignMutation, { name: 'setRepDesign' }),
+  graphql(assignManagerDesignMutation, { name: 'assignManager' }),
+  graphql(togglePreflight, { name: 'checkPreflightAction' }),
+  graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
+  graphql(updateDesignMutation, { name: 'updateDesign' }),
+  graphql(generatePdfMutation, { name: 'generatePdf' }),
+  graphql(getColorsQuery, { name: 'colorsList' }),
+  graphql(getRepUsers, {
+    name: 'salesRep',
+    options: ({ repSearchText }: OwnProps) => ({
+      variables: {
+        text: repSearchText
+      },
+      fetchPolicy: 'network-only'
+    })
+  }),
+  graphql(getManagers, {
+    name: 'managers',
+    options: ({ managerSearchText }: OwnProps) => ({
+      variables: {
+        searchText: managerSearchText
+      },
+      fetchPolicy: 'network-only'
+    })
+  })
 )(DesignSearchAdmin)
 
 export default DesignSearchAdminEnhance

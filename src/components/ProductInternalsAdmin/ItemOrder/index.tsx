@@ -22,6 +22,7 @@ interface Props {
   bibBrace?: string
   collection: string
   model?: string
+  canEdit: boolean
   onInternalClick: (internal: ProductInternal) => void
 }
 
@@ -35,6 +36,7 @@ const ItemOrder = ({
   color,
   frontZipper,
   pocketZipper,
+  canEdit,
   binding,
   bibBrace,
   collection,
@@ -74,11 +76,13 @@ const ItemOrder = ({
       <Cell>{binding}</Cell>
       <Cell>{bibBrace}</Cell>
       <Cell>{collection}</Cell>
-      <Cell>
-        <Button onClick={handleOnClick}>
-          <FormattedMessage {...messages.edit} />
-        </Button>
-      </Cell>
+      {canEdit && (
+        <Cell>
+          <Button onClick={handleOnClick}>
+            <FormattedMessage {...messages.edit} />
+          </Button>
+        </Cell>
+      )}
     </Container>
   )
 }

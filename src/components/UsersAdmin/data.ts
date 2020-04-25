@@ -53,3 +53,29 @@ export const addNoteMutation = gql`
     }
   }
 `
+
+export const assignRepUserMutation = graphql(
+  gql`
+    mutation assignRepUser($userId: String!, $repUser: String) {
+      assignRepUser(userId: $userId, repUser: $repUser) {
+        id
+      }
+    }
+  `,
+  {
+    name: 'assignRepUser'
+  }
+)
+
+export const setManagerMutation = graphql(
+  gql`
+    mutation setManager($userId: String!, $manager: String) {
+      setManager(userId: $userId, manager: $manager) {
+        id
+      }
+    }
+  `,
+  {
+    name: 'assignManager'
+  }
+)

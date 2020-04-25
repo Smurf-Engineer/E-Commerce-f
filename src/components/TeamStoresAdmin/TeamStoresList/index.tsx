@@ -39,6 +39,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  canEdit: boolean
   onSortClick: (label: string, sort: sorts) => void
   onChangeSwitch: (id: number, fieldId: string) => void
   onChangePage: (page: number) => void
@@ -50,6 +51,7 @@ const teamStoreHeaders = [
   { title: 'manager', id: 'first_name' },
   { title: 'type', id: 'on_demand_mode' },
   { title: 'cutoffDate', id: 'cutoff_date' },
+  { title: 'deliveryDate', id: 'delivery_date' },
   { title: 'featured', id: 'featured' },
   { title: 'display', id: 'display' }
 ]
@@ -66,6 +68,7 @@ const TeamStoresList = ({
   onChangePage,
   withPagination = true,
   withoutPadding = false,
+  canEdit,
   onClickRow
 }: Props) => {
   const teamStores = get<
@@ -94,7 +97,7 @@ const TeamStoresList = ({
 
   const header = (
     <MediaQuery maxWidth={768}>
-      {matches => {
+      {(matches) => {
         if (matches) {
           return <Row>{mobileHeaders}</Row>
         }
@@ -112,6 +115,7 @@ const TeamStoresList = ({
         userLastName,
         onDemand,
         cutOffDateString,
+        deliveryDate,
         shortId,
         display
       }: TeamStoreAdminType,
@@ -127,8 +131,10 @@ const TeamStoresList = ({
             userFirstName,
             userLastName,
             onDemand,
+            canEdit,
             formatMessage,
             cutOffDateString,
+            deliveryDate,
             onChangeSwitch,
             onClickRow,
             shortId,

@@ -14,7 +14,7 @@ import { MAIN_TITLE } from '../../constants'
 import { InjectedIntl, FormattedMessage } from 'react-intl'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { UserType, Font, SimpleFont } from '../../types/common'
+import { UserType, Font, SimpleFont, UserPermissions } from '../../types/common'
 import { getTeamStoreStatus, getFonts } from './data'
 import * as adminLayoutActions from './api'
 import {
@@ -23,7 +23,6 @@ import {
   DISCOUNTS,
   PRODUCT_CATALOG,
   PRODUCT_INTERNAL,
-  USERS,
   TEAM_STORES,
   DESIGN_SEARCH,
   DESIGN_LAB,
@@ -31,14 +30,17 @@ import {
   ADD_PRO_DESIGN,
   CREATE_DESIGNS,
   DESIGN_LAB_TOOLS,
-  PRO_ASSIST
+  PRO_ASSIST,
+  USER_LIST,
+  ROLE_MANAGEMENT,
+  SALES_REP
 } from './constants'
 import {
   SideBar,
   Container,
   OptionMenu,
   Content,
-  LogoutButton
+  LogoutButton,
 } from './styledComponents'
 import Helmet from 'react-helmet'
 
@@ -53,8 +55,9 @@ interface Props extends RouteComponentProps<any> {
   fonts: []
   openKeys: string[]
   screen: string
+  permissions: UserPermissions
   onLogout: () => void
-  restoreUserSession: () => void
+  restoreUserSession: (client: any) => void
   deleteUserSession: () => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
@@ -64,10 +67,10 @@ interface Props extends RouteComponentProps<any> {
 
 class AdminLayout extends React.Component<Props, {}> {
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSession } = this.props
-      restoreUserSession()
+      restoreUserSession(client)
     }
   }
 
@@ -77,7 +80,7 @@ class AdminLayout extends React.Component<Props, {}> {
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
     const fonts: SimpleFont[] = fontsList.map((font: Font) => ({
-      font: font.family
+      font: font.family,
     }))
     setInstalledFontsAction(fonts)
   }
@@ -113,8 +116,14 @@ class AdminLayout extends React.Component<Props, {}> {
       case DESIGN_SEARCH:
         history.push('/admin/design-search')
         break
-      case USERS:
+      case USER_LIST:
         history.push('/admin/users')
+        break
+      case ROLE_MANAGEMENT:
+        history.push('/admin/roles')
+        break
+      case SALES_REP:
+        history.push('/admin/reps')
         break
       case TEAM_STORES:
         history.push('/admin/team-stores')
@@ -141,24 +150,44 @@ class AdminLayout extends React.Component<Props, {}> {
   }
 
   render() {
-    const { children, fonts, intl, openKeys, screen, onLogout } = this.props
+    const {
+      children,
+      fonts,
+      intl,
+      openKeys,
+      screen,
+      onLogout,
+      permissions,
+    } = this.props
+    const isHidden = options.reduce((obj, { title, options: submenus }) => {
+      obj[title] = submenus.every((label) => !permissions[label].view)
+      return obj
+      // tslint:disable-next-line: align
+    }, {})
     const menuOptions = options.map(({ title, options: submenus }) =>
-      submenus.length ? (
+      submenus.length && !isHidden[title] ? (
         <SubMenu
           key={title}
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
         >
-          {submenus.map(label => (
-            <Menu.Item key={label} active={true}>
-              {<FormattedMessage {...messages[label]} />}
-            </Menu.Item>
-          ))}
+          {submenus.map(
+            (label) =>
+              permissions[label] &&
+              permissions[label].view && (
+                <Menu.Item key={label} active={true}>
+                  {<FormattedMessage {...messages[label]} />}
+                </Menu.Item>
+              )
+          )}
         </SubMenu>
       ) : (
-        <Menu.Item className="ant-menu-item-custom" key={title}>
-          <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-        </Menu.Item>
-      )
+          permissions[title] &&
+          permissions[title].view && (
+            <Menu.Item className="ant-menu-item-custom" key={title}>
+              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+            </Menu.Item>
+          )
+        )
     )
 
     const logoutButton = (
@@ -200,7 +229,7 @@ const mapStateToProps = (state: any) => {
     ...layoutProps,
     ...responsive,
     ...adminLayout,
-    ...app
+    ...app,
   }
 }
 
@@ -211,7 +240,7 @@ const LayoutEnhance = compose(
   connect(mapStateToProps, {
     ...LayoutActions,
     ...LocaleActions,
-    ...adminLayoutActions
+    ...adminLayoutActions,
   })
 )(AdminLayout)
 export default LayoutEnhance

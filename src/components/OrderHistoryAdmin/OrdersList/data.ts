@@ -1,7 +1,7 @@
 /**
  * Account-OrdersList Queries
  */
-
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const getOrdersQuery = gql`
@@ -28,8 +28,13 @@ export const getOrdersQuery = gql`
         status
         clientId: user_id
         firstName: first_name
+        total: total_amount
+        currency {
+          abbreviation
+        }
         lastName: last_name
         pendingChecks: pending_checks
+        source
         netsuite: netsuit_order {
           orderStatus {
             orderStatus
@@ -39,7 +44,21 @@ export const getOrdersQuery = gql`
           }
         }
         netsuiteAttempts: netsuite_attempts
+        cutoffDate: cutoff_date
       }
     }
   }
 `
+
+export const updateStatusMutation = graphql(
+  gql`
+    mutation changeOrderStatus($status: String!, $orderId: String!) {
+      changeOrderStatus(status: $status, orderId: $orderId) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateStatus'
+  }
+)

@@ -83,14 +83,14 @@ export class DesignCheckModal extends React.Component<Props, {}> {
             {loadingPro ? (
               <Spin size="large" />
             ) : (
-              <ContinueButton
-                key="review"
-                disabled={!open}
-                onClick={handleGetPro}
-              >
-                {formatMessage(messages.talkWithDesigner)}
-              </ContinueButton>
-            )}
+                <ContinueButton
+                  key="review"
+                  disabled={!open}
+                  onClick={handleGetPro}
+                >
+                  {formatMessage(messages.talkWithDesigner)}
+                </ContinueButton>
+              )}
           </ModalButtonsWrapper>
           <HoursLabel>{hours}</HoursLabel>
           <StatusLabel {...{ open }}>

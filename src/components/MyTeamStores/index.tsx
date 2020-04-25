@@ -68,7 +68,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     let myTeamstoresList
     if (teamStores) {
       myTeamstoresList = teamStores.map((teamstore, key) => {
-        const { shortId } = teamstore
+        const { shortId, closed, isOnDemand } = teamstore
         return (
           <TeamStore
             name={teamstore.name}
@@ -77,11 +77,13 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
             withEditButton={true}
             withShareButton={true}
             withDeleteButton={true}
+            owner={true}
             onEditClick={this.editTeamStore(shortId)}
             onDeleteClick={this.openDeleteModal(shortId)}
             openShareModalAction={this.handleOpenShareModal(shortId)}
             onItemClick={this.gotoTeamStore(shortId)}
-            {...{ key, formatMessage }}
+            fixedDate={!isOnDemand}
+            {...{ key, formatMessage, closed }}
           />
         )
       })
@@ -164,7 +166,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
 
   editTeamStore = (storeId: string) => () => {
     const { history } = this.props
-    history.push(`/create-store?storeId=${storeId}`)
+    history.push(`/create-store/form?storeId=${storeId}`)
   }
 
   gotoTeamStore = (storeId: string) => () => {
@@ -203,10 +205,7 @@ type OwnProps = {
 }
 
 const MyTeamStoresEnhanced = compose(
-  connect(
-    mapstateToProps,
-    { ...MyTeamStoresActions }
-  ),
+  connect(mapstateToProps, { ...MyTeamStoresActions }),
   graphql(GetTeamMyStoresQuery, {
     options: ({ limit, skip }: OwnProps) => ({
       fetchPolicy: 'network-only',

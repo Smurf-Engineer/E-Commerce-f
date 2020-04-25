@@ -10,7 +10,8 @@ import { BLUE } from '../../theme/colors'
 import {
   getDesignLabInfo,
   setDeliveryDaysMutation,
-  setPlaylistMutation
+  setPlaylistMutation,
+  setCutOffDaysMutation
 } from './data'
 import Spin from 'antd/lib/spin'
 import * as DesignLabActions from './actions'
@@ -26,6 +27,8 @@ import {
   InfoText
 } from './styledComponents'
 import messages from './messages'
+import { UserPermissions } from '../../types/common'
+import { DESIGN_LAB } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -35,13 +38,18 @@ interface Props {
   tutorialPlaylist: string
   deliveryDays: number
   deliveryDaysChanges: boolean
+  cutOffDays: number
   tutorialPlaylistChanged: boolean
+  permissions: UserPermissions
+  cutOffDaysChanges: boolean
   formatMessage: (messageDescriptor: any) => string
   setDataAction: (data: any) => void
   setDeliveryDaysAction: (value: number) => void
   setPlaylistAction: (value: string) => void
   setDeliveryDays: (variables: {}) => Promise<any>
   setPlaylist: (variables: {}) => Promise<any>
+  setCutoffDaysAction: (value: number) => void
+  setCutOffDays: (variables: {}) => Promise<any>
 }
 
 class DesignLabAdmin extends React.Component<Props, {}> {
@@ -73,6 +81,15 @@ class DesignLabAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  saveCutOffDays = async () => {
+    const { setCutOffDays, cutOffDays } = this.props
+    try {
+      const response = await setCutOffDays({ variables: { cutOffDays } })
+      message.success(get(response, 'data.setCutOffDays.message', ''))
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
   savePlaylist = async () => {
     const { tutorialPlaylist, setPlaylist } = this.props
     try {
@@ -90,55 +107,82 @@ class DesignLabAdmin extends React.Component<Props, {}> {
       loading,
       tutorialPlaylist,
       deliveryDays,
+      permissions,
       tutorialPlaylistChanged,
       deliveryDaysChanges,
-      setDeliveryDaysAction
+      setDeliveryDaysAction,
+      setCutoffDaysAction,
+      cutOffDaysChanges,
+      cutOffDays
     } = this.props
-
+    const access = permissions[DESIGN_LAB] || {}
+    if (!access.view) {
+      return null
+    }
     return loading ? (
       <SpinContainer>
         <Spin />
       </SpinContainer>
     ) : (
-      <Container>
-        <ScreenTitle>{formatMessage(messages.deliveryDates)}</ScreenTitle>
-        <BoxContainer>
-          <InfoText>{formatMessage(messages.currentDeliveryDate)}</InfoText>
-          <StyledInputNumber
-            onChange={setDeliveryDaysAction}
-            value={deliveryDays}
-          />
-          <ButtonWrapper color={BLUE}>
-            <StyledButton
-              type="primary"
-              disabled={!deliveryDaysChanges}
-              onClick={this.saveDeliveryDays}
-              loading={loading}
-            >
-              {formatMessage(messages.update)}
-            </StyledButton>
-          </ButtonWrapper>
-        </BoxContainer>
-        <ScreenTitle>{formatMessage(messages.videoTutorial)}</ScreenTitle>
-        <BoxContainer>
-          <InfoText>{formatMessage(messages.tutorialPlaylist)}</InfoText>
-          <StyledInput
-            onChange={this.handleChangeText}
-            value={tutorialPlaylist}
-          />
-          <ButtonWrapper color={BLUE}>
-            <StyledButton
-              type="primary"
-              disabled={!tutorialPlaylistChanged}
-              onClick={this.savePlaylist}
-              loading={loading}
-            >
-              {formatMessage(messages.update)}
-            </StyledButton>
-          </ButtonWrapper>
-        </BoxContainer>
-      </Container>
-    )
+        <Container>
+          <ScreenTitle>{formatMessage(messages.deliveryDates)}</ScreenTitle>
+          <BoxContainer>
+            <InfoText>{formatMessage(messages.currentDeliveryDate)}</InfoText>
+            <StyledInputNumber
+              onChange={setDeliveryDaysAction}
+              disabled={!access.edit}
+              value={deliveryDays}
+            />
+            <ButtonWrapper color={BLUE}>
+              <StyledButton
+                type="primary"
+                disabled={!deliveryDaysChanges || !access.edit}
+                onClick={this.saveDeliveryDays}
+                loading={loading}
+              >
+                {formatMessage(messages.update)}
+              </StyledButton>
+            </ButtonWrapper>
+          </BoxContainer>
+          <ScreenTitle>{formatMessage(messages.cutOffDays)}</ScreenTitle>
+          <BoxContainer>
+            <InfoText>{formatMessage(messages.currentCutOffDays)}</InfoText>
+            <StyledInputNumber
+              onChange={setCutoffDaysAction}
+              value={cutOffDays}
+            />
+            <ButtonWrapper color={BLUE}>
+              <StyledButton
+                type="primary"
+                disabled={!cutOffDaysChanges}
+                onClick={this.saveCutOffDays}
+                loading={loading}
+              >
+                {formatMessage(messages.update)}
+              </StyledButton>
+            </ButtonWrapper>
+          </BoxContainer>
+          <ScreenTitle>{formatMessage(messages.videoTutorial)}</ScreenTitle>
+          <BoxContainer>
+            <InfoText>{formatMessage(messages.tutorialPlaylist)}</InfoText>
+            <StyledInput
+              onChange={this.handleChangeText}
+              disabled={!access.edit}
+              value={tutorialPlaylist}
+            />
+            <ButtonWrapper color={BLUE}>
+              <StyledButton
+                type="primary"
+                disabled={!tutorialPlaylistChanged || !access.edit}
+                onClick={this.savePlaylist}
+                loading={loading}
+              >
+                {formatMessage(messages.update)}
+              </StyledButton>
+            </ButtonWrapper>
+          </BoxContainer>
+        </Container>
+      )
   }
 }
 
@@ -147,11 +191,9 @@ const mapStateToProps = (state: any) => state.get('designLabAdmin').toJS()
 const DesignLabAdminEnhance = compose(
   withApollo,
   setDeliveryDaysMutation,
+  setCutOffDaysMutation,
   setPlaylistMutation,
-  connect(
-    mapStateToProps,
-    { ...DesignLabActions }
-  )
+  connect(mapStateToProps, { ...DesignLabActions })
 )(DesignLabAdmin)
 
 export default DesignLabAdminEnhance

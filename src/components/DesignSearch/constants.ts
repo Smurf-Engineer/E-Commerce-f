@@ -23,5 +23,9 @@ export const OPEN_NOTES = `${namespace}/OPEN_NOTES`
 export const SET_LOADING_NOTE = `${namespace}/SET_LOADING_NOTE`
 export const SET_PREFLIGHT = `${namespace}/SET_PREFLIGHT`
 export const SET_LOADING_PREFLIGHT = `${namespace}/SET_LOADING_PREFLIGHT`
+export const SET_SEARCH_REP = `${namespace}/SET_SEARCH_REP`
+export const SET_SEARCH_MANAGER = `${namespace}/SET_SEARCH_MANAGER`
+export const SET_USER_REP = `${namespace}/SET_USER_REP`
+export const SET_ACCOUNT_MANAGER = `${namespace}/SET_ACCOUNT_MANAGER`
 
 export const NOTE_FORMAT = 'MM/DD/YYYY'

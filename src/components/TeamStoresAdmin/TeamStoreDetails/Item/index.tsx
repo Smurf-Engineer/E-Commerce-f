@@ -24,6 +24,7 @@ import {
   Message,
   PricesByCurrency
 } from '../../../../types/common'
+import { CHF_CURRENCY } from '../../constants'
 
 interface Props {
   thumbnail: string
@@ -35,6 +36,7 @@ interface Props {
   priceRange: PriceRange[]
   pricesByCurrency: PricesByCurrency
   loading: boolean
+  canEdit: boolean
   handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
   handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
   formatMessage: (messageDescriptor: Message) => string
@@ -51,6 +53,7 @@ const RowItem = ({
   pricesByCurrency,
   handleOnSave,
   formatMessage,
+  canEdit,
   loading
 }: Props) => {
   const onSetPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,14 +65,17 @@ const RowItem = ({
   }
   const inputFields = currencies.map(({ shortName, id: currencyId }) => {
     return (
-      <Cell key={currencyId}>
-        <StyledInput
-          id={shortName}
-          placeholder={shortName}
-          onChange={onSetPrice}
-          value={pricesByCurrency[shortName]}
-        />
-      </Cell>
+      shortName !== CHF_CURRENCY && (
+        <Cell key={currencyId}>
+          <StyledInput
+            id={shortName}
+            disabled={!canEdit}
+            placeholder={shortName}
+            onChange={onSetPrice}
+            value={pricesByCurrency[shortName]}
+          />
+        </Cell>
+      )
     )
   })
   return (
@@ -89,10 +95,12 @@ const RowItem = ({
         <ButtonWrapper color={BLUE}>
           <StyledButton
             id={index}
-            disabled={some(
-              currencies,
-              ({ shortName }) => !pricesByCurrency[shortName]
-            )}
+            disabled={
+              some(
+                currencies,
+                ({ shortName }) => !pricesByCurrency[shortName]
+              ) || !canEdit
+            }
             type="primary"
             onClick={handleOnSave}
             {...{ loading }}
