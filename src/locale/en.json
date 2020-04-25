@@ -746,6 +746,8 @@
   "screens.DesignCenter.unsupportedDeviceTitle": "TO CONTINUE…",
   "screens.DesignCenter.unsupportedDeviceContent": "For the best 3D design experience adding text and logos, please return on a device with a larger screen such as a laptop or desktop computer.",
   "screens.DesignCenter.unsupportedDeviceButton": "Got it!",
+  "screens.DesignCenter.proAssist": "{proLabel} ASSIST",
+  "screens.DesignCenter.proLabel": "PRO",
   "componentes.StoreForm.save": "Save Changes",
   "componentes.StoreForm.emptyList": "You need to add items to your store!",
   "componentes.StoreForm.cancel": "Cancel",

@@ -37,6 +37,7 @@ import {
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
+import PROAssistButton from '../../assets/PROAssist-button.svg'
 import saveIcon from '../../assets/save-icon.svg'
 import {
   Container,
@@ -55,6 +56,7 @@ import {
   CanvasElements
 } from '../../screens/DesignCenter/constants'
 import messages from './messages'
+import { FormattedMessage } from 'react-intl'
 
 const SVG_FILE = 'image/svg+xml'
 const POSCRIPT_FILE = 'application/postscript'
@@ -424,6 +426,19 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             </BackCircle>
             <MobileTitle>{productName}</MobileTitle>
             <ActionMobileItems>
+              {!proAssistId &&
+                <MobileItem wide={true} onClick={openDesignCheckModal}>
+                  <ButtonImg src={PROAssistButton} />
+                  <ButtonText secondary={true}>
+                    <FormattedMessage
+                      {...messages.proAssist}
+                      values={{
+                        proLabel: <b>{formatMessage(messages.proLabel)}</b>
+                      }}
+                    />
+                  </ButtonText>
+                </MobileItem>
+              }
               <MobileItem onClick={this.handleOnAddArt}>
                 <ButtonImg src={artIcon} />
                 <ButtonText>{formatMessage({ ...messages.addArt })}</ButtonText>
@@ -509,8 +524,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             }}
           />
         ) : (
-          loadingView
-        )}
+            loadingView
+          )}
         {isMobile && !loadingData && showRender3d && !loadingModel && (
           <MobileSelectColors
             onSelectStitchingColor={setStitchingColorAction}
@@ -580,10 +595,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const layers = this.render3D
       ? this.render3D.getLayersIndexed(canvas)
       : {
-          image: {},
-          path: {},
-          text: {}
-        }
+        image: {},
+        path: {},
+        text: {}
+      }
     return layers
   }
 
