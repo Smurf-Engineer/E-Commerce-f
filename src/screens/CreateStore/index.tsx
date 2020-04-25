@@ -536,30 +536,34 @@ export class CreateStore extends React.Component<Props, StateProps> {
     })
   }
 
-  openEditDatesInfo = () => {
+  openEditDatesInfo = async () => {
     const {
       intl: { formatMessage },
       endDateMoment,
       startDateMoment
     } = this.props
-    confirm({
-      title: formatMessage(messages.editDatesTitle),
-      okText: formatMessage(messages.proceed),
-      okButtonProps: {
-        style: buttonStyle
-      },
-      content: formatMessage(messages.editDatesMessage, {
-        cutOff: startDateMoment.format('DD-MM-YYYY'),
-        delivery: endDateMoment.format('DD-MM-YYYY')
-      }),
-      onOk: async () => {
-        try {
-          await this.handleBuildTeamStore()
-        } catch (e) {
-          message.error(e.message)
+    if (startDateMoment && endDateMoment) {
+      confirm({
+        title: formatMessage(messages.editDatesTitle),
+        okText: formatMessage(messages.proceed),
+        okButtonProps: {
+          style: buttonStyle
+        },
+        content: formatMessage(messages.editDatesMessage, {
+          cutOff: startDateMoment.format('DD-MM-YYYY'),
+          delivery: endDateMoment.format('DD-MM-YYYY')
+        }),
+        onOk: async () => {
+          try {
+            await this.handleBuildTeamStore()
+          } catch (e) {
+            message.error(e.message)
+          }
         }
-      }
-    })
+      })
+    } else {
+      await this.handleBuildTeamStore()
+    }
   }
 
   render() {
@@ -876,10 +880,7 @@ const CreateStoreEnhance = compose(
       fetchPolicy: 'network-only'
     }
   }),
-  connect(
-    mapStateToProps,
-    { ...createStoreActions, ...thunkActions }
-  )
+  connect(mapStateToProps, { ...createStoreActions, ...thunkActions })
 )(CreateStore)
 
 export default CreateStoreEnhance
