@@ -1257,6 +1257,8 @@
   "components.UsersList.netsuiteId": "Netsuite ID",
   "components.UsersList.billing": "Billing Country",
   "components.UsersList.signUpDate": "Sign-Up Date",
+  "components.UsersList.salesRep": "Sales Rep",
+  "components.UsersList.accountManager": "Account Manager",
   "components.CarouselHeader.Uploader.imageSizeError": "Oh no! Max file size is limited to 20MB",
   "components.CarouselHeader.Uploader.videoExtensionError": "Oh no! Your file has to be a mp4",
   "components.CarouselHeader.Uploader.imageExtensionError": "Oh no! Your file has to be an jpg, jpeg or png",
