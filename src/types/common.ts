@@ -448,6 +448,11 @@ export interface ThemeResult {
   themes: Theme[]
 }
 
+export interface UsersResult {
+  fullCount: string
+  users: User[]
+}
+
 export interface ColorBlock {
   image: string
   color: string
@@ -1289,6 +1294,8 @@ export interface OrderSearchResult {
   pdfUrl?: string
   product: Product
   pngUrl?: string
+  salesRep?: User
+  accountManager?: User
   notes?: DesignNote[]
 }
 
@@ -1379,6 +1386,14 @@ export interface User {
   billingCountry?: string
   createdAt?: string
   shortId?: string
+  role?: string
+  salesRep?: User
+  accountManager?: User
+}
+
+export interface Role {
+  id: string
+  name: string
 }
 
 export interface DesignSearchCode {
