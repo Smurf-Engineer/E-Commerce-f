@@ -18,7 +18,7 @@ import {
 } from './styledComponents'
 import List from './ListRole'
 import messages from './messages'
-import { QueryProps, Role } from '../../types/common'
+import { QueryProps, Role, Message } from '../../types/common'
 import { getRoles } from './ListRole/data'
 import { Spin } from 'antd'
 
@@ -32,7 +32,7 @@ interface Props {
   rolesQuery: DataRoles
   searchText: string
   setFilterAction: (filter: string) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
   setSearchTextAction: (searchText: string) => void
@@ -88,16 +88,16 @@ class RolesCatalog extends React.Component<Props, {}> {
             {loading ? (
               <Spin />
             ) : (
-              <FilterSelect
-                allowClear={true}
-                onChange={this.handleFilterChange}
-                placeholder={formatMessage(messages.filterPlaceholder)}
-              >
-                {roles.map(({ id, name }: Role) => (
-                  <RoleOption value={id}>{name}</RoleOption>
-                ))}
-              </FilterSelect>
-            )}
+                <FilterSelect
+                  allowClear={true}
+                  onChange={this.handleFilterChange}
+                  placeholder={formatMessage(messages.filterPlaceholder)}
+                >
+                  {roles.map(({ id, name }: Role, index: number) => (
+                    <RoleOption key={index} value={id}>{name}</RoleOption>
+                  ))}
+                </FilterSelect>
+              )}
           </FilterDiv>
         </HeaderList>
         <List

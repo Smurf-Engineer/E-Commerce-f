@@ -2,6 +2,7 @@
  * Styled Components - Created by miguelcanobbio on 16/07/18.
  */
 import styled from 'styled-components'
+import { GRAY_DARK } from '../../../theme/colors'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -36,7 +37,7 @@ export const Header = styled.th`
   border-bottom: 1px solid #818181;
   text-align: left;
   padding: 8px 0;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;

@@ -5,11 +5,11 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import Message from 'antd/lib/message'
+import MessageBar from 'antd/lib/message'
 import { Container, Header, Row, Table } from './styledComponents'
 import ItemOrder from '../ItemOrder'
 import EmptyContainer from '../../EmptyContainer'
-import { User, UsersResult, QueryProps, Role } from '../../../types/common'
+import { User, UsersResult, QueryProps, Role, Message } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getUserRolesQuery, changeRoleMutation } from './data'
@@ -23,7 +23,7 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   currentPage: number
   filter: string
   roles: Role[]
@@ -41,7 +41,7 @@ class RoleList extends React.Component<Props, {}> {
       })
     } catch (e) {
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
-      Message.error(errorMessage, 5)
+      MessageBar.error(errorMessage, 5)
     }
   }
   render() {
@@ -73,24 +73,24 @@ class RoleList extends React.Component<Props, {}> {
                   { id, firstName, lastName, socialMethod, email, role }: User,
                   index: number
                 ) => (
-                  <ItemOrder
-                    key={index}
-                    changeRole={this.handleChangeRole}
-                    {...{
-                      id,
-                      roles,
-                      firstName,
-                      lastName,
-                      socialMethod,
-                      email,
-                      role
-                    }}
-                  />
-                )
+                    <ItemOrder
+                      key={index}
+                      changeRole={this.handleChangeRole}
+                      {...{
+                        id,
+                        roles,
+                        firstName,
+                        lastName,
+                        socialMethod,
+                        email,
+                        role
+                      }}
+                    />
+                  )
               )
             ) : (
-              <EmptyContainer message={formatMessage(messages.empty)} />
-            )}
+                <EmptyContainer message={formatMessage(messages.empty)} />
+              )}
           </tbody>
         </Table>
         <Pagination
