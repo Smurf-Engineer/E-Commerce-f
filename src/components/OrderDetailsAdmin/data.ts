@@ -123,6 +123,8 @@ export const getOrderQuery = gql`
         productTotal
         designName
         designImage
+        salesRepName
+        managerName
         designCode
         bibBraceColor
         flatlock

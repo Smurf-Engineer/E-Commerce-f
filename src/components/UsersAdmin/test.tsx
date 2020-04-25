@@ -13,7 +13,9 @@ import {
   onChangeSectionAction,
   onToggleModalAction,
   setNoteText,
-  setDesignSelected
+  setDesignSelected,
+  setSearchManager,
+  setSearchRep
 } from './actions'
 
 import {
@@ -25,7 +27,9 @@ import {
   ON_CHANGE_SECTION,
   ON_TOGGLE_MODAL,
   CHANGE_NOTE,
-  SET_DESIGN
+  SET_DESIGN,
+  SET_SEARCH_MANAGER,
+  SET_SEARCH
 } from './constants'
 
 describe(' DiscountsAdmin Screen', () => {
@@ -96,6 +100,22 @@ describe(' DiscountsAdmin Screen', () => {
       expect(setNoteText(text)).toEqual({
         type,
         text
+      })
+    })
+    it('setSearchManager', () => {
+      const type = SET_SEARCH_MANAGER
+      const value = 'Test'
+      expect(setSearchManager(value)).toEqual({
+        type,
+        value
+      })
+    })
+    it('setSearchRep', () => {
+      const type = SET_SEARCH
+      const value = 'Test'
+      expect(setSearchRep(value)).toEqual({
+        type,
+        value
       })
     })
     it('setDesignSelected', () => {
@@ -383,6 +403,48 @@ describe(' DiscountsAdmin Screen', () => {
             )
             const customDesignValue = noteState.get('designSelected')
             expect(customDesignValue).toBe(value)
+          })
+        })
+      })
+      describe('SET_SEARCH_MANAGER', () => {
+        describe('Set search manager value action', () => {
+          it('Handles undefined value in managerSearchText', () => {
+            const customInitialValue = initialState.get('managerSearchText')
+            expect(customInitialValue).not.toBeUndefined()
+          })
+          it('Handles initial value in managerSearchText', () => {
+            const customInitialValue = initialState.get('managerSearchText')
+            expect(customInitialValue).toBe('')
+          })
+          it('Handles custom value in managerSearchText', () => {
+            const value = 'Test'
+            const noteState = usersAdminReducer(
+              initialState,
+              setSearchManager(value)
+            )
+            const customSearchValue = noteState.get('managerSearchText')
+            expect(customSearchValue).toBe(value)
+          })
+        })
+      })
+      describe('SET_SEARCH', () => {
+        describe('Set search rep value action', () => {
+          it('Handles undefined value in repSearchText', () => {
+            const customInitialValue = initialState.get('repSearchText')
+            expect(customInitialValue).not.toBeUndefined()
+          })
+          it('Handles initial value in repSearchText', () => {
+            const customInitialValue = initialState.get('repSearchText')
+            expect(customInitialValue).toBe('')
+          })
+          it('Handles custom value in repSearchText', () => {
+            const value = 'Test'
+            const noteState = usersAdminReducer(
+              initialState,
+              setSearchRep(value)
+            )
+            const customSearchValue = noteState.get('repSearchText')
+            expect(customSearchValue).toBe(value)
           })
         })
       })

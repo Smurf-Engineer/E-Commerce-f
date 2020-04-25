@@ -10,6 +10,7 @@ import {
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
+  SET_SEARCH_REP,
   UPDATE_THUMBNAIL_ACTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
@@ -21,13 +22,17 @@ import {
   OPEN_NOTES,
   SET_LOADING_NOTE,
   SET_PREFLIGHT,
-  SET_LOADING_PREFLIGHT
+  SET_LOADING_PREFLIGHT,
+  SET_USER_REP,
+  SET_SEARCH_MANAGER,
+  SET_ACCOUNT_MANAGER
 } from './constants'
 import {
   AnyAction,
   OrderSearchResult,
   StitchingColor,
-  DesignSearchCode
+  DesignSearchCode,
+  User
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -126,4 +131,24 @@ export const creatingPdfAction = (creating: boolean) => ({
 export const setPdfAction = (url: string) => ({
   type: SET_PDF,
   url
+})
+
+export const setSearchRep = (value: string) => ({
+  type: SET_SEARCH_REP,
+  value
+})
+
+export const setSearchManager = (value: string) => ({
+  type: SET_SEARCH_MANAGER,
+  value
+})
+
+export const setUserRepAction = (userRep: User) => ({
+  type: SET_USER_REP,
+  userRep
+})
+
+export const setManagerAction = (manager: User) => ({
+  type: SET_ACCOUNT_MANAGER,
+  manager
 })
