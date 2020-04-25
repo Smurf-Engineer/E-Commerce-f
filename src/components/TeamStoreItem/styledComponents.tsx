@@ -3,7 +3,14 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GRAY_DARK, GRAY_STRONG, GRAY } from '../../theme/colors'
+import {
+  WHITE,
+  GRAY_DARK,
+  GRAY_STRONG,
+  GRAY,
+  GRAY_LIGHT,
+  RED
+} from '../../theme/colors'
 import { BLACK } from '../../screens/DesignerTool/constants'
 
 export const Container = styled.div`
@@ -18,7 +25,7 @@ export const Container = styled.div`
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const StyledImg = styled.img`
@@ -59,8 +66,8 @@ interface CardProps {
 }
 
 export const CardContent = styled.div`
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px 0 #dcdcdc;
+  background-color: ${WHITE};
+  box-shadow: 0 2px 4px 0 ${GRAY_LIGHT};
   position: relative;
   &: before {
     color: ${WHITE};
@@ -109,14 +116,14 @@ export const BottomContainer = styled.div`
 
 export const ShareButton = styled(Button)`
   height: 24px;
-  border: 1px solid #dcdcdc;
+  border: 1px solid ${GRAY_LIGHT};
   border-radius: 2px;
-  background-color: #ffffff;
+  background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   margin-left: 10px;
 
   span {
-    color: #5f6062;
+    color: ${GRAY_DARK};
     font-size: 14px;
     letter-spacing: 0.1px;
     line-height: 19px;
@@ -147,7 +154,7 @@ export const DeleteLabel = styled.span`
   color: ${WHITE};
   font-size: 14px;
   font-weight: normal;
-  background: #ef5350;
+  background: ${RED};
   justify-content: center;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.18);
   border-radius: 2px;
