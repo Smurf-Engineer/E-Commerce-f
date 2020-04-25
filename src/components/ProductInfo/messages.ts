@@ -34,7 +34,7 @@ export default defineMessages({
     defaultMessage: 'Add {products} more for {price}'
   },
   flatlock: {
-    id: 'components.CartListItem.tittle',
+    id: 'components.CartListItem.flatlock',
     defaultMessage: 'Flatlock'
   },
   flatlockCode: {
@@ -52,5 +52,13 @@ export default defineMessages({
   bibbraceColor: {
     id: 'components.CartListItem.bibbraceColor',
     defaultMessage: 'Bib Brace Color'
+  },
+  salesRep: {
+    id: 'components.CartListItem.salesRep',
+    defaultMessage: 'Sales Rep'
+  },
+  manager: {
+    id: 'components.CartListItem.manager',
+    defaultMessage: 'Account Manager'
   }
 })
