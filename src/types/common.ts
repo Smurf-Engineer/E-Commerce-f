@@ -501,6 +501,7 @@ export interface UserType {
   token: string
   email: string
   administrator: boolean
+  permissions: UserPermissions
 }
 
 export interface AntColumns {

@@ -40,13 +40,15 @@ import {
   AddNote,
   PreflightDiv,
   WarningIcon,
-  PreflightCheckbox
+  PreflightCheckbox,
+  NoteIcon
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import {
   OrderSearchResult,
   StitchingColor,
-  DesignNote
+  DesignNote,
+  RolePermission
 } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
@@ -67,6 +69,8 @@ interface Props {
   addingNote: boolean
   note: string
   loadingPreflight: boolean
+  canEdit: boolean
+  accessAssets: RolePermission
   handleSaveNote: () => void
   setNoteAction: (text: string) => void
   openNoteAction: (openNotes: boolean) => void
@@ -121,6 +125,8 @@ export class OrderFiles extends React.PureComponent<Props> {
       onSelectColor,
       onGeneratePdf,
       checkPreflight,
+      accessAssets,
+      canEdit,
       creatingPdf
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
@@ -166,7 +172,7 @@ export class OrderFiles extends React.PureComponent<Props> {
                 theme="filled"
               />
               <PreflightCheckbox
-                disabled={loadingPreflight}
+                disabled={loadingPreflight || !canEdit}
                 checked={preflightCheck}
                 onChange={checkPreflight}
               >
@@ -178,10 +184,12 @@ export class OrderFiles extends React.PureComponent<Props> {
         <ProAssistNotes>
           <ProAssistTitle>
             <FormattedMessage {...messages.proAssistNotes} />
-            <Icon type="form" />
-            <AddNote onClick={this.handleOpenNotes}>
-              <FormattedMessage {...messages.add} />
-            </AddNote>
+            <NoteIcon type="form" />
+            {canEdit && (
+              <AddNote onClick={this.handleOpenNotes}>
+                <FormattedMessage {...messages.add} />
+              </AddNote>
+            )}
           </ProAssistTitle>
           {notes && notes.length && (
             <ProAssistBackground>{notesElements}</ProAssistBackground>
@@ -189,20 +197,22 @@ export class OrderFiles extends React.PureComponent<Props> {
         </ProAssistNotes>
         <FlexContainer>
           <RenderLayout>
-            <AccessoryColors
-              {...{
-                bibColor,
-                bindingColor,
-                onSelectStitchingColor,
-                onSelectColor,
-                allowZipperSelection
-              }}
-              stitchingValue={colorAccessories.stitching || stitchingValue}
-              stitchingName={colorAccessories.stitchingName || stitchingName}
-              zipperColor={colorAccessories.zipperColor || zipperColor}
-              bibColor={colorAccessories.bibColor || bibColor}
-              bindingColor={colorAccessories.bindingColor || bindingColor}
-            />
+            {canEdit && (
+              <AccessoryColors
+                {...{
+                  bibColor,
+                  bindingColor,
+                  onSelectStitchingColor,
+                  onSelectColor,
+                  allowZipperSelection
+                }}
+                stitchingValue={colorAccessories.stitching || stitchingValue}
+                stitchingName={colorAccessories.stitchingName || stitchingName}
+                zipperColor={colorAccessories.zipperColor || zipperColor}
+                bibColor={colorAccessories.bibColor || bibColor}
+                bindingColor={colorAccessories.bindingColor || bindingColor}
+              />
+            )}
             <RenderContainer>
               <Render3D
                 designSearch={true}
@@ -230,25 +240,29 @@ export class OrderFiles extends React.PureComponent<Props> {
               </ButtonContainer>
             </Button>
             <Divider />
-            <Button onClick={this.onDownload} icon="download">
-              <ButtonContainer>
-                <FormattedMessage {...messages.downloadAll} />
-              </ButtonContainer>
-            </Button>
-            <DraggerWithLoading
-              className="upload"
-              loading={uploadingFile}
-              onSelectImage={this.beforeUpload}
-              formatMessage={formatMessage}
-              extensions={['.svg']}
-            >
-              <Button>
+            {accessAssets.view && (
+              <Button onClick={this.onDownload} icon="download">
                 <ButtonContainer>
-                  <Icon type="upload" />
-                  <FormattedMessage {...messages.uploadDesign} />
+                  <FormattedMessage {...messages.downloadAll} />
                 </ButtonContainer>
               </Button>
-            </DraggerWithLoading>
+            )}
+            {canEdit && (
+              <DraggerWithLoading
+                className="upload"
+                loading={uploadingFile}
+                onSelectImage={this.beforeUpload}
+                formatMessage={formatMessage}
+                extensions={['.svg']}
+              >
+                <Button>
+                  <ButtonContainer>
+                    <Icon type="upload" />
+                    <FormattedMessage {...messages.uploadDesign} />
+                  </ButtonContainer>
+                </Button>
+              </DraggerWithLoading>
+            )}
             <FinalSvg>
               {pdfUrl && pdfUrl.length && (
                 <DownloadItem url={pdfUrl} name="Final PDF" />
@@ -258,10 +272,14 @@ export class OrderFiles extends React.PureComponent<Props> {
               )}
               {pngUrl && <DownloadItem url={pngUrl} name="Final PNG" />}
             </FinalSvg>
-            <AssetsLabel>
-              <FormattedMessage {...messages.assets} />
-            </AssetsLabel>
-            <FilesList {...{ assets }} />
+            {accessAssets.view && (
+              <>
+                <AssetsLabel>
+                  <FormattedMessage {...messages.assets} />
+                </AssetsLabel>
+                <FilesList {...{ assets }} />
+              </>
+            )}
             <ThumbnailLabel>
               <FormattedMessage {...messages.thumbnail} />
             </ThumbnailLabel>

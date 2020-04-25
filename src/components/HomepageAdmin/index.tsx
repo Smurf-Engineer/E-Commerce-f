@@ -12,7 +12,7 @@ import {
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
   getHomepageInfo,
-  updateProductTilesMutation
+  updateProductTilesMutation,
 } from './data'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
@@ -28,7 +28,7 @@ import {
   Container,
   ScreenTitle,
   SpinContainer,
-  Goback
+  Goback,
 } from './styledComponents'
 import messages from './messages'
 import { EMPTY_TILE, HOMEPAGE_LABEL, EMPTY_HEADER } from './constants'
@@ -41,9 +41,11 @@ import {
   HeaderImageResponse,
   ProductTilePlaceHolder,
   CarouselSettings,
-  Message
+  Message,
+  UserPermissions,
 } from '../../types/common'
 import { History } from 'history'
+import { EDIT_NAVIGATION } from '../AdminLayout/constants'
 
 interface Props {
   history: History
@@ -67,6 +69,7 @@ interface Props {
   secondaryHeaderCarousel: CarouselSettings
   mainHeaderCarousel: CarouselSettings
   currentPreview: string
+  permissions: UserPermissions
   formatMessage: (messageDescriptor: Message) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
@@ -116,7 +119,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
     const {
       setLoadersAction,
       setHomepageInfoAction,
-      client: { query }
+      client: { query },
     } = this.props
     const routeParam = this.getRouteParam()
     try {
@@ -124,7 +127,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const response = await query({
         query: getHomepageInfo,
         variables: { route: routeParam },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       })
       await this.handleOnChangePage()
       const {
@@ -133,7 +136,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         homepageImages,
         mainHeaderImages,
         productTiles,
-        carouselSettings
+        carouselSettings,
       } = response.data.getHomepageContent
       const items = featuredProducts.map((item: Product) => {
         return { visible: true, product: item }
@@ -149,12 +152,12 @@ class HomepageAdmin extends React.Component<Props, {}> {
         productTiles,
         mainHeaderCarousel: {
           duration: carouselSettings.slideDuration,
-          transition: carouselSettings.slideTransition
+          transition: carouselSettings.slideTransition,
         },
         secondaryHeaderCarousel: {
           duration: carouselSettings.secondarySlideDuration,
-          transition: carouselSettings.secondarySlideTransition
-        }
+          transition: carouselSettings.secondarySlideTransition,
+        },
       }
       setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -188,9 +191,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
         mainHeaderCarousel: { duration, transition },
         history: {
           location: {
-            state: { sportId }
-          }
-        }
+            state: { sportId },
+          },
+        },
       } = this.props
       setLoadersAction(Sections.MAIN_HEADER, true)
 
@@ -203,7 +206,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
               image_mobile: item.mobileImage,
               link: item.url,
               sport_id: sportId,
-              type: item.assetType
+              type: item.assetType,
             })
           }
           return filtered
@@ -212,14 +215,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
       )
 
       const {
-        data: { setMainHeader: response }
+        data: { setMainHeader: response },
       } = await setMainHeader({
         variables: {
           homepageImages,
           duration,
           transition,
-          mainHeader: true
-        }
+          mainHeader: true,
+        },
       })
 
       const mainHeaderList = response.map(
@@ -229,7 +232,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           image,
           image_mobile,
           link,
-          type
+          type,
         }: HeaderImageResponse) => {
           return {
             id,
@@ -237,7 +240,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
             desktopImage: image,
             mobileImage: image_mobile,
             url: link,
-            assetType: type
+            assetType: type,
           }
         }
       )
@@ -259,9 +262,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
         secondaryHeaderCarousel: { duration, transition },
         history: {
           location: {
-            state: { sportId }
-          }
-        }
+            state: { sportId },
+          },
+        },
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
 
@@ -274,7 +277,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
               image_mobile: item.mobileImage,
               link: item.url,
               sport_id: sportId,
-              type: item.assetType
+              type: item.assetType,
             })
           }
           return filtered
@@ -283,14 +286,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
       )
 
       const {
-        data: { setMainHeader: response }
+        data: { setMainHeader: response },
       } = await setMainHeader({
         variables: {
           homepageImages,
           duration,
           transition,
-          mainHeader: false
-        }
+          mainHeader: false,
+        },
       })
       const secondaryHeaderList = response.map(
         ({
@@ -299,7 +302,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           image,
           image_mobile,
           link,
-          type
+          type,
         }: HeaderImageResponse) => {
           return {
             id,
@@ -307,7 +310,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
             desktopImage: image,
             mobileImage: image_mobile,
             url: link,
-            assetType: type
+            assetType: type,
           }
         }
       )
@@ -337,7 +340,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       offset: offsetProp,
       currentPage: pageProp,
       limit,
-      setProductsData
+      setProductsData,
     } = this.props
     let offset = offsetParam !== undefined ? offsetParam : offsetProp
     let currentPage = pageParam !== undefined ? pageParam : pageProp
@@ -356,7 +359,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const data = await query({
         query: productsQuery,
         variables: { limit, offset },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       })
       setProductsData(data, offset, currentPage)
     } catch (e) {
@@ -378,9 +381,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setFeaturedProducts,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     setItemsAddAction()
     const itemsToSave = selectedItems.concat(items)
@@ -389,8 +392,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const response = await setFeaturedProducts({
         variables: {
           products: idCollection,
-          sportId
-        }
+          sportId,
+        },
       })
       message.success(get(response, 'data.setFeaturedProducts.message', ''))
     } catch (e) {
@@ -403,8 +406,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
     try {
       await deleteFeaturedProduct({
         variables: {
-          id
-        }
+          id,
+        },
       })
     } catch (e) {
       message.error(e.message)
@@ -419,9 +422,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       formatMessage,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     setLoadersAction(Sections.PRODUCT_TILES, true)
     const products = productTiles.map((item: ProductTiles) => ({
@@ -429,11 +432,11 @@ class HomepageAdmin extends React.Component<Props, {}> {
       image: item.image,
       content_tile: item.contentTile,
       title: item.title,
-      sport_id: sportId
+      sport_id: sportId,
     }))
     try {
       const response = await updateProductTiles({
-        variables: { products }
+        variables: { products },
       })
       const dataResponse = get(response, 'data.updateProductTiles', {})
       updateProductTilesListAction(dataResponse)
@@ -456,9 +459,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       secondaryHeader,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     const currentSection =
       section === Sections.MAIN_HEADER ? mainHeader : secondaryHeader
@@ -466,7 +469,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const newPlaceholder = {
         ...EMPTY_HEADER,
         sport_id: sportId || null,
-        assetType
+        assetType,
       }
       addCarouselItemAction(newPlaceholder, section)
     }
@@ -478,9 +481,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       productTiles,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     if (!productTiles || productTiles.length < 3) {
       const newTile = { ...EMPTY_TILE, sportId }
@@ -491,8 +494,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
   getRouteParam = () => {
     const {
       history: {
-        location: { pathname }
-      }
+        location: { pathname },
+      },
     } = this.props
     return pathname.split('/').pop()
   }
@@ -512,12 +515,13 @@ class HomepageAdmin extends React.Component<Props, {}> {
         mainContainer,
         mainHeader: mainHeaderLoader,
         secondaryHeader: secondaryHeaderLoader,
-        productTiles: productTilesLoader
+        productTiles: productTilesLoader,
       },
       secondaryHeader,
       selectedItems,
       productsModalOpen,
       items,
+      permissions,
       openModalAction,
       setUrlListAction,
       productTiles,
@@ -533,11 +537,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
       currentPreview,
       history: {
         location: {
-          state: { sportName }
-        }
-      }
+          state: { sportName },
+        },
+      },
     } = this.props
-
+    const access = permissions[EDIT_NAVIGATION] || {}
+    if (!access.edit) {
+      return null
+    }
     return mainContainer ? (
       <SpinContainer>
         <Spin />
@@ -552,7 +559,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           <FormattedMessage
             {...messages.title}
             values={{
-              title: sportName || HOMEPAGE_LABEL
+              title: sportName || HOMEPAGE_LABEL,
             }}
           />
         </ScreenTitle>
@@ -572,7 +579,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           loading={mainHeaderLoading}
           {...{
             desktopImage,
-            formatMessage
+            formatMessage,
           }}
         />
         <CarouselHeader
@@ -591,7 +598,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           loading={secondaryHeaderLoading}
           {...{
             desktopImage,
-            formatMessage
+            formatMessage,
           }}
         />
         <FeaturedProducts
@@ -603,7 +610,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
             limit,
             selectedItems,
             productsModalOpen,
-            items
+            items,
           }}
           changePage={this.handleOnChangePage}
           onSelectItem={this.handleOnSelectItem}
@@ -642,7 +649,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('homepageAdmin').toJS()
 const mapDispatchToProps = {
   ...HomepageAdminActions,
-  ...homepageAdminApiActions
+  ...homepageAdminApiActions,
 }
 
 const HomepageAdminEnhance = compose(

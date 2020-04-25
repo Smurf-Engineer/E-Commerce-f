@@ -27,6 +27,8 @@ import {
   InfoText
 } from './styledComponents'
 import messages from './messages'
+import { UserPermissions } from '../../types/common'
+import { DESIGN_LAB } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -38,6 +40,7 @@ interface Props {
   deliveryDaysChanges: boolean
   cutOffDays: number
   tutorialPlaylistChanged: boolean
+  permissions: UserPermissions
   cutOffDaysChanges: boolean
   formatMessage: (messageDescriptor: any) => string
   setDataAction: (data: any) => void
@@ -104,6 +107,7 @@ class DesignLabAdmin extends React.Component<Props, {}> {
       loading,
       tutorialPlaylist,
       deliveryDays,
+      permissions,
       tutorialPlaylistChanged,
       deliveryDaysChanges,
       setDeliveryDaysAction,
@@ -111,69 +115,74 @@ class DesignLabAdmin extends React.Component<Props, {}> {
       cutOffDaysChanges,
       cutOffDays
     } = this.props
-
+    const access = permissions[DESIGN_LAB] || {}
+    if (!access.view) {
+      return null
+    }
     return loading ? (
       <SpinContainer>
         <Spin />
       </SpinContainer>
     ) : (
-      <Container>
-        <ScreenTitle>{formatMessage(messages.deliveryDates)}</ScreenTitle>
-        <BoxContainer>
-          <InfoText>{formatMessage(messages.currentDeliveryDate)}</InfoText>
-          <StyledInputNumber
-            onChange={setDeliveryDaysAction}
-            value={deliveryDays}
-          />
-          <ButtonWrapper color={BLUE}>
-            <StyledButton
-              type="primary"
-              disabled={!deliveryDaysChanges}
-              onClick={this.saveDeliveryDays}
-              loading={loading}
-            >
-              {formatMessage(messages.update)}
-            </StyledButton>
-          </ButtonWrapper>
-        </BoxContainer>
-        <ScreenTitle>{formatMessage(messages.cutOffDays)}</ScreenTitle>
-        <BoxContainer>
-          <InfoText>{formatMessage(messages.currentCutOffDays)}</InfoText>
-          <StyledInputNumber
-            onChange={setCutoffDaysAction}
-            value={cutOffDays}
-          />
-          <ButtonWrapper color={BLUE}>
-            <StyledButton
-              type="primary"
-              disabled={!cutOffDaysChanges}
-              onClick={this.saveCutOffDays}
-              loading={loading}
-            >
-              {formatMessage(messages.update)}
-            </StyledButton>
-          </ButtonWrapper>
-        </BoxContainer>
-        <ScreenTitle>{formatMessage(messages.videoTutorial)}</ScreenTitle>
-        <BoxContainer>
-          <InfoText>{formatMessage(messages.tutorialPlaylist)}</InfoText>
-          <StyledInput
-            onChange={this.handleChangeText}
-            value={tutorialPlaylist}
-          />
-          <ButtonWrapper color={BLUE}>
-            <StyledButton
-              type="primary"
-              disabled={!tutorialPlaylistChanged}
-              onClick={this.savePlaylist}
-              loading={loading}
-            >
-              {formatMessage(messages.update)}
-            </StyledButton>
-          </ButtonWrapper>
-        </BoxContainer>
-      </Container>
-    )
+        <Container>
+          <ScreenTitle>{formatMessage(messages.deliveryDates)}</ScreenTitle>
+          <BoxContainer>
+            <InfoText>{formatMessage(messages.currentDeliveryDate)}</InfoText>
+            <StyledInputNumber
+              onChange={setDeliveryDaysAction}
+              disabled={!access.edit}
+              value={deliveryDays}
+            />
+            <ButtonWrapper color={BLUE}>
+              <StyledButton
+                type="primary"
+                disabled={!deliveryDaysChanges || !access.edit}
+                onClick={this.saveDeliveryDays}
+                loading={loading}
+              >
+                {formatMessage(messages.update)}
+              </StyledButton>
+            </ButtonWrapper>
+          </BoxContainer>
+          <ScreenTitle>{formatMessage(messages.cutOffDays)}</ScreenTitle>
+          <BoxContainer>
+            <InfoText>{formatMessage(messages.currentCutOffDays)}</InfoText>
+            <StyledInputNumber
+              onChange={setCutoffDaysAction}
+              value={cutOffDays}
+            />
+            <ButtonWrapper color={BLUE}>
+              <StyledButton
+                type="primary"
+                disabled={!cutOffDaysChanges}
+                onClick={this.saveCutOffDays}
+                loading={loading}
+              >
+                {formatMessage(messages.update)}
+              </StyledButton>
+            </ButtonWrapper>
+          </BoxContainer>
+          <ScreenTitle>{formatMessage(messages.videoTutorial)}</ScreenTitle>
+          <BoxContainer>
+            <InfoText>{formatMessage(messages.tutorialPlaylist)}</InfoText>
+            <StyledInput
+              onChange={this.handleChangeText}
+              disabled={!access.edit}
+              value={tutorialPlaylist}
+            />
+            <ButtonWrapper color={BLUE}>
+              <StyledButton
+                type="primary"
+                disabled={!tutorialPlaylistChanged || !access.edit}
+                onClick={this.savePlaylist}
+                loading={loading}
+              >
+                {formatMessage(messages.update)}
+              </StyledButton>
+            </ButtonWrapper>
+          </BoxContainer>
+        </Container>
+      )
   }
 }
 

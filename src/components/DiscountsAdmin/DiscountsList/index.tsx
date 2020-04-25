@@ -31,6 +31,7 @@ interface Props {
   currentPage: number
   orderBy: string
   sort: sorts
+  canEdit: boolean
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
@@ -45,6 +46,7 @@ const DiscountsList = ({
   interactiveHeaders,
   orderBy,
   sort,
+  canEdit,
   currentPage,
   data: { discountsQuery },
   onSortClick,
@@ -109,18 +111,22 @@ const DiscountsList = ({
               sort={orderBy === 'expiry' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
-            <HeaderTable
-              id={'switch'}
-              label={''}
-              interactiveHeaders={false}
-              {...{ onSortClick }}
-            />
-            <HeaderTable
-              id={'edit'}
-              label={''}
-              interactiveHeaders={false}
-              {...{ onSortClick }}
-            />
+            {canEdit && (
+              <>
+                <HeaderTable
+                  id={'switch'}
+                  label={''}
+                  interactiveHeaders={false}
+                  {...{ onSortClick }}
+                />
+                <HeaderTable
+                  id={'edit'}
+                  label={''}
+                  interactiveHeaders={false}
+                  {...{ onSortClick }}
+                />
+              </>
+            )}
           </Row>
         )
       }}
@@ -153,6 +159,7 @@ const DiscountsList = ({
             discountItemId,
             type,
             rate,
+            canEdit,
             expiry,
             active,
             onDiscountClick,

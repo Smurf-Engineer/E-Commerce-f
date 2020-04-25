@@ -34,7 +34,8 @@ import {
   StitchingColor,
   Font,
   DesignSearchCode,
-  MessagePayload
+  MessagePayload,
+  UserPermissions
 } from '../../types/common'
 import {
   orderSearchQuery,
@@ -48,6 +49,7 @@ import {
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
+import { DESIGN_SEARCH, DESIGN_SEARCH_ASSETS } from '../AdminLayout/constants'
 
 type Thumbnail = {
   style: {
@@ -78,6 +80,7 @@ interface Props {
   addingNote: boolean
   note: string
   loadingPreflight: boolean
+  permissions: UserPermissions
   // redux actions
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteAction: (text: string) => void
@@ -156,15 +159,18 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       setNoteAction,
       openNoteAction,
       setColorAction,
+      permissions,
       fontsData,
       designSearchCodes,
       creatingPdf
     } = this.props
 
+    const access = permissions[DESIGN_SEARCH] || {}
+    const accessAssets = permissions[DESIGN_SEARCH_ASSETS] || {}
     let loadErrContent = <Spin />
     if (notFound) {
       loadErrContent = <FormattedMessage {...messages.notFound} />
-    } else if (noAdmin) {
+    } else if (noAdmin || !access.view) {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
@@ -190,8 +196,10 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           openNoteAction,
           colorAccessories,
           creatingPdf,
+          accessAssets,
           loadingPreflight
         }}
+        canEdit={access.edit}
         checkPreflight={this.handleCheckPreflight}
         handleSaveNote={this.saveNote}
         onSelectStitchingColor={setStitchingColorAction}
