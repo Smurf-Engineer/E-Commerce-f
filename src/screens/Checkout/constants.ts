@@ -82,7 +82,7 @@ export const EU_SUBSIDIARY_COUNTRIES = [
 
 export const EUROPE = 9
 export const STRIPE = 'stripe'
-export const EU_STRIPE = 'suStripe'
+export const EU_STRIPE = 'euStripe'
 
 export const quantities = [
   'Personal',

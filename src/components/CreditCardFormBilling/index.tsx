@@ -292,15 +292,20 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       }
     }
     setLoadingBillingAction(true)
-    const stripeResponse = !selectedCardId
-      ? await stripe.createPaymentMethod(
-          PAYMENT_TYPE_CARD,
-          this.state.cardElement,
-          {
-            billing_details: stripeTokenData
-          }
-        )
-      : {}
+
+    let stripeResponse = {}
+
+    if (!selectedCardId && !isEuSubsidiary) {
+      stripeResponse = await stripe.createToken(stripeTokenData)
+    } else if (isEuSubsidiary) {
+      stripeResponse = await stripe.createPaymentMethod(
+        PAYMENT_TYPE_CARD,
+        this.state.cardElement,
+        {
+          billing_details: stripeTokenData
+        }
+      )
+    }
 
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
