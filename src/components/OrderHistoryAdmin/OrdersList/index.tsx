@@ -105,7 +105,7 @@ const OrdersList = ({
               label={formatMessage(messages.source)}
               sort={orderBy === 'source' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
-              />
+            />
             <HeaderTable
               id={'total_amount'}
               label={formatMessage(messages.total)}
@@ -220,7 +220,6 @@ const OrdersList = ({
         firstName,
         total,
         currency,
-        lastName
         lastName,
         source,
         estimatedDate,
