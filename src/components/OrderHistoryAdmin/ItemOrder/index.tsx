@@ -15,6 +15,7 @@ interface Props {
   shortId: string
   pendingCheck: boolean
   statusError?: boolean
+  canEdit: boolean
   total?: number
   currency?: string
   firstName: string
@@ -40,6 +41,7 @@ const ItemOrder = ({
   pendingCheck,
   estimatedDate,
   statusError,
+  canEdit,
   firstName,
   lastName,
   source,
@@ -84,6 +86,7 @@ const ItemOrder = ({
       >
         {upperFirst(status)}
         <StyledSelect
+          disabled={!canEdit}
           onChange={onSelectStatus}
           showSearch={false}
           value={status}

@@ -28,6 +28,7 @@ interface Props {
   withoutPadding?: boolean
   customLimit?: number
   searchText?: string
+  canEdit: boolean
   updateActiveProduct: (variables: {}) => Promise<any>
   onSortClick: (label: string, sort: sorts) => void
   onProductClick: (id: number) => void
@@ -40,6 +41,7 @@ const OrdersList = ({
   data: { productsQuery },
   onProductClick,
   onChangePage,
+  canEdit,
   updateActiveProduct,
   withPagination = true,
   withoutPadding = false
@@ -89,16 +91,25 @@ const OrdersList = ({
         get(images[0], 'thumbnail', '') ||
         get(images[0], 'front', '') ||
         jakrooLogo
+      const disabled = (!obj && !mtl && isCustom) || !canEdit
       return (
         <ItemOrder
           key={index}
           active={active}
           onCheck={updateActiveProduct}
-          disabled={!obj && !mtl && isCustom}
           productType={formatMessage(
             isCustom ? messages.custom : messages.inline
           )}
-          {...{ id, name, mpn, code, isCustom, onProductClick, image }}
+          {...{
+            id,
+            name,
+            mpn,
+            code,
+            isCustom,
+            onProductClick,
+            image,
+            disabled
+          }}
         />
       )
     }

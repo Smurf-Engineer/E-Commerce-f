@@ -47,6 +47,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  canEdit: boolean
   onSortClick: (label: string, sort: sorts) => void
   onOrderClick: (shortId: string) => void
   onChangePage: (page: number) => void
@@ -61,6 +62,7 @@ const OrdersList = ({
   currentPage,
   data: { ordersQuery },
   onSortClick,
+  canEdit,
   onOrderClick,
   onChangePage,
   withPagination = true,
@@ -248,6 +250,7 @@ const OrdersList = ({
             shortId,
             date,
             clientId,
+            canEdit,
             firstName,
             total,
             pendingChecks,

@@ -39,6 +39,7 @@ interface Props {
   currencies: Currency[]
   loading: boolean
   id: number
+  canEdit: boolean
   handleDeleteStore: () => void
   resetDataAction: () => void
   formatMessage: (messageDescriptor: Message) => string
@@ -98,6 +99,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       teamStore,
       currencies = [],
       loading,
+      canEdit,
       handleOnSave
     } = this.props
     if (loading || !teamStore) {
@@ -134,6 +136,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
           {typeof teamStore[header] === 'boolean' ? (
             <StyledSwitch
               defaultChecked={teamStore.featured}
+              disabled={!canEdit}
               onChange={this.handleOnSetFeatured}
             />
           ) : (
@@ -169,6 +172,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
               handleOnSetPrice,
               index,
               priceRange,
+              canEdit,
               pricesByCurrency,
               handleOnSave,
               formatMessage
@@ -189,12 +193,16 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
             <NameLink href={`/store-front?storeId=${teamStore.shortId}`}>
               {`${teamStore.name} ${formatMessage(messages.title)}`}
             </NameLink>
-            <EditButton onClick={this.handleEditStore}>
-              {formatMessage(messages.edit)}
-            </EditButton>
-            <DeleteButton onClick={this.handleDeleteStore}>
-              {formatMessage(messages.delete)}
-            </DeleteButton>
+            {canEdit && (
+              <>
+                <EditButton onClick={this.handleEditStore}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+                <DeleteButton onClick={this.handleDeleteStore}>
+                  {formatMessage(messages.delete)}
+                </DeleteButton>
+              </>
+            )}
           </ScreenTitle>
           <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
           <Table>

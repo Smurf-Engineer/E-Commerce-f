@@ -506,6 +506,7 @@ export interface UserType {
   token: string
   email: string
   administrator: boolean
+  permissions: UserPermissions
 }
 
 export interface AntColumns {
@@ -1511,6 +1512,16 @@ export type Color = {
   name: string
   value: string
   type?: string
+}
+
+export type RolePermission = {
+  page: string
+  edit: boolean
+  view: boolean
+}
+
+export type UserPermissions = {
+  [page: string]: RolePermission
 }
 
 export interface SelectedDesignType {

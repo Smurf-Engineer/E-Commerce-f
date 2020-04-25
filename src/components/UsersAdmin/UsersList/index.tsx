@@ -14,7 +14,7 @@ import {
   AddInternalButton,
   ScreenTitle,
   SearchInput,
-  OptionsContainer
+  OptionsContainer,
 } from './styledComponents'
 
 import debounce from 'lodash/debounce'
@@ -48,6 +48,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  canEdit: boolean
   repSearchText: string
   managerSearchText: string
   salesRep: Data
@@ -69,7 +70,7 @@ interface StateProps {
 
 class UsersList extends React.Component<Props, StateProps> {
   state = {
-    searchValue: ''
+    searchValue: '',
   }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchText(this.state.searchValue),
@@ -77,7 +78,7 @@ class UsersList extends React.Component<Props, StateProps> {
   )
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
-      currentTarget: { value }
+      currentTarget: { value },
     } = evt
     this.setState({ searchValue: value }, () => {
       this.raiseSearchWhenUserStopsTyping()
@@ -88,6 +89,7 @@ class UsersList extends React.Component<Props, StateProps> {
       formatMessage,
       orderBy,
       sort,
+      canEdit,
       currentPage,
       data: { usersQuery },
       onSortClick,
@@ -103,7 +105,7 @@ class UsersList extends React.Component<Props, StateProps> {
       onSetAdministrator,
       onAddNewUser,
       searchText,
-      onSelectUser
+      onSelectUser,
     } = this.props
 
     const users = get(usersQuery, 'users', []) as User[]
@@ -117,7 +119,7 @@ class UsersList extends React.Component<Props, StateProps> {
 
     const header = (
       <MediaQuery maxWidth={768}>
-        {matches => {
+        {(matches) => {
           if (matches) {
             return (
               <Row>
@@ -214,7 +216,7 @@ class UsersList extends React.Component<Props, StateProps> {
           netsuiteId = '',
           billingCountry,
           createdAt,
-          shortId
+          shortId,
         }: User,
         index: number
       ) => {
@@ -228,6 +230,7 @@ class UsersList extends React.Component<Props, StateProps> {
               setUserRep,
               email,
               firstName,
+              canEdit,
               lastName,
               managerSelected,
               setManager,
@@ -241,7 +244,7 @@ class UsersList extends React.Component<Props, StateProps> {
               billingCountry,
               createdAt,
               onSelectUser,
-              shortId
+              shortId,
             }}
           />
         )
@@ -252,9 +255,11 @@ class UsersList extends React.Component<Props, StateProps> {
       <Container {...{ withoutPadding }}>
         <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>
         <OptionsContainer>
-          <AddInternalButton onClick={onAddNewUser}>
-            {formatMessage(messages.addUser)}
-          </AddInternalButton>
+          {canEdit && (
+            <AddInternalButton onClick={onAddNewUser}>
+              {formatMessage(messages.addUser)}
+            </AddInternalButton>
+          )}
           <SearchInput
             value={this.state.searchValue || searchText}
             onChange={this.handleInputChange}
@@ -314,7 +319,7 @@ const UsersListEnhance = compose(
       orderBy,
       sort,
       customLimit,
-      searchText
+      searchText,
     }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : USERS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
@@ -324,11 +329,11 @@ const UsersListEnhance = compose(
           offset,
           order: orderBy,
           orderAs: sort,
-          searchText
+          searchText,
         },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       }
-    }
+    },
   }),
   withError,
   withLoading

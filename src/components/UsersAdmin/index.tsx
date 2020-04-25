@@ -21,10 +21,11 @@ import { Container } from './styledComponents'
 import List from './UsersList'
 import messages from './messages'
 import message from 'antd/lib/message'
-import { sorts, User, Message } from '../../types/common'
+import { sorts, User, Message, UserPermissions } from '../../types/common'
 import SignupModal from './SignupModal'
 import { validateEmail } from '../../utils/utilsFunctions'
 import Options from './Options'
+import { USERS } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -41,6 +42,7 @@ interface Props {
   loading: boolean
   designSelected: string
   note: string
+  permissions: UserPermissions
   repSearchText: string
   managerSearchText: string
   setSearchManager: (value: string) => void
@@ -90,7 +92,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       sort,
       searchText,
       onResetModalAction,
-      setLoadingAction
+      setLoadingAction,
     } = this.props
 
     if (!name || !lastName || !email) {
@@ -107,7 +109,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       email: email.toLowerCase(),
       first_name: name,
       last_name: lastName,
-      countryCode: initialCountryCode
+      countryCode: initialCountryCode,
     }
 
     try {
@@ -130,8 +132,8 @@ class UsersAdmin extends React.Component<Props, StateProps> {
               offset: 0,
               order: orderBy,
               orderAs: sort,
-              searchText
-            }
+              searchText,
+            },
           })
           const usersList = get(storedData, 'usersQuery.users')
           usersList.unshift(newUser)
@@ -142,11 +144,11 @@ class UsersAdmin extends React.Component<Props, StateProps> {
               offset: 0,
               order: orderBy,
               orderAs: sort,
-              searchText
+              searchText,
             },
-            data: storedData
+            data: storedData,
           })
-        }
+        },
       })
       onResetModalAction()
     } catch (error) {
@@ -168,6 +170,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       designSelected,
       setDesignSelected,
       name,
+      permissions,
       lastName,
       repSearchText,
       managerSearchText,
@@ -183,9 +186,12 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       openModal,
       onToggleModalAction,
       onResetModalAction,
-      loading
+      loading,
     } = this.props
-
+    const access = permissions[USERS] || {}
+    if (!access.view) {
+      return null
+    }
     return (
       <Container>
         <Route
@@ -204,6 +210,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
               }}
               onSortClick={this.handleOnSortClick}
               onChangePage={this.handleOnChangePage}
+              canEdit={access.edit}
               onSetAdministrator={this.handleOnSetAdministrator}
               onSelectUser={this.handleOnSelectUser}
               searchReps={this.searchReps}
@@ -230,8 +237,9 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                   loading,
                   setLoadingAction,
                   setDesignSelected,
-                  showLocker
+                  showLocker,
                 }}
+                canEdit={access.edit}
                 onChangeSection={onChangeSectionAction}
               />
             </div>
@@ -265,7 +273,10 @@ class UsersAdmin extends React.Component<Props, StateProps> {
     }
   }
   handleOnSetAdministrator = async (id: boolean) => {
-    const { setAdminUser, formatMessage } = this.props
+    const {
+      setAdminUser,
+      formatMessage,
+    } = this.props
     try {
       const query = this.userQuery()
       await setAdminUser({
@@ -325,7 +336,7 @@ const mapStateToProps = (state: any) => {
   const app = state.get('app').toJS()
   return {
     ...usersAdmin,
-    ...app
+    ...app,
   }
 }
 

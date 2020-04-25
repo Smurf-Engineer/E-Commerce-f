@@ -83,9 +83,9 @@ interface Props extends RouteComponentProps<any> {
   fonts: []
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
-  restoreUserSession: () => void
+  restoreUserSession: (client: any) => void
   deleteUserSession: () => void
-  saveUserSession: (user: UserType) => void
+  saveUserSession: (user: UserType, client: any) => void
   openLogoutModalAction: (open: boolean) => void
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
@@ -101,10 +101,10 @@ class MainLayout extends React.Component<Props, {}> {
   state = {}
 
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSession } = this.props
-      restoreUserSession()
+      restoreUserSession(client)
     }
   }
 
@@ -325,8 +325,8 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   handleOnLogin = (user: UserType) => {
-    const { saveUserSession } = this.props
-    saveUserSession(user)
+    const { saveUserSession, client } = this.props
+    saveUserSession(user, client)
   }
 
   closeResults = () => {

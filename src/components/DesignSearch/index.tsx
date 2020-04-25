@@ -35,6 +35,7 @@ import {
   Font,
   DesignSearchCode,
   MessagePayload,
+  UserPermissions,
   QueryProps,
   User
 } from '../../types/common'
@@ -54,6 +55,7 @@ import {
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
+import { DESIGN_SEARCH, DESIGN_SEARCH_ASSETS } from '../AdminLayout/constants'
 
 type Thumbnail = {
   style: {
@@ -97,6 +99,7 @@ interface Props {
   salesRep: Data
   repSearchText: string
   loadingPreflight: boolean
+  permissions: UserPermissions
   // redux actions
   setUserRepAction: (userRep: User) => void
   setManagerAction: (userRep: User) => void
@@ -110,7 +113,7 @@ interface Props {
   setLoadingNote: (loading: boolean) => void
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
-  restoreUserSessionAction: () => void
+  restoreUserSessionAction: (client: any) => void
   formatMessage: (messageDescriptor: any) => string
   uploadProDesignAction: (file: any, code: string) => void
   resetDataAction: () => void
@@ -136,10 +139,10 @@ interface Props {
 export class DesignSearchAdmin extends React.Component<Props, {}> {
   debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
-      restoreUserSessionAction()
+      restoreUserSessionAction(client)
     }
   }
   componentDidMount() {
@@ -183,15 +186,18 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       setNoteAction,
       openNoteAction,
       setColorAction,
+      permissions,
       fontsData,
       designSearchCodes,
       creatingPdf
     } = this.props
 
+    const access = permissions[DESIGN_SEARCH] || {}
+    const accessAssets = permissions[DESIGN_SEARCH_ASSETS] || {}
     let loadErrContent = <Spin />
     if (notFound) {
       loadErrContent = <FormattedMessage {...messages.notFound} />
-    } else if (noAdmin) {
+    } else if (noAdmin || !access.view) {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
@@ -220,8 +226,10 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           openNoteAction,
           colorAccessories,
           creatingPdf,
+          accessAssets,
           loadingPreflight
         }}
+        canEdit={access.edit}
         changeUserRep={this.changeUserRep}
         changeManager={this.changeManager}
         searchReps={this.searchReps}

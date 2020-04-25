@@ -21,6 +21,7 @@ interface Props {
   billingCountry: string
   createdAt: string
   shortId: string
+  canEdit: boolean
   repSelected: User
   managerSelected: User
   repUsers: User[]
@@ -52,8 +53,9 @@ const ItemOrder = ({
   onSetAdministrator,
   billingCountry,
   createdAt,
+  canEdit,
   onSelectUser,
-  shortId
+  shortId,
 }: Props) => {
   const stopPropagation = (event: React.MouseEvent) => {
     if (event) {
@@ -84,7 +86,11 @@ const ItemOrder = ({
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>
       <Cell onClick={stopPropagation}>
-        <Switch onChange={handleOnSetAdministrator} checked={administrator} />
+        <Switch
+          disabled={!canEdit}
+          onChange={handleOnSetAdministrator}
+          checked={administrator}
+        />
       </Cell>
       <Cell>
         <Mail title={email}>{email}</Mail>
@@ -106,10 +112,10 @@ const ItemOrder = ({
               { shortId: saleId, firstName: name, lastName: secondName }: User,
               indexSales
             ) => (
-              <Option key={indexSales} value={saleId}>
-                {name} {secondName}
-              </Option>
-            )
+                <Option key={indexSales} value={saleId}>
+                  {name} {secondName}
+                </Option>
+              )
           )}
         </StyledSelect>
       </Cell>
@@ -133,10 +139,10 @@ const ItemOrder = ({
               }: User,
               indexManagers
             ) => (
-              <Option key={indexManagers} value={managerId}>
-                {name} {secondName}
-              </Option>
-            )
+                <Option key={indexManagers} value={managerId}>
+                  {name} {secondName}
+                </Option>
+              )
           )}
         </StyledSelect>
       </Cell>

@@ -94,6 +94,7 @@ interface Props {
   loading: boolean
   userToSearch: string
   storeShortId: string
+  canEdit: boolean
   startDate?: Moment
   endDate?: Moment
   cutoffSettings: CutoffData
@@ -360,6 +361,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       storeShortId,
       users,
       buildTeamStore,
+      canEdit,
       featured,
       onDemand,
       deleteItemSelectedAction,
@@ -371,6 +373,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
       endDate,
       onChangeTeamStoreType
     } = this.props
+    if (!canEdit) {
+      return null
+    }
     const { searchValue } = this.state
 
     let selected = ''
@@ -525,8 +530,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
         {imagePreviewUrl ? (
           <PreviewImage src={imagePreviewUrl} />
         ) : (
-          <Dragger onSelectImage={this.beforeUpload} />
-        )}
+            <Dragger onSelectImage={this.beforeUpload} />
+          )}
         <BuildButton disabled={!name || !userId} onClick={buildTeamStore}>
           {formatMessage(storeShortId ? messages.save : messages.buildStore)}
         </BuildButton>

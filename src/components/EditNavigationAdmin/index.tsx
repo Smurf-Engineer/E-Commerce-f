@@ -19,12 +19,13 @@ import {
   SwitchWrapper,
   StyledSwitch
 } from './styledComponents'
-import { SportType } from '../../types/common'
+import { SportType, UserPermissions } from '../../types/common'
 import {
   CATALOGUE_CONSTANT,
   NAVBAR_CONSTANT,
   ACTIVE_CONSTANT
 } from '../../constants'
+import { EDIT_NAVIGATION } from '../AdminLayout/constants'
 
 interface Data extends QueryProps {
   sports: [SportType]
@@ -32,6 +33,7 @@ interface Data extends QueryProps {
 interface Props {
   history: History
   data: Data
+  permissions: UserPermissions
   activateInMenu: (variables: {}) => void
 }
 
@@ -39,9 +41,13 @@ const CYCLING = 'Cycling'
 class EditNavigationAdmin extends React.Component<Props, {}> {
   render() {
     const {
-      data: { sports }
+      data: { sports },
+      permissions
     } = this.props
-
+    const access = permissions[EDIT_NAVIGATION] || {}
+    if (!access.view) {
+      return null
+    }
     const sportsList = sports.map(
       ({ id, name, navbar, route, catalogue, active }, index) => {
         return (
@@ -58,6 +64,7 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
                 <SwitchWrapper>
                   <StyledSwitch
                     key={id}
+                    disabled={!access.edit}
                     checked={active}
                     onChange={this.handleActivateSport(id, ACTIVE_CONSTANT)}
                   />
@@ -69,6 +76,7 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
                 <SwitchWrapper>
                   <StyledSwitch
                     key={id}
+                    disabled={!access.edit}
                     checked={catalogue}
                     onChange={this.handleActivateSport(id, CATALOGUE_CONSTANT)}
                   />
@@ -79,6 +87,7 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
               <SwitchWrapper>
                 <StyledSwitch
                   key={id}
+                  disabled={!access.edit}
                   checked={navbar}
                   onChange={this.handleActivateSport(id, NAVBAR_CONSTANT)}
                 />
@@ -123,9 +132,15 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
   handleRedirect = (sportId?: number, sportRoute?: string) => ({
     currentTarget
   }: React.MouseEvent<HTMLDivElement>) => {
-    const { history } = this.props
+    const { history, permissions } = this.props
     const { id: sportName } = currentTarget
-    history.push(`/admin/homepage/${sportRoute || ''}`, { sportId, sportName })
+    const access = permissions[EDIT_NAVIGATION] || {}
+    if (access.edit) {
+      history.push(`/admin/homepage/${sportRoute || ''}`, {
+        sportId,
+        sportName
+      })
+    }
   }
 
   handleActivateSport = (id: number, field: string) => async () => {
