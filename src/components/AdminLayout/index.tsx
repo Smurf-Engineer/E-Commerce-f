@@ -23,7 +23,6 @@ import {
   DISCOUNTS,
   PRODUCT_CATALOG,
   PRODUCT_INTERNAL,
-  USERS,
   TEAM_STORES,
   DESIGN_SEARCH,
   DESIGN_LAB,
@@ -32,6 +31,9 @@ import {
   CREATE_DESIGNS,
   DESIGN_LAB_TOOLS,
   PRO_ASSIST,
+  USER_LIST,
+  ROLE_MANAGEMENT,
+  SALES_REP
 } from './constants'
 import {
   SideBar,
@@ -114,8 +116,14 @@ class AdminLayout extends React.Component<Props, {}> {
       case DESIGN_SEARCH:
         history.push('/admin/design-search')
         break
-      case USERS:
+      case USER_LIST:
         history.push('/admin/users')
+        break
+      case ROLE_MANAGEMENT:
+        history.push('/admin/roles')
+        break
+      case SALES_REP:
+        history.push('/admin/reps')
         break
       case TEAM_STORES:
         history.push('/admin/team-stores')
@@ -173,13 +181,13 @@ class AdminLayout extends React.Component<Props, {}> {
           )}
         </SubMenu>
       ) : (
-        permissions[title] &&
-        permissions[title].view && (
-          <Menu.Item className="ant-menu-item-custom" key={title}>
-            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-          </Menu.Item>
+          permissions[title] &&
+          permissions[title].view && (
+            <Menu.Item className="ant-menu-item-custom" key={title}>
+              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+            </Menu.Item>
+          )
         )
-      )
     )
 
     const logoutButton = (

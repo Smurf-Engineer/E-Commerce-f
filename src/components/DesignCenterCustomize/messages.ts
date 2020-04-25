@@ -35,5 +35,13 @@ export default defineMessages({
   unsupportedDeviceButton: {
     id: 'screens.DesignCenter.unsupportedDeviceButton',
     defaultMessage: 'Got it!'
+  },
+  proAssist: {
+    id: 'screens.DesignCenter.proAssist',
+    defaultMessage: '{proLabel} ASSIST'
+  },
+  proLabel: {
+    id: 'screens.DesignCenter.proLabel',
+    defaultMessage: 'PRO'
   }
 })

@@ -7,7 +7,12 @@ import { connect } from 'react-redux'
 import { getUsersQuery } from './UsersList/data'
 import { Route } from 'react-router-dom'
 import get from 'lodash/get'
-import { setAdminUserMutation, createUserMutation } from './data'
+import {
+  setAdminUserMutation,
+  createUserMutation,
+  assignRepUserMutation,
+  setManagerMutation
+} from './data'
 import { USERS_LIMIT } from './constants'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -38,7 +43,13 @@ interface Props {
   designSelected: string
   note: string
   permissions: UserPermissions
+  repSearchText: string
+  managerSearchText: string
+  setSearchManager: (value: string) => void
+  setSearchRep: (value: string) => void
   setNoteText: (text: string) => void
+  assignRepUser: (variables: {}) => Promise<User>
+  assignManager: (variables: {}) => Promise<User>
   setDesignSelected: (designId: string) => void
   formatMessage: (messageDescriptor: Message, params?: object) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
@@ -161,6 +172,8 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       name,
       permissions,
       lastName,
+      repSearchText,
+      managerSearchText,
       setNoteText,
       setLoadingAction,
       note,
@@ -186,14 +199,27 @@ class UsersAdmin extends React.Component<Props, StateProps> {
           exact={true}
           render={() => (
             <List
-              {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+              {...{
+                formatMessage,
+                repSearchText,
+                managerSearchText,
+                currentPage,
+                orderBy,
+                sort,
+                searchText
+              }}
               onSortClick={this.handleOnSortClick}
               onChangePage={this.handleOnChangePage}
               canEdit={access.edit}
               onSetAdministrator={this.handleOnSetAdministrator}
               onSelectUser={this.handleOnSelectUser}
+              searchReps={this.searchReps}
+              searchManager={this.searchManager}
+              setUserRep={this.setUserRep}
+              setManager={this.setManager}
               setSearchText={setSearchTextAction}
               onAddNewUser={onToggleModalAction}
+              withoutPadding={true}
             />
           )}
         />
@@ -229,38 +255,71 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       </Container>
     )
   }
+  userQuery = () => {
+    const { orderBy, sort, searchText, currentPage } = this.props
+    const offset = currentPage ? (currentPage - 1) * USERS_LIMIT : 0
+    return {
+      query: getUsersQuery,
+      variables: {
+        limit: USERS_LIMIT,
+        offset,
+        order: orderBy,
+        orderAs: sort,
+        searchText
+      },
+      options: {
+        fetchPolicy: 'network-only'
+      }
+    }
+  }
   handleOnSetAdministrator = async (id: boolean) => {
     const {
       setAdminUser,
-      orderBy,
-      sort,
-      searchText,
       formatMessage,
     } = this.props
     try {
+      const query = this.userQuery()
       await setAdminUser({
         variables: { id },
-        refetchQueries: [
-          {
-            query: getUsersQuery,
-            variables: {
-              limit: USERS_LIMIT,
-              offset: 0,
-              order: orderBy,
-              orderAs: sort,
-              searchText,
-            },
-            options: {
-              fetchPolicy: 'network-only',
-            },
-          },
-        ],
+        refetchQueries: [query]
       })
     } catch (e) {
       message.error(formatMessage(messages.unexpectedError))
     }
   }
-  handleOnSaveUser = () => {}
+  setUserRep = async (repUser: string, userId: string) => {
+    const { assignRepUser, formatMessage } = this.props
+    try {
+      const query = this.userQuery()
+      await assignRepUser({
+        variables: { userId, repUser },
+        refetchQueries: [query]
+      })
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
+  }
+  setManager = async (manager: string, userId: string) => {
+    const { assignManager, formatMessage } = this.props
+    try {
+      const query = this.userQuery()
+      await assignManager({
+        variables: { userId, manager },
+        refetchQueries: [query]
+      })
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
+  }
+  searchManager = (value: string) => {
+    const { setSearchManager } = this.props
+    setSearchManager(value)
+  }
+  searchReps = (value: string) => {
+    const { setSearchRep } = this.props
+    setSearchRep(value)
+  }
+  handleOnSaveUser = () => { }
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props
     setOrderByAction(label, sort)
@@ -283,6 +342,8 @@ const mapStateToProps = (state: any) => {
 
 const UsersAdminEnhance = compose(
   setAdminUserMutation,
+  assignRepUserMutation,
+  setManagerMutation,
   createUserMutation,
   connect(mapStateToProps, { ...UsersAdminActions })
 )(UsersAdmin)

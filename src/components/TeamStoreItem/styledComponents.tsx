@@ -5,6 +5,10 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import { WHITE, GRAY_DARK, GRAY_STRONG, GRAY } from '../../theme/colors'
 
+interface DivProps {
+  small?: boolean
+}
+
 export const Container = styled.div`
   margin-bottom: 30px;
   &:hover {
@@ -36,7 +40,7 @@ export const TitleName = styled.div`
 }`
 
 export const TeamStoreCard = styled.div`
-  width: 658px;
+  width: ${({ small }: DivProps) => small ? '428px' : '658px'};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: auto;

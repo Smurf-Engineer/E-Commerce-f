@@ -203,7 +203,6 @@ class Payment extends React.PureComponent<Props, {}> {
     const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
       billingAddress.country.toLowerCase()
     )
-
     const paymentForm =
       paymentMethod === CREDITCARD ? (
         <CreditCardForm
@@ -235,9 +234,9 @@ class Payment extends React.PureComponent<Props, {}> {
             showBillingAddressFormAction,
             paymentClientSecret,
             createPaymentIntent,
-            isFixedTeamstore
+            isFixedTeamstore,
+            stripe
           }}
-          stripe={europeStripeAccount ? euStripe : stripe}
           setStripeCardDataAction={this.setStripeCardData}
           selectDropdownAction={this.handleOnDropdownAction}
           inputChangeAction={this.handleOnChangeInput}

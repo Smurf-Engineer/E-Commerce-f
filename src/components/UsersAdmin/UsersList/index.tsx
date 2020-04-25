@@ -25,7 +25,7 @@ import EmptyContainer from '../../EmptyContainer'
 import { sorts, QueryProps, User } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getUsersQuery } from './data'
+import { getUsersQuery, getRepUsers, getManagers } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Data extends QueryProps {
@@ -33,6 +33,10 @@ interface Data extends QueryProps {
     fullCount: number
     users: User[]
   }
+}
+
+interface ManagersData extends QueryProps {
+  managersQuery: User[]
 }
 
 interface Props {
@@ -45,6 +49,14 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   canEdit: boolean
+  repSearchText: string
+  managerSearchText: string
+  salesRep: Data
+  managers: ManagersData
+  setManager: (value: string, userId: string) => void
+  setUserRep: (value: string, userId: string) => void
+  searchReps: (value: string) => void
+  searchManager: (value: string) => void
   onSortClick: (label: string, sort: sorts) => void
   onChangePage: (page: number) => void
   onSetAdministrator: (id: number) => void
@@ -81,6 +93,12 @@ class UsersList extends React.Component<Props, StateProps> {
       currentPage,
       data: { usersQuery },
       onSortClick,
+      searchReps,
+      searchManager,
+      setUserRep,
+      setManager,
+      salesRep,
+      managers,
       onChangePage,
       withPagination = true,
       withoutPadding = false,
@@ -91,6 +109,8 @@ class UsersList extends React.Component<Props, StateProps> {
     } = this.props
 
     const users = get(usersQuery, 'users', []) as User[]
+    const repUsers = get(salesRep, 'repUsers.users', []) as User[]
+    const managersUsers = get(managers, 'managersQuery', []) as User[]
     const fullCount = get(usersQuery, 'fullCount', 0)
 
     if (!users || !users.length) {
@@ -164,6 +184,18 @@ class UsersList extends React.Component<Props, StateProps> {
                 sort={orderBy === 'netsuite_internal' ? sort : 'none'}
                 {...{ onSortClick }}
               />
+              <HeaderTable
+                id={'sales_rep'}
+                label={formatMessage(messages.salesRep)}
+                sort={orderBy === 'sales_rep' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'account_manager'}
+                label={formatMessage(messages.accountManager)}
+                sort={orderBy === 'account_manager' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
             </Row>
           )
         }}
@@ -177,6 +209,8 @@ class UsersList extends React.Component<Props, StateProps> {
           email,
           firstName,
           lastName,
+          salesRep: repSelected,
+          accountManager: managerSelected,
           socialMethod,
           administrator,
           netsuiteId = '',
@@ -191,11 +225,19 @@ class UsersList extends React.Component<Props, StateProps> {
             key={index}
             {...{
               id,
+              searchReps,
+              searchManager,
+              setUserRep,
               email,
               firstName,
               canEdit,
               lastName,
+              managerSelected,
+              setManager,
               socialMethod,
+              managersUsers,
+              repUsers,
+              repSelected,
               administrator,
               onSetAdministrator,
               netsuiteId,
@@ -248,9 +290,29 @@ interface OwnProps {
   sort?: string
   customLimit?: number
   searchText?: string
+  repSearchText?: string
+  managerSearchText?: string
 }
 
 const UsersListEnhance = compose(
+  graphql(getManagers, {
+    name: 'managers',
+    options: ({ managerSearchText }: OwnProps) => ({
+      variables: {
+        searchText: managerSearchText
+      },
+      fetchPolicy: 'network-only'
+    })
+  }),
+  graphql(getRepUsers, {
+    name: 'salesRep',
+    options: ({ repSearchText }: OwnProps) => ({
+      variables: {
+        text: repSearchText
+      },
+      fetchPolicy: 'network-only'
+    })
+  }),
   graphql(getUsersQuery, {
     options: ({
       currentPage,

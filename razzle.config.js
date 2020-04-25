@@ -133,6 +133,8 @@ module.exports = {
         'GOOGLE_TAG_MANAGER_ID',
         'SLAASK_KEY',
         'SLAASK_TEAM',
+        'SLAASK_SUPPORT_KEY',
+        'SLAASK_SUPPORT_TEAM',
         'LOG_ROCKET_KEY',
         'GOOGLE_FONTS_KEY',
         'GOOGLE_FONTS_URL',
