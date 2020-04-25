@@ -717,6 +717,7 @@ export interface OrderHistory {
   lastName?: string
   netsuiteAttempts: number
   source?: string
+  cutoffDate?: string
 }
 
 export interface Discount {
