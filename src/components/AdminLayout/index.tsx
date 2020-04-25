@@ -23,7 +23,6 @@ import {
   DISCOUNTS,
   PRODUCT_CATALOG,
   PRODUCT_INTERNAL,
-  USERS,
   TEAM_STORES,
   DESIGN_SEARCH,
   DESIGN_LAB,
@@ -31,7 +30,10 @@ import {
   ADD_PRO_DESIGN,
   CREATE_DESIGNS,
   DESIGN_LAB_TOOLS,
-  PRO_ASSIST
+  PRO_ASSIST,
+  USER_LIST,
+  ROLE_MANAGEMENT,
+  SALES_REP
 } from './constants'
 import {
   SideBar,
@@ -113,8 +115,14 @@ class AdminLayout extends React.Component<Props, {}> {
       case DESIGN_SEARCH:
         history.push('/admin/design-search')
         break
-      case USERS:
+      case USER_LIST:
         history.push('/admin/users')
+        break
+      case ROLE_MANAGEMENT:
+        history.push('/admin/roles')
+        break
+      case SALES_REP:
+        history.push('/admin/reps')
         break
       case TEAM_STORES:
         history.push('/admin/team-stores')

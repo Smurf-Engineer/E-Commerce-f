@@ -7,8 +7,8 @@ import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import reverse from 'lodash/reverse'
+import queryString from 'query-string'
 import withLoading from '../WithLoadingData'
-import withError from '../WithError'
 import { SELECTED_DESIGN } from '../../constants'
 import { QueryProps, StyleModalType, Style } from '../../types/common'
 import { stylesQuery } from './data'
@@ -39,7 +39,9 @@ interface Props {
   productId: number
   themeId: number
   complexity: number
+  history: History
   isMobile: boolean
+  design?: string
   onSelectStyle: (style: DesignStyle, index: number, colors: string[]) => void
   onSelectStyleComplexity: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -50,15 +52,37 @@ interface Props {
   ) => void
 }
 
-export class DesignCenterStyle extends React.PureComponent<Props, {}> {
+export class DesignCenterStyle extends React.Component<Props, {}> {
+  selectStyleByName() {
+    const { design, data } = this.props
+    if (data && !data.loading && data.styles) {
+      const index = data.styles.findIndex(
+        elem => elem.name.toLowerCase() === design.toLowerCase()
+      )
+      if (index !== -1) {
+        const { id } = data.styles[index]
+        this.handleOnSelectStyle(id, index)
+      }
+    }
+  }
   handleOnSelectStyle = (id: number, index: any) => {
     const {
       styleIndex,
       openNewStyleModalAction,
       designHasChanges,
+      history,
       data: { styles }
     } = this.props
     const label = get(styles[index], 'name', '')
+    const {
+      location: { pathname, search }
+    } = history
+    const { id: designId, style } = queryString.parse(search)
+    const themeParam = encodeURIComponent(style)
+    const designParam = encodeURIComponent(label)
+    history.push(
+      `${pathname}?id=${designId}&style=${themeParam}&design=${designParam}`
+    )
     window.dataLayer.push({ event: SELECTED_DESIGN, label })
     if (styleIndex !== -1 && designHasChanges) {
       openNewStyleModalAction(true, index, id)
@@ -95,8 +119,13 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
       data: { styles = [] },
       formatMessage,
       styleModalData: { openNewStyleModal },
-      isMobile
+      isMobile,
+      styleIndex,
+      design
     } = this.props
+    if (styleIndex === -1 && design) {
+      this.selectStyleByName()
+    }
     if (!styles.length) {
       return (
         <Container>
@@ -156,7 +185,6 @@ const DesignCenterStyleWithData = compose(
       variables: { productId, themeId }
     })
   }),
-  withError,
   withLoading
 )(DesignCenterStyle)
 

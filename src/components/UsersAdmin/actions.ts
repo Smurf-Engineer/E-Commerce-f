@@ -13,7 +13,9 @@ import {
   ON_TOGGLE_MODAL,
   ON_RESET_MODAL,
   SET_LOADING,
-  CHANGE_NOTE
+  CHANGE_NOTE,
+  SET_SEARCH,
+  SET_SEARCH_MANAGER
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -70,4 +72,14 @@ export const onResetModalAction = () => ({
 export const setLoadingAction = (loading: boolean) => ({
   type: SET_LOADING,
   loading
+})
+
+export const setSearchRep = (value: string) => ({
+  type: SET_SEARCH,
+  value
+})
+
+export const setSearchManager = (value: string) => ({
+  type: SET_SEARCH_MANAGER,
+  value
 })

@@ -103,6 +103,12 @@ const OrdersList = ({
               label={formatMessage(messages.source)}
               sort={orderBy === 'source' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
+              />
+            <HeaderTable
+              id={'total_amount'}
+              label={formatMessage(messages.total)}
+              sort={orderBy === 'total_amount' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
               id={'created_at'}
@@ -210,6 +216,9 @@ const OrdersList = ({
         netsuite,
         netsuiteAttempts,
         firstName,
+        total,
+        currency,
+        lastName
         lastName,
         source,
         estimatedDate,
@@ -231,6 +240,7 @@ const OrdersList = ({
       return (
         <ItemOrder
           key={index}
+          currency={currency ? currency.abbreviation : ''}
           statusError={!!errorStatus || status === PAYMENT_ISSUE}
           pendingCheck={pendingChecks > 0 && !netsuiteStatus}
           status={errorStatus || netsuiteStatus || status}
@@ -239,6 +249,7 @@ const OrdersList = ({
             date,
             clientId,
             firstName,
+            total,
             pendingChecks,
             estimatedDate,
             lastName,

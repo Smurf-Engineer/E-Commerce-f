@@ -15,6 +15,8 @@ interface Props {
   shortId: string
   pendingCheck: boolean
   statusError?: boolean
+  total?: number
+  currency?: string
   firstName: string
   lastName: string
   source: string
@@ -32,6 +34,8 @@ const ItemOrder = ({
   clientId,
   status,
   shortId,
+  total,
+  currency,
   onOrderClick,
   pendingCheck,
   estimatedDate,
@@ -62,6 +66,9 @@ const ItemOrder = ({
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
       <Cell>{source}</Cell>
+      <Cell>
+        {total} {currency}
+      </Cell>
       <Cell>{date}</Cell>
       <Cell>{cutoffDate}</Cell>
       <Cell>{estimatedDate}</Cell>

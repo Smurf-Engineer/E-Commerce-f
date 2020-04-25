@@ -2,7 +2,13 @@
  * Styled Components - Created by david on 26/02/18.
  */
 import styled, { keyframes } from 'styled-components'
-import { WHITE } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT } from '../../theme/colors'
+import { BLACK } from '../../screens/DesignerTool/constants'
+
+interface ItemProps {
+  wide?: boolean
+  secondary?: boolean
+}
 
 export const fadeIn = keyframes`
   to {
@@ -65,12 +71,11 @@ export const MobileTitle = styled.h2`
 `
 export const ActionMobileItems = styled.div`
   height: 100%;
-  width: 120px;
   display: flex;
 `
 
 export const MobileItem = styled.div`
-  width: 50px;
+  width: ${({ wide }: ItemProps) => wide ? '80px' : '50px'};
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -89,6 +94,7 @@ export const ButtonImg = styled.img``
 export const ButtonText = styled.p`
   font-size: 10px;
   margin: 0;
+  color: ${({ secondary }: ItemProps) => secondary ? GREEN_BRIGHT : BLACK};
 `
 
 export const BackCircle = styled.div`
