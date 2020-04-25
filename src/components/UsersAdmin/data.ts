@@ -35,3 +35,21 @@ export const createUserMutation = graphql(
     name: 'addUser'
   }
 )
+
+export const GetDesignNotes = gql`
+  query getDesignNotes($designId: String!) {
+    designNotes: getDesignNotes(designId: $designId) {
+      text
+      user
+      createdAt: created_at
+    }
+  }
+`
+
+export const addNoteMutation = gql`
+  mutation addDesignNote($designId: String!, $text: String!) {
+    addDesignNote(designId: $designId, text: $text) {
+      message
+    }
+  }
+`

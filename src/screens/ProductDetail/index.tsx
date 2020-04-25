@@ -60,7 +60,8 @@ import {
   StyledButtonWrapper,
   MenIcon,
   WomenIcon,
-  layoutStyle
+  layoutStyle,
+  CustomizeButton
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
@@ -221,6 +222,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       genders,
       images: imagesArray,
       customizable,
+      customLink,
       retailMen,
       retailWomen,
       yotpoAverageScore: reviewsScore,
@@ -467,6 +469,14 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           item={itemToAdd}
           itemProdPage={true}
         />
+        {customLink && (
+          <StyledButtonWrapper marginLeft="24px">
+            <CustomizeButton href={customLink}>
+              <ColorWheel src={colorWheel} />
+              {formatMessage(messages.customize)}
+            </CustomizeButton>
+          </StyledButtonWrapper>
+        )}
       </ButtonsRow>
     )
 
@@ -545,7 +555,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           designId={0}
                           textColor="white"
                           isProduct={true}
-                          isPhone={phone}
+                          asImage={phone}
                           {...{ product, modelSize }}
                         />
                         <HowItFits onClick={this.toggleFitsModal(true)}>
@@ -792,7 +802,10 @@ const ProductDetailEnhance = compose(
       }
     }
   }),
-  connect(mapStateToProps, { ...productDetailActions })
+  connect(
+    mapStateToProps,
+    { ...productDetailActions }
+  )
 )(ProductDetail)
 
 export default ProductDetailEnhance

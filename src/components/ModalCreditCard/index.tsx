@@ -29,6 +29,7 @@ interface Props {
   visible: boolean
   newCardLoading: boolean
   cardAsDefaultPayment: boolean
+  clientSecret: string
   saveAddress: (token: string) => void
   formatMessage: (messageDescriptor: any) => string
   inputChangeAction: (id: string, value: string) => void
@@ -40,6 +41,9 @@ interface Props {
 }
 
 class ModalCreditCard extends React.Component<Props, {}> {
+  state = {
+    cardElement: null
+  }
   render() {
     const {
       formatMessage,
@@ -79,7 +83,11 @@ class ModalCreditCard extends React.Component<Props, {}> {
                 <RequiredSpan>*</RequiredSpan>
               </InputTitleContainer>
               <ContainerInput>
-                <CardElement hidePostalCode={true} style={StripeCardElement} />
+                <CardElement
+                  hidePostalCode={true}
+                  style={StripeCardElement}
+                  onReady={this.handleReady}
+                />
               </ContainerInput>
               {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
             </Column>
@@ -95,10 +103,9 @@ class ModalCreditCard extends React.Component<Props, {}> {
                 value={cardHolderName}
                 onChange={this.handleInputChange}
               />
-              {!cardHolderName &&
-                hasError && (
-                  <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
-                )}
+              {!cardHolderName && hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+              )}
             </Column>
           </Row>
           <Row withoutMargin={true}>
@@ -165,6 +172,9 @@ class ModalCreditCard extends React.Component<Props, {}> {
       saveAddress(id)
     }
   }
+
+  handleReady = (cardElement: stripe.elements.Element) =>
+    this.setState({ cardElement })
 }
 
 export default injectStripe(ModalCreditCard)

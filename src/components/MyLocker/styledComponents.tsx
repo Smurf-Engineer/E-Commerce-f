@@ -3,7 +3,13 @@
  */
 import styled, { keyframes } from 'styled-components'
 import Input from 'antd/lib/input'
-import { BLUE, BLUE_SHADOW, GRAY_DARK, WHITE } from '../../theme/colors'
+import {
+  BLUE,
+  BLUE_SHADOW,
+  GRAY_DARK,
+  WHITE,
+  WHITE_TRANSPARENT
+} from '../../theme/colors'
 
 export const fadeIn = keyframes`
   to {
@@ -24,6 +30,19 @@ export const LoadingContainer = styled.div`
   height: 60vh;
   justify-content: center;
   align-items: center;
+`
+
+export const TransparentLoader = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background: ${WHITE_TRANSPARENT};
+  height: 100vh;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
 `
 
 export const Text = styled.div`

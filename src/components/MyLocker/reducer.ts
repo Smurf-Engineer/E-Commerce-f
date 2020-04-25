@@ -19,7 +19,7 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
-  loading: true,
+  loading: false,
   error: false,
   limit: 12,
   offset: 0,

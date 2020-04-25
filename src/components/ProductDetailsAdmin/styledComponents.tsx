@@ -129,3 +129,12 @@ export const RenderBackground = styled.div`
 export const ModelSection = styled.div`
   position: relative;
 `
+
+export const RowLink = styled.a`
+  color: ${BLUE};
+  text-decoration: underline;
+  flex: 2;
+  text-align: left;
+  padding-top: unset;
+  margin-right: 16px;
+`

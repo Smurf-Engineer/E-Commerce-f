@@ -17,12 +17,7 @@ import * as designsActions from './actions'
 import { QueryProps, DesignSaved, Font, UserType } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
-import {
-  Container
-  // Row,
-  // Model,
-  // QuickView
-} from './styledComponents'
+import { Container } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 
@@ -73,7 +68,7 @@ export class Designs extends React.Component<Props, {}> {
   // }
 
   render() {
-    const { location, fontsData, phone, loadingModel, user } = this.props
+    const { location, fontsData, loadingModel, user } = this.props
     const { search } = location
     const queryParams = queryString.parse(search)
     const designId = queryParams.id || ''
@@ -100,7 +95,7 @@ export class Designs extends React.Component<Props, {}> {
           <ThreeD
             {...{ designId }}
             detailed={user && user.administrator}
-            isPhone={phone}
+            asImage={true}
           />
         )}
       </Container>

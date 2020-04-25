@@ -8121,6 +8121,14 @@ prop-types@^15.0.0:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+prop-types@15.x, prop-types@^15.3.0, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
+  integrity sha512-3pboPvLiWD7dkI3qf3KbUe6hKFKa52w+AE0VCqECtf+QHAKgOL37tTaNCnuX1nAAQ4ZhyP+kYVKf8rLmJ/feDQ==
+  dependencies:
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 proxy-addr@~2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.4.tgz#ecfc733bf22ff8c6f407fa275327b9ab67e48b93"
@@ -9103,12 +9111,12 @@ react-star-ratings@^2.2.0:
     prop-types "^15.6.0"
     react "^16.1.0"
 
-react-stripe-elements@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/react-stripe-elements/-/react-stripe-elements-2.0.2.tgz#351ed92e58bd1b69e12d57817353c4190cea6863"
-  integrity sha512-ETyOjOeCmgJdRILzJQ6YsYLqtqgdxZn8jVtdkMQvRQMJCXzu9aKTopPmNGw/iiRk1MonRfG5k46vX5vL2ZOVsA==
+react-stripe-elements@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-stripe-elements/-/react-stripe-elements-5.0.0.tgz#3a67717ddc9580c4dad9d45b672a9cf6c8a6dda4"
+  integrity sha512-zYYmlaROlkRV+Naz2abUZL4DnnQFzlSKc1PmAx7DKDi8PdFUEMiXk5kepPFlIfhwzq5fgoSptT2Y3Jri0p7cAQ==
   dependencies:
-    prop-types "^15.5.10"
+    prop-types "15.7.2"
 
 react-swipeable-clickeable-bottom-sheet@^1.1.1:
   version "1.1.1"

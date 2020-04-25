@@ -4,6 +4,14 @@
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
+export const setupIntentQuery = gql`
+  query setupStripeIntent {
+    setupIntent: setupStripeIntent {
+      clientSecret
+    }
+  }
+`
+
 export const cardsQuery = gql`
   query getusercards {
     userCards: getUserCards {
