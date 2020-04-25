@@ -64,5 +64,13 @@ export default defineMessages({
   preflight: {
     id: 'screens.DesignSearch.preflight',
     defaultMessage: 'Pre Flight check'
+  },
+  salesRep: {
+    id: 'screens.DesignSearch.salesRep',
+    defaultMessage: 'Sales Rep'
+  },
+  accountManager: {
+    id: 'screens.DesignSearch.accountManager',
+    defaultMessage: 'Account Manager'
   }
 })

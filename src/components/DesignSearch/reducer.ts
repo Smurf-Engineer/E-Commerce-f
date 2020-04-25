@@ -10,6 +10,7 @@ import {
   RESET_DATA,
   SET_UPLOADING_FILE_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
+  SET_SEARCH_REP,
   SET_UPLOADING_THUMBNAIL_ACTION,
   UPDATE_THUMBNAIL_ACTION,
   SET_STITCHING_COLOR_ACTION,
@@ -20,9 +21,12 @@ import {
   SET_PDF,
   SET_NOTE,
   OPEN_NOTES,
+  SET_USER_REP,
+  SET_SEARCH_MANAGER,
   SET_LOADING_NOTE,
   SET_PREFLIGHT,
-  SET_LOADING_PREFLIGHT
+  SET_LOADING_PREFLIGHT,
+  SET_ACCOUNT_MANAGER
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -35,6 +39,8 @@ export const initialState = fromJS({
   noAdmin: false,
   uploadingFile: false,
   note: '',
+  repSearchText: '',
+  managerSearchText: '',
   openNotes: false,
   addingNote: false,
   actualSvg: '',
@@ -58,6 +64,10 @@ const designSearchAdminReducer: Reducer<any> = (
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
+    case SET_SEARCH_REP:
+      return state.set('repSearchText', action.value)
+    case SET_SEARCH_MANAGER:
+      return state.set('managerSearchText', action.value)
     case SET_LOADING_PREFLIGHT:
       return state.set('loadingPreflight', action.loading)
     case SET_PREFLIGHT:
@@ -126,6 +136,10 @@ const designSearchAdminReducer: Reducer<any> = (
       return state
         .setIn(['colorAccessories', action.id], action.color)
         .set('changes', true)
+    case SET_USER_REP:
+      return state.setIn(['order', 'salesRep'], action.userRep)
+    case SET_ACCOUNT_MANAGER:
+      return state.setIn(['order', 'accountManager'], action.manager)
     case RESET_CHANGES_ACTION:
       return state.set('changes', false)
     case SET_SEARCH_CODES:

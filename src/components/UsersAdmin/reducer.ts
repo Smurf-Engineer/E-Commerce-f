@@ -8,6 +8,8 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_SEARCH_TEXT,
+  SET_SEARCH,
+  SET_SEARCH_MANAGER,
   ON_INPUT_CHANGE,
   ON_CHANGE_SECTION,
   ON_TOGGLE_MODAL,
@@ -23,6 +25,8 @@ export const initialState = fromJS({
   orderBy: 'id',
   sort: 'desc',
   searchText: '',
+  repSearchText: '',
+  managerSearchText: '',
   firstName: '',
   name: '',
   designSelected: '',
@@ -36,6 +40,10 @@ export const initialState = fromJS({
 
 const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
+    case SET_SEARCH_MANAGER:
+      return state.set('managerSearchText', action.value)
+    case SET_SEARCH:
+      return state.set('repSearchText', action.value)
     case SET_ORDER_BY:
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
