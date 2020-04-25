@@ -292,7 +292,6 @@ class UsersAdmin extends React.Component<Props, StateProps> {
     const { assignManager, formatMessage } = this.props
     try {
       const query = this.userQuery()
-      console.log('manager:', manager)
       await assignManager({
         variables: { userId, manager },
         refetchQueries: [query]
@@ -309,7 +308,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
     const { setSearchRep } = this.props
     setSearchRep(value)
   }
-  handleOnSaveUser = () => {}
+  handleOnSaveUser = () => { }
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props
     setOrderByAction(label, sort)
