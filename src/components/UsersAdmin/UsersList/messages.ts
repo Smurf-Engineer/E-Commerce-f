@@ -52,5 +52,13 @@ export default defineMessages({
   search: {
     id: 'components.UsersList.search',
     defaultMessage: 'Search for a user'
+  },
+  salesRep: {
+    id: 'components.UsersList.salesRep',
+    defaultMessage: 'Sales Rep'
+  },
+  accountManager: {
+    id: 'components.UsersList.accountManager',
+    defaultMessage: 'Account Manager'
   }
 })

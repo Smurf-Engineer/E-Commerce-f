@@ -2,13 +2,19 @@
  * MainLayout ThunkActions
  */
 import { SET_USER_ACTION } from '../../store/constants'
+import { getPermissionsQuery } from './data'
+import get from 'lodash/get'
+import { message } from 'antd'
+import { RolePermission, UserPermissions } from '../../types/common'
 
-export const restoreUserSession = () => {
+export const restoreUserSession = (client: any) => {
   return async (dispatch: any) => {
     try {
       const jsonUser = localStorage.getItem('user')
       if (!!jsonUser) {
-        const user = JSON.parse(jsonUser)
+        const userObject = JSON.parse(jsonUser)
+        const permissions = await getPermissions(client)
+        const user = { ...userObject, permissions }
         dispatch({ type: SET_USER_ACTION, user })
       }
     } catch (e) {
@@ -28,15 +34,38 @@ export const deleteUserSession = () => {
   }
 }
 
-export const saveUserSession = (user: object) => {
+export const saveUserSession = (userObject: object, client: any) => {
   return async (dispatch: any) => {
     try {
       if (typeof window !== 'undefined') {
-        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('user', JSON.stringify(userObject))
       }
+      const permissions = await getPermissions(client)
+      const user = { ...userObject, permissions }
       dispatch({ type: SET_USER_ACTION, user })
     } catch (e) {
       console.error(e)
     }
+  }
+}
+
+export const getPermissions = async (client: any) => {
+  try {
+    const { query } = client
+    const response = await query({
+      query: getPermissionsQuery,
+      fetchPolicy: 'network-only'
+    })
+    const resultArray = get(response, 'data.permissions', [])
+    const permissions = resultArray.reduce(
+      (obj: UserPermissions, permission: RolePermission) => {
+        obj[permission.page] = permission
+        return obj
+      },
+      {}
+    )
+    return permissions
+  } catch (e) {
+    message.error('Error retrieving permissions')
   }
 }

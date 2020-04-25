@@ -21,6 +21,8 @@ interface ConfigType {
   paypalEnv?: string
   slaaskTeam?: string
   slaaskApiKey?: string
+  slaaskSupportTeam?: string
+  slaaskSuuportKey?: string
   googleMapKey?: string
   intercomKey?: string
   defaultCurrency?: string
@@ -41,6 +43,8 @@ const config: ConfigType = {
   baseUrl: process.env.BASE_URL,
   slaaskTeam: process.env.SLAASK_TEAM,
   slaaskApiKey: process.env.SLAASK_KEY,
+  slaaskSupportTeam: process.env.SLAASK_SUPPORT_TEAM,
+  slaaskSuuportKey: process.env.SLAASK_SUPPORT_KEY,
   storageUrl: process.env.STORAGE_URL,
   pkStripeUS: process.env.PK_STRIPE_US,
   pkStripeEU: process.env.PK_STRIPE_EU,

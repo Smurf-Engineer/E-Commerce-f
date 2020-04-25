@@ -23,6 +23,7 @@ interface Props {
   image: string
   idStore?: string
   name?: string
+  small?: boolean
   showNameStore?: boolean
   fixedDate?: boolean
   closed?: boolean
@@ -44,6 +45,7 @@ const TeamStoreItem = ({
   name,
   formatMessage,
   openShareModalAction,
+  small = false,
   showNameStore = false,
   withEditButton = false,
   withShareButton = false,
@@ -96,7 +98,7 @@ const TeamStoreItem = ({
 
   return (
     <Container>
-      <TeamStoreCard>
+      <TeamStoreCard {...{ small }}>
         <CardContent {...{ closedMessage }}>
           {image ? (
             <StyledImg src={image} onClick={onItemClick} />

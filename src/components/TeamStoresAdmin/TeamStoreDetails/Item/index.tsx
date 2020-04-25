@@ -36,6 +36,7 @@ interface Props {
   priceRange: PriceRange[]
   pricesByCurrency: PricesByCurrency
   loading: boolean
+  canEdit: boolean
   handleOnSetPrice: (value: number, currency: string, itemIndex: number) => void
   handleOnSave: (event: React.MouseEvent<HTMLElement>) => void
   formatMessage: (messageDescriptor: Message) => string
@@ -52,6 +53,7 @@ const RowItem = ({
   pricesByCurrency,
   handleOnSave,
   formatMessage,
+  canEdit,
   loading
 }: Props) => {
   const onSetPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +69,7 @@ const RowItem = ({
         <Cell key={currencyId}>
           <StyledInput
             id={shortName}
+            disabled={!canEdit}
             placeholder={shortName}
             onChange={onSetPrice}
             value={pricesByCurrency[shortName]}
@@ -92,10 +95,12 @@ const RowItem = ({
         <ButtonWrapper color={BLUE}>
           <StyledButton
             id={index}
-            disabled={some(
-              currencies,
-              ({ shortName }) => !pricesByCurrency[shortName]
-            )}
+            disabled={
+              some(
+                currencies,
+                ({ shortName }) => !pricesByCurrency[shortName]
+              ) || !canEdit
+            }
             type="primary"
             onClick={handleOnSave}
             {...{ loading }}

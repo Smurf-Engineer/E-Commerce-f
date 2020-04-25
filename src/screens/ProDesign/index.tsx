@@ -42,10 +42,13 @@ import {
   Product,
   QueryProps,
   StitchingColor,
-  ColorAccessories
+  ColorAccessories,
+  UserType
 } from '../../types/common'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
+import { restoreUserSession } from '../../components/MainLayout/api'
+import { ADD_PRO_DESIGN } from '../../components/AdminLayout/constants'
 
 const { TabPane } = AntdTabs
 
@@ -76,6 +79,9 @@ interface Props {
   savingDesign: boolean
   userToSearch: string
   productToSearch: string
+  client: any
+  user: UserType
+  restoreUserSessionAction: (client: any) => void
   onTabClickAction: (selectedKey: string) => void
   setProductCodeAction: (productCode: string) => void
   uploadProDesignAction: (file: any, name: string) => void
@@ -95,6 +101,13 @@ export class ProDesign extends React.Component<Props, {}> {
   render3D: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
+  }
+  componentWillMount() {
+    const { user, client } = this.props
+    if (typeof window !== 'undefined' && !user) {
+      const { restoreUserSessionAction } = this.props
+      restoreUserSessionAction(client)
+    }
   }
   handleOnPressBack = () => {
     window.location.replace('/admin')
@@ -166,6 +179,7 @@ export class ProDesign extends React.Component<Props, {}> {
       goToColorSectionAction,
       setStitchingColorAction,
       colorAccessories,
+      user = {},
       colorAccessories: { stitching },
       setColorAction,
       setSelectedUserAction,
@@ -182,6 +196,11 @@ export class ProDesign extends React.Component<Props, {}> {
       productToSearch
     } = this.props
     const { formatMessage } = intl
+    const { permissions } = user
+    const access = permissions ? permissions[ADD_PRO_DESIGN] : {}
+    if (!access.view) {
+      return null
+    }
     const product = get(data, 'productFromCode')
     const loading = get(data, 'loading')
     const colorsResult = get(data, 'colorsResult', '')
@@ -280,7 +299,9 @@ export class ProDesign extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => {
   const proDesign = state.get('proDesign').toJS()
+  const app = state.get('app').toJS()
   return {
+    ...app,
     ...proDesign
   }
 }
@@ -292,13 +313,11 @@ type OwnProps = {
 const ProDesignEnhance = compose(
   withApollo,
   injectIntl,
-  connect(
-    mapStateToProps,
-    {
-      ...proDesignActions,
-      uploadProDesignAction: uploadProDesign
-    }
-  ),
+  connect(mapStateToProps, {
+    ...proDesignActions,
+    restoreUserSessionAction: restoreUserSession,
+    uploadProDesignAction: uploadProDesign
+  }),
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
       const { productCode } = ownprops

@@ -15,8 +15,12 @@ interface Props {
   shortId: string
   pendingCheck: boolean
   statusError?: boolean
+  canEdit: boolean
+  total?: number
+  currency?: string
   firstName: string
   lastName: string
+  source: string
   cutoffDate?: string
   estimatedDate?: string
   onOrderClick: (shortId: string) => void
@@ -31,12 +35,16 @@ const ItemOrder = ({
   clientId,
   status,
   shortId,
+  total,
+  currency,
   onOrderClick,
   pendingCheck,
   estimatedDate,
   statusError,
+  canEdit,
   firstName,
   lastName,
+  source,
   cutoffDate,
   handleOnUpdateStatus
 }: Props) => {
@@ -59,6 +67,10 @@ const ItemOrder = ({
   return (
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
+      <Cell>{source}</Cell>
+      <Cell>
+        {total} {currency}
+      </Cell>
       <Cell>{date}</Cell>
       <Cell>{cutoffDate}</Cell>
       <Cell>{estimatedDate}</Cell>
@@ -74,6 +86,7 @@ const ItemOrder = ({
       >
         {upperFirst(status)}
         <StyledSelect
+          disabled={!canEdit}
           onChange={onSelectStatus}
           showSearch={false}
           value={status}

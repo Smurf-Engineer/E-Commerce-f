@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'components.OrdersList.title',
     defaultMessage: 'Recent Orders'
   },
+  total: {
+    id: 'components.OrdersList.total',
+    defaultMessage: 'Total'
+  },
   orderNumber: {
     id: 'components.OrdersList.orderNumber',
     defaultMessage: 'Order Number'
@@ -48,6 +52,10 @@ export default defineMessages({
   emptyMessage: {
     id: 'components.OrdersList.emptyMessage',
     defaultMessage: 'No orders yet'
+  },
+  source: {
+    id: 'components.OrdersList.source',
+    defaultMessage: 'Order Point'
   },
   cutoffDate: {
     id: 'components.OrdersList.cutoffDate',

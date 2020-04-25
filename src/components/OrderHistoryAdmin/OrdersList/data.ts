@@ -28,8 +28,13 @@ export const getOrdersQuery = gql`
         status
         clientId: user_id
         firstName: first_name
+        total: total_amount
+        currency {
+          abbreviation
+        }
         lastName: last_name
         pendingChecks: pending_checks
+        source
         netsuite: netsuit_order {
           orderStatus {
             orderStatus

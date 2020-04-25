@@ -31,7 +31,41 @@ export const getUsersQuery = gql`
         billingCountry: billing_country
         createdAt: created_at
         shortId: short_id
+        salesRep {
+          shortId: short_id
+          firstName: first_name
+          lastName: last_name
+        }
+        accountManager {
+          shortId: short_id
+          firstName: first_name
+          lastName: last_name
+        }
       }
+    }
+  }
+`
+
+export const getRepUsers = gql`
+  query getRepUsers($text: String) {
+    repUsers: getRepUsers(searchText: $text) {
+      users {
+        id
+        shortId: short_id
+        firstName: first_name
+        lastName: last_name
+      }
+    }
+  }
+`
+
+export const getManagers = gql`
+  query getManagers($searchText: String) {
+    managersQuery: getManagers(searchText: $searchText) {
+      id
+      shortId: short_id
+      firstName: first_name
+      lastName: last_name
     }
   }
 `

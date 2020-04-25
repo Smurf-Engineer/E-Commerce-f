@@ -13,3 +13,13 @@ export const getFonts = graphql(
   `,
   { name: 'getFontsData' }
 )
+
+export const getPermissionsQuery = gql`
+  query getPermissions {
+    permissions: getPermissions {
+      page
+      edit
+      view
+    }
+  }
+`

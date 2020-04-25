@@ -8,7 +8,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import zenscroll from 'zenscroll'
 import * as teamstoresActions from './actions'
-import { SCREEN_TITLE } from './constants'
+import { SCREEN_TITLE, paymentIcons } from './constants'
 import messages from './messages'
 import {
   Container,
@@ -19,7 +19,11 @@ import {
   ResultContainer,
   TitleContainer,
   Title,
-  GetSponsored
+  TeamTitle,
+  PaySection,
+  PayIcons,
+  Icon,
+  TitleText
 } from './styledComponents'
 import config from '../../config/index'
 import Layout from '../../components/MainLayout'
@@ -70,6 +74,9 @@ export class SearchTeamstores extends React.Component<Props, {}> {
     return (
       <Layout teamStoresHeader={true} {...{ intl, history }}>
         <Helmet title={SCREEN_TITLE} />
+        <TeamTitle>
+          <TitleText>{formatMessage(messages.teamTitle)}</TitleText>
+        </TeamTitle>
         <Container>
           <Content>
             <SearchBackground src={teamstoreImage} />
@@ -87,13 +94,18 @@ export class SearchTeamstores extends React.Component<Props, {}> {
               />
             </SearchBarContent>
           </Content>
+          <PaySection>
+            <Title>{formatMessage(messages.payInfo)}</Title>
+            <PayIcons>
+              {paymentIcons.map((src: string, key: number) =>
+                <Icon {...{ src, key }} />
+              )}
+            </PayIcons>
+          </PaySection>
           <ResultContainer>
             {!searchString && (
               <TitleContainer>
                 <Title>{formatMessage(messages.featuredTeamStoresLabel)}</Title>
-                <GetSponsored>
-                  {formatMessage(messages.getSponsoredLabel)}
-                </GetSponsored>
               </TitleContainer>
             )}
             <div

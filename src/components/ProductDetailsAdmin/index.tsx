@@ -54,6 +54,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   history: any
+  canEdit: boolean
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -71,6 +72,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
+      canEdit,
       data: { loading, product }
     } = this.props
     const { openedModel } = this.state
@@ -214,16 +216,18 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   {name}
                   <ScreenSubTitle>{mpn}</ScreenSubTitle>
                 </ScreenTitle>
-                <div>
-                  <BlueButton onClick={this.handleOnClickEdit} size="large">
-                    <FormattedMessage {...messages.editProduct} />
-                  </BlueButton>
-                  {designCenter && (
-                    <Button onClick={this.handlePublishing} size="large">
-                      <FormattedMessage {...messages.openPublishingTool} />
-                    </Button>
-                  )}
-                </div>
+                {canEdit && (
+                  <div>
+                    <BlueButton onClick={this.handleOnClickEdit} size="large">
+                      <FormattedMessage {...messages.editProduct} />
+                    </BlueButton>
+                    {designCenter && (
+                      <Button onClick={this.handlePublishing} size="large">
+                        <FormattedMessage {...messages.openPublishingTool} />
+                      </Button>
+                    )}
+                  </div>
+                )}
               </HeaderRow>
               <FormBody>
                 <Row>
@@ -409,9 +413,11 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                           <FormattedMessage {...messages.openModel} />
                         </Button>
                       )}
-                      <EditModel type="ghost" onClick={this.editModels}>
-                        <FormattedMessage {...messages.editModel} />
-                      </EditModel>
+                      {canEdit && (
+                        <EditModel type="ghost" onClick={this.editModels}>
+                          <FormattedMessage {...messages.editModel} />
+                        </EditModel>
+                      )}
                     </Buttons>
                     {obj && mtl ? (
                       <RenderBackground {...{ openedModel }}>

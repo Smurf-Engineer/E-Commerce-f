@@ -846,7 +846,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         {...{ history, intl }}
         hideTopHeader={responsive.tablet}
         hideBottomHeader={true}
-        disableIntercom={true}
+        disableAssist={true}
         hideFooter={true}
         buyNowHeader={isMobile && tabSelected > DesignTabs.StyleTab}
       >
@@ -890,8 +890,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <ThemeTab
                   currentTheme={themeId}
                   onSelectTheme={this.handleOnSelectTheme}
+                  style={queryParams.style}
                   {...{
                     loadingModel,
+                    history,
                     themeModalData,
                     openNewThemeModalAction,
                     designHasChanges,
@@ -915,11 +917,13 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <StyleTab
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
+                  design={queryParams.design}
                   {...{
                     styleModalData,
                     openNewStyleModalAction,
                     designHasChanges,
                     formatMessage,
+                    history,
                     styleIndex,
                     productId,
                     themeId,
@@ -1321,13 +1325,16 @@ const DesignCenterEnhance = compose(
   addTeamStoreItemMutation,
   getProTicket,
   withApollo,
-  connect(mapStateToProps, {
-    ...designCenterActions,
-    ...designCenterApiActions,
-    openQuickViewAction,
-    openLoginAction,
-    saveAndBuyAction
-  }),
+  connect(
+    mapStateToProps,
+    {
+      ...designCenterActions,
+      ...designCenterApiActions,
+      openQuickViewAction,
+      openLoginAction,
+      saveAndBuyAction
+    }
+  ),
   graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''

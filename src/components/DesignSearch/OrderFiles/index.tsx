@@ -7,6 +7,7 @@ import Button from 'antd/lib/button'
 import messages from './messages'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
+import Select, { OptionProps } from 'antd/lib/select'
 import Divider from 'antd/lib/divider'
 import indexOf from 'lodash/indexOf'
 import message from 'antd/lib/message'
@@ -40,13 +41,20 @@ import {
   AddNote,
   PreflightDiv,
   WarningIcon,
-  PreflightCheckbox
+  PreflightCheckbox,
+  NoteIcon,
+  RepsDiv,
+  StyledSelect,
+  Selectable,
+  Subtitle
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import {
   OrderSearchResult,
   StitchingColor,
-  DesignNote
+  DesignNote,
+  RolePermission,
+  User
 } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
@@ -54,6 +62,8 @@ import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
 import { NOTE_FORMAT } from '../constants'
 import ProassistNotes from '../../ProassistNotes'
+
+const Option = Select.Option
 
 interface Props {
   order: OrderSearchResult
@@ -67,6 +77,20 @@ interface Props {
   addingNote: boolean
   note: string
   loadingPreflight: boolean
+  canEdit: boolean
+  accessAssets: RolePermission
+  salesRepUsers: User[]
+  managersUsers: User[]
+  changeManager: (
+    value: string,
+    option: React.ReactElement<OptionProps>
+  ) => void
+  changeUserRep: (
+    value: string,
+    option: React.ReactElement<OptionProps>
+  ) => void
+  searchReps: (value: string) => void
+  searchManagers: (value: string) => void
   handleSaveNote: () => void
   setNoteAction: (text: string) => void
   openNoteAction: (openNotes: boolean) => void
@@ -91,6 +115,8 @@ export class OrderFiles extends React.PureComponent<Props> {
         assets,
         stitchingName,
         stitchingValue,
+        salesRep,
+        accountManager,
         bibColor,
         zipperColor,
         bindingColor,
@@ -105,6 +131,12 @@ export class OrderFiles extends React.PureComponent<Props> {
       },
       uploadingFile,
       openNotes,
+      salesRepUsers = [],
+      managersUsers = [],
+      changeUserRep,
+      changeManager,
+      searchReps,
+      searchManagers,
       setNoteAction,
       handleSaveNote,
       note,
@@ -121,9 +153,18 @@ export class OrderFiles extends React.PureComponent<Props> {
       onSelectColor,
       onGeneratePdf,
       checkPreflight,
+      accessAssets,
+      canEdit,
       creatingPdf
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
+    const selectedRep = salesRep
+      ? `${salesRep.firstName} ${salesRep.lastName}`
+      : null
+    const selectedManager =
+      accountManager && accountManager.shortId
+        ? `${accountManager.firstName} ${accountManager.lastName}`
+        : null
     const allowZipperSelection = !!zipper && !!zipper.white && !!zipper.black
     const notesElements = notes.map(
       ({ createdAt, text, user }: DesignNote, index: number) => {
@@ -166,7 +207,7 @@ export class OrderFiles extends React.PureComponent<Props> {
                 theme="filled"
               />
               <PreflightCheckbox
-                disabled={loadingPreflight}
+                disabled={loadingPreflight || !canEdit}
                 checked={preflightCheck}
                 onChange={checkPreflight}
               >
@@ -174,35 +215,88 @@ export class OrderFiles extends React.PureComponent<Props> {
               </PreflightCheckbox>
             </PreflightDiv>
           </SideData>
+          <RepsDiv>
+            <Selectable>
+              <Subtitle>
+                <FormattedMessage {...messages.salesRep} />
+              </Subtitle>
+              <StyledSelect
+                showSearch={true}
+                onChange={changeUserRep}
+                value={selectedRep}
+                notFoundContent={null}
+                allowClear={true}
+                defaultActiveFirstOption={false}
+                filterOption={false}
+                onSearch={searchReps}
+              >
+                {salesRepUsers.map(
+                  ({ shortId: repId, firstName, lastName }: User) => (
+                    <Option value={repId}>
+                      {firstName} {lastName}
+                    </Option>
+                  )
+                )}
+              </StyledSelect>
+            </Selectable>
+            <Selectable>
+              <Subtitle>
+                {' '}
+                <FormattedMessage {...messages.accountManager} />
+              </Subtitle>
+              <StyledSelect
+                showSearch={true}
+                onChange={changeManager}
+                value={selectedManager}
+                notFoundContent={null}
+                allowClear={true}
+                defaultActiveFirstOption={false}
+                filterOption={false}
+                onSearch={searchManagers}
+              >
+                {managersUsers.map(
+                  ({ shortId: managerId, firstName, lastName }: User) => (
+                    <Option value={managerId}>
+                      {firstName} {lastName}
+                    </Option>
+                  )
+                )}
+              </StyledSelect>
+            </Selectable>
+          </RepsDiv>
         </FlexContainer>
         <ProAssistNotes>
           <ProAssistTitle>
             <FormattedMessage {...messages.proAssistNotes} />
-            <Icon type="form" />
-            <AddNote onClick={this.handleOpenNotes}>
-              <FormattedMessage {...messages.add} />
-            </AddNote>
+            <NoteIcon type="form" />
+            {canEdit && (
+              <AddNote onClick={this.handleOpenNotes}>
+                <FormattedMessage {...messages.add} />
+              </AddNote>
+            )}
           </ProAssistTitle>
-          {notes && notes.length && (
+          {notes && !!notes.length && (
             <ProAssistBackground>{notesElements}</ProAssistBackground>
           )}
         </ProAssistNotes>
         <FlexContainer>
           <RenderLayout>
-            <AccessoryColors
-              {...{
-                bibColor,
-                bindingColor,
-                onSelectStitchingColor,
-                onSelectColor,
-                allowZipperSelection
-              }}
-              stitchingValue={colorAccessories.stitching || stitchingValue}
-              stitchingName={colorAccessories.stitchingName || stitchingName}
-              zipperColor={colorAccessories.zipperColor || zipperColor}
-              bibColor={colorAccessories.bibColor || bibColor}
-              bindingColor={colorAccessories.bindingColor || bindingColor}
-            />
+            {canEdit && (
+              <AccessoryColors
+                {...{
+                  bibColor,
+                  bindingColor,
+                  onSelectStitchingColor,
+                  onSelectColor,
+                  allowZipperSelection
+                }}
+                stitchingValue={colorAccessories.stitching || stitchingValue}
+                stitchingName={colorAccessories.stitchingName || stitchingName}
+                zipperColor={colorAccessories.zipperColor || zipperColor}
+                bibColor={colorAccessories.bibColor || bibColor}
+                bindingColor={colorAccessories.bindingColor || bindingColor}
+              />
+            )}
             <RenderContainer>
               <Render3D
                 designSearch={true}
@@ -230,25 +324,29 @@ export class OrderFiles extends React.PureComponent<Props> {
               </ButtonContainer>
             </Button>
             <Divider />
-            <Button onClick={this.onDownload} icon="download">
-              <ButtonContainer>
-                <FormattedMessage {...messages.downloadAll} />
-              </ButtonContainer>
-            </Button>
-            <DraggerWithLoading
-              className="upload"
-              loading={uploadingFile}
-              onSelectImage={this.beforeUpload}
-              formatMessage={formatMessage}
-              extensions={['.svg']}
-            >
-              <Button>
+            {accessAssets.view && (
+              <Button onClick={this.onDownload} icon="download">
                 <ButtonContainer>
-                  <Icon type="upload" />
-                  <FormattedMessage {...messages.uploadDesign} />
+                  <FormattedMessage {...messages.downloadAll} />
                 </ButtonContainer>
               </Button>
-            </DraggerWithLoading>
+            )}
+            {canEdit && (
+              <DraggerWithLoading
+                className="upload"
+                loading={uploadingFile}
+                onSelectImage={this.beforeUpload}
+                formatMessage={formatMessage}
+                extensions={['.svg']}
+              >
+                <Button>
+                  <ButtonContainer>
+                    <Icon type="upload" />
+                    <FormattedMessage {...messages.uploadDesign} />
+                  </ButtonContainer>
+                </Button>
+              </DraggerWithLoading>
+            )}
             <FinalSvg>
               {pdfUrl && pdfUrl.length && (
                 <DownloadItem url={pdfUrl} name="Final PDF" />
@@ -258,10 +356,14 @@ export class OrderFiles extends React.PureComponent<Props> {
               )}
               {pngUrl && <DownloadItem url={pngUrl} name="Final PNG" />}
             </FinalSvg>
-            <AssetsLabel>
-              <FormattedMessage {...messages.assets} />
-            </AssetsLabel>
-            <FilesList {...{ assets }} />
+            {accessAssets.view && (
+              <>
+                <AssetsLabel>
+                  <FormattedMessage {...messages.assets} />
+                </AssetsLabel>
+                <FilesList {...{ assets }} />
+              </>
+            )}
             <ThumbnailLabel>
               <FormattedMessage {...messages.thumbnail} />
             </ThumbnailLabel>

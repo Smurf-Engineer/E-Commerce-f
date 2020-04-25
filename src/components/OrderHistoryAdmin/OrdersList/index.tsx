@@ -47,6 +47,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  canEdit: boolean
   onSortClick: (label: string, sort: sorts) => void
   onOrderClick: (shortId: string) => void
   onChangePage: (page: number) => void
@@ -61,6 +62,7 @@ const OrdersList = ({
   currentPage,
   data: { ordersQuery },
   onSortClick,
+  canEdit,
   onOrderClick,
   onChangePage,
   withPagination = true,
@@ -77,7 +79,7 @@ const OrdersList = ({
 
   const header = (
     <MediaQuery maxWidth={768}>
-      {matches => {
+      {(matches) => {
         if (matches) {
           return (
             <Row>
@@ -96,6 +98,18 @@ const OrdersList = ({
               id={'id'}
               label={formatMessage(messages.orderNumber)}
               sort={orderBy === 'id' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'source'}
+              label={formatMessage(messages.source)}
+              sort={orderBy === 'source' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+              />
+            <HeaderTable
+              id={'total_amount'}
+              label={formatMessage(messages.total)}
+              sort={orderBy === 'total_amount' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -204,7 +218,11 @@ const OrdersList = ({
         netsuite,
         netsuiteAttempts,
         firstName,
+        total,
+        currency,
+        lastName
         lastName,
+        source,
         estimatedDate,
         cutoffDate
       }: OrderHistory,
@@ -224,6 +242,7 @@ const OrdersList = ({
       return (
         <ItemOrder
           key={index}
+          currency={currency ? currency.abbreviation : ''}
           statusError={!!errorStatus || status === PAYMENT_ISSUE}
           pendingCheck={pendingChecks > 0 && !netsuiteStatus}
           status={errorStatus || netsuiteStatus || status}
@@ -231,12 +250,15 @@ const OrdersList = ({
             shortId,
             date,
             clientId,
+            canEdit,
             firstName,
+            total,
             pendingChecks,
             estimatedDate,
             lastName,
             onOrderClick,
             trackingNumber,
+            source,
             cutoffDate,
             handleOnUpdateStatus
           }}

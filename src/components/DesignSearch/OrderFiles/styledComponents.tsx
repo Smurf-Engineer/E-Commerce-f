@@ -13,6 +13,7 @@ import {
 import icon from 'antd/lib/icon'
 import { BLACK } from '../../../screens/DesignerTool/constants'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
+import Select from 'antd/lib/select'
 
 interface DivProps {
   enable: boolean
@@ -99,6 +100,11 @@ export const Icon = styled(icon)`
   margin-right: 8px;
 `
 
+export const NoteIcon = styled(icon)`
+  margin-right: 16px;
+  margin-left: 12px;
+`
+
 export const RenderLayout = styled.div``
 
 export const ThumbnailLabel = styled.div`
@@ -134,7 +140,7 @@ export const MessageContainer = styled.div`
 `
 
 export const ModelNameContainer = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: 4px;
 `
 
 export const ProAssistNotes = styled.div`
@@ -160,15 +166,12 @@ export const ProAssistTitle = styled.div`
   font-weight: bold;
   max-width: 246px;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 14px;
 `
 
 export const DataContainer = styled.div``
 
-export const SideData = styled.div`
-  width: 268px;
-`
+export const SideData = styled.div``
 
 export const ProAssistBackground = styled.div`
   max-height: 190px;
@@ -227,4 +230,19 @@ export const PreflightCheckbox = styled(Checkbox)`
     margin-top: 2px;
     margin-bottom: 0;
   }
+`
+
+export const RepsDiv = styled.div`
+  width: 270px;
+`
+
+export const Selectable = styled.div`
+  margin-bottom: 12px;
+`
+
+export const Subtitle = styled.div``
+
+export const StyledSelect = styled(Select)`
+  width: 100%;
+  margin-top: 4px;
 `

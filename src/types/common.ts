@@ -448,6 +448,11 @@ export interface ThemeResult {
   themes: Theme[]
 }
 
+export interface UsersResult {
+  fullCount: string
+  users: User[]
+}
+
 export interface ColorBlock {
   image: string
   color: string
@@ -501,6 +506,7 @@ export interface UserType {
   token: string
   email: string
   administrator: boolean
+  permissions: UserPermissions
 }
 
 export interface AntColumns {
@@ -706,8 +712,11 @@ export interface OrderHistory {
   netsuite?: NetsuiteObject
   clientId?: string
   firstName?: string
+  total?: number
+  currency?: Currency
   lastName?: string
   netsuiteAttempts: number
+  source?: string
 }
 
 export interface Discount {
@@ -1287,6 +1296,8 @@ export interface OrderSearchResult {
   pdfUrl?: string
   product: Product
   pngUrl?: string
+  salesRep?: User
+  accountManager?: User
   notes?: DesignNote[]
 }
 
@@ -1377,6 +1388,14 @@ export interface User {
   billingCountry?: string
   createdAt?: string
   shortId?: string
+  role?: string
+  salesRep?: User
+  accountManager?: User
+}
+
+export interface Role {
+  id: string
+  name: string
 }
 
 export interface DesignSearchCode {
@@ -1493,6 +1512,16 @@ export type Color = {
   name: string
   value: string
   type?: string
+}
+
+export type RolePermission = {
+  page: string
+  edit: boolean
+  view: boolean
+}
+
+export type UserPermissions = {
+  [page: string]: RolePermission
 }
 
 export interface SelectedDesignType {
