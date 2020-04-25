@@ -30,6 +30,7 @@ interface Props {
   withShareButton?: boolean
   withEditButton?: boolean
   withDeleteButton?: boolean
+  owner?: boolean
   formatMessage: (messageDescriptor: any) => string
   openShareModalAction?: (id?: string) => void
   onItemClick?: () => void
@@ -51,12 +52,12 @@ const TeamStoreItem = ({
   onEditClick,
   onDeleteClick,
   closed = false,
-  fixedDate = false
+  fixedDate = false,
+  owner = false
 }: Props) => {
   const closedMessage =
-    fixedDate && closed ? formatMessage(messages.closedForOrder) : ''
+    owner && fixedDate && closed ? formatMessage(messages.closedForOrder) : ''
 
-  console.log('Fixed date ', fixedDate)
   const handleClickShare = () => {
     if (openShareModalAction) {
       openShareModalAction(idStore)
@@ -105,9 +106,13 @@ const TeamStoreItem = ({
           {showNameStore && (
             <BottomContainer>
               <CardTitle>{name}</CardTitle>
-              <StoreType>
-                {formatMessage(messages[fixedDate ? 'batchOrder' : 'onDemand'])}
-              </StoreType>
+              {owner && (
+                <StoreType>
+                  {formatMessage(
+                    messages[fixedDate ? 'batchOrder' : 'onDemand']
+                  )}
+                </StoreType>
+              )}
               <MediaQuery minWidth={480}>{buttons}</MediaQuery>
             </BottomContainer>
           )}

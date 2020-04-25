@@ -79,7 +79,6 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
                       onItemClick={this.gotoStore(store.shortId)}
                       idStore={store.shortId}
                       fixedDate={!store.isOnDemand}
-                      closed={store.closed}
                       {...{ formatMessage, openShareModalAction }}
                     />
                   </TeamStoreContainer>

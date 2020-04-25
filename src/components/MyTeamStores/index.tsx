@@ -68,7 +68,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     let myTeamstoresList
     if (teamStores) {
       myTeamstoresList = teamStores.map((teamstore, key) => {
-        const { shortId, closed } = teamstore
+        const { shortId, closed, isOnDemand } = teamstore
         return (
           <TeamStore
             name={teamstore.name}
@@ -77,10 +77,12 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
             withEditButton={true}
             withShareButton={true}
             withDeleteButton={true}
+            owner={true}
             onEditClick={this.editTeamStore(shortId)}
             onDeleteClick={this.openDeleteModal(shortId)}
             openShareModalAction={this.handleOpenShareModal(shortId)}
             onItemClick={this.gotoTeamStore(shortId)}
+            fixedDate={!isOnDemand}
             {...{ key, formatMessage, closed }}
           />
         )

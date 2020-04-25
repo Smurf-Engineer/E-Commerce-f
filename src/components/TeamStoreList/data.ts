@@ -9,8 +9,6 @@ export const GetTeamStoresQuery = gql`
         shortId: short_id
         name
         banner
-        closed
-        on_demand_mode
       }
     }
   }
