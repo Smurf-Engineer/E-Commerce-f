@@ -25,9 +25,10 @@ import messages from './messages'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import { addRepUserMutation, getRepUsers } from './RepList/data'
-import { User } from '../../types/common'
+import { User, UserPermissions } from '../../types/common'
 import get from 'lodash/get'
 import { REPS_LIMIT } from './constants'
+import { SALES_REP } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -37,6 +38,7 @@ interface Props {
   loading: boolean
   lastName: string
   searchText: string
+  permissions: UserPermissions
   setLoading: (loading: boolean) => void
   addRepUser: (variables: {}) => Promise<User>
   setOpenModal: (open: boolean) => void
@@ -144,17 +146,24 @@ class SalesRep extends React.Component<Props, {}> {
       loading,
       searchText,
       name,
-      lastName
+      lastName,
+      permissions
     } = this.props
+    const access = permissions[SALES_REP] || {}
+    if (!access.view) {
+      return null
+    }
     return (
       <Container>
         <ScreenTitle>
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
         <HeaderList>
-          <AddButton onClick={this.onOpen}>
-            {formatMessage(messages.addRep)}
-          </AddButton>
+          {access.edit &&
+            <AddButton onClick={this.onOpen}>
+              {formatMessage(messages.addRep)}
+            </AddButton>
+          }
           <SearchInput
             value={searchText}
             onChange={this.handleInputChange}
@@ -165,7 +174,7 @@ class SalesRep extends React.Component<Props, {}> {
           {...{ formatMessage, currentPage, searchText }}
           onChangePage={this.handleOnChangePage}
         />
-        <Modal visible={open} footer={null} closable={false} width="442px">
+        <Modal visible={open && access.edit} footer={null} closable={false} width="442px">
           <Title>{formatMessage(messages.addSalesRep)}</Title>
           <FormContainer>
             <StyledInput
@@ -184,15 +193,15 @@ class SalesRep extends React.Component<Props, {}> {
           {loading ? (
             <SpinLoader />
           ) : (
-            <Buttons>
-              <SaveButton disabled={!name || !lastName} onClick={this.saveUser}>
-                {formatMessage(messages.save)}
-              </SaveButton>
-              <CancelButton onClick={this.onClose}>
-                {formatMessage(messages.cancel)}
-              </CancelButton>
-            </Buttons>
-          )}
+              <Buttons>
+                <SaveButton disabled={!name || !lastName} onClick={this.saveUser}>
+                  {formatMessage(messages.save)}
+                </SaveButton>
+                <CancelButton onClick={this.onClose}>
+                  {formatMessage(messages.cancel)}
+                </CancelButton>
+              </Buttons>
+            )}
         </Modal>
       </Container>
     )
