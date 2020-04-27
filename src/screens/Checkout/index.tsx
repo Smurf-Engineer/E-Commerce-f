@@ -777,6 +777,7 @@ class Checkout extends React.Component<Props, {}> {
       setStripeCardDataAction,
       billingCountry,
       addNewCard,
+      intl: { formatMessage },
       client: { query },
       location: {
         state: { cart }
@@ -794,7 +795,11 @@ class Checkout extends React.Component<Props, {}> {
     }
     if (card && stripeToken) {
       setStripeCardDataAction(card, stripeToken)
-      await addNewCard({ variables: { token: stripeToken } })
+      try {
+        await addNewCard({ variables: { token: stripeToken } })
+      } catch (e) {
+        message.error(formatMessage(messages.errorSavingCart))
+      }
     }
   }
   getProductsPrice = () => {
