@@ -96,5 +96,9 @@ export default defineMessages({
   designLabTools: {
     id: 'screens.AdminLayout.designLabTools',
     defaultMessage: 'Edit Designlab Tools'
+  },
+  noRole: {
+    id: 'screens.AdminLayout.noRole',
+    defaultMessage: `You don't have a role assigned`
   }
 })
