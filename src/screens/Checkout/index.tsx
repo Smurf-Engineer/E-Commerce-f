@@ -776,6 +776,7 @@ class Checkout extends React.Component<Props, {}> {
     const {
       setStripeCardDataAction,
       billingCountry,
+      addNewCard,
       client: { query },
       location: {
         state: { cart }
@@ -793,6 +794,7 @@ class Checkout extends React.Component<Props, {}> {
     }
     if (card && stripeToken) {
       setStripeCardDataAction(card, stripeToken)
+      await addNewCard({ variables: { token: stripeToken } })
     }
   }
   getProductsPrice = () => {
@@ -1071,11 +1073,14 @@ const CheckoutEnhance = compose(
   CreatePaymentIntentMutation,
   AddCardMutation,
   withApollo,
-  connect(mapStateToProps, {
-    ...checkoutActions,
-    ...thunkActions,
-    getTotalItemsIncart
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...checkoutActions,
+      ...thunkActions,
+      getTotalItemsIncart
+    }
+  )
 )(Checkout)
 
 export default CheckoutEnhance
