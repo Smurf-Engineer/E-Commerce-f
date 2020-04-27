@@ -21,5 +21,9 @@ export default defineMessages({
     id: 'screens.Checkout.correctCurrency',
     defaultMessage:
       'Your selected Currency is {currentCurrency}. Is this the currency you wish to proceed?'
+  },
+  errorSavingCart: {
+    id: 'screens.Checkout.errorSavingCart',
+    defaultMessage: 'Error trying to save card information'
   }
 })
