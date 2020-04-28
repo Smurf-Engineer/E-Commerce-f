@@ -7,90 +7,94 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.OrderDetails.title',
-    defaultMessage: 'Order Details',
+    defaultMessage: 'Order Details'
   },
   backToOrders: {
     id: 'components.OrderDetails.backToHistory',
-    defaultMessage: 'Back to Orders',
+    defaultMessage: 'Back to Orders'
   },
   receipt: {
     id: 'components.OrderDetails.receipt',
-    defaultMessage: 'Receipt',
+    defaultMessage: 'Receipt'
   },
   deliveryDate: {
     id: 'components.OrderDetails.deliveryDate',
-    defaultMessage: 'Estimated delivery date',
+    defaultMessage: 'Estimated delivery date'
   },
   orderNumber: {
     id: 'components.OrderDetails.orderNumber',
-    defaultMessage: 'Order Number',
+    defaultMessage: 'Order Number'
   },
   orderDate: {
     id: 'components.OrderDetails.orderDate',
-    defaultMessage: 'Order Date',
+    defaultMessage: 'Order Date'
   },
   trackingNumber: {
     id: 'components.OrderDetails.trackingNumber',
-    defaultMessage: 'Tracking Number',
+    defaultMessage: 'Tracking Number'
   },
   status: {
     id: 'components.OrderDetails.status',
-    defaultMessage: 'Status',
+    defaultMessage: 'Status'
   },
   orderSummary: {
     id: 'components.OrderDetails.orderSummary',
-    defaultMessage: 'Order Summary',
+    defaultMessage: 'Order Summary'
   },
   subtotal: {
     id: 'components.OrderDetails.subtotal',
-    defaultMessage: 'Subtotal',
+    defaultMessage: 'Subtotal'
   },
   taxes: {
     id: 'components.OrderDetails.taxes',
-    defaultMessage: 'Taxes',
+    defaultMessage: 'Taxes'
   },
   shipping: {
     id: 'components.OrderDetails.shipping',
-    defaultMessage: 'Shipping',
+    defaultMessage: 'Shipping'
   },
   discount: {
     id: 'components.OrderDetails.discount',
-    defaultMessage: 'Discount',
+    defaultMessage: 'Discount'
   },
   total: {
     id: 'components.OrderDetails.total',
-    defaultMessage: 'Total',
+    defaultMessage: 'Total'
   },
   items: {
     id: 'components.OrderDetails.items',
-    defaultMessage: 'Items',
+    defaultMessage: 'Items'
   },
   shippingAddress: {
     id: 'components.OrderDetails.shippingAddress',
-    defaultMessage: 'Shipping Address',
+    defaultMessage: 'Shipping Address'
   },
   billingAddress: {
     id: 'components.OrderDetails.billingAddress',
-    defaultMessage: 'Billing Address',
+    defaultMessage: 'Billing Address'
   },
   payment: {
     id: 'components.OrderDetails.payment',
-    defaultMessage: 'Payment',
+    defaultMessage: 'Payment'
   },
   notFound: {
     id: 'components.OrderDetails.notFound',
-    defaultMessage: 'Order not found',
+    defaultMessage: 'Order not found'
   },
   orderPoint: {
     id: 'components.OrderDetails.orderPoint',
-    defaultMessage: 'Order Point',
+    defaultMessage: 'Order Point'
   },
   cart: {
     id: 'components.OrderDetails.cart',
-    defaultMessage: 'Cart',
+    defaultMessage: 'Cart'
   },
   lastUpdated: {
     id: 'components.OrderDetails.lastUpdated',
-    defaultMessage: 'Last Updated',
+    defaultMessage: 'Last Updated'
   },
+  email: {
+    id: 'components.OrderDetails.email',
+    defaultMessage: 'Email'
+  }
 })

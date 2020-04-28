@@ -9,7 +9,9 @@ import {
   GRAY_STRONG,
   GRAY,
   GRAY_LIGHT,
-  RED
+  RED,
+  RED_TRANSPARENT,
+  BLACK_LIGHT
 } from '../../theme/colors'
 import { BLACK } from '../../screens/DesignerTool/constants'
 
@@ -52,7 +54,7 @@ export const TitleName = styled.div`
 }`
 
 export const TeamStoreCard = styled.div`
-  width: ${({ small }: DivProps) => small ? '428px' : '658px'};
+  width: ${({ small }: DivProps) => (small ? '428px' : '658px')};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: auto;
@@ -74,9 +76,11 @@ export const CardContent = styled.div`
   box-shadow: 0 2px 4px 0 ${GRAY_LIGHT};
   position: relative;
   &: before {
-    color: ${WHITE};
-    top: 5px;
-    text-shadow: 1px 1px 3px ${BLACK};
+    background: ${({ closedMessage }: CardProps) =>
+      closedMessage ? RED_TRANSPARENT : 'none'};
+    color: ${BLACK};
+    top: 8px;
+    padding: 5px;
     position: absolute;
     text-align: center;
     content: ${({ closedMessage }: CardProps) => `'${closedMessage}'`};
@@ -90,17 +94,20 @@ export const CardTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 33%;
 `
 
 export const StoreType = styled.div`
-  text-shadow: 0px 2px 4px ${GRAY_DARK};
   cursor: text;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 12px;
   text-align: center;
-  width: 33%;
+  background: ${BLACK_LIGHT};
+  border: 1px solid ${WHITE};
+  font-weight: 500;
+  height: 24px;
+  padding: 0 12px;
 `
 
 export const BottomContainer = styled.div`
@@ -145,7 +152,6 @@ export const EditButton = ShareButton.extend``
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  width: 33%;
   @media (max-width: 480px) {
     width: 100%;
     justify-content: space-between;
