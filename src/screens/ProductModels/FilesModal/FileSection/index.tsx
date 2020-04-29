@@ -18,9 +18,8 @@ import {
   DefaultButton
 } from './styledComponents'
 import messages from '../messages'
-import { files, extraFiles, validModels } from '../../constants'
+import { files, extraFiles } from '../../constants'
 import { Message, ModelVariant, UploadFile } from '../../../../types/common'
-import indexOf from 'lodash/indexOf'
 import {
   getFileWithExtension,
   getFileExtension
@@ -36,14 +35,13 @@ interface Props {
 }
 
 export class FileSection extends React.Component<Props, {}> {
-  beforeUpload = (file: UploadFile) => {
+  beforeUpload = (file: UploadFile, extension: string) => {
     const { formatMessage } = this.props
     const { name } = file
     const fileExtension = getFileExtension(name)
-    const isValidType =
-      indexOf(validModels, (fileExtension as String).toLowerCase()) !== -1
+    const isValidType = fileExtension === extension
     if (!isValidType) {
-      message.error(formatMessage(messages.fileError))
+      message.error(formatMessage(messages.fileError, { extension }))
     }
     return isValidType
   }
@@ -72,6 +70,7 @@ export class FileSection extends React.Component<Props, {}> {
         <StrongLabel>{formatMessage(messages.modelFiles)}</StrongLabel>
         {files.map(({ title, extension, key, placeholder }, index) => {
           const remove = () => this.handleRemove(key)
+          const validateFile = (file: UploadFile) => this.beforeUpload(file, extension)
           return (
             <FileContainer active={!!tempModel[key]} key={index}>
               <Label>
@@ -84,27 +83,27 @@ export class FileSection extends React.Component<Props, {}> {
                 className="avatar-uploader"
                 customRequest={this.handleUploadFile}
                 showUploadList={false}
-                beforeUpload={this.beforeUpload}
+                beforeUpload={validateFile}
               >
                 {tempModel[key] ? (
                   <CenterName>
                     {tempModel[key] === 'loading' ? (
                       <Spin size="small" />
                     ) : (
-                      <FileTag>
-                        <FileName>
-                          <Clip type="paper-clip" />
-                          {getFileWithExtension(tempModel[key])}
-                        </FileName>
-                        <Delete onClick={remove} type="close" />
-                      </FileTag>
-                    )}
+                        <FileTag>
+                          <FileName>
+                            <Clip type="paper-clip" />
+                            {getFileWithExtension(tempModel[key])}
+                          </FileName>
+                          <Delete onClick={remove} type="close" />
+                        </FileTag>
+                      )}
                   </CenterName>
                 ) : (
-                  <PlaceHolder>
-                    {formatMessage(messages[placeholder])}
-                  </PlaceHolder>
-                )}
+                    <PlaceHolder>
+                      {formatMessage(messages[placeholder])}
+                    </PlaceHolder>
+                  )}
               </Upload>
             </FileContainer>
           )
@@ -124,6 +123,7 @@ export class FileSection extends React.Component<Props, {}> {
                 <ExtraFile header={formatMessage(messages[title])} key={index}>
                   {options.map(({ key, extension }, subIndex) => {
                     const remove = () => this.handleRemove(key)
+                    const validateFile = (file: UploadFile) => this.beforeUpload(file, extension)
                     const fileExt = tempModel[key]
                       ? getFileWithExtension(tempModel[key])
                       : ''
@@ -136,27 +136,27 @@ export class FileSection extends React.Component<Props, {}> {
                         className="avatar-uploader"
                         customRequest={this.handleUploadFile}
                         showUploadList={false}
-                        beforeUpload={this.beforeUpload}
+                        beforeUpload={validateFile}
                       >
                         {tempModel[key] ? (
                           <CenterName>
                             {tempModel[key] === 'loading' ? (
                               <Spin size="small" />
                             ) : (
-                              <FileTag>
-                                <FileName>
-                                  <Clip type="paper-clip" />
-                                  {fileExt}
-                                </FileName>
-                                <Delete onClick={remove} type="close" />
-                              </FileTag>
-                            )}
+                                <FileTag>
+                                  <FileName>
+                                    <Clip type="paper-clip" />
+                                    {fileExt}
+                                  </FileName>
+                                  <Delete onClick={remove} type="close" />
+                                </FileTag>
+                              )}
                           </CenterName>
                         ) : (
-                          <PlaceHolder>
-                            {formatMessage(messages[key])}
-                          </PlaceHolder>
-                        )}
+                            <PlaceHolder>
+                              {formatMessage(messages[key])}
+                            </PlaceHolder>
+                          )}
                       </Upload>
                     )
                   })}
