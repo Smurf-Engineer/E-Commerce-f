@@ -56,9 +56,6 @@ export const TitleName = styled.div`
 export const TeamStoreCard = styled.div`
   width: ${({ small }: DivProps) => (small ? '428px' : '658px')};
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-  }
-
   @media (min-width: 481px) and (max-width: 767px) {
     width: 100%;
   }
