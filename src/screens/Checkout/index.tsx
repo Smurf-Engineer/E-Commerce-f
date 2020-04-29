@@ -200,7 +200,10 @@ interface Props extends RouteComponentProps<any> {
   openAddressesModalAction: (open: boolean) => void
   setSkipValueAction: (limit: number, pageNumber: number) => void
   showCardFormAction: (open: boolean) => void
-  selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  selectCardToPayAction: (
+    card: StripeCardData | CreditCardData,
+    selectedCardId: string
+  ) => void
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
@@ -777,6 +780,7 @@ class Checkout extends React.Component<Props, {}> {
       setStripeCardDataAction,
       billingCountry,
       addNewCard,
+      selectCardToPayAction,
       intl: { formatMessage },
       client: { query },
       location: {
@@ -793,10 +797,16 @@ class Checkout extends React.Component<Props, {}> {
     if (data.subsidiary === EUROPE && !isFixedTeamstore) {
       await this.createPaymentIntent()
     }
-    if (isFixedTeamstore && card && stripeToken) {
-      setStripeCardDataAction(card, stripeToken)
+    if (card && stripeToken) {
       try {
-        await addNewCard({ variables: { token: stripeToken } })
+        if (isFixedTeamstore) {
+          await addNewCard({
+            variables: { token: stripeToken }
+          })
+          selectCardToPayAction(card, card.id)
+        } else {
+          setStripeCardDataAction(card, stripeToken)
+        }
       } catch (e) {
         message.error(formatMessage(messages.errorSavingCart))
       }
