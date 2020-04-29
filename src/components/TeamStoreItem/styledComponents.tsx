@@ -56,7 +56,7 @@ export const TitleName = styled.div`
 export const TeamStoreCard = styled.div`
   width: ${({ small }: DivProps) => (small ? '428px' : '658px')};
 
-  @media (min-width: 481px) and (max-width: 767px) {
+  @media (min-width: 370px) and (max-width: 767px) {
     width: 100%;
   }
 `
@@ -99,9 +99,15 @@ export const StoreType = styled.div`
   text-align: center;
   background: ${BLACK_LIGHT};
   border: 1px solid ${WHITE};
+  color: ${WHITE};
   font-weight: 500;
   height: 24px;
   padding: 0 12px;
+  @media (max-width: 480px) {
+    line-height: 20px;
+    min-width: 45%;
+    border-color: ${GRAY};
+  }
 `
 
 export const BottomContainer = styled.div`
