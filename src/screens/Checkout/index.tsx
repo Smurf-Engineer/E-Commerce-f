@@ -793,10 +793,12 @@ class Checkout extends React.Component<Props, {}> {
     if (data.subsidiary === EUROPE && !isFixedTeamstore) {
       await this.createPaymentIntent()
     }
-    if (isFixedTeamstore && card && stripeToken) {
+    if (card && stripeToken) {
       setStripeCardDataAction(card, stripeToken)
       try {
-        await addNewCard({ variables: { token: stripeToken } })
+        if (isFixedTeamstore) {
+          await addNewCard({ variables: { token: stripeToken } })
+        }
       } catch (e) {
         message.error(formatMessage(messages.errorSavingCart))
       }
