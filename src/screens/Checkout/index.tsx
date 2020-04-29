@@ -796,7 +796,9 @@ class Checkout extends React.Component<Props, {}> {
     if (card && stripeToken) {
       setStripeCardDataAction(card, stripeToken)
       try {
-        await addNewCard({ variables: { token: stripeToken } })
+        if (isFixedTeamstore) {
+          await addNewCard({ variables: { token: stripeToken } })
+        }
       } catch (e) {
         message.error(formatMessage(messages.errorSavingCart))
       }
