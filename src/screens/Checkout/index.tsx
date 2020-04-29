@@ -777,6 +777,7 @@ class Checkout extends React.Component<Props, {}> {
       setStripeCardDataAction,
       billingCountry,
       addNewCard,
+      selectCardToPayAction,
       intl: { formatMessage },
       client: { query },
       location: {
@@ -794,10 +795,14 @@ class Checkout extends React.Component<Props, {}> {
       await this.createPaymentIntent()
     }
     if (card && stripeToken) {
-      setStripeCardDataAction(card, stripeToken)
       try {
         if (isFixedTeamstore) {
-          await addNewCard({ variables: { token: stripeToken } })
+          await addNewCard({
+            variables: { token: stripeToken }
+          })
+          selectCardToPayAction(card, card.id)
+        } else {
+          setStripeCardDataAction(card, stripeToken)
         }
       } catch (e) {
         message.error(formatMessage(messages.errorSavingCart))
