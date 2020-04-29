@@ -200,7 +200,10 @@ interface Props extends RouteComponentProps<any> {
   openAddressesModalAction: (open: boolean) => void
   setSkipValueAction: (limit: number, pageNumber: number) => void
   showCardFormAction: (open: boolean) => void
-  selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  selectCardToPayAction: (
+    card: StripeCardData | CreditCardData,
+    selectedCardId: string
+  ) => void
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
