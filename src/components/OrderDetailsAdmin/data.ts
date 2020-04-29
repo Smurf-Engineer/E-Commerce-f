@@ -144,6 +144,7 @@ export const getOrderQuery = gql`
       taxVat: tax_vat
       teamStoreId: teamstore_id
       teamStoreName: teamstore_name
+      email
     }
   }
 `

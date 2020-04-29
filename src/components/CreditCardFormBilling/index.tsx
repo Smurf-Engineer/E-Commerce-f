@@ -327,7 +327,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           brand
         }
         setStripeCardDataAction(cardData, tokenId)
-      } else {
+      } else if (isEuSubsidiary) {
         createPaymentIntent()
       }
       nextStep()

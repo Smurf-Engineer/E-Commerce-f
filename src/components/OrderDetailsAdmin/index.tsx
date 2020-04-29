@@ -136,7 +136,8 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       discount,
       teamStoreId,
       lastDrop,
-      teamStoreName
+      teamStoreName,
+      email
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -244,6 +245,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 <DeliveryLabel>
                   {formatMessage(messages.lastUpdated)}
                 </DeliveryLabel>
+                <DeliveryLabel>{formatMessage(messages.email)}</DeliveryLabel>
               </DeliveryLabels>
               <DeliveryData>
                 <Info>
@@ -257,6 +259,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 <Info>
                   {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                 </Info>
+                <Info>{email}</Info>
               </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>
