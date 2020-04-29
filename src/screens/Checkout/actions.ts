@@ -192,7 +192,7 @@ export const showCardFormAction = (
 })
 
 export const selectCardToPayAction = (
-  card: CreditCardData | CreditCardData,
+  card: CreditCardData,
   cardId?: string
 ) => {
   return {
