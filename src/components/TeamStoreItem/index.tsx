@@ -78,6 +78,11 @@ const TeamStoreItem = ({
 
   const buttons = (
     <ButtonsContainer>
+      {owner && (
+        <StoreType>
+          {formatMessage(messages[fixedDate ? 'batchOrder' : 'onDemand'])}
+        </StoreType>
+      )}
       {withEditButton && !closed && (
         <EditButton onClick={handleClickEdit}>
           {formatMessage(messages.editButtonLabel)}
@@ -108,13 +113,6 @@ const TeamStoreItem = ({
           {showNameStore && (
             <BottomContainer>
               <CardTitle>{name}</CardTitle>
-              {owner && (
-                <StoreType>
-                  {formatMessage(
-                    messages[fixedDate ? 'batchOrder' : 'onDemand']
-                  )}
-                </StoreType>
-              )}
               <MediaQuery minWidth={480}>{buttons}</MediaQuery>
             </BottomContainer>
           )}

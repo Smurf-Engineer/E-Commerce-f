@@ -142,6 +142,7 @@ export const getOrderQuery = gql`
       teamStoreName: teamstore_name
       canUpdatePayment
       onDemand: on_demand_mode
+      email
     }
   }
 `

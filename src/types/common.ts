@@ -795,6 +795,7 @@ export interface OrderDetailsInfo {
   teamStoreName?: string
   canUpdatePayment?: boolean
   onDemand?: boolean
+  email?: string
 }
 
 export interface OrderDataInfo {
