@@ -28,7 +28,7 @@ import { addRepUserMutation, getRepUsers } from './RepList/data'
 import { User, UserPermissions } from '../../types/common'
 import get from 'lodash/get'
 import { REPS_LIMIT } from './constants'
-import { SALES_REP } from '../AdminLayout/constants'
+import { SALES_REP, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -144,6 +144,7 @@ class SalesRep extends React.Component<Props, {}> {
       formatMessage,
       open,
       loading,
+      history,
       searchText,
       name,
       lastName,
@@ -151,7 +152,7 @@ class SalesRep extends React.Component<Props, {}> {
     } = this.props
     const access = permissions[SALES_REP] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     return (
       <Container>

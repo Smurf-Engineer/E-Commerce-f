@@ -46,7 +46,7 @@ import {
   UserPermissions
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
-import { TEAM_STORES } from '../AdminLayout/constants'
+import { TEAM_STORES, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -217,7 +217,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
     } = this.props
     const access = permissions[TEAM_STORES] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     return (
       <div>

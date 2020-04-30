@@ -21,7 +21,7 @@ import messages from './messages'
 import { QueryProps, Role, Message, UserPermissions } from '../../types/common'
 import { getRoles } from './ListRole/data'
 import { Spin } from 'antd'
-import { ROLE_MANAGEMENT } from '../AdminLayout/constants'
+import { ROLE_MANAGEMENT, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface DataRoles extends QueryProps {
   roles: Role[]
@@ -69,13 +69,14 @@ class RolesCatalog extends React.Component<Props, {}> {
       currentPage,
       formatMessage,
       filter,
+      history,
       searchText,
       permissions,
       rolesQuery: { loading, roles }
     } = this.props
     const access = permissions[ROLE_MANAGEMENT] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     return (
       <Container>
