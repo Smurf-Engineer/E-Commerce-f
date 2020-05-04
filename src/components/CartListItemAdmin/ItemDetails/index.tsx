@@ -25,13 +25,15 @@ interface Props {
   symbol: string
   preflightCheck: boolean
   total: number
+  teamStoreName?: string
   unitaryPrice: number
-  formatMessage: (messageDescriptor: Message, params?: MessagePrice) => string
+  formatMessage: (messageDescriptor: Message, params?: MessageParams) => string
 }
 
-interface MessagePrice {
-  symbol: string
-  price: string
+interface MessageParams {
+  symbol?: string
+  price?: string
+  teamStoreName?: string
 }
 class ItemDetails extends React.Component<Props, {}> {
   render() {
@@ -42,6 +44,7 @@ class ItemDetails extends React.Component<Props, {}> {
       total,
       designCode,
       mpnCode,
+      teamStoreName,
       preflightCheck,
       symbol,
       unitaryPrice
@@ -56,6 +59,9 @@ class ItemDetails extends React.Component<Props, {}> {
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>
+          {teamStoreName && <ItemDetailsHeaderNameDetail>
+            {formatMessage(messages.from, { teamStoreName })}
+          </ItemDetailsHeaderNameDetail>}
           <div>{designCode || mpnCode}</div>
         </NameContainer>
         <PriceContainer>

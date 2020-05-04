@@ -124,6 +124,7 @@ export const getOrderQuery = gql`
         designName
         designImage
         salesRepName
+        teamStoreName
         managerName
         designCode
         bibBraceColor
