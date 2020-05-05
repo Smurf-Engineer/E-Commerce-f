@@ -138,6 +138,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingAmount,
       proDesign,
       taxGst,
+      teamStoreName,
       taxPst,
       taxVat,
       taxFee,
@@ -163,14 +164,12 @@ export class OrderDetails extends React.Component<Props, {}> {
           product: { images, name, shortDescription },
           productTotal,
           unitPrice,
-          teamStoreName,
           teamStoreItem
         } = cartItem
 
         subtotal += productTotal || 0
         cartItem.isFixed = onDemand === false
         cartItem.teamStoreItem = teamStoreItem
-        cartItem.teamStoreName = teamStoreName
         const priceRange = {
           quantity: '0',
           price: 0,
