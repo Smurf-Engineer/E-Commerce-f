@@ -125,7 +125,7 @@ interface Props extends RouteComponentProps<any> {
   setInitialData: (query: any) => void
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
-  saveToStorage: (cart: CartItems[]) => void
+  saveToStorage: (cart: CartItems[], reset: boolean) => void
   showReviewDesignModalAction: (open: boolean) => void
   openFitInfoAction: (open: boolean, selectedIndex?: number) => void
 }
@@ -217,9 +217,17 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setInitialData(query)
   }
 
+  componentDidUpdate() {
+    this.saveCart()
+  }
+
   componentWillUnmount() {
+    this.saveCart(true)
+  }
+
+  saveCart = (reset: boolean = false) => {
     const { cart, saveToStorage } = this.props
-    saveToStorage(cart)
+    saveToStorage(cart, reset)
   }
 
   handleAddItemDetail = (
@@ -409,7 +417,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           }
           price={
             currencyPrices[
-              cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
+            cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
             ]
           }
           image={
@@ -468,29 +476,29 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               </EmptyItems>
             </EmptyContainer>
           ) : (
-            <Container>
-              <SideBar>
-                <Ordersummary
-                  subtotal={total}
-                  currencySymbol={symbol}
-                  youSaved={totalWithoutDiscount - total}
-                  {...{ formatMessage, totalWithoutDiscount }}
-                />
-                <ButtonWrapper disabled={!activeCheckout}>
-                  <CheckoutButton
-                    disabled={!activeCheckout}
-                    type="primary"
-                    onClick={this.onCheckoutClick}
-                  >
-                    <FormattedMessage {...messages.checkout} />
-                  </CheckoutButton>
-                </ButtonWrapper>
-              </SideBar>
-              <Content>
-                <CartList>{renderList}</CartList>
-              </Content>
-            </Container>
-          )}
+              <Container>
+                <SideBar>
+                  <Ordersummary
+                    subtotal={total}
+                    currencySymbol={symbol}
+                    youSaved={totalWithoutDiscount - total}
+                    {...{ formatMessage, totalWithoutDiscount }}
+                  />
+                  <ButtonWrapper disabled={!activeCheckout}>
+                    <CheckoutButton
+                      disabled={!activeCheckout}
+                      type="primary"
+                      onClick={this.onCheckoutClick}
+                    >
+                      <FormattedMessage {...messages.checkout} />
+                    </CheckoutButton>
+                  </ButtonWrapper>
+                </SideBar>
+                <Content>
+                  <CartList>{renderList}</CartList>
+                </Content>
+              </Container>
+            )}
           <Modal
             visible={showDeleteLastItemModal}
             title={

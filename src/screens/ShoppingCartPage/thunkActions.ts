@@ -58,11 +58,13 @@ export const setInitialData = (query: any) => {
   }
 }
 
-export const saveToStorage = (cart: CartItems[]) => {
+export const saveToStorage = (cart: CartItems[], reset: boolean = false) => {
   return async (dispatch: any) => {
     try {
       localStorage.setItem('cart', JSON.stringify(cart))
-      dispatch(resetReducerData())
+      if (reset) {
+        dispatch(resetReducerData())
+      }
     } catch (error) {
       console.error(error)
     }
