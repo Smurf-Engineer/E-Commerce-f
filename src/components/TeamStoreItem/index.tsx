@@ -9,7 +9,6 @@ import {
   TeamStoreCard,
   CardContent,
   StyledImg,
-  CardTitle,
   ShareButton,
   EditButton,
   ButtonsContainer,
@@ -112,7 +111,6 @@ const TeamStoreItem = ({
           )}
           {showNameStore && (
             <BottomContainer>
-              <CardTitle>{name}</CardTitle>
               <MediaQuery minWidth={480}>{buttons}</MediaQuery>
             </BottomContainer>
           )}

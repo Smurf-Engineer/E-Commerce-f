@@ -122,7 +122,7 @@ export const BottomContainer = styled.div`
   background: linear-gradient(0deg, #54545494, #54545400);
   padding: 4px 8px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 `
 
 export const ShareButton = styled(Button)`
