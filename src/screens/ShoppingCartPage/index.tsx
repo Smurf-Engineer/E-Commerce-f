@@ -82,6 +82,7 @@ interface Props extends RouteComponentProps<any> {
   openFitInfo: boolean
   storeTerms: boolean
   openStoreInfo: boolean
+  hasChanges: boolean
   selectedIndex: number
   openStoreInfoAction: (open: boolean) => void
   setStoreTerms: (checked: boolean) => void
@@ -218,7 +219,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   componentDidUpdate() {
-    this.saveCart()
+    const { hasChanges } = this.props
+    if (hasChanges) {
+      this.saveCart()
+    }
   }
 
   componentWillUnmount() {
