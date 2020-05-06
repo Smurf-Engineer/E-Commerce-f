@@ -59,7 +59,7 @@ class ItemDetails extends React.Component<Props, {}> {
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>
-          {teamStoreName && <ItemDetailsHeaderNameDetail>
+          {!!teamStoreName && <ItemDetailsHeaderNameDetail>
             {formatMessage(messages.from, { teamStoreName })}
           </ItemDetailsHeaderNameDetail>}
           <div>{designCode || mpnCode}</div>
