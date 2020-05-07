@@ -32,7 +32,6 @@ export const initialState = fromJS({
   subtotal: 0,
   total: 0,
   shipping: 0,
-  hasChanges: false,
   openStoreInfo: false,
   storeTerms: false,
   showDeleteLastItemModal: false,
@@ -40,7 +39,7 @@ export const initialState = fromJS({
   openFitInfo: false,
   selectedIndex: 0
 })
-// TODO: Create the tests for all the cases
+
 const shoppingCartPageReducer: Reducer<any> = (
   state = initialState,
   action
@@ -53,99 +52,73 @@ const shoppingCartPageReducer: Reducer<any> = (
     case ADD_ITEM_DETAIL_ACTION: {
       const { index } = action
       const color = state.getIn(['cart', index, 'itemDetails', 0, 'color'])
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', index, 'itemDetails'],
-          (itemDetails: any) => itemDetails.push(fromJS({ color, quantity: 1 }))
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', index, 'itemDetails'],
+        (itemDetails: any) => itemDetails.push(fromJS({ color, quantity: 1 }))
+      )
     }
     case SET_STORE_TERMS:
       return state.set('storeTerms', action.checked)
     case OPEN_STORE_INFO:
       return state.set('openStoreInfo', action.open)
     case DELETE_ITEM_DETAIL_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', action.index, 'itemDetails'],
-          (itemDetails: any) => itemDetails.splice(action.detailIndex, 1)
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails'],
+        (itemDetails: any) => itemDetails.splice(action.detailIndex, 1)
+      )
     case SET_LABEL_ITEM_DETAIL_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', action.index, 'itemDetails', action.detailIndex],
-          (detailItem: any) => {
-            const updateItem = detailItem.set('label', action.label)
-            return updateItem
-          }
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('label', action.label)
+          return updateItem
+        }
+      )
     case SET_QUANTITY_ITEM_DETAIL_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', action.index, 'itemDetails', action.detailIndex],
-          (detailItem: any) => {
-            const updateItem = detailItem.set('quantity', action.quantity)
-            return updateItem
-          }
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('quantity', action.quantity)
+          return updateItem
+        }
+      )
+
     case SET_GENDER_ITEM_DETAIL_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', action.index, 'itemDetails', action.detailIndex],
-          (detailItem: any) => {
-            const updateItem = detailItem.set('gender', action.gender)
-            return updateItem
-          }
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('gender', action.gender)
+          return updateItem
+        }
+      )
     case SET_COLOR_ITEM_DETAIL_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', action.index, 'itemDetails', action.detailIndex],
-          (detailItem: any) => {
-            const updateItem = detailItem.set('color', action.color)
-            return updateItem
-          }
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('color', action.color)
+          return updateItem
+        }
+      )
     case SET_SIZE_ITEM_DETAIL_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', action.index, 'itemDetails', action.detailIndex],
-          (detailItem: any) => {
-            const updateItem = detailItem.set('size', action.size)
-            return updateItem
-          }
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('size', action.size)
+          return updateItem
+        }
+      )
     case SET_FIT_ITEM_DETAIL_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(
-          ['cart', action.index, 'itemDetails', action.detailIndex],
-          (detailItem: any) => {
-            const updateItem = detailItem.set('fit', action.fit)
-            return updateItem
-          }
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('fit', action.fit)
+          return updateItem
+        }
+      )
     case REMOVE_ITEM_ACTION:
-      return state.withMutations((map: any) => {
-        map.updateIn(['cart'], (items: any) =>
-          items.splice(action.index, 1)
-        )
-        map.set('hasChanges', true)
-      })
+      return state.updateIn(['cart'], (items: any) =>
+        items.splice(action.index, 1)
+      )
     case SET_TOTAL_ACTION:
       return state.set('total', fromJS(action.total))
     case SET_SUBTOTAL_ACTION:

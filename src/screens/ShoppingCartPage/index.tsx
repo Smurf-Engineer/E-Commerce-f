@@ -9,6 +9,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
 import find from 'lodash/find'
 import get from 'lodash/get'
+import isEqual from 'lodash/isEqual'
 import every from 'lodash/every'
 import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
@@ -82,7 +83,6 @@ interface Props extends RouteComponentProps<any> {
   openFitInfo: boolean
   storeTerms: boolean
   openStoreInfo: boolean
-  hasChanges: boolean
   selectedIndex: number
   openStoreInfoAction: (open: boolean) => void
   setStoreTerms: (checked: boolean) => void
@@ -218,9 +218,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setInitialData(query)
   }
 
-  componentDidUpdate() {
-    const { hasChanges } = this.props
-    if (hasChanges) {
+  componentDidUpdate(oldProps: Props) {
+    const { cart } = this.props
+    const { cart: oldCart } = oldProps
+    if (!isEqual(cart, oldCart)) {
       this.saveCart()
     }
   }
