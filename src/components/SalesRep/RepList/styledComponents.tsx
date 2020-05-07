@@ -88,3 +88,13 @@ export const LoadingContainer = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+export const DeleteButton = styled.div`
+  color: ${RED};
+  text-align: center;
+  border-radius: 4px;
+  transition: all .25s;
+  &:hover {
+    background: ${GRAY_LIGHT};
+  }
+`

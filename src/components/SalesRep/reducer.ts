@@ -9,7 +9,8 @@ import {
   SET_SEARCH_TEXT,
   SET_NAME,
   SET_OPEN_MODAL,
-  SET_LOADING
+  SET_LOADING,
+  SELECT_USER
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -19,7 +20,8 @@ export const initialState = fromJS({
   open: false,
   loading: false,
   lastName: '',
-  searchText: ''
+  searchText: '',
+  shortId: ''
 })
 
 const salesRepReducer: Reducer<any> = (state = initialState, action) => {
@@ -31,8 +33,18 @@ const salesRepReducer: Reducer<any> = (state = initialState, action) => {
         open: action.open,
         name: '',
         lastName: '',
+        shortId: '',
         loading: false
       })
+    case SELECT_USER: {
+      const { firstName, lastName, shortId } = action.user
+      return state.merge({
+        open: true,
+        name: firstName,
+        shortId,
+        lastName,
+      })
+    }
     case SET_NAME:
       return state.set(action.field, action.value)
     case SET_CURRENT_PAGE:

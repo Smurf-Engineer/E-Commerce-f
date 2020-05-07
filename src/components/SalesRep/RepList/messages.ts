@@ -16,5 +16,9 @@ export default defineMessages({
   empty: {
     id: 'components.SalesRepList.empty',
     defaultMessage: 'No sales rep users added'
+  },
+  delete: {
+    id: 'components.SalesRepList.delete',
+    defaultMessage: 'Delete'
   }
 })
