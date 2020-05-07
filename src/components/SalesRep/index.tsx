@@ -28,6 +28,8 @@ import { addRepUserMutation, getRepUsers, editRepUserMutation, deleteRepUserMuta
 import { User, UsersResult, QueryProps } from '../../types/common'
 import get from 'lodash/get'
 import { REPS_LIMIT } from './constants'
+import remove from 'lodash/remove'
+import set from 'lodash/set'
 
 interface Data extends QueryProps {
   repUsers: UsersResult
@@ -47,6 +49,7 @@ interface Props {
   setLoading: (loading: boolean) => void
   addRepUser: (variables: {}) => Promise<User>
   editRepUser: (variables: {}) => Promise<User>
+  deleteRepUser: (variables: {}) => Promise<User>
   setOpenModal: (open: boolean) => void
   setNameAction: (field: string, value: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -114,14 +117,46 @@ class SalesRep extends React.Component<Props, {}> {
     const {
       setLoading,
       formatMessage,
+      currentPage,
+      searchText,
+      deleteRepUser,
     } = this.props
     try {
-      console.log('shortId:', shortId)
       setLoading(true)
-      // await deleteRepUser({
-      //   variables: { shortId }
-      // })
-      Message.success(formatMessage(messages.updated))
+      await deleteRepUser({
+        variables: { shortId },
+        update: (store: any, dataInternal: User) => {
+          const user = get(dataInternal, 'data.userResult', {})
+          if (user) {
+            const offset = currentPage ? (currentPage - 1) * REPS_LIMIT : 0
+            const storedData = store.readQuery({
+              query: getRepUsers,
+              variables: {
+                limit: REPS_LIMIT,
+                offset,
+                text: searchText
+              }
+            })
+            const { shortId: id } = user
+            const users = get(storedData, 'repUsers.users', []) as User[]
+            const updatedUsers = remove(
+              users,
+              ({ shortId: oldId }) => oldId === id
+            )
+            set(storedData, 'repUSers.users', updatedUsers)
+            store.writeQuery({
+              query: getRepUsers,
+              variables: {
+                limit: REPS_LIMIT,
+                offset,
+                text: searchText
+              },
+              data: storedData
+            })
+            Message.success(formatMessage(messages.deleted))
+          }
+        }
+      })
     } catch (e) {
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)

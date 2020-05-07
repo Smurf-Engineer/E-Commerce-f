@@ -39,3 +39,11 @@ export const editRepUserMutation = gql`
     }
   }
 `
+
+export const deleteRepUserMutation = gql`
+  mutation deleteRepUser($shortId: String!) {
+    userResult: deleteRepUser(shortId: $shortId) {
+      shortId: short_id
+    }
+  }
+`

@@ -44,5 +44,9 @@ export default defineMessages({
   updated: {
     id: 'components.SalesRep.updated',
     defaultMessage: 'Sales Rep Updated'
+  },
+  deleted: {
+    id: 'components.SalesRep.deleted',
+    defaultMessage: 'Sales Rep deleted'
   }
 })
