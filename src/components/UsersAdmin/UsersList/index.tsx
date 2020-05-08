@@ -49,6 +49,7 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   canEdit: boolean
+  canSetAdmin: boolean
   repSearchText: string
   managerSearchText: string
   salesRep: Data
@@ -105,6 +106,7 @@ class UsersList extends React.Component<Props, StateProps> {
       onSetAdministrator,
       onAddNewUser,
       searchText,
+      canSetAdmin,
       onSelectUser,
     } = this.props
 
@@ -228,6 +230,7 @@ class UsersList extends React.Component<Props, StateProps> {
               searchReps,
               searchManager,
               setUserRep,
+              canSetAdmin,
               email,
               firstName,
               canEdit,

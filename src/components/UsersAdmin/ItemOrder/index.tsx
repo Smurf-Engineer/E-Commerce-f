@@ -15,6 +15,7 @@ interface Props {
   email: string
   socialMethod: string
   administrator: boolean
+  canSetAdmin: boolean
   firstName: string
   lastName: string
   netsuiteId: string
@@ -53,6 +54,7 @@ const ItemOrder = ({
   onSetAdministrator,
   billingCountry,
   createdAt,
+  canSetAdmin,
   canEdit,
   onSelectUser,
   shortId,
@@ -87,7 +89,7 @@ const ItemOrder = ({
       <Cell>{socialMethod}</Cell>
       <Cell onClick={stopPropagation}>
         <Switch
-          disabled={!canEdit}
+          disabled={!canEdit || !canSetAdmin}
           onChange={handleOnSetAdministrator}
           checked={administrator}
         />

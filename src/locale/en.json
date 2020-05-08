@@ -1156,6 +1156,7 @@
   "components.SalesRep.title": "Sales Rep List",
   "components.SalesRep.search": "Search for a user",
   "components.SalesRep.addRep": "+ ADD SALES REP",
+  "components.SalesRep.edit": "Edit Sales Rep",
   "components.SalesRep.addSalesRep": "Add Sales Rep",
   "components.SalesRep.firstNameLabel": "First Name",
   "components.SalesRep.lastNameLabel": "Last Name",

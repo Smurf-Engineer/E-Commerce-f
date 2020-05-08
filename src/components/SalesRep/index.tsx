@@ -247,6 +247,7 @@ class SalesRep extends React.Component<Props, {}> {
       formatMessage,
       open,
       loading,
+      shortId,
       searchText,
       name,
       lastName,
@@ -277,7 +278,7 @@ class SalesRep extends React.Component<Props, {}> {
           onChangePage={this.handleOnChangePage}
         />
         <Modal visible={open} footer={null} closable={false} width="442px">
-          <Title>{formatMessage(messages.addSalesRep)}</Title>
+          <Title>{formatMessage(shortId ? messages.edit : messages.addSalesRep)}</Title>
           <FormContainer>
             <StyledInput
               id="name"
