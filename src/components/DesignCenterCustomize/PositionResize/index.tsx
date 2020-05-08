@@ -83,12 +83,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
   }
 
   format = (value: string) => {
-    let newValue = value
-    if (newValue && !LAST_DOT.test(newValue)) {
-      const rounded = Math.round(parseFloat(newValue) * 10) / 10
-      newValue = rounded.toString()
-    }
-    return `${newValue} cm`
+    const newValue = value && !LAST_DOT.test(value) ? Math.round(parseFloat(value) * 10) / 10 : value
+    return `${newValue.toString()} cm`
   }
 
   render() {
