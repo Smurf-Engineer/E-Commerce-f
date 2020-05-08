@@ -40,7 +40,7 @@ import {
   Container,
   OptionMenu,
   Content,
-  LogoutButton,
+  LogoutButton
 } from './styledComponents'
 import Helmet from 'react-helmet'
 
@@ -80,7 +80,7 @@ class AdminLayout extends React.Component<Props, {}> {
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
     const fonts: SimpleFont[] = fontsList.map((font: Font) => ({
-      font: font.family,
+      font: font.family
     }))
     setInstalledFontsAction(fonts)
   }
@@ -157,13 +157,14 @@ class AdminLayout extends React.Component<Props, {}> {
       openKeys,
       screen,
       onLogout,
-      permissions,
+      permissions
     } = this.props
     const isHidden = options.reduce((obj, { title, options: submenus }) => {
       obj[title] = submenus.every((label) => !permissions[label].view)
       return obj
       // tslint:disable-next-line: align
     }, {})
+
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length && !isHidden[title] ? (
         <SubMenu
@@ -181,13 +182,13 @@ class AdminLayout extends React.Component<Props, {}> {
           )}
         </SubMenu>
       ) : (
-          permissions[title] &&
-          permissions[title].view && (
-            <Menu.Item className="ant-menu-item-custom" key={title}>
-              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-            </Menu.Item>
-          )
+        permissions[title] &&
+        permissions[title].view && (
+          <Menu.Item className="ant-menu-item-custom" key={title}>
+            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+          </Menu.Item>
         )
+      )
     )
 
     const logoutButton = (
@@ -229,7 +230,7 @@ const mapStateToProps = (state: any) => {
     ...layoutProps,
     ...responsive,
     ...adminLayout,
-    ...app,
+    ...app
   }
 }
 
@@ -237,10 +238,13 @@ const LayoutEnhance = compose(
   withApollo,
   getTeamStoreStatus,
   getFonts,
-  connect(mapStateToProps, {
-    ...LayoutActions,
-    ...LocaleActions,
-    ...adminLayoutActions,
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...LayoutActions,
+      ...LocaleActions,
+      ...adminLayoutActions
+    }
+  )
 )(AdminLayout)
 export default LayoutEnhance
