@@ -19,7 +19,8 @@ import { PositionSize } from '../../../types/common'
 import mirrorButton from '../../../assets/mirrorbutton.svg'
 import { SCALE_ACTION, ROTATE_ACTION, DRAG_ACTION } from '../Render3D/config'
 
-const DECIMAL_REGEX = /\D/g
+const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
+const LAST_DOT = /\.$/g
 
 interface Props {
   activeEl: PositionSize
@@ -74,6 +75,16 @@ export class PositionResize extends React.PureComponent<Props, State> {
     this.setState(({ aspectLock }) => ({
       aspectLock: !aspectLock
     }))
+  }
+
+  parser = (value: string | undefined) => {
+    const newValue = value ? value.replace(DECIMAL_REGEX, '') : ''
+    return newValue
+  }
+
+  format = (value: string) => {
+    const newValue = value && !LAST_DOT.test(value) ? Math.round(parseFloat(value) * 10) / 10 : value
+    return `${newValue.toString()} cm`
   }
 
   render() {
@@ -146,8 +157,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
             <NumberInput
               size="large"
               value={width}
-              formatter={rawValue => `${rawValue} cm`}
-              parser={value => value.replace(DECIMAL_REGEX, '')}
+              formatter={this.format}
+              parser={this.parser}
               precision={1}
               onChange={this.changeWidth}
             />
@@ -164,8 +175,8 @@ export class PositionResize extends React.PureComponent<Props, State> {
             <NumberInput
               size="large"
               value={height}
-              formatter={rawValue => `${rawValue} cm`}
-              parser={value => value.replace(DECIMAL_REGEX, '')}
+              formatter={this.format}
+              parser={this.parser}
               precision={1}
               onChange={this.changeHeight}
             />
