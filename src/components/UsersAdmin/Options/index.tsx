@@ -84,14 +84,10 @@ class Options extends React.Component<Props> {
       note,
       loading,
       setNoteText,
-      canEdit,
       data,
       designSelected,
       setDesignSelected,
     } = this.props
-    if (!canEdit) {
-      return null
-    }
     const userId = get(match, 'params.id', '')
     const { loading: loadingData, designNotes = [] } = data || {}
     return (
@@ -133,8 +129,8 @@ class Options extends React.Component<Props> {
             admin={true}
           />
         ) : (
-          <UserFiles {...{ userId, formatMessage }} />
-        )}
+            <UserFiles {...{ userId, formatMessage }} />
+          )}
         <ProassistNotes
           {...{ loadingData, loading, note, designNotes, setNoteText }}
           visible={!!designSelected}
