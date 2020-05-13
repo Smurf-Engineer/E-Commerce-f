@@ -266,8 +266,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loading || notFound || noAdmin ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
       ) : (
-        orderContent
-      )
+          orderContent
+        )
 
     return (
       <Container>
@@ -447,7 +447,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       a.download = `${code}.zip`
       a.click()
     } catch (e) {
-      Message.error(messages.errorDownload.defaultMessage)
+      Message.error(e)
     }
   }
   saveDesign = async (image: string) => {
