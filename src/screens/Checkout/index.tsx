@@ -867,7 +867,7 @@ class Checkout extends React.Component<Props, {}> {
 
       if (
         stripeAccount === EU_STRIPE &&
-        orderObj.paymentMethod === 'creditcard' &&
+        orderObj.paymentMethod === PaymentOptions.CREDITCARD &&
         !orderObj.isFixedTeamstore
       ) {
         const { stripe } = this.state
