@@ -98,7 +98,7 @@ const RowItem = ({
             disabled={
               some(
                 currencies,
-                ({ shortName }) => !pricesByCurrency[shortName]
+                ({ shortName }) => !pricesByCurrency[shortName] && shortName !== CHF_CURRENCY
               ) || !canEdit
             }
             type="primary"
