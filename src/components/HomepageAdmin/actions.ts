@@ -26,14 +26,20 @@ import {
   ADD_CAROUSEL_ITEM,
   TOGGLE_PREVIEW_MODAL,
   SET_DURATION,
-  SET_TRANSITION
+  SET_TRANSITION,
+  MOVE_BANNER,
+  REMOVE_MEDIA,
+  SET_MEDIA,
+  ADD_MEDIA,
+  SET_LOADING
 } from './constants'
 
 import {
   AnyAction,
   ProductType,
   HeaderImagePlaceHolder,
-  ProductTilePlaceHolder
+  ProductTilePlaceHolder,
+  ProductFile
 } from '../../types/common'
 
 export const clearReducerAction = (): AnyAction => ({
@@ -221,4 +227,39 @@ export const setTransitionAction = (section: string, transition: string) => ({
   type: SET_TRANSITION,
   section,
   transition
+})
+
+export const moveFile = (
+  index: number,
+  indexTo: number
+): AnyAction => ({
+  type: MOVE_BANNER,
+  index,
+  indexTo
+})
+
+export const removeMedia = (index: number): AnyAction => ({
+  type: REMOVE_MEDIA,
+  index
+})
+
+export const setMedia = (
+  id: string,
+  name: string,
+  value: string
+): AnyAction => ({
+  type: SET_MEDIA,
+  id,
+  name,
+  value
+})
+
+export const addMedia = (value: ProductFile): AnyAction => ({
+  type: ADD_MEDIA,
+  value
+})
+
+export const setLoadingAction = (loading: boolean): AnyAction => ({
+  type: SET_LOADING,
+  loading
 })
