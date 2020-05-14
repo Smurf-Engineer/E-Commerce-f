@@ -31,12 +31,17 @@ import {
   SkeletonDiv,
   layoutStyle,
   CarouselContainer,
-  Arrow
+  Arrow,
+  SlideImageContainer,
+  SlideVideo,
+  ImageContainer,
+  SlideImage,
+  SlideImageMobile
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
-import { MAIN_TITLE } from '../../constants'
+import { MAIN_TITLE, MP4_EXTENSION } from '../../constants'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
@@ -50,10 +55,12 @@ import {
   Product,
   HomepageImagesType,
   HeaderImagePlaceHolder,
-  HomepageCarousel
+  HomepageCarousel,
+  ProductFile
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
+import { getFileExtension } from '../../utils/utilsFiles'
 
 interface Data extends QueryProps {
   files: any
@@ -82,6 +89,7 @@ interface Props extends RouteComponentProps<any> {
   headerImageMobile: string
   headerImage: string
   headerImageLink: string
+  featuredBanners: ProductFile[]
   productTiles: ProductTiles[]
   featuredProducts: Product[]
   homepageImages: HomepageImagesType[]
@@ -160,6 +168,7 @@ export class Home extends React.Component<Props, {}> {
       clientInfo,
       mainHeaderImages,
       productTiles,
+      featuredBanners,
       featuredProducts,
       loading,
       homepageImages,
@@ -287,6 +296,20 @@ export class Home extends React.Component<Props, {}> {
               <SubText>{formatMessage(messages.priceDrop)}</SubText>
             </PropositionTile>
           </PropositionTilesContainer> */}
+          {featuredBanners.map(({ url, urlMobile }: ProductFile) => (
+            <SlideImageContainer>
+              {getFileExtension(url || '') === MP4_EXTENSION ? (
+                <SlideVideo controls={true}>
+                  <source src={url} type="video/mp4" />
+                </SlideVideo>
+              ) : (
+                  <ImageContainer>
+                    <SlideImage src={url} />
+                    <SlideImageMobile src={urlMobile} />
+                  </ImageContainer>
+                )}
+            </SlideImageContainer>
+          ))}
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
           <YotpoHome />
         </Container>
