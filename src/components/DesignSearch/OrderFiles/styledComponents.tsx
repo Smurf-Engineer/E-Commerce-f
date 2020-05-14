@@ -9,7 +9,8 @@ import {
   RED,
   DARKER_GRAY,
   GRAY_SNOW,
-  GRAY
+  GRAY,
+  BLUE
 } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
 import { BLACK } from '../../../screens/DesignerTool/constants'
@@ -44,6 +45,7 @@ export const Code = styled.div`
   font-weight: bold;
   letter-spacing: 0.23px;
   line-height: 25px;
+  margin-right: 8px;
 `
 
 export const StatusContainer = styled.div`
@@ -141,6 +143,9 @@ export const MessageContainer = styled.div`
 
 export const ModelNameContainer = styled.div`
   margin-bottom: 4px;
+  display: flex;
+    align-items: center;
+    font-size: 16px;
 `
 
 export const ProAssistNotes = styled.div`
@@ -248,7 +253,7 @@ export const Color = styled.div`
   border-radius: 50%;
   border: 1px solid
     ${({ color }: ColorProps) =>
-      color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
+    color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
   background-color: ${({ color }: ColorProps) => color || WHITE};
   align-self: center;
 `
@@ -275,4 +280,10 @@ export const Subtitle = styled.div``
 export const StyledSelect = styled(Select)`
   width: 100%;
   margin-top: 4px;
+`
+
+export const LockerLink = styled.div`
+  color: ${BLUE};
+  text-decoration: underline;
+  cursor: pointer;
 `

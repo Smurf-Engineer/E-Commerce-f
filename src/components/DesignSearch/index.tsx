@@ -186,6 +186,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       openNotes,
       salesRep,
       managers,
+      history,
       addingNote,
       note,
       setNoteAction,
@@ -243,6 +244,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           colorAccessories,
           creatingPdf,
           accessAssets,
+          history,
           loadingPreflight
         }}
         canEdit={access.edit}
@@ -266,8 +268,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       loading || notFound || noAdmin ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
       ) : (
-        orderContent
-      )
+          orderContent
+        )
 
     return (
       <Container>

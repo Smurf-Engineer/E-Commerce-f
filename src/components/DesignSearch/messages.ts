@@ -7,14 +7,14 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'screens.DesignSearch.title',
-    defaultMessage: 'ORDER SEARCH'
+    defaultMessage: 'DESIGN SEARCH'
   },
   designerTool: {
     id: 'screens.DesignSearch.designerTool',
     defaultMessage: 'Designer Tool'
   },
   addCode: {
-    id: 'screens.DesignSearch.designerTool',
+    id: 'screens.DesignSearch.addCode',
     defaultMessage: 'Add JV2-CODE'
   },
   notFound: {
@@ -27,7 +27,7 @@ export default defineMessages({
       'Insufficient privileges please contact your site administrator'
   },
   errorDownload: {
-    id: 'screens.DesignSearch.notFound',
+    id: 'screens.DesignSearch.errorDownload',
     defaultMessage:
       'An unknown error has occurred while trying to download this file, try again later.'
   }

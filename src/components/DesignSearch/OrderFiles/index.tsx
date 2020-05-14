@@ -52,7 +52,8 @@ import {
   RepsDiv,
   StyledSelect,
   Selectable,
-  Subtitle
+  Subtitle,
+  LockerLink
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import {
@@ -88,6 +89,7 @@ interface Props {
   accessAssets: RolePermission
   salesRepUsers: User[]
   managersUsers: User[]
+  history: History
   changeManager: (
     value: string,
     option: React.ReactElement<OptionProps>
@@ -123,6 +125,11 @@ export class OrderFiles extends React.PureComponent<Props> {
         stitchingName,
         stitchingValue,
         salesRep,
+        legacyNumber,
+        user: {
+          firstName: userFirstName,
+          lastName: userLastName,
+        },
         accountManager,
         bibColor,
         zipperColor,
@@ -200,16 +207,35 @@ export class OrderFiles extends React.PureComponent<Props> {
         <FlexContainer>
           <DataContainer>
             <ModelNameContainer>
-              <Code>{formatMessage(messages.designNameLabel, { name })}</Code>
+              <Code>{formatMessage(messages.designCode)}</Code>
+              {code}
+            </ModelNameContainer>
+            <ModelNameContainer>
+              <Code>{formatMessage(messages.designNameLabel)}</Code>
+              {name}
             </ModelNameContainer>
             <ModelNameContainer>
               <Code>
-                {formatMessage(messages.modelNameLabel, { modelName })}
+                {formatMessage(messages.legacy)}
               </Code>
+              {legacyNumber}
+            </ModelNameContainer>
+            <ModelNameContainer>
+              <Code>
+                {formatMessage(messages.modelNameLabel)}
+              </Code>
+              {modelName}
             </ModelNameContainer>
           </DataContainer>
           <SideData>
-            <Code>{code}</Code>
+            <ModelNameContainer>
+              <Code>
+                {formatMessage(messages.locker)}
+              </Code>
+              <LockerLink onClick={this.goToLocker}>
+                {`${userFirstName} ${userLastName}`}
+              </LockerLink>
+            </ModelNameContainer>
             <StatusContainer>
               <Label>
                 <FormattedMessage {...messages.status} />
@@ -426,6 +452,18 @@ export class OrderFiles extends React.PureComponent<Props> {
         />
       </Container>
     )
+  }
+
+  goToLocker = () => {
+    const {
+      order: {
+        user: {
+          shortId
+        },
+      },
+      history
+    } = this.props
+    history.push(`/admin/users/${shortId}`)
   }
   handleOpenNotes = () => {
     const { openNoteAction } = this.props
