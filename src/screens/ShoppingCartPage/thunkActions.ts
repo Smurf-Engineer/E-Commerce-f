@@ -32,7 +32,7 @@ export const setInitialData = (query: any) => {
             cartList.push(item)
             continue
           }
-          const indexOfSameProduct = findIndex(cartList, cartItem => {
+          const indexOfSameProduct = findIndex(cartList, (cartItem) => {
             return (
               cartItem.product.id === item.product.id &&
               item.designId === cartItem.designId
@@ -58,11 +58,13 @@ export const setInitialData = (query: any) => {
   }
 }
 
-export const saveToStorage = (cart: CartItems[]) => {
+export const saveToStorage = (cart: CartItems[], reset: boolean = false) => {
   return async (dispatch: any) => {
     try {
       localStorage.setItem('cart', JSON.stringify(cart))
-      dispatch(resetReducerData())
+      if (reset) {
+        dispatch(resetReducerData())
+      }
     } catch (error) {
       console.error(error)
     }
@@ -96,7 +98,7 @@ const setItemDetails = async (cartItem: CartItems, query: any) => {
   if (teamStoreItem && isFixed) {
     const response = await query({
       query: getTeamDesignTotal,
-      variables: { teamStoreItem },
+      variables: { teamStoreItemId: teamStoreItem },
       fetchPolicy: 'no-cache'
     })
     const totalOrder = get(response, 'data.getTeamDesignTotal.total', 0)

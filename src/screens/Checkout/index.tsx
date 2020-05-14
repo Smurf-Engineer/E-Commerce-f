@@ -200,7 +200,10 @@ interface Props extends RouteComponentProps<any> {
   openAddressesModalAction: (open: boolean) => void
   setSkipValueAction: (limit: number, pageNumber: number) => void
   showCardFormAction: (open: boolean) => void
-  selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  selectCardToPayAction: (
+    card: StripeCardData | CreditCardData,
+    selectedCardId: string
+  ) => void
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
@@ -776,6 +779,9 @@ class Checkout extends React.Component<Props, {}> {
     const {
       setStripeCardDataAction,
       billingCountry,
+      addNewCard,
+      selectCardToPayAction,
+      intl: { formatMessage },
       client: { query },
       location: {
         state: { cart }
@@ -792,7 +798,18 @@ class Checkout extends React.Component<Props, {}> {
       await this.createPaymentIntent()
     }
     if (card && stripeToken) {
-      setStripeCardDataAction(card, stripeToken)
+      try {
+        if (isFixedTeamstore) {
+          await addNewCard({
+            variables: { token: stripeToken }
+          })
+          selectCardToPayAction(card, card.id)
+        } else {
+          setStripeCardDataAction(card, stripeToken)
+        }
+      } catch (e) {
+        message.error(formatMessage(messages.errorSavingCart))
+      }
     }
   }
   getProductsPrice = () => {
@@ -1071,11 +1088,14 @@ const CheckoutEnhance = compose(
   CreatePaymentIntentMutation,
   AddCardMutation,
   withApollo,
-  connect(mapStateToProps, {
-    ...checkoutActions,
-    ...thunkActions,
-    getTotalItemsIncart
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...checkoutActions,
+      ...thunkActions,
+      getTotalItemsIncart
+    }
+  )
 )(Checkout)
 
 export default CheckoutEnhance

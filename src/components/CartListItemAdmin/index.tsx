@@ -139,11 +139,11 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       unitPrice,
       currentCurrency,
       currencySymbol,
-      openFitInfoAction = () => {},
+      openFitInfoAction = () => { },
       openFitInfo
     } = this.props
 
-    const { designId, designCode } = cartItem
+    const { designId, designCode, teamStoreName } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
@@ -210,6 +210,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
           designCode,
           mpnCode,
           symbol,
+          teamStoreName,
           total,
           preflightCheck,
           onlyRead,

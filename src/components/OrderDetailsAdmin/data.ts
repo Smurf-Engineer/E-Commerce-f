@@ -124,6 +124,7 @@ export const getOrderQuery = gql`
         designName
         designImage
         salesRepName
+        teamStoreName
         managerName
         designCode
         bibBraceColor
@@ -144,6 +145,7 @@ export const getOrderQuery = gql`
       taxVat: tax_vat
       teamStoreId: teamstore_id
       teamStoreName: teamstore_name
+      email
     }
   }
 `
