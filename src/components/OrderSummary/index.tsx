@@ -81,6 +81,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       youSaved > totalWithoutDiscount ? totalWithoutDiscount : youSaved
     const totalWithDiscount = discount > subtotal ? extraFee : totalSum
 
+    console.log('tptañ', totalWithoutDiscount)
+
     const savedPercent = Math.round((saved * 100) / totalWithoutDiscount)
     const netTotal =
       totalWithDiscount || discount ? totalWithDiscount : subtotal + extraFee
