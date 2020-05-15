@@ -67,7 +67,7 @@ import {
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
 import { restoreUserSession } from '../../components/MainLayout/api'
-import { CREATE_DESIGNS } from '../../components/AdminLayout/constants'
+import { CREATE_DESIGNS, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
 
 const { confirm } = Modal
 
@@ -568,6 +568,7 @@ export class PublishingTool extends React.Component<Props, {}> {
       openSaveDesign,
       productId,
       saveDesignLoading,
+      history,
       setDesignNameAction,
       setCanvasJsonAction,
       updateInspirationAction,
@@ -580,7 +581,7 @@ export class PublishingTool extends React.Component<Props, {}> {
     const { permissions } = user
     const access = permissions ? permissions[CREATE_DESIGNS] : {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
     const tabs = steps.map((step, index) => {
@@ -635,30 +636,30 @@ export class PublishingTool extends React.Component<Props, {}> {
               addNewModel={this.goToBuildModel}
             />
           ) : (
-            <Design
-              {...{
-                formatMessage,
-                colorIdeas,
-                design,
-                colorIdeaItem,
-                colorsList,
-                colorBlock,
-                colorBlockHovered,
-                colors,
-                uploadingThumbnail
-              }}
-              onEditColorIdea={setColorIdeaItemAction}
-              onSelectColorBlock={setColorBlockAction}
-              onSelectColor={setColorAction}
-              onHoverColor={setHoverColorBlockAction}
-              onUpdateColorIdeaName={setColorIdeaNameAction}
-              onSelectInspirationColor={setInspirationColorAction}
-              onAddColorIdea={addColorIdeaAction}
-              onSaveThumbnail={this.handleOnSaveThumbnail}
-              onDeleteInspiration={this.handleOnDeleteInspiration}
-              updateColorIdeas={updateInspirationAction}
-            />
-          )}
+              <Design
+                {...{
+                  formatMessage,
+                  colorIdeas,
+                  design,
+                  colorIdeaItem,
+                  colorsList,
+                  colorBlock,
+                  colorBlockHovered,
+                  colors,
+                  uploadingThumbnail
+                }}
+                onEditColorIdea={setColorIdeaItemAction}
+                onSelectColorBlock={setColorBlockAction}
+                onSelectColor={setColorAction}
+                onHoverColor={setHoverColorBlockAction}
+                onUpdateColorIdeaName={setColorIdeaNameAction}
+                onSelectInspirationColor={setInspirationColorAction}
+                onAddColorIdea={addColorIdeaAction}
+                onSaveThumbnail={this.handleOnSaveThumbnail}
+                onDeleteInspiration={this.handleOnDeleteInspiration}
+                updateColorIdeas={updateInspirationAction}
+              />
+            )}
           {!!colors.length && (
             <PlaceholdersRender3D
               ref={placeHolder => (this.render3DPlaceholder = placeHolder)}

@@ -43,7 +43,7 @@ export const getRoles = gql`
 `
 
 export const changeRoleMutation = gql`
-  mutation changeRoleUser($userId: Int!, $roleId: String!) {
+  mutation changeRoleUser($userId: Int!, $roleId: String) {
     userResult: changeRoleUser(userId: $userId, roleId: $roleId) {
       id
       role

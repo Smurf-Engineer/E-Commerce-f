@@ -28,7 +28,7 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { UserPermissions } from '../../types/common'
-import { DESIGN_LAB } from '../AdminLayout/constants'
+import { DESIGN_LAB, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -105,6 +105,7 @@ class DesignLabAdmin extends React.Component<Props, {}> {
     const {
       formatMessage,
       loading,
+      history,
       tutorialPlaylist,
       deliveryDays,
       permissions,
@@ -117,7 +118,7 @@ class DesignLabAdmin extends React.Component<Props, {}> {
     } = this.props
     const access = permissions[DESIGN_LAB] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     return loading ? (
       <SpinContainer>

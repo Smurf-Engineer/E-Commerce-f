@@ -33,14 +33,15 @@ import {
   PRO_ASSIST,
   USER_LIST,
   ROLE_MANAGEMENT,
-  SALES_REP
+  SALES_REP,
 } from './constants'
 import {
   SideBar,
   Container,
   OptionMenu,
   Content,
-  LogoutButton
+  LogoutButton,
+  Advertisement,
 } from './styledComponents'
 import Helmet from 'react-helmet'
 
@@ -157,8 +158,15 @@ class AdminLayout extends React.Component<Props, {}> {
       openKeys,
       screen,
       onLogout,
-      permissions
+      permissions = {},
     } = this.props
+    if (!Object.keys(permissions).length) {
+      return (
+        <Advertisement>
+          <FormattedMessage {...messages.noRole} />
+        </Advertisement>
+      )
+    }
     const isHidden = options.reduce((obj, { title, options: submenus }) => {
       obj[title] = submenus.every((label) => !permissions[label].view)
       return obj
@@ -182,13 +190,13 @@ class AdminLayout extends React.Component<Props, {}> {
           )}
         </SubMenu>
       ) : (
-        permissions[title] &&
-        permissions[title].view && (
-          <Menu.Item className="ant-menu-item-custom" key={title}>
-            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-          </Menu.Item>
+          permissions[title] &&
+          permissions[title].view && (
+            <Menu.Item className="ant-menu-item-custom" key={title}>
+              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+            </Menu.Item>
+          )
         )
-      )
     )
 
     const logoutButton = (

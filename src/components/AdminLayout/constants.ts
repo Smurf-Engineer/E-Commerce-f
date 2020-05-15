@@ -8,6 +8,8 @@ export const SET_CURRENT_SCREEN = `${namespace}/SET_CURRENT_SCREEN`
 
 export const SET_INSTALLED_FONTS_ACTION = `${namespace}/SET_INSTALLED_FONTS_ACTION`
 
+export const ADMIN_ROUTE = '/admin'
+
 export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'

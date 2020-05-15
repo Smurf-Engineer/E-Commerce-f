@@ -13,6 +13,7 @@ interface Props {
   socialMethod: string
   email: string
   role: string
+  canEdit: boolean
   changeRole: (userId: number, role: string) => void
 }
 
@@ -27,6 +28,7 @@ class ItemOrder extends React.PureComponent<Props, {}> {
       firstName,
       roles,
       lastName,
+      canEdit,
       socialMethod,
       email,
       role
@@ -43,6 +45,7 @@ class ItemOrder extends React.PureComponent<Props, {}> {
           {roles && roles.length ? (
             <RoleSelect
               value={role}
+              disabled={!canEdit}
               onChange={this.handleChangeRole}
               allowClear={true}
             >
@@ -51,8 +54,8 @@ class ItemOrder extends React.PureComponent<Props, {}> {
               ))}
             </RoleSelect>
           ) : (
-            <Spin />
-          )}
+              <Spin />
+            )}
         </Cell>
       </Container>
     )

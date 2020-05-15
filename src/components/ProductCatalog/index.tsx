@@ -18,7 +18,7 @@ import messages from './messages'
 import { sorts, UserPermissions } from '../../types/common'
 import ProductDetailsAdmin from '../ProductDetailsAdmin'
 import ProductForm from '../ProductForm'
-import { PRODUCT_CATALOG } from '../AdminLayout/constants'
+import { PRODUCT_CATALOG, ADMIN_ROUTE } from '../AdminLayout/constants'
 interface Props {
   history: any
   currentPage: number
@@ -87,7 +87,7 @@ class ProductCatalog extends React.Component<Props, {}> {
     } = this.props
     const access = permissions[PRODUCT_CATALOG] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     return (
       <div>
