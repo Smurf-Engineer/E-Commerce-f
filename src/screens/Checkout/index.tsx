@@ -865,7 +865,11 @@ class Checkout extends React.Component<Props, {}> {
 
       const orderId = get(response, 'data.charge.short_id', '')
 
-      if (stripeAccount === EU_STRIPE && !orderObj.isFixedTeamstore) {
+      if (
+        stripeAccount === EU_STRIPE &&
+        orderObj.paymentMethod === PaymentOptions.CREDITCARD &&
+        !orderObj.isFixedTeamstore
+      ) {
         const { stripe } = this.state
         const stripeResponse = await stripe.handleCardPayment(
           paymentClientSecret,
