@@ -25,7 +25,7 @@ import { sorts, User, Message, UserPermissions } from '../../types/common'
 import SignupModal from './SignupModal'
 import { validateEmail } from '../../utils/utilsFunctions'
 import Options from './Options'
-import { USERS, SET_ADMIN } from '../AdminLayout/constants'
+import { USERS, SET_ADMIN, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -190,7 +190,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
     } = this.props
     const access = permissions[USERS] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     const setAdmin = permissions[SET_ADMIN] || {}
     return (

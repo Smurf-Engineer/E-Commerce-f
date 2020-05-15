@@ -28,6 +28,7 @@ interface Props {
   filter: string
   roles: Role[]
   searchText?: string
+  canEdit: boolean
   roleChangeMutation: (variables: {}) => Promise<User>
   onChangePage: (page: number) => void
 }
@@ -50,7 +51,8 @@ class RoleList extends React.Component<Props, {}> {
       currentPage,
       roles,
       data: { getUsers },
-      onChangePage
+      onChangePage,
+      canEdit,
     } = this.props
     const users = get(getUsers, 'users', []) as User[]
     const fullCount = get(getUsers, 'fullCount', 0)
@@ -82,6 +84,7 @@ class RoleList extends React.Component<Props, {}> {
                         firstName,
                         lastName,
                         socialMethod,
+                        canEdit,
                         email,
                         role
                       }}

@@ -18,9 +18,10 @@ import {
 } from './styledComponents'
 import List from './ListRole'
 import messages from './messages'
-import { QueryProps, Role, Message } from '../../types/common'
+import { QueryProps, Role, Message, UserPermissions } from '../../types/common'
 import { getRoles } from './ListRole/data'
 import { Spin } from 'antd'
+import { ROLE_MANAGEMENT, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface DataRoles extends QueryProps {
   roles: Role[]
@@ -31,6 +32,7 @@ interface Props {
   filter: string
   rolesQuery: DataRoles
   searchText: string
+  permissions: UserPermissions
   setFilterAction: (filter: string) => void
   formatMessage: (messageDescriptor: Message) => string
   setCurrentPageAction: (page: number) => void
@@ -67,9 +69,15 @@ class RolesCatalog extends React.Component<Props, {}> {
       currentPage,
       formatMessage,
       filter,
+      history,
       searchText,
+      permissions,
       rolesQuery: { loading, roles }
     } = this.props
+    const access = permissions[ROLE_MANAGEMENT] || {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
     return (
       <Container>
         <ScreenTitle>
@@ -102,6 +110,7 @@ class RolesCatalog extends React.Component<Props, {}> {
         </HeaderList>
         <List
           {...{ formatMessage, currentPage, searchText, filter, roles }}
+          canEdit={access.edit}
           onChangePage={this.handleOnChangePage}
         />
       </Container>

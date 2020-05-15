@@ -75,12 +75,15 @@ export class OrderSummary extends React.Component<Props, {}> {
       totalWithoutDiscount = 0
     } = this.props
 
+    const extraFee = proDesignReview + taxFee + taxPst + taxGst + shippingTotal
     const symbol = currencySymbol || '$'
-    const savedPercent = Math.round((youSaved * 100) / totalWithoutDiscount)
+    const saved =
+      youSaved > totalWithoutDiscount ? totalWithoutDiscount : youSaved
+    const totalWithDiscount = discount > subtotal ? extraFee : totalSum
+
+    const savedPercent = Math.round((saved * 100) / totalWithoutDiscount)
     const netTotal =
-      totalSum || discount
-        ? totalSum
-        : subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
+      totalWithDiscount || discount ? totalWithDiscount : subtotal + extraFee
     const amountsDivider =
       !!proDesignReview ||
       !!taxFee ||
@@ -101,7 +104,7 @@ export class OrderSummary extends React.Component<Props, {}> {
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>
             {formatMessage(messages.youSaved, { percent: savedPercent })}
-            <div>{`${symbol} ${youSaved.toFixed(2)}`}</div>
+            <div>{`${symbol} ${saved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
         ) : null}
         <OrderItem>

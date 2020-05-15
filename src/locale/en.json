@@ -1318,6 +1318,7 @@
   "screens.AdminLayout.createDesigns": "Create and Edit Designs",
   "screens.AdminLayout.designLabTools": "Edit Designlab Tools",
   "screens.AdminLayout.proDesign": "PRO DESIGN",
+  "screens.AdminLayout.noRole": "You don't have a role assigned",
   "screens.AdminLayout.addProDesign": "Create and Assign to User",
   "components.DesignCheckModal.reviewDesignModalText": "<p><strong>SERVICES INCLUDE</strong></p><ul><li>Minor logo adjustments (add/remove tag line, remove background, check color consistency)</li> <li>Color consistency across graphics and multiple products</li > <li>Logo and Text alignment</li> <li>Resolution quality review for uploaded raster images</li> <li>Review for any other unforeseen potential issues</li> </ul> <p><i>*The basic ProAssist service is free of charge. However, requests for advanced artwork adjustments may require a small fee. Your Designer will advise you in advance in such cases.</i></p>",
   "screens.ProDesignTab.upload": "Upload",

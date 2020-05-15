@@ -28,7 +28,7 @@ import {
 } from '../../types/common'
 import Switch from 'antd/lib/switch'
 import get from 'lodash/get'
-import { PRO_ASSIST } from '../AdminLayout/constants'
+import { PRO_ASSIST, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Data extends QueryProps {
   proAssistStatus: ProAssistStatus
@@ -72,6 +72,7 @@ class ProAssist extends React.Component<Props, StateProps> {
       currentPage,
       orderBy,
       sort,
+      history,
       formatMessage,
       searchText,
       loading,
@@ -81,7 +82,7 @@ class ProAssist extends React.Component<Props, StateProps> {
     const checked = get(data, 'proAssistStatus.enabled', false)
     const access = permissions[PRO_ASSIST] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     return (
       <Container>

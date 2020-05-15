@@ -25,7 +25,7 @@ import {
   NAVBAR_CONSTANT,
   ACTIVE_CONSTANT
 } from '../../constants'
-import { EDIT_NAVIGATION } from '../AdminLayout/constants'
+import { EDIT_NAVIGATION, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Data extends QueryProps {
   sports: [SportType]
@@ -42,11 +42,12 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
   render() {
     const {
       data: { sports },
+      history,
       permissions
     } = this.props
     const access = permissions[EDIT_NAVIGATION] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     const sportsList = sports.map(
       ({ id, name, navbar, route, catalogue, active }, index) => {

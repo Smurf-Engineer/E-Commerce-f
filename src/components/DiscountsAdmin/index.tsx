@@ -37,7 +37,7 @@ import {
 import DiscountsData from './DiscountsData'
 import { isNumber } from '../../utils/utilsFiles'
 import { Moment } from 'moment'
-import { USERS, DISCOUNTS } from '../AdminLayout/constants'
+import { USERS, DISCOUNTS, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -155,6 +155,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       expiry,
       loading,
       permissions,
+      history,
       restrictionType,
       onChangeUserAction,
       onAddProductAction,
@@ -171,7 +172,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     } = this.props
     const access = permissions[DISCOUNTS] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
 
     const searchResults =

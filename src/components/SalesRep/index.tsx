@@ -25,8 +25,9 @@ import messages from './messages'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import { addRepUserMutation, getRepUsers, editRepUserMutation, deleteRepUserMutation } from './data'
-import { User, UsersResult, QueryProps } from '../../types/common'
+import { User, UsersResult, QueryProps, UserPermissions } from '../../types/common'
 import get from 'lodash/get'
+import { SALES_REP, ADMIN_ROUTE } from '../AdminLayout/constants'
 import { REPS_LIMIT } from './constants'
 import remove from 'lodash/remove'
 import set from 'lodash/set'
@@ -45,6 +46,7 @@ interface Props {
   loading: boolean
   lastName: string
   searchText: string
+  permissions: UserPermissions
   selectUser: (user: User) => void
   setLoading: (loading: boolean) => void
   addRepUser: (variables: {}) => Promise<User>
@@ -251,8 +253,14 @@ class SalesRep extends React.Component<Props, {}> {
       searchText,
       name,
       lastName,
+      history,
+      permissions,
       data: { repUsers, loading: loadingList }
     } = this.props
+    const access = permissions[SALES_REP] || {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
     const users = get(repUsers, 'users', []) as User[]
     const fullCount = get(repUsers, 'fullCount', 0)
     return (
@@ -261,9 +269,11 @@ class SalesRep extends React.Component<Props, {}> {
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
         <HeaderList>
-          <AddButton onClick={this.onOpen}>
-            {formatMessage(messages.addRep)}
-          </AddButton>
+          {access.edit &&
+            <AddButton onClick={this.onOpen}>
+              {formatMessage(messages.addRep)}
+            </AddButton>
+          }
           <SearchInput
             value={searchText}
             onChange={this.handleInputChange}

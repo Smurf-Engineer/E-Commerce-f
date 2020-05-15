@@ -48,7 +48,7 @@ import {
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import { restoreUserSession } from '../../components/MainLayout/api'
-import { ADD_PRO_DESIGN } from '../../components/AdminLayout/constants'
+import { ADD_PRO_DESIGN, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
 
 const { TabPane } = AntdTabs
 
@@ -64,6 +64,7 @@ interface Data extends QueryProps {
 
 interface Props {
   intl: InjectedIntl
+  history: History
   selectedKey: string
   data: Data
   productCode: string
@@ -189,6 +190,7 @@ export class ProDesign extends React.Component<Props, {}> {
       selectedUser,
       setSaveModalOpenAction,
       saveModalOpen,
+      history,
       savingDesign,
       setUserToSearchAction,
       userToSearch,
@@ -199,7 +201,7 @@ export class ProDesign extends React.Component<Props, {}> {
     const { permissions } = user
     const access = permissions ? permissions[ADD_PRO_DESIGN] : {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     const product = get(data, 'productFromCode')
     const loading = get(data, 'loading')

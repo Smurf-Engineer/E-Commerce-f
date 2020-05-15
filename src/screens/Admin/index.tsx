@@ -210,11 +210,15 @@ export class Admin extends React.Component<Props, {}> {
         />
         <Route
           path="/admin/roles"
-          render={() => <RoleList {...{ history, formatMessage }} />}
+          render={() => (
+            <RoleList {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/reps"
-          render={() => <SalesRep {...{ history, formatMessage }} />}
+          render={() => (
+            <SalesRep {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/team-stores"
@@ -312,12 +316,15 @@ const AdminEnhance = compose(
   withApollo,
   injectIntl,
   mailLogin,
-  connect(mapStateToProps, {
-    ...adminActions,
-    restoreUserSessionAction: restoreUserSession,
-    saveUserSessionAction: saveUserSession,
-    deleteUserSessionAction: deleteUserSession,
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...adminActions,
+      restoreUserSessionAction: restoreUserSession,
+      saveUserSessionAction: saveUserSession,
+      deleteUserSessionAction: deleteUserSession,
+    }
+  )
 )(Admin)
 
 export default AdminEnhance

@@ -44,7 +44,7 @@ import {
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { restoreUserSession } from '../../components/MainLayout/api'
-import { DESIGN_LAB_TOOLS } from '../../components/AdminLayout/constants'
+import { DESIGN_LAB_TOOLS, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
@@ -203,6 +203,7 @@ export class DesignTools extends React.Component<Props, {}> {
       setSearchClipParamAction,
       getGoogleFonts,
       user = {},
+      history,
       installedFonts,
       selectedTab,
       symbols,
@@ -212,7 +213,7 @@ export class DesignTools extends React.Component<Props, {}> {
     const { permissions } = user
     const access = permissions ? permissions[DESIGN_LAB_TOOLS] : {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
 
     return (

@@ -53,7 +53,7 @@ export const getTaxesAndDiscount = (
           discount = products.reduce((totalDiscount: number, product) => {
             const itemForDiscount = find(
               productsPrices,
-              productObject => productObject.yotpoId === product
+              (productObject) => productObject.yotpoId === product
             )
             if (itemForDiscount) {
               return (
@@ -75,7 +75,7 @@ export const getTaxesAndDiscount = (
           discount = products.reduce((totalDiscount: number, product) => {
             const itemForDiscount = find(
               productsPrices,
-              productObject => productObject.yotpoId === product
+              (productObject) => productObject.yotpoId === product
             )
             if (itemForDiscount) {
               return totalDiscount + Number(rate) * itemForDiscount.quantity

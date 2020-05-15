@@ -497,7 +497,8 @@ const MyLockerEnhance = compose(
   graphql<Data>(desginsQuery, {
     options: (ownprops: OwnProps) => {
       const { limit, offset, admin, userId, user } = ownprops
-      const userShortId = admin ? userId : user.id
+      const personalId = user ? user.id : ''
+      const userShortId = admin ? userId : personalId
 
       return {
         fetchPolicy: 'network-only',

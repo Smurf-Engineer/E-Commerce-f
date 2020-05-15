@@ -49,7 +49,7 @@ import {
 import { INTERNALS_LIMIT, CSV_EXTENSION } from './constants'
 import Spin from 'antd/lib/spin'
 import Icon from 'antd/lib/icon'
-import { PRODUCT_INTERNAL } from '../AdminLayout/constants'
+import { PRODUCT_INTERNAL, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 const { confirm } = Modal
 interface Props {
@@ -140,6 +140,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       permissions,
       binding,
       bibBrace,
+      history,
       collection,
       modalOpen,
       loading,
@@ -150,7 +151,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
     } = this.props
     const access = permissions[PRODUCT_INTERNAL] || {}
     if (!access.view) {
-      return null
+      history.replace(ADMIN_ROUTE)
     }
     return (
       <Container>
@@ -167,18 +168,18 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
                 <Spin size="large" />
               </CsvLoader>
             ) : (
-              <Upload
-                accept={CSV_EXTENSION}
-                showUploadList={false}
-                customRequest={this.uploadCsv}
-                beforeUpload={this.beforeUpload}
-              >
-                <UploadButton>
-                  <Icon type="upload" />
-                  <FormattedMessage {...messages.uploadCsv} />
-                </UploadButton>
-              </Upload>
-            )}
+                <Upload
+                  accept={CSV_EXTENSION}
+                  showUploadList={false}
+                  customRequest={this.uploadCsv}
+                  beforeUpload={this.beforeUpload}
+                >
+                  <UploadButton>
+                    <Icon type="upload" />
+                    <FormattedMessage {...messages.uploadCsv} />
+                  </UploadButton>
+                </Upload>
+              )}
           </>
         )}
         <SearchInput
