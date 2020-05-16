@@ -26,7 +26,12 @@ import {
   updateProductTilesListAction,
   togglePreviewModalAction,
   setDurationAction,
-  setTransitionAction
+  setTransitionAction,
+  moveFile,
+  addMedia,
+  removeMedia,
+  setMedia,
+  setLoadingAction
 } from './actions'
 import {
   SET_URL_IMAGE_LIST,
@@ -57,7 +62,12 @@ import {
   SET_DURATION,
   SET_TRANSITION,
   ADD_CAROUSEL_ITEM,
-  SET_LOADING_LIST
+  SET_LOADING_LIST,
+  MOVE_BANNER,
+  REMOVE_MEDIA,
+  SET_MEDIA,
+  ADD_MEDIA,
+  SET_LOADING
 } from './constants'
 
 describe(' HomepageAdmin Screen', () => {
@@ -137,6 +147,57 @@ describe(' HomepageAdmin Screen', () => {
         type,
         section,
         loading
+      })
+    })
+    it('moveFile', () => {
+      const type = MOVE_BANNER
+      const index = 0
+      const indexTo = 1
+      expect(moveFile(index, indexTo)).toEqual({
+        type,
+        index,
+        indexTo
+      })
+    })
+    it('removeMedia', () => {
+      const type = REMOVE_MEDIA
+      const index = 0
+      expect(removeMedia(index)).toEqual({
+        type,
+        index,
+      })
+    })
+    it('setMedia', () => {
+      const type = SET_MEDIA
+      const id = 0
+      const name = 'url'
+      const value = 'url'
+      expect(setMedia(id, name, value)).toEqual({
+        type,
+        id,
+        name,
+        value
+      })
+    })
+    it('addMedia', () => {
+      const type = ADD_MEDIA
+      const value = {
+        id: 0,
+        url: 'Test',
+        urlMobile: 'Test',
+        isVideo: true
+      }
+      expect(addMedia(value)).toEqual({
+        type,
+        value
+      })
+    })
+    it('setLoadingAction', () => {
+      const type = SET_LOADING
+      const loading = true
+      expect(setLoadingAction(loading)).toEqual({
+        type,
+        loading,
       })
     })
     it('setProductsData', () => {
@@ -583,6 +644,144 @@ describe(' HomepageAdmin Screen', () => {
         const customValue = customProductTileState.get('productTiles')
 
         expect(customValue.size).toBeGreaterThan(0)
+      })
+    })
+    describe('MOVE_BANNER', () => {
+      it('Handles undefined value in featuredBanners', () => {
+        expect(initialState.get('featuredBanners')).not.toBeUndefined()
+      })
+      it('Handles initial length in featuredBanners', () => {
+        const customInitialValue = initialState.get('featuredBanners')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom values in featuredBanners when moving', () => {
+        const fileOne = {
+          id: 0,
+          url: 'Test',
+          urlMobile: 'Test',
+          isVideo: true
+        }
+        const fileTwo = {
+          id: 1,
+          url: 'Test2',
+          urlMobile: 'Test2',
+          isVideo: false
+        }
+        const customFirstAdd = homepageAdminReducer(
+          initialState,
+          addMedia(fileOne)
+        )
+        const customSecondAdd = homepageAdminReducer(
+          customFirstAdd,
+          addMedia(fileTwo)
+        )
+        const setMoveState = homepageAdminReducer(
+          customSecondAdd,
+          moveFile(0, 1)
+        )
+
+        const customValue = setMoveState.getIn(['featuredBanners', 0, 'id'])
+        expect(customValue).toBe(fileTwo.id)
+      })
+    })
+    describe('REMOVE_MEDIA', () => {
+      it('Handles undefined value in featuredBanners', () => {
+        expect(initialState.get('featuredBanners')).not.toBeUndefined()
+      })
+      it('Handles initial length in featuredBanners', () => {
+        const customInitialValue = initialState.get('featuredBanners')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom values in featuredBanners when removing', () => {
+        const fileOne = {
+          id: 0,
+          url: 'Test',
+          urlMobile: 'Test',
+          isVideo: true
+        }
+        const customFirstAdd = homepageAdminReducer(
+          initialState,
+          addMedia(fileOne)
+        )
+        const removeState = homepageAdminReducer(
+          customFirstAdd,
+          removeMedia(0)
+        )
+
+        const customValue = removeState.get('featuredBanners')
+        expect(customValue.size).toBe(0)
+      })
+    })
+    describe('SET_MEDIA', () => {
+      it('Handles undefined value in featuredBanners', () => {
+        expect(initialState.get('featuredBanners')).not.toBeUndefined()
+      })
+      it('Handles initial length in featuredBanners', () => {
+        const customInitialValue = initialState.get('featuredBanners')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom values in featuredBanners when setting media', () => {
+        const fileOne = {
+          id: 0,
+          url: 'Test',
+          urlMobile: 'Test',
+          isVideo: true
+        }
+        const index = 0
+        const field = 'urlMobile'
+        const newValue = 'exampleMobile'
+        const customFirstAdd = homepageAdminReducer(
+          initialState,
+          addMedia(fileOne)
+        )
+        const setMediaState = homepageAdminReducer(
+          customFirstAdd,
+          setMedia(index, field, newValue)
+        )
+
+        const customValue = setMediaState.getIn(['featuredBanners', index, field])
+        expect(customValue).toBe(newValue)
+      })
+    })
+    describe('ADD_MEDIA', () => {
+      it('Handles undefined value in featuredBanners', () => {
+        expect(initialState.get('featuredBanners')).not.toBeUndefined()
+      })
+      it('Handles initial length in featuredBanners', () => {
+        const customInitialValue = initialState.get('featuredBanners')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom values in featuredBanners when adding media', () => {
+        const fileOne = {
+          id: 0,
+          url: 'Test',
+          urlMobile: 'Test',
+          isVideo: true
+        }
+        const addMediaState = homepageAdminReducer(
+          initialState,
+          addMedia(fileOne)
+        )
+        const customValue = addMediaState.get('featuredBanners')
+        expect(customValue.size).toBe(1)
+      })
+    })
+    describe('SET_LOADING', () => {
+      it('Handles undefined value in loadingBanner', () => {
+        expect(initialState.get('loadingBanner')).not.toBeUndefined()
+      })
+      it('Handles initial length in loadingBanner', () => {
+        const customInitialValue = initialState.get('loadingBanner')
+        expect(customInitialValue).toBeFalsy()
+      })
+      it('Handles custom values in loadingBanner', () => {
+        const loading = true
+        const loadingState = homepageAdminReducer(
+          initialState,
+          setLoadingAction(loading)
+        )
+        const customValue = loadingState.get('loadingBanner')
+        expect(customValue).toBe(loading)
       })
     })
     describe('SET_PRODUCT_TILE_IMAGE', () => {

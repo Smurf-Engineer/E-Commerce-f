@@ -49,6 +49,7 @@ export const initialState = fromJS({
   mainHeader: [],
   secondaryHeader: [],
   mainHeaderLoading: [],
+  featuredBanners: [],
   secondaryHeaderLoading: [],
   loaders: {
     [Sections.MAIN_CONTAINER]: true,
