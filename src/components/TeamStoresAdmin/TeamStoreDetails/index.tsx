@@ -103,7 +103,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       handleOnSave
     } = this.props
     const accountManagerName = get(teamStore, 'accountManager.first_name')
-    const accountManagerLastName = get(teamStore, 'accountManager.first_name')
+    const accountManagerLastName = get(teamStore, 'accountManager.last_name')
 
     if (loading || !teamStore) {
       return (
