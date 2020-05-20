@@ -43,7 +43,8 @@ import {
   UserSearchResult,
   QueryProps,
   TeamstoreType,
-  UserPermissions
+  UserPermissions,
+  AccountManagerName
 } from '../../types/common'
 import { TEAM_STORES_LIMIT } from './constants'
 import { TEAM_STORES, ADMIN_ROUTE } from '../AdminLayout/constants'
@@ -96,6 +97,7 @@ interface Props {
   endDateMoment: Moment
   startDate: string
   endDate: string
+  accountManager: AccountManagerName
   resetForm: () => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
@@ -213,7 +215,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       startDateMoment,
       endDateMoment,
       updateEndDateAction,
-      updateTeamStoreTypeAction
+      updateTeamStoreTypeAction,
+      accountManager
     } = this.props
     const access = permissions[TEAM_STORES] || {}
     if (!access.view) {
@@ -314,7 +317,8 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 offset,
                 teamSizeRange,
                 currentCurrency,
-                openCropper
+                openCropper,
+                accountManager
               }}
               setImage={uploadBanner}
               canEdit={access.edit}
@@ -344,7 +348,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
     try {
       const teamStoreItem = teamStore.items[index]
       const prices = Object.keys(teamStoreItem.pricesByCurrency).map(
-        currency => ({
+        (currency) => ({
           shortName: currency,
           price: teamStoreItem.pricesByCurrency[currency]
         })
@@ -602,7 +606,10 @@ const TeamStoresAdminEnhance = compose(
   createStoreMutation,
   updateStoreMutation,
   withApollo,
-  connect(mapStateToProps, { ...TeamStoresActions, ...ThunkActions }),
+  connect(
+    mapStateToProps,
+    { ...TeamStoresActions, ...ThunkActions }
+  ),
   graphql<Data>(getUsers, {
     options: (ownprops: OwnProps) => {
       const { userToSearch } = ownprops

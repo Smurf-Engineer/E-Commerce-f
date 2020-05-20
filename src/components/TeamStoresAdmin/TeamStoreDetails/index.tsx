@@ -102,6 +102,9 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       canEdit,
       handleOnSave
     } = this.props
+    const accountManagerName = get(teamStore, 'accountManager.first_name')
+    const accountManagerLastName = get(teamStore, 'accountManager.first_name')
+
     if (loading || !teamStore) {
       return (
         <LoadingContainer>
@@ -204,16 +207,24 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
               </>
             )}
           </ScreenTitle>
-          <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
+          <TeamStoreInformation>
+            {teamStoresInformation}
+            <InformationContainer>
+              <ScreenHeader>
+                {formatMessage(messages.accountManager)}
+              </ScreenHeader>
+              <Text>
+                {accountManagerName
+                  ? `${accountManagerName} ${accountManagerLastName}`
+                  : '-'}
+              </Text>
+            </InformationContainer>
+          </TeamStoreInformation>
           <Table>
             {teamStore.onDemand && (
               <PricesContainer>
                 <thead>
-                  <tr>
-                    <Header>{formatMessage(messages.name)}</Header>
-                    {headers}
-                    <Header>{''}</Header>
-                  </tr>
+                  <tr>{headers}</tr>
                 </thead>
                 <tbody>{teamStoreItems}</tbody>
               </PricesContainer>

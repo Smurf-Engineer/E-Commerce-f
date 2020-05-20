@@ -51,6 +51,10 @@ export const getTeamStoreEdit = gql`
       deliveryDate: deliveryDateString
       privateStore: private
       created_at
+      accountManager {
+        first_name
+        last_name
+      }
       items {
         id
         visible
