@@ -30,15 +30,14 @@ import {
   ButtonsContainer,
   CancelButton,
   SaveButton,
+  LinkButton,
 } from './styledComponents'
 import messages from './messages'
-import { getProductQuery } from './data'
-import { saveInLocalStorage } from './api'
-import { ImageType, PriceRange, ProductColors, Message } from '../../types/common'
+import { Message } from '../../types/common'
 
 const links = {
-  usd: 'uvuvevwevw',
-  cad: 'onyetenyevwe'
+  usd: 'usdLink',
+  cad: 'cadLink'
 }
 
 interface Props {
@@ -66,13 +65,23 @@ export class AffiliateModal extends React.Component<Props, {}> {
           visible={open}
           footer={null}
           closable={false}
-          width={'512px'}
+          width={link ? '352px' : '512px'}
           destroyOnClose={true}
         >
           {link ?
-            <Title>
-              <FormattedMessage {...messages.link} />
-            </Title>
+            <ModalContainer>
+              <Title>
+                <FormattedMessage {...messages.link} />
+              </Title>
+              <Description>
+                <FormattedMessage {...messages.linkDesc} />
+              </Description>
+              <ButtonsContainer>
+                <LinkButton>
+                  <FormattedMessage {...messages.linkButton} />
+                </LinkButton>
+              </ButtonsContainer>
+            </ModalContainer>
             : <ModalContainer>
               <Title>
                 <FormattedMessage {...messages.title} />
@@ -131,7 +140,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 <Clip type="paper-clip" />
                 <FileName>
                   UVUWEUGEOSSSASEOSSSAS.pdf
-            </FileName>
+                </FileName>
               </FileLabel>
               <CheckboxContainer>
                 <Checkbox
@@ -149,7 +158,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.termsDesc} />
               </TermsLabel>
               <ButtonsContainer>
-                <CancelButton>
+                <CancelButton onClick={handleClose}>
                   <FormattedMessage {...messages.cancel} />
                 </CancelButton>
                 <SaveButton>

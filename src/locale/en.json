@@ -1479,6 +1479,8 @@
   "components.AffiliateModal.cancel": "Cancel",
   "components.AffiliateModal.sendRequest": "Send Request",
   "components.AffiliateModal.link": "LINK WITH PAYPAL ACCOUNT",
+  "components.AffiliateModal.linkDesc": "Link your paypal account to create a Team Store to collect comissions.",
+  "components.AffiliateModal.linkButton": "Link PayPal Account",
   "components.DesignTools.ColorTab.selectColor": "Colors",
   "components.DesignTools.ColorTab.fileSizeError": "Oh no! Max file size is limited to 20MB",
   "components.DesignTools.ColorTab.fileExtensionError": "Oh no! Your file has to be an json",

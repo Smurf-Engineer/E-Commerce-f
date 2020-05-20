@@ -227,7 +227,7 @@ class ProfileSettings extends React.Component<Props, {}> {
         <AffiliateModal
           {...{ history, formatMessage }}
           open={true}
-          link={true}
+          link={false}
         />
         {/* REGION */}
         {/*<Title>{formatMessage(messages.languageTitle)}</Title>

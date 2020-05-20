@@ -74,5 +74,13 @@ export default defineMessages({
   link: {
     id: 'components.AffiliateModal.link',
     defaultMessage: 'LINK WITH PAYPAL ACCOUNT'
+  },
+  linkDesc: {
+    id: 'components.AffiliateModal.linkDesc',
+    defaultMessage: 'Link your paypal account to create a Team Store to collect comissions.'
+  },
+  linkButton: {
+    id: 'components.AffiliateModal.linkButton',
+    defaultMessage: 'Link PayPal Account'
   }
 })

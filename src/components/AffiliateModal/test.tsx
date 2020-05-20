@@ -1,22 +1,20 @@
 /**
- * ProductThumbnail Test - Created by david on 12/02/18.
+ * AffiliateModal Test - Created by Jesús on 20/05/20.
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { ProductThumbnail } from './index'
+import { AffiliateModal } from './index'
 import { MemoryRouter } from 'react-router-dom'
 
-describe('<ProductThumbnail />', () => {
+describe('<AffiliateModal />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
       <MemoryRouter>
-        <ProductThumbnail
-          id={0}
-          isTopProduct={false}
-          onPressCustomize={() => {}}
-          onPressQuickView={() => {}}
-          yotpoId="fondo"
+        <AffiliateModal
+          open={true}
+          link={false}
+          formatMessage={() => { }}
         />
       </MemoryRouter>,
       div

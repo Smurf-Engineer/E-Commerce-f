@@ -153,3 +153,11 @@ export const SaveButton = styled(Button)`
   color: ${WHITE};
   background: ${BLUE};
 `
+
+export const LinkButton = styled(Button)`
+  width: 168px;
+  border-radius: 2px;
+  height: 38px;
+  color: ${WHITE};
+  background: ${BLUE};
+`
