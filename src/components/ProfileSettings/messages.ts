@@ -72,5 +72,9 @@ export default defineMessages({
   emailSignUpNewsLetter: {
     id: 'components.ProfileSettings.emailSignUpNewsLetter',
     defaultMessage: 'Yes, I would like to sign up for your Newsletter'
+  },
+  makeAffiliate: {
+    id: 'components.ProfileSettings.makeAffiliate',
+    defaultMessage: 'Make account an Affiliate Account'
   }
 })

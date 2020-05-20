@@ -37,8 +37,11 @@ import {
   // StyledButton,
   // StyledCheckbox,
   LoadingErrorContainer,
-  ErrorMessage
+  ErrorMessage,
+  SwitchWrapper,
+  StyledSwitch
 } from './styledComponents'
+import AffiliateModal from '../AffiliateModal'
 import ProfileForm from '../ProfileForm'
 // import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
 // import MeasurementsForm from '../MeasurementsForm'
@@ -217,6 +220,15 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
+        <SwitchWrapper>
+          {formatMessage(messages.makeAffiliate)}
+          <StyledSwitch />
+        </SwitchWrapper>
+        <AffiliateModal
+          {...{ history, formatMessage }}
+          open={true}
+          link={true}
+        />
         {/* REGION */}
         {/*<Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>
