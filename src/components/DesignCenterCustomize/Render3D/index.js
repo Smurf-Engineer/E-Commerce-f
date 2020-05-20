@@ -1301,7 +1301,6 @@ class Render3D extends PureComponent {
 
   handleOnClickClear = () => this.props.onClearAction()
 
-  handleOnChange3DModel = () => { }
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
