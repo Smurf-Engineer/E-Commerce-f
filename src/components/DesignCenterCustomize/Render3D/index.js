@@ -1301,7 +1301,7 @@ class Render3D extends PureComponent {
 
   handleOnClickClear = () => this.props.onClearAction()
 
-  handleOnChange3DModel = () => {}
+  handleOnChange3DModel = () => { }
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
@@ -1325,6 +1325,12 @@ class Render3D extends PureComponent {
         design
       } = this.props
       if (!isMobile) {
+        this.canvasTexture.forEachObject(el => {
+          el.set({
+            opacity: 1,
+            backgroundColor: null
+          })
+        })
         this.canvasTexture.discardActiveObject()
         this.canvasTexture.renderAll()
       }
@@ -1588,6 +1594,7 @@ class Render3D extends PureComponent {
     if (id) {
       const el = this.getElementById(id)
       this.controls.enabled = false
+      this.hoverBlur(id, false)
       this.canvasTexture.setActiveObject(el)
     } else {
       this.canvasTexture.discardActiveObject()
