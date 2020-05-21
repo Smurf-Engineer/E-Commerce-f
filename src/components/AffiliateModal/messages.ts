@@ -82,5 +82,9 @@ export default defineMessages({
   linkButton: {
     id: 'components.AffiliateModal.linkButton',
     defaultMessage: 'Link PayPal Account'
+  },
+  sizeError: {
+    id: 'components.AffiliateModal.sizeError',
+    defaultMessage: 'File must be smaller than 20MB!'
   }
 })

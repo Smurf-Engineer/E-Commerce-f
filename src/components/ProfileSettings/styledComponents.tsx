@@ -6,6 +6,7 @@ import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
 import Checkbox from 'antd/lib/checkbox'
+import { WHITE_TRANSPARENT } from '../../theme/colors'
 
 interface InputProps {
   inputhWidth?: string

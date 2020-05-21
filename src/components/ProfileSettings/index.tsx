@@ -14,6 +14,7 @@ import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
+import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
 import { PHONE_FIELD } from '../../constants'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
@@ -39,7 +40,7 @@ import {
   LoadingErrorContainer,
   ErrorMessage,
   SwitchWrapper,
-  StyledSwitch
+  StyledSwitch,
 } from './styledComponents'
 import AffiliateModal from '../AffiliateModal'
 import ProfileForm from '../ProfileForm'
@@ -49,7 +50,8 @@ import {
   ClickParam,
   QueryProps,
   Region,
-  IProfileSettings
+  IProfileSettings,
+  UploadFile
 } from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
 
@@ -99,7 +101,17 @@ interface Props {
   passwordModalLoading: boolean
   dataFromApollo: boolean
   modalPasswordHasError: boolean
+  paypalCurrency: string
+  paypalCheck: boolean
+  loading: boolean
+  openModal: boolean
+  file: string
+  // api actions
+  uploadFileAction: (file: UploadFile) => void
   // redux actions
+  openAffiliate: (value: boolean) => void
+  setPaypalCheck: (value: boolean) => void
+  setPaypalCurrency: (value: string) => void
   inputChangeAction: (id: string, value: string) => void
   setSmsConfirmationChecked: (checked: boolean) => void
   setSmsUpdatesChecked: (checked: boolean) => void
@@ -157,6 +169,15 @@ class ProfileSettings extends React.Component<Props, {}> {
       // regionsOptions: { regions },
       firstName,
       lastName,
+      setPaypalCurrency,
+      setPaypalCheck,
+      openAffiliate,
+      uploadFileAction,
+      file,
+      openModal,
+      loading: loadingFile,
+      paypalCheck,
+      paypalCurrency,
       email,
       phone,
       loadingProfile,
@@ -222,11 +243,22 @@ class ProfileSettings extends React.Component<Props, {}> {
         </SectionContainer>
         <SwitchWrapper>
           {formatMessage(messages.makeAffiliate)}
-          <StyledSwitch />
+          <StyledSwitch checked={openModal} onChange={openAffiliate} />
         </SwitchWrapper>
         <AffiliateModal
-          {...{ history, formatMessage }}
-          open={true}
+          {...{
+            history,
+            paypalCheck,
+            setPaypalCheck,
+            formatMessage,
+            file,
+            openAffiliate,
+            loadingFile,
+            uploadFileAction,
+            paypalCurrency,
+            setPaypalCurrency
+          }}
+          open={openModal}
           link={false}
         />
         {/* REGION */}
@@ -675,7 +707,10 @@ const ProfileSettingsEnhance = compose(
   ChangePasswordMutation,
   connect(
     mapStateToProps,
-    { ...ProfileSettingsActions }
+    {
+      ...ProfileSettingsActions,
+      ...ProfileApiActions
+    }
   )
 )(ProfileSettings)
 

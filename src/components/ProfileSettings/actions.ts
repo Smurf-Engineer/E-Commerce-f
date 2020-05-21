@@ -16,7 +16,12 @@ import {
   RESET_REDUCER_DATA,
   SET_SETTINGS_LOADING,
   CHANGE_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FORM
+  RESET_PASSWORD_FORM,
+  SET_PAYPAL_CURRENCY,
+  SET_PAYPAL_CHECK,
+  SET_LOADING,
+  SET_FILE,
+  OPEN_AFFILIATE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -40,6 +45,31 @@ export const selectDropdownAction = (id: string, key: string): AnyAction => ({
 export const showPasswordModalAction = (show: boolean): AnyAction => ({
   type: SHOW_PASSWORD_MODAL,
   show
+})
+
+export const setPaypalCurrency = (value: string): AnyAction => ({
+  type: SET_PAYPAL_CURRENCY,
+  value
+})
+
+export const setPaypalCheck = (value: boolean): AnyAction => ({
+  type: SET_PAYPAL_CHECK,
+  value
+})
+
+export const setUploadingAction = (value: boolean): AnyAction => ({
+  type: SET_LOADING,
+  value
+})
+
+export const setFileAction = (value: string): AnyAction => ({
+  type: SET_FILE,
+  value
+})
+
+export const openAffiliate = (value: boolean): AnyAction => ({
+  type: OPEN_AFFILIATE,
+  value
 })
 
 export const setModalLoadingAction = (loading: boolean): AnyAction => ({

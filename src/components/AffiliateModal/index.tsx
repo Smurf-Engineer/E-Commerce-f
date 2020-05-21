@@ -5,7 +5,7 @@ import * as React from 'react'
 import { withRouter } from 'react-router'
 import { compose, withApollo } from 'react-apollo'
 import Modal from 'antd/lib/modal'
-import Checkbox from 'antd/lib/checkbox'
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { FormattedMessage } from 'react-intl'
 import {
   ModalContainer,
@@ -31,25 +31,42 @@ import {
   CancelButton,
   SaveButton,
   LinkButton,
+  LoadingContainer,
 } from './styledComponents'
 import messages from './messages'
-import { Message } from '../../types/common'
+import { Message, UploadFile } from '../../types/common'
+import { RadioChangeEvent } from 'antd/lib/radio'
+import { UploadChangeParam } from 'antd/lib/upload'
+import AntdMessage from 'antd/lib/message'
+import { getFileWithExtension } from '../../utils/utilsFiles'
+import Spin from 'antd/lib/spin'
+
+const US_CURRENCY = 'usd'
+const CA_CURRENCY = 'cad'
 
 const links = {
-  usd: 'usdLink',
-  cad: 'cadLink'
+  [US_CURRENCY]: 'usdLink',
+  [CA_CURRENCY]: 'cadLink'
 }
 
 interface Props {
   open: boolean
   history: History
   link: boolean
+  paypalCheck: boolean
+  loadingFile: boolean
+  paypalCurrency: string
+  file: string
+  openAffiliate: (value: boolean) => void
+  uploadFileAction: (file: UploadFile) => void
+  setPaypalCheck: (value: boolean) => void
+  setPaypalCurrency: (value: string) => void
   formatMessage: (messageDescriptor: Message) => string
-  handleClose: () => void
   onPressCustomize: (id: number) => void
 }
 
 export class AffiliateModal extends React.Component<Props, {}> {
+
   openFile = (event: React.MouseEvent<EventTarget>) => {
     const {
       target: { id }
@@ -57,8 +74,54 @@ export class AffiliateModal extends React.Component<Props, {}> {
     const { history } = this.props
     history.push(links[id])
   }
+
+  handleSelectSection = (event: RadioChangeEvent) => {
+    const { setPaypalCurrency } = this.props
+    const {
+      target: {
+        value
+      }
+    } = event
+    setPaypalCurrency(value)
+  }
+
+  handleCheckChange = (event: CheckboxChangeEvent) => {
+    const { setPaypalCheck } = this.props
+    const { target: { checked } } = event
+    setPaypalCheck(checked)
+  }
+
+  uploadFile = async (event: UploadChangeParam) => {
+    const { uploadFileAction } = this.props
+    const { file } = event
+    uploadFileAction(file)
+  }
+
+  beforeUpload = (file: any) => {
+    const { formatMessage } = this.props
+    const isLt2M = file.size / 1024 / 1024 < 20
+    if (!isLt2M) {
+      AntdMessage.error(formatMessage(messages.sizeError))
+    }
+    return isLt2M
+  }
+
+  handleClose = () => {
+    const { openAffiliate } = this.props
+    openAffiliate(false)
+  }
+
   render() {
-    const { open, link, handleClose, formatMessage } = this.props
+    const {
+      open,
+      file,
+      link,
+      loadingFile,
+      paypalCheck,
+      formatMessage,
+      paypalCurrency
+    } = this.props
+    const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
         <Modal
@@ -66,7 +129,6 @@ export class AffiliateModal extends React.Component<Props, {}> {
           footer={null}
           closable={false}
           width={link ? '352px' : '512px'}
-          destroyOnClose={true}
         >
           {link ?
             <ModalContainer>
@@ -97,14 +159,14 @@ export class AffiliateModal extends React.Component<Props, {}> {
               </Label>
               <CurrencyContainer>
                 <RadioGroupStyled
-                  onChange={() => { }}
-                  value={''}
-                  defaultValue={'left'}
+                  onChange={this.handleSelectSection}
+                  value={paypalCurrency}
+                  defaultValue={US_CURRENCY}
                 >
-                  <RadioStyled value="left">
+                  <RadioStyled value={US_CURRENCY}>
                     <FormattedMessage {...messages.unitedStates} />
                   </RadioStyled>
-                  <RadioStyled value="left">
+                  <RadioStyled value={CA_CURRENCY}>
                     <FormattedMessage {...messages.canada} />
                   </RadioStyled>
                 </RadioGroupStyled>
@@ -113,10 +175,10 @@ export class AffiliateModal extends React.Component<Props, {}> {
                   <FormattedMessage {...messages.cad} />
                 </Currencies>
                 <Currencies>
-                  <FileLink id={'usd'} onClick={this.openFile}>
+                  <FileLink disabled={paypalCurrency !== US_CURRENCY} id={US_CURRENCY} onClick={this.openFile}>
                     <FormattedMessage {...messages.usdForm} />
                   </FileLink>
-                  <FileLink disabled={true} id={'cad'} onClick={this.openFile}>
+                  <FileLink disabled={paypalCurrency !== CA_CURRENCY} id={CA_CURRENCY} onClick={this.openFile}>
                     <FormattedMessage {...messages.cadForm} />
                   </FileLink>
                 </Currencies>
@@ -127,25 +189,35 @@ export class AffiliateModal extends React.Component<Props, {}> {
               <StyledUpload
                 listType="picture-card"
                 className="avatar-uploader"
-                customRequest={() => { }}
+                customRequest={this.uploadFile}
                 showUploadList={false}
-                beforeUpload={() => { }}
+                disabled={loadingFile}
+                beforeUpload={this.beforeUpload}
               >
                 <UploadButton>
-                  <StyledIcon type="upload" />
-                  <FormattedMessage {...messages.uploadTaxForm} />
+                  {loadingFile ?
+                    <LoadingContainer>
+                      <Spin size="small" />
+                    </LoadingContainer> :
+                    <>
+                      <StyledIcon type="upload" />
+                      <FormattedMessage {...messages.uploadTaxForm} />
+                    </>
+                  }
                 </UploadButton>
               </StyledUpload>
-              <FileLabel>
-                <Clip type="paper-clip" />
-                <FileName>
-                  UVUWEUGEOSSSASEOSSSAS.pdf
-                </FileName>
-              </FileLabel>
+              {!!fileName &&
+                <FileLabel>
+                  <Clip type="paper-clip" />
+                  <FileName>
+                    {fileName}
+                  </FileName>
+                </FileLabel>
+              }
               <CheckboxContainer>
                 <Checkbox
-                  checked={false}
-                  onChange={() => { }}
+                  checked={paypalCheck}
+                  onChange={this.handleCheckChange}
                 >
                   <CheckboxLabel
                     dangerouslySetInnerHTML={{
@@ -158,10 +230,10 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.termsDesc} />
               </TermsLabel>
               <ButtonsContainer>
-                <CancelButton onClick={handleClose}>
+                <CancelButton onClick={this.handleClose}>
                   <FormattedMessage {...messages.cancel} />
                 </CancelButton>
-                <SaveButton>
+                <SaveButton disabled={!paypalCheck || !file}>
                   <FormattedMessage {...messages.sendRequest} />
                 </SaveButton>
               </ButtonsContainer>
