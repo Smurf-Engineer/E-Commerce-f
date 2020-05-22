@@ -42,7 +42,8 @@ import {
 import {
   Reducer,
   HeaderImagePlaceHolder,
-  ProductTilePlaceHolder
+  ProductTilePlaceHolder,
+  ProductFile
 } from '../../types/common'
 
 export const initialState = fromJS({
@@ -93,16 +94,14 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       const newList = oldList.delete(index).insert(indexTo, oldItem)
       return state.set('featuredBanners', newList)
     }
-    case ADD_MEDIA: {
-      const { value } = action
-      const oldList = state.get('featuredBanners')
-      return state.set('featuredBanners', oldList.push(fromJS(value)))
-    }
-    case REMOVE_MEDIA: {
-      const { index } = action
-      const oldList = state.get('featuredBanners')
-      return state.set('featuredBanners', oldList.remove(index))
-    }
+    case ADD_MEDIA:
+      return state.updateIn(
+        ['featuredBanners'],
+        (banners: [ProductFile]) =>
+          banners.push(fromJS(action.value))
+      )
+    case REMOVE_MEDIA:
+      return state.deleteIn(['featuredBanners', action.index])
     case SET_HOMEPAGE_INFO: {
       const {
         homepageImages,
