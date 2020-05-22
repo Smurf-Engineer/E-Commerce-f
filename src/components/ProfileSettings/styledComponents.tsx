@@ -6,7 +6,7 @@ import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
 import Checkbox from 'antd/lib/checkbox'
-import { WHITE_TRANSPARENT, BLUE } from '../../theme/colors'
+import { WHITE_TRANSPARENT, BLUE, GRAY_DARK } from '../../theme/colors'
 
 interface InputProps {
   inputhWidth?: string
@@ -170,4 +170,9 @@ export const StatusLabel = styled.div`
   margin-top: 8px;
   color: ${BLUE};
   font-style: italic;
+`
+
+export const AccountLabel = styled.div`
+  margin-top: 8px;
+  color: ${GRAY_DARK};
 `

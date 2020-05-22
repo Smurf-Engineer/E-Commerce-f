@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -205,6 +205,11 @@ export type DesignNote = {
   createdAt: string
   user: string
   text: string
+}
+
+export type Affiliate = {
+  status: string
+  paypalAccount: string
 }
 
 export type SaveDesignType = {

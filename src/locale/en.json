@@ -691,6 +691,8 @@
   "components.ProfileSettings.emailSignUpNewsLetter": "Yes, I would like to sign up for your Newsletter",
   "components.ProfileSettings.success": "Request sent",
   "components.ProfileSettings.pending": "Waiting for Approval",
+  "components.ProfileSettings.linkedTo": "Linked to: {paypalAccount}",
+  "components.ProfileSettings.successLink": "Linked successfully!",
   "screens.TemplateDownload.title": "TEMPLATE DOWNLOAD",
   "screens.TemplateDownload.name": "TOUR",
   "screens.TemplateDownload.description": "SHORT SLEEVE JERSEY",
