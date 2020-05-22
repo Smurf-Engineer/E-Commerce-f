@@ -128,7 +128,7 @@ class SalesRep extends React.Component<Props, {}> {
       await deleteRepUser({
         variables: { shortId },
         update: (store: any, dataInternal: User) => {
-          const user = get(dataInternal, 'data.userResult', {})
+          const user = get(dataInternal, 'data.userResult')
           if (user) {
             const offset = currentPage ? (currentPage - 1) * REPS_LIMIT : 0
             const storedData = store.readQuery({
