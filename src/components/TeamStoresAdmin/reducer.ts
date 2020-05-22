@@ -68,7 +68,8 @@ export const initialState = fromJS({
   startDate: '',
   startDateMoment: null,
   endDate: '',
-  endDateMoment: null
+  endDateMoment: null,
+  accountManager: {}
 })
 
 const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -91,7 +92,8 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
           featured,
           onDemand,
           items,
-          teamSize: { id: sizeId, size }
+          teamSize: { id: sizeId, size },
+          accountManager
         }
       } = action
 
@@ -112,7 +114,8 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         loading: false,
         items,
         onDemand,
-        imagePreviewUrl: banner
+        imagePreviewUrl: banner,
+        accountManager
       })
     }
     case SET_NAME:

@@ -296,6 +296,10 @@ describe(' TeamStoresAdmin Screen', () => {
         teamSize: {
           id: 1,
           size: '2-5'
+        },
+        accountManager: {
+          first_name: '',
+          last_name: ''
         }
       }
       expect(setTeamData(data)).toEqual({
@@ -511,9 +515,7 @@ describe(' TeamStoresAdmin Screen', () => {
           updateStartDateAction(startDateMoment, startDate)
         )
         const customStartDateValue = startDateState.get('startDate')
-        const customStartDateMomentValue = startDateState.get(
-          'startDateMoment'
-        )
+        const customStartDateMomentValue = startDateState.get('startDateMoment')
 
         expect(customStartDateValue).toBe(startDate)
         expect(customStartDateMomentValue).toBe(startDateMoment)
@@ -877,6 +879,10 @@ describe(' TeamStoresAdmin Screen', () => {
         const customShortIdValue = state.get('storeShortId')
         expect(typeof customShortIdValue).toBe('string')
         expect(customShortIdValue).toBe(shortId)
+      })
+      it('Handles undefined value in accountManager', () => {
+        const customInitialAccountManager = initialState.get('accountManager')
+        expect(customInitialAccountManager).not.toBeUndefined()
       })
       it('Handles undefined value in name', () => {
         const customInitialName = initialState.get('name')

@@ -51,7 +51,8 @@ import {
   DesignType,
   UserSearchResult,
   QueryProps,
-  TeamstoreType
+  TeamstoreType,
+  AccountManagerName
 } from '../../../types/common'
 import { cutoffDateSettingsQuery } from './data'
 import { DEFAULT_CUTOFF_DAYS } from '../../../screens/CreateStore/constants'
@@ -98,6 +99,7 @@ interface Props {
   startDate?: Moment
   endDate?: Moment
   cutoffSettings: CutoffData
+  accountManager: AccountManagerName
   getEditStore: (id: string) => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
@@ -371,7 +373,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       loading,
       startDate,
       endDate,
-      onChangeTeamStoreType
+      onChangeTeamStoreType,
+      accountManager
     } = this.props
     if (!canEdit) {
       return null
@@ -484,6 +487,21 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <SwitchInput checked={featured} onChange={setFeaturedAction} />
           </InputDiv>
         </RowInput>
+        <RowInput>
+          <InputDiv>
+            <FormattedMessage {...messages.accountManager} />
+            <Input
+              size="large"
+              value={
+                accountManager.first_name
+                  ? `${accountManager.first_name} ${accountManager.last_name}`
+                  : '-'
+              }
+              name="accountManager"
+              disabled={true}
+            />
+          </InputDiv>
+        </RowInput>
         <Label>
           <FormattedMessage {...messages.addStoreItems} />
         </Label>
@@ -530,8 +548,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
         {imagePreviewUrl ? (
           <PreviewImage src={imagePreviewUrl} />
         ) : (
-            <Dragger onSelectImage={this.beforeUpload} />
-          )}
+          <Dragger onSelectImage={this.beforeUpload} />
+        )}
         <BuildButton disabled={!name || !userId} onClick={buildTeamStore}>
           {formatMessage(storeShortId ? messages.save : messages.buildStore)}
         </BuildButton>

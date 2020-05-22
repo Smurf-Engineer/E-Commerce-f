@@ -100,5 +100,9 @@ export default defineMessages({
   deliveryErrorLabel: {
     id: 'components.CreateStoreAdmin.deliveryErrorLabel',
     defaultMessage: 'Delivery date cannot be on a Saturday or Sunday'
+  },
+  accountManager: {
+    id: 'components.CreateStoreAdmin.accountManager',
+    defaultMessage: 'Account Manager'
   }
 })

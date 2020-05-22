@@ -20,6 +20,10 @@ export const getTeamStoreQuery = gql`
       teamstoreType: teamstore_type
       cutoffDate: cutOffDateString
       deliveryDate: deliveryDateString
+      accountManager {
+        first_name
+        last_name
+      }
       items {
         id
         priceRange {

@@ -1635,3 +1635,8 @@ export type PriceRangeProgress = {
   index: number
   price: number
 }
+
+export type AccountManagerName = {
+  first_name: string
+  last_name: string
+}
