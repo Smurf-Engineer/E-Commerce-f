@@ -21,7 +21,8 @@ import {
   SET_PAYPAL_CHECK,
   SET_LOADING,
   SET_FILE,
-  OPEN_AFFILIATE
+  OPEN_AFFILIATE,
+  SUCCESS_REQUEST
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -60,6 +61,10 @@ export const setPaypalCheck = (value: boolean): AnyAction => ({
 export const setUploadingAction = (value: boolean): AnyAction => ({
   type: SET_LOADING,
   value
+})
+
+export const successRequestAction = (): AnyAction => ({
+  type: SUCCESS_REQUEST,
 })
 
 export const setFileAction = (value: string): AnyAction => ({

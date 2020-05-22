@@ -161,7 +161,3 @@ export const LinkButton = styled(Button)`
   color: ${WHITE};
   background: ${BLUE};
 `
-
-export const LoadingContainer = styled.div`
-  width: 100%;
-`

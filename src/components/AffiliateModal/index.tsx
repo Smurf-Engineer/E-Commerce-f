@@ -31,7 +31,6 @@ import {
   CancelButton,
   SaveButton,
   LinkButton,
-  LoadingContainer,
 } from './styledComponents'
 import messages from './messages'
 import { Message, UploadFile } from '../../types/common'
@@ -39,7 +38,6 @@ import { RadioChangeEvent } from 'antd/lib/radio'
 import { UploadChangeParam } from 'antd/lib/upload'
 import AntdMessage from 'antd/lib/message'
 import { getFileWithExtension } from '../../utils/utilsFiles'
-import Spin from 'antd/lib/spin'
 
 const US_CURRENCY = 'usd'
 const CA_CURRENCY = 'cad'
@@ -54,9 +52,10 @@ interface Props {
   history: History
   link: boolean
   paypalCheck: boolean
-  loadingFile: boolean
   paypalCurrency: string
   file: string
+  linkPaypal: () => void
+  sendRequest: (value: boolean) => void
   openAffiliate: (value: boolean) => void
   uploadFileAction: (file: UploadFile) => void
   setPaypalCheck: (value: boolean) => void
@@ -91,7 +90,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
     setPaypalCheck(checked)
   }
 
-  uploadFile = async (event: UploadChangeParam) => {
+  uploadFile = (event: UploadChangeParam) => {
     const { uploadFileAction } = this.props
     const { file } = event
     uploadFileAction(file)
@@ -116,7 +115,8 @@ export class AffiliateModal extends React.Component<Props, {}> {
       open,
       file,
       link,
-      loadingFile,
+      linkPaypal,
+      sendRequest,
       paypalCheck,
       formatMessage,
       paypalCurrency
@@ -139,7 +139,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.linkDesc} />
               </Description>
               <ButtonsContainer>
-                <LinkButton>
+                <LinkButton onClick={linkPaypal}>
                   <FormattedMessage {...messages.linkButton} />
                 </LinkButton>
               </ButtonsContainer>
@@ -191,19 +191,11 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 className="avatar-uploader"
                 customRequest={this.uploadFile}
                 showUploadList={false}
-                disabled={loadingFile}
                 beforeUpload={this.beforeUpload}
               >
                 <UploadButton>
-                  {loadingFile ?
-                    <LoadingContainer>
-                      <Spin size="small" />
-                    </LoadingContainer> :
-                    <>
-                      <StyledIcon type="upload" />
-                      <FormattedMessage {...messages.uploadTaxForm} />
-                    </>
-                  }
+                  <StyledIcon type="upload" />
+                  <FormattedMessage {...messages.uploadTaxForm} />
                 </UploadButton>
               </StyledUpload>
               {!!fileName &&
@@ -233,7 +225,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 <CancelButton onClick={this.handleClose}>
                   <FormattedMessage {...messages.cancel} />
                 </CancelButton>
-                <SaveButton disabled={!paypalCheck || !file}>
+                <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file}>
                   <FormattedMessage {...messages.sendRequest} />
                 </SaveButton>
               </ButtonsContainer>

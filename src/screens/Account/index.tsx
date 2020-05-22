@@ -235,7 +235,7 @@ export class Account extends React.Component<Props, {}> {
       case CREDIT_CARDS:
         return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
-        return <ProfileSettings {...{ isMobile, formatMessage }} />
+        return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
@@ -288,10 +288,10 @@ export class Account extends React.Component<Props, {}> {
           ))}
         </SubMenu>
       ) : (
-        <Menu.Item className="ant-menu-item-custom" key={title}>
-          <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-        </Menu.Item>
-      )
+          <Menu.Item className="ant-menu-item-custom" key={title}>
+            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+          </Menu.Item>
+        )
     )
 
     const logoutButton = (

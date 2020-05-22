@@ -689,6 +689,8 @@
   "components.ProfileSettings.smsProDesignUpdates": "Pro Design Updates",
   "components.ProfileSettings.emailTitle": "E-mail Preferences",
   "components.ProfileSettings.emailSignUpNewsLetter": "Yes, I would like to sign up for your Newsletter",
+  "components.ProfileSettings.success": "Request sent",
+  "components.ProfileSettings.pending": "Waiting for Approval",
   "screens.TemplateDownload.title": "TEMPLATE DOWNLOAD",
   "screens.TemplateDownload.name": "TOUR",
   "screens.TemplateDownload.description": "SHORT SLEEVE JERSEY",

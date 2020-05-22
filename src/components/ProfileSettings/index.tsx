@@ -26,7 +26,8 @@ import {
   UpdateUserProfileOptionsMutation,
   UpdateMeasurementsMutation,
   UpdateRegionOptionsMutation,
-  ChangePasswordMutation
+  ChangePasswordMutation,
+  sendAffiliateMutation
 } from './data'
 import messages from './messages'
 import {
@@ -41,6 +42,8 @@ import {
   ErrorMessage,
   SwitchWrapper,
   StyledSwitch,
+  LoadingContainer,
+  StatusLabel,
 } from './styledComponents'
 import AffiliateModal from '../AffiliateModal'
 import ProfileForm from '../ProfileForm'
@@ -51,9 +54,13 @@ import {
   QueryProps,
   Region,
   IProfileSettings,
-  UploadFile
+  UploadFile,
+  MessagePayload
 } from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
+import get from 'lodash/get'
+import { PENDING } from './constants'
+import config from '../../config'
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -96,6 +103,7 @@ interface Props {
   loadingEmail: boolean
   currentPassword: string
   newPassword: string
+  history: History
   newPasswordConfirm: string
   showPasswordModal: boolean
   passwordModalLoading: boolean
@@ -104,11 +112,15 @@ interface Props {
   paypalCurrency: string
   paypalCheck: boolean
   loading: boolean
+  link: boolean
   openModal: boolean
   file: string
   // api actions
   uploadFileAction: (file: UploadFile) => void
   // redux actions
+  successRequestAction: () => void
+  setUploadingAction: (value: boolean) => void
+  linkAccount: (value: boolean) => void
   openAffiliate: (value: boolean) => void
   setPaypalCheck: (value: boolean) => void
   setPaypalCurrency: (value: string) => void
@@ -125,6 +137,7 @@ interface Props {
   setSettingsLoadingAction: (key: string, loading: boolean) => void
   changePasswordSuccessAction: () => void
   // mutations
+  sendAffiliateRequest: (variables: {}) => Promise<MessagePayload>
   updateUserProfile: (variables: {}) => void
   updateEmailOptions: (variables: {}) => void
   updateSmsOptions: (variables: {}) => void
@@ -157,15 +170,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     }
     const {
       isMobile,
-      profileData: {
-        profileData: {
-          userProfile
-          // languageSettings,
-          // measurementSettings,
-          // smsSettings,
-          // emailSettings
-        }
-      },
+      profileData,
       // regionsOptions: { regions },
       firstName,
       lastName,
@@ -174,6 +179,8 @@ class ProfileSettings extends React.Component<Props, {}> {
       openAffiliate,
       uploadFileAction,
       file,
+      link,
+      history,
       openModal,
       loading: loadingFile,
       paypalCheck,
@@ -210,6 +217,8 @@ class ProfileSettings extends React.Component<Props, {}> {
       modalPasswordHasError
     } = this.props
 
+    const userProfile = get(profileData, 'profileData.userProfile', {})
+    const affiliate = get(profileData, 'profileData.affiliate', {})
     // const regionsOptions: Region[] = regions || []
 
     // const smsButtonDisabled =
@@ -220,9 +229,15 @@ class ProfileSettings extends React.Component<Props, {}> {
     // const emailButtonDisabled =
     //   emailNewsletterChecked === null ||
     //   emailSettings.newsletter === emailNewsletterChecked
+    const { status } = affiliate
     return (
       <Container>
         {/* PROFILE */}
+        {loadingFile &&
+          <LoadingContainer>
+            <Spin />
+          </LoadingContainer>
+        }
         <Title>{formatMessage(messages.profileTitle)}</Title>
         <SectionContainer>
           <ProfileForm
@@ -243,8 +258,13 @@ class ProfileSettings extends React.Component<Props, {}> {
         </SectionContainer>
         <SwitchWrapper>
           {formatMessage(messages.makeAffiliate)}
-          <StyledSwitch checked={openModal} onChange={openAffiliate} />
+          <StyledSwitch disabled={!!status} checked={openModal || !!status} onChange={openAffiliate} />
         </SwitchWrapper>
+        {status === PENDING &&
+          <StatusLabel>
+            {formatMessage(messages.pending)}
+          </StatusLabel>
+        }
         <AffiliateModal
           {...{
             history,
@@ -252,14 +272,15 @@ class ProfileSettings extends React.Component<Props, {}> {
             setPaypalCheck,
             formatMessage,
             file,
+            link,
             openAffiliate,
-            loadingFile,
             uploadFileAction,
             paypalCurrency,
             setPaypalCurrency
           }}
+          linkPaypal={this.linkPaypal}
+          sendRequest={this.sendRequest}
           open={openModal}
-          link={false}
         />
         {/* REGION */}
         {/*<Title>{formatMessage(messages.languageTitle)}</Title>
@@ -649,6 +670,56 @@ class ProfileSettings extends React.Component<Props, {}> {
     )
   }
 
+  linkPaypal = () => {
+    const { history } = this.props
+    const redirect = encodeURIComponent(`https://designlab.jakroo.com/account?option=profileSettings`)
+    // const redirect = encodeURIComponent(`${config.baseUrl}account?option=profileSettings`)
+    history.push(`
+      https://www.sandbox.paypal.com/connect?
+      flowEntry=static
+      &client_id=${config.paypalClientIdUS}
+      &scope=openid https://uri.paypal.com/services/paypalattributes
+      &redirect_uri=${redirect}
+    `)
+  }
+
+  sendRequest = async () => {
+    const {
+      setUploadingAction,
+      successRequestAction,
+      paypalCurrency: currency,
+      file,
+      formatMessage,
+      sendAffiliateRequest
+    } = this.props
+    try {
+      setUploadingAction(true)
+      await sendAffiliateRequest({
+        variables: {
+          currency,
+          file
+        },
+        update: (store: any) => {
+          const profileData = store.readQuery({
+            query: profileSettingsQuery
+          })
+          const affiliateData = get(profileData, 'profileData.affiliate', {})
+          affiliateData.status = PENDING
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData
+          })
+        }
+      })
+      successRequestAction()
+      Message.success(formatMessage(messages.success), 4)
+    } catch (error) {
+      setUploadingAction(false)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+    }
+  }
+
   updateSetting = async (
     setting: string,
     payload: {},
@@ -699,6 +770,7 @@ const ProfileSettingsEnhance = compose(
     },
     name: 'regionsOptions'
   }),
+  sendAffiliateMutation,
   UpdateEmailOptionsMutation,
   UpdateSmsOptionsMutation,
   UpdateUserProfileOptionsMutation,

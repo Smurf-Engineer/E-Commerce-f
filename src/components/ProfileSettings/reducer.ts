@@ -22,7 +22,8 @@ import {
   SET_PAYPAL_CHECK,
   SET_LOADING,
   SET_FILE,
-  OPEN_AFFILIATE
+  OPEN_AFFILIATE,
+  SUCCESS_REQUEST
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -54,6 +55,7 @@ export const initialState = fromJS({
   paypalCheck: false,
   loading: false,
   file: '',
+  link: false,
   openModal: false,
   smsUpdatesChecked: null,
   loadingSms: false,
@@ -82,6 +84,13 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loading', action.value)
     case SET_FILE:
       return state.merge({ file: action.value, loading: false })
+    case SUCCESS_REQUEST:
+      return state.merge({
+        file: '',
+        link: true,
+        loading: false,
+        paypalCheck: false,
+      })
     case CHANGE_INPUT: {
       if (action.id === 'region') {
         return state.merge({

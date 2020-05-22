@@ -76,5 +76,13 @@ export default defineMessages({
   makeAffiliate: {
     id: 'components.ProfileSettings.makeAffiliate',
     defaultMessage: 'Make account an Affiliate Account'
+  },
+  success: {
+    id: 'components.ProfileSettings.success',
+    defaultMessage: 'Request sent'
+  },
+  pending: {
+    id: 'components.ProfileSettings.pending',
+    defaultMessage: 'Waiting for Approval'
   }
 })

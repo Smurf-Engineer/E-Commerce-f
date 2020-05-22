@@ -10,6 +10,9 @@ export const profileSettingsQuery = gql`
         email
         phone
       }
+      affiliate {
+        status
+      }
       languageSettings: userRegionOptions {
         region {
           id
@@ -150,5 +153,18 @@ export const ChangePasswordMutation = graphql(
   `,
   {
     name: 'changePassword'
+  }
+)
+
+export const sendAffiliateMutation = graphql(
+  gql`
+    mutation sendAffiliateRequest($currency: String!, $file: String!) {
+      sendAffiliateRequest(currency: $currency, file: $file) {
+        status
+      }
+    }
+  `,
+  {
+    name: 'sendAffiliateRequest'
   }
 )
