@@ -534,17 +534,17 @@ class HomepageAdmin extends React.Component<Props, {}> {
     addMedia({ id, isVideo: false })
   }
 
-  beforeUploadMedia = (file: any) => {
+  beforeUploadMedia = (file: UploadFile) => {
     const { formatMessage } = this.props
     const isValidType = validTypes.includes(file.type)
     if (!isValidType) {
       message.error(formatMessage(messages.invalidFile))
     }
-    const isLt2M = file.size / 1024 / 1024 < 20
-    if (!isLt2M) {
+    const lessThanTwoMb = file.size / 1024 / 1024 < 20
+    if (!lessThanTwoMb) {
       message.error(formatMessage(messages.sizeError))
     }
-    return isValidType && isLt2M
+    return isValidType && lessThanTwoMb
   }
 
   handleOnDropRow = (dragIndex: number, dropIndex: number) => {
