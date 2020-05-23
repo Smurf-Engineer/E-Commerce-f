@@ -244,7 +244,7 @@ export const removeMedia = (index: number): AnyAction => ({
 })
 
 export const setMedia = (
-  id: string,
+  id: number,
   name: string,
   value: string
 ): AnyAction => ({
