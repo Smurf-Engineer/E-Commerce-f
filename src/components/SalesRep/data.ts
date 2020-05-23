@@ -28,3 +28,22 @@ export const addRepUserMutation = gql`
     }
   }
 `
+
+export const editRepUserMutation = gql`
+  mutation editRepUser($firstName: String!, $lastName: String!, $shortId: String!) {
+    userResult: editRepUser(firstName: $firstName, lastName: $lastName, shortId: $shortId) {
+      id
+      shortId: short_id
+      firstName: first_name
+      lastName: last_name
+    }
+  }
+`
+
+export const deleteRepUserMutation = gql`
+  mutation deleteRepUser($shortId: String!) {
+    userResult: deleteRepUser(shortId: $shortId) {
+      shortId: short_id
+    }
+  }
+`

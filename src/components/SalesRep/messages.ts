@@ -40,5 +40,17 @@ export default defineMessages({
   added: {
     id: 'components.SalesRep.added',
     defaultMessage: 'Sales Rep Added'
+  },
+  updated: {
+    id: 'components.SalesRep.updated',
+    defaultMessage: 'Sales Rep Updated'
+  },
+  deleted: {
+    id: 'components.SalesRep.deleted',
+    defaultMessage: 'Sales Rep deleted'
+  },
+  edit: {
+    id: 'components.SalesRep.edit',
+    defaultMessage: 'Edit Sales Rep'
   }
 })

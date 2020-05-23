@@ -4,10 +4,10 @@
 
 import salesRepReducer, { initialState } from './reducer'
 import {
-  resetDataAction, setCurrentPageAction, setSearchTextAction, setNameAction, setOpenModal, setLoading,
+  resetDataAction, setCurrentPageAction, setSearchTextAction, setNameAction, setOpenModal, setLoading, selectUser,
 } from './actions'
 import {
-  RESET_DATA, SET_CURRENT_PAGE, SET_SEARCH_TEXT, SET_NAME, SET_LOADING, SET_OPEN_MODAL,
+  RESET_DATA, SET_CURRENT_PAGE, SET_SEARCH_TEXT, SET_NAME, SET_LOADING, SET_OPEN_MODAL, SELECT_USER,
 } from './constants'
 
 describe('Design Search Admin Screen', () => {
@@ -58,6 +58,19 @@ describe('Design Search Admin Screen', () => {
       expect(setLoading(loading)).toEqual({
         type,
         loading
+      })
+    })
+    it('selectUser', () => {
+      const type = SELECT_USER
+      const user = {
+        id: 1,
+        shortId: 'test',
+        firstName: 'test',
+        lastName: 'test',
+      }
+      expect(selectUser(user)).toEqual({
+        type,
+        user
       })
     })
   })
@@ -177,6 +190,32 @@ describe('Design Search Admin Screen', () => {
           )
           const customLoadingValue = salesState.get('loading')
           expect(customLoadingValue).toBe(loading)
+        })
+      })
+    })
+    describe('SELECT_USER', () => {
+      describe('Set user value action', () => {
+        it('Handles undefined value in selected user id', () => {
+          const customInitialValue = initialState.get('shortId')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in selected id', () => {
+          const customInitialValue = initialState.get('shortId')
+          expect(customInitialValue).toBe('')
+        })
+        it('Handles custom values in user selected id', () => {
+          const user = {
+            id: 1,
+            shortId: 'test',
+            firstName: 'test',
+            lastName: 'test',
+          }
+          const salesState = salesRepReducer(
+            initialState,
+            selectUser(user)
+          )
+          const customUserId = salesState.get('shortId')
+          expect(customUserId).toBe(user.shortId)
         })
       })
     })

@@ -24,23 +24,34 @@ import List from './RepList'
 import messages from './messages'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
-import { addRepUserMutation, getRepUsers } from './RepList/data'
-import { User, UserPermissions } from '../../types/common'
+import { addRepUserMutation, getRepUsers, editRepUserMutation, deleteRepUserMutation } from './data'
+import { User, UsersResult, QueryProps, UserPermissions } from '../../types/common'
 import get from 'lodash/get'
-import { REPS_LIMIT } from './constants'
 import { SALES_REP, ADMIN_ROUTE } from '../AdminLayout/constants'
+import { REPS_LIMIT } from './constants'
+import remove from 'lodash/remove'
+import set from 'lodash/set'
+
+interface Data extends QueryProps {
+  repUsers: UsersResult
+}
 
 interface Props {
   history: any
   currentPage: number
   name: string
+  data: Data
+  shortId: string
   open: boolean
   loading: boolean
   lastName: string
   searchText: string
   permissions: UserPermissions
+  selectUser: (user: User) => void
   setLoading: (loading: boolean) => void
   addRepUser: (variables: {}) => Promise<User>
+  editRepUser: (variables: {}) => Promise<User>
+  deleteRepUser: (variables: {}) => Promise<User>
   setOpenModal: (open: boolean) => void
   setNameAction: (field: string, value: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -87,7 +98,101 @@ class SalesRep extends React.Component<Props, {}> {
     setOpenModal(false)
   }
 
+  handleSelectUser = (id: number) => {
+    const { data: { repUsers }, selectUser } = this.props
+    const user = get(repUsers, ['users', id], {})
+    if (user) {
+      selectUser(user)
+    }
+  }
+
   saveUser = async () => {
+    const { shortId } = this.props
+    if (shortId) {
+      await this.editUser()
+    } else {
+      await this.addUser()
+    }
+  }
+
+  handleDeleteUser = async (shortId: string) => {
+    const {
+      setLoading,
+      formatMessage,
+      currentPage,
+      searchText,
+      deleteRepUser,
+    } = this.props
+    try {
+      setLoading(true)
+      await deleteRepUser({
+        variables: { shortId },
+        update: (store: any, dataInternal: User) => {
+          const user = get(dataInternal, 'data.userResult')
+          if (user) {
+            const offset = currentPage ? (currentPage - 1) * REPS_LIMIT : 0
+            const storedData = store.readQuery({
+              query: getRepUsers,
+              variables: {
+                limit: REPS_LIMIT,
+                offset,
+                text: searchText
+              }
+            })
+            const { shortId: id } = user
+            const users = get(storedData, 'repUsers.users', []) as User[]
+            const updatedUsers = remove(
+              users,
+              ({ shortId: oldId }) => oldId === id
+            )
+            set(storedData, 'repUSers.users', updatedUsers)
+            store.writeQuery({
+              query: getRepUsers,
+              variables: {
+                limit: REPS_LIMIT,
+                offset,
+                text: searchText
+              },
+              data: storedData
+            })
+            Message.success(formatMessage(messages.deleted))
+          }
+        }
+      })
+    } catch (e) {
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  editUser = async () => {
+    const {
+      setLoading,
+      formatMessage,
+      name: firstName,
+      lastName,
+      shortId,
+      editRepUser,
+      setOpenModal
+    } = this.props
+    try {
+      setLoading(true)
+      await editRepUser({
+        variables: { firstName, lastName, shortId }
+      })
+      setOpenModal(false)
+      Message.success(formatMessage(messages.updated))
+    } catch (e) {
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  addUser = async () => {
     const {
       name: firstName,
       lastName,
@@ -144,16 +249,20 @@ class SalesRep extends React.Component<Props, {}> {
       formatMessage,
       open,
       loading,
-      history,
+      shortId,
       searchText,
       name,
       lastName,
-      permissions
+      history,
+      permissions,
+      data: { repUsers, loading: loadingList }
     } = this.props
     const access = permissions[SALES_REP] || {}
     if (!access.view) {
       history.replace(ADMIN_ROUTE)
     }
+    const users = get(repUsers, 'users', []) as User[]
+    const fullCount = get(repUsers, 'fullCount', 0)
     return (
       <Container>
         <ScreenTitle>
@@ -172,11 +281,14 @@ class SalesRep extends React.Component<Props, {}> {
           />
         </HeaderList>
         <List
-          {...{ formatMessage, currentPage, searchText }}
+          {...{ formatMessage, currentPage, searchText, users, fullCount }}
+          loading={loadingList}
+          deleteUser={this.handleDeleteUser}
+          selectUser={this.handleSelectUser}
           onChangePage={this.handleOnChangePage}
         />
-        <Modal visible={open && access.edit} footer={null} closable={false} width="442px">
-          <Title>{formatMessage(messages.addSalesRep)}</Title>
+        <Modal visible={open} footer={null} closable={false} width="442px">
+          <Title>{formatMessage(messages[shortId ? 'edit' : 'addSalesRep'])}</Title>
           <FormContainer>
             <StyledInput
               id="name"
@@ -209,11 +321,31 @@ class SalesRep extends React.Component<Props, {}> {
   }
 }
 
+interface OwnProps {
+  currentPage?: number
+  searchText?: string
+}
+
 const mapStateToProps = (state: any) => state.get('salesRep').toJS()
 
 const SalesRepEnhance = compose(
+  connect(mapStateToProps, { ...SalesRepActions }),
   graphql(addRepUserMutation, { name: 'addRepUser' }),
-  connect(mapStateToProps, { ...SalesRepActions })
+  graphql(editRepUserMutation, { name: 'editRepUser' }),
+  graphql(deleteRepUserMutation, { name: 'deleteRepUser' }),
+  graphql(getRepUsers, {
+    options: ({ currentPage, searchText }: OwnProps) => {
+      const offset = currentPage ? (currentPage - 1) * REPS_LIMIT : 0
+      return {
+        variables: {
+          limit: REPS_LIMIT,
+          offset,
+          text: searchText
+        },
+        fetchPolicy: 'network-only'
+      }
+    }
+  }),
 )(SalesRep)
 
 export default SalesRepEnhance

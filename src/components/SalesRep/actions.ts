@@ -8,9 +8,10 @@ import {
   SET_OPEN_MODAL,
   SET_SEARCH_TEXT,
   SET_NAME,
-  SET_LOADING
+  SET_LOADING,
+  SELECT_USER
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, User } from '../../types/common'
 
 export const setCurrentPageAction = (page: number): AnyAction => ({
   type: SET_CURRENT_PAGE,
@@ -40,4 +41,9 @@ export const resetDataAction = (): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const selectUser = (user: User) => ({
+  type: SELECT_USER,
+  user
 })

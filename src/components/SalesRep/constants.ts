@@ -10,5 +10,6 @@ export const SET_SEARCH_TEXT = `${namespace}/SET_SEARCH_TEXT`
 export const SET_NAME = `${namespace}/SET_NAME`
 export const SET_OPEN_MODAL = `${namespace}/SET_OPEN_MODAL`
 export const SET_LOADING = `${namespace}/SET_LOADING`
+export const SELECT_USER = `${namespace}/SELECT_USER`
 
 export const REPS_LIMIT = 12
