@@ -186,6 +186,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       openNotes,
       salesRep,
       managers,
+      history,
       addingNote,
       note,
       setNoteAction,
@@ -243,6 +244,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           colorAccessories,
           creatingPdf,
           accessAssets,
+          history,
           loadingPreflight
         }}
         canEdit={access.edit}

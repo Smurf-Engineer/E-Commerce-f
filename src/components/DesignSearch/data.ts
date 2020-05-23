@@ -18,6 +18,12 @@ export const orderSearchQuery = gql`
       code
       status: order_status
       image
+      user {
+        shortId: short_id
+        firstName: first_name
+        lastName: last_name
+      }
+      legacyNumber: legacy_number
       assets: media {
         files {
           fileUrl: file_url
