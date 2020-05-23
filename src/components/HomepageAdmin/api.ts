@@ -7,10 +7,12 @@ import {
   setUrlImageList,
   setLoadingListAction,
   setProductTileImage,
-  setProductTileLoading
+  setProductTileLoading,
+  setMedia
 } from './actions'
 
 import { Sections, LoadingSections } from './constants'
+import { UploadFile } from 'antd/lib/upload/interface'
 
 const { MAIN_HEADER } = Sections
 const { MAIN_HEADER_LOADING, SECONDARY_HEADER_LOADING } = LoadingSections
@@ -77,6 +79,36 @@ export const uploadProductFileAction = (file: File, index: number) => {
     } catch (e) {
       message.error(e.message)
       return false
+    }
+  }
+}
+
+export const uploadMediaAction = (event: UploadFile) => {
+  return async (dispatch: any) => {
+    try {
+      const {
+        file,
+        data: { index, isMobile }
+      } = event
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const formData = new FormData()
+      formData.append('file', file)
+      const response = await fetch(
+        `${config.graphqlUriBase}upload/adminImage`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        }
+      )
+      const { image } = await response.json()
+      const urlField = isMobile ? 'urlMobile' : 'url'
+      dispatch(setMedia(index, urlField, image))
+    } catch (e) {
+      message.error(e.message)
     }
   }
 }

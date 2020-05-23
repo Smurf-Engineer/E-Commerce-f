@@ -19,6 +19,13 @@ export const getHomepageInfo = gql`
         url: link
         assetType: type
       }
+      featuredBanners {
+        id
+        url
+        urlMobile: url_mobile
+        sportId: sport_id,
+        isVideo: is_video
+      }
       featuredProducts {
         id
         code
@@ -127,4 +134,15 @@ export const updateProductTilesMutation = graphql(
     }
   `,
   { name: 'updateProductTiles' }
+)
+
+export const saveBannersMutation = graphql(
+  gql`
+    mutation saveBanners($featuredBanners: [InputFeaturedBanner], $sportId: Int) {
+      saveBanners(featuredBanners: $featuredBanners, sportId: $sportId) {
+        message
+      }
+    }
+  `,
+  { name: 'saveBanners' }
 )

@@ -8,6 +8,7 @@ export const VIDEO_TYPE = 'video'
 export const IMAGE_TYPE = 'image'
 
 export const animationTypes = ['slide', 'fade']
+export const validTypes = ['image/jpeg', 'image/png', 'video/mp4']
 
 export enum Sections {
   MAIN_CONTAINER = 'mainContainer',
@@ -71,3 +72,8 @@ export const ADD_CAROUSEL_ITEM = `${namespace}/ADD_CAROUSEL_ITEM`
 export const TOGGLE_PREVIEW_MODAL = `${namespace}/TOGGLE_PREVIEW_MODAL`
 export const SET_DURATION = `${namespace}/SET_DURATION`
 export const SET_TRANSITION = `${namespace}/SET_TRANSITION`
+export const MOVE_BANNER = `${namespace}/MOVE_BANNER`
+export const REMOVE_MEDIA = `${namespace}/REMOVE_MEDIA`
+export const SET_MEDIA = `${namespace}/SET_MEDIA`
+export const ADD_MEDIA = `${namespace}/ADD_MEDIA`
+export const SET_LOADING = `${namespace}/SET_LOADING`
