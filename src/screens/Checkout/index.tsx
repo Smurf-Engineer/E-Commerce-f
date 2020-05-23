@@ -346,7 +346,10 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const { cart } = stateLocation
+    const reorder = some(cart, 'fixedCart')
     const isFixedTeamstore = some(cart, 'isFixed')
+
+    const preorder = isFixedTeamstore && !reorder
 
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
@@ -362,7 +365,7 @@ class Checkout extends React.Component<Props, {}> {
       currentStep === 2 &&
       !paymentClientSecret.length &&
       europeStripeAccount &&
-      !isFixedTeamstore
+      !preorder
 
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
     const { Step } = Steps
@@ -467,8 +470,7 @@ class Checkout extends React.Component<Props, {}> {
                     setSkipValueAction,
                     showBillingForm,
                     showBillingAddressFormAction,
-                    paymentClientSecret,
-                    isFixedTeamstore
+                    paymentClientSecret
                   }}
                   setStripeCardDataAction={this.setStripeCardDataAction}
                   showContent={currentStep === PaymentTab}
@@ -478,6 +480,7 @@ class Checkout extends React.Component<Props, {}> {
                   nextStep={this.nextStep}
                   setStripeAction={this.setStripe}
                   createPaymentIntent={this.createPaymentIntent}
+                  isFixedTeamstore={preorder}
                 />
                 <Review
                   {...{
@@ -792,14 +795,17 @@ class Checkout extends React.Component<Props, {}> {
       variables: { code: billingCountry },
       fetchPolicy: 'network-only'
     })
+    const reorder = some(cart, 'fixedCart')
     const isFixedTeamstore = some(cart, 'isFixed')
 
-    if (data.subsidiary === EUROPE && !isFixedTeamstore) {
+    const preorder = isFixedTeamstore && !reorder
+
+    if (data.subsidiary === EUROPE && !preorder) {
       await this.createPaymentIntent()
     }
     if (card && stripeToken) {
       try {
-        if (isFixedTeamstore) {
+        if (preorder) {
           await addNewCard({
             variables: { token: stripeToken }
           })
@@ -864,11 +870,12 @@ class Checkout extends React.Component<Props, {}> {
       })
 
       const orderId = get(response, 'data.charge.short_id', '')
+      const preorder = orderObj.isFixedTeamstore && !orderObj.replaceOrder
 
       if (
         stripeAccount === EU_STRIPE &&
         orderObj.paymentMethod === PaymentOptions.CREDITCARD &&
-        !orderObj.isFixedTeamstore
+        !preorder
       ) {
         const { stripe } = this.state
         const stripeResponse = await stripe.handleCardPayment(

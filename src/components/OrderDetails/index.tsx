@@ -157,51 +157,51 @@ export class OrderDetails extends React.Component<Props, {}> {
     let subtotal = 0
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
-        const {
-          designId,
-          designImage,
-          designName,
-          product: { images, name, shortDescription },
-          productTotal,
-          unitPrice,
-          teamStoreItem
-        } = cartItem
+          const {
+            designId,
+            designImage,
+            designName,
+            product: { images, name, shortDescription },
+            productTotal,
+            unitPrice,
+            teamStoreItem
+          } = cartItem
 
-        subtotal += productTotal || 0
-        cartItem.isFixed = onDemand === false
-        cartItem.teamStoreItem = teamStoreItem
-        const priceRange = {
-          quantity: '0',
-          price: 0,
-          shortName: ''
-        }
+          subtotal += productTotal || 0
+          cartItem.isFixed = onDemand === false
+          cartItem.teamStoreItem = teamStoreItem
+          const priceRange = {
+            quantity: '0',
+            price: 0,
+            shortName: ''
+          }
 
-        const itemImage = designId ? designImage || '' : images[0].front
-        const itemTitle = designId ? designName || '' : name
-        const itemDescription = designId
-          ? `${name} ${shortDescription}`
-          : shortDescription
-        return (
-          <CartListItem
-            {...{
-              formatMessage,
-              productTotal,
-              unitPrice,
-              cartItem,
-              currentCurrency
-            }}
-            currencySymbol={currency.shortName}
-            key={index}
-            image={itemImage}
-            title={itemTitle}
-            description={itemDescription}
-            price={priceRange}
-            itemIndex={index}
-            onlyRead={true}
-            canReorder={!teamStoreId && true}
-          />
-        )
-      })
+          const itemImage = designId ? designImage || '' : images[0].front
+          const itemTitle = designId ? designName || '' : name
+          const itemDescription = designId
+            ? `${name} ${shortDescription}`
+            : shortDescription
+          return (
+            <CartListItem
+              {...{
+                formatMessage,
+                productTotal,
+                unitPrice,
+                cartItem,
+                currentCurrency
+              }}
+              currencySymbol={currency.shortName}
+              key={index}
+              image={itemImage}
+              title={itemTitle}
+              description={itemDescription}
+              price={priceRange}
+              itemIndex={index}
+              onlyRead={true}
+              canReorder={!teamStoreId && true}
+            />
+          )
+        })
       : null
 
     const card = get(stripeCharge, 'cardData')
@@ -209,8 +209,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
       ) : (
-          <StyledImage src={iconPaypal} />
-        )
+        <StyledImage src={iconPaypal} />
+      )
 
     return (
       <Container>
@@ -368,25 +368,25 @@ export class OrderDetails extends React.Component<Props, {}> {
           replaceOrder={shortId}
         />
         {teamStoreId &&
-          (status === PREORDER ||
-            (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
-            <OrderActions>
-              <ButtonWrapper>
-                <Button type="primary" onClick={this.handleOnEditOrder}>
-                  {formatMessage(
-                    status === PAYMENT_ISSUE
-                      ? messages.updatePayment
-                      : messages.edit
-                  )}
-                </Button>
-              </ButtonWrapper>
-              <DeleteButton onClick={this.handleOnDeleteOrder}>
-                {formatMessage(messages.deleteOrder)}
-              </DeleteButton>
-            </OrderActions>
-          ) : (
-            <Annotation>{formatMessage(messages.annotation)}</Annotation>
-          )}
+        (status === PREORDER ||
+          (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
+          <OrderActions>
+            <ButtonWrapper>
+              <Button type="primary" onClick={this.handleOnEditOrder}>
+                {formatMessage(
+                  status === PAYMENT_ISSUE
+                    ? messages.updatePayment
+                    : messages.edit
+                )}
+              </Button>
+            </ButtonWrapper>
+            <DeleteButton onClick={this.handleOnDeleteOrder}>
+              {formatMessage(messages.deleteOrder)}
+            </DeleteButton>
+          </OrderActions>
+        ) : (
+          <Annotation>{formatMessage(messages.annotation)}</Annotation>
+        )}
       </Container>
     )
   }
