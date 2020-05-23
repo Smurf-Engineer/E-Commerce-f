@@ -40,12 +40,12 @@ const data = [
   {
     key: '4',
     pieces: '50-99pc',
-    discount: '45% Off'
+    discount: '50% Off'
   },
   {
     key: '5',
     pieces: '100-249pc',
-    discount: '50% Off'
+    discount: '55% Off'
   }
 ]
 
