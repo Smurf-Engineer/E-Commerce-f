@@ -210,6 +210,8 @@ export type DesignNote = {
 export type Affiliate = {
   status: string
   paypalAccount: string
+  comission: number
+  activatedAt: string
 }
 
 export type SaveDesignType = {

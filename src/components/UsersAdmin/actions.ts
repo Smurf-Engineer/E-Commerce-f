@@ -56,7 +56,7 @@ export const onInputChangeAction = (id: string, value: string) => ({
   value
 })
 
-export const onChangeSectionAction = (section: boolean) => ({
+export const onChangeSectionAction = (section: number) => ({
   type: ON_CHANGE_SECTION,
   section
 })

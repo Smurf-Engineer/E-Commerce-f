@@ -17,7 +17,7 @@ import Spin from 'antd/lib/spin'
 import queryString from 'query-string'
 import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
-import { PHONE_FIELD } from '../../constants'
+import { PHONE_FIELD, PENDING } from '../../constants'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import {
   regionsQuery,
@@ -63,7 +63,6 @@ import {
 } from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
 import get from 'lodash/get'
-import { PENDING } from './constants'
 import config from '../../config'
 
 interface ProfileData extends QueryProps {

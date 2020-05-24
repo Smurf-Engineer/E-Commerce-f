@@ -10,13 +10,19 @@ import { withRouter } from 'react-router-dom'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
 import messages from './messages'
 import UserFiles from '../UserFiles'
-import { RadioButton, BackLabel, BackText } from './styledComponents'
+import AffiliateOptions from '../AffiliateOptions'
+import { RadioButton, BackLabel, BackText, UserLabel, NameLabel, StatusLabel } from './styledComponents'
 import MyLocker from '../../MyLocker'
-import { QueryProps, DesignNote, MessagePayload } from '../../../types/common'
-import { GetDesignNotes, addNoteMutation } from '../data'
+import { QueryProps, DesignNote, MessagePayload, IProfileSettings, Affiliate } from '../../../types/common'
+import { GetDesignNotes, addNoteMutation, profileSettingsQuery, changeAffiliateMutation } from '../data'
 import ProassistNotes from '../../ProassistNotes'
+import { APPROVED } from '../../../constants'
 
 const RadioGroup = Radio.Group
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface Data extends QueryProps {
   designNotes: DesignNote[]
@@ -26,12 +32,14 @@ interface Props {
   history: any
   match: any
   data: Data
-  showLocker: boolean
+  optionSelected: number
   designSelected: string
   note: string
   loading: boolean
   canEdit: boolean
+  profileData: ProfileData
   setLoadingAction: (loading: boolean) => void
+  changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteText: (text: string) => void
   setDesignSelected: (designId?: string) => void
@@ -75,12 +83,52 @@ class Options extends React.Component<Props> {
       message.error(e.message)
     }
   }
+  enableAffiliate = async (status: string) => {
+    const {
+      formatMessage,
+      changeAffiliateStatus,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeAffiliateStatus({
+          variables: {
+            status,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const affiliateData = get(profileData, 'profileData.affiliate', {})
+            affiliateData.status = status
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
   render() {
     const {
       formatMessage,
       history,
       match,
-      showLocker,
+      optionSelected,
+      profileData,
       note,
       loading,
       setNoteText,
@@ -89,27 +137,20 @@ class Options extends React.Component<Props> {
       setDesignSelected,
     } = this.props
     const userId = get(match, 'params.id', '')
+    const { userProfile = {}, affiliate = {} } = get(profileData, 'profileData', {})
+    const { id, firstName, lastName } = userProfile
+    const {
+      status,
+      comission,
+      activatedAt,
+      paypalAccount,
+      file,
+    } = affiliate
     const { loading: loadingData, designNotes = [] } = data || {}
-    return (
-      <div>
-        <BackLabel onClick={this.handleOnGoBack}>
-          <Icon type="left" />
-          <BackText>{formatMessage(messages.backToList)}</BackText>
-        </BackLabel>
-        <RadioGroup
-          onChange={this.handleSelectSection}
-          value={showLocker}
-          name="usersListOption"
-          size="large"
-        >
-          <RadioButton value={true}>
-            {formatMessage(messages.locker)}
-          </RadioButton>
-          <RadioButton value={false}>
-            {formatMessage(messages.files)}
-          </RadioButton>
-        </RadioGroup>
-        {showLocker ? (
+    let selectedScreen
+    switch (optionSelected) {
+      case 0:
+        selectedScreen = (
           <MyLocker
             {...{
               setCurrentShare: null,
@@ -128,9 +169,67 @@ class Options extends React.Component<Props> {
             onGoBack={this.handleOnGoBack}
             admin={true}
           />
-        ) : (
-            <UserFiles {...{ userId, formatMessage }} />
-          )}
+        )
+        break
+      case 1:
+        selectedScreen = (
+          <UserFiles {...{ userId, formatMessage }} />
+        )
+        break
+      case 2:
+        selectedScreen = (
+          <AffiliateOptions
+            {...{
+              formatMessage,
+              loading,
+              comission,
+              activatedAt,
+              paypalAccount,
+              file,
+              status
+            }}
+            enableAffiliate={this.enableAffiliate}
+          />
+        )
+        break
+      default:
+        break
+    }
+    return (
+      <div>
+        <BackLabel onClick={this.handleOnGoBack}>
+          <Icon type="left" />
+          <BackText>{formatMessage(messages.backToList)}</BackText>
+        </BackLabel>
+        {id &&
+          <UserLabel>
+            <NameLabel>
+              {`${id} - ${firstName} ${lastName}`}
+            </NameLabel>
+            {!!status &&
+              <StatusLabel>
+                {status}
+              </StatusLabel>
+            }
+          </UserLabel>
+        }
+        <RadioGroup
+          onChange={this.handleSelectSection}
+          value={optionSelected}
+          name="usersListOption"
+          size="large"
+        >
+          <RadioButton value={0}>
+            {formatMessage(messages.locker)}
+          </RadioButton>
+          <RadioButton value={1}>
+            {formatMessage(messages.files)}
+          </RadioButton>
+          <RadioButton value={2}>
+            {formatMessage(messages.affiliate)}
+          </RadioButton>
+        </RadioGroup>
+        {selectedScreen}
         <ProassistNotes
           {...{ loadingData, loading, note, designNotes, setNoteText }}
           visible={!!designSelected}
@@ -144,10 +243,23 @@ class Options extends React.Component<Props> {
 
 type OwnProps = {
   designSelected?: string
+  match: any
 }
 
 const OptionsEnhance = compose(
   withRouter,
+  graphql(profileSettingsQuery, {
+    options: ({ match }: OwnProps) => {
+      const id = match && match.params ? match.params.id : ''
+      return {
+        variables: { id },
+        skip: !id,
+        fetchPolicy: 'network-only'
+      }
+    },
+    name: 'profileData'
+  }),
+  graphql(changeAffiliateMutation, { name: 'changeAffiliateStatus' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {
     options: (ownprops: OwnProps) => {

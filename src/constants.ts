@@ -79,3 +79,8 @@ export const MODEL_SIZES = {
   large: 170,
   xLarge: 200
 }
+
+// Affiliate status
+export const PENDING = `Pending approval`
+export const APPROVED = 'Approved'
+export const REJECTED = 'Rejected'

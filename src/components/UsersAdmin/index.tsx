@@ -36,7 +36,7 @@ interface Props {
   name: string
   lastName: string
   email: string
-  showLocker: boolean
+  optionSelected: boolean
   initialCountryCode: string
   openModal: boolean
   loading: boolean
@@ -58,7 +58,7 @@ interface Props {
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
   onInputChangeAction: (id: string, value: string) => void
-  onChangeSectionAction: (section: boolean) => void
+  onChangeSectionAction: (section: number) => void
   addUser: (variables: {}) => void
   onToggleModalAction: () => void
   onResetModalAction: () => void
@@ -180,7 +180,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       email,
       onInputChangeAction,
       history,
-      showLocker,
+      optionSelected,
       onChangeSectionAction,
       setSearchTextAction,
       openModal,
@@ -237,7 +237,7 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                   loading,
                   setLoadingAction,
                   setDesignSelected,
-                  showLocker,
+                  optionSelected,
                 }}
                 canEdit={access.edit}
                 onChangeSection={onChangeSectionAction}

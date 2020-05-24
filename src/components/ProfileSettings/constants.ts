@@ -24,6 +24,3 @@ export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_FILE = `${namespace}/SET_FILE`
 export const OPEN_AFFILIATE = `${namespace}/OPEN_AFFILIATE`
 export const SUCCESS_REQUEST = `${namespace}/SUCCESS_REQUEST`
-
-// Affiliate status
-export const PENDING = `Pending approval`

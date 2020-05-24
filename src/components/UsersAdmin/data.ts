@@ -1,6 +1,27 @@
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
+export const profileSettingsQuery = gql`
+  query profile($id: String) {
+    profileData: getUserProfile(id: $id, isAdmin: true) {
+      userProfile {
+        id
+        firstName: first_name
+        lastName: last_name
+        email
+        phone
+      }
+      affiliate {
+        status
+        file
+        paypalAccount: paypal_account
+        comission
+        activatedAt: activated_at
+      }
+    }
+  }
+`
+
 export const setAdminUserMutation = graphql(
   gql`
     mutation upgradeUser($id: Int!) {
@@ -50,6 +71,17 @@ export const addNoteMutation = gql`
   mutation addDesignNote($designId: String!, $text: String!) {
     addDesignNote(designId: $designId, text: $text) {
       message
+    }
+  }
+`
+
+export const changeAffiliateMutation = gql`
+  mutation changeAffiliateStatus($status: String!, $userId: String!) {
+    changeAffiliateStatus(status: $status, userId: $userId) {
+      status
+      paypalAccount: paypal_account
+      comission
+      activatedAt: activated_at
     }
   }
 `

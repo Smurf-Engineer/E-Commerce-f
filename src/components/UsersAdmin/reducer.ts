@@ -33,7 +33,7 @@ export const initialState = fromJS({
   note: '',
   lastName: '',
   email: '',
-  showLocker: true,
+  optionSelected: 0,
   openModal: false,
   loading: false
 })
@@ -65,7 +65,7 @@ const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set(id, value)
     }
     case ON_CHANGE_SECTION:
-      return state.set('showLocker', action.section)
+      return state.set('optionSelected', action.section)
     case ON_TOGGLE_MODAL:
       return state.set('openModal', !state.get('openModal'))
     case ON_RESET_MODAL:
