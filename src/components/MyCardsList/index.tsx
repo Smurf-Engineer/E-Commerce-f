@@ -48,7 +48,8 @@ class MyCardsList extends React.Component<Props, {}> {
           expMonth,
           expYear,
           defaultPayment,
-          id
+          id,
+          pendingOrder
         } = cardItem
         return (
           <MyCard
@@ -71,13 +72,16 @@ class MyCardsList extends React.Component<Props, {}> {
               listForMyAccount,
               setStripeCardDataAction,
               selectCardToPayAction,
-              selectedCard
+              selectedCard,
+              pendingOrder
             }}
           />
         )
       })
     } else if (listForMyAccount) {
-      cardsList = <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+      cardsList = (
+        <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+      )
     }
 
     return (

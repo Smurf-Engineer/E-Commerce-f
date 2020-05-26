@@ -25,6 +25,7 @@ interface Props {
   paymentsRender: boolean
   listForMyAccount: boolean
   selectedCard: CreditCardData
+  pendingOrder: boolean
   showCardForm?: (show: boolean) => void
   showConfirmDelete?: (index: number) => void
   selectCardAsDefault?: (index: number) => void
@@ -46,6 +47,7 @@ const MyCard = ({
   formatMessage,
   listForMyAccount = false,
   selectedCard,
+  pendingOrder,
   showConfirmDelete = () => {},
   selectCardAsDefault = () => {},
   selectCardToPayAction = () => {}
@@ -84,7 +86,7 @@ const MyCard = ({
         {formatMessage(messages.asDefault)}
       </StyledCheckbox>
       {paymentsRender && (
-        <StyledButton onClick={handleOnDelete}>
+        <StyledButton onClick={handleOnDelete} disabled={pendingOrder}>
           {formatMessage(messages.delete)}
         </StyledButton>
       )}
