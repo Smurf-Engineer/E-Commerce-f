@@ -14,9 +14,14 @@ import AffiliateOptions from '../AffiliateOptions'
 import { RadioButton, BackLabel, BackText, UserLabel, NameLabel, StatusLabel } from './styledComponents'
 import MyLocker from '../../MyLocker'
 import { QueryProps, DesignNote, MessagePayload, IProfileSettings, Affiliate } from '../../../types/common'
-import { GetDesignNotes, addNoteMutation, profileSettingsQuery, changeAffiliateMutation } from '../data'
+import {
+  GetDesignNotes,
+  addNoteMutation,
+  profileSettingsQuery,
+  changeAffiliateMutation,
+  changeComissionMutation
+} from '../data'
 import ProassistNotes from '../../ProassistNotes'
-import { APPROVED } from '../../../constants'
 
 const RadioGroup = Radio.Group
 
@@ -38,7 +43,10 @@ interface Props {
   loading: boolean
   canEdit: boolean
   profileData: ProfileData
+  pageAffiliate: number
+  onChangePage: (page: number) => void
   setLoadingAction: (loading: boolean) => void
+  changeComission: (variables: {}) => Promise<Affiliate>
   changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteText: (text: string) => void
@@ -99,7 +107,8 @@ class Options extends React.Component<Props> {
             status,
             userId
           },
-          update: (store: any) => {
+          update: (store: any, responseData: Affiliate) => {
+            const { activatedAt } = get(responseData, 'data.changeAffiliateStatus', {})
             const profileData = store.readQuery({
               query: profileSettingsQuery,
               variables: {
@@ -108,6 +117,46 @@ class Options extends React.Component<Props> {
             })
             const affiliateData = get(profileData, 'profileData.affiliate', {})
             affiliateData.status = status
+            affiliateData.activatedAt = activatedAt
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleChangeComission = async (value = 0) => {
+    const {
+      formatMessage,
+      changeComission,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeComission({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const affiliateData = get(profileData, 'profileData.affiliate', {})
+            affiliateData.comission = value
             store.writeQuery({
               query: profileSettingsQuery,
               data: profileData
@@ -132,6 +181,8 @@ class Options extends React.Component<Props> {
       note,
       loading,
       setNoteText,
+      onChangePage,
+      pageAffiliate: currentPage,
       data,
       designSelected,
       setDesignSelected,
@@ -184,10 +235,15 @@ class Options extends React.Component<Props> {
               loading,
               comission,
               activatedAt,
+              currentPage,
+              onChangePage,
               paypalAccount,
               file,
+              history,
+              userId,
               status
             }}
+            changeComission={this.handleChangeComission}
             enableAffiliate={this.enableAffiliate}
           />
         )
@@ -259,6 +315,7 @@ const OptionsEnhance = compose(
     },
     name: 'profileData'
   }),
+  graphql(changeComissionMutation, { name: 'changeComission' }),
   graphql(changeAffiliateMutation, { name: 'changeAffiliateStatus' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {

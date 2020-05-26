@@ -2,10 +2,8 @@
  * AffiliateOptions Component - Created by Jesús Ricardo on 23/05/20.
  */
 import * as React from 'react'
-import MediaQuery from 'react-responsive'
-import { graphql, compose } from 'react-apollo'
-import get from 'lodash/get'
 import messages from './messages'
+import debounce from 'lodash/debounce'
 import {
   Container,
   OptionsContainer,
@@ -19,31 +17,32 @@ import {
   StyledInputNumber,
 } from './styledComponents'
 
-import debounce from 'lodash/debounce'
-import HeaderTable from '../HeaderOrdersTable'
-import ItemOrder from '../ItemOrder'
-import { USERS_LIMIT, NOTE_FORMAT } from '../constants'
-import EmptyContainer from '../../EmptyContainer'
-import { sorts, QueryProps, User } from '../../../types/common'
-import withError from '../../WithError'
-import withLoading from '../../WithLoading'
-import Pagination from 'antd/lib/pagination/Pagination'
+import PaymentsList from './PaymentsList'
+import { NOTE_FORMAT } from '../constants'
 import { PENDING, APPROVED, REJECTED } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
+
+const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
 interface Props {
   status: string
   loading: boolean
   comission: number
+  history: History
+  userId: string
   activatedAt: string
   paypalAccount: string
   file: string
+  currentPage: number
+  changeComission: (value: number) => void
+  onChangePage: (page: number) => void
   enableAffiliate: (status: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 class AffiliateOptions extends React.Component<Props, {}> {
+  debounceComission = debounce((value) => this.handleChangeComission(value), 700)
   enableStatus = () => {
     const { enableAffiliate } = this.props
     enableAffiliate(APPROVED)
@@ -56,11 +55,19 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const { file } = this.props
     window.open(file)
   }
+  handleChangeComission = (value: number) => {
+    const { changeComission } = this.props
+    changeComission(value)
+  }
   render() {
     const {
       file,
       paypalAccount,
       comission,
+      history,
+      currentPage,
+      onChangePage,
+      userId,
       activatedAt,
       formatMessage,
       status
@@ -115,8 +122,10 @@ class AffiliateOptions extends React.Component<Props, {}> {
                   {formatMessage(messages.comissions)}
                 </Title>
                 <StyledInputNumber
-                  onChange={() => { }}
+                  onChange={this.debounceComission}
                   value={comission}
+                  formatter={rawValue => `${rawValue}%`}
+                  parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
               </LabelButton>
               <LabelButton>
@@ -130,6 +139,18 @@ class AffiliateOptions extends React.Component<Props, {}> {
             </>
           }
         </OptionsContainer>
+        {isActive &&
+          <PaymentsList
+            {...{
+              formatMessage,
+              currentPage,
+              onChangePage,
+              userId,
+              history,
+            }}
+            isAdmin={true}
+          />
+        }
       </Container>
     )
   }

@@ -712,7 +712,6 @@ class ProfileSettings extends React.Component<Props, {}> {
           code
         },
         update: (store: any, responseData: Affiliate) => {
-          console.log('responseData:', responseData)
           const newAccount = get(responseData, 'data.linkPaypalAccount.paypalAccount')
           const profileData = store.readQuery({
             query: profileSettingsQuery

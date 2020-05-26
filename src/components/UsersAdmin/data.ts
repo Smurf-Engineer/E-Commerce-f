@@ -86,6 +86,15 @@ export const changeAffiliateMutation = gql`
   }
 `
 
+export const changeComissionMutation = gql`
+  mutation changeComission($value: Float, $userId: String!) {
+    changeComission(value: $value, userId: $userId) {
+      status
+      comission
+    }
+  }
+`
+
 export const assignRepUserMutation = graphql(
   gql`
     mutation assignRepUser($userId: String!, $repUser: String) {

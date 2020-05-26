@@ -214,6 +214,15 @@ export type Affiliate = {
   activatedAt: string
 }
 
+export type AffiliatePayment = {
+  id: number
+  userId: string
+  createdAt: string
+  status: string
+  amount: number
+  receipt: string
+}
+
 export type SaveDesignType = {
   designBase64: string
   canvasSvg: string
