@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
-import { RED } from '../../../theme/colors'
+import { RED, WHITE_TRANSPARENT } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
 
@@ -69,4 +69,16 @@ export const StyledInputNumber = styled(InputNumber)`
   .ant-input-number-handler-wrap {
     display: none;
   }
+`
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 100vh;
+  background: ${WHITE_TRANSPARENT};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `

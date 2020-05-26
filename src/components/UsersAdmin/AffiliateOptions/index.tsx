@@ -15,6 +15,7 @@ import {
   FileLink,
   Clip,
   StyledInputNumber,
+  LoadingContainer,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -22,6 +23,7 @@ import { NOTE_FORMAT } from '../constants'
 import { PENDING, APPROVED, REJECTED } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
+import Spin from 'antd/lib/spin'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
@@ -42,7 +44,7 @@ interface Props {
 }
 
 class AffiliateOptions extends React.Component<Props, {}> {
-  debounceComission = debounce((value) => this.handleChangeComission(value), 700)
+  debounceComission = debounce((value) => this.handleChangeComission(value), 800)
   enableStatus = () => {
     const { enableAffiliate } = this.props
     enableAffiliate(APPROVED)
@@ -55,9 +57,9 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const { file } = this.props
     window.open(file)
   }
-  handleChangeComission = (value: number) => {
+  handleChangeComission = (value: number | undefined) => {
     const { changeComission } = this.props
-    changeComission(value)
+    changeComission(value || 0)
   }
   render() {
     const {
@@ -65,6 +67,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
       paypalAccount,
       comission,
       history,
+      loading,
       currentPage,
       onChangePage,
       userId,
@@ -77,6 +80,11 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
+        {loading &&
+          <LoadingContainer>
+            <Spin />
+          </LoadingContainer>
+        }
         <OptionsContainer>
           <LabelButton>
             <Title>
@@ -124,6 +132,8 @@ class AffiliateOptions extends React.Component<Props, {}> {
                 <StyledInputNumber
                   onChange={this.debounceComission}
                   value={comission}
+                  min={0}
+                  max={100}
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
