@@ -133,7 +133,6 @@ const PaymentsListEnhance = compose(
           isAdmin,
           userId
         },
-        skip: !userId,
         fetchPolicy: 'network-only'
       }
     }

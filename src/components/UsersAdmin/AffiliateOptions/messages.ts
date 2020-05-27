@@ -28,5 +28,13 @@ export default defineMessages({
   paypalAccount: {
     id: 'components.affiliateOptions.paypalAccount',
     defaultMessage: 'Paypal Account'
+  },
+  status: {
+    id: 'components.affiliateOptions.status',
+    defaultMessage: 'Status'
+  },
+  edit: {
+    id: 'components.affiliateOptions.edit',
+    defaultMessage: 'Edit'
   }
 })

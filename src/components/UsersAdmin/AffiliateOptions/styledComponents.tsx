@@ -15,6 +15,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
   padding-right: ${({ withoutPadding }: ContainerProps) =>
     withoutPadding ? '0' : '32px'};
   @media (min-width: 320px) and (max-width: 768px) {
@@ -40,11 +41,14 @@ export const LabelButton = styled.div`
   margin-right: 24px;
 `
 
-export const Title = styled.div``
+export const Title = styled.div`
+  display: flex;
+`
 
-export const DeclineLabel = styled.div`
+export const RedLabel = styled.div`
   color: red;
   cursor: pointer;
+  margin-left: 28px;
 `
 
 export const BoldLabel = styled.div`

@@ -243,6 +243,7 @@ class Options extends React.Component<Props> {
               userId,
               status
             }}
+            isAdmin={true}
             changeComission={this.handleChangeComission}
             enableAffiliate={this.enableAffiliate}
           />

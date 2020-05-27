@@ -9,6 +9,7 @@ export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
 export const TEAMSTORES = 'myTeamStores'
+export const AFFILIATES = 'affiliate'
 export const CREATIONS = 'myCreations'
 export const MY_FILES = 'myFiles'
 export const SCREEN_LOCKER = 'myLocker'
@@ -38,6 +39,10 @@ export const options = [
   // TODO: hide teamstores for phase I
   {
     title: TEAMSTORES,
+    options: []
+  },
+  {
+    title: AFFILIATES,
     options: []
   },
   {

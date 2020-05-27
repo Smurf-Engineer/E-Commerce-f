@@ -10,7 +10,7 @@ import {
   LabelButton,
   Title,
   StyledSwitch,
-  DeclineLabel,
+  RedLabel,
   BoldLabel,
   FileLink,
   Clip,
@@ -37,6 +37,8 @@ interface Props {
   paypalAccount: string
   file: string
   currentPage: number
+  isAdmin: boolean
+  openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
   onChangePage: (page: number) => void
   enableAffiliate: (status: string) => void
@@ -57,6 +59,10 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const { file } = this.props
     window.open(file)
   }
+  openEdit = () => {
+    const { openAffiliate } = this.props
+    openAffiliate(true)
+  }
   handleChangeComission = (value: number | undefined) => {
     const { changeComission } = this.props
     changeComission(value || 0)
@@ -71,6 +77,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
       currentPage,
       onChangePage,
       userId,
+      isAdmin,
       activatedAt,
       formatMessage,
       status
@@ -88,22 +95,29 @@ class AffiliateOptions extends React.Component<Props, {}> {
         <OptionsContainer>
           <LabelButton>
             <Title>
-              {formatMessage(messages.enabled)}
+              {formatMessage(messages[isAdmin ? 'enabled' : 'status'])}
             </Title>
-            <StyledSwitch
-              disabled={hasChanged}
-              checked={isActive}
-              onChange={this.enableStatus}
-            />
-          </LabelButton>
-          <LabelButton>
-            <Title />
-            {status === PENDING &&
-              <DeclineLabel onClick={this.rejectStatus}>
-                {formatMessage(messages.decline)}
-              </DeclineLabel>
+            {isAdmin ?
+              <StyledSwitch
+                disabled={hasChanged}
+                checked={isActive}
+                onChange={this.enableStatus}
+              /> :
+              <BoldLabel>
+                {status}
+              </BoldLabel>
             }
           </LabelButton>
+          {isAdmin &&
+            <LabelButton>
+              <Title />
+              {status === PENDING &&
+                <RedLabel onClick={this.rejectStatus}>
+                  {formatMessage(messages.decline)}
+                </RedLabel>
+              }
+            </LabelButton>
+          }
           {isActive &&
             <>
               <LabelButton>
@@ -129,18 +143,28 @@ class AffiliateOptions extends React.Component<Props, {}> {
                 <Title>
                   {formatMessage(messages.comissions)}
                 </Title>
-                <StyledInputNumber
-                  onChange={this.debounceComission}
-                  value={comission}
-                  min={0}
-                  max={100}
-                  formatter={rawValue => `${rawValue}%`}
-                  parser={value => value.replace(DECIMAL_REGEX, '')}
-                />
+                {isAdmin ?
+                  <StyledInputNumber
+                    onChange={this.debounceComission}
+                    value={comission}
+                    min={0}
+                    max={100}
+                    formatter={rawValue => `${rawValue}%`}
+                    parser={value => value.replace(DECIMAL_REGEX, '')}
+                  />
+                  : <BoldLabel>
+                    {`${comission}%`}
+                  </BoldLabel>
+                }
               </LabelButton>
               <LabelButton>
                 <Title>
                   {formatMessage(messages.paypalAccount)}
+                  {!isAdmin &&
+                    <RedLabel onClick={this.openEdit}>
+                      {formatMessage(messages.edit)}
+                    </RedLabel>
+                  }
                 </Title>
                 <BoldLabel>
                   {paypalAccount}
@@ -157,8 +181,8 @@ class AffiliateOptions extends React.Component<Props, {}> {
               onChangePage,
               userId,
               history,
+              isAdmin,
             }}
-            isAdmin={true}
           />
         }
       </Container>

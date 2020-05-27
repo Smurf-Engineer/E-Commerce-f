@@ -29,6 +29,7 @@ import fitInfo from '../components/FitInfo/reducer'
 import addresses from '../components/MyAddresses/reducer'
 import cards from '../components/MyCards/reducer'
 import profileSettings from '../components/ProfileSettings/reducer'
+import affiliateOptions from '../components/AffiliateOptions/reducer'
 import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import myTeamStores from '../components/MyTeamStores/reducer'
 import warrantyProgram from '../screens/WarrantyProgram/reducer'
@@ -110,6 +111,7 @@ export interface ReducersObject {
   addresses: any
   cards: any
   profileSettings: any
+  affiliateOptions: any
   myLocker: any
   myFiles: any
   orderHistory: any
@@ -231,6 +233,7 @@ const rootReducer = combineReducers({
   fitInfo,
   addresses,
   cards,
+  affiliateOptions,
   profileSettings,
   myLocker,
   myFiles,

@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'screens.Account.menu.myTeamStores',
     defaultMessage: 'MY TEAM STORES'
   },
+  affiliate: {
+    id: 'screens.Account.menu.affiliate',
+    defaultMessage: 'AFFILIATES'
+  },
   myCreations: {
     id: 'screens.Account.menu.myCreations',
     defaultMessage: 'MY CREATIONS'
