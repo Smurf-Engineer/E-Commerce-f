@@ -349,6 +349,10 @@ export type TeamStoreAdminResultType = {
   teamStores: TeamStoreAdminType[]
 }
 
+export type SelectedPays = {
+  [key: string]: boolean
+}
+
 export type TeamStoreAdminType = {
   id: number
   name: string

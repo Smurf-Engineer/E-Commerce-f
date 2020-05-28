@@ -10,5 +10,6 @@ export const SET_SEARCH_TEXT = `${namespace}/SET_SEARCH_TEXT`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_DATE = `${namespace}/SET_DATE`
 export const SET_SHOW = `${namespace}/SET_SHOW`
+export const SET_SELECTED = `${namespace}/SET_SELECTED`
 
 export const PAY_LIMITS = 12

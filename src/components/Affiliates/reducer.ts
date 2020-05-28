@@ -9,7 +9,8 @@ import {
   SET_SEARCH_TEXT,
   SET_LOADING,
   SET_DATE,
-  SET_SHOW
+  SET_SHOW,
+  SET_SELECTED
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -20,7 +21,8 @@ export const initialState = fromJS({
   endDate: '',
   end: '',
   start: '',
-  searchText: ''
+  searchText: '',
+  selected: {}
 })
 
 const affiliatesReducer: Reducer<any> = (state = initialState, action) => {
@@ -33,8 +35,11 @@ const affiliatesReducer: Reducer<any> = (state = initialState, action) => {
         end,
         searchText: '',
         currentPage: 1,
+        selected: {}
       })
     }
+    case SET_SELECTED:
+      return state.set('selected', action.value)
     case SET_LOADING:
       return state.set('loading', action.loading)
     case SET_DATE:
@@ -47,7 +52,7 @@ const affiliatesReducer: Reducer<any> = (state = initialState, action) => {
     case RESET_DATA:
       return initialState
     case SET_SEARCH_TEXT:
-      return state.merge({ searchText: action.searchText, currentPage: 1 })
+      return state.merge({ searchText: action.searchText, currentPage: 1, selected: {} })
     default:
       return state
   }

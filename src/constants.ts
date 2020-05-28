@@ -84,3 +84,8 @@ export const MODEL_SIZES = {
 export const PENDING = `Pending approval`
 export const APPROVED = 'Approved'
 export const REJECTED = 'Rejected'
+
+// Affiliate payment status
+export const PENDING_PAY = 'Pending'
+export const PAID = 'Paid'
+export const FAILURE = 'Failed payment'

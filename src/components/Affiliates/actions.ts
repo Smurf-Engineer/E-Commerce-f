@@ -8,9 +8,10 @@ import {
   SET_SEARCH_TEXT,
   SET_LOADING,
   SET_DATE,
-  SET_SHOW
+  SET_SHOW,
+  SET_SELECTED
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, SelectedPays } from '../../types/common'
 
 export const setCurrentPageAction = (page: number): AnyAction => ({
   type: SET_CURRENT_PAGE,
@@ -39,4 +40,9 @@ export const changeDateAction = (startDate: string, endDate: string) => ({
 
 export const setShowAction = (): AnyAction => ({
   type: SET_SHOW
+})
+
+export const setSelected = (value: SelectedPays) => ({
+  type: SET_SELECTED,
+  value
 })

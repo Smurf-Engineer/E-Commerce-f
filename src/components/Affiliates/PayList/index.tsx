@@ -17,16 +17,19 @@ import {
   FileName
 } from './styledComponents'
 import EmptyContainer from '../../EmptyContainer'
-import { AffiliatesResult, QueryProps, AffiliatePayment } from '../../../types/common'
+import { AffiliatesResult, QueryProps, AffiliatePayment, SelectedPays } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getAffiliatesPayments } from './data'
+import { getAffiliatesPayments, makePaymentsMutation } from './data'
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
 import { PAY_LIMITS } from '../constants'
 import moment from 'moment'
 import { NOTE_FORMAT } from '../../UsersAdmin/constants'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
+import { PENDING_PAY } from '../../../constants'
+import clone from 'lodash/clone'
 
 interface Data extends QueryProps {
   paymentsResult: AffiliatesResult
@@ -37,6 +40,8 @@ interface Props {
   history: History
   currentPage: number
   searchText?: string
+  selected: SelectedPays
+  setSelected: (value: SelectedPays) => void
   formatMessage: (messageDescriptor: any) => string
   onChangePage: (page: number) => void
 }
@@ -47,13 +52,31 @@ class PayList extends React.Component<Props, {}> {
       event.stopPropagation()
     }
   }
+  handleCheckChange = (event: CheckboxChangeEvent) => {
+    const { data, selected, setSelected } = this.props
+    const { target: { checked } } = event
+    const payments = get(data, 'paymentsResult.payments', []) as AffiliatePayment[]
+    const newSelected = clone(selected)
+    payments.forEach(({ id }: AffiliatePayment) => {
+      newSelected[id] = checked
+    })
+    setSelected(newSelected)
+  }
   openLinkAction = (receipt: string) => () => {
     const { history } = this.props
     history.push(receipt)
   }
+  handleCheckRow = (event: CheckboxChangeEvent) => {
+    const { selected, setSelected } = this.props
+    const { target: { checked, id } } = event
+    const newSelected = clone(selected)
+    newSelected[id] = checked
+    setSelected(newSelected)
+  }
   render() {
     const {
       formatMessage,
+      selected,
       currentPage,
       data,
       onChangePage
@@ -61,8 +84,16 @@ class PayList extends React.Component<Props, {}> {
     const { loading } = data || {}
     const payments = get(data, 'paymentsResult.payments', []) as AffiliatePayment[]
     const fullCount = get(data, 'paymentsResult.fullCount', 0)
+    const checked = payments.every(({ id }: AffiliatePayment) => selected[id])
+    const hasChecked = payments.some(({ id }: AffiliatePayment) => selected[id])
+    const indeterminate = !checked && hasChecked
     return (
       <Container>
+        {hasChecked &&
+          <div>
+            {formatMessage(messages.payAll)}
+          </div>
+        }
         {loading ? (
           <LoadingContainer>
             <Spin size="large" />
@@ -71,6 +102,12 @@ class PayList extends React.Component<Props, {}> {
             <Table>
               <thead>
                 <Row>
+                  <Header>
+                    <Checkbox
+                      {...{ checked, indeterminate }}
+                      onChange={this.handleCheckChange}
+                    />
+                  </Header>
                   <Header>{formatMessage(messages.date)}</Header>
                   <Header>{formatMessage(messages.clientId)}</Header>
                   <Header>{formatMessage(messages.name)}</Header>
@@ -85,6 +122,7 @@ class PayList extends React.Component<Props, {}> {
                 {payments.length ? (
                   payments.map((
                     {
+                      id,
                       createdAt,
                       userId,
                       name,
@@ -97,6 +135,15 @@ class PayList extends React.Component<Props, {}> {
                     index: number) => {
                     const openLink = this.openLinkAction(receipt)
                     return (<RepDiv key={index}>
+                      <Cell>
+                        {status === PENDING_PAY &&
+                          <Checkbox
+                            {...{ id }}
+                            checked={selected[id]}
+                            onChange={this.handleCheckRow}
+                          />
+                        }
+                      </Cell>
                       <Cell>
                         {createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}
                       </Cell>
@@ -139,6 +186,7 @@ interface OwnProps {
 }
 
 const PayListEnhance = compose(
+  graphql(makePaymentsMutation, { name: 'makePayments' }),
   graphql(getAffiliatesPayments, {
     options: ({ currentPage, searchText, startParam, endParam }: OwnProps) => {
       const offset = currentPage ? (currentPage - 1) * PAY_LIMITS : 0

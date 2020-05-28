@@ -790,6 +790,7 @@
   "components.AffiliatesList.affiliatePercent": "Affiliate %",
   "components.AffiliatesList.status": "Status",
   "components.AffiliatesList.amount": "Amount",
+  "components.AffiliatesList.payAll": "PAY ALL",
   "components.AffiliatesList.empty": "No payments found",
   "components.AffiliatesList.receipt": "Attached Receipt",
   "components.TextTab.title": "Add Text",

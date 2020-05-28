@@ -23,13 +23,18 @@ export const getAffiliatesPayments = gql`
   }
 `
 
-export const addRepUserMutation = gql`
-  mutation addRepUser($firstName: String!, $lastName: String!) {
-    userResult: addRepUser(firstName: $firstName, lastName: $lastName) {
+export const makePaymentsMutation = gql`
+  mutation makePayments($list: [String]) {
+    payments: makePayments(list: $list) {
       id
-      shortId: short_id
-      firstName: first_name
-      lastName: last_name
+      createdAt: created_at
+      userId: user_id
+      name
+      paypalAccount: paypal_account
+      comission
+      status
+      amount
+      receipt
     }
   }
 `

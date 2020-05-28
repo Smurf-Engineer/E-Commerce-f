@@ -18,8 +18,7 @@ import {
 } from './styledComponents'
 import List from './PayList'
 import messages from './messages'
-import { addRepUserMutation } from './PayList/data'
-import { UserPermissions } from '../../types/common'
+import { UserPermissions, SelectedPays } from '../../types/common'
 import { AFFILIATES, ADMIN_ROUTE } from '../AdminLayout/constants'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import moment, { Moment } from 'moment'
@@ -35,6 +34,8 @@ interface Props {
   endDate: string
   permissions: UserPermissions
   show: boolean
+  selected: SelectedPays
+  setSelected: (value: SelectedPays) => void
   setShowAction: () => void
   setLoading: (loading: boolean) => void
   changeDateAction: (startDate: string, endDate: string) => void
@@ -82,6 +83,8 @@ class Affiliates extends React.Component<Props, {}> {
       formatMessage,
       loading,
       history,
+      selected,
+      setSelected,
       start: startParam,
       end: endParam,
       startDate,
@@ -129,7 +132,7 @@ class Affiliates extends React.Component<Props, {}> {
               placeholder={formatMessage(messages.search)}
             />
             <List
-              {...{ formatMessage, currentPage, searchText, history, startParam, endParam }}
+              {...{ formatMessage, setSelected, selected, currentPage, searchText, history, startParam, endParam }}
               onChangePage={this.handleOnChangePage}
             />
           </>
@@ -142,7 +145,6 @@ class Affiliates extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('affiliates').toJS()
 
 const AffiliatesEnhance = compose(
-  graphql(addRepUserMutation, { name: 'addRepUser' }),
   connect(mapStateToProps, { ...AffiliatesActions })
 )(Affiliates)
 

@@ -40,5 +40,9 @@ export default defineMessages({
   empty: {
     id: 'components.AffiliatesList.empty',
     defaultMessage: 'No payments found'
+  },
+  payAll: {
+    id: 'components.AffiliatesList.payAll',
+    defaultMessage: 'PAY ALL'
   }
 })
