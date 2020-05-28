@@ -31,7 +31,8 @@ import {
   StyledTabs,
   Render3DContainer,
   StyledButton,
-  ButtonWrapper
+  ButtonWrapper,
+  LoadingContainer
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
@@ -49,6 +50,7 @@ import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import { restoreUserSession } from '../../components/MainLayout/api'
 import { ADD_PRO_DESIGN, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
+import Spin from 'antd/lib/spin'
 
 const { TabPane } = AntdTabs
 
@@ -198,6 +200,9 @@ export class ProDesign extends React.Component<Props, {}> {
       productToSearch
     } = this.props
     const { formatMessage } = intl
+    if (!user) {
+      return <LoadingContainer><Spin /></LoadingContainer>
+    }
     const { permissions } = user
     const access = permissions ? permissions[ADD_PRO_DESIGN] : {}
     if (!access.view) {
