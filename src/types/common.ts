@@ -221,6 +221,14 @@ export type AffiliatePayment = {
   status: string
   amount: number
   receipt: string
+  paypalAccount?: string
+  comission?: number
+  name?: string
+}
+
+export type AffiliatesResult = {
+  fullCount: number
+  payments: AffiliatePayment[]
 }
 
 export type SaveDesignType = {

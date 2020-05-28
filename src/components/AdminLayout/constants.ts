@@ -26,6 +26,7 @@ export const USERS = 'users'
 export const USER_LIST = 'usersList'
 export const ROLE_MANAGEMENT = 'roleManagement'
 export const SALES_REP = 'salesRep'
+export const AFFILIATES = 'affiliates'
 export const TEAM_STORES = 'teamStores'
 export const LOGOUT_MENU = 'logout'
 export const EDIT_NAVIGATION = 'editNavigation'
@@ -50,7 +51,7 @@ export const options = [
   },
   {
     title: USERS,
-    options: [USER_LIST, ROLE_MANAGEMENT, SALES_REP]
+    options: [USER_LIST, ROLE_MANAGEMENT, SALES_REP, AFFILIATES]
   },
   {
     title: TEAM_STORES,

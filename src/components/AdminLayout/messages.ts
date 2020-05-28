@@ -65,6 +65,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.salesRep',
     defaultMessage: 'Sales Rep List'
   },
+  affiliates: {
+    id: 'screens.AdminLayout.affiliates',
+    defaultMessage: 'Affiliates'
+  },
   teamStores: {
     id: 'screens.AdminLayout.teamStores',
     defaultMessage: 'TEAM STORES'
