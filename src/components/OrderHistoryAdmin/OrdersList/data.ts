@@ -40,6 +40,14 @@ export const getOrdersQuery = gql`
         currency {
           abbreviation
         }
+        netsuite: netsuit_order {
+          orderStatus {
+            orderStatus
+            fulfillments {
+              packages
+            }
+          }
+        }
         lastName: last_name
         pendingChecks: pending_checks
         source
