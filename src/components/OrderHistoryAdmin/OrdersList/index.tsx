@@ -4,6 +4,7 @@
 import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
+import { Moment } from 'moment'
 import get from 'lodash/get'
 import messages from './messages'
 import Modal from 'antd/lib/modal'
@@ -48,6 +49,8 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   canEdit: boolean
+  startDate: Moment
+  endDate: Moment
   onSortClick: (label: string, sort: sorts) => void
   onOrderClick: (shortId: string) => void
   onChangePage: (page: number) => void
@@ -290,6 +293,10 @@ interface OwnProps {
   sort?: string
   customLimit?: number
   searchText?: string
+  startDate?: Moment
+  endDate?: Moment
+  status?: string
+  orderPoint?: string
 }
 
 const OrdersListEnhance = compose(
@@ -299,7 +306,11 @@ const OrdersListEnhance = compose(
       orderBy,
       sort,
       customLimit,
-      searchText
+      searchText,
+      startDate,
+      endDate,
+      status,
+      orderPoint
     }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : ORDERS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
@@ -309,7 +320,11 @@ const OrdersListEnhance = compose(
           offset,
           order: orderBy,
           orderAs: sort,
-          searchText
+          searchText,
+          startDate: startDate ? startDate.format('YYYY-MM-DD') : '',
+          endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
+          status,
+          orderPoint
         },
         fetchPolicy: 'network-only'
       }

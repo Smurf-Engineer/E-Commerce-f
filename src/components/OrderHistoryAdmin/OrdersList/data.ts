@@ -11,6 +11,10 @@ export const getOrdersQuery = gql`
     $order: String
     $orderAs: String
     $searchText: String
+    $startDate: String
+    $endDate: String
+    $status: String
+    $orderPoint: String
   ) {
     ordersQuery: getOrdersStatus(
       limit: $limit
@@ -18,6 +22,10 @@ export const getOrdersQuery = gql`
       order: $order
       orderAs: $orderAs
       searchText: $searchText
+      startDate: $startDate
+      endDate: $endDate
+      status: $status
+      orderPoint: $orderPoint
     ) {
       fullCount
       orders {
@@ -35,14 +43,6 @@ export const getOrdersQuery = gql`
         lastName: last_name
         pendingChecks: pending_checks
         source
-        netsuite: netsuit_order {
-          orderStatus {
-            orderStatus
-            fulfillments {
-              packages
-            }
-          }
-        }
         netsuiteAttempts: netsuite_attempts
         cutoffDate: cutoff_date
       }
