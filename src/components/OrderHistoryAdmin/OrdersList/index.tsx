@@ -297,6 +297,7 @@ interface OwnProps {
   endDate?: Moment
   status?: string
   orderPoint?: string
+  data?: any
 }
 
 const OrdersListEnhance = compose(
@@ -327,6 +328,16 @@ const OrdersListEnhance = compose(
           orderPoint
         },
         fetchPolicy: 'network-only'
+      }
+    }
+  }),
+  graphql(getOrdersQuery, {
+    options: ({ data }: OwnProps) => {
+      console.log('data ', data)
+      return {
+        variables: {},
+        fetchPolicy: 'network-only',
+        skip: !data && !data.loading
       }
     }
   }),
