@@ -24,9 +24,5 @@ export default defineMessages({
   show: {
     id: 'components.Affiliates.show',
     defaultMessage: 'Show'
-  },
-  search: {
-    id: 'components.Affiliates.search',
-    defaultMessage: 'Search for an affiliate'
   }
 })

@@ -2,8 +2,9 @@
  * Styled Components - Created by Jesús Apodaca on 23/03/20.
  */
 import styled from 'styled-components'
-import { GRAY_LIGHT, GRAY_DARK, RED } from '../../../theme/colors'
+import { GRAY_LIGHT, GRAY_DARK, RED, BLUE, WHITE, WHITE_TRANSPARENT } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
+import Search from 'antd/lib/input/Search'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -83,7 +84,11 @@ export const Cell = styled.td`
 
 export const LoadingContainer = styled.div`
   width: 100%;
-  height: 416px;
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 100vh;
+  background: ${WHITE_TRANSPARENT};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -104,4 +109,39 @@ export const FileName = styled.div`
     color: ${RED};
     text-decoration: underline;
   }
+`
+
+export const PayButton = styled.div`
+  display: inline-flex;
+  margin-left: 26px;
+  background: ${BLUE};
+  border: 1px solid ${BLUE};
+  padding: 11px 68px;
+  border-radius: 3px;
+  color: ${WHITE};
+  font-weight: normal;
+  transition: all .2s;
+  cursor: pointer;
+  &:hover {
+    background: ${WHITE};
+    color: ${BLUE};  
+  }
+`
+
+export const SearchInput = styled(Search)`
+  border-radius: 0;
+  width: 500px;
+  & input {
+    border-radius: 0;
+    padding: 7px;
+    height: 48px;
+  }
+`
+
+export const HeaderSection = styled.div`
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `

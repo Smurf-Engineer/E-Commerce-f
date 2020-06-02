@@ -88,4 +88,5 @@ export const REJECTED = 'Rejected'
 // Affiliate payment status
 export const PENDING_PAY = 'Pending'
 export const PAID = 'Paid'
+export const PROCESSING = 'Processing'
 export const FAILURE = 'Failed payment'

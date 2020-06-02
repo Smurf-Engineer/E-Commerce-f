@@ -2,14 +2,13 @@
  * Affiliates Component - Created by Jesús Apodaca on 26/03/20.
  */
 import * as React from 'react'
-import { compose, graphql } from 'react-apollo'
+import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import * as AffiliatesActions from './actions'
 import {
   Container,
   ScreenTitle,
-  SearchInput,
   HeaderList,
   CalendarContainer,
   RangePickerStyled,
@@ -68,12 +67,8 @@ class Affiliates extends React.Component<Props, {}> {
     setShowAction()
   }
 
-  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+  handleInputChange = (value: string) => {
     const { setSearchTextAction } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
     setSearchTextAction(value)
   }
 
@@ -83,6 +78,7 @@ class Affiliates extends React.Component<Props, {}> {
       formatMessage,
       loading,
       history,
+      setLoading,
       selected,
       setSelected,
       start: startParam,
@@ -125,17 +121,22 @@ class Affiliates extends React.Component<Props, {}> {
           </CalendarContainer>
         </HeaderList>
         {startParam &&
-          <>
-            <SearchInput
-              value={searchText}
-              onChange={this.handleInputChange}
-              placeholder={formatMessage(messages.search)}
-            />
-            <List
-              {...{ formatMessage, setSelected, selected, currentPage, searchText, history, startParam, endParam }}
-              onChangePage={this.handleOnChangePage}
-            />
-          </>
+          <List
+            {...{
+              formatMessage,
+              loading,
+              setLoading,
+              setSelected,
+              selected,
+              currentPage,
+              searchText,
+              history,
+              startParam,
+              endParam
+            }}
+            onChangePage={this.handleOnChangePage}
+            handleInputChange={this.handleInputChange}
+          />
         }
       </Container>
     )

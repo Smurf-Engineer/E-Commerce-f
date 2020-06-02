@@ -14,7 +14,10 @@ import {
   Cell,
   LoadingContainer,
   Clip,
-  FileName
+  FileName,
+  PayButton,
+  SearchInput,
+  HeaderSection
 } from './styledComponents'
 import EmptyContainer from '../../EmptyContainer'
 import { AffiliatesResult, QueryProps, AffiliatePayment, SelectedPays } from '../../../types/common'
@@ -30,6 +33,8 @@ import { NOTE_FORMAT } from '../../UsersAdmin/constants'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import { PENDING_PAY } from '../../../constants'
 import clone from 'lodash/clone'
+import { message } from 'antd'
+import debounce from 'lodash/debounce'
 
 interface Data extends QueryProps {
   paymentsResult: AffiliatesResult
@@ -40,31 +45,43 @@ interface Props {
   history: History
   currentPage: number
   searchText?: string
+  startParam: string
+  endParam: string
+  loading: boolean
   selected: SelectedPays
+  handleInputChange: (value: string) => void
+  setLoading: (loading: boolean) => void
+  makePayments: (variables: {}) => Promise<AffiliatePayment>
   setSelected: (value: SelectedPays) => void
   formatMessage: (messageDescriptor: any) => string
   onChangePage: (page: number) => void
 }
 
-class PayList extends React.Component<Props, {}> {
+export class PayList extends React.Component<Props, {}> {
+  debounceSearch = debounce(value => this.props.handleInputChange(value), 800)
   stopPropagation = (event: any) => {
     if (event) {
       event.stopPropagation()
     }
+  }
+  handleOnUpdateText = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.debounceSearch(value)
   }
   handleCheckChange = (event: CheckboxChangeEvent) => {
     const { data, selected, setSelected } = this.props
     const { target: { checked } } = event
     const payments = get(data, 'paymentsResult.payments', []) as AffiliatePayment[]
     const newSelected = clone(selected)
-    payments.forEach(({ id }: AffiliatePayment) => {
-      newSelected[id] = checked
+    payments.forEach(({ id, status }: AffiliatePayment) => {
+      newSelected[id] = status === PENDING_PAY ? checked : false
     })
     setSelected(newSelected)
   }
   openLinkAction = (receipt: string) => () => {
-    const { history } = this.props
-    history.push(receipt)
+    window.open(receipt)
   }
   handleCheckRow = (event: CheckboxChangeEvent) => {
     const { selected, setSelected } = this.props
@@ -73,10 +90,43 @@ class PayList extends React.Component<Props, {}> {
     newSelected[id] = checked
     setSelected(newSelected)
   }
+
+  handleMakePayment = async () => {
+    const {
+      formatMessage,
+      selected,
+      setSelected,
+      makePayments,
+      setLoading,
+    } = this.props
+    try {
+      const list = Object.keys(selected).reduce(((arr: string[], id: string) => {
+        if (selected[id]) {
+          arr.push(id)
+        }
+        return arr
+        // tslint:disable-next-line: align
+      }), [])
+      setLoading(true)
+      await makePayments({
+        variables: {
+          list
+        }
+      })
+      setSelected({})
+      message.success(formatMessage(messages.paymentsDone))
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   render() {
     const {
       formatMessage,
       selected,
+      loading: loadingPayment,
       currentPage,
       data,
       onChangePage
@@ -89,84 +139,89 @@ class PayList extends React.Component<Props, {}> {
     const indeterminate = !checked && hasChecked
     return (
       <Container>
-        {hasChecked &&
-          <div>
-            {formatMessage(messages.payAll)}
-          </div>
-        }
-        {loading ? (
+        <HeaderSection>
+          <SearchInput
+            onChange={this.handleOnUpdateText}
+            placeholder={formatMessage(messages.search)}
+          />
+          {hasChecked &&
+            <PayButton onClick={this.handleMakePayment}>
+              {formatMessage(messages.payAll)}
+            </PayButton>
+          }
+        </HeaderSection>
+        {loading || loadingPayment &&
           <LoadingContainer>
             <Spin size="large" />
           </LoadingContainer>
-        ) : (
-            <Table>
-              <thead>
-                <Row>
-                  <Header>
-                    <Checkbox
-                      {...{ checked, indeterminate }}
-                      onChange={this.handleCheckChange}
-                    />
-                  </Header>
-                  <Header>{formatMessage(messages.date)}</Header>
-                  <Header>{formatMessage(messages.clientId)}</Header>
-                  <Header>{formatMessage(messages.name)}</Header>
-                  <Header>{formatMessage(messages.paypalAccount)}</Header>
-                  <Header>{formatMessage(messages.affiliatePercent)}</Header>
-                  <Header>{formatMessage(messages.status)}</Header>
-                  <Header>{formatMessage(messages.amount)}</Header>
-                  <Header>{formatMessage(messages.receipt)}</Header>
-                </Row>
-              </thead>
-              <tbody>
-                {payments.length ? (
-                  payments.map((
-                    {
-                      id,
-                      createdAt,
-                      userId,
-                      name,
-                      paypalAccount,
-                      comission,
-                      status,
-                      amount,
-                      receipt
-                    }: AffiliatePayment,
-                    index: number) => {
-                    const openLink = this.openLinkAction(receipt)
-                    return (<RepDiv key={index}>
-                      <Cell>
-                        {status === PENDING_PAY &&
-                          <Checkbox
-                            {...{ id }}
-                            checked={selected[id]}
-                            onChange={this.handleCheckRow}
-                          />
-                        }
-                      </Cell>
-                      <Cell>
-                        {createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}
-                      </Cell>
-                      <Cell>{userId}</Cell>
-                      <Cell>{name}</Cell>
-                      <Cell>{paypalAccount}</Cell>
-                      <Cell>{`${comission}%`}</Cell>
-                      <Cell>{status}</Cell>
-                      <Cell bold={true}>{`$${amount}`}</Cell>
-                      <Cell onClick={this.stopPropagation}>
-                        <Clip type="paper-clip" />
-                        <FileName onClick={openLink}>
-                          {receipt ? getFileWithExtension(receipt) : ''}
-                        </FileName>
-                      </Cell>
-                    </RepDiv>)
-                  })
-                ) : (
-                    <EmptyContainer message={formatMessage(messages.empty)} />
-                  )}
-              </tbody>
-            </Table>
-          )}
+        }
+        <Table>
+          <thead>
+            <Row>
+              <Header>
+                <Checkbox
+                  {...{ checked, indeterminate }}
+                  onChange={this.handleCheckChange}
+                />
+              </Header>
+              <Header>{formatMessage(messages.date)}</Header>
+              <Header>{formatMessage(messages.clientId)}</Header>
+              <Header>{formatMessage(messages.name)}</Header>
+              <Header>{formatMessage(messages.paypalAccount)}</Header>
+              <Header>{formatMessage(messages.affiliatePercent)}</Header>
+              <Header>{formatMessage(messages.status)}</Header>
+              <Header>{formatMessage(messages.amount)}</Header>
+              <Header>{formatMessage(messages.receipt)}</Header>
+            </Row>
+          </thead>
+          <tbody>
+            {payments.length ? (
+              payments.map((
+                {
+                  id,
+                  createdAt,
+                  userId,
+                  name,
+                  paypalAccount,
+                  comission,
+                  status,
+                  amount,
+                  receipt
+                }: AffiliatePayment,
+                index: number) => {
+                const openLink = this.openLinkAction(receipt)
+                return (<RepDiv key={index}>
+                  <Cell>
+                    {status === PENDING_PAY &&
+                      <Checkbox
+                        {...{ id }}
+                        checked={selected[id]}
+                        onChange={this.handleCheckRow}
+                      />
+                    }
+                  </Cell>
+                  <Cell>
+                    {createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}
+                  </Cell>
+                  <Cell>{userId}</Cell>
+                  <Cell>{name}</Cell>
+                  <Cell>{paypalAccount}</Cell>
+                  <Cell>{`${comission}%`}</Cell>
+                  <Cell>{status}</Cell>
+                  <Cell bold={true}>{`$${amount}`}</Cell>
+                  <Cell onClick={this.stopPropagation}>
+                    <Clip type="paper-clip" />
+                    <FileName onClick={openLink}>
+                      {receipt ? getFileWithExtension(receipt) : ''}
+                    </FileName>
+                  </Cell>
+                </RepDiv>)
+              })
+            ) : (
+                <EmptyContainer message={formatMessage(messages.empty)} />
+              )}
+          </tbody>
+        </Table>
         <Pagination
           current={currentPage}
           pageSize={PAY_LIMITS}
