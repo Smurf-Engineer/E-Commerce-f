@@ -153,11 +153,13 @@ interface Props {
 
 class ProfileSettings extends React.Component<Props, {}> {
   componentDidUpdate() {
-    const { history: { location: { search } }, profileData } = this.props
+    const { profileData, history } = this.props
+    const { location: { search } } = history
     const { code } = queryString.parse(search)
     const { paypalAccount, status } = get(profileData, 'profileData.affiliate', {})
     if (code && !paypalAccount && !!status) {
       this.sendCode(code)
+      history.replace('/account?option=profileSettings')
     }
   }
   render() {
