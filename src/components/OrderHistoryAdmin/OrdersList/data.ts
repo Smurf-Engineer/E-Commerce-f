@@ -58,6 +58,12 @@ export const getOrdersQuery = gql`
   }
 `
 
+export const getOrdersPreflight = gql`
+  query getOrdersPreflight($ordersIds: [Int]!) {
+    getOrdersPreflight(ordersIds: $ordersIds)
+  }
+`
+
 export const updateStatusMutation = graphql(
   gql`
     mutation changeOrderStatus($status: String!, $orderId: String!) {

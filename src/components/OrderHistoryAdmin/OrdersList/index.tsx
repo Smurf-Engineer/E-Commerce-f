@@ -331,16 +331,6 @@ const OrdersListEnhance = compose(
       }
     }
   }),
-  graphql(getOrdersQuery, {
-    options: ({ data }: OwnProps) => {
-      console.log('data ', data)
-      return {
-        variables: {},
-        fetchPolicy: 'network-only',
-        skip: !data && !data.loading
-      }
-    }
-  }),
   updateStatusMutation,
   withError,
   withLoading
