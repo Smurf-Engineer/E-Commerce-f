@@ -72,6 +72,7 @@ export const FileLink = styled.button`
   color: ${RED};
   text-decoration: underline;
   cursor: pointer;
+  background: none;
   :disabled {
     color: ${GRAY_SOFT};
     cursor: default;

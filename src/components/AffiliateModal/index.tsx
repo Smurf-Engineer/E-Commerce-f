@@ -43,8 +43,8 @@ const US_CURRENCY = 'usd'
 const CA_CURRENCY = 'cad'
 
 const links = {
-  [US_CURRENCY]: 'usdLink',
-  [CA_CURRENCY]: 'cadLink'
+  [US_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/FW-9.pdf',
+  [CA_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/CA%20Tax%20form.pdf'
 }
 
 interface Props {
@@ -66,12 +66,8 @@ interface Props {
 
 export class AffiliateModal extends React.Component<Props, {}> {
 
-  openFile = (event: React.MouseEvent<EventTarget>) => {
-    const {
-      target: { id }
-    } = event
-    const { history } = this.props
-    history.push(links[id])
+  openFile = (id: string) => () => {
+    window.open(links[id])
   }
 
   handleSelectSection = (event: RadioChangeEvent) => {
@@ -175,10 +171,10 @@ export class AffiliateModal extends React.Component<Props, {}> {
                   <FormattedMessage {...messages.cad} />
                 </Currencies>
                 <Currencies>
-                  <FileLink disabled={paypalCurrency !== US_CURRENCY} id={US_CURRENCY} onClick={this.openFile}>
+                  <FileLink disabled={paypalCurrency !== US_CURRENCY} onClick={this.openFile(US_CURRENCY)}>
                     <FormattedMessage {...messages.usdForm} />
                   </FileLink>
-                  <FileLink disabled={paypalCurrency !== CA_CURRENCY} id={CA_CURRENCY} onClick={this.openFile}>
+                  <FileLink disabled={paypalCurrency !== CA_CURRENCY} onClick={this.openFile(CA_CURRENCY)}>
                     <FormattedMessage {...messages.cadForm} />
                   </FileLink>
                 </Currencies>

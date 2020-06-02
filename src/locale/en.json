@@ -674,6 +674,7 @@
   "components.ProfileForm.save": "Save",
   "components.ProfileForm.changePassword": "Change Password",
   "components.ProfileSettings.errorTitle": "Oops!",
+  "components.ProfileSettings.notAvailable": "Status not available.",
   "components.ProfileSettings.errorMessage": "Something went wrong",
   "components.ProfileSettings.profileTitle": "Profile",
   "components.ProfileSettings.profileSuccessMessage": "Your profile has been updated!",
