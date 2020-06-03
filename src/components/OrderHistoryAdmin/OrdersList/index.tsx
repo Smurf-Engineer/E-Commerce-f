@@ -26,6 +26,7 @@ import { getOrdersQuery, updateStatusMutation } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 import { PAID_STATUS, ERROR_STATUS, PAYMENT_ISSUE } from '../../../constants'
 import findIndex from 'lodash/findIndex'
+import { DATE_FORMAT } from '../constants'
 
 interface Data extends QueryProps {
   ordersQuery: {
@@ -321,8 +322,8 @@ const OrdersListEnhance = compose(
           order: orderBy,
           orderAs: sort,
           searchText,
-          startDate: startDate ? startDate.format('YYYY-MM-DD') : '',
-          endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
+          startDate: startDate ? startDate.format(DATE_FORMAT) : '',
+          endDate: endDate ? endDate.format(DATE_FORMAT) : '',
           status,
           orderPoint
         },

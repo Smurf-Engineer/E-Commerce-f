@@ -35,9 +35,8 @@ import {
   CANCELLED,
   PURGED
 } from '../../constants'
-
+import { DATE_FORMAT } from './constants'
 const Option = Select.Option
-const DATE_FORMAT = 'YYYY-MM-DD'
 
 interface Props {
   history: History
