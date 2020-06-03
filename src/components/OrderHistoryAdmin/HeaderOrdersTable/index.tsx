@@ -2,7 +2,13 @@
  * HeaderOrdersTable Component - Created by miguelcanobbio on 16/07/18.
  */
 import * as React from 'react'
-import { Container, Icon, IconsContainer, Header } from './styledComponents'
+import {
+  Container,
+  Icon,
+  IconsContainer,
+  Header,
+  StyledSpin
+} from './styledComponents'
 import { sorts } from '../../../types/common'
 
 interface Props {
@@ -11,6 +17,7 @@ interface Props {
   id: string
   justifyContent?: string
   interactiveHeaders: boolean
+  loading?: boolean
   onSortClick: (id: string, sort: sorts) => void
 }
 
@@ -26,7 +33,8 @@ const HeaderOrdersTable = ({
   sort,
   onSortClick,
   justifyContent,
-  interactiveHeaders
+  interactiveHeaders,
+  loading
 }: Props) => {
   if (!interactiveHeaders) {
     const textAlign = justifyContent === 'flex-end' ? 'right' : 'left'
@@ -48,6 +56,7 @@ const HeaderOrdersTable = ({
             <Icon type="down" color={downColor} />
           </IconsContainer>
         ) : null}
+        {loading && <StyledSpin size={'small'} />}
       </Container>
     </Header>
   )

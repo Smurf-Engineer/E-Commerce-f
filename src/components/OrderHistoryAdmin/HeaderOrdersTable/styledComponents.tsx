@@ -2,6 +2,7 @@
  * Styled Components - Created by miguelcanobbio on 16/07/18.
  */
 import styled from 'styled-components'
+import Spin from 'antd/lib/spin'
 import icon from 'antd/lib/icon'
 
 interface ContainerProps {
@@ -55,4 +56,9 @@ export const Header = styled.th`
     font-size: 12px;
     line-height: 15px;
   }
+`
+
+export const StyledSpin = styled(Spin)`
+  margin-left: 10px;
+  display: inline-flex;
 `

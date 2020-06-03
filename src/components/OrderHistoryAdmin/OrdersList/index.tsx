@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import { Moment } from 'moment'
 import get from 'lodash/get'
+import find from 'lodash/find'
 import messages from './messages'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
@@ -18,11 +19,16 @@ import {
   sorts,
   QueryProps,
   FulfillmentNetsuite,
-  Message
+  Message,
+  OrderPreflight
 } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getOrdersQuery, updateStatusMutation } from './data'
+import {
+  getOrdersQuery,
+  updateStatusMutation,
+  getOrdersPreflight
+} from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 import { PAID_STATUS, ERROR_STATUS, PAYMENT_ISSUE } from '../../../constants'
 import findIndex from 'lodash/findIndex'
@@ -31,6 +37,13 @@ interface Data extends QueryProps {
   ordersQuery: {
     fullCount: number
     orders: OrderHistory[]
+  }
+}
+
+interface PreflightData extends QueryProps {
+  preflight: {
+    id: number
+    orders: OrderPreflight[]
   }
 }
 
@@ -51,6 +64,7 @@ interface Props {
   canEdit: boolean
   startDate: Moment
   endDate: Moment
+  preflightData: PreflightData
   onSortClick: (label: string, sort: sorts) => void
   onOrderClick: (shortId: string) => void
   onChangePage: (page: number) => void
@@ -71,7 +85,8 @@ const OrdersList = ({
   withPagination = true,
   withoutPadding = false,
   updateStatus,
-  searchText
+  searchText,
+  preflightData
 }: Props) => {
   const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
   const fullCount = get(ordersQuery, 'fullCount', 0)
@@ -150,6 +165,7 @@ const OrdersList = ({
               justifyContent={'center'}
               label={formatMessage(messages.preflight)}
               sort={orderBy === 'pending_checks' ? sort : 'none'}
+              loading={preflightData && preflightData.loading}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -213,11 +229,11 @@ const OrdersList = ({
   const orderItems = orders.map(
     (
       {
+        id,
         shortId,
         date,
         clientId,
         status,
-        pendingChecks,
         netsuite,
         netsuiteAttempts,
         firstName,
@@ -237,10 +253,18 @@ const OrdersList = ({
         'fulfillments',
         [] as FulfillmentNetsuite[]
       )
+
       const packages = get(fulfillments, '[0].packages')
       const trackingNumber = (packages && packages.replace('<BR>', ', ')) || '-'
       const errorStatus =
         netsuiteAttempts > 0 && status === PAID_STATUS ? ERROR_STATUS : null
+      const preflight = get(preflightData, 'preflight', [])
+      const pendingChecks = get(
+        find(preflight, (item) => item.id === id),
+        'pendingChecks',
+        0
+      )
+
       return (
         <ItemOrder
           key={index}
@@ -297,7 +321,7 @@ interface OwnProps {
   endDate?: Moment
   status?: string
   orderPoint?: string
-  data?: any
+  data?: Data
 }
 
 const OrdersListEnhance = compose(
@@ -328,6 +352,19 @@ const OrdersListEnhance = compose(
           orderPoint
         },
         fetchPolicy: 'network-only'
+      }
+    }
+  }),
+  graphql(getOrdersPreflight, {
+    name: 'preflightData',
+    options: ({ data }: OwnProps) => {
+      const { ordersQuery } = data
+      const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
+      const ordersIds = orders.map((order) => order.id)
+      return {
+        variables: { ordersIds },
+        fetchPolicy: 'network-only',
+        skip: !ordersIds.length
       }
     }
   }),
