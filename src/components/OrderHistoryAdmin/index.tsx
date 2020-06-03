@@ -37,6 +37,7 @@ import {
 } from '../../constants'
 
 const Option = Select.Option
+const DATE_FORMAT = 'YYYY-MM-DD'
 
 interface Props {
   history: History
@@ -187,7 +188,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
                   value={startDate}
                   onChange={this.handleOnSelectStart}
                   disabledDate={this.disabledDatePicker}
-                  format="YYYY-MM-DD" // TODO: Change format
+                  format={DATE_FORMAT}
                   size="large"
                   placeholder={formatMessage(messages.from)}
                 />
@@ -195,7 +196,7 @@ class OrderHistoryAdmin extends React.Component<Props, {}> {
                   value={endDate}
                   onChange={this.handleOnSelectEnd}
                   disabledDate={this.disabledDatePicker}
-                  format="YYYY-MM-DD" // TODO: Change format
+                  format={DATE_FORMAT}
                   size="large"
                   placeholder={formatMessage(messages.to)}
                 />

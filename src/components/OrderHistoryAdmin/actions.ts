@@ -39,26 +39,6 @@ export const setSearchTextAction = (searchText: string) => ({
   searchText
 })
 
-export const setFilterStatusAction = (status: string) => ({
-  type: SET_FILTER_STATUS,
-  status
-})
-
-export const setFilterOrderPointAction = (orderPoint: string) => ({
-  type: SET_FILTER_ORDER_POINT,
-  orderPoint
-})
-
-export const onSelectStartDateAction = (date: Moment): AnyAction => ({
-  type: SET_START_DATE,
-  date
-})
-
-export const onSelectEndDateAction = (date: Moment): AnyAction => ({
-  type: SET_END_DATE,
-  date
-})
-
 export const setFiltersAction = (
   status: string,
   orderPoint: string,
