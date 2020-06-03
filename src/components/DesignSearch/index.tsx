@@ -282,7 +282,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
             <FormattedMessage {...messages.addCode} />
           </Subtitle>
           <Search
-            placeholder="Product Code"
+            placeholder={formatMessage(messages.search)}
             onChange={this.debounceSearchCode}
             size="large"
             dataSource={designSearchCodes}

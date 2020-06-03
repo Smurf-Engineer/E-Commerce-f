@@ -1194,6 +1194,7 @@
   "screens.DesignSearch.designNameLabel": "Design Name:",
   "screens.DesignSearch.proAssistNotes": "PROASSIST NOTES",
   "screens.DesignSearch.add": "ADD +",
+  "screens.DesignSearch.search": "JV2 Code or Legacy Number",
   "screens.DesignSearch.salesRep": "Sales Rep",
   "screens.DesignSearch.accountManager": "Account Manager",
   "screens.DesignSearch.title": "DESIGN SEARCH",
