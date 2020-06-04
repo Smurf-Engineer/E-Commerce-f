@@ -18,6 +18,9 @@ export const getAffiliatesPayments = gql`
         status
         amount
         receipt
+        customerId: customer_id
+        customerName: customer_name
+        orderId: order_id
       }
     }
   }

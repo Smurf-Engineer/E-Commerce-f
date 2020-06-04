@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { GRAY_LIGHT, GRAY_DARK, RED, BLUE, WHITE, WHITE_TRANSPARENT } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import Search from 'antd/lib/input/Search'
+import Tooltip from 'antd/lib/tooltip'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -12,10 +13,12 @@ interface ContainerProps {
 
 interface HeaderProps {
   textAlign?: string
+  width?: string
 }
 
 interface CellProps {
   bold?: boolean
+  width?: string
 }
 
 export const Container = styled.div`
@@ -55,6 +58,7 @@ export const Header = styled.th`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
+  width: ${({ width }: HeaderProps) => width ? width : 'auto'};
   text-align: ${({ textAlign }: HeaderProps) =>
     textAlign ? textAlign : 'start'};
 
@@ -69,7 +73,7 @@ export const Cell = styled.td`
   border-bottom: 1px solid ${GRAY_LIGHT};
   text-align: left;
   padding: 4px 0;
-  width: auto;
+  width: ${({ width }: HeaderProps) => width ? width : 'auto'};
   color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.1px;
@@ -144,4 +148,13 @@ export const HeaderSection = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+`
+
+export const Mail = styled(Tooltip)`
+  width: 152px;
+  display: block;
+  margin-right: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `

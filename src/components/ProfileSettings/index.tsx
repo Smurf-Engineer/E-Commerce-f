@@ -115,7 +115,6 @@ interface Props {
   paypalCurrency: string
   paypalCheck: boolean
   loading: boolean
-  link: boolean
   openModal: boolean
   file: string
   // api actions
@@ -193,7 +192,6 @@ class ProfileSettings extends React.Component<Props, {}> {
       openAffiliate,
       uploadFileAction,
       file,
-      link,
       history,
       openModal,
       loading: loadingFile,
@@ -244,7 +242,6 @@ class ProfileSettings extends React.Component<Props, {}> {
     //   emailNewsletterChecked === null ||
     //   emailSettings.newsletter === emailNewsletterChecked
     const { status, paypalAccount } = affiliate
-    const pendingLink = !!status && !paypalAccount
     return (
       <Container>
         {/* PROFILE */}
@@ -292,16 +289,14 @@ class ProfileSettings extends React.Component<Props, {}> {
             setPaypalCheck,
             formatMessage,
             file,
-            link,
             openAffiliate,
             uploadFileAction,
             paypalCurrency,
             setPaypalCurrency
           }}
-          link={link || pendingLink}
           linkPaypal={this.linkPaypal}
           sendRequest={this.sendRequest}
-          open={openModal || pendingLink}
+          open={openModal}
         />
         {/* REGION */}
         {/*<Title>{formatMessage(messages.languageTitle)}</Title>

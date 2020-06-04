@@ -135,6 +135,9 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.linkDesc} />
               </Description>
               <ButtonsContainer>
+                <CancelButton onClick={this.handleClose}>
+                  <FormattedMessage {...messages.cancel} />
+                </CancelButton>
                 <LinkButton onClick={linkPaypal}>
                   <FormattedMessage {...messages.linkButton} />
                 </LinkButton>

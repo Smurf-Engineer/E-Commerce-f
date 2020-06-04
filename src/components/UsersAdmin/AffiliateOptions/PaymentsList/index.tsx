@@ -43,15 +43,13 @@ const PaymentsList = ({
 }: Props) => {
   const payments = get(data, 'paymentsQuery.payments', []) as AffiliatePayment[]
   const fullCount = get(data, 'paymentsQuery.fullCount', 0)
-  if (!payments || !payments.length) {
-    return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
-  }
+
   const openReceipt = (receipt: string) => () => {
     if (receipt) {
       history.push(receipt)
     }
   }
-  const userItems = payments.map(
+  const userItems = payments && payments.length ? payments.map(
     (
       { id, createdAt, status, amount, receipt }: any,
       index: number
@@ -70,7 +68,7 @@ const PaymentsList = ({
         </ItemContainer>
       )
     }
-  )
+  ) : <EmptyContainer message={formatMessage(messages.emptyMessage)} />
 
   return (
     <Container>

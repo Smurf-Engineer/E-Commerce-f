@@ -224,6 +224,9 @@ export type AffiliatePayment = {
   paypalAccount?: string
   comission?: number
   name?: string
+  orderId?: string
+  customerId?: string
+  customerName?: string
 }
 
 export type AffiliatesResult = {

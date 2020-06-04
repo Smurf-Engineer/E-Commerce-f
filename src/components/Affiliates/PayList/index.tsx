@@ -13,11 +13,12 @@ import {
   RepDiv,
   Cell,
   LoadingContainer,
-  Clip,
-  FileName,
+  // Clip,
+  // FileName,
   PayButton,
   SearchInput,
-  HeaderSection
+  HeaderSection,
+  Mail
 } from './styledComponents'
 import EmptyContainer from '../../EmptyContainer'
 import { AffiliatesResult, QueryProps, AffiliatePayment, SelectedPays } from '../../../types/common'
@@ -30,7 +31,7 @@ import Spin from 'antd/lib/spin'
 import { PAY_LIMITS } from '../constants'
 import moment from 'moment'
 import { NOTE_FORMAT } from '../../UsersAdmin/constants'
-import { getFileWithExtension } from '../../../utils/utilsFiles'
+// import { getFileWithExtension } from '../../../utils/utilsFiles'
 import { PENDING_PAY } from '../../../constants'
 import clone from 'lodash/clone'
 import { message } from 'antd'
@@ -75,14 +76,21 @@ export class PayList extends React.Component<Props, {}> {
     const { target: { checked } } = event
     const payments = get(data, 'paymentsResult.payments', []) as AffiliatePayment[]
     const newSelected = clone(selected)
-    payments.forEach(({ id, status }: AffiliatePayment) => {
-      newSelected[id] = status === PENDING_PAY ? checked : false
+    payments.forEach(({ id, status, paypalAccount }: AffiliatePayment) => {
+      newSelected[id] = status === PENDING_PAY && !!paypalAccount ? checked : false
     })
     setSelected(newSelected)
   }
   openLinkAction = (receipt: string) => () => {
     window.open(receipt)
   }
+
+  stopPropagation = (event: React.MouseEvent) => {
+    if (event) {
+      event.stopPropagation()
+    }
+  }
+
   handleCheckRow = (event: CheckboxChangeEvent) => {
     const { selected, setSelected } = this.props
     const { target: { checked, id } } = event
@@ -120,6 +128,14 @@ export class PayList extends React.Component<Props, {}> {
     } finally {
       setLoading(false)
     }
+  }
+
+  openOrder = (event: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    const { history } = this.props
+    history.push(`/admin?order=${id}`)
   }
 
   render() {
@@ -167,11 +183,14 @@ export class PayList extends React.Component<Props, {}> {
               <Header>{formatMessage(messages.date)}</Header>
               <Header>{formatMessage(messages.clientId)}</Header>
               <Header>{formatMessage(messages.name)}</Header>
-              <Header>{formatMessage(messages.paypalAccount)}</Header>
+              <Header width="152px">{formatMessage(messages.paypalAccount)}</Header>
               <Header>{formatMessage(messages.affiliatePercent)}</Header>
               <Header>{formatMessage(messages.status)}</Header>
               <Header>{formatMessage(messages.amount)}</Header>
-              <Header>{formatMessage(messages.receipt)}</Header>
+              <Header>{formatMessage(messages.orderId)}</Header>
+              <Header>{formatMessage(messages.customerId)}</Header>
+              <Header>{formatMessage(messages.customerName)}</Header>
+              {/* <Header>{formatMessage(messages.receipt)}</Header> */}
             </Row>
           </thead>
           <tbody>
@@ -186,36 +205,46 @@ export class PayList extends React.Component<Props, {}> {
                   comission,
                   status,
                   amount,
-                  receipt
+                  orderId,
+                  customerId,
+                  customerName,
+                  // receipt
                 }: AffiliatePayment,
                 index: number) => {
-                const openLink = this.openLinkAction(receipt)
-                return (<RepDiv key={index}>
-                  <Cell>
-                    {status === PENDING_PAY &&
-                      <Checkbox
-                        {...{ id }}
-                        checked={selected[id]}
-                        onChange={this.handleCheckRow}
-                      />
-                    }
-                  </Cell>
-                  <Cell>
-                    {createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}
-                  </Cell>
-                  <Cell>{userId}</Cell>
-                  <Cell>{name}</Cell>
-                  <Cell>{paypalAccount}</Cell>
-                  <Cell>{`${comission}%`}</Cell>
-                  <Cell>{status}</Cell>
-                  <Cell bold={true}>{`$${amount}`}</Cell>
-                  <Cell onClick={this.stopPropagation}>
-                    <Clip type="paper-clip" />
-                    <FileName onClick={openLink}>
-                      {receipt ? getFileWithExtension(receipt) : ''}
-                    </FileName>
-                  </Cell>
-                </RepDiv>)
+                // const openLink = this.openLinkAction(receipt)
+                return (
+                  <RepDiv id={orderId} onClick={this.openOrder} key={index}>
+                    <Cell onClick={this.stopPropagation}>
+                      {status === PENDING_PAY && !!paypalAccount &&
+                        <Checkbox
+                          {...{ id }}
+                          checked={selected[id]}
+                          onChange={this.handleCheckRow}
+                        />
+                      }
+                    </Cell>
+                    <Cell>
+                      {createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}
+                    </Cell>
+                    <Cell>{userId}</Cell>
+                    <Cell>{name}</Cell>
+                    <Cell width="152px">
+                      <Mail title={paypalAccount}>{paypalAccount}</Mail>
+                    </Cell>
+                    <Cell>{`${comission}%`}</Cell>
+                    <Cell>{status}</Cell>
+                    <Cell bold={true}>{`$${amount}`}</Cell>
+                    {/* <Cell onClick={this.stopPropagation}>
+                      <Clip type="paper-clip" />
+                      <FileName onClick={openLink}>
+                        {receipt ? getFileWithExtension(receipt) : ''}
+                      </FileName>
+                    </Cell> */}
+                    <Cell>{orderId}</Cell>
+                    <Cell>{`JV2-${customerId}`}</Cell>
+                    <Cell>{customerName}</Cell>
+                  </RepDiv>
+                )
               })
             ) : (
                 <EmptyContainer message={formatMessage(messages.empty)} />

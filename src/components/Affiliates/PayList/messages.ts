@@ -11,7 +11,7 @@ export default defineMessages({
   },
   clientId: {
     id: 'components.AffiliatesList.clientId',
-    defaultMessage: 'Client ID'
+    defaultMessage: 'Affiliate #'
   },
   name: {
     id: 'components.AffiliatesList.name',
@@ -52,5 +52,17 @@ export default defineMessages({
   search: {
     id: 'components.AffiliatesList.search',
     defaultMessage: 'Search for an affiliate'
+  },
+  orderId: {
+    id: 'components.AffiliatesList.orderId',
+    defaultMessage: 'Order #'
+  },
+  customerId: {
+    id: 'components.AffiliatesList.customerId',
+    defaultMessage: 'Customer #'
+  },
+  customerName: {
+    id: 'components.AffiliatesList.customerName',
+    defaultMessage: 'Customer Name'
   }
 })
