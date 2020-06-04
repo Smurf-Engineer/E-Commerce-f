@@ -20,7 +20,6 @@ export const UPLOAD_COMPLETE = `${namespace}/UPLOAD_COMPLETE`
 export const RESET_REDUCER = `${namespace}/RESET_REDUCER`
 
 export const validIcons = ['image/jpeg', 'image/png']
-export const validModels = ['.svg', '.jpg', '.jpeg', '.png', '.obj', '.mtl']
 
 export const files = [
   {

@@ -1488,7 +1488,7 @@
   "components.FilesModal.labelTitle": "Label",
   "components.FilesModal.setDefault": "Set this as default",
   "components.FilesModal.label": "+ Label File",
-  "components.FilesModal.fileError": "You can only upload SVG/PNG/JPEG/JPG file!",
+  "components.FilesModal.fileError": "You can only upload {extension} file!",
   "components.FontTab.title": "Fonts Settings",
   "screens.DesignTools.title": "Publishing Tool",
   "screens.DesignTools.back": "Back to admin",
