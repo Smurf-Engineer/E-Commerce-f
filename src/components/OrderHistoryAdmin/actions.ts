@@ -7,8 +7,10 @@ import {
   SET_CURRENT_PAGE,
   RESET_DATA,
   SET_ORDER_ID,
-  SET_SEARCH_TEXT
+  SET_SEARCH_TEXT,
+  SET_FILTERS
 } from './constants'
+import { Moment } from 'moment'
 
 import { AnyAction, sorts } from '../../types/common'
 
@@ -35,4 +37,17 @@ export const setOrderIdAction = (orderId: string): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const setFiltersAction = (
+  status: string,
+  orderPoint: string,
+  startDate: Moment,
+  endDate: Moment
+) => ({
+  type: SET_FILTERS,
+  status,
+  orderPoint,
+  startDate,
+  endDate
 })

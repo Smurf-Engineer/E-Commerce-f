@@ -720,6 +720,11 @@ export interface OrderHistory {
   cutoffDate?: string
 }
 
+export interface OrderPreflight {
+  id: number
+  pendingChecks: number
+}
+
 export interface Discount {
   id?: number
   code: string
