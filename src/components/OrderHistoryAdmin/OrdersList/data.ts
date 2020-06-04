@@ -49,11 +49,19 @@ export const getOrdersQuery = gql`
           }
         }
         lastName: last_name
-        pendingChecks: pending_checks
         source
         netsuiteAttempts: netsuite_attempts
         cutoffDate: cutoff_date
       }
+    }
+  }
+`
+
+export const getOrdersPreflight = gql`
+  query getOrdersPreflight($ordersIds: [Int]!) {
+    preflight: getOrdersPreflight(ordersIds: $ordersIds) {
+      id
+      pendingChecks: pending_checks
     }
   }
 `
