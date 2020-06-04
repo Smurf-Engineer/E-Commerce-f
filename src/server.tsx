@@ -102,7 +102,7 @@ server
         region: code,
         localeIndex: langFound,
         locale: langFound,
-        currency: 'eur'
+        currency: currencyFound
       })
     )
     getDataFromTree(App as any).then(() => {
