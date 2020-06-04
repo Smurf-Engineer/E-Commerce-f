@@ -7,6 +7,7 @@ import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import sumBy from 'lodash/sumBy'
 import find from 'lodash/find'
+import head from 'lodash/head'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import Steps from 'antd/lib/steps'
@@ -16,10 +17,26 @@ import unset from 'lodash/unset'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import * as checkoutActions from './actions'
+import * as thunkActions from './thunkActions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
-import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
-import { CheckoutTabs, PaymentOptions, quantities } from './constants'
+import {
+  AddAddressMutation,
+  PlaceOrderMutation,
+  CurrencyQuery,
+  CreatePaymentIntentMutation,
+  AddCardMutation,
+  getSubsidiaryQuery
+} from './data'
+import {
+  CheckoutTabs,
+  PaymentOptions,
+  quantities,
+  EUROPE,
+  EU_STRIPE,
+  STRIPE,
+  EU_SUBSIDIARY_COUNTRIES
+} from './constants'
 
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
@@ -33,8 +50,8 @@ import {
   StepWrapper,
   StepIcon,
   CheckIcon,
-  CurrencyWarningText,
-  PlaceOrderLoading
+  PlaceOrderLoading,
+  okButtonStyles
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -49,16 +66,18 @@ import {
   CreditCardData,
   TaxAddressObj,
   ItemDetailType,
-  CouponCode
+  CouponCode,
+  PaymentIntent
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 import Modal from 'antd/lib/modal'
-import ModalFooter from '../../components/ModalFooter'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE } from '../../constants'
 import Spin from 'antd/lib/spin'
+import { message } from 'antd'
+import some from 'lodash/some'
 
 type ProductCart = {
   id: number
@@ -79,12 +98,14 @@ interface CartItems {
   designId: string
   designCode: string
   product: Product
+  totalOrder?: number
   itemDetails: CartItemDetail[]
   teamStoreId?: string
 }
 
 interface Props extends RouteComponentProps<any> {
   client: any
+  stripe: any
   intl: InjectedIntl
   firstName: string
   lastName: string
@@ -140,8 +161,11 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   couponCode?: CouponCode
   openCurrencyWarning: boolean
+  paymentClientSecret: string
+  intentId: string
+  subsidiaryQuery?: number
   // Redux actions
-  setStripeCardDataAction: (card: CreditCardData) => void
+  setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setStripeIbanDataAction: (iban: IbanData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -176,15 +200,28 @@ interface Props extends RouteComponentProps<any> {
   openAddressesModalAction: (open: boolean) => void
   setSkipValueAction: (limit: number, pageNumber: number) => void
   showCardFormAction: (open: boolean) => void
-  selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  selectCardToPayAction: (
+    card: StripeCardData | CreditCardData,
+    selectedCardId: string
+  ) => void
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
+  createPaymentIntent: (variables: {}) => Promise<PaymentIntent>
+  savePaymentId: (paymentIntent: PaymentIntent) => void
+  removeClientSecretAction: () => void
+  addNewCard: (variables: {}) => Promise<any>
 }
+
+const { confirm } = Modal
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
+  state = {
+    stripe: null,
+    euStripe: null
+  }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
@@ -242,7 +279,6 @@ class Checkout extends React.Component<Props, {}> {
       setStripeErrorAction,
       setIbanErrorAction,
       setLoadingBillingAction,
-      setStripeCardDataAction,
       setStripeIbanDataAction,
       setPaymentMethodAction,
       paymentMethod,
@@ -261,7 +297,7 @@ class Checkout extends React.Component<Props, {}> {
       couponCode,
       setCouponCodeAction,
       deleteCouponCodeAction,
-      openCurrencyWarning
+      paymentClientSecret
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -310,12 +346,27 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const { cart } = stateLocation
+    const reorder = some(cart, 'fixedCart')
+    const isFixedTeamstore = some(cart, 'isFixed')
+
+    const preorder = isFixedTeamstore && !reorder
+
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
     const shoppingCartData = getShoppingCartData(
       shoppingCart,
       currentCurrency || config.defaultCurrency
     )
+    const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
+      billingCountry.toLowerCase()
+    )
+    const paymentIntentLoading =
+      paymentMethod === PaymentOptions.CREDITCARD &&
+      currentStep === 2 &&
+      !paymentClientSecret.length &&
+      europeStripeAccount &&
+      !preorder
+
     const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
@@ -404,7 +455,6 @@ class Checkout extends React.Component<Props, {}> {
                     invalidBillingFormAction,
                     loadingBilling,
                     setLoadingBillingAction,
-                    setStripeCardDataAction,
                     setStripeIbanDataAction,
                     setPaymentMethodAction,
                     saveCountryAction,
@@ -419,13 +469,18 @@ class Checkout extends React.Component<Props, {}> {
                     limit,
                     setSkipValueAction,
                     showBillingForm,
-                    showBillingAddressFormAction
+                    showBillingAddressFormAction,
+                    paymentClientSecret
                   }}
+                  setStripeCardDataAction={this.setStripeCardDataAction}
                   showContent={currentStep === PaymentTab}
                   setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
                   nextStep={this.nextStep}
+                  setStripeAction={this.setStripe}
+                  createPaymentIntent={this.createPaymentIntent}
+                  isFixedTeamstore={preorder}
                 />
                 <Review
                   {...{
@@ -473,34 +528,13 @@ class Checkout extends React.Component<Props, {}> {
               />
             </SummaryContainer>
           </Content>
-          {loadingPlaceOrder && (
+
+          {(loadingPlaceOrder || paymentIntentLoading) && (
             <PlaceOrderLoading>
               <Spin />
             </PlaceOrderLoading>
           )}
         </Container>
-        <Modal
-          visible={openCurrencyWarning}
-          footer={
-            <ModalFooter
-              okText={intl.formatMessage(messages.confirm)}
-              onOk={this.placeOrder}
-              onCancel={this.handleOnCancelWarning}
-              formatMessage={intl.formatMessage}
-            />
-          }
-          destroyOnClose={false}
-          maskClosable={false}
-          closable={false}
-        >
-          <CurrencyWarningText>
-            {intl.formatMessage(messages.correctCurrency, {
-              currentCurrency: (
-                currentCurrency || config.defaultCurrency
-              ).toUpperCase()
-            })}
-          </CurrencyWarningText>
-        </Modal>
       </Layout>
     )
   }
@@ -533,9 +567,10 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   handleOnGoToStep = (step: number) => {
-    const { stepAdvanceAction } = this.props
+    const { stepAdvanceAction, removeClientSecretAction } = this.props
     stepAdvanceAction(step - 1)
     zenscroll.toY(0)
+    removeClientSecretAction()
   }
 
   verifyStepTwo = () => {
@@ -677,12 +712,12 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async (event: any) => {
+  handleOnPlaceOrder = async (event: any, subsidiary?: number) => {
     const {
       client: { query },
       billingCountry,
       currentCurrency,
-      openCurrencyWarningAction
+      intl: { formatMessage }
     } = this.props
 
     const { data } = await query({
@@ -695,11 +730,21 @@ class Checkout extends React.Component<Props, {}> {
 
     if (data && data.currency) {
       if (data.currency.toLowerCase() !== selectedCurrency) {
-        return openCurrencyWarningAction(true)
+        confirm({
+          icon: ' ',
+          okText: formatMessage(messages.confirm),
+          title: formatMessage(messages.correctCurrency, {
+            currentCurrency: selectedCurrency.toUpperCase()
+          }),
+          okButtonProps: { style: okButtonStyles },
+          onOk: () => {
+            this.placeOrder(event, null, subsidiary)
+          }
+        })
+      } else {
+        this.placeOrder(event, null, subsidiary)
       }
     }
-
-    this.placeOrder(event)
   }
   getSimpleCart = () => {
     const {
@@ -714,6 +759,64 @@ class Checkout extends React.Component<Props, {}> {
       }
       return simpleCartItem
     })
+  }
+  createPaymentIntent = async () => {
+    const { savePaymentId, createPaymentIntent } = this.props
+
+    try {
+      const orderObj = await this.getOrderObject()
+      const response = await createPaymentIntent({
+        variables: { orderObj }
+      })
+      const paymentIntent = get(response, 'data.createPaymentIntent', {})
+      await savePaymentId(paymentIntent)
+    } catch (e) {
+      this.handleOnGoToStep(1)
+      message.error('Error generating payment')
+    }
+  }
+  setStripeCardDataAction = async (
+    card?: CreditCardData,
+    stripeToken?: string
+  ) => {
+    const {
+      setStripeCardDataAction,
+      billingCountry,
+      addNewCard,
+      selectCardToPayAction,
+      intl: { formatMessage },
+      client: { query },
+      location: {
+        state: { cart }
+      }
+    } = this.props
+    const { data } = await query({
+      query: getSubsidiaryQuery,
+      variables: { code: billingCountry },
+      fetchPolicy: 'network-only'
+    })
+    const reorder = some(cart, 'fixedCart')
+    const isFixedTeamstore = some(cart, 'isFixed')
+
+    const preorder = isFixedTeamstore && !reorder
+
+    if (data.subsidiary === EUROPE && !preorder) {
+      await this.createPaymentIntent()
+    }
+    if (card && stripeToken) {
+      try {
+        if (preorder) {
+          await addNewCard({
+            variables: { token: stripeToken }
+          })
+          selectCardToPayAction(card, card.id)
+        } else {
+          setStripeCardDataAction(card, stripeToken)
+        }
+      } catch (e) {
+        message.error(formatMessage(messages.errorSavingCart))
+      }
+    }
   }
   getProductsPrice = () => {
     const {
@@ -740,10 +843,74 @@ class Checkout extends React.Component<Props, {}> {
       return designsPrice
     })
   }
-  placeOrder = async (event: any, paypalObj?: object) => {
+  getStripeAccount = (subsidiary: number = 0) => {
+    if (subsidiary === EUROPE) {
+      return EU_STRIPE
+    }
+    return STRIPE
+  }
+  placeOrder = async (event: any, paypalObj?: object, subsidiary?: number) => {
+    const {
+      placeOrder,
+      setLoadingPlaceOrderAction,
+      getTotalItemsIncart: getTotalItemsIncartAction,
+      stripeToken,
+      paymentClientSecret
+    } = this.props
+
+    try {
+      setLoadingPlaceOrderAction(true)
+
+      const stripeAccount = this.getStripeAccount(subsidiary)
+
+      const orderObj = await this.getOrderObject(paypalObj, stripeAccount)
+
+      const response = await placeOrder({
+        variables: { orderObj }
+      })
+
+      const orderId = get(response, 'data.charge.short_id', '')
+      const preorder = orderObj.isFixedTeamstore && !orderObj.replaceOrder
+
+      if (
+        stripeAccount === EU_STRIPE &&
+        orderObj.paymentMethod === PaymentOptions.CREDITCARD &&
+        !preorder
+      ) {
+        const { stripe } = this.state
+        const stripeResponse = await stripe.handleCardPayment(
+          paymentClientSecret,
+          {
+            payment_method: stripeToken
+          }
+        )
+
+        if (stripeResponse.error) {
+          message.error(stripeResponse.error.message)
+          setLoadingPlaceOrderAction(false)
+
+          return
+        }
+      }
+
+      localStorage.removeItem('cart')
+      setLoadingPlaceOrderAction(false)
+      getTotalItemsIncartAction()
+
+      const { history } = this.props
+      history.push(`/order-placed?orderId=${orderId}`)
+    } catch (error) {
+      setLoadingPlaceOrderAction(false)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+    }
+  }
+  getOrderObject = async (
+    paypalObj?: object,
+    stripeAccount: string = STRIPE
+  ) => {
     const {
       location,
-      placeOrder,
       firstName,
       lastName,
       street,
@@ -763,8 +930,6 @@ class Checkout extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       billingPhone,
-      setLoadingPlaceOrderAction,
-      getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
       stripeToken,
       selectedCard,
@@ -772,7 +937,8 @@ class Checkout extends React.Component<Props, {}> {
       ibanData = {},
       client: { query },
       currentCurrency,
-      couponCode: couponObject
+      couponCode: couponObject,
+      intentId
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -818,9 +984,10 @@ class Checkout extends React.Component<Props, {}> {
       state: shippingAddress.stateProvinceCode,
       zipCode: shippingAddress.zipCode
     }
+    const isFixedTeamstore = some(cart, 'isFixed')
+    const replaceOrder = get(head(cart), 'replaceOrder', '')
 
     try {
-      setLoadingPlaceOrderAction(true)
       const taxResponse = await query({
         query: getTaxQuery,
         variables: {
@@ -849,6 +1016,7 @@ class Checkout extends React.Component<Props, {}> {
           teamStoreId
         }: CartItems) => {
           const item = { designCode, designId } as CartItem
+
           const productItem = {
             id: product.id,
             code: product.code,
@@ -877,11 +1045,12 @@ class Checkout extends React.Component<Props, {}> {
         }
       )
       const couponCode = couponObject && couponObject.code
+
       const orderObj = {
         proDesign,
         paymentMethod,
         cardId,
-        tokenId: stripeToken,
+        tokenId: stripeAccount === EU_STRIPE ? intentId : stripeToken,
         sourceId: stripeSource,
         cart: sanitizedCart,
         shippingAddress,
@@ -896,24 +1065,21 @@ class Checkout extends React.Component<Props, {}> {
         shippingAmount: shippingAmount || '0',
         currency: currentCurrency || config.defaultCurrency,
         weight: weightSum,
-        couponCode
+        couponCode,
+        isFixedTeamstore,
+        replaceOrder
       }
-
-      const response = await placeOrder({
-        variables: { orderObj }
-      })
-      const orderId = get(response, 'data.charge.short_id', '')
-      localStorage.removeItem('cart')
-      setLoadingPlaceOrderAction(false)
-      getTotalItemsIncartAction()
-
-      const { history } = this.props
-      history.push(`/order-placed?orderId=${orderId}`)
+      return orderObj
     } catch (error) {
-      setLoadingPlaceOrderAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
     }
+  }
+  setStripe = async (stripe: any, euStripe: any) => {
+    this.setState({
+      stripe,
+      euStripe
+    })
   }
 }
 
@@ -930,11 +1096,17 @@ const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
   PlaceOrderMutation,
+  CreatePaymentIntentMutation,
+  AddCardMutation,
   withApollo,
-  connect(mapStateToProps, {
-    ...checkoutActions,
-    getTotalItemsIncart
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...checkoutActions,
+      ...thunkActions,
+      getTotalItemsIncart
+    }
+  )
 )(Checkout)
 
 export default CheckoutEnhance

@@ -6,7 +6,8 @@ import {
   DesignInfoContainer,
   DesignInfoTitle,
   DesignInfoSubtitle,
-  DesignInfoBox
+  DesignInfoBox,
+  NamesContainer
 } from './styledComponents'
 import messages from '../../ProductInfo/messages'
 
@@ -17,44 +18,72 @@ interface Props {
 
 class ItemDetails extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, cartItem } = this.props
+    const {
+      formatMessage,
+      cartItem: {
+        flatlock,
+        flatlockCode,
+        zipperColor,
+        bindingColor,
+        bibBraceColor,
+        managerName,
+        salesRepName
+      }
+    } = this.props
     return (
-      <DesignInfoContainer>
-        <DesignInfoBox>
-          <DesignInfoTitle> {formatMessage(messages.flatlock)}</DesignInfoTitle>
-          <DesignInfoSubtitle>{cartItem.flatlock || '-'} </DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.flatlockCode)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>
-            {cartItem.flatlockCode || '-'}
-          </DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.zipperColor)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>{cartItem.zipperColor || '-'}</DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.bindingColor)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>
-            {cartItem.bindingColor || '-'}
-          </DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.bibbraceColor)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>
-            {cartItem.bibBraceColor || '-'}
-          </DesignInfoSubtitle>
-        </DesignInfoBox>
-      </DesignInfoContainer>
+      <>
+        <DesignInfoContainer>
+          <DesignInfoBox>
+            <DesignInfoTitle>
+              {' '}
+              {formatMessage(messages.flatlock)}
+            </DesignInfoTitle>
+            <DesignInfoSubtitle>{flatlock || '-'} </DesignInfoSubtitle>
+          </DesignInfoBox>
+          <DesignInfoBox>
+            <DesignInfoTitle>
+              {formatMessage(messages.flatlockCode)}
+            </DesignInfoTitle>
+            <DesignInfoSubtitle>{flatlockCode || '-'}</DesignInfoSubtitle>
+          </DesignInfoBox>
+          <DesignInfoBox>
+            <DesignInfoTitle>
+              {formatMessage(messages.zipperColor)}
+            </DesignInfoTitle>
+            <DesignInfoSubtitle>{zipperColor || '-'}</DesignInfoSubtitle>
+          </DesignInfoBox>
+          <DesignInfoBox>
+            <DesignInfoTitle>
+              {formatMessage(messages.bindingColor)}
+            </DesignInfoTitle>
+            <DesignInfoSubtitle>{bindingColor || '-'}</DesignInfoSubtitle>
+          </DesignInfoBox>
+          <DesignInfoBox>
+            <DesignInfoTitle>
+              {formatMessage(messages.bibbraceColor)}
+            </DesignInfoTitle>
+            <DesignInfoSubtitle>{bibBraceColor || '-'}</DesignInfoSubtitle>
+          </DesignInfoBox>
+        </DesignInfoContainer>
+        <NamesContainer>
+          {salesRepName && (
+            <DesignInfoBox>
+              <DesignInfoTitle>
+                {formatMessage(messages.salesRep)}
+              </DesignInfoTitle>
+              <DesignInfoSubtitle>{salesRepName}</DesignInfoSubtitle>
+            </DesignInfoBox>
+          )}
+          {managerName && (
+            <DesignInfoBox>
+              <DesignInfoTitle>
+                {formatMessage(messages.manager)}
+              </DesignInfoTitle>
+              <DesignInfoSubtitle>{managerName}</DesignInfoSubtitle>
+            </DesignInfoBox>
+          )}
+        </NamesContainer>
+      </>
     )
   }
 }

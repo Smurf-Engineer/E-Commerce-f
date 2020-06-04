@@ -39,7 +39,7 @@ export default defineMessages({
   },
   editContent: {
     id: 'screens.AdminLayout.editContent',
-    defaultMessage: 'EDIT CONTENT'
+    defaultMessage: 'SETTINGS'
   },
   homepage: {
     id: 'screens.AdminLayout.homepage',
@@ -47,11 +47,23 @@ export default defineMessages({
   },
   designLab: {
     id: 'screens.AdminLayout.designLab',
-    defaultMessage: 'Design Lab'
+    defaultMessage: 'Preferences'
   },
   users: {
     id: 'screens.AdminLayout.users',
     defaultMessage: 'USERS'
+  },
+  usersList: {
+    id: 'screens.AdminLayout.usersList',
+    defaultMessage: 'User List'
+  },
+  roleManagement: {
+    id: 'screens.AdminLayout.roleManagement',
+    defaultMessage: 'Role Management'
+  },
+  salesRep: {
+    id: 'screens.AdminLayout.salesRep',
+    defaultMessage: 'Sales Rep List'
   },
   teamStores: {
     id: 'screens.AdminLayout.teamStores',
@@ -84,5 +96,9 @@ export default defineMessages({
   designLabTools: {
     id: 'screens.AdminLayout.designLabTools',
     defaultMessage: 'Edit Designlab Tools'
+  },
+  noRole: {
+    id: 'screens.AdminLayout.noRole',
+    defaultMessage: `You don't have a role assigned`
   }
 })

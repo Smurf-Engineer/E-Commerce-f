@@ -31,12 +31,13 @@ import {
   UserSearchResult,
   SelectedDesignObjectType,
   UserDiscount,
-  ProductsCodes
+  ProductsCodes,
+  UserPermissions
 } from '../../types/common'
 import DiscountsData from './DiscountsData'
 import { isNumber } from '../../utils/utilsFiles'
 import { Moment } from 'moment'
-import { USERS } from '../AdminLayout/constants'
+import { USERS, DISCOUNTS, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -54,6 +55,7 @@ interface Props {
   expiry: string
   loading: boolean
   restrictionType: string
+  permissions: UserPermissions
   selectedItems: SelectedDesignObjectType
   users: Data
   products: ProductsData
@@ -152,6 +154,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       discountActive,
       expiry,
       loading,
+      permissions,
+      history,
       restrictionType,
       onChangeUserAction,
       onAddProductAction,
@@ -166,6 +170,10 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       unlimitedUsage,
       selectedProducts
     } = this.props
+    const access = permissions[DISCOUNTS] || {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
 
     const searchResults =
       restrictionType === USERS
@@ -181,9 +189,11 @@ class DiscountsAdmin extends React.Component<Props, {}> {
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
-          <AddDiscountButton onClick={this.handleOnAddNewDiscount}>
-            {formatMessage(messages.addDiscountLabel)}
-          </AddDiscountButton>
+          {access.edit && (
+            <AddDiscountButton onClick={this.handleOnAddNewDiscount}>
+              {formatMessage(messages.addDiscountLabel)}
+            </AddDiscountButton>
+          )}
           <SearchInput
             value={searchText}
             onChange={this.handleInputChange}
@@ -195,6 +205,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             onDiscountClick={this.handleOnDiscountClick}
             onChangePage={this.handleOnChangePage}
             interactiveHeaders={true}
+            canEdit={access.edit}
             onChangeActive={this.handleOnChangeActive}
           />
         </Container>

@@ -37,6 +37,7 @@ import ProDesign from '../screens/ProDesign'
 import SignUpTest from '../screens/HomeTest'
 import PublishingTool from '../screens/PublishingTool'
 import DesignTools from '../screens/DesignTools'
+import TeamstoreTypes from '../screens/TeamstoreTypes'
 
 const routes = [
   {
@@ -155,16 +156,20 @@ const routes = [
     name: 'shoppingCartPage',
     component: ShoppingCartPage
   },
-  // TODO: hide teamstores for phase I
   {
     path: '/store-front',
     name: 'storeFront',
     component: StoreFront
   },
   {
+    path: '/create-store/form',
+    name: 'createStoreForm',
+    component: CreateStore
+  },
+  {
     path: '/create-store',
     name: 'createStore',
-    component: CreateStore
+    component: TeamstoreTypes
   },
   {
     path: '/search-teamstores',

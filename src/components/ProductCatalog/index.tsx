@@ -15,9 +15,10 @@ import {
 } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
-import { sorts } from '../../types/common'
+import { sorts, UserPermissions } from '../../types/common'
 import ProductDetailsAdmin from '../ProductDetailsAdmin'
 import ProductForm from '../ProductForm'
+import { PRODUCT_CATALOG, ADMIN_ROUTE } from '../AdminLayout/constants'
 interface Props {
   history: any
   currentPage: number
@@ -26,6 +27,7 @@ interface Props {
   sort: sorts
   productId: string
   searchText: string
+  permissions: UserPermissions
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -79,9 +81,14 @@ class ProductCatalog extends React.Component<Props, {}> {
       orderBy,
       sort,
       history,
+      permissions,
       formatMessage,
       searchText
     } = this.props
+    const access = permissions[PRODUCT_CATALOG] || {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
     return (
       <div>
         <Route
@@ -92,9 +99,11 @@ class ProductCatalog extends React.Component<Props, {}> {
               <ScreenTitle>
                 <FormattedMessage {...messages.title} />
               </ScreenTitle>
-              <AddProductButton onClick={this.addNewProduct}>
-                {formatMessage(messages.addProductLabel)}
-              </AddProductButton>
+              {access.edit && (
+                <AddProductButton onClick={this.addNewProduct}>
+                  {formatMessage(messages.addProductLabel)}
+                </AddProductButton>
+              )}
               <SearchInput
                 value={searchText}
                 onChange={this.handleInputChange}
@@ -103,6 +112,7 @@ class ProductCatalog extends React.Component<Props, {}> {
               <List
                 {...{ formatMessage, currentPage, orderBy, sort, searchText }}
                 onSortClick={this.handleOnSortClick}
+                canEdit={access.edit}
                 onProductClick={this.handleOnProductClick}
                 onChangePage={this.handleOnChangePage}
                 interactiveHeaders={true}
@@ -114,7 +124,10 @@ class ProductCatalog extends React.Component<Props, {}> {
           path="/admin/product"
           render={() => (
             <div>
-              <ProductDetailsAdmin {...{ formatMessage, history }} />
+              <ProductDetailsAdmin
+                {...{ formatMessage, history }}
+                canEdit={access.edit}
+              />
             </div>
           )}
         />
@@ -122,7 +135,10 @@ class ProductCatalog extends React.Component<Props, {}> {
           path="/admin/products/form/:id?"
           render={() => (
             <div>
-              <ProductForm {...{ formatMessage, history }} />
+              <ProductForm
+                {...{ formatMessage, history }}
+                canEdit={access.edit}
+              />
             </div>
           )}
         />

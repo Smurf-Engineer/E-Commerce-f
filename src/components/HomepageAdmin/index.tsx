@@ -5,6 +5,8 @@ import * as React from 'react'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 import Icon from 'antd/lib/icon'
 import {
   setMainHeaderMutation,
@@ -12,14 +14,15 @@ import {
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
   getHomepageInfo,
-  updateProductTilesMutation
+  updateProductTilesMutation,
+  saveBannersMutation,
 } from './data'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { FormattedMessage } from 'react-intl'
 import CarouselModal from '../CarouselModal'
 import * as HomepageAdminActions from './actions'
-import { Sections } from './constants'
+import { Sections, validTypes } from './constants'
 import * as homepageAdminApiActions from './api'
 import CarouselHeader from './CarouselHeader'
 import FeaturedProducts from './FeaturedProducts'
@@ -28,7 +31,15 @@ import {
   Container,
   ScreenTitle,
   SpinContainer,
-  Goback
+  Goback,
+  MediaSection,
+  Buttons,
+  AddButton,
+  RowInput,
+  Label,
+  SaveSection,
+  SaveButton,
+  LoadingContainer,
 } from './styledComponents'
 import messages from './messages'
 import { EMPTY_TILE, HOMEPAGE_LABEL, EMPTY_HEADER } from './constants'
@@ -41,9 +52,15 @@ import {
   HeaderImageResponse,
   ProductTilePlaceHolder,
   CarouselSettings,
-  Message
+  Message,
+  UserPermissions,
+  ProductFile,
+  UploadFile,
 } from '../../types/common'
 import { History } from 'history'
+import { EDIT_NAVIGATION } from '../AdminLayout/constants'
+import MediaBlock from '../ProductForm/Steps/FourthStep/MediaBlock'
+import Draggable from '../Draggable'
 
 interface Props {
   history: History
@@ -67,8 +84,20 @@ interface Props {
   secondaryHeaderCarousel: CarouselSettings
   mainHeaderCarousel: CarouselSettings
   currentPreview: string
+  permissions: UserPermissions
+  featuredBanners: [ProductFile]
+  loadingBanner: boolean
+  setLoading: (loading: boolean) => void
+  addMedia: (value: ProductFile) => void
+  removeMedia: (index: number) => void
+  moveFile: (index: number, indexTo: number) => void
+  uploadMediaAction: (
+    event: UploadFile
+  ) => void
+  setLoadingAction: (loading: boolean) => void
   formatMessage: (messageDescriptor: Message) => string
   setMainHeader: (variables: {}) => Promise<any>
+  saveBanners: (variables: {}) => Promise<MessagePayload>
   setSecondaryHeader: (variables: {}) => Promise<any>
   setFeaturedProducts: (variables: {}) => Promise<any>
   openModalAction: (open: boolean) => void
@@ -116,7 +145,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
     const {
       setLoadersAction,
       setHomepageInfoAction,
-      client: { query }
+      client: { query },
     } = this.props
     const routeParam = this.getRouteParam()
     try {
@@ -124,7 +153,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const response = await query({
         query: getHomepageInfo,
         variables: { route: routeParam },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       })
       await this.handleOnChangePage()
       const {
@@ -133,7 +162,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         homepageImages,
         mainHeaderImages,
         productTiles,
-        carouselSettings
+        featuredBanners,
+        carouselSettings,
       } = response.data.getHomepageContent
       const items = featuredProducts.map((item: Product) => {
         return { visible: true, product: item }
@@ -142,6 +172,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         id,
         items,
         homepageImages,
+        featuredBanners,
         mainHeaderImages,
         headerImageLink: '',
         headerImage: '',
@@ -149,12 +180,12 @@ class HomepageAdmin extends React.Component<Props, {}> {
         productTiles,
         mainHeaderCarousel: {
           duration: carouselSettings.slideDuration,
-          transition: carouselSettings.slideTransition
+          transition: carouselSettings.slideTransition,
         },
         secondaryHeaderCarousel: {
           duration: carouselSettings.secondarySlideDuration,
-          transition: carouselSettings.secondarySlideTransition
-        }
+          transition: carouselSettings.secondarySlideTransition,
+        },
       }
       setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -188,9 +219,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
         mainHeaderCarousel: { duration, transition },
         history: {
           location: {
-            state: { sportId }
-          }
-        }
+            state: { sportId },
+          },
+        },
       } = this.props
       setLoadersAction(Sections.MAIN_HEADER, true)
 
@@ -203,7 +234,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
               image_mobile: item.mobileImage,
               link: item.url,
               sport_id: sportId,
-              type: item.assetType
+              type: item.assetType,
             })
           }
           return filtered
@@ -212,14 +243,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
       )
 
       const {
-        data: { setMainHeader: response }
+        data: { setMainHeader: response },
       } = await setMainHeader({
         variables: {
           homepageImages,
           duration,
           transition,
-          mainHeader: true
-        }
+          mainHeader: true,
+        },
       })
 
       const mainHeaderList = response.map(
@@ -229,7 +260,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           image,
           image_mobile,
           link,
-          type
+          type,
         }: HeaderImageResponse) => {
           return {
             id,
@@ -237,7 +268,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
             desktopImage: image,
             mobileImage: image_mobile,
             url: link,
-            assetType: type
+            assetType: type,
           }
         }
       )
@@ -259,9 +290,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
         secondaryHeaderCarousel: { duration, transition },
         history: {
           location: {
-            state: { sportId }
-          }
-        }
+            state: { sportId },
+          },
+        },
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
 
@@ -274,7 +305,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
               image_mobile: item.mobileImage,
               link: item.url,
               sport_id: sportId,
-              type: item.assetType
+              type: item.assetType,
             })
           }
           return filtered
@@ -283,14 +314,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
       )
 
       const {
-        data: { setMainHeader: response }
+        data: { setMainHeader: response },
       } = await setMainHeader({
         variables: {
           homepageImages,
           duration,
           transition,
-          mainHeader: false
-        }
+          mainHeader: false,
+        },
       })
       const secondaryHeaderList = response.map(
         ({
@@ -299,7 +330,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           image,
           image_mobile,
           link,
-          type
+          type,
         }: HeaderImageResponse) => {
           return {
             id,
@@ -307,7 +338,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
             desktopImage: image,
             mobileImage: image_mobile,
             url: link,
-            assetType: type
+            assetType: type,
           }
         }
       )
@@ -337,7 +368,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       offset: offsetProp,
       currentPage: pageProp,
       limit,
-      setProductsData
+      setProductsData,
     } = this.props
     let offset = offsetParam !== undefined ? offsetParam : offsetProp
     let currentPage = pageParam !== undefined ? pageParam : pageProp
@@ -356,7 +387,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const data = await query({
         query: productsQuery,
         variables: { limit, offset },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       })
       setProductsData(data, offset, currentPage)
     } catch (e) {
@@ -378,9 +409,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setFeaturedProducts,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     setItemsAddAction()
     const itemsToSave = selectedItems.concat(items)
@@ -389,8 +420,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const response = await setFeaturedProducts({
         variables: {
           products: idCollection,
-          sportId
-        }
+          sportId,
+        },
       })
       message.success(get(response, 'data.setFeaturedProducts.message', ''))
     } catch (e) {
@@ -403,8 +434,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
     try {
       await deleteFeaturedProduct({
         variables: {
-          id
-        }
+          id,
+        },
       })
     } catch (e) {
       message.error(e.message)
@@ -419,9 +450,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       formatMessage,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     setLoadersAction(Sections.PRODUCT_TILES, true)
     const products = productTiles.map((item: ProductTiles) => ({
@@ -429,11 +460,11 @@ class HomepageAdmin extends React.Component<Props, {}> {
       image: item.image,
       content_tile: item.contentTile,
       title: item.title,
-      sport_id: sportId
+      sport_id: sportId,
     }))
     try {
       const response = await updateProductTiles({
-        variables: { products }
+        variables: { products },
       })
       const dataResponse = get(response, 'data.updateProductTiles', {})
       updateProductTilesListAction(dataResponse)
@@ -456,9 +487,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       secondaryHeader,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     const currentSection =
       section === Sections.MAIN_HEADER ? mainHeader : secondaryHeader
@@ -466,7 +497,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       const newPlaceholder = {
         ...EMPTY_HEADER,
         sport_id: sportId || null,
-        assetType
+        assetType,
       }
       addCarouselItemAction(newPlaceholder, section)
     }
@@ -478,9 +509,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       productTiles,
       history: {
         location: {
-          state: { sportId }
-        }
-      }
+          state: { sportId },
+        },
+      },
     } = this.props
     if (!productTiles || productTiles.length < 3) {
       const newTile = { ...EMPTY_TILE, sportId }
@@ -491,16 +522,78 @@ class HomepageAdmin extends React.Component<Props, {}> {
   getRouteParam = () => {
     const {
       history: {
-        location: { pathname }
-      }
+        location: { pathname },
+      },
     } = this.props
     return pathname.split('/').pop()
+  }
+
+  handleAddImage = () => {
+    const { addMedia, featuredBanners } = this.props
+    const id = featuredBanners.length + 1
+    addMedia({ id, isVideo: false })
+  }
+
+  beforeUploadMedia = (file: UploadFile) => {
+    const { formatMessage } = this.props
+    const isValidType = validTypes.includes(file.type)
+    if (!isValidType) {
+      message.error(formatMessage(messages.invalidFile))
+    }
+    const lessThanTwoMb = file.size / 1024 / 1024 < 20
+    if (!lessThanTwoMb) {
+      message.error(formatMessage(messages.sizeError))
+    }
+    return isValidType && lessThanTwoMb
+  }
+
+  handleOnDropRow = (dragIndex: number, dropIndex: number) => {
+    const { moveFile } = this.props
+    moveFile(dragIndex, dropIndex)
+  }
+
+  removeMediaFile = (index: number) => {
+    const { removeMedia } = this.props
+    removeMedia(index)
+  }
+
+  handleSaveBanners = async () => {
+    const {
+      featuredBanners: localBanners,
+      saveBanners,
+      setLoadingAction,
+      history: {
+        location: {
+          state: { sportId },
+        },
+      },
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const featuredBanners = localBanners.map(
+        ({ isVideo, url, urlMobile }: ProductFile) => ({ isVideo, url, urlMobile }))
+      const response = await saveBanners({
+        variables: { featuredBanners, sportId }
+      })
+      message.success(get(response, 'data.saveBanners.message', ''))
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+
+  handleAddVideo = () => {
+    const { addMedia, featuredBanners } = this.props
+    const id = featuredBanners.length + 1
+    addMedia({ id, isVideo: true })
   }
 
   render() {
     const {
       formatMessage,
       desktopImage,
+      uploadMediaAction,
       mainHeader,
       mainHeaderLoading,
       secondaryHeaderLoading,
@@ -512,12 +605,15 @@ class HomepageAdmin extends React.Component<Props, {}> {
         mainContainer,
         mainHeader: mainHeaderLoader,
         secondaryHeader: secondaryHeaderLoader,
-        productTiles: productTilesLoader
+        productTiles: productTilesLoader,
       },
       secondaryHeader,
       selectedItems,
+      loadingBanner,
       productsModalOpen,
       items,
+      featuredBanners = [],
+      permissions,
       openModalAction,
       setUrlListAction,
       productTiles,
@@ -533,116 +629,179 @@ class HomepageAdmin extends React.Component<Props, {}> {
       currentPreview,
       history: {
         location: {
-          state: { sportName }
-        }
-      }
+          state: { sportName },
+        },
+      },
     } = this.props
-
+    const access = permissions[EDIT_NAVIGATION] || {}
+    if (!access.edit) {
+      return null
+    }
+    let videoCount = 1
+    let imageCount = 1
+    const counter = featuredBanners.reduce(
+      (count: number[], item: ProductFile, index: number) => {
+        if (item.isVideo) {
+          count[index] = videoCount
+          videoCount++
+        } else {
+          count[index] = imageCount
+          imageCount++
+        }
+        return count
+        // tslint:disable-next-line: align
+      },
+      []
+    )
     return mainContainer ? (
       <SpinContainer>
         <Spin />
       </SpinContainer>
     ) : (
-      <Container>
-        <Goback onClick={this.handleGoback}>
-          <Icon type="left" />
-          <FormattedMessage {...messages.backToEditNavigation} />
-        </Goback>
-        <ScreenTitle>
-          <FormattedMessage
-            {...messages.title}
-            values={{
-              title: sportName || HOMEPAGE_LABEL
+        <Container>
+          <Goback onClick={this.handleGoback}>
+            <Icon type="left" />
+            <FormattedMessage {...messages.backToEditNavigation} />
+          </Goback>
+          <ScreenTitle>
+            <FormattedMessage
+              {...messages.title}
+              values={{
+                title: sportName || HOMEPAGE_LABEL,
+              }}
+            />
+          </ScreenTitle>
+          <CarouselHeader
+            section={Sections.MAIN_HEADER}
+            onUploadFile={this.handleOnUploadFile}
+            setUrl={setUrlListAction}
+            onSaveHeader={this.handleOnSaveMainHeader}
+            saving={mainHeaderLoader}
+            handleAddMoreImages={this.handleAddCarouselItem}
+            removeImage={removeHeaderAction}
+            openPreview={togglePreviewModalAction}
+            onSetDuration={setDurationAction}
+            setTransition={setTransitionAction}
+            carouselSettings={mainHeaderCarousel}
+            items={mainHeader}
+            loading={mainHeaderLoading}
+            {...{
+              desktopImage,
+              formatMessage,
             }}
           />
-        </ScreenTitle>
-        <CarouselHeader
-          section={Sections.MAIN_HEADER}
-          onUploadFile={this.handleOnUploadFile}
-          setUrl={setUrlListAction}
-          onSaveHeader={this.handleOnSaveMainHeader}
-          saving={mainHeaderLoader}
-          handleAddMoreImages={this.handleAddCarouselItem}
-          removeImage={removeHeaderAction}
-          openPreview={togglePreviewModalAction}
-          onSetDuration={setDurationAction}
-          setTransition={setTransitionAction}
-          carouselSettings={mainHeaderCarousel}
-          items={mainHeader}
-          loading={mainHeaderLoading}
-          {...{
-            desktopImage,
-            formatMessage
-          }}
-        />
-        <CarouselHeader
-          section={Sections.SECONDARY_HEADER}
-          onUploadFile={this.handleOnUploadFile}
-          setUrl={setUrlListAction}
-          onSaveHeader={this.handleOnSaveSecondaryHeader}
-          saving={secondaryHeaderLoader}
-          handleAddMoreImages={this.handleAddCarouselItem}
-          removeImage={removeHeaderAction}
-          openPreview={togglePreviewModalAction}
-          onSetDuration={setDurationAction}
-          setTransition={setTransitionAction}
-          carouselSettings={secondaryHeaderCarousel}
-          items={secondaryHeader}
-          loading={secondaryHeaderLoading}
-          {...{
-            desktopImage,
-            formatMessage
-          }}
-        />
-        <FeaturedProducts
-          {...{
-            formatMessage,
-            products,
-            currentPage,
-            fullCount,
-            limit,
-            selectedItems,
-            productsModalOpen,
-            items
-          }}
-          changePage={this.handleOnChangePage}
-          onSelectItem={this.handleOnSelectItem}
-          onPressDelete={this.handleDeleteFromTable}
-          openModal={openModalAction}
-          setItemsAdd={this.handleAddNewItems}
-        />
-        <Tiles
-          onUploadFile={this.handleOnUploadProductFile}
-          {...{ formatMessage, productTiles }}
-          saving={productTilesLoader}
-          onSave={this.handleOnSaveProductTiles}
-          onChangeText={setTilesTextAction}
-          removeImage={removeTileDataAction}
-          handleAddMoreTiles={this.handleAddMoreTiles}
-        />
-        <CarouselModal
-          visible={previewOpen}
-          items={
-            currentPreview === Sections.MAIN_HEADER
-              ? mainHeader
-              : secondaryHeader
-          }
-          carouselSettings={
-            currentPreview === Sections.MAIN_HEADER
-              ? mainHeaderCarousel
-              : secondaryHeaderCarousel
-          }
-          requestClose={togglePreviewModalAction}
-        />
-      </Container>
-    )
+          <CarouselHeader
+            section={Sections.SECONDARY_HEADER}
+            onUploadFile={this.handleOnUploadFile}
+            setUrl={setUrlListAction}
+            onSaveHeader={this.handleOnSaveSecondaryHeader}
+            saving={secondaryHeaderLoader}
+            handleAddMoreImages={this.handleAddCarouselItem}
+            removeImage={removeHeaderAction}
+            openPreview={togglePreviewModalAction}
+            onSetDuration={setDurationAction}
+            setTransition={setTransitionAction}
+            carouselSettings={secondaryHeaderCarousel}
+            items={secondaryHeader}
+            loading={secondaryHeaderLoading}
+            {...{
+              desktopImage,
+              formatMessage,
+            }}
+          />
+          <RowInput>
+            <Label>
+              <FormattedMessage {...messages.featuredBanner} />
+            </Label>
+            <Buttons>
+              <AddButton onClick={this.handleAddImage}>
+                <FormattedMessage {...messages.addImages} />
+              </AddButton>
+              <AddButton onClick={this.handleAddVideo}>
+                <FormattedMessage {...messages.addVideos} />
+              </AddButton>
+            </Buttons>
+          </RowInput>
+          {loadingBanner &&
+            <LoadingContainer>
+              <Spin />
+            </LoadingContainer>}
+          {!!featuredBanners.length && (
+            <MediaSection>
+              {featuredBanners.map((mediaFile: ProductFile, index: number) => (
+                <Draggable
+                  {...{ index }}
+                  key={index}
+                  id={mediaFile.id}
+                  section="banner"
+                  onDropRow={this.handleOnDropRow}
+                >
+                  <MediaBlock
+                    {...{ index, mediaFile, counter }}
+                    uploadMediaFile={uploadMediaAction}
+                    beforeUpload={this.beforeUploadMedia}
+                    removeMediaFile={this.removeMediaFile}
+                  />
+                </Draggable>
+              ))}
+            </MediaSection>
+          )}
+          <SaveSection>
+            <SaveButton
+              onClick={this.handleSaveBanners}
+            >
+              {formatMessage(messages.save)}
+            </SaveButton>
+          </SaveSection>
+          <FeaturedProducts
+            {...{
+              formatMessage,
+              products,
+              currentPage,
+              fullCount,
+              limit,
+              selectedItems,
+              productsModalOpen,
+              items,
+            }}
+            changePage={this.handleOnChangePage}
+            onSelectItem={this.handleOnSelectItem}
+            onPressDelete={this.handleDeleteFromTable}
+            openModal={openModalAction}
+            setItemsAdd={this.handleAddNewItems}
+          />
+          <Tiles
+            onUploadFile={this.handleOnUploadProductFile}
+            {...{ formatMessage, productTiles }}
+            saving={productTilesLoader}
+            onSave={this.handleOnSaveProductTiles}
+            onChangeText={setTilesTextAction}
+            removeImage={removeTileDataAction}
+            handleAddMoreTiles={this.handleAddMoreTiles}
+          />
+          <CarouselModal
+            visible={previewOpen}
+            items={
+              currentPreview === Sections.MAIN_HEADER
+                ? mainHeader
+                : secondaryHeader
+            }
+            carouselSettings={
+              currentPreview === Sections.MAIN_HEADER
+                ? mainHeaderCarousel
+                : secondaryHeaderCarousel
+            }
+            requestClose={togglePreviewModalAction}
+          />
+        </Container>
+      )
   }
 }
 
 const mapStateToProps = (state: any) => state.get('homepageAdmin').toJS()
 const mapDispatchToProps = {
   ...HomepageAdminActions,
-  ...homepageAdminApiActions
+  ...homepageAdminApiActions,
 }
 
 const HomepageAdminEnhance = compose(
@@ -651,7 +810,9 @@ const HomepageAdminEnhance = compose(
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
   updateProductTilesMutation,
-  connect(mapStateToProps, mapDispatchToProps)
+  saveBannersMutation,
+  connect(mapStateToProps, mapDispatchToProps),
+  DragDropContext(HTML5Backend)
 )(HomepageAdmin)
 
 export default HomepageAdminEnhance

@@ -3,16 +3,21 @@ import { Product, CartItemDetail } from '../../types/common'
 import findIndex from 'lodash/findIndex'
 import has from 'lodash/has'
 import first from 'lodash/first'
+import { getTeamDesignTotal } from './data'
+import get from 'lodash/get'
 
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
   storeDesignId?: string
+  teamStoreItem?: string
+  totalOrder?: number
+  isFixed?: boolean
   designId?: string
   designCode?: string
 }
 
-export const setInitialData = () => {
+export const setInitialData = (query: any) => {
   return async (dispatch: any) => {
     try {
       if (typeof window !== 'undefined') {
@@ -21,13 +26,13 @@ export const setInitialData = () => {
           []
         let cartList: CartItems[] = []
         for (let i = 0; i < cartListFromLS.length; i++) {
-          const item = setItemDetails(cartListFromLS[i])
+          const item = await setItemDetails(cartListFromLS[i], query)
 
           if (i === 0) {
             cartList.push(item)
             continue
           }
-          const indexOfSameProduct = findIndex(cartList, cartItem => {
+          const indexOfSameProduct = findIndex(cartList, (cartItem) => {
             return (
               cartItem.product.id === item.product.id &&
               item.designId === cartItem.designId
@@ -53,20 +58,24 @@ export const setInitialData = () => {
   }
 }
 
-export const saveToStorage = (cart: CartItems[]) => {
+export const saveToStorage = (cart: CartItems[], reset: boolean = false) => {
   return async (dispatch: any) => {
     try {
       localStorage.setItem('cart', JSON.stringify(cart))
-      dispatch(resetReducerData())
+      if (reset) {
+        dispatch(resetReducerData())
+      }
     } catch (error) {
       console.error(error)
     }
   }
 }
 
-const setItemDetails = (cartItem: CartItems) => {
+const setItemDetails = async (cartItem: CartItems, query: any) => {
   const {
     itemDetails,
+    teamStoreItem,
+    isFixed,
     product: { genders, fitStyles, sizeRange }
   } = cartItem
   if (!has(itemDetails[0], 'gender') && genders.length === 1 && genders[0].id) {
@@ -85,6 +94,15 @@ const setItemDetails = (cartItem: CartItems) => {
     sizeRange[0].id
   ) {
     itemDetails[0].size = first(sizeRange)
+  }
+  if (teamStoreItem && isFixed) {
+    const response = await query({
+      query: getTeamDesignTotal,
+      variables: { teamStoreItemId: teamStoreItem },
+      fetchPolicy: 'no-cache'
+    })
+    const totalOrder = get(response, 'data.getTeamDesignTotal.total', 0)
+    cartItem.totalOrder = totalOrder
   }
   return cartItem
 }

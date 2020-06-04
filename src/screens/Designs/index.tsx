@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import get from 'lodash/get'
 import GoogleFontLoader from 'react-google-font-loader'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import { getFonts } from './data'
@@ -17,12 +17,7 @@ import * as designsActions from './actions'
 import { QueryProps, DesignSaved, Font, UserType } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
-import {
-  Container
-  // Row,
-  // Model,
-  // QuickView
-} from './styledComponents'
+import { Container } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 
@@ -33,22 +28,23 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
+  client: any
   user: UserType
   // openQuickViewAction: (index: number) => void
   loadingModel: boolean
   fontsData: any
   phone: boolean
   // Redux actions
-  restoreUserSessionAction: () => void
+  restoreUserSessionAction: (client: any) => void
   setLoadingAction: (loading: boolean) => void
 }
 
 export class Designs extends React.Component<Props, {}> {
   componentWillMount() {
-    const { user } = this.props
+    const { user, client } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
-      restoreUserSessionAction()
+      restoreUserSessionAction(client)
     }
   }
   async componentDidMount() {
@@ -121,6 +117,7 @@ const mapStateToProps = (state: any) => {
 const DesignsEnhance = compose(
   injectIntl,
   getFonts,
+  withApollo,
   connect(mapStateToProps, {
     ...designsActions,
     openQuickViewAction,

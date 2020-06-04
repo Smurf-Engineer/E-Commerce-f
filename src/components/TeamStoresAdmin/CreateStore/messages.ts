@@ -73,9 +73,9 @@ export default defineMessages({
     id: 'components.CreateStoreAdmin.onDemand',
     defaultMessage: 'On Demand'
   },
-  fixedDate: {
-    id: 'components.CreateStoreAdmin.fixedDate',
-    defaultMessage: 'On Demand'
+  batchOrder: {
+    id: 'components.CreateStoreAdmin.batchOrder',
+    defaultMessage: 'Batch Order'
   },
   noUserSelected: {
     id: 'components.CreateStoreAdmin.noUserSelected',
@@ -96,5 +96,13 @@ export default defineMessages({
   save: {
     id: 'components.CreateStoreAdmin.save',
     defaultMessage: 'Save Team Store'
+  },
+  deliveryErrorLabel: {
+    id: 'components.CreateStoreAdmin.deliveryErrorLabel',
+    defaultMessage: 'Delivery date cannot be on a Saturday or Sunday'
+  },
+  accountManager: {
+    id: 'components.CreateStoreAdmin.accountManager',
+    defaultMessage: 'Account Manager'
   }
 })

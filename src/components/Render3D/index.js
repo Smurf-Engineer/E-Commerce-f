@@ -5,6 +5,8 @@ import Icon from 'antd/lib/icon'
 import FontFaceObserver from 'fontfaceobserver'
 import isEqual from 'lodash/isEqual'
 import has from 'lodash/has'
+import cloneDeep from 'lodash/cloneDeep'
+import find from 'lodash/find'
 import get from 'lodash/get'
 import reverse from 'lodash/reverse'
 import shortid from 'shortid'
@@ -213,7 +215,7 @@ class Render3D extends PureComponent {
 
           const texture =
             binding[
-              hasBindingColor ? colorAccessories.bindingColor : bindingColor
+            hasBindingColor ? colorAccessories.bindingColor : bindingColor
             ]
           loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
@@ -467,7 +469,7 @@ class Render3D extends PureComponent {
             if (!!binding) {
               const texture =
                 binding[
-                  colorAccessories.bindingColor || Object.keys(binding)[0]
+                colorAccessories.bindingColor || Object.keys(binding)[0]
                 ]
 
               const bindingObj = textureLoader.load(texture)
@@ -821,6 +823,7 @@ class Render3D extends PureComponent {
             paths.push(el)
             break
           }
+          case CanvasElements.Polygon:
           case CanvasElements.Path: {
             paths.push(el)
             break
@@ -851,8 +854,11 @@ class Render3D extends PureComponent {
       await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
-      this.canvasTexture.getObjects().forEach(el => {
-        el.moveTo(indexes[el.id])
+      const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
+      temporalCanvasTexture.forEach(el => {
+        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(
+          indexes[el.id]
+        )
       })
       this.canvasTexture.renderAll()
       return true

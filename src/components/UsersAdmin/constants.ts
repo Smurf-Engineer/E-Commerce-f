@@ -16,5 +16,7 @@ export const ON_RESET_MODAL = `${namespace}/ON_RESET_MODAL`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_DESIGN = `${namespace}/SET_DESIGN`
 export const CHANGE_NOTE = `${namespace}/CHANGE_NOTE`
+export const SET_SEARCH = `${namespace}/SET_SEARCH`
+export const SET_SEARCH_MANAGER = `${namespace}/SET_SEARCH_MANAGER`
 
 export const NOTE_FORMAT = 'MM/DD/YYYY'

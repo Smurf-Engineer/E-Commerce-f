@@ -24,7 +24,7 @@ import {
   Layout,
   SaveContainer,
   SaveButton,
-  Loading
+  Loading,
 } from './styledComponents'
 import { History } from 'history'
 import logo from '../../assets/jakroo_logo.svg'
@@ -38,10 +38,13 @@ import {
   UploadFile,
   Colors,
   SelectedFonts,
-  HiddenSymbols
+  HiddenSymbols,
+  UserType,
 } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
+import { restoreUserSession } from '../../components/MainLayout/api'
+import { DESIGN_LAB_TOOLS, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
@@ -71,7 +74,10 @@ interface Props {
   loading: boolean
   hiddenSymbols: HiddenSymbols
   selectedFonts: SelectedFonts
+  client: any
+  user: UserType
   onResetReducer: () => void
+  restoreUserSessionAction: (client: any) => void
   saveDesignConfig: (variables: {}) => Promise<any>
   setUploadingAction: (isLoading: boolean) => void
   changeFont: (font: string, active: boolean) => void
@@ -86,6 +92,13 @@ interface Props {
   onTabClick: (selectedIndex: string) => void
 }
 export class DesignTools extends React.Component<Props, {}> {
+  componentWillMount() {
+    const { user, client } = this.props
+    if (typeof window !== 'undefined' && !user) {
+      const { restoreUserSessionAction } = this.props
+      restoreUserSessionAction(client)
+    }
+  }
   componentWillUnmount() {
     const { onResetReducer } = this.props
     onResetReducer()
@@ -103,7 +116,7 @@ export class DesignTools extends React.Component<Props, {}> {
       saveDesignConfig,
       selectedFonts,
       history,
-      setUploadingAction
+      setUploadingAction,
     } = this.props
     try {
       setUploadingAction(true)
@@ -126,7 +139,7 @@ export class DesignTools extends React.Component<Props, {}> {
           arr.push({
             id,
             family,
-            active: selectedFonts[family]
+            active: selectedFonts[family],
           })
           delete selectedFonts[family]
         }
@@ -143,7 +156,9 @@ export class DesignTools extends React.Component<Props, {}> {
       const symbolsToHide = Object.keys(hiddenSymbols)
       const colorsObject = {
         colors: colors.length ? JSON.stringify(colors) : '',
-        stitching: stitchingColors.length ? JSON.stringify(stitchingColors) : ''
+        stitching: stitchingColors.length
+          ? JSON.stringify(stitchingColors)
+          : '',
       }
       const response = await saveDesignConfig({
         variables: {
@@ -151,8 +166,8 @@ export class DesignTools extends React.Component<Props, {}> {
           symbolsToHide,
           symbolsToAdd,
           fontsToUpdate,
-          fontsToAdd
-        }
+          fontsToAdd,
+        },
       })
       message.success(get(response, 'data.saveDesignConfig.message', ''))
       history.push('/admin')
@@ -187,12 +202,19 @@ export class DesignTools extends React.Component<Props, {}> {
       searchClipParam,
       setSearchClipParamAction,
       getGoogleFonts,
+      user = {},
+      history,
       installedFonts,
       selectedTab,
       symbols,
-      onTabClick
+      onTabClick,
     } = this.props
     const { formatMessage } = intl
+    const { permissions } = user
+    const access = permissions ? permissions[DESIGN_LAB_TOOLS] : {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
 
     return (
       <Container>
@@ -239,15 +261,17 @@ export class DesignTools extends React.Component<Props, {}> {
               getGoogleFonts,
               installedFonts,
               selectedTab,
-              onTabClick
+              onTabClick,
             }}
           />
-          <SaveContainer>
-            <SaveButton onClick={this.saveSettings}>
-              {formatMessage(messages.update)}
-            </SaveButton>
-            <Logo src={logo} />
-          </SaveContainer>
+          {access.edit && (
+            <SaveContainer>
+              <SaveButton onClick={this.saveSettings}>
+                {formatMessage(messages.update)}
+              </SaveButton>
+              <Logo src={logo} />
+            </SaveContainer>
+          )}
         </Layout>
       </Container>
     )
@@ -256,8 +280,10 @@ export class DesignTools extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => {
   const publishingTool = state.get('designTools').toJS()
+  const app = state.get('app').toJS()
   return {
-    ...publishingTool
+    ...app,
+    ...publishingTool,
   }
 }
 
@@ -266,21 +292,22 @@ const DesignToolsEnhance = compose(
   injectIntl,
   graphql(getColorsQuery, {
     options: () => ({
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     }),
-    name: 'colorsList'
+    name: 'colorsList',
   }),
   graphql(getFonts, {
     options: () => ({
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     }),
-    name: 'fontsData'
+    name: 'fontsData',
   }),
   graphql(saveDesignConfigMutation, { name: 'saveDesignConfig' }),
   connect(mapStateToProps, {
     ...publishingToolActions,
     ...designToolApi,
-    ...thunkActions
+    ...thunkActions,
+    restoreUserSessionAction: restoreUserSession,
   })
 )(DesignTools)
 

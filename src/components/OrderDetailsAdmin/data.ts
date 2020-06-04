@@ -123,6 +123,9 @@ export const getOrderQuery = gql`
         productTotal
         designName
         designImage
+        salesRepName
+        teamStoreName
+        managerName
         designCode
         bibBraceColor
         flatlock
@@ -140,6 +143,9 @@ export const getOrderQuery = gql`
       taxPst: tax_pst
       taxGst: tax_gst
       taxVat: tax_vat
+      teamStoreId: teamstore_id
+      teamStoreName: teamstore_name
+      email
     }
   }
 `

@@ -4,6 +4,7 @@ export const getOrderQuery = gql`
   query getOrderById($orderId: String!) {
     orderData: getOrder(orderId: $orderId) {
       id
+      status
       orderDate: created_at
       estimatedDate: estimated_date
       paymentMethod: payment_method
@@ -75,6 +76,7 @@ export const getOrderQuery = gql`
         designImage
         designCode
         unitPrice
+        teamStoreName
         productTotal
         teamStoreId
       }
@@ -87,6 +89,10 @@ export const getOrderQuery = gql`
       taxPst: tax_pst
       taxGst: tax_gst
       taxVat: tax_vat
+      confirmed: payment_confirmed
+      teamStoreId: teamstore_id
+      lastDrop: last_drop
+      teamStoreName: teamstore_name
     }
   }
 `

@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'components.TeamStoreDetails.delete',
     defaultMessage: 'Delete'
   },
+  accountManager: {
+    id: 'components.TeamStoreDetails.accountManager',
+    defaultMessage: 'Account Manager'
+  },
   deleteDescription: {
     id: 'components.TeamStoreDetails.deleteDescription',
     defaultMessage: `This action will delete the team store including 

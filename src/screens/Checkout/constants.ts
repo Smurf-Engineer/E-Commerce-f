@@ -39,6 +39,8 @@ export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_VALUE`
 export const SET_COUPON_CODE = `${namespace}/SET_COUPON_CODE`
 export const DELETE_COUPON_CODE = `${namespace}/DELETE_COUPON_CODE`
 export const OPEN_CURRENCY_WARNING = `${namespace}/OPEN_CURRENCY_WARNING`
+export const SET_PAYMENT_ID = `${namespace}/SET_PAYMENT_ID`
+export const REMOVE_CLIENT_SECRET = `${namespace}/REMOVE_CLIENT_SECRET`
 
 // DISCOUNT TYPES
 export const PRODUCT = 'product'
@@ -77,6 +79,10 @@ export const EU_SUBSIDIARY_COUNTRIES = [
   COUNTRY_CODE_IT,
   COUNTRY_CODE_FR
 ]
+
+export const EUROPE = 9
+export const STRIPE = 'stripe'
+export const EU_STRIPE = 'euStripe'
 
 export const quantities = [
   'Personal',

@@ -20,7 +20,8 @@ import {
   cardsQuery,
   addCardMutation,
   updateCardMutation,
-  deleteCardMutation
+  deleteCardMutation,
+  setupIntentQuery
 } from './data'
 import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
@@ -37,6 +38,12 @@ interface Data extends QueryProps {
   userCards: {
     cards: CreditCardData[]
     default: string
+  }
+}
+
+interface SetupIntentData extends QueryProps {
+  setupIntent: {
+    clientSecret: string
   }
 }
 
@@ -57,7 +64,9 @@ interface Props {
   showCardForm: boolean
   listForMyAccount: boolean
   selectedCard: CreditCardData
+  setupIntent: SetupIntentData
   formatMessage: (messageDescriptor: any) => string
+  isEuSubsidiary?: boolean
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
   inputChangeAction: (id: string, value: string) => void
@@ -153,7 +162,9 @@ class MyCards extends React.Component<Props, {}> {
       listForMyAccount,
       setStripeCardDataAction,
       selectCardToPayAction,
-      selectedCard
+      selectedCard,
+      setupIntent,
+      isEuSubsidiary
     } = this.props
 
     const { stripe } = this.state
@@ -167,11 +178,12 @@ class MyCards extends React.Component<Props, {}> {
         </Container>
       )
     }
-
     const userCards = get(data, 'userCards', {})
     const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
-
+    const clientSecret = isEuSubsidiary
+      ? get(setupIntent, 'setupIntent.clientSecret', '')
+      : ''
     return (
       <Container>
         {(listForMyAccount || !!cards.length) && (
@@ -196,7 +208,8 @@ class MyCards extends React.Component<Props, {}> {
                 validFormAction,
                 setModalLoadingAction,
                 setDefaultPaymentCheckedAction,
-                cardAsDefaultPayment
+                cardAsDefaultPayment,
+                clientSecret
               }}
               saveAddress={this.handleOnSaveCard}
               visible={showCardModal}
@@ -204,20 +217,22 @@ class MyCards extends React.Component<Props, {}> {
             />
           </Elements>
         </StripeProvider>
-        <MyCardsList
-          items={cards}
-          {...{
-            formatMessage,
-            idDefaultCard,
-            paymentsRender,
-            listForMyAccount,
-            setStripeCardDataAction,
-            selectCardToPayAction,
-            selectedCard
-          }}
-          showConfirmDelete={this.handleOnShowDeleteCardConfirm}
-          selectCardAsDefault={this.handleOnSelectCardAsDefault}
-        />
+        {!isEuSubsidiary && (
+          <MyCardsList
+            items={cards}
+            {...{
+              formatMessage,
+              idDefaultCard,
+              paymentsRender,
+              listForMyAccount,
+              setStripeCardDataAction,
+              selectCardToPayAction,
+              selectedCard
+            }}
+            showConfirmDelete={this.handleOnShowDeleteCardConfirm}
+            selectCardAsDefault={this.handleOnSelectCardAsDefault}
+          />
+        )}
         <Modal
           visible={showDeleteCardConfirm}
           confirmLoading={deleteLoading}
@@ -287,13 +302,15 @@ class MyCards extends React.Component<Props, {}> {
       cardIdToMutate,
       deleteCard,
       setDeleteLoadingAction,
-      resetReducerDataAction
+      resetReducerDataAction,
+      data: { refetch }
     } = this.props
     setDeleteLoadingAction(true)
     await deleteCard({
       variables: { cardId: cardIdToMutate },
       refetchQueries: [{ query: cardsQuery }]
     })
+    await refetch()
     resetReducerDataAction()
   }
 
@@ -306,7 +323,8 @@ class MyCards extends React.Component<Props, {}> {
     const {
       resetReducerDataAction,
       addNewCard,
-      cardAsDefaultPayment
+      cardAsDefaultPayment,
+      data: { refetch }
     } = this.props
     await addNewCard({
       variables: {
@@ -315,6 +333,7 @@ class MyCards extends React.Component<Props, {}> {
       },
       refetchQueries: [{ query: cardsQuery }]
     })
+    await refetch()
     resetReducerDataAction()
   }
 
@@ -341,17 +360,27 @@ class MyCards extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
+type OwnProps = {
+  isFixedTeamstore?: boolean
+  isEuSubsidiary?: boolean
+}
 const MyCardsEnhance = compose(
-  graphql(cardsQuery),
+  graphql(cardsQuery, {
+    name: 'data',
+    options: (ownprops: OwnProps) => {
+      const { isFixedTeamstore, isEuSubsidiary } = ownprops
+      return {
+        skip: isFixedTeamstore && !isEuSubsidiary
+      }
+    }
+  }),
+  graphql(setupIntentQuery, { name: 'setupIntent' }),
   withLoading,
   withError,
   addCardMutation,
   updateCardMutation,
   deleteCardMutation,
-  connect(
-    mapStateToProps,
-    { ...MyCardsActions }
-  )
+  connect(mapStateToProps, { ...MyCardsActions })
 )(MyCards)
 
 export default MyCardsEnhance

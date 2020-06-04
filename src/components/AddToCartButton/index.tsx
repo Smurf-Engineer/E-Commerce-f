@@ -1,11 +1,11 @@
 /**
  * AddToCartButton Component - Created by cazarez on 02/05/18.
  */
-import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
+import { injectIntl } from 'react-intl'
 import Message from 'antd/lib/message'
 
 import {
@@ -29,13 +29,14 @@ interface CartItems {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   shortId?: string
+  teamStoreName?: string
 }
 
 interface Props {
-  intl: InjectedIntl
   label: string
   renderForThumbnail?: boolean
   item?: CartItems
@@ -44,6 +45,7 @@ interface Props {
   designName?: string
   designImage?: string
   designCode?: string
+  isFixed?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   withoutTop?: boolean
@@ -52,11 +54,16 @@ interface Props {
   myLockerList?: boolean
   orderDetails?: boolean
   fixedPrices?: PriceRange[]
+  teamStoreName?: string
+  hide?: boolean
+  fixedCart?: boolean
+  replaceOrder?: string
+  addToCart: () => void
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
 }
 
-export class AddToCartButton extends React.PureComponent<Props, {}> {
+export class AddToCartButton extends PureComponent<Props, {}> {
   render() {
     const {
       item,
@@ -64,25 +71,26 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       renderForThumbnail,
       withoutTop,
       myLockerList,
-      orderDetails
+      orderDetails,
+      hide
     } = this.props
     const renderView = renderForThumbnail ? (
       <ButtonContainer {...{ myLockerList }} withoutTop={!!withoutTop}>
         <CustomizeButton onClick={this.addToCart}>{label}</CustomizeButton>
       </ButtonContainer>
     ) : (
-      <Container>
-        {orderDetails ? (
-          <ButtonWrapper individual={!!item}>
-            <ReorderButton type="primary" onClick={this.addToCart}>
-              {label}
-            </ReorderButton>
-          </ButtonWrapper>
-        ) : (
-          <StyledButton onClick={this.addToCart}>{label}</StyledButton>
-        )}
-      </Container>
-    )
+        <Container>
+          {orderDetails ? (
+            <ButtonWrapper individual={!!item} {...{ hide }}>
+              <ReorderButton type="primary" onClick={this.addToCart}>
+                {label}
+              </ReorderButton>
+            </ButtonWrapper>
+          ) : (
+              <StyledButton onClick={this.addToCart}>{label}</StyledButton>
+            )}
+        </Container>
+      )
 
     return renderView
   }
@@ -91,9 +99,9 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     const {
       onClick,
       renderForThumbnail,
-      intl,
       item,
       designId,
+      isFixed,
       teamStoreId,
       teamStoreItem,
       designName,
@@ -101,26 +109,34 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       designCode,
       items,
       itemProdPage = false,
-      fixedPrices = []
+      fixedPrices = [],
+      teamStoreName,
+      formatMessage,
+      fixedCart = false,
+      replaceOrder = ''
     } = this.props
     if (renderForThumbnail && item) {
       const itemToAdd = this.getItemWithDetails(
         item,
         designId,
+        isFixed,
         teamStoreId,
         teamStoreItem,
         designName,
         designImage,
         designCode,
         itemProdPage,
-        fixedPrices
+        fixedPrices,
+        teamStoreName,
+        fixedCart,
+        replaceOrder
       )
       this.saveInLocalStorage(itemToAdd)
     } else {
       const canAddToStore = onClick()
       if (!canAddToStore) {
         Message.warning(
-          intl.formatMessage(
+          formatMessage(
             designId
               ? messages.validationMessageProdPage
               : messages.validationMessage
@@ -130,18 +146,22 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       } else {
         if (itemProdPage) {
           if (!item && items && !!items.length) {
-            items.map(i =>
+            items.map((i) =>
               this.saveInLocalStorage(
                 this.getItemWithDetails(
                   i,
                   i.designId,
+                  i.isFixed,
                   i.teamStoreId,
                   i.teamStoreItem,
                   i.designName,
                   i.designImage,
                   i.designCode,
                   itemProdPage,
-                  fixedPrices
+                  fixedPrices,
+                  i.teamStoreName,
+                  fixedCart,
+                  replaceOrder
                 )
               )
             )
@@ -149,13 +169,17 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             const itemToAdd = this.getItemWithDetails(
               item,
               designId,
+              isFixed,
               teamStoreId,
               teamStoreItem,
               designName,
               designImage,
               designCode,
               itemProdPage,
-              fixedPrices
+              fixedPrices,
+              teamStoreName,
+              fixedCart,
+              replaceOrder
             )
             this.saveInLocalStorage(itemToAdd)
           }
@@ -166,13 +190,17 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             this.getItemWithDetails(
               item,
               item.shortId,
+              item.isFixed,
               item.teamStoreId,
               item.teamStoreItem,
               item.designName,
               item.designImage,
               item.designCode,
               false,
-              fixedPrices
+              fixedPrices,
+              item.teamStoreName,
+              fixedCart,
+              replaceOrder
             )
           )
         }
@@ -183,13 +211,17 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   getItemWithDetails = (
     item: CartItems,
     designId = '',
+    isFixed = false,
     teamStoreId = '',
     teamStoreItem = '',
     designName = '',
     designImage = '',
     designCode = '',
     itemProdPage: boolean,
-    fixedPrices: PriceRange[]
+    fixedPrices: PriceRange[],
+    teamStoreName = '',
+    fixedCart: boolean = false,
+    replaceOrder: string = ''
   ) => {
     const details = [] as CartItemDetail[]
     const detail = {
@@ -206,18 +238,22 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       { designName },
       { designImage },
       { designCode },
+      { isFixed },
       { teamStoreId },
       { teamStoreItem },
-      { fixedPrices }
+      { fixedPrices },
+      { teamStoreName },
+      { fixedCart },
+      { replaceOrder }
     )
     return itemToAdd
   }
 
   saveInLocalStorage = (item: CartItems) => {
     const {
-      intl,
       renderForThumbnail,
-      getTotalItemsIncart: countCartItems
+      getTotalItemsIncart: countCartItems,
+      formatMessage
     } = this.props
     const productName = renderForThumbnail
       ? get(item, 'product.name')
@@ -243,7 +279,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       }
       countCartItems()
       Message.success(
-        intl.formatMessage(messages.successfulAddMessage, { name: productName })
+        formatMessage(messages.successfulAddMessage, { name: productName })
       )
     }
   }
@@ -251,7 +287,12 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
 const AddToCartEnhanced = compose(
   injectIntl,
-  connect(null, { getTotalItemsIncart })
+  connect(
+    null,
+    { getTotalItemsIncart },
+    null,
+    { withRef: true }
+  )
 )(AddToCartButton)
 
 export default AddToCartEnhanced

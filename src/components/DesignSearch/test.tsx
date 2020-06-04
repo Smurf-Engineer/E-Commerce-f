@@ -11,7 +11,11 @@ import {
   resetDataAction,
   setNoteAction,
   setLoadingNote,
-  openNoteAction
+  openNoteAction,
+  setSearchRep,
+  setSearchManager,
+  setUserRepAction,
+  setManagerAction
 } from './actions'
 import {
   SET_LOADING,
@@ -20,7 +24,11 @@ import {
   RESET_DATA,
   SET_NOTE,
   SET_LOADING_NOTE,
-  OPEN_NOTES
+  OPEN_NOTES,
+  SET_SEARCH_REP,
+  SET_SEARCH_MANAGER,
+  SET_USER_REP,
+  SET_ACCOUNT_MANAGER
 } from './constants'
 
 describe('Design Search Admin Screen', () => {
@@ -43,6 +51,46 @@ describe('Design Search Admin Screen', () => {
       expect(setNoteAction(text)).toEqual({
         type,
         text
+      })
+    })
+    it('setSearchRep', () => {
+      const type = SET_SEARCH_REP
+      const value = 'Test'
+      expect(setSearchRep(value)).toEqual({
+        type,
+        value
+      })
+    })
+    it('setSearchManager', () => {
+      const type = SET_SEARCH_MANAGER
+      const value = 'Test'
+      expect(setSearchManager(value)).toEqual({
+        type,
+        value
+      })
+    })
+    it('setUserRepAction', () => {
+      const type = SET_USER_REP
+      const userRep = {
+        id: 1,
+        firstName: 'Test',
+        lastName: 'Test'
+      }
+      expect(setUserRepAction(userRep)).toEqual({
+        type,
+        userRep
+      })
+    })
+    it('setManagerAction', () => {
+      const type = SET_ACCOUNT_MANAGER
+      const manager = {
+        id: 1,
+        firstName: 'Test',
+        lastName: 'Test'
+      }
+      expect(setManagerAction(manager)).toEqual({
+        type,
+        manager
       })
     })
     it('setLoadingNote', () => {
@@ -132,6 +180,104 @@ describe('Design Search Admin Screen', () => {
           )
           const customTextValue = designState.get('note')
           expect(customTextValue).toBe(text)
+        })
+      })
+    })
+    describe('SET_SEARCH_REP', () => {
+      describe('Set search rep text value action', () => {
+        it('Handles undefined value in repSearchText', () => {
+          const customInitialValue = initialState.get('repSearchText')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in repSearchText', () => {
+          const customInitialValue = initialState.get('repSearchText')
+          expect(customInitialValue).toBe('')
+        })
+        it('Handles custom values in repSearchText', () => {
+          const value = 'Test'
+          const designState = designSearchAdminReducer(
+            initialState,
+            setSearchRep(value)
+          )
+          const customTextValue = designState.get('repSearchText')
+          expect(customTextValue).toBe(value)
+        })
+      })
+    })
+    describe('SET_SEARCH_MANAGER', () => {
+      describe('Set search manager text value action', () => {
+        it('Handles undefined value in managerSearchText', () => {
+          const customInitialValue = initialState.get('managerSearchText')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in managerSearchText', () => {
+          const customInitialValue = initialState.get('managerSearchText')
+          expect(customInitialValue).toBe('')
+        })
+        it('Handles custom values in managerSearchText', () => {
+          const value = 'Test'
+          const designState = designSearchAdminReducer(
+            initialState,
+            setSearchManager(value)
+          )
+          const customTextValue = designState.get('managerSearchText')
+          expect(customTextValue).toBe(value)
+        })
+      })
+    })
+    describe('SET_USER_REP', () => {
+      describe('Set sales rep user value action', () => {
+        it('Handles undefined value in order', () => {
+          const customInitialValue = initialState.get('order')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles custom values in salesRep in order', () => {
+          const userRep = {
+            id: 1,
+            firstName: 'Test',
+            lastName: 'Test'
+          }
+          const order = {
+            code: 'Test'
+          }
+          const orderState = designSearchAdminReducer(
+            initialState,
+            setOrderAction(order)
+          )
+          const designState = designSearchAdminReducer(
+            orderState,
+            setUserRepAction(userRep)
+          )
+          const customRepValue = designState.getIn(['order', 'salesRep'])
+          expect(customRepValue).toBe(userRep)
+        })
+      })
+    })
+    describe('SET_ACCOUNT_MANAGER', () => {
+      describe('Set search manager text value action', () => {
+        it('Handles undefined value in order', () => {
+          const customInitialValue = initialState.get('order')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles custom values in accountManager in order', () => {
+          const manager = {
+            id: 1,
+            firstName: 'Test',
+            lastName: 'Test'
+          }
+          const order = {
+            code: 'Test'
+          }
+          const orderState = designSearchAdminReducer(
+            initialState,
+            setOrderAction(order)
+          )
+          const designState = designSearchAdminReducer(
+            orderState,
+            setManagerAction(manager)
+          )
+          const customManagerValue = designState.getIn(['order', 'accountManager'])
+          expect(customManagerValue).toBe(manager)
         })
       })
     })

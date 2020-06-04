@@ -14,7 +14,7 @@ import {
   AddInternalButton,
   ScreenTitle,
   SearchInput,
-  OptionsContainer
+  OptionsContainer,
 } from './styledComponents'
 
 import debounce from 'lodash/debounce'
@@ -25,7 +25,7 @@ import EmptyContainer from '../../EmptyContainer'
 import { sorts, QueryProps, User } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getUsersQuery } from './data'
+import { getUsersQuery, getRepUsers, getManagers } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Data extends QueryProps {
@@ -33,6 +33,10 @@ interface Data extends QueryProps {
     fullCount: number
     users: User[]
   }
+}
+
+interface ManagersData extends QueryProps {
+  managersQuery: User[]
 }
 
 interface Props {
@@ -44,6 +48,16 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  canEdit: boolean
+  canSetAdmin: boolean
+  repSearchText: string
+  managerSearchText: string
+  salesRep: Data
+  managers: ManagersData
+  setManager: (value: string, userId: string) => void
+  setUserRep: (value: string, userId: string) => void
+  searchReps: (value: string) => void
+  searchManager: (value: string) => void
   onSortClick: (label: string, sort: sorts) => void
   onChangePage: (page: number) => void
   onSetAdministrator: (id: number) => void
@@ -57,7 +71,7 @@ interface StateProps {
 
 class UsersList extends React.Component<Props, StateProps> {
   state = {
-    searchValue: ''
+    searchValue: '',
   }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchText(this.state.searchValue),
@@ -65,7 +79,7 @@ class UsersList extends React.Component<Props, StateProps> {
   )
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
-      currentTarget: { value }
+      currentTarget: { value },
     } = evt
     this.setState({ searchValue: value }, () => {
       this.raiseSearchWhenUserStopsTyping()
@@ -76,19 +90,29 @@ class UsersList extends React.Component<Props, StateProps> {
       formatMessage,
       orderBy,
       sort,
+      canEdit,
       currentPage,
       data: { usersQuery },
       onSortClick,
+      searchReps,
+      searchManager,
+      setUserRep,
+      setManager,
+      salesRep,
+      managers,
       onChangePage,
       withPagination = true,
       withoutPadding = false,
       onSetAdministrator,
       onAddNewUser,
       searchText,
-      onSelectUser
+      canSetAdmin,
+      onSelectUser,
     } = this.props
 
     const users = get(usersQuery, 'users', []) as User[]
+    const repUsers = get(salesRep, 'repUsers.users', []) as User[]
+    const managersUsers = get(managers, 'managersQuery', []) as User[]
     const fullCount = get(usersQuery, 'fullCount', 0)
 
     if (!users || !users.length) {
@@ -97,7 +121,7 @@ class UsersList extends React.Component<Props, StateProps> {
 
     const header = (
       <MediaQuery maxWidth={768}>
-        {matches => {
+        {(matches) => {
           if (matches) {
             return (
               <Row>
@@ -162,6 +186,18 @@ class UsersList extends React.Component<Props, StateProps> {
                 sort={orderBy === 'netsuite_internal' ? sort : 'none'}
                 {...{ onSortClick }}
               />
+              <HeaderTable
+                id={'sales_rep'}
+                label={formatMessage(messages.salesRep)}
+                sort={orderBy === 'sales_rep' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
+              <HeaderTable
+                id={'account_manager'}
+                label={formatMessage(messages.accountManager)}
+                sort={orderBy === 'account_manager' ? sort : 'none'}
+                {...{ onSortClick }}
+              />
             </Row>
           )
         }}
@@ -175,12 +211,14 @@ class UsersList extends React.Component<Props, StateProps> {
           email,
           firstName,
           lastName,
+          salesRep: repSelected,
+          accountManager: managerSelected,
           socialMethod,
           administrator,
           netsuiteId = '',
           billingCountry,
           createdAt,
-          shortId
+          shortId,
         }: User,
         index: number
       ) => {
@@ -189,17 +227,27 @@ class UsersList extends React.Component<Props, StateProps> {
             key={index}
             {...{
               id,
+              searchReps,
+              searchManager,
+              setUserRep,
+              canSetAdmin,
               email,
               firstName,
+              canEdit,
               lastName,
+              managerSelected,
+              setManager,
               socialMethod,
+              managersUsers,
+              repUsers,
+              repSelected,
               administrator,
               onSetAdministrator,
               netsuiteId,
               billingCountry,
               createdAt,
               onSelectUser,
-              shortId
+              shortId,
             }}
           />
         )
@@ -210,9 +258,11 @@ class UsersList extends React.Component<Props, StateProps> {
       <Container {...{ withoutPadding }}>
         <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>
         <OptionsContainer>
-          <AddInternalButton onClick={onAddNewUser}>
-            {formatMessage(messages.addUser)}
-          </AddInternalButton>
+          {canEdit && (
+            <AddInternalButton onClick={onAddNewUser}>
+              {formatMessage(messages.addUser)}
+            </AddInternalButton>
+          )}
           <SearchInput
             value={this.state.searchValue || searchText}
             onChange={this.handleInputChange}
@@ -243,16 +293,36 @@ interface OwnProps {
   sort?: string
   customLimit?: number
   searchText?: string
+  repSearchText?: string
+  managerSearchText?: string
 }
 
 const UsersListEnhance = compose(
+  graphql(getManagers, {
+    name: 'managers',
+    options: ({ managerSearchText }: OwnProps) => ({
+      variables: {
+        searchText: managerSearchText
+      },
+      fetchPolicy: 'network-only'
+    })
+  }),
+  graphql(getRepUsers, {
+    name: 'salesRep',
+    options: ({ repSearchText }: OwnProps) => ({
+      variables: {
+        text: repSearchText
+      },
+      fetchPolicy: 'network-only'
+    })
+  }),
   graphql(getUsersQuery, {
     options: ({
       currentPage,
       orderBy,
       sort,
       customLimit,
-      searchText
+      searchText,
     }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : USERS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
@@ -262,11 +332,11 @@ const UsersListEnhance = compose(
           offset,
           order: orderBy,
           orderAs: sort,
-          searchText
+          searchText,
         },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       }
-    }
+    },
   }),
   withError,
   withLoading

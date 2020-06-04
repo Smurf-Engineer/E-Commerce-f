@@ -80,5 +80,21 @@ export default defineMessages({
   notFound: {
     id: 'components.OrderDetails.notFound',
     defaultMessage: 'Order not found'
+  },
+  orderPoint: {
+    id: 'components.OrderDetails.orderPoint',
+    defaultMessage: 'Order Point'
+  },
+  cart: {
+    id: 'components.OrderDetails.cart',
+    defaultMessage: 'Cart'
+  },
+  lastUpdated: {
+    id: 'components.OrderDetails.lastUpdated',
+    defaultMessage: 'Last Updated'
+  },
+  email: {
+    id: 'components.OrderDetails.email',
+    defaultMessage: 'Email'
   }
 })

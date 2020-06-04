@@ -32,10 +32,12 @@ import {
   Responsive,
   SimpleFont,
   UserInfo,
-  ModelVariant
+  ModelVariant,
+  PositionSize
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
+import PROAssistButton from '../../assets/PROAssist-button.svg'
 import saveIcon from '../../assets/save-icon.svg'
 import {
   Container,
@@ -54,6 +56,7 @@ import {
   CanvasElements
 } from '../../screens/DesignCenter/constants'
 import messages from './messages'
+import { FormattedMessage } from 'react-intl'
 
 const SVG_FILE = 'image/svg+xml'
 const POSCRIPT_FILE = 'application/postscript'
@@ -341,6 +344,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         <Spin />
       </LoadingContainer>
     )
+    const activeEl = this.getActiveElement()
+    const layers = this.getLayers()
     return (
       <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
@@ -348,6 +353,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             {...{
               palettes,
               colorBlock,
+              activeEl,
               colorBlockHovered,
               onSelectColorBlock,
               onHoverColorBlock,
@@ -364,7 +370,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onUpdateText,
               formatMessage,
               productName,
-              canvas,
+              layers,
               selectedElement,
               textFormat,
               artFormat,
@@ -401,6 +407,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onOpenColorChart,
               tutorialPlaylist
             }}
+            hoverBlurLayer={this.hoverBlurLayer}
+            moveLayer={this.moveLayer}
+            onDeleteLayer={this.onDeleteLayer}
+            onSelectEl={this.setSelectedLayer}
+            onPositionChange={this.handleApplyPosition}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
             onApplyImage={this.handleOnApplyImage}
@@ -415,6 +426,19 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             </BackCircle>
             <MobileTitle>{productName}</MobileTitle>
             <ActionMobileItems>
+              {!proAssistId &&
+                <MobileItem wide={true} onClick={openDesignCheckModal}>
+                  <ButtonImg src={PROAssistButton} />
+                  <ButtonText secondary={true}>
+                    <FormattedMessage
+                      {...messages.proAssist}
+                      values={{
+                        proLabel: <b>{formatMessage(messages.proLabel)}</b>
+                      }}
+                    />
+                  </ButtonText>
+                </MobileItem>
+              }
               <MobileItem onClick={this.handleOnAddArt}>
                 <ButtonImg src={artIcon} />
                 <ButtonText>{formatMessage({ ...messages.addArt })}</ButtonText>
@@ -500,8 +524,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             }}
           />
         ) : (
-          loadingView
-        )}
+            loadingView
+          )}
         {isMobile && !loadingData && showRender3d && !loadingModel && (
           <MobileSelectColors
             onSelectStitchingColor={setStitchingColorAction}
@@ -534,6 +558,50 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       </Container>
     )
   }
+
+  getActiveElement = () => {
+    const { selectedElement } = this.props
+    let activeEl = {}
+    if (selectedElement && this.render3D) {
+      const active = this.render3D.getElementById(selectedElement, true)
+      const { top = 0, left = 0, angle = 0, width = 1, height = 1 } = active
+      activeEl = {
+        height,
+        width,
+        horizontal: left,
+        vertical: top,
+        rotation: angle
+      }
+    }
+    return activeEl
+  }
+
+  hoverBlurLayer = (id: string, hover: boolean) => {
+    if (this.render3D) {
+      this.render3D.hoverBlur(id, hover)
+      this.forceUpdate()
+    }
+  }
+
+  moveLayer = (id: string, index: number) => {
+    if (this.render3D) {
+      this.render3D.changeLayerIndex(id, index)
+      this.forceUpdate()
+    }
+  }
+
+  getLayers = () => {
+    const { canvas } = this.props
+    const layers = this.render3D
+      ? this.render3D.getLayersIndexed(canvas)
+      : {
+        image: {},
+        path: {},
+        text: {}
+      }
+    return layers
+  }
+
   handleOnSave = () => {
     this.render3D.takeDesignPicture()
   }
@@ -592,6 +660,26 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         fileId
       })
       onSelectedItem({ id: fileId, type: CanvasElements.Path }, name || '')
+    }
+  }
+
+  setSelectedLayer = (id: string, type?: string) => {
+    if (this.render3D) {
+      this.render3D.setSelectedLayer(id, type)
+    }
+  }
+
+  onDeleteLayer = (id: string) => {
+    if (this.render3D) {
+      this.render3D.deleteLayer(id)
+    }
+  }
+
+  handleApplyPosition = (data: PositionSize, type: string) => {
+    const { selectedElement } = this.props
+    if (selectedElement && this.render3D) {
+      this.render3D.applyPosition(data, type)
+      this.forceUpdate()
     }
   }
 }

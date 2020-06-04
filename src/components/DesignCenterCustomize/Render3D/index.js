@@ -94,7 +94,11 @@ import {
   AMBIENT_LIGHT_INTENSITY,
   DIRECTIONAL_LIGHT_INTENSITY
 } from '../../../constants'
-import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
+import {
+  BLACK,
+  SELECTION_3D_AREA,
+  RED_TRANSPARENT
+} from '../../../theme/colors'
 import {
   Changes,
   CustomizeTabs,
@@ -110,6 +114,7 @@ import {
   clickOnCorner,
   getTextCanvasElement,
   getClipArtCanvasElement,
+  downloadSVG,
   getImageCanvas
 } from './utils'
 import HelpModal from '../../Common/JakrooModal'
@@ -280,7 +285,10 @@ class Render3D extends PureComponent {
     /* Scene and light */
     const scene = new THREE.Scene()
     const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, DIRECTIONAL_LIGHT_INTENSITY)
+    const directionalLight = new THREE.DirectionalLight(
+      0xffffff,
+      DIRECTIONAL_LIGHT_INTENSITY
+    )
     directionalLight.position.copy(camera.position)
 
     scene.add(camera)
@@ -421,7 +429,8 @@ class Render3D extends PureComponent {
       const fonts = []
       const indexes = {}
       const { objects } = JSON.parse(object)
-      objects.forEach((el, index) => {
+      let index = 0
+      for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
         el.hasRotatingPoint = false
@@ -436,7 +445,7 @@ class Render3D extends PureComponent {
           }
           case CanvasElements.Group: {
             if (el.isClipArtGroup) {
-              const element = getClipArtCanvasElement(el)
+              const element = await getClipArtCanvasElement(el)
               canvas.path[elId] = element
               paths.push(el)
             } else {
@@ -446,8 +455,9 @@ class Render3D extends PureComponent {
             }
             break
           }
+          case CanvasElements.Polygon:
           case CanvasElements.Path: {
-            const element = getClipArtCanvasElement(el)
+            const element = await getClipArtCanvasElement(el)
             canvas.path[elId] = element
             paths.push(el)
             break
@@ -462,7 +472,8 @@ class Render3D extends PureComponent {
           default:
             break
         }
-      })
+        index++
+      }
       elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
@@ -893,6 +904,26 @@ class Render3D extends PureComponent {
     }
   }
 
+  getLayersIndexed = canvas => {
+    if (canvas && this.canvasTexture) {
+      const objects = this.canvasTexture.getObjects() || []
+      objects.forEach((obj, index) => {
+        const { type, id } = obj
+        if (canvas[type] && canvas[type][id]) {
+          canvas[type][id].index = index
+        }
+      })
+    }
+    return canvas
+  }
+
+  changeLayerIndex = (id, index) => {
+    if (this.canvasTexture) {
+      find(this.canvasTexture.getObjects(), obj => obj.id === id).moveTo(index)
+      this.canvasTexture.renderAll()
+    }
+  }
+
   changeExtraColor = (texture, color) => {
     const { bibBraceIndex, zipperIndex, bindingIndex } = this.state
     const object = this.scene.getObjectByName(MESH_NAME)
@@ -1128,12 +1159,43 @@ class Render3D extends PureComponent {
     }
   }
 
+  rotateByAngle = (newAngle, idElement) => {
+    const element = this.getElementById(idElement)
+    const constraintPosition = element.translateToOriginPoint(
+      element.getCenterPoint(),
+      CENTER_ORIGIN,
+      CENTER_ORIGIN
+    )
+    element.set({
+      angle: newAngle
+    })
+    element.setPositionByOrigin(
+      constraintPosition,
+      CENTER_ORIGIN,
+      CENTER_ORIGIN
+    )
+    element.setCoords()
+  }
+
   rotateCanvasElement = (canvasElement, applyNewRotation = false) => {
     const {
-      state: { id, oldRotation, newRotation, currentTransform }
+      state: {
+        id,
+        fromTool,
+        oldAngle,
+        angle,
+        oldRotation,
+        newRotation,
+        currentTransform
+      }
     } = canvasElement
-    const { x, y } = applyNewRotation ? newRotation : oldRotation
-    this.rotateObject(x, y, currentTransform, id)
+    if (fromTool) {
+      const newAngle = applyNewRotation ? angle : oldAngle
+      this.rotateByAngle(newAngle, id)
+    } else {
+      const { x, y } = applyNewRotation ? newRotation : oldRotation
+      this.rotateObject(x, y, currentTransform, id)
+    }
   }
 
   styleCanvasElement = (canvasElement, newStyle = false) => {
@@ -1160,14 +1222,14 @@ class Render3D extends PureComponent {
     if (element) {
       let scaleX = oldScaleX
       let scaleY = oldScaleY
-      if (newScale) {
+      if (newScale || newScaleX < 0) {
         scaleX = newScaleX
         scaleY = newScaleY
       }
       element
         .set({
-          scaleX: Math.max(0, scaleX),
-          scaleY: Math.max(0, scaleY)
+          scaleX,
+          scaleY
         })
         .setCoords()
       this.canvasTexture.renderAll()
@@ -1240,7 +1302,6 @@ class Render3D extends PureComponent {
 
   handleOnClickClear = () => this.props.onClearAction()
 
-  handleOnChange3DModel = () => {}
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
@@ -1264,6 +1325,12 @@ class Render3D extends PureComponent {
         design
       } = this.props
       if (!isMobile) {
+        this.canvasTexture.forEachObject(el => {
+          el.set({
+            opacity: 1,
+            backgroundColor: null
+          })
+        })
         this.canvasTexture.discardActiveObject()
         this.canvasTexture.renderAll()
       }
@@ -1376,37 +1443,6 @@ class Render3D extends PureComponent {
     )*/
     }
 
-    let widthInCm = 0
-    let heightInCm = 0
-    let rotation = 0
-    const selectedGraphicElement =
-      canvas.image[selectedElement] ||
-      canvas.path[selectedElement] ||
-      canvas.text[selectedElement]
-    if (!!selectedGraphicElement && this.canvasTexture) {
-      const activeEl = this.getElementById(selectedElement)
-      if (selectedGraphicElement.imageSize) {
-        const { width, height } = this.getSizeInCentimeters(
-          selectedGraphicElement
-        )
-        widthInCm = width
-        heightInCm = height
-      } else {
-        const { width, height } = this.getSizeInCentimeters({
-          imageSize: { width: activeEl.width, height: activeEl.height },
-          scaleX: activeEl.scaleX,
-          scaleY: activeEl.scaleY
-        })
-        widthInCm = width
-        heightInCm = height
-      }
-      if (activeEl.angle > 180) {
-        rotation = Math.round(activeEl.angle - 360)
-      } else {
-        rotation = Math.round(activeEl.angle)
-      }
-    }
-
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
         <Row>
@@ -1444,18 +1480,6 @@ class Render3D extends PureComponent {
             {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>
-        {!!selectedGraphicElement && (
-          <MeasurementBox>
-            <MeasurementLabel>
-              <FormattedMessage {...messages.sizeMessage} />
-            </MeasurementLabel>
-            <Measurement>{`${widthInCm} x ${heightInCm} cm`}</Measurement>
-            <MeasurementLabel>
-              <FormattedMessage {...messages.rotationMessage} />
-            </MeasurementLabel>
-            <Measurement>{`${rotation}º`}</Measurement>
-          </MeasurementBox>
-        )}
         <Render
           id="render-3d"
           innerRef={container => (this.container = container)}
@@ -1565,6 +1589,106 @@ class Render3D extends PureComponent {
     }
   }
 
+  setSelectedLayer = (id, type) => {
+    const { onSelectEl } = this.props
+    if (id) {
+      const el = this.getElementById(id)
+      this.controls.enabled = false
+      this.hoverBlur(id, false)
+      this.canvasTexture.setActiveObject(el)
+    } else {
+      this.canvasTexture.discardActiveObject()
+    }
+    onSelectEl(id, type)
+    this.canvasTexture.renderAll()
+  }
+
+  hoverBlur = (id, hover) => {
+    const el = this.getElementById(id)
+    const opacity = hover ? 0.5 : 1
+    const backgroundColor = hover ? RED_TRANSPARENT : null
+    el.set({ opacity, backgroundColor })
+    this.canvasTexture.renderAll()
+  }
+
+  deleteLayer = id => {
+    const el = this.getElementById(id)
+    this.deleteElement(el)
+    this.canvasTexture.renderAll()
+  }
+
+  applyPosition = (data, type) => {
+    const activeEl = this.canvasTexture.getActiveObject()
+    if (activeEl) {
+      const {
+        left: oldLeft,
+        top: oldTop,
+        scaleX: oldScaleX,
+        scaleY: oldScaleY,
+        flipX: oldFlipX,
+        angle: oldAngle
+      } = activeEl
+      const oldValues = {
+        oldAngle,
+        oldLeft,
+        oldTop,
+        oldScaleX,
+        oldScaleY,
+        oldFlipX
+      }
+      const { selectedElement, canvas } = this.props
+      const selectedGraphicElement =
+        canvas.image[selectedElement] ||
+        canvas.path[selectedElement] ||
+        canvas.text[selectedElement]
+      const { width: elmWidth, height: elmHeight, angle } = activeEl
+      let width = elmWidth
+      let height = elmHeight
+      if (selectedGraphicElement && selectedGraphicElement.imageSize) {
+        const {
+          imageSize: { width: imageWidth, height: imageHeight }
+        } = selectedGraphicElement
+        width = imageWidth
+        height = imageHeight
+      }
+      const {
+        width: cmWidth,
+        height: cmHeight,
+        rotation,
+        horizontal,
+        vertical
+      } = data
+      const { scaleX, scaleY } = this.getSizeInPixels(
+        cmWidth,
+        cmHeight,
+        width,
+        height
+      )
+      const constraintPosition = activeEl.translateToOriginPoint(
+        activeEl.getCenterPoint(),
+        CENTER_ORIGIN,
+        CENTER_ORIGIN
+      )
+      activeEl.set({
+        scaleX,
+        scaleY,
+        left: horizontal,
+        top: vertical,
+        angle: rotation
+      })
+      if (angle !== rotation) {
+        activeEl.setPositionByOrigin(
+          constraintPosition,
+          CENTER_ORIGIN,
+          CENTER_ORIGIN
+        )
+      }
+      activeEl.setCoords()
+      this.canvasTexture.renderAll()
+      this.storeAction(type, oldValues)
+    }
+  }
+
   applyCanvasEl = canvasEl => {
     if (this.canvasTexture) {
       const { isFirstAdd } = this.state
@@ -1610,6 +1734,7 @@ class Render3D extends PureComponent {
           this.applyGroup(src, position, id, rotation)
           break
         }
+      case CanvasElements.Polygon:
       case CanvasElements.Path:
         const source = src || fileUrl
         this.applyClipArt(source, style, position, id, fileId, rotation)
@@ -1808,27 +1933,30 @@ class Render3D extends PureComponent {
           shape.forEachObject(o => o.set({ ...style }))
         }
         this.canvasTexture.add(shape)
-
-        const el = {
-          id,
-          fill: BLACK,
-          stroke: BLACK,
-          strokeWidth: 0,
-          ...style,
-          lock: false
-        }
-        position.scaleX = scaleX
-        position.scaleY = scaleY
-        if (!idElement) {
-          onApplyCanvasEl(el, CanvasElements.Path, false, {
+        downloadSVG(src).then(svg => {
+          const el = {
+            id,
             src,
-            style,
-            position,
-            fileId
-          })
-          this.canvasTexture.setActiveObject(shape)
-        }
-        this.canvasTexture.renderAll()
+            svg,
+            fill: BLACK,
+            stroke: BLACK,
+            strokeWidth: 0,
+            ...style,
+            lock: false
+          }
+          position.scaleX = scaleX
+          position.scaleY = scaleY
+          if (!idElement) {
+            onApplyCanvasEl(el, CanvasElements.Path, false, {
+              src,
+              style,
+              position,
+              fileId
+            })
+            this.canvasTexture.setActiveObject(shape)
+          }
+          this.canvasTexture.renderAll()
+        })
       })
     }
   }
@@ -1941,6 +2069,7 @@ class Render3D extends PureComponent {
           }
           break
         }
+      case CanvasElements.Polygon:
       case CanvasElements.Path:
         {
           const { fill, stroke, strokeWidth, fileId, fileUrl } = el
@@ -1971,9 +2100,28 @@ class Render3D extends PureComponent {
     this.canvasTexture.remove(el)
   }
 
-  getElementById = id => {
-    const objects = this.canvasTexture.getObjects()
-    return find(objects, { id })
+  getElementById = (id, inCentimeters) => {
+    if (this.canvasTexture) {
+      const objects = this.canvasTexture.getObjects()
+      const element = find(objects, { id })
+      if (inCentimeters) {
+        const { canvas } = this.props
+        const selectedGraphicElement =
+          canvas.image[id] || canvas.path[id] || canvas.text[id] || {}
+        const imageSize = selectedGraphicElement.imageSize || {
+          width: element.width,
+          height: element.height
+        }
+        const { width, height } = this.getSizeInCentimeters({
+          imageSize,
+          scaleX: element.scaleX,
+          scaleY: element.scaleY
+        })
+        return { ...element, width, height }
+      }
+      return element
+    }
+    return {}
   }
 
   deleteElementById = id => {
@@ -2014,6 +2162,67 @@ class Render3D extends PureComponent {
 
   setLayerElement = el => {
     this.canvasTexture.bringToFront(el)
+  }
+
+  storeAction = (action, oldValues) => {
+    const activeEl = this.canvasTexture.getActiveObject()
+    const { id } = activeEl
+    switch (action) {
+      case SCALE_ACTION:
+        const {
+          scaleX: newScaleX,
+          flipX,
+          scaleY,
+          type,
+          isClipArtGroup
+        } = activeEl
+        const { oldScaleX: scaleXOld, oldScaleY, oldFlipX } = oldValues
+        const canvasType =
+          type === CanvasElements.Group && !isClipArtGroup
+            ? CanvasElements.Image
+            : type
+        const oldScaleX = oldFlipX ? scaleXOld * -1 : scaleXOld
+        const scaleX = flipX ? newScaleX * -1 : newScaleX
+        if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
+          const { onCanvasElementResized } = this.props
+          onCanvasElementResized({
+            id,
+            elementType: canvasType,
+            oldScaleX,
+            oldScaleY,
+            scaleX,
+            scaleY
+          })
+        }
+        break
+      case DRAG_ACTION:
+        const { left, top } = activeEl
+        const { oldLeft, oldTop } = oldValues
+        if (left !== oldLeft || top !== oldTop) {
+          const { onCanvasElementDragged } = this.props
+          onCanvasElementDragged({
+            id,
+            oldLeft,
+            oldTop,
+            left,
+            top
+          })
+        }
+        break
+      case ROTATE_ACTION:
+        const { oldAngle } = oldValues
+        const { angle } = activeEl
+        const { onCanvasElementRotated } = this.props
+        if (oldAngle != angle) {
+          onCanvasElementRotated({
+            id,
+            fromTool: true,
+            oldAngle,
+            angle
+          })
+        }
+        break
+    }
   }
 
   onMouseUp = evt => {
@@ -2169,6 +2378,7 @@ class Render3D extends PureComponent {
             case CanvasElements.Group:
               this.applyGroup(el.file, { left, top })
               break
+            case CanvasElements.Polygon:
             case CanvasElements.Path:
               this.applyClipArt(
                 el.url,
@@ -2483,9 +2693,20 @@ class Render3D extends PureComponent {
     const scaleYTemp = scaleY / scaleFactorY
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
-    size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
-    size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
+    size.width = (scaledWidth * CM_PER_INCH) / DPI
+    size.height = (scaledHeight * CM_PER_INCH) / DPI
     return size
+  }
+
+  getSizeInPixels = (cmWidth, cmHeight, width, height) => {
+    const { scaleFactorX, scaleFactorY } = this.state
+    const scaledWidth = ((cmWidth || 1) * DPI) / CM_PER_INCH
+    const scaleXTemp = scaledWidth / width
+    const scaleX = scaleFactorX * scaleXTemp
+    const scaledHeight = ((cmHeight || 1) * DPI) / CM_PER_INCH
+    const scaleYTemp = scaledHeight / height
+    const scaleY = scaleFactorY * scaleYTemp
+    return { scaleX, scaleY }
   }
 }
 

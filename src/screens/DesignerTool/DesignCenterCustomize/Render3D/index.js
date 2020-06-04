@@ -246,6 +246,7 @@ class Render3D extends PureComponent {
             }
             break
           }
+          case CanvasElements.Polygon:
           case CanvasElements.Path: {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element

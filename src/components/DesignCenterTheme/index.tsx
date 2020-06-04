@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
+import queryString from 'query-string'
 import messages from './messages'
 import withLoading from '../WithLoadingData'
 import { QueryProps, ThemeModalType, Theme } from '../../types/common'
@@ -25,32 +26,44 @@ interface Props {
   loadingModel: boolean
   designHasChanges: boolean
   productId: number
+  history: History
   isMobile: boolean
+  style?: string
   onSelectTheme: (id: number, name?: string) => void
   formatMessage: (messageDescriptor: any) => string
   openNewThemeModalAction: (open: boolean, themeId?: number) => void
 }
 
-export const DesignCenterGrid = ({
-  data,
-  onSelectTheme,
-  formatMessage,
-  currentTheme,
-  themeModalData: { openNewThemeModal, themeId },
-  openNewThemeModalAction,
-  designHasChanges,
-  productId
-}: Props) => {
-  if (data.error) {
-    // TODO: Handle error.
-    return <div>Error</div>
+export class DesignCenterGrid extends React.Component<Props, {}> {
+  componentDidUpdate() {
+    const { style, data, onSelectTheme, currentTheme } = this.props
+    if (style && data && data.themes && currentTheme === -1) {
+      const theme = find(
+        data.themes,
+        elem => elem.name.toLowerCase() === style.toLowerCase()
+      )
+      if (theme) {
+        const { id, name } = theme
+        onSelectTheme(id, name)
+      }
+    }
   }
-
-  const selectTheme = () => {
+  selectTheme = () => {
+    const {
+      onSelectTheme,
+      themeModalData: { themeId }
+    } = this.props
     onSelectTheme(themeId)
   }
-
-  const handleOnSelectTheme = (id: number) => {
+  handleOnSelectTheme = (id: number) => {
+    const {
+      data,
+      history,
+      currentTheme,
+      onSelectTheme,
+      designHasChanges,
+      openNewThemeModalAction
+    } = this.props
     if (currentTheme !== -1 && designHasChanges) {
       openNewThemeModalAction(true, id)
       return
@@ -60,44 +73,61 @@ export const DesignCenterGrid = ({
       'name',
       ''
     )
+    const {
+      location: { pathname, search }
+    } = history
+    const { id: designId } = queryString.parse(search)
+    const themeParam = encodeURIComponent(themeName)
+    history.push(`${pathname}?id=${designId}&style=${themeParam}`)
     onSelectTheme(id, themeName)
   }
-
-  const cancelReselectTheme = () => {
+  cancelReselectTheme = () => {
+    const { openNewThemeModalAction } = this.props
     openNewThemeModalAction(false)
   }
+  render() {
+    const {
+      data,
+      formatMessage,
+      themeModalData: { openNewThemeModal }
+    } = this.props
+    if (data.error) {
+      // TODO: Handle error.
+      return <div>Error</div>
+    }
 
-  const { themes = [] } = data
-  const list = themes.map(({ id, image, name }, index) => (
-    <ThemeItem
-      key={index}
-      {...{ id, name, image }}
-      onClick={handleOnSelectTheme}
-    />
-  ))
-  return (
-    <Container>
-      <Row>{list}</Row>
-      <Modal
-        visible={openNewThemeModal}
-        title={<ModalTitle title={formatMessage(messages.modalNewTheme)} />}
-        footer={
-          <ModalFooter
-            onOk={selectTheme}
-            onCancel={cancelReselectTheme}
-            {...{ formatMessage }}
-          />
-        }
-        closable={false}
-        maskClosable={false}
-        destroyOnClose={true}
-      >
-        <ModalMessage>
-          {formatMessage(messages.modalNewThemeMessage)}
-        </ModalMessage>
-      </Modal>
-    </Container>
-  )
+    const { themes = [] } = data
+    const list = themes.map(({ id, image, name }, index) => (
+      <ThemeItem
+        key={index}
+        {...{ id, name, image }}
+        onClick={this.handleOnSelectTheme}
+      />
+    ))
+    return (
+      <Container>
+        <Row>{list}</Row>
+        <Modal
+          visible={openNewThemeModal}
+          title={<ModalTitle title={formatMessage(messages.modalNewTheme)} />}
+          footer={
+            <ModalFooter
+              onOk={this.selectTheme}
+              onCancel={this.cancelReselectTheme}
+              {...{ formatMessage }}
+            />
+          }
+          closable={false}
+          maskClosable={false}
+          destroyOnClose={true}
+        >
+          <ModalMessage>
+            {formatMessage(messages.modalNewThemeMessage)}
+          </ModalMessage>
+        </Modal>
+      </Container>
+    )
+  }
 }
 
 const DesignCenterGridWithData = compose(

@@ -47,11 +47,11 @@ export default defineMessages({
   },
   modelNameLabel: {
     id: 'screens.DesignSearch.modelNameLabel',
-    defaultMessage: 'Model Name: {modelName}'
+    defaultMessage: 'Model Name:'
   },
   designNameLabel: {
     id: 'screens.DesignSearch.designNameLabel',
-    defaultMessage: 'Design Name: {name}'
+    defaultMessage: 'Design Name:'
   },
   proAssistNotes: {
     id: 'screens.DesignSearch.proAssistNotes',
@@ -64,5 +64,25 @@ export default defineMessages({
   preflight: {
     id: 'screens.DesignSearch.preflight',
     defaultMessage: 'Pre Flight check'
+  },
+  salesRep: {
+    id: 'screens.DesignSearch.salesRep',
+    defaultMessage: 'Sales Rep'
+  },
+  accountManager: {
+    id: 'screens.DesignSearch.accountManager',
+    defaultMessage: 'Account Manager'
+  },
+  designCode: {
+    id: 'screens.DesignSearch.designCode',
+    defaultMessage: 'JV2 #:'
+  },
+  legacy: {
+    id: 'screens.DesignSearch.legacy',
+    defaultMessage: 'Legacy #:'
+  },
+  locker: {
+    id: 'screens.DesignSearch.locker',
+    defaultMessage: 'Locker:'
   }
 })

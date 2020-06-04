@@ -11,7 +11,7 @@ import { RouteComponentProps, Route } from 'react-router-dom'
 import {
   restoreUserSession,
   saveUserSession,
-  deleteUserSession
+  deleteUserSession,
 } from '../../components/MainLayout/api'
 import { Login } from './Login'
 import { MAIN_TITLE } from '../../constants'
@@ -21,6 +21,8 @@ import ProductCatalog from '../../components/ProductCatalog'
 import ProductInternalsAdmin from '../../components/ProductInternalsAdmin'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
+import RoleList from '../../components/RoleList'
+import SalesRep from '../../components/SalesRep'
 import TeamStoresAdmin from '../../components/TeamStoresAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
 import DesignLabAdmin from '../../components/DesignLabAdmin'
@@ -44,7 +46,7 @@ import {
   LogoIcon,
   DesignerLink,
   Content,
-  LoadingContainer
+  LoadingContainer,
 } from './styledComponents'
 import { UserType } from '../../types/common'
 import Helmet from 'react-helmet'
@@ -66,8 +68,8 @@ interface Props extends RouteComponentProps<any> {
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
   setCurrentScreenAction: (screen: string) => void
   clearReducerAction: () => void
-  restoreUserSessionAction: () => void
-  saveUserSessionAction: (user: object) => void
+  restoreUserSessionAction: (client: any) => void
+  saveUserSessionAction: (user: object, client: any) => void
   deleteUserSessionAction: () => void
   requestClose: () => void
   loginWithEmail: (variables: {}) => void
@@ -89,12 +91,13 @@ export class Admin extends React.Component<Props, {}> {
   componentWillMount() {
     const {
       user,
+      client,
       setDefaultScreenAction,
-      location: { pathname }
+      location: { pathname },
     } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
-      restoreUserSessionAction()
+      restoreUserSessionAction(client)
       setDefaultScreenAction(keys[pathname])
     }
   }
@@ -102,13 +105,14 @@ export class Admin extends React.Component<Props, {}> {
   onLogout = () => {
     const {
       client: { cache },
-      deleteUserSessionAction
+      deleteUserSessionAction,
     } = this.props
     cache.reset()
     deleteUserSessionAction()
   }
   login = async (user: any) => {
-    await saveUserSession(user)
+    const { client } = this.props
+    await saveUserSession(user, client)
   }
 
   getScreenComponent = (screen: string) => {
@@ -119,7 +123,7 @@ export class Admin extends React.Component<Props, {}> {
       intl,
       history,
       loading,
-      forgotPasswordOpen
+      forgotPasswordOpen,
     } = this.props
     if (loading) {
       return (
@@ -141,71 +145,108 @@ export class Admin extends React.Component<Props, {}> {
         </Content>
       )
     }
+    const { permissions = {} } = user
     return (
-      <AdminLayout {...{ history, intl, screen }} onLogout={this.onLogout}>
+      <AdminLayout
+        {...{ history, intl, screen, permissions }}
+        onLogout={this.onLogout}
+      >
         <Route
           exact={true}
           path="/admin"
-          render={() => <OrderHistoryAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <OrderHistoryAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           exact={true}
           path="/admin/discounts"
-          render={() => <DiscountsAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <DiscountsAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           exact={true}
           path="/admin/pro-assist"
-          render={() => <ProAssist {...{ history, formatMessage }} />}
+          render={() => (
+            <ProAssist {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path={['/admin/products', '/admin/product']}
-          render={() => <ProductCatalog {...{ history, formatMessage }} />}
+          render={() => (
+            <ProductCatalog {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/products-internal"
           render={() => (
-            <ProductInternalsAdmin {...{ history, formatMessage }} />
+            <ProductInternalsAdmin
+              {...{ history, formatMessage, permissions }}
+            />
           )}
         />
         <Route
           path="/admin/design-lab"
-          render={() => <DesignLabAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <DesignLabAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/design-search"
-          render={() => <DesignSearchAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <DesignSearchAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/edit-navigation"
-          render={() => <EditNavigationAdmin {...{ history }} />}
+          render={() => <EditNavigationAdmin {...{ history, permissions }} />}
         />
         <Route
           path="/admin/users"
-          render={() => <UsersAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <UsersAdmin {...{ history, formatMessage, permissions }} />
+          )}
+        />
+        <Route
+          path="/admin/roles"
+          render={() => (
+            <RoleList {...{ history, formatMessage, permissions }} />
+          )}
+        />
+        <Route
+          path="/admin/reps"
+          render={() => (
+            <SalesRep {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/team-stores"
-          render={() => <TeamStoresAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <TeamStoresAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
         <Route
           path="/admin/homepage/:sportName?"
-          render={() => <HomepageAdmin {...{ history, formatMessage }} />}
+          render={() => (
+            <HomepageAdmin {...{ history, formatMessage, permissions }} />
+          )}
         />
       </AdminLayout>
     )
   }
   handleLogin = (userData: any) => {
-    const { saveUserSessionAction, setLoadingAction } = this.props
-    saveUserSessionAction(userData)
+    const { saveUserSessionAction, setLoadingAction, client } = this.props
+    saveUserSessionAction(userData, client)
     setLoadingAction(false)
   }
   handleMailLogin = async (email: string, password: string) => {
     const {
       loginWithEmail,
+      client,
       intl: { formatMessage },
       saveUserSessionAction,
-      setLoadingAction
+      setLoadingAction,
     } = this.props
     setLoadingAction(true)
     try {
@@ -218,16 +259,16 @@ export class Admin extends React.Component<Props, {}> {
           name: get(data, 'user.name', ''),
           lastName: get(data, 'user.lastName'),
           email: get(data, 'user.email'),
-          administrator: get(data, 'user.administrator', false)
+          administrator: get(data, 'user.administrator', false),
         }
         if (data.user.administrator) {
           message.success(
             formatMessage(messages.welcomeMessage, {
-              name: get(data, 'user.name', '')
+              name: get(data, 'user.name', ''),
             }),
             5
           )
-          saveUserSessionAction(userData)
+          saveUserSessionAction(userData, client)
         } else {
           message.error(formatMessage(messages.forbidden))
         }
@@ -267,7 +308,7 @@ const mapStateToProps = (state: any) => {
   const app = state.get('app').toJS()
   return {
     ...app,
-    ...admin
+    ...admin,
   }
 }
 
@@ -275,12 +316,15 @@ const AdminEnhance = compose(
   withApollo,
   injectIntl,
   mailLogin,
-  connect(mapStateToProps, {
-    ...adminActions,
-    restoreUserSessionAction: restoreUserSession,
-    saveUserSessionAction: saveUserSession,
-    deleteUserSessionAction: deleteUserSession
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...adminActions,
+      restoreUserSessionAction: restoreUserSession,
+      saveUserSessionAction: saveUserSession,
+      deleteUserSessionAction: deleteUserSession,
+    }
+  )
 )(Admin)
 
 export default AdminEnhance

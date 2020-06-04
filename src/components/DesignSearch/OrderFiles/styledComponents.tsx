@@ -8,11 +8,14 @@ import {
   WHITE,
   RED,
   DARKER_GRAY,
-  GRAY_SNOW
+  GRAY_SNOW,
+  GRAY,
+  BLUE
 } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
 import { BLACK } from '../../../screens/DesignerTool/constants'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
+import Select from 'antd/lib/select'
 
 interface DivProps {
   enable: boolean
@@ -42,7 +45,7 @@ export const Code = styled.div`
   font-weight: bold;
   letter-spacing: 0.23px;
   line-height: 25px;
-  margin-bottom: 4px;
+  margin-right: 8px;
 `
 
 export const StatusContainer = styled.div`
@@ -99,6 +102,11 @@ export const Icon = styled(icon)`
   margin-right: 8px;
 `
 
+export const NoteIcon = styled(icon)`
+  margin-right: 16px;
+  margin-left: 12px;
+`
+
 export const RenderLayout = styled.div``
 
 export const ThumbnailLabel = styled.div`
@@ -134,7 +142,10 @@ export const MessageContainer = styled.div`
 `
 
 export const ModelNameContainer = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: 4px;
+  display: flex;
+    align-items: center;
+    font-size: 16px;
 `
 
 export const ProAssistNotes = styled.div`
@@ -160,15 +171,12 @@ export const ProAssistTitle = styled.div`
   font-weight: bold;
   max-width: 246px;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 14px;
 `
 
 export const DataContainer = styled.div``
 
-export const SideData = styled.div`
-  width: 268px;
-`
+export const SideData = styled.div``
 
 export const ProAssistBackground = styled.div`
   max-height: 190px;
@@ -227,4 +235,55 @@ export const PreflightCheckbox = styled(Checkbox)`
     margin-top: 2px;
     margin-bottom: 0;
   }
+`
+
+export const Colors = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`
+
+interface ColorProps {
+  color?: string
+}
+
+export const Color = styled.div`
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 1px solid
+    ${({ color }: ColorProps) =>
+    color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
+  background-color: ${({ color }: ColorProps) => color || WHITE};
+  align-self: center;
+`
+
+export const ColorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+`
+export const ColorName = styled.p`
+  margin: 5px 0 0 0;
+`
+
+export const RepsDiv = styled.div`
+  width: 270px;
+`
+
+export const Selectable = styled.div`
+  margin-bottom: 12px;
+`
+
+export const Subtitle = styled.div``
+
+export const StyledSelect = styled(Select)`
+  width: 100%;
+  margin-top: 4px;
+`
+
+export const LockerLink = styled.div`
+  color: ${BLUE};
+  text-decoration: underline;
+  cursor: pointer;
 `

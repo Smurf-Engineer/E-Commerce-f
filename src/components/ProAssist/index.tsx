@@ -19,9 +19,16 @@ import {
 } from './styledComponents'
 import List from './OrdersList'
 import messages from './messages'
-import { sorts, QueryProps, Message, ProAssistStatus } from '../../types/common'
+import {
+  sorts,
+  QueryProps,
+  Message,
+  ProAssistStatus,
+  UserPermissions
+} from '../../types/common'
 import Switch from 'antd/lib/switch'
 import get from 'lodash/get'
+import { PRO_ASSIST, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Data extends QueryProps {
   proAssistStatus: ProAssistStatus
@@ -35,6 +42,7 @@ interface Props {
   loading: boolean
   data: Data
   searchText: string
+  permissions: UserPermissions
   formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -64,12 +72,18 @@ class ProAssist extends React.Component<Props, StateProps> {
       currentPage,
       orderBy,
       sort,
+      history,
       formatMessage,
       searchText,
       loading,
+      permissions,
       data
     } = this.props
     const checked = get(data, 'proAssistStatus.enabled', false)
+    const access = permissions[PRO_ASSIST] || {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
     return (
       <Container>
         <ScreenTitle>
@@ -83,7 +97,11 @@ class ProAssist extends React.Component<Props, StateProps> {
           />
           <ActiveLabel>
             <SwitchLabel>{formatMessage(messages.enable)}</SwitchLabel>
-            <Switch {...{ checked, loading }} onChange={this.onChangeEnabled} />
+            <Switch
+              {...{ checked, loading }}
+              disabled={!access.edit}
+              onChange={this.onChangeEnabled}
+            />
           </ActiveLabel>
         </Header>
         <List

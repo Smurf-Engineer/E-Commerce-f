@@ -9,23 +9,28 @@ import {
   TeamStoreCard,
   CardContent,
   StyledImg,
-  CardTitle,
   ShareButton,
   EditButton,
   ButtonsContainer,
   DeleteLabel,
   BottomContainer,
-  TitleName
+  TitleName,
+  StoreType
 } from './styledComponents'
 
 interface Props {
   image: string
   idStore?: string
   name?: string
+  small?: boolean
   showNameStore?: boolean
+  fixedDate?: boolean
+  closed?: boolean
+  cutOffDate?: string
   withShareButton?: boolean
   withEditButton?: boolean
   withDeleteButton?: boolean
+  owner?: boolean
   formatMessage: (messageDescriptor: any) => string
   openShareModalAction?: (id?: string) => void
   onItemClick?: () => void
@@ -39,14 +44,21 @@ const TeamStoreItem = ({
   name,
   formatMessage,
   openShareModalAction,
+  small = false,
   showNameStore = false,
   withEditButton = false,
   withShareButton = false,
   withDeleteButton = false,
   onItemClick,
   onEditClick,
-  onDeleteClick
+  onDeleteClick,
+  closed = false,
+  fixedDate = false,
+  owner = false
 }: Props) => {
+  const closedMessage =
+    owner && fixedDate && closed ? formatMessage(messages.closedForOrder) : ''
+
   const handleClickShare = () => {
     if (openShareModalAction) {
       openShareModalAction(idStore)
@@ -65,17 +77,22 @@ const TeamStoreItem = ({
 
   const buttons = (
     <ButtonsContainer>
-      {withEditButton && (
+      {owner && (
+        <StoreType>
+          {formatMessage(messages[fixedDate ? 'batchOrder' : 'onDemand'])}
+        </StoreType>
+      )}
+      {withEditButton && !closed && (
         <EditButton onClick={handleClickEdit}>
           {formatMessage(messages.editButtonLabel)}
         </EditButton>
       )}
-      {withShareButton && (
+      {withShareButton && !closed && (
         <ShareButton onClick={handleClickShare}>
           {formatMessage(messages.shareButtonLabel)}
         </ShareButton>
       )}
-      {withDeleteButton && (
+      {withDeleteButton && !closed && (
         <DeleteLabel onClick={handleClickDelete}>
           {formatMessage(messages.deleteButtonLabel)}
         </DeleteLabel>
@@ -85,8 +102,8 @@ const TeamStoreItem = ({
 
   return (
     <Container>
-      <TeamStoreCard>
-        <CardContent>
+      <TeamStoreCard {...{ small }}>
+        <CardContent {...{ closedMessage }}>
           {image ? (
             <StyledImg src={image} onClick={onItemClick} />
           ) : (
@@ -94,7 +111,6 @@ const TeamStoreItem = ({
           )}
           {showNameStore && (
             <BottomContainer>
-              <CardTitle>{name}</CardTitle>
               <MediaQuery minWidth={480}>{buttons}</MediaQuery>
             </BottomContainer>
           )}

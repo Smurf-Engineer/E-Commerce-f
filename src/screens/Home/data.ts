@@ -29,6 +29,13 @@ export const getHomepageInfo = gql`
         url: link
         assetType: type
       }
+      featuredBanners {
+        id
+        url
+        urlMobile: url_mobile
+        sportId: sport_id,
+        isVideo: is_video
+      }
       featuredProducts {
         id
         code

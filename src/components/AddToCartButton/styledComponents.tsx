@@ -64,7 +64,7 @@ export const CustomizeButton = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 2px;
-  padding: 6px 16px;
+  padding: 6px 19px;
 
   @media (min-width: 320px) and (max-width: 768px) {
     background-color: #fff;
@@ -76,9 +76,11 @@ export const CustomizeButton = styled.div`
 
 interface Prop {
   individual?: boolean
+  hide?: boolean
 }
 
 export const ButtonWrapper = styled.span`
+  display: ${({ hide }: Prop) => (hide ? 'none' : 'flex')};
   align-self: flex-end;
   font-size: 16px;
   letter-spacing: 0.11px;

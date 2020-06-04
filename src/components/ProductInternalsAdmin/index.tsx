@@ -43,11 +43,13 @@ import {
   BasicColor,
   ProductInternalInput,
   MessagePayload,
-  UploadFile
+  UploadFile,
+  UserPermissions
 } from '../../types/common'
 import { INTERNALS_LIMIT, CSV_EXTENSION } from './constants'
 import Spin from 'antd/lib/spin'
 import Icon from 'antd/lib/icon'
+import { PRODUCT_INTERNAL, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 const { confirm } = Modal
 interface Props {
@@ -74,6 +76,7 @@ interface Props {
   loading: boolean
   downloading: boolean
   model: string
+  permissions: UserPermissions
   formatMessage: (messageDescriptor: Message, params?: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -134,8 +137,10 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       color,
       pocketZipper,
       frontZipper,
+      permissions,
       binding,
       bibBrace,
+      history,
       collection,
       modalOpen,
       loading,
@@ -144,31 +149,38 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       downloadCsv,
       model
     } = this.props
-
+    const access = permissions[PRODUCT_INTERNAL] || {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
     return (
       <Container>
         <ScreenTitle>
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
-        <AddInternalButton onClick={this.handleOnAddInternal}>
-          {formatMessage(messages.addInternalLabel)}
-        </AddInternalButton>
-        {loading ? (
-          <CsvLoader>
-            <Spin size="large" />
-          </CsvLoader>
-        ) : (
-          <Upload
-            accept={CSV_EXTENSION}
-            showUploadList={false}
-            customRequest={this.uploadCsv}
-            beforeUpload={this.beforeUpload}
-          >
-            <UploadButton>
-              <Icon type="upload" />
-              <FormattedMessage {...messages.uploadCsv} />
-            </UploadButton>
-          </Upload>
+        {access.edit && (
+          <>
+            <AddInternalButton onClick={this.handleOnAddInternal}>
+              {formatMessage(messages.addInternalLabel)}
+            </AddInternalButton>
+            {loading ? (
+              <CsvLoader>
+                <Spin size="large" />
+              </CsvLoader>
+            ) : (
+                <Upload
+                  accept={CSV_EXTENSION}
+                  showUploadList={false}
+                  customRequest={this.uploadCsv}
+                  beforeUpload={this.beforeUpload}
+                >
+                  <UploadButton>
+                    <Icon type="upload" />
+                    <FormattedMessage {...messages.uploadCsv} />
+                  </UploadButton>
+                </Upload>
+              )}
+          </>
         )}
         <SearchInput
           value={this.state.searchValue}
@@ -181,6 +193,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
           onInternalClick={this.handleOnInternalClick}
           onChangePage={this.handleOnChangePage}
           interactiveHeaders={true}
+          canEdit={access.edit}
         />
         <InternalsModal
           open={modalOpen}

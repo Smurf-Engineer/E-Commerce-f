@@ -524,7 +524,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           openSaveDesign: action.open,
           design: action.design,
-          automaticSave: action.automaticSave
+          automaticSave: action.automaticSave,
+          selectedElement: ''
         })
       }
 
@@ -1027,6 +1028,7 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
     case CanvasElements.Text:
       canvasObject = { id, text: src, textFormat: style }
       break
+    case CanvasElements.Polygon:
     case CanvasElements.Path:
       const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = style
       canvasObject = {
@@ -1060,6 +1062,7 @@ const changeStyleCanvasElement = (
   } = styleCanvas
   const format = newStyle ? newFormat : oldFormat
   switch (canvasType) {
+    case CanvasElements.Polygon:
     case CanvasElements.Path:
       return canvas.setIn([canvasType, id], { ...format })
     case CanvasElements.Text:

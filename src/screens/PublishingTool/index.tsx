@@ -62,9 +62,12 @@ import {
   ColorsDataResult,
   Thumbnail,
   Design as DeisgnType,
-  StitchingColor
+  StitchingColor,
+  UserType
 } from '../../types/common'
 import { SETTINGS_TAB, Sections } from './constants'
+import { restoreUserSession } from '../../components/MainLayout/api'
+import { CREATE_DESIGNS, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
 
 const { confirm } = Modal
 
@@ -101,6 +104,9 @@ interface Props {
   bindingColor: string
   zipperColor: string
   bibColor: string
+  client: any
+  user: UserType
+  restoreUserSessionAction: (client: any) => void
   setCodeSearch: (value: string) => void
   onSelectTab: (index: number) => void
   setProductCodeAction: (value: string) => void
@@ -166,6 +172,13 @@ export class PublishingTool extends React.Component<Props, {}> {
     const { code } = queryString.parse(search)
     if (code) {
       setProductCodeAction(code)
+    }
+  }
+  componentWillMount() {
+    const { user, client } = this.props
+    if (typeof window !== 'undefined' && !user) {
+      const { restoreUserSessionAction } = this.props
+      restoreUserSessionAction(client)
     }
   }
   handleOnPressBack = () => {
@@ -532,6 +545,7 @@ export class PublishingTool extends React.Component<Props, {}> {
       setCodeSearch,
       code,
       design,
+      user = {},
       setColorIdeaItemAction,
       colorIdeaItem,
       colorsList,
@@ -554,6 +568,7 @@ export class PublishingTool extends React.Component<Props, {}> {
       openSaveDesign,
       productId,
       saveDesignLoading,
+      history,
       setDesignNameAction,
       setCanvasJsonAction,
       updateInspirationAction,
@@ -563,6 +578,11 @@ export class PublishingTool extends React.Component<Props, {}> {
       bibColor
     } = this.props
     const { formatMessage } = intl
+    const { permissions } = user
+    const access = permissions ? permissions[CREATE_DESIGNS] : {}
+    if (!access.view) {
+      history.replace(ADMIN_ROUTE)
+    }
     const handleOnSelectTab = (index: number) => () => onSelectTab(index)
     const tabs = steps.map((step, index) => {
       return (
@@ -616,30 +636,30 @@ export class PublishingTool extends React.Component<Props, {}> {
               addNewModel={this.goToBuildModel}
             />
           ) : (
-            <Design
-              {...{
-                formatMessage,
-                colorIdeas,
-                design,
-                colorIdeaItem,
-                colorsList,
-                colorBlock,
-                colorBlockHovered,
-                colors,
-                uploadingThumbnail
-              }}
-              onEditColorIdea={setColorIdeaItemAction}
-              onSelectColorBlock={setColorBlockAction}
-              onSelectColor={setColorAction}
-              onHoverColor={setHoverColorBlockAction}
-              onUpdateColorIdeaName={setColorIdeaNameAction}
-              onSelectInspirationColor={setInspirationColorAction}
-              onAddColorIdea={addColorIdeaAction}
-              onSaveThumbnail={this.handleOnSaveThumbnail}
-              onDeleteInspiration={this.handleOnDeleteInspiration}
-              updateColorIdeas={updateInspirationAction}
-            />
-          )}
+              <Design
+                {...{
+                  formatMessage,
+                  colorIdeas,
+                  design,
+                  colorIdeaItem,
+                  colorsList,
+                  colorBlock,
+                  colorBlockHovered,
+                  colors,
+                  uploadingThumbnail
+                }}
+                onEditColorIdea={setColorIdeaItemAction}
+                onSelectColorBlock={setColorBlockAction}
+                onSelectColor={setColorAction}
+                onHoverColor={setHoverColorBlockAction}
+                onUpdateColorIdeaName={setColorIdeaNameAction}
+                onSelectInspirationColor={setInspirationColorAction}
+                onAddColorIdea={addColorIdeaAction}
+                onSaveThumbnail={this.handleOnSaveThumbnail}
+                onDeleteInspiration={this.handleOnDeleteInspiration}
+                updateColorIdeas={updateInspirationAction}
+              />
+            )}
           {!!colors.length && (
             <PlaceholdersRender3D
               ref={placeHolder => (this.render3DPlaceholder = placeHolder)}
@@ -723,7 +743,14 @@ export class PublishingTool extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('publishingTool').toJS()
+const mapStateToProps = (state: any) => {
+  const publishingTool = state.get('publishingTool').toJS()
+  const app = state.get('app').toJS()
+  return {
+    ...app,
+    ...publishingTool
+  }
+}
 
 type OwnProps = {
   colorsList?: ColorsDataResult
@@ -748,7 +775,8 @@ const PublishingToolEnhance = compose(
   }),
   connect(mapStateToProps, {
     ...publishingToolActions,
-    ...publishingToolApi
+    ...publishingToolApi,
+    restoreUserSessionAction: restoreUserSession
   })
 )(PublishingTool)
 

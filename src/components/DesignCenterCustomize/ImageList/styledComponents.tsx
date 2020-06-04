@@ -13,7 +13,8 @@ import {
 } from '../../../theme/colors'
 
 export const Container = styled.div`
-  height: 200px;
+  height: 100%;
+  max-height: 200px;
   overflow: auto;
   padding: 15px 32px 32px 32px;
   padding-top: 16px;

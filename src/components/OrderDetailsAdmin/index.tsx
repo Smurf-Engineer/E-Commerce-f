@@ -25,7 +25,6 @@ import {
   // Button,
   OrderInfo,
   OrderDelivery,
-  DeliveryDate,
   DeliveryInfo,
   DeliveryLabels,
   DeliveryLabel,
@@ -39,7 +38,6 @@ import {
   ShippingBillingCard,
   SubTitle,
   StyledImage,
-  Date,
   LoadingContainer
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
@@ -49,6 +47,7 @@ import MyAddress from '../MyAddress'
 import iconPaypal from '../../assets/Paypal.svg'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
+import moment from 'moment'
 
 const PRO_DESIGN_FEE = 15
 
@@ -134,7 +133,11 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       taxVat,
       taxFee,
       total,
-      discount
+      discount,
+      teamStoreId,
+      lastDrop,
+      teamStoreName,
+      email
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -221,12 +224,11 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
         </Div>
         <OrderInfo>
           <OrderDelivery>
-            <DeliveryDate>
-              <span>{formatMessage(messages.deliveryDate)}</span>
-              <Date>{` ${estimatedDate}`}</Date>
-            </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
+                <DeliveryLabel>
+                  {formatMessage(messages.orderPoint)}
+                </DeliveryLabel>
                 <DeliveryLabel>
                   {formatMessage(messages.orderNumber)}
                 </DeliveryLabel>
@@ -234,15 +236,30 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                   {formatMessage(messages.orderDate)}
                 </DeliveryLabel>
                 <DeliveryLabel>
+                  {formatMessage(messages.deliveryDate)}
+                </DeliveryLabel>
+                <DeliveryLabel>
                   {formatMessage(messages.trackingNumber)}
                 </DeliveryLabel>
                 <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
+                <DeliveryLabel>
+                  {formatMessage(messages.lastUpdated)}
+                </DeliveryLabel>
+                <DeliveryLabel>{formatMessage(messages.email)}</DeliveryLabel>
               </DeliveryLabels>
               <DeliveryData>
+                <Info>
+                  {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+                </Info>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
+                <Info>{estimatedDate}</Info>
                 <Info tracking={true}>{trackingNumber || '-'}</Info>
                 <Info>{netsuiteStatus || status}</Info>
+                <Info>
+                  {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
+                </Info>
+                <Info>{email}</Info>
               </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>

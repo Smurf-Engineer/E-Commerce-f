@@ -1,7 +1,7 @@
 /**
  * Account-OrdersList Queries
  */
-
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const getOrdersQuery = gql`
@@ -11,6 +11,10 @@ export const getOrdersQuery = gql`
     $order: String
     $orderAs: String
     $searchText: String
+    $startDate: String
+    $endDate: String
+    $status: String
+    $orderPoint: String
   ) {
     ordersQuery: getOrdersStatus(
       limit: $limit
@@ -18,6 +22,10 @@ export const getOrdersQuery = gql`
       order: $order
       orderAs: $orderAs
       searchText: $searchText
+      startDate: $startDate
+      endDate: $endDate
+      status: $status
+      orderPoint: $orderPoint
     ) {
       fullCount
       orders {
@@ -28,8 +36,10 @@ export const getOrdersQuery = gql`
         status
         clientId: user_id
         firstName: first_name
-        lastName: last_name
-        pendingChecks: pending_checks
+        total: total_amount
+        currency {
+          abbreviation
+        }
         netsuite: netsuit_order {
           orderStatus {
             orderStatus
@@ -38,8 +48,33 @@ export const getOrdersQuery = gql`
             }
           }
         }
+        lastName: last_name
+        source
         netsuiteAttempts: netsuite_attempts
+        cutoffDate: cutoff_date
       }
     }
   }
 `
+
+export const getOrdersPreflight = gql`
+  query getOrdersPreflight($ordersIds: [Int]!) {
+    preflight: getOrdersPreflight(ordersIds: $ordersIds) {
+      id
+      pendingChecks: pending_checks
+    }
+  }
+`
+
+export const updateStatusMutation = graphql(
+  gql`
+    mutation changeOrderStatus($status: String!, $orderId: String!) {
+      changeOrderStatus(status: $status, orderId: $orderId) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateStatus'
+  }
+)

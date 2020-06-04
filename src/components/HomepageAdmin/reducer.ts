@@ -32,18 +32,25 @@ import {
   SET_TRANSITION,
   ImageTypes,
   Sections,
-  LoadingSections
+  LoadingSections,
+  MOVE_BANNER,
+  REMOVE_MEDIA,
+  SET_MEDIA,
+  ADD_MEDIA,
+  SET_LOADING
 } from './constants'
 import {
   Reducer,
   HeaderImagePlaceHolder,
-  ProductTilePlaceHolder
+  ProductTilePlaceHolder,
+  ProductFile
 } from '../../types/common'
 
 export const initialState = fromJS({
   mainHeader: [],
   secondaryHeader: [],
   mainHeaderLoading: [],
+  featuredBanners: [],
   secondaryHeaderLoading: [],
   loaders: {
     [Sections.MAIN_CONTAINER]: true,
@@ -56,6 +63,7 @@ export const initialState = fromJS({
   limit: 12,
   offset: 0,
   currentPage: 1,
+  loadingBanner: false,
   selectedItems: [],
   productsModalOpen: false,
   items: [],
@@ -74,6 +82,27 @@ export const initialState = fromJS({
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
+    case SET_LOADING:
+      return state.set('loadingBanner', action.loading)
+    case SET_MEDIA: {
+      const { id, name, value } = action
+      return state.setIn(['featuredBanners', id, name], value)
+    }
+    case MOVE_BANNER: {
+      const { indexTo, index } = action
+      const oldList = state.get('featuredBanners')
+      const oldItem = oldList.get(index)
+      const newList = oldList.delete(index).insert(indexTo, oldItem)
+      return state.set('featuredBanners', newList)
+    }
+    case ADD_MEDIA:
+      return state.updateIn(
+        ['featuredBanners'],
+        (banners: [ProductFile]) =>
+          banners.push(fromJS(action.value))
+      )
+    case REMOVE_MEDIA:
+      return state.deleteIn(['featuredBanners', action.index])
     case SET_HOMEPAGE_INFO: {
       const {
         homepageImages,
@@ -81,10 +110,12 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         items,
         productTiles,
         mainHeaderCarousel,
+        featuredBanners,
         secondaryHeaderCarousel
       } = action.data
       return state.withMutations((map: any) => {
         map.set('items', fromJS(items))
+        map.set('featuredBanners', fromJS(featuredBanners))
         map.set('secondaryHeader', fromJS(homepageImages))
         map.set('productTiles', fromJS(productTiles))
         map.set(

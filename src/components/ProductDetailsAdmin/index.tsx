@@ -44,7 +44,8 @@ import {
   MainBody,
   EditModel,
   Buttons,
-  ModelSection
+  ModelSection,
+  RowLink
 } from './styledComponents'
 interface Data extends QueryProps {
   product: Product
@@ -53,6 +54,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   history: any
+  canEdit: boolean
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -70,6 +72,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
+      canEdit,
       data: { loading, product }
     } = this.props
     const { openedModel } = this.state
@@ -93,6 +96,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
       tags,
       active,
       designCenter,
+      customLink,
       season,
       materials,
       details,
@@ -212,16 +216,18 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   {name}
                   <ScreenSubTitle>{mpn}</ScreenSubTitle>
                 </ScreenTitle>
-                <div>
-                  <BlueButton onClick={this.handleOnClickEdit} size="large">
-                    <FormattedMessage {...messages.editProduct} />
-                  </BlueButton>
-                  {designCenter && (
-                    <Button onClick={this.handlePublishing} size="large">
-                      <FormattedMessage {...messages.openPublishingTool} />
-                    </Button>
-                  )}
-                </div>
+                {canEdit && (
+                  <div>
+                    <BlueButton onClick={this.handleOnClickEdit} size="large">
+                      <FormattedMessage {...messages.editProduct} />
+                    </BlueButton>
+                    {designCenter && (
+                      <Button onClick={this.handlePublishing} size="large">
+                        <FormattedMessage {...messages.openPublishingTool} />
+                      </Button>
+                    )}
+                  </div>
+                )}
               </HeaderRow>
               <FormBody>
                 <Row>
@@ -310,6 +316,17 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   />
                   <RowField flex="2" label={materials} />
                 </Row>
+                {!designCenter && customLink && (
+                  <Row>
+                    <RowField
+                      marginRight="8px"
+                      value={formatMessage(messages.customizeLink)}
+                    />
+                    <RowLink href={customLink} target="_blank">
+                      {customLink}
+                    </RowLink>
+                  </Row>
+                )}
                 <Separator>
                   <FormattedMessage {...messages.fitSizing} />
                 </Separator>
@@ -396,9 +413,11 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                           <FormattedMessage {...messages.openModel} />
                         </Button>
                       )}
-                      <EditModel type="ghost" onClick={this.editModels}>
-                        <FormattedMessage {...messages.editModel} />
-                      </EditModel>
+                      {canEdit && (
+                        <EditModel type="ghost" onClick={this.editModels}>
+                          <FormattedMessage {...messages.editModel} />
+                        </EditModel>
+                      )}
                     </Buttons>
                     {obj && mtl ? (
                       <RenderBackground {...{ openedModel }}>
@@ -463,7 +482,10 @@ const mapStateToProps = (state: any) => state.get('productDetailAdmin').toJS()
 
 const ProductDetailsAdminEnhance = compose(
   withRouter,
-  connect(mapStateToProps, { ...ProductDetailsAdminActions }),
+  connect(
+    mapStateToProps,
+    { ...ProductDetailsAdminActions }
+  ),
   graphql(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''

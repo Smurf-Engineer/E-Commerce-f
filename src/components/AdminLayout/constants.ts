@@ -8,6 +8,8 @@ export const SET_CURRENT_SCREEN = `${namespace}/SET_CURRENT_SCREEN`
 
 export const SET_INSTALLED_FONTS_ACTION = `${namespace}/SET_INSTALLED_FONTS_ACTION`
 
+export const ADMIN_ROUTE = '/admin'
+
 export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
@@ -16,10 +18,15 @@ export const PRODUCTS = 'products'
 export const PRODUCT_INTERNAL = 'productInternal'
 export const PRODUCT_CATALOG = 'productCatalog'
 export const DESIGN_SEARCH = 'designSearch'
+export const DESIGN_SEARCH_ASSETS = 'designSearchDownload'
 export const EDIT_CONTENT = 'editContent'
 export const HOMEPAGE = 'homepage'
 export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
+export const USER_LIST = 'usersList'
+export const SET_ADMIN = 'setAdmin'
+export const ROLE_MANAGEMENT = 'roleManagement'
+export const SALES_REP = 'salesRep'
 export const TEAM_STORES = 'teamStores'
 export const LOGOUT_MENU = 'logout'
 export const EDIT_NAVIGATION = 'editNavigation'
@@ -44,7 +51,7 @@ export const options = [
   },
   {
     title: USERS,
-    options: []
+    options: [USER_LIST, ROLE_MANAGEMENT, SALES_REP]
   },
   {
     title: TEAM_STORES,

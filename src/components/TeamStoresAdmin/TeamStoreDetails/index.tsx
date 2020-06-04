@@ -26,8 +26,10 @@ import {
   NameLink,
   Table,
   EditButton,
-  DeleteButton
+  DeleteButton,
+  PricesContainer
 } from './styledComponents'
+import { CHF_CURRENCY } from '../constants'
 interface Props {
   history: any
   from: string
@@ -37,6 +39,7 @@ interface Props {
   currencies: Currency[]
   loading: boolean
   id: number
+  canEdit: boolean
   handleDeleteStore: () => void
   resetDataAction: () => void
   formatMessage: (messageDescriptor: Message) => string
@@ -96,8 +99,12 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       teamStore,
       currencies = [],
       loading,
+      canEdit,
       handleOnSave
     } = this.props
+    const accountManagerName = get(teamStore, 'accountManager.first_name')
+    const accountManagerLastName = get(teamStore, 'accountManager.last_name')
+
     if (loading || !teamStore) {
       return (
         <LoadingContainer>
@@ -120,9 +127,10 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
       )
     }
 
-    const headers = currencies.map(({ id, shortName }) => (
-      <Header key={id}>{shortName}</Header>
-    ))
+    const headers = currencies.map(
+      ({ id, shortName }) =>
+        shortName !== CHF_CURRENCY && <Header key={id}>{shortName}</Header>
+    )
 
     const teamStoresInformation = teamStoreHeaderInformation.map(
       (header: string, index: number) => (
@@ -131,6 +139,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
           {typeof teamStore[header] === 'boolean' ? (
             <StyledSwitch
               defaultChecked={teamStore.featured}
+              disabled={!canEdit}
               onChange={this.handleOnSetFeatured}
             />
           ) : (
@@ -166,6 +175,7 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
               handleOnSetPrice,
               index,
               priceRange,
+              canEdit,
               pricesByCurrency,
               handleOnSave,
               formatMessage
@@ -186,23 +196,39 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
             <NameLink href={`/store-front?storeId=${teamStore.shortId}`}>
               {`${teamStore.name} ${formatMessage(messages.title)}`}
             </NameLink>
-            <EditButton onClick={this.handleEditStore}>
-              {formatMessage(messages.edit)}
-            </EditButton>
-            <DeleteButton onClick={this.handleDeleteStore}>
-              {formatMessage(messages.delete)}
-            </DeleteButton>
+            {canEdit && (
+              <>
+                <EditButton onClick={this.handleEditStore}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+                <DeleteButton onClick={this.handleDeleteStore}>
+                  {formatMessage(messages.delete)}
+                </DeleteButton>
+              </>
+            )}
           </ScreenTitle>
-          <TeamStoreInformation>{teamStoresInformation}</TeamStoreInformation>
+          <TeamStoreInformation>
+            {teamStoresInformation}
+            <InformationContainer>
+              <ScreenHeader>
+                {formatMessage(messages.accountManager)}
+              </ScreenHeader>
+              <Text>
+                {accountManagerName
+                  ? `${accountManagerName} ${accountManagerLastName}`
+                  : '-'}
+              </Text>
+            </InformationContainer>
+          </TeamStoreInformation>
           <Table>
-            <thead>
-              <tr>
-                <Header>{formatMessage(messages.name)}</Header>
-                {headers}
-                <Header>{''}</Header>
-              </tr>
-            </thead>
-            <tbody>{teamStoreItems}</tbody>
+            {teamStore.onDemand && (
+              <PricesContainer>
+                <thead>
+                  <tr>{headers}</tr>
+                </thead>
+                <tbody>{teamStoreItems}</tbody>
+              </PricesContainer>
+            )}
           </Table>
         </ScreenContent>
       </Container>

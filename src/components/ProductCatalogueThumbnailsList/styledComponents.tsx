@@ -141,14 +141,15 @@ export const ButtonsContainer = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+  max-width: 148px;
+  width: 100%;
 `
 
 export const ButtonContainer = styled.div`
   user-select: none;
   display: flex !important;
   align-items: center;
-  margin: ${({ maxMargin }: ButtonProps) => (maxMargin ? '8px' : '4px')};
-  max-width: 140px;
+  margin: ${({ maxMargin }: ButtonProps) => (maxMargin ? '8px 0' : '4px 0')};
   width: 100%;
 `
 

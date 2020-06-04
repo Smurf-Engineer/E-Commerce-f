@@ -176,3 +176,32 @@ export const Arrow = styled.img`
     opacity: 0.7;
   }
 `
+
+export const SlideImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const SlideVideo = styled.video`
+  width: 100%;
+`
+
+export const ImageContainer = styled.div`
+  width: 100%;
+`
+
+export const SlideImage = styled.img`
+  width: 100%;
+  display: inline-block;
+  @media (max-width: 425px) {
+    display: none;
+  }
+`
+export const SlideImageMobile = styled.img`
+  width: 100%;
+  display: none;
+  @media (max-width: 425px) {
+    display: inline-block;
+  }
+`

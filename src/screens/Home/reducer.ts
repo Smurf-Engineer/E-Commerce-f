@@ -18,6 +18,7 @@ export const initialState = fromJS({
   searchString: '',
   productId: 0,
   productTiles: [],
+  featuredBanners: [],
   featuredProducts: [],
   homepageImages: [],
   title: '',
@@ -48,6 +49,7 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
       const {
         mainHeaderImages,
         productTiles,
+        featuredBanners,
         featuredProducts,
         homepageImages,
         carouselSettings,
@@ -57,6 +59,7 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
         mainHeaderImages,
         productTiles,
         featuredProducts,
+        featuredBanners,
         homepageImages,
         carouselSettings,
         title,
