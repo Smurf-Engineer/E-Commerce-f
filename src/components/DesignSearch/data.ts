@@ -178,6 +178,14 @@ export const setRepDesignMutation = gql`
   }
 `
 
+export const setLegacyMutation = gql`
+  mutation setLegacyNumber($designId: String!, $legacy: String) {
+    setLegacyNumber(designId: $designId, legacy: $legacy) {
+      legacyNumber: legacy_number
+    }
+  }
+`
+
 export const assignManagerDesignMutation = gql`
   mutation assignManagerDesign($designId: String!, $managerId: String) {
     assignManagerDesign(designId: $designId, managerId: $managerId) {

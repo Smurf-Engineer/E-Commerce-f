@@ -30,5 +30,10 @@ export default defineMessages({
     id: 'screens.DesignSearch.errorDownload',
     defaultMessage:
       'An unknown error has occurred while trying to download this file, try again later.'
+  },
+  legacySuccess: {
+    id: 'screens.DesignSearch.legacySuccess',
+    defaultMessage:
+      'Legacy Number Updated'
   }
 })

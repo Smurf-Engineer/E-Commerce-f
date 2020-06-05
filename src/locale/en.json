@@ -1201,6 +1201,8 @@
   "screens.DesignSearch.designNameLabel": "Design Name:",
   "screens.DesignSearch.proAssistNotes": "PROASSIST NOTES",
   "screens.DesignSearch.add": "ADD +",
+  "screens.DesignSearch.edit": "Edit",
+  "screens.DesignSearch.legacySuccess": "Legacy Number Updated",
   "screens.DesignSearch.salesRep": "Sales Rep",
   "screens.DesignSearch.accountManager": "Account Manager",
   "screens.DesignSearch.title": "DESIGN SEARCH",
