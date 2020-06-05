@@ -101,14 +101,18 @@ interface Props {
   currentCurrency: string
   user: UserType
   contactInfo: ContactInformation
+  skip: number
+  pageNumber: number
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
   setPassCodeAction: (passCode: string) => void
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  setPage: (skip: number, pageNumber: number) => void
 }
 
 const invalidDateExp = /\bInvalid date\b/
+const LIMIT = 11
 
 export class StoreFrontContent extends React.Component<Props, StateProps> {
   state = {
@@ -203,6 +207,12 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     )
   }
 
+  handleChangePage = (pageNumber: number) => {
+    const { setPage } = this.props
+    const skip = (pageNumber - 1) * LIMIT
+    setPage(skip, pageNumber)
+  }
+
   onTogglePriceModal = () => {
     this.setState({ pricingModalOpen: !this.state.pricingModalOpen } as any)
   }
@@ -223,7 +233,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       currentCurrency,
       user,
       handleInputChange,
-      contactInfo
+      contactInfo,
+      skip,
+      pageNumber
     } = this.props
     const {
       showMuch,
@@ -277,6 +289,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       config.baseUrl
     }store-front?storeId=${teamStoreShortId}`
 
+    const totalDesigns = get(getTeamStore, 'totalDesigns', 0)
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
     // TODO: uncomment if return to old method
     // const maxValueOfY = items.length
@@ -420,7 +433,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           currentCurrency,
                           display,
                           teamStoreName,
-                          closed
+                          closed,
+                          totalDesigns
                         }}
                         withoutPadding={false}
                         openQuickView={this.handleOnOpenQuickView}
@@ -428,6 +442,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                         teamStoreShortId={teamStoreShortId}
                         targentPrice={targetRange.name}
                         currentRange={priceRanges[1]}
+                        limit={LIMIT}
+                        offset={skip}
+                        handleChangePage={this.handleChangePage}
+                        currentPage={pageNumber}
                       />
                     </ListContainer>
                   </div>
@@ -576,11 +594,12 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 type OwnProps = {
   teamStoreId?: string
   passCode?: string
+  skip?: number
 }
 
 const StoreFrontContentEnhance = compose(
   graphql<Data>(getSingleTeamStore, {
-    options: ({ teamStoreId, passCode }: OwnProps) => {
+    options: ({ teamStoreId, passCode, skip = 0 }: OwnProps) => {
       return {
         variables: {
           teamStoreId,
@@ -589,8 +608,11 @@ const StoreFrontContentEnhance = compose(
             day: moment().date(),
             month: moment().month(),
             year: moment().year()
-          }
-        }
+          },
+          limit: LIMIT,
+          offset: skip
+        },
+        fetchPolicy: 'no-cache'
       }
     }
   })

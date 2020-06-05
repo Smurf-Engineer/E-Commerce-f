@@ -10,7 +10,8 @@ import {
   SET_EMAIL_CONTACT,
   SET_EMAIL_MESSAGE,
   SEND_MESSAGE_LOADING,
-  SET_CONTACT_FIELD
+  SET_CONTACT_FIELD,
+  SET_CURRENT_PAGE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -70,4 +71,10 @@ export const setContactFieldAction = (field: string, value: string) => ({
   type: SET_CONTACT_FIELD,
   field,
   value
+})
+
+export const setPageAction = (skip: number, pageNumber: number) => ({
+  type: SET_CURRENT_PAGE,
+  skip,
+  pageNumber
 })

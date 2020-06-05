@@ -8,12 +8,16 @@ export const getSingleTeamStore = gql`
     $teamStoreId: String!
     $passCode: String
     $date: HolyDate
+    $limit: Int
+    $offset: Int
   ) {
     getTeamStore(
       teamStoreId: $teamStoreId
       passCode: $passCode
       storeFront: true
       date: $date
+      limit: $limit
+      offset: $offset
     ) {
       id
       short_id
@@ -98,6 +102,7 @@ export const getSingleTeamStore = gql`
         totalOrders
       }
       totalItems
+      totalDesigns
     }
   }
 `
