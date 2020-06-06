@@ -126,7 +126,7 @@ class UsersList extends React.Component<Props, StateProps> {
             return (
               <Row>
                 <Header>{formatMessage(messages.clientID)}</Header>
-                <Header>{formatMessage(messages.billing)}</Header>
+                <Header>{formatMessage(messages.affiliate)}</Header>
                 <Header>{formatMessage(messages.signUpDate)}</Header>
                 <Header>{formatMessage(messages.name)}</Header>
                 <Header>{formatMessage(messages.accountType)}</Header>
@@ -145,9 +145,9 @@ class UsersList extends React.Component<Props, StateProps> {
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'billing_country'}
-                label={formatMessage(messages.billing)}
-                sort={orderBy === 'billing_country' ? sort : 'none'}
+                id={'affiliate_id'}
+                label={formatMessage(messages.affiliate)}
+                sort={orderBy === 'affiliate_id' ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
@@ -216,7 +216,7 @@ class UsersList extends React.Component<Props, StateProps> {
           socialMethod,
           administrator,
           netsuiteId = '',
-          billingCountry,
+          affiliateId,
           createdAt,
           shortId,
         }: User,
@@ -244,7 +244,7 @@ class UsersList extends React.Component<Props, StateProps> {
               administrator,
               onSetAdministrator,
               netsuiteId,
-              billingCountry,
+              affiliateId,
               createdAt,
               onSelectUser,
               shortId,

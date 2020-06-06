@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Select from 'antd/lib/select'
 import { RED } from '../../../theme/colors'
 import Tooltip from 'antd/lib/tooltip'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.tr`
   cursor: pointer;
@@ -53,4 +54,10 @@ export const Mail = styled(Tooltip)`
 export const StyledSelect = styled(Select)`
   width: 140px;
   margin-right: 8px;
+`
+
+export const StyledIcon = styled(Icon)`
+  width: 100%;
+  padding-right: 12px;
+  color: ${RED};
 `

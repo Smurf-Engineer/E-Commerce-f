@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -1398,6 +1398,7 @@ export interface User {
   role?: string
   salesRep?: User
   accountManager?: User
+  affiliateId?: String
 }
 
 export interface Role {
