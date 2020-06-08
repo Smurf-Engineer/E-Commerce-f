@@ -37,8 +37,7 @@ import {
   MessagePayload,
   Colors,
   UserPermissions,
-  User,
-  Design
+  User
 } from '../../types/common'
 import {
   orderSearchQuery,
@@ -77,6 +76,12 @@ interface Data extends QueryProps {
 
 interface ManagersData extends QueryProps {
   managersQuery: User[]
+}
+
+interface LegacyData {
+  data: {
+    setLegacyNumber: String
+  }
 }
 
 interface Props {
@@ -327,8 +332,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
             designId: shortId,
             legacy
           },
-          update: (store: any, design: Design) => {
-            const legacyNumber = get(design, 'data.setLegacyNumber.legacyNumber', '')
+          update: (store: any, response: LegacyData) => {
+            const legacyNumber = get(response, 'data.setLegacyNumber', '')
             const { order } = store.readQuery({
               query: orderSearchQuery,
               variables: { code },

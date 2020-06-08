@@ -180,9 +180,7 @@ export const setRepDesignMutation = gql`
 
 export const setLegacyMutation = gql`
   mutation setLegacyNumber($designId: String!, $legacy: String) {
-    setLegacyNumber(designId: $designId, legacy: $legacy) {
-      legacyNumber: legacy_number
-    }
+    setLegacyNumber(designId: $designId, legacy: $legacy)
   }
 `
 
