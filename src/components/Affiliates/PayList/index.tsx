@@ -233,7 +233,7 @@ export class PayList extends React.Component<Props, {}> {
                     </Cell>
                     <Cell>{`${comission}%`}</Cell>
                     <Cell>{status}</Cell>
-                    <Cell bold={true}>{`$${amount}`}</Cell>
+                    <Cell bold={true}>{`$${amount.toFixed(2)}`}</Cell>
                     {/* <Cell onClick={this.stopPropagation}>
                       <Clip type="paper-clip" />
                       <FileName onClick={openLink}>

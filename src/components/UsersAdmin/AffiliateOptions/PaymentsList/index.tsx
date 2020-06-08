@@ -5,8 +5,17 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { Container, Header, Row, Table, ItemContainer, Cell, TableTitle, Clip } from './styledComponents'
-import EmptyContainer from '../../../EmptyContainer'
+import {
+  Container,
+  Header,
+  Row,
+  Table,
+  ItemContainer,
+  Cell,
+  TableTitle,
+  Clip,
+  EmptyContainer
+} from './styledComponents'
 import { QueryProps, Message, AffiliatePayment } from '../../../../types/common'
 import withError from '../../../WithError'
 import withLoading from '../../../WithLoading'
@@ -49,7 +58,7 @@ const PaymentsList = ({
       history.push(receipt)
     }
   }
-  const userItems = payments && payments.length ? payments.map(
+  const userItems = payments && payments.length && payments.map(
     (
       { id, createdAt, status, amount, receipt }: any,
       index: number
@@ -60,7 +69,7 @@ const PaymentsList = ({
           <Cell>{id}</Cell>
           <Cell>{createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}</Cell>
           <Cell>{status}</Cell>
-          <Cell>{`$${amount}`}</Cell>
+          <Cell>{`$${amount.toFixed(2)}`}</Cell>
           <Cell>
             <Clip type="paper-clip" />
             {fileName}
@@ -68,7 +77,7 @@ const PaymentsList = ({
         </ItemContainer>
       )
     }
-  ) : <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+  )
 
   return (
     <Container>
@@ -97,6 +106,9 @@ const PaymentsList = ({
         </thead>
         <tbody>{userItems}</tbody>
       </Table>
+      {!userItems &&
+        <EmptyContainer>{formatMessage(messages.emptyMessage)}</EmptyContainer>
+      }
       <Pagination
         current={currentPage}
         pageSize={LIST_LIMIT}

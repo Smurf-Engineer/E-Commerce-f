@@ -23,7 +23,7 @@ export default defineMessages({
   },
   comissions: {
     id: 'components.affiliateOptions.comissions',
-    defaultMessage: 'Affiliate Comission'
+    defaultMessage: 'Affiliate Commission'
   },
   paypalAccount: {
     id: 'components.affiliateOptions.paypalAccount',

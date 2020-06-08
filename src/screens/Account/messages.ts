@@ -35,7 +35,7 @@ export default defineMessages({
   },
   affiliate: {
     id: 'screens.Account.menu.affiliate',
-    defaultMessage: 'AFFILIATES'
+    defaultMessage: 'AFFILIATE SALES'
   },
   myCreations: {
     id: 'screens.Account.menu.myCreations',

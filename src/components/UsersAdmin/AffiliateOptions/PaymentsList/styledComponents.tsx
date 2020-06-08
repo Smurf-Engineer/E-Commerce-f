@@ -93,3 +93,11 @@ export const Clip = styled(Icon)`
   color: ${RED};
   margin-right: 12px;
 `
+
+export const EmptyContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  padding: 24px;
+  padding-right: 92px;
+  margin-bottom: 24px;
+`
