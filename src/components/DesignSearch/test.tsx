@@ -15,7 +15,8 @@ import {
   setSearchRep,
   setSearchManager,
   setUserRepAction,
-  setManagerAction
+  setManagerAction,
+  changeLegacy
 } from './actions'
 import {
   SET_LOADING,
@@ -28,7 +29,8 @@ import {
   SET_SEARCH_REP,
   SET_SEARCH_MANAGER,
   SET_USER_REP,
-  SET_ACCOUNT_MANAGER
+  SET_ACCOUNT_MANAGER,
+  CHANGE_LEGACY
 } from './constants'
 
 describe('Design Search Admin Screen', () => {
@@ -125,6 +127,14 @@ describe('Design Search Admin Screen', () => {
         openNotes
       })
     })
+    it('changeLegacy', () => {
+      const type = CHANGE_LEGACY
+      const value = 'Test'
+      expect(changeLegacy(value)).toEqual({
+        type,
+        value
+      })
+    })
   })
   describe('Reducer', () => {
     describe('RESET_DATA', () => {
@@ -201,6 +211,27 @@ describe('Design Search Admin Screen', () => {
           )
           const customTextValue = designState.get('repSearchText')
           expect(customTextValue).toBe(value)
+        })
+      })
+    })
+    describe('CHANGE_LEGACY', () => {
+      describe('Set legacy number value action', () => {
+        it('Handles undefined value in legacy', () => {
+          const customInitialValue = initialState.get('legacy')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles initial value in legacy', () => {
+          const customInitialValue = initialState.get('legacy')
+          expect(customInitialValue).toBe('')
+        })
+        it('Handles custom values in legacy', () => {
+          const value = 'Test'
+          const designState = designSearchAdminReducer(
+            initialState,
+            changeLegacy(value)
+          )
+          const customLegacyValue = designState.get('legacy')
+          expect(customLegacyValue).toBe(value)
         })
       })
     })

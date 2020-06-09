@@ -84,5 +84,9 @@ export default defineMessages({
   locker: {
     id: 'screens.DesignSearch.locker',
     defaultMessage: 'Locker:'
+  },
+  edit: {
+    id: 'screens.DesignSearch.edit',
+    defaultMessage: 'Edit'
   }
 })
