@@ -25,7 +25,8 @@ import {
   SET_LOADING_PREFLIGHT,
   SET_USER_REP,
   SET_SEARCH_MANAGER,
-  SET_ACCOUNT_MANAGER
+  SET_ACCOUNT_MANAGER,
+  CHANGE_LEGACY
 } from './constants'
 import {
   AnyAction,
@@ -62,6 +63,11 @@ export const setOrderAction = (order: OrderSearchResult): AnyAction => ({
 export const setNoteAction = (text: string): AnyAction => ({
   type: SET_NOTE,
   text
+})
+
+export const changeLegacy = (value: string): AnyAction => ({
+  type: CHANGE_LEGACY,
+  value
 })
 
 export const openNoteAction = (openNotes: boolean): AnyAction => ({

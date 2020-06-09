@@ -242,7 +242,7 @@ class MainLayout extends React.Component<Props, {}> {
 
     if (shoppingCart.cart) {
       const cart = shoppingCart.cart as CartItems[]
-      cart.map(cartItem => {
+      cart.map((cartItem) => {
         const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
           return itemDetail.quantity
         })
@@ -370,12 +370,15 @@ const mapStateToProps = (state: any) => {
 const LayoutEnhance = compose(
   withApollo,
   getFonts,
-  connect(mapStateToProps, {
-    ...LayoutActions,
-    ...LocaleActions,
-    ...mainLayoutActions,
-    openWithoutSaveModalAction: openOutWithoutSaveModalAction,
-    setAccountScreen: setDefaultScreenAction
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...LayoutActions,
+      ...LocaleActions,
+      ...mainLayoutActions,
+      openWithoutSaveModalAction: openOutWithoutSaveModalAction,
+      setAccountScreen: setDefaultScreenAction
+    }
+  )
 )(MainLayout)
 export default LayoutEnhance

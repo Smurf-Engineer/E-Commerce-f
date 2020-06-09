@@ -26,7 +26,8 @@ import {
   SET_LOADING_NOTE,
   SET_PREFLIGHT,
   SET_LOADING_PREFLIGHT,
-  SET_ACCOUNT_MANAGER
+  SET_ACCOUNT_MANAGER,
+  CHANGE_LEGACY
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -43,6 +44,7 @@ export const initialState = fromJS({
   managerSearchText: '',
   openNotes: false,
   addingNote: false,
+  legacy: '',
   actualSvg: '',
   uploadingThumbnail: false,
   changes: false,
@@ -64,6 +66,8 @@ const designSearchAdminReducer: Reducer<any> = (
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
+    case CHANGE_LEGACY:
+      return state.set('legacy', action.value)
     case SET_SEARCH_REP:
       return state.set('repSearchText', action.value)
     case SET_SEARCH_MANAGER:

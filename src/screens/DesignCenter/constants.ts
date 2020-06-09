@@ -120,6 +120,7 @@ export enum Changes {
 export enum CanvasElements {
   Text = 'text',
   Path = 'path',
+  Polygon = 'polygon',
   Image = 'image',
   Group = 'group'
 }

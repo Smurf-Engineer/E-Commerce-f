@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -718,6 +718,11 @@ export interface OrderHistory {
   netsuiteAttempts: number
   source?: string
   cutoffDate?: string
+}
+
+export interface OrderPreflight {
+  id: number
+  pendingChecks: number
 }
 
 export interface Discount {
@@ -1392,6 +1397,7 @@ export interface User {
   shortId?: string
   role?: string
   salesRep?: User
+  affiliated?: boolean
   accountManager?: User
 }
 

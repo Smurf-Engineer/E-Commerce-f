@@ -2,6 +2,8 @@
  * MenuRegion Component - Created by david on 20/02/18.
  */
 import * as React from 'react'
+import { compose } from 'react-apollo'
+import { connect } from 'react-redux'
 import findIndex from 'lodash/findIndex'
 import Modal from 'antd/lib/modal'
 import Popover from 'antd/lib/popover'
@@ -11,11 +13,13 @@ import {
   Region as RegionType,
   Currency
 } from '../../types/common'
+import * as thunkActions from './thunkActions'
 import { TopText, Regions, overStyle } from './styledComponents'
 
 interface Props {
   regionsResult: RegionType[]
   onChangeLocation: (payload: RegionConfig) => void
+  saveRegion: (regionObject: RegionConfig) => void
   currentRegion?: string
   currentLanguage?: string
   currentCurrency?: string
@@ -59,7 +63,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
   }
 
   getCurrentIndex = (list: any[], param: string, key: string): number => {
-    const index = findIndex(list, item => item[key] === param)
+    const index = findIndex(list, (item) => item[key] === param)
 
     if (index >= 0) {
       return index
@@ -68,7 +72,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     return 0
   }
 
-  handleOnClickConfirm = () => {
+  handleOnClickConfirm = async () => {
     const {
       currentRegionTemp,
       currentLanguageTemp,
@@ -114,9 +118,14 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     const { code: regionCode } = region
     const { shortName: langCode } = language
     const { abbreviation: currencyCode } = currency
-    const url = `/${regionCode}?lang=${langCode}&currency=${currencyCode}`
-
-    window.location.replace(url)
+    const { saveRegion } = this.props
+    const regionObject = {
+      region: regionCode,
+      localeIndex: languageIndex,
+      locale: langCode,
+      currency: currencyCode
+    }
+    await saveRegion(regionObject)
   }
 
   handleOnVisibleChange = (visible: boolean) => {
@@ -225,4 +234,11 @@ export class MenuRegion extends React.PureComponent<Props, State> {
   }
 }
 
-export default MenuRegion
+const MenuRegionEnhance = compose(
+  connect(
+    null,
+    { ...thunkActions }
+  )
+)(MenuRegion)
+
+export default MenuRegionEnhance

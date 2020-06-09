@@ -215,7 +215,7 @@ class Render3D extends PureComponent {
 
           const texture =
             binding[
-              hasBindingColor ? colorAccessories.bindingColor : bindingColor
+            hasBindingColor ? colorAccessories.bindingColor : bindingColor
             ]
           loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
@@ -469,7 +469,7 @@ class Render3D extends PureComponent {
             if (!!binding) {
               const texture =
                 binding[
-                  colorAccessories.bindingColor || Object.keys(binding)[0]
+                colorAccessories.bindingColor || Object.keys(binding)[0]
                 ]
 
               const bindingObj = textureLoader.load(texture)
@@ -823,6 +823,7 @@ class Render3D extends PureComponent {
             paths.push(el)
             break
           }
+          case CanvasElements.Polygon:
           case CanvasElements.Path: {
             paths.push(el)
             break

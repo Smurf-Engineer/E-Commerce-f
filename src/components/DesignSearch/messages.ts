@@ -35,5 +35,10 @@ export default defineMessages({
     id: 'screens.DesignSearch.search',
     defaultMessage:
       'JV2 Code or Legacy Number'
+  },
+  legacySuccess: {
+    id: 'screens.DesignSearch.legacySuccess',
+    defaultMessage:
+      'Legacy Number Updated'
   }
 })

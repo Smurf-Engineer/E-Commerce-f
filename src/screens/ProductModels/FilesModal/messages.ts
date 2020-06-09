@@ -123,6 +123,6 @@ export default defineMessages({
   },
   fileError: {
     id: 'components.FilesModal.fileError',
-    defaultMessage: 'Save Model'
+    defaultMessage: 'You can only upload {extension} file!'
   }
 })
