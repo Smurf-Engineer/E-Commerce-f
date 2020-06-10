@@ -1405,6 +1405,7 @@
   "components.UsersList.accountManager": "Account Manager",
   "components.affiliateOptions.enabled": "Enabled",
   "components.affiliateOptions.decline": "Decline request",
+  "components.affiliateOptions.retry": "Retry request",
   "components.affiliateOptions.saved": "Saved status",
   "components.affiliateOptions.activationDate": "Activation Date",
   "components.affiliateOptions.taxForm": "Tax Form",

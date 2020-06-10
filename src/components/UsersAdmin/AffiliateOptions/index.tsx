@@ -20,7 +20,7 @@ import {
 
 import PaymentsList from './PaymentsList'
 import { NOTE_FORMAT } from '../constants'
-import { PENDING, APPROVED, REJECTED } from '../../../constants'
+import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
@@ -54,6 +54,10 @@ class AffiliateOptions extends React.Component<Props, {}> {
   rejectStatus = () => {
     const { enableAffiliate } = this.props
     enableAffiliate(REJECTED)
+  }
+  retryStatus = () => {
+    const { enableAffiliate } = this.props
+    enableAffiliate(RETRY)
   }
   openFile = () => {
     const { file } = this.props
@@ -108,15 +112,21 @@ class AffiliateOptions extends React.Component<Props, {}> {
               </BoldLabel>
             }
           </LabelButton>
-          {isAdmin &&
-            <LabelButton>
-              <Title />
-              {status === PENDING &&
+          {isAdmin && status === PENDING &&
+            <>
+              <LabelButton>
+                <Title />
                 <RedLabel onClick={this.rejectStatus}>
                   {formatMessage(messages.decline)}
                 </RedLabel>
-              }
-            </LabelButton>
+              </LabelButton>
+              <LabelButton>
+                <Title />
+                <RedLabel onClick={this.retryStatus}>
+                  {formatMessage(messages.retry)}
+                </RedLabel>
+              </LabelButton>
+            </>
           }
           {isActive &&
             <>
