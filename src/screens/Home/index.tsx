@@ -261,7 +261,7 @@ export class Home extends React.Component<Props, {}> {
             </SearchBarContent>
           </SearchContainer>
           <div
-            ref={input => {
+            ref={(input) => {
               this.stepInput = input
             }}
           >
@@ -303,11 +303,11 @@ export class Home extends React.Component<Props, {}> {
                   <source src={url} type="video/mp4" />
                 </SlideVideo>
               ) : (
-                  <ImageContainer>
-                    <SlideImage src={url} />
-                    <SlideImageMobile src={urlMobile} />
-                  </ImageContainer>
-                )}
+                <ImageContainer>
+                  <SlideImage src={url} />
+                  <SlideImageMobile src={urlMobile} />
+                </ImageContainer>
+              )}
             </SlideImageContainer>
           ))}
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
@@ -342,7 +342,10 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Home)
 
 export default HomeEnhance

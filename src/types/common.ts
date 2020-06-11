@@ -693,6 +693,7 @@ export interface CreditCardData {
   expMonth: number
   expYear: number
   defaultPayment?: boolean
+  pendingOrder?: boolean
 }
 
 export interface IbanData {
