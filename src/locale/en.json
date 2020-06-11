@@ -1414,6 +1414,7 @@
   "components.affiliateOptions.paypalAccount": "Paypal Account",
   "components.affiliateOptions.status": "Status",
   "components.affiliateOptions.edit": "Edit",
+  "components.affiliateOptions.settings": "Settings",
   "components.CarouselHeader.Uploader.imageSizeError": "Oh no! Max file size is limited to 20MB",
   "components.CarouselHeader.Uploader.videoExtensionError": "Oh no! Your file has to be a mp4",
   "components.CarouselHeader.Uploader.imageExtensionError": "Oh no! Your file has to be an jpg, jpeg or png",

@@ -86,3 +86,9 @@ export const LoadingContainer = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+export const Subtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 22px;
+  font-size: 16px;
+`

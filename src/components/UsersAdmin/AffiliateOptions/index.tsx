@@ -16,6 +16,7 @@ import {
   Clip,
   StyledInputNumber,
   LoadingContainer,
+  Subtitle,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -95,6 +96,11 @@ class AffiliateOptions extends React.Component<Props, {}> {
           <LoadingContainer>
             <Spin />
           </LoadingContainer>
+        }
+        {!isAdmin &&
+          <Subtitle>
+            {formatMessage(messages.settings)}
+          </Subtitle>
         }
         <OptionsContainer>
           <LabelButton>

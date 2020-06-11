@@ -38,7 +38,6 @@ interface Props {
   data: Data
   formatMessage: (messageDescriptor: Message) => string
   currentPage: number
-  history: History
   onChangePage: (page: number) => void
   onRowClick: (url: string) => void
 }
@@ -46,7 +45,6 @@ interface Props {
 const PaymentsList = ({
   formatMessage,
   currentPage,
-  history,
   data,
   onChangePage,
 }: Props) => {
@@ -55,7 +53,7 @@ const PaymentsList = ({
 
   const openReceipt = (receipt: string) => () => {
     if (receipt) {
-      history.push(receipt)
+      window.open(receipt)
     }
   }
   const userItems = payments && payments.length && payments.map(

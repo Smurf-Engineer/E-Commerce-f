@@ -40,5 +40,9 @@ export default defineMessages({
   retry: {
     id: 'components.affiliateOptions.retry',
     defaultMessage: 'Retry request'
+  },
+  settings: {
+    id: 'components.affiliateOptions.settings',
+    defaultMessage: 'Settings'
   }
 })

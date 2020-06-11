@@ -29,7 +29,7 @@ import {
   PROFILE_SETTINGS,
   ORDER_HISTORY,
   OVERVIEW,
-  AFFILIATES
+  AFFILIATES_PAYOUTS
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -240,7 +240,7 @@ export class Account extends React.Component<Props, {}> {
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
-      case AFFILIATES:
+      case AFFILIATES_PAYOUTS:
         return <AffiliateOptions {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return (
