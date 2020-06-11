@@ -11,5 +11,8 @@ export const SET_LOADING = `${namespace}/SET_LOADING`
 export const SET_DATE = `${namespace}/SET_DATE`
 export const SET_SHOW = `${namespace}/SET_SHOW`
 export const SET_SELECTED = `${namespace}/SET_SELECTED`
+export const SET_STATUS = `${namespace}/SET_STATUS`
+export const SET_ORDER_POINT = `${namespace}/SET_ORDER_POINT`
 
 export const PAY_LIMITS = 12
+export const ALL_STATUS = 'All'

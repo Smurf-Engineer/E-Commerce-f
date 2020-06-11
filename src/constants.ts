@@ -55,6 +55,7 @@ export const ERROR_STATUS = 'Error'
 export const PENDING_APPROVAL = 'Pending Approval'
 export const PURGED = 'Purged'
 export const PREORDER = 'Pre-Order'
+export const CANCELLED = 'Cancelled'
 
 /* Quantity */
 export const PERSONAL = 'Personal'

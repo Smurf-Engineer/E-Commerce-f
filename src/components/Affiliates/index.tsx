@@ -5,15 +5,17 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import Select from 'antd/lib/select'
 import * as AffiliatesActions from './actions'
 import {
   Container,
   ScreenTitle,
   HeaderList,
-  CalendarContainer,
   RangePickerStyled,
-  DateLabels,
-  ShowButton
+  ShowButton,
+  InputDiv,
+  OrderPoint,
+  StatusFilter
 } from './styledComponents'
 import List from './PayList'
 import messages from './messages'
@@ -21,6 +23,20 @@ import { UserPermissions, SelectedPays } from '../../types/common'
 import { AFFILIATES, ADMIN_ROUTE } from '../AdminLayout/constants'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import moment, { Moment } from 'moment'
+import { PREORDER, PENDING_APPROVAL, PAID_STATUS, PAYMENT_ISSUE, PURGED, CANCELLED } from '../../constants'
+import { ALL_STATUS } from './constants'
+
+const { Option } = Select
+
+const statusList = [
+  ALL_STATUS,
+  PREORDER,
+  PENDING_APPROVAL,
+  PAID_STATUS,
+  PAYMENT_ISSUE,
+  PURGED,
+  CANCELLED
+]
 
 interface Props {
   history: any
@@ -34,6 +50,12 @@ interface Props {
   permissions: UserPermissions
   show: boolean
   selected: SelectedPays
+  status: string
+  orderPoint: string
+  statusValue: string
+  orderValue: string
+  setStatus: (value: string) => void
+  setOrderPoint: (value: string) => void
   setSelected: (value: SelectedPays) => void
   setShowAction: () => void
   setLoading: (loading: boolean) => void
@@ -72,6 +94,17 @@ class Affiliates extends React.Component<Props, {}> {
     setSearchTextAction(value)
   }
 
+  handleChangeOrderPoint = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { setOrderPoint } = this.props
+    const { target: { value } } = event
+    setOrderPoint(value)
+  }
+
+  handleChangeStatus = (value) => {
+    const { setStatus } = this.props
+    setStatus(value)
+  }
+
   render() {
     const {
       currentPage,
@@ -85,6 +118,10 @@ class Affiliates extends React.Component<Props, {}> {
       end: endParam,
       startDate,
       searchText,
+      status,
+      orderPoint,
+      statusValue,
+      orderValue,
       endDate,
       permissions
     } = this.props
@@ -95,6 +132,11 @@ class Affiliates extends React.Component<Props, {}> {
     const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
     const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
     const rangeValue = [start, end]
+    const selectOptions = statusList.map((currentStatus, index) => (
+      <Option key={index} value={currentStatus !== ALL_STATUS ? currentStatus : ''}>
+        {currentStatus}
+      </Option>
+    ))
     return (
       <Container>
         <ScreenTitle>
@@ -102,13 +144,21 @@ class Affiliates extends React.Component<Props, {}> {
         </ScreenTitle>
         <HeaderList>
           <FormattedMessage {...messages.subtitle} />
-          <CalendarContainer>
-            <DateLabels>
-              <FormattedMessage {...messages.from} />
-              <FormattedMessage {...messages.to} />
-            </DateLabels>
+          <InputDiv>
+            <StatusFilter
+              value={statusValue}
+              onChange={this.handleChangeStatus}
+            >
+              {selectOptions}
+            </StatusFilter>
+            <OrderPoint
+              value={orderValue}
+              onChange={this.handleChangeOrderPoint}
+              placeholder={'Order Point'}
+            />
             <RangePickerStyled
               value={rangeValue}
+              placeholder={[formatMessage(messages.from), formatMessage(messages.to)]}
               format={NOTE_FORMAT}
               allowClear={false}
               onChange={this.handleChangeCalendar}
@@ -118,7 +168,7 @@ class Affiliates extends React.Component<Props, {}> {
             <ShowButton onClick={this.handleShow}>
               <FormattedMessage {...messages.show} />
             </ShowButton>
-          </CalendarContainer>
+          </InputDiv>
         </HeaderList>
         {startParam &&
           <List
@@ -131,6 +181,8 @@ class Affiliates extends React.Component<Props, {}> {
               currentPage,
               searchText,
               history,
+              status,
+              orderPoint,
               startParam,
               endParam
             }}

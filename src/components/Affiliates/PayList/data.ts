@@ -5,8 +5,24 @@
 import gql from 'graphql-tag'
 
 export const getAffiliatesPayments = gql`
-  query getPaymenstHistory($limit: Int, $offset: Int, $text: String, $start: String, $end: String) {
-    paymentsResult: getPaymenstHistory(limit: $limit, offset: $offset, searchText: $text, start: $start, end: $end) {
+  query getPaymenstHistory(
+      $limit: Int,
+      $offset: Int,
+      $text: String,
+      $start: String,
+      $end: String,
+      $status: String,
+      $orderPoint: String
+    ) {
+    paymentsResult: getPaymenstHistory(
+        limit: $limit,
+        offset: $offset,
+        searchText: $text,
+        start: $start,
+        end: $end,
+        status: $status,
+        orderPoint: $orderPoint
+      ) {
       fullCount
       payments {
         id
@@ -18,6 +34,7 @@ export const getAffiliatesPayments = gql`
         status
         amount
         receipt
+        orderStatus: order_status
         customerId: customer_id
         customerName: customer_name
         orderId: order_id

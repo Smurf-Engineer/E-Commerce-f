@@ -188,8 +188,8 @@ export class PayList extends React.Component<Props, {}> {
               <Header>{formatMessage(messages.status)}</Header>
               <Header>{formatMessage(messages.amount)}</Header>
               <Header>{formatMessage(messages.orderId)}</Header>
+              <Header>{formatMessage(messages.orderStatus)}</Header>
               <Header>{formatMessage(messages.customerId)}</Header>
-              <Header>{formatMessage(messages.customerName)}</Header>
               {/* <Header>{formatMessage(messages.receipt)}</Header> */}
             </Row>
           </thead>
@@ -207,7 +207,7 @@ export class PayList extends React.Component<Props, {}> {
                   amount,
                   orderId,
                   customerId,
-                  customerName,
+                  orderStatus,
                   // receipt
                 }: AffiliatePayment,
                 index: number) => {
@@ -228,7 +228,7 @@ export class PayList extends React.Component<Props, {}> {
                     </Cell>
                     <Cell>{userId}</Cell>
                     <Cell>{name}</Cell>
-                    <Cell width="152px">
+                    <Cell width="122px">
                       <Mail title={paypalAccount}>{paypalAccount}</Mail>
                     </Cell>
                     <Cell>{`${comission}%`}</Cell>
@@ -241,8 +241,8 @@ export class PayList extends React.Component<Props, {}> {
                       </FileName>
                     </Cell> */}
                     <Cell>{orderId}</Cell>
+                    <Cell>{orderStatus}</Cell>
                     <Cell>{`JV2-${customerId}`}</Cell>
-                    <Cell>{customerName}</Cell>
                   </RepDiv>
                 )
               })
@@ -267,12 +267,14 @@ interface OwnProps {
   searchText?: string
   startParam?: string
   endParam?: string
+  status?: String,
+  orderPoint?: String
 }
 
 const PayListEnhance = compose(
   graphql(makePaymentsMutation, { name: 'makePayments' }),
   graphql(getAffiliatesPayments, {
-    options: ({ currentPage, searchText, startParam, endParam }: OwnProps) => {
+    options: ({ currentPage, searchText, startParam, endParam, status, orderPoint }: OwnProps) => {
       const offset = currentPage ? (currentPage - 1) * PAY_LIMITS : 0
       return {
         variables: {
@@ -280,7 +282,9 @@ const PayListEnhance = compose(
           offset,
           text: searchText,
           start: startParam,
-          end: endParam
+          end: endParam,
+          status,
+          orderPoint
         },
         fetchPolicy: 'network-only'
       }

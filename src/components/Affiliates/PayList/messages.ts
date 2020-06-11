@@ -11,7 +11,7 @@ export default defineMessages({
   },
   clientId: {
     id: 'components.AffiliatesList.clientId',
-    defaultMessage: 'Affiliate #'
+    defaultMessage: 'AFL #'
   },
   name: {
     id: 'components.AffiliatesList.name',
@@ -27,7 +27,7 @@ export default defineMessages({
   },
   status: {
     id: 'components.AffiliatesList.status',
-    defaultMessage: 'Status'
+    defaultMessage: 'Payment Status'
   },
   amount: {
     id: 'components.AffiliatesList.amount',
@@ -64,5 +64,9 @@ export default defineMessages({
   customerName: {
     id: 'components.AffiliatesList.customerName',
     defaultMessage: 'Customer Name'
+  },
+  orderStatus: {
+    id: 'components.AffiliatesList.orderStatus',
+    defaultMessage: 'Order Status'
   }
 })

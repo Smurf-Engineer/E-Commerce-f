@@ -9,7 +9,9 @@ import {
   SET_LOADING,
   SET_DATE,
   SET_SHOW,
-  SET_SELECTED
+  SET_SELECTED,
+  SET_STATUS,
+  SET_ORDER_POINT
 } from './constants'
 import { AnyAction, SelectedPays } from '../../types/common'
 
@@ -44,5 +46,15 @@ export const setShowAction = (): AnyAction => ({
 
 export const setSelected = (value: SelectedPays) => ({
   type: SET_SELECTED,
+  value
+})
+
+export const setStatus = (value: string) => ({
+  type: SET_STATUS,
+  value
+})
+
+export const setOrderPoint = (value: string) => ({
+  type: SET_ORDER_POINT,
   value
 })

@@ -226,6 +226,7 @@ export type AffiliatePayment = {
   name?: string
   orderId?: string
   customerId?: string
+  orderStatus?: string
   customerName?: string
 }
 

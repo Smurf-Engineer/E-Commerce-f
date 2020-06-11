@@ -11,7 +11,7 @@ export default defineMessages({
   },
   subtitle: {
     id: 'components.Affiliates.subtitle',
-    defaultMessage: 'Select Period to show active affiliates with pending comissions'
+    defaultMessage: 'FILTER BY'
   },
   from: {
     id: 'components.Affiliates.from',
