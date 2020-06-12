@@ -40,5 +40,14 @@ export default defineMessages({
   empty: {
     id: 'components.AffiliatesOrders.empty',
     defaultMessage: 'No orders with commissions found.'
+  },
+  qualified: {
+    id: 'components.AffiliatesOrders.qualified',
+    defaultMessage: `Commissions for qualified orders are paid out on a scheduled basis, typically every two weeks. 
+    Qualifying orders are those that are paid in full and shipped to the customer`
+  },
+  affiliateInfo: {
+    id: 'components.AffiliatesOrders.affiliateInfo',
+    defaultMessage: 'Affiliates are not able to receive commissions on their own orders.'
   }
 })

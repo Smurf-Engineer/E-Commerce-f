@@ -16,6 +16,7 @@ import {
   RepDiv,
   Cell,
   LoadingContainer,
+  InfoSection,
 } from './styledComponents'
 import messages from './messages'
 import { AffiliatePayment, QueryProps, AffiliatesResult } from '../../types/common'
@@ -100,9 +101,9 @@ class AffiliatesOrders extends React.Component<Props, {}> {
                       </Cell>
                       <Cell>{orderId}</Cell>
                       <Cell>{orderStatus}</Cell>
-                      <Cell>{orderAmount}</Cell>
+                      <Cell>${orderAmount.toFixed(2)}</Cell>
                       <Cell>{status}</Cell>
-                      <Cell>{amount}</Cell>
+                      <Cell>${amount.toFixed(2)}</Cell>
                       <Cell>
                         {paidAt ? moment(paidAt).format(NOTE_FORMAT) : '-'}
                       </Cell>
@@ -114,6 +115,10 @@ class AffiliatesOrders extends React.Component<Props, {}> {
                   )}
               </tbody>}
           </Table>
+          <InfoSection>
+            <FormattedMessage {...messages.qualified} />
+            <FormattedMessage {...messages.affiliateInfo} />
+          </InfoSection>
           <Pagination
             current={currentPage}
             pageSize={PAY_LIMITS}

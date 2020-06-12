@@ -111,3 +111,12 @@ export const LoadingContainer = styled.div`
   height: 100vh;
   background: ${WHITE_TRANSPARENT};
 `
+
+export const InfoSection = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin: 54px 0;
+  height: 64px;
+  font-style: italic;
+  justify-content: space-between;
+`

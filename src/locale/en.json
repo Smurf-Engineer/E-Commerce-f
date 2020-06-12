@@ -785,6 +785,8 @@
   "components.AffiliatesOrders.orderAmount": "Order Amount",
   "components.AffiliatesOrders.commisionStatus": "Commission Status",
   "components.AffiliatesOrders.amount": "Amount",
+  "components.AffiliatesOrders.qualified": "Commissions for qualified orders are paid out on a scheduled basis, typically every two weeks. Qualifying orders are those that are paid in full and shipped to the customer",
+  "components.AffiliatesOrders.affiliateInfo": "Affiliates are not able to receive commissions on their own orders.",
   "components.AffiliatesOrders.datePaid": "Date Paid",
   "components.AffiliatesOrders.empty": "No orders with commissions found.",
   "components.Affiliates.from": "From",
