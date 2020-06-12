@@ -29,7 +29,8 @@ import {
   PROFILE_SETTINGS,
   ORDER_HISTORY,
   OVERVIEW,
-  AFFILIATES_PAYOUTS
+  AFFILIATES_PAYOUTS,
+  AFFILIATES_ORDERS
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -39,6 +40,7 @@ import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
 import ProfileSettings from '../../components/ProfileSettings'
 import AffiliateOptions from '../../components/AffiliateOptions'
+import AffiliatesOrders from '../../components/AffiliatesOrders'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyLocker from '../../components/MyLocker'
 import {
@@ -242,6 +244,8 @@ export class Account extends React.Component<Props, {}> {
         return <MyTeamStores {...{ history, formatMessage }} />
       case AFFILIATES_PAYOUTS:
         return <AffiliateOptions {...{ history, formatMessage }} />
+      case AFFILIATES_ORDERS:
+        return <AffiliatesOrders {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return (
           <MyLocker

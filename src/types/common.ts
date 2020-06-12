@@ -228,6 +228,8 @@ export type AffiliatePayment = {
   customerId?: string
   orderStatus?: string
   customerName?: string
+  orderAmount?: number
+  paidAt?: string
 }
 
 export type AffiliatesResult = {

@@ -61,6 +61,7 @@ import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 import roleCatalog from '../components/RoleList/reducer'
 import salesRep from '../components/SalesRep/reducer'
 import affiliates from '../components/Affiliates/reducer'
+import affiliatesOrders from '../components/AffiliatesOrders/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -84,6 +85,7 @@ export interface ReducersObject {
   roleCatalog: any
   salesRep: any
   affiliates: any
+  affiliatesOrders: any
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
@@ -210,6 +212,7 @@ const rootReducer = combineReducers({
   productModels,
   createStore,
   affiliates,
+  affiliatesOrders,
   searchTeamstores,
   teamstoreProductPage,
   account,
