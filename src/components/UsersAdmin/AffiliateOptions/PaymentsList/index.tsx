@@ -58,7 +58,7 @@ const PaymentsList = ({
   }
   const userItems = payments && payments.length && payments.map(
     (
-      { id, createdAt, status, amount, receipt }: any,
+      { id, createdAt, status, amount, receipt }: AffiliatePayment,
       index: number
     ) => {
       const fileName = receipt ? getFileWithExtension(receipt) : ''
