@@ -2,9 +2,6 @@
  * AffiliateOptions Component - Created by Jesús Ricardo on 23/05/20.
  */
 import * as React from 'react'
-import MediaQuery from 'react-responsive'
-import { graphql, compose } from 'react-apollo'
-import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
@@ -18,16 +15,7 @@ import {
   Clip,
   StyledInputNumber,
 } from './styledComponents'
-
-import debounce from 'lodash/debounce'
-import HeaderTable from '../HeaderOrdersTable'
-import ItemOrder from '../ItemOrder'
-import { USERS_LIMIT, NOTE_FORMAT } from '../constants'
-import EmptyContainer from '../../EmptyContainer'
-import { sorts, QueryProps, User } from '../../../types/common'
-import withError from '../../WithError'
-import withLoading from '../../WithLoading'
-import Pagination from 'antd/lib/pagination/Pagination'
+import { NOTE_FORMAT } from '../constants'
 import { PENDING, APPROVED, REJECTED } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'

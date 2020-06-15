@@ -2,10 +2,8 @@
  * Styled Components - Created by Jesús on 23/05/20.
  */
 import styled from 'styled-components'
-import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
-import { RED, WHITE } from '../../../theme/colors'
-import Input from 'antd/lib/input'
+import { RED } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
 

@@ -16,7 +16,6 @@ import MyLocker from '../../MyLocker'
 import { QueryProps, DesignNote, MessagePayload, IProfileSettings, Affiliate } from '../../../types/common'
 import { GetDesignNotes, addNoteMutation, profileSettingsQuery, changeAffiliateMutation } from '../data'
 import ProassistNotes from '../../ProassistNotes'
-import { APPROVED } from '../../../constants'
 
 const RadioGroup = Radio.Group
 
