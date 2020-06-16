@@ -33,19 +33,12 @@ import {
   LinkButton,
 } from './styledComponents'
 import messages from './messages'
+import { US_CURRENCY, CA_CURRENCY, currencies, links } from './constants'
 import { Message, UploadFile } from '../../types/common'
 import { RadioChangeEvent } from 'antd/lib/radio'
 import { UploadChangeParam } from 'antd/lib/upload'
 import AntdMessage from 'antd/lib/message'
 import { getFileWithExtension } from '../../utils/utilsFiles'
-
-const US_CURRENCY = 'usd'
-const CA_CURRENCY = 'cad'
-
-const links = {
-  [US_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/FW-9.pdf',
-  [CA_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/CA%20Tax%20form.pdf'
-}
 
 interface Props {
   open: boolean
@@ -170,16 +163,19 @@ export class AffiliateModal extends React.Component<Props, {}> {
                   </RadioStyled>
                 </RadioGroupStyled>
                 <Currencies>
-                  <FormattedMessage {...messages.usd} />
-                  <FormattedMessage {...messages.cad} />
+                  <FormattedMessage {...messages.usdSymbol} />
+                  <FormattedMessage {...messages.cadSymbol} />
                 </Currencies>
                 <Currencies>
-                  <FileLink disabled={paypalCurrency !== US_CURRENCY} onClick={this.openFile(US_CURRENCY)}>
-                    <FormattedMessage {...messages.usdForm} />
-                  </FileLink>
-                  <FileLink disabled={paypalCurrency !== CA_CURRENCY} onClick={this.openFile(CA_CURRENCY)}>
-                    <FormattedMessage {...messages.cadForm} />
-                  </FileLink>
+                  {currencies.map((currentCurrency, index) =>
+                    <FileLink
+                      key={index}
+                      disabled={paypalCurrency !== currentCurrency}
+                      onClick={this.openFile(currentCurrency)}
+                    >
+                      <FormattedMessage {...messages[currentCurrency]} />
+                    </FileLink>
+                  )}
                 </Currencies>
               </CurrencyContainer>
               <Label>
