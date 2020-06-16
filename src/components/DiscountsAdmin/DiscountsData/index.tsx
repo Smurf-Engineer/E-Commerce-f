@@ -33,7 +33,7 @@ import {
 } from './styledComponents'
 import Select, { SelectValue } from 'antd/lib/select'
 import moment, { Moment } from 'moment'
-import { User, UserDiscount, Header } from '../../../types/common'
+import { User, UserDiscount, Header, HiddenSymbols } from '../../../types/common'
 
 interface Props {
   title?: string
@@ -45,8 +45,9 @@ interface Props {
   discountActive: boolean
   expiry: string
   loading: boolean
-  restrictionType: string
+  restrictionType: HiddenSymbols
   searchResults: string[]
+  searchResultsProducts: string[]
   user: string
   selectedUsers: User[]
   usageNumber: number
@@ -74,6 +75,7 @@ const discountRestrictionTypes = [PRODUCT, USERS, USAGE]
 
 interface StateProps {
   searchValue: string
+  searchValueProducts: string
 }
 
 const usersHeader: Header[] = [
@@ -89,10 +91,15 @@ const productsHeader: Header[] = [
 
 class DiscountsData extends React.Component<Props, StateProps> {
   state = {
-    searchValue: ''
+    searchValue: '',
+    searchValueProducts: ''
   }
   debounceSearchUser = debounce(
     () => this.props.handleOnChange(this.state.searchValue),
+    300
+  )
+  debounceSearchProduct = debounce(
+    () => this.props.handleOnChange(this.state.searchValueProducts),
     300
   )
   componentDidUpdate(prevProps: Props) {
@@ -134,9 +141,14 @@ class DiscountsData extends React.Component<Props, StateProps> {
       this.debounceSearchUser()
     })
 
+  handleProductInputChange = (value: string) =>
+    this.setState({ searchValueProducts: value }, () => {
+      this.debounceSearchProduct()
+    })
+
   goBack = () => {
     const { goBack } = this.props
-    this.setState({ searchValue: '' }, () => {
+    this.setState({ searchValue: '', searchValueProducts: '' }, () => {
       goBack()
     })
   }
@@ -169,6 +181,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
       restrictionType,
       onSelectRestriction,
       searchResults,
+      searchResultsProducts,
       onDeleteItem,
       selectedUsers,
       onChangeUsage,
@@ -181,10 +194,11 @@ class DiscountsData extends React.Component<Props, StateProps> {
       !discountItemId.length ||
       !rate ||
       !expiry ||
-      (restrictionType === USERS && !selectedUsers.length) ||
-      (restrictionType === PRODUCT && !selectedProducts.length) ||
-      (restrictionType === USAGE && !unlimitedUsage && usageNumber <= 0)
-    const { searchValue } = this.state
+      (!restrictionType[USERS] && !restrictionType[PRODUCT] && !restrictionType[USAGE]) ||
+      (!!restrictionType[USERS] && !selectedUsers.length) ||
+      (!!restrictionType[PRODUCT] && !selectedProducts.length) ||
+      (!!restrictionType[USAGE] && !unlimitedUsage && usageNumber <= 0)
+    const { searchValue, searchValueProducts } = this.state
     return (
       <Container>
         <ViewContainer onClick={this.goBack}>
@@ -205,7 +219,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
                   key={index}
                   id={restriction}
                   large={true}
-                  selected={restriction === restrictionType}
+                  selected={restrictionType[restriction]}
                   onClick={onSelectRestriction(restriction)}
                 >
                   {formatMessage(messages[restriction])}
@@ -277,7 +291,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
             />
           </Column>
         </Row>
-        {restrictionType === USERS && (
+        {restrictionType[USERS] && (
           <div>
             <Row>
               <Column>
@@ -315,7 +329,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
             />
           </div>
         )}
-        {restrictionType === USAGE && (
+        {restrictionType[USAGE] && (
           <div>
             <Row>
               <Column>
@@ -343,17 +357,17 @@ class DiscountsData extends React.Component<Props, StateProps> {
             </Row>
           </div>
         )}
-        {restrictionType === PRODUCT && (
+        {restrictionType[PRODUCT] && (
           <div>
             <Row>
               <Column>
                 <Title>{formatMessage(messages.discountProduct)}</Title>
                 <Label>{formatMessage(messages.addProduct)}</Label>
                 <StyledSearch
-                  onChange={this.handleSearchInputChange}
-                  dataSource={searchResults}
+                  onChange={this.handleProductInputChange}
+                  dataSource={searchResultsProducts}
                   onSelect={this.handleOnSelectProduct}
-                  value={searchValue}
+                  value={searchValueProducts}
                   placeholder={formatMessage(messages.searchByProduct)}
                 >
                   <StyledInput

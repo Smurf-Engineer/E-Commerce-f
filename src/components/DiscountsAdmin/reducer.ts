@@ -28,7 +28,7 @@ import {
   ON_CHANGE_USAGE,
   ON_CHECK_USAGE
 } from './constants'
-import { Reducer } from '../../types/common'
+import { Reducer, HiddenSymbols } from '../../types/common'
 
 export const initialState = fromJS({
   currentPage: 1,
@@ -91,7 +91,11 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         expiry: '',
         loading: false,
         discountId: -1,
-        restrictionType: '',
+        restrictionType: {
+          users: false,
+          product: true,
+          usage: false,
+        },
         user: '',
         selectedUser: '',
         currentPageModal: 1,
@@ -118,6 +122,12 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         selectedProducts,
         usageNumber
       } = action.discount
+      const restrictions = restrictionType.split(',')
+      const restricts = restrictions.reduce((obj: HiddenSymbols, restrictType: string) => {
+        obj[restrictType] = true
+        return obj
+        // tslint:disable-next-line: align
+      }, {})
       return state.merge({
         discountId: id,
         discountType: type,
@@ -126,7 +136,7 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         rate,
         discountActive: active,
         expiry,
-        restrictionType,
+        restrictionType: restricts,
         user,
         discountPage: EDIT,
         selectedUsers,

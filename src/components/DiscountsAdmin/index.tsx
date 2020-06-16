@@ -176,11 +176,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       history.replace(ADMIN_ROUTE)
     }
 
-    const searchResults =
-      restrictionType === USERS
-        ? this.getUsersSearchResults()
-        : this.getProductsSearchResults()
-
+    const searchResults = restrictionType.users ? this.getUsersSearchResults() : []
+    const searchResultsProducts = restrictionType.product ? this.getProductsSearchResults() : []
     return (
       <SwipeableViews
         onChangeIndex={this.handleOnChangeIndex}
@@ -236,6 +233,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             expiry,
             loading,
             restrictionType,
+            searchResultsProducts,
             searchResults,
             user,
             selectedUsers,
