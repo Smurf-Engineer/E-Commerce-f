@@ -44,7 +44,11 @@ export const initialState = fromJS({
   rate: 1,
   discountActive: false,
   loading: false,
-  restrictionType: '',
+  restrictionType: {
+    users: false,
+    product: true,
+    usage: false,
+  },
   user: '',
   selectedUser: '',
   discountPage: LIST,
