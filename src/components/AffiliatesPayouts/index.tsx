@@ -88,7 +88,11 @@ export class AffiliatesPayouts extends React.Component<Props, {}> {
     if (!access.view) {
       history.replace(ADMIN_ROUTE)
     }
-    const payoutList = get(data, 'paymentsQuery.payments', []) as AffiliatePayment[]
+    const payoutList = get<Data, 'paymentsQuery.payments', AffiliatePayment[]>(
+      data,
+      'paymentsQuery.payments',
+      []
+    )
     const fullCount = get(data, 'paymentsQuery.fullCount', 0)
 
     const payouts = payoutList && !!payoutList.length && payoutList.map(
