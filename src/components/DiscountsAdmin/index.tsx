@@ -32,7 +32,8 @@ import {
   SelectedDesignObjectType,
   UserDiscount,
   ProductsCodes,
-  UserPermissions
+  UserPermissions,
+  HiddenSymbols
 } from '../../types/common'
 import DiscountsData from './DiscountsData'
 import { isNumber } from '../../utils/utilsFiles'
@@ -54,7 +55,7 @@ interface Props {
   discountActive: boolean
   expiry: string
   loading: boolean
-  restrictionType: string
+  restrictionType: HiddenSymbols
   permissions: UserPermissions
   selectedItems: SelectedDesignObjectType
   users: Data
@@ -81,7 +82,7 @@ interface Props {
   activateDiscount: (variables: {}) => void
   onSelectDateAction: (date: string) => void
   setDiscountToUpdateAction: (discount: Discount) => void
-  selectRestrictionAction: (restriction: string) => void
+  selectRestrictionAction: (restriction: HiddenSymbols) => void
   onChangeUserAction: (value: string) => void
   onAddProductAction: (value: string) => void
   deleteItemSelectedAction: (index: number, section: string) => void
@@ -289,8 +290,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     }
   }
   handleOnSelectRestriction = (restriction: string) => () => {
-    const { selectRestrictionAction } = this.props
-    selectRestrictionAction(restriction)
+    const { selectRestrictionAction, restrictionType } = this.props
+    restrictionType[restriction] = !restrictionType[restriction]
+    selectRestrictionAction(restrictionType)
   }
   onSelectDate = (date: Moment) => {
     const { onSelectDateAction } = this.props

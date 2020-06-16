@@ -30,7 +30,8 @@ import {
   AnyAction,
   sorts,
   Discount,
-  UserDiscount
+  UserDiscount,
+  HiddenSymbols
 } from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
@@ -98,7 +99,7 @@ export const setDiscountToUpdateAction = (discount: Discount) => ({
   discount
 })
 
-export const selectRestrictionAction = (restriction: string) => ({
+export const selectRestrictionAction = (restriction: HiddenSymbols) => ({
   type: SELECT_RESTRICTION,
   restriction
 })
