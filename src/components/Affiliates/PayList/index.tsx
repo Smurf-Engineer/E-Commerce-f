@@ -190,7 +190,6 @@ export class PayList extends React.Component<Props, {}> {
               <Header>{formatMessage(messages.orderId)}</Header>
               <Header>{formatMessage(messages.orderStatus)}</Header>
               <Header>{formatMessage(messages.customerId)}</Header>
-              {/* <Header>{formatMessage(messages.receipt)}</Header> */}
             </Row>
           </thead>
           <tbody>
@@ -207,12 +206,9 @@ export class PayList extends React.Component<Props, {}> {
                   amount,
                   orderId,
                   customerId,
-                  orderStatus,
-                  // receipt
+                  orderStatus
                 }: AffiliatePayment,
-                index: number) => {
-                // const openLink = this.openLinkAction(receipt)
-                return (
+                index: number) => (
                   <RepDiv id={orderId} onClick={this.openOrder} key={index}>
                     <Cell onClick={this.stopPropagation}>
                       {status === PENDING_PAY && !!paypalAccount &&
@@ -234,18 +230,11 @@ export class PayList extends React.Component<Props, {}> {
                     <Cell>{`${comission}%`}</Cell>
                     <Cell>{status}</Cell>
                     <Cell bold={true}>{`$${amount.toFixed(2)}`}</Cell>
-                    {/* <Cell onClick={this.stopPropagation}>
-                      <Clip type="paper-clip" />
-                      <FileName onClick={openLink}>
-                        {receipt ? getFileWithExtension(receipt) : ''}
-                      </FileName>
-                    </Cell> */}
                     <Cell>{orderId}</Cell>
                     <Cell>{orderStatus}</Cell>
                     <Cell>{`JV2-${customerId}`}</Cell>
                   </RepDiv>
-                )
-              })
+                ))
             ) : (
                 <EmptyContainer message={formatMessage(messages.empty)} />
               )}
