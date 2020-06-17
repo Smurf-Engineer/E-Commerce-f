@@ -38,7 +38,7 @@ import {
 import DiscountsData from './DiscountsData'
 import { isNumber } from '../../utils/utilsFiles'
 import { Moment } from 'moment'
-import { USERS, DISCOUNTS, ADMIN_ROUTE } from '../AdminLayout/constants'
+import { DISCOUNTS, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -315,7 +315,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     } = this.props
 
     const usersIds = selectedUsers.map(user => user.value)
-
+    const restrictArray = Object.keys(restrictionType).filter((type: string) => restrictionType[type])
+    const restrictions = restrictArray.join(',')
     const isUpdatingDiscount = discountId !== -1
     const discount = {
       id: isUpdatingDiscount ? discountId : undefined,
@@ -325,7 +326,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       rate,
       expiry,
       active: discountActive,
-      restrictionType,
+      restrictionType: restrictions,
       selectedUsers: usersIds,
       items: selectedProducts,
       usageNumber: !unlimitedUsage ? usageNumber : 0

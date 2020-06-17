@@ -506,8 +506,8 @@ describe(' DiscountsAdmin Screen', () => {
             initialState,
             setDiscountToUpdateAction(discount)
           )
-          const customNameValue = customState.get('restrictionType')
-          expect(customNameValue).toBe(discount.restrictionType)
+          const customNameValue = customState.getIn(['restrictionType', 'usage'])
+          expect(customNameValue).toBeTruthy()
         })
       })
     })
@@ -517,22 +517,22 @@ describe(' DiscountsAdmin Screen', () => {
           const customInitialValue = initialState.get('restrictionType')
           expect(customInitialValue).not.toBeUndefined()
         })
-        it('Handles init value in restrictionType', () => {
-          const customInitialValue = initialState.get('restrictionType')
-          expect(customInitialValue).toBe('')
-        })
         it('Handles value type in restrictionType', () => {
           const customInitialValue = initialState.get('restrictionType')
-          expect(typeof customInitialValue).toBe('string')
+          expect(typeof customInitialValue).toBe('object')
         })
         it('Handles custom values in discount', () => {
-          const customValue = 'product'
+          const customValue = {
+            users: false,
+            product: true,
+            usage: false,
+          }
           const customState = discountsAdminReducer(
             initialState,
             selectRestrictionAction(customValue)
           )
-          const customNameValue = customState.get('restrictionType')
-          expect(customNameValue).toBe(customValue)
+          const customNameValue = customState.getIn(['restrictionType', 'product'])
+          expect(customNameValue).toBe(customValue.product)
         })
       })
     })

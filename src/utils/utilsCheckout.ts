@@ -36,9 +36,10 @@ export const getTaxesAndDiscount = (
 
   if (couponCode) {
     const { type, rate, restrictionType, products } = couponCode
+    const restrictions = restrictionType ? restrictionType.split(',') : []
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
-        if (restrictionType !== PRODUCT) {
+        if (!restrictions.includes(PRODUCT)) {
           if (taxesAmount && applySpecialTaxes) {
             taxVatTotal = taxesAmount / 100
             const totalNet = subtotal / (1 + taxVatTotal)
@@ -59,8 +60,8 @@ export const getTaxesAndDiscount = (
               return (
                 totalDiscount +
                 itemForDiscount.price *
-                  (Number(rate) / 100) *
-                  itemForDiscount.quantity
+                (Number(rate) / 100) *
+                itemForDiscount.quantity
               )
             }
             return totalDiscount
@@ -69,7 +70,7 @@ export const getTaxesAndDiscount = (
         }
         break
       case FLAT_PROMO: // 'flat
-        if (restrictionType !== PRODUCT) {
+        if (!restrictions.includes(PRODUCT)) {
           discount = Number(rate)
         } else {
           discount = products.reduce((totalDiscount: number, product) => {

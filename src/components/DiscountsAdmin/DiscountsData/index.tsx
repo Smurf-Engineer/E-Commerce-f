@@ -102,12 +102,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
     () => this.props.handleOnChange(this.state.searchValueProducts),
     300
   )
-  componentDidUpdate(prevProps: Props) {
-    const { user } = this.props
-    if (prevProps.user !== user) {
-      this.setState({ searchValue: user })
-    }
-  }
+
   handleOnSelectProduct = (value: SelectValue) => {
     const { onAddProduct } = this.props
     const parsedValue = value.toString()

@@ -144,13 +144,20 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         selectedProducts
       })
     }
-    case SELECT_RESTRICTION:
+    case SELECT_RESTRICTION: {
+      const restrictionType = action.restriction
+      let selectedArray = ''
+      if (!restrictionType.users) {
+        selectedArray = 'selectedUsers'
+      } else if (!restrictionType.product) {
+        selectedArray = 'selectedProducts'
+      }
       return state.merge({
-        restrictionType: action.restriction,
-        selectedUsers: [],
-        selectedProducts: [],
+        restrictionType,
+        [selectedArray]: [],
         user: ''
       })
+    }
     case ON_CHANGE_USER:
       return state.set('user', action.value)
     case ON_ADD_PRODUCT: {
