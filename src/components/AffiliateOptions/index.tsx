@@ -135,9 +135,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
   }
 
   linkPaypal = () => {
-    // Use the next line on development env (Paypal doesn't accept localhost as a valid URL)
-    const redirect = encodeURIComponent(`https://designlab.jakroo.com/account?option=affiliate`)
-    // const redirect = encodeURIComponent(`${config.baseUrl}account?option=affiliate`)
+    const redirect = encodeURIComponent(`${config.baseUrl}account?option=affiliate`)
     const client = `flowEntry=static&client_id=${config.paypalClientId}`
     const params = `&scope=openid email https://uri.paypal.com/services/paypalattributes&redirect_uri=${redirect}`
     window.location.href = `${config.paypalBaseUrl}${client}${params}`
