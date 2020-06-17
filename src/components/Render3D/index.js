@@ -215,7 +215,7 @@ class Render3D extends PureComponent {
 
           const texture =
             binding[
-            hasBindingColor ? colorAccessories.bindingColor : bindingColor
+              hasBindingColor ? colorAccessories.bindingColor : bindingColor
             ]
           loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
@@ -267,7 +267,7 @@ class Render3D extends PureComponent {
             loadedTextures.colors.push(color)
             images.push(image)
           })
-          const loadedAreas = images.map(image => {
+          const loadedAreas = images.map((image) => {
             const areaTexture = textureLoader.load(image)
             areaTexture.minFilter = THREE.LinearFilter
             return areaTexture
@@ -280,16 +280,16 @@ class Render3D extends PureComponent {
       }
     })
 
-  handleOnLoadModel = isLoading => this.setState({ loadingModel: isLoading })
+  handleOnLoadModel = (isLoading) => this.setState({ loadingModel: isLoading })
 
-  onProgress = xhr => {
+  onProgress = (xhr) => {
     if (xhr.lengthComputable) {
       const progress = Math.round((xhr.loaded / xhr.total) * 100)
       this.setState({ progress })
     }
   }
 
-  onError = xhr => console.error('Error: ' + xhr)
+  onError = (xhr) => console.error('Error: ' + xhr)
 
   start = () => {
     if (!this.frameId) {
@@ -381,7 +381,7 @@ class Render3D extends PureComponent {
         <Render
           {...{ customProduct, designSearch }}
           id="render-3d"
-          innerRef={container => (this.container = container)}
+          innerRef={(container) => (this.container = container)}
         >
           {loading && !isProduct && <Loading indicator={circleIcon} />}
           {loadingModel && !isProduct && (
@@ -418,7 +418,7 @@ class Render3D extends PureComponent {
     /* Object and MTL load */
     if (obj && mtl) {
       const mtlLoader = new THREE.MTLLoader()
-      mtlLoader.load(mtl, materials => {
+      mtlLoader.load(mtl, (materials) => {
         this.handleOnLoadModel(true)
 
         materials.preload()
@@ -426,11 +426,14 @@ class Render3D extends PureComponent {
         objLoader.setMaterials(materials)
         objLoader.load(
           obj,
-          async object => {
+          async (object) => {
             const { children } = object
             const objectChildCount = children.length
-            const getMeshIndex = meshName => {
-              const index = findIndex(children, mesh => mesh.name === meshName)
+            const getMeshIndex = (meshName) => {
+              const index = findIndex(
+                children,
+                (mesh) => mesh.name === meshName
+              )
               return index < 0 ? 0 : index
             }
             const meshIndex = getMeshIndex(MESH)
@@ -469,7 +472,7 @@ class Render3D extends PureComponent {
             if (!!binding) {
               const texture =
                 binding[
-                colorAccessories.bindingColor || Object.keys(binding)[0]
+                  colorAccessories.bindingColor || Object.keys(binding)[0]
                 ]
 
               const bindingObj = textureLoader.load(texture)
@@ -592,14 +595,14 @@ class Render3D extends PureComponent {
     )
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
-    mtlLoader.load(product.mtl, materials => {
+    mtlLoader.load(product.mtl, (materials) => {
       this.handleOnLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
       objLoader.setMaterials(materials)
       objLoader.load(
         product.obj,
-        async object => {
+        async (object) => {
           const {
             areas = [],
             colors,
@@ -613,8 +616,8 @@ class Render3D extends PureComponent {
           } = loadedTextures
           const { children } = object
           const objectChildCount = children.length
-          const getMeshIndex = meshName => {
-            const index = findIndex(children, mesh => mesh.name === meshName)
+          const getMeshIndex = (meshName) => {
+            const index = findIndex(children, (mesh) => mesh.name === meshName)
             return index < 0 ? 0 : index
           }
           const meshIndex = getMeshIndex(MESH)
@@ -779,10 +782,10 @@ class Render3D extends PureComponent {
     })
   }
 
-  convertToFabricObjects = elements =>
+  convertToFabricObjects = (elements) =>
     new Promise((resolve, reject) => {
       try {
-        fabric.util.enlivenObjects(elements, objects => {
+        fabric.util.enlivenObjects(elements, (objects) => {
           resolve(objects)
         })
       } catch (e) {
@@ -790,16 +793,21 @@ class Render3D extends PureComponent {
       }
     })
 
-  loadFabricImage = url =>
+  loadFabricImage = (url) =>
     new Promise((resolve, reject) => {
       try {
-        fabric.util.loadImage(url, img => resolve(img), undefined, 'Anonymous')
+        fabric.util.loadImage(
+          url,
+          (img) => resolve(img),
+          undefined,
+          'Anonymous'
+        )
       } catch (e) {
         reject(e)
       }
     })
 
-  loadCanvasTexture = async object => {
+  loadCanvasTexture = async (object) => {
     try {
       let elements = []
       const paths = []
@@ -847,16 +855,16 @@ class Render3D extends PureComponent {
         const imageEl = new fabric.Image(img, { ...config })
         this.canvasTexture.add(imageEl)
       })
-      const fontsPromises = fonts.map(font => {
+      const fontsPromises = fonts.map((font) => {
         const fontObserver = new FontFaceObserver(font)
         return fontObserver.load()
       })
       await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
-      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      fabricObjects.forEach((o) => this.canvasTexture.add(o))
       const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
-      temporalCanvasTexture.forEach(el => {
-        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(
+      temporalCanvasTexture.forEach((el) => {
+        find(this.canvasTexture.getObjects(), (obj) => obj.id === el.id).moveTo(
           indexes[el.id]
         )
       })
@@ -868,11 +876,11 @@ class Render3D extends PureComponent {
     }
   }
 
-  getFontsFromCanvas = async object => {
+  getFontsFromCanvas = async (object) => {
     try {
       const fonts = []
       const { objects } = JSON.parse(object)
-      objects.forEach(el => {
+      objects.forEach((el) => {
         switch (el.type) {
           case CanvasElements.Text: {
             fonts.push(el.fontFamily)
@@ -882,7 +890,7 @@ class Render3D extends PureComponent {
             break
         }
       })
-      const fontsPromises = fonts.map(font => {
+      const fontsPromises = fonts.map((font) => {
         const fontObserver = new FontFaceObserver(font)
         return fontObserver.load()
       })
@@ -945,11 +953,16 @@ class Render3D extends PureComponent {
   }
 
   takeScreenshot = () =>
-    new Promise(resolve => {
-      setTimeout(() => {
-        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.3)
-        resolve(thumbnail)
-      }, 800)
+    new Promise((resolve) => {
+      if (this.renderer) {
+        setTimeout(() => {
+          const thumbnail = this.renderer.domElement.toDataURL(
+            'image/webp',
+            0.3
+          )
+          resolve(thumbnail)
+        }, 800)
+      }
     })
   saveThumbnail = async () => {
     const { designId } = this.props
