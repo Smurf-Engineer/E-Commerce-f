@@ -31,7 +31,7 @@ export default defineMessages({
   },
   amount: {
     id: 'components.AffiliatesList.amount',
-    defaultMessage: 'Amount'
+    defaultMessage: 'Affiliate Commission'
   },
   receipt: {
     id: 'components.AffiliatesList.receipt',
@@ -68,5 +68,13 @@ export default defineMessages({
   orderStatus: {
     id: 'components.AffiliatesList.orderStatus',
     defaultMessage: 'Order Status'
+  },
+  originAmount: {
+    id: 'components.AffiliatesList.originAmount',
+    defaultMessage: 'Amount (FX)'
+  },
+  amountBase: {
+    id: 'components.AffiliatesList.amountBase',
+    defaultMessage: 'Amount (Base)'
   }
 })

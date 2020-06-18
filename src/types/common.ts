@@ -226,9 +226,12 @@ export type AffiliatePayment = {
   name?: string
   orderId?: string
   customerId?: string
+  currency?: String
+  totalOrigin: number
+  orderCurrency?: String
   orderStatus?: string
   customerName?: string
-  orderAmount?: number
+  orderAmount: number
   paidAt?: string
 }
 
