@@ -232,7 +232,6 @@ class ProfileSettings extends React.Component<Props, {}> {
     const { status } = affiliate
     return (
       <Container>
-        {/* PROFILE */}
         {loadingFile &&
           <LoadingContainer>
             <Spin />
@@ -278,128 +277,11 @@ class ProfileSettings extends React.Component<Props, {}> {
             paypalCurrency,
             setPaypalCurrency
           }}
+          loading={loadingFile}
           linkPaypal={this.linkPaypal}
           sendRequest={this.sendRequest}
           open={openModal}
         />
-        {/* REGION */}
-        {/*<Title>{formatMessage(messages.languageTitle)}</Title>
-        <SectionContainer>
-          <Row marginBottom={'0'}>
-            <LanguageAndCurrencyForm
-              selectedDropDown={this.selectedDropDown}
-              regionsAndLanguageOptions={regionsOptions}
-              onSaveLanguageSettings={this.handleOnSaveLanguageSettings}
-              loading={loadingRegion}
-              {...{
-                languageSettings,
-                region,
-                language,
-                currency,
-                formatMessage,
-                isMobile
-              }}
-            />
-          </Row>
-        </SectionContainer>
-        */}
-        {/* MEASUREMENTS
-        <Title>{formatMessage(messages.measurementsTitle)}</Title>
-        <SectionContainer>
-          <MeasurementsForm
-            loading={loadingMeasurements}
-            onSaveMeasurementsSettings={this.handleOnSaveMeasurementsSettings}
-            handleInputChange={this.handleInputChange}
-            handleOnMsrmntGenderChange={this.handleOnMsrmntGenderChange}
-            handleOnMsrmntSystemChange={this.handleOnMsrmntSystemChange}
-            {...{
-              formatMessage,
-              msrmntSystemSelected,
-              msrmntGenderSelected,
-              weight,
-              heightFirst,
-              heightSecond,
-              chestSize,
-              waistSize,
-              hipsSize,
-              inseamSize,
-              shouldersSize,
-              neckSize,
-              measurementSettings,
-              isMobile
-            }}
-          />
-        </SectionContainer> */}
-        {/*SMS Preferences*/}
-        {/* <SectionContainer>
-          <Title>{formatMessage(messages.smsTitle)}</Title>
-          <Row marginBottom={'0'}>
-            <StyledCheckbox
-              onChange={this.handleOnSmsConfirmationChecked}
-              checked={
-                smsConfirmationChecked !== null
-                  ? smsConfirmationChecked
-                  : smsSettings.orderConfirmation
-              }
-            >
-              {formatMessage(messages.smsOrderConfirmation)}
-            </StyledCheckbox>
-          </Row>
-          <Row>
-            <StyledCheckbox
-              onChange={this.handleOnSmsUpdatesChecked}
-              checked={
-                smsUpdatesChecked !== null
-                  ? smsUpdatesChecked
-                  : smsSettings.desingUpdates
-              }
-            >
-              {formatMessage(messages.smsProDesignUpdates)}
-            </StyledCheckbox>
-          </Row>
-          <Row>
-            <Column inputhWidth={!isMobile ? '27%' : '48%'}>
-              <StyledButton
-                loading={loadingSms}
-                type="primary"
-                disabled={smsButtonDisabled}
-                onClick={this.handleOnSaveSmsSettings}
-              >
-                {formatMessage(messages.save)}
-              </StyledButton>
-            </Column>
-          </Row>
-        </SectionContainer> */}
-        {/*Email Preferences*/}
-        {/*
-        <SectionContainer>
-          <Title>{formatMessage(messages.emailTitle)}</Title>
-          <Row>
-            <StyledCheckbox
-              onChange={this.handleOnEmailNewsletterChecked}
-              checked={
-                emailNewsletterChecked !== null
-                  ? emailNewsletterChecked
-                  : emailSettings.newsletter
-              }
-            >
-              {formatMessage(messages.emailSignUpNewsLetter)}
-            </StyledCheckbox>
-          </Row>
-          <Row>
-            <Column inputhWidth={!isMobile ? '27%' : '48%'}>
-              <StyledButton
-                loading={loadingEmail}
-                type="primary"
-                disabled={emailButtonDisabled}
-                onClick={this.handleOnSaveEmailSettings}
-              >
-                {formatMessage(messages.save)}
-              </StyledButton>
-            </Column>
-          </Row>
-        </SectionContainer>
-         */}
         <ChangePasswordModal
           {...{
             formatMessage,
@@ -672,8 +554,7 @@ class ProfileSettings extends React.Component<Props, {}> {
 
   linkPaypal = () => {
     const { history } = this.props
-    const redirect = encodeURIComponent(`https://designlab.jakroo.com/account?option=profileSettings`)
-    // const redirect = encodeURIComponent(`${config.baseUrl}account?option=profileSettings`)
+    const redirect = encodeURIComponent(`${config.baseUrl}account?option=profileSettings`)
     history.push(`
       https://www.sandbox.paypal.com/connect?
       flowEntry=static

@@ -54,6 +54,7 @@ interface Props {
   paypalCheck: boolean
   paypalCurrency: string
   file: string
+  loading: boolean
   linkPaypal: () => void
   sendRequest: (value: boolean) => void
   openAffiliate: (value: boolean) => void
@@ -114,6 +115,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
     const {
       open,
       file,
+      loading,
       link,
       linkPaypal,
       sendRequest,
@@ -225,7 +227,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 <CancelButton onClick={this.handleClose}>
                   <FormattedMessage {...messages.cancel} />
                 </CancelButton>
-                <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file}>
+                <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file || loading}>
                   <FormattedMessage {...messages.sendRequest} />
                 </SaveButton>
               </ButtonsContainer>
