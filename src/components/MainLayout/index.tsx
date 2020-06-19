@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import GoogleFontLoader from 'react-google-font-loader'
 import get from 'lodash/get'
+import shortId from 'shortId'
 import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
@@ -142,10 +143,11 @@ class MainLayout extends React.Component<Props, {}> {
     if (!disableAssist) {
       let id = sessionStorage.getItem('slaaskSupportId')
       if (!id) {
-        const slaaskId = Math.floor(Math.random() * 1001).toString()
+        const slaaskId = shortId.generate()
         sessionStorage.setItem('slaaskSupportId', slaaskId)
         id = slaaskId
       }
+      console.log('slaaskId:', id)
       const { email, name, lastName, id: userId } = user || {}
       const info = {
         id,
