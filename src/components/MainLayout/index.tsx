@@ -147,7 +147,6 @@ class MainLayout extends React.Component<Props, {}> {
         sessionStorage.setItem('slaaskSupportId', slaaskId)
         id = slaaskId
       }
-      console.log('slaaskId:', id)
       const { email, name, lastName, id: userId } = user || {}
       const info = {
         id,
