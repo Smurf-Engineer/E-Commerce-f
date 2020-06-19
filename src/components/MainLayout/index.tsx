@@ -6,7 +6,6 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import GoogleFontLoader from 'react-google-font-loader'
 import get from 'lodash/get'
-import shortId from 'shortId'
 import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
@@ -36,7 +35,8 @@ import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
 import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
-import { initSlaask, closeSlaask } from '../../slaask'
+import { closeSlaask } from '../../slaask'
+import { openSupport } from './api'
 
 const { Content } = Layout
 
@@ -141,21 +141,7 @@ class MainLayout extends React.Component<Props, {}> {
   componentDidUpdate() {
     const { user, disableAssist } = this.props
     if (!disableAssist) {
-      let id = sessionStorage.getItem('slaaskSupportId')
-      if (!id) {
-        const slaaskId = shortId.generate()
-        sessionStorage.setItem('slaaskSupportId', slaaskId)
-        id = slaaskId
-      }
-      const { email, name, lastName, id: userId } = user || {}
-      const info = {
-        id,
-        email,
-        userId,
-        name,
-        lastName
-      }
-      initSlaask(info, true)
+      openSupport(user)
     }
   }
 
