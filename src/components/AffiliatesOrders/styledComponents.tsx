@@ -70,7 +70,7 @@ export const Header = styled.th`
 
   @media (min-width: 320px) and (max-width: 768px) {
     letter-spacing: 0.09px;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 15px;
   }
 `
@@ -96,6 +96,9 @@ export const Cell = styled.td`
   font-weight: ${({ bold }: CellProps) => bold ? 'bold' : 'normal'};
   &.error {
     color: ${RED};
+  }
+  @media (max-width: 768px) {
+    font-size: 11px;
   }
 `
 

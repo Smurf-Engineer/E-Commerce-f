@@ -28,6 +28,7 @@ import { PAY_LIMITS } from './constants'
 import { getAffiliatesPayments } from './data'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import Spin from 'antd/lib/spin'
+import MediaQuery from 'react-responsive'
 
 interface Data extends QueryProps {
   paymentsResult: AffiliatesResult
@@ -73,8 +74,14 @@ class AffiliatesOrders extends React.Component<Props, {}> {
               <Row>
                 <Header>{formatMessage(messages.orderDate)}</Header>
                 <Header>{formatMessage(messages.orderNumber)}</Header>
-                <Header>{formatMessage(messages.orderStatus)}</Header>
-                <Header>{formatMessage(messages.orderAmount)}</Header>
+                <MediaQuery minWidth={769}>
+                  {matches => matches && (
+                    <>
+                      <Header>{formatMessage(messages.orderStatus)}</Header>
+                      <Header>{formatMessage(messages.orderAmount)}</Header>
+                    </>
+                  )}
+                </MediaQuery>
                 <Header>{formatMessage(messages.commisionStatus)}</Header>
                 <Header>{formatMessage(messages.amount)}</Header>
                 <Header>{formatMessage(messages.datePaid)}</Header>
@@ -100,8 +107,14 @@ class AffiliatesOrders extends React.Component<Props, {}> {
                         {createdAt ? moment(createdAt).format(NOTE_FORMAT) : '-'}
                       </Cell>
                       <Cell>{orderId}</Cell>
-                      <Cell>{orderStatus}</Cell>
-                      <Cell>${orderAmount.toFixed(2)}</Cell>
+                      <MediaQuery minWidth={769}>
+                        {matches => matches &&
+                          <>
+                            <Cell>{orderStatus}</Cell>
+                            <Cell>${orderAmount.toFixed(2)}</Cell>
+                          </>
+                        }
+                      </MediaQuery>
                       <Cell>{status}</Cell>
                       <Cell>${amount.toFixed(2)}</Cell>
                       <Cell>

@@ -28,6 +28,11 @@ export const OptionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    font-size: 13px;
+    justify-content: space-between;
+  }
 `
 
 export const StyledSwitch = styled(Switch)``
@@ -39,6 +44,11 @@ export const LabelButton = styled.div`
   align-items: flex-start;
   height: 48px;
   margin-right: 24px;
+  @media (max-width: 768px) {
+    flex: 1;
+    height: 38px;
+    margin-bottom: 14px;
+  }
 `
 
 export const Title = styled.div`
@@ -91,4 +101,7 @@ export const Subtitle = styled.div`
   font-weight: bold;
   margin-bottom: 22px;
   font-size: 16px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
