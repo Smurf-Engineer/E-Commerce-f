@@ -238,7 +238,7 @@ export class PayList extends React.Component<Props, {}> {
                     <Cell>{status}</Cell>
                     <Cell width="100px" bold={true}>{`${orderCurrency} ${totalOrigin.toFixed(2)}`}</Cell>
                     <Cell width="100px" bold={true}>{`${currency} ${orderAmount.toFixed(2)}`}</Cell>
-                    <Cell width="90px" bold={true}>{amount.toFixed(2)}</Cell>
+                    <Cell width="90px" bold={true}>{`${currency} ${amount.toFixed(2)}`}</Cell>
                     <Cell>{orderId}</Cell>
                     <Cell>{orderStatus}</Cell>
                     <Cell>{`JV2-${customerId}`}</Cell>
