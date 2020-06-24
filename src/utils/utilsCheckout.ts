@@ -116,7 +116,7 @@ export const getTaxesAndDiscount = (
           taxRates
         ) {
           // for CANADA the taxes are calculated
-          // GST = (subtotal + proDesignReview + shipping - discountAmount) * gstRate%
+          // GST = ((subtotal + proDesignReview - discountAmount) * gstRate%) + (shipping * shippingRate%)
           taxGst =
             (subtotal + proDesignFee - discount) * (taxRates.rateGst / 100) // calculate tax
           taxGst += shippingTotal * (CANADA_SHIPPING_TAX_RATE / 100)
