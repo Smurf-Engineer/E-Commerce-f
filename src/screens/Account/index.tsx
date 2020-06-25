@@ -104,7 +104,6 @@ export class Account extends React.Component<Props, {}> {
     } = this.props
     const queryParams = queryString.parse(search)
     const { option } = queryParams
-
     if (option) {
       if (option === SCREEN_LOCKER || option === MY_FILES) {
         setDefaultScreenAction(option)
