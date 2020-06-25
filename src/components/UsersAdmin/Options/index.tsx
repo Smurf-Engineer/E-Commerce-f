@@ -195,6 +195,8 @@ class Options extends React.Component<Props> {
       comission,
       activatedAt,
       paypalAccount,
+      region,
+      currency,
       file,
     } = affiliate
     const { loading: loadingData, designNotes = [] } = data || {}
@@ -235,6 +237,8 @@ class Options extends React.Component<Props> {
               loading,
               comission,
               activatedAt,
+              region,
+              currency,
               currentPage,
               onChangePage,
               paypalAccount,

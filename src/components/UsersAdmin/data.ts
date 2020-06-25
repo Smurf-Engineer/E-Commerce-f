@@ -16,6 +16,8 @@ export const profileSettingsQuery = gql`
         file
         paypalAccount: paypal_account
         comission
+        region
+        currency
         activatedAt: activated_at
       }
     }

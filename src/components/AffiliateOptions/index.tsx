@@ -20,7 +20,9 @@ import {
   LoadingErrorContainer,
   ErrorMessage,
   LoadingContainer,
+  PayIcon,
 } from './styledComponents'
+import Payday from '../../assets/jakroo_payday.png'
 import AffiliateDetails from '../UsersAdmin/AffiliateOptions'
 import AffiliateModal from '../AffiliateModal'
 import {
@@ -96,9 +98,10 @@ class AffiliateOptions extends React.Component<Props, {}> {
       openModal,
     } = this.props
     const affiliate = get(profileData, 'profileData.affiliate', {})
-    const { status, paypalAccount, comission, file, activatedAt } = affiliate
+    const { status, currency, region, paypalAccount, comission, file, activatedAt } = affiliate
     return (
       <Container>
+        <PayIcon src={Payday} />
         {loading &&
           <LoadingContainer>
             <Spin />
@@ -114,6 +117,8 @@ class AffiliateOptions extends React.Component<Props, {}> {
               onChangePage,
               paypalAccount,
               file,
+              currency,
+              region,
               openAffiliate,
               history,
               status

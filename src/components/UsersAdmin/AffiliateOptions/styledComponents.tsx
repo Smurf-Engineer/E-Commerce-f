@@ -9,6 +9,7 @@ import InputNumber from 'antd/lib/input-number'
 
 interface ContainerProps {
   withoutPadding?: boolean
+  upperCase?: boolean
 }
 
 export const Container = styled.div`
@@ -63,6 +64,7 @@ export const RedLabel = styled.div`
 
 export const BoldLabel = styled.div`
   font-weight: bold;
+  text-transform: ${({ upperCase }: ContainerProps) => upperCase ? 'uppercase' : ''};
 `
 
 export const FileLink = styled.div`

@@ -44,5 +44,13 @@ export default defineMessages({
   settings: {
     id: 'components.affiliateOptions.settings',
     defaultMessage: 'Settings'
+  },
+  currency: {
+    id: 'components.affiliateOptions.currency',
+    defaultMessage: 'Payout Currency'
+  },
+  region: {
+    id: 'components.affiliateOptions.region',
+    defaultMessage: 'Region'
   }
 })

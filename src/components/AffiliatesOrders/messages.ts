@@ -49,5 +49,29 @@ export default defineMessages({
   affiliateInfo: {
     id: 'components.AffiliatesOrders.affiliateInfo',
     defaultMessage: 'Affiliates are not able to receive commissions on their own orders.'
+  },
+  filterBy: {
+    id: 'components.AffiliatesOrders.filterBy',
+    defaultMessage: 'FILTER BY'
+  },
+  from: {
+    id: 'components.AffiliatesOrders.from',
+    defaultMessage: 'From'
+  },
+  to: {
+    id: 'components.AffiliatesOrders.to',
+    defaultMessage: 'To'
+  },
+  show: {
+    id: 'components.AffiliatesOrders.show',
+    defaultMessage: 'Show'
+  },
+  orderPoint: {
+    id: 'components.AffiliatesOrders.orderPoint',
+    defaultMessage: 'Order point'
+  },
+  store: {
+    id: 'components.AffiliatesOrders.store',
+    defaultMessage: 'Store'
   }
 })

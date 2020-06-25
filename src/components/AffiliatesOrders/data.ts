@@ -7,11 +7,19 @@ import gql from 'graphql-tag'
 export const getAffiliatesPayments = gql`
   query getAffiliateHistory(
       $limit: Int,
-      $offset: Int
+      $offset: Int,
+      $start: String,
+      $end: String,
+      $status: String,
+      $orderPoint: String
     ) {
     paymentsResult: getAffiliateHistory(
         limit: $limit,
-        offset: $offset
+        offset: $offset,
+        start: $start,
+        end: $end,
+        status: $status,
+        orderPoint: $orderPoint
       ) {
       fullCount
       payments {
@@ -20,6 +28,7 @@ export const getAffiliatesPayments = gql`
         comission
         status
         amount
+        store
         orderAmount: order_amount
         orderStatus: order_status
         paidAt: paid_at

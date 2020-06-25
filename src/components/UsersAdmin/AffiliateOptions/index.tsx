@@ -39,6 +39,8 @@ interface Props {
   file: string
   currentPage: number
   isAdmin: boolean
+  currency: string
+  region: string
   openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
   onChangePage: (page: number) => void
@@ -85,7 +87,9 @@ class AffiliateOptions extends React.Component<Props, {}> {
       isAdmin,
       activatedAt,
       formatMessage,
-      status
+      status,
+      region,
+      currency
     } = this.props
     const hasChanged = status !== PENDING || !status
     const isActive = status === APPROVED
@@ -172,6 +176,22 @@ class AffiliateOptions extends React.Component<Props, {}> {
                     {`${comission}%`}
                   </BoldLabel>
                 }
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.currency)}
+                </Title>
+                <BoldLabel upperCase={true}>
+                  {currency}
+                </BoldLabel>
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.region)}
+                </Title>
+                <BoldLabel upperCase={true}>
+                  {region}
+                </BoldLabel>
               </LabelButton>
               <LabelButton>
                 <Title>

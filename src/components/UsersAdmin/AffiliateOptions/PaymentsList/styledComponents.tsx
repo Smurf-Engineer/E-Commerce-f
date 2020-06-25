@@ -106,3 +106,9 @@ export const EmptyContainer = styled.div`
   padding-right: 92px;
   margin-bottom: 24px;
 `
+
+export const Subtitle = styled.div`
+  font-weight: normal;
+  font-size: 14px;
+  margin-top: 8px;
+`
