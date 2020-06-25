@@ -27,6 +27,9 @@ export const Container = styled.div`
   padding-bottom: 36px;
   width: 100%;
   margin-top: -64px;
+  @media (max-width: 768px) {
+    margin-top: -14px;
+  }
 `
 
 export const ScreenTitle = styled.div`
@@ -140,6 +143,9 @@ export const HeaderList = styled.div`
   padding: 16px 24px;
   margin-bottom: 24px;
   margin-right: 34px;
+  @media (max-width: 768px) {
+    margin-right: 0;
+  }
 `
 
 export const InputDiv = styled.div`
@@ -147,6 +153,12 @@ export const InputDiv = styled.div`
   justify-content: flex-start;
   align-items: center;
   margin-top: 28px;
+  @media (max-width: 768px) {
+    flex-flow: column;
+    align-items: flex-start;
+    height: 212px;
+    justify-content: space-between;
+  }
 `
 
 export const StatusFilter = styled(Select)`
@@ -159,6 +171,9 @@ export const StatusFilter = styled(Select)`
     font-weight: normal;
     border-radius: 0;
   }
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `
 
 export const OrderPoint = styled(Input)`
@@ -167,6 +182,9 @@ export const OrderPoint = styled(Input)`
   height: 40px;
   margin-right: 28px;
   border-radius: 0px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `
 
 export const RangePickerStyled = styled(RangePicker)`
@@ -190,6 +208,11 @@ export const ShowButton = styled.div`
   &:hover {
     background: ${WHITE};
     color: ${BLUE};  
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0;
+    justify-content: center;
   }
 `
 
