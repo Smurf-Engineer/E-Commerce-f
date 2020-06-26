@@ -175,7 +175,7 @@ export class Themes extends React.Component<Props, {}> {
         const { themes = [] } = product
 
         const currentThemeIndex = themes.findIndex(
-          theme => theme.id === selectedTheme
+          (theme) => theme.id === selectedTheme
         )
 
         const designs = orderBy(
@@ -252,7 +252,7 @@ export class Themes extends React.Component<Props, {}> {
       const areaColors: string[] = []
       const areasPng: string[] = []
       const areasSvg: string[] = []
-      areas.forEach(area => areasSvg.push(currentStyle[area]))
+      areas.forEach((area) => areasSvg.push(currentStyle[area]))
       colors.forEach(({ color, image }) => {
         areaColors.push(color)
         areasPng.push(image)
@@ -288,7 +288,7 @@ export class Themes extends React.Component<Props, {}> {
         }
       }
 
-      extraFiles.forEach(key => {
+      extraFiles.forEach((key) => {
         const file = productData.product[key]
         if (file) {
           modelConfig[`${key}White`] = file.white
@@ -332,8 +332,10 @@ export class Themes extends React.Component<Props, {}> {
       'itemOrder',
       'asc'
     )
-    const currentThemeIndex =
-      themes.findIndex(theme => theme.id === selectedTheme) || -1
+
+    const currentThemeIndex = themes.findIndex(
+      (theme) => theme.id === selectedTheme
+    )
     const themeStyles = get(themes[currentThemeIndex], 'styles', [])
     const styleItems = orderBy(
       themeStyles.map(({ id, name, itemOrder }: Style) => ({
