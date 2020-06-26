@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -802,6 +802,7 @@ export interface OrderDetailsInfo {
   canUpdatePayment?: boolean
   onDemand?: boolean
   email?: string
+  coupon?: string
 }
 
 export interface OrderDataInfo {
@@ -842,6 +843,7 @@ export interface OrderDataInfo {
   lastDrop?: string
   teamStoreName?: string
   teamStoreId?: string
+  coupon?: string
 }
 
 export interface TextFormat {
