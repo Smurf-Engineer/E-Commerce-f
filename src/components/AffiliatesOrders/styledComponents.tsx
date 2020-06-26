@@ -191,6 +191,11 @@ export const RangePickerStyled = styled(RangePicker)`
   .ant-input-lg {
     border-radius: 0px;
   }
+  .ant-calendar-range {
+    @media (max-width: 768px) {
+      width: auto;
+    }
+  }
 `
 
 export const ShowButton = styled.div`
