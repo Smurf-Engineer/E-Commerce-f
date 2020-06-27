@@ -154,8 +154,8 @@ export class DesignSearch extends React.Component<Props, {}> {
       loading || notFound || noAdmin ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
       ) : (
-        orderContent
-      )
+          orderContent
+        )
 
     return (
       <Container>

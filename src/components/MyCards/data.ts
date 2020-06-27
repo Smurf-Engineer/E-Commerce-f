@@ -23,6 +23,7 @@ export const cardsQuery = gql`
         expYear: exp_year
         expMonth: exp_month
         name
+        pendingOrder: pending_order
       }
     }
   }

@@ -16,5 +16,9 @@ export default defineMessages({
   successfulAddMessage: {
     id: 'components.addToCartButton.successfulAddMessage',
     defaultMessage: '{name} has been successfully added to cart!'
+  },
+  cantMix: {
+    id: 'components.addToCartButton.cantMix',
+    defaultMessage: `Can't mix teamstore design with one from the locker`
   }
 })

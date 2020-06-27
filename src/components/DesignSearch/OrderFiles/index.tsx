@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Button from 'antd/lib/button'
+import Modal from 'antd/lib/modal'
 import messages from './messages'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
@@ -53,7 +54,11 @@ import {
   StyledSelect,
   Selectable,
   Subtitle,
-  LockerLink
+  LockerLink,
+  EditButton,
+  Title,
+  OkStyle,
+  LegacyInput
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import {
@@ -71,6 +76,7 @@ import { NOTE_FORMAT } from '../constants'
 import ProassistNotes from '../../ProassistNotes'
 
 const Option = Select.Option
+const Confirm = Modal.confirm
 
 interface Props {
   order: OrderSearchResult
@@ -98,6 +104,8 @@ interface Props {
     value: string,
     option: React.ReactElement<OptionProps>
   ) => void
+  editLegacy: () => void
+  changeLegacy: (value: string) => void
   searchReps: (value: string) => void
   searchManagers: (value: string) => void
   handleSaveNote: () => void
@@ -219,6 +227,9 @@ export class OrderFiles extends React.PureComponent<Props> {
                 {formatMessage(messages.legacy)}
               </Code>
               {legacyNumber}
+              <EditButton onClick={this.openEditLegacy}>
+                {formatMessage(messages.edit)}
+              </EditButton>
             </ModelNameContainer>
             <ModelNameContainer>
               <Code>
@@ -452,6 +463,27 @@ export class OrderFiles extends React.PureComponent<Props> {
         />
       </Container>
     )
+  }
+
+  onChangeLegacy = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { changeLegacy } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    changeLegacy(value)
+  }
+
+  openEditLegacy = () => {
+    const { formatMessage, order: { legacyNumber }, editLegacy } = this.props
+    Confirm({
+      iconType: null,
+      title: <Title>{formatMessage(messages.legacy)}</Title>,
+      content: <LegacyInput onChange={this.onChangeLegacy} defaultValue={legacyNumber} />,
+      okButtonProps: {
+        style: OkStyle
+      },
+      onOk: editLegacy
+    })
   }
 
   goToLocker = () => {

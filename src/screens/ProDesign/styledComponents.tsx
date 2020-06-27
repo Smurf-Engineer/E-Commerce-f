@@ -91,14 +91,23 @@ export const ButtonWrapper = styled.div`
   align-self: right;
   .ant-btn-primary {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
   }
   .ant-btn-primary:hover {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
   }
+`
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 `

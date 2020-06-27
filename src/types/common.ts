@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -693,6 +693,7 @@ export interface CreditCardData {
   expMonth: number
   expYear: number
   defaultPayment?: boolean
+  pendingOrder?: boolean
 }
 
 export interface IbanData {
@@ -1397,6 +1398,7 @@ export interface User {
   shortId?: string
   role?: string
   salesRep?: User
+  affiliated?: boolean
   accountManager?: User
 }
 

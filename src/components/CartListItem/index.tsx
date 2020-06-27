@@ -252,7 +252,7 @@ export class CartListItem extends React.Component<Props, {}> {
       designId,
       designName,
       designImage,
-      totalOrder,
+      totalOrder = 0,
       designCode,
       fixedPrices = [],
       teamStoreName = '',

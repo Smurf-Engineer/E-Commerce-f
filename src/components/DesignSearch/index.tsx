@@ -52,7 +52,8 @@ import {
   getManagers,
   getRepUsers,
   setRepDesignMutation,
-  assignManagerDesignMutation
+  assignManagerDesignMutation,
+  setLegacyMutation
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -75,6 +76,12 @@ interface Data extends QueryProps {
 
 interface ManagersData extends QueryProps {
   managersQuery: User[]
+}
+
+interface LegacyData {
+  data: {
+    setLegacyNumber: String
+  }
 }
 
 interface Props {
@@ -105,9 +112,12 @@ interface Props {
   loadingPreflight: boolean
   colorsList: ColorsData
   permissions: UserPermissions
+  legacy: string
   // redux actions
+  changeLegacy: (value: string) => void
   setUserRepAction: (userRep: User) => void
   setManagerAction: (userRep: User) => void
+  setLegacyNumber: (variables: {}) => Promise<MessagePayload>
   setRepDesign: (variables: {}) => Promise<MessagePayload>
   assignManager: (variables: {}) => Promise<MessagePayload>
   setSearchRep: (value: string) => void
@@ -179,6 +189,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       intl: { formatMessage },
       actualSvg,
       uploadingThumbnail,
+      changeLegacy,
       setUploadingThumbnailAction,
       changes,
       setStitchingColorAction,
@@ -243,10 +254,12 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           openNoteAction,
           colorAccessories,
           creatingPdf,
+          changeLegacy,
           accessAssets,
           history,
           loadingPreflight
         }}
+        editLegacy={this.editLegacy}
         canEdit={access.edit}
         changeUserRep={this.changeUserRep}
         changeManager={this.changeManager}
@@ -282,7 +295,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
             <FormattedMessage {...messages.addCode} />
           </Subtitle>
           <Search
-            placeholder="Product Code"
+            placeholder={formatMessage(messages.search)}
             onChange={this.debounceSearchCode}
             size="large"
             dataSource={designSearchCodes}
@@ -300,6 +313,43 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         </Content>
       </Container>
     )
+  }
+
+  editLegacy = async () => {
+    const {
+      formatMessage,
+      setLegacyNumber,
+      setOrderAction,
+      legacy,
+      order: { shortId, code },
+      setLoadingNote
+    } = this.props
+    try {
+      if (!!legacy) {
+        setLoadingNote(true)
+        await setLegacyNumber({
+          variables: {
+            designId: shortId,
+            legacy
+          },
+          update: (store: any, response: LegacyData) => {
+            const legacyNumber = get(response, 'data.setLegacyNumber', '')
+            const { order } = store.readQuery({
+              query: orderSearchQuery,
+              variables: { code },
+              fetchPolicy: 'network-only'
+            })
+            order.legacyNumber = legacyNumber
+            setOrderAction(order)
+            message.success(formatMessage(messages.legacySuccess))
+          }
+        })
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingNote(false)
+    }
   }
 
   saveNote = async () => {
@@ -571,6 +621,7 @@ const DesignSearchAdminEnhance = compose(
     uploadProDesignAction: uploadProDesign,
     restoreUserSessionAction: restoreUserSession
   }),
+  graphql(setLegacyMutation, { name: 'setLegacyNumber' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql(setRepDesignMutation, { name: 'setRepDesign' }),
   graphql(assignManagerDesignMutation, { name: 'assignManager' }),

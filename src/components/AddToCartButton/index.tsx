@@ -5,6 +5,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
+import { injectIntl } from 'react-intl'
 import Message from 'antd/lib/message'
 
 import {
@@ -18,6 +19,7 @@ import {
 import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
 import { Product, CartItemDetail, PriceRange } from '../../types/common'
+import find from 'lodash/find'
 
 interface CartItems {
   product: Product
@@ -77,18 +79,18 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         <CustomizeButton onClick={this.addToCart}>{label}</CustomizeButton>
       </ButtonContainer>
     ) : (
-      <Container>
-        {orderDetails ? (
-          <ButtonWrapper individual={!!item} {...{ hide }}>
-            <ReorderButton type="primary" onClick={this.addToCart}>
-              {label}
-            </ReorderButton>
-          </ButtonWrapper>
-        ) : (
-          <StyledButton onClick={this.addToCart}>{label}</StyledButton>
-        )}
-      </Container>
-    )
+        <Container>
+          {orderDetails ? (
+            <ButtonWrapper individual={!!item} {...{ hide }}>
+              <ReorderButton type="primary" onClick={this.addToCart}>
+                {label}
+              </ReorderButton>
+            </ButtonWrapper>
+          ) : (
+              <StyledButton onClick={this.addToCart}>{label}</StyledButton>
+            )}
+        </Container>
+      )
 
     return renderView
   }
@@ -261,8 +263,15 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       const cartList = JSON.parse(localStorage.getItem('cart') as any)
 
       if (cartList) {
-        cartList.push(item)
-        localStorage.setItem('cart', JSON.stringify(cartList))
+        const { teamStoreId, designId } = item
+        const sameDesign = find(cartList, ['designId', designId])
+        if (sameDesign && sameDesign.teamStoreId !== teamStoreId) {
+          Message.warning(intl.formatMessage(messages.cantMix))
+          return
+        } else {
+          cartList.push(item)
+          localStorage.setItem('cart', JSON.stringify(cartList))
+        }
       } else {
         const myItems = []
         myItems.push(item)
@@ -277,6 +286,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
 }
 
 const AddToCartEnhanced = compose(
+  injectIntl,
   connect(
     null,
     { getTotalItemsIncart },

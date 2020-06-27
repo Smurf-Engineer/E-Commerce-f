@@ -16,6 +16,7 @@ import icon from 'antd/lib/icon'
 import { BLACK } from '../../../screens/DesignerTool/constants'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import Select from 'antd/lib/select'
+import Input from 'antd/lib/input'
 
 interface DivProps {
   enable: boolean
@@ -287,3 +288,34 @@ export const LockerLink = styled.div`
   text-decoration: underline;
   cursor: pointer;
 `
+
+export const EditButton = styled.div`
+  color: ${RED};
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 14px;
+`
+
+export const Title = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+  text-transform: uppercase;
+`
+
+export const LegacyInput = styled(Input)`
+  margin: 16px 0 4px -37px;
+  width: 350px;
+  display: block;
+  border-radius: 0px;
+  .ant-modal-confirm-content {
+    margin-left: 0;
+  }
+`
+
+export const OkStyle = {
+  background: BLUE,
+  color: WHITE,
+  border: `1px solid ${BLUE}`
+}

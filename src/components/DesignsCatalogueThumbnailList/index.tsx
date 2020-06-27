@@ -355,7 +355,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           )}
         </HeadRow>
         <Content>{loading ? renderLoading : renderThumbnailList}</Content>
-        <pre>{JSON.stringify(currentPage)}</pre>
         <PaginationRow>
           {totalDesigns > limit && (
             <Pagination
