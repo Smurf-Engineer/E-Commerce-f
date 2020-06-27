@@ -36,7 +36,8 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   user: UserType
   contactInfo: ContactInformation
-
+  skip: number
+  pageNumber: number
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickView: (id: number, yotpoId: string | null) => void
@@ -47,6 +48,7 @@ interface Props extends RouteComponentProps<any> {
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
   setContactFieldAction: (field: string, value: string) => void
+  setPageAction: (skip: number, pageNumber: number) => void
 }
 
 export class StoreFront extends React.Component<Props, {}> {
@@ -112,7 +114,10 @@ export class StoreFront extends React.Component<Props, {}> {
       openPassCodeDialogAction,
       currentCurrency,
       user,
-      contactInfo
+      contactInfo,
+      skip,
+      pageNumber,
+      setPageAction
     } = this.props
     const {
       location: { search }
@@ -141,7 +146,15 @@ export class StoreFront extends React.Component<Props, {}> {
             sendMessageLoadingAction={sendMessageLoadingAction}
             setPassCodeAction={setPassCodeAction}
             handleInputChange={this.handleOnContactFieldChange}
-            {...{ history, currentCurrency, user, contactInfo }}
+            setPage={setPageAction}
+            {...{
+              history,
+              currentCurrency,
+              user,
+              contactInfo,
+              pageNumber,
+              skip
+            }}
           />
         </Container>
       </TeamsLayout>
