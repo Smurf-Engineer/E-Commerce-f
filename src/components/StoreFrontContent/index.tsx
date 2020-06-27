@@ -22,7 +22,6 @@ import {
 import {
   Container,
   SideBar,
-  Title,
   OrderTitle,
   PriceDescription,
   PriceTitle,
@@ -295,7 +294,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     // const maxValueOfY = items.length
     //   ? Math.max(...items.map(o => o.totalOrders))
     //   : 0
-
+    const dayOrdinal = deliveryDay ? moment(deliveryDay, 'D').format('Do') : ''
     return (
       <Container>
         {loading || openModal ? (
@@ -314,9 +313,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                   <ImageBanner src={teamStoreBanner} />
                 )}
                 <FlexContainer>
-                  <Title>
-                    {formatMessage(messages.welcome, { teamStoreName })}
-                  </Title>
                   <ButtonsContainer>
                     <ButtonWrapper>
                       <Button type="primary" onClick={this.handlShareClick}>
@@ -373,7 +369,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                         <Dates>
                           {!onDemandMode && isThereCutoffDate && (
                             <CalendarContainer>
-                              <DatesTitle>
+                              <DatesTitle {...{ onDemandMode }}>
                                 <FormattedMessage {...messages.cutOff} />
                               </DatesTitle>
                               <CalendarView>
@@ -384,10 +380,15 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           )}
                           {display && (
                             <CalendarContainer>
-                              <DatesTitle>
-                                <FormattedMessage
-                                  {...messages.estimatedArrival}
-                                />
+                              <DatesTitle {...{ onDemandMode }}>
+                                {formatMessage(
+                                  messages[
+                                    onDemandMode
+                                      ? 'orderNow'
+                                      : 'estimatedArrival'
+                                  ],
+                                  { dayOrdinal, deliveryMonth }
+                                )}
                               </DatesTitle>
                               <CalendarFinalView>
                                 <CalendarFinalTitle>
