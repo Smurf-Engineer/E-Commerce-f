@@ -175,5 +175,9 @@ export default defineMessages({
   quantityPrice: {
     id: 'screen.StoreFrontContent.quantityPrice',
     defaultMessage: 'Quantity Price Schedule'
+  },
+  orderNow: {
+    id: 'screen.StoreFrontContent.orderNow',
+    defaultMessage: 'Order today and receive by {deliveryMonth} {dayOrdinal}'
   }
 })

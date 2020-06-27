@@ -22,7 +22,6 @@ import {
 import {
   Container,
   SideBar,
-  Title,
   OrderTitle,
   PriceDescription,
   PriceTitle,
@@ -237,8 +236,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
-        error.message ||
-        null
+      error.message ||
+      null
       : null
     const openModal =
       getTeamStore &&
@@ -275,14 +274,14 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const bulletin = get(getTeamStore, 'bulletin', '')
     const shareStoreUrl = `${
       config.baseUrl
-    }store-front?storeId=${teamStoreShortId}`
+      }store-front?storeId=${teamStoreShortId}`
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
     // TODO: uncomment if return to old method
     // const maxValueOfY = items.length
     //   ? Math.max(...items.map(o => o.totalOrders))
     //   : 0
-
+    const dayOrdinal = deliveryDay ? moment(deliveryDay, 'D').format('Do') : ''
     return (
       <Container>
         {loading || openModal ? (
@@ -290,273 +289,271 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
             <Spin />
           </Loading>
         ) : (
-          <React.Fragment>
-            {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
-              <ErrorTitle>{formatMessage(messages.storeClosed)}</ErrorTitle>
-            ) : (
-              <MainContainer>
-                {!teamStoreBanner ? (
-                  <div />
-                ) : (
-                  <ImageBanner src={teamStoreBanner} />
-                )}
-                <FlexContainer>
-                  <Title>
-                    {formatMessage(messages.welcome, { teamStoreName })}
-                  </Title>
-                  <ButtonsContainer>
-                    <ButtonWrapper>
-                      <Button type="primary" onClick={this.handlShareClick}>
-                        <FormattedMessage {...messages.share} />
-                      </Button>
-                    </ButtonWrapper>
-                    {teamStoreOwner && !closed ? (
-                      <ButtonWrapper>
-                        <Button type="primary" onClick={this.handleOnPressEdit}>
-                          <FormattedMessage {...messages.edit} />
-                        </Button>
-                      </ButtonWrapper>
+            <React.Fragment>
+              {getTeamStore && getTeamStore.id === STORE_CLOSED_CODE ? (
+                <ErrorTitle>{formatMessage(messages.storeClosed)}</ErrorTitle>
+              ) : (
+                  <MainContainer>
+                    {!teamStoreBanner ? (
+                      <div />
                     ) : (
-                      !closed && (
-                        <DefaultButton onClick={this.handlContactClick}>
-                          <FormattedMessage {...messages.contactManager} />
-                        </DefaultButton>
-                      )
-                    )}
-                  </ButtonsContainer>
-                </FlexContainer>
-                <TopContainer>
-                  <FlexColumnContainer>
-                    {!onDemandMode && (
-                      <React.Fragment>
-                        <DynamicDropLogo src={dropLogo} />
-                        <PriceDescription>
-                          <FormattedHTMLMessage
-                            {...messages.priceDropMessage}
-                          />
-                        </PriceDescription>
-                      </React.Fragment>
-                    )}
-                  </FlexColumnContainer>
-                  <SideBar>
-                    <DatesContainer {...{ onDemandMode }}>
-                      <StoreBox open={display && !closed}>
-                        {formatMessage(
-                          display && !closed
-                            ? messages.storeOpen
-                            : messages.storeClosed
+                        <ImageBanner src={teamStoreBanner} />
+                      )}
+                    <FlexContainer>
+                      <ButtonsContainer>
+                        <ButtonWrapper>
+                          <Button type="primary" onClick={this.handlShareClick}>
+                            <FormattedMessage {...messages.share} />
+                          </Button>
+                        </ButtonWrapper>
+                        {teamStoreOwner && !closed ? (
+                          <ButtonWrapper>
+                            <Button type="primary" onClick={this.handleOnPressEdit}>
+                              <FormattedMessage {...messages.edit} />
+                            </Button>
+                          </ButtonWrapper>
+                        ) : (
+                            !closed && (
+                              <DefaultButton onClick={this.handlContactClick}>
+                                <FormattedMessage {...messages.contactManager} />
+                              </DefaultButton>
+                            )
+                          )}
+                      </ButtonsContainer>
+                    </FlexContainer>
+                    <TopContainer>
+                      <FlexColumnContainer>
+                        {!onDemandMode && (
+                          <React.Fragment>
+                            <DynamicDropLogo src={dropLogo} />
+                            <PriceDescription>
+                              <FormattedHTMLMessage
+                                {...messages.priceDropMessage}
+                              />
+                            </PriceDescription>
+                          </React.Fragment>
                         )}
-                      </StoreBox>
-                      {!onDemandMode && !closed && isThereCutoffDate && (
-                        <OrderTitle>
-                          {`${formatMessage(
-                            messages.orderTitle
-                          )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
-                            messages.orderTitle2
-                          )} ${deliveryMonth} ${deliveryDayOrdinal}`}
-                        </OrderTitle>
-                      )}
-                      {!closed && (
-                        <Dates>
-                          {!onDemandMode && isThereCutoffDate && (
-                            <CalendarContainer>
-                              <DatesTitle>
-                                <FormattedMessage {...messages.cutOff} />
-                              </DatesTitle>
-                              <CalendarView>
-                                <CalendarTitle>{cutOffMonth}</CalendarTitle>
-                                <CalendarDay>{cutOffDay}</CalendarDay>
-                              </CalendarView>
-                            </CalendarContainer>
+                      </FlexColumnContainer>
+                      <SideBar>
+                        <DatesContainer {...{ onDemandMode }}>
+                          <StoreBox open={display && !closed}>
+                            {formatMessage(
+                              display && !closed
+                                ? messages.storeOpen
+                                : messages.storeClosed
+                            )}
+                          </StoreBox>
+                          {!onDemandMode && !closed && isThereCutoffDate && (
+                            <OrderTitle>
+                              {`${formatMessage(
+                                messages.orderTitle
+                              )} ${cutOffMonth} ${cutOffDayOrdinal} ${formatMessage(
+                                messages.orderTitle2
+                              )} ${deliveryMonth} ${deliveryDayOrdinal}`}
+                            </OrderTitle>
                           )}
-                          {display && (
-                            <CalendarContainer>
-                              <DatesTitle>
-                                <FormattedMessage
-                                  {...messages.estimatedArrival}
-                                />
-                              </DatesTitle>
-                              <CalendarFinalView>
-                                <CalendarFinalTitle>
-                                  {deliveryMonth}
-                                </CalendarFinalTitle>
-                                <CalendarDay>{deliveryDay}</CalendarDay>
-                              </CalendarFinalView>
-                            </CalendarContainer>
+                          {!closed && (
+                            <Dates>
+                              {!onDemandMode && isThereCutoffDate && (
+                                <CalendarContainer>
+                                  <DatesTitle {...{ onDemandMode }}>
+                                    <FormattedMessage {...messages.cutOff} />
+                                  </DatesTitle>
+                                  <CalendarView>
+                                    <CalendarTitle>{cutOffMonth}</CalendarTitle>
+                                    <CalendarDay>{cutOffDay}</CalendarDay>
+                                  </CalendarView>
+                                </CalendarContainer>
+                              )}
+                              {display && (
+                                <CalendarContainer>
+                                  <DatesTitle {...{ onDemandMode }}>
+                                    {formatMessage(
+                                      messages[onDemandMode ? 'orderNow' : 'estimatedArrival'],
+                                      { dayOrdinal, deliveryMonth }
+                                    )}
+                                  </DatesTitle>
+                                  <CalendarFinalView>
+                                    <CalendarFinalTitle>
+                                      {deliveryMonth}
+                                    </CalendarFinalTitle>
+                                    <CalendarDay>{deliveryDay}</CalendarDay>
+                                  </CalendarFinalView>
+                                </CalendarContainer>
+                              )}
+                            </Dates>
                           )}
-                        </Dates>
+                        </DatesContainer>
+                      </SideBar>
+                    </TopContainer>
+                    <PriceTitle center={true}>
+                      {formatMessage(messages.welcome, { teamStoreName })}
+                    </PriceTitle>
+                    {bulletin && (
+                      <Bulletin>
+                        <PinDiv>
+                          <Pin src={PinSVG} left={true} />
+                          <Pin src={PinSVG} />
+                        </PinDiv>
+                        <BulletinLabel>{bulletin}</BulletinLabel>
+                        <Corner />
+                      </Bulletin>
+                    )}
+                    {!onDemandMode && (
+                      <PricesButton onClick={this.onTogglePriceModal}>
+                        {formatMessage(messages.quantityPrice)}
+                      </PricesButton>
+                    )}
+                    {errorMessage ? (
+                      <ErrorTitle>{errorMessage}</ErrorTitle>
+                    ) : (
+                        <div>
+                          <ListContainer>
+                            <ProductList
+                              {...{
+                                targetRange,
+                                formatMessage,
+                                onDemandMode,
+                                currentCurrency,
+                                display,
+                                teamStoreName,
+                                closed
+                              }}
+                              withoutPadding={false}
+                              openQuickView={this.handleOnOpenQuickView}
+                              designs={items}
+                              teamStoreShortId={teamStoreShortId}
+                              targentPrice={targetRange.name}
+                              currentRange={priceRanges[1]}
+                            />
+                          </ListContainer>
+                        </div>
                       )}
-                    </DatesContainer>
-                  </SideBar>
-                </TopContainer>
-                <PriceTitle center={true}>
-                  {formatMessage(messages.welcome, { teamStoreName })}
-                </PriceTitle>
-                {bulletin && (
-                  <Bulletin>
-                    <PinDiv>
-                      <Pin src={PinSVG} left={true} />
-                      <Pin src={PinSVG} />
-                    </PinDiv>
-                    <BulletinLabel>{bulletin}</BulletinLabel>
-                    <Corner />
-                  </Bulletin>
+
+                    <AboutContainer>
+                      <AboutTitle>
+                        <FormattedMessage {...messages.aboutOrdering} />
+                      </AboutTitle>
+                      <ProductInfo
+                        id="Much"
+                        title={formatMessage(messages.howMuchTitle)}
+                        showContent={showMuch}
+                        toggleView={this.toggleProductInfo}
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(
+                              onDemandMode
+                                ? messages.howMuchDesc
+                                : messages.howMuchDescBatch
+                            )
+                          }}
+                        />
+                      </ProductInfo>
+
+                      <ProductInfo
+                        id="When"
+                        title={formatMessage(messages.whenTitle)}
+                        showContent={showWhen}
+                        toggleView={this.toggleProductInfo}
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(
+                              onDemandMode
+                                ? messages.whenDesc
+                                : messages.whenDescBatch
+                            )
+                          }}
+                        />
+                      </ProductInfo>
+                      {!onDemandMode && (
+                        <ProductInfo
+                          id="Change"
+                          title={formatMessage(messages.changeOrderTitle)}
+                          showContent={showChange}
+                          toggleView={this.toggleProductInfo}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(messages.changeOrderDesc)
+                            }}
+                          />
+                        </ProductInfo>
+                      )}
+
+                      <ProductInfo
+                        id="Long"
+                        title={formatMessage(messages.howLongTitle)}
+                        showContent={showLong}
+                        toggleView={this.toggleProductInfo}
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(
+                              onDemandMode
+                                ? messages.howLongDesc
+                                : messages.howLongDescBatch
+                            )
+                          }}
+                        />
+                      </ProductInfo>
+                      <ProductInfo
+                        id="Cani"
+                        title={formatMessage(messages.canIORder)}
+                        showContent={showCani}
+                        toggleView={this.toggleProductInfo}
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(
+                              onDemandMode
+                                ? messages.canIORderDesc
+                                : messages.canIORderDescBatch
+                            )
+                          }}
+                        />
+                      </ProductInfo>
+                      <ProductInfo
+                        id="Return"
+                        title={formatMessage(messages.returnMessage)}
+                        showContent={showReturn}
+                        toggleView={this.toggleProductInfo}
+                      >
+                        <p>{formatMessage(messages.returnMessageDesc)}</p>
+                      </ProductInfo>
+                    </AboutContainer>
+
+                    <Share
+                      open={openShare}
+                      modalTitle={formatMessage(messages.shareModalTitle)}
+                      requestClose={this.handleOpenShareModal}
+                      url={shareStoreUrl}
+                      {...{ formatMessage }}
+                    />
+
+                    <EmailContact
+                      {...{
+                        formatMessage,
+                        user,
+                        handleInputChange,
+                        contactInfo
+                      }}
+                      open={openEmailContact}
+                      requestClose={this.closeEmailContactModal}
+                      onSetEmail={setEmailContactAction}
+                      onSetMesage={setEmailMessageAction}
+                      teamStoreId={teamStoreShortId}
+                      emailContact={emailContact}
+                      emailMessage={emailMessage}
+                      sendMessageLoading={sendMessageLoading}
+                      setSendMessageLoading={sendMessageLoadingAction}
+                      ownerName={ownerName}
+                    />
+                  </MainContainer>
                 )}
-                {!onDemandMode && (
-                  <PricesButton onClick={this.onTogglePriceModal}>
-                    {formatMessage(messages.quantityPrice)}
-                  </PricesButton>
-                )}
-                {errorMessage ? (
-                  <ErrorTitle>{errorMessage}</ErrorTitle>
-                ) : (
-                  <div>
-                    <ListContainer>
-                      <ProductList
-                        {...{
-                          targetRange,
-                          formatMessage,
-                          onDemandMode,
-                          currentCurrency,
-                          display,
-                          teamStoreName,
-                          closed
-                        }}
-                        withoutPadding={false}
-                        openQuickView={this.handleOnOpenQuickView}
-                        designs={items}
-                        teamStoreShortId={teamStoreShortId}
-                        targentPrice={targetRange.name}
-                        currentRange={priceRanges[1]}
-                      />
-                    </ListContainer>
-                  </div>
-                )}
-
-                <AboutContainer>
-                  <AboutTitle>
-                    <FormattedMessage {...messages.aboutOrdering} />
-                  </AboutTitle>
-                  <ProductInfo
-                    id="Much"
-                    title={formatMessage(messages.howMuchTitle)}
-                    showContent={showMuch}
-                    toggleView={this.toggleProductInfo}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: formatMessage(
-                          onDemandMode
-                            ? messages.howMuchDesc
-                            : messages.howMuchDescBatch
-                        )
-                      }}
-                    />
-                  </ProductInfo>
-
-                  <ProductInfo
-                    id="When"
-                    title={formatMessage(messages.whenTitle)}
-                    showContent={showWhen}
-                    toggleView={this.toggleProductInfo}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: formatMessage(
-                          onDemandMode
-                            ? messages.whenDesc
-                            : messages.whenDescBatch
-                        )
-                      }}
-                    />
-                  </ProductInfo>
-                  {!onDemandMode && (
-                    <ProductInfo
-                      id="Change"
-                      title={formatMessage(messages.changeOrderTitle)}
-                      showContent={showChange}
-                      toggleView={this.toggleProductInfo}
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: formatMessage(messages.changeOrderDesc)
-                        }}
-                      />
-                    </ProductInfo>
-                  )}
-
-                  <ProductInfo
-                    id="Long"
-                    title={formatMessage(messages.howLongTitle)}
-                    showContent={showLong}
-                    toggleView={this.toggleProductInfo}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: formatMessage(
-                          onDemandMode
-                            ? messages.howLongDesc
-                            : messages.howLongDescBatch
-                        )
-                      }}
-                    />
-                  </ProductInfo>
-                  <ProductInfo
-                    id="Cani"
-                    title={formatMessage(messages.canIORder)}
-                    showContent={showCani}
-                    toggleView={this.toggleProductInfo}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: formatMessage(
-                          onDemandMode
-                            ? messages.canIORderDesc
-                            : messages.canIORderDescBatch
-                        )
-                      }}
-                    />
-                  </ProductInfo>
-                  <ProductInfo
-                    id="Return"
-                    title={formatMessage(messages.returnMessage)}
-                    showContent={showReturn}
-                    toggleView={this.toggleProductInfo}
-                  >
-                    <p>{formatMessage(messages.returnMessageDesc)}</p>
-                  </ProductInfo>
-                </AboutContainer>
-
-                <Share
-                  open={openShare}
-                  modalTitle={formatMessage(messages.shareModalTitle)}
-                  requestClose={this.handleOpenShareModal}
-                  url={shareStoreUrl}
-                  {...{ formatMessage }}
-                />
-
-                <EmailContact
-                  {...{
-                    formatMessage,
-                    user,
-                    handleInputChange,
-                    contactInfo
-                  }}
-                  open={openEmailContact}
-                  requestClose={this.closeEmailContactModal}
-                  onSetEmail={setEmailContactAction}
-                  onSetMesage={setEmailMessageAction}
-                  teamStoreId={teamStoreShortId}
-                  emailContact={emailContact}
-                  emailMessage={emailMessage}
-                  sendMessageLoading={sendMessageLoading}
-                  setSendMessageLoading={sendMessageLoadingAction}
-                  ownerName={ownerName}
-                />
-              </MainContainer>
-            )}
-          </React.Fragment>
-        )}
+            </React.Fragment>
+          )}
         <TeamPassCode
           open={openModal}
           requestClose={this.closePassCodeModal}
