@@ -281,7 +281,7 @@ export class Account extends React.Component<Props, {}> {
           key={title}
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
         >
-          {submenus.map(label => (
+          {submenus.map((label) => (
             <Menu.Item key={label}>
               <FormattedMessage {...messages[label]} />
             </Menu.Item>
@@ -321,7 +321,7 @@ export class Account extends React.Component<Props, {}> {
       </DrawerSidebar>
     )
 
-    const currentScreen = this.getScreenComponent(screen)
+    const currentScreen = this.getScreenComponent(screen || defaultScreen)
 
     const noOrderScreenFlag = screen !== ORDER_HISTORY && screen !== OVERVIEW
 
@@ -330,7 +330,7 @@ export class Account extends React.Component<Props, {}> {
         maxWidth={768}
         values={{ width: fakeWidth, deviceWidth: fakeWidth }}
       >
-        {matches => {
+        {(matches) => {
           if (matches) {
             return (
               <div className="drawer-container">
