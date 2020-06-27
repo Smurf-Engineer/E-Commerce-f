@@ -5,12 +5,9 @@ import {
   FLAT_PROMO,
   COUNTRY_CODE_US,
   COUNTRY_CODE_CANADA,
-  COUNTRY_CODE_AT,
-  COUNTRY_CODE_DE,
   PRODUCT
 } from '../screens/Checkout/constants'
 
-const specialTaxes = [COUNTRY_CODE_AT, COUNTRY_CODE_DE]
 const CANADA_SHIPPING_TAX_RATE = 5
 
 export const getTaxesAndDiscount = (
@@ -27,11 +24,6 @@ export const getTaxesAndDiscount = (
   // get tax fee
   const taxesAmount = taxRates && taxRates.total
 
-  // true when shippingAddressCountry is Austria or Germany
-  const applySpecialTaxes = specialTaxes.includes(
-    shippingAddressCountry.toLowerCase()
-  )
-
   let discount = 0
   let taxVatTotal = 0
 
@@ -40,16 +32,8 @@ export const getTaxesAndDiscount = (
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
         if (restrictionType !== PRODUCT) {
-          if (taxesAmount && applySpecialTaxes) {
-            taxVatTotal = taxesAmount / 100
-            const totalNet = subtotal / (1 + taxVatTotal)
-            // for Austria and Germany we calculate discount
-            // discount = (totalNet + proDesignReview) * percentageDiscount
-            discount = (totalNet + proDesignFee) * (Number(rate) / 100)
-          } else {
-            // calculate discount with (subtotal + proDesignFee) * percentageDiscount
-            discount = (subtotal + proDesignFee) * (Number(rate) / 100)
-          }
+          // calculate discount with (subtotal + proDesignFee) * percentageDiscount
+          discount = (subtotal + proDesignFee) * (Number(rate) / 100)
         } else {
           discount = products.reduce((totalDiscount: number, product) => {
             const itemForDiscount = find(
@@ -125,32 +109,6 @@ export const getTaxesAndDiscount = (
             (subtotal + proDesignFee - discount) * (taxRates.ratePst / 100) // calculate tax
           taxGst = roundDecimals(taxGst) // round to 2 decimals
           taxPst = roundDecimals(taxPst) // round to 2 decimals
-        }
-        break
-      case COUNTRY_CODE_AT:
-        taxVatTotal = taxesAmount / 100
-        if (applySpecialTaxes) {
-          // explanation of taxVat at calculateTaxVat function
-          taxVat = calculateTaxVat(
-            subtotal,
-            taxVatTotal,
-            proDesignFee,
-            shippingTotal,
-            discount
-          )
-        }
-        break
-      case COUNTRY_CODE_DE:
-        taxVatTotal = taxesAmount / 100
-        if (applySpecialTaxes) {
-          // explanation of taxVat at calculateTaxVat function
-          taxVat = calculateTaxVat(
-            subtotal,
-            taxVatTotal,
-            proDesignFee,
-            shippingTotal,
-            discount
-          )
         }
         break
       default:
