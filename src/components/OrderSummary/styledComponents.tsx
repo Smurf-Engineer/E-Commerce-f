@@ -163,3 +163,7 @@ export const CalculationsWrapper = styled.div`
 export const DiscountAmout = styled.div`
   color: ${RED};
 `
+
+export const CouponName = styled.div`
+  font-weight: 600;
+`

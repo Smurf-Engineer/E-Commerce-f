@@ -143,6 +143,7 @@ export const getOrderQuery = gql`
       canUpdatePayment
       onDemand: on_demand_mode
       email
+      coupon: coupon_code
     }
   }
 `

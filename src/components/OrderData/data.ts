@@ -93,6 +93,7 @@ export const getOrderQuery = gql`
       teamStoreId: teamstore_id
       lastDrop: last_drop
       teamStoreName: teamstore_name
+      coupon: coupon_code
     }
   }
 `

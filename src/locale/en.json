@@ -1021,6 +1021,7 @@
   "screens.Checkout.correctCurrency": "Your selected Currency is {currentCurrency}. Is this the currency you wish to proceed?",
   "screens.Checkout.couponApplied": "Coupon applied",
   "screens.Checkout.couponError": "Invalid promo code",
+  "screens.Checkout.couponCode": "Coupon Code",
   "screens.CustomProductDetail.editDesign": "EDIT DESIGN",
   "screens.CustomProductDetail.maleGenderLabel": "Available for Men",
   "screens.CustomProductDetail.femaleGenderLabel": "Available for Women",

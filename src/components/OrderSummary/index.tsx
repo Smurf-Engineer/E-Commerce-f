@@ -20,7 +20,8 @@ import {
   YouSavedOrderItem,
   FlexWrapper,
   DeleteLabel,
-  DiscountAmout
+  DiscountAmout,
+  CouponName
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
@@ -29,6 +30,7 @@ import moment from 'moment'
 interface Props {
   onlyRead?: boolean
   subtotal: number
+  couponName?: string
   proDesignReview?: number
   totalWithoutDiscount?: number
   discount?: number
@@ -42,6 +44,7 @@ interface Props {
   currencySymbol?: string
   showCouponInput?: boolean
   couponCode?: CouponCode
+  admin?: boolean
   formatMessage: (messageDescriptor: Message, params?: PercentParams) => string
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
@@ -51,6 +54,7 @@ interface Props {
 
 interface PercentParams {
   percent: number
+  isAdmin: string
 }
 
 const InputSearch = Input.Search
@@ -72,7 +76,9 @@ export class OrderSummary extends React.Component<Props, {}> {
       shippingTotal = 0,
       discount = 0,
       totalSum = 0,
-      totalWithoutDiscount = 0
+      totalWithoutDiscount = 0,
+      couponName = '',
+      admin = false
     } = this.props
 
     const extraFee = proDesignReview + taxFee + taxPst + taxGst + shippingTotal
@@ -103,7 +109,10 @@ export class OrderSummary extends React.Component<Props, {}> {
         )}
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>
-            {formatMessage(messages.youSaved, { percent: savedPercent })}
+            {formatMessage(messages.youSaved, {
+              percent: savedPercent,
+              isAdmin: !admin ? 'You' : ''
+            })}
             <div>{`${symbol} ${saved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
         ) : null}
@@ -132,6 +141,14 @@ export class OrderSummary extends React.Component<Props, {}> {
               <DiscountAmout>
                 {`- ${symbol} ${discount.toFixed(2)}`}
               </DiscountAmout>
+            </OrderItem>
+          )}
+          {!!couponName && (
+            <OrderItem>
+              <FlexWrapper>
+                <div>{formatMessage(messages.couponCode)}</div>
+              </FlexWrapper>
+              <CouponName>{couponName}</CouponName>
             </OrderItem>
           )}
           {/* shipping */}

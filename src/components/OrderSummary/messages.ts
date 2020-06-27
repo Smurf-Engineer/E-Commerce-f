@@ -75,7 +75,7 @@ export default defineMessages({
   },
   youSaved: {
     id: 'screens.ShoppingCartPage.youSaved',
-    defaultMessage: 'You Saved {percent}%'
+    defaultMessage: '{isAdmin}Saved {percent}%'
   },
   proDesigner: {
     id: 'screens.ShoppingCartPage.proDesigner',
@@ -88,5 +88,9 @@ export default defineMessages({
   couponError: {
     id: 'screens.Checkout.couponError',
     defaultMessage: 'Invalid promo code'
+  },
+  couponCode: {
+    id: 'screens.Checkout.couponCode',
+    defaultMessage: 'Coupon Code'
   }
 })

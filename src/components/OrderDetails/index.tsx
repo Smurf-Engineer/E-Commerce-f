@@ -147,7 +147,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       teamStoreId,
       lastDrop,
       canUpdatePayment,
-      onDemand
+      onDemand,
+      coupon
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -292,8 +293,11 @@ export class OrderDetails extends React.Component<Props, {}> {
               onlyRead={true}
               totalSum={total}
               shippingTotal={shippingAmount}
+              totalWithoutDiscount={subtotal}
+              youSaved={!!coupon && discount}
               currencySymbol={currency.shortName}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
+              couponName={coupon}
               {...{
                 formatMessage,
                 taxGst,
