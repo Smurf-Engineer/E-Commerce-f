@@ -111,7 +111,7 @@ interface Props {
 }
 
 const invalidDateExp = /\bInvalid date\b/
-const LIMIT = 11
+const LIMIT = 12
 
 export class StoreFrontContent extends React.Component<Props, StateProps> {
   state = {
@@ -245,7 +245,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       showReturn,
       pricingModalOpen
     } = this.state
-    console.log(pageNumber)
 
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
@@ -613,7 +612,8 @@ const StoreFrontContentEnhance = compose(
           },
           limit: LIMIT,
           offset: skip
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     }
   })
