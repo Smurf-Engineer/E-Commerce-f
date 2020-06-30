@@ -17,6 +17,8 @@ import {
   StyledInputNumber,
   LoadingContainer,
   Subtitle,
+  InfoIcon,
+  PopoverText,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -25,6 +27,7 @@ import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import Popover from 'antd/lib/popover'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
@@ -180,6 +183,13 @@ class AffiliateOptions extends React.Component<Props, {}> {
               <LabelButton>
                 <Title>
                   {formatMessage(messages.currency)}
+                  {!isAdmin && <Popover content={
+                    <PopoverText>
+                      {formatMessage(messages.payoutDesc)}
+                    </PopoverText>
+                  } title={formatMessage(messages.currency)}>
+                    <InfoIcon type="info-circle" />
+                  </Popover>}
                 </Title>
                 <BoldLabel upperCase={true}>
                   {currency}

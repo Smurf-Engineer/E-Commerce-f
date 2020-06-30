@@ -28,5 +28,9 @@ export default defineMessages({
   saved: {
     id: 'components.UsersAdmin.Options.saved',
     defaultMessage: 'Saved status'
+  },
+  showAffiliate: {
+    id: 'components.UsersAdmin.Options.showAffiliate',
+    defaultMessage: 'Show Affiliate'
   }
 })

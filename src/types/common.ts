@@ -207,6 +207,10 @@ export type DesignNote = {
   text: string
 }
 
+export type AffiliateStatus = {
+  enabled: boolean
+}
+
 export type Affiliate = {
   status: string
   paypalAccount: string

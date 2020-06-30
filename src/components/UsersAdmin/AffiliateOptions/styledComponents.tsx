@@ -107,3 +107,13 @@ export const Subtitle = styled.div`
     width: 100%;
   }
 `
+
+export const InfoIcon = styled(Icon)`
+  margin-left: 8px;
+  margin-top: 1px;
+`
+
+export const PopoverText = styled.div`
+  max-width: 512px;
+  width: 100%;
+`
