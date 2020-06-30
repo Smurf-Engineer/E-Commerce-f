@@ -245,6 +245,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       showReturn,
       pricingModalOpen
     } = this.state
+    console.log(pageNumber)
 
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
@@ -612,8 +613,7 @@ const StoreFrontContentEnhance = compose(
           },
           limit: LIMIT,
           offset: skip
-        },
-        fetchPolicy: 'no-cache'
+        }
       }
     }
   })

@@ -106,7 +106,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
-
+    console.log(currentPage)
     if (designs) {
       total = designs.length.toString()
       thumbnailsList = designs.map(
