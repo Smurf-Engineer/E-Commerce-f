@@ -268,7 +268,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
-        <SwitchWrapper>
+        {/* <SwitchWrapper>
           {formatMessage(messages.makeAffiliate)}
           <StyledSwitch disabled={!!status} checked={openModal || !!status} onChange={openAffiliate} />
         </SwitchWrapper>
@@ -297,7 +297,7 @@ class ProfileSettings extends React.Component<Props, {}> {
           linkPaypal={this.linkPaypal}
           sendRequest={this.sendRequest}
           open={openModal}
-        />
+        /> */}
         {/* REGION */}
         {/*<Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>

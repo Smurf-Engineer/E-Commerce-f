@@ -31,6 +31,6 @@ export default defineMessages({
   },
   showAffiliate: {
     id: 'components.UsersAdmin.Options.showAffiliate',
-    defaultMessage: 'Show Affiliate'
+    defaultMessage: 'Show Affiliate Program'
   }
 })

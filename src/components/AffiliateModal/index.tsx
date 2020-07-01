@@ -31,6 +31,7 @@ import {
   CancelButton,
   SaveButton,
   LinkButton,
+  FormContainer,
 } from './styledComponents'
 import messages from './messages'
 import { Message, UploadFile } from '../../types/common'
@@ -120,116 +121,116 @@ export class AffiliateModal extends React.Component<Props, {}> {
     const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
+        {open && !link &&
+          <FormContainer>
+            <Title>
+              <FormattedMessage {...messages.title} />
+            </Title>
+            <Description>
+              <FormattedMessage {...messages.description} />
+            </Description>
+            <Description>
+              <FormattedMessage {...messages.getStarted} />
+            </Description>
+            <Label>
+              <FormattedMessage {...messages.resident} />
+            </Label>
+            <CurrencyContainer>
+              <RadioGroupStyled
+                onChange={this.handleSelectSection}
+                value={paypalCurrency}
+                defaultValue={US_CURRENCY}
+              >
+                <RadioStyled value={US_CURRENCY}>
+                  <FormattedMessage {...messages.unitedStates} />
+                </RadioStyled>
+                <RadioStyled value={CA_CURRENCY}>
+                  <FormattedMessage {...messages.canada} />
+                </RadioStyled>
+              </RadioGroupStyled>
+              <Currencies>
+                <FormattedMessage {...messages.usd} />
+                <FormattedMessage {...messages.cad} />
+              </Currencies>
+              <Currencies>
+                <FileLink disabled={paypalCurrency !== US_CURRENCY} onClick={this.openFile(US_CURRENCY)}>
+                  <FormattedMessage {...messages.usdForm} />
+                </FileLink>
+                <FileLink disabled={paypalCurrency !== CA_CURRENCY} onClick={this.openFile(CA_CURRENCY)}>
+                  <FormattedMessage {...messages.cadForm} />
+                </FileLink>
+              </Currencies>
+            </CurrencyContainer>
+            <Label>
+              <FormattedMessage {...messages.uploadTax} />
+            </Label>
+            <StyledUpload
+              listType="picture-card"
+              className="avatar-uploader"
+              customRequest={this.uploadFile}
+              showUploadList={false}
+              beforeUpload={this.beforeUpload}
+            >
+              <UploadButton>
+                <StyledIcon type="upload" />
+                <FormattedMessage {...messages.uploadTaxForm} />
+              </UploadButton>
+            </StyledUpload>
+            {!!fileName &&
+              <FileLabel>
+                <Clip type="paper-clip" />
+                <FileName>
+                  {fileName}
+                </FileName>
+              </FileLabel>
+            }
+            <CheckboxContainer>
+              <Checkbox
+                checked={paypalCheck}
+                onChange={this.handleCheckChange}
+              >
+                <CheckboxLabel
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.terms)
+                  }}
+                />
+              </Checkbox>
+            </CheckboxContainer>
+            <TermsLabel>
+              <FormattedMessage {...messages.termsDesc} />
+            </TermsLabel>
+            <ButtonsContainer>
+              <CancelButton onClick={this.handleClose}>
+                <FormattedMessage {...messages.cancel} />
+              </CancelButton>
+              <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file}>
+                <FormattedMessage {...messages.sendRequest} />
+              </SaveButton>
+            </ButtonsContainer>
+          </FormContainer>
+        }
         <Modal
-          visible={open}
+          visible={open && link}
           footer={null}
           closable={false}
-          width={link ? '352px' : '512px'}
+          width={'352px'}
         >
-          {link ?
-            <ModalContainer>
-              <Title>
-                <FormattedMessage {...messages.link} />
-              </Title>
-              <Description>
-                <FormattedMessage {...messages.linkDesc} />
-              </Description>
-              <ButtonsContainer>
-                <CancelButton onClick={this.handleClose}>
-                  <FormattedMessage {...messages.cancel} />
-                </CancelButton>
-                <LinkButton onClick={linkPaypal}>
-                  <FormattedMessage {...messages.linkButton} />
-                </LinkButton>
-              </ButtonsContainer>
-            </ModalContainer>
-            : <ModalContainer>
-              <Title>
-                <FormattedMessage {...messages.title} />
-              </Title>
-              <Description>
-                <FormattedMessage {...messages.description} />
-              </Description>
-              <Description>
-                <FormattedMessage {...messages.getStarted} />
-              </Description>
-              <Label>
-                <FormattedMessage {...messages.resident} />
-              </Label>
-              <CurrencyContainer>
-                <RadioGroupStyled
-                  onChange={this.handleSelectSection}
-                  value={paypalCurrency}
-                  defaultValue={US_CURRENCY}
-                >
-                  <RadioStyled value={US_CURRENCY}>
-                    <FormattedMessage {...messages.unitedStates} />
-                  </RadioStyled>
-                  <RadioStyled value={CA_CURRENCY}>
-                    <FormattedMessage {...messages.canada} />
-                  </RadioStyled>
-                </RadioGroupStyled>
-                <Currencies>
-                  <FormattedMessage {...messages.usd} />
-                  <FormattedMessage {...messages.cad} />
-                </Currencies>
-                <Currencies>
-                  <FileLink disabled={paypalCurrency !== US_CURRENCY} onClick={this.openFile(US_CURRENCY)}>
-                    <FormattedMessage {...messages.usdForm} />
-                  </FileLink>
-                  <FileLink disabled={paypalCurrency !== CA_CURRENCY} onClick={this.openFile(CA_CURRENCY)}>
-                    <FormattedMessage {...messages.cadForm} />
-                  </FileLink>
-                </Currencies>
-              </CurrencyContainer>
-              <Label>
-                <FormattedMessage {...messages.uploadTax} />
-              </Label>
-              <StyledUpload
-                listType="picture-card"
-                className="avatar-uploader"
-                customRequest={this.uploadFile}
-                showUploadList={false}
-                beforeUpload={this.beforeUpload}
-              >
-                <UploadButton>
-                  <StyledIcon type="upload" />
-                  <FormattedMessage {...messages.uploadTaxForm} />
-                </UploadButton>
-              </StyledUpload>
-              {!!fileName &&
-                <FileLabel>
-                  <Clip type="paper-clip" />
-                  <FileName>
-                    {fileName}
-                  </FileName>
-                </FileLabel>
-              }
-              <CheckboxContainer>
-                <Checkbox
-                  checked={paypalCheck}
-                  onChange={this.handleCheckChange}
-                >
-                  <CheckboxLabel
-                    dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.terms)
-                    }}
-                  />
-                </Checkbox>
-              </CheckboxContainer>
-              <TermsLabel>
-                <FormattedMessage {...messages.termsDesc} />
-              </TermsLabel>
-              <ButtonsContainer>
-                <CancelButton onClick={this.handleClose}>
-                  <FormattedMessage {...messages.cancel} />
-                </CancelButton>
-                <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file}>
-                  <FormattedMessage {...messages.sendRequest} />
-                </SaveButton>
-              </ButtonsContainer>
-            </ModalContainer>
-          }
+          <ModalContainer>
+            <Title>
+              <FormattedMessage {...messages.link} />
+            </Title>
+            <Description>
+              <FormattedMessage {...messages.linkDesc} />
+            </Description>
+            <ButtonsContainer>
+              <CancelButton onClick={this.handleClose}>
+                <FormattedMessage {...messages.cancel} />
+              </CancelButton>
+              <LinkButton onClick={linkPaypal}>
+                <FormattedMessage {...messages.linkButton} />
+              </LinkButton>
+            </ButtonsContainer>
+          </ModalContainer>
         </Modal>
       </Container>
     )

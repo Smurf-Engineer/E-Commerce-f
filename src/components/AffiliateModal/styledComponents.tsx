@@ -12,14 +12,14 @@ import Icon from 'antd/lib/icon'
 const RadioGroup = Radio.Group
 
 export const Container = styled.section`
-  width: 220px;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
-  }
 `
 
 export const ModalContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+`
+
+export const FormContainer = styled.div`
   display: flex;
   flex-flow: column;
 `
