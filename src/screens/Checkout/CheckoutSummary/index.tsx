@@ -98,9 +98,6 @@ const CheckoutSummary = ({
     case 6:
       paypalClientId = config.paypalClientIdCA
       break
-    case 9:
-      paypalClientId = config.paypalClientIdEU
-      break
     default:
       paypalClientId = config.paypalClientIdUS
       break
