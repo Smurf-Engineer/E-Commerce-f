@@ -25,7 +25,29 @@ import {
   LoadingContainer,
   StatusLabel,
   AccountLabel,
+  HeaderSection,
+  PayDayIcon,
+  InfoSection,
+  TextSection,
+  TitlePay,
+  BodyPay,
+  Slogan,
+  PayDayImage,
+  HowItWorks,
+  IconLabel,
+  SmallIcon,
+  Label,
+  Icons,
+  FAQSection,
+  FAQBody,
+  AboutBody,
 } from './styledComponents'
+import Payday from '../../assets/jakroo_payday.png'
+import PaydayJersey from '../../assets/payday_jersey.png'
+import PaydayPaypal from '../../assets/payday_paypal.png'
+import PaydayShare from '../../assets/payday_share.png'
+import PaydayStore from '../../assets/payday_store.png'
+import LaptopGuy from '../../assets/laptop_guy.jpg'
 import AffiliateModal from '../AffiliateModal'
 import {
   QueryProps,
@@ -35,6 +57,7 @@ import {
   Message,
 } from '../../types/common'
 import get from 'lodash/get'
+import { US_CURRENCY, US_COUNTRY, CA_CURRENCY, CA_COUNTRY } from './constants'
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -48,6 +71,7 @@ interface Props {
   openModal: boolean
   file: string
   history: History
+  initialCountryCode: string
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   // api actions
   uploadFileAction: (file: UploadFile) => void
@@ -101,6 +125,25 @@ class AffiliateAbout extends React.Component<Props, {}> {
     const { status, paypalAccount } = affiliate
     return (
       <Container>
+        <HeaderSection>
+          <PayDayIcon src={Payday} />
+          <InfoSection>
+            <TextSection>
+              <TitlePay>
+                {formatMessage(messages.titlePay)}
+              </TitlePay>
+              <BodyPay
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.bodyPay)
+                }}
+              />
+              <Slogan>
+                {formatMessage(messages.slogan)}
+              </Slogan>
+            </TextSection>
+            <PayDayImage src={LaptopGuy} />
+          </InfoSection>
+        </HeaderSection>
         {loadingFile &&
           <LoadingContainer>
             <Spin />
@@ -135,6 +178,49 @@ class AffiliateAbout extends React.Component<Props, {}> {
           sendRequest={this.sendRequest}
           open={openModal}
         />
+        <AboutBody>
+          <HowItWorks>
+            <Title>
+              {formatMessage(messages.howItWorks)}
+            </Title>
+            <Icons>
+              <IconLabel>
+                <SmallIcon src={PaydayJersey} />
+                <Label>
+                  {formatMessage(messages.createDesigns)}
+                </Label>
+              </IconLabel>
+              <IconLabel>
+                <SmallIcon src={PaydayStore} />
+                <Label>
+                  {formatMessage(messages.buildStore)}
+                </Label>
+              </IconLabel>
+              <IconLabel>
+                <SmallIcon src={PaydayShare} />
+                <Label>
+                  {formatMessage(messages.shareStore)}
+                </Label>
+              </IconLabel>
+              <IconLabel>
+                <SmallIcon src={PaydayPaypal} />
+                <Label>
+                  {formatMessage(messages.getPaid)}
+                </Label>
+              </IconLabel>
+            </Icons>
+          </HowItWorks>
+          <FAQSection>
+            <Title>
+              {formatMessage(messages.faqTitle)}
+            </Title>
+            <FAQBody
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.faqBody)
+              }}
+            />
+          </FAQSection>
+        </AboutBody>
       </Container>
     )
   }
@@ -142,6 +228,7 @@ class AffiliateAbout extends React.Component<Props, {}> {
   sendRequest = async () => {
     const {
       setUploadingAction,
+      initialCountryCode,
       successRequestAction,
       paypalCurrency: currency,
       file,
@@ -149,26 +236,33 @@ class AffiliateAbout extends React.Component<Props, {}> {
       sendAffiliateRequest
     } = this.props
     try {
-      setUploadingAction(true)
-      await sendAffiliateRequest({
-        variables: {
-          currency,
-          file
-        },
-        update: (store: any) => {
-          const profileData = store.readQuery({
-            query: profileSettingsQuery
-          })
-          const affiliateData = get(profileData, 'profileData.affiliate', {})
-          affiliateData.status = PENDING
-          store.writeQuery({
-            query: profileSettingsQuery,
-            data: profileData
-          })
-        }
-      })
-      successRequestAction()
-      MessageBar.success(formatMessage(messages.success), 4)
+      if (
+        (currency === US_CURRENCY && initialCountryCode === US_COUNTRY) ||
+        (currency === CA_CURRENCY && initialCountryCode === CA_COUNTRY)
+      ) {
+        setUploadingAction(true)
+        await sendAffiliateRequest({
+          variables: {
+            currency,
+            file
+          },
+          update: (store: any) => {
+            const profileDataStore = store.readQuery({
+              query: profileSettingsQuery
+            })
+            const affiliateData = get(profileDataStore, 'profileData.affiliate', {})
+            affiliateData.status = PENDING
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileDataStore
+            })
+          }
+        })
+        successRequestAction()
+        MessageBar.success(formatMessage(messages.success), 4)
+      } else {
+        MessageBar.error(formatMessage(messages.wrongCurrency), 5)
+      }
     } catch (error) {
       setUploadingAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
@@ -177,7 +271,14 @@ class AffiliateAbout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('affiliatesAbout').toJS()
+const mapStateToProps = (state: any) => {
+  const affiliatesAbout = state.get('affiliatesAbout').toJS()
+  const app = state.get('app').toJS()
+  return {
+    ...affiliatesAbout,
+    ...app,
+  }
+}
 
 const AffiliateAboutEnhance = compose(
   graphql(profileSettingsQuery, {

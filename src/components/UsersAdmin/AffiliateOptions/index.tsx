@@ -142,81 +142,80 @@ class AffiliateOptions extends React.Component<Props, {}> {
             </>
           }
           {isActive &&
-            <>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.activationDate)}
-                </Title>
-                {!!activatedAt &&
-                  <BoldLabel>
-                    {moment(activatedAt).format(NOTE_FORMAT)}
-                  </BoldLabel>
-                }
-              </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.taxForm)}
-                </Title>
-                <FileLink onClick={this.openFile}>
-                  <Clip type="paper-clip" />
-                  {fileName}
-                </FileLink>
-              </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.comissions)}
-                </Title>
-                {isAdmin ?
-                  <StyledInputNumber
-                    onChange={this.debounceComission}
-                    value={comission}
-                    min={0}
-                    max={100}
-                    formatter={rawValue => `${rawValue}%`}
-                    parser={value => value.replace(DECIMAL_REGEX, '')}
-                  />
-                  : <BoldLabel>
-                    {`${comission}%`}
-                  </BoldLabel>
-                }
-              </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.currency)}
-                  {!isAdmin && <Popover content={
-                    <PopoverText>
-                      {formatMessage(messages.payoutDesc)}
-                    </PopoverText>
-                  } title={formatMessage(messages.currency)}>
-                    <InfoIcon type="info-circle" />
-                  </Popover>}
-                </Title>
-                <BoldLabel upperCase={true}>
-                  {currency}
-                </BoldLabel>
-              </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.region)}
-                </Title>
-                <BoldLabel upperCase={true}>
-                  {region}
-                </BoldLabel>
-              </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.paypalAccount)}
-                  {!isAdmin &&
-                    <RedLabel onClick={this.openEdit}>
-                      {formatMessage(messages.edit)}
-                    </RedLabel>
-                  }
-                </Title>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.activationDate)}
+              </Title>
+              {!!activatedAt &&
                 <BoldLabel>
-                  {paypalAccount}
+                  {moment(activatedAt).format(NOTE_FORMAT)}
                 </BoldLabel>
-              </LabelButton>
-            </>
+              }
+            </LabelButton>
+          }
+          <LabelButton>
+            <Title>
+              {formatMessage(messages.taxForm)}
+            </Title>
+            <FileLink onClick={this.openFile}>
+              <Clip type="paper-clip" />
+              {fileName}
+            </FileLink>
+          </LabelButton>
+          {isActive && <LabelButton>
+            <Title>
+              {formatMessage(messages.comissions)}
+            </Title>
+            {isAdmin ?
+              <StyledInputNumber
+                onChange={this.debounceComission}
+                value={comission}
+                min={0}
+                max={100}
+                formatter={rawValue => `${rawValue}%`}
+                parser={value => value.replace(DECIMAL_REGEX, '')}
+              />
+              : <BoldLabel>
+                {`${comission}%`}
+              </BoldLabel>
+            }
+          </LabelButton>}
+          <LabelButton>
+            <Title>
+              {formatMessage(messages.currency)}
+              {!isAdmin && <Popover content={
+                <PopoverText>
+                  {formatMessage(messages.payoutDesc)}
+                </PopoverText>
+              } title={formatMessage(messages.currency)}>
+                <InfoIcon type="info-circle" />
+              </Popover>}
+            </Title>
+            <BoldLabel upperCase={true}>
+              {currency}
+            </BoldLabel>
+          </LabelButton>
+          <LabelButton>
+            <Title>
+              {formatMessage(messages.region)}
+            </Title>
+            <BoldLabel upperCase={true}>
+              {region}
+            </BoldLabel>
+          </LabelButton>
+          {isActive && <LabelButton>
+            <Title>
+              {formatMessage(messages.paypalAccount)}
+              {!isAdmin &&
+                <RedLabel onClick={this.openEdit}>
+                  {formatMessage(messages.edit)}
+                </RedLabel>
+              }
+            </Title>
+            <BoldLabel>
+              {paypalAccount}
+            </BoldLabel>
+          </LabelButton>
           }
         </OptionsContainer>
         {isActive &&

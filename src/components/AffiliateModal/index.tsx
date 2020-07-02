@@ -24,7 +24,6 @@ import {
   FileLabel,
   Clip,
   FileName,
-  CheckboxContainer,
   CheckboxLabel,
   TermsLabel,
   ButtonsContainer,
@@ -129,9 +128,6 @@ export class AffiliateModal extends React.Component<Props, {}> {
             <Description>
               <FormattedMessage {...messages.description} />
             </Description>
-            <Description>
-              <FormattedMessage {...messages.getStarted} />
-            </Description>
             <Label>
               <FormattedMessage {...messages.resident} />
             </Label>
@@ -161,6 +157,9 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 </FileLink>
               </Currencies>
             </CurrencyContainer>
+            <TermsLabel>
+              <FormattedMessage {...messages.termsDesc} />
+            </TermsLabel>
             <Label>
               <FormattedMessage {...messages.uploadTax} />
             </Label>
@@ -184,7 +183,10 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 </FileName>
               </FileLabel>
             }
-            <CheckboxContainer>
+            <ButtonsContainer>
+              <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file}>
+                <FormattedMessage {...messages.sendRequest} />
+              </SaveButton>
               <Checkbox
                 checked={paypalCheck}
                 onChange={this.handleCheckChange}
@@ -195,17 +197,6 @@ export class AffiliateModal extends React.Component<Props, {}> {
                   }}
                 />
               </Checkbox>
-            </CheckboxContainer>
-            <TermsLabel>
-              <FormattedMessage {...messages.termsDesc} />
-            </TermsLabel>
-            <ButtonsContainer>
-              <CancelButton onClick={this.handleClose}>
-                <FormattedMessage {...messages.cancel} />
-              </CancelButton>
-              <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file}>
-                <FormattedMessage {...messages.sendRequest} />
-              </SaveButton>
             </ButtonsContainer>
           </FormContainer>
         }

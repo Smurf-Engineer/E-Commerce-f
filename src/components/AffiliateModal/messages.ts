@@ -7,16 +7,12 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.AffiliateModal.title',
-    defaultMessage: 'BECOME A JAKROO AFFILIATE PARTNER'
+    defaultMessage: 'Become a member today!'
   },
   description: {
     id: 'components.AffiliateModal.description',
-    defaultMessage: `Become a Jakroo Affiliate and earn commissions on sales of your custom 
-    design from your Jakroo Custom Stores.`
-  },
-  getStarted: {
-    id: 'components.AffiliateModal.getStarted',
-    defaultMessage: 'In order to get started we will need to collect some information from your country of residence.'
+    defaultMessage: `Becoming a member of PayDay is fast and easy. 
+    In order to get started we need to collect some information from you.`
   },
   resident: {
     id: 'components.AffiliateModal.resident',
@@ -60,8 +56,9 @@ export default defineMessages({
   },
   termsDesc: {
     id: 'components.AffiliateModal.termsDesc',
-    defaultMessage: `We will review your application within 2 
-    business days and confirm acceptance or request additional information.`
+    defaultMessage: `Form W9 is an Internal Revenue Service (IRS) form that's used to gather information about a 
+    contractor or individual so that their earnings can be reported at year-end. At the end of tax year, you will 
+    recieve a 1099 MISC as a record of the income you earned from JAKROO.`
   },
   cancel: {
     id: 'components.AffiliateModal.cancel',
@@ -69,7 +66,7 @@ export default defineMessages({
   },
   sendRequest: {
     id: 'components.AffiliateModal.sendRequest',
-    defaultMessage: 'Send Request'
+    defaultMessage: 'JOIN NOW'
   },
   link: {
     id: 'components.AffiliateModal.link',

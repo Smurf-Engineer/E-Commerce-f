@@ -22,12 +22,12 @@ export const ModalContainer = styled.div`
 export const FormContainer = styled.div`
   display: flex;
   flex-flow: column;
+  margin-top: 36px;
 `
 
 export const Title = styled.div`
   font-size: 18px;
   font-weight: 600;
-  text-transform: uppercase;
   margin-bottom: 10px;
 `
 
@@ -45,6 +45,8 @@ export const CurrencyContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 16px 0;
+  max-width: 338px;
+  width: 100%;
 `
 
 export const RadioGroupStyled = styled(RadioGroup)`
@@ -129,8 +131,8 @@ export const CheckboxLabel = styled.div`
 `
 
 export const TermsLabel = styled.div`
-  font-style: italic;
-  margin-top: 12px;
+  margin-bottom: 12px;
+  max-width: 740px;
 `
 
 export const ButtonsContainer = styled.div`
@@ -138,7 +140,8 @@ export const ButtonsContainer = styled.div`
   width: 100%;
   text-align: right;
   display: inline-flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  align-items: center;
 `
 
 export const CancelButton = styled(Button)`
