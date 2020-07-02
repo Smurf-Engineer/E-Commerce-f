@@ -62,7 +62,7 @@ interface Props {
     billing: boolean
   ) => void
   saveCountryAction: (countryCode: string | null) => void
-  setStripeAction: (stripe: any, euStripe: any) => void
+  setStripeAction: (stripe: any) => void
   createPaymentIntent: () => void
 }
 
@@ -75,8 +75,7 @@ declare var window: MyWindow
 class Payment extends React.PureComponent<Props, {}> {
   state = {
     stripe: null,
-    openConfirm: false,
-    euStripe: null
+    openConfirm: false
   }
 
   componentDidMount() {
@@ -84,10 +83,9 @@ class Payment extends React.PureComponent<Props, {}> {
     if (window.Stripe) {
       this.setState(
         {
-          stripe: window.Stripe(config.pkStripeUS),
-          euStripe: window.Stripe(config.pkStripeEU)
+          stripe: window.Stripe(config.pkStripeUS)
         },
-        () => setStripeAction(this.state.stripe, this.state.euStripe)
+        () => setStripeAction(this.state.stripe)
       )
     } else {
       // this code is safe to server-side render.
@@ -99,9 +97,8 @@ class Payment extends React.PureComponent<Props, {}> {
         this.setState(
           {
             stripe: window.Stripe(config.pkStripeUS),
-            euStripe: window.Stripe(config.pkStripeEU)
           },
-          () => setStripeAction(this.state.stripe, this.state.euStripe)
+          () => setStripeAction(this.state.stripe)
         )
       }
       // tslint:disable-next-line:no-unused-expression
@@ -170,7 +167,7 @@ class Payment extends React.PureComponent<Props, {}> {
       createPaymentIntent,
       isFixedTeamstore
     } = this.props
-    const { stripe, openConfirm, euStripe } = this.state
+    const { stripe, openConfirm } = this.state
 
     if (!showContent) {
       return <div />
@@ -240,11 +237,6 @@ class Payment extends React.PureComponent<Props, {}> {
 
         {paymentMethod === CREDITCARD && (
           <StripeProvider stripe={stripe}>
-            <Elements>{paymentForm}</Elements>
-          </StripeProvider>
-        )}
-        {paymentMethod !== CREDITCARD && (
-          <StripeProvider stripe={euStripe}>
             <Elements>{paymentForm}</Elements>
           </StripeProvider>
         )}

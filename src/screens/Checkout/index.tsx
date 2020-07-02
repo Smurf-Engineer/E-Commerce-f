@@ -33,8 +33,8 @@ import {
   PaymentOptions,
   quantities,
   EUROPE,
-  EU_STRIPE,
   STRIPE,
+  EU_STRIPE,
   EU_SUBSIDIARY_COUNTRIES
 } from './constants'
 
@@ -217,8 +217,7 @@ const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
   state = {
-    stripe: null,
-    euStripe: null
+    stripe: null
   }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -1069,10 +1068,9 @@ class Checkout extends React.Component<Props, {}> {
       Message.error(errorMessage, 5)
     }
   }
-  setStripe = async (stripe: any, euStripe: any) => {
+  setStripe = async (stripe: any) => {
     this.setState({
-      stripe,
-      euStripe
+      stripe
     })
   }
 }
