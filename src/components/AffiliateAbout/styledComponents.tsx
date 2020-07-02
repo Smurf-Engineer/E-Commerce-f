@@ -94,6 +94,9 @@ export const InfoSection = styled.div`
   color: ${WHITE};
   padding: 21px 28px;
   display: flex;
+  @media (max-width: 768px) {
+    flex-flow: column;
+  }
 `
 
 export const TextSection = styled.div`
@@ -128,10 +131,21 @@ export const PayDayImage = styled.img`
   margin-right: 52px;
   margin-bottom: -46px;
   flex: 1;
+  @media (min-width: 769px) and (max-width: 1024px) {
+    max-width: 302px;
+    margin-right: 0;
+  }
+  @media (max-width: 768px) {
+    margin-top: 26px;
+    margin-bottom: -44px;
+  }
 `
 
 export const AboutBody = styled.div`
   margin-right: 84px;
+  @media (max-width: 768px) {
+    margin-right: 0;
+  }
 `
 
 export const HowItWorks = styled.div`
@@ -150,6 +164,9 @@ export const Icons = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  @media (max-width: 768px) {
+    flex-flow: column;
+  }
 `
 
 export const IconLabel = styled.div`

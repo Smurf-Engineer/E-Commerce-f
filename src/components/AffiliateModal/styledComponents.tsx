@@ -142,6 +142,9 @@ export const ButtonsContainer = styled.div`
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
+  @media (max-width: 768px) {
+    flex-flow: column-reverse;
+  }
 `
 
 export const CancelButton = styled(Button)`
@@ -158,6 +161,9 @@ export const SaveButton = styled(Button)`
   height: 38px;
   color: ${WHITE};
   background: ${BLUE};
+  @media (max-width: 768px) {
+    margin-top: 28px;
+  }
 `
 
 export const LinkButton = styled(Button)`
