@@ -12,7 +12,7 @@ import {
   paypalButtonStyle,
   PlaceOrderButton
 } from './styledComponents'
-import { getTaxQuery, getSubsidiaryQuery } from './data'
+import { getTaxQuery, isScaPaymentQuery } from './data'
 import {
   CouponCode,
   QueryProps,
@@ -21,7 +21,8 @@ import {
   AddressObj,
   TaxAddressObj,
   SimpleCart,
-  ProductPrice
+  ProductPrice,
+  SubsidiarySCA
 } from '../../../types/common'
 import OrderSummary from '../../../components/OrderSummary'
 import config from '../../../config/index'
@@ -39,7 +40,7 @@ interface Data extends QueryProps {
 interface Props {
   showOrderButton: boolean
   taxShipQuery?: Data
-  subsidiaryQuery?: number
+  subsidiaryQuery?: SubsidiarySCA
   subtotal: number
   shipping?: number
   totalWithoutDiscount?: number
@@ -62,7 +63,7 @@ interface Props {
   onPaypalSuccess: (payment: any) => void
   onPaypalCancel: (data: AnalyserNode) => void
   onPaypalError: (err: any) => void
-  onPlaceOrder: (event: any, subsidiary?: number) => void
+  onPlaceOrder: (event: any, sca?: boolean) => void
 }
 
 const CheckoutSummary = ({
@@ -90,8 +91,8 @@ const CheckoutSummary = ({
   productsPrices
 }: Props) => {
   let paypalClientId
-  const subsidiary = get(subsidiaryQuery, 'subsidiary', 1)
-  switch (subsidiary) {
+  const subsidiarySCA = get(subsidiaryQuery, 'subsidiarySCA', { subsidiary: 1, sca: false })
+  switch (subsidiarySCA.subsidiary) {
     case 1:
       paypalClientId = config.paypalClientIdUS
       break
@@ -164,7 +165,7 @@ const CheckoutSummary = ({
     ? currentCurrency.toUpperCase()
     : config.defaultCurrency.toUpperCase()
 
-  const handleOnPlaceOrder = (event) => onPlaceOrder(event, subsidiary)
+  const handleOnPlaceOrder = (event) => onPlaceOrder(event, subsidiarySCA.sca)
   const orderButtonComponent =
     paymentMethod === PaymentOptions.PAYPAL ? (
       <PaypalExpressBtn
@@ -232,7 +233,7 @@ const CheckoutSummaryEnhance = compose(
       fetchPolicy: 'network-only'
     })
   }),
-  graphql(getSubsidiaryQuery, {
+  graphql(isScaPaymentQuery, {
     name: 'subsidiaryQuery',
     options: ({ country }: OwnProps) => ({
       skip: !country,

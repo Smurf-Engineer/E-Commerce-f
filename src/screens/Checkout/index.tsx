@@ -26,7 +26,7 @@ import {
   CurrencyQuery,
   CreatePaymentIntentMutation,
   AddCardMutation,
-  getSubsidiaryQuery
+  isScaPaymentQuery
 } from './data'
 import {
   CheckoutTabs,
@@ -705,7 +705,7 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async (event: any, subsidiary?: number) => {
+  handleOnPlaceOrder = async (event: any, sca?: boolean) => {
     const {
       client: { query },
       billingCountry,
@@ -731,11 +731,11 @@ class Checkout extends React.Component<Props, {}> {
           }),
           okButtonProps: { style: okButtonStyles },
           onOk: () => {
-            this.placeOrder(event, null, subsidiary)
+            this.placeOrder(event, null, sca)
           }
         })
       } else {
-        this.placeOrder(event, null, subsidiary)
+        this.placeOrder(event, null, sca)
       }
     }
   }
@@ -755,7 +755,6 @@ class Checkout extends React.Component<Props, {}> {
   }
   createPaymentIntent = async () => {
     const { savePaymentId, createPaymentIntent } = this.props
-
     try {
       const orderObj = await this.getOrderObject()
       const response = await createPaymentIntent({
@@ -784,7 +783,7 @@ class Checkout extends React.Component<Props, {}> {
       }
     } = this.props
     const { data } = await query({
-      query: getSubsidiaryQuery,
+      query: isScaPaymentQuery,
       variables: { code: billingCountry },
       fetchPolicy: 'network-only'
     })
@@ -793,7 +792,8 @@ class Checkout extends React.Component<Props, {}> {
 
     const preorder = isFixedTeamstore && !reorder
 
-    if (data.subsidiary === EUROPE && !preorder) {
+    const subsidiarySCA = get(data, 'subsidiarySCA.sca', false) 
+    if (subsidiarySCA && !preorder) {
       await this.createPaymentIntent()
     }
     if (card && stripeToken) {
@@ -842,7 +842,7 @@ class Checkout extends React.Component<Props, {}> {
     }
     return STRIPE
   }
-  placeOrder = async (event: any, paypalObj?: object, subsidiary?: number) => {
+  placeOrder = async (event: any, paypalObj?: object, sca?: boolean) => {
     const {
       placeOrder,
       setLoadingPlaceOrderAction,
@@ -854,10 +854,7 @@ class Checkout extends React.Component<Props, {}> {
     try {
       setLoadingPlaceOrderAction(true)
 
-      const stripeAccount = this.getStripeAccount(subsidiary)
-
-      const orderObj = await this.getOrderObject(paypalObj, stripeAccount)
-
+      const orderObj = await this.getOrderObject(paypalObj, sca)
       const response = await placeOrder({
         variables: { orderObj }
       })
@@ -866,7 +863,7 @@ class Checkout extends React.Component<Props, {}> {
       const preorder = orderObj.isFixedTeamstore && !orderObj.replaceOrder
 
       if (
-        stripeAccount === EU_STRIPE &&
+        sca &&
         orderObj.paymentMethod === PaymentOptions.CREDITCARD &&
         !preorder
       ) {
@@ -900,7 +897,7 @@ class Checkout extends React.Component<Props, {}> {
   }
   getOrderObject = async (
     paypalObj?: object,
-    stripeAccount: string = STRIPE
+    sca: boolean = false
   ) => {
     const {
       location,
@@ -1043,7 +1040,7 @@ class Checkout extends React.Component<Props, {}> {
         proDesign,
         paymentMethod,
         cardId,
-        tokenId: stripeAccount === EU_STRIPE ? intentId : stripeToken,
+        tokenId: sca ? intentId : stripeToken,
         sourceId: stripeSource,
         cart: sanitizedCart,
         shippingAddress,
