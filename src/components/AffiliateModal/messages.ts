@@ -60,6 +60,12 @@ export default defineMessages({
     contractor or individual so that their earnings can be reported at year-end. At the end of tax year, you will 
     recieve a 1099 MISC as a record of the income you earned from JAKROO.`
   },
+  termsDescCad: {
+    id: 'components.AffiliateModal.termsDescCad',
+    defaultMessage: `Jakroo Canada Inc. is required to submit T4A slips to the CRA when the earned income paidto 
+    an individual or contractor during the tax year exceeds $500.00. In order to submit a T4A,we require the address 
+    and social security number of the individual.`
+  },
   cancel: {
     id: 'components.AffiliateModal.cancel',
     defaultMessage: 'Cancel'

@@ -66,7 +66,7 @@ export const LoadingContainer = styled.div`
 `
 
 export const StatusLabel = styled.div`
-  margin-top: 8px;
+  margin-top: 64px;
   color: ${BLUE};
   font-style: italic;
 `
@@ -120,6 +120,7 @@ export const BodyPay = styled.div`
 
 export const Slogan = styled.div`
   font-size: 21px;
+  color: #96be00;
   font-family: ${AVENIR_MEDIUM};
 `
 
@@ -136,15 +137,31 @@ export const PayDayImage = styled.img`
     margin-right: 0;
   }
   @media (max-width: 768px) {
-    margin-top: 26px;
-    margin-bottom: -44px;
+    display: none;
+  }
+`
+
+export const PayDayImageMobile = styled.img`
+  max-width: 462px;
+  width: 100%;
+  object-fit: cover;
+  flex: 1;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+    width: calc(100% + 80px);
+    max-width: calc(100% + 80px);
+    object-fit: cover;
+    margin-left: -28px;
+    margin-bottom: 8px;
   }
 `
 
 export const AboutBody = styled.div`
-  margin-right: 84px;
+  padding-right: 84px;
+  width: 100%;
   @media (max-width: 768px) {
-    margin-right: 0;
+    padding-right: 0;
   }
 `
 
@@ -199,5 +216,15 @@ export const FAQBody = styled.div`
   margin-bottom: 54px;
   b {
     display: block;
+  }
+`
+
+export const AffiliateDetailsSection = styled.div`
+  margin-top: 57px;
+  margin-right: 84px;
+  border: 1px solid ${GRAY};
+  padding: 22px 28px;
+  @media (max-width: 768px) {
+    margin-right: 0;
   }
 `
