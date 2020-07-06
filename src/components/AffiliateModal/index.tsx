@@ -31,6 +31,7 @@ import {
   SaveButton,
   LinkButton,
   FormContainer,
+  TermsLink,
 } from './styledComponents'
 import messages from './messages'
 import { Message, UploadFile } from '../../types/common'
@@ -41,10 +42,12 @@ import { getFileWithExtension } from '../../utils/utilsFiles'
 
 const US_CURRENCY = 'usd'
 const CA_CURRENCY = 'cad'
+const TERMS_CONDITIONS = 'termsConditions'
 
 const links = {
   [US_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/FW-9.pdf',
-  [CA_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/CA%20Tax%20form.pdf'
+  [CA_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/CA%20Tax%20form.pdf',
+  [TERMS_CONDITIONS]: 'https://storage.googleapis.com/jakroo/config/PayDay_Terms.docx'
 }
 
 interface Props {
@@ -69,7 +72,11 @@ export class AffiliateModal extends React.Component<Props, {}> {
   openFile = (id: string) => () => {
     window.open(links[id])
   }
-
+  stopPropagation = (event: any) => {
+    if (event) {
+      event.stopPropagation()
+    }
+  }
   handleSelectSection = (event: RadioChangeEvent) => {
     const { setPaypalCurrency } = this.props
     const {
@@ -191,11 +198,12 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 checked={paypalCheck}
                 onChange={this.handleCheckChange}
               >
-                <CheckboxLabel
-                  dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.terms)
-                  }}
-                />
+                <CheckboxLabel onClick={this.stopPropagation}>
+                  {formatMessage(messages.terms)}
+                  <TermsLink onClick={this.openFile(TERMS_CONDITIONS)}>
+                    {formatMessage(messages.termsLink)}
+                  </TermsLink>
+                </CheckboxLabel>
               </Checkbox>
             </ButtonsContainer>
           </FormContainer>

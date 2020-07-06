@@ -40,12 +40,17 @@ import {
   AboutBody,
   AffiliateDetailsSection,
   PayDayImageMobile,
+  Arrow,
+  CarousselDiv,
+  DesktopIcons,
 } from './styledComponents'
 import Payday from '../../assets/jakroo_payday.png'
 import PaydayJersey from '../../assets/payday_jersey.png'
 import PaydayPaypal from '../../assets/payday_paypal.png'
 import PaydayShare from '../../assets/payday_share.png'
 import PaydayStore from '../../assets/payday_store.png'
+import leftArrow from '../../assets/leftarrow.svg'
+import rightArrow from '../../assets/arrow.svg'
 import LaptopGuy from '../../assets/laptop_guy.jpg'
 import LaptopGuyMobile from '../../assets/laptop_guy_mobile.jpg'
 import AffiliateModal from '../AffiliateModal'
@@ -60,6 +65,41 @@ import {
 import get from 'lodash/get'
 import { US_CURRENCY, US_COUNTRY, CA_CURRENCY, CA_COUNTRY } from './constants'
 import ProductInfo from '../ProductInfo'
+
+const arrowLeft = <Arrow src={leftArrow} />
+const arrowRight = <Arrow src={rightArrow} />
+
+const settings = {
+  dots: false,
+  speed: 2000,
+  autoplay: true,
+  arrows: true,
+  draggable: true,
+  centerMode: false,
+  prevArrow: arrowLeft,
+  nextArrow: arrowRight,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+}
+
+const carousel = [
+  {
+    icon: PaydayJersey,
+    label: 'createDesigns'
+  },
+  {
+    icon: PaydayStore,
+    label: 'buildStore'
+  },
+  {
+    icon: PaydayShare,
+    label: 'shareStore'
+  },
+  {
+    icon: PaydayPaypal,
+    label: 'getPaid'
+  }
+]
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -142,6 +182,16 @@ class AffiliateAbout extends React.Component<Props, StateProps> {
     } = this.state
 
     const { status } = get(profileData, 'profileData.affiliate', {})
+    const carouselElements = carousel.map(({ icon, label }, index) =>
+      <div key={index}>
+        <IconLabel>
+          <SmallIcon src={icon} />
+          <Label>
+            {formatMessage(messages[label])}
+          </Label>
+        </IconLabel>
+      </div>
+    )
     return (
       <Container>
         <HeaderSection>
@@ -202,30 +252,12 @@ class AffiliateAbout extends React.Component<Props, StateProps> {
               {formatMessage(messages.howItWorks)}
             </Title>
             <Icons>
-              <IconLabel>
-                <SmallIcon src={PaydayJersey} />
-                <Label>
-                  {formatMessage(messages.createDesigns)}
-                </Label>
-              </IconLabel>
-              <IconLabel>
-                <SmallIcon src={PaydayStore} />
-                <Label>
-                  {formatMessage(messages.buildStore)}
-                </Label>
-              </IconLabel>
-              <IconLabel>
-                <SmallIcon src={PaydayShare} />
-                <Label>
-                  {formatMessage(messages.shareStore)}
-                </Label>
-              </IconLabel>
-              <IconLabel>
-                <SmallIcon src={PaydayPaypal} />
-                <Label>
-                  {formatMessage(messages.getPaid)}
-                </Label>
-              </IconLabel>
+              <CarousselDiv {...settings}>
+                {carouselElements}
+              </CarousselDiv>
+              <DesktopIcons>
+                {carouselElements}
+              </DesktopIcons>
             </Icons>
           </HowItWorks>
           <FAQSection>

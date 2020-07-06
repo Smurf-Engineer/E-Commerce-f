@@ -26,9 +26,10 @@ export const FormContainer = styled.div`
 `
 
 export const Title = styled.div`
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
   margin-bottom: 10px;
+  text-transform: uppercase;
 `
 
 export const Description = styled.div`
@@ -91,6 +92,10 @@ export const StyledUpload = styled(Upload)`
     margin-top: 10px;
     background: ${WHITE};
     border-radius: 1px;
+    @media (max-width: 767px) {
+      width: 100%;
+      height: 54px;
+    }
   }
 `
 
@@ -130,6 +135,12 @@ export const CheckboxLabel = styled.div`
   display: inline-block;
 `
 
+export const TermsLink = styled.span`
+  color: ${BLUE};
+  text-decoration: underline;
+  font-weight: bold;
+`
+
 export const TermsLabel = styled.div`
   margin-bottom: 12px;
   max-width: 740px;
@@ -142,8 +153,9 @@ export const ButtonsContainer = styled.div`
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     flex-flow: column-reverse;
+    margin-top: 12px;
   }
 `
 
@@ -161,8 +173,11 @@ export const SaveButton = styled(Button)`
   height: 38px;
   color: ${WHITE};
   background: ${BLUE};
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     margin-top: 28px;
+    width: 100%;
+    margin-right: 0;
+    height: 50px;
   }
 `
 

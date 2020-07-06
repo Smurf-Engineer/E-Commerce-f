@@ -83,13 +83,14 @@ export default defineMessages({
     id: 'components.AffiliatesAbout.howMuchDesc',
     defaultMessage: `
     <p>Members earn 10% on the fully priced sales from their own custom stores. Orders with a discount do not qualify 
-    for the PayDay affiliate commissions. Commissions are paid in the currency based on your country of residence.</p>
-    <p>At this time, only residents of the United States or Canada are eligible for thePayDay program.  Commissions are 
-    based on the net sale amount less any applied shipping and taxes.</p>
-    <p>You will receive commission payouts only on orders that have been fully shipped and paid. If an order has only 
-    been partially shipped or paid, you willnot be paid until the order is shipped complete and paid in full. In the 
-    event an order is returned or refunded to a customer for any reason, we reserve the right to deduct the paid 
-    commission amount from future earnings.</p>`
+    for the PayDay affiliate commissions. Commissions are based on the net sale amount less any applied shipping and 
+    taxes and paid out to you in the currency based on your country of residence you designated during sign-up.</p>
+    <p>At this time, only residents of the United States or Canada are eligible for the PayDay program. As such, 
+    payouts are only denominated in USD or CAD respectively.</p>
+    <p>You will receive commission payouts only on orders that have been fully shipped and paid the customer. If an 
+    order has only been partially shipped or paid, you will not be paid until the order is shipped complete and paid in 
+    full. In the event an order is returned or refunded to a customer for any reason after commissions have been paid 
+    out, we reserve the right to deduct the paid commission amount from future earnings.</p>`
   },
   whenPaid: {
     id: 'components.AffiliatesAbout.whenPaid',
@@ -107,12 +108,12 @@ export default defineMessages({
   },
   howGetPaidDesc: {
     id: 'components.AffiliatesAbout.howGetPaidDesc',
-    defaultMessage: `Payments are directly deposited into the PayPal account you have registered during your PayDay set 
-    up and displayed in the Settings section at the top of the Payouts tab. You can update your PayPal deposit account 
-    anytime. If the payout currency is different from the currency of your registered PayPalaccount, PayPal will 
-    automatically convert the payout to your default currency at the prevailing exchange rate determined by PayPal. We 
-    do not take responsibility for the accuracy of the PayPal account you register and will not be able to refund any 
-    payouts to a mistakenly registered account.`
+    defaultMessage: `Payments are directly deposited into the PayPal account you have registered during your PayDay 
+    set up and displayed in the Settings section on the About tab. You can update your PayPal deposit account anytime. 
+    If the payout currency is different from the currency of your registered PayPal account, PayPal will automatically 
+    convert the payout to your default currency at the prevailing exchange rate determined by PayPal. We do not take 
+    responsibility for the accuracy of the PayPal account you register and will not be able to refund any payouts to 
+    a mistakenly registered account.`
   },
   costsInfo: {
     id: 'components.AffiliatesAbout.costsInfo',
@@ -121,7 +122,6 @@ export default defineMessages({
   costsInfoDesc: {
     id: 'components.AffiliatesAbout.costsInfoDesc',
     defaultMessage: `No, there is no set-up costs, subscription fees or hidden costs. We take care of all the details 
-    related to your orders, including shipping, duty and taxes and general customer support through our online chat 
-    and email. We also handle warranty issues and size recommendations.`
+    related to your orders, including shipping and general customer support through our online chat and email.`
   },
 })
