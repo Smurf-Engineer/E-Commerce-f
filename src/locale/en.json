@@ -1579,7 +1579,7 @@
   "components.AffiliateModal.uploadTaxForm": "Upload Tax Form",
   "components.AffiliateModal.terms": "I have read and agree to the ",
   "components.AffiliateModal.termsLink": "Terms and Conditions",
-  "components.AffiliateModal.termsDesc": "Form W9 is an Internal Revenue Service (IRS) form that's used to gather information about a contractor or individual so that their earnings can be reported at year-end. At the end of tax year, you will recieve a 1099 MISC as a record of the income you earned from JAKROO.",
+  "components.AffiliateModal.termsDesc": "Form W9 is an Internal Revenue Service (IRS) form that's used to gather information about a contractor or individual so that their earnings can be reported at year-end. At the end of tax year, you will receive a 1099 MISC as a record of the income you earned from JAKROO.",
   "components.AffiliateModal.termsDescCad": "Jakroo Canada Inc. is required to submit T4A slips to the CRA when the earned income paidto an individual exceeds $500.00 during the tax year. In order to submit a T4A, we requirethe address and social security number of the individual. Should you prefer to provide thisinformation over the phone, please contact customer support.",
   "components.AffiliateModal.cancel": "Cancel",
   "components.AffiliateModal.sendRequest": "JOIN NOW",

@@ -62,7 +62,7 @@ export default defineMessages({
     id: 'components.AffiliateModal.termsDesc',
     defaultMessage: `Form W9 is an Internal Revenue Service (IRS) form that's used to gather information about a 
     contractor or individual so that their earnings can be reported at year-end. At the end of tax year, you will 
-    recieve a 1099 MISC as a record of the income you earned from JAKROO.`
+    receive a 1099 MISC as a record of the income you earned from JAKROO.`
   },
   termsDescCad: {
     id: 'components.AffiliateModal.termsDescCad',
