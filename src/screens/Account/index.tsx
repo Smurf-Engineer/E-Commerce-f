@@ -252,11 +252,11 @@ export class Account extends React.Component<Props, {}> {
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case AFFILIATES_ABOUT:
-        return affiliateEnabled ? <AffiliateAbout {...{ history, formatMessage }} /> : null
+        return !!affiliateEnabled && <AffiliateAbout {...{ history, formatMessage }} />
       case AFFILIATES_PAYOUTS:
-        return affiliateEnabled ? <AffiliateOptions {...{ history, formatMessage }} /> : null
+        return !!affiliateEnabled && <AffiliateOptions {...{ history, formatMessage }} />
       case AFFILIATES_ORDERS:
-        return affiliateEnabled ? <AffiliatesOrders {...{ history, formatMessage }} /> : null
+        return !!affiliateEnabled && <AffiliatesOrders {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return (
           <MyLocker
