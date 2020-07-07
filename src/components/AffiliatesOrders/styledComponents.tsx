@@ -141,8 +141,7 @@ export const HeaderList = styled.div`
   font-size: 18px;
   justify-content: flex-start;
   padding: 16px 24px;
-  margin-bottom: 24px;
-  margin-right: 34px;
+  margin: 0 34px 24px 0;
   @media (max-width: 768px) {
     margin-right: 0;
   }
