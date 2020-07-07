@@ -46,7 +46,7 @@ const TERMS_CONDITIONS = 'termsConditions'
 
 const links = {
   [US_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/FW-9.pdf',
-  [CA_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/CA%20Tax%20form.pdf',
+  [CA_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/PayDay-Canada.pdf',
   [TERMS_CONDITIONS]: 'https://storage.googleapis.com/jakroo/config/PayDay_Terms.docx'
 }
 
