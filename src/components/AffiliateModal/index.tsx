@@ -72,7 +72,7 @@ export class AffiliateModal extends React.Component<Props, {}> {
   openFile = (id: string) => () => {
     window.open(links[id])
   }
-  stopPropagation = (event: any) => {
+  stopPropagation = (event: React.MouseEvent) => {
     if (event) {
       event.stopPropagation()
     }
