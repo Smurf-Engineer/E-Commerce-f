@@ -54,13 +54,13 @@ export default defineMessages({
   },
   howMuchTitle: {
     id: 'screens.StoreFrontContent.howMuchTitle',
-    defaultMessage: 'How much will you pay?'
+    defaultMessage: 'How much will I pay?'
   },
   howMuchDesc: {
     id: 'screens.StoreFrontContent.howMuchDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      '<p>When ordering through the Jakroo Team Store portal, team members receive a 20% discount off the regular price of the product. Larger teams with 25 members or more, may be entitled to receive higher bulk pricing. Please contact a Jakroo representative tolearn more about bulk team store ordering. Additional discounts may be available through seasonal and special promotions using a promo code.</p>'
+      '<p>When ordering through an On-Demand Team Store, team members receive a 20% discount off the regular price of the product regardless of how many pieces are ordered by the individual or collectively, by the team. In special cases, however, discounts may vary. Additional discounts may be available through seasonal and special promotions using a promo code.</p>'
   },
   howMuchDescBatch: {
     id: 'screens.StoreFrontContent.howMuchDescBatch',
@@ -76,7 +76,7 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.whenDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      '<p>With team ordering, the payment method is validated and processed at the time the order is placed. Available payments for Team Store ordering may vary by region. Currently PayPal, Credit Card and in the case of Europe, IBAN, are the available options.</p>'
+      '<p>With team ordering, the payment method is validated and processed at the time the order is placed. Available payments for On-Demand Team Store currently are credit card and PayPal.</p>'
   },
   whenDescBatch: {
     id: 'screens.StoreFrontContent.whenDescBatch',
@@ -101,14 +101,30 @@ export default defineMessages({
   howLongDesc: {
     id: 'screens.StoreFrontContent.howLongDesc',
     defaultMessage:
-      // tslint:disable-next-line:max-line-length
-      '<p>Estimated delivery times for all orders are displayed on the Team Store and during checkout. Orders will enter the production process upon receipt and review and typicallyship out within 7 days from receipt. If you have ordered retail collection (non-customized) products together with customized products, all products will ship together. In the case of large volume orders exceeding 50 pieces, delivery times may be slightly longer. Contact our staff to confirm the delivery time of your order, if it exceeds 50 pieces. While we are committed to always meet delivery dates, delays beyond our directcontrol such as weather, force majeure, and customs clearance times may affect delivery. If you have a specific deadline for your delivery, we recommend factoring a fewadditional days into design and ordering period.</p>'
+      `<p>JAKROO has the fastest delivery time for technical apparel in the world. Orders through typically take only 
+      2 weeks from the day you place your order until delivery at your door. Order times may vary based on the quantity 
+      ordered, and in many cases, may even be delivered in less than 14 days. Estimated delivery dates are posted on 
+      our website and on your Order Detail record in “My Account”. We strongly encourage customers to allow for a few 
+      additional delivery days when planning for a date specific even</p>
+      <p>While we have optimized our design, ordering and manufacturing processes, we have little to no control over 
+      carrier shipping times and potential delays related to customs clearance, weather, or force majeure. We use our 
+      best efforts to initiate shipment and meet scheduled delivery dates <u>but cannot guarantee the actual
+       delivery date of your order.</u></p>`
   },
   howLongDescBatch: {
     id: 'screens.StoreFrontContent.howLongDescBatch',
     defaultMessage:
-      // tslint:disable-next-line:max-line-length
-      '<p>Estimated delivery times for all orders are displayed on the Team Store page (right side) and during checkout. Final delivery date will be set at the close of the ordering period. Orders will enter the production process upon receipt and review and typically ship out within 10-12 days from receipt. In the case of large volume orders exceeding 100 pieces, delivery times may be slightly longer. Contact our staff to confirm the delivery time of your order, if it exceeds 100 pieces.</p> <p>While we are committed to always meet delivery dates, delays beyond our direct control such as weather, force majeure, and customs clearance times may affect delivery. <b>If you have a specific deadline for your delivery, we recommend factoring a 2-3 additional days into the desired delivery date.</b></p>'
+      `<p>Estimated delivery times for all orders are displayed on the Team Store page (right side) and during 
+      checkout. Final delivery date will be set at the close of the ordering period. Orders will enter the production 
+      process upon receipt and review and typically ship out within 10-12 days from receipt. In the case of large 
+      volume orders exceeding 100 pieces, delivery times may be slightly longer. Contact our staff to confirm the 
+      delivery time of your order, if it exceeds 100 pieces.</p>
+      <p>While we have optimized our design, ordering and manufacturing processes, we have little to no control 
+      over carrier shipping times and potential delays related to customs clearance, weather, or force majeure. 
+      We use our best efforts to initiate shipment and meet scheduled delivery dates but <u>cannot guarante</u>
+      the actual delivery date of your order. <b>If you have a specific deadline for your delivery, we recommend 
+      factoring a 2-3 additional days into the desired delivery date.</b></p>
+      `
   },
   canIORder: {
     id: 'screens.StoreFrontContent.canIORder',
