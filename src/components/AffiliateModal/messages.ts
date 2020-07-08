@@ -26,19 +26,19 @@ export default defineMessages({
     id: 'components.AffiliateModal.canada',
     defaultMessage: 'Canada'
   },
-  usd: {
+  usdSymbol: {
     id: 'components.AffiliateModal.usd',
     defaultMessage: '$USD'
   },
-  cad: {
+  cadSymbol: {
     id: 'components.AffiliateModal.cad',
     defaultMessage: '$CAD'
   },
-  usdForm: {
+  usd: {
     id: 'components.AffiliateModal.usdForm',
     defaultMessage: 'Form W-9'
   },
-  cadForm: {
+  cad: {
     id: 'components.AffiliateModal.cadForm',
     defaultMessage: 'Form CA Tax Form'
   },

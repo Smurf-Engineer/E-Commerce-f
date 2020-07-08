@@ -192,7 +192,6 @@ export class PayList extends React.Component<Props, {}> {
               <Header>{formatMessage(messages.orderId)}</Header>
               <Header>{formatMessage(messages.orderStatus)}</Header>
               <Header>{formatMessage(messages.customerId)}</Header>
-              {/* <Header>{formatMessage(messages.receipt)}</Header> */}
             </Row>
           </thead>
           <tbody>

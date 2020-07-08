@@ -34,21 +34,12 @@ import {
   TermsLink,
 } from './styledComponents'
 import messages from './messages'
+import { US_CURRENCY, CA_CURRENCY, TERMS_CONDITIONS, links } from './constants'
 import { Message, UploadFile } from '../../types/common'
 import { RadioChangeEvent } from 'antd/lib/radio'
 import { UploadChangeParam } from 'antd/lib/upload'
 import AntdMessage from 'antd/lib/message'
 import { getFileWithExtension } from '../../utils/utilsFiles'
-
-const US_CURRENCY = 'usd'
-const CA_CURRENCY = 'cad'
-const TERMS_CONDITIONS = 'termsConditions'
-
-const links = {
-  [US_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/FW-9.pdf',
-  [CA_CURRENCY]: 'https://storage.googleapis.com/jakroo/config/PayDay-Canada.pdf',
-  [TERMS_CONDITIONS]: 'https://storage.googleapis.com/jakroo/config/PayDay_Terms.docx'
-}
 
 interface Props {
   open: boolean
