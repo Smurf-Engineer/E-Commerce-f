@@ -26,7 +26,7 @@ import {
   PayIcon,
 } from './styledComponents'
 import messages from './messages'
-import { AffiliatePayment, QueryProps, AffiliatesResult } from '../../types/common'
+import { AffiliatePayment, QueryProps, AffiliatesResult, Message } from '../../types/common'
 import EmptyContainer from '../EmptyContainer'
 import Select from 'antd/lib/select'
 import Pagination from 'antd/lib/pagination/Pagination'
@@ -66,7 +66,7 @@ interface Props {
   setOrderPoint: (value: string) => void
   setShowAction: () => void
   changeDateAction: (startDate: string, endDate: string) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
 }
@@ -116,7 +116,11 @@ class AffiliatesOrders extends React.Component<Props, {}> {
       formatMessage,
     } = this.props
     const { loading } = data || {}
-    const payments = get(data, 'paymentsResult.payments', []) as AffiliatePayment[]
+    const payments = get<Data, 'paymentsResult.payments', AffiliatePayment[]>(
+      data,
+      'paymentsResult.payments',
+      []
+    )
     const fullCount = get(data, 'paymentsResult.fullCount', 0)
     const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
     const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
