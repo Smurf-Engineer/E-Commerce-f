@@ -34,6 +34,10 @@ export const getAffiliatesPayments = gql`
         status
         amount
         receipt
+        currency
+        orderAmount: order_amount
+        orderCurrency: order_currency
+        totalOrigin: total_origin
         orderStatus: order_status
         customerId: customer_id
         customerName: customer_name

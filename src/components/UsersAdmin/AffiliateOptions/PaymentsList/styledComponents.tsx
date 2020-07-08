@@ -37,8 +37,9 @@ export const Header = styled.th`
 
   @media (min-width: 320px) and (max-width: 768px) {
     letter-spacing: 0.09px;
-    font-size: 12px;
     line-height: 15px;
+    padding: 8px 3px;
+    font-size: 12px;
   }
 `
 
@@ -75,6 +76,7 @@ export const Cell = styled.td`
   @media (min-width: 331px) and (max-width: 768px) {
     letter-spacing: 0.09px;
     font-size: 12px;
+    padding: 8px 3px;
   }
 
   @media (max-width: 330px) and (max-width: 768px) {
@@ -92,6 +94,9 @@ export const TableTitle = styled.div`
 export const Clip = styled(Icon)`
   color: ${RED};
   margin-right: 12px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 export const EmptyContainer = styled.div`
@@ -100,4 +105,10 @@ export const EmptyContainer = styled.div`
   padding: 24px;
   padding-right: 92px;
   margin-bottom: 24px;
+`
+
+export const Subtitle = styled.div`
+  font-weight: normal;
+  font-size: 14px;
+  margin-top: 8px;
 `

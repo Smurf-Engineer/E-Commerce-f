@@ -20,7 +20,9 @@ import {
   LoadingErrorContainer,
   ErrorMessage,
   LoadingContainer,
+  PayIcon,
 } from './styledComponents'
+import Payday from '../../assets/jakroo_payday.png'
 import AffiliateDetails from '../UsersAdmin/AffiliateOptions'
 import AffiliateModal from '../AffiliateModal'
 import {
@@ -43,6 +45,7 @@ interface Props {
   history: History
   loading: boolean
   link: boolean
+  onlyDetails: boolean
   openModal: boolean
   file: string
   // redux actions
@@ -92,13 +95,15 @@ class AffiliateOptions extends React.Component<Props, {}> {
       onChangePage,
       openAffiliate,
       link,
+      onlyDetails,
       history,
       openModal,
     } = this.props
     const affiliate = get(profileData, 'profileData.affiliate', {})
-    const { status, paypalAccount, comission, file, activatedAt } = affiliate
+    const { status, currency, region, paypalAccount, comission, file, activatedAt } = affiliate
     return (
-      <Container>
+      <Container {...{ onlyDetails }}>
+        {!onlyDetails && <PayIcon src={Payday} />}
         {loading &&
           <LoadingContainer>
             <Spin />
@@ -110,10 +115,13 @@ class AffiliateOptions extends React.Component<Props, {}> {
               loading,
               comission,
               activatedAt,
+              onlyDetails,
               currentPage,
               onChangePage,
               paypalAccount,
               file,
+              currency,
+              region,
               openAffiliate,
               history,
               status
@@ -139,9 +147,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
   }
 
   linkPaypal = () => {
-    // Use the next line on development env (Paypal doesn't accept localhost as a valid URL)
-    // const redirect = encodeURIComponent(`https://designlab.jakroo.com/account?option=affiliate`)
-    const redirect = encodeURIComponent(`${config.baseUrl}account?option=affiliate`)
+    const redirect = encodeURIComponent(`${config.baseUrl}account?option=affiliateAbout`)
     const client = `flowEntry=static&client_id=${config.paypalClientId}`
     const params = `&scope=openid email https://uri.paypal.com/services/paypalattributes&redirect_uri=${redirect}`
     window.location.href = `${config.paypalBaseUrl}${client}${params}`

@@ -35,7 +35,7 @@ export default defineMessages({
   },
   affiliate: {
     id: 'screens.Account.menu.affiliate',
-    defaultMessage: 'AFFILIATE SALES'
+    defaultMessage: 'PAYDAY PROGRAM'
   },
   affiliateAbout: {
     id: 'screens.Account.menu.affiliateAbout',

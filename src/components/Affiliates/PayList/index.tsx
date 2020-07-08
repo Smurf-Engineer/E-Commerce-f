@@ -183,10 +183,12 @@ export class PayList extends React.Component<Props, {}> {
               <Header>{formatMessage(messages.date)}</Header>
               <Header>{formatMessage(messages.clientId)}</Header>
               <Header>{formatMessage(messages.name)}</Header>
-              <Header width="152px">{formatMessage(messages.paypalAccount)}</Header>
+              <Header width="100px">{formatMessage(messages.paypalAccount)}</Header>
               <Header>{formatMessage(messages.affiliatePercent)}</Header>
               <Header>{formatMessage(messages.status)}</Header>
-              <Header>{formatMessage(messages.amount)}</Header>
+              <Header width="80px">{formatMessage(messages.originAmount)}</Header>
+              <Header width="80px">{formatMessage(messages.amountBase)}</Header>
+              <Header width="70px">{formatMessage(messages.amount)}</Header>
               <Header>{formatMessage(messages.orderId)}</Header>
               <Header>{formatMessage(messages.orderStatus)}</Header>
               <Header>{formatMessage(messages.customerId)}</Header>
@@ -208,11 +210,12 @@ export class PayList extends React.Component<Props, {}> {
                   orderId,
                   customerId,
                   orderStatus,
-                  // receipt
+                  currency,
+                  totalOrigin,
+                  orderAmount,
+                  orderCurrency,
                 }: AffiliatePayment,
-                index: number) => {
-                // const openLink = this.openLinkAction(receipt)
-                return (
+                index: number) => (
                   <RepDiv id={orderId} onClick={this.openOrder} key={index}>
                     <Cell onClick={this.stopPropagation}>
                       {status === PENDING_PAY && !!paypalAccount &&
@@ -228,24 +231,19 @@ export class PayList extends React.Component<Props, {}> {
                     </Cell>
                     <Cell>{userId}</Cell>
                     <Cell>{name}</Cell>
-                    <Cell width="122px">
+                    <Cell width="100px">
                       <Mail title={paypalAccount}>{paypalAccount}</Mail>
                     </Cell>
                     <Cell>{`${comission}%`}</Cell>
                     <Cell>{status}</Cell>
-                    <Cell bold={true}>{`$${amount.toFixed(2)}`}</Cell>
-                    {/* <Cell onClick={this.stopPropagation}>
-                      <Clip type="paper-clip" />
-                      <FileName onClick={openLink}>
-                        {receipt ? getFileWithExtension(receipt) : ''}
-                      </FileName>
-                    </Cell> */}
+                    <Cell width="100px" bold={true}>{`${orderCurrency} ${totalOrigin.toFixed(2)}`}</Cell>
+                    <Cell width="100px" bold={true}>{`${currency} ${orderAmount.toFixed(2)}`}</Cell>
+                    <Cell width="90px" bold={true}>{`${currency} ${amount.toFixed(2)}`}</Cell>
                     <Cell>{orderId}</Cell>
                     <Cell>{orderStatus}</Cell>
                     <Cell>{`JV2-${customerId}`}</Cell>
                   </RepDiv>
-                )
-              })
+                ))
             ) : (
                 <EmptyContainer message={formatMessage(messages.empty)} />
               )}

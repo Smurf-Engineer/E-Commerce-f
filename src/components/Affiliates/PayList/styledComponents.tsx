@@ -54,7 +54,7 @@ export const Header = styled.th`
   text-align: left;
   padding: 8px 0;
   color: ${GRAY_DARK};
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
@@ -75,9 +75,9 @@ export const Cell = styled.td`
   padding: 4px 0;
   width: ${({ width }: HeaderProps) => width ? width : 'auto'};
   color: ${GRAY_DARK};
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.1px;
-  text-transform: capitalize;
+  text-transform: ${({ bold }: CellProps) => bold ? 'uppercase' : 'capitalize'};;
   line-height: 35px;
   text-align: start;
   font-weight: ${({ bold }: CellProps) => bold ? 'bold' : 'normal'};
@@ -151,7 +151,7 @@ export const HeaderSection = styled.div`
 `
 
 export const Mail = styled(Tooltip)`
-  width: 152px;
+  width: 100px;
   display: block;
   margin-right: 8px;
   overflow: hidden;

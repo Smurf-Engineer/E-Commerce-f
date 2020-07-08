@@ -17,17 +17,38 @@ import {
   Cell,
   LoadingContainer,
   InfoSection,
+  HeaderList,
+  InputDiv,
+  StatusFilter,
+  OrderPoint,
+  RangePickerStyled,
+  ShowButton,
+  PayIcon,
 } from './styledComponents'
 import messages from './messages'
 import { AffiliatePayment, QueryProps, AffiliatesResult, Message } from '../../types/common'
 import EmptyContainer from '../EmptyContainer'
+import Select from 'antd/lib/select'
 import Pagination from 'antd/lib/pagination/Pagination'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import get from 'lodash/get'
-import { PAY_LIMITS } from './constants'
+import { PAY_LIMITS, ALL_STATUS } from './constants'
 import { getAffiliatesPayments } from './data'
+import Payday from '../../assets/jakroo_payday.png'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import Spin from 'antd/lib/spin'
+import MediaQuery from 'react-responsive'
+import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
+
+const { Option } = Select
+
+const statusList = [
+  ALL_STATUS,
+  PREORDER,
+  PENDING_APPROVAL,
+  PAID_STATUS,
+  CANCELLED
+]
 
 interface Data extends QueryProps {
   paymentsResult: AffiliatesResult
@@ -37,6 +58,14 @@ interface Props {
   history: any
   data: Data
   currentPage: number
+  startDate: string
+  endDate: string
+  statusValue: string
+  orderValue: string
+  setStatus: (value: string) => void
+  setOrderPoint: (value: string) => void
+  setShowAction: () => void
+  changeDateAction: (startDate: string, endDate: string) => void
   formatMessage: (messageDescriptor: Message) => string
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
@@ -53,10 +82,37 @@ class AffiliatesOrders extends React.Component<Props, {}> {
     setCurrentPageAction(page)
   }
 
+  handleChangeCalendar = (dates: [Moment, Moment]) => {
+    const { changeDateAction } = this.props
+    const startDate = moment(dates[0]).format(NOTE_FORMAT)
+    const endDate = moment(dates[1]).format(NOTE_FORMAT)
+    changeDateAction(startDate, endDate)
+  }
+
+  handleChangeOrderPoint = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { setOrderPoint } = this.props
+    const { target: { value } } = event
+    setOrderPoint(value)
+  }
+
+  handleChangeStatus = (value: string) => {
+    const { setStatus } = this.props
+    setStatus(value)
+  }
+
+  handleShow = () => {
+    const { setShowAction } = this.props
+    setShowAction()
+  }
+
   render() {
     const {
       data,
+      startDate,
+      endDate,
       currentPage,
+      statusValue,
+      orderValue,
       formatMessage,
     } = this.props
     const { loading } = data || {}
@@ -66,8 +122,45 @@ class AffiliatesOrders extends React.Component<Props, {}> {
       []
     )
     const fullCount = get(data, 'paymentsResult.fullCount', 0)
+    const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
+    const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
+    const rangeValue = [start, end]
+    const selectOptions = statusList.map((currentStatus, index) => (
+      <Option key={index} value={currentStatus !== ALL_STATUS ? currentStatus : ''}>
+        {currentStatus}
+      </Option>
+    ))
     return (
       <Container>
+        <PayIcon src={Payday} />
+        <HeaderList>
+          <FormattedMessage {...messages.filterBy} />
+          <InputDiv>
+            <StatusFilter
+              value={statusValue}
+              onChange={this.handleChangeStatus}
+            >
+              {selectOptions}
+            </StatusFilter>
+            <OrderPoint
+              value={orderValue}
+              onChange={this.handleChangeOrderPoint}
+              placeholder={formatMessage(messages.orderPoint)}
+            />
+            <RangePickerStyled
+              value={rangeValue}
+              placeholder={[formatMessage(messages.from), formatMessage(messages.to)]}
+              format={NOTE_FORMAT}
+              allowClear={false}
+              onChange={this.handleChangeCalendar}
+              size="large"
+              disabled={loading}
+            />
+            <ShowButton onClick={this.handleShow}>
+              <FormattedMessage {...messages.show} />
+            </ShowButton>
+          </InputDiv>
+        </HeaderList>
         <ScreenTitle>
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
@@ -77,8 +170,15 @@ class AffiliatesOrders extends React.Component<Props, {}> {
               <Row>
                 <Header>{formatMessage(messages.orderDate)}</Header>
                 <Header>{formatMessage(messages.orderNumber)}</Header>
-                <Header>{formatMessage(messages.orderStatus)}</Header>
-                <Header>{formatMessage(messages.orderAmount)}</Header>
+                <MediaQuery minWidth={769}>
+                  {matches => matches && (
+                    <>
+                      <Header>{formatMessage(messages.store)}</Header>
+                      <Header>{formatMessage(messages.orderStatus)}</Header>
+                      <Header>{formatMessage(messages.orderAmount)}</Header>
+                    </>
+                  )}
+                </MediaQuery>
                 <Header>{formatMessage(messages.commisionStatus)}</Header>
                 <Header>{formatMessage(messages.amount)}</Header>
                 <Header>{formatMessage(messages.datePaid)}</Header>
@@ -95,6 +195,7 @@ class AffiliatesOrders extends React.Component<Props, {}> {
                       status,
                       amount,
                       orderId,
+                      store,
                       orderStatus,
                       paidAt,
                     }: AffiliatePayment,
@@ -104,8 +205,15 @@ class AffiliatesOrders extends React.Component<Props, {}> {
                         {createdAt ? moment(createdAt).format(NOTE_FORMAT) : '-'}
                       </Cell>
                       <Cell>{orderId}</Cell>
-                      <Cell>{orderStatus}</Cell>
-                      <Cell>${orderAmount.toFixed(2)}</Cell>
+                      <MediaQuery minWidth={769}>
+                        {matches => matches &&
+                          <>
+                            <Cell>{store}</Cell>
+                            <Cell>{orderStatus}</Cell>
+                            <Cell>${orderAmount.toFixed(2)}</Cell>
+                          </>
+                        }
+                      </MediaQuery>
                       <Cell>{status}</Cell>
                       <Cell>${amount.toFixed(2)}</Cell>
                       <Cell>
@@ -137,6 +245,10 @@ class AffiliatesOrders extends React.Component<Props, {}> {
 
 interface OwnProps {
   currentPage?: number
+  start?: string
+  end?: string
+  status?: String,
+  orderPoint?: String
 }
 
 const mapStateToProps = (state: any) => state.get('affiliatesOrders').toJS()
@@ -144,13 +256,18 @@ const mapStateToProps = (state: any) => state.get('affiliatesOrders').toJS()
 const AffiliatesOrdersEnhance = compose(
   connect(mapStateToProps, { ...AffiliatesActions }),
   graphql(getAffiliatesPayments, {
-    options: ({ currentPage }: OwnProps) => {
+    options: ({ currentPage, start, end, status, orderPoint }: OwnProps) => {
       const offset = currentPage ? (currentPage - 1) * PAY_LIMITS : 0
       return {
         variables: {
           limit: PAY_LIMITS,
           offset,
+          start,
+          end,
+          status,
+          orderPoint
         },
+        skip: !start,
         fetchPolicy: 'network-only'
       }
     }
