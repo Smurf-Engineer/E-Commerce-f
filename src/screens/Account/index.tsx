@@ -31,7 +31,8 @@ import {
   OVERVIEW,
   AFFILIATES_PAYOUTS,
   AFFILIATES_ORDERS,
-  AFFILIATES
+  AFFILIATES,
+  AFFILIATES_ABOUT
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -41,6 +42,7 @@ import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
 import ProfileSettings from '../../components/ProfileSettings'
 import AffiliateOptions from '../../components/AffiliateOptions'
+import AffiliateAbout from '../../components/AffiliateAbout'
 import AffiliatesOrders from '../../components/AffiliatesOrders'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyLocker from '../../components/MyLocker'
@@ -249,10 +251,12 @@ export class Account extends React.Component<Props, {}> {
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
+      case AFFILIATES_ABOUT:
+        return !!affiliateEnabled && <AffiliateAbout {...{ history, formatMessage }} />
       case AFFILIATES_PAYOUTS:
-        return affiliateEnabled ? <AffiliateOptions {...{ history, formatMessage }} /> : null
+        return !!affiliateEnabled && <AffiliateOptions {...{ history, formatMessage }} />
       case AFFILIATES_ORDERS:
-        return affiliateEnabled ? <AffiliatesOrders {...{ history, formatMessage }} /> : null
+        return !!affiliateEnabled && <AffiliatesOrders {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return (
           <MyLocker
