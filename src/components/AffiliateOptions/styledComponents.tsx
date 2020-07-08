@@ -15,13 +15,17 @@ interface RowProps {
   marginBottom?: string
 }
 
+interface DivProps {
+  onlyDetails?: boolean
+}
+
 export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 32px;
-  margin-top: -64px;
+  margin-bottom: ${({ onlyDetails }: DivProps) => onlyDetails ? '0' : '32px'};
+  margin-bottom: ${({ onlyDetails }: DivProps) => onlyDetails ? '0' : '-64px'};
   @media (min-width: 320px) and (max-width: 768px) {
     padding: 24px 0;
   }

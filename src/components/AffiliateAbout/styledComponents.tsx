@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
 import { WHITE_TRANSPARENT, BLUE, GRAY_DARK, BLACK, WHITE, GRAY } from '../../theme/colors'
 import { AVENIR_MEDIUM } from '../../theme/fonts'
+import Caroussel from 'react-slick'
 
 export const Container = styled.div`
   width: 100%;
@@ -66,7 +67,7 @@ export const LoadingContainer = styled.div`
 `
 
 export const StatusLabel = styled.div`
-  margin-top: 8px;
+  margin-top: 64px;
   color: ${BLUE};
   font-style: italic;
 `
@@ -87,6 +88,9 @@ export const PayDayIcon = styled.img`
   margin-left: -24px;
   object-fit: cover;
   margin-top: -64px;
+  @media (max-width: 767px) {
+    max-width: 264px;
+  }
 `
 
 export const InfoSection = styled.div`
@@ -94,8 +98,9 @@ export const InfoSection = styled.div`
   color: ${WHITE};
   padding: 21px 28px;
   display: flex;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     flex-flow: column;
+    padding: 21px 18px;
   }
 `
 
@@ -105,6 +110,9 @@ export const TextSection = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+  @media (max-width: 767px) {
+    margin-right: 0;
+  }
 `
 
 export const TitlePay = styled.div`
@@ -120,7 +128,11 @@ export const BodyPay = styled.div`
 
 export const Slogan = styled.div`
   font-size: 21px;
+  color: #96be00;
   font-family: ${AVENIR_MEDIUM};
+  @media (max-width: 767px) {
+    font-size: 28px;
+  }
 `
 
 export const PayDayImage = styled.img`
@@ -131,20 +143,34 @@ export const PayDayImage = styled.img`
   margin-right: 52px;
   margin-bottom: -46px;
   flex: 1;
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     max-width: 302px;
     margin-right: 0;
   }
-  @media (max-width: 768px) {
-    margin-top: 26px;
-    margin-bottom: -44px;
+  @media (max-width: 767px) {
+    display: none;
+  }
+`
+
+export const PayDayImageMobile = styled.img`
+  max-width: 462px;
+  width: 100%;
+  object-fit: cover;
+  flex: 1;
+  display: none;
+  @media (max-width: 767px) {
+    display: block;
+    max-width: 100%;
+    object-fit: cover;
+    margin-bottom: 8px;
   }
 `
 
 export const AboutBody = styled.div`
-  margin-right: 84px;
+  padding-right: 84px;
+  width: 100%;
   @media (max-width: 768px) {
-    margin-right: 0;
+    padding-right: 0;
   }
 `
 
@@ -160,12 +186,9 @@ export const HowItWorks = styled.div`
 `
 
 export const Icons = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
   width: 100%;
-  @media (max-width: 768px) {
-    flex-flow: column;
+  @media (max-width: 767px) {
+    padding: 0 28px;
   }
 `
 
@@ -175,11 +198,21 @@ export const IconLabel = styled.div`
   justify-content: space-between;
   align-items: center;
   max-width: 237px;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    margin: 0 16px
+  }
+  @media (max-width: 767px) {
+    margin: 0 14px;
+    margin-left: 29px;
+  }
 `
 
 export const SmallIcon = styled.img`
   height: 164px;
   object-fit: contain;
+  @media (min-width: 769px) and (max-width: 1024px) {
+    height: 114px;
+  }
 `
 
 export const Label = styled.div`
@@ -199,5 +232,33 @@ export const FAQBody = styled.div`
   margin-bottom: 54px;
   b {
     display: block;
+  }
+`
+
+export const AffiliateDetailsSection = styled.div`
+  margin-top: 57px;
+  margin-right: 84px;
+  border: 1px solid ${GRAY};
+  padding: 22px 28px;
+  @media (max-width: 768px) {
+    margin-right: 0;
+    padding: 0px 28px;
+  }
+`
+
+export const Arrow = styled.img``
+
+export const CarousselDiv = styled(Caroussel)`
+  display: none !important;
+  @media (max-width: 767px) {
+    display: block !important;
+  }
+`
+
+export const DesktopIcons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 767px) {
+    display: none;
   }
 `

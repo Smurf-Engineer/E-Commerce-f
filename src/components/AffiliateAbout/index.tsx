@@ -9,7 +9,7 @@ import MessageBar from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
-import { PENDING } from '../../constants'
+import { PENDING, APPROVED } from '../../constants'
 import {
   profileSettingsQuery,
   sendAffiliateMutation,
@@ -20,11 +20,8 @@ import {
   Title,
   LoadingErrorContainer,
   ErrorMessage,
-  SwitchWrapper,
-  StyledSwitch,
   LoadingContainer,
   StatusLabel,
-  AccountLabel,
   HeaderSection,
   PayDayIcon,
   InfoSection,
@@ -41,14 +38,23 @@ import {
   FAQSection,
   FAQBody,
   AboutBody,
+  AffiliateDetailsSection,
+  PayDayImageMobile,
+  Arrow,
+  CarousselDiv,
+  DesktopIcons,
 } from './styledComponents'
 import Payday from '../../assets/jakroo_payday.png'
 import PaydayJersey from '../../assets/payday_jersey.png'
 import PaydayPaypal from '../../assets/payday_paypal.png'
 import PaydayShare from '../../assets/payday_share.png'
 import PaydayStore from '../../assets/payday_store.png'
+import leftArrow from '../../assets/leftarrow.svg'
+import rightArrow from '../../assets/arrow.svg'
 import LaptopGuy from '../../assets/laptop_guy.jpg'
+import LaptopGuyMobile from '../../assets/laptop_guy_mobile.jpg'
 import AffiliateModal from '../AffiliateModal'
+import AffiliateOptions from '../AffiliateOptions'
 import {
   QueryProps,
   IProfileSettings,
@@ -58,9 +64,52 @@ import {
 } from '../../types/common'
 import get from 'lodash/get'
 import { US_CURRENCY, US_COUNTRY, CA_CURRENCY, CA_COUNTRY } from './constants'
+import ProductInfo from '../ProductInfo'
+
+const arrowLeft = <Arrow src={leftArrow} />
+const arrowRight = <Arrow src={rightArrow} />
+
+const settings = {
+  dots: false,
+  speed: 2000,
+  autoplay: true,
+  arrows: true,
+  draggable: true,
+  centerMode: false,
+  prevArrow: arrowLeft,
+  nextArrow: arrowRight,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+}
+
+const carousel = [
+  {
+    icon: PaydayJersey,
+    label: 'createDesigns'
+  },
+  {
+    icon: PaydayStore,
+    label: 'buildStore'
+  },
+  {
+    icon: PaydayShare,
+    label: 'shareStore'
+  },
+  {
+    icon: PaydayPaypal,
+    label: 'getPaid'
+  }
+]
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
+}
+
+interface StateProps {
+  showMuch: boolean
+  showWhen: boolean
+  showCani: boolean
+  showCosts: boolean
 }
 
 interface Props {
@@ -85,7 +134,13 @@ interface Props {
   sendAffiliateRequest: (variables: {}) => Promise<Affiliate>
 }
 
-class AffiliateAbout extends React.Component<Props, {}> {
+class AffiliateAbout extends React.Component<Props, StateProps> {
+  state = {
+    showMuch: false,
+    showCani: false,
+    showWhen: false,
+    showCosts: false,
+  }
   render() {
     const {
       formatMessage,
@@ -114,15 +169,29 @@ class AffiliateAbout extends React.Component<Props, {}> {
       uploadFileAction,
       file,
       history,
-      openModal,
       loading: loadingFile,
       paypalCheck,
       paypalCurrency,
     } = this.props
 
-    const affiliate = get(profileData, 'profileData.affiliate', {})
+    const {
+      showMuch,
+      showCani,
+      showCosts,
+      showWhen,
+    } = this.state
 
-    const { status, paypalAccount } = affiliate
+    const { status } = get(profileData, 'profileData.affiliate', {})
+    const carouselElements = carousel.map(({ icon, label }, index) =>
+      <div key={index}>
+        <IconLabel>
+          <SmallIcon src={icon} />
+          <Label>
+            {formatMessage(messages[label])}
+          </Label>
+        </IconLabel>
+      </div>
+    )
     return (
       <Container>
         <HeaderSection>
@@ -132,6 +201,7 @@ class AffiliateAbout extends React.Component<Props, {}> {
               <TitlePay>
                 {formatMessage(messages.titlePay)}
               </TitlePay>
+              <PayDayImageMobile src={LaptopGuyMobile} />
               <BodyPay
                 dangerouslySetInnerHTML={{
                   __html: formatMessage(messages.bodyPay)
@@ -149,80 +219,110 @@ class AffiliateAbout extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
-        <SwitchWrapper>
-          {formatMessage(messages.makeAffiliate)}
-          <StyledSwitch disabled={!!status} checked={openModal || !!status} onChange={openAffiliate} />
-        </SwitchWrapper>
         {status === PENDING &&
           <StatusLabel>
             {formatMessage(messages.pending)}
           </StatusLabel>
         }
-        {!!paypalAccount &&
-          <AccountLabel>
-            {formatMessage(messages.linkedTo, { paypalAccount })}
-          </AccountLabel>
+        {!status &&
+          <AffiliateModal
+            {...{
+              history,
+              paypalCheck,
+              setPaypalCheck,
+              formatMessage,
+              file,
+              openAffiliate,
+              uploadFileAction,
+              paypalCurrency,
+              setPaypalCurrency
+            }}
+            sendRequest={this.sendRequest}
+            open={true}
+          />
         }
-        <AffiliateModal
-          {...{
-            history,
-            paypalCheck,
-            setPaypalCheck,
-            formatMessage,
-            file,
-            openAffiliate,
-            uploadFileAction,
-            paypalCurrency,
-            setPaypalCurrency
-          }}
-          sendRequest={this.sendRequest}
-          open={openModal}
-        />
+        {status === APPROVED &&
+          <AffiliateDetailsSection>
+            <AffiliateOptions {...{ history, formatMessage }} onlyDetails={true} />
+          </AffiliateDetailsSection>
+        }
         <AboutBody>
           <HowItWorks>
             <Title>
               {formatMessage(messages.howItWorks)}
             </Title>
             <Icons>
-              <IconLabel>
-                <SmallIcon src={PaydayJersey} />
-                <Label>
-                  {formatMessage(messages.createDesigns)}
-                </Label>
-              </IconLabel>
-              <IconLabel>
-                <SmallIcon src={PaydayStore} />
-                <Label>
-                  {formatMessage(messages.buildStore)}
-                </Label>
-              </IconLabel>
-              <IconLabel>
-                <SmallIcon src={PaydayShare} />
-                <Label>
-                  {formatMessage(messages.shareStore)}
-                </Label>
-              </IconLabel>
-              <IconLabel>
-                <SmallIcon src={PaydayPaypal} />
-                <Label>
-                  {formatMessage(messages.getPaid)}
-                </Label>
-              </IconLabel>
+              <CarousselDiv {...settings}>
+                {carouselElements}
+              </CarousselDiv>
+              <DesktopIcons>
+                {carouselElements}
+              </DesktopIcons>
             </Icons>
           </HowItWorks>
           <FAQSection>
             <Title>
               {formatMessage(messages.faqTitle)}
             </Title>
-            <FAQBody
-              dangerouslySetInnerHTML={{
-                __html: formatMessage(messages.faqBody)
-              }}
-            />
+            <FAQBody>
+              <ProductInfo
+                id="Much"
+                title={formatMessage(messages.howMuch)}
+                showContent={showMuch}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.howMuchDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="When"
+                title={formatMessage(messages.whenPaid)}
+                showContent={showWhen}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.whenPaidDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="Cani"
+                title={formatMessage(messages.howGetPaid)}
+                showContent={showCani}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.howGetPaidDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="Costs"
+                title={formatMessage(messages.costsInfo)}
+                showContent={showCosts}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.costsInfoDesc)
+                  }}
+                />
+              </ProductInfo>
+            </FAQBody>
           </FAQSection>
         </AboutBody>
       </Container>
     )
+  }
+
+  toggleProductInfo = (id: string) => {
+    const stateValue = this.state[`show${id}`]
+    this.setState({ [`show${id}`]: !stateValue } as any)
   }
 
   sendRequest = async () => {

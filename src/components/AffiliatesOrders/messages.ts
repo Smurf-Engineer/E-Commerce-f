@@ -43,12 +43,14 @@ export default defineMessages({
   },
   qualified: {
     id: 'components.AffiliatesOrders.qualified',
-    defaultMessage: `Commissions for qualified orders are paid out on a scheduled basis, typically every two weeks. 
-    Qualifying orders are those that are paid in full and shipped to the customer`
+    defaultMessage: `Orders marked with a Pre-Order status are those which have been placed by 
+    customers on a Batch Order store and are pending final confirmation. Customers may modify or 
+    cancel their Pre-Order during the ordering period and therefore affect the eligible payable commission amount.`
   },
   affiliateInfo: {
     id: 'components.AffiliatesOrders.affiliateInfo',
-    defaultMessage: 'Affiliates are not able to receive commissions on their own orders.'
+    defaultMessage: `Orders with a status of Pending Approval are awaiting a final review by Jakroo’s service team 
+    prior to being sent to production.`
   },
   filterBy: {
     id: 'components.AffiliatesOrders.filterBy',
