@@ -42,13 +42,13 @@ import {
   // StyledCheckbox,
   LoadingErrorContainer,
   ErrorMessage,
-  SwitchWrapper,
-  StyledSwitch,
+  // SwitchWrapper,
+  // StyledSwitch,
   LoadingContainer,
-  StatusLabel,
-  AccountLabel,
+  // StatusLabel,
+  // AccountLabel,
 } from './styledComponents'
-import AffiliateModal from '../AffiliateModal'
+// import AffiliateModal from '../AffiliateModal'
 import ProfileForm from '../ProfileForm'
 // import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
 // import MeasurementsForm from '../MeasurementsForm'
@@ -184,43 +184,12 @@ class ProfileSettings extends React.Component<Props, {}> {
     const {
       isMobile,
       profileData,
-      // regionsOptions: { regions },
       firstName,
       lastName,
-      setPaypalCurrency,
-      setPaypalCheck,
-      openAffiliate,
-      uploadFileAction,
-      file,
-      history,
-      openModal,
       loading: loadingFile,
-      paypalCheck,
-      paypalCurrency,
       email,
       phone,
       loadingProfile,
-      // region,
-      // language,
-      // currency,
-      // loadingRegion,
-      // msrmntSystemSelected,
-      // msrmntGenderSelected,
-      // weight,
-      // heightFirst,
-      // heightSecond,
-      // chestSize,
-      // waistSize,
-      // hipsSize,
-      // inseamSize,
-      // shouldersSize,
-      // neckSize,
-      // loadingMeasurements,
-      // smsConfirmationChecked,
-      // smsUpdatesChecked,
-      // loadingSms,
-      // emailNewsletterChecked,
-      // loadingEmail,
       currentPassword,
       newPassword,
       newPasswordConfirm,
@@ -230,7 +199,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     } = this.props
 
     const userProfile = get(profileData, 'profileData.userProfile', {})
-    const affiliate = get(profileData, 'profileData.affiliate', {})
+    // const affiliate = get(profileData, 'profileData.affiliate', {})
     // const regionsOptions: Region[] = regions || []
 
     // const smsButtonDisabled =
@@ -241,7 +210,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     // const emailButtonDisabled =
     //   emailNewsletterChecked === null ||
     //   emailSettings.newsletter === emailNewsletterChecked
-    const { status, paypalAccount } = affiliate
+    // const { status, paypalAccount } = affiliate
     return (
       <Container>
         {/* PROFILE */}
@@ -268,7 +237,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
-        <SwitchWrapper>
+        {/* <SwitchWrapper>
           {formatMessage(messages.makeAffiliate)}
           <StyledSwitch disabled={!!status} checked={openModal || !!status} onChange={openAffiliate} />
         </SwitchWrapper>
@@ -297,7 +266,7 @@ class ProfileSettings extends React.Component<Props, {}> {
           linkPaypal={this.linkPaypal}
           sendRequest={this.sendRequest}
           open={openModal}
-        />
+        /> */}
         {/* REGION */}
         {/*<Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>

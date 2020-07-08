@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Radio from 'antd/lib/radio'
 import { WHITE, GRAY_DARK, BLUE } from '../../../theme/colors'
+import Switch from 'antd/lib/switch'
 const RadioButtonComponent = Radio.Button
 
 export const RadioButton = styled(RadioButtonComponent)`
@@ -50,4 +51,15 @@ export const StatusLabel = styled.div`
 export const NameLabel = styled.div`
   font-size: 16px;
   font-weight: bold;
+`
+
+export const EnableSection = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+`
+
+export const StyledSwitch = styled(Switch)`
+  margin-left: 12px;
+  margin-bottom: 1px;
 `

@@ -38,7 +38,7 @@ import Payday from '../../assets/jakroo_payday.png'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import Spin from 'antd/lib/spin'
 import MediaQuery from 'react-responsive'
-import { PREORDER, PENDING_APPROVAL, PAID_STATUS, PAYMENT_ISSUE, PURGED, CANCELLED } from '../../constants'
+import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
 
 const { Option } = Select
 
@@ -47,8 +47,6 @@ const statusList = [
   PREORDER,
   PENDING_APPROVAL,
   PAID_STATUS,
-  PAYMENT_ISSUE,
-  PURGED,
   CANCELLED
 ]
 

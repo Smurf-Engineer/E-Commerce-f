@@ -23,7 +23,7 @@ import { UserPermissions, SelectedPays } from '../../types/common'
 import { AFFILIATES, ADMIN_ROUTE } from '../AdminLayout/constants'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import moment, { Moment } from 'moment'
-import { PREORDER, PENDING_APPROVAL, PAID_STATUS, PAYMENT_ISSUE, PURGED, CANCELLED } from '../../constants'
+import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
 import { ALL_STATUS } from './constants'
 
 const { Option } = Select
@@ -33,8 +33,6 @@ const statusList = [
   PREORDER,
   PENDING_APPROVAL,
   PAID_STATUS,
-  PAYMENT_ISSUE,
-  PURGED,
   CANCELLED
 ]
 
