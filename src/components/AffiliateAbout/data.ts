@@ -12,27 +12,21 @@ export const profileSettingsQuery = gql`
       }
       affiliate {
         status
-        comission
-        activatedAt: activated_at
-        file
-        currency
-        region
         paypalAccount: paypal_account
       }
     }
   }
 `
 
-export const linkPaypalAccountMutation = graphql(
+export const sendAffiliateMutation = graphql(
   gql`
-    mutation linkPaypalAccount($code: String!) {
-      linkPaypalAccount(code: $code) {
+    mutation sendAffiliateRequest($currency: String!, $file: String!) {
+      sendAffiliateRequest(currency: $currency, file: $file) {
         status
-        paypalAccount: paypal_account
       }
     }
   `,
   {
-    name: 'linkPaypalAccount'
+    name: 'sendAffiliateRequest'
   }
 )

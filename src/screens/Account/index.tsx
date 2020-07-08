@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
@@ -13,7 +13,7 @@ import Message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
 import queryString from 'query-string'
 import * as accountActions from './actions'
-import { addTeamStoreItemMutation } from './data'
+import { addTeamStoreItemMutation, profileSettingsQuery } from './data'
 import {
   logoutAction,
   openQuickViewAction
@@ -30,7 +30,9 @@ import {
   ORDER_HISTORY,
   OVERVIEW,
   AFFILIATES_PAYOUTS,
-  AFFILIATES_ORDERS
+  AFFILIATES_ORDERS,
+  AFFILIATES,
+  AFFILIATES_ABOUT
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -40,6 +42,7 @@ import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
 import ProfileSettings from '../../components/ProfileSettings'
 import AffiliateOptions from '../../components/AffiliateOptions'
+import AffiliateAbout from '../../components/AffiliateAbout'
 import AffiliatesOrders from '../../components/AffiliatesOrders'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyLocker from '../../components/MyLocker'
@@ -57,12 +60,16 @@ import {
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
-import { TeamStoreItemtype, MessagePayload } from '../../types/common'
+import { TeamStoreItemtype, MessagePayload, IProfileSettings, QueryProps } from '../../types/common'
 import get from 'lodash/get'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 
 const { SubMenu } = Menu
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -73,6 +80,7 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   openSidebar: boolean
   client: any
+  data: ProfileData
   openShareModal: boolean
   currentCurrency: string
   openAddToStoreModal: boolean
@@ -211,6 +219,7 @@ export class Account extends React.Component<Props, {}> {
   getScreenComponent = (screen: string) => {
     const {
       isMobile,
+      data,
       intl: { formatMessage },
       history,
       openQuickViewAction: openQuickView,
@@ -222,7 +231,7 @@ export class Account extends React.Component<Props, {}> {
       setItemToAddAction,
       openAddToTeamStoreModalAction
     } = this.props
-
+    const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
     switch (screen) {
       case OVERVIEW:
         return (
@@ -242,10 +251,12 @@ export class Account extends React.Component<Props, {}> {
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
+      case AFFILIATES_ABOUT:
+        return affiliateEnabled && <AffiliateAbout {...{ history, formatMessage }} />
       case AFFILIATES_PAYOUTS:
-        return <AffiliateOptions {...{ history, formatMessage }} />
+        return affiliateEnabled && <AffiliateOptions {...{ history, formatMessage }} />
       case AFFILIATES_ORDERS:
-        return <AffiliatesOrders {...{ history, formatMessage }} />
+        return affiliateEnabled && <AffiliatesOrders {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return (
           <MyLocker
@@ -275,6 +286,7 @@ export class Account extends React.Component<Props, {}> {
       intl,
       history,
       openKeys,
+      data,
       screen,
       defaultScreen,
       fakeWidth,
@@ -282,9 +294,10 @@ export class Account extends React.Component<Props, {}> {
       openShareModal,
       savedDesignId
     } = this.props
-
+    const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
     const menuOptions = options.map(({ title, options: submenus }) =>
-      submenus.length ? (
+      submenus.length ?
+        ((title === AFFILIATES && affiliateEnabled) || title !== AFFILIATES) &&
         <SubMenu
           key={title}
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
@@ -295,7 +308,7 @@ export class Account extends React.Component<Props, {}> {
             </Menu.Item>
           ))}
         </SubMenu>
-      ) : (
+        : (
           <Menu.Item className="ant-menu-item-custom" key={title}>
             <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
           </Menu.Item>
@@ -437,6 +450,11 @@ const mapStateToProps = (state: any) => {
 
 const AccountEnhance = compose(
   withApollo,
+  graphql(profileSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
   addTeamStoreItemMutation,
   injectIntl,
   connect(

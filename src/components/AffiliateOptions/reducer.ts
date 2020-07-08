@@ -16,6 +16,7 @@ export const initialState = fromJS({
   loading: false,
   link: false,
   currentPage: 1,
+  modalLoading: false,
   openModal: false,
 })
 

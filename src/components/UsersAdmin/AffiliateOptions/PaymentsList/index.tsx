@@ -14,7 +14,8 @@ import {
   Cell,
   TableTitle,
   Clip,
-  EmptyContainer
+  EmptyContainer,
+  Subtitle
 } from './styledComponents'
 import { QueryProps, Message, AffiliatePayment } from '../../../../types/common'
 import withError from '../../../WithError'
@@ -36,6 +37,7 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
+  isAdmin: boolean
   formatMessage: (messageDescriptor: Message) => string
   currentPage: number
   onChangePage: (page: number) => void
@@ -46,6 +48,7 @@ const PaymentsList = ({
   formatMessage,
   currentPage,
   data,
+  isAdmin,
   onChangePage,
 }: Props) => {
   const payments = get(data, 'paymentsQuery.payments', []) as AffiliatePayment[]
@@ -81,6 +84,11 @@ const PaymentsList = ({
     <Container>
       <TableTitle>
         {formatMessage(messages.title)}
+        {!isAdmin &&
+          <Subtitle>
+            {formatMessage(messages.subtitle)}
+          </Subtitle>
+        }
       </TableTitle>
       <Table>
         <thead>

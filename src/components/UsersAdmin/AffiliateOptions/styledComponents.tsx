@@ -9,6 +9,7 @@ import InputNumber from 'antd/lib/input-number'
 
 interface ContainerProps {
   withoutPadding?: boolean
+  upperCase?: boolean
 }
 
 export const Container = styled.div`
@@ -47,7 +48,7 @@ export const LabelButton = styled.div`
   @media (max-width: 768px) {
     flex: 1;
     height: 38px;
-    margin-bottom: 14px;
+    margin-bottom: 26px;
   }
 `
 
@@ -63,6 +64,7 @@ export const RedLabel = styled.div`
 
 export const BoldLabel = styled.div`
   font-weight: bold;
+  text-transform: ${({ upperCase }: ContainerProps) => upperCase ? 'uppercase' : ''};
 `
 
 export const FileLink = styled.div`
@@ -104,4 +106,14 @@ export const Subtitle = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
+`
+
+export const InfoIcon = styled(Icon)`
+  margin-left: 8px;
+  margin-top: 1px;
+`
+
+export const PopoverText = styled.div`
+  max-width: 512px;
+  width: 100%;
 `

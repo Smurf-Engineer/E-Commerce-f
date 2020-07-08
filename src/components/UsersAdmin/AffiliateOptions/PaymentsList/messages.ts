@@ -32,5 +32,10 @@ export default defineMessages({
   receipt: {
     id: 'components.PaymentsList.receipt',
     defaultMessage: 'Receipt'
+  },
+  subtitle: {
+    id: 'components.PaymentsList.subtitle',
+    defaultMessage: `Payouts are made on or before the 15th of each month and cover commissions
+    payable on orders from the previous month.`
   }
 })

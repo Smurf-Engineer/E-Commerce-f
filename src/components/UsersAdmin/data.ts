@@ -9,6 +9,7 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
+        affiliateEnabled: affiliate_enabled
         phone
       }
       affiliate {
@@ -16,6 +17,8 @@ export const profileSettingsQuery = gql`
         file
         paypalAccount: paypal_account
         comission
+        region
+        currency
         activatedAt: activated_at
       }
     }
@@ -91,6 +94,14 @@ export const changeComissionMutation = gql`
     changeComission(value: $value, userId: $userId) {
       status
       comission
+    }
+  }
+`
+
+export const setAffiliateStatusMutation = gql`
+  mutation setAffiliateStatus($userId: String!, $enabled: Boolean) {
+    affiliateData: setAffiliateStatus(userId: $userId ,enabled: $enabled) {
+      enabled: affiliate_enabled
     }
   }
 `
