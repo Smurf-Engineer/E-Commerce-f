@@ -899,7 +899,7 @@
   "components.OrderDetails.email": "Email",
   "components.OrderDetails.editOrderMessage": "By editing your order, all items will be added to your cart so you can update your payment information and complete the checkout. In doing so, this previous order will be cancelled.",
   "components.CartListItem.reorder": "Reorder",
-  "components.CartListItem.from": "From {teamStoreName}",
+  "components.CartListItem.from": "From ",
   "components.CartListItem.flatlock": "Flatlock",
   "components.CartListItem.flatlockCode": "Flatlock Code",
   "components.CartListItem.zipperColor": "Zipper Color",
