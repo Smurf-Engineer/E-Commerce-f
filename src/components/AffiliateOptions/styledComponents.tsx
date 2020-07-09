@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
-import { WHITE_TRANSPARENT } from '../../theme/colors'
+import { WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../theme/colors'
 
 interface InputProps {
   inputhWidth?: string
@@ -32,7 +32,7 @@ export const Container = styled.div`
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -57,7 +57,7 @@ export const InputTitleContainer = styled.div`
 `
 export const Label = styled.div`
   height: 19px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -94,7 +94,7 @@ export const StyledInputUnity = styled(Input)`
 
 export const StyledCheckbox = styled(Checkbox)`
   height: 36px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -107,12 +107,12 @@ export const DropDownPlaceHolder = styled(Button)`
   justify-content: space-between;
   height: 40px;
   width: 100%;
-  border: 1px solid #bebebe;
+  border: 1px solid ${GRAY};
   border-radius: 0;
   margin-top: 5px;
   &:hover {
-    border: 1px solid #bebebe;
-    color: #bebebe;
+    border: 1px solid ${GRAY};
+    color: ${GRAY};
   }
 `
 
