@@ -361,7 +361,7 @@ class AffiliateAbout extends React.Component<Props, StateProps> {
         successRequestAction()
         MessageBar.success(formatMessage(messages.success), 4)
       } else {
-        MessageBar.error(formatMessage(messages.wrongCurrency), 5)
+        MessageBar.error(formatMessage(messages.wrongCurrency, { initialCountryCode }), 5)
       }
     } catch (error) {
       setUploadingAction(false)
