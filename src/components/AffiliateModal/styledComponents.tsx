@@ -12,11 +12,6 @@ import Icon from 'antd/lib/icon'
 const RadioGroup = Radio.Group
 
 export const Container = styled.section`
-  width: 220px;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
-  }
 `
 
 export const ModalContainer = styled.div`
@@ -24,11 +19,17 @@ export const ModalContainer = styled.div`
   flex-flow: column;
 `
 
+export const FormContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin-top: 36px;
+`
+
 export const Title = styled.div`
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
-  text-transform: uppercase;
   margin-bottom: 10px;
+  text-transform: uppercase;
 `
 
 export const Description = styled.div`
@@ -45,6 +46,8 @@ export const CurrencyContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 16px 0;
+  max-width: 338px;
+  width: 100%;
 `
 
 export const RadioGroupStyled = styled(RadioGroup)`
@@ -72,6 +75,7 @@ export const FileLink = styled.button`
   color: ${RED};
   text-decoration: underline;
   cursor: pointer;
+  background: none;
   :disabled {
     color: ${GRAY_SOFT};
     cursor: default;
@@ -88,6 +92,10 @@ export const StyledUpload = styled(Upload)`
     margin-top: 10px;
     background: ${WHITE};
     border-radius: 1px;
+    @media (max-width: 767px) {
+      width: 100%;
+      height: 54px;
+    }
   }
 `
 
@@ -127,15 +135,28 @@ export const CheckboxLabel = styled.div`
   display: inline-block;
 `
 
+export const TermsLink = styled.span`
+  color: ${BLUE};
+  text-decoration: underline;
+  font-weight: bold;
+`
+
 export const TermsLabel = styled.div`
-  font-style: italic;
-  margin-top: 12px;
+  margin-bottom: 12px;
+  max-width: 740px;
 `
 
 export const ButtonsContainer = styled.div`
   margin-top: 28px;
   width: 100%;
   text-align: right;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  @media (max-width: 767px) {
+    flex-flow: column-reverse;
+    margin-top: 12px;
+  }
 `
 
 export const CancelButton = styled(Button)`
@@ -152,6 +173,12 @@ export const SaveButton = styled(Button)`
   height: 38px;
   color: ${WHITE};
   background: ${BLUE};
+  @media (max-width: 767px) {
+    margin-top: 28px;
+    width: 100%;
+    margin-right: 0;
+    height: 50px;
+  }
 `
 
 export const LinkButton = styled(Button)`

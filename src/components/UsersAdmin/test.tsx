@@ -324,21 +324,21 @@ describe(' DiscountsAdmin Screen', () => {
       })
       describe('ON_CHANGE_SECTION', () => {
         describe('Set showLocker', () => {
-          it('Handles undefined value in showLocker', () => {
-            const customInitialValue = initialState.get('showLocker')
+          it('Handles undefined value in optionSelected', () => {
+            const customInitialValue = initialState.get('optionSelected')
             expect(customInitialValue).not.toBeUndefined()
           })
-          it('Handles initial value in showLocker', () => {
-            const customInitialValue = initialState.get('showLocker')
-            expect(customInitialValue).toBeTruthy()
+          it('Handles initial value in optionSelected', () => {
+            const customInitialValue = initialState.get('optionSelected')
+            expect(customInitialValue).toBe(0)
           })
-          it('Handles custom value in showLocker', () => {
-            const value = true
+          it('Handles custom value in optionSelected', () => {
+            const value = 3
             const showLockerState = usersAdminReducer(
               initialState,
               onChangeSectionAction(value)
             )
-            const customSectionValue = showLockerState.get('showLocker')
+            const customSectionValue = showLockerState.get('optionSelected')
             expect(customSectionValue).toBe(value)
           })
         })

@@ -20,5 +20,17 @@ export default defineMessages({
   files: {
     id: 'components.UsersAdmin.Options.files',
     defaultMessage: 'Files'
+  },
+  affiliate: {
+    id: 'components.UsersAdmin.Options.affiliate',
+    defaultMessage: 'Affiliate Options'
+  },
+  saved: {
+    id: 'components.UsersAdmin.Options.saved',
+    defaultMessage: 'Saved status'
+  },
+  showAffiliate: {
+    id: 'components.UsersAdmin.Options.showAffiliate',
+    defaultMessage: 'Show Affiliate Program'
   }
 })

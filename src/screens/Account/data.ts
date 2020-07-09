@@ -20,3 +20,26 @@ export const addTeamStoreItemMutation = graphql(
   `,
   { name: 'addItemToStore' }
 )
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        firstName: first_name
+        lastName: last_name
+        email
+        affiliateEnabled: affiliate_enabled
+        phone
+      }
+      affiliate {
+        status
+        comission
+        activatedAt: activated_at
+        file
+        currency
+        region
+        paypalAccount: paypal_account
+      }
+    }
+  }
+`

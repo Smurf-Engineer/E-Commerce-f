@@ -7,16 +7,12 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.AffiliateModal.title',
-    defaultMessage: 'BECOME A JAKROO AFFILIATE PARTNER'
+    defaultMessage: 'Become a member today!'
   },
   description: {
     id: 'components.AffiliateModal.description',
-    defaultMessage: `Become a Jakroo Affiliate and earn commissions on sales of your custom 
-    design from your Jakroo Custom Stores.`
-  },
-  getStarted: {
-    id: 'components.AffiliateModal.getStarted',
-    defaultMessage: 'In order to get started we will need to collect some information from your country of residence.'
+    defaultMessage: `Becoming a member of PayDay is fast and easy. 
+    In order to get started we need to collect some information from you.`
   },
   resident: {
     id: 'components.AffiliateModal.resident',
@@ -30,19 +26,19 @@ export default defineMessages({
     id: 'components.AffiliateModal.canada',
     defaultMessage: 'Canada'
   },
-  usd: {
+  usdSymbol: {
     id: 'components.AffiliateModal.usd',
     defaultMessage: '$USD'
   },
-  cad: {
+  cadSymbol: {
     id: 'components.AffiliateModal.cad',
     defaultMessage: '$CAD'
   },
-  usdForm: {
+  usd: {
     id: 'components.AffiliateModal.usdForm',
     defaultMessage: 'Form W-9'
   },
-  cadForm: {
+  cad: {
     id: 'components.AffiliateModal.cadForm',
     defaultMessage: 'Form CA Tax Form'
   },
@@ -56,12 +52,24 @@ export default defineMessages({
   },
   terms: {
     id: 'components.AffiliateModal.terms',
-    defaultMessage: 'I have read and agree to the <b>Terms and Conditions</b>'
+    defaultMessage: 'I have read and agree to the '
+  },
+  termsLink: {
+    id: 'components.AffiliateModal.termsLink',
+    defaultMessage: 'Terms and Conditions'
   },
   termsDesc: {
     id: 'components.AffiliateModal.termsDesc',
-    defaultMessage: `We will review your application within 2 
-    business days and confirm acceptance or request additional information.`
+    defaultMessage: `Form W9 is an Internal Revenue Service (IRS) form that's used to gather information about a 
+    contractor or individual so that their earnings can be reported at year-end. At the end of tax year, you will 
+    receive a 1099 MISC as a record of the income you earned from JAKROO.`
+  },
+  termsDescCad: {
+    id: 'components.AffiliateModal.termsDescCad',
+    defaultMessage: `Jakroo Canada Inc. is required to submit T4A slips to the CRA when the earned income paidto 
+    an individual exceeds $500.00 during the tax year. In order to submit a T4A, we requirethe address and social 
+    security number of the individual. Should you prefer to provide thisinformation over the phone, please contact 
+    customer support.`
   },
   cancel: {
     id: 'components.AffiliateModal.cancel',
@@ -69,7 +77,7 @@ export default defineMessages({
   },
   sendRequest: {
     id: 'components.AffiliateModal.sendRequest',
-    defaultMessage: 'Send Request'
+    defaultMessage: 'JOIN NOW'
   },
   link: {
     id: 'components.AffiliateModal.link',
