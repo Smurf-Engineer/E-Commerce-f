@@ -3,7 +3,8 @@
  */
 import styled from 'styled-components'
 import Radio from 'antd/lib/radio'
-import { WHITE, GRAY_DARK } from '../../../theme/colors'
+import { WHITE, GRAY_DARK, BLUE } from '../../../theme/colors'
+import Switch from 'antd/lib/switch'
 const RadioButtonComponent = Radio.Button
 
 export const RadioButton = styled(RadioButtonComponent)`
@@ -13,7 +14,7 @@ export const RadioButton = styled(RadioButtonComponent)`
   vertical-align: top;
   align-items: center;
   justify-content: center;
-  width: 140px;
+  width: 158px;
   border-radius: 2px !important;
   background-color: ${WHITE};
   margin-bottom: 20px;
@@ -33,4 +34,32 @@ export const BackLabel = styled.div`
 export const BackText = styled.span`
   display: inline-block;
   margin-left: 6px;
+`
+
+export const UserLabel = styled.div`
+  display: flex;
+  margin-bottom: 18px;
+  align-items: center;
+`
+
+export const StatusLabel = styled.div`
+  margin-left: 16px;
+  color: ${BLUE};
+  font-style: italic;
+`
+
+export const NameLabel = styled.div`
+  font-size: 16px;
+  font-weight: bold;
+`
+
+export const EnableSection = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+`
+
+export const StyledSwitch = styled(Switch)`
+  margin-left: 12px;
+  margin-bottom: 1px;
 `

@@ -5,7 +5,7 @@ import * as React from 'react'
 import { withRouter } from 'react-router'
 import { compose, withApollo } from 'react-apollo'
 import Modal from 'antd/lib/modal'
-import Checkbox from 'antd/lib/checkbox'
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { FormattedMessage } from 'react-intl'
 import {
   ModalContainer,
@@ -24,149 +24,204 @@ import {
   FileLabel,
   Clip,
   FileName,
-  CheckboxContainer,
   CheckboxLabel,
   TermsLabel,
   ButtonsContainer,
   CancelButton,
   SaveButton,
   LinkButton,
+  FormContainer,
+  TermsLink,
 } from './styledComponents'
 import messages from './messages'
-import { Message } from '../../types/common'
-
-const links = {
-  usd: 'usdLink',
-  cad: 'cadLink'
-}
+import { US_CURRENCY, CA_CURRENCY, TERMS_CONDITIONS, links } from './constants'
+import { Message, UploadFile } from '../../types/common'
+import { RadioChangeEvent } from 'antd/lib/radio'
+import { UploadChangeParam } from 'antd/lib/upload'
+import AntdMessage from 'antd/lib/message'
+import { getFileWithExtension } from '../../utils/utilsFiles'
 
 interface Props {
   open: boolean
   history: History
   link: boolean
+  paypalCheck: boolean
+  paypalCurrency: string
+  file: string
+  loading: boolean
+  linkPaypal: () => void
+  sendRequest: (value: boolean) => void
+  openAffiliate: (value: boolean) => void
+  uploadFileAction: (file: UploadFile) => void
+  setPaypalCheck: (value: boolean) => void
+  setPaypalCurrency: (value: string) => void
   formatMessage: (messageDescriptor: Message) => string
-  handleClose: () => void
   onPressCustomize: (id: number) => void
 }
 
 export class AffiliateModal extends React.Component<Props, {}> {
-  openFile = (event: React.MouseEvent<EventTarget>) => {
-    const {
-      target: { id }
-    } = event
-    const { history } = this.props
-    history.push(links[id])
+
+  openFile = (id: string) => () => {
+    window.open(links[id])
   }
+  stopPropagation = (event: React.MouseEvent) => {
+    if (event) {
+      event.stopPropagation()
+    }
+  }
+  handleSelectSection = (event: RadioChangeEvent) => {
+    const { setPaypalCurrency } = this.props
+    const {
+      target: {
+        value
+      }
+    } = event
+    setPaypalCurrency(value)
+  }
+
+  handleCheckChange = (event: CheckboxChangeEvent) => {
+    const { setPaypalCheck } = this.props
+    const { target: { checked } } = event
+    setPaypalCheck(checked)
+  }
+
+  uploadFile = (event: UploadChangeParam) => {
+    const { uploadFileAction } = this.props
+    const { file } = event
+    uploadFileAction(file)
+  }
+
+  beforeUpload = (file: any) => {
+    const { formatMessage } = this.props
+    const isLt2M = file.size / 1024 / 1024 < 20
+    if (!isLt2M) {
+      AntdMessage.error(formatMessage(messages.sizeError))
+    }
+    return isLt2M
+  }
+
+  handleClose = () => {
+    const { openAffiliate } = this.props
+    openAffiliate(false)
+  }
+
   render() {
-    const { open, link, handleClose, formatMessage } = this.props
+    const {
+      open,
+      file,
+      link,
+      linkPaypal,
+      sendRequest,
+      paypalCheck,
+      formatMessage,
+      paypalCurrency
+    } = this.props
+    const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
-        <Modal
-          visible={open}
-          footer={null}
-          closable={false}
-          width={link ? '352px' : '512px'}
-          destroyOnClose={true}
-        >
-          {link ?
-            <ModalContainer>
-              <Title>
-                <FormattedMessage {...messages.link} />
-              </Title>
-              <Description>
-                <FormattedMessage {...messages.linkDesc} />
-              </Description>
-              <ButtonsContainer>
-                <LinkButton>
-                  <FormattedMessage {...messages.linkButton} />
-                </LinkButton>
-              </ButtonsContainer>
-            </ModalContainer>
-            : <ModalContainer>
-              <Title>
-                <FormattedMessage {...messages.title} />
-              </Title>
-              <Description>
-                <FormattedMessage {...messages.description} />
-              </Description>
-              <Description>
-                <FormattedMessage {...messages.getStarted} />
-              </Description>
-              <Label>
-                <FormattedMessage {...messages.resident} />
-              </Label>
-              <CurrencyContainer>
-                <RadioGroupStyled
-                  onChange={() => { }}
-                  value={''}
-                  defaultValue={'left'}
-                >
-                  <RadioStyled value="left">
-                    <FormattedMessage {...messages.unitedStates} />
-                  </RadioStyled>
-                  <RadioStyled value="left">
-                    <FormattedMessage {...messages.canada} />
-                  </RadioStyled>
-                </RadioGroupStyled>
-                <Currencies>
-                  <FormattedMessage {...messages.usd} />
-                  <FormattedMessage {...messages.cad} />
-                </Currencies>
-                <Currencies>
-                  <FileLink id={'usd'} onClick={this.openFile}>
-                    <FormattedMessage {...messages.usdForm} />
-                  </FileLink>
-                  <FileLink disabled={true} id={'cad'} onClick={this.openFile}>
-                    <FormattedMessage {...messages.cadForm} />
-                  </FileLink>
-                </Currencies>
-              </CurrencyContainer>
-              <Label>
-                <FormattedMessage {...messages.uploadTax} />
-              </Label>
-              <StyledUpload
-                listType="picture-card"
-                className="avatar-uploader"
-                customRequest={() => { }}
-                showUploadList={false}
-                beforeUpload={() => { }}
+        {open && !link &&
+          <FormContainer>
+            <Title>
+              <FormattedMessage {...messages.title} />
+            </Title>
+            <Description>
+              <FormattedMessage {...messages.description} />
+            </Description>
+            <Label>
+              <FormattedMessage {...messages.resident} />
+            </Label>
+            <CurrencyContainer>
+              <RadioGroupStyled
+                onChange={this.handleSelectSection}
+                value={paypalCurrency}
+                defaultValue={US_CURRENCY}
               >
-                <UploadButton>
-                  <StyledIcon type="upload" />
-                  <FormattedMessage {...messages.uploadTaxForm} />
-                </UploadButton>
-              </StyledUpload>
+                <RadioStyled value={US_CURRENCY}>
+                  <FormattedMessage {...messages.unitedStates} />
+                </RadioStyled>
+                <RadioStyled value={CA_CURRENCY}>
+                  <FormattedMessage {...messages.canada} />
+                </RadioStyled>
+              </RadioGroupStyled>
+              <Currencies>
+                <FormattedMessage {...messages.usd} />
+                <FormattedMessage {...messages.cad} />
+              </Currencies>
+              <Currencies>
+                <FileLink disabled={paypalCurrency !== US_CURRENCY} onClick={this.openFile(US_CURRENCY)}>
+                  <FormattedMessage {...messages.usdForm} />
+                </FileLink>
+                <FileLink disabled={paypalCurrency !== CA_CURRENCY} onClick={this.openFile(CA_CURRENCY)}>
+                  <FormattedMessage {...messages.cadForm} />
+                </FileLink>
+              </Currencies>
+            </CurrencyContainer>
+            <TermsLabel>
+              <FormattedMessage {...messages[paypalCurrency === CA_CURRENCY ? 'termsDescCad' : 'termsDesc']} />
+            </TermsLabel>
+            <Label>
+              <FormattedMessage {...messages.uploadTax} />
+            </Label>
+            <StyledUpload
+              listType="picture-card"
+              className="avatar-uploader"
+              customRequest={this.uploadFile}
+              showUploadList={false}
+              beforeUpload={this.beforeUpload}
+            >
+              <UploadButton>
+                <StyledIcon type="upload" />
+                <FormattedMessage {...messages.uploadTaxForm} />
+              </UploadButton>
+            </StyledUpload>
+            {!!fileName &&
               <FileLabel>
                 <Clip type="paper-clip" />
                 <FileName>
-                  UVUWEUGEOSSSASEOSSSAS.pdf
+                  {fileName}
                 </FileName>
               </FileLabel>
-              <CheckboxContainer>
-                <Checkbox
-                  checked={false}
-                  onChange={() => { }}
-                >
-                  <CheckboxLabel
-                    dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.terms)
-                    }}
-                  />
-                </Checkbox>
-              </CheckboxContainer>
-              <TermsLabel>
-                <FormattedMessage {...messages.termsDesc} />
-              </TermsLabel>
-              <ButtonsContainer>
-                <CancelButton onClick={handleClose}>
-                  <FormattedMessage {...messages.cancel} />
-                </CancelButton>
-                <SaveButton>
-                  <FormattedMessage {...messages.sendRequest} />
-                </SaveButton>
-              </ButtonsContainer>
-            </ModalContainer>
-          }
+            }
+            <ButtonsContainer>
+              <SaveButton onClick={sendRequest} disabled={!paypalCheck || !file}>
+                <FormattedMessage {...messages.sendRequest} />
+              </SaveButton>
+              <Checkbox
+                checked={paypalCheck}
+                onChange={this.handleCheckChange}
+              >
+                <CheckboxLabel onClick={this.stopPropagation}>
+                  {formatMessage(messages.terms)}
+                  <TermsLink onClick={this.openFile(TERMS_CONDITIONS)}>
+                    {formatMessage(messages.termsLink)}
+                  </TermsLink>
+                </CheckboxLabel>
+              </Checkbox>
+            </ButtonsContainer>
+          </FormContainer>
+        }
+        <Modal
+          visible={open && link}
+          footer={null}
+          closable={false}
+          width={'352px'}
+        >
+          <ModalContainer>
+            <Title>
+              <FormattedMessage {...messages.link} />
+            </Title>
+            <Description>
+              <FormattedMessage {...messages.linkDesc} />
+            </Description>
+            <ButtonsContainer>
+              <CancelButton onClick={this.handleClose}>
+                <FormattedMessage {...messages.cancel} />
+              </CancelButton>
+              <LinkButton onClick={linkPaypal}>
+                <FormattedMessage {...messages.linkButton} />
+              </LinkButton>
+            </ButtonsContainer>
+          </ModalContainer>
         </Modal>
       </Container>
     )

@@ -36,7 +36,7 @@ interface Props {
   name: string
   lastName: string
   email: string
-  showLocker: boolean
+  optionSelected: boolean
   initialCountryCode: string
   openModal: boolean
   loading: boolean
@@ -45,6 +45,8 @@ interface Props {
   permissions: UserPermissions
   repSearchText: string
   managerSearchText: string
+  pageAffiliate: number
+  onChangePage: (page: number) => void
   setSearchManager: (value: string) => void
   setSearchRep: (value: string) => void
   setNoteText: (text: string) => void
@@ -58,7 +60,7 @@ interface Props {
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
   onInputChangeAction: (id: string, value: string) => void
-  onChangeSectionAction: (section: boolean) => void
+  onChangeSectionAction: (section: number) => void
   addUser: (variables: {}) => void
   onToggleModalAction: () => void
   onResetModalAction: () => void
@@ -178,9 +180,11 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       setLoadingAction,
       note,
       email,
+      pageAffiliate,
+      onChangePage,
       onInputChangeAction,
       history,
-      showLocker,
+      optionSelected,
       onChangeSectionAction,
       setSearchTextAction,
       openModal,
@@ -235,9 +239,11 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                   setNoteText,
                   note,
                   loading,
+                  pageAffiliate,
+                  onChangePage,
                   setLoadingAction,
                   setDesignSelected,
-                  showLocker,
+                  optionSelected,
                 }}
                 canEdit={access.edit}
                 onChangeSection={onChangeSectionAction}

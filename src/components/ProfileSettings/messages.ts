@@ -76,5 +76,21 @@ export default defineMessages({
   makeAffiliate: {
     id: 'components.ProfileSettings.makeAffiliate',
     defaultMessage: 'Make account an Affiliate Account'
+  },
+  success: {
+    id: 'components.ProfileSettings.success',
+    defaultMessage: 'Request sent'
+  },
+  pending: {
+    id: 'components.ProfileSettings.pending',
+    defaultMessage: 'Waiting for Approval'
+  },
+  linkedTo: {
+    id: 'components.ProfileSettings.linkedTo',
+    defaultMessage: 'Linked to: {paypalAccount}'
+  },
+  successLink: {
+    id: 'components.ProfileSettings.successLink',
+    defaultMessage: 'Linked successfully!'
   }
 })

@@ -13,6 +13,7 @@ interface ConfigType {
   storageUrl?: string
   pkStripeUS?: string
   pkStripeEU?: string
+  paypalBaseUrl?: string
   paypalClientId?: string
   paypalClientIdTest?: string
   paypalClientIdUS?: string
@@ -48,6 +49,7 @@ const config: ConfigType = {
   storageUrl: process.env.STORAGE_URL,
   pkStripeUS: process.env.PK_STRIPE_US,
   pkStripeEU: process.env.PK_STRIPE_EU,
+  paypalBaseUrl: process.env.PAYPAL_BASE_URL,
   paypalClientId: process.env.PAYPAL_CLIENT_ID,
   paypalClientIdUS: process.env.PAYPAL_CLIENT_ID_US,
   paypalClientIdCA: process.env.PAYPAL_CLIENT_ID_CA,
