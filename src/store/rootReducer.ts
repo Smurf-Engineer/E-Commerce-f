@@ -29,6 +29,7 @@ import fitInfo from '../components/FitInfo/reducer'
 import addresses from '../components/MyAddresses/reducer'
 import cards from '../components/MyCards/reducer'
 import profileSettings from '../components/ProfileSettings/reducer'
+import affiliateOptions from '../components/AffiliateOptions/reducer'
 import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import myTeamStores from '../components/MyTeamStores/reducer'
 import warrantyProgram from '../screens/WarrantyProgram/reducer'
@@ -59,6 +60,10 @@ import proAssist from '../components/ProAssist/reducer'
 import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 import roleCatalog from '../components/RoleList/reducer'
 import salesRep from '../components/SalesRep/reducer'
+import affiliates from '../components/Affiliates/reducer'
+import affiliatesAbout from '../components/AffiliateAbout/reducer'
+import affiliatesOrders from '../components/AffiliatesOrders/reducer'
+import affiliatesPayouts from '../components/AffiliatesPayouts/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -80,7 +85,11 @@ export interface ReducersObject {
   createStore: any
   designSearchAdmin: any
   roleCatalog: any
+  affiliatesAbout: any
   salesRep: any
+  affiliates: any
+  affiliatesOrders: any
+  affiliatesPayouts: any
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
@@ -110,6 +119,7 @@ export interface ReducersObject {
   addresses: any
   cards: any
   profileSettings: any
+  affiliateOptions: any
   myLocker: any
   myFiles: any
   orderHistory: any
@@ -199,12 +209,16 @@ const rootReducer = combineReducers({
   warrantyProgram,
   orderPlaced,
   myTeamStores,
+  affiliatesAbout,
   checkout,
   designerTool,
   shoppingCartPage,
   storeFront,
   productModels,
   createStore,
+  affiliates,
+  affiliatesOrders,
+  affiliatesPayouts,
   searchTeamstores,
   teamstoreProductPage,
   account,
@@ -231,6 +245,7 @@ const rootReducer = combineReducers({
   fitInfo,
   addresses,
   cards,
+  affiliateOptions,
   profileSettings,
   myLocker,
   myFiles,

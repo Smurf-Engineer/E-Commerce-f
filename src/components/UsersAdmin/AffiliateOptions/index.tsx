@@ -10,20 +10,24 @@ import {
   LabelButton,
   Title,
   StyledSwitch,
-  DeclineLabel,
+  RedLabel,
   BoldLabel,
   FileLink,
   Clip,
   StyledInputNumber,
   LoadingContainer,
+  Subtitle,
+  InfoIcon,
+  PopoverText,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
 import { NOTE_FORMAT } from '../constants'
-import { PENDING, APPROVED, REJECTED } from '../../../constants'
+import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import Popover from 'antd/lib/popover'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
@@ -37,6 +41,11 @@ interface Props {
   paypalAccount: string
   file: string
   currentPage: number
+  isAdmin: boolean
+  currency: string
+  region: string
+  onlyDetails: boolean
+  openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
   onChangePage: (page: number) => void
   enableAffiliate: (status: string) => void
@@ -53,9 +62,17 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const { enableAffiliate } = this.props
     enableAffiliate(REJECTED)
   }
+  retryStatus = () => {
+    const { enableAffiliate } = this.props
+    enableAffiliate(RETRY)
+  }
   openFile = () => {
     const { file } = this.props
     window.open(file)
+  }
+  openEdit = () => {
+    const { openAffiliate } = this.props
+    openAffiliate(true)
   }
   handleChangeComission = (value: number | undefined) => {
     const { changeComission } = this.props
@@ -71,9 +88,13 @@ class AffiliateOptions extends React.Component<Props, {}> {
       currentPage,
       onChangePage,
       userId,
+      isAdmin,
+      onlyDetails,
       activatedAt,
       formatMessage,
-      status
+      status,
+      region,
+      currency
     } = this.props
     const hasChanged = status !== PENDING || !status
     const isActive = status === APPROVED
@@ -85,27 +106,45 @@ class AffiliateOptions extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
-        <OptionsContainer>
-          <LabelButton>
-            <Title>
-              {formatMessage(messages.enabled)}
-            </Title>
-            <StyledSwitch
-              disabled={hasChanged}
-              checked={isActive}
-              onChange={this.enableStatus}
-            />
-          </LabelButton>
-          <LabelButton>
-            <Title />
-            {status === PENDING &&
-              <DeclineLabel onClick={this.rejectStatus}>
-                {formatMessage(messages.decline)}
-              </DeclineLabel>
+        {onlyDetails &&
+          <Subtitle>
+            {formatMessage(messages.settings)}
+          </Subtitle>
+        }
+        {(onlyDetails || isAdmin) &&
+          <OptionsContainer>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages[isAdmin ? 'enabled' : 'status'])}
+              </Title>
+              {isAdmin ?
+                <StyledSwitch
+                  disabled={hasChanged}
+                  checked={isActive}
+                  onChange={this.enableStatus}
+                /> :
+                <BoldLabel>
+                  {status}
+                </BoldLabel>
+              }
+            </LabelButton>
+            {isAdmin && status === PENDING &&
+              <>
+                <LabelButton>
+                  <Title />
+                  <RedLabel onClick={this.rejectStatus}>
+                    {formatMessage(messages.decline)}
+                  </RedLabel>
+                </LabelButton>
+                <LabelButton>
+                  <Title />
+                  <RedLabel onClick={this.retryStatus}>
+                    {formatMessage(messages.retry)}
+                  </RedLabel>
+                </LabelButton>
+              </>
             }
-          </LabelButton>
-          {isActive &&
-            <>
+            {isActive &&
               <LabelButton>
                 <Title>
                   {formatMessage(messages.activationDate)}
@@ -116,19 +155,21 @@ class AffiliateOptions extends React.Component<Props, {}> {
                   </BoldLabel>
                 }
               </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.taxForm)}
-                </Title>
-                <FileLink onClick={this.openFile}>
-                  <Clip type="paper-clip" />
-                  {fileName}
-                </FileLink>
-              </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.comissions)}
-                </Title>
+            }
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.taxForm)}
+              </Title>
+              <FileLink onClick={this.openFile}>
+                <Clip type="paper-clip" />
+                {fileName}
+              </FileLink>
+            </LabelButton>
+            {isActive && <LabelButton>
+              <Title>
+                {formatMessage(messages.comissions)}
+              </Title>
+              {isAdmin ?
                 <StyledInputNumber
                   onChange={this.debounceComission}
                   value={comission}
@@ -137,19 +178,51 @@ class AffiliateOptions extends React.Component<Props, {}> {
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
-              </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.paypalAccount)}
-                </Title>
-                <BoldLabel>
-                  {paypalAccount}
+                : <BoldLabel>
+                  {`${comission}%`}
                 </BoldLabel>
-              </LabelButton>
-            </>
-          }
-        </OptionsContainer>
-        {isActive &&
+              }
+            </LabelButton>}
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.currency)}
+                {!isAdmin && <Popover content={
+                  <PopoverText>
+                    {formatMessage(messages.payoutDesc)}
+                  </PopoverText>
+                } title={formatMessage(messages.currency)}>
+                  <InfoIcon type="info-circle" />
+                </Popover>}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {currency}
+              </BoldLabel>
+            </LabelButton>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.region)}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {region}
+              </BoldLabel>
+            </LabelButton>
+            {isActive && <LabelButton>
+              <Title>
+                {formatMessage(messages.paypalAccount)}
+                {!isAdmin &&
+                  <RedLabel onClick={this.openEdit}>
+                    {formatMessage(messages.edit)}
+                  </RedLabel>
+                }
+              </Title>
+              <BoldLabel>
+                {paypalAccount}
+              </BoldLabel>
+            </LabelButton>
+            }
+          </OptionsContainer>
+        }
+        {isActive && !onlyDetails &&
           <PaymentsList
             {...{
               formatMessage,
@@ -157,8 +230,8 @@ class AffiliateOptions extends React.Component<Props, {}> {
               onChangePage,
               userId,
               history,
+              isAdmin,
             }}
-            isAdmin={true}
           />
         }
       </Container>

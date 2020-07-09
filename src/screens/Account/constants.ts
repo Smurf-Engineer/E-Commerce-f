@@ -9,6 +9,10 @@ export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
 export const TEAMSTORES = 'myTeamStores'
+export const AFFILIATES = 'affiliate'
+export const AFFILIATES_ABOUT = 'affiliateAbout'
+export const AFFILIATES_ORDERS = 'affiliateOrders'
+export const AFFILIATES_PAYOUTS = 'affiliatePayouts'
 export const CREATIONS = 'myCreations'
 export const MY_FILES = 'myFiles'
 export const SCREEN_LOCKER = 'myLocker'
@@ -39,6 +43,10 @@ export const options = [
   {
     title: TEAMSTORES,
     options: []
+  },
+  {
+    title: AFFILIATES,
+    options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
   },
   {
     title: CREATIONS,

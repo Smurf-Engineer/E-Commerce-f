@@ -9,12 +9,14 @@ import InputNumber from 'antd/lib/input-number'
 
 interface ContainerProps {
   withoutPadding?: boolean
+  upperCase?: boolean
 }
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
   padding-right: ${({ withoutPadding }: ContainerProps) =>
     withoutPadding ? '0' : '32px'};
   @media (min-width: 320px) and (max-width: 768px) {
@@ -27,6 +29,11 @@ export const OptionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    font-size: 13px;
+    justify-content: space-between;
+  }
 `
 
 export const StyledSwitch = styled(Switch)``
@@ -38,17 +45,26 @@ export const LabelButton = styled.div`
   align-items: flex-start;
   height: 48px;
   margin-right: 24px;
+  @media (max-width: 768px) {
+    flex: 1;
+    height: 38px;
+    margin-bottom: 26px;
+  }
 `
 
-export const Title = styled.div``
+export const Title = styled.div`
+  display: flex;
+`
 
-export const DeclineLabel = styled.div`
+export const RedLabel = styled.div`
   color: red;
   cursor: pointer;
+  margin-left: 28px;
 `
 
 export const BoldLabel = styled.div`
   font-weight: bold;
+  text-transform: ${({ upperCase }: ContainerProps) => upperCase ? 'uppercase' : ''};
 `
 
 export const FileLink = styled.div`
@@ -81,4 +97,23 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+export const Subtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 22px;
+  font-size: 16px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`
+
+export const InfoIcon = styled(Icon)`
+  margin-left: 8px;
+  margin-top: 1px;
+`
+
+export const PopoverText = styled.div`
+  max-width: 512px;
+  width: 100%;
 `

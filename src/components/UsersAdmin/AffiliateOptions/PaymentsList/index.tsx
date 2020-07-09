@@ -5,8 +5,18 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { Container, Header, Row, Table, ItemContainer, Cell, TableTitle, Clip } from './styledComponents'
-import EmptyContainer from '../../../EmptyContainer'
+import {
+  Container,
+  Header,
+  Row,
+  Table,
+  ItemContainer,
+  Cell,
+  TableTitle,
+  Clip,
+  EmptyContainer,
+  Subtitle
+} from './styledComponents'
 import { QueryProps, Message, AffiliatePayment } from '../../../../types/common'
 import withError from '../../../WithError'
 import withLoading from '../../../WithLoading'
@@ -27,9 +37,9 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
+  isAdmin: boolean
   formatMessage: (messageDescriptor: Message) => string
   currentPage: number
-  history: History
   onChangePage: (page: number) => void
   onRowClick: (url: string) => void
 }
@@ -37,23 +47,21 @@ interface Props {
 const PaymentsList = ({
   formatMessage,
   currentPage,
-  history,
   data,
+  isAdmin,
   onChangePage,
 }: Props) => {
   const payments = get(data, 'paymentsQuery.payments', []) as AffiliatePayment[]
   const fullCount = get(data, 'paymentsQuery.fullCount', 0)
-  if (!payments || !payments.length) {
-    return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
-  }
+
   const openReceipt = (receipt: string) => () => {
     if (receipt) {
-      history.push(receipt)
+      window.open(receipt)
     }
   }
-  const userItems = payments.map(
+  const userItems = payments && payments.length && payments.map(
     (
-      { id, createdAt, status, amount, receipt }: any,
+      { id, createdAt, status, amount, receipt }: AffiliatePayment,
       index: number
     ) => {
       const fileName = receipt ? getFileWithExtension(receipt) : ''
@@ -62,7 +70,7 @@ const PaymentsList = ({
           <Cell>{id}</Cell>
           <Cell>{createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}</Cell>
           <Cell>{status}</Cell>
-          <Cell>{`$${amount}`}</Cell>
+          <Cell>{`$${amount.toFixed(2)}`}</Cell>
           <Cell>
             <Clip type="paper-clip" />
             {fileName}
@@ -76,6 +84,11 @@ const PaymentsList = ({
     <Container>
       <TableTitle>
         {formatMessage(messages.title)}
+        {!isAdmin &&
+          <Subtitle>
+            {formatMessage(messages.subtitle)}
+          </Subtitle>
+        }
       </TableTitle>
       <Table>
         <thead>
@@ -99,6 +112,9 @@ const PaymentsList = ({
         </thead>
         <tbody>{userItems}</tbody>
       </Table>
+      {!userItems &&
+        <EmptyContainer>{formatMessage(messages.emptyMessage)}</EmptyContainer>
+      }
       <Pagination
         current={currentPage}
         pageSize={LIST_LIMIT}
@@ -133,7 +149,6 @@ const PaymentsListEnhance = compose(
           isAdmin,
           userId
         },
-        skip: !userId,
         fetchPolicy: 'network-only'
       }
     }
