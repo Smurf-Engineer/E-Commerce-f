@@ -12,6 +12,7 @@ export const profileSettingsQuery = gql`
       }
       affiliate {
         status
+        paypalAccount: paypal_account
       }
       languageSettings: userRegionOptions {
         region {
@@ -166,5 +167,19 @@ export const sendAffiliateMutation = graphql(
   `,
   {
     name: 'sendAffiliateRequest'
+  }
+)
+
+export const linkPaypalAccountMutation = graphql(
+  gql`
+    mutation linkPaypalAccount($code: String!) {
+      linkPaypalAccount(code: $code) {
+        status
+        paypalAccount: paypal_account
+      }
+    }
+  `,
+  {
+    name: 'linkPaypalAccount'
   }
 )

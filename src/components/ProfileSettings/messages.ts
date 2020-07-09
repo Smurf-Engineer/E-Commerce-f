@@ -84,5 +84,13 @@ export default defineMessages({
   pending: {
     id: 'components.ProfileSettings.pending',
     defaultMessage: 'Waiting for Approval'
+  },
+  linkedTo: {
+    id: 'components.ProfileSettings.linkedTo',
+    defaultMessage: 'Linked to: {paypalAccount}'
+  },
+  successLink: {
+    id: 'components.ProfileSettings.successLink',
+    defaultMessage: 'Linked successfully!'
   }
 })

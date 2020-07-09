@@ -12,11 +12,12 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import Message from 'antd/lib/message'
+import MessageBar from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
+import queryString from 'query-string'
 import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
-import { PHONE_FIELD } from '../../constants'
+import { PHONE_FIELD, PENDING } from '../../constants'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import {
   regionsQuery,
@@ -27,7 +28,8 @@ import {
   UpdateMeasurementsMutation,
   UpdateRegionOptionsMutation,
   ChangePasswordMutation,
-  sendAffiliateMutation
+  sendAffiliateMutation,
+  linkPaypalAccountMutation
 } from './data'
 import messages from './messages'
 import {
@@ -40,12 +42,13 @@ import {
   // StyledCheckbox,
   LoadingErrorContainer,
   ErrorMessage,
-  SwitchWrapper,
-  StyledSwitch,
+  // SwitchWrapper,
+  // StyledSwitch,
   LoadingContainer,
-  StatusLabel,
+  // StatusLabel,
+  // AccountLabel,
 } from './styledComponents'
-import AffiliateModal from '../AffiliateModal'
+// import AffiliateModal from '../AffiliateModal'
 import ProfileForm from '../ProfileForm'
 // import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
 // import MeasurementsForm from '../MeasurementsForm'
@@ -55,11 +58,11 @@ import {
   Region,
   IProfileSettings,
   UploadFile,
-  MessagePayload
+  Affiliate,
+  Message,
 } from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
 import get from 'lodash/get'
-import { PENDING } from './constants'
 import config from '../../config'
 
 interface ProfileData extends QueryProps {
@@ -74,7 +77,7 @@ interface Props {
   isMobile: boolean
   regionsOptions: RegionOptions
   profileData: ProfileData
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message, values?: {}) => string
   firstName: string
   lastName: string
   email: string
@@ -112,7 +115,6 @@ interface Props {
   paypalCurrency: string
   paypalCheck: boolean
   loading: boolean
-  link: boolean
   openModal: boolean
   file: string
   // api actions
@@ -137,7 +139,8 @@ interface Props {
   setSettingsLoadingAction: (key: string, loading: boolean) => void
   changePasswordSuccessAction: () => void
   // mutations
-  sendAffiliateRequest: (variables: {}) => Promise<MessagePayload>
+  linkPaypalAccount: (variables: {}) => Promise<Affiliate>
+  sendAffiliateRequest: (variables: {}) => Promise<Affiliate>
   updateUserProfile: (variables: {}) => void
   updateEmailOptions: (variables: {}) => void
   updateSmsOptions: (variables: {}) => void
@@ -148,6 +151,16 @@ interface Props {
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
+  componentDidUpdate() {
+    const { profileData, history } = this.props
+    const { location: { search } } = history
+    const { code } = queryString.parse(search)
+    const { paypalAccount, status } = get(profileData, 'profileData.affiliate', {})
+    if (code && !paypalAccount && !!status) {
+      this.sendCode(code)
+      history.replace('/account?option=profileSettings')
+    }
+  }
   render() {
     const {
       formatMessage,
@@ -171,44 +184,12 @@ class ProfileSettings extends React.Component<Props, {}> {
     const {
       isMobile,
       profileData,
-      // regionsOptions: { regions },
       firstName,
       lastName,
-      setPaypalCurrency,
-      setPaypalCheck,
-      openAffiliate,
-      uploadFileAction,
-      file,
-      link,
-      history,
-      openModal,
       loading: loadingFile,
-      paypalCheck,
-      paypalCurrency,
       email,
       phone,
       loadingProfile,
-      // region,
-      // language,
-      // currency,
-      // loadingRegion,
-      // msrmntSystemSelected,
-      // msrmntGenderSelected,
-      // weight,
-      // heightFirst,
-      // heightSecond,
-      // chestSize,
-      // waistSize,
-      // hipsSize,
-      // inseamSize,
-      // shouldersSize,
-      // neckSize,
-      // loadingMeasurements,
-      // smsConfirmationChecked,
-      // smsUpdatesChecked,
-      // loadingSms,
-      // emailNewsletterChecked,
-      // loadingEmail,
       currentPassword,
       newPassword,
       newPasswordConfirm,
@@ -218,7 +199,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     } = this.props
 
     const userProfile = get(profileData, 'profileData.userProfile', {})
-    const affiliate = get(profileData, 'profileData.affiliate', {})
+    // const affiliate = get(profileData, 'profileData.affiliate', {})
     // const regionsOptions: Region[] = regions || []
 
     // const smsButtonDisabled =
@@ -229,7 +210,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     // const emailButtonDisabled =
     //   emailNewsletterChecked === null ||
     //   emailSettings.newsletter === emailNewsletterChecked
-    const { status } = affiliate
+    // const { status, paypalAccount } = affiliate
     return (
       <Container>
         {loadingFile &&
@@ -255,33 +236,6 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
-        <SwitchWrapper>
-          {formatMessage(messages.makeAffiliate)}
-          <StyledSwitch disabled={!!status} checked={openModal || !!status} onChange={openAffiliate} />
-        </SwitchWrapper>
-        {status === PENDING &&
-          <StatusLabel>
-            {formatMessage(messages.pending)}
-          </StatusLabel>
-        }
-        <AffiliateModal
-          {...{
-            history,
-            paypalCheck,
-            setPaypalCheck,
-            formatMessage,
-            file,
-            link,
-            openAffiliate,
-            uploadFileAction,
-            paypalCurrency,
-            setPaypalCurrency
-          }}
-          loading={loadingFile}
-          linkPaypal={this.linkPaypal}
-          sendRequest={this.sendRequest}
-          open={openModal}
-        />
         <ChangePasswordModal
           {...{
             formatMessage,
@@ -326,11 +280,11 @@ class ProfileSettings extends React.Component<Props, {}> {
           variables: { currentPassword, password: newPassword }
         })
         changePasswordSuccessAction()
-        Message.success(formatMessage(messages.passwordSuccessMessage))
+        MessageBar.success(formatMessage(messages.passwordSuccessMessage))
       } catch (error) {
         setModalLoadingAction(false)
         const errorMessage = error.graphQLErrors.map((x: any) => x.message)
-        Message.error(errorMessage, 5)
+        MessageBar.error(errorMessage, 5)
       }
     }
   }
@@ -553,15 +507,44 @@ class ProfileSettings extends React.Component<Props, {}> {
   }
 
   linkPaypal = () => {
-    const { history } = this.props
     const redirect = encodeURIComponent(`${config.baseUrl}account?option=profileSettings`)
-    history.push(`
-      https://www.sandbox.paypal.com/connect?
-      flowEntry=static
-      &client_id=${config.paypalClientIdUS}
-      &scope=openid https://uri.paypal.com/services/paypalattributes
-      &redirect_uri=${redirect}
-    `)
+    const client = `flowEntry=static&client_id=${config.paypalClientId}`
+    const params = `&scope=openid email https://uri.paypal.com/services/paypalattributes&redirect_uri=${redirect}`
+    window.location.href = `${config.paypalBaseUrl}${client}${params}`
+  }
+
+  sendCode = async (code: string) => {
+    const {
+      setUploadingAction,
+      formatMessage,
+      linkPaypalAccount
+    } = this.props
+    try {
+      setUploadingAction(true)
+      await linkPaypalAccount({
+        variables: {
+          code
+        },
+        update: (store: any, responseData: Affiliate) => {
+          const newAccount = get(responseData, 'data.linkPaypalAccount.paypalAccount')
+          const profileData = store.readQuery({
+            query: profileSettingsQuery
+          })
+          const affiliateData = get(profileData, 'profileData.affiliate', {})
+          affiliateData.paypalAccount = newAccount
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData
+          })
+        }
+      })
+      setUploadingAction(false)
+      MessageBar.success(formatMessage(messages.successLink), 4)
+    } catch (error) {
+      setUploadingAction(false)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      MessageBar.error(errorMessage, 5)
+    }
   }
 
   sendRequest = async () => {
@@ -593,11 +576,11 @@ class ProfileSettings extends React.Component<Props, {}> {
         }
       })
       successRequestAction()
-      Message.success(formatMessage(messages.success), 4)
+      MessageBar.success(formatMessage(messages.success), 4)
     } catch (error) {
       setUploadingAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
-      Message.error(errorMessage, 5)
+      MessageBar.error(errorMessage, 5)
     }
   }
 
@@ -622,11 +605,11 @@ class ProfileSettings extends React.Component<Props, {}> {
         ]
       })
       setSettingsLoadingAction(setting, false)
-      Message.success(formatMessage(successMessage), 4)
+      MessageBar.success(formatMessage(successMessage), 4)
     } catch (error) {
       setSettingsLoadingAction(setting, false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
-      Message.error(errorMessage, 5)
+      MessageBar.error(errorMessage, 5)
     }
   }
 
@@ -651,6 +634,7 @@ const ProfileSettingsEnhance = compose(
     },
     name: 'regionsOptions'
   }),
+  linkPaypalAccountMutation,
   sendAffiliateMutation,
   UpdateEmailOptionsMutation,
   UpdateSmsOptionsMutation,

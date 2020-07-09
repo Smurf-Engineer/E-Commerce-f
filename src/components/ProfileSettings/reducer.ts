@@ -55,7 +55,6 @@ export const initialState = fromJS({
   paypalCheck: false,
   loading: false,
   file: '',
-  link: false,
   openModal: false,
   smsUpdatesChecked: null,
   loadingSms: false,
@@ -87,7 +86,7 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
     case SUCCESS_REQUEST:
       return state.merge({
         file: '',
-        link: true,
+        openModal: false,
         loading: false,
         paypalCheck: false,
       })
