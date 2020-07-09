@@ -11,10 +11,33 @@ import Radio, { RadioChangeEvent } from 'antd/lib/radio'
 import messages from './messages'
 import UserFiles from '../UserFiles'
 import AffiliateOptions from '../AffiliateOptions'
-import { RadioButton, BackLabel, BackText, UserLabel, NameLabel, StatusLabel } from './styledComponents'
+import {
+  RadioButton,
+  BackLabel,
+  BackText,
+  UserLabel,
+  NameLabel,
+  StatusLabel,
+  EnableSection,
+  StyledSwitch
+} from './styledComponents'
 import MyLocker from '../../MyLocker'
-import { QueryProps, DesignNote, MessagePayload, IProfileSettings, Affiliate } from '../../../types/common'
-import { GetDesignNotes, addNoteMutation, profileSettingsQuery, changeAffiliateMutation } from '../data'
+import {
+  QueryProps,
+  DesignNote,
+  MessagePayload,
+  IProfileSettings,
+  Affiliate,
+  AffiliateStatus
+} from '../../../types/common'
+import {
+  GetDesignNotes,
+  addNoteMutation,
+  profileSettingsQuery,
+  changeAffiliateMutation,
+  changeComissionMutation,
+  setAffiliateStatusMutation
+} from '../data'
 import ProassistNotes from '../../ProassistNotes'
 
 const RadioGroup = Radio.Group
@@ -37,7 +60,11 @@ interface Props {
   loading: boolean
   canEdit: boolean
   profileData: ProfileData
+  pageAffiliate: number
+  enableAffiliate: (variables: {}) => Promise<AffiliateStatus>
+  onChangePage: (page: number) => void
   setLoadingAction: (loading: boolean) => void
+  changeComission: (variables: {}) => Promise<Affiliate>
   changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteText: (text: string) => void
@@ -98,7 +125,8 @@ class Options extends React.Component<Props> {
             status,
             userId
           },
-          update: (store: any) => {
+          update: (store: any, responseData: Affiliate) => {
+            const { activatedAt } = get(responseData, 'data.changeAffiliateStatus', {})
             const profileData = store.readQuery({
               query: profileSettingsQuery,
               variables: {
@@ -107,6 +135,83 @@ class Options extends React.Component<Props> {
             })
             const affiliateData = get(profileData, 'profileData.affiliate', {})
             affiliateData.status = status
+            affiliateData.activatedAt = activatedAt
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleChangeEnabled = async (enabled: boolean) => {
+    const {
+      match,
+      setLoadingAction,
+      enableAffiliate
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const userId = get(match, 'params.id', '')
+      await enableAffiliate({
+        variables: {
+          enabled,
+          userId
+        },
+        update: (store: any, responseData: AffiliateStatus) => {
+          const enabledResponse = get(responseData, 'data.affiliateData.enabled', false)
+          const profileData = store.readQuery({
+            query: profileSettingsQuery,
+            variables: { id: userId },
+            fetchPolicy: 'network-only'
+          })
+          const userProfile = get(profileData, 'profileData.userProfile', {})
+          userProfile.affiliateEnabled = enabledResponse
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData,
+            variables: { id: userId }
+          })
+        }
+      })
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, 5)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleChangeComission = async (value = 0) => {
+    const {
+      formatMessage,
+      changeComission,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeComission({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const affiliateData = get(profileData, 'profileData.affiliate', {})
+            affiliateData.comission = value
             store.writeQuery({
               query: profileSettingsQuery,
               data: profileData
@@ -131,18 +236,22 @@ class Options extends React.Component<Props> {
       note,
       loading,
       setNoteText,
+      onChangePage,
+      pageAffiliate: currentPage,
       data,
       designSelected,
       setDesignSelected,
     } = this.props
     const userId = get(match, 'params.id', '')
     const { userProfile = {}, affiliate = {} } = get(profileData, 'profileData', {})
-    const { id, firstName, lastName } = userProfile
+    const { id, firstName, lastName, affiliateEnabled } = userProfile
     const {
       status,
       comission,
       activatedAt,
       paypalAccount,
+      region,
+      currency,
       file,
     } = affiliate
     const { loading: loadingData, designNotes = [] } = data || {}
@@ -183,10 +292,18 @@ class Options extends React.Component<Props> {
               loading,
               comission,
               activatedAt,
+              region,
+              currency,
+              currentPage,
+              onChangePage,
               paypalAccount,
               file,
+              history,
+              userId,
               status
             }}
+            isAdmin={true}
+            changeComission={this.handleChangeComission}
             enableAffiliate={this.enableAffiliate}
           />
         )
@@ -227,6 +344,15 @@ class Options extends React.Component<Props> {
           <RadioButton value={2}>
             {formatMessage(messages.affiliate)}
           </RadioButton>
+          <EnableSection>
+            {formatMessage(messages.showAffiliate)}
+            <StyledSwitch
+              {...{ loading }}
+              checked={affiliateEnabled}
+              size="small"
+              onChange={this.handleChangeEnabled}
+            />
+          </EnableSection>
         </RadioGroup>
         {selectedScreen}
         <ProassistNotes
@@ -258,7 +384,9 @@ const OptionsEnhance = compose(
     },
     name: 'profileData'
   }),
+  graphql(changeComissionMutation, { name: 'changeComission' }),
   graphql(changeAffiliateMutation, { name: 'changeAffiliateStatus' }),
+  graphql(setAffiliateStatusMutation, { name: 'enableAffiliate' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {
     options: (ownprops: OwnProps) => {

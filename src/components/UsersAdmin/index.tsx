@@ -45,6 +45,8 @@ interface Props {
   permissions: UserPermissions
   repSearchText: string
   managerSearchText: string
+  pageAffiliate: number
+  onChangePage: (page: number) => void
   setSearchManager: (value: string) => void
   setSearchRep: (value: string) => void
   setNoteText: (text: string) => void
@@ -178,6 +180,8 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       setLoadingAction,
       note,
       email,
+      pageAffiliate,
+      onChangePage,
       onInputChangeAction,
       history,
       optionSelected,
@@ -235,6 +239,8 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                   setNoteText,
                   note,
                   loading,
+                  pageAffiliate,
+                  onChangePage,
                   setLoadingAction,
                   setDesignSelected,
                   optionSelected,

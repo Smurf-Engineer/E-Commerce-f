@@ -55,6 +55,7 @@ export const ERROR_STATUS = 'Error'
 export const PENDING_APPROVAL = 'Pending Approval'
 export const PURGED = 'Purged'
 export const PREORDER = 'Pre-Order'
+export const CANCELLED = 'Cancelled'
 
 /* Quantity */
 export const PERSONAL = 'Personal'
@@ -84,3 +85,10 @@ export const MODEL_SIZES = {
 export const PENDING = `Pending approval`
 export const APPROVED = 'Approved'
 export const REJECTED = 'Rejected'
+export const RETRY = 'Retry'
+
+// Affiliate payment status
+export const PENDING_PAY = 'Pending'
+export const PAID = 'Paid'
+export const PROCESSING = 'Processing'
+export const FAILURE = 'Failed payment'

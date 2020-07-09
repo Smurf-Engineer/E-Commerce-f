@@ -324,7 +324,7 @@ describe(' DiscountsAdmin Screen', () => {
       })
       describe('ON_CHANGE_SECTION', () => {
         describe('Set showLocker', () => {
-          it('Handles undefined value in showLocker', () => {
+          it('Handles undefined value in optionSelected', () => {
             const customInitialValue = initialState.get('optionSelected')
             expect(customInitialValue).not.toBeUndefined()
           })
@@ -333,7 +333,7 @@ describe(' DiscountsAdmin Screen', () => {
             expect(customInitialValue).toBe(0)
           })
           it('Handles custom value in optionSelected', () => {
-            const value = 1
+            const value = 3
             const showLockerState = usersAdminReducer(
               initialState,
               onChangeSectionAction(value)

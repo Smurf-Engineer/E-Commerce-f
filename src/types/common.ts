@@ -207,11 +207,42 @@ export type DesignNote = {
   text: string
 }
 
+export type AffiliateStatus = {
+  enabled: boolean
+}
+
 export type Affiliate = {
   status: string
   paypalAccount: string
   comission: number
   activatedAt: string
+}
+
+export type AffiliatePayment = {
+  id: number
+  userId: string
+  createdAt: string
+  status: string
+  amount: number
+  receipt: string
+  paypalAccount?: string
+  comission?: number
+  name?: string
+  store?: string
+  orderId?: string
+  customerId?: string
+  currency?: String
+  totalOrigin: number
+  orderCurrency?: String
+  orderStatus?: string
+  customerName?: string
+  orderAmount: number
+  paidAt?: string
+}
+
+export type AffiliatesResult = {
+  fullCount: number
+  payments: AffiliatePayment[]
 }
 
 export type SaveDesignType = {
@@ -330,6 +361,10 @@ export type TeamStoreType = {
 export type TeamStoreAdminResultType = {
   fullCount: number
   teamStores: TeamStoreAdminType[]
+}
+
+export type SelectedPays = {
+  [key: string]: boolean
 }
 
 export type TeamStoreAdminType = {
