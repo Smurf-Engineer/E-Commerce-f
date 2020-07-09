@@ -32,5 +32,9 @@ export default defineMessages({
   successLink: {
     id: 'components.ProfileSettings.successLink',
     defaultMessage: 'Linked successfully!'
+  },
+  notAvailable: {
+    id: 'components.ProfileSettings.notAvailable',
+    defaultMessage: 'Status not available.'
   }
 })

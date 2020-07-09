@@ -11,15 +11,15 @@ export default defineMessages({
   },
   emptyMessage: {
     id: 'components.PaymentsList.emptyMessage',
-    defaultMessage: 'No payments found.'
+    defaultMessage: 'Your applied payments will show here'
   },
   number: {
     id: 'components.PaymentsList.number',
-    defaultMessage: 'Receipt number'
+    defaultMessage: 'Payment No.'
   },
   date: {
     id: 'components.PaymentsList.date',
-    defaultMessage: 'Date'
+    defaultMessage: 'Payment Date'
   },
   status: {
     id: 'components.PaymentsList.status',
@@ -31,6 +31,11 @@ export default defineMessages({
   },
   receipt: {
     id: 'components.PaymentsList.receipt',
-    defaultMessage: 'Attached Receipt'
+    defaultMessage: 'Receipt'
+  },
+  subtitle: {
+    id: 'components.PaymentsList.subtitle',
+    defaultMessage: `Payouts are made on or before the 15th of each month and cover commissions
+    payable on orders from the previous month.`
   }
 })

@@ -42,13 +42,13 @@ import {
   // StyledCheckbox,
   LoadingErrorContainer,
   ErrorMessage,
-  SwitchWrapper,
-  StyledSwitch,
+  // SwitchWrapper,
+  // StyledSwitch,
   LoadingContainer,
-  StatusLabel,
-  AccountLabel,
+  // StatusLabel,
+  // AccountLabel,
 } from './styledComponents'
-import AffiliateModal from '../AffiliateModal'
+// import AffiliateModal from '../AffiliateModal'
 import ProfileForm from '../ProfileForm'
 // import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
 // import MeasurementsForm from '../MeasurementsForm'
@@ -115,7 +115,6 @@ interface Props {
   paypalCurrency: string
   paypalCheck: boolean
   loading: boolean
-  link: boolean
   openModal: boolean
   file: string
   // api actions
@@ -153,11 +152,13 @@ interface Props {
 
 class ProfileSettings extends React.Component<Props, {}> {
   componentDidUpdate() {
-    const { history: { location: { search } }, profileData } = this.props
+    const { profileData, history } = this.props
+    const { location: { search } } = history
     const { code } = queryString.parse(search)
     const { paypalAccount, status } = get(profileData, 'profileData.affiliate', {})
     if (code && !paypalAccount && !!status) {
       this.sendCode(code)
+      history.replace('/account?option=profileSettings')
     }
   }
   render() {
@@ -183,44 +184,12 @@ class ProfileSettings extends React.Component<Props, {}> {
     const {
       isMobile,
       profileData,
-      // regionsOptions: { regions },
       firstName,
       lastName,
-      setPaypalCurrency,
-      setPaypalCheck,
-      openAffiliate,
-      uploadFileAction,
-      file,
-      link,
-      history,
-      openModal,
       loading: loadingFile,
-      paypalCheck,
-      paypalCurrency,
       email,
       phone,
       loadingProfile,
-      // region,
-      // language,
-      // currency,
-      // loadingRegion,
-      // msrmntSystemSelected,
-      // msrmntGenderSelected,
-      // weight,
-      // heightFirst,
-      // heightSecond,
-      // chestSize,
-      // waistSize,
-      // hipsSize,
-      // inseamSize,
-      // shouldersSize,
-      // neckSize,
-      // loadingMeasurements,
-      // smsConfirmationChecked,
-      // smsUpdatesChecked,
-      // loadingSms,
-      // emailNewsletterChecked,
-      // loadingEmail,
       currentPassword,
       newPassword,
       newPasswordConfirm,
@@ -230,7 +199,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     } = this.props
 
     const userProfile = get(profileData, 'profileData.userProfile', {})
-    const affiliate = get(profileData, 'profileData.affiliate', {})
+    // const affiliate = get(profileData, 'profileData.affiliate', {})
     // const regionsOptions: Region[] = regions || []
 
     // const smsButtonDisabled =
@@ -241,8 +210,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     // const emailButtonDisabled =
     //   emailNewsletterChecked === null ||
     //   emailSettings.newsletter === emailNewsletterChecked
-    const { status, paypalAccount } = affiliate
-    const pendingLink = !!status && !paypalAccount
+    // const { status, paypalAccount } = affiliate
     return (
       <Container>
         {/* PROFILE */}
@@ -269,7 +237,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
-        <SwitchWrapper>
+        {/* <SwitchWrapper>
           {formatMessage(messages.makeAffiliate)}
           <StyledSwitch disabled={!!status} checked={openModal || !!status} onChange={openAffiliate} />
         </SwitchWrapper>
@@ -290,17 +258,15 @@ class ProfileSettings extends React.Component<Props, {}> {
             setPaypalCheck,
             formatMessage,
             file,
-            link,
             openAffiliate,
             uploadFileAction,
             paypalCurrency,
             setPaypalCurrency
           }}
-          link={link || pendingLink}
           linkPaypal={this.linkPaypal}
           sendRequest={this.sendRequest}
-          open={openModal || pendingLink}
-        />
+          open={openModal}
+        /> */}
         {/* REGION */}
         {/*<Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>

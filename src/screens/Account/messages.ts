@@ -35,7 +35,19 @@ export default defineMessages({
   },
   affiliate: {
     id: 'screens.Account.menu.affiliate',
-    defaultMessage: 'AFFILIATES'
+    defaultMessage: 'PAYDAY PROGRAM'
+  },
+  affiliateAbout: {
+    id: 'screens.Account.menu.affiliateAbout',
+    defaultMessage: 'About'
+  },
+  affiliateOrders: {
+    id: 'screens.Account.menu.affiliateOrders',
+    defaultMessage: 'Orders'
+  },
+  affiliatePayouts: {
+    id: 'screens.Account.menu.affiliatePayouts',
+    defaultMessage: 'Payouts'
   },
   myCreations: {
     id: 'screens.Account.menu.myCreations',

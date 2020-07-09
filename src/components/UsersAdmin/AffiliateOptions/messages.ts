@@ -23,7 +23,7 @@ export default defineMessages({
   },
   comissions: {
     id: 'components.affiliateOptions.comissions',
-    defaultMessage: 'Affiliate Comission'
+    defaultMessage: 'Affiliate Commission'
   },
   paypalAccount: {
     id: 'components.affiliateOptions.paypalAccount',
@@ -36,5 +36,27 @@ export default defineMessages({
   edit: {
     id: 'components.affiliateOptions.edit',
     defaultMessage: 'Edit'
+  },
+  retry: {
+    id: 'components.affiliateOptions.retry',
+    defaultMessage: 'Retry request'
+  },
+  settings: {
+    id: 'components.affiliateOptions.settings',
+    defaultMessage: 'Settings'
+  },
+  currency: {
+    id: 'components.affiliateOptions.currency',
+    defaultMessage: 'Payout Currency'
+  },
+  region: {
+    id: 'components.affiliateOptions.region',
+    defaultMessage: 'Region'
+  },
+  payoutDesc: {
+    id: 'components.affiliateOptions.payoutDesc',
+    defaultMessage: `Commissions are paid out in the currency based on your defined country of residence during 
+    the sign-up stage. If your default PayPal account currency differs from the payout currency, PayPal will convert 
+    the deposit amount into your default currency using the prevailing exchange rate determined by PayPal.`
   }
 })
