@@ -48,6 +48,7 @@ interface Props {
   paypalCheck: boolean
   paypalCurrency: string
   file: string
+  loading: boolean
   linkPaypal: () => void
   sendRequest: (value: boolean) => void
   openAffiliate: (value: boolean) => void
