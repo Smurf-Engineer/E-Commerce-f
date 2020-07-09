@@ -9,7 +9,7 @@
   "components.menuBar.nordic": "NORDIC",
   "components.menuBar.active": "ACTIVE",
   "components.menuBar.seeAll": "SEE ALL",
-  "components.AffiliatesAbout.wrongCurrency": "Wrong currency selected on your actual region",
+  "components.AffiliatesAbout.wrongCurrency": "Wrong currency selected on your actual region ({initialCountryCode})",
   "components.AffiliatesAbout.faqTitle": "FREQUENTLY ASKED QUESTIONS",
   "components.AffiliatesAbout.howItWorks": "How it works",
   "components.AffiliatesAbout.createDesigns": "Create your own designs or have our Pro Designers create them for you.",

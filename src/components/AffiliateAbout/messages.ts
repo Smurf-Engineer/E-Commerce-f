@@ -73,7 +73,7 @@ export default defineMessages({
   },
   wrongCurrency: {
     id: 'components.AffiliatesAbout.wrongCurrency',
-    defaultMessage: 'Wrong currency selected on your actual region'
+    defaultMessage: 'Wrong currency selected on your actual region ({initialCountryCode})'
   },
   howMuch: {
     id: 'components.AffiliatesAbout.howMuch',

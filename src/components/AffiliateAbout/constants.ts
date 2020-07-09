@@ -12,6 +12,6 @@ export const OPEN_AFFILIATE = `${namespace}/OPEN_AFFILIATE`
 export const SUCCESS_REQUEST = `${namespace}/SUCCESS_REQUEST`
 
 export const US_CURRENCY = 'usd'
-export const US_COUNTRY = 'us'
+export const US_COUNTRY = 'US'
 export const CA_CURRENCY = 'cad'
-export const CA_COUNTRY = 'ca'
+export const CA_COUNTRY = 'CA'
