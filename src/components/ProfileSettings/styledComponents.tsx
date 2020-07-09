@@ -4,7 +4,9 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import Switch from 'antd/lib/switch'
 import Checkbox from 'antd/lib/checkbox'
+import { WHITE_TRANSPARENT, BLUE, GRAY_DARK } from '../../theme/colors'
 
 interface InputProps {
   inputhWidth?: string
@@ -138,4 +140,39 @@ export const ErrorMessage = styled.div`
   font-size: 16px;
   line-height: 23px;
   text-align: center;
+`
+
+export const StyledSwitch = styled(Switch)`
+  margin-left: 24px;
+`
+
+export const SwitchWrapper = styled.div`
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  display: flex;
+`
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 10000;
+  height: 100vh;
+  background: ${WHITE_TRANSPARENT};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const StatusLabel = styled.div`
+  margin-top: 8px;
+  color: ${BLUE};
+  font-style: italic;
+`
+
+export const AccountLabel = styled.div`
+  margin-top: 8px;
+  color: ${GRAY_DARK};
 `

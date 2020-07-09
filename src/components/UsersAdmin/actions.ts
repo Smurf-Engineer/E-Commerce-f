@@ -15,7 +15,8 @@ import {
   SET_LOADING,
   CHANGE_NOTE,
   SET_SEARCH,
-  SET_SEARCH_MANAGER
+  SET_SEARCH_MANAGER,
+  SET_AFFILIATE_PAGE
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -56,7 +57,7 @@ export const onInputChangeAction = (id: string, value: string) => ({
   value
 })
 
-export const onChangeSectionAction = (section: boolean) => ({
+export const onChangeSectionAction = (section: number) => ({
   type: ON_CHANGE_SECTION,
   section
 })
@@ -72,6 +73,11 @@ export const onResetModalAction = () => ({
 export const setLoadingAction = (loading: boolean) => ({
   type: SET_LOADING,
   loading
+})
+
+export const onChangePage = (page: number): AnyAction => ({
+  type: SET_AFFILIATE_PAGE,
+  page
 })
 
 export const setSearchRep = (value: string) => ({

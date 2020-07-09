@@ -17,7 +17,13 @@ import {
   RESET_REDUCER_DATA,
   SET_SETTINGS_LOADING,
   CHANGE_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FORM
+  RESET_PASSWORD_FORM,
+  SET_PAYPAL_CURRENCY,
+  SET_PAYPAL_CHECK,
+  SET_LOADING,
+  SET_FILE,
+  OPEN_AFFILIATE,
+  SUCCESS_REQUEST
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -45,6 +51,11 @@ export const initialState = fromJS({
   neckSize: null,
   loadingMeasurements: false,
   smsConfirmationChecked: null,
+  paypalCurrency: 'usd',
+  paypalCheck: false,
+  loading: false,
+  file: '',
+  openModal: false,
   smsUpdatesChecked: null,
   loadingSms: false,
   emailNewsletterChecked: null,
@@ -62,6 +73,23 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
+    case SET_PAYPAL_CURRENCY:
+      return state.set('paypalCurrency', action.value)
+    case SET_PAYPAL_CHECK:
+      return state.set('paypalCheck', action.value)
+    case OPEN_AFFILIATE:
+      return state.set('openModal', action.value)
+    case SET_LOADING:
+      return state.set('loading', action.value)
+    case SET_FILE:
+      return state.merge({ file: action.value, loading: false })
+    case SUCCESS_REQUEST:
+      return state.merge({
+        file: '',
+        openModal: false,
+        loading: false,
+        paypalCheck: false,
+      })
     case CHANGE_INPUT: {
       if (action.id === 'region') {
         return state.merge({
