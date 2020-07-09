@@ -144,8 +144,8 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 </RadioStyled>
               </RadioGroupStyled>
               <Currencies>
-                <FormattedMessage {...messages.usd} />
-                <FormattedMessage {...messages.cad} />
+                <FormattedMessage {...messages.usdSymbol} />
+                <FormattedMessage {...messages.cadSymbol} />
               </Currencies>
               <Currencies>
                 <FileLink disabled={paypalCurrency !== US_CURRENCY} onClick={this.openFile(US_CURRENCY)}>
