@@ -1444,6 +1444,7 @@ export interface User {
   salesRep?: User
   affiliated?: boolean
   accountManager?: User
+  affiliateId?: String
 }
 
 export interface Role {

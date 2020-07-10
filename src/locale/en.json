@@ -1492,7 +1492,7 @@
   "screens.ProDesign.legacySample": "Ex. BRBR-123456789",
   "components.ProductThumbnail.ProductSlide.proAssigned": "PRODESIGN",
   "components.UsersList.netsuiteId": "Netsuite ID",
-  "components.UsersList.billing": "Billing Country",
+  "components.UsersList.affiliate": "Affiliated",
   "components.UsersList.signUpDate": "Sign-Up Date",
   "components.UsersList.salesRep": "Sales Rep",
   "components.UsersList.accountManager": "Account Manager",

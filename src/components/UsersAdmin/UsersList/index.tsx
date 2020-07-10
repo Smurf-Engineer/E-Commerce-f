@@ -27,6 +27,18 @@ import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getUsersQuery, getRepUsers, getManagers } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
+import {
+  ID,
+  SOCIAL_METHOD,
+  NETSUITE_INTERNAL,
+  AFFILIATE_ID,
+  CREATED_AT,
+  FIRST_NAME,
+  ADMINISTRATOR,
+  EMAIL,
+  SALES_REP,
+  ACCOUNT_MANAGER
+} from './constants'
 
 interface Data extends QueryProps {
   usersQuery: {
@@ -126,7 +138,7 @@ class UsersList extends React.Component<Props, StateProps> {
             return (
               <Row>
                 <Header>{formatMessage(messages.clientID)}</Header>
-                <Header>{formatMessage(messages.billing)}</Header>
+                <Header>{formatMessage(messages.affiliate)}</Header>
                 <Header>{formatMessage(messages.signUpDate)}</Header>
                 <Header>{formatMessage(messages.name)}</Header>
                 <Header>{formatMessage(messages.accountType)}</Header>
@@ -139,63 +151,63 @@ class UsersList extends React.Component<Props, StateProps> {
           return (
             <Row>
               <HeaderTable
-                id={'id'}
+                id={ID}
                 label={formatMessage(messages.clientID)}
-                sort={orderBy === 'id' ? sort : 'none'}
+                sort={orderBy === ID ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'billing_country'}
-                label={formatMessage(messages.billing)}
-                sort={orderBy === 'billing_country' ? sort : 'none'}
+                id={AFFILIATE_ID}
+                label={formatMessage(messages.affiliate)}
+                sort={orderBy === AFFILIATE_ID ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'created_at'}
+                id={CREATED_AT}
                 label={formatMessage(messages.signUpDate)}
-                sort={orderBy === 'created_at' ? sort : 'none'}
+                sort={orderBy === CREATED_AT ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'first_name'}
+                id={FIRST_NAME}
                 label={formatMessage(messages.name)}
-                sort={orderBy === 'first_name' ? sort : 'none'}
+                sort={orderBy === FIRST_NAME ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'social_method'}
+                id={SOCIAL_METHOD}
                 label={formatMessage(messages.accountType)}
-                sort={orderBy === 'social_method' ? sort : 'none'}
+                sort={orderBy === SOCIAL_METHOD ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'administrator'}
+                id={ADMINISTRATOR}
                 label={formatMessage(messages.admin)}
-                sort={orderBy === 'administrator' ? sort : 'none'}
+                sort={orderBy === ADMINISTRATOR ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'email'}
+                id={EMAIL}
                 label={formatMessage(messages.email)}
-                sort={orderBy === 'email' ? sort : 'none'}
+                sort={orderBy === EMAIL ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'netsuite_internal'}
+                id={NETSUITE_INTERNAL}
                 label={formatMessage(messages.netsuiteId)}
-                sort={orderBy === 'netsuite_internal' ? sort : 'none'}
+                sort={orderBy === NETSUITE_INTERNAL ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'sales_rep'}
+                id={SALES_REP}
                 label={formatMessage(messages.salesRep)}
-                sort={orderBy === 'sales_rep' ? sort : 'none'}
+                sort={orderBy === SALES_REP ? sort : 'none'}
                 {...{ onSortClick }}
               />
               <HeaderTable
-                id={'account_manager'}
+                id={ACCOUNT_MANAGER}
                 label={formatMessage(messages.accountManager)}
-                sort={orderBy === 'account_manager' ? sort : 'none'}
+                sort={orderBy === ACCOUNT_MANAGER ? sort : 'none'}
                 {...{ onSortClick }}
               />
             </Row>
@@ -216,7 +228,7 @@ class UsersList extends React.Component<Props, StateProps> {
           socialMethod,
           administrator,
           netsuiteId = '',
-          billingCountry,
+          affiliateId,
           createdAt,
           shortId,
         }: User,
@@ -244,7 +256,7 @@ class UsersList extends React.Component<Props, StateProps> {
               administrator,
               onSetAdministrator,
               netsuiteId,
-              billingCountry,
+              affiliateId,
               createdAt,
               onSelectUser,
               shortId,
