@@ -138,9 +138,9 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'orders.cutoff_date'}
+              id={'cutoff_date'}
               label={formatMessage(messages.cutoffDate)}
-              sort={orderBy === 'orders.cutoff_date' ? sort : 'none'}
+              sort={orderBy === 'cutoff_date' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -162,10 +162,9 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'pending_checks'}
               justifyContent={'center'}
               label={formatMessage(messages.preflight)}
-              sort={orderBy === 'pending_checks' ? sort : 'none'}
+              sort={'none'}
               loading={preflightData && preflightData.loading}
               {...{ onSortClick, interactiveHeaders }}
             />
