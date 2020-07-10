@@ -19,7 +19,7 @@ export const Container = styled.div`
   width: 100%;
   padding-right: ${({ withoutPadding }: ContainerProps) =>
     withoutPadding ? '0' : '32px'};
-  @media (min-width: 320px) and (max-width: 768px) {
+  @media (min-width: 320px) and (max-width: 1024px) {
     padding-right: 0;
     align-items: center;
   }
@@ -29,7 +29,7 @@ export const OptionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     flex-wrap: wrap;
     font-size: 13px;
     justify-content: space-between;
@@ -45,7 +45,7 @@ export const LabelButton = styled.div`
   align-items: flex-start;
   height: 48px;
   margin-right: 24px;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     flex: 1;
     height: 38px;
     margin-bottom: 26px;
@@ -103,7 +103,7 @@ export const Subtitle = styled.div`
   font-weight: bold;
   margin-bottom: 22px;
   font-size: 16px;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 100%;
   }
 `
