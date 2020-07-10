@@ -144,7 +144,7 @@ type TitleProps = {
 
 export const PriceTitle = styled.div`
   color: ${GRAY_DARK};
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 23px;
