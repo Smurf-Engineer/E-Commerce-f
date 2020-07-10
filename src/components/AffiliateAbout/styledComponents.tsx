@@ -143,11 +143,7 @@ export const PayDayImage = styled.img`
   margin-right: 52px;
   margin-bottom: -46px;
   flex: 1;
-  @media (min-width: 768px) and (max-width: 1024px) {
-    max-width: 302px;
-    margin-right: 0;
-  }
-  @media (max-width: 767px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 `
@@ -158,7 +154,10 @@ export const PayDayImageMobile = styled.img`
   object-fit: cover;
   flex: 1;
   display: none;
-  @media (max-width: 767px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
+    max-height: 383px;
+  }
+  @media (max-width: 1024px) {
     display: block;
     max-width: 100%;
     object-fit: cover;
@@ -169,6 +168,9 @@ export const PayDayImageMobile = styled.img`
 export const AboutBody = styled.div`
   padding-right: 84px;
   width: 100%;
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding-right: 42px;
+  }
   @media (max-width: 768px) {
     padding-right: 0;
   }
@@ -240,9 +242,12 @@ export const AffiliateDetailsSection = styled.div`
   margin-right: 84px;
   border: 1px solid ${GRAY};
   padding: 22px 28px;
+  width: auto;
+  @media (min-width: 769px) and (max-width: 1024px) {
+    margin-right: 42px;
+  }
   @media (max-width: 768px) {
-    margin-right: 0;
-    padding: 0px 28px;
+    width: 100%;
   }
 `
 

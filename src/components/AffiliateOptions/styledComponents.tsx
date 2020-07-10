@@ -26,7 +26,7 @@ export const Container = styled.div`
   align-items: flex-start;
   margin-bottom: ${({ onlyDetails }: DivProps) => onlyDetails ? '0' : '32px'};
   margin-bottom: ${({ onlyDetails }: DivProps) => onlyDetails ? '0' : '-64px'};
-  @media (min-width: 320px) and (max-width: 768px) {
+  @media (min-width: 320px) and (max-width: 1024px) {
     padding: 24px 0;
   }
 `
