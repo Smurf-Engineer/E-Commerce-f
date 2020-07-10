@@ -2,7 +2,7 @@
  * Styled Components - Created by gustavomedina on 04/05/18.
  */
 import styled from 'styled-components'
-import { GREEN, GRAY, BLUE } from '../../theme/colors'
+import { GREEN, GRAY, BLUE, FACEBOOKBLUE } from '../../theme/colors'
 
 type StyleProps = {
   onlyRead?: boolean
@@ -176,4 +176,8 @@ export const StoreLink = styled.div`
   text-decoration: underline;
   color: ${BLUE};
   cursor: pointer;
+  transition: all .25s;
+  &:hover {
+    color: ${FACEBOOKBLUE};
+  }
 `
