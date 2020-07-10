@@ -5,8 +5,10 @@ import { SET_USER_ACTION } from '../../store/constants'
 import { setRegionAction } from '../../screens/LanguageProvider/actions'
 import { getPermissionsQuery } from './data'
 import get from 'lodash/get'
+import shortId from 'shortid'
 import { message } from 'antd'
-import { RolePermission, UserPermissions } from '../../types/common'
+import { RolePermission, UserPermissions, UserType } from '../../types/common'
+import { initSlaask } from '../../slaask'
 
 export const restoreUserSession = (client: any) => {
   return async (dispatch: any) => {
@@ -81,5 +83,27 @@ export const getPermissions = async (client: any) => {
     return permissions
   } catch (e) {
     message.error('Error retrieving permissions')
+  }
+}
+
+export const openSupport = (user: UserType) => {
+  try {
+    let id = sessionStorage.getItem('slaaskSupportId')
+    if (!id) {
+      const slaaskId = shortId.generate()
+      sessionStorage.setItem('slaaskSupportId', slaaskId)
+      id = slaaskId
+    }
+    const { email, name, lastName, id: userId } = user || {}
+    const info = {
+      id,
+      email,
+      userId,
+      name,
+      lastName
+    }
+    initSlaask(info, true)
+  } catch (error) {
+    message.error(error)
   }
 }
