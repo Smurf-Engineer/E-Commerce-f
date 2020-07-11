@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'components.CartListItem.from',
     defaultMessage: 'From '
   },
+  fromStore: {
+    id: 'components.CartListItem.fromStore',
+    defaultMessage: 'From {teamStoreName} '
+  },
   salesRep: {
     id: 'components.CartListItem.salesRep',
     defaultMessage: 'Sales Rep'
