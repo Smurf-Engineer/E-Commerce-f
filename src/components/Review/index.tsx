@@ -55,6 +55,7 @@ class Review extends React.PureComponent<Props, {}> {
         city,
         stateProvince,
         zipCode,
+        phone,
         country,
         apartment
       },
@@ -84,43 +85,43 @@ class Review extends React.PureComponent<Props, {}> {
 
     const renderList = cart
       ? cart.map((cartItem, index) => {
-          const {
-            designId,
-            designImage,
-            designName,
-            teamStoreItem,
-            teamStoreId,
-            isFixed,
-            fixedPrices,
-            product: { images, name, shortDescription, priceRange }
-          } = cartItem
-          const rangeToUse =
-            fixedPrices && fixedPrices.length ? fixedPrices : priceRange
-          const currencyPrices = filter(rangeToUse, { abbreviation: currency })
-          const teamStoreRange = teamStoreId && isFixed ? 0 : 1
-          const itemImage = designId ? designImage || '' : images[0].front
-          const itemTitle = designId ? designName || '' : name
-          const itemDescription = designId
-            ? `${name} ${shortDescription}`
-            : shortDescription
-          return (
-            <CartListItem
-              currentCurrency={currency}
-              formatMessage={formatMessage}
-              key={index}
-              title={itemTitle}
-              image={itemImage}
-              description={itemDescription}
-              price={
-                currencyPrices[teamStoreId ? teamStoreRange : priceRangeToApply]
-              }
-              itemIndex={index}
-              onlyRead={true}
-              currencySymbol={currencyPrices[0].shortName}
-              {...{ cartItem, isFixed, teamStoreItem }}
-            />
-          )
-        })
+        const {
+          designId,
+          designImage,
+          designName,
+          teamStoreItem,
+          teamStoreId,
+          isFixed,
+          fixedPrices,
+          product: { images, name, shortDescription, priceRange }
+        } = cartItem
+        const rangeToUse =
+          fixedPrices && fixedPrices.length ? fixedPrices : priceRange
+        const currencyPrices = filter(rangeToUse, { abbreviation: currency })
+        const teamStoreRange = teamStoreId && isFixed ? 0 : 1
+        const itemImage = designId ? designImage || '' : images[0].front
+        const itemTitle = designId ? designName || '' : name
+        const itemDescription = designId
+          ? `${name} ${shortDescription}`
+          : shortDescription
+        return (
+          <CartListItem
+            currentCurrency={currency}
+            formatMessage={formatMessage}
+            key={index}
+            title={itemTitle}
+            image={itemImage}
+            description={itemDescription}
+            price={
+              currencyPrices[teamStoreId ? teamStoreRange : priceRangeToApply]
+            }
+            itemIndex={index}
+            onlyRead={true}
+            currencySymbol={currencyPrices[0].shortName}
+            {...{ cartItem, isFixed, teamStoreItem }}
+          />
+        )
+      })
       : null
     const isPaypalPayment = paymentMethod === PaymentOptions.PAYPAL
     const isIbanPayment = paymentMethod === PaymentOptions.IBAN
@@ -138,7 +139,7 @@ class Review extends React.PureComponent<Props, {}> {
               hideBottomButtons={true}
               name={`${firstName} ${lastName}`}
               city={`${city} ${stateProvince}`}
-              {...{ street, zipCode, country, formatMessage, apartment }}
+              {...{ street, zipCode, country, phone, formatMessage, apartment }}
             />
             <EditInfoButton onClick={this.handleOnGoToStepOne}>
               {formatMessage(messages.edit)}
@@ -149,22 +150,22 @@ class Review extends React.PureComponent<Props, {}> {
             {isPaypalPayment ? (
               <Text>{billingCountry.toUpperCase()}</Text>
             ) : (
-              <div>
-                <MyAddress
-                  hideBottomButtons={true}
-                  name={`${billingFirstName} ${billingLastName}`}
-                  street={billingStreet}
-                  city={`${billingCity} ${billingStateProvince}`}
-                  zipCode={billingZipCode}
-                  country={billingCountry.toUpperCase()}
-                  apartment={billingApartment}
-                  {...{ formatMessage }}
-                />
-                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-                  {formatMessage(messages.edit)}
-                </EditInfoButton>
-              </div>
-            )}
+                <div>
+                  <MyAddress
+                    hideBottomButtons={true}
+                    name={`${billingFirstName} ${billingLastName}`}
+                    street={billingStreet}
+                    city={`${billingCity} ${billingStateProvince}`}
+                    zipCode={billingZipCode}
+                    country={billingCountry.toUpperCase()}
+                    apartment={billingApartment}
+                    {...{ formatMessage }}
+                  />
+                  <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                    {formatMessage(messages.edit)}
+                  </EditInfoButton>
+                </div>
+              )}
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.payment)}</Title>
@@ -183,8 +184,8 @@ class Review extends React.PureComponent<Props, {}> {
                 </EditInfoButton>
               </div>
             ) : (
-              <img src={iconPaypal} />
-            )}
+                  <img src={iconPaypal} />
+                )}
           </InfoContainer>
         </BottomContainer>
       </Container>

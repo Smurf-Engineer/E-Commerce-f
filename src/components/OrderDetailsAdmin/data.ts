@@ -16,6 +16,7 @@ export const getOrderQuery = gql`
       shippingLastName: shipping_address_last_name
       shippingStreet: shipping_address_street
       shippingApartment: shipping_address_apartment
+      shippingPhone: shipping_address_phone
       shippingCountry: shipping_address_country
       shippingStateProvince: shipping_address_state_province
       shippingCity: shipping_address_city

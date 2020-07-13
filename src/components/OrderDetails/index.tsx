@@ -118,6 +118,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingLastName,
       shippingStreet,
       shippingApartment,
+      shippingPhone,
       shippingCountry,
       shippingStateProvince,
       shippingCity,
@@ -342,6 +343,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               name={`${shippingFirstName} ${shippingLastName}`}
               city={`${shippingCity} ${shippingStateProvince}`}
               street={shippingStreet}
+              phone={shippingPhone}
               zipCode={shippingZipCode}
               country={shippingCountry}
               apartment={shippingApartment}

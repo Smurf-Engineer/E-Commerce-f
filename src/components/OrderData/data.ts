@@ -13,6 +13,7 @@ export const getOrderQuery = gql`
       apartment: shipping_address_apartment
       street: shipping_address_street
       city: shipping_address_city
+      phone: shipping_address_phone
       stateProvince: shipping_address_state_province
       zipCode: shipping_address_zip_code
       country: shipping_address_country

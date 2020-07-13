@@ -110,6 +110,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       shippingStreet,
       shippingApartment,
       shippingCountry,
+      shippingPhone,
       shippingStateProvince,
       shippingCity,
       shippingZipCode,
@@ -157,51 +158,51 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
     let subtotal = 0
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
-          const {
-            designId,
-            designImage = '',
-            designName = '',
-            product: { images, name, shortDescription },
-            productTotal,
-            preflightCheck,
-            unitPrice
-          } = cartItem
+        const {
+          designId,
+          designImage = '',
+          designName = '',
+          product: { images, name, shortDescription },
+          productTotal,
+          preflightCheck,
+          unitPrice
+        } = cartItem
 
-          subtotal += productTotal || 0
+        subtotal += productTotal || 0
 
-          const priceRange = {
-            quantity: '0',
-            price: 0,
-            shortName: ''
-          }
+        const priceRange = {
+          quantity: '0',
+          price: 0,
+          shortName: ''
+        }
 
-          const itemImage = designId ? designImage : images[0].front
-          const itemTitle = designId ? designName : name
-          const itemDescription = designId
-            ? `${name} ${shortDescription}`
-            : shortDescription
-          return (
-            <CartListItemAdmin
-              {...{
-                formatMessage,
-                productTotal,
-                history,
-                unitPrice,
-                cartItem,
-                preflightCheck,
-                currentCurrency
-              }}
-              currencySymbol={currency.shortName}
-              key={index}
-              image={itemImage}
-              title={itemTitle}
-              description={itemDescription}
-              price={priceRange}
-              itemIndex={index}
-              onlyRead={true}
-            />
-          )
-        })
+        const itemImage = designId ? designImage : images[0].front
+        const itemTitle = designId ? designName : name
+        const itemDescription = designId
+          ? `${name} ${shortDescription}`
+          : shortDescription
+        return (
+          <CartListItemAdmin
+            {...{
+              formatMessage,
+              productTotal,
+              history,
+              unitPrice,
+              cartItem,
+              preflightCheck,
+              currentCurrency
+            }}
+            currencySymbol={currency.shortName}
+            key={index}
+            image={itemImage}
+            title={itemTitle}
+            description={itemDescription}
+            price={priceRange}
+            itemIndex={index}
+            onlyRead={true}
+          />
+        )
+      })
       : null
 
     const card = get(stripeCharge, 'cardData')
@@ -209,8 +210,8 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
       ) : (
-        <StyledImage src={iconPaypal} />
-      )
+          <StyledImage src={iconPaypal} />
+        )
 
     return (
       <Container>
@@ -298,6 +299,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
               hideBottomButtons={true}
               name={`${shippingFirstName} ${shippingLastName}`}
               city={`${shippingCity} ${shippingStateProvince}`}
+              phone={shippingPhone}
               street={shippingStreet}
               zipCode={shippingZipCode}
               country={shippingCountry}
