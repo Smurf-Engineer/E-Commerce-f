@@ -133,6 +133,7 @@
   "components.signUp.createLabel": "Create a Jakroo Account",
   "components.signUp.saveAndAccessLegend": "Save and access all your customized designs and preferences for a better shopping experience.",
   "components.signUp.orLabel": "OR",
+  "components.signUp.badFormat": "The e-mail contains not valid characters",
   "components.signUp.firstNameLabel": "First Name",
   "components.signUp.lastNameLabel": "Last Name",
   "components.signUp.emailLabel": "E-Mail",

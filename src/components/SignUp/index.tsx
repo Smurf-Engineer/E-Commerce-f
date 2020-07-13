@@ -30,6 +30,8 @@ import {
 } from './styledComponents'
 import messages from './messages'
 
+const EMAIL_REGEX = /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi
+
 interface Props {
   closeSignUp: () => void
   signUpUser: (variables: {}) => void
@@ -209,6 +211,10 @@ class SignUp extends React.Component<Props, StateProps> {
       countryCode: initialCountryCode
     }
 
+    if (!EMAIL_REGEX.test(email.toLowerCase())) {
+      message.error(formatMessage(messages.badFormat))
+      return
+    }
     try {
       const response = await signUpUser({ variables: { user } })
       const data = get(response, 'data.signUp', false)

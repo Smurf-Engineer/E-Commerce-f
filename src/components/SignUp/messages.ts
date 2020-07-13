@@ -69,5 +69,9 @@ export default defineMessages({
   createAccountError: {
     id: 'components.signUp.createAccountError',
     defaultMessage: 'Yikes, something went wrong. Please try again!'
+  },
+  badFormat: {
+    id: 'components.signUp.badFormat',
+    defaultMessage: 'The e-mail contains not valid characters'
   }
 })
