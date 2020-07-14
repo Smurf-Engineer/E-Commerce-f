@@ -53,10 +53,13 @@ export const getUsers = gql`
   }
 `
 
-export const getProducts = gql`
-  query getProductInternalsInfo($text: String) {
-    productsSearch: getProductInternalsInfo(text: $text) {
-      products
+export const getDesignSearchCode = gql`
+  query GetDesignSearchCodeQuery($pattern: String!) {
+    getDesignSearchCode(pattern: $pattern) {
+      id
+      code
+      name
+      image
     }
   }
 `

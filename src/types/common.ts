@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -1409,6 +1409,8 @@ export interface Role {
 
 export interface DesignSearchCode {
   code: string
+  name?: string
+  image?: string
 }
 
 export interface NavbarSports {

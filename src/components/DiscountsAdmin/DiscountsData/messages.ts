@@ -57,9 +57,9 @@ export default defineMessages({
     id: 'components.DiscountsData.usage',
     defaultMessage: 'Usage'
   },
-  product: {
-    id: 'components.DiscountsData.product',
-    defaultMessage: 'Product'
+  design: {
+    id: 'components.DiscountsData.design',
+    defaultMessage: 'Design'
   },
   users: {
     id: 'components.DiscountsData.users',
@@ -73,9 +73,9 @@ export default defineMessages({
     id: 'components.DiscountsData.searchByProduct',
     defaultMessage: 'Model ID'
   },
-  addProduct: {
-    id: 'components.DiscountsData.addProduct',
-    defaultMessage: 'Add Products'
+  addDesign: {
+    id: 'components.DiscountsData.addDesign',
+    defaultMessage: 'Add Designs'
   },
   addItems: {
     id: 'components.DiscountsData.addItems',
@@ -101,9 +101,9 @@ export default defineMessages({
     id: 'components.DiscountsData.discountUser',
     defaultMessage: 'Discount User List'
   },
-  discountProduct: {
-    id: 'components.DiscountsData.discountProduct',
-    defaultMessage: 'Discount Product List'
+  discountDesign: {
+    id: 'components.DiscountsData.discountDesign',
+    defaultMessage: 'Discount Design List'
   },
   addUsers: {
     id: 'components.DiscountsData.addUsers',

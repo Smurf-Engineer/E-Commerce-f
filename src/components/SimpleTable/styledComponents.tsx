@@ -127,3 +127,9 @@ export const Center = styled.div`
   width: 58px;
   text-align: center;
 `
+
+export const Thumbnail = styled.img`
+  width: 180px;
+  height: 100px;
+  object-fit: contain;
+`

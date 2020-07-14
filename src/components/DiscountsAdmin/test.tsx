@@ -16,8 +16,8 @@ import {
   onSelectDateAction,
   setDiscountToUpdateAction,
   selectRestrictionAction,
-  onChangeUserAction,
-  onAddProductAction,
+  onChangeInputAction,
+  onAddDesignAction,
   deleteItemSelectedAction,
   onAddUserAction,
   setDiscountPageAction,
@@ -37,7 +37,7 @@ import {
   ON_SELECT_DATE,
   SET_DISCOUNT_TO_UPDATE,
   SELECT_RESTRICTION,
-  ON_CHANGE_USER,
+  ON_CHANGE_INPUT,
   ON_ADD_PRODUCT,
   DELETE_ITEM_SELECTED_ACTION,
   ON_ADD_USER,
@@ -160,20 +160,26 @@ describe(' DiscountsAdmin Screen', () => {
         restriction
       })
     })
-    it('onChangeUserAction', () => {
-      const type = ON_CHANGE_USER
+    it('onChangeInputAction', () => {
+      const type = ON_CHANGE_INPUT
+      const key = ''
       const value = ''
-      expect(onChangeUserAction(value)).toEqual({
+      expect(onChangeInputAction(key, value)).toEqual({
         type,
+        key,
         value
       })
     })
-    it('onAddProductAction', () => {
+    it('onAddDesignAction', () => {
       const type = ON_ADD_PRODUCT
-      const value = ''
-      expect(onAddProductAction(value)).toEqual({
+      const design = {
+        code: '',
+        image: '',
+        name: ''
+      }
+      expect(onAddDesignAction(design)).toEqual({
         type,
-        value
+        design
       })
     })
     it('deleteItemSelectedAction', () => {
@@ -506,7 +512,10 @@ describe(' DiscountsAdmin Screen', () => {
             initialState,
             setDiscountToUpdateAction(discount)
           )
-          const customNameValue = customState.getIn(['restrictionType', 'usage'])
+          const customNameValue = customState.getIn([
+            'restrictionType',
+            'usage'
+          ])
           expect(customNameValue).toBeTruthy()
         })
       })
@@ -524,15 +533,18 @@ describe(' DiscountsAdmin Screen', () => {
         it('Handles custom values in discount', () => {
           const customValue = {
             users: false,
-            product: true,
-            usage: false,
+            design: true,
+            usage: false
           }
           const customState = discountsAdminReducer(
             initialState,
             selectRestrictionAction(customValue)
           )
-          const customNameValue = customState.getIn(['restrictionType', 'product'])
-          expect(customNameValue).toBe(customValue.product)
+          const customNameValue = customState.getIn([
+            'restrictionType',
+            'design'
+          ])
+          expect(customNameValue).toBe(customValue.design)
         })
       })
     })
@@ -552,9 +564,10 @@ describe(' DiscountsAdmin Screen', () => {
         })
         it('Handles custom values in user', () => {
           const customValue = 'john'
+          const key = 'user'
           const customState = discountsAdminReducer(
             initialState,
-            onChangeUserAction(customValue)
+            onChangeInputAction(key, customValue)
           )
           const customNameValue = customState.get('user')
           expect(customNameValue).toBe(customValue)
@@ -572,10 +585,10 @@ describe(' DiscountsAdmin Screen', () => {
           expect(customInitialValue.size).toBe(0)
         })
         it('Handles custom values in selectedProducts', () => {
-          const customValue = 'tour'
+          const customValue = { name: 'My design', image: '', code: 'JV2-123' }
           const customState = discountsAdminReducer(
             initialState,
-            onAddProductAction(customValue)
+            onAddDesignAction(customValue)
           )
           const customNameValue = customState.get('selectedProducts')
           expect(customNameValue.size).toBeGreaterThan(0)

@@ -8,7 +8,7 @@ import Icon from 'antd/lib/icon'
 import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import debounce from 'lodash/debounce'
-import { USAGE, PRODUCT, USERS } from '../constants'
+import { USAGE, DESIGN, USERS } from '../constants'
 import SimpleTable from '../../SimpleTable'
 import { BLUE } from '../../../theme/colors'
 import {
@@ -33,7 +33,13 @@ import {
 } from './styledComponents'
 import Select, { SelectValue } from 'antd/lib/select'
 import moment, { Moment } from 'moment'
-import { User, UserDiscount, Header, HiddenSymbols } from '../../../types/common'
+import {
+  User,
+  UserDiscount,
+  Header,
+  HiddenSymbols,
+  DesignSearchCode
+} from '../../../types/common'
 
 interface Props {
   title?: string
@@ -53,6 +59,7 @@ interface Props {
   usageNumber: number
   unlimitedUsage: boolean
   selectedProducts: string[]
+  design: string
   goBack: () => void
   formatMessage: (messageDescriptor: any) => string
   handleOnInputChange: (event: any) => void
@@ -62,8 +69,8 @@ interface Props {
   onSaveDiscount: () => void
   onSelectDate: (date: Moment, dateString: string) => void
   onSelectRestriction: (restriction: string) => () => void
-  handleOnChange: (value: string) => void
-  onAddProduct: (value: string) => void
+  handleOnChange: (key: string, value: string) => void
+  onAddDesign: (design: DesignSearchCode) => void
   onDeleteItem: (id: number, section: string) => void
   onAddUser: (user: UserDiscount) => void
   onChangeUsage: (value: number) => void
@@ -71,7 +78,7 @@ interface Props {
 }
 
 const { Option } = Select
-const discountRestrictionTypes = [PRODUCT, USERS, USAGE]
+const discountRestrictionTypes = [DESIGN, USERS, USAGE]
 
 interface StateProps {
   searchValue: string
@@ -86,6 +93,7 @@ const usersHeader: Header[] = [
 ]
 
 const productsHeader: Header[] = [
+  { message: 'image', width: 20, tabletWidth: 20, fieldName: 'image' },
   { message: 'name', width: 40, tabletWidth: 40, fieldName: 'name' }
 ]
 
@@ -95,18 +103,29 @@ class DiscountsData extends React.Component<Props, StateProps> {
     searchValueProducts: ''
   }
   debounceSearchUser = debounce(
-    () => this.props.handleOnChange(this.state.searchValue),
+    () => this.props.handleOnChange('user', this.state.searchValue),
     300
   )
   debounceSearchProduct = debounce(
-    () => this.props.handleOnChange(this.state.searchValueProducts),
+    () => this.props.handleOnChange('design', this.state.searchValueProducts),
     300
   )
 
   handleOnSelectProduct = (value: SelectValue) => {
-    const { onAddProduct } = this.props
+    const { onAddDesign, searchResultsProducts, selectedProducts } = this.props
     const parsedValue = value.toString()
-    onAddProduct(parsedValue)
+    const designInfo = searchResultsProducts.find(
+      (item: DesignSearchCode) => item.value === parsedValue
+    )
+    console.log(searchResultsProducts)
+    const designAlreadyAdded = selectedProducts.find(
+      (item) => item.value === designInfo.value
+    )
+
+    if (!designAlreadyAdded && designInfo) {
+      onAddDesign(designInfo)
+      this.setState({ searchValueProducts: '' })
+    }
   }
 
   handleOnSelectUser = (value: SelectValue) => {
@@ -122,7 +141,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
       (element: UserDiscount) => element.value === userId
     )
     const userAlreadyAdded = selectedUsers.find(
-      element => element.netsuiteId === userInfo.netsuiteId
+      (element) => element.netsuiteId === userInfo.netsuiteId
     )
     if (!userAlreadyAdded) {
       onAddUser(userInfo)
@@ -189,9 +208,11 @@ class DiscountsData extends React.Component<Props, StateProps> {
       !discountItemId.length ||
       !rate ||
       !expiry ||
-      (!restrictionType[USERS] && !restrictionType[PRODUCT] && !restrictionType[USAGE]) ||
+      (!restrictionType[USERS] &&
+        !restrictionType[DESIGN] &&
+        !restrictionType[USAGE]) ||
       (!!restrictionType[USERS] && !selectedUsers.length) ||
-      (!!restrictionType[PRODUCT] && !selectedProducts.length) ||
+      (!!restrictionType[DESIGN] && !selectedProducts.length) ||
       (!!restrictionType[USAGE] && !unlimitedUsage && usageNumber <= 0)
     const { searchValue, searchValueProducts } = this.state
     return (
@@ -352,12 +373,12 @@ class DiscountsData extends React.Component<Props, StateProps> {
             </Row>
           </div>
         )}
-        {restrictionType[PRODUCT] && (
+        {restrictionType[DESIGN] && (
           <div>
             <Row>
               <Column>
-                <Title>{formatMessage(messages.discountProduct)}</Title>
-                <Label>{formatMessage(messages.addProduct)}</Label>
+                <Title>{formatMessage(messages.discountDesign)}</Title>
+                <Label>{formatMessage(messages.addDesign)}</Label>
                 <StyledSearch
                   onChange={this.handleProductInputChange}
                   dataSource={searchResultsProducts}

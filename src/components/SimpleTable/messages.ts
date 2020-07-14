@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'components.SimpleTable.name',
     defaultMessage: 'Name'
   },
+  image: {
+    id: 'components.SimpleTable.image',
+    defaultMessage: 'Image'
+  },
   delete: {
     id: 'components.SimpleTable.delete',
     defaultMessage: 'Delete'
