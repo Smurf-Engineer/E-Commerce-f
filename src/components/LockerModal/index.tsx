@@ -112,28 +112,28 @@ export class LockerModal extends React.PureComponent<Props, {}> {
               name,
               image,
               createdAt,
-              product: { id: productId, description, type },
+              product: { id: productId, active, description, type },
               product
             }: DesignType,
             index
           ) => (
-            <ProductThumbnail
-              key={id}
-              checked={selectedItems[id] || tableItems[id]}
-              disabled={tableItems[id]}
-              id={index}
-              product={product}
-              onSelectItem={this.handleOnItemSelect}
-              {...{ name, image, productId, description, type, proDesign }}
-              date={createdAt}
-            />
-          )
+              <ProductThumbnail
+                key={id}
+                checked={selectedItems[id] || tableItems[id]}
+                disabled={tableItems[id] || !active}
+                id={index}
+                product={product}
+                onSelectItem={this.handleOnItemSelect}
+                {...{ name, image, productId, description, type, proDesign }}
+                date={createdAt}
+              />
+            )
         )
       ) : (
-        <NotFound>
-          <FormattedMessage {...messages.noDesigns} />
-        </NotFound>
-      )
+          <NotFound>
+            <FormattedMessage {...messages.noDesigns} />
+          </NotFound>
+        )
     } else {
       screen = <Spin />
     }
@@ -154,8 +154,8 @@ export class LockerModal extends React.PureComponent<Props, {}> {
           {title ? (
             <FormattedMessage {...messages.locker} values={{ title }} />
           ) : (
-            <FormattedMessage {...messages.myLocker} />
-          )}
+              <FormattedMessage {...messages.myLocker} />
+            )}
         </Title>
         <List
           ref={(listObject: any) => {

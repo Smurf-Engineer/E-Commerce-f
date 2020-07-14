@@ -27,6 +27,7 @@ export const desginsQuery = gql`
         product {
           id
           code
+          active
           yotpoId: yotpo_id
           type: name
           weight
