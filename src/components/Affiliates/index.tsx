@@ -127,6 +127,7 @@ class Affiliates extends React.Component<Props, {}> {
     if (!access.view) {
       history.replace(ADMIN_ROUTE)
     }
+    const isManager = access.view && !access.edit
     const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
     const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
     const rangeValue = [start, end]
@@ -182,6 +183,7 @@ class Affiliates extends React.Component<Props, {}> {
               status,
               orderPoint,
               startParam,
+              isManager,
               endParam
             }}
             onChangePage={this.handleOnChangePage}

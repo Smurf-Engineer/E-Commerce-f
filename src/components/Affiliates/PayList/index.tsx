@@ -32,7 +32,7 @@ import { PAY_LIMITS } from '../constants'
 import moment from 'moment'
 import { NOTE_FORMAT } from '../../UsersAdmin/constants'
 // import { getFileWithExtension } from '../../../utils/utilsFiles'
-import { PENDING_PAY } from '../../../constants'
+import { PENDING_PAY, TO_PAY } from '../../../constants'
 import clone from 'lodash/clone'
 import { message } from 'antd'
 import debounce from 'lodash/debounce'
@@ -49,6 +49,7 @@ interface Props {
   startParam: string
   endParam: string
   loading: boolean
+  isManager: boolean
   selected: SelectedPays
   handleInputChange: (value: string) => void
   setLoading: (loading: boolean) => void
@@ -60,11 +61,7 @@ interface Props {
 
 export class PayList extends React.Component<Props, {}> {
   debounceSearch = debounce(value => this.props.handleInputChange(value), 800)
-  stopPropagation = (event: any) => {
-    if (event) {
-      event.stopPropagation()
-    }
-  }
+
   handleOnUpdateText = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
       currentTarget: { value }
@@ -135,13 +132,14 @@ export class PayList extends React.Component<Props, {}> {
       currentTarget: { id }
     } = event
     const { history } = this.props
-    history.push(`/admin?order=${id}`)
+    history.push(`/admin?order=${id}&from=affiliates`)
   }
 
   render() {
     const {
       formatMessage,
       selected,
+      isManager,
       loading: loadingPayment,
       currentPage,
       data,
@@ -162,7 +160,7 @@ export class PayList extends React.Component<Props, {}> {
           />
           {hasChecked &&
             <PayButton onClick={this.handleMakePayment}>
-              {formatMessage(messages.payAll)}
+              {formatMessage(messages[isManager ? 'requestPay' : 'payAll'])}
             </PayButton>
           }
         </HeaderSection>
@@ -217,7 +215,13 @@ export class PayList extends React.Component<Props, {}> {
                 index: number) => (
                   <RepDiv id={orderId} onClick={this.openOrder} key={index}>
                     <Cell onClick={this.stopPropagation}>
-                      {status === PENDING_PAY && !!paypalAccount &&
+                      {(
+                        (
+                          (status === TO_PAY && !isManager) ||
+                          (isManager && status === PENDING_PAY)
+                        ) &&
+                        !!paypalAccount
+                      ) &&
                         <Checkbox
                           {...{ id }}
                           checked={selected[id]}
