@@ -33,7 +33,7 @@ export const getHomepageInfo = gql`
         id
         url
         urlMobile: url_mobile
-        sportId: sport_id,
+        sportId: sport_id
         isVideo: is_video
       }
       featuredProducts {
@@ -86,6 +86,21 @@ export const getHomepageInfo = gql`
         contentTile: content_tile
         title
         image
+      }
+    }
+  }
+`
+
+export const getDesignLabInfo = gql`
+  query getDesignLabInfo {
+    designInfo: getDesignLabInfo(onlyData: false) {
+      deliveryDays: delivery_days
+      tutorialPlaylist: tutorial_playlist
+      workingHours {
+        start
+        end
+        open
+        timeZone
       }
     }
   }
