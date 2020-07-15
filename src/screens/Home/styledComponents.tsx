@@ -205,3 +205,6 @@ export const SlideImageMobile = styled.img`
     display: inline-block;
   }
 `
+export const DeliveryInfo = styled.div`
+  background: orange;
+`

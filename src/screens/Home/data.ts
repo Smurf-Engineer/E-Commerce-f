@@ -93,15 +93,8 @@ export const getHomepageInfo = gql`
 
 export const getDesignLabInfo = gql`
   query getDesignLabInfo {
-    designInfo: getDesignLabInfo(onlyData: false) {
+    designInfo: getDesignLabInfo {
       deliveryDays: delivery_days
-      tutorialPlaylist: tutorial_playlist
-      workingHours {
-        start
-        end
-        open
-        timeZone
-      }
     }
   }
 `

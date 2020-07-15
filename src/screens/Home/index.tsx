@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import get from 'lodash/get'
 import * as thunkActions from './thunkActions'
 import { injectIntl, InjectedIntl } from 'react-intl'
@@ -36,8 +36,10 @@ import {
   SlideVideo,
   ImageContainer,
   SlideImage,
-  SlideImageMobile
+  SlideImageMobile,
+  DeliveryInfo
 } from './styledComponents'
+import { getDesignLabInfo } from './data'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
@@ -56,7 +58,8 @@ import {
   HomepageImagesType,
   HeaderImagePlaceHolder,
   HomepageCarousel,
-  ProductFile
+  ProductFile,
+  DeliveryDays
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
@@ -64,6 +67,10 @@ import { getFileExtension } from '../../utils/utilsFiles'
 
 interface Data extends QueryProps {
   files: any
+}
+
+interface DesignLab extends QueryProps {
+  designInfo?: DeliveryDays
 }
 
 const arrowLeft = <Arrow src={leftArrow} />
@@ -96,6 +103,7 @@ interface Props extends RouteComponentProps<any> {
   mainHeaderImages: HomepageImagesType[]
   title: string
   carouselSettings: HomepageCarousel
+  dataDesignLabInfo: DesignLab
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -178,10 +186,17 @@ export class Home extends React.Component<Props, {}> {
         secondarySlideTransition,
         secondarySlideDuration
       },
-      title = MAIN_TITLE
+      title = MAIN_TITLE,
+      dataDesignLabInfo
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
+
+    const deliveryDaysResponse = get(
+      dataDesignLabInfo,
+      'designInfo.deliveryDays',
+      null
+    )
 
     const searchResults = searchString ? (
       <SearchResults
@@ -267,6 +282,9 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
+          {!!deliveryDaysResponse && (
+            <DeliveryInfo>{deliveryDaysResponse}</DeliveryInfo>
+          )}
           {featured}
           {secondaryHeaderItems.length && (
             <CarouselContainer>
@@ -342,6 +360,13 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
+  graphql<DesignLab>(getDesignLabInfo, {
+    options: () => ({
+      fetchPolicy: 'network-only',
+      variables: {}
+    }),
+    name: 'dataDesignLabInfo'
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps

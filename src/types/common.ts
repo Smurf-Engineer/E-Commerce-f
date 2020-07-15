@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -1691,4 +1691,8 @@ export type PriceRangeProgress = {
 export type AccountManagerName = {
   first_name: string
   last_name: string
+}
+
+export type DeliveryDays = {
+  deliveryDays: string
 }
