@@ -117,7 +117,7 @@ class DiscountsData extends React.Component<Props, StateProps> {
     const designInfo = searchResultsProducts.find(
       (item: DesignSearchCode) => item.value === parsedValue
     )
-    console.log(searchResultsProducts)
+
     const designAlreadyAdded = selectedProducts.find(
       (item) => item.value === designInfo.value
     )

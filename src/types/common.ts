@@ -684,6 +684,7 @@ export interface ProductPrice {
   yotpoId: string
   price: number
   quantity: number
+  designId: string
 }
 export interface CreditCardData {
   id?: string
@@ -1411,6 +1412,8 @@ export interface DesignSearchCode {
   code: string
   name?: string
   image?: string
+  id?: number
+  shortId?: string
 }
 
 export interface NavbarSports {

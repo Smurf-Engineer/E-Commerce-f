@@ -71,7 +71,7 @@ export default defineMessages({
   },
   searchByProduct: {
     id: 'components.DiscountsData.searchByProduct',
-    defaultMessage: 'Model ID'
+    defaultMessage: 'JV2 Code'
   },
   addDesign: {
     id: 'components.DiscountsData.addDesign',

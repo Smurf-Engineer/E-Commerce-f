@@ -827,7 +827,7 @@ class Checkout extends React.Component<Props, {}> {
     } = this.props
     const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
     const quantity = quantities[priceRangeToApply]
-    return cart.map(({ product, itemDetails }: CartItems) => {
+    return cart.map(({ product, itemDetails, designId }: CartItems) => {
       // Check for fixed prices
       const productPriceRanges = get(product, 'priceRange', [])
       // get prices from currency
@@ -837,6 +837,7 @@ class Checkout extends React.Component<Props, {}> {
       })
       const designsPrice = {
         yotpoId: product.yotpoId,
+        designId,
         price: currencyPrice.price,
         quantity: sumBy(itemDetails, 'quantity')
       }

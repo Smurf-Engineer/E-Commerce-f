@@ -136,6 +136,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
         (item: DesignSearchCode) => {
           return {
             key: item.id,
+            shortId: item.shortId,
             value: item.code,
             text: item.code,
             name: item.name,
@@ -334,6 +335,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     const restrictArray = Object.keys(restrictionType).filter(
       (type: string) => restrictionType[type]
     )
+
+    const items = selectedProducts.map((item) => item.shortId)
     const restrictions = restrictArray.join(',')
     const isUpdatingDiscount = discountId !== -1
     const discount = {
@@ -346,10 +349,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       active: discountActive,
       restrictionType: restrictions,
       selectedUsers: usersIds,
-      items: selectedProducts,
+      items,
       usageNumber: !unlimitedUsage ? usageNumber : 0
     }
-
     setLoadingAction(true)
     try {
       await this.updateAddDiscount(isUpdatingDiscount, discount)

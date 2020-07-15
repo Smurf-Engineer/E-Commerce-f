@@ -1533,7 +1533,7 @@
   "components.DiscountsData.noUserSelected": "NO USER SELECTED",
   "components.DiscountsData.userNotSelected": "To add items, you need to select a user first.",
   "components.DiscountsData.gotIt": "Got it",
-  "components.DiscountsData.searchByProduct": "Model ID",
+  "components.DiscountsData.searchByProduct": "JV2 Code",
   "components.DiscountsData.addDesign": "Add Designs",
   "components.DiscountsData.discountUser": "Discount User List",
   "components.DiscountsData.discountDesign": "Discount Design List",
