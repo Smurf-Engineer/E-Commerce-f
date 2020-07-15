@@ -21,7 +21,8 @@ import {
   SHOW_REVIEW_DESIGN_MODAL,
   OPEN_FITINFO,
   OPEN_STORE_INFO,
-  SET_STORE_TERMS
+  SET_STORE_TERMS,
+  HIGHLIGHT_FIELDS
 } from './constants'
 import {
   AnyAction,
@@ -168,4 +169,8 @@ export const openFitInfoAction = (open: boolean, selectedIndex: number) => ({
   type: OPEN_FITINFO,
   open,
   selectedIndex
+})
+
+export const highlightRequiredFields = () => ({
+  type: HIGHLIGHT_FIELDS
 })

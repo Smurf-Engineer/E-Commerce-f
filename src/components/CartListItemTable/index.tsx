@@ -76,6 +76,7 @@ interface Props {
   itemIndex: number
   openFitInfo: boolean
   hideSizeHelp: boolean
+  highlightFields?: boolean
   openFitInfoAction: (open: boolean, selectedIndex: number) => void
 }
 
@@ -201,7 +202,8 @@ class CartListItemTable extends React.Component<Props, State> {
       cartItem,
       itemIndex,
       onlyRead,
-      hideSizeHelp
+      hideSizeHelp,
+      highlightFields
     } = this.props
     const { genderSelectWidth, fitSelectWidth } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
@@ -278,6 +280,9 @@ class CartListItemTable extends React.Component<Props, State> {
                   value={gender ? gender.name : undefined}
                   selectWidth={genderSelectWidth}
                   disabled={cartItem.fixedCart}
+                  highlightFields={
+                    highlightFields && !gender && !!genders.length
+                  }
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -299,9 +304,9 @@ class CartListItemTable extends React.Component<Props, State> {
                   placeholder={formatMessage(messages.sizePlaceholder)}
                   optionFilterProp="children"
                   value={size ? size.name : undefined}
-                  disabled={!sizes.length}
                   selectWidth={fitSelectWidth}
-                  disabled={cartItem.fixedCart}
+                  disabled={cartItem.fixedCart || !sizes.length}
+                  highlightFields={highlightFields && !size && !!sizes.length}
                 >
                   {sizeOptions}
                 </StyledSelect>
@@ -312,10 +317,10 @@ class CartListItemTable extends React.Component<Props, State> {
                   showSearch={false}
                   placeholder={formatMessage(messages.fitPlaceholder)}
                   optionFilterProp="children"
-                  disabled={!fits}
                   value={fit ? fit.name : undefined}
                   selectWidth={fitSelectWidth}
-                  disabled={cartItem.fixedCart}
+                  disabled={cartItem.fixedCart || !fits}
+                  highlightFields={highlightFields && !fit && fits}
                 >
                   {fitOptions}
                 </StyledSelect>
