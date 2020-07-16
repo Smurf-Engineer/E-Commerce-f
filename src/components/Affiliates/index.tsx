@@ -20,7 +20,7 @@ import {
 import List from './PayList'
 import messages from './messages'
 import { UserPermissions, SelectedPays } from '../../types/common'
-import { AFFILIATES, ADMIN_ROUTE } from '../AdminLayout/constants'
+import { AFFILIATES, ADMIN_ROUTE, MAKE_PAYOUTS } from '../AdminLayout/constants'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import moment, { Moment } from 'moment'
 import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
@@ -127,7 +127,9 @@ class Affiliates extends React.Component<Props, {}> {
     if (!access.view) {
       history.replace(ADMIN_ROUTE)
     }
-    const isManager = access.view && !access.edit
+    const canEdit = access.edit
+    const makePayouts = permissions[MAKE_PAYOUTS] || {}
+    const isAccountant = makePayouts.view && makePayouts.edit
     const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
     const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
     const rangeValue = [start, end]
@@ -183,7 +185,8 @@ class Affiliates extends React.Component<Props, {}> {
               status,
               orderPoint,
               startParam,
-              isManager,
+              canEdit,
+              isAccountant,
               endParam
             }}
             onChangePage={this.handleOnChangePage}

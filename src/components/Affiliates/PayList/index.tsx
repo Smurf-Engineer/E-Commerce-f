@@ -49,7 +49,8 @@ interface Props {
   startParam: string
   endParam: string
   loading: boolean
-  isManager: boolean
+  canEdit: boolean
+  isAccountant: boolean
   selected: SelectedPays
   handleInputChange: (value: string) => void
   setLoading: (loading: boolean) => void
@@ -139,7 +140,8 @@ export class PayList extends React.Component<Props, {}> {
     const {
       formatMessage,
       selected,
-      isManager,
+      canEdit,
+      isAccountant,
       loading: loadingPayment,
       currentPage,
       data,
@@ -158,9 +160,9 @@ export class PayList extends React.Component<Props, {}> {
             onChange={this.handleOnUpdateText}
             placeholder={formatMessage(messages.search)}
           />
-          {hasChecked &&
+          {(hasChecked && canEdit) &&
             <PayButton onClick={this.handleMakePayment}>
-              {formatMessage(messages[isManager ? 'requestPay' : 'payAll'])}
+              {formatMessage(messages[isAccountant ? 'payAll' : 'requestPay'])}
             </PayButton>
           }
         </HeaderSection>
@@ -173,10 +175,12 @@ export class PayList extends React.Component<Props, {}> {
           <thead>
             <Row>
               <Header>
-                <Checkbox
-                  {...{ checked, indeterminate }}
-                  onChange={this.handleCheckChange}
-                />
+                {canEdit &&
+                  <Checkbox
+                    {...{ checked, indeterminate }}
+                    onChange={this.handleCheckChange}
+                  />
+                }
               </Header>
               <Header>{formatMessage(messages.date)}</Header>
               <Header>{formatMessage(messages.clientId)}</Header>
@@ -217,10 +221,10 @@ export class PayList extends React.Component<Props, {}> {
                     <Cell onClick={this.stopPropagation}>
                       {(
                         (
-                          (status === TO_PAY && !isManager) ||
-                          (isManager && status === PENDING_PAY)
+                          (status === TO_PAY && isAccountant) ||
+                          (!isAccountant && status === PENDING_PAY)
                         ) &&
-                        !!paypalAccount
+                        !!paypalAccount && canEdit
                       ) &&
                         <Checkbox
                           {...{ id }}
