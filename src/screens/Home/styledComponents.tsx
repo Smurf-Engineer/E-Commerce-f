@@ -8,7 +8,10 @@ import {
   GRAY_SOFT,
   GRAY_SKELETON,
   GRAY_HEADER,
-  BLACK
+  BLACK,
+  GRAY_LIGHTEST,
+  RED,
+  GREEN
 } from '../../theme/colors'
 
 interface DivProps {
@@ -206,5 +209,79 @@ export const SlideImageMobile = styled.img`
   }
 `
 export const DeliveryInfo = styled.div`
-  background: orange;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  @media (max-width: 500px) {
+    flex-direction: column-reverse;
+  }
+`
+interface MonthProps {
+  currentMonth?: boolean
+}
+
+export const Calendar = styled.div`
+  margin-top: 15px;
+  border: 2px solid
+    ${({ currentMonth }: MonthProps) => (currentMonth ? RED : GREEN)};
+  min-width: 150px;
+  @media (max-width: 600px) {
+    margin-bottom: 15px;
+  }
+`
+
+export const Month = styled.div`
+  font-size: 20px;
+  background: ${({ currentMonth }: MonthProps) => (currentMonth ? RED : GREEN)}
+  text-align: center;
+  color: ${WHITE};
+  padding: 5px;
+  text-transform: uppercase;
+  font-weight: 600;
+`
+
+export const Day = styled.div`
+  font-size: 40px;
+  text-align: center;
+  padding: 10px;
+  font-weight: 600;
+`
+
+export const OrderInfo = styled.div`
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+`
+
+export const HeaderInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  text-transform: uppercase;
+  text-align: center;
+  @media (max-width: 600px) {
+    order: 1;
+  }
+`
+
+export const NumberOfDays = styled.div`
+  font-weight: 600;
+  font-size: 30px;
+  margin: 20px 0;
+`
+
+export const OrderingInfo = styled.div`
+  font-style: italic;
+  font-size: 15px;
+  text-transform: capitalize;
+`
+
+export const DeliveryContainer = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background: ${GRAY_LIGHTEST};
+  text-align: center;
 `

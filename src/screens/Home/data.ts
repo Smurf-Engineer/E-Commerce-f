@@ -93,8 +93,11 @@ export const getHomepageInfo = gql`
 
 export const getDesignLabInfo = gql`
   query getDesignLabInfo {
-    designInfo: getDesignLabInfo {
-      deliveryDays: delivery_days
+    deliveryDays: getDesignLabInfo {
+      days: delivery_days
+    }
+    deliveryDate: getDesignLabInfo(onlyData: false) {
+      date: delivery_days
     }
   }
 `

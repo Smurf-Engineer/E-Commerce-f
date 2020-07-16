@@ -6,6 +6,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose, withApollo, graphql } from 'react-apollo'
 import get from 'lodash/get'
+import moment from 'moment'
 import * as thunkActions from './thunkActions'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
@@ -37,7 +38,15 @@ import {
   ImageContainer,
   SlideImage,
   SlideImageMobile,
-  DeliveryInfo
+  DeliveryInfo,
+  Calendar,
+  Month,
+  Day,
+  OrderInfo,
+  HeaderInfo,
+  NumberOfDays,
+  OrderingInfo,
+  DeliveryContainer
 } from './styledComponents'
 import { getDesignLabInfo } from './data'
 import SearchResults from '../../components/SearchResults'
@@ -48,7 +57,7 @@ import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
-// import messages from './messages'
+import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import {
@@ -194,9 +203,13 @@ export class Home extends React.Component<Props, {}> {
 
     const deliveryDaysResponse = get(
       dataDesignLabInfo,
-      'designInfo.deliveryDays',
+      'deliveryDays.days',
       null
     )
+
+    const deliveryDate = get(dataDesignLabInfo, 'deliveryDate.date', null)
+
+    const today = new Date()
 
     const searchResults = searchString ? (
       <SearchResults
@@ -283,7 +296,35 @@ export class Home extends React.Component<Props, {}> {
             {searchResults}
           </div>
           {!!deliveryDaysResponse && (
-            <DeliveryInfo>{deliveryDaysResponse}</DeliveryInfo>
+            <DeliveryContainer>
+              <DeliveryInfo>
+                <OrderInfo>
+                  {formatMessage(messages.orderDate)}
+                  <Calendar currentMonth={true}>
+                    <Month currentMonth={true}>
+                      {moment(today).format('MMMM')}
+                    </Month>
+                    <Day>{today.getDate()}</Day>
+                  </Calendar>
+                </OrderInfo>
+                <HeaderInfo>
+                  {formatMessage(messages.currentTurnaround)}
+                  <NumberOfDays>
+                    {`${deliveryDaysResponse} ${formatMessage(messages.days)}`}
+                  </NumberOfDays>
+                </HeaderInfo>
+                <OrderInfo>
+                  {formatMessage(messages.deliveryDate)}
+                  <Calendar>
+                    <Month>{moment(deliveryDate).format('MMMM')}</Month>
+                    <Day>{moment(deliveryDate).format('DD')}</Day>
+                  </Calendar>
+                </OrderInfo>
+              </DeliveryInfo>
+              <OrderingInfo>
+                {formatMessage(messages.orderingNote)}
+              </OrderingInfo>
+            </DeliveryContainer>
           )}
           {featured}
           {secondaryHeaderItems.length && (
