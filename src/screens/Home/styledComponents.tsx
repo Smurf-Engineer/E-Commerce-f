@@ -13,6 +13,7 @@ import {
   RED,
   GREEN
 } from '../../theme/colors'
+import { AVENIR_MEDIUM } from '../../theme/fonts'
 
 interface DivProps {
   loading?: boolean
@@ -218,13 +219,15 @@ interface MonthProps {
 }
 
 export const Calendar = styled.div`
-  margin-top: 10px;
+  margin-top: 5px;
   border: 2px solid
     ${({ currentMonth }: MonthProps) => (currentMonth ? RED : GREEN)};
   width: 90px;
   height: 90px;
+  background: ${WHITE};
+  color: ${BLACK};
   @media (max-width: 400px) {
-    height: 60px;
+    height: 50px;
     width: 60px;
   }
 `
@@ -234,19 +237,29 @@ export const Month = styled.div`
   background: ${({ currentMonth }: MonthProps) => (currentMonth ? RED : GREEN)}
   text-align: center;
   color: ${WHITE};
-  padding: 5px;
   text-transform: uppercase;
   font-weight: 600;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 400px) {
+    font-size: 10px;
+    height: 15px;
+  }
 `
 
 export const Day = styled.div`
-  font-size: 29px;
+  font-size: 36px;
   text-align: center;
-  padding: 10px;
   font-weight: 600;
+  height: 63px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media (max-width: 400px) {
+    height: 30px;
     font-size: 20px;
-    padding: 1px;
   }
 `
 
@@ -257,8 +270,9 @@ export const OrderInfo = styled.div`
   font-size: 16px;
   font-weight: 600;
   align-items: center;
+  color: ${BLACK};
   @media (max-width: 400px) {
-    font-size: 13px;
+    font-size: 8px;
   }
 `
 
@@ -269,19 +283,25 @@ export const HeaderInfo = styled.div`
   text-transform: uppercase;
   text-align: center;
   margin: 0 90px;
+  color: ${BLACK};
   @media (max-width: 600px) {
     margin: 0 10px;
   }
   @media (max-width: 400px) {
     margin: 0;
-    font-size: 13px;
+    font-size: 11px;
   }
 `
 
 export const NumberOfDays = styled.div`
   font-weight: 600;
-  font-size: 30px;
+  font-size: 18px;
+  font-family: ${AVENIR_MEDIUM};
   margin: 0px 0;
+  font-weight: 900;
+  @media (max-width: 400px) {
+    font-size: 12px;
+  }
 `
 
 export const OrderingInfo = styled.div`
@@ -292,7 +312,7 @@ export const OrderingInfo = styled.div`
     margin-top: 10px;
   }
   @media (max-width: 400px) {
-    font-size: 11px;
+    font-size: 9px;
   }
 `
 
@@ -302,6 +322,7 @@ export const DeliveryContainer = styled.div`
   flex-direction: column;
   background: ${GRAY_LIGHTEST};
   text-align: center;
+  color: ${BLACK};
   @media (max-width: 600px) {
     width: 100%;
     overflow: hidden;
@@ -313,5 +334,9 @@ export const HeaderInfoTitle = styled.div`
   font-weight: 600;
   letter-spacing: 0.5px;
   width: 250px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
+  @media (max-width: 400px) {
+    font-size: 10px;
+    width: 180px;
+  }
 `
