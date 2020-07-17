@@ -148,7 +148,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
 
   linkPaypal = () => {
     const redirect = encodeURIComponent(`${config.baseUrl}account?option=affiliateAbout`)
-    const client = `flowEntry=static&client_id=${config.paypalClientId}`
+    const client = `flowEntry=static&client_id=${config.paypalClientIdUS}`
     const params = `&scope=openid email https://uri.paypal.com/services/paypalattributes&redirect_uri=${redirect}`
     window.location.href = `${config.paypalBaseUrl}${client}${params}`
   }
