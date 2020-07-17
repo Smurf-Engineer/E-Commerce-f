@@ -25,7 +25,7 @@ export default defineMessages({
   },
   chargeForDesignAnswer: {
     id: 'screens.Faq.chargeForDesignAnswer',
-    defaultMessage: `<p>With DesignLab, you are the designer and there are no fees to use the online design service. We do, however, provide an optional Pro Review service at the time of order placement. For a small fee of $15.00, Jakroo’s Pro Designers will review each of the custom designs on your order and check for the following:</p><p><ul><li>Color consistency throughout design and ordered products</li><li>Center alignment and adjustment to graphics/text</li><li>Any other unforeseen issues</li></ul><p>We also provide free Pro Assist design support from within the Design Center that connects you directly with one of our professional designers. Look for the Pro Assist button at the top right of the Design Center. Our designers are there to answer any questions, review your design for accuracy and quality, or provide simple editing support. If there is any recommended work that would fall outside of the free design support, our designers will let you know in advance, to give you the option to move forward with the services.</p>`
+    defaultMessage: `<p>With DesignLab, you are the designer and there are no fees to use the online design service. We do, however, provide an optional Pro Review service at the time of order placement. For a small fee of $15.00, Jakroo’s Pro Designers will review each of the custom designs on your order and check for the following:</p><p><ul><li>Color consistency throughout design and ordered products</li><li>Center alignment and adjustment to graphics/text</li><li>Any other unforeseen issues</li></ul><p>We also provide free Pro Assist design support from within the Design Center that connects you directly with one of our professional designers. Look for the Pro Assist button at the top right of the Design Center. Our designers are there to answer any questions, review your design for accuracy and quality, or provide simple editing support. <br/> If there is any recommended work that would fall outside of the free design support, our designers will let you know in advance, to give you the option to move forward with the services.</p>`
   },
   getStartedQuestion: {
     id: 'screens.Faq.getStartedQuestion',
@@ -101,7 +101,7 @@ export default defineMessages({
   tieredPricingAnswer: {
     id: 'screens.Faq.tieredPricingAnswer',
     defaultMessage:
-      '<p>You can combine men’s and women’s sizes together only when available on the same product to qualify for a higher tier discount. You cannot, however, combine genders across different products. </p>'
+      '<p>You can combine men’s and women’s sizes together only when available on the <u>same product</u> to qualify for a higher tier discount. You cannot, however, combine genders across different products. </p>'
   },
   orderOnlineQuestion: {
     id: 'screens.Faq.orderOnlineQuestion',
