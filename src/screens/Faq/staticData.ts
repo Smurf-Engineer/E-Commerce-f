@@ -74,6 +74,16 @@ export const orderingPaymentQuestions = [
     id: 'orderStatus',
     question: 'orderStatusQuestion',
     answer: 'orderStatusAnswer'
+  },
+  {
+    id: 'preOrder',
+    question: 'preOrderQuestion',
+    answer: 'preOrderAnswer'
+  },
+  {
+    id: 'notification',
+    question: 'notificationQuestion',
+    answer: 'notificationAnswer'
   }
   // {
   //   id: 'orderingPeriodEnded',
