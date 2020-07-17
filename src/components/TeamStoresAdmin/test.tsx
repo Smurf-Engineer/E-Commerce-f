@@ -1418,4 +1418,74 @@ describe(' TeamStoresAdmin Screen', () => {
       })
     })
   })
+  describe('SET_FILTERS', () => {
+    describe('Loading state for team store items', () => {
+      it('Handles undefined value in filter item', () => {
+        const customInitialValue = initialState.get('filter')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in filter', () => {
+        const customInitialValue = initialState.get('filter')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in filter', () => {
+        const customInitialValue = initialState.get('filter')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles undefined value in filterText item', () => {
+        const customInitialValue = initialState.get('filterText')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in filterText', () => {
+        const customInitialValue = initialState.get('filterText')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in filterText', () => {
+        const customInitialValue = initialState.get('filterText')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles undefined value in startDateFilter', () => {
+        const customInitialValue = initialState.get('startDateFilter')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in startDateFilter', () => {
+        const customInitialValue = initialState.get('startDateFilter')
+        expect(typeof customInitialValue).toBe('object')
+      })
+      it('Handles initial value in startDateFilter', () => {
+        const customInitialValue = initialState.get('startDateFilter')
+        expect(customInitialValue).toBeNull()
+      })
+      it('Handles undefined value in endDateFilter', () => {
+        const customInitialValue = initialState.get('endDateFilter')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in endDateFilter', () => {
+        const customInitialValue = initialState.get('endDateFilter')
+        expect(typeof customInitialValue).toBe('object')
+      })
+      it('Handles initial value in endDateFilter', () => {
+        const customInitialValue = initialState.get('endDateFilter')
+        expect(customInitialValue).toBeNull()
+      })
+      it('Handles custom values in filters', () => {
+        const filter = FILTER_OPTIONS[0].name
+        const filterText = 'test'
+        const startDate = '2019-01-01'
+        const endDate = '2019-05-06'
+        const startDateMoment = moment(startDate)
+        const endDateMoment = moment(endDate)
+
+        const nameState = teamStoresAdminReducer(
+          initialState,
+          setFiltersAction(filter, filterText, startDateMoment, endDateMoment)
+        )
+        const customFilterValue = nameState.get('filter')
+        expect(customFilterValue).toBe(filter)
+
+        const customFilterTextValue = nameState.get('filterText')
+        expect(customFilterTextValue).toBe(filterText)
+      })
+    })
+  })
 })
