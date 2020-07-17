@@ -145,15 +145,15 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SELECT_RESTRICTION: {
-      const restrictionType = action.restriction
+      const { restriction } = action
       let selectedArray = ''
-      if (!restrictionType.users) {
+      if (!restriction.users) {
         selectedArray = 'selectedUsers'
-      } else if (!restrictionType.product) {
+      } else if (!restriction.product) {
         selectedArray = 'selectedProducts'
       }
       return state.merge({
-        restrictionType,
+        restrictionType: restriction,
         [selectedArray]: [],
         user: ''
       })
