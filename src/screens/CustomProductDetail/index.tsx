@@ -275,7 +275,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       ({ id, name: genderName }: SelectedType, key: number) => (
         <div {...{ key }}>
           <SectionButton
-            id={String(id)}
             selected={id === selectedGender.id}
             large={true}
             onClick={this.handleSelectedGender({ id, name: genderName })}
@@ -291,7 +290,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
-            id={String(id)}
             selected={id === selectedSize.id}
             onClick={this.handleSelectedSize({
               id: Number(id),
@@ -309,7 +307,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           id && (
             <div key={index}>
               <SectionButton
-                id={String(id)}
                 selected={id === selectedFit.id}
                 large={true}
                 onClick={this.handleSelectedFit({ id, name: fitName })}
@@ -320,7 +317,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           )
       )) || (
         <SectionButton
-          id={'1'}
           selected={1 === selectedFit.id}
           onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
         >
