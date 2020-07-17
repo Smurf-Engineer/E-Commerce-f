@@ -232,13 +232,15 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       })
     case UPDATE_TEAMSTORE_TYPE:
       return state.set('onDemand', action.onDemand)
-    case SET_FILTERS:
+    case SET_FILTERS: {
+      const { filter, filterText, startDate, endDate } = action
       return state.merge({
-        filter: action.filter,
-        filterText: action.filterText,
-        startDateFilter: action.startDate,
-        endDateFilter: action.endDate
+        filter,
+        filterText,
+        startDateFilter: startDate,
+        endDateFilter: endDate
       })
+    }
     default:
       return state
   }
