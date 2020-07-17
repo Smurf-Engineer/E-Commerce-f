@@ -29,7 +29,8 @@ import {
   setSelectedUser,
   setTeamData,
   updateStartDateAction,
-  updateEndDateAction
+  updateEndDateAction,
+  setFiltersAction
 } from './actions'
 import {
   SET_ORDER_BY,
@@ -56,7 +57,9 @@ import {
   SET_SELECTED_USER,
   SET_TEAM_DATA,
   UPDATE_START_DATE_ACTION,
-  UPDATE_END_DATE_ACTION
+  UPDATE_END_DATE_ACTION,
+  SET_FILTERS,
+  FILTER_OPTIONS
 } from './constants'
 
 describe(' TeamStoresAdmin Screen', () => {
@@ -338,6 +341,20 @@ describe(' TeamStoresAdmin Screen', () => {
         index,
         hoverIndex,
         row
+      })
+    })
+    it('setFiltersAction', () => {
+      const type = SET_FILTERS
+      const filter = FILTER_OPTIONS[0].name
+      const filterText = 'test'
+      const startDate = null
+      const endDate = null
+      expect(setFiltersAction(filter, filterText, startDate, endDate)).toEqual({
+        type,
+        filter,
+        filterText,
+        startDate,
+        endDate
       })
     })
   })
