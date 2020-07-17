@@ -62,7 +62,7 @@
   "screens.Home.deliveryDate": "DELIVERY DATE",
   "screens.Home.currentTurnaround": "Current turnaround time for full custom kits",
   "screens.Home.days": "DAYS",
-  "screens.Home.orderingNote": "*Based on demand ordering and federal holidays",
+  "screens.Home.orderingNote": "Based on On Demand ordering, and excluding Federal Holidays",
   "components.HomepageAdmin.title": "{title} Images",
   "components.HomepageAdmin.backToEditNavigation": "Back to edit main navigation",
   "components.HomeAdmin.updatedHeaderSuccess": "Header updated!",

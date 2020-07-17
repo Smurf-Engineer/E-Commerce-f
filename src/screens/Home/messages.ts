@@ -56,6 +56,7 @@ export default defineMessages({
   },
   orderingNote: {
     id: 'screens.Home.orderingNote',
-    defaultMessage: '*Based on demand ordering and federal holidays'
+    defaultMessage:
+      '*Based on On Demand ordering, and excluding Federal Holidays'
   }
 })

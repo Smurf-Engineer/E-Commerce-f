@@ -210,28 +210,27 @@ export const SlideImageMobile = styled.img`
 `
 export const DeliveryInfo = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  @media (max-width: 500px) {
-    flex-direction: column-reverse;
-  }
 `
 interface MonthProps {
   currentMonth?: boolean
 }
 
 export const Calendar = styled.div`
-  margin-top: 15px;
+  margin-top: 10px;
   border: 2px solid
     ${({ currentMonth }: MonthProps) => (currentMonth ? RED : GREEN)};
-  min-width: 150px;
-  @media (max-width: 600px) {
-    margin-bottom: 15px;
+  width: 90px;
+  height: 90px;
+  @media (max-width: 400px) {
+    height: 60px;
+    width: 60px;
   }
 `
 
 export const Month = styled.div`
-  font-size: 20px;
+  font-size: 13px;
   background: ${({ currentMonth }: MonthProps) => (currentMonth ? RED : GREEN)}
   text-align: center;
   color: ${WHITE};
@@ -241,47 +240,78 @@ export const Month = styled.div`
 `
 
 export const Day = styled.div`
-  font-size: 40px;
+  font-size: 29px;
   text-align: center;
   padding: 10px;
   font-weight: 600;
+  @media (max-width: 400px) {
+    font-size: 20px;
+    padding: 1px;
+  }
 `
 
 export const OrderInfo = styled.div`
   display: flex;
   flex-flow: column;
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
+  align-items: center;
+  @media (max-width: 400px) {
+    font-size: 13px;
+  }
 `
 
 export const HeaderInfo = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 20px;
+  font-size: 16px;
   text-transform: uppercase;
   text-align: center;
+  margin: 0 90px;
   @media (max-width: 600px) {
-    order: 1;
+    margin: 0 10px;
+  }
+  @media (max-width: 400px) {
+    margin: 0;
+    font-size: 13px;
   }
 `
 
 export const NumberOfDays = styled.div`
   font-weight: 600;
   font-size: 30px;
-  margin: 20px 0;
+  margin: 0px 0;
 `
 
 export const OrderingInfo = styled.div`
+  font-size: 13px;
+  text-transform: none;
   font-style: italic;
-  font-size: 15px;
-  text-transform: capitalize;
+  @media (max-width: 600px) {
+    margin-top: 10px;
+  }
+  @media (max-width: 400px) {
+    font-size: 11px;
+  }
 `
 
 export const DeliveryContainer = styled.div`
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   background: ${GRAY_LIGHTEST};
   text-align: center;
+  @media (max-width: 600px) {
+    width: 100%;
+    overflow: hidden;
+  }
+`
+
+export const HeaderInfoTitle = styled.div`
+  display: flex;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: 250px;
+  margin-bottom: 8px;
 `

@@ -46,7 +46,8 @@ import {
   HeaderInfo,
   NumberOfDays,
   OrderingInfo,
-  DeliveryContainer
+  DeliveryContainer,
+  HeaderInfoTitle
 } from './styledComponents'
 import { getDesignLabInfo } from './data'
 import SearchResults from '../../components/SearchResults'
@@ -308,7 +309,9 @@ export class Home extends React.Component<Props, {}> {
                   </Calendar>
                 </OrderInfo>
                 <HeaderInfo>
-                  {formatMessage(messages.currentTurnaround)}
+                  <HeaderInfoTitle>
+                    {formatMessage(messages.currentTurnaround)}
+                  </HeaderInfoTitle>
                   <NumberOfDays>
                     {`${deliveryDaysResponse} ${formatMessage(messages.days)}`}
                   </NumberOfDays>
