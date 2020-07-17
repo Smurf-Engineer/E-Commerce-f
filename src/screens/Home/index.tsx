@@ -406,8 +406,7 @@ const HomeEnhance = compose(
   withApollo,
   graphql<DesignLab>(getDesignLabInfo, {
     options: () => ({
-      fetchPolicy: 'network-only',
-      variables: {}
+      fetchPolicy: 'network-only'
     }),
     name: 'dataDesignLabInfo'
   }),
