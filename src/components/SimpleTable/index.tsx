@@ -19,23 +19,27 @@ interface Props {
 
 class SimpleTable extends React.PureComponent<Props, {}> {
   render() {
-    const { formatMessage, onPressDelete, headerTitles, data, targetGroup } = this.props
+    const {
+      formatMessage,
+      onPressDelete,
+      headerTitles,
+      data,
+      targetGroup
+    } = this.props
 
-    const itemsSelected = data.map(
-      (item: any, index: number) => (
-        <Row
-          {...{
-            index,
-            item,
-            headerTitles,
-            formatMessage,
-            onPressDelete,
-            targetGroup
-          }}
-          key={index}
-        />
-      )
-    )
+    const itemsSelected = data.map((item: any, index: number) => (
+      <Row
+        {...{
+          index,
+          item,
+          headerTitles,
+          formatMessage,
+          onPressDelete,
+          targetGroup
+        }}
+        key={index}
+      />
+    ))
 
     const renderTable = data.length > 0 && itemsSelected
     return (

@@ -43,7 +43,7 @@ export const SET_PAYMENT_ID = `${namespace}/SET_PAYMENT_ID`
 export const REMOVE_CLIENT_SECRET = `${namespace}/REMOVE_CLIENT_SECRET`
 
 // DISCOUNT TYPES
-export const PRODUCT = 'product'
+export const DESIGN = 'design'
 
 export enum CheckoutTabs {
   ShippingTab = 0,

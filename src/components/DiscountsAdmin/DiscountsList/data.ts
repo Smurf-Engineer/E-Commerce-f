@@ -36,7 +36,14 @@ export const getDiscountsQuery = gql`
           email
           value: short_id
         }
-        selectedProducts: items
+        selectedProducts: items {
+          image
+          id
+          shortId: short_id
+          value: code
+          text: code
+          name
+        }
       }
     }
   }

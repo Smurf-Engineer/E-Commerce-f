@@ -20,7 +20,14 @@ export const upsertDiscountMutation = graphql(
           email
           value: short_id
         }
-        selectedProducts: items
+        selectedProducts: items {
+          image
+          id
+          shortId: short_id
+          value: code
+          text: code
+          name
+        }
       }
     }
   `,
@@ -53,10 +60,14 @@ export const getUsers = gql`
   }
 `
 
-export const getProducts = gql`
-  query getProductInternalsInfo($text: String) {
-    productsSearch: getProductInternalsInfo(text: $text) {
-      products
+export const getDesignSearchCode = gql`
+  query GetDesignSearchCodeQuery($pattern: String!) {
+    getDesignSearchCode(pattern: $pattern) {
+      id
+      shortId: short_id
+      code
+      name
+      image
     }
   }
 `
