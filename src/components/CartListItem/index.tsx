@@ -279,6 +279,7 @@ export class CartListItem extends React.Component<Props, {}> {
       []
     )
     const mpnCode = get(cartItem, 'product.mpn', '')
+    const active = get(cartItem, 'product.active', false)
     const isTeamStore = get(cartItem, 'teamStoreId', '')
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
@@ -409,7 +410,7 @@ export class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  {canReorder && renderAddToCartButton}
+                  {(canReorder && active) && renderAddToCartButton}
                 </ItemDetails>
               </Container>
             )
@@ -427,7 +428,7 @@ export class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
-                  {canReorder && renderAddToCartButton}
+                  {(canReorder && active) && renderAddToCartButton}
                 </div>
               </Container>
             )

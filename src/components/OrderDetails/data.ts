@@ -66,6 +66,7 @@ export const getOrderQuery = gql`
           code
           yotpoId: yotpo_id
           name
+          active
           type: name
           shortDescription: short_description
           collections
