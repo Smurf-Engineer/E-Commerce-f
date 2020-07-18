@@ -29,7 +29,8 @@ import {
   SET_TEAM_DATA,
   UPDATE_START_DATE_ACTION,
   UPDATE_END_DATE_ACTION,
-  UPDATE_TEAMSTORE_TYPE
+  UPDATE_TEAMSTORE_TYPE,
+  SET_FILTERS
 } from './constants'
 import { Moment } from 'moment'
 
@@ -215,4 +216,17 @@ export const updateEndDateAction = (
 export const updateTeamStoreTypeAction = (onDemand: boolean): AnyAction => ({
   type: UPDATE_TEAMSTORE_TYPE,
   onDemand
+})
+
+export const setFiltersAction = (
+  filter: string,
+  filterText: string,
+  startDate: Moment,
+  endDate: Moment
+) => ({
+  type: SET_FILTERS,
+  filter,
+  filterText,
+  startDate,
+  endDate
 })

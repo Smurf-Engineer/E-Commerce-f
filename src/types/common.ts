@@ -383,6 +383,7 @@ export type TeamStoreAdminType = {
   cutOffDateString: string
   shortId: string
   display: boolean
+  accountManager?: User
 }
 
 export type DateObjectType = {

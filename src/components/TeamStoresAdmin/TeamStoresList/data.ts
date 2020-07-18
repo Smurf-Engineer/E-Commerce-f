@@ -11,6 +11,10 @@ export const GetTeamStoresQuery = gql`
     $order: String
     $orderAs: String
     $searchText: String
+    $filter: String
+    $filterText: String
+    $startDate: String
+    $endDate: String
   ) {
     teamStoresList(
       limit: $limit
@@ -20,6 +24,10 @@ export const GetTeamStoresQuery = gql`
       order: $order
       orderAs: $orderAs
       searchText: $searchText
+      filter: $filter
+      filterText: $filterText
+      startDate: $startDate
+      endDate: $endDate
     ) {
       fullCount
       teamStores {
@@ -33,6 +41,10 @@ export const GetTeamStoresQuery = gql`
         cutOffDateString
         deliveryDate: deliveryDateString
         display
+        accountManager {
+          firstName: first_name
+          lastName: last_name
+        }
       }
     }
   }

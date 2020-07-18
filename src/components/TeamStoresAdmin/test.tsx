@@ -29,7 +29,8 @@ import {
   setSelectedUser,
   setTeamData,
   updateStartDateAction,
-  updateEndDateAction
+  updateEndDateAction,
+  setFiltersAction
 } from './actions'
 import {
   SET_ORDER_BY,
@@ -56,7 +57,9 @@ import {
   SET_SELECTED_USER,
   SET_TEAM_DATA,
   UPDATE_START_DATE_ACTION,
-  UPDATE_END_DATE_ACTION
+  UPDATE_END_DATE_ACTION,
+  SET_FILTERS,
+  FILTER_OPTIONS
 } from './constants'
 
 describe(' TeamStoresAdmin Screen', () => {
@@ -338,6 +341,20 @@ describe(' TeamStoresAdmin Screen', () => {
         index,
         hoverIndex,
         row
+      })
+    })
+    it('setFiltersAction', () => {
+      const type = SET_FILTERS
+      const filter = FILTER_OPTIONS[0].name
+      const filterText = 'test'
+      const startDate = null
+      const endDate = null
+      expect(setFiltersAction(filter, filterText, startDate, endDate)).toEqual({
+        type,
+        filter,
+        filterText,
+        startDate,
+        endDate
       })
     })
   })
@@ -1398,6 +1415,76 @@ describe(' TeamStoresAdmin Screen', () => {
         const teamStoreItems = itemState.getIn(['teamStore', 'items']).toJS()
         const loadingValue = teamStoreItems[0].loading
         expect(loadingValue).toBeTruthy()
+      })
+    })
+  })
+  describe('SET_FILTERS', () => {
+    describe('Loading state for team store items', () => {
+      it('Handles undefined value in filter item', () => {
+        const customInitialValue = initialState.get('filter')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in filter', () => {
+        const customInitialValue = initialState.get('filter')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in filter', () => {
+        const customInitialValue = initialState.get('filter')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles undefined value in filterText item', () => {
+        const customInitialValue = initialState.get('filterText')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in filterText', () => {
+        const customInitialValue = initialState.get('filterText')
+        expect(typeof customInitialValue).toBe('string')
+      })
+      it('Handles initial value in filterText', () => {
+        const customInitialValue = initialState.get('filterText')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles undefined value in startDateFilter', () => {
+        const customInitialValue = initialState.get('startDateFilter')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in startDateFilter', () => {
+        const customInitialValue = initialState.get('startDateFilter')
+        expect(typeof customInitialValue).toBe('object')
+      })
+      it('Handles initial value in startDateFilter', () => {
+        const customInitialValue = initialState.get('startDateFilter')
+        expect(customInitialValue).toBeNull()
+      })
+      it('Handles undefined value in endDateFilter', () => {
+        const customInitialValue = initialState.get('endDateFilter')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles value type in endDateFilter', () => {
+        const customInitialValue = initialState.get('endDateFilter')
+        expect(typeof customInitialValue).toBe('object')
+      })
+      it('Handles initial value in endDateFilter', () => {
+        const customInitialValue = initialState.get('endDateFilter')
+        expect(customInitialValue).toBeNull()
+      })
+      it('Handles custom values in filters', () => {
+        const filter = FILTER_OPTIONS[0].name
+        const filterText = 'test'
+        const startDate = '2019-01-01'
+        const endDate = '2019-05-06'
+        const startDateMoment = moment(startDate)
+        const endDateMoment = moment(endDate)
+
+        const nameState = teamStoresAdminReducer(
+          initialState,
+          setFiltersAction(filter, filterText, startDateMoment, endDateMoment)
+        )
+        const customFilterValue = nameState.get('filter')
+        expect(customFilterValue).toBe(filter)
+
+        const customFilterTextValue = nameState.get('filterText')
+        expect(customFilterTextValue).toBe(filterText)
       })
     })
   })
