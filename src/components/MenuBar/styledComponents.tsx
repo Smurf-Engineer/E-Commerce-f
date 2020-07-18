@@ -17,7 +17,7 @@ export const Row = styled.div`
 
 export const TopRow = styled.div`
   display: flex;
-  width: 16%;
+  width: 26%;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;

@@ -2,7 +2,7 @@
  * MenuBar Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage, InjectedIntl } from 'react-intl'
+import { InjectedIntl } from 'react-intl'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import DropdownList from '../DropdownList'
@@ -96,7 +96,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     // TODO: temporal solution to avoid the site crashing when you
     // click on Jakroo's logo in the menuBar from the product-catalogue screen
     const regionsCodes =
-      regionsResult && regionsResult.map(region => region.code)
+      regionsResult && regionsResult.map((region) => region.code)
 
     const regionCode = regionsCodes.includes(currentRegion)
       ? currentRegion
@@ -165,9 +165,11 @@ class MenuBar extends React.Component<Props, StateProps> {
       user = JSON.parse(localStorage.getItem('user') as string)
     }
 
+    const { formatMessage } = intl
+
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
-        <FormattedMessage {...messages.title} />
+        {formatMessage(messages.title)}
       </TopText>
     ) : (
       <Logout
@@ -179,7 +181,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     )
 
     const regionsCodes =
-      !loadingRegions && regionsResult.map(region => region.code)
+      !loadingRegions && regionsResult.map((region) => region.code)
 
     const menuRegion = (
       <MenuRegion
@@ -193,8 +195,6 @@ class MenuBar extends React.Component<Props, StateProps> {
         }}
       />
     )
-
-    const { formatMessage } = intl
 
     const bottomRowContent = teamStoresHeader ? (
       <BottomRow>
@@ -222,7 +222,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           minWidth={992}
           values={{ width: fakeWidth, deviceWidth: fakeWidth }}
         >
-          {matches => {
+          {(matches) => {
             if (matches) {
               return (
                 <Container>

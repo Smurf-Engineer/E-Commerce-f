@@ -1697,3 +1697,7 @@ export type AccountManagerName = {
   first_name: string
   last_name: string
 }
+
+export type DeliveryDays = {
+  deliveryDays: string
+}

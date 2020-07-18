@@ -37,5 +37,26 @@ export default defineMessages({
   priceDrop: {
     id: 'screens.Home.priceDrop',
     defaultMessage: 'SAVE WITH DYNAMIC PRICE DROP'
+  },
+  orderDate: {
+    id: 'screens.Home.orderDate',
+    defaultMessage: 'ORDER DATE'
+  },
+  deliveryDate: {
+    id: 'screens.Home.deliveryDate',
+    defaultMessage: 'DELIVERY DATE'
+  },
+  currentTurnaround: {
+    id: 'screens.Home.currentTurnaround',
+    defaultMessage: 'Current turnaround time for full custom kits'
+  },
+  days: {
+    id: 'screens.Home.days',
+    defaultMessage: 'DAYS'
+  },
+  orderingNote: {
+    id: 'screens.Home.orderingNote',
+    defaultMessage:
+      '*Based on On Demand ordering, and excluding Federal Holidays'
   }
 })
