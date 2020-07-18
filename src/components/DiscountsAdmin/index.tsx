@@ -21,7 +21,7 @@ import {
   upsertDiscountMutation,
   activateDiscountMutation,
   getUsers,
-  getProducts
+  getDesignSearchCode
 } from './data'
 import { getDiscountsQuery } from './DiscountsList/data'
 import messages from './messages'
@@ -31,13 +31,14 @@ import {
   UserSearchResult,
   SelectedDesignObjectType,
   UserDiscount,
-  ProductsCodes,
-  UserPermissions
+  UserPermissions,
+  HiddenSymbols,
+  DesignSearchCode
 } from '../../types/common'
 import DiscountsData from './DiscountsData'
 import { isNumber } from '../../utils/utilsFiles'
 import { Moment } from 'moment'
-import { USERS, DISCOUNTS, ADMIN_ROUTE } from '../AdminLayout/constants'
+import { DISCOUNTS, ADMIN_ROUTE } from '../AdminLayout/constants'
 
 interface Props {
   history: any
@@ -54,17 +55,18 @@ interface Props {
   discountActive: boolean
   expiry: string
   loading: boolean
-  restrictionType: string
+  restrictionType: HiddenSymbols
   permissions: UserPermissions
   selectedItems: SelectedDesignObjectType
   users: Data
-  products: ProductsData
+  designs: DesignsData
   user: string
   discountPage: number
   selectedUsers: []
   usageNumber: number
   unlimitedUsage: boolean
   selectedProducts: string[]
+  design: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -81,9 +83,9 @@ interface Props {
   activateDiscount: (variables: {}) => void
   onSelectDateAction: (date: string) => void
   setDiscountToUpdateAction: (discount: Discount) => void
-  selectRestrictionAction: (restriction: string) => void
-  onChangeUserAction: (value: string) => void
-  onAddProductAction: (value: string) => void
+  selectRestrictionAction: (restriction: HiddenSymbols) => void
+  onChangeInputAction: (key: string, value: string) => void
+  onAddDesignAction: (design: DesignSearchCode) => void
   deleteItemSelectedAction: (index: number, section: string) => void
   onAddUserAction: (user: UserDiscount) => void
   setDiscountPageAction: (page: number) => void
@@ -95,8 +97,8 @@ interface Data extends QueryProps {
   userSearch: UserSearchResult[]
 }
 
-interface ProductsData extends QueryProps {
-  productsSearch: ProductsCodes
+interface DesignsData extends QueryProps {
+  getDesignSearchCode: DesignSearchCode[]
 }
 
 class DiscountsAdmin extends React.Component<Props, {}> {
@@ -126,14 +128,24 @@ class DiscountsAdmin extends React.Component<Props, {}> {
   }
 
   getProductsSearchResults = () => {
-    const { products } = this.props
-    let productsResults
-    if (products && !products.loading) {
-      productsResults = products.productsSearch.products.map(
-        (item: string) => item
+    const { designs } = this.props
+    let designsResults
+
+    if (designs && !designs.loading) {
+      designsResults = designs.getDesignSearchCode.map(
+        (item: DesignSearchCode) => {
+          return {
+            key: item.id,
+            shortId: item.shortId,
+            value: item.code,
+            text: item.code,
+            name: item.name,
+            image: item.image
+          }
+        }
       )
     }
-    return productsResults
+    return designsResults
   }
 
   render() {
@@ -157,8 +169,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       permissions,
       history,
       restrictionType,
-      onChangeUserAction,
-      onAddProductAction,
+      onChangeInputAction,
+      onAddDesignAction,
       deleteItemSelectedAction,
       user,
       discountPage,
@@ -168,18 +180,20 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       usageNumber,
       onCheckUsageAction,
       unlimitedUsage,
-      selectedProducts
+      selectedProducts,
+      design
     } = this.props
     const access = permissions[DISCOUNTS] || {}
     if (!access.view) {
       history.replace(ADMIN_ROUTE)
     }
 
-    const searchResults =
-      restrictionType === USERS
-        ? this.getUsersSearchResults()
-        : this.getProductsSearchResults()
-
+    const searchResults = restrictionType.users
+      ? this.getUsersSearchResults()
+      : []
+    const searchResultsProducts = restrictionType.design
+      ? this.getProductsSearchResults()
+      : []
     return (
       <SwipeableViews
         onChangeIndex={this.handleOnChangeIndex}
@@ -218,8 +232,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
           onSaveDiscount={this.handleOnSaveDiscount}
           onSelectDate={this.onSelectDate}
           onSelectRestriction={this.handleOnSelectRestriction}
-          handleOnChange={onChangeUserAction}
-          onAddProduct={onAddProductAction}
+          handleOnChange={onChangeInputAction}
+          onAddDesign={onAddDesignAction}
           onDeleteItem={deleteItemSelectedAction}
           onAddUser={onAddUserAction}
           onChangeUsage={onChangeUsageAction}
@@ -235,12 +249,14 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             expiry,
             loading,
             restrictionType,
+            searchResultsProducts,
             searchResults,
             user,
             selectedUsers,
             usageNumber,
             unlimitedUsage,
-            selectedProducts
+            selectedProducts,
+            design
           }}
         />
       </SwipeableViews>
@@ -289,8 +305,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     }
   }
   handleOnSelectRestriction = (restriction: string) => () => {
-    const { selectRestrictionAction } = this.props
-    selectRestrictionAction(restriction)
+    const { selectRestrictionAction, restrictionType } = this.props
+    restrictionType[restriction] = !restrictionType[restriction]
+    selectRestrictionAction(restrictionType)
   }
   onSelectDate = (date: Moment) => {
     const { onSelectDateAction } = this.props
@@ -314,8 +331,13 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       unlimitedUsage
     } = this.props
 
-    const usersIds = selectedUsers.map(user => user.value)
+    const usersIds = selectedUsers.map((user) => user.value)
+    const restrictArray = Object.keys(restrictionType).filter(
+      (type: string) => restrictionType[type]
+    )
 
+    const items = selectedProducts.map((item) => item.shortId)
+    const restrictions = restrictArray.join(',')
     const isUpdatingDiscount = discountId !== -1
     const discount = {
       id: isUpdatingDiscount ? discountId : undefined,
@@ -325,12 +347,11 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       rate,
       expiry,
       active: discountActive,
-      restrictionType,
+      restrictionType: restrictions,
       selectedUsers: usersIds,
-      items: selectedProducts,
+      items,
       usageNumber: !unlimitedUsage ? usageNumber : 0
     }
-
     setLoadingAction(true)
     try {
       await this.updateAddDiscount(isUpdatingDiscount, discount)
@@ -472,12 +493,16 @@ const mapStateToProps = (state: any) => state.get('discountsAdmin').toJS()
 
 type OwnProps = {
   user?: string
+  design?: string
 }
 
 const DiscountsAdminEnhance = compose(
   upsertDiscountMutation,
   activateDiscountMutation,
-  connect(mapStateToProps, { ...DiscountsActions }),
+  connect(
+    mapStateToProps,
+    { ...DiscountsActions }
+  ),
   graphql<Data>(getUsers, {
     options: (ownprops: OwnProps) => {
       const { user } = ownprops
@@ -491,18 +516,19 @@ const DiscountsAdminEnhance = compose(
     },
     name: 'users'
   }),
-  graphql<Data>(getProducts, {
+  graphql<Data>(getDesignSearchCode, {
     options: (ownprops: OwnProps) => {
-      const { user } = ownprops
+      const { design = '' } = ownprops
+      const pattern = design.trim()
       return {
         variables: {
-          text: user
+          pattern
         },
-        skip: !user,
+        skip: !design || design.length < 5,
         fetchPolicy: 'network-only'
       }
     },
-    name: 'products'
+    name: 'designs'
   })
 )(DiscountsAdmin)
 

@@ -31,7 +31,8 @@ import {
   SET_TEAM_DATA,
   UPDATE_START_DATE_ACTION,
   UPDATE_END_DATE_ACTION,
-  UPDATE_TEAMSTORE_TYPE
+  UPDATE_TEAMSTORE_TYPE,
+  SET_FILTERS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -69,7 +70,11 @@ export const initialState = fromJS({
   startDateMoment: null,
   endDate: '',
   endDateMoment: null,
-  accountManager: {}
+  accountManager: {},
+  filter: '',
+  filterText: '',
+  startDateFilter: null,
+  endDateFilter: null
 })
 
 const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -227,6 +232,15 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
       })
     case UPDATE_TEAMSTORE_TYPE:
       return state.set('onDemand', action.onDemand)
+    case SET_FILTERS: {
+      const { filter, filterText, startDate, endDate } = action
+      return state.merge({
+        filter,
+        filterText,
+        startDateFilter: startDate,
+        endDateFilter: endDate
+      })
+    }
     default:
       return state
   }

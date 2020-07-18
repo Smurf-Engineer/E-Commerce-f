@@ -5,7 +5,7 @@ import * as React from 'react'
 import Switch from 'antd/lib/switch'
 import Select from 'antd/lib/select'
 import moment from 'moment'
-import { Container, Cell, StyledSelect, Mail } from './styledComponents'
+import { Container, Cell, StyledSelect, Mail, StyledIcon } from './styledComponents'
 import { User } from '../../../types/common'
 
 const Option = Select.Option
@@ -19,7 +19,7 @@ interface Props {
   firstName: string
   lastName: string
   netsuiteId: string
-  billingCountry: string
+  affiliateId: string
   createdAt: string
   shortId: string
   canEdit: boolean
@@ -52,7 +52,7 @@ const ItemOrder = ({
   lastName,
   netsuiteId,
   onSetAdministrator,
-  billingCountry,
+  affiliateId,
   createdAt,
   canSetAdmin,
   canEdit,
@@ -83,7 +83,11 @@ const ItemOrder = ({
   return (
     <Container onClick={handleOnSelectUser}>
       <Cell>JV2-{id}</Cell>
-      <Cell>{billingCountry}</Cell>
+      <Cell>
+        {!!affiliateId &&
+          <StyledIcon type="check-square" theme="filled" />
+        }
+      </Cell>
       <Cell>{moment(createdAt).format('DD-MM-YYYY')}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>

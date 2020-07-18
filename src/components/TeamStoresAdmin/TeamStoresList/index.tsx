@@ -21,6 +21,7 @@ import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { GetTeamStoresQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
+import { Moment } from 'moment'
 
 interface Data extends QueryProps {
   teamStoresList: {
@@ -40,6 +41,10 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   canEdit: boolean
+  filter: string
+  filterText: string
+  startDate: Moment
+  endDate: Moment
   onSortClick: (label: string, sort: sorts) => void
   onChangeSwitch: (id: number, fieldId: string) => void
   onChangePage: (page: number) => void
@@ -48,8 +53,9 @@ interface Props {
 
 const teamStoreHeaders = [
   { title: 'name', id: 'name' },
-  { title: 'manager', id: 'first_name' },
+  { title: 'owner', id: 'first_name' },
   { title: 'type', id: 'on_demand_mode' },
+  { title: 'manager', id: 'managers.first_name' },
   { title: 'cutoffDate', id: 'cutoff_date' },
   { title: 'deliveryDate', id: 'delivery_date' },
   { title: 'featured', id: 'featured' },
@@ -117,7 +123,8 @@ const TeamStoresList = ({
         cutOffDateString,
         deliveryDate,
         shortId,
-        display
+        display,
+        accountManager
       }: TeamStoreAdminType,
       index: number
     ) => {
@@ -138,7 +145,8 @@ const TeamStoresList = ({
             onChangeSwitch,
             onClickRow,
             shortId,
-            display
+            display,
+            accountManager
           }}
         />
       )
@@ -169,6 +177,10 @@ interface OwnProps {
   sort?: string
   customLimit?: number
   searchText?: string
+  filter?: string
+  filterText?: string
+  startDate?: Moment
+  endDate?: Moment
 }
 
 const TeamStoresListEnhance = compose(
@@ -178,7 +190,11 @@ const TeamStoresListEnhance = compose(
       orderBy,
       sort,
       customLimit,
-      searchText
+      searchText,
+      filter,
+      filterText,
+      startDate,
+      endDate
     }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : TEAM_STORES_LIMIT
       const offset = (currentPage - 1) * limit
@@ -188,7 +204,11 @@ const TeamStoresListEnhance = compose(
           offset,
           order: orderBy,
           orderAs: sort,
-          searchText
+          searchText,
+          filter,
+          filterText,
+          startDate,
+          endDate
         },
         fetchPolicy: 'network-only'
       }

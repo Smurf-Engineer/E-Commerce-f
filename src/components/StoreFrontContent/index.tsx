@@ -111,7 +111,7 @@ interface Props {
 }
 
 const invalidDateExp = /\bInvalid date\b/
-const LIMIT = 11
+const LIMIT = 12
 
 export class StoreFrontContent extends React.Component<Props, StateProps> {
   state = {
@@ -613,7 +613,7 @@ const StoreFrontContentEnhance = compose(
           limit: LIMIT,
           offset: skip
         },
-        fetchPolicy: 'no-cache'
+        fetchPolicy: 'network-only'
       }
     }
   })

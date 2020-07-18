@@ -18,7 +18,7 @@ import {
   ON_SELECT_DATE,
   SET_DISCOUNT_TO_UPDATE,
   SELECT_RESTRICTION,
-  ON_CHANGE_USER,
+  ON_CHANGE_INPUT,
   ON_ADD_PRODUCT,
   DELETE_ITEM_SELECTED_ACTION,
   LIST,
@@ -28,7 +28,7 @@ import {
   ON_CHANGE_USAGE,
   ON_CHECK_USAGE
 } from './constants'
-import { Reducer } from '../../types/common'
+import { Reducer, HiddenSymbols } from '../../types/common'
 
 export const initialState = fromJS({
   currentPage: 1,
@@ -44,7 +44,11 @@ export const initialState = fromJS({
   rate: 1,
   discountActive: false,
   loading: false,
-  restrictionType: '',
+  restrictionType: {
+    users: false,
+    design: true,
+    usage: false
+  },
   user: '',
   selectedUser: '',
   discountPage: LIST,
@@ -87,7 +91,11 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         expiry: '',
         loading: false,
         discountId: -1,
-        restrictionType: '',
+        restrictionType: {
+          users: false,
+          design: true,
+          usage: false
+        },
         user: '',
         selectedUser: '',
         currentPageModal: 1,
@@ -114,6 +122,15 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         selectedProducts,
         usageNumber
       } = action.discount
+      const restrictions = restrictionType.split(',')
+      const restricts = restrictions.reduce(
+        (obj: HiddenSymbols, restrictType: string) => {
+          obj[restrictType] = true
+          return obj
+          // tslint:disable-next-line: align
+        },
+        {}
+      )
       return state.merge({
         discountId: id,
         discountType: type,
@@ -122,7 +139,7 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         rate,
         discountActive: active,
         expiry,
-        restrictionType,
+        restrictionType: restricts,
         user,
         discountPage: EDIT,
         selectedUsers,
@@ -130,22 +147,29 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         selectedProducts
       })
     }
-    case SELECT_RESTRICTION:
+    case SELECT_RESTRICTION: {
+      const { restriction } = action
+      let selectedArray = ''
+      if (!restriction.users) {
+        selectedArray = 'selectedUsers'
+      } else if (!restriction.design) {
+        selectedArray = 'selectedProducts'
+      }
       return state.merge({
-        restrictionType: action.restriction,
-        selectedUsers: [],
-        selectedProducts: [],
+        restrictionType: restriction,
+        [selectedArray]: [],
         user: ''
       })
-    case ON_CHANGE_USER:
-      return state.set('user', action.value)
+    }
+    case ON_CHANGE_INPUT:
+      return state.set(action.key, action.value)
     case ON_ADD_PRODUCT: {
-      const { value } = action
+      const { design } = action
       const selectedProducts = state.get('selectedProducts')
       const itemsMap = selectedProducts.valueSeq((item: any) => item)
       return state.merge({
-        user: '',
-        selectedProducts: [value, ...itemsMap]
+        design: '',
+        selectedProducts: [design, ...itemsMap]
       })
     }
     case DELETE_ITEM_SELECTED_ACTION:

@@ -21,7 +21,8 @@ import {
   BottomDivider,
   FooterItem,
   HeaderPriceDetailEmpty,
-  FromTeamStore
+  FromTeamStore,
+  StoreLink
 } from './styledComponents'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
@@ -212,6 +213,14 @@ export class CartListItem extends React.Component<Props, {}> {
     history.push(productUrl)
   }
 
+  goToStore = () => {
+    const { history, cartItem } = this.props
+    const teamStoreId = get(cartItem, 'teamStoreId', '')
+    if (teamStoreId) {
+      history.push(`/store-front?storeId=${teamStoreId}`)
+    }
+  }
+
   getPriceRangeByQuantity = (quantity: string) => {
     const { cartItem, currentCurrency } = this.props
     return find(cartItem.product.priceRange, {
@@ -270,6 +279,7 @@ export class CartListItem extends React.Component<Props, {}> {
       []
     )
     const mpnCode = get(cartItem, 'product.mpn', '')
+    const active = get(cartItem, 'product.active', false)
     const isTeamStore = get(cartItem, 'teamStoreId', '')
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
@@ -338,7 +348,10 @@ export class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
           {!!teamStoreName && (
             <FromTeamStore>
-              {formatMessage(messages.from, { teamStoreName })}
+              {formatMessage(messages.from)}
+              <StoreLink onClick={this.goToStore}>
+                {teamStoreName}
+              </StoreLink>
             </FromTeamStore>
           )}
           <ItemDetailsHeaderNameDetail>
@@ -397,7 +410,7 @@ export class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  {canReorder && renderAddToCartButton}
+                  {(canReorder && active) && renderAddToCartButton}
                 </ItemDetails>
               </Container>
             )
@@ -415,7 +428,7 @@ export class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
-                  {canReorder && renderAddToCartButton}
+                  {(canReorder && active) && renderAddToCartButton}
                 </div>
               </Container>
             )

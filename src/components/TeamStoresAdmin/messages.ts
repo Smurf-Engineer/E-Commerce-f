@@ -24,5 +24,33 @@ export default defineMessages({
   addTeamStore: {
     id: 'components.TeamStoresAdmin.addTeamStore',
     defaultMessage: '+ Add Team Store'
+  },
+  filters: {
+    id: 'components.TeamStoresAdmin.filters',
+    defaultMessage: 'FILTER BY'
+  },
+  from: {
+    id: 'components.TeamStoresAdmin.from',
+    defaultMessage: 'From'
+  },
+  to: {
+    id: 'components.TeamStoresAdmin.to',
+    defaultMessage: 'To'
+  },
+  select: {
+    id: 'components.TeamStoresAdmin.select',
+    defaultMessage: 'Select'
+  },
+  show: {
+    id: 'components.TeamStoresAdmin.show',
+    defaultMessage: 'Show'
+  },
+  accountManager: {
+    id: 'components.TeamStoresAdmin.accountManager',
+    defaultMessage: 'Account Manager'
+  },
+  cutoffDate: {
+    id: 'components.TeamStoresAdmin.cutoffDate',
+    defaultMessage: 'Cut-off Date'
   }
 })

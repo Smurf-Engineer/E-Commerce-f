@@ -25,6 +25,7 @@ export const GetDesignByIdQuery = gql`
         productId: id
         yotpoId: yotpo_id
         name
+        active
         modelSize: model_size
         type: short_description
         shortDescription: short_description

@@ -17,7 +17,7 @@ import {
   ON_SELECT_DATE,
   SET_DISCOUNT_TO_UPDATE,
   SELECT_RESTRICTION,
-  ON_CHANGE_USER,
+  ON_CHANGE_INPUT,
   ON_ADD_PRODUCT,
   DELETE_ITEM_SELECTED_ACTION,
   ON_ADD_USER,
@@ -30,7 +30,9 @@ import {
   AnyAction,
   sorts,
   Discount,
-  UserDiscount
+  UserDiscount,
+  HiddenSymbols,
+  DesignSearchCode
 } from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
@@ -98,19 +100,20 @@ export const setDiscountToUpdateAction = (discount: Discount) => ({
   discount
 })
 
-export const selectRestrictionAction = (restriction: string) => ({
+export const selectRestrictionAction = (restriction: HiddenSymbols) => ({
   type: SELECT_RESTRICTION,
   restriction
 })
 
-export const onChangeUserAction = (value: string) => ({
-  type: ON_CHANGE_USER,
+export const onChangeInputAction = (key: string, value: string) => ({
+  type: ON_CHANGE_INPUT,
+  key,
   value
 })
 
-export const onAddProductAction = (value: string) => ({
+export const onAddDesignAction = (design: DesignSearchCode) => ({
   type: ON_ADD_PRODUCT,
-  value
+  design
 })
 
 export const deleteItemSelectedAction = (

@@ -1097,9 +1097,9 @@ const getCanvas = (canvasToSet: any) => {
   const imageds = Object.keys(image)
   const canvas = fromJS({ text: {}, image: {}, path: {} })
   const updatedCanvas = canvas.withMutations((map: any) => {
-    textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
-    pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
-    imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+    textIds.forEach((id) => map.setIn([CanvasElements.Text, id], text[id]))
+    pathIds.forEach((id) => map.setIn([CanvasElements.Path, id], path[id]))
+    imageds.forEach((id) => map.setIn([CanvasElements.Image, id], image[id]))
   })
   return updatedCanvas
 }

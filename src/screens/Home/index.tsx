@@ -4,8 +4,9 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import get from 'lodash/get'
+import moment from 'moment'
 import * as thunkActions from './thunkActions'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
@@ -36,8 +37,19 @@ import {
   SlideVideo,
   ImageContainer,
   SlideImage,
-  SlideImageMobile
+  SlideImageMobile,
+  DeliveryInfo,
+  Calendar,
+  Month,
+  Day,
+  OrderInfo,
+  HeaderInfo,
+  NumberOfDays,
+  OrderingInfo,
+  DeliveryContainer,
+  HeaderInfoTitle
 } from './styledComponents'
+import { getDesignLabInfo } from './data'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
@@ -46,7 +58,7 @@ import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
-// import messages from './messages'
+import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import {
@@ -56,7 +68,8 @@ import {
   HomepageImagesType,
   HeaderImagePlaceHolder,
   HomepageCarousel,
-  ProductFile
+  ProductFile,
+  DeliveryDays
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
@@ -64,6 +77,10 @@ import { getFileExtension } from '../../utils/utilsFiles'
 
 interface Data extends QueryProps {
   files: any
+}
+
+interface DesignLab extends QueryProps {
+  designInfo?: DeliveryDays
 }
 
 const arrowLeft = <Arrow src={leftArrow} />
@@ -96,6 +113,7 @@ interface Props extends RouteComponentProps<any> {
   mainHeaderImages: HomepageImagesType[]
   title: string
   carouselSettings: HomepageCarousel
+  dataDesignLabInfo: DesignLab
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -178,10 +196,21 @@ export class Home extends React.Component<Props, {}> {
         secondarySlideTransition,
         secondarySlideDuration
       },
-      title = MAIN_TITLE
+      title = MAIN_TITLE,
+      dataDesignLabInfo
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
+
+    const deliveryDaysResponse = get(
+      dataDesignLabInfo,
+      'deliveryDays.days',
+      null
+    )
+
+    const deliveryDate = get(dataDesignLabInfo, 'deliveryDate.date', null)
+
+    const today = new Date()
 
     const searchResults = searchString ? (
       <SearchResults
@@ -267,6 +296,39 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
+          {!!deliveryDaysResponse && (
+            <DeliveryContainer>
+              <DeliveryInfo>
+                <OrderInfo>
+                  {formatMessage(messages.orderDate)}
+                  <Calendar currentMonth={true}>
+                    <Month currentMonth={true}>
+                      {moment(today).format('MMMM')}
+                    </Month>
+                    <Day>{today.getDate()}</Day>
+                  </Calendar>
+                </OrderInfo>
+                <HeaderInfo>
+                  <HeaderInfoTitle>
+                    {formatMessage(messages.currentTurnaround)}
+                  </HeaderInfoTitle>
+                  <NumberOfDays>
+                    {`${deliveryDaysResponse} ${formatMessage(messages.days)}`}
+                  </NumberOfDays>
+                </HeaderInfo>
+                <OrderInfo>
+                  {formatMessage(messages.deliveryDate)}
+                  <Calendar>
+                    <Month>{moment(deliveryDate).format('MMMM')}</Month>
+                    <Day>{moment(deliveryDate).format('DD')}</Day>
+                  </Calendar>
+                </OrderInfo>
+              </DeliveryInfo>
+              <OrderingInfo>
+                {formatMessage(messages.orderingNote)}
+              </OrderingInfo>
+            </DeliveryContainer>
+          )}
           {featured}
           {secondaryHeaderItems.length && (
             <CarouselContainer>
@@ -342,6 +404,12 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
+  graphql<DesignLab>(getDesignLabInfo, {
+    options: () => ({
+      fetchPolicy: 'network-only'
+    }),
+    name: 'dataDesignLabInfo'
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps

@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { compose, withApollo, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import Select from 'antd/lib/select'
 import message from 'antd/lib/message'
 import { Moment } from 'moment'
 import { GetTeamStoresQuery } from './TeamStoresList/data'
@@ -27,7 +28,14 @@ import {
   Container,
   ScreenTitle,
   SearchInput,
-  AddTeamStoreButton
+  AddTeamStoreButton,
+  Filters,
+  Options,
+  StyledInput,
+  StyledDatePicker,
+  StyledButton,
+  StyledSelect,
+  ButtonWrapper
 } from './styledComponents'
 import List from './TeamStoresList'
 import messages from './messages'
@@ -46,8 +54,15 @@ import {
   UserPermissions,
   AccountManagerName
 } from '../../types/common'
-import { TEAM_STORES_LIMIT } from './constants'
+import {
+  TEAM_STORES_LIMIT,
+  FILTER_OPTIONS,
+  DATE_FORMAT,
+  ACCOUNT_MANAGER_COLUMN
+} from './constants'
 import { TEAM_STORES, ADMIN_ROUTE } from '../AdminLayout/constants'
+
+const Option = Select.Option
 
 interface Props {
   history: any
@@ -98,6 +113,10 @@ interface Props {
   startDate: string
   endDate: string
   accountManager: AccountManagerName
+  filter: string
+  filterText: string
+  startDateFilter: Moment
+  endDateFilter: Moment
   resetForm: () => void
   setTeamData: (data: TeamstoreType) => void
   setLoadingAction: (loading: boolean) => void
@@ -140,6 +159,12 @@ interface Props {
   updateStartDateAction: (dateMoment: Moment, date: string) => void
   updateEndDateAction: (dateMoment: Moment, date: string) => void
   updateTeamStoreTypeAction: (onDemand: boolean) => void
+  setFiltersAction: (
+    filter: string,
+    filterText: string,
+    startDate: Moment,
+    endDate: Moment
+  ) => void
 }
 
 interface Data extends QueryProps {
@@ -151,7 +176,11 @@ interface StateProps {
 }
 class TeamStoresAdmin extends React.Component<Props, StateProps> {
   state = {
-    searchValue: ''
+    searchValue: '',
+    filter: null,
+    startDate: null,
+    endDate: null,
+    filterText: ''
   }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchTextAction(this.state.searchValue),
@@ -161,6 +190,31 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
+  }
+
+  onSelectFilter = (value: string) => {
+    this.setState({ filter: value })
+  }
+
+  onChangeFilterText = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.setState({ filterText: value })
+  }
+
+  handleOnSelectStart = (date: Moment) => {
+    this.setState({ startDate: date })
+  }
+
+  handleOnSelectEnd = (date: Moment) => {
+    this.setState({ endDate: date })
+  }
+
+  onSaveFilters = () => {
+    const { setFiltersAction } = this.props
+    const { filter, filterText, startDate, endDate } = this.state
+    setFiltersAction(filter, filterText, startDate, endDate)
   }
 
   render() {
@@ -216,12 +270,29 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
       endDateMoment,
       updateEndDateAction,
       updateTeamStoreTypeAction,
-      accountManager
+      accountManager,
+      filter,
+      filterText,
+      startDateFilter,
+      endDateFilter
     } = this.props
+    const {
+      filter: stateFilter,
+      filterText: stateFilterText,
+      startDate,
+      endDate
+    } = this.state
     const access = permissions[TEAM_STORES] || {}
     if (!access.view) {
       history.replace(ADMIN_ROUTE)
     }
+    const selectOptions = FILTER_OPTIONS.map(
+      ({ name: filterName, column }, index) => (
+        <Option key={index} value={column}>
+          {formatMessage(messages[filterName])}
+        </Option>
+      )
+    )
     return (
       <div>
         <Route
@@ -242,14 +313,63 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                 onChange={this.handleInputChange}
                 placeholder={formatMessage(messages.search)}
               />
+              <Filters>
+                <ScreenTitle>{formatMessage(messages.filters)}</ScreenTitle>
+                <Options>
+                  <StyledSelect
+                    onChange={this.onSelectFilter}
+                    showSearch={false}
+                    value={stateFilter}
+                    placeholder={formatMessage(messages.select)}
+                  >
+                    {selectOptions}
+                  </StyledSelect>
+                  <StyledInput
+                    value={stateFilterText}
+                    disabled={stateFilter !== ACCOUNT_MANAGER_COLUMN}
+                    onChange={this.onChangeFilterText}
+                  />
+                  <StyledDatePicker
+                    value={startDate}
+                    onChange={this.handleOnSelectStart}
+                    format={DATE_FORMAT}
+                    size="large"
+                    disabled={!stateFilter}
+                    placeholder={formatMessage(messages.from)}
+                  />
+                  <StyledDatePicker
+                    value={endDate}
+                    onChange={this.handleOnSelectEnd}
+                    disabled={!stateFilter}
+                    format={DATE_FORMAT}
+                    size="large"
+                    placeholder={formatMessage(messages.to)}
+                  />
+                  <ButtonWrapper>
+                    <StyledButton type="primary" onClick={this.onSaveFilters}>
+                      {formatMessage(messages.show)}
+                    </StyledButton>
+                  </ButtonWrapper>
+                </Options>
+              </Filters>
               <List
-                {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+                {...{
+                  formatMessage,
+                  currentPage,
+                  orderBy,
+                  sort,
+                  searchText,
+                  filter,
+                  filterText
+                }}
                 onSortClick={this.handleOnSortClick}
                 onChangePage={this.handleOnChangePage}
                 interactiveHeaders={true}
                 canEdit={access.edit}
                 onChangeSwitch={this.onChangeSwitch}
                 onClickRow={this.handleGoToTeamStore}
+                startDate={startDateFilter}
+                endDate={endDateFilter}
               />
             </Container>
           )}
