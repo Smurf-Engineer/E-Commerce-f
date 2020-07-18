@@ -18,7 +18,7 @@ import {
   ON_SELECT_DATE,
   SET_DISCOUNT_TO_UPDATE,
   SELECT_RESTRICTION,
-  ON_CHANGE_USER,
+  ON_CHANGE_INPUT,
   ON_ADD_PRODUCT,
   DELETE_ITEM_SELECTED_ACTION,
   LIST,
@@ -46,8 +46,8 @@ export const initialState = fromJS({
   loading: false,
   restrictionType: {
     users: false,
-    product: true,
-    usage: false,
+    design: true,
+    usage: false
   },
   user: '',
   selectedUser: '',
@@ -93,8 +93,8 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         discountId: -1,
         restrictionType: {
           users: false,
-          product: true,
-          usage: false,
+          design: true,
+          usage: false
         },
         user: '',
         selectedUser: '',
@@ -123,11 +123,14 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         usageNumber
       } = action.discount
       const restrictions = restrictionType.split(',')
-      const restricts = restrictions.reduce((obj: HiddenSymbols, restrictType: string) => {
-        obj[restrictType] = true
-        return obj
-        // tslint:disable-next-line: align
-      }, {})
+      const restricts = restrictions.reduce(
+        (obj: HiddenSymbols, restrictType: string) => {
+          obj[restrictType] = true
+          return obj
+          // tslint:disable-next-line: align
+        },
+        {}
+      )
       return state.merge({
         discountId: id,
         discountType: type,
@@ -149,7 +152,7 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
       let selectedArray = ''
       if (!restriction.users) {
         selectedArray = 'selectedUsers'
-      } else if (!restriction.product) {
+      } else if (!restriction.design) {
         selectedArray = 'selectedProducts'
       }
       return state.merge({
@@ -158,15 +161,15 @@ const discountsAdminReducer: Reducer<any> = (state = initialState, action) => {
         user: ''
       })
     }
-    case ON_CHANGE_USER:
-      return state.set('user', action.value)
+    case ON_CHANGE_INPUT:
+      return state.set(action.key, action.value)
     case ON_ADD_PRODUCT: {
-      const { value } = action
+      const { design } = action
       const selectedProducts = state.get('selectedProducts')
       const itemsMap = selectedProducts.valueSeq((item: any) => item)
       return state.merge({
-        user: '',
-        selectedProducts: [value, ...itemsMap]
+        design: '',
+        selectedProducts: [design, ...itemsMap]
       })
     }
     case DELETE_ITEM_SELECTED_ACTION:

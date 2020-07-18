@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -684,6 +684,7 @@ export interface ProductPrice {
   yotpoId: string
   price: number
   quantity: number
+  designId: string
 }
 export interface CreditCardData {
   id?: string
@@ -1409,6 +1410,10 @@ export interface Role {
 
 export interface DesignSearchCode {
   code: string
+  name?: string
+  image?: string
+  id?: number
+  shortId?: string
 }
 
 export interface NavbarSports {

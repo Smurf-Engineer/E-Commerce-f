@@ -2,7 +2,7 @@
  * Row Component - Created by eduardoquintero on 21/11/19.
  */
 import * as React from 'react'
-import { TableRow, Cell, DeleteButton } from '../styledComponents'
+import { TableRow, Cell, DeleteButton, Thumbnail } from '../styledComponents'
 import messages from '../messages'
 import { Message, Header } from '../../../types/common'
 
@@ -33,8 +33,17 @@ class Row extends React.PureComponent<Props, {}> {
     return (
       <div>
         <TableRow>
-          {headerTitles.map((header) => header.fieldName &&
-            <Cell width={header.tabletWidth}>{item[header.fieldName] || item}</Cell>
+          {headerTitles.map(
+            (header) =>
+              header.fieldName && (
+                <Cell width={header.tabletWidth}>
+                  {header.fieldName !== 'image' ? (
+                    item[header.fieldName] || item
+                  ) : (
+                    <Thumbnail src={item[header.fieldName]} />
+                  )}
+                </Cell>
+              )
           )}
           <Cell>
             <DeleteButton onClick={handleOnClick}>
