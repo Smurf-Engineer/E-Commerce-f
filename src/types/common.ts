@@ -1699,6 +1699,11 @@ export type AccountManagerName = {
   last_name: string
 }
 
+export type SubsidiarySCA = {
+  subsidiary: number
+  sca: boolean
+}
+
 export type DeliveryDays = {
   deliveryDays: string
 }
