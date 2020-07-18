@@ -17,10 +17,13 @@ export const Row = styled.div`
 
 export const TopRow = styled.div`
   display: flex;
-  width: 26%;
+  width: 16%;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  @media (max-width: 1350px) {
+    width: 26%;
+  }
 `
 
 export const TopText = styled.div`
