@@ -33,7 +33,8 @@ import {
   PAID_STATUS,
   PAYMENT_ISSUE,
   CANCELLED,
-  PURGED
+  PURGED,
+  ERROR
 } from '../../constants'
 import { DATE_FORMAT } from './constants'
 const Option = Select.Option
@@ -74,7 +75,8 @@ const statusList = [
   PAID_STATUS,
   PAYMENT_ISSUE,
   PURGED,
-  CANCELLED
+  CANCELLED,
+  ERROR
 ]
 
 const selectOptions = statusList.map((currentStatus, index) => (
