@@ -7,6 +7,7 @@ export const GetDesignByIdQuery = gql`
       teamStoreItem: $teamStoreItem
     ) {
       id
+      shared
       name
       canEdit: can_edit
       shortId: short_id

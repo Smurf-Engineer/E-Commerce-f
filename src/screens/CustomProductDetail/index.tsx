@@ -148,6 +148,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const ownedDesign = get(design, 'canEdit', false)
     const product = get(design, 'product', null)
+    const shared = get(design, 'shared', false)
     const productPriceRange = get(product, 'priceRange', null)
     const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
     const teamStoreItem = queryParams.item
@@ -160,7 +161,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       )
     }
 
-    if (!product || error) {
+    if (!product || error || (!ownedDesign && !shared)) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -446,7 +447,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Container>
           <BreadCrumbs {...{ history, formatMessage, routes }} />
-          {design && !loading && (
+          {(design && !loading) && (
             <Content>
               <ImagePreview>
                 <RenderContainer>

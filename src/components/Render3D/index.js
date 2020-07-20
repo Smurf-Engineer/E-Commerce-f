@@ -215,7 +215,7 @@ class Render3D extends PureComponent {
 
           const texture =
             binding[
-              hasBindingColor ? colorAccessories.bindingColor : bindingColor
+            hasBindingColor ? colorAccessories.bindingColor : bindingColor
             ]
           loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
@@ -323,14 +323,15 @@ class Render3D extends PureComponent {
       designSearch,
       isProduct,
       isAdmin,
+      fromShare,
       detailed,
       data,
       textColor
     } = this.props
     const { loading, error, design } = data
-    const { code, name, product } = design || {}
+    const { code, name, product, shared } = design || {}
     const { name: productName } = product || {}
-    if (error && !isProduct) {
+    if ((error && !isProduct) || (fromShare && !shared)) {
       return (
         <ContainerError>
           <Title>
@@ -472,7 +473,7 @@ class Render3D extends PureComponent {
             if (!!binding) {
               const texture =
                 binding[
-                  colorAccessories.bindingColor || Object.keys(binding)[0]
+                colorAccessories.bindingColor || Object.keys(binding)[0]
                 ]
 
               const bindingObj = textureLoader.load(texture)
