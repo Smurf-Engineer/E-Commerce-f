@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   overflow: auto;
+  max-width: 512px;
   padding: 0px 32px;
 `
 
@@ -41,4 +42,10 @@ export const Col = styled.li`
   height: 32px;
   text-align: center;
   margin-bottom: 6px;
+`
+
+export const ColorTitle = styled.p`
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
 `
