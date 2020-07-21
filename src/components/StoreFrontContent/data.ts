@@ -67,6 +67,7 @@ export const getSingleTeamStore = gql`
             code
             yotpoId: yotpo_id
             name
+            active
             type: name
             description: short_description
             shortDescription: short_description

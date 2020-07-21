@@ -26,6 +26,7 @@ export const GetProductsQuery = gql`
         yotpoId: yotpo_id
         name
         type: name
+        active
         description: short_description
         shortDescription: short_description
         collections
