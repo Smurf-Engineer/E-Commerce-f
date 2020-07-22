@@ -66,7 +66,7 @@ const AccessoryColor = ({
                 onClick={onSelectBlack}
                 selected={colorSelected === BLACK}
               >
-                <Oval color={'#000'} />
+                <Oval color={BLACK} />
               </OvalSelected>
               <OvalSelected
                 onClick={onSelectWhite}
