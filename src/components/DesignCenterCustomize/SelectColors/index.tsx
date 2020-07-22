@@ -16,15 +16,23 @@ import {
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
 import colorsIcon from '../.../../../../assets/color_squares.svg'
-import { StitchingColor, AccesoryColor, UserInfo } from '../../../types/common'
+import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
 import { FormattedMessage } from 'react-intl'
 import { ColorChartForm } from '../../ColorChartForm'
 import { ColorChart } from '../../ColorChart'
+import Message from 'antd/lib/message'
+import get from 'lodash/get'
+import find from 'lodash/find'
+
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
 
 interface Props {
   colors: string[]
+  colorsList: ColorsData
   names: string[]
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
@@ -59,12 +67,13 @@ class SelectColors extends React.PureComponent<Props, {}> {
       goToStitching,
       formatMessage,
       colors,
+      colorsList,
       showContent,
       stitchingColor,
       bindingColor,
       zipperColor,
       bibColor,
-      onAccessoryColorSelected = () => {},
+      onAccessoryColorSelected = () => { },
       hasStitching,
       hasZipper,
       hasBinding,
@@ -85,6 +94,26 @@ class SelectColors extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return null
     }
+    let arrayColors: Color[] = []
+    let stitchingLabel = ''
+    if (colorsList && !colorsList.loading) {
+      try {
+        arrayColors = JSON.parse(
+          get(
+            colorsList,
+            'colorsResult.stitchingColors',
+            []
+          )
+        )
+        console.log('arrayColors:', arrayColors)
+        const color = find(arrayColors, { value: stitchingColor ? stitchingColor.value : '' })
+        console.log('color:', color)
+        stitchingLabel = color ? color.label : ''
+      } catch (e) {
+        Message.error(e)
+      }
+    }
+
     return (
       <Container>
         <BaseColors onClick={goToBaseColors}>
@@ -107,7 +136,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
         {hasStitching && (
           <AccessoryColor
             name={formatMessage(messages.stitching)}
-            {...{ goToStitching, stitchingColor }}
+            {...{ goToStitching, stitchingColor, stitchingLabel }}
           />
         )}
         {hasBinding && (
@@ -156,7 +185,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
       </Container>
     )
   }
-  handleClose = () => {}
+  handleClose = () => { }
 }
 
 export default SelectColors
