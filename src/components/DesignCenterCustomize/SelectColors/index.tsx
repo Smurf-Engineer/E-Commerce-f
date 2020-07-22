@@ -105,9 +105,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
             []
           )
         )
-        console.log('arrayColors:', arrayColors)
         const color = find(arrayColors, { value: stitchingColor ? stitchingColor.value : '' })
-        console.log('color:', color)
         stitchingLabel = color ? color.label : ''
       } catch (e) {
         Message.error(e)
