@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -207,6 +207,44 @@ export type DesignNote = {
   text: string
 }
 
+export type AffiliateStatus = {
+  enabled: boolean
+}
+
+export type Affiliate = {
+  status: string
+  paypalAccount: string
+  comission: number
+  activatedAt: string
+}
+
+export type AffiliatePayment = {
+  id: number
+  userId: string
+  createdAt: string
+  status: string
+  amount: number
+  receipt: string
+  paypalAccount?: string
+  comission?: number
+  name?: string
+  store?: string
+  orderId?: string
+  customerId?: string
+  currency?: String
+  totalOrigin: number
+  orderCurrency?: String
+  orderStatus?: string
+  customerName?: string
+  orderAmount: number
+  paidAt?: string
+}
+
+export type AffiliatesResult = {
+  fullCount: number
+  payments: AffiliatePayment[]
+}
+
 export type SaveDesignType = {
   designBase64: string
   canvasSvg: string
@@ -325,6 +363,10 @@ export type TeamStoreAdminResultType = {
   teamStores: TeamStoreAdminType[]
 }
 
+export type SelectedPays = {
+  [key: string]: boolean
+}
+
 export type TeamStoreAdminType = {
   id: number
   name: string
@@ -341,6 +383,7 @@ export type TeamStoreAdminType = {
   cutOffDateString: string
   shortId: string
   display: boolean
+  accountManager?: User
 }
 
 export type DateObjectType = {
@@ -684,6 +727,7 @@ export interface ProductPrice {
   yotpoId: string
   price: number
   quantity: number
+  designId: string
 }
 export interface CreditCardData {
   id?: string
@@ -802,6 +846,7 @@ export interface OrderDetailsInfo {
   canUpdatePayment?: boolean
   onDemand?: boolean
   email?: string
+  coupon?: string
 }
 
 export interface OrderDataInfo {
@@ -842,6 +887,7 @@ export interface OrderDataInfo {
   lastDrop?: string
   teamStoreName?: string
   teamStoreId?: string
+  coupon?: string
 }
 
 export interface TextFormat {
@@ -1400,6 +1446,7 @@ export interface User {
   salesRep?: User
   affiliated?: boolean
   accountManager?: User
+  affiliateId?: String
 }
 
 export interface Role {
@@ -1409,6 +1456,10 @@ export interface Role {
 
 export interface DesignSearchCode {
   code: string
+  name?: string
+  image?: string
+  id?: number
+  shortId?: string
 }
 
 export interface NavbarSports {
@@ -1646,4 +1697,13 @@ export type PriceRangeProgress = {
 export type AccountManagerName = {
   first_name: string
   last_name: string
+}
+
+export type SubsidiarySCA = {
+  subsidiary: number
+  sca: boolean
+}
+
+export type DeliveryDays = {
+  deliveryDays: string
 }

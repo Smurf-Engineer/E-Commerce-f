@@ -11,7 +11,8 @@ import {
   SET_EMAIL_CONTACT,
   SET_EMAIL_MESSAGE,
   SEND_MESSAGE_LOADING,
-  SET_CONTACT_FIELD
+  SET_CONTACT_FIELD,
+  SET_CURRENT_PAGE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -29,7 +30,9 @@ export const initialState = fromJS({
     phone: '',
     email: '',
     name: ''
-  }
+  },
+  skip: 0,
+  pageNumber: 1
 })
 
 const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
@@ -55,6 +58,11 @@ const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('sendMessageLoading', action.loading)
     case SET_CONTACT_FIELD:
       return state.setIn(['contactInfo', action.field], action.value)
+    case SET_CURRENT_PAGE:
+      return state.merge({
+        skip: action.skip,
+        pageNumber: action.pageNumber
+      })
     default:
       return state
   }

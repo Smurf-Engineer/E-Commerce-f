@@ -255,11 +255,12 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       getTotalItemsIncart: countCartItems,
       formatMessage
     } = this.props
+    const active = get(item, 'product.active', false)
     const productName = renderForThumbnail
       ? get(item, 'product.name')
       : item.product.name
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && active) {
       const cartList = JSON.parse(localStorage.getItem('cart') as any)
 
       if (cartList) {

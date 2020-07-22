@@ -5,7 +5,7 @@ import {
   FLAT_PROMO,
   COUNTRY_CODE_US,
   COUNTRY_CODE_CANADA,
-  PRODUCT
+  DESIGN
 } from '../screens/Checkout/constants'
 
 const CANADA_SHIPPING_TAX_RATE = 5
@@ -28,17 +28,26 @@ export const getTaxesAndDiscount = (
   let taxVatTotal = 0
 
   if (couponCode) {
-    const { type, rate, restrictionType, products } = couponCode
+    const { type, rate, restrictionType, products = [] } = couponCode
+    const restrictions = restrictionType ? restrictionType.split(',') : []
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
-        if (restrictionType !== PRODUCT) {
-          // calculate discount with (subtotal + proDesignFee) * percentageDiscount
-          discount = (subtotal + proDesignFee) * (Number(rate) / 100)
+        if (!restrictions.includes(DESIGN)) {
+          if (taxesAmount && applySpecialTaxes) {
+            taxVatTotal = taxesAmount / 100
+            const totalNet = subtotal / (1 + taxVatTotal)
+            // for Austria and Germany we calculate discount
+            // discount = (totalNet + proDesignReview) * percentageDiscount
+            discount = (totalNet + proDesignFee) * (Number(rate) / 100)
+          } else {
+            // calculate discount with (subtotal + proDesignFee) * percentageDiscount
+            discount = (subtotal + proDesignFee) * (Number(rate) / 100)
+          }
         } else {
-          discount = products.reduce((totalDiscount: number, product) => {
+          discount = products.reduce((totalDiscount: number, design) => {
             const itemForDiscount = find(
               productsPrices,
-              (productObject) => productObject.yotpoId === product
+              (productObject) => productObject.designId === design
             )
             if (itemForDiscount) {
               return (
@@ -54,13 +63,13 @@ export const getTaxesAndDiscount = (
         }
         break
       case FLAT_PROMO: // 'flat
-        if (restrictionType !== PRODUCT) {
+        if (!restrictions.includes(DESIGN)) {
           discount = Number(rate)
         } else {
-          discount = products.reduce((totalDiscount: number, product) => {
+          discount = products.reduce((totalDiscount: number, design) => {
             const itemForDiscount = find(
               productsPrices,
-              (productObject) => productObject.yotpoId === product
+              (productObject) => productObject.designId === design
             )
             if (itemForDiscount) {
               return totalDiscount + Number(rate) * itemForDiscount.quantity

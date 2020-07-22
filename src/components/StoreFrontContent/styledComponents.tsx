@@ -11,7 +11,8 @@ import {
   GRAY_HEADER,
   GRAY_SKELETON,
   BLUE,
-  GRAY_DARK
+  GRAY_DARK,
+  RED
 } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
@@ -77,7 +78,7 @@ export const Title = styled.div`
 `
 
 export const AboutTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -127,7 +128,7 @@ export const AboutContainer = styled.div`
 `
 
 export const OrderTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -142,9 +143,8 @@ type TitleProps = {
 }
 
 export const PriceTitle = styled.div`
-  padding-top: 18px;
   color: ${GRAY_DARK};
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -215,7 +215,7 @@ export const Corner = styled.div`
 
 export const PriceDescription = styled.div`
   padding-top: 10px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -268,15 +268,17 @@ export const CalendarFinalView = styled.div`
   height: 78px;
   margin-right: 5px;
   margin-left: 5px;
-  border: 2px solid #e61737;
+  border: 2px solid ${RED};
   border-radius: 2px;
+  max-width: 80px;
+  width: 100%;
 `
 
 export const CalendarTitle = styled.div`
   text-align: center;
   width: 100%;
   height: 20px;
-  color: #ffffff;
+  color: ${WHITE};
   background-color: #8c8c8c;
   text-transform: uppercase;
 `
@@ -284,8 +286,8 @@ export const CalendarTitle = styled.div`
 export const CalendarFinalTitle = styled.div`
   text-align: center;
   height: 22px;
-  color: #ffffff;
-  background-color: #e61737;
+  color: ${WHITE};
+  background-color: ${RED};
   text-transform: uppercase;
   padding: 4px 8px;
   font-size: 12px;
@@ -297,7 +299,7 @@ export const CalendarDay = styled.div`
   height: 80%;
   font-size: 36px;
   font-weight: bold;
-  color: #5f6062;
+  color: ${GRAY_DARK};
 `
 
 export const DatesContainer = styled.div`
@@ -321,7 +323,7 @@ export const FlexContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  @media (max-width: 768px) {
+  @media (max-width: 764px) {
     flex-flow: column-reverse;
     justify-content: center;
   }
@@ -335,8 +337,10 @@ export const FlexColumnContainer = styled.div`
 `
 
 export const CalendarContainer = styled.div`
-  margin-bottom: 20px;
-  text-align: center;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 `
 
 export const ButtonsContainer = styled.div`
@@ -346,11 +350,14 @@ export const ButtonsContainer = styled.div`
 `
 
 export const DatesTitle = styled.div`
-  color: #5f6062;
-  font-size: 12px;
+  color: ${GRAY_DARK};
+  font-size: 14px;
+  max-width: 170px;
   letter-spacing: 0.15px;
   line-height: 16px;
+  text-align: center;
   padding-bottom: 5px;
+  font-weight: ${({ onDemandMode }: DivProps) => onDemandMode ? 'bold' : 'normal'};
 `
 
 export const ListContainer = styled.div`

@@ -34,6 +34,8 @@ import {
   USER_LIST,
   ROLE_MANAGEMENT,
   SALES_REP,
+  AFFILIATES,
+  AFFILIATES_PAYOUTS,
 } from './constants'
 import {
   SideBar,
@@ -125,6 +127,12 @@ class AdminLayout extends React.Component<Props, {}> {
         break
       case SALES_REP:
         history.push('/admin/reps')
+        break
+      case AFFILIATES_PAYOUTS:
+        history.push('/admin/affiliates-payouts')
+        break
+      case AFFILIATES:
+        history.push('/admin/affiliates')
         break
       case TEAM_STORES:
         history.push('/admin/team-stores')

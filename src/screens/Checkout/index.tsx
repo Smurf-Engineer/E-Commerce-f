@@ -26,15 +26,15 @@ import {
   CurrencyQuery,
   CreatePaymentIntentMutation,
   AddCardMutation,
-  getSubsidiaryQuery
+  isScaPaymentQuery
 } from './data'
 import {
   CheckoutTabs,
   PaymentOptions,
   quantities,
   EUROPE,
-  EU_STRIPE,
   STRIPE,
+  EU_STRIPE,
   EU_SUBSIDIARY_COUNTRIES
 } from './constants'
 
@@ -138,7 +138,6 @@ interface Props extends RouteComponentProps<any> {
   placeOrder: any
   cardHolderName: string
   stripeError: string
-  ibanError: boolean
   cardNumber: string
   cardExpDate: string
   cardBrand: string
@@ -170,7 +169,6 @@ interface Props extends RouteComponentProps<any> {
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
-  setIbanErrorAction: (isError: boolean) => void
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
   invalidBillingFormAction: (hasError: boolean) => void
@@ -219,8 +217,7 @@ const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
   state = {
-    stripe: null,
-    euStripe: null
+    stripe: null
   }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -264,7 +261,6 @@ class Checkout extends React.Component<Props, {}> {
       ibanData,
       sameBillingAndShipping,
       stripeError,
-      ibanError,
       loadingBilling,
       loadingPlaceOrder,
       smsCheckAction,
@@ -277,7 +273,6 @@ class Checkout extends React.Component<Props, {}> {
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
       setStripeErrorAction,
-      setIbanErrorAction,
       setLoadingBillingAction,
       setStripeIbanDataAction,
       setPaymentMethodAction,
@@ -444,9 +439,7 @@ class Checkout extends React.Component<Props, {}> {
                     billingAddress,
                     cardHolderName,
                     stripeError,
-                    ibanError,
                     setStripeErrorAction,
-                    setIbanErrorAction,
                     inputChangeAction,
                     selectDropdownAction,
                     sameBillingAndShipping,
@@ -712,7 +705,7 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async (event: any, subsidiary?: number) => {
+  handleOnPlaceOrder = async (event: any, sca?: boolean) => {
     const {
       client: { query },
       billingCountry,
@@ -738,11 +731,11 @@ class Checkout extends React.Component<Props, {}> {
           }),
           okButtonProps: { style: okButtonStyles },
           onOk: () => {
-            this.placeOrder(event, null, subsidiary)
+            this.placeOrder(event, null, sca)
           }
         })
       } else {
-        this.placeOrder(event, null, subsidiary)
+        this.placeOrder(event, null, sca)
       }
     }
   }
@@ -762,7 +755,6 @@ class Checkout extends React.Component<Props, {}> {
   }
   createPaymentIntent = async () => {
     const { savePaymentId, createPaymentIntent } = this.props
-
     try {
       const orderObj = await this.getOrderObject()
       const response = await createPaymentIntent({
@@ -791,7 +783,7 @@ class Checkout extends React.Component<Props, {}> {
       }
     } = this.props
     const { data } = await query({
-      query: getSubsidiaryQuery,
+      query: isScaPaymentQuery,
       variables: { code: billingCountry },
       fetchPolicy: 'network-only'
     })
@@ -800,7 +792,8 @@ class Checkout extends React.Component<Props, {}> {
 
     const preorder = isFixedTeamstore && !reorder
 
-    if (data.subsidiary === EUROPE && !preorder) {
+    const subsidiarySCA = get(data, 'subsidiarySCA.sca', false) 
+    if (subsidiarySCA && !preorder) {
       await this.createPaymentIntent()
     }
     if (card && stripeToken) {
@@ -827,7 +820,7 @@ class Checkout extends React.Component<Props, {}> {
     } = this.props
     const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
     const quantity = quantities[priceRangeToApply]
-    return cart.map(({ product, itemDetails }: CartItems) => {
+    return cart.map(({ product, itemDetails, designId }: CartItems) => {
       // Check for fixed prices
       const productPriceRanges = get(product, 'priceRange', [])
       // get prices from currency
@@ -837,6 +830,7 @@ class Checkout extends React.Component<Props, {}> {
       })
       const designsPrice = {
         yotpoId: product.yotpoId,
+        designId,
         price: currencyPrice.price,
         quantity: sumBy(itemDetails, 'quantity')
       }
@@ -849,7 +843,7 @@ class Checkout extends React.Component<Props, {}> {
     }
     return STRIPE
   }
-  placeOrder = async (event: any, paypalObj?: object, subsidiary?: number) => {
+  placeOrder = async (event: any, paypalObj?: object, sca?: boolean) => {
     const {
       placeOrder,
       setLoadingPlaceOrderAction,
@@ -861,10 +855,7 @@ class Checkout extends React.Component<Props, {}> {
     try {
       setLoadingPlaceOrderAction(true)
 
-      const stripeAccount = this.getStripeAccount(subsidiary)
-
-      const orderObj = await this.getOrderObject(paypalObj, stripeAccount)
-
+      const orderObj = await this.getOrderObject(paypalObj, sca)
       const response = await placeOrder({
         variables: { orderObj }
       })
@@ -873,7 +864,7 @@ class Checkout extends React.Component<Props, {}> {
       const preorder = orderObj.isFixedTeamstore && !orderObj.replaceOrder
 
       if (
-        stripeAccount === EU_STRIPE &&
+        sca &&
         orderObj.paymentMethod === PaymentOptions.CREDITCARD &&
         !preorder
       ) {
@@ -907,7 +898,7 @@ class Checkout extends React.Component<Props, {}> {
   }
   getOrderObject = async (
     paypalObj?: object,
-    stripeAccount: string = STRIPE
+    sca: boolean = false
   ) => {
     const {
       location,
@@ -1050,7 +1041,7 @@ class Checkout extends React.Component<Props, {}> {
         proDesign,
         paymentMethod,
         cardId,
-        tokenId: stripeAccount === EU_STRIPE ? intentId : stripeToken,
+        tokenId: sca ? intentId : stripeToken,
         sourceId: stripeSource,
         cart: sanitizedCart,
         shippingAddress,
@@ -1075,10 +1066,9 @@ class Checkout extends React.Component<Props, {}> {
       Message.error(errorMessage, 5)
     }
   }
-  setStripe = async (stripe: any, euStripe: any) => {
+  setStripe = async (stripe: any) => {
     this.setState({
-      stripe,
-      euStripe
+      stripe
     })
   }
 }

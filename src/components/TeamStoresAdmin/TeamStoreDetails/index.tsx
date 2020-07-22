@@ -143,8 +143,8 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
               onChange={this.handleOnSetFeatured}
             />
           ) : (
-            <Text>{teamStore[header] || '-'}</Text>
-          )}
+              <Text>{teamStore[header] || '-'}</Text>
+            )}
         </InformationContainer>
       )
     )
@@ -164,25 +164,25 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
           },
           index: number
         ) => (
-          <Item
-            key={index}
-            {...{
-              thumbnail,
-              designName,
-              productName,
-              productType,
-              currencies,
-              handleOnSetPrice,
-              index,
-              priceRange,
-              canEdit,
-              pricesByCurrency,
-              handleOnSave,
-              formatMessage
-            }}
-            loading={loadingItem}
-          />
-        )
+            <Item
+              key={index}
+              {...{
+                thumbnail,
+                designName,
+                productName,
+                productType,
+                currencies,
+                handleOnSetPrice,
+                index,
+                priceRange,
+                canEdit,
+                pricesByCurrency,
+                handleOnSave,
+                formatMessage
+              }}
+              loading={loadingItem}
+            />
+          )
       )
 
     return (
@@ -224,7 +224,11 @@ export class TeamStoreDetails extends React.Component<Props, {}> {
             {teamStore.onDemand && (
               <PricesContainer>
                 <thead>
-                  <tr>{headers}</tr>
+                  <tr>
+                    <Header />
+                    {headers}
+                    <Header />
+                  </tr>
                 </thead>
                 <tbody>{teamStoreItems}</tbody>
               </PricesContainer>

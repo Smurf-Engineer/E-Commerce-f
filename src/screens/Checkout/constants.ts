@@ -20,7 +20,6 @@ export const VALID_BILLING_FORM = `${namespace}/VALID_BILLING_FORM`
 export const SAME_BILLING_AND_SHIPPING_CHECKED = `${namespace}/SAME_BILLING_AND_SHIPPING_CHECKED`
 export const SAME_BILLING_AND_SHIPPING_UNCHECKED = `${namespace}/SAME_BILLING_AND_SHIPPING_UNCHECKED`
 export const SET_STRIPE_ERROR = `${namespace}/SET_STRIPE_ERROR`
-export const SET_IBAN_ERROR = `${namespace}/SET_IBAN_ERROR`
 export const SET_LOADING_BILLING = `${namespace}/SET_LOADING_BILLING`
 export const SET_STRIPE_TOKEN = `${namespace}/SET_STRIPE_TOKEN`
 export const SET_STRIPE_CARD_DATA = `${namespace}/SET_STRIPE_CARD_DATA`
@@ -43,7 +42,7 @@ export const SET_PAYMENT_ID = `${namespace}/SET_PAYMENT_ID`
 export const REMOVE_CLIENT_SECRET = `${namespace}/REMOVE_CLIENT_SECRET`
 
 // DISCOUNT TYPES
-export const PRODUCT = 'product'
+export const DESIGN = 'design'
 
 export enum CheckoutTabs {
   ShippingTab = 0,

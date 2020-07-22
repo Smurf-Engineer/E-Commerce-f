@@ -63,8 +63,11 @@ export const AddCardMutation = graphql(
   }
 )
 
-export const getSubsidiaryQuery = gql`
-  query subsidiaryByCountryCode($code: String!) {
-    subsidiary: subsidiaryByCountryCode(code: $code)
+export const isScaPaymentQuery = gql`
+  query isScaPayment($code: String!) {
+    subsidiarySCA: isScaPayment(code: $code) {
+      subsidiary
+      sca
+    }
   }
 `

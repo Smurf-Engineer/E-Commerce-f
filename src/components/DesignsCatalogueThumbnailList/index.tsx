@@ -73,6 +73,7 @@ interface Props {
   display?: boolean
   teamStoreName?: string
   closed?: boolean
+  totalDesigns?: number
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -81,7 +82,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       formatMessage,
       sortByLabel,
       currentPage,
-      limit,
+      limit = 12,
       handleChangePage,
       handleOrderBy,
       data,
@@ -94,7 +95,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       currentRange,
       currentCurrency = config.defaultCurrency,
       teamStoreName,
-      closed
+      closed,
+      totalDesigns = 0
     } = this.props
     const LAST_ITEM = 1
 
@@ -104,7 +106,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
-
     if (designs) {
       total = designs.length.toString()
       thumbnailsList = designs.map(
@@ -192,12 +193,20 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPrice = onDemandMode
             ? fixedPriceValue.price
             : currentRangeAttributes.price
-          const currentPriceText = `${fixedPriceValue.shortName} ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price}`
+          const currentPriceText = `${
+            fixedPriceValue.shortName
+          } ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName} ${
+            targetPriceValue.price
+          }`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
-                itemsLeft: `<strong>${currentRangeAttributes.itemsLeft} more</strong>`,
-                percent: `<strong>${currentRangeAttributes.percentToSave}%</strong>`
+                itemsLeft: `<strong>${
+                  currentRangeAttributes.itemsLeft
+                } more</strong>`,
+                percent: `<strong>${
+                  currentRangeAttributes.percentToSave
+                }%</strong>`
               })
             : ''
           return (
@@ -346,12 +355,12 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         </HeadRow>
         <Content>{loading ? renderLoading : renderThumbnailList}</Content>
         <PaginationRow>
-          {parseInt(total, 10) > 12 && (
+          {totalDesigns > limit && (
             <Pagination
               size="small"
               current={currentPage}
               onChange={handleChangePage}
-              total={parseInt(total, 10)}
+              total={totalDesigns}
               pageSize={limit}
             />
           )}

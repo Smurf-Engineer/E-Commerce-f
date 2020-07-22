@@ -2,7 +2,7 @@
  * Styled Components - Created by gustavomedina on 04/05/18.
  */
 import styled from 'styled-components'
-import { GREEN, GRAY } from '../../theme/colors'
+import { GREEN, GRAY, BLUE, FACEBOOKBLUE } from '../../theme/colors'
 
 type StyleProps = {
   onlyRead?: boolean
@@ -169,4 +169,15 @@ export const BottomDivider = styled.div`
 
 export const FromTeamStore = styled.div`
   margin-bottom: 10px;
+`
+
+export const StoreLink = styled.div`
+  display: inline-block;
+  text-decoration: underline;
+  color: ${BLUE};
+  cursor: pointer;
+  transition: all .25s;
+  &:hover {
+    color: ${FACEBOOKBLUE};
+  }
 `

@@ -133,7 +133,8 @@ class OrderData extends React.Component<Props, {}> {
           discount,
           status,
           teamStoreName,
-          teamStoreId
+          teamStoreId,
+          coupon
         }
       },
       currentCurrency
@@ -149,7 +150,6 @@ class OrderData extends React.Component<Props, {}> {
           src={paymentMethod === PaymentOptions.PAYPAL ? iconPaypal : iconSepa}
         />
       )
-
     let subtotal = 0
     const renderList = cart
       ? cart.map((cartItem, index) => {
@@ -294,7 +294,10 @@ class OrderData extends React.Component<Props, {}> {
               shippingTotal={shippingAmount}
               onlyRead={true}
               currencySymbol={currency.shortName}
+              totalWithoutDiscount={subtotal}
+              youSaved={!!coupon && discount}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
+              couponName={coupon}
               {...{
                 formatMessage,
                 taxGst,

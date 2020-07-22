@@ -82,9 +82,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       handleOrderBy,
       data,
       designs,
-      onPressPrivate = () => {},
-      onPressDelete = () => {},
-      onPressRename = () => {},
+      onPressPrivate = () => { },
+      onPressDelete = () => { },
+      onPressRename = () => { },
       withoutPadding,
       currentCurrency,
       genderFilters,
@@ -114,7 +114,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           },
           index
         ) => {
-          const addToCartButton = (
+          const addToCartButton = product.active ? (
             <AddToCartButton
               label={formatMessage(messages.addToCart)}
               renderForThumbnail={true}
@@ -127,7 +127,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
               designCode={code}
               myLockerList={true}
             />
-          )
+          ) : null
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -170,34 +170,34 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                             )}
                           </ActionButton>
                         </ButtonContainer>
-                        <ButtonContainer maxMargin={true}>
+                        {product.active && <ButtonContainer maxMargin={true}>
                           <ActionButton onClick={this.openAddStore(shortId)}>
                             {formatMessage(messages.addToStore)}
                           </ActionButton>
-                        </ButtonContainer>
+                        </ButtonContainer>}
                       </div>
                     ) : (
-                      <>
-                        <ButtonContainer>
-                          <CopyButton onClick={this.handleMakeCopy(shortId)}>
-                            {formatMessage(messages.makeCopy)}
-                          </CopyButton>
-                        </ButtonContainer>
-                        <ButtonContainer>
-                          <ActionButton onClick={this.openPreview(shortId)}>
-                            {formatMessage(messages.preview)}
-                          </ActionButton>
-                        </ButtonContainer>
-                        <ButtonContainer>
-                          <ActionButton
-                            secondary={true}
-                            onClick={this.openAssistModal(shortId)}
-                          >
-                            {formatMessage(messages.proassist)}
-                          </ActionButton>
-                        </ButtonContainer>
-                      </>
-                    )}
+                        <>
+                          <ButtonContainer>
+                            <CopyButton onClick={this.handleMakeCopy(shortId)}>
+                              {formatMessage(messages.makeCopy)}
+                            </CopyButton>
+                          </ButtonContainer>
+                          <ButtonContainer>
+                            <ActionButton onClick={this.openPreview(shortId)}>
+                              {formatMessage(messages.preview)}
+                            </ActionButton>
+                          </ButtonContainer>
+                          <ButtonContainer>
+                            <ActionButton
+                              secondary={true}
+                              onClick={this.openAssistModal(shortId)}
+                            >
+                              {formatMessage(messages.proassist)}
+                            </ActionButton>
+                          </ButtonContainer>
+                        </>
+                      )}
                   </ButtonsContainer>
                 }
                 myLockerList={true}
@@ -287,10 +287,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-          <NoResultsFound>
-            {formatMessage(messages.emptyResults)}
-          </NoResultsFound>
-        )
+            <NoResultsFound>
+              {formatMessage(messages.emptyResults)}
+            </NoResultsFound>
+          )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -375,7 +375,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => {}
+  handleOnPressAddToCart = (id: number) => { }
 }
 
 type OwnProps = {

@@ -218,7 +218,7 @@ class Render3D extends PureComponent {
     }
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
-      const emptyColors = filter(nextColors, color => !!!color)
+      const emptyColors = filter(nextColors, (color) => !!!color)
       const isResetingColors = emptyColors.length >= colors.length
       this.setupColors(isResetingColors ? styleColors : nextColors)
       return
@@ -393,15 +393,15 @@ class Render3D extends PureComponent {
     return this.raycaster.intersectObjects(objects, true)
   }
 
-  handleSelectVariant = value => () => {
+  handleSelectVariant = (value) => () => {
     const { selectVariantAction } = this.props
     selectVariantAction(value)
   }
 
-  convertToFabricObjects = elements =>
+  convertToFabricObjects = (elements) =>
     new Promise((resolve, reject) => {
       try {
-        fabric.util.enlivenObjects(elements, objects => {
+        fabric.util.enlivenObjects(elements, (objects) => {
           resolve(objects)
         })
       } catch (e) {
@@ -409,10 +409,15 @@ class Render3D extends PureComponent {
       }
     })
 
-  loadFabricImage = url =>
+  loadFabricImage = (url) =>
     new Promise((resolve, reject) => {
       try {
-        fabric.util.loadImage(url, img => resolve(img), undefined, 'Anonymous')
+        fabric.util.loadImage(
+          url,
+          (img) => resolve(img),
+          undefined,
+          'Anonymous'
+        )
       } catch (e) {
         reject(e)
       }
@@ -484,13 +489,13 @@ class Render3D extends PureComponent {
         const imageEl = new fabric.Image(img, { ...config })
         this.canvasTexture.add(imageEl)
       })
-      const fontsPromises = fonts.map(font => {
+      const fontsPromises = fonts.map((font) => {
         const fontObserver = new FontFaceObserver(font)
         return fontObserver.load()
       })
       await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
-      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      fabricObjects.forEach((o) => this.canvasTexture.add(o))
       if (reseting) {
         const {
           currentStyle: { accessoriesColor },
@@ -501,8 +506,8 @@ class Render3D extends PureComponent {
         onSetCanvasObject(canvas, paths)
       }
       const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
-      temporalCanvasTexture.forEach(el => {
-        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(
+      temporalCanvasTexture.forEach((el) => {
+        find(this.canvasTexture.getObjects(), (obj) => obj.id === el.id).moveTo(
           indexes[el.id]
         )
       })
@@ -571,7 +576,7 @@ class Render3D extends PureComponent {
           loadedTextures.colors.push(color)
           images.push(image)
         })
-        const loadedAreas = images.map(image => {
+        const loadedAreas = images.map((image) => {
           const areaTexture = this.textureLoader.load(image)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
@@ -618,7 +623,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  render3DModel = async newProduct => {
+  render3DModel = async (newProduct) => {
     /* Object and MTL load */
     const {
       onLoadModel,
@@ -648,12 +653,12 @@ class Render3D extends PureComponent {
       onLoadModel(true)
     }
 
-    this.mtlLoader.load(product.mtl, materials => {
+    this.mtlLoader.load(product.mtl, (materials) => {
       materials.preload()
       this.objLoader.setMaterials(materials)
       this.objLoader.load(
         product.obj,
-        object => {
+        (object) => {
           /* Object materials */
           const { children } = object
           const objectChildCount = children.length
@@ -666,8 +671,8 @@ class Render3D extends PureComponent {
           const scaleFactorY = CANVAS_SIZE / height
           this.setState({ scaleFactorX, scaleFactorY, objectChildCount })
 
-          const getMeshIndex = meshName => {
-            const index = findIndex(children, mesh => mesh.name === meshName)
+          const getMeshIndex = (meshName) => {
+            const index = findIndex(children, (mesh) => mesh.name === meshName)
             return index < 0 ? 0 : index
           }
 
@@ -850,14 +855,14 @@ class Render3D extends PureComponent {
     })
   }
 
-  onProgress = xhr => {
+  onProgress = (xhr) => {
     if (xhr.lengthComputable) {
       const progress = Math.round((xhr.loaded / xhr.total) * 100)
       this.setState({ progress })
     }
   }
 
-  onError = xhr => console.error('Error: ' + xhr)
+  onError = (xhr) => console.error('Error: ' + xhr)
 
   start = () => {
     if (!this.framId) {
@@ -876,7 +881,7 @@ class Render3D extends PureComponent {
     this.renderer.render(this.scene, this.camera)
   }
 
-  lightUpdate = changed => {
+  lightUpdate = (changed) => {
     const { showDragmessage } = this.state
     if (showDragmessage) {
       this.setState({ showDragmessage: false })
@@ -892,7 +897,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  changeStitchingColor = color => {
+  changeStitchingColor = (color) => {
     const { flatlockIndex } = this.state
     const object = this.scene.getObjectByName(MESH_NAME)
     if (!!object) {
@@ -904,7 +909,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  getLayersIndexed = canvas => {
+  getLayersIndexed = (canvas) => {
     if (canvas && this.canvasTexture) {
       const objects = this.canvasTexture.getObjects() || []
       objects.forEach((obj, index) => {
@@ -919,7 +924,9 @@ class Render3D extends PureComponent {
 
   changeLayerIndex = (id, index) => {
     if (this.canvasTexture) {
-      find(this.canvasTexture.getObjects(), obj => obj.id === id).moveTo(index)
+      find(this.canvasTexture.getObjects(), (obj) => obj.id === id).moveTo(
+        index
+      )
       this.canvasTexture.renderAll()
     }
   }
@@ -941,6 +948,7 @@ class Render3D extends PureComponent {
             if (object.children[bibBraceIndex]) {
               object.children[bibBraceIndex].material.map = map
             }
+            break
           case BINDING_NAME:
             if (object.children[bindingIndex]) {
               object.children[bindingIndex].material.map = map
@@ -954,7 +962,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  setupColors = colors => {
+  setupColors = (colors) => {
     if (!this.scene) {
       return
     }
@@ -969,7 +977,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  setupHoverColor = colorBlockHovered => {
+  setupHoverColor = (colorBlockHovered) => {
     if (!this.scene) {
       return
     }
@@ -1018,14 +1026,14 @@ class Render3D extends PureComponent {
     this.setState({ currentView: TOP_VIEW })
   }
 
-  handleOnChangeZoom = value => {
+  handleOnChangeZoom = (value) => {
     if (this.camera) {
       this.camera.zoom = value / 100.0
       this.camera.updateProjectionMatrix()
     }
   }
 
-  onKeyDown = event => {
+  onKeyDown = (event) => {
     let charCode = String.fromCharCode(event.which).toLowerCase()
     if (event.shiftKey && event.ctrlKey && charCode === 'z') {
       event.preventDefault()
@@ -1130,14 +1138,14 @@ class Render3D extends PureComponent {
     }
   }
 
-  deleteDuplicateCanvasElement = canvasElement => {
+  deleteDuplicateCanvasElement = (canvasElement) => {
     const {
       state: { id }
     } = canvasElement
     this.deleteElementById(id)
   }
 
-  reDuplicateCanvasElement = canvasElement => {
+  reDuplicateCanvasElement = (canvasElement) => {
     const {
       state: { id, originalId }
     } = canvasElement
@@ -1207,7 +1215,7 @@ class Render3D extends PureComponent {
     let format = newStyle ? newFormat : oldFormat
     if (element) {
       if (element.isClipArtGroup) {
-        element.forEachObject(o => o.set({ ...format }))
+        element.forEachObject((o) => o.set({ ...format }))
       }
       element.set({ ...format })
       this.canvasTexture.renderAll()
@@ -1325,7 +1333,7 @@ class Render3D extends PureComponent {
         design
       } = this.props
       if (!isMobile) {
-        this.canvasTexture.forEachObject(el => {
+        this.canvasTexture.forEachObject((el) => {
           el.set({
             opacity: 1,
             backgroundColor: null
@@ -1383,7 +1391,7 @@ class Render3D extends PureComponent {
         <MobileContainer>
           <Render
             id="render-3d"
-            innerRef={container => (this.container = container)}
+            innerRef={(container) => (this.container = container)}
           >
             {loadingModel && <Progress type="circle" percent={progress + 1} />}
           </Render>
@@ -1482,7 +1490,7 @@ class Render3D extends PureComponent {
         </ButtonWrapper>
         <Render
           id="render-3d"
-          innerRef={container => (this.container = container)}
+          innerRef={(container) => (this.container = container)}
         >
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
@@ -1569,7 +1577,7 @@ class Render3D extends PureComponent {
     )
   }
 
-  disableHelpModal = evt => {
+  disableHelpModal = (evt) => {
     const {
       target: { checked }
     } = evt
@@ -1611,7 +1619,7 @@ class Render3D extends PureComponent {
     this.canvasTexture.renderAll()
   }
 
-  deleteLayer = id => {
+  deleteLayer = (id) => {
     const el = this.getElementById(id)
     this.deleteElement(el)
     this.canvasTexture.renderAll()
@@ -1689,7 +1697,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyCanvasEl = canvasEl => {
+  applyCanvasEl = (canvasEl) => {
     if (this.canvasTexture) {
       const { isFirstAdd } = this.state
       const objects = this.canvasTexture.getObjects()
@@ -1714,7 +1722,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  reAddCanvasElement = canvasEl => {
+  reAddCanvasElement = (canvasEl) => {
     const {
       state: {
         id,
@@ -1754,7 +1762,7 @@ class Render3D extends PureComponent {
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
       fileUrl,
-      img => {
+      (img) => {
         const imageEl = new fabric.Image(img, {
           id,
           crossOrigin: 'Anonymous',
@@ -1891,7 +1899,7 @@ class Render3D extends PureComponent {
     if (isClipArtElement && !idElement && !activeEl.isImageGroup) {
       if (isGroup && activeEl.forEachObject) {
         const { fill, stroke, strokeWidth } = style
-        activeEl.forEachObject(o => o.set({ fill, stroke, strokeWidth }))
+        activeEl.forEachObject((o) => o.set({ fill, stroke, strokeWidth }))
         activeEl.set({ fill, stroke, strokeWidth })
       } else {
         activeEl.set({ ...style })
@@ -1930,10 +1938,10 @@ class Render3D extends PureComponent {
         shape.setCoords()
 
         if (isClipArtGroup && !isEmpty(style)) {
-          shape.forEachObject(o => o.set({ ...style }))
+          shape.forEachObject((o) => o.set({ ...style }))
         }
         this.canvasTexture.add(shape)
-        downloadSVG(src).then(svg => {
+        downloadSVG(src).then((svg) => {
           const el = {
             id,
             src,
@@ -2009,7 +2017,7 @@ class Render3D extends PureComponent {
     })
   }
 
-  deleteElement = el => {
+  deleteElement = (el) => {
     const { canvas } = this.props
     const type = el.get('type')
     const { id, left, top, scaleX, scaleY, isClipArtGroup, angle } = el
@@ -2124,7 +2132,7 @@ class Render3D extends PureComponent {
     return {}
   }
 
-  deleteElementById = id => {
+  deleteElementById = (id) => {
     const object = this.getElementById(id)
     if (object) {
       this.canvasTexture.remove(object)
@@ -2143,7 +2151,7 @@ class Render3D extends PureComponent {
     const id = oldId || shortid.generate()
     let canvasEl = { id, originalId: el.id }
 
-    el.clone(clone => {
+    el.clone((clone) => {
       clone.set({
         id,
         hasRotatingPoint: false,
@@ -2160,7 +2168,7 @@ class Render3D extends PureComponent {
     onCanvasElementDuplicated(canvasEl, elementType, oldId)
   }
 
-  setLayerElement = el => {
+  setLayerElement = (el) => {
     this.canvasTexture.bringToFront(el)
   }
 
@@ -2225,7 +2233,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  onMouseUp = evt => {
+  onMouseUp = (evt) => {
     const { isEditing, design } = this.props
     evt.preventDefault()
     document.getElementById('render-3d').style.cursor = 'grab'
@@ -2312,7 +2320,7 @@ class Render3D extends PureComponent {
     this.controls.enabled = true
   }
 
-  onMouseDown = evt => {
+  onMouseDown = (evt) => {
     evt.preventDefault()
     document.getElementById('render-3d').style.cursor = 'grabbing'
 
@@ -2467,7 +2475,7 @@ class Render3D extends PureComponent {
         }
 
         let allDeactive = true
-        this.canvasTexture.forEachObject(el => {
+        this.canvasTexture.forEachObject((el) => {
           const boundingBox = el.getBoundingRect()
           const isInside = isMouseOver(boundingBox, uv, CANVAS_SIZE)
           if (isInside) {
@@ -2515,7 +2523,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  onMouseMove = evt => {
+  onMouseMove = (evt) => {
     evt.preventDefault()
     const {
       responsive: { tablet },

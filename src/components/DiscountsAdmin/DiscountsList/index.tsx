@@ -65,7 +65,7 @@ const DiscountsList = ({
 
   const header = (
     <MediaQuery maxWidth={768}>
-      {matches => {
+      {(matches) => {
         if (matches) {
           return (
             <Row>

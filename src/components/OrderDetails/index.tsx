@@ -9,7 +9,7 @@ import message from 'antd/lib/message'
 import moment from 'moment'
 import get from 'lodash/get'
 import messages from './messages'
-import { OrderDetailsInfo, QueryProps } from '../../types/common'
+import { OrderDetailsInfo, QueryProps, FulfillmentNetsuite } from '../../types/common'
 import Modal from 'antd/lib/modal'
 import { getOrderQuery, deleteOrderMutation } from './data'
 import Icon from 'antd/lib/icon'
@@ -147,61 +147,70 @@ export class OrderDetails extends React.Component<Props, {}> {
       teamStoreId,
       lastDrop,
       canUpdatePayment,
-      onDemand
+      onDemand,
+      coupon
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
 
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
 
+    const fulfillments = get(
+      netsuiteObject,
+      'fulfillments',
+      [] as FulfillmentNetsuite[]
+    )
+    const packages = get(fulfillments, '[0].packages')
+    const trackingNumber = packages && packages.replace('<BR>', ', ')
+
     let subtotal = 0
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
-          const {
-            designId,
-            designImage,
-            designName,
-            product: { images, name, shortDescription },
-            productTotal,
-            unitPrice,
-            teamStoreItem
-          } = cartItem
+        const {
+          designId,
+          designImage,
+          designName,
+          product: { images, name, shortDescription },
+          productTotal,
+          unitPrice,
+          teamStoreItem
+        } = cartItem
 
-          subtotal += productTotal || 0
-          cartItem.isFixed = onDemand === false
-          cartItem.teamStoreItem = teamStoreItem
-          const priceRange = {
-            quantity: '0',
-            price: 0,
-            shortName: ''
-          }
+        subtotal += productTotal || 0
+        cartItem.isFixed = onDemand === false
+        cartItem.teamStoreItem = teamStoreItem
+        const priceRange = {
+          quantity: '0',
+          price: 0,
+          shortName: ''
+        }
 
-          const itemImage = designId ? designImage || '' : images[0].front
-          const itemTitle = designId ? designName || '' : name
-          const itemDescription = designId
-            ? `${name} ${shortDescription}`
-            : shortDescription
-          return (
-            <CartListItem
-              {...{
-                formatMessage,
-                productTotal,
-                unitPrice,
-                cartItem,
-                currentCurrency
-              }}
-              currencySymbol={currency.shortName}
-              key={index}
-              image={itemImage}
-              title={itemTitle}
-              description={itemDescription}
-              price={priceRange}
-              itemIndex={index}
-              onlyRead={true}
-              canReorder={!teamStoreId && true}
-            />
-          )
-        })
+        const itemImage = designId ? designImage || '' : images[0].front
+        const itemTitle = designId ? designName || '' : name
+        const itemDescription = designId
+          ? `${name} ${shortDescription}`
+          : shortDescription
+        return (
+          <CartListItem
+            {...{
+              formatMessage,
+              productTotal,
+              unitPrice,
+              cartItem,
+              currentCurrency
+            }}
+            currencySymbol={currency.shortName}
+            key={index}
+            image={itemImage}
+            title={itemTitle}
+            description={itemDescription}
+            price={priceRange}
+            itemIndex={index}
+            onlyRead={true}
+            canReorder={!teamStoreId && true}
+          />
+        )
+      })
       : null
 
     const card = get(stripeCharge, 'cardData')
@@ -209,8 +218,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
       ) : (
-        <StyledImage src={iconPaypal} />
-      )
+          <StyledImage src={iconPaypal} />
+        )
 
     return (
       <Container>
@@ -252,6 +261,9 @@ export class OrderDetails extends React.Component<Props, {}> {
                   {formatMessage(messages.orderDate)}
                 </DeliveryLabel>
                 <DeliveryLabel>
+                  {formatMessage(messages.trackingNumber)}
+                </DeliveryLabel>
+                <DeliveryLabel>
                   {formatMessage(messages.deliveryDate)}
                 </DeliveryLabel>
                 <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
@@ -265,6 +277,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 </Info>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
+                <Info>{trackingNumber || '-'}</Info>
                 <Info>{estimatedDate}</Info>
                 <Info redColor={status === PAYMENT_ISSUE}>
                   {netsuiteStatus || status}
@@ -280,8 +293,11 @@ export class OrderDetails extends React.Component<Props, {}> {
               onlyRead={true}
               totalSum={total}
               shippingTotal={shippingAmount}
+              totalWithoutDiscount={subtotal}
+              youSaved={!!coupon && discount}
               currencySymbol={currency.shortName}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
+              couponName={coupon}
               {...{
                 formatMessage,
                 taxGst,
@@ -368,25 +384,25 @@ export class OrderDetails extends React.Component<Props, {}> {
           replaceOrder={shortId}
         />
         {teamStoreId &&
-        (status === PREORDER ||
-          (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
-          <OrderActions>
-            <ButtonWrapper>
-              <Button type="primary" onClick={this.handleOnEditOrder}>
-                {formatMessage(
-                  status === PAYMENT_ISSUE
-                    ? messages.updatePayment
-                    : messages.edit
-                )}
-              </Button>
-            </ButtonWrapper>
-            <DeleteButton onClick={this.handleOnDeleteOrder}>
-              {formatMessage(messages.deleteOrder)}
-            </DeleteButton>
-          </OrderActions>
-        ) : (
-          <Annotation>{formatMessage(messages.annotation)}</Annotation>
-        )}
+          (status === PREORDER ||
+            (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
+            <OrderActions>
+              <ButtonWrapper>
+                <Button type="primary" onClick={this.handleOnEditOrder}>
+                  {formatMessage(
+                    status === PAYMENT_ISSUE
+                      ? messages.updatePayment
+                      : messages.edit
+                  )}
+                </Button>
+              </ButtonWrapper>
+              <DeleteButton onClick={this.handleOnDeleteOrder}>
+                {formatMessage(messages.deleteOrder)}
+              </DeleteButton>
+            </OrderActions>
+          ) : (
+            <Annotation>{formatMessage(messages.annotation)}</Annotation>
+          )}
       </Container>
     )
   }

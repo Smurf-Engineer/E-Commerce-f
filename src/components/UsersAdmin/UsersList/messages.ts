@@ -41,9 +41,9 @@ export default defineMessages({
     id: 'components.UsersList.addUser',
     defaultMessage: '+ ADD NEW USER'
   },
-  billing: {
-    id: 'components.UsersList.billing',
-    defaultMessage: 'Billing Country'
+  affiliate: {
+    id: 'components.UsersList.affiliate',
+    defaultMessage: 'Affiliated'
   },
   signUpDate: {
     id: 'components.UsersList.signUpDate',

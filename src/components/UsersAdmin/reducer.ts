@@ -16,7 +16,8 @@ import {
   ON_RESET_MODAL,
   SET_LOADING,
   SET_DESIGN,
-  CHANGE_NOTE
+  CHANGE_NOTE,
+  SET_AFFILIATE_PAGE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -33,9 +34,10 @@ export const initialState = fromJS({
   note: '',
   lastName: '',
   email: '',
-  showLocker: true,
+  optionSelected: 0,
   openModal: false,
-  loading: false
+  loading: false,
+  pageAffiliate: 1
 })
 
 const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -44,6 +46,8 @@ const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('managerSearchText', action.value)
     case SET_SEARCH:
       return state.set('repSearchText', action.value)
+    case SET_AFFILIATE_PAGE:
+      return state.set('pageAffiliate', action.page)
     case SET_ORDER_BY:
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
@@ -65,7 +69,7 @@ const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set(id, value)
     }
     case ON_CHANGE_SECTION:
-      return state.set('showLocker', action.section)
+      return state.set('optionSelected', action.section)
     case ON_TOGGLE_MODAL:
       return state.set('openModal', !state.get('openModal'))
     case ON_RESET_MODAL:

@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'components.Payment.methodPaypal',
     defaultMessage: 'Paypal'
   },
-  methodIban: {
-    id: 'components.Payment.methodIban',
-    defaultMessage: 'IBAN'
-  },
   methodBankTransfer: {
     id: 'components.Payment.methodBankTransfer',
     defaultMessage: 'Bank Transfer'

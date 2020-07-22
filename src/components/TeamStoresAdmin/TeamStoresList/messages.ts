@@ -9,9 +9,13 @@ export default defineMessages({
     id: 'components.TeamStoresList.name',
     defaultMessage: 'Team Store Name'
   },
+  owner: {
+    id: 'components.TeamStoresList.owner',
+    defaultMessage: 'Store Owner'
+  },
   manager: {
     id: 'components.TeamStoresList.manager',
-    defaultMessage: 'Manager'
+    defaultMessage: 'Account Manager'
   },
   type: {
     id: 'components.TeamStoresList.type',

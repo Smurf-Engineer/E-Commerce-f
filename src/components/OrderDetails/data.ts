@@ -66,6 +66,7 @@ export const getOrderQuery = gql`
           code
           yotpoId: yotpo_id
           name
+          active
           type: name
           shortDescription: short_description
           collections
@@ -143,6 +144,7 @@ export const getOrderQuery = gql`
       canUpdatePayment
       onDemand: on_demand_mode
       email
+      coupon: coupon_code
     }
   }
 `

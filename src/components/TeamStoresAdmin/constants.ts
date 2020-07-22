@@ -33,5 +33,16 @@ export const MOVE_ROW = `${namespace}/MOVE_ROW`
 export const UPDATE_START_DATE_ACTION = `${namespace}/UPDATE_START_DATE_ACTION`
 export const UPDATE_END_DATE_ACTION = `${namespace}/UPDATE_END_DATE_ACTION`
 export const UPDATE_TEAMSTORE_TYPE = `${namespace}/UPDATE_TEAMSTORE_TYPE`
+export const SET_FILTERS = `${namespace}/SET_FILTERS`
 
 export const CHF_CURRENCY = 'CHF'
+
+export const ACCOUNT_MANAGER_COLUMN = 'users.account_manager'
+export const CUTOFF_COLUMN = 'cutoff_date'
+
+export const FILTER_OPTIONS = [
+  { name: 'select', column: null },
+  { name: 'accountManager', column: ACCOUNT_MANAGER_COLUMN },
+  { name: 'cutoffDate', column: CUTOFF_COLUMN }
+]
+export const DATE_FORMAT = 'YYYY-MM-DD'

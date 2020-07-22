@@ -17,7 +17,6 @@ import {
   SET_SELECTED_ADDRESS,
   SET_SELECTED_ADDRESSES,
   SET_STRIPE_ERROR,
-  SET_IBAN_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
   SET_STRIPE_CARD_DATA,
@@ -126,11 +125,6 @@ export const setSelectedAddressesAction = (
 
 export const setStripeErrorAction = (error: string): AnyAction => ({
   type: SET_STRIPE_ERROR,
-  error
-})
-
-export const setIbanErrorAction = (error: boolean): AnyAction => ({
-  type: SET_IBAN_ERROR,
   error
 })
 

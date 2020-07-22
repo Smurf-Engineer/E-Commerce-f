@@ -182,7 +182,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designCode = get(design, 'code', '')
     const teamPrice = get(design, 'teamPrice', '')
     const teamEnable = get(design, 'teamEnable', '')
-    const teamOnDemand = get(design, 'teamOnDemand', '')
+    const teamOnDemand = get(design, 'teamOnDemand', false)
     const teamName = get(design, 'teamName', '')
     const proDesign = get(design, 'proDesign', false)
     const {
@@ -198,6 +198,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       details,
       materials,
       mediaFiles,
+      active,
       modelSize,
       id: productId,
       bannerMaterials,
@@ -274,7 +275,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       ({ id, name: genderName }: SelectedType, key: number) => (
         <div {...{ key }}>
           <SectionButton
-            id={String(id)}
             selected={id === selectedGender.id}
             large={true}
             onClick={this.handleSelectedGender({ id, name: genderName })}
@@ -290,7 +290,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
-            id={String(id)}
             selected={id === selectedSize.id}
             onClick={this.handleSelectedSize({
               id: Number(id),
@@ -308,7 +307,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           id && (
             <div key={index}>
               <SectionButton
-                id={String(id)}
                 selected={id === selectedFit.id}
                 large={true}
                 onClick={this.handleSelectedFit({ id, name: fitName })}
@@ -318,14 +316,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             </div>
           )
       )) || (
-      <SectionButton
-        id={'1'}
-        selected={1 === selectedFit.id}
-        onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
-      >
-        {formatMessage(messages.standard)}
-      </SectionButton>
-    )
+        <SectionButton
+          selected={1 === selectedFit.id}
+          onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
+        >
+          {formatMessage(messages.standard)}
+        </SectionButton>
+      )
 
     const gendersSection = (
       <SectionRow>
@@ -374,7 +371,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const addToCartRow = (
       <ButtonsRow>
-        <AddtoCartButton
+        {active && <AddtoCartButton
           onClick={this.validateAddtoCart}
           label={formatMessage(messages.addToCartButton)}
           item={itemToAdd}
@@ -385,7 +382,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           fixedPrices={teamPrice}
           {...{ designId, designName, designImage, teamStoreItem }}
           teamStoreName={teamName}
-        />
+        />}
       </ButtonsRow>
     )
 
@@ -500,16 +497,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                         {formatMessage(messages.editDesign)}
                       </EditDesignButton>
                     ) : (
-                      <ProApproved proAssigned={proDesignAssigned}>
-                        <ProApprovedLabel>
-                          {formatMessage(
-                            messages[
+                        <ProApproved proAssigned={proDesignAssigned}>
+                          <ProApprovedLabel>
+                            {formatMessage(
+                              messages[
                               proDesignAssigned ? 'proAssigned' : 'approved'
-                            ]
-                          )}
-                        </ProApprovedLabel>
-                      </ProApproved>
-                    ))}
+                              ]
+                            )}
+                          </ProApprovedLabel>
+                        </ProApproved>
+                      ))}
                 </TitleRow>
                 <PricesRow isTeamStore={!!teamStoreItem}>
                   {renderPrices}
