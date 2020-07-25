@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import queryString from 'query-string'
 import get from 'lodash/get'
 import messages from './messages'
 import {
@@ -155,6 +156,10 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
 
     const trackingNumber = packages && packages.replace('<BR>', ', ')
 
+    const { location } = history || {}
+    const { search } = location || {}
+    const { from } = queryString.parse(search)
+
     let subtotal = 0
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
@@ -217,7 +222,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       <Container>
         <ViewContainer onClick={this.handleOnReturn}>
           <Icon type="left" />
-          <span>{formatMessage(messages.backToOrders)}</span>
+          <span>{formatMessage(messages[from || 'backToOrders'])}</span>
         </ViewContainer>
         <Div>
           <ScreenTitle>
@@ -330,8 +335,14 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
   }
 
   handleOnReturn = () => {
-    const { onReturn } = this.props
-    onReturn('')
+    const { onReturn, history } = this.props
+    const { location: { search } } = history
+    const { from } = queryString.parse(search)
+    if (from) {
+      history.goBack()
+    } else {
+      onReturn('')
+    }
   }
 }
 

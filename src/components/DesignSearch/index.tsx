@@ -278,7 +278,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       />
     )
     const content =
-      loading || notFound || noAdmin ? (
+      loading || notFound || noAdmin || !access.view ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
       ) : (
           orderContent

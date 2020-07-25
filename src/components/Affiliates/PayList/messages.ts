@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'components.AffiliatesList.payAll',
     defaultMessage: 'PAY ALL'
   },
+  requestPay: {
+    id: 'components.AffiliatesList.requestPay',
+    defaultMessage: 'Request payment'
+  },
   paymentsDone: {
     id: 'components.AffiliatesList.paymentsDone',
     defaultMessage: 'Payments Done!'

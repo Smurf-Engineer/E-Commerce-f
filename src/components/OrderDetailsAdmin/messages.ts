@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.OrderDetails.backToHistory',
     defaultMessage: 'Back to Orders'
   },
+  affiliates: {
+    id: 'components.OrderDetails.affiliates',
+    defaultMessage: 'Back to Affiliates orders'
+  },
   receipt: {
     id: 'components.OrderDetails.receipt',
     defaultMessage: 'Receipt'
