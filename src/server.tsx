@@ -74,7 +74,7 @@ server
 
     const redirectUrl = `/${locale.code}?lang=${locale.lang}&currency=${
       locale.currency
-    }`
+      }`
     if (location === '/') {
       res.redirect(redirectUrl)
       return
@@ -96,13 +96,13 @@ server
       client: ua,
       country: locale.realCountryCode
     })
-
+    const { code: region, lang: localeIndex, lang: localeValue, currency: currencyValue } = locale
     dispatch(
       setRegionAction({
-        region: code,
-        localeIndex: langFound,
-        locale: langFound,
-        currency: currencyFound
+        region,
+        localeIndex,
+        locale: localeValue,
+        currency: currencyValue
       })
     )
     getDataFromTree(App as any).then(() => {
