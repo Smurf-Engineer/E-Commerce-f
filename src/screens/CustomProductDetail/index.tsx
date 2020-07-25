@@ -380,7 +380,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           isFixed={!teamOnDemand}
           teamStoreId={teamStoreShortId}
           fixedPrices={teamPrice}
-          {...{ designId, designName, designImage, teamStoreItem }}
+          {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
           teamStoreName={teamName}
         />}
       </ButtonsRow>

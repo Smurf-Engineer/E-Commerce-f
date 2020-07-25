@@ -136,7 +136,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                   onClick={this.handleAddToCart}
                   item={itemToAdd}
                   designId={shortId}
-                  {...{ designName, designImage }}
+                  {...{ designName, designImage, formatMessage }}
                 />
               </ButtonWrapper>
             </BottomButtons>

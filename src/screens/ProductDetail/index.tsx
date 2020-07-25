@@ -464,6 +464,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const addToCartRow = (
       <ButtonsRow>
         <AddtoCartButton
+          {...{ formatMessage }}
           onClick={this.validateAddtoCart}
           label={formatMessage(messages.addToCartButtonLabel)}
           item={itemToAdd}
@@ -547,56 +548,56 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Spin />
                   </Loading>
                 ) : (
-                  <div>
-                    {customizable && obj && mtl ? (
-                      <ModelContainer>
-                        <Render3D
-                          customProduct={true}
-                          designId={0}
-                          textColor="white"
-                          isProduct={true}
-                          asImage={phone}
-                          {...{ product, modelSize }}
-                        />
-                        <HowItFits onClick={this.toggleFitsModal(true)}>
-                          <FormattedMessage {...messages.howItFits} />
-                        </HowItFits>
-                        {showFits && (
-                          <Modal
-                            open={showFits}
-                            requestClose={this.toggleFitsModal(false)}
-                            width={'90%'}
-                            style={{ maxWidth: '704px' }}
-                            withLogo={false}
-                          >
-                            <ImagesSlider
-                              onLoadModel={setLoadingModel}
-                              squareArrows={true}
-                              leftSide={true}
-                              {...{
-                                images,
-                                moreImages,
-                                loadingImage,
-                                setLoadingImageAction
-                              }}
-                            />
-                          </Modal>
+                    <div>
+                      {customizable && obj && mtl ? (
+                        <ModelContainer>
+                          <Render3D
+                            customProduct={true}
+                            designId={0}
+                            textColor="white"
+                            isProduct={true}
+                            asImage={phone}
+                            {...{ product, modelSize }}
+                          />
+                          <HowItFits onClick={this.toggleFitsModal(true)}>
+                            <FormattedMessage {...messages.howItFits} />
+                          </HowItFits>
+                          {showFits && (
+                            <Modal
+                              open={showFits}
+                              requestClose={this.toggleFitsModal(false)}
+                              width={'90%'}
+                              style={{ maxWidth: '704px' }}
+                              withLogo={false}
+                            >
+                              <ImagesSlider
+                                onLoadModel={setLoadingModel}
+                                squareArrows={true}
+                                leftSide={true}
+                                {...{
+                                  images,
+                                  moreImages,
+                                  loadingImage,
+                                  setLoadingImageAction
+                                }}
+                              />
+                            </Modal>
+                          )}
+                        </ModelContainer>
+                      ) : (
+                          <ImagesSlider
+                            onLoadModel={setLoadingModel}
+                            squareArrows={true}
+                            {...{
+                              images,
+                              moreImages,
+                              loadingImage,
+                              setLoadingImageAction
+                            }}
+                          />
                         )}
-                      </ModelContainer>
-                    ) : (
-                      <ImagesSlider
-                        onLoadModel={setLoadingModel}
-                        squareArrows={true}
-                        {...{
-                          images,
-                          moreImages,
-                          loadingImage,
-                          setLoadingImageAction
-                        }}
-                      />
-                    )}
-                  </div>
-                )}
+                    </div>
+                  )}
                 {/* {!isRetail &&
                   template && (
                     <Desktop>
