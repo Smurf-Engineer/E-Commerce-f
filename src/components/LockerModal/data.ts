@@ -21,6 +21,7 @@ export const desginsQuery = gql`
         id
         code
         name
+        shared
         image
         shortId: short_id
         createdAt: created_at

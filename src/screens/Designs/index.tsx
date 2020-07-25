@@ -97,6 +97,7 @@ export class Designs extends React.Component<Props, {}> {
             {...{ designId }}
             detailed={user && user.administrator}
             asImage={true}
+            fromShare={true}
           />
         )}
       </Container>

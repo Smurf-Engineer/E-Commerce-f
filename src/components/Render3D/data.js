@@ -10,6 +10,7 @@ export const designQuery = gql`
       id
       name
       code
+      shared
       flatlockColor: flatlock
       bindingColor: binding_color
       bibBraceColor: bib_brace_color
