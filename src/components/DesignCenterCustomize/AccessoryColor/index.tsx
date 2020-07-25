@@ -21,6 +21,7 @@ interface Props {
   name: string
   id?: string
   stitchingColor?: StitchingColor
+  stitchingLabel?: string
   goToStitching?: () => void
   colorSelected?: AccesoryColor
   allowSelection?: boolean
@@ -31,10 +32,11 @@ const AccessoryColor = ({
   id = '',
   name,
   stitchingColor,
+  stitchingLabel,
   goToStitching,
   colorSelected = BLACK,
   allowSelection = true,
-  onAccessoryColorSelected = () => {}
+  onAccessoryColorSelected = () => { }
 }: Props) => {
   // tslint:disable:curly
   const onSelectBlack = () => {
@@ -54,27 +56,27 @@ const AccessoryColor = ({
         <Name>{name}</Name>
         {stitchingColor ? (
           <Stitching onClick={goToStitching}>
-            <ColorLabel>{stitchingName}</ColorLabel>
+            <ColorLabel>{stitchingLabel || stitchingName}</ColorLabel>
             <Oval color={stitchingValue} />
             <Arrow type="right" />
           </Stitching>
         ) : (
-          <Colors>
-            <OvalSelected
-              onClick={onSelectBlack}
-              selected={colorSelected === BLACK}
-            >
-              <Oval color={'#000'} />
-            </OvalSelected>
-            <OvalSelected
-              onClick={onSelectWhite}
-              selected={colorSelected === WHITE}
-              marginLeft={'8px'}
-            >
-              <Oval />
-            </OvalSelected>
-          </Colors>
-        )}
+            <Colors>
+              <OvalSelected
+                onClick={onSelectBlack}
+                selected={colorSelected === BLACK}
+              >
+                <Oval color={BLACK} />
+              </OvalSelected>
+              <OvalSelected
+                onClick={onSelectWhite}
+                selected={colorSelected === WHITE}
+                marginLeft={'8px'}
+              >
+                <Oval />
+              </OvalSelected>
+            </Colors>
+          )}
       </Container>
       <Divider />
     </div>

@@ -184,6 +184,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             goToStitching={this.goToStitching}
             {...{
               colors,
+              colorsList,
               names,
               stitchingColor,
               bindingColor,
@@ -252,8 +253,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
               />
             </StitchingList>
           ) : (
-            <div />
-          )}
+              <div />
+            )}
         </SwipeableViews>
       </Container>
     )

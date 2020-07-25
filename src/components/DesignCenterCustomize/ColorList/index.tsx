@@ -17,6 +17,7 @@ import Message from 'antd/lib/message'
 interface Color {
   value: string
   name: string
+  label?: string
   type?: string
 }
 
@@ -38,8 +39,8 @@ interface Props {
 }
 
 const ColorList = ({
-  onSelectColor = () => {},
-  onSelectStitchingColor = () => {},
+  onSelectColor = () => { },
+  onSelectStitchingColor = () => { },
   formatMessage,
   height = 40,
   stitching = false,
@@ -72,7 +73,7 @@ const ColorList = ({
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []
 
-  arrayColors.forEach(({ value, type, name }: Color, index: number) => {
+  arrayColors.forEach(({ value, type, name, label }: Color, index: number) => {
     if (type) {
       const node = (
         <Col key={index} className="custom-tooltip">
@@ -81,7 +82,7 @@ const ColorList = ({
             color={value}
             onClick={setColor(value, name, index)}
           />
-          {!!name && <div className="tooltip-content">{name}</div>}
+          {!!label && <div className="tooltip-content">{label}</div>}
         </Col>
       )
       fluorescentColors.push(node)
@@ -97,7 +98,7 @@ const ColorList = ({
                 : setColor(value, name, index)
             }
           />
-          {!!name && <div className="tooltip-content">{name}</div>}
+          {!!label && <div className="tooltip-content">{label}</div>}
         </Col>
       )
       regularColors.push(node)
