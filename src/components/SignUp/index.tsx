@@ -29,6 +29,7 @@ import {
   LogInLabel
 } from './styledComponents'
 import messages from './messages'
+import { validateEmail } from '../../utils/utilsFunctions'
 
 interface Props {
   closeSignUp: () => void
@@ -209,6 +210,10 @@ class SignUp extends React.Component<Props, StateProps> {
       countryCode: initialCountryCode
     }
 
+    if (!validateEmail(email.toLowerCase())) {
+      message.error(formatMessage(messages.badFormat))
+      return
+    }
     try {
       const response = await signUpUser({ variables: { user } })
       const data = get(response, 'data.signUp', false)
