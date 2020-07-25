@@ -29,8 +29,7 @@ import {
   LogInLabel
 } from './styledComponents'
 import messages from './messages'
-
-const EMAIL_REGEX = /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi
+import { validateEmail } from '../../utils/utilsFunctions'
 
 interface Props {
   closeSignUp: () => void
@@ -211,7 +210,7 @@ class SignUp extends React.Component<Props, StateProps> {
       countryCode: initialCountryCode
     }
 
-    if (!EMAIL_REGEX.test(email.toLowerCase())) {
+    if (!validateEmail(email.toLowerCase())) {
       message.error(formatMessage(messages.badFormat))
       return
     }
