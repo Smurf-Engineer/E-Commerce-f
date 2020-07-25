@@ -106,6 +106,7 @@ class OrderData extends React.Component<Props, {}> {
           firstName,
           lastName,
           street,
+          phone,
           city,
           stateProvince,
           zipCode,
@@ -146,50 +147,50 @@ class OrderData extends React.Component<Props, {}> {
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
       ) : (
-        <StyledImage
-          src={paymentMethod === PaymentOptions.PAYPAL ? iconPaypal : iconSepa}
-        />
-      )
+          <StyledImage
+            src={paymentMethod === PaymentOptions.PAYPAL ? iconPaypal : iconSepa}
+          />
+        )
     let subtotal = 0
     const renderList = cart
       ? cart.map((cartItem, index) => {
-          const {
-            designId,
-            designImage,
-            designName,
-            product: { images, name, shortDescription, priceRange },
-            productTotal,
-            unitPrice
-          } = cartItem
+        const {
+          designId,
+          designImage,
+          designName,
+          product: { images, name, shortDescription, priceRange },
+          productTotal,
+          unitPrice
+        } = cartItem
 
-          subtotal += productTotal || 0
+        subtotal += productTotal || 0
 
-          const itemImage = designId ? designImage || '' : images[0].front
-          const itemTitle = designId ? designName || '' : name
-          const itemDescription = designId
-            ? `${name} ${shortDescription}`
-            : shortDescription
-          return (
-            <CartListItem
-              {...{
-                formatMessage,
-                productTotal,
-                unitPrice,
-                cartItem,
-                currentCurrency
-              }}
-              currencySymbol={currency.shortName}
-              key={index}
-              image={itemImage}
-              title={itemTitle}
-              description={itemDescription}
-              price={priceRange}
-              itemIndex={index}
-              onlyRead={true}
-              canReorder={false}
-            />
-          )
-        })
+        const itemImage = designId ? designImage || '' : images[0].front
+        const itemTitle = designId ? designName || '' : name
+        const itemDescription = designId
+          ? `${name} ${shortDescription}`
+          : shortDescription
+        return (
+          <CartListItem
+            {...{
+              formatMessage,
+              productTotal,
+              unitPrice,
+              cartItem,
+              currentCurrency
+            }}
+            currencySymbol={currency.shortName}
+            key={index}
+            image={itemImage}
+            title={itemTitle}
+            description={itemDescription}
+            price={priceRange}
+            itemIndex={index}
+            onlyRead={true}
+            canReorder={false}
+          />
+        )
+      })
       : null
     return (
       <Container>
@@ -223,7 +224,7 @@ class OrderData extends React.Component<Props, {}> {
             <StyledText>
               <FormattedHTMLMessage
                 {...messages[
-                  teamStoreId ? 'messageTeamstore' : 'messageRetail'
+                teamStoreId ? 'messageTeamstore' : 'messageRetail'
                 ]}
               />
             </StyledText>
@@ -234,7 +235,7 @@ class OrderData extends React.Component<Props, {}> {
                   hideBottomButtons={true}
                   name={`${firstName} ${lastName}`}
                   city={`${city} ${stateProvince}`}
-                  {...{ street, zipCode, country, apartment, formatMessage }}
+                  {...{ street, zipCode, country, apartment, phone, formatMessage }}
                 />
               </div>
               <div>

@@ -20,6 +20,7 @@ interface Props {
   city: string
   zipCode: string
   country: string
+  phone?: string
   defaultBilling?: boolean
   defaultShipping?: boolean
   addressIndex?: number
@@ -42,13 +43,14 @@ const MyAddress = ({
   defaultBilling,
   defaultShipping,
   addressIndex,
+  phone,
   formatMessage,
   showSecondaryButtons,
   hideBottomButtons,
   isSelected = false,
-  selectAddressAction = () => {},
-  showAddressFormAction = () => {},
-  showConfirmDeleteAction = () => {}
+  selectAddressAction = () => { },
+  showAddressFormAction = () => { },
+  showConfirmDeleteAction = () => { }
 }: Props) => {
   const handleOnEdit = () => {
     showAddressFormAction(true, addressIndex)
@@ -64,15 +66,15 @@ const MyAddress = ({
       {formatMessage(messages.useThisAddress)}
     </StyledCheckbox>
   ) : (
-    <SecondaryButtons>
-      <EditButton type="primary" onClick={handleOnEdit}>
-        {formatMessage(messages.edit)}
-      </EditButton>
-      <StyledButton onClick={handleOnDelete}>
-        {formatMessage(messages.delete)}
-      </StyledButton>
-    </SecondaryButtons>
-  )
+      <SecondaryButtons>
+        <EditButton type="primary" onClick={handleOnEdit}>
+          {formatMessage(messages.edit)}
+        </EditButton>
+        <StyledButton onClick={handleOnDelete}>
+          {formatMessage(messages.delete)}
+        </StyledButton>
+      </SecondaryButtons>
+    )
   let footerMessageText
   if (defaultBilling && defaultShipping) {
     footerMessageText = messages.defaultBillingAndShipping
@@ -93,6 +95,7 @@ const MyAddress = ({
       <Text>{city}</Text>
       <Text>{zipCode}</Text>
       <Text>{country}</Text>
+      {!!phone && <Text>{phone}</Text>}
       {footerMessage}
       {!hideBottomButtons ? buttons : null}
     </Container>

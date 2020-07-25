@@ -115,6 +115,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
         zipCode,
         country,
         apartment,
+        phone,
         defaultBilling,
         defaultShipping
       } = address
@@ -143,6 +144,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
             showAddressFormAction,
             showConfirmDeleteAction,
             isSelected,
+            phone,
             defaultBilling,
             defaultShipping
           }}

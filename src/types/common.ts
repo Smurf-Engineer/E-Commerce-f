@@ -813,6 +813,7 @@ export interface OrderDetailsInfo {
   shippingLastName: string
   shippingStreet: string
   shippingApartment: string
+  shippingPhone?: string
   shippingCountry: string
   shippingStateProvince: string
   shippingCity: string
