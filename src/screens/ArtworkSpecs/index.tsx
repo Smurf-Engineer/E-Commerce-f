@@ -2,7 +2,7 @@
  * ArtworkSpecs Screen - Created by gustavomedina on 05/06/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
@@ -30,19 +30,29 @@ import ColorList from '../../screens/DesignerTool/DesignCenterCustomize/ColorLis
 import vector from '../../assets/vector.svg'
 import raster from '../../assets/raster.png'
 import fsc from '../../assets/fsc.png'
+import { getColorsQuery } from './data'
+import { Colors, QueryProps } from '../../types/common'
+
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
+  colorsList: ColorsData
 }
 
 export class ArtworkSpecs extends React.Component<Props, {}> {
   componentWillMount() {
-    zenscroll.toY(0, 0)
+    if (window && zenscroll) {
+      zenscroll.toY(0, 0)
+    }
   }
   render() {
     const {
       intl,
       history,
+      colorsList,
       intl: { formatMessage }
     } = this.props
     return (
@@ -88,7 +98,7 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
               <FormattedMessage {...messages.colorChart} />
             </ThirdTitle>
             <ColorWrapper>
-              <ColorList height={'100%'} {...{ formatMessage }} />
+              <ColorList height={'100%'} {...{ formatMessage, colorsList }} />
             </ColorWrapper>
           </ColorChartContainer>
           <LineCopy />
@@ -107,6 +117,10 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
   }
 }
 
-const ArtworkSpecsEnhance = compose(injectIntl)(ArtworkSpecs)
+const ArtworkSpecsEnhance = compose(
+  injectIntl,
+  graphql(getColorsQuery, { name: 'colorsList' }),
+
+)(ArtworkSpecs)
 
 export default ArtworkSpecsEnhance

@@ -18,12 +18,9 @@ export const Text = styled.div`
 `
 
 export const ColorWrapper = styled.div`
-  width: 80%;
-  text-align: center;
-  align-content: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   margin-top: 32px;
 `
 
