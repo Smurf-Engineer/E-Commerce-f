@@ -3,7 +3,14 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { RED, GRAY_DARK, GRAY_LIGHT, BLUE, WHITE } from '../../theme/colors'
+import {
+  RED,
+  GRAY_DARK,
+  GRAY_LIGHT,
+  BLUE,
+  WHITE,
+  GRAY
+} from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
 
 export const Container = styled.div`
@@ -189,9 +196,24 @@ export const ButtonWrapper = styled.div`
   }
 `
 
+interface CheckoutButtonProps {
+  disabledButton: boolean
+}
+
 export const CheckoutButton = styled(Button)`
   height: 40px;
   width: 100%;
+  color: ${({ disabledButton }: CheckoutButtonProps) =>
+    disabledButton ? GRAY : WHITE};
+  text-shadow: ${({ disabledButton }: CheckoutButtonProps) =>
+    disabledButton ? 'none' : WHITE};
+  &:hover,
+  :focus-within {
+    color: ${({ disabledButton }: CheckoutButtonProps) =>
+      disabledButton ? GRAY : WHITE};
+    cursor: ${({ disabledButton }: CheckoutButtonProps) =>
+      disabledButton ? 'default' : 'pointer'};
+  }
 `
 
 export const InputWrapper = styled.div`

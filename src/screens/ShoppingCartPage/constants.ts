@@ -24,3 +24,4 @@ export const SET_COLOR_ITEM_DETAIL_ACTION = `${namespace}/SET_COLOR_ITEM_DETAIL_
 export const OPEN_FITINFO = `${namespace}/OPEN_FITINFO`
 export const OPEN_STORE_INFO = `${namespace}/OPEN_STORE_INFO`
 export const SET_STORE_TERMS = `${namespace}/SET_STORE_TERMS`
+export const HIGHLIGHT_FIELDS = `${namespace}/HIGHLIGHT_FIELDS`

@@ -104,6 +104,7 @@ interface Props {
   currencySymbol?: string
   history?: any
   openFitInfo: boolean
+  highlightFields?: boolean
 }
 
 interface MessagePrice {
@@ -244,17 +245,18 @@ export class CartListItem extends React.Component<Props, {}> {
       unitPrice,
       currentCurrency,
       currencySymbol,
-      handleAddItemDetail = () => { },
-      handledeleteItemDetail = () => { },
-      setLabelItemDetail = () => { },
-      setDetailQuantity = () => { },
-      setDetailFit = () => { },
-      setDetailGender = () => { },
-      setDetailColor = () => { },
-      setDetailSize = () => { },
-      removeItem = () => { },
-      openFitInfoAction = () => { },
-      openFitInfo
+      handleAddItemDetail = () => {},
+      handledeleteItemDetail = () => {},
+      setLabelItemDetail = () => {},
+      setDetailQuantity = () => {},
+      setDetailFit = () => {},
+      setDetailGender = () => {},
+      setDetailColor = () => {},
+      setDetailSize = () => {},
+      removeItem = () => {},
+      openFitInfoAction = () => {},
+      openFitInfo,
+      highlightFields
     } = this.props
 
     const {
@@ -326,7 +328,8 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailSize,
           openFitInfoAction,
           openFitInfo,
-          teamStoreName
+          teamStoreName,
+          highlightFields
         }}
       />
     )
@@ -349,9 +352,7 @@ export class CartListItem extends React.Component<Props, {}> {
           {!!teamStoreName && (
             <FromTeamStore>
               {formatMessage(messages.from)}
-              <StoreLink onClick={this.goToStore}>
-                {teamStoreName}
-              </StoreLink>
+              <StoreLink onClick={this.goToStore}>{teamStoreName}</StoreLink>
             </FromTeamStore>
           )}
           <ItemDetailsHeaderNameDetail>
