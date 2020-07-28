@@ -90,7 +90,8 @@ export const Item = styled.li`
 
 export const PaymentIcons = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: baseline;
   margin: 0 30px;
   height: 40px;
 `
@@ -98,6 +99,7 @@ export const PaymentIcons = styled.div`
 export const Icon = styled.img`
   width: 100%;
   max-width: 90px;
+  margin-right: 16px;
 `
 
 export const SelectTeamStoreButton = styled(Button)`

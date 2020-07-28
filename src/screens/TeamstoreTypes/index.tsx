@@ -19,7 +19,6 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import creditCard from '../../assets/creditcard_color.png'
-import sepa from '../../assets/sepa.png'
 import onDemandImage from '../../assets/OnDemand-Guys.jpg'
 import ScheduledImage from '../../assets/Scheduled-Team.jpg'
 import onDemandBanner from '../../assets/OnDemand.png'
@@ -91,7 +90,6 @@ class TeamstoreTypes extends React.Component<Props, {}> {
               <PaymentIcons>
                 <Icon src={creditCard} />
                 <Icon src={paypal} />
-                <Icon src={sepa} />
               </PaymentIcons>
               <SelectTeamStoreButton id="demand" onClick={this.goTo}>
                 {formatMessage(messages.select)}

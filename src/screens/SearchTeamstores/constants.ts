@@ -10,7 +10,6 @@ import visaCard from '../../assets/visa-card.svg'
 import amexCard from '../../assets/amex_card.svg'
 import discoverCard from '../../assets/card-discover.svg'
 import paypal from '../../assets/Paypal.svg'
-import sepa from '../../assets/sepa.png'
 
 const namespace = 'src/Teamstores'
 
@@ -32,5 +31,4 @@ export const paymentIcons = [
     amexCard,
     discoverCard,
     paypal,
-    sepa
 ]
