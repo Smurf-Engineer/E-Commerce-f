@@ -96,6 +96,7 @@ export const GetProductsByIdQuery = gql`
       retailWomen: women_retail
       template
       relatedItemTag: related_item_tag
+      active
     }
   }
 `
