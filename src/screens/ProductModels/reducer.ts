@@ -17,7 +17,9 @@ import {
   CHANGE_DEFAULT,
   CHANGE_MODEL_RENDER,
   UPLOAD_COMPLETE,
-  RESET_REDUCER
+  RESET_REDUCER,
+  MODELS_TAB,
+  ON_TAB_CLICK_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -27,6 +29,7 @@ export const initialState = fromJS({
   tempModel: {},
   selected: '',
   modelRender: '',
+  selectedTab: MODELS_TAB,
   loading: true,
   defaultModelIndex: '',
   variants: {}
@@ -85,6 +88,8 @@ const productModelsReducer: Reducer<any> = (state = initialState, action) => {
       return initialState
     case CHANGE_MODEL_RENDER:
       return state.set('modelRender', action.id)
+    case ON_TAB_CLICK_ACTION:
+      return state.set('selectedTab', action.selectedIndex)
     case SET_LOADING:
       return state.set('loading', action.loading)
     case REMOVE_MODEL:

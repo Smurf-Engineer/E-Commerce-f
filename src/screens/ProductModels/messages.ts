@@ -61,5 +61,13 @@ export default defineMessages({
   goToInfo: {
     id: 'screens.ProductModels.goToInfo',
     defaultMessage: 'Go to Product Information Overview'
+  },
+  predyedTitle: {
+    id: 'screens.ProductModels.predyedTitle',
+    defaultMessage: 'Add predyed variants'
+  },
+  addPredyed: {
+    id: 'screens.ProductModels.addPredyed',
+    defaultMessage: '+ ADD PRE DYED VARIANT'
   }
 })

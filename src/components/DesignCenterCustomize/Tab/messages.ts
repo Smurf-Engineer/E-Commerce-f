@@ -28,5 +28,13 @@ export default defineMessages({
   tutorials: {
     id: 'components.designCenterCustomize.Tab.tutorials',
     defaultMessage: 'Tutorials'
+  },
+  models: {
+    id: 'components.designCenterCustomize.Tab.models',
+    defaultMessage: '3D Models'
+  },
+  predyed: {
+    id: 'components.designCenterCustomize.Tab.predyed',
+    defaultMessage: 'Predyed'
   }
 })
