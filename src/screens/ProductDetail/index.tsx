@@ -469,6 +469,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           label={formatMessage(messages.addToCartButtonLabel)}
           item={itemToAdd}
           itemProdPage={true}
+          {...{ formatMessage }}
         />
         {customLink && (
           <StyledButtonWrapper marginLeft="24px">
