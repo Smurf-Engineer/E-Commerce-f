@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -270,6 +270,12 @@ export type ModelVariant = {
   zipperBlack: string
   bindingWhite: string
   bindingBlack: string
+}
+
+export type PredyedColor = {
+  id: string
+  name: string
+  code: string
 }
 
 export interface SaveDesignData {

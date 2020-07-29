@@ -24,6 +24,16 @@ export const getVariantsFromProduct = gql`
   }
 `
 
+export const getPredyedColors = gql`
+  query getPredyedColors($id: Int!) {
+    getPredyedColors(id: $id) {
+      id: short_id
+      name
+      code
+    }
+  }
+`
+
 export const saveProductsMutation = graphql(
   gql`
     mutation saveProductModels(

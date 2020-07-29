@@ -13,6 +13,7 @@ import * as apiActions from './api'
 import * as thunkActions from './thunkActions'
 import messages from './messages'
 import FilesModal from './FilesModal'
+import PredyedModal from './PredyedModal'
 import { connect } from 'react-redux'
 import { compose, withApollo, graphql } from 'react-apollo'
 import {
@@ -53,7 +54,7 @@ import backIcon from '../../assets/rightarrow.svg'
 import jakrooLogo from '../../assets/Jackroologo.svg'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
-import { ModelVariant } from '../../types/common'
+import { ModelVariant, PredyedColor } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { saveProductsMutation, getProductQuery } from './data'
@@ -70,12 +71,20 @@ interface Props {
   loading: boolean
   tempModel: ModelVariant
   variants: { [id: string]: ModelVariant }
+  predyedColors: { [id: string]: PredyedColor }
   defaultModelIndex: string
   selected: string
   modelRender: string
   data: any
   openSuccess: boolean
   selectedTab: string
+  color: string
+  hexColor: string
+  openPredyed: boolean
+  selectedColor: string
+  changeColorAction: (color: string) => void
+  changeHexAction: (name: string) => void
+  openPredyedAction: (open: boolean) => void
   onTabClick: (selectedIndex: string) => void
   saveInfoAction: () => void
   resetReducer: () => void
@@ -188,6 +197,14 @@ export class ProductModels extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  closePredyed = () => {
+    const { openPredyedAction } = this.props
+    openPredyedAction(false)
+  }
+  handleOpenPredyed = () => {
+    const { openPredyedAction } = this.props
+    openPredyedAction(true)
+  }
   handleAddDesigns = () => {
     const {
       data: {
@@ -222,6 +239,13 @@ export class ProductModels extends React.Component<Props, {}> {
       loading,
       selected,
       modelRender,
+      predyedColors,
+      selectedColor,
+      openPredyed,
+      hexColor,
+      color,
+      changeColorAction,
+      changeHexAction,
       changeDefault,
       saveInfoAction,
       removeModelAction,
@@ -344,39 +368,37 @@ export class ProductModels extends React.Component<Props, {}> {
                 <TopMessage background={true}>
                   {formatMessage(messages.predyedTitle)}
                 </TopMessage>
-                <AddModel onClick={this.handleOpenModal}>
+                <AddModel onClick={this.handleOpenPredyed}>
                   {formatMessage(messages.addPredyed)}
                 </AddModel>
               </Side>
               <ModelsContainers>
-                {Object.keys(variants).length &&
+                {Object.keys(predyedColors).length &&
                   <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
                 }
-                {Object.keys(variants).map((id: string, index) => {
+                {Object.keys(predyedColors).map((id: string, index) => {
                   const edit = () => this.handleEdit(id)
-                  const { icon, name, default: isDefault } = variants[id]
+                  const { code, name } = predyedColors[id]
                   const selectModel = () => this.selectModel(id)
                   const remove = () => this.handleRemoveModel(id)
                   return (
-                    !isDefault && (
-                      <ModelBlock active={modelRender === id} key={index}>
-                        <Thumbnail
-                          onClick={selectModel}
-                          src={icon || jakrooLogo}
-                        />
-                        <Details>
-                          <Name>{name}</Name>
-                          <Buttons>
-                            <EditButton onClick={edit}>
-                              {formatMessage(messages.edit)}
-                            </EditButton>
-                            <DeleteButton onClick={remove}>
-                              {formatMessage(messages.delete)}
-                            </DeleteButton>
-                          </Buttons>
-                        </Details>
-                      </ModelBlock>
-                    )
+                    <ModelBlock active={selectedColor === id} key={index}>
+                      <Thumbnail
+                        onClick={selectModel}
+                        src={code}
+                      />
+                      <Details>
+                        <Name>{name}</Name>
+                        <Buttons>
+                          <EditButton onClick={edit}>
+                            {formatMessage(messages.edit)}
+                          </EditButton>
+                          <DeleteButton onClick={remove}>
+                            {formatMessage(messages.delete)}
+                          </DeleteButton>
+                        </Buttons>
+                      </Details>
+                    </ModelBlock>
                   )
                 })}
               </ModelsContainers>
@@ -401,6 +423,18 @@ export class ProductModels extends React.Component<Props, {}> {
               )}
           </ModelContainer>
         </Layout>
+        <PredyedModal
+          {...{
+            openPredyed,
+            color,
+            hexColor,
+            formatMessage,
+            changeColorAction,
+            selectedColor,
+            changeHexAction,
+          }}
+          requestClose={this.closePredyed}
+        />
         <FilesModal
           {...{
             openModal,

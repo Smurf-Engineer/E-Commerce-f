@@ -19,12 +19,19 @@ import {
   UPLOAD_COMPLETE,
   RESET_REDUCER,
   MODELS_TAB,
-  ON_TAB_CLICK_ACTION
+  ON_TAB_CLICK_ACTION,
+  OPEN_PREDYED,
+  CHANGE_COLOR,
+  CHANGE_CODE
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   openModal: false,
+  openPredyed: false,
+  color: '',
+  hexColor: '',
+  selectedColor: '',
   openSuccess: false,
   tempModel: {},
   selected: '',
@@ -32,7 +39,8 @@ export const initialState = fromJS({
   selectedTab: MODELS_TAB,
   loading: true,
   defaultModelIndex: '',
-  variants: {}
+  variants: {},
+  predyedColors: {}
 })
 
 const productModelsReducer: Reducer<any> = (state = initialState, action) => {
@@ -75,6 +83,7 @@ const productModelsReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         loading: false,
         variants: action.variants,
+        predyedColors: action.predyedColors,
         defaultModelIndex: action.defaultIndex
       })
     case UPLOAD_COMPLETE:
@@ -86,6 +95,12 @@ const productModelsReducer: Reducer<any> = (state = initialState, action) => {
       })
     case RESET_REDUCER:
       return initialState
+    case OPEN_PREDYED:
+      return state.set('openPredyed', action.open)
+    case CHANGE_COLOR:
+      return state.set('color', action.color)
+    case CHANGE_CODE:
+      return state.set('hexColor', action.code)
     case CHANGE_MODEL_RENDER:
       return state.set('modelRender', action.id)
     case ON_TAB_CLICK_ACTION:
