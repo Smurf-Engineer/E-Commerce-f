@@ -5,7 +5,6 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
-import { injectIntl } from 'react-intl'
 import Message from 'antd/lib/message'
 
 import {
@@ -267,7 +266,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         const { teamStoreId, designId } = item
         const sameDesign = find(cartList, ['designId', designId])
         if (sameDesign && sameDesign.teamStoreId !== teamStoreId) {
-          Message.warning(intl.formatMessage(messages.cantMix))
+          Message.warning(formatMessage(messages.cantMix))
           return
         } else {
           cartList.push(item)
@@ -287,7 +286,6 @@ export class AddToCartButton extends PureComponent<Props, {}> {
 }
 
 const AddToCartEnhanced = compose(
-  injectIntl,
   connect(
     null,
     { getTotalItemsIncart },
