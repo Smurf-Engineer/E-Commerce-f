@@ -25,7 +25,8 @@ import {
   AccesoryColor,
   Product,
   UserInfo,
-  Color
+  Color,
+  PredyedColor
 } from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
@@ -53,6 +54,8 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  predyedColors: PredyedColor[]
+  selectedPredyed: PredyedColor
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -74,6 +77,7 @@ const SELECT_COLORS_INDEX = 0
 const BASE_COLORS_INDEX = 1
 const PALETTES_COLORS_INDEX = 2
 const STITCHING_COLORS_INDEX = 3
+const PREDYED_COLORS_INDEX = 4
 
 class ColorsTab extends React.PureComponent<Props, State> {
   state = {
@@ -111,6 +115,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onChangePaletteName,
       paletteName,
       palettes,
+      selectedPredyed,
       onSetPalettes,
       onSelectPalette,
       openPaletteModalAction,
@@ -143,11 +148,13 @@ class ColorsTab extends React.PureComponent<Props, State> {
       !!product.zipper.black
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
+    const hasBranding = !!product && !!product.branding
 
     const isFirstTab = index === SELECT_COLORS_INDEX
     const baseColorsTab = index === BASE_COLORS_INDEX
     const palettesTab = index === PALETTES_COLORS_INDEX
     const stitchingTab = index === STITCHING_COLORS_INDEX
+    const predyedTab = index === PREDYED_COLORS_INDEX
 
     let topMessage = messages.selectColors
 
@@ -192,6 +199,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
               bibColor,
               onAccessoryColorSelected,
               formatMessage,
+              selectedPredyed,
+              hasBranding,
               hasStitching,
               hasZipper,
               hasBinding,
@@ -240,6 +249,22 @@ class ColorsTab extends React.PureComponent<Props, State> {
             }}
           />
           {stitchingTab ? (
+            <StitchingList>
+              <ColorList
+                stitching={true}
+                {...{
+                  onSelectStitchingColor,
+                  stitchingColor,
+                  disableTooltip,
+                  colorsList,
+                  formatMessage
+                }}
+              />
+            </StitchingList>
+          ) : (
+              <div />
+            )}
+          {predyedTab ? (
             <StitchingList>
               <ColorList
                 stitching={true}

@@ -28,7 +28,8 @@ import {
   SelectedAsset,
   SimpleFont,
   UserInfo,
-  PositionSize
+  PositionSize,
+  PredyedColor
 } from '../../../types/common'
 import { Container } from './styledComponents'
 import config from '../../../config'
@@ -45,6 +46,8 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
+  predyedColors: PredyedColor[]
+  selectedPredyed: PredyedColor
   stitchingColor?: StitchingColor
   videos: object[]
   bindingColor?: AccesoryColor
@@ -165,6 +168,8 @@ const Tabs = ({
   openLoginModalAction,
   fonts,
   colorsList,
+  selectedPredyed,
+  predyedColors,
   onRequestColorChart,
   colorChartSending,
   colorChartModalOpen,
@@ -190,6 +195,8 @@ const Tabs = ({
               colorBlockHovered,
               onSelectColor,
               colors,
+              selectedPredyed,
+              predyedColors,
               styleColors,
               onChangePaletteName,
               paletteName,

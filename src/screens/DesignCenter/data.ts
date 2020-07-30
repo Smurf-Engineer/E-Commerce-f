@@ -13,6 +13,7 @@ export const getProductQuery = gql`
       mtl
       label
       bumpMap: bump_map
+      branding
       isCustom: design_center
       flatlock
       mpn
@@ -51,6 +52,16 @@ export const getVariantsFromProduct = gql`
       zipperBlack: zipper_black
       bindingWhite: binding_white
       bindingBlack: binding_black
+    }
+  }
+`
+
+export const getPredyedColors = gql`
+  query getPredyedColors($id: Int!) {
+    predyedColors: getPredyedColors(id: $id) {
+      id: short_id
+      name
+      code
     }
   }
 `

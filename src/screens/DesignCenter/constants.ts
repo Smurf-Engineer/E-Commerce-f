@@ -129,7 +129,8 @@ export enum AccessoryColors {
   Binding = 'bindingColor',
   Zipper = 'zipperColor',
   Bib = 'bibColor',
-  Stitching = 'stitchingColor'
+  Stitching = 'stitchingColor',
+  Predyed = 'predyed'
 }
 
 export const ElementsToApplyScale = [CanvasElements.Image]

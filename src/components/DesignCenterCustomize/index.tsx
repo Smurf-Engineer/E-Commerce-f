@@ -33,7 +33,8 @@ import {
   SimpleFont,
   UserInfo,
   ModelVariant,
-  PositionSize
+  PositionSize,
+  PredyedColor
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -125,6 +126,8 @@ interface Props {
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
   userCode: string
+  selectedPredyed: PredyedColor
+  predyedColors: PredyedColor[]
   // Redux actions
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
@@ -241,6 +244,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       styleColors,
       currentStyle,
       videos,
+      selectedPredyed,
+      predyedColors,
       loadingModel,
       onLoadModel,
       onUndoAction,
@@ -358,6 +363,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectColorBlock,
               onHoverColorBlock,
               videos,
+              predyedColors,
+              selectedPredyed,
               setVideos,
               onSelectColor,
               colors,

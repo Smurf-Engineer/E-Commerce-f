@@ -88,7 +88,8 @@ import {
   UserInfo,
   DesignLabInfo,
   ProAssistItem,
-  UserType
+  UserType,
+  PredyedColor
 } from '../../types/common'
 import {
   getProductQuery,
@@ -99,7 +100,8 @@ import {
   getDesignLabInfo,
   getVariantsFromProduct,
   getProAssist,
-  getProTicket
+  getProTicket,
+  getPredyedColors
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -115,6 +117,10 @@ import clone from 'lodash/clone'
 
 interface DataProduct extends QueryProps {
   product?: Product
+}
+
+interface DataPredyedColors extends QueryProps {
+  predyedColors?: PredyedColor[]
 }
 
 interface DataDesign extends QueryProps {
@@ -147,6 +153,8 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   undoChanges: Change[]
   redoChanges: Change[]
+  dataPredyedColors: DataPredyedColors
+  predyedIndex: number
   swipingView: boolean
   openShareModal: boolean
   openSaveDesign: boolean
@@ -641,6 +649,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectVariantAction,
       selectedVariant,
       dataVariants,
+      predyedIndex,
+      dataPredyedColors,
       responsive,
       onReApplyImageElementAction,
       onCanvasElementDuplicatedAction,
@@ -694,6 +704,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       return redirect
     }
     const variants = get(dataVariants, 'getVariants', [])
+    const predyedColors = get(dataPredyedColors, 'predyedColors', [])
     const deliveryDaysResponse = get(
       dataDesignLabInfo,
       'designInfo.deliveryDays',
@@ -834,6 +845,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       productConfig.obj = obj
       productConfig.mtl = mtl
     }
+    const selectedPredyed = predyedColors[predyedIndex] || {}
     const loadingView = (
       <LoadingContainer>
         <Spin />
@@ -936,127 +948,129 @@ export class DesignCenter extends React.Component<Props, {}> {
             {loadingData ? (
               loadingView
             ) : (
-              <CustomizeTab
-                {...{
-                  colorBlock,
-                  colorBlockHovered,
-                  colors,
-                  videos,
-                  loadingModel,
-                  swipingView,
-                  styleColors,
-                  paletteName,
-                  palettes,
-                  text,
-                  productName,
-                  canvas,
-                  selectedElement,
-                  selectVariantAction,
-                  selectedVariant,
-                  variants,
-                  textFormat,
-                  artFormat,
-                  proAssistId,
-                  openPaletteModalAction,
-                  myPaletteModals,
-                  openResetDesignModal,
-                  openResetDesignModalAction,
-                  openResetPlaceholderModalAction,
-                  designName,
-                  formatMessage,
-                  customize3dMounted,
-                  setCustomize3dMountedAction,
-                  loadingData,
-                  currentStyle,
-                  undoChanges,
-                  redoChanges,
-                  setStitchingColorAction,
-                  stitchingColor,
-                  bindingColor,
-                  zipperColor,
-                  bibColor,
-                  images,
-                  uploadingFile,
-                  searchClipParam,
-                  setSearchClipParamAction,
-                  designHasChanges,
-                  isUserAuthenticated,
-                  isEditing,
-                  originalPaths,
-                  selectedItem,
-                  openLoginModalAction,
-                  isMobile,
-                  responsive,
-                  handleOnCloseInfo,
-                  infoModalOpen,
-                  selectedTab,
-                  colorsList,
-                  setVideos,
-                  placeholders,
-                  openResetPlaceholderModal,
-                  colorChartSending,
-                  colorChartModalOpen,
-                  colorChartModalFormOpen,
-                  tutorialPlaylist,
-                  loggedUserId,
-                  userCode
-                }}
-                designId={get(dataDesign, 'designData.shortId', '')}
-                userEmail={email}
-                name={firstName}
-                lastName={lastName}
-                callbackToSave={get(layout, 'callback', false)}
-                saveAndBuy={get(layout, 'saveAndBuy', false)}
-                fonts={get(layout, 'fonts', {})}
-                handleOnSaveAndBuy={handleOnSaveAndBuy}
-                handleOnGoBack={this.handleOnGoBack}
-                onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
-                product={productConfig}
-                onUploadFile={uploadFileAction}
-                onAccessoryColorSelected={setAccessoryColorAction}
-                currentTab={tabSelected}
-                design={designObject}
-                onUpdateText={setTextAction}
-                undoEnabled={undoChanges.length > 0}
-                redoEnabled={redoChanges.length > 0}
-                onSelectColorBlock={setColorBlockAction}
-                onHoverColorBlock={setHoverColorBlockAction}
-                onSelectColor={this.setColorEvent}
-                onSelectPalette={setPaletteAction}
-                onChangePaletteName={setPaletteNameAction}
-                onSetPalettes={setPalettesAction}
-                onLoadModel={setLoadingModel}
-                onUndoAction={designUndoAction}
-                onRedoAction={designRedoAction}
-                onResetAction={designResetAction}
-                onClearAction={designClearAction}
-                onPressQuickView={this.handleOpenQuickView}
-                onOpenSaveDesign={openSaveDesignAction}
-                onApplyCanvasEl={setCanvasElement}
-                onSelectEl={setSelectedElement}
-                onRemoveEl={removeCanvasElement}
-                onSelectTextFormat={this.setTextEvent}
-                onSelectArtFormat={setArtFormatAction}
-                onUnmountTab={setCanvasJsonAction}
-                onCanvasElementResized={onCanvasElementResizedAction}
-                onCanvasElementDragged={onCanvasElementDraggedAction}
-                onCanvasElementRotated={onCanvasElementRotatedAction}
-                onCanvasElementTextChanged={onCanvasElementTextChangedAction}
-                onReApplyImageEl={onReApplyImageElementAction}
-                onSetEditConfig={setEditConfigAction}
-                onSetCanvasObject={setLoadedCanvasAction}
-                onResetEditing={onResetEditingAction}
-                onSelectedItem={this.setSelectedItemEvent}
-                onTabClick={onTabClickAction}
-                onLockElement={onLockElementAction}
-                onRequestColorChart={this.sendColorChartRequest}
-                onCloseColorChart={this.handleOnCloseColorChart}
-                onCloseColorChartForm={this.handleOnCloseColorChartForm}
-                onOpenFormChart={this.handleOnOpenFormChart}
-                onOpenColorChart={this.handleOnOpenColorChart}
-                openDesignCheckModal={openDesignCheckModalAction}
-              />
-            )}
+                <CustomizeTab
+                  {...{
+                    colorBlock,
+                    colorBlockHovered,
+                    colors,
+                    videos,
+                    loadingModel,
+                    swipingView,
+                    styleColors,
+                    paletteName,
+                    palettes,
+                    text,
+                    productName,
+                    canvas,
+                    selectedElement,
+                    selectVariantAction,
+                    selectedVariant,
+                    variants,
+                    predyedColors,
+                    selectedPredyed,
+                    textFormat,
+                    artFormat,
+                    proAssistId,
+                    openPaletteModalAction,
+                    myPaletteModals,
+                    openResetDesignModal,
+                    openResetDesignModalAction,
+                    openResetPlaceholderModalAction,
+                    designName,
+                    formatMessage,
+                    customize3dMounted,
+                    setCustomize3dMountedAction,
+                    loadingData,
+                    currentStyle,
+                    undoChanges,
+                    redoChanges,
+                    setStitchingColorAction,
+                    stitchingColor,
+                    bindingColor,
+                    zipperColor,
+                    bibColor,
+                    images,
+                    uploadingFile,
+                    searchClipParam,
+                    setSearchClipParamAction,
+                    designHasChanges,
+                    isUserAuthenticated,
+                    isEditing,
+                    originalPaths,
+                    selectedItem,
+                    openLoginModalAction,
+                    isMobile,
+                    responsive,
+                    handleOnCloseInfo,
+                    infoModalOpen,
+                    selectedTab,
+                    colorsList,
+                    setVideos,
+                    placeholders,
+                    openResetPlaceholderModal,
+                    colorChartSending,
+                    colorChartModalOpen,
+                    colorChartModalFormOpen,
+                    tutorialPlaylist,
+                    loggedUserId,
+                    userCode
+                  }}
+                  designId={get(dataDesign, 'designData.shortId', '')}
+                  userEmail={email}
+                  name={firstName}
+                  lastName={lastName}
+                  callbackToSave={get(layout, 'callback', false)}
+                  saveAndBuy={get(layout, 'saveAndBuy', false)}
+                  fonts={get(layout, 'fonts', {})}
+                  handleOnSaveAndBuy={handleOnSaveAndBuy}
+                  handleOnGoBack={this.handleOnGoBack}
+                  onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
+                  product={productConfig}
+                  onUploadFile={uploadFileAction}
+                  onAccessoryColorSelected={setAccessoryColorAction}
+                  currentTab={tabSelected}
+                  design={designObject}
+                  onUpdateText={setTextAction}
+                  undoEnabled={undoChanges.length > 0}
+                  redoEnabled={redoChanges.length > 0}
+                  onSelectColorBlock={setColorBlockAction}
+                  onHoverColorBlock={setHoverColorBlockAction}
+                  onSelectColor={this.setColorEvent}
+                  onSelectPalette={setPaletteAction}
+                  onChangePaletteName={setPaletteNameAction}
+                  onSetPalettes={setPalettesAction}
+                  onLoadModel={setLoadingModel}
+                  onUndoAction={designUndoAction}
+                  onRedoAction={designRedoAction}
+                  onResetAction={designResetAction}
+                  onClearAction={designClearAction}
+                  onPressQuickView={this.handleOpenQuickView}
+                  onOpenSaveDesign={openSaveDesignAction}
+                  onApplyCanvasEl={setCanvasElement}
+                  onSelectEl={setSelectedElement}
+                  onRemoveEl={removeCanvasElement}
+                  onSelectTextFormat={this.setTextEvent}
+                  onSelectArtFormat={setArtFormatAction}
+                  onUnmountTab={setCanvasJsonAction}
+                  onCanvasElementResized={onCanvasElementResizedAction}
+                  onCanvasElementDragged={onCanvasElementDraggedAction}
+                  onCanvasElementRotated={onCanvasElementRotatedAction}
+                  onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+                  onReApplyImageEl={onReApplyImageElementAction}
+                  onSetEditConfig={setEditConfigAction}
+                  onSetCanvasObject={setLoadedCanvasAction}
+                  onResetEditing={onResetEditingAction}
+                  onSelectedItem={this.setSelectedItemEvent}
+                  onTabClick={onTabClickAction}
+                  onLockElement={onLockElementAction}
+                  onRequestColorChart={this.sendColorChartRequest}
+                  onCloseColorChart={this.handleOnCloseColorChart}
+                  onCloseColorChartForm={this.handleOnCloseColorChartForm}
+                  onOpenFormChart={this.handleOnOpenFormChart}
+                  onOpenColorChart={this.handleOnOpenColorChart}
+                  openDesignCheckModal={openDesignCheckModalAction}
+                />
+              )}
             {!isMobile ? (
               <PreviewTab
                 {...{
@@ -1097,8 +1111,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 addItemToStore={this.saveItemToStore}
               />
             ) : (
-              <div />
-            )}
+                <div />
+              )}
           </SwipeableViews>
           <SaveDesign
             {...{
@@ -1155,21 +1169,21 @@ export class DesignCenter extends React.Component<Props, {}> {
               </SwipeableBottomSheet>
             </BottomSheetWrapper>
           ) : (
-            <div />
-          )}
+              <div />
+            )}
           {tabSelected === CustomizeTabIndex &&
-          !loadingData &&
-          isMobile &&
-          !swipingView &&
-          !loadingModel ? (
-            <MobileDesignCenterInspiration
-              styleId={currentStyle.id}
-              open={openBottomSheet}
-              setPaletteAction={this.setPaletteEvent}
-              {...{ formatMessage }}
-              hideList={this.toggleBottomSheet}
-            />
-          ) : null}
+            !loadingData &&
+            isMobile &&
+            !swipingView &&
+            !loadingModel ? (
+              <MobileDesignCenterInspiration
+                styleId={currentStyle.id}
+                open={openBottomSheet}
+                setPaletteAction={this.setPaletteEvent}
+                {...{ formatMessage }}
+                hideList={this.toggleBottomSheet}
+              />
+            ) : null}
         </Container>
         <DesignCheckModal
           handleGetPro={this.handleGetPro}
@@ -1386,6 +1400,21 @@ const DesignCenterEnhance = compose(
       }
     },
     name: 'dataVariants'
+  }),
+  graphql(getPredyedColors, {
+    options: ({ dataDesign, location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      const productId = get(dataDesign, 'designData.product.id', queryParams.id)
+      return {
+        fetchPolicy: 'network-only',
+        skip: !productId,
+        variables: {
+          id: productId
+        }
+      }
+    },
+    name: 'dataPredyedColors'
   }),
   graphql(getProAssist, {
     name: 'proAssist',

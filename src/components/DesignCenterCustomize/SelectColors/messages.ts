@@ -28,5 +28,9 @@ export default defineMessages({
   orderChart: {
     id: 'components.designCenterCustomize.SelectColors.orderChart',
     defaultMessage: 'Request a color chart'
+  },
+  predyedColor: {
+    id: 'components.designCenterCustomize.SelectColors.predyedColor',
+    defaultMessage: 'Predyed'
   }
 })

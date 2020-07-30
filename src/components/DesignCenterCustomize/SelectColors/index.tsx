@@ -16,7 +16,7 @@ import {
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
 import colorsIcon from '../.../../../../assets/color_squares.svg'
-import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color } from '../../../types/common'
+import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color, PredyedColor } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
 import { FormattedMessage } from 'react-intl'
@@ -25,6 +25,7 @@ import { ColorChart } from '../../ColorChart'
 import Message from 'antd/lib/message'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import { BLACK } from '../../../screens/DesignerTool/DesignCenterCustomize/UploadTab/config'
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
@@ -40,6 +41,8 @@ interface Props {
   bibColor?: AccesoryColor
   hasStitching: boolean
   hasZipper: boolean
+  selectedPredyed: PredyedColor
+  hasBranding: boolean
   hasBinding: boolean
   hasBibBrace: boolean
   colorBlockHovered: number
@@ -75,6 +78,11 @@ class SelectColors extends React.PureComponent<Props, {}> {
       bibColor,
       onAccessoryColorSelected = () => { },
       hasStitching,
+      hasBranding,
+      selectedPredyed: {
+        code: value = BLACK,
+        name = 'BLACK'
+      },
       hasZipper,
       hasBinding,
       hasBibBrace,
@@ -111,7 +119,6 @@ class SelectColors extends React.PureComponent<Props, {}> {
         Message.error(e)
       }
     }
-
     return (
       <Container>
         <BaseColors onClick={goToBaseColors}>
@@ -135,6 +142,18 @@ class SelectColors extends React.PureComponent<Props, {}> {
           <AccessoryColor
             name={formatMessage(messages.stitching)}
             {...{ goToStitching, stitchingColor, stitchingLabel }}
+          />
+        )}
+        {hasBranding && (
+          <AccessoryColor
+            id={AccessoryColors.Predyed}
+            name={formatMessage(messages.predyedColor)}
+            stitchingColor={{
+              value,
+              name
+            }}
+            stitchingLabel={name}
+            {...{ goToStitching }}
           />
         )}
         {hasBinding && (
