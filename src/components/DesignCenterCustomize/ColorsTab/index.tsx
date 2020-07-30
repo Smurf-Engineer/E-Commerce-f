@@ -58,6 +58,7 @@ interface Props {
   selectedPredyed: PredyedColor
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
+  onSelectPredyed: (predyedColor: PredyedColor) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
@@ -103,6 +104,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
 
   goToStitching = () => this.setState({ index: STITCHING_COLORS_INDEX })
 
+  goToPredyed = () => this.setState({ index: PREDYED_COLORS_INDEX })
+
   render() {
     const {
       formatMessage,
@@ -111,12 +114,14 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onHoverColorBlock,
       colorBlock,
       colorBlockHovered,
+      onSelectPredyed,
       onSelectStitchingColor,
       onChangePaletteName,
       paletteName,
       palettes,
       selectedPredyed,
       onSetPalettes,
+      predyedColors,
       onSelectPalette,
       openPaletteModalAction,
       myPaletteModals,
@@ -161,13 +166,16 @@ class ColorsTab extends React.PureComponent<Props, State> {
     if (palettesTab) {
       topMessage = messages.myPalettes
     }
-
+    if (predyedTab) {
+      topMessage = messages.predyed
+    }
+    const { code: value, name } = selectedPredyed
     return (
       <Container>
         <Top>
           <Row
             onClick={
-              !isFirstTab && !stitchingTab
+              !isFirstTab && !stitchingTab && !predyedTab
                 ? this.handleOnBack
                 : this.handleOnResetIndex
             }
@@ -189,6 +197,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             showContent={isFirstTab}
             goToBaseColors={this.goToBaseColors}
             goToStitching={this.goToStitching}
+            goToPredyed={this.goToPredyed}
             {...{
               colors,
               colorsList,
@@ -268,11 +277,15 @@ class ColorsTab extends React.PureComponent<Props, State> {
             <StitchingList>
               <ColorList
                 stitching={true}
+                isPredyed={true}
+                stitchingColor={{
+                  value,
+                  name
+                }}
                 {...{
-                  onSelectStitchingColor,
-                  stitchingColor,
                   disableTooltip,
-                  colorsList,
+                  predyedColors,
+                  onSelectPredyed,
                   formatMessage
                 }}
               />

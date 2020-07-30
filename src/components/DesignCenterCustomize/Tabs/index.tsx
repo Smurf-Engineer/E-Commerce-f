@@ -99,6 +99,7 @@ interface Props {
   ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  onSelectPredyed: (predyedColor: PredyedColor) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
@@ -145,6 +146,7 @@ const Tabs = ({
   onSelectEl,
   onDeleteLayer,
   onSelectArtFormat,
+  onSelectPredyed,
   onSelectStitchingColor,
   stitchingColor,
   bindingColor,
@@ -210,6 +212,7 @@ const Tabs = ({
               bindingColor,
               zipperColor,
               bibColor,
+              onSelectPredyed,
               onSelectStitchingColor,
               onAccessoryColorSelected,
               product,

@@ -134,6 +134,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
+  setPredyedColor: (predyedColor: PredyedColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
@@ -234,6 +235,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorBlockHovered,
       onSelectColor,
       setStitchingColorAction,
+      setPredyedColor,
       onSelectPalette,
       onChangePaletteName,
       paletteName,
@@ -419,6 +421,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onDeleteLayer={this.onDeleteLayer}
             onSelectEl={this.setSelectedLayer}
             onPositionChange={this.handleApplyPosition}
+            onSelectPredyed={setPredyedColor}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
             onApplyImage={this.handleOnApplyImage}
@@ -461,6 +464,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             openLoginAction={this.handleOnOpenLogin}
+            showBranding={!!selectedPredyed.code}
             {...{
               text,
               loggedUserId,

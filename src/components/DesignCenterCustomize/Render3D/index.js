@@ -169,7 +169,8 @@ class Render3D extends PureComponent {
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
       bibColor: oldBibColor,
-      selectedVariant: oldSelected
+      selectedVariant: oldSelected,
+      showBranding: oldShowBranding
     } = this.props
     const {
       colors: nextColors,
@@ -188,6 +189,7 @@ class Render3D extends PureComponent {
       lastName,
       designId,
       loggedUserId,
+      showBranding,
       userCode
     } = nextProps
     const { openSlaask } = this.state
@@ -228,9 +230,9 @@ class Render3D extends PureComponent {
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
     }
-    if (selectedVariant !== oldSelected) {
+    if ((selectedVariant !== oldSelected) || (oldShowBranding !== showBranding)) {
       this.clearScene()
-      this.render3DModel(newProduct)
+      this.render3DModel(newProduct, showBranding)
     }
     if (openSlaask && proAssistId) {
       initSlaask({
@@ -623,7 +625,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  render3DModel = async (newProduct) => {
+  render3DModel = async (newProduct, showBranding = true) => {
     /* Object and MTL load */
     const {
       onLoadModel,
@@ -638,7 +640,7 @@ class Render3D extends PureComponent {
       bibColor,
       colors: areaColors,
       designHasChanges,
-      isMobile
+      isMobile,
     } = this.props
     const product = newProduct || oldProduct
     const loadedTextures = await this.loadTextures(
@@ -827,7 +829,7 @@ class Render3D extends PureComponent {
             object.add(brandingObj)
             const brandingIndex = children.length - 1
             const brandingMaterial = new THREE.MeshPhongMaterial({
-              map: branding,
+              map: showBranding ? branding : null,
               side: THREE.FrontSide,
               bumpMap,
               transparent: true

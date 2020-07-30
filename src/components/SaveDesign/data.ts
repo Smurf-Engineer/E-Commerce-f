@@ -21,6 +21,8 @@ export const saveDesignName = graphql(
         }
         flatlockColor: flatlock
         flatlockCode: flatlock_code
+        predyedColor: predyed_color
+        predyedName: predyed_name
         bindingColor: binding_color
         bibBraceColor: bib_brace_color
         zipperColor: zipper_color
@@ -96,6 +98,8 @@ export const saveDesignChanges = graphql(
         }
         flatlockColor: flatlock
         flatlockCode: flatlock_code
+        predyedColor: predyed_color
+        predyedName: predyed_name
         bindingColor: binding_color
         bibBraceColor: bib_brace_color
         zipperColor: zipper_color

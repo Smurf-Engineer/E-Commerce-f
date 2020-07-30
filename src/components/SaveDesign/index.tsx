@@ -27,7 +27,8 @@ import {
   CanvasType,
   DesignFiles,
   SaveDesignData,
-  Message
+  Message,
+  PredyedColor
 } from '../../types/common'
 import { NEW_DESIGN_SAVED } from '../../constants'
 import { saveDesignName, saveDesignChanges } from './data'
@@ -41,6 +42,8 @@ type DesignInput = {
   styleId?: number
   canvas?: string
   flatlock?: string
+  predyed_color?: string
+  predyed_name?: string
   flatlock_code?: string
   zipper_color?: string
   binding_color?: string
@@ -67,10 +70,12 @@ interface Props {
   saveDesignLoading: boolean
   saveDesignChangesLoading: boolean
   stitchingColor: StitchingColor
+  selectedPredyed: PredyedColor
   hasFlatlock: boolean
   hasZipper: boolean
   hasBinding: boolean
   hasBibBrace: boolean
+  hasBranding: boolean
   bindingColor: string
   zipperColor: string
   bibColor: string
@@ -135,6 +140,8 @@ export class SaveDesign extends React.Component<Props, State> {
       designName,
       colors,
       design,
+      hasBranding,
+      selectedPredyed: { code, name },
       formatMessage,
       saveDesign,
       requestClose,
@@ -190,6 +197,10 @@ export class SaveDesign extends React.Component<Props, State> {
       if (hasBibBrace) {
         designObj.bib_brace_color = bibColor
       }
+      if (hasBranding) {
+        designObj.predyed_color = code
+        designObj.predyed_name = name
+      }
 
       setSaveDesignLoading(true)
       await saveDesign({
@@ -233,6 +244,8 @@ export class SaveDesign extends React.Component<Props, State> {
       saveDesignAs,
       requestClose,
       design,
+      hasBranding,
+      selectedPredyed: { code, name },
       setSaveDesignChangesLoading,
       hasFlatlock,
       hasZipper,
@@ -268,6 +281,10 @@ export class SaveDesign extends React.Component<Props, State> {
       }
       if (hasBibBrace) {
         designObj.bib_brace_color = bibColor
+      }
+      if (hasBranding) {
+        designObj.predyed_color = code
+        designObj.predyed_name = name
       }
 
       setSaveDesignChangesLoading(true)
@@ -353,8 +370,8 @@ export class SaveDesign extends React.Component<Props, State> {
               {!isMobile ? (
                 <FormattedMessage {...messages.modalTitle} />
               ) : (
-                <FormattedMessage {...messages.mobileModalTitle} />
-              )}
+                  <FormattedMessage {...messages.mobileModalTitle} />
+                )}
             </Title>
             {!!savedDesignId ? (
               <StyledSaveAs>
@@ -363,10 +380,10 @@ export class SaveDesign extends React.Component<Props, State> {
                 </Text>
               </StyledSaveAs>
             ) : (
-              <Text>
-                <FormattedMessage {...messages.modalText} />
-              </Text>
-            )}
+                <Text>
+                  <FormattedMessage {...messages.modalText} />
+                </Text>
+              )}
             <InputWrapper>
               <StyledInput
                 id="saveDesignName"
@@ -409,10 +426,10 @@ export class SaveDesign extends React.Component<Props, State> {
             </ButtonWrapper>
           </Modal>
         ) : (
-          <SpinWrapper>
-            <StyledSpin tip={formatMessage(messages.saving)} />
-          </SpinWrapper>
-        )}
+            <SpinWrapper>
+              <StyledSpin tip={formatMessage(messages.saving)} />
+            </SpinWrapper>
+          )}
       </Container>
     )
   }

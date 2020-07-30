@@ -25,7 +25,6 @@ import { ColorChart } from '../../ColorChart'
 import Message from 'antd/lib/message'
 import get from 'lodash/get'
 import find from 'lodash/find'
-import { BLACK } from '../../../screens/DesignerTool/DesignCenterCustomize/UploadTab/config'
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
@@ -53,6 +52,7 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   goToBaseColors: () => void
   goToStitching: () => void
+  goToPredyed: () => void
   showContent: boolean
   formatMessage: (messageDescriptor: any) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
@@ -68,6 +68,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
     const {
       goToBaseColors,
       goToStitching,
+      goToPredyed,
       formatMessage,
       colors,
       colorsList,
@@ -80,8 +81,8 @@ class SelectColors extends React.PureComponent<Props, {}> {
       hasStitching,
       hasBranding,
       selectedPredyed: {
-        code: value = BLACK,
-        name = 'BLACK'
+        code: value,
+        name
       },
       hasZipper,
       hasBinding,
@@ -147,13 +148,14 @@ class SelectColors extends React.PureComponent<Props, {}> {
         {hasBranding && (
           <AccessoryColor
             id={AccessoryColors.Predyed}
+            goToStitching={goToPredyed}
+            isPredyed={true}
             name={formatMessage(messages.predyedColor)}
             stitchingColor={{
               value,
               name
             }}
             stitchingLabel={name}
-            {...{ goToStitching }}
           />
         )}
         {hasBinding && (

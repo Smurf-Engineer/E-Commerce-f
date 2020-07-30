@@ -11,7 +11,7 @@ import {
   ColorTitle,
   SyledDivider
 } from './styledComponents'
-import { StitchingColor, QueryProps, Colors } from '../../../types/common'
+import { StitchingColor, QueryProps, Colors, PredyedColor } from '../../../types/common'
 import messages from './messages'
 import Message from 'antd/lib/message'
 interface Color {
@@ -28,7 +28,10 @@ interface ColorsData extends QueryProps {
 interface Props {
   onSelectColor?: (color: string, name: string, index: number) => void
   onSelectStitchingColor?: (color: StitchingColor) => void
+  onSelectPredyed?: (color: PredyedColor) => void
   formatMessage: (messageDescriptor: any) => string
+  isPredyed: boolean
+  predyedColors: PredyedColor[]
   height?: number
   wide?: boolean
   stitching?: boolean
@@ -40,11 +43,14 @@ interface Props {
 
 const ColorList = ({
   onSelectColor = () => { },
+  onSelectPredyed = () => { },
   onSelectStitchingColor = () => { },
   formatMessage,
   height = 40,
   stitching = false,
   wide,
+  predyedColors,
+  isPredyed = false,
   stitchingColor = { value: '', name: '' },
   colors = [],
   colorsList
@@ -53,11 +59,17 @@ const ColorList = ({
     onSelectColor(color, name, index)
   const setStitchingColor = (color: StitchingColor) => () => {
     // tslint:disable-next-line:curly
-    if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
+    if (color.value !== stitchingColor.value) {
+      if (isPredyed) {
+        onSelectPredyed({ code: color.value, name: color.name })
+      } else {
+        onSelectStitchingColor(color)
+      }
+    }
   }
   let arrayColors: Color[] = colors
 
-  if (!colors.length && colorsList && !colorsList.loading) {
+  if (!colors.length && colorsList && !colorsList.loading && !isPredyed) {
     try {
       arrayColors = JSON.parse(
         get(
@@ -69,6 +81,12 @@ const ColorList = ({
     } catch (e) {
       Message.error(e)
     }
+  } else if (isPredyed) {
+    arrayColors = predyedColors.map(({ code, name }) => ({
+      value: code,
+      name,
+      label: name
+    }))
   }
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []

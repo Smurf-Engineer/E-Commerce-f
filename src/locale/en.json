@@ -135,6 +135,7 @@
   "components.designCenterCustomize.Tab.predyed": "Predyed",
   "components.designCenterCustomize.ColorTab.selectColor": "Select Colors",
   "components.designCenterCustomize.ColorTab.myPalette": "My Palette",
+  "components.designCenterCustomize.ColorTab.predyed": "Predyed",
   "components.designCenterCustomize.ColorTab.color": "Color {name}",
   "components.login.title": "Log In",
   "components.login.rememberMe": "Remember Me",

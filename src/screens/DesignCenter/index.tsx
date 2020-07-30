@@ -114,6 +114,7 @@ import moment from 'moment'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import clone from 'lodash/clone'
+import { BLACK } from '../../theme/colors'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -154,7 +155,7 @@ interface Props extends RouteComponentProps<any> {
   undoChanges: Change[]
   redoChanges: Change[]
   dataPredyedColors: DataPredyedColors
-  predyedIndex: number
+  selectedPredyed: PredyedColor
   swipingView: boolean
   openShareModal: boolean
   openSaveDesign: boolean
@@ -220,6 +221,7 @@ interface Props extends RouteComponentProps<any> {
   designCheckModalOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
+  setPredyedColor: (predyedColor: PredyedColor) => void
   selectVariantAction: (index: number) => void
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
@@ -633,6 +635,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       bindingColor,
       zipperColor,
       bibColor,
+      setPredyedColor,
       setStitchingColorAction,
       setAccessoryColorAction,
       uploadFileAction,
@@ -649,7 +652,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectVariantAction,
       selectedVariant,
       dataVariants,
-      predyedIndex,
+      selectedPredyed,
       dataPredyedColors,
       responsive,
       onReApplyImageElementAction,
@@ -704,7 +707,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       return redirect
     }
     const variants = get(dataVariants, 'getVariants', [])
-    const predyedColors = get(dataPredyedColors, 'predyedColors', [])
+    const predyedArray = get(dataPredyedColors, 'predyedColors', [])
+    const predyedColors = [...predyedArray, { code: BLACK, name: 'BLACK' }]
     const deliveryDaysResponse = get(
       dataDesignLabInfo,
       'designInfo.deliveryDays',
@@ -845,7 +849,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       productConfig.obj = obj
       productConfig.mtl = mtl
     }
-    const selectedPredyed = predyedColors[predyedIndex] || {}
     const loadingView = (
       <LoadingContainer>
         <Spin />
@@ -984,6 +987,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     currentStyle,
                     undoChanges,
                     redoChanges,
+                    setPredyedColor,
                     setStitchingColorAction,
                     stitchingColor,
                     bindingColor,
@@ -1125,6 +1129,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               bibColor,
               canvas,
               designName,
+              selectedPredyed,
               isUserAuthenticated,
               isEditing,
               isMobile,
@@ -1137,6 +1142,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             hasZipper={!!productConfig && !!productConfig.zipper}
             hasBinding={!!productConfig && !!productConfig.binding}
             hasBibBrace={!!productConfig && !!productConfig.bibBrace}
+            hasBranding={!!productConfig && !!productConfig.branding}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
             onDesignName={setDesignNameAction}
