@@ -10,12 +10,15 @@ import {
   GRAY_DARK,
   GRAY_LIGHTEST,
   RED,
-  BLUE_SOFT
+  BLUE_SOFT,
+  GRAY
 } from '../../theme/colors'
 import AntdTabs from 'antd/lib/tabs'
 import AntdButton from 'antd/lib/button'
+import transparentGrid from '../../assets/transparent_grid.png'
 
 interface DivProps {
+  hexColor?: string
   background?: boolean
   active?: boolean
 }
@@ -343,4 +346,12 @@ export const NavTabs = styled(AntdTabs)`
   .ant-tabs-bar {
     margin-bottom: 0;
   }
+`
+
+export const ColorBlock = styled.div`
+  width: 94px;
+  height: 70px;
+  cursor: pointer;
+  border: 1px solid ${GRAY};
+  background: ${({ hexColor }: DivProps) => hexColor ? hexColor : `url(${transparentGrid})`};
 `

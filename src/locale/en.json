@@ -1590,6 +1590,7 @@
   "screens.ProductModels.productNotFound": "Error: Product not found.",
   "screens.ProductModels.saveDesign": "Save",
   "screens.ProductModels.build3D": "Build 3D Model",
+  "screens.ProductModels.preDyedVariants": "Predyed Variants",
   "screens.ProductModels.addModel": "+ Add New 3D Model Variant",
   "screens.ProductModels.defaultModel": "Default 3D Model",
   "screens.ProductModels.modelVariants": "3D Model Variants",

@@ -39,8 +39,9 @@ export const saveProductsMutation = graphql(
     mutation saveProductModels(
       $variants: [InputModelVariant]
       $productId: Int
+      $predyedColors: [InputPredyedColor]
     ) {
-      saveProductModels(variants: $variants, productId: $productId) {
+      saveProductModels(variants: $variants, productId: $productId, predyedColors: $predyedColors) {
         message
       }
     }

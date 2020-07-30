@@ -21,7 +21,10 @@ import {
   ON_TAB_CLICK_ACTION,
   OPEN_PREDYED,
   CHANGE_CODE,
-  CHANGE_COLOR
+  SET_COLORS,
+  CHANGE_COLOR,
+  SELECT_COLOR,
+  EDIT_COLOR
 } from './constants'
 
 import { AnyAction, ModelVariant, PredyedColor } from '../../types/common'
@@ -48,6 +51,23 @@ export const changeColorAction = (color: string): AnyAction => ({
 
 export const changeHexAction = (code: string): AnyAction => ({
   type: CHANGE_CODE,
+  code
+})
+
+export const setColorsAction = (predyedColors: { [id: string]: PredyedColor }): AnyAction => ({
+  type: SET_COLORS,
+  predyedColors
+})
+
+export const selectColorAction = (id: string): AnyAction => ({
+  type: SELECT_COLOR,
+  id
+})
+
+export const editColorAction = (id: string, name: string, code: string): AnyAction => ({
+  type: EDIT_COLOR,
+  id,
+  name,
   code
 })
 

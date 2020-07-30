@@ -22,7 +22,10 @@ import {
   ON_TAB_CLICK_ACTION,
   OPEN_PREDYED,
   CHANGE_COLOR,
-  CHANGE_CODE
+  CHANGE_CODE,
+  SET_COLORS,
+  SELECT_COLOR,
+  EDIT_COLOR
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -32,6 +35,7 @@ export const initialState = fromJS({
   color: '',
   hexColor: '',
   selectedColor: '',
+  editColor: '',
   openSuccess: false,
   tempModel: {},
   selected: '',
@@ -95,8 +99,29 @@ const productModelsReducer: Reducer<any> = (state = initialState, action) => {
       })
     case RESET_REDUCER:
       return initialState
+    case SET_COLORS:
+      return state.merge({
+        predyedColors: action.predyedColors,
+        color: '',
+        hexColor: '',
+        openPredyed: false
+      })
+    case EDIT_COLOR:
+      return state.merge({
+        color: action.name,
+        hexColor: action.code,
+        editColor: action.id,
+        openPredyed: true,
+      })
     case OPEN_PREDYED:
-      return state.set('openPredyed', action.open)
+      return state.merge({
+        openPredyed: action.open,
+        editColor: '',
+        color: '',
+        hexColor: ''
+      })
+    case SELECT_COLOR:
+      return state.set('selectedColor', action.id)
     case CHANGE_COLOR:
       return state.set('color', action.color)
     case CHANGE_CODE:

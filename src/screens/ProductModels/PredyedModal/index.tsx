@@ -24,7 +24,8 @@ interface Props {
   openPredyed: boolean
   hexColor: string
   color: string
-  selectedColor: string
+  editColor: string
+  saveColor: () => void
   changeColorAction: (color: string) => void
   changeHexAction: (name: string) => void
   requestClose: () => void
@@ -50,6 +51,7 @@ export class PredyedModal extends React.Component<Props, {}> {
   render() {
     const {
       openPredyed,
+      saveColor,
       formatMessage,
       requestClose,
       hexColor,
@@ -92,7 +94,7 @@ export class PredyedModal extends React.Component<Props, {}> {
             <CancelButton onClick={requestClose}>
               {formatMessage(messages.cancel)}
             </CancelButton>
-            <SaveButton onClick={() => { }} disabled={!color}>
+            <SaveButton onClick={saveColor} disabled={!color}>
               {formatMessage(messages.saveColor)}
             </SaveButton>
           </SaveSection>

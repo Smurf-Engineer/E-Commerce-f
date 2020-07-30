@@ -130,20 +130,22 @@ class Render3D extends PureComponent {
       data: { loading, error, design = {} },
       actualImage = '',
       colorAccessories,
-      product: newProduct
+      product: newProduct,
+      predyedSelected: newPredyed
     } = nextProps
     const {
       product,
       isProduct,
       data: { design: oldDesign = {} },
       actualImage: oldImage = '',
-      colorAccessories: oldColorAccessories
+      colorAccessories: oldColorAccessories,
+      predyedSelected
     } = this.props
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
     const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories)
     const productChanged =
-      product && newProduct && product.obj !== newProduct.obj
+      (product && newProduct && product.obj !== newProduct.obj) || (predyedSelected !== newPredyed)
     const productToRender = productChanged ? newProduct : product
     if (productChanged && this.renderer) {
       this.removeObject()
@@ -403,7 +405,7 @@ class Render3D extends PureComponent {
     fromImage = false,
     colorAccessories = {}
   ) => {
-    const { stitchingValue, asImage } = this.props
+    const { stitchingValue, asImage, predyedSelected } = this.props
 
     const {
       obj,
@@ -549,7 +551,7 @@ class Render3D extends PureComponent {
             children[objectChildCount].material = frontMaterial
 
             /* Branding */
-            if (!!branding) {
+            if (!!branding && !predyedSelected) {
               const brandingObj = children[meshIndex].clone()
               object.add(brandingObj)
               const brandingIndex = children.length - 1

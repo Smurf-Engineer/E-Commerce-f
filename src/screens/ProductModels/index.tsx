@@ -44,7 +44,8 @@ import {
   AddDesigns,
   ProductInfo,
   TitleModal,
-  NavTabs
+  NavTabs,
+  ColorBlock
 } from './styledComponents'
 import Render3D from '../../components/Render3D'
 import logo from '../../assets/jakroo_logo.svg'
@@ -60,6 +61,7 @@ import Spin from 'antd/lib/spin'
 import { saveProductsMutation, getProductQuery } from './data'
 import Tab from '../../components/DesignCenterCustomize/Tab'
 import { MODELS_TAB, PREDYED_TAB } from './constants'
+import shortid from 'shortid'
 
 const { TabPane } = AntdTabs
 
@@ -82,6 +84,10 @@ interface Props {
   hexColor: string
   openPredyed: boolean
   selectedColor: string
+  editColor: string
+  editColorAction: (id: string, name: string, code: string) => void
+  selectColorAction: (id: string) => void
+  setColorsAction: (predyedColors: { [id: string]: PredyedColor }) => void
   changeColorAction: (color: string) => void
   changeHexAction: (name: string) => void
   openPredyedAction: (open: boolean) => void
@@ -140,16 +146,32 @@ export class ProductModels extends React.Component<Props, {}> {
     const { selectModelAction } = this.props
     selectModelAction(id)
   }
+  saveColor = () => {
+    const { editColor, predyedColors, color, hexColor, setColorsAction } = this.props
+    const id = editColor || shortid.generate()
+    const colorObject = predyedColors[id] || {}
+    predyedColors[id] = { ...colorObject, code: hexColor, name: color }
+    setColorsAction(predyedColors)
+  }
   saveProduct = async () => {
     try {
       const {
         saveProductModels,
         uploadComplete,
         setLoadingAction,
+        predyedColors,
         variants
       } = this.props
       setLoadingAction(true)
       const { id: productId } = queryString.parse(location.search)
+      const arrayPredyed = Object.keys(predyedColors).map((shortId: string) => {
+        const { code, id, name } = predyedColors[shortId]
+        return {
+          code,
+          id,
+          name
+        }
+      })
       const arrayVariants = Object.keys(variants).map((shortId: string) => {
         const {
           name,
@@ -189,7 +211,7 @@ export class ProductModels extends React.Component<Props, {}> {
         }
       })
       const response = await saveProductModels({
-        variables: { variants: arrayVariants, productId }
+        variables: { variants: arrayVariants, predyedColors: arrayPredyed, productId }
       })
       message.success(get(response, 'data.saveProductModels.message', ''))
       uploadComplete()
@@ -227,6 +249,22 @@ export class ProductModels extends React.Component<Props, {}> {
     const { defaultModelIndex, selectModelAction } = this.props
     selectModelAction(defaultModelIndex)
   }
+  handleEditColor = (id: string) => {
+    const { editColorAction, predyedColors } = this.props
+    const { code, name } = predyedColors[id] || {}
+    editColorAction(id, name, code)
+  }
+  removeColor = (id: string) => {
+    const { setColorsAction, predyedColors } = this.props
+    if (id && predyedColors[id]) {
+      delete predyedColors[id]
+      setColorsAction(predyedColors)
+    }
+  }
+  selectColorShow = (id: string) => {
+    const { selectColorAction } = this.props
+    selectColorAction(id)
+  }
   render() {
     const {
       intl,
@@ -244,6 +282,7 @@ export class ProductModels extends React.Component<Props, {}> {
       openPredyed,
       hexColor,
       color,
+      editColor,
       changeColorAction,
       changeHexAction,
       changeDefault,
@@ -257,6 +296,7 @@ export class ProductModels extends React.Component<Props, {}> {
     const { formatMessage } = intl
     const defaultModel = variants[defaultModelIndex]
     const selectedRender = variants[modelRender]
+    const { code: codeSelected, name: nameSelected } = predyedColors[selectedColor] || {}
     let product = {}
     if (selectedRender) {
       const {
@@ -371,37 +411,38 @@ export class ProductModels extends React.Component<Props, {}> {
                 <AddModel onClick={this.handleOpenPredyed}>
                   {formatMessage(messages.addPredyed)}
                 </AddModel>
+                <ModelsContainers>
+                  {!!Object.keys(predyedColors).length &&
+                    <TopMessage>{formatMessage(messages.preDyedVariants)}</TopMessage>
+                  }
+                  {Object.keys(predyedColors).map((id: string, index) => {
+                    const edit = () => this.handleEditColor(id)
+                    const { code, name } = predyedColors[id]
+                    const selectColorShow = () => this.selectColorShow(id)
+                    const remove = () => this.removeColor(id)
+                    return (
+                      <ModelBlock active={selectedColor === id} key={index}>
+                        <ColorBlock
+                          onClick={selectColorShow}
+                          hexColor={code}
+                        />
+                        <Details>
+                          <Name>{name}</Name>
+                          <Name>{code}</Name>
+                          <Buttons>
+                            <EditButton onClick={edit}>
+                              {formatMessage(messages.edit)}
+                            </EditButton>
+                            <DeleteButton onClick={remove}>
+                              {formatMessage(messages.delete)}
+                            </DeleteButton>
+                          </Buttons>
+                        </Details>
+                      </ModelBlock>
+                    )
+                  })}
+                </ModelsContainers>
               </Side>
-              <ModelsContainers>
-                {Object.keys(predyedColors).length &&
-                  <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
-                }
-                {Object.keys(predyedColors).map((id: string, index) => {
-                  const edit = () => this.handleEdit(id)
-                  const { code, name } = predyedColors[id]
-                  const selectModel = () => this.selectModel(id)
-                  const remove = () => this.handleRemoveModel(id)
-                  return (
-                    <ModelBlock active={selectedColor === id} key={index}>
-                      <Thumbnail
-                        onClick={selectModel}
-                        src={code}
-                      />
-                      <Details>
-                        <Name>{name}</Name>
-                        <Buttons>
-                          <EditButton onClick={edit}>
-                            {formatMessage(messages.edit)}
-                          </EditButton>
-                          <DeleteButton onClick={remove}>
-                            {formatMessage(messages.delete)}
-                          </DeleteButton>
-                        </Buttons>
-                      </Details>
-                    </ModelBlock>
-                  )
-                })}
-              </ModelsContainers>
             </TabPane>
           </NavTabs>
           <ModelContainer>
@@ -416,6 +457,7 @@ export class ProductModels extends React.Component<Props, {}> {
                 isProduct={true}
                 textColor="white"
                 asImage={false}
+                predyedSelected={nameSelected && !codeSelected}
                 {...{ product }}
               />
             ) : (
@@ -430,9 +472,10 @@ export class ProductModels extends React.Component<Props, {}> {
             hexColor,
             formatMessage,
             changeColorAction,
-            selectedColor,
+            editColor,
             changeHexAction,
           }}
+          saveColor={this.saveColor}
           requestClose={this.closePredyed}
         />
         <FilesModal
