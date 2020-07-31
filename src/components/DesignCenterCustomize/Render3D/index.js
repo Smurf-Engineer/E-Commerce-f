@@ -232,7 +232,7 @@ class Render3D extends PureComponent {
     }
     if ((selectedVariant !== oldSelected) || (oldShowBranding !== showBranding)) {
       this.clearScene()
-      this.render3DModel(newProduct, showBranding)
+      this.render3DModel(showBranding, newProduct)
     }
     if (openSlaask && proAssistId) {
       initSlaask({
@@ -254,7 +254,7 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { isEditing, design } = this.props
+    const { isEditing, design, showBranding = true } = this.props
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CORNER_SIZE
@@ -322,7 +322,7 @@ class Render3D extends PureComponent {
     this.camera.zoom = isMobile ? INITIAL_ZOOM_MOBILE : INITIAL_ZOOM
     this.camera.updateProjectionMatrix()
 
-    this.render3DModel()
+    this.render3DModel(showBranding)
 
     this.container.appendChild(this.renderer.domElement)
 
@@ -625,7 +625,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  render3DModel = async (newProduct, showBranding = true) => {
+  render3DModel = async (showBranding = true, newProduct) => {
     /* Object and MTL load */
     const {
       onLoadModel,

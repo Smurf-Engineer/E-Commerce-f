@@ -92,6 +92,7 @@ export const initialState = fromJS({
   colors: [],
   stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
   bindingColor: BLACK,
+  predyedChanged: false,
   selectedPredyed: {
     name: 'BLACK',
     code: BLACK_COLOR
@@ -282,6 +283,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         selectedPredyed: newColor,
         designHasChanges: true,
+        predyedChanged: true,
         undoChanges: undoChanges.unshift(lastStep),
         redoChanges: redoChanges.clear()
       })

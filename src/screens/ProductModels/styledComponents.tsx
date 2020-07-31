@@ -16,6 +16,7 @@ import {
 import AntdTabs from 'antd/lib/tabs'
 import AntdButton from 'antd/lib/button'
 import transparentGrid from '../../assets/transparent_grid.png'
+import { ACCESSORY_TRANSPARENT } from '../../constants'
 
 interface DivProps {
   hexColor?: string
@@ -353,5 +354,5 @@ export const ColorBlock = styled.div`
   height: 70px;
   cursor: pointer;
   border: 1px solid ${GRAY};
-  background: ${({ hexColor }: DivProps) => hexColor ? hexColor : `url(${transparentGrid})`};
+  background: ${({ hexColor }: DivProps) => hexColor === ACCESSORY_TRANSPARENT ? `url(${transparentGrid})` : hexColor};
 `

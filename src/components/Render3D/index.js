@@ -33,6 +33,7 @@ import {
 import { modelPositions } from './config'
 import {
   MESH,
+  ACCESSORY_TRANSPARENT,
   BIB_BRACE,
   BINDING,
   ZIPPER,
@@ -131,7 +132,7 @@ class Render3D extends PureComponent {
       actualImage = '',
       colorAccessories,
       product: newProduct,
-      predyedSelected: newPredyed
+      hidePredyed: newPredyed
     } = nextProps
     const {
       product,
@@ -139,13 +140,13 @@ class Render3D extends PureComponent {
       data: { design: oldDesign = {} },
       actualImage: oldImage = '',
       colorAccessories: oldColorAccessories,
-      predyedSelected
+      hidePredyed
     } = this.props
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
     const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories)
     const productChanged =
-      (product && newProduct && product.obj !== newProduct.obj) || (predyedSelected !== newPredyed)
+      (product && newProduct && product.obj !== newProduct.obj) || (hidePredyed !== newPredyed)
     const productToRender = productChanged ? newProduct : product
     if (productChanged && this.renderer) {
       this.removeObject()
@@ -405,7 +406,7 @@ class Render3D extends PureComponent {
     fromImage = false,
     colorAccessories = {}
   ) => {
-    const { stitchingValue, asImage, predyedSelected } = this.props
+    const { stitchingValue, asImage, hidePredyed } = this.props
 
     const {
       obj,
@@ -551,7 +552,7 @@ class Render3D extends PureComponent {
             children[objectChildCount].material = frontMaterial
 
             /* Branding */
-            if (!!branding && !predyedSelected) {
+            if (!!branding && !hidePredyed) {
               const brandingObj = children[meshIndex].clone()
               object.add(brandingObj)
               const brandingIndex = children.length - 1
@@ -757,7 +758,7 @@ class Render3D extends PureComponent {
               object.add(brandingObj)
               const brandingIndex = children.length - 1
               const brandingMaterial = new THREE.MeshPhongMaterial({
-                map: branding,
+                map: design.predyedColor !== ACCESSORY_TRANSPARENT ? branding : null,
                 side: THREE.FrontSide,
                 bumpMap,
                 transparent: true

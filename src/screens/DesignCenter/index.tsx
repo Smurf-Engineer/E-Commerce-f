@@ -219,6 +219,7 @@ interface Props extends RouteComponentProps<any> {
   selectedVariant: number
   tutorialPlaylist: string
   designCheckModalOpen: boolean
+  predyedChanged: boolean
   // Redux Actions
   clearStoreAction: () => void
   setPredyedColor: (predyedColor: PredyedColor) => void
@@ -652,7 +653,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectVariantAction,
       selectedVariant,
       dataVariants,
-      selectedPredyed,
+      predyedChanged,
+      selectedPredyed: storedPredyed,
       dataPredyedColors,
       responsive,
       onReApplyImageElementAction,
@@ -786,6 +788,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     let isEditing = !!dataDesign
     let productConfig = clone(product)
     let currentStyle = style
+    let originPredyed = storedPredyed
     let proDesignModel
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
@@ -793,6 +796,8 @@ export class DesignCenter extends React.Component<Props, {}> {
         shortId: designId,
         colors: designColors = [],
         style: designStyle,
+        predyedName,
+        predyedCode,
         flatlockCode,
         flatlockColor,
         bibBraceColor: bibBraceAccesoryColor,
@@ -808,6 +813,12 @@ export class DesignCenter extends React.Component<Props, {}> {
         canvas: designCanvas,
         outputSvg
       } = designData
+      if (predyedName && predyedCode) {
+        originPredyed = {
+          name: predyedName,
+          code: predyedCode
+        }
+      }
       const designConfig = {
         flatlockCode,
         flatlockColor,
@@ -844,6 +855,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         tabSelected = PreviewTabIndex
       }
     }
+    const selectedPredyed = predyedChanged ? storedPredyed : originPredyed
     if (selectedVariant !== -1) {
       const { obj, mtl } = variants[selectedVariant]
       productConfig.obj = obj

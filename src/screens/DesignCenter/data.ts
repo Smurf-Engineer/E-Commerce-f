@@ -89,6 +89,8 @@ export const getDesignQuery = gql`
       id
       name
       shortId: short_id
+      predyedName: predyed_name
+      predyedCode: predyed_color
       flatlockColor: flatlock
       flatlockCode: flatlock_code
       bindingColor: binding_color
@@ -114,6 +116,7 @@ export const getDesignQuery = gql`
         obj
         mtl
         label
+        branding
         bumpMap: bump_map
         flatlock
         mpn

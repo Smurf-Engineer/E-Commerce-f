@@ -28,6 +28,7 @@ export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'
 export const ACCESSORY_BLACK = 'black'
+export const ACCESSORY_TRANSPARENT = 'transparent'
 
 /* Routes  */
 export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
