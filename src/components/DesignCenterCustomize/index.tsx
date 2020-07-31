@@ -58,7 +58,7 @@ import {
 } from '../../screens/DesignCenter/constants'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
-import { ACCESSORY_TRANSPARENT } from '../../constants'
+import { PREDYED_TRANSPARENT } from '../../constants'
 
 const SVG_FILE = 'image/svg+xml'
 const POSCRIPT_FILE = 'application/postscript'
@@ -465,7 +465,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             openLoginAction={this.handleOnOpenLogin}
-            showBranding={selectedPredyed.code !== ACCESSORY_TRANSPARENT}
+            showBranding={selectedPredyed.code !== PREDYED_TRANSPARENT}
             {...{
               text,
               loggedUserId,

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Divider from 'antd/lib/divider'
 import { WHITE, RED, GRAY } from '../../../theme/colors'
 import transparentGrid from '../../../assets/transparent_grid.png'
-import { ACCESSORY_TRANSPARENT } from '../../../constants'
+import { PREDYED_TRANSPARENT } from '../../../constants'
 
 interface ContainerProps {
   height: number
@@ -34,7 +34,7 @@ interface ColorProps {
 }
 
 export const Color = styled.div`
-  background: ${({ color }: ColorProps) => color === ACCESSORY_TRANSPARENT ?
+  background: ${({ color }: ColorProps) => color === PREDYED_TRANSPARENT ?
     `url(${transparentGrid})` : (color || WHITE)};
   border: 1px solid ${({ selected }: ColorProps) => (selected ? RED : GRAY)};
   cursor: pointer;

@@ -33,7 +33,7 @@ import {
 import { modelPositions } from './config'
 import {
   MESH,
-  ACCESSORY_TRANSPARENT,
+  PREDYED_TRANSPARENT,
   BIB_BRACE,
   BINDING,
   ZIPPER,
@@ -758,7 +758,7 @@ class Render3D extends PureComponent {
               object.add(brandingObj)
               const brandingIndex = children.length - 1
               const brandingMaterial = new THREE.MeshPhongMaterial({
-                map: design.predyedColor !== ACCESSORY_TRANSPARENT ? branding : null,
+                map: design.predyedColor !== PREDYED_TRANSPARENT ? branding : null,
                 side: THREE.FrontSide,
                 bumpMap,
                 transparent: true

@@ -16,7 +16,7 @@ import AntdButton from 'antd/lib/button'
 import AntdModal from 'antd/lib/modal'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
-import { ACCESSORY_TRANSPARENT } from '../../../constants'
+import { PREDYED_TRANSPARENT } from '../../../constants'
 
 interface DivProps {
   hexColor?: string
@@ -178,7 +178,7 @@ export const ColorSelected = styled.div`
   width: 31px;
   height: 31px;
   border: 1px solid ${GRAY};
-  background: ${({ hexColor }: DivProps) => hexColor === ACCESSORY_TRANSPARENT ? `url(${transparentGrid})` : hexColor};
+  background: ${({ hexColor }: DivProps) => hexColor === PREDYED_TRANSPARENT ? `url(${transparentGrid})` : hexColor};
 `
 
 export const maskStyles = {
