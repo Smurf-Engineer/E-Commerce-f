@@ -27,8 +27,7 @@ import {
   CanvasType,
   DesignFiles,
   SaveDesignData,
-  Message,
-  PredyedColor
+  Message
 } from '../../types/common'
 import { NEW_DESIGN_SAVED } from '../../constants'
 import { saveDesignName, saveDesignChanges } from './data'
@@ -42,7 +41,6 @@ type DesignInput = {
   styleId?: number
   canvas?: string
   flatlock?: string
-  predyed_color?: string
   predyed_name?: string
   flatlock_code?: string
   zipper_color?: string
@@ -70,7 +68,7 @@ interface Props {
   saveDesignLoading: boolean
   saveDesignChangesLoading: boolean
   stitchingColor: StitchingColor
-  selectedPredyed: PredyedColor
+  selectedPredyed: string
   hasFlatlock: boolean
   hasZipper: boolean
   hasBinding: boolean
@@ -141,7 +139,7 @@ export class SaveDesign extends React.Component<Props, State> {
       colors,
       design,
       hasBranding,
-      selectedPredyed: { code, name },
+      selectedPredyed,
       formatMessage,
       saveDesign,
       requestClose,
@@ -198,8 +196,7 @@ export class SaveDesign extends React.Component<Props, State> {
         designObj.bib_brace_color = bibColor
       }
       if (hasBranding) {
-        designObj.predyed_color = code
-        designObj.predyed_name = name
+        designObj.predyed_name = selectedPredyed
       }
 
       setSaveDesignLoading(true)
@@ -245,7 +242,7 @@ export class SaveDesign extends React.Component<Props, State> {
       requestClose,
       design,
       hasBranding,
-      selectedPredyed: { code, name },
+      selectedPredyed,
       setSaveDesignChangesLoading,
       hasFlatlock,
       hasZipper,
@@ -283,8 +280,7 @@ export class SaveDesign extends React.Component<Props, State> {
         designObj.bib_brace_color = bibColor
       }
       if (hasBranding) {
-        designObj.predyed_color = code
-        designObj.predyed_name = name
+        designObj.predyed_name = selectedPredyed
       }
 
       setSaveDesignChangesLoading(true)
@@ -295,6 +291,7 @@ export class SaveDesign extends React.Component<Props, State> {
             svg,
             designName,
             canvas,
+            predyedName,
             bibBraceColor,
             bindingColor: updatedBindingColor,
             flatlockCode,
@@ -312,6 +309,7 @@ export class SaveDesign extends React.Component<Props, State> {
             data.designData.flatlockCode = flatlockCode
             data.designData.flatlockColor = flatlockColor
             data.designData.zipperColor = updatedZipperColor
+            data.designData.predyedName = predyedName
             store.writeQuery({
               query: getDesignQuery,
               variables: { designId: savedDesignId },

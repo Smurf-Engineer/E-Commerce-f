@@ -22,8 +22,7 @@ import {
   AccesoryColor,
   Product,
   Message,
-  Index,
-  PredyedColor
+  Index
 } from '../../../types/common'
 
 interface Props {
@@ -35,9 +34,8 @@ interface Props {
   bibColor?: AccesoryColor
   product?: Product
   colorsList: any
-  predyedColors: PredyedColor[]
-  selectedPredyed: PredyedColor
-  onSelectPredyed: (predyedColor: PredyedColor) => void
+  selectedPredyed: string
+  onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -61,11 +59,7 @@ class MobileSelectColors extends React.PureComponent<Props> {
       colorBlock = -1,
       onSelectColor,
       stitchingColor,
-      predyedColors,
-      selectedPredyed: {
-        code: value,
-        name
-      },
+      selectedPredyed,
       product,
       onSelectStitchingColor,
       onSelectPredyed,
@@ -123,17 +117,10 @@ class MobileSelectColors extends React.PureComponent<Props> {
         {hasBranding && (
           <Row>
             <Label>{formatMessage({ ...messages.predyed })}</Label>
-            <MobileColorList
-              stitching={true}
-              isPredyed={true}
-              stitchingColor={{
-                value,
-                name
-              }}
-              {...{
-                onSelectPredyed,
-                predyedColors
-              }}
+            <MobileAccessoryColor
+              id={AccessoryColors.Predyed}
+              colorSelected={selectedPredyed}
+              onAccessoryColorSelected={onSelectPredyed}
             />
           </Row>
         )}

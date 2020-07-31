@@ -33,8 +33,7 @@ import {
   SimpleFont,
   UserInfo,
   ModelVariant,
-  PositionSize,
-  PredyedColor
+  PositionSize
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -127,15 +126,14 @@ interface Props {
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
   userCode: string
-  selectedPredyed: PredyedColor
-  predyedColors: PredyedColor[]
+  selectedPredyed: string
   // Redux actions
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
-  setPredyedColor: (predyedColor: PredyedColor) => void
+  setPredyedColor: (predyedColor: string) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
@@ -248,7 +246,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       currentStyle,
       videos,
       selectedPredyed,
-      predyedColors,
       loadingModel,
       onLoadModel,
       onUndoAction,
@@ -366,7 +363,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectColorBlock,
               onHoverColorBlock,
               videos,
-              predyedColors,
               selectedPredyed,
               setVideos,
               onSelectColor,
@@ -465,7 +461,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             openLoginAction={this.handleOnOpenLogin}
-            showBranding={selectedPredyed.code !== PREDYED_TRANSPARENT}
+            showBranding={selectedPredyed !== PREDYED_TRANSPARENT}
             {...{
               text,
               loggedUserId,
@@ -551,7 +547,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               styleColors,
               stitchingColor,
               selectedPredyed,
-              predyedColors,
               bindingColor,
               zipperColor,
               bibColor,
