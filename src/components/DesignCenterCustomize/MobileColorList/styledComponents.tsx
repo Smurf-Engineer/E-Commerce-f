@@ -3,6 +3,8 @@
  */
 import styled from 'styled-components'
 import { WHITE, RED, GRAY } from '../../../theme/colors'
+import { ACCESSORY_TRANSPARENT } from '../../../constants'
+import transparentGrid from '../../../assets/transparent_grid.png'
 
 export const Container = styled.div`
   overflow: auto;
@@ -23,10 +25,11 @@ interface ColorSliderProps {
   totalWidth: number
 }
 export const Color = styled.div`
-  background-color: ${({ color }: ColorProps) => color};
+background: ${({ color }: ColorProps) => color === ACCESSORY_TRANSPARENT ?
+    `url(${transparentGrid})` : (color || WHITE)};
   border: 1px solid
     ${({ color }: ColorProps) =>
-      color && color.toUpperCase() !== WHITE ? 'transparent' : GRAY};
+    color && color.toUpperCase() !== WHITE ? 'transparent' : GRAY};
   cursor: pointer;
   width: 32px;
   height: 32px;

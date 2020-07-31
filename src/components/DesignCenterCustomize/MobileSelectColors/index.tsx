@@ -22,7 +22,8 @@ import {
   AccesoryColor,
   Product,
   Message,
-  Index
+  Index,
+  PredyedColor
 } from '../../../types/common'
 
 interface Props {
@@ -34,6 +35,9 @@ interface Props {
   bibColor?: AccesoryColor
   product?: Product
   colorsList: any
+  predyedColors: PredyedColor[]
+  selectedPredyed: PredyedColor
+  onSelectPredyed: (predyedColor: PredyedColor) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -57,8 +61,14 @@ class MobileSelectColors extends React.PureComponent<Props> {
       colorBlock = -1,
       onSelectColor,
       stitchingColor,
+      predyedColors,
+      selectedPredyed: {
+        code: value,
+        name
+      },
       product,
       onSelectStitchingColor,
+      onSelectPredyed,
       bibColor,
       onAccessoryColorSelected,
       bindingColor,
@@ -69,6 +79,7 @@ class MobileSelectColors extends React.PureComponent<Props> {
     const hasZipper = !!product && !!product.zipper
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
+    const hasBranding = !!product && !!product.branding
     const colorButtons = colors.map((color, index) => {
       return (
         <TabPane
@@ -106,6 +117,23 @@ class MobileSelectColors extends React.PureComponent<Props> {
             <MobileColorList
               {...{ stitchingColor, onSelectStitchingColor, colorsList }}
               stitching={true}
+            />
+          </Row>
+        )}
+        {hasBranding && (
+          <Row>
+            <Label>{formatMessage({ ...messages.predyed })}</Label>
+            <MobileColorList
+              stitching={true}
+              isPredyed={true}
+              stitchingColor={{
+                value,
+                name
+              }}
+              {...{
+                onSelectPredyed,
+                predyedColors
+              }}
             />
           </Row>
         )}

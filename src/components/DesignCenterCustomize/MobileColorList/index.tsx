@@ -8,16 +8,19 @@ import findIndex from 'lodash/findIndex'
 import Message from 'antd/lib/message'
 
 import { Container, Color, Col, ColorSlider, Border } from './styledComponents'
-import { StitchingColor } from '../../../types/common'
+import { StitchingColor, PredyedColor } from '../../../types/common'
 
 interface Color {
   value: string
   name: string
 }
 interface Props {
+  onSelectPredyed?: (color: PredyedColor) => void
   onSelectColor?: (color: string, name: string, index: number) => void
   onSelectStitchingColor?: (color: StitchingColor) => void
   stitching?: boolean
+  isPredyed: boolean
+  predyedColors: PredyedColor[]
   selectedColor?: string
   stitchingColor?: StitchingColor
   disableTooltip?: boolean
@@ -38,19 +41,27 @@ class MobileColorList extends React.PureComponent<Props> {
   }
 
   scrollColorList(selectedColor: string) {
-    const { stitching, colorsList } = this.props
+    const { stitching, colorsList, isPredyed, predyedColors } = this.props
     let arrayColors: any = !stitching
 
-    try {
-      arrayColors = JSON.parse(
-        get(
-          colorsList,
-          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
-          []
+    if (isPredyed) {
+      arrayColors = predyedColors.map(({ code, name }) => ({
+        value: code,
+        name,
+        label: name
+      }))
+    } else {
+      try {
+        arrayColors = JSON.parse(
+          get(
+            colorsList,
+            !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+            []
+          )
         )
-      )
-    } catch (e) {
-      Message.error(e)
+      } catch (e) {
+        Message.error(e)
+      }
     }
 
     const index = findIndex(arrayColors, ['value', selectedColor])
@@ -69,8 +80,11 @@ class MobileColorList extends React.PureComponent<Props> {
 
   render() {
     const {
-      onSelectColor = () => {},
-      onSelectStitchingColor = () => {},
+      predyedColors,
+      isPredyed = false,
+      onSelectColor = () => { },
+      onSelectPredyed = () => { },
+      onSelectStitchingColor = () => { },
       stitching = false,
       stitchingColor = { value: '', name: '' },
       selectedColor,
@@ -80,19 +94,33 @@ class MobileColorList extends React.PureComponent<Props> {
       onSelectColor(color, name, index)
     const setStitchingColor = (color: StitchingColor) => () => {
       // tslint:disable-next-line:curly
-      if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
+      if (color.value !== stitchingColor.value) {
+        if (isPredyed) {
+          onSelectPredyed({ code: color.value, name: color.name })
+        } else {
+          onSelectStitchingColor(color)
+        }
+      }
     }
     let arrayColors: any
-    try {
-      arrayColors = JSON.parse(
-        get(
-          colorsList,
-          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
-          []
+    if (isPredyed) {
+      arrayColors = predyedColors.map(({ code, name }) => ({
+        value: code,
+        name,
+        label: name
+      }))
+    } else {
+      try {
+        arrayColors = JSON.parse(
+          get(
+            colorsList,
+            !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+            []
+          )
         )
-      )
-    } catch (e) {
-      Message.error(e)
+      } catch (e) {
+        Message.error(e)
+      }
     }
 
     const colorList = arrayColors.map(

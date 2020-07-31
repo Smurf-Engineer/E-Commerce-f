@@ -541,6 +541,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         {isMobile && !loadingData && showRender3d && !loadingModel && (
           <MobileSelectColors
             onSelectStitchingColor={setStitchingColorAction}
+            onSelectPredyed={setPredyedColor}
             {...{
               formatMessage,
               onSelectColorBlock,
@@ -549,6 +550,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               colors,
               styleColors,
               stitchingColor,
+              selectedPredyed,
+              predyedColors,
               bindingColor,
               zipperColor,
               bibColor,
