@@ -15,6 +15,9 @@ export const getProductInternalsInfoQuery = gql`
         name
       }
       products
+      predyedColors {
+        name
+      }
       genders {
         gender: product_internals_gender
       }
@@ -47,6 +50,7 @@ export const updateProductInternal = graphql(
         pocketZipper: pocket_zipper
         frontZipper: front_zipper
         binding
+        predyedColor: predyed
         bibBrace: bib_brace
         collection
         model: yotpo_id
@@ -72,6 +76,7 @@ export const addProductInternal = graphql(
         pocketZipper: pocket_zipper
         frontZipper: front_zipper
         binding
+        predyedColor: predyed
         bibBrace: bib_brace
         collection
         model: yotpo_id

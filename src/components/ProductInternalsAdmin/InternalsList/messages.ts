@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'components.InternalsList.collection',
     defaultMessage: 'Collection'
   },
+  predyed: {
+    id: 'components.InternalsList.predyed',
+    defaultMessage: 'Predyed'
+  },
   emptyMessage: {
     id: 'components.InternalsList.emptyMessage',
     defaultMessage: 'No product internals yet'

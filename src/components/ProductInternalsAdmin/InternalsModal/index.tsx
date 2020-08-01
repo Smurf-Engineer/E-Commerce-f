@@ -28,7 +28,8 @@ import {
   BasicColor,
   ProductColors,
   CollectionType,
-  Message
+  Message,
+  PredyedColor
 } from '../../../types/common'
 
 interface Props {
@@ -43,6 +44,7 @@ interface Props {
   size: string
   fitStyle: string
   color: string
+  predyedColor: string
   pocketZipper: string
   frontZipper: string
   binding: string
@@ -79,6 +81,7 @@ const InternalsModal = ({
   pocketZipper,
   frontZipper,
   binding,
+  predyedColor,
   bibBrace,
   collection,
   deleteProduct,
@@ -104,6 +107,11 @@ const InternalsModal = ({
   const fitStyles = get<ProductInternalsInfo, 'fitStyles', FitStyle[]>(
     productInternalsInfo,
     'fitStyles',
+    []
+  )
+  const predyedColors = get<ProductInternalsInfo, 'predyedColors', PredyedColor[]>(
+    productInternalsInfo,
+    'predyedColors',
     []
   )
   const basicColors = get<ProductInternalsInfo, 'basicColors', BasicColor[]>(
@@ -283,6 +291,21 @@ const InternalsModal = ({
               defaultValue={collection}
             >
               {collections.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
+                </Option>
+              ))}
+            </StyledSelect>
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <Label>{formatMessage(messages.predyed)}</Label>
+            <StyledSelect
+              onSelect={handleOnSelect('predyedColor')}
+              defaultValue={predyedColor}
+            >
+              {predyedColors.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
                 </Option>
