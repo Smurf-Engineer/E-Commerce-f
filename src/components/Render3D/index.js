@@ -328,7 +328,7 @@ class Render3D extends PureComponent {
       textColor
     } = this.props
     const { loading, error, design } = data
-    const { code, name, product, shared = true } = design || {}
+    const { code, name, product, shared } = design || {}
     const { name: productName } = product || {}
 
     if ((error && !isProduct) || (!isAdmin && (fromShare && (design && !shared)))) {
