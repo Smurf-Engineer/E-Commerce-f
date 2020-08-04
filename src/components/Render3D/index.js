@@ -332,8 +332,6 @@ class Render3D extends PureComponent {
     const { name: productName } = product || {}
 
     if ((error && !isProduct) || (!isAdmin && (fromShare && (design && !shared)))) {
-      console.log('js')
-      console.log(error, isProduct)
       return (
         <ContainerError>
           <Title>
