@@ -31,6 +31,7 @@ const modalData = {
   binding: null,
   bibBrace: null,
   collection: null,
+  predyedColor: null,
   loading: false,
   downloading: false,
   model: null

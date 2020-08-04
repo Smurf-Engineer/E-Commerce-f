@@ -20,6 +20,7 @@ interface Props {
   pocketZipper?: string
   binding?: string
   bibBrace?: string
+  predyedColor?: string
   collection: string
   model?: string
   canEdit: boolean
@@ -38,6 +39,7 @@ const ItemOrder = ({
   pocketZipper,
   canEdit,
   binding,
+  predyedColor,
   bibBrace,
   collection,
   onInternalClick,
@@ -55,6 +57,7 @@ const ItemOrder = ({
       frontZipper,
       pocketZipper,
       binding,
+      predyedColor,
       bibBrace,
       collection,
       model
@@ -76,6 +79,7 @@ const ItemOrder = ({
       <Cell>{binding}</Cell>
       <Cell>{bibBrace}</Cell>
       <Cell>{collection}</Cell>
+      <Cell>{predyedColor}</Cell>
       {canEdit && (
         <Cell>
           <Button onClick={handleOnClick}>
