@@ -20,7 +20,7 @@ import {
 import List from './PayList'
 import messages from './messages'
 import { UserPermissions, SelectedPays } from '../../types/common'
-import { AFFILIATES, ADMIN_ROUTE, MAKE_PAYOUTS } from '../AdminLayout/constants'
+import { AFFILIATES, ADMIN_ROUTE, MAKE_PAYOUTS, IGNORE_STATUS_PAYOUTS } from '../AdminLayout/constants'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import moment, { Moment } from 'moment'
 import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
@@ -130,6 +130,8 @@ class Affiliates extends React.Component<Props, {}> {
     const canEdit = access.edit
     const makePayouts = permissions[MAKE_PAYOUTS] || {}
     const isAccountant = makePayouts.view && makePayouts.edit
+    const ignoreStatus = permissions[IGNORE_STATUS_PAYOUTS] || {}
+    const overrideStatus = ignoreStatus.edit
     const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
     const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
     const rangeValue = [start, end]
@@ -180,6 +182,7 @@ class Affiliates extends React.Component<Props, {}> {
               setSelected,
               selected,
               currentPage,
+              overrideStatus,
               searchText,
               history,
               status,

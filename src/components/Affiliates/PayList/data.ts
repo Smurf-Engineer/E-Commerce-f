@@ -35,6 +35,11 @@ export const getAffiliatesPayments = gql`
         amount
         receipt
         currency
+        netsuite: netsuit_order {
+          orderStatus {
+            orderStatus
+          }
+        }
         orderAmount: order_amount
         orderCurrency: order_currency
         totalOrigin: total_origin

@@ -23,6 +23,7 @@ export const EDIT_CONTENT = 'editContent'
 export const HOMEPAGE = 'homepage'
 export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
+export const PAYDAY = 'payday'
 export const USER_LIST = 'usersList'
 export const SET_ADMIN = 'setAdmin'
 export const ROLE_MANAGEMENT = 'roleManagement'
@@ -30,6 +31,7 @@ export const SALES_REP = 'salesRep'
 export const AFFILIATES_PAYOUTS = 'affiliatesPayouts'
 export const AFFILIATES = 'affiliates'
 export const MAKE_PAYOUTS = 'makePayouts'
+export const IGNORE_STATUS_PAYOUTS = 'ignoreStatusPayouts'
 export const TEAM_STORES = 'teamStores'
 export const LOGOUT_MENU = 'logout'
 export const EDIT_NAVIGATION = 'editNavigation'
@@ -54,7 +56,11 @@ export const options = [
   },
   {
     title: USERS,
-    options: [USER_LIST, ROLE_MANAGEMENT, SALES_REP, AFFILIATES_PAYOUTS, AFFILIATES]
+    options: [USER_LIST, ROLE_MANAGEMENT, SALES_REP]
+  },
+  {
+    title: PAYDAY,
+    options: [AFFILIATES_PAYOUTS, AFFILIATES]
   },
   {
     title: TEAM_STORES,

@@ -52,7 +52,7 @@ export interface Filter {
   image?: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -233,6 +233,7 @@ export type AffiliatePayment = {
   customerId?: string
   currency?: String
   totalOrigin: number
+  netsuite?: NetsuiteObject
   orderCurrency?: String
   orderStatus?: string
   customerName?: string
