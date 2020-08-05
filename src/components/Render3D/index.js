@@ -324,14 +324,14 @@ class Render3D extends PureComponent {
       isProduct,
       isAdmin,
       fromShare,
-      detailed,
       data,
       textColor
     } = this.props
     const { loading, error, design } = data
     const { code, name, product, shared } = design || {}
     const { name: productName } = product || {}
-    if ((error && !isProduct) || (fromShare && !shared)) {
+
+    if ((error && !isProduct) || (!isAdmin && (fromShare && (design && !shared)))) {
       return (
         <ContainerError>
           <Title>
@@ -351,7 +351,7 @@ class Render3D extends PureComponent {
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
         )}
-        {detailed && window.location === window.parent.location && (
+        {isAdmin && window.location === window.parent.location && (
           <Details>
             <DetailHeader>
               <Logo src={JakrooLogoWhite} />
