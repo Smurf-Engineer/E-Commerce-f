@@ -35,7 +35,7 @@ export const getAffiliatesPayments = gql`
         amount
         receipt
         currency
-        netsuite: netsuit_order {
+        netsuite: netsuite_order {
           orderStatus {
             orderStatus
           }
@@ -46,7 +46,7 @@ export const getAffiliatesPayments = gql`
         orderStatus: order_status
         customerId: customer_id
         customerName: customer_name
-        orderId: order_id
+        orderId: order_short_id
       }
     }
   }
