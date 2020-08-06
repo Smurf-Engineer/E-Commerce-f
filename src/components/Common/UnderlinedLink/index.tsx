@@ -18,10 +18,10 @@ class UnderlinedLink extends React.Component<Props, {}> {
     const { children, url } = this.props
 
     const renderComponent = url ? (
-      <StyledA href={url}>{children}</StyledA>
+      <StyledA target="_blank" href={url}>{children}</StyledA>
     ) : (
-      <StyledSpan onClick={this.handleClick}>{children}</StyledSpan>
-    )
+        <StyledSpan onClick={this.handleClick}>{children}</StyledSpan>
+      )
 
     return renderComponent
   }
