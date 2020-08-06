@@ -58,7 +58,7 @@ import {
   TEAM_STORES_LIMIT,
   FILTER_OPTIONS,
   DATE_FORMAT,
-  ACCOUNT_MANAGER_COLUMN
+  CUTOFF_COLUMN
 } from './constants'
 import { TEAM_STORES, ADMIN_ROUTE } from '../AdminLayout/constants'
 
@@ -214,7 +214,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
   onSaveFilters = () => {
     const { setFiltersAction } = this.props
     const { filter, filterText, startDate, endDate } = this.state
-    setFiltersAction(filter, filterText, startDate, endDate)
+    setFiltersAction(filter, filter !== CUTOFF_COLUMN ? filterText : '', startDate, endDate)
   }
 
   render() {
@@ -326,7 +326,7 @@ class TeamStoresAdmin extends React.Component<Props, StateProps> {
                   </StyledSelect>
                   <StyledInput
                     value={stateFilterText}
-                    disabled={stateFilter !== ACCOUNT_MANAGER_COLUMN}
+                    disabled={stateFilter === CUTOFF_COLUMN}
                     onChange={this.onChangeFilterText}
                   />
                   <StyledDatePicker
