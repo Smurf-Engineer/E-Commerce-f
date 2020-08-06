@@ -155,6 +155,7 @@ export interface Product {
   shortDescription: string
   genderId: number
   productTotal?: number
+  onlyProDesign?: boolean
   unitPrice?: number
   sizeRange: ItemDetailType[]
   obj?: string

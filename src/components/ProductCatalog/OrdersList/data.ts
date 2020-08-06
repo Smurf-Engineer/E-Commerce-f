@@ -21,6 +21,7 @@ export const getProductsQuery = gql`
         mtl
         active
         isCustom: design_center
+        onlyProDesign: only_pro_design
         mpn
         images: original_pictures {
           front: front_image
@@ -40,6 +41,15 @@ export const changeActiveProduct = gql`
     productResult: toggleActive(id: $id) {
       id
       active
+    }
+  }
+`
+
+export const changeOnlyPro = gql`
+  mutation changeOnlyPro($id: Int!) {
+    productResult: changeOnlyPro(id: $id) {
+      id
+      onlyProDesign: only_pro_design
     }
   }
 `
