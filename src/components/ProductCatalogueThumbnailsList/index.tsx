@@ -114,7 +114,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           },
           index
         ) => {
-          const addToCartButton = product.active ? (
+          const addToCartButton = product.active || product.onlyProDesign ? (
             <AddToCartButton
               label={formatMessage(messages.addToCart)}
               renderForThumbnail={true}
@@ -170,11 +170,13 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                             )}
                           </ActionButton>
                         </ButtonContainer>
-                        {product.active && <ButtonContainer maxMargin={true}>
-                          <ActionButton onClick={this.openAddStore(shortId)}>
-                            {formatMessage(messages.addToStore)}
-                          </ActionButton>
-                        </ButtonContainer>}
+                        {(product.active || product.onlyProDesign) &&
+                          <ButtonContainer maxMargin={true}>
+                            <ActionButton onClick={this.openAddStore(shortId)}>
+                              {formatMessage(messages.addToStore)}
+                            </ActionButton>
+                          </ButtonContainer>
+                        }
                       </div>
                     ) : (
                         <>

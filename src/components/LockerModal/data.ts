@@ -32,6 +32,7 @@ export const desginsQuery = gql`
           yotpoId: yotpo_id
           type: name
           weight
+          onlyProDesign: only_pro_design
           description: short_description
           priceRange {
             quantity

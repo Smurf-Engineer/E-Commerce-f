@@ -113,7 +113,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
               image,
               createdAt,
               shared,
-              product: { id: productId, active, description, type },
+              product: { id: productId, active, onlyProDesign, description, type },
               product
             }: DesignType,
             index
@@ -121,7 +121,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
               <ProductThumbnail
                 key={id}
                 checked={selectedItems[id] || tableItems[id]}
-                disabled={tableItems[id] || !active || !shared}
+                disabled={tableItems[id] || (!active && !onlyProDesign) || !shared}
                 id={index}
                 product={product}
                 onSelectItem={this.handleOnItemSelect}
