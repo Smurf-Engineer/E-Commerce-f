@@ -14,7 +14,7 @@ import { Product, sorts } from '../../../types/common'
 import jakrooLogo from '../../../assets/Jackroologo.svg'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getProductsQuery, changeActiveProduct } from './data'
+import { getProductsQuery, changeActiveProduct, changeOnlyPro } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Props {
@@ -29,19 +29,21 @@ interface Props {
   customLimit?: number
   searchText?: string
   canEdit: boolean
-  updateActiveProduct: (variables: {}) => Promise<any>
+  updateActiveProduct: (variables: {}) => Promise<Product>
+  updateOnlyPro: (variables: {}) => Promise<Product>
   onSortClick: (label: string, sort: sorts) => void
   onProductClick: (id: number) => void
   onChangePage: (page: number) => void
 }
 
-const OrdersList = ({
+const ProductList = ({
   formatMessage,
   currentPage,
   data: { productsQuery },
   onProductClick,
   onChangePage,
   canEdit,
+  updateOnlyPro,
   updateActiveProduct,
   withPagination = true,
   withoutPadding = false
@@ -77,6 +79,10 @@ const OrdersList = ({
               label={formatMessage(messages.onStore)}
               justifyContent="center"
             />
+            <HeaderTable
+              label={formatMessage(messages.proDesign)}
+              justifyContent="center"
+            />
           </Row>
         )
       }}
@@ -84,7 +90,7 @@ const OrdersList = ({
   )
   const orderItems = orders.map(
     (
-      { id, images, active, name, mpn, code, isCustom, obj, mtl }: Product,
+      { id, images, active, name, mpn, code, isCustom, obj, mtl, onlyProDesign }: Product,
       index: number
     ) => {
       const image =
@@ -105,6 +111,8 @@ const OrdersList = ({
             name,
             mpn,
             code,
+            updateOnlyPro,
+            onlyProDesign,
             isCustom,
             onProductClick,
             image,
@@ -143,8 +151,9 @@ interface OwnProps {
 
 const PRODUCTS_LIMIT = 12
 
-const OrdersListEnhance = compose(
+const ProductListEnhance = compose(
   graphql(changeActiveProduct, { name: 'updateActiveProduct' }),
+  graphql(changeOnlyPro, { name: 'updateOnlyPro' }),
   graphql(getProductsQuery, {
     options: ({ currentPage, customLimit, searchText }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : PRODUCTS_LIMIT
@@ -161,6 +170,6 @@ const OrdersListEnhance = compose(
   }),
   withError,
   withLoading
-)(OrdersList)
+)(ProductList)
 
-export default OrdersListEnhance
+export default ProductListEnhance

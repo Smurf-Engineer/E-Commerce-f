@@ -69,6 +69,7 @@ export const getSingleTeamStore = gql`
             name
             active
             type: name
+            onlyProDesign: only_pro_design
             description: short_description
             shortDescription: short_description
             collections

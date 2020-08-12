@@ -40,5 +40,9 @@ export default defineMessages({
   emptyMessage: {
     id: 'components.ProductList.emptyMessage',
     defaultMessage: 'No orders yet'
+  },
+  proDesign: {
+    id: 'components.ProductList.proDesign',
+    defaultMessage: 'Only Pro Design'
   }
 })

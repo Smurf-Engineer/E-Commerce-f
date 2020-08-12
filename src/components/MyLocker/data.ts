@@ -26,6 +26,7 @@ export const desginsQuery = gql`
           name
           active
           type: name
+          onlyProDesign: only_pro_design
           description: short_description
           shortDescription: short_description
           collections

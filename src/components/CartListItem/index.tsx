@@ -245,16 +245,16 @@ export class CartListItem extends React.Component<Props, {}> {
       unitPrice,
       currentCurrency,
       currencySymbol,
-      handleAddItemDetail = () => {},
-      handledeleteItemDetail = () => {},
-      setLabelItemDetail = () => {},
-      setDetailQuantity = () => {},
-      setDetailFit = () => {},
-      setDetailGender = () => {},
-      setDetailColor = () => {},
-      setDetailSize = () => {},
-      removeItem = () => {},
-      openFitInfoAction = () => {},
+      handleAddItemDetail = () => { },
+      handledeleteItemDetail = () => { },
+      setLabelItemDetail = () => { },
+      setDetailQuantity = () => { },
+      setDetailFit = () => { },
+      setDetailGender = () => { },
+      setDetailColor = () => { },
+      setDetailSize = () => { },
+      removeItem = () => { },
+      openFitInfoAction = () => { },
       openFitInfo,
       highlightFields
     } = this.props
@@ -282,6 +282,7 @@ export class CartListItem extends React.Component<Props, {}> {
     )
     const mpnCode = get(cartItem, 'product.mpn', '')
     const active = get(cartItem, 'product.active', false)
+    const onlyProDesign = get(cartItem, 'product.onlyProDesign', false)
     const isTeamStore = get(cartItem, 'teamStoreId', '')
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
@@ -411,7 +412,7 @@ export class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  {(canReorder && active) && renderAddToCartButton}
+                  {(canReorder && (active || onlyProDesign)) && renderAddToCartButton}
                 </ItemDetails>
               </Container>
             )
@@ -429,7 +430,7 @@ export class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
-                  {(canReorder && active) && renderAddToCartButton}
+                  {(canReorder && (active || onlyProDesign)) && renderAddToCartButton}
                 </div>
               </Container>
             )
