@@ -238,7 +238,8 @@ const teamStoresAdminReducer: Reducer<any> = (state = initialState, action) => {
         filter,
         filterText,
         startDateFilter: startDate,
-        endDateFilter: endDate
+        endDateFilter: endDate,
+        currentPage: 1
       })
     }
     default:

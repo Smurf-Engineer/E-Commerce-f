@@ -37,12 +37,14 @@ export const SET_FILTERS = `${namespace}/SET_FILTERS`
 
 export const CHF_CURRENCY = 'CHF'
 
-export const ACCOUNT_MANAGER_COLUMN = 'users.account_manager'
+export const ACCOUNT_MANAGER_COLUMN = 'managers'
 export const CUTOFF_COLUMN = 'cutoff_date'
+export const OWNER_COLUMN = 'users'
 
 export const FILTER_OPTIONS = [
   { name: 'select', column: null },
   { name: 'accountManager', column: ACCOUNT_MANAGER_COLUMN },
-  { name: 'cutoffDate', column: CUTOFF_COLUMN }
+  { name: 'cutoffDate', column: CUTOFF_COLUMN },
+  { name: 'ownerName', column: OWNER_COLUMN }
 ]
 export const DATE_FORMAT = 'YYYY-MM-DD'
