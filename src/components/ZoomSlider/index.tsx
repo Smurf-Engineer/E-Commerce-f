@@ -4,54 +4,37 @@
 import * as React from 'react'
 import Slider from 'react-rangeslider'
 import { Container, Button } from './styledComponents'
-import { INITIAL_ZOOM } from '../DesignCenterCustomize/Render3D/config'
 
 const MIN_ZOOM = 50
 const MAX_ZOOM = 400
 const STEP = 2
 
 interface Props {
+  value: number
   onChangeZoom: (value: number) => void
 }
 
-interface State {
-  value: number
-}
+class ZoomSlider extends React.PureComponent<Props, {}> {
 
-class ZoomSlider extends React.PureComponent<Props, State> {
-  state = {
-    value: INITIAL_ZOOM * 100
-  }
-
-  handleOnChangeValue = (value: number) =>
-    this.setState({ value }, () => this.props.onChangeZoom(value))
+  handleOnChangeValue = (value: number) => this.props.onChangeZoom(value)
 
   handleZoomIn = () => {
-    const { value } = this.state
-    const { onChangeZoom } = this.props
+    const { onChangeZoom, value } = this.props
 
     if (value < MAX_ZOOM) {
-      this.setState(
-        ({ value: prevValue }) => ({ value: prevValue + STEP }),
-        () => onChangeZoom(this.state.value)
-      )
+      onChangeZoom(value + STEP)
     }
   }
 
   handleZoomOut = () => {
-    const { value } = this.state
-    const { onChangeZoom } = this.props
-
+    const { onChangeZoom, value } = this.props
     if (value > MIN_ZOOM) {
-      this.setState(
-        ({ value: prevValue }) => ({ value: prevValue - STEP }),
-        () => onChangeZoom(this.state.value)
-      )
+      onChangeZoom(value - STEP)
     }
   }
 
   render() {
-    const { value } = this.state
+    const { value } = this.props
     return (
       <Container>
         <Button onClick={this.handleZoomIn}>+</Button>
