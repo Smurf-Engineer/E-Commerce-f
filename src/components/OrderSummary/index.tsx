@@ -171,7 +171,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           </OrderItem>
           <OrderItem hide={!taxVat}>
             <FormattedMessage {...messages.taxesVat} />
-            <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>
+            {taxVat && <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>}
           </OrderItem>
         </CalculationsWrapper>
         {amountsDivider && <Divider />}
@@ -206,8 +206,8 @@ export class OrderSummary extends React.Component<Props, {}> {
   onApplyCouponCode = async (code: string) => {
     const {
       applyPromoCode,
-      setCouponCodeAction = () => {},
-      deleteCouponCodeAction = () => {},
+      setCouponCodeAction = () => { },
+      deleteCouponCodeAction = () => { },
       formatMessage
     } = this.props
 
@@ -235,7 +235,7 @@ export class OrderSummary extends React.Component<Props, {}> {
   }
 
   deleteCouponCode = () => {
-    const { deleteCouponCodeAction = () => {} } = this.props
+    const { deleteCouponCodeAction = () => { } } = this.props
     deleteCouponCodeAction()
   }
 }
