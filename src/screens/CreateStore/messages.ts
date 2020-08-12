@@ -92,7 +92,7 @@ export default defineMessages({
   },
   addItem: {
     id: 'screens.CreateStore.addItem',
-    defaultMessage: 'ADD ITEM'
+    defaultMessage: '+ ADD ITEM'
   },
   bannerMessage: {
     id: 'screens.CreateStore.bannerMessage',
@@ -109,7 +109,7 @@ export default defineMessages({
   },
   optional: {
     id: 'screens.CreateStore.optional',
-    defaultMessage: 'Optional'
+    defaultMessage: '(Optional)'
   },
   privateLabel: {
     id: 'screens.CreateStore.privateLabel',

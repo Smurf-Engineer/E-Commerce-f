@@ -102,6 +102,7 @@ interface Props extends RouteComponentProps<any> {
   onDemand: boolean
   startDate: string
   open: boolean
+  initialStartDate?: Moment
   startDateMoment?: Moment
   endDate: string
   endDateMoment?: Moment
@@ -581,6 +582,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       setItemsAddAction,
       moveRowAction,
       name,
+      initialStartDate,
       startDateMoment,
       endDateMoment,
       privateStore,
@@ -618,8 +620,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
       imagePreviewUrl || (storeId && banner) ? (
         <PreviewImage src={imagePreviewUrl || banner} />
       ) : (
-        <Dragger onSelectImage={this.beforeUpload} />
-      )
+          <Dragger onSelectImage={this.beforeUpload} />
+        )
 
     const tableItems = this.getCheckedItems(items)
 
@@ -634,229 +636,229 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <Spin />
           </Loading>
         ) : (
-          <Container>
-            <TitleContainer>
-              <Title>
-                <FormattedMessage {...messages.title} />
-              </Title>
-              {storeId && (isOnDemand || !startDate) && (
-                <SwitchWithLabel
-                  checked={onDemand}
-                  onChange={updateOnDemandAction}
-                  label={formatMessage(
-                    isOnDemand
-                      ? messages.switchToBatch
-                      : messages.switchToDemand
-                  )}
-                  message={''}
-                  infoIcon={true}
-                  handleOpenInfo={this.openInfo}
-                />
-              )}
-            </TitleContainer>
-            <StoreForm
-              {...{ formatMessage }}
-              name={name}
-              startDate={startDateMoment}
-              endDate={endDateMoment}
-              onUpdateName={updateNameAction}
-              onSelectStartDate={updateStartDateAction}
-              onSelectEndDate={updateEndDateAction}
-              onDemand={isOnDemand}
-              {...{ hasError, cutoffDays, storeId, datesEdited }}
-            />
-            {isOnDemand ? (
-              <React.Fragment>
-                <TextBlock>
-                  <Subtitle>
-                    <FormattedMessage {...messages.pricingCheckout} />
-                  </Subtitle>
-                  <FormattedMessage
-                    {...messages.pricingCheckoutContent}
-                    values={{
-                      onDemandTeam: (
-                        <b>{formatMessage(messages.onDemandTeamStore)}</b>
-                      ),
-                      discount: <b>{formatMessage(messages.percent)}</b>
-                    }}
+            <Container>
+              <TitleContainer>
+                <Title>
+                  <FormattedMessage {...messages.title} />
+                </Title>
+                {storeId && (isOnDemand || !startDate) && (
+                  <SwitchWithLabel
+                    checked={onDemand}
+                    onChange={updateOnDemandAction}
+                    label={formatMessage(
+                      isOnDemand
+                        ? messages.switchToBatch
+                        : messages.switchToDemand
+                    )}
+                    message={''}
+                    infoIcon={true}
+                    handleOpenInfo={this.openInfo}
                   />
-                </TextBlock>
-                <TextBlock>
-                  <Subtitle>
-                    <FormattedMessage {...messages.productionDelivery} />
-                  </Subtitle>
-                  <FormattedMessage
-                    {...messages.productionDeliveryContent}
-                    values={{
-                      orderDays: <b>{formatMessage(messages.orderDays)}</b>,
-                      shippingCompany: (
-                        <b>{formatMessage(messages.shippingCompany)}</b>
-                      ),
-                      signature: <b>{formatMessage(messages.signature)}</b>
-                    }}
-                  />
-                </TextBlock>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <DynamicDropLogo src={dropLogo} />
-                <PriceMessage>
-                  <FormattedHTMLMessage {...messages.priceDropMessage} />
-                </PriceMessage>
-              </React.Fragment>
-            )}
-            <Subtitle>
-              <div
-                ref={(table) => {
-                  this.lockerTable = table
-                }}
-              >
-                <FormattedMessage {...messages.storeItemsTitle} />
-              </div>
-            </Subtitle>
-            <LockerMessage>
-              <FormattedMessage {...messages.storeItemsMessage} />
-            </LockerMessage>
-            <AddItem
-              type="primary"
-              ghost={true}
-              size="large"
-              onClick={this.handleOnAddItem}
-            >
-              {`+ ${formatMessage(messages.addItem)}`}
-            </AddItem>
-            <LockerTable
-              {...{ formatMessage, teamSizeRange, currentCurrency }}
-              items={items}
-              hideQuickView={true}
-              isFixed={!isOnDemand}
-              onPressDelete={this.handleOnDeleteItem}
-              onPressQuickView={this.handleOnPressQuickView}
-              onPressVisible={this.handleOnPressVisible}
-              onMoveRow={moveRowAction}
-            />
-            <Row>
-              <BannerTitleContainer>
-                <Subtitle>
-                  <FormattedMessage {...messages.bannerMessage} />
-                </Subtitle>
-                <OptionalLabel>
-                  {`(${formatMessage(messages.optional)})`}
-                </OptionalLabel>
-              </BannerTitleContainer>
-              {(!!imagePreviewUrl || storeId) && (
-                <RowButtons>
-                  <Upload
-                    beforeUpload={this.beforeUpload}
-                    multiple={false}
-                    showUploadList={false}
-                    supportServerRender={true}
-                  >
-                    <Button>{formatMessage(messages.changeLabel)}</Button>
-                  </Upload>
-                  <ButtonDelete onClick={this.handleOnDeleteImage}>
-                    {formatMessage(messages.deleteLabel)}
-                  </ButtonDelete>
-                </RowButtons>
-              )}
-            </Row>
-            {bannerComponent}
-            <RowColumn>
-              <BulletinLabel>
-                <Subtitle>
-                  <FormattedMessage {...messages.bulletin} />
-                </Subtitle>
-                <OptionalLabel>
-                  {`(${formatMessage(messages.optional)})`}
-                </OptionalLabel>
-              </BulletinLabel>
-              <Bulletin>
-                <PinDiv>
-                  <Pin src={PinSVG} left={true} />
-                  <Pin src={PinSVG} />
-                </PinDiv>
-                <BulletinInput
-                  value={bulletin}
-                  autosize={true}
-                  placeholder={formatMessage(messages.bulletinPlaceholder)}
-                  size="large"
-                  onChange={this.handleOnBulletinChange}
-                />
-                <Corner />
-              </Bulletin>
-            </RowColumn>
-            <RowSwitch>
-              <SwitchWithLabel
-                hasError={hasError}
-                defaultChecked={true}
-                {...{ passCode, updatePassCodeAction }}
-                withInput={true}
-                checked={privateStore}
-                onChange={this.handlePrivateSwitch}
-                placeholder={formatMessage(messages.passcode)}
-                label={formatMessage(messages.privateLabel)}
-                subLabel={formatMessage(messages.passFormat)}
-                message={formatMessage(messages.privateMessage)}
-                errorLabel={formatMessage(messages.requiredFieldLabel)}
+                )}
+              </TitleContainer>
+              <StoreForm
+                {...{ formatMessage }}
+                name={name}
+                startDate={startDateMoment}
+                endDate={endDateMoment}
+                onUpdateName={updateNameAction}
+                onSelectStartDate={updateStartDateAction}
+                onSelectEndDate={updateEndDateAction}
+                onDemand={isOnDemand}
+                {...{ hasError, cutoffDays, storeId, datesEdited, initialStartDate }}
               />
-            </RowSwitch>
-            {storeShortId ? (
-              <ButtonOptionsWrapper>
-                <ButtonOptionStyle
-                  {...{ loading }}
-                  size="large"
-                  onClick={this.handleCancelTeamStore}
+              {isOnDemand ? (
+                <React.Fragment>
+                  <TextBlock>
+                    <Subtitle>
+                      <FormattedMessage {...messages.pricingCheckout} />
+                    </Subtitle>
+                    <FormattedMessage
+                      {...messages.pricingCheckoutContent}
+                      values={{
+                        onDemandTeam: (
+                          <b>{formatMessage(messages.onDemandTeamStore)}</b>
+                        ),
+                        discount: <b>{formatMessage(messages.percent)}</b>
+                      }}
+                    />
+                  </TextBlock>
+                  <TextBlock>
+                    <Subtitle>
+                      <FormattedMessage {...messages.productionDelivery} />
+                    </Subtitle>
+                    <FormattedMessage
+                      {...messages.productionDeliveryContent}
+                      values={{
+                        orderDays: <b>{formatMessage(messages.orderDays)}</b>,
+                        shippingCompany: (
+                          <b>{formatMessage(messages.shippingCompany)}</b>
+                        ),
+                        signature: <b>{formatMessage(messages.signature)}</b>
+                      }}
+                    />
+                  </TextBlock>
+                </React.Fragment>
+              ) : (
+                  <React.Fragment>
+                    <DynamicDropLogo src={dropLogo} />
+                    <PriceMessage>
+                      <FormattedHTMLMessage {...messages.priceDropMessage} />
+                    </PriceMessage>
+                  </React.Fragment>
+                )}
+              <Subtitle>
+                <div
+                  ref={(table) => {
+                    this.lockerTable = table
+                  }}
                 >
-                  {formatMessage(messages.cancel)}
-                </ButtonOptionStyle>
-                <SaveButton
-                  {...{ loading }}
-                  size="large"
-                  onClick={
-                    !datesEdited
-                      ? this.openEditDatesInfo
-                      : this.handleBuildTeamStore
-                  }
-                >
-                  {formatMessage(messages.save)}
-                </SaveButton>
-              </ButtonOptionsWrapper>
-            ) : (
-              <SaveButton
-                {...{ loading }}
+                  <FormattedMessage {...messages.storeItemsTitle} />
+                </div>
+              </Subtitle>
+              <LockerMessage>
+                <FormattedMessage {...messages.storeItemsMessage} />
+              </LockerMessage>
+              <AddItem
                 type="primary"
-                width="316px"
+                ghost={true}
                 size="large"
-                onClick={this.handleBuildTeamStore}
+                onClick={this.handleOnAddItem}
               >
-                {formatMessage(messages.buttonBuild)}
-              </SaveButton>
-            )}
-            <LockerModal
-              {...{
-                selectedItems,
-                tableItems,
-                currentPage,
-                limit,
-                offset
-              }}
-              visible={openLocker}
-              onRequestClose={this.handleOnCloseLocker}
-              onSelectItem={setItemSelectedAction}
-              onUnselectItem={onUnselectItemAction}
-              onAddItems={setItemsAddAction}
-              changePage={this.changePage}
-              proDesign={false}
-              userId={user.id}
-            />
-            <ImageCropper
-              {...{ formatMessage, open }}
-              requestClose={this.closeModal}
-              setImage={this.setImage}
-              image={imagePreviewUrl}
-            />
-          </Container>
-        )}
+                {formatMessage(messages.addItem)}
+              </AddItem>
+              <LockerTable
+                {...{ formatMessage, teamSizeRange, currentCurrency }}
+                items={items}
+                hideQuickView={true}
+                isFixed={!isOnDemand}
+                onPressDelete={this.handleOnDeleteItem}
+                onPressQuickView={this.handleOnPressQuickView}
+                onPressVisible={this.handleOnPressVisible}
+                onMoveRow={moveRowAction}
+              />
+              <Row>
+                <BannerTitleContainer>
+                  <Subtitle>
+                    <FormattedMessage {...messages.bannerMessage} />
+                  </Subtitle>
+                  <OptionalLabel>
+                    {formatMessage(messages.optional)}
+                  </OptionalLabel>
+                </BannerTitleContainer>
+                {(!!imagePreviewUrl || storeId) && (
+                  <RowButtons>
+                    <Upload
+                      beforeUpload={this.beforeUpload}
+                      multiple={false}
+                      showUploadList={false}
+                      supportServerRender={true}
+                    >
+                      <Button>{formatMessage(messages.changeLabel)}</Button>
+                    </Upload>
+                    <ButtonDelete onClick={this.handleOnDeleteImage}>
+                      {formatMessage(messages.deleteLabel)}
+                    </ButtonDelete>
+                  </RowButtons>
+                )}
+              </Row>
+              {bannerComponent}
+              <RowColumn>
+                <BulletinLabel>
+                  <Subtitle>
+                    <FormattedMessage {...messages.bulletin} />
+                  </Subtitle>
+                  <OptionalLabel>
+                    {formatMessage(messages.optional)}
+                  </OptionalLabel>
+                </BulletinLabel>
+                <Bulletin>
+                  <PinDiv>
+                    <Pin src={PinSVG} left={true} />
+                    <Pin src={PinSVG} />
+                  </PinDiv>
+                  <BulletinInput
+                    value={bulletin}
+                    autosize={true}
+                    placeholder={formatMessage(messages.bulletinPlaceholder)}
+                    size="large"
+                    onChange={this.handleOnBulletinChange}
+                  />
+                  <Corner />
+                </Bulletin>
+              </RowColumn>
+              <RowSwitch>
+                <SwitchWithLabel
+                  hasError={hasError}
+                  defaultChecked={true}
+                  {...{ passCode, updatePassCodeAction }}
+                  withInput={true}
+                  checked={privateStore}
+                  onChange={this.handlePrivateSwitch}
+                  placeholder={formatMessage(messages.passcode)}
+                  label={formatMessage(messages.privateLabel)}
+                  subLabel={formatMessage(messages.passFormat)}
+                  message={formatMessage(messages.privateMessage)}
+                  errorLabel={formatMessage(messages.requiredFieldLabel)}
+                />
+              </RowSwitch>
+              {storeShortId ? (
+                <ButtonOptionsWrapper>
+                  <ButtonOptionStyle
+                    {...{ loading }}
+                    size="large"
+                    onClick={this.handleCancelTeamStore}
+                  >
+                    {formatMessage(messages.cancel)}
+                  </ButtonOptionStyle>
+                  <SaveButton
+                    {...{ loading }}
+                    size="large"
+                    onClick={
+                      !datesEdited
+                        ? this.openEditDatesInfo
+                        : this.handleBuildTeamStore
+                    }
+                  >
+                    {formatMessage(messages.save)}
+                  </SaveButton>
+                </ButtonOptionsWrapper>
+              ) : (
+                  <SaveButton
+                    {...{ loading }}
+                    type="primary"
+                    width="316px"
+                    size="large"
+                    onClick={this.handleBuildTeamStore}
+                  >
+                    {formatMessage(messages.buttonBuild)}
+                  </SaveButton>
+                )}
+              <LockerModal
+                {...{
+                  selectedItems,
+                  tableItems,
+                  currentPage,
+                  limit,
+                  offset
+                }}
+                visible={openLocker}
+                onRequestClose={this.handleOnCloseLocker}
+                onSelectItem={setItemSelectedAction}
+                onUnselectItem={onUnselectItemAction}
+                onAddItems={setItemsAddAction}
+                changePage={this.changePage}
+                proDesign={false}
+                userId={user.id}
+              />
+              <ImageCropper
+                {...{ formatMessage, open }}
+                requestClose={this.closeModal}
+                setImage={this.setImage}
+                image={imagePreviewUrl}
+              />
+            </Container>
+          )}
       </Layout>
     )
   }
