@@ -3,9 +3,10 @@
  */
 import * as React from 'react'
 import { Container, Title, Text } from './styledComponents'
-import config from '../../config'
 import messages from './messages'
 import Span from '../Common/UnderlinedLink'
+
+const PRICING_LINK = 'http://www.jakroo.com/JV2PRICING.pdf'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -20,9 +21,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
       </Text>
       <Text>
         <Span
-          url={`${
-            config.storageUrl
-          }/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`}
+          url={PRICING_LINK}
         >
           {formatMessage(messages.pricing)}
         </Span>
