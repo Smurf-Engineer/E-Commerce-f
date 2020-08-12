@@ -131,6 +131,7 @@ export interface Product {
   pictures?: any[]
   mediaFiles?: object[]
   description: string
+  hasPredyed?: boolean
   productMaterials?: object[]
   designCenter?: boolean
   priceRange: PriceRange[]

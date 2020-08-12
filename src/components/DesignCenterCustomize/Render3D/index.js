@@ -743,7 +743,20 @@ class Render3D extends PureComponent {
           // Setup the texture layers
           const areasLayers = areas.map(() => children[meshIndex].clone())
           object.add(...areasLayers)
-
+          /* Transparent predyed  */
+          if (!showBranding && product.hasPredyed) {
+            const brandingObj = children[meshIndex].clone()
+            object.add(brandingObj)
+            const brandingIndex = children.length - 1
+            const brandingMaterial = new THREE.MeshPhongMaterial({
+              side: THREE.FrontSide,
+              bumpMap,
+              opacity: 1,
+              transparent: false
+            })
+            children[brandingIndex].material = brandingMaterial
+            children[brandingIndex].name = BRANDING_MESH
+          }
           children[meshIndex].material = insideMaterial
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
@@ -824,12 +837,12 @@ class Render3D extends PureComponent {
           children[canvasIndex].name = CANVAS_MESH
 
           /* Branding  */
-          if (!!branding) {
+          if (!!branding && showBranding) {
             const brandingObj = children[meshIndex].clone()
             object.add(brandingObj)
             const brandingIndex = children.length - 1
             const brandingMaterial = new THREE.MeshPhongMaterial({
-              map: showBranding ? branding : null,
+              map: branding,
               side: THREE.FrontSide,
               bumpMap,
               transparent: true

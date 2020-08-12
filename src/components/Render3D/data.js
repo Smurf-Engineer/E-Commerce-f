@@ -40,6 +40,7 @@ export const designQuery = gql`
         obj
         mtl
         label
+        hasPredyed: has_predyed
         bumpMap: bump_map
         flatlock
         binding {

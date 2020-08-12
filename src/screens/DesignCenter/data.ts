@@ -12,6 +12,7 @@ export const getProductQuery = gql`
       obj
       mtl
       label
+      hasPredyed: has_predyed
       bumpMap: bump_map
       branding
       isCustom: design_center
@@ -106,6 +107,7 @@ export const getDesignQuery = gql`
         mtl
         label
         branding
+        hasPredyed: has_predyed
         bumpMap: bump_map
         flatlock
         mpn
