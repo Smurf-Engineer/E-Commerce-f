@@ -725,7 +725,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 size="large"
                 onClick={this.handleOnAddItem}
               >
-                {`+ ${formatMessage(messages.addItem)}`}
+                {formatMessage(messages.addItem)}
               </AddItem>
               <LockerTable
                 {...{ formatMessage, teamSizeRange, currentCurrency }}
@@ -743,7 +743,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                     <FormattedMessage {...messages.bannerMessage} />
                   </Subtitle>
                   <OptionalLabel>
-                    {`(${formatMessage(messages.optional)})`}
+                    {formatMessage(messages.optional)}
                   </OptionalLabel>
                 </BannerTitleContainer>
                 {(!!imagePreviewUrl || storeId) && (
@@ -769,7 +769,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                     <FormattedMessage {...messages.bulletin} />
                   </Subtitle>
                   <OptionalLabel>
-                    {`(${formatMessage(messages.optional)})`}
+                    {formatMessage(messages.optional)}
                   </OptionalLabel>
                 </BulletinLabel>
                 <Bulletin>
