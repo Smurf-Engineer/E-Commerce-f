@@ -79,7 +79,8 @@ import {
   GRIP_TAPE,
   DEFAULT_COLOR,
   AMBIENT_LIGHT_INTENSITY,
-  DIRECTIONAL_LIGHT_INTENSITY
+  DIRECTIONAL_LIGHT_INTENSITY,
+  ILLUSTRATOR_PIXELS_PER_CM
 } from '../../constants'
 import { BLACK, SELECTION_3D_AREA } from '../../theme/colors'
 import { Changes, CanvasElements } from '../../screens/DesignCenter/constants'
@@ -2243,8 +2244,8 @@ class Render3D extends PureComponent {
     const scaleYTemp = scaleY / scaleFactorY
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
-    size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
-    size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
+    size.width = scaledWidth / ILLUSTRATOR_PIXELS_PER_CM
+    size.height = scaledHeight / ILLUSTRATOR_PIXELS_PER_CM
     return size
   }
   setFrontFaceModel = () => {
