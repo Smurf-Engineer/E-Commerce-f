@@ -2,6 +2,8 @@
  * Styled Components - Created by david on 03/04/18.
  */
 import styled from 'styled-components'
+import MenuAntd from 'antd/lib/menu'
+const { SubMenu } = MenuAntd
 
 export const Container = styled.div``
 
@@ -26,4 +28,13 @@ export const SeeAll = styled.div`
   }
 `
 
-export const menuStyle = { width: '100%', marginLeft: -24 }
+export const StyledSubMenu = styled(SubMenu)`
+  border-bottom: 1px solid gray;
+`
+
+export const Item = styled(MenuAntd.Item)`
+  padding: 0 6px;
+  width: 100%;
+`
+
+export const menuStyle = { width: '100%' }

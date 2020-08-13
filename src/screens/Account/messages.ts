@@ -19,15 +19,15 @@ export default defineMessages({
   },
   addresses: {
     id: 'screens.Account.menu.addresses',
-    defaultMessage: 'ADDRESSES'
+    defaultMessage: 'Addresses'
   },
   creditCards: {
     id: 'screens.Account.menu.creditCards',
-    defaultMessage: 'CREDIT CARDS'
+    defaultMessage: 'Credit Cards'
   },
   profileSettings: {
     id: 'screens.Account.menu.profileSettings',
-    defaultMessage: 'PROFILE SETTINGS'
+    defaultMessage: 'Profile'
   },
   myTeamStores: {
     id: 'screens.Account.menu.myTeamStores',
@@ -72,5 +72,9 @@ export default defineMessages({
   addedToStore: {
     id: 'screens.Account.addedToStore',
     defaultMessage: 'Design added to "{storeName}"'
+  },
+  profileMenu: {
+    id: 'screens.Account.profileMenu',
+    defaultMessage: 'PROFILE SETTINGS'
   }
 })

@@ -6,10 +6,8 @@ import { compose, withApollo } from 'react-apollo'
 import queryString from 'query-string'
 import MenuAntd from 'antd/lib/menu'
 import Spin from 'antd/lib/spin'
-import { Container, Bottom, menuStyle, SeeAll } from './styledComponents'
+import { Container, Bottom, menuStyle, SeeAll, Item, StyledSubMenu } from './styledComponents'
 import messages from './messages'
-
-const { SubMenu } = MenuAntd
 
 interface Props {
   client: any
@@ -121,19 +119,19 @@ class Menu extends React.PureComponent<Props, {}> {
       // TODO: Check this out.
       // this.getCategories(id)
       return (
-        <SubMenu
+        <StyledSubMenu
           key={`menu-${name}-${index}`}
           onClick={this.handleOpenSport(name)}
           title={<span>{name}</span>}
         >
           {categories.map(({ name: categoryName }: any) => (
-            <MenuAntd.Item
+            <Item
               key={`sport=${name}&category=${categoryName.replace(' & ', ' ')}`}
             >
               {categoryName}
-            </MenuAntd.Item>
+            </Item>
           ))}
-        </SubMenu>
+        </StyledSubMenu>
       )
     })
 
@@ -141,6 +139,7 @@ class Menu extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
+        <Bottom>{loginButton}</Bottom>
         <MenuAntd
           mode="inline"
           onSelect={this.handleClick}
@@ -155,7 +154,6 @@ class Menu extends React.PureComponent<Props, {}> {
         <SeeAll onClick={this.handleOnSeeAll}>
           {formatMessage(messages.seeAll)}
         </SeeAll>
-        <Bottom>{loginButton}</Bottom>
       </Container>
     )
   }
