@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import MenuAntd from 'antd/lib/menu'
+import { GRAY_LIGHT } from '../../../theme/colors'
 const { SubMenu } = MenuAntd
 
 export const Container = styled.div``
@@ -25,16 +26,26 @@ export const SeeAll = styled.div`
     height: 40px;
     display: flex;
     align-items: center;
+    padding-left: 6px;
+    font-weight: bold;
   }
 `
 
 export const StyledSubMenu = styled(SubMenu)`
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid ${GRAY_LIGHT};
+  .ant-menu-submenu-title {
+    padding-left: 6px !important;
+    padding-right: 2px;
+    width: 100%;
+  }
+  .ant-menu-submenu-arrow {
+    right: 12px;
+  }
 `
 
 export const Item = styled(MenuAntd.Item)`
-  padding: 0 6px;
   width: 100%;
+  padding: 0 6px !important;
 `
 
 export const menuStyle = { width: '100%' }

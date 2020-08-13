@@ -7,6 +7,7 @@ import icon from 'antd/lib/icon'
 export const Container = styled.div`
   align-items: center;
   display: flex;
+  border-bottom: 1px solid gray;
 `
 
 export const Text = styled.div`
