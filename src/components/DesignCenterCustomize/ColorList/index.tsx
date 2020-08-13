@@ -82,7 +82,7 @@ const ColorList = ({
             color={value}
             onClick={setColor(value, name, index)}
           />
-          {!!label && <div className="tooltip-content">{label}</div>}
+          <div className="tooltip-content">{label || name}</div>
         </Col>
       )
       fluorescentColors.push(node)
@@ -98,7 +98,7 @@ const ColorList = ({
                 : setColor(value, name, index)
             }
           />
-          {!!label && <div className="tooltip-content">{label}</div>}
+          <div className="tooltip-content">{label || name}</div>
         </Col>
       )
       regularColors.push(node)
