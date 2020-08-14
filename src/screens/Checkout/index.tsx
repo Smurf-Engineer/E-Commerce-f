@@ -101,6 +101,7 @@ interface CartItems {
   totalOrder?: number
   itemDetails: CartItemDetail[]
   teamStoreId?: string
+  isFixed?: boolean
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -820,14 +821,15 @@ class Checkout extends React.Component<Props, {}> {
     } = this.props
     const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
     const quantity = quantities[priceRangeToApply]
-
+    console.log(cart)
     return cart.map(({ product, itemDetails, designId, isFixed, totalOrder = 0 }: CartItems) => {
       // Check for fixed prices
+      const currentQuantity = sumBy(itemDetails, 'quantity')
       const productPriceRanges = get(product, 'priceRange', [])
-      const itemPriceRange = getPriceRangeToApply(totalOrder)
-      const itemQuantity = quantities[itemPriceRange]
+      const itemPriceRange = getPriceRangeToApply(totalOrder + currentQuantity)
+      const itemQuantity = quantities[itemPriceRange === 0 ? 1 : itemPriceRange]
 
-      const totalItems = isFixed ? itemQuantity : quantity
+      const totalItems = !!isFixed ? itemQuantity : quantity
       // get prices from currency
       const currencyPrice = find(productPriceRanges, {
         abbreviation: currentCurrency,
@@ -838,7 +840,7 @@ class Checkout extends React.Component<Props, {}> {
         yotpoId: product.yotpoId,
         designId,
         price: currencyPrice.price,
-        quantity: sumBy(itemDetails, 'quantity')
+        quantity: currentQuantity
       }
       return designsPrice
     })
