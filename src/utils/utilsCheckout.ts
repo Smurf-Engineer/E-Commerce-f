@@ -30,14 +30,13 @@ export const getTaxesAndDiscount = (
   if (couponCode) {
     const { type, rate, restrictionType, products = [] } = couponCode
     const restrictions = restrictionType ? restrictionType.split(',') : []
-    console.log(restrictions)
+
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
         if (!restrictions.includes(DESIGN)) {
           // calculate discount with (subtotal + proDesignFee) * percentageDiscount
           discount = (subtotal + proDesignFee) * (Number(rate) / 100)
         } else {
-          console.log(productsPrices)
           discount = productsPrices.reduce((totalDiscount: number, design) => {
             if (!products.includes(design.designId)) {
               return totalDiscount
@@ -75,7 +74,6 @@ export const getTaxesAndDiscount = (
   }
 
   discount = roundDecimals(discount) // round to 2 decimals
-  console.log(discount)
   // taxes
   let taxGst = 0
   let taxPst = 0
