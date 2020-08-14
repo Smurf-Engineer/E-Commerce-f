@@ -220,7 +220,7 @@ export class PayList extends React.Component<Props, {}> {
                   orderCurrency,
                 }: AffiliatePayment,
                 index: number) => {
-                const netsuiteStatus = netsuite ? netsuite.orderStatus : ''
+                const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus', '')
                 return (
                   <RepDiv id={orderId} onClick={this.openOrder} key={index}>
                     <Cell onClick={this.stopPropagation}>
