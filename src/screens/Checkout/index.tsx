@@ -70,7 +70,7 @@ import {
   PaymentIntent
 } from '../../types/common'
 import config from '../../config/index'
-import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import { getShoppingCartData, getPriceRangeToApply } from '../../utils/utilsShoppingCart'
 import Modal from 'antd/lib/modal'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
@@ -328,10 +328,10 @@ class Checkout extends React.Component<Props, {}> {
     const taxAddress: TaxAddressObj = shippingAddress.country &&
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
-        country: shippingAddress.country,
-        state: shippingAddress.stateProvinceCode,
-        zipCode: shippingAddress.zipCode
-      }
+      country: shippingAddress.country,
+      state: shippingAddress.stateProvinceCode,
+      zipCode: shippingAddress.zipCode
+    }
 
     const { state: stateLocation } = location
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
@@ -792,7 +792,7 @@ class Checkout extends React.Component<Props, {}> {
 
     const preorder = isFixedTeamstore && !reorder
 
-    const subsidiarySCA = get(data, 'subsidiarySCA.sca', false) 
+    const subsidiarySCA = get(data, 'subsidiarySCA.sca', false)
     if (subsidiarySCA && !preorder) {
       await this.createPaymentIntent()
     }
@@ -820,14 +820,20 @@ class Checkout extends React.Component<Props, {}> {
     } = this.props
     const { priceRangeToApply } = getShoppingCartData(cart, currentCurrency)
     const quantity = quantities[priceRangeToApply]
-    return cart.map(({ product, itemDetails, designId }: CartItems) => {
+
+    return cart.map(({ product, itemDetails, designId, isFixed, totalOrder = 0 }: CartItems) => {
       // Check for fixed prices
       const productPriceRanges = get(product, 'priceRange', [])
+      const itemPriceRange = getPriceRangeToApply(totalOrder)
+      const itemQuantity = quantities[itemPriceRange]
+
+      const totalItems = isFixed ? itemQuantity : quantity
       // get prices from currency
       const currencyPrice = find(productPriceRanges, {
         abbreviation: currentCurrency,
-        quantity
+        quantity: totalItems
       })
+
       const designsPrice = {
         yotpoId: product.yotpoId,
         designId,

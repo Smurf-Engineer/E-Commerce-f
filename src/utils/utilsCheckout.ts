@@ -42,7 +42,6 @@ export const getTaxesAndDiscount = (
               return totalDiscount
             }
             const { price, quantity} = design
-
             return (
               totalDiscount +
               price * (Number(rate) / 100) * quantity
