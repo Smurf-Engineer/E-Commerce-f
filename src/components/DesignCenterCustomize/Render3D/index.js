@@ -92,7 +92,8 @@ import {
   GRIP_TAPE,
   DEFAULT_COLOR,
   AMBIENT_LIGHT_INTENSITY,
-  DIRECTIONAL_LIGHT_INTENSITY
+  DIRECTIONAL_LIGHT_INTENSITY,
+  ILLUSTRATOR_PIXELS_PER_CM
 } from '../../../constants'
 import {
   BLACK,
@@ -2701,17 +2702,17 @@ class Render3D extends PureComponent {
     const scaleYTemp = scaleY / scaleFactorY
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
-    size.width = (scaledWidth * CM_PER_INCH) / DPI
-    size.height = (scaledHeight * CM_PER_INCH) / DPI
+    size.width = scaledWidth / ILLUSTRATOR_PIXELS_PER_CM
+    size.height = scaledHeight / ILLUSTRATOR_PIXELS_PER_CM
     return size
   }
 
   getSizeInPixels = (cmWidth, cmHeight, width, height) => {
     const { scaleFactorX, scaleFactorY } = this.state
-    const scaledWidth = ((cmWidth || 1) * DPI) / CM_PER_INCH
+    const scaledWidth = (cmWidth || 1) * ILLUSTRATOR_PIXELS_PER_CM
     const scaleXTemp = scaledWidth / width
     const scaleX = scaleFactorX * scaleXTemp
-    const scaledHeight = ((cmHeight || 1) * DPI) / CM_PER_INCH
+    const scaledHeight = (cmHeight || 1) * ILLUSTRATOR_PIXELS_PER_CM
     const scaleYTemp = scaledHeight / height
     const scaleY = scaleFactorY * scaleYTemp
     return { scaleX, scaleY }
