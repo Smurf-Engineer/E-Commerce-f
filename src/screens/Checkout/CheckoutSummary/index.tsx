@@ -181,10 +181,10 @@ const CheckoutSummary = ({
         {...{ currency }}
       />
     ) : (
-      <PlaceOrderButton onClick={handleOnPlaceOrder}>
-        {formatMessage(messages.placeOrder)}
-      </PlaceOrderButton>
-    )
+        <PlaceOrderButton onClick={handleOnPlaceOrder}>
+          {formatMessage(messages.placeOrder)}
+        </PlaceOrderButton>
+      )
 
   const orderButton = showOrderButton && orderButtonComponent
   return (

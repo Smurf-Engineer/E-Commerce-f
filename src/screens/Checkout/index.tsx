@@ -51,7 +51,13 @@ import {
   StepIcon,
   CheckIcon,
   PlaceOrderLoading,
-  okButtonStyles
+  okButtonStyles,
+  ModalTitle,
+  InfoBody,
+  InfoText,
+  CheckList,
+  CheckLabel,
+  CheckGreen
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -211,13 +217,14 @@ interface Props extends RouteComponentProps<any> {
   addNewCard: (variables: {}) => Promise<any>
 }
 
-const { confirm } = Modal
+const { confirm, info } = Modal
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
   state = {
-    stripe: null
+    stripe: null,
+    checked: false,
   }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -328,12 +335,13 @@ class Checkout extends React.Component<Props, {}> {
     const taxAddress: TaxAddressObj = shippingAddress.country &&
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
-        country: shippingAddress.country,
-        state: shippingAddress.stateProvinceCode,
-        zipCode: shippingAddress.zipCode
-      }
+      country: shippingAddress.country,
+      state: shippingAddress.stateProvinceCode,
+      zipCode: shippingAddress.zipCode
+    }
 
     const { state: stateLocation } = location
+    const { checked } = this.state
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
 
     if (!stateLocation || !stateLocation.cart || !stateLocation.cart.length) {
@@ -397,6 +405,9 @@ class Checkout extends React.Component<Props, {}> {
 
     const simpleCart = this.getSimpleCart()
     const productsPrices = this.getProductsPrice()
+    if (!checked && paymentMethod === PaymentOptions.PAYPAL && showOrderButton && !isFixedTeamstore) {
+      this.confirmOrder(true)
+    }
 
     return (
       <Layout {...{ history, intl }}>
@@ -718,7 +729,6 @@ class Checkout extends React.Component<Props, {}> {
       variables: { countryCode: billingCountry },
       fetchPolicy: 'network-only'
     })
-
     const selectedCurrency = currentCurrency || config.defaultCurrency
 
     if (data && data.currency) {
@@ -731,12 +741,59 @@ class Checkout extends React.Component<Props, {}> {
           }),
           okButtonProps: { style: okButtonStyles },
           onOk: () => {
-            this.placeOrder(event, null, sca)
+            this.confirmOrder(false, sca, undefined)
           }
         })
       } else {
-        this.placeOrder(event, null, sca)
+        this.confirmOrder(false, sca, undefined)
       }
+    }
+  }
+  confirmOrder = (isPaypal?: boolean, sca?: boolean, paypalObj?: object) => {
+    const {
+      location,
+      intl: { formatMessage }
+    } = this.props
+    const {
+      state: { cart }
+    } = location
+    const isFixedTeamstore = some(cart, 'isFixed')
+    if (isFixedTeamstore && !isPaypal) {
+      this.placeOrder(undefined, paypalObj, sca)
+    } else {
+      info({
+        title: (
+          <ModalTitle>
+            {formatMessage(messages.areYouSure)}
+          </ModalTitle>
+        ),
+        icon: ' ',
+        width: 642,
+        okText: formatMessage(messages.gotIt),
+        okButtonProps: {
+          style: okButtonStyles
+        },
+        onOk: () => {
+          if (isPaypal) {
+            this.setState({ checked: true })
+          } else {
+            this.placeOrder(undefined, paypalObj, sca)
+          }
+        },
+        content: (
+          <InfoBody>
+            <InfoText
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.infoOrder)
+              }} />
+            <CheckList>
+              <CheckLabel><CheckGreen type="check" />{formatMessage(messages.shippingBilling)}</CheckLabel>
+              <CheckLabel><CheckGreen type="check" />{formatMessage(messages.itemQuantities)}</CheckLabel>
+              <CheckLabel><CheckGreen type="check" />{formatMessage(messages.itemSizes)}</CheckLabel>
+            </CheckList>
+          </InfoBody>
+        )
+      })
     }
   }
   getSimpleCart = () => {
@@ -792,7 +849,7 @@ class Checkout extends React.Component<Props, {}> {
 
     const preorder = isFixedTeamstore && !reorder
 
-    const subsidiarySCA = get(data, 'subsidiarySCA.sca', false) 
+    const subsidiarySCA = get(data, 'subsidiarySCA.sca', false)
     if (subsidiarySCA && !preorder) {
       await this.createPaymentIntent()
     }
