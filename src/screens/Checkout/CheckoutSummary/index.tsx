@@ -137,8 +137,10 @@ const CheckoutSummary = ({
     country,
     productsPrices
   )
+
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
+
   let totalSum = 0
   // calculate totalSum
   if (taxVat) {
@@ -181,10 +183,10 @@ const CheckoutSummary = ({
         {...{ currency }}
       />
     ) : (
-      <PlaceOrderButton onClick={handleOnPlaceOrder}>
-        {formatMessage(messages.placeOrder)}
-      </PlaceOrderButton>
-    )
+        <PlaceOrderButton onClick={handleOnPlaceOrder}>
+          {formatMessage(messages.placeOrder)}
+        </PlaceOrderButton>
+      )
 
   const orderButton = showOrderButton && orderButtonComponent
   return (
