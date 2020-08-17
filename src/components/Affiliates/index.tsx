@@ -132,8 +132,10 @@ class Affiliates extends React.Component<Props, {}> {
     const isAccountant = makePayouts.view && makePayouts.edit
     const ignoreStatus = permissions[IGNORE_STATUS_PAYOUTS] || {}
     const overrideStatus = ignoreStatus.edit
-    const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
-    const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
+    const defaultStart = moment().startOf('month').format(NOTE_FORMAT)
+    const defaultEnd = moment().endOf('month').format(NOTE_FORMAT)
+    const start = moment(startDate || defaultStart, NOTE_FORMAT)
+    const end = moment(endDate || defaultEnd, NOTE_FORMAT)
     const rangeValue = [start, end]
     const selectOptions = statusList.map((currentStatus, index) => (
       <Option key={index} value={currentStatus !== ALL_STATUS ? currentStatus : ''}>
@@ -173,29 +175,27 @@ class Affiliates extends React.Component<Props, {}> {
             </ShowButton>
           </InputDiv>
         </HeaderList>
-        {startParam &&
-          <List
-            {...{
-              formatMessage,
-              loading,
-              setLoading,
-              setSelected,
-              selected,
-              currentPage,
-              overrideStatus,
-              searchText,
-              history,
-              status,
-              orderPoint,
-              startParam,
-              canEdit,
-              isAccountant,
-              endParam
-            }}
-            onChangePage={this.handleOnChangePage}
-            handleInputChange={this.handleInputChange}
-          />
-        }
+        <List
+          {...{
+            formatMessage,
+            loading,
+            setLoading,
+            setSelected,
+            selected,
+            currentPage,
+            overrideStatus,
+            searchText,
+            history,
+            status,
+            orderPoint,
+            canEdit,
+            isAccountant
+          }}
+          startParam={startParam || defaultStart}
+          endParam={endParam || defaultEnd}
+          onChangePage={this.handleOnChangePage}
+          handleInputChange={this.handleInputChange}
+        />
       </Container>
     )
   }
