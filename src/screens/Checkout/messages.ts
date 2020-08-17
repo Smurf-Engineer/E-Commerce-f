@@ -25,5 +25,9 @@ export default defineMessages({
   errorSavingCart: {
     id: 'screens.Checkout.errorSavingCart',
     defaultMessage: 'Error trying to save card information'
+  },
+  paymentError: {
+    id: 'screens.Checkout.paymentError',
+    defaultMessage: 'You cannot use this credit card. Please check with your credit card company for details.'
   }
 })
