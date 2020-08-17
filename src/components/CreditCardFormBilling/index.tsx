@@ -300,7 +300,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     if (!selectedCardId && (isFixedTeamstore || !isEuSubsidiary)) {
       stripeResponse = await stripe.createToken(stripeTokenData)
     } else if (isEuSubsidiary) {
-      alert('payment method')
       stripeResponse = await stripe.createPaymentMethod(
         PAYMENT_TYPE_CARD,
         this.state.cardElement,
