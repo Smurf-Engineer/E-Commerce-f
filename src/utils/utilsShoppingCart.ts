@@ -110,6 +110,7 @@ export const getShoppingCartData = (
               !cartItem.teamStoreId ? currencyPrices.length - 1 : teamStoreRange
             ]
           : priceRange
+
       // increase the total
       totalSum = totalSum + priceRange.price * quantitySum
     })
@@ -148,7 +149,7 @@ const getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
   return markslider
 }
 
-const getPriceRangeToApply = (items: number) => {
+export const getPriceRangeToApply = (items: number) => {
   if (items >= 2 && items <= 5) {
     return 1
   } else if (items >= 6 && items <= 24) {

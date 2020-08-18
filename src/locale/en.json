@@ -1127,6 +1127,7 @@
   "screens.Checkout.couponApplied": "Coupon applied",
   "screens.Checkout.couponError": "Invalid promo code",
   "screens.Checkout.couponCode": "Coupon Code",
+  "screens.Checkout.paymentError": "You cannot use this credit card. Please check with your credit card company for details.",
   "screens.CustomProductDetail.editDesign": "EDIT DESIGN",
   "screens.CustomProductDetail.maleGenderLabel": "Available for Men",
   "screens.CustomProductDetail.femaleGenderLabel": "Available for Women",

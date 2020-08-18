@@ -24,6 +24,7 @@ export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
 export const AMBIENT_LIGHT_INTENSITY = 0.2
 export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
+export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
 
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'

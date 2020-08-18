@@ -94,3 +94,6 @@ export const quantities = [
   '50-99',
   '100-249'
 ]
+
+export const STEP_ADDRESS = 1
+export const STEP_PAYMENT = 2

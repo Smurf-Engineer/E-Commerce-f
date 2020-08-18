@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'screens.Checkout.itemSizes',
     defaultMessage: 'Item sizes, genders, fit styles (where applicable)'
   },
+  paymentError: {
+    id: 'screens.Checkout.paymentError',
+    defaultMessage: 'You cannot use this credit card. Please check with your credit card company for details.'
+  }
 })
