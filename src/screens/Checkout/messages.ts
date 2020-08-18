@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'screens.Checkout.gotIt',
     defaultMessage: 'Got it!'
   },
+  goBack: {
+    id: 'screens.Checkout.goBack',
+    defaultMessage: 'Go Back'
+  },
   infoOrder: {
     id: 'screens.Checkout.infoOrder',
     defaultMessage: `<p>In order to provide the world's fastest delivery times, orders enter the production

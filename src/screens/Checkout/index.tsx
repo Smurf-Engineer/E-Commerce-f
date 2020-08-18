@@ -217,7 +217,7 @@ interface Props extends RouteComponentProps<any> {
   addNewCard: (variables: {}) => Promise<any>
 }
 
-const { confirm, info } = Modal
+const { confirm } = Modal
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 const DESIGNREVIEWFEE = 15
@@ -761,7 +761,7 @@ class Checkout extends React.Component<Props, {}> {
     if (isFixedTeamstore && !isPaypal) {
       this.placeOrder(undefined, paypalObj, sca)
     } else {
-      info({
+      confirm({
         title: (
           <ModalTitle>
             {formatMessage(messages.areYouSure)}
@@ -773,6 +773,7 @@ class Checkout extends React.Component<Props, {}> {
         okButtonProps: {
           style: okButtonStyles
         },
+        cancelText: formatMessage(messages.goBack),
         onOk: () => {
           if (isPaypal) {
             this.setState({ checked: true })
