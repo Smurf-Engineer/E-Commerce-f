@@ -35,7 +35,9 @@ import {
   EUROPE,
   STRIPE,
   EU_STRIPE,
-  EU_SUBSIDIARY_COUNTRIES
+  EU_SUBSIDIARY_COUNTRIES,
+  STEP_ADDRESS,
+  STEP_PAYMENT
 } from './constants'
 
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
@@ -764,7 +766,7 @@ class Checkout extends React.Component<Props, {}> {
       const paymentIntent = get(response, 'data.createPaymentIntent', {})
       await savePaymentId(paymentIntent)
     } catch (e) {
-      this.handleOnGoToStep(1)
+      this.handleOnGoToStep(STEP_ADDRESS)
       message.error('Error generating payment')
     }
   }
@@ -800,10 +802,14 @@ class Checkout extends React.Component<Props, {}> {
     if (card && stripeToken) {
       try {
         if (preorder) {
-          await addNewCard({
+          const newCard = await addNewCard({
             variables: { token: stripeToken }
           })
-          selectCardToPayAction(card, card.id)
+          if (!newCard.id) {
+            this.handleOnGoToStep(STEP_PAYMENT)
+            return message.error(formatMessage(messages.paymentError))
+          }
+          return selectCardToPayAction(card, card.id)
         } else {
           setStripeCardDataAction(card, stripeToken)
         }
