@@ -105,7 +105,7 @@ export default defineMessages({
       2 weeks from the day you place your order until delivery at your door. Order times may vary based on the quantity 
       ordered, and in many cases, may even be delivered in less than 14 days. Estimated delivery dates are posted on 
       our website and on your Order Detail record in “My Account”. We strongly encourage customers to allow for a few 
-      additional delivery days when planning for a date specific even</p>
+      additional delivery days when planning for a date specific event.</p>
       <p>While we have optimized our design, ordering and manufacturing processes, we have little to no control over 
       carrier shipping times and potential delays related to customs clearance, weather, or force majeure. We use our 
       best efforts to initiate shipment and meet scheduled delivery dates <u>but cannot guarantee the actual
@@ -121,7 +121,7 @@ export default defineMessages({
       delivery time of your order, if it exceeds 100 pieces.</p>
       <p>While we have optimized our design, ordering and manufacturing processes, we have little to no control 
       over carrier shipping times and potential delays related to customs clearance, weather, or force majeure. 
-      We use our best efforts to initiate shipment and meet scheduled delivery dates but <u>cannot guarante</u>
+      We use our best efforts to initiate shipment and meet scheduled delivery dates but <u>cannot guarantee</u>
       the actual delivery date of your order. <b>If you have a specific deadline for your delivery, we recommend 
       factoring a 2-3 additional days into the desired delivery date.</b></p>
       `
