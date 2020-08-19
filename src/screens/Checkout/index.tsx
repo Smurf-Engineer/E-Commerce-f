@@ -744,15 +744,15 @@ class Checkout extends React.Component<Props, {}> {
           }),
           okButtonProps: { style: okButtonStyles },
           onOk: () => {
-            this.confirmOrder(false, sca, undefined)
+            this.confirmOrder(false, sca)
           }
         })
       } else {
-        this.confirmOrder(false, sca, undefined)
+        this.confirmOrder(false, sca)
       }
     }
   }
-  confirmOrder = (isPaypal?: boolean, sca?: boolean, paypalObj?: object) => {
+  confirmOrder = (isPaypal?: boolean, sca?: boolean) => {
     const {
       location,
       intl: { formatMessage }
@@ -762,7 +762,7 @@ class Checkout extends React.Component<Props, {}> {
     } = location
     const isFixedTeamstore = some(cart, 'isFixed')
     if (isFixedTeamstore && !isPaypal) {
-      this.placeOrder(undefined, paypalObj, sca)
+      this.placeOrder(undefined, undefined, sca)
     } else {
       confirm({
         title: (
@@ -781,7 +781,7 @@ class Checkout extends React.Component<Props, {}> {
           if (isPaypal) {
             this.setState({ checked: true })
           } else {
-            this.placeOrder(undefined, paypalObj, sca)
+            this.placeOrder(undefined, undefined, sca)
           }
         },
         content: (
