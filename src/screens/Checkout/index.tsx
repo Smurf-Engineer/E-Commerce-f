@@ -805,7 +805,9 @@ class Checkout extends React.Component<Props, {}> {
           const newCard = await addNewCard({
             variables: { token: stripeToken }
           })
-          if (!newCard.id) {
+          const newCardId = get(newCard, 'data.addCardSourceStripeCustomer.id')
+
+          if (!newCardId) {
             this.handleOnGoToStep(STEP_PAYMENT)
             return message.error(formatMessage(messages.paymentError))
           }
