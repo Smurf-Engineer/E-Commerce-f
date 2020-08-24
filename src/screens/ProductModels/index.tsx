@@ -44,12 +44,10 @@ import {
   AddDesigns,
   ProductInfo,
   TitleModal,
-  NavTabs,
-  ColorBlock
+  NavTabs
 } from './styledComponents'
 import Render3D from '../../components/Render3D'
 import logo from '../../assets/jakroo_logo.svg'
-import colorIcon from '../../assets/color_white.svg'
 import shirtModel from '../../assets/shirt_model.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import jakrooLogo from '../../assets/Jackroologo.svg'
@@ -60,7 +58,7 @@ import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { saveProductsMutation, getProductQuery } from './data'
 import Tab from '../../components/DesignCenterCustomize/Tab'
-import { MODELS_TAB, PREDYED_TAB } from './constants'
+import { MODELS_TAB } from './constants'
 import shortid from 'shortid'
 
 const { TabPane } = AntdTabs
@@ -398,47 +396,6 @@ export class ProductModels extends React.Component<Props, {}> {
                           </Details>
                         </ModelBlock>
                       )
-                    )
-                  })}
-                </ModelsContainers>
-              </Side>
-            </TabPane>
-            <TabPane key={PREDYED_TAB} tab={<Tab label="predyed" icon={colorIcon} />}>
-              <Side>
-                <TopMessage background={true}>
-                  {formatMessage(messages.predyedTitle)}
-                </TopMessage>
-                <AddModel onClick={this.handleOpenPredyed}>
-                  {formatMessage(messages.addPredyed)}
-                </AddModel>
-                <ModelsContainers>
-                  {!!Object.keys(predyedColors).length &&
-                    <TopMessage>{formatMessage(messages.preDyedVariants)}</TopMessage>
-                  }
-                  {Object.keys(predyedColors).map((id: string, index) => {
-                    const edit = () => this.handleEditColor(id)
-                    const { code, name } = predyedColors[id]
-                    const selectColorShow = () => this.selectColorShow(id)
-                    const remove = () => this.removeColor(id)
-                    return (
-                      <ModelBlock active={selectedColor === id} key={index}>
-                        <ColorBlock
-                          onClick={selectColorShow}
-                          hexColor={code}
-                        />
-                        <Details>
-                          <Name>{name}</Name>
-                          <Name>{code}</Name>
-                          <Buttons>
-                            <EditButton onClick={edit}>
-                              {formatMessage(messages.edit)}
-                            </EditButton>
-                            <DeleteButton onClick={remove}>
-                              {formatMessage(messages.delete)}
-                            </DeleteButton>
-                          </Buttons>
-                        </Details>
-                      </ModelBlock>
                     )
                   })}
                 </ModelsContainers>

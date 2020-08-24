@@ -1,8 +1,8 @@
 import get from 'lodash/get'
 import message from 'antd/lib/message'
 import { setLoadingAction, setVariantsAction } from './actions'
-import { getVariantsFromProduct, getPredyedColors } from './data'
-import { ModelVariant, PredyedColor } from '../../types/common'
+import { getVariantsFromProduct } from './data'
+import { ModelVariant } from '../../types/common'
 
 export const getVariants = (query: any, id: number) => {
   return async (dispatch: any) => {
@@ -23,18 +23,18 @@ export const getVariants = (query: any, id: number) => {
           return obj
           // tslint:disable-next-line: align
         }, {})
-        const responsePredyed = await query({
-          query: getPredyedColors,
-          variables: { id },
-          fetchPolicy: 'no-cache'
-        })
-        const arrayColors: PredyedColor[] = get(responsePredyed, 'data.getPredyedColors', {})
-        const predyedColors = arrayColors.reduce((obj, color: PredyedColor) => {
-          obj[color.id] = color
-          return obj
-          // tslint:disable-next-line: align
-        }, {})
-        dispatch(setVariantsAction(variants, defaultIndex, predyedColors))
+        // const responsePredyed = await query({
+        //   query: getPredyedColors,
+        //   variables: { id },
+        //   fetchPolicy: 'no-cache'
+        // })
+        // const arrayColors: PredyedColor[] = get(responsePredyed, 'data.getPredyedColors', {})
+        // const predyedColors = arrayColors.reduce((obj, color: PredyedColor) => {
+        //   obj[color.id] = color
+        //   return obj
+        //   // tslint:disable-next-line: align
+        // }, {})
+        dispatch(setVariantsAction(variants, defaultIndex, {}))
       } catch (e) {
         message.error(e)
         dispatch(setLoadingAction(false))
