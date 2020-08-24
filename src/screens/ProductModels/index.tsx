@@ -47,7 +47,6 @@ import {
 } from './styledComponents'
 import Render3D from '../../components/Render3D'
 import logo from '../../assets/jakroo_logo.svg'
-import colorIcon from '../../assets/color_white.svg'
 import shirtModel from '../../assets/shirt_model.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import jakrooLogo from '../../assets/Jackroologo.svg'
@@ -58,7 +57,7 @@ import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { saveProductsMutation, getProductQuery } from './data'
 import Tab from '../../components/DesignCenterCustomize/Tab'
-import { MODELS_TAB, PREDYED_TAB } from './constants'
+import { MODELS_TAB } from './constants'
 
 const { TabPane } = AntdTabs
 
@@ -338,48 +337,6 @@ export class ProductModels extends React.Component<Props, {}> {
                   })}
                 </ModelsContainers>
               </Side>
-            </TabPane>
-            <TabPane key={PREDYED_TAB} tab={<Tab label="predyed" icon={colorIcon} />}>
-              <Side>
-                <TopMessage background={true}>
-                  {formatMessage(messages.predyedTitle)}
-                </TopMessage>
-                <AddModel onClick={this.handleOpenModal}>
-                  {formatMessage(messages.addPredyed)}
-                </AddModel>
-              </Side>
-              <ModelsContainers>
-                {Object.keys(variants).length &&
-                  <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
-                }
-                {Object.keys(variants).map((id: string, index) => {
-                  const edit = () => this.handleEdit(id)
-                  const { icon, name, default: isDefault } = variants[id]
-                  const selectModel = () => this.selectModel(id)
-                  const remove = () => this.handleRemoveModel(id)
-                  return (
-                    !isDefault && (
-                      <ModelBlock active={modelRender === id} key={index}>
-                        <Thumbnail
-                          onClick={selectModel}
-                          src={icon || jakrooLogo}
-                        />
-                        <Details>
-                          <Name>{name}</Name>
-                          <Buttons>
-                            <EditButton onClick={edit}>
-                              {formatMessage(messages.edit)}
-                            </EditButton>
-                            <DeleteButton onClick={remove}>
-                              {formatMessage(messages.delete)}
-                            </DeleteButton>
-                          </Buttons>
-                        </Details>
-                      </ModelBlock>
-                    )
-                  )
-                })}
-              </ModelsContainers>
             </TabPane>
           </NavTabs>
           <ModelContainer>
