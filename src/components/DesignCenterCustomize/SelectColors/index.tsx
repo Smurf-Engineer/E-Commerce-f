@@ -147,6 +147,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
             id={AccessoryColors.Predyed}
             name={formatMessage(messages.predyedColor)}
             colorSelected={selectedPredyed}
+            isPredyed={true}
             onAccessoryColorSelected={onSelectPredyed}
           />
         )}
