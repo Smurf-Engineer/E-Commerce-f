@@ -60,7 +60,8 @@ export const Oval = styled.div`
   border: 1px solid
     ${({ color }: OvalProps) =>
     color && color.toLowerCase() !== '#ffffff' ? color : '#bebebe'};
-  background: ${({ color, isPredyed }: OvalProps) => color || (isPredyed ? `url(${transparentGrid})` : WHITE)};
+  background: ${({ color, isPredyed }: OvalProps) =>
+    isPredyed ? `url(${transparentGrid})` : (color || WHITE)};
   align-self: center;
   cursor: pointer;
 `

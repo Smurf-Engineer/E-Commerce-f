@@ -25,8 +25,7 @@ import {
   AccesoryColor,
   Product,
   UserInfo,
-  Color,
-  PredyedColor
+  Color
 } from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
@@ -54,11 +53,10 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
-  predyedColors: PredyedColor[]
-  selectedPredyed: PredyedColor
+  selectedPredyed: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
-  onSelectPredyed: (predyedColor: PredyedColor) => void
+  onSelectPredyed: (predyedColor: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
@@ -78,7 +76,6 @@ const SELECT_COLORS_INDEX = 0
 const BASE_COLORS_INDEX = 1
 const PALETTES_COLORS_INDEX = 2
 const STITCHING_COLORS_INDEX = 3
-const PREDYED_COLORS_INDEX = 4
 
 class ColorsTab extends React.PureComponent<Props, State> {
   state = {
@@ -104,8 +101,6 @@ class ColorsTab extends React.PureComponent<Props, State> {
 
   goToStitching = () => this.setState({ index: STITCHING_COLORS_INDEX })
 
-  goToPredyed = () => this.setState({ index: PREDYED_COLORS_INDEX })
-
   render() {
     const {
       formatMessage,
@@ -121,7 +116,6 @@ class ColorsTab extends React.PureComponent<Props, State> {
       palettes,
       selectedPredyed,
       onSetPalettes,
-      predyedColors,
       onSelectPalette,
       openPaletteModalAction,
       myPaletteModals,
@@ -153,29 +147,25 @@ class ColorsTab extends React.PureComponent<Props, State> {
       !!product.zipper.black
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
-    const hasBranding = !!product && !!product.branding
+    const hasBranding = !!product && !!product.hasPredyed
 
     const isFirstTab = index === SELECT_COLORS_INDEX
     const baseColorsTab = index === BASE_COLORS_INDEX
     const palettesTab = index === PALETTES_COLORS_INDEX
     const stitchingTab = index === STITCHING_COLORS_INDEX
-    const predyedTab = index === PREDYED_COLORS_INDEX
 
     let topMessage = messages.selectColors
 
     if (palettesTab) {
       topMessage = messages.myPalettes
     }
-    if (predyedTab) {
-      topMessage = messages.predyed
-    }
-    const { code: value, name } = selectedPredyed
+
     return (
       <Container>
         <Top>
           <Row
             onClick={
-              !isFirstTab && !stitchingTab && !predyedTab
+              !isFirstTab && !stitchingTab
                 ? this.handleOnBack
                 : this.handleOnResetIndex
             }
@@ -197,10 +187,10 @@ class ColorsTab extends React.PureComponent<Props, State> {
             showContent={isFirstTab}
             goToBaseColors={this.goToBaseColors}
             goToStitching={this.goToStitching}
-            goToPredyed={this.goToPredyed}
             {...{
               colors,
               colorsList,
+              onSelectPredyed,
               names,
               stitchingColor,
               bindingColor,
@@ -266,26 +256,6 @@ class ColorsTab extends React.PureComponent<Props, State> {
                   stitchingColor,
                   disableTooltip,
                   colorsList,
-                  formatMessage
-                }}
-              />
-            </StitchingList>
-          ) : (
-              <div />
-            )}
-          {predyedTab ? (
-            <StitchingList>
-              <ColorList
-                stitching={true}
-                isPredyed={true}
-                stitchingColor={{
-                  value,
-                  name
-                }}
-                {...{
-                  disableTooltip,
-                  predyedColors,
-                  onSelectPredyed,
                   formatMessage
                 }}
               />

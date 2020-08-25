@@ -88,8 +88,7 @@ import {
   UserInfo,
   DesignLabInfo,
   ProAssistItem,
-  UserType,
-  PredyedColor
+  UserType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -100,8 +99,7 @@ import {
   getDesignLabInfo,
   getVariantsFromProduct,
   getProAssist,
-  getProTicket,
-  getPredyedColors
+  getProTicket
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -114,14 +112,9 @@ import moment from 'moment'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import clone from 'lodash/clone'
-import { BLACK } from '../../theme/colors'
 
 interface DataProduct extends QueryProps {
   product?: Product
-}
-
-interface DataPredyedColors extends QueryProps {
-  predyedColors?: PredyedColor[]
 }
 
 interface DataDesign extends QueryProps {
@@ -154,8 +147,7 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   undoChanges: Change[]
   redoChanges: Change[]
-  dataPredyedColors: DataPredyedColors
-  selectedPredyed: PredyedColor
+  selectedPredyed: string
   swipingView: boolean
   openShareModal: boolean
   openSaveDesign: boolean
@@ -219,9 +211,10 @@ interface Props extends RouteComponentProps<any> {
   selectedVariant: number
   tutorialPlaylist: string
   designCheckModalOpen: boolean
+  predyedChanged: boolean
   // Redux Actions
   clearStoreAction: () => void
-  setPredyedColor: (predyedColor: PredyedColor) => void
+  setPredyedColor: (predyedColor: string) => void
   selectVariantAction: (index: number) => void
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
@@ -652,8 +645,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectVariantAction,
       selectedVariant,
       dataVariants,
-      selectedPredyed,
-      dataPredyedColors,
+      predyedChanged,
+      selectedPredyed: storedPredyed,
       responsive,
       onReApplyImageElementAction,
       onCanvasElementDuplicatedAction,
@@ -707,8 +700,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       return redirect
     }
     const variants = get(dataVariants, 'getVariants', [])
-    const predyedArray = get(dataPredyedColors, 'predyedColors', [])
-    const predyedColors = [...predyedArray, { code: BLACK, name: 'BLACK' }]
     const deliveryDaysResponse = get(
       dataDesignLabInfo,
       'designInfo.deliveryDays',
@@ -786,6 +777,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     let isEditing = !!dataDesign
     let productConfig = clone(product)
     let currentStyle = style
+    let originPredyed = storedPredyed
     let proDesignModel
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
@@ -793,6 +785,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         shortId: designId,
         colors: designColors = [],
         style: designStyle,
+        predyedName,
         flatlockCode,
         flatlockColor,
         bibBraceColor: bibBraceAccesoryColor,
@@ -808,6 +801,9 @@ export class DesignCenter extends React.Component<Props, {}> {
         canvas: designCanvas,
         outputSvg
       } = designData
+      if (predyedName) {
+        originPredyed = predyedName
+      }
       const designConfig = {
         flatlockCode,
         flatlockColor,
@@ -844,6 +840,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         tabSelected = PreviewTabIndex
       }
     }
+    const selectedPredyed = predyedChanged ? storedPredyed : originPredyed
     if (selectedVariant !== -1) {
       const { obj, mtl } = variants[selectedVariant]
       productConfig.obj = obj
@@ -969,7 +966,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                     selectVariantAction,
                     selectedVariant,
                     variants,
-                    predyedColors,
                     selectedPredyed,
                     textFormat,
                     artFormat,
@@ -1406,21 +1402,6 @@ const DesignCenterEnhance = compose(
       }
     },
     name: 'dataVariants'
-  }),
-  graphql(getPredyedColors, {
-    options: ({ dataDesign, location }: OwnProps) => {
-      const search = location ? location.search : ''
-      const queryParams = queryString.parse(search)
-      const productId = get(dataDesign, 'designData.product.id', queryParams.id)
-      return {
-        fetchPolicy: 'network-only',
-        skip: !productId,
-        variables: {
-          id: productId
-        }
-      }
-    },
-    name: 'dataPredyedColors'
   }),
   graphql(getProAssist, {
     name: 'proAssist',

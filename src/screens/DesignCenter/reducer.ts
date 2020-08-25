@@ -82,7 +82,7 @@ import {
   SET_PREDYED_COLOR
 } from './constants'
 import { Reducer, Change } from '../../types/common'
-import { DEFAULT_FONT } from '../../constants'
+import { DEFAULT_FONT, ACCESSORY_BLACK } from '../../constants'
 import { BLACK as BLACK_COLOR } from '../../theme/colors'
 export const initialState = fromJS({
   currentTab: 0,
@@ -92,10 +92,8 @@ export const initialState = fromJS({
   colors: [],
   stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
   bindingColor: BLACK,
-  selectedPredyed: {
-    name: 'BLACK',
-    code: BLACK_COLOR
-  },
+  predyedChanged: false,
+  selectedPredyed: ACCESSORY_BLACK,
   zipperColor: BLACK,
   bibColor: WHITE,
   styleColors: [],
@@ -271,17 +269,17 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_PREDYED_COLOR: {
-      const oldColor = state.get('selectedPredyed').toJS()
-      const newColor = action.predyedColor
+      const color = action.predyedColor
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const lastStep = {
         type: Changes.AccessoryColors,
-        state: { id: AccessoryColors.Predyed, oldColor, newColor }
+        state: { id: AccessoryColors.Predyed, color }
       }
       return state.merge({
-        selectedPredyed: newColor,
+        selectedPredyed: color,
         designHasChanges: true,
+        predyedChanged: true,
         undoChanges: undoChanges.unshift(lastStep),
         redoChanges: redoChanges.clear()
       })
@@ -352,8 +350,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           const {
             state: { id: accessory, newColor: color, oldColor }
           } = undoStep
-          if (accessory !== AccessoryColors.Stitching &&
-            accessory !== AccessoryColors.Predyed) {
+          if (accessory !== AccessoryColors.Stitching) {
             const newColor = color === WHITE ? BLACK : WHITE
             return state.merge({
               undoChanges: undoChanges.shift(),
@@ -364,7 +361,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
-            [accessory === AccessoryColors.Predyed ? 'selectedPredyed' : 'stitchingColor']: oldColor
+            stitchingColor: oldColor
           })
         }
         case Changes.ChangeText: {
@@ -436,8 +433,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           const {
             state: { id: accessory, newColor: color }
           } = redoStep
-          if (accessory !== AccessoryColors.Stitching &&
-            accessory !== AccessoryColors.Predyed) {
+          if (accessory !== AccessoryColors.Stitching) {
             const newColor = color === WHITE ? WHITE : BLACK
             return state.merge({
               undoChanges: undoChanges.unshift(redoStep),
@@ -448,7 +444,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
-            [accessory === AccessoryColors.Predyed ? 'selectedPredyed' : 'stitchingColor']: color
+            stitchingColor: color
 
           })
         }
@@ -486,6 +482,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         colors: state.get('styleColors'),
         stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
+        selectedPredyed: ACCESSORY_BLACK,
         bindingColor: BLACK,
         zipperColor: BLACK,
         bibColor: WHITE,
