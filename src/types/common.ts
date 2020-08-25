@@ -156,6 +156,7 @@ export interface Product {
   shortDescription: string
   genderId: number
   productTotal?: number
+  onlyProDesign?: boolean
   unitPrice?: number
   sizeRange: ItemDetailType[]
   obj?: string
@@ -234,6 +235,7 @@ export type AffiliatePayment = {
   customerId?: string
   currency?: String
   totalOrigin: number
+  netsuite?: NetsuiteObject
   orderCurrency?: String
   orderStatus?: string
   customerName?: string

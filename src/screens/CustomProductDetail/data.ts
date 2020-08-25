@@ -28,6 +28,7 @@ export const GetDesignByIdQuery = gql`
         active
         modelSize: model_size
         type: short_description
+        onlyProDesign: only_pro_design
         shortDescription: short_description
         genderId: gender_id
         customizable: design_center

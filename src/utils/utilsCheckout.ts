@@ -5,12 +5,9 @@ import {
   FLAT_PROMO,
   COUNTRY_CODE_US,
   COUNTRY_CODE_CANADA,
-  COUNTRY_CODE_AT,
-  COUNTRY_CODE_DE,
   DESIGN
 } from '../screens/Checkout/constants'
 
-const specialTaxes = [COUNTRY_CODE_AT, COUNTRY_CODE_DE]
 const CANADA_SHIPPING_TAX_RATE = 5
 
 export const getTaxesAndDiscount = (
@@ -27,45 +24,28 @@ export const getTaxesAndDiscount = (
   // get tax fee
   const taxesAmount = taxRates && taxRates.total
 
-  // true when shippingAddressCountry is Austria or Germany
-  const applySpecialTaxes = specialTaxes.includes(
-    shippingAddressCountry.toLowerCase()
-  )
-
   let discount = 0
   let taxVatTotal = 0
 
   if (couponCode) {
     const { type, rate, restrictionType, products = [] } = couponCode
     const restrictions = restrictionType ? restrictionType.split(',') : []
+
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
         if (!restrictions.includes(DESIGN)) {
-          if (taxesAmount && applySpecialTaxes) {
-            taxVatTotal = taxesAmount / 100
-            const totalNet = subtotal / (1 + taxVatTotal)
-            // for Austria and Germany we calculate discount
-            // discount = (totalNet + proDesignReview) * percentageDiscount
-            discount = (totalNet + proDesignFee) * (Number(rate) / 100)
-          } else {
-            // calculate discount with (subtotal + proDesignFee) * percentageDiscount
-            discount = (subtotal + proDesignFee) * (Number(rate) / 100)
-          }
+          // calculate discount with (subtotal + proDesignFee) * percentageDiscount
+          discount = (subtotal + proDesignFee) * (Number(rate) / 100)
         } else {
-          discount = products.reduce((totalDiscount: number, design) => {
-            const itemForDiscount = find(
-              productsPrices,
-              (productObject) => productObject.designId === design
-            )
-            if (itemForDiscount) {
-              return (
-                totalDiscount +
-                itemForDiscount.price *
-                  (Number(rate) / 100) *
-                  itemForDiscount.quantity
-              )
+          discount = productsPrices.reduce((totalDiscount: number, design) => {
+            if (!products.includes(design.designId)) {
+              return totalDiscount
             }
-            return totalDiscount
+            const { price, quantity} = design
+            return (
+              totalDiscount +
+              price * (Number(rate) / 100) * quantity
+            )
             // tslint:disable-next-line: align
           }, 0)
         }
@@ -93,7 +73,6 @@ export const getTaxesAndDiscount = (
   }
 
   discount = roundDecimals(discount) // round to 2 decimals
-
   // taxes
   let taxGst = 0
   let taxPst = 0
@@ -126,32 +105,6 @@ export const getTaxesAndDiscount = (
             (subtotal + proDesignFee - discount) * (taxRates.ratePst / 100) // calculate tax
           taxGst = roundDecimals(taxGst) // round to 2 decimals
           taxPst = roundDecimals(taxPst) // round to 2 decimals
-        }
-        break
-      case COUNTRY_CODE_AT:
-        taxVatTotal = taxesAmount / 100
-        if (applySpecialTaxes) {
-          // explanation of taxVat at calculateTaxVat function
-          taxVat = calculateTaxVat(
-            subtotal,
-            taxVatTotal,
-            proDesignFee,
-            shippingTotal,
-            discount
-          )
-        }
-        break
-      case COUNTRY_CODE_DE:
-        taxVatTotal = taxesAmount / 100
-        if (applySpecialTaxes) {
-          // explanation of taxVat at calculateTaxVat function
-          taxVat = calculateTaxVat(
-            subtotal,
-            taxVatTotal,
-            proDesignFee,
-            shippingTotal,
-            discount
-          )
         }
         break
       default:

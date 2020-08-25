@@ -52,5 +52,9 @@ export default defineMessages({
   cutoffDate: {
     id: 'components.TeamStoresAdmin.cutoffDate',
     defaultMessage: 'Cut-off Date'
+  },
+  ownerName: {
+    id: 'components.TeamStoresAdmin.ownerName',
+    defaultMessage: 'Store Owner'
   }
 })

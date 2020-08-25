@@ -104,6 +104,7 @@ interface Props {
   currencySymbol?: string
   history?: any
   openFitInfo: boolean
+  highlightFields?: boolean
 }
 
 interface MessagePrice {
@@ -254,7 +255,8 @@ export class CartListItem extends React.Component<Props, {}> {
       setDetailSize = () => { },
       removeItem = () => { },
       openFitInfoAction = () => { },
-      openFitInfo
+      openFitInfo,
+      highlightFields
     } = this.props
 
     const {
@@ -280,6 +282,7 @@ export class CartListItem extends React.Component<Props, {}> {
     )
     const mpnCode = get(cartItem, 'product.mpn', '')
     const active = get(cartItem, 'product.active', false)
+    const onlyProDesign = get(cartItem, 'product.onlyProDesign', false)
     const isTeamStore = get(cartItem, 'teamStoreId', '')
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
@@ -326,7 +329,8 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailSize,
           openFitInfoAction,
           openFitInfo,
-          teamStoreName
+          teamStoreName,
+          highlightFields
         }}
       />
     )
@@ -349,9 +353,7 @@ export class CartListItem extends React.Component<Props, {}> {
           {!!teamStoreName && (
             <FromTeamStore>
               {formatMessage(messages.from)}
-              <StoreLink onClick={this.goToStore}>
-                {teamStoreName}
-              </StoreLink>
+              <StoreLink onClick={this.goToStore}>{teamStoreName}</StoreLink>
             </FromTeamStore>
           )}
           <ItemDetailsHeaderNameDetail>
@@ -410,7 +412,7 @@ export class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  {(canReorder && active) && renderAddToCartButton}
+                  {(canReorder && (active || onlyProDesign)) && renderAddToCartButton}
                 </ItemDetails>
               </Container>
             )
@@ -428,7 +430,7 @@ export class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
-                  {(canReorder && active) && renderAddToCartButton}
+                  {(canReorder && (active || onlyProDesign)) && renderAddToCartButton}
                 </div>
               </Container>
             )

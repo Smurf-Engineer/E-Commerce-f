@@ -30,6 +30,7 @@ interface Props {
   hasError?: boolean
   name: string
   startDate?: Moment
+  initialStartDate?: Moment
   endDate?: Moment
   onDemand?: boolean
   validateHoliday: any
@@ -56,6 +57,7 @@ const StoreForm = ({
   onSelectStartDate,
   onSelectEndDate,
   name,
+  initialStartDate,
   startDate,
   endDate,
   onDemand,
@@ -89,12 +91,13 @@ const StoreForm = ({
     date.add('1', 'days')
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
 
-    date.add('14', 'days')
-
-    let momentStartDate = date.valueOf()
+    let momentStartDate
     if (storeId && !datesEdited) {
-      momentStartDate = moment(startDate)
+      momentStartDate = moment(initialStartDate || date)
       momentStartDate.add('17', 'days')
+    } else {
+      date.add('14', 'days')
+      momentStartDate = date.valueOf()
     }
     const isGreaterThanFourteenDays = current.valueOf() > momentStartDate
 

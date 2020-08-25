@@ -32,7 +32,7 @@ import { PAY_LIMITS } from '../constants'
 import moment from 'moment'
 import { NOTE_FORMAT } from '../../UsersAdmin/constants'
 // import { getFileWithExtension } from '../../../utils/utilsFiles'
-import { PENDING_PAY, TO_PAY } from '../../../constants'
+import { PENDING_PAY, TO_PAY, SHIPPED, PARTIALLY_SHIPPED } from '../../../constants'
 import clone from 'lodash/clone'
 import { message } from 'antd'
 import debounce from 'lodash/debounce'
@@ -50,6 +50,7 @@ interface Props {
   endParam: string
   loading: boolean
   canEdit: boolean
+  overrideStatus: boolean
   isAccountant: boolean
   selected: SelectedPays
   handleInputChange: (value: string) => void
@@ -141,6 +142,7 @@ export class PayList extends React.Component<Props, {}> {
       formatMessage,
       selected,
       canEdit,
+      overrideStatus,
       isAccountant,
       loading: loadingPayment,
       currentPage,
@@ -209,6 +211,7 @@ export class PayList extends React.Component<Props, {}> {
                   status,
                   amount,
                   orderId,
+                  netsuite,
                   customerId,
                   orderStatus,
                   currency,
@@ -216,13 +219,17 @@ export class PayList extends React.Component<Props, {}> {
                   orderAmount,
                   orderCurrency,
                 }: AffiliatePayment,
-                index: number) => (
+                index: number) => {
+                const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus', '')
+                return (
                   <RepDiv id={orderId} onClick={this.openOrder} key={index}>
                     <Cell onClick={this.stopPropagation}>
                       {(
                         (
                           (status === TO_PAY && isAccountant) ||
-                          (!isAccountant && status === PENDING_PAY)
+                          (!isAccountant && status === PENDING_PAY &&
+                            ((netsuiteStatus === SHIPPED || netsuiteStatus === PARTIALLY_SHIPPED) || overrideStatus)
+                          )
                         ) &&
                         !!paypalAccount && canEdit
                       ) &&
@@ -247,10 +254,11 @@ export class PayList extends React.Component<Props, {}> {
                     <Cell width="100px" bold={true}>{`${currency} ${orderAmount.toFixed(2)}`}</Cell>
                     <Cell width="90px" bold={true}>{`${currency} ${amount.toFixed(2)}`}</Cell>
                     <Cell>{orderId}</Cell>
-                    <Cell>{orderStatus}</Cell>
+                    <Cell>{netsuiteStatus || orderStatus}</Cell>
                     <Cell>{`JV2-${customerId}`}</Cell>
                   </RepDiv>
-                ))
+                )
+              })
             ) : (
                 <EmptyContainer message={formatMessage(messages.empty)} />
               )}

@@ -5,10 +5,18 @@ import styled from 'styled-components'
 import Select from 'antd/lib/select'
 import Input from 'antd/lib/input'
 import InputNumber from 'antd/lib/input-number'
-import { GRAY_LIGHT, RED, GRAY, GRAY_SOFT, GRAY_DARK } from '../../theme/colors'
+import {
+  GRAY_LIGHT,
+  RED,
+  GRAY,
+  GRAY_SOFT,
+  GRAY_DARK,
+  GRAY_ANTDESIGN
+} from '../../theme/colors'
 
 type SelectType = {
   selectWidth?: string
+  highlightFields?: boolean
 }
 
 export const Table = styled.div`
@@ -163,6 +171,10 @@ export const DeleteItem = styled.div`
 export const StyledSelect = styled(Select)`
   width: ${({ selectWidth }: SelectType) =>
     selectWidth ? selectWidth : '100%'};
+  & .ant-select-selection {
+    border-color: ${({ highlightFields }: SelectType) =>
+      highlightFields ? RED : GRAY_ANTDESIGN};
+  }
 `
 
 export const StyledInput = styled(Input)`

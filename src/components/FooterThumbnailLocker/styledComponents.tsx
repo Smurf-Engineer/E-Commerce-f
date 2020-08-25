@@ -26,7 +26,6 @@ export const Type = styled.div`
 `
 
 export const Description = styled.div`
-  user-select: none;
   color: #8c8c8c;
   font-size: 12px;
   line-height: 16px;
@@ -43,7 +42,6 @@ export const Description = styled.div`
 `
 
 export const Bottom = styled.div`
-  user-select: none;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -51,7 +49,6 @@ export const Bottom = styled.div`
 `
 
 export const Label = styled.div`
-  user-select: none;
   color: #5f6062;
   padding 4px 0px;
   font-size: 12px;
@@ -60,7 +57,6 @@ export const Label = styled.div`
 `
 
 export const Price = styled.div`
-  user-select: none;
   color: #5f6062;
   font-size: 12px;
   font-weight: 600;

@@ -258,7 +258,15 @@ class Render3D extends PureComponent {
               `${actualImage || outputSvg}${this.getCacheQuery()}`
             )
             loadedTextures.texture = new THREE.Texture(imageCanvas)
-          } else {
+          } else if (!outputPng && outputSvg) {
+            const imageCanvas = document.createElement('canvas')
+            canvg(
+              imageCanvas,
+              `${outputSvg}${this.getCacheQuery()}`
+            )
+            loadedTextures.texture = new THREE.Texture(imageCanvas)
+          }
+          else {
             loadedTextures.texture = textureLoader.load(
               `${outputPng}${this.getCacheQuery()}`
             )
@@ -327,7 +335,6 @@ class Render3D extends PureComponent {
       isProduct,
       isAdmin,
       fromShare,
-      detailed,
       data,
       textColor
     } = this.props

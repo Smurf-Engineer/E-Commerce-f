@@ -22,7 +22,8 @@ import {
   SHOW_REVIEW_DESIGN_MODAL,
   OPEN_FITINFO,
   OPEN_STORE_INFO,
-  SET_STORE_TERMS
+  SET_STORE_TERMS,
+  HIGHLIGHT_FIELDS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -37,7 +38,8 @@ export const initialState = fromJS({
   showDeleteLastItemModal: false,
   showReviewDesignModal: false,
   openFitInfo: false,
-  selectedIndex: 0
+  selectedIndex: 0,
+  highlightFields: false
 })
 
 const shoppingCartPageReducer: Reducer<any> = (
@@ -136,6 +138,8 @@ const shoppingCartPageReducer: Reducer<any> = (
         openFitInfo: action.open,
         selectedIndex: action.selectedIndex || 0
       })
+    case HIGHLIGHT_FIELDS:
+      return state.set('highlightFields', true)
     default:
       return state
   }

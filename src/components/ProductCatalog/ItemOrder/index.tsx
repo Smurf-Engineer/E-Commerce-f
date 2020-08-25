@@ -16,7 +16,9 @@ interface Props {
   active: boolean
   disabled: boolean
   hasPredyed: boolean
+  onlyProDesign?: boolean
   togglePredyed: (variables: {}) => Promise<Product>
+  updateOnlyPro: (variables: {}) => Promise<Product>
   onCheck: (variables: {}) => Promise<Product>
   onProductClick: (id: number) => void
 }
@@ -37,17 +39,30 @@ class ItemOrder extends React.PureComponent<Props, State> {
       event.stopPropagation()
     }
   }
-  onChange = async () => {
+  onChangeActive = async () => {
     const { onCheck, id } = this.props
     try {
       this.setState({ loading: true })
       await onCheck({
         variables: { id }
       })
-      this.setState({ loading: false })
     } catch (e) {
-      this.setState({ loading: false })
       message.error(e.graphQLErrors.map((x: Error) => x.message).join(', '))
+    } finally {
+      this.setState({ loading: false })
+    }
+  }
+  onChangePro = async () => {
+    const { updateOnlyPro, id } = this.props
+    try {
+      this.setState({ loading: true })
+      await updateOnlyPro({
+        variables: { id }
+      })
+    } catch (e) {
+      message.error(e.graphQLErrors.map((x: Error) => x.message).join(', '))
+    } finally {
+      this.setState({ loading: false })
     }
   }
   enablePredyed = async () => {
@@ -73,6 +88,7 @@ class ItemOrder extends React.PureComponent<Props, State> {
       code,
       productType,
       active: checked,
+      onlyProDesign,
       disabled
     } = this.props
     return (
@@ -89,7 +105,15 @@ class ItemOrder extends React.PureComponent<Props, State> {
         <Cell onClick={this.stopPropagation} textAlign="center">
           <Switch
             {...{ disabled, checked, loading }}
-            onChange={this.onChange}
+            onChange={this.onChangeActive}
+          />
+        </Cell>
+        <Cell onClick={this.stopPropagation} textAlign="center">
+          <Switch
+            {...{ loading }}
+            checked={onlyProDesign}
+            disabled={checked}
+            onChange={this.onChangePro}
           />
         </Cell>
         <Cell onClick={this.stopPropagation} textAlign="center">

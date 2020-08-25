@@ -22,6 +22,7 @@ export const getProductsQuery = gql`
         active
         hasPredyed: has_predyed
         isCustom: design_center
+        onlyProDesign: only_pro_design
         mpn
         images: original_pictures {
           front: front_image
@@ -50,6 +51,14 @@ export const togglePredyedProduct = gql`
     productResult: togglePredyed(id: $id) {
       id
       hasPredyed: has_predyed
+    }
+  }
+`
+export const changeOnlyPro = gql`
+  mutation changeOnlyPro($id: Int!) {
+    productResult: changeOnlyPro(id: $id) {
+      id
+      onlyProDesign: only_pro_design
     }
   }
 `

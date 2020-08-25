@@ -92,7 +92,8 @@ import {
   GRIP_TAPE,
   DEFAULT_COLOR,
   AMBIENT_LIGHT_INTENSITY,
-  DIRECTIONAL_LIGHT_INTENSITY
+  DIRECTIONAL_LIGHT_INTENSITY,
+  ILLUSTRATOR_PIXELS_PER_CM
 } from '../../../constants'
 import {
   BLACK,
@@ -138,6 +139,8 @@ import { initSlaask, closeSlaask } from '../../../slaask'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const { info } = Modal
+const MIN_ZOOM = 50
+const MAX_ZOOM = 400
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -282,7 +285,7 @@ class Render3D extends PureComponent {
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
 
-    camera.position.z = 250
+    camera.position.z = 150
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -330,13 +333,16 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
 
     controls.enableKeys = false
+    controls.enableZoom = false
     controls.minDistance = CAMERA_MIN_ZOOM
     controls.maxDistance = CAMERA_MAX_ZOOM
     // controls.enableZoom = isMobile TODO: Pan zoom
 
     if (!isMobile) {
-      const { down, up, move } = this.configureEventListeners()
+      const { down, up, move, wheel } = this.configureEventListeners()
       this.container.addEventListener(down, this.onMouseDown, false)
+      this.container.addEventListener(down, this.onMouseDown, false)
+      this.container.addEventListener(wheel, this.onWheel, false)
       this.container.addEventListener(up, this.onMouseUp, false)
       this.container.addEventListener(move, this.onMouseMove, false)
     }
@@ -380,7 +386,8 @@ class Render3D extends PureComponent {
     return {
       down: 'mousedown',
       up: 'mouseup',
-      move: 'mousemove'
+      move: 'mousemove',
+      wheel: 'wheel'
     }
   }
 
@@ -912,6 +919,16 @@ class Render3D extends PureComponent {
     }
   }
 
+  onWheel = (event) => {
+    if (event && event.deltaY) {
+      const actualZoom = this.camera.zoom * 100
+      const newZoom = actualZoom + (event.deltaY * -1)
+      if (newZoom >= MIN_ZOOM && newZoom <= MAX_ZOOM) {
+        this.handleOnChangeZoom(newZoom)
+      }
+    }
+  }
+
   changeStitchingColor = (color) => {
     const { flatlockIndex } = this.state
     const object = this.scene.getObjectByName(MESH_NAME)
@@ -1045,6 +1062,7 @@ class Render3D extends PureComponent {
     if (this.camera) {
       this.camera.zoom = value / 100.0
       this.camera.updateProjectionMatrix()
+      this.forceUpdate()
     }
   }
 
@@ -1445,7 +1463,7 @@ class Render3D extends PureComponent {
         </MobileContainer>
       )
     }
-
+    const zoom = this.camera ? this.camera.zoom * 100 : INITIAL_ZOOM * 100
     const showHint = this.getHelpModalValueFromLocal()
 
     {
@@ -1533,7 +1551,7 @@ class Render3D extends PureComponent {
           onClickClear={this.handleOnClickClear}
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
-        <Slider onChangeZoom={this.handleOnChangeZoom} />
+        <Slider value={zoom} onChangeZoom={this.handleOnChangeZoom} />
         {config.tutorialsTabActive === 'true' && (
           <TutorialButton onClick={this.handleGoToTutorials}>
             <TutorialIcon src={tutorials} />
@@ -2716,17 +2734,17 @@ class Render3D extends PureComponent {
     const scaleYTemp = scaleY / scaleFactorY
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
-    size.width = (scaledWidth * CM_PER_INCH) / DPI
-    size.height = (scaledHeight * CM_PER_INCH) / DPI
+    size.width = scaledWidth / ILLUSTRATOR_PIXELS_PER_CM
+    size.height = scaledHeight / ILLUSTRATOR_PIXELS_PER_CM
     return size
   }
 
   getSizeInPixels = (cmWidth, cmHeight, width, height) => {
     const { scaleFactorX, scaleFactorY } = this.state
-    const scaledWidth = ((cmWidth || 1) * DPI) / CM_PER_INCH
+    const scaledWidth = (cmWidth || 1) * ILLUSTRATOR_PIXELS_PER_CM
     const scaleXTemp = scaledWidth / width
     const scaleX = scaleFactorX * scaleXTemp
-    const scaledHeight = ((cmHeight || 1) * DPI) / CM_PER_INCH
+    const scaledHeight = (cmHeight || 1) * ILLUSTRATOR_PIXELS_PER_CM
     const scaleYTemp = scaledHeight / height
     const scaleY = scaleFactorY * scaleYTemp
     return { scaleX, scaleY }

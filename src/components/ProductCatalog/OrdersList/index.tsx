@@ -14,7 +14,7 @@ import { Product, sorts } from '../../../types/common'
 import jakrooLogo from '../../../assets/Jackroologo.svg'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getProductsQuery, changeActiveProduct, togglePredyedProduct } from './data'
+import { getProductsQuery, changeActiveProduct, togglePredyedProduct, changeOnlyPro } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Props {
@@ -31,18 +31,20 @@ interface Props {
   canEdit: boolean
   updateActiveProduct: (variables: {}) => Promise<Product>
   togglePredyed: (variables: {}) => Promise<Product>
+  updateOnlyPro: (variables: {}) => Promise<Product>
   onSortClick: (label: string, sort: sorts) => void
   onProductClick: (id: number) => void
   onChangePage: (page: number) => void
 }
 
-const OrdersList = ({
+const ProductList = ({
   formatMessage,
   currentPage,
   data: { productsQuery },
   onProductClick,
   onChangePage,
   canEdit,
+  updateOnlyPro,
   updateActiveProduct,
   togglePredyed,
   withPagination = true,
@@ -80,6 +82,10 @@ const OrdersList = ({
               justifyContent="center"
             />
             <HeaderTable
+              label={formatMessage(messages.proDesign)}
+              justifyContent="center"
+            />
+            <HeaderTable
               label={formatMessage(messages.hasPredyed)}
               justifyContent="center"
             />
@@ -90,7 +96,7 @@ const OrdersList = ({
   )
   const orderItems = orders.map(
     (
-      { id, images, active, name, mpn, code, isCustom, obj, mtl, hasPredyed }: Product,
+      { id, images, active, name, mpn, code, isCustom, obj, mtl, hasPredyed, onlyProDesign }: Product,
       index: number
     ) => {
       const image =
@@ -111,6 +117,8 @@ const OrdersList = ({
             name,
             mpn,
             code,
+            updateOnlyPro,
+            onlyProDesign,
             isCustom,
             togglePredyed,
             hasPredyed,
@@ -151,9 +159,10 @@ interface OwnProps {
 
 const PRODUCTS_LIMIT = 12
 
-const OrdersListEnhance = compose(
+const ProductListEnhance = compose(
   graphql(changeActiveProduct, { name: 'updateActiveProduct' }),
   graphql(togglePredyedProduct, { name: 'togglePredyed' }),
+  graphql(changeOnlyPro, { name: 'updateOnlyPro' }),
   graphql(getProductsQuery, {
     options: ({ currentPage, customLimit, searchText }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : PRODUCTS_LIMIT
@@ -170,6 +179,6 @@ const OrdersListEnhance = compose(
   }),
   withError,
   withLoading
-)(OrdersList)
+)(ProductList)
 
-export default OrdersListEnhance
+export default ProductListEnhance

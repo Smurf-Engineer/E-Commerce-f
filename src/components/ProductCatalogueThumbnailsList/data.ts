@@ -31,6 +31,7 @@ export const GetProductsQuery = gql`
         code
         yotpoId: yotpo_id
         name
+        onlyProDesign: only_pro_design
         active
         type: name
         description: short_description

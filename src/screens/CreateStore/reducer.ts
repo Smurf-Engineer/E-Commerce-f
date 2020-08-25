@@ -36,6 +36,7 @@ export const initialState = fromJS({
   name: '',
   startDate: '',
   startDateMoment: null,
+  initialStartDate: null,
   endDate: '',
   endDateMoment: null,
   privateStore: true,
@@ -157,7 +158,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
           datesEdited
         }
       } = action
-
+      const startDateMoment = startDate ? moment(startDate) : null
       return state.merge({
         storeId: id,
         storeShortId: shortId,
@@ -165,7 +166,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         passCode,
         bulletin,
         startDate: startDate,
-        startDateMoment: startDate ? moment(startDate) : null,
+        startDateMoment,
+        initialStartDate: startDateMoment,
         endDate: endDate,
         endDateMoment: endDate ? moment(endDate) : null,
         teamSizeId: sizeId,

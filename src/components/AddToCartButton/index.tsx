@@ -5,7 +5,6 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
-import { injectIntl } from 'react-intl'
 import Message from 'antd/lib/message'
 
 import {
@@ -256,18 +255,19 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       formatMessage
     } = this.props
     const active = get(item, 'product.active', false)
+    const onlyProDesign = get(item, 'product.onlyProDesign', false)
     const productName = renderForThumbnail
       ? get(item, 'product.name')
       : item.product.name
 
-    if (typeof window !== 'undefined' && active) {
+    if (typeof window !== 'undefined' && (active || onlyProDesign)) {
       const cartList = JSON.parse(localStorage.getItem('cart') as any)
 
       if (cartList) {
         const { teamStoreId, designId } = item
         const sameDesign = find(cartList, ['designId', designId])
         if (sameDesign && sameDesign.teamStoreId !== teamStoreId) {
-          Message.warning(intl.formatMessage(messages.cantMix))
+          Message.warning(formatMessage(messages.cantMix))
           return
         } else {
           cartList.push(item)
@@ -287,7 +287,6 @@ export class AddToCartButton extends PureComponent<Props, {}> {
 }
 
 const AddToCartEnhanced = compose(
-  injectIntl,
   connect(
     null,
     { getTotalItemsIncart },

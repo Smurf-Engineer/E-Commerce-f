@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.users',
     defaultMessage: 'USERS'
   },
+  payday: {
+    id: 'screens.AdminLayout.payday',
+    defaultMessage: 'PAYDAY PROGRAM'
+  },
   usersList: {
     id: 'screens.AdminLayout.usersList',
     defaultMessage: 'User List'
@@ -67,11 +71,11 @@ export default defineMessages({
   },
   affiliatesPayouts: {
     id: 'screens.AdminLayout.affiliatesPayouts',
-    defaultMessage: 'Affiliates Payouts'
+    defaultMessage: 'Payouts'
   },
   affiliates: {
     id: 'screens.AdminLayout.affiliates',
-    defaultMessage: 'Affiliates Orders'
+    defaultMessage: 'Orders'
   },
   teamStores: {
     id: 'screens.AdminLayout.teamStores',

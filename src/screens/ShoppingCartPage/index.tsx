@@ -84,6 +84,7 @@ interface Props extends RouteComponentProps<any> {
   storeTerms: boolean
   openStoreInfo: boolean
   selectedIndex: number
+  highlightFields: boolean
   openStoreInfoAction: (open: boolean) => void
   setStoreTerms: (checked: boolean) => void
   setItemsAction: (items: Product[]) => void
@@ -129,6 +130,7 @@ interface Props extends RouteComponentProps<any> {
   saveToStorage: (cart: CartItems[], reset: boolean) => void
   showReviewDesignModalAction: (open: boolean) => void
   openFitInfoAction: (open: boolean, selectedIndex?: number) => void
+  highlightRequiredFields: () => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -190,19 +192,22 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setStoreTerms(checked)
   }
 
-  onCheckoutClick = () => {
-    const { openStoreInfoAction, cart } = this.props
-    const fixedItem = find(cart, 'isFixed')
-    if (fixedItem) {
-      const sameTeam = every(cart, ['teamStoreId', fixedItem.teamStoreId])
-      if (sameTeam) {
-        openStoreInfoAction(true)
-      } else {
-        this.showFixedError()
+  onCheckoutClick = (activeCheckout: boolean) => {
+    const { openStoreInfoAction, cart, highlightRequiredFields } = this.props
+    if (activeCheckout) {
+      const fixedItem = find(cart, 'isFixed')
+      if (fixedItem) {
+        const sameTeam = every(cart, ['teamStoreId', fixedItem.teamStoreId])
+        if (sameTeam) {
+          openStoreInfoAction(true)
+        } else {
+          this.showFixedError()
+        }
+        return
       }
-      return
+      return this.proceedCheckout()
     }
-    this.proceedCheckout()
+    highlightRequiredFields()
   }
 
   handleCloseStoreInfo = () => {
@@ -366,7 +371,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       currentCurrency,
       openFitInfoAction,
       openFitInfo,
-      selectedIndex
+      selectedIndex,
+      highlightFields
     } = this.props
     const { formatMessage } = intl
 
@@ -422,7 +428,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           }
           price={
             currencyPrices[
-            cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
+              cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
             ]
           }
           image={
@@ -445,14 +451,15 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailSize={this.handleSetDetailSize}
           removeItem={this.handleRemoveItem}
           disable={cartItem.fixedCart}
-          {...{ history, openFitInfoAction, openFitInfo }}
+          {...{ history, openFitInfoAction, openFitInfo, highlightFields }}
         />
       )
     })
 
+    const onCheckoutClick = () => this.onCheckoutClick(activeCheckout)
     const designReviewModal = (
       <CheckoutDesignCheckModal
-        requestClose={this.onCheckoutClick}
+        requestClose={onCheckoutClick}
         handleContinue={this.handleCheckout()}
         handleAccept={this.handleCheckout(true)}
         visible={showReviewDesignModal}
@@ -481,29 +488,29 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               </EmptyItems>
             </EmptyContainer>
           ) : (
-              <Container>
-                <SideBar>
-                  <Ordersummary
-                    subtotal={total}
-                    currencySymbol={symbol}
-                    youSaved={totalWithoutDiscount - total}
-                    {...{ formatMessage, totalWithoutDiscount }}
-                  />
-                  <ButtonWrapper disabled={!activeCheckout}>
-                    <CheckoutButton
-                      disabled={!activeCheckout}
-                      type="primary"
-                      onClick={this.onCheckoutClick}
-                    >
-                      <FormattedMessage {...messages.checkout} />
-                    </CheckoutButton>
-                  </ButtonWrapper>
-                </SideBar>
-                <Content>
-                  <CartList>{renderList}</CartList>
-                </Content>
-              </Container>
-            )}
+            <Container>
+              <SideBar>
+                <Ordersummary
+                  subtotal={total}
+                  currencySymbol={symbol}
+                  youSaved={totalWithoutDiscount - total}
+                  {...{ formatMessage, totalWithoutDiscount }}
+                />
+                <ButtonWrapper disabled={!activeCheckout}>
+                  <CheckoutButton
+                    disabledButton={!activeCheckout}
+                    type="primary"
+                    onClick={onCheckoutClick}
+                  >
+                    <FormattedMessage {...messages.checkout} />
+                  </CheckoutButton>
+                </ButtonWrapper>
+              </SideBar>
+              <Content>
+                <CartList>{renderList}</CartList>
+              </Content>
+            </Container>
+          )}
           <Modal
             visible={showDeleteLastItemModal}
             title={
@@ -585,7 +592,10 @@ const mapStateToProps = (state: any) => {
 const ShoppingCartPageEnhance = compose(
   withApollo,
   injectIntl,
-  connect(mapStateToProps, { ...shoppingCartPageActions, ...thunkActions })
+  connect(
+    mapStateToProps,
+    { ...shoppingCartPageActions, ...thunkActions }
+  )
 )(ShoppingCartPage)
 
 export default ShoppingCartPageEnhance

@@ -162,9 +162,10 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
+              id={'pending_checks'}
               justifyContent={'center'}
               label={formatMessage(messages.preflight)}
-              sort={'none'}
+              sort={orderBy === 'pending_checks' ? sort : 'none'}
               loading={preflightData && preflightData.loading}
               {...{ onSortClick, interactiveHeaders }}
             />

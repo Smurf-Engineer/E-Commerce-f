@@ -200,6 +200,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       materials,
       mediaFiles,
       active,
+      onlyProDesign,
       modelSize,
       id: productId,
       bannerMaterials,
@@ -372,18 +373,20 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const addToCartRow = (
       <ButtonsRow>
-        {active && <AddtoCartButton
-          onClick={this.validateAddtoCart}
-          label={formatMessage(messages.addToCartButton)}
-          item={itemToAdd}
-          itemProdPage={true}
-          withoutTop={true}
-          isFixed={!teamOnDemand}
-          teamStoreId={teamStoreShortId}
-          fixedPrices={teamPrice}
-          {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
-          teamStoreName={teamName}
-        />}
+        {(active || onlyProDesign) &&
+          <AddtoCartButton
+            onClick={this.validateAddtoCart}
+            label={formatMessage(messages.addToCartButton)}
+            item={itemToAdd}
+            itemProdPage={true}
+            withoutTop={true}
+            isFixed={!teamOnDemand}
+            teamStoreId={teamStoreShortId}
+            fixedPrices={teamPrice}
+            {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
+            teamStoreName={teamName}
+          />
+        }
       </ButtonsRow>
     )
 

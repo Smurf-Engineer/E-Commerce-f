@@ -24,6 +24,7 @@ export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
 export const AMBIENT_LIGHT_INTENSITY = 0.2
 export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
+export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
 
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'
@@ -55,6 +56,8 @@ export const PAID_STATUS = 'Paid'
 export const ERROR_STATUS = 'Error'
 export const PENDING_APPROVAL = 'Pending Approval'
 export const PURGED = 'Purged'
+export const SHIPPED = 'Shipped'
+export const PARTIALLY_SHIPPED = 'Partially-shipped'
 export const PREORDER = 'Pre-Order'
 export const CANCELLED = 'Cancelled'
 export const ERROR = 'Error'

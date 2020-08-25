@@ -44,5 +44,9 @@ export default defineMessages({
   hasPredyed: {
     id: 'components.ProductList.hasPredyed',
     defaultMessage: 'Has Predyed'
+  },
+  proDesign: {
+    id: 'components.ProductList.proDesign',
+    defaultMessage: 'Only Pro Design'
   }
 })
