@@ -28,8 +28,7 @@ import {
   SelectedAsset,
   SimpleFont,
   UserInfo,
-  PositionSize,
-  PredyedColor
+  PositionSize
 } from '../../../types/common'
 import { Container } from './styledComponents'
 import config from '../../../config'
@@ -46,8 +45,7 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
-  predyedColors: PredyedColor[]
-  selectedPredyed: PredyedColor
+  selectedPredyed: string
   stitchingColor?: StitchingColor
   videos: object[]
   bindingColor?: AccesoryColor
@@ -99,6 +97,7 @@ interface Props {
   ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  onSelectPredyed: (predyedColor: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
@@ -145,6 +144,7 @@ const Tabs = ({
   onSelectEl,
   onDeleteLayer,
   onSelectArtFormat,
+  onSelectPredyed,
   onSelectStitchingColor,
   stitchingColor,
   bindingColor,
@@ -169,7 +169,6 @@ const Tabs = ({
   fonts,
   colorsList,
   selectedPredyed,
-  predyedColors,
   onRequestColorChart,
   colorChartSending,
   colorChartModalOpen,
@@ -196,7 +195,6 @@ const Tabs = ({
               onSelectColor,
               colors,
               selectedPredyed,
-              predyedColors,
               styleColors,
               onChangePaletteName,
               paletteName,
@@ -210,6 +208,7 @@ const Tabs = ({
               bindingColor,
               zipperColor,
               bibColor,
+              onSelectPredyed,
               onSelectStitchingColor,
               onAccessoryColorSelected,
               product,

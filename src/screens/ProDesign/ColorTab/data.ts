@@ -10,3 +10,13 @@ export const GetColorsQuery = gql`
     }
   }
 `
+
+export const getPredyedColors = gql`
+  query getPredyedColors {
+    getPredyedColors {
+      id: short_id
+      name
+      code
+    }
+  }
+`

@@ -169,7 +169,8 @@ class Render3D extends PureComponent {
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
       bibColor: oldBibColor,
-      selectedVariant: oldSelected
+      selectedVariant: oldSelected,
+      showBranding: oldShowBranding
     } = this.props
     const {
       colors: nextColors,
@@ -188,6 +189,7 @@ class Render3D extends PureComponent {
       lastName,
       designId,
       loggedUserId,
+      showBranding,
       userCode
     } = nextProps
     const { openSlaask } = this.state
@@ -228,9 +230,9 @@ class Render3D extends PureComponent {
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
     }
-    if (selectedVariant !== oldSelected) {
+    if ((selectedVariant !== oldSelected) || (oldShowBranding !== showBranding)) {
       this.clearScene()
-      this.render3DModel(newProduct)
+      this.render3DModel(showBranding, newProduct)
     }
     if (openSlaask && proAssistId) {
       initSlaask({
@@ -252,7 +254,7 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { isEditing, design } = this.props
+    const { isEditing, design, showBranding = true } = this.props
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CORNER_SIZE
@@ -320,7 +322,7 @@ class Render3D extends PureComponent {
     this.camera.zoom = isMobile ? INITIAL_ZOOM_MOBILE : INITIAL_ZOOM
     this.camera.updateProjectionMatrix()
 
-    this.render3DModel()
+    this.render3DModel(showBranding)
 
     this.container.appendChild(this.renderer.domElement)
 
@@ -623,7 +625,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  render3DModel = async (newProduct) => {
+  render3DModel = async (showBranding = true, newProduct) => {
     /* Object and MTL load */
     const {
       onLoadModel,
@@ -638,7 +640,7 @@ class Render3D extends PureComponent {
       bibColor,
       colors: areaColors,
       designHasChanges,
-      isMobile
+      isMobile,
     } = this.props
     const product = newProduct || oldProduct
     const loadedTextures = await this.loadTextures(
@@ -741,7 +743,20 @@ class Render3D extends PureComponent {
           // Setup the texture layers
           const areasLayers = areas.map(() => children[meshIndex].clone())
           object.add(...areasLayers)
-
+          /* Transparent predyed  */
+          if (!showBranding && product.hasPredyed) {
+            const brandingObj = children[meshIndex].clone()
+            object.add(brandingObj)
+            const brandingIndex = children.length - 1
+            const brandingMaterial = new THREE.MeshPhongMaterial({
+              side: THREE.FrontSide,
+              bumpMap,
+              opacity: 1,
+              transparent: false
+            })
+            children[brandingIndex].material = brandingMaterial
+            children[brandingIndex].name = BRANDING_MESH
+          }
           children[meshIndex].material = insideMaterial
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
@@ -822,7 +837,7 @@ class Render3D extends PureComponent {
           children[canvasIndex].name = CANVAS_MESH
 
           /* Branding  */
-          if (!!branding) {
+          if (!!branding && showBranding) {
             const brandingObj = children[meshIndex].clone()
             object.add(brandingObj)
             const brandingIndex = children.length - 1

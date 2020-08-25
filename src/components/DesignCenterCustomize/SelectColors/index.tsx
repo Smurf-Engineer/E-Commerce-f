@@ -16,7 +16,7 @@ import {
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
 import colorsIcon from '../.../../../../assets/color_squares.svg'
-import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color, PredyedColor } from '../../../types/common'
+import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
 import { FormattedMessage } from 'react-intl'
@@ -25,7 +25,6 @@ import { ColorChart } from '../../ColorChart'
 import Message from 'antd/lib/message'
 import get from 'lodash/get'
 import find from 'lodash/find'
-import { BLACK } from '../../../screens/DesignerTool/DesignCenterCustomize/UploadTab/config'
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
@@ -41,7 +40,7 @@ interface Props {
   bibColor?: AccesoryColor
   hasStitching: boolean
   hasZipper: boolean
-  selectedPredyed: PredyedColor
+  selectedPredyed: string
   hasBranding: boolean
   hasBinding: boolean
   hasBibBrace: boolean
@@ -49,6 +48,7 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
   goToBaseColors: () => void
@@ -76,13 +76,11 @@ class SelectColors extends React.PureComponent<Props, {}> {
       bindingColor,
       zipperColor,
       bibColor,
+      onSelectPredyed = () => { },
       onAccessoryColorSelected = () => { },
       hasStitching,
       hasBranding,
-      selectedPredyed: {
-        code: value = BLACK,
-        name = 'BLACK'
-      },
+      selectedPredyed,
       hasZipper,
       hasBinding,
       hasBibBrace,
@@ -148,12 +146,9 @@ class SelectColors extends React.PureComponent<Props, {}> {
           <AccessoryColor
             id={AccessoryColors.Predyed}
             name={formatMessage(messages.predyedColor)}
-            stitchingColor={{
-              value,
-              name
-            }}
-            stitchingLabel={name}
-            {...{ goToStitching }}
+            colorSelected={selectedPredyed}
+            isPredyed={true}
+            onAccessoryColorSelected={onSelectPredyed}
           />
         )}
         {hasBinding && (

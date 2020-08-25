@@ -95,7 +95,7 @@ export class Designs extends React.Component<Props, {}> {
         {!loadingModel && (
           <ThreeD
             {...{ designId }}
-            detailed={user && user.administrator}
+            isAdmin={user && user.administrator}
             asImage={true}
             fromShare={true}
           />

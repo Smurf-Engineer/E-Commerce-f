@@ -131,6 +131,7 @@ export interface Product {
   pictures?: any[]
   mediaFiles?: object[]
   description: string
+  hasPredyed?: boolean
   productMaterials?: object[]
   designCenter?: boolean
   priceRange: PriceRange[]
@@ -1496,6 +1497,7 @@ export interface ProductInternal {
   size: string
   fitStyle?: string
   color?: string
+  predyedColor?: string
   frontZipper?: string
   pocketZipper?: string
   binding?: string
@@ -1519,6 +1521,7 @@ export interface ProductInternalInput {
   front_zipper?: string
   pocket_zipper?: string
   binding?: string
+  predyedColor?: string
   bib_brace?: string
   collection?: string
   model?: string
@@ -1557,6 +1560,7 @@ export interface ProductInternalsInfo {
   basicColors: BasicColor[]
   frontZipperColors: BasicColor[]
   products: String[]
+  predyedColors: PredyedColor[]
   genders: GenderType[]
   sizes: ProductSize[]
   fitStyles: FitStyle[]
@@ -1623,6 +1627,7 @@ export interface ProductSearchResult {
 export interface ColorAccessories {
   stitching: string
   stitchingName: string
+  predyed: string
   zipperColor: AccesoryColor
   bibColor: AccesoryColor
   bindingColor: AccesoryColor

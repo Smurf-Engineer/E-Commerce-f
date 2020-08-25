@@ -69,8 +69,8 @@ class MobileColorList extends React.PureComponent<Props> {
 
   render() {
     const {
-      onSelectColor = () => {},
-      onSelectStitchingColor = () => {},
+      onSelectColor = () => { },
+      onSelectStitchingColor = () => { },
       stitching = false,
       stitchingColor = { value: '', name: '' },
       selectedColor,
