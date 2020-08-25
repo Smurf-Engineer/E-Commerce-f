@@ -14,7 +14,7 @@ import { Product, sorts } from '../../../types/common'
 import jakrooLogo from '../../../assets/Jackroologo.svg'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getProductsQuery, changeActiveProduct } from './data'
+import { getProductsQuery, changeActiveProduct, togglePredyedProduct } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Props {
@@ -29,7 +29,8 @@ interface Props {
   customLimit?: number
   searchText?: string
   canEdit: boolean
-  updateActiveProduct: (variables: {}) => Promise<any>
+  updateActiveProduct: (variables: {}) => Promise<Product>
+  togglePredyed: (variables: {}) => Promise<Product>
   onSortClick: (label: string, sort: sorts) => void
   onProductClick: (id: number) => void
   onChangePage: (page: number) => void
@@ -43,6 +44,7 @@ const OrdersList = ({
   onChangePage,
   canEdit,
   updateActiveProduct,
+  togglePredyed,
   withPagination = true,
   withoutPadding = false
 }: Props) => {
@@ -77,6 +79,10 @@ const OrdersList = ({
               label={formatMessage(messages.onStore)}
               justifyContent="center"
             />
+            <HeaderTable
+              label={formatMessage(messages.hasPredyed)}
+              justifyContent="center"
+            />
           </Row>
         )
       }}
@@ -84,7 +90,7 @@ const OrdersList = ({
   )
   const orderItems = orders.map(
     (
-      { id, images, active, name, mpn, code, isCustom, obj, mtl }: Product,
+      { id, images, active, name, mpn, code, isCustom, obj, mtl, hasPredyed }: Product,
       index: number
     ) => {
       const image =
@@ -106,6 +112,8 @@ const OrdersList = ({
             mpn,
             code,
             isCustom,
+            togglePredyed,
+            hasPredyed,
             onProductClick,
             image,
             disabled
@@ -145,6 +153,7 @@ const PRODUCTS_LIMIT = 12
 
 const OrdersListEnhance = compose(
   graphql(changeActiveProduct, { name: 'updateActiveProduct' }),
+  graphql(togglePredyedProduct, { name: 'togglePredyed' }),
   graphql(getProductsQuery, {
     options: ({ currentPage, customLimit, searchText }: OwnProps) => {
       const limit = customLimit !== undefined ? customLimit : PRODUCTS_LIMIT

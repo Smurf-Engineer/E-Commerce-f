@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
 import transparentGrid from '../../../assets/transparent_grid.png'
 import { WHITE } from '../../../theme/colors'
-import { PREDYED_TRANSPARENT } from '../../../constants'
 
 export const Container = styled.div`
   padding: 4px 32px;
@@ -62,7 +61,7 @@ export const Oval = styled.div`
     ${({ color }: OvalProps) =>
     color && color.toLowerCase() !== '#ffffff' ? color : '#bebebe'};
   background: ${({ color, isPredyed }: OvalProps) =>
-    isPredyed && color === PREDYED_TRANSPARENT ? `url(${transparentGrid})` : (color || WHITE)};
+    isPredyed ? `url(${transparentGrid})` : (color || WHITE)};
   align-self: center;
   cursor: pointer;
 `

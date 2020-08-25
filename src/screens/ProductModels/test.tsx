@@ -16,7 +16,14 @@ import {
   setLoadingAction,
   changeDefault,
   selectModelAction,
-  uploadComplete
+  uploadComplete,
+  onTabClick,
+  setColorsAction,
+  editColorAction,
+  openPredyedAction,
+  selectColorAction,
+  changeColorAction,
+  changeHexAction
 } from './actions'
 import {
   OPEN_MODAL,
@@ -31,7 +38,15 @@ import {
   SET_VARIANTS,
   CHANGE_DEFAULT,
   CHANGE_MODEL_RENDER,
-  UPLOAD_COMPLETE
+  UPLOAD_COMPLETE,
+  ON_TAB_CLICK_ACTION,
+  MODELS_TAB,
+  SET_COLORS,
+  EDIT_COLOR,
+  OPEN_PREDYED,
+  SELECT_COLOR,
+  CHANGE_COLOR,
+  CHANGE_CODE
 } from './constants'
 
 describe(' TeamStoresAdmin Screen', () => {
@@ -104,6 +119,66 @@ describe(' TeamStoresAdmin Screen', () => {
       expect(setLoadingAction(loading)).toEqual({
         type,
         loading
+      })
+    })
+    it('onTabClick', () => {
+      const type = ON_TAB_CLICK_ACTION
+      const selectedIndex = 'Test'
+      expect(onTabClick(selectedIndex)).toEqual({
+        type,
+        selectedIndex
+      })
+    })
+    it('openPredyedAction', () => {
+      const type = OPEN_PREDYED
+      const open = true
+      expect(openPredyedAction(open)).toEqual({
+        type,
+        open
+      })
+    })
+    it('setColorsAction', () => {
+      const type = SET_COLORS
+      const predyedColors = {
+        'Test': { id: 'Test', name: 'Test', code: 'Test' }
+      }
+      expect(setColorsAction(predyedColors)).toEqual({
+        type,
+        predyedColors
+      })
+    })
+    it('editColorAction', () => {
+      const type = EDIT_COLOR
+      const id = 'Test'
+      const name = 'Test'
+      const code = 'Test'
+      expect(editColorAction(id, name, code)).toEqual({
+        type,
+        id, name, code
+      })
+    })
+    it('selectColorAction', () => {
+      const type = SELECT_COLOR
+      const id = 'Test'
+      expect(selectColorAction(id)).toEqual({
+        type,
+        id
+      })
+    })
+    it('changeColorAction', () => {
+      const type = CHANGE_COLOR
+      const color = 'Test'
+      expect(changeColorAction(color)).toEqual({
+        type,
+        color
+      })
+    })
+    it('changeHexAction', () => {
+      const type = CHANGE_CODE
+      const code = 'Test'
+      expect(changeHexAction(code)).toEqual({
+        type,
+        code
       })
     })
     it('setVariantsAction', () => {
@@ -234,6 +309,143 @@ describe(' TeamStoresAdmin Screen', () => {
         )
         const customNameValue = productModelState.getIn(['tempModel', 'name'])
         expect(customNameValue).toBe(name)
+      })
+    })
+    describe('ON_TAB_CLICK_ACTION', () => {
+      it('Handles undefined value in selectedTab', () => {
+        const customInitialValue = initialState.get('selectedTab')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in selectedTab', () => {
+        const customInitialValue = initialState.get('selectedTab')
+        expect(customInitialValue).toBe(MODELS_TAB)
+      })
+      it('Handles custom value in selectedTab', () => {
+        const index = 'Test'
+        const productModelState = productModelsReducer(
+          initialState,
+          onTabClick(index)
+        )
+        const customIndexValue = productModelState.get('selectedTab')
+        expect(customIndexValue).toBe(index)
+      })
+    })
+    describe('SET_COLORS', () => {
+      it('Handles undefined value in predyedColors', () => {
+        const customInitialValue = initialState.get('predyedColors')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in predyedColors', () => {
+        const customInitialValue = initialState.get('predyedColors')
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom value in predyedColors', () => {
+        const predyedColors = {
+          'Test': { id: 'Test', name: 'Test', code: 'Test' }
+        }
+        const productModelState = productModelsReducer(
+          initialState,
+          setColorsAction(predyedColors)
+        )
+        const customPredyedValue = productModelState.get('predyedColors')
+        expect(customPredyedValue.size).toBe(1)
+      })
+    })
+    describe('EDIT_COLOR', () => {
+      it('Handles undefined value in color', () => {
+        const customInitialValue = initialState.get('color')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in color', () => {
+        const customInitialValue = initialState.get('color')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom value in color', () => {
+        const id = 'Test'
+        const name = 'Test'
+        const code = 'Test'
+        const productModelState = productModelsReducer(
+          initialState,
+          editColorAction(id, name, code)
+        )
+        const customPredyedValue = productModelState.get('color')
+        expect(customPredyedValue).toBe(name)
+      })
+    })
+    describe('OPEN_PREDYED', () => {
+      it('Handles undefined value in openPredyed', () => {
+        const customInitialValue = initialState.get('openPredyed')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in openPredyed', () => {
+        const customInitialValue = initialState.get('openPredyed')
+        expect(customInitialValue).toBeFalsy()
+      })
+      it('Handles custom value in openPredyed', () => {
+        const open = true
+        const productModelState = productModelsReducer(
+          initialState,
+          openPredyedAction(open)
+        )
+        const customOpenValue = productModelState.get('openPredyed')
+        expect(customOpenValue).toBe(open)
+      })
+    })
+    describe('SELECT_COLOR', () => {
+      it('Handles undefined value in selectedColor', () => {
+        const customInitialValue = initialState.get('selectedColor')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in selectedColor', () => {
+        const customInitialValue = initialState.get('selectedColor')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom value in selectedColor', () => {
+        const id = 'Test'
+        const productModelState = productModelsReducer(
+          initialState,
+          selectColorAction(id)
+        )
+        const customSelectedValue = productModelState.get('selectedColor')
+        expect(customSelectedValue).toBe(id)
+      })
+    })
+    describe('CHANGE_COLOR', () => {
+      it('Handles undefined value in color', () => {
+        const customInitialValue = initialState.get('color')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in color', () => {
+        const customInitialValue = initialState.get('color')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom value in color', () => {
+        const color = 'Test'
+        const productModelState = productModelsReducer(
+          initialState,
+          changeColorAction(color)
+        )
+        const customColorValue = productModelState.get('color')
+        expect(customColorValue).toBe(color)
+      })
+    })
+    describe('CHANGE_CODE', () => {
+      it('Handles undefined value in hexColor', () => {
+        const customInitialValue = initialState.get('hexColor')
+        expect(customInitialValue).not.toBeUndefined()
+      })
+      it('Handles initial value in hexColor', () => {
+        const customInitialValue = initialState.get('hexColor')
+        expect(customInitialValue).toBe('')
+      })
+      it('Handles custom value in hexColor', () => {
+        const code = 'Test'
+        const productModelState = productModelsReducer(
+          initialState,
+          changeHexAction(code)
+        )
+        const customCodeValue = productModelState.get('hexColor')
+        expect(customCodeValue).toBe(code)
       })
     })
     describe('UPLOADING_IMAGE', () => {

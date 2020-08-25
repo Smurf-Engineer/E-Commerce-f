@@ -334,7 +334,7 @@ class Render3D extends PureComponent {
     const { loading, error, design } = data
     const { code, name, product, shared } = design || {}
     const { name: productName } = product || {}
-    if ((error && !isProduct) || (fromShare && !shared)) {
+    if ((error && !isProduct) || (!isAdmin && (fromShare && (design && !shared)))) {
       return (
         <ContainerError>
           <Title>
@@ -354,7 +354,7 @@ class Render3D extends PureComponent {
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
         )}
-        {detailed && window.location === window.parent.location && (
+        {isAdmin && window.location === window.parent.location && (
           <Details>
             <DetailHeader>
               <Logo src={JakrooLogoWhite} />
@@ -522,6 +522,20 @@ class Render3D extends PureComponent {
               bumpMap: bumpMapObj
             })
 
+            /* Transparent predyed  */
+            if (!!branding && hidePredyed) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                side: THREE.FrontSide,
+                bumpMap,
+                opacity: 1,
+                transparent: false
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
+
             /* Extra files loaded by MTL file */
             const labelIndex = findIndex(
               children,
@@ -682,6 +696,19 @@ class Render3D extends PureComponent {
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
           }
+          /* Transparent predyed  */
+          if (design.predyedColor === PREDYED_TRANSPARENT && product.hasPredyed) {
+            const brandingObj = children[meshIndex].clone()
+            object.add(brandingObj)
+            const brandingIndex = children.length - 1
+            const brandingMaterial = new THREE.MeshPhongMaterial({
+              side: THREE.FrontSide,
+              bumpMap,
+              opacity: 1,
+              transparent: false
+            })
+            children[brandingIndex].material = brandingMaterial
+          }
 
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
@@ -753,12 +780,12 @@ class Render3D extends PureComponent {
               await this.loadCanvasTexture(design.canvas)
             }
             /* Branding  */
-            if (!!branding) {
+            if (!!branding && design.predyedColor !== PREDYED_TRANSPARENT) {
               const brandingObj = children[meshIndex].clone()
               object.add(brandingObj)
               const brandingIndex = children.length - 1
               const brandingMaterial = new THREE.MeshPhongMaterial({
-                map: design.predyedColor !== PREDYED_TRANSPARENT ? branding : null,
+                map: branding,
                 side: THREE.FrontSide,
                 bumpMap,
                 transparent: true

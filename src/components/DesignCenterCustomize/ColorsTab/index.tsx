@@ -147,7 +147,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       !!product.zipper.black
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
-    const hasBranding = !!product && !!product.branding
+    const hasBranding = !!product && !!product.hasPredyed
 
     const isFirstTab = index === SELECT_COLORS_INDEX
     const baseColorsTab = index === BASE_COLORS_INDEX

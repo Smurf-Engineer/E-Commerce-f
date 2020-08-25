@@ -73,7 +73,7 @@ class MobileSelectColors extends React.PureComponent<Props> {
     const hasZipper = !!product && !!product.zipper
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
-    const hasBranding = !!product && !!product.branding
+    const hasBranding = !!product && !!product.hasPredyed
     const colorButtons = colors.map((color, index) => {
       return (
         <TabPane

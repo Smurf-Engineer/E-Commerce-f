@@ -131,6 +131,7 @@ export interface Product {
   pictures?: any[]
   mediaFiles?: object[]
   description: string
+  hasPredyed?: boolean
   productMaterials?: object[]
   designCenter?: boolean
   priceRange: PriceRange[]
@@ -1626,6 +1627,7 @@ export interface ProductSearchResult {
 export interface ColorAccessories {
   stitching: string
   stitchingName: string
+  predyed: string
   zipperColor: AccesoryColor
   bibColor: AccesoryColor
   bindingColor: AccesoryColor
