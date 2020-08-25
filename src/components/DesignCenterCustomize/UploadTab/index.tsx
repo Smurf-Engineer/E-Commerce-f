@@ -67,6 +67,8 @@ interface Data extends QueryProps {
 
 const warningExtensions = [
   '.svg',
+  '.eps',
+  '.pdf',
   '.ai'
 ]
 
