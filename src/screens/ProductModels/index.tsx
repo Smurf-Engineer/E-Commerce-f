@@ -62,6 +62,7 @@ import { saveProductsMutation, getProductQuery } from './data'
 import Tab from '../../components/DesignCenterCustomize/Tab'
 import { MODELS_TAB, PREDYED_TAB } from './constants'
 import shortid from 'shortid'
+import { PREDYED_TRANSPARENT } from '../../constants'
 
 const { TabPane } = AntdTabs
 
@@ -296,7 +297,7 @@ export class ProductModels extends React.Component<Props, {}> {
     const { formatMessage } = intl
     const defaultModel = variants[defaultModelIndex]
     const selectedRender = variants[modelRender]
-    const { code: codeSelected, name: nameSelected } = predyedColors[selectedColor] || {}
+    const { code: codeSelected } = predyedColors[selectedColor] || {}
     let product = {}
     if (selectedRender) {
       const {
@@ -457,7 +458,7 @@ export class ProductModels extends React.Component<Props, {}> {
                 isProduct={true}
                 textColor="white"
                 asImage={false}
-                predyedSelected={nameSelected && !codeSelected}
+                hidePredyed={codeSelected === PREDYED_TRANSPARENT}
                 {...{ product }}
               />
             ) : (

@@ -73,7 +73,8 @@ import {
   OPEN_DESIGN_CHECK_MODAL,
   ON_OPEN_COLOR_CHART_FORM,
   SELECT_VARIANT,
-  SET_TICKET
+  SET_TICKET,
+  SET_PREDYED_COLOR
 } from './constants'
 import {
   AnyAction,
@@ -402,6 +403,11 @@ export const setCanvasJsonAction = (canvas: string) => ({
 export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   type: SET_STITCHING_COLOR_ACTION,
   stitchingColor
+})
+
+export const setPredyedColor = (predyedColor: string) => ({
+  type: SET_PREDYED_COLOR,
+  predyedColor
 })
 
 export const uploadFileSuccessAction = (url: string) => ({

@@ -12,5 +12,9 @@ export default defineMessages({
   myPalettes: {
     id: 'components.designCenterCustomize.ColorTab.myPalettes',
     defaultMessage: 'My Palettes'
+  },
+  predyed: {
+    id: 'components.designCenterCustomize.ColorTab.predyed',
+    defaultMessage: 'Predyed'
   }
 })

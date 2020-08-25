@@ -28,7 +28,8 @@ const colorAccessories = {
   stitchingName: 'FSC-10',
   zipperColor: BLACK,
   bibColor: WHITE,
-  bindingColor: BLACK
+  bindingColor: BLACK,
+  predyed: BLACK
 }
 
 export const initialState = fromJS({

@@ -25,8 +25,8 @@ export const getVariantsFromProduct = gql`
 `
 
 export const getPredyedColors = gql`
-  query getPredyedColors($id: Int!) {
-    getPredyedColors(id: $id) {
+  query getPredyedColors {
+    getPredyedColors {
       id: short_id
       name
       code

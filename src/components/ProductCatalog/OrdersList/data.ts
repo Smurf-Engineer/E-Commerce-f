@@ -20,6 +20,7 @@ export const getProductsQuery = gql`
         obj
         mtl
         active
+        hasPredyed: has_predyed
         isCustom: design_center
         mpn
         images: original_pictures {
@@ -40,6 +41,15 @@ export const changeActiveProduct = gql`
     productResult: toggleActive(id: $id) {
       id
       active
+    }
+  }
+`
+
+export const togglePredyedProduct = gql`
+  mutation togglePredyed($id: Int!) {
+    productResult: togglePredyed(id: $id) {
+      id
+      hasPredyed: has_predyed
     }
   }
 `
