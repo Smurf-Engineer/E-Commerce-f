@@ -72,9 +72,10 @@ export const Layout = styled.div`
 `
 
 export const Side = styled.div`
+  max-width: 334px;
   width: 100%;
-  height: 100%;
   display: flex;
+  border-right: 1px solid ${GRAY_LIGHT};
   flex-flow: column;
   align-items: center;
 `
@@ -327,20 +328,5 @@ export const ButtonWrapper = styled.div`
     disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
     disabled ? WHITE_SMOKE : BLUE};
-  }
-`
-
-export const NavTabs = styled(AntdTabs)`
-  max-width: 384px;
-  border-right: 1px solid ${GRAY_LIGHT};
-  width: 100%;
-  .ant-tabs-nav-scroll {
-    text-align: center;
-  }
-  .ant-tabs-content {
-    height: 100%;
-  }
-  .ant-tabs-bar {
-    margin-bottom: 0;
   }
 `

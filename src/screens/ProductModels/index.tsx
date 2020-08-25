@@ -5,7 +5,6 @@ import * as React from 'react'
 import Helmet from 'react-helmet'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
-import AntdTabs from 'antd/lib/tabs'
 import queryString from 'query-string'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import * as productModelsActions from './actions'
@@ -42,12 +41,10 @@ import {
   Message,
   AddDesigns,
   ProductInfo,
-  TitleModal,
-  NavTabs
+  TitleModal
 } from './styledComponents'
 import Render3D from '../../components/Render3D'
 import logo from '../../assets/jakroo_logo.svg'
-import shirtModel from '../../assets/shirt_model.svg'
 import backIcon from '../../assets/rightarrow.svg'
 import jakrooLogo from '../../assets/Jackroologo.svg'
 import { LoadScripts } from '../../utils/scriptLoader'
@@ -56,10 +53,6 @@ import { ModelVariant } from '../../types/common'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { saveProductsMutation, getProductQuery } from './data'
-import Tab from '../../components/DesignCenterCustomize/Tab'
-import { MODELS_TAB } from './constants'
-
-const { TabPane } = AntdTabs
 
 interface Props {
   intl: InjectedIntl
@@ -74,7 +67,6 @@ interface Props {
   modelRender: string
   data: any
   openSuccess: boolean
-  selectedTab: string
   onTabClick: (selectedIndex: string) => void
   saveInfoAction: () => void
   resetReducer: () => void
@@ -105,10 +97,6 @@ export class ProductModels extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { resetReducer } = this.props
     resetReducer()
-  }
-  handleChangeTab = (selectedIndex: string) => {
-    const { onTabClick } = this.props
-    onTabClick(selectedIndex)
   }
   handleCloseModal = () => {
     const { openModalAction } = this.props
@@ -217,7 +205,6 @@ export class ProductModels extends React.Component<Props, {}> {
       variants,
       uploadFile,
       openSuccess,
-      selectedTab,
       loading,
       selected,
       modelRender,
@@ -272,73 +259,65 @@ export class ProductModels extends React.Component<Props, {}> {
           </BackButton>
         </TopMenu>
         <Layout>
-          <NavTabs
-            activeKey={selectedTab}
-            size="large"
-            onTabClick={this.handleChangeTab}
-          >
-            <TabPane key={MODELS_TAB} tab={<Tab label="models" icon={shirtModel} />}>
-              <Side>
-                <TopMessage background={true}>
-                  {formatMessage(messages.build3D)}
-                </TopMessage>
-                <AddModel onClick={this.handleOpenModal}>
-                  {formatMessage(messages.addModel)}
-                </AddModel>
-                <ModelsContainers>
-                  {defaultModel && (
-                    <>
-                      <TopMessage>
-                        {formatMessage(messages.defaultModel)}
-                      </TopMessage>
-                      <ModelBlock active={modelRender === defaultModelIndex}>
-                        <Thumbnail
-                          onClick={this.selectModelDefault}
-                          src={defaultModel.icon || jakrooLogo}
-                        />
-                        <Details>
-                          <Name>{defaultModel.name}</Name>
-                          <Buttons>
-                            <EditButton onClick={this.editDefault}>
-                              {formatMessage(messages.edit)}
-                            </EditButton>
-                          </Buttons>
-                        </Details>
-                      </ModelBlock>
-                    </>
-                  )}
-                  <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
-                  {Object.keys(variants).map((id: string, index) => {
-                    const edit = () => this.handleEdit(id)
-                    const { icon, name, default: isDefault } = variants[id]
-                    const selectModel = () => this.selectModel(id)
-                    const remove = () => this.handleRemoveModel(id)
-                    return (
-                      !isDefault && (
-                        <ModelBlock active={modelRender === id} key={index}>
-                          <Thumbnail
-                            onClick={selectModel}
-                            src={icon || jakrooLogo}
-                          />
-                          <Details>
-                            <Name>{name}</Name>
-                            <Buttons>
-                              <EditButton onClick={edit}>
-                                {formatMessage(messages.edit)}
-                              </EditButton>
-                              <DeleteButton onClick={remove}>
-                                {formatMessage(messages.delete)}
-                              </DeleteButton>
-                            </Buttons>
-                          </Details>
-                        </ModelBlock>
-                      )
-                    )
-                  })}
-                </ModelsContainers>
-              </Side>
-            </TabPane>
-          </NavTabs>
+          <Side>
+            <TopMessage background={true}>
+              {formatMessage(messages.build3D)}
+            </TopMessage>
+            <AddModel onClick={this.handleOpenModal}>
+              {formatMessage(messages.addModel)}
+            </AddModel>
+            <ModelsContainers>
+              {defaultModel && (
+                <>
+                  <TopMessage>
+                    {formatMessage(messages.defaultModel)}
+                  </TopMessage>
+                  <ModelBlock active={modelRender === defaultModelIndex}>
+                    <Thumbnail
+                      onClick={this.selectModelDefault}
+                      src={defaultModel.icon || jakrooLogo}
+                    />
+                    <Details>
+                      <Name>{defaultModel.name}</Name>
+                      <Buttons>
+                        <EditButton onClick={this.editDefault}>
+                          {formatMessage(messages.edit)}
+                        </EditButton>
+                      </Buttons>
+                    </Details>
+                  </ModelBlock>
+                </>
+              )}
+              <TopMessage>{formatMessage(messages.modelVariants)}</TopMessage>
+              {Object.keys(variants).map((id: string, index) => {
+                const edit = () => this.handleEdit(id)
+                const { icon, name, default: isDefault } = variants[id]
+                const selectModel = () => this.selectModel(id)
+                const remove = () => this.handleRemoveModel(id)
+                return (
+                  !isDefault && (
+                    <ModelBlock active={modelRender === id} key={index}>
+                      <Thumbnail
+                        onClick={selectModel}
+                        src={icon || jakrooLogo}
+                      />
+                      <Details>
+                        <Name>{name}</Name>
+                        <Buttons>
+                          <EditButton onClick={edit}>
+                            {formatMessage(messages.edit)}
+                          </EditButton>
+                          <DeleteButton onClick={remove}>
+                            {formatMessage(messages.delete)}
+                          </DeleteButton>
+                        </Buttons>
+                      </Details>
+                    </ModelBlock>
+                  )
+                )
+              })}
+            </ModelsContainers>
+          </Side>
           <ModelContainer>
             <SaveButton onClick={this.saveProduct}>
               {formatMessage(messages.saveDesign)}

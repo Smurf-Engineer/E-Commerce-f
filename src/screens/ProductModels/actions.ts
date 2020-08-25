@@ -17,8 +17,7 @@ import {
   CHANGE_DEFAULT,
   CHANGE_MODEL_RENDER,
   UPLOAD_COMPLETE,
-  RESET_REDUCER,
-  ON_TAB_CLICK_ACTION
+  RESET_REDUCER
 } from './constants'
 
 import { AnyAction, ModelVariant } from '../../types/common'
@@ -31,11 +30,6 @@ export const openModalAction = (open: boolean): AnyAction => ({
 export const setEditModel = (id: string): AnyAction => ({
   type: EDIT_MODEL,
   id
-})
-
-export const onTabClick = (selectedIndex: string): AnyAction => ({
-  type: ON_TAB_CLICK_ACTION,
-  selectedIndex
 })
 
 export const changeNameAction = (name: string): AnyAction => ({
