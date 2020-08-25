@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.ColorTab.SelectColors.bibColor',
     defaultMessage: 'Bib brace color'
   },
+  predyed: {
+    id: 'components.ColorTab.SelectColors.predyed',
+    defaultMessage: 'Predyed'
+  },
   noProductSelected: {
     id: 'components.ColorTab.SelectColors.noProductSelected',
     defaultMessage: 'You must select a product first'
