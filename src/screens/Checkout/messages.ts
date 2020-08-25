@@ -30,9 +30,9 @@ export default defineMessages({
     id: 'screens.Checkout.areYouSure',
     defaultMessage: 'ARE YOU SURE?'
   },
-  gotIt: {
-    id: 'screens.Checkout.gotIt',
-    defaultMessage: 'Got it!'
+  proceed: {
+    id: 'screens.Checkout.proceed',
+    defaultMessage: 'Proceed'
   },
   goBack: {
     id: 'screens.Checkout.goBack',

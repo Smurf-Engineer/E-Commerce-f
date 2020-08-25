@@ -772,7 +772,7 @@ class Checkout extends React.Component<Props, {}> {
         ),
         icon: ' ',
         width: 642,
-        okText: formatMessage(messages.gotIt),
+        okText: formatMessage(messages.proceed),
         okButtonProps: {
           style: okButtonStyles
         },
