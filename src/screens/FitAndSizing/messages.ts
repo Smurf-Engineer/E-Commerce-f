@@ -22,6 +22,14 @@ export default defineMessages({
     id: 'screens.FitAndSizing.sizingChart',
     defaultMessage: 'SIZING CHART'
   },
+  needAssistance: {
+    id: 'screens.FitAndSizing.needAssistance',
+    defaultMessage: 'Need assistance with determining your size?'
+  },
+  tryFreeService: {
+    id: 'screens.FitAndSizing.tryFreeService',
+    defaultMessage: 'Try our free Size Recommendation Service'
+  },
   in: {
     id: 'screens.FitAndSizing.in',
     defaultMessage: 'IN'
