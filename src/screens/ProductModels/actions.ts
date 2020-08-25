@@ -17,17 +17,10 @@ import {
   CHANGE_DEFAULT,
   CHANGE_MODEL_RENDER,
   UPLOAD_COMPLETE,
-  RESET_REDUCER,
-  ON_TAB_CLICK_ACTION,
-  OPEN_PREDYED,
-  CHANGE_CODE,
-  SET_COLORS,
-  CHANGE_COLOR,
-  SELECT_COLOR,
-  EDIT_COLOR
+  RESET_REDUCER
 } from './constants'
 
-import { AnyAction, ModelVariant, PredyedColor } from '../../types/common'
+import { AnyAction, ModelVariant } from '../../types/common'
 
 export const openModalAction = (open: boolean): AnyAction => ({
   type: OPEN_MODAL,
@@ -37,43 +30,6 @@ export const openModalAction = (open: boolean): AnyAction => ({
 export const setEditModel = (id: string): AnyAction => ({
   type: EDIT_MODEL,
   id
-})
-
-export const openPredyedAction = (open: boolean): AnyAction => ({
-  type: OPEN_PREDYED,
-  open
-})
-
-export const changeColorAction = (color: string): AnyAction => ({
-  type: CHANGE_COLOR,
-  color
-})
-
-export const changeHexAction = (code: string): AnyAction => ({
-  type: CHANGE_CODE,
-  code
-})
-
-export const setColorsAction = (predyedColors: { [id: string]: PredyedColor }): AnyAction => ({
-  type: SET_COLORS,
-  predyedColors
-})
-
-export const selectColorAction = (id: string): AnyAction => ({
-  type: SELECT_COLOR,
-  id
-})
-
-export const editColorAction = (id: string, name: string, code: string): AnyAction => ({
-  type: EDIT_COLOR,
-  id,
-  name,
-  code
-})
-
-export const onTabClick = (selectedIndex: string): AnyAction => ({
-  type: ON_TAB_CLICK_ACTION,
-  selectedIndex
 })
 
 export const changeNameAction = (name: string): AnyAction => ({
@@ -122,12 +78,10 @@ export const setLoadingAction = (loading: boolean): AnyAction => ({
 export const setVariantsAction = (
   variants: { [id: string]: ModelVariant },
   defaultIndex: string,
-  predyedColors: { [id: string]: PredyedColor }
 ): AnyAction => ({
   type: SET_VARIANTS,
   variants,
   defaultIndex,
-  predyedColors
 })
 
 export const changeDefault = (checked: boolean): AnyAction => ({
