@@ -59,7 +59,7 @@ const AccessoryColor = ({
         {stitchingColor ? (
           <Stitching onClick={goToStitching}>
             <ColorLabel>{stitchingLabel || stitchingName}</ColorLabel>
-            <Oval {...{ isPredyed }} color={stitchingValue} />
+            <Oval color={stitchingValue} />
             <Arrow type="right" />
           </Stitching>
         ) : (
@@ -75,7 +75,7 @@ const AccessoryColor = ({
                 selected={colorSelected === WHITE}
                 marginLeft={'8px'}
               >
-                <Oval />
+                <Oval {...{ isPredyed }} />
               </OvalSelected>
             </Colors>
           )}

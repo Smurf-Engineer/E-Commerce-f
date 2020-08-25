@@ -25,7 +25,6 @@ export const getVariants = (query: any, id: number) => {
         }, {})
         const responsePredyed = await query({
           query: getPredyedColors,
-          variables: { id },
           fetchPolicy: 'no-cache'
         })
         const arrayColors: PredyedColor[] = get(responsePredyed, 'data.getPredyedColors', {})

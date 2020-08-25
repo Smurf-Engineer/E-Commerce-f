@@ -26,7 +26,11 @@ export default defineMessages({
     defaultMessage: 'Bib brace color'
   },
   zipper: {
-    id: 'components.MobileSelectColors.bibBrace',
+    id: 'components.MobileSelectColors.zipper',
     defaultMessage: 'Zipper'
+  },
+  predyed: {
+    id: 'components.MobileSelectColors.predyed',
+    defaultMessage: 'Predyed'
   }
 })

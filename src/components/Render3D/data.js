@@ -12,7 +12,7 @@ export const designQuery = gql`
       code
       shared
       flatlockColor: flatlock
-      predyedColor: predyed_color
+      predyedColor: predyed_name
       bindingColor: binding_color
       bibBraceColor: bib_brace_color
       zipperColor: zipper_color
@@ -40,6 +40,7 @@ export const designQuery = gql`
         obj
         mtl
         label
+        hasPredyed: has_predyed
         bumpMap: bump_map
         flatlock
         binding {

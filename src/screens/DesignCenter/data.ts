@@ -12,6 +12,7 @@ export const getProductQuery = gql`
       obj
       mtl
       label
+      hasPredyed: has_predyed
       bumpMap: bump_map
       branding
       isCustom: design_center
@@ -56,16 +57,6 @@ export const getVariantsFromProduct = gql`
   }
 `
 
-export const getPredyedColors = gql`
-  query getPredyedColors($id: Int!) {
-    predyedColors: getPredyedColors(id: $id) {
-      id: short_id
-      name
-      code
-    }
-  }
-`
-
 export const addTeamStoreItemMutation = graphql(
   gql`
     mutation AddTeamStoreItem(
@@ -90,7 +81,6 @@ export const getDesignQuery = gql`
       name
       shortId: short_id
       predyedName: predyed_name
-      predyedCode: predyed_color
       flatlockColor: flatlock
       flatlockCode: flatlock_code
       bindingColor: binding_color
@@ -117,6 +107,7 @@ export const getDesignQuery = gql`
         mtl
         label
         branding
+        hasPredyed: has_predyed
         bumpMap: bump_map
         flatlock
         mpn

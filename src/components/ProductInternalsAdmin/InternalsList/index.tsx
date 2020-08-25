@@ -52,7 +52,8 @@ const productHeaders = [
   { title: 'pocketZipper', id: 'pocket_zipper' },
   { title: 'binding', id: 'binding' },
   { title: 'bibBrace', id: 'bib_brace' },
-  { title: 'collection', id: 'collection' }
+  { title: 'collection', id: 'collection' },
+  { title: 'predyed', id: 'predyed' }
 ]
 
 const InternalsList = ({
@@ -134,6 +135,7 @@ const InternalsList = ({
         frontZipper,
         pocketZipper,
         binding,
+        predyedColor,
         bibBrace,
         collection,
         model
@@ -156,6 +158,7 @@ const InternalsList = ({
             pocketZipper,
             binding,
             bibBrace,
+            predyedColor,
             collection,
             onInternalClick,
             model

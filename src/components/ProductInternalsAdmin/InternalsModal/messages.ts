@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'components.InternalsModal.collection',
     defaultMessage: 'Collection'
   },
+  predyed: {
+    id: 'components.InternalsModal.predyed',
+    defaultMessage: 'Predyed Color'
+  },
   save: {
     id: 'components.InternalsModal.save',
     defaultMessage: 'Save'

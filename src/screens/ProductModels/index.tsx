@@ -62,7 +62,7 @@ import { saveProductsMutation, getProductQuery } from './data'
 import Tab from '../../components/DesignCenterCustomize/Tab'
 import { MODELS_TAB, PREDYED_TAB } from './constants'
 import shortid from 'shortid'
-import { ACCESSORY_TRANSPARENT } from '../../constants'
+import { PREDYED_TRANSPARENT } from '../../constants'
 
 const { TabPane } = AntdTabs
 
@@ -458,7 +458,7 @@ export class ProductModels extends React.Component<Props, {}> {
                 isProduct={true}
                 textColor="white"
                 asImage={false}
-                hidePredyed={codeSelected === ACCESSORY_TRANSPARENT}
+                hidePredyed={codeSelected === PREDYED_TRANSPARENT}
                 {...{ product }}
               />
             ) : (

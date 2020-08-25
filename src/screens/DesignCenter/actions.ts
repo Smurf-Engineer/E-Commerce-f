@@ -92,8 +92,7 @@ import {
   CanvasRotated,
   AccessoriesColor,
   CanvasType,
-  SelectedAsset,
-  PredyedColor
+  SelectedAsset
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -406,7 +405,7 @@ export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   stitchingColor
 })
 
-export const setPredyedColor = (predyedColor: PredyedColor) => ({
+export const setPredyedColor = (predyedColor: string) => ({
   type: SET_PREDYED_COLOR,
   predyedColor
 })
