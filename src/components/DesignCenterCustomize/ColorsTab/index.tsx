@@ -53,8 +53,10 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  selectedPredyed: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
+  onSelectPredyed: (predyedColor: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
@@ -107,10 +109,12 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onHoverColorBlock,
       colorBlock,
       colorBlockHovered,
+      onSelectPredyed,
       onSelectStitchingColor,
       onChangePaletteName,
       paletteName,
       palettes,
+      selectedPredyed,
       onSetPalettes,
       onSelectPalette,
       openPaletteModalAction,
@@ -143,6 +147,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       !!product.zipper.black
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
+    const hasBranding = !!product && !!product.hasPredyed
 
     const isFirstTab = index === SELECT_COLORS_INDEX
     const baseColorsTab = index === BASE_COLORS_INDEX
@@ -185,6 +190,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             {...{
               colors,
               colorsList,
+              onSelectPredyed,
               names,
               stitchingColor,
               bindingColor,
@@ -192,6 +198,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
               bibColor,
               onAccessoryColorSelected,
               formatMessage,
+              selectedPredyed,
+              hasBranding,
               hasStitching,
               hasZipper,
               hasBinding,

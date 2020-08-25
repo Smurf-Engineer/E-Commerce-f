@@ -40,5 +40,9 @@ export default defineMessages({
   emptyMessage: {
     id: 'components.ProductList.emptyMessage',
     defaultMessage: 'No orders yet'
+  },
+  hasPredyed: {
+    id: 'components.ProductList.hasPredyed',
+    defaultMessage: 'Has Predyed'
   }
 })

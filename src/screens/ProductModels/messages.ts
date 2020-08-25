@@ -69,5 +69,9 @@ export default defineMessages({
   addPredyed: {
     id: 'screens.ProductModels.addPredyed',
     defaultMessage: '+ ADD PRE DYED VARIANT'
+  },
+  preDyedVariants: {
+    id: 'screens.ProductModels.preDyedVariants',
+    defaultMessage: 'Predyed Variants'
   }
 })

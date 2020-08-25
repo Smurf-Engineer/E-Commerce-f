@@ -77,11 +77,11 @@ export const setLoadingAction = (loading: boolean): AnyAction => ({
 
 export const setVariantsAction = (
   variants: { [id: string]: ModelVariant },
-  defaultIndex: string
+  defaultIndex: string,
 ): AnyAction => ({
   type: SET_VARIANTS,
   variants,
-  defaultIndex
+  defaultIndex,
 })
 
 export const changeDefault = (checked: boolean): AnyAction => ({

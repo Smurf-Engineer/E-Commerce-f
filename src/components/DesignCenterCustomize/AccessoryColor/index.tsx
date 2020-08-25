@@ -20,6 +20,7 @@ import { BLACK, WHITE } from '../../../screens/DesignCenter/constants'
 interface Props {
   name: string
   id?: string
+  isPredyed?: boolean
   stitchingColor?: StitchingColor
   stitchingLabel?: string
   goToStitching?: () => void
@@ -34,6 +35,7 @@ const AccessoryColor = ({
   stitchingColor,
   stitchingLabel,
   goToStitching,
+  isPredyed = false,
   colorSelected = BLACK,
   allowSelection = true,
   onAccessoryColorSelected = () => { }
@@ -73,7 +75,7 @@ const AccessoryColor = ({
                 selected={colorSelected === WHITE}
                 marginLeft={'8px'}
               >
-                <Oval />
+                <Oval {...{ isPredyed }} />
               </OvalSelected>
             </Colors>
           )}

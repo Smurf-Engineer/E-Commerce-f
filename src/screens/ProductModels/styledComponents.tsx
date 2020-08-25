@@ -10,12 +10,13 @@ import {
   GRAY_DARK,
   GRAY_LIGHTEST,
   RED,
-  BLUE_SOFT
+  BLUE_SOFT,
 } from '../../theme/colors'
 import AntdTabs from 'antd/lib/tabs'
 import AntdButton from 'antd/lib/button'
 
 interface DivProps {
+  hexColor?: string
   background?: boolean
   active?: boolean
 }
