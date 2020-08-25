@@ -1517,6 +1517,7 @@
   "components.ColorTab.SelectColors.stitching": "Stitching",
   "components.ColorTab.SelectColors.binding": "Binding",
   "components.ColorTab.SelectColors.zipper": "Zipper",
+  "components.ColorTab.SelectColors.predyed": "Predyed",
   "components.ColorTab.SelectColors.bibColor": "Bib brace color",
   "components.ColorTab.SelectColors.noProductSelected": "You must select a product first",
   "screens.UploadTab.title": "Model and Design",

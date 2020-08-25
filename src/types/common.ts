@@ -1627,6 +1627,7 @@ export interface ProductSearchResult {
 export interface ColorAccessories {
   stitching: string
   stitchingName: string
+  predyed: string
   zipperColor: AccesoryColor
   bibColor: AccesoryColor
   bindingColor: AccesoryColor

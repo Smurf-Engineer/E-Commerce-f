@@ -522,6 +522,20 @@ class Render3D extends PureComponent {
               bumpMap: bumpMapObj
             })
 
+            /* Transparent predyed  */
+            if (!!branding && hidePredyed) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                side: THREE.FrontSide,
+                bumpMap,
+                opacity: 1,
+                transparent: false
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
+
             /* Extra files loaded by MTL file */
             const labelIndex = findIndex(
               children,
