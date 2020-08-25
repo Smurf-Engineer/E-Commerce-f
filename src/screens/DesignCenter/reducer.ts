@@ -78,10 +78,11 @@ import {
   ON_OPEN_COLOR_CHART_FORM,
   OPEN_DESIGN_CHECK_MODAL,
   SELECT_VARIANT,
-  SET_TICKET
+  SET_TICKET,
+  SET_PREDYED_COLOR
 } from './constants'
 import { Reducer, Change } from '../../types/common'
-import { DEFAULT_FONT } from '../../constants'
+import { DEFAULT_FONT, ACCESSORY_BLACK } from '../../constants'
 import { BLACK as BLACK_COLOR } from '../../theme/colors'
 export const initialState = fromJS({
   currentTab: 0,
@@ -91,6 +92,8 @@ export const initialState = fromJS({
   colors: [],
   stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
   bindingColor: BLACK,
+  predyedChanged: false,
+  selectedPredyed: ACCESSORY_BLACK,
   zipperColor: BLACK,
   bibColor: WHITE,
   styleColors: [],
@@ -265,6 +268,22 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         redoChanges: redoChanges.clear()
       })
     }
+    case SET_PREDYED_COLOR: {
+      const color = action.predyedColor
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const lastStep = {
+        type: Changes.AccessoryColors,
+        state: { id: AccessoryColors.Predyed, color }
+      }
+      return state.merge({
+        selectedPredyed: color,
+        designHasChanges: true,
+        predyedChanged: true,
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
+    }
     case SET_ACCESSORY_COLOR_ACTION: {
       const { id, color } = action
       const undoChanges = state.get('undoChanges')
@@ -426,6 +445,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
             stitchingColor: color
+
           })
         }
         case Changes.ChangeText: {
@@ -462,6 +482,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         colors: state.get('styleColors'),
         stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
+        selectedPredyed: ACCESSORY_BLACK,
         bindingColor: BLACK,
         zipperColor: BLACK,
         bibColor: WHITE,

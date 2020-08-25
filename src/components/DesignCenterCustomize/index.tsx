@@ -57,6 +57,7 @@ import {
 } from '../../screens/DesignCenter/constants'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
+import { PREDYED_TRANSPARENT } from '../../constants'
 
 const SVG_FILE = 'image/svg+xml'
 const POSCRIPT_FILE = 'application/postscript'
@@ -125,12 +126,14 @@ interface Props {
   colorChartModalFormOpen: boolean
   tutorialPlaylist: string
   userCode: string
+  selectedPredyed: string
   // Redux actions
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
+  setPredyedColor: (predyedColor: string) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
@@ -231,6 +234,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorBlockHovered,
       onSelectColor,
       setStitchingColorAction,
+      setPredyedColor,
       onSelectPalette,
       onChangePaletteName,
       paletteName,
@@ -241,6 +245,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       styleColors,
       currentStyle,
       videos,
+      selectedPredyed,
       loadingModel,
       onLoadModel,
       onUndoAction,
@@ -358,6 +363,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectColorBlock,
               onHoverColorBlock,
               videos,
+              selectedPredyed,
               setVideos,
               onSelectColor,
               colors,
@@ -412,6 +418,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onDeleteLayer={this.onDeleteLayer}
             onSelectEl={this.setSelectedLayer}
             onPositionChange={this.handleApplyPosition}
+            onSelectPredyed={setPredyedColor}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
             onApplyImage={this.handleOnApplyImage}
@@ -454,6 +461,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             openLoginAction={this.handleOnOpenLogin}
+            showBranding={selectedPredyed !== PREDYED_TRANSPARENT}
             {...{
               text,
               loggedUserId,
@@ -529,6 +537,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         {isMobile && !loadingData && showRender3d && !loadingModel && (
           <MobileSelectColors
             onSelectStitchingColor={setStitchingColorAction}
+            onSelectPredyed={setPredyedColor}
             {...{
               formatMessage,
               onSelectColorBlock,
@@ -537,6 +546,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               colors,
               styleColors,
               stitchingColor,
+              selectedPredyed,
               bindingColor,
               zipperColor,
               bibColor,

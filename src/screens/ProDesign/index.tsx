@@ -51,6 +51,7 @@ import { threeDScripts } from '../../utils/scripts'
 import { restoreUserSession } from '../../components/MainLayout/api'
 import { ADD_PRO_DESIGN, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
 import Spin from 'antd/lib/spin'
+import { WHITE } from '../DesignCenter/constants'
 
 const { TabPane } = AntdTabs
 
@@ -123,7 +124,8 @@ export class ProDesign extends React.Component<Props, {}> {
         stitchingName,
         zipperColor,
         bibColor,
-        bindingColor
+        bindingColor,
+        predyed
       },
       selectedUser,
       designName,
@@ -143,6 +145,7 @@ export class ProDesign extends React.Component<Props, {}> {
           .saveProDesignThumbnail()
 
         const design = {
+          predyed_name: product.branding && predyed,
           stitching: product.flatlock && stitching,
           stitching_name: product.flatlock && stitchingName,
           zipper_color: product.zipper && zipperColor,
@@ -183,7 +186,7 @@ export class ProDesign extends React.Component<Props, {}> {
       setStitchingColorAction,
       colorAccessories,
       user = {},
-      colorAccessories: { stitching },
+      colorAccessories: { stitching, predyed },
       setColorAction,
       setSelectedUserAction,
       setInputValueAction,
@@ -267,6 +270,7 @@ export class ProDesign extends React.Component<Props, {}> {
                 customProduct={true}
                 isProduct={true}
                 designId={0}
+                hidePredyed={predyed === WHITE}
                 {...{ product, actualImage, colorAccessories }}
                 stitchingValue={stitching}
                 ref={(render3D: any) => (this.render3D = render3D)}

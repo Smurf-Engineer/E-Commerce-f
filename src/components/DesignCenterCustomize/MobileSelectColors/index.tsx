@@ -34,6 +34,8 @@ interface Props {
   bibColor?: AccesoryColor
   product?: Product
   colorsList: any
+  selectedPredyed: string
+  onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -57,8 +59,10 @@ class MobileSelectColors extends React.PureComponent<Props> {
       colorBlock = -1,
       onSelectColor,
       stitchingColor,
+      selectedPredyed,
       product,
       onSelectStitchingColor,
+      onSelectPredyed,
       bibColor,
       onAccessoryColorSelected,
       bindingColor,
@@ -69,6 +73,7 @@ class MobileSelectColors extends React.PureComponent<Props> {
     const hasZipper = !!product && !!product.zipper
     const hasBinding = !!product && !!product.binding
     const hasBibBrace = !!product && !!product.bibBrace
+    const hasBranding = !!product && !!product.hasPredyed
     const colorButtons = colors.map((color, index) => {
       return (
         <TabPane
@@ -106,6 +111,16 @@ class MobileSelectColors extends React.PureComponent<Props> {
             <MobileColorList
               {...{ stitchingColor, onSelectStitchingColor, colorsList }}
               stitching={true}
+            />
+          </Row>
+        )}
+        {hasBranding && (
+          <Row>
+            <Label>{formatMessage({ ...messages.predyed })}</Label>
+            <MobileAccessoryColor
+              id={AccessoryColors.Predyed}
+              colorSelected={selectedPredyed}
+              onAccessoryColorSelected={onSelectPredyed}
             />
           </Row>
         )}
