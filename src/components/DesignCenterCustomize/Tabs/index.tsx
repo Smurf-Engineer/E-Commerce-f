@@ -45,6 +45,7 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
+  selectedPredyed: string
   stitchingColor?: StitchingColor
   videos: object[]
   bindingColor?: AccesoryColor
@@ -96,6 +97,7 @@ interface Props {
   ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  onSelectPredyed: (predyedColor: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
@@ -142,6 +144,7 @@ const Tabs = ({
   onSelectEl,
   onDeleteLayer,
   onSelectArtFormat,
+  onSelectPredyed,
   onSelectStitchingColor,
   stitchingColor,
   bindingColor,
@@ -165,6 +168,7 @@ const Tabs = ({
   openLoginModalAction,
   fonts,
   colorsList,
+  selectedPredyed,
   onRequestColorChart,
   colorChartSending,
   colorChartModalOpen,
@@ -190,6 +194,7 @@ const Tabs = ({
               colorBlockHovered,
               onSelectColor,
               colors,
+              selectedPredyed,
               styleColors,
               onChangePaletteName,
               paletteName,
@@ -203,6 +208,7 @@ const Tabs = ({
               bindingColor,
               zipperColor,
               bibColor,
+              onSelectPredyed,
               onSelectStitchingColor,
               onAccessoryColorSelected,
               product,

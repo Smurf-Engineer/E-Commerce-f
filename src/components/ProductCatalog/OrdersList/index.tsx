@@ -14,7 +14,7 @@ import { Product, sorts } from '../../../types/common'
 import jakrooLogo from '../../../assets/Jackroologo.svg'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getProductsQuery, changeActiveProduct, changeOnlyPro } from './data'
+import { getProductsQuery, changeActiveProduct, togglePredyedProduct, changeOnlyPro } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Props {
@@ -30,6 +30,7 @@ interface Props {
   searchText?: string
   canEdit: boolean
   updateActiveProduct: (variables: {}) => Promise<Product>
+  togglePredyed: (variables: {}) => Promise<Product>
   updateOnlyPro: (variables: {}) => Promise<Product>
   onSortClick: (label: string, sort: sorts) => void
   onProductClick: (id: number) => void
@@ -45,6 +46,7 @@ const ProductList = ({
   canEdit,
   updateOnlyPro,
   updateActiveProduct,
+  togglePredyed,
   withPagination = true,
   withoutPadding = false
 }: Props) => {
@@ -83,6 +85,10 @@ const ProductList = ({
               label={formatMessage(messages.proDesign)}
               justifyContent="center"
             />
+            <HeaderTable
+              label={formatMessage(messages.hasPredyed)}
+              justifyContent="center"
+            />
           </Row>
         )
       }}
@@ -90,7 +96,7 @@ const ProductList = ({
   )
   const orderItems = orders.map(
     (
-      { id, images, active, name, mpn, code, isCustom, obj, mtl, onlyProDesign }: Product,
+      { id, images, active, name, mpn, code, isCustom, obj, mtl, hasPredyed, onlyProDesign }: Product,
       index: number
     ) => {
       const image =
@@ -114,6 +120,8 @@ const ProductList = ({
             updateOnlyPro,
             onlyProDesign,
             isCustom,
+            togglePredyed,
+            hasPredyed,
             onProductClick,
             image,
             disabled
@@ -153,6 +161,7 @@ const PRODUCTS_LIMIT = 12
 
 const ProductListEnhance = compose(
   graphql(changeActiveProduct, { name: 'updateActiveProduct' }),
+  graphql(togglePredyedProduct, { name: 'togglePredyed' }),
   graphql(changeOnlyPro, { name: 'updateOnlyPro' }),
   graphql(getProductsQuery, {
     options: ({ currentPage, customLimit, searchText }: OwnProps) => {

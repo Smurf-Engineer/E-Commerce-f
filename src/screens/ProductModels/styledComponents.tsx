@@ -10,12 +10,13 @@ import {
   GRAY_DARK,
   GRAY_LIGHTEST,
   RED,
-  BLUE_SOFT
+  BLUE_SOFT,
 } from '../../theme/colors'
 import AntdTabs from 'antd/lib/tabs'
 import AntdButton from 'antd/lib/button'
 
 interface DivProps {
+  hexColor?: string
   background?: boolean
   active?: boolean
 }
@@ -75,8 +76,8 @@ export const Side = styled.div`
   max-width: 334px;
   width: 100%;
   display: flex;
-  flex-flow: column;
   border-right: 1px solid ${GRAY_LIGHT};
+  flex-flow: column;
   align-items: center;
 `
 
@@ -319,14 +320,14 @@ export const ButtonWrapper = styled.div`
   align-self: right;
   .ant-btn-primary {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
   }
   .ant-btn-primary:hover {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    disabled ? WHITE_SMOKE : BLUE};
   }
 `
