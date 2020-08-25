@@ -21,7 +21,6 @@ export const UPLOAD_COMPLETE = `${namespace}/UPLOAD_COMPLETE`
 export const RESET_REDUCER = `${namespace}/RESET_REDUCER`
 
 export const MODELS_TAB = 'models'
-export const PREDYED_TAB = 'predyed'
 
 export const validIcons = ['image/jpeg', 'image/png']
 
