@@ -11,11 +11,9 @@ import {
   GRAY_LIGHTEST,
   RED,
   BLUE_SOFT,
-  GRAY
 } from '../../theme/colors'
 import AntdTabs from 'antd/lib/tabs'
 import AntdButton from 'antd/lib/button'
-import transparentGrid from '../../assets/transparent_grid.png'
 
 interface DivProps {
   hexColor?: string
@@ -75,9 +73,10 @@ export const Layout = styled.div`
 `
 
 export const Side = styled.div`
+  max-width: 334px;
   width: 100%;
-  height: 100%;
   display: flex;
+  border-right: 1px solid ${GRAY_LIGHT};
   flex-flow: column;
   align-items: center;
 `
@@ -331,27 +330,4 @@ export const ButtonWrapper = styled.div`
     border-color: ${({ disabled }: ButtonWrapperProps) =>
     disabled ? WHITE_SMOKE : BLUE};
   }
-`
-
-export const NavTabs = styled(AntdTabs)`
-  max-width: 384px;
-  border-right: 1px solid ${GRAY_LIGHT};
-  width: 100%;
-  .ant-tabs-nav-scroll {
-    text-align: center;
-  }
-  .ant-tabs-content {
-    height: 100%;
-  }
-  .ant-tabs-bar {
-    margin-bottom: 0;
-  }
-`
-
-export const ColorBlock = styled.div`
-  width: 94px;
-  height: 70px;
-  cursor: pointer;
-  border: 1px solid ${GRAY};
-  background: ${({ hexColor }: DivProps) => hexColor ? hexColor : `url(${transparentGrid})`};
 `
