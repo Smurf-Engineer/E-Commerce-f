@@ -33,6 +33,7 @@ interface Data extends QueryProps {
 
 interface Props {
   userId: string
+  isAdmin: boolean
   data: Data
   images: ImageFile[]
   uploading: boolean
@@ -124,6 +125,7 @@ class UserFiles extends React.Component<Props> {
       data: { userFiles },
       data,
       formatMessage,
+      isAdmin,
       uploading
     } = this.props
     if (data.loading) {
@@ -154,7 +156,7 @@ class UserFiles extends React.Component<Props> {
       ))
     return (
       <Container>
-        <MessageText>
+        <MessageText {...{ isAdmin }}>
           {!!userFiles &&
             formatMessage(messages.userFiles, {
               userName: userFiles.userName

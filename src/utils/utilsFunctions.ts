@@ -18,3 +18,7 @@ export const validateEmail = (email: string) => {
   const emailPattern = /[a-z0-9!#$%&'*+\=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
   return emailPattern.test(email)
 }
+
+export const formatAmount = (value: Number = 0) => {
+  return value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}

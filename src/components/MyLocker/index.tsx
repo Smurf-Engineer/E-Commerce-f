@@ -371,7 +371,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             <Spin size="large" />
           </TransparentLoader>
         )}
-        <MessageText>
+        <MessageText {...{ admin }}>
           {admin
             ? formatMessage(messages.userLocker, { userName })
             : formatMessage(messages.message)}
