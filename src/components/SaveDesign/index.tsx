@@ -68,7 +68,7 @@ interface Props {
   saveDesignLoading: boolean
   saveDesignChangesLoading: boolean
   stitchingColor: StitchingColor
-  selectedPredyed: string
+  predyedColor: string
   hasFlatlock: boolean
   hasZipper: boolean
   hasBinding: boolean
@@ -139,7 +139,7 @@ export class SaveDesign extends React.Component<Props, State> {
       colors,
       design,
       hasBranding,
-      selectedPredyed,
+      predyedColor,
       formatMessage,
       saveDesign,
       requestClose,
@@ -196,7 +196,7 @@ export class SaveDesign extends React.Component<Props, State> {
         designObj.bib_brace_color = bibColor
       }
       if (hasBranding) {
-        designObj.predyed_name = selectedPredyed
+        designObj.predyed_name = predyedColor
       }
 
       setSaveDesignLoading(true)
@@ -242,7 +242,7 @@ export class SaveDesign extends React.Component<Props, State> {
       requestClose,
       design,
       hasBranding,
-      selectedPredyed,
+      predyedColor,
       setSaveDesignChangesLoading,
       hasFlatlock,
       hasZipper,
@@ -280,7 +280,7 @@ export class SaveDesign extends React.Component<Props, State> {
         designObj.bib_brace_color = bibColor
       }
       if (hasBranding) {
-        designObj.predyed_name = selectedPredyed
+        designObj.predyed_name = predyedColor
       }
 
       setSaveDesignChangesLoading(true)
