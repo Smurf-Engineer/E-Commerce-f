@@ -1063,6 +1063,8 @@
   "components.PaletteCard.color5": "Color 5",
   "components.PaletteCard.delete": "Delete",
   "screens.FitAndSizing.tittle": "FIT & SIZING",
+  "screens.FitAndSizing.needAssistance": "Need assistance with determining your size?",
+  "screens.FitAndSizing.tryFreeService": "Try our free Size Recommendation Service",
   "screens.FitAndSizing.bodySizeTitle": "BODY SIZE CHART",
   "screens.FitAndSizing.bodySizeDescription": "JAKROO size charts reflect the ranges of measurements that would be considered typical within the size of the item. For questions, sizing consultations, or fit sample orders – please email us at: <a href=\"mailto:customdesign@jakroousa.com\">customdesign@jakroousa.com</a>",
   "screens.FitAndSizing.sizingChart": "SIZING CHART",
