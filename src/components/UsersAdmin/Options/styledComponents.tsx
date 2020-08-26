@@ -48,6 +48,11 @@ export const StatusLabel = styled.div`
   font-style: italic;
 `
 
+export const Stats = styled.div`
+`
+
+export const StatsLabel = styled.div``
+
 export const NameLabel = styled.div`
   font-size: 16px;
   font-weight: bold;

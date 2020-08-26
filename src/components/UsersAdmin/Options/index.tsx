@@ -19,7 +19,9 @@ import {
   NameLabel,
   StatusLabel,
   EnableSection,
-  StyledSwitch
+  StyledSwitch,
+  StatsLabel,
+  Stats
 } from './styledComponents'
 import MyLocker from '../../MyLocker'
 import {
@@ -39,6 +41,8 @@ import {
   setAffiliateStatusMutation
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
+import { NOTE_FORMAT } from '../constants'
+import moment from 'moment'
 
 const RadioGroup = Radio.Group
 
@@ -243,7 +247,7 @@ class Options extends React.Component<Props> {
       setDesignSelected,
     } = this.props
     const userId = get(match, 'params.id', '')
-    const { userProfile = {}, affiliate = {} } = get(profileData, 'profileData', {})
+    const { userProfile = {}, affiliate = {}, stats = {} } = get(profileData, 'profileData', {})
     const { id, firstName, lastName, affiliateEnabled } = userProfile
     const {
       status,
@@ -254,6 +258,10 @@ class Options extends React.Component<Props> {
       currency,
       file,
     } = affiliate
+    const {
+      lastOrder,
+      amountOrders = []
+    } = stats
     const { loading: loadingData, designNotes = [] } = data || {}
     let selectedScreen
     switch (optionSelected) {
@@ -322,6 +330,13 @@ class Options extends React.Component<Props> {
             <NameLabel>
               {`${id} - ${firstName} ${lastName}`}
             </NameLabel>
+            <Stats>
+              {!!lastOrder &&
+                <StatsLabel>
+                  {moment(lastOrder).format(NOTE_FORMAT)}
+                </StatsLabel>
+              }
+            </Stats>
             {!!status &&
               <StatusLabel>
                 {status}

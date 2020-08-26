@@ -12,6 +12,13 @@ export const profileSettingsQuery = gql`
         affiliateEnabled: affiliate_enabled
         phone
       }
+      stats {
+        lastOrder: last_order
+        amountOrders: amount_orders {
+          total
+          currency
+        }
+      }
       affiliate {
         status
         file
