@@ -144,6 +144,10 @@ export const TermsLink = styled.span`
 export const TermsLabel = styled.div`
   margin-bottom: 12px;
   max-width: 740px;
+  a {
+    text-decoration: underline;
+    color: ${BLUE};
+  }
 `
 
 export const ButtonsContainer = styled.div`
