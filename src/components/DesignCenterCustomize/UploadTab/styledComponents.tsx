@@ -7,9 +7,11 @@ import {
   GRAY_LIGHTEST,
   GRAY_DARK,
   RED,
-  GRAY_LIGHT
+  GRAY_LIGHT,
+  BLUE
 } from '../../../theme/colors'
 import { AVENIR_NEXT } from '../../../theme/fonts'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   height: 60vh;
@@ -237,3 +239,30 @@ export const DragIcon = styled.img`
   max-width: 8px;
   margin-right: 8px;
 `
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+`
+
+export const WarningIcon = styled(Icon)``
+
+export const buttonStyle = {
+  background: BLUE,
+  border: 'none',
+}
