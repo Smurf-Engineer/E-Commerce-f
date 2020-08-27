@@ -66,10 +66,12 @@ export default defineMessages({
   },
   termsDescCad: {
     id: 'components.AffiliateModal.termsDescCad',
-    defaultMessage: `Jakroo Canada Inc. is required to submit T4A slips to the CRA when the earned income paidto 
-    an individual exceeds $500.00 during the tax year. In order to submit a T4A, we requirethe address and social 
-    security number of the individual. Should you prefer to provide thisinformation over the phone, please contact 
-    customer support.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Jakroo Canada Inc. is <a target='_blank' href='https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/completing-filing-information-returns/t4a-information-payers.html'>required by the CRA</a> 
+    to submit T4A slips to the Canada Revenue Agency (CRA) when the earned income paid to an individual exceeds 
+    $500.00 during the tax year. In order to submit a T4A slip, Jakroo requires the name, address, and social 
+    insurance number of the individual. If you prefer to provide this information over the phone, please contact 
+    our customer support team.`
   },
   cancel: {
     id: 'components.AffiliateModal.cancel',

@@ -156,9 +156,11 @@ export class AffiliateModal extends React.Component<Props, {}> {
                 </FileLink>
               </Currencies>
             </CurrencyContainer>
-            <TermsLabel>
-              <FormattedMessage {...messages[paypalCurrency === CA_CURRENCY ? 'termsDescCad' : 'termsDesc']} />
-            </TermsLabel>
+            <TermsLabel
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages[paypalCurrency === CA_CURRENCY ? 'termsDescCad' : 'termsDesc'])
+              }}
+            />
             <Label>
               <FormattedMessage {...messages.uploadTax} />
             </Label>
