@@ -19,6 +19,7 @@ interface Data extends QueryProps {
 interface Props {
   data?: Data
   history: any
+  openMenu: boolean
   loginButton: React.ReactNode
   formatMessage: (messageDescriptor: any) => string
 }
@@ -33,7 +34,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
   handleVisibleChange = (visible: boolean) => this.setState({ visible })
 
   render() {
-    const { data, history, loginButton, formatMessage } = this.props
+    const { data, history, loginButton, openMenu, formatMessage } = this.props
     const { visible } = this.state
     return (
       <Popover
@@ -42,6 +43,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
           <Menu
             {...{ data, history, loginButton, formatMessage }}
             menuOpen={visible}
+            openMenuAccount={openMenu}
             hideMenu={this.hide}
           />
         }

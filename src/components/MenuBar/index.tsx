@@ -67,6 +67,7 @@ interface Props {
 
 interface StateProps {
   openForgotPassword: boolean
+  openMenu: boolean
   isMobile: boolean
 }
 
@@ -76,6 +77,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
   state = {
     openForgotPassword: false,
+    openMenu: false,
     isMobile: false
   }
 
@@ -104,8 +106,12 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     window.location.replace(
       `/${regionCode}?lang=${currentLanguage ||
-        'en'}&currency=${currentCurrency}`
+      'en'}&currency=${currentCurrency}`
     )
+  }
+
+  openMenu = () => {
+    this.setState({ openMenu: true })
   }
 
   handleGoTo = (path: string) => {
@@ -135,7 +141,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { openForgotPassword, isMobile } = this.state
+    const { openForgotPassword, isMobile, openMenu } = this.state
     const {
       history,
       searchFunc,
@@ -172,13 +178,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         {formatMessage(messages.title)}
       </TopText>
     ) : (
-      <Logout
-        {...{ history }}
-        title={`${String(user.name).toUpperCase()}`}
-        logout={logoutAction}
-        goTo={this.handleOnGoTo}
-      />
-    )
+        <Logout
+          {...{ history }}
+          title={formatMessage(messages.myAccount, { user: String(user.name).toUpperCase() })}
+          logout={logoutAction}
+          openMenu={this.openMenu}
+          goTo={this.handleOnGoTo}
+        />
+      )
 
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
@@ -207,14 +214,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         <div />
       </BottomRow>
     ) : (
-      <BottomRow>
-        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList
-          {...{ history, formatMessage, currentCurrency, regionsCodes }}
-        />
-        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
-      </BottomRow>
-    )
+        <BottomRow>
+          <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+          <DropdownList
+            {...{ history, formatMessage, currentCurrency, regionsCodes }}
+          />
+          <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
+        </BottomRow>
+      )
 
     return (
       <div>
@@ -263,6 +270,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                       openWithoutSaveModalAction,
                       formatMessage,
                       buyNowHeader,
+                      openMenu,
                       saveAndBuy
                     }}
                     handleOnGoHome={this.handleOnGoHome}

@@ -15,6 +15,7 @@ interface Props {
   regionButton: React.ReactNode
   totalItems: number
   designHasChanges: boolean
+  openMenu: boolean
   hide?: boolean
   buyNowHeader?: boolean
   saveAndBuy: (buy: boolean) => void
@@ -28,6 +29,7 @@ export const MenuBarMobile = ({
   loginButton,
   regionButton,
   totalItems,
+  openMenu,
   designHasChanges,
   hide,
   openWithoutSaveModalAction,
@@ -41,7 +43,7 @@ export const MenuBarMobile = ({
   }
   return (
     <Container {...{ hide }}>
-      {!buyNowHeader && <Menu {...{ history, loginButton, formatMessage }} />}
+      {!buyNowHeader && <Menu {...{ history, loginButton, openMenu, formatMessage }} />}
       <Logo
         src={logo}
         onClick={handleOnGoHome}

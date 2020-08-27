@@ -3,8 +3,12 @@
  */
 import styled from 'styled-components'
 import MenuAntd from 'antd/lib/menu'
-import { GRAY_LIGHT } from '../../../theme/colors'
+import { GRAY_LIGHTEST } from '../../../theme/colors'
 const { SubMenu } = MenuAntd
+
+interface DivProps {
+  withBorder?: boolean
+}
 
 export const Container = styled.div``
 
@@ -21,7 +25,7 @@ export const LoginButton = styled.div`
 
 export const Bottom = styled.div``
 
-export const SeeAll = styled.div`
+export const BottomDiv = styled.div`
   @media (max-width: 991px) {
     height: 40px;
     display: flex;
@@ -32,7 +36,7 @@ export const SeeAll = styled.div`
 `
 
 export const StyledSubMenu = styled(SubMenu)`
-  border-bottom: 1px solid ${GRAY_LIGHT};
+  border-bottom: 1px solid ${GRAY_LIGHTEST};
   .ant-menu-submenu-title {
     padding-left: 6px !important;
     padding-right: 2px;
@@ -46,6 +50,8 @@ export const StyledSubMenu = styled(SubMenu)`
 export const Item = styled(MenuAntd.Item)`
   width: 100%;
   padding: 0 6px !important;
+  text-transform: ${({ withBorder }: DivProps) => withBorder ? `uppercase` : 'capitalize'};
+  border-bottom: ${({ withBorder }: DivProps) => withBorder ? `1px solid ${GRAY_LIGHTEST}` : 'none'};
 `
 
 export const menuStyle = { width: '100%' }

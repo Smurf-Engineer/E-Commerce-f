@@ -13,7 +13,9 @@ import {
   Text,
   menuStyle,
   Icon,
-  OverviewStyle
+  OverviewStyle,
+  titleStyle,
+  RightIcon
 } from './styledComponents'
 import {
   SCREEN_LOCKER,
@@ -24,10 +26,11 @@ import {
 interface Props {
   title: string
   logout: () => void
+  openMenu: () => void
   goTo: (path: string) => void
 }
 
-const Logout = ({ title, logout, goTo }: Props) => {
+const Logout = ({ title, logout, goTo, openMenu }: Props) => {
   const handleOnClick = ({ key }: any) => {
     if (key === 'logout') {
       logout()
@@ -68,9 +71,10 @@ const Logout = ({ title, logout, goTo }: Props) => {
               <Icon type="user" />
               <Text>
                 <Menu onClick={handleOnClick} style={OverviewStyle}>
-                  <Menu.Item key={OVERVIEW}>{toUpper(title)}</Menu.Item>
+                  <Menu.Item style={titleStyle} key={OVERVIEW}>{toUpper(title)}</Menu.Item>
                 </Menu>
               </Text>
+              <RightIcon onClick={openMenu} type="right" />
             </Container>
           )
         }
