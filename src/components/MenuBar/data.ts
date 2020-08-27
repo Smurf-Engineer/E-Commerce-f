@@ -35,3 +35,24 @@ export const regionsQuery = gql`
     }
   }
 `
+
+export const notificationsQuery = gql`
+  query getNotifications {
+    notifications: getNotifications {
+      id
+      senderId: user_id
+      notificationType: notification_type
+      toAdmin: to_admin
+      read: user_read
+    }
+  }
+`
+
+export  const notificationsSubscription = gql`
+  subscription newNotification {
+    newNotification {
+      id
+      text
+    }
+  }
+`

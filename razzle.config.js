@@ -142,7 +142,8 @@ module.exports = {
         'YOUTUBE_ID',
         'YOUTUBE_KEY',
         'TUTORIALS_TAB_ACTIVE',
-        'COLOR_SWATCH_ZIP'
+        'COLOR_SWATCH_ZIP',
+        'WEBSOCKET_URI_BASE'
       ])
     )
 

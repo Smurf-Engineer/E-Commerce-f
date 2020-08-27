@@ -20,7 +20,7 @@ import {
   TeamStoresMenuContainer,
   TeamStoresMenuTitle
 } from './styledComponents'
-import { regionsQuery } from './data'
+import { regionsQuery, notificationsQuery, notificationsSubscription } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -28,15 +28,21 @@ import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
 import Cart from '../CartForHeader'
+import Notifications from '../NotificationHeader'
 import {
   RegionConfig,
   Region as RegionType,
-  QueryProps
+  QueryProps,
+  Notification as NotificationType
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
+}
+
+interface NotificationsData extends QueryProps {
+  notifications: NotificationType[]
 }
 
 interface Props {
@@ -61,6 +67,7 @@ interface Props {
   designHasChanges: boolean
   initialCountryCode: string
   buyNowHeader: boolean
+  notificationsData: NotificationsData
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
 }
@@ -78,7 +85,22 @@ class MenuBar extends React.Component<Props, StateProps> {
     openForgotPassword: false,
     isMobile: false
   }
+  componentWillMount() {
+    const {
+      notificationsData: { subscribeToMore }
+    } = this.props
+    const isBrowser = typeof window !== 'undefined'
 
+    if (isBrowser) {
+      subscribeToMore({
+        document: notificationsSubscription,
+        updateQuery: (prev: any, { subscriptionData }: any) => {
+          console.log('SUBSC ', subscriptionData)
+          return prev
+        }
+      })
+    }
+  }
   componentDidMount() {
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
@@ -104,7 +126,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     window.location.replace(
       `/${regionCode}?lang=${currentLanguage ||
-        'en'}&currency=${currentCurrency}`
+      'en'}&currency=${currentCurrency}`
     )
   }
 
@@ -157,7 +179,8 @@ class MenuBar extends React.Component<Props, StateProps> {
       initialCountryCode,
       buyNowHeader,
       saveAndBuy,
-      regionsData: { regionsResult, loading: loadingRegions }
+      regionsData: { regionsResult, loading: loadingRegions },
+      notificationsData: { notifications }
     } = this.props
 
     let user: any
@@ -168,17 +191,17 @@ class MenuBar extends React.Component<Props, StateProps> {
     const { formatMessage } = intl
 
     const loggedUser = !user ? (
-      <TopText onClick={this.handleOpenLogin}>
+      <TopText onClick={this.handleOpenLogin} data-test="sign-up">
         {formatMessage(messages.title)}
       </TopText>
     ) : (
-      <Logout
-        {...{ history }}
-        title={`${String(user.name).toUpperCase()}`}
-        logout={logoutAction}
-        goTo={this.handleOnGoTo}
-      />
-    )
+        <Logout
+          {...{ history }}
+          title={`${String(user.name).toUpperCase()}`}
+          logout={logoutAction}
+          goTo={this.handleOnGoTo}
+        />
+      )
 
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
@@ -207,14 +230,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         <div />
       </BottomRow>
     ) : (
-      <BottomRow>
-        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList
-          {...{ history, formatMessage, currentCurrency, regionsCodes }}
-        />
-        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
-      </BottomRow>
-    )
+        <BottomRow>
+          <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+          <DropdownList
+            {...{ history, formatMessage, currentCurrency, regionsCodes }}
+          />
+          <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
+        </BottomRow>
+      )
 
     return (
       <div>
@@ -243,6 +266,13 @@ class MenuBar extends React.Component<Props, StateProps> {
                             history,
                             designHasChanges,
                             openWithoutSaveModalAction
+                          }}
+                        />
+                        <Notifications
+                          {...{
+                            notifications,
+                            history,
+                            isMobile
                           }}
                         />
                         {loggedUser}
@@ -321,6 +351,9 @@ const MenuBarEnhanced = compose(
       fetchPolicy: 'network-only',
       variables: {}
     })
+  }),
+  graphql<NotificationsData>(notificationsQuery, {
+    name: 'notificationsData',
   })
 )(MenuBar)
 export default MenuBarEnhanced

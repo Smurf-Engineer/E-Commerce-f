@@ -30,7 +30,10 @@ export const TopText = styled.div`
   color: #5f6062;
   cursor: pointer;
   font-size: 14px;
-
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media (max-width: 991px) {
     align-items: center;
     display: flex;

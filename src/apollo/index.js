@@ -4,9 +4,8 @@ import { createHttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
 import message from 'antd/lib/message'
 import head from 'lodash/head'
-// TODO: ENABLE LATER
-// import { WebSocketLink } from 'apollo-link-ws'
-// import { getMainDefinition } from 'apollo-utilities'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '../config'
 import fetch from 'node-fetch'
@@ -48,11 +47,10 @@ const authLink = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-// TODO: ENABLE LATER
-// const hasSubscriptionOperation = ({ query }) => {
-//   const { kind, operation } = getMainDefinition(query)
-//   return kind === 'OperationDefinition' && operation === 'subscription'
-// }
+const hasSubscriptionOperation = ({ query }) => {
+  const { kind, operation } = getMainDefinition(query)
+  return kind === 'OperationDefinition' && operation === 'subscription'
+}
 
 const httpLink = createHttpLink({
   uri: `${config.graphqlUriBase}graphql`,
@@ -60,23 +58,21 @@ const httpLink = createHttpLink({
 })
 
 // TODO: ENABLE LATER
-// const wsLink = process.browser
-//   ? new WebSocketLink({
-//       uri: `wss://api.jakroo.tailrecursive.co/api/subscriptions`,
-//       options: {
-//         reconnect: false // TODO: CHANGE TO TRUE LATER
-//       }
-//     })
-//   : null
+const wsLink = process.browser
+  ? new WebSocketLink({
+    uri: config.websocketUriBase,
+    options: {
+      reconnect: false // TODO: CHANGE TO TRUE LATER
+    }
+  })
+  : null
 
 const apolloLink = ApolloLink.from([authLink, errorLink, httpLink])
 
 // TODO: ENABLE LATER
-// const link = process.browser
-//   ? split(hasSubscriptionOperation, wsLink, apolloLink)
-//   : apolloLink
-
-const link = apolloLink
+const link = process.browser
+  ? ApolloLink.split(hasSubscriptionOperation, wsLink, apolloLink)
+  : apolloLink
 
 export const configureServerClient = () => {
   const client = new ApolloClient({

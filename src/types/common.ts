@@ -1710,3 +1710,11 @@ export type SubsidiarySCA = {
 export type DeliveryDays = {
   deliveryDays: string
 }
+
+export type Notification = {
+  id: number
+  senderId: string
+  notificationType: string
+  toAdmin: boolean
+  read: boolean
+}
