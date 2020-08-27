@@ -348,7 +348,7 @@ class Options extends React.Component<Props> {
                 {formatMessage(messages.totalSales)}
               </StatsTitle>
               {amountOrders.map(({ total, currency: currencyOrder }: OrderStats, index: number) =>
-                <StatsValue key={index}>
+                <StatsValue secondary={true} key={index}>
                   {`${currencyOrder} ${formatAmount(total)}`}
                 </StatsValue>
               )}

@@ -3,10 +3,14 @@
  */
 import styled from 'styled-components'
 import Radio from 'antd/lib/radio'
-import { WHITE, GRAY_DARK, BLUE, GRAY } from '../../../theme/colors'
+import { WHITE, GRAY_DARK, BLUE, GRAY, RED } from '../../../theme/colors'
 import Switch from 'antd/lib/switch'
 import { AVENIR_MEDIUM } from '../../../theme/fonts'
 const RadioButtonComponent = Radio.Button
+
+interface DivProps {
+  secondary?: boolean
+}
 
 export const RadioButton = styled(RadioButtonComponent)`
   margin-right: 26px;
@@ -67,6 +71,7 @@ export const StatsTitle = styled.div`
 export const StatsValue = styled.div`
   font-size: 14px;
   font-weight: bold;
+  color: ${({ secondary }: DivProps) => secondary ? RED : GRAY_DARK}
   font-family: ${AVENIR_MEDIUM};
   text-transform: uppercase;
 `
