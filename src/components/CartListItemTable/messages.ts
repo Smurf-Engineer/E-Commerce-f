@@ -58,5 +58,9 @@ export default defineMessages({
   maxQuantityAlert: {
     id: 'components.CartListItemTable.maxQuantityAlert',
     defaultMessage: 'MAXIMUM QUANTITY ALERT'
+  },
+  gotIt: {
+    id: 'components.CartListItemTable.gotIt',
+    defaultMessage: 'Got it!'
   }
 })

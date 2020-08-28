@@ -1241,6 +1241,7 @@
   "components.CartListItemTable.color": "Color",
   "components.CartListItemTable.maxQuantity": "The maximum quantity of 249 pieces has been reached. Please contact Customer Service to assist you with placing this order.",
   "components.CartListItemTable.maxQuantityAlert": "MAXIMUM QUANTITY ALERT",
+  "components.CartListItemTable.gotIt": "Got it!",
   "components.EmailContact.tittle": "CONTACT STORE MANAGER",
   "components.EmailContact.email": "Email:",
   "components.EmailContact.phone": "Phone:",

@@ -157,7 +157,7 @@ class CartListItemTable extends React.Component<Props, State> {
       info({
         title: formatMessage(messages.maxQuantityAlert),
         content: formatMessage(messages.maxQuantity),
-        okText: 'Got it!',
+        okText: formatMessage(messages.gotIt),
         okType: 'default'
       })
     }
