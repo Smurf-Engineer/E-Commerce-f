@@ -54,4 +54,4 @@ export const Item = styled(MenuAntd.Item)`
   border-bottom: ${({ withBorder }: DivProps) => withBorder ? `1px solid ${GRAY_LIGHTEST}` : 'none'};
 `
 
-export const menuStyle = { width: '100%' }
+export const menuStyle = { width: '100%', overflowX: 'hidden' }

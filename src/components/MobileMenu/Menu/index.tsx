@@ -12,14 +12,16 @@ import {
 import { Container, Bottom, menuStyle, BottomDiv, Item, StyledSubMenu } from './styledComponents'
 import messages from './messages'
 import messagesMenu from '../../../screens/Account/messages'
-import { menuOptions } from './constants'
+import { menuOptions, AFFILIATES } from './constants'
 import { setCurrentScreenAction } from '../../../screens/Account/actions'
 import { connect } from 'react-redux'
+import SwipeableViews from 'react-swipeable-views'
 
 interface Props {
   client: any
   data?: any
   history: any
+  affiliateEnabled?: boolean
   openMenuAccount: boolean
   hideMenu: () => void
   logoutAction: () => void
@@ -126,6 +128,7 @@ class Menu extends React.PureComponent<Props, {}> {
       data: { loading, error, sports },
       loginButton,
       openMenuAccount,
+      affiliateEnabled,
       formatMessage
     } = this.props
 
@@ -143,6 +146,7 @@ class Menu extends React.PureComponent<Props, {}> {
 
     const menuAccount = menuOptions.map(({ title, options: submenus }) =>
       submenus.length ?
+        ((title === AFFILIATES && affiliateEnabled) || title !== AFFILIATES) &&
         <StyledSubMenu
           key={title}
           title={formatMessage(messagesMenu[title])}
@@ -180,22 +184,33 @@ class Menu extends React.PureComponent<Props, {}> {
       )
     })
 
-    const options = openMenuAccount ? menuAccount : optionsSports
-
     return (
       <Container>
         <Bottom>{loginButton}</Bottom>
-        <MenuAntd
-          mode="inline"
-          onSelect={this.handleClick}
-          defaultSelectedKeys={['']}
-          defaultOpenKeys={['']}
-          openKeys={this.state.openKeys}
-          onOpenChange={this.onOpenChange}
-          style={menuStyle}
-        >
-          {options}
-        </MenuAntd>
+        <SwipeableViews index={openMenuAccount ? 1 : 0} disabled={true} animateHeight={true}>
+          <MenuAntd
+            mode="inline"
+            onSelect={this.handleClick}
+            defaultSelectedKeys={['']}
+            defaultOpenKeys={['']}
+            openKeys={this.state.openKeys}
+            onOpenChange={this.onOpenChange}
+            style={menuStyle}
+          >
+            {optionsSports}
+          </MenuAntd>
+          <MenuAntd
+            mode="inline"
+            onSelect={this.handleClick}
+            defaultSelectedKeys={['']}
+            defaultOpenKeys={['']}
+            openKeys={this.state.openKeys}
+            onOpenChange={this.onOpenChange}
+            style={menuStyle}
+          >
+            {menuAccount}
+          </MenuAntd>
+        </SwipeableViews>
         {openMenuAccount ?
           <BottomDiv onClick={this.logout}>
             {formatMessage(messages.logout)}

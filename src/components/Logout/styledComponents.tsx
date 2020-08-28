@@ -41,6 +41,13 @@ export const RightIcon = styled(icon)`
   color: ${RED};
 `
 
+export const LeftIcon = styled(icon)`
+  padding-right: 28px;
+  padding-left: 8px;
+  font-size: 12px;
+  color: ${RED};
+`
+
 export const menuStyle = {
   marginTop: 15,
   borderRadius: 0,
