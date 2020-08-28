@@ -272,7 +272,8 @@ class MenuBar extends React.Component<Props, StateProps> {
                           {...{
                             notifications,
                             history,
-                            isMobile
+                            isMobile,
+                            formatMessage
                           }}
                         />
                         {loggedUser}

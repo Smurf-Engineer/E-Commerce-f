@@ -2,11 +2,13 @@
  * Styled Components - Created by eduardoquinterp on 19/08/20.
  */
 import styled from 'styled-components'
+import { WHITE } from '../../theme/colors'
 
-export const Container = styled.div``
+export const Container = styled.div`
+`
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const Image = styled.img`
@@ -14,7 +16,13 @@ export const Image = styled.img`
   width: 20px;
 `
 
-export const overStyle = {
-  width: 276,
-  paddingTop: 7
+export const NotificationList = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: scroll;
+`
+
+export const overlayStyle = {
+  width: 276
 }

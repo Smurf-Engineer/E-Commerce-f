@@ -115,6 +115,7 @@ export const getShoppingCartData = (
       totalSum = totalSum + priceRange.price * quantitySum
     })
   }
+  console.log(priceRangeToApply)
   return {
     total: totalSum,
     weightSum,
@@ -128,6 +129,7 @@ export const getShoppingCartData = (
 }
 
 const getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
+  console.log(priceRanges, totalItems)
   let markslider = { quantity: '0', price: 0 }
   for (const priceRangeItem of priceRanges) {
     if (!totalItems || !priceRangeItem.quantity) {

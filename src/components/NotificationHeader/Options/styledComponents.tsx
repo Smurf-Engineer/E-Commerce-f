@@ -1,37 +1,49 @@
 /**
- * Styled Components - Created by david on 20/02/18.
+ * Styled Components - Created by eduardoquintero on 25/08/20.
  */
 import styled from 'styled-components'
-import Divider from 'antd/lib/divider'
+import { RED, GRAY_DARK, GRAY, RED_TRANSPARENT_BRIGHT } from '../../../theme/colors'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  position: relative;
+  cursor: pointer;
+  & .new {
+    background: ${RED_TRANSPARENT_BRIGHT};
+    &::after {
+      content: '';
+      background: ${RED};
+      width: 14px;
+      height: 14px;
+      border-radius: 7px;
+      position: absolute;
+      top: calc(50% - 7px);
+      right: 10px;
+    }
+  }
+`
 
-export const Label = styled.div`
-  text-align: center;
-  color: #5f6062;
+export const Title = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: 600;
+`
+
+export const Description = styled.div`
+  color: ${GRAY_DARK};
   font-size: 12px;
-  margin-bottom: 13px;
+  margin-bottom: 5px;
+`
+
+export const Date = styled.div`
+  color: ${GRAY};
+  font-size: 10px;
+  margin-bottom: 5px;
 `
 
 export const Row = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
 
-interface TextProps {
-  selected: boolean
-}
-
-export const Text = styled.div`
-  color: ${({ selected }: TextProps) => (selected ? '#e61737' : ' #5f6062')};
-  text-align: center;
-  cursor: pointer;
-  font-size: 18px;
-  line-height: 25px;
-  padding: 0px 10px;
-`
-
-export const LineVertical = styled(Divider)`
-  height: 20px;
 `

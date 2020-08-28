@@ -12,3 +12,7 @@ body {
 .rc-drawer-sidebar {
   z-index: 11;
 }
+
+.ant-popover.notifications .ant-popover-inner-content{
+  padding: 0;
+}

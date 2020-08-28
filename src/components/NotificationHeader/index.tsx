@@ -2,10 +2,13 @@
  * NotificationHeader Component - Created by eduardoquintero on 19/08/20.
  */
 import * as React from 'react'
-import { Notification } from '../../types/common'
+import { Notification, Message } from '../../types/common'
 import Badge from 'antd/lib/badge'
+import ListHeader from './ListHeader'
+import ListFooter from './ListFooter'
 import Popover from 'antd/lib/popover'
-import { Container, Image, overStyle } from './styledComponents'
+import { Container, Image, overlayStyle, NotificationList } from './styledComponents'
+import Options from './Options'
 import bell from '../../assets/bell.svg'
 
 interface Props {
@@ -13,6 +16,7 @@ interface Props {
   totalItems: number
   notifications?: Notification[]
   isMobile?: boolean
+  formatMessage: (messageDescriptor: Message) => string
 }
 
 export class NotificationHeader extends React.PureComponent<Props, {}> {
@@ -20,16 +24,46 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { isMobile, notifications = [] } = this.props
+    const { isMobile, notifications = [], formatMessage } = this.props
     const unreadTotal = notifications.length && notifications.filter((notification) => !notification.read).length
+
+    const content = (
+      <>
+        <NotificationList>
+          <Options
+            title="Language"
+            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
+            onPress={() => console.log('A')}
+          />
+          <Options
+            title="Language"
+            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
+            onPress={() => console.log('A')}
+          />
+          <Options
+            title="Language"
+            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
+            onPress={() => console.log('A')}
+          />
+          <Options
+            title="Language"
+            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
+            onPress={() => console.log('A')}
+          />
+        </NotificationList>
+        <ListFooter {...{ formatMessage }} onViewAll={() => console.log('a')} />
+      </>
+    )
 
     return !isMobile ? (
       <Popover
-        overlayStyle={overStyle}
-        trigger="hover"
+        overlayStyle={overlayStyle}
+        overlayClassName="notifications"
+        trigger="click"
         placement="bottom"
         onVisibleChange={this.handleOnVisibleChange}
-        content={<div>hola</div>}
+        title={<ListHeader {...{ formatMessage }} onMarkAll={() => console.log()} />}
+        content={content}
       >
         <Container>
           <Badge count={unreadTotal} overflowCount={9}>
