@@ -23,6 +23,7 @@ import {
   QuestionSpan,
   CellContainer
 } from './styledComponents'
+import Modal from 'antd/lib/modal'
 import {
   ItemDetailType,
   FitStyle,
@@ -33,6 +34,8 @@ import {
 } from '../../types/common'
 
 const Option = Select.Option
+
+const MAX_INDIVIDUAL_ITEMS = 249
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -99,6 +102,8 @@ const headerTitles: Header[] = [
   { message: '', width: 10 }
 ]
 
+const { info } = Modal
+
 class CartListItemTable extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
@@ -146,7 +151,16 @@ class CartListItemTable extends React.Component<Props, State> {
   }
 
   handleQuantityChange = (value: any, detail: number) => {
-    const { setDetailQuantity, itemIndex } = this.props
+    const { setDetailQuantity, itemIndex, formatMessage } = this.props
+
+    if (value > MAX_INDIVIDUAL_ITEMS) {
+      info({
+        title: formatMessage(messages.maxQuantityAlert),
+        content: formatMessage(messages.maxQuantity),
+        okText: 'Got it!',
+        okType: 'default'
+      })
+    }
 
     setDetailQuantity(itemIndex, detail, value)
   }
@@ -266,66 +280,66 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-          const { gender, size, fit, quantity, color, colorImage } = item
-          const colorName = color && color.name
-          const colorObject = find(colors, { name: colorName })
-          return !onlyRead ? (
-            <Row key={index} withColor={withColorColumn}>
+        const { gender, size, fit, quantity, color, colorImage } = item
+        const colorName = color && color.name
+        const colorObject = find(colors, { name: colorName })
+        return !onlyRead ? (
+          <Row key={index} withColor={withColorColumn}>
+            <Cell>
+              <StyledSelect
+                onChange={(e) => this.handleGenderChange(e, index)}
+                showSearch={false}
+                placeholder={formatMessage(messages.genderPlaceholder)}
+                optionFilterProp="children"
+                value={gender ? gender.name : undefined}
+                selectWidth={genderSelectWidth}
+                disabled={cartItem.fixedCart}
+                highlightFields={
+                  highlightFields && !gender && !!genders.length
+                }
+              >
+                {genderOptions}
+              </StyledSelect>
+            </Cell>
+            {((withColorColumn && !!colorObject) || colorImage) && (
               <Cell>
-                <StyledSelect
-                  onChange={(e) => this.handleGenderChange(e, index)}
-                  showSearch={false}
-                  placeholder={formatMessage(messages.genderPlaceholder)}
-                  optionFilterProp="children"
-                  value={gender ? gender.name : undefined}
-                  selectWidth={genderSelectWidth}
+                <ColorPicker
+                  selectedColor={colorObject.id}
+                  onSelectColor={(e) => this.handleColorChange(e, index)}
+                  productColors={colors}
                   disabled={cartItem.fixedCart}
-                  highlightFields={
-                    highlightFields && !gender && !!genders.length
-                  }
-                >
-                  {genderOptions}
-                </StyledSelect>
+                />
               </Cell>
-              {((withColorColumn && !!colorObject) || colorImage) && (
-                <Cell>
-                  <ColorPicker
-                    selectedColor={colorObject.id}
-                    onSelectColor={(e) => this.handleColorChange(e, index)}
-                    productColors={colors}
-                    disabled={cartItem.fixedCart}
-                  />
-                </Cell>
-              )}
-              <Cell>
-                <StyledSelect
-                  onChange={(e) => this.handleSizeChange(e, index)}
-                  showSearch={false}
-                  placeholder={formatMessage(messages.sizePlaceholder)}
-                  optionFilterProp="children"
-                  value={size ? size.name : undefined}
-                  selectWidth={fitSelectWidth}
-                  disabled={cartItem.fixedCart || !sizes.length}
-                  highlightFields={highlightFields && !size && !!sizes.length}
-                >
-                  {sizeOptions}
-                </StyledSelect>
-              </Cell>
-              <Cell>
-                <StyledSelect
-                  onChange={(e) => this.handleFitChange(e, index)}
-                  showSearch={false}
-                  placeholder={formatMessage(messages.fitPlaceholder)}
-                  optionFilterProp="children"
-                  value={fit ? fit.name : undefined}
-                  selectWidth={fitSelectWidth}
-                  disabled={cartItem.fixedCart || !fits}
-                  highlightFields={highlightFields && !fit && fits}
-                >
-                  {fitOptions}
-                </StyledSelect>
-              </Cell>
-              {/* TODO: Delete after confirm label won't be necessary in table
+            )}
+            <Cell>
+              <StyledSelect
+                onChange={(e) => this.handleSizeChange(e, index)}
+                showSearch={false}
+                placeholder={formatMessage(messages.sizePlaceholder)}
+                optionFilterProp="children"
+                value={size ? size.name : undefined}
+                selectWidth={fitSelectWidth}
+                disabled={cartItem.fixedCart || !sizes.length}
+                highlightFields={highlightFields && !size && !!sizes.length}
+              >
+                {sizeOptions}
+              </StyledSelect>
+            </Cell>
+            <Cell>
+              <StyledSelect
+                onChange={(e) => this.handleFitChange(e, index)}
+                showSearch={false}
+                placeholder={formatMessage(messages.fitPlaceholder)}
+                optionFilterProp="children"
+                value={fit ? fit.name : undefined}
+                selectWidth={fitSelectWidth}
+                disabled={cartItem.fixedCart || !fits}
+                highlightFields={highlightFields && !fit && fits}
+              >
+                {fitOptions}
+              </StyledSelect>
+            </Cell>
+            {/* TODO: Delete after confirm label won't be necessary in table
               <Cell>
                 <StyledInput
                   id={`input${index}`}
@@ -334,23 +348,23 @@ class CartListItemTable extends React.Component<Props, State> {
                   onChange={e => this.handleLabelChange(e, index)}
                 />
               </Cell> */}
-              <Cell>
-                <StyledInputNumber
-                  key={index}
-                  onChange={(e) => this.handleQuantityChange(e, index)}
-                  min={1}
-                  max={99}
-                  value={quantity || undefined}
-                  disabled={cartItem.fixedCart}
-                />
-                {!cartItem.fixedCart && (
-                  <DeleteItem onClick={this.handleRemove(itemIndex, index)}>
-                    —
-                  </DeleteItem>
-                )}
-              </Cell>
-            </Row>
-          ) : (
+            <Cell>
+              <StyledInputNumber
+                key={index}
+                onChange={(e) => this.handleQuantityChange(e, index)}
+                min={1}
+                max={249}
+                value={quantity || undefined}
+                disabled={cartItem.fixedCart}
+              />
+              {!cartItem.fixedCart && (
+                <DeleteItem onClick={this.handleRemove(itemIndex, index)}>
+                  —
+                </DeleteItem>
+              )}
+            </Cell>
+          </Row>
+        ) : (
             <Row key={index} withColor={withColorColumn} {...{ onlyRead }}>
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
               {((withColorColumn && !!colorObject) || colorImage) && (
@@ -365,7 +379,7 @@ class CartListItemTable extends React.Component<Props, State> {
               <InfoCell align={'center'}>{quantity || '-'}</InfoCell>
             </Row>
           )
-        })
+      })
       : null
 
     return (

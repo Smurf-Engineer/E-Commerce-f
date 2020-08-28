@@ -49,5 +49,14 @@ export default defineMessages({
   labelPlaceholder: {
     id: 'components.CartListItemTable.labelPlaceholder',
     defaultMessage: 'Label'
+  },
+  maxQuantity: {
+    id: 'components.CartListItemTable.maxQuantity',
+    defaultMessage: 'The maximum quantity of 249 pieces has been reached. Please \
+    contact Customer Service to assist you with placing this order.'
+  },
+  maxQuantityAlert: {
+    id: 'components.CartListItemTable.maxQuantityAlert',
+    defaultMessage: 'MAXIMUM QUANTITY ALERT'
   }
 })
