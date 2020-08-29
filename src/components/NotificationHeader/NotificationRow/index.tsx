@@ -1,5 +1,5 @@
 /**
- * Options Component - Created by eduardoquintero on 25/08/20.
+ * NotificationRow Component - Created by eduardoquintero on 25/08/20.
  */
 import * as React from 'react'
 import { Language } from '../../../types/common'
@@ -11,7 +11,7 @@ interface Props {
   onPress: (index: number) => void
 }
 
-const Options = ({ title, options, onPress }: Props) => {
+const NotificationRow = ({ title, options, onPress }: Props) => {
   return (
     <Container>
       <Title>{title}</Title>
@@ -21,4 +21,4 @@ const Options = ({ title, options, onPress }: Props) => {
   )
 }
 
-export default Options
+export default NotificationRow

@@ -8,7 +8,7 @@ import ListHeader from './ListHeader'
 import ListFooter from './ListFooter'
 import Popover from 'antd/lib/popover'
 import { Container, Image, overlayStyle, NotificationList } from './styledComponents'
-import Options from './Options'
+import NotificationRow from './NotificationRow'
 import bell from '../../assets/bell.svg'
 
 interface Props {
@@ -26,30 +26,17 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
   render() {
     const { isMobile, notifications = [], formatMessage } = this.props
     const unreadTotal = notifications.length && notifications.filter((notification) => !notification.read).length
-
+    console.log(notifications)
     const content = (
       <>
         <NotificationList>
-          <Options
-            title="Language"
-            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
-            onPress={() => console.log('A')}
-          />
-          <Options
-            title="Language"
-            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
-            onPress={() => console.log('A')}
-          />
-          <Options
-            title="Language"
-            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
-            onPress={() => console.log('A')}
-          />
-          <Options
-            title="Language"
-            options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
-            onPress={() => console.log('A')}
-          />
+          {notifications.map((notification) => (
+            <NotificationRow
+              title="Language"
+              options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
+              onPress={() => console.log('A')}
+            />
+          ))}
         </NotificationList>
         <ListFooter {...{ formatMessage }} onViewAll={() => console.log('a')} />
       </>
@@ -67,7 +54,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
       >
         <Container>
           <Badge count={unreadTotal} overflowCount={9}>
-            <Image src={bell} onClick={this.gotoCartpage} />
+            <Image src={bell} />
           </Badge>
         </Container>
       </Popover>
@@ -75,7 +62,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
         <div>
           <Container>
             <Badge count={unreadTotal} overflowCount={9}>
-              <Image src={bell} onClick={this.gotoCartpage} />
+              <Image src={bell} />
             </Badge>
           </Container>
           {/* <Modal
@@ -100,14 +87,6 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
         currentCurrencyTemp: null
       })
     }
-  }
-
-  gotoCartpage = () => {
-    const {
-      history: { push },
-    } = this.props
-
-    push('/shopping-cart')
   }
 }
 
