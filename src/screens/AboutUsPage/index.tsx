@@ -154,8 +154,10 @@ const peopleArray = [
 ]
 
 export class AboutUsPage extends React.Component<Props, {}> {
-  componentWillMount() {
-    zenscroll.toY(0, 0)
+  componentDidMount() {
+    if (window && zenscroll) {
+      zenscroll.toY(0, 0)
+    }
   }
   render() {
     const { intl, history } = this.props

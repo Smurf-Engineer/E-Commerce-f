@@ -56,8 +56,10 @@ export class FitAndSizing extends React.Component<Props, {}> {
   private bodySize: any
   private fitStyles: any
 
-  componentWillMount() {
-    zenscroll.toY(0, 0)
+  componentDidMount() {
+    if (window && zenscroll) {
+      zenscroll.toY(0, 0)
+    }
   }
 
   render() {
