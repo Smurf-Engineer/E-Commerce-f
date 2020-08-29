@@ -19,7 +19,11 @@ import {
   NameLabel,
   StatusLabel,
   EnableSection,
-  StyledSwitch
+  StyledSwitch,
+  StatsLabel,
+  Stats,
+  StatsTitle,
+  StatsValue
 } from './styledComponents'
 import MyLocker from '../../MyLocker'
 import {
@@ -28,7 +32,8 @@ import {
   MessagePayload,
   IProfileSettings,
   Affiliate,
-  AffiliateStatus
+  AffiliateStatus,
+  OrderStats
 } from '../../../types/common'
 import {
   GetDesignNotes,
@@ -39,6 +44,9 @@ import {
   setAffiliateStatusMutation
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
+import { NOTE_FORMAT } from '../constants'
+import moment from 'moment'
+import { formatAmount } from '../../../utils/utilsFunctions'
 
 const RadioGroup = Radio.Group
 
@@ -243,7 +251,7 @@ class Options extends React.Component<Props> {
       setDesignSelected,
     } = this.props
     const userId = get(match, 'params.id', '')
-    const { userProfile = {}, affiliate = {} } = get(profileData, 'profileData', {})
+    const { userProfile = {}, affiliate = {}, stats = {} } = get(profileData, 'profileData', {})
     const { id, firstName, lastName, affiliateEnabled } = userProfile
     const {
       status,
@@ -254,6 +262,10 @@ class Options extends React.Component<Props> {
       currency,
       file,
     } = affiliate
+    const {
+      lastOrder,
+      amountOrders = []
+    } = stats
     const { loading: loadingData, designNotes = [] } = data || {}
     let selectedScreen
     switch (optionSelected) {
@@ -281,7 +293,7 @@ class Options extends React.Component<Props> {
         break
       case 1:
         selectedScreen = (
-          <UserFiles {...{ userId, formatMessage }} />
+          <UserFiles {...{ userId, formatMessage }} isAdmin={true} />
         )
         break
       case 2:
@@ -329,6 +341,38 @@ class Options extends React.Component<Props> {
             }
           </UserLabel>
         }
+        <Stats>
+          {(amountOrders.length > 0) &&
+            <StatsLabel>
+              <StatsTitle>
+                {formatMessage(messages.totalSales)}
+              </StatsTitle>
+              {amountOrders.map(({ total, currency: currencyOrder }: OrderStats, index: number) =>
+                <StatsValue secondary={true} key={index}>
+                  {`${currencyOrder} ${formatAmount(total)}`}
+                </StatsValue>
+              )}
+            </StatsLabel>
+          }
+          {!!lastOrder &&
+            <StatsLabel>
+              <StatsTitle>
+                {formatMessage(messages.lastSale)}
+              </StatsTitle>
+              <StatsValue>
+                {moment(lastOrder).format(NOTE_FORMAT)}
+              </StatsValue>
+            </StatsLabel>
+          }
+          <EnableSection>
+            {formatMessage(messages.showAffiliate)}
+            <StyledSwitch
+              {...{ loading }}
+              checked={affiliateEnabled}
+              onChange={this.handleChangeEnabled}
+            />
+          </EnableSection>
+        </Stats>
         <RadioGroup
           onChange={this.handleSelectSection}
           value={optionSelected}
@@ -344,15 +388,6 @@ class Options extends React.Component<Props> {
           <RadioButton value={2}>
             {formatMessage(messages.affiliate)}
           </RadioButton>
-          <EnableSection>
-            {formatMessage(messages.showAffiliate)}
-            <StyledSwitch
-              {...{ loading }}
-              checked={affiliateEnabled}
-              size="small"
-              onChange={this.handleChangeEnabled}
-            />
-          </EnableSection>
         </RadioGroup>
         {selectedScreen}
         <ProassistNotes

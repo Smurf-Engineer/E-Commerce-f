@@ -19,6 +19,7 @@ import {
   Subtitle,
   InfoIcon,
   PopoverText,
+  MessageText,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -106,6 +107,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
+        {isAdmin && <MessageText>{formatMessage(messages.paydayOptions)}</MessageText>}
         {onlyDetails &&
           <Subtitle>
             {formatMessage(messages.settings)}

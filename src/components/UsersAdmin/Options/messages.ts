@@ -23,7 +23,7 @@ export default defineMessages({
   },
   affiliate: {
     id: 'components.UsersAdmin.Options.affiliate',
-    defaultMessage: 'Affiliate Options'
+    defaultMessage: 'Payday Options'
   },
   saved: {
     id: 'components.UsersAdmin.Options.saved',
@@ -32,5 +32,13 @@ export default defineMessages({
   showAffiliate: {
     id: 'components.UsersAdmin.Options.showAffiliate',
     defaultMessage: 'Show Affiliate Program'
+  },
+  lastSale: {
+    id: 'components.UsersAdmin.Options.lastSale',
+    defaultMessage: 'Last Sale'
+  },
+  totalSales: {
+    id: 'components.UsersAdmin.Options.totalSales',
+    defaultMessage: 'Total Sales'
   }
 })

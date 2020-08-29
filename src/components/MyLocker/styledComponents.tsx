@@ -8,8 +8,13 @@ import {
   BLUE_SHADOW,
   GRAY_DARK,
   WHITE,
-  WHITE_TRANSPARENT
+  WHITE_TRANSPARENT,
+  GRAY
 } from '../../theme/colors'
+
+interface DivProps {
+  admin?: boolean
+}
 
 export const fadeIn = keyframes`
   to {
@@ -81,12 +86,16 @@ export const ConfirmMessage = styled.div`
 `
 
 export const MessageText = styled.div`
-  max-width: 500px;
+  max-width: ${({ admin }: DivProps) => admin ? '100%' : '500px'};
   color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-bottom: 20px;
+  margin-top: ${({ admin }: DivProps) => admin ? `20px` : 'none'};
+  padding-bottom: ${({ admin }: DivProps) => admin ? `12px` : 'none'};;
+  font-weight: ${({ admin }: DivProps) => admin ? `bold` : 'none'};;
+  border-bottom: ${({ admin }: DivProps) => admin ? `1px solid ${GRAY}` : 'none'};
 `
 
 export const InputWrapper = styled.div`

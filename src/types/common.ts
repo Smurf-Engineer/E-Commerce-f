@@ -66,6 +66,11 @@ export interface SizeFilter {
   name: string
 }
 
+export type OrderStats = {
+  total: number
+  currency: string
+}
+
 export type ImageType = {
   front: string
   back: string

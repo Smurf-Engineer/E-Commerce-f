@@ -3,9 +3,14 @@
  */
 import styled from 'styled-components'
 import Radio from 'antd/lib/radio'
-import { WHITE, GRAY_DARK, BLUE } from '../../../theme/colors'
+import { WHITE, GRAY_DARK, BLUE, GRAY, RED } from '../../../theme/colors'
 import Switch from 'antd/lib/switch'
+import { AVENIR_MEDIUM } from '../../../theme/fonts'
 const RadioButtonComponent = Radio.Button
+
+interface DivProps {
+  secondary?: boolean
+}
 
 export const RadioButton = styled(RadioButtonComponent)`
   margin-right: 26px;
@@ -48,6 +53,36 @@ export const StatusLabel = styled.div`
   font-style: italic;
 `
 
+export const Stats = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-top: 1px solid ${GRAY};
+  padding-top: 32px;
+  margin-bottom: 32px;
+  margin-top: 32px;
+`
+
+export const StatsTitle = styled.div`
+  margin-bottom: 10px;
+  font-size: 14px;
+`
+
+export const StatsValue = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  color: ${({ secondary }: DivProps) => secondary ? RED : GRAY_DARK}
+  font-family: ${AVENIR_MEDIUM};
+  text-transform: uppercase;
+`
+
+export const StatsLabel = styled.div`
+  margin-right: 98px;
+  font-size: 12px;
+  display: flex;
+  flex-flow: column;
+`
+
 export const NameLabel = styled.div`
   font-size: 16px;
   font-weight: bold;
@@ -55,11 +90,11 @@ export const NameLabel = styled.div`
 
 export const EnableSection = styled.div`
   display: inline-flex;
-  align-items: center;
-  margin-top: 12px;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: start;
 `
 
 export const StyledSwitch = styled(Switch)`
-  margin-left: 12px;
-  margin-bottom: 1px;
+  margin-top: 8px;
 `
