@@ -1717,4 +1717,7 @@ export type Notification = {
   notificationType: string
   toAdmin: boolean
   read: boolean
+  date: string
+  title: string
+  message: string
 }

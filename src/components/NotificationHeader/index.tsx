@@ -7,13 +7,12 @@ import Badge from 'antd/lib/badge'
 import ListHeader from './ListHeader'
 import ListFooter from './ListFooter'
 import Popover from 'antd/lib/popover'
-import { Container, Image, overlayStyle, NotificationList } from './styledComponents'
+import { Container, Image, overlayStyle, overlayMobileStyle, NotificationList } from './styledComponents'
 import NotificationRow from './NotificationRow'
 import bell from '../../assets/bell.svg'
 
 interface Props {
   history?: any
-  totalItems: number
   notifications?: Notification[]
   isMobile?: boolean
   formatMessage: (messageDescriptor: Message) => string
@@ -26,30 +25,29 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
   render() {
     const { isMobile, notifications = [], formatMessage } = this.props
     const unreadTotal = notifications.length && notifications.filter((notification) => !notification.read).length
-    console.log(notifications)
+
     const content = (
       <>
         <NotificationList>
-          {notifications.map((notification) => (
+          {notifications.map(({ title, message, date, read }) => (
             <NotificationRow
-              title="Language"
-              options={[{ id: 1, name: ' Eduardo', shortName: 'ED' }]}
-              onPress={() => console.log('A')}
+              {...{ title, message, date, read }}
+              onPress={null}
             />
           ))}
         </NotificationList>
-        <ListFooter {...{ formatMessage }} onViewAll={() => console.log('a')} />
+        <ListFooter {...{ formatMessage }} onViewAll={null} />
       </>
     )
 
-    return !isMobile ? (
+    return (
       <Popover
-        overlayStyle={overlayStyle}
+        overlayStyle={isMobile ? overlayMobileStyle : overlayStyle}
         overlayClassName="notifications"
         trigger="click"
         placement="bottom"
         onVisibleChange={this.handleOnVisibleChange}
-        title={<ListHeader {...{ formatMessage }} onMarkAll={() => console.log()} />}
+        title={<ListHeader {...{ formatMessage }} onMarkAll={null} />}
         content={content}
       >
         <Container>
@@ -58,25 +56,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
           </Badge>
         </Container>
       </Popover>
-    ) : (
-        <div>
-          <Container>
-            <Badge count={unreadTotal} overflowCount={9}>
-              <Image src={bell} />
-            </Badge>
-          </Container>
-          {/* <Modal
-            visible={openModal}
-            footer={null}
-            closable={false}
-            maskClosable={true}
-            onCancel={this.handleModalClick}
-            width={'80%'}
-          >
-            {innerContent}
-          </Modal>*/ }
-        </div>
-      )
+    )
   }
 
   handleOnVisibleChange = (visible: boolean) => {

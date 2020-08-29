@@ -10,16 +10,16 @@ export const Container = styled.div`
   padding: 8px;
   position: relative;
   cursor: pointer;
-  & .new {
+  &.new {
     background: ${RED_TRANSPARENT_BRIGHT};
     &::after {
       content: '';
       background: ${RED};
-      width: 14px;
-      height: 14px;
-      border-radius: 7px;
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
       position: absolute;
-      top: calc(50% - 7px);
+      top: calc(50% - 6px);
       right: 10px;
     }
   }
@@ -30,20 +30,25 @@ export const Title = styled.div`
   font-size: 14px;
   margin-bottom: 5px;
   font-weight: 600;
+  text-transform: uppercase;
 `
 
 export const Description = styled.div`
   color: ${GRAY_DARK};
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 5px;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 93%;
 `
 
 export const Date = styled.div`
   color: ${GRAY};
-  font-size: 10px;
+  font-size: 12px;
   margin-bottom: 5px;
 `
 
 export const Row = styled.div`
-
 `

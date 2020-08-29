@@ -44,6 +44,9 @@ export const notificationsQuery = gql`
       notificationType: notification_type
       toAdmin: to_admin
       read: user_read
+      date: created_at
+      title
+      message
     }
   }
 `

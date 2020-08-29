@@ -4,8 +4,10 @@
 import * as React from 'react'
 import logo from '../../assets/jakroo_logo.svg'
 import Cart from '../CartForHeader'
+import Notifications from '../NotificationHeader'
 import Menu from '../MobileMenu'
 import messages from './messages'
+import { Notification } from '../../types/common'
 import { Container, Logo, Button } from './styledComponents'
 import { History } from 'history'
 
@@ -17,6 +19,7 @@ interface Props {
   designHasChanges: boolean
   hide?: boolean
   buyNowHeader?: boolean
+  notifications?: Notification[]
   saveAndBuy: (buy: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -33,6 +36,7 @@ export const MenuBarMobile = ({
   openWithoutSaveModalAction,
   formatMessage,
   buyNowHeader,
+  notifications = [],
   saveAndBuy,
   handleOnGoHome
 }: Props) => {
@@ -49,14 +53,24 @@ export const MenuBarMobile = ({
       />
       {regionButton}
       {!buyNowHeader && (
-        <Cart
-          {...{
-            totalItems,
-            history,
-            designHasChanges,
-            openWithoutSaveModalAction
-          }}
-        />
+        <>
+          <Notifications
+            {...{
+              notifications,
+              history,
+              formatMessage
+            }}
+            isMobile={true}
+          />
+          <Cart
+            {...{
+              totalItems,
+              history,
+              designHasChanges,
+              openWithoutSaveModalAction
+            }}
+          />
+        </>
       )}
       {buyNowHeader ? (
         <Button onClick={handleOnSaveAndBuy} type="primary">

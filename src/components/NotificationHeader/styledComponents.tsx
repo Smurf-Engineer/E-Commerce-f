@@ -24,5 +24,9 @@ export const NotificationList = styled.div`
 `
 
 export const overlayStyle = {
-  width: 276
+  width: '276'
+}
+
+export const overlayMobileStyle = {
+  width: '100%'
 }

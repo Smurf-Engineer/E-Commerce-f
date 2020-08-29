@@ -2,21 +2,23 @@
  * NotificationRow Component - Created by eduardoquintero on 25/08/20.
  */
 import * as React from 'react'
-import { Language } from '../../../types/common'
+import moment from 'moment'
 import { Container, Description, Date, Title } from './styledComponents'
 
 interface Props {
   title: string
-  options: Language[]
+  message: string
+  date: string
+  read: boolean
   onPress: (index: number) => void
 }
 
-const NotificationRow = ({ title, options, onPress }: Props) => {
+const NotificationRow = ({ title, message, date, read, onPress }: Props) => {
   return (
-    <Container>
+    <Container className={!read ? 'new' : ''}>
       <Title>{title}</Title>
-      <Description>{title}</Description>
-      <Date>{title}</Date>
+      <Description>{message}</Description>
+      <Date>{moment(date).calendar()}</Date>
     </Container>
   )
 }

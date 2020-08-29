@@ -94,8 +94,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     if (isBrowser) {
       subscribeToMore({
         document: notificationsSubscription,
-        updateQuery: (prev: any, { subscriptionData }: any) => {
-          console.log('SUBSC ', subscriptionData)
+        updateQuery: (prev: any, { }: any) => {
           return prev
         }
       })
@@ -294,7 +293,8 @@ class MenuBar extends React.Component<Props, StateProps> {
                       openWithoutSaveModalAction,
                       formatMessage,
                       buyNowHeader,
-                      saveAndBuy
+                      saveAndBuy,
+                      notifications
                     }}
                     handleOnGoHome={this.handleOnGoHome}
                     totalItems={itemsInCart}

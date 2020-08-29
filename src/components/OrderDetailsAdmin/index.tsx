@@ -211,8 +211,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       : null
 
     const card = get(stripeCharge, 'cardData')
-    console.log(stripeCharge)
-    console.log(card)
+
     const paymentMethodInfo =
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />

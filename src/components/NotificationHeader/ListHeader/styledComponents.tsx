@@ -17,7 +17,7 @@ export const Container = styled.div`
 export const Label = styled.div`
   text-align: center;
   color: ${GRAY_DARK};
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
 `
@@ -26,5 +26,5 @@ export const MarkButton = styled.div`
   color: ${RED};
   cursor: pointer;
   user-select: none;
-  font-size: 12px;
+  font-size: 14px;
 `
