@@ -6,6 +6,7 @@ import { graphql, compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
+import InfiniteScroll from 'react-infinite-scroller'
 import Menu from 'antd/lib/menu'
 import find from 'lodash/find'
 import messages from './messages'
@@ -120,20 +121,20 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         ) => {
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, {
-                quantity: targetRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity: targetRange.name,
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
-                quantity:
-                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity:
+                currentRange.name === '0-0' ? '2-5' : currentRange.name,
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
           const fixedPriceValue =
             priceRange && priceRange.length
@@ -195,19 +196,19 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             : currentRangeAttributes.price
           const currentPriceText = `${
             fixedPriceValue.shortName
-          } ${currentPrice}`
+            } ${currentPrice}`
           const targetPriceText = `${targetPriceValue.shortName} ${
             targetPriceValue.price
-          }`
+            }`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
-                itemsLeft: `<strong>${
-                  currentRangeAttributes.itemsLeft
+              itemsLeft: `<strong>${
+                currentRangeAttributes.itemsLeft
                 } more</strong>`,
-                percent: `<strong>${
-                  currentRangeAttributes.percentToSave
+              percent: `<strong>${
+                currentRangeAttributes.percentToSave
                 }%</strong>`
-              })
+            })
             : ''
           return (
             <ThumbnailListItem key={index}>
@@ -271,7 +272,14 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       )
       renderThumbnailList = (
         <ThumbnailsList withoutPadding={!!withoutPadding}>
-          {thumbnailsList}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={handleChangePage}
+            hasMore={totalDesigns > designs.length}
+            loader={<Loading><Spin /></Loading>}
+          >
+            {thumbnailsList}
+          </InfiniteScroll>
         </ThumbnailsList>
       )
     } else {
@@ -317,10 +325,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-          <NoResultsFound>
-            {formatMessage(messages.emptyResults)}
-          </NoResultsFound>
-        )
+            <NoResultsFound>
+              {formatMessage(messages.emptyResults)}
+            </NoResultsFound>
+          )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -353,18 +361,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             </SortOptions>
           )}
         </HeadRow>
-        <Content>{loading ? renderLoading : renderThumbnailList}</Content>
-        <PaginationRow>
-          {totalDesigns > limit && (
-            <Pagination
-              size="small"
-              current={currentPage}
-              onChange={handleChangePage}
-              total={totalDesigns}
-              pageSize={limit}
-            />
-          )}
-        </PaginationRow>
+        <Content>
+          {loading ? renderLoading : renderThumbnailList}
+        </Content>
       </Container>
     )
   }
@@ -380,7 +379,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => {}
+  handleOnPressAddToCart = (id: number) => { }
 }
 
 type OwnProps = {
