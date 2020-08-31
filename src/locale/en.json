@@ -944,7 +944,7 @@
   "components.DesignsCatalogueThumbnailList.lowestPriceLabel": "Lowest Price",
   "components.DesignsCatalogueThumbnailList.hightestPriceLabel": "Highest Price",
   "components.DesignsCatalogueThumbnailList.addToCart": "ADD TO CART",
-  "components.DesignsCatalogueThumbnailList.items": "{total, plural, one {1 item} other {{total} items}}",
+  "components.DesignsCatalogueThumbnailList.items": "{total, plural, one {1 item} other {{total}/{totalDesigns} items}}",
   "components.ShippingAddressForm.tittle": "ShippingAddressForm",
   "components.ShippingAddressForm.requiredLabel": "This field is required",
   "components.ShippingAddressForm.requiredAddressLabel": "We do not ship to APO and PO Boxes.",

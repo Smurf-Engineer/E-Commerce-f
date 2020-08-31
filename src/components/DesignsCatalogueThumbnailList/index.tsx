@@ -5,8 +5,6 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import Dropdown from 'antd/lib/dropdown'
-import Pagination from 'antd/lib/pagination'
-import InfiniteScroll from 'react-infinite-scroller'
 import Menu from 'antd/lib/menu'
 import find from 'lodash/find'
 import messages from './messages'
@@ -38,9 +36,9 @@ import {
   ThumbnailsList,
   ThumbnailListItem,
   Loading,
-  PaginationRow,
   MenuStyle,
-  NoResultsFound
+  NoResultsFound,
+  InfiniteScrollStyled
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
@@ -82,8 +80,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     const {
       formatMessage,
       sortByLabel,
-      currentPage,
-      limit = 12,
       handleChangePage,
       handleOrderBy,
       data,
@@ -104,9 +100,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     let thumbnailsList
     let total = ''
     let sortOptions = null
-    let loading = false
     let renderThumbnailList = null
-    let renderLoading = null
     if (designs) {
       total = designs.length.toString()
       thumbnailsList = designs.map(
@@ -271,26 +265,22 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         }
       )
       renderThumbnailList = (
-        <ThumbnailsList withoutPadding={!!withoutPadding}>
-          <InfiniteScroll
-            pageStart={0}
-            loadMore={handleChangePage}
-            hasMore={totalDesigns > designs.length}
-            loader={<Loading><Spin /></Loading>}
-          >
+        <InfiniteScrollStyled
+          useWindow={false}
+          pageStart={0}
+          threshold={728}
+          loadMore={handleChangePage}
+          hasMore={totalDesigns > designs.length}
+          loader={<Loading><Spin /></Loading>}
+        >
+          <ThumbnailsList withoutPadding={!!withoutPadding}>
             {thumbnailsList}
-          </InfiniteScroll>
-        </ThumbnailsList>
+          </ThumbnailsList>
+        </InfiniteScrollStyled>
       )
     } else {
-      renderLoading = (
-        <Loading>
-          <Spin />
-        </Loading>
-      )
       const { loading: loadingData, products } = data
-      loading = loadingData || false
-      if (!products) {
+      if (!products || loadingData) {
         return null
       }
       const { products: catalogue = [], fullCount } = products
@@ -349,7 +339,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
           <TotalItems>
-            <FormattedMessage {...messages.items} values={{ total }} />
+            <FormattedMessage {...messages.items} values={{ total, totalDesigns }} />
           </TotalItems>
           {sortOptions && (
             <SortOptions>
@@ -362,7 +352,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           )}
         </HeadRow>
         <Content>
-          {loading ? renderLoading : renderThumbnailList}
+          {renderThumbnailList}
         </Content>
       </Container>
     )
