@@ -97,3 +97,9 @@ export const TO_PAY = 'To Pay'
 export const PAID = 'Paid'
 export const PROCESSING = 'Processing'
 export const FAILURE = 'Failed payment'
+
+// Dates format
+export const SIMPLE_DATE_FORMAT = 'DD-MM-YY'
+
+// Simple table headers data types
+export const DATE = 'date'

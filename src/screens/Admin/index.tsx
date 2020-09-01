@@ -31,6 +31,7 @@ import DesignLabAdmin from '../../components/DesignLabAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
 import DesignSearchAdmin from '../../components/DesignSearch'
 import EditNavigationAdmin from '../../components/EditNavigationAdmin'
+import Notifications from '../../components/Notifications'
 import ProAssist from '../../components/ProAssist'
 
 // import Menu from 'antd/lib/menu'
@@ -84,10 +85,6 @@ export class Admin extends React.Component<Props, {}> {
     const { setLoadingAction } = this.props
     LoadScripts(threeDScripts)
     setLoadingAction(false)
-  }
-  componentWillUnmount() {
-    const { clearReducerAction } = this.props
-    clearReducerAction()
   }
 
   componentWillMount() {
@@ -150,12 +147,20 @@ export class Admin extends React.Component<Props, {}> {
     const { permissions = {} } = user
     return (
       <AdminLayout
-        {...{ history, intl, screen, permissions }}
+        {...{ history, intl, permissions }}
         onLogout={this.onLogout}
+        screen={screen}
       >
         <Route
           exact={true}
           path="/admin"
+          render={() => (
+            <Notifications fromAdmin={true} {...{ history, formatMessage, permissions }} />
+          )}
+        />
+        <Route
+          exact={true}
+          path="/admin/orders"
           render={() => (
             <OrderHistoryAdmin {...{ history, formatMessage, permissions }} />
           )}

@@ -14,8 +14,8 @@ import { MAIN_TITLE } from '../../constants'
 import { InjectedIntl, FormattedMessage } from 'react-intl'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { UserType, Font, SimpleFont, UserPermissions } from '../../types/common'
-import { getTeamStoreStatus, getFonts } from './data'
+import { UserType, Font, SimpleFont, UserPermissions, QueryProps } from '../../types/common'
+import { getTeamStoreStatus, getFonts, unreadNotificationsQuery } from './data'
 import * as adminLayoutActions from './api'
 import {
   options,
@@ -36,6 +36,8 @@ import {
   SALES_REP,
   AFFILIATES,
   AFFILIATES_PAYOUTS,
+  NOTIFICATIONS,
+  BADGE,
 } from './constants'
 import {
   SideBar,
@@ -44,10 +46,15 @@ import {
   Content,
   LogoutButton,
   Advertisement,
+  MenuItem
 } from './styledComponents'
 import Helmet from 'react-helmet'
 
 const { SubMenu } = Menu
+
+interface NotificationsData extends QueryProps {
+  unread: number
+}
 
 interface Props extends RouteComponentProps<any> {
   children: React.ReactChildren
@@ -59,6 +66,7 @@ interface Props extends RouteComponentProps<any> {
   openKeys: string[]
   screen: string
   permissions: UserPermissions
+  notifications: NotificationsData
   onLogout: () => void
   restoreUserSession: (client: any) => void
   deleteUserSession: () => void
@@ -101,8 +109,11 @@ class AdminLayout extends React.Component<Props, {}> {
   handleOnSelectItem = ({ key }: any) => {
     const { setCurrentScreenAction, history } = this.props
     switch (key) {
-      case ORDER_STATUS:
+      case NOTIFICATIONS:
         history.push('/admin')
+        break
+      case ORDER_STATUS:
+        history.push('/admin/orders')
         break
       case DISCOUNTS:
         history.push('/admin/discounts')
@@ -167,7 +178,9 @@ class AdminLayout extends React.Component<Props, {}> {
       screen,
       onLogout,
       permissions = {},
+      notifications: { unread = 0 }
     } = this.props
+
     if (!Object.keys(permissions).length) {
       return (
         <Advertisement>
@@ -180,7 +193,7 @@ class AdminLayout extends React.Component<Props, {}> {
       return obj
       // tslint:disable-next-line: align
     }, {})
-
+    const notificationsBadge = unread > 9 ? '+9' : unread
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length && !isHidden[title] ? (
         <SubMenu
@@ -200,9 +213,12 @@ class AdminLayout extends React.Component<Props, {}> {
       ) : (
           permissions[title] &&
           permissions[title].view && (
-            <Menu.Item className="ant-menu-item-custom" key={title}>
+            <MenuItem className={`ant-menu-item-custom 
+              ${title === NOTIFICATIONS && notificationsBadge > 0 && BADGE}`} key={title}
+              notifications={notificationsBadge}
+            >
               <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-            </Menu.Item>
+            </MenuItem>
           )
         )
     )
@@ -219,6 +235,7 @@ class AdminLayout extends React.Component<Props, {}> {
       <Container>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         <Helmet defaultTitle={MAIN_TITLE} />
+
         <SideBar>
           <Menu
             selectedKeys={[screen]}
@@ -254,6 +271,7 @@ const LayoutEnhance = compose(
   withApollo,
   getTeamStoreStatus,
   getFonts,
+  unreadNotificationsQuery,
   connect(
     mapStateToProps,
     {

@@ -1661,6 +1661,7 @@ export interface Header {
   width?: number
   tabletWidth?: number
   fieldName?: string
+  dataType?: string
 }
 
 export interface ColorsDataResult {

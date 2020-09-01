@@ -24,5 +24,17 @@ export default defineMessages({
   email: {
     id: 'components.SimpleTable.email',
     defaultMessage: 'Email'
+  },
+  date: {
+    id: 'components.SimpleTable.date',
+    defaultMessage: 'Date'
+  },
+  notification: {
+    id: 'components.SimpleTable.notification',
+    defaultMessage: 'Notification'
+  },
+  source: {
+    id: 'components.SimpleTable.notifications',
+    defaultMessage: 'Source'
   }
 })

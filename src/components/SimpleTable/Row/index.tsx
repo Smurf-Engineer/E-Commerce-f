@@ -3,14 +3,18 @@
  */
 import * as React from 'react'
 import { TableRow, Cell, DeleteButton, Thumbnail } from '../styledComponents'
+import moment from 'moment'
 import messages from '../messages'
 import { Message, Header } from '../../../types/common'
+import { DATE, SIMPLE_DATE_FORMAT } from '../../../constants'
 
 interface Props {
   index: number
   item: any
   headerTitles: Header[]
   targetGroup: string
+  canDelete: boolean
+  unread?: boolean
   onPressDelete: (index: number, section: string) => void
   formatMessage: (messageDescriptor: Message) => string
 }
@@ -23,7 +27,9 @@ class Row extends React.PureComponent<Props, {}> {
       formatMessage,
       item,
       headerTitles,
-      targetGroup
+      targetGroup,
+      canDelete,
+      unread = false
     } = this.props
 
     const handleOnClick = () => {
@@ -34,22 +40,27 @@ class Row extends React.PureComponent<Props, {}> {
       <div>
         <TableRow>
           {headerTitles.map(
-            (header) =>
-              header.fieldName && (
-                <Cell width={header.tabletWidth}>
+            (header, indexx) => {
+              const currentItem = item[header.fieldName] || item
+              const value = header.dataType === DATE ? moment(currentItem).format(SIMPLE_DATE_FORMAT) : currentItem
+
+              return header.fieldName ? (
+                <Cell width={header.tabletWidth} className={unread && header.fieldName === 'message' && 'unread'}>
                   {header.fieldName !== 'image' ? (
-                    item[header.fieldName] || item
+                    value
                   ) : (
-                    <Thumbnail src={item[header.fieldName]} />
-                  )}
+                      <Thumbnail src={currentItem} />
+                    )}
                 </Cell>
-              )
+              ) :
+                <Cell width={header.tabletWidth} className={unread && 'badge'} />
+            }
           )}
-          <Cell>
+          {canDelete && <Cell>
             <DeleteButton onClick={handleOnClick}>
               {formatMessage(messages.delete)}
             </DeleteButton>
-          </Cell>
+          </Cell>}
         </TableRow>
       </div>
     )

@@ -27,6 +27,7 @@ import {
   CREDIT_CARDS,
   TEAMSTORES,
   PROFILE_SETTINGS,
+  NOTIFICATIONS,
   ORDER_HISTORY,
   OVERVIEW,
   AFFILIATES_PAYOUTS,
@@ -46,6 +47,7 @@ import AffiliateAbout from '../../components/AffiliateAbout'
 import AffiliatesOrders from '../../components/AffiliatesOrders'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyLocker from '../../components/MyLocker'
+import Notifications from '../../components/Notifications'
 import {
   Container,
   SideBar,
@@ -249,6 +251,8 @@ export class Account extends React.Component<Props, {}> {
         return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
+      case NOTIFICATIONS:
+        return <Notifications {...{ formatMessage }} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case AFFILIATES_ABOUT:
@@ -343,9 +347,9 @@ export class Account extends React.Component<Props, {}> {
     )
 
     const currentScreen = this.getScreenComponent(screen || defaultScreen)
+    const currentScreenValue = screen || defaultScreen
 
     const noOrderScreenFlag = screen !== ORDER_HISTORY && screen !== OVERVIEW
-
     const renderView = (
       <MediaQuery
         maxWidth={768}
@@ -373,8 +377,8 @@ export class Account extends React.Component<Props, {}> {
                           <Icon type="down" />
                         </FiltersTitle>
                         <ScreenTitle show={noOrderScreenFlag}>
-                          {!!messages[screen] && (
-                            <FormattedMessage {...messages[screen]} />
+                          {!!messages[currentScreenValue] && (
+                            <FormattedMessage {...messages[currentScreenValue]} />
                           )}
                         </ScreenTitle>
                         {currentScreen}
@@ -399,7 +403,7 @@ export class Account extends React.Component<Props, {}> {
                     </Title>
                     <Menu
                       defaultSelectedKeys={[defaultScreen]}
-                      selectedKeys={[screen]}
+                      selectedKeys={[currentScreenValue]}
                       mode="inline"
                       onSelect={this.handleOnSelectItem}
                       onOpenChange={this.handleOnSelectedKeys}
@@ -412,8 +416,8 @@ export class Account extends React.Component<Props, {}> {
                   </SideBar>
                   <Content>
                     <ScreenTitle show={noOrderScreenFlag}>
-                      {!!messages[screen] && (
-                        <FormattedMessage {...messages[screen]} />
+                      {!!messages[currentScreenValue] && (
+                        <FormattedMessage {...messages[currentScreenValue]} />
                       )}
                     </ScreenTitle>
                     {currentScreen}

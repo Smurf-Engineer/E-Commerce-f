@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'screens.Account.menu.profileSettings',
     defaultMessage: 'PROFILE SETTINGS'
   },
+  notifications: {
+    id: 'screens.Account.menu.notifications',
+    defaultMessage: 'NOTIFICATIONS'
+  },
   myTeamStores: {
     id: 'screens.Account.menu.myTeamStores',
     defaultMessage: 'MY TEAM STORES'

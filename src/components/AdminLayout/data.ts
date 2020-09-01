@@ -24,3 +24,12 @@ export const getFonts = graphql(
   `,
   { name: 'getFontsData' }
 )
+
+export const unreadNotificationsQuery = graphql(
+  gql`
+    query unreadNotifications {
+      unread: unreadNotifications
+    }
+  `,
+  { name: 'notifications' }
+)

@@ -8,6 +8,7 @@ interface RowProps {
 
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
+import { RED } from '../../theme/colors'
 
 export const Container = styled.div``
 
@@ -34,6 +35,7 @@ export const TableRow = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     justify-content: space-between;
   }
+  min-height: 65px;
 `
 
 export const HeaderRow = styled.div`
@@ -59,9 +61,25 @@ interface CellProps {
 }
 export const Cell = styled.div`
  width ${({ width }: CellProps) => (width ? width : 10)}%;
+ position: relative;
+ &.unread {
+   color: ${RED} !important;
+ }
+ &.badge::after {
+  content: '';
+  display: flex;
+  position: absolute;
+  left: 30px;
+  width: 12px;
+  height: 12px;
+  background: ${RED};
+  border-radius: 6px;
+  top: calc(50% - 6px);
+  border: none;
+ }
  @media (min-width: 425px) and (max-width: 768px) {
   width ${({ tabletWidth }: CellProps) => (tabletWidth ? tabletWidth : 10)}%;
-}
+  }
 `
 
 interface TitleProps {

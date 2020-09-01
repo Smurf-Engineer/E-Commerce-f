@@ -2,7 +2,10 @@
  * Styled Components - Created by eduardoquintero on 29/03/19.
  */
 import styled from 'styled-components'
-import { RED } from '../../theme/colors'
+import Menu from 'antd/lib/menu'
+import { RED, WHITE } from '../../theme/colors'
+
+const { Item } = Menu
 
 export const SideBar = styled.div`
   width: 20%;
@@ -15,6 +18,7 @@ export const OptionMenu = styled.div`
   line-height: 22px;
   padding-top: 8px;
   cursor: pointer;
+  position: reltive;
 `
 
 export const Container = styled.div`
@@ -38,4 +42,29 @@ export const Advertisement = styled.div`
   align-items: center;
   font-size: 16px;
   color: ${RED};
+`
+
+type MenuItemProps = {
+  notifications?: number
+}
+
+export const MenuItem = styled(Item)`
+  position: relative;
+  &.badge::after {
+    content: '${({ notifications }: MenuItemProps) => (notifications)}' !important;
+    font-size: 11px;
+    align-items: center;
+    justify-content: center;
+    color: ${WHITE};
+    opacity: 1;
+    display: flex;
+    position: absolute;
+    right: 10px !important;
+    width: 24px;
+    height: 24px;
+    background: ${RED};
+    border-radius: 12px;
+    top: calc(50% - 12px) !important;
+    border: none;
+  }
 `

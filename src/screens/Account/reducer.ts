@@ -55,7 +55,7 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.merge({
         screen: action.screen,
-        defaultScreen: action.screen
+        defaultScreen: action.screen,
       })
     }
     case SET_CURRENT_SCREEN:
@@ -74,8 +74,6 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
         screen: '',
         openKeys: ['']
       })
-    case SET_CURRENT_SCREEN:
-      return state.set('screen', action.screen)
     default:
       return state
   }

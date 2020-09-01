@@ -3,6 +3,7 @@
  */
 const namespace = 'src/Admin'
 
+export const NOTIFICATIONS = 'notifications'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
 export const PRO_ASSIST = 'proAssist'
@@ -21,7 +22,8 @@ export const SET_LOADING = `${namespace}/SET_LOADING`
 export const OPEN_FORGOT_PASSWORD = `${namespace}/OPEN_FORGOT_PASSWORD`
 
 export const keys = {
-  ['/admin/']: ORDER_STATUS,
+  ['/admin/']: NOTIFICATIONS,
+  ['/admin/orders']: ORDER_STATUS,
   ['/admin/discounts']: DISCOUNTS,
   ['/admin/proAssist']: PRO_ASSIST,
   ['/admin/design-search']: PRODUCT_CATALOG,
