@@ -5,7 +5,7 @@ import * as React from 'react'
 import Switch from 'antd/lib/switch'
 import Select from 'antd/lib/select'
 import moment from 'moment'
-import { Container, Cell, StyledSelect, Mail, StyledIcon } from './styledComponents'
+import { Container, Cell, StyledSelect, Mail, StyledIcon, WarningIcon } from './styledComponents'
 import { User } from '../../../types/common'
 
 const Option = Select.Option
@@ -101,7 +101,7 @@ const ItemOrder = ({
       <Cell>
         <Mail title={email}>{email}</Mail>
       </Cell>
-      <Cell>{netsuiteId}</Cell>
+      <Cell>{netsuiteId || <WarningIcon type="warning" theme="filled" />}</Cell>
       <Cell onClick={stopPropagation}>
         <StyledSelect
           showSearch={true}

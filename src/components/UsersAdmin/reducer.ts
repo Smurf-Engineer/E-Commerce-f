@@ -17,7 +17,10 @@ import {
   SET_LOADING,
   SET_DESIGN,
   CHANGE_NOTE,
-  SET_AFFILIATE_PAGE
+  SET_AFFILIATE_PAGE,
+  CLOSE_INTERNAL,
+  OPEN_INTERNAL,
+  CHANGE_INTERNAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -36,6 +39,8 @@ export const initialState = fromJS({
   email: '',
   optionSelected: 0,
   openModal: false,
+  openInternalModal: false,
+  netsuiteId: '',
   loading: false,
   pageAffiliate: 1
 })
@@ -54,6 +59,12 @@ const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('currentPage', action.page)
     case CHANGE_NOTE:
       return state.set('note', action.text)
+    case CHANGE_INTERNAL:
+      return state.set('netsuiteId', action.value)
+    case OPEN_INTERNAL:
+      return state.merge({ openInternalModal: true, netsuiteId: action.id })
+    case CLOSE_INTERNAL:
+      return state.merge({ openInternalModal: false, netsuiteId: '' })
     case SET_DESIGN:
       return state.merge({
         designSelected: action.designId,
