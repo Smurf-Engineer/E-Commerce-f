@@ -105,7 +105,7 @@ const OrdersList = ({
             />
             <HeaderTable
               id={'last_order'}
-              label={formatMessage(messages.status)}
+              label={formatMessage(messages.lastOrder)}
               sort={orderBy === 'last_order' ? sort : 'none'}
               {...{ onSortClick }}
             />
