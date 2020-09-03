@@ -16,5 +16,9 @@ export default defineMessages({
   markAll: {
     id: 'components.Notifications.markAll',
     defaultMessage: 'Mark all as read'
+  },
+  notFound: {
+    id: 'components.Notifications.notFound',
+    defaultMessage: 'You don´t have notifications yet'
   }
 })

@@ -36,6 +36,7 @@ import {
   Notification as NotificationType
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
+import get from 'lodash/get'
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
@@ -87,17 +88,28 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
   componentWillMount() {
     const {
-      notificationsData: { subscribeToMore }
+      notificationsData
     } = this.props
     const isBrowser = typeof window !== 'undefined'
 
-    if (isBrowser) {
-      subscribeToMore({
-        document: notificationsSubscription,
-        updateQuery: (prev: any, { }: any) => {
-          return prev
-        }
-      })
+    const subscribeToMore = get(notificationsData, 'subscribeToMore')
+
+    if (isBrowser && subscribeToMore) {
+      let user
+      if (typeof window !== 'undefined') {
+        user = JSON.parse(localStorage.getItem('user') as string)
+      }
+      if (user) {
+        subscribeToMore({
+          document: notificationsSubscription,
+          updateQuery: (prev: any, { subscriptionData }: any) => {
+            const newNotification = get(subscriptionData, 'data.newNotification')
+            return Object.assign({}, prev, {
+              notifications: [newNotification, ...prev.notifications]
+            })
+          }
+        })
+      }
     }
   }
   componentDidMount() {
@@ -179,7 +191,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       buyNowHeader,
       saveAndBuy,
       regionsData: { regionsResult, loading: loadingRegions },
-      notificationsData: { notifications }
+      notificationsData
     } = this.props
 
     let user: any
@@ -189,6 +201,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     const { formatMessage } = intl
 
+    const notifications = get(notificationsData, 'notifications', [])
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin} data-test="sign-up">
         {formatMessage(messages.title)}
@@ -355,6 +368,15 @@ const MenuBarEnhanced = compose(
   }),
   graphql<NotificationsData>(notificationsQuery, {
     name: 'notificationsData',
+    options: () => {
+      let user
+      if (typeof window !== 'undefined') {
+        user = JSON.parse(localStorage.getItem('user') as string)
+      }
+      return {
+        skip: !user
+      }
+    }
   })
 )(MenuBar)
 export default MenuBarEnhanced

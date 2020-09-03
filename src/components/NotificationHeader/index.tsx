@@ -28,7 +28,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
 
     const content = (
       <>
-        <NotificationList>
+        {notifications.length ? <><NotificationList>
           {notifications.map(({ title, message, date, read }) => (
             <NotificationRow
               {...{ title, message, date, read }}
@@ -36,7 +36,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
             />
           ))}
         </NotificationList>
-        <ListFooter {...{ formatMessage }} onViewAll={null} />
+          <ListFooter {...{ formatMessage }} onViewAll={null} /> </> : <p>{'No hay'}</p>}
       </>
     )
 

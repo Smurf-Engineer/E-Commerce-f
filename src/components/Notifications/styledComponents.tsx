@@ -3,9 +3,12 @@
  */
 
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
 import { RED, GRAY_DARK } from '../../theme/colors'
 
-export const Container = styled.div``
+export const Container = styled.div`
+    text-align: center
+`
 
 export const NotificationsHeader = styled.div`
     display: flex;
@@ -18,8 +21,10 @@ export const Latest = styled.div`
     font-weight: 600;
 `
 
-export const Button = styled.div`
+export const BorderlessButton = styled(Button)`
     color: ${RED};
+    border: none;
+    box-shadow: none;
 `
 
 export const ScreenTitle = styled.div`
@@ -31,4 +36,10 @@ export const ScreenTitle = styled.div`
   @media (max-width: 768px) and (min-width: 320px) {
     margin-bottom: 24px;
   }
+`
+
+export const EmptyMessage = styled.div`
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
 `

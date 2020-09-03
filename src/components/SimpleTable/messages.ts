@@ -36,5 +36,9 @@ export default defineMessages({
   source: {
     id: 'components.SimpleTable.notifications',
     defaultMessage: 'Source'
+  },
+  user: {
+    id: 'components.SimpleTable.user',
+    defaultMessage: 'User'
   }
 })

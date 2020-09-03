@@ -17,6 +17,7 @@ export const Table = styled.div`
   table-layout: fixed;
   width: 100%;
   margin-bottom: 20px;
+  text-align: left;
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin-bottom: 0;
@@ -79,7 +80,10 @@ export const Cell = styled.div`
  }
  @media (min-width: 425px) and (max-width: 768px) {
   width ${({ tabletWidth }: CellProps) => (tabletWidth ? tabletWidth : 10)}%;
+  &.badge::after {
+    display: none;
   }
+ }
 `
 
 interface TitleProps {

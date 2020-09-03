@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const notificationsQuery = gql`
-  query getNotifications {
-    notifications: getNotifications {
+  query getNotifications($isAdmin: Boolean) {
+    notifications: getNotifications(isAdmin: $isAdmin) {
       id
       senderId: user_id
       notificationType: notification_type
@@ -15,6 +15,8 @@ export const notificationsQuery = gql`
       date: created_at
       title
       message
+      user: sender_name
+      email: sender_email
     }
   }
 `

@@ -57,13 +57,21 @@ const httpLink = createHttpLink({
   fetch
 })
 
-// TODO: ENABLE LATER
 const wsLink = process.browser
   ? new WebSocketLink({
     uri: config.websocketUriBase,
     options: {
-      reconnect: false // TODO: CHANGE TO TRUE LATER
-    }
+      connectionParams: () => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        const token = user ? user.token : ''
+        return {
+          headers: {
+            Authorization: token
+          }
+        }
+      },
+      reconnect: false // TODO: CHANGE TO TRUE LATER,
+    },
   })
   : null
 

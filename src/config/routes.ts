@@ -22,7 +22,6 @@ import CreateStore from '../screens/CreateStore'
 import SearchTeamstores from '../screens/SearchTeamstores'
 import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
-import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
 import Designs from '../screens/Designs'
 import ProductDetail from '../screens/ProductDetail'
@@ -185,11 +184,6 @@ const routes = [
     path: '/account',
     name: 'account',
     component: Account
-  },
-  {
-    path: '/subscription-test',
-    name: 'subscriptionTest',
-    component: SubscriptionTest
   },
   {
     path: '/fit-widget',
