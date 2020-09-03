@@ -4,12 +4,14 @@
 import * as React from 'react'
 import moment from 'moment'
 import { Container, Cell, Link } from './styledComponents'
+import { NOTE_FORMAT } from '../../UsersAdmin/constants'
 
 interface Props {
   id: number
   userId: string
   date: string
   firstName: string
+  lastOrder: string
   lastName: string
   status: string
   url: string
@@ -23,6 +25,7 @@ const ItemOrder = ({
   status,
   firstName,
   lastName,
+  lastOrder,
   url,
   onRowClick
 }: Props) => {
@@ -34,8 +37,9 @@ const ItemOrder = ({
       </Cell>
       <Cell>JV2-{userId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
-      <Cell>{moment(date).format('DD/MM/YYYY')}</Cell>
+      <Cell>{date ? moment(date).format(NOTE_FORMAT) : '-'}</Cell>
       <Cell>{status}</Cell>
+      <Cell>{lastOrder ? moment(lastOrder).format(NOTE_FORMAT) : '-'}</Cell>
     </Container>
   )
 }
