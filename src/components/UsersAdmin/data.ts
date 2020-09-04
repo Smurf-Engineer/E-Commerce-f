@@ -9,6 +9,7 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
+        netsuiteInternal: netsuite_internal
         affiliateEnabled: affiliate_enabled
         phone
       }
@@ -109,6 +110,14 @@ export const setAffiliateStatusMutation = gql`
   mutation setAffiliateStatus($userId: String!, $enabled: Boolean) {
     affiliateData: setAffiliateStatus(userId: $userId ,enabled: $enabled) {
       enabled: affiliate_enabled
+    }
+  }
+`
+
+export const changeNetsuiteInternal = gql`
+  mutation setNetsuiteId($userId: String!, $netsuiteId: String) {
+    profile: setNetsuiteId(userId: $userId, netsuiteId: $netsuiteId) {
+      netsuiteInternal: netsuite_internal
     }
   }
 `
