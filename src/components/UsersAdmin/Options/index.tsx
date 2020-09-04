@@ -323,6 +323,7 @@ class Options extends React.Component<Props> {
     } = this.props
     const userId = get(match, 'params.id', '')
     const { userProfile = {}, affiliate = {}, stats = {} } = get(profileData, 'profileData', {})
+    const netsuiteTitle = formatMessage(messages.netsuiteInternal).toUpperCase()
     const { id, firstName, lastName, affiliateEnabled, netsuiteInternal } = userProfile
     const {
       status,
@@ -475,7 +476,7 @@ class Options extends React.Component<Props> {
           withCross={false}
           withLogo={false}
           width={360}
-          title={formatMessage(messages.netsuiteInternal).toUpperCase()}
+          title={netsuiteTitle}
         >
           <FormContainer>
             <StyledInput
