@@ -214,6 +214,13 @@ export type DesignNote = {
   text: string
 }
 
+export type Reseller = {
+  status: string
+  paypalAccount: string
+  comission: number
+  activatedAt: string
+}
+
 export type AffiliateStatus = {
   enabled: boolean
 }

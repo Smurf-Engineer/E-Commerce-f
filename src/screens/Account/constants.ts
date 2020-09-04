@@ -9,6 +9,8 @@ export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
 export const TEAMSTORES = 'myTeamStores'
+export const RESELLER = 'reseller'
+export const RESELLER_ABOUT = 'resellerAbout'
 export const AFFILIATES = 'affiliate'
 export const AFFILIATES_ABOUT = 'affiliateAbout'
 export const AFFILIATES_ORDERS = 'affiliateOrders'
@@ -43,6 +45,10 @@ export const options = [
   {
     title: TEAMSTORES,
     options: []
+  },
+  {
+    title: RESELLER,
+    options: [RESELLER_ABOUT]
   },
   {
     title: AFFILIATES,

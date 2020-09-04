@@ -72,5 +72,13 @@ export default defineMessages({
   addedToStore: {
     id: 'screens.Account.addedToStore',
     defaultMessage: 'Design added to "{storeName}"'
+  },
+  reseller: {
+    id: 'screens.Account.reseller',
+    defaultMessage: 'RESELLER'
+  },
+  resellerAbout: {
+    id: 'screens.Account.resellerAbout',
+    defaultMessage: 'About'
   }
 })
