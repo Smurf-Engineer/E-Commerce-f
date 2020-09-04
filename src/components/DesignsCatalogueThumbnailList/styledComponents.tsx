@@ -1,7 +1,11 @@
 import styled from 'styled-components'
+import InfiniteScroll from 'react-infinite-scroller'
 
 export const Container = styled.div``
-export const Content = styled.div``
+export const Content = styled.div`
+  height: 70vh;
+  overflow: auto;
+`
 
 export const Text = styled.div`
   color: #5f6062;
@@ -19,7 +23,7 @@ export const HeadRow = styled.div`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: ${({ withoutPadding }: HeadRowProps) =>
-      withoutPadding ? '0' : '0 2% 0 5%;'}
+    withoutPadding ? '0' : '0 2% 0 5%;'}
     @media (min-width: 320px) and (max-width: 480px) {
     padding: 0;
   }
@@ -57,6 +61,7 @@ export const ThumbnailsList = styled.ul`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  overflow: auto;
   width: 100%;
   align-items: flex-start;
   justify-content: center;
@@ -85,7 +90,7 @@ export const ThumbnailListItem = styled.li`
 
 export const Loading = styled.div`
   display: flex;
-  height: 100vh;
+  height: 12px;
   justify-content: center;
   align-items: center;
 `
@@ -107,4 +112,8 @@ export const NoResultsFound = styled.div`
   display: flex;
   height: 60vh;
   justify-content: center;
+`
+
+export const InfiniteScrollStyled = styled(InfiniteScroll)`
+  height: 100%;
 `

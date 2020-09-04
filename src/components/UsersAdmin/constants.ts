@@ -22,5 +22,3 @@ export const SET_AFFILIATE_PAGE = `${namespace}/SET_AFFILIATE_PAGE`
 export const CLOSE_INTERNAL = `${namespace}/CLOSE_INTERNAL`
 export const OPEN_INTERNAL = `${namespace}/OPEN_INTERNAL`
 export const CHANGE_INTERNAL = `${namespace}/CHANGE_INTERNAL`
-
-export const NOTE_FORMAT = 'MM/DD/YYYY'
