@@ -26,6 +26,9 @@ export const AMBIENT_LIGHT_INTENSITY = 0.2
 export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
 export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
 
+/* Date formats */
+export const DATE_FORMAT = 'MM/DD/YYY'
+
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'
 export const ACCESSORY_BLACK = 'black'
