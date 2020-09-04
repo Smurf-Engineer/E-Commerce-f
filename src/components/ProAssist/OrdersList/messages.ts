@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.ProAssist.OrdersList.status',
     defaultMessage: 'Status'
   },
+  lastOrder: {
+    id: 'components.ProAssist.OrdersList.lastOrder',
+    defaultMessage: 'Last Sale'
+  },
   emptyMessage: {
     id: 'components.ProAssist.OrdersList.emptyMessage',
     defaultMessage: 'No orders yet'

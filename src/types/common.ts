@@ -1701,6 +1701,7 @@ export type ProAssist = {
   firstName: string
   lastName: string
   date: string
+  lastOrder: string
   status: string
   url: string
 }

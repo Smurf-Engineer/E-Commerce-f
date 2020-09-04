@@ -1815,6 +1815,7 @@
   "components.ProAssist.OrdersList.ticketNo": "Ticket No.",
   "components.ProAssist.OrdersList.clientId": "Client ID",
   "components.ProAssist.OrdersList.user": "User",
+  "components.ProAssist.OrdersList.lastOrder": "Last Sale",
   "components.ProAssist.OrdersList.date": "Order Date",
   "components.ProAssist.OrdersList.status": "Status",
   "components.ProAssist.OrdersList.emptyMessage": "No orders yet",
