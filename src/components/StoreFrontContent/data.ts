@@ -18,6 +18,7 @@ export const getSingleTeamStore = gql`
       date: $date
       limit: $limit
       offset: $offset
+      isInfinite: true
     ) {
       id
       short_id
