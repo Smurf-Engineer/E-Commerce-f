@@ -23,8 +23,7 @@ import {
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
-import { NOTE_FORMAT } from '../constants'
-import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
+import { PENDING, APPROVED, REJECTED, RETRY, DATE_FORMAT } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
@@ -153,7 +152,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
                 </Title>
                 {!!activatedAt &&
                   <BoldLabel>
-                    {moment(activatedAt).format(NOTE_FORMAT)}
+                    {moment(activatedAt).format(DATE_FORMAT)}
                   </BoldLabel>
                 }
               </LabelButton>

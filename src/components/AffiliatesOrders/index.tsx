@@ -35,10 +35,9 @@ import get from 'lodash/get'
 import { PAY_LIMITS, ALL_STATUS } from './constants'
 import { getAffiliatesPayments } from './data'
 import Payday from '../../assets/jakroo_payday.png'
-import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import Spin from 'antd/lib/spin'
 import MediaQuery from 'react-responsive'
-import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
+import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED, DATE_FORMAT } from '../../constants'
 
 const { Option } = Select
 
@@ -84,8 +83,8 @@ class AffiliatesOrders extends React.Component<Props, {}> {
 
   handleChangeCalendar = (dates: [Moment, Moment]) => {
     const { changeDateAction } = this.props
-    const startDate = moment(dates[0]).format(NOTE_FORMAT)
-    const endDate = moment(dates[1]).format(NOTE_FORMAT)
+    const startDate = moment(dates[0]).format(DATE_FORMAT)
+    const endDate = moment(dates[1]).format(DATE_FORMAT)
     changeDateAction(startDate, endDate)
   }
 
@@ -122,8 +121,8 @@ class AffiliatesOrders extends React.Component<Props, {}> {
       []
     )
     const fullCount = get(data, 'paymentsResult.fullCount', 0)
-    const start = startDate ? moment(startDate, NOTE_FORMAT) : ''
-    const end = endDate ? moment(endDate, NOTE_FORMAT) : ''
+    const start = startDate ? moment(startDate, DATE_FORMAT) : ''
+    const end = endDate ? moment(endDate, DATE_FORMAT) : ''
     const rangeValue = [start, end]
     const selectOptions = statusList.map((currentStatus, index) => (
       <Option key={index} value={currentStatus !== ALL_STATUS ? currentStatus : ''}>
@@ -150,7 +149,7 @@ class AffiliatesOrders extends React.Component<Props, {}> {
             <RangePickerStyled
               value={rangeValue}
               placeholder={[formatMessage(messages.from), formatMessage(messages.to)]}
-              format={NOTE_FORMAT}
+              format={DATE_FORMAT}
               allowClear={false}
               onChange={this.handleChangeCalendar}
               size="large"
@@ -202,7 +201,7 @@ class AffiliatesOrders extends React.Component<Props, {}> {
                     index: number) =>
                     <RepDiv key={index}>
                       <Cell>
-                        {createdAt ? moment(createdAt).format(NOTE_FORMAT) : '-'}
+                        {createdAt ? moment(createdAt).format(DATE_FORMAT) : '-'}
                       </Cell>
                       <Cell>{orderId}</Cell>
                       <MediaQuery minWidth={769}>
@@ -217,7 +216,7 @@ class AffiliatesOrders extends React.Component<Props, {}> {
                       <Cell>{status}</Cell>
                       <Cell>${amount.toFixed(2)}</Cell>
                       <Cell>
-                        {paidAt ? moment(paidAt).format(NOTE_FORMAT) : '-'}
+                        {paidAt ? moment(paidAt).format(DATE_FORMAT) : '-'}
                       </Cell>
                     </RepDiv>
 

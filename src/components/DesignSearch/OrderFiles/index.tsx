@@ -72,8 +72,8 @@ import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
-import { NOTE_FORMAT } from '../constants'
 import ProassistNotes from '../../ProassistNotes'
+import { DATE_FORMAT } from '../../../constants'
 
 const Option = Select.Option
 const Confirm = Modal.confirm
@@ -200,7 +200,7 @@ export class OrderFiles extends React.PureComponent<Props> {
     const notesElements = notes.map(
       ({ createdAt, text, user }: DesignNote, index: number) => {
         const createdLabel = `${moment(createdAt).format(
-          NOTE_FORMAT
+          DATE_FORMAT
         )} - ${user}`
         return (
           <NoteContainer key={index}>

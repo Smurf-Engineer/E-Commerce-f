@@ -4,7 +4,7 @@
 import * as React from 'react'
 import moment from 'moment'
 import { Container, Cell, Link } from './styledComponents'
-import { NOTE_FORMAT } from '../../UsersAdmin/constants'
+import { DATE_FORMAT } from '../../../constants'
 
 interface Props {
   id: number
@@ -37,9 +37,9 @@ const ItemOrder = ({
       </Cell>
       <Cell>JV2-{userId}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
-      <Cell>{date ? moment(date).format(NOTE_FORMAT) : '-'}</Cell>
+      <Cell>{date ? moment(date).format(DATE_FORMAT) : '-'}</Cell>
       <Cell>{status}</Cell>
-      <Cell>{lastOrder ? moment(lastOrder).format(NOTE_FORMAT) : '-'}</Cell>
+      <Cell>{lastOrder ? moment(lastOrder).format(DATE_FORMAT) : '-'}</Cell>
     </Container>
   )
 }

@@ -44,9 +44,9 @@ import {
   setAffiliateStatusMutation
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
-import { NOTE_FORMAT } from '../constants'
 import moment from 'moment'
 import { formatAmount } from '../../../utils/utilsFunctions'
+import { DATE_FORMAT } from '../../../constants'
 
 const RadioGroup = Radio.Group
 
@@ -360,7 +360,7 @@ class Options extends React.Component<Props> {
                 {formatMessage(messages.lastSale)}
               </StatsTitle>
               <StatsValue>
-                {moment(lastOrder).format(NOTE_FORMAT)}
+                {moment(lastOrder).format(DATE_FORMAT)}
               </StatsValue>
             </StatsLabel>
           }
