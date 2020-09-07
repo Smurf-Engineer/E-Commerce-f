@@ -54,7 +54,7 @@ import rightArrow from '../../assets/arrow.svg'
 import LaptopGuy from '../../assets/laptop_guy.jpg'
 import LaptopGuyMobile from '../../assets/laptop_guy_mobile.jpg'
 import AffiliateModal from '../AffiliateModal'
-import AffiliateOptions from '../AffiliateOptions'
+import ResellerOptions from '../ResellerOptions'
 import {
   QueryProps,
   IProfileSettings,
@@ -243,7 +243,7 @@ class ResellerAbout extends React.Component<Props, StateProps> {
         }
         {status === APPROVED &&
           <AffiliateDetailsSection>
-            <AffiliateOptions {...{ history, formatMessage }} onlyDetails={true} />
+            <ResellerOptions {...{ history, formatMessage }} onlyDetails={true} />
           </AffiliateDetailsSection>
         }
         <AboutBody>

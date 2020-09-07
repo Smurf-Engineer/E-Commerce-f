@@ -60,6 +60,7 @@ import proAssist from '../components/ProAssist/reducer'
 import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 import roleCatalog from '../components/RoleList/reducer'
 import salesRep from '../components/SalesRep/reducer'
+import resellerOptions from '../components/ResellerOptions/reducer'
 import resellerAbout from '../components/ResellerAbout/reducer'
 import affiliates from '../components/Affiliates/reducer'
 import affiliatesAbout from '../components/AffiliateAbout/reducer'
@@ -89,6 +90,7 @@ export interface ReducersObject {
   roleCatalog: any
   affiliatesAbout: any
   salesRep: any
+  resellerOptions: any
   affiliates: any
   affiliatesOrders: any
   affiliatesPayouts: any
@@ -212,6 +214,7 @@ const rootReducer = combineReducers({
   orderPlaced,
   myTeamStores,
   affiliatesAbout,
+  resellerOptions,
   checkout,
   designerTool,
   shoppingCartPage,
