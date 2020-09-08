@@ -33,7 +33,8 @@ import {
   AFFILIATES_ORDERS,
   AFFILIATES,
   AFFILIATES_ABOUT,
-  RESELLER_ABOUT
+  RESELLER_ABOUT,
+  RESELLER
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -234,6 +235,7 @@ export class Account extends React.Component<Props, {}> {
       openAddToTeamStoreModalAction
     } = this.props
     const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
+    const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
     switch (screen) {
       case OVERVIEW:
         return (
@@ -254,7 +256,7 @@ export class Account extends React.Component<Props, {}> {
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case RESELLER_ABOUT:
-        return <ResellerAbout {...{ history, formatMessage }} />
+        return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
       case AFFILIATES_ABOUT:
         return affiliateEnabled && <AffiliateAbout {...{ history, formatMessage }} />
       case AFFILIATES_PAYOUTS:
@@ -299,9 +301,11 @@ export class Account extends React.Component<Props, {}> {
       savedDesignId
     } = this.props
     const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
+    const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length ?
-        ((title === AFFILIATES && affiliateEnabled) || title !== AFFILIATES) &&
+        (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
+          || (title !== AFFILIATES && title !== RESELLER)) &&
         <SubMenu
           key={title}
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}

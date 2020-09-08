@@ -49,23 +49,23 @@ interface Props {
   openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
   onChangePage: (page: number) => void
-  enableAffiliate: (status: string) => void
+  enableReseller: (status: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 class ResellerDetails extends React.Component<Props, {}> {
   debounceComission = debounce((value) => this.handleChangeComission(value), 800)
   enableStatus = () => {
-    const { enableAffiliate } = this.props
-    enableAffiliate(APPROVED)
+    const { enableReseller } = this.props
+    enableReseller(APPROVED)
   }
   rejectStatus = () => {
-    const { enableAffiliate } = this.props
-    enableAffiliate(REJECTED)
+    const { enableReseller } = this.props
+    enableReseller(REJECTED)
   }
   retryStatus = () => {
-    const { enableAffiliate } = this.props
-    enableAffiliate(RETRY)
+    const { enableReseller } = this.props
+    enableReseller(RETRY)
   }
   openFile = () => {
     const { file } = this.props
@@ -107,7 +107,7 @@ class ResellerDetails extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
-        {isAdmin && <MessageText>{formatMessage(messages.paydayOptions)}</MessageText>}
+        {isAdmin && <MessageText>{formatMessage(messages.resellerOptions)}</MessageText>}
         {onlyDetails &&
           <Subtitle>
             {formatMessage(messages.settings)}

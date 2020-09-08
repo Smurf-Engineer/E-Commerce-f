@@ -10,6 +10,7 @@ export const profileSettingsQuery = gql`
         lastName: last_name
         email
         affiliateEnabled: affiliate_enabled
+        resellerEnabled: reseller_enabled
         phone
       }
       stats {
@@ -18,6 +19,15 @@ export const profileSettingsQuery = gql`
           total
           currency
         }
+      }
+      reseller {
+        status
+        file
+        paypalAccount: paypal_account
+        comission
+        region
+        currency
+        activatedAt: activated_at
       }
       affiliate {
         status
@@ -113,6 +123,33 @@ export const setAffiliateStatusMutation = gql`
   }
 `
 
+export const setResellerEnabledMutation = gql`
+  mutation enableReseller($userId: String!, $enabled: Boolean) {
+    resellerData: enableReseller(userId: $userId ,enabled: $enabled) {
+      enabled: reseller_enabled
+    }
+  }
+`
+
+export const changeResellerComissionMutation = gql`
+  mutation changeResellerComission($value: Float, $userId: String!) {
+    changeResellerComission(value: $value, userId: $userId) {
+      status
+      comission
+    }
+  }
+`
+
+export const setResellerStatusMutation = gql`
+  mutation changeResellerStatus($status: String!, $userId: String!) {
+    changeResellerStatus(status: $status, userId: $userId) {
+      status
+      paypalAccount: paypal_account
+      comission
+      activatedAt: activated_at
+    }
+  }
+`
 export const assignRepUserMutation = graphql(
   gql`
     mutation assignRepUser($userId: String!, $repUser: String) {

@@ -23,11 +23,11 @@ export default defineMessages({
   },
   comissions: {
     id: 'components.ResellerDetails.comissions',
-    defaultMessage: 'Payday Commission'
+    defaultMessage: 'Reseller Commission'
   },
-  paydayOptions: {
-    id: 'components.ResellerDetails.paydayOptions',
-    defaultMessage: 'Payday Options'
+  resellerOptions: {
+    id: 'components.ResellerDetails.resellerOptions',
+    defaultMessage: 'Reseller Options'
   },
   paypalAccount: {
     id: 'components.ResellerDetails.paypalAccount',
