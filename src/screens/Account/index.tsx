@@ -217,6 +217,17 @@ export class Account extends React.Component<Props, {}> {
     logout()
     window.location.replace('/')
   }
+  handleUpdateScreen = () => {
+    const {
+      location: { search },
+      setCurrentScreenAction
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (option) {
+      setCurrentScreenAction(option)
+    }
+  }
 
   getScreenComponent = (screen: string) => {
     const {
@@ -252,7 +263,7 @@ export class Account extends React.Component<Props, {}> {
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case NOTIFICATIONS:
-        return <Notifications {...{ formatMessage }} />
+        return <Notifications {...{ history, formatMessage }} updateScreen={this.handleUpdateScreen} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case AFFILIATES_ABOUT:

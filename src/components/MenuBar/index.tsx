@@ -5,6 +5,7 @@ import * as React from 'react'
 import { InjectedIntl } from 'react-intl'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
+import find from 'lodash/find'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -20,7 +21,7 @@ import {
   TeamStoresMenuContainer,
   TeamStoresMenuTitle
 } from './styledComponents'
-import { regionsQuery, notificationsQuery, notificationsSubscription } from './data'
+import { regionsQuery, notificationsQuery, notificationsSubscription, setAsRead } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -37,6 +38,7 @@ import {
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
+import config from '../../config'
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
@@ -44,6 +46,10 @@ interface RegionsData extends QueryProps {
 
 interface NotificationsData extends QueryProps {
   notifications: NotificationType[]
+}
+
+interface NotificationsRead extends QueryProps {
+  notification: NotificationType
 }
 
 interface Props {
@@ -71,6 +77,7 @@ interface Props {
   notificationsData: NotificationsData
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
+  readNotification: (variables: {}) => Promise<NotificationsRead>
 }
 
 interface StateProps {
@@ -104,9 +111,10 @@ class MenuBar extends React.Component<Props, StateProps> {
           document: notificationsSubscription,
           updateQuery: (prev: any, { subscriptionData }: any) => {
             const newNotification = get(subscriptionData, 'data.newNotification')
-            return Object.assign({}, prev, {
+            const alreadyExist = find(prev.notifications, ['id', newNotification.id])
+            return !alreadyExist ? Object.assign({}, prev, {
               notifications: [newNotification, ...prev.notifications]
-            })
+            }) : prev
           }
         })
       }
@@ -165,6 +173,16 @@ class MenuBar extends React.Component<Props, StateProps> {
     }
     setAccountScreen(key)
     push(route)
+  }
+
+  handleOnPressNotification = async (notificationId: number, url: string) => {
+    const { readNotification } = this.props
+    await readNotification({
+      variables: {
+        id: notificationId
+      }
+    })
+    window.location.href = `${config.baseUrl}${url}`
   }
 
   render() {
@@ -287,6 +305,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                             isMobile,
                             formatMessage
                           }}
+                          onPressNotification={this.handleOnPressNotification}
                         />
                         {loggedUser}
                       </TopRow>
@@ -377,6 +396,7 @@ const MenuBarEnhanced = compose(
         skip: !user
       }
     }
-  })
+  }),
+  setAsRead
 )(MenuBar)
 export default MenuBarEnhanced

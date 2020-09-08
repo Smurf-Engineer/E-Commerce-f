@@ -36,6 +36,9 @@ export const TableRow = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     justify-content: space-between;
   }
+  &.clickable {
+    cursor: pointer;
+  }
   min-height: 65px;
 `
 

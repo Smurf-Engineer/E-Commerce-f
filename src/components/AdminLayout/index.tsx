@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import GoogleFontLoader from 'react-google-font-loader'
 import get from 'lodash/get'
+import find from 'lodash/find'
 import Menu from 'antd/lib/menu'
 import isEmpty from 'lodash/isEmpty'
 import messages from './messages'
@@ -14,8 +15,20 @@ import { MAIN_TITLE } from '../../constants'
 import { InjectedIntl, FormattedMessage } from 'react-intl'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { UserType, Font, SimpleFont, UserPermissions, QueryProps } from '../../types/common'
-import { getTeamStoreStatus, getFonts, unreadNotificationsQuery } from './data'
+import {
+  UserType,
+  Font,
+  SimpleFont,
+  UserPermissions,
+  QueryProps,
+  Notification as NotificationType
+} from '../../types/common'
+import {
+  getTeamStoreStatus,
+  getFonts,
+  notificationsQuery,
+  notificationsSubscription
+} from './data'
 import * as adminLayoutActions from './api'
 import {
   options,
@@ -53,7 +66,10 @@ import Helmet from 'react-helmet'
 const { SubMenu } = Menu
 
 interface NotificationsData extends QueryProps {
-  unread: number
+  notificationsResult: {
+    notifications: NotificationType[]
+    fullCount: number
+  }
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -66,7 +82,7 @@ interface Props extends RouteComponentProps<any> {
   openKeys: string[]
   screen: string
   permissions: UserPermissions
-  notifications: NotificationsData
+  notificationsData: NotificationsData
   onLogout: () => void
   restoreUserSession: (client: any) => void
   deleteUserSession: () => void
@@ -87,6 +103,35 @@ class AdminLayout extends React.Component<Props, {}> {
 
   async componentDidMount() {
     const { getFontsData, setInstalledFontsAction } = this.props
+    const {
+      notificationsData
+    } = this.props
+    const subscribeToMore = get(notificationsData, 'subscribeToMore')
+    const isBrowser = typeof window !== 'undefined'
+
+    if (isBrowser && subscribeToMore) {
+      let user = JSON.parse(localStorage.getItem('user') as string)
+      if (user) {
+        // tslint:disable
+        subscribeToMore({
+          document: notificationsSubscription,
+          updateQuery: (prev: NotificationsData, { subscriptionData }: any) => {
+            const newNotification = get(subscriptionData, 'data.newNotificationAdmin')
+            const currentNotifications = get(prev, 'notificationsResult.notifications', [])
+
+            const alreadyExist = !!find(currentNotifications, ['id', newNotification.id])
+            const asignation = !alreadyExist ? Object.assign({}, prev, {
+              notificationsResult: {
+                notifications: [newNotification, ...currentNotifications],
+                fullCount: prev.notificationsResult.fullCount,
+                __typename: 'NotificationsResult'
+              }
+            }) : prev
+            return asignation
+          }
+        })
+      }
+    }
 
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
@@ -178,8 +223,11 @@ class AdminLayout extends React.Component<Props, {}> {
       screen,
       onLogout,
       permissions = {},
-      notifications: { unread = 0 }
+      notificationsData
     } = this.props
+
+    const notifications = get(notificationsData, 'notificationsResult.notifications', [])
+    const unread = notifications.filter((notification) => !notification.read).length
 
     if (!Object.keys(permissions).length) {
       return (
@@ -271,7 +319,7 @@ const LayoutEnhance = compose(
   withApollo,
   getTeamStoreStatus,
   getFonts,
-  unreadNotificationsQuery,
+  notificationsQuery,
   connect(
     mapStateToProps,
     {

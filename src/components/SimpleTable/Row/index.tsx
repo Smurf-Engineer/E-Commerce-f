@@ -15,8 +15,10 @@ interface Props {
   targetGroup: string
   canDelete: boolean
   unread?: boolean
+  clickable?: boolean
   onPressDelete: (index: number, section: string) => void
   formatMessage: (messageDescriptor: Message) => string
+  onPressRow?: (notificationId: number, url: string) => void
 }
 
 class Row extends React.PureComponent<Props, {}> {
@@ -29,23 +31,33 @@ class Row extends React.PureComponent<Props, {}> {
       headerTitles,
       targetGroup,
       canDelete,
-      unread = false
+      unread = false,
+      clickable,
+      onPressRow
     } = this.props
 
     const handleOnClick = () => {
       onPressDelete(index, targetGroup)
     }
 
+    const handleOnClickRow = () => {
+      if (onPressRow && clickable) {
+        onPressRow(item.id, item.url)
+      }
+    }
     return (
       <div>
-        <TableRow>
+        <TableRow className={clickable && 'clickable'} onClick={handleOnClickRow}>
           {headerTitles.map(
             (header, indexx) => {
               const currentItem = item[header.fieldName] || item
               const value = header.dataType === DATE ? moment(currentItem).format(SIMPLE_DATE_FORMAT) : currentItem
 
               return header.fieldName ? (
-                <Cell width={header.tabletWidth} className={unread && header.fieldName === 'message' && 'unread'}>
+                <Cell
+                  width={header.tabletWidth}
+                  className={unread && header.fieldName === 'message' && 'unread'}
+                >
                   {header.fieldName !== 'image' ? (
                     value
                   ) : (

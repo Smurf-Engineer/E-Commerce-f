@@ -23,6 +23,10 @@ export const NotificationList = styled.div`
   overflow-y: scroll;
 `
 
+export const Empty = styled.div`
+  padding: 10px;
+`
+
 export const overlayStyle = {
   width: '276'
 }

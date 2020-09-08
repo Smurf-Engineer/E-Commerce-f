@@ -66,5 +66,6 @@ export const MenuItem = styled(Item)`
     border-radius: 12px;
     top: calc(50% - 12px) !important;
     border: none;
+    transform: none !important;
   }
 `

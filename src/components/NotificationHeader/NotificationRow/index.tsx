@@ -10,12 +10,17 @@ interface Props {
   message: string
   date: string
   read: boolean
-  onPress: (index: number) => void
+  id: number
+  url?: string
+  onPress: (id: number) => void
 }
 
-const NotificationRow = ({ title, message, date, read, onPress }: Props) => {
+const NotificationRow = ({ id, title, message, date, read, url, onPress }: Props) => {
+  const handleOnPress = () => {
+    onPress(id, url)
+  }
   return (
-    <Container className={!read ? 'new' : ''}>
+    <Container className={!read ? 'new' : ''} onClick={handleOnPress}>
       <Title>{title}</Title>
       <Description>{message}</Description>
       <Date>{moment(date).calendar()}</Date>

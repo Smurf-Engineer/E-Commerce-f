@@ -1721,4 +1721,5 @@ export type Notification = {
   date: string
   title: string
   message: string
+  url?: string
 }

@@ -37,7 +37,6 @@ export const Description = styled.div`
   color: ${GRAY_DARK};
   font-size: 14px;
   margin-bottom: 5px;
-  text-transform: capitalize;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

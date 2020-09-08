@@ -2,7 +2,8 @@ import {
   SET_DEFAULT_SCREEN,
   CLEAR_REDUCER,
   SET_LOADING,
-  OPEN_FORGOT_PASSWORD
+  OPEN_FORGOT_PASSWORD,
+  SET_NOTIFICATION_PAGE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -26,4 +27,9 @@ export const setLoadingAction = (loading: boolean) => ({
 
 export const openForgotPasswordAction = () => ({
   type: OPEN_FORGOT_PASSWORD
+})
+
+export const setNotificationsPageAction = (page: number) => ({
+  type: SET_NOTIFICATION_PAGE,
+  page
 })

@@ -7,8 +7,9 @@ import Badge from 'antd/lib/badge'
 import ListHeader from './ListHeader'
 import ListFooter from './ListFooter'
 import Popover from 'antd/lib/popover'
-import { Container, Image, overlayStyle, overlayMobileStyle, NotificationList } from './styledComponents'
+import { Container, Image, overlayStyle, overlayMobileStyle, NotificationList, Empty } from './styledComponents'
 import NotificationRow from './NotificationRow'
+import messages from './messages'
 import bell from '../../assets/bell.svg'
 
 interface Props {
@@ -16,27 +17,30 @@ interface Props {
   notifications?: Notification[]
   isMobile?: boolean
   formatMessage: (messageDescriptor: Message) => string
+  onPressNotification?: (id: number, url: string) => void
 }
 
 export class NotificationHeader extends React.PureComponent<Props, {}> {
-  componentDidMount() {
+  goToNotifications = () => {
+    const { history } = this.props
+    history.push('/account?option=notifications')
   }
-
   render() {
-    const { isMobile, notifications = [], formatMessage } = this.props
+    const { isMobile, notifications = [], formatMessage, onPressNotification } = this.props
     const unreadTotal = notifications.length && notifications.filter((notification) => !notification.read).length
 
     const content = (
       <>
         {notifications.length ? <><NotificationList>
-          {notifications.map(({ title, message, date, read }) => (
+          {notifications.map(({ title, message, date, read, id, url }) => (
             <NotificationRow
-              {...{ title, message, date, read }}
-              onPress={null}
+              {...{ title, message, date, read, id, url }}
+              onPress={onPressNotification}
             />
           ))}
         </NotificationList>
-          <ListFooter {...{ formatMessage }} onViewAll={null} /> </> : <p>{'No hay'}</p>}
+          <ListFooter {...{ formatMessage }} onViewAll={this.goToNotifications} /></>
+          : <Empty>{formatMessage(messages.notFound)}</Empty>}
       </>
     )
 

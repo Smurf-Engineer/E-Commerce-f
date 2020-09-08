@@ -6,7 +6,8 @@ import {
   SET_DEFAULT_SCREEN,
   CLEAR_REDUCER,
   SET_LOADING,
-  OPEN_FORGOT_PASSWORD
+  OPEN_FORGOT_PASSWORD,
+  SET_NOTIFICATION_PAGE
 } from './constants'
 import { SET_CURRENT_SCREEN } from '../../components/AdminLayout/constants'
 
@@ -17,7 +18,8 @@ export const initialState = fromJS({
   defaultScreen: '',
   openKeys: [''],
   loading: true,
-  forgotPasswordOpen: false
+  forgotPasswordOpen: false,
+  notificationPage: 1
 })
 
 const adminReducer: Reducer<any> = (state = initialState, action) => {
@@ -44,6 +46,8 @@ const adminReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loading', action.loading)
     case OPEN_FORGOT_PASSWORD:
       return state.set('forgotPasswordOpen', !state.get('forgotPasswordOpen'))
+    case SET_NOTIFICATION_PAGE:
+      return state.set('notificationPage', action.page)
     default:
       return state
   }

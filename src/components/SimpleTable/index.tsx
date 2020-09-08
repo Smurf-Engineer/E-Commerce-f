@@ -17,6 +17,7 @@ interface Props {
   canDelete?: boolean
   notifications?: boolean
   onPressDelete: (index: number) => void
+  onPressRow?: (notificationId: number, url: string) => void
 }
 
 class SimpleTable extends React.PureComponent<Props, {}> {
@@ -28,7 +29,8 @@ class SimpleTable extends React.PureComponent<Props, {}> {
       data,
       targetGroup,
       canDelete = true,
-      notifications = false
+      notifications = false,
+      onPressRow,
     } = this.props
 
     const itemsSelected = data.map((item: any, index: number) => (
@@ -40,10 +42,12 @@ class SimpleTable extends React.PureComponent<Props, {}> {
           formatMessage,
           onPressDelete,
           targetGroup,
-          canDelete
+          canDelete,
+          onPressRow
         }}
         key={index}
         unread={notifications && !item.read}
+        clickable={notifications}
       />
     ))
 

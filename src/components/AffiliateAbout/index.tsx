@@ -336,9 +336,12 @@ class AffiliateAbout extends React.Component<Props, StateProps> {
       sendAffiliateRequest
     } = this.props
     try {
+      const currentCurrency = currency.toLowerCase()
+      const currentCountryCode = initialCountryCode.toUpperCase()
+
       if (
-        (currency === US_CURRENCY && initialCountryCode === US_COUNTRY) ||
-        (currency === CA_CURRENCY && initialCountryCode === CA_COUNTRY)
+        (currentCurrency === US_CURRENCY && currentCountryCode === US_COUNTRY) ||
+        (currentCurrency === CA_CURRENCY && currentCountryCode === CA_COUNTRY)
       ) {
         setUploadingAction(true)
         await sendAffiliateRequest({

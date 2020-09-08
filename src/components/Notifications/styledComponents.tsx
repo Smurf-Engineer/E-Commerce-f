@@ -33,6 +33,7 @@ export const ScreenTitle = styled.div`
   font-weight: 600;
   line-height: 27px;
   margin-bottom: 26px;
+  text-align: left;
   @media (max-width: 768px) and (min-width: 320px) {
     margin-bottom: 24px;
   }

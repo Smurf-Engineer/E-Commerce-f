@@ -25,11 +25,46 @@ export const getFonts = graphql(
   { name: 'getFontsData' }
 )
 
-export const unreadNotificationsQuery = graphql(
+export const notificationsQuery = graphql(
   gql`
-    query unreadNotifications {
-      unread: unreadNotifications
+    query getNotifications{
+      notificationsResult: getNotifications(
+        isAdmin: true
+        limit: 5
+        offset: 0
+      ) {
+        fullCount
+        notifications {
+          id
+          senderId: user_id
+          notificationType: notification_type
+          toAdmin: to_admin
+          read: user_read
+          date: created_at
+          title
+          message
+          user: sender_name
+          email: sender_email
+        }
+      }
     }
   `,
-  { name: 'notifications' }
+  { name: 'notificationsData' }
 )
+
+export  const notificationsSubscription = gql`
+  subscription newNotificationAdmin {
+    newNotificationAdmin {
+      id
+      senderId: user_id
+      notificationType: notification_type
+      toAdmin: to_admin
+      read: user_read
+      date: created_at
+      title
+      message
+      user: sender_name
+      email: sender_email
+    }
+  }
+`
