@@ -74,9 +74,11 @@ interface Props {
   canEdit: boolean
   profileData: ProfileData
   pageAffiliate: number
+  pageReseller: number
   enableReseller: (variables: {}) => Promise<AffiliateStatus>
   enableAffiliate: (variables: {}) => Promise<AffiliateStatus>
   onChangePage: (page: number) => void
+  onChangePageReseller: (page: number) => void
   setLoadingAction: (loading: boolean) => void
   changeComission: (variables: {}) => Promise<Affiliate>
   changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
@@ -367,6 +369,8 @@ class Options extends React.Component<Props> {
       optionSelected,
       profileData,
       note,
+      onChangePageReseller,
+      pageReseller,
       loading,
       setNoteText,
       onChangePage,
@@ -460,11 +464,11 @@ class Options extends React.Component<Props> {
             {...{
               formatMessage,
               loading,
-              currentPage,
-              onChangePage,
               history,
               userId,
             }}
+            onChangePage={onChangePageReseller}
+            currentPage={pageReseller}
             status={statusReseller}
             comission={comissionReseller}
             activatedAt={activatedReseller}

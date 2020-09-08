@@ -4,14 +4,14 @@
 
 import gql from 'graphql-tag'
 
-export const getAffiliatePaymentsQuery = gql`
-  query getAffiliatePayments(
+export const getResellerPaymentsQuery = gql`
+  query getResellerPayments(
     $limit: Int
     $offset: Int
     $isAdmin: Boolean
     $userId: String
   ) {
-    paymentsQuery: getAffiliatePayments(
+    paymentsQuery: getResellerPayments(
       limit: $limit
       offset: $offset
       isAdmin: $isAdmin

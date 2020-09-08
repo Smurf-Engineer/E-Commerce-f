@@ -16,7 +16,8 @@ import {
   CHANGE_NOTE,
   SET_SEARCH,
   SET_SEARCH_MANAGER,
-  SET_AFFILIATE_PAGE
+  SET_AFFILIATE_PAGE,
+  SET_RESELLER_PAGE
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -77,6 +78,11 @@ export const setLoadingAction = (loading: boolean) => ({
 
 export const onChangePage = (page: number): AnyAction => ({
   type: SET_AFFILIATE_PAGE,
+  page
+})
+
+export const onChangePageReseller = (page: number): AnyAction => ({
+  type: SET_RESELLER_PAGE,
   page
 })
 

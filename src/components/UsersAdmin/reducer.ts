@@ -17,7 +17,8 @@ import {
   SET_LOADING,
   SET_DESIGN,
   CHANGE_NOTE,
-  SET_AFFILIATE_PAGE
+  SET_AFFILIATE_PAGE,
+  SET_RESELLER_PAGE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -37,6 +38,7 @@ export const initialState = fromJS({
   optionSelected: 0,
   openModal: false,
   loading: false,
+  pageReseller: 0,
   pageAffiliate: 1
 })
 
@@ -52,6 +54,8 @@ const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
+    case SET_RESELLER_PAGE:
+      return state.set('pageReseller', action.page)
     case CHANGE_NOTE:
       return state.set('note', action.text)
     case SET_DESIGN:

@@ -19,5 +19,6 @@ export const CHANGE_NOTE = `${namespace}/CHANGE_NOTE`
 export const SET_SEARCH = `${namespace}/SET_SEARCH`
 export const SET_SEARCH_MANAGER = `${namespace}/SET_SEARCH_MANAGER`
 export const SET_AFFILIATE_PAGE = `${namespace}/SET_AFFILIATE_PAGE`
+export const SET_RESELLER_PAGE = `${namespace}/SET_RESELLER_PAGE`
 
 export const NOTE_FORMAT = 'MM/DD/YYYY'
