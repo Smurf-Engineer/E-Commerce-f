@@ -20,6 +20,7 @@ interface Props {
   hide?: boolean
   buyNowHeader?: boolean
   notifications?: Notification[]
+  updatingNotifications?: boolean
   saveAndBuy: (buy: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -38,7 +39,8 @@ export const MenuBarMobile = ({
   buyNowHeader,
   notifications = [],
   saveAndBuy,
-  handleOnGoHome
+  handleOnGoHome,
+  updatingNotifications
 }: Props) => {
   const handleOnSaveAndBuy = () => {
     saveAndBuy(true)
@@ -61,6 +63,7 @@ export const MenuBarMobile = ({
               formatMessage
             }}
             isMobile={true}
+            updating={updatingNotifications}
           />
           <Cart
             {...{

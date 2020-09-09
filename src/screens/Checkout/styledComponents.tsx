@@ -4,7 +4,8 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
-import { BLUE, WHITE, GRAY_DARK, BLACK_SHADOW } from '../../theme/colors'
+import { BLUE, WHITE, GRAY_DARK, BLACK_SHADOW, GREEN } from '../../theme/colors'
+import { AVENIR_NEXT } from '../../theme/fonts'
 
 export const Container = styled.div`
   padding: 40px 32px;
@@ -152,6 +153,38 @@ export const PlaceOrderLoading = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 100;
+`
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+`
+
+export const InfoText = styled.div``
+
+export const CheckList = styled.div``
+
+export const CheckLabel = styled.div``
+
+export const CheckGreen = styled(Icon)`
+  color: ${GREEN};
+  font-size: 16px;
+  margin-right: 8px;
 `
 
 export const okButtonStyles = {

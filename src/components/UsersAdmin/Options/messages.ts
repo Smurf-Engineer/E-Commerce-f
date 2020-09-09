@@ -23,14 +23,42 @@ export default defineMessages({
   },
   affiliate: {
     id: 'components.UsersAdmin.Options.affiliate',
-    defaultMessage: 'Affiliate Options'
+    defaultMessage: 'Payday Options'
   },
   saved: {
     id: 'components.UsersAdmin.Options.saved',
     defaultMessage: 'Saved status'
   },
+  savedInternal: {
+    id: 'components.UsersAdmin.Options.savedInternal',
+    defaultMessage: 'Saved Netsuite ID'
+  },
+  netsuiteInternal: {
+    id: 'components.UsersAdmin.Options.netsuiteInternal',
+    defaultMessage: 'NetSuite Internal'
+  },
+  edit: {
+    id: 'components.UsersAdmin.Options.edit',
+    defaultMessage: 'Edit'
+  },
+  save: {
+    id: 'components.UsersAdmin.Options.save',
+    defaultMessage: 'Save'
+  },
+  cancel: {
+    id: 'components.UsersAdmin.Options.cancel',
+    defaultMessage: 'Cancel'
+  },
   showAffiliate: {
     id: 'components.UsersAdmin.Options.showAffiliate',
     defaultMessage: 'Show Affiliate Program'
+  },
+  lastSale: {
+    id: 'components.UsersAdmin.Options.lastSale',
+    defaultMessage: 'Last Sale'
+  },
+  totalSales: {
+    id: 'components.UsersAdmin.Options.totalSales',
+    defaultMessage: 'Total Sales'
   }
 })

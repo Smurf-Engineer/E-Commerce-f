@@ -67,7 +67,6 @@ interface Props extends RouteComponentProps<any> {
   loading: boolean
   client: any
   forgotPasswordOpen: boolean
-  notificationPage: number
   // Redux actions
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
   setCurrentScreenAction: (screen: string) => void
@@ -116,11 +115,6 @@ export class Admin extends React.Component<Props, {}> {
     await saveUserSession(user, client)
   }
 
-  handleOnChangeNotificationsPage = (page: number) => {
-    const { setNotificationsPageAction } = this.props
-    setNotificationsPageAction(page)
-  }
-
   getScreenComponent = (screen: string) => {
     const {
       intl: { formatMessage },
@@ -129,8 +123,7 @@ export class Admin extends React.Component<Props, {}> {
       intl,
       history,
       loading,
-      forgotPasswordOpen,
-      notificationPage
+      forgotPasswordOpen
     } = this.props
     if (loading) {
       return (
@@ -165,8 +158,6 @@ export class Admin extends React.Component<Props, {}> {
           render={() => (
             <Notifications
               fromAdmin={true}
-              currentPage={notificationPage}
-              changePage={this.handleOnChangeNotificationsPage}
               {...{ history, formatMessage, permissions }}
             />
           )}

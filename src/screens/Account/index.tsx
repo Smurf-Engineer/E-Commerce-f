@@ -263,7 +263,7 @@ export class Account extends React.Component<Props, {}> {
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case NOTIFICATIONS:
-        return <Notifications {...{ history, formatMessage }} updateScreen={this.handleUpdateScreen} />
+        return <Notifications {...{ history, formatMessage, isMobile }} updateScreen={this.handleUpdateScreen} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case AFFILIATES_ABOUT:

@@ -105,8 +105,10 @@ export class Technology extends React.Component<Props, {}> {
   private tech: any
   private fabrics: any
 
-  componentWillMount() {
-    zenscroll.toY(0, 0)
+  componentDidMount() {
+    if (window && zenscroll) {
+      zenscroll.toY(0, 0)
+    }
   }
 
   handleOnButtonClick = (index: number) => () => {

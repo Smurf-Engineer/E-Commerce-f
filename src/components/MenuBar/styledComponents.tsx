@@ -85,3 +85,5 @@ export const TeamStoresMenuTitle = styled.div`
     cursor: pointer;
   }
 `
+
+export const notificationStyles = { cursor: 'pointer' }

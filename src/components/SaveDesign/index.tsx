@@ -41,6 +41,7 @@ type DesignInput = {
   styleId?: number
   canvas?: string
   flatlock?: string
+  predyed_name?: string
   flatlock_code?: string
   zipper_color?: string
   binding_color?: string
@@ -67,10 +68,12 @@ interface Props {
   saveDesignLoading: boolean
   saveDesignChangesLoading: boolean
   stitchingColor: StitchingColor
+  predyedColor: string
   hasFlatlock: boolean
   hasZipper: boolean
   hasBinding: boolean
   hasBibBrace: boolean
+  hasBranding: boolean
   bindingColor: string
   zipperColor: string
   bibColor: string
@@ -135,6 +138,8 @@ export class SaveDesign extends React.Component<Props, State> {
       designName,
       colors,
       design,
+      hasBranding,
+      predyedColor,
       formatMessage,
       saveDesign,
       requestClose,
@@ -190,6 +195,9 @@ export class SaveDesign extends React.Component<Props, State> {
       if (hasBibBrace) {
         designObj.bib_brace_color = bibColor
       }
+      if (hasBranding) {
+        designObj.predyed_name = predyedColor
+      }
 
       setSaveDesignLoading(true)
       await saveDesign({
@@ -233,6 +241,8 @@ export class SaveDesign extends React.Component<Props, State> {
       saveDesignAs,
       requestClose,
       design,
+      hasBranding,
+      predyedColor,
       setSaveDesignChangesLoading,
       hasFlatlock,
       hasZipper,
@@ -269,6 +279,9 @@ export class SaveDesign extends React.Component<Props, State> {
       if (hasBibBrace) {
         designObj.bib_brace_color = bibColor
       }
+      if (hasBranding) {
+        designObj.predyed_name = predyedColor
+      }
 
       setSaveDesignChangesLoading(true)
       await saveDesignAs({
@@ -278,6 +291,7 @@ export class SaveDesign extends React.Component<Props, State> {
             svg,
             designName,
             canvas,
+            predyedName,
             bibBraceColor,
             bindingColor: updatedBindingColor,
             flatlockCode,
@@ -295,6 +309,7 @@ export class SaveDesign extends React.Component<Props, State> {
             data.designData.flatlockCode = flatlockCode
             data.designData.flatlockColor = flatlockColor
             data.designData.zipperColor = updatedZipperColor
+            data.designData.predyedName = predyedName
             store.writeQuery({
               query: getDesignQuery,
               variables: { designId: savedDesignId },
@@ -353,8 +368,8 @@ export class SaveDesign extends React.Component<Props, State> {
               {!isMobile ? (
                 <FormattedMessage {...messages.modalTitle} />
               ) : (
-                <FormattedMessage {...messages.mobileModalTitle} />
-              )}
+                  <FormattedMessage {...messages.mobileModalTitle} />
+                )}
             </Title>
             {!!savedDesignId ? (
               <StyledSaveAs>
@@ -363,10 +378,10 @@ export class SaveDesign extends React.Component<Props, State> {
                 </Text>
               </StyledSaveAs>
             ) : (
-              <Text>
-                <FormattedMessage {...messages.modalText} />
-              </Text>
-            )}
+                <Text>
+                  <FormattedMessage {...messages.modalText} />
+                </Text>
+              )}
             <InputWrapper>
               <StyledInput
                 id="saveDesignName"
@@ -409,10 +424,10 @@ export class SaveDesign extends React.Component<Props, State> {
             </ButtonWrapper>
           </Modal>
         ) : (
-          <SpinWrapper>
-            <StyledSpin tip={formatMessage(messages.saving)} />
-          </SpinWrapper>
-        )}
+            <SpinWrapper>
+              <StyledSpin tip={formatMessage(messages.saving)} />
+            </SpinWrapper>
+          )}
       </Container>
     )
   }

@@ -53,6 +53,7 @@ export const SET_DESIGN_HAS_CHANGES = `${namespace}/SET_DESIGN_HAS_CHANGES`
 
 export const SET_STITCHING_COLOR_ACTION = `${namespace}/SET_STITCHING_COLOR_ACTION`
 export const SET_ACCESSORY_COLOR_ACTION = `${namespace}/SET_ACCESSORY_COLOR_ACTION`
+export const SET_PREDYED_COLOR = `${namespace}/SET_PREDYED_COLOR`
 
 export const SET_UPLOADING_FILE_ACTION = `${namespace}/SET_UPLOADING_FILE_ACTION`
 export const UPLOAD_FILE_ACTION_SUCCESS = `${namespace}/UPLOAD_FILE_ACTION_SUCCESS`
@@ -129,7 +130,8 @@ export enum AccessoryColors {
   Binding = 'bindingColor',
   Zipper = 'zipperColor',
   Bib = 'bibColor',
-  Stitching = 'stitchingColor'
+  Stitching = 'stitchingColor',
+  Predyed = 'predyed'
 }
 
 export const ElementsToApplyScale = [CanvasElements.Image]

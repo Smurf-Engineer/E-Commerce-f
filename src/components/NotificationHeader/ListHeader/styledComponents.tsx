@@ -2,6 +2,7 @@
  * Styled Components - Created by eduardoquintero on 25/08/20.
  */
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
 import { RED, GRAY_DARK } from '../../../theme/colors'
 
 export const Container = styled.div`
@@ -27,4 +28,10 @@ export const MarkButton = styled.div`
   cursor: pointer;
   user-select: none;
   font-size: 14px;
+`
+
+export const BorderlessButton = styled(Button)`
+    color: ${RED};
+    border: none;
+    box-shadow: none;
 `

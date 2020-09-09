@@ -30,9 +30,8 @@ import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
 import { PAY_LIMITS } from '../constants'
 import moment from 'moment'
-import { NOTE_FORMAT } from '../../UsersAdmin/constants'
 // import { getFileWithExtension } from '../../../utils/utilsFiles'
-import { PENDING_PAY, TO_PAY, SHIPPED, PARTIALLY_SHIPPED } from '../../../constants'
+import { PENDING_PAY, TO_PAY, SHIPPED, PARTIALLY_SHIPPED, DATE_FORMAT } from '../../../constants'
 import clone from 'lodash/clone'
 import { message } from 'antd'
 import debounce from 'lodash/debounce'
@@ -134,7 +133,7 @@ export class PayList extends React.Component<Props, {}> {
       currentTarget: { id }
     } = event
     const { history } = this.props
-    history.push(`/admin?order=${id}&from=affiliates`)
+    history.push(`/admin/orders?order=${id}&from=affiliates`)
   }
 
   render() {
@@ -241,7 +240,7 @@ export class PayList extends React.Component<Props, {}> {
                       }
                     </Cell>
                     <Cell>
-                      {createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}
+                      {createdAt ? moment(createdAt).format(DATE_FORMAT) : ''}
                     </Cell>
                     <Cell>{userId}</Cell>
                     <Cell>{name}</Cell>

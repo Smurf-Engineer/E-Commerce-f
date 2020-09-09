@@ -117,7 +117,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
   }
 
   componentDidMount() {
-    zenscroll.toY(0, 0)
+    if (window && zenscroll) {
+      zenscroll.toY(0, 0)
+    }
   }
 
   beforeUpload = (file: any) => {

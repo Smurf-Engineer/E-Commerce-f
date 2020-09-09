@@ -33,13 +33,16 @@ import {
   FitStyle,
   FitStyleTitle,
   FitStyleImage,
-  FitStyleDescription
+  FitStyleDescription,
+  SectionLink,
+  AssistanceDiv
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import SizingChart from '../../components/SizingChart'
 import slimFit from '../../assets/slim_fit.svg'
 import standardFit from '../../assets/standard_fit.svg'
 import relaxedFit from '../../assets/relaxed_fit.svg'
+import { FIT_FORM } from './constants'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -53,8 +56,10 @@ export class FitAndSizing extends React.Component<Props, {}> {
   private bodySize: any
   private fitStyles: any
 
-  componentWillMount() {
-    zenscroll.toY(0, 0)
+  componentDidMount() {
+    if (window && zenscroll) {
+      zenscroll.toY(0, 0)
+    }
   }
 
   render() {
@@ -89,6 +94,12 @@ export class FitAndSizing extends React.Component<Props, {}> {
               <FormattedMessage {...messages.title} />
             </Title>
             <AnchorsRow>{buttons}</AnchorsRow>
+            <AssistanceDiv>
+              <FormattedMessage {...messages.needAssistance} />
+            </AssistanceDiv>
+            <SectionLink target="_blank" href={FIT_FORM}>
+              <FormattedMessage {...messages.tryFreeService} />
+            </SectionLink>
           </TitleSectionRow>
           <Divider />
           <ContentSection>

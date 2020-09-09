@@ -71,6 +71,7 @@ interface Props {
   binding: string
   bibBrace: string
   collection: string
+  predyedColor: string
   id: number
   modalOpen: boolean
   loading: boolean
@@ -141,6 +142,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       binding,
       bibBrace,
       history,
+      predyedColor,
       collection,
       modalOpen,
       loading,
@@ -219,6 +221,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
             bibBrace,
             collection,
             id,
+            predyedColor,
             model
           }}
         />
@@ -264,6 +267,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       binding,
       bibBrace,
       collection,
+      predyedColor,
       formatMessage,
       setLoadingAction,
       model
@@ -282,6 +286,7 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       binding,
       bib_brace: bibBrace,
       collection,
+      predyed: predyedColor,
       model
     }
     setLoadingAction(true)

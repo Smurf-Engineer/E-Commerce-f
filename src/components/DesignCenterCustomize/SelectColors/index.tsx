@@ -40,12 +40,15 @@ interface Props {
   bibColor?: AccesoryColor
   hasStitching: boolean
   hasZipper: boolean
+  selectedPredyed: string
+  hasBranding: boolean
   hasBinding: boolean
   hasBibBrace: boolean
   colorBlockHovered: number
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
   goToBaseColors: () => void
@@ -73,8 +76,11 @@ class SelectColors extends React.PureComponent<Props, {}> {
       bindingColor,
       zipperColor,
       bibColor,
+      onSelectPredyed = () => { },
       onAccessoryColorSelected = () => { },
       hasStitching,
+      hasBranding,
+      selectedPredyed,
       hasZipper,
       hasBinding,
       hasBibBrace,
@@ -111,7 +117,6 @@ class SelectColors extends React.PureComponent<Props, {}> {
         Message.error(e)
       }
     }
-
     return (
       <Container>
         <BaseColors onClick={goToBaseColors}>
@@ -135,6 +140,15 @@ class SelectColors extends React.PureComponent<Props, {}> {
           <AccessoryColor
             name={formatMessage(messages.stitching)}
             {...{ goToStitching, stitchingColor, stitchingLabel }}
+          />
+        )}
+        {hasBranding && (
+          <AccessoryColor
+            id={AccessoryColors.Predyed}
+            name={formatMessage(messages.predyedColor)}
+            colorSelected={selectedPredyed}
+            isPredyed={true}
+            onAccessoryColorSelected={onSelectPredyed}
           />
         )}
         {hasBinding && (

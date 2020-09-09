@@ -20,7 +20,6 @@ export const SET_DEFAULT_SCREEN = `${namespace}/SET_DEFAULT_SCREEN`
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
 export const SET_LOADING = `${namespace}/SET_LOADING`
 export const OPEN_FORGOT_PASSWORD = `${namespace}/OPEN_FORGOT_PASSWORD`
-export const SET_NOTIFICATION_PAGE = `${namespace}/SET_NOTIFICATION_PAGE`
 
 export const keys = {
   ['/admin/']: NOTIFICATIONS,

@@ -4,18 +4,25 @@
 import * as React from 'react'
 import { Message } from '../../../types/common'
 import messages from './messages'
-import { Container, Label, MarkButton } from './styledComponents'
+import { Container, Label, BorderlessButton } from './styledComponents'
 
 interface Props {
+  updating: boolean
   onMarkAll: () => void
   formatMessage: (messageDescriptor: Message) => string
 }
 
-const NotificationHeader = ({ onMarkAll, formatMessage }: Props) => {
+const NotificationHeader = ({ onMarkAll, formatMessage, updating }: Props) => {
   return (
     <Container>
       <Label>{formatMessage(messages.latest)}</Label>
-      <MarkButton onClick={onMarkAll}>{formatMessage(messages.markAll)}</MarkButton>
+      <BorderlessButton
+        type="ghost"
+        loading={updating}
+        onClick={onMarkAll}
+      >
+        {formatMessage(messages.markAll)}
+      </BorderlessButton>
     </Container>
   )
 }

@@ -32,7 +32,7 @@ class Row extends React.PureComponent<Props, {}> {
       targetGroup,
       canDelete,
       unread = false,
-      clickable,
+      clickable = false,
       onPressRow
     } = this.props
 
@@ -49,12 +49,13 @@ class Row extends React.PureComponent<Props, {}> {
       <div>
         <TableRow className={clickable && 'clickable'} onClick={handleOnClickRow}>
           {headerTitles.map(
-            (header, indexx) => {
+            (header, rowIndex) => {
               const currentItem = item[header.fieldName] || item
               const value = header.dataType === DATE ? moment(currentItem).format(SIMPLE_DATE_FORMAT) : currentItem
 
               return header.fieldName ? (
                 <Cell
+                  key={rowIndex}
                   width={header.tabletWidth}
                   className={unread && header.fieldName === 'message' && 'unread'}
                 >
@@ -65,7 +66,7 @@ class Row extends React.PureComponent<Props, {}> {
                     )}
                 </Cell>
               ) :
-                <Cell width={header.tabletWidth} className={unread && 'badge'} />
+                <Cell key={rowIndex} width={header.tabletWidth} className={unread && 'badge'} />
             }
           )}
           {canDelete && <Cell>

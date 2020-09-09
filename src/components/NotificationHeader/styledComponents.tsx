@@ -24,7 +24,7 @@ export const NotificationList = styled.div`
 `
 
 export const Empty = styled.div`
-  padding: 10px;
+  padding: 25px;
 `
 
 export const overlayStyle = {

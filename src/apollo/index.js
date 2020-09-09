@@ -77,7 +77,6 @@ const wsLink = process.browser
 
 const apolloLink = ApolloLink.from([authLink, errorLink, httpLink])
 
-// TODO: ENABLE LATER
 const link = process.browser
   ? ApolloLink.split(hasSubscriptionOperation, wsLink, apolloLink)
   : apolloLink

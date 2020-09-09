@@ -40,18 +40,15 @@ export const regionsQuery = gql`
 export const notificationsQuery = gql`
   query getNotifications {
     notifications: getNotifications {
-      fullCount
-      notifications {
-        id
-        senderId: user_id
-        notificationType: notification_type
-        toAdmin: to_admin
-        read: user_read
-        date: created_at
-        title
-        message
-        url
-      }
+      id
+      senderId: user_id
+      notificationType: notification_type
+      toAdmin: to_admin
+      read: user_read
+      date: created_at
+      title
+      message
+      url
     }
   }
 `
@@ -83,5 +80,18 @@ export const setAsRead = graphql(
   `,
   {
     name: 'readNotification'
+  }
+)
+
+export const setAllAsRead = graphql(
+  gql`
+    mutation setAllNotificationRead {
+      setAllNotificationRead {
+        message
+      }
+    }
+  `,
+  {
+    name: 'readNAllotification'
   }
 )

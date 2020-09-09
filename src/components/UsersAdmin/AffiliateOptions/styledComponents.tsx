@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
-import { RED, WHITE_TRANSPARENT } from '../../../theme/colors'
+import { RED, WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
 
@@ -97,6 +97,19 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+export const MessageText = styled.div`
+  width: 100%;
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  margin-bottom: 32px;
+  margin-top: 20px;
+  padding-bottom: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid ${GRAY};
 `
 
 export const Subtitle = styled.div`

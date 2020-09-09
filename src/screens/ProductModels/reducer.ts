@@ -29,7 +29,7 @@ export const initialState = fromJS({
   modelRender: '',
   loading: true,
   defaultModelIndex: '',
-  variants: {}
+  variants: {},
 })
 
 const productModelsReducer: Reducer<any> = (state = initialState, action) => {

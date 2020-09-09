@@ -156,11 +156,12 @@ export const getPriceRangeToApply = (items: number) => {
     return 2
   } else if (items >= 25 && items <= 49) {
     return 3
-  } else if (items >= 50) {
+  } else if (items >= 50 && items <= 99) {
     return 4
-  } else {
-    return 0
+  } else if (items >= 100) {
+    return 5
   }
+  return 0
 }
 
 export const designExistsOnCart = (designId: string) => {

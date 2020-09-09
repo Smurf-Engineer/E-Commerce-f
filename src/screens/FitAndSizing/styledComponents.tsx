@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import divider from 'antd/lib/divider'
 import radioGroup from 'antd/lib/radio/group'
 import radioButton from 'antd/lib/radio/radioButton'
+import { GRAY_DARK, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: #fff;
@@ -15,14 +16,14 @@ export const Container = styled.div`
   }
 `
 export const TitleSectionRow = styled.div`
-  padding: 28px 32px 64px;
+  padding: 28px 32px 28px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 28px 32px 0px;
   }
 `
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -75,7 +76,7 @@ export const ContentSection = styled.div`
   }
 `
 export const SectionTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -91,7 +92,7 @@ export const SectionTitle = styled.div`
   }
 `
 export const SectionDescription = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -151,7 +152,7 @@ export const FitStyle = styled.div`
   }
 `
 export const FitStyleTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   display: flex;
   font-size: 16px;
   font-weight: 600;
@@ -164,7 +165,7 @@ export const FitStyleImage = styled.img`
   width: 100%;
 `
 export const FitStyleDescription = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -173,4 +174,21 @@ export const FitStyleDescription = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     margin-top: 15px;
   }
+`
+
+export const SectionLink = styled.a`
+  text-align: center;
+  margin-top: 8px;
+  display: block;
+  font-size: 16px;
+  color: ${BLUE};
+`
+
+export const AssistanceDiv = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  text-align: center;
+  margin-top: 32px;
 `

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import GoogleFontLoader from 'react-google-font-loader'
+import AntdNotification from 'antd/lib/notification'
 import get from 'lodash/get'
 import find from 'lodash/find'
 import Menu from 'antd/lib/menu'
@@ -27,7 +28,8 @@ import {
   getTeamStoreStatus,
   getFonts,
   notificationsQuery,
-  notificationsSubscription
+  notificationsSubscription,
+  setAsRead
 } from './data'
 import * as adminLayoutActions from './api'
 import {
@@ -59,17 +61,21 @@ import {
   Content,
   LogoutButton,
   Advertisement,
-  MenuItem
+  MenuItem,
+  notificationStyles
 } from './styledComponents'
 import Helmet from 'react-helmet'
 
 const { SubMenu } = Menu
 
 interface NotificationsData extends QueryProps {
-  notificationsResult: {
-    notifications: NotificationType[]
-    fullCount: number
-  }
+  notifications: NotificationType[]
+  loading: boolean
+}
+
+interface NotificationsRead extends QueryProps {
+  notification: NotificationType
+  loading: boolean
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -90,6 +96,7 @@ interface Props extends RouteComponentProps<any> {
   setInstalledFontsAction: (fonts: any) => void
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
+  readNotification: (variables: {}) => Promise<NotificationsRead>
 }
 
 class AdminLayout extends React.Component<Props, {}> {
@@ -104,7 +111,9 @@ class AdminLayout extends React.Component<Props, {}> {
   async componentDidMount() {
     const { getFontsData, setInstalledFontsAction } = this.props
     const {
-      notificationsData
+      notificationsData,
+      history,
+      readNotification
     } = this.props
     const subscribeToMore = get(notificationsData, 'subscribeToMore')
     const isBrowser = typeof window !== 'undefined'
@@ -112,22 +121,31 @@ class AdminLayout extends React.Component<Props, {}> {
     if (isBrowser && subscribeToMore) {
       let user = JSON.parse(localStorage.getItem('user') as string)
       if (user) {
-        // tslint:disable
         subscribeToMore({
           document: notificationsSubscription,
           updateQuery: (prev: NotificationsData, { subscriptionData }: any) => {
             const newNotification = get(subscriptionData, 'data.newNotificationAdmin')
-            const currentNotifications = get(prev, 'notificationsResult.notifications', [])
-
-            const alreadyExist = !!find(currentNotifications, ['id', newNotification.id])
-            const asignation = !alreadyExist ? Object.assign({}, prev, {
-              notificationsResult: {
-                notifications: [newNotification, ...currentNotifications],
-                fullCount: prev.notificationsResult.fullCount,
-                __typename: 'NotificationsResult'
+            const alreadyExist = !!find(prev.notifications, ['id', newNotification.id])
+            if (!alreadyExist) {
+              const goToUrl = () => {
+                readNotification({
+                  variables: {
+                    id: newNotification.id,
+                    isAdmin: true
+                  }
+                })
+                history.push(`/${newNotification.url}`)
               }
+              AntdNotification.open({
+                message: newNotification.title,
+                description: newNotification.message,
+                onClick: goToUrl,
+                style: notificationStyles
+              })
+            }
+            return !alreadyExist ? Object.assign({}, prev, {
+              notifications: [newNotification, ...prev.notifications]
             }) : prev
-            return asignation
           }
         })
       }
@@ -226,7 +244,7 @@ class AdminLayout extends React.Component<Props, {}> {
       notificationsData
     } = this.props
 
-    const notifications = get(notificationsData, 'notificationsResult.notifications', [])
+    const notifications = get(notificationsData, 'notifications', [])
     const unread = notifications.filter((notification) => !notification.read).length
 
     if (!Object.keys(permissions).length) {
@@ -320,6 +338,7 @@ const LayoutEnhance = compose(
   getTeamStoreStatus,
   getFonts,
   notificationsQuery,
+  setAsRead,
   connect(
     mapStateToProps,
     {

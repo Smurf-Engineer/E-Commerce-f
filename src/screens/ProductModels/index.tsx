@@ -67,6 +67,7 @@ interface Props {
   modelRender: string
   data: any
   openSuccess: boolean
+  onTabClick: (selectedIndex: string) => void
   saveInfoAction: () => void
   resetReducer: () => void
   setLoadingAction: (loading: boolean) => void
@@ -332,8 +333,8 @@ export class ProductModels extends React.Component<Props, {}> {
                 {...{ product }}
               />
             ) : (
-              <Logo src={logo} />
-            )}
+                <Logo src={logo} />
+              )}
           </ModelContainer>
         </Layout>
         <FilesModal

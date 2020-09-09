@@ -27,25 +27,19 @@ export const getFonts = graphql(
 
 export const notificationsQuery = graphql(
   gql`
-    query getNotifications{
-      notificationsResult: getNotifications(
-        isAdmin: true
-        limit: 5
-        offset: 0
-      ) {
-        fullCount
-        notifications {
-          id
-          senderId: user_id
-          notificationType: notification_type
-          toAdmin: to_admin
-          read: user_read
-          date: created_at
-          title
-          message
-          user: sender_name
-          email: sender_email
-        }
+    query getNotifications {
+      notifications: getNotifications(isAdmin: true) {
+        id
+        senderId: user_id
+        notificationType: notification_type
+        toAdmin: to_admin
+        read: user_read
+        date: created_at
+        title
+        message
+        user: sender_name
+        email: sender_email
+        url
       }
     }
   `,
@@ -65,6 +59,21 @@ export  const notificationsSubscription = gql`
       message
       user: sender_name
       email: sender_email
+      url
     }
   }
 `
+
+export const setAsRead = graphql(
+  gql`
+    mutation setNotificationRead($id: Int!, $isAdmin: Boolean) {
+      notification: setNotificationRead(id: $id, isAdmin: $isAdmin) {
+        id
+        read: user_read
+      }
+    }
+  `,
+  {
+    name: 'readNotification'
+  }
+)

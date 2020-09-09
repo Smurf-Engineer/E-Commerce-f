@@ -3,26 +3,24 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { notificationsQuery, setAsRead } from './data'
+import { notificationsQuery, setAsRead, setAllAsRead } from './data'
 import Spin from 'antd/lib/spin'
+import AntdMessage from 'antd/lib/message'
 import { graphql, compose } from 'react-apollo'
-import get from 'lodash/get'
 import SimpleTable from '../SimpleTable'
 import { Container, NotificationsHeader, Latest, ScreenTitle, BorderlessButton, EmptyMessage } from './styledComponents'
-import Pagination from 'antd/lib/pagination/Pagination'
-import { Message, Header, Notification as NotificationType, QueryProps } from '../../types/common'
+import { Message, Header, Notification as NotificationType, QueryProps, MessagePayload } from '../../types/common'
 import { DATE } from '../../constants'
-import { NOTIFICATIONS_LIMIT } from './constants'
 
 interface Props {
   notificationsData: NotificationsData
   fromAdmin?: boolean
   history: any
-  currentPage: number
+  isMobile?: boolean
   formatMessage: (messageDescriptor: Message) => string
   readNotification: (variables: {}) => Promise<NotificationsRead>
   updateScreen?: () => void
-  changePage: (page: number) => void
+  readNAllotification: (variables: {}) => Promise<MessagePayload>
 }
 
 const NOTIFICATIONS = 'notifications'
@@ -30,8 +28,11 @@ const NOTIFICATIONS = 'notifications'
 const notificationsHeader: Header[] = [
   { message: '', width: 5, tabletWidth: 5, fieldName: '' },
   { message: 'notification', width: 45, tabletWidth: 45, fieldName: 'message' },
-  { message: 'date', width: 30, tabletWidth: 30, fieldName: 'date', dataType: DATE },
-  { message: 'source', width: 20, tabletWidth: 20, fieldName: 'notificationType' },
+  { message: 'date', width: 30, tabletWidth: 30, fieldName: 'date', dataType: DATE }
+]
+
+const sourceHeader: Header[] = [
+  { message: 'source', width: 20, tabletWidth: 20, fieldName: 'notificationType' }
 ]
 
 const optionalHeaders: Header[] = [
@@ -40,10 +41,7 @@ const optionalHeaders: Header[] = [
 ]
 
 interface NotificationsData extends QueryProps {
-  notificationsResult: {
-    fullCount: number
-    notifications: NotificationType[]
-  },
+  notifications: NotificationType[]
   loading: boolean
 }
 
@@ -57,15 +55,25 @@ class Notifications extends React.Component<Props, {}> {
     updating: false
   }
 
-  markAllAsRead = () => {
-    this.setState({ updating: true })
+  markAllAsRead = async () => {
+    const { readNAllotification, fromAdmin, notificationsData, formatMessage } = this.props
+    try {
+      this.setState({ updating: true })
+      await readNAllotification({ variables: { isAdmin: fromAdmin } })
+      await notificationsData.refetch()
+      this.setState({ updating: false })
+    } catch (e) {
+      this.setState({ updating: false })
+      AntdMessage.error(formatMessage(messages.readError))
+    }
   }
 
   handleOnPressNotification = async (notificationId: number, url: string) => {
-    const { history, readNotification, updateScreen } = this.props
+    const { history, readNotification, updateScreen, fromAdmin } = this.props
     await readNotification({
       variables: {
-        id: notificationId
+        id: notificationId,
+        isAdmin: fromAdmin
       }
     })
     history.push(`/${url}`)
@@ -77,14 +85,11 @@ class Notifications extends React.Component<Props, {}> {
     const { updating } = this.state
     const {
       formatMessage,
-      notificationsData: { notificationsResult, loading },
+      notificationsData: { notifications = [], loading },
       fromAdmin = false,
-      currentPage,
-      changePage
+      isMobile = false
     } = this.props
-
-    const notifications = get(notificationsResult, 'notifications', [])
-    const fullCount = get(notificationsResult, 'fullCount', 0)
+    const headers = !isMobile ? [...notificationsHeader, ...sourceHeader] : notificationsHeader
     return (
       <Container>
         {fromAdmin && <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>}
@@ -100,19 +105,12 @@ class Notifications extends React.Component<Props, {}> {
                 formatMessage
               }}
               data={notifications || []}
-              headerTitles={fromAdmin ? [...notificationsHeader, ...optionalHeaders] : notificationsHeader}
+              headerTitles={fromAdmin ? [...notificationsHeader, ...optionalHeaders] : headers}
               targetGroup={NOTIFICATIONS}
               canDelete={false}
               notifications={true}
               onPressRow={this.handleOnPressNotification}
-            />
-            <Pagination
-              current={currentPage}
-              pageSize={NOTIFICATIONS_LIMIT}
-              total={Number(fullCount)}
-              onChange={changePage}
-            />
-          </>}
+            /></>}
         {loading && <Spin />}
         {!loading && !notifications.length && <EmptyMessage>{formatMessage(messages.notFound)}</EmptyMessage>}
       </Container>
@@ -122,30 +120,19 @@ class Notifications extends React.Component<Props, {}> {
 
 interface OwnProps {
   fromAdmin?: boolean
-  currentPage?: number
-  customLimit?: number
 }
 
 const NotificationsEnhance = compose(
   graphql<NotificationsData>(notificationsQuery, {
     name: 'notificationsData',
-    options: ({
-      fromAdmin,
-      currentPage,
-      customLimit
-    }: OwnProps) => {
-      const limit = customLimit !== undefined ? customLimit : NOTIFICATIONS_LIMIT
-      const offset = currentPage ? (currentPage - 1) * limit : 0
-      return {
-        variables: {
-          isAdmin: fromAdmin,
-          limit,
-          offset
-        }
+    options: ({ fromAdmin }: OwnProps) => ({
+      variables: {
+        isAdmin: fromAdmin
       }
-    }
+    })
   }),
-  setAsRead
+  setAsRead,
+  setAllAsRead
 )(Notifications)
 
 export default NotificationsEnhance

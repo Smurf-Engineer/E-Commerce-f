@@ -16,7 +16,7 @@ import {
   setLoadingAction,
   changeDefault,
   selectModelAction,
-  uploadComplete
+  uploadComplete,
 } from './actions'
 import {
   OPEN_MODAL,

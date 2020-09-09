@@ -43,7 +43,7 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class ArtworkSpecs extends React.Component<Props, {}> {
-  componentWillMount() {
+  componentDidMount() {
     if (window && zenscroll) {
       zenscroll.toY(0, 0)
     }

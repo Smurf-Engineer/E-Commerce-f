@@ -2,15 +2,23 @@
  * Styled Components - Created by eduardoquintero on 21/01/20.
  */
 import styled from 'styled-components'
-import { GRAY_DARK } from '../../../theme/colors'
+import { GRAY_DARK, GRAY } from '../../../theme/colors'
+
+interface DivProps {
+  isAdmin?: boolean
+}
 
 export const MessageText = styled.div`
-  max-width: 500px;
+  max-width: ${({ isAdmin }: DivProps) => isAdmin ? '100%' : '500px'};
   color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-bottom: 20px;
+  margin-top: ${({ isAdmin }: DivProps) => isAdmin ? `20px` : 'none'};
+  padding-bottom: ${({ isAdmin }: DivProps) => isAdmin ? `12px` : 'none'};;
+  font-weight: ${({ isAdmin }: DivProps) => isAdmin ? `bold` : 'none'};;
+  border-bottom: ${({ isAdmin }: DivProps) => isAdmin ? `1px solid ${GRAY}` : 'none'};
 `
 
 export const Container = styled.div`

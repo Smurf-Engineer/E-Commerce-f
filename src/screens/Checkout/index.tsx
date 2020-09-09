@@ -53,7 +53,13 @@ import {
   StepIcon,
   CheckIcon,
   PlaceOrderLoading,
-  okButtonStyles
+  okButtonStyles,
+  ModalTitle,
+  InfoBody,
+  InfoText,
+  CheckList,
+  CheckLabel,
+  CheckGreen
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -220,7 +226,8 @@ const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
   state = {
-    stripe: null
+    stripe: null,
+    checked: false,
   }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -337,6 +344,7 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const { state: stateLocation } = location
+    const { checked } = this.state
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
 
     if (!stateLocation || !stateLocation.cart || !stateLocation.cart.length) {
@@ -400,6 +408,9 @@ class Checkout extends React.Component<Props, {}> {
 
     const simpleCart = this.getSimpleCart()
     const productsPrices = this.getProductsPrice()
+    if (!checked && paymentMethod === PaymentOptions.PAYPAL && showOrderButton && !isFixedTeamstore) {
+      this.confirmOrder(true)
+    }
 
     return (
       <Layout {...{ history, intl }}>
@@ -721,7 +732,6 @@ class Checkout extends React.Component<Props, {}> {
       variables: { countryCode: billingCountry },
       fetchPolicy: 'network-only'
     })
-
     const selectedCurrency = currentCurrency || config.defaultCurrency
 
     if (data && data.currency) {
@@ -734,12 +744,60 @@ class Checkout extends React.Component<Props, {}> {
           }),
           okButtonProps: { style: okButtonStyles },
           onOk: () => {
-            this.placeOrder(event, null, sca)
+            this.confirmOrder(false, sca)
           }
         })
       } else {
-        this.placeOrder(event, null, sca)
+        this.confirmOrder(false, sca)
       }
+    }
+  }
+  confirmOrder = (isPaypal?: boolean, sca?: boolean) => {
+    const {
+      location,
+      intl: { formatMessage }
+    } = this.props
+    const {
+      state: { cart }
+    } = location
+    const isFixedTeamstore = some(cart, 'isFixed')
+    if (isFixedTeamstore && !isPaypal) {
+      this.placeOrder(undefined, undefined, sca)
+    } else {
+      confirm({
+        title: (
+          <ModalTitle>
+            {formatMessage(messages.areYouSure)}
+          </ModalTitle>
+        ),
+        icon: ' ',
+        width: 642,
+        okText: formatMessage(messages.proceed),
+        okButtonProps: {
+          style: okButtonStyles
+        },
+        cancelText: formatMessage(messages.goBack),
+        onOk: () => {
+          if (isPaypal) {
+            this.setState({ checked: true })
+          } else {
+            this.placeOrder(undefined, undefined, sca)
+          }
+        },
+        content: (
+          <InfoBody>
+            <InfoText
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.infoOrder)
+              }} />
+            <CheckList>
+              <CheckLabel><CheckGreen type="check" />{formatMessage(messages.shippingBilling)}</CheckLabel>
+              <CheckLabel><CheckGreen type="check" />{formatMessage(messages.itemQuantities)}</CheckLabel>
+              <CheckLabel><CheckGreen type="check" />{formatMessage(messages.itemSizes)}</CheckLabel>
+            </CheckList>
+          </InfoBody>
+        )
+      })
     }
   }
   getSimpleCart = () => {

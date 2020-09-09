@@ -45,7 +45,7 @@ export const Advertisement = styled.div`
 `
 
 type MenuItemProps = {
-  notifications?: number
+  notifications?: string
 }
 
 export const MenuItem = styled(Item)`
@@ -69,3 +69,5 @@ export const MenuItem = styled(Item)`
     transform: none !important;
   }
 `
+
+export const notificationStyles = { cursor: 'pointer' }

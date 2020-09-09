@@ -16,8 +16,10 @@ interface Props {
   history?: any
   notifications?: Notification[]
   isMobile?: boolean
+  updating?: boolean
   formatMessage: (messageDescriptor: Message) => string
   onPressNotification?: (id: number, url: string) => void
+  onPressMarkAllAsRead: () => void
 }
 
 export class NotificationHeader extends React.PureComponent<Props, {}> {
@@ -26,7 +28,14 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
     history.push('/account?option=notifications')
   }
   render() {
-    const { isMobile, notifications = [], formatMessage, onPressNotification } = this.props
+    const {
+      isMobile,
+      notifications = [],
+      formatMessage,
+      onPressNotification,
+      onPressMarkAllAsRead,
+      updating
+    } = this.props
     const unreadTotal = notifications.length && notifications.filter((notification) => !notification.read).length
 
     const content = (
@@ -51,7 +60,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
         trigger="click"
         placement="bottom"
         onVisibleChange={this.handleOnVisibleChange}
-        title={<ListHeader {...{ formatMessage }} onMarkAll={null} />}
+        title={<ListHeader {...{ formatMessage, updating }} onMarkAll={onPressMarkAllAsRead} />}
         content={content}
       >
         <Container>

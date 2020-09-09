@@ -5,7 +5,9 @@ import * as React from 'react'
 import { InjectedIntl } from 'react-intl'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
+import AntdNotification from 'antd/lib/notification'
 import find from 'lodash/find'
+import AntdMessage from 'antd/lib/message'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -19,9 +21,10 @@ import {
   BottomRow,
   LogoIcon,
   TeamStoresMenuContainer,
-  TeamStoresMenuTitle
+  TeamStoresMenuTitle,
+  notificationStyles
 } from './styledComponents'
-import { regionsQuery, notificationsQuery, notificationsSubscription, setAsRead } from './data'
+import { regionsQuery, notificationsQuery, notificationsSubscription, setAsRead, setAllAsRead } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -34,7 +37,8 @@ import {
   RegionConfig,
   Region as RegionType,
   QueryProps,
-  Notification as NotificationType
+  Notification as NotificationType,
+  MessagePayload
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
@@ -78,6 +82,7 @@ interface Props {
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
   readNotification: (variables: {}) => Promise<NotificationsRead>
+  readAllotification: (variables: {}) => Promise<MessagePayload>
 }
 
 interface StateProps {
@@ -91,11 +96,12 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
   state = {
     openForgotPassword: false,
-    isMobile: false
+    isMobile: false,
+    updating: false
   }
   componentWillMount() {
     const {
-      notificationsData
+      notificationsData,
     } = this.props
     const isBrowser = typeof window !== 'undefined'
 
@@ -112,6 +118,15 @@ class MenuBar extends React.Component<Props, StateProps> {
           updateQuery: (prev: any, { subscriptionData }: any) => {
             const newNotification = get(subscriptionData, 'data.newNotification')
             const alreadyExist = find(prev.notifications, ['id', newNotification.id])
+            if (!alreadyExist) {
+              const goToUrl = () => this.handleOnPressNotification(newNotification.id, newNotification.url)
+              AntdNotification.open({
+                message: newNotification.title,
+                description: newNotification.message,
+                onClick: goToUrl,
+                style: notificationStyles
+              })
+            }
             return !alreadyExist ? Object.assign({}, prev, {
               notifications: [newNotification, ...prev.notifications]
             }) : prev
@@ -184,9 +199,21 @@ class MenuBar extends React.Component<Props, StateProps> {
     })
     window.location.href = `${config.baseUrl}${url}`
   }
+  markAllNotificationsAsRead = async () => {
+    const { readAllotification, notificationsData, intl: { formatMessage } } = this.props
+    try {
+      this.setState({ updating: true })
+      await readAllotification({ variables: {} })
+      await notificationsData.refetch()
+      this.setState({ updating: false })
+    } catch (e) {
+      this.setState({ updating: false })
+      AntdMessage.error(formatMessage(messages.readError))
+    }
+  }
 
   render() {
-    const { openForgotPassword, isMobile } = this.state
+    const { openForgotPassword, isMobile, updating } = this.state
     const {
       history,
       searchFunc,
@@ -303,9 +330,11 @@ class MenuBar extends React.Component<Props, StateProps> {
                             notifications,
                             history,
                             isMobile,
-                            formatMessage
+                            formatMessage,
+                            updating
                           }}
                           onPressNotification={this.handleOnPressNotification}
+                          onPressMarkAllAsRead={this.markAllNotificationsAsRead}
                         />
                         {loggedUser}
                       </TopRow>
@@ -333,6 +362,9 @@ class MenuBar extends React.Component<Props, StateProps> {
                     hide={hideTop}
                     loginButton={loggedUser}
                     regionButton={menuRegion}
+                    onPressNotification={this.handleOnPressNotification}
+                    onPressMarkAllAsRead={this.markAllNotificationsAsRead}
+                    updatingNotifications={updating}
                   />
                 )
               )
@@ -397,6 +429,7 @@ const MenuBarEnhanced = compose(
       }
     }
   }),
-  setAsRead
+  setAsRead,
+  setAllAsRead
 )(MenuBar)
 export default MenuBarEnhanced

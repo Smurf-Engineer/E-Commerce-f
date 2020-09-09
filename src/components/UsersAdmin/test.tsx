@@ -15,7 +15,10 @@ import {
   setNoteText,
   setDesignSelected,
   setSearchManager,
-  setSearchRep
+  setSearchRep,
+  onCloseInternal,
+  openInternal,
+  handleOnInternalChange
 } from './actions'
 
 import {
@@ -29,7 +32,10 @@ import {
   CHANGE_NOTE,
   SET_DESIGN,
   SET_SEARCH_MANAGER,
-  SET_SEARCH
+  SET_SEARCH,
+  CLOSE_INTERNAL,
+  OPEN_INTERNAL,
+  CHANGE_INTERNAL
 } from './constants'
 
 describe(' DiscountsAdmin Screen', () => {
@@ -58,6 +64,28 @@ describe(' DiscountsAdmin Screen', () => {
       expect(setSearchTextAction(searchText)).toEqual({
         type,
         searchText
+      })
+    })
+    it('handleOnInternalChange', () => {
+      const type = CHANGE_INTERNAL
+      const value = 'TEST'
+      expect(handleOnInternalChange(value)).toEqual({
+        type,
+        value
+      })
+    })
+    it('openInternal', () => {
+      const type = OPEN_INTERNAL
+      const id = 'TEST'
+      expect(openInternal(id)).toEqual({
+        type,
+        id
+      })
+    })
+    it('onCloseInternal', () => {
+      const type = CLOSE_INTERNAL
+      expect(onCloseInternal()).toEqual({
+        type
       })
     })
     it('setLoading', () => {
@@ -225,6 +253,80 @@ describe(' DiscountsAdmin Screen', () => {
           )
           const customSearchValue = searchTextState.get('searchText')
           expect(customSearchValue).toBe(value)
+        })
+      })
+    })
+    describe('CHANGE_INTERNAL', () => {
+      describe('Change internal value', () => {
+        it('Handles undefined value in netsuiteId', () => {
+          const customInitialValue = initialState.get('netsuiteId')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles value type in netsuiteId', () => {
+          const customInitialValue = initialState.get('netsuiteId')
+          expect(typeof customInitialValue).toBe('string')
+        })
+        it('Handles initial value in netsuiteId', () => {
+          const customInitialValue = initialState.get('netsuiteId')
+          expect(customInitialValue).toBe('')
+        })
+        it('Handles custom value in netsuiteId', () => {
+          const netsuiteId = 'TEST'
+          const internalState = usersAdminReducer(
+            initialState,
+            handleOnInternalChange(netsuiteId)
+          )
+          const customSearchValue = internalState.get('netsuiteId')
+          expect(customSearchValue).toBe(netsuiteId)
+        })
+      })
+    })
+    describe('OPEN_INTERNAL', () => {
+      describe('Open internal modal', () => {
+        it('Handles undefined value in openInternalModal', () => {
+          const customInitialValue = initialState.get('openInternalModal')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles value type in openInternalModal', () => {
+          const customInitialValue = initialState.get('openInternalModal')
+          expect(typeof customInitialValue).toBe('boolean')
+        })
+        it('Handles initial value in openInternalModal', () => {
+          const customInitialValue = initialState.get('openInternalModal')
+          expect(customInitialValue).toBeFalsy()
+        })
+        it('Handles custom value in openInternalModal', () => {
+          const netsuiteId = 'TEST'
+          const internalState = usersAdminReducer(
+            initialState,
+            openInternal(netsuiteId)
+          )
+          const customSearchValue = internalState.get('openInternalModal')
+          expect(customSearchValue).toBeTruthy()
+        })
+      })
+    })
+    describe('CLOSE_INTERNAL', () => {
+      describe('Close internal modal', () => {
+        it('Handles undefined value in openInternalModal', () => {
+          const customInitialValue = initialState.get('openInternalModal')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles value type in openInternalModal', () => {
+          const customInitialValue = initialState.get('openInternalModal')
+          expect(typeof customInitialValue).toBe('boolean')
+        })
+        it('Handles initial value in openInternalModal', () => {
+          const customInitialValue = initialState.get('openInternalModal')
+          expect(customInitialValue).toBeFalsy()
+        })
+        it('Handles custom value in openInternalModal', () => {
+          const internalState = usersAdminReducer(
+            initialState,
+            onCloseInternal()
+          )
+          const customSearchValue = internalState.get('openInternalModal')
+          expect(customSearchValue).toBeFalsy()
         })
       })
     })

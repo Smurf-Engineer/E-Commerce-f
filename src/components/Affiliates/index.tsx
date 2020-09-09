@@ -21,9 +21,8 @@ import List from './PayList'
 import messages from './messages'
 import { UserPermissions, SelectedPays } from '../../types/common'
 import { AFFILIATES, ADMIN_ROUTE, MAKE_PAYOUTS, IGNORE_STATUS_PAYOUTS } from '../AdminLayout/constants'
-import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import moment, { Moment } from 'moment'
-import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
+import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED, DATE_FORMAT } from '../../constants'
 import { ALL_STATUS } from './constants'
 
 const { Option } = Select
@@ -72,8 +71,8 @@ class Affiliates extends React.Component<Props, {}> {
 
   handleChangeCalendar = (dates: [Moment, Moment]) => {
     const { changeDateAction } = this.props
-    const startDate = moment(dates[0]).format(NOTE_FORMAT)
-    const endDate = moment(dates[1]).format(NOTE_FORMAT)
+    const startDate = moment(dates[0]).format(DATE_FORMAT)
+    const endDate = moment(dates[1]).format(DATE_FORMAT)
     changeDateAction(startDate, endDate)
   }
 
@@ -132,10 +131,10 @@ class Affiliates extends React.Component<Props, {}> {
     const isAccountant = makePayouts.view && makePayouts.edit
     const ignoreStatus = permissions[IGNORE_STATUS_PAYOUTS] || {}
     const overrideStatus = ignoreStatus.edit
-    const defaultStart = moment().startOf('month').format(NOTE_FORMAT)
-    const defaultEnd = moment().endOf('month').format(NOTE_FORMAT)
-    const start = moment(startDate || defaultStart, NOTE_FORMAT)
-    const end = moment(endDate || defaultEnd, NOTE_FORMAT)
+    const defaultStart = moment().startOf('month').format(DATE_FORMAT)
+    const defaultEnd = moment().endOf('month').format(DATE_FORMAT)
+    const start = moment(startDate || defaultStart, DATE_FORMAT)
+    const end = moment(endDate || defaultEnd, DATE_FORMAT)
     const rangeValue = [start, end]
     const selectOptions = statusList.map((currentStatus, index) => (
       <Option key={index} value={currentStatus !== ALL_STATUS ? currentStatus : ''}>
@@ -164,7 +163,7 @@ class Affiliates extends React.Component<Props, {}> {
             <RangePickerStyled
               value={rangeValue}
               placeholder={[formatMessage(messages.from), formatMessage(messages.to)]}
-              format={NOTE_FORMAT}
+              format={DATE_FORMAT}
               allowClear={false}
               onChange={this.handleChangeCalendar}
               size="large"

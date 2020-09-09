@@ -67,5 +67,20 @@ export default defineMessages({
   backToLayers: {
     id: 'components.UploadTab.backToLayers',
     defaultMessage: `Back to layers`
+  },
+  vectorCheck: {
+    id: 'components.UploadTab.vectorCheck',
+    defaultMessage: `VECTOR CHECK`
+  },
+  gotIt: {
+    id: 'components.UploadTab.gotIt',
+    defaultMessage: `Got it!`
+  },
+  vectorInfo: {
+    id: 'components.UploadTab.vectorInfo',
+    defaultMessage: `Please ensure your files are as simplified as possible. Adding raster images that are too large, 
+    or vector files that are too complex (with many anchor points or effects such as gradients or shadows), may lead to 
+    problems with saving your design. This could cause you to lose your work! We recommend saving your work often to 
+    avoid losing progress. If you are unsure, you can always use the ProAssist tool; We are happy to help!`
   }
 })
