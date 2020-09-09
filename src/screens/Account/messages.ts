@@ -80,5 +80,13 @@ export default defineMessages({
   resellerAbout: {
     id: 'screens.Account.resellerAbout',
     defaultMessage: 'About'
+  },
+  resellerPayouts: {
+    id: 'screens.Account.resellerPayouts',
+    defaultMessage: 'Payouts'
+  },
+  resellerOrders: {
+    id: 'screens.Account.resellerOrders',
+    defaultMessage: 'Payouts'
   }
 })

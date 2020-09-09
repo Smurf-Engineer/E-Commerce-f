@@ -34,7 +34,9 @@ import {
   AFFILIATES,
   AFFILIATES_ABOUT,
   RESELLER_ABOUT,
-  RESELLER
+  RESELLER,
+  RESELLER_PAYOUTS,
+  RESELLER_ORDERS
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -44,6 +46,8 @@ import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
 import ProfileSettings from '../../components/ProfileSettings'
 import ResellerAbout from '../../components/ResellerAbout'
+import ResellerOptions from '../../components/ResellerOptions'
+import ResellerOrders from '../../components/ResellerOrders'
 import AffiliateOptions from '../../components/AffiliateOptions'
 import AffiliateAbout from '../../components/AffiliateAbout'
 import AffiliatesOrders from '../../components/AffiliatesOrders'
@@ -257,6 +261,10 @@ export class Account extends React.Component<Props, {}> {
         return <MyTeamStores {...{ history, formatMessage }} />
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
+      case RESELLER_PAYOUTS:
+        return resellerEnabled && <ResellerOptions {...{ history, formatMessage }} />
+      case RESELLER_ORDERS:
+        return resellerEnabled && <ResellerOrders {...{ history, formatMessage }} />
       case AFFILIATES_ABOUT:
         return affiliateEnabled && <AffiliateAbout {...{ history, formatMessage }} />
       case AFFILIATES_PAYOUTS:

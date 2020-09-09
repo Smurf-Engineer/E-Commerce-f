@@ -61,6 +61,7 @@ import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 import roleCatalog from '../components/RoleList/reducer'
 import salesRep from '../components/SalesRep/reducer'
 import resellerOptions from '../components/ResellerOptions/reducer'
+import resellerOrders from '../components/ResellerOrders/reducer'
 import resellerAbout from '../components/ResellerAbout/reducer'
 import affiliates from '../components/Affiliates/reducer'
 import affiliatesAbout from '../components/AffiliateAbout/reducer'
@@ -100,6 +101,7 @@ export interface ReducersObject {
   subscriptionTest: any
   fitWidget: any
   designs: any
+  resellerOrders: any
   productDetail: any
   productForm: any
   product: any
@@ -218,6 +220,7 @@ const rootReducer = combineReducers({
   checkout,
   designerTool,
   shoppingCartPage,
+  resellerOrders,
   storeFront,
   resellerAbout,
   productModels,

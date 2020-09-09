@@ -11,6 +11,8 @@ export const PROFILE_SETTINGS = 'profileSettings'
 export const TEAMSTORES = 'myTeamStores'
 export const RESELLER = 'reseller'
 export const RESELLER_ABOUT = 'resellerAbout'
+export const RESELLER_PAYOUTS = 'resellerPayouts'
+export const RESELLER_ORDERS = 'resellerOrders'
 export const AFFILIATES = 'affiliate'
 export const AFFILIATES_ABOUT = 'affiliateAbout'
 export const AFFILIATES_ORDERS = 'affiliateOrders'
@@ -48,7 +50,7 @@ export const options = [
   },
   {
     title: RESELLER,
-    options: [RESELLER_ABOUT]
+    options: [RESELLER_ABOUT, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
     title: AFFILIATES,
