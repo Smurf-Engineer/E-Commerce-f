@@ -36,6 +36,8 @@ import {
   SALES_REP,
   AFFILIATES,
   AFFILIATES_PAYOUTS,
+  RESELLER_ORDERS,
+  RESELLER_PAYOUTS,
 } from './constants'
 import {
   SideBar,
@@ -127,6 +129,12 @@ class AdminLayout extends React.Component<Props, {}> {
         break
       case SALES_REP:
         history.push('/admin/reps')
+        break
+      case RESELLER_ORDERS:
+        history.push('/admin/reseller-orders')
+        break
+      case RESELLER_PAYOUTS:
+        history.push('/admin/reseller-payouts')
         break
       case AFFILIATES_PAYOUTS:
         history.push('/admin/affiliates-payouts')

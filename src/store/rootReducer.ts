@@ -63,6 +63,7 @@ import salesRep from '../components/SalesRep/reducer'
 import resellerOptions from '../components/ResellerOptions/reducer'
 import resellerOrders from '../components/ResellerOrders/reducer'
 import resellerAbout from '../components/ResellerAbout/reducer'
+import resellerPayouts from '../components/ResellerPayouts/reducer'
 import affiliates from '../components/Affiliates/reducer'
 import affiliatesAbout from '../components/AffiliateAbout/reducer'
 import affiliatesOrders from '../components/AffiliatesOrders/reducer'
@@ -116,6 +117,7 @@ export interface ReducersObject {
   productCatalogAdmin: any
   menuSports: any
   layout: any
+  resellerPayouts: any
   productModels: any
   menu: any
   forgot: any
@@ -219,6 +221,7 @@ const rootReducer = combineReducers({
   resellerOptions,
   checkout,
   designerTool,
+  resellerPayouts,
   shoppingCartPage,
   resellerOrders,
   storeFront,
