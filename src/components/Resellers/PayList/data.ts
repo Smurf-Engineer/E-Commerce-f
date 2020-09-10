@@ -53,8 +53,8 @@ export const getAffiliatesPayments = gql`
 `
 
 export const makePaymentsMutation = gql`
-  mutation makePayments($list: [String]) {
-    payments: makePayments(list: $list) {
+  mutation makeResellerPayments($list: [String]) {
+    payments: makeResellerPayments(list: $list) {
       id
       createdAt: created_at
       userId: user_id

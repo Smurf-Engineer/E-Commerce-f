@@ -26,7 +26,7 @@ export const profileSettingsQuery = gql`
 export const linkPaypalAccountMutation = graphql(
   gql`
     mutation linkPaypalAccount($code: String!) {
-      linkPaypalAccount(code: $code) {
+      linkPaypalAccount(code: $code, isReseller: true) {
         status
         paypalAccount: paypal_account
       }
