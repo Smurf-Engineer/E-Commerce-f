@@ -185,6 +185,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     }
 
     const { formatMessage } = intl
+    const userName = String(user.name).toUpperCase()
 
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
@@ -194,7 +195,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     ) : (
         <Logout
           {...{ history }}
-          title={formatMessage(messages.myAccount, { user: String(user.name).toUpperCase() })}
+          title={formatMessage(messages.myAccount, { user: userName })}
           logout={logoutAction}
           openMenu={this.openMenu}
           openedMenu={openMenu}
