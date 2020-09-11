@@ -328,7 +328,7 @@ class ResellerAbout extends React.Component<Props, StateProps> {
   sendRequest = async () => {
     const {
       setUploadingAction,
-      initialCountryCode,
+      initialCountryCode = '',
       successRequestAction,
       paypalCurrency: currency,
       file,
@@ -337,8 +337,8 @@ class ResellerAbout extends React.Component<Props, StateProps> {
     } = this.props
     try {
       if (
-        (currency === US_CURRENCY && initialCountryCode === US_COUNTRY) ||
-        (currency === CA_CURRENCY && initialCountryCode === CA_COUNTRY)
+        (currency === US_CURRENCY && initialCountryCode.toUpperCase() === US_COUNTRY) ||
+        (currency === CA_CURRENCY && initialCountryCode.toUpperCase() === CA_COUNTRY)
       ) {
         setUploadingAction(true)
         await sendResellerRequest({
