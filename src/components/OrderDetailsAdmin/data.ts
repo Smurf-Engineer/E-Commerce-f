@@ -147,6 +147,7 @@ export const getOrderQuery = gql`
       teamStoreId: teamstore_id
       teamStoreName: teamstore_name
       email
+      userId: user_id
       coupon: coupon_code
     }
   }
