@@ -145,7 +145,7 @@ export class ProDesign extends React.Component<Props, {}> {
           .saveProDesignThumbnail()
 
         const design = {
-          predyed_name: product.branding && predyed,
+          predyed_name: product.hasPredyed ? predyed : null,
           stitching: product.flatlock && stitching,
           stitching_name: product.flatlock && stitchingName,
           zipper_color: product.zipper && zipperColor,
