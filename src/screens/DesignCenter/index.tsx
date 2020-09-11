@@ -105,7 +105,7 @@ import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
-import { DesignTabs, BLACK } from './constants'
+import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
 import DesignCheckModal from '../../components/DesignCheckModal'
 import moment from 'moment'
@@ -853,7 +853,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
 
     const isUserAuthenticated = !!user
-    const predyedColor = (selectedPredyed !== BLACK && productConfig.hasPredyed) ? selectedPredyed : null
+    const predyedColor = productConfig.hasPredyed ? selectedPredyed : null
     return (
       <Layout
         {...{ history, intl }}

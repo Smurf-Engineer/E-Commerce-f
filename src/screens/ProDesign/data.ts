@@ -8,6 +8,7 @@ export const GetProductsByIdQuery = gql`
       code
       modelSize: model_size
       mpn
+      hasPredyed: has_predyed
       flatlock
       branding
       bibBrace {
