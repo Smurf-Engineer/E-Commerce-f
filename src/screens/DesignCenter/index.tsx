@@ -853,7 +853,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
 
     const isUserAuthenticated = !!user
-    const predyedColor = productConfig.hasPredyed ? selectedPredyed : null
+    const predyedColor = productConfig && productConfig.hasPredyed ? selectedPredyed : null
     return (
       <Layout
         {...{ history, intl }}
