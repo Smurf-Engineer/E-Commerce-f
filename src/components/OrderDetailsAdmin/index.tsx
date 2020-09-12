@@ -67,6 +67,11 @@ interface Props {
 }
 
 export class OrderDetailsAdmin extends React.Component<Props, {}> {
+  goToUserDetails = () => {
+    const { history, data } = this.props
+    const userId = get(data, 'orderQuery.userId')
+    history.push(`/admin/users/${userId}`)
+  }
   render() {
     const {
       data,
@@ -266,7 +271,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 <Info>
                   {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                 </Info>
-                <Info>{email}</Info>
+                <Info className="link" onClick={this.goToUserDetails}>{email}</Info>
               </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>
