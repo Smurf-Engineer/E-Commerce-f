@@ -69,7 +69,6 @@ interface Props {
 export class OrderDetailsAdmin extends React.Component<Props, {}> {
   goToUserDetails = () => {
     const { history, data } = this.props
-    console.log(data)
     const userId = get(data, 'orderQuery.userId')
     history.push(`/admin/users/${userId}`)
   }
