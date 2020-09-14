@@ -2,10 +2,14 @@
  * ItemOrder Component - Created by miguelcanobbio on 13/07/18.
  */
 import * as React from 'react'
+import Dropdown from 'antd/lib/dropdown'
+import Menu from 'antd/lib/menu'
 import { Container, Cell, WarningIcon, StyledSelect } from './styledComponents'
 import Select from 'antd/lib/select'
+import messages from '../messages'
 import upperFirst from 'lodash/upperFirst'
 import { PAID_STATUS, PENDING_APPROVAL, PURGED } from '../../../constants'
+import { Message } from '../../../types/common'
 
 interface Props {
   date: string
@@ -25,6 +29,8 @@ interface Props {
   estimatedDate?: string
   onOrderClick: (shortId: string) => void
   handleOnUpdateStatus: (status: string, orderId: string) => void
+  formatMessage: (messageDescriptor: Message, params?: any) => string
+  sendOrder: (orderId: string) => void
 }
 
 const Option = Select.Option
@@ -46,7 +52,9 @@ const ItemOrder = ({
   lastName,
   source,
   cutoffDate,
-  handleOnUpdateStatus
+  handleOnUpdateStatus,
+  formatMessage,
+  sendOrder
 }: Props) => {
   const handleOnClick = () => {
     onOrderClick(shortId)
@@ -59,42 +67,55 @@ const ItemOrder = ({
   const onSelectStatus = (selectedStatus: string) =>
     handleOnUpdateStatus(selectedStatus, shortId)
 
+  const onSendOrder = () => sendOrder(shortId)
+
   const selectOptions = options.map((option, index) => (
     <Option key={index} value={option}>
       {option}
     </Option>
   ))
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" onClick={onSendOrder}>
+        {formatMessage(messages.sendToNetsuite, { orderId: shortId })}
+      </Menu.Item>
+    </Menu>
+  )
   return (
-    <Container onClick={handleOnClick}>
-      <Cell>{shortId}</Cell>
-      <Cell>{source}</Cell>
-      <Cell>
-        {total} {currency}
-      </Cell>
-      <Cell>{date}</Cell>
-      <Cell>{cutoffDate}</Cell>
-      <Cell>{estimatedDate}</Cell>
-      <Cell>JV2-{clientId}</Cell>
-      <Cell>{`${firstName} ${lastName}`}</Cell>
-      <Cell textAlign={'center'}>
-        {pendingCheck && <WarningIcon type="warning" theme="filled" />}
-      </Cell>
-      <Cell
-        textAlign={'right'}
-        className={statusError ? 'error' : ''}
-        onClick={stopPropagation}
-      >
-        {upperFirst(status)}
-        <StyledSelect
-          disabled={!canEdit}
-          onChange={onSelectStatus}
-          showSearch={false}
-          value={status}
+    <Dropdown
+      overlay={menu} trigger={['contextMenu']}>
+      <Container onClick={handleOnClick}>
+        <Cell>{shortId}</Cell>
+        <Cell>{source}</Cell>
+        <Cell>
+          {total} {currency}
+        </Cell>
+        <Cell>{date}</Cell>
+        <Cell>{cutoffDate}</Cell>
+        <Cell>{estimatedDate}</Cell>
+        <Cell>JV2-{clientId}</Cell>
+        <Cell>{`${firstName} ${lastName}`}</Cell>
+        <Cell textAlign={'center'}>
+          {pendingCheck && <WarningIcon type="warning" theme="filled" />}
+        </Cell>
+        <Cell
+          textAlign={'right'}
+          className={statusError ? 'error' : ''}
+          onClick={stopPropagation}
         >
-          {selectOptions}
-        </StyledSelect>
-      </Cell>
-    </Container>
+          {upperFirst(status)}
+          <StyledSelect
+            disabled={!canEdit}
+            onChange={onSelectStatus}
+            showSearch={false}
+            value={status}
+          >
+            {selectOptions}
+          </StyledSelect>
+        </Cell>
+      </Container>
+    </Dropdown>
   )
 }
 
