@@ -355,6 +355,7 @@ export type LockerTableType = {
   totalOrders: number
   visible: boolean
   priceRange?: Currency[]
+  resellerRange?: Currency[]
 }
 
 export type ProductTableType = {

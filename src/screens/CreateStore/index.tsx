@@ -28,6 +28,7 @@ import StoreForm from '../../components/StoreForm'
 import {
   createStoreMutation,
   GetTeamStoreQuery,
+  profileSettingsQuery,
   updateStoreMutation
 } from './data'
 import {
@@ -37,7 +38,7 @@ import {
   LockerTableType,
   DesignType,
   SelectedDesignObjectType,
-  UserType
+  UserType, IProfileSettings
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import { cutoffDateSettingsQuery } from './data'
@@ -82,11 +83,16 @@ import {
   ON_DEMAND_TEAMSTORE,
   DEFAULT_CUTOFF_DAYS
 } from './constants'
+import { APPROVED } from '../../constants'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
+}
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
 }
 
 interface CutoffData extends QueryProps {
@@ -126,7 +132,9 @@ interface Props extends RouteComponentProps<any> {
   cutoffSettings: CutoffData
   datesEdited: boolean
   datesEditedTemporal: boolean
+  profileData: ProfileData
   // Redux actions
+  setPriceAction: (value: number, currency: number, itemIndex: number, abbreviation: string) => void
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
   changeBulletinAction: (value: string) => void
@@ -377,9 +385,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
     const items = itemsSelected.map((item) => {
+      const resellerRange = item.resellerRange ? item.resellerRange.map(
+        ({ price, abbreviation }) =>
+          ({ price, abbreviation })
+      ) : []
       return {
         design_id: get(item, 'design.shortId'),
-        visible: get(item, 'visible')
+        visible: get(item, 'visible'),
+        reseller_range: resellerRange
       }
     })
 
@@ -567,6 +580,12 @@ export class CreateStore extends React.Component<Props, StateProps> {
     }
   }
 
+  handleOnSetPrice = (value: number, currency: number, itemIndex: number) => {
+    const { setPriceAction, profileData } = this.props
+    const abbreviation = get(profileData, 'profileData.reseller.currency', {})
+    setPriceAction(value, currency, itemIndex, abbreviation)
+  }
+
   render() {
     const { imagePreviewUrl, hasError } = this.state
     const {
@@ -599,6 +618,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       currentPage,
       limit,
       offset,
+      profileData,
       onUnselectItemAction,
       user,
       cutoffSettings,
@@ -622,13 +642,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
       ) : (
           <Dragger onSelectImage={this.beforeUpload} />
         )
-
+    const reseller = get(profileData, 'profileData.reseller', {})
+    const { comission: resellerComission, status: resellerStatus, currency: resellerCurrency } = reseller
     const tableItems = this.getCheckedItems(items)
-
     const storeShortId = this.getStoreId()
     const isOnDemand = this.isOnDemand()
     const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
-
+    const isReseller = resellerStatus === APPROVED && isOnDemand
     return (
       <Layout {...{ history, intl }}>
         {loading ? (
@@ -728,13 +748,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 {formatMessage(messages.addItem)}
               </AddItem>
               <LockerTable
-                {...{ formatMessage, teamSizeRange, currentCurrency }}
+                {...{ formatMessage, teamSizeRange, currentCurrency, resellerComission, isReseller }}
                 items={items}
                 hideQuickView={true}
                 isFixed={!isOnDemand}
+                currentCurrency={isReseller ? resellerCurrency : currentCurrency}
                 onPressDelete={this.handleOnDeleteItem}
                 onPressQuickView={this.handleOnPressQuickView}
                 onPressVisible={this.handleOnPressVisible}
+                handleOnSetPrice={this.handleOnSetPrice}
                 onMoveRow={moveRowAction}
               />
               <Row>
@@ -876,6 +898,12 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
+  graphql(profileSettingsQuery, {
+    name: 'profileData',
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
   graphql(cutoffDateSettingsQuery, {
     name: 'cutoffSettings',
     options: {

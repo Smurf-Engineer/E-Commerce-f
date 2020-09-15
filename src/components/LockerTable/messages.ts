@@ -39,6 +39,22 @@ export default defineMessages({
     id: 'components.LockerTable.fixedPrice',
     defaultMessage: 'Team Price'
   },
+  teamPrice: {
+    id: 'components.LockerTable.teamPrice',
+    defaultMessage: '2-5pc Price'
+  },
+  purchasePrice: {
+    id: 'components.LockerTable.purchasePrice',
+    defaultMessage: 'Purchase Price'
+  },
+  yourPrice: {
+    id: 'components.LockerTable.yourPrice',
+    defaultMessage: 'Your List Price'
+  },
+  profit: {
+    id: 'components.LockerTable.profit',
+    defaultMessage: 'Your Profit'
+  },
   regularPrice: {
     id: 'components.LockerTable.regularPrice',
     defaultMessage: 'Regular Price'

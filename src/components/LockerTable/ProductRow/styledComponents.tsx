@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 12/04/18.
  */
 import styled from 'styled-components'
+import Input from 'antd/lib/input'
 
 interface TitleProps {
   align: string
@@ -18,6 +19,11 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #fff;
+`
+
+export const StyledInput = styled(Input)`
+  border-radius: 0;
+  width: 55px;
 `
 
 export const Title = styled.div`
