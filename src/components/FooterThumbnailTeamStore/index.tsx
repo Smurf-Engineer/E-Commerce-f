@@ -32,6 +32,9 @@ interface Props {
   code: string
   targetRange?: Filter
   onDemandMode?: boolean
+  purchasePrice?: number
+  isResellerStore?: boolean
+  isResellerOwner?: boolean
   targetPrice: number | string
   currentPrice: number | string
   priceRange?: PriceRange[]
@@ -47,6 +50,9 @@ const FooterThumbnailTeamStore = ({
   onDemandMode,
   code,
   targetPrice,
+  purchasePrice,
+  isResellerStore,
+  isResellerOwner,
   currentPrice,
   priceRange = [],
   currentRangeAttributes,
@@ -60,7 +66,7 @@ const FooterThumbnailTeamStore = ({
     if (relativePercentParam !== MAX_PERCENT) {
       return Math.round(
         (relativePercentParam * PERCENT_BY_SECTION) / MAX_PERCENT +
-          currentRangeAttributes.index * PERCENT_BY_SECTION
+        currentRangeAttributes.index * PERCENT_BY_SECTION
       )
     } else {
       return (
@@ -86,15 +92,20 @@ const FooterThumbnailTeamStore = ({
       <BottomPrices>
         <PricesContainer>
           <Label>
-            <FormattedMessage {...messages.regularPrice} />
+            <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
           </Label>
-          <PriceLabel>{targetPrice}</PriceLabel>
+          <PriceLabel>{isResellerStore && isResellerOwner ? purchasePrice : targetPrice}</PriceLabel>
         </PricesContainer>
         <PricesContainer>
           <Label>
-            <FormattedMessage
-              {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
-            />
+            {isResellerStore && isResellerOwner ?
+              <FormattedMessage
+                {...messages.listPrice}
+              /> :
+              <FormattedMessage
+                {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
+              />
+            }
           </Label>
           <PriceLabel color={BLUE}>{currentPrice}</PriceLabel>
         </PricesContainer>

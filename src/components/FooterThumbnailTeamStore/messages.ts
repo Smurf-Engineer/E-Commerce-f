@@ -13,6 +13,14 @@ export default defineMessages({
     id: 'components.FooterThumbnailTeamStore.regularPrice',
     defaultMessage: 'Regular price'
   },
+  purchasePrice: {
+    id: 'components.FooterThumbnailTeamStore.purchasePrice',
+    defaultMessage: 'Purchase price'
+  },
+  listPrice: {
+    id: 'components.FooterThumbnailTeamStore.listPrice',
+    defaultMessage: 'List price'
+  },
   currentPrice: {
     id: 'components.FooterThumbnailTeamStore.currentPrice',
     defaultMessage: 'Current price'
