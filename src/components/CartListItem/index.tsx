@@ -263,7 +263,6 @@ export class CartListItem extends React.Component<Props, {}> {
       designId,
       designName,
       designImage,
-      totalOrder = 0,
       designCode,
       fixedPrices = [],
       teamStoreName = '',
@@ -294,11 +293,13 @@ export class CartListItem extends React.Component<Props, {}> {
       'price',
       0
     )
-
+    /* let priceRange =
+      this.getPriceRange(currencyPrices, isTeamStore && isFixed ? quantitySum + totalOrder : quantitySum + 0) */
     let priceRange =
       !isTeamStore || fixedPrices.length || (isTeamStore && isFixed)
-        ? this.getPriceRange(currencyPrices, quantitySum + totalOrder)
+        ? this.getPriceRange(currencyPrices, quantitySum)
         : this.getPriceRangeByQuantity('2-5')
+    // let priceRange = this.getPriceRange(currencyPrices, quantitySum + totalOrder)
 
     priceRange =
       priceRange && priceRange.price === 0

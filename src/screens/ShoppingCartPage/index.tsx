@@ -55,7 +55,7 @@ import {
 import Modal from 'antd/lib/modal/Modal'
 import Checkbox from 'antd/lib/checkbox'
 import closeIcon from '../../assets/cancel-button.svg'
-import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import { getShoppingCartData, getPriceRangeByItem, getItemQuantity } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
 
@@ -384,9 +384,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const {
       total,
       totalWithoutDiscount,
-      priceRangeToApply,
       nameOfFirstProduct,
-      numberOfProducts
+      numberOfProducts,
+      moreThanOneItem
     } = shoppingCartData
 
     let symbol = '$'
@@ -410,7 +410,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       })
 
       symbol = currencyPrices[0].shortName
-      const teamStoreRange = cartItem.teamStoreId && cartItem.isFixed ? 0 : 1
+      const itemRange = getItemQuantity(cartItem) === 1 && moreThanOneItem ? 1 : getPriceRangeByItem(cartItem)
+      const priceRangeToApply = cartItem.isFixed ? 0 : itemRange
+      // const teamStoreRange = cartItem.teamStoreId && cartItem.isFixed ? 0 : 1
       return (
         <CartItem
           currentCurrency={currentCurrency || config.defaultCurrency}
@@ -426,11 +428,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
               : cartItem.product.shortDescription
           }
-          price={
-            currencyPrices[
-              cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
-            ]
-          }
+          price={priceRangeToApply}
           image={
             cartItem.designId
               ? cartItem.designImage || ''
@@ -488,29 +486,29 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               </EmptyItems>
             </EmptyContainer>
           ) : (
-            <Container>
-              <SideBar>
-                <Ordersummary
-                  subtotal={total}
-                  currencySymbol={symbol}
-                  youSaved={totalWithoutDiscount - total}
-                  {...{ formatMessage, totalWithoutDiscount }}
-                />
-                <ButtonWrapper disabled={!activeCheckout}>
-                  <CheckoutButton
-                    disabledButton={!activeCheckout}
-                    type="primary"
-                    onClick={onCheckoutClick}
-                  >
-                    <FormattedMessage {...messages.checkout} />
-                  </CheckoutButton>
-                </ButtonWrapper>
-              </SideBar>
-              <Content>
-                <CartList>{renderList}</CartList>
-              </Content>
-            </Container>
-          )}
+              <Container>
+                <SideBar>
+                  <Ordersummary
+                    subtotal={total}
+                    currencySymbol={symbol}
+                    youSaved={totalWithoutDiscount - total}
+                    {...{ formatMessage, totalWithoutDiscount }}
+                  />
+                  <ButtonWrapper disabled={!activeCheckout}>
+                    <CheckoutButton
+                      disabledButton={!activeCheckout}
+                      type="primary"
+                      onClick={onCheckoutClick}
+                    >
+                      <FormattedMessage {...messages.checkout} />
+                    </CheckoutButton>
+                  </ButtonWrapper>
+                </SideBar>
+                <Content>
+                  <CartList>{renderList}</CartList>
+                </Content>
+              </Container>
+            )}
           <Modal
             visible={showDeleteLastItemModal}
             title={

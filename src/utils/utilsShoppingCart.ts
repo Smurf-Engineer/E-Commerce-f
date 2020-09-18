@@ -17,6 +17,7 @@ export const getShoppingCartData = (
   let numberOfProducts = 0
   let nameOfFirstProduct = ''
   let symbol = '$'
+  let moreThanOneItem = false
   if (shoppingCart) {
     shoppingCart.map((cartItem, index) => {
       const quantities = cartItem.itemDetails.map(itemDetail => {
@@ -58,6 +59,9 @@ export const getShoppingCartData = (
       totalWithoutDiscount =
         totalWithoutDiscount + quantitySum * currencyPrices[0].price
     })
+    if (shoppingCart.length > 1) {
+      moreThanOneItem = true
+    }
     if (justOneOfEveryItem && shoppingCart.length) {
       priceRangeToApply = getPriceRangeToApply(shoppingCart.length)
     } else {
@@ -71,13 +75,13 @@ export const getShoppingCartData = (
         return itemDetail.quantity
       })
       const quantitySum = quantities.reduce((a, b) => a + b, 0)
-      let teamStoreRange = 1
+      // let teamStoreRange = 1
       if (cartItem.fixedPrices && cartItem.fixedPrices.length) {
-        teamStoreRange = 0
+        // teamStoreRange = 0
       } else if (cartItem.isFixed && cartItem.teamStoreItem) {
-        const totalOrder = cartItem.totalOrder + quantitySum
-        const rangeTeam = getPriceRangeToApply(totalOrder)
-        teamStoreRange = rangeTeam || 1
+        // const totalOrder = cartItem.totalOrder + quantitySum
+        // const rangeTeam = getPriceRangeToApply(totalOrder)
+        // teamStoreRange = rangeTeam || 1
       }
       const productPriceRanges = get(
         cartItem,
@@ -97,20 +101,23 @@ export const getShoppingCartData = (
         priceRangeRetails = numberOfProducts > 1 ? 1 : 0
         priceRange = currencyPrices[priceRangeRetails]
       } else {
+        const itemRange = getItemQuantity(cartItem) === 1 && moreThanOneItem ? 2 : quantitySum
         priceRange =
+          getPriceRange(currencyPrices, cartItem.isFixed && cartItem.teamStoreItem ? cartItem.totalOrder : itemRange)
+
+        /* priceRange =
           priceRangeToApply !== 0 || cartItem.teamStoreId
             ? currencyPrices[
                 !cartItem.teamStoreId ? priceRangeToApply : teamStoreRange
               ]
-            : getPriceRange(currencyPrices, quantitySum)
+            : getPriceRange(currencyPrices, quantitySum) */
       }
-      priceRange =
+      /* priceRange =
         (priceRange && priceRange.price === 0) || cartItem.teamStoreId
           ? currencyPrices[
               !cartItem.teamStoreId ? currencyPrices.length - 1 : teamStoreRange
             ]
-          : priceRange
-
+          : priceRange */
       // increase the total
       totalSum = totalSum + priceRange.price * quantitySum
     })
@@ -123,7 +130,8 @@ export const getShoppingCartData = (
     nameOfFirstProduct,
     show25PercentMessage,
     numberOfProducts,
-    symbol
+    symbol,
+    moreThanOneItem
   }
 }
 
@@ -178,4 +186,16 @@ export const designExistsOnCart = (designId: string) => {
   } catch (e) {
     return false
   }
+}
+
+export const getPriceRangeByItem = (cartItem: CartItems) => {
+  const totalQuantity = getItemQuantity(cartItem)
+  return getPriceRangeToApply(totalQuantity)
+}
+
+export const getItemQuantity = (cartItem: CartItems) => {
+  const quantities = cartItem.itemDetails.map(itemDetail => {
+    return itemDetail.quantity
+  })
+  return quantities.reduce((a, b) => a + b, 0)
 }
