@@ -1968,6 +1968,8 @@
   "components.DesignLabAdmin.currentDeliveryDate": "Delivery days",
   "components.DesignLabAdmin.businessDays": "Business days",
   "components.DesignLabAdmin.update": "Update",
+  "components.DesignLabAdmin.resellerExchange": "Reseller Exchange Rate",
+  "components.DesignLabAdmin.save": "Save",
   "components.DesignLabAdmin.videoTutorial": "Design Lab Video Tutorial",
   "components.DesignLabAdmin.tutorialPlaylist": "Tutorial playlist",
   "components.DesignLabAdmin.cutOffDays": "Batch Order Store",
