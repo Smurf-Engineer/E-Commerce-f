@@ -8,7 +8,7 @@ import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu from 'antd/lib/menu'
 import messages from './messages'
-import { GetProductsQuery } from './data'
+import { GetProductsQuery, profileSettingsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
 import FooterThumbnailLocker from '../FooterThumbnailLocker'
 import AddToCartButton from '../AddToCartButton'
@@ -16,7 +16,7 @@ import {
   QueryProps,
   ProductType,
   DesignType,
-  ClickParam
+  ClickParam, IProfileSettings, Product
 } from '../../types/common'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import {
@@ -40,6 +40,12 @@ import {
   CopyButton
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
+import get from 'lodash/get'
+import { APPROVED } from '../../constants'
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface Data extends QueryProps {
   products: ProductType
@@ -59,6 +65,7 @@ interface Props {
   limit?: number
   designs?: DesignType[]
   previewOnly?: boolean
+  profileData: ProfileData
   makeCopy: (shortId: string) => void
   setDesignSelected: (shortId: string) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
@@ -80,6 +87,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       limit,
       handleChangePage,
       handleOrderBy,
+      profileData,
       data,
       designs,
       onPressPrivate = () => { },
@@ -97,12 +105,14 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
+    const { status, comission: resellerComission } = get(profileData, 'profileData.reseller', {})
+    const isReseller = status === APPROVED
     if (designs) {
       thumbnailsList = designs.map(
         (
           {
             name,
-            product,
+            product: productData,
             image,
             createdAt,
             shortId,
@@ -114,6 +124,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           },
           index
         ) => {
+          let product = productData
+          if (isReseller) {
+            product = this.calculateReseller(product, resellerComission)
+          }
           const addToCartButton = product.active || product.onlyProDesign ? (
             <AddToCartButton
               label={formatMessage(messages.addToCart)}
@@ -339,6 +353,17 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     )
   }
 
+  calculateReseller = (productData: Product, comission = 0) => {
+    let product = productData
+    const originalPriceRange = get(productData, 'priceRange', [])
+    const purchasePrices = originalPriceRange.map((priceItem) => {
+      const price = Number((priceItem.price * (1 - (comission / 100))).toFixed(2))
+      return { ...priceItem, price }
+    })
+    product = { ...product, priceRange: purchasePrices }
+    return product
+  }
+
   gotoDesignCenter = (id: string) => {
     const { history } = this.props
     history.push(`/design-center?id=${id}`)
@@ -396,6 +421,12 @@ type OwnProps = {
 }
 
 const ThumbnailsListEnhance = compose(
+  graphql(profileSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'profileData'
+  }),
   graphql<Data>(GetProductsQuery, {
     options: ({
       contentTile,

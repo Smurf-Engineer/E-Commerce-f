@@ -32,7 +32,6 @@ interface Props {
   code: string
   targetRange?: Filter
   onDemandMode?: boolean
-  purchasePrice?: number
   isResellerStore?: boolean
   isResellerOwner?: boolean
   targetPrice: number | string
@@ -50,7 +49,6 @@ const FooterThumbnailTeamStore = ({
   onDemandMode,
   code,
   targetPrice,
-  purchasePrice,
   isResellerStore,
   isResellerOwner,
   currentPrice,
@@ -94,7 +92,7 @@ const FooterThumbnailTeamStore = ({
           <Label>
             <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
           </Label>
-          <PriceLabel>{isResellerStore && isResellerOwner ? purchasePrice : targetPrice}</PriceLabel>
+          <PriceLabel>{targetPrice}</PriceLabel>
         </PricesContainer>
         <PricesContainer>
           <Label>

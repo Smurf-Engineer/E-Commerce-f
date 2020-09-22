@@ -84,6 +84,7 @@ import {
   DEFAULT_CUTOFF_DAYS
 } from './constants'
 import { APPROVED } from '../../constants'
+import find from 'lodash/find'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
@@ -357,6 +358,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       name,
       startDate,
       endDate,
+      profileData,
       privateStore,
       bulletin,
       passCode,
@@ -381,18 +383,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
     if (!validForm) {
       return
     }
-
+    const resellerCurrency = get(profileData, 'profileData.reseller.currency', '')
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
     const items = itemsSelected.map((item) => {
-      const resellerRange = item.resellerRange ? item.resellerRange.map(
-        ({ price, abbreviation }) =>
-          ({ price, abbreviation })
-      ) : []
+      const resellerPrice = get(find((item.resellerRange || []), ['abbreviation', resellerCurrency]), 'price', 0)
       return {
         design_id: get(item, 'design.shortId'),
         visible: get(item, 'visible'),
-        reseller_range: resellerRange
+        reseller_price: resellerPrice
       }
     })
 
