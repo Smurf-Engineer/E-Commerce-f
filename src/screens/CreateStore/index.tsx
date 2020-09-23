@@ -383,11 +383,20 @@ export class CreateStore extends React.Component<Props, StateProps> {
     if (!validForm) {
       return
     }
-    const resellerCurrency = get(profileData, 'profileData.reseller.currency', '')
+    const reseller = get(profileData, 'profileData.reseller', {})
+    const { currency: resellerCurrency, comission = 0, status: resellerStatus } = reseller || {}
+    const isReseller = resellerStatus === APPROVED && onDemand
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
     const items = itemsSelected.map((item) => {
-      const resellerPrice = get(find((item.resellerRange || []), ['abbreviation', resellerCurrency]), 'price', 0)
+      let resellerPrice = 0
+      if (isReseller) {
+        const priceSelected = get(find((item.resellerRange || []), ['abbreviation', resellerCurrency]), 'price', 0)
+        const productPriceRange = get(item, 'design.product.priceRange', [])
+        const normalPrice = find(productPriceRange, { quantity: '2-5', abbreviation: resellerCurrency })
+        const purchasePrice = normalPrice ? normalPrice.price * (1 - (comission / 100)) : 0
+        resellerPrice = priceSelected < purchasePrice ? purchasePrice : priceSelected
+      }
       return {
         design_id: get(item, 'design.shortId'),
         visible: get(item, 'visible'),
