@@ -25,7 +25,7 @@ import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
 import CartListItem from '../../components/CartListItem'
 import iconPaypal from '../../assets/Paypal.svg'
-import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import { getShoppingCartData, getPriceRangeByItem, getItemQuantity } from '../../utils/utilsShoppingCart'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 
 interface Props {
@@ -81,7 +81,7 @@ class Review extends React.PureComponent<Props, {}> {
     }
 
     const shoppingCartData = getShoppingCartData(cart, currency)
-    const { priceRangeToApply } = shoppingCartData
+    const { moreThanOneItem } = shoppingCartData
 
     const renderList = cart
       ? cart.map((cartItem, index) => {
@@ -97,8 +97,14 @@ class Review extends React.PureComponent<Props, {}> {
         } = cartItem
         const rangeToUse =
           fixedPrices && fixedPrices.length ? fixedPrices : priceRange
+
         const currencyPrices = filter(rangeToUse, { abbreviation: currency })
-        const teamStoreRange = teamStoreId && isFixed ? 0 : 1
+
+        const itemQuantity = getItemQuantity(cartItem)
+        const itemRange = itemQuantity === 1 && moreThanOneItem ? 1 : getPriceRangeByItem(cartItem)
+        const onDemandRuleItem = teamStoreId && itemQuantity === 1 ? 2 : itemRange
+        const priceRangeToApply = currencyPrices[isFixed ? 0 : onDemandRuleItem]
+
         const itemImage = designId ? designImage || '' : images[0].front
         const itemTitle = designId ? designName || '' : name
         const itemDescription = designId
@@ -112,9 +118,7 @@ class Review extends React.PureComponent<Props, {}> {
             title={itemTitle}
             image={itemImage}
             description={itemDescription}
-            price={
-              currencyPrices[teamStoreId ? teamStoreRange : priceRangeToApply]
-            }
+            price={priceRangeToApply}
             itemIndex={index}
             onlyRead={true}
             currencySymbol={currencyPrices[0].shortName}

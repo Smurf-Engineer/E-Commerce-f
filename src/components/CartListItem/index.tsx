@@ -129,6 +129,7 @@ export class CartListItem extends React.Component<Props, {}> {
 
   getPriceRange(priceRanges: PriceRange[], totalItems: CardNumberElement) {
     const { price, teamStoreItem } = this.props
+
     let markslider = { quantity: '0', price: 0 }
     if (price && price.quantity !== 'Personal') {
       markslider = price
@@ -239,7 +240,6 @@ export class CartListItem extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
-      isFixed,
       canReorder,
       productTotal,
       unitPrice,
@@ -263,6 +263,7 @@ export class CartListItem extends React.Component<Props, {}> {
       designId,
       designName,
       designImage,
+      totalOrder = 0,
       designCode,
       fixedPrices = [],
       teamStoreName = '',
@@ -287,19 +288,13 @@ export class CartListItem extends React.Component<Props, {}> {
     const currencyPrices = filter(productPriceRanges, {
       abbreviation: currentCurrency || config.defaultCurrency
     })
-
     const personalPrice = get(
       this.getPriceRangeByQuantity('Personal'),
       'price',
       0
     )
-    /* let priceRange =
-      this.getPriceRange(currencyPrices, isTeamStore && isFixed ? quantitySum + totalOrder : quantitySum + 0) */
     let priceRange =
-      !isTeamStore || fixedPrices.length || (isTeamStore && isFixed)
-        ? this.getPriceRange(currencyPrices, quantitySum)
-        : this.getPriceRangeByQuantity('2-5')
-    // let priceRange = this.getPriceRange(currencyPrices, quantitySum + totalOrder)
+      this.getPriceRange(currencyPrices, quantitySum + totalOrder)
 
     priceRange =
       priceRange && priceRange.price === 0

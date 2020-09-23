@@ -59,9 +59,8 @@ export const getShoppingCartData = (
       totalWithoutDiscount =
         totalWithoutDiscount + quantitySum * currencyPrices[0].price
     })
-    if (shoppingCart.length > 1) {
-      moreThanOneItem = true
-    }
+    moreThanOneItem = !!(shoppingCart.length > 1)
+
     if (justOneOfEveryItem && shoppingCart.length) {
       priceRangeToApply = getPriceRangeToApply(shoppingCart.length)
     } else {
@@ -71,17 +70,14 @@ export const getShoppingCartData = (
     }
 
     shoppingCart.map(cartItem => {
-      const quantities = cartItem.itemDetails.map(itemDetail => {
-        return itemDetail.quantity
-      })
-      const quantitySum = quantities.reduce((a, b) => a + b, 0)
-      // let teamStoreRange = 1
+      const quantitySum = getItemQuantity(cartItem)
+      let teamStoreRange = 0
       if (cartItem.fixedPrices && cartItem.fixedPrices.length) {
-        // teamStoreRange = 0
+        teamStoreRange = 0
       } else if (cartItem.isFixed && cartItem.teamStoreItem) {
-        // const totalOrder = cartItem.totalOrder + quantitySum
-        // const rangeTeam = getPriceRangeToApply(totalOrder)
-        // teamStoreRange = rangeTeam || 1
+        const totalOrder = cartItem.totalOrder + quantitySum
+        const rangeTeam = getPriceRangeToApply(totalOrder)
+        teamStoreRange = rangeTeam || 1
       }
       const productPriceRanges = get(
         cartItem,
@@ -101,23 +97,19 @@ export const getShoppingCartData = (
         priceRangeRetails = numberOfProducts > 1 ? 1 : 0
         priceRange = currencyPrices[priceRangeRetails]
       } else {
-        const itemRange = getItemQuantity(cartItem) === 1 && moreThanOneItem ? 2 : quantitySum
+        const itemRange = quantitySum === 1 && moreThanOneItem ? 2 : quantitySum
+        const onDemandRuleItem = cartItem.teamStoreId && quantitySum === 1 ? 2 : itemRange
         priceRange =
-          getPriceRange(currencyPrices, cartItem.isFixed && cartItem.teamStoreItem ? cartItem.totalOrder : itemRange)
-
-        /* priceRange =
-          priceRangeToApply !== 0 || cartItem.teamStoreId
-            ? currencyPrices[
-                !cartItem.teamStoreId ? priceRangeToApply : teamStoreRange
-              ]
-            : getPriceRange(currencyPrices, quantitySum) */
+          getPriceRange(currencyPrices, cartItem.isFixed &&
+            cartItem.teamStoreItem ? cartItem.totalOrder : onDemandRuleItem)
       }
-      /* priceRange =
-        (priceRange && priceRange.price === 0) || cartItem.teamStoreId
+      priceRange =
+        (priceRange && priceRange.price === 0) || cartItem.isFixed
           ? currencyPrices[
               !cartItem.teamStoreId ? currencyPrices.length - 1 : teamStoreRange
             ]
-          : priceRange */
+          : priceRange
+
       // increase the total
       totalSum = totalSum + priceRange.price * quantitySum
     })

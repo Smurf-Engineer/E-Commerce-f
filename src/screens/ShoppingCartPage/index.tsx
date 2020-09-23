@@ -408,10 +408,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       const currencyPrices = filter(productPriceRanges, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
-
       symbol = currencyPrices[0].shortName
       const itemRange = getItemQuantity(cartItem) === 1 && moreThanOneItem ? 1 : getPriceRangeByItem(cartItem)
-      const priceRangeToApply = cartItem.isFixed ? 0 : itemRange
+      const priceRangeToApply = currencyPrices[cartItem.isFixed ? 0 : itemRange]
       // const teamStoreRange = cartItem.teamStoreId && cartItem.isFixed ? 0 : 1
       return (
         <CartItem
