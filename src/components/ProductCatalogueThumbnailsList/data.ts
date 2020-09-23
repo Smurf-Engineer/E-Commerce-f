@@ -67,16 +67,11 @@ export const GetProductsQuery = gql`
 export const profileSettingsQuery = gql`
   query profile {
     profileData: getUserProfile {
-      userProfile {
-        firstName: first_name
-        lastName: last_name
-        email
-        phone
-      }
       reseller {
         status
         currency
         comission
+        inline
         paypalAccount: paypal_account
       }
     }

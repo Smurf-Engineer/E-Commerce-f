@@ -57,6 +57,14 @@ export default defineMessages({
     id: 'components.ResellerDetails.region',
     defaultMessage: 'Region'
   },
+  customMargin: {
+    id: 'components.ResellerDetails.customMargin',
+    defaultMessage: 'Custom Prod. Margin'
+  },
+  inlineMargin: {
+    id: 'components.ResellerDetails.inlineMargin',
+    defaultMessage: 'Inline Prod. Margin'
+  },
   payoutDesc: {
     id: 'components.ResellerDetails.payoutDesc',
     defaultMessage: `Commissions are paid out in the currency based on your defined country of residence during 

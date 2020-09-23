@@ -36,6 +36,8 @@ interface Props {
   status: string
   loading: boolean
   comission: number
+  margin: number
+  inline: number
   history: History
   userId: string
   activatedAt: string
@@ -48,6 +50,8 @@ interface Props {
   onlyDetails: boolean
   openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
+  changeMargin: (value: number) => void
+  changeInline: (value: number) => void
   onChangePage: (page: number) => void
   enableReseller: (status: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -55,6 +59,8 @@ interface Props {
 
 class ResellerDetails extends React.Component<Props, {}> {
   debounceComission = debounce((value) => this.handleChangeComission(value), 800)
+  debounceMargin = debounce((value) => this.handleChangeMargin(value), 800)
+  debounceInline = debounce((value) => this.handleChangeInline(value), 800)
   enableStatus = () => {
     const { enableReseller } = this.props
     enableReseller(APPROVED)
@@ -79,6 +85,14 @@ class ResellerDetails extends React.Component<Props, {}> {
     const { changeComission } = this.props
     changeComission(value || 0)
   }
+  handleChangeMargin = (value: number | undefined) => {
+    const { changeMargin } = this.props
+    changeMargin(value || 0)
+  }
+  handleChangeInline = (value: number | undefined) => {
+    const { changeInline } = this.props
+    changeInline(value || 0)
+  }
   render() {
     const {
       file,
@@ -91,6 +105,8 @@ class ResellerDetails extends React.Component<Props, {}> {
       userId,
       isAdmin,
       onlyDetails,
+      margin,
+      inline,
       activatedAt,
       formatMessage,
       status,
@@ -167,24 +183,64 @@ class ResellerDetails extends React.Component<Props, {}> {
                 {fileName}
               </FileLink>
             </LabelButton>
-            {isActive && <LabelButton>
-              <Title>
-                {formatMessage(messages.comissions)}
-              </Title>
-              {isAdmin ?
-                <StyledInputNumber
-                  onChange={this.debounceComission}
-                  value={comission}
-                  min={0}
-                  max={100}
-                  formatter={rawValue => `${rawValue}%`}
-                  parser={value => value.replace(DECIMAL_REGEX, '')}
-                />
-                : <BoldLabel>
-                  {`${comission}%`}
-                </BoldLabel>
-              }
-            </LabelButton>}
+            {isActive &&
+              <>
+                <LabelButton>
+                  <Title>
+                    {formatMessage(messages.comissions)}
+                  </Title>
+                  {isAdmin ?
+                    <StyledInputNumber
+                      onChange={this.debounceMargin}
+                      value={margin}
+                      min={0}
+                      max={100}
+                      formatter={rawValue => `${rawValue}%`}
+                      parser={value => value.replace(DECIMAL_REGEX, '')}
+                    />
+                    : <BoldLabel>
+                      {`${margin}%`}
+                    </BoldLabel>
+                  }
+                </LabelButton>
+                <LabelButton>
+                  <Title>
+                    {formatMessage(messages.customMargin)}
+                  </Title>
+                  {isAdmin ?
+                    <StyledInputNumber
+                      onChange={this.debounceComission}
+                      value={comission}
+                      min={0}
+                      max={100}
+                      formatter={rawValue => `${rawValue}%`}
+                      parser={value => value.replace(DECIMAL_REGEX, '')}
+                    />
+                    : <BoldLabel>
+                      {`${comission}%`}
+                    </BoldLabel>
+                  }
+                </LabelButton>
+                <LabelButton>
+                  <Title>
+                    {formatMessage(messages.inlineMargin)}
+                  </Title>
+                  {isAdmin ?
+                    <StyledInputNumber
+                      onChange={this.debounceInline}
+                      value={inline}
+                      min={0}
+                      max={100}
+                      formatter={rawValue => `${rawValue}%`}
+                      parser={value => value.replace(DECIMAL_REGEX, '')}
+                    />
+                    : <BoldLabel>
+                      {`${inline}%`}
+                    </BoldLabel>
+                  }
+                </LabelButton>
+              </>
+            }
             <LabelButton>
               <Title>
                 {formatMessage(messages.currency)}

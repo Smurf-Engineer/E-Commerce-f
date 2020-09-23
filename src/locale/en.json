@@ -844,6 +844,8 @@
   "components.ResellerDetails.decline": "Decline request",
   "components.ResellerDetails.activationDate": "Activation Date",
   "components.ResellerDetails.taxForm": "Tax Form",
+  "components.ResellerDetails.customMargin": "Custom Prod. Margin",
+  "components.ResellerDetails.inlineMargin": "Inline Prod. Margin",
   "components.ResellerDetails.comissions": "Reseller Commission",
   "components.ResellerDetails.resellerOptions": "Reseller Options",
   "components.ResellerDetails.paypalAccount": "Reseller Account",

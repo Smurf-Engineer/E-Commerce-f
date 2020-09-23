@@ -100,3 +100,15 @@ export const GetProductsByIdQuery = gql`
     }
   }
 `
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      reseller {
+        status
+        currency
+        inline
+      }
+    }
+  }
+`

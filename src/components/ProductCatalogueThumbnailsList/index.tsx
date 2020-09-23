@@ -105,7 +105,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
-    const { status, comission: resellerComission } = get(profileData, 'profileData.reseller', {})
+    const { status, comission: resellerComission, inline } = get(profileData, 'profileData.reseller', {})
     const isReseller = status === APPROVED
     if (designs) {
       thumbnailsList = designs.map(
@@ -249,7 +249,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       const { products: catalogue = [], fullCount } = products
       total = fullCount
       if (catalogue) {
-        thumbnailsList = catalogue.map((product, index) => {
+        thumbnailsList = catalogue.map((productData, index) => {
+          let product = productData
+          if (isReseller && !productData.customizable) {
+            product = this.calculateReseller(product, inline)
+          }
           const {
             images,
             id,

@@ -25,6 +25,8 @@ export const profileSettingsQuery = gql`
         file
         paypalAccount: paypal_account
         comission
+        margin
+        inline
         region
         currency
         activatedAt: activated_at
@@ -136,6 +138,24 @@ export const changeResellerComissionMutation = gql`
     changeResellerComission(value: $value, userId: $userId) {
       status
       comission
+    }
+  }
+`
+
+export const changeResellerMarginMutation = gql`
+  mutation changeResellerMargin($value: Float, $userId: String!) {
+    changeResellerMargin(value: $value, userId: $userId) {
+      status
+      margin
+    }
+  }
+`
+
+export const changeResellerInlineMutation = gql`
+  mutation changeResellerInline($value: Float, $userId: String!) {
+    changeResellerInline(value: $value, userId: $userId) {
+      status
+      inline
     }
   }
 `

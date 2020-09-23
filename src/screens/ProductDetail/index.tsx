@@ -16,7 +16,7 @@ import find from 'lodash/find'
 import Spin from 'antd/lib/spin'
 import * as productDetailActions from './actions'
 import messages from './messages'
-import { GetProductsByIdQuery } from './data'
+import { GetProductsByIdQuery, profileSettingsQuery } from './data'
 import { oneSize } from './constants'
 import {
   Container,
@@ -65,7 +65,7 @@ import {
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
-import { MAIN_TITLE } from '../../constants'
+import { APPROVED, MAIN_TITLE } from '../../constants'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import Render3D from '../../components/Render3D'
@@ -83,7 +83,7 @@ import {
   ProductColors,
   ProductFile,
   ItemDetailType,
-  BreadRoute
+  BreadRoute, IProfileSettings
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
@@ -95,6 +95,10 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 const WHITENAME = 'White'
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -122,6 +126,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   loadingImage: boolean
   phone: boolean
+  profileData: ProfileData
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -187,15 +192,28 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedFit,
       selectedColor,
       openFitInfo,
+      profileData,
       setLoadingModel,
       loadingImage,
       setLoadingImageAction,
       currentCurrency,
-      data: { product, error, loading },
+      data: { product: productData, error, loading },
       phone
     } = this.props
 
     const { formatMessage } = intl
+    const { status, inline } = get(profileData, 'profileData.reseller', {})
+    const isReseller = status === APPROVED
+    let product = productData
+    if (isReseller) {
+      const originalPriceRange = get(productData, 'priceRange', [])
+      const purchasePrices = originalPriceRange.map((priceItem) => {
+        const price = Number((priceItem.price * (1 - (inline / 100))).toFixed(2))
+        return { ...priceItem, price }
+      })
+      product = { ...product, priceRange: purchasePrices }
+    }
+
     const { showDetails, showFits } = this.state
     if ((!product || error) && !loading) {
       return (
@@ -790,6 +808,12 @@ type OwnProps = {
 
 const ProductDetailEnhance = compose(
   injectIntl,
+  graphql(profileSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'profileData'
+  }),
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {
