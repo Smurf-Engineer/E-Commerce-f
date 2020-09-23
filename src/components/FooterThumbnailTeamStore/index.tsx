@@ -88,12 +88,13 @@ const FooterThumbnailTeamStore = ({
       <Description>{description}</Description>
       <Description>{code}</Description>
       <BottomPrices>
-        <PricesContainer>
-          <Label>
-            <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
-          </Label>
-          <PriceLabel>{targetPrice}</PriceLabel>
-        </PricesContainer>
+        {((isResellerStore && isResellerOwner) || !isResellerStore) &&
+          <PricesContainer>
+            <Label>
+              <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
+            </Label>
+            <PriceLabel>{targetPrice}</PriceLabel>
+          </PricesContainer>}
         <PricesContainer>
           <Label>
             {isResellerStore && isResellerOwner ?

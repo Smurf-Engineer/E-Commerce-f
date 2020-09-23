@@ -353,6 +353,7 @@ class Options extends React.Component<Props> {
           })
           const userProfile = get(profileData, 'profileData.userProfile', {})
           userProfile.affiliateEnabled = enabledResponse
+          userProfile.resellerEnabled = false
           store.writeQuery({
             query: profileSettingsQuery,
             data: profileData,
@@ -390,6 +391,7 @@ class Options extends React.Component<Props> {
           })
           const userProfile = get(profileData, 'profileData.userProfile', {})
           userProfile.resellerEnabled = enabledResponse
+          userProfile.affiliateEnabled = false
           store.writeQuery({
             query: profileSettingsQuery,
             data: profileData,
