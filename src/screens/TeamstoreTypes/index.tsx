@@ -24,13 +24,20 @@ import ScheduledImage from '../../assets/Scheduled-Team.jpg'
 import onDemandBanner from '../../assets/OnDemand.png'
 import scheduledBanner from '../../assets/BatchOrder-Logo.png'
 import paypal from '../../assets/Paypal.png'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import messages from './messages'
-import { ON_DEMAND_DAYS, FIXED_DATE_DAYS } from './constants'
+import { getDesignLabInfo } from './data'
+import { QueryProps, DesignLabInfo } from '../../types/common'
+import get from 'lodash/get'
+
+interface DataDesignLabInfo extends QueryProps {
+  designInfo?: DesignLabInfo
+}
 
 interface Props {
   intl: InjectedIntl
+  data: DataDesignLabInfo
   history: any
 }
 
@@ -60,8 +67,11 @@ class TeamstoreTypes extends React.Component<Props, {}> {
     const {
       intl,
       intl: { formatMessage },
+      data,
       history
     } = this.props
+    const designLabInfo = get(data, 'getDesignLabInfo', '')
+    const { cutOffDays, deliveryDays } = designLabInfo || {}
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -78,7 +88,7 @@ class TeamstoreTypes extends React.Component<Props, {}> {
                     key={index}
                     dangerouslySetInnerHTML={{
                       __html: formatMessage(messages[item], {
-                        dayNumber: ON_DEMAND_DAYS
+                        dayNumber: deliveryDays
                       })
                     }}
                   />
@@ -106,7 +116,7 @@ class TeamstoreTypes extends React.Component<Props, {}> {
                     key={index}
                     dangerouslySetInnerHTML={{
                       __html: formatMessage(messages[item], {
-                        dayNumber: FIXED_DATE_DAYS
+                        dayNumber: cutOffDays
                       })
                     }}
                   />
@@ -129,5 +139,12 @@ class TeamstoreTypes extends React.Component<Props, {}> {
   }
 }
 
-const TeamstoreTypesEnhance = compose(injectIntl)(TeamstoreTypes)
+const TeamstoreTypesEnhance = compose(
+  injectIntl,
+  graphql(getDesignLabInfo, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
+)(TeamstoreTypes)
 export default TeamstoreTypesEnhance

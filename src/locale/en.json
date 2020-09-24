@@ -1314,7 +1314,7 @@
   "components.PaymentsList.receipt": "Receipt",
   "screens.TeamstoreTypes.title": "What type of team store do you want to build?",
   "screens.TeamstoreTypes.idealForSmall": "Ideal for small groups less than 6 members",
-  "screens.TeamstoreTypes.fastTurnaround": "<b>Fast 10 Day Turnaround</b>",
+  "screens.TeamstoreTypes.fastTurnaround": "<b>Fast {dayNumber} Day Turnaround</b>",
   "screens.TeamstoreTypes.saveWithFixed": "Save 20% with fixed team pricing",
   "screens.TeamstoreTypes.onDemandProduction": "On-Demand Production",
   "screens.TeamstoreTypes.acceptedPayment": "Accepted payment methods available:",

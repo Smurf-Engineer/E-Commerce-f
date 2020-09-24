@@ -15,7 +15,7 @@ export default defineMessages({
   },
   fastTurnaround: {
     id: 'screens.TeamstoreTypes.fastTurnaround',
-    defaultMessage: '<b>Fast 10 Day Turnaround</b>'
+    defaultMessage: '<b>Fast {dayNumber} Day Turnaround</b>'
   },
   saveWithFixed: {
     id: 'screens.TeamstoreTypes.saveWithFixed',
