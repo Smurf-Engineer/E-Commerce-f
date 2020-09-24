@@ -149,6 +149,7 @@ export const getOrderQuery = gql`
       email
       userId: user_id
       coupon: coupon_code
+      user
     }
   }
 `
