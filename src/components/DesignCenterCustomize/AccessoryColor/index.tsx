@@ -12,9 +12,10 @@ import {
   Oval,
   Arrow,
   Colors,
-  OvalSelected
+  OvalSelected, HintIcon
 } from './styledComponents'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
+import helpTooltip from '../../../assets/tooltip.svg'
 import { BLACK, WHITE } from '../../../screens/DesignCenter/constants'
 
 interface Props {
@@ -26,6 +27,7 @@ interface Props {
   goToStitching?: () => void
   colorSelected?: AccesoryColor
   allowSelection?: boolean
+  openHelp?: () => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
@@ -38,6 +40,7 @@ const AccessoryColor = ({
   isPredyed = false,
   colorSelected = BLACK,
   allowSelection = true,
+  openHelp = () => { },
   onAccessoryColorSelected = () => { }
 }: Props) => {
   // tslint:disable:curly
@@ -55,7 +58,12 @@ const AccessoryColor = ({
   return (
     <div>
       <Container>
-        <Name>{name}</Name>
+        <Name>
+          {name}
+          {isPredyed &&
+            <HintIcon src={helpTooltip} onClick={openHelp} />
+          }
+        </Name>
         {stitchingColor ? (
           <Stitching onClick={goToStitching}>
             <ColorLabel>{stitchingLabel || stitchingName}</ColorLabel>

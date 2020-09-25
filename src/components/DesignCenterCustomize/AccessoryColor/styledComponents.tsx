@@ -22,6 +22,14 @@ export const Name = styled.div`
   line-height: 22px;
 `
 
+export const HintIcon = styled.img`
+  cursor: pointer;
+  max-width: 16px;
+  width: 100%;
+  margin-left: 8px;
+  margin-bottom: 2px;
+`
+
 export const ColorLabel = styled.div`
   color: #5f6062;
   font-size: 16px;

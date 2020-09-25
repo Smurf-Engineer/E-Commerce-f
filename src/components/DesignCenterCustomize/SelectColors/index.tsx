@@ -12,10 +12,13 @@ import {
   Divider,
   ColorsIcon,
   StyledButton,
-  ButtonContainer
+  ButtonContainer, Description, ExampleImage, HelpImage, PredyedImages, Title
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
 import colorsIcon from '../.../../../../assets/color_squares.svg'
+import predyedFabric from '../.../../../../assets/predyed-fabric.jpg'
+import printedFabric from '../.../../../../assets/printed-fabric.jpg'
+import HelpModal from '../../Common/JakrooModal'
 import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
@@ -63,7 +66,20 @@ interface Props {
   onOpenColorChart: () => void
 }
 
-class SelectColors extends React.PureComponent<Props, {}> {
+interface State {
+  openHelp: boolean
+}
+
+class SelectColors extends React.PureComponent<Props, State> {
+  state = {
+    openHelp: false
+  }
+  closeHelpModal = () => {
+    this.setState({ openHelp: false })
+  }
+  openHelpModal = () => {
+    this.setState({ openHelp: true })
+  }
   render() {
     const {
       goToBaseColors,
@@ -100,6 +116,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return null
     }
+    const { openHelp } = this.state
     let arrayColors: Color[] = []
     let stitchingLabel = ''
     if (colorsList && !colorsList.loading) {
@@ -148,6 +165,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
             name={formatMessage(messages.predyedColor)}
             colorSelected={selectedPredyed}
             isPredyed={true}
+            openHelp={this.openHelpModal}
             onAccessoryColorSelected={onSelectPredyed}
           />
         )}
@@ -194,6 +212,30 @@ class SelectColors extends React.PureComponent<Props, {}> {
           loading={colorChartSending}
           {...{ onRequestColorChart }}
         />
+        <HelpModal
+          open={openHelp}
+          withLogo={false}
+          requestClose={this.closeHelpModal}
+        >
+          <Title dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.predyedTitle)
+          }} />
+          <PredyedImages>
+            <HelpImage>
+              <ExampleImage src={predyedFabric} />
+              {formatMessage(messages.predyedFabric)}
+            </HelpImage>
+            <HelpImage>
+              <ExampleImage src={printedFabric} />
+              {formatMessage(messages.printedFabric)}
+            </HelpImage>
+          </PredyedImages>
+          <Description
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.predyedDesc)
+            }}
+          />
+        </HelpModal>
       </Container>
     )
   }
