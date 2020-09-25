@@ -15,7 +15,9 @@ import {
   SelectTeamStoreButton,
   TeamBanner,
   TeamImage,
-  PaymentMethodsText
+  PaymentMethodsText,
+  StyledSpin,
+  LoadingContainer, ImageSkeleton
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import creditCard from '../../assets/creditcard_color.png'
@@ -74,66 +76,73 @@ class TeamstoreTypes extends React.Component<Props, {}> {
     const { cutOffDays, deliveryDays } = designLabInfo || {}
     return (
       <Layout {...{ history, intl }}>
-        <Container>
-          <Title>{formatMessage(messages.title)}</Title>
-          <TeamStoreCardsContainer>
-            <Card id="demand" onClick={this.goTo}>
-              <CardTitle>
-                <TeamBanner src={onDemandBanner} />
-              </CardTitle>
-              <TeamImage src={onDemandImage} />
-              <List>
-                {onDemandMessages.map((item: string, index: number) => (
-                  <Item
-                    key={index}
-                    dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages[item], {
-                        dayNumber: deliveryDays
-                      })
-                    }}
-                  />
-                ))}
-              </List>
-              <PaymentMethodsText>
-                {formatMessage(messages.acceptedPayment)}
-              </PaymentMethodsText>
-              <PaymentIcons>
-                <Icon src={creditCard} />
-                <Icon src={paypal} />
-              </PaymentIcons>
-              <SelectTeamStoreButton id="demand" onClick={this.goTo}>
-                {formatMessage(messages.select)}
-              </SelectTeamStoreButton>
-            </Card>
-            <Card id="fixed" onClick={this.goTo}>
-              <CardTitle>
-                <TeamBanner src={scheduledBanner} />
-              </CardTitle>
-              <TeamImage src={ScheduledImage} />
-              <List>
-                {fixedDateMessages.map((item: string, index: number) => (
-                  <Item
-                    key={index}
-                    dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages[item], {
-                        dayNumber: cutOffDays
-                      })
-                    }}
-                  />
-                ))}
-              </List>
-              <PaymentMethodsText>
-                {formatMessage(messages.acceptedPayment)}
-              </PaymentMethodsText>
-              <PaymentIcons>
-                <Icon src={creditCard} />
-              </PaymentIcons>
-              <SelectTeamStoreButton id="fixed" onClick={this.goTo}>
-                {formatMessage(messages.select)}
-              </SelectTeamStoreButton>
-            </Card>
-          </TeamStoreCardsContainer>
-        </Container>
+        {data.loading ?
+          <LoadingContainer>
+            <StyledSpin />
+            <ImageSkeleton />
+            <ImageSkeleton />
+          </LoadingContainer> :
+          <Container>
+            <Title>{formatMessage(messages.title)}</Title>
+            <TeamStoreCardsContainer>
+              <Card id="demand" onClick={this.goTo}>
+                <CardTitle>
+                  <TeamBanner src={onDemandBanner} />
+                </CardTitle>
+                <TeamImage src={onDemandImage} />
+                <List>
+                  {onDemandMessages.map((item: string, index: number) => (
+                    <Item
+                      key={index}
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages[item], {
+                          dayNumber: deliveryDays
+                        })
+                      }}
+                    />
+                  ))}
+                </List>
+                <PaymentMethodsText>
+                  {formatMessage(messages.acceptedPayment)}
+                </PaymentMethodsText>
+                <PaymentIcons>
+                  <Icon src={creditCard} />
+                  <Icon src={paypal} />
+                </PaymentIcons>
+                <SelectTeamStoreButton id="demand" onClick={this.goTo}>
+                  {formatMessage(messages.select)}
+                </SelectTeamStoreButton>
+              </Card>
+              <Card id="fixed" onClick={this.goTo}>
+                <CardTitle>
+                  <TeamBanner src={scheduledBanner} />
+                </CardTitle>
+                <TeamImage src={ScheduledImage} />
+                <List>
+                  {fixedDateMessages.map((item: string, index: number) => (
+                    <Item
+                      key={index}
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages[item], {
+                          dayNumber: cutOffDays
+                        })
+                      }}
+                    />
+                  ))}
+                </List>
+                <PaymentMethodsText>
+                  {formatMessage(messages.acceptedPayment)}
+                </PaymentMethodsText>
+                <PaymentIcons>
+                  <Icon src={creditCard} />
+                </PaymentIcons>
+                <SelectTeamStoreButton id="fixed" onClick={this.goTo}>
+                  {formatMessage(messages.select)}
+                </SelectTeamStoreButton>
+              </Card>
+            </TeamStoreCardsContainer>
+          </Container>
+        }
       </Layout>
     )
   }
