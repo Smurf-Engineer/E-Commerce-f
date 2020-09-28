@@ -153,13 +153,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const { formatMessage } = intl
 
     const queryParams = queryString.parse(search)
-    const { comission = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
+    const { comission = 0, margin = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
     const ownedDesign = get(design, 'canEdit', false)
     let product = get(design, 'product', null)
+    const teamStoreItem = queryParams.item
+    const comissionToApply = teamStoreItem ? margin : comission
     if (resellerStatus === APPROVED && ownedDesign) {
       const originalPriceRange = get(product, 'priceRange', [])
       const purchasePrices = originalPriceRange.map((priceItem) => {
-        const price = Number((priceItem.price * (1 - (comission / 100))).toFixed(2))
+        const price = Number((priceItem.price * (1 - (comissionToApply / 100))).toFixed(2))
         return { ...priceItem, price }
       })
       product = { ...product, priceRange: purchasePrices }
@@ -167,7 +169,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const productPriceRange = get(product, 'priceRange', [])
     const shared = get(design, 'shared', false)
     const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
-    const teamStoreItem = queryParams.item
 
     if (loading || dataLoading) {
       return (
