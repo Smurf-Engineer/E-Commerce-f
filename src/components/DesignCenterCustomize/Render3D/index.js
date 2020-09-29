@@ -801,15 +801,18 @@ class Render3D extends PureComponent {
           /* Canvas */
           if (!newProduct) {
             this.canvasApplied = document.createElement('canvas')
-            this.canvasApplied.width = CANVAS_SIZE
-            this.canvasApplied.height = CANVAS_SIZE
+            const MOBILE_SIZE = 512
+            const CANVAS = !isMobile ? CANVAS_SIZE : MOBILE_SIZE
+            this.canvasApplied.width = CANVAS
+            this.canvasApplied.height = CANVAS
             const canvasConfig = {
-              width: CANVAS_SIZE,
-              height: CANVAS_SIZE,
+              width: CANVAS,
+              height: CANVAS,
               crossOrigin: 'Anonymous',
               selection: false,
               skipTargetFind: true
             }
+
             if (isMobile) {
               this.canvasTexture = new fabric.StaticCanvas(
                 this.canvasApplied,
