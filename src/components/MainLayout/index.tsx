@@ -33,6 +33,7 @@ import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
+import ResellerSignup from '../ResellerSignup'
 import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
 import { closeSlaask } from '../../slaask'
@@ -294,6 +295,7 @@ class MainLayout extends React.Component<Props, {}> {
             <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}
+        <ResellerSignup {...{ formatMessage, initialCountryCode }} open={true} />
         <QuickView
           open={!!productId}
           currentCurrency={currentCurrency || config.defaultCurrency}
