@@ -102,7 +102,7 @@ class Review extends React.PureComponent<Props, {}> {
 
         const itemQuantity = getItemQuantity(cartItem)
         const itemRange = itemQuantity === 1 && moreThanOneItem ? 1 : getPriceRangeByItem(cartItem)
-        const onDemandRuleItem = teamStoreId && itemQuantity === 1 ? 2 : itemRange
+        const onDemandRuleItem = teamStoreId && itemQuantity === 1 ? 1 : itemRange
         const priceRangeToApply = currencyPrices[isFixed ? 0 : onDemandRuleItem]
 
         const itemImage = designId ? designImage || '' : images[0].front
