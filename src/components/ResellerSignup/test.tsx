@@ -3,21 +3,18 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { Login } from './index'
+import { ResellerSignup } from './index'
 
-describe('<Login />', () => {
+describe('<ResellerSignup />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const format = (message: string) => 'string'
-    const user = () => {}
+    const user = () => { }
     ReactDOM.render(
-      <Login
+      <ResellerSignup
         open={false}
-        requestClose={() => {}}
+        requestClose={() => { }}
         formatMessage={format}
-        loginWithEmail={() => {}}
-        loginWithFacebook={() => {}}
-        loginWithGoogle={() => {}}
         login={user}
       />,
       div

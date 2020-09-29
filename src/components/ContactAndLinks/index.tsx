@@ -21,11 +21,13 @@ import CaliPropLogo from '../../assets/californiaprop65.svg'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  openReseller: () => void
+  showReseller: boolean
   fakeWidth: number
   history?: any
 }
 
-const ContactAndLinks = ({ formatMessage, fakeWidth, history }: Props) => {
+const ContactAndLinks = ({ formatMessage, fakeWidth, history, openReseller, showReseller }: Props) => {
   return (
     <MediaQuery
       minWidth={768}
@@ -39,7 +41,7 @@ const ContactAndLinks = ({ formatMessage, fakeWidth, history }: Props) => {
               <CustomerSupport {...{ history, formatMessage }} />
               <DesignSupport {...{ history, formatMessage }} />
               <AboutUs {...{ history, formatMessage }} />
-              <Teams {...{ history, formatMessage }} />
+              <Teams {...{ history, formatMessage, openReseller, showReseller }} />
               <ComplianceLogos>
                 <a href="/compliance">
                   <StyledImg alt="logo" src={BSCILogo} />

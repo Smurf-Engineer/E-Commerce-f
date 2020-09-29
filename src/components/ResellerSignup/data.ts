@@ -20,3 +20,21 @@ export const mailLogin = graphql(
     name: 'loginWithEmail'
   }
 )
+
+export const createUser = graphql(
+  gql`
+    mutation SignUp($user: UserInput!, $reseller: ResellerUserInput) {
+      signUp(user: $user, reseller: $reseller) {
+        user {
+          id
+          name: first_name
+          lastName: last_name
+        }
+        token
+      }
+    }
+  `,
+  {
+    name: 'signUpUser'
+  }
+)

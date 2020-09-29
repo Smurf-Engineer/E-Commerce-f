@@ -61,6 +61,30 @@ export default defineMessages({
     id: 'components.ResellerSignup.cancel',
     defaultMessage: 'Cancel'
   },
+  sizeError: {
+    id: 'components.ResellerSignup.sizeError',
+    defaultMessage: 'File must be smaller than 20MB!'
+  },
+  passwordLengthError: {
+    id: 'components.ResellerSignup.passwordLengthError',
+    defaultMessage: 'Password must be at least 8 characters'
+  },
+  badFormat: {
+    id: 'components.ResellerSignup.badFormat',
+    defaultMessage: 'The e-mail contains not valid characters'
+  },
+  badCurrency: {
+    id: 'components.ResellerSignup.badCurrency',
+    defaultMessage: 'Currency selected is not the same as your region'
+  },
+  passwordNotSame: {
+    id: 'components.ResellerSignup.passwordNotSame',
+    defaultMessage: 'Passwords must be the same'
+  },
+  requiredFieldsError: {
+    id: 'components.ResellerSignup.requiredFieldsError',
+    defaultMessage: 'All fields are required!'
+  },
   termsAndConditions: {
     id: 'components.ResellerSignup.termsAndConditions',
     defaultMessage: `By creating an account, you agree to Jakroo's Privacy Policy and Terms of Use`

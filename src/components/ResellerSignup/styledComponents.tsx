@@ -7,7 +7,7 @@ import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
 import Checkbox from 'antd/lib/checkbox'
 import Upload from 'antd/lib/upload'
-import { BLUE, GRAY, GRAY_STRONG, RED, WHITE } from '../../theme/colors'
+import { BLUE, GRAY, GRAY_STRONG, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
@@ -33,10 +33,27 @@ export const FormContainer = styled.div`
   margin-top: 24px;
 `
 
+export const SavingContainer = styled.div`
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 10000;
+  height: 100vh;
+  background: ${WHITE_TRANSPARENT};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+`
+
 export const BillingSelect = styled(Select)`
   width: 100%;
   .ant-select-selection--single {
-    padding-top: 4px;
+    padding-top: 2px;
     font-weight: normal;
     border-radius: 0;
   }
@@ -201,6 +218,9 @@ export const StyledInput = styled(Input)`
 export const StyledInputPassword = styled(Input.Password)`
   border-radius: 0px;
   margin-bottom: 20px;
+  .ant-input {
+    border-radius: 0px;
+  }
 `
 
 export const TitleDesc = styled.div``

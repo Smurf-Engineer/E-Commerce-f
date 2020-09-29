@@ -8,7 +8,7 @@ import { compose } from 'react-apollo'
 import message from 'antd/lib/message'
 import Select from 'antd/lib/select'
 import get from 'lodash/get'
-import { validate } from 'email-validator'
+import AntdMessage from 'antd/lib/message'
 import { FormattedMessage } from 'react-intl'
 import {
   Container,
@@ -32,23 +32,38 @@ import {
   UploadButton,
   StyledIcon,
   FileLabel,
+  SavingContainer,
   Clip,
-  FileName, ButtonsContainer, CancelButton, SaveButton, TermsCheckbox
+  FileName,
+  ButtonsContainer,
+  CancelButton,
+  SaveButton,
+  TermsCheckbox,
+  LoadingContainer
 } from './styledComponents'
 import JakrooModal from '../Common/JakrooModal'
-import { mailLogin } from './data'
+import { createUser } from './data'
 import messages from './messages'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { uploadFileAction } from './api'
+import { UploadChangeParam } from 'antd/lib/upload'
+import Spin from 'antd/lib/spin'
+import { getFileWithExtension } from '../../utils/utilsFiles'
+import { validateEmail } from '../../utils/utilsFunctions'
+import { NEW_USER } from '../../constants'
+import { User } from '../../types/common'
+import { CA_COUNTRY, CA_CURRENCY, US_COUNTRY, US_CURRENCY } from '../ResellerAbout/constants'
 
 const { Option } = Select
 
 const countries = [
   {
     label: 'Canada',
-    value: 'CAD'
+    value: 'cad'
   },
   {
     label: 'USA',
-    value: 'USD'
+    value: 'usd'
   }
 ]
 
@@ -56,48 +71,114 @@ interface Props {
   open: boolean
   initialCountryCode: string
   requestClose: () => void
-  loginWithEmail: (variables: {}) => void
-  loginWithFacebook: (variables: {}) => void
-  loginWithGoogle: (variables: {}) => void
+  history: History
+  signUpUser: (variables: {}) => Promise<User>
   formatMessage: (messageDescriptor: any, values?: object) => string
   login: (user: object) => void
-  handleForgotPassword?: () => void
 }
 
 interface StateProps {
-  isLoginIn: boolean
-  email: string
-  password: string
-  validEmail: boolean
-  validPassword: boolean
+  firstName: string,
+  lastName: string,
+  phone: string,
+  email: string,
+  saving: boolean,
+  password: string,
+  confirmPassword: string,
+  website: string,
+  currency: string,
+  sendSms: boolean,
+  sendMail: boolean,
+  terms: boolean,
+  loading: boolean,
+  fileName: string
 }
 
 export class ResellerSignup extends React.Component<Props, StateProps> {
   state = {
-    isLoginIn: false,
+    firstName: '',
+    lastName: '',
+    phone: '',
     email: '',
+    saving: false,
     password: '',
-    validEmail: false,
-    validPassword: false
+    confirmPassword: '',
+    website: '',
+    currency: '',
+    sendSms: false,
+    sendMail: false,
+    terms: false,
+    loading: false,
+    fileName: ''
+  }
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value, id }
+    } = evt
+    evt.persist()
+    this.setState({ [id]: value } as any)
+  }
+  handleChangeCurrency = (value: string) => {
+    if (value) {
+      this.setState({ currency: value })
+    }
+  }
+  handleCheckChange = ({ target: { name, checked } }: CheckboxChangeEvent) => {
+    if (!!name) {
+      this.setState({ [name]: checked } as any)
+    }
+  }
+  uploadFile = (event: UploadChangeParam) => {
+    const { file } = event
+    this.setState({ loading: true })
+    uploadFileAction(file).then((fileName) => {
+      this.setState({ loading: false, fileName })
+    })
+  }
+  beforeUpload = (file: any) => {
+    const { formatMessage } = this.props
+    const isLt2M = file.size / 1024 / 1024 < 20
+    if (!isLt2M) {
+      AntdMessage.error(formatMessage(messages.sizeError))
+    }
+    return isLt2M
   }
   render() {
     const {
       open,
       requestClose,
-      formatMessage,
-      handleForgotPassword,
-      login,
-      initialCountryCode
+      formatMessage
     } = this.props
-    const { isLoginIn, email, password } = this.state
+    const {
+      loading,
+      firstName,
+      lastName,
+      phone,
+      saving,
+      email,
+      password,
+      confirmPassword,
+      website,
+      currency,
+      sendSms,
+      sendMail,
+      terms,
+      fileName
+    } = this.state
+    const file = fileName ? getFileWithExtension(fileName) : ''
     return (
       <JakrooModal
         open={open}
         width={712}
-        requestClose={this.onClosemodal}
+        requestClose={requestClose}
         style={{ top: 20 }}
       >
         <Container>
+          {saving &&
+            <SavingContainer>
+              <Spin />
+            </SavingContainer>
+          }
           <LoginLabel>
             <FormattedMessage {...messages.signupTitle} />
           </LoginLabel>
@@ -117,9 +198,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   <RequiredSymbol>*</RequiredSymbol>
                 </Label>
                 <StyledInput
-                  id="email"
+                  id="firstName"
                   placeholder={formatMessage(messages.firstName)}
-                  value={email}
+                  value={firstName}
                   onChange={this.handleInputChange}
                 />
               </InputDiv>
@@ -129,9 +210,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   <RequiredSymbol>*</RequiredSymbol>
                 </Label>
                 <StyledInput
-                  id="email"
+                  id="lastName"
                   placeholder={formatMessage(messages.lastName)}
-                  value={email}
+                  value={lastName}
                   onChange={this.handleInputChange}
                 />
               </InputDiv>
@@ -155,9 +236,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   <RequiredSymbol>*</RequiredSymbol>
                 </Label>
                 <StyledInput
-                  id="email"
+                  id="phone"
                   placeholder={formatMessage(messages.phone)}
-                  value={email}
+                  value={phone}
                   onChange={this.handleInputChange}
                 />
               </InputDiv>
@@ -173,7 +254,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   id="password"
                   type="Password"
                   placeholder={formatMessage(messages.password)}
-                  value={email}
+                  value={password}
                   onChange={this.handleInputChange}
                 />
               </InputDiv>
@@ -186,7 +267,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   id="confirmPassword"
                   type="Password"
                   placeholder={formatMessage(messages.confirmPassword)}
-                  value={email}
+                  value={confirmPassword}
                   onChange={this.handleInputChange}
                 />
               </InputDiv>
@@ -195,12 +276,11 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               <InputDiv>
                 <Label>
                   <FormattedMessage {...messages.website} />
-                  <RequiredSymbol>*</RequiredSymbol>
                 </Label>
                 <StyledInput
-                  id="email"
+                  id="website"
                   placeholder={formatMessage(messages.website)}
-                  value={email}
+                  value={website}
                   onChange={this.handleInputChange}
                 />
               </InputDiv>
@@ -210,8 +290,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   <RequiredSymbol>*</RequiredSymbol>
                 </Label>
                 <BillingSelect
-                  value={''}
-                  onChange={() => { }}
+                  value={currency}
+                  onChange={this.handleChangeCurrency}
                 >
                   {countries.map(({ label, value }, index: Number) =>
                     <Option key={index} {...{ value }}>
@@ -227,14 +307,16 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               </Label>
               <Checkboxes>
                 <CheckboxStyled
-                  checked={false}
-                  onChange={() => { }}
+                  checked={sendMail}
+                  name="sendMail"
+                  onChange={this.handleCheckChange}
                 >
                   <FormattedMessage {...messages.sendMail} />
                 </CheckboxStyled>
                 <CheckboxStyled
-                  checked={false}
-                  onChange={() => { }}
+                  checked={sendSms}
+                  name="sendSms"
+                  onChange={this.handleCheckChange}
                 >
                   <FormattedMessage {...messages.sendSms} />
                 </CheckboxStyled>
@@ -252,20 +334,28 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
           <StyledUpload
             listType="picture-card"
             className="avatar-uploader"
-            customRequest={() => { }}
+            customRequest={this.uploadFile}
+            disabled={loading}
             showUploadList={false}
-            beforeUpload={() => { }}
+            beforeUpload={this.beforeUpload}
           >
             <UploadButton>
-              <StyledIcon type="upload" />
-              <FormattedMessage {...messages.uploadCertificate} />
+              {loading ?
+                <LoadingContainer>
+                  <Spin size="small" />
+                </LoadingContainer> :
+                <>
+                  <StyledIcon type="upload" />
+                  <FormattedMessage {...messages.uploadCertificate} />
+                </>
+              }
             </UploadButton>
           </StyledUpload>
-          {!!'fileName' &&
+          {!!file &&
             <FileLabel>
               <Clip type="paper-clip" />
               <FileName>
-                {'fileName'}
+                {file}
               </FileName>
             </FileLabel>
           }
@@ -275,16 +365,17 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
             }}
           />
           <TermsCheckbox
-            checked={false}
-            onChange={() => { }}
+            checked={terms}
+            name="terms"
+            onChange={this.handleCheckChange}
           >
             <FormattedMessage {...messages.termsAndConditions} />
           </TermsCheckbox>
           <ButtonsContainer>
-            <SaveButton onClick={() => { }}>
+            <SaveButton disabled={!terms} onClick={this.handleSignUp}>
               <FormattedMessage {...messages.create} />
             </SaveButton>
-            <CancelButton onClick={() => { }}>
+            <CancelButton onClick={requestClose}>
               <FormattedMessage {...messages.cancel} />
             </CancelButton>
           </ButtonsContainer>
@@ -292,77 +383,115 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       </JakrooModal>
     )
   }
-  handleJoinNow = () => {
-    this.setState({ isLoginIn: false })
-  }
-  onClosemodal = () => {
-    const { requestClose } = this.props
-    requestClose()
-    this.setState({ isLoginIn: true })
-  }
-
-  onSignedUp = (data: any) => {
-    const { login } = this.props
-    login(data)
-    this.onClosemodal()
-  }
-
-  showLogin = () => {
+  clearState = () => {
     this.setState({
-      isLoginIn: true
+      firstName: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      website: '',
+      currency: '',
+      sendSms: false,
+      sendMail: false,
+      terms: false,
+      loading: false,
+      fileName: ''
     })
   }
-  validateMail = (mail: string) => {
-    return validate(mail)
-  }
-
-  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+  handleSignUp = async (evt: React.MouseEvent<EventTarget>) => {
     const {
-      currentTarget: { value, id }
-    } = evt
-    evt.persist()
-    this.setState({ [id]: value } as any)
-  }
-
-  handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {
-    const { password } = this.state
-    const email = this.state.email.toLowerCase()
-    const { loginWithEmail, requestClose, formatMessage, login } = this.props
-
-    if (!email || !password) {
-      message.error('Invalid User or Password!')
+      firstName,
+      lastName,
+      email,
+      fileName,
+      password,
+      website,
+      sendSms,
+      sendMail,
+      phone,
+      currency,
+      confirmPassword
+    } = this.state
+    const {
+      signUpUser,
+      history,
+      formatMessage,
+      requestClose,
+      initialCountryCode = '',
+      login
+    } = this.props
+    if (password.length < 8) {
+      message.error(formatMessage(messages.passwordLengthError))
       return
+    }
+    if (password !== confirmPassword) {
+      message.error(formatMessage(messages.passwordLengthError))
+    }
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency || !fileName) {
+      message.error(formatMessage(messages.requiredFieldsError))
+      return
+    }
+    if (
+      (currency === US_CURRENCY && initialCountryCode.toUpperCase() !== US_COUNTRY) ||
+      (currency === CA_CURRENCY && initialCountryCode.toUpperCase() !== CA_COUNTRY)
+    ) {
+      message.error(formatMessage(messages.badCurrency))
+      return
+    }
+    if (!validateEmail(email.toLowerCase())) {
+      message.error(formatMessage(messages.badFormat))
+      return
+    }
+    this.setState({ saving: true })
+    const user = {
+      email: email.toLowerCase(),
+      first_name: firstName,
+      last_name: lastName,
+      password,
+      newsletter_subscribed: false,
+      countryCode: initialCountryCode
+    }
+    const reseller = {
+      website,
+      currency,
+      sendSms,
+      sendMail,
+      fileName,
+      phone
     }
 
     try {
-      const loginData = await loginWithEmail({ variables: { email, password } })
-      const data = get(loginData, 'data.login', false)
+      const response = await signUpUser({ variables: { user, reseller } })
+      const data = get(response, 'data.signUp', false)
       if (data) {
+        const { user: userResponse, token } = data || {}
+        const { shortId, name, lastName: lastNameResponse, email: emailResponse, administrator } = userResponse || {}
         const userData = {
-          id: get(data, 'user.shortId', ''),
-          token: get(data, 'token', ''),
-          name: get(data, 'user.name', ''),
-          lastName: get(data, 'user.lastName'),
-          email: get(data, 'user.email'),
-          administrator: get(data, 'user.administrator', false)
+          id: shortId,
+          token,
+          name,
+          lastName: lastNameResponse,
+          email: emailResponse,
+          administrator
         }
-        message.success(
-          formatMessage(messages.welcomeMessage, {
-            name: get(data, 'user.name', '')
-          }),
-          5
-        )
+        message.success(formatMessage(messages.welcomeMessage, { name }))
+        window.dataLayer.push({ event: NEW_USER, label: 'Form Sign Up' })
         login(userData)
-        requestClose()
       }
+      requestClose()
+      history.push('/account?option=resellerAbout')
     } catch (error) {
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
       message.error(errorMessage)
       console.error(error)
+    } finally {
+      this.clearState()
     }
   }
 }
 
-const loginEnhance = compose(mailLogin)(ResellerSignup)
+const loginEnhance = compose(createUser)(ResellerSignup)
 export default loginEnhance
