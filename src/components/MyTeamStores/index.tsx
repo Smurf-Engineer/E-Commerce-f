@@ -16,7 +16,7 @@ import {
   AddTeamStoreButton,
   CreateTeamStoreLegend,
   DeleteConfirmMessage,
-  PaginationRow
+  PaginationRow, Title
 } from './styledComponents'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
@@ -40,6 +40,7 @@ interface Props {
   storeId: string
   currentPage: number
   limit: number
+  isReseller: boolean
   setSkipValueAction: (skip: number, limit: number) => void
   formatMessage: (messageDescriptor: any) => string
   deleteTeamStore: (variables: {}) => void
@@ -57,6 +58,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       deleteLoading,
       openShare,
       openDeleteModal,
+      isReseller,
       currentPage,
       formatMessage,
       data: { myTeamstores }
@@ -91,12 +93,13 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
+        {isReseller && <Title>{formatMessage(messages.myStores)}</Title>}
         <AddTeamStoreButton onClick={this.addNewTeamStore}>
-          {formatMessage(messages.addTeamstoreLabel)}
+          {formatMessage(messages[isReseller ? 'addCustomStore' : 'addTeamstoreLabel'])}
         </AddTeamStoreButton>
         <CreateTeamStoreLegend
           dangerouslySetInnerHTML={{
-            __html: formatMessage(messages.teamStoreConcept)
+            __html: formatMessage(messages[isReseller ? 'resellerConcept' : 'teamStoreConcept'])
           }}
         />
         <div>{myTeamstoresList}</div>

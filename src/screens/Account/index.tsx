@@ -239,6 +239,8 @@ export class Account extends React.Component<Props, {}> {
       setItemToAddAction,
       openAddToTeamStoreModalAction
     } = this.props
+    const resellerStatus = get(data, 'profileData.reseller.status', '')
+    const isReseller = resellerStatus === APPROVED
     const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
     switch (screen) {
@@ -260,7 +262,7 @@ export class Account extends React.Component<Props, {}> {
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
       case MY_STORES:
-        return <MyTeamStores {...{ history, formatMessage }} />
+        return <MyTeamStores {...{ history, formatMessage, isReseller }} />
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
       case RESELLER_PAYOUTS:

@@ -301,9 +301,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   isOnDemand = () => {
     const {
-      location: { search }
+      location: { search },
+      profileData
     } = this.props
     const { type, storeId } = queryString.parse(search)
+    const resellerStatus = get(profileData, 'profileData.reseller.status', '')
+    if (resellerStatus === APPROVED) {
+      return true
+    }
     if (storeId) {
       const { onDemand } = this.props
       return onDemand
@@ -671,6 +676,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 </Title>
                 {storeId && (isOnDemand || !startDate) && (
                   <SwitchWithLabel
+                    disabled={isReseller}
                     checked={onDemand}
                     onChange={updateOnDemandAction}
                     label={formatMessage(
@@ -879,7 +885,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 onAddItems={setItemsAddAction}
                 changePage={this.changePage}
                 proDesign={false}
-                userId={user.id}
+                userId={user ? user.id : ''}
               />
               <ImageCropper
                 {...{ formatMessage, open }}

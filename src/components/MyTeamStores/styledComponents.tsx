@@ -20,6 +20,12 @@ export const Text = styled.div`
   color: #fff;
 `
 
+export const Title = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 22px;
+`
+
 export const AddTeamStoreButton = styled(Button)`
   height: 50px;
   border: 2px solid #e61737;
