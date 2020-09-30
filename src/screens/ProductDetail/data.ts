@@ -108,6 +108,7 @@ export const profileSettingsQuery = gql`
         status
         currency
         inline
+        comission
       }
     }
   }

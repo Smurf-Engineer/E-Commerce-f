@@ -202,13 +202,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
 
     const { formatMessage } = intl
-    const { status, inline } = get(profileData, 'profileData.reseller', {})
+    const { status, inline, comission } = get(profileData, 'profileData.reseller', {})
     const isReseller = status === APPROVED
     let product = productData
+
+    const isRetail = product && (product.retailMen || product.retailWomen || !product.customizable)
+
     if (isReseller) {
       const originalPriceRange = get(productData, 'priceRange', [])
+      const comissionToApply = isRetail ? inline : comission
       const purchasePrices = originalPriceRange.map((priceItem) => {
-        const price = Number((priceItem.price * (1 - (inline / 100))).toFixed(2))
+        const price = Number((priceItem.price * (1 - (comissionToApply / 100))).toFixed(2))
         return { ...priceItem, price }
       })
       product = { ...product, priceRange: purchasePrices }
@@ -241,8 +245,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       images: imagesArray,
       customizable,
       customLink,
-      retailMen,
-      retailWomen,
       yotpoAverageScore: reviewsScore,
       mpn: mpnCode,
       obj,
@@ -258,7 +260,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       modelSize,
       title = MAIN_TITLE
     } = product
-    const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
