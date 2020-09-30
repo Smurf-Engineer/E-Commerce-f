@@ -23,7 +23,6 @@ import {
   LoadingContainer,
   StatusLabel,
   HeaderSection,
-  PayDayIcon,
   InfoSection,
   TextSection,
   TitlePay,
@@ -44,7 +43,6 @@ import {
   CarousselDiv,
   DesktopIcons,
 } from './styledComponents'
-import Payday from '../../assets/jakroo_payday.png'
 import PaydayJersey from '../../assets/payday_jersey.png'
 import PaydayPaypal from '../../assets/payday_paypal.png'
 import PaydayShare from '../../assets/payday_share.png'
@@ -110,6 +108,8 @@ interface StateProps {
   showWhen: boolean
   showCani: boolean
   showCosts: boolean
+  showReturns: boolean
+  showEarn: boolean
 }
 
 interface Props {
@@ -140,6 +140,8 @@ class ResellerAbout extends React.Component<Props, StateProps> {
     showCani: false,
     showWhen: false,
     showCosts: false,
+    showReturns: false,
+    showEarn: false
   }
   render() {
     const {
@@ -178,6 +180,8 @@ class ResellerAbout extends React.Component<Props, StateProps> {
       showMuch,
       showCani,
       showCosts,
+      showEarn,
+      showReturns,
       showWhen,
     } = this.state
 
@@ -195,7 +199,6 @@ class ResellerAbout extends React.Component<Props, StateProps> {
     return (
       <Container>
         <HeaderSection>
-          <PayDayIcon src={Payday} />
           <InfoSection>
             <TextSection>
               <TitlePay>
@@ -266,6 +269,19 @@ class ResellerAbout extends React.Component<Props, StateProps> {
             </Title>
             <FAQBody>
               <ProductInfo
+                id="Earn"
+                titleWidth="705px"
+                title={formatMessage(messages.howEarn)}
+                showContent={showEarn}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.howEarnDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
                 id="Much"
                 title={formatMessage(messages.howMuch)}
                 showContent={showMuch}
@@ -310,6 +326,18 @@ class ResellerAbout extends React.Component<Props, StateProps> {
                 <div
                   dangerouslySetInnerHTML={{
                     __html: formatMessage(messages.costsInfoDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="Returns"
+                title={formatMessage(messages.returns)}
+                showContent={showReturns}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.returnsDesc)
                   }}
                 />
               </ProductInfo>

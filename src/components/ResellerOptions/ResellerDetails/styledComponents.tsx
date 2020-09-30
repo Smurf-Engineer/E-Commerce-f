@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
+import Popover from 'antd/lib/popover'
 import { RED, WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
@@ -23,6 +24,10 @@ export const Container = styled.div`
     padding-right: 0;
     align-items: center;
   }
+`
+
+export const PopoverStyled = styled(Popover)`
+  cursor: pointer;
 `
 
 export const OptionsContainer = styled.div`
@@ -129,4 +134,10 @@ export const InfoIcon = styled(Icon)`
 export const PopoverText = styled.div`
   max-width: 512px;
   width: 100%;
+  span {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
 `

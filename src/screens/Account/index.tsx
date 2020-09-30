@@ -36,7 +36,7 @@ import {
   RESELLER_ABOUT,
   RESELLER,
   RESELLER_PAYOUTS,
-  RESELLER_ORDERS
+  RESELLER_ORDERS, resellerOptions, MY_STORES
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -71,6 +71,7 @@ import { TeamStoreItemtype, MessagePayload, IProfileSettings, QueryProps } from 
 import get from 'lodash/get'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
+import { APPROVED } from '../../constants'
 
 const { SubMenu } = Menu
 
@@ -258,6 +259,7 @@ export class Account extends React.Component<Props, {}> {
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
+      case MY_STORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
@@ -308,9 +310,13 @@ export class Account extends React.Component<Props, {}> {
       openShareModal,
       savedDesignId
     } = this.props
-    const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
-    const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
-    const menuOptions = options.map(({ title, options: submenus }) =>
+    const userProfile = get(data, 'profileData.userProfile', {})
+    const reseller = get(data, 'profileData.reseller', {})
+    const { affiliateEnabled, resellerEnabled } = userProfile || {}
+    const { status } = reseller || {}
+    const isReseller = status === APPROVED
+    const sideMenu = isReseller ? resellerOptions : options
+    const menuOptions = sideMenu.map(({ title, options: submenus }) =>
       submenus.length ?
         (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
           || (title !== AFFILIATES && title !== RESELLER)) &&

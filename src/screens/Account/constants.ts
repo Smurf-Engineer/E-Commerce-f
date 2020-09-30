@@ -9,6 +9,7 @@ export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
 export const TEAMSTORES = 'myTeamStores'
+export const MY_STORES = 'myStores'
 export const RESELLER = 'reseller'
 export const RESELLER_ABOUT = 'resellerAbout'
 export const RESELLER_PAYOUTS = 'resellerPayouts'
@@ -51,6 +52,41 @@ export const options = [
   {
     title: RESELLER,
     options: [RESELLER_ABOUT, RESELLER_ORDERS, RESELLER_PAYOUTS]
+  },
+  {
+    title: AFFILIATES,
+    options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
+  },
+  {
+    title: CREATIONS,
+    options: [SCREEN_LOCKER, MY_FILES]
+  }
+]
+
+export const resellerOptions = [
+  {
+    title: OVERVIEW,
+    options: []
+  },
+  {
+    title: ORDER_HISTORY,
+    options: []
+  },
+  {
+    title: ADDRESSES,
+    options: []
+  },
+  {
+    title: CREDIT_CARDS,
+    options: []
+  },
+  {
+    title: PROFILE_SETTINGS,
+    options: []
+  },
+  {
+    title: RESELLER,
+    options: [MY_STORES, RESELLER_ABOUT, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
     title: AFFILIATES,

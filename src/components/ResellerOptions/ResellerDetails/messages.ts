@@ -23,7 +23,12 @@ export default defineMessages({
   },
   comissions: {
     id: 'components.ResellerDetails.comissions',
-    defaultMessage: 'Reseller Commission'
+    defaultMessage: 'Dealer Margin'
+  },
+  marginPopover: {
+    id: 'components.ResellerDetails.marginPopover',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>Dealer Margin</span><p><b>Custom products</b> are items which either you or Jakroo Designers have designed specifically for you. <b>Inline products</b> are items that have been pre-made by Jakroo and are sold as part of a retail collection and not customizable.</p><p>The Dealer margin is fixed and used to determine your purchase price of each type of product.</p>'
   },
   resellerOptions: {
     id: 'components.ResellerDetails.resellerOptions',
@@ -67,8 +72,7 @@ export default defineMessages({
   },
   payoutDesc: {
     id: 'components.ResellerDetails.payoutDesc',
-    defaultMessage: `Commissions are paid out in the currency based on your defined country of residence during 
-    the sign-up stage. If your default PayPal account currency differs from the payout currency, PayPal will convert 
-    the deposit amount into your default currency using the prevailing exchange rate determined by PayPal.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `<span>Payout Currency</span><p>Commissions are paid out in the currency based on your defined country of residence during the sign-up stage. If your default PayPal account currency differs from the payout currency, PayPal will convert the deposit amount into your default currency using the prevailing exchange rate determined by PayPal.</p>`
   }
 })

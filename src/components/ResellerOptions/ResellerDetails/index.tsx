@@ -19,6 +19,7 @@ import {
   Subtitle,
   InfoIcon,
   PopoverText,
+  PopoverStyled,
   MessageText,
 } from './styledComponents'
 
@@ -28,7 +29,6 @@ import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
-import Popover from 'antd/lib/popover'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
@@ -131,21 +131,17 @@ class ResellerDetails extends React.Component<Props, {}> {
         }
         {(onlyDetails || isAdmin) &&
           <OptionsContainer>
-            <LabelButton>
+            {isAdmin && <LabelButton>
               <Title>
-                {formatMessage(messages[isAdmin ? 'enabled' : 'status'])}
+                {formatMessage(messages.enabled)}
               </Title>
-              {isAdmin ?
-                <StyledSwitch
-                  disabled={hasChanged}
-                  checked={isActive}
-                  onChange={this.enableStatus}
-                /> :
-                <BoldLabel>
-                  {status}
-                </BoldLabel>
-              }
+              <StyledSwitch
+                disabled={hasChanged}
+                checked={isActive}
+                onChange={this.enableStatus}
+              />
             </LabelButton>
+            }
             {isAdmin && status === PENDING &&
               <>
                 <LabelButton>
@@ -162,7 +158,7 @@ class ResellerDetails extends React.Component<Props, {}> {
                 </LabelButton>
               </>
             }
-            {isActive &&
+            {isAdmin &&
               <LabelButton>
                 <Title>
                   {formatMessage(messages.activationDate)}
@@ -174,20 +170,36 @@ class ResellerDetails extends React.Component<Props, {}> {
                 }
               </LabelButton>
             }
-            <LabelButton>
-              <Title>
-                {formatMessage(messages.taxForm)}
-              </Title>
-              <FileLink onClick={this.openFile}>
-                <Clip type="paper-clip" />
-                {fileName}
-              </FileLink>
-            </LabelButton>
+            {isAdmin &&
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.taxForm)}
+                </Title>
+                <FileLink onClick={this.openFile}>
+                  <Clip type="paper-clip" />
+                  {fileName}
+                </FileLink>
+              </LabelButton>
+            }
             {isActive &&
               <>
                 <LabelButton>
                   <Title>
                     {formatMessage(messages.comissions)}
+                    {!isAdmin &&
+                      <PopoverStyled
+                        trigger="click"
+                        content={
+                          <PopoverText
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(messages.marginPopover)
+                            }}
+                          />
+                        }
+                      >
+                        <InfoIcon type="info-circle" />
+                      </PopoverStyled>
+                    }
                   </Title>
                   {isAdmin ?
                     <StyledInputNumber
@@ -203,54 +215,55 @@ class ResellerDetails extends React.Component<Props, {}> {
                     </BoldLabel>
                   }
                 </LabelButton>
-                <LabelButton>
-                  <Title>
-                    {formatMessage(messages.customMargin)}
-                  </Title>
-                  {isAdmin ?
-                    <StyledInputNumber
-                      onChange={this.debounceComission}
-                      value={comission}
-                      min={0}
-                      max={100}
-                      formatter={rawValue => `${rawValue}%`}
-                      parser={value => value.replace(DECIMAL_REGEX, '')}
-                    />
-                    : <BoldLabel>
-                      {`${comission}%`}
-                    </BoldLabel>
-                  }
-                </LabelButton>
-                <LabelButton>
-                  <Title>
-                    {formatMessage(messages.inlineMargin)}
-                  </Title>
-                  {isAdmin ?
-                    <StyledInputNumber
-                      onChange={this.debounceInline}
-                      value={inline}
-                      min={0}
-                      max={100}
-                      formatter={rawValue => `${rawValue}%`}
-                      parser={value => value.replace(DECIMAL_REGEX, '')}
-                    />
-                    : <BoldLabel>
-                      {`${inline}%`}
-                    </BoldLabel>
-                  }
-                </LabelButton>
+                {isAdmin &&
+                  <>
+                    <LabelButton>
+                      <Title>
+                        {formatMessage(messages.customMargin)}
+                      </Title>
+                      <StyledInputNumber
+                        onChange={this.debounceComission}
+                        value={comission}
+                        min={0}
+                        max={100}
+                        formatter={rawValue => `${rawValue}%`}
+                        parser={value => value.replace(DECIMAL_REGEX, '')}
+                      />
+
+                    </LabelButton>
+                    <LabelButton>
+                      <Title>
+                        {formatMessage(messages.inlineMargin)}
+                      </Title>
+                      <StyledInputNumber
+                        onChange={this.debounceInline}
+                        value={inline}
+                        min={0}
+                        max={100}
+                        formatter={rawValue => `${rawValue}%`}
+                        parser={value => value.replace(DECIMAL_REGEX, '')}
+                      />
+                    </LabelButton>
+                  </>
+                }
               </>
             }
             <LabelButton>
               <Title>
                 {formatMessage(messages.currency)}
-                {!isAdmin && <Popover content={
-                  <PopoverText>
-                    {formatMessage(messages.payoutDesc)}
-                  </PopoverText>
-                } title={formatMessage(messages.currency)}>
-                  <InfoIcon type="info-circle" />
-                </Popover>}
+                {!isAdmin &&
+                  <PopoverStyled
+                    trigger="click"
+                    content={
+                      <PopoverText
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.payoutDesc)
+                        }}
+                      />
+                    } >
+                    <InfoIcon type="info-circle" />
+                  </PopoverStyled>
+                }
               </Title>
               <BoldLabel upperCase={true}>
                 {currency}
@@ -280,7 +293,8 @@ class ResellerDetails extends React.Component<Props, {}> {
             }
           </OptionsContainer>
         }
-        {isActive && !onlyDetails &&
+        {
+          isActive && !onlyDetails &&
           <PaymentsList
             {...{
               formatMessage,
@@ -292,7 +306,7 @@ class ResellerDetails extends React.Component<Props, {}> {
             }}
           />
         }
-      </Container>
+      </Container >
     )
   }
 }
