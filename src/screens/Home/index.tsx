@@ -49,7 +49,7 @@ import {
   DeliveryContainer,
   HeaderInfoTitle
 } from './styledComponents'
-import { getDesignLabInfo } from './data'
+import { getDesignLabInfo, profileSettingsQuery } from './data'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
@@ -69,12 +69,15 @@ import {
   HeaderImagePlaceHolder,
   HomepageCarousel,
   ProductFile,
-  DeliveryDays
+  DeliveryDays, IProfileSettings
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
 import { getFileExtension } from '../../utils/utilsFiles'
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 interface Data extends QueryProps {
   files: any
 }
@@ -91,6 +94,7 @@ interface Props extends RouteComponentProps<any> {
   someKey?: string
   client: any
   productId: number
+  profileData: ProfileData
   loading: boolean
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
@@ -182,6 +186,7 @@ export class Home extends React.Component<Props, {}> {
       searchString,
       intl,
       fakeWidth,
+      profileData,
       currentCurrency,
       clientInfo,
       mainHeaderImages,
@@ -207,7 +212,7 @@ export class Home extends React.Component<Props, {}> {
       'deliveryDays.days',
       null
     )
-
+    const reseller = get(profileData, 'profileData.reseller', {})
     const deliveryDate = get(dataDesignLabInfo, 'deliveryDate.date', null)
 
     const today = new Date()
@@ -229,7 +234,7 @@ export class Home extends React.Component<Props, {}> {
         formatMessage={intl.formatMessage}
         openQuickView={this.handleOnQuickView}
         currentCurrency={currentCurrency || config.defaultCurrency}
-        {...{ history, featuredProducts }}
+        {...{ history, featuredProducts, reseller }}
       />
     )
     const mainHeaderItems = mainHeaderImages.map(
@@ -365,11 +370,11 @@ export class Home extends React.Component<Props, {}> {
                   <source src={url} type="video/mp4" />
                 </SlideVideo>
               ) : (
-                <ImageContainer>
-                  <SlideImage src={url} />
-                  <SlideImageMobile src={urlMobile} />
-                </ImageContainer>
-              )}
+                  <ImageContainer>
+                    <SlideImage src={url} />
+                    <SlideImageMobile src={urlMobile} />
+                  </ImageContainer>
+                )}
             </SlideImageContainer>
           ))}
           <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
@@ -404,6 +409,12 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
+  graphql(profileSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'profileData'
+  }),
   graphql<DesignLab>(getDesignLabInfo, {
     options: () => ({
       fetchPolicy: 'network-only'
