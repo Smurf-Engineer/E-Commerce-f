@@ -61,7 +61,8 @@ import {
   MenIcon,
   WomenIcon,
   layoutStyle,
-  CustomizeButton
+  CustomizeButton,
+  DealerTitle
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
@@ -212,7 +213,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       const originalPriceRange = get(productData, 'priceRange', [])
       const comissionToApply = isRetail ? inline : comission
       const purchasePrices = originalPriceRange.map((priceItem) => {
-        const price = Number((priceItem.price * (1 - (comissionToApply / 100))).toFixed(2))
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
         return { ...priceItem, price }
       })
       product = { ...product, priceRange: purchasePrices }
@@ -646,6 +647,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
+                {isReseller && <DealerTitle>{formatMessage(messages.dealerPricing)}</DealerTitle>}
                 <PricesRow>{isRetail ? retailPrice : renderPrices}</PricesRow>
                 <Ratings
                   stars={5}

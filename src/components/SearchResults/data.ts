@@ -33,5 +33,12 @@ export const searchResultsQuery = gql`
         image
       }
     }
+    profileData: getUserProfile {
+      reseller {
+        status
+        comission
+        inline
+      }
+    }
   }
 `

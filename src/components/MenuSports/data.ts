@@ -10,5 +10,12 @@ export const categoriesQuery = gql`
       id
       name
     }
+    profileData: getUserProfile {
+      reseller {
+        status
+        comission
+        inline
+      }
+    }
   }
 `

@@ -132,7 +132,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           if (isResellerOwner) {
             const originalPriceRange = get(product, 'priceRange', [])
             const purchasePrices = originalPriceRange.map((priceItem) => {
-              const price = Number((priceItem.price * (1 - (resellerComission / 100))).toFixed(2))
+              const price = (priceItem.price * (1 - (resellerComission / 100))).toFixed(2)
               return { ...priceItem, price }
             })
             product = { ...product, priceRange: purchasePrices }

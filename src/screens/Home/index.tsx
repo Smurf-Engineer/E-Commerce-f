@@ -49,7 +49,7 @@ import {
   DeliveryContainer,
   HeaderInfoTitle
 } from './styledComponents'
-import { getDesignLabInfo, profileSettingsQuery } from './data'
+import { getDesignLabInfo } from './data'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
@@ -75,15 +75,13 @@ import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
 import { getFileExtension } from '../../utils/utilsFiles'
 
-interface ProfileData extends QueryProps {
-  profileData: IProfileSettings
-}
 interface Data extends QueryProps {
   files: any
 }
 
 interface DesignLab extends QueryProps {
   designInfo?: DeliveryDays
+  profileData: IProfileSettings
 }
 
 const arrowLeft = <Arrow src={leftArrow} />
@@ -94,7 +92,6 @@ interface Props extends RouteComponentProps<any> {
   someKey?: string
   client: any
   productId: number
-  profileData: ProfileData
   loading: boolean
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
@@ -186,7 +183,6 @@ export class Home extends React.Component<Props, {}> {
       searchString,
       intl,
       fakeWidth,
-      profileData,
       currentCurrency,
       clientInfo,
       mainHeaderImages,
@@ -212,7 +208,7 @@ export class Home extends React.Component<Props, {}> {
       'deliveryDays.days',
       null
     )
-    const reseller = get(profileData, 'profileData.reseller', {})
+    const reseller = get(dataDesignLabInfo, 'profileData.reseller', {})
     const deliveryDate = get(dataDesignLabInfo, 'deliveryDate.date', null)
 
     const today = new Date()
@@ -409,12 +405,6 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomeEnhance = compose(
   injectIntl,
   withApollo,
-  graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
-  }),
   graphql<DesignLab>(getDesignLabInfo, {
     options: () => ({
       fetchPolicy: 'network-only'

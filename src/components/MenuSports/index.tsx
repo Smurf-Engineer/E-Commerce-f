@@ -16,12 +16,13 @@ import {
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
-import { Filter, QueryProps } from '../../types/common'
+import { Filter, IProfileSettings, QueryProps } from '../../types/common'
 import { categoriesQuery } from './data'
 import Spin from 'antd/lib/spin'
 
 interface Data extends QueryProps {
   categories: Filter[]
+  profileData: IProfileSettings
 }
 
 interface Props {
@@ -101,7 +102,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       sports,
       formatMessage,
       currentCurrency,
-      data: { categories, loading },
+      data: { categories, loading, profileData },
       genderOptions
     } = this.props
 
@@ -116,6 +117,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
         </LoadingContainer>
       )
     }
+    const reseller = get(profileData, 'reseller', {})
     const sportFilter = this.getFilter(sports, type)
     const categoryFilter = this.getFilter(categories, categorySelected)
     const genderFilter = this.getFilter(genderOptions, genderSelected)
@@ -155,6 +157,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
               sportFilter,
               categoryFilter,
               onPressCustomize,
+              reseller,
               onPressQuickView,
               formatMessage,
               currentCurrency

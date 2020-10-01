@@ -99,11 +99,6 @@ export const getDesignLabInfo = gql`
     deliveryDate: getDesignLabInfo(onlyData: false) {
       date: delivery_days
     }
-  }
-`
-
-export const profileSettingsQuery = gql`
-  query profile {
     profileData: getUserProfile {
       reseller {
         status

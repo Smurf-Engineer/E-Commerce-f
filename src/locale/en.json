@@ -1334,6 +1334,7 @@
   "screens.Designs.errorMessage": "Seems like the design was deleted or is not available",
   "screens.ProductDetail.customizeLabel": "START YOUR DESIGN",
   "screens.ProductDetail.customize": "Customize",
+  "screens.ProductDetail.dealerPricing": "Dealer pricing",
   "screens.ProductDetail.buyNowLabel": "BUY NOW",
   "screens.ProductDetail.intendedUseLabel": "INTENDED USE",
   "screens.ProductDetail.detailsLabel": "Additional Product Details",

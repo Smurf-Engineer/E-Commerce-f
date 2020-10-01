@@ -6,7 +6,7 @@ import { graphql, compose } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import AnimateHeight from 'react-animate-height'
 import CloseIcon from '../../assets/cancel-button.svg'
-import { QueryProps, Product } from '../../types/common'
+import { QueryProps, Product, IProfileSettings } from '../../types/common'
 import { searchResultsQuery } from './data'
 import {
   Container,
@@ -18,9 +18,12 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import ProductThumbnail from '../ProductThumbnail'
+import get from 'lodash/get'
+import { APPROVED } from '../../constants'
 
 interface Data extends QueryProps {
   productSearch: Product[]
+  profileData: IProfileSettings
 }
 
 interface Props {
@@ -49,7 +52,7 @@ export class SearchResults extends React.Component<Props, {}> {
       closeResults,
       quickViewAction,
       currentCurrency,
-      data: { productSearch, loading }
+      data: { productSearch, loading, profileData }
     } = this.props
 
     // TODO: REMOVE IT LATER
@@ -59,10 +62,22 @@ export class SearchResults extends React.Component<Props, {}> {
 
     let list: JSX.Element[] = []
     let totalProducts = 0
-
+    const reseller = get(profileData, 'reseller', {})
+    const { status, inline = 0, comission = 0 } = reseller || {}
+    const isReseller = status === APPROVED
     if (!loading && productSearch) {
       totalProducts = productSearch.length
-      list = productSearch.map((product, key) => {
+      list = productSearch.map((productData, key) => {
+        let product = productData
+        if (isReseller) {
+          const originalPriceRange = get(productData, 'priceRange', [])
+          const comissionToApply = product.customizable ? comission : inline
+          const purchasePrices = originalPriceRange.map((priceItem) => {
+            const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+            return { ...priceItem, price }
+          })
+          product = { ...product, priceRange: purchasePrices }
+        }
         const {
           id,
           yotpoId,
@@ -102,8 +117,8 @@ export class SearchResults extends React.Component<Props, {}> {
                 customizable ? (
                   <FormattedMessage {...messages.customizeLabel} />
                 ) : (
-                  <FormattedMessage {...messages.fullDetailsLabel} />
-                )
+                    <FormattedMessage {...messages.fullDetailsLabel} />
+                  )
               }
             />
           </ResultDiv>
