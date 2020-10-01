@@ -40,6 +40,8 @@ export const Title = styled.div`
   line-height: 27px;
 `
 
+export const DescDiv = styled.div``
+
 export const Subtitle = styled.div`
   color: #5f6062;
   font-size: 18px;

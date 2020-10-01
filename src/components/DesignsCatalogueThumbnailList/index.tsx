@@ -215,8 +215,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             : currentRangeAttributes.price
           const currentPriceText = `${fixedPriceValue.shortName
             } ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price
-            }`
+          const targetPriceText = `${targetPriceValue.shortName}
+          ${isResellerOwner ? targetPriceValue.price.toFixed(2) : targetPriceValue.price}`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
               itemsLeft: `<strong>${currentRangeAttributes.itemsLeft

@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
 import { GRAY_DARK, BLUE } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
+import Popover from 'antd/lib/popover'
 
 export const Container = styled.div``
 
@@ -21,6 +22,24 @@ export const Table = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin-bottom: 0;
+  }
+`
+
+export const InfoIcon = styled(Icon)`
+`
+
+export const PopoverStyled = styled(Popover)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  max-width: 382px;
+  width: 100%;
+  span {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
   }
 `
 

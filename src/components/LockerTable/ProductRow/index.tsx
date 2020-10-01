@@ -230,7 +230,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <StyledInput
                   id={index}
                   onChange={this.onSetPrice}
-                  value={resellerPrice}
+                  value={resellerPrice || fixedPrice}
                 />
               </Cell>
             }

@@ -41,11 +41,11 @@ export default defineMessages({
   },
   teamPrice: {
     id: 'components.LockerTable.teamPrice',
-    defaultMessage: '2-5pc Price'
+    defaultMessage: 'MSRP'
   },
   purchasePrice: {
     id: 'components.LockerTable.purchasePrice',
-    defaultMessage: 'Purchase Price'
+    defaultMessage: 'Dealer Price'
   },
   yourPrice: {
     id: 'components.LockerTable.yourPrice',
@@ -75,5 +75,20 @@ export default defineMessages({
   quantity: {
     id: 'components.LockerTable.quantity',
     defaultMessage: 'QTY Ordered'
-  }
+  },
+  msrpDesc: {
+    id: 'components.LockerTable.msrpDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>MSRP</span>The <b>MSRP</b> is Jakroo’s default on-demand store price. This may serve as a benchmark for setting your list price.'
+  },
+  dealerPrice: {
+    id: 'components.LockerTable.dealerPrice',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>DEALER PRICE</span>The <b>Dealer Price</b> is the price used to calculate your profit. This price is static and will not change based on quantity sold.'
+  },
+  listPriceDesc: {
+    id: 'components.LockerTable.listPriceDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>LIST PRICE</span>The <b>List Price</b> is what your customers will see on the store. The minimum price allowed is the MSRP. You can set a higher price to increase your profit amount.'
+  },
 })

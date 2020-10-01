@@ -13,7 +13,7 @@ import {
   Question,
   ModalTitle,
   buttonStyle,
-  InfoBody
+  InfoBody, PopoverStyled, PopoverText, InfoIcon
 } from './styledComponents'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
@@ -33,6 +33,7 @@ interface Header {
   width?: number
   withHelp?: boolean
   tabletWidth?: number
+  helpMessage?: string
 }
 
 const PERSONAL = 'Personal'
@@ -54,9 +55,9 @@ const resellerTitles: Header[] = [
   { message: '', width: 20, tabletWidth: 20 },
   { message: '', width: 10, tabletWidth: 10 },
   { message: '', width: 10, tabletWidth: 10 },
-  { message: 'teamPrice', width: 10, tabletWidth: 10 },
-  { message: 'purchasePrice', width: 10, tabletWidth: 10 },
-  { message: 'yourPrice', width: 10, tabletWidth: 10 },
+  { message: 'teamPrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'msrpDesc' },
+  { message: 'purchasePrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'dealerPrice' },
+  { message: 'yourPrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'listPriceDesc' },
   { message: 'profit', width: 10, tabletWidth: 10 },
   { message: 'visible', width: 10, tabletWidth: 10 },
   { message: '', width: 15, tabletWidth: 10 }
@@ -222,11 +223,25 @@ class LockerTable extends React.PureComponent<Props, {}> {
       <Table>
         <HeaderRow>
           {headerTitles.map(
-            ({ width, tabletWidth, message, withHelp }, key) => (
+            ({ width, tabletWidth, message, withHelp, helpMessage }, key) => (
               <Cell {...{ key, width, tabletWidth }}>
                 <Title>
                   {message ? formatMessage(messsages[message]) : ''}
                 </Title>
+                {isReseller && withHelp && !!helpMessage &&
+                  <PopoverStyled
+                    trigger="click"
+                    content={
+                      <PopoverText
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messsages[helpMessage])
+                        }}
+                      />
+                    }
+                  >
+                    <InfoIcon type="info-circle" />
+                  </PopoverStyled>
+                }
                 {withHelp && isFixed && (
                   <Question
                     onClick={this.onTogglePriceModal}
