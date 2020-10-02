@@ -294,7 +294,7 @@ class MainLayout extends React.Component<Props, {}> {
           />
         </Header>
         <SearchResults
-          {...{ history, SearchResults }}
+          {...{ history, SearchResults, user }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}

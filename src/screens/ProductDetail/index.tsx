@@ -84,7 +84,7 @@ import {
   ProductColors,
   ProductFile,
   ItemDetailType,
-  BreadRoute, IProfileSettings
+  BreadRoute, IProfileSettings, UserType
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
@@ -794,12 +794,14 @@ const mapStateToProps = (state: any) => {
   const menuSports = state.get('menuSports').toJS()
   const langProps = state.get('languageProvider').toJS()
   const responsive = state.get('responsive').toJS()
+  const app = state.get('app').toJS()
   return {
     ...productDetail,
     ...menu,
     ...menuSports,
     ...langProps,
-    ...responsive
+    ...responsive,
+    ...app
   }
 }
 
@@ -807,15 +809,21 @@ type OwnProps = {
   productId?: number
   match?: any
   location?: any
+  user?: UserType
 }
 
 const ProductDetailEnhance = compose(
+  connect(
+    mapStateToProps,
+    { ...productDetailActions }
+  ),
   injectIntl,
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
   }),
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
@@ -830,11 +838,7 @@ const ProductDetailEnhance = compose(
         fetchPolicy: 'network-only'
       }
     }
-  }),
-  connect(
-    mapStateToProps,
-    { ...productDetailActions }
-  )
+  })
 )(ProductDetail)
 
 export default ProductDetailEnhance

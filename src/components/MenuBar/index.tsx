@@ -104,7 +104,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     window.location.replace(
       `/${regionCode}?lang=${currentLanguage ||
-        'en'}&currency=${currentCurrency}`
+      'en'}&currency=${currentCurrency}`
     )
   }
 
@@ -172,13 +172,13 @@ class MenuBar extends React.Component<Props, StateProps> {
         {formatMessage(messages.title)}
       </TopText>
     ) : (
-      <Logout
-        {...{ history }}
-        title={`${String(user.name).toUpperCase()}`}
-        logout={logoutAction}
-        goTo={this.handleOnGoTo}
-      />
-    )
+        <Logout
+          {...{ history }}
+          title={`${String(user.name).toUpperCase()}`}
+          logout={logoutAction}
+          goTo={this.handleOnGoTo}
+        />
+      )
 
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
@@ -207,14 +207,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         <div />
       </BottomRow>
     ) : (
-      <BottomRow>
-        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList
-          {...{ history, formatMessage, currentCurrency, regionsCodes }}
-        />
-        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
-      </BottomRow>
-    )
+        <BottomRow>
+          <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+          <DropdownList
+            {...{ history, formatMessage, currentCurrency, regionsCodes, user }}
+          />
+          <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
+        </BottomRow>
+      )
 
     return (
       <div>

@@ -223,6 +223,11 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       typeFilters
     ]
 
+    let user: any
+    if (typeof window !== 'undefined') {
+      user = JSON.parse(localStorage.getItem('user') as string)
+    }
+
     const renderFilters = filtersGraph.map(
       (filter: FilterType, index: number) => {
         const filterToShow = this.state[`show${filter.name}Filters`]
@@ -339,6 +344,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             orderBy,
                             limit,
                             openQuickView,
+                            user,
                             history,
                             sortByLabel,
                             currentPage,
@@ -382,6 +388,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         openQuickView,
                         history,
                         sortByLabel,
+                        user,
                         currentPage,
                         contentTile
                       }}

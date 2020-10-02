@@ -6,8 +6,8 @@ import { graphql, compose } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import AnimateHeight from 'react-animate-height'
 import CloseIcon from '../../assets/cancel-button.svg'
-import { QueryProps, Product, IProfileSettings } from '../../types/common'
-import { searchResultsQuery } from './data'
+import { QueryProps, Product, IProfileSettings, User } from '../../types/common'
+import { profileSettingsQuery, searchResultsQuery } from './data'
 import {
   Container,
   Text,
@@ -23,12 +23,16 @@ import { APPROVED } from '../../constants'
 
 interface Data extends QueryProps {
   productSearch: Product[]
+}
+
+interface ProfileData extends QueryProps {
   profileData: IProfileSettings
 }
 
 interface Props {
   data: Data
   searchParam: string
+  profileData: ProfileData
   showResults: boolean
   closeResults: () => void
   openResults: () => void
@@ -50,9 +54,10 @@ export class SearchResults extends React.Component<Props, {}> {
       searchParam,
       showResults,
       closeResults,
+      profileData,
       quickViewAction,
       currentCurrency,
-      data: { productSearch, loading, profileData }
+      data: { productSearch, loading }
     } = this.props
 
     // TODO: REMOVE IT LATER
@@ -62,7 +67,7 @@ export class SearchResults extends React.Component<Props, {}> {
 
     let list: JSX.Element[] = []
     let totalProducts = 0
-    const reseller = get(profileData, 'reseller', {})
+    const reseller = get(profileData, 'profileData.reseller', {})
     const { status, inline = 0, comission = 0 } = reseller || {}
     const isReseller = status === APPROVED
     if (!loading && productSearch) {
@@ -146,9 +151,17 @@ export class SearchResults extends React.Component<Props, {}> {
 
 type OwnProps = {
   searchParam?: string
+  user?: User
 }
 
 const searchEnhance = compose(
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<Data>(searchResultsQuery, {
     options: ({ searchParam }: OwnProps) => ({
       fetchPolicy: 'network-only',
