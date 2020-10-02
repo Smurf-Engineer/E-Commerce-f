@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'components.ResellerDetails.comissions',
     defaultMessage: 'Dealer Margin'
   },
+  storeMargin: {
+    id: 'components.ResellerDetails.storeMargin',
+    defaultMessage: 'Store Margin'
+  },
+  dealerMargins: {
+    id: 'components.ResellerDetails.dealerMargins',
+    defaultMessage: 'Dealer Margins'
+  },
   marginPopover: {
     id: 'components.ResellerDetails.marginPopover',
     // tslint:disable-next-line: max-line-length

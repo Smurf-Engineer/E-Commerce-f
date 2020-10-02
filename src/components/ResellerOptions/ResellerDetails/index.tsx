@@ -21,6 +21,7 @@ import {
   PopoverText,
   PopoverStyled,
   MessageText,
+  MarginsContainer, SubtitleMargin
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -181,72 +182,27 @@ class ResellerDetails extends React.Component<Props, {}> {
                 </FileLink>
               </LabelButton>
             }
-            {isActive &&
-              <>
-                <LabelButton>
-                  <Title>
-                    {formatMessage(messages.comissions)}
-                    {!isAdmin &&
-                      <PopoverStyled
-                        trigger="click"
-                        content={
-                          <PopoverText
-                            dangerouslySetInnerHTML={{
-                              __html: formatMessage(messages.marginPopover)
-                            }}
-                          />
-                        }
-                      >
-                        <InfoIcon type="info-circle" />
-                      </PopoverStyled>
+            {isActive && !isAdmin &&
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.comissions)}
+                  <PopoverStyled
+                    trigger="click"
+                    content={
+                      <PopoverText
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.marginPopover)
+                        }}
+                      />
                     }
-                  </Title>
-                  {isAdmin ?
-                    <StyledInputNumber
-                      onChange={this.debounceMargin}
-                      value={margin}
-                      min={0}
-                      max={100}
-                      formatter={rawValue => `${rawValue}%`}
-                      parser={value => value.replace(DECIMAL_REGEX, '')}
-                    />
-                    : <BoldLabel>
-                      {`${margin}%`}
-                    </BoldLabel>
-                  }
-                </LabelButton>
-                {isAdmin &&
-                  <>
-                    <LabelButton>
-                      <Title>
-                        {formatMessage(messages.customMargin)}
-                      </Title>
-                      <StyledInputNumber
-                        onChange={this.debounceComission}
-                        value={comission}
-                        min={0}
-                        max={100}
-                        formatter={rawValue => `${rawValue}%`}
-                        parser={value => value.replace(DECIMAL_REGEX, '')}
-                      />
-
-                    </LabelButton>
-                    <LabelButton>
-                      <Title>
-                        {formatMessage(messages.inlineMargin)}
-                      </Title>
-                      <StyledInputNumber
-                        onChange={this.debounceInline}
-                        value={inline}
-                        min={0}
-                        max={100}
-                        formatter={rawValue => `${rawValue}%`}
-                        parser={value => value.replace(DECIMAL_REGEX, '')}
-                      />
-                    </LabelButton>
-                  </>
-                }
-              </>
+                  >
+                    <InfoIcon type="info-circle" />
+                  </PopoverStyled>
+                </Title>
+                <BoldLabel>
+                  {`${margin}%`}
+                </BoldLabel>
+              </LabelButton>
             }
             <LabelButton>
               <Title>
@@ -292,6 +248,55 @@ class ResellerDetails extends React.Component<Props, {}> {
             </LabelButton>
             }
           </OptionsContainer>
+        }
+        {isAdmin && isActive &&
+          <>
+            <SubtitleMargin>
+              {formatMessage(messages.dealerMargins)}
+            </SubtitleMargin>
+            <MarginsContainer>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.storeMargin)}
+                </Title>
+                <StyledInputNumber
+                  onChange={this.debounceMargin}
+                  value={margin}
+                  min={0}
+                  max={100}
+                  formatter={rawValue => `${rawValue}%`}
+                  parser={value => value.replace(DECIMAL_REGEX, '')}
+                />
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.customMargin)}
+                </Title>
+                <StyledInputNumber
+                  onChange={this.debounceComission}
+                  value={comission}
+                  min={0}
+                  max={100}
+                  formatter={rawValue => `${rawValue}%`}
+                  parser={value => value.replace(DECIMAL_REGEX, '')}
+                />
+
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.inlineMargin)}
+                </Title>
+                <StyledInputNumber
+                  onChange={this.debounceInline}
+                  value={inline}
+                  min={0}
+                  max={100}
+                  formatter={rawValue => `${rawValue}%`}
+                  parser={value => value.replace(DECIMAL_REGEX, '')}
+                />
+              </LabelButton>
+            </MarginsContainer>
+          </>
         }
         {
           isActive && !onlyDetails &&

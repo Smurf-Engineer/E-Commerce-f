@@ -26,6 +26,25 @@ export const Container = styled.div`
   }
 `
 
+export const MarginsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  margin-top: 22px;
+  margin-bottom: 22px;
+`
+
+export const SubtitleMargin = styled.div`
+  font-weight: bold;
+  margin-top: 22px;
+  font-size: 16px;
+  padding-bottom: 12px;
+  width: 100%;
+  border-bottom: 1px solid ${GRAY};
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
+`
+
 export const PopoverStyled = styled(Popover)`
   cursor: pointer;
 `
