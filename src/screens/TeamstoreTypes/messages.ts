@@ -11,7 +11,7 @@ export default defineMessages({
   },
   idealForSmall: {
     id: 'screens.TeamstoreTypes.idealForSmall',
-    defaultMessage: 'Ideal for small groups less than 6 members'
+    defaultMessage: 'Ideal for small groups with less than 6 members'
   },
   fastTurnaround: {
     id: 'screens.TeamstoreTypes.fastTurnaround',
