@@ -119,6 +119,12 @@ export type HomePageBatch = {
   result: string
 }
 
+export type DesignLabInfo = {
+  cutOffDays: string
+  deliveryDays: string
+  tutorialPlaylist: string
+}
+
 type ExtraFile = {
   white: string
   black: string
