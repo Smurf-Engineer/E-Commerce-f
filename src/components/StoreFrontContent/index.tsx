@@ -113,6 +113,9 @@ interface Props {
 const invalidDateExp = /\bInvalid date\b/
 const LIMIT = 12
 
+const ON_DEMAND_ORDERING = 'ON-DEMAND ORDERING'
+const BATCH_ORDERING = 'BATCH ORDER STORES'
+
 export class StoreFrontContent extends React.Component<Props, StateProps> {
   state = {
     showMuch: false,
@@ -287,8 +290,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const teamSizeId = get(getTeamStore, 'team_size_id', 0)
     const priceRanges = getTeamStore ? getTeamStore.priceRanges || [] : []
     const bulletin = get(getTeamStore, 'bulletin', '')
-    const shareStoreUrl = `${
-      config.baseUrl
+    const shareStoreUrl = `${config.baseUrl
       }store-front?storeId=${teamStoreShortId}`
 
     const totalDesigns = get(getTeamStore, 'totalDesigns', 0)
@@ -457,7 +459,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
                     <AboutContainer>
                       <AboutTitle>
-                        <FormattedMessage {...messages.aboutOrdering} />
+                        <FormattedMessage {...messages.aboutOrdering}
+                          values={{ teamType: onDemandMode ? ON_DEMAND_ORDERING : BATCH_ORDERING }}
+                        />
                       </AboutTitle>
                       <ProductInfo
                         id="Much"
