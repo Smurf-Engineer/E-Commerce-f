@@ -370,7 +370,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
 
     const itemToAdd = Object.assign({}, { product }, { itemDetails })
-
     const addToCartRow = (
       <ButtonsRow>
         {(active || onlyProDesign) &&
@@ -380,7 +379,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             item={itemToAdd}
             itemProdPage={true}
             withoutTop={true}
-            isFixed={!teamOnDemand}
+            isFixed={teamStoreItem && !teamOnDemand}
             teamStoreId={teamStoreShortId}
             fixedPrices={teamPrice}
             {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
