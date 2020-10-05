@@ -160,7 +160,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       confirmPassword,
       website,
       currency,
-      sendSms,
+      // sendSms,
       sendMail,
       terms,
       fileName
@@ -313,13 +313,13 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                 >
                   <FormattedMessage {...messages.sendMail} />
                 </CheckboxStyled>
-                <CheckboxStyled
+                {/* <CheckboxStyled
                   checked={sendSms}
                   name="sendSms"
                   onChange={this.handleCheckChange}
                 >
                   <FormattedMessage {...messages.sendSms} />
-                </CheckboxStyled>
+                </CheckboxStyled> */}
               </Checkboxes>
             </Notifications>
           </FormContainer>
@@ -390,6 +390,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       phone: '',
       email: '',
       password: '',
+      saving: false,
       confirmPassword: '',
       website: '',
       currency: '',
@@ -481,7 +482,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
         login(userData)
       }
       requestClose()
-      history.push('/account?option=resellerAbout')
+      history.replace('/account?option=resellerAbout')
     } catch (error) {
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
