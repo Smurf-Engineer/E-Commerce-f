@@ -24,7 +24,14 @@ import {
   TeamStoresMenuTitle,
   notificationStyles
 } from './styledComponents'
-import { regionsQuery, notificationsQuery, notificationsSubscription, setAsRead, setAllAsRead } from './data'
+import {
+  regionsQuery,
+  notificationsQuery,
+  notificationsSubscription,
+  setAsRead,
+  setAllAsRead,
+  upsertNotificationToken
+} from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -43,6 +50,7 @@ import {
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
 import config from '../../config'
+import { firebaseInit, getToken } from '../../utils/realtimeUtils'
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
@@ -83,6 +91,7 @@ interface Props {
   saveAndBuy: (buy: boolean) => void
   readNotification: (variables: {}) => Promise<NotificationsRead>
   readAllotification: (variables: {}) => Promise<MessagePayload>
+  upsertNotification: (variables: {}) => Promise<MessagePayload>
 }
 
 interface StateProps {
@@ -99,9 +108,10 @@ class MenuBar extends React.Component<Props, StateProps> {
     isMobile: false,
     updating: false
   }
-  componentWillMount() {
+  async componentWillMount() {
     const {
       notificationsData,
+      upsertNotification
     } = this.props
     const isBrowser = typeof window !== 'undefined'
 
@@ -113,6 +123,12 @@ class MenuBar extends React.Component<Props, StateProps> {
         user = JSON.parse(localStorage.getItem('user') as string)
       }
       if (user) {
+        await firebaseInit()
+        const token = await getToken()
+        console.log('FIRABSE ', token)
+        await upsertNotification({
+          variables: { token }
+        })
         subscribeToMore({
           document: notificationsSubscription,
           updateQuery: (prev: any, { subscriptionData }: any) => {
@@ -430,6 +446,7 @@ const MenuBarEnhanced = compose(
     }
   }),
   setAsRead,
-  setAllAsRead
+  setAllAsRead,
+  upsertNotificationToken
 )(MenuBar)
 export default MenuBarEnhanced

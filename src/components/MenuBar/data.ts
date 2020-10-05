@@ -83,6 +83,19 @@ export const setAsRead = graphql(
   }
 )
 
+export const upsertNotificationToken = graphql(
+  gql`
+    mutation upsertNotificationToken($token: String!) {
+      notification: upsertNotificationToken(token: $token) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'upsertNotification'
+  }
+)
+
 export const setAllAsRead = graphql(
   gql`
     mutation setAllNotificationRead {

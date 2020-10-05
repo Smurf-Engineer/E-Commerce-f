@@ -227,9 +227,11 @@ export class OrderFiles extends React.PureComponent<Props> {
                 {formatMessage(messages.legacy)}
               </Code>
               {legacyNumber}
-              <EditButton onClick={this.openEditLegacy}>
-                {formatMessage(messages.edit)}
-              </EditButton>
+              {canEdit &&
+                <EditButton onClick={this.openEditLegacy}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+              }
             </ModelNameContainer>
             <ModelNameContainer>
               <Code>
@@ -268,55 +270,56 @@ export class OrderFiles extends React.PureComponent<Props> {
               </PreflightCheckbox>
             </PreflightDiv>
           </SideData>
-          <RepsDiv>
-            <Selectable>
-              <Subtitle>
-                <FormattedMessage {...messages.salesRep} />
-              </Subtitle>
-              <StyledSelect
-                showSearch={true}
-                onChange={changeUserRep}
-                value={selectedRep}
-                notFoundContent={null}
-                allowClear={true}
-                defaultActiveFirstOption={false}
-                filterOption={false}
-                onSearch={searchReps}
-              >
-                {salesRepUsers.map(
-                  ({ shortId: repId, firstName, lastName }: User) => (
-                    <Option value={repId}>
-                      {firstName} {lastName}
-                    </Option>
-                  )
-                )}
-              </StyledSelect>
-            </Selectable>
-            <Selectable>
-              <Subtitle>
-                {' '}
-                <FormattedMessage {...messages.accountManager} />
-              </Subtitle>
-              <StyledSelect
-                showSearch={true}
-                onChange={changeManager}
-                value={selectedManager}
-                notFoundContent={null}
-                allowClear={true}
-                defaultActiveFirstOption={false}
-                filterOption={false}
-                onSearch={searchManagers}
-              >
-                {managersUsers.map(
-                  ({ shortId: managerId, firstName, lastName }: User) => (
-                    <Option value={managerId}>
-                      {firstName} {lastName}
-                    </Option>
-                  )
-                )}
-              </StyledSelect>
-            </Selectable>
-          </RepsDiv>
+          {canEdit &&
+            <RepsDiv>
+              <Selectable>
+                <Subtitle>
+                  <FormattedMessage {...messages.salesRep} />
+                </Subtitle>
+                <StyledSelect
+                  showSearch={true}
+                  onChange={changeUserRep}
+                  value={selectedRep}
+                  notFoundContent={null}
+                  allowClear={true}
+                  defaultActiveFirstOption={false}
+                  filterOption={false}
+                  onSearch={searchReps}
+                >
+                  {salesRepUsers.map(
+                    ({ shortId: repId, firstName, lastName }: User) => (
+                      <Option value={repId}>
+                        {firstName} {lastName}
+                      </Option>
+                    )
+                  )}
+                </StyledSelect>
+              </Selectable>
+              <Selectable>
+                <Subtitle>
+                  <FormattedMessage {...messages.accountManager} />
+                </Subtitle>
+                <StyledSelect
+                  showSearch={true}
+                  onChange={changeManager}
+                  value={selectedManager}
+                  notFoundContent={null}
+                  allowClear={true}
+                  defaultActiveFirstOption={false}
+                  filterOption={false}
+                  onSearch={searchManagers}
+                >
+                  {managersUsers.map(
+                    ({ shortId: managerId, firstName, lastName }: User) => (
+                      <Option value={managerId}>
+                        {firstName} {lastName}
+                      </Option>
+                    )
+                  )}
+                </StyledSelect>
+              </Selectable>
+            </RepsDiv>
+          }
         </FlexContainer>
         <Colors>
           <Code>Colors:</Code>

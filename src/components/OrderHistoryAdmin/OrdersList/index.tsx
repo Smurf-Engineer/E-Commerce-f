@@ -27,7 +27,8 @@ import withLoading from '../../WithLoading'
 import {
   getOrdersQuery,
   updateStatusMutation,
-  getOrdersPreflight
+  getOrdersPreflight,
+  sendOrderToNetsuite
 } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 import { PAID_STATUS, ERROR_STATUS, PAYMENT_ISSUE } from '../../../constants'
@@ -70,6 +71,7 @@ interface Props {
   onOrderClick: (shortId: string) => void
   onChangePage: (page: number) => void
   updateStatus: (variables: {}) => Promise<any>
+  sendOrder: (variables: {}) => Promise<any> // TODO: declare a type for order response
 }
 
 const OrdersList = ({
@@ -87,7 +89,8 @@ const OrdersList = ({
   withoutPadding = false,
   updateStatus,
   searchText,
-  preflightData
+  preflightData,
+  sendOrder
 }: Props) => {
   const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
   const fullCount = get(ordersQuery, 'fullCount', 0)
@@ -227,6 +230,18 @@ const OrdersList = ({
       }
     })
   }
+
+  const handleSendOrder = async (orderId: string) => {
+    try {
+      const order = await sendOrder({ variables: { orderId } })
+      if (!order.data.sendOrderToNetsuite.message) {
+        return message.error(formatMessage(messages.errorCreatingOrder))
+      }
+      message.success(order.data.sendOrderToNetsuite.message)
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
   const orderItems = orders.map(
     (
       {
@@ -273,6 +288,7 @@ const OrdersList = ({
           statusError={!!errorStatus || status === PAYMENT_ISSUE}
           pendingCheck={pendingChecks > 0 && !netsuiteStatus}
           status={errorStatus || netsuiteStatus || status}
+          sendOrder={handleSendOrder}
           {...{
             shortId,
             date,
@@ -287,7 +303,8 @@ const OrdersList = ({
             trackingNumber,
             source,
             cutoffDate,
-            handleOnUpdateStatus
+            handleOnUpdateStatus,
+            formatMessage
           }}
         />
       )
@@ -370,6 +387,7 @@ const OrdersListEnhance = compose(
     }
   }),
   updateStatusMutation,
+  sendOrderToNetsuite,
   withError,
   withLoading
 )(OrdersList)

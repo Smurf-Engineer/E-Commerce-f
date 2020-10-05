@@ -60,6 +60,7 @@
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
+    "firebase": "^7.22.0",
     "fontfaceobserver": "^2.0.13",
     "google-map-react": "^1.0.4",
     "graphql": "^0.12.3",
