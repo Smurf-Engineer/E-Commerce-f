@@ -94,6 +94,11 @@ export const OvalSelected = styled.div`
   align-self: center;
 `
 
+export const ColorWheel = styled.img`
+  width: 100%;
+  margin-bottom: 2px;
+`
+
 export const Arrow = styled(Icon)`
   color: #5f6062;
   font-size: 16px;

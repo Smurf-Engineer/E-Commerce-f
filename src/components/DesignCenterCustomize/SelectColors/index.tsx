@@ -51,6 +51,7 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  predyedLabel?: string
   onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
@@ -87,6 +88,7 @@ class SelectColors extends React.PureComponent<Props, State> {
       formatMessage,
       colors,
       colorsList,
+      predyedLabel,
       showContent,
       stitchingColor,
       bindingColor,
@@ -162,7 +164,7 @@ class SelectColors extends React.PureComponent<Props, State> {
         {hasBranding && (
           <AccessoryColor
             id={AccessoryColors.Predyed}
-            name={formatMessage(messages.predyedColor)}
+            name={predyedLabel || formatMessage(messages.predyedColor)}
             colorSelected={selectedPredyed}
             isPredyed={true}
             openHelp={this.openHelpModal}

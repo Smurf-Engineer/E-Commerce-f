@@ -12,9 +12,10 @@ import {
   Oval,
   Arrow,
   Colors,
-  OvalSelected, HintIcon
+  OvalSelected, HintIcon, ColorWheel
 } from './styledComponents'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
+import colorWheel from '../../../assets/Colorwheel.svg'
 import helpTooltip from '../../../assets/tooltip.svg'
 import { BLACK, WHITE } from '../../../screens/DesignCenter/constants'
 
@@ -76,7 +77,10 @@ const AccessoryColor = ({
                 onClick={onSelectBlack}
                 selected={colorSelected === BLACK}
               >
-                <Oval color={BLACK} />
+                {isPredyed ?
+                  <ColorWheel src={colorWheel} /> :
+                  <Oval color={BLACK} />
+                }
               </OvalSelected>
               <OvalSelected
                 onClick={onSelectWhite}

@@ -153,7 +153,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
     const baseColorsTab = index === BASE_COLORS_INDEX
     const palettesTab = index === PALETTES_COLORS_INDEX
     const stitchingTab = index === STITCHING_COLORS_INDEX
-
+    const predyedLabel = !!product ? product.predyedlabel : ''
     let topMessage = messages.selectColors
 
     if (palettesTab) {
@@ -197,6 +197,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
               zipperColor,
               bibColor,
               onAccessoryColorSelected,
+              predyedLabel,
               formatMessage,
               selectedPredyed,
               hasBranding,
