@@ -136,6 +136,8 @@ export interface Product {
   pictures?: any[]
   mediaFiles?: object[]
   description: string
+  branding?: string
+  predyedlabel?: string
   hasPredyed?: boolean
   productMaterials?: object[]
   designCenter?: boolean
