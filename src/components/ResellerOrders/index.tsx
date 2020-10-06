@@ -16,14 +16,13 @@ import {
   RepDiv,
   Cell,
   LoadingContainer,
-  InfoSection,
   HeaderList,
   InputDiv,
   StatusFilter,
-  OrderPoint,
   RangePickerStyled,
   ShowButton,
   PayIcon,
+  StatusDiv
 } from './styledComponents'
 import messages from './messages'
 import { ResellerPayment, QueryProps, AffiliatesResult, Message } from '../../types/common'
@@ -38,16 +37,17 @@ import Payday from '../../assets/jakroo_payday.png'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import Spin from 'antd/lib/spin'
 import MediaQuery from 'react-responsive'
-import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
+import { PENDING_PAY, TO_PAY, PAID, PROCESSING, FAILURE } from '../../constants'
 
 const { Option } = Select
 
 const statusList = [
   ALL_STATUS,
-  PREORDER,
-  PENDING_APPROVAL,
-  PAID_STATUS,
-  CANCELLED
+  PENDING_PAY,
+  TO_PAY,
+  PAID,
+  PROCESSING,
+  FAILURE
 ]
 
 interface Data extends QueryProps {
@@ -112,7 +112,6 @@ class ResellerOrders extends React.Component<Props, {}> {
       endDate,
       currentPage,
       statusValue,
-      orderValue,
       formatMessage,
     } = this.props
     const { loading } = data || {}
@@ -136,17 +135,15 @@ class ResellerOrders extends React.Component<Props, {}> {
         <HeaderList>
           <FormattedMessage {...messages.filterBy} />
           <InputDiv>
-            <StatusFilter
-              value={statusValue}
-              onChange={this.handleChangeStatus}
-            >
-              {selectOptions}
-            </StatusFilter>
-            <OrderPoint
-              value={orderValue}
-              onChange={this.handleChangeOrderPoint}
-              placeholder={formatMessage(messages.orderPoint)}
-            />
+            <StatusDiv>
+              <FormattedMessage {...messages.commisionStatus} />
+              <StatusFilter
+                value={statusValue}
+                onChange={this.handleChangeStatus}
+              >
+                {selectOptions}
+              </StatusFilter>
+            </StatusDiv>
             <RangePickerStyled
               value={rangeValue}
               placeholder={[formatMessage(messages.from), formatMessage(messages.to)]}
@@ -227,10 +224,6 @@ class ResellerOrders extends React.Component<Props, {}> {
                   )}
               </tbody>}
           </Table>
-          <InfoSection>
-            <FormattedMessage {...messages.qualified} />
-            <FormattedMessage {...messages.affiliateInfo} />
-          </InfoSection>
           <Pagination
             current={currentPage}
             pageSize={PAY_LIMITS}

@@ -160,9 +160,12 @@ export const InputDiv = styled.div`
   }
 `
 
-export const StatusFilter = styled(Select)`
+export const StatusDiv = styled.div`
   max-width: 188px;
   width: 100%;
+  font-size: 12px;
+  font-weight: normal;
+  margin-top: -20px;
   margin-right: 28px;
   .ant-select-selection--single {
     padding-top: 4px;
@@ -173,6 +176,11 @@ export const StatusFilter = styled(Select)`
   @media (max-width: 768px) {
     max-width: 100%;
   }
+`
+
+export const StatusFilter = styled(Select)`
+  width: 100%;
+  margin-top: 6px;
 `
 
 export const OrderPoint = styled(Input)`
