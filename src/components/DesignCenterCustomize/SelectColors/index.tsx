@@ -12,10 +12,11 @@ import {
   Divider,
   ColorsIcon,
   StyledButton,
-  ButtonContainer
+  ButtonContainer, Description, ExampleImage, HelpImage, PredyedImages, Title
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
 import colorsIcon from '../.../../../../assets/color_squares.svg'
+import HelpModal from '../../Common/JakrooModal'
 import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
@@ -25,6 +26,9 @@ import { ColorChart } from '../../ColorChart'
 import Message from 'antd/lib/message'
 import get from 'lodash/get'
 import find from 'lodash/find'
+
+const predyedFabric = 'https://storage.googleapis.com/jakroo/screens/predyed-fabric.jpg'
+const printedFabric = 'https://storage.googleapis.com/jakroo/screens/printed-fabric.jpg'
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
@@ -48,6 +52,7 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  predyedLabel?: string
   onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
@@ -63,7 +68,20 @@ interface Props {
   onOpenColorChart: () => void
 }
 
-class SelectColors extends React.PureComponent<Props, {}> {
+interface State {
+  openHelp: boolean
+}
+
+class SelectColors extends React.PureComponent<Props, State> {
+  state = {
+    openHelp: false
+  }
+  closeHelpModal = () => {
+    this.setState({ openHelp: false })
+  }
+  openHelpModal = () => {
+    this.setState({ openHelp: true })
+  }
   render() {
     const {
       goToBaseColors,
@@ -71,6 +89,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
       formatMessage,
       colors,
       colorsList,
+      predyedLabel,
       showContent,
       stitchingColor,
       bindingColor,
@@ -100,6 +119,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return null
     }
+    const { openHelp } = this.state
     let arrayColors: Color[] = []
     let stitchingLabel = ''
     if (colorsList && !colorsList.loading) {
@@ -145,9 +165,10 @@ class SelectColors extends React.PureComponent<Props, {}> {
         {hasBranding && (
           <AccessoryColor
             id={AccessoryColors.Predyed}
-            name={formatMessage(messages.predyedColor)}
+            name={predyedLabel || formatMessage(messages.predyedColor)}
             colorSelected={selectedPredyed}
             isPredyed={true}
+            openHelp={this.openHelpModal}
             onAccessoryColorSelected={onSelectPredyed}
           />
         )}
@@ -194,6 +215,30 @@ class SelectColors extends React.PureComponent<Props, {}> {
           loading={colorChartSending}
           {...{ onRequestColorChart }}
         />
+        <HelpModal
+          open={openHelp}
+          withLogo={false}
+          requestClose={this.closeHelpModal}
+        >
+          <Title dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.predyedTitle)
+          }} />
+          <PredyedImages>
+            <HelpImage>
+              <ExampleImage src={predyedFabric} />
+              {formatMessage(messages.predyedFabric)}
+            </HelpImage>
+            <HelpImage>
+              <ExampleImage src={printedFabric} />
+              {formatMessage(messages.printedFabric)}
+            </HelpImage>
+          </PredyedImages>
+          <Description
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.predyedDesc)
+            }}
+          />
+        </HelpModal>
       </Container>
     )
   }

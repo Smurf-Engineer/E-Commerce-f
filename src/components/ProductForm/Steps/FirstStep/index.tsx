@@ -83,6 +83,8 @@ export class FirstStep extends React.Component<Props, {}> {
       mtl,
       active,
       season,
+      branding,
+      predyedlabel,
       yotpoId,
       designCenter,
       customLink,
@@ -205,6 +207,20 @@ export class FirstStep extends React.Component<Props, {}> {
               placeholder={formatMessage(messages.yotpoIdHolder)}
             />
           </InputDiv>
+          {designCenter && branding &&
+            <InputDiv flex={1}>
+              <Label>
+                <FormattedMessage {...messages.predyedLabel} />
+              </Label>
+              <Input
+                size="large"
+                value={predyedlabel}
+                name="predyedlabel"
+                onChange={this.handleChangeCustom}
+                placeholder={formatMessage(messages.predyedLabelHolder)}
+              />
+            </InputDiv>
+          }
         </RowInput>
         {!designCenter && (
           <RowInput>

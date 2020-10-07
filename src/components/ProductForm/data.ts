@@ -74,6 +74,8 @@ export const getProductQuery = gql`
         white
         black
       }
+      branding
+      predyedlabel
       bibBrace {
         white
         black
