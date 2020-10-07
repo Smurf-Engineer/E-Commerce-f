@@ -44,3 +44,8 @@ export const EmptyMessage = styled.div`
   width: 100%;
   justify-content: center;
 `
+
+export const PaginationContainer = styled.div`
+  text-align: right;
+  padding: 9px 10px 20px 0;
+`

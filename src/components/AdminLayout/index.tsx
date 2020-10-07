@@ -130,7 +130,7 @@ class AdminLayout extends React.Component<Props, {}> {
               const goToUrl = () => {
                 readNotification({
                   variables: {
-                    shortId: newNotification.id,
+                    id: newNotification.id,
                     isAdmin: true
                   }
                 })

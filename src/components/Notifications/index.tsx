@@ -8,7 +8,15 @@ import Spin from 'antd/lib/spin'
 import AntdMessage from 'antd/lib/message'
 import { graphql, compose } from 'react-apollo'
 import SimpleTable from '../SimpleTable'
-import { Container, NotificationsHeader, Latest, ScreenTitle, BorderlessButton, EmptyMessage } from './styledComponents'
+import {
+  Container,
+  NotificationsHeader,
+  Latest,
+  ScreenTitle,
+  BorderlessButton,
+  EmptyMessage,
+  PaginationContainer
+} from './styledComponents'
 import { Message, Header, Notification as NotificationType, QueryProps, MessagePayload } from '../../types/common'
 import { DATE } from '../../constants'
 
@@ -121,7 +129,17 @@ class Notifications extends React.Component<Props, {}> {
               canDelete={false}
               notifications={true}
               onPressRow={this.handleOnPressNotification}
-            /></>}
+            />
+            <PaginationContainer>
+              {/* <Pagination
+                current={0}
+                pageSize={20}
+                total={Number(100)}
+                onChange={null}
+              /> */}
+            </PaginationContainer>
+
+          </>}
         {loading && <Spin />}
         {!loading && !notifications.length && <EmptyMessage>{formatMessage(messages.notFound)}</EmptyMessage>}
       </Container>
