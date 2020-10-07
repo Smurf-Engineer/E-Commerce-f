@@ -89,6 +89,12 @@ class ResellerOrders extends React.Component<Props, {}> {
     changeDateAction(startDate, endDate)
   }
 
+  goToOrder = (orderId: string) => () => {
+    if (orderId) {
+      window.location.replace(`/account?option=orderHistory&orderId=${orderId}`)
+    }
+  }
+
   handleChangeOrderPoint = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { setOrderPoint } = this.props
     const { target: { value } } = event
@@ -197,7 +203,7 @@ class ResellerOrders extends React.Component<Props, {}> {
                       paidAt,
                     }: ResellerPayment,
                     index: number) =>
-                    <RepDiv key={index}>
+                    <RepDiv onClick={this.goToOrder(orderId)} key={index}>
                       <Cell>
                         {createdAt ? moment(createdAt).format(NOTE_FORMAT) : '-'}
                       </Cell>

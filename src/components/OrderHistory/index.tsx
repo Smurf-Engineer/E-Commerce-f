@@ -12,6 +12,7 @@ import messages from './messages'
 import { sorts } from '../../types/common'
 import OrderDetails from '../OrderDetails'
 import SwipeableViews from 'react-swipeable-views'
+import queryString from 'query-string'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 
 interface Props {
@@ -28,6 +29,18 @@ interface Props {
 }
 
 class OrderHistory extends React.Component<Props, {}> {
+  componentDidMount() {
+    const {
+      history: {
+        location: { search }
+      }
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { orderId } = queryParams
+    if (orderId) {
+      this.handleOnOrderClick(orderId)
+    }
+  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
