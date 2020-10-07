@@ -16,8 +16,6 @@ import {
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
 import colorsIcon from '../.../../../../assets/color_squares.svg'
-import predyedFabric from '../.../../../../assets/predyed-fabric.jpg'
-import printedFabric from '../.../../../../assets/printed-fabric.jpg'
 import HelpModal from '../../Common/JakrooModal'
 import { StitchingColor, AccesoryColor, UserInfo, QueryProps, Colors, Color } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
@@ -28,6 +26,9 @@ import { ColorChart } from '../../ColorChart'
 import Message from 'antd/lib/message'
 import get from 'lodash/get'
 import find from 'lodash/find'
+
+const predyedFabric = 'https://storage.googleapis.com/jakroo/screens/predyed-fabric.jpg'
+const printedFabric = 'https://storage.googleapis.com/jakroo/screens/printed-fabric.jpg'
 
 interface ColorsData extends QueryProps {
   colorsResult: Colors
