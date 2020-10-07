@@ -10,9 +10,9 @@ interface Props {
   message: string
   date: string
   read: boolean
-  id: number
+  id: string
   url?: string
-  onPress: (id: number) => void
+  onPress: (id: string) => void
 }
 
 const NotificationRow = ({ id, title, message, date, read, url, onPress }: Props) => {

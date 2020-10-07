@@ -11,7 +11,15 @@ export default defineMessages({
   },
   idealForSmall: {
     id: 'screens.TeamstoreTypes.idealForSmall',
-    defaultMessage: 'Ideal for small groups less than 6 members'
+    defaultMessage: 'Ideal for small groups with less than 6 members'
+  },
+  individualCheckout: {
+    id: 'screens.TeamstoreTypes.individualCheckout',
+    defaultMessage: 'Individual checkout'
+  },
+  individualDiscounting: {
+    id: 'screens.TeamstoreTypes.individualDiscounting',
+    defaultMessage: 'Individual based discounting'
   },
   fastTurnaround: {
     id: 'screens.TeamstoreTypes.fastTurnaround',
@@ -31,11 +39,11 @@ export default defineMessages({
   },
   idealForLarger: {
     id: 'screens.TeamstoreTypes.idealForLarger',
-    defaultMessage: 'Ideal for larger groups with 6 or more members'
+    defaultMessage: 'Ideal for larger groups with more than 6 members'
   },
   saveWithGroup: {
     id: 'screens.TeamstoreTypes.saveWithGroup',
-    defaultMessage: '<b>Save 20-40% with group buying power</b>'
+    defaultMessage: '<b>Orders combine for volume discounting</b>'
   },
   turnaroundDays: {
     id: 'screens.TeamstoreTypes.turnaroundDays',

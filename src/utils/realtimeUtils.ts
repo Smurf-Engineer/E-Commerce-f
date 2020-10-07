@@ -4,13 +4,13 @@
 import 'firebase/messaging'
 import firebase from 'firebase/app'
 const config = {
-    apiKey: 'AIzaSyD4Y7N1GrqL-442TpueEYLEEc3fdnIqvAs',
-    authDomain: 'jakroo-f148e.firebaseapp.com',
-    databaseURL: 'https://jakroo-f148e.firebaseio.com',
-    projectId: 'jakroo-f148e',
-    storageBucket: 'jakroo-f148e.appspot.com',
-    messagingSenderId: '300041701090',
-    appId: '1:300041701090:web:73f8b52f2beca6c69480bb'
+  apiKey: 'AIzaSyA2G_KKwxdtBawSWDbQ3rePbzRrf9uou0w',
+  authDomain: 'jv2-design-center.firebaseapp.com',
+  databaseURL: 'https://jv2-design-center.firebaseio.com',
+  projectId: 'jv2-design-center',
+  storageBucket: 'jv2-design-center.appspot.com',
+  messagingSenderId: '452333895224',
+  appId: '1:452333895224:web:6db14d0cc4fd36128830cd'
 }
 export const firebaseInit = async () => {
   try {
@@ -31,18 +31,5 @@ export const getToken = async () => {
   } catch (e) {
     console.error(e)
     return 
-  }
-}
-export const onMessage = (cb: any) => {
-  try {
-    firebase.messaging().onMessage(payload => {
-    console.log('Message')
-      // const type = payload.type
-      // const info = JSON.parse(payload.data)
-      // cb(type, payload)
-    cb(payload)
-    })
-  } catch (e) {
-    console.error(e)
   }
 }

@@ -40,7 +40,7 @@ export const regionsQuery = gql`
 export const notificationsQuery = gql`
   query getNotifications {
     notifications: getNotifications {
-      id
+      id: short_id
       senderId: user_id
       notificationType: notification_type
       toAdmin: to_admin
@@ -48,6 +48,8 @@ export const notificationsQuery = gql`
       date: created_at
       title
       message
+      user: sender_name
+      email: sender_email
       url
     }
   }
@@ -71,8 +73,8 @@ export  const notificationsSubscription = gql`
 
 export const setAsRead = graphql(
   gql`
-    mutation setNotificationRead($id: Int!) {
-      notification: setNotificationRead(id: $id) {
+    mutation setNotificationRead($shortId: String!) {
+      notification: setNotificationRead(shortId: $shortId) {
         id
         read: user_read
       }

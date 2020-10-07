@@ -29,7 +29,7 @@ export const notificationsQuery = graphql(
   gql`
     query getNotifications {
       notifications: getNotifications(isAdmin: true) {
-        id
+        id: short_id
         senderId: user_id
         notificationType: notification_type
         toAdmin: to_admin
@@ -66,8 +66,8 @@ export  const notificationsSubscription = gql`
 
 export const setAsRead = graphql(
   gql`
-    mutation setNotificationRead($id: Int!, $isAdmin: Boolean) {
-      notification: setNotificationRead(id: $id, isAdmin: $isAdmin) {
+    mutation setNotificationRead($shortId: String!, $isAdmin: Boolean) {
+      notification: setNotificationRead(shortId: $shortId, isAdmin: $isAdmin) {
         id
         read: user_read
       }

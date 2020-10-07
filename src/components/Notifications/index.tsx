@@ -55,6 +55,17 @@ class Notifications extends React.Component<Props, {}> {
     updating: false
   }
 
+  async componentDidMount() {
+    navigator.serviceWorker.addEventListener('message', (notification) => {
+      this.reloadNotifications()
+    })
+  }
+
+  reloadNotifications = async () => {
+    const { notificationsData } = this.props
+    await notificationsData.refetch()
+  }
+
   markAllAsRead = async () => {
     const { readNAllotification, fromAdmin, notificationsData, formatMessage } = this.props
     try {
@@ -72,7 +83,7 @@ class Notifications extends React.Component<Props, {}> {
     const { history, readNotification, updateScreen, fromAdmin } = this.props
     await readNotification({
       variables: {
-        id: notificationId,
+        shortId: notificationId,
         isAdmin: fromAdmin
       }
     })
@@ -128,7 +139,8 @@ const NotificationsEnhance = compose(
     options: ({ fromAdmin }: OwnProps) => ({
       variables: {
         isAdmin: fromAdmin
-      }
+      },
+      fetchPolicy: 'network-only'
     })
   }),
   setAsRead,

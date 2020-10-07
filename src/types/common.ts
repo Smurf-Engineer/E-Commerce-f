@@ -1736,12 +1736,21 @@ export type DeliveryDays = {
 }
 
 export type Notification = {
-  id: number
+  id: string
   senderId: string
   notificationType: string
   toAdmin: boolean
   read: boolean
   date: string
+  title: string
+  message: string
+  url?: string
+}
+
+export type PushNotificationData = {
+  id: string
+  senderId: string
+  toAdmin: string
   title: string
   message: string
   url?: string

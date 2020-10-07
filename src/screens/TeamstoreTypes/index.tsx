@@ -45,13 +45,15 @@ interface Props {
 
 const onDemandMessages = [
   'idealForSmall',
+  'individualCheckout',
+  'individualDiscounting',
   'fastTurnaround',
-  'saveWithFixed',
   'onDemandProduction'
 ]
 
 const fixedDateMessages = [
   'idealForLarger',
+  'individualCheckout',
   'saveWithGroup',
   'turnaroundDays',
   'bulk'

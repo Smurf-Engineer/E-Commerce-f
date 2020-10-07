@@ -27,7 +27,6 @@ import {
 import {
   regionsQuery,
   notificationsQuery,
-  notificationsSubscription,
   setAsRead,
   setAllAsRead,
   upsertNotificationToken
@@ -45,7 +44,7 @@ import {
   Region as RegionType,
   QueryProps,
   Notification as NotificationType,
-  MessagePayload
+  MessagePayload, PushNotificationData
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
@@ -62,6 +61,14 @@ interface NotificationsData extends QueryProps {
 
 interface NotificationsRead extends QueryProps {
   notification: NotificationType
+}
+
+interface PushNotification {
+  data: {
+    'firebase-messaging-msg-data': {
+      data: PushNotificationData
+    }
+  }
 }
 
 interface Props {
@@ -108,49 +115,59 @@ class MenuBar extends React.Component<Props, StateProps> {
     isMobile: false,
     updating: false
   }
+  componentWillUnmount() {
+    navigator.serviceWorker.removeEventListener('message', this.drawNotification)
+  }
   async componentWillMount() {
     const {
-      notificationsData,
       upsertNotification
     } = this.props
-    const isBrowser = typeof window !== 'undefined'
 
-    const subscribeToMore = get(notificationsData, 'subscribeToMore')
-
-    if (isBrowser && subscribeToMore) {
-      let user
-      if (typeof window !== 'undefined') {
-        user = JSON.parse(localStorage.getItem('user') as string)
-      }
-      if (user) {
-        await firebaseInit()
-        const token = await getToken()
-        console.log('FIRABSE ', token)
-        await upsertNotification({
-          variables: { token }
-        })
-        subscribeToMore({
-          document: notificationsSubscription,
-          updateQuery: (prev: any, { subscriptionData }: any) => {
-            const newNotification = get(subscriptionData, 'data.newNotification')
-            const alreadyExist = find(prev.notifications, ['id', newNotification.id])
-            if (!alreadyExist) {
-              const goToUrl = () => this.handleOnPressNotification(newNotification.id, newNotification.url)
-              AntdNotification.open({
-                message: newNotification.title,
-                description: newNotification.message,
-                onClick: goToUrl,
-                style: notificationStyles
-              })
-            }
-            return !alreadyExist ? Object.assign({}, prev, {
-              notifications: [newNotification, ...prev.notifications]
-            }) : prev
-          }
-        })
-      }
+    let user
+    if (typeof window !== 'undefined') {
+      user = JSON.parse(localStorage.getItem('user') as string)
+    }
+    if (user) {
+      await firebaseInit()
+      const token = await getToken()
+      await upsertNotification({
+        variables: { token }
+      })
+      navigator.serviceWorker.addEventListener('message', this.drawNotification)
     }
   }
+
+  drawNotification = (notification: PushNotification) => {
+    const { data } = notification
+    const payload = data['firebase-messaging-msg-data'].data
+    const goToUrl = () => this.handleOnPressNotification(payload.id, payload.url)
+    if (!this.notificationAlreadyExist(payload.id) && payload.toAdmin === 'false') {
+      this.displayNotification(payload, goToUrl)
+    }
+  }
+
+  notificationAlreadyExist = (notificationId: string) => {
+    const { notificationsData } = this.props
+    const notifications = get(notificationsData, 'notifications', [])
+    const alreadyExist = find(notifications, ['id', notificationId])
+    return !!alreadyExist
+  }
+
+  displayNotification = async (payload: PushNotificationData, goToUrl: () => void) => {
+    AntdNotification.open({
+      message: payload.title,
+      description: payload.message,
+      onClick: goToUrl,
+      style: notificationStyles
+    })
+    this.reloadNotifications()
+  }
+
+  reloadNotifications = async () => {
+    const { notificationsData } = this.props
+    await notificationsData.refetch()
+  }
+
   componentDidMount() {
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
@@ -206,11 +223,11 @@ class MenuBar extends React.Component<Props, StateProps> {
     push(route)
   }
 
-  handleOnPressNotification = async (notificationId: number, url: string) => {
+  handleOnPressNotification = async (notificationId: string, url: string) => {
     const { readNotification } = this.props
     await readNotification({
       variables: {
-        id: notificationId
+        shortId: notificationId
       }
     })
     window.location.href = `${config.baseUrl}${url}`

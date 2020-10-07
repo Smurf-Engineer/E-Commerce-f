@@ -1,4 +1,3 @@
-'use strict'
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
@@ -7,18 +6,20 @@ importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js')
 // Initialize the Firebase app in the service worker by passing in the
 // messagingSenderId.
 firebase.initializeApp({
-    apiKey: "AIzaSyD4Y7N1GrqL-442TpueEYLEEc3fdnIqvAs",
-    authDomain: "jakroo-f148e.firebaseapp.com",
-    databaseURL: "https://jakroo-f148e.firebaseio.com",
-    projectId: "jakroo-f148e",
-    storageBucket: "jakroo-f148e.appspot.com",
-    messagingSenderId: "300041701090",
-    appId: "1:300041701090:web:73f8b52f2beca6c69480bb"
+    apiKey: "AIzaSyA2G_KKwxdtBawSWDbQ3rePbzRrf9uou0w",
+    authDomain: "jv2-design-center.firebaseapp.com",
+    databaseURL: "https://jv2-design-center.firebaseio.com",
+    projectId: "jv2-design-center",
+    storageBucket: "jv2-design-center.appspot.com",
+    messagingSenderId: "452333895224",
+    appId: "1:452333895224:web:6db14d0cc4fd36128830cd"
 })
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
 const messaging = firebase.messaging()
-messaging.setBackgroundMessageHandler(function (payload) {
+messaging.setBackgroundMessageHandler(function (notification) {
+    const { data } = notification
+    const payload = data['firebase-messaging-msg-data'].data
     const promiseChain = clients
         .matchAll({
             type: 'window',
@@ -27,12 +28,12 @@ messaging.setBackgroundMessageHandler(function (payload) {
         .then((windowClients) => {
             for (let i = 0; i < windowClients.length; i++) {
                 const windowClient = windowClients[i]
-                windowClient.postMessage(payload.data)
+                windowClient.postMessage(payload)
             }
         })
-    var notificationTitle = 'Jakroo'
     var notificationOptions = {
-        body: 'A connection has changed'
+        body: payload.message,
+        title: payload.title
     }
     self.registration.showNotification(notificationTitle, notificationOptions)
     return promiseChain
