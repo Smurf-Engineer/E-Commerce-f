@@ -10,6 +10,7 @@ import Input from 'antd/lib/input/Input'
 import Checkbox from 'antd/lib/checkbox'
 import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button/button'
+import Select from 'antd/lib/select'
 const RadioButtonComponent = Radio.Button
 
 interface DivProps {
@@ -57,12 +58,11 @@ export const TaxesDiv = styled.div`
   margin-bottom: 34px;
 `
 
-export const TaxesInput = styled(Input)`
-  max-width: 145px;
-  width: 100%;
-  height: 40px;
-  margin-right: 28px;
-  border-radius: 0px;
+export const TaxesInput = styled(Select)`
+  width: 145px;
+  & .ant-select-selection {
+    border-radius: 0;
+  }
 `
 
 export const UserLabel = styled.div`

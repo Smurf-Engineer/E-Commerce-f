@@ -8,6 +8,7 @@ import Icon from 'antd/lib/icon'
 import message from 'antd/lib/message'
 import { withRouter } from 'react-router-dom'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
+import Select from 'antd/lib/select'
 import messages from './messages'
 import UserFiles from '../UserFiles'
 import Modal from '../../Common/JakrooModal'
@@ -61,8 +62,10 @@ import moment from 'moment'
 import { formatAmount } from '../../../utils/utilsFunctions'
 import { DATE_FORMAT } from '../../../constants'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import debounce from 'lodash/debounce'
 
+const taxesOptions = ['-8', '115080', '115081', '115082']
+
+const { Option } = Select
 const RadioGroup = Radio.Group
 
 interface ProfileData extends QueryProps {
@@ -105,10 +108,6 @@ interface Props {
 }
 
 class Options extends React.Component<Props> {
-  state = {
-    taxTyped: ''
-  }
-  debounceTaxItem = debounce((value) => this.changeTaxAction(value), 800)
   handleOnGoBack = () => {
     const { history } = this.props
     history.push('/admin/users')
@@ -235,14 +234,11 @@ class Options extends React.Component<Props> {
       setLoadingAction(false)
     }
   }
-  changeTaxInput = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { target: { value } } = evt
+  changeTaxInput = (value: string) => {
     const { profileData } = this.props
     const taxItem = get(profileData, 'profileData.userProfile.taxItem', '')
     if (value && value !== taxItem) {
-      this.setState({ taxTyped: value }, () => {
-        this.debounceTaxItem(value)
-      })
+      this.changeTaxAction(value)
     }
   }
   changeTaxAction = async (value: string) => {
@@ -436,7 +432,6 @@ class Options extends React.Component<Props> {
       lastOrder,
       amountOrders = []
     } = stats
-    const { taxTyped } = this.state
     const { loading: loadingData, designNotes = [] } = data || {}
     let selectedScreen
     switch (optionSelected) {
@@ -569,9 +564,16 @@ class Options extends React.Component<Props> {
               {formatMessage(messages.taxItem)}
             </StatsTitle>
             <TaxesInput
-              value={taxTyped || taxItem}
-              onChange={this.changeTaxInput}
-            />
+              onSelect={this.changeTaxInput}
+              loading={loading}
+              value={taxItem}
+            >
+              {taxesOptions.map((value: string, key: number) => (
+                <Option {...{ key, value }}>
+                  {value}
+                </Option>
+              ))}
+            </TaxesInput>
           </StatsLabel>
         </TaxesDiv>
         <RadioGroup
