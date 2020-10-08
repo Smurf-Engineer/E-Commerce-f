@@ -25,6 +25,8 @@
   "components.PredyedModal.hexPlaceholder": "#F1F4F5",
   "components.PredyedModal.cancel": "Cancel",
   "components.ProductList.hasPredyed": "Has Predyed",
+  "components.AccessoryColor.predyed": "PRE-DYED",
+  "components.AccessoryColor.printed": "PRINTED",
   "components.AffiliatesAbout.wrongCurrency": "Wrong currency selected on your actual region ({initialCountryCode})",
   "components.AffiliatesAbout.faqTitle": "FREQUENTLY ASKED QUESTIONS",
   "components.AffiliatesAbout.howItWorks": "How it works",

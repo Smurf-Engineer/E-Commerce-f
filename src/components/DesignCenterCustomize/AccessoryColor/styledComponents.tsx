@@ -97,6 +97,9 @@ export const OvalSelected = styled.div`
 export const ColorWheel = styled.img`
   width: 100%;
   margin-bottom: 2px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const Arrow = styled(Icon)`
