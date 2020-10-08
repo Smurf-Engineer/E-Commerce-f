@@ -44,7 +44,8 @@ import {
   Region as RegionType,
   QueryProps,
   Notification as NotificationType,
-  MessagePayload, PushNotificationData
+  MessagePayload,
+  PushNotificationData
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
@@ -55,8 +56,12 @@ interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
 }
 
+export type NotificationResults = {
+  fullCount: number
+  list: NotificationType[]
+}
 interface NotificationsData extends QueryProps {
-  notifications: NotificationType[]
+  notifications: NotificationResults
 }
 
 interface NotificationsRead extends QueryProps {
@@ -279,7 +284,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     const { formatMessage } = intl
 
-    const notifications = get(notificationsData, 'notifications', [])
+    const notifications = get(notificationsData, 'notifications.list', [])
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin} data-test="sign-up">
         {formatMessage(messages.title)}

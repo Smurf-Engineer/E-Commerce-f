@@ -14,6 +14,7 @@ import messages from './messages'
 import { connect } from 'react-redux'
 import { MAIN_TITLE } from '../../constants'
 import { InjectedIntl, FormattedMessage } from 'react-intl'
+import { firebaseInit, getToken } from '../../utils/realtimeUtils'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import {
@@ -22,13 +23,15 @@ import {
   SimpleFont,
   UserPermissions,
   QueryProps,
-  Notification as NotificationType
+  Notification as NotificationType,
+  MessagePayload,
+  PushNotificationData
 } from '../../types/common'
 import {
   getTeamStoreStatus,
   getFonts,
   notificationsQuery,
-  notificationsSubscription,
+  upsertNotificationToken,
   setAsRead
 } from './data'
 import * as adminLayoutActions from './api'
@@ -68,14 +71,25 @@ import Helmet from 'react-helmet'
 
 const { SubMenu } = Menu
 
+export type NotificationResults = {
+  fullCount: number
+  list: NotificationType[]
+}
 interface NotificationsData extends QueryProps {
-  notifications: NotificationType[]
-  loading: boolean
+  notifications: NotificationResults
 }
 
 interface NotificationsRead extends QueryProps {
   notification: NotificationType
   loading: boolean
+}
+
+interface PushNotification {
+  data: {
+    'firebase-messaging-msg-data': {
+      data: PushNotificationData
+    }
+  }
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -97,6 +111,7 @@ interface Props extends RouteComponentProps<any> {
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
   readNotification: (variables: {}) => Promise<NotificationsRead>
+  upsertNotification: (variables: {}) => Promise<MessagePayload>
 }
 
 class AdminLayout extends React.Component<Props, {}> {
@@ -108,46 +123,25 @@ class AdminLayout extends React.Component<Props, {}> {
     }
   }
 
+  componentWillUnmount() {
+    navigator.serviceWorker.removeEventListener('message', this.drawNotification)
+  }
+
   async componentDidMount() {
     const { getFontsData, setInstalledFontsAction } = this.props
     const {
-      notificationsData,
-      history,
-      readNotification
+      upsertNotification
     } = this.props
-    const subscribeToMore = get(notificationsData, 'subscribeToMore')
-    const isBrowser = typeof window !== 'undefined'
 
-    if (isBrowser && subscribeToMore) {
-      let user = JSON.parse(localStorage.getItem('user') as string)
+    let user = JSON.parse(localStorage.getItem('user') as string)
+    if (user) {
       if (user) {
-        subscribeToMore({
-          document: notificationsSubscription,
-          updateQuery: (prev: NotificationsData, { subscriptionData }: any) => {
-            const newNotification = get(subscriptionData, 'data.newNotificationAdmin')
-            const alreadyExist = !!find(prev.notifications, ['id', newNotification.id])
-            if (!alreadyExist) {
-              const goToUrl = () => {
-                readNotification({
-                  variables: {
-                    id: newNotification.id,
-                    isAdmin: true
-                  }
-                })
-                history.push(`/${newNotification.url}`)
-              }
-              AntdNotification.open({
-                message: newNotification.title,
-                description: newNotification.message,
-                onClick: goToUrl,
-                style: notificationStyles
-              })
-            }
-            return !alreadyExist ? Object.assign({}, prev, {
-              notifications: [newNotification, ...prev.notifications]
-            }) : prev
-          }
+        await firebaseInit()
+        const token = await getToken()
+        await upsertNotification({
+          variables: { token }
         })
+        navigator.serviceWorker.addEventListener('message', this.drawNotification)
       }
     }
 
@@ -157,6 +151,47 @@ class AdminLayout extends React.Component<Props, {}> {
       font: font.family
     }))
     setInstalledFontsAction(fonts)
+  }
+
+  drawNotification = (notification: PushNotification) => {
+    const { data } = notification
+    const payload = data['firebase-messaging-msg-data'].data
+    const goToUrl = () => this.handleOnPressNotification(payload.id, payload.url)
+    if (!this.notificationAlreadyExist(payload.id) && payload.toAdmin === 'true') {
+      this.displayNotification(payload, goToUrl)
+    }
+  }
+
+  notificationAlreadyExist = (notificationId: string) => {
+    const { notificationsData } = this.props
+    const notifications = get(notificationsData, 'notifications', [])
+    const alreadyExist = find(notifications, ['id', notificationId])
+    return !!alreadyExist
+  }
+
+  displayNotification = async (payload: PushNotificationData, goToUrl: () => void) => {
+    AntdNotification.open({
+      message: payload.title,
+      description: payload.message,
+      onClick: goToUrl,
+      style: notificationStyles
+    })
+    this.reloadNotifications()
+  }
+
+  reloadNotifications = async () => {
+    const { notificationsData } = this.props
+    await notificationsData.refetch()
+  }
+
+  handleOnPressNotification = async (notificationId: string, url: string) => {
+    const { readNotification, history } = this.props
+    await readNotification({
+      variables: {
+        shortId: notificationId
+      }
+    })
+    history.push(url)
   }
 
   handleOnSelectedKeys = (keys: string[]) => {
@@ -244,7 +279,7 @@ class AdminLayout extends React.Component<Props, {}> {
       notificationsData
     } = this.props
 
-    const notifications = get(notificationsData, 'notifications', [])
+    const notifications = get(notificationsData, 'notifications.list', [])
     const unread = notifications.filter((notification) => !notification.read).length
 
     if (!Object.keys(permissions).length) {
@@ -339,6 +374,7 @@ const LayoutEnhance = compose(
   getFonts,
   notificationsQuery,
   setAsRead,
+  upsertNotificationToken,
   connect(
     mapStateToProps,
     {

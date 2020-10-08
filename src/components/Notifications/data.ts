@@ -6,19 +6,22 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
 export const notificationsQuery = gql`
-  query getNotifications($isAdmin: Boolean) {
-    notifications: getNotifications(isAdmin: $isAdmin) {
-      id: short_id
-      senderId: user_id
-      notificationType: notification_type
-      toAdmin: to_admin
-      read: user_read
-      date: created_at
-      title
-      message
-      user: sender_name
-      email: sender_email
-      url
+  query getNotifications($isAdmin: Boolean, $limit: Int, $offset: Int) {
+    notifications: getNotifications(isAdmin: $isAdmin, limit: $limit, offset: $offset) {
+      fullCount
+      list: notifications {
+        id: short_id
+        senderId: user_id
+        notificationType: notification_type
+        toAdmin: to_admin
+        read: user_read
+        date: created_at
+        title
+        message
+        user: sender_name
+        email: sender_email
+        url
+      }
     }
   }
 `

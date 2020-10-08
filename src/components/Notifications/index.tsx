@@ -1,11 +1,16 @@
 /**
- * Notifications Component - Created by eduardoquintero on 27/08/20.
+ * Notifications Component - Created by eduardoquintero on 26/08/20.
  */
 import * as React from 'react'
 import messages from './messages'
+import { connect } from 'react-redux'
+import zenscroll from 'zenscroll'
+import * as NotificationsActions from './actions'
 import { notificationsQuery, setAsRead, setAllAsRead } from './data'
 import Spin from 'antd/lib/spin'
+import get from 'lodash/get'
 import AntdMessage from 'antd/lib/message'
+import Pagination from 'antd/lib/pagination/Pagination'
 import { graphql, compose } from 'react-apollo'
 import SimpleTable from '../SimpleTable'
 import {
@@ -17,6 +22,7 @@ import {
   EmptyMessage,
   PaginationContainer
 } from './styledComponents'
+import { NOTIFICATIONS_LIMIT } from './constants'
 import { Message, Header, Notification as NotificationType, QueryProps, MessagePayload } from '../../types/common'
 import { DATE } from '../../constants'
 
@@ -25,10 +31,12 @@ interface Props {
   fromAdmin?: boolean
   history: any
   isMobile?: boolean
+  currentPage: number
   formatMessage: (messageDescriptor: Message) => string
   readNotification: (variables: {}) => Promise<NotificationsRead>
   updateScreen?: () => void
   readNAllotification: (variables: {}) => Promise<MessagePayload>
+  setCurrentPageAction: (page: number) => void
 }
 
 const NOTIFICATIONS = 'notifications'
@@ -48,8 +56,13 @@ const optionalHeaders: Header[] = [
   { message: 'email', width: 20, tabletWidth: 20, fieldName: 'email' },
 ]
 
+export type NotificationResults = {
+  fullCount: number
+  list: NotificationType[]
+}
+
 interface NotificationsData extends QueryProps {
-  notifications: NotificationType[]
+  notifications: NotificationResults
   loading: boolean
 }
 
@@ -100,14 +113,27 @@ class Notifications extends React.Component<Props, {}> {
       updateScreen()
     }
   }
+
+  changePage = (page: number) => {
+    const { setCurrentPageAction } = this.props
+    setCurrentPageAction(page)
+    if (window && zenscroll) {
+      zenscroll.toY(0, 0)
+    }
+  }
+
   render() {
     const { updating } = this.state
     const {
       formatMessage,
-      notificationsData: { notifications = [], loading },
+      notificationsData: { notifications, loading },
       fromAdmin = false,
-      isMobile = false
+      isMobile = false,
+      currentPage,
     } = this.props
+    const notificationsList = get(notifications, 'list', [])
+    const fullCount = get(notifications, 'fullCount', 0)
+
     const headers = !isMobile ? [...notificationsHeader, ...sourceHeader] : notificationsHeader
     return (
       <Container>
@@ -123,7 +149,7 @@ class Notifications extends React.Component<Props, {}> {
               {...{
                 formatMessage
               }}
-              data={notifications || []}
+              data={notificationsList || []}
               headerTitles={fromAdmin ? [...notificationsHeader, ...optionalHeaders] : headers}
               targetGroup={NOTIFICATIONS}
               canDelete={false}
@@ -131,17 +157,17 @@ class Notifications extends React.Component<Props, {}> {
               onPressRow={this.handleOnPressNotification}
             />
             <PaginationContainer>
-              {/* <Pagination
-                current={0}
-                pageSize={20}
-                total={Number(100)}
-                onChange={null}
-              /> */}
+              <Pagination
+                current={currentPage}
+                pageSize={NOTIFICATIONS_LIMIT}
+                total={Number(fullCount)}
+                onChange={this.changePage}
+              />
             </PaginationContainer>
 
           </>}
         {loading && <Spin />}
-        {!loading && !notifications.length && <EmptyMessage>{formatMessage(messages.notFound)}</EmptyMessage>}
+        {!loading && !notificationsList.length && <EmptyMessage>{formatMessage(messages.notFound)}</EmptyMessage>}
       </Container>
     )
   }
@@ -149,17 +175,27 @@ class Notifications extends React.Component<Props, {}> {
 
 interface OwnProps {
   fromAdmin?: boolean
+  currentPage?: number
 }
 
+const mapStateToProps = (state: any) => state.get('notifications').toJS()
+
 const NotificationsEnhance = compose(
+  connect(mapStateToProps, { ...NotificationsActions }),
   graphql<NotificationsData>(notificationsQuery, {
     name: 'notificationsData',
-    options: ({ fromAdmin }: OwnProps) => ({
-      variables: {
-        isAdmin: fromAdmin
-      },
-      fetchPolicy: 'network-only'
-    })
+    options: ({ fromAdmin, currentPage = 0 }: OwnProps) => {
+      const offset = currentPage ? (currentPage - 1) * NOTIFICATIONS_LIMIT : 0
+
+      return {
+        variables: {
+          isAdmin: fromAdmin,
+          limit: NOTIFICATIONS_LIMIT,
+          offset
+        },
+        fetchPolicy: 'network-only'
+      }
+    }
   }),
   setAsRead,
   setAllAsRead

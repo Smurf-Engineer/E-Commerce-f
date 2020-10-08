@@ -1,6 +1,5 @@
-export const NOTIFICATIONS_LIMIT = 15
+const namespace = 'src/Notifications'
 
-export const enum NotificationSource {
-    RETRY_AFFILIATE = 'Intentar',
-    Svg = 'image/svg+xml'
-  }
+export const SET_CURRENT_PAGE = `${namespace}/SET_CURRENT_PAGE`
+
+export const NOTIFICATIONS_LIMIT = 15
