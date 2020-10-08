@@ -9,6 +9,8 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
+        taxExempt: tax_exempt
+        taxItem: tax_item
         netsuiteInternal: netsuite_internal
         affiliateEnabled: affiliate_enabled
         phone
@@ -110,6 +112,22 @@ export const setAffiliateStatusMutation = gql`
   mutation setAffiliateStatus($userId: String!, $enabled: Boolean) {
     affiliateData: setAffiliateStatus(userId: $userId ,enabled: $enabled) {
       enabled: affiliate_enabled
+    }
+  }
+`
+
+export const setTaxEnabledMutation = gql`
+  mutation setTaxExempt($userId: String!, $enabled: Boolean) {
+    userData: setTaxExempt(userId: $userId ,enabled: $enabled) {
+      enabled: tax_exempt
+    }
+  }
+`
+
+export const setTaxItemMutation = gql`
+  mutation setTaxItem($userId: String!, $value: String) {
+    userData: setTaxItem(userId: $userId ,value: $value) {
+      taxItem: tax_item
     }
   }
 `

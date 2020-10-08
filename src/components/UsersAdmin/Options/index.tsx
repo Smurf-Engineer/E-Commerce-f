@@ -30,7 +30,10 @@ import {
   StyledInput,
   ButtonWrapper,
   StyledButton,
-  WarningIcon
+  WarningIcon,
+  TaxesInput,
+  TaxesDiv,
+  CheckboxStyled
 } from './styledComponents'
 import MyLocker from '../../MyLocker'
 import {
@@ -49,12 +52,16 @@ import {
   changeAffiliateMutation,
   changeComissionMutation,
   setAffiliateStatusMutation,
-  changeNetsuiteInternal
+  changeNetsuiteInternal,
+  setTaxEnabledMutation,
+  setTaxItemMutation
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
 import moment from 'moment'
 import { formatAmount } from '../../../utils/utilsFunctions'
 import { DATE_FORMAT } from '../../../constants'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import debounce from 'lodash/debounce'
 
 const RadioGroup = Radio.Group
 
@@ -80,6 +87,8 @@ interface Props {
   netsuiteId: string
   openInternalModal: boolean
   enableAffiliate: (variables: {}) => Promise<AffiliateStatus>
+  setTaxExempt: (variables: {}) => Promise<ProfileData>
+  setTaxItem: (variables: {}) => Promise<ProfileData>
   changeNetsuiteId: (variables: {}) => Promise<ProfileData>
   onChangePage: (page: number) => void
   onCloseInternal: () => void
@@ -96,6 +105,10 @@ interface Props {
 }
 
 class Options extends React.Component<Props> {
+  state = {
+    taxTyped: ''
+  }
+  debounceTaxItem = debounce((value) => this.changeTaxAction(value), 800)
   handleOnGoBack = () => {
     const { history } = this.props
     history.push('/admin/users')
@@ -180,6 +193,91 @@ class Options extends React.Component<Props> {
       }
     } catch (e) {
       message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleCheckChange = async (event: CheckboxChangeEvent) => {
+    const {
+      match,
+      setLoadingAction,
+      setTaxExempt
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const { target: { checked: enabled } } = event
+      const userId = get(match, 'params.id', '')
+      await setTaxExempt({
+        variables: {
+          enabled,
+          userId
+        },
+        update: (store: any, responseData: ProfileData) => {
+          const enabledResponse = get(responseData, 'data.userData.enabled', false)
+          const profileData = store.readQuery({
+            query: profileSettingsQuery,
+            variables: { id: userId },
+            fetchPolicy: 'network-only'
+          })
+          const userProfile = get(profileData, 'profileData.userProfile', {})
+          userProfile.taxExempt = enabledResponse
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData,
+            variables: { id: userId }
+          })
+        }
+      })
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, 5)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  changeTaxInput = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { target: { value } } = evt
+    const { profileData } = this.props
+    const taxItem = get(profileData, 'profileData.userProfile.taxItem', '')
+    if (value && value !== taxItem) {
+      this.setState({ taxTyped: value }, () => {
+        this.debounceTaxItem(value)
+      })
+    }
+  }
+  changeTaxAction = async (value: string) => {
+    const {
+      match,
+      setLoadingAction,
+      setTaxItem
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const userId = get(match, 'params.id', '')
+      await setTaxItem({
+        variables: {
+          value,
+          userId
+        },
+        update: (store: any, responseData: ProfileData) => {
+          const enabledResponse = get(responseData, 'data.userData.taxItem', false)
+          const profileData = store.readQuery({
+            query: profileSettingsQuery,
+            variables: { id: userId },
+            fetchPolicy: 'network-only'
+          })
+          const userProfile = get(profileData, 'profileData.userProfile', {})
+          userProfile.taxItem = enabledResponse
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData,
+            variables: { id: userId }
+          })
+        }
+      })
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, 5)
     } finally {
       setLoadingAction(false)
     }
@@ -324,7 +422,7 @@ class Options extends React.Component<Props> {
     const userId = get(match, 'params.id', '')
     const { userProfile = {}, affiliate = {}, stats = {} } = get(profileData, 'profileData', {})
     const netsuiteTitle = formatMessage(messages.netsuiteInternal).toUpperCase()
-    const { id, firstName, lastName, affiliateEnabled, netsuiteInternal } = userProfile
+    const { id, firstName, lastName, affiliateEnabled, netsuiteInternal, taxExempt, taxItem } = userProfile
     const {
       status,
       comission,
@@ -338,6 +436,7 @@ class Options extends React.Component<Props> {
       lastOrder,
       amountOrders = []
     } = stats
+    const { taxTyped } = this.state
     const { loading: loadingData, designNotes = [] } = data || {}
     let selectedScreen
     switch (optionSelected) {
@@ -454,6 +553,27 @@ class Options extends React.Component<Props> {
             </StatsValue>
           </StatsLabel>
         </Stats>
+        <TaxesDiv>
+          <StatsLabel>
+            <StatsTitle>
+              {formatMessage(messages.pstExempt)}
+            </StatsTitle>
+            <CheckboxStyled
+              checked={taxExempt}
+              disabled={loading}
+              onChange={this.handleCheckChange}
+            />
+          </StatsLabel>
+          <StatsLabel>
+            <StatsTitle>
+              {formatMessage(messages.taxItem)}
+            </StatsTitle>
+            <TaxesInput
+              value={taxTyped || taxItem}
+              onChange={this.changeTaxInput}
+            />
+          </StatsLabel>
+        </TaxesDiv>
         <RadioGroup
           onChange={this.handleSelectSection}
           value={optionSelected}
@@ -536,6 +656,8 @@ const OptionsEnhance = compose(
   graphql(changeAffiliateMutation, { name: 'changeAffiliateStatus' }),
   graphql(setAffiliateStatusMutation, { name: 'enableAffiliate' }),
   graphql(changeNetsuiteInternal, { name: 'changeNetsuiteId' }),
+  graphql(setTaxEnabledMutation, { name: 'setTaxExempt' }),
+  graphql(setTaxItemMutation, { name: 'setTaxItem' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {
     options: (ownprops: OwnProps) => {

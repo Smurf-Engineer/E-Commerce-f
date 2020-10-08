@@ -7,6 +7,7 @@ import { WHITE, GRAY_DARK, BLUE, GRAY, RED, WHITE_SMOKE } from '../../../theme/c
 import Switch from 'antd/lib/switch'
 import { AVENIR_MEDIUM } from '../../../theme/fonts'
 import Input from 'antd/lib/input/Input'
+import Checkbox from 'antd/lib/checkbox'
 import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button/button'
 const RadioButtonComponent = Radio.Button
@@ -42,6 +43,26 @@ export const BackLabel = styled.div`
 export const BackText = styled.span`
   display: inline-block;
   margin-left: 6px;
+`
+
+export const CheckboxStyled = styled(Checkbox)`
+  margin-left: 27px;
+  margin-right: 55px;
+  text-align: center;
+  margin-top: 10px;
+`
+
+export const TaxesDiv = styled.div`
+  display: flex;
+  margin-bottom: 34px;
+`
+
+export const TaxesInput = styled(Input)`
+  max-width: 145px;
+  width: 100%;
+  height: 40px;
+  margin-right: 28px;
+  border-radius: 0px;
 `
 
 export const UserLabel = styled.div`
