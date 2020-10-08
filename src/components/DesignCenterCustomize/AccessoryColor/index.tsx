@@ -14,10 +14,12 @@ import {
   Colors,
   OvalSelected, HintIcon, ColorWheel
 } from './styledComponents'
-import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { StitchingColor, AccesoryColor, Message } from '../../../types/common'
 import colorWheel from '../../../assets/Colorwheel.svg'
 import helpTooltip from '../../../assets/tooltip.svg'
 import { BLACK, WHITE } from '../../../screens/DesignCenter/constants'
+import Tooltip from 'antd/lib/tooltip'
+import messages from './messages'
 
 interface Props {
   name: string
@@ -29,6 +31,7 @@ interface Props {
   colorSelected?: AccesoryColor
   allowSelection?: boolean
   openHelp?: () => void
+  formatMessage: (messageDescriptor: Message) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
@@ -41,6 +44,7 @@ const AccessoryColor = ({
   isPredyed = false,
   colorSelected = BLACK,
   allowSelection = true,
+  formatMessage,
   openHelp = () => { },
   onAccessoryColorSelected = () => { }
 }: Props) => {
@@ -78,7 +82,9 @@ const AccessoryColor = ({
                 selected={colorSelected === BLACK}
               >
                 {isPredyed ?
-                  <ColorWheel src={colorWheel} /> :
+                  <Tooltip placement="bottom" title={formatMessage(messages.predyed)}>
+                    <Oval color={BLACK} />
+                  </Tooltip> :
                   <Oval color={BLACK} />
                 }
               </OvalSelected>
@@ -87,7 +93,12 @@ const AccessoryColor = ({
                 selected={colorSelected === WHITE}
                 marginLeft={'8px'}
               >
-                <Oval {...{ isPredyed }} />
+                {isPredyed ?
+                  <Tooltip placement="bottom" title={formatMessage(messages.printed)}>
+                    <ColorWheel src={colorWheel} />
+                  </Tooltip> :
+                  <Oval {...{ isPredyed }} />
+                }
               </OvalSelected>
             </Colors>
           )}

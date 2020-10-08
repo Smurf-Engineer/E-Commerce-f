@@ -164,6 +164,7 @@ class SelectColors extends React.PureComponent<Props, State> {
         )}
         {hasBranding && (
           <AccessoryColor
+            {...{ formatMessage }}
             id={AccessoryColors.Predyed}
             name={predyedLabel || formatMessage(messages.predyedColor)}
             colorSelected={selectedPredyed}
