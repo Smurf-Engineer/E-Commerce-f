@@ -139,9 +139,9 @@ export const PayDayImage = styled.img`
   max-width: 462px;
   width: 100%;
   object-fit: cover;
-  margin-top: -46px;
-  margin-right: 52px;
-  margin-bottom: -46px;
+  margin-top: -21px;
+  margin-right: -28px;
+  margin-bottom: -21px;
   flex: 1;
   @media (max-width: 1024px) {
     display: none;
