@@ -89,12 +89,27 @@ export const resellerOptions = [
     options: [MY_STORES, RESELLER_ABOUT, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
-    title: AFFILIATES,
-    options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
-  },
-  {
     title: CREATIONS,
     options: [SCREEN_LOCKER, MY_FILES]
+  }
+]
+
+export const resellerShortOptions = [
+  {
+    title: ADDRESSES,
+    options: []
+  },
+  {
+    title: CREDIT_CARDS,
+    options: []
+  },
+  {
+    title: PROFILE_SETTINGS,
+    options: []
+  },
+  {
+    title: RESELLER,
+    options: [RESELLER_ABOUT]
   }
 ]
 
