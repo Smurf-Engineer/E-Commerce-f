@@ -10,6 +10,7 @@ export const orderSearchQuery = gql`
       name
       product {
         name
+        hasPredyed: has_predyed
         zipper {
           white
           black
@@ -38,6 +39,7 @@ export const orderSearchQuery = gql`
       pdfUrl: output_pdf
       pngUrl: output_png
       stitchingValue: flatlock
+      predyedName: predyed_name
       stitchingName: flatlock_code
       zipperColor: zipper_color
       bindingColor: binding_color
@@ -78,6 +80,16 @@ export const togglePreflight = gql`
   mutation togglePreflight($shortId: String!) {
     design: togglePreflight(designId: $shortId) {
       checked: preflight_check
+    }
+  }
+`
+
+export const getPredyedColors = gql`
+  query getPredyedColors {
+    getPredyedColors {
+      id: short_id
+      name
+      code
     }
   }
 `

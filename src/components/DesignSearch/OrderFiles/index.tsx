@@ -66,7 +66,7 @@ import {
   StitchingColor,
   DesignNote,
   RolePermission,
-  User
+  User, PredyedColor
 } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
@@ -95,6 +95,7 @@ interface Props {
   accessAssets: RolePermission
   salesRepUsers: User[]
   managersUsers: User[]
+  predyedColors: PredyedColor[]
   history: History
   changeManager: (
     value: string,
@@ -131,6 +132,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         svgUrl = '',
         assets,
         stitchingName,
+        predyedName,
         stitchingValue,
         salesRep,
         legacyNumber,
@@ -149,7 +151,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         name,
         notes = [],
         pngUrl = '',
-        product: { name: modelName, zipper },
+        product: { name: modelName, zipper, hasPredyed },
         colors = []
       },
       uploadingFile,
@@ -171,6 +173,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       uploadingThumbnail,
       setUploadingThumbnailAction,
       changes,
+      predyedColors,
       onSelectStitchingColor,
       colorAccessories,
       onSelectColor,
@@ -357,8 +360,11 @@ export class OrderFiles extends React.PureComponent<Props> {
                   bindingColor,
                   onSelectStitchingColor,
                   onSelectColor,
+                  hasPredyed,
+                  predyedColors,
                   allowZipperSelection
                 }}
+                predyedValue={colorAccessories.predyed || predyedName}
                 stitchingValue={colorAccessories.stitching || stitchingValue}
                 stitchingName={colorAccessories.stitchingName || stitchingName}
                 zipperColor={colorAccessories.zipperColor || zipperColor}

@@ -2,9 +2,10 @@
  * AccessoryColors Component - Created by miguelcanobbio on 17/08/18.
  */
 import * as React from 'react'
-import { AccesoryColor, StitchingColor } from '../../../types/common'
+import { AccesoryColor, PredyedColor, StitchingColor } from '../../../types/common'
 import AccessoryColor from '../AccessoryColor'
 import StitchingColorComponent from '../StitchingColor'
+import PredyedColorComponent from '../PredyedColor'
 
 import { AccessoryColors as AccessoryColorsConstants } from '../../../screens/DesignCenter/constants'
 
@@ -15,6 +16,9 @@ interface Props {
   zipperColor?: AccesoryColor
   bindingColor?: AccesoryColor
   allowZipperSelection: boolean
+  predyedValue?: string
+  hasPredyed?: boolean
+  predyedColors?: PredyedColor[]
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
 }
@@ -24,6 +28,9 @@ const AccessoryColors = ({
   stitchingValue,
   bibColor,
   zipperColor,
+  hasPredyed,
+  predyedColors,
+  predyedValue,
   bindingColor,
   onSelectStitchingColor,
   onSelectColor,
@@ -63,6 +70,12 @@ const AccessoryColors = ({
           {...{ onSelectStitchingColor }}
           name="Stitching"
           stitchingColor={{ name: stitchingName, value: stitchingValue }}
+        />
+      )}
+      {hasPredyed && (
+        <PredyedColorComponent
+          {...{ onSelectStitchingColor, predyedValue, predyedColors }}
+          name="Predyed"
         />
       )}
     </div>
