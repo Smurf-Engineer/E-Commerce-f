@@ -237,7 +237,7 @@ class Options extends React.Component<Props> {
   changeTaxInput = (value: string) => {
     const { profileData } = this.props
     const taxItem = get(profileData, 'profileData.userProfile.taxItem', '')
-    if (value && value !== taxItem) {
+    if (value !== taxItem) {
       this.changeTaxAction(value)
     }
   }
@@ -564,8 +564,9 @@ class Options extends React.Component<Props> {
               {formatMessage(messages.taxItem)}
             </StatsTitle>
             <TaxesInput
-              onSelect={this.changeTaxInput}
+              onChange={this.changeTaxInput}
               loading={loading}
+              allowClear={true}
               value={taxItem}
             >
               {taxesOptions.map((value: string, key: number) => (
