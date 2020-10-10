@@ -2,7 +2,6 @@
  * StitchingColor Component - Created by miguelcanobbio on 17/08/18.
  */
 import * as React from 'react'
-import get from 'lodash/get'
 import {
   Container,
   Name,
@@ -16,7 +15,7 @@ import PredyedPicker from '../PredyedPicker'
 import { PredyedColor, StitchingColor } from '../../../types/common'
 
 interface Props {
-  name: String
+  name: string
   predyedValue: string
   predyedColors: PredyedColor[]
   onSelectPredyed?: (predyedValue: string) => void

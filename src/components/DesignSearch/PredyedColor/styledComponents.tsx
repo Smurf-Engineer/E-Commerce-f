@@ -2,10 +2,17 @@
  * Styled Components - Created by miguelcanobbio on 17/08/18.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, WHITE, GRAY } from '../../../theme/colors'
+import { PREDYED_TRANSPARENT } from '../../../constants'
+import { GRAY_DARK, WHITE } from '../../../theme/colors'
+import transparentGrid from '../../../assets/transparent_grid.png'
+
+interface OvalProps {
+  color?: string
+  isPredyed?: boolean
+}
 
 export const Container = styled.div`
-  padding: 4px 0;
+  padding: 10px 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -25,6 +32,7 @@ export const ColorLabel = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
+  text-transform: capitalize;
   text-align: right;
   margin-right: 8px;
 `
@@ -35,15 +43,12 @@ export const Stitching = styled.div`
   cursor: pointer;
 `
 
-interface OvalProps {
-  color?: string
-}
-
 export const Oval = styled.div`
   height: 30px;
   width: 30px;
   border-radius: 50%;
-  background-color: ${({ color }: OvalProps) => color || WHITE};
+  background: ${({ color }: OvalProps) => color === PREDYED_TRANSPARENT ?
+    `url(${transparentGrid})` : (color || WHITE)};
   align-self: center;
 `
 

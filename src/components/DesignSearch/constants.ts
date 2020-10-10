@@ -28,3 +28,4 @@ export const SET_SEARCH_MANAGER = `${namespace}/SET_SEARCH_MANAGER`
 export const SET_USER_REP = `${namespace}/SET_USER_REP`
 export const SET_ACCOUNT_MANAGER = `${namespace}/SET_ACCOUNT_MANAGER`
 export const CHANGE_LEGACY = `${namespace}/CHANGE_LEGACY`
+export const SET_PREDYED_VALUE = `${namespace}/SET_PREDYED_VALUE`

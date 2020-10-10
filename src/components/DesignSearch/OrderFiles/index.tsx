@@ -73,7 +73,7 @@ import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
 import ProassistNotes from '../../ProassistNotes'
-import { DATE_FORMAT } from '../../../constants'
+import { DATE_FORMAT, PREDYED_TRANSPARENT } from '../../../constants'
 
 const Option = Select.Option
 const Confirm = Modal.confirm
@@ -118,6 +118,7 @@ interface Props {
   formatMessage: (messageDescriptor: any, params?: any) => string
   onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
+  onSelectPredyed: (predyedValue: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
   onGeneratePdf: () => void
@@ -174,6 +175,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       setUploadingThumbnailAction,
       changes,
       predyedColors,
+      onSelectPredyed,
       onSelectStitchingColor,
       colorAccessories,
       onSelectColor,
@@ -191,6 +193,8 @@ export class OrderFiles extends React.PureComponent<Props> {
     } catch (e) {
       console.error(e)
     }
+    const predyedValue = colorAccessories.predyed || predyedName
+    const hidePredyed = predyedValue === PREDYED_TRANSPARENT
     const statusOrder = status.replace(/_/g, ' ')
     const selectedRep = salesRep
       ? `${salesRep.firstName} ${salesRep.lastName}`
@@ -361,10 +365,11 @@ export class OrderFiles extends React.PureComponent<Props> {
                   onSelectStitchingColor,
                   onSelectColor,
                   hasPredyed,
+                  onSelectPredyed,
+                  predyedValue,
                   predyedColors,
                   allowZipperSelection
                 }}
-                predyedValue={colorAccessories.predyed || predyedName}
                 stitchingValue={colorAccessories.stitching || stitchingValue}
                 stitchingName={colorAccessories.stitchingName || stitchingName}
                 zipperColor={colorAccessories.zipperColor || zipperColor}
@@ -383,7 +388,7 @@ export class OrderFiles extends React.PureComponent<Props> {
                 onUploadingThumbnail={setUploadingThumbnailAction}
                 colorAccessories={colorAccessories}
                 ref={(render3D: any) => (this.render3D = render3D)}
-                {...{ stitchingValue }}
+                {...{ stitchingValue, hidePredyed }}
               />
             </RenderContainer>
           </RenderLayout>

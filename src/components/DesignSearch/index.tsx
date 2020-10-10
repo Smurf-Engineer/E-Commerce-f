@@ -147,6 +147,7 @@ interface Props {
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   setUploadingThumbnailAction: (uploading: boolean) => void
   updateThumbnailAction: (thumbnail: string) => void
+  selectPredyedAction: (predyedValue: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setColorAction: (color: string, id: string) => void
   updateDesign: (variables: {}) => Promise<Thumbnail>
@@ -198,6 +199,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       changeLegacy,
       setUploadingThumbnailAction,
       changes,
+      selectPredyedAction,
       setStitchingColorAction,
       colorAccessories,
       openNotes,
@@ -275,6 +277,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         searchManagers={this.searchManagers}
         checkPreflight={this.handleCheckPreflight}
         handleSaveNote={this.saveNote}
+        onSelectPredyed={selectPredyedAction}
         onSelectStitchingColor={setStitchingColorAction}
         onSelectColor={setColorAction}
         formatMessage={formatMessage}

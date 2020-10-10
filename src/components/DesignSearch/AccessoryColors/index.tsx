@@ -19,6 +19,7 @@ interface Props {
   predyedValue?: string
   hasPredyed?: boolean
   predyedColors?: PredyedColor[]
+  onSelectPredyed: (predyedValue: string) => void,
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
 }
@@ -32,6 +33,7 @@ const AccessoryColors = ({
   predyedColors,
   predyedValue,
   bindingColor,
+  onSelectPredyed,
   onSelectStitchingColor,
   onSelectColor,
   allowZipperSelection
@@ -74,7 +76,7 @@ const AccessoryColors = ({
       )}
       {hasPredyed && (
         <PredyedColorComponent
-          {...{ onSelectStitchingColor, predyedValue, predyedColors }}
+          {...{ onSelectPredyed, predyedValue, predyedColors }}
           name="Predyed"
         />
       )}

@@ -609,7 +609,7 @@ class Render3D extends PureComponent {
     fromImage = false
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
-    const { stitchingValue, asImage } = this.props
+    const { stitchingValue, asImage, designSearch, hidePredyed } = this.props
     if (design.canvas && asImage) {
       await this.getFontsFromCanvas(design.canvas)
     }
@@ -704,7 +704,10 @@ class Render3D extends PureComponent {
             object.add(...areasLayers)
           }
           /* Transparent predyed  */
-          if (design.predyedColor === PREDYED_TRANSPARENT && product.hasPredyed) {
+          if (
+            ((design.predyedColor === PREDYED_TRANSPARENT && !designSearch) || (hidePredyed && designSearch))
+            && product.hasPredyed
+          ) {
             const brandingObj = children[meshIndex].clone()
             object.add(brandingObj)
             const brandingIndex = children.length - 1
@@ -787,7 +790,9 @@ class Render3D extends PureComponent {
               await this.loadCanvasTexture(design.canvas)
             }
             /* Branding  */
-            if (!!branding && design.predyedColor !== PREDYED_TRANSPARENT) {
+            if (!!branding &&
+              ((design.predyedColor !== PREDYED_TRANSPARENT && !designSearch) || (!hidePredyed && designSearch))
+            ) {
               const brandingObj = children[meshIndex].clone()
               object.add(brandingObj)
               const brandingIndex = children.length - 1

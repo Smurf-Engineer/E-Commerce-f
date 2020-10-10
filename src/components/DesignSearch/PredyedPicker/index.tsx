@@ -4,9 +4,7 @@
 import * as React from 'react'
 
 import { Container, Color, Col, Border } from './styledComponents'
-import stitchingColors from '../../../colorList/stitchingColors'
-import { PredyedColor, StitchingColor } from '../../../types/common'
-import { BLACK, WHITE } from '../../../screens/DesignCenter/constants'
+import { PredyedColor } from '../../../types/common'
 
 interface Props {
   predyedValue: string,

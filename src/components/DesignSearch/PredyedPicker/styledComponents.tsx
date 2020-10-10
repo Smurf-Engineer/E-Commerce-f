@@ -4,6 +4,8 @@
 import styled from 'styled-components'
 import { WHITE, RED, GRAY } from '../../../theme/colors'
 import { WHITE as WHITE_TEXT } from '../../../screens/DesignCenter/constants'
+import { PREDYED_TRANSPARENT } from '../../../constants'
+import transparentGrid from '../../../assets/transparent_grid.png'
 
 export const Container = styled.div`
   width: 400px;
@@ -21,7 +23,6 @@ interface ColorProps {
 }
 
 export const Color = styled.div`
-  background-color: ${({ color }: ColorProps) => color};
   border: 1px solid
     ${({ color }: ColorProps) =>
       color && (color.toUpperCase() !== WHITE && color !== WHITE_TEXT)
@@ -30,6 +31,8 @@ export const Color = styled.div`
   cursor: pointer;
   width: 32px;
   height: 32px;
+  background: ${({ color }: ColorProps) => color === PREDYED_TRANSPARENT ?
+    `url(${transparentGrid})` : (color || WHITE)};
   transform: scale(${({ selected }: ColorProps) => (selected ? '0.8' : '1')});
   transition: transform 0.3s ease-in-out;
 `
