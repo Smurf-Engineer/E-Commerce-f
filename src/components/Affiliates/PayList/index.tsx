@@ -31,7 +31,7 @@ import Spin from 'antd/lib/spin'
 import { PAY_LIMITS } from '../constants'
 import moment from 'moment'
 // import { getFileWithExtension } from '../../../utils/utilsFiles'
-import { PENDING_PAY, TO_PAY, SHIPPED, PARTIALLY_SHIPPED, DATE_FORMAT } from '../../../constants'
+import { PENDING_PAY, TO_PAY, SHIPPED, PARTIALLY_SHIPPED, DATE_FORMAT, CANCELLED } from '../../../constants'
 import clone from 'lodash/clone'
 import { message } from 'antd'
 import debounce from 'lodash/debounce'
@@ -225,7 +225,7 @@ export class PayList extends React.Component<Props, {}> {
                     <Cell onClick={this.stopPropagation}>
                       {(
                         (
-                          (status === TO_PAY && isAccountant) ||
+                          (status === TO_PAY && isAccountant && orderStatus !== CANCELLED) ||
                           (!isAccountant && status === PENDING_PAY &&
                             ((netsuiteStatus === SHIPPED || netsuiteStatus === PARTIALLY_SHIPPED) || overrideStatus)
                           )
