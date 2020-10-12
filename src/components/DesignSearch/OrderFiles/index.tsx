@@ -73,7 +73,7 @@ import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
 import ProassistNotes from '../../ProassistNotes'
-import { DATE_FORMAT, PREDYED_TRANSPARENT } from '../../../constants'
+import { DATE_FORMAT, PREDYED_DEFAULT, PREDYED_TRANSPARENT } from '../../../constants'
 
 const Option = Select.Option
 const Confirm = Modal.confirm
@@ -193,7 +193,7 @@ export class OrderFiles extends React.PureComponent<Props> {
     } catch (e) {
       console.error(e)
     }
-    const predyedValue = colorAccessories.predyed || predyedName
+    const predyedValue = colorAccessories.predyed || predyedName || PREDYED_DEFAULT
     const hidePredyed = predyedValue === PREDYED_TRANSPARENT
     const statusOrder = status.replace(/_/g, ' ')
     const selectedRep = salesRep

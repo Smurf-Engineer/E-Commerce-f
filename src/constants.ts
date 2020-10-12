@@ -33,6 +33,7 @@ export const DATE_FORMAT = 'MM/DD/YYYY'
 export const ACCESSORY_WHITE = 'white'
 export const ACCESSORY_BLACK = 'black'
 export const PREDYED_TRANSPARENT = 'white'
+export const PREDYED_DEFAULT = 'black'
 
 /* Routes  */
 export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
