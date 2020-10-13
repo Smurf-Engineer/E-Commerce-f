@@ -283,6 +283,7 @@ class MainLayout extends React.Component<Props, {}> {
               currentRegion,
               currentLanguage,
               buyNowHeader,
+              user,
               setAccountScreen
             }}
             saveAndBuy={saveAndBuyAction}
