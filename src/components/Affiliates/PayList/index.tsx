@@ -225,12 +225,12 @@ export class PayList extends React.Component<Props, {}> {
                     <Cell onClick={this.stopPropagation}>
                       {(
                         (
-                          (status === TO_PAY && isAccountant && orderStatus !== CANCELLED) ||
+                          (status === TO_PAY && isAccountant) ||
                           (!isAccountant && status === PENDING_PAY &&
                             ((netsuiteStatus === SHIPPED || netsuiteStatus === PARTIALLY_SHIPPED) || overrideStatus)
                           )
                         ) &&
-                        !!paypalAccount && canEdit
+                        !!paypalAccount && canEdit && orderStatus !== CANCELLED
                       ) &&
                         <Checkbox
                           {...{ id }}
