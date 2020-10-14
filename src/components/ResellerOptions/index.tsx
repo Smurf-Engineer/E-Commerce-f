@@ -22,7 +22,7 @@ import {
   LoadingContainer,
   PayIcon,
 } from './styledComponents'
-import Payday from '../../assets/jakroo_payday.png'
+import Payday from '../../assets/directship_dark.png'
 import ResellerDetails from './ResellerDetails'
 import AffiliateModal from '../AffiliateModal'
 import {

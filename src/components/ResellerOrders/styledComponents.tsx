@@ -231,6 +231,7 @@ export const ShowButton = styled.div`
 export const PayIcon = styled.img`
   max-width: 158px;
   width: 100%;
-  margin-left: -16px;
-  margin-bottom: 12px;
+  margin-left: -8px;
+  margin-bottom: 16px;
+  margin-top: 14px;
 `

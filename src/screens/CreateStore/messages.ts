@@ -90,13 +90,13 @@ export default defineMessages({
     id: 'screens.CreateStore.priceDropReseller',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      '<p>With on-demand Direct Fulfilment stores, you are able to set your preferred selling price for each item. Default reseller margin is set at 20% off the MSRP. However, you can increase your profit by increasing the selling price.</p><p>Each member will be able to individually place their order and checkout using their preferred payment method from the available payment options. All transaction fees and any applicable custom duties are covered by Jakroo.</p>'
+      '<p>With on-demand DirectShip Stores, you are able to set your preferred selling price for each item. Default reseller margin is set at 20% off the MSRP. However, you can increase your profit by increasing the selling price.<br />Each member will be able to individually place their order and checkout using their preferred payment method from the available payment options. All transaction fees and any applicable custom duties are covered by Jakroo.</p>'
   },
   deliveryReseller: {
     id: 'screens.CreateStore.deliveryReseller',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'Direct Fulfillment store orders are produced on demand upon receipt of order and typically ship direct to the customer within 7-12 days of receipt (excluding Federal holidays). Estimated delivery times are displayed on the store page and in the order confirmation email. Delivery times may occasionally vary due to periodic shipping carrier or production facility closures. We use our best efforts to initiate shipment and meet scheduled delivery dates but cannot guarantee the actual delivery date of the order. For security reasons, all orders are shipped via Fedex International Priority with signature required. In some cases, when products are shipped from multiple facilities, a secondary carrier such as UPS may be used. Customers will receive a shipping notification once their order is picked up by the shipping carrier.'
+      'DirectShip Store orders are produced on demand upon receipt of order and typically ship direct to the customer within 7-12 days of receipt (excluding Federal holidays). Estimated delivery times are displayed on the store page and in the order confirmation email. Delivery times may occasionally vary due to periodic shipping carrier or production facility closures. We use our best efforts to initiate shipment and meet scheduled delivery dates but cannot guarantee the actual delivery date of the order. For security reasons, all orders are shipped via Fedex International Priority with signature required. In some cases, when products are shipped from multiple facilities, a secondary carrier such as UPS may be used. Customers will receive a shipping notification once their order is picked up by the shipping carrier.'
   },
   storeItemsTitle: {
     id: 'screens.CreateStore.storeItemsTitle',

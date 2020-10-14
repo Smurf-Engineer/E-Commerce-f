@@ -85,9 +85,20 @@ export const HeaderSection = styled.div`
 
 export const PayDayIcon = styled.img`
   max-width: 344px;
-  margin-left: -24px;
+  margin-left: -8px;
   object-fit: cover;
-  margin-top: -64px;
+  margin-top: -52px;
+  margin-bottom: 14px;
+  @media (max-width: 767px) {
+    max-width: 264px;
+  }
+`
+
+export const ResellerDiagram = styled.img`
+  max-width: 304px;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 14px;
   @media (max-width: 767px) {
     max-width: 264px;
   }
@@ -119,6 +130,10 @@ export const TitlePay = styled.div`
   color: #96be00;
   font-size: 32px;
   font-family: ${AVENIR_MEDIUM};
+  @media (max-width: 767px) {
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
 `
 
 export const BodyPay = styled.div`

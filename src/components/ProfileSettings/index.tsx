@@ -248,7 +248,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
-        <BoldTitle>{formatMessage(messages.resellerSettings)}</BoldTitle>
+        {!!status && <><BoldTitle>{formatMessage(messages.resellerSettings)}</BoldTitle>
         <ResellerDetails>
           <LabelButton>
             <Title>
@@ -312,7 +312,7 @@ class ProfileSettings extends React.Component<Props, {}> {
               </LabelButton>
             </Margins>
           </LabelButton>
-        </ResellerDetails>
+        </ResellerDetails></>}
         <ChangePasswordModal
           {...{
             formatMessage,
