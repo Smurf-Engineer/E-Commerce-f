@@ -21,13 +21,13 @@ import CaliPropLogo from '../../assets/californiaprop65.svg'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  openReseller: () => void
-  showReseller: boolean
+  openReseller?: () => void
+  showReseller?: boolean
   fakeWidth: number
   history?: any
 }
 
-const ContactAndLinks = ({ formatMessage, fakeWidth, history, openReseller, showReseller }: Props) => {
+const ContactAndLinks = ({ formatMessage, fakeWidth, history, openReseller = () => {}, showReseller }: Props) => {
   return (
     <MediaQuery
       minWidth={768}
