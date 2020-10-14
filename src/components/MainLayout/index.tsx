@@ -33,7 +33,6 @@ import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
-import ResellerSignup from '../ResellerSignup'
 import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
 import { closeSlaask } from '../../slaask'
@@ -214,7 +213,6 @@ class MainLayout extends React.Component<Props, {}> {
       openLogin,
       openLoginAction,
       setRegionAction,
-      openReseller,
       currentRegion,
       user,
       currentLanguage,
@@ -308,18 +306,10 @@ class MainLayout extends React.Component<Props, {}> {
           <Footer>
             <ContactAndLinks
               {...{ history, formatMessage, fakeWidth }}
-              openReseller={this.handleOpenReseller}
-              showReseller={!user}
             />
             <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}
-        <ResellerSignup
-          {...{ formatMessage, initialCountryCode, history }}
-          open={openReseller}
-          login={this.handleOnLogin}
-          requestClose={this.closeReseller}
-        />
         <QuickView
           open={!!productId}
           currentCurrency={currentCurrency || config.defaultCurrency}
