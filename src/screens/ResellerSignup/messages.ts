@@ -109,7 +109,7 @@ export default defineMessages({
   resellerDesc: {
     id: 'components.ResellerSignup.resellerDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: 'For individuals and corporations located in the USA, we will require a resale certificate. This allows reseller to purchase products without paying sales tax if they plan to resell them.'
+    defaultMessage: 'For individuals and corporations located in the USA, we will require a resale certificate to participate in Reseller Program. For those in Canada, we will require either a GST # or Business Number for verification purposes.'
   },
   notifyMe: {
     id: 'components.ResellerSignup.notifyMe',

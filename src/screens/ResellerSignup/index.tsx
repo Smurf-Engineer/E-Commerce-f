@@ -75,6 +75,7 @@ interface Props {
   client: any
   initialCountryCode: string
   history: History
+  user: User
   signUpUser: (variables: {}) => Promise<User>
   saveUserSession: (user: UserType, client: any) => void
 }
@@ -157,6 +158,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     const {
       history,
       intl,
+      user
     } = this.props
     const {
       loading,
@@ -174,6 +176,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       terms,
       fileName
     } = this.state
+    if (!!user) {
+      history.replace('/')
+    }
     const { formatMessage } = intl
     const file = fileName ? getFileWithExtension(fileName) : ''
     return (
@@ -336,26 +341,28 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               __html: formatMessage(messages.resellerDesc)
             }}
           />
-          <StyledUpload
-            listType="picture-card"
-            className="avatar-uploader"
-            customRequest={this.uploadFile}
-            disabled={loading}
-            showUploadList={false}
-            beforeUpload={this.beforeUpload}
-          >
-            <UploadButton>
-              {loading ?
-                <LoadingContainer>
-                  <Spin size="small" />
-                </LoadingContainer> :
-                <>
-                  <StyledIcon type="upload" />
-                  <FormattedMessage {...messages.uploadCertificate} />
-                </>
-              }
-            </UploadButton>
-          </StyledUpload>
+          {currency === US_CURRENCY && 
+            <StyledUpload
+              listType="picture-card"
+              className="avatar-uploader"
+              customRequest={this.uploadFile}
+              disabled={loading}
+              showUploadList={false}
+              beforeUpload={this.beforeUpload}
+            >
+              <UploadButton>
+                {loading ?
+                  <LoadingContainer>
+                    <Spin size="small" />
+                  </LoadingContainer> :
+                  <>
+                    <StyledIcon type="upload" />
+                    <FormattedMessage {...messages.uploadCertificate} />
+                  </>
+                }
+              </UploadButton>
+            </StyledUpload>
+          }
           {!!file &&
             <FileLabel>
               <Clip type="paper-clip" />
@@ -364,11 +371,13 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               </FileName>
             </FileLabel>
           }
+         {!!currency &&
           <TitleDesc
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.reviewText)
-            }}
-          />
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.reviewText)
+              }}
+            />
+          }
           <TermsCheckbox
             checked={terms}
             name="terms"

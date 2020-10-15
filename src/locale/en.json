@@ -250,6 +250,7 @@
   "components.ResellerSignup.rememberMe": "Remember me",
   "components.ResellerSignup.forgotPassword": "Forgot Password?",
   "components.ResellerSignup.loginButtonLabel": "LOGIN",
+  "components.ResellerSignup.resellerDesc": "For individuals and corporations located in the USA, we will require a resale certificate to participate in Reseller Program. For those in Canada, we will require either a GST # or Business Number for verification purposes.",
   "components.ResellerSignup.titleDesc": "<p>Become a JAKROO reseller and sell your designs on your custom Jakroo Storefront or through your Shopify website.</p><p>In order to become an authorized reseller, we will need to gather the required information-the legal stuff</p><p>Depending on your location, the required information will vary</p>",
   "components.ResellerSignup.notAMember": "Not a member?",
   "components.ResellerSignup.joinNow": "JOIN NOW",
