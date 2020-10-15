@@ -27,6 +27,15 @@ export const Name = styled.div`
   margin-right: 16px;
 `
 
+export const ColorWheel = styled.img`
+  height: 30px;
+  width: 30px;
+  align-self: center;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 export const ColorLabel = styled.div`
   color: ${GRAY_DARK};
   font-size: 16px;

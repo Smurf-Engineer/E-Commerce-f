@@ -8,11 +8,14 @@ import {
   Stitching,
   ColorLabel,
   Oval,
-  Row
+  Row,
+  ColorWheel
 } from './styledComponents'
 import Popover from 'antd/lib/popover'
+import colorWheel from '../../../assets/Colorwheel.svg'
 import PredyedPicker from '../PredyedPicker'
 import { PredyedColor, StitchingColor } from '../../../types/common'
+import { PREDYED_TRANSPARENT } from '../../../constants'
 
 interface Props {
   name: string
@@ -45,8 +48,11 @@ const StitchingColor = ({
         <Row>
           <Name>{name}</Name>
           <Stitching>
-            <ColorLabel>{predyedValue}</ColorLabel>
-            <Oval color={predyedCode} />
+            <ColorLabel>{predyedValue === PREDYED_TRANSPARENT ? 'Full Print' : predyedValue}</ColorLabel>
+            {predyedValue === PREDYED_TRANSPARENT ?
+              <ColorWheel src={colorWheel} /> :
+              <Oval color={predyedCode} />
+            }
           </Stitching>
         </Row>
       </Popover>

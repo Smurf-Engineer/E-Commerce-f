@@ -3,8 +3,10 @@
  */
 import * as React from 'react'
 
-import { Container, Color, Col, Border } from './styledComponents'
+import { Container, Color, Col, Border, ColorWheel } from './styledComponents'
+import colorWheel from '../../../assets/Colorwheel.svg'
 import { PredyedColor } from '../../../types/common'
+import { PREDYED_TRANSPARENT } from '../../../constants'
 
 interface Props {
   predyedValue: string,
@@ -26,12 +28,21 @@ class ColorPicker extends React.PureComponent<Props> {
     const colorsList = predyedColors.map(({ name, code }, index) => (
       <Col key={index}>
         <Border selected={name === predyedValue}>
-          <Color
-            id={name}
-            selected={name === predyedValue}
-            color={code}
-            onClick={setColor(name)}
-          />
+          {name === PREDYED_TRANSPARENT ?
+            <ColorWheel
+              id={name}
+              src={colorWheel}
+              selected={name === predyedValue}
+              color={code}
+              onClick={setColor(name)}
+            /> :
+            <Color
+              id={name}
+              selected={name === predyedValue}
+              color={code}
+              onClick={setColor(name)}
+            />
+          }
         </Border>
       </Col>
     ))

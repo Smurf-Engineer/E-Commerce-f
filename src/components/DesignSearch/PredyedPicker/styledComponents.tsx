@@ -22,6 +22,16 @@ interface ColorProps {
   selected?: boolean
 }
 
+export const ColorWheel = styled.img`
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  padding-bottom: 2px;
+  border-radius: 50%;
+  transform: scale(${({ selected }: ColorProps) => (selected ? '0.8' : '1')});
+  transition: transform 0.3s ease-in-out;
+`
+
 export const Color = styled.div`
   border: 1px solid
     ${({ color }: ColorProps) =>
