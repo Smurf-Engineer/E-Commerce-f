@@ -260,6 +260,7 @@
   "screens.Account.menu.overview": "OVERVIEW",
   "screens.Account.menu.orderHistory": "ORDER HISTORY",
   "screens.Account.menu.addresses": "Addresses",
+  "screens.Account.menu.goBack": "Back",
   "screens.Account.menu.creditCards": "Credit Cards",
   "screens.Account.menu.profileSettings": "Profile",
   "screens.Account.menu.profileMenu": "PROFILE SETTINGS",

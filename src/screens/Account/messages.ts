@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'screens.Account.menu.addresses',
     defaultMessage: 'Addresses'
   },
+  goBack: {
+    id: 'screens.Account.menu.goBack',
+    defaultMessage: 'Back'
+  },
   creditCards: {
     id: 'screens.Account.menu.creditCards',
     defaultMessage: 'Credit Cards'

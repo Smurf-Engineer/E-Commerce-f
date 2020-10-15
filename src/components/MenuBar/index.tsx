@@ -179,7 +179,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       regionsData: { regionsResult, loading: loadingRegions }
     } = this.props
 
-    let user: any
+    let user: any = {}
     if (typeof window !== 'undefined') {
       user = JSON.parse(localStorage.getItem('user') as string)
     }

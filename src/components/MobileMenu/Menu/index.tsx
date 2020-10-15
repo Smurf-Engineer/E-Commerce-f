@@ -9,7 +9,7 @@ import Spin from 'antd/lib/spin'
 import {
   logoutAction
 } from '../../MainLayout/actions'
-import { Container, Bottom, menuStyle, BottomDiv, Item, StyledSubMenu } from './styledComponents'
+import { Container, Bottom, menuStyle, BottomDiv, Item, StyledSubMenu, containerStyle } from './styledComponents'
 import messages from './messages'
 import messagesMenu from '../../../screens/Account/messages'
 import { menuOptions, AFFILIATES } from './constants'
@@ -187,7 +187,12 @@ class Menu extends React.PureComponent<Props, {}> {
     return (
       <Container>
         <Bottom>{loginButton}</Bottom>
-        <SwipeableViews index={openMenuAccount ? 1 : 0} disabled={true} animateHeight={true}>
+        <SwipeableViews
+          {... {containerStyle }}
+          index={openMenuAccount ? 1 : 0}
+          disabled={true}
+          animateHeight={true}
+        >
           <MenuAntd
             mode="inline"
             onSelect={this.handleClick}

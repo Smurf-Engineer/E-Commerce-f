@@ -74,7 +74,7 @@ const Logout = ({ title, logout, goTo, openMenu, openedMenu, closeMenu }: Props)
               {openedMenu && <LeftIcon onClick={closeMenu} type="left" />}
               <Icon type="user" />
               <Text>
-                <Menu onClick={handleOnClick} style={OverviewStyle}>
+                <Menu onClick={openMenu} style={OverviewStyle}>
                   <Menu.Item style={titleStyle} key={OVERVIEW}>{toUpper(title)}</Menu.Item>
                 </Menu>
               </Text>

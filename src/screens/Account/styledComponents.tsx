@@ -35,13 +35,15 @@ export const Content = styled.div`
   padding-left: 36px;
 
   @media (max-width: 768px) and (min-width: 320px) {
-    padding: 31px 8px 32px;
+    padding: 16px 8px 32px;
   }
 `
 interface StyleProps {
   showChildren?: boolean
   color?: string
 }
+
+export const BackButton = styled.div``
 
 export const FiltersTitle = styled.div`
   display: ${({ showChildren }: StyleProps) =>

@@ -56,7 +56,8 @@ import {
   OptionMenu,
   FiltersTitle,
   menuDeviceStyle,
-  DrawerSidebar
+  DrawerSidebar,
+  BackButton
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
@@ -110,6 +111,10 @@ export class Account extends React.Component<Props, {}> {
   }
 
   componentWillMount() {
+    this.setScreen()
+  }
+
+  setScreen = () => {
     const {
       location: { search },
       setDefaultScreenAction
@@ -191,6 +196,12 @@ export class Account extends React.Component<Props, {}> {
     }
 
     setCurrentScreenAction(key)
+  }
+
+  handleGoBack = () => {
+    const { history } = this.props
+    history.goBack()
+    this.setScreen()
   }
 
   handleOnGoToScreen = (screen: string) => {
@@ -365,13 +376,12 @@ export class Account extends React.Component<Props, {}> {
                   <Layout {...{ history, intl }}>
                     <Container>
                       <Content width={'100%'}>
-                        <FiltersTitle
-                          showChildren={true}
-                          onClick={this.handleOpenSidebar}
+                        <BackButton
+                          onClick={this.handleGoBack}
                         >
-                          {intl.formatMessage(messages.filtersTitle)}
-                          <Icon type="down" />
-                        </FiltersTitle>
+                          <Icon type="left" />
+                          {intl.formatMessage(messages.goBack)}
+                        </BackButton>
                         <ScreenTitle show={noOrderScreenFlag}>
                           {!!messages[screen] && (
                             <FormattedMessage {...messages[screen]} />
