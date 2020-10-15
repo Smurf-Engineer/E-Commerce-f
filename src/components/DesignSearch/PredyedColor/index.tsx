@@ -17,6 +17,7 @@ import { PredyedColor, StitchingColor } from '../../../types/common'
 interface Props {
   name: string
   predyedValue: string
+  predyedCode: string
   predyedColors: PredyedColor[]
   onSelectPredyed?: (predyedValue: string) => void
 }
@@ -25,6 +26,7 @@ const StitchingColor = ({
   name,
   predyedValue,
   predyedColors,
+  predyedCode,
   onSelectPredyed
 }: Props) => {
   return (
@@ -44,7 +46,7 @@ const StitchingColor = ({
           <Name>{name}</Name>
           <Stitching>
             <ColorLabel>{predyedValue}</ColorLabel>
-            <Oval color={predyedValue} />
+            <Oval color={predyedCode} />
           </Stitching>
         </Row>
       </Popover>

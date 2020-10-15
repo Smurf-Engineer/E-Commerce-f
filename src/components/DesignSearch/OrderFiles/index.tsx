@@ -174,7 +174,7 @@ export class OrderFiles extends React.PureComponent<Props> {
       uploadingThumbnail,
       setUploadingThumbnailAction,
       changes,
-      predyedColors,
+      predyedColors = [],
       onSelectPredyed,
       onSelectStitchingColor,
       colorAccessories,
@@ -195,6 +195,8 @@ export class OrderFiles extends React.PureComponent<Props> {
     }
     const predyedValue = colorAccessories.predyed || predyedName || PREDYED_DEFAULT
     const hidePredyed = predyedValue === PREDYED_TRANSPARENT
+    const predyedItem = predyedColors.find(({ name: colorName }) => colorName === predyedValue)
+    const predyedCode = predyedItem ? predyedItem.code : predyedValue
     const statusOrder = status.replace(/_/g, ' ')
     const selectedRep = salesRep
       ? `${salesRep.firstName} ${salesRep.lastName}`
@@ -368,6 +370,7 @@ export class OrderFiles extends React.PureComponent<Props> {
                   onSelectPredyed,
                   predyedValue,
                   predyedColors,
+                  predyedCode,
                   allowZipperSelection
                 }}
                 stitchingValue={colorAccessories.stitching || stitchingValue}
