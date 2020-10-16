@@ -42,6 +42,8 @@ interface Props {
   productInternalsInfo: ProductInternalsInfo
   gender: string
   size: string
+  topSize: string
+  bottomSize: string
   fitStyle: string
   color: string
   predyedColor: string
@@ -76,6 +78,8 @@ const InternalsModal = ({
   productInternalsInfo,
   gender: genderValue,
   size,
+  topSize,
+  bottomSize,
   fitStyle,
   color,
   pocketZipper,
@@ -193,6 +197,26 @@ const InternalsModal = ({
           <Column>
             <Label>{formatMessage(messages.size)}</Label>
             <StyledSelect onSelect={handleOnSelect('size')} defaultValue={size}>
+              {sizes.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
+                </Option>
+              ))}
+            </StyledSelect>
+          </Column>
+          <Column>
+            <Label>{formatMessage(messages.topSize)}</Label>
+            <StyledSelect onSelect={handleOnSelect('topSize')} defaultValue={topSize}>
+              {sizes.map(({ name }) => (
+                <Option key={name} value={name}>
+                  {name}
+                </Option>
+              ))}
+            </StyledSelect>
+          </Column>
+          <Column>
+            <Label>{formatMessage(messages.bottomSize)}</Label>
+            <StyledSelect onSelect={handleOnSelect('bottomSize')} defaultValue={bottomSize}>
               {sizes.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}

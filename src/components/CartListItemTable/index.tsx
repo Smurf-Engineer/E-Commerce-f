@@ -75,6 +75,16 @@ interface Props {
     detailIndex: number,
     size: ItemDetailType
   ) => void
+  setTopDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+  setBottomDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
   cartItem: CartItems
   itemIndex: number
   openFitInfo: boolean
@@ -97,6 +107,8 @@ const headerTitles: Header[] = [
   { message: 'gender' },
   { message: 'color' },
   { message: 'size' },
+  { message: 'topSize' },
+  { message: 'bottomSize' },
   { message: 'fit' },
   { message: 'quantity' },
   { message: '', width: 10 }
@@ -183,6 +195,22 @@ class CartListItemTable extends React.Component<Props, State> {
     setDetailSize(itemIndex, detail, selectedSize)
   }
 
+  handleTopSizeChange = (value: any, detail: number) => {
+    const { setTopDetailSize, itemIndex, cartItem } = this.props
+    const selectedSize = find(cartItem.product.sizeRange, {
+      name: value
+    }) as ItemDetailType
+    setTopDetailSize(itemIndex, detail, selectedSize)
+  }
+
+  handleBottomSizeChange = (value: any, detail: number) => {
+    const { setBottomDetailSize, itemIndex, cartItem } = this.props
+    const selectedSize = find(cartItem.product.sizeRange, {
+      name: value
+    }) as ItemDetailType
+    setBottomDetailSize(itemIndex, detail, selectedSize)
+  }
+
   handleFitChange = (value: any, detail: number) => {
     const { setDetailFit, itemIndex, cartItem } = this.props
     const selectedfit = find(cartItem.product.fitStyles, {
@@ -226,10 +254,12 @@ class CartListItemTable extends React.Component<Props, State> {
     const colors = get(cartItem, 'product.colors', [])
     const colorImg = get(cartItem, 'itemDetails[0].colorImage', '')
     const withColorColumn = (isRetailProduct && !!colors.length) || !!colorImg
+    const withTwoPieces = get(cartItem, 'product.twoPieces', false)
 
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
-      if (index === 1 && !withColorColumn) return
+      if (index === 1 && !withColorColumn || index === 2 && withTwoPieces ||
+        (index === 3 || index === 4) && !withTwoPieces) return
       return (
         <HeaderCell key={index} {...{ width }}>
           <CellContainer>
@@ -241,7 +271,7 @@ class CartListItemTable extends React.Component<Props, State> {
             >
               {message ? formatMessage(messages[message]) : ''}
             </Title>
-            {message === 'size' && !hideSizeHelp && (
+            {(message === 'size' || message === 'topSize' || message === 'bottomSize') && !hideSizeHelp && (
               <QuestionSpan key={index} onClick={this.handleOpenFitInfo} />
             )}
           </CellContainer>
@@ -280,11 +310,11 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-        const { gender, size, fit, quantity, color, colorImage } = item
+        const { gender, size, topSize, bottomSize, fit, quantity, color, colorImage } = item
         const colorName = color && color.name
         const colorObject = find(colors, { name: colorName })
         return !onlyRead ? (
-          <Row key={index} withColor={withColorColumn}>
+          <Row key={index} withColor={withColorColumn} withTwoPieces={withTwoPieces}>
             <Cell>
               <StyledSelect
                 onChange={(e) => this.handleGenderChange(e, index)}
@@ -311,7 +341,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 />
               </Cell>
             )}
-            <Cell>
+            {!withTwoPieces && <Cell>
               <StyledSelect
                 onChange={(e) => this.handleSizeChange(e, index)}
                 showSearch={false}
@@ -324,7 +354,35 @@ class CartListItemTable extends React.Component<Props, State> {
               >
                 {sizeOptions}
               </StyledSelect>
+            </Cell>}
+            {withTwoPieces && <><Cell>
+              <StyledSelect
+                onChange={(e) => this.handleTopSizeChange(e, index)}
+                showSearch={false}
+                placeholder={formatMessage(messages.topSizePlaceholder)}
+                optionFilterProp="children"
+                value={topSize ? topSize.name : undefined}
+                selectWidth={fitSelectWidth}
+                disabled={cartItem.fixedCart || !sizes.length}
+                highlightFields={highlightFields && !size && !!sizes.length}
+              >
+                {sizeOptions}
+              </StyledSelect>
             </Cell>
+              <Cell>
+                <StyledSelect
+                  onChange={(e) => this.handleBottomSizeChange(e, index)}
+                  showSearch={false}
+                  placeholder={formatMessage(messages.bottomSizePlaceholder)}
+                  optionFilterProp="children"
+                  value={bottomSize ? bottomSize.name : undefined}
+                  selectWidth={fitSelectWidth}
+                  disabled={cartItem.fixedCart || !sizes.length}
+                  highlightFields={highlightFields && !size && !!sizes.length}
+                >
+                  {sizeOptions}
+                </StyledSelect>
+              </Cell></>}
             <Cell>
               <StyledSelect
                 onChange={(e) => this.handleFitChange(e, index)}
@@ -365,14 +423,16 @@ class CartListItemTable extends React.Component<Props, State> {
             </Cell>
           </Row>
         ) : (
-            <Row key={index} withColor={withColorColumn} {...{ onlyRead }}>
+            <Row key={index} withColor={withColorColumn} {...{ onlyRead, withTwoPieces }}>
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
               {((withColorColumn && !!colorObject) || colorImage) && (
                 <InfoCell>
                   <ProductColor src={colorImage || colorObject.image} />
                 </InfoCell>
               )}
-              <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
+              {!withTwoPieces && <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>}
+              {withTwoPieces && <InfoCell>{topSize && topSize.name ? topSize.name : '-'}</InfoCell>}
+              {withTwoPieces && <InfoCell>{bottomSize && bottomSize.name ? bottomSize.name : '-'}</InfoCell>}
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
               {/* TODO: Delete after confirm label won't be necessary in table
                 <InfoCell>{label || '-'}</InfoCell> */}
@@ -384,7 +444,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     return (
       <Table>
-        <HeaderRow withColor={withColorColumn} {...{ onlyRead }}>
+        <HeaderRow withColor={withColorColumn} {...{ onlyRead, withTwoPieces }}>
           {header}
         </HeaderRow>
         {renderList}

@@ -22,7 +22,9 @@ import {
   OPEN_FITINFO,
   OPEN_STORE_INFO,
   SET_STORE_TERMS,
-  HIGHLIGHT_FIELDS
+  HIGHLIGHT_FIELDS,
+  SET_TOP_SIZE_ITEM_DETAIL_ACTION,
+  SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -104,6 +106,28 @@ export const setSizeItemDetailAction = (
   size: ItemDetailType
 ): AnyAction => ({
   type: SET_SIZE_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  size
+})
+
+export const setTopSizeItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  size: ItemDetailType
+): AnyAction => ({
+  type: SET_TOP_SIZE_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  size
+})
+
+export const setBottomSizeItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  size: ItemDetailType
+): AnyAction => ({
+  type: SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION,
   index,
   detailIndex,
   size

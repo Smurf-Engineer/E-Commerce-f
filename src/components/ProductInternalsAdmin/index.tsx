@@ -64,6 +64,8 @@ interface Props {
   data: Data
   gender: string
   size: string
+  topSize: string
+  bottomSize: string
   fitStyle: string
   color: string
   pocketZipper: string
@@ -134,6 +136,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
       data: { productInternalsInfo },
       gender,
       size,
+      topSize,
+      bottomSize,
       fitStyle,
       color,
       pocketZipper,
@@ -213,6 +217,8 @@ class ProductInternalsAdmin extends React.Component<Props, StateProps> {
             productInternalsInfo,
             gender,
             size,
+            topSize,
+            bottomSize,
             fitStyle,
             color,
             pocketZipper,

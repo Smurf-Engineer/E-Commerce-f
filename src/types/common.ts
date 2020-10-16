@@ -188,6 +188,7 @@ export interface Product {
   isCustom?: boolean
   colors?: ProductColors[]
   mpn?: string
+  twoPieces?: boolean
 }
 
 export type DesignType = {
@@ -666,6 +667,8 @@ export type CartItemDetail = {
   label?: string
   quantity: number
   colorImage?: string
+  topSize?: ItemDetailType
+  bottomSize?: ItemDetailType
 }
 
 export interface AddressType {
