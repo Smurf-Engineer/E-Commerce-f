@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.ResellerDetails.taxForm',
     defaultMessage: 'Tax Form'
   },
+  gstLabel: {
+    id: 'components.ResellerDetails.gstLabel',
+    defaultMessage: 'GST # / Business No.'
+  },
   comissions: {
     id: 'components.ResellerDetails.comissions',
     defaultMessage: 'Dealer Margin'

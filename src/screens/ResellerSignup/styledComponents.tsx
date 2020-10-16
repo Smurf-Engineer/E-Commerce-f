@@ -7,7 +7,7 @@ import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
 import Checkbox from 'antd/lib/checkbox'
 import Upload from 'antd/lib/upload'
-import { BLUE, GRAY, GRAY_STRONG, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
+import { BLUE, GRAY, GRAY_DARK, GRAY_STRONG, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
@@ -19,6 +19,20 @@ export const Container = styled.div`
   margin: 0 auto;
   margin-top: 58px;
   margin-bottom: 58px;
+`
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoText = styled.div`
+  margin-left: -38px;
+  margin-top: 22px;
 `
 
 export const LoginLabel = styled.div`
@@ -208,6 +222,15 @@ export const InputDiv = styled.div`
   }
 `
 
+export const GSTInput = styled.div`
+  margin-right: 28px;
+  width: 100%;
+  margin-top: 16px;
+  &:last-child {
+    margin-right: 0px;
+  }
+`
+
 export const Label = styled.div`
   font-size: 12px;
   margin-bottom: 8px;
@@ -228,7 +251,9 @@ export const StyledInputPassword = styled(Input.Password)`
   }
 `
 
-export const TitleDesc = styled.div``
+export const TitleDesc = styled.div`
+  width: 100%;
+`
 
 export const FormTitle = styled.div`
   display: block;
@@ -283,4 +308,10 @@ export const ForgotPasswordLabel = styled.div`
 
 export const layoutStyle = {
   background: WHITE
+}
+
+export const okButtonStyles = {
+  background: BLUE,
+  border: 'none',
+  borderRadius: '2px'
 }

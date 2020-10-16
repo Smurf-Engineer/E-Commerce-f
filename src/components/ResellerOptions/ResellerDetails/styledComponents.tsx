@@ -7,6 +7,7 @@ import Popover from 'antd/lib/popover'
 import { RED, WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
+import Input from 'antd/lib/input'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -43,6 +44,10 @@ export const SubtitleMargin = styled.div`
   @media (max-width: 1024px) {
     width: 100%;
   }
+`
+
+export const SaveIcon = styled(Icon)`
+  cursor: pointer;
 `
 
 export const PopoverStyled = styled(Popover)`
@@ -94,6 +99,15 @@ export const BoldLabel = styled.div`
 export const FileLink = styled.div`
   cursor: pointer;
   color: ${RED};
+`
+
+export const StyledInput = styled(Input)`
+  border-radius: 0;
+  width: 130px;
+  margin-top: 8px;
+  .ant-input {
+    border-radius: 0;
+  }
 `
 
 export const Clip = styled(Icon)`

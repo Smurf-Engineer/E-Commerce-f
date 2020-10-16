@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'components.ResellerSignup.website',
     defaultMessage: 'Website'
   },
+  gstLabel: {
+    id: 'components.ResellerSignup.gstLabel',
+    defaultMessage: 'GST # or Business Number'
+  },
   billingCountry: {
     id: 'components.ResellerSignup.billingCountry',
     defaultMessage: 'Billing Country'
@@ -96,6 +100,19 @@ export default defineMessages({
   advertisement: {
     id: 'components.ResellerSignup.advertisement',
     defaultMessage: 'ACTION REQUIRED'
+  },
+  yes: {
+    id: 'components.ResellerSignup.yes',
+    defaultMessage: 'Yes'
+  },
+  currencyDesc: {
+    id: 'components.ResellerSignup.currencyDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>Your selected Billing Country does not match your current region settings.</p> <p>The Reseller Partner Program is currently only available for residents of <b>Canada</b> or the <b>United States</b>.</p> <p>Are you sure your Billing Country is correct?</p>'
+  },
+  changeSelection: {
+    id: 'components.ResellerSignup.changeSelection',
+    defaultMessage: 'Change selection'
   },
   reviewText: {
     id: 'components.ResellerSignup.reviewText',

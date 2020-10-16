@@ -41,12 +41,17 @@ import {
   SaveButton,
   TermsCheckbox,
   LoadingContainer,
-  layoutStyle
+  layoutStyle,
+  GSTInput,
+  ModalTitle,
+  okButtonStyles,
+  InfoText
 } from './styledComponents'
 import { createUser } from './data'
 import messages from './messages'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { uploadFileAction } from './api'
+import Modal from 'antd/lib/modal'
 import { UploadChangeParam } from 'antd/lib/upload'
 import Spin from 'antd/lib/spin'
 import { getFileWithExtension } from '../../utils/utilsFiles'
@@ -58,6 +63,7 @@ import { CA_COUNTRY, CA_CURRENCY, US_COUNTRY, US_CURRENCY } from '../../componen
 import { connect } from 'react-redux'
 
 const { Option } = Select
+const { confirm } = Modal
 
 const countries = [
   {
@@ -85,6 +91,7 @@ interface StateProps {
   lastName: string,
   phone: string,
   email: string,
+  gst: string,
   saving: boolean,
   password: string,
   confirmPassword: string,
@@ -108,6 +115,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     confirmPassword: '',
     website: '',
     currency: '',
+    gst: '',
     sendSms: false,
     sendMail: false,
     terms: false,
@@ -142,6 +150,32 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       this.setState({ loading: false, fileName })
     })
   }
+  handlePromptCurrency = () => {
+    const { intl: { formatMessage } } = this.props
+    confirm({
+      title: (
+        <ModalTitle>
+          {formatMessage(messages.advertisement)}
+        </ModalTitle>
+      ),
+      icon: ' ',
+      width: 512,
+      okText: formatMessage(messages.yes),
+      okButtonProps: {
+        style: okButtonStyles
+      },
+      cancelText: formatMessage(messages.changeSelection),
+      onOk: () => {
+        this.handleSignUp(null, true)
+      },
+      content: (
+        <InfoText
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.currencyDesc)
+        }} />
+      )
+    })
+  }
   requestClose = () => {
     const { history } = this.props
     history.push('/')
@@ -164,6 +198,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       loading,
       firstName,
       lastName,
+      gst,
       phone,
       saving,
       email,
@@ -363,6 +398,19 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               </UploadButton>
             </StyledUpload>
           }
+          {currency === CA_CURRENCY &&
+            <GSTInput>
+              <Label>
+                <FormattedMessage {...messages.gstLabel} />
+              </Label>
+              <StyledInput
+                id="gst"
+                placeholder={formatMessage(messages.gstLabel)}
+                value={gst}
+                onChange={this.handleInputChange}
+              />
+          </GSTInput>
+          }
           {!!file &&
             <FileLabel>
               <Clip type="paper-clip" />
@@ -372,7 +420,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
             </FileLabel>
           }
          {!!currency &&
-          <TitleDesc
+            <TitleDesc
               dangerouslySetInnerHTML={{
                 __html: formatMessage(messages.reviewText)
               }}
@@ -415,7 +463,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       fileName: ''
     })
   }
-  handleSignUp = async (evt: React.MouseEvent<EventTarget>) => {
+  handleSignUp = async (evt: React.FormEvent<HTMLInputElement>, ignoreCurrency?: boolean) => {
     const {
       firstName,
       lastName,
@@ -424,6 +472,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       password,
       website,
       sendSms,
+      gst,
       sendMail,
       phone,
       currency,
@@ -442,15 +491,19 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     if (password !== confirmPassword) {
       message.error(formatMessage(messages.passwordLengthError))
     }
-    if (!firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency || !fileName) {
+    if (
+      !firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency
+      || (currency === US_CURRENCY && !fileName) || (currency === CA_CURRENCY && !gst)
+    ) {
       message.error(formatMessage(messages.requiredFieldsError))
       return
     }
-    if (
+    if ((
       (currency === US_CURRENCY && initialCountryCode.toUpperCase() !== US_COUNTRY) ||
       (currency === CA_CURRENCY && initialCountryCode.toUpperCase() !== CA_COUNTRY)
+      ) && !ignoreCurrency
     ) {
-      message.error(formatMessage(messages.badCurrency))
+      this.handlePromptCurrency()
       return
     }
     if (!validateEmail(email.toLowerCase())) {
@@ -469,6 +522,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     const reseller = {
       website,
       currency,
+      gst,
       sendSms,
       sendMail,
       fileName,

@@ -27,6 +27,7 @@ export const profileSettingsQuery = gql`
         comission
         margin
         inline
+        gst
         region
         currency
         activatedAt: activated_at
@@ -138,6 +139,14 @@ export const changeResellerComissionMutation = gql`
     changeResellerComission(value: $value, userId: $userId) {
       status
       comission
+    }
+  }
+`
+
+export const changeGstMutation = gql`
+  mutation changeGst($value: String, $userId: String!) {
+    changeGst(value: $value, userId: $userId) {
+      gst
     }
   }
 `
