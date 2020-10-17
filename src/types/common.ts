@@ -1513,6 +1513,8 @@ export interface ProductInternal {
   productCode: string
   gender: string
   size: string
+  topSize?: string
+  bottomSize?: string
   fitStyle?: string
   color?: string
   predyedColor?: string

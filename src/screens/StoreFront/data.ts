@@ -46,6 +46,7 @@ export const getSingleTeamStore = gql`
             collections
             isTopProduct
             weight
+            twoPieces: two_pieces
             priceRange {
               quantity
               price
@@ -112,6 +113,7 @@ export const getTeamStoreMutation = graphql(
               collections
               isTopProduct
               weight
+              twoPieces: two_pieces
               priceRange {
                 quantity
                 price

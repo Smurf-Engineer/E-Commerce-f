@@ -20,5 +20,9 @@ export default defineMessages({
   selectColors: {
     id: 'components.SecondStep.selectColors',
     defaultMessage: 'Select colors available'
+  },
+  twoPieces: {
+    id: 'components.SecondStep.twoPieces',
+    defaultMessage: '2-Piece'
   }
 })
