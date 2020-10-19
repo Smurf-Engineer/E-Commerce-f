@@ -43,7 +43,13 @@ interface StyleProps {
   color?: string
 }
 
-export const BackButton = styled.div``
+export const BackButton = styled.div`
+  position: absolute;
+  left: 12px;
+  font-size: 14px;
+  font-weight: normal;
+  color: red;
+`
 
 export const FiltersTitle = styled.div`
   display: ${({ showChildren }: StyleProps) =>
@@ -75,7 +81,11 @@ export const ScreenTitle = styled.div`
   margin-bottom: 64px;
 
   @media (max-width: 768px) and (min-width: 320px) {
-    margin-bottom: 24px;
+    margin-bottom: 38px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `
 

@@ -186,6 +186,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     const { formatMessage } = intl
     const userName = String(user.name).toUpperCase()
+    const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
 
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
@@ -194,7 +195,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       </TopText>
     ) : (
         <Logout
-          {...{ history }}
+          {...{ history, formatMessage, affiliateEnabled }}
           title={formatMessage(messages.myAccount, { user: userName })}
           logout={logoutAction}
           openMenu={this.openMenu}
@@ -206,8 +207,6 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
-
-    const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
 
     const menuRegion = (
       <MenuRegion

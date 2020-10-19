@@ -66,7 +66,7 @@ class Menu extends React.PureComponent<Props, {}> {
 
     if (openMenuAccount) {
       hideMenu()
-      replace(`/account?option=${key}`)
+      push(`/account?option=${key}`)
       setCurrentScreen(key)
       return
     }

@@ -3,7 +3,16 @@
  */
 import styled from 'styled-components'
 import icon from 'antd/lib/icon'
-import { RED, GRAY_DARK, GRAY_LIGHT } from '../../theme/colors'
+import MenuAntd from 'antd/lib/menu'
+import Popover from 'antd/lib/popover'
+import { RED, GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST } from '../../theme/colors'
+
+const { SubMenu } = MenuAntd
+
+interface DivProps {
+  withBorder?: boolean
+  bold?: boolean
+}
 
 export const Container = styled.div`
   align-items: center;
@@ -15,7 +24,6 @@ export const Text = styled.div`
   color: ${GRAY_DARK};
   cursor: pointer;
   font-size: 14px;
-
   @media (max-width: 991px) {
     align-items: center;
     color: ${GRAY_DARK};
@@ -33,6 +41,40 @@ export const Icon = styled(icon)`
   font-weight: 600;
 `
 
+export const PopoverStyled = styled(Popover)``
+
+export const Item = styled(MenuAntd.Item)`
+  width: 100%;
+  padding: 0 6px !important;
+  font-weight: ${({ bold }: DivProps) => bold ? `bold` : 'normal'};
+  text-transform: ${({ withBorder, bold }: DivProps) => withBorder || bold ? `uppercase` : 'capitalize'};
+  border-bottom: ${({ withBorder }: DivProps) => withBorder ? `1px solid ${GRAY_LIGHTEST}` : 'none'};
+`
+
+export const TitleItem = styled(MenuAntd.Item)`
+  width: 100%;
+  padding: 0 6px !important;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px !important;
+  text-transform: uppercase;
+  border-bottom: 1px solid ${GRAY_LIGHTEST};
+`
+
+export const UserIcon = styled(Icon)``
+
+export const StyledSubMenu = styled(SubMenu)`
+  border-bottom: 1px solid ${GRAY_LIGHTEST};
+  .ant-menu-submenu-title {
+    padding-left: 6px !important;
+    padding-right: 2px;
+    width: 100%;
+  }
+  .ant-menu-submenu-arrow {
+    right: 12px;
+  }
+`
+
 export const RightIcon = styled(icon)`
   flex: 1;
   text-align: right;
@@ -48,10 +90,11 @@ export const LeftIcon = styled(icon)`
   color: ${RED};
 `
 
-export const menuStyle = {
-  marginTop: 15,
-  borderRadius: 0,
-  paddingBottom: 20
+export const menuStyle = { width: '100%' }
+
+export const overStyle = {
+  maxWidth: '292px',
+  width: '100%'
 }
 
 export const OverviewStyle = { border: 'none' }

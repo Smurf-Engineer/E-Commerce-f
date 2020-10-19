@@ -114,6 +114,18 @@ export class Account extends React.Component<Props, {}> {
     this.setScreen()
   }
 
+  componentDidUpdate(prevProps: Props) {
+    const { location: { search: oldSearch } } = prevProps
+    const oldQueryParams = queryString.parse(oldSearch)
+    const { option: oldOption } = oldQueryParams
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (oldOption !== option) {
+      this.setScreen()
+    }
+  }
+
   setScreen = () => {
     const {
       location: { search },
@@ -201,7 +213,6 @@ export class Account extends React.Component<Props, {}> {
   handleGoBack = () => {
     const { history } = this.props
     history.goBack()
-    this.setScreen()
   }
 
   handleOnGoToScreen = (screen: string) => {
@@ -376,13 +387,11 @@ export class Account extends React.Component<Props, {}> {
                   <Layout {...{ history, intl }}>
                     <Container>
                       <Content width={'100%'}>
-                        <BackButton
-                          onClick={this.handleGoBack}
-                        >
-                          <Icon type="left" />
-                          {intl.formatMessage(messages.goBack)}
-                        </BackButton>
                         <ScreenTitle show={noOrderScreenFlag}>
+                          <BackButton onClick={this.handleGoBack}>
+                            <Icon type="left" />
+                            {intl.formatMessage(messages.goBack)}
+                          </BackButton>
                           {!!messages[screen] && (
                             <FormattedMessage {...messages[screen]} />
                           )}
