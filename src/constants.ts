@@ -94,6 +94,7 @@ export const PENDING = `Pending approval`
 export const APPROVED = 'Approved'
 export const REJECTED = 'Rejected'
 export const RETRY = 'Retry'
+export const PAUSED = `Paused`
 
 // Affiliate payment status
 export const PENDING_PAY = 'Pending'
