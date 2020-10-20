@@ -185,7 +185,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     }
 
     const { formatMessage } = intl
-    const userName = String(user.name).toUpperCase()
+    const userName = !!user ? String(user.name).toUpperCase() : ''
     const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
 
     const loggedUser = !user ? (
