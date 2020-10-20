@@ -39,6 +39,7 @@ interface Props {
   id?: number
   text?: string
   regularPrice?: string
+  currentCurrency?: string
   hideQuickView?: boolean
   isReseller?: boolean
   currencyIndex?: number
@@ -135,6 +136,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
       resellerPrice = 0,
       description,
       visible,
+      currentCurrency,
       yotpoId,
       totalOrders,
       onPressDelete,
@@ -215,7 +217,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <MoreIcon type="ellipsis" />
               </DragCell>
             </Cell>
-            <Cell width={20} tabletWidth={20}>
+            <Cell width={10} tabletWidth={10}>
               <Thumbnail
                 {...{ image, hideQuickView }}
                 onPressQuickView={handleOnClickView}
@@ -227,6 +229,11 @@ class ProductRow extends React.PureComponent<Props, {}> {
             <Cell width={10} tabletWidth={10}>
               <Description>{description}</Description>
             </Cell>
+            {isReseller && 
+              <Cell width={10} tabletWidth={10}>
+                <Price>{currentCurrency}</Price>
+              </Cell>
+            }
             <Cell width={10} tabletWidth={10}>
               <Price>{`$${isReseller ? fixedPrice : regularPrice}`}</Price>
             </Cell>

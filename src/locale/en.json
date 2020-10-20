@@ -428,6 +428,8 @@
   "components.LockerTable.orders": "Current Orders",
   "components.LockerTable.current": "Current Price",
   "components.LockerTable.visible": "Visible",
+  "components.LockerTable.currency": "Base Currency",
+  "components.LockerTable.currencyDesc": "<span>BASE CURRENCY</span>The <b>Base Currency</b> is your default store currency based on your region. For Canadian Resellers, the base currency is set to CAD. For Resellers in the USA, the base currency is USD.",
   "components.LockerTable.teamPrice": "MSRP",
   "components.LockerTable.purchasePrice": "Dealer Price",
   "components.LockerTable.listPriceDesc": "<span>LIST PRICE</span>The <b>List Price</b> is what your customers will see on the store. The minimum price allowed is the MSRP. You can set a higher price to increase your profit amount.",
