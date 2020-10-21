@@ -50,7 +50,7 @@ export const uploadBanner = (file: Blob, opened: boolean) => {
       let bannerResp = ''
       if (file) {
         const formData = new FormData()
-        formData.append('file', file as any, 'banner.jpeg')
+        formData.append('file', file)
         const user = JSON.parse(localStorage.getItem('user') || '')
         const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
           method: 'POST',

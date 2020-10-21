@@ -23,7 +23,7 @@ import {
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
-import { PENDING, APPROVED, REJECTED, RETRY, DATE_FORMAT } from '../../../constants'
+import { PENDING, APPROVED, REJECTED, RETRY, DATE_FORMAT, PAUSED } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
@@ -55,8 +55,8 @@ interface Props {
 class AffiliateOptions extends React.Component<Props, {}> {
   debounceComission = debounce((value) => this.handleChangeComission(value), 800)
   enableStatus = () => {
-    const { enableAffiliate } = this.props
-    enableAffiliate(APPROVED)
+    const { enableAffiliate, status } = this.props
+    enableAffiliate(status === APPROVED ? PAUSED : APPROVED)
   }
   rejectStatus = () => {
     const { enableAffiliate } = this.props
@@ -96,8 +96,8 @@ class AffiliateOptions extends React.Component<Props, {}> {
       region,
       currency
     } = this.props
-    const hasChanged = status !== PENDING || !status
-    const isActive = status === APPROVED
+    const hasChanged = status === REJECTED || status === RETRY || !status
+    const isActive = status === APPROVED || status === PAUSED
     const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
@@ -121,7 +121,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
               {isAdmin ?
                 <StyledSwitch
                   disabled={hasChanged}
-                  checked={isActive}
+                  checked={status === APPROVED}
                   onChange={this.enableStatus}
                 /> :
                 <BoldLabel>
