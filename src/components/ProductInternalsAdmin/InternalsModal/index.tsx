@@ -63,6 +63,10 @@ interface Props {
   handleOnProductChange: (value: SelectValue) => void
 }
 
+const TOP_SIZE = 'topSize'
+const BOTTOM_SIZE = 'bottomSize'
+const SIZE = 'size'
+
 const { Option } = Select
 
 const InternalsModal = ({
@@ -144,6 +148,15 @@ const InternalsModal = ({
   const handleOnSelect = (fieldId: string) => (value: string) =>
     handleOnSelectChange(value, fieldId)
 
+  const handleOnSelectSize = (fieldId: string) => (value: string) => {
+    if (fieldId === SIZE) {
+      handleOnSelectChange(null, TOP_SIZE)
+      handleOnSelectChange(null, BOTTOM_SIZE)
+    } else {
+      handleOnSelectChange(null, SIZE)
+    }
+    handleOnSelectChange(value, fieldId)
+  }
   return (
     <Container>
       <Modal
@@ -196,7 +209,7 @@ const InternalsModal = ({
         <Row>
           <Column>
             <Label>{formatMessage(messages.size)}</Label>
-            <StyledSelect onSelect={handleOnSelect('size')} defaultValue={size}>
+            <StyledSelect onSelect={handleOnSelectSize(SIZE)} defaultValue={size} value={size}>
               {sizes.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
@@ -206,7 +219,7 @@ const InternalsModal = ({
           </Column>
           <Column>
             <Label>{formatMessage(messages.topSize)}</Label>
-            <StyledSelect onSelect={handleOnSelect('topSize')} defaultValue={topSize}>
+            <StyledSelect onSelect={handleOnSelectSize(TOP_SIZE)} defaultValue={topSize} value={topSize}>
               {sizes.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
@@ -216,7 +229,7 @@ const InternalsModal = ({
           </Column>
           <Column>
             <Label>{formatMessage(messages.bottomSize)}</Label>
-            <StyledSelect onSelect={handleOnSelect('bottomSize')} defaultValue={bottomSize}>
+            <StyledSelect onSelect={handleOnSelectSize(BOTTOM_SIZE)} defaultValue={bottomSize} value={bottomSize}>
               {sizes.map(({ name }) => (
                 <Option key={name} value={name}>
                   {name}
@@ -344,7 +357,7 @@ const InternalsModal = ({
 
           <ButtonWrapper color={BLUE}>
             <StyledButton
-              disabled={!internalId || !model}
+              disabled={!internalId || !model || !collection}
               type="primary"
               onClick={onSave}
               loading={loading}
