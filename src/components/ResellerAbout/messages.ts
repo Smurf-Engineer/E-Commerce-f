@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   titlePay: {
     id: 'components.ResellerAbout.titlePay',
-    defaultMessage: 'Direct Fulfillment Program'
+    defaultMessage: 'DirectShip Program'
   },
   bodyPay: {
     id: 'components.ResellerAbout.bodyPay',
