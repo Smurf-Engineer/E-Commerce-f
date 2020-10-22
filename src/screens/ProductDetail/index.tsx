@@ -73,6 +73,7 @@ import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
+import StartDesignModal from '../../components/StartDesignModal'
 import AddtoCartButton from '../../components/AddToCartButton'
 import {
   Product,
@@ -682,6 +683,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             }}
           />
         </Container>
+        <StartDesignModal {...{ formatMessage }} />
       </Layout>
     )
   }
@@ -724,6 +726,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       data: { product }
     } = this.props
     const productId = get(product, 'id')
+
     history.push(`/design-center?id=${productId}`)
   }
 
