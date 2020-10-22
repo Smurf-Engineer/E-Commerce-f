@@ -1428,7 +1428,7 @@
   "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO {year}",
   "components.FacebookGmailLogin.userExistsError": "An account for this email already exists, please log in with your email",
   "components.InternalsList.modelId": "Model ID",
-  "components.InternalsList.internalId": "Interna`l ID",
+  "components.InternalsList.internalId": "Internal ID",
   "components.InternalsList.productCode": "Product Code",
   "components.InternalsList.gender": "Gender",
   "components.InternalsList.size": "Size",
