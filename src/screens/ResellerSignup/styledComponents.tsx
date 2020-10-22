@@ -9,6 +9,11 @@ import Checkbox from 'antd/lib/checkbox'
 import Upload from 'antd/lib/upload'
 import { BLUE, GRAY, GRAY_DARK, GRAY_STRONG, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
+import { AVENIR_MEDIUM } from '../../theme/fonts'
+
+interface DivProps {
+  visible: boolean
+}
 
 export const Container = styled.div`
   display: flex;
@@ -17,8 +22,44 @@ export const Container = styled.div`
   max-width: 744px;
   width: 100%;
   margin: 0 auto;
-  margin-top: 58px;
+  margin-top: 38px;
   margin-bottom: 58px;
+`
+
+export const TopSection = styled.section``
+
+export const TopDiv = styled.div``
+
+export const FeatureBox = styled.div``
+
+export const FeatureTitle = styled.div``
+
+export const FeatureImage = styled.img``
+
+export const FeatureDesc = styled.div``
+
+export const LearnMore = styled.div``
+
+export const Title = styled.div`
+  font-weight: bold;
+  font-size: 18px;
+`
+
+export const Signup = styled.div`
+  display: ${({ visible }: DivProps) => visible ? 'block' : 'none'};
+  animation: slide-in-top 0.25s ease both;
+  @keyframes slide-in-top {
+    0% {
+      height: 0px;
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    100% {
+      height: 100%;
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `
 
 export const ModalTitle = styled.div`
@@ -36,14 +77,20 @@ export const InfoText = styled.div`
 `
 
 export const LoginLabel = styled.div`
-  height: 25px;
+  height: 50px;
   width: 100%;
-  color: #5f6062;
+  color: ${WHITE};
   font-size: 18px;
-  font-weight: 600;
+  font-family: ${AVENIR_MEDIUM};
   line-height: 25px;
   text-align: center;
-  margin-bottom: 40px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  background: ${BLUE};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
 `
 export const FormContainer = styled.div`
   width: 100%;
@@ -89,7 +136,9 @@ color: ${GRAY};
 margin-left: 6px;
 `
 
-export const Notifications = styled.div``
+export const Notifications = styled.div`
+  margin-top: 28px;
+`
 
 export const Advertisement = styled.div`
   width: 100%;
@@ -100,7 +149,6 @@ export const Advertisement = styled.div`
 export const Checkboxes = styled.div`
   display: flex;
   flex-flow: column;
-  margin-top: 14px;
 `
 
 export const CheckboxStyled = styled(Checkbox)`
@@ -108,7 +156,6 @@ export const CheckboxStyled = styled(Checkbox)`
   display: flex;
   width: 100%;
   &:last-child {
-    margin-top: 16px;
     margin-bottom: 14px;
   }
   &.ant-checkbox-wrapper {

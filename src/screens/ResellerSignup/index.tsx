@@ -45,7 +45,16 @@ import {
   GSTInput,
   ModalTitle,
   okButtonStyles,
-  InfoText
+  InfoText,
+  Signup,
+  TopSection,
+  TopDiv,
+  Title,
+  FeatureBox,
+  FeatureTitle,
+  FeatureImage,
+  FeatureDesc,
+  LearnMore
 } from './styledComponents'
 import { createUser } from './data'
 import messages from './messages'
@@ -57,6 +66,7 @@ import Spin from 'antd/lib/spin'
 import { getFileWithExtension } from '../../utils/utilsFiles'
 import { validateEmail } from '../../utils/utilsFunctions'
 import Layout from '../../components/MainLayout'
+import RegionSelect from '../../components/RegionSelect'
 import { NEW_USER } from '../../constants'
 import { User, UserType } from '../../types/common'
 import { CA_COUNTRY, CA_CURRENCY, US_COUNTRY, US_CURRENCY } from '../../components/ResellerAbout/constants'
@@ -75,6 +85,16 @@ const countries = [
     value: 'usd'
   }
 ]
+
+const countryNames = {
+  [US_CURRENCY]: 'United States',
+  [CA_CURRENCY]: 'Canada'
+}
+
+const countryCodes = {
+  [US_CURRENCY]: '6252001',
+  [CA_CURRENCY]: '6251999'
+}
 
 interface Props {
   intl: InjectedIntl
@@ -101,6 +121,10 @@ interface StateProps {
   sendMail: boolean,
   terms: boolean,
   loading: boolean,
+  visible: boolean,
+  selectedRegion: string,
+  selectedRegionCode: string,
+  businessName: string,
   fileName: string
 }
 
@@ -116,10 +140,14 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     website: '',
     currency: '',
     gst: '',
+    businessName: '',
+    selectedRegion: '',
+    selectedRegionCode: '',
     sendSms: false,
     sendMail: false,
     terms: false,
     loading: false,
+    visible: false,
     fileName: ''
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -131,7 +159,11 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
   }
   handleChangeCurrency = (value: string) => {
     if (value) {
-      this.setState({ currency: value })
+      this.setState({
+        currency: value,
+        selectedRegion: '',
+        selectedRegionCode: '',
+      })
     }
   }
   login = (user: UserType) => {
@@ -142,6 +174,12 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     if (!!name) {
       this.setState({ [name]: checked } as any)
     }
+  }
+  handleRegionChange = (value: any, regionCode: string) => {
+    this.setState({
+      selectedRegion: value,
+      selectedRegionCode: regionCode
+    })
   }
   uploadFile = (event: UploadChangeParam) => {
     const { file } = event
@@ -176,6 +214,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       )
     })
   }
+  setFormVisible = () => {
+    this.setState({ visible: true })
+  }
   requestClose = () => {
     const { history } = this.props
     history.push('/')
@@ -200,12 +241,16 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       lastName,
       gst,
       phone,
+      businessName,
+      selectedRegion,
+      selectedRegionCode,
       saving,
       email,
       password,
       confirmPassword,
       website,
       currency,
+      visible,
       // sendSms,
       sendMail,
       terms,
@@ -224,223 +269,273 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               <Spin />
             </SavingContainer>
           }
-          <LoginLabel>
+          <TopSection>
+            <TopDiv>
+              <Title>
+                {formatMessage(messages.title)}
+              </Title>
+            </TopDiv>
+            <TopDiv>
+              <FeatureBox>
+                  <FeatureTitle dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.resellerDesc)
+                  }} />
+                  <FeatureImage src="" />
+                  <FeatureDesc dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.resellerDesc)
+                  }} />
+                  <LearnMore>{formatMessage(messages.title)}</LearnMore>
+              </FeatureBox>
+            </TopDiv>
+          </TopSection>
+          <LoginLabel onClick={this.setFormVisible}>
             <FormattedMessage {...messages.signupTitle} />
           </LoginLabel>
-          <TitleDesc
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.titleDesc)
-            }}
-          />
-          <FormTitle>
-            <FormattedMessage {...messages.resellerInfo} />
-          </FormTitle>
-          <FormContainer>
-            <InputRow>
-              <InputDiv>
+          <Signup {...{ visible }}>
+            <FormTitle>
+              <FormattedMessage {...messages.resellerInfo} />
+            </FormTitle>
+            <FormContainer>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.firstName} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="firstName"
+                    placeholder={formatMessage(messages.firstName)}
+                    value={firstName}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.lastName} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="lastName"
+                    placeholder={formatMessage(messages.lastName)}
+                    value={lastName}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.email} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="email"
+                    placeholder={formatMessage(messages.email)}
+                    value={email}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.phone} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="phone"
+                    placeholder={formatMessage(messages.phone)}
+                    value={phone}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.password} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                    <InfoLabel><FormattedMessage {...messages.passwordRestriction} /></InfoLabel>
+                  </Label>
+                  <StyledInputPassword
+                    id="password"
+                    type="Password"
+                    placeholder={formatMessage(messages.password)}
+                    value={password}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.confirmPassword} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInputPassword
+                    id="confirmPassword"
+                    type="Password"
+                    placeholder={formatMessage(messages.confirmPassword)}
+                    value={confirmPassword}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.website} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="website"
+                    placeholder={formatMessage(messages.website)}
+                    value={website}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.businessName} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="businessName"
+                    placeholder={formatMessage(messages.businessName)}
+                    value={businessName}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.billingCountry} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <RegionSelect
+                    {...{ formatMessage }}
+                    disabled={!currency}
+                    reseller={true}
+                    country={currency ? countryCodes[currency] : ''}
+                    countryName={currency ? countryNames[currency] : ''}
+                    region={
+                      selectedRegion
+                        ? `${selectedRegion}-${selectedRegionCode}`
+                        : undefined
+                    }
+                    handleRegionChange={this.handleRegionChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.billingCountry} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <BillingSelect
+                    value={currency}
+                    onChange={this.handleChangeCurrency}
+                  >
+                    {countries.map(({ label, value }, index: Number) =>
+                      <Option key={index} {...{ value }}>
+                        {label}
+                      </Option>
+                    )}
+                  </BillingSelect>
+                </InputDiv>
+              </InputRow>
+              <Notifications>
                 <Label>
-                  <FormattedMessage {...messages.firstName} />
-                  <RequiredSymbol>*</RequiredSymbol>
+                  <FormattedMessage {...messages.notifyMe} />
                 </Label>
-                <StyledInput
-                  id="firstName"
-                  placeholder={formatMessage(messages.firstName)}
-                  value={firstName}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.lastName} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInput
-                  id="lastName"
-                  placeholder={formatMessage(messages.lastName)}
-                  value={lastName}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-            </InputRow>
-            <InputRow>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.email} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInput
-                  id="email"
-                  placeholder={formatMessage(messages.email)}
-                  value={email}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.phone} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInput
-                  id="phone"
-                  placeholder={formatMessage(messages.phone)}
-                  value={phone}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-            </InputRow>
-            <InputRow>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.password} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                  <InfoLabel><FormattedMessage {...messages.passwordRestriction} /></InfoLabel>
-                </Label>
-                <StyledInputPassword
-                  id="password"
-                  type="Password"
-                  placeholder={formatMessage(messages.password)}
-                  value={password}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.confirmPassword} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInputPassword
-                  id="confirmPassword"
-                  type="Password"
-                  placeholder={formatMessage(messages.confirmPassword)}
-                  value={confirmPassword}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-            </InputRow>
-            <InputRow>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.website} />
-                </Label>
-                <StyledInput
-                  id="website"
-                  placeholder={formatMessage(messages.website)}
-                  value={website}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.billingCountry} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <BillingSelect
-                  value={currency}
-                  onChange={this.handleChangeCurrency}
-                >
-                  {countries.map(({ label, value }, index: Number) =>
-                    <Option key={index} {...{ value }}>
-                      {label}
-                    </Option>
-                  )}
-                </BillingSelect>
-              </InputDiv>
-            </InputRow>
-            <Notifications>
-              <Label>
-                <FormattedMessage {...messages.notifyMe} />
-              </Label>
-              <Checkboxes>
-                <CheckboxStyled
-                  checked={sendMail}
-                  name="sendMail"
-                  onChange={this.handleCheckChange}
-                >
-                  <FormattedMessage {...messages.sendMail} />
-                </CheckboxStyled>
-                {/* <CheckboxStyled
-                  checked={sendSms}
-                  name="sendSms"
-                  onChange={this.handleCheckChange}
-                >
-                  <FormattedMessage {...messages.sendSms} />
-                </CheckboxStyled> */}
-              </Checkboxes>
-            </Notifications>
-          </FormContainer>
-          <Advertisement>
-            <FormattedMessage {...messages.advertisement} />
-          </Advertisement>
-          <TitleDesc
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.resellerDesc)
-            }}
-          />
-          {currency === US_CURRENCY && 
-            <StyledUpload
-              listType="picture-card"
-              className="avatar-uploader"
-              customRequest={this.uploadFile}
-              disabled={loading}
-              showUploadList={false}
-              beforeUpload={this.beforeUpload}
-            >
-              <UploadButton>
-                {loading ?
-                  <LoadingContainer>
-                    <Spin size="small" />
-                  </LoadingContainer> :
-                  <>
-                    <StyledIcon type="upload" />
-                    <FormattedMessage {...messages.uploadCertificate} />
-                  </>
-                }
-              </UploadButton>
-            </StyledUpload>
-          }
-          {currency === CA_CURRENCY &&
-            <GSTInput>
-              <Label>
-                <FormattedMessage {...messages.gstLabel} />
-              </Label>
-              <StyledInput
-                id="gst"
-                placeholder={formatMessage(messages.gstLabel)}
-                value={gst}
-                onChange={this.handleInputChange}
-              />
-          </GSTInput>
-          }
-          {!!file &&
-            <FileLabel>
-              <Clip type="paper-clip" />
-              <FileName>
-                {file}
-              </FileName>
-            </FileLabel>
-          }
-         {!!currency &&
+                <Checkboxes>
+                  <CheckboxStyled
+                    checked={sendMail}
+                    name="sendMail"
+                    onChange={this.handleCheckChange}
+                  >
+                    <FormattedMessage {...messages.sendMail} />
+                  </CheckboxStyled>
+                  {/* <CheckboxStyled
+                    checked={sendSms}
+                    name="sendSms"
+                    onChange={this.handleCheckChange}
+                  >
+                    <FormattedMessage {...messages.sendSms} />
+                  </CheckboxStyled> */}
+                </Checkboxes>
+              </Notifications>
+            </FormContainer>
+            <Advertisement>
+              <FormattedMessage {...messages.advertisement} />
+            </Advertisement>
             <TitleDesc
               dangerouslySetInnerHTML={{
-                __html: formatMessage(messages.reviewText)
+                __html: formatMessage(messages.resellerDesc)
               }}
             />
-          }
-          <TermsCheckbox
-            checked={terms}
-            name="terms"
-            onChange={this.handleCheckChange}
-          >
-            <FormattedMessage {...messages.termsAndConditions} />
-          </TermsCheckbox>
-          <ButtonsContainer>
-            <SaveButton disabled={!terms} onClick={this.handleSignUp}>
-              <FormattedMessage {...messages.create} />
-            </SaveButton>
-            <CancelButton onClick={this.requestClose}>
-              <FormattedMessage {...messages.cancel} />
-            </CancelButton>
-          </ButtonsContainer>
+            {currency === US_CURRENCY && 
+              <StyledUpload
+                listType="picture-card"
+                className="avatar-uploader"
+                customRequest={this.uploadFile}
+                disabled={loading}
+                showUploadList={false}
+                beforeUpload={this.beforeUpload}
+              >
+                <UploadButton>
+                  {loading ?
+                    <LoadingContainer>
+                      <Spin size="small" />
+                    </LoadingContainer> :
+                    <>
+                      <StyledIcon type="upload" />
+                      <FormattedMessage {...messages.uploadCertificate} />
+                    </>
+                  }
+                </UploadButton>
+              </StyledUpload>
+            }
+            {currency === CA_CURRENCY &&
+              <GSTInput>
+                <Label>
+                  <FormattedMessage {...messages.gstLabel} />
+                </Label>
+                <StyledInput
+                  id="gst"
+                  placeholder={formatMessage(messages.gstLabel)}
+                  value={gst}
+                  onChange={this.handleInputChange}
+                />
+            </GSTInput>
+            }
+            {!!file &&
+              <FileLabel>
+                <Clip type="paper-clip" />
+                <FileName>
+                  {file}
+                </FileName>
+              </FileLabel>
+            }
+          {!!currency &&
+              <TitleDesc
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.reviewText)
+                }}
+              />
+            }
+            <TermsCheckbox
+              checked={terms}
+              name="terms"
+              onChange={this.handleCheckChange}
+            >
+              <FormattedMessage {...messages.termsAndConditions} />
+            </TermsCheckbox>
+            <ButtonsContainer>
+              <SaveButton disabled={!terms} onClick={this.handleSignUp}>
+                <FormattedMessage {...messages.create} />
+              </SaveButton>
+              <CancelButton onClick={this.requestClose}>
+                <FormattedMessage {...messages.cancel} />
+              </CancelButton>
+            </ButtonsContainer>
+          </Signup>
         </Container>
       </Layout>
     )
@@ -492,7 +587,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.passwordLengthError))
     }
     if (
-      !firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency
+      !firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency || !website
       || (currency === US_CURRENCY && !fileName) || (currency === CA_CURRENCY && !gst)
     ) {
       message.error(formatMessage(messages.requiredFieldsError))

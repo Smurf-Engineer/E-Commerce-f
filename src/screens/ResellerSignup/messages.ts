@@ -3,7 +3,11 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   signupTitle: {
     id: 'components.ResellerSignup.signupTitle',
-    defaultMessage: 'BECOME A JAKROO RESELLER'
+    defaultMessage: 'BECOME A JAKROO RESELLER TODAY!'
+  },
+  title: {
+    id: 'components.ResellerSignup.title',
+    defaultMessage: 'SEE WHY RETAIL SHOPS ARE PARTNERING WITH JAKROO'
   },
   rememberMe: {
     id: 'components.ResellerSignup.rememberMe',
@@ -36,6 +40,10 @@ export default defineMessages({
   email: {
     id: 'components.ResellerSignup.email',
     defaultMessage: 'E-mail'
+  },
+  businessName: {
+    id: 'components.ResellerSignup.businessName',
+    defaultMessage: 'Business Name'
   },
   phone: {
     id: 'components.ResellerSignup.phone',
@@ -99,7 +107,7 @@ export default defineMessages({
   },
   advertisement: {
     id: 'components.ResellerSignup.advertisement',
-    defaultMessage: 'ACTION REQUIRED'
+    defaultMessage: 'VERIFICATION'
   },
   yes: {
     id: 'components.ResellerSignup.yes',
