@@ -62,7 +62,6 @@ export const orderSearchQuery = gql`
         createdAt: created_at
       }
       preflightCheck: preflight_check
-      twoPieces: two_pieces
     }
   }
 `
