@@ -113,7 +113,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           },
           index
         ) => {
-          console.log(product)
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, {
               quantity: targetRange.name,

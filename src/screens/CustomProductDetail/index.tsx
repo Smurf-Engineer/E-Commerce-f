@@ -684,7 +684,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     } = this.props
     const fitStyles = get(design.product, 'fitStyles', []) as SelectedType[]
     const twoPieces = get(design.product, 'twoPieces', false)
-    console.log(fitStyles)
     if (fitStyles.length && fitStyles[0].id) {
       return (
         ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
@@ -694,8 +693,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         selectedGender.id
       )
     }
-    console.log(selectedTopSize.id)
-    console.log(selectedBottomSize.id)
 
     return ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
       selectedBottomSize.id > 0) && selectedGender.id)

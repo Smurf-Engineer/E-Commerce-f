@@ -370,11 +370,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       itemDetails,
       product: { genders, fitStyles, sizeRange, twoPieces }
     } = cartItem
-    console.log(sizeRange)
     const checkGender = genders.length && genders[0].id
     const checkFit = fitStyles.length && fitStyles[0].id
     const checkSize = sizeRange.length && sizeRange[0].id
-    console.log(itemDetails)
 
     for (const details of itemDetails) {
       if (checkGender && !has(details, 'gender')) {

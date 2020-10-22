@@ -255,7 +255,6 @@ class CartListItemTable extends React.Component<Props, State> {
     const colorImg = get(cartItem, 'itemDetails[0].colorImage', '')
     const withColorColumn = (isRetailProduct && !!colors.length) || !!colorImg
     const withTwoPieces = get(cartItem, 'product.twoPieces', false)
-    console.log(cartItem)
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
       if (index === 1 && !withColorColumn || index === 2 && withTwoPieces ||
