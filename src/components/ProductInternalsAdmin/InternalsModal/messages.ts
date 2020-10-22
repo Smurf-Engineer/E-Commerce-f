@@ -29,6 +29,14 @@ export default defineMessages({
     id: 'components.InternalsModal.size',
     defaultMessage: 'Size'
   },
+  topSize: {
+    id: 'components.InternalsModal.topSize',
+    defaultMessage: 'Top Size'
+  },
+  bottomSize: {
+    id: 'components.InternalsModal.bottomSize',
+    defaultMessage: 'Bottom Size'
+  },
   fitStyle: {
     id: 'components.InternalsModal.fitStyle',
     defaultMessage: 'Fit Style'

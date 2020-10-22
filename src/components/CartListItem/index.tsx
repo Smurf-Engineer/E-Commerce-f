@@ -86,6 +86,16 @@ interface Props {
     detailIndex: number,
     size: ItemDetailType
   ) => void
+  setTopDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+  setBottomDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
   onClickReorder?: () => void
   openFitInfoAction: (open: boolean, selectedIndex: number) => void
 
@@ -253,6 +263,8 @@ export class CartListItem extends React.Component<Props, {}> {
       setDetailGender = () => { },
       setDetailColor = () => { },
       setDetailSize = () => { },
+      setTopDetailSize = () => { },
+      setBottomDetailSize = () => { },
       removeItem = () => { },
       openFitInfoAction = () => { },
       openFitInfo,
@@ -323,6 +335,8 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailFit,
           setDetailGender,
           setDetailSize,
+          setTopDetailSize,
+          setBottomDetailSize,
           openFitInfoAction,
           openFitInfo,
           teamStoreName,

@@ -471,7 +471,8 @@ export class ProductForm extends React.Component<Props, {}> {
         mpn,
         tags,
         modelSize,
-        active
+        active,
+        twoPieces
       } = product
       const specsDetails = details.join(', ')
       const materialsDetails = materials.join('-')
@@ -575,7 +576,8 @@ export class ProductForm extends React.Component<Props, {}> {
         fit_styles: fitStylesDet,
         size_range: sizeRangeDet,
         colors: colorsDet,
-        product_materials: productMaterialsDet
+        product_materials: productMaterialsDet,
+        two_pieces: twoPieces
       }
       setUploadingAction(true, formatMessage(messages.savingProduct))
       await upsertProductAction({

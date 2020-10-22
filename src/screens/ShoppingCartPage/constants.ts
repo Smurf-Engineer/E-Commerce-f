@@ -25,3 +25,5 @@ export const OPEN_FITINFO = `${namespace}/OPEN_FITINFO`
 export const OPEN_STORE_INFO = `${namespace}/OPEN_STORE_INFO`
 export const SET_STORE_TERMS = `${namespace}/SET_STORE_TERMS`
 export const HIGHLIGHT_FIELDS = `${namespace}/HIGHLIGHT_FIELDS`
+export const SET_TOP_SIZE_ITEM_DETAIL_ACTION = `${namespace}/SET_TOP_SIZE_ITEM_DETAIL_ACTION`
+export const SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION = `${namespace}/SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION`

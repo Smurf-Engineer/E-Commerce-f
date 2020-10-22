@@ -32,6 +32,7 @@ export const GetProductsQuery = gql`
         collections
         isTopProduct
         weight
+        twoPieces: two_pieces
         genders {
           id
           name: gender
