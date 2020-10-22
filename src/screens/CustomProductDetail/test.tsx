@@ -10,7 +10,9 @@ import {
   openFitInfoAction,
   setShowDetailsAction,
   setShowSpecsAction,
-  setFitsModal
+  setFitsModal,
+  setSelectedTopSizeAction,
+  setSelectedBottomSizeAction
 } from './actions'
 import {
   SET_LOADING_ACTION,
@@ -20,7 +22,9 @@ import {
   OPEN_FITINFO,
   SET_SHOW_DETAILS,
   SET_SHOW_SPECS,
-  SET_FITS_MODAL
+  SET_FITS_MODAL,
+  SET_TOP_SELECTED_SIZE,
+  SET_BOTTOM_SELECTED_SIZE
 } from './constants'
 
 describe(' CustomProductDetail Screen', () => {
@@ -87,6 +91,22 @@ describe(' CustomProductDetail Screen', () => {
       expect(setFitsModal(showFits)).toEqual({
         type,
         showFits
+      })
+    })
+    it('setSelectedTopSizeAction', () => {
+      const type = SET_TOP_SELECTED_SIZE
+      const selected = { id: 1, name: 'Name' }
+      expect(setSelectedTopSizeAction(selected)).toEqual({
+        type,
+        selected
+      })
+    })
+    it('setSelectedBottomSizeAction', () => {
+      const type = SET_BOTTOM_SELECTED_SIZE
+      const selected = { id: 1, name: 'Name' }
+      expect(setSelectedBottomSizeAction(selected)).toEqual({
+        type,
+        selected
       })
     })
   })
@@ -261,6 +281,52 @@ describe(' CustomProductDetail Screen', () => {
 
         const showFitsModal = state.get('showFitsModal')
         expect(showFitsModal).toBe(showFits)
+      })
+    })
+  })
+  describe('SET_TOP_SELECTED_SIZE', () => {
+    describe('setSelectedTopSizeAction action', () => {
+      it('Handles initial value in selectedTopSize', () => {
+        const customInitialValue = initialState.get('selectedTopSize')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom value in selectedTopSize', () => {
+        const selectedSize = {
+          id: 1,
+          name: 'Name'
+        }
+        const state = customProductDetailReducer(
+          initialState,
+          setSelectedTopSizeAction(selectedSize)
+        )
+
+        const customSelectedSize = state.get('selectedTopSize')
+        expect(customSelectedSize).not.toBeUndefined()
+        expect(customSelectedSize).toBe(selectedSize)
+      })
+    })
+  })
+  describe('SET_BOTTOM_SELECTED_SIZE', () => {
+    describe('setSelectedBottomSizeAction action', () => {
+      it('Handles initial value in selectedTopSize', () => {
+        const customInitialValue = initialState.get('selectedBottomSize')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(customInitialValue.size).toBe(0)
+      })
+      it('Handles custom value in selectedBottomSize', () => {
+        const selectedSize = {
+          id: 1,
+          name: 'Name'
+        }
+        const state = customProductDetailReducer(
+          initialState,
+          setSelectedBottomSizeAction(selectedSize)
+        )
+
+        const customSelectedSize = state.get('selectedBottomSize')
+        expect(customSelectedSize).not.toBeUndefined()
+        expect(customSelectedSize).toBe(selectedSize)
       })
     })
   })
