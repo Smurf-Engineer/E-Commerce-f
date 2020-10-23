@@ -695,7 +695,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
 
     return ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
-      selectedBottomSize.id > 0) && selectedGender.id)
+      selectedBottomSize.id > 0)) && selectedGender.id
   }
 
   toggleProductInfo = (id: string) => {
