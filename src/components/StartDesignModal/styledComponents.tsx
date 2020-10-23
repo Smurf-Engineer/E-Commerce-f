@@ -2,12 +2,11 @@
  * Styled Components - Created by eduardoquintero on 19/10/20.
  */
 import styled from 'styled-components'
-import Button from 'antd/lib/button'
-import Input from 'antd/lib/input'
-import Search from 'antd/lib/auto-complete'
-import { GRAY_DARK, WHITE_SMOKE, BLUE } from '../../theme/colors'
+import CheckImg from '../../assets/green_check.svg'
+import { BLACK, GRAY_DARK, GRAY_LIGHTEST, WHITE, GRAY_LIGHT } from '../../theme/colors'
 
-export const Container = styled.div``
+export const Container = styled.div`
+`
 
 export const Title = styled.div`
   margin-bottom: 25px;
@@ -17,52 +16,72 @@ export const Title = styled.div`
   line-height: 27px;
   display: flex;
   align-items: center;
+  justify-content: center;
 `
 
-export const StyledButton = styled(Button)`
-  height: 40px;
-`
-
-interface ButtonWrapperProps {
-  disabled: boolean
-}
-
-export const ButtonWrapper = styled.div`
-  margin-top: 25px;
-  text-align: right;
-  align-self: right;
-  .ant-btn-primary {
-    background-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
-    border-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
+export const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: ${WHITE};
+  min-height: 608px;
+  width: 400px;
+  transition: all 0.25s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 3px 11px 1px rgba(0, 0, 0, 0.15);
   }
-  .ant-btn-primary:hover {
-    background-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
-    border-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? WHITE_SMOKE : BLUE};
+  &:last-child {
+    margin-left: 30px;
   }
+  @media (min-width: 320px) and (max-width: 748px) {
+    &:last-child {
+      margin-left: 0px;
+      margin-top: 32px;
+    }
+  }
+  border: 1px solid ${GRAY_LIGHT};
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  position: relative;
 `
 
-export const StyledSearch = styled(Search)`
-  width: 100%;
-`
-
-export const Label = styled.p`
-  margin: 10px 0;
-`
-
-export const StyledInput = styled(Input)`
-  border-radius: 0;
-  input {
-    border-radius: 0;
+export const CardTitle = styled.div`
+  font-weight: 600;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: ${BLACK};
+  background: ${GRAY_LIGHTEST};
+  text-align: center;
+  padding: 30px;
+  & img {
     width: 100%;
   }
 `
 
-export const SearchButton = styled(Button)`
-  height: 100%;
-  border: none;
-  width: 35px;
+export const DesignsCardsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 320px) and (max-width: 748px) {
+    flex-flow: column;
+  }
+`
+
+export const List = styled.ul`
+  padding: 0;
+  margin: 40px 28px 0 40px;
+  list-style: none;
+  text-align: left;
+  list-style-image: url(${CheckImg});
+`
+
+export const Item = styled.li`
+  margin-bottom: 10px;
+  line-height: 25px;
+`
+
+export const Icon = styled.img`
+  width: 100%;
+  max-width: 90px;
+  margin-right: 16px;
 `

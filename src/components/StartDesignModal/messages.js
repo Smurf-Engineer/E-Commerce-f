@@ -5,36 +5,52 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.StartDesignModal.title',
-    defaultMessage: 'SAVE PRO DESIGN'
+  twoWays: {
+    id: 'components.StartDesignModal.twoWays',
+    defaultMessage: 'TWO WAYS TO DESIGN'
   },
-  saveDesign: {
-    id: 'components.AddProDesignModal.saveDesign',
-    defaultMessage: 'Save Design'
+  createUnlimited: {
+    id: 'components.AddProDesignModal.createUnlimited',
+    defaultMessage: 'Create unlimited designs from our kickstart design library for free.'
   },
-  searchBy: {
-    id: 'screens.AddProDesignModal.searchBy',
-    defaultMessage: 'Name, Email or Client ID'
+  themedDesign: {
+    id: 'screens.AddProDesignModal.themedDesign',
+    defaultMessage: 'Use the Themed Design Collections to get those creative ideas flowing.'
   },
-  selectUser: {
-    id: 'screens.AddProDesignModal.selectUser',
-    defaultMessage: 'Select User to Assign Design'
+  expanded: {
+    id: 'screens.AddProDesignModal.expanded',
+    defaultMessage: 'Expanded Clipart and Font Libraries.'
   },
-  designName: {
-    id: 'screens.AddProDesignModal.designName',
-    defaultMessage: 'Design Name'
+  connect: {
+    id: 'screens.AddProDesignModal.connect',
+    defaultMessage: 'Conect with a Pro Desinger with Jakroo Pro Assist.'
   },
-  name: {
-    id: 'screens.AddProDesignModal.name',
-    defaultMessage: 'Name'
+  ideas: {
+    id: 'screens.AddProDesignModal.ideas',
+    defaultMessage: 'Ideas for individuals or small groups looking for 1-3 items or anyone who enjoys creating their own designs.'
   },
-  legacyNumber: {
-    id: 'screens.AddProDesignModal.legacyNumber',
-    defaultMessage: 'Legacy Number'
+  dedicatedAccount: {
+    id: 'components.AddProDesignModal.dedicatedAccount',
+    defaultMessage: 'Dedicated Account Manager and Design team to assist with design and ordering.'
   },
-  legacySample: {
-    id: 'screens.AddProDesignModal.legacySample',
-    defaultMessage: 'Ex. BRBR-123456789'
+  createUnlimited: {
+    id: 'components.AddProDesignModal.createUnlimited',
+    defaultMessage: 'Create unlimited designs from our kickstart design library for free.'
+  },
+  freeDesign: {
+    id: 'components.AddProDesignModal.freeDesign',
+    defaultMessage: 'Free design and 2 free edits per item.'
+  },
+  extended: {
+    id: 'components.AddProDesignModal.extended',
+    defaultMessage: 'Extended configuration and customization options.'
+  },
+  customColor: {
+    id: 'components.AddProDesignModal.customColor',
+    defaultMessage: 'Custom color and Pantone matching to your branding requirements.'
+  },
+  idealForTeams: {
+    id: 'components.AddProDesignModal.idealForTeams',
+    defaultMessage: 'Ideal for Teams and Clubs requiring multiple items and have specific design requirements.'
   }
 })

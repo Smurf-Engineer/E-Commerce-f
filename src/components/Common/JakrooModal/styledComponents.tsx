@@ -6,7 +6,8 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   justify-content: center;
-  .ant-modal-content {
+  & .ant-modal-content {
+    background-color: blue;
     border-radius: 0;
   }
 `

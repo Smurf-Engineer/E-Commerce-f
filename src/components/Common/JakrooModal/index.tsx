@@ -16,6 +16,7 @@ interface Props {
   children?: any
   title?: string
   style?: any
+  maskStyle?: any
 }
 
 const CustomModal = ({
@@ -26,12 +27,13 @@ const CustomModal = ({
   style,
   width,
   withCross = true,
-  withLogo = true
+  withLogo = true,
+  maskStyle
 }: Props) => {
   return (
     <Container>
       <Modal
-        {...{ style, width }}
+        {...{ style, width, maskStyle }}
         visible={open}
         footer={null}
         closable={false}

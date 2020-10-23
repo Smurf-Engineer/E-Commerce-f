@@ -123,6 +123,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   loadingImage: boolean
   phone: boolean
+  isMobile: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -537,6 +538,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selected: true,
       label: name
     })
+
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
@@ -683,7 +685,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             }}
           />
         </Container>
-        <StartDesignModal {...{ formatMessage }} />
+        <StartDesignModal {...{ formatMessage }} isMobile={phone} />
       </Layout>
     )
   }
