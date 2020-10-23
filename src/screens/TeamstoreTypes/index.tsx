@@ -137,6 +137,7 @@ class TeamstoreTypes extends React.Component<Props, {}> {
                 </PaymentMethodsText>
                 <PaymentIcons>
                   <Icon src={creditCard} />
+                  <Icon src={paypal} />
                 </PaymentIcons>
                 <SelectTeamStoreButton id="fixed" onClick={this.goTo}>
                   {formatMessage(messages.select)}
