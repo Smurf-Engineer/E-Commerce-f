@@ -29,6 +29,14 @@ export default defineMessages({
     id: 'components.ResellerDetails.comissions',
     defaultMessage: 'Dealer Margin'
   },
+  businessName: {
+    id: 'components.ResellerDetails.businessName',
+    defaultMessage: 'Business Name'
+  },
+  stateProvince: {
+    id: 'components.ResellerDetails.stateProvince',
+    defaultMessage: 'State / Province'
+  },
   storeMargin: {
     id: 'components.ResellerDetails.storeMargin',
     defaultMessage: 'Store Margin'

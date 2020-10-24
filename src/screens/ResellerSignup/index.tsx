@@ -2,6 +2,7 @@
  * ResellerSignup Component - Created by cazarez on 20/02/18.
  */
 import * as React from 'react'
+import MediaQuery from 'react-responsive'
 import { compose, withApollo } from 'react-apollo'
 // UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED
 // import Checkbox from 'antd/lib/checkbox'
@@ -54,7 +55,21 @@ import {
   FeatureTitle,
   FeatureImage,
   FeatureDesc,
-  LearnMore
+  LearnMore,
+  ImageTitle,
+  BannerSection,
+  BannerBack,
+  BannerLogo,
+  BannerLogos,
+  BannerDescription,
+  BannerTitle,
+  HalfDiv,
+  HalfImage,
+  BannerFooter,
+  FullDiv,
+  BigTitle,
+  BannerCheckList,
+  MiddleText
 } from './styledComponents'
 import { createUser } from './data'
 import messages from './messages'
@@ -67,6 +82,16 @@ import { getFileWithExtension } from '../../utils/utilsFiles'
 import { validateEmail } from '../../utils/utilsFunctions'
 import Layout from '../../components/MainLayout'
 import RegionSelect from '../../components/RegionSelect'
+import yourKitImage from '../../assets/your_kit_graphic.png'
+import directShip from '../../assets/directship_dark.png'
+import directShipSteps from '../../assets/directship_3steps.png'
+import onDemandLogo from '../../assets/on_demand_red.png'
+import onDemandLogoMain from '../../assets/on_demand_logo_main.jpg'
+import onDemandDelivery from '../../assets/on_demand_delivery.png'
+import designLabWhite from '../../assets/design_lab_white.png'
+import proDesignWhite from '../../assets/pro_design_white.png'
+import directShipWhite from '../../assets/directship_white.png'
+import resellerGuy from '../../assets/reseller-banner-image.jpg'
 import { NEW_USER } from '../../constants'
 import { User, UserType } from '../../types/common'
 import { CA_COUNTRY, CA_CURRENCY, US_COUNTRY, US_CURRENCY } from '../../components/ResellerAbout/constants'
@@ -74,6 +99,8 @@ import { connect } from 'react-redux'
 
 const { Option } = Select
 const { confirm } = Modal
+
+const shopImage = 'https://storage.googleapis.com/jakroo/screens/YourShop-YourBrand-photo.jpg'
 
 const countries = [
   {
@@ -123,6 +150,8 @@ interface StateProps {
   loading: boolean,
   visible: boolean,
   selectedRegion: string,
+  bannerSelected: number,
+  changedBanner: boolean,
   selectedRegionCode: string,
   businessName: string,
   fileName: string
@@ -148,7 +177,14 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     terms: false,
     loading: false,
     visible: false,
+    bannerSelected: 0,
+    changedBanner: false,
     fileName: ''
+  }
+  componentDidMount() {
+    if (window) {
+      window.scrollTo(0, 0)
+    }
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
@@ -187,6 +223,12 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     uploadFileAction(file).then((fileName) => {
       this.setState({ loading: false, fileName })
     })
+  }
+  handleSetBanner = (event: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    this.setState({ bannerSelected: Number(id), changedBanner: true })
   }
   handlePromptCurrency = () => {
     const { intl: { formatMessage } } = this.props
@@ -240,6 +282,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       firstName,
       lastName,
       gst,
+      bannerSelected,
+      changedBanner,
       phone,
       businessName,
       selectedRegion,
@@ -263,31 +307,153 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     const file = fileName ? getFileWithExtension(fileName) : ''
     return (
       <Layout {...{ intl, history }} style={layoutStyle}>
+        <TopSection>
+          <TopDiv>
+            <Title>
+              {formatMessage(messages.title)}
+            </Title>
+          </TopDiv>
+          <TopDiv>
+            <FeatureBox>
+              <FeatureTitle dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.yourKit)
+              }} />
+              <FeatureImage src={yourKitImage} />
+              <FeatureDesc dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.yourKitDesc)
+              }} />
+              <LearnMore id="0" onClick={this.handleSetBanner}>{formatMessage(messages.learnMore)}</LearnMore>
+            </FeatureBox>
+            <MediaQuery maxWidth={767}>
+              {(matches) => matches && bannerSelected === 0 && changedBanner &&
+                <BannerBack>
+                  <HalfImage src={shopImage} />
+                  <HalfDiv>
+                    <BannerTitle dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.yourKit)
+                    }} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.kitFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerLogo src={designLabWhite} />
+                      <BannerLogo src={proDesignWhite} />
+                    </BannerLogos>
+                  </HalfDiv>
+                </BannerBack>
+              }
+            </MediaQuery>
+            <FeatureBox>
+              <ImageTitle src={directShip} />
+              <FeatureImage large={true} src={directShipSteps} />
+              <FeatureDesc dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.directDesc)
+              }} />
+              <LearnMore id="1" onClick={this.handleSetBanner}>{formatMessage(messages.learnMore)}</LearnMore>
+            </FeatureBox>
+            <MediaQuery maxWidth={767}>
+              {(matches) => matches && bannerSelected === 1 &&
+                <BannerBack>
+                  <HalfDiv>
+                    <BannerLogo large={true} src={directShipWhite} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.directFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerFooter dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.easyConvenient)
+                      }} />
+                    </BannerLogos>
+                  </HalfDiv>
+                  <HalfImage src={resellerGuy} />
+                </BannerBack>
+              }
+            </MediaQuery>
+            <FeatureBox>
+              <ImageTitle src={onDemandLogo} />
+              <FeatureImage src={onDemandDelivery} />
+              <FeatureDesc dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.onDemandDesc)
+              }} />
+              <LearnMore id="2" onClick={this.handleSetBanner}>{formatMessage(messages.learnMore)}</LearnMore>
+            </FeatureBox>
+            <MediaQuery maxWidth={767}>
+              {(matches) => matches && bannerSelected === 2 &&
+                <BannerBack>
+                  <FullDiv>
+                    <BigTitle>{formatMessage(messages.justWhatYouNeed)}</BigTitle>
+                    <FeatureImage large={true} src={onDemandLogoMain} />
+                    <MiddleText dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buildingDesc)
+                    }} />
+                    <BannerCheckList dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buldingCheckList)
+                    }} />
+                  </FullDiv>
+                </BannerBack>
+              }
+            </MediaQuery>
+          </TopDiv>
+          <MediaQuery minWidth={768}>
+            {(matches) => matches &&
+              <BannerSection>
+              {bannerSelected === 0 && 
+                <BannerBack>
+                  <HalfImage src={shopImage} />
+                  <HalfDiv>
+                    <BannerTitle dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.yourKit)
+                    }} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.kitFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerLogo src={designLabWhite} />
+                      <BannerLogo src={proDesignWhite} />
+                    </BannerLogos>
+                  </HalfDiv>
+                </BannerBack>
+              }
+              {bannerSelected === 1 && 
+                <BannerBack>
+                  <HalfDiv>
+                    <BannerLogo large={true} src={directShipWhite} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.directFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerFooter dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.easyConvenient)
+                      }} />
+                    </BannerLogos>
+                  </HalfDiv>
+                  <HalfImage src={resellerGuy} />
+                </BannerBack>
+              }
+              {bannerSelected === 2 && 
+                <BannerBack>
+                  <FullDiv>
+                    <BigTitle>{formatMessage(messages.justWhatYouNeed)}</BigTitle>
+                    <FeatureImage large={true} src={onDemandLogoMain} />
+                    <MiddleText dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buildingDesc)
+                    }} />
+                    <BannerCheckList dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buldingCheckList)
+                    }} />
+                  </FullDiv>
+                </BannerBack>
+              }
+            </BannerSection>
+          }
+          </MediaQuery>
+        </TopSection>
         <Container>
           {saving &&
             <SavingContainer>
               <Spin />
             </SavingContainer>
           }
-          <TopSection>
-            <TopDiv>
-              <Title>
-                {formatMessage(messages.title)}
-              </Title>
-            </TopDiv>
-            <TopDiv>
-              <FeatureBox>
-                  <FeatureTitle dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.resellerDesc)
-                  }} />
-                  <FeatureImage src="" />
-                  <FeatureDesc dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.resellerDesc)
-                  }} />
-                  <LearnMore>{formatMessage(messages.title)}</LearnMore>
-              </FeatureBox>
-            </TopDiv>
-          </TopSection>
           <LoginLabel onClick={this.setFormVisible}>
             <FormattedMessage {...messages.signupTitle} />
           </LoginLabel>
@@ -406,7 +572,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               <InputRow>
                 <InputDiv>
                   <Label>
-                    <FormattedMessage {...messages.billingCountry} />
+                    <FormattedMessage {...messages.stateProvince} />
                     <RequiredSymbol>*</RequiredSymbol>
                   </Label>
                   <RegionSelect
@@ -553,6 +719,10 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       currency: '',
       sendSms: false,
       sendMail: false,
+      gst: '',
+      businessName: '',
+      selectedRegion: '',
+      selectedRegionCode: '',
       terms: false,
       loading: false,
       fileName: ''
@@ -568,6 +738,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       website,
       sendSms,
       gst,
+      businessName,
+      selectedRegion,
       sendMail,
       phone,
       currency,
@@ -586,8 +758,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     if (password !== confirmPassword) {
       message.error(formatMessage(messages.passwordLengthError))
     }
-    if (
-      !firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency || !website
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency 
+      || !website || !businessName || !selectedRegion
       || (currency === US_CURRENCY && !fileName) || (currency === CA_CURRENCY && !gst)
     ) {
       message.error(formatMessage(messages.requiredFieldsError))
@@ -619,6 +791,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       currency,
       gst,
       sendSms,
+      businessName,
+      selectedRegion,
       sendMail,
       fileName,
       phone
