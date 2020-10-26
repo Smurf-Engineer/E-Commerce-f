@@ -13,6 +13,10 @@ export const AFFILIATES = 'affiliate'
 export const AFFILIATES_ABOUT = 'affiliateAbout'
 export const AFFILIATES_ORDERS = 'affiliateOrders'
 export const AFFILIATES_PAYOUTS = 'affiliatePayouts'
+export const RESELLER = 'reseller'
+export const RESELLER_ABOUT = 'resellerAbout'
+export const RESELLER_PAYOUTS = 'resellerPayouts'
+export const RESELLER_ORDERS = 'resellerOrders'
 export const CREATIONS = 'myCreations'
 export const MY_FILES = 'myFiles'
 export const SCREEN_LOCKER = 'myLocker'
@@ -30,6 +34,10 @@ export const menuOptions = [
   {
     title: TEAMSTORES,
     options: []
+  },
+  {
+    title: RESELLER,
+    options: [RESELLER_ABOUT, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
     title: AFFILIATES,

@@ -80,5 +80,21 @@ export default defineMessages({
   profileMenu: {
     id: 'screens.Account.profileMenu',
     defaultMessage: 'PROFILE SETTINGS'
+  },
+  reseller: {
+    id: 'screens.Account.reseller',
+    defaultMessage: 'DIRECTSHIP STORES'
+  },
+  resellerAbout: {
+    id: 'screens.Account.resellerAbout',
+    defaultMessage: 'About'
+  },
+  resellerPayouts: {
+    id: 'screens.Account.resellerPayouts',
+    defaultMessage: 'Payouts'
+  },
+  resellerOrders: {
+    id: 'screens.Account.resellerOrders',
+    defaultMessage: 'Orders'
   }
 })

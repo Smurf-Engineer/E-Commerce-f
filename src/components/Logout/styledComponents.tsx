@@ -45,7 +45,7 @@ export const PopoverStyled = styled(Popover)``
 
 export const Item = styled(MenuAntd.Item)`
   width: 100%;
-  padding: 0 6px !important;
+  padding: ${({ withBorder }: DivProps) => withBorder ? `0 6px !important` : '0 18px !important'};
   font-weight: ${({ bold }: DivProps) => bold ? `bold` : 'normal'};
   text-transform: ${({ withBorder, bold }: DivProps) => withBorder || bold ? `uppercase` : 'capitalize'};
   border-bottom: ${({ withBorder }: DivProps) => withBorder ? `1px solid ${GRAY_LIGHTEST}` : 'none'};
@@ -66,8 +66,7 @@ export const UserIcon = styled(Icon)``
 export const StyledSubMenu = styled(SubMenu)`
   border-bottom: 1px solid ${GRAY_LIGHTEST};
   .ant-menu-submenu-title {
-    padding-left: 6px !important;
-    padding-right: 2px;
+    padding: 0 2px 0 6px !important;
     width: 100%;
   }
   .ant-menu-submenu-arrow {
@@ -84,8 +83,7 @@ export const RightIcon = styled(icon)`
 `
 
 export const LeftIcon = styled(icon)`
-  padding-right: 28px;
-  padding-left: 8px;
+  padding: 0 28px 0 8px;
   font-size: 12px;
   color: ${RED};
 `

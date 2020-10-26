@@ -12,7 +12,7 @@ import {
 import { Container, Bottom, menuStyle, BottomDiv, Item, StyledSubMenu, containerStyle } from './styledComponents'
 import messages from './messages'
 import messagesMenu from '../../../screens/Account/messages'
-import { menuOptions, AFFILIATES } from './constants'
+import { menuOptions, AFFILIATES, RESELLER } from './constants'
 import { setCurrentScreenAction } from '../../../screens/Account/actions'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -21,6 +21,7 @@ interface Props {
   client: any
   data?: any
   history: any
+  resellerEnabled?: boolean
   affiliateEnabled?: boolean
   openMenuAccount: boolean
   hideMenu: () => void
@@ -129,6 +130,7 @@ class Menu extends React.PureComponent<Props, {}> {
       loginButton,
       openMenuAccount,
       affiliateEnabled,
+      resellerEnabled,
       formatMessage
     } = this.props
 
@@ -146,7 +148,8 @@ class Menu extends React.PureComponent<Props, {}> {
 
     const menuAccount = menuOptions.map(({ title, options: submenus }) =>
       submenus.length ?
-        ((title === AFFILIATES && affiliateEnabled) || title !== AFFILIATES) &&
+      (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
+      || (title !== AFFILIATES && title !== RESELLER)) &&
         <StyledSubMenu
           key={title}
           title={formatMessage(messagesMenu[title])}

@@ -26,12 +26,13 @@ import {
 import {
   OVERVIEW
 } from '../../screens/Account/constants'
-import { AFFILIATES, menuOptions } from './constants'
+import { AFFILIATES, menuOptions, RESELLER } from './constants'
 import { Message } from '../../types/common'
 
 interface Props {
   title: string
   openedMenu: boolean
+  resellerEnabled: boolean
   affiliateEnabled: boolean
   logout: () => void
   openMenu: () => void
@@ -63,7 +64,7 @@ class Logout extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { title, openMenu, openedMenu, closeMenu, formatMessage, affiliateEnabled } = this.props
+    const { title, openMenu, openedMenu, closeMenu, formatMessage, affiliateEnabled, resellerEnabled } = this.props
     const logoutMenu = (
       <Menu
         mode="inline"
@@ -80,7 +81,8 @@ class Logout extends React.PureComponent<Props, {}> {
         </TitleItem>
         {menuOptions.map(({ titleLabel, options: submenus }) =>
           submenus.length ?
-          ((titleLabel === AFFILIATES && affiliateEnabled) || titleLabel !== AFFILIATES) &&
+          (((titleLabel === AFFILIATES && affiliateEnabled) || (titleLabel === RESELLER && resellerEnabled))
+            || (titleLabel !== AFFILIATES && titleLabel !== RESELLER)) &&
             <StyledSubMenu
               key={titleLabel}
               title={formatMessage(messagesMenu[titleLabel])}
