@@ -48,7 +48,7 @@ const YotpoSection = ({
   data,
   moreTag,
   name,
-  hideFeatured,
+  hideFeatured = false,
   history,
   formatMessage,
   dispatch,
