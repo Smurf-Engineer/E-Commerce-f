@@ -12,6 +12,10 @@ export const HOMEPAGE = 'homepage'
 export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
 export const DESIGN_TOOLS = 'designTools'
+export const AFFILIATES_PAYOUTS = 'affiliatesPayouts'
+export const AFFILIATES = 'affiliates'
+export const RESELLER_ORDERS = 'resellerOrders'
+export const RESELLER_PAYOUTS = 'resellerPayouts'
 export const EDIT_NAVIGATION = 'editNavigation'
 export const PRO_DESIGN = 'proDesign'
 export const PUBLISHING_TOOL = 'publishingTool'
@@ -27,6 +31,10 @@ export const keys = {
   ['/admin/design-search']: PRODUCT_CATALOG,
   ['/admin/products']: DESIGN_SEARCH,
   ['/admin/users']: USERS,
+  ['/admin/reseller-payouts']: RESELLER_PAYOUTS,
+  ['/admin/reseller-orders']: RESELLER_ORDERS,
+  ['/admin/affiliates-payouts']: AFFILIATES_PAYOUTS,
+  ['/admin/affiliates']: AFFILIATES,
   ['/admin/edit-navigation']: EDIT_NAVIGATION,
   ['/admin/design-lab']: DESIGN_LAB,
   ['/admin/add-pro-design']: PRO_DESIGN,
