@@ -4,6 +4,8 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import { BLACK } from '../../screens/DesignCenter/constants'
+import { GRAY_DARK } from '../../theme/colors'
+import { WHITE } from '../../screens/DesignerTool/constants'
 
 const Search = Input.Search
 
@@ -29,15 +31,16 @@ export const Container = styled.div`
     font-size: 20px;
   }
   .ant-input-suffix:focus {
-    background-color: #fff;
+    background-color: ${WHITE};
   }
 
   .ant-btn-primary {
-    color: grey;
+    color: ${WHITE};
+    border: none;
+    box-shadow: none;
+    border-radius: 5px !important;
     background-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? '#fff' : '#f6f6f6'};
-    border-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? '#fff' : '#f6f6f6'};
+      focused || !onHeader ? '#fff' : GRAY_DARK};
   }
 `
 
