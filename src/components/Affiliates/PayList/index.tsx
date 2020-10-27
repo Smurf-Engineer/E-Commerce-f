@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import {
   Container,
@@ -18,10 +19,13 @@ import {
   PayButton,
   SearchInput,
   HeaderSection,
-  Mail
+  Mail,
+  TotalDiv,
+  Amounts,
+  LeftDiv
 } from './styledComponents'
 import EmptyContainer from '../../EmptyContainer'
-import { AffiliatesResult, QueryProps, AffiliatePayment, SelectedPays } from '../../../types/common'
+import { AffiliatesResult, QueryProps, AffiliatePayment, SelectedPays, Message } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getAffiliatesPayments, makePaymentsMutation } from './data'
@@ -35,6 +39,7 @@ import { PENDING_PAY, TO_PAY, SHIPPED, PARTIALLY_SHIPPED, DATE_FORMAT, CANCELLED
 import clone from 'lodash/clone'
 import { message } from 'antd'
 import debounce from 'lodash/debounce'
+import { CA_CURRENCY, US_CURRENCY } from '../../AffiliateAbout/constants'
 
 interface Data extends QueryProps {
   paymentsResult: AffiliatesResult
@@ -56,7 +61,7 @@ interface Props {
   setLoading: (loading: boolean) => void
   makePayments: (variables: {}) => Promise<AffiliatePayment>
   setSelected: (value: SelectedPays) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   onChangePage: (page: number) => void
 }
 
@@ -74,11 +79,30 @@ export class PayList extends React.Component<Props, {}> {
     const { target: { checked } } = event
     const payments = get(data, 'paymentsResult.payments', []) as AffiliatePayment[]
     const newSelected = clone(selected)
-    payments.forEach(({ id, status, paypalAccount }: AffiliatePayment) => {
-      newSelected[id] = status === PENDING_PAY && !!paypalAccount ? checked : false
+    payments.forEach(({ id, status, paypalAccount, netsuite, orderStatus }: AffiliatePayment) => {
+      const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus', '')
+      const checkedAvailable = this.checkAvailable(paypalAccount, status, netsuiteStatus, orderStatus)
+      newSelected[id] = checkedAvailable ? checked : false
     })
     setSelected(newSelected)
   }
+
+  checkAvailable = (paypalAccount: string, status: string, netsuiteStatus: string, orderStatus: string) => {
+    const { isAccountant, overrideStatus, canEdit } = this.props
+    if (
+      (
+        (status === TO_PAY && isAccountant) ||
+        (!isAccountant && status === PENDING_PAY &&
+          ((netsuiteStatus === SHIPPED || netsuiteStatus === PARTIALLY_SHIPPED) || overrideStatus)
+        )
+      ) &&
+      !!paypalAccount && canEdit && orderStatus !== CANCELLED
+    ) {
+      return true
+    }
+    return false
+  }
+
   openLinkAction = (receipt: string) => () => {
     window.open(receipt)
   }
@@ -141,7 +165,6 @@ export class PayList extends React.Component<Props, {}> {
       formatMessage,
       selected,
       canEdit,
-      overrideStatus,
       isAccountant,
       loading: loadingPayment,
       currentPage,
@@ -149,18 +172,44 @@ export class PayList extends React.Component<Props, {}> {
       onChangePage
     } = this.props
     const { loading } = data || {}
+    let hasChecked = false
+    let usdTotal = 0
+    let cadTotal = 0 
     const payments = get(data, 'paymentsResult.payments', []) as AffiliatePayment[]
     const fullCount = get(data, 'paymentsResult.fullCount', 0)
-    const checked = payments.every(({ id }: AffiliatePayment) => selected[id])
-    const hasChecked = payments.some(({ id }: AffiliatePayment) => selected[id])
+    const availablePayments = payments.filter((
+      { id, paypalAccount, status, netsuite, currency, amount, orderStatus }: AffiliatePayment
+      ) => {
+      const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus', '')
+      const checkedAvailable = this.checkAvailable(paypalAccount, status, netsuiteStatus, orderStatus)
+      if (checkedAvailable && selected[id]) {
+        hasChecked = true
+        if (currency === US_CURRENCY) {
+          usdTotal += amount
+        } else if (currency === CA_CURRENCY) {
+          cadTotal += amount
+        }
+      }
+      return checkedAvailable
+    })
+    const checked = availablePayments.every(({ id }) => selected[id])
     const indeterminate = !checked && hasChecked
     return (
       <Container>
         <HeaderSection>
-          <SearchInput
-            onChange={this.handleOnUpdateText}
-            placeholder={formatMessage(messages.search)}
-          />
+          <LeftDiv>
+            <SearchInput
+              onChange={this.handleOnUpdateText}
+              placeholder={formatMessage(messages.search)}
+            />
+            <TotalDiv>
+              {formatMessage(messages.comissionAmount)}
+              <Amounts>
+                <FormattedMessage {...messages.usdAmount} values={{ usdTotal }} />
+                <FormattedMessage {...messages.cadAmount} values={{ cadTotal }} />
+              </Amounts>
+            </TotalDiv>
+          </LeftDiv>
           {(hasChecked && canEdit) &&
             <PayButton onClick={this.handleMakePayment}>
               {formatMessage(messages[isAccountant ? 'payAll' : 'requestPay'])}
@@ -220,18 +269,11 @@ export class PayList extends React.Component<Props, {}> {
                 }: AffiliatePayment,
                 index: number) => {
                 const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus', '')
+                const availableCheck = this.checkAvailable(paypalAccount, status, netsuiteStatus)
                 return (
                   <RepDiv id={orderId} onClick={this.openOrder} key={index}>
                     <Cell onClick={this.stopPropagation}>
-                      {(
-                        (
-                          (status === TO_PAY && isAccountant) ||
-                          (!isAccountant && status === PENDING_PAY &&
-                            ((netsuiteStatus === SHIPPED || netsuiteStatus === PARTIALLY_SHIPPED) || overrideStatus)
-                          )
-                        ) &&
-                        !!paypalAccount && canEdit && orderStatus !== CANCELLED
-                      ) &&
+                      {availableCheck &&
                         <Checkbox
                           {...{ id }}
                           checked={selected[id]}
