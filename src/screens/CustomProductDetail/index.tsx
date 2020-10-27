@@ -619,6 +619,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               formatMessage,
               currentCurrency
             }}
+            hideFeatured={true}
           />
         </Container>
       </Layout>
