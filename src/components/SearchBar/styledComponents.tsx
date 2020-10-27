@@ -3,9 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
-import { BLACK } from '../../screens/DesignCenter/constants'
-import { GRAY } from '../../theme/colors'
-import { WHITE } from '../../screens/DesignerTool/constants'
+import { BLACK, GRAY, GRAY_LIGHTEST, WHITE } from '../../theme/colors'
 
 const Search = Input.Search
 
@@ -20,7 +18,7 @@ export const Container = styled.div`
 
   .ant-input {
     ${({ onHeader }: StyledProps) =>
-      onHeader ? 'background-color : #f6f6f6;' : ''};
+      onHeader ? `background-color : ${GRAY_LIGHTEST};` : ''};
   }
   .ant-input:focus {
     ${({ onHeader }: StyledProps) =>
@@ -38,9 +36,9 @@ export const Container = styled.div`
   .ant-btn-primary {
     color: grey;
     background-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? WHITE : '#f6f6f6'};
+      focused || !onHeader ? WHITE : GRAY_LIGHTEST};
     border-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? WHITE : '#f6f6f6'};
+      focused || !onHeader ? WHITE : GRAY_LIGHTEST};
   }
 `
 
