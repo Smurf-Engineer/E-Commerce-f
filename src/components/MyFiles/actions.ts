@@ -8,7 +8,9 @@ import {
   HIDE_DELETE_IMAGE_CONFIRM,
   SET_DELETE_LOADING,
   RESET_REDUCER_DATA,
-  SET_PALETTES_ACTION
+  SET_PALETTES_ACTION,
+  SET_UPLOADING,
+  UPLOAD_SUCCESS
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -42,4 +44,14 @@ export const setDeleteLoadingAction = (loading: boolean): AnyAction => ({
 
 export const resetReducerDataAction = (): AnyAction => ({
   type: RESET_REDUCER_DATA
+})
+
+export const setUploadingAction = (loading: boolean): AnyAction => ({
+  type: SET_UPLOADING,
+  loading
+})
+
+export const uploadFileSuccessAction = (url: string): AnyAction => ({
+  type: UPLOAD_SUCCESS,
+  url
 })

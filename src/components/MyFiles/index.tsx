@@ -6,22 +6,60 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import Modal from 'antd/lib/modal/Modal'
 import AntdMessage from 'antd/lib/message'
+import message from 'antd/lib/message'
 import { List } from 'immutable'
 import { deleteImageMutation, imagesQuery } from './data'
 import * as MyFilesActions from './actions'
+import * as filesApiActions from './api'
 import messages from './messages'
 import {
   Container,
   Message,
   Subtitle,
   VerticalDivider,
-  ModalMessage
+  ModalMessage,
+  DraggerBottom,
+  Recommendation,
+  RecommendationSection,
+  ModalTitleStyled,
+  WarningIcon,
+  InfoBody,
+  buttonStyle
 } from './styledComponents'
 import { Palette, ImageFile, QueryProps } from '../../types/common'
 import PalettesList from './PalettesList'
 import ModalTitle from '../ModalTitle'
+import Dragger from '../DraggerWithLoading'
 import ModalFooter from '../ModalFooter'
 import ImagesList from './ImagesList'
+import { RED } from '../../theme/colors'
+import indexOf from 'lodash/indexOf'
+import isEmpty from 'lodash/isEmpty'
+import last from 'lodash/last'
+
+const { warning } = Modal
+
+const warningExtensions = [
+  '.svg',
+  '.eps',
+  '.pdf',
+  '.ai'
+]
+
+const validFileExtensions = [
+  '.eps',
+  '.pdf',
+  '.ai',
+  '.svg',
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.gif',
+  '.tif',
+  '.tiff',
+  '.bmp',
+  '.psd'
+]
 
 interface Data extends QueryProps {
   images: ImageFile[]
@@ -35,6 +73,9 @@ interface Props {
   indexPaletteToDelete: number
   showDeleteModal: boolean
   deleteLoading: boolean
+  uploading: boolean
+  onUploadFile: (file: File) => void
+  uploadFileAction: (file: File) => void
   formatMessage: (messageDescriptor: any) => string
   // Apollo mutations
   deleteImage: (variables: {}) => void
@@ -102,6 +143,59 @@ class MyFiles extends React.Component<Props, {}> {
     }
   }
 
+  getFileExtension = (fileName: string) => {
+    const extensionPattern = /\.[a-zA-Z]+/g
+    let extension = fileName.match(extensionPattern)
+    if (!isEmpty(extension)) {
+      return last(extension as RegExpMatchArray)
+    }
+    return ''
+  }
+
+  uploadAction = async (file: File) => {
+    const { uploadFileAction, data } = this.props
+    await uploadFileAction(file)
+    await data.refetch()
+  }
+
+  beforeUpload = async (file: File) => {
+    if (file) {
+      const { formatMessage } = this.props
+      const { size, name } = file
+      // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
+      if (size / 1000000 > 20) {
+        message.error(formatMessage(messages.imageSizeError))
+        return false
+      }
+      const fileExtension = this.getFileExtension(name)
+      if (
+        indexOf(
+          validFileExtensions,
+          (fileExtension as String).toLowerCase()
+        ) === -1
+      ) {
+        message.error(formatMessage(messages.imageExtensionError))
+        return false
+      }
+      if (warningExtensions.includes(fileExtension.toLowerCase())) {
+        warning({
+          title: <ModalTitleStyled>{formatMessage(messages.vectorCheck)}</ModalTitleStyled>,
+          width: 494,
+          okText: formatMessage(messages.gotIt),
+          icon: <WarningIcon theme="filled" type="exclamation-circle" />,
+          okButtonProps: {
+            style: buttonStyle
+          },
+          content: <InfoBody>{formatMessage(messages.vectorInfo)}</InfoBody>,
+          onOk: async () => await this.uploadAction(file)
+        })
+      } else {
+        await this.uploadAction(file)
+      }
+    }
+    return false
+  }
+
   onDeleteImage = async () => {
     const {
       setDeleteLoadingAction,
@@ -129,6 +223,7 @@ class MyFiles extends React.Component<Props, {}> {
       palettes,
       showDeleteModal,
       deleteLoading,
+      uploading,
       indexPaletteToDelete,
       data: { loading, images }
     } = this.props
@@ -147,6 +242,24 @@ class MyFiles extends React.Component<Props, {}> {
           images={images || []}
           loading={!!loading}
           onClickDelete={this.handleOnShowDeleteImageModal}
+          dragger={
+            <DraggerBottom>
+              <Dragger
+                extensions={['.eps', '.ai', '.svg', '.tiff', '.pdf', '.jpg']}
+                formatMessage={formatMessage}
+                loading={uploading}
+                onSelectImage={this.beforeUpload}
+              />
+              <RecommendationSection>
+                <Recommendation color={RED}>
+                  {formatMessage(messages.recommendationTitle)}
+                </Recommendation>
+                <Recommendation>
+                  {formatMessage(messages.recommendationMessage)}
+                </Recommendation>
+              </RecommendationSection>
+            </DraggerBottom>
+          }
         />
         <Modal
           visible={showDeleteModal}
@@ -190,7 +303,7 @@ const MyFilesEnhance = compose(
   graphql(imagesQuery),
   connect(
     mapStateToProps,
-    { ...MyFilesActions }
+    { ...MyFilesActions, ...filesApiActions }
   ),
   deleteImageMutation
 )(MyFiles)
