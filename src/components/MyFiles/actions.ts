@@ -19,7 +19,7 @@ export const setPalettesAction = (palettes: Palette[]): AnyAction => ({
   palettes
 })
 
-export const showDeletePaletteConfirmAction = (index: string): AnyAction => ({
+export const showDeletePaletteConfirmAction = (index: number): AnyAction => ({
   type: SHOW_DELETE_PALETTE_CONFIRM,
   index
 })
