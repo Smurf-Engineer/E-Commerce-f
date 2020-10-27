@@ -6,6 +6,9 @@ import CheckImg from '../../assets/green_check.svg'
 import { BLACK, GRAY_DARK, GRAY_LIGHTEST, WHITE, GRAY_LIGHT } from '../../theme/colors'
 
 export const Container = styled.div`
+  & .ant-modal {
+    background: blue;
+  }
 `
 
 export const Title = styled.div`
@@ -84,4 +87,30 @@ export const Icon = styled.img`
   width: 100%;
   max-width: 90px;
   margin-right: 16px;
+`
+
+export const BannerBack = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  background: lime;
+  color: ${WHITE};
+  width: 100%;
+  transform-style: preserve-3d;
+  perspective: 800px;
+  animation-fill-mode: both;
+
+  -webkit-transform-origin: bottom;
+  transform-origin: bottom;
+
+  transition: all 1s cubic-bezier(0.390, 0.575, 0.565, 1.000);
+
+  &.folded {
+    -webkit-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+  }
+  &.unfolded {
+    -webkit-transform: rotateX(0);
+    transform: rotateX(0);
+  }
 `

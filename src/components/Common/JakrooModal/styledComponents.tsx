@@ -7,7 +7,6 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   & .ant-modal-content {
-    background-color: blue;
     border-radius: 0;
   }
 `
@@ -29,6 +28,7 @@ export const Logo = styled.img`
   margin-top: -25px;
   margin-bottom: 30px;
 `
+
 export const Title = styled.div`
   margin-bottom: 20px;
   color: #5f6062;
