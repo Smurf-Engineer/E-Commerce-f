@@ -27,7 +27,8 @@ import {
   SET_PREFLIGHT,
   SET_LOADING_PREFLIGHT,
   SET_ACCOUNT_MANAGER,
-  CHANGE_LEGACY
+  CHANGE_LEGACY,
+  SET_PREDYED_VALUE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -135,6 +136,10 @@ const designSearchAdminReducer: Reducer<any> = (
           ['colorAccessories', 'stitchingName'],
           action.stitchingColor.name
         )
+        .set('changes', true)
+    case SET_PREDYED_VALUE:
+      return state
+        .setIn(['colorAccessories', 'predyed'], action.prededValue)
         .set('changes', true)
     case SET_COLOR_ACTION:
       return state

@@ -18,9 +18,10 @@ import {
   BottomRow,
   LogoIcon,
   TeamStoresMenuContainer,
-  TeamStoresMenuTitle
+  TeamStoresMenuTitle,
+  Icon
 } from './styledComponents'
-import { regionsQuery } from './data'
+import { regionsQuery, profileDataQuery } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -31,9 +32,15 @@ import Cart from '../CartForHeader'
 import {
   RegionConfig,
   Region as RegionType,
-  QueryProps
+  QueryProps,
+  IProfileSettings
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
+import get from 'lodash/get'
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
@@ -44,6 +51,7 @@ interface Props {
   history: any
   searchFunc: (param: string) => void
   openLogin?: boolean
+  profileData: ProfileData
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
@@ -67,6 +75,7 @@ interface Props {
 
 interface StateProps {
   openForgotPassword: boolean
+  openMenu: boolean
   isMobile: boolean
 }
 
@@ -76,6 +85,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
   state = {
     openForgotPassword: false,
+    openMenu: false,
     isMobile: false
   }
 
@@ -104,8 +114,16 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     window.location.replace(
       `/${regionCode}?lang=${currentLanguage ||
-        'en'}&currency=${currentCurrency}`
+      'en'}&currency=${currentCurrency}`
     )
+  }
+
+  openMenu = () => {
+    this.setState({ openMenu: true })
+  }
+
+  closeMenu = () => {
+    this.setState({ openMenu: false })
   }
 
   handleGoTo = (path: string) => {
@@ -135,10 +153,11 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { openForgotPassword, isMobile } = this.state
+    const { openForgotPassword, isMobile, openMenu } = this.state
     const {
       history,
       searchFunc,
+      profileData,
       openLogin,
       onChangeLocation,
       currentRegion,
@@ -160,25 +179,31 @@ class MenuBar extends React.Component<Props, StateProps> {
       regionsData: { regionsResult, loading: loadingRegions }
     } = this.props
 
-    let user: any
+    let user: any = {}
     if (typeof window !== 'undefined') {
       user = JSON.parse(localStorage.getItem('user') as string)
     }
 
     const { formatMessage } = intl
+    const userName = !!user ? String(user.name).toUpperCase() : ''
+    const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
 
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
+        <Icon type="user" />
         {formatMessage(messages.title)}
       </TopText>
     ) : (
-      <Logout
-        {...{ history }}
-        title={`${String(user.name).toUpperCase()}`}
-        logout={logoutAction}
-        goTo={this.handleOnGoTo}
-      />
-    )
+        <Logout
+          {...{ history, formatMessage, affiliateEnabled }}
+          title={formatMessage(messages.myAccount, { user: userName })}
+          logout={logoutAction}
+          openMenu={this.openMenu}
+          openedMenu={openMenu}
+          closeMenu={this.closeMenu}
+          goTo={this.handleOnGoTo}
+        />
+      )
 
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
@@ -207,14 +232,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         <div />
       </BottomRow>
     ) : (
-      <BottomRow>
-        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList
-          {...{ history, formatMessage, currentCurrency, regionsCodes }}
-        />
-        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
-      </BottomRow>
-    )
+        <BottomRow>
+          <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+          <DropdownList
+            {...{ history, formatMessage, currentCurrency, regionsCodes }}
+          />
+          <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
+        </BottomRow>
+      )
 
     return (
       <div>
@@ -263,6 +288,8 @@ class MenuBar extends React.Component<Props, StateProps> {
                       openWithoutSaveModalAction,
                       formatMessage,
                       buyNowHeader,
+                      openMenu,
+                      affiliateEnabled,
                       saveAndBuy
                     }}
                     handleOnGoHome={this.handleOnGoHome}
@@ -314,12 +341,23 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 }
 
+type OwnProps = {
+  loggedIn?: boolean
+}
+
 const MenuBarEnhanced = compose(
   graphql<RegionsData>(regionsQuery, {
     name: 'regionsData',
     options: () => ({
       fetchPolicy: 'network-only',
       variables: {}
+    })
+  }),
+  graphql<RegionsData>(profileDataQuery, {
+    name: 'profileData',
+    options: ({ loggedIn }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !loggedIn
     })
   })
 )(MenuBar)

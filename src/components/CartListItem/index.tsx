@@ -86,6 +86,16 @@ interface Props {
     detailIndex: number,
     size: ItemDetailType
   ) => void
+  setTopDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+  setBottomDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
   onClickReorder?: () => void
   openFitInfoAction: (open: boolean, selectedIndex: number) => void
 
@@ -129,6 +139,7 @@ export class CartListItem extends React.Component<Props, {}> {
 
   getPriceRange(priceRanges: PriceRange[], totalItems: CardNumberElement) {
     const { price, teamStoreItem } = this.props
+
     let markslider = { quantity: '0', price: 0 }
     if (price && price.quantity !== 'Personal') {
       markslider = price
@@ -239,7 +250,6 @@ export class CartListItem extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
-      isFixed,
       canReorder,
       productTotal,
       unitPrice,
@@ -253,6 +263,8 @@ export class CartListItem extends React.Component<Props, {}> {
       setDetailGender = () => { },
       setDetailColor = () => { },
       setDetailSize = () => { },
+      setTopDetailSize = () => { },
+      setBottomDetailSize = () => { },
       removeItem = () => { },
       openFitInfoAction = () => { },
       openFitInfo,
@@ -288,17 +300,13 @@ export class CartListItem extends React.Component<Props, {}> {
     const currencyPrices = filter(productPriceRanges, {
       abbreviation: currentCurrency || config.defaultCurrency
     })
-
     const personalPrice = get(
       this.getPriceRangeByQuantity('Personal'),
       'price',
       0
     )
-
     let priceRange =
-      !isTeamStore || fixedPrices.length || (isTeamStore && isFixed)
-        ? this.getPriceRange(currencyPrices, quantitySum + totalOrder)
-        : this.getPriceRangeByQuantity('2-5')
+      this.getPriceRange(currencyPrices, quantitySum + totalOrder)
 
     priceRange =
       priceRange && priceRange.price === 0
@@ -327,6 +335,8 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailFit,
           setDetailGender,
           setDetailSize,
+          setTopDetailSize,
+          setBottomDetailSize,
           openFitInfoAction,
           openFitInfo,
           teamStoreName,

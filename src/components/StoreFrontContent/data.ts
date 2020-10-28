@@ -18,6 +18,7 @@ export const getSingleTeamStore = gql`
       date: $date
       limit: $limit
       offset: $offset
+      isInfinite: true
     ) {
       id
       short_id
@@ -75,6 +76,7 @@ export const getSingleTeamStore = gql`
             collections
             isTopProduct
             weight
+            twoPieces: two_pieces
             genders {
               id
               name: gender

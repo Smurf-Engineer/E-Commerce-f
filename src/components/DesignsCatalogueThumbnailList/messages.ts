@@ -35,7 +35,7 @@ export default defineMessages({
   },
   items: {
     id: 'components.DesignsCatalogueThumbnailList.items',
-    defaultMessage: '{total, plural, one {1 item} other {{total} items}}'
+    defaultMessage: '{total, plural, one {1 item} other {{total}/{totalDesigns} items}}'
   },
   suggestedSave: {
     id: 'components.DesignsCatalogueThumbnailList.suggestedSave',

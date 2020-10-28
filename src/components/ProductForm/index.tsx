@@ -338,28 +338,28 @@ export class ProductForm extends React.Component<Props, {}> {
             <Spin size="large" />
           </Loader>
         ) : (
-          <MainBody>
-            <HeaderRow>
-              <ScreenTitle>
-                {formatMessage(
-                  productId ? messages.editProduct : messages.addNewProduct
-                )}
-              </ScreenTitle>
-              <Steps current={currentStep}>
-                {stepsArray.map((step, index) => (
-                  <Step key={index} title={step.title} />
-                ))}
-              </Steps>
-              {screenSteps[currentStep]}
-            </HeaderRow>
-            <Stepper
-              {...{ currentStep, validNext, customizable }}
-              changeStep={this.changeStep}
-              showMissingFields={this.showMissingFields}
-              handleSave={this.handleSave}
-            />
-          </MainBody>
-        )}
+            <MainBody>
+              <HeaderRow>
+                <ScreenTitle>
+                  {formatMessage(
+                    productId ? messages.editProduct : messages.addNewProduct
+                  )}
+                </ScreenTitle>
+                <Steps current={currentStep}>
+                  {stepsArray.map((step, index) => (
+                    <Step key={index} title={step.title} />
+                  ))}
+                </Steps>
+                {screenSteps[currentStep]}
+              </HeaderRow>
+              <Stepper
+                {...{ currentStep, validNext, customizable }}
+                changeStep={this.changeStep}
+                showMissingFields={this.showMissingFields}
+                handleSave={this.handleSave}
+              />
+            </MainBody>
+          )}
       </Container>
     )
   }
@@ -457,6 +457,7 @@ export class ProductForm extends React.Component<Props, {}> {
         description,
         obj,
         mtl,
+        predyedlabel,
         details,
         materials,
         genders,
@@ -470,18 +471,19 @@ export class ProductForm extends React.Component<Props, {}> {
         mpn,
         tags,
         modelSize,
-        active
+        active,
+        twoPieces
       } = product
       const specsDetails = details.join(', ')
       const materialsDetails = materials.join('-')
       const sportsProduct = sports
         ? Object.keys(sports).reduce((arr: any[], sportId: string) => {
-            if (sports[sportId]) {
-              arr.push({ id: sportId })
-            }
-            return arr
-            // tslint:disable-next-line: align
-          }, [])
+          if (sports[sportId]) {
+            arr.push({ id: sportId })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
         : []
       const productMaterialsDet = bannerMaterials.reduce(
         (arr: any[], banner: ProductFile) => {
@@ -495,39 +497,39 @@ export class ProductForm extends React.Component<Props, {}> {
       )
       const sizeRangeDet = sizeRange
         ? Object.keys(sizeRange).reduce((arr: any[], sizeId: string) => {
-            if (sizeRange[sizeId]) {
-              arr.push({ id: sizeId })
-            }
-            return arr
-            // tslint:disable-next-line: align
-          }, [])
+          if (sizeRange[sizeId]) {
+            arr.push({ id: sizeId })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
         : []
       const fitStylesDet = fitStyles
         ? Object.keys(fitStyles).reduce((arr: any[], fitId: string) => {
-            if (fitStyles[fitId]) {
-              arr.push({ id: fitId })
-            }
-            return arr
-            // tslint:disable-next-line: align
-          }, [])
+          if (fitStyles[fitId]) {
+            arr.push({ id: fitId })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
         : []
       const colorsDet = colors
         ? Object.keys(colors).reduce((arr: any[], colorId: string) => {
-            if (colors[colorId].selected) {
-              arr.push({ id: colorId })
-            }
-            return arr
-            // tslint:disable-next-line: align
-          }, [])
+          if (colors[colorId].selected) {
+            arr.push({ id: colorId })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
         : []
       const gendersDet = genders
         ? Object.keys(genders).reduce((arr: any[], genderId: string) => {
-            if (genders[genderId].selected) {
-              arr.push({ id: genderId })
-            }
-            return arr
-            // tslint:disable-next-line: align
-          }, [])
+          if (genders[genderId].selected) {
+            arr.push({ id: genderId })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
         : []
       const arrayType = designCenter ? genders : colors
       const picturesDet = Object.keys(arrayType).map((imageId: string) => ({
@@ -552,6 +554,7 @@ export class ProductForm extends React.Component<Props, {}> {
         custom_link: customLink,
         description,
         obj,
+        predyedlabel,
         mtl,
         details: specsDetails,
         materials: materialsDetails,
@@ -573,7 +576,8 @@ export class ProductForm extends React.Component<Props, {}> {
         fit_styles: fitStylesDet,
         size_range: sizeRangeDet,
         colors: colorsDet,
-        product_materials: productMaterialsDet
+        product_materials: productMaterialsDet,
+        two_pieces: twoPieces
       }
       setUploadingAction(true, formatMessage(messages.savingProduct))
       await upsertProductAction({
@@ -581,7 +585,7 @@ export class ProductForm extends React.Component<Props, {}> {
       })
       if (!onlySave) {
         if (code) {
-          history.push(`/publishing-tool?code=${code}`)
+          history.push(`/admin/publishing-tool?code=${code}`)
         }
       } else {
         history.push('/admin/products')

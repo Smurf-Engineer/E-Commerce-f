@@ -8,8 +8,9 @@ import Logout from './index'
 describe('<Logout />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const format = (message: string) => 'string'
     ReactDOM.render(
-      <Logout title={''} logout={() => {}} goTo={() => {}} />,
+      <Logout title={''} logout={() => {}} goTo={() => {}} formatMessage={format} />,
       div
     )
   })

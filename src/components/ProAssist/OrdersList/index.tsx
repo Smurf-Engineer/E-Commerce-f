@@ -103,6 +103,12 @@ const OrdersList = ({
               sort={orderBy === 'status' ? sort : 'none'}
               {...{ onSortClick }}
             />
+            <HeaderTable
+              id={'last_order'}
+              label={formatMessage(messages.lastOrder)}
+              sort={orderBy === 'last_order' ? sort : 'none'}
+              {...{ onSortClick }}
+            />
           </Row>
         )
       }}
@@ -110,7 +116,7 @@ const OrdersList = ({
   )
   const userItems = proAssist.map(
     (
-      { shortId, userId, firstName, lastName, date, status, url }: ProAssist,
+      { shortId, userId, firstName, lastName, date, status, url, lastOrder }: ProAssist,
       index: number
     ) => {
       return (
@@ -122,6 +128,7 @@ const OrdersList = ({
             firstName,
             lastName,
             date,
+            lastOrder,
             status,
             url,
             onRowClick

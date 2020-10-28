@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
-import { WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../theme/colors'
+import { WHITE_TRANSPARENT, GRAY_DARK, GRAY, WHITE } from '../../theme/colors'
 
 interface InputProps {
   inputhWidth?: string
@@ -88,7 +88,7 @@ export const StyledInputUnity = styled(Input)`
   border-radius: 0;
   border-left: 0;
   pointer-events: none;
-  background-color: #fff;
+  background-color: ${WHITE};
   width: 20%;
 `
 

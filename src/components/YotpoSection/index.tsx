@@ -37,6 +37,7 @@ interface Props {
   data: Data
   name: string
   dispatch: any
+  hideFeatured: boolean
   history: History
   currentCurrency: string
   moreTag?: string
@@ -47,6 +48,7 @@ const YotpoSection = ({
   data,
   moreTag,
   name,
+  hideFeatured = false,
   history,
   formatMessage,
   dispatch,
@@ -56,7 +58,7 @@ const YotpoSection = ({
   return (
     <Container>
       <YotpoReviews {...{ yotpoId, name }}>
-        {mediaFiles && !!mediaFiles.length && (
+        {mediaFiles && !!mediaFiles.length && !hideFeatured && (
           <div>
             <Separator>
               <FormattedMessage {...messages.features} values={{ name }} />
@@ -68,11 +70,11 @@ const YotpoSection = ({
                     <source src={image.url} type="video/mp4" />
                   </SlideVideo>
                 ) : (
-                  <ImageContainer>
-                    <SlideImage src={image.url} />
-                    <SlideImageMobile src={image.urlMobile} />
-                  </ImageContainer>
-                )}
+                    <ImageContainer>
+                      <SlideImage src={image.url} />
+                      <SlideImageMobile src={image.urlMobile} />
+                    </ImageContainer>
+                  )}
               </SlideImageContainer>
             ))}
           </div>

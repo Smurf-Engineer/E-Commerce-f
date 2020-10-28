@@ -82,6 +82,8 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
       obj,
       mtl,
       code,
+      predyedlabel,
+      branding,
       shortDescription,
       description,
       yotpoId,
@@ -210,234 +212,240 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
               <Spin size="large" />
             </Loader>
           ) : (
-            <DetailsContainer>
-              <HeaderRow>
-                <ScreenTitle>
-                  {name}
-                  <ScreenSubTitle>{mpn}</ScreenSubTitle>
-                </ScreenTitle>
-                {canEdit && (
-                  <div>
-                    <BlueButton onClick={this.handleOnClickEdit} size="large">
-                      <FormattedMessage {...messages.editProduct} />
-                    </BlueButton>
-                    {designCenter && (
-                      <Button onClick={this.handlePublishing} size="large">
-                        <FormattedMessage {...messages.openPublishingTool} />
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </HeaderRow>
-              <FormBody>
-                <Row>
-                  <RowField
-                    label={formatMessage(messages.productCode)}
-                    value={code}
-                  />
-                  <RowField
-                    label={formatMessage(messages.productDescription)}
-                    value={shortDescription}
-                  />
-                  <RowField
-                    label={formatMessage(messages.productModel)}
-                    value={yotpoId}
-                  />
-                </Row>
-                <Row>
-                  <RowField
-                    label={formatMessage(messages.categories)}
-                    value={categories}
-                  />
-                  <RowField
-                    label={formatMessage(messages.productCategories)}
-                    value={categoryName}
-                  />
-                  <RowField
-                    label={formatMessage(messages.relatedTags)}
-                    subLabel={
-                      <i>
-                        <FormattedMessage {...messages.youMayLike} />
-                      </i>
+              <DetailsContainer>
+                <HeaderRow>
+                  <ScreenTitle>
+                    {name}
+                    <ScreenSubTitle>{mpn}</ScreenSubTitle>
+                  </ScreenTitle>
+                  {canEdit && (
+                    <div>
+                      <BlueButton onClick={this.handleOnClickEdit} size="large">
+                        <FormattedMessage {...messages.editProduct} />
+                      </BlueButton>
+                      {designCenter && (
+                        <Button onClick={this.handlePublishing} size="large">
+                          <FormattedMessage {...messages.openPublishingTool} />
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                </HeaderRow>
+                <FormBody>
+                  <Row>
+                    <RowField
+                      label={formatMessage(messages.productCode)}
+                      value={code}
+                    />
+                    <RowField
+                      label={formatMessage(messages.productDescription)}
+                      value={shortDescription}
+                    />
+                    <RowField
+                      label={formatMessage(messages.productModel)}
+                      value={yotpoId}
+                    />
+                  </Row>
+                  <Row>
+                    <RowField
+                      label={formatMessage(messages.categories)}
+                      value={categories}
+                    />
+                    <RowField
+                      label={formatMessage(messages.productCategories)}
+                      value={categoryName}
+                    />
+                    <RowField
+                      label={formatMessage(messages.relatedTags)}
+                      subLabel={
+                        <i>
+                          <FormattedMessage {...messages.youMayLike} />
+                        </i>
+                      }
+                      value={relatedTags}
+                    />
+                  </Row>
+                  <Row>
+                    <RowField
+                      label={formatMessage(messages.searchTags)}
+                      capitalize={true}
+                      value={tags}
+                    />
+                    <RowField
+                      label={formatMessage(messages.onStock)}
+                      value={formatMessage(active ? messages.yes : messages.no)}
+                    />
+                    <RowField
+                      label={formatMessage(messages.designLab)}
+                      value={formatMessage(
+                        designCenter ? messages.yes : messages.no
+                      )}
+                    />
+                  </Row>
+                  <Row>
+                    <RowField
+                      label={formatMessage(messages.seasons)}
+                      marginRight={designCenter && branding ? '16px' : '8px'}
+                      value={season}
+                    />
+                    <RowField
+                      flex={designCenter && branding ? '1' : '2'}
+                      label={formatMessage(messages.gender)}
+                      value={genders}
+                    />
+                    {designCenter && branding &&
+                      <RowField
+                        label={formatMessage(messages.predyedLabel)}
+                        value={predyedlabel}
+                      />
                     }
-                    value={relatedTags}
-                  />
-                </Row>
-                <Row>
-                  <RowField
-                    label={formatMessage(messages.searchTags)}
-                    capitalize={true}
-                    value={tags}
-                  />
-                  <RowField
-                    label={formatMessage(messages.onStock)}
-                    value={formatMessage(active ? messages.yes : messages.no)}
-                  />
-                  <RowField
-                    label={formatMessage(messages.designLab)}
-                    value={formatMessage(
-                      designCenter ? messages.yes : messages.no
-                    )}
-                  />
-                </Row>
-                <Row>
-                  <RowField
-                    label={formatMessage(messages.seasons)}
-                    marginRight="8px"
-                    value={season}
-                  />
-                  <RowField
-                    flex="2"
-                    label={formatMessage(messages.gender)}
-                    value={genders}
-                  />
-                </Row>
-                <Separator>
-                  <FormattedMessage {...messages.productInformation} />
-                </Separator>
-                <Row>
-                  <RowField
-                    marginRight="8px"
-                    value={formatMessage(messages.productDescription)}
-                  />
-                  <RowField flex="2" label={description} />
-                </Row>
-                <Row>
-                  <RowField
-                    marginRight="8px"
-                    value={formatMessage(messages.specDetails)}
-                  />
-                  <RowField flex="2" label={details} />
-                </Row>
-                <Row>
-                  <RowField
-                    marginRight="8px"
-                    value={formatMessage(messages.materialInfo)}
-                  />
-                  <RowField flex="2" label={materials} />
-                </Row>
-                {!designCenter && customLink && (
+                  </Row>
+                  <Separator>
+                    <FormattedMessage {...messages.productInformation} />
+                  </Separator>
                   <Row>
                     <RowField
                       marginRight="8px"
-                      value={formatMessage(messages.customizeLink)}
+                      value={formatMessage(messages.productDescription)}
                     />
-                    <RowLink href={customLink} target="_blank">
-                      {customLink}
-                    </RowLink>
+                    <RowField flex="2" label={description} />
                   </Row>
-                )}
-                <Separator>
-                  <FormattedMessage {...messages.fitSizing} />
-                </Separator>
-                <Row>
-                  <RowField
-                    label={formatMessage(messages.fitStyles)}
-                    value={fitStyles}
-                  />
-                  <RowField
-                    flex="2"
-                    label={formatMessage(messages.productSizes)}
-                    value={sizeRange}
-                  />
-                </Row>
-                <Separator>
-                  <FormattedMessage {...messages.prices} />
-                </Separator>
-                <Row
-                  margin="0 20px"
-                  borderBottom="1px solid gray"
-                  paddingBottom="12px"
-                >
-                  <RowField
-                    textAlign="center"
-                    value={formatMessage(messages.currency)}
-                  />
-                  <RowField
-                    textAlign="center"
-                    value={formatMessage(messages.personal)}
-                  />
-                  <RowField
-                    textAlign="center"
-                    value={formatMessage(messages.firstAmount)}
-                  />
-                  <RowField
-                    textAlign="center"
-                    value={formatMessage(messages.secondAmount)}
-                  />
-                  <RowField
-                    textAlign="center"
-                    value={formatMessage(messages.thirdAmount)}
-                  />
-                  <RowField
-                    textAlign="center"
-                    value={formatMessage(messages.fourthAmount)}
-                  />
-                  <RowField
-                    textAlign="center"
-                    value={formatMessage(messages.fifthAmount)}
-                  />
-                </Row>
-                {currencies.map((currencyItem, index) => (
+                  <Row>
+                    <RowField
+                      marginRight="8px"
+                      value={formatMessage(messages.specDetails)}
+                    />
+                    <RowField flex="2" label={details} />
+                  </Row>
+                  <Row>
+                    <RowField
+                      marginRight="8px"
+                      value={formatMessage(messages.materialInfo)}
+                    />
+                    <RowField flex="2" label={materials} />
+                  </Row>
+                  {!designCenter && customLink && (
+                    <Row>
+                      <RowField
+                        marginRight="8px"
+                        value={formatMessage(messages.customizeLink)}
+                      />
+                      <RowLink href={customLink} target="_blank">
+                        {customLink}
+                      </RowLink>
+                    </Row>
+                  )}
+                  <Separator>
+                    <FormattedMessage {...messages.fitSizing} />
+                  </Separator>
+                  <Row>
+                    <RowField
+                      label={formatMessage(messages.fitStyles)}
+                      value={fitStyles}
+                    />
+                    <RowField
+                      flex="2"
+                      label={formatMessage(messages.productSizes)}
+                      value={sizeRange}
+                    />
+                  </Row>
+                  <Separator>
+                    <FormattedMessage {...messages.prices} />
+                  </Separator>
                   <Row
-                    key={index}
-                    margin="16px 20px"
-                    borderBottom="1px solid gainsboro"
+                    margin="0 20px"
+                    borderBottom="1px solid gray"
                     paddingBottom="12px"
                   >
-                    <RowField textAlign="center" label={currencyItem.label} />
-                    {currencyItem.amounts.map((amount, subindex) => (
-                      <RowField
-                        key={subindex}
-                        textAlign="center"
-                        label={amount ? `$${amount.price}` : ''}
-                      />
-                    ))}
+                    <RowField
+                      textAlign="center"
+                      value={formatMessage(messages.currency)}
+                    />
+                    <RowField
+                      textAlign="center"
+                      value={formatMessage(messages.personal)}
+                    />
+                    <RowField
+                      textAlign="center"
+                      value={formatMessage(messages.firstAmount)}
+                    />
+                    <RowField
+                      textAlign="center"
+                      value={formatMessage(messages.secondAmount)}
+                    />
+                    <RowField
+                      textAlign="center"
+                      value={formatMessage(messages.thirdAmount)}
+                    />
+                    <RowField
+                      textAlign="center"
+                      value={formatMessage(messages.fourthAmount)}
+                    />
+                    <RowField
+                      textAlign="center"
+                      value={formatMessage(messages.fifthAmount)}
+                    />
                   </Row>
-                ))}
-                <Separator>
-                  <FormattedMessage {...messages.productImages} />
-                </Separator>
-                {productImages &&
-                  productImages.map((picture: ProductImage, index: number) => (
-                    <ProductImageBox key={index} {...{ picture }} />
+                  {currencies.map((currencyItem, index) => (
+                    <Row
+                      key={index}
+                      margin="16px 20px"
+                      borderBottom="1px solid gainsboro"
+                      paddingBottom="12px"
+                    >
+                      <RowField textAlign="center" label={currencyItem.label} />
+                      {currencyItem.amounts.map((amount, subindex) => (
+                        <RowField
+                          key={subindex}
+                          textAlign="center"
+                          label={amount ? `$${amount.price}` : ''}
+                        />
+                      ))}
+                    </Row>
                   ))}
-                {designCenter && (
-                  <ModelSection>
-                    <Separator>
-                      <FormattedMessage {...messages.threeDModel} />
-                    </Separator>
-                    <Buttons>
-                      {!openedModel && obj && mtl && (
-                        <Button onClick={this.handleOpenModel} size="large">
-                          <FormattedMessage {...messages.openModel} />
-                        </Button>
-                      )}
-                      {canEdit && (
-                        <EditModel type="ghost" onClick={this.editModels}>
-                          <FormattedMessage {...messages.editModel} />
-                        </EditModel>
-                      )}
-                    </Buttons>
-                    {obj && mtl ? (
-                      <RenderBackground {...{ openedModel }}>
-                        {openedModel && (
-                          <Render3D
-                            customProduct={false}
-                            designId={0}
-                            isProduct={true}
-                            {...{ product }}
-                          />
+                  <Separator>
+                    <FormattedMessage {...messages.productImages} />
+                  </Separator>
+                  {productImages &&
+                    productImages.map((picture: ProductImage, index: number) => (
+                      <ProductImageBox key={index} {...{ picture }} />
+                    ))}
+                  {designCenter && (
+                    <ModelSection>
+                      <Separator>
+                        <FormattedMessage {...messages.threeDModel} />
+                      </Separator>
+                      <Buttons>
+                        {!openedModel && obj && mtl && (
+                          <Button onClick={this.handleOpenModel} size="large">
+                            <FormattedMessage {...messages.openModel} />
+                          </Button>
                         )}
-                      </RenderBackground>
-                    ) : (
-                      <FormattedMessage {...messages.modelNotFound} />
-                    )}
-                  </ModelSection>
-                )}
-              </FormBody>
-            </DetailsContainer>
-          )}
+                        {canEdit && (
+                          <EditModel type="ghost" onClick={this.editModels}>
+                            <FormattedMessage {...messages.editModel} />
+                          </EditModel>
+                        )}
+                      </Buttons>
+                      {obj && mtl ? (
+                        <RenderBackground {...{ openedModel }}>
+                          {openedModel && (
+                            <Render3D
+                              customProduct={false}
+                              designId={0}
+                              isProduct={true}
+                              {...{ product }}
+                            />
+                          )}
+                        </RenderBackground>
+                      ) : (
+                          <FormattedMessage {...messages.modelNotFound} />
+                        )}
+                    </ModelSection>
+                  )}
+                </FormBody>
+              </DetailsContainer>
+            )}
         </MainBody>
       </Container>
     )
@@ -491,7 +499,8 @@ const ProductDetailsAdminEnhance = compose(
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
       return {
-        variables: { id: queryParams.id }
+        variables: { id: queryParams.id },
+        fetchPolicy: 'network-only'
       }
     }
   })

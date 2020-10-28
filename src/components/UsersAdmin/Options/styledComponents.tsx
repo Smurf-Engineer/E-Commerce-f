@@ -3,9 +3,12 @@
  */
 import styled from 'styled-components'
 import Radio from 'antd/lib/radio'
-import { WHITE, GRAY_DARK, BLUE, GRAY, RED } from '../../../theme/colors'
+import { WHITE, GRAY_DARK, BLUE, GRAY, RED, WHITE_SMOKE } from '../../../theme/colors'
 import Switch from 'antd/lib/switch'
 import { AVENIR_MEDIUM } from '../../../theme/fonts'
+import Input from 'antd/lib/input/Input'
+import Icon from 'antd/lib/icon'
+import Button from 'antd/lib/button/button'
 const RadioButtonComponent = Radio.Button
 
 interface DivProps {
@@ -76,6 +79,12 @@ export const StatsValue = styled.div`
   text-transform: uppercase;
 `
 
+export const WarningIcon = styled(Icon)`
+  font-size: 18px;
+  color: ${RED};
+  margin-right: 8px;
+`
+
 export const StatsLabel = styled.div`
   margin-right: 98px;
   font-size: 12px;
@@ -94,8 +103,58 @@ export const EnableSection = styled.div`
   flex-flow: column;
   justify-content: flex-start;
   align-items: start;
+  margin-right: 98px;
+`
+
+export const EditButton = styled.div`
+  display: inline-block;
+  margin-left: 16px;
+  color: ${RED};
+  cursor: pointer;
 `
 
 export const StyledSwitch = styled(Switch)`
   margin-top: 8px;
+`
+
+export const FormContainer = styled.div`
+  padding: 0 77px;
+
+  @media (min-width: 320px) {
+    padding: 0;
+  }
+`
+
+export const StyledButton = styled(Button)`
+  border-radius: 2px;
+  height: 33px;
+  width: 74px;
+  margin-left: 16px;
+`
+
+export const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+  border-radius: 0px;
+`
+
+interface ButtonWrapperProps {
+  disabled: boolean
+}
+
+export const ButtonWrapper = styled.div`
+  margin-top: 10px;
+  text-align: right;
+  align-self: right;
+  .ant-btn-primary {
+    background-color: ${({ disabled }: ButtonWrapperProps) =>
+    disabled ? WHITE_SMOKE : BLUE};
+    border-color: ${({ disabled }: ButtonWrapperProps) =>
+    disabled ? WHITE_SMOKE : BLUE};
+  }
+  .ant-btn-primary:hover {
+    background-color: ${({ disabled }: ButtonWrapperProps) =>
+    disabled ? WHITE_SMOKE : BLUE};
+    border-color: ${({ disabled }: ButtonWrapperProps) =>
+    disabled ? WHITE_SMOKE : BLUE};
+  }
 `
