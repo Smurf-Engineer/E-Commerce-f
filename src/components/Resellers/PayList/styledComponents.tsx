@@ -2,7 +2,7 @@
  * Styled Components - Created by Jesús Apodaca on 23/03/20.
  */
 import styled from 'styled-components'
-import { GRAY_LIGHT, GRAY_DARK, RED, BLUE, WHITE, WHITE_TRANSPARENT } from '../../../theme/colors'
+import { GRAY_LIGHT, GRAY_DARK, RED, BLUE, WHITE, WHITE_TRANSPARENT, GRAY_STRONG } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import Search from 'antd/lib/input/Search'
 import Tooltip from 'antd/lib/tooltip'
@@ -50,7 +50,7 @@ export const RepDiv = styled.tr`
 `
 
 export const Header = styled.th`
-  border-bottom: 1px solid #818181;
+  border-bottom: 1px solid ${GRAY_STRONG};
   text-align: left;
   padding: 8px 0;
   color: ${GRAY_DARK};
