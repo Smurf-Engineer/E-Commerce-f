@@ -160,6 +160,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   <ButtonsContainer>
                     {!previewOnly ? (
                       <div>
+                         <ButtonContainer>
+                          <CopyButton onClick={this.handleMakeCopy(shortId)}>
+                            {formatMessage(messages.makeCopy)}
+                          </CopyButton>
+                        </ButtonContainer>
                         {addToCartButton}
                         <ButtonContainer maxMargin={true}>
                           <ActionButton
