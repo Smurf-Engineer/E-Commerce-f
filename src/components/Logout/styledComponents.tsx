@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import icon from 'antd/lib/icon'
 import MenuAntd from 'antd/lib/menu'
 import Popover from 'antd/lib/popover'
-import { RED, GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST } from '../../theme/colors'
+import { RED, GRAY_DARK, GRAY_LIGHTEST } from '../../theme/colors'
 
 const { SubMenu } = MenuAntd
 
@@ -17,7 +17,6 @@ interface DivProps {
 export const Container = styled.div`
   align-items: center;
   display: flex;
-  border-bottom: 1px solid ${GRAY_LIGHT};
 `
 
 export const Text = styled.div`
@@ -45,7 +44,7 @@ export const PopoverStyled = styled(Popover)``
 
 export const Item = styled(MenuAntd.Item)`
   width: 100%;
-  padding: ${({ withBorder }: DivProps) => withBorder ? `0 6px !important` : '0 18px !important'};
+  padding: ${({ withBorder, bold }: DivProps) => withBorder || bold ? `0 6px !important` : '0 18px !important'};
   font-weight: ${({ bold }: DivProps) => bold ? `bold` : 'normal'};
   text-transform: ${({ withBorder, bold }: DivProps) => withBorder || bold ? `uppercase` : 'capitalize'};
   border-bottom: ${({ withBorder }: DivProps) => withBorder ? `1px solid ${GRAY_LIGHTEST}` : 'none'};
