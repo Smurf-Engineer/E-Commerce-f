@@ -3,12 +3,14 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Spin from 'antd/lib/spin'
 import {
   BLACK,
   WHITE,
   GRAY_LIGHTEST,
   GRAY_LIGHT,
-  RED
+  RED,
+  GRAY_SKELETON
 } from '../../theme/colors'
 
 export const Container = styled.div`
@@ -18,6 +20,41 @@ export const Container = styled.div`
   padding-bottom: 50px;
   flex-direction: column;
   background: ${WHITE};
+`
+
+export const StyledSpin = styled(Spin)`
+  position: fixed !important;
+  width: 100%;
+`
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  align-items: center;
+  padding-top: 48px;
+  justify-content: center;
+  padding-bottom: 50px;
+  display: flex;
+  align-items: center;
+`
+
+export const ImageSkeleton = styled.div`
+  width: 380px;
+  min-height: 608px;
+  margin-top: 24px;
+  opacity: 0.6;
+  margin-bottom: 18px;
+  border: 1px solid ${GRAY_LIGHT};
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  background: ${GRAY_SKELETON};
+  &:last-child {
+    margin-left: 30px;
+  }
+  @media (min-width: 320px) and (max-width: 748px) {
+    &:last-child {
+      margin-left: 0px;
+      margin-top: 32px;
+    }
+  }
 `
 
 export const Title = styled.p`

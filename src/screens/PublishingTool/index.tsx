@@ -45,7 +45,8 @@ import {
   TopMenu,
   Layout,
   View,
-  Tabs
+  Tabs,
+  LoadingContainer
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import backIcon from '../../assets/rightarrow.svg'
@@ -68,6 +69,7 @@ import {
 import { SETTINGS_TAB, Sections } from './constants'
 import { restoreUserSession } from '../../components/MainLayout/api'
 import { CREATE_DESIGNS, ADMIN_ROUTE } from '../../components/AdminLayout/constants'
+import Spin from 'antd/lib/spin'
 
 const { confirm } = Modal
 
@@ -578,6 +580,9 @@ export class PublishingTool extends React.Component<Props, {}> {
       bibColor
     } = this.props
     const { formatMessage } = intl
+    if (!user) {
+      return <LoadingContainer><Spin /></LoadingContainer>
+    }
     const { permissions } = user
     const access = permissions ? permissions[CREATE_DESIGNS] : {}
     if (!access.view) {

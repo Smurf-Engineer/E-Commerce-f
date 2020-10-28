@@ -67,7 +67,6 @@ export const InputDiv = styled.div`
 `
 
 export const OrderPoint = styled(Input)`
-  max-width: 188px;
   width: 100%;
   height: 40px;
   margin-right: 28px;
@@ -75,13 +74,24 @@ export const OrderPoint = styled(Input)`
 `
 
 export const StatusFilter = styled(Select)`
-  max-width: 188px;
   width: 100%;
-  margin-right: 28px;
   .ant-select-selection--single {
     padding-top: 4px;
     height: 40px;
     font-weight: normal;
     border-radius: 0;
   }
+  `
+
+export const HeaderInput = styled.div`
+  max-width: 188px;
+  width: 100%;
+  margin-right: 28px;
+`
+
+export const InputTitle = styled.div`
+  font-size: 12px;
+  font-weight: normal;
+  margin-top: -20px;
+  margin-bottom: 6px;
 `

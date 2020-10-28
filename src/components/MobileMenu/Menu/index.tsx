@@ -6,16 +6,27 @@ import { compose, withApollo } from 'react-apollo'
 import queryString from 'query-string'
 import MenuAntd from 'antd/lib/menu'
 import Spin from 'antd/lib/spin'
-import { Container, Bottom, menuStyle, SeeAll } from './styledComponents'
+import {
+  logoutAction
+} from '../../MainLayout/actions'
+import { Container, Bottom, menuStyle, BottomDiv, Item, StyledSubMenu, containerStyle } from './styledComponents'
 import messages from './messages'
-
-const { SubMenu } = MenuAntd
+import messagesMenu from '../../../screens/Account/messages'
+import { menuOptions, AFFILIATES, RESELLER } from './constants'
+import { setCurrentScreenAction } from '../../../screens/Account/actions'
+import { connect } from 'react-redux'
+import SwipeableViews from 'react-swipeable-views'
 
 interface Props {
   client: any
   data?: any
   history: any
+  resellerEnabled?: boolean
+  affiliateEnabled?: boolean
+  openMenuAccount: boolean
   hideMenu: () => void
+  logoutAction: () => void
+  setCurrentScreen: (screen: string) => void
   loginButton: React.ReactNode
   menuOpen: boolean
   formatMessage: (messageDescriptor: any) => string
@@ -44,6 +55,8 @@ class Menu extends React.PureComponent<Props, {}> {
     key
   }: any) => {
     const {
+      openMenuAccount,
+      setCurrentScreen,
       history: {
         push,
         replace,
@@ -51,6 +64,13 @@ class Menu extends React.PureComponent<Props, {}> {
       },
       hideMenu
     } = this.props
+
+    if (openMenuAccount) {
+      hideMenu()
+      push(`/account?option=${key}`)
+      setCurrentScreen(key)
+      return
+    }
 
     const { sportSelected } = this.state
 
@@ -83,6 +103,12 @@ class Menu extends React.PureComponent<Props, {}> {
     push(route)
   }
 
+  logout = () => {
+    const { logoutAction: logout } = this.props
+    logout()
+    window.location.replace('/')
+  }
+
   onOpenChange = (openKeys: string[]) => {
     if (openKeys[openKeys.length - 1].substring(0, 4) === 'menu') {
       const newOpenKeys = ['']
@@ -102,6 +128,9 @@ class Menu extends React.PureComponent<Props, {}> {
     const {
       data: { loading, error, sports },
       loginButton,
+      openMenuAccount,
+      affiliateEnabled,
+      resellerEnabled,
       formatMessage
     } = this.props
 
@@ -117,50 +146,98 @@ class Menu extends React.PureComponent<Props, {}> {
       return <div>{formatMessage(messages.error)}</div>
     }
 
+    const menuAccount = menuOptions.map(({ title, options: submenus }) =>
+      submenus.length ?
+      (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
+      || (title !== AFFILIATES && title !== RESELLER)) &&
+        <StyledSubMenu
+          key={title}
+          title={formatMessage(messagesMenu[title])}
+        >
+          {submenus.map((label) => (
+            <Item key={label}>
+              {formatMessage(messagesMenu[label])}
+            </Item>
+          ))}
+        </StyledSubMenu>
+        : (
+          <Item withBorder={true} key={title}>
+            {formatMessage(messagesMenu[title])}
+          </Item>
+        )
+    )
+
     const optionsSports = sports.map(({ name, categories }, index) => {
       // TODO: Check this out.
       // this.getCategories(id)
       return (
-        <SubMenu
+        <StyledSubMenu
           key={`menu-${name}-${index}`}
           onClick={this.handleOpenSport(name)}
           title={<span>{name}</span>}
         >
           {categories.map(({ name: categoryName }: any) => (
-            <MenuAntd.Item
+            <Item
               key={`sport=${name}&category=${categoryName.replace(' & ', ' ')}`}
             >
               {categoryName}
-            </MenuAntd.Item>
+            </Item>
           ))}
-        </SubMenu>
+        </StyledSubMenu>
       )
     })
 
-    const options = [...optionsSports]
-
     return (
       <Container>
-        <MenuAntd
-          mode="inline"
-          onSelect={this.handleClick}
-          defaultSelectedKeys={['']}
-          defaultOpenKeys={['']}
-          openKeys={this.state.openKeys}
-          onOpenChange={this.onOpenChange}
-          style={menuStyle}
-        >
-          {options}
-        </MenuAntd>
-        <SeeAll onClick={this.handleOnSeeAll}>
-          {formatMessage(messages.seeAll)}
-        </SeeAll>
         <Bottom>{loginButton}</Bottom>
+        <SwipeableViews
+          {... {containerStyle }}
+          index={openMenuAccount ? 1 : 0}
+          disabled={true}
+          animateHeight={true}
+        >
+          <MenuAntd
+            mode="inline"
+            onSelect={this.handleClick}
+            defaultSelectedKeys={['']}
+            defaultOpenKeys={['']}
+            openKeys={this.state.openKeys}
+            onOpenChange={this.onOpenChange}
+            style={menuStyle}
+          >
+            {optionsSports}
+          </MenuAntd>
+          <MenuAntd
+            mode="inline"
+            onSelect={this.handleClick}
+            defaultSelectedKeys={['']}
+            defaultOpenKeys={['']}
+            openKeys={this.state.openKeys}
+            onOpenChange={this.onOpenChange}
+            style={menuStyle}
+          >
+            {menuAccount}
+          </MenuAntd>
+        </SwipeableViews>
+        {openMenuAccount ?
+          <BottomDiv onClick={this.logout}>
+            {formatMessage(messages.logout)}
+          </BottomDiv> :
+          <BottomDiv onClick={this.handleOnSeeAll}>
+            {formatMessage(messages.seeAll)}
+          </BottomDiv>
+        }
       </Container>
     )
   }
 }
 
-const MenuEnhance = compose(withApollo)(Menu)
+const MenuEnhance = compose(
+  withApollo,
+  connect(null, {
+    setCurrentScreen: setCurrentScreenAction,
+    logoutAction
+  })
+)(Menu)
 
 export default MenuEnhance

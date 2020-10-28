@@ -204,6 +204,7 @@ class MainLayout extends React.Component<Props, {}> {
       currentRegion,
       currentLanguage,
       currentCurrency,
+      user,
       intl,
       hideTopHeader,
       hideBottomHeader,
@@ -270,6 +271,7 @@ class MainLayout extends React.Component<Props, {}> {
               buyNowHeader,
               setAccountScreen
             }}
+            loggedIn={!!user}
             saveAndBuy={saveAndBuyAction}
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}

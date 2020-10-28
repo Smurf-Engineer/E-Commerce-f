@@ -55,7 +55,7 @@ import {
 import Modal from 'antd/lib/modal/Modal'
 import Checkbox from 'antd/lib/checkbox'
 import closeIcon from '../../assets/cancel-button.svg'
-import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import { getShoppingCartData, getPriceRangeByItem, getItemQuantity } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
 
@@ -131,6 +131,16 @@ interface Props extends RouteComponentProps<any> {
   showReviewDesignModalAction: (open: boolean) => void
   openFitInfoAction: (open: boolean, selectedIndex?: number) => void
   highlightRequiredFields: () => void
+  setTopSizeItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+  setBottomSizeItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -315,6 +325,24 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setSizeItemDetailAction(index, detailIndex, size)
   }
 
+  handleSetTopDetailSize = (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => {
+    const { setTopSizeItemDetailAction } = this.props
+    setTopSizeItemDetailAction(index, detailIndex, size)
+  }
+
+  handleSetBottomDetailSize = (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => {
+    const { setBottomSizeItemDetailAction } = this.props
+    setBottomSizeItemDetailAction(index, detailIndex, size)
+  }
+
   handleSetDetailFit = (
     index: number,
     detailIndex: number,
@@ -340,11 +368,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   isAllSetInProduct = (cartItem: CartItems) => {
     const {
       itemDetails,
-      product: { genders, fitStyles, sizeRange }
+      product: { genders, fitStyles, sizeRange, twoPieces }
     } = cartItem
     const checkGender = genders.length && genders[0].id
     const checkFit = fitStyles.length && fitStyles[0].id
     const checkSize = sizeRange.length && sizeRange[0].id
+
     for (const details of itemDetails) {
       if (checkGender && !has(details, 'gender')) {
         return false
@@ -352,7 +381,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       if (checkFit && !has(details, 'fit')) {
         return false
       }
-      if (checkSize && !has(details, 'size')) {
+      if (!twoPieces && checkSize && !has(details, 'size')) {
+        return false
+      }
+      if (twoPieces && checkSize && !has(details, 'bottomSize')) {
+        return false
+      }
+      if (twoPieces && checkSize && !has(details, 'topSize')) {
         return false
       }
     }
@@ -384,9 +419,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const {
       total,
       totalWithoutDiscount,
-      priceRangeToApply,
       nameOfFirstProduct,
-      numberOfProducts
+      numberOfProducts,
+      moreThanOneItem
     } = shoppingCartData
 
     let symbol = '$'
@@ -408,9 +443,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       const currencyPrices = filter(productPriceRanges, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
-
       symbol = currencyPrices[0].shortName
-      const teamStoreRange = cartItem.teamStoreId && cartItem.isFixed ? 0 : 1
+      const itemRange = getItemQuantity(cartItem) === 1 && moreThanOneItem ? 1 : getPriceRangeByItem(cartItem)
+      const priceRangeToApply = currencyPrices[cartItem.isFixed ? 0 : itemRange]
+      // const teamStoreRange = cartItem.teamStoreId && cartItem.isFixed ? 0 : 1
       return (
         <CartItem
           currentCurrency={currentCurrency || config.defaultCurrency}
@@ -426,11 +462,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
               : cartItem.product.shortDescription
           }
-          price={
-            currencyPrices[
-              cartItem.teamStoreId ? teamStoreRange : priceRangeToApply
-            ]
-          }
+          price={priceRangeToApply}
           image={
             cartItem.designId
               ? cartItem.designImage || ''
@@ -449,6 +481,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailColor={this.handleSetDetailColor}
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
+          setTopDetailSize={this.handleSetTopDetailSize}
+          setBottomDetailSize={this.handleSetBottomDetailSize}
           removeItem={this.handleRemoveItem}
           disable={cartItem.fixedCart}
           {...{ history, openFitInfoAction, openFitInfo, highlightFields }}
@@ -488,29 +522,29 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               </EmptyItems>
             </EmptyContainer>
           ) : (
-            <Container>
-              <SideBar>
-                <Ordersummary
-                  subtotal={total}
-                  currencySymbol={symbol}
-                  youSaved={totalWithoutDiscount - total}
-                  {...{ formatMessage, totalWithoutDiscount }}
-                />
-                <ButtonWrapper disabled={!activeCheckout}>
-                  <CheckoutButton
-                    disabledButton={!activeCheckout}
-                    type="primary"
-                    onClick={onCheckoutClick}
-                  >
-                    <FormattedMessage {...messages.checkout} />
-                  </CheckoutButton>
-                </ButtonWrapper>
-              </SideBar>
-              <Content>
-                <CartList>{renderList}</CartList>
-              </Content>
-            </Container>
-          )}
+              <Container>
+                <SideBar>
+                  <Ordersummary
+                    subtotal={total}
+                    currencySymbol={symbol}
+                    youSaved={totalWithoutDiscount - total}
+                    {...{ formatMessage, totalWithoutDiscount }}
+                  />
+                  <ButtonWrapper disabled={!activeCheckout}>
+                    <CheckoutButton
+                      disabledButton={!activeCheckout}
+                      type="primary"
+                      onClick={onCheckoutClick}
+                    >
+                      <FormattedMessage {...messages.checkout} />
+                    </CheckoutButton>
+                  </ButtonWrapper>
+                </SideBar>
+                <Content>
+                  <CartList>{renderList}</CartList>
+                </Content>
+              </Container>
+            )}
           <Modal
             visible={showDeleteLastItemModal}
             title={

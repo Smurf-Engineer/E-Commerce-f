@@ -22,9 +22,9 @@ import withError from '../../../WithError'
 import withLoading from '../../../WithLoading'
 import { getAffiliatePaymentsQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
-import { NOTE_FORMAT } from '../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../../utils/utilsFiles'
+import { DATE_FORMAT } from '../../../../constants'
 
 const LIST_LIMIT = 10
 
@@ -68,7 +68,7 @@ const PaymentsList = ({
       return (
         <ItemContainer id={index} onClick={openReceipt(receipt)} key={index}>
           <Cell>{id}</Cell>
-          <Cell>{createdAt ? moment(createdAt).format(NOTE_FORMAT) : ''}</Cell>
+          <Cell>{createdAt ? moment(createdAt).format(DATE_FORMAT) : ''}</Cell>
           <Cell>{status}</Cell>
           <Cell>{`$${amount.toFixed(2)}`}</Cell>
           <Cell>

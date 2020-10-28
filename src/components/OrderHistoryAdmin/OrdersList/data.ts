@@ -78,3 +78,16 @@ export const updateStatusMutation = graphql(
     name: 'updateStatus'
   }
 )
+
+export const sendOrderToNetsuite = graphql(
+  gql`
+  mutation sendOrderToNetsuite($orderId: String!) {
+    sendOrderToNetsuite(orderId: $orderId) {
+      message
+    }
+  }
+  `,
+  {
+    name: 'sendOrder'
+  }
+)

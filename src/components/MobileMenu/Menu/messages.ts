@@ -36,5 +36,9 @@ export default defineMessages({
   error: {
     id: 'components.menuBar.error',
     defaultMessage: 'Something went wrong'
+  },
+  logout: {
+    id: 'components.menuBar.logout',
+    defaultMessage: 'LOG OUT'
   }
 })

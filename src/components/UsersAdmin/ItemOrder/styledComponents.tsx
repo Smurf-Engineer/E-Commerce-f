@@ -43,6 +43,12 @@ export const Cell = styled.td`
   }
 `
 
+export const WarningIcon = styled(Icon)`
+  font-size: 18px;
+  color: ${RED};
+  margin-right: 8px;
+`
+
 export const Mail = styled(Tooltip)`
   width: 128px;
   display: block;

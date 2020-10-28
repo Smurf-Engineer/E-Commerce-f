@@ -16,6 +16,7 @@ export const getProductQuery = gql`
       bumpMap: bump_map
       flatlock
       branding
+      predyedlabel
       binding {
         white
         black

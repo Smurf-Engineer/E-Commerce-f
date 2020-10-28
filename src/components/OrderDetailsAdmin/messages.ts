@@ -100,5 +100,9 @@ export default defineMessages({
   email: {
     id: 'components.OrderDetails.email',
     defaultMessage: 'Email'
+  },
+  user: {
+    id: 'components.OrderDetails.user',
+    defaultMessage: 'User'
   }
 })

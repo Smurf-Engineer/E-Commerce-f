@@ -24,6 +24,8 @@ const modalData = {
   productCode: null,
   gender: null,
   size: null,
+  topSize: null,
+  bottomSize: null,
   fitStyle: null,
   color: null,
   pocketZipper: null,

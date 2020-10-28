@@ -12,7 +12,9 @@ import {
   SET_SHOW_DETAILS,
   SET_SHOW_SPECS,
   RESET_DATA,
-  SET_LOADING_ACTION
+  SET_LOADING_ACTION,
+  SET_TOP_SELECTED_SIZE,
+  SET_BOTTOM_SELECTED_SIZE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -25,7 +27,9 @@ export const initialState = fromJS({
   openFitInfo: false,
   showDetails: false,
   showSpecs: false,
-  showFitsModal: false
+  showFitsModal: false,
+  selectedTopSize: {},
+  selectedBottomSize: {},
 })
 
 const customProductDetailReducer: Reducer<any> = (
@@ -39,6 +43,10 @@ const customProductDetailReducer: Reducer<any> = (
       return state.set('selectedGender', action.selected)
     case SET_SELECTED_SIZE:
       return state.set('selectedSize', action.selected)
+    case SET_TOP_SELECTED_SIZE:
+      return state.set('selectedTopSize', action.selected)
+    case SET_BOTTOM_SELECTED_SIZE:
+      return state.set('selectedBottomSize', action.selected)
     case SET_SELECTED_FIT:
       return state.set('selectedFit', action.selected)
     case SET_FITS_MODAL:

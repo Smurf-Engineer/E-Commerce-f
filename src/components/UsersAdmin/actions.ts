@@ -15,8 +15,11 @@ import {
   SET_LOADING,
   CHANGE_NOTE,
   SET_SEARCH,
+  CLOSE_INTERNAL,
+  OPEN_INTERNAL,
   SET_SEARCH_MANAGER,
-  SET_AFFILIATE_PAGE
+  SET_AFFILIATE_PAGE,
+  CHANGE_INTERNAL
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -34,6 +37,20 @@ export const setCurrentPageAction = (page: number): AnyAction => ({
 
 export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
+})
+
+export const onCloseInternal = (): AnyAction => ({
+  type: CLOSE_INTERNAL
+})
+
+export const openInternal = (id: string): AnyAction => ({
+  type: OPEN_INTERNAL,
+  id
+})
+
+export const handleOnInternalChange = (value: string): AnyAction => ({
+  type: CHANGE_INTERNAL,
+  value
 })
 
 export const setSearchTextAction = (searchText: string) => ({

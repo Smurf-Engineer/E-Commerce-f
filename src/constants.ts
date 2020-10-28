@@ -26,10 +26,14 @@ export const AMBIENT_LIGHT_INTENSITY = 0.2
 export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
 export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
 
+/* Date formats */
+export const DATE_FORMAT = 'MM/DD/YYYY'
+
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'
 export const ACCESSORY_BLACK = 'black'
 export const PREDYED_TRANSPARENT = 'white'
+export const PREDYED_DEFAULT = 'black'
 
 /* Routes  */
 export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
@@ -57,7 +61,7 @@ export const ERROR_STATUS = 'Error'
 export const PENDING_APPROVAL = 'Pending Approval'
 export const PURGED = 'Purged'
 export const SHIPPED = 'Shipped'
-export const PARTIALLY_SHIPPED = 'Partially-shipped'
+export const PARTIALLY_SHIPPED = 'Shipped / Partially Shipped'
 export const PREORDER = 'Pre-Order'
 export const CANCELLED = 'Cancelled'
 export const ERROR = 'Error'
@@ -92,6 +96,7 @@ export const PENDING = `Pending approval`
 export const APPROVED = 'Approved'
 export const REJECTED = 'Rejected'
 export const RETRY = 'Retry'
+export const PAUSED = 'Paused'
 
 // Affiliate payment status
 export const PENDING_PAY = 'Pending'

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
+import { BLACK, RED, GRAY_DARK } from '../../theme/colors'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -134,9 +135,16 @@ interface InfoProps {
 }
 
 export const Info = styled.div`
-  color: ${({ tracking }: InfoProps) => (tracking ? '#e61737' : '#5f6062')};
+  color: ${({ tracking }: InfoProps) => (tracking ? RED : GRAY_DARK)};
   height: 22px;
   margin-bottom: 12px;
+  &.link {
+    text-decoration: underline;
+    &:hover {
+      color: ${BLACK};
+      cursor: pointer;
+    }
+  }
 `
 export const OrderSummaryContainer = styled.div`
   width: 25%;

@@ -45,6 +45,8 @@ export const updateProductInternal = graphql(
         internalId: internal_id
         gender
         size
+        topSize: top_size
+        bottomSize: bottom_size
         fitStyle: fit_style
         color
         pocketZipper: pocket_zipper
@@ -71,6 +73,8 @@ export const addProductInternal = graphql(
         internalId: internal_id
         gender
         size
+        topSize: top_size
+        bottomSize: bottom_size
         fitStyle: fit_style
         color
         pocketZipper: pocket_zipper

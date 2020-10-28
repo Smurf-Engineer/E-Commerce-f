@@ -11,7 +11,9 @@ import {
   CheckBox,
   Label,
   ColorIcon,
-  InputDiv
+  InputDiv,
+  SwitchInput,
+  InlineLabel
 } from './styledComponents'
 import {
   Product,
@@ -37,13 +39,26 @@ export class SecondStep extends React.Component<Props, {}> {
       sizeRange: sizesSelected,
       fitStyles: fitStylesProduct,
       colors: productColors,
-      designCenter
+      designCenter,
+      twoPieces
     } = product
     return (
       <Container>
         <Separator>
           <FormattedMessage {...messages.title} />
         </Separator>
+        <RowInput>
+          <InputDiv flex={1} isFlex={true} flexFlow="row">
+            <InlineLabel>
+              <SwitchInput
+                checked={twoPieces}
+                onChange={this.handleSwitchTwoPieces}
+              />
+              <FormattedMessage {...messages.twoPieces} />
+            </InlineLabel>
+          </InputDiv>
+          <InputDiv flex={1} />
+        </RowInput>
         <RowInput>
           <InputDiv flex={2}>
             <Label>
@@ -124,6 +139,10 @@ export class SecondStep extends React.Component<Props, {}> {
   }: React.ChangeEvent<HTMLInputElement>) => {
     const { setColors } = this.props
     setColors(id, checked)
+  }
+  handleSwitchTwoPieces = (value: boolean) => {
+    const { setValue } = this.props
+    setValue('twoPieces', value)
   }
 }
 

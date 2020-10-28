@@ -76,5 +76,13 @@ export default defineMessages({
   estimatedDate: {
     id: 'components.OrdersList.estimatedDate',
     defaultMessage: 'Est. Delivery Date'
+  },
+  orderSent: {
+    id: 'components.OrdersList.orderSent',
+    defaultMessage: 'Order sent!'
+  },
+  errorCreatingOrder: {
+    id: 'components.OrdersList.errorCreatingOrder',
+    defaultMessage: 'Error creating order on netsuite'
   }
 })
