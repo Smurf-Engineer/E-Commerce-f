@@ -89,14 +89,10 @@ export class PayList extends React.Component<Props, {}> {
 
   checkAvailable = (paypalAccount: string, status: string, netsuiteStatus: string, orderStatus: string) => {
     const { isAccountant, overrideStatus, canEdit } = this.props
-    if (
-      (
-        (status === TO_PAY && isAccountant) ||
-        (!isAccountant && status === PENDING_PAY &&
+    if (((status === TO_PAY && isAccountant) ||
+         (!isAccountant && status === PENDING_PAY && 
           ((netsuiteStatus === SHIPPED || netsuiteStatus === PARTIALLY_SHIPPED) || overrideStatus)
-        )
-      ) &&
-      !!paypalAccount && canEdit && orderStatus !== CANCELLED
+         )) && !!paypalAccount && canEdit && orderStatus !== CANCELLED
     ) {
       return true
     }
