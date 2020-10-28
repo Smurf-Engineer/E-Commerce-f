@@ -24,5 +24,13 @@ export default defineMessages({
   show: {
     id: 'components.Affiliates.show',
     defaultMessage: 'Show'
+  },
+  comissionStatus: {
+    id: 'components.Affiliates.comissionStatus',
+    defaultMessage: 'Commission Status'
+  },
+  orderPoint: {
+    id: 'components.Affiliates.orderPoint',
+    defaultMessage: 'Payout Currency'
   }
 })
