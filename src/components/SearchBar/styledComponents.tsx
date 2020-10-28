@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
-import { BLACK, GRAY, GRAY_LIGHTEST, WHITE } from '../../theme/colors'
+import { BLACK, GRAY, GRAY_DARK, GRAY_LIGHTEST, WHITE } from '../../theme/colors'
 
 const Search = Input.Search
 
@@ -34,9 +34,12 @@ export const Container = styled.div`
   }
 
   .ant-btn-primary {
-    color: grey;
+    color: ${WHITE};
+    border: none;
+    box-shadow: none;
+    border-radius: 5px !important;
     background-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? WHITE : GRAY_LIGHTEST};
+      focused || !onHeader ? WHITE : GRAY_DARK};
     border-color: ${({ onHeader, focused }: StyledProps) =>
       focused || !onHeader ? WHITE : GRAY_LIGHTEST};
   }

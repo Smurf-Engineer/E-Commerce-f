@@ -35,3 +35,14 @@ export const regionsQuery = gql`
     }
   }
 `
+
+export const profileDataQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        email
+        affiliateEnabled: affiliate_enabled
+      }
+    }
+  }
+`

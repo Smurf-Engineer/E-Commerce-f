@@ -225,14 +225,12 @@ class Payment extends React.PureComponent<Props, {}> {
           >
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          {!isFixedTeamstore && (
-            <MethodButton
-              selected={paymentMethod === PAYPAL}
-              onClick={this.handlePaypalClick}
-            >
-              {formatMessage(messages.methodPaypal)}
-            </MethodButton>
-          )}
+          <MethodButton
+            selected={paymentMethod === PAYPAL}
+            onClick={this.handlePaypalClick}
+          >
+            {formatMessage(messages.methodPaypal)}
+          </MethodButton>
         </ContainerMethods>
 
         {paymentMethod === CREDITCARD && (
