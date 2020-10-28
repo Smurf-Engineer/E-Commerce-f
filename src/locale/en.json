@@ -666,7 +666,7 @@
   "screens.WarrantyProgram.required": "This field is required",
   "screens.WarrantyProgram.selectFile": " Select File",
   "screens.JerseyComparison.title": "WHICH JERSEY SUITS YOU?",
-  "screens.JerseyComparison.headerMessage": "Here at JAKROO, you can select from 3 versions of our short-sleeve jerseys to best match your performance requirements.",
+  "screens.JerseyComparison.headerMessage": "Here at JAKROO, you can select from {quantity} versions of our short-sleeve jerseys to best match your performance requirements.",
   "screens.JerseyComparison.details": "DETAILS",
   "screens.JerseyComparison.intentedUse": "INTENDED USE",
   "screens.JerseyComparison.weather": "WEATHER",
