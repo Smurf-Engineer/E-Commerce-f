@@ -11,10 +11,13 @@ import {
   DesignsCardsContainer,
   Item,
   List,
-  BannerBack
+  BannerBack,
+  BannerDesign
 } from './styledComponents'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
-import DesignCenterImg from '../../assets/DesignLAB.png'
+import DesignCenterImg from '../../assets/DesignLaB.png'
+import DesignCenterBanner from '../../assets/design_lab.png'
+import UnfoldList from '../UnfoldList'
 import CustomModal from '../Common/JakrooModal'
 import { Message } from '../../types/common'
 
@@ -58,12 +61,15 @@ export class StartDesignModal extends React.Component<Props, {}> {
       isMobile
     } = this.props
 
+    const mobileList = [
+      <p key="1">Hello</p>, <p key="2">Bye</p>
+    ]
     return (
       <Container>
         <CustomModal
           open={true}
           withLogo={false}
-          width={'900px'}
+          width={'1200px'}
           requestClose={this.requestClose}
           wrapClassName={isMobile && 'transparent-modal'}
           maskStyle={isMobile && { background: 'rgba(0,0,0,0.9)' }}
@@ -71,6 +77,10 @@ export class StartDesignModal extends React.Component<Props, {}> {
           <Title>{formatMessage(messages.twoWays)}</Title>
           {isMobile ?
             (<div>
+              <UnfoldList
+                childrens={mobileList}
+              />
+              <BannerDesign src={DesignCenterBanner} />
               <BannerBack
                 onClick={this.toggleAnimation}
                 className={cardFolded ? 'folded' : 'unfolded'}

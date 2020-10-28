@@ -114,3 +114,17 @@ export const BannerBack = styled.div`
     transform: rotateX(0);
   }
 `
+
+interface BannerProps {
+  src: string
+}
+
+export const BannerDesign = styled.div`
+  background-image: url(${({ src }: BannerProps) => src});
+  width: 100%;
+  height: 250px;
+  border-radius: 5px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+`
