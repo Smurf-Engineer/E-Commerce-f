@@ -201,8 +201,8 @@ export class PayList extends React.Component<Props, {}> {
             <TotalDiv>
               {formatMessage(messages.comissionAmount)}
               <Amounts>
-                <FormattedMessage {...messages.usdAmount} values={{ usdTotal }} />
-                <FormattedMessage {...messages.cadAmount} values={{ cadTotal }} />
+                <FormattedMessage {...messages.usdAmount} values={{ usdTotal: usdTotal.toFixed(2) }} />
+                <FormattedMessage {...messages.cadAmount} values={{ cadTotal: cadTotal.toFixed(2) }} />
               </Amounts>
             </TotalDiv>
           </LeftDiv>
@@ -265,7 +265,7 @@ export class PayList extends React.Component<Props, {}> {
                 }: AffiliatePayment,
                 index: number) => {
                 const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus', '')
-                const availableCheck = this.checkAvailable(paypalAccount, status, netsuiteStatus)
+                const availableCheck = this.checkAvailable(paypalAccount, status, netsuiteStatus, orderStatus)
                 return (
                   <RepDiv id={orderId} onClick={this.openOrder} key={index}>
                     <Cell onClick={this.stopPropagation}>
