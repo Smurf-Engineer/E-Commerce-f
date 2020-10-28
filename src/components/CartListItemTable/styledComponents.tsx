@@ -39,15 +39,16 @@ export const Body = styled.tbody``
 type RowProps = {
   withColor?: boolean
   onlyRead?: boolean
+  withTwoPieces?: boolean
 }
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces }: RowProps) => {
     if (withColor) {
       return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
     }
-    return 'repeat(4, 1fr)'
+    return !withTwoPieces ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
   }};
   grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '3px')};
 
@@ -72,11 +73,11 @@ export const Row = styled.div`
 
 export const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces }: RowProps) => {
     if (withColor) {
       return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
     }
-    return 'repeat(4, 1fr)'
+    return !withTwoPieces ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
   }};
   grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '5px')};
   align-items: center;
@@ -170,10 +171,10 @@ export const DeleteItem = styled.div`
 
 export const StyledSelect = styled(Select)`
   width: ${({ selectWidth }: SelectType) =>
-    selectWidth ? selectWidth : '100%'};
+    selectWidth ? selectWidth : '20%'};
   & .ant-select-selection {
     border-color: ${({ highlightFields }: SelectType) =>
-      highlightFields ? RED : GRAY_ANTDESIGN};
+    highlightFields ? RED : GRAY_ANTDESIGN};
   }
 `
 

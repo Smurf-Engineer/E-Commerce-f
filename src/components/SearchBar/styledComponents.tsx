@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
-import { BLACK } from '../../screens/DesignCenter/constants'
+import { BLACK, GRAY, GRAY_DARK, GRAY_LIGHTEST, WHITE } from '../../theme/colors'
 
 const Search = Input.Search
 
@@ -18,39 +18,43 @@ export const Container = styled.div`
 
   .ant-input {
     ${({ onHeader }: StyledProps) =>
-      onHeader ? 'background-color : #f6f6f6;' : ''};
+      onHeader ? `background-color : ${GRAY_LIGHTEST};` : ''};
   }
   .ant-input:focus {
     ${({ onHeader }: StyledProps) =>
-      onHeader ? 'background-color : #fff;' : ''};
+      onHeader ? `background-color : ${WHITE}` : ''};
+    box-shadow: 0 0 0 2px ${GRAY};
   }
 
   .ant-input-suffix {
     font-size: 20px;
   }
   .ant-input-suffix:focus {
-    background-color: #fff;
+    background-color: ${WHITE};
   }
 
   .ant-btn-primary {
-    color: grey;
+    color: ${WHITE};
+    border: none;
+    box-shadow: none;
+    border-radius: 5px !important;
     background-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? '#fff' : '#f6f6f6'};
+      focused || !onHeader ? WHITE : GRAY_DARK};
     border-color: ${({ onHeader, focused }: StyledProps) =>
-      focused || !onHeader ? '#fff' : '#f6f6f6'};
+      focused || !onHeader ? WHITE : GRAY_LIGHTEST};
   }
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 export const SearchInput = styled(Search)`
   height: 50px;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: ${WHITE};
 
   &:focus {
-    background-color: #fff;
+    background-color: ${WHITE};
   }
 
   input {

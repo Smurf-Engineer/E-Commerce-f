@@ -101,6 +101,8 @@ interface Props extends RouteComponentProps<any> {
   showFitsModal: boolean
   phone: boolean
   loading: boolean
+  selectedTopSize: SelectedType
+  selectedBottomSize: SelectedType
   setLoadingAction: (loading: boolean) => void
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
@@ -112,6 +114,8 @@ interface Props extends RouteComponentProps<any> {
   setShowDetailsAction: (show: boolean) => void
   setShowSpecsAction: (show: boolean) => void
   resetDataAction: () => void
+  setSelectedTopSizeAction: (selected: SelectedType) => void
+  setSelectedBottomSizeAction: (selected: SelectedType) => void
 }
 
 export class CustomProductDetail extends React.Component<Props, {}> {
@@ -140,7 +144,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       currentCurrency,
       showFitsModal,
       loading,
-      phone
+      phone,
+      selectedTopSize,
+      selectedBottomSize
     } = this.props
     const { formatMessage } = intl
 
@@ -204,7 +210,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       modelSize,
       id: productId,
       bannerMaterials,
-      relatedItemTag
+      relatedItemTag,
+      twoPieces
     } = product
     const totalReviews = get(yotpoAverageScore, 'total', 0)
     const rating = get(yotpoAverageScore, 'averageScore', 0)
@@ -288,12 +295,47 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     )
 
     const availableSizes =
+      !twoPieces &&
       sizeRange &&
       sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
             selected={id === selectedSize.id}
             onClick={this.handleSelectedSize({
+              id: Number(id),
+              name: String(sizeName)
+            })}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      ))
+
+    const availableTopSizes =
+      twoPieces &&
+      sizeRange &&
+      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
+        <div {...{ key }}>
+          <SectionButton
+            selected={id === selectedTopSize.id}
+            onClick={this.handleSelectedTopSize({
+              id: Number(id),
+              name: String(sizeName)
+            })}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      ))
+
+    const availableBottomSizes =
+      twoPieces &&
+      sizeRange &&
+      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
+        <div {...{ key }}>
+          <SectionButton
+            selected={id === selectedBottomSize.id}
+            onClick={this.handleSelectedBottomSize({
               id: Number(id),
               name: String(sizeName)
             })}
@@ -335,7 +377,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
-    const sizeSection = (
+    const sizeSection = !twoPieces && (
       <SectionRow>
         <SizeRowTitleRow>
           <SectionTitleContainer>
@@ -344,6 +386,30 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           </SectionTitleContainer>
         </SizeRowTitleRow>
         <SectionButtonsContainer>{availableSizes}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
+    const topSizeSection = twoPieces && (
+      <SectionRow>
+        <SizeRowTitleRow>
+          <SectionTitleContainer>
+            <SectionTitle>{formatMessage(messages.topSize)}</SectionTitle>
+            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+          </SectionTitleContainer>
+        </SizeRowTitleRow>
+        <SectionButtonsContainer>{availableTopSizes}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
+    const bottomSizeSection = twoPieces && (
+      <SectionRow>
+        <SizeRowTitleRow>
+          <SectionTitleContainer>
+            <SectionTitle>{formatMessage(messages.bottomSize)}</SectionTitle>
+            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+          </SectionTitleContainer>
+        </SizeRowTitleRow>
+        <SectionButtonsContainer>{availableBottomSizes}</SectionButtonsContainer>
       </SectionRow>
     )
 
@@ -364,13 +430,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         fit: selectedFit,
         size: selectedSize,
         gender: selectedGender,
+        topSize: selectedTopSize,
+        bottomSize: selectedBottomSize,
         quantity: 1
       }
       itemDetails.push(detail)
     }
 
     const itemToAdd = Object.assign({}, { product }, { itemDetails })
-
     const addToCartRow = (
       <ButtonsRow>
         {(active || onlyProDesign) &&
@@ -380,7 +447,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             item={itemToAdd}
             itemProdPage={true}
             withoutTop={true}
-            isFixed={!teamOnDemand}
+            isFixed={teamStoreItem && !teamOnDemand}
             teamStoreId={teamStoreShortId}
             fixedPrices={teamPrice}
             {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
@@ -393,7 +460,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const collectionSelection = (
       <BuyNowOptions>
         {gendersSection}
-        {sizeSection}
+        {!twoPieces && sizeSection}
+        {twoPieces && topSizeSection}
+        {twoPieces && bottomSizeSection}
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
@@ -550,6 +619,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               formatMessage,
               currentCurrency
             }}
+            hideFeatured={true}
           />
         </Container>
       </Layout>
@@ -567,6 +637,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   handleSelectedSize = (size: SelectedType) => () => {
     const { setSelectedSizeAction } = this.props
     setSelectedSizeAction(size)
+  }
+
+  handleSelectedTopSize = (size: SelectedType) => () => {
+    const { setSelectedTopSizeAction } = this.props
+    setSelectedTopSizeAction(size)
+  }
+
+  handleSelectedBottomSize = (size: SelectedType) => () => {
+    const { setSelectedBottomSizeAction } = this.props
+    setSelectedBottomSizeAction(size)
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
@@ -599,18 +679,24 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedSize,
       selectedGender,
       selectedFit,
+      selectedTopSize,
+      selectedBottomSize,
       data: { design }
     } = this.props
     const fitStyles = get(design.product, 'fitStyles', []) as SelectedType[]
+    const twoPieces = get(design.product, 'twoPieces', false)
     if (fitStyles.length && fitStyles[0].id) {
       return (
-        selectedSize.id >= 0 &&
+        ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
+          selectedBottomSize.id > 0)) &&
         selectedFit &&
         selectedFit.id &&
         selectedGender.id
       )
     }
-    return selectedSize.id >= 0 && selectedGender.id
+
+    return ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
+      selectedBottomSize.id > 0)) && selectedGender.id
   }
 
   toggleProductInfo = (id: string) => {

@@ -32,5 +32,9 @@ export default defineMessages({
   orderPoint: {
     id: 'components.OrderHistoryAdmin.orderPoint',
     defaultMessage: 'Order Point'
+  },
+  sendToNetsuite: {
+    id: 'components.OrderHistoryAdmin.sendToNetsuite',
+    defaultMessage: 'Send {orderId} to netsuite'
   }
 })

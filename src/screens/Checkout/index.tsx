@@ -1091,7 +1091,7 @@ class Checkout extends React.Component<Props, {}> {
           item.product = productItem
           item.teamStoreId = teamStoreId
           item.itemDetails = itemDetails.map(
-            ({ gender, quantity, size, fit, color }: CartItemDetail) => {
+            ({ gender, quantity, size, fit, color, topSize, bottomSize }: CartItemDetail) => {
               const fitId = get(fit, 'id', 0)
               const fitName = get(fit, 'name', '')
               const fitObj: ItemDetailType = {
@@ -1102,7 +1102,10 @@ class Checkout extends React.Component<Props, {}> {
               unset(quantity, '__typename')
               unset(size, '__typename')
               unset(color, '__typename')
-              return { gender, quantity, size, fit: fitObj, color }
+              unset(topSize, '__typename')
+              unset(bottomSize, '__typename')
+
+              return { gender, quantity, size, fit: fitObj, color, topSize, bottomSize }
             }
           )
 

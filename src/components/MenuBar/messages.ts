@@ -10,7 +10,11 @@ export default defineMessages({
     defaultMessage: 'SIGN UP | LOGIN'
   },
   teamStoresTitle: {
-    id: 'components.menunBar.teamStoresTitle',
+    id: 'components.menuBar.teamStoresTitle',
     defaultMessage: 'TEAM STORES'
+  },
+  myAccount: {
+    id: 'components.menuBar.myAccount',
+    defaultMessage: '{user} | MY ACCOUNT'
   }
 })

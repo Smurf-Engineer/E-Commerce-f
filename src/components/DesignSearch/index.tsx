@@ -37,7 +37,7 @@ import {
   MessagePayload,
   Colors,
   UserPermissions,
-  User
+  User, PredyedColor
 } from '../../types/common'
 import {
   orderSearchQuery,
@@ -53,7 +53,7 @@ import {
   getRepUsers,
   setRepDesignMutation,
   assignManagerDesignMutation,
-  setLegacyMutation
+  setLegacyMutation, getPredyedColors
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -68,6 +68,11 @@ type Thumbnail = {
 interface ColorsData extends QueryProps {
   colorsResult: Colors
 }
+
+interface PredyedData extends QueryProps {
+  getPredyedColors: PredyedColor[]
+}
+
 interface Data extends QueryProps {
   repUsers: {
     users: User[]
@@ -107,6 +112,7 @@ interface Props {
   addingNote: boolean
   note: string
   managers: ManagersData
+  predyedData: PredyedData
   salesRep: Data
   repSearchText: string
   loadingPreflight: boolean
@@ -141,6 +147,7 @@ interface Props {
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   setUploadingThumbnailAction: (uploading: boolean) => void
   updateThumbnailAction: (thumbnail: string) => void
+  selectPredyedAction: (predyedValue: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setColorAction: (color: string, id: string) => void
   updateDesign: (variables: {}) => Promise<Thumbnail>
@@ -192,10 +199,12 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       changeLegacy,
       setUploadingThumbnailAction,
       changes,
+      selectPredyedAction,
       setStitchingColorAction,
       colorAccessories,
       openNotes,
       salesRep,
+      predyedData,
       managers,
       history,
       addingNote,
@@ -220,7 +229,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
     }
     const fontList = get(fontsData, 'fonts', [])
     const colors = get(colorsList, 'colorsResult.colors', [])
-
+    const predyedColors = get(predyedData, 'getPredyedColors', [])
     const salesRepUsers = get<Data, 'repUsers.users', User[]>(
       salesRep,
       'repUsers.users',
@@ -247,6 +256,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           changes,
           salesRepUsers,
           managersUsers,
+          predyedColors,
           openNotes,
           addingNote,
           note,
@@ -267,6 +277,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         searchManagers={this.searchManagers}
         checkPreflight={this.handleCheckPreflight}
         handleSaveNote={this.saveNote}
+        onSelectPredyed={selectPredyedAction}
         onSelectStitchingColor={setStitchingColorAction}
         onSelectColor={setColorAction}
         formatMessage={formatMessage}
@@ -638,6 +649,12 @@ const DesignSearchAdminEnhance = compose(
       },
       fetchPolicy: 'network-only'
     })
+  }),
+  graphql<PredyedData>(getPredyedColors, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'predyedData'
   }),
   graphql(getManagers, {
     name: 'managers',

@@ -11,6 +11,7 @@ interface Props {
   open: boolean
   width?: string | number
   requestClose?: () => void
+  withCross?: boolean | undefined
   withLogo?: boolean | undefined
   children?: any
   title?: string
@@ -24,6 +25,7 @@ const CustomModal = ({
   title,
   style,
   width,
+  withCross = true,
   withLogo = true
 }: Props) => {
   return (
@@ -35,7 +37,7 @@ const CustomModal = ({
         closable={false}
         destroyOnClose={true}
       >
-        <CloseIcon src={closeIcon} onClick={requestClose} />
+        {withCross && <CloseIcon src={closeIcon} onClick={requestClose} />}
         {withLogo && (
           <Header>
             <Logo src={JakRooLogo} />

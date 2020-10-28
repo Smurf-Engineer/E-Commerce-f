@@ -45,6 +45,14 @@ export default defineMessages({
     id: 'components.FirstStep.productName',
     defaultMessage: 'Product Name'
   },
+  predyedLabel: {
+    id: 'components.FirstStep.predyedLabel',
+    defaultMessage: 'Predyed Label'
+  },
+  predyedLabelHolder: {
+    id: 'components.FirstStep.predyedLabelHolder',
+    defaultMessage: 'Ex. Black Print'
+  },
   mpnPlaceholder: {
     id: 'components.FirstStep.mpnPlaceholder',
     defaultMessage: 'JV2-00000000'

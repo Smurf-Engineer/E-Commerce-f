@@ -129,7 +129,7 @@ export class ColorTab extends React.Component<Props, {}> {
                     onAccessoryColorSelected={onSelectColor}
                   />
                 )}
-                {product.branding && (
+                {product.hasPredyed && (
                   <Column>
                     <Label>{formatMessage(messages.predyed)}</Label>
                     <StyledSelect

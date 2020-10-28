@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'components.ProductDetailAdmin.productCategories',
     defaultMessage: 'Product Categories'
   },
+  predyedLabel: {
+    id: 'components.ProductDetailAdmin.predyedLabel',
+    defaultMessage: 'Predyed Label'
+  },
   relatedTags: {
     id: 'components.ProductDetailAdmin.relatedTags',
     defaultMessage: 'Related Item Tag'

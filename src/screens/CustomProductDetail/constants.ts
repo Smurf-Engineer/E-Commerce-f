@@ -13,3 +13,5 @@ export const SET_SHOW_SPECS = `${namespace}/SET_SHOW_SPECS`
 export const RESET_DATA = `${namespace}/RESET_DATA`
 export const SET_FITS_MODAL = `${namespace}/SET_FITS_MODAL`
 export const SET_LOADING_ACTION = `${namespace}/SET_LOADING_ACTION`
+export const SET_TOP_SELECTED_SIZE = `${namespace}/SET_TOP_SELECTED_SIZE`
+export const SET_BOTTOM_SELECTED_SIZE = `${namespace}/SET_BOTTOM_SELECTED_SIZE`

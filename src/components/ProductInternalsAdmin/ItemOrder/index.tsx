@@ -24,6 +24,8 @@ interface Props {
   collection: string
   model?: string
   canEdit: boolean
+  topSize?: string
+  bottomSize?: string
   onInternalClick: (internal: ProductInternal) => void
 }
 
@@ -43,7 +45,9 @@ const ItemOrder = ({
   bibBrace,
   collection,
   onInternalClick,
-  model
+  model,
+  topSize,
+  bottomSize
 }: Props) => {
   const handleOnClick = () => {
     const internal = {
@@ -60,7 +64,9 @@ const ItemOrder = ({
       predyedColor,
       bibBrace,
       collection,
-      model
+      model,
+      topSize,
+      bottomSize
     }
     onInternalClick(internal)
   }

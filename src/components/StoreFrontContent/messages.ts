@@ -50,7 +50,7 @@ export default defineMessages({
   },
   aboutOrdering: {
     id: 'screens.StoreFrontContent.aboutOrdering',
-    defaultMessage: 'About Team Store Ordering'
+    defaultMessage: 'About {teamType}'
   },
   howMuchTitle: {
     id: 'screens.StoreFrontContent.howMuchTitle',
@@ -60,7 +60,7 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.howMuchDesc',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      '<p>When ordering through an On-Demand Team Store, team members receive a 20% discount off the regular price of the product regardless of how many pieces are ordered by the individual or collectively, by the team. In special cases, however, discounts may vary. Additional discounts may be available through seasonal and special promotions using a promo code.</p>'
+      '<p>When ordering through an On-Demand Store, pricing for each item starts at the 2-5pc pricing tier (20% off the single item price) and drops automatically based on the quantity ordered. Orders placed by other members do not combine for volume pricing in this mode Additional discounts may be available through seasonal and special promotions using a promo code.</p>'
   },
   howMuchDescBatch: {
     id: 'screens.StoreFrontContent.howMuchDescBatch',
