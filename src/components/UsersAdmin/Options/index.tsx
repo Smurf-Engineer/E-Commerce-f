@@ -518,6 +518,8 @@ class Options extends React.Component<Props> {
     } = affiliate
     const {
       gst,
+      stateProvince,
+      businessName,
       status: statusReseller,
       comission: comissionReseller,
       activatedAt: activatedReseller,
@@ -596,6 +598,8 @@ class Options extends React.Component<Props> {
               userId,
               gst,
               margin,
+              stateProvince,
+              businessName,
               inline
             }}
             onChangePage={onChangePageReseller}

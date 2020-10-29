@@ -29,6 +29,8 @@ export const profileSettingsQuery = gql`
         inline
         gst
         region
+        businessName: business_name
+        stateProvince: state_province
         currency
         activatedAt: activated_at
       }

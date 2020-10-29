@@ -100,7 +100,19 @@ class ResellerOptions extends React.Component<Props, {}> {
       openModal,
     } = this.props
     const reseller = get(profileData, 'profileData.reseller', {})
-    const { status, currency, region, paypalAccount, comission, file, activatedAt, inline, margin } = reseller
+    const { 
+      status,
+      currency,
+      region,
+      businessName,
+      stateProvince,
+      paypalAccount,
+      comission,
+      file,
+      activatedAt,
+      inline,
+      margin
+    } = reseller
     return (
       <Container {...{ onlyDetails }}>
         {!onlyDetails && <PayIcon src={Payday} />}
@@ -121,6 +133,8 @@ class ResellerOptions extends React.Component<Props, {}> {
               currentPage,
               onChangePage,
               paypalAccount,
+              businessName,
+              stateProvince,
               file,
               currency,
               region,
