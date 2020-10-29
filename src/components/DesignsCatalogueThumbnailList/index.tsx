@@ -132,7 +132,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           if (isResellerOwner) {
             const originalPriceRange = get(product, 'priceRange', [])
             const purchasePrices = originalPriceRange.map((priceItem) => {
-              const price = Number((priceItem.price * (1 - (resellerComission / 100))).toFixed(2))
+              const price = (priceItem.price * (1 - (resellerComission / 100))).toFixed(2)
               return { ...priceItem, price }
             })
             product = { ...product, priceRange: purchasePrices }
@@ -215,8 +215,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             : currentRangeAttributes.price
           const currentPriceText = `${fixedPriceValue.shortName
             } ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price
-            }`
+          const targetPriceText = `${targetPriceValue.shortName}
+          ${isResellerOwner ? Number(targetPriceValue.price).toFixed(2) : targetPriceValue.price}`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
               itemsLeft: `<strong>${currentRangeAttributes.itemsLeft

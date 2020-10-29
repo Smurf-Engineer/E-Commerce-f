@@ -8,7 +8,9 @@ import Spin from 'antd/lib/spin'
 import messages from './messages'
 import ProductThumbnail from '../ProductThumbnail'
 import { productsQuery } from './data'
-import { ProductType, QueryProps, Filter } from '../../types/common'
+import { ProductType, QueryProps, Filter, Reseller } from '../../types/common'
+import get from 'lodash/get'
+import { APPROVED } from '../../constants'
 
 interface Data extends QueryProps {
   products?: ProductType
@@ -18,6 +20,7 @@ interface Props {
   data: Data
   genderFilter?: Filter
   sportFilter: Filter
+  reseller?: Reseller
   onPressSeeAll: () => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
@@ -33,6 +36,7 @@ export const ProductHorizontalList = ({
   onPressCustomize,
   onPressQuickView,
   width = '60%',
+  reseller,
   genderFilter,
   formatMessage,
   onPressThumbnail,
@@ -58,8 +62,20 @@ export const ProductHorizontalList = ({
     fullCount: '0',
     products: []
   }
+  const { status, inline = 0, comission = 0 } = reseller || {}
+  const isReseller = status === APPROVED
 
-  const list = products.products.map((product, key) => {
+  const list = products.products.map((productData, key) => {
+    let product = productData
+    if (isReseller) {
+      const originalPriceRange = get(productData, 'priceRange', [])
+      const comissionToApply = product.customizable ? comission : inline
+      const purchasePrices = originalPriceRange.map((priceItem) => {
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+        return { ...priceItem, price }
+      })
+      product = { ...product, priceRange: purchasePrices }
+    }
     const {
       id,
       type,

@@ -15,7 +15,7 @@ export default defineMessages({
   },
   purchasePrice: {
     id: 'components.FooterThumbnailTeamStore.purchasePrice',
-    defaultMessage: 'Purchase price'
+    defaultMessage: 'Dealer price'
   },
   listPrice: {
     id: 'components.FooterThumbnailTeamStore.listPrice',

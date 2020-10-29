@@ -161,7 +161,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     if (resellerStatus === APPROVED && ownedDesign) {
       const originalPriceRange = get(product, 'priceRange', [])
       const purchasePrices = originalPriceRange.map((priceItem) => {
-        const price = Number((priceItem.price * (1 - (comissionToApply / 100))).toFixed(2))
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
         return { ...priceItem, price }
       })
       product = { ...product, priceRange: purchasePrices }
@@ -663,10 +663,11 @@ const CustomProductDetailEnhance = compose(
   injectIntl,
   connect(mapStateToProps, { ...customProductDetailActions }),
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
   }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {

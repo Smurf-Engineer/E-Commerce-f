@@ -133,6 +133,7 @@ export const getOrderQuery = gql`
         teamStoreName
       }
       status
+      owner
       shippingAmount: shipping_amount
       proDesign: pro_design
       discount: discount_amount

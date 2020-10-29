@@ -7,18 +7,16 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   titlePay: {
     id: 'components.ResellerAbout.titlePay',
-    defaultMessage: 'Direct Fulfillment Program'
+    defaultMessage: 'DirectShip Program'
   },
   bodyPay: {
     id: 'components.ResellerAbout.bodyPay',
     defaultMessage: `
-      <p>Jakroo’s Direct Fulfillment Program eliminates the hassle and risks of 
-         inventory forecasting and management, We handle all transaction 
-         and customer service costs allowing you to focus on running the 
-         day to day operations of your shop.
+      <p>DirectShip Stores eliminate the hassle and risks of inventory management. We handle all 
+      transaction and customer service costs allowing you to focus on running the day-to-day operations of your shop.
       </p>
-      <p>Customers order directly through the store and your margin is 
-         paid out monthly direct to a PayPal account of your choice.
+      <p>Customers order directly through the store and your margin is paid out monthly 
+      direct to a PayPal account of your choice.
       </p>`
   },
   slogan: {
@@ -83,7 +81,7 @@ export default defineMessages({
   },
   howEarn: {
     id: 'components.ResellerAbout.howEarn',
-    defaultMessage: 'Are there any costs to me for participating in the Direct Fulfillment Program?'
+    defaultMessage: 'Are there any costs to me for participating in the DirectShip Program?'
   },
   howEarnDesc: {
     id: 'components.ResellerAbout.howEarnDesc',
@@ -97,7 +95,7 @@ export default defineMessages({
   howMuchDesc: {
     id: 'components.ResellerAbout.howMuchDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `<p>Resellers earn 20% margin on the fully priced sales from their own custom stores. Orders with a discount do not qualify for the Direct Fulfillment Program. Margin is based on the net sale amount less any applied shipping and taxes and paid out to you in the currency based on your country of residence you designated during sign-up.</p><p>At this time, only residents of the United States or Canada are eligible for the Direct Fulfillment Program. As such, payouts are only denominated in USD or CAD respectively.</p><p>You will receive margin payouts only on orders that have been fully shipped and paid the customer. If an order has only been partially shipped or paid, you will not be paid until the order is shipped complete and paid in full. In the event an order is returned or refunded to a customer for any reason after margin has been paid out, we reserve the right to deduct the paid margin amount from future earnings.</p>`
+    defaultMessage: `<p>Resellers earn 20% margin on the fully priced sales from their own custom stores. Orders with a discount do not qualify for the DirectShip Program. Margin is based on the net sale amount less any applied shipping and taxes and paid out to you in the currency based on your country of residence you designated during sign-up.</p>`
   },
   whenPaid: {
     id: 'components.ResellerAbout.whenPaid',
@@ -133,6 +131,6 @@ export default defineMessages({
   returnsDesc: {
     id: 'components.ResellerAbout.returnsDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `All Jakroo products include a limited 1-year manufacturers’ warranty covering defects in materials and workmanship. This warranty does not cover normal wear and tear. All custom products are made-to-order on demand and thus not returnable for reasons other than manufacturer defect. All retail collection items (non-customized) are returnable for a full refund or exchange, provided that the products are unworn and accompanied by the receipt. With our size exchange program, however, customers have the option of keeping their original item and ordering a different size at 50% of the original item price. Jakroo’s customer service team handles all customer facing warranty and exchange for orders through Direct Fulfilment stores.`
+    defaultMessage: `All Jakroo products include a limited 1-year manufacturers’ warranty covering defects in materials and workmanship. This warranty does not cover normal wear and tear. All custom products are made-to-order on demand and thus not returnable for reasons other than manufacturer defect. All retail collection items (non-customized) are returnable for a full refund or exchange, provided that the products are unworn and accompanied by the receipt. With our size exchange program, however, customers have the option of keeping their original item and ordering a different size at 50% of the original item price. Jakroo’s customer service team handles all customer facing warranty and exchange for orders through DirectShip stores.`
   },
 })

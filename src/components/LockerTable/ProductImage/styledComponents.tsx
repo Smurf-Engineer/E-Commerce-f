@@ -28,7 +28,7 @@ export const Page = styled.div`
 export const Image = styled.img`
   user-select: none;
   height: 132px;
-  width: 172px;
+  width: 100%;
   object-fit: cover;
   @media (min-width: 321px) and (max-width: 480px) {
     height: 100%;

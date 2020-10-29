@@ -3,7 +3,11 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   signupTitle: {
     id: 'components.ResellerSignup.signupTitle',
-    defaultMessage: 'BECOME A JAKROO RESELLER'
+    defaultMessage: 'BECOME A JAKROO RESELLER TODAY!'
+  },
+  title: {
+    id: 'components.ResellerSignup.title',
+    defaultMessage: 'SEE WHY RETAIL SHOPS ARE PARTNERING WITH JAKROO'
   },
   rememberMe: {
     id: 'components.ResellerSignup.rememberMe',
@@ -37,6 +41,10 @@ export default defineMessages({
     id: 'components.ResellerSignup.email',
     defaultMessage: 'E-mail'
   },
+  businessName: {
+    id: 'components.ResellerSignup.businessName',
+    defaultMessage: 'Business Name'
+  },
   phone: {
     id: 'components.ResellerSignup.phone',
     defaultMessage: 'Phone'
@@ -52,6 +60,10 @@ export default defineMessages({
   website: {
     id: 'components.ResellerSignup.website',
     defaultMessage: 'Website'
+  },
+  gstLabel: {
+    id: 'components.ResellerSignup.gstLabel',
+    defaultMessage: 'GST # or Business Number'
   },
   billingCountry: {
     id: 'components.ResellerSignup.billingCountry',
@@ -95,7 +107,24 @@ export default defineMessages({
   },
   advertisement: {
     id: 'components.ResellerSignup.advertisement',
-    defaultMessage: 'ACTION REQUIRED'
+    defaultMessage: 'VERIFICATION'
+  },
+  yes: {
+    id: 'components.ResellerSignup.yes',
+    defaultMessage: 'Yes'
+  },
+  stateProvince: {
+    id: 'components.ResellerSignup.stateProvince',
+    defaultMessage: 'State / Province'
+  },
+  currencyDesc: {
+    id: 'components.ResellerSignup.currencyDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>Your selected Billing Country does not match your current region settings.</p> <p>The Reseller Partner Program is currently only available for residents of <b>Canada</b> or the <b>United States</b>.</p> <p>Are you sure your Billing Country is correct?</p>'
+  },
+  changeSelection: {
+    id: 'components.ResellerSignup.changeSelection',
+    defaultMessage: 'Change selection'
   },
   reviewText: {
     id: 'components.ResellerSignup.reviewText',
@@ -109,7 +138,7 @@ export default defineMessages({
   resellerDesc: {
     id: 'components.ResellerSignup.resellerDesc',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: 'For individuals and corporations located in the USA, we will require a resale certificate. This allows reseller to purchase products without paying sales tax if they plan to resell them.'
+    defaultMessage: 'For individuals and corporations located in the USA, we will require a resale certificate to participate in Reseller Program. For those in Canada, we will require either a GST # or Business Number for verification purposes.'
   },
   notifyMe: {
     id: 'components.ResellerSignup.notifyMe',
@@ -151,5 +180,56 @@ export default defineMessages({
   loginError: {
     id: 'components.ResellerSignup.createAccountError',
     defaultMessage: 'Something went wrong. Please try again!'
+  },
+  yourKit: {
+    id: 'components.ResellerSignup.yourKit',
+    defaultMessage: 'YOUR KIT. <b>YOUR BRAND.</b>'
+  },
+  yourKitDesc: {
+    id: 'components.ResellerSignup.yourKitDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'We set the new standard for custom shop kits. Our branding is minimalized to allow you to <b>showcase yours!</b>'
+  },
+  directDesc: {
+    id: 'components.ResellerSignup.directDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'We handle all transaction and customer service costs <b>allowing you to focus</b> on running the day-to-day operations of your shop.'
+  },
+  onDemandDesc: {
+    id: 'components.ResellerSignup.onDemandDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'No bookings and never out of stock. <br /> <b>Just what you need when you need it.</b> <br /> Delivered to your door in 2 weeks or less.'
+  },
+  kitFeatures: {
+    id: 'components.ResellerSignup.kitFeatures',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>Jakroo’s Custom Program sets the new standard for custom shop kits. Our branding is minimalized to allow you to prominently showcase yours!</p><p>Create seasonal collections for a fresh look or build out a line of designs to support your other product lines or promote special events.</p><p>Take advantage of our Pro Custom Designers to bring your ideas to life or use your creative skills to create your own kits using DesignLab.</p>'
+  },
+  directFeatures: {
+    id: 'components.ResellerSignup.directFeatures',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<pr>DirectShip Stores eliminate the hassle and risks of booking and holding inventory. We handle all transaction and customer service costs allowing you to focus on running the day-to-day operations of your shop.</p><br /><p>Customers order directly through the store and your margin is paid out monthly direct to a PayPal account of your choice.</p>'
+  },
+  easyConvenient: {
+    id: 'components.ResellerSignup.easyConvenient',
+    defaultMessage: 'Easy • Convenient • Safe'
+  },
+  learnMore: {
+    id: 'components.ResellerSignup.learnMore',
+    defaultMessage: 'Learn more'
+  },
+  justWhatYouNeed: {
+    id: 'components.ResellerSignup.justWhatYouNeed',
+    defaultMessage: 'Just what you need, when you need it!'
+  },
+  buildingDesc: {
+    id: 'components.ResellerSignup.buildingDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Building on our proven custom gear, Jakroo now offers select non-custom core products to help you build margin, all with the same advantages as our custom gear:'
+  },
+  buldingCheckList: {
+    id: 'components.ResellerSignup.buldingCheckList',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<ul> <li>Keystone + margin</li> <li>No advance booking. Never out of stock</li> <li>No minimum order requirement</li> <li>Turnaround time of 10-14 days</li> </ul>'
   }
 })
