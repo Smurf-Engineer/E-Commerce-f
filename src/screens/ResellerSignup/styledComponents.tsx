@@ -271,8 +271,10 @@ export const FeatureDesc = styled.div`
 
 export const LearnMore = styled.div`
   color: ${BLUE};
-  cursor: pointer;
   margin-top: 22px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const Title = styled.div`
