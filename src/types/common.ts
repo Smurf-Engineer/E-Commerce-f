@@ -218,6 +218,8 @@ export type Reseller = {
   status: string
   paypalAccount: string
   comission: number
+  inline: number
+  margin: number
   activatedAt: string
 }
 

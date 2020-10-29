@@ -8,7 +8,9 @@ import {
   SET_DATA,
   SET_DELIVERY_DAYS,
   SET_PLAYLIST,
-  SET_CUTOFF_DAYS
+  SET_RATE,
+  SET_CUTOFF_DAYS,
+  SET_LOADING
 } from './constants'
 
 export const initialState = fromJS({
@@ -16,6 +18,14 @@ export const initialState = fromJS({
   tutorialPlaylistChanged: false,
   deliveryDaysChanges: false,
   tutorialPlaylist: '',
+  currencies: {
+    usd: {
+      cad: 0
+    },
+    cad: {
+      usd: 0
+    }
+  },
   deliveryDays: 0,
   cutOffDays: 0,
   cutOffDaysChanges: false
@@ -23,9 +33,14 @@ export const initialState = fromJS({
 
 const designLabAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
+    case SET_RATE:
+      const { title, currency, value } = action
+      return state.setIn(['currencies', title, currency], value)
+    case SET_LOADING:
+      return state.set('loading', action.loading)
     case SET_DATA:
-      const { deliveryDays, tutorialPlaylist, cutOffDays } = action.data
-      return state.merge({ deliveryDays, tutorialPlaylist, cutOffDays })
+      const { currencies, data: { deliveryDays, tutorialPlaylist, cutOffDays } } = action
+      return state.merge({ deliveryDays, tutorialPlaylist, cutOffDays, currencies })
     case SET_DELIVERY_DAYS:
       return state.merge({
         deliveryDays: action.value,

@@ -6,7 +6,9 @@ import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
 import Checkbox from 'antd/lib/checkbox'
-import { WHITE_TRANSPARENT, BLUE, GRAY_DARK } from '../../theme/colors'
+import { WHITE_TRANSPARENT, BLUE, GRAY_DARK, RED, GRAY } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
+import Popover from 'antd/lib/popover'
 
 interface InputProps {
   inputhWidth?: string
@@ -27,10 +29,88 @@ export const Container = styled.div`
   }
 `
 
+export const ResellerDetails = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border: 1px solid ${GRAY};
+  padding: 18px 28px;
+  @media (max-width: 1024px) {
+    flex-wrap: wrap;
+    font-size: 13px;
+    justify-content: space-between;
+  }
+`
+
+export const FileLink = styled.div`
+  cursor: pointer;
+  color: ${RED};
+`
+
+export const Clip = styled(Icon)`
+  color: ${RED};
+  margin-right: 12px;
+`
+
+export const LabelButton = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-right: 24px;
+  @media (max-width: 1024px) {
+    flex: 1;
+    margin-bottom: 26px;
+  }
+`
+
+export const BoldLabel = styled.div`
+  font-weight: bold;
+  text-transform: ${({ upperCase }: ContainerProps) => upperCase ? 'uppercase' : ''};
+`
+
+export const Margins = styled.div`
+  display: flex;
+`
+
+export const InfoIcon = styled(Icon)`
+  margin-left: 8px;
+  margin-top: 1px;
+`
+
+export const PopoverStyled = styled(Popover)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  max-width: 512px;
+  width: 100%;
+  span {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+`
+
+export const TitleMargin = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: -12px;
+  font-size: 13px;
+  margin-bottom: 2px;
+`
+
 export const Title = styled.div`
-  color: #5f6062;
   font-size: 16px;
-  font-weight: 600;
+  line-height: 22px;
+  margin-bottom: 24px;
+`
+
+export const BoldTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  font-weight: bold;
   line-height: 22px;
   margin-bottom: 24px;
 `

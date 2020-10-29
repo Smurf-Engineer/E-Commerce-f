@@ -134,7 +134,7 @@ export const profileSettingsQuery = gql`
       }
       reseller {
         status
-        comission
+        comission: margin
         currency
         paypalAccount: paypal_account
       }

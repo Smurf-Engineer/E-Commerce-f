@@ -45,7 +45,10 @@ import {
   setAffiliateStatusMutation,
   setResellerStatusMutation,
   changeResellerComissionMutation,
-  setResellerEnabledMutation
+  setResellerEnabledMutation,
+  changeResellerMarginMutation,
+  changeResellerInlineMutation,
+  changeGstMutation
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
 import { NOTE_FORMAT } from '../constants'
@@ -82,7 +85,10 @@ interface Props {
   setLoadingAction: (loading: boolean) => void
   changeComission: (variables: {}) => Promise<Affiliate>
   changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
+  changeGst: (variables: {}) => Promise<Reseller>
   changeResellerComission: (variables: {}) => Promise<Reseller>
+  changeResellerMargin: (variables: {}) => Promise<Reseller>
+  changeResellerInline: (variables: {}) => Promise<Reseller>
   changeResellerStatus: (variables: {}) => Promise<Reseller>
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteText: (text: string) => void
@@ -168,6 +174,45 @@ class Options extends React.Component<Props> {
       setLoadingAction(false)
     }
   }
+  handleChangeGst = async (value = '') => {
+    const {
+      formatMessage,
+      changeGst,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeGst({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.gst = value
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
   handleResellerComission = async (value = 0) => {
     const {
       formatMessage,
@@ -193,6 +238,84 @@ class Options extends React.Component<Props> {
             })
             const resellerData = get(profileData, 'profileData.reseller', {})
             resellerData.comission = value
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleResellerMargin = async (value = 0) => {
+    const {
+      formatMessage,
+      changeResellerMargin,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeResellerMargin({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.margin = value
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleResellerInline = async (value = 0) => {
+    const {
+      formatMessage,
+      changeResellerInline,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeResellerInline({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.inline = value
             store.writeQuery({
               query: profileSettingsQuery,
               data: profileData
@@ -271,6 +394,7 @@ class Options extends React.Component<Props> {
           })
           const userProfile = get(profileData, 'profileData.userProfile', {})
           userProfile.affiliateEnabled = enabledResponse
+          userProfile.resellerEnabled = false
           store.writeQuery({
             query: profileSettingsQuery,
             data: profileData,
@@ -308,6 +432,7 @@ class Options extends React.Component<Props> {
           })
           const userProfile = get(profileData, 'profileData.userProfile', {})
           userProfile.resellerEnabled = enabledResponse
+          userProfile.affiliateEnabled = false
           store.writeQuery({
             query: profileSettingsQuery,
             data: profileData,
@@ -392,6 +517,9 @@ class Options extends React.Component<Props> {
       file,
     } = affiliate
     const {
+      gst,
+      stateProvince,
+      businessName,
       status: statusReseller,
       comission: comissionReseller,
       activatedAt: activatedReseller,
@@ -399,6 +527,8 @@ class Options extends React.Component<Props> {
       region: regionReseller,
       currency: currencyReseller,
       file: fileReseller,
+      margin,
+      inline,
     } = reseller
     const {
       lastOrder,
@@ -466,6 +596,11 @@ class Options extends React.Component<Props> {
               loading,
               history,
               userId,
+              gst,
+              margin,
+              stateProvince,
+              businessName,
+              inline
             }}
             onChangePage={onChangePageReseller}
             currentPage={pageReseller}
@@ -477,7 +612,10 @@ class Options extends React.Component<Props> {
             currency={currencyReseller}
             file={fileReseller}
             isAdmin={true}
+            changeGst={this.handleChangeGst}
             changeComission={this.handleResellerComission}
+            changeMargin={this.handleResellerMargin}
+            changeInline={this.handleResellerInline}
             enableReseller={this.enableReseller}
           />
         )
@@ -594,9 +732,12 @@ const OptionsEnhance = compose(
   }),
   graphql(changeComissionMutation, { name: 'changeComission' }),
   graphql(changeResellerComissionMutation, { name: 'changeResellerComission' }),
+  graphql(changeResellerMarginMutation, { name: 'changeResellerMargin' }),
+  graphql(changeResellerInlineMutation, { name: 'changeResellerInline' }),
   graphql(changeAffiliateMutation, { name: 'changeAffiliateStatus' }),
   graphql(setAffiliateStatusMutation, { name: 'enableAffiliate' }),
   graphql(setResellerEnabledMutation, { name: 'enableReseller' }),
+  graphql(changeGstMutation, { name: 'changeGst' }),
   graphql(setResellerStatusMutation, { name: 'changeResellerStatus' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {
