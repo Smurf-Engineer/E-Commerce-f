@@ -91,6 +91,5 @@ export const HeaderInput = styled.div`
 export const InputTitle = styled.div`
   font-size: 12px;
   font-weight: normal;
-  margin-top: -20px;
-  margin-bottom: 6px;
+  margin: -20px 0 6px 0;
 `
