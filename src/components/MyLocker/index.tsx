@@ -42,7 +42,8 @@ import {
   RenameDesignModal,
   UserType,
   MessagePayload,
-  DesignCopyResult
+  DesignCopyResult,
+  User
 } from '../../types/common'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
@@ -55,7 +56,7 @@ interface Props {
   fullCount: string
   deleteModal: DeleteDesignModal
   renameModal: RenameDesignModal
-  user: object
+  user: User
   openAddToStoreModal: boolean
   teamStoreId: string
   savedDesignId: string
@@ -317,6 +318,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       limit,
       loading,
       currentPage,
+      user,
       setCurrentShare,
       openAddToStoreModal,
       teamStoreId,
@@ -383,6 +385,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
               setCurrentShare,
               formatMessage,
               history,
+              user,
               withoutPadding,
               openAddToTeamStoreModalAction,
               setDesignSelected,

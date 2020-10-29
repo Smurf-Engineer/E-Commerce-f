@@ -337,6 +337,12 @@ export const BuyNowOptions = styled.div`
   margin-bottom: 40px;
 `
 
+export const DealerTitle = styled.div`
+  margin-top: 8px;
+  margin-bottom: -12px;
+  color: ${RED};
+`
+
 export const GenderRow = styled.div`
   display: flex;
   margin-bottom: 20px;

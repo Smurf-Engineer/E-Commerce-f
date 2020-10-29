@@ -46,6 +46,9 @@ interface Props {
   repSearchText: string
   managerSearchText: string
   pageAffiliate: number
+  isReseller: boolean
+  isAffiliate: boolean
+  setCheckedAction: (name: string, checked: boolean) => void
   onChangePage: (page: number) => void
   setSearchManager: (value: string) => void
   setSearchRep: (value: string) => void
@@ -174,6 +177,9 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       name,
       permissions,
       lastName,
+      isReseller,
+      isAffiliate,
+      setCheckedAction,
       repSearchText,
       managerSearchText,
       setNoteText,
@@ -208,6 +214,9 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                 formatMessage,
                 repSearchText,
                 managerSearchText,
+                isReseller,
+                isAffiliate,
+                setCheckedAction,
                 currentPage,
                 orderBy,
                 sort,
