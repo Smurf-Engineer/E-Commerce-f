@@ -54,6 +54,7 @@ export const LabelButton = styled.div`
 
 export const Title = styled.div`
   display: flex;
+  font-size: 12px;
 `
 
 export const RedLabel = styled.div`

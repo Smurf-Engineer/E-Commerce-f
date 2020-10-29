@@ -81,17 +81,17 @@ class ResellerDetails extends React.Component<Props, {}> {
     const { openAffiliate } = this.props
     openAffiliate(true)
   }
-  handleChangeComission = (value: number | undefined) => {
+  handleChangeComission = (value = 0) => {
     const { changeComission } = this.props
-    changeComission(value || 0)
+    changeComission(value)
   }
-  handleChangeMargin = (value: number | undefined) => {
+  handleChangeMargin = (value = 0) => {
     const { changeMargin } = this.props
-    changeMargin(value || 0)
+    changeMargin(value)
   }
-  handleChangeInline = (value: number | undefined) => {
+  handleChangeInline = (value = 0) => {
     const { changeInline } = this.props
-    changeInline(value || 0)
+    changeInline(value)
   }
   render() {
     const {
