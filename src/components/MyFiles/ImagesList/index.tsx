@@ -12,6 +12,7 @@ import EmptyContainer from '../../EmptyContainer'
 interface Props {
   images: ImageFile[]
   loading: boolean
+  dragger: React.ReactNode
   formatMessage: (messageDescriptor: any) => string
   onClickDelete: (id: number) => void
 }
@@ -20,6 +21,7 @@ const ImagesList = ({
   images,
   formatMessage,
   onClickDelete,
+  dragger,
   loading
 }: Props) => {
   if (loading) {
@@ -37,7 +39,7 @@ const ImagesList = ({
   const list = images.map((image, index) => (
     <ImageItem key={index} {...{ image, formatMessage, onClickDelete }} />
   ))
-  return <Container>{list}</Container>
+  return <Container>{list}{dragger}</Container>
 }
 
 export default ImagesList
