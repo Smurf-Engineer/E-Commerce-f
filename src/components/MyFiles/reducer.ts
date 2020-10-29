@@ -9,7 +9,9 @@ import {
   SHOW_DELETE_IMAGE_CONFIRM,
   HIDE_DELETE_IMAGE_CONFIRM,
   SET_DELETE_LOADING,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  SET_UPLOADING,
+  UPLOAD_SUCCESS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -18,7 +20,8 @@ export const initialState = fromJS({
   idImageToDelete: -1,
   indexPaletteToDelete: -1,
   showDeleteModal: false,
-  deleteLoading: false
+  deleteLoading: false,
+  uploading: false
 })
 
 const myFilesReducer: Reducer<any> = (state = initialState, action) => {
@@ -46,6 +49,10 @@ const myFilesReducer: Reducer<any> = (state = initialState, action) => {
         idImageToDelete: -1,
         deleteLoading: false
       })
+    case UPLOAD_SUCCESS:
+      return state.set('uploading', false)
+    case SET_UPLOADING:
+      return state.set('uploading', action.loading)
     case SET_DELETE_LOADING:
       return state.set('deleteLoading', action.loading)
     case RESET_REDUCER_DATA:

@@ -24,7 +24,7 @@ export const TopRow = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  @media (max-width: 1350px) {
+  @media (max-width: 1648px) {
     width: 26%;
   }
 `
