@@ -52,9 +52,10 @@ const teamTitles: Header[] = [
 
 const resellerTitles: Header[] = [
   { message: '', width: 5, tabletWidth: 5 },
-  { message: '', width: 20, tabletWidth: 20 },
   { message: '', width: 10, tabletWidth: 10 },
   { message: '', width: 10, tabletWidth: 10 },
+  { message: '', width: 11, tabletWidth: 11 },
+  { message: 'currency', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'currencyDesc' },
   { message: 'teamPrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'msrpDesc' },
   { message: 'purchasePrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'dealerPrice' },
   { message: 'yourPrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'listPriceDesc' },
@@ -191,6 +192,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
               description,
               hideQuickView,
               productId,
+              currentCurrency,
               fixedPrice,
               currencyIndex,
               isReseller,
