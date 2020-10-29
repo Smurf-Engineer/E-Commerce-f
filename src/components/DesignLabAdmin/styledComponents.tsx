@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
-import { GRAY_DARK, GRAY_LIGHTEST, RED } from '../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED } from '../../theme/colors'
 
 interface CellProps {
   color?: string
@@ -131,7 +131,7 @@ export const CurrencyTitle = styled.div`
 export const Row = styled.tr``
 
 export const Cell = styled.td`
-  border-bottom: 1px solid #d7d7d7;
+  border-bottom: 1px solid ${GRAY_LIGHT};
   padding: 8px 0;
   color: ${({ color }: CellProps) => (color ? color : GRAY_DARK)};
   font-size: 14px;
