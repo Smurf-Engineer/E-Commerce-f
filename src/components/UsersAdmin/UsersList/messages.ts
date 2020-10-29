@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'components.UsersList.admin',
     defaultMessage: 'Admin'
   },
+  isAffiliate: {
+    id: 'components.UsersList.isAffiliate',
+    defaultMessage: 'Affiliate'
+  },
+  isReseller: {
+    id: 'components.UsersList.isReseller',
+    defaultMessage: 'Reseller'
+  },
   email: {
     id: 'components.UsersList.email',
     defaultMessage: 'Email'

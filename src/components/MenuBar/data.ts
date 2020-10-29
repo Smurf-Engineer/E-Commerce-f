@@ -14,6 +14,17 @@ export const getSportsQuery = gql`
   }
 `
 
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      reseller {
+        status
+        paypalAccount: paypal_account
+      }
+    }
+  }
+`
+
 export const regionsQuery = gql`
   query regions {
     regionsResult: regions {

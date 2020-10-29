@@ -15,6 +15,10 @@ export const profileSettingsQuery = gql`
         comission
         activatedAt: activated_at
         file
+        inline
+        margin
+        businessName: business_name
+        stateProvince: state_province
         currency
         region
         paypalAccount: paypal_account

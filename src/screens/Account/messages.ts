@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'screens.Account.menu.myTeamStores',
     defaultMessage: 'MY TEAM STORES'
   },
+  myStores: {
+    id: 'screens.Account.menu.myStores',
+    defaultMessage: 'My Stores'
+  },
   affiliate: {
     id: 'screens.Account.menu.affiliate',
     defaultMessage: 'PAYDAY PROGRAM'
@@ -75,7 +79,7 @@ export default defineMessages({
   },
   reseller: {
     id: 'screens.Account.reseller',
-    defaultMessage: 'RESELLER'
+    defaultMessage: 'DIRECTSHIP STORES'
   },
   resellerAbout: {
     id: 'screens.Account.resellerAbout',
@@ -87,6 +91,6 @@ export default defineMessages({
   },
   resellerOrders: {
     id: 'screens.Account.resellerOrders',
-    defaultMessage: 'Payouts'
+    defaultMessage: 'Orders'
   }
 })

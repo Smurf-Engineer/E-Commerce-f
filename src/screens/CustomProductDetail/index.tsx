@@ -79,6 +79,7 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
+import { APPROVED } from '../../constants'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
@@ -152,13 +153,22 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const { formatMessage } = intl
 
     const queryParams = queryString.parse(search)
-    const { comission = 0 } = get(profileData, 'profileData.reseller', {})
+    const { comission = 0, margin = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
     const ownedDesign = get(design, 'canEdit', false)
-    const product = get(design, 'product', null)
-    const shared = get(design, 'shared', false)
-    const productPriceRange = get(product, 'priceRange', null)
-    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
+    let product = get(design, 'product', null)
     const teamStoreItem = queryParams.item
+    const comissionToApply = teamStoreItem ? margin : comission
+    if (resellerStatus === APPROVED && ownedDesign) {
+      const originalPriceRange = get(product, 'priceRange', [])
+      const purchasePrices = originalPriceRange.map((priceItem) => {
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+        return { ...priceItem, price }
+      })
+      product = { ...product, priceRange: purchasePrices }
+    }
+    const productPriceRange = get(product, 'priceRange', [])
+    const shared = get(design, 'shared', false)
+    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
 
     if (loading || dataLoading) {
       return (
@@ -229,25 +239,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       )
     }
     const teamPrice = isReseller ? resellerPrice : fixedPrices
-    const hasFixedPrices = teamPrice && teamPrice.length
+    const hasFixedPrices = teamPrice && teamPrice.length && !isReseller
     let priceRange: PriceRange[] = []
-    let purchasePrices: PriceRange[] = []
     if (teamStoreItem) {
       const regularPrices = filter(
         productPriceRange,
         ({ quantity }) =>
-          quantity === 'Personal' || (quantity === '2-5' && !hasFixedPrices)
+          (quantity === 'Personal' && !isReseller) || (quantity === '2-5' && !hasFixedPrices)
       )
-      if (isReseller && ownedDesign) {
-        const resellerRange = filter(productPriceRange, ({ quantity }) => quantity === '2-5')
-        purchasePrices = resellerRange.map((priceItem) => {
-          const price = priceItem.price * (1 - (comission / 100))
-          return { ...priceItem, price }
-        })
-        priceRange = [...purchasePrices, ...teamPrice]
-      } else {
-        priceRange = [...regularPrices, ...teamPrice]
-      }
+      priceRange = [...regularPrices, ...teamPrice]
     } else {
       priceRange = productPriceRange
     }
@@ -264,7 +264,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       currencyPrices.length &&
       currencyPrices.map(
         ({ price, quantity }, index: number) =>
-          index < MAX_AMOUNT_PRICES && (
+          index < MAX_AMOUNT_PRICES && (!(isReseller && !ownedDesign && index === 0) || !isReseller) && (
             <AvailablePrices key={index}>
               <PriceQuantity
                 {...{ index, price, symbol, teamStoreItem }}
@@ -401,7 +401,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             withoutTop={true}
             isFixed={!teamOnDemand}
             teamStoreId={teamStoreShortId}
-            fixedPrices={isReseller && ownedDesign ? purchasePrices : teamPrice}
+            fixedPrices={isReseller && ownedDesign ? [] : teamPrice}
             {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
             teamStoreName={teamName}
           />
@@ -663,10 +663,11 @@ const CustomProductDetailEnhance = compose(
   injectIntl,
   connect(mapStateToProps, { ...customProductDetailActions }),
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
   }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
