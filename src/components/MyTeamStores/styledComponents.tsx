@@ -28,10 +28,8 @@ export const Title = styled.div`
 
 export const ResellerIcon = styled.img`
   max-width: 344px;
-  margin-left: -8px;
   object-fit: cover;
-  margin-top: -52px;
-  margin-bottom: 14px;
+  margin: -52px 0 14px -8px;
   @media (max-width: 767px) {
     max-width: 264px;
   }
