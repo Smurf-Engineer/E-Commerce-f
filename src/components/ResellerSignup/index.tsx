@@ -160,7 +160,6 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       confirmPassword,
       website,
       currency,
-      // sendSms,
       sendMail,
       terms,
       fileName
