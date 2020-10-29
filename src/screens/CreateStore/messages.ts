@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'screens.CreateStore.title',
     defaultMessage: 'Let’s build your team store!'
   },
+  buildCustom: {
+    id: 'screens.CreateStore.buildCustom',
+    defaultMessage: 'Let’s build your custom store!'
+  },
   teamSizeTitle: {
     id: 'screens.CreateStore.teamSizeTitle',
     defaultMessage: 'Estimated Team Size'
@@ -82,6 +86,18 @@ export default defineMessages({
       // tslint:disable-next-line:max-line-length
       '<p>With JAKROO’s Dynamic Price Drop, everyone wins!</p> <p>The starting discount level for all team members is 20%.  As team members place their orders and reach the next discount level, <strong>the price automatically drops for everyone, even for those who placed their order before the drop.</strong></p> <p>Final pricing for each item will be based on the highest discount level achieved for that item. Payment is processed after the close of the order period so <strong>everyone receives the same low price, regardless of when your order was placed.</strong> Yes, its that cool!</p>'
   },
+  priceDropReseller: {
+    id: 'screens.CreateStore.priceDropReseller',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      '<p>With on-demand DirectShip Stores, you are able to set your preferred selling price for each item. Default reseller margin is set at 20% off the MSRP. However, you can increase your profit by increasing the selling price.<br /> Each member will be able to individually place their order and checkout using their preferred payment method from the available payment options. All transaction fees and any applicable custom duties are covered by Jakroo.</p>'
+  },
+  deliveryReseller: {
+    id: 'screens.CreateStore.deliveryReseller',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'DirectShip Store orders are produced on demand upon receipt of order and typically ship direct to the customer within 10-12 days of receipt (excluding Federal holidays). Estimated delivery times are displayed on the store page and in the order confirmation email. Delivery times may occasionally vary due to periodic shipping carrier or production facility closures. We use our best efforts to initiate shipment and meet scheduled delivery dates but cannot guarantee the actual delivery date of the order. For security reasons, all orders are shipped via Fedex International Priority with signature required. In some cases, when products are shipped from multiple facilities, a secondary carrier such as UPS may be used. Customers will receive a shipping notification once their order is picked up by the shipping carrier.'
+  },
   storeItemsTitle: {
     id: 'screens.CreateStore.storeItemsTitle',
     defaultMessage: 'Add Store Items'
@@ -102,6 +118,11 @@ export default defineMessages({
     id: 'screens.CreateStore.bulletin',
     defaultMessage:
       'Add a Bulletin or Important Message for your Team to see on the stores page'
+  },
+  bulletinStore: {
+    id: 'screens.CreateStore.bulletinStore',
+    defaultMessage:
+      'Add a bulletin or important message for your customers to see on the store page'
   },
   bulletinPlaceholder: {
     id: 'screens.CreateStore.bulletinPlaceholder',

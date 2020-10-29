@@ -60,9 +60,11 @@ import proAssist from '../components/ProAssist/reducer'
 import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 import roleCatalog from '../components/RoleList/reducer'
 import salesRep from '../components/SalesRep/reducer'
+import resellers from '../components/Resellers/reducer'
 import resellerOptions from '../components/ResellerOptions/reducer'
 import resellerOrders from '../components/ResellerOrders/reducer'
 import resellerAbout from '../components/ResellerAbout/reducer'
+import resellerPayouts from '../components/ResellerPayouts/reducer'
 import affiliates from '../components/Affiliates/reducer'
 import affiliatesAbout from '../components/AffiliateAbout/reducer'
 import affiliatesOrders from '../components/AffiliatesOrders/reducer'
@@ -100,6 +102,7 @@ export interface ReducersObject {
   account: any
   subscriptionTest: any
   fitWidget: any
+  resellers: any
   designs: any
   resellerOrders: any
   productDetail: any
@@ -116,6 +119,7 @@ export interface ReducersObject {
   productCatalogAdmin: any
   menuSports: any
   layout: any
+  resellerPayouts: any
   productModels: any
   menu: any
   forgot: any
@@ -219,9 +223,11 @@ const rootReducer = combineReducers({
   resellerOptions,
   checkout,
   designerTool,
+  resellerPayouts,
   shoppingCartPage,
   resellerOrders,
   storeFront,
+  resellers,
   resellerAbout,
   productModels,
   createStore,

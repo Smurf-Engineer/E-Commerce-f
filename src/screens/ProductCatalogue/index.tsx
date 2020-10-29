@@ -27,7 +27,7 @@ import {
   ResultsColumn,
   Icon
 } from './styledComponents'
-import { QueryProps, ClickParam, Filter } from '../../types/common'
+import { QueryProps, ClickParam, Filter, User } from '../../types/common'
 import { GetFiltersQuery } from './data'
 import { filtersNames, ALL_GENDERS } from './constants'
 
@@ -72,6 +72,7 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   openSidebar: boolean
   currentCurrency: string
+  user: User
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
@@ -175,6 +176,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       orderBy,
       limit,
       skip,
+      user,
       currentPage,
       fakeWidth,
       openSidebar,
@@ -339,6 +341,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             orderBy,
                             limit,
                             openQuickView,
+                            user,
                             history,
                             sortByLabel,
                             currentPage,
@@ -382,6 +385,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         openQuickView,
                         history,
                         sortByLabel,
+                        user,
                         currentPage,
                         contentTile
                       }}
@@ -469,7 +473,8 @@ const mapStateToProps = (state: any) => {
   const productCatalogue = state.get('productCatalog').toJS()
   const responsive = state.get('responsive').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...productCatalogue, ...responsive, ...langProps }
+  const app = state.get('app').toJS()
+  return { ...app, ...productCatalogue, ...responsive, ...langProps }
 }
 
 const ProductCatalogEnhance = compose(

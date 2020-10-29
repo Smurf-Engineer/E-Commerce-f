@@ -28,6 +28,7 @@ import StoreForm from '../../components/StoreForm'
 import {
   createStoreMutation,
   GetTeamStoreQuery,
+  profileSettingsQuery,
   updateStoreMutation
 } from './data'
 import {
@@ -37,7 +38,7 @@ import {
   LockerTableType,
   DesignType,
   SelectedDesignObjectType,
-  UserType
+  UserType, IProfileSettings
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import { cutoffDateSettingsQuery } from './data'
@@ -73,7 +74,7 @@ import {
   TitleContainer,
   ModalTitle,
   InfoBody,
-  buttonStyle
+  buttonStyle, DescDiv
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
@@ -82,11 +83,17 @@ import {
   ON_DEMAND_TEAMSTORE,
   DEFAULT_CUTOFF_DAYS
 } from './constants'
+import { APPROVED } from '../../constants'
+import find from 'lodash/find'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
 interface Data extends QueryProps {
   teamStore: DesignResultType
+}
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
 }
 
 interface CutoffData extends QueryProps {
@@ -126,7 +133,9 @@ interface Props extends RouteComponentProps<any> {
   cutoffSettings: CutoffData
   datesEdited: boolean
   datesEditedTemporal: boolean
+  profileData: ProfileData
   // Redux actions
+  setPriceAction: (value: number, currency: number, itemIndex: number, abbreviation: string) => void
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
   changeBulletinAction: (value: string) => void
@@ -292,9 +301,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   isOnDemand = () => {
     const {
-      location: { search }
+      location: { search },
+      profileData
     } = this.props
     const { type, storeId } = queryString.parse(search)
+    const resellerStatus = get(profileData, 'profileData.reseller.status', '')
+    if (resellerStatus === APPROVED) {
+      return true
+    }
     if (storeId) {
       const { onDemand } = this.props
       return onDemand
@@ -349,6 +363,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       name,
       startDate,
       endDate,
+      profileData,
       privateStore,
       bulletin,
       passCode,
@@ -373,13 +388,24 @@ export class CreateStore extends React.Component<Props, StateProps> {
     if (!validForm) {
       return
     }
-
+    const reseller = get(profileData, 'profileData.reseller', {})
+    const { currency: resellerCurrency, status: resellerStatus } = reseller || {}
+    const isReseller = resellerStatus === APPROVED && onDemand
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
     const items = itemsSelected.map((item) => {
+      let resellerPrice = 0
+      if (isReseller) {
+        const priceSelected = get(find((item.resellerRange || []), ['abbreviation', resellerCurrency]), 'price', 0)
+        const productPriceRange = get(item, 'design.product.priceRange', [])
+        const normalPrice = find(productPriceRange, { quantity: '2-5', abbreviation: resellerCurrency })
+        const purchasePrice = normalPrice ? normalPrice.price : 0
+        resellerPrice = priceSelected < purchasePrice ? purchasePrice : priceSelected
+      }
       return {
         design_id: get(item, 'design.shortId'),
-        visible: get(item, 'visible')
+        visible: get(item, 'visible'),
+        reseller_price: resellerPrice
       }
     })
 
@@ -567,6 +593,12 @@ export class CreateStore extends React.Component<Props, StateProps> {
     }
   }
 
+  handleOnSetPrice = (value: number, currency: number, itemIndex: number) => {
+    const { setPriceAction, profileData } = this.props
+    const abbreviation = get(profileData, 'profileData.reseller.currency', {})
+    setPriceAction(value, currency, itemIndex, abbreviation)
+  }
+
   render() {
     const { imagePreviewUrl, hasError } = this.state
     const {
@@ -599,6 +631,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       currentPage,
       limit,
       offset,
+      profileData,
       onUnselectItemAction,
       user,
       cutoffSettings,
@@ -622,13 +655,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
       ) : (
           <Dragger onSelectImage={this.beforeUpload} />
         )
-
+    const reseller = get(profileData, 'profileData.reseller', {})
+    const { comission: resellerComission, status: resellerStatus, currency: resellerCurrency } = reseller
     const tableItems = this.getCheckedItems(items)
-
     const storeShortId = this.getStoreId()
     const isOnDemand = this.isOnDemand()
     const cutoffDays = get(cutoffSettings, 'cutoffDays', DEFAULT_CUTOFF_DAYS)
-
+    const isReseller = resellerStatus === APPROVED && isOnDemand
     return (
       <Layout {...{ history, intl }}>
         {loading ? (
@@ -639,9 +672,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <Container>
               <TitleContainer>
                 <Title>
-                  <FormattedMessage {...messages.title} />
+                  <FormattedMessage {...messages[isReseller ? 'buildCustom' : 'title']} />
                 </Title>
-                {storeId && (isOnDemand || !startDate) && (
+                {storeId && (isOnDemand || !startDate) && !isReseller && (
                   <SwitchWithLabel
                     checked={onDemand}
                     onChange={updateOnDemandAction}
@@ -665,7 +698,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 onSelectStartDate={updateStartDateAction}
                 onSelectEndDate={updateEndDateAction}
                 onDemand={isOnDemand}
-                {...{ hasError, cutoffDays, storeId, datesEdited, initialStartDate }}
+                {...{ hasError, cutoffDays, storeId, datesEdited, initialStartDate, isReseller }}
               />
               {isOnDemand ? (
                 <React.Fragment>
@@ -673,30 +706,44 @@ export class CreateStore extends React.Component<Props, StateProps> {
                     <Subtitle>
                       <FormattedMessage {...messages.pricingCheckout} />
                     </Subtitle>
-                    <FormattedMessage
-                      {...messages.pricingCheckoutContent}
-                      values={{
-                        onDemandTeam: (
-                          <b>{formatMessage(messages.onDemandTeamStore)}</b>
-                        ),
-                        discount: <b>{formatMessage(messages.percent)}</b>
-                      }}
-                    />
+                    {isReseller ?
+                      <DescDiv
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.priceDropReseller)
+                        }}
+                      /> :
+                      <FormattedMessage
+                        {...messages.pricingCheckoutContent}
+                        values={{
+                          onDemandTeam: (
+                            <strong>{formatMessage(messages.onDemandTeamStore)}</strong>
+                          ),
+                          discount: <strong>{formatMessage(messages.percent)}</strong>
+                        }}
+                      />
+                    }
                   </TextBlock>
                   <TextBlock>
                     <Subtitle>
                       <FormattedMessage {...messages.productionDelivery} />
                     </Subtitle>
-                    <FormattedMessage
-                      {...messages.productionDeliveryContent}
-                      values={{
-                        orderDays: <b>{formatMessage(messages.orderDays)}</b>,
-                        shippingCompany: (
-                          <b>{formatMessage(messages.shippingCompany)}</b>
-                        ),
-                        signature: <b>{formatMessage(messages.signature)}</b>
-                      }}
-                    />
+                    {isReseller ?
+                      <DescDiv
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.deliveryReseller)
+                        }}
+                      /> :
+                      <FormattedMessage
+                        {...messages.productionDeliveryContent}
+                        values={{
+                          orderDays: <strong>{formatMessage(messages.orderDays)}</strong>,
+                          shippingCompany: (
+                            <strong>{formatMessage(messages.shippingCompany)}</strong>
+                          ),
+                          signature: <strong>{formatMessage(messages.signature)}</strong>
+                        }}
+                      />
+                    }
                   </TextBlock>
                 </React.Fragment>
               ) : (
@@ -728,13 +775,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 {formatMessage(messages.addItem)}
               </AddItem>
               <LockerTable
-                {...{ formatMessage, teamSizeRange, currentCurrency }}
+                {...{ formatMessage, teamSizeRange, currentCurrency, resellerComission, isReseller }}
                 items={items}
                 hideQuickView={true}
                 isFixed={!isOnDemand}
+                currentCurrency={isReseller ? resellerCurrency : currentCurrency}
                 onPressDelete={this.handleOnDeleteItem}
                 onPressQuickView={this.handleOnPressQuickView}
                 onPressVisible={this.handleOnPressVisible}
+                handleOnSetPrice={this.handleOnSetPrice}
                 onMoveRow={moveRowAction}
               />
               <Row>
@@ -766,7 +815,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               <RowColumn>
                 <BulletinLabel>
                   <Subtitle>
-                    <FormattedMessage {...messages.bulletin} />
+                    <FormattedMessage {...messages[isReseller ? 'bulletinStore' : 'bulletin']} />
                   </Subtitle>
                   <OptionalLabel>
                     {formatMessage(messages.optional)}
@@ -849,7 +898,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 onAddItems={setItemsAddAction}
                 changePage={this.changePage}
                 proDesign={false}
-                userId={user.id}
+                userId={user ? user.id : ''}
               />
               <ImageCropper
                 {...{ formatMessage, open }}
@@ -876,6 +925,12 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
+  graphql(profileSettingsQuery, {
+    name: 'profileData',
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
   graphql(cutoffDateSettingsQuery, {
     name: 'cutoffSettings',
     options: {

@@ -30,6 +30,9 @@ export const ROLE_MANAGEMENT = 'roleManagement'
 export const SALES_REP = 'salesRep'
 export const AFFILIATES_PAYOUTS = 'affiliatesPayouts'
 export const AFFILIATES = 'affiliates'
+export const RESELLER_ORDERS = 'resellerOrders'
+export const RESELLER_PAYOUTS = 'resellerPayouts'
+export const RESELLER = 'reseller'
 export const MAKE_PAYOUTS = 'makePayouts'
 export const IGNORE_STATUS_PAYOUTS = 'ignoreStatusPayouts'
 export const TEAM_STORES = 'teamStores'
@@ -57,6 +60,10 @@ export const options = [
   {
     title: USERS,
     options: [USER_LIST, ROLE_MANAGEMENT, SALES_REP]
+  },
+  {
+    title: RESELLER,
+    options: [RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
     title: PAYDAY,

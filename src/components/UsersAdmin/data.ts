@@ -25,7 +25,12 @@ export const profileSettingsQuery = gql`
         file
         paypalAccount: paypal_account
         comission
+        margin
+        inline
+        gst
         region
+        businessName: business_name
+        stateProvince: state_province
         currency
         activatedAt: activated_at
       }
@@ -136,6 +141,32 @@ export const changeResellerComissionMutation = gql`
     changeResellerComission(value: $value, userId: $userId) {
       status
       comission
+    }
+  }
+`
+
+export const changeGstMutation = gql`
+  mutation changeGst($value: String, $userId: String!) {
+    changeGst(value: $value, userId: $userId) {
+      gst
+    }
+  }
+`
+
+export const changeResellerMarginMutation = gql`
+  mutation changeResellerMargin($value: Float, $userId: String!) {
+    changeResellerMargin(value: $value, userId: $userId) {
+      status
+      margin
+    }
+  }
+`
+
+export const changeResellerInlineMutation = gql`
+  mutation changeResellerInline($value: Float, $userId: String!) {
+    changeResellerInline(value: $value, userId: $userId) {
+      status
+      inline
     }
   }
 `

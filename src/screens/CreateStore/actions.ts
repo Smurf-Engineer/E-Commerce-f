@@ -24,7 +24,7 @@ import {
   CLEAR_DATA,
   SET_PAGINATION_DATA,
   ON_UNSELECT_ITEM,
-  CHANGE_BULLETIN
+  CHANGE_BULLETIN, SET_ITEM_PRICE
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
@@ -123,6 +123,19 @@ export const setItemsAddAction = (): AnyAction => ({
 
 export const clearStoreAction = (): AnyAction => ({
   type: CREATE_STORE_SUCCESS
+})
+
+export const setPriceAction = (
+  value: number,
+  currency: number,
+  itemIndex: number,
+  abbreviation: string
+) => ({
+  type: SET_ITEM_PRICE,
+  value,
+  currency,
+  itemIndex,
+  abbreviation
 })
 
 export const setItemVisibleAction = (

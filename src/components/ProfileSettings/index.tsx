@@ -45,6 +45,9 @@ import {
   // SwitchWrapper,
   // StyledSwitch,
   LoadingContainer,
+  BoldLabel,
+  LabelButton,
+  ResellerDetails, FileLink, Clip, BoldTitle, Margins, TitleMargin, PopoverStyled, PopoverText, InfoIcon
   // StatusLabel,
   // AccountLabel,
 } from './styledComponents'
@@ -64,6 +67,9 @@ import {
 import ChangePasswordModal from '../ChangePasswordModal'
 import get from 'lodash/get'
 import config from '../../config'
+import moment from 'moment'
+import { NOTE_FORMAT } from '../UsersAdmin/constants'
+import { getFileWithExtension } from '../../utils/utilsFiles'
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -161,6 +167,11 @@ class ProfileSettings extends React.Component<Props, {}> {
       history.replace('/account?option=profileSettings')
     }
   }
+  openFile = () => {
+    const { profileData } = this.props
+    const file = get(profileData, 'profileData.reseller.file', '')
+    window.open(file)
+  }
   render() {
     const {
       formatMessage,
@@ -199,7 +210,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     } = this.props
 
     const userProfile = get(profileData, 'profileData.userProfile', {})
-    // const affiliate = get(profileData, 'profileData.affiliate', {})
+    const reseller = get(profileData, 'profileData.reseller', {})
     // const regionsOptions: Region[] = regions || []
 
     // const smsButtonDisabled =
@@ -210,7 +221,8 @@ class ProfileSettings extends React.Component<Props, {}> {
     // const emailButtonDisabled =
     //   emailNewsletterChecked === null ||
     //   emailSettings.newsletter === emailNewsletterChecked
-    // const { status, paypalAccount } = affiliate
+    const { status, comission, inline, activatedAt, file } = reseller || {}
+    const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
         {loadingFile &&
@@ -218,7 +230,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             <Spin />
           </LoadingContainer>
         }
-        <Title>{formatMessage(messages.profileTitle)}</Title>
+        <BoldTitle>{formatMessage(messages.profileTitle)}</BoldTitle>
         <SectionContainer>
           <ProfileForm
             handleInputChange={this.handleInputChange}
@@ -236,6 +248,71 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
+        {!!status && <><BoldTitle>{formatMessage(messages.resellerSettings)}</BoldTitle>
+        <ResellerDetails>
+          <LabelButton>
+            <Title>
+              {formatMessage(messages.status)}
+            </Title>
+            <BoldLabel>
+              {status}
+            </BoldLabel>
+          </LabelButton>
+          <LabelButton>
+            <Title>
+              {formatMessage(messages.activatedAt)}
+            </Title>
+            {!!activatedAt &&
+              <BoldLabel>
+                {moment(activatedAt).format(NOTE_FORMAT)}
+              </BoldLabel>
+            }
+          </LabelButton>
+          <LabelButton>
+            <Title>
+              {formatMessage(messages.taxForm)}
+            </Title>
+            <FileLink onClick={this.openFile}>
+              <Clip type="paper-clip" />
+              {fileName}
+            </FileLink>
+          </LabelButton>
+          <LabelButton>
+            <TitleMargin>
+              {formatMessage(messages.dealerMargin)}
+              <PopoverStyled
+                trigger="click"
+                content={
+                  <PopoverText
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.marginPopover)
+                    }}
+                  />
+                }
+              >
+                <InfoIcon type="info-circle" />
+              </PopoverStyled>
+            </TitleMargin>
+            <Margins>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.customProducts)}
+                </Title>
+                <BoldLabel>
+                  {`${comission}%`}
+                </BoldLabel>
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.inlineProducts)}
+                </Title>
+                <BoldLabel>
+                  {`${inline}%`}
+                </BoldLabel>
+              </LabelButton>
+            </Margins>
+          </LabelButton>
+        </ResellerDetails></>}
         <ChangePasswordModal
           {...{
             formatMessage,
