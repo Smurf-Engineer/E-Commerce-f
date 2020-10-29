@@ -36,6 +36,7 @@ import { RED } from '../../theme/colors'
 import indexOf from 'lodash/indexOf'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
+import { bytesToMb } from '../../utils/utilsFiles'
 
 const { warning } = Modal
 
@@ -163,7 +164,8 @@ class MyFiles extends React.Component<Props, {}> {
       const { formatMessage } = this.props
       const { size, name } = file
       // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
-      if (size / 1000000 > 20) {
+      const mbSize = bytesToMb(size)
+      if (mbSize > 20) {
         message.error(formatMessage(messages.imageSizeError))
         return false
       }
