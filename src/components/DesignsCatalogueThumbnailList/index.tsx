@@ -119,7 +119,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       thumbnailsList = designs.map(
         (
           {
-            design: { id, shortId, name, product, image, code },
+            design: { id, shortId, name, product: productData, image, code },
             totalOrders,
             resellerRange,
             priceRange: fixedRange,
@@ -128,9 +128,18 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           index
         ) => {
           const priceRange = isResellerStore ? resellerRange : fixedRange
+          let product = productData
+          if (isResellerOwner) {
+            const originalPriceRange = get(product, 'priceRange', [])
+            const purchasePrices = originalPriceRange.map((priceItem) => {
+              const price = (priceItem.price * (1 - (resellerComission / 100))).toFixed(2)
+              return { ...priceItem, price }
+            })
+            product = { ...product, priceRange: purchasePrices }
+          }
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, {
-              quantity: targetRange.name,
+              quantity: (isResellerOwner ? '2-5' : targetRange.name),
               abbreviation: currentCurrency || config.defaultCurrency
             }) || {
               price: 0
@@ -145,16 +154,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               price: 0
             }
             : { price: 0 }
-          // Purchase price calculation when it's a reseller
-          const purchaseRange = filter(product.priceRange, ({ quantity }) => quantity === '2-5')
-          const purchasePrices = purchaseRange.map((priceItem) => {
-            const price = priceItem.price * (1 - (resellerComission / 100))
-            return { ...priceItem, price }
-          })
-          const purchasePriceBase = get(
-            find(purchasePrices, { abbreviation: currentCurrency || config.defaultCurrency }),
-            'price', 0)
-          const purchasePrice = `${currentCurrency || config.defaultCurrency} ${purchasePriceBase}`
 
           const fixedPriceValue =
             priceRange && priceRange.length
@@ -216,8 +215,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             : currentRangeAttributes.price
           const currentPriceText = `${fixedPriceValue.shortName
             } ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${targetPriceValue.price
-            }`
+          const targetPriceText = `${targetPriceValue.shortName}
+          ${isResellerOwner ? Number(targetPriceValue.price).toFixed(2) : targetPriceValue.price}`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
               itemsLeft: `<strong>${currentRangeAttributes.itemsLeft
@@ -244,7 +243,6 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       targetRange,
                       onDemandMode,
                       isResellerStore,
-                      purchasePrice,
                       isResellerOwner,
                       code,
                       currentRangeAttributes,
@@ -273,7 +271,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       isFixed={!onDemandMode}
                       teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}
-                      fixedPrices={isResellerStore && isResellerOwner ? purchasePrices : priceRange}
+                      fixedPrices={isResellerOwner ? [] : priceRange}
                     />
                   )
                 }

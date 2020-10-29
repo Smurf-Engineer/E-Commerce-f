@@ -74,7 +74,7 @@ import {
   TitleContainer,
   ModalTitle,
   InfoBody,
-  buttonStyle
+  buttonStyle, DescDiv
 } from './styledComponents'
 import config from '../../config/index'
 import ImageCropper from '../../components/ImageCropper'
@@ -84,6 +84,7 @@ import {
   DEFAULT_CUTOFF_DAYS
 } from './constants'
 import { APPROVED } from '../../constants'
+import find from 'lodash/find'
 const passwordRegex = /^[a-zA-Z0-9]{4,10}$/g
 const BULLETIN_MAX_LENGTH = 120
 
@@ -300,9 +301,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   isOnDemand = () => {
     const {
-      location: { search }
+      location: { search },
+      profileData
     } = this.props
     const { type, storeId } = queryString.parse(search)
+    const resellerStatus = get(profileData, 'profileData.reseller.status', '')
+    if (resellerStatus === APPROVED) {
+      return true
+    }
     if (storeId) {
       const { onDemand } = this.props
       return onDemand
@@ -357,6 +363,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       name,
       startDate,
       endDate,
+      profileData,
       privateStore,
       bulletin,
       passCode,
@@ -381,18 +388,24 @@ export class CreateStore extends React.Component<Props, StateProps> {
     if (!validForm) {
       return
     }
-
+    const reseller = get(profileData, 'profileData.reseller', {})
+    const { currency: resellerCurrency, status: resellerStatus } = reseller || {}
+    const isReseller = resellerStatus === APPROVED && onDemand
     const storeShortId = this.getStoreId()
     setLoadingAction(true)
     const items = itemsSelected.map((item) => {
-      const resellerRange = item.resellerRange ? item.resellerRange.map(
-        ({ price, abbreviation }) =>
-          ({ price, abbreviation })
-      ) : []
+      let resellerPrice = 0
+      if (isReseller) {
+        const priceSelected = get(find((item.resellerRange || []), ['abbreviation', resellerCurrency]), 'price', 0)
+        const productPriceRange = get(item, 'design.product.priceRange', [])
+        const normalPrice = find(productPriceRange, { quantity: '2-5', abbreviation: resellerCurrency })
+        const purchasePrice = normalPrice ? normalPrice.price : 0
+        resellerPrice = priceSelected < purchasePrice ? purchasePrice : priceSelected
+      }
       return {
         design_id: get(item, 'design.shortId'),
         visible: get(item, 'visible'),
-        reseller_range: resellerRange
+        reseller_price: resellerPrice
       }
     })
 
@@ -659,9 +672,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <Container>
               <TitleContainer>
                 <Title>
-                  <FormattedMessage {...messages.title} />
+                  <FormattedMessage {...messages[isReseller ? 'buildCustom' : 'title']} />
                 </Title>
-                {storeId && (isOnDemand || !startDate) && (
+                {storeId && (isOnDemand || !startDate) && !isReseller && (
                   <SwitchWithLabel
                     checked={onDemand}
                     onChange={updateOnDemandAction}
@@ -685,7 +698,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 onSelectStartDate={updateStartDateAction}
                 onSelectEndDate={updateEndDateAction}
                 onDemand={isOnDemand}
-                {...{ hasError, cutoffDays, storeId, datesEdited, initialStartDate }}
+                {...{ hasError, cutoffDays, storeId, datesEdited, initialStartDate, isReseller }}
               />
               {isOnDemand ? (
                 <React.Fragment>
@@ -693,30 +706,44 @@ export class CreateStore extends React.Component<Props, StateProps> {
                     <Subtitle>
                       <FormattedMessage {...messages.pricingCheckout} />
                     </Subtitle>
-                    <FormattedMessage
-                      {...messages.pricingCheckoutContent}
-                      values={{
-                        onDemandTeam: (
-                          <b>{formatMessage(messages.onDemandTeamStore)}</b>
-                        ),
-                        discount: <b>{formatMessage(messages.percent)}</b>
-                      }}
-                    />
+                    {isReseller ?
+                      <DescDiv
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.priceDropReseller)
+                        }}
+                      /> :
+                      <FormattedMessage
+                        {...messages.pricingCheckoutContent}
+                        values={{
+                          onDemandTeam: (
+                            <strong>{formatMessage(messages.onDemandTeamStore)}</strong>
+                          ),
+                          discount: <strong>{formatMessage(messages.percent)}</strong>
+                        }}
+                      />
+                    }
                   </TextBlock>
                   <TextBlock>
                     <Subtitle>
                       <FormattedMessage {...messages.productionDelivery} />
                     </Subtitle>
-                    <FormattedMessage
-                      {...messages.productionDeliveryContent}
-                      values={{
-                        orderDays: <b>{formatMessage(messages.orderDays)}</b>,
-                        shippingCompany: (
-                          <b>{formatMessage(messages.shippingCompany)}</b>
-                        ),
-                        signature: <b>{formatMessage(messages.signature)}</b>
-                      }}
-                    />
+                    {isReseller ?
+                      <DescDiv
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.deliveryReseller)
+                        }}
+                      /> :
+                      <FormattedMessage
+                        {...messages.productionDeliveryContent}
+                        values={{
+                          orderDays: <strong>{formatMessage(messages.orderDays)}</strong>,
+                          shippingCompany: (
+                            <strong>{formatMessage(messages.shippingCompany)}</strong>
+                          ),
+                          signature: <strong>{formatMessage(messages.signature)}</strong>
+                        }}
+                      />
+                    }
                   </TextBlock>
                 </React.Fragment>
               ) : (
@@ -788,7 +815,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
               <RowColumn>
                 <BulletinLabel>
                   <Subtitle>
-                    <FormattedMessage {...messages.bulletin} />
+                    <FormattedMessage {...messages[isReseller ? 'bulletinStore' : 'bulletin']} />
                   </Subtitle>
                   <OptionalLabel>
                     {formatMessage(messages.optional)}
@@ -871,7 +898,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 onAddItems={setItemsAddAction}
                 changePage={this.changePage}
                 proDesign={false}
-                userId={user.id}
+                userId={user ? user.id : ''}
               />
               <ImageCropper
                 {...{ formatMessage, open }}

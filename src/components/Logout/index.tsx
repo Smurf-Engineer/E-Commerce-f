@@ -23,11 +23,12 @@ import {
 
 interface Props {
   title: string
+  resellerPending?: boolean
   logout: () => void
   goTo: (path: string) => void
 }
 
-const Logout = ({ title, logout, goTo }: Props) => {
+const Logout = ({ title, logout, goTo, resellerPending }: Props) => {
   const handleOnClick = ({ key }: any) => {
     if (key === 'logout') {
       logout()
@@ -36,7 +37,12 @@ const Logout = ({ title, logout, goTo }: Props) => {
     }
   }
 
-  const logoutMenu = (
+  const logoutMenu = resellerPending ? 
+    <Menu onClick={handleOnClick} style={menuStyle}>
+      <Menu.Item key="logout">
+        <FormattedMessage {...messages.logoutLabel} />
+      </Menu.Item>
+    </Menu> : 
     <Menu onClick={handleOnClick} style={menuStyle}>
       <Menu.Item key={SCREEN_LOCKER}>
         <FormattedMessage {...messages.myLockerLabel} />
@@ -51,7 +57,6 @@ const Logout = ({ title, logout, goTo }: Props) => {
         <FormattedMessage {...messages.logoutLabel} />
       </Menu.Item>
     </Menu>
-  )
 
   return (
     <MediaQuery minWidth={992}>

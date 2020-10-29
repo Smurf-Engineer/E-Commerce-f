@@ -607,14 +607,18 @@ type OwnProps = {
   teamStoreId?: string
   passCode?: string
   skip?: number
+  user?: UserType
 }
 
 const StoreFrontContentEnhance = compose(
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
+    options: ({ user }: OwnProps) => {
+      return {
+        fetchPolicy: 'network-only',
+        skip: !user
+      }
     },
-    name: 'profileData'
+    name: 'profileData',
   }),
   graphql<Data>(getSingleTeamStore, {
     options: ({ teamStoreId, passCode, skip = 0 }: OwnProps) => {

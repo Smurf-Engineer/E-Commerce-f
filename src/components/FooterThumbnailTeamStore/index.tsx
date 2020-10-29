@@ -32,7 +32,6 @@ interface Props {
   code: string
   targetRange?: Filter
   onDemandMode?: boolean
-  purchasePrice?: number
   isResellerStore?: boolean
   isResellerOwner?: boolean
   targetPrice: number | string
@@ -50,7 +49,6 @@ const FooterThumbnailTeamStore = ({
   onDemandMode,
   code,
   targetPrice,
-  purchasePrice,
   isResellerStore,
   isResellerOwner,
   currentPrice,
@@ -90,12 +88,13 @@ const FooterThumbnailTeamStore = ({
       <Description>{description}</Description>
       <Description>{code}</Description>
       <BottomPrices>
-        <PricesContainer>
-          <Label>
-            <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
-          </Label>
-          <PriceLabel>{isResellerStore && isResellerOwner ? purchasePrice : targetPrice}</PriceLabel>
-        </PricesContainer>
+        {((isResellerStore && isResellerOwner) || !isResellerStore) &&
+          <PricesContainer>
+            <Label>
+              <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
+            </Label>
+            <PriceLabel>{targetPrice}</PriceLabel>
+          </PricesContainer>}
         <PricesContainer>
           <Label>
             {isResellerStore && isResellerOwner ?
@@ -103,7 +102,9 @@ const FooterThumbnailTeamStore = ({
                 {...messages.listPrice}
               /> :
               <FormattedMessage
-                {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
+                {...(onDemandMode ? 
+                  messages[isResellerStore && !isResellerOwner ? 'listPrice' : 'teamPrice'] : messages.currentPrice
+                )}
               />
             }
           </Label>

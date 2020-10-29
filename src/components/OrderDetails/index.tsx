@@ -117,6 +117,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingFirstName,
       shippingLastName,
       shippingStreet,
+      owner,
       shippingApartment,
       shippingPhone,
       shippingCountry,
@@ -208,7 +209,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             price={priceRange}
             itemIndex={index}
             onlyRead={true}
-            canReorder={!teamStoreId && true}
+            canReorder={!teamStoreId && owner}
           />
         )
       })
@@ -317,7 +318,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           />
         </StyledText>
         <Items>
-          {!teamStoreId && (
+          {!teamStoreId && owner && (
             <TitleStyled>
               {formatMessage(messages.items)}
               <AddToCartButton
@@ -368,24 +369,26 @@ export class OrderDetails extends React.Component<Props, {}> {
             {paymentMethodInfo}
           </ShippingBillingCard>
         </ShippingBillingContainer>
-        <AddToCartButton
-          ref={(addToCartButton: any) =>
-            (this.editOrderButton = addToCartButton)
-          }
-          label={formatMessage(messages.edit)}
-          renderForThumbnail={false}
-          items={cart}
-          {...{ formatMessage }}
-          withoutTop={true}
-          myLockerList={false}
-          itemProdPage={true}
-          orderDetails={true}
-          onClick={() => true}
-          hide={true}
-          fixedCart={status === PAYMENT_ISSUE}
-          replaceOrder={shortId}
-        />
-        {teamStoreId &&
+        {owner &&
+          <AddToCartButton
+            ref={(addToCartButton: any) =>
+              (this.editOrderButton = addToCartButton)
+            }
+            label={formatMessage(messages.edit)}
+            renderForThumbnail={false}
+            items={cart}
+            {...{ formatMessage }}
+            withoutTop={true}
+            myLockerList={false}
+            itemProdPage={true}
+            orderDetails={true}
+            onClick={() => true}
+            hide={true}
+            fixedCart={status === PAYMENT_ISSUE}
+            replaceOrder={shortId}
+          />
+        }
+        {(teamStoreId && owner) &&
           (status === PREORDER ||
             (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
             <OrderActions>
