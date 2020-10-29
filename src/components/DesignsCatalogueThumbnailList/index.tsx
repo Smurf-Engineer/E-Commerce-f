@@ -45,6 +45,7 @@ import downArrowIcon from '../../assets/downarrow.svg'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import { FormattedMessage } from 'react-intl'
 import filter from 'lodash/filter'
+import get from 'lodash/get'
 const LIMIT_FIRST_RANGE = 2
 interface Data extends QueryProps {
   products: ProductType
@@ -63,6 +64,8 @@ interface Props {
   onDemandMode?: boolean
   limit?: number
   teamStoreShortId?: string
+  isResellerStore?: boolean
+  isResellerOwner?: boolean
   designs?: TeamStoreItemtype[]
   withoutPadding?: boolean
   storeFront?: boolean
@@ -71,6 +74,8 @@ interface Props {
   targetPrice: string
   currentCurrency: string
   display?: boolean
+  purchasePrice?: number
+  resellerComission?: number
   teamStoreName?: string
   closed?: boolean
   totalDesigns?: number
@@ -89,6 +94,9 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       teamStoreShortId,
       designs,
       display,
+      resellerComission = 0,
+      isResellerStore,
+      isResellerOwner,
       onDemandMode,
       withoutPadding,
       targetRange,
@@ -111,30 +119,42 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       thumbnailsList = designs.map(
         (
           {
-            design: { id, shortId, name, product, image, code },
+            design: { id, shortId, name, product: productData, image, code },
             totalOrders,
-            priceRange,
+            resellerRange,
+            priceRange: fixedRange,
             short_id: itemShortId
           },
           index
         ) => {
+          const priceRange = isResellerStore ? resellerRange : fixedRange
+          let product = productData
+          if (isResellerOwner) {
+            const originalPriceRange = get(product, 'priceRange', [])
+            const purchasePrices = originalPriceRange.map((priceItem) => {
+              const price = (priceItem.price * (1 - (resellerComission / 100))).toFixed(2)
+              return { ...priceItem, price }
+            })
+            product = { ...product, priceRange: purchasePrices }
+          }
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, {
-                quantity: targetRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity: (isResellerOwner ? '2-5' : targetRange.name),
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
           const currentPriceValue: any = currentRange
             ? find(product.priceRange, {
-                quantity:
-                  currentRange.name === '0-0' ? '2-5' : currentRange.name,
-                abbreviation: currentCurrency || config.defaultCurrency
-              }) || {
-                price: 0
-              }
+              quantity:
+                currentRange.name === '0-0' ? '2-5' : currentRange.name,
+              abbreviation: currentCurrency || config.defaultCurrency
+            }) || {
+              price: 0
+            }
             : { price: 0 }
+
           const fixedPriceValue =
             priceRange && priceRange.length
               ? find(priceRange, ['abbreviation', currentCurrency])
@@ -193,21 +213,17 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           const currentPrice = onDemandMode
             ? fixedPriceValue.price
             : currentRangeAttributes.price
-          const currentPriceText = `${
-            fixedPriceValue.shortName
-          } ${currentPrice}`
-          const targetPriceText = `${targetPriceValue.shortName} ${
-            targetPriceValue.price
-          }`
+          const currentPriceText = `${fixedPriceValue.shortName
+            } ${currentPrice}`
+          const targetPriceText = `${targetPriceValue.shortName}
+          ${isResellerOwner ? Number(targetPriceValue.price).toFixed(2) : targetPriceValue.price}`
           const suggestedSaveText = currentRangeAttributes.percentToSave
             ? formatMessage(messages.suggestedSave, {
-                itemsLeft: `<strong>${
-                  currentRangeAttributes.itemsLeft
+              itemsLeft: `<strong>${currentRangeAttributes.itemsLeft
                 } more</strong>`,
-                percent: `<strong>${
-                  currentRangeAttributes.percentToSave
+              percent: `<strong>${currentRangeAttributes.percentToSave
                 }%</strong>`
-              })
+            })
             : ''
           return (
             <ThumbnailListItem key={index}>
@@ -226,6 +242,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       name,
                       targetRange,
                       onDemandMode,
+                      isResellerStore,
+                      isResellerOwner,
                       code,
                       currentRangeAttributes,
                       suggestedSaveText
@@ -253,7 +271,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       isFixed={!onDemandMode}
                       teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}
-                      fixedPrices={priceRange}
+                      fixedPrices={isResellerOwner ? [] : priceRange}
                     />
                   )
                 }
@@ -317,10 +335,10 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-          <NoResultsFound>
-            {formatMessage(messages.emptyResults)}
-          </NoResultsFound>
-        )
+            <NoResultsFound>
+              {formatMessage(messages.emptyResults)}
+            </NoResultsFound>
+          )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -380,7 +398,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => {}
+  handleOnPressAddToCart = (id: number) => { }
 }
 
 type OwnProps = {

@@ -32,6 +32,9 @@ export const profileSettingsQuery = gql`
         resellerEnabled: reseller_enabled
         phone
       }
+      reseller {
+        status
+      }
       affiliate {
         status
         comission

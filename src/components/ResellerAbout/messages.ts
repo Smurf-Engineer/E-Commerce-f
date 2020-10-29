@@ -7,13 +7,17 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   titlePay: {
     id: 'components.ResellerAbout.titlePay',
-    defaultMessage: 'Reseller Program'
+    defaultMessage: 'DirectShip Program'
   },
   bodyPay: {
     id: 'components.ResellerAbout.bodyPay',
-    defaultMessage: `<p>With the Reseller program, earn commissions on the sales from your custom stores. </p>
-    <p>Use Reseller to easily raise money for a charity cause, special event or as a source of passive
-    income for yourself or group.</p>`
+    defaultMessage: `
+      <p>DirectShip Stores eliminate the hassle and risks of inventory management. We handle all 
+      transaction and customer service costs allowing you to focus on running the day-to-day operations of your shop.
+      </p>
+      <p>Customers order directly through the store and your margin is paid out monthly 
+      direct to a PayPal account of your choice.
+      </p>`
   },
   slogan: {
     id: 'components.ResellerAbout.slogan',
@@ -75,22 +79,23 @@ export default defineMessages({
     id: 'components.ResellerAbout.wrongCurrency',
     defaultMessage: 'Wrong currency selected on your actual region ({initialCountryCode})'
   },
+  howEarn: {
+    id: 'components.ResellerAbout.howEarn',
+    defaultMessage: 'Are there any costs to me for participating in the DirectShip Program?'
+  },
+  howEarnDesc: {
+    id: 'components.ResellerAbout.howEarnDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'There are no set-up costs, subscription fees or hidden costs. We take care of all the details related to your orders, including shipping and general customer support through our online chat and email.'
+  },
   howMuch: {
     id: 'components.ResellerAbout.howMuch',
-    defaultMessage: 'How much can I earn?'
+    defaultMessage: 'How much will I earn?'
   },
   howMuchDesc: {
     id: 'components.ResellerAbout.howMuchDesc',
-    defaultMessage: `
-    <p>Members earn 10% on the fully priced sales from their own custom stores. Orders with a discount do not qualify 
-    for the Reseller commissions. Commissions are based on the net sale amount less any applied shipping and 
-    taxes and paid out to you in the currency based on your country of residence you designated during sign-up.</p>
-    <p>At this time, only residents of the United States or Canada are eligible for the Reseller program. As such, 
-    payouts are only denominated in USD or CAD respectively.</p>
-    <p>You will receive commission payouts only on orders that have been fully shipped and paid the customer. If an 
-    order has only been partially shipped or paid, you will not be paid until the order is shipped complete and paid in 
-    full. In the event an order is returned or refunded to a customer for any reason after commissions have been paid 
-    out, we reserve the right to deduct the paid commission amount from future earnings.</p>`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `<p>Resellers earn 20% margin on the fully priced sales from their own custom stores. Orders with a discount do not qualify for the DirectShip Program. Margin is based on the net sale amount less any applied shipping and taxes and paid out to you in the currency based on your country of residence you designated during sign-up.</p>`
   },
   whenPaid: {
     id: 'components.ResellerAbout.whenPaid',
@@ -98,9 +103,8 @@ export default defineMessages({
   },
   whenPaidDesc: {
     id: 'components.ResellerAbout.whenPaidDesc',
-    defaultMessage: `Payouts of commissions are made on or before the 15th of each month and cover the sales from the 
-    previous month. For example, commissions earned on sales during June 1-30, would be paid to you by or 
-    before July 15.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Payouts of margin to the reseller are made on or before the 15th of each month and cover the sales from the previous month. For example, margin earned on sales during June 1-30, would be paid to you by or before July 15.`
   },
   howGetPaid: {
     id: 'components.ResellerAbout.howGetPaid',
@@ -108,20 +112,25 @@ export default defineMessages({
   },
   howGetPaidDesc: {
     id: 'components.ResellerAbout.howGetPaidDesc',
-    defaultMessage: `Payments are directly deposited into the PayPal account you have registered during your Reseller 
-    set up and displayed in the Settings section on the About tab. You can update your PayPal deposit account anytime. 
-    If the payout currency is different from the currency of your registered PayPal account, PayPal will automatically 
-    convert the payout to your default currency at the prevailing exchange rate determined by PayPal. We do not take 
-    responsibility for the accuracy of the PayPal account you register and will not be able to refund any payouts to 
-    a mistakenly registered account.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Payments are directly deposited into the PayPal account you have registered during your Reseller set up and is displayed in the Settings section on the About tab. You can update your PayPal deposit account anytime. If the payout currency is different from the currency of your registered PayPal account, PayPal will automatically convert the payout to your default currency at the prevailing exchange rate determined by PayPal. We do not take responsibility for the accuracy of the PayPal account you register and will not be able to refund any payouts to a mistakenly registered account.`
   },
   costsInfo: {
     id: 'components.ResellerAbout.costsInfo',
-    defaultMessage: 'Are there any costs to me for participating in Reseller program?'
+    defaultMessage: 'How long will it take to deliver orders?'
   },
   costsInfoDesc: {
     id: 'components.ResellerAbout.costsInfoDesc',
-    defaultMessage: `No, there is no set-up costs, subscription fees or hidden costs. We take care of all the details 
-    related to your orders, including shipping and general customer support through our online chat and email.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `JAKROO has the fastest delivery time for technical apparel in the world. Direct Fulfilment Orders typically take 12 days from the day you place your order until it’s delivered at your customer’s door. Estimated delivery dates are posted on our website and on your Order Detail record in “My Account”. We do strongly encourage customers to allow for a few additional delivery days when planning for a date specific event in case of shipping or customs delays.`
+  },
+  returns: {
+    id: 'components.ResellerAbout.returns',
+    defaultMessage: 'Returns and exchanges?'
+  },
+  returnsDesc: {
+    id: 'components.ResellerAbout.returnsDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `All Jakroo products include a limited 1-year manufacturers’ warranty covering defects in materials and workmanship. This warranty does not cover normal wear and tear. All custom products are made-to-order on demand and thus not returnable for reasons other than manufacturer defect. All retail collection items (non-customized) are returnable for a full refund or exchange, provided that the products are unworn and accompanied by the receipt. With our size exchange program, however, customers have the option of keeping their original item and ordering a different size at 50% of the original item price. Jakroo’s customer service team handles all customer facing warranty and exchange for orders through DirectShip stores.`
   },
 })

@@ -21,6 +21,7 @@ interface Props {
   country?: string
   region: string
   disabled: boolean
+  reseller: boolean
   countryName?: string
   handleRegionChange: (value: any, regionCode: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -39,7 +40,7 @@ export class RegionSelect extends React.Component<Props, {}> {
     props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 
   render() {
-    const { data, region, formatMessage, disabled, countryName } = this.props
+    const { data, region, reseller, formatMessage, disabled, countryName } = this.props
     let dropdownOptions: any = []
     if (data && data.regions) {
       dropdownOptions = data.regions.length ? (
@@ -62,7 +63,7 @@ export class RegionSelect extends React.Component<Props, {}> {
     return (
       <Container>
         <StyledSelect
-          {...{ disabled }}
+          {...{ disabled, reseller }}
           notFoundContent={
             !!data && data.loading ? <Spin size="small" /> : null
           }

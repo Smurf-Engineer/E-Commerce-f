@@ -36,5 +36,13 @@ export default defineMessages({
   currentCutOffDays: {
     id: 'components.DesignLabAdmin.currentCutOffDays',
     defaultMessage: 'Delivery days'
+  },
+  resellerExchange: {
+    id: 'components.DesignLabAdmin.resellerExchange',
+    defaultMessage: 'Reseller Exchange Rate'
+  },
+  save: {
+    id: 'components.DesignLabAdmin.save',
+    defaultMessage: 'Save'
   }
 })

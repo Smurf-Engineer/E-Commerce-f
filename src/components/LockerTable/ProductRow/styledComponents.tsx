@@ -2,9 +2,15 @@
  * Styled Components - Created by david on 12/04/18.
  */
 import styled from 'styled-components'
+import Input from 'antd/lib/input'
+import { RED_WARNING } from '../../../theme/colors'
 
 interface TitleProps {
   align: string
+}
+
+interface InputProps {
+  badInput?: boolean
 }
 
 interface AlignProps {
@@ -18,6 +24,12 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #fff;
+`
+
+export const StyledInput = styled(Input)`
+  border-radius: 0;
+  width: 55px;
+  background: ${({ badInput }: InputProps) => badInput ? RED_WARNING : 'none'};
 `
 
 export const Title = styled.div`

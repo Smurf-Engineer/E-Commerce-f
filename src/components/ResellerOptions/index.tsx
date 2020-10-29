@@ -22,7 +22,7 @@ import {
   LoadingContainer,
   PayIcon,
 } from './styledComponents'
-import Payday from '../../assets/jakroo_payday.png'
+import Payday from '../../assets/directship_dark.png'
 import ResellerDetails from './ResellerDetails'
 import AffiliateModal from '../AffiliateModal'
 import {
@@ -100,7 +100,19 @@ class ResellerOptions extends React.Component<Props, {}> {
       openModal,
     } = this.props
     const reseller = get(profileData, 'profileData.reseller', {})
-    const { status, currency, region, paypalAccount, comission, file, activatedAt } = reseller
+    const { 
+      status,
+      currency,
+      region,
+      businessName,
+      stateProvince,
+      paypalAccount,
+      comission,
+      file,
+      activatedAt,
+      inline,
+      margin
+    } = reseller
     return (
       <Container {...{ onlyDetails }}>
         {!onlyDetails && <PayIcon src={Payday} />}
@@ -116,9 +128,13 @@ class ResellerOptions extends React.Component<Props, {}> {
               comission,
               activatedAt,
               onlyDetails,
+              inline,
+              margin,
               currentPage,
               onChangePage,
               paypalAccount,
+              businessName,
+              stateProvince,
               file,
               currency,
               region,
