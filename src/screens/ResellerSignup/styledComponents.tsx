@@ -16,9 +16,7 @@ export const Container = styled.div`
   justify-content: center;
   max-width: 744px;
   width: 100%;
-  margin: 0 auto;
-  margin-top: 58px;
-  margin-bottom: 58px;
+  margin: 58px auto;
 `
 
 export const LoginLabel = styled.div`
