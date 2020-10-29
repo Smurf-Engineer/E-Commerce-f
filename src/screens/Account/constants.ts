@@ -86,7 +86,7 @@ export const resellerOptions = [
   },
   {
     title: RESELLER,
-    options: [MY_STORES, RESELLER_ABOUT, RESELLER_ORDERS, RESELLER_PAYOUTS]
+    options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
     title: CREATIONS,

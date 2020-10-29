@@ -33,7 +33,6 @@ import { getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
-import ResellerSignup from '../ResellerSignup'
 import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
 import { closeSlaask } from '../../slaask'
@@ -175,8 +174,8 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   handleOpenReseller = () => {
-    const { openResellerAction } = this.props
-    openResellerAction(true)
+    const { history } = this.props
+    history.push('/reseller-signup')
   }
 
   closeReseller = () => {
@@ -214,7 +213,6 @@ class MainLayout extends React.Component<Props, {}> {
       openLogin,
       openLoginAction,
       setRegionAction,
-      openReseller,
       currentRegion,
       user,
       currentLanguage,
@@ -283,6 +281,7 @@ class MainLayout extends React.Component<Props, {}> {
               currentRegion,
               currentLanguage,
               buyNowHeader,
+              user,
               setAccountScreen
             }}
             saveAndBuy={saveAndBuyAction}
@@ -307,18 +306,12 @@ class MainLayout extends React.Component<Props, {}> {
           <Footer>
             <ContactAndLinks
               {...{ history, formatMessage, fakeWidth }}
-              openReseller={this.handleOpenReseller}
               showReseller={!user}
+              openReseller={this.handleOpenReseller}
             />
             <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}
-        <ResellerSignup
-          {...{ formatMessage, initialCountryCode, history }}
-          open={openReseller}
-          login={this.handleOnLogin}
-          requestClose={this.closeReseller}
-        />
         <QuickView
           open={!!productId}
           currentCurrency={currentCurrency || config.defaultCurrency}

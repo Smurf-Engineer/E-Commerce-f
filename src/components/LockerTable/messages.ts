@@ -39,6 +39,10 @@ export default defineMessages({
     id: 'components.LockerTable.fixedPrice',
     defaultMessage: 'Team Price'
   },
+  currency: {
+    id: 'components.LockerTable.currency',
+    defaultMessage: 'Base Currency'
+  },
   teamPrice: {
     id: 'components.LockerTable.teamPrice',
     defaultMessage: 'MSRP'
@@ -75,6 +79,11 @@ export default defineMessages({
   quantity: {
     id: 'components.LockerTable.quantity',
     defaultMessage: 'QTY Ordered'
+  },
+  currencyDesc: {
+    id: 'components.LockerTable.currencyDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>BASE CURRENCY</span>The <b>Base Currency</b> is your default store currency based on your region. For Canadian Resellers, the base currency is set to CAD. For Resellers in the USA, the base currency is USD.'
   },
   msrpDesc: {
     id: 'components.LockerTable.msrpDesc',

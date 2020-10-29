@@ -32,7 +32,8 @@ import {
   RegionConfig,
   Region as RegionType,
   QueryProps,
-  IProfileSettings
+  IProfileSettings,
+  User
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
@@ -324,12 +325,17 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 }
 
+type OwnProps = {
+  user?: User
+}
+
 const MenuBarEnhanced = compose(
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
   }),
   graphql<RegionsData>(regionsQuery, {
     name: 'regionsData',

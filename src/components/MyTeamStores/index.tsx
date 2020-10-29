@@ -16,8 +16,9 @@ import {
   AddTeamStoreButton,
   CreateTeamStoreLegend,
   DeleteConfirmMessage,
-  PaginationRow, Title
+  PaginationRow, Title, ResellerIcon
 } from './styledComponents'
+import directShipLogo from '../../assets/directship_dark.png'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
 import { QueryProps, TeamstoreResult } from '../../types/common'
@@ -93,7 +94,12 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
-        {isReseller && <Title>{formatMessage(messages.myStores)}</Title>}
+        {isReseller &&
+          <>
+            <ResellerIcon src={directShipLogo} />
+            <Title>{formatMessage(messages.myStores)}</Title>
+          </>
+        }
         <AddTeamStoreButton onClick={this.addNewTeamStore}>
           {formatMessage(messages[isReseller ? 'addCustomStore' : 'addTeamstoreLabel'])}
         </AddTeamStoreButton>

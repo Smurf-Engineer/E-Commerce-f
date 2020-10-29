@@ -21,7 +21,7 @@ import {
   PopoverText,
   PopoverStyled,
   MessageText,
-  MarginsContainer, SubtitleMargin
+  MarginsContainer, SubtitleMargin, StyledInput
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -30,6 +30,7 @@ import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import { CA_CURRENCY, US_CURRENCY } from '../../ResellerAbout/constants'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
@@ -44,15 +45,19 @@ interface Props {
   activatedAt: string
   paypalAccount: string
   file: string
+  gst: string
   currentPage: number
   isAdmin: boolean
   currency: string
   region: string
+  businessName: string
+  stateProvince: string
   onlyDetails: boolean
   openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
   changeMargin: (value: number) => void
   changeInline: (value: number) => void
+  changeGst: (value: string) => void
   onChangePage: (page: number) => void
   enableReseller: (status: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -62,6 +67,7 @@ class ResellerDetails extends React.Component<Props, {}> {
   debounceComission = debounce((value) => this.handleChangeComission(value), 800)
   debounceMargin = debounce((value) => this.handleChangeMargin(value), 800)
   debounceInline = debounce((value) => this.handleChangeInline(value), 800)
+  debounceGst = debounce((value) => this.props.changeGst(value), 800)
   enableStatus = () => {
     const { enableReseller } = this.props
     enableReseller(APPROVED)
@@ -73,6 +79,12 @@ class ResellerDetails extends React.Component<Props, {}> {
   retryStatus = () => {
     const { enableReseller } = this.props
     enableReseller(RETRY)
+  }
+  handleChangeGst = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.debounceGst(value || '')
   }
   openFile = () => {
     const { file } = this.props
@@ -108,9 +120,12 @@ class ResellerDetails extends React.Component<Props, {}> {
       onlyDetails,
       margin,
       inline,
+      businessName,
+      stateProvince,
       activatedAt,
       formatMessage,
       status,
+      gst,
       region,
       currency
     } = this.props
@@ -171,7 +186,7 @@ class ResellerDetails extends React.Component<Props, {}> {
                 }
               </LabelButton>
             }
-            {isAdmin &&
+            {(isAdmin && currency === US_CURRENCY) &&
               <LabelButton>
                 <Title>
                   {formatMessage(messages.taxForm)}
@@ -180,6 +195,17 @@ class ResellerDetails extends React.Component<Props, {}> {
                   <Clip type="paper-clip" />
                   {fileName}
                 </FileLink>
+              </LabelButton>
+            }
+            {(isAdmin && currency === CA_CURRENCY) &&
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.gstLabel)}
+                </Title>
+                <StyledInput
+                  onChange={this.handleChangeGst}
+                  defaultValue={gst}
+                />
               </LabelButton>
             }
             {isActive && !isAdmin &&
@@ -223,6 +249,22 @@ class ResellerDetails extends React.Component<Props, {}> {
               </Title>
               <BoldLabel upperCase={true}>
                 {currency}
+              </BoldLabel>
+            </LabelButton>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.stateProvince)}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {stateProvince}
+              </BoldLabel>
+            </LabelButton>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.businessName)}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {businessName}
               </BoldLabel>
             </LabelButton>
             <LabelButton>

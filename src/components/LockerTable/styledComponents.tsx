@@ -107,6 +107,7 @@ export const Price = styled.div`
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 43px;
+  text-transform: uppercase;
   width: 58px;
   text-align: ${({ align }: TitleProps) => (align ? align : 'center')};
 `
@@ -167,7 +168,7 @@ export const Description = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
-
+  margin: 0 auto;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
