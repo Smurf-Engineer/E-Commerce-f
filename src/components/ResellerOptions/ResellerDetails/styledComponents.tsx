@@ -47,7 +47,9 @@ export const SubtitleMargin = styled.div`
 `
 
 export const SaveIcon = styled(Icon)`
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const PopoverStyled = styled(Popover)`
