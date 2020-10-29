@@ -2,6 +2,7 @@
  * TeamstoreTypes Screen - Created by eduardoquintero on 18/02/20.
  */
 import * as React from 'react'
+import { graphql } from 'react-apollo'
 import {
   Container,
   Title,
@@ -28,9 +29,18 @@ import { compose } from 'react-apollo'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import messages from './messages'
 import { ON_DEMAND_DAYS, FIXED_DATE_DAYS } from './constants'
+import { profileSettingsQuery } from './data'
+import { IProfileSettings, QueryProps } from '../../types/common'
+import { APPROVED } from '../../constants'
+import get from 'lodash/get'
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface Props {
   intl: InjectedIntl
+  profileData: ProfileData
   history: any
 }
 
@@ -49,6 +59,13 @@ const fixedDateMessages = [
 ]
 
 class TeamstoreTypes extends React.Component<Props, {}> {
+  componentDidUpdate() {
+    const { profileData, history } = this.props
+    const { status } = get(profileData, 'profileData.reseller', '')
+    if (status === APPROVED) {
+      history.push(`/create-store/form?type=demand`)
+    }
+  }
   goTo = (event: React.MouseEvent<HTMLDivElement>) => {
     const { history } = this.props
     const {
@@ -129,5 +146,12 @@ class TeamstoreTypes extends React.Component<Props, {}> {
   }
 }
 
-const TeamstoreTypesEnhance = compose(injectIntl)(TeamstoreTypes)
+const TeamstoreTypesEnhance = compose(
+  injectIntl,
+  graphql(profileSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'profileData'
+  }))(TeamstoreTypes)
 export default TeamstoreTypesEnhance

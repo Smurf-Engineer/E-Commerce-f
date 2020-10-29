@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'screens.ProductDetail.productNotFound',
     defaultMessage: 'Error: Product not found.'
   },
+  dealerPricing: {
+    id: 'screens.ProductDetail.dealerPricing',
+    defaultMessage: 'Dealer pricing'
+  },
   customerReview: {
     id: 'screens.ProductDetail.customerReview',
     defaultMessage: 'CUSTOMER REVIEW'

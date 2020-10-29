@@ -61,7 +61,8 @@ import {
   MenIcon,
   WomenIcon,
   layoutStyle,
-  CustomizeButton
+  CustomizeButton,
+  DealerTitle
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
@@ -83,7 +84,7 @@ import {
   ProductColors,
   ProductFile,
   ItemDetailType,
-  BreadRoute, IProfileSettings
+  BreadRoute, IProfileSettings, UserType
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
@@ -202,13 +203,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
 
     const { formatMessage } = intl
-    const { status, inline } = get(profileData, 'profileData.reseller', {})
+    const { status, inline, comission } = get(profileData, 'profileData.reseller', {})
     const isReseller = status === APPROVED
     let product = productData
+
+    const isRetail = product && (product.retailMen || product.retailWomen || !product.customizable)
+
     if (isReseller) {
       const originalPriceRange = get(productData, 'priceRange', [])
+      const comissionToApply = isRetail ? inline : comission
       const purchasePrices = originalPriceRange.map((priceItem) => {
-        const price = Number((priceItem.price * (1 - (inline / 100))).toFixed(2))
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
         return { ...priceItem, price }
       })
       product = { ...product, priceRange: purchasePrices }
@@ -241,8 +246,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       images: imagesArray,
       customizable,
       customLink,
-      retailMen,
-      retailWomen,
       yotpoAverageScore: reviewsScore,
       mpn: mpnCode,
       obj,
@@ -258,7 +261,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       modelSize,
       title = MAIN_TITLE
     } = product
-    const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
@@ -645,6 +647,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
+                {isReseller && <DealerTitle>{formatMessage(messages.dealerPricing)}</DealerTitle>}
                 <PricesRow>{isRetail ? retailPrice : renderPrices}</PricesRow>
                 <Ratings
                   stars={5}
@@ -791,12 +794,14 @@ const mapStateToProps = (state: any) => {
   const menuSports = state.get('menuSports').toJS()
   const langProps = state.get('languageProvider').toJS()
   const responsive = state.get('responsive').toJS()
+  const app = state.get('app').toJS()
   return {
     ...productDetail,
     ...menu,
     ...menuSports,
     ...langProps,
-    ...responsive
+    ...responsive,
+    ...app
   }
 }
 
@@ -804,15 +809,21 @@ type OwnProps = {
   productId?: number
   match?: any
   location?: any
+  user?: UserType
 }
 
 const ProductDetailEnhance = compose(
+  connect(
+    mapStateToProps,
+    { ...productDetailActions }
+  ),
   injectIntl,
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
   }),
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
@@ -827,11 +838,7 @@ const ProductDetailEnhance = compose(
         fetchPolicy: 'network-only'
       }
     }
-  }),
-  connect(
-    mapStateToProps,
-    { ...productDetailActions }
-  )
+  })
 )(ProductDetail)
 
 export default ProductDetailEnhance

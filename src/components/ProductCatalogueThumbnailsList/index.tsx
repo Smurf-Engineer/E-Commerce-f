@@ -16,7 +16,7 @@ import {
   QueryProps,
   ProductType,
   DesignType,
-  ClickParam, IProfileSettings, Product
+  ClickParam, IProfileSettings, Product, User
 } from '../../types/common'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import {
@@ -251,8 +251,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       if (catalogue) {
         thumbnailsList = catalogue.map((productData, index) => {
           let product = productData
-          if (isReseller && !productData.customizable) {
-            product = this.calculateReseller(product, inline)
+          if (isReseller) {
+            product = this.calculateReseller(product, productData.customizable ? resellerComission : inline)
           }
           const {
             images,
@@ -361,7 +361,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let product = productData
     const originalPriceRange = get(productData, 'priceRange', [])
     const purchasePrices = originalPriceRange.map((priceItem) => {
-      const price = Number((priceItem.price * (1 - (comission / 100))).toFixed(2))
+      const price = (priceItem.price * (1 - (comission / 100))).toFixed(2)
       return { ...priceItem, price }
     })
     product = { ...product, priceRange: purchasePrices }
@@ -414,6 +414,7 @@ type OwnProps = {
   collectionFilters?: string
   genderFilters?: string
   sportFilters?: string
+  user?: User
   categoryFilters?: string
   seasonFilters?: string
   fitFilters?: string
@@ -426,10 +427,11 @@ type OwnProps = {
 
 const ThumbnailsListEnhance = compose(
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
   }),
   graphql<Data>(GetProductsQuery, {
     options: ({

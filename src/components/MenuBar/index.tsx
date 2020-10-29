@@ -20,7 +20,7 @@ import {
   TeamStoresMenuContainer,
   TeamStoresMenuTitle
 } from './styledComponents'
-import { regionsQuery } from './data'
+import { profileSettingsQuery, regionsQuery } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -31,17 +31,26 @@ import Cart from '../CartForHeader'
 import {
   RegionConfig,
   Region as RegionType,
-  QueryProps
+  QueryProps,
+  IProfileSettings,
+  User
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
+import get from 'lodash/get'
+import { PENDING } from '../../constants'
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
 }
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
+
 interface Props {
   regionsData: RegionsData
   history: any
+  profileData: ProfileData
   searchFunc: (param: string) => void
   openLogin?: boolean
   setAccountScreen: (screen: string, openCreations?: boolean) => void
@@ -104,7 +113,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     window.location.replace(
       `/${regionCode}?lang=${currentLanguage ||
-        'en'}&currency=${currentCurrency}`
+      'en'}&currency=${currentCurrency}`
     )
   }
 
@@ -144,6 +153,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       currentRegion,
       currentLanguage,
       currentCurrency,
+      profileData,
       hideTop,
       hideBottom,
       intl,
@@ -166,20 +176,21 @@ class MenuBar extends React.Component<Props, StateProps> {
     }
 
     const { formatMessage } = intl
-
+    const { status } = get(profileData, 'profileData.reseller', {})
+    const resellerPending = status === PENDING
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
         {formatMessage(messages.title)}
       </TopText>
     ) : (
-      <Logout
-        {...{ history }}
-        title={`${String(user.name).toUpperCase()}`}
-        logout={logoutAction}
-        goTo={this.handleOnGoTo}
-      />
-    )
-
+        <Logout
+          {...{ history, resellerPending }}
+          title={`${String(user.name).toUpperCase()}`}
+          logout={logoutAction}
+          goTo={this.handleOnGoTo}
+        />
+      )
+    
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
 
@@ -207,14 +218,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         <div />
       </BottomRow>
     ) : (
-      <BottomRow>
-        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList
-          {...{ history, formatMessage, currentCurrency, regionsCodes }}
-        />
-        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
-      </BottomRow>
-    )
+        <BottomRow>
+          <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+          <DropdownList
+            {...{ history, formatMessage, currentCurrency, regionsCodes, user }}
+          />
+          <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
+        </BottomRow>
+      )
 
     return (
       <div>
@@ -314,7 +325,18 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 }
 
+type OwnProps = {
+  user?: User
+}
+
 const MenuBarEnhanced = compose(
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<RegionsData>(regionsQuery, {
     name: 'regionsData',
     options: () => ({

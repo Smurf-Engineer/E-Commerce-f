@@ -4,6 +4,7 @@ export const SHOW_HEADER_SEARCH_RESULTS = `${namespace}/SHOW_HEADER_SEARCH_RESUL
 export const SET_SEARCH_PARAM = `${namespace}/SET_SEARCH_PARAM`
 export const OPEN_QUICKVIEW_ACTION = `${namespace}/OPEN_QUICKVIEW_ACTION`
 export const OPEN_LOGOUT_MODAL = `${namespace}/OPEN_LOGOUT_MODAL`
+export const OPEN_RESELLER = `${namespace}/OPEN_RESELLER`
 
 // LOGIN MODAL
 export const OPEN_LOGIN_MODAL = `${namespace}/OPEN_LOGIN_MODAL`

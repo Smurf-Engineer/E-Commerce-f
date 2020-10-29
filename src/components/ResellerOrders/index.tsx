@@ -16,14 +16,13 @@ import {
   RepDiv,
   Cell,
   LoadingContainer,
-  InfoSection,
   HeaderList,
   InputDiv,
   StatusFilter,
-  OrderPoint,
   RangePickerStyled,
   ShowButton,
   PayIcon,
+  StatusDiv
 } from './styledComponents'
 import messages from './messages'
 import { ResellerPayment, QueryProps, AffiliatesResult, Message } from '../../types/common'
@@ -34,20 +33,21 @@ import moment, { Moment } from 'moment'
 import get from 'lodash/get'
 import { PAY_LIMITS, ALL_STATUS } from './constants'
 import { getResellerPayments } from './data'
-import Payday from '../../assets/jakroo_payday.png'
+import Payday from '../../assets/directship_dark.png'
 import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import Spin from 'antd/lib/spin'
 import MediaQuery from 'react-responsive'
-import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
+import { PENDING_PAY, TO_PAY, PAID, PROCESSING, FAILURE } from '../../constants'
 
 const { Option } = Select
 
 const statusList = [
   ALL_STATUS,
-  PREORDER,
-  PENDING_APPROVAL,
-  PAID_STATUS,
-  CANCELLED
+  PENDING_PAY,
+  TO_PAY,
+  PAID,
+  PROCESSING,
+  FAILURE
 ]
 
 interface Data extends QueryProps {
@@ -89,6 +89,12 @@ class ResellerOrders extends React.Component<Props, {}> {
     changeDateAction(startDate, endDate)
   }
 
+  goToOrder = (orderId: string) => () => {
+    if (orderId) {
+      window.location.replace(`/account?option=orderHistory&orderId=${orderId}`)
+    }
+  }
+
   handleChangeOrderPoint = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { setOrderPoint } = this.props
     const { target: { value } } = event
@@ -112,7 +118,6 @@ class ResellerOrders extends React.Component<Props, {}> {
       endDate,
       currentPage,
       statusValue,
-      orderValue,
       formatMessage,
     } = this.props
     const { loading } = data || {}
@@ -136,17 +141,15 @@ class ResellerOrders extends React.Component<Props, {}> {
         <HeaderList>
           <FormattedMessage {...messages.filterBy} />
           <InputDiv>
-            <StatusFilter
-              value={statusValue}
-              onChange={this.handleChangeStatus}
-            >
-              {selectOptions}
-            </StatusFilter>
-            <OrderPoint
-              value={orderValue}
-              onChange={this.handleChangeOrderPoint}
-              placeholder={formatMessage(messages.orderPoint)}
-            />
+            <StatusDiv>
+              <FormattedMessage {...messages.commisionStatus} />
+              <StatusFilter
+                value={statusValue}
+                onChange={this.handleChangeStatus}
+              >
+                {selectOptions}
+              </StatusFilter>
+            </StatusDiv>
             <RangePickerStyled
               value={rangeValue}
               placeholder={[formatMessage(messages.from), formatMessage(messages.to)]}
@@ -200,7 +203,7 @@ class ResellerOrders extends React.Component<Props, {}> {
                       paidAt,
                     }: ResellerPayment,
                     index: number) =>
-                    <RepDiv key={index}>
+                    <RepDiv onClick={this.goToOrder(orderId)} key={index}>
                       <Cell>
                         {createdAt ? moment(createdAt).format(NOTE_FORMAT) : '-'}
                       </Cell>
@@ -227,10 +230,6 @@ class ResellerOrders extends React.Component<Props, {}> {
                   )}
               </tbody>}
           </Table>
-          <InfoSection>
-            <FormattedMessage {...messages.qualified} />
-            <FormattedMessage {...messages.affiliateInfo} />
-          </InfoSection>
           <Pagination
             current={currentPage}
             pageSize={PAY_LIMITS}
