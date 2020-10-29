@@ -78,7 +78,6 @@ export const LabelButton = styled.div`
   margin-right: 24px;
   @media (max-width: 1024px) {
     flex: 1;
-    height: 38px;
     margin-bottom: 26px;
   }
 `

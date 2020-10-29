@@ -2,6 +2,7 @@
  * ResellerSignup Component - Created by cazarez on 20/02/18.
  */
 import * as React from 'react'
+import MediaQuery from 'react-responsive'
 import { compose, withApollo } from 'react-apollo'
 // UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED
 // import Checkbox from 'antd/lib/checkbox'
@@ -45,7 +46,30 @@ import {
   GSTInput,
   ModalTitle,
   okButtonStyles,
-  InfoText
+  InfoText,
+  Signup,
+  TopSection,
+  TopDiv,
+  Title,
+  FeatureBox,
+  FeatureTitle,
+  FeatureImage,
+  FeatureDesc,
+  LearnMore,
+  ImageTitle,
+  BannerSection,
+  BannerBack,
+  BannerLogo,
+  BannerLogos,
+  BannerDescription,
+  BannerTitle,
+  HalfDiv,
+  HalfImage,
+  BannerFooter,
+  FullDiv,
+  BigTitle,
+  BannerCheckList,
+  MiddleText
 } from './styledComponents'
 import { createUser } from './data'
 import messages from './messages'
@@ -57,6 +81,17 @@ import Spin from 'antd/lib/spin'
 import { getFileWithExtension } from '../../utils/utilsFiles'
 import { validateEmail } from '../../utils/utilsFunctions'
 import Layout from '../../components/MainLayout'
+import RegionSelect from '../../components/RegionSelect'
+import yourKitImage from '../../assets/your_kit_graphic.png'
+import directShip from '../../assets/directship_dark.png'
+import directShipSteps from '../../assets/directship_3steps.png'
+import onDemandLogo from '../../assets/on_demand_red.png'
+import onDemandLogoMain from '../../assets/on_demand_logo_main.jpg'
+import onDemandDelivery from '../../assets/on_demand_delivery.png'
+import designLabWhite from '../../assets/design_lab_white.png'
+import proDesignWhite from '../../assets/pro_design_white.png'
+import directShipWhite from '../../assets/directship_white.png'
+import resellerGuy from '../../assets/reseller-banner-image.jpg'
 import { NEW_USER } from '../../constants'
 import { User, UserType } from '../../types/common'
 import { CA_COUNTRY, CA_CURRENCY, US_COUNTRY, US_CURRENCY } from '../../components/ResellerAbout/constants'
@@ -64,6 +99,8 @@ import { connect } from 'react-redux'
 
 const { Option } = Select
 const { confirm } = Modal
+
+const shopImage = 'https://storage.googleapis.com/jakroo/screens/YourShop-YourBrand-photo.jpg'
 
 const countries = [
   {
@@ -75,6 +112,16 @@ const countries = [
     value: 'usd'
   }
 ]
+
+const countryNames = {
+  [US_CURRENCY]: 'United States',
+  [CA_CURRENCY]: 'Canada'
+}
+
+const countryCodes = {
+  [US_CURRENCY]: '6252001',
+  [CA_CURRENCY]: '6251999'
+}
 
 interface Props {
   intl: InjectedIntl
@@ -101,6 +148,12 @@ interface StateProps {
   sendMail: boolean,
   terms: boolean,
   loading: boolean,
+  visible: boolean,
+  selectedRegion: string,
+  bannerSelected: number,
+  changedBanner: boolean,
+  selectedRegionCode: string,
+  businessName: string,
   fileName: string
 }
 
@@ -116,11 +169,22 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     website: '',
     currency: '',
     gst: '',
+    businessName: '',
+    selectedRegion: '',
+    selectedRegionCode: '',
     sendSms: false,
     sendMail: false,
     terms: false,
     loading: false,
+    visible: false,
+    bannerSelected: 0,
+    changedBanner: false,
     fileName: ''
+  }
+  componentDidMount() {
+    if (window) {
+      window.scrollTo(0, 0)
+    }
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
@@ -131,7 +195,11 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
   }
   handleChangeCurrency = (value: string) => {
     if (value) {
-      this.setState({ currency: value })
+      this.setState({
+        currency: value,
+        selectedRegion: '',
+        selectedRegionCode: '',
+      })
     }
   }
   login = (user: UserType) => {
@@ -143,12 +211,24 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       this.setState({ [name]: checked } as any)
     }
   }
+  handleRegionChange = (value: any, regionCode: string) => {
+    this.setState({
+      selectedRegion: value,
+      selectedRegionCode: regionCode
+    })
+  }
   uploadFile = (event: UploadChangeParam) => {
     const { file } = event
     this.setState({ loading: true })
     uploadFileAction(file).then((fileName) => {
       this.setState({ loading: false, fileName })
     })
+  }
+  handleSetBanner = (event: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      currentTarget: { id }
+    } = event
+    this.setState({ bannerSelected: Number(id), changedBanner: true })
   }
   handlePromptCurrency = () => {
     const { intl: { formatMessage } } = this.props
@@ -176,6 +256,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       )
     })
   }
+  setFormVisible = () => {
+    this.setState({ visible: true })
+  }
   requestClose = () => {
     const { history } = this.props
     history.push('/')
@@ -199,13 +282,19 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       firstName,
       lastName,
       gst,
+      bannerSelected,
+      changedBanner,
       phone,
+      businessName,
+      selectedRegion,
+      selectedRegionCode,
       saving,
       email,
       password,
       confirmPassword,
       website,
       currency,
+      visible,
       // sendSms,
       sendMail,
       terms,
@@ -218,229 +307,401 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     const file = fileName ? getFileWithExtension(fileName) : ''
     return (
       <Layout {...{ intl, history }} style={layoutStyle}>
+        <TopSection>
+          <TopDiv>
+            <Title>
+              {formatMessage(messages.title)}
+            </Title>
+          </TopDiv>
+          <TopDiv>
+            <FeatureBox>
+              <FeatureTitle dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.yourKit)
+              }} />
+              <FeatureImage src={yourKitImage} />
+              <FeatureDesc dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.yourKitDesc)
+              }} />
+              <LearnMore id="0" onClick={this.handleSetBanner}>{formatMessage(messages.learnMore)}</LearnMore>
+            </FeatureBox>
+            <MediaQuery maxWidth={767}>
+              {(matches) => matches && bannerSelected === 0 && changedBanner &&
+                <BannerBack>
+                  <HalfImage src={shopImage} />
+                  <HalfDiv>
+                    <BannerTitle dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.yourKit)
+                    }} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.kitFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerLogo src={designLabWhite} />
+                      <BannerLogo src={proDesignWhite} />
+                    </BannerLogos>
+                  </HalfDiv>
+                </BannerBack>
+              }
+            </MediaQuery>
+            <FeatureBox>
+              <ImageTitle src={directShip} />
+              <FeatureImage large={true} src={directShipSteps} />
+              <FeatureDesc dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.directDesc)
+              }} />
+              <LearnMore id="1" onClick={this.handleSetBanner}>{formatMessage(messages.learnMore)}</LearnMore>
+            </FeatureBox>
+            <MediaQuery maxWidth={767}>
+              {(matches) => matches && bannerSelected === 1 &&
+                <BannerBack>
+                  <HalfDiv>
+                    <BannerLogo large={true} src={directShipWhite} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.directFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerFooter dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.easyConvenient)
+                      }} />
+                    </BannerLogos>
+                  </HalfDiv>
+                  <HalfImage src={resellerGuy} />
+                </BannerBack>
+              }
+            </MediaQuery>
+            <FeatureBox>
+              <ImageTitle src={onDemandLogo} />
+              <FeatureImage src={onDemandDelivery} />
+              <FeatureDesc dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.onDemandDesc)
+              }} />
+              <LearnMore id="2" onClick={this.handleSetBanner}>{formatMessage(messages.learnMore)}</LearnMore>
+            </FeatureBox>
+            <MediaQuery maxWidth={767}>
+              {(matches) => matches && bannerSelected === 2 &&
+                <BannerBack>
+                  <FullDiv>
+                    <BigTitle>{formatMessage(messages.justWhatYouNeed)}</BigTitle>
+                    <FeatureImage large={true} src={onDemandLogoMain} />
+                    <MiddleText dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buildingDesc)
+                    }} />
+                    <BannerCheckList dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buldingCheckList)
+                    }} />
+                  </FullDiv>
+                </BannerBack>
+              }
+            </MediaQuery>
+          </TopDiv>
+          <MediaQuery minWidth={768}>
+            {(matches) => matches &&
+              <BannerSection>
+              {bannerSelected === 0 && 
+                <BannerBack>
+                  <HalfImage src={shopImage} />
+                  <HalfDiv>
+                    <BannerTitle dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.yourKit)
+                    }} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.kitFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerLogo src={designLabWhite} />
+                      <BannerLogo src={proDesignWhite} />
+                    </BannerLogos>
+                  </HalfDiv>
+                </BannerBack>
+              }
+              {bannerSelected === 1 && 
+                <BannerBack>
+                  <HalfDiv>
+                    <BannerLogo large={true} src={directShipWhite} />
+                    <BannerDescription dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.directFeatures)
+                    }} />
+                    <BannerLogos>
+                      <BannerFooter dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.easyConvenient)
+                      }} />
+                    </BannerLogos>
+                  </HalfDiv>
+                  <HalfImage src={resellerGuy} />
+                </BannerBack>
+              }
+              {bannerSelected === 2 && 
+                <BannerBack>
+                  <FullDiv>
+                    <BigTitle>{formatMessage(messages.justWhatYouNeed)}</BigTitle>
+                    <FeatureImage large={true} src={onDemandLogoMain} />
+                    <MiddleText dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buildingDesc)
+                    }} />
+                    <BannerCheckList dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.buldingCheckList)
+                    }} />
+                  </FullDiv>
+                </BannerBack>
+              }
+            </BannerSection>
+          }
+          </MediaQuery>
+        </TopSection>
         <Container>
           {saving &&
             <SavingContainer>
               <Spin />
             </SavingContainer>
           }
-          <LoginLabel>
+          <LoginLabel onClick={this.setFormVisible}>
             <FormattedMessage {...messages.signupTitle} />
           </LoginLabel>
-          <TitleDesc
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.titleDesc)
-            }}
-          />
-          <FormTitle>
-            <FormattedMessage {...messages.resellerInfo} />
-          </FormTitle>
-          <FormContainer>
-            <InputRow>
-              <InputDiv>
+          <Signup {...{ visible }}>
+            <FormTitle>
+              <FormattedMessage {...messages.resellerInfo} />
+            </FormTitle>
+            <FormContainer>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.firstName} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="firstName"
+                    placeholder={formatMessage(messages.firstName)}
+                    value={firstName}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.lastName} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="lastName"
+                    placeholder={formatMessage(messages.lastName)}
+                    value={lastName}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.email} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="email"
+                    placeholder={formatMessage(messages.email)}
+                    value={email}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.phone} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="phone"
+                    placeholder={formatMessage(messages.phone)}
+                    value={phone}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.password} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                    <InfoLabel><FormattedMessage {...messages.passwordRestriction} /></InfoLabel>
+                  </Label>
+                  <StyledInputPassword
+                    id="password"
+                    type="Password"
+                    placeholder={formatMessage(messages.password)}
+                    value={password}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.confirmPassword} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInputPassword
+                    id="confirmPassword"
+                    type="Password"
+                    placeholder={formatMessage(messages.confirmPassword)}
+                    value={confirmPassword}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.website} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="website"
+                    placeholder={formatMessage(messages.website)}
+                    value={website}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.businessName} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <StyledInput
+                    id="businessName"
+                    placeholder={formatMessage(messages.businessName)}
+                    value={businessName}
+                    onChange={this.handleInputChange}
+                  />
+                </InputDiv>
+              </InputRow>
+              <InputRow>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.stateProvince} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <RegionSelect
+                    {...{ formatMessage }}
+                    disabled={!currency}
+                    reseller={true}
+                    country={currency ? countryCodes[currency] : ''}
+                    countryName={currency ? countryNames[currency] : ''}
+                    region={
+                      selectedRegion
+                        ? `${selectedRegion}-${selectedRegionCode}`
+                        : undefined
+                    }
+                    handleRegionChange={this.handleRegionChange}
+                  />
+                </InputDiv>
+                <InputDiv>
+                  <Label>
+                    <FormattedMessage {...messages.billingCountry} />
+                    <RequiredSymbol>*</RequiredSymbol>
+                  </Label>
+                  <BillingSelect
+                    value={currency}
+                    onChange={this.handleChangeCurrency}
+                  >
+                    {countries.map(({ label, value }, index: Number) =>
+                      <Option key={index} {...{ value }}>
+                        {label}
+                      </Option>
+                    )}
+                  </BillingSelect>
+                </InputDiv>
+              </InputRow>
+              <Notifications>
                 <Label>
-                  <FormattedMessage {...messages.firstName} />
-                  <RequiredSymbol>*</RequiredSymbol>
+                  <FormattedMessage {...messages.notifyMe} />
                 </Label>
-                <StyledInput
-                  id="firstName"
-                  placeholder={formatMessage(messages.firstName)}
-                  value={firstName}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.lastName} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInput
-                  id="lastName"
-                  placeholder={formatMessage(messages.lastName)}
-                  value={lastName}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-            </InputRow>
-            <InputRow>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.email} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInput
-                  id="email"
-                  placeholder={formatMessage(messages.email)}
-                  value={email}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.phone} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInput
-                  id="phone"
-                  placeholder={formatMessage(messages.phone)}
-                  value={phone}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-            </InputRow>
-            <InputRow>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.password} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                  <InfoLabel><FormattedMessage {...messages.passwordRestriction} /></InfoLabel>
-                </Label>
-                <StyledInputPassword
-                  id="password"
-                  type="Password"
-                  placeholder={formatMessage(messages.password)}
-                  value={password}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.confirmPassword} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <StyledInputPassword
-                  id="confirmPassword"
-                  type="Password"
-                  placeholder={formatMessage(messages.confirmPassword)}
-                  value={confirmPassword}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-            </InputRow>
-            <InputRow>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.website} />
-                </Label>
-                <StyledInput
-                  id="website"
-                  placeholder={formatMessage(messages.website)}
-                  value={website}
-                  onChange={this.handleInputChange}
-                />
-              </InputDiv>
-              <InputDiv>
-                <Label>
-                  <FormattedMessage {...messages.billingCountry} />
-                  <RequiredSymbol>*</RequiredSymbol>
-                </Label>
-                <BillingSelect
-                  value={currency}
-                  onChange={this.handleChangeCurrency}
-                >
-                  {countries.map(({ label, value }, index: Number) =>
-                    <Option key={index} {...{ value }}>
-                      {label}
-                    </Option>
-                  )}
-                </BillingSelect>
-              </InputDiv>
-            </InputRow>
-            <Notifications>
-              <Label>
-                <FormattedMessage {...messages.notifyMe} />
-              </Label>
-              <Checkboxes>
-                <CheckboxStyled
-                  checked={sendMail}
-                  name="sendMail"
-                  onChange={this.handleCheckChange}
-                >
-                  <FormattedMessage {...messages.sendMail} />
-                </CheckboxStyled>
-                {/* <CheckboxStyled
-                  checked={sendSms}
-                  name="sendSms"
-                  onChange={this.handleCheckChange}
-                >
-                  <FormattedMessage {...messages.sendSms} />
-                </CheckboxStyled> */}
-              </Checkboxes>
-            </Notifications>
-          </FormContainer>
-          <Advertisement>
-            <FormattedMessage {...messages.advertisement} />
-          </Advertisement>
-          <TitleDesc
-            dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.resellerDesc)
-            }}
-          />
-          {currency === US_CURRENCY && 
-            <StyledUpload
-              listType="picture-card"
-              className="avatar-uploader"
-              customRequest={this.uploadFile}
-              disabled={loading}
-              showUploadList={false}
-              beforeUpload={this.beforeUpload}
-            >
-              <UploadButton>
-                {loading ?
-                  <LoadingContainer>
-                    <Spin size="small" />
-                  </LoadingContainer> :
-                  <>
-                    <StyledIcon type="upload" />
-                    <FormattedMessage {...messages.uploadCertificate} />
-                  </>
-                }
-              </UploadButton>
-            </StyledUpload>
-          }
-          {currency === CA_CURRENCY &&
-            <GSTInput>
-              <Label>
-                <FormattedMessage {...messages.gstLabel} />
-              </Label>
-              <StyledInput
-                id="gst"
-                placeholder={formatMessage(messages.gstLabel)}
-                value={gst}
-                onChange={this.handleInputChange}
-              />
-          </GSTInput>
-          }
-          {!!file &&
-            <FileLabel>
-              <Clip type="paper-clip" />
-              <FileName>
-                {file}
-              </FileName>
-            </FileLabel>
-          }
-         {!!currency &&
+                <Checkboxes>
+                  <CheckboxStyled
+                    checked={sendMail}
+                    name="sendMail"
+                    onChange={this.handleCheckChange}
+                  >
+                    <FormattedMessage {...messages.sendMail} />
+                  </CheckboxStyled>
+                  {/* <CheckboxStyled
+                    checked={sendSms}
+                    name="sendSms"
+                    onChange={this.handleCheckChange}
+                  >
+                    <FormattedMessage {...messages.sendSms} />
+                  </CheckboxStyled> */}
+                </Checkboxes>
+              </Notifications>
+            </FormContainer>
+            <Advertisement>
+              <FormattedMessage {...messages.advertisement} />
+            </Advertisement>
             <TitleDesc
               dangerouslySetInnerHTML={{
-                __html: formatMessage(messages.reviewText)
+                __html: formatMessage(messages.resellerDesc)
               }}
             />
-          }
-          <TermsCheckbox
-            checked={terms}
-            name="terms"
-            onChange={this.handleCheckChange}
-          >
-            <FormattedMessage {...messages.termsAndConditions} />
-          </TermsCheckbox>
-          <ButtonsContainer>
-            <SaveButton disabled={!terms} onClick={this.handleSignUp}>
-              <FormattedMessage {...messages.create} />
-            </SaveButton>
-            <CancelButton onClick={this.requestClose}>
-              <FormattedMessage {...messages.cancel} />
-            </CancelButton>
-          </ButtonsContainer>
+            {currency === US_CURRENCY && 
+              <StyledUpload
+                listType="picture-card"
+                className="avatar-uploader"
+                customRequest={this.uploadFile}
+                disabled={loading}
+                showUploadList={false}
+                beforeUpload={this.beforeUpload}
+              >
+                <UploadButton>
+                  {loading ?
+                    <LoadingContainer>
+                      <Spin size="small" />
+                    </LoadingContainer> :
+                    <>
+                      <StyledIcon type="upload" />
+                      <FormattedMessage {...messages.uploadCertificate} />
+                    </>
+                  }
+                </UploadButton>
+              </StyledUpload>
+            }
+            {currency === CA_CURRENCY &&
+              <GSTInput>
+                <Label>
+                  <FormattedMessage {...messages.gstLabel} />
+                </Label>
+                <StyledInput
+                  id="gst"
+                  placeholder={formatMessage(messages.gstLabel)}
+                  value={gst}
+                  onChange={this.handleInputChange}
+                />
+            </GSTInput>
+            }
+            {!!file &&
+              <FileLabel>
+                <Clip type="paper-clip" />
+                <FileName>
+                  {file}
+                </FileName>
+              </FileLabel>
+            }
+          {!!currency &&
+              <TitleDesc
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.reviewText)
+                }}
+              />
+            }
+            <TermsCheckbox
+              checked={terms}
+              name="terms"
+              onChange={this.handleCheckChange}
+            >
+              <FormattedMessage {...messages.termsAndConditions} />
+            </TermsCheckbox>
+            <ButtonsContainer>
+              <SaveButton disabled={!terms} onClick={this.handleSignUp}>
+                <FormattedMessage {...messages.create} />
+              </SaveButton>
+              <CancelButton onClick={this.requestClose}>
+                <FormattedMessage {...messages.cancel} />
+              </CancelButton>
+            </ButtonsContainer>
+          </Signup>
         </Container>
       </Layout>
     )
@@ -458,6 +719,10 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       currency: '',
       sendSms: false,
       sendMail: false,
+      gst: '',
+      businessName: '',
+      selectedRegion: '',
+      selectedRegionCode: '',
       terms: false,
       loading: false,
       fileName: ''
@@ -473,6 +738,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       website,
       sendSms,
       gst,
+      businessName,
+      selectedRegion,
       sendMail,
       phone,
       currency,
@@ -491,8 +758,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     if (password !== confirmPassword) {
       message.error(formatMessage(messages.passwordLengthError))
     }
-    if (
-      !firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency 
+      || !website || !businessName || !selectedRegion
       || (currency === US_CURRENCY && !fileName) || (currency === CA_CURRENCY && !gst)
     ) {
       message.error(formatMessage(messages.requiredFieldsError))
@@ -524,6 +791,8 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       currency,
       gst,
       sendSms,
+      businessName,
+      selectedRegion,
       sendMail,
       fileName,
       phone

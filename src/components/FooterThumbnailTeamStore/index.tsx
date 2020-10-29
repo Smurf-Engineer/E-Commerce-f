@@ -102,7 +102,9 @@ const FooterThumbnailTeamStore = ({
                 {...messages.listPrice}
               /> :
               <FormattedMessage
-                {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
+                {...(onDemandMode ? 
+                  messages[isResellerStore && !isResellerOwner ? 'listPrice' : 'teamPrice'] : messages.currentPrice
+                )}
               />
             }
           </Label>

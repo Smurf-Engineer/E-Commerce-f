@@ -50,6 +50,8 @@ interface Props {
   isAdmin: boolean
   currency: string
   region: string
+  businessName: string
+  stateProvince: string
   onlyDetails: boolean
   openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
@@ -118,6 +120,8 @@ class ResellerDetails extends React.Component<Props, {}> {
       onlyDetails,
       margin,
       inline,
+      businessName,
+      stateProvince,
       activatedAt,
       formatMessage,
       status,
@@ -245,6 +249,22 @@ class ResellerDetails extends React.Component<Props, {}> {
               </Title>
               <BoldLabel upperCase={true}>
                 {currency}
+              </BoldLabel>
+            </LabelButton>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.stateProvince)}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {stateProvince}
+              </BoldLabel>
+            </LabelButton>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.businessName)}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {businessName}
               </BoldLabel>
             </LabelButton>
             <LabelButton>
