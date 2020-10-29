@@ -17,7 +17,8 @@ import {
   SET_SEARCH,
   SET_SEARCH_MANAGER,
   SET_AFFILIATE_PAGE,
-  SET_RESELLER_PAGE
+  SET_RESELLER_PAGE,
+  SET_CHECKED
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -40,6 +41,12 @@ export const resetDataAction = (): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const setCheckedAction = (name: string, checked: boolean) => ({
+  type: SET_CHECKED,
+  name,
+  checked
 })
 
 export const setDesignSelected = (designId: string) => ({

@@ -26,6 +26,15 @@ export const Title = styled.div`
   margin-bottom: 22px;
 `
 
+export const ResellerIcon = styled.img`
+  max-width: 344px;
+  object-fit: cover;
+  margin: -52px 0 14px -8px;
+  @media (max-width: 767px) {
+    max-width: 264px;
+  }
+`
+
 export const AddTeamStoreButton = styled(Button)`
   height: 50px;
   border: 2px solid #e61737;

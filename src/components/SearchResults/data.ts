@@ -33,6 +33,11 @@ export const searchResultsQuery = gql`
         image
       }
     }
+  }
+`
+
+export const profileSettingsQuery = gql`
+  query profile {
     profileData: getUserProfile {
       reseller {
         status

@@ -10,6 +10,11 @@ export const categoriesQuery = gql`
       id
       name
     }
+  }
+`
+
+export const profileSettingsQuery = gql`
+  query profile {
     profileData: getUserProfile {
       reseller {
         status

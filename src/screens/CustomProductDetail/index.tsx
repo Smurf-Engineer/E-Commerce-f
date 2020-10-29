@@ -663,10 +663,11 @@ const CustomProductDetailEnhance = compose(
   injectIntl,
   connect(mapStateToProps, { ...customProductDetailActions }),
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
-    name: 'profileData'
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
   }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {

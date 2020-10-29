@@ -47,7 +47,8 @@ import {
   changeResellerComissionMutation,
   setResellerEnabledMutation,
   changeResellerMarginMutation,
-  changeResellerInlineMutation
+  changeResellerInlineMutation,
+  changeGstMutation
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
 import { NOTE_FORMAT } from '../constants'
@@ -84,6 +85,7 @@ interface Props {
   setLoadingAction: (loading: boolean) => void
   changeComission: (variables: {}) => Promise<Affiliate>
   changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
+  changeGst: (variables: {}) => Promise<Reseller>
   changeResellerComission: (variables: {}) => Promise<Reseller>
   changeResellerMargin: (variables: {}) => Promise<Reseller>
   changeResellerInline: (variables: {}) => Promise<Reseller>
@@ -158,6 +160,45 @@ class Options extends React.Component<Props> {
             const resellerData = get(profileData, 'profileData.reseller', {})
             resellerData.status = status
             resellerData.activatedAt = activatedAt
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleChangeGst = async (value = '') => {
+    const {
+      formatMessage,
+      changeGst,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeGst({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.gst = value
             store.writeQuery({
               query: profileSettingsQuery,
               data: profileData
@@ -476,6 +517,9 @@ class Options extends React.Component<Props> {
       file,
     } = affiliate
     const {
+      gst,
+      stateProvince,
+      businessName,
       status: statusReseller,
       comission: comissionReseller,
       activatedAt: activatedReseller,
@@ -552,7 +596,10 @@ class Options extends React.Component<Props> {
               loading,
               history,
               userId,
+              gst,
               margin,
+              stateProvince,
+              businessName,
               inline
             }}
             onChangePage={onChangePageReseller}
@@ -565,6 +612,7 @@ class Options extends React.Component<Props> {
             currency={currencyReseller}
             file={fileReseller}
             isAdmin={true}
+            changeGst={this.handleChangeGst}
             changeComission={this.handleResellerComission}
             changeMargin={this.handleResellerMargin}
             changeInline={this.handleResellerInline}
@@ -689,6 +737,7 @@ const OptionsEnhance = compose(
   graphql(changeAffiliateMutation, { name: 'changeAffiliateStatus' }),
   graphql(setAffiliateStatusMutation, { name: 'enableAffiliate' }),
   graphql(setResellerEnabledMutation, { name: 'enableReseller' }),
+  graphql(changeGstMutation, { name: 'changeGst' }),
   graphql(setResellerStatusMutation, { name: 'changeResellerStatus' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {

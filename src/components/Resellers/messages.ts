@@ -25,8 +25,12 @@ export default defineMessages({
     id: 'components.Resellers.show',
     defaultMessage: 'Show'
   },
+  comissionStatus: {
+    id: 'components.Resellers.comissionStatus',
+    defaultMessage: 'Commission Status'
+  },
   orderPoint: {
     id: 'components.Resellers.orderPoint',
-    defaultMessage: 'Order Point'
+    defaultMessage: 'Payout Currency'
   }
 })

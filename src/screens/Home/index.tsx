@@ -49,7 +49,7 @@ import {
   DeliveryContainer,
   HeaderInfoTitle
 } from './styledComponents'
-import { getDesignLabInfo } from './data'
+import { getDesignLabInfo, profileSettingsQuery } from './data'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
@@ -69,7 +69,7 @@ import {
   HeaderImagePlaceHolder,
   HomepageCarousel,
   ProductFile,
-  DeliveryDays, IProfileSettings
+  DeliveryDays, IProfileSettings, User
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
@@ -79,9 +79,12 @@ interface Data extends QueryProps {
   files: any
 }
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
+
 interface DesignLab extends QueryProps {
   designInfo?: DeliveryDays
-  profileData: IProfileSettings
 }
 
 const arrowLeft = <Arrow src={leftArrow} />
@@ -93,6 +96,8 @@ interface Props extends RouteComponentProps<any> {
   client: any
   productId: number
   loading: boolean
+  profileData: ProfileData
+  user: User
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -189,8 +194,10 @@ export class Home extends React.Component<Props, {}> {
       productTiles,
       featuredBanners,
       featuredProducts,
+      profileData,
       loading,
       homepageImages,
+      user,
       carouselSettings: {
         slideTransition,
         slideDuration,
@@ -208,7 +215,7 @@ export class Home extends React.Component<Props, {}> {
       'deliveryDays.days',
       null
     )
-    const reseller = get(dataDesignLabInfo, 'profileData.reseller', {})
+    const reseller = get(profileData, 'profileData.reseller', {})
     const deliveryDate = get(dataDesignLabInfo, 'deliveryDate.date', null)
 
     const today = new Date()
@@ -221,7 +228,7 @@ export class Home extends React.Component<Props, {}> {
         openResults={this.openResults}
         quickViewAction={this.handleOnQuickView}
         currentCurrency={currentCurrency || config.defaultCurrency}
-        {...{ history, SearchResults }}
+        {...{ history, SearchResults, user }}
       />
     ) : null
 
@@ -402,19 +409,32 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
+type OwnProps = {
+  user?: User
+}
+
 const HomeEnhance = compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   injectIntl,
   withApollo,
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => {
+      return {
+        fetchPolicy: 'network-only',
+        skip: !user
+      }
+    },
+    name: 'profileData',
+  }),
   graphql<DesignLab>(getDesignLabInfo, {
     options: () => ({
       fetchPolicy: 'network-only'
     }),
     name: 'dataDesignLabInfo'
-  }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  })
 )(Home)
 
 export default HomeEnhance

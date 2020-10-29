@@ -16,8 +16,8 @@ import {
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
-import { Filter, IProfileSettings, QueryProps } from '../../types/common'
-import { categoriesQuery } from './data'
+import { Filter, IProfileSettings, QueryProps, User } from '../../types/common'
+import { categoriesQuery, profileSettingsQuery } from './data'
 import Spin from 'antd/lib/spin'
 
 interface Data extends QueryProps {
@@ -25,10 +25,15 @@ interface Data extends QueryProps {
   profileData: IProfileSettings
 }
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
+
 interface Props {
   data: Data
   type: number
   history: any
+  profileData: ProfileData
   genderSelected: number
   onPressSeeAll: (
     gender: number | string | undefined,
@@ -96,13 +101,14 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       type,
       visible,
       onPressCustomize,
+      profileData,
       onPressQuickView,
       categorySelected,
       genderSelected,
       sports,
       formatMessage,
       currentCurrency,
-      data: { categories, loading, profileData },
+      data: { categories, loading },
       genderOptions
     } = this.props
 
@@ -117,7 +123,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
         </LoadingContainer>
       )
     }
-    const reseller = get(profileData, 'reseller', {})
+    const reseller = get(profileData, 'profileData.reseller', {})
     const sportFilter = this.getFilter(sports, type)
     const categoryFilter = this.getFilter(categories, categorySelected)
     const genderFilter = this.getFilter(genderOptions, genderSelected)
@@ -177,9 +183,17 @@ const mapStateToProps = (state: any) => state.get('menuSports').toJS()
 type OwnProps = {
   type?: number
   sports?: Filter[]
+  user?: User
 }
 
 const MenuSportsEnhanced = compose(
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<Data>(categoriesQuery, {
     options: ({ type, sports }: OwnProps) => {
       const sportId =
