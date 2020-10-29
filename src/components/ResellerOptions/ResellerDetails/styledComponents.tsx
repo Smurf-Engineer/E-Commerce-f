@@ -27,7 +27,9 @@ export const Container = styled.div`
 `
 
 export const PopoverStyled = styled(Popover)`
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const OptionsContainer = styled.div`
