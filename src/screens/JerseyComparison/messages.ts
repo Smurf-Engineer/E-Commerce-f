@@ -13,7 +13,7 @@ export default defineMessages({
   headerMessage: {
     id: 'screens.JerseyComparison.headerMessage',
     defaultMessage:
-      'Here at JAKROO, you can select from 3 versions of our short-sleeve jerseys to best match your performance requirements.'
+      'Here at JAKROO, you can select from {quantity} versions of our short-sleeve jerseys to best match your performance requirements.'
   },
   details: {
     id: 'screens.JerseyComparison.details',
