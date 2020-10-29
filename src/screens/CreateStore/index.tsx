@@ -716,9 +716,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
                         {...messages.pricingCheckoutContent}
                         values={{
                           onDemandTeam: (
-                            <b>{formatMessage(messages.onDemandTeamStore)}</b>
+                            <strong>{formatMessage(messages.onDemandTeamStore)}</strong>
                           ),
-                          discount: <b>{formatMessage(messages.percent)}</b>
+                          discount: <strong>{formatMessage(messages.percent)}</strong>
                         }}
                       />
                     }
@@ -736,11 +736,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
                       <FormattedMessage
                         {...messages.productionDeliveryContent}
                         values={{
-                          orderDays: <b>{formatMessage(messages.orderDays)}</b>,
+                          orderDays: <strong>{formatMessage(messages.orderDays)}</strong>,
                           shippingCompany: (
-                            <b>{formatMessage(messages.shippingCompany)}</b>
+                            <strong>{formatMessage(messages.shippingCompany)}</strong>
                           ),
-                          signature: <b>{formatMessage(messages.signature)}</b>
+                          signature: <strong>{formatMessage(messages.signature)}</strong>
                         }}
                       />
                     }
