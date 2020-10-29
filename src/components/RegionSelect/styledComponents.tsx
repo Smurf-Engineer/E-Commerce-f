@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import Select from 'antd/lib/select'
 
+interface DivProps {
+  reseller?: boolean
+}
+
 export const Container = styled.div`
   background-color: #ffffff;
 `
@@ -13,6 +17,10 @@ export const Text = styled.div`
 `
 
 export const StyledSelect = styled(Select)`
-  margin-top: 5px;
+  margin-top: ${({ reseller }: DivProps) => reseller ? '0' : '5px'};
+  margin-bottom: ${({ reseller }: DivProps) => reseller ? '22px' : '0'};
   width: 100%;
+  .ant-select-selection--single {
+    border-radius: ${({ reseller }: DivProps) => reseller ? '0' : '4px'};
+  }
 `

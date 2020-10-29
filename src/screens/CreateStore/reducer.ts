@@ -26,7 +26,7 @@ import {
   SET_PAGINATION_DATA,
   OPEN_MODAL,
   ON_UNSELECT_ITEM,
-  CHANGE_BULLETIN
+  CHANGE_BULLETIN, SET_ITEM_PRICE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -131,6 +131,15 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       const { index, visible } = action
       const items = state.get('items')
       const updatedItems = items.setIn([index, 'visible'], visible)
+      return state.merge({ items: updatedItems })
+    }
+    case SET_ITEM_PRICE: {
+      const { value, currency, itemIndex, abbreviation } = action
+      const items = state.get('items')
+      const currencyIndex = currency < 0 ? 0 : Number(currency)
+      const updatedItems = items
+        .setIn([itemIndex, 'resellerRange', currencyIndex, 'price'], value)
+        .setIn([itemIndex, 'resellerRange', currencyIndex, 'abbreviation'], abbreviation)
       return state.merge({ items: updatedItems })
     }
     case MOVE_ROW: {

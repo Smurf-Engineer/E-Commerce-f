@@ -218,6 +218,8 @@ export type Reseller = {
   status: string
   paypalAccount: string
   comission: number
+  inline: number
+  margin: number
   activatedAt: string
 }
 
@@ -355,6 +357,7 @@ export type LockerTableType = {
   totalOrders: number
   visible: boolean
   priceRange?: Currency[]
+  resellerRange?: Currency[]
 }
 
 export type ProductTableType = {

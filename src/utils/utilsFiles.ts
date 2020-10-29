@@ -1,4 +1,7 @@
 import isEmpty from 'lodash/isEmpty'
+import message from 'antd/lib/message'
+import config from '../config/index'
+import { UploadFile } from '../types/common'
 import last from 'lodash/last'
 import { Area } from 'react-easy-crop'
 
@@ -85,4 +88,30 @@ export const getFileNameFromUrl = (url: string): string => {
     .join('.')
 
   return name || ''
+}
+
+export const converToBytes = (file: File) => {
+  if (file && file.size) {
+    return (file.size / 1024 / 1024)
+  }
+  return 0
+}
+
+export const uploadFileAction = async (file: UploadFile) => {
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await fetch(`${config.graphqlUriBase}upload/docs`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json'
+      },
+      body: formData
+    })
+
+    const { file: responseFile } = await response.json()
+    return responseFile
+  } catch (e) {
+    message.error(e.message)
+  }
 }

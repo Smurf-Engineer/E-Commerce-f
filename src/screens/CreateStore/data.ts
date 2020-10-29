@@ -13,6 +13,12 @@ export const createStoreMutation = graphql(
           id
           visible
           totalOrders
+          resellerRange {
+            price
+            shortName: short_name
+            quantity
+            abbreviation
+          }
           design {
             id
             code
@@ -67,6 +73,12 @@ export const GetTeamStoreQuery = gql`
         visible
         design_id
         totalOrders
+        resellerRange {
+          price
+          shortName: short_name
+          quantity
+          abbreviation
+        }
         priceRange {
           price
           shortName: short_name
@@ -108,5 +120,24 @@ export const GetTeamStoreQuery = gql`
 export const cutoffDateSettingsQuery = gql`
   query getCutoffConfig {
     cutoffDays: getCutoffConfig
+  }
+`
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        firstName: first_name
+        lastName: last_name
+        email
+        phone
+      }
+      reseller {
+        status
+        comission: margin
+        currency
+        paypalAccount: paypal_account
+      }
+    }
   }
 `

@@ -158,3 +158,23 @@ export const Mail = styled(Tooltip)`
   white-space: nowrap;
   text-overflow: ellipsis;
 `
+
+export const TotalDiv = styled.div`
+  display: flex;
+  margin-left: 28px;
+  align-items: center;
+  max-width: 190px;
+  width: 100%;
+`
+
+export const Amounts = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  margin-left: 14px;
+  font-weight: bold;
+`
+
+export const LeftDiv = styled.div`
+  display: flex;
+`

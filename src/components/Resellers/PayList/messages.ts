@@ -29,6 +29,18 @@ export default defineMessages({
     id: 'components.ResellerPayments.status',
     defaultMessage: 'Payment Status'
   },
+  comissionAmount: {
+    id: 'components.ResellerPayments.comissionAmount',
+    defaultMessage: 'Commission Amount:'
+  },
+  usdAmount: {
+    id: 'components.ResellerPayments.usdAmount',
+    defaultMessage: 'USD: {usdTotal}'
+  },
+  cadAmount: {
+    id: 'components.ResellerPayments.cadAmount',
+    defaultMessage: 'CAD: {cadTotal}'
+  },
   amount: {
     id: 'components.ResellerPayments.amount',
     defaultMessage: 'Reseller Commission'

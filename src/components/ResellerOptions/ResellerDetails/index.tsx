@@ -19,7 +19,9 @@ import {
   Subtitle,
   InfoIcon,
   PopoverText,
+  PopoverStyled,
   MessageText,
+  MarginsContainer, SubtitleMargin, StyledInput
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -28,7 +30,7 @@ import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
-import Popover from 'antd/lib/popover'
+import { CA_CURRENCY, US_CURRENCY } from '../../ResellerAbout/constants'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
@@ -36,18 +38,26 @@ interface Props {
   status: string
   loading: boolean
   comission: number
+  margin: number
+  inline: number
   history: History
   userId: string
   activatedAt: string
   paypalAccount: string
   file: string
+  gst: string
   currentPage: number
   isAdmin: boolean
   currency: string
   region: string
+  businessName: string
+  stateProvince: string
   onlyDetails: boolean
   openAffiliate: (open: boolean) => void
   changeComission: (value: number) => void
+  changeMargin: (value: number) => void
+  changeInline: (value: number) => void
+  changeGst: (value: string) => void
   onChangePage: (page: number) => void
   enableReseller: (status: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -55,6 +65,9 @@ interface Props {
 
 class ResellerDetails extends React.Component<Props, {}> {
   debounceComission = debounce((value) => this.handleChangeComission(value), 800)
+  debounceMargin = debounce((value) => this.handleChangeMargin(value), 800)
+  debounceInline = debounce((value) => this.handleChangeInline(value), 800)
+  debounceGst = debounce((value) => this.props.changeGst(value), 800)
   enableStatus = () => {
     const { enableReseller } = this.props
     enableReseller(APPROVED)
@@ -67,6 +80,12 @@ class ResellerDetails extends React.Component<Props, {}> {
     const { enableReseller } = this.props
     enableReseller(RETRY)
   }
+  handleChangeGst = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.debounceGst(value || '')
+  }
   openFile = () => {
     const { file } = this.props
     window.open(file)
@@ -75,9 +94,17 @@ class ResellerDetails extends React.Component<Props, {}> {
     const { openAffiliate } = this.props
     openAffiliate(true)
   }
-  handleChangeComission = (value: number | undefined) => {
+  handleChangeComission = (value = 0) => {
     const { changeComission } = this.props
-    changeComission(value || 0)
+    changeComission(value)
+  }
+  handleChangeMargin = (value = 0) => {
+    const { changeMargin } = this.props
+    changeMargin(value)
+  }
+  handleChangeInline = (value = 0) => {
+    const { changeInline } = this.props
+    changeInline(value)
   }
   render() {
     const {
@@ -91,9 +118,14 @@ class ResellerDetails extends React.Component<Props, {}> {
       userId,
       isAdmin,
       onlyDetails,
+      margin,
+      inline,
+      businessName,
+      stateProvince,
       activatedAt,
       formatMessage,
       status,
+      gst,
       region,
       currency
     } = this.props
@@ -115,21 +147,17 @@ class ResellerDetails extends React.Component<Props, {}> {
         }
         {(onlyDetails || isAdmin) &&
           <OptionsContainer>
-            <LabelButton>
+            {isAdmin && <LabelButton>
               <Title>
-                {formatMessage(messages[isAdmin ? 'enabled' : 'status'])}
+                {formatMessage(messages.enabled)}
               </Title>
-              {isAdmin ?
-                <StyledSwitch
-                  disabled={hasChanged}
-                  checked={isActive}
-                  onChange={this.enableStatus}
-                /> :
-                <BoldLabel>
-                  {status}
-                </BoldLabel>
-              }
+              <StyledSwitch
+                disabled={hasChanged}
+                checked={isActive}
+                onChange={this.enableStatus}
+              />
             </LabelButton>
+            }
             {isAdmin && status === PENDING &&
               <>
                 <LabelButton>
@@ -146,7 +174,7 @@ class ResellerDetails extends React.Component<Props, {}> {
                 </LabelButton>
               </>
             }
-            {isActive &&
+            {isAdmin &&
               <LabelButton>
                 <Title>
                   {formatMessage(messages.activationDate)}
@@ -158,46 +186,85 @@ class ResellerDetails extends React.Component<Props, {}> {
                 }
               </LabelButton>
             }
-            <LabelButton>
-              <Title>
-                {formatMessage(messages.taxForm)}
-              </Title>
-              <FileLink onClick={this.openFile}>
-                <Clip type="paper-clip" />
-                {fileName}
-              </FileLink>
-            </LabelButton>
-            {isActive && <LabelButton>
-              <Title>
-                {formatMessage(messages.comissions)}
-              </Title>
-              {isAdmin ?
-                <StyledInputNumber
-                  onChange={this.debounceComission}
-                  value={comission}
-                  min={0}
-                  max={100}
-                  formatter={rawValue => `${rawValue}%`}
-                  parser={value => value.replace(DECIMAL_REGEX, '')}
+            {(isAdmin && currency === US_CURRENCY) &&
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.taxForm)}
+                </Title>
+                <FileLink onClick={this.openFile}>
+                  <Clip type="paper-clip" />
+                  {fileName}
+                </FileLink>
+              </LabelButton>
+            }
+            {(isAdmin && currency === CA_CURRENCY) &&
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.gstLabel)}
+                </Title>
+                <StyledInput
+                  onChange={this.handleChangeGst}
+                  defaultValue={gst}
                 />
-                : <BoldLabel>
-                  {`${comission}%`}
+              </LabelButton>
+            }
+            {isActive && !isAdmin &&
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.comissions)}
+                  <PopoverStyled
+                    trigger="click"
+                    content={
+                      <PopoverText
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.marginPopover)
+                        }}
+                      />
+                    }
+                  >
+                    <InfoIcon type="info-circle" />
+                  </PopoverStyled>
+                </Title>
+                <BoldLabel>
+                  {`${margin}%`}
                 </BoldLabel>
-              }
-            </LabelButton>}
+              </LabelButton>
+            }
             <LabelButton>
               <Title>
                 {formatMessage(messages.currency)}
-                {!isAdmin && <Popover content={
-                  <PopoverText>
-                    {formatMessage(messages.payoutDesc)}
-                  </PopoverText>
-                } title={formatMessage(messages.currency)}>
-                  <InfoIcon type="info-circle" />
-                </Popover>}
+                {!isAdmin &&
+                  <PopoverStyled
+                    trigger="click"
+                    content={
+                      <PopoverText
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.payoutDesc)
+                        }}
+                      />
+                    } >
+                    <InfoIcon type="info-circle" />
+                  </PopoverStyled>
+                }
               </Title>
               <BoldLabel upperCase={true}>
                 {currency}
+              </BoldLabel>
+            </LabelButton>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.stateProvince)}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {stateProvince}
+              </BoldLabel>
+            </LabelButton>
+            <LabelButton>
+              <Title>
+                {formatMessage(messages.businessName)}
+              </Title>
+              <BoldLabel upperCase={true}>
+                {businessName}
               </BoldLabel>
             </LabelButton>
             <LabelButton>
@@ -224,7 +291,57 @@ class ResellerDetails extends React.Component<Props, {}> {
             }
           </OptionsContainer>
         }
-        {isActive && !onlyDetails &&
+        {isAdmin && isActive &&
+          <>
+            <SubtitleMargin>
+              {formatMessage(messages.dealerMargins)}
+            </SubtitleMargin>
+            <MarginsContainer>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.storeMargin)}
+                </Title>
+                <StyledInputNumber
+                  onChange={this.debounceMargin}
+                  value={margin}
+                  min={0}
+                  max={100}
+                  formatter={rawValue => `${rawValue}%`}
+                  parser={value => value.replace(DECIMAL_REGEX, '')}
+                />
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.customMargin)}
+                </Title>
+                <StyledInputNumber
+                  onChange={this.debounceComission}
+                  value={comission}
+                  min={0}
+                  max={100}
+                  formatter={rawValue => `${rawValue}%`}
+                  parser={value => value.replace(DECIMAL_REGEX, '')}
+                />
+
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.inlineMargin)}
+                </Title>
+                <StyledInputNumber
+                  onChange={this.debounceInline}
+                  value={inline}
+                  min={0}
+                  max={100}
+                  formatter={rawValue => `${rawValue}%`}
+                  parser={value => value.replace(DECIMAL_REGEX, '')}
+                />
+              </LabelButton>
+            </MarginsContainer>
+          </>
+        }
+        {
+          isActive && !onlyDetails &&
           <PaymentsList
             {...{
               formatMessage,
@@ -236,7 +353,7 @@ class ResellerDetails extends React.Component<Props, {}> {
             }}
           />
         }
-      </Container>
+      </Container >
     )
   }
 }
