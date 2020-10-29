@@ -45,10 +45,9 @@ import JakrooModal from '../Common/JakrooModal'
 import { createUser } from './data'
 import messages from './messages'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import { uploadFileAction } from './api'
 import { UploadChangeParam } from 'antd/lib/upload'
 import Spin from 'antd/lib/spin'
-import { getFileWithExtension } from '../../utils/utilsFiles'
+import { converToBytes, getFileWithExtension, uploadFileAction } from '../../utils/utilsFiles'
 import { validateEmail } from '../../utils/utilsFunctions'
 import { NEW_USER } from '../../constants'
 import { User } from '../../types/common'
@@ -135,9 +134,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       this.setState({ loading: false, fileName })
     })
   }
-  beforeUpload = (file: any) => {
+  beforeUpload = (file: File) => {
     const { formatMessage } = this.props
-    const isLt2M = file.size / 1024 / 1024 < 20
+    const isLt2M = converToBytes(file) < 20
     if (!isLt2M) {
       AntdMessage.error(formatMessage(messages.sizeError))
     }

@@ -7,7 +7,7 @@ import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
 import Checkbox from 'antd/lib/checkbox'
 import Upload from 'antd/lib/upload'
-import { BLUE, GRAY, GRAY_STRONG, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
+import { BLUE, GRAY, GRAY_DARK, GRAY_STRONG, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
@@ -65,9 +65,9 @@ export const InputRow = styled.div`
 `
 
 export const InfoLabel = styled.div`
-font-style: italic;
-color: ${GRAY};
-margin-left: 6px;
+  font-style: italic;
+  color: ${GRAY};
+  margin-left: 6px;
 `
 
 export const Notifications = styled.div``
@@ -237,7 +237,7 @@ export const RememberMeRow = styled.div`
   flex-direction: row-reverse;
   justify-content: space-between;
   height: 19px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 19px;
   text-align: right;
@@ -252,8 +252,8 @@ export const JoinNowLabel = styled.span`
   }
 `
 export const StyledLoginButton = styled(Button)`
-  background-color: #fff;
-  border-color: #e61737;
+  background-color: ${WHITE};
+  border-color: ${RED};
   border-radius: 0px;
   height: 50px;
   margin-bottom: 10px;
@@ -263,7 +263,7 @@ export const StyledLoginButton = styled(Button)`
 export const NotAMemberLabel = styled.div`
   height: 22px;
   width: 100%;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 22px;
   text-align: center;
