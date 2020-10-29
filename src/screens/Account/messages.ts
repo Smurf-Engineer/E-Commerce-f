@@ -79,7 +79,7 @@ export default defineMessages({
   },
   reseller: {
     id: 'screens.Account.reseller',
-    defaultMessage: 'DIRECT FULFILLMENT'
+    defaultMessage: 'DIRECTSHIP STORES'
   },
   resellerAbout: {
     id: 'screens.Account.resellerAbout',

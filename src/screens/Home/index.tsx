@@ -69,17 +69,18 @@ import {
   HeaderImagePlaceHolder,
   HomepageCarousel,
   ProductFile,
-  DeliveryDays, IProfileSettings
+  DeliveryDays, IProfileSettings, User
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
 import { getFileExtension } from '../../utils/utilsFiles'
 
-interface ProfileData extends QueryProps {
-  profileData: IProfileSettings
-}
 interface Data extends QueryProps {
   files: any
+}
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
 }
 
 interface DesignLab extends QueryProps {
@@ -94,8 +95,9 @@ interface Props extends RouteComponentProps<any> {
   someKey?: string
   client: any
   productId: number
-  profileData: ProfileData
   loading: boolean
+  profileData: ProfileData
+  user: User
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -186,15 +188,16 @@ export class Home extends React.Component<Props, {}> {
       searchString,
       intl,
       fakeWidth,
-      profileData,
       currentCurrency,
       clientInfo,
       mainHeaderImages,
       productTiles,
       featuredBanners,
       featuredProducts,
+      profileData,
       loading,
       homepageImages,
+      user,
       carouselSettings: {
         slideTransition,
         slideDuration,
@@ -225,7 +228,7 @@ export class Home extends React.Component<Props, {}> {
         openResults={this.openResults}
         quickViewAction={this.handleOnQuickView}
         currentCurrency={currentCurrency || config.defaultCurrency}
-        {...{ history, SearchResults }}
+        {...{ history, SearchResults, user }}
       />
     ) : null
 
@@ -406,25 +409,32 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
+type OwnProps = {
+  user?: User
+}
+
 const HomeEnhance = compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   injectIntl,
   withApollo,
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
+    options: ({ user }: OwnProps) => {
+      return {
+        fetchPolicy: 'network-only',
+        skip: !user
+      }
     },
-    name: 'profileData'
+    name: 'profileData',
   }),
   graphql<DesignLab>(getDesignLabInfo, {
     options: () => ({
       fetchPolicy: 'network-only'
     }),
     name: 'dataDesignLabInfo'
-  }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  })
 )(Home)
 
 export default HomeEnhance

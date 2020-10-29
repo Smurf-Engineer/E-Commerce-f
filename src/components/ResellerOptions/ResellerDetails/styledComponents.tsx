@@ -7,6 +7,7 @@ import Popover from 'antd/lib/popover'
 import { RED, WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
+import Input from 'antd/lib/input'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -23,6 +24,31 @@ export const Container = styled.div`
   @media (min-width: 320px) and (max-width: 1024px) {
     padding-right: 0;
     align-items: center;
+  }
+`
+
+export const MarginsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  margin-top: 22px;
+  margin-bottom: 22px;
+`
+
+export const SubtitleMargin = styled.div`
+  font-weight: bold;
+  margin-top: 22px;
+  font-size: 16px;
+  padding-bottom: 12px;
+  width: 100%;
+  border-bottom: 1px solid ${GRAY};
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
+`
+
+export const SaveIcon = styled(Icon)`
+  &:hover {
+    cursor: pointer;
   }
 `
 
@@ -54,7 +80,6 @@ export const LabelButton = styled.div`
   margin-right: 24px;
   @media (max-width: 1024px) {
     flex: 1;
-    height: 38px;
     margin-bottom: 26px;
   }
 `
@@ -77,6 +102,15 @@ export const BoldLabel = styled.div`
 export const FileLink = styled.div`
   cursor: pointer;
   color: ${RED};
+`
+
+export const StyledInput = styled(Input)`
+  border-radius: 0;
+  width: 130px;
+  margin-top: 8px;
+  .ant-input {
+    border-radius: 0;
+  }
 `
 
 export const Clip = styled(Icon)`

@@ -368,7 +368,7 @@ export class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderPriceDetail highlighted={true}>
             {formatMessage(
               !isTeamStore ? messages.unitPrice : messages.teamPrice,
-              { symbol, price: (unitaryPrice || 0).toFixed(2) }
+              { symbol, price: (Number(unitaryPrice) || 0).toFixed(2) }
             )}
           </ItemDetailsHeaderPriceDetail>
           <ItemDetailsHeaderPriceDetail>
