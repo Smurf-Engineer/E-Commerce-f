@@ -62,10 +62,11 @@ export const PriceLabel = styled.div`
   padding: 4px 0px;
   font-size: 12px;
   line-height: 16px;
+  text-transform: uppercase;
   text-align: left;
   margin-left: 5px;
   font-weight: bold;
-  width: 62px;
+  width: 70px;
 `
 
 export const Price = styled.div`

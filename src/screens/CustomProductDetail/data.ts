@@ -14,6 +14,13 @@ export const GetDesignByIdQuery = gql`
       teamEnable: team_enable
       teamName: team_name
       teamOnDemand: team_on_demand_mode
+      isReseller: is_reseller
+      resellerPrice: reseller_price {
+        abbreviation
+        shortName: short_name
+        quantity
+        price
+      }
       teamPrice: team_price {
         abbreviation
         shortName: short_name
@@ -117,6 +124,26 @@ export const GetDesignByIdQuery = gql`
       createdAt: created_at
       proDesign: pro_design
       png: output_png
+    }
+  }
+`
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        firstName: first_name
+        lastName: last_name
+        email
+        phone
+      }
+      reseller {
+        status
+        currency
+        margin
+        comission
+        paypalAccount: paypal_account
+      }
     }
   }
 `

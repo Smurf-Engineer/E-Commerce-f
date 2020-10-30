@@ -20,7 +20,7 @@ import {
 import { QueryProps, Message, AffiliatePayment } from '../../../../types/common'
 import withError from '../../../WithError'
 import withLoading from '../../../WithLoading'
-import { getAffiliatePaymentsQuery } from './data'
+import { getResellerPaymentsQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 import { NOTE_FORMAT } from '../../constants'
 import moment from 'moment'
@@ -133,7 +133,7 @@ interface OwnProps {
 }
 
 const PaymentsListEnhance = compose(
-  graphql(getAffiliatePaymentsQuery, {
+  graphql(getResellerPaymentsQuery, {
     options: ({
       currentPage,
       customLimit,

@@ -11,6 +11,7 @@ export const profileSettingsQuery = gql`
         email
         netsuiteInternal: netsuite_internal
         affiliateEnabled: affiliate_enabled
+        resellerEnabled: reseller_enabled
         phone
       }
       stats {
@@ -19,6 +20,20 @@ export const profileSettingsQuery = gql`
           total
           currency
         }
+      }
+      reseller {
+        status
+        file
+        paypalAccount: paypal_account
+        comission
+        margin
+        inline
+        gst
+        region
+        businessName: business_name
+        stateProvince: state_province
+        currency
+        activatedAt: activated_at
       }
       affiliate {
         status
@@ -114,6 +129,14 @@ export const setAffiliateStatusMutation = gql`
   }
 `
 
+export const setResellerEnabledMutation = gql`
+  mutation enableReseller($userId: String!, $enabled: Boolean) {
+    resellerData: enableReseller(userId: $userId ,enabled: $enabled) {
+      enabled: reseller_enabled
+    }
+  }
+`
+
 export const changeNetsuiteInternal = gql`
   mutation setNetsuiteId($userId: String!, $netsuiteId: String) {
     profile: setNetsuiteId(userId: $userId, netsuiteId: $netsuiteId) {
@@ -122,6 +145,51 @@ export const changeNetsuiteInternal = gql`
   }
 `
 
+export const changeResellerComissionMutation = gql`
+  mutation changeResellerComission($value: Float, $userId: String!) {
+    changeResellerComission(value: $value, userId: $userId) {
+      status
+      comission
+    }
+  }
+`
+
+export const changeGstMutation = gql`
+  mutation changeGst($value: String, $userId: String!) {
+    changeGst(value: $value, userId: $userId) {
+      gst
+    }
+  }
+`
+
+export const changeResellerMarginMutation = gql`
+  mutation changeResellerMargin($value: Float, $userId: String!) {
+    changeResellerMargin(value: $value, userId: $userId) {
+      status
+      margin
+    }
+  }
+`
+
+export const changeResellerInlineMutation = gql`
+  mutation changeResellerInline($value: Float, $userId: String!) {
+    changeResellerInline(value: $value, userId: $userId) {
+      status
+      inline
+    }
+  }
+`
+
+export const setResellerStatusMutation = gql`
+  mutation changeResellerStatus($status: String!, $userId: String!) {
+    changeResellerStatus(status: $status, userId: $userId) {
+      status
+      paypalAccount: paypal_account
+      comission
+      activatedAt: activated_at
+    }
+  }
+`
 export const assignRepUserMutation = graphql(
   gql`
     mutation assignRepUser($userId: String!, $repUser: String) {

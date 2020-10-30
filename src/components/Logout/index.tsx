@@ -31,6 +31,7 @@ import { Message } from '../../types/common'
 
 interface Props {
   title: string
+  resellerPending?: boolean
   openedMenu: boolean
   resellerEnabled: boolean
   affiliateEnabled: boolean

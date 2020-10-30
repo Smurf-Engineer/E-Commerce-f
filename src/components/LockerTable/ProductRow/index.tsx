@@ -7,6 +7,7 @@ import { compose } from 'react-apollo'
 import { DragSource, DropTarget } from 'react-dnd'
 import screenMessage from 'antd/lib/message'
 import ItemTypes from '../dndTypes'
+import { isNumber } from '../../../utils/utilsFiles'
 import {
   Row,
   Cell,
@@ -21,7 +22,7 @@ import {
   DesktopLocker,
   DragCell
 } from '../styledComponents'
-import { Align } from './styledComponents'
+import { Align, StyledInput } from './styledComponents'
 import Checkbox from 'antd/lib/checkbox'
 import Thumbnail from '../ProductImage'
 import messages from '../messages'
@@ -38,11 +39,17 @@ interface Props {
   id?: number
   text?: string
   regularPrice?: string
+  currentCurrency?: string
   hideQuickView?: boolean
-  fixedPrice?: string
+  isReseller?: boolean
+  currencyIndex?: number
+  resellerComission?: number
+  resellerPrice?: number
+  fixedPrice?: number
   isDragging?: () => boolean
   connectDragSource?: any
   connectDropTarget?: any
+  handleOnSetPrice: (value: number, currency: number, itemIndex: number) => void
   moveRow: (dragIndex: number, hoverIndex: number) => void
   onPressDelete: (index: number) => void
   onPressQuickView: (
@@ -103,14 +110,33 @@ const headerTitles: Header[] = [
 ]
 
 class ProductRow extends React.PureComponent<Props, {}> {
+  onSetPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    const { index, handleOnSetPrice, currencyIndex } = this.props
+    if (!isNumber(value) && value !== '') {
+      return
+    }
+    handleOnSetPrice(Number(value), currencyIndex, index)
+  }
+  validateInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { fixedPrice = 0, currencyIndex, index, handleOnSetPrice } = this.props
+    const { target: { value } } = event
+    if (value < fixedPrice) {
+      handleOnSetPrice(Number(fixedPrice), currencyIndex, index)
+    }
+  }
   render() {
     const {
       index,
       productId,
       image,
       name,
+      isReseller,
+      resellerComission = 0,
+      resellerPrice = 0,
       description,
       visible,
+      currentCurrency,
       yotpoId,
       totalOrders,
       onPressDelete,
@@ -120,7 +146,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
       connectDropTarget,
       formatMessage,
       regularPrice,
-      fixedPrice,
+      fixedPrice = 0,
       hideQuickView
     } = this.props
 
@@ -142,7 +168,9 @@ class ProductRow extends React.PureComponent<Props, {}> {
         <Title>{message ? formatMessage(messages[message]) : ''}</Title>
       </Cell>
     ))
-
+    const purchasePrice = (fixedPrice * (1 - (resellerComission / 100))).toFixed(2)
+    const profit = ((resellerPrice || fixedPrice) - Number(purchasePrice)).toFixed(2)
+    const badInput = resellerPrice < fixedPrice
     const renderView = (
       <>
         <MobileLocker>
@@ -166,6 +194,11 @@ class ProductRow extends React.PureComponent<Props, {}> {
             <Cell width={40}>
               <Price>{`$${fixedPrice}`}</Price>
             </Cell>
+            {isReseller &&
+              <Cell width={40}>
+                <Price>{`$${fixedPrice}`}</Price>
+              </Cell>
+            }
             <Cell width={40}>
               <Checkbox checked={visible} onChange={handleOnClickVisible} />
             </Cell>
@@ -184,7 +217,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <MoreIcon type="ellipsis" />
               </DragCell>
             </Cell>
-            <Cell width={20} tabletWidth={20}>
+            <Cell width={10} tabletWidth={10}>
               <Thumbnail
                 {...{ image, hideQuickView }}
                 onPressQuickView={handleOnClickView}
@@ -196,14 +229,31 @@ class ProductRow extends React.PureComponent<Props, {}> {
             <Cell width={10} tabletWidth={10}>
               <Description>{description}</Description>
             </Cell>
+            {isReseller && 
+              <Cell width={10} tabletWidth={10}>
+                <Price>{currentCurrency}</Price>
+              </Cell>
+            }
             <Cell width={10} tabletWidth={10}>
-              <Price>{`$${regularPrice}`}</Price>
+              <Price>{`$${isReseller ? fixedPrice : regularPrice}`}</Price>
             </Cell>
             <Cell width={10} tabletWidth={10}>
-              <Price>{`$${fixedPrice}`}</Price>
+              <Price>{`$${isReseller ? purchasePrice : fixedPrice}`}</Price>
             </Cell>
+            {isReseller &&
+              <Cell width={10} tabletWidth={10}>
+                <StyledInput
+                  {...{ badInput }}
+                  id={index}
+                  onBlur={this.validateInput}
+                  defaultValue={fixedPrice}
+                  onChange={this.onSetPrice}
+                  value={resellerPrice}
+                />
+              </Cell>
+            }
             <Cell width={10} tabletWidth={10}>
-              <Price>{totalOrders}</Price>
+              <Price>{isReseller ? `$${profit}` : totalOrders}</Price>
             </Cell>
             <Cell width={10} tabletWidth={10}>
               <Center>
