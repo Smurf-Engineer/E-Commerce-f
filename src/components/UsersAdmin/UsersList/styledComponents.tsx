@@ -3,8 +3,9 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { RED, WHITE } from '../../../theme/colors'
+import { GRAY_STRONG, RED, WHITE } from '../../../theme/colors'
 import Input from 'antd/lib/input'
+import Checkbox from 'antd/lib/checkbox/Checkbox'
 
 const Search = Input.Search
 interface ContainerProps {
@@ -94,4 +95,22 @@ export const OptionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+`
+
+export const Checkboxes = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin-left: 28px;
+`
+
+export const CheckboxStyled = styled(Checkbox)`
+  color: ${GRAY_STRONG};
+  display: flex;
+  width: 100%;
+  &:last-child {
+    margin-top: 12px;
+  }
+  &.ant-checkbox-wrapper {
+    margin-left: 0px;
+  }
 `

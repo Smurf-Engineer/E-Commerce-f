@@ -18,7 +18,8 @@ import {
   setSearchRep,
   onCloseInternal,
   openInternal,
-  handleOnInternalChange
+  handleOnInternalChange,
+  onChangePageReseller
 } from './actions'
 
 import {
@@ -35,7 +36,8 @@ import {
   SET_SEARCH,
   CLOSE_INTERNAL,
   OPEN_INTERNAL,
-  CHANGE_INTERNAL
+  CHANGE_INTERNAL,
+  SET_RESELLER_PAGE
 } from './constants'
 
 describe(' DiscountsAdmin Screen', () => {
@@ -48,6 +50,14 @@ describe(' DiscountsAdmin Screen', () => {
         type,
         orderBy,
         sort
+      })
+    })
+    it('onChangePageReseller', () => {
+      const type = SET_RESELLER_PAGE
+      const page = 2
+      expect(onChangePageReseller(page)).toEqual({
+        type,
+        page
       })
     })
     it('setCurrentPageAction', () => {
@@ -228,6 +238,31 @@ describe(' DiscountsAdmin Screen', () => {
           )
           const customPageValue = currentPageState.get('currentPage')
           expect(customPageValue).toBe(2)
+        })
+      })
+    })
+    describe('SET_RESELLER_PAGE', () => {
+      describe('Current page for reseller', () => {
+        it('Handles undefined value in pageReseller', () => {
+          const customInitialValue = initialState.get('pageReseller')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles value type in pageReseller', () => {
+          const customInitialValue = initialState.get('pageReseller')
+          expect(typeof customInitialValue).toBe('number')
+        })
+        it('Handles initial value in pageReseller', () => {
+          const customInitialValue = initialState.get('pageReseller')
+          expect(customInitialValue).toBe(0)
+        })
+        it('Handles custom value in pageReseller', () => {
+          const newPage = 2
+          const currentPageState = usersAdminReducer(
+            initialState,
+            onChangePageReseller(newPage)
+          )
+          const customPageValue = currentPageState.get('pageReseller')
+          expect(customPageValue).toBe(newPage)
         })
       })
     })
