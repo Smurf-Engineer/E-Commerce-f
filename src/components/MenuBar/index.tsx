@@ -21,7 +21,7 @@ import {
   TeamStoresMenuTitle,
   Icon
 } from './styledComponents'
-import { regionsQuery, profileDataQuery } from './data'
+import { profileSettingsQuery, regionsQuery } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -33,10 +33,12 @@ import {
   RegionConfig,
   Region as RegionType,
   QueryProps,
-  IProfileSettings
+  IProfileSettings,
+  User
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
+import { APPROVED, PENDING } from '../../constants'
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -46,12 +48,16 @@ interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
 }
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
+
 interface Props {
   regionsData: RegionsData
   history: any
+  profileData: ProfileData
   searchFunc: (param: string) => void
   openLogin?: boolean
-  profileData: ProfileData
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
@@ -157,12 +163,12 @@ class MenuBar extends React.Component<Props, StateProps> {
     const {
       history,
       searchFunc,
-      profileData,
       openLogin,
       onChangeLocation,
       currentRegion,
       currentLanguage,
       currentCurrency,
+      profileData,
       hideTop,
       hideBottom,
       intl,
@@ -185,8 +191,12 @@ class MenuBar extends React.Component<Props, StateProps> {
     }
 
     const { formatMessage } = intl
+    const { status } = get(profileData, 'profileData.reseller', {})
+    const resellerPending = status === PENDING
+    const approvedReseller = status === APPROVED
     const userName = !!user ? String(user.name).toUpperCase() : ''
     const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
+    const resellerEnabled = get(profileData, 'profileData.userProfile.resellerEnabled', false)
 
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
@@ -195,7 +205,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       </TopText>
     ) : (
         <Logout
-          {...{ history, formatMessage, affiliateEnabled }}
+          {...{ history, formatMessage, affiliateEnabled, resellerPending, approvedReseller, resellerEnabled }}
           title={formatMessage(messages.myAccount, { user: userName })}
           logout={logoutAction}
           openMenu={this.openMenu}
@@ -235,7 +245,7 @@ class MenuBar extends React.Component<Props, StateProps> {
         <BottomRow>
           <LogoIcon src={logo} onClick={this.handleOnGoHome} />
           <DropdownList
-            {...{ history, formatMessage, currentCurrency, regionsCodes }}
+            {...{ history, formatMessage, currentCurrency, regionsCodes, user }}
           />
           <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
         </BottomRow>
@@ -289,6 +299,9 @@ class MenuBar extends React.Component<Props, StateProps> {
                       formatMessage,
                       buyNowHeader,
                       openMenu,
+                      approvedReseller,
+                      resellerPending,
+                      resellerEnabled,
                       affiliateEnabled,
                       saveAndBuy
                     }}
@@ -342,22 +355,22 @@ class MenuBar extends React.Component<Props, StateProps> {
 }
 
 type OwnProps = {
-  loggedIn?: boolean
+  user?: User
 }
 
 const MenuBarEnhanced = compose(
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<RegionsData>(regionsQuery, {
     name: 'regionsData',
     options: () => ({
       fetchPolicy: 'network-only',
       variables: {}
-    })
-  }),
-  graphql<RegionsData>(profileDataQuery, {
-    name: 'profileData',
-    options: ({ loggedIn }: OwnProps) => ({
-      fetchPolicy: 'network-only',
-      skip: !loggedIn
     })
   })
 )(MenuBar)

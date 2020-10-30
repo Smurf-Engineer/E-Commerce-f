@@ -14,6 +14,13 @@ export const profileSettingsQuery = gql`
         status
         paypalAccount: paypal_account
       }
+      reseller {
+        status
+        comission
+        inline
+        file
+        activatedAt: activated_at
+      }
       languageSettings: userRegionOptions {
         region {
           id

@@ -47,7 +47,10 @@ interface Props {
   managerSearchText: string
   netsuiteId: string
   pageAffiliate: number
+  isReseller: boolean
+  isAffiliate: boolean
   openInternalModal: boolean
+  setCheckedAction: (name: string, checked: boolean) => void
   onChangePage: (page: number) => void
   onCloseInternal: () => void
   openInternal: (id: string) => void
@@ -179,6 +182,9 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       name,
       permissions,
       lastName,
+      isReseller,
+      isAffiliate,
+      setCheckedAction,
       repSearchText,
       managerSearchText,
       setNoteText,
@@ -218,6 +224,9 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                 formatMessage,
                 repSearchText,
                 managerSearchText,
+                isReseller,
+                isAffiliate,
+                setCheckedAction,
                 currentPage,
                 orderBy,
                 sort,

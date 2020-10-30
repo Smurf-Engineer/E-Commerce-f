@@ -80,8 +80,10 @@ interface Props extends RouteComponentProps<any> {
   initialCountryCode: string
   buyNowHeader: boolean
   disableAssist: boolean
+  openReseller: boolean
   fontsData: any
   fonts: []
+  openResellerAction: (open: boolean) => void
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: (client: any) => void
@@ -169,6 +171,16 @@ class MainLayout extends React.Component<Props, {}> {
     }
 
     this.onLogout()
+  }
+
+  handleOpenReseller = () => {
+    const { history } = this.props
+    history.push('/reseller-signup')
+  }
+
+  closeReseller = () => {
+    const { openResellerAction } = this.props
+    openResellerAction(false)
   }
 
   onLogout = () => {
@@ -269,6 +281,7 @@ class MainLayout extends React.Component<Props, {}> {
               currentRegion,
               currentLanguage,
               buyNowHeader,
+              user,
               setAccountScreen
             }}
             loggedIn={!!user}
@@ -281,7 +294,7 @@ class MainLayout extends React.Component<Props, {}> {
           />
         </Header>
         <SearchResults
-          {...{ history, SearchResults }}
+          {...{ history, SearchResults, user }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}
@@ -292,7 +305,11 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks {...{ history, formatMessage, fakeWidth }} />
+            <ContactAndLinks
+              {...{ history, formatMessage, fakeWidth }}
+              showReseller={!user}
+              openReseller={this.handleOpenReseller}
+            />
             <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}

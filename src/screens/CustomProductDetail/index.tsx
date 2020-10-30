@@ -13,7 +13,7 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
-import { GetDesignByIdQuery } from './data'
+import { GetDesignByIdQuery, profileSettingsQuery } from './data'
 import {
   Container,
   Content,
@@ -61,7 +61,7 @@ import {
   ProductFile,
   PriceRange,
   UserType,
-  BreadRoute
+  BreadRoute, IProfileSettings
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -79,13 +79,19 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
+import { APPROVED } from '../../constants'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
+const resellerLabels = ['purchasePrice', 'listPrice']
 const { Men, Women, Unisex } = ProductGenders
 
 interface Data extends QueryProps {
   design: DesignType
+}
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -101,6 +107,7 @@ interface Props extends RouteComponentProps<any> {
   showFitsModal: boolean
   phone: boolean
   loading: boolean
+  profileData: ProfileData
   selectedTopSize: SelectedType
   selectedBottomSize: SelectedType
   setLoadingAction: (loading: boolean) => void
@@ -140,6 +147,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedFit,
       openFitInfo,
       setLoadingModel,
+      profileData,
       showDetails,
       currentCurrency,
       showFitsModal,
@@ -151,13 +159,22 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const { formatMessage } = intl
 
     const queryParams = queryString.parse(search)
-
+    const { comission = 0, margin = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
     const ownedDesign = get(design, 'canEdit', false)
-    const product = get(design, 'product', null)
-    const shared = get(design, 'shared', false)
-    const productPriceRange = get(product, 'priceRange', null)
-    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
+    let product = get(design, 'product', null)
     const teamStoreItem = queryParams.item
+    const comissionToApply = teamStoreItem ? margin : comission
+    if (resellerStatus === APPROVED && ownedDesign) {
+      const originalPriceRange = get(product, 'priceRange', [])
+      const purchasePrices = originalPriceRange.map((priceItem) => {
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+        return { ...priceItem, price }
+      })
+      product = { ...product, priceRange: purchasePrices }
+    }
+    const productPriceRange = get(product, 'priceRange', [])
+    const shared = get(design, 'shared', false)
+    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
 
     if (loading || dataLoading) {
       return (
@@ -187,9 +204,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
-    const teamPrice = get(design, 'teamPrice', '')
+    const fixedPrices = get(design, 'teamPrice', [])
+    const resellerPrice = get(design, 'resellerPrice', [])
     const teamEnable = get(design, 'teamEnable', '')
     const teamOnDemand = get(design, 'teamOnDemand', false)
+    const isReseller = get(design, 'isReseller', false)
     const teamName = get(design, 'teamName', '')
     const proDesign = get(design, 'proDesign', false)
     const {
@@ -226,14 +245,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ genderId: imageGender }) => imageGender !== images.genderId
       )
     }
-
-    const hasFixedPrices = teamPrice && teamPrice.length
+    const teamPrice = isReseller ? resellerPrice : fixedPrices
+    const hasFixedPrices = teamPrice && teamPrice.length && !isReseller
     let priceRange: PriceRange[] = []
     if (teamStoreItem) {
       const regularPrices = filter(
         productPriceRange,
         ({ quantity }) =>
-          quantity === 'Personal' || (quantity === '2-5' && !hasFixedPrices)
+          (quantity === 'Personal' && !isReseller) || (quantity === '2-5' && !hasFixedPrices)
       )
       priceRange = [...regularPrices, ...teamPrice]
     } else {
@@ -245,21 +264,21 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       filter(priceRange, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
-
+    const priceLabels = isReseller && ownedDesign ? resellerLabels : teamStoreLabels
     const symbol = currencyPrices.length ? currencyPrices[0].shortName : ''
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
       currencyPrices.map(
         ({ price, quantity }, index: number) =>
-          index < MAX_AMOUNT_PRICES && (
+          index < MAX_AMOUNT_PRICES && (!(isReseller && !ownedDesign && index === 0) || !isReseller) && (
             <AvailablePrices key={index}>
               <PriceQuantity
                 {...{ index, price, symbol, teamStoreItem }}
                 priceColor={index > 0 && teamStoreItem ? BLUE : GRAY_DARK}
                 quantity={
                   teamStoreItem
-                    ? formatMessage(messages[teamStoreLabels[index]])
+                    ? formatMessage(messages[priceLabels[index]])
                     : quantity
                 }
               />
@@ -449,7 +468,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             withoutTop={true}
             isFixed={teamStoreItem && !teamOnDemand}
             teamStoreId={teamStoreShortId}
-            fixedPrices={teamPrice}
+            fixedPrices={isReseller && ownedDesign ? [] : teamPrice}
             {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
             teamStoreName={teamName}
           />
@@ -729,6 +748,13 @@ type OwnProps = {
 const CustomProductDetailEnhance = compose(
   injectIntl,
   connect(mapStateToProps, { ...customProductDetailActions }),
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {

@@ -60,6 +60,11 @@ import proAssist from '../components/ProAssist/reducer'
 import userFiles from '../components/UsersAdmin/UserFiles/reducer'
 import roleCatalog from '../components/RoleList/reducer'
 import salesRep from '../components/SalesRep/reducer'
+import resellers from '../components/Resellers/reducer'
+import resellerOptions from '../components/ResellerOptions/reducer'
+import resellerOrders from '../components/ResellerOrders/reducer'
+import resellerAbout from '../components/ResellerAbout/reducer'
+import resellerPayouts from '../components/ResellerPayouts/reducer'
 import affiliates from '../components/Affiliates/reducer'
 import affiliatesAbout from '../components/AffiliateAbout/reducer'
 import affiliatesOrders from '../components/AffiliatesOrders/reducer'
@@ -81,12 +86,14 @@ export interface ReducersObject {
   checkout: any
   designerTool: any
   shoppingCartPage: any
+  resellerAbout: any
   storeFront: any
   createStore: any
   designSearchAdmin: any
   roleCatalog: any
   affiliatesAbout: any
   salesRep: any
+  resellerOptions: any
   affiliates: any
   affiliatesOrders: any
   affiliatesPayouts: any
@@ -95,7 +102,9 @@ export interface ReducersObject {
   account: any
   subscriptionTest: any
   fitWidget: any
+  resellers: any
   designs: any
+  resellerOrders: any
   productDetail: any
   productForm: any
   product: any
@@ -110,6 +119,7 @@ export interface ReducersObject {
   productCatalogAdmin: any
   menuSports: any
   layout: any
+  resellerPayouts: any
   productModels: any
   menu: any
   forgot: any
@@ -210,10 +220,15 @@ const rootReducer = combineReducers({
   orderPlaced,
   myTeamStores,
   affiliatesAbout,
+  resellerOptions,
   checkout,
   designerTool,
+  resellerPayouts,
   shoppingCartPage,
+  resellerOrders,
   storeFront,
+  resellers,
+  resellerAbout,
   productModels,
   createStore,
   affiliates,

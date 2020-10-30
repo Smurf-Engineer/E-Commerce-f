@@ -37,6 +37,7 @@ interface Props {
   cutoffDays: number
   storeId: string
   datesEdited: boolean
+  isReseller: boolean
   onUpdateName: (name: string) => void
   onSelectStartDate: (
     dateMoment: Moment,
@@ -59,6 +60,7 @@ const StoreForm = ({
   name,
   initialStartDate,
   startDate,
+  isReseller,
   endDate,
   onDemand,
   formatMessage,
@@ -184,7 +186,7 @@ const StoreForm = ({
       <Fields>
         <Column>
           <Label>
-            {formatMessage(messages.teamStoreName)} <Required>*</Required>
+            {formatMessage(messages[isReseller ? 'storeName' : 'teamStoreName'])} <Required>*</Required>
           </Label>
           <Input
             value={name}

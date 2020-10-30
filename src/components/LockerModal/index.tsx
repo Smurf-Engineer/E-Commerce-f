@@ -67,7 +67,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     } = this.props
     const selectedItem = Object.assign(
       {},
-      { visible: true, design: designs[index] }
+      { visible: true, design: designs[index], resellerRange: [] }
     )
     const designId = get(designs[index], 'id', -1)
     if (selectedItems[designId]) {

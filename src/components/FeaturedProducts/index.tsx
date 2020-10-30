@@ -15,12 +15,15 @@ import {
 import ProductThumbnail from '../ProductThumbnail'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
-import { Product } from '../../types/common'
+import { Product, Reseller } from '../../types/common'
+import { APPROVED } from '../../constants'
+import get from 'lodash/get'
 
 interface Props {
   history: any
   featuredProducts: Product[]
   currentCurrency?: string
+  reseller?: Reseller
   formatMessage: (messageDescriptor: any) => string
   openQuickView: (id: number, yotpoId: string, gender: number) => void
 }
@@ -69,9 +72,11 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       openQuickView,
       formatMessage,
       currentCurrency,
+      reseller,
       featuredProducts
     } = this.props
-
+    const { status, inline = 0, comission = 0 } = reseller || {}
+    const isReseller = status === APPROVED
     if (!featuredProducts.length) {
       return (
         <Loading>
@@ -82,7 +87,18 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
 
     const featuredList =
       featuredProducts &&
-      featuredProducts.map((product, key) => {
+      featuredProducts.map((productData, key) => {
+        let product = productData
+        if (isReseller) {
+          const originalPriceRange = get(productData, 'priceRange', [])
+          const comissionToApply = productData.customizable ? comission : inline
+          const purchasePrices = originalPriceRange.map((priceItem) => {
+            const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+            return { ...priceItem, price }
+          })
+          product = { ...product, priceRange: purchasePrices }
+        }
+
         const {
           id,
           yotpoId,

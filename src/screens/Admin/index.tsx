@@ -25,6 +25,8 @@ import RoleList from '../../components/RoleList'
 import SalesRep from '../../components/SalesRep'
 import Affiliates from '../../components/Affiliates'
 import AffiliatesPayouts from '../../components/AffiliatesPayouts'
+import ResellerPayouts from '../../components/ResellerPayouts'
+import Resellers from '../../components/Resellers'
 import TeamStoresAdmin from '../../components/TeamStoresAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
 import DesignLabAdmin from '../../components/DesignLabAdmin'
@@ -220,6 +222,18 @@ export class Admin extends React.Component<Props, {}> {
           path="/admin/reps"
           render={() => (
             <SalesRep {...{ history, formatMessage, permissions }} />
+          )}
+        />
+        <Route
+          path="/admin/reseller-payouts"
+          render={() => (
+            <ResellerPayouts {...{ history, formatMessage, permissions }} />
+          )}
+        />
+        <Route
+          path="/admin/reseller-orders"
+          render={() => (
+            <Resellers {...{ history, formatMessage, permissions }} />
           )}
         />
         <Route

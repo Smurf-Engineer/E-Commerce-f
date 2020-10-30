@@ -2,6 +2,7 @@
  * TeamstoreTypes Screen - Created by eduardoquintero on 18/02/20.
  */
 import * as React from 'react'
+import { compose, graphql } from 'react-apollo'
 import {
   Container,
   Title,
@@ -26,19 +27,23 @@ import ScheduledImage from '../../assets/Scheduled-Team.jpg'
 import onDemandBanner from '../../assets/OnDemand.png'
 import scheduledBanner from '../../assets/BatchOrder-Logo.png'
 import paypal from '../../assets/Paypal.png'
-import { compose, graphql } from 'react-apollo'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import messages from './messages'
-import { getDesignLabInfo } from './data'
-import { QueryProps, DesignLabInfo } from '../../types/common'
+import { profileSettingsQuery, getDesignLabInfo } from './data'
+import { IProfileSettings, QueryProps, DesignLabInfo } from '../../types/common'
+import { APPROVED } from '../../constants'
 import get from 'lodash/get'
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 interface DataDesignLabInfo extends QueryProps {
   designInfo?: DesignLabInfo
 }
 
 interface Props {
   intl: InjectedIntl
+  profileData: ProfileData
   data: DataDesignLabInfo
   history: any
 }
@@ -60,6 +65,13 @@ const fixedDateMessages = [
 ]
 
 class TeamstoreTypes extends React.Component<Props, {}> {
+  componentDidUpdate() {
+    const { profileData, history } = this.props
+    const { status } = get(profileData, 'profileData.reseller', '')
+    if (status === APPROVED) {
+      history.push(`/create-store/form?type=demand`)
+    }
+  }
   goTo = (event: React.MouseEvent<HTMLDivElement>) => {
     const { history } = this.props
     const {
@@ -157,6 +169,12 @@ const TeamstoreTypesEnhance = compose(
     options: {
       fetchPolicy: 'network-only'
     }
+  }),
+  graphql(profileSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'profileData'
   })
 )(TeamstoreTypes)
 export default TeamstoreTypesEnhance

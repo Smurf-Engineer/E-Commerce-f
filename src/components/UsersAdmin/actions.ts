@@ -19,6 +19,8 @@ import {
   OPEN_INTERNAL,
   SET_SEARCH_MANAGER,
   SET_AFFILIATE_PAGE,
+  SET_RESELLER_PAGE,
+  SET_CHECKED,
   CHANGE_INTERNAL
 } from './constants'
 
@@ -58,6 +60,12 @@ export const setSearchTextAction = (searchText: string) => ({
   searchText
 })
 
+export const setCheckedAction = (name: string, checked: boolean) => ({
+  type: SET_CHECKED,
+  name,
+  checked
+})
+
 export const setDesignSelected = (designId: string) => ({
   type: SET_DESIGN,
   designId
@@ -94,6 +102,11 @@ export const setLoadingAction = (loading: boolean) => ({
 
 export const onChangePage = (page: number): AnyAction => ({
   type: SET_AFFILIATE_PAGE,
+  page
+})
+
+export const onChangePageReseller = (page: number): AnyAction => ({
+  type: SET_RESELLER_PAGE,
   page
 })
 
