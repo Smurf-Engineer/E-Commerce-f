@@ -66,14 +66,14 @@ import {
   StitchingColor,
   DesignNote,
   RolePermission,
-  User
+  User, PredyedColor
 } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
-import { NOTE_FORMAT } from '../constants'
 import ProassistNotes from '../../ProassistNotes'
+import { DATE_FORMAT, PREDYED_DEFAULT, PREDYED_TRANSPARENT } from '../../../constants'
 
 const Option = Select.Option
 const Confirm = Modal.confirm
@@ -95,6 +95,7 @@ interface Props {
   accessAssets: RolePermission
   salesRepUsers: User[]
   managersUsers: User[]
+  predyedColors: PredyedColor[]
   history: History
   changeManager: (
     value: string,
@@ -117,6 +118,7 @@ interface Props {
   formatMessage: (messageDescriptor: any, params?: any) => string
   onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
+  onSelectPredyed: (predyedValue: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
   onGeneratePdf: () => void
@@ -131,6 +133,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         svgUrl = '',
         assets,
         stitchingName,
+        predyedName,
         stitchingValue,
         salesRep,
         legacyNumber,
@@ -149,7 +152,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         name,
         notes = [],
         pngUrl = '',
-        product: { name: modelName, zipper },
+        product: { name: modelName, zipper, hasPredyed },
         colors = []
       },
       uploadingFile,
@@ -171,6 +174,8 @@ export class OrderFiles extends React.PureComponent<Props> {
       uploadingThumbnail,
       setUploadingThumbnailAction,
       changes,
+      predyedColors = [],
+      onSelectPredyed,
       onSelectStitchingColor,
       colorAccessories,
       onSelectColor,
@@ -188,6 +193,10 @@ export class OrderFiles extends React.PureComponent<Props> {
     } catch (e) {
       console.error(e)
     }
+    const predyedValue = colorAccessories.predyed || predyedName || PREDYED_DEFAULT
+    const hidePredyed = predyedValue === PREDYED_TRANSPARENT
+    const predyedItem = predyedColors.find(({ name: colorName }) => colorName === predyedValue)
+    const predyedCode = predyedItem ? predyedItem.code : predyedValue
     const statusOrder = status.replace(/_/g, ' ')
     const selectedRep = salesRep
       ? `${salesRep.firstName} ${salesRep.lastName}`
@@ -200,7 +209,7 @@ export class OrderFiles extends React.PureComponent<Props> {
     const notesElements = notes.map(
       ({ createdAt, text, user }: DesignNote, index: number) => {
         const createdLabel = `${moment(createdAt).format(
-          NOTE_FORMAT
+          DATE_FORMAT
         )} - ${user}`
         return (
           <NoteContainer key={index}>
@@ -227,9 +236,11 @@ export class OrderFiles extends React.PureComponent<Props> {
                 {formatMessage(messages.legacy)}
               </Code>
               {legacyNumber}
-              <EditButton onClick={this.openEditLegacy}>
-                {formatMessage(messages.edit)}
-              </EditButton>
+              {canEdit &&
+                <EditButton onClick={this.openEditLegacy}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+              }
             </ModelNameContainer>
             <ModelNameContainer>
               <Code>
@@ -268,55 +279,56 @@ export class OrderFiles extends React.PureComponent<Props> {
               </PreflightCheckbox>
             </PreflightDiv>
           </SideData>
-          <RepsDiv>
-            <Selectable>
-              <Subtitle>
-                <FormattedMessage {...messages.salesRep} />
-              </Subtitle>
-              <StyledSelect
-                showSearch={true}
-                onChange={changeUserRep}
-                value={selectedRep}
-                notFoundContent={null}
-                allowClear={true}
-                defaultActiveFirstOption={false}
-                filterOption={false}
-                onSearch={searchReps}
-              >
-                {salesRepUsers.map(
-                  ({ shortId: repId, firstName, lastName }: User) => (
-                    <Option value={repId}>
-                      {firstName} {lastName}
-                    </Option>
-                  )
-                )}
-              </StyledSelect>
-            </Selectable>
-            <Selectable>
-              <Subtitle>
-                {' '}
-                <FormattedMessage {...messages.accountManager} />
-              </Subtitle>
-              <StyledSelect
-                showSearch={true}
-                onChange={changeManager}
-                value={selectedManager}
-                notFoundContent={null}
-                allowClear={true}
-                defaultActiveFirstOption={false}
-                filterOption={false}
-                onSearch={searchManagers}
-              >
-                {managersUsers.map(
-                  ({ shortId: managerId, firstName, lastName }: User) => (
-                    <Option value={managerId}>
-                      {firstName} {lastName}
-                    </Option>
-                  )
-                )}
-              </StyledSelect>
-            </Selectable>
-          </RepsDiv>
+          {canEdit &&
+            <RepsDiv>
+              <Selectable>
+                <Subtitle>
+                  <FormattedMessage {...messages.salesRep} />
+                </Subtitle>
+                <StyledSelect
+                  showSearch={true}
+                  onChange={changeUserRep}
+                  value={selectedRep}
+                  notFoundContent={null}
+                  allowClear={true}
+                  defaultActiveFirstOption={false}
+                  filterOption={false}
+                  onSearch={searchReps}
+                >
+                  {salesRepUsers.map(
+                    ({ shortId: repId, firstName, lastName }: User) => (
+                      <Option value={repId}>
+                        {firstName} {lastName}
+                      </Option>
+                    )
+                  )}
+                </StyledSelect>
+              </Selectable>
+              <Selectable>
+                <Subtitle>
+                  <FormattedMessage {...messages.accountManager} />
+                </Subtitle>
+                <StyledSelect
+                  showSearch={true}
+                  onChange={changeManager}
+                  value={selectedManager}
+                  notFoundContent={null}
+                  allowClear={true}
+                  defaultActiveFirstOption={false}
+                  filterOption={false}
+                  onSearch={searchManagers}
+                >
+                  {managersUsers.map(
+                    ({ shortId: managerId, firstName, lastName }: User) => (
+                      <Option value={managerId}>
+                        {firstName} {lastName}
+                      </Option>
+                    )
+                  )}
+                </StyledSelect>
+              </Selectable>
+            </RepsDiv>
+          }
         </FlexContainer>
         <Colors>
           <Code>Colors:</Code>
@@ -354,6 +366,11 @@ export class OrderFiles extends React.PureComponent<Props> {
                   bindingColor,
                   onSelectStitchingColor,
                   onSelectColor,
+                  hasPredyed,
+                  onSelectPredyed,
+                  predyedValue,
+                  predyedColors,
+                  predyedCode,
                   allowZipperSelection
                 }}
                 stitchingValue={colorAccessories.stitching || stitchingValue}
@@ -374,7 +391,7 @@ export class OrderFiles extends React.PureComponent<Props> {
                 onUploadingThumbnail={setUploadingThumbnailAction}
                 colorAccessories={colorAccessories}
                 ref={(render3D: any) => (this.render3D = render3D)}
-                {...{ stitchingValue }}
+                {...{ stitchingValue, hidePredyed }}
               />
             </RenderContainer>
           </RenderLayout>

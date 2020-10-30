@@ -21,6 +21,10 @@ export const profileSettingsQuery = gql`
         status
         paypalAccount: paypal_account
       }
+      userProfile {
+        email
+        affiliateEnabled: affiliate_enabled
+      }
     }
   }
 `

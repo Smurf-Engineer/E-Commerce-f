@@ -19,6 +19,9 @@ interface Data extends QueryProps {
 interface Props {
   data?: Data
   history: any
+  openMenu: boolean
+  resellerEnabled?: boolean
+  affiliateEnabled?: boolean
   loginButton: React.ReactNode
   formatMessage: (messageDescriptor: any) => string
 }
@@ -33,15 +36,16 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
   handleVisibleChange = (visible: boolean) => this.setState({ visible })
 
   render() {
-    const { data, history, loginButton, formatMessage } = this.props
+    const { data, history, loginButton, openMenu, formatMessage, affiliateEnabled, resellerEnabled } = this.props
     const { visible } = this.state
     return (
       <Popover
         overlayStyle={overStyle}
         content={
           <Menu
-            {...{ data, history, loginButton, formatMessage }}
+            {...{ data, history, loginButton, formatMessage, affiliateEnabled, resellerEnabled }}
             menuOpen={visible}
+            openMenuAccount={openMenu}
             hideMenu={this.hide}
           />
         }

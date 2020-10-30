@@ -119,6 +119,9 @@ interface Props {
 const invalidDateExp = /\bInvalid date\b/
 const LIMIT = 12
 
+const ON_DEMAND_ORDERING = 'ON-DEMAND ORDERING'
+const BATCH_ORDERING = 'BATCH ORDER STORES'
+
 export class StoreFrontContent extends React.Component<Props, StateProps> {
   state = {
     showMuch: false,
@@ -212,10 +215,13 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     )
   }
 
-  handleChangePage = (pageNumber: number) => {
-    const { setPage } = this.props
-    const skip = (pageNumber - 1) * LIMIT
-    setPage(skip, pageNumber)
+  handleChangePage = () => {
+    const { setPage, pageNumber, data: { loading } } = this.props
+    if (!loading) {
+      const newPage = pageNumber + 1
+      const skip = (newPage) * LIMIT
+      setPage(skip, newPage)
+    }
   }
 
   onTogglePriceModal = () => {
@@ -305,7 +311,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const dayOrdinal = deliveryDay ? moment(deliveryDay, 'D').format('Do') : ''
     return (
       <Container>
-        {loading || openModal ? (
+        {(loading && !teamStoreShortId) || openModal ? (
           <Loading>
             <Spin />
           </Loading>
@@ -465,7 +471,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
                     <AboutContainer>
                       <AboutTitle>
-                        <FormattedMessage {...messages.aboutOrdering} />
+                        <FormattedMessage {...messages.aboutOrdering}
+                          values={{ teamType: onDemandMode ? ON_DEMAND_ORDERING : BATCH_ORDERING }}
+                        />
                       </AboutTitle>
                       <ProductInfo
                         id="Much"
@@ -621,7 +629,7 @@ const StoreFrontContentEnhance = compose(
     name: 'profileData',
   }),
   graphql<Data>(getSingleTeamStore, {
-    options: ({ teamStoreId, passCode, skip = 0 }: OwnProps) => {
+    options: ({ teamStoreId, passCode, skip }: OwnProps) => {
       return {
         variables: {
           teamStoreId,
@@ -631,8 +639,7 @@ const StoreFrontContentEnhance = compose(
             month: moment().month(),
             year: moment().year()
           },
-          limit: LIMIT,
-          offset: skip
+          offset: skip || LIMIT
         },
         fetchPolicy: 'network-only'
       }

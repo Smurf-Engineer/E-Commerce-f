@@ -25,6 +25,8 @@ export const getProductInternalsQuery = gql`
         internalId: internal_id
         gender
         size
+        topSize: top_size
+        bottomSize: bottom_size
         fitStyle: fit_style
         color
         frontZipper: front_zipper

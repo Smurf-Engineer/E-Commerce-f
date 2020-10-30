@@ -67,6 +67,16 @@ interface Props {
 }
 
 export class OrderDetailsAdmin extends React.Component<Props, {}> {
+  goToUserDetails = () => {
+    const { history, data } = this.props
+    const userId = get(data, 'orderQuery.userId')
+    history.push(`/admin/users/${userId}`)
+  }
+  goToTeamStore = () => {
+    const { history, data } = this.props
+    const teamStoreId = get(data, 'orderQuery.teamStoreId')
+    history.push(`/admin/team-stores/details/${teamStoreId}`)
+  }
   render() {
     const {
       data,
@@ -140,7 +150,8 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       lastDrop,
       teamStoreName,
       email,
-      coupon
+      coupon,
+      user
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -252,10 +263,11 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 <DeliveryLabel>
                   {formatMessage(messages.lastUpdated)}
                 </DeliveryLabel>
+                <DeliveryLabel>{formatMessage(messages.user)}</DeliveryLabel>
                 <DeliveryLabel>{formatMessage(messages.email)}</DeliveryLabel>
               </DeliveryLabels>
               <DeliveryData>
-                <Info>
+                <Info className={teamStoreId ? 'link' : ''} onClick={teamStoreId ? this.goToTeamStore : null}>
                   {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
                 </Info>
                 <Info>{shortId}</Info>
@@ -266,6 +278,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
                 <Info>
                   {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                 </Info>
+                <Info className="link" onClick={this.goToUserDetails}>{user}</Info>
                 <Info>{email}</Info>
               </DeliveryData>
             </DeliveryInfo>

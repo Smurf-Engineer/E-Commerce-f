@@ -11,7 +11,9 @@ import {
   SET_FITS_MODAL,
   SET_SHOW_SPECS,
   SET_LOADING_ACTION,
-  RESET_DATA
+  RESET_DATA,
+  SET_TOP_SELECTED_SIZE,
+  SET_BOTTOM_SELECTED_SIZE
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
 
@@ -32,6 +34,16 @@ export const setFitsModal = (showFits: boolean) => ({
 
 export const setSelectedSizeAction = (selected: SelectedType) => ({
   type: SET_SELECTED_SIZE,
+  selected
+})
+
+export const setSelectedTopSizeAction = (selected: SelectedType) => ({
+  type: SET_TOP_SELECTED_SIZE,
+  selected
+})
+
+export const setSelectedBottomSizeAction = (selected: SelectedType) => ({
+  type: SET_BOTTOM_SELECTED_SIZE,
   selected
 })
 

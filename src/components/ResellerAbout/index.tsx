@@ -9,7 +9,7 @@ import MessageBar from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
-import { PENDING, APPROVED } from '../../constants'
+import { PENDING, APPROVED, MESSAGE_TIME } from '../../constants'
 import {
   profileSettingsQuery,
   sendResellerMutation,
@@ -392,14 +392,14 @@ class ResellerAbout extends React.Component<Props, StateProps> {
           }
         })
         successRequestAction()
-        MessageBar.success(formatMessage(messages.success), 4)
+        MessageBar.success(formatMessage(messages.success), MESSAGE_TIME)
       } else {
-        MessageBar.error(formatMessage(messages.wrongCurrency, { initialCountryCode }), 5)
+        MessageBar.error(formatMessage(messages.wrongCurrency, { initialCountryCode }), MESSAGE_TIME)
       }
     } catch (error) {
       setUploadingAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
-      MessageBar.error(errorMessage, 5)
+      MessageBar.error(errorMessage, MESSAGE_TIME)
     }
   }
 }

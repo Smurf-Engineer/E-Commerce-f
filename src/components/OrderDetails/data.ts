@@ -75,6 +75,7 @@ export const getOrderQuery = gql`
           isTopProduct
           weight
           mpn
+          twoPieces: two_pieces
           priceRange {
             quantity
             price
@@ -117,6 +118,12 @@ export const getOrderQuery = gql`
             name
           }
           color {
+            name
+          }
+          topSize {
+            name
+          }
+          bottomSize {
             name
           }
           colorImage

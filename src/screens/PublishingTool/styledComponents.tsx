@@ -69,3 +69,12 @@ export const Tabs = styled.div`
   flex: 3;
   background-color: ${GRAY_BLUE};
 `
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`

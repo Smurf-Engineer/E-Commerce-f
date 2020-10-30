@@ -12,10 +12,14 @@ import {
   Oval,
   Arrow,
   Colors,
-  OvalSelected
+  OvalSelected, HintIcon, ColorWheel
 } from './styledComponents'
-import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { StitchingColor, AccesoryColor, Message } from '../../../types/common'
+import colorWheel from '../../../assets/Colorwheel.svg'
+import helpTooltip from '../../../assets/tooltip.svg'
 import { BLACK, WHITE } from '../../../screens/DesignCenter/constants'
+import Tooltip from 'antd/lib/tooltip'
+import messages from './messages'
 
 interface Props {
   name: string
@@ -26,6 +30,8 @@ interface Props {
   goToStitching?: () => void
   colorSelected?: AccesoryColor
   allowSelection?: boolean
+  openHelp?: () => void
+  formatMessage: (messageDescriptor: Message) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
@@ -38,6 +44,8 @@ const AccessoryColor = ({
   isPredyed = false,
   colorSelected = BLACK,
   allowSelection = true,
+  formatMessage,
+  openHelp = () => { },
   onAccessoryColorSelected = () => { }
 }: Props) => {
   // tslint:disable:curly
@@ -55,7 +63,12 @@ const AccessoryColor = ({
   return (
     <div>
       <Container>
-        <Name>{name}</Name>
+        <Name>
+          {name}
+          {isPredyed &&
+            <HintIcon src={helpTooltip} onClick={openHelp} />
+          }
+        </Name>
         {stitchingColor ? (
           <Stitching onClick={goToStitching}>
             <ColorLabel>{stitchingLabel || stitchingName}</ColorLabel>
@@ -68,14 +81,24 @@ const AccessoryColor = ({
                 onClick={onSelectBlack}
                 selected={colorSelected === BLACK}
               >
-                <Oval color={BLACK} />
+                {isPredyed ?
+                  <Tooltip placement="bottom" title={formatMessage(messages.predyed)}>
+                    <Oval color={BLACK} />
+                  </Tooltip> :
+                  <Oval color={BLACK} />
+                }
               </OvalSelected>
               <OvalSelected
                 onClick={onSelectWhite}
                 selected={colorSelected === WHITE}
                 marginLeft={'8px'}
               >
-                <Oval {...{ isPredyed }} />
+                {isPredyed ?
+                  <Tooltip placement="bottom" title={formatMessage(messages.printed)}>
+                    <ColorWheel src={colorWheel} />
+                  </Tooltip> :
+                  <Oval {...{ isPredyed }} />
+                }
               </OvalSelected>
             </Colors>
           )}

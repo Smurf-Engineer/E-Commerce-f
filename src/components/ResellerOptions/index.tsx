@@ -33,6 +33,7 @@ import {
 } from '../../types/common'
 import get from 'lodash/get'
 import config from '../../config'
+import { MESSAGE_TIME } from '../../constants'
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -195,11 +196,11 @@ class ResellerOptions extends React.Component<Props, {}> {
         }
       })
       setUploadingAction(false)
-      MessageBar.success(formatMessage(messages.successLink), 4)
+      MessageBar.success(formatMessage(messages.successLink), MESSAGE_TIME)
     } catch (error) {
       setUploadingAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
-      MessageBar.error(errorMessage, 5)
+      MessageBar.error(errorMessage, MESSAGE_TIME)
     }
   }
 }

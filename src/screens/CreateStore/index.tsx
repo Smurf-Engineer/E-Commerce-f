@@ -413,7 +413,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       let bannerResp = banner
       if (file) {
         const formData = new FormData()
-        formData.append('file', file as any, 'banner.jpeg')
+        formData.append('file', file)
         const user = JSON.parse(localStorage.getItem('user') || '')
 
         const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {

@@ -14,26 +14,34 @@ import {
   RangePickerStyled,
   ShowButton,
   InputDiv,
-  OrderPoint,
-  StatusFilter
+  StatusFilter,
+  HeaderInput,
+  InputTitle
 } from './styledComponents'
 import List from './PayList'
 import messages from './messages'
 import { UserPermissions, SelectedPays } from '../../types/common'
 import { AFFILIATES, ADMIN_ROUTE, MAKE_PAYOUTS, IGNORE_STATUS_PAYOUTS } from '../AdminLayout/constants'
-import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import moment, { Moment } from 'moment'
-import { PREORDER, PENDING_APPROVAL, PAID_STATUS, CANCELLED } from '../../constants'
+import { DATE_FORMAT, FAILURE, PAID, PENDING_PAY, PROCESSING, TO_PAY } from '../../constants'
 import { ALL_STATUS } from './constants'
+import { CA_CURRENCY, US_CURRENCY } from '../AffiliateAbout/constants'
 
 const { Option } = Select
 
 const statusList = [
   ALL_STATUS,
-  PREORDER,
-  PENDING_APPROVAL,
-  PAID_STATUS,
-  CANCELLED
+  PENDING_PAY,
+  TO_PAY,
+  PAID,
+  PROCESSING,
+  FAILURE
+]
+
+const currencies = [
+  ALL_STATUS,
+  US_CURRENCY,
+  CA_CURRENCY
 ]
 
 interface Props {
@@ -72,8 +80,8 @@ class Affiliates extends React.Component<Props, {}> {
 
   handleChangeCalendar = (dates: [Moment, Moment]) => {
     const { changeDateAction } = this.props
-    const startDate = moment(dates[0]).format(NOTE_FORMAT)
-    const endDate = moment(dates[1]).format(NOTE_FORMAT)
+    const startDate = moment(dates[0]).format(DATE_FORMAT)
+    const endDate = moment(dates[1]).format(DATE_FORMAT)
     changeDateAction(startDate, endDate)
   }
 
@@ -92,13 +100,12 @@ class Affiliates extends React.Component<Props, {}> {
     setSearchTextAction(value)
   }
 
-  handleChangeOrderPoint = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChangeOrderPoint = (value: string) => {
     const { setOrderPoint } = this.props
-    const { target: { value } } = event
     setOrderPoint(value)
   }
 
-  handleChangeStatus = (value) => {
+  handleChangeStatus = (value: string) => {
     const { setStatus } = this.props
     setStatus(value)
   }
@@ -132,11 +139,16 @@ class Affiliates extends React.Component<Props, {}> {
     const isAccountant = makePayouts.view && makePayouts.edit
     const ignoreStatus = permissions[IGNORE_STATUS_PAYOUTS] || {}
     const overrideStatus = ignoreStatus.edit
-    const defaultStart = moment().startOf('month').format(NOTE_FORMAT)
-    const defaultEnd = moment().endOf('month').format(NOTE_FORMAT)
-    const start = moment(startDate || defaultStart, NOTE_FORMAT)
-    const end = moment(endDate || defaultEnd, NOTE_FORMAT)
+    const defaultStart = moment().startOf('month').format(DATE_FORMAT)
+    const defaultEnd = moment().endOf('month').format(DATE_FORMAT)
+    const start = moment(startDate || defaultStart, DATE_FORMAT)
+    const end = moment(endDate || defaultEnd, DATE_FORMAT)
     const rangeValue = [start, end]
+    const currencyOptions = currencies.map((currentStatus, index) => (
+      <Option key={index} value={currentStatus !== ALL_STATUS ? currentStatus : ''}>
+        {currentStatus !== ALL_STATUS ? currentStatus.toUpperCase() : currentStatus}
+      </Option>
+    ))
     const selectOptions = statusList.map((currentStatus, index) => (
       <Option key={index} value={currentStatus !== ALL_STATUS ? currentStatus : ''}>
         {currentStatus}
@@ -150,21 +162,32 @@ class Affiliates extends React.Component<Props, {}> {
         <HeaderList>
           <FormattedMessage {...messages.subtitle} />
           <InputDiv>
-            <StatusFilter
-              value={statusValue}
-              onChange={this.handleChangeStatus}
-            >
+            <HeaderInput>
+              <InputTitle>
+                <FormattedMessage {...messages.comissionStatus} />
+              </InputTitle>
+              <StatusFilter
+                value={statusValue}
+                onChange={this.handleChangeStatus}
+              >
               {selectOptions}
-            </StatusFilter>
-            <OrderPoint
-              value={orderValue}
-              onChange={this.handleChangeOrderPoint}
-              placeholder={'Order Point'}
-            />
+              </StatusFilter>
+            </HeaderInput>
+            <HeaderInput>
+              <InputTitle>
+                <FormattedMessage {...messages.orderPoint} />
+              </InputTitle>
+              <StatusFilter
+                value={orderValue}
+                onChange={this.handleChangeOrderPoint}
+              >
+              {currencyOptions}
+              </StatusFilter>
+            </HeaderInput>
             <RangePickerStyled
               value={rangeValue}
               placeholder={[formatMessage(messages.from), formatMessage(messages.to)]}
-              format={NOTE_FORMAT}
+              format={DATE_FORMAT}
               allowClear={false}
               onChange={this.handleChangeCalendar}
               size="large"

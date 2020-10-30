@@ -20,8 +20,8 @@ import {
 import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import TextArea from 'antd/lib/input/TextArea'
-import { NOTE_FORMAT } from '../DesignSearch/constants'
 import moment from 'moment'
+import { DATE_FORMAT } from '../../constants'
 
 interface Props {
   visible: boolean
@@ -68,17 +68,17 @@ class ProassistNotes extends React.PureComponent<Props, {}> {
           {loadingData ? (
             <Spin />
           ) : (
-            designNotes.map(
-              ({ createdAt, text, user }: DesignNote, index: number) => (
-                <NoteContainer key={index}>
-                  <NoteTitle>{`${moment(createdAt).format(
-                    NOTE_FORMAT
-                  )} - ${user}`}</NoteTitle>
-                  <NoteText>{text}</NoteText>
-                </NoteContainer>
+              designNotes.map(
+                ({ createdAt, text, user }: DesignNote, index: number) => (
+                  <NoteContainer key={index}>
+                    <NoteTitle>{`${moment(createdAt).format(
+                      DATE_FORMAT
+                    )} - ${user}`}</NoteTitle>
+                    <NoteText>{text}</NoteText>
+                  </NoteContainer>
+                )
               )
-            )
-          )}
+            )}
           <SubTitle>
             <FormattedMessage {...messages.addNote} />
           </SubTitle>

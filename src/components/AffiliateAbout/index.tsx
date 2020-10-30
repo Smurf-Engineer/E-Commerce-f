@@ -9,7 +9,7 @@ import MessageBar from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
-import { PENDING, APPROVED } from '../../constants'
+import { PENDING, APPROVED, PAUSED } from '../../constants'
 import {
   profileSettingsQuery,
   sendAffiliateMutation,
@@ -241,7 +241,7 @@ class AffiliateAbout extends React.Component<Props, StateProps> {
             open={true}
           />
         }
-        {status === APPROVED &&
+        {(status === APPROVED || status === PAUSED) &&
           <AffiliateDetailsSection>
             <AffiliateOptions {...{ history, formatMessage }} onlyDetails={true} />
           </AffiliateDetailsSection>

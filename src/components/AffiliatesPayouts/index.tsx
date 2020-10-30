@@ -25,11 +25,11 @@ import { getAffiliatePaymentsQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 import moment from 'moment'
 import { getFileWithExtension } from '../../utils/utilsFiles'
-import { NOTE_FORMAT } from '../UsersAdmin/constants'
 import { connect } from 'react-redux'
 import { PAY_LIMITS } from './constants'
 import debounce from 'lodash/debounce'
 import { AFFILIATES_PAYOUTS, ADMIN_ROUTE } from '../AdminLayout/constants'
+import { DATE_FORMAT } from '../../constants'
 
 interface Data extends QueryProps {
   paymentsQuery: {
@@ -104,7 +104,7 @@ export class AffiliatesPayouts extends React.Component<Props, {}> {
         return (
           <ItemContainer id={receipt} onClick={this.openReceipt} key={index}>
             <Cell>{id}</Cell>
-            <Cell>{createdAt ? moment(createdAt).format(NOTE_FORMAT) : ' - '}</Cell>
+            <Cell>{createdAt ? moment(createdAt).format(DATE_FORMAT) : ' - '}</Cell>
             <Cell>{status}</Cell>
             <Cell>{`$${amount.toFixed(2)}`}</Cell>
             <Cell>

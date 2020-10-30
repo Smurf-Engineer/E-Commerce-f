@@ -63,7 +63,8 @@ import {
   OptionMenu,
   FiltersTitle,
   menuDeviceStyle,
-  DrawerSidebar
+  DrawerSidebar,
+  BackButton
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
@@ -118,6 +119,22 @@ export class Account extends React.Component<Props, {}> {
   }
 
   componentWillMount() {
+    this.setScreen()
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { location: { search: oldSearch } } = prevProps
+    const oldQueryParams = queryString.parse(oldSearch)
+    const { option: oldOption } = oldQueryParams
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (oldOption !== option) {
+      this.setScreen()
+    }
+  }
+
+  setScreen = () => {
     const {
       location: { search },
       setDefaultScreenAction
@@ -199,6 +216,11 @@ export class Account extends React.Component<Props, {}> {
     }
 
     setCurrentScreenAction(key)
+  }
+
+  handleGoBack = () => {
+    const { history } = this.props
+    history.goBack()
   }
 
   handleOnGoToScreen = (screen: string) => {
@@ -393,14 +415,11 @@ export class Account extends React.Component<Props, {}> {
                   <Layout {...{ history, intl }}>
                     <Container>
                       <Content width={'100%'}>
-                        <FiltersTitle
-                          showChildren={true}
-                          onClick={this.handleOpenSidebar}
-                        >
-                          {intl.formatMessage(messages.filtersTitle)}
-                          <Icon type="down" />
-                        </FiltersTitle>
                         <ScreenTitle show={noOrderScreenFlag}>
+                          <BackButton onClick={this.handleGoBack}>
+                            <Icon type="left" />
+                            {intl.formatMessage(messages.goBack)}
+                          </BackButton>
                           {!!messages[screen] && (
                             <FormattedMessage {...messages[screen]} />
                           )}

@@ -44,6 +44,7 @@ export const GetDesignByIdQuery = gql`
         relatedItemTag: related_item_tag
         materials: materials_info
         temperatures: temperature_range
+        twoPieces: two_pieces
         bannerMaterials: banner_materials {
           id
           url

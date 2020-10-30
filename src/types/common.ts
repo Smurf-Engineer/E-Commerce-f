@@ -119,6 +119,12 @@ export type HomePageBatch = {
   result: string
 }
 
+export type DesignLabInfo = {
+  cutOffDays: string
+  deliveryDays: string
+  tutorialPlaylist: string
+}
+
 type ExtraFile = {
   white: string
   black: string
@@ -136,6 +142,8 @@ export interface Product {
   pictures?: any[]
   mediaFiles?: object[]
   description: string
+  branding?: string
+  predyedlabel?: string
   hasPredyed?: boolean
   productMaterials?: object[]
   designCenter?: boolean
@@ -180,6 +188,7 @@ export interface Product {
   isCustom?: boolean
   colors?: ProductColors[]
   mpn?: string
+  twoPieces?: boolean
 }
 
 export type DesignType = {
@@ -691,6 +700,8 @@ export type CartItemDetail = {
   label?: string
   quantity: number
   colorImage?: string
+  topSize?: ItemDetailType
+  bottomSize?: ItemDetailType
 }
 
 export interface AddressType {
@@ -1535,6 +1546,8 @@ export interface ProductInternal {
   productCode: string
   gender: string
   size: string
+  topSize?: string
+  bottomSize?: string
   fitStyle?: string
   color?: string
   predyedColor?: string
@@ -1734,6 +1747,7 @@ export type ProAssist = {
   firstName: string
   lastName: string
   date: string
+  lastOrder: string
   status: string
   url: string
 }

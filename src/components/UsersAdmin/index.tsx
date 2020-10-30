@@ -45,11 +45,16 @@ interface Props {
   permissions: UserPermissions
   repSearchText: string
   managerSearchText: string
+  netsuiteId: string
   pageAffiliate: number
   isReseller: boolean
   isAffiliate: boolean
+  openInternalModal: boolean
   setCheckedAction: (name: string, checked: boolean) => void
   onChangePage: (page: number) => void
+  onCloseInternal: () => void
+  openInternal: (id: string) => void
+  handleOnInternalChange: (value: string) => void
   setSearchManager: (value: string) => void
   setSearchRep: (value: string) => void
   setNoteText: (text: string) => void
@@ -187,6 +192,11 @@ class UsersAdmin extends React.Component<Props, StateProps> {
       note,
       email,
       pageAffiliate,
+      netsuiteId,
+      openInternalModal,
+      openInternal,
+      handleOnInternalChange,
+      onCloseInternal,
       onChangePage,
       onInputChangeAction,
       history,
@@ -255,6 +265,11 @@ class UsersAdmin extends React.Component<Props, StateProps> {
                   setLoadingAction,
                   setDesignSelected,
                   optionSelected,
+                  netsuiteId,
+                  onCloseInternal,
+                  openInternal,
+                  openInternalModal,
+                  handleOnInternalChange,
                 }}
                 canEdit={access.edit}
                 onChangeSection={onChangeSectionAction}

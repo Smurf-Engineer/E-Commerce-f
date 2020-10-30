@@ -31,6 +31,7 @@ import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
 import { CA_CURRENCY, US_CURRENCY } from '../../ResellerAbout/constants'
+import { Message } from '../../../types/common'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
@@ -60,7 +61,8 @@ interface Props {
   changeGst: (value: string) => void
   onChangePage: (page: number) => void
   enableReseller: (status: string) => void
-  formatMessage: (messageDescriptor: any) => string
+  enableAffiliate: (status: string) => void
+  formatMessage: (messageDescriptor: Message) => string
 }
 
 class ResellerDetails extends React.Component<Props, {}> {

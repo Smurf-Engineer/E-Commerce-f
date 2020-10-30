@@ -26,7 +26,8 @@ import {
   SET_USER_REP,
   SET_SEARCH_MANAGER,
   SET_ACCOUNT_MANAGER,
-  CHANGE_LEGACY
+  CHANGE_LEGACY,
+  SET_PREDYED_VALUE
 } from './constants'
 import {
   AnyAction,
@@ -112,6 +113,11 @@ export const updateThumbnailAction = (thumbnail: string) => ({
 export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   type: SET_STITCHING_COLOR_ACTION,
   stitchingColor
+})
+
+export const selectPredyedAction = (prededValue: string) => ({
+  type: SET_PREDYED_VALUE,
+  prededValue
 })
 
 export const setColorAction = (color: string, id: string) => ({

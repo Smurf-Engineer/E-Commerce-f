@@ -72,6 +72,7 @@ export const getOrderQuery = gql`
           isTopProduct
           weight
           mpn
+          twoPieces: two_pieces
           priceRange {
             quantity
             price
@@ -147,7 +148,9 @@ export const getOrderQuery = gql`
       teamStoreId: teamstore_id
       teamStoreName: teamstore_name
       email
+      userId: user_id
       coupon: coupon_code
+      user
     }
   }
 `

@@ -9,6 +9,7 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
+        netsuiteInternal: netsuite_internal
         affiliateEnabled: affiliate_enabled
         resellerEnabled: reseller_enabled
         phone
@@ -132,6 +133,14 @@ export const setResellerEnabledMutation = gql`
   mutation enableReseller($userId: String!, $enabled: Boolean) {
     resellerData: enableReseller(userId: $userId ,enabled: $enabled) {
       enabled: reseller_enabled
+    }
+  }
+`
+
+export const changeNetsuiteInternal = gql`
+  mutation setNetsuiteId($userId: String!, $netsuiteId: String) {
+    profile: setNetsuiteId(userId: $userId, netsuiteId: $netsuiteId) {
+      netsuiteInternal: netsuite_internal
     }
   }
 `

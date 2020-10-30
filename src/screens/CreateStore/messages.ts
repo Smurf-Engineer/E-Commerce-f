@@ -49,11 +49,12 @@ export default defineMessages({
   },
   pricingCheckoutContent: {
     id: 'screens.CreateStore.pricingCheckoutContent',
-    defaultMessage: `With {onDemandTeam}, default pricing is fixed and all members
-    {discount}, regardless of the quantity ordered. 
-    Additional discounts may be available through seasonal promotional offers.
-    Each member will be able to individually place their order and checkout using their preferred payment method. 
-    Orders are shipped directly to the member’s designated shipping address.`
+    defaultMessage: `With {onDemandTeam}, pricing for each item starts at the 2-5pc pricing tier 
+    (20% off the single item price) and drops automatically based on the quantity ordered. 
+    Separately placed orders do not combine for volume pricing in this mode. Each member will be able to 
+    individually place their order and checkout using their preferred payment method. Orders are shipped 
+    directly to the member’s designated shipping address.
+    `
   },
   orderDays: {
     id: 'screens.CreateStore.orderDays',

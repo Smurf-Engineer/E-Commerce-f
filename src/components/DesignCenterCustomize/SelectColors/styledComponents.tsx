@@ -54,3 +54,37 @@ export const ButtonContainer = styled.div`
   justify-content: center;
   margin-top: 40px;
 `
+
+export const Title = styled.div`
+text-align: center;
+    font-size: 16px;
+    margin-top: 4px;
+    margin-bottom: 28px;
+`
+
+export const PredyedImages = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+`
+
+export const HelpImage = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
+`
+
+export const ExampleImage = styled.img`
+  max-width: 202px;
+  width: 100%;
+  border-radius: 3px;
+  margin-bottom: 6px;
+`
+
+export const Description = styled.div`
+  margin-top: 32px;
+  padding: 0 22px;
+  margin-bottom: 8px;
+`

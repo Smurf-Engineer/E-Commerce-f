@@ -8,6 +8,7 @@ export const ORDER_HISTORY = 'orderHistory'
 export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
+export const PROFILE_MENU = 'profileMenu'
 export const TEAMSTORES = 'myTeamStores'
 export const MY_STORES = 'myStores'
 export const RESELLER = 'reseller'
@@ -33,16 +34,8 @@ export const options = [
     options: []
   },
   {
-    title: ADDRESSES,
-    options: []
-  },
-  {
-    title: CREDIT_CARDS,
-    options: []
-  },
-  {
-    title: PROFILE_SETTINGS,
-    options: []
+    title: PROFILE_MENU,
+    options: [PROFILE_SETTINGS, ADDRESSES, CREDIT_CARDS]
   },
   // TODO: hide teamstores for phase I
   {

@@ -97,6 +97,7 @@ export const GetProductsByIdQuery = gql`
       template
       relatedItemTag: related_item_tag
       active
+      two_pieces
     }
   }
 `

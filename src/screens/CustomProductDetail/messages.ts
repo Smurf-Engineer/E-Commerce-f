@@ -65,6 +65,14 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.size',
     defaultMessage: 'Size'
   },
+  topSize: {
+    id: 'screens.CustomProductDetail.topSize',
+    defaultMessage: 'Top Size'
+  },
+  bottomSize: {
+    id: 'screens.CustomProductDetail.bottomSize',
+    defaultMessage: 'Bottom Size'
+  },
   fit: {
     id: 'screens.CustomProductDetail.fit',
     defaultMessage: 'Fit'

@@ -18,7 +18,8 @@ import {
   BottomRow,
   LogoIcon,
   TeamStoresMenuContainer,
-  TeamStoresMenuTitle
+  TeamStoresMenuTitle,
+  Icon
 } from './styledComponents'
 import { profileSettingsQuery, regionsQuery } from './data'
 import logo from '../../assets/jakroo_logo.svg'
@@ -38,6 +39,10 @@ import {
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
 import { PENDING } from '../../constants'
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
@@ -76,6 +81,7 @@ interface Props {
 
 interface StateProps {
   openForgotPassword: boolean
+  openMenu: boolean
   isMobile: boolean
 }
 
@@ -85,6 +91,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
   state = {
     openForgotPassword: false,
+    openMenu: false,
     isMobile: false
   }
 
@@ -117,6 +124,14 @@ class MenuBar extends React.Component<Props, StateProps> {
     )
   }
 
+  openMenu = () => {
+    this.setState({ openMenu: true })
+  }
+
+  closeMenu = () => {
+    this.setState({ openMenu: false })
+  }
+
   handleGoTo = (path: string) => {
     this.handleOnGoTo(path)
   }
@@ -144,7 +159,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { openForgotPassword, isMobile } = this.state
+    const { openForgotPassword, isMobile, openMenu } = this.state
     const {
       history,
       searchFunc,
@@ -170,7 +185,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       regionsData: { regionsResult, loading: loadingRegions }
     } = this.props
 
-    let user: any
+    let user: any = {}
     if (typeof window !== 'undefined') {
       user = JSON.parse(localStorage.getItem('user') as string)
     }
@@ -178,19 +193,26 @@ class MenuBar extends React.Component<Props, StateProps> {
     const { formatMessage } = intl
     const { status } = get(profileData, 'profileData.reseller', {})
     const resellerPending = status === PENDING
+    const userName = !!user ? String(user.name).toUpperCase() : ''
+    const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
+
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
+        <Icon type="user" />
         {formatMessage(messages.title)}
       </TopText>
     ) : (
         <Logout
-          {...{ history, resellerPending }}
-          title={`${String(user.name).toUpperCase()}`}
+          {...{ history, formatMessage, affiliateEnabled, resellerPending }}
+          title={formatMessage(messages.myAccount, { user: userName })}
           logout={logoutAction}
+          openMenu={this.openMenu}
+          openedMenu={openMenu}
+          closeMenu={this.closeMenu}
           goTo={this.handleOnGoTo}
         />
       )
-    
+
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
 
@@ -274,6 +296,8 @@ class MenuBar extends React.Component<Props, StateProps> {
                       openWithoutSaveModalAction,
                       formatMessage,
                       buyNowHeader,
+                      openMenu,
+                      affiliateEnabled,
                       saveAndBuy
                     }}
                     handleOnGoHome={this.handleOnGoHome}

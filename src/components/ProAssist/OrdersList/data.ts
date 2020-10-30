@@ -25,6 +25,7 @@ export const getProAssistQuery = gql`
         userId: user_id
         firstName: first_name
         lastName: last_name
+        lastOrder: last_order
         date: created_at
         status
         url: slack_url
