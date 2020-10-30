@@ -15,6 +15,6 @@ export default defineMessages({
   },
   size: {
     id: 'components.TeamDragger.size',
-    defaultMessage: 'MAX SIZE = 25 m x 25cm / 20MB'
+    defaultMessage: 'MAX SIZE = 25 cm x 25cm / 20MB'
   }
 })

@@ -51,6 +51,7 @@ export const BannerBack = styled.div`
   display: flex;
   justify-content: space-between;
   height: 100%;
+  line-height: normal;
   color: ${WHITE};
   width: 100%;
   @media (min-width: 768px) {
