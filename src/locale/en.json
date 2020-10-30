@@ -1416,7 +1416,7 @@
   "screens.ProductDetail.designCenter": "Design Center",
   "components.TeamDragger.tittle": "Click or drag files to this area",
   "components.TeamDragger.files": "Files in {extensions}",
-  "components.TeamDragger.size": "MAX SIZE = 25 m x 25cm / 20MB",
+  "components.TeamDragger.size": "MAX SIZE = 25 cm x 25cm / 20MB",
   "components.UploadTab.recommendationTitle": "Jakroo Recommends",
   "components.UploadTab.recommendationMessage": "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.",
   "components.Render3D.sizeMessage": "Approx size",
