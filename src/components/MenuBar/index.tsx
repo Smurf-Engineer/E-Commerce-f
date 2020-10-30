@@ -38,7 +38,7 @@ import {
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
-import { PENDING } from '../../constants'
+import { APPROVED, PENDING } from '../../constants'
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
@@ -193,8 +193,10 @@ class MenuBar extends React.Component<Props, StateProps> {
     const { formatMessage } = intl
     const { status } = get(profileData, 'profileData.reseller', {})
     const resellerPending = status === PENDING
+    const approvedReseller = status === APPROVED
     const userName = !!user ? String(user.name).toUpperCase() : ''
     const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
+    const resellerEnabled = get(profileData, 'profileData.userProfile.resellerEnabled', false)
 
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin}>
@@ -203,7 +205,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       </TopText>
     ) : (
         <Logout
-          {...{ history, formatMessage, affiliateEnabled, resellerPending }}
+          {...{ history, formatMessage, affiliateEnabled, resellerPending, approvedReseller, resellerEnabled }}
           title={formatMessage(messages.myAccount, { user: userName })}
           logout={logoutAction}
           openMenu={this.openMenu}
@@ -297,6 +299,9 @@ class MenuBar extends React.Component<Props, StateProps> {
                       formatMessage,
                       buyNowHeader,
                       openMenu,
+                      approvedReseller,
+                      resellerPending,
+                      resellerEnabled,
                       affiliateEnabled,
                       saveAndBuy
                     }}

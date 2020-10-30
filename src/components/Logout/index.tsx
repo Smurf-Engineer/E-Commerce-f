@@ -26,7 +26,7 @@ import {
 import {
   OVERVIEW
 } from '../../screens/Account/constants'
-import { AFFILIATES, menuOptions, RESELLER } from './constants'
+import { AFFILIATES, menuOptions, RESELLER, resellerOptions, resellerShortOptions } from './constants'
 import { Message } from '../../types/common'
 
 interface Props {
@@ -35,6 +35,7 @@ interface Props {
   openedMenu: boolean
   resellerEnabled: boolean
   affiliateEnabled: boolean
+  approvedReseller?: boolean
   logout: () => void
   openMenu: () => void
   closeMenu: () => void
@@ -65,7 +66,23 @@ class Logout extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { title, openMenu, openedMenu, closeMenu, formatMessage, affiliateEnabled, resellerEnabled } = this.props
+    const {
+      title,
+      openMenu,
+      openedMenu,
+      closeMenu,
+      formatMessage,
+      affiliateEnabled,
+      resellerPending,
+      resellerEnabled,
+      approvedReseller
+    } = this.props
+    let sideMenu = menuOptions
+    if (resellerPending) {
+      sideMenu = resellerShortOptions
+    } else if (approvedReseller) {
+      sideMenu = resellerOptions
+    }
     const logoutMenu = (
       <Menu
         mode="inline"
@@ -80,7 +97,7 @@ class Logout extends React.PureComponent<Props, {}> {
           <UserIcon type="user" />
           {title}
         </TitleItem>
-        {menuOptions.map(({ titleLabel, options: submenus }) =>
+        {sideMenu.map(({ titleLabel, options: submenus }) =>
           submenus.length ?
           (((titleLabel === AFFILIATES && affiliateEnabled) || (titleLabel === RESELLER && resellerEnabled))
             || (titleLabel !== AFFILIATES && titleLabel !== RESELLER)) &&

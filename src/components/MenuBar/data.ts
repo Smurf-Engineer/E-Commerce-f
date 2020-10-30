@@ -23,6 +23,7 @@ export const profileSettingsQuery = gql`
       }
       userProfile {
         email
+        resellerEnabled: reseller_enabled
         affiliateEnabled: affiliate_enabled
       }
     }

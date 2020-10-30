@@ -12,7 +12,7 @@ import {
 import { Container, Bottom, menuStyle, BottomDiv, Item, StyledSubMenu, containerStyle } from './styledComponents'
 import messages from './messages'
 import messagesMenu from '../../../screens/Account/messages'
-import { menuOptions, AFFILIATES, RESELLER } from './constants'
+import { menuOptions, AFFILIATES, RESELLER, resellerShortOptions, resellerOptions } from './constants'
 import { setCurrentScreenAction } from '../../../screens/Account/actions'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -24,6 +24,8 @@ interface Props {
   resellerEnabled?: boolean
   affiliateEnabled?: boolean
   openMenuAccount: boolean
+  resellerPending?: boolean
+  approvedReseller?: boolean
   hideMenu: () => void
   logoutAction: () => void
   setCurrentScreen: (screen: string) => void
@@ -130,6 +132,8 @@ class Menu extends React.PureComponent<Props, {}> {
       loginButton,
       openMenuAccount,
       affiliateEnabled,
+      approvedReseller,
+      resellerPending,
       resellerEnabled,
       formatMessage
     } = this.props
@@ -145,8 +149,15 @@ class Menu extends React.PureComponent<Props, {}> {
     if (error) {
       return <div>{formatMessage(messages.error)}</div>
     }
+    let sideMenu = menuOptions
 
-    const menuAccount = menuOptions.map(({ title, options: submenus }) =>
+    if (resellerPending) {
+      sideMenu = resellerShortOptions
+    } else if (approvedReseller) {
+      sideMenu = resellerOptions
+    }
+
+    const menuAccount = sideMenu.map(({ title, options: submenus }) =>
       submenus.length ?
       (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
       || (title !== AFFILIATES && title !== RESELLER)) &&
