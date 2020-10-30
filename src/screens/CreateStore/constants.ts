@@ -26,6 +26,7 @@ export const SET_LOADING_ITEMS = `${namespace}/SET_LOADING_ITEMS`
 export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
 export const CHANGE_BULLETIN = `${namespace}/CHANGE_BULLETIN`
 export const ON_UNSELECT_ITEM = `${namespace}/ON_UNSELECT_ITEM`
+export const SET_ITEM_PRICE = `${namespace}/SET_ITEM_PRICE`
 
 export const MOVE_ROW = `${namespace}/MOVE_ROW`
 

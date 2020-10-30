@@ -26,6 +26,7 @@ export const getSingleTeamStore = gql`
       banner
       private
       bulletin
+      isResellerStore
       owner
       featured
       owner_name
@@ -52,6 +53,12 @@ export const getSingleTeamStore = gql`
         visible
         short_id
         priceRange {
+          price
+          shortName: short_name
+          quantity
+          abbreviation
+        }
+        resellerRange {
           price
           shortName: short_name
           quantity
@@ -107,6 +114,25 @@ export const getSingleTeamStore = gql`
       }
       totalItems
       totalDesigns
+    }
+  }
+`
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        firstName: first_name
+        lastName: last_name
+        email
+        phone
+      }
+      reseller {
+        status
+        currency
+        comission: margin
+        paypalAccount: paypal_account
+      }
     }
   }
 `

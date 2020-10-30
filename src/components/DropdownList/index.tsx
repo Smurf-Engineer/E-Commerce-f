@@ -19,7 +19,7 @@ import {
   setGenderSportAction
 } from './actions'
 import { sportRoutePosition } from './constants'
-import { Filter } from '../../types/common'
+import { Filter, User } from '../../types/common'
 import {
   Option,
   OptionDropdown,
@@ -42,6 +42,7 @@ interface Props {
   genderSportSelected: number
   sportOptions: Option[]
   genderOptions: Option[]
+  user: User
   menuGender: any
   currentCurrency: string
   currentLanguage: string
@@ -164,6 +165,7 @@ export class DropdownList extends React.PureComponent<Props> {
       formatMessage,
       currentCurrency,
       history,
+      user,
       sports
     } = this.props
 
@@ -189,7 +191,8 @@ export class DropdownList extends React.PureComponent<Props> {
                     formatMessage,
                     currentCurrency,
                     history,
-                    name
+                    name,
+                    user
                   }}
                   visible={menuOpen}
                   type={index}

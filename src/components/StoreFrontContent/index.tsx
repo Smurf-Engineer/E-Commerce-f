@@ -10,14 +10,14 @@ import Spin from 'antd/lib/spin'
 import message from 'antd/lib/message'
 import moment from 'moment'
 import messages from './messages'
-import { getSingleTeamStore } from './data'
+import { getSingleTeamStore, profileSettingsQuery } from './data'
 import {
   QueryProps,
   TeamStoreResultType,
   TeamStoreType,
   UserType,
   ContactInformation,
-  Message
+  Message, IProfileSettings
 } from '../../types/common'
 import {
   Container,
@@ -66,12 +66,17 @@ import dropLogo from '../../assets/dynamic_drop.png'
 import EmailContact from '../../components/EmailContact'
 import TeamPassCode from '../../components/TeamPassCode'
 import DropPricingModal from '../../components/DropPricingModal'
+import { APPROVED } from '../../constants'
 const STORE_PRIVATE_CODE = -1
 const PASS_CODE_INVALID = -2
 const STORE_CLOSED_CODE = -3
 interface Data extends QueryProps {
   teamStores: TeamStoreResultType
   getTeamStore: TeamStoreType
+}
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
 }
 
 interface StateProps {
@@ -93,6 +98,7 @@ interface Props {
   openShare: boolean
   teamStoreId: string
   passCode?: string
+  profileData: ProfileData
   openEmailContact: boolean
   emailContact: string
   emailMessage: string
@@ -230,6 +236,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       openShare,
       openEmailContact,
       emailContact,
+      profileData,
       emailMessage,
       setEmailContactAction,
       setEmailMessageAction,
@@ -263,7 +270,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         getTeamStore.id === PASS_CODE_INVALID) &&
       !errorMessage &&
       (getTeamStore.id === -1 || getTeamStore.id === -2)
-
+    const { status, comission: resellerComission } = get(profileData, 'profileData.reseller', {})
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
     const teamStoreName = get(getTeamStore, 'name', '')
@@ -271,6 +278,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const cutOffDay = get(getTeamStore, 'cutoff_date.day', '0')
     const deliveryDay = get(getTeamStore, 'delivery_date.day', '0')
     const onDemandMode = get(getTeamStore, 'onDemandMode', false)
+    const isResellerStore = get(getTeamStore, 'isResellerStore', false)
+    const isResellerOwner = status === APPROVED && teamStoreOwner && isResellerStore
     const display = get(getTeamStore, 'display', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
     const closed = get(getTeamStore, 'closed', false)
@@ -435,6 +444,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                               {...{
                                 targetRange,
                                 formatMessage,
+                                isResellerOwner,
+                                resellerComission,
+                                isResellerStore,
                                 onDemandMode,
                                 currentCurrency,
                                 display,
@@ -603,9 +615,19 @@ type OwnProps = {
   teamStoreId?: string
   passCode?: string
   skip?: number
+  user?: UserType
 }
 
 const StoreFrontContentEnhance = compose(
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => {
+      return {
+        fetchPolicy: 'network-only',
+        skip: !user
+      }
+    },
+    name: 'profileData',
+  }),
   graphql<Data>(getSingleTeamStore, {
     options: ({ teamStoreId, passCode, skip }: OwnProps) => {
       return {
