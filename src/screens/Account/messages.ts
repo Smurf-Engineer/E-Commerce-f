@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'screens.Account.menu.myTeamStores',
     defaultMessage: 'MY TEAM STORES'
   },
+  myStores: {
+    id: 'screens.Account.menu.myStores',
+    defaultMessage: 'My Stores'
+  },
   affiliate: {
     id: 'screens.Account.menu.affiliate',
     defaultMessage: 'PAYDAY PROGRAM'

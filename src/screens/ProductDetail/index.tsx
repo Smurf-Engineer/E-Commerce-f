@@ -16,7 +16,7 @@ import find from 'lodash/find'
 import Spin from 'antd/lib/spin'
 import * as productDetailActions from './actions'
 import messages from './messages'
-import { GetProductsByIdQuery } from './data'
+import { GetProductsByIdQuery, profileSettingsQuery } from './data'
 import { oneSize } from './constants'
 import {
   Container,
@@ -61,11 +61,12 @@ import {
   MenIcon,
   WomenIcon,
   layoutStyle,
-  CustomizeButton
+  CustomizeButton,
+  DealerTitle
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
-import { MAIN_TITLE } from '../../constants'
+import { APPROVED, MAIN_TITLE } from '../../constants'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import Render3D from '../../components/Render3D'
@@ -83,7 +84,7 @@ import {
   ProductColors,
   ProductFile,
   ItemDetailType,
-  BreadRoute
+  BreadRoute, IProfileSettings, UserType
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
@@ -95,6 +96,10 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 const WHITENAME = 'White'
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -122,6 +127,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   loadingImage: boolean
   phone: boolean
+  profileData: ProfileData
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -187,15 +193,32 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedFit,
       selectedColor,
       openFitInfo,
+      profileData,
       setLoadingModel,
       loadingImage,
       setLoadingImageAction,
       currentCurrency,
-      data: { product, error, loading },
+      data: { product: productData, error, loading },
       phone
     } = this.props
 
     const { formatMessage } = intl
+    const { status, inline, comission } = get(profileData, 'profileData.reseller', {})
+    const isReseller = status === APPROVED
+    let product = productData
+
+    const isRetail = product && (product.retailMen || product.retailWomen || !product.customizable)
+
+    if (isReseller) {
+      const originalPriceRange = get(productData, 'priceRange', [])
+      const comissionToApply = isRetail ? inline : comission
+      const purchasePrices = originalPriceRange.map((priceItem) => {
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+        return { ...priceItem, price }
+      })
+      product = { ...product, priceRange: purchasePrices }
+    }
+
     const { showDetails, showFits } = this.state
     if ((!product || error) && !loading) {
       return (
@@ -223,8 +246,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       images: imagesArray,
       customizable,
       customLink,
-      retailMen,
-      retailWomen,
       yotpoAverageScore: reviewsScore,
       mpn: mpnCode,
       obj,
@@ -240,7 +261,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       modelSize,
       title = MAIN_TITLE
     } = product
-    const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
@@ -627,6 +647,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
+                {isReseller && <DealerTitle>{formatMessage(messages.dealerPricing)}</DealerTitle>}
                 <PricesRow>{isRetail ? retailPrice : renderPrices}</PricesRow>
                 <Ratings
                   stars={5}
@@ -773,12 +794,14 @@ const mapStateToProps = (state: any) => {
   const menuSports = state.get('menuSports').toJS()
   const langProps = state.get('languageProvider').toJS()
   const responsive = state.get('responsive').toJS()
+  const app = state.get('app').toJS()
   return {
     ...productDetail,
     ...menu,
     ...menuSports,
     ...langProps,
-    ...responsive
+    ...responsive,
+    ...app
   }
 }
 
@@ -786,10 +809,22 @@ type OwnProps = {
   productId?: number
   match?: any
   location?: any
+  user?: UserType
 }
 
 const ProductDetailEnhance = compose(
+  connect(
+    mapStateToProps,
+    { ...productDetailActions }
+  ),
   injectIntl,
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {
@@ -803,11 +838,7 @@ const ProductDetailEnhance = compose(
         fetchPolicy: 'network-only'
       }
     }
-  }),
-  connect(
-    mapStateToProps,
-    { ...productDetailActions }
-  )
+  })
 )(ProductDetail)
 
 export default ProductDetailEnhance

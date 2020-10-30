@@ -20,6 +20,7 @@ export const SET_SEARCH = `${namespace}/SET_SEARCH`
 export const SET_SEARCH_MANAGER = `${namespace}/SET_SEARCH_MANAGER`
 export const SET_AFFILIATE_PAGE = `${namespace}/SET_AFFILIATE_PAGE`
 export const SET_RESELLER_PAGE = `${namespace}/SET_RESELLER_PAGE`
+export const SET_CHECKED = `${namespace}/SET_CHECKED`
 export const CLOSE_INTERNAL = `${namespace}/CLOSE_INTERNAL`
 export const OPEN_INTERNAL = `${namespace}/OPEN_INTERNAL`
 export const CHANGE_INTERNAL = `${namespace}/CHANGE_INTERNAL`

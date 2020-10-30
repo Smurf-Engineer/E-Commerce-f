@@ -34,7 +34,9 @@ import {
   AFFILIATES,
   AFFILIATES_ABOUT,
   RESELLER_ABOUT,
-  RESELLER
+  RESELLER,
+  RESELLER_PAYOUTS,
+  RESELLER_ORDERS, resellerOptions, MY_STORES, resellerShortOptions
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -44,6 +46,8 @@ import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
 import ProfileSettings from '../../components/ProfileSettings'
 import ResellerAbout from '../../components/ResellerAbout'
+import ResellerOptions from '../../components/ResellerOptions'
+import ResellerOrders from '../../components/ResellerOrders'
 import AffiliateOptions from '../../components/AffiliateOptions'
 import AffiliateAbout from '../../components/AffiliateAbout'
 import AffiliatesOrders from '../../components/AffiliatesOrders'
@@ -68,6 +72,7 @@ import { TeamStoreItemtype, MessagePayload, IProfileSettings, QueryProps } from 
 import get from 'lodash/get'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
+import { APPROVED, PENDING } from '../../constants'
 
 const { SubMenu } = Menu
 
@@ -256,11 +261,14 @@ export class Account extends React.Component<Props, {}> {
       setItemToAddAction,
       openAddToTeamStoreModalAction
     } = this.props
+    const resellerStatus = get(data, 'profileData.reseller.status', '')
+    const isReseller = resellerStatus === APPROVED
+    const pendingReseller = resellerStatus === PENDING
     const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
     switch (screen) {
       case OVERVIEW:
-        return (
+        return !pendingReseller && (
           <Overview
             {...{ history, formatMessage }}
             currentCurrency={currentCurrency || config.defaultCurrency}
@@ -268,17 +276,22 @@ export class Account extends React.Component<Props, {}> {
           />
         )
       case ORDER_HISTORY:
-        return <OrderHistory {...{ history, formatMessage }} />
+        return !pendingReseller && <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:
-        return <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
+        return !pendingReseller && <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
       case CREDIT_CARDS:
-        return <MyCards listForMyAccount={true} {...{ formatMessage }} />
+        return !pendingReseller && <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
-        return <ProfileSettings {...{ isMobile, history, formatMessage }} />
+        return !pendingReseller && <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
-        return <MyTeamStores {...{ history, formatMessage }} />
+      case MY_STORES:
+        return !pendingReseller && <MyTeamStores {...{ history, formatMessage, isReseller }} />
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
+      case RESELLER_PAYOUTS:
+        return (resellerEnabled && isReseller) && <ResellerOptions {...{ history, formatMessage }} />
+      case RESELLER_ORDERS:
+        return (resellerEnabled && isReseller) && <ResellerOrders {...{ history, formatMessage }} />
       case AFFILIATES_ABOUT:
         return affiliateEnabled && <AffiliateAbout {...{ history, formatMessage }} />
       case AFFILIATES_PAYOUTS:
@@ -286,7 +299,7 @@ export class Account extends React.Component<Props, {}> {
       case AFFILIATES_ORDERS:
         return affiliateEnabled && <AffiliatesOrders {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
-        return (
+        return !pendingReseller && (
           <MyLocker
             {...{
               setCurrentShare,
@@ -303,7 +316,7 @@ export class Account extends React.Component<Props, {}> {
           />
         )
       case MY_FILES:
-        return <MyFiles {...{ history, formatMessage }} />
+        return !pendingReseller && <MyFiles {...{ history, formatMessage }} />
       default:
         return null
     }
@@ -322,9 +335,16 @@ export class Account extends React.Component<Props, {}> {
       openShareModal,
       savedDesignId
     } = this.props
-    const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
-    const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
-    const menuOptions = options.map(({ title, options: submenus }) =>
+    const userProfile = get(data, 'profileData.userProfile', {})
+    const reseller = get(data, 'profileData.reseller', {})
+    const { affiliateEnabled, resellerEnabled } = userProfile || {}
+    const { status } = reseller || {}
+    const approvedReseller = status === APPROVED
+    let sideMenu = options
+    if (!!status) {
+      sideMenu = approvedReseller ? resellerOptions : resellerShortOptions
+    }
+    const menuOptions = sideMenu.map(({ title, options: submenus }) =>
       submenus.length ?
         (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
           || (title !== AFFILIATES && title !== RESELLER)) &&

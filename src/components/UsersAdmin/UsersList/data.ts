@@ -11,6 +11,8 @@ export const getUsersQuery = gql`
     $order: String
     $orderAs: String
     $searchText: String
+    $isAffiliate: Boolean
+    $isReseller: Boolean
   ) {
     usersQuery: getUsers(
       limit: $limit
@@ -18,6 +20,8 @@ export const getUsersQuery = gql`
       order: $order
       orderAs: $orderAs
       searchText: $searchText
+      isAffiliate: $isAffiliate
+      isReseller: $isReseller
     ) {
       fullCount
       users {

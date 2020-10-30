@@ -15,6 +15,10 @@ export const profileSettingsQuery = gql`
         comission
         activatedAt: activated_at
         file
+        inline
+        margin
+        businessName: business_name
+        stateProvince: state_province
         currency
         region
         paypalAccount: paypal_account
@@ -26,7 +30,7 @@ export const profileSettingsQuery = gql`
 export const linkPaypalAccountMutation = graphql(
   gql`
     mutation linkPaypalAccount($code: String!) {
-      linkPaypalAccount(code: $code) {
+      linkPaypalAccount(code: $code, isReseller: true) {
         status
         paypalAccount: paypal_account
       }

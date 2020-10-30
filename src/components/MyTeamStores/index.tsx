@@ -16,8 +16,9 @@ import {
   AddTeamStoreButton,
   CreateTeamStoreLegend,
   DeleteConfirmMessage,
-  PaginationRow
+  PaginationRow, Title, ResellerIcon
 } from './styledComponents'
+import directShipLogo from '../../assets/directship_dark.png'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
 import { QueryProps, TeamstoreResult } from '../../types/common'
@@ -40,6 +41,7 @@ interface Props {
   storeId: string
   currentPage: number
   limit: number
+  isReseller: boolean
   setSkipValueAction: (skip: number, limit: number) => void
   formatMessage: (messageDescriptor: any) => string
   deleteTeamStore: (variables: {}) => void
@@ -57,6 +59,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       deleteLoading,
       openShare,
       openDeleteModal,
+      isReseller,
       currentPage,
       formatMessage,
       data: { myTeamstores }
@@ -91,12 +94,18 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
+        {isReseller &&
+          <>
+            <ResellerIcon src={directShipLogo} />
+            <Title>{formatMessage(messages.myStores)}</Title>
+          </>
+        }
         <AddTeamStoreButton onClick={this.addNewTeamStore}>
-          {formatMessage(messages.addTeamstoreLabel)}
+          {formatMessage(messages[isReseller ? 'addCustomStore' : 'addTeamstoreLabel'])}
         </AddTeamStoreButton>
         <CreateTeamStoreLegend
           dangerouslySetInnerHTML={{
-            __html: formatMessage(messages.teamStoreConcept)
+            __html: formatMessage(messages[isReseller ? 'resellerConcept' : 'teamStoreConcept'])
           }}
         />
         <div>{myTeamstoresList}</div>

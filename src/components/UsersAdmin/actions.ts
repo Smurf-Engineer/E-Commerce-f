@@ -20,6 +20,7 @@ import {
   SET_SEARCH_MANAGER,
   SET_AFFILIATE_PAGE,
   SET_RESELLER_PAGE,
+  SET_CHECKED,
   CHANGE_INTERNAL
 } from './constants'
 
@@ -57,6 +58,12 @@ export const handleOnInternalChange = (value: string): AnyAction => ({
 export const setSearchTextAction = (searchText: string) => ({
   type: SET_SEARCH_TEXT,
   searchText
+})
+
+export const setCheckedAction = (name: string, checked: boolean) => ({
+  type: SET_CHECKED,
+  name,
+  checked
 })
 
 export const setDesignSelected = (designId: string) => ({

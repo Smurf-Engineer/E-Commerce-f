@@ -19,6 +19,7 @@ import {
   CHANGE_NOTE,
   SET_AFFILIATE_PAGE,
   SET_RESELLER_PAGE,
+  SET_CHECKED,
   CLOSE_INTERNAL,
   OPEN_INTERNAL,
   CHANGE_INTERNAL
@@ -34,6 +35,8 @@ export const initialState = fromJS({
   managerSearchText: '',
   firstName: '',
   name: '',
+  isReseller: false,
+  isAffiliate: false,
   designSelected: '',
   note: '',
   lastName: '',
@@ -49,6 +52,8 @@ export const initialState = fromJS({
 
 const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
+    case SET_CHECKED:
+      return state.set(action.name, action.checked)
     case SET_SEARCH_MANAGER:
       return state.set('managerSearchText', action.value)
     case SET_SEARCH:
