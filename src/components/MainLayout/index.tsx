@@ -214,7 +214,6 @@ class MainLayout extends React.Component<Props, {}> {
       openLoginAction,
       setRegionAction,
       currentRegion,
-      user,
       currentLanguage,
       currentCurrency,
       user,
