@@ -17,7 +17,7 @@ import Spin from 'antd/lib/spin'
 import queryString from 'query-string'
 import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
-import { PHONE_FIELD, PENDING } from '../../constants'
+import { PHONE_FIELD, PENDING, APPROVED } from '../../constants'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import {
   regionsQuery,
@@ -47,7 +47,7 @@ import {
   LoadingContainer,
   BoldLabel,
   LabelButton,
-  ResellerDetails, FileLink, Clip, BoldTitle, Margins, TitleMargin, PopoverStyled, PopoverText, InfoIcon
+  ResellerDetails, FileLink, Clip, BoldTitle, Margins, TitleMargin, PopoverStyled, PopoverText, InfoIcon, StatusMessage
   // StatusLabel,
   // AccountLabel,
 } from './styledComponents'
@@ -248,71 +248,80 @@ class ProfileSettings extends React.Component<Props, {}> {
             }}
           />
         </SectionContainer>
-        {!!status && <><BoldTitle>{formatMessage(messages.resellerSettings)}</BoldTitle>
-        <ResellerDetails>
-          <LabelButton>
-            <Title>
-              {formatMessage(messages.status)}
-            </Title>
-            <BoldLabel>
-              {status}
-            </BoldLabel>
-          </LabelButton>
-          <LabelButton>
-            <Title>
-              {formatMessage(messages.activatedAt)}
-            </Title>
-            {!!activatedAt &&
-              <BoldLabel>
-                {moment(activatedAt).format(NOTE_FORMAT)}
-              </BoldLabel>
-            }
-          </LabelButton>
-          <LabelButton>
-            <Title>
-              {formatMessage(messages.taxForm)}
-            </Title>
-            <FileLink onClick={this.openFile}>
-              <Clip type="paper-clip" />
-              {fileName}
-            </FileLink>
-          </LabelButton>
-          <LabelButton>
-            <TitleMargin>
-              {formatMessage(messages.dealerMargin)}
-              <PopoverStyled
-                trigger="click"
-                content={
-                  <PopoverText
-                    dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.marginPopover)
-                    }}
-                  />
+        {!!status && 
+          <>
+            <BoldTitle>{formatMessage(messages.resellerSettings)}</BoldTitle>
+            {status === APPROVED ?
+            <ResellerDetails>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.status)}
+                </Title>
+                <BoldLabel>
+                  {status}
+                </BoldLabel>
+              </LabelButton>
+              <LabelButton>
+                <Title>
+                  {formatMessage(messages.activatedAt)}
+                </Title>
+                {!!activatedAt &&
+                  <BoldLabel>
+                    {moment(activatedAt).format(NOTE_FORMAT)}
+                  </BoldLabel>
                 }
-              >
-                <InfoIcon type="info-circle" />
-              </PopoverStyled>
-            </TitleMargin>
-            <Margins>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.customProducts)}
-                </Title>
-                <BoldLabel>
-                  {`${comission}%`}
-                </BoldLabel>
               </LabelButton>
               <LabelButton>
                 <Title>
-                  {formatMessage(messages.inlineProducts)}
+                  {formatMessage(messages.taxForm)}
                 </Title>
-                <BoldLabel>
-                  {`${inline}%`}
-                </BoldLabel>
+                <FileLink onClick={this.openFile}>
+                  <Clip type="paper-clip" />
+                  {fileName}
+                </FileLink>
               </LabelButton>
-            </Margins>
-          </LabelButton>
-        </ResellerDetails></>}
+              <LabelButton>
+                <TitleMargin>
+                  {formatMessage(messages.dealerMargin)}
+                  <PopoverStyled
+                    trigger="click"
+                    content={
+                      <PopoverText
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.marginPopover)
+                        }}
+                      />
+                    }
+                  >
+                    <InfoIcon type="info-circle" />
+                  </PopoverStyled>
+                </TitleMargin>
+                <Margins>
+                  <LabelButton>
+                    <Title>
+                      {formatMessage(messages.customProducts)}
+                    </Title>
+                    <BoldLabel>
+                      {`${comission}%`}
+                    </BoldLabel>
+                  </LabelButton>
+                  <LabelButton>
+                    <Title>
+                      {formatMessage(messages.inlineProducts)}
+                    </Title>
+                    <BoldLabel>
+                      {`${inline}%`}
+                    </BoldLabel>
+                  </LabelButton>
+                </Margins>
+              </LabelButton>
+            </ResellerDetails> : 
+            <StatusMessage>
+              {formatMessage(messages.pendingStatus)}
+            </StatusMessage>
+            }
+          </>
+        }
         <ChangePasswordModal
           {...{
             formatMessage,

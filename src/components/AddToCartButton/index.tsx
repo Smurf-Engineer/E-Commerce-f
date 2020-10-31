@@ -29,6 +29,7 @@ interface CartItems {
   designImage?: string
   designCode?: string
   isFixed?: boolean
+  isReseller?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   shortId?: string
@@ -45,6 +46,7 @@ interface Props {
   designImage?: string
   designCode?: string
   isFixed?: boolean
+  isReseller?: boolean
   teamStoreId?: string
   teamStoreItem?: string
   withoutTop?: boolean
@@ -101,6 +103,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       item,
       designId,
       isFixed,
+      isReseller,
       teamStoreId,
       teamStoreItem,
       designName,
@@ -119,6 +122,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         item,
         designId,
         isFixed,
+        isReseller,
         teamStoreId,
         teamStoreItem,
         designName,
@@ -151,6 +155,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
                   i,
                   i.designId,
                   i.isFixed,
+                  i.isReseller,
                   i.teamStoreId,
                   i.teamStoreItem,
                   i.designName,
@@ -169,6 +174,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               item,
               designId,
               isFixed,
+              isReseller,
               teamStoreId,
               teamStoreItem,
               designName,
@@ -190,6 +196,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
               item,
               item.shortId,
               item.isFixed,
+              item.isReseller,
               item.teamStoreId,
               item.teamStoreItem,
               item.designName,
@@ -211,6 +218,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     item: CartItems,
     designId = '',
     isFixed = false,
+    isReseller = false,
     teamStoreId = '',
     teamStoreItem = '',
     designName = '',
@@ -237,6 +245,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       { designName },
       { designImage },
       { designCode },
+      { isReseller },
       { isFixed },
       { teamStoreId },
       { teamStoreItem },

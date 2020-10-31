@@ -42,6 +42,7 @@ interface Props {
   taxVat?: number
   totalSum?: number
   currencySymbol?: string
+  showDiscount?: boolean
   showCouponInput?: boolean
   couponCode?: CouponCode
   admin?: boolean
@@ -66,6 +67,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       formatMessage,
       showCouponInput,
       onlyRead,
+      showDiscount = true,
       proDesignReview = 0,
       currencySymbol,
       taxFee = 0,
@@ -101,13 +103,13 @@ export class OrderSummary extends React.Component<Props, {}> {
         <SummaryTitle>
           <FormattedMessage {...messages.summaryTitle} />
         </SummaryTitle>
-        {totalWithoutDiscount > 0 && (
+        {(totalWithoutDiscount > 0 && showDiscount) && (
           <OrderItem>
             <FormattedMessage {...messages.total} />
             <div>{`${symbol} ${totalWithoutDiscount.toFixed(2)}`}</div>
           </OrderItem>
         )}
-        {youSaved > 0 ? (
+        {(youSaved > 0 && showDiscount) ? (
           <YouSavedOrderItem {...{ onlyRead }}>
             {formatMessage(messages.youSaved, {
               percent: savedPercent,

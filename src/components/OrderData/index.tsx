@@ -152,6 +152,8 @@ class OrderData extends React.Component<Props, {}> {
           />
         )
     let subtotal = 0
+    const cartItems = cart || []
+    const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderList = cart
       ? cart.map((cartItem, index) => {
         const {
@@ -305,6 +307,7 @@ class OrderData extends React.Component<Props, {}> {
                 taxPst,
                 taxVat,
                 taxFee,
+                showDiscount,
                 discount,
                 subtotal
               }}

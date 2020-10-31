@@ -166,6 +166,8 @@ export class OrderDetails extends React.Component<Props, {}> {
     const trackingNumber = packages && packages.replace('<BR>', ', ')
 
     let subtotal = 0
+    const cartItems = cart || []
+    const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
         const {
@@ -306,6 +308,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 taxPst,
                 taxVat,
                 taxFee,
+                showDiscount,
                 discount,
                 subtotal
               }}

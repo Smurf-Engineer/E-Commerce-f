@@ -771,6 +771,7 @@ export interface CartItems {
   teamStoreId?: string
   teamStoreItem?: string
   bibBraceColor?: string
+  isReseller?: boolean
   flatlockCode?: string
   zipperColor?: string
   bindingColor?: string
