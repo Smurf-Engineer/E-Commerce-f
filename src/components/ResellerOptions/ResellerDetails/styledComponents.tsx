@@ -7,6 +7,7 @@ import Popover from 'antd/lib/popover'
 import { RED, WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
+import Select from 'antd/lib/select'
 import Input from 'antd/lib/input'
 
 interface ContainerProps {
@@ -24,6 +25,21 @@ export const Container = styled.div`
   @media (min-width: 320px) and (max-width: 1024px) {
     padding-right: 0;
     align-items: center;
+  }
+`
+
+export const StateDiv = styled.div`
+  width: 130px;
+  margin-top: 14px;
+`
+
+export const BillingSelect = styled(Select)`
+  width: 130px;
+  margin-top: 14px;
+  .ant-select-selection--single {
+    padding-top: 2px;
+    font-weight: normal;
+    border-radius: 0;
   }
 `
 
@@ -76,7 +92,7 @@ export const LabelButton = styled.div`
   flex-flow: column;
   justify-content: space-between;
   align-items: flex-start;
-  height: 48px;
+  height: 54px;
   margin-right: 24px;
   @media (max-width: 1024px) {
     flex: 1;
@@ -108,7 +124,8 @@ export const FileLink = styled.div`
 export const StyledInput = styled(Input)`
   border-radius: 0;
   width: 130px;
-  margin-top: 8px;
+  height: auto;
+  margin-top: 14px;
   .ant-input {
     border-radius: 0;
   }

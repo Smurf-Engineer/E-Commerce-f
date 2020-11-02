@@ -184,12 +184,48 @@ export const setResellerStatusMutation = gql`
   mutation changeResellerStatus($status: String!, $userId: String!) {
     changeResellerStatus(status: $status, userId: $userId) {
       status
+      file
       paypalAccount: paypal_account
       comission
+      margin
+      inline
+      gst
+      region
+      businessName: business_name
+      stateProvince: state_province
+      currency
       activatedAt: activated_at
     }
   }
 `
+
+export const changeCurrencyMutation = gql`
+  mutation changeCurrencyReseller($currency: String!, $userId: String!) {
+    changeCurrencyReseller(currency: $currency, userId: $userId) {
+      status
+      currency
+    }
+  }
+`
+
+export const changeRegionMutation = gql`
+  mutation changeRegionReseller($region: String!, $userId: String!) {
+    changeRegionReseller(region: $region, userId: $userId) {
+      status
+      stateProvince: state_province
+    }
+  }
+`
+
+export const changeBusinessMutation = gql`
+  mutation changeBusinessReseller($business: String!, $userId: String!) {
+    changeBusinessReseller(business: $business, userId: $userId) {
+      status
+      businessName: business_name
+    }
+  }
+`
+
 export const assignRepUserMutation = graphql(
   gql`
     mutation assignRepUser($userId: String!, $repUser: String) {
