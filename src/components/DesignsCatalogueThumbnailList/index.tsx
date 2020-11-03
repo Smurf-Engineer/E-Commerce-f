@@ -263,6 +263,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       designName={name}
                       designImage={image}
                       designCode={code}
+                      promptReseller={isResellerOwner}
                       isFixed={!onDemandMode}
                       teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}

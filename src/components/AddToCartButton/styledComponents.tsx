@@ -3,7 +3,8 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { RED, BLUE, WHITE } from '../../theme/colors'
+import { RED, BLUE, WHITE, GRAY_DARK, GRAY_LIGHT } from '../../theme/colors'
+import { AVENIR_NEXT } from '../../theme/fonts'
 
 export const Container = styled.div`
   display: flex;
@@ -52,6 +53,26 @@ export const ButtonContainer = styled.div`
     }
     return withoutTop ? '5px' : '170px'
   }};
+`
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: -38px;
 `
 
 export const CustomizeButton = styled.div`
@@ -104,3 +125,17 @@ export const ButtonWrapper = styled.span`
 export const ReorderButton = styled(Button)`
   width: 100%;
 `
+
+export const buttonStyle = {
+  background: BLUE,
+  color: WHITE,
+  border: 'none',
+  boxShadow: 'none'
+}
+
+export const cancelButtonStyle = {
+  background: WHITE,
+  color: GRAY_DARK,
+  borderColor: GRAY_LIGHT,
+  boxShadow: 'none'
+}

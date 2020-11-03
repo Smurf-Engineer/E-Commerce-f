@@ -59,6 +59,10 @@ export default defineMessages({
     id: 'components.LockerTable.profit',
     defaultMessage: 'Your Profit'
   },
+  yourMargin: {
+    id: 'components.LockerTable.yourMargin',
+    defaultMessage: 'Your Margin'
+  },
   regularPrice: {
     id: 'components.LockerTable.regularPrice',
     defaultMessage: 'Regular Price'

@@ -457,6 +457,7 @@
   "components.LockerTable.dealerPrice": "<span>DEALER PRICE</span>The <b>Dealer Price</b> is the price used to calculate your profit. This price is static and will not change based on quantity sold.",
   "components.LockerTable.msrpDesc": "<span>MSRP</span>The <b>MSRP</b> is Jakroo’s default on-demand store price. This may serve as a benchmark for setting your list price.",
   "components.LockerTable.yourPrice": "Your List Price",
+  "components.LockerTable.yourMargin": "Your Margin",
   "components.LockerTable.profit": "Your Profit",
   "components.LockerTable.gotIt": "Got it!",
   "components.LockerTable.aboutTeam": "ABOUT TEAM PRICE",
