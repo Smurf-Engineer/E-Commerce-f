@@ -15,8 +15,13 @@ interface Props {
   regionButton: React.ReactNode
   totalItems: number
   designHasChanges: boolean
+  openMenu: boolean
   hide?: boolean
   buyNowHeader?: boolean
+  affiliateEnabled?: boolean
+  resellerPending?: boolean
+  resellerEnabled?: boolean
+  approvedReseller?: boolean
   saveAndBuy: (buy: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -28,8 +33,13 @@ export const MenuBarMobile = ({
   loginButton,
   regionButton,
   totalItems,
+  affiliateEnabled,
+  resellerEnabled,
+  resellerPending,
+  openMenu,
   designHasChanges,
   hide,
+  approvedReseller,
   openWithoutSaveModalAction,
   formatMessage,
   buyNowHeader,
@@ -41,7 +51,20 @@ export const MenuBarMobile = ({
   }
   return (
     <Container {...{ hide }}>
-      {!buyNowHeader && <Menu {...{ history, loginButton, formatMessage }} />}
+      {!buyNowHeader &&
+        <Menu 
+          {...{
+            history,
+            resellerEnabled,
+            loginButton,
+            openMenu,
+            formatMessage,
+            affiliateEnabled,
+            approvedReseller,
+            resellerPending
+          }}
+        />
+      }
       <Logo
         src={logo}
         onClick={handleOnGoHome}

@@ -15,6 +15,7 @@ export const getProductQuery = gql`
       hasPredyed: has_predyed
       bumpMap: bump_map
       branding
+      predyedlabel
       isCustom: design_center
       flatlock
       mpn
@@ -107,10 +108,12 @@ export const getDesignQuery = gql`
         mtl
         label
         branding
+        predyedlabel
         hasPredyed: has_predyed
         bumpMap: bump_map
         flatlock
         mpn
+        twoPieces: two_pieces
         binding {
           white
           black

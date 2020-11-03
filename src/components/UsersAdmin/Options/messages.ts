@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'components.UsersAdmin.Options.showAffiliate',
     defaultMessage: 'Show Affiliate Program'
   },
+  showReseller: {
+    id: 'components.UsersAdmin.Options.showReseller',
+    defaultMessage: 'Show Reseller Program'
+  },
   lastSale: {
     id: 'components.UsersAdmin.Options.lastSale',
     defaultMessage: 'Last Sale'
@@ -68,5 +72,9 @@ export default defineMessages({
   taxItem: {
     id: 'components.UsersAdmin.Options.taxItem',
     defaultMessage: 'Tax Item'
+  },
+  resellerOptions: {
+    id: 'components.UsersAdmin.Options.resellerOptions',
+    defaultMessage: 'Reseller Options'
   }
 })

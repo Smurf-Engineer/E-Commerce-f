@@ -120,6 +120,7 @@ export const NameLabel = styled.div`
 
 export const EnableSection = styled.div`
   display: inline-flex;
+  margin-right: 38px;
   flex-flow: column;
   justify-content: flex-start;
   align-items: start;

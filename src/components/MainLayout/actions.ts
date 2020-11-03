@@ -8,7 +8,7 @@ import {
   GET_TOTAL_CART_ITEMS,
   OPEN_LOGOUT_MODAL,
   SAVE_AND_BUY,
-  SET_INSTALLED_FONTS_ACTION
+  SET_INSTALLED_FONTS_ACTION, OPEN_RESELLER
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -49,6 +49,11 @@ export const saveUserToLocal = (user: object): AnyAction => ({
 
 export const logoutAction = (): AnyAction => ({
   type: LOGOUT
+})
+
+export const openResellerAction = (open: boolean): AnyAction => ({
+  type: OPEN_RESELLER,
+  open
 })
 
 export const getTotalItemsIncart = (): AnyAction => ({

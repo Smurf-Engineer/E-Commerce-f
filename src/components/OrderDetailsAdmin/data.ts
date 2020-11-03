@@ -72,6 +72,7 @@ export const getOrderQuery = gql`
           isTopProduct
           weight
           mpn
+          twoPieces: two_pieces
           priceRange {
             quantity
             price

@@ -53,6 +53,18 @@ export default defineMessages({
     id: 'components.AffiliatesList.paymentsDone',
     defaultMessage: 'Payments Done!'
   },
+  comissionAmount: {
+    id: 'components.AffiliatesList.comissionAmount',
+    defaultMessage: 'Commission Amount:'
+  },
+  usdAmount: {
+    id: 'components.AffiliatesList.usdAmount',
+    defaultMessage: 'USD: {usdTotal}'
+  },
+  cadAmount: {
+    id: 'components.AffiliatesList.cadAmount',
+    defaultMessage: 'CAD: {cadTotal}'
+  },
   search: {
     id: 'components.AffiliatesList.search',
     defaultMessage: 'Search for an affiliate'

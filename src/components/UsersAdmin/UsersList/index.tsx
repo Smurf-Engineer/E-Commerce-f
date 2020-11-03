@@ -5,6 +5,7 @@ import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import messages from './messages'
 import {
   Container,
@@ -15,6 +16,8 @@ import {
   ScreenTitle,
   SearchInput,
   OptionsContainer,
+  Checkboxes,
+  CheckboxStyled
 } from './styledComponents'
 
 import debounce from 'lodash/debounce'
@@ -59,6 +62,8 @@ interface Props {
   sort: sorts
   withPagination?: boolean
   withoutPadding?: boolean
+  isReseller: boolean
+  isAffiliate: boolean
   searchText: string
   canEdit: boolean
   canSetAdmin: boolean
@@ -66,6 +71,7 @@ interface Props {
   managerSearchText: string
   salesRep: Data
   managers: ManagersData
+  setCheckedAction: (name: string, checked: boolean) => void
   setManager: (value: string, userId: string) => void
   setUserRep: (value: string, userId: string) => void
   searchReps: (value: string) => void
@@ -89,6 +95,12 @@ class UsersList extends React.Component<Props, StateProps> {
     () => this.props.setSearchText(this.state.searchValue),
     600
   )
+  handleCheckChange = ({ target: { name, checked } }: CheckboxChangeEvent) => {
+    if (!!name) {
+      const { setCheckedAction } = this.props
+      setCheckedAction(name, checked)
+    }
+  }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
       currentTarget: { value },
@@ -111,6 +123,8 @@ class UsersList extends React.Component<Props, StateProps> {
       setUserRep,
       setManager,
       salesRep,
+      isReseller,
+      isAffiliate,
       managers,
       onChangePage,
       withPagination = true,
@@ -281,6 +295,22 @@ class UsersList extends React.Component<Props, StateProps> {
             placeholder={formatMessage(messages.search)}
             autoFocus={true}
           />
+          <Checkboxes>
+            <CheckboxStyled
+              checked={isAffiliate}
+              name="isAffiliate"
+              onChange={this.handleCheckChange}
+            >
+              {formatMessage(messages.isAffiliate)}
+            </CheckboxStyled>
+            <CheckboxStyled
+              checked={isReseller}
+              name="isReseller"
+              onChange={this.handleCheckChange}
+            >
+              {formatMessage(messages.isReseller)}
+            </CheckboxStyled>
+          </Checkboxes>
         </OptionsContainer>
         <Table>
           <thead>{header}</thead>
@@ -305,6 +335,8 @@ interface OwnProps {
   sort?: string
   customLimit?: number
   searchText?: string
+  isReseller?: boolean
+  isAffiliate?: boolean
   repSearchText?: string
   managerSearchText?: string
 }
@@ -332,6 +364,8 @@ const UsersListEnhance = compose(
     options: ({
       currentPage,
       orderBy,
+      isReseller,
+      isAffiliate,
       sort,
       customLimit,
       searchText,
@@ -345,6 +379,8 @@ const UsersListEnhance = compose(
           order: orderBy,
           orderAs: sort,
           searchText,
+          isReseller,
+          isAffiliate
         },
         fetchPolicy: 'network-only',
       }

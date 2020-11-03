@@ -44,7 +44,8 @@ import {
   IProfileSettings,
   Affiliate,
   AffiliateStatus,
-  OrderStats
+  OrderStats,
+  Reseller
 } from '../../../types/common'
 import {
   GetDesignNotes,
@@ -53,15 +54,22 @@ import {
   changeAffiliateMutation,
   changeComissionMutation,
   setAffiliateStatusMutation,
-  changeNetsuiteInternal,
   setTaxEnabledMutation,
-  setTaxItemMutation
+  setTaxItemMutation,
+  setResellerStatusMutation,
+  changeResellerComissionMutation,
+  setResellerEnabledMutation,
+  changeResellerMarginMutation,
+  changeResellerInlineMutation,
+  changeGstMutation,
+  changeNetsuiteInternal
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
 import moment from 'moment'
 import { formatAmount } from '../../../utils/utilsFunctions'
-import { DATE_FORMAT } from '../../../constants'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import ResellerDetails from '../../ResellerOptions/ResellerDetails'
+import { DATE_FORMAT, MESSAGE_TIME } from '../../../constants'
 
 const taxesOptions = ['-8', '115080', '115081', '115082']
 
@@ -87,6 +95,8 @@ interface Props {
   canEdit: boolean
   profileData: ProfileData
   pageAffiliate: number
+  pageReseller: number
+  enableReseller: (variables: {}) => Promise<AffiliateStatus>
   netsuiteId: string
   openInternalModal: boolean
   enableAffiliate: (variables: {}) => Promise<AffiliateStatus>
@@ -94,12 +104,18 @@ interface Props {
   setTaxItem: (variables: {}) => Promise<ProfileData>
   changeNetsuiteId: (variables: {}) => Promise<ProfileData>
   onChangePage: (page: number) => void
+  onChangePageReseller: (page: number) => void
   onCloseInternal: () => void
   openInternal: (id: string) => void
   handleOnInternalChange: (value: string) => void
   setLoadingAction: (loading: boolean) => void
   changeComission: (variables: {}) => Promise<Affiliate>
   changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
+  changeGst: (variables: {}) => Promise<Reseller>
+  changeResellerComission: (variables: {}) => Promise<Reseller>
+  changeResellerMargin: (variables: {}) => Promise<Reseller>
+  changeResellerInline: (variables: {}) => Promise<Reseller>
+  changeResellerStatus: (variables: {}) => Promise<Reseller>
   addNoteAction: (variables: {}) => Promise<MessagePayload>
   setNoteText: (text: string) => void
   setDesignSelected: (designId?: string) => void
@@ -153,6 +169,203 @@ class Options extends React.Component<Props> {
     } catch (e) {
       setLoadingAction(false)
       message.error(e.message)
+    }
+  }
+  enableReseller = async (status: string) => {
+    const {
+      formatMessage,
+      changeResellerStatus,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeResellerStatus({
+          variables: {
+            status,
+            userId
+          },
+          update: (store: any, responseData: Reseller) => {
+            const { activatedAt } = get(responseData, 'data.changeResellerStatus', {})
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.status = status
+            resellerData.activatedAt = activatedAt
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleChangeGst = async (value = '') => {
+    const {
+      formatMessage,
+      changeGst,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeGst({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.gst = value
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleResellerComission = async (value = 0) => {
+    const {
+      formatMessage,
+      changeResellerComission,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeResellerComission({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.comission = value
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleResellerMargin = async (value = 0) => {
+    const {
+      formatMessage,
+      changeResellerMargin,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeResellerMargin({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.margin = value
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleResellerInline = async (value = 0) => {
+    const {
+      formatMessage,
+      changeResellerInline,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeResellerInline({
+          variables: {
+            value,
+            userId
+          },
+          update: (store: any) => {
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.inline = value
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
     }
   }
   enableAffiliate = async (status: string) => {
@@ -301,6 +514,45 @@ class Options extends React.Component<Props> {
           })
           const userProfile = get(profileData, 'profileData.userProfile', {})
           userProfile.affiliateEnabled = enabledResponse
+          userProfile.resellerEnabled = false
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData,
+            variables: { id: userId }
+          })
+        }
+      })
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, MESSAGE_TIME)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleEnabledReseller = async (enabled: boolean) => {
+    const {
+      match,
+      setLoadingAction,
+      enableReseller
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const userId = get(match, 'params.id', '')
+      await enableReseller({
+        variables: {
+          enabled,
+          userId
+        },
+        update: (store: any, responseData: AffiliateStatus) => {
+          const enabledResponse = get(responseData, 'data.resellerData.enabled', false)
+          const profileData = store.readQuery({
+            query: profileSettingsQuery,
+            variables: { id: userId },
+            fetchPolicy: 'network-only'
+          })
+          const userProfile = get(profileData, 'profileData.userProfile', {})
+          userProfile.resellerEnabled = enabledResponse
+          userProfile.affiliateEnabled = false
           store.writeQuery({
             query: profileSettingsQuery,
             data: profileData,
@@ -404,6 +656,8 @@ class Options extends React.Component<Props> {
       optionSelected,
       profileData,
       note,
+      onChangePageReseller,
+      pageReseller,
       openInternalModal,
       netsuiteId,
       onCloseInternal,
@@ -416,9 +670,18 @@ class Options extends React.Component<Props> {
       setDesignSelected,
     } = this.props
     const userId = get(match, 'params.id', '')
-    const { userProfile = {}, affiliate = {}, stats = {} } = get(profileData, 'profileData', {})
+    const { userProfile = {}, affiliate = {}, stats = {}, reseller = {} } = get(profileData, 'profileData', {})
     const netsuiteTitle = formatMessage(messages.netsuiteInternal).toUpperCase()
-    const { id, firstName, lastName, affiliateEnabled, netsuiteInternal, taxExempt, taxItem } = userProfile
+    const {
+      id,
+      firstName,
+      lastName,
+      affiliateEnabled,
+      netsuiteInternal,
+      taxExempt,
+      taxItem,
+      resellerEnabled
+    } = userProfile
     const {
       status,
       comission,
@@ -428,6 +691,20 @@ class Options extends React.Component<Props> {
       currency,
       file,
     } = affiliate
+    const {
+      gst,
+      stateProvince,
+      businessName,
+      status: statusReseller,
+      comission: comissionReseller,
+      activatedAt: activatedReseller,
+      paypalAccount: paypalReseller,
+      region: regionReseller,
+      currency: currencyReseller,
+      file: fileReseller,
+      margin,
+      inline,
+    } = reseller
     const {
       lastOrder,
       amountOrders = []
@@ -486,6 +763,38 @@ class Options extends React.Component<Props> {
           />
         )
         break
+      case 3:
+        selectedScreen = (
+          <ResellerDetails
+            {...{
+              formatMessage,
+              loading,
+              history,
+              userId,
+              gst,
+              margin,
+              stateProvince,
+              businessName,
+              inline
+            }}
+            onChangePage={onChangePageReseller}
+            currentPage={pageReseller}
+            status={statusReseller}
+            comission={comissionReseller}
+            activatedAt={activatedReseller}
+            paypalAccount={paypalReseller}
+            region={regionReseller}
+            currency={currencyReseller}
+            file={fileReseller}
+            isAdmin={true}
+            changeGst={this.handleChangeGst}
+            changeComission={this.handleResellerComission}
+            changeMargin={this.handleResellerMargin}
+            changeInline={this.handleResellerInline}
+            enableReseller={this.enableReseller}
+          />
+        )
+        break
       default:
         break
     }
@@ -536,6 +845,14 @@ class Options extends React.Component<Props> {
               {...{ loading }}
               checked={affiliateEnabled}
               onChange={this.handleChangeEnabled}
+            />
+          </EnableSection>
+          <EnableSection>
+            {formatMessage(messages.showReseller)}
+            <StyledSwitch
+              {...{ loading }}
+              checked={resellerEnabled}
+              onChange={this.handleEnabledReseller}
             />
           </EnableSection>
           <StatsLabel>
@@ -591,6 +908,9 @@ class Options extends React.Component<Props> {
           </RadioButton>
           <RadioButton value={2}>
             {formatMessage(messages.affiliate)}
+          </RadioButton>
+          <RadioButton value={3}>
+            {formatMessage(messages.resellerOptions)}
           </RadioButton>
         </RadioGroup>
         {selectedScreen}
@@ -656,8 +976,14 @@ const OptionsEnhance = compose(
     name: 'profileData'
   }),
   graphql(changeComissionMutation, { name: 'changeComission' }),
+  graphql(changeResellerComissionMutation, { name: 'changeResellerComission' }),
+  graphql(changeResellerMarginMutation, { name: 'changeResellerMargin' }),
+  graphql(changeResellerInlineMutation, { name: 'changeResellerInline' }),
   graphql(changeAffiliateMutation, { name: 'changeAffiliateStatus' }),
   graphql(setAffiliateStatusMutation, { name: 'enableAffiliate' }),
+  graphql(setResellerEnabledMutation, { name: 'enableReseller' }),
+  graphql(changeGstMutation, { name: 'changeGst' }),
+  graphql(setResellerStatusMutation, { name: 'changeResellerStatus' }),
   graphql(changeNetsuiteInternal, { name: 'changeNetsuiteId' }),
   graphql(setTaxEnabledMutation, { name: 'setTaxExempt' }),
   graphql(setTaxItemMutation, { name: 'setTaxItem' }),

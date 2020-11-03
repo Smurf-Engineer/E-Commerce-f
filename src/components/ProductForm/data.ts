@@ -74,6 +74,8 @@ export const getProductQuery = gql`
         white
         black
       }
+      branding
+      predyedlabel
       bibBrace {
         white
         black
@@ -150,6 +152,7 @@ export const getProductQuery = gql`
       }
       retailMen: men_retail
       retailWomen: women_retail
+      twoPieces: two_pieces
     }
   }
 `

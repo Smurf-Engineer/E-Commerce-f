@@ -26,25 +26,19 @@ import {
 import Layout from '../../components/MainLayout'
 import config from '../../config/index'
 import { GetProductsToCompareQuery } from './data'
-import jerseysInfo from './jerseysInfo'
-import { QueryProps, ProductType, PriceRange } from '../../types/common'
+import { QueryProps, Product } from '../../types/common'
 
 interface Jersey {
   id: number
   name: string
 }
 
-interface ProductToCompareType extends ProductType {
-  priceRange: PriceRange[]
-  name: string
-}
 interface Data extends QueryProps {
-  product: ProductToCompareType[]
+  product: Product[]
 }
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
-  productsData: ProductToCompareType[]
   currentCurrency: string
 }
 
@@ -61,7 +55,7 @@ export class JerseyComparison extends React.Component<Props, {}> {
     const {
       intl,
       history,
-      data: { loading, error }
+      data: { loading, error, product = [] }
     } = this.props
     if (loading || error) {
       return null
@@ -75,66 +69,65 @@ export class JerseyComparison extends React.Component<Props, {}> {
       messages.priceTitle4,
       messages.priceTitle5
     ]
-
+    const jerseysInfo = loading || error ? [] : product
     const pricesTitles = pricesT.map((price, i) => (
       <InfoText key={i} centered={true}>
         {formatMessage(price)}
       </InfoText>
     ))
 
-    const mainJerseys = jerseysInfo.map(({ title, image, message }, i) => {
-      const msg = formatMessage(title)
-
+    const mainJerseys = jerseysInfo.map(({ name, images = [], description }, i) => {
+      const image = images[0] ? images[0].front : ''
       return (
         <Column key={i}>
-          <div onClick={this.handleOnClickJersey(msg)}>
-            <Title>{msg}</Title>
+          <div onClick={this.handleOnClickJersey(name)}>
+            <Title>{name}</Title>
             <StyledImage src={image} />
           </div>
-          <Text>{formatMessage(message)}</Text>
+          <Text>{description}</Text>
         </Column>
       )
     })
-    const detailsJerseys = jerseysInfo.map(({ details }, i) => (
+    const detailsJerseys = jerseysInfo.map(({ details = '' }, i) => (
       <Column key={i}>
-        {details.map((detail, index) => (
-          <InfoText key={index}>{formatMessage(detail)}</InfoText>
+        {(details.split(',')).map((detail: string, index: number) => (
+          <InfoText key={index}>• {detail}</InfoText>
         ))}
       </Column>
     ))
-    const useJerseys = jerseysInfo.map(({ intendedUse }, i) => (
+    const useJerseys = jerseysInfo.map(({ sports = [] }, i) => {
+      const intededUse = sports.map((item: any) => item.name).join(', ')
+      return ( 
+        <Column key={i}>
+          <Text>{intededUse}</Text>
+        </Column>
+      )
+    })
+    const weatherJerseys = jerseysInfo.map(({ season }, i) => (
       <Column key={i}>
-        <Text>{formatMessage(intendedUse)}</Text>
+        <Text>{season}</Text>
       </Column>
     ))
-    const weatherJerseys = jerseysInfo.map(({ weather }, i) => (
+    const fitJerseys = jerseysInfo.map(({ fitStyles }, i) => (
       <Column key={i}>
-        <Text>{formatMessage(weather)}</Text>
-      </Column>
-    ))
-    const fitJerseys = jerseysInfo.map(({ fits }, i) => (
-      <Column key={i}>
-        {fits.map((fit, index) => (
-          <InfoText key={index}>{formatMessage(fit)}</InfoText>
+        {fitStyles.map(({ name: fitName }, index) => (
+          <InfoText key={index}>• {fitName}</InfoText>
         ))}
       </Column>
     ))
-    const materialJerseys = jerseysInfo.map(({ materials }, i) => (
+    const materialJerseys = jerseysInfo.map(({ materials = '' }, i) => (
       <Column key={i}>
-        {materials.map((material, index) => (
-          <InfoText key={index}>{formatMessage(material)}</InfoText>
+        {(materials.split('-')).map((material: string, index: number) => (
+          <InfoText key={index}>• {material}</InfoText>
         ))}
       </Column>
     ))
 
-    const priceJerseys = jerseysInfo.map(({ title }, i) => {
-      const msg = formatMessage(title)
-
-      return (
+    const priceJerseys = jerseysInfo.map(({ name }, i) => 
         <PriceColumn key={i}>
           <PriceTitlesContainer>{pricesTitles}</PriceTitlesContainer>
           <div>
-            {this.getPricesArray(msg).map(
+            {this.getPricesArray(name).map(
               ({ shortName: symbol, price }, key: number) => (
                 <InfoText {...{ key }}>
                   {key < MAX_LIMIT_PRICES
@@ -146,12 +139,11 @@ export class JerseyComparison extends React.Component<Props, {}> {
           </div>
         </PriceColumn>
       )
-    })
 
     const headerSection = (
       <div>
         <Title>{formatMessage(messages.title)}</Title>
-        <HeaderText>{formatMessage(messages.headerMessage)}</HeaderText>
+        <HeaderText>{formatMessage(messages.headerMessage, { quantity: jerseysInfo.length })}</HeaderText>
       </div>
     )
 

@@ -142,6 +142,8 @@ export interface Product {
   pictures?: any[]
   mediaFiles?: object[]
   description: string
+  branding?: string
+  predyedlabel?: string
   hasPredyed?: boolean
   productMaterials?: object[]
   designCenter?: boolean
@@ -186,6 +188,7 @@ export interface Product {
   isCustom?: boolean
   colors?: ProductColors[]
   mpn?: string
+  twoPieces?: boolean
 }
 
 export type DesignType = {
@@ -220,6 +223,15 @@ export type DesignNote = {
   text: string
 }
 
+export type Reseller = {
+  status: string
+  paypalAccount: string
+  comission: number
+  inline: number
+  margin: number
+  activatedAt: string
+}
+
 export type AffiliateStatus = {
   enabled: boolean
 }
@@ -229,6 +241,29 @@ export type Affiliate = {
   paypalAccount: string
   comission: number
   activatedAt: string
+}
+
+export type ResellerPayment = {
+  id: number
+  userId: string
+  createdAt: string
+  status: string
+  amount: number
+  receipt: string
+  paypalAccount?: string
+  comission?: number
+  name?: string
+  store?: string
+  orderId?: string
+  customerId?: string
+  currency?: String
+  totalOrigin: number
+  netsuite?: NetsuiteObject
+  orderCurrency?: String
+  orderStatus?: string
+  customerName?: string
+  orderAmount: number
+  paidAt?: string
 }
 
 export type AffiliatePayment = {
@@ -331,6 +366,7 @@ export type LockerTableType = {
   totalOrders: number
   visible: boolean
   priceRange?: Currency[]
+  resellerRange?: Currency[]
 }
 
 export type ProductTableType = {
@@ -664,6 +700,8 @@ export type CartItemDetail = {
   label?: string
   quantity: number
   colorImage?: string
+  topSize?: ItemDetailType
+  bottomSize?: ItemDetailType
 }
 
 export interface AddressType {
@@ -1508,6 +1546,8 @@ export interface ProductInternal {
   productCode: string
   gender: string
   size: string
+  topSize?: string
+  bottomSize?: string
   fitStyle?: string
   color?: string
   predyedColor?: string
