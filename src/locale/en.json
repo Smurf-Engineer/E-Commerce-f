@@ -2063,6 +2063,8 @@
   "components.UsersAdmin.Options.savedInternal": "Saved Netsuite ID",
   "components.UsersAdmin.Options.cancel": "Cancel",
   "components.UsersAdmin.Options.affiliate": "Payday Options",
+  "components.UsersAdmin.Options.pstExempt": "PST Exempt",
+  "components.UsersAdmin.Options.taxItem": "Tax Item",
   "components.UsersAdmin.Options.resellerOptions": "Reseller Options",
   "components.ProAssistNotes.proAssistNotes": "PRO ASSIST NOTES",
   "components.ProAssistNotes.addNote": "Add a Note",

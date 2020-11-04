@@ -8,6 +8,7 @@ import Icon from 'antd/lib/icon'
 import message from 'antd/lib/message'
 import { withRouter } from 'react-router-dom'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
+import Select from 'antd/lib/select'
 import messages from './messages'
 import UserFiles from '../UserFiles'
 import Modal from '../../Common/JakrooModal'
@@ -30,7 +31,10 @@ import {
   StyledInput,
   ButtonWrapper,
   StyledButton,
-  WarningIcon
+  WarningIcon,
+  TaxesInput,
+  TaxesDiv,
+  CheckboxStyled
 } from './styledComponents'
 import MyLocker from '../../MyLocker'
 import {
@@ -50,6 +54,8 @@ import {
   changeAffiliateMutation,
   changeComissionMutation,
   setAffiliateStatusMutation,
+  setTaxEnabledMutation,
+  setTaxItemMutation,
   setResellerStatusMutation,
   changeResellerComissionMutation,
   setResellerEnabledMutation,
@@ -61,9 +67,13 @@ import {
 import ProassistNotes from '../../ProassistNotes'
 import moment from 'moment'
 import { formatAmount } from '../../../utils/utilsFunctions'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import ResellerDetails from '../../ResellerOptions/ResellerDetails'
 import { DATE_FORMAT, MESSAGE_TIME } from '../../../constants'
 
+const taxesOptions = ['-8', '115080', '115081', '115082']
+
+const { Option } = Select
 const RadioGroup = Radio.Group
 
 interface ProfileData extends QueryProps {
@@ -90,6 +100,8 @@ interface Props {
   netsuiteId: string
   openInternalModal: boolean
   enableAffiliate: (variables: {}) => Promise<AffiliateStatus>
+  setTaxExempt: (variables: {}) => Promise<ProfileData>
+  setTaxItem: (variables: {}) => Promise<ProfileData>
   changeNetsuiteId: (variables: {}) => Promise<ProfileData>
   onChangePage: (page: number) => void
   onChangePageReseller: (page: number) => void
@@ -397,6 +409,88 @@ class Options extends React.Component<Props> {
       setLoadingAction(false)
     }
   }
+  handleCheckChange = async (event: CheckboxChangeEvent) => {
+    const {
+      match,
+      setLoadingAction,
+      setTaxExempt
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const { target: { checked: enabled } } = event
+      const userId = get(match, 'params.id', '')
+      await setTaxExempt({
+        variables: {
+          enabled,
+          userId
+        },
+        update: (store: any, responseData: ProfileData) => {
+          const enabledResponse = get(responseData, 'data.userData.enabled', false)
+          const profileData = store.readQuery({
+            query: profileSettingsQuery,
+            variables: { id: userId },
+            fetchPolicy: 'network-only'
+          })
+          const userProfile = get(profileData, 'profileData.userProfile', {})
+          userProfile.taxExempt = enabledResponse
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData,
+            variables: { id: userId }
+          })
+        }
+      })
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, 5)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  changeTaxInput = (value: string) => {
+    const { profileData } = this.props
+    const taxItem = get(profileData, 'profileData.userProfile.taxItem', '')
+    if (value !== taxItem) {
+      this.changeTaxAction(value)
+    }
+  }
+  changeTaxAction = async (value: string) => {
+    const {
+      match,
+      setLoadingAction,
+      setTaxItem
+    } = this.props
+    try {
+      setLoadingAction(true)
+      const userId = get(match, 'params.id', '')
+      await setTaxItem({
+        variables: {
+          value,
+          userId
+        },
+        update: (store: any, responseData: ProfileData) => {
+          const enabledResponse = get(responseData, 'data.userData.taxItem', false)
+          const profileData = store.readQuery({
+            query: profileSettingsQuery,
+            variables: { id: userId },
+            fetchPolicy: 'network-only'
+          })
+          const userProfile = get(profileData, 'profileData.userProfile', {})
+          userProfile.taxItem = enabledResponse
+          store.writeQuery({
+            query: profileSettingsQuery,
+            data: profileData,
+            variables: { id: userId }
+          })
+        }
+      })
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, 5)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
   handleChangeEnabled = async (enabled: boolean) => {
     const {
       match,
@@ -578,7 +672,16 @@ class Options extends React.Component<Props> {
     const userId = get(match, 'params.id', '')
     const { userProfile = {}, affiliate = {}, stats = {}, reseller = {} } = get(profileData, 'profileData', {})
     const netsuiteTitle = formatMessage(messages.netsuiteInternal).toUpperCase()
-    const { id, firstName, lastName, affiliateEnabled, netsuiteInternal, resellerEnabled } = userProfile
+    const {
+      id,
+      firstName,
+      lastName,
+      affiliateEnabled,
+      netsuiteInternal,
+      taxExempt,
+      taxItem,
+      resellerEnabled
+    } = userProfile
     const {
       status,
       comission,
@@ -762,6 +865,35 @@ class Options extends React.Component<Props> {
             </StatsValue>
           </StatsLabel>
         </Stats>
+        <TaxesDiv>
+          <StatsLabel>
+            <StatsTitle>
+              {formatMessage(messages.pstExempt)}
+            </StatsTitle>
+            <CheckboxStyled
+              checked={taxExempt}
+              disabled={loading}
+              onChange={this.handleCheckChange}
+            />
+          </StatsLabel>
+          <StatsLabel>
+            <StatsTitle>
+              {formatMessage(messages.taxItem)}
+            </StatsTitle>
+            <TaxesInput
+              onChange={this.changeTaxInput}
+              loading={loading}
+              allowClear={true}
+              value={taxItem}
+            >
+              {taxesOptions.map((value: string, key: number) => (
+                <Option {...{ key, value }}>
+                  {value}
+                </Option>
+              ))}
+            </TaxesInput>
+          </StatsLabel>
+        </TaxesDiv>
         <RadioGroup
           onChange={this.handleSelectSection}
           value={optionSelected}
@@ -853,6 +985,8 @@ const OptionsEnhance = compose(
   graphql(changeGstMutation, { name: 'changeGst' }),
   graphql(setResellerStatusMutation, { name: 'changeResellerStatus' }),
   graphql(changeNetsuiteInternal, { name: 'changeNetsuiteId' }),
+  graphql(setTaxEnabledMutation, { name: 'setTaxExempt' }),
+  graphql(setTaxItemMutation, { name: 'setTaxItem' }),
   graphql(addNoteMutation, { name: 'addNoteAction' }),
   graphql<Data>(GetDesignNotes, {
     options: (ownprops: OwnProps) => {

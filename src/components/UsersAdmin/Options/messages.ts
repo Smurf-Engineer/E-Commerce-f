@@ -65,6 +65,14 @@ export default defineMessages({
     id: 'components.UsersAdmin.Options.totalSales',
     defaultMessage: 'Total Sales'
   },
+  pstExempt: {
+    id: 'components.UsersAdmin.Options.pstExempt',
+    defaultMessage: 'PST Exempt'
+  },
+  taxItem: {
+    id: 'components.UsersAdmin.Options.taxItem',
+    defaultMessage: 'Tax Item'
+  },
   resellerOptions: {
     id: 'components.UsersAdmin.Options.resellerOptions',
     defaultMessage: 'Reseller Options'
