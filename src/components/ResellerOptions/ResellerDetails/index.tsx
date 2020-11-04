@@ -21,19 +21,42 @@ import {
   PopoverText,
   PopoverStyled,
   MessageText,
-  MarginsContainer, SubtitleMargin, StyledInput
+  MarginsContainer, SubtitleMargin, StyledInput, BillingSelect, StateDiv
 } from './styledComponents'
-
 import PaymentsList from './PaymentsList'
 import { NOTE_FORMAT } from '../constants'
-import { PENDING, APPROVED, REJECTED, RETRY } from '../../../constants'
+import { PENDING, APPROVED, REJECTED, RETRY, PAUSED } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import Select from 'antd/lib/select'
 import { CA_CURRENCY, US_CURRENCY } from '../../ResellerAbout/constants'
 import { Message } from '../../../types/common'
+import RegionSelect from '../../RegionSelect'
 
+const { Option } = Select
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
+
+const countries = [
+  {
+    label: 'Canada',
+    value: 'cad'
+  },
+  {
+    label: 'USA',
+    value: 'usd'
+  }
+]
+
+const countryNames = {
+  [US_CURRENCY]: 'United States',
+  [CA_CURRENCY]: 'Canada'
+}
+
+const countryCodes = {
+  [US_CURRENCY]: '6252001',
+  [CA_CURRENCY]: '6251999'
+}
 
 interface Props {
   status: string
@@ -59,6 +82,9 @@ interface Props {
   changeMargin: (value: number) => void
   changeInline: (value: number) => void
   changeGst: (value: string) => void
+  changeBusiness: (value: string) => void
+  changeCurrency: (value: string) => void
+  changeRegion: (value: string) => void
   onChangePage: (page: number) => void
   enableReseller: (status: string) => void
   enableAffiliate: (status: string) => void
@@ -70,9 +96,28 @@ class ResellerDetails extends React.Component<Props, {}> {
   debounceMargin = debounce((value) => this.handleChangeMargin(value), 800)
   debounceInline = debounce((value) => this.handleChangeInline(value), 800)
   debounceGst = debounce((value) => this.props.changeGst(value), 800)
+  debounceBusiness = debounce((value) => this.props.changeBusiness(value), 800)
   enableStatus = () => {
-    const { enableReseller } = this.props
-    enableReseller(APPROVED)
+    const { enableReseller, status } = this.props
+    enableReseller(status === APPROVED ? PAUSED : APPROVED)
+  }
+  handleChangeCurrency = (value: string) => {
+    if (value) {
+      const { changeCurrency } = this.props
+      changeCurrency(value)
+    }
+  }
+  handleRegionChange = (value: any) => {
+    if (value) {
+      const { changeRegion } = this.props
+      changeRegion(value)
+    }
+  }
+  handleChangeBusiness = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.debounceBusiness(value || '')
   }
   rejectStatus = () => {
     const { enableReseller } = this.props
@@ -131,7 +176,7 @@ class ResellerDetails extends React.Component<Props, {}> {
       region,
       currency
     } = this.props
-    const hasChanged = status !== PENDING || !status
+    const hasChanged = status === REJECTED || status === RETRY 
     const isActive = status === APPROVED
     const fileName = file ? getFileWithExtension(file) : ''
     return (
@@ -188,7 +233,7 @@ class ResellerDetails extends React.Component<Props, {}> {
                 }
               </LabelButton>
             }
-            {(isAdmin && currency === US_CURRENCY) &&
+            {(isAdmin && currency === US_CURRENCY) && !!fileName &&
               <LabelButton>
                 <Title>
                   {formatMessage(messages.taxForm)}
@@ -249,25 +294,57 @@ class ResellerDetails extends React.Component<Props, {}> {
                   </PopoverStyled>
                 }
               </Title>
-              <BoldLabel upperCase={true}>
-                {currency}
-              </BoldLabel>
+              {isAdmin && !!status ?
+                <BillingSelect
+                  value={currency}
+                  onChange={this.handleChangeCurrency}
+                >
+                  {countries.map(({ label, value }, index: Number) =>
+                    <Option key={index} {...{ value }}>
+                      {label}
+                    </Option>
+                  )}
+                </BillingSelect> :
+                <BoldLabel upperCase={true}>
+                  {currency}
+                </BoldLabel>
+              }
             </LabelButton>
             <LabelButton>
               <Title>
                 {formatMessage(messages.stateProvince)}
               </Title>
-              <BoldLabel upperCase={true}>
-                {stateProvince}
-              </BoldLabel>
+              {isAdmin && !!status ?
+                <StateDiv>
+                  <RegionSelect
+                    {...{ formatMessage }}
+                    disabled={!currency}
+                    reseller={true}
+                    country={currency ? countryCodes[currency] : ''}
+                    countryName={currency ? countryNames[currency] : ''}
+                    region={stateProvince || undefined}
+                    handleRegionChange={this.handleRegionChange}
+                  />
+                </StateDiv>
+                 : 
+                <BoldLabel upperCase={true}>
+                  {stateProvince}
+                </BoldLabel>
+              }
             </LabelButton>
             <LabelButton>
               <Title>
                 {formatMessage(messages.businessName)}
               </Title>
-              <BoldLabel upperCase={true}>
-                {businessName}
-              </BoldLabel>
+              {isAdmin && !!status ?
+                <StyledInput
+                  onChange={this.handleChangeBusiness}
+                  defaultValue={businessName}
+                /> :
+                <BoldLabel upperCase={true}>
+                  {businessName}
+                </BoldLabel>
+              }
             </LabelButton>
             <LabelButton>
               <Title>

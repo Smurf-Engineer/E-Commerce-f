@@ -23,7 +23,7 @@ export default defineMessages({
   },
   affiliate: {
     id: 'components.UsersAdmin.Options.affiliate',
-    defaultMessage: 'Payday Options'
+    defaultMessage: 'Payday Settings'
   },
   saved: {
     id: 'components.UsersAdmin.Options.saved',
@@ -75,6 +75,6 @@ export default defineMessages({
   },
   resellerOptions: {
     id: 'components.UsersAdmin.Options.resellerOptions',
-    defaultMessage: 'Reseller Options'
+    defaultMessage: 'Reseller Settings'
   }
 })

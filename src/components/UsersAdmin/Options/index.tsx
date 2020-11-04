@@ -62,7 +62,10 @@ import {
   changeResellerMarginMutation,
   changeResellerInlineMutation,
   changeGstMutation,
-  changeNetsuiteInternal
+  changeNetsuiteInternal,
+  changeCurrencyMutation,
+  changeRegionMutation,
+  changeBusinessMutation
 } from '../data'
 import ProassistNotes from '../../ProassistNotes'
 import moment from 'moment'
@@ -105,9 +108,12 @@ interface Props {
   changeNetsuiteId: (variables: {}) => Promise<ProfileData>
   onChangePage: (page: number) => void
   onChangePageReseller: (page: number) => void
+  changeRegionReseller: (variables: {}) => Promise<Reseller>
   onCloseInternal: () => void
+  changeCurrencyReseller: (variables: {}) => Promise<Reseller>
   openInternal: (id: string) => void
   handleOnInternalChange: (value: string) => void
+  changeBusinessReseller: (variables: {}) => Promise<Reseller>
   setLoadingAction: (loading: boolean) => void
   changeComission: (variables: {}) => Promise<Affiliate>
   changeAffiliateStatus: (variables: {}) => Promise<Affiliate>
@@ -171,6 +177,126 @@ class Options extends React.Component<Props> {
       message.error(e.message)
     }
   }
+  handleChangeCurrency = async (currency: string) => {
+    const {
+      formatMessage,
+      changeCurrencyReseller,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeCurrencyReseller({
+          variables: {
+            currency,
+            userId
+          },
+          update: (store: any, responseData: Reseller) => {
+            const { currency: currencyResponse } = get(responseData, 'data.changeCurrencyReseller', {})
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.currency = currencyResponse
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleChangeBusiness = async (business: string) => {
+    const {
+      formatMessage,
+      changeBusinessReseller,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeBusinessReseller({
+          variables: {
+            business,
+            userId
+          },
+          update: (store: any, responseData: Reseller) => {
+            const { businessName } = get(responseData, 'data.changeBusinessReseller', {})
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.businessName = businessName
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
+  handleChangeRegion = async (region: string) => {
+    const {
+      formatMessage,
+      changeRegionReseller,
+      setLoadingAction,
+      match,
+    } = this.props
+    try {
+      const userId = get(match, 'params.id', '')
+      if (userId) {
+        setLoadingAction(true)
+        await changeRegionReseller({
+          variables: {
+            region,
+            userId
+          },
+          update: (store: any, responseData: Reseller) => {
+            const { stateProvince } = get(responseData, 'data.changeRegionReseller', {})
+            const profileData = store.readQuery({
+              query: profileSettingsQuery,
+              variables: {
+                id: userId
+              }
+            })
+            const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.stateProvince = stateProvince
+            store.writeQuery({
+              query: profileSettingsQuery,
+              data: profileData
+            })
+          }
+        })
+        message.success(formatMessage(messages.saved))
+      }
+    } catch (e) {
+      message.error(e.message)
+    } finally {
+      setLoadingAction(false)
+    }
+  }
   enableReseller = async (status: string) => {
     const {
       formatMessage,
@@ -196,8 +322,11 @@ class Options extends React.Component<Props> {
               }
             })
             const resellerData = get(profileData, 'profileData.reseller', {})
+            resellerData.comission = 0
             resellerData.status = status
+            resellerData.margin = 0
             resellerData.activatedAt = activatedAt
+            resellerData.inline = 0
             store.writeQuery({
               query: profileSettingsQuery,
               data: profileData
@@ -787,6 +916,9 @@ class Options extends React.Component<Props> {
             currency={currencyReseller}
             file={fileReseller}
             isAdmin={true}
+            changeBusiness={this.handleChangeBusiness}
+            changeRegion={this.handleChangeRegion}
+            changeCurrency={this.handleChangeCurrency}
             changeGst={this.handleChangeGst}
             changeComission={this.handleResellerComission}
             changeMargin={this.handleResellerMargin}
@@ -976,6 +1108,9 @@ const OptionsEnhance = compose(
     name: 'profileData'
   }),
   graphql(changeComissionMutation, { name: 'changeComission' }),
+  graphql(changeCurrencyMutation, { name: 'changeCurrencyReseller' }),
+  graphql(changeRegionMutation, { name: 'changeRegionReseller' }),
+  graphql(changeBusinessMutation, { name: 'changeBusinessReseller' }),
   graphql(changeResellerComissionMutation, { name: 'changeResellerComission' }),
   graphql(changeResellerMarginMutation, { name: 'changeResellerMargin' }),
   graphql(changeResellerInlineMutation, { name: 'changeResellerInline' }),
