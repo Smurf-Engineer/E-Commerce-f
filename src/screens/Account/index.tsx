@@ -278,11 +278,11 @@ export class Account extends React.Component<Props, {}> {
       case ORDER_HISTORY:
         return !pendingReseller && <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:
-        return !pendingReseller && <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
+        return <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
       case CREDIT_CARDS:
-        return !pendingReseller && <MyCards listForMyAccount={true} {...{ formatMessage }} />
+        return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
-        return !pendingReseller && <ProfileSettings {...{ isMobile, history, formatMessage }} />
+        return <ProfileSettings {...{ isMobile, history, formatMessage }} />
       case TEAMSTORES:
       case MY_STORES:
         return !pendingReseller && <MyTeamStores {...{ history, formatMessage, isReseller }} />

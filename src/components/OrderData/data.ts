@@ -84,6 +84,7 @@ export const getOrderQuery = gql`
         designImage
         designCode
         unitPrice
+        isReseller
         teamStoreName
         productTotal
         teamStoreId

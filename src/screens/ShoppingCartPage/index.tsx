@@ -69,6 +69,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   isFixed?: boolean
+  isReseller?: boolean
   teamStoreId?: string
   fixedPrices: PriceRange[]
 }
@@ -427,6 +428,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     let symbol = '$'
 
     const cartItems = cart || []
+    const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     let activeCheckout = true
     const renderList = cartItems.map((cartItem, index) => {
       if (!this.isAllSetInProduct(cartItem)) {
@@ -528,7 +530,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                     subtotal={total}
                     currencySymbol={symbol}
                     youSaved={totalWithoutDiscount - total}
-                    {...{ formatMessage, totalWithoutDiscount }}
+                    {...{ formatMessage, totalWithoutDiscount, showDiscount }}
                   />
                   <ButtonWrapper disabled={!activeCheckout}>
                     <CheckoutButton

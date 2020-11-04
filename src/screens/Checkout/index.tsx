@@ -354,7 +354,7 @@ class Checkout extends React.Component<Props, {}> {
     const { cart } = stateLocation
     const reorder = some(cart, 'fixedCart')
     const isFixedTeamstore = some(cart, 'isFixed')
-
+    const showDiscount = some(cart, ['isReseller', false])
     const preorder = isFixedTeamstore && !reorder
 
     const shoppingCart = cloneDeep(cart) as CartItems[]
@@ -524,6 +524,7 @@ class Checkout extends React.Component<Props, {}> {
                 {...{
                   showOrderButton,
                   couponCode,
+                  showDiscount,
                   setCouponCodeAction,
                   deleteCouponCodeAction,
                   proDesignReview,

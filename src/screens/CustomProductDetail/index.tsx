@@ -83,6 +83,7 @@ import { APPROVED } from '../../constants'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
+const purchaseLabels = ['regularPrice', 'listPrice']
 const resellerLabels = ['purchasePrice', 'listPrice']
 const { Men, Women, Unisex } = ProductGenders
 
@@ -264,7 +265,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       filter(priceRange, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
-    const priceLabels = isReseller && ownedDesign ? resellerLabels : teamStoreLabels
+    let priceLabels = teamStoreLabels
+    if (isReseller) {
+      priceLabels = ownedDesign ? resellerLabels : purchaseLabels
+    }
     const symbol = currencyPrices.length ? currencyPrices[0].shortName : ''
     const renderPrices =
       currencyPrices &&
@@ -468,6 +472,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             withoutTop={true}
             isFixed={teamStoreItem && !teamOnDemand}
             teamStoreId={teamStoreShortId}
+            isReseller={isReseller && !ownedDesign}
             fixedPrices={isReseller && ownedDesign ? [] : teamPrice}
             {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
             teamStoreName={teamName}

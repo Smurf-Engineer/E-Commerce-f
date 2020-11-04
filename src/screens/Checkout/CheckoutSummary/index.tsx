@@ -55,6 +55,7 @@ interface Props {
   showCouponInput?: boolean
   paymentMethod: string
   currentCurrency: string
+  showDiscount?: boolean
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
   productsPrices: ProductPrice[]
@@ -75,6 +76,7 @@ const CheckoutSummary = ({
   formatMessage,
   proDesignReview,
   currencySymbol,
+  showDiscount,
   couponCode,
   totalWithoutDiscount = 0,
   setCouponCodeAction,
@@ -201,6 +203,7 @@ const CheckoutSummary = ({
           formatMessage,
           proDesignReview,
           currencySymbol,
+          showDiscount,
           couponCode,
           totalWithoutDiscount,
           setCouponCodeAction,

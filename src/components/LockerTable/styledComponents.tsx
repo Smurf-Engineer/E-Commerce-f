@@ -93,8 +93,9 @@ interface TitleProps {
 }
 
 export const Title = styled.div`
-  width: 58px;
-  color: #5f6062;
+  max-width: 58px;
+  width: 100%;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -103,7 +104,7 @@ export const Title = styled.div`
 `
 
 export const Price = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 43px;
@@ -154,23 +155,27 @@ export const Center = styled.div`
 `
 
 export const Name = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
   margin-right: 20px;
+  overflow-wrap: anywhere;
+  @media (max-width: 480px) {
+    margin-right: 4px;
+  }
 `
 
 export const Description = styled.div`
-  color: #5f6062;
-  width: 40%;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
-  margin: 0 auto;
+  margin: 0 12px;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
+    margin: 0;
   }
 `
 export const MobileEmtpytable = styled.div`
