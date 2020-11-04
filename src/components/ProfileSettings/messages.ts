@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'components.ProfileSettings.passwordSuccessMessage',
     defaultMessage: 'New password saved'
   },
+  pendingStatus: {
+    id: 'components.ProfileSettings.pendingStatus',
+    defaultMessage: `Once you apply for Reseller Program and it's approved, your account settings will show here.`
+  },
   languageTitle: {
     id: 'components.ProfileSettings.languageTitle',
     defaultMessage: 'Language and Currency Settings'

@@ -29,6 +29,11 @@ export const Container = styled.div`
   }
 `
 
+export const StatusMessage = styled.div`
+  font-style: italic;
+  color: ${BLUE};
+`
+
 export const ResellerDetails = styled.div`
   display: flex;
   align-items: center;

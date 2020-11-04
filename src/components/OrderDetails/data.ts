@@ -137,6 +137,7 @@ export const getOrderQuery = gql`
         designCode
         teamStoreId
         teamStoreItem
+        isReseller
         teamStoreName
       }
       status
