@@ -109,6 +109,12 @@ const headerTitles: Header[] = [
   { message: 'visible', width: 40 }
 ]
 
+const resellerMobileTitles: Header[] = [
+  { message: 'teamPrice', width: 30 },
+  { message: 'purchasePrice', width: 30 },
+  { message: 'visible', width: 40 }
+]
+
 class ProductRow extends React.PureComponent<Props, {}> {
   onSetPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -162,8 +168,8 @@ class ProductRow extends React.PureComponent<Props, {}> {
       const checked = e.target.checked
       onPressVisible(index, checked)
     }
-
-    const mobileTitles = headerTitles.map(({ width = 100, message }, key) => (
+    const titles = isReseller ? resellerMobileTitles : headerTitles
+    const mobileTitles = titles.map(({ width = 100, message }, key) => (
       <Cell {...{ key, width }}>
         <Title>{message ? formatMessage(messages[message]) : ''}</Title>
       </Cell>
@@ -171,17 +177,18 @@ class ProductRow extends React.PureComponent<Props, {}> {
     const purchasePrice = (fixedPrice * (1 - (resellerComission / 100))).toFixed(2)
     const profit = ((resellerPrice || fixedPrice) - Number(purchasePrice)).toFixed(2)
     const badInput = resellerPrice < fixedPrice
+    const gainMargin = (Number(profit) * 100 / Number(purchasePrice)).toFixed(2)
     const renderView = (
       <>
         <MobileLocker>
           <Row>
-            <Cell width={45}>
+            <Cell width={40}>
               <Thumbnail
                 {...{ image, hideQuickView }}
                 onPressQuickView={handleOnClickView}
               />
             </Cell>
-            <Cell width={45}>
+            <Cell width={60}>
               <Name>{name}</Name>
               <Description>{description}</Description>
             </Cell>
@@ -189,16 +196,11 @@ class ProductRow extends React.PureComponent<Props, {}> {
           <Row>{mobileTitles}</Row>
           <Row noBorder={true} rowPadding={'0'}>
             <Cell width={33}>
-              <Price>{`$${regularPrice}`}</Price>
+              <Price>{`$${isReseller ? fixedPrice : regularPrice}`}</Price>
             </Cell>
             <Cell width={40}>
-              <Price>{`$${fixedPrice}`}</Price>
+              <Price>{`$${isReseller ? purchasePrice : fixedPrice}`}</Price>
             </Cell>
-            {isReseller &&
-              <Cell width={40}>
-                <Price>{`$${fixedPrice}`}</Price>
-              </Cell>
-            }
             <Cell width={40}>
               <Checkbox checked={visible} onChange={handleOnClickVisible} />
             </Cell>
@@ -217,7 +219,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 <MoreIcon type="ellipsis" />
               </DragCell>
             </Cell>
-            <Cell width={10} tabletWidth={10}>
+            <Cell width={20} tabletWidth={20}>
               <Thumbnail
                 {...{ image, hideQuickView }}
                 onPressQuickView={handleOnClickView}
@@ -255,12 +257,17 @@ class ProductRow extends React.PureComponent<Props, {}> {
             <Cell width={10} tabletWidth={10}>
               <Price>{isReseller ? `$${profit}` : totalOrders}</Price>
             </Cell>
+            {isReseller &&
+              <Cell width={10} tabletWidth={10}>
+                <Price>{gainMargin}%</Price>
+              </Cell>
+            }
             <Cell width={10} tabletWidth={10}>
               <Center>
                 <Checkbox checked={visible} onChange={handleOnClickVisible} />
               </Center>
             </Cell>
-            <Cell width={14} tabletWidth={15}>
+            <Cell width={15} tabletWidth={10}>
               <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
             </Cell>
           </Row>

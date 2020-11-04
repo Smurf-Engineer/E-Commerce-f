@@ -5,20 +5,26 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
+import Modal from 'antd/lib/modal'
 import Message from 'antd/lib/message'
-
 import {
   Container,
   StyledButton,
   ButtonContainer,
   CustomizeButton,
   ButtonWrapper,
-  ReorderButton
+  ReorderButton,
+  ModalTitle,
+  InfoBody,
+  buttonStyle,
+  cancelButtonStyle
 } from './styledComponents'
 import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
-import { Product, CartItemDetail, PriceRange } from '../../types/common'
+import { Product, CartItemDetail, PriceRange, User } from '../../types/common'
 import find from 'lodash/find'
+
+const { confirm } = Modal
 
 interface CartItems {
   product: Product
@@ -49,6 +55,8 @@ interface Props {
   teamStoreItem?: string
   withoutTop?: boolean
   itemProdPage?: boolean
+  promptReseller?: boolean
+  user?: User
   onClick: () => boolean
   myLockerList?: boolean
   orderDetails?: boolean
@@ -75,23 +83,50 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     } = this.props
     const renderView = renderForThumbnail ? (
       <ButtonContainer {...{ myLockerList }} withoutTop={!!withoutTop}>
-        <CustomizeButton onClick={this.addToCart}>{label}</CustomizeButton>
+        <CustomizeButton onClick={this.checkReseller}>{label}</CustomizeButton>
       </ButtonContainer>
     ) : (
         <Container>
           {orderDetails ? (
             <ButtonWrapper individual={!!item} {...{ hide }}>
-              <ReorderButton type="primary" onClick={this.addToCart}>
+              <ReorderButton type="primary" onClick={this.checkReseller}>
                 {label}
               </ReorderButton>
             </ButtonWrapper>
           ) : (
-              <StyledButton onClick={this.addToCart}>{label}</StyledButton>
+              <StyledButton onClick={this.checkReseller}>{label}</StyledButton>
             )}
         </Container>
       )
 
     return renderView
+  }
+
+  checkReseller = () => {
+    const { promptReseller, formatMessage, user } = this.props
+    if (promptReseller) {
+      const name = user ? user.name : ''
+      confirm({
+        title: <ModalTitle>{formatMessage(messages.name, { name })}</ModalTitle>,
+        icon: ' ',
+        centered: true,
+        cancelText: formatMessage(messages.goToLocker),
+        okText: formatMessage(messages.proceed),
+        cancelButtonProps: {
+          style: buttonStyle
+        },
+        okButtonProps: {
+          style: cancelButtonStyle
+        },
+        onCancel: () => {
+          window.location.replace('/account?option=myLocker')
+        },
+        onOk: this.addToCart,
+        content: <InfoBody>{formatMessage(messages.resellerPrompt)}</InfoBody>
+      })
+    } else {
+      this.addToCart()
+    }
   }
 
   addToCart = () => {
@@ -286,9 +321,16 @@ export class AddToCartButton extends PureComponent<Props, {}> {
   }
 }
 
+const mapStateToProps = (state: any) => {
+  const app = state.get('app').toJS()
+  return {
+    ...app,
+  }
+}
+
 const AddToCartEnhanced = compose(
   connect(
-    null,
+    mapStateToProps,
     { getTotalItemsIncart },
     null,
     { withRef: true }
