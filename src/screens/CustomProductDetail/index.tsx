@@ -470,6 +470,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             item={itemToAdd}
             itemProdPage={true}
             withoutTop={true}
+            promptReseller={isReseller && ownedDesign}
             isFixed={teamStoreItem && !teamOnDemand}
             teamStoreId={teamStoreShortId}
             isReseller={isReseller && !ownedDesign}
