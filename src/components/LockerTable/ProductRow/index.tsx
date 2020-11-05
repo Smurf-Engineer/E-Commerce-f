@@ -177,7 +177,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
     const purchasePrice = (fixedPrice * (1 - (resellerComission / 100))).toFixed(2)
     const profit = ((resellerPrice || fixedPrice) - Number(purchasePrice)).toFixed(2)
     const badInput = resellerPrice < fixedPrice
-    const gainMargin = (Number(profit) * 100 / Number(purchasePrice)).toFixed(2)
+    const gainMargin = (Number(profit) * 100 / Number(resellerPrice || fixedPrice)).toFixed(2)
     const renderView = (
       <>
         <MobileLocker>
