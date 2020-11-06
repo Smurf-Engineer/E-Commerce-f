@@ -20,6 +20,9 @@ import {
   InfoIcon,
   PopoverText,
   MessageText,
+  PaypalLogo,
+  WarningLabel,
+  WarningIcon,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -27,6 +30,7 @@ import { PENDING, APPROVED, REJECTED, RETRY, DATE_FORMAT, PAUSED } from '../../.
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import paypalLogo from '../../../assets/paypal_logo.png'
 import Popover from 'antd/lib/popover'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
@@ -208,6 +212,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
               </BoldLabel>
             </LabelButton>
             {isActive && <LabelButton>
+              {!isAdmin && <PaypalLogo src={paypalLogo} />}
               <Title>
                 {formatMessage(messages.paypalAccount)}
                 {!isAdmin &&
@@ -217,7 +222,13 @@ class AffiliateOptions extends React.Component<Props, {}> {
                 }
               </Title>
               <BoldLabel>
-                {paypalAccount}
+                {paypalAccount ||
+                  !isAdmin && 
+                    <WarningLabel>
+                      <WarningIcon theme="filled" type="warning" />
+                      {formatMessage(messages.warningPaypal)}
+                    </WarningLabel>
+                }
               </BoldLabel>
             </LabelButton>
             }

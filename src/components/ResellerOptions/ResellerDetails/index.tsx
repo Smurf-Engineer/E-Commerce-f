@@ -21,12 +21,13 @@ import {
   PopoverText,
   PopoverStyled,
   MessageText,
-  MarginsContainer, SubtitleMargin, StyledInput, BillingSelect, StateDiv
+  MarginsContainer, SubtitleMargin, StyledInput, BillingSelect, StateDiv, PaypalLogo, WarningLabel, WarningIcon
 } from './styledComponents'
 import PaymentsList from './PaymentsList'
 import { NOTE_FORMAT } from '../constants'
 import { PENDING, APPROVED, REJECTED, RETRY, PAUSED } from '../../../constants'
 import moment from 'moment'
+import paypalLogo from '../../../assets/paypal_logo.png'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
 import Select from 'antd/lib/select'
@@ -355,6 +356,7 @@ class ResellerDetails extends React.Component<Props, {}> {
               </BoldLabel>
             </LabelButton>
             {isActive && <LabelButton>
+              {!isAdmin && <PaypalLogo src={paypalLogo} />}
               <Title>
                 {formatMessage(messages.paypalAccount)}
                 {!isAdmin &&
@@ -364,7 +366,13 @@ class ResellerDetails extends React.Component<Props, {}> {
                 }
               </Title>
               <BoldLabel>
-                {paypalAccount}
+                {paypalAccount ||
+                  !isAdmin && 
+                    <WarningLabel>
+                      <WarningIcon theme="filled" type="warning" />
+                      {formatMessage(messages.warningPaypal)}
+                    </WarningLabel>
+                }
               </BoldLabel>
             </LabelButton>
             }

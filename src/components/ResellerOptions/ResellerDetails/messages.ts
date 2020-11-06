@@ -86,6 +86,10 @@ export default defineMessages({
     id: 'components.ResellerDetails.customMargin',
     defaultMessage: 'Custom Prod. Margin'
   },
+  warningPaypal: {
+    id: 'components.ResellerDetails.warningPaypal',
+    defaultMessage: 'You need to connect a PayPal account in order to receive Payouts'
+  },
   inlineMargin: {
     id: 'components.ResellerDetails.inlineMargin',
     defaultMessage: 'Inline Prod. Margin'
