@@ -351,7 +351,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     )
     const activeEl = this.getActiveElement()
     const layers = this.getLayers()
-    console.log('layers:', layers)
+
     return (
       <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
