@@ -351,6 +351,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     )
     const activeEl = this.getActiveElement()
     const layers = this.getLayers()
+    console.log('layers:', layers)
     return (
       <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
@@ -637,7 +638,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
 
   handleOnApplyImage = (file: ImageFile) => {
     const { onSelectedItem } = this.props
-
     if (
       file.type === SVG_FILE ||
       file.type === PDF_FILE ||
@@ -645,10 +645,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     ) {
       this.render3D.applyCanvasEl({
         file,
-        type: CanvasElements.Group
+        type: CanvasElements.Group,
+        isImage: true
       })
     } else {
-      this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
+      this.render3D.applyCanvasEl({ file, type: CanvasElements.Image, isImage: true })
     }
     onSelectedItem({ id: file.id, type: CanvasElements.Image })
   }
