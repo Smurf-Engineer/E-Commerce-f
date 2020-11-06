@@ -35,6 +35,8 @@ import Popover from 'antd/lib/popover'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
 
+const MAX_COMISSION = 15
+
 interface Props {
   status: string
   loading: boolean
@@ -78,9 +80,11 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const { openAffiliate } = this.props
     openAffiliate(true)
   }
-  handleChangeComission = (value: number | undefined) => {
-    const { changeComission } = this.props
-    changeComission(value || 0)
+  handleChangeComission = (value = 0) => {
+    const { changeComission, comission } = this.props
+    if (value <= MAX_COMISSION && value > 0 && comission !== value) {
+      changeComission(value)
+    }
   }
   render() {
     const {
@@ -179,7 +183,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
                   onChange={this.debounceComission}
                   value={comission}
                   min={0}
-                  max={100}
+                  max={MAX_COMISSION}
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />

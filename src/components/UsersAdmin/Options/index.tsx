@@ -314,7 +314,7 @@ class Options extends React.Component<Props> {
             userId
           },
           update: (store: any, responseData: Reseller) => {
-            const { activatedAt } = get(responseData, 'data.changeResellerStatus', {})
+            const { activatedAt, comission, margin, inline } = get(responseData, 'data.changeResellerStatus', {})
             const profileData = store.readQuery({
               query: profileSettingsQuery,
               variables: {
@@ -322,11 +322,11 @@ class Options extends React.Component<Props> {
               }
             })
             const resellerData = get(profileData, 'profileData.reseller', {})
-            resellerData.comission = 0
+            resellerData.comission = comission
             resellerData.status = status
-            resellerData.margin = 0
+            resellerData.margin = margin
             resellerData.activatedAt = activatedAt
-            resellerData.inline = 0
+            resellerData.inline = inline
             store.writeQuery({
               query: profileSettingsQuery,
               data: profileData
@@ -514,7 +514,7 @@ class Options extends React.Component<Props> {
             userId
           },
           update: (store: any, responseData: Affiliate) => {
-            const { activatedAt } = get(responseData, 'data.changeAffiliateStatus', {})
+            const { activatedAt, comission } = get(responseData, 'data.changeAffiliateStatus', {})
             const profileData = store.readQuery({
               query: profileSettingsQuery,
               variables: {
@@ -523,6 +523,7 @@ class Options extends React.Component<Props> {
             })
             const affiliateData = get(profileData, 'profileData.affiliate', {})
             affiliateData.status = status
+            affiliateData.comission = comission
             affiliateData.activatedAt = activatedAt
             store.writeQuery({
               query: profileSettingsQuery,
