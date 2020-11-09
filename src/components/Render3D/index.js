@@ -53,9 +53,11 @@ import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
+import { getFileExtension } from '../../utils/utilsFiles'
 import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
 import JakrooLogoWhite from '../../assets/jakroo_logo_white.svg'
 import '../../screens/App/theme.ant'
+import { PNG_EXTENSION } from '../DesignSearch/constants'
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -252,12 +254,19 @@ class Render3D extends PureComponent {
 
         if (proDesign || (outputSvg && fromImage) || asImage) {
           if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
-            const imageCanvas = document.createElement('canvas')
-            canvg(
-              imageCanvas,
-              `${actualImage || outputSvg}${this.getCacheQuery()}`
-            )
-            loadedTextures.texture = new THREE.Texture(imageCanvas)
+            const imageExtension = getFileExtension(actualImage)
+            if (imageExtension === PNG_EXTENSION) {
+              loadedTextures.texture = textureLoader.load(
+                `${actualImage}${this.getCacheQuery()}`
+              )
+            } else {
+              const imageCanvas = document.createElement('canvas')
+              canvg(
+                imageCanvas,
+                `${actualImage || outputSvg}${this.getCacheQuery()}`
+              )
+              loadedTextures.texture = new THREE.Texture(imageCanvas)
+            }
           } else if (!outputPng && outputSvg) {
             const imageCanvas = document.createElement('canvas')
             canvg(

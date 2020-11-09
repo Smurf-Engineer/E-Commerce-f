@@ -2,6 +2,7 @@ import { UserType } from '../../types/common'
 import config from '../../config'
 import message from 'antd/lib/message'
 import { uploadFileSuccessAction, setUploadingAction } from './actions'
+import { getFileExtension } from '../../utils/utilsFiles'
 
 export const downloadFile = async (user: UserType, code: string) => {
   try {
@@ -31,7 +32,9 @@ export const uploadProDesign = (file: any, code: string) => {
       dispatch(setUploadingAction(true))
       const user = JSON.parse(localStorage.getItem('user') || '')
       const formData = new FormData()
-      formData.append('file', file, `${code}-output.svg`)
+      const { name } = file
+      const extension = getFileExtension(name)
+      formData.append('file', file, `${code}-output${extension || '.svg'}`)
       const response = await fetch(
         `${config.graphqlUriBase}upload/pro-design/file/${code}`,
         {
