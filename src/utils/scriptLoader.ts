@@ -2,8 +2,6 @@ type ScriptObjType = {
   url: string
   scriptId: string
   attr?: any
-  isAsync: boolean
-  publicKey: any
   callback?: () => {}
 }
 export const LoadScripts = async (scriptObjects: ScriptObjType[], cb?: any) => {

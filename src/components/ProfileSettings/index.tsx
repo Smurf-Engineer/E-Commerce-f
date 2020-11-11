@@ -247,8 +247,6 @@ class ProfileSettings extends React.Component<Props, {}> {
               isMobile
             }}
           />
-          <div class="saia-widget-container"><p>Hello</p></div>
-          <p>ye</p>
         </SectionContainer>
         {!!status && 
           <>
