@@ -117,7 +117,7 @@ pipelines:
             - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:latest
             # Deploy the image
             - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT --record --namespace=production
-    release/*:
+    staging:
       - step:
           name: Test
           script:
@@ -126,7 +126,7 @@ pipelines:
             - yarn lint
             - yarn test
       - step:
-          name: Deploy to release
+          name: Deploy to staging
           trigger: manual
           deployment: Staging
           script:
@@ -149,7 +149,7 @@ pipelines:
             - gcloud docker -- push $DOCKER_IMAGE
             - gcloud container builds submit devops/ --config=cloudbuild.yaml --substitutions=_RELEASE_NAME=$DEPLOY_NAME,_COMPUTE_ZONE=$GCP_ZONE,_CONTAINER_CLUSTER=$GCP_CLUSTER
   pull-requests:
-    '**':
+    "**":
       - step:
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
