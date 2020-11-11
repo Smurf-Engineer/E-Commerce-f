@@ -260,8 +260,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     this.setState({ visible: true })
   }
   requestClose = () => {
-    const { history } = this.props
-    history.push('/')
+    this.setState({ visible: false })
   }
   beforeUpload = (file: any) => {
     const { intl: { formatMessage } } = this.props
