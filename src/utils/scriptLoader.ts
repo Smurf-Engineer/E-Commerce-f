@@ -8,11 +8,10 @@ type ScriptObjType = {
 }
 export const LoadScripts = async (scriptObjects: ScriptObjType[], cb?: any) => {
   let counter = 0
-  scriptObjects.forEach(({ scriptId, url, isAsync, publicKey }) => {
-    console.log('Loaded ,', publicKey)
+  scriptObjects.forEach(({ scriptId, url }) => {
     const isLoaded = document.getElementById(scriptId)
     if (!!!isLoaded) {
-      const script = createScript(url, scriptId, isAsync, publicKey)
+      const script = createScript(url, scriptId)
       script.addEventListener('load', () => {
         counter++
         if (counter === scriptObjects.length && cb) {
@@ -25,13 +24,11 @@ export const LoadScripts = async (scriptObjects: ScriptObjType[], cb?: any) => {
   })
 }
 
-const createScript = (src: string, id: string, isAsync = false, publicKey: string) => {
+const createScript = (src: string, id: string) => {
   const script = document.createElement('script')
   script.src = src
   script.id = id
-  script.async = isAsync
+  script.async = false
   script.type = 'text/javascript'
-  console.log(publicKey)
-  script['data-public-key'] = publicKey
   return script
 }

@@ -12,8 +12,6 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import { LoadScripts } from '../../utils/scriptLoader'
-import { measureScript } from '../../utils/scripts'
 import MessageBar from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import queryString from 'query-string'
@@ -159,9 +157,6 @@ interface Props {
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
-  async componentDidMount() {
-    await LoadScripts(measureScript)
-  }
   componentDidUpdate() {
     const { profileData, history } = this.props
     const { location: { search } } = history
