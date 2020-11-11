@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
-import { WHITE_TRANSPARENT, BLUE, GRAY_DARK, BLACK, WHITE, GRAY } from '../../theme/colors'
+import { WHITE_TRANSPARENT, BLUE, GRAY_DARK, BLACK, WHITE, GRAY, GREEN_PAYDAY } from '../../theme/colors'
 import { AVENIR_MEDIUM } from '../../theme/fonts'
 import Caroussel from 'react-slick'
 
@@ -85,11 +85,10 @@ export const HeaderSection = styled.div`
 
 export const PayDayIcon = styled.img`
   max-width: 344px;
-  margin-left: -24px;
   object-fit: cover;
-  margin-top: -64px;
+  margin: -64px 0 0 -24px;
   @media (max-width: 767px) {
-    max-width: 264px;
+    max-width: 224px;
   }
 `
 
@@ -116,9 +115,13 @@ export const TextSection = styled.div`
 `
 
 export const TitlePay = styled.div`
-  color: #96be00;
+  color: ${GREEN_PAYDAY};
   font-size: 32px;
   font-family: ${AVENIR_MEDIUM};
+  @media (max-width: 767px) {
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
 `
 
 export const BodyPay = styled.div`
@@ -128,7 +131,7 @@ export const BodyPay = styled.div`
 
 export const Slogan = styled.div`
   font-size: 21px;
-  color: #96be00;
+  color: ${GREEN_PAYDAY};
   font-family: ${AVENIR_MEDIUM};
   @media (max-width: 767px) {
     font-size: 28px;
@@ -139,9 +142,7 @@ export const PayDayImage = styled.img`
   max-width: 462px;
   width: 100%;
   object-fit: cover;
-  margin-top: -46px;
-  margin-right: 52px;
-  margin-bottom: -46px;
+  margin: -21px -28px -21px 0;
   flex: 1;
   @media (max-width: 1024px) {
     display: none;
