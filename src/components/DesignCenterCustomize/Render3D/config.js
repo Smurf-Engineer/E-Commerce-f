@@ -16,7 +16,8 @@ export const EXTRA_FIELDS = [
   'fileId',
   'fileUrl',
   'isClipArtGroup',
-  'isImageGroup'
+  'isImageGroup',
+  'isImage'
 ]
 export const INITIAL_ZOOM = 0.85
 export const INITIAL_ZOOM_MOBILE = 1.2

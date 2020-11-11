@@ -20,6 +20,9 @@ import {
   InfoIcon,
   PopoverText,
   MessageText,
+  PaypalLogo,
+  WarningLabel,
+  WarningIcon,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
@@ -27,9 +30,12 @@ import { PENDING, APPROVED, REJECTED, RETRY, DATE_FORMAT, PAUSED } from '../../.
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import paypalLogo from '../../../assets/paypal_logo.png'
 import Popover from 'antd/lib/popover'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
+
+const MAX_COMISSION = 15
 
 interface Props {
   status: string
@@ -74,9 +80,11 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const { openAffiliate } = this.props
     openAffiliate(true)
   }
-  handleChangeComission = (value: number | undefined) => {
-    const { changeComission } = this.props
-    changeComission(value || 0)
+  handleChangeComission = (value = 0) => {
+    const { changeComission, comission } = this.props
+    if (value <= MAX_COMISSION && value > 0 && comission !== value) {
+      changeComission(value)
+    }
   }
   render() {
     const {
@@ -175,7 +183,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
                   onChange={this.debounceComission}
                   value={comission}
                   min={0}
-                  max={100}
+                  max={MAX_COMISSION}
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
@@ -208,6 +216,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
               </BoldLabel>
             </LabelButton>
             {isActive && <LabelButton>
+              {!isAdmin && <PaypalLogo src={paypalLogo} />}
               <Title>
                 {formatMessage(messages.paypalAccount)}
                 {!isAdmin &&
@@ -217,7 +226,13 @@ class AffiliateOptions extends React.Component<Props, {}> {
                 }
               </Title>
               <BoldLabel>
-                {paypalAccount}
+                {paypalAccount ||
+                  !isAdmin && 
+                    <WarningLabel>
+                      <WarningIcon theme="filled" type="warning" />
+                      {formatMessage(messages.warningPaypal)}
+                    </WarningLabel>
+                }
               </BoldLabel>
             </LabelButton>
             }

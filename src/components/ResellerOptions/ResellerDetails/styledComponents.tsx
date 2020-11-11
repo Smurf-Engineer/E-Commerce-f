@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
 import Popover from 'antd/lib/popover'
-import { RED, WHITE_TRANSPARENT, GRAY_DARK, GRAY } from '../../../theme/colors'
+import { RED, WHITE_TRANSPARENT, GRAY_DARK, GRAY, ORANGE } from '../../../theme/colors'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
 import Select from 'antd/lib/select'
@@ -109,6 +109,35 @@ export const RedLabel = styled.div`
   color: red;
   cursor: pointer;
   margin-left: 28px;
+`
+
+export const PaypalLogo = styled.img`
+  text-align: center;
+  object-fit: contain;
+  width: 58px;
+  margin: -33px 0 -6px 54px;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    margin: -28px 0 4px 24px;
+  }
+  @media (max-width: 767px) {
+    margin: -19px 0 0px 45px;
+    width: 44px;
+  }
+`
+
+export const WarningIcon = styled(Icon)`
+  margin-right: 8px;
+  font-size: 16px;
+  color: ${ORANGE};
+`
+
+export const WarningLabel = styled.div`
+  font-size: 12px;
+  font-style: italic;
+  font-weight: normal;
+  @media (max-width: 1024px) {
+    margin-top: 8px;
+  }
 `
 
 export const BoldLabel = styled.div`

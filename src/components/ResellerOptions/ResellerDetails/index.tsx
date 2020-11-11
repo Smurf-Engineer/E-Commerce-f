@@ -21,12 +21,13 @@ import {
   PopoverText,
   PopoverStyled,
   MessageText,
-  MarginsContainer, SubtitleMargin, StyledInput, BillingSelect, StateDiv
+  MarginsContainer, SubtitleMargin, StyledInput, BillingSelect, StateDiv, PaypalLogo, WarningLabel, WarningIcon
 } from './styledComponents'
 import PaymentsList from './PaymentsList'
 import { NOTE_FORMAT } from '../constants'
 import { PENDING, APPROVED, REJECTED, RETRY, PAUSED } from '../../../constants'
 import moment from 'moment'
+import paypalLogo from '../../../assets/paypal_logo.png'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
 import Select from 'antd/lib/select'
@@ -36,6 +37,10 @@ import RegionSelect from '../../RegionSelect'
 
 const { Option } = Select
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
+
+const MAX_MARGIN = 25
+const MAX_COMISSION = 30
+const MAX_INLINE = 40
 
 const countries = [
   {
@@ -142,16 +147,22 @@ class ResellerDetails extends React.Component<Props, {}> {
     openAffiliate(true)
   }
   handleChangeComission = (value = 0) => {
-    const { changeComission } = this.props
-    changeComission(value)
+    const { changeComission, comission } = this.props
+    if (value <= MAX_COMISSION && value > 0 && comission !== value) {
+      changeComission(value)
+    }
   }
   handleChangeMargin = (value = 0) => {
-    const { changeMargin } = this.props
-    changeMargin(value)
+    const { changeMargin, margin } = this.props
+    if (value <= MAX_MARGIN && value > 0 && margin !== value) {
+      changeMargin(value)
+    }
   }
   handleChangeInline = (value = 0) => {
-    const { changeInline } = this.props
-    changeInline(value)
+    const { changeInline, inline } = this.props
+    if (value <= MAX_INLINE && value > 0 && inline !== value) {
+      changeInline(value)
+    }
   }
   render() {
     const {
@@ -355,6 +366,7 @@ class ResellerDetails extends React.Component<Props, {}> {
               </BoldLabel>
             </LabelButton>
             {isActive && <LabelButton>
+              {!isAdmin && <PaypalLogo src={paypalLogo} />}
               <Title>
                 {formatMessage(messages.paypalAccount)}
                 {!isAdmin &&
@@ -364,7 +376,13 @@ class ResellerDetails extends React.Component<Props, {}> {
                 }
               </Title>
               <BoldLabel>
-                {paypalAccount}
+                {paypalAccount ||
+                  !isAdmin && 
+                    <WarningLabel>
+                      <WarningIcon theme="filled" type="warning" />
+                      {formatMessage(messages.warningPaypal)}
+                    </WarningLabel>
+                }
               </BoldLabel>
             </LabelButton>
             }
@@ -384,7 +402,7 @@ class ResellerDetails extends React.Component<Props, {}> {
                   onChange={this.debounceMargin}
                   value={margin}
                   min={0}
-                  max={100}
+                  max={MAX_MARGIN}
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
@@ -397,7 +415,7 @@ class ResellerDetails extends React.Component<Props, {}> {
                   onChange={this.debounceComission}
                   value={comission}
                   min={0}
-                  max={100}
+                  max={MAX_COMISSION}
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
@@ -411,7 +429,7 @@ class ResellerDetails extends React.Component<Props, {}> {
                   onChange={this.debounceInline}
                   value={inline}
                   min={0}
-                  max={100}
+                  max={MAX_INLINE}
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
