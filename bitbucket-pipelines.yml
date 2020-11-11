@@ -128,7 +128,7 @@ pipelines:
       - step:
           name: Deploy to staging
           trigger: manual
-          deployment: Staging
+          deployment: staging
           script:
             - export CI=false
             # Installing gcloud
