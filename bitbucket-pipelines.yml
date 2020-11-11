@@ -139,18 +139,18 @@ pipelines:
             # Installing kubectl
             - gcloud components install kubectl -q
             # Authentication
-            - echo $GCLOUD_API_KEYFILE | base64 --decode --ignore-garbage > ./gcloud-api-key.json
+            - echo $DEVELOPMENT_SA | base64 --decode --ignore-garbage > ./gcloud-api-key.json
             - gcloud auth activate-service-account --key-file gcloud-api-key.json
-            - gcloud config set project $GCLOUD_PROJECT
-            - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone=$GCLOUD_ZONE
+            - gcloud config set project $GCP_PROJECT
+            - gcloud container clusters get-credentials $GCP_CLUSTER --zone=$GCP_ZONE
             # Building images
-            - docker build --build-arg LOG_ROCKET_KEY=$LOG_ROCKET_KEY --build-arg GOOGLE_ID=$GOOGLE_ID --build-arg GOOGLE_TAG_MANAGER_ID=$GOOGLE_TAG_MANAGER_ID --build-arg FACEBOOK_ID=$FACEBOOK_ID --build-arg GRAPHQL_URI_BASE=$GRAPHQL_URI_BASE --build-arg BASE_URL=$BASE_URL --build-arg STORAGE_URL=$STORAGE_URL --build-arg PK_STRIPE_US=$PK_STRIPE_US --build-arg PK_STRIPE_EU=$PK_STRIPE_EU --build-arg PAYPAL_BASE_URL=$PAYPAL_BASE_URL --build-arg PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID --build-arg PAYPAL_CLIENT_ID_US=$PAYPAL_CLIENT_ID_US --build-arg PAYPAL_CLIENT_ID_CA=$PAYPAL_CLIENT_ID_CA --build-arg PAYPAL_CLIENT_ID_EU=$PAYPAL_CLIENT_ID_EU --build-arg PAYPAL_ENV=$PAYPAL_ENV --build-arg GOOGLE_MAP_KEY=$GOOGLE_MAP_KEY --build-arg INTERCOM_KEY=$INTERCOM_KEY --build-arg DEFAULT_CURRENCY=$DEFAULT_CURRENCY --build-arg SLAASK_TEAM=$SLAASK_TEAM --build-arg SLAASK_SUPPORT_TEAM=$SLAASK_SUPPORT_TEAM --build-arg SLAASK_KEY=$SLAASK_KEY --build-arg SLAASK_SUPPORT_KEY=$SLAASK_SUPPORT_KEY --build-arg GOOGLE_FONTS_KEY=$GOOGLE_FONTS_KEY --build-arg GOOGLE_FONTS_URL=$GOOGLE_FONTS_URL --build-arg YOUTUBE_ID=$YOUTUBE_ID --build-arg YOUTUBE_KEY=$YOUTUBE_KEY --build-arg TUTORIALS_TAB_ACTIVE=$TUTORIALS_TAB_ACTIVE --build-arg COLOR_SWATCH_ZIP=$COLOR_SWATCH_ZIP . -t $DOCKER_IMAGE
-            - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/test:$BITBUCKET_COMMIT
+            - docker build --build-arg LOG_ROCKET_KEY=$LOG_ROCKET_KEY --build-arg GOOGLE_ID=$GOOGLE_ID --build-arg GOOGLE_TAG_MANAGER_ID=$GOOGLE_TAG_MANAGER_ID --build-arg FACEBOOK_ID=$FACEBOOK_ID --build-arg GRAPHQL_URI_BASE=$GRAPHQL_URI_BASE --build-arg BASE_URL=$BASE_URL --build-arg STORAGE_URL=$STORAGE_URL --build-arg PK_STRIPE_US=$PK_STRIPE_US --build-arg PK_STRIPE_EU=$PK_STRIPE_EU --build-arg PAYPAL_BASE_URL=$PAYPAL_BASE_URL --build-arg PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID --build-arg PAYPAL_CLIENT_ID_US=$PAYPAL_CLIENT_ID_US --build-arg PAYPAL_CLIENT_ID_CA=$PAYPAL_CLIENT_ID_CA --build-arg PAYPAL_CLIENT_ID_EU=$PAYPAL_CLIENT_ID_EU --build-arg PAYPAL_ENV=$PAYPAL_ENV --build-arg GOOGLE_MAP_KEY=$GOOGLE_MAP_KEY --build-arg INTERCOM_KEY=$INTERCOM_KEY --build-arg DEFAULT_CURRENCY=$DEFAULT_CURRENCY --build-arg SLAASK_TEAM=$SLAASK_TEAM --build-arg SLAASK_SUPPORT_TEAM=$SLAASK_SUPPORT_TEAM --build-arg SLAASK_KEY=$SLAASK_KEY --build-arg SLAASK_SUPPORT_KEY=$SLAASK_SUPPORT_KEY --build-arg GOOGLE_FONTS_KEY=$GOOGLE_FONTS_KEY --build-arg GOOGLE_FONTS_URL=$GOOGLE_FONTS_URL --build-arg YOUTUBE_ID=$YOUTUBE_ID --build-arg YOUTUBE_KEY=$YOUTUBE_KEY --build-arg TUTORIALS_TAB_ACTIVE=$TUTORIALS_TAB_ACTIVE --build-arg COLOR_SWATCH_ZIP=$COLOR_SWATCH_ZIP  . -t us.gcr.io/$GCP_PROJECT/$APP/test:$BITBUCKET_COMMIT
+            - gcloud docker -- push us.gcr.io/$GCP_PROJECT/$APP/test:$BITBUCKET_COMMIT
             # Pushing latest image
-            - docker tag us.gcr.io/$GCLOUD_PROJECT/$APP/test:$BITBUCKET_COMMIT us.gcr.io/$GCLOUD_PROJECT/$APP/test:latest
-            - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/test:latest
+            - docker tag us.gcr.io/$GCP_PROJECT/$APP/test:$BITBUCKET_COMMIT us.gcr.io/$GCP_PROJECT/$APP/test:latest
+            - gcloud docker -- push us.gcr.io/$GCP_PROJECT/$APP/test:latest
             # Deploy the image
-            - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT/$APP/test:$BITBUCKET_COMMIT --record --namespace=test
+            - kubectl set image deployment $APP $APP=us.gcr.io/$GCP_PROJECT/$APP/test:$BITBUCKET_COMMIT --record --namespace=test
   pull-requests:
     "**":
       - step:
