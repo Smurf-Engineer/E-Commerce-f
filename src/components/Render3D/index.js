@@ -123,12 +123,23 @@ class Render3D extends PureComponent {
       this.container.appendChild(this.renderer.domElement)
 
       this.start()
+      const { designId, product, actualImage = '', colorAccessories } = this.props
+      if (!designId && product) {
+        setTimeout(() => {
+          this.renderProduct(
+            product,
+            actualImage,
+            false,
+            colorAccessories
+          )
+        }, 2000)
+      }
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const {
-      data: { loading, error, design = {} },
+      data: { loading, error, design = {} } = {},
       actualImage = '',
       colorAccessories,
       product: newProduct,
@@ -137,7 +148,8 @@ class Render3D extends PureComponent {
     const {
       product,
       isProduct,
-      data: { design: oldDesign = {} },
+      designId,
+      data: { design: oldDesign = {} } = {},
       actualImage: oldImage = '',
       colorAccessories: oldColorAccessories,
       hidePredyed
@@ -152,7 +164,7 @@ class Render3D extends PureComponent {
       this.removeObject()
     }
     if (isProduct && productToRender) {
-      if (imageChanged || accessoriesChanged || firstLoad || productChanged) {
+      if (imageChanged || accessoriesChanged || (firstLoad && designId) || productChanged) {
         setTimeout(() => {
           this.renderProduct(
             productToRender,
@@ -177,6 +189,9 @@ class Render3D extends PureComponent {
   }
 
   componentWillUnmount() {
+    if (this.canvasTexture) {
+      this.canvasTexture.dispose()
+    }
     if (this.scene) {
       this.stop()
       this.clearScene()
@@ -335,7 +350,7 @@ class Render3D extends PureComponent {
       isProduct,
       isAdmin,
       fromShare,
-      data,
+      data = {},
       textColor
     } = this.props
     const { loading, error, design } = data
@@ -1035,7 +1050,8 @@ const Render3DWithData = compose(
   graphql(designQuery, {
     options: ({ designId }) => ({
       variables: { designId },
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
+      skip: !designId
     }),
     withRef: true
   })
