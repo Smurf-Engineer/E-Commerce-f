@@ -17,3 +17,7 @@ body {
   background: transparent;
   box-shadow: none;
 }
+
+.transparent-modal .ant-modal-content .ant-modal-body{
+  padding: 0;
+}

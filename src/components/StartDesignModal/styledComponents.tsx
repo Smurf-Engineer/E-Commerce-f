@@ -128,3 +128,9 @@ export const BannerDesign = styled.div`
   background-position: center;
   background-repeat: no-repeat;
 `
+
+export const Banner = styled.img`
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid ${WHITE};
+`

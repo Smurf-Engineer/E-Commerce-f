@@ -12,7 +12,7 @@ import {
   Item,
   List,
   BannerBack,
-  BannerDesign
+  Banner
 } from './styledComponents'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
 import DesignCenterImg from '../../assets/DesignLaB.png'
@@ -80,7 +80,9 @@ export class StartDesignModal extends React.Component<Props, {}> {
               <UnfoldList
                 childrens={mobileList}
               />
-              <BannerDesign src={DesignCenterBanner} />
+              <BannerBack className={cardFolded ? 'folded' : 'unfolded'}>
+                <Banner src={DesignCenterBanner} />
+              </BannerBack>
               <BannerBack
                 onClick={this.toggleAnimation}
                 className={cardFolded ? 'folded' : 'unfolded'}
