@@ -1,5 +1,4 @@
 import { CouponCode, NetsuiteTax, ProductPrice } from '../types/common'
-import find from 'lodash/find'
 import {
   PERCENTAGE_PROMO,
   FLAT_PROMO,
@@ -51,21 +50,7 @@ export const getTaxesAndDiscount = (
         }
         break
       case FLAT_PROMO: // 'flat
-        if (!restrictions.includes(DESIGN)) {
-          discount = Number(rate)
-        } else {
-          discount = products.reduce((totalDiscount: number, design) => {
-            const itemForDiscount = find(
-              productsPrices,
-              (productObject) => productObject.designId === design
-            )
-            if (itemForDiscount) {
-              return totalDiscount + Number(rate) * itemForDiscount.quantity
-            }
-            return totalDiscount
-            // tslint:disable-next-line: align
-          }, 0)
-        }
+        discount = Number(rate)
         break
       default:
         break

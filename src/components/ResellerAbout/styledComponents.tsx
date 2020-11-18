@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Switch from 'antd/lib/switch'
-import { WHITE_TRANSPARENT, BLUE, GRAY_DARK, BLACK, WHITE, GRAY } from '../../theme/colors'
+import { WHITE_TRANSPARENT, BLUE, GRAY_DARK, BLACK, WHITE, GRAY, GREEN_PAYDAY } from '../../theme/colors'
 import { AVENIR_MEDIUM } from '../../theme/fonts'
 import Caroussel from 'react-slick'
 
@@ -125,7 +125,7 @@ export const TextSection = styled.div`
 `
 
 export const TitlePay = styled.div`
-  color: #96be00;
+  color: ${GREEN_PAYDAY};
   font-size: 32px;
   font-family: ${AVENIR_MEDIUM};
   @media (max-width: 767px) {
@@ -141,7 +141,7 @@ export const BodyPay = styled.div`
 
 export const Slogan = styled.div`
   font-size: 21px;
-  color: #96be00;
+  color: ${GREEN_PAYDAY};
   font-family: ${AVENIR_MEDIUM};
   @media (max-width: 767px) {
     font-size: 28px;
