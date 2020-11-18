@@ -37,7 +37,7 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.priceDropMessage',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      '<p>With JAKROO’s Dynamic Price Drop, everyone wins!</p> <p>The starting discount level for all team members is 20%.  As team members place their orders and reach the next discount level, <strong>the price automatically drops for everyone, even for those who placed their order before the drop.</strong></p> <p>Final pricing for each item will be based on the highest discount level achieved for that item. Payment is processed after the close of the order period so <strong>everyone receives the same low price, regardless of when your order was placed.</strong> Yes, its that cool!</p>'
+      '<p>With JAKROO’s Dynamic Price Drop, everyone wins!</p> <p>The starting discount level for all team members is 20%.  As team members place their orders and reach the next discount level, <strong>the price automatically drops for everyone, even for those who placed their order before the drop.</strong></p> <p>Final pricing for each item will be based on the highest discount level achieved for that item. Payment is processed after the close of the order period so <strong>everyone receives the same low price, regardless of when your order was placed.</strong> Yes, it’s that cool!</p>'
   },
   tierTitle: {
     id: 'screens.StoreFrontContent.tierTitle',
