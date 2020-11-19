@@ -474,9 +474,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
         history.push(`/store-front?storeId=${shortId}`)
       }
     } catch (error) {
-      message.error(
-        `Something wrong happened. Please try again! ${error.message}`
-      )
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage)
       setLoadingAction(false)
     }
   }
