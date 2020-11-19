@@ -64,6 +64,8 @@ interface Props {
   resetReducerDataAction: () => void
 }
 
+const notAvailable = ['HK', 'IL']
+
 export class MyAddressesList extends React.Component<Props, {}> {
   componentWillMount() {
     const {
@@ -104,8 +106,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
     const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
     const fullCount = get(data, 'userAddresses.fullCount', 0)
     let atLeastOneIsSelected = false
-
-    const adressesList = addresses.map((address, key) => {
+    const addressesFiltered = this.filterAddress(addresses)
+    const adressesList = addressesFiltered.map((address, key) => {
       const {
         firstName,
         lastName,
@@ -251,7 +253,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
         userAddresses: { addresses }
       }
     } = this.props
-    const address = addresses[index]
+    const filtered = this.filterAddress(addresses)
+    const address = filtered[index]
     selectAddressAction(address, index)
   }
 
@@ -276,7 +279,15 @@ export class MyAddressesList extends React.Component<Props, {}> {
       },
       setAddressToUpdateAction
     } = this.props
-    setAddressToUpdateAction(addresses[addressIndex])
+    const filtered = this.filterAddress(addresses)
+    setAddressToUpdateAction(filtered[addressIndex])
+  }
+
+  filterAddress = (addresses: AddressType[]) => {
+    const { billingAddress } = this.props
+    const filteredList = billingAddress ? addresses : 
+      addresses.filter(({ country }) => !notAvailable.includes(country))
+    return filteredList
   }
 
   handleOnHideDeleteAddressConfirm = () => {
@@ -291,7 +302,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
         userAddresses: { addresses }
       }
     } = this.props
-    const addressId = addresses[index].id
+    const filtered = this.filterAddress(addresses)
+    const addressId = filtered[index].id
     showDeleteAddressConfirmAction(addressId as number)
   }
 }
