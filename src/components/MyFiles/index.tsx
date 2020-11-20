@@ -232,11 +232,22 @@ class MyFiles extends React.Component<Props, {}> {
     return (
       <Container>
         <Message>{formatMessage(messages.message)}</Message>
-        <Subtitle>{formatMessage(messages.myPalettes)}</Subtitle>
-        <PalettesList
-          onClickDelete={this.handleOnShowDeletePaletteModal}
-          {...{ formatMessage, palettes }}
-        />
+        <DraggerBottom>
+          <Dragger
+            extensions={['.eps', '.ai', '.svg', '.tiff', '.pdf', '.jpg']}
+            formatMessage={formatMessage}
+            loading={uploading}
+            onSelectImage={this.beforeUpload}
+          />
+          <RecommendationSection>
+            <Recommendation color={RED}>
+              {formatMessage(messages.recommendationTitle)}
+            </Recommendation>
+            <Recommendation>
+              {formatMessage(messages.recommendationMessage)}
+            </Recommendation>
+          </RecommendationSection>
+        </DraggerBottom>
         <VerticalDivider />
         <Subtitle>{formatMessage(messages.uploadedImages)}</Subtitle>
         <ImagesList
@@ -244,24 +255,12 @@ class MyFiles extends React.Component<Props, {}> {
           images={images || []}
           loading={!!loading}
           onClickDelete={this.handleOnShowDeleteImageModal}
-          dragger={
-            <DraggerBottom>
-              <Dragger
-                extensions={['.eps', '.ai', '.svg', '.tiff', '.pdf', '.jpg']}
-                formatMessage={formatMessage}
-                loading={uploading}
-                onSelectImage={this.beforeUpload}
-              />
-              <RecommendationSection>
-                <Recommendation color={RED}>
-                  {formatMessage(messages.recommendationTitle)}
-                </Recommendation>
-                <Recommendation>
-                  {formatMessage(messages.recommendationMessage)}
-                </Recommendation>
-              </RecommendationSection>
-            </DraggerBottom>
-          }
+        />
+        <VerticalDivider />
+        <Subtitle>{formatMessage(messages.myPalettes)}</Subtitle>
+        <PalettesList
+          onClickDelete={this.handleOnShowDeletePaletteModal}
+          {...{ formatMessage, palettes }}
         />
         <Modal
           visible={showDeleteModal}
