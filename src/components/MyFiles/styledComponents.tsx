@@ -15,7 +15,6 @@ export const Container = styled.div`
 `
 
 export const Message = styled.div`
-  max-width: 500px;
   color: #5f6062;
   font-size: 16px;
   letter-spacing: 0.11px;
@@ -48,10 +47,9 @@ export const ModalMessage = styled.div`
 export const DraggerBottom = styled.div`
   display: flex;
   margin-bottom: 48px;
-  max-width: 644px;
   .ant-upload.ant-upload-drag {
     background: ${WHITE};
-    padding: 8px 0;
+    padding: 8px 22px;
   }
   @media (max-width: 768px) {
     flex-flow: column;
