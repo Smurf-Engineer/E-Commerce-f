@@ -11,6 +11,7 @@ export const GetDesignByIdQuery = gql`
       name
       canEdit: can_edit
       shortId: short_id
+      totalOrders: total_orders
       teamEnable: team_enable
       teamName: team_name
       teamOnDemand: team_on_demand_mode

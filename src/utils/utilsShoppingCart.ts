@@ -149,6 +149,21 @@ const getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
   return markslider
 }
 
+export const getRangeLabel = (total: number) => {
+  if (total >= 2 && total <= 5) {
+    return '2-5'
+  } else if (total >= 6 && total <= 24) {
+    return '6-24'
+  } else if (total >= 25 && total <= 49) {
+    return '25-49'
+  } else if (total >= 50 && total <= 99) {
+    return '50-99'
+  } else if (total >= 100) {
+    return '100-249'
+  }
+  return 'Personal'
+}
+
 export const getPriceRangeToApply = (items: number) => {
   if (items >= 2 && items <= 5) {
     return 1

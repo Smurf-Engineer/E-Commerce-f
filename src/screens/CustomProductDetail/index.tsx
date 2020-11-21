@@ -80,6 +80,7 @@ import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
 import { APPROVED } from '../../constants'
+import { getRangeLabel } from '../../utils/utilsShoppingCart'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
@@ -205,6 +206,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
+    const totalOrders = get(design, 'totalOrders', 0)
     const fixedPrices = get(design, 'teamPrice', [])
     const resellerPrice = get(design, 'resellerPrice', [])
     const teamEnable = get(design, 'teamEnable', '')
@@ -236,6 +238,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const totalReviews = get(yotpoAverageScore, 'total', 0)
     const rating = get(yotpoAverageScore, 'averageScore', 0)
     const genderId = selectedGender ? selectedGender.id : 0
+    const rangeLabel = totalOrders > 5 && !teamOnDemand ? getRangeLabel(totalOrders) : '2-5' 
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/, ' ') : ''
     let images = null
@@ -253,7 +256,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       const regularPrices = filter(
         productPriceRange,
         ({ quantity }) =>
-          (quantity === 'Personal' && !isReseller) || (quantity === '2-5' && !hasFixedPrices)
+          (quantity === 'Personal' && !isReseller) || (quantity === rangeLabel && !hasFixedPrices)
       )
       priceRange = [...regularPrices, ...teamPrice]
     } else {
