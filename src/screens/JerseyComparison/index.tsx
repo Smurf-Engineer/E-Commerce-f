@@ -28,11 +28,6 @@ import config from '../../config/index'
 import { GetProductsToCompareQuery } from './data'
 import { QueryProps, Product } from '../../types/common'
 
-interface Jersey {
-  id: number
-  name: string
-}
-
 interface Data extends QueryProps {
   product: Product[]
 }
@@ -43,12 +38,6 @@ interface Props extends RouteComponentProps<any> {
 }
 
 const MAX_LIMIT_PRICES = 4
-
-const jerseys: Jersey[] = [
-  { name: 'FONDO', id: 7 },
-  { name: 'TOUR', id: 13 },
-  { name: 'NOVA', id: 5 }
-]
 
 export class JerseyComparison extends React.Component<Props, {}> {
   render() {
@@ -233,10 +222,11 @@ export class JerseyComparison extends React.Component<Props, {}> {
 
   handleOnClickJersey = (title: string) => () => {
     const {
-      history: { push }
+      history: { push },
+      data
     } = this.props
-
-    const jersey = jerseys.find(
+    const { product = [] } = data || {}
+    const jersey = product.find(
       ({ name }) => name.toLowerCase() === title.toLowerCase()
     )
     const id = jersey && jersey.id
