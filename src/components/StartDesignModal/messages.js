@@ -52,5 +52,9 @@ export default defineMessages({
   idealForTeams: {
     id: 'components.AddProDesignModal.idealForTeams',
     defaultMessage: 'Ideal for Teams and Clubs requiring multiple items and have specific design requirements.'
-  }
+  },
+  customizeLabel: {
+    id: 'components.AddProDesignModal.customizeLabel',
+    defaultMessage: 'START YOUR DESIGN'
+  },
 })

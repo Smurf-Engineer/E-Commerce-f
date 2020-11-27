@@ -134,6 +134,7 @@ interface Props extends RouteComponentProps<any> {
   addItemToCartAction: (item: any) => void
   setLoadingImageAction: (loading: boolean) => void
   resetReducerAction: () => void
+  setDesignModalOpenAction: (open: boolean) => void
 }
 
 interface StateProps {
@@ -194,7 +195,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       setLoadingImageAction,
       currentCurrency,
       data: { product, error, loading },
-      phone
+      phone,
+      designModalOpen
     } = this.props
 
     const { formatMessage } = intl
@@ -639,7 +641,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 />
                 {!isRetail && (
                   <MobileButtonWrapper>
-                    <MobileButton onClick={this.gotoCustomize}>
+                    <MobileButton onClick={this.openDesignModal}>
                       <ColorWheel src={colorWheel} />
                       {formatMessage(messages.customizeLabel)}
                     </MobileButton>
@@ -654,7 +656,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 <ButtonsRow>
                   {!isRetail && (
                     <StyledButtonWrapper>
-                      <StyledButton onClick={this.gotoCustomize}>
+                      <StyledButton onClick={this.openDesignModal}>
                         <ColorWheel src={colorWheel} />
                         {formatMessage(messages.customizeLabel)}
                       </StyledButton>
@@ -685,9 +687,24 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             }}
           />
         </Container>
-        <StartDesignModal {...{ formatMessage }} isMobile={phone} />
+        <StartDesignModal
+          open={designModalOpen}
+          onClose={this.closeDesignModal}
+          {...{ formatMessage }}
+          isMobile={phone}
+          goToCustomize={this.gotoCustomize}
+          goToProDesign={this.goToProDesign}
+        />
       </Layout>
     )
+  }
+  closeDesignModal = () => {
+    const { setDesignModalOpenAction } = this.props
+    setDesignModalOpenAction(false)
+  }
+  openDesignModal = () => {
+    const { setDesignModalOpenAction } = this.props
+    setDesignModalOpenAction(true)
   }
   toggleFitsModal = (showFits: boolean) => () => {
     this.setState({ showFits })
@@ -732,6 +749,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     history.push(`/design-center?id=${productId}`)
   }
 
+  goToProDesign = () => {
+    const {
+      history,
+      data: { product }
+    } = this.props
+    const productId = get(product, 'id')
+
+    history.push(`/pro-design?id=${productId}`)
+  }
+ 
   gotoGetFittedPage = () => {
     const { history } = this.props
     history.push('/fit-widget')

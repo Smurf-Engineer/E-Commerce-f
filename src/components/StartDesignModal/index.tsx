@@ -12,19 +12,31 @@ import {
   Item,
   List,
   BannerBack,
-  Banner
+  Banner,
+  FoldContent,
+  UnfoldContainer,
+  MobileCard,
+  ButtonWrapper,
+  Button,
+  ColorWheel
 } from './styledComponents'
+import colorWheel from '../../assets/Colorwheel.svg'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
 import DesignCenterImg from '../../assets/DesignLaB.png'
 import DesignCenterBanner from '../../assets/design_lab.png'
 import UnfoldList from '../UnfoldList'
 import CustomModal from '../Common/JakrooModal'
+import SimpleLi from '../SimpleLi'
 import { Message } from '../../types/common'
 
 interface Props {
   visible: boolean
   isMobile: boolean
+  open: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
+  goToCustomize: () => void
+  goToProDesign: () => void
+  onClose: () => void
 }
 
 const designCenterMessages = [
@@ -46,52 +58,99 @@ const proDesignMessages = [
 
 export class StartDesignModal extends React.Component<Props, {}> {
   state = {
-    cardFolded: true,
+    designCardFolded: true,
+    proDesignCardFolded: true,
     animationInProgress: false
   }
 
-  toggleAnimation = () => {
-    this.setState({ cardFolded: !this.state.cardFolded })
+  toggleDesignAnimation = () => {
+    this.setState({ designCardFolded: !this.state.designCardFolded })
+  }
+
+  toggleProDesignAnimation = () => {
+    this.setState({ proDesignCardFolded: !this.state.proDesignCardFolded })
   }
 
   render() {
-    const { cardFolded } = this.state
+    const { designCardFolded, proDesignCardFolded } = this.state
     const {
       formatMessage,
-      isMobile
+      isMobile,
+      goToCustomize,
+      goToProDesign,
+      open,
+      onClose
     } = this.props
 
-    const mobileList = [
-      <p key="1">Hello</p>, <p key="2">Bye</p>
-    ]
     return (
       <Container>
         <CustomModal
-          open={true}
+          {... {open}}
           withLogo={false}
           width={'1200px'}
-          requestClose={this.requestClose}
+          requestClose={onClose}
           wrapClassName={isMobile && 'transparent-modal'}
           maskStyle={isMobile && { background: 'rgba(0,0,0,0.9)' }}
         >
           <Title>{formatMessage(messages.twoWays)}</Title>
           {isMobile ?
-            (<div>
-              <UnfoldList
-                childrens={mobileList}
-              />
-              <BannerBack className={cardFolded ? 'folded' : 'unfolded'}>
-                <Banner src={DesignCenterBanner} />
-              </BannerBack>
-              <BannerBack
-                onClick={this.toggleAnimation}
-                className={cardFolded ? 'folded' : 'unfolded'}
-              >
-                <p>Hello</p>
-              </BannerBack>
+            (<div style={{perspective: '340px'}}>
+              <UnfoldList childrens={[]} />
+              <UnfoldContainer>
+                <BannerBack onClick={this.toggleDesignAnimation}>
+                  <Banner src={DesignCenterBanner} />
+                </BannerBack>
+                {designCenterMessages.map((item: string, index: number) => (
+                  <FoldContent
+                  order={index + 1}
+                  className={designCardFolded ? 'folded' : 'unfolded'}
+                  >
+                    <MobileCard>
+                      <SimpleLi message={formatMessage(messages[item])} />
+                    </MobileCard>
+                  </FoldContent>
+                ))}
+                <FoldContent
+                  order={designCenterMessages.length + 1}
+                  className={designCardFolded ? 'folded' : 'unfolded'}
+                >
+                  <ButtonWrapper>
+                    <Button onClick={goToCustomize}>
+                      <ColorWheel src={colorWheel} />
+                      {formatMessage(messages.customizeLabel)}
+                    </Button>
+                  </ButtonWrapper>
+                </FoldContent>
+              </UnfoldContainer>
+              <UnfoldContainer>
+                <BannerBack onClick={this.toggleProDesignAnimation}>
+                  <Banner src={DesignCenterBanner} />
+                </BannerBack>
+                {proDesignMessages.map((item: string, index: number) => (
+                  <FoldContent
+                  order={index + 1}
+                  className={proDesignCardFolded ? 'folded' : 'unfolded'}
+                  >
+                    <MobileCard>
+                      <SimpleLi message={formatMessage(messages[item])} />
+                    </MobileCard>
+                  </FoldContent>
+                ))}
+                 <FoldContent
+                  order={designCenterMessages.length + 1}
+                  className={proDesignCardFolded ? 'folded' : 'unfolded'}
+                >
+                  <ButtonWrapper>
+                    <Button onClick={goToProDesign}>
+                      <ColorWheel src={colorWheel} />
+                      {formatMessage(messages.customizeLabel)}
+                    </Button>
+                  </ButtonWrapper>
+                </FoldContent>
+              </UnfoldContainer>
             </div>) :
             <DesignsCardsContainer>
-              <Card onClick={this.goTo}>
+              <Card onClick={goToCustomize}>
                 <CardTitle>
                   <img src={DesignCenterImg} />
                 </CardTitle>
@@ -104,8 +163,15 @@ export class StartDesignModal extends React.Component<Props, {}> {
                     </Item>
                   ))}
                 </List>
+                <ButtonWrapper>
+                  <Button>
+                    <ColorWheel src={colorWheel} />
+                    {formatMessage(messages.customizeLabel)}
+                  </Button>
+                </ButtonWrapper>
+
               </Card>
-              <Card onClick={this.goTo}>
+              <Card onClick={goToProDesign}>
                 <CardTitle>
                   <img src={ProDesignImg} />
                 </CardTitle>
@@ -118,6 +184,12 @@ export class StartDesignModal extends React.Component<Props, {}> {
                     </Item>
                   ))}
                 </List>
+                <ButtonWrapper>
+                  <Button>
+                    <ColorWheel src={colorWheel} />
+                    {formatMessage(messages.customizeLabel)}
+                  </Button>
+                </ButtonWrapper>
               </Card>
             </DesignsCardsContainer>}
         </CustomModal>

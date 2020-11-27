@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import CheckImg from '../../assets/green_check.svg'
-import { BLACK, GRAY_DARK, GRAY_LIGHTEST, WHITE, GRAY_LIGHT } from '../../theme/colors'
+import { BLACK, GRAY_DARK, GRAY_LIGHTEST, WHITE, GRAY_LIGHT, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   & .ant-modal {
@@ -45,6 +45,8 @@ export const Card = styled.div`
   border: 1px solid ${GRAY_LIGHT};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   position: relative;
+  display: flex;
+  justify-content: space-between;
 `
 
 export const CardTitle = styled.div`
@@ -72,7 +74,7 @@ export const DesignsCardsContainer = styled.div`
 
 export const List = styled.ul`
   padding: 0;
-  margin: 40px 28px 0 40px;
+  margin: 0 28px 0 40px;
   list-style: none;
   text-align: left;
   list-style-image: url(${CheckImg});
@@ -92,27 +94,62 @@ export const Icon = styled.img`
 export const BannerBack = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 100%;
-  background: lime;
-  color: ${WHITE};
   width: 100%;
-  transform-style: preserve-3d;
-  perspective: 800px;
-  animation-fill-mode: both;
+  z-index: 99;
+`
 
-  -webkit-transform-origin: bottom;
-  transform-origin: bottom;
+interface FoldAnimationProps {
+  order: number
+}
 
-  transition: all 1s cubic-bezier(0.390, 0.575, 0.565, 1.000);
+export const FoldContent  = styled.div`
+display: flex;
+justify-content: space-between;
+color: ${WHITE};
+width: 100%;
+transform-style: preserve-3d;
+animation-fill-mode: both;
+-webkit-transform-origin: bottom;
+transform-origin: top;
+transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000), opacity 0.4s, max-height 0.4s;
 
-  &.folded {
-    -webkit-transform: rotateX(180deg);
-    transform: rotateX(180deg);
+&.folded {
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transform: rotateX(120deg);
+  transform: rotateX(120deg) scaleY(0);
+  max-height: 0;
+  transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
+  &::after {
+    visibility: hidden;
+    background: rgba(200, 55, 55, 1);
+    transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
   }
-  &.unfolded {
-    -webkit-transform: rotateX(0);
-    transform: rotateX(0);
+}
+&.unfolded {
+  max-height: 130px;
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: rotateX(0);
+  transform: rotateX(0);
+  transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
+  &::after {
+    visibility: visible;
+    background: rgba(200, 55, 55, 0);
+    transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
   }
+}
+&::after {
+  position: absolute;
+  content: '';
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  mix-blend-mode: normal;
+  transition: all 0.4s ease;
+}
 `
 
 interface BannerProps {
@@ -123,14 +160,53 @@ export const BannerDesign = styled.div`
   background-image: url(${({ src }: BannerProps) => src});
   width: 100%;
   height: 250px;
-  border-radius: 5px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  margin-bottom
 `
 
 export const Banner = styled.img`
   width: 100%;
-  border-radius: 5px;
+  border-radius: 8px;
   border: 1px solid ${WHITE};
+`
+
+export const UnfoldContainer = styled.div`
+  position: relative;
+  margin-bottom: 20px;
+`
+
+export const MobileCard = styled.div`
+  font-size: 22px;
+  background: ${WHITE};
+  padding: 20px;
+  width: 100%;
+`
+
+export const ButtonWrapper = styled.div`
+  width: 100%;
+  padding: 20px;
+  background-color: ${WHITE};
+`
+
+export const Button = styled.div`
+  display: flex;
+  height: 50px;
+  width: 100%;
+  margin-bottom: 16px;
+  border: 1px solid ${BLUE};
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: ${WHITE};
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: ${BLUE};
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+`
+export const ColorWheel = styled.img`
+  width: 20px;
+  margin-right: 12px;
 `
