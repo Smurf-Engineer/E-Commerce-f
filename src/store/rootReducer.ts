@@ -64,6 +64,7 @@ import affiliates from '../components/Affiliates/reducer'
 import affiliatesAbout from '../components/AffiliateAbout/reducer'
 import affiliatesOrders from '../components/AffiliatesOrders/reducer'
 import affiliatesPayouts from '../components/AffiliatesPayouts/reducer'
+import intakeForm from '../screens/IntakeForm/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -139,6 +140,7 @@ export interface ReducersObject {
   designTools: any
   proAssist: any
   userFiles: any
+  intakeForm: any
 }
 
 const appInitialState = fromJS({
@@ -267,7 +269,8 @@ const rootReducer = combineReducers({
   publishingTool,
   designTools,
   proAssist,
-  userFiles
+  userFiles,
+  intakeForm
 })
 
 export default rootReducer

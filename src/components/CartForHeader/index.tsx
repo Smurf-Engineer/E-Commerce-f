@@ -7,12 +7,14 @@ import { connect } from 'react-redux'
 import Badge from 'antd/lib/badge'
 import { Container, Image } from './styledComponents'
 import cart from '../../assets/cart.svg'
+import cartWhite from '../../assets/cart_white.svg'
 import { getTotalItemsIncart } from '../MainLayout/actions'
 
 interface Props {
   history?: any
   totalItems: number
   designHasChanges: boolean
+  darkMode?: boolean
   getTotalItemsIncart: () => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
@@ -24,11 +26,11 @@ export class CartForHeader extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { totalItems } = this.props
+    const { totalItems, darkMode = false } = this.props
     return (
       <Container>
         <Badge count={totalItems} overflowCount={9}>
-          <Image src={cart} onClick={this.gotoCartpage} />
+          <Image src={darkMode ? cartWhite : cart} onClick={this.gotoCartpage} />
         </Badge>
       </Container>
     )

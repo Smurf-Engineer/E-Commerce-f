@@ -23,11 +23,12 @@ import {
 
 interface Props {
   title: string
+  darkMode?: boolean
   logout: () => void
   goTo: (path: string) => void
 }
 
-const Logout = ({ title, logout, goTo }: Props) => {
+const Logout = ({ title, logout, goTo, darkMode = false }: Props) => {
   const handleOnClick = ({ key }: any) => {
     if (key === 'logout') {
       logout()
@@ -59,14 +60,14 @@ const Logout = ({ title, logout, goTo }: Props) => {
         if (matches) {
           return (
             <Dropdown overlay={logoutMenu}>
-              <Text>{toUpper(title)}</Text>
+              <Text {...{darkMode}}>{toUpper(title)}</Text>
             </Dropdown>
           )
         } else {
           return (
-            <Container>
+            <Container {...{darkMode}}>
               <Icon type="user" />
-              <Text>
+              <Text {...{darkMode}}>
                 <Menu onClick={handleOnClick} style={OverviewStyle}>
                   <Menu.Item key={OVERVIEW}>{toUpper(title)}</Menu.Item>
                 </Menu>

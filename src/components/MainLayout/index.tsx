@@ -82,6 +82,7 @@ interface Props extends RouteComponentProps<any> {
   disableAssist: boolean
   fontsData: any
   fonts: []
+  darkMode?: boolean
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: (client: any) => void
@@ -222,7 +223,8 @@ class MainLayout extends React.Component<Props, {}> {
       saveAndBuyAction,
       style,
       fonts,
-      setAccountScreen
+      setAccountScreen,
+      darkMode
     } = this.props
     const { formatMessage } = intl
     let numberOfProducts = 0
@@ -268,7 +270,8 @@ class MainLayout extends React.Component<Props, {}> {
               currentRegion,
               currentLanguage,
               buyNowHeader,
-              setAccountScreen
+              setAccountScreen,
+              darkMode
             }}
             saveAndBuy={saveAndBuyAction}
             saveUserToLocal={this.handleOnLogin}

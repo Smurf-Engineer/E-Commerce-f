@@ -61,6 +61,7 @@ interface Props {
   designHasChanges: boolean
   initialCountryCode: string
   buyNowHeader: boolean
+  darkMode?: boolean
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
 }
@@ -157,7 +158,8 @@ class MenuBar extends React.Component<Props, StateProps> {
       initialCountryCode,
       buyNowHeader,
       saveAndBuy,
-      regionsData: { regionsResult, loading: loadingRegions }
+      regionsData: { regionsResult, loading: loadingRegions },
+      darkMode = false
     } = this.props
 
     let user: any
@@ -168,12 +170,12 @@ class MenuBar extends React.Component<Props, StateProps> {
     const { formatMessage } = intl
 
     const loggedUser = !user ? (
-      <TopText onClick={this.handleOpenLogin}>
+      <TopText onClick={this.handleOpenLogin} {...{darkMode}}>
         {formatMessage(messages.title)}
       </TopText>
     ) : (
       <Logout
-        {...{ history }}
+        {...{ history, darkMode }}
         title={`${String(user.name).toUpperCase()}`}
         logout={logoutAction}
         goTo={this.handleOnGoTo}
@@ -191,7 +193,8 @@ class MenuBar extends React.Component<Props, StateProps> {
           currentLanguage,
           currentCurrency,
           isMobile,
-          regionsResult
+          regionsResult,
+          darkMode
         }}
       />
     )
@@ -225,11 +228,12 @@ class MenuBar extends React.Component<Props, StateProps> {
           {(matches) => {
             if (matches) {
               return (
-                <Container>
+                <Container {...{darkMode}}>
                   {!hideTop && (
                     <Row>
                       <MenuSupport
                         {...{
+                          darkMode,
                           history,
                           designHasChanges,
                           openWithoutSaveModalAction
@@ -242,7 +246,8 @@ class MenuBar extends React.Component<Props, StateProps> {
                           {...{
                             history,
                             designHasChanges,
-                            openWithoutSaveModalAction
+                            openWithoutSaveModalAction,
+                            darkMode
                           }}
                         />
                         {loggedUser}
@@ -270,6 +275,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                     hide={hideTop}
                     loginButton={loggedUser}
                     regionButton={menuRegion}
+                    proDesign={darkMode}
                   />
                 )
               )

@@ -3,20 +3,27 @@
  */
 import styled from 'styled-components'
 import icon from 'antd/lib/icon'
+import { WHITE, DARK_TEXT } from '../../theme/colors'
 
 export const Container = styled.div`
   align-items: center;
   display: flex;
+  color: ${({ darkMode }: ThemeProps) =>
+    darkMode ? WHITE : DARK_TEXT};
 `
 
+interface ThemeProps {
+  darkMode?: boolean
+}
+
 export const Text = styled.div`
-  color: #5f6062;
+  color: ${({ darkMode }: ThemeProps) =>
+    darkMode ? WHITE : DARK_TEXT};
   cursor: pointer;
   font-size: 14px;
 
   @media (max-width: 991px) {
     align-items: center;
-    color: #5f6062;
     display: flex;
     font-weight: 600;
     height: 40px;

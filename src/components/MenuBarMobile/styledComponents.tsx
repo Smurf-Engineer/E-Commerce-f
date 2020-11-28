@@ -2,31 +2,36 @@
  * Styled Components - Created by david on 02/04/18.
  */
 import styled from 'styled-components'
-import { WHITE, BLUE } from '../../theme/colors'
+import { WHITE, BLUE, DARK_TEXT, BLACK_SEMILIGHT } from '../../theme/colors'
 import AntButton from 'antd/lib/button'
 
-interface ContainerProps {
+interface ThemeProps {
   hide?: boolean
+  darkMode?: boolean
 }
 
 export const Container = styled.div`
   align-items: center;
-  background-color: ${WHITE};
+  background-color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? BLACK_SEMILIGHT : WHITE};
   border-bottom: 1px solid gainsboro;
   display: flex;
-  height: ${({ hide }: ContainerProps) => (!!hide ? 0 : 70)}px;
+  height: ${({ hide }: ThemeProps) => (!!hide ? 0 : 70)}px;
   justify-content: space-between;
   line-height: 16px;
   padding: 0px 16px 0 10px;
   position: relative;
 `
 
-export const Logo = styled.img``
+export const Logo = styled.img`
+  width: 47%;
+`
 
 export const Icon = styled.img``
 
 export const Text = styled.div`
-  color: ${WHITE};
+  color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? WHITE : DARK_TEXT};
 `
 
 export const Button = styled(AntButton)`

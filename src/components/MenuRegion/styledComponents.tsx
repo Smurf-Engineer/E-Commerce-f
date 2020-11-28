@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 20/02/18.
  */
 import styled from 'styled-components'
+import { WHITE, DARK_TEXT } from '../../theme/colors'
 
 export const Regions = styled.div`
   display: flex;
@@ -16,8 +17,13 @@ export const Regions = styled.div`
   }
 `
 
+type ThemeProps = {
+  darkMode: boolean
+}
+
 export const TopText = styled.div`
-  color: #5f6062;
+  color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? WHITE : DARK_TEXT};
   font-size: 14px;
   cursor: pointer;
 `

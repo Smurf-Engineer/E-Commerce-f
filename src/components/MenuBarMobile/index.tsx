@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import logo from '../../assets/jakroo_logo.svg'
+import pro_design_logo from '../../assets/Jakroo_Pro_White.png'
 import Cart from '../CartForHeader'
 import Menu from '../MobileMenu'
 import messages from './messages'
@@ -17,6 +18,7 @@ interface Props {
   designHasChanges: boolean
   hide?: boolean
   buyNowHeader?: boolean
+  proDesign?: boolean
   saveAndBuy: (buy: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -34,16 +36,17 @@ export const MenuBarMobile = ({
   formatMessage,
   buyNowHeader,
   saveAndBuy,
-  handleOnGoHome
+  handleOnGoHome,
+  proDesign = false
 }: Props) => {
   const handleOnSaveAndBuy = () => {
     saveAndBuy(true)
   }
   return (
-    <Container {...{ hide }}>
-      {!buyNowHeader && <Menu {...{ history, loginButton, formatMessage }} />}
+    <Container darkMode={proDesign} {...{ hide }}>
+      {!buyNowHeader && <Menu {...{ history, loginButton, formatMessage, proDesign }} />}
       <Logo
-        src={logo}
+        src={proDesign ? pro_design_logo : logo}
         onClick={handleOnGoHome}
         className={buyNowHeader ? 'alignLeft' : ''}
       />
@@ -54,8 +57,9 @@ export const MenuBarMobile = ({
             totalItems,
             history,
             designHasChanges,
-            openWithoutSaveModalAction
+            openWithoutSaveModalAction,
           }}
+          darkMode={proDesign}
         />
       )}
       {buyNowHeader ? (

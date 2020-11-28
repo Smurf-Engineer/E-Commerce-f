@@ -2,30 +2,38 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled from 'styled-components'
+import { WHITE, DARK_TEXT } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: #222;
 `
 
+type ThemeProps = {
+  darkMode: boolean
+}
+
 export const Text = styled.div`
-  color: #5f6062;
-  cursor: pointer;
+color: ${({ darkMode }: ThemeProps) =>
+darkMode ? WHITE : DARK_TEXT};
+cursor: pointer;
   font-size: 14px;
 `
 
 export const TextOption = styled.div`
-  color: #5f6062;
+  color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? WHITE : DARK_TEXT};
   font-size: 16px;
   line-height: 25px;
 `
 
 export const Link = styled.a`
-  color: #5f6062;
+  color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? WHITE : DARK_TEXT};
   font-size: 16px;
   line-height: 25px;
 `
 
 export const menuStyle = {
   borderRadius: 0,
-  marginTop: 15
+  marginTop: 15,
 }

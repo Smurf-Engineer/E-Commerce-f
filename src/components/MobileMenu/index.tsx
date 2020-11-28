@@ -5,6 +5,7 @@ import * as React from 'react'
 import Popover from 'antd/lib/popover'
 import { compose, graphql } from 'react-apollo'
 import menu from '../../assets/Menu.svg'
+import menuWhite from '../../assets/Menu_white.svg'
 import { Filter, QueryProps } from '../../types/common'
 import Menu from './Menu'
 import { categoriesQuery } from './data'
@@ -20,6 +21,7 @@ interface Props {
   data?: Data
   history: any
   loginButton: React.ReactNode
+  proDesign?: boolean
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -33,7 +35,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
   handleVisibleChange = (visible: boolean) => this.setState({ visible })
 
   render() {
-    const { data, history, loginButton, formatMessage } = this.props
+    const { data, history, loginButton, formatMessage, proDesign = false } = this.props
     const { visible } = this.state
     return (
       <Popover
@@ -50,7 +52,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
         visible={visible}
         onVisibleChange={this.handleVisibleChange}
       >
-        <Icon src={menu} />
+        <Icon src={proDesign ? menuWhite : menu} />
       </Popover>
     )
   }

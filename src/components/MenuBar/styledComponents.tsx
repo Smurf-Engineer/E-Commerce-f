@@ -2,9 +2,16 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled from 'styled-components'
+import { WHITE, BLACK_SEMILIGHT, DARK_TEXT } from '../../theme/colors'
+
+type ThemeProps = {
+  darkMode: boolean
+}
 
 export const Container = styled.div`
   position: relative;
+  background-color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? BLACK_SEMILIGHT : WHITE};
 `
 
 export const Row = styled.div`
@@ -27,10 +34,10 @@ export const TopRow = styled.div`
 `
 
 export const TopText = styled.div`
-  color: #5f6062;
   cursor: pointer;
   font-size: 14px;
-
+  color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? WHITE : DARK_TEXT};
   @media (max-width: 991px) {
     align-items: center;
     display: flex;

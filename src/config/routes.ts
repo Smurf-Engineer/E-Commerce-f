@@ -31,6 +31,7 @@ import DesignCenter from '../screens/DesignCenter'
 import ProductModels from '../screens/ProductModels'
 import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
+import IntakeForm from '../screens/IntakeForm'
 import ResetPassword from '../screens/ResetPassword'
 import Admin from '../screens/Admin'
 import ProDesign from '../screens/ProDesign'
@@ -69,6 +70,11 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: Admin
+  },
+  {
+    path: '/pro-design',
+    name: 'intakeForm',
+    component: IntakeForm
   },
   {
     path: '/custom-product',
