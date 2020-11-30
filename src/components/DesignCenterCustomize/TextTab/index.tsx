@@ -357,9 +357,7 @@ export class TextTab extends React.PureComponent<Props, State> {
   handleOnUpdateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value: text } = e.target
     const { onUpdateText } = this.props
-    console.log('text:', text)
     const newText = text ? text.replace(EMOJI_REGEX, '') : ''
-    console.log('newText:', newText)
     onUpdateText(newText)
   }
 
