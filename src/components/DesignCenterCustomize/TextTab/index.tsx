@@ -51,7 +51,7 @@ const SELECT_OUTLINE = 2
 const ADD_EFFECT = 3
 const SELECT_ALIGNMENT = 4
 const CHANGE_SEPARATION = 5
-// const EMOJI_REGEX = /[\uD800-\uDBFF]|[\u2702-\u27B0]|[\uF680-\uF6C0]|[\u24C2-\uF251]/g
+const EMOJI_REGEX = /[\uD800-\uDBFF]|[\u2702-\u27B0]|[\uF680-\uF6C0]|[\u24C2-\uF251]/g
 
 interface Props {
   text: string
@@ -357,8 +357,8 @@ export class TextTab extends React.PureComponent<Props, State> {
   handleOnUpdateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value: text } = e.target
     const { onUpdateText } = this.props
-    // const newText = text ? text.replace(EMOJI_REGEX, '') : ''
-    onUpdateText(text)
+    const newText = text ? text.replace(EMOJI_REGEX, '') : ''
+    onUpdateText(newText)
   }
 
   handleOnApplyText = () => {
