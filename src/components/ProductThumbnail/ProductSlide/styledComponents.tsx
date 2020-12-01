@@ -6,6 +6,7 @@ import { GRAY_DARK, GREEN_BRIGHT, WHITE } from '../../../theme/colors'
 
 type StyledProps = {
   backgroundColor?: string
+  selectProduct?: boolean
 }
 
 export const ImageContainer = styled.div`
@@ -15,19 +16,23 @@ export const ImageContainer = styled.div`
   ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? `background-color: ${backgroundColor}` : ''};
   width: 100%;
-  padding: ${({ backgroundColor }: StyledProps) =>
-    backgroundColor ? '10px' : '10px 0'};
+  padding: ${({ backgroundColor, selectProduct }: StyledProps) => {
+    if (selectProduct) {
+      return '0'
+    }
+    return backgroundColor ? '10px' : '10px 0'
+  }}
   text-align: center;
   border: ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? `1px solid ${WHITE}` : 'none'};
   @media (min-width: 321px) and (max-width: 480px) {
     width: 100%;
-    margin: 0;
+    margin-bottom:  ${({ selectProduct }: StyledProps) => selectProduct ? '10px' : '10px'};
   }
   @media only screen and (max-width: 320px) {
     height: 130px;
     width: 100%;
-    margin: 0;
+    margin-bottom:  ${({ selectProduct }: StyledProps) => selectProduct ? '10px' : '10px'};
   }
 `
 

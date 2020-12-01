@@ -31,6 +31,7 @@ import ImageSlide from './ProductSlide'
 import { saveInLocalStorage } from './api'
 import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const LIMIT_PRICE_RANGE = 3
 const WHITENAME = 'White'
@@ -68,9 +69,12 @@ interface Props {
   colors: ProductColors[]
   proDesign: boolean
   proDesignAssigned?: boolean
+  selectProduct?: boolean
+  isSelected?: boolean
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
+  handleCheckChange: (productId: number, checked: boolean) => void
 }
 
 export class ProductThumbnail extends React.Component<Props, {}> {
@@ -198,6 +202,11 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       this.setState({ loading: false })
     }
   }
+  onHandleCheckChange = (event: CheckboxChangeEvent) => {
+    const { target: { checked } } = event
+    const { product, handleCheckChange } = this.props
+    handleCheckChange(product.id, checked)
+  }
   render() {
     const {
       type,
@@ -221,7 +230,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       colors,
       reversePriceRange,
       proDesign,
-      proDesignAssigned
+      proDesignAssigned,
+      selectProduct,
+      isSelected = false
     } = this.props
     const { isHovered, currentImage, loading } = this.state
 
@@ -311,7 +322,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             customizable,
             backgroundColor,
             proDesign,
-            proDesignAssigned
+            proDesignAssigned,
+            selectProduct,
+            isSelected
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
@@ -320,6 +333,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
           onPressNext={this.handleOnPressNext}
           onPressCustomize={this.handleOnPressCustomize}
           onPressThumbnail={this.handlePressThumbnail}
+          handleCheckChange={this.onHandleCheckChange}
         />
         {footer ? (
           footer

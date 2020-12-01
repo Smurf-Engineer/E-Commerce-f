@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
+import includes from 'lodash/includes'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu from 'antd/lib/menu'
@@ -69,6 +70,9 @@ interface Props {
   withoutPadding?: boolean
   currentCurrency: string
   genderFilters: string
+  selectProduct?: boolean
+  selectedItems?: number[]
+  handleCheckChange: (productId: number, checked: boolean) => void
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -88,7 +92,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       withoutPadding,
       currentCurrency,
       genderFilters,
-      previewOnly = false
+      previewOnly = false,
+      selectProduct,
+      selectedItems = [],
+      handleCheckChange
     } = this.props
 
     let thumbnailsList
@@ -114,6 +121,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           },
           index
         ) => {
+          const isSelected = includes(selectedItems, product.id)
+
           const addToCartButton = product.active || product.onlyProDesign ? (
             <AddToCartButton
               label={formatMessage(messages.addToCart)}
@@ -131,7 +140,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                {...{ currentCurrency }}
+                {...{ currentCurrency, handleCheckChange, isSelected }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
@@ -254,6 +263,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           )
 
           const productImages = images ? imgsByGender || images[0] : {}
+          const isSelected = includes(selectedItems, product.id)
+
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -272,7 +283,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   collections,
                   priceRange,
                   customizable,
-                  colors
+                  colors,
+                  selectProduct,
+                  handleCheckChange,
+                  isSelected
                 }}
                 labelButton={
                   customizable
@@ -393,6 +407,7 @@ type OwnProps = {
   orderBy?: string
   skip?: number
   designs?: DesignType[]
+  selectProduct?: boolean
 }
 
 const ThumbnailsListEnhance = compose(
@@ -408,13 +423,15 @@ const ThumbnailsListEnhance = compose(
       limit,
       orderBy,
       skip,
-      designs
+      designs,
+      selectProduct
     }: OwnProps) => {
+      console.log(collectionFilters)
       return {
         fetchPolicy: 'network-only',
         variables: {
           contentTile: contentTile ? contentTile : null,
-          collection: collectionFilters ? collectionFilters : null,
+          collection: selectProduct ? 1 : (collectionFilters ? collectionFilters : 1),
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,
           sport: sportFilters ? sportFilters : null,

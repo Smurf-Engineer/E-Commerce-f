@@ -14,7 +14,6 @@ import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
 import upperFirst from 'lodash/upperFirst'
 import queryString from 'query-string'
-import Layout from '../../components/MainLayout'
 import FilterComponent from '../../components/ProductCatalogFilterComponent'
 import ProductsThumbnailList from '../../components/ProductCatalogueThumbnailsList'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
@@ -72,6 +71,7 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   openSidebar: boolean
   currentCurrency: string
+  selectedItems: number[]
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
@@ -82,6 +82,8 @@ interface Props extends RouteComponentProps<any> {
   setHomeSelectedFilters: () => void
   resetReducerAction: () => void
   setAllGendersAction: () => void
+  selectProductAction: (productId: number) => void
+  deselectProductAction: (productId: number) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
@@ -89,13 +91,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     showTypeFilters: false,
     showcollectionFilters: true,
     filters: []
-  }
-
-  componentWillMount() {
-    const { withLayout = true } = this.props
-    if (withLayout) {
-      this.checkFilters()
-    }
   }
 
   componentWillUnmount() {
@@ -164,6 +159,15 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     }
   }
 
+  onCheckChange = (productId: number, checked: boolean) => {
+    const { selectProductAction, deselectProductAction } = this.props
+    if (checked) {
+      selectProductAction(productId)
+      return
+    }
+    deselectProductAction(productId)
+  }
+
   render() {
     const {
       history,
@@ -183,9 +187,11 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       openSidebar,
       openQuickViewAction: openQuickView,
       currentCurrency,
-      data: { loading, filters: filtersGraph }
+      data: { loading, filters: filtersGraph },
+      selectedItems,
+      selectProductAction
     } = this.props
-
+    console.log(selectedItems)
     let sortByLabel = ''
     if (loading || !filtersGraph || !filtersGraph.length) {
       return null
@@ -314,7 +320,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                   touch={true}
                   onOpenChange={this.handleOpenSidebar}
                 >
-                  <Layout {...{ history, intl }}>
                     <Container>
                       <ResultsColumn>
                         <FiltersTitle
@@ -334,6 +339,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                           fitFilters={fitSizeIndexes}
                           handleChangePage={this.handlechangePage}
                           handleOrderBy={this.handleOrderBy}
+                          selectProduct={true}
+                          handleCheckChange={selectProductAction}
                           currentCurrency={
                             currentCurrency || config.defaultCurrency
                           }
@@ -350,48 +357,48 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         />
                       </ResultsColumn>
                     </Container>
-                  </Layout>
                 </Drawer>
               </div>
             )
           } else {
             return (
-              <Layout {...{ history, intl }}>
-                <Container>
-                  <FiltersColumn>
-                    <FiltersTitle>
-                      {intl.formatMessage(messages.filtersTitle)}
-                    </FiltersTitle>
-                    {renderFilters}
-                  </FiltersColumn>
-                  <ResultsColumn>
-                    <ProductsThumbnailList
-                      formatMessage={intl.formatMessage}
-                      collectionFilters={collectionIndexes}
-                      genderFilters={genderIndexes}
-                      sportFilters={sportIndexes}
-                      categoryFilters={categoryIndexes}
-                      seasonFilters={seasonsIndexes}
-                      fitFilters={fitSizeIndexes}
-                      handleChangePage={this.handlechangePage}
-                      handleOrderBy={this.handleOrderBy}
-                      currentCurrency={
-                        currentCurrency || config.defaultCurrency
-                      }
-                      {...{
-                        skip,
-                        orderBy,
-                        limit,
-                        openQuickView,
-                        history,
-                        sortByLabel,
-                        currentPage,
-                        contentTile
-                      }}
-                    />
-                  </ResultsColumn>
-                </Container>
-              </Layout>
+              <Container>
+                <FiltersColumn>
+                  <FiltersTitle>
+                    {intl.formatMessage(messages.filtersTitle)}
+                  </FiltersTitle>
+                  {renderFilters}
+                </FiltersColumn>
+                <ResultsColumn>
+                  <ProductsThumbnailList
+                    formatMessage={intl.formatMessage}
+                    collectionFilters={collectionIndexes}
+                    genderFilters={genderIndexes}
+                    sportFilters={sportIndexes}
+                    categoryFilters={categoryIndexes}
+                    seasonFilters={seasonsIndexes}
+                    fitFilters={fitSizeIndexes}
+                    handleChangePage={this.handlechangePage}
+                    handleOrderBy={this.handleOrderBy}
+                    selectProduct={true}
+                    handleCheckChange={this.onCheckChange}
+                    currentCurrency={
+                      currentCurrency || config.defaultCurrency
+                    }
+                    {...{
+                      skip,
+                      orderBy,
+                      limit,
+                      openQuickView,
+                      history,
+                      sortByLabel,
+                      currentPage,
+                      contentTile,
+                      selectedItems
+                    }}
+                  />
+                </ResultsColumn>
+              </Container>
             )
           }
         }}
@@ -469,7 +476,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 }
 
 const mapStateToProps = (state: any) => {
-  const productCatalogue = state.get('productCatalog').toJS()
+  const productCatalogue = state.get('intakeProductCatalog').toJS()
   const responsive = state.get('responsive').toJS()
   const langProps = state.get('languageProvider').toJS()
   return { ...productCatalogue, ...responsive, ...langProps }

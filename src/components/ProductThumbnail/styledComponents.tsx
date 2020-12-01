@@ -4,6 +4,7 @@
 import styled, { keyframes } from 'styled-components'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
+import { RED, WHITE } from '../../theme/colors'
 
 interface StyleProps {
   withBorder?: boolean
@@ -13,6 +14,7 @@ interface StyleProps {
 export const Container = styled.section`
   margin: ${({ withMargin }: StyleProps) => (withMargin ? '0px 16px' : '0')};
   width: 220px;
+  border: 3px solid ${RED};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -20,7 +22,7 @@ export const Container = styled.section`
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 export const BuyNow = styled.div`
   font-size: 10px;

@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import Header from '../../components/DesignCenterHeader'
 import Layout from '../../components/MainLayout'
+import ProductCatalogue from '../../components/ProductCatalogue'
 import { connect } from 'react-redux'
 import MobileMenu from './MobileMenu'
 
@@ -55,6 +56,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             />
           )}
       </Container>
+      <ProductCatalogue {...{ history }} />
     </Layout>)
   }
 }

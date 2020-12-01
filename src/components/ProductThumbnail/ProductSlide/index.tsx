@@ -20,6 +20,7 @@ import {
 import messages from './messages'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { ImageType } from '../../../types/common'
 
 const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
@@ -43,11 +44,14 @@ interface Props {
   backgroundColor?: string
   proDesign: boolean
   proDesignAssigned: boolean
+  selectProduct?: boolean
+  isSelected?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
   onPressCustomize: () => void
   onPressThumbnail: () => void
+  handleCheckChange: (event: CheckboxChangeEvent) => void
 }
 
 const imagesOrder = ['thumbnail', 'front', 'left', 'right', 'back']
@@ -74,7 +78,10 @@ const ProductSlide = ({
   customizable,
   backgroundColor,
   proDesign,
-  proDesignAssigned
+  proDesignAssigned,
+  selectProduct,
+  isSelected = false,
+  handleCheckChange
 }: Props) => {
   if (image) {
     return (
@@ -112,11 +119,11 @@ const ProductSlide = ({
         </ImageTop>
         <Page>
           {/* <a href={urlProduct}> TODO: WIP new way to right click */}
-          <Image src={image} onClick={onPressThumbnail} />
+          <Image src={image} onClick={!selectProduct && onPressThumbnail} />
           {/* </a> TODO: WIP new way to right click */}
         </Page>
         <AboveTablet>
-          {isHovered && (
+          {isHovered && !selectProduct && (
             <ButtonContainer {...{ myLockerList }} onClick={onPressCustomize}>
               {labelButton}
             </ButtonContainer>
@@ -129,21 +136,26 @@ const ProductSlide = ({
     ? images[imagesOrder.find(key => images[key]) || 'thumbnail']
     : JackrooLogo
   return (
-    <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
+    <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
       <ImageTop>
         <AboveTablet>
           <QuickView onClick={onPressQuickView}>
             <img src={quickViewIcon} />
           </QuickView>
         </AboveTablet>
+        {selectProduct && <Checkbox
+          {...{ indeterminate: false }}
+          onChange={(handleCheckChange)}
+          checked={isSelected}
+        />}
         {isTopProduct && (
           <TopContainer>
             <TopText>TOP</TopText>
           </TopContainer>
         )}
       </ImageTop>
-      <ThumbnailImage onClick={onPressThumbnail} src={thumbnail} />
-      {isHovered && (
+      <ThumbnailImage onClick={!selectProduct && onPressThumbnail} src={thumbnail} />
+      {isHovered && !selectProduct && (
         <ButtonContainer
           {...{ myLockerList }}
           onClick={customizable ? onPressCustomize : onPressThumbnail}
