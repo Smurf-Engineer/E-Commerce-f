@@ -19,7 +19,6 @@ const MobileMenu = ({
     <Container>
       <Previous />
       <Continue />
-
     </Container>
   )
 }

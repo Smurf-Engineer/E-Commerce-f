@@ -48,7 +48,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       <Container>
           {isMobile &&
               (<MobileMenu />
-            )}
+              )}
           {!isMobile && (
             <Header
               proDesign={true}
