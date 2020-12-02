@@ -58,12 +58,15 @@ import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
 import orderBy from 'lodash/orderBy'
 import Draggable from '../../Draggable'
+import { getSizeInCentimeters } from '../../../utils/utilsFiles'
 
 const { confirm, warning } = Modal
 
 interface Data extends QueryProps {
   images: ImageFile[]
 }
+
+const MAX_CM = 25
 
 const warningExtensions = [
   '.svg',
@@ -363,7 +366,19 @@ class UploadTab extends React.PureComponent<Props, State> {
           onOk: () => onUploadFile(file)
         })
       } else {
-        onUploadFile(file)
+        const img = new Image()
+        const objectUrl = URL.createObjectURL(file)
+        img.onload = async () => {
+          const width = getSizeInCentimeters(img.width)
+          const height = getSizeInCentimeters(img.height) 
+          if (width <= MAX_CM && height <= MAX_CM) {
+            onUploadFile(file)
+          } else {
+            message.error(formatMessage(messages.imageCmError))
+          }
+          URL.revokeObjectURL(objectUrl)
+        }
+        img.src = objectUrl 
       }
     }
     return false

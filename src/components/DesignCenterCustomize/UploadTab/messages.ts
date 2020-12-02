@@ -48,6 +48,10 @@ export default defineMessages({
     id: 'components.UploadTab.uploadFile',
     defaultMessage: `+ UPLOAD FILE`
   },
+  imageCmError: {
+    id: 'components.UploadTab.imageCmError',
+    defaultMessage: `Oh no! Image size is limited to 25x25cm`
+  },
   uploadLayers: {
     id: 'components.UploadTab.uploadLayers',
     defaultMessage: `Upload Layers`

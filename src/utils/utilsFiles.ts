@@ -4,6 +4,7 @@ import config from '../config/index'
 import { UploadFile } from '../types/common'
 import last from 'lodash/last'
 import { Area } from 'react-easy-crop'
+import { CM_PER_INCH, DPI } from '../constants'
 
 export const getFileExtension = (fileName: string) => {
   const extensionPattern = /\.[a-zA-Z0-9]+/g
@@ -27,6 +28,11 @@ export const isPhoneNumber = (value: string) => {
   const regex = /^[0-9 ()+-]+$/
   return regex.test(value)
 }
+
+export const getSizeInCentimeters = (pixels: number): number => {
+  return Math.round((pixels * CM_PER_INCH) / DPI)
+}
+
 export const containsNumberAndLetters = (value: string) =>
   /^[0-9a-zA-Z]+$/.test(value)
 

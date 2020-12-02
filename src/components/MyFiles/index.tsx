@@ -36,9 +36,11 @@ import { RED } from '../../theme/colors'
 import indexOf from 'lodash/indexOf'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
-import { bytesToMb } from '../../utils/utilsFiles'
+import { bytesToMb, getSizeInCentimeters } from '../../utils/utilsFiles'
 
 const { warning } = Modal
+
+const MAX_CM = 25
 
 const warningExtensions = [
   '.svg',
@@ -192,7 +194,19 @@ class MyFiles extends React.Component<Props, {}> {
           onOk: async () => await this.uploadAction(file)
         })
       } else {
-        await this.uploadAction(file)
+        const img = new Image()
+        const objectUrl = URL.createObjectURL(file)
+        img.onload = async () => {
+          const width = getSizeInCentimeters(img.width)
+          const height = getSizeInCentimeters(img.height) 
+          if (width <= MAX_CM && height <= MAX_CM) {
+            await this.uploadAction(file)
+          } else {
+            message.error(formatMessage(messages.imageCmError))
+          }
+          URL.revokeObjectURL(objectUrl)
+        }
+        img.src = objectUrl
       }
     }
     return false
