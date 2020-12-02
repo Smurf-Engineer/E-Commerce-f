@@ -333,20 +333,17 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
 
     controls.enableKeys = false
-    controls.enableZoom = false
+    controls.enableZoom = isMobile
     controls.minDistance = CAMERA_MIN_ZOOM
     controls.maxDistance = CAMERA_MAX_ZOOM
     // controls.enableZoom = isMobile TODO: Pan zoom
-
+    const { down, up, move, wheel } = this.configureEventListeners()
     if (!isMobile) {
-      const { down, up, move, wheel } = this.configureEventListeners()
       this.container.addEventListener(down, this.onMouseDown, false)
-      this.container.addEventListener(down, this.onMouseDown, false)
-      this.container.addEventListener(wheel, this.onWheel, false)
       this.container.addEventListener(up, this.onMouseUp, false)
       this.container.addEventListener(move, this.onMouseMove, false)
+      this.container.addEventListener(wheel, this.onWheel, false)
     }
-
     this.controls = controls
     this.start()
   }
@@ -360,10 +357,11 @@ class Render3D extends PureComponent {
     if (this.renderer) {
       this.stop()
       if (!isMobile) {
-        const { down, up, move } = this.configureEventListeners()
+        const { down, up, move, wheel } = this.configureEventListeners()
         this.container.removeEventListener(down, this.onMouseDown, false)
         this.container.removeEventListener(up, this.onMouseUp, false)
         this.container.removeEventListener(move, this.onMouseMove, false)
+        this.container.removeEventListener(wheel, this.onWheel, false)
       }
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
