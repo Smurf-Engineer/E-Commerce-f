@@ -44,6 +44,10 @@ export default defineMessages({
     id: 'components.MyFiles.imageSizeError',
     defaultMessage: 'Oh no! Max file size is limited to 20MB'
   },
+  imageCmError: {
+    id: 'components.MyFiles.imageCmError',
+    defaultMessage: 'Oh no! Image size is limited to 25x25cm'
+  },
   imageExtensionError: {
     id: 'components.MyFiles.imageExtensionError',
     defaultMessage: 'Oh no! Your file has to be an eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd'
