@@ -60,6 +60,15 @@ export default defineMessages({
     id: 'components.MyFiles.gotIt',
     defaultMessage: 'Got it!'
   },
+  somethingWrong: {
+    id: 'components.MyFiles.somethingWrong',
+    defaultMessage: 'Oops, something went wrong!'
+  },
+  sizeBody: {
+    id: 'components.MyFiles.sizeBody',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Your file is <strong>{width}cm x {height}cm</strong> and exceeds the allowable size. The maximum dimension must be under 25cm x 25cm. Please reduce the dimensional size of your file and upload again.'
+  },
   vectorInfo: {
     id: 'components.MyFiles.vectorInfo',
     // tslint:disable-next-line: max-line-length

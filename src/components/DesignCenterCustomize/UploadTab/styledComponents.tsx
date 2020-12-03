@@ -8,7 +8,8 @@ import {
   GRAY_DARK,
   RED,
   GRAY_LIGHT,
-  BLUE
+  BLUE,
+  GREEN_BRIGHT
 } from '../../../theme/colors'
 import { AVENIR_NEXT } from '../../../theme/fonts'
 import Icon from 'antd/lib/icon'
@@ -258,6 +259,26 @@ export const InfoBody = styled.div`
   margin-top: 12px;
   margin-bottom: 12px;
   margin-left: -38px;
+`
+
+export const SizeTitle = styled.div`
+  color: ${RED};
+  text-align: center;
+  font-weight: bold;
+`
+
+export const SizeBody = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+  span {
+    color: ${GREEN_BRIGHT};
+    font-weight: bold;
+  }
 `
 
 export const WarningIcon = styled(Icon)``

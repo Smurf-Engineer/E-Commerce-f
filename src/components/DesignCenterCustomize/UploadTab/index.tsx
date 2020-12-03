@@ -52,7 +52,9 @@ import {
   ModalTitle,
   buttonStyle,
   InfoBody,
-  WarningIcon
+  WarningIcon,
+  SizeTitle,
+  SizeBody
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
@@ -374,7 +376,18 @@ class UploadTab extends React.PureComponent<Props, State> {
           if (width <= MAX_CM && height <= MAX_CM) {
             onUploadFile(file)
           } else {
-            message.error(formatMessage(messages.imageCmError))
+            warning({
+              title: <SizeTitle>{formatMessage(messages.somethingWrong)}</SizeTitle>,
+              icon: ' ',
+              okText: formatMessage(messages.gotIt),
+              okButtonProps: {
+                style: buttonStyle
+              },
+              content: 
+                <SizeBody 
+                  dangerouslySetInnerHTML={{__html: formatMessage(messages.sizeBody, { width, height })}}
+                />
+            })
           }
           URL.revokeObjectURL(objectUrl)
         }
