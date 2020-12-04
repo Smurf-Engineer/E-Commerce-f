@@ -91,9 +91,7 @@ export const InfoBody = styled.div`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  margin-left: -38px;
+  margin: 12px 0 12px -38px;
 `
 
 export const SizeTitle = styled.div`
@@ -107,9 +105,7 @@ export const SizeBody = styled.div`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
-  margin-top: 24px;
-  margin-bottom: 12px;
-  margin-left: -38px;
+  margin: 24px 0 12px -38px;
 `
 
 export const WarningIcon = styled(Icon)``
