@@ -21,3 +21,7 @@ body {
 .transparent-modal .ant-modal-content .ant-modal-body{
   padding: 0;
 }
+
+.rc-drawer, .rc-drawer-content{
+  position: relative;
+}

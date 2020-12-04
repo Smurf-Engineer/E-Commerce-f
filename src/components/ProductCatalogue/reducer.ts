@@ -37,8 +37,7 @@ export const initialState = fromJS({
   fit_styleFilters: {},
   typeFilters: {},
   TemperatureFilters: {},
-  openSidebar: false,
-  selectedItems: []
+  openSidebar: false
 })
 
 const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -96,10 +95,8 @@ const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action)
         genderFilters: { Men: true, Women: true, Unisex: true }
       })
     case SELECT_PRODUCT: {
-      console.log('Tr')
       const selectedItems = state.get('selectedItems')
       const addItem = selectedItems.push(action.productId)
-      console.log('Item ', addItem)
       return state.merge({ selectedItems: addItem })
     }
     case DESELECT_PRODUCT: {
@@ -107,7 +104,6 @@ const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action)
       const indexOfListingToDelete = state
         .get('selectedItems')
         .findIndex((productType: number) => {
-          console.log('PT ', productType)
           return productType === productId
         })
       const selectedItems = state.get('selectedItems')

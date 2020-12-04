@@ -15,7 +15,8 @@ import {
   QuickView,
   ProApproved,
   ThumbnailImage,
-  CustomizeButton
+  CustomizeButton,
+  CheckboxContainer
 } from './styledComponents'
 import messages from './messages'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
@@ -24,6 +25,7 @@ import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { ImageType } from '../../../types/common'
 
 const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
+const BelowTablet = (props: any) => <Responsive {...props} maxWidth={767} />
 
 interface Props {
   onMouseEnter: () => void
@@ -46,6 +48,7 @@ interface Props {
   proDesignAssigned: boolean
   selectProduct?: boolean
   isSelected?: boolean
+  selectedIndex?: number
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -81,6 +84,7 @@ const ProductSlide = ({
   proDesignAssigned,
   selectProduct,
   isSelected = false,
+  selectedIndex,
   handleCheckChange
 }: Props) => {
   if (image) {
@@ -91,7 +95,8 @@ const ProductSlide = ({
           onMouseLeave,
           isTopProduct,
           hideCustomButton,
-          backgroundColor
+          backgroundColor,
+          selectProduct
         }}
       >
         {proDesign && (
@@ -137,17 +142,21 @@ const ProductSlide = ({
     : JackrooLogo
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
-      <ImageTop>
+      <ImageTop {...{selectProduct, selectedIndex}}>
         <AboveTablet>
           <QuickView onClick={onPressQuickView}>
             <img src={quickViewIcon} />
           </QuickView>
         </AboveTablet>
-        {selectProduct && <Checkbox
+        {selectProduct && <BelowTablet><QuickView onClick={onPressQuickView}>
+          <img src={quickViewIcon} />
+        </QuickView></BelowTablet>}
+        {selectProduct && <CheckboxContainer {...{selectedIndex}}>
+          <Checkbox
           {...{ indeterminate: false }}
-          onChange={(handleCheckChange)}
+          onChange={handleCheckChange}
           checked={isSelected}
-        />}
+        /></CheckboxContainer>}
         {isTopProduct && (
           <TopContainer>
             <TopText>TOP</TopText>

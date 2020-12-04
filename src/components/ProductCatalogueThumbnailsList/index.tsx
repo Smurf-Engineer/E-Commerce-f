@@ -273,6 +273,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 images={productImages}
                 product={product}
                 customizableLabel={formatMessage(messages.customizable)}
+                selectedIndex={isSelected && selectedItems.findIndex((item) => item === product.id) + 1}
                 {...{
                   currentCurrency,
                   id,
@@ -327,7 +328,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
           {total ? <TotalItems>{`${total} Items`}</TotalItems> : null}
-          {sortOptions && (
+          {sortOptions && !!sortByLabel.length && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
               <Dropdown overlay={sortOptions} placement="bottomCenter">
@@ -426,7 +427,6 @@ const ThumbnailsListEnhance = compose(
       designs,
       selectProduct
     }: OwnProps) => {
-      console.log(collectionFilters)
       return {
         fetchPolicy: 'network-only',
         variables: {

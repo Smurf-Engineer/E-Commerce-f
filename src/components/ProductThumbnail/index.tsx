@@ -71,6 +71,7 @@ interface Props {
   proDesignAssigned?: boolean
   selectProduct?: boolean
   isSelected?: boolean
+  selectedIndex?: number
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
@@ -123,7 +124,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     onPressCustomize(id)
   }
 
-  handleOnPressQuickView = () => {
+  handleOnPressQuickView = (event: React.MouseEvent) => {
+    event.stopPropagation()
     const { onPressQuickView, id, yotpoId, gender } = this.props
     onPressQuickView(id, yotpoId, gender || 0)
   }
@@ -207,6 +209,12 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     const { product, handleCheckChange } = this.props
     handleCheckChange(product.id, checked)
   }
+  onHandleCheckChangeImage = (event: any) => {
+    event.stopPropagation()
+    const { isSelected } = this.props
+    const { product, handleCheckChange } = this.props
+    handleCheckChange(product.id, !isSelected)
+  }
   render() {
     const {
       type,
@@ -232,7 +240,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       proDesign,
       proDesignAssigned,
       selectProduct,
-      isSelected = false
+      isSelected = false,
+      selectedIndex = 0
     } = this.props
     const { isHovered, currentImage, loading } = this.state
 
@@ -304,7 +313,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       })
     }
     return (
-      <Container {...{ withMargin }}>
+      <Container {...{ withMargin, selectProduct, isSelected  }} onClick={this.onHandleCheckChangeImage}>
         <ImageSlide
           {...{
             isTopProduct,
@@ -324,7 +333,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             proDesign,
             proDesignAssigned,
             selectProduct,
-            isSelected
+            isSelected,
+            selectedIndex
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

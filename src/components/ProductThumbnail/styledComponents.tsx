@@ -4,17 +4,22 @@
 import styled, { keyframes } from 'styled-components'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
-import { RED, WHITE } from '../../theme/colors'
+import { RED, TRANSPARENT, WHITE } from '../../theme/colors'
 
 interface StyleProps {
   withBorder?: boolean
   withMargin?: boolean
+  selectProduct?: boolean
+  isSelected?: boolean
 }
 
 export const Container = styled.section`
   margin: ${({ withMargin }: StyleProps) => (withMargin ? '0px 16px' : '0')};
+  margin-bottom: ${({ selectProduct }: StyleProps) => (selectProduct ? '16px' : '0')};
   width: 220px;
-  border: 3px solid ${RED};
+  border: 3px solid;
+  border-radius: 6px;
+  border-color: ${({ isSelected }: StyleProps) => (isSelected ? RED : TRANSPARENT)};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;

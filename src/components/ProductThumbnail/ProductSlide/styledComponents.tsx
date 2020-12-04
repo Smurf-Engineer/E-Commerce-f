@@ -2,11 +2,12 @@
  * Styled Components - Created by david on 12/02/18.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GREEN_BRIGHT, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED } from '../../../theme/colors'
 
 type StyledProps = {
   backgroundColor?: string
   selectProduct?: boolean
+  selectedIndex?: number
 }
 
 export const ImageContainer = styled.div`
@@ -27,12 +28,10 @@ export const ImageContainer = styled.div`
     backgroundColor ? `1px solid ${WHITE}` : 'none'};
   @media (min-width: 321px) and (max-width: 480px) {
     width: 100%;
-    margin-bottom:  ${({ selectProduct }: StyledProps) => selectProduct ? '10px' : '10px'};
   }
   @media only screen and (max-width: 320px) {
     height: 130px;
     width: 100%;
-    margin-bottom:  ${({ selectProduct }: StyledProps) => selectProduct ? '10px' : '10px'};
   }
 `
 
@@ -75,7 +74,22 @@ export const ImageTop = styled.div`
   width: 100%;
   cursor: pointer;
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 100px;
+    width: ${({ selectProduct }: StyledProps) =>
+    selectProduct ? `100%` : '100px'};
+    &::after {
+      content: "${({ selectedIndex }: StyledProps) => selectedIndex}";
+      color: ${WHITE};
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      background: ${RED};
+      right: 5px;
+      top: 5px;
+      display: ${({ selectedIndex }: StyledProps) => selectedIndex ? 'flex' : 'none'};
+      justify-content: center;
+      align-items: center;
+    }
   }
 `
 export const TopContainer = styled.div`
@@ -168,4 +182,11 @@ export const ProApproved = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
+`
+
+export const CheckboxContainer = styled.div`
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: ${({ selectedIndex }: StyledProps) =>
+    selectedIndex ? 'none' : 'inline-block'};
+  }
 `

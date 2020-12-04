@@ -82,8 +82,8 @@ interface Props extends RouteComponentProps<any> {
   setHomeSelectedFilters: () => void
   resetReducerAction: () => void
   setAllGendersAction: () => void
-  selectProductAction: (productId: number) => void
-  deselectProductAction: (productId: number) => void
+  onSelectProduct: (productId: number) => void
+  onDeselectProduct: (productId: number) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
@@ -160,12 +160,12 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   onCheckChange = (productId: number, checked: boolean) => {
-    const { selectProductAction, deselectProductAction } = this.props
+    const { onSelectProduct, onDeselectProduct } = this.props
     if (checked) {
-      selectProductAction(productId)
+      onSelectProduct(productId)
       return
     }
-    deselectProductAction(productId)
+    onDeselectProduct(productId)
   }
 
   render() {
@@ -188,11 +188,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       openQuickViewAction: openQuickView,
       currentCurrency,
       data: { loading, filters: filtersGraph },
-      selectedItems,
-      selectProductAction
+      selectedItems
     } = this.props
-    console.log(selectedItems)
-    let sortByLabel = ''
     if (loading || !filtersGraph || !filtersGraph.length) {
       return null
     }
@@ -208,18 +205,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
     if (forced) {
       this.checkFilters()
-    }
-
-    switch (orderBy) {
-      case 'pricelow':
-        sortByLabel = intl.formatMessage(messages.lowestPriceLabel)
-        break
-      case 'pricehigh':
-        sortByLabel = intl.formatMessage(messages.hightestPriceLabel)
-        break
-      default:
-        sortByLabel = intl.formatMessage(messages.topSellerLabel)
-        break
     }
 
     const filters = [
@@ -340,7 +325,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                           handleChangePage={this.handlechangePage}
                           handleOrderBy={this.handleOrderBy}
                           selectProduct={true}
-                          handleCheckChange={selectProductAction}
+                          handleCheckChange={this.onCheckChange}
                           currentCurrency={
                             currentCurrency || config.defaultCurrency
                           }
@@ -350,9 +335,10 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             limit,
                             openQuickView,
                             history,
-                            sortByLabel,
+                            sortByLabel: '',
                             currentPage,
-                            contentTile
+                            contentTile,
+                            selectedItems
                           }}
                         />
                       </ResultsColumn>
@@ -391,7 +377,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       limit,
                       openQuickView,
                       history,
-                      sortByLabel,
+                      sortByLabel: '',
                       currentPage,
                       contentTile,
                       selectedItems

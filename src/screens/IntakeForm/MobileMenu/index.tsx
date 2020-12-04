@@ -9,16 +9,17 @@ import {
 } from './styledComponents'
 
 interface Props {
-  currentRegion: number
+  continueDisable: boolean
+  showPreviousButton?: boolean
+  showContinueButton?: boolean
+  onContinue: () => void
 }
 
-const MobileMenu = ({
-  currentRegion,
-}: Props) => {
+const MobileMenu = ({ continueDisable, showPreviousButton = true, showContinueButton = true, onContinue }: Props) => {
   return (
     <Container>
-      <Previous />
-      <Continue />
+       <Previous show={showPreviousButton} />
+       <Continue onClick={!continueDisable  ? onContinue : null} disabled={continueDisable} show={showContinueButton} />
     </Container>
   )
 }

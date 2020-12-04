@@ -113,9 +113,10 @@ export class StartDesignModal extends React.Component<Props, {}> {
                 <FoldContent
                   order={designCenterMessages.length + 1}
                   className={designCardFolded ? 'folded' : 'unfolded'}
+                  onClick={goToCustomize}
                 >
-                  <ButtonWrapper>
-                    <Button onClick={goToCustomize}>
+                  <ButtonWrapper onClick={goToCustomize}>
+                    <Button>
                       <ColorWheel src={colorWheel} />
                       {formatMessage(messages.customizeLabel)}
                     </Button>
@@ -139,9 +140,10 @@ export class StartDesignModal extends React.Component<Props, {}> {
                  <FoldContent
                   order={designCenterMessages.length + 1}
                   className={proDesignCardFolded ? 'folded' : 'unfolded'}
+                  onClick={goToProDesign}
                 >
                   <ButtonWrapper>
-                    <Button onClick={goToProDesign}>
+                    <Button>
                       <ColorWheel src={colorWheel} />
                       {formatMessage(messages.customizeLabel)}
                     </Button>
