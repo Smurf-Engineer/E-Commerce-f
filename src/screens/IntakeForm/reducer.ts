@@ -5,10 +5,12 @@ import { fromJS } from 'immutable'
 import { Reducer } from '../../types/common'
 import {
   SELECT_PRODUCT,
-  DESELECT_PRODUCT
+  DESELECT_PRODUCT,
+  Sections
 } from './constants'
 export const initialState = fromJS({
-  selectedItems: []
+  selectedItems: [],
+  currentScreen: Sections.PRODUCTS
 })
 
 const intakeFormReducer: Reducer<any> = (

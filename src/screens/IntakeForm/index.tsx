@@ -26,6 +26,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   responsive: Responsive
   selectedItems: number[]
+  currentScreen: number
   selectProductAction: (productId: number) => void
   deselectProductAction: (productId: number) => void
 }
