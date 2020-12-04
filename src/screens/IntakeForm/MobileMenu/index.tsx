@@ -8,17 +8,28 @@ import {
   Continue
 } from './styledComponents'
 
+interface NavValidation {
+  continueDisable?: boolean
+  showPreviousButton?: boolean
+  previousDisable?: boolean
+  showContinueButton?: boolean
+}
 interface Props {
   continueDisable: boolean
-  showPreviousButton?: boolean
-  showContinueButton?: boolean
+  validations: NavValidation
   onContinue: () => void
 }
 
-const MobileMenu = ({ continueDisable, showPreviousButton = true, showContinueButton = true, onContinue }: Props) => {
+const MobileMenu = ({ validations, onContinue }: Props) => {
+  const {
+    continueDisable = false,
+    showPreviousButton = true,
+    previousDisable = false,
+    showContinueButton = true
+  } = validations
   return (
     <Container>
-       <Previous show={showPreviousButton} />
+       <Previous show={showPreviousButton} disabled={previousDisable} />
        <Continue onClick={!continueDisable  ? onContinue : null} disabled={continueDisable} show={showContinueButton} />
     </Container>
   )

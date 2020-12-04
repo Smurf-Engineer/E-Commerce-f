@@ -6,6 +6,7 @@ import { Reducer } from '../../types/common'
 import {
   SELECT_PRODUCT,
   DESELECT_PRODUCT,
+  GO_TO_NEXT_PAGE,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -34,6 +35,8 @@ const intakeFormReducer: Reducer<any> = (
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
       return state.set('selectedItems', updatedSelectedItems)
     }
+    case GO_TO_NEXT_PAGE:
+      return state.set('currentScreen', action.page)
     default:
       return state
   }

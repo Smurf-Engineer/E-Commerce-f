@@ -313,7 +313,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       })
     }
     return (
-      <Container {...{ withMargin, selectProduct, isSelected  }} onClick={this.onHandleCheckChangeImage}>
+      <Container
+      {...{ withMargin, selectProduct, isSelected  }}
+      onClick={selectProduct ? this.onHandleCheckChangeImage : null}>
         <ImageSlide
           {...{
             isTopProduct,

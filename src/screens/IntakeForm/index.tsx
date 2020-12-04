@@ -7,10 +7,12 @@ import { compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import Header from '../../components/DesignCenterHeader'
 import Layout from '../../components/MainLayout'
+import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import ProductCatalogue from '../../components/ProductCatalogue'
 import { connect } from 'react-redux'
 import MobileMenu from './MobileMenu'
+import DesignPathway from './DesignPathway'
 
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -21,6 +23,7 @@ import {
 import {
   Responsive,
 } from '../../types/common'
+import { Sections } from './constants'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -29,6 +32,7 @@ interface Props extends RouteComponentProps<any> {
   currentScreen: number
   selectProductAction: (productId: number) => void
   deselectProductAction: (productId: number) => void
+  goToPage: (page: number) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {
@@ -39,7 +43,26 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnContinue = () => {
-    alert('s')
+    const { goToPage, currentScreen } = this.props
+    goToPage(currentScreen + 1)
+  }
+
+  getNavButtonsValidation = () => {
+    const { currentScreen, selectedItems } = this.props
+    switch (currentScreen) {
+      case Sections.PRODUCTS:
+        return {
+          continueDisable: selectedItems.length < 1,
+          showPreviousButton: false
+        }
+      case Sections.PATHWAY:
+        return {
+          showPreviousButton: false,
+          showContinueButton: false
+        }
+      default:
+        return {}
+    }
   }
 
   render() {
@@ -49,10 +72,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       history,
       responsive,
       selectedItems,
+      currentScreen,
       selectProductAction,
       deselectProductAction
     } = this.props
     const isMobile = !!responsive && responsive.phone
+    const validations = this.getNavButtonsValidation()
     return (
       <Layout
         {...{ history, intl }}
@@ -66,9 +91,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         {isMobile &&
             (<MobileMenu
               onContinue={this.handleOnContinue}
-              continueDisable={selectedItems.length < 1}
-              showPreviousButton={false}
-              showContinueButton={true}
+              {...{validations}}
             />
             )}
         {!isMobile && (
@@ -82,10 +105,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             {formatMessage(messages.chooseProducts)}
           </Title>
         </NavHeader>
-        <ProductCatalogue
-          onSelectProduct={selectProductAction}
-          onDeselectProduct={deselectProductAction}
-          {...{ history, formatMessage, selectedItems }} />
+        <SwipeableViews disabled={true} index={currentScreen}>
+          <ProductCatalogue
+            onSelectProduct={selectProductAction}
+            onDeselectProduct={deselectProductAction}
+            {...{ history, formatMessage, selectedItems }} />
+          <DesignPathway {...{formatMessage}} />
+        </SwipeableViews>
       </Container>
     </Layout>)
   }

@@ -3,7 +3,8 @@
  */
 import {
   SELECT_PRODUCT,
-  DESELECT_PRODUCT
+  DESELECT_PRODUCT,
+  GO_TO_NEXT_PAGE
 } from './constants'
 
 export const selectProductAction = (productId: number) => ({
@@ -14,4 +15,9 @@ export const selectProductAction = (productId: number) => ({
 export const deselectProductAction = (productId: number) => ({
   type: DESELECT_PRODUCT,
   productId
+})
+
+export const goToPage = (page: number) => ({
+  type: GO_TO_NEXT_PAGE,
+  page
 })
