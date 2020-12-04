@@ -3,7 +3,7 @@
  */
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { BLUE, GRAY_DARK, WHITE } from '../../theme/colors'
+import { BLUE, GRAY_DARK, RED, WHITE } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
 
 type Props = {
@@ -91,9 +91,21 @@ export const InfoBody = styled.div`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  margin-left: -38px;
+  margin: 12px 0 12px -38px;
+`
+
+export const SizeTitle = styled.div`
+  color: ${RED};
+  text-align: center;
+  font-weight: bold;
+`
+
+export const SizeBody = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 24px 0 12px -38px;
 `
 
 export const WarningIcon = styled(Icon)``

@@ -24,7 +24,9 @@ import {
   ModalTitleStyled,
   WarningIcon,
   InfoBody,
-  buttonStyle
+  buttonStyle,
+  SizeTitle,
+  SizeBody
 } from './styledComponents'
 import { Palette, ImageFile, QueryProps } from '../../types/common'
 import PalettesList from './PalettesList'
@@ -79,7 +81,7 @@ interface Props {
   uploading: boolean
   onUploadFile: (file: File) => void
   uploadFileAction: (file: File) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, params?: any) => string
   // Apollo mutations
   deleteImage: (variables: {}) => void
   // Redux Actions
@@ -202,7 +204,18 @@ class MyFiles extends React.Component<Props, {}> {
           if (width <= MAX_CM && height <= MAX_CM) {
             await this.uploadAction(file)
           } else {
-            message.error(formatMessage(messages.imageCmError))
+            warning({
+              title: <SizeTitle>{formatMessage(messages.somethingWrong)}</SizeTitle>,
+              icon: ' ',
+              okText: formatMessage(messages.gotIt),
+              okButtonProps: {
+                style: buttonStyle
+              },
+              content: 
+                <SizeBody 
+                  dangerouslySetInnerHTML={{__html: formatMessage(messages.sizeBody, { width, height })}}
+                />
+            })
           }
           URL.revokeObjectURL(objectUrl)
         }
