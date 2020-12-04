@@ -2,9 +2,10 @@
  * Styled Components - Created by eduardoquintero on 17/11/20.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, BLUE, GRAY_LIGHT, GRAY_LIGHTEST, BLACK , WHITE } from '../../../theme/colors'
+import { GRAY_DARK, RED, GRAY_LIGHT, GRAY_LIGHTEST, BLACK , WHITE } from '../../../theme/colors'
 
 export const Container = styled.div`
+  width: 100%;
 `
 
 export const Title = styled.div`
@@ -26,6 +27,7 @@ export const Card = styled.div`
   width: 400px;
   transition: all 0.25s;
   cursor: pointer;
+  padding: 20px;
   &:hover {
     box-shadow: 0 3px 11px 1px rgba(0, 0, 0, 0.15);
   }
@@ -33,6 +35,7 @@ export const Card = styled.div`
     margin-left: 30px;
   }
   @media (min-width: 320px) and (max-width: 748px) {
+    width: 100%;
     &:last-child {
       margin-left: 0px;
       margin-top: 32px;
@@ -53,8 +56,13 @@ export const CardTitle = styled.div`
   background: ${GRAY_LIGHTEST};
   text-align: center;
   padding: 30px;
+  min-height: 330px;
+  display: flex;
   & img {
     width: 100%;
+  }
+  @media (min-width: 320px) and (max-width: 748px) {
+    padding: 90px;
   }
 `
 
@@ -65,6 +73,7 @@ export const DesignsCardsContainer = styled.div`
   align-items: center;
   @media (min-width: 320px) and (max-width: 748px) {
     flex-flow: column;
+    padding: 20px;
   }
 `
 
@@ -80,19 +89,23 @@ export const ButtonWrapper = styled.div`
   background-color: ${WHITE};
 `
 
-export const Button = styled.div`
-  display: flex;
-  height: 50px;
-  width: 100%;
-  margin-bottom: 16px;
-  border: 1px solid ${BLUE};
-  border-radius: 2px;
-  cursor: pointer;
-  font-weight: 600;
-  background-color: ${WHITE};
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-  color: ${BLUE};
+export const Text = styled.div`
   font-size: 16px;
-  justify-content: center;
-  align-items: center;
+  letter-spacing: 0.8px;
+`
+
+export const Button = styled.div`
+  padding: 10px 13px;
+  font-size: 16px;
+  border: 2px solid ${RED};
+  color: ${RED};
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  margin-left: 20px;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+    background: ${RED};
+    color: ${WHITE};
+  }
 `

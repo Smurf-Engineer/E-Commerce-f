@@ -105,13 +105,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             {formatMessage(messages.chooseProducts)}
           </Title>
         </NavHeader>
-        <SwipeableViews disabled={true} index={currentScreen}>
-          <ProductCatalogue
+        {currentScreen === Sections.PRODUCTS && <ProductCatalogue
             onSelectProduct={selectProductAction}
             onDeselectProduct={deselectProductAction}
-            {...{ history, formatMessage, selectedItems }} />
-          <DesignPathway {...{formatMessage}} />
-        </SwipeableViews>
+            {...{ history, formatMessage, selectedItems }} />}
+        {currentScreen === Sections.PATHWAY && (
+          <DesignPathway fromScratch={this.handleOnContinue} {...{formatMessage, isMobile}} />
+        )}
+       {currentScreen > Sections.PATHWAY && <SwipeableViews disabled={true} index={currentScreen}>
+          {/* INSPIRATION */}
+        </SwipeableViews>}
       </Container>
     </Layout>)
   }
