@@ -341,7 +341,7 @@ export class Account extends React.Component<Props, {}> {
     const { status } = reseller || {}
     const approvedReseller = status === APPROVED
     let sideMenu = options
-    if (!!status) {
+    if (!!status && resellerEnabled) {
       sideMenu = approvedReseller ? resellerOptions : resellerShortOptions
     }
     const menuOptions = sideMenu.map(({ title, options: submenus }) =>
