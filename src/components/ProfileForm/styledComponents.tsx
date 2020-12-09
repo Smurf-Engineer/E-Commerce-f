@@ -39,6 +39,12 @@ export const Label = styled.div`
   line-height: 19px;
 `
 
+export const Advise = styled.div`
+  font-size: 12px;
+  margin: -8px 0 14px;
+  font-style: italic;
+`
+
 export const StyledInput = styled(Input)`
   height: 40px;
   width: 100%;
