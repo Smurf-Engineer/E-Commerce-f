@@ -28,5 +28,10 @@ export default defineMessages({
   changePassword: {
     id: 'components.ProfileForm.changePassword',
     defaultMessage: 'Change Password'
+  },
+  mailAdvise: {
+    id: 'components.ProfileForm.mailAdvise',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'If you need to change your login email, please contact our customer service team via email or chat.'
   }
 })

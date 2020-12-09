@@ -940,6 +940,7 @@
   "components.ProfileForm.lastName": "Last Name",
   "components.ProfileForm.email": "E-mail",
   "components.ProfileForm.phone": "Phone",
+  "components.ProfileForm.mailAdvise": "If you need to change your login email, please contact our customer service team via email or chat.",
   "components.ProfileForm.save": "Save",
   "components.ProfileForm.changePassword": "Change Password",
   "components.ProfileSettings.resellerSettings": "Reseller Account Settings",
