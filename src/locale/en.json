@@ -946,6 +946,7 @@
   "components.ProfileSettings.status": "Status",
   "components.ProfileSettings.activatedAt": "Activation Date",
   "components.ProfileSettings.taxForm": "Tax Form",
+  "components.ProfileSettings.badFormat": "Bad email format or empty.",
   "components.ProfileSettings.pendingStatus": "Once you apply for Reseller Program and it's approved, your account settings will show here.",
   "components.ProfileSettings.dealerMargin": "Dealer Margin",
   "components.ProfileSettings.customProducts": "Custom Products",

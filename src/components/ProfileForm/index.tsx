@@ -99,11 +99,9 @@ const ProfileForm = ({
             <Label>{formatMessage(messages.email)}</Label>
           </InputTitleContainer>
           <StyledInput
-            disabled={true} // TODO: ask flow to change email
             id="email"
-            value={email !== null ? email : emailUP}
+            defaultValue={emailUP}
             onChange={handleInputChange}
-            maxLength={50}
           />
         </Column>
       </Row>
