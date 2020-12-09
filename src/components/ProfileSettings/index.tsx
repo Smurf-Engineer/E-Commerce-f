@@ -17,6 +17,7 @@ import Spin from 'antd/lib/spin'
 import queryString from 'query-string'
 import * as ProfileApiActions from './api'
 import * as ProfileSettingsActions from './actions'
+import { validate } from 'email-validator'
 import { PHONE_FIELD, PENDING, APPROVED } from '../../constants'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import {
@@ -124,6 +125,7 @@ interface Props {
   openModal: boolean
   file: string
   // api actions
+  onLogout: () => void
   uploadFileAction: (file: UploadFile) => void
   // redux actions
   successRequestAction: () => void
@@ -271,15 +273,17 @@ class ProfileSettings extends React.Component<Props, {}> {
                   </BoldLabel>
                 }
               </LabelButton>
-              <LabelButton>
-                <Title>
-                  {formatMessage(messages.taxForm)}
-                </Title>
-                <FileLink onClick={this.openFile}>
-                  <Clip type="paper-clip" />
-                  {fileName}
-                </FileLink>
-              </LabelButton>
+              {!!fileName && 
+                <LabelButton>
+                  <Title>
+                    {formatMessage(messages.taxForm)}
+                  </Title>
+                  <FileLink onClick={this.openFile}>
+                    <Clip type="paper-clip" />
+                    {fileName}
+                  </FileLink>
+                </LabelButton>
+              }
               <LabelButton>
                 <TitleMargin>
                   {formatMessage(messages.dealerMargin)}
@@ -459,6 +463,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     const {
       updateUserProfile,
       firstName,
+      formatMessage,
       lastName,
       email,
       phone,
@@ -467,11 +472,16 @@ class ProfileSettings extends React.Component<Props, {}> {
       }
     } = this.props
 
+    if (!!email && !validate(email)) {
+      MessageBar.error(formatMessage(messages.badFormat))
+      return
+    }
+    const isNewMail = email && email !== userProfile.email
     const payload = {
       userData: {
         firstName: firstName || userProfile.firstName,
         lastName: lastName || userProfile.lastName,
-        email: email || userProfile.email,
+        email: isNewMail ? email : null,
         phone: phone || userProfile.phone
       }
     }
@@ -479,7 +489,8 @@ class ProfileSettings extends React.Component<Props, {}> {
       'loadingProfile',
       payload,
       updateUserProfile,
-      messages.profileSuccessMessage
+      messages.profileSuccessMessage,
+      isNewMail
     )
   }
 
@@ -674,9 +685,10 @@ class ProfileSettings extends React.Component<Props, {}> {
     setting: string,
     payload: {},
     mutation: any,
-    successMessage: any
+    successMessage: any,
+    logout?: boolean
   ) => {
-    const { setSettingsLoadingAction, formatMessage } = this.props
+    const { setSettingsLoadingAction, formatMessage, onLogout } = this.props
     try {
       setSettingsLoadingAction(setting, true)
       await mutation({
@@ -692,6 +704,9 @@ class ProfileSettings extends React.Component<Props, {}> {
       })
       setSettingsLoadingAction(setting, false)
       MessageBar.success(formatMessage(successMessage), 4)
+      if (logout) {
+        onLogout()
+      }
     } catch (error) {
       setSettingsLoadingAction(setting, false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
