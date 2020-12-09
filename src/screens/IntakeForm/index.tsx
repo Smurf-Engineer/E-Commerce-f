@@ -12,6 +12,7 @@ import * as intakeFormActions from './actions'
 import ProductCatalogue from '../../components/ProductCatalogue'
 import { connect } from 'react-redux'
 import MobileMenu from './MobileMenu'
+import Inspiration from './Inspiration'
 import DesignPathway from './DesignPathway'
 
 import { RouteComponentProps } from 'react-router-dom'
@@ -22,6 +23,7 @@ import {
 } from './styledComponents'
 import {
   Responsive,
+  InspirationType
 } from '../../types/common'
 import { Sections } from './constants'
 
@@ -30,13 +32,21 @@ interface Props extends RouteComponentProps<any> {
   responsive: Responsive
   selectedItems: number[]
   currentScreen: number
-  selectProductAction: (productId: number) => void
-  deselectProductAction: (productId: number) => void
+  inspirationPage: number
+  inspirationSkip: number
+  inspiration: InspirationType[]
+  inspirationTotal: number
+  inspirationLoading: boolean
+  inspirationSelectedItems: number[]
+  selectElementAction: (elementId: number, listName: string) => void
+  deselectElementAction: (elementId: number, listName: string) => void
   goToPage: (page: number) => void
+  setInspirationPageAction: (skip: number, newPage: number) => void
+  setInspirationDataAction: (data: InspirationType[], fullCount: number) => void
+  setInspirationLoadingAction: (loading: boolean) => void
 }
 
-export class IntakeFormPage extends React.Component<Props, {}> {
-  productCatalog: any
+export class IntakeFormPage extends React.Component<Props, {}> {  
   handleClick = () => {
     const { history } = this.props
     history.push('/product-catalogue')
@@ -48,7 +58,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   getNavButtonsValidation = () => {
-    const { currentScreen, selectedItems } = this.props
+    const { currentScreen, selectedItems, inspirationSelectedItems } = this.props
     switch (currentScreen) {
       case Sections.PRODUCTS:
         return {
@@ -59,6 +69,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         return {
           showPreviousButton: false,
           showContinueButton: false
+        }
+      case Sections.INSPIRATION:
+        return {
+          showPreviousButton: true,
+          continueDisable: inspirationSelectedItems.length < 1
         }
       default:
         return {}
@@ -73,8 +88,17 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       responsive,
       selectedItems,
       currentScreen,
-      selectProductAction,
-      deselectProductAction
+      inspirationPage,
+      inspirationSkip,
+      inspiration,
+      inspirationTotal,
+      inspirationLoading,
+      inspirationSelectedItems,
+      selectElementAction,
+      deselectElementAction,
+      setInspirationPageAction,
+      setInspirationDataAction,
+      setInspirationLoadingAction
     } = this.props
     const isMobile = !!responsive && responsive.phone
     const validations = this.getNavButtonsValidation()
@@ -88,7 +112,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         darkMode={true}
       >
       <Container>
-        {isMobile &&
+        {!isMobile &&
             (<MobileMenu
               onContinue={this.handleOnContinue}
               {...{validations}}
@@ -106,14 +130,27 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           </Title>
         </NavHeader>
         {currentScreen === Sections.PRODUCTS && <ProductCatalogue
-            onSelectProduct={selectProductAction}
-            onDeselectProduct={deselectProductAction}
+            onSelectProduct={selectElementAction}
+            onDeselectProduct={deselectElementAction}
             {...{ history, formatMessage, selectedItems }} />}
         {currentScreen === Sections.PATHWAY && (
           <DesignPathway fromScratch={this.handleOnContinue} {...{formatMessage, isMobile}} />
         )}
        {currentScreen > Sections.PATHWAY && <SwipeableViews disabled={true} index={currentScreen}>
-          {/* INSPIRATION */}
+          <Inspiration
+            {...{ formatMessage, inspiration }}
+            windowWidth={responsive.fakeWidth}
+            currentPage={inspirationPage}
+            setPage={setInspirationPageAction}
+            skip={inspirationSkip}
+            setInspirationData={setInspirationDataAction}
+            total={inspirationTotal}
+            setLoading={setInspirationLoadingAction}
+            loading={inspirationLoading}
+            onSelect={selectElementAction}
+            onDeselect={deselectElementAction}
+            selectedItems={inspirationSelectedItems}
+          />
         </SwipeableViews>}
       </Container>
     </Layout>)

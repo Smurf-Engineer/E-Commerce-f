@@ -25,3 +25,19 @@ body {
 .rc-drawer, .rc-drawer-content{
   position: relative;
 }
+
+.masonry-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.masonry-grid_column {
+  padding-left: 2px;
+  background-clip: padding-box;
+}
+
+.masonry-grid_column > div {
+  margin: 2px auto;
+}

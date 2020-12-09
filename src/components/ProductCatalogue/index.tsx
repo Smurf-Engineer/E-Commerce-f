@@ -33,6 +33,8 @@ import { filtersNames, ALL_GENDERS } from './constants'
 import config from '../../config/index'
 import { RED } from '../../theme/colors'
 
+const SELECTEED_ITEMS = 'selectedItems'
+
 interface FilterOptions extends Filter {
   selected: boolean
   filterId: number
@@ -82,8 +84,8 @@ interface Props extends RouteComponentProps<any> {
   setHomeSelectedFilters: () => void
   resetReducerAction: () => void
   setAllGendersAction: () => void
-  onSelectProduct: (productId: number) => void
-  onDeselectProduct: (productId: number) => void
+  onSelectProduct: (productId: number, listName: string) => void
+  onDeselectProduct: (productId: number, listName: string) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
@@ -162,10 +164,10 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   onCheckChange = (productId: number, checked: boolean) => {
     const { onSelectProduct, onDeselectProduct } = this.props
     if (checked) {
-      onSelectProduct(productId)
+      onSelectProduct(productId, SELECTEED_ITEMS)
       return
     }
-    onDeselectProduct(productId)
+    onDeselectProduct(productId, SELECTEED_ITEMS)
   }
 
   render() {

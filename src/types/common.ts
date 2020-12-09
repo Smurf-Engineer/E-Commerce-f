@@ -1735,3 +1735,11 @@ export type SubsidiarySCA = {
 export type DeliveryDays = {
   deliveryDays: string
 }
+
+export type InspirationType = {
+  id: number
+  name: string
+  image: string
+  width: number
+  height: number
+}
