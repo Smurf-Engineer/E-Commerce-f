@@ -1743,3 +1743,13 @@ export type InspirationType = {
   width: number
   height: number
 }
+
+export type ProDesignPalette = {
+  id: number
+  name: string
+  primary: string
+  accent1: string
+  accent2: string
+  accent3: string
+  fromAdmin: boolean
+}

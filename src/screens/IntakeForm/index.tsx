@@ -13,6 +13,7 @@ import ProductCatalogue from '../../components/ProductCatalogue'
 import { connect } from 'react-redux'
 import MobileMenu from './MobileMenu'
 import Inspiration from './Inspiration'
+import Colors from './Colors'
 import DesignPathway from './DesignPathway'
 
 import { RouteComponentProps } from 'react-router-dom'
@@ -151,6 +152,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             onDeselect={deselectElementAction}
             selectedItems={inspirationSelectedItems}
           />
+          <Colors {...{formatMessage}} />
         </SwipeableViews>}
       </Container>
     </Layout>)
