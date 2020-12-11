@@ -8,19 +8,22 @@ import {
   GO_TO_NEXT_PAGE,
   SET_INSPIRATION_PAGE,
   SET_INSPIRATION_DATA,
-  SET_INSPIRATION_LOADING
+  SET_INSPIRATION_LOADING,
+  SET_PALETTE
 } from './constants'
 
-export const selectElementAction = (elementId: number, listName: string) => ({
+export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
   type: SELECT_ELEMENT,
   elementId,
-  listName
+  listName,
+  index
 })
 
-export const deselectElementAction = (elementId: number, listName: string) => ({
+export const deselectElementAction = (elementId: number | string, listName: string, index?: number) => ({
   type: DESELECT_ELEMENT,
   elementId,
-  listName
+  listName,
+  index
 })
 
 export const goToPage = (page: number) => ({
@@ -43,4 +46,11 @@ export const setInspirationDataAction = (data: InspirationType[], fullCount: num
 export const setInspirationLoadingAction = (loading: boolean) => ({
   type: SET_INSPIRATION_LOADING,
   loading
+})
+
+export const selectPaletteAction = (primaryColor: string, accentColors: string[], index: number) => ({
+  type: SET_PALETTE,
+  primaryColor,
+  accentColors,
+  index
 })

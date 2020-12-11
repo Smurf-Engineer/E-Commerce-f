@@ -1689,6 +1689,7 @@ export interface Header {
 
 export interface ColorsDataResult {
   colorsResult: Colors
+  loading?: boolean
 }
 
 export type Thumbnail = {

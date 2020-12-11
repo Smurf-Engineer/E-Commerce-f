@@ -18,4 +18,16 @@ export default defineMessages({
     id: 'screens.IntakeForm.Colors.selectPalette',
     defaultMessage: 'Select Palette '
   },
+  primaryColor: {
+    id: 'screens.IntakeForm.Colors.primaryColor',
+    defaultMessage: 'Primary Color (Choose 1) '
+  },
+  accentColor: {
+    id: 'screens.IntakeForm.Colors.accentColor',
+    defaultMessage: 'Accent Color (Choose up to 3)'
+  },
+  custom: {
+    id: 'screens.IntakeForm.Colors.custom',
+    defaultMessage: 'Custom'
+  },
 })

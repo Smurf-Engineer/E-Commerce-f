@@ -13,3 +13,11 @@ export const GetColorPalettes = gql`
     }
   }
 `
+
+export const GetColorsQuery = gql`
+  query GetColors {
+    colorsResult: getColors {
+      colors
+    }
+  }
+`

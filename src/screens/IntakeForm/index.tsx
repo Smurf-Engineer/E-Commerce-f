@@ -26,7 +26,7 @@ import {
   Responsive,
   InspirationType
 } from '../../types/common'
-import { Sections } from './constants'
+import { Sections, CUSTOM_PALETTE_INDEX } from './constants'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -39,12 +39,18 @@ interface Props extends RouteComponentProps<any> {
   inspirationTotal: number
   inspirationLoading: boolean
   inspirationSelectedItems: number[]
-  selectElementAction: (elementId: number, listName: string) => void
-  deselectElementAction: (elementId: number, listName: string) => void
+  selectedColors: string[]
+  selectedPrimaryColor: string[]
+  selectedEditColors: string[]
+  selectedEditPrimaryColor: string[]
+  selectedPaletteIndex: number
+  selectElementAction: (elementId: number | string, listName: string, index?: number) => void
+  deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
   setInspirationPageAction: (skip: number, newPage: number) => void
   setInspirationDataAction: (data: InspirationType[], fullCount: number) => void
   setInspirationLoadingAction: (loading: boolean) => void
+  selectPaletteAction: (primaryColor: string, accentColors: string[], index: number) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
@@ -59,7 +65,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   getNavButtonsValidation = () => {
-    const { currentScreen, selectedItems, inspirationSelectedItems } = this.props
+    const {
+      currentScreen,
+      selectedItems,
+      inspirationSelectedItems,
+      selectedPaletteIndex,
+      selectedColors,
+      selectedEditColors,
+      selectedPrimaryColor,
+      selectedEditPrimaryColor
+    } = this.props
     switch (currentScreen) {
       case Sections.PRODUCTS:
         return {
@@ -75,6 +90,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         return {
           showPreviousButton: true,
           continueDisable: inspirationSelectedItems.length < 1
+        }
+      case Sections.COLORS:
+        return {
+          continueDisable:
+            selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
+              (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
+                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)
         }
       default:
         return {}
@@ -95,11 +117,17 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       inspirationTotal,
       inspirationLoading,
       inspirationSelectedItems,
+      selectedColors,
+      selectedPrimaryColor,
+      selectedPaletteIndex,
+      selectedEditColors,
+      selectedEditPrimaryColor,
       selectElementAction,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
-      setInspirationLoadingAction
+      setInspirationLoadingAction,
+      selectPaletteAction
     } = this.props
     const isMobile = !!responsive && responsive.phone
     const validations = this.getNavButtonsValidation()
@@ -148,11 +176,23 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             total={inspirationTotal}
             setLoading={setInspirationLoadingAction}
             loading={inspirationLoading}
-            onSelect={selectElementAction}
+            onSelect={(selectElementAction)}
             onDeselect={deselectElementAction}
             selectedItems={inspirationSelectedItems}
           />
-          <Colors {...{formatMessage}} />
+          <Colors
+            {...{
+              formatMessage,
+              selectedColors,
+              selectedPrimaryColor,
+              selectedPaletteIndex,
+              selectedEditColors,
+              selectedEditPrimaryColor
+            }}
+            onSelect={(selectElementAction)}
+            onDeselect={deselectElementAction}
+            selectPalette={selectPaletteAction}
+          />
         </SwipeableViews>}
       </Container>
     </Layout>)

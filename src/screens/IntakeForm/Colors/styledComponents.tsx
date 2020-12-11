@@ -2,12 +2,16 @@
  * Styled Components - Created by eduardoquintero on 02/12/20.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHTEST, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHTEST, RED, TRANSPARENT, WHITE } from '../../../theme/colors'
+
+interface StyleProps {
+  selected?: boolean
+}
 
 export const Container = styled.div`
-  width: 100%;
+  width: 60%;
   background-color: ${WHITE};
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   padding: 0 240px;
 `
@@ -45,16 +49,24 @@ export const PaletteColumns = styled.div`
 `
 
 export const Palettes = styled.div`
-  flex: 1;
+  flex: 1.5;
   border-right: 1px solid ${GRAY_LIGHTEST};
 `
 export const CreatePalette = styled.div`
   flex: 2;
+  padding: 10px;
 `
 
 export const PaletteContainer = styled.div`
   padding: 10px;
   position: relative;
+  transition: opacity 0.3s ease;
+  border: 2px solid ${({ selected }: StyleProps) => (selected ? RED : TRANSPARENT)};
+
+  &:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
   &::after {
     content: "";
     width: 98%;
@@ -75,4 +87,21 @@ export const Header = styled.div`
 
 export const Body = styled.div`
   padding: 10px 20px;
+`
+
+export const MainContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+
+export const Text = styled.div`
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+`
+
+export const Palette = styled.div`
+  margin-bottom: 20px;
 `

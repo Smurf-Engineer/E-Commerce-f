@@ -9,6 +9,7 @@ export const GO_TO_NEXT_PAGE = `${namespace}/GO_TO_NEXT_PAGE`
 export const SET_INSPIRATION_PAGE = `${namespace}/SET_INSPIRATION_PAGE`
 export const SET_INSPIRATION_DATA = `${namespace}/SET_INSPIRATION_DATA`
 export const SET_INSPIRATION_LOADING = `${namespace}/SET_INSPIRATION_LOADING`
+export const SET_PALETTE = `${namespace}/SET_PALETTE`
 
 export enum Sections {
   PRODUCTS = -2,
@@ -19,3 +20,5 @@ export enum Sections {
   NOTES = 3,
   REVIEW = 4
 }
+
+export const CUSTOM_PALETTE_INDEX = -1
