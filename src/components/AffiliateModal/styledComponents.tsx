@@ -123,8 +123,8 @@ export const FileLabel = styled.div`
 export const FileName = styled.div`
   width: 100%;
   text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
 `
 
 export const CheckboxContainer = styled.div`

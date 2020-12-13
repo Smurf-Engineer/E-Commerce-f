@@ -2,6 +2,14 @@
  * Styled Components - Created by david on 09/04/18.
  */
 import styled from 'styled-components'
+import Upload from 'antd/lib/upload'
+import { RED } from '../../theme/colors'
+
+const { Dragger } = Upload
+
+interface DraggerProps {
+  gallery: boolean
+}
 
 export const Container = styled.div`
   height: 120px;
@@ -34,6 +42,21 @@ export const Icon = styled.img`
 export const PreviewImage = styled.img`
   width: 100%
   height: 194px;
+`
+
+export const StyledDragger = styled(Dragger)`
+  & .ant-upload {
+    width: ${({ gallery }: DraggerProps) => gallery ? '100%' : 'auto'};
+  }
+`
+
+export const GalleryButton = styled.div`
+  color: ${RED};
+  text-decoration: underline;
+  padding: 5px;
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
 `
 
 export const buttonStyle = {

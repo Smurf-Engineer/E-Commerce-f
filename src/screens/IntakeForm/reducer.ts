@@ -2,7 +2,7 @@
  * ShoppingCartPage Reducer - Created by gustavomedina on 02/05/18.
  */
 import { fromJS } from 'immutable'
-import { Reducer } from '../../types/common'
+import { ImageFile, Reducer } from '../../types/common'
 import {
   SELECT_ELEMENT,
   DESELECT_ELEMENT,
@@ -11,6 +11,11 @@ import {
   SET_INSPIRATION_DATA,
   SET_INSPIRATION_LOADING,
   SET_PALETTE,
+  SET_UPLOADING_FILE,
+  SET_FILE,
+  OPEN_LOCKER,
+  ADD_LOCKER_ITEMS,
+  DESELECT_LOCKER_FILE,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -27,6 +32,10 @@ export const initialState = fromJS({
   selectedPaletteIndex: -1,
   selectedEditColors: [],
   selectedEditPrimaryColor: [],
+  uploadingFile: false,
+  selectedFiles: [],
+  lockerSelectedFiles: [],
+  userLockerModalOpen: false
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -36,7 +45,6 @@ const intakeFormReducer: Reducer<any> = (
   switch (action.type) {
     case SELECT_ELEMENT: {
       const { listName, elementId, index } = action
-      console.log('Index ', index)
       const selectedItems = state.get(listName)
       const addItem = index >= 0  ? selectedItems.splice(index, 1, elementId) : selectedItems.push(elementId)
       return state.merge({ [listName]: addItem })
@@ -79,6 +87,38 @@ const intakeFormReducer: Reducer<any> = (
         selectedEditPrimaryColor: [primaryColor],
         selectedPaletteIndex: index
       })
+    }
+    case SET_UPLOADING_FILE: {
+      return state.set('uploadingFile', action.uploading)
+    }
+    case SET_FILE: {
+      const { file, listName } = action
+      const selectedItems = state.get(listName)
+      const addItem = selectedItems.push(fromJS(file))
+      return state.merge({ [listName]: addItem })
+    }
+    case OPEN_LOCKER: {
+      return state.merge({ userLockerModalOpen: action.open, lockerSelectedFiles: [] })
+    }
+    case ADD_LOCKER_ITEMS: {
+      const selectedItems = state.get('lockerSelectedFiles')
+      const existingItems = state.get('selectedFiles')
+      return state.merge({
+        selectedFiles: existingItems.concat(selectedItems),
+        lockerSelectedFiles: [],
+        userLockerModalOpen: false
+      })
+    }
+    case DESELECT_LOCKER_FILE: {
+      const { listName, elementId } = action
+      const indexOfListingToDelete = state
+        .get(listName)
+        .findIndex((file: ImageFile) => {
+          return file.get('id') === elementId
+        })
+      const selectedItems = state.get(listName)
+      const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
+      return state.set(listName, updatedSelectedItems)
     }
     default:
       return state

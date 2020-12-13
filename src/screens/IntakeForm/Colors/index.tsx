@@ -79,7 +79,7 @@ export class Colors extends React.Component<Props, {}> {
       onSelect(color, selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
         SELECTED_COLORS : SELECTED_EDIT_COLORS,
                accentColorsLength >= 3 ? 0 : undefined)
-    console.log(selectedColors.length)
+
     const onSelectCustomPalette = () => selectPalette(selectedPrimaryColor[0], selectedColors, CUSTOM_PALETTE_INDEX)
     return (
       <MainContainer>

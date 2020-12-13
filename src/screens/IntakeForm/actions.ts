@@ -1,7 +1,7 @@
 /**
  * ProductCatalog  Actions - Created by cazarez on 27/02/18.
  */
-import { InspirationType } from '../../types/common'
+import { InspirationType, ImageFile } from '../../types/common'
 import {
   SELECT_ELEMENT,
   DESELECT_ELEMENT,
@@ -9,7 +9,12 @@ import {
   SET_INSPIRATION_PAGE,
   SET_INSPIRATION_DATA,
   SET_INSPIRATION_LOADING,
-  SET_PALETTE
+  SET_PALETTE,
+  SET_UPLOADING_FILE,
+  SET_FILE,
+  OPEN_LOCKER,
+  ADD_LOCKER_ITEMS,
+  DESELECT_LOCKER_FILE
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -53,4 +58,30 @@ export const selectPaletteAction = (primaryColor: string, accentColors: string[]
   primaryColor,
   accentColors,
   index
+})
+
+export const setUploadingFileAction = (uploading: boolean) => ({
+  type: SET_UPLOADING_FILE,
+  uploading
+})
+
+export const setFileAction = (file: ImageFile, listName: string) => ({
+  type: SET_FILE,
+  file,
+  listName
+})
+
+export const openUserLockerAction = (open: boolean) => ({
+  type: OPEN_LOCKER,
+  open
+})
+
+export const onAddItemsAction = () => ({
+  type: ADD_LOCKER_ITEMS
+})
+
+export const deselectLockerItemAction = (elementId: number, listName: string) => ({
+  type: DESELECT_LOCKER_FILE,
+  elementId,
+  listName
 })

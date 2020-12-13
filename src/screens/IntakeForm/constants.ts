@@ -10,6 +10,11 @@ export const SET_INSPIRATION_PAGE = `${namespace}/SET_INSPIRATION_PAGE`
 export const SET_INSPIRATION_DATA = `${namespace}/SET_INSPIRATION_DATA`
 export const SET_INSPIRATION_LOADING = `${namespace}/SET_INSPIRATION_LOADING`
 export const SET_PALETTE = `${namespace}/SET_PALETTE`
+export const SET_UPLOADING_FILE = `${namespace}/SET_UPLOADING_FILE`
+export const SET_FILE = `${namespace}/SET_FILE`
+export const OPEN_LOCKER = `${namespace}/OPEN_LOCKER`
+export const ADD_LOCKER_ITEMS = `${namespace}/ADD_LOCKER_ITEMS`
+export const DESELECT_LOCKER_FILE = `${namespace}/DESELECT_LOCKER_FILE`
 
 export enum Sections {
   PRODUCTS = -2,
@@ -22,3 +27,5 @@ export enum Sections {
 }
 
 export const CUSTOM_PALETTE_INDEX = -1
+export const SELECTED_LCOKER_FILES = 'lockerSelectedFiles'
+export const SELECTED_FILES = 'selectedFiles'

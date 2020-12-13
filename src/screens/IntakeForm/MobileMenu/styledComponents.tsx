@@ -25,7 +25,6 @@ const Button = styled.div`
   disabled ? GRAY : BLUE};
   visibility: ${({ show }: ButtonProps) =>
   show ? 'visible' : 'hidden'};
-
 `
 
 export const Previous = styled(Button)`

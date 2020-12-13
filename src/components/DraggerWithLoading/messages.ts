@@ -16,5 +16,9 @@ export default defineMessages({
   size: {
     id: 'components.TeamDragger.size',
     defaultMessage: '20 MB max'
+  },
+  addFromGallery: {
+    id: 'components.addFromGallery',
+    defaultMessage: 'Add from your Jakroo Gallery'
   }
 })

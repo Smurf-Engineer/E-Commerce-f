@@ -1,0 +1,32 @@
+/**
+ * Files -  Messages
+ */
+
+import { defineMessages } from 'react-intl'
+
+export default defineMessages({
+  description: {
+    id: 'screens.IntakeForm.Files.description',
+    defaultMessage: 'I hereby agree that I have permission and the rights to  use this logo art. '
+  },
+  imageExtensionError: {
+    id: 'components.IntakeForm.Files.imageExtensionError',
+    defaultMessage: 'Oh no! Your file has to be an jpg, jpeg or png'
+  },
+  imageSizeError: {
+    id: 'components.IntakeForm.Files.imageSizeError',
+    defaultMessage: 'Oh no! Max file size is limited to 20MB'
+  },
+  loginMessage: {
+    id: 'components.IntakeForm.Files.loginMessage',
+    defaultMessage: 'To continue log in please'
+  },
+  login: {
+    id: 'components.IntakeForm.Files.login',
+    defaultMessage: `Log in / Sign up`
+  },
+  delete: {
+    id: 'components.IntakeForm.Files.delete',
+    defaultMessage: `Delete`
+  },
+})

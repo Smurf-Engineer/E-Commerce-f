@@ -9,12 +9,18 @@ import Header from '../../components/DesignCenterHeader'
 import Layout from '../../components/MainLayout'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
+import * as apiActions from './api'
 import ProductCatalogue from '../../components/ProductCatalogue'
 import { connect } from 'react-redux'
 import MobileMenu from './MobileMenu'
+import Menu from './Menu'
 import Inspiration from './Inspiration'
 import Colors from './Colors'
+import Files from './Files'
 import DesignPathway from './DesignPathway'
+import {
+  openLoginAction
+} from '../../components/MainLayout/actions'
 
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -24,9 +30,11 @@ import {
 } from './styledComponents'
 import {
   Responsive,
-  InspirationType
+  InspirationType,
+  ImageFile,
+  UserType
 } from '../../types/common'
-import { Sections, CUSTOM_PALETTE_INDEX } from './constants'
+import { Sections, CUSTOM_PALETTE_INDEX, SELECTED_LCOKER_FILES, SELECTED_FILES } from './constants'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -44,6 +52,11 @@ interface Props extends RouteComponentProps<any> {
   selectedEditColors: string[]
   selectedEditPrimaryColor: string[]
   selectedPaletteIndex: number
+  uploadingFile: boolean
+  selectedFiles: ImageFile[]
+  lockerSelectedFiles: ImageFile[]
+  userLockerModalOpen: boolean
+  user?: UserType
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -51,9 +64,16 @@ interface Props extends RouteComponentProps<any> {
   setInspirationDataAction: (data: InspirationType[], fullCount: number) => void
   setInspirationLoadingAction: (loading: boolean) => void
   selectPaletteAction: (primaryColor: string, accentColors: string[], index: number) => void
+  uploadFileAction: (file: File) => void
+  openUserLockerAction: (open: boolean) => void
+  openLoginAction: (open: boolean, callback?: boolean) => void
+  setFileAction: (file: ImageFile, listName: string) => void
+  onAddItemsAction: () => void
+  deselectLockerItemAction: (elementId: number, listName: string) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
+  swipeableActions = null
   handleClick = () => {
     const { history } = this.props
     history.push('/product-catalogue')
@@ -62,6 +82,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   handleOnContinue = () => {
     const { goToPage, currentScreen } = this.props
     goToPage(currentScreen + 1)
+  }
+
+  handleOnOpenLogin = () => {
+    const { openLoginAction: openLoginModalAction } = this.props
+    openLoginModalAction(true)
   }
 
   getNavButtonsValidation = () => {
@@ -73,7 +98,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedColors,
       selectedEditColors,
       selectedPrimaryColor,
-      selectedEditPrimaryColor
+      selectedEditPrimaryColor,
+      user
     } = this.props
     switch (currentScreen) {
       case Sections.PRODUCTS:
@@ -98,9 +124,28 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
                 (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)
         }
+      case Sections.FILES:
+        return {
+          continueDisable: !user
+        }
       default:
         return {}
     }
+  }
+  
+  handleOnSelectLockerFile = (file: ImageFile) => {
+    const { setFileAction } = this.props
+    setFileAction(file, SELECTED_LCOKER_FILES)
+  }
+
+  handleOnDeselectLockerFile = (elementId: number) => {
+    const { deselectLockerItemAction } = this.props
+    deselectLockerItemAction(elementId, SELECTED_LCOKER_FILES)
+  }
+
+  handleOnDeleteImage = (elementId: number) => {
+    const { deselectLockerItemAction } = this.props
+    deselectLockerItemAction(elementId, SELECTED_FILES)
   }
 
   render() {
@@ -122,12 +167,20 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedPaletteIndex,
       selectedEditColors,
       selectedEditPrimaryColor,
+      uploadingFile,
+      selectedFiles,
+      userLockerModalOpen,
+      user,
+      lockerSelectedFiles,
       selectElementAction,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
       setInspirationLoadingAction,
-      selectPaletteAction
+      selectPaletteAction,
+      uploadFileAction,
+      openUserLockerAction,
+      onAddItemsAction
     } = this.props
     const isMobile = !!responsive && responsive.phone
     const validations = this.getNavButtonsValidation()
@@ -141,17 +194,23 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         darkMode={true}
       >
       <Container>
-        {!isMobile &&
+        {isMobile &&
             (<MobileMenu
               onContinue={this.handleOnContinue}
               {...{validations}}
             />
             )}
         {!isMobile && (
-          <Header
-            proDesign={true}
-            onPressBack={this.handleOnPressBack}
-          />
+          <>
+            <Header
+              proDesign={true}
+              onPressBack={this.handleOnPressBack}
+            />
+            <Menu
+              {...{validations}}
+              onContinue={this.handleOnContinue}
+            />
+          </>
         )}
         <NavHeader>
           <Title>
@@ -165,35 +224,50 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         {currentScreen === Sections.PATHWAY && (
           <DesignPathway fromScratch={this.handleOnContinue} {...{formatMessage, isMobile}} />
         )}
-       {currentScreen > Sections.PATHWAY && <SwipeableViews disabled={true} index={currentScreen}>
-          <Inspiration
-            {...{ formatMessage, inspiration }}
-            windowWidth={responsive.fakeWidth}
-            currentPage={inspirationPage}
-            setPage={setInspirationPageAction}
-            skip={inspirationSkip}
-            setInspirationData={setInspirationDataAction}
-            total={inspirationTotal}
-            setLoading={setInspirationLoadingAction}
-            loading={inspirationLoading}
-            onSelect={(selectElementAction)}
-            onDeselect={deselectElementAction}
-            selectedItems={inspirationSelectedItems}
-          />
-          <Colors
-            {...{
-              formatMessage,
-              selectedColors,
-              selectedPrimaryColor,
-              selectedPaletteIndex,
-              selectedEditColors,
-              selectedEditPrimaryColor
-            }}
-            onSelect={(selectElementAction)}
-            onDeselect={deselectElementAction}
-            selectPalette={selectPaletteAction}
-          />
-        </SwipeableViews>}
+       {currentScreen > Sections.PATHWAY &&
+        <SwipeableViews
+          disabled={true}
+          index={currentScreen}
+          action={actions => (this.swipeableActions = actions)}
+          onChangeIndex={() => this.swipeableActions.updateHeight()}>
+            <Inspiration
+              {...{ formatMessage, inspiration }}
+              windowWidth={responsive.fakeWidth}
+              currentPage={inspirationPage}
+              setPage={setInspirationPageAction}
+              skip={inspirationSkip}
+              setInspirationData={setInspirationDataAction}
+              total={inspirationTotal}
+              setLoading={setInspirationLoadingAction}
+              loading={inspirationLoading}
+              onSelect={(selectElementAction)}
+              onDeselect={deselectElementAction}
+              selectedItems={inspirationSelectedItems}
+            />
+            <Colors
+              {...{
+                formatMessage,
+                selectedColors,
+                selectedPrimaryColor,
+                selectedPaletteIndex,
+                selectedEditColors,
+                selectedEditPrimaryColor
+              }}
+              onSelect={(selectElementAction)}
+              onDeselect={deselectElementAction}
+              selectPalette={selectPaletteAction}
+            />
+            <Files
+              {...{formatMessage, uploadingFile, selectedFiles, userLockerModalOpen, user, lockerSelectedFiles}}
+              onUploadFile={uploadFileAction}
+              openUserLocker={openUserLockerAction}
+              onOpenLogin={this.handleOnOpenLogin}
+              onSelectItem={this.handleOnSelectLockerFile}
+              onAddItems={onAddItemsAction}
+              deselectLockerItem={this.handleOnDeselectLockerFile}
+              deleteImage={this.handleOnDeleteImage}
+            />
+          </SwipeableViews>}
       </Container>
     </Layout>)
   }
@@ -218,7 +292,7 @@ const IntakeFormPageEnhance = compose(
   injectIntl,
   connect(
     mapStateToProps,
-    { ...intakeFormActions }
+    { ...intakeFormActions, ...apiActions, openLoginAction }
   )
 )(IntakeFormPage)
 
