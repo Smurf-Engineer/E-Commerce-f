@@ -6,11 +6,13 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import Header from '../../components/DesignCenterHeader'
+import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import ProductCatalogue from '../../components/ProductCatalogue'
+import Tabs from '../../components/IntakeFormTabs'
 import { connect } from 'react-redux'
 import MobileMenu from './MobileMenu'
 import Menu from './Menu'
@@ -18,6 +20,7 @@ import Inspiration from './Inspiration'
 import Colors from './Colors'
 import Files from './Files'
 import DesignPathway from './DesignPathway'
+import Notes from './Notes'
 import {
   openLoginAction
 } from '../../components/MainLayout/actions'
@@ -57,6 +60,14 @@ interface Props extends RouteComponentProps<any> {
   lockerSelectedFiles: ImageFile[]
   userLockerModalOpen: boolean
   user?: UserType
+  selectedTeamSize: string
+  proyectDescription: string
+  proyectName: string
+  phone: string
+  estimatedDate: string
+  estimatedDateMoment: Moment
+  sendSms: boolean
+  sendEmail: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -70,6 +81,11 @@ interface Props extends RouteComponentProps<any> {
   setFileAction: (file: ImageFile, listName: string) => void
   onAddItemsAction: () => void
   deselectLockerItemAction: (elementId: number, listName: string) => void
+  onSelectTeamSizeAction: (size: string) => void
+  onSetInputAction: (key: string, value: string) => void
+  onSelectDateAction: (dateMoment: Moment | null, date: string) => void
+  onCheckSmsChangeAction: (checked: boolean) => void
+  onCheckEmailChangeAction: (checked: boolean) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
@@ -82,6 +98,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   handleOnContinue = () => {
     const { goToPage, currentScreen } = this.props
     goToPage(currentScreen + 1)
+  }
+
+  handleOnSelectTab = (selectedTab: number) => {
+    const { goToPage } = this.props
+    goToPage(selectedTab)
   }
 
   handleOnOpenLogin = () => {
@@ -172,6 +193,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       userLockerModalOpen,
       user,
       lockerSelectedFiles,
+      selectedTeamSize,
+      proyectDescription,
+      proyectName,
+      phone,
+      estimatedDateMoment,
+      sendSms,
+      sendEmail,
       selectElementAction,
       deselectElementAction,
       setInspirationPageAction,
@@ -180,7 +208,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectPaletteAction,
       uploadFileAction,
       openUserLockerAction,
-      onAddItemsAction
+      onAddItemsAction,
+      onSelectTeamSizeAction,
+      onSetInputAction,
+      onSelectDateAction,
+      onCheckSmsChangeAction,
+      onCheckEmailChangeAction
     } = this.props
     const isMobile = !!responsive && responsive.phone
     const validations = this.getNavButtonsValidation()
@@ -206,6 +239,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               proDesign={true}
               onPressBack={this.handleOnPressBack}
             />
+            {currentScreen > Sections.PATHWAY &&
+              <Tabs
+                onSelectTab={this.handleOnSelectTab}
+                currentTab={currentScreen}
+                cantContinue={validations.continueDisable}
+              />
+            }
             <Menu
               {...{validations}}
               onContinue={this.handleOnContinue}
@@ -266,6 +306,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onAddItems={onAddItemsAction}
               deselectLockerItem={this.handleOnDeselectLockerFile}
               deleteImage={this.handleOnDeleteImage}
+            />
+            <Notes
+              {...{formatMessage, user, selectedTeamSize, proyectDescription,
+                proyectName, phone, sendSms, sendEmail}}
+              estimatedDate={estimatedDateMoment}
+              onSelectTeamSize={onSelectTeamSizeAction}
+              onChangeInput={onSetInputAction}
+              onSelectDate={onSelectDateAction}
+              onCheckSms={onCheckSmsChangeAction}
+              onCheckEmail={onCheckEmailChangeAction}
             />
           </SwipeableViews>}
       </Container>

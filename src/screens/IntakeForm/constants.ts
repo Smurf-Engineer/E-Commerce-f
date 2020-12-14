@@ -15,6 +15,11 @@ export const SET_FILE = `${namespace}/SET_FILE`
 export const OPEN_LOCKER = `${namespace}/OPEN_LOCKER`
 export const ADD_LOCKER_ITEMS = `${namespace}/ADD_LOCKER_ITEMS`
 export const DESELECT_LOCKER_FILE = `${namespace}/DESELECT_LOCKER_FILE`
+export const SELECT_TEAM_SIZE = `${namespace}/SELECT_TEAM_SIZE`
+export const SET_INPUT = `${namespace}/SET_INPUT`
+export const ON_SELECT_DATE = `${namespace}/ON_SELECT_DATE`
+export const ON_CHECK_SMS = `${namespace}/ON_CHECK_SMS`
+export const ON_CHECK_EMAIL = `${namespace}/ON_CHECK_EMAIL`
 
 export enum Sections {
   PRODUCTS = -2,

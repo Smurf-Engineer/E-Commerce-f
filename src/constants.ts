@@ -28,6 +28,7 @@ export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
 
 /* Date formats */
 export const DATE_FORMAT = 'MM/DD/YYYY'
+export const DATE_FORMAT_STARTING_YEAR = 'YYYY-MM-DD'
 
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'

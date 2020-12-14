@@ -2,6 +2,7 @@
  * ProductCatalog  Actions - Created by cazarez on 27/02/18.
  */
 import { InspirationType, ImageFile } from '../../types/common'
+import { Moment } from 'moment'
 import {
   SELECT_ELEMENT,
   DESELECT_ELEMENT,
@@ -14,7 +15,12 @@ import {
   SET_FILE,
   OPEN_LOCKER,
   ADD_LOCKER_ITEMS,
-  DESELECT_LOCKER_FILE
+  DESELECT_LOCKER_FILE,
+  SELECT_TEAM_SIZE,
+  SET_INPUT,
+  ON_SELECT_DATE,
+  ON_CHECK_SMS,
+  ON_CHECK_EMAIL
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -84,4 +90,31 @@ export const deselectLockerItemAction = (elementId: number, listName: string) =>
   type: DESELECT_LOCKER_FILE,
   elementId,
   listName
+})
+
+export const onSelectTeamSizeAction = (size: string) => ({
+  type: SELECT_TEAM_SIZE,
+  size
+}) 
+
+export const onSetInputAction = (key: string, value: string) => ({
+  type: SET_INPUT,
+  key,
+  value
+})
+
+export const onSelectDateAction = (dateMoment: Moment, date: string) => ({
+  type: ON_SELECT_DATE,
+  dateMoment,
+  date
+})
+
+export const onCheckSmsChangeAction = (checked: boolean) => ({
+  type: ON_CHECK_SMS,
+  checked
+})
+
+export const onCheckEmailChangeAction = (checked: boolean) => ({
+  type: ON_CHECK_EMAIL,
+  checked
 })

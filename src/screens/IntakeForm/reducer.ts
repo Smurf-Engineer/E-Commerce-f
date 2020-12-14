@@ -16,6 +16,11 @@ import {
   OPEN_LOCKER,
   ADD_LOCKER_ITEMS,
   DESELECT_LOCKER_FILE,
+  SELECT_TEAM_SIZE,
+  SET_INPUT,
+  ON_SELECT_DATE,
+  ON_CHECK_SMS,
+  ON_CHECK_EMAIL,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -35,7 +40,15 @@ export const initialState = fromJS({
   uploadingFile: false,
   selectedFiles: [],
   lockerSelectedFiles: [],
-  userLockerModalOpen: false
+  userLockerModalOpen: false,
+  selectedTeamSize: '1',
+  proyectDescription: '',
+  proyectName: '',
+  phone: '',
+  estimatedDate: '',
+  estimatedDateMoment: null,
+  sendSms: false,
+  sendEmail: false
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -120,6 +133,19 @@ const intakeFormReducer: Reducer<any> = (
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
       return state.set(listName, updatedSelectedItems)
     }
+    case SELECT_TEAM_SIZE:
+      return state.set('selectedTeamSize', action.size)
+    case SET_INPUT:
+      return state.merge({ [action.key]: action.value})
+    case ON_SELECT_DATE:
+      return state.merge({
+        estimatedDate: action.date,
+        estimatedDateMoment: action.dateMoment
+      })
+    case ON_CHECK_SMS:
+      return state.set('sendSms', action.checked)
+    case ON_CHECK_EMAIL:
+      return state.set('sendEmail', action.checked)
     default:
       return state
   }

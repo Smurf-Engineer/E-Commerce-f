@@ -122,7 +122,7 @@ export class Files extends React.Component<Props, {}> {
               {formatMessage(messages.login)}
             </CustomButton>
           </LoginMessage>}
-        <LockerModal
+        {user && <LockerModal
           {...{
             selectedFiles,
             formatMessage,
@@ -133,7 +133,7 @@ export class Files extends React.Component<Props, {}> {
           onRequestClose={handleCloseLocker}
           onSelectItem={onSelectItem}
           onUnselectItem={deselectLockerItem}
-        />
+        />}
       </Container>
     )
   }
