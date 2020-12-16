@@ -9,6 +9,7 @@ interface Props {
   designHasChanges: boolean
   cantContinue: boolean
   onSelectTab: (index: number) => void
+  validate: (screen: number) => void
 }
 
 const steps = ['inspiration', 'colors', 'uploadFiles', 'designNotes', 'review']
@@ -16,11 +17,12 @@ const steps = ['inspiration', 'colors', 'uploadFiles', 'designNotes', 'review']
 const IntakeFormTabs = ({
   currentTab,
   onSelectTab,
-  cantContinue
+  cantContinue,
+  validate
 }: Props) => {
   const handleOnSelectTab = (index: any) => () => onSelectTab(index)
   const tabs = steps.map((step, index) => {
-    const canNavigate = (index < currentTab) || (currentTab + 1 === index && !cantContinue)
+    const canNavigate = (index < currentTab) || !validate(index - 1).continueDisable
     return (
       <Tab
         {...{ index }}

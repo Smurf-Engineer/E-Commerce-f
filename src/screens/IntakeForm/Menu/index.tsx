@@ -11,43 +11,51 @@ interface NavValidation {
   showPreviousButton?: boolean
   previousDisable?: boolean
   showContinueButton?: boolean
+  continueButtonText?: string
+  previousButtonText?: string
 }
 interface Props {
-  continueDisable: boolean
   validations: NavValidation
+  savingIntake: boolean
   onContinue: () => void
+  onPrevious: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
 }
 
-const Menu = ({ validations, onContinue }: Props) => {
+const Menu = ({ validations, savingIntake = false, onContinue, onPrevious }: Props) => {
   const {
     continueDisable = false,
     showPreviousButton = true,
     previousDisable = false,
-    showContinueButton = true
+    showContinueButton = true,
+    continueButtonText = '',
+    previousButtonText = ''
   } = validations
   return (
     <Container>
-      <ButtonWrapper disabled={true}>
-        <StyledButton
-          show={showPreviousButton}
-          disabled={previousDisable}
-          type="primary"
-          onClick={this.onSaveDesign}
+      <ButtonWrapper
+        disabled={savingIntake || previousDisable}
+        show={showPreviousButton}
+        onClick={!previousDisable ? onPrevious : null}
         >
-          {'Previous'}
+        <StyledButton
+          type="primary"
+          disabled={previousDisable}
+        >
+          {previousButtonText}
         </StyledButton>
       </ButtonWrapper>
       <ButtonWrapper
         show={showContinueButton}
-        disabled={continueDisable}
+        disabled={savingIntake || continueDisable}
         onClick={!continueDisable  ? onContinue : null}
 >
         <StyledButton
           type="primary"
+          loading={savingIntake}
           disabled={continueDisable}
         >
-          {'Continue'}
+          {continueButtonText}
         </StyledButton>
       </ButtonWrapper>
     </Container>

@@ -35,8 +35,8 @@ import { Message, UserType } from '../../../types/common'
 interface Props extends RouteComponentProps<any> {
   user?: UserType
   selectedTeamSize: string
-  proyectDescription: string
-  proyectName: string
+  projectDescription: string
+  projectName: string
   phone: string
   estimatedDate: Moment
   sendSms: boolean
@@ -112,8 +112,8 @@ export class Notes extends React.Component<Props, {}> {
       formatMessage,
       user,
       selectedTeamSize,
-      proyectDescription,
-      proyectName,
+      projectDescription,
+      projectName,
       phone,
       estimatedDate,
       sendSms,
@@ -143,8 +143,8 @@ export class Notes extends React.Component<Props, {}> {
               {formatMessage(messages.projectName)} <Required>*</Required>
             </Label>
             <Input
-              id="proyectName"
-              value={proyectName}
+              id="projectName"
+              value={projectName}
               placeholder={formatMessage(messages.name)}
               size="large"
               onChange={this.handleOnChangeInput}
@@ -155,8 +155,8 @@ export class Notes extends React.Component<Props, {}> {
               {formatMessage(messages.ideas)} <Required>*</Required>
             </Label>
             <TextArea
-              id="proyectDescription"
-              value={proyectDescription}
+              id="projectDescription"
+              value={projectDescription}
               rows={5}
               onChange={this.handleOnChangeInput}
             />

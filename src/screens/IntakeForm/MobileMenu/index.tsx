@@ -17,10 +17,12 @@ interface NavValidation {
 interface Props {
   continueDisable: boolean
   validations: NavValidation
+  savingIntake?: boolean
   onContinue: () => void
+  onPrevious: () => void
 }
 
-const MobileMenu = ({ validations, onContinue }: Props) => {
+const MobileMenu = ({ validations, onContinue, onPrevious, savingIntake = false }: Props) => {
   const {
     continueDisable = false,
     showPreviousButton = true,
@@ -29,8 +31,12 @@ const MobileMenu = ({ validations, onContinue }: Props) => {
   } = validations
   return (
     <Container>
-       <Previous show={showPreviousButton} disabled={previousDisable} />
-       <Continue onClick={!continueDisable  ? onContinue : null} disabled={continueDisable} show={showContinueButton} />
+       <Previous onClick={!previousDisable ? onPrevious : null} show={showPreviousButton} disabled={previousDisable} />
+       <Continue
+        onClick={!continueDisable  ? onContinue : null}
+        disabled={continueDisable}
+        show={savingIntake || showContinueButton}
+        loading={savingIntake} />
     </Container>
   )
 }

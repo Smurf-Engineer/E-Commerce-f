@@ -95,6 +95,7 @@ export const ImageText = styled.div`
   overflow: hidden;
   white-space: nowrap;
 `
+
 export const DeleteButton = styled.div`
   color: ${RED};
   margin-top: 2px;

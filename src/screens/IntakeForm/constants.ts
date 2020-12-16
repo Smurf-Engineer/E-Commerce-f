@@ -20,6 +20,8 @@ export const SET_INPUT = `${namespace}/SET_INPUT`
 export const ON_SELECT_DATE = `${namespace}/ON_SELECT_DATE`
 export const ON_CHECK_SMS = `${namespace}/ON_CHECK_SMS`
 export const ON_CHECK_EMAIL = `${namespace}/ON_CHECK_EMAIL`
+export const SET_SAVING_INTAKE = `${namespace}/SET_SAVING_INTAKE`
+export const SET_SUCCESS_MODAL_OPEN = `${namespace}/SET_SUCCESS_MODAL_OPEN`
 
 export enum Sections {
   PRODUCTS = -2,

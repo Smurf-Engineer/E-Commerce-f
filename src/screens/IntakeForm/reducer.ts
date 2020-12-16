@@ -21,6 +21,8 @@ import {
   ON_SELECT_DATE,
   ON_CHECK_SMS,
   ON_CHECK_EMAIL,
+  SET_SAVING_INTAKE,
+  SET_SUCCESS_MODAL_OPEN,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -42,13 +44,15 @@ export const initialState = fromJS({
   lockerSelectedFiles: [],
   userLockerModalOpen: false,
   selectedTeamSize: '1',
-  proyectDescription: '',
-  proyectName: '',
+  projectDescription: '',
+  projectName: '',
   phone: '',
   estimatedDate: '',
   estimatedDateMoment: null,
   sendSms: false,
-  sendEmail: false
+  sendEmail: false,
+  savingIntake: false,
+  successModal: false
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -92,7 +96,7 @@ const intakeFormReducer: Reducer<any> = (
         inspirationLoading: false
       })
     case SET_INSPIRATION_LOADING:
-      return state.setIn('inspirationLoading', action.loading)
+      return state.set('inspirationLoading', action.loading)
     case SET_PALETTE: {
       const { accentColors, primaryColor, index } = action
       return state.merge({
@@ -146,6 +150,10 @@ const intakeFormReducer: Reducer<any> = (
       return state.set('sendSms', action.checked)
     case ON_CHECK_EMAIL:
       return state.set('sendEmail', action.checked)
+    case SET_SAVING_INTAKE:
+      return state.set('savingIntake', action.saving)
+    case SET_SUCCESS_MODAL_OPEN:
+      return state.set('successModal', action.open)
     default:
       return state
   }

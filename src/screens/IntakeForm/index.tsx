@@ -5,13 +5,17 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import messages from './messages'
+import get from 'lodash/get'
+import message from 'antd/lib/message'
 import Header from '../../components/DesignCenterHeader'
 import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
+import { saveProject } from './data'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import ProductCatalogue from '../../components/ProductCatalogue'
+import SuccessModal from '../../components/SuccessModal'
 import Tabs from '../../components/IntakeFormTabs'
 import { connect } from 'react-redux'
 import MobileMenu from './MobileMenu'
@@ -20,6 +24,7 @@ import Inspiration from './Inspiration'
 import Colors from './Colors'
 import Files from './Files'
 import DesignPathway from './DesignPathway'
+import Review from './Review'
 import Notes from './Notes'
 import {
   openLoginAction
@@ -35,7 +40,8 @@ import {
   Responsive,
   InspirationType,
   ImageFile,
-  UserType
+  UserType,
+  MessagePayload
 } from '../../types/common'
 import { Sections, CUSTOM_PALETTE_INDEX, SELECTED_LCOKER_FILES, SELECTED_FILES } from './constants'
 
@@ -61,13 +67,15 @@ interface Props extends RouteComponentProps<any> {
   userLockerModalOpen: boolean
   user?: UserType
   selectedTeamSize: string
-  proyectDescription: string
-  proyectName: string
+  projectDescription: string
+  projectName: string
   phone: string
   estimatedDate: string
   estimatedDateMoment: Moment
   sendSms: boolean
   sendEmail: boolean
+  savingIntake: boolean
+  successModal: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -86,6 +94,9 @@ interface Props extends RouteComponentProps<any> {
   onSelectDateAction: (dateMoment: Moment | null, date: string) => void
   onCheckSmsChangeAction: (checked: boolean) => void
   onCheckEmailChangeAction: (checked: boolean) => void
+  createProject: (variables: {}) => Promise<MessagePayload>
+  onSetSavingIntake: (saving: boolean) => void
+  onSetSuccessModalOpen: (open: boolean) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
@@ -95,9 +106,75 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     history.push('/product-catalogue')
   }
 
-  handleOnContinue = () => {
+  handleOnContinue = async () => {
     const { goToPage, currentScreen } = this.props
-    goToPage(currentScreen + 1)
+    if (currentScreen !== Sections.REVIEW) {
+      return goToPage(currentScreen + 1)
+    }
+    const {
+      selectedPaletteIndex,
+      selectedItems,
+      inspirationSelectedItems,
+      selectedColors,
+      selectedPrimaryColor,
+      selectedEditColors,
+      selectedEditPrimaryColor,
+      selectedFiles,
+      selectedTeamSize,
+      projectDescription,
+      projectName,
+      phone,
+      estimatedDate,
+      sendSms,
+      sendEmail,
+      createProject,
+      onSetSavingIntake,
+      onSetSuccessModalOpen
+    } = this.props
+    onSetSavingIntake(true)
+    const primary = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
+      ? selectedPrimaryColor[0] : selectedEditPrimaryColor[0]
+    const accents = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
+                ? selectedColors : selectedEditColors
+    const palette = {
+      primary_color: primary,
+      accent_1: accents.length >= 0 ? accents[0] : null,
+      accent_2: accents.length >= 1 ? accents[1] : null,
+      accent_3: accents.length >= 2 ? accents[2] : null
+    }
+    const proDesignProject = {
+      name: projectName,
+      phone,
+      notes: projectDescription,
+      teamSize: selectedTeamSize,
+      deliveryDate: estimatedDate,
+      sendEmail,
+      sendSms,
+      files: selectedFiles.map((file) => file.id),
+      products: selectedItems,
+      inspiration: inspirationSelectedItems,
+      palette,
+      fromScratch: false
+    }
+    try {
+      const results = await createProject({
+        variables: { proDesignProject }
+      })
+      const successMessage = get(results, 'data.createProDesignProject.message')
+      message.success(successMessage)
+      onSetSuccessModalOpen(true)
+      onSetSavingIntake(false)
+    } catch (e) {
+      onSetSavingIntake(false)
+      message.error(
+        `Something wrong happened. Please try again! ${e.message}`
+      )
+    }
+  }
+
+  handleOnPrevious = () => {
+    const { goToPage, currentScreen } = this.props
+    goToPage(currentScreen - 1)
   }
 
   handleOnSelectTab = (selectedTab: number) => {
@@ -110,7 +187,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     openLoginModalAction(true)
   }
 
-  getNavButtonsValidation = () => {
+  getNavButtonsValidation = (screen?: number) => {
     const {
       currentScreen,
       selectedItems,
@@ -120,34 +197,70 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedEditColors,
       selectedPrimaryColor,
       selectedEditPrimaryColor,
-      user
+      user,
+      projectName,
+      selectedTeamSize,
+      estimatedDate,
+      projectDescription,
+      intl: { formatMessage }
     } = this.props
-    switch (currentScreen) {
+    const continueButtonText = currentScreen ===
+      Sections.REVIEW ? formatMessage(messages.submitButtonText) :
+        formatMessage(messages.continueButtonText)
+    const previousButtonText = formatMessage(messages.previousButtonText)
+
+    switch (screen || currentScreen) {
       case Sections.PRODUCTS:
         return {
           continueDisable: selectedItems.length < 1,
-          showPreviousButton: false
+          showPreviousButton: false,
+          continueButtonText,
+          previousButtonText
         }
       case Sections.PATHWAY:
         return {
           showPreviousButton: false,
-          showContinueButton: false
+          showContinueButton: false,
+          continueButtonText,
+          previousButtonText
         }
       case Sections.INSPIRATION:
         return {
           showPreviousButton: true,
-          continueDisable: inspirationSelectedItems.length < 1
+          continueDisable: inspirationSelectedItems.length < 1,
+          previousDisable: true,
+          continueButtonText,
+          previousButtonText
         }
       case Sections.COLORS:
         return {
           continueDisable:
             selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
               (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
-                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)
+                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0),
+          showPreviousButton: true,
+          continueButtonText,
+          previousButtonText
         }
       case Sections.FILES:
         return {
-          continueDisable: !user
+          continueDisable: !user,
+          showPreviousButton: true,
+          continueButtonText,
+          previousButtonText
+        }
+      case Sections.NOTES:
+        return {
+          continueDisable: !projectName || !selectedTeamSize || !user
+          || !estimatedDate || !projectDescription,
+          showPreviousButton: true,
+          continueButtonText,
+          previousButtonText
+        }
+      case Sections.REVIEW:
+        return {
+          continueButtonText,
+          previousButtonText
         }
       default:
         return {}
@@ -167,6 +280,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   handleOnDeleteImage = (elementId: number) => {
     const { deselectLockerItemAction } = this.props
     deselectLockerItemAction(elementId, SELECTED_FILES)
+  }
+
+  handleOnReturnHome = () => {
+    const { onSetSuccessModalOpen } = this.props
+    onSetSuccessModalOpen(false)
+    window.location.replace(`/us?lang=en&currency=usd`)
   }
 
   render() {
@@ -194,12 +313,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       user,
       lockerSelectedFiles,
       selectedTeamSize,
-      proyectDescription,
-      proyectName,
+      projectDescription,
+      projectName,
       phone,
       estimatedDateMoment,
       sendSms,
       sendEmail,
+      savingIntake,
+      successModal,
       selectElementAction,
       deselectElementAction,
       setInspirationPageAction,
@@ -230,7 +351,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         {isMobile &&
             (<MobileMenu
               onContinue={this.handleOnContinue}
-              {...{validations}}
+              onPrevious={this.handleOnPrevious}
+              {...{validations, savingIntake}}
             />
             )}
         {!isMobile && (
@@ -243,11 +365,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               <Tabs
                 onSelectTab={this.handleOnSelectTab}
                 currentTab={currentScreen}
+                validate={this.getNavButtonsValidation}
                 cantContinue={validations.continueDisable}
               />
             }
             <Menu
-              {...{validations}}
+              {...{validations, savingIntake}}
+              onPrevious={this.handleOnPrevious}
               onContinue={this.handleOnContinue}
             />
           </>
@@ -308,8 +432,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               deleteImage={this.handleOnDeleteImage}
             />
             <Notes
-              {...{formatMessage, user, selectedTeamSize, proyectDescription,
-                proyectName, phone, sendSms, sendEmail}}
+              {...{formatMessage, user, selectedTeamSize, projectDescription,
+                projectName, phone, sendSms, sendEmail}}
               estimatedDate={estimatedDateMoment}
               onSelectTeamSize={onSelectTeamSizeAction}
               onChangeInput={onSetInputAction}
@@ -317,8 +441,34 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onCheckSms={onCheckSmsChangeAction}
               onCheckEmail={onCheckEmailChangeAction}
             />
+            <Review
+              {...{
+                formatMessage,
+                inspiration,
+                inspirationSelectedItems,
+                selectedColors,
+                selectedPrimaryColor,
+                selectedPaletteIndex,
+                selectedEditColors,
+                selectedEditPrimaryColor,
+                selectedFiles,
+                projectName,
+                user,
+                projectDescription,
+                selectedItems
+              }}
+              goToPage={this.handleOnSelectTab}
+            />
           </SwipeableViews>}
       </Container>
+      {successModal ? <SuccessModal
+        title={formatMessage(messages.successTitle)}
+        text={formatMessage(messages.successMessage)}
+        center={formatMessage(messages.successMessageCenter)}
+        footer={formatMessage(messages.sucessMessageBottom)}
+        returnHomeText={formatMessage(messages.returnToHome)}
+        onReturnPage={this.handleOnReturnHome}
+      /> : null}
     </Layout>)
   }
 }
@@ -338,6 +488,7 @@ const mapStateToProps = (state: any) => {
 }
 
 const IntakeFormPageEnhance = compose(
+  saveProject,
   withApollo,
   injectIntl,
   connect(

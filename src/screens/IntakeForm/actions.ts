@@ -20,7 +20,9 @@ import {
   SET_INPUT,
   ON_SELECT_DATE,
   ON_CHECK_SMS,
-  ON_CHECK_EMAIL
+  ON_CHECK_EMAIL,
+  SET_SAVING_INTAKE,
+  SET_SUCCESS_MODAL_OPEN
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -117,4 +119,14 @@ export const onCheckSmsChangeAction = (checked: boolean) => ({
 export const onCheckEmailChangeAction = (checked: boolean) => ({
   type: ON_CHECK_EMAIL,
   checked
+})
+
+export const onSetSavingIntake = (saving: boolean) => ({
+  type: SET_SAVING_INTAKE,
+  saving
+})
+
+export const onSetSuccessModalOpen = (open: boolean) => ({
+  type: SET_SUCCESS_MODAL_OPEN,
+  open
 })
