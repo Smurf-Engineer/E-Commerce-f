@@ -23,6 +23,8 @@ import {
   ON_CHECK_EMAIL,
   SET_SAVING_INTAKE,
   SET_SUCCESS_MODAL_OPEN,
+  ON_EXPAND_INSPIRATION,
+  ON_CLOSE_INSPIRATION,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -52,7 +54,9 @@ export const initialState = fromJS({
   sendSms: false,
   sendEmail: false,
   savingIntake: false,
-  successModal: false
+  successModal: false,
+  expandedInspiration: null,
+  expandedInspirationOpen: false
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -154,6 +158,19 @@ const intakeFormReducer: Reducer<any> = (
       return state.set('savingIntake', action.saving)
     case SET_SUCCESS_MODAL_OPEN:
       return state.set('successModal', action.open)
+    case ON_EXPAND_INSPIRATION: {
+      const { inspirationId, image, name, isSelected } = action
+      return state.merge({
+        expandedInspiration: {
+          id: inspirationId, image, name, selected: isSelected
+        },
+        expandedInspirationOpen: true
+      })
+    }
+    case ON_CLOSE_INSPIRATION:
+      return state.merge({
+        expandedInspirationOpen: false
+      })
     default:
       return state
   }

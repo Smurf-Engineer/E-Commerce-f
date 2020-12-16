@@ -248,7 +248,6 @@ export class ProDesign extends React.Component<Props, {}> {
         </TabPane>
       </StyledTabs>
     )
-
     return (
       <Container>
         <Helmet title={formatMessage(messages.title)} />

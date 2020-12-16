@@ -756,7 +756,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
     const productId = get(product, 'id')
 
-    history.push(`/pro-design?id=${productId}`)
+    history.push({
+      pathname: `/pro-design`,
+      state: {
+        productId
+      }
+    })
   }
  
   gotoGetFittedPage = () => {

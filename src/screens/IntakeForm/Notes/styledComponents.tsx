@@ -13,6 +13,10 @@ export const Container = styled.div`
   display: inline-flex;
   flex-direction: column;
   padding: 0 240px;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 `
 
 export const Title = styled.div`
@@ -93,6 +97,9 @@ export const Row = styled.div`
 export const CheckBoxContainer = styled.div`
   margin-right: 10px;
   flex: 1.2;
+  @media (max-width: 768px) {
+    flex: 4
+  }
 `
 
 export const SectionButton = styled.div`

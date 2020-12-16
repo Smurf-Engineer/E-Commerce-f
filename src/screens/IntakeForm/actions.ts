@@ -22,7 +22,9 @@ import {
   ON_CHECK_SMS,
   ON_CHECK_EMAIL,
   SET_SAVING_INTAKE,
-  SET_SUCCESS_MODAL_OPEN
+  SET_SUCCESS_MODAL_OPEN,
+  ON_EXPAND_INSPIRATION,
+  ON_CLOSE_INSPIRATION
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -129,4 +131,21 @@ export const onSetSavingIntake = (saving: boolean) => ({
 export const onSetSuccessModalOpen = (open: boolean) => ({
   type: SET_SUCCESS_MODAL_OPEN,
   open
+})
+
+export const onExpandInspirationAction = (
+  inspirationId: number,
+  image: string,
+  name: string,
+  isSelected: boolean
+  ) => ({
+  type: ON_EXPAND_INSPIRATION,
+  inspirationId,
+  image,
+  name,
+  isSelected
+})
+
+export const onCloseInspirationAction = () => ({
+  type: ON_CLOSE_INSPIRATION
 })

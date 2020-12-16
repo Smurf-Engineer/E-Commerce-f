@@ -14,6 +14,10 @@ export const Container = styled.div`
   display: inline-flex;
   flex-direction: column;
   padding: 0 240px;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 `
 
 export const Title = styled.div`

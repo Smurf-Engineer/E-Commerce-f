@@ -43,6 +43,7 @@ interface Props extends RouteComponentProps<any> {
   setLoading: (loading: boolean) => void
   onSelect: (inspirationId: number, listName: string) => void
   onDeselect: (inspirationId: number, listName: string) => void
+  onExpandInspiration: (inspirationId: number, image: string, name: string, isSelected: boolean) => void
 }
 
 const gridBreakPoints = {
@@ -98,12 +99,17 @@ export class Inspiration extends React.Component<Props, {}> {
       total,
       selectedItems,
       onSelect,
-      onDeselect
+      onDeselect,
+      onExpandInspiration
     } = this.props
     const items = inspiration.map((item: InspirationType) => {
       const isSelected = includes(selectedItems, item.id)
       const handleOnSelectInspiration = () =>
         !isSelected ? onSelect(item.id, INSPIRATION_SELECTEED_ITEMS) : onDeselect(item.id, INSPIRATION_SELECTEED_ITEMS)
+      const handleOnExpand = (event: React.MouseEvent) => {
+        event.stopPropagation()
+        onExpandInspiration(item.id, item.image, item.name, isSelected)
+      }
       return (
         <ImageContainer
             key={item.id}
@@ -112,7 +118,7 @@ export class Inspiration extends React.Component<Props, {}> {
             selectedIndex={isSelected && selectedItems.findIndex((currentItem) => currentItem === item.id) + 1}
           >
             <LazyImage src={item.image} />
-          <Expand src={expandIcon} />
+          <Expand src={expandIcon} onClick={handleOnExpand} />
         </ImageContainer>)
     })
     const loader = <LoadingContainer><Spin /></LoadingContainer>

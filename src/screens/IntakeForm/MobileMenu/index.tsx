@@ -7,12 +7,15 @@ import {
   Previous,
   Continue
 } from './styledComponents'
+import Spin from 'antd/lib/spin'
 
 interface NavValidation {
   continueDisable?: boolean
   showPreviousButton?: boolean
   previousDisable?: boolean
   showContinueButton?: boolean
+  continueButtonText?: string
+  previousButtonText?: string
 }
 interface Props {
   continueDisable: boolean
@@ -27,16 +30,25 @@ const MobileMenu = ({ validations, onContinue, onPrevious, savingIntake = false 
     continueDisable = false,
     showPreviousButton = true,
     previousDisable = false,
-    showContinueButton = true
+    showContinueButton = true,
+    continueButtonText = '',
+    previousButtonText = ''
   } = validations
+  console.log('Continue ,', continueButtonText)
   return (
     <Container>
-       <Previous onClick={!previousDisable ? onPrevious : null} show={showPreviousButton} disabled={previousDisable} />
-       <Continue
+       <Previous
+        text={previousButtonText}
+        onClick={!previousDisable ? onPrevious : null}
+        show={showPreviousButton}
+        disabled={previousDisable}
+       />
+       {!savingIntake ? <Continue
+        text={continueButtonText}
         onClick={!continueDisable  ? onContinue : null}
         disabled={continueDisable}
-        show={savingIntake || showContinueButton}
-        loading={savingIntake} />
+        show={savingIntake || showContinueButton} /> :
+        <Spin />}
     </Container>
   )
 }

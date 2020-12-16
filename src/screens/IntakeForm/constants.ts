@@ -22,6 +22,8 @@ export const ON_CHECK_SMS = `${namespace}/ON_CHECK_SMS`
 export const ON_CHECK_EMAIL = `${namespace}/ON_CHECK_EMAIL`
 export const SET_SAVING_INTAKE = `${namespace}/SET_SAVING_INTAKE`
 export const SET_SUCCESS_MODAL_OPEN = `${namespace}/SET_SUCCESS_MODAL_OPEN`
+export const ON_EXPAND_INSPIRATION = `${namespace}/ON_EXPAND_INSPIRATION`
+export const ON_CLOSE_INSPIRATION = `${namespace}/ON_CLOSE_INSPIRATION`
 
 export enum Sections {
   PRODUCTS = -2,
@@ -36,3 +38,78 @@ export enum Sections {
 export const CUSTOM_PALETTE_INDEX = -1
 export const SELECTED_LCOKER_FILES = 'lockerSelectedFiles'
 export const SELECTED_FILES = 'selectedFiles'
+export const SELECTED_ITEMS = 'selectedItems'
+export const INSPIRATION_SELECTEED_ITEMS = 'inspirationSelectedItems'
+
+export const titleTexts = {
+  [Sections.PRODUCTS]:
+    {
+      title: 'chooseProducts',
+      body: '',
+      bodyWithTip: '',
+      action: false,
+      tipTitle: '',
+      tipBody: '',
+      tipAccept: ''
+    },
+  [Sections.PATHWAY]:
+    {
+      title: 'designPathway',
+      body: 'designPathwayBody',
+      bodyWithTip: '',
+      action: false,
+      tipTitle: '',
+      tipBody: '',
+      tipAccept: ''
+    },
+  [Sections.INSPIRATION]:
+    {
+      title: 'inspiration',
+      body: 'inspirationBody',
+      bodyWithTip: 'inspirationTip',
+      action: false,
+      tipTitle: '',
+      tipBody: '',
+      tipAccept: ''
+    },
+  [Sections.COLORS]:
+    {
+      title: 'colors',
+      body: '',
+      bodyWithTip: 'colorsBody',
+      action: true,
+      tipTitle: 'colorsTipTitle',
+      tipBody: 'colorsTipBody',
+      tipAccept: 'gotIt'
+    },
+    [Sections.FILES]:
+    {
+      title: 'fileUploadTitle',
+      body: 'fileUploadBody',
+      bodyWithTip: 'fileUploadTips',
+      action: true,
+      tipTitle: 'fileUploadTipTitle',
+      tipBody: 'fileUploadTipBody',
+      tipAccept: 'gotIt'
+    },
+  [Sections.NOTES]:
+    {
+      title: 'designNotes',
+      body: 'designNotesBody',
+      bodyWithTip: 'designNotesBodyTip',
+      action: false,
+      tipTitle: '',
+      tipBody: '',
+      tipAccept: ''
+    },
+  [Sections.REVIEW]:
+    {
+      title: 'reviewTitle',
+      body: 'reviewBody',
+      bodyWithTip: '',
+      action: false,
+      tipTitle: '',
+      tipBody: '',
+      tipAccept: ''
+    }
+}

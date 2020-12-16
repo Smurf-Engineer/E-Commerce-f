@@ -30,7 +30,7 @@ export const List = styled.div`
   align-items: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    height: auto;
+    max-height: 80vh;
   }
 `
 
@@ -41,6 +41,9 @@ export const Images = styled.div`
   column-gap: 5px;
   row-gap: 15px;
   justify-items: center;
+  @media (min-width: 320px) and (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 export const ImageContainer = styled.div`

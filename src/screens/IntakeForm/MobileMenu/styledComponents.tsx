@@ -7,6 +7,7 @@ import { BLACK_SEMILIGHT, BLUE, GRAY, WHITE } from '../../../theme/colors'
 interface ButtonProps {
   disabled?: boolean
   show?: boolean
+  text?: string
 }
 
 export const Container = styled.div`
@@ -16,6 +17,7 @@ export const Container = styled.div`
   color: ${WHITE};
   display: inline-flex;
   justify-content: space-between;
+  align-items: center;
 `
 
 const Button = styled.div`
@@ -29,12 +31,12 @@ const Button = styled.div`
 
 export const Previous = styled(Button)`
   &::after {
-    content: "Previous";
+    content: ${({ text }: ButtonProps) => `"${text}"`};  
   }
 `
 
 export const Continue = styled(Button)`
   &::after {
-    content: "Continue";
+    content: ${({ text }: ButtonProps) => `"${text}"`};  
   }
 `

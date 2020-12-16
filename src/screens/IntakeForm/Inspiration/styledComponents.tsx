@@ -55,4 +55,7 @@ export const Expand = styled.img`
   bottom: 0;
   left: 0;
   width: 24px;
+  &:hover {
+    cursor: pointer;
+  }
 `

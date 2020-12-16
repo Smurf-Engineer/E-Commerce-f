@@ -45,6 +45,7 @@ interface Props extends RouteComponentProps<any> {
   selectedPaletteIndex: number
   selectedEditColors: string[]
   selectedEditPrimaryColor: string[]
+  isMobile: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onSelect: (color: string, listName: string, index?: number) => void
   onDeselect: (color: string, listName: string) => void
@@ -64,7 +65,8 @@ export class Colors extends React.Component<Props, {}> {
       selectedPrimaryColor,
       selectedPaletteIndex,
       selectedEditPrimaryColor,
-      selectedEditColors
+      selectedEditColors,
+      isMobile
     } = this.props
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
     selectedColors.length : selectedEditColors.length
@@ -133,7 +135,7 @@ export class Colors extends React.Component<Props, {}> {
                   
                   const onSelectPalette = () => selectPalette(palette.primary, filteredAccentColors, index)
                   return (
-                  <>
+                    <>
                     <PaletteContainer
                       key={id}
                       selected={selectedPaletteIndex === index}
@@ -152,9 +154,10 @@ export class Colors extends React.Component<Props, {}> {
                       </Body>
                     </PaletteContainer>
                   </>)
-                })}
+                })} :
+
               </Palettes>
-              <CreatePalette>
+              {!isMobile ? <CreatePalette>
                 <Palette>
                   <Text>{formatMessage(messages.primaryColor)}</Text>
                   {!colorsList.loading &&
@@ -175,7 +178,7 @@ export class Colors extends React.Component<Props, {}> {
                       onSelect={handleOnSelectAccent}
                       onDeselect={handleOnDeselect} />}
                 </Palette>
-              </CreatePalette>
+              </CreatePalette> : null}
             </PaletteColumns>
           </SelectPaletteContainer>
         </Container>

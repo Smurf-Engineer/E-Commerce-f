@@ -122,9 +122,10 @@ export class Review extends React.Component<Props, {}> {
             <Row>
               <Column>
                 <StrongText>{formatMessage(messages.designNotes)}</StrongText>
+              </Column>
+              <Column>
                 <Text>{projectDescription || '-'}</Text>
               </Column>
-              <Column />
             </Row>
           </Ideas>
           <Inspiration>

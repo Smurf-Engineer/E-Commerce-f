@@ -11,6 +11,10 @@ export const Container = styled.div`
   display: inline-flex;
   flex-direction: column;
   padding: 0 240px;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 `
 
 export const StrongText = styled.div`
@@ -18,6 +22,9 @@ export const StrongText = styled.div`
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 10px;
+  @media (max-width: 768px) {
+    width: 50%
+  }
 `
 
 export const MainContainer = styled.div`
@@ -30,19 +37,27 @@ export const MainContainer = styled.div`
 export const Text = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
+  @media (max-width: 768px) {
+    width: 40%
+  }
 `
 
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 120px;
+  @media (max-width: 768px) {
+    flex-direction: row;
+    margin: 0;
+    width: 100%;
+  }
 `
 
 export const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  flex-wrap:wrap
+  flex-wrap:wrap;
 `
 
 export const EditButton = styled.div`
@@ -78,6 +93,9 @@ export const Images = styled.div`
   row-gap: 10px;
   justify-items: flex-start;
   margin-top: 10px;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
 `
 
 export const ImageContainer = styled.div`
@@ -85,6 +103,9 @@ export const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  @media (max-width: 768px) {
+    width: 160px;
+  }
 `
 
 export const Image = styled.div`
@@ -93,6 +114,10 @@ export const Image = styled.div`
   background-image: url('${({ src }: ImagePreviewProps) => src || ''}');
   width: 200px;
   height: 200px;
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 160px;
+  }
   background-color: ${GRAY_LIGHT};
 `
 

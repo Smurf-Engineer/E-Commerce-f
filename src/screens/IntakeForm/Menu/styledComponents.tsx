@@ -15,6 +15,8 @@ export const Container = styled.div`
   display: inline-flex;
   justify-content: space-between;
   padding: 10px 100px;
+  position: absolute;
+  pointer-events: none;
 `
 
 interface ButtonWrapperProps {
@@ -22,6 +24,7 @@ interface ButtonWrapperProps {
 }
 
 export const ButtonWrapper = styled.div`
+  pointer-events: all;
   visibility: ${({ show }: ButtonProps) => show ? 'visible' : 'hidden'};
   margin-top: 25px;
   text-align: right;

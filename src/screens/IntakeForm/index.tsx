@@ -14,6 +14,7 @@ import { saveProject } from './data'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
+import Modal from 'antd/lib/modal'
 import ProductCatalogue from '../../components/ProductCatalogue'
 import SuccessModal from '../../components/SuccessModal'
 import Tabs from '../../components/IntakeFormTabs'
@@ -29,12 +30,16 @@ import Notes from './Notes'
 import {
   openLoginAction
 } from '../../components/MainLayout/actions'
-
+import InspirationModal from '../../components/InspirationModal'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   Container,
   Title,
-  NavHeader
+  NavHeader,
+  ModalTitle,
+  InfoBody,
+  buttonStyle,
+  Subtitle
 } from './styledComponents'
 import {
   Responsive,
@@ -43,7 +48,16 @@ import {
   UserType,
   MessagePayload
 } from '../../types/common'
-import { Sections, CUSTOM_PALETTE_INDEX, SELECTED_LCOKER_FILES, SELECTED_FILES } from './constants'
+import {
+  Sections,
+  titleTexts,
+  CUSTOM_PALETTE_INDEX,
+  SELECTED_LCOKER_FILES,
+  SELECTED_FILES, SELECTED_ITEMS,
+  INSPIRATION_SELECTEED_ITEMS
+} from './constants'
+
+const { info } = Modal
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -76,6 +90,8 @@ interface Props extends RouteComponentProps<any> {
   sendEmail: boolean
   savingIntake: boolean
   successModal: boolean
+  expandedInspiration: boolean
+  expandedInspirationOpen: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -97,10 +113,18 @@ interface Props extends RouteComponentProps<any> {
   createProject: (variables: {}) => Promise<MessagePayload>
   onSetSavingIntake: (saving: boolean) => void
   onSetSuccessModalOpen: (open: boolean) => void
+  onExpandInspirationAction: (inspirationId: number, image: string, name: string, isSelected: boolean) => void
+  onCloseInspirationAction: () => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
   swipeableActions = null
+  componentDidMount() {
+    const { location, selectElementAction, selectedItems } = this.props
+    if (location.state && !selectedItems.length) {
+      selectElementAction(location.state.productId, SELECTED_ITEMS)
+    }
+  }
   handleClick = () => {
     const { history } = this.props
     history.push('/product-catalogue')
@@ -228,7 +252,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         return {
           showPreviousButton: true,
           continueDisable: inspirationSelectedItems.length < 1,
-          previousDisable: true,
+          previousDisable: false,
           continueButtonText,
           previousButtonText
         }
@@ -288,6 +312,68 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     window.location.replace(`/us?lang=en&currency=usd`)
   }
 
+  handleOnselectElementAction = (elementId: number | string, listName: string, index?: number) => {
+    const {
+      intl: { formatMessage },
+      selectElementAction,
+      onCloseInspirationAction,
+      inspirationSelectedItems
+    } = this.props
+    let title = ''
+    let body = ''
+    let accept = ''
+    switch (listName) {
+      case SELECTED_ITEMS: {
+        const { selectedItems } = this.props
+        if (selectedItems.length < 5) {
+          return selectElementAction(elementId, listName, index)
+        }
+        title = formatMessage(messages.maxProductsTitle)
+        body = formatMessage(messages.maxProductsBody)
+        accept = formatMessage(messages.gotIt)
+        break
+      }
+      case INSPIRATION_SELECTEED_ITEMS: { 
+        if (inspirationSelectedItems.length < 5) {
+          onCloseInspirationAction()
+          return selectElementAction(elementId, listName, index)
+        }
+        return
+      }
+      default:
+        return selectElementAction(elementId, listName, index)
+    }
+    this.showAlert(title, body, accept)
+  }
+
+  showAlert = (title: string, body: string, accept: string) => {
+    info({
+      title: (
+        <ModalTitle>
+          {title}
+        </ModalTitle>
+      ),
+      okText: accept,
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: (
+        <InfoBody>
+          {body}
+        </InfoBody>
+      )
+    })
+  }
+
+  showTips = () => {
+    const { intl: { formatMessage }, currentScreen } = this.props
+    const title = formatMessage(messages[titleTexts[currentScreen].tipTitle])
+    const body = formatMessage(messages[titleTexts[currentScreen].tipBody])
+    const accept = formatMessage(messages[titleTexts[currentScreen].tipAccept])
+
+    this.showAlert(title, body, accept)
+  }
+
   render() {
     const {
       intl: { formatMessage },
@@ -321,7 +407,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       savingIntake,
       successModal,
-      selectElementAction,
+      expandedInspiration,
+      expandedInspirationOpen,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -334,10 +421,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       onSetInputAction,
       onSelectDateAction,
       onCheckSmsChangeAction,
-      onCheckEmailChangeAction
+      onCheckEmailChangeAction,
+      onExpandInspirationAction,
+      onCloseInspirationAction
     } = this.props
     const isMobile = !!responsive && responsive.phone
     const validations = this.getNavButtonsValidation()
+    const currentTitleHasAction = titleTexts[currentScreen].action
+    const currentSubtitle = titleTexts[currentScreen].body
+    const currentSubtitleTips = titleTexts[currentScreen].bodyWithTip
+    const currentTitle = titleTexts[currentScreen].title
     return (
       <Layout
         {...{ history, intl }}
@@ -377,12 +470,19 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           </>
         )}
         <NavHeader>
-          <Title>
-            {formatMessage(messages.chooseProducts)}
-          </Title>
+          {currentTitle.length ? <Title>
+            {formatMessage(messages[currentTitle])}
+          </Title> : null}
+          {currentSubtitle.length ? <Subtitle>
+              {formatMessage(messages[currentSubtitle])}
+          </Subtitle> : null}
+          {currentSubtitleTips.length ? <Subtitle action={currentTitleHasAction} 
+            onClick={currentTitleHasAction ? this.showTips : null}>
+              {formatMessage(messages[currentSubtitleTips])}
+          </Subtitle> : null}
         </NavHeader>
         {currentScreen === Sections.PRODUCTS && <ProductCatalogue
-            onSelectProduct={selectElementAction}
+            onSelectProduct={this.handleOnselectElementAction}
             onDeselectProduct={deselectElementAction}
             {...{ history, formatMessage, selectedItems }} />}
         {currentScreen === Sections.PATHWAY && (
@@ -404,9 +504,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               total={inspirationTotal}
               setLoading={setInspirationLoadingAction}
               loading={inspirationLoading}
-              onSelect={(selectElementAction)}
+              onSelect={this.handleOnselectElementAction}
               onDeselect={deselectElementAction}
               selectedItems={inspirationSelectedItems}
+              onExpandInspiration={onExpandInspirationAction}
             />
             <Colors
               {...{
@@ -415,14 +516,23 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 selectedPrimaryColor,
                 selectedPaletteIndex,
                 selectedEditColors,
-                selectedEditPrimaryColor
+                selectedEditPrimaryColor,
+                isMobile
               }}
-              onSelect={(selectElementAction)}
+              onSelect={(this.handleOnselectElementAction)}
               onDeselect={deselectElementAction}
               selectPalette={selectPaletteAction}
             />
             <Files
-              {...{formatMessage, uploadingFile, selectedFiles, userLockerModalOpen, user, lockerSelectedFiles}}
+              {...{
+                formatMessage,
+                uploadingFile,
+                selectedFiles,
+                userLockerModalOpen,
+                user,
+                lockerSelectedFiles,
+                isMobile
+              }}
               onUploadFile={uploadFileAction}
               openUserLocker={openUserLockerAction}
               onOpenLogin={this.handleOnOpenLogin}
@@ -468,6 +578,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         footer={formatMessage(messages.sucessMessageBottom)}
         returnHomeText={formatMessage(messages.returnToHome)}
         onReturnPage={this.handleOnReturnHome}
+      /> : null}
+      {expandedInspiration ? <InspirationModal
+        {...{expandedInspiration, expandedInspirationOpen, formatMessage}}
+        onCloseInspiration={onCloseInspirationAction}
+        onSelect={this.handleOnselectElementAction}
       /> : null}
     </Layout>)
   }

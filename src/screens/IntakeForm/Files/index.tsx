@@ -26,7 +26,7 @@ import { getFileExtension, bytesToMb } from '../../../utils/utilsFiles'
 import messages from './messages'
 import { Message, ImageFile, UserType } from '../../../types/common'
 
-const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
+const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.ai', '.eps', 'svg']
 
 interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
@@ -34,6 +34,7 @@ interface Props extends RouteComponentProps<any> {
   userLockerModalOpen: boolean
   user?: UserType
   lockerSelectedFiles: ImageFile[]
+  isMobile?: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onUploadFile: (file: File) => void
   openUserLocker: (open: boolean) => void
@@ -76,6 +77,7 @@ export class Files extends React.Component<Props, {}> {
       userLockerModalOpen,
       user,
       lockerSelectedFiles,
+      isMobile,
       formatMessage,
       openUserLocker,
       onSelectItem,
@@ -127,7 +129,8 @@ export class Files extends React.Component<Props, {}> {
             selectedFiles,
             formatMessage,
             onAddItems,
-            lockerSelectedFiles
+            lockerSelectedFiles,
+            isMobile
           }}
           visible={userLockerModalOpen}
           onRequestClose={handleCloseLocker}

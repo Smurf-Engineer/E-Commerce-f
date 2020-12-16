@@ -14,6 +14,10 @@ export const Container = styled.div`
   overflow: hidden;
   padding: 10px 180px;
   flex-direction: column;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 `
 
 export const DraggerContainer = styled.div`
