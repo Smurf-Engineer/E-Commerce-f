@@ -45,6 +45,7 @@ interface Props extends RouteComponentProps<any> {
   projectDescription: string
   user: UserType
   selectedItems: number[]
+  fromScratch: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
 }
@@ -84,7 +85,8 @@ export class Review extends React.Component<Props, {}> {
       projectName,
       projectDescription,
       user,
-      selectedItems
+      selectedItems,
+      fromScratch
     } = this.props
     const inspirationItems =
       filter(inspiration, (inspirationItem: InspirationType) => includes(inspirationSelectedItems, inspirationItem.id))
@@ -128,7 +130,7 @@ export class Review extends React.Component<Props, {}> {
               </Column>
             </Row>
           </Ideas>
-          <Inspiration>
+          {fromScratch ? <Inspiration>
             <EditButton onClick={this.goToInspiration}>
               {formatMessage(messages.edit)}
             </EditButton>
@@ -147,8 +149,8 @@ export class Review extends React.Component<Props, {}> {
                 })}
               </Images>
             </Row>
-          </Inspiration>
-          <Color>
+          </Inspiration> : null}
+          {fromScratch ? <Color>
             <EditButton onClick={this.goToColor}>
               {formatMessage(messages.edit)}
             </EditButton>
@@ -163,7 +165,7 @@ export class Review extends React.Component<Props, {}> {
               accent={selectedPaletteIndex === CUSTOM_PALETTE_INDEX
                 ? selectedColors : selectedEditColors}
             />
-          </Color>
+          </Color> : null}
           <Files>
             <EditButton onClick={this.goToFiles}>
               {formatMessage(messages.edit)}

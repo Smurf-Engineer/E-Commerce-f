@@ -589,7 +589,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 projectName,
                 user,
                 projectDescription,
-                selectedItems
+                selectedItems,
+                fromScratch
               }}
               goToPage={this.handleOnSelectTab}
             />

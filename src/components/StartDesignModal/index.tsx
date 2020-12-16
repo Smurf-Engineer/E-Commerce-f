@@ -22,7 +22,7 @@ import {
 } from './styledComponents'
 import colorWheel from '../../assets/Colorwheel.svg'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
-import DesignCenterImg from '../../assets/DesignLaB.png'
+import DesignCenterImg from '../../assets/DesignLAB.png'
 import DesignCenterBanner from '../../assets/design_lab.png'
 import UnfoldList from '../UnfoldList'
 import CustomModal from '../Common/JakrooModal'
