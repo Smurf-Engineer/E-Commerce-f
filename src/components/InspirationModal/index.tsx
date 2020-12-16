@@ -22,7 +22,6 @@ const SuccessModal = ({
   onSelect
 }: Props) => {
   const { image, name, id, selected } = expandedInspiration
-  console.log('ID ', id)
   const onSelectItem = () => onSelect(id, INSPIRATION_SELECTEED_ITEMS)
   return <Modal
   visible={expandedInspirationOpen}

@@ -24,7 +24,8 @@ import {
   SET_SAVING_INTAKE,
   SET_SUCCESS_MODAL_OPEN,
   ON_EXPAND_INSPIRATION,
-  ON_CLOSE_INSPIRATION
+  ON_CLOSE_INSPIRATION,
+  SET_FROM_SCRATCH
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -148,4 +149,9 @@ export const onExpandInspirationAction = (
 
 export const onCloseInspirationAction = () => ({
   type: ON_CLOSE_INSPIRATION
+})
+
+export const setFromScratchAction = (fromScratch: boolean) => ({
+  type: SET_FROM_SCRATCH,
+  fromScratch
 })

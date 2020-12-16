@@ -92,6 +92,7 @@ interface Props extends RouteComponentProps<any> {
   successModal: boolean
   expandedInspiration: boolean
   expandedInspirationOpen: boolean
+  fromScratch: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -115,6 +116,7 @@ interface Props extends RouteComponentProps<any> {
   onSetSuccessModalOpen: (open: boolean) => void
   onExpandInspirationAction: (inspirationId: number, image: string, name: string, isSelected: boolean) => void
   onCloseInspirationAction: () => void
+  setFromScratchAction: (fromScratch: boolean) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
@@ -130,9 +132,24 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     history.push('/product-catalogue')
   }
 
-  handleOnContinue = async () => {
-    const { goToPage, currentScreen } = this.props
+  handleFromScratch = () => {
+    const { setFromScratchAction } = this.props
+    setFromScratchAction(true)
+    this.handleOnContinue(true)
+  }
+
+  handleFromExistingArtwork = () => {
+    const { setFromScratchAction } = this.props
+    setFromScratchAction(false)
+    this.handleOnContinue(false)
+  }
+
+  handleOnContinue = async (isFromScratch?: boolean) => {
+    const { goToPage, currentScreen} = this.props
     if (currentScreen !== Sections.REVIEW) {
+      if (currentScreen === Sections.PATHWAY && !isFromScratch) {
+        return goToPage(currentScreen + 3)
+      }
       return goToPage(currentScreen + 1)
     }
     const {
@@ -151,6 +168,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       estimatedDate,
       sendSms,
       sendEmail,
+      fromScratch,
       createProject,
       onSetSavingIntake,
       onSetSuccessModalOpen
@@ -178,7 +196,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       products: selectedItems,
       inspiration: inspirationSelectedItems,
       palette,
-      fromScratch: false
+      fromScratch
     }
     try {
       const results = await createProject({
@@ -226,7 +244,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedTeamSize,
       estimatedDate,
       projectDescription,
-      intl: { formatMessage }
+      intl: { formatMessage },
+      fromScratch
     } = this.props
     const continueButtonText = currentScreen ===
       Sections.REVIEW ? formatMessage(messages.submitButtonText) :
@@ -251,7 +270,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       case Sections.INSPIRATION:
         return {
           showPreviousButton: true,
-          continueDisable: inspirationSelectedItems.length < 1,
+          continueDisable: fromScratch && inspirationSelectedItems.length < 1,
           previousDisable: false,
           continueButtonText,
           previousButtonText
@@ -259,9 +278,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       case Sections.COLORS:
         return {
           continueDisable:
-            selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
+            fromScratch && (selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
               (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
-                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0),
+                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)),
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
@@ -409,6 +428,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       successModal,
       expandedInspiration,
       expandedInspirationOpen,
+      fromScratch,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -460,6 +480,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 currentTab={currentScreen}
                 validate={this.getNavButtonsValidation}
                 cantContinue={validations.continueDisable}
+                {...{ fromScratch }}
               />
             }
             <Menu
@@ -486,7 +507,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             onDeselectProduct={deselectElementAction}
             {...{ history, formatMessage, selectedItems }} />}
         {currentScreen === Sections.PATHWAY && (
-          <DesignPathway fromScratch={this.handleOnContinue} {...{formatMessage, isMobile}} />
+          <DesignPathway 
+            fromScratch={this.handleFromScratch}
+            existingArtwork={this.handleFromExistingArtwork}
+            {...{formatMessage, isMobile}} />
         )}
        {currentScreen > Sections.PATHWAY &&
         <SwipeableViews

@@ -34,7 +34,6 @@ const MobileMenu = ({ validations, onContinue, onPrevious, savingIntake = false 
     continueButtonText = '',
     previousButtonText = ''
   } = validations
-  console.log('Continue ,', continueButtonText)
   return (
     <Container>
        <Previous

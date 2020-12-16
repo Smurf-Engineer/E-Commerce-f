@@ -25,6 +25,7 @@ import {
   SET_SUCCESS_MODAL_OPEN,
   ON_EXPAND_INSPIRATION,
   ON_CLOSE_INSPIRATION,
+  SET_FROM_SCRATCH,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -56,7 +57,8 @@ export const initialState = fromJS({
   savingIntake: false,
   successModal: false,
   expandedInspiration: null,
-  expandedInspirationOpen: false
+  expandedInspirationOpen: false,
+  fromScratch: true
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -171,6 +173,8 @@ const intakeFormReducer: Reducer<any> = (
       return state.merge({
         expandedInspirationOpen: false
       })
+    case SET_FROM_SCRATCH:
+      return state.set('fromScratch', action.fromScratch)
     default:
       return state
   }

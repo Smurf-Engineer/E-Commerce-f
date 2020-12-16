@@ -24,6 +24,7 @@ export const SET_SAVING_INTAKE = `${namespace}/SET_SAVING_INTAKE`
 export const SET_SUCCESS_MODAL_OPEN = `${namespace}/SET_SUCCESS_MODAL_OPEN`
 export const ON_EXPAND_INSPIRATION = `${namespace}/ON_EXPAND_INSPIRATION`
 export const ON_CLOSE_INSPIRATION = `${namespace}/ON_CLOSE_INSPIRATION`
+export const SET_FROM_SCRATCH = `${namespace}/SET_FROM_SCRATCH`
 
 export enum Sections {
   PRODUCTS = -2,
