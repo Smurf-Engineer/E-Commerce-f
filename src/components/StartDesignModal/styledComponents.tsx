@@ -6,9 +6,6 @@ import CheckImg from '../../assets/green_check.svg'
 import { BLACK, GRAY_DARK, GRAY_LIGHTEST, WHITE, GRAY_LIGHT, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
-  & .ant-modal {
-    background: blue;
-  }
 `
 
 export const Title = styled.div`
@@ -96,6 +93,7 @@ export const BannerBack = styled.div`
   justify-content: space-between;
   width: 100%;
   z-index: 99;
+  max-height: 180px;
 `
 
 interface FoldAnimationProps {
@@ -103,71 +101,71 @@ interface FoldAnimationProps {
 }
 
 export const FoldContent  = styled.div`
-  display: flex;
-  justify-content: space-between;
-  color: ${WHITE};
-  width: 100%;
-  animation-fill-mode: both;
+display: flex;
+justify-content: space-between;
+color: ${WHITE};
+width: 100%;
+animation-fill-mode: both;
 
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
+transform-style: preserve-3d;
+-webkit-transform-style: preserve-3d;
 
-  transform-origin: bottom
-  -webkit-transform-origin: bottom;
+transform-origin: bottom
+-webkit-transform-origin: bottom;
 
-  transform-origin: top
-  -webkit-transform-origin: top;
+transform-origin: top
+-webkit-transform-origin: top;
 
-  transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
-    opacity 0.4s, max-height 0.4s;
-  -webkit-transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
-    opacity 0.4s, max-height 0.4s;
+transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
+  opacity 0.4s, max-height 0.4s;
+-webkit-transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
+  opacity 0.4s, max-height 0.4s;
 
-  &.folded {
-    opacity: 0;
+&.folded {
+  opacity: 0;
+  visibility: hidden;
+  transform: rotateX(120deg) scaleY(0);
+  -webkit-transform: rotateX(120deg) scaleY(0);
+
+  max-height: 0;
+  transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
+  -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
+  &::after {
     visibility: hidden;
-    transform: rotateX(120deg) scaleY(0);
-    -webkit-transform: rotateX(120deg) scaleY(0);
-
-    max-height: 0;
+    background: rgba(200, 55, 55, 1);
     transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
     -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
-    &::after {
-      visibility: hidden;
-      background: rgba(200, 55, 55, 1);
-      transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
-      -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 5 ? 0 : 0.3 / order}s;
-    }
   }
-  &.unfolded {
-    max-height: 130px;
-    opacity: 1;
+}
+&.unfolded {
+  max-height: 130px;
+  opacity: 1;
+  visibility: visible;
+
+  transform: rotateX(0);
+  -webkit-transform: rotateX(0);
+
+  transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
+  -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
+
+  &::after {
     visibility: visible;
-
-    transform: rotateX(0);
-    -webkit-transform: rotateX(0);
-
+    background: rgba(200, 55, 55, 0);
     transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
     -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
-
-    &::after {
-      visibility: visible;
-      background: rgba(200, 55, 55, 0);
-      transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
-      -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
-    }
   }
-  &::after {
-    position: absolute;
-    content: '';
-    display: block;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    mix-blend-mode: normal;
-    transition: all 0.4s ease;
-  }
+}
+&::after {
+  position: absolute;
+  content: '';
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  mix-blend-mode: normal;
+  transition: all 0.4s ease;
+}
 `
 
 interface BannerProps {

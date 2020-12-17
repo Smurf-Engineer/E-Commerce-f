@@ -215,8 +215,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnPrevious = () => {
-    const { goToPage, currentScreen } = this.props
-    goToPage(currentScreen - 1)
+    const { goToPage, currentScreen, fromScratch } = this.props
+    if (currentScreen === Sections.FILES && !fromScratch) {
+      return goToPage(currentScreen - 3)
+    }
+    return goToPage(currentScreen - 1)
   }
 
   handleOnSelectTab = (selectedTab: number) => {
