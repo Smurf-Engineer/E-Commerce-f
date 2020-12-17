@@ -84,6 +84,7 @@
     "react-animate-height": "^0.10.9",
     "react-apollo": "2.0.4",
     "react-components-generator": "^0.0.7",
+    "react-device-detect": "^1.14.0",
     "react-dnd": "^2.6.0",
     "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "^16.2.0",

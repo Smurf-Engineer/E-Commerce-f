@@ -226,3 +226,14 @@ export const ColorWheel = styled.img`
   width: 20px;
   margin-right: 12px;
 `
+
+export const MobileContainer = styled.div`
+  perspective: 340px;
+  -webkit-perspective: 340px;
+`
+
+export const CloseIcon = styled.img`
+  position: fixed;
+  right: 0;
+  top: -15vh;
+`

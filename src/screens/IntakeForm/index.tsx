@@ -12,6 +12,7 @@ import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
 import { saveProject } from './data'
 import SwipeableViews from 'react-swipeable-views'
+import { isMobile } from 'react-device-detect'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import Modal from 'antd/lib/modal'
@@ -448,7 +449,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       onExpandInspirationAction,
       onCloseInspirationAction
     } = this.props
-    const isMobile = !!responsive && responsive.phone
     const validations = this.getNavButtonsValidation()
     const currentTitleHasAction = titleTexts[currentScreen].action
     const currentSubtitle = titleTexts[currentScreen].body

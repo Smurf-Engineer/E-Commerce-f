@@ -18,8 +18,14 @@ import {
   MobileCard,
   ButtonWrapper,
   Button,
-  ColorWheel
+  ColorWheel,
+  MobileContainer,
+  CloseIcon
 } from './styledComponents'
+import {
+  isMobile
+} from 'react-device-detect'
+import closeIcon from '../../assets/cancel-button.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
 import DesignCenterImg from '../../assets/DesignLAB.png'
@@ -31,7 +37,6 @@ import { Message } from '../../types/common'
 
 interface Props {
   visible: boolean
-  isMobile: boolean
   open: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToCustomize: () => void
@@ -75,7 +80,6 @@ export class StartDesignModal extends React.Component<Props, {}> {
     const { designCardFolded, proDesignCardFolded } = this.state
     const {
       formatMessage,
-      isMobile,
       goToCustomize,
       goToProDesign,
       open,
@@ -90,11 +94,13 @@ export class StartDesignModal extends React.Component<Props, {}> {
           width={'1200px'}
           requestClose={onClose}
           wrapClassName={isMobile && 'transparent-modal'}
+          withCross={!isMobile}
           maskStyle={isMobile && { background: 'rgba(0,0,0,0.9)' }}
         >
           <Title>{formatMessage(messages.twoWays)}</Title>
           {isMobile ?
-            (<div style={{perspective: '340px'}}>
+            (<MobileContainer>
+              <CloseIcon src={closeIcon} onClick={onClose} />
               <UnfoldList childrens={[]} />
               <UnfoldContainer>
                 <BannerBack onClick={this.toggleDesignAnimation}>
@@ -150,7 +156,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
                   </ButtonWrapper>
                 </FoldContent>
               </UnfoldContainer>
-            </div>) :
+            </MobileContainer>) :
             <DesignsCardsContainer>
               <Card onClick={goToCustomize}>
                 <CardTitle>

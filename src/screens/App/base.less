@@ -1,4 +1,4 @@
-@popover-prefix-cls: ~'@{ant-prefix}-popover';
+@popover-prefix-cls: ~"@{ant-prefix}-popover";
 
 .@{popover-prefix-cls} {
   &-inner {
@@ -35,7 +35,7 @@
     border-right: 0px @border-style-base @border-color-split;
 
     .@{menu-prefix-cls}-submenu-title {
-      width: ~'calc(100% + 24px)';
+      width: ~"calc(100% + 24px)";
     }
   }
 }
@@ -263,5 +263,46 @@ body {
       background-color: #272727;
       color: #fff;
     }
+  }
+}
+
+body {
+  margin: 0 !important;
+  padding: 0;
+  font-family: "Avenir Next", sans-serif;
+  line-height: normal;
+}
+.ant-modal-body {
+  line-height: normal;
+}
+.rc-drawer-sidebar {
+  z-index: 11;
+}
+.transparent-modal {
+  .ant-modal-content {
+    background: transparent;
+    box-shadow: none;
+    .ant-modal-body {
+      padding: 0;
+    }
+  }
+}
+.rc-drawer {
+  position: relative;
+}
+.rc-drawer-content {
+  position: relative;
+}
+.masonry-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+.masonry-grid_column {
+  padding-left: 2px;
+  background-clip: padding-box;
+  > div {
+    margin: 2px auto;
   }
 }
