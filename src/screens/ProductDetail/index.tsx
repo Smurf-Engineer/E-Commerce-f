@@ -691,7 +691,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           open={designModalOpen}
           onClose={this.closeDesignModal}
           {...{ formatMessage }}
-          isMobile={phone}
           goToCustomize={this.gotoCustomize}
           goToProDesign={this.goToProDesign}
         />

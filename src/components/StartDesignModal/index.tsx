@@ -22,9 +22,7 @@ import {
   MobileContainer,
   CloseIcon
 } from './styledComponents'
-import {
-  isMobile
-} from 'react-device-detect'
+
 import closeIcon from '../../assets/cancel-button.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
@@ -35,6 +33,9 @@ import CustomModal from '../Common/JakrooModal'
 import SimpleLi from '../SimpleLi'
 import { Message } from '../../types/common'
 
+const isMobile = window.matchMedia(
+  '(min-width: 220px) and (max-width: 680px)'
+).matches
 interface Props {
   visible: boolean
   open: boolean
