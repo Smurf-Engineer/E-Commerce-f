@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import {
-  MobileContainer,
+  MobileNavContainer,
   Previous,
   Continue
 } from './styledComponents'
@@ -18,7 +18,6 @@ interface NavValidation {
   previousButtonText?: string
 }
 interface Props {
-  continueDisable: boolean
   validations: NavValidation
   savingIntake?: boolean
   onContinue: () => void
@@ -35,24 +34,19 @@ const MobileMenuNav = ({ validations, onContinue, onPrevious, savingIntake = fal
     previousButtonText = ''
   } = validations
   return (
-    <MobileContainer>
+    <MobileNavContainer>
        <Previous
         text={previousButtonText}
         onClick={!previousDisable ? onPrevious : null}
         show={showPreviousButton}
-        disabled={previousDisable}
-       >
-         {previousButtonText}
-      </Previous>
+        disabled={previousDisable} />
        {!savingIntake ? <Continue
         text={continueButtonText}
         onClick={!continueDisable  ? onContinue : null}
         disabled={continueDisable}
-        show={savingIntake || showContinueButton}>
-          {continueButtonText}
-        </Continue> :
+        show={savingIntake || showContinueButton} /> :
         <Spin />}
-    </MobileContainer>
+    </MobileNavContainer>
   )
 }
 

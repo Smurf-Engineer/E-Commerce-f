@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import { WHITE, GRAY_LIGHT, BLACK_SEMILIGHT } from '../../theme/colors'
 
-export const Container = styled.div`
+export const TabsContainer = styled.div`
   background-color: ${BLACK_SEMILIGHT};
 `
 
@@ -12,7 +12,7 @@ export const Text = styled.div`
   color: ${WHITE};
 `
 
-export const Row = styled.div`
+export const Row2 = styled.div`
   display: flex;
   flex-direction: row;
 `

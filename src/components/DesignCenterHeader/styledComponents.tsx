@@ -8,7 +8,7 @@ type ContainerProps = {
   dark: boolean
 }
 
-export const Container = styled.div`
+export const HeaderContainer = styled.div`
   flex: 1;
   background-color: ${({ dark }: ContainerProps) =>
   dark ? BLACK_SEMILIGHT : WHITE};

@@ -23,7 +23,7 @@ export const StrongText = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
   @media (max-width: 768px) {
-    width: 50%
+    width: 50%;
   }
 `
 
@@ -38,7 +38,7 @@ export const Text = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
   @media (max-width: 768px) {
-    width: 40%
+    width: 40%;
   }
 `
 
@@ -57,7 +57,7 @@ export const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 `
 
 export const EditButton = styled.div`

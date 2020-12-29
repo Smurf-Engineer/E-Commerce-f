@@ -7,12 +7,12 @@ import { compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
-import Header from '../../components/DesignCenterHeader'
+import DesignCenterHeader from '../../components/DesignCenterHeader'
 import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
 import { saveProject } from './data'
 import SwipeableViews from 'react-swipeable-views'
-import { isMobile } from 'react-device-detect'
+import MediaQuery from 'react-responsive'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import Modal from 'antd/lib/modal'
@@ -34,7 +34,7 @@ import {
 import InspirationModal from '../../components/InspirationModal'
 import { RouteComponentProps } from 'react-router-dom'
 import {
-  Container,
+  IntakeContainer,
   Title,
   TopNavHeader,
   ModalTitle,
@@ -59,6 +59,10 @@ import {
 } from './constants'
 
 const { info } = Modal
+
+const isMobile = window.matchMedia(
+  '(min-width: 220px) and (max-width: 680px)'
+).matches
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -455,6 +459,24 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const currentSubtitleTips = titleTexts[currentScreen].bodyWithTip
     const currentTitle = titleTexts[currentScreen].title
     const showTopNav = currentTitle.length || currentSubtitle.length || currentSubtitleTips.length
+    const navTitle = currentTitle.length ? (<Title>
+        {formatMessage(messages[currentTitle])}
+      </Title>) : null
+    const navSubtitle = currentSubtitle.length ? <Subtitle>
+          {formatMessage(messages[currentSubtitle])}
+      </Subtitle> : null
+
+    const navTips = currentSubtitleTips.length ? (<Subtitle action={currentTitleHasAction} 
+        onClick={currentTitleHasAction ? this.showTips : null}>
+          {formatMessage(messages[currentSubtitleTips])}
+        </Subtitle>) : null
+  
+    const topNavHeader = showTopNav ?
+      <TopNavHeader>
+        {navTitle}
+        {navSubtitle}
+        {navTips}
+      </TopNavHeader> : null
 
     return (
       <Layout
@@ -465,63 +487,49 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         hideFooter={true}
         darkMode={true}
       >
-      <Container>
-        {isMobile ?
-          (<MobileMenuNav
+      <IntakeContainer>
+        <MediaQuery minDeviceWidth={1224}>
+          <DesignCenterHeader
+            proDesign={true}
+            onPressBack={this.handleOnPressBack}
+          />
+          {currentScreen > Sections.PATHWAY ?
+            <Tabs
+            onSelectTab={this.handleOnSelectTab}
+            currentTab={currentScreen}
+            validate={this.getNavButtonsValidation}
+            cantContinue={validations.continueDisable}
+            {...{ fromScratch }}
+          /> : null}
+          <Menu
+            {...{validations, savingIntake}}
+            onPrevious={this.handleOnPrevious}
+            onContinue={this.handleOnContinue}
+          />
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={1224}>
+          <MobileMenuNav
             onContinue={this.handleOnContinue}
             onPrevious={this.handleOnPrevious}
             {...{validations, savingIntake}}
-          />) : null}
-        {!isMobile && (
-          <>
-            <Header
-              proDesign={true}
-              onPressBack={this.handleOnPressBack}
-            />
-            {currentScreen > Sections.PATHWAY &&
-              <Tabs
-                onSelectTab={this.handleOnSelectTab}
-                currentTab={currentScreen}
-                validate={this.getNavButtonsValidation}
-                cantContinue={validations.continueDisable}
-                {...{ fromScratch }}
-              />
-            }
-            <Menu
-              {...{validations, savingIntake}}
-              onPrevious={this.handleOnPrevious}
-              onContinue={this.handleOnContinue}
-            />
-          </>
-        )}
-        {showTopNav ? <TopNavHeader>
-          {currentTitle.length ? <Title>
-            {formatMessage(messages[currentTitle])}
-          </Title> : null}
-          {currentSubtitle.length ? <Subtitle>
-              {formatMessage(messages[currentSubtitle])}
-          </Subtitle> : null}
-          {currentSubtitleTips.length ? <Subtitle action={currentTitleHasAction} 
-            onClick={currentTitleHasAction ? this.showTips : null}>
-              {formatMessage(messages[currentSubtitleTips])}
-          </Subtitle> : null}
-        </TopNavHeader> : null}
-        {currentScreen === Sections.PRODUCTS && <ProductCatalogue
+          />
+        </MediaQuery>
+
+        {topNavHeader}
+        {currentScreen === Sections.PRODUCTS ? <ProductCatalogue
             onSelectProduct={this.handleOnselectElementAction}
             onDeselectProduct={deselectElementAction}
-            {...{ history, formatMessage, selectedItems }} />}
-        {currentScreen === Sections.PATHWAY && (
+            {...{ history, formatMessage, selectedItems }} /> : null}
+        {currentScreen === Sections.PATHWAY ? (
           <DesignPathway 
             fromScratch={this.handleFromScratch}
             existingArtwork={this.handleFromExistingArtwork}
             {...{formatMessage, isMobile}} />
-        )}
-       {currentScreen > Sections.PATHWAY &&
+        ) : null}
+       {currentScreen > Sections.PATHWAY ?
         <SwipeableViews
           disabled={true}
-          index={currentScreen}
-          action={actions => (this.swipeableActions = actions)}
-          onChangeIndex={() => this.swipeableActions.updateHeight()}>
+          index={currentScreen}>
             <Inspiration
               {...{ formatMessage, inspiration }}
               windowWidth={responsive.fakeWidth}
@@ -598,8 +606,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               }}
               goToPage={this.handleOnSelectTab}
             />
-          </SwipeableViews>}
-      </Container>
+          </SwipeableViews> : null}
+      </IntakeContainer>
       {successModal ? <SuccessModal
         title={formatMessage(messages.successTitle)}
         text={formatMessage(messages.successMessage)}

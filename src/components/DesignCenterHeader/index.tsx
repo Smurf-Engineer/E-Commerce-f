@@ -8,7 +8,7 @@ import backIcon from '../../assets/rightarrow.svg'
 import whiteBackIcon from '../../assets/rightarrowwhite.svg'
 
 import {
-  Container,
+  HeaderContainer,
   Row,
   BackButton,
   Back,
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const DesignCenterHeader = ({ onPressBack, deliveryDays, proDesign = false }: Props) => (
-  <Container dark={proDesign}>
+  <HeaderContainer dark={proDesign}>
     <Row>
       <BackButton onClick={onPressBack}>
         <BackIcon src={proDesign ? whiteBackIcon : backIcon} />
@@ -43,7 +43,7 @@ const DesignCenterHeader = ({ onPressBack, deliveryDays, proDesign = false }: Pr
       </Date>}
     </Row>
     <Divider />
-  </Container>
+  </HeaderContainer>
 )
 
 export default DesignCenterHeader

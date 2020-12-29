@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Message } from '../../../types/common'
 import {
-  Container,
+  MenuContainer,
   StyledButton,
   ButtonWrapper
 } from './styledComponents'
@@ -32,7 +32,7 @@ const Menu = ({ validations, savingIntake = false, onContinue, onPrevious }: Pro
     previousButtonText = ''
   } = validations
   return (
-    <Container>
+    <MenuContainer>
       <ButtonWrapper
         disabled={savingIntake || previousDisable}
         show={showPreviousButton}
@@ -58,7 +58,7 @@ const Menu = ({ validations, savingIntake = false, onContinue, onPrevious }: Pro
           {continueButtonText}
         </StyledButton>
       </ButtonWrapper>
-    </Container>
+    </MenuContainer>
   )
 }
 

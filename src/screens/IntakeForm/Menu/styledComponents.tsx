@@ -10,7 +10,7 @@ interface ButtonProps {
   show?: boolean
 }
 
-export const Container = styled.div`
+export const MenuContainer = styled.div`
   width: 100%;
   display: inline-flex;
   justify-content: space-between;

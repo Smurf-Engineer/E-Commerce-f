@@ -2,7 +2,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import Tab from './Tab'
-import { Container, Divider, Row, View, Tabs } from './styledComponents'
+import { TabsContainer, Divider, Row2, View, Tabs } from './styledComponents'
 
 interface Props {
   currentTab: number
@@ -42,14 +42,14 @@ const IntakeFormTabs = ({
     }
   })
   return (
-    <Container>
-      <Row>
+    <TabsContainer>
+      <Row2>
         <View />
         <Tabs>{tabs}</Tabs>
         <View />
-      </Row>
+      </Row2>
       <Divider />
-    </Container>
+    </TabsContainer>
   )
 }
 

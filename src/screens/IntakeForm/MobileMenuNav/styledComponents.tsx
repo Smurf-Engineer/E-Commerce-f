@@ -10,7 +10,7 @@ interface ButtonProps {
   text?: string
 }
 
-export const MobileContainer = styled.div`
+export const MobileNavContainer = styled.div`
   padding: 10px;
   width: 100%;
   background-color: ${BLACK_SEMILIGHT};
@@ -30,7 +30,13 @@ const Button = styled.div`
 `
 
 export const Previous = styled(Button)`
+  &::after {
+    content: ${({ text }: ButtonProps) => `"${text}"`};
+  }
 `
 
 export const Continue = styled(Button)`
+  &::after {
+    content: ${({ text }: ButtonProps) => `"${text}"`};
+  }
 `

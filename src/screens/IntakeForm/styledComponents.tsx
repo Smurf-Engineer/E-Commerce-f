@@ -6,7 +6,7 @@ interface StyleProps {
   action?: boolean
 }
 
-export const Container = styled.div`
+export const IntakeContainer = styled.div`
   background-color: ${WHITE};
   width: 100%;
 `

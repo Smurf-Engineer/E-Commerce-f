@@ -358,10 +358,10 @@
     "@types/react" "*"
     redux "^3.6.0"
 
-"@types/react-responsive@^3.0.1":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@types/react-responsive/-/react-responsive-3.0.2.tgz#428fdaf12c28df010508d3374c71e027b1989d8b"
-  integrity sha512-sX4l0wwGvN9YaTUaRGyqqFJVJ3eU+zEbq5Db8sTWnd2uPYkBH1A4yKyYa04mxi+ZKaexSydCqRU1M9Q/+lrlCQ==
+"@types/react-responsive@^4.0.1":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-responsive/-/react-responsive-3.0.3.tgz#a31b599c7cfe4135c5cc2f45d0b71df64803b23f"
+  integrity sha512-paTAvXIFgv/jG60d7WSV0+yWCjqJ05cG+KOV48SiqYGjGi9kFdss9QnVTTLnFJmbUwWnoM+VD1Iyay1JBy/HPQ==
   dependencies:
     "@types/react" "*"
 
@@ -8849,13 +8849,6 @@ react-dev-utils@^4.0.0:
     strip-ansi "3.0.1"
     text-table "0.2.0"
 
-react-device-detect@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/react-device-detect/-/react-device-detect-1.14.0.tgz#ae8bf8cff85055c030f97aa491a0c2b06c472644"
-  integrity sha512-fXFsZoTeLVrONrUr2sqCAXvnbouwyuqlBWoa3K92goCiPM1lUBvZqekv5TY3C02U/IrdoKLOBPFITYluwxKFyw==
-  dependencies:
-    ua-parser-js "^0.7.22"
-
 react-dnd-html5-backend@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.6.0.tgz#590cd1cca78441bb274edd571fef4c0b16ddcf8e"
@@ -10756,11 +10749,6 @@ ua-parser-js@^0.7.18:
   version "0.7.19"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.19.tgz#94151be4c0a7fb1d001af7022fdaca4642659e4b"
   integrity sha512-T3PVJ6uz8i0HzPxOF9SWzWAlfN/DavlpQqepn22xgve/5QecC+XMCAtmUNnY7C9StehaV6exjUCI801lOI7QlQ==
-
-ua-parser-js@^0.7.22:
-  version "0.7.23"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.23.tgz#704d67f951e13195fbcd3d78818577f5bc1d547b"
-  integrity sha512-m4hvMLxgGHXG3O3fQVAyyAQpZzDOvwnhOTjYz5Xmr7r/+LpkNy3vJXdVRWgd1TkAb7NGROZuSy96CrlNVjA7KA==
 
 uglify-es@^3.3.4:
   version "3.3.9"
