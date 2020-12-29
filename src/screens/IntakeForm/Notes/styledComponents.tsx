@@ -98,7 +98,7 @@ export const CheckBoxContainer = styled.div`
   margin-right: 10px;
   flex: 1.2;
   @media (max-width: 768px) {
-    flex: 4
+    flex: 4;
   }
 `
 

@@ -13,7 +13,7 @@ export const Container = styled.div`
 
 export const Title = styled.div`
   font-weight: 600;
-  font-size: 19px
+  font-size: 19px;
   margin-top: 20px;
   @media (max-width: 768px) {
     margin: 0;
@@ -21,14 +21,14 @@ export const Title = styled.div`
 `
 
 export const Subtitle = styled.div`
-  font-size: 18px
-  margin-top: 5px
+  font-size: 18px;
+  margin-top: 5px;
   color: ${({ action }: StyleProps) => (action ? BLUE : GRAY_DARK)};
   cursor: ${({ action }: StyleProps) => (action ? 'pointer' : 'normal')};
   max-width: 525px;
 `
 
-export const NavHeader = styled.div`
+export const TopNavHeader = styled.div`
   width: 100%;
   padding: 20px;
   display: flex;

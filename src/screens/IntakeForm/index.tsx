@@ -20,7 +20,7 @@ import ProductCatalogue from '../../components/ProductCatalogue'
 import SuccessModal from '../../components/SuccessModal'
 import Tabs from '../../components/IntakeFormTabs'
 import { connect } from 'react-redux'
-import MobileMenu from './MobileMenu'
+import MobileMenuNav from './MobileMenuNav'
 import Menu from './Menu'
 import Inspiration from './Inspiration'
 import Colors from './Colors'
@@ -36,7 +36,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import {
   Container,
   Title,
-  NavHeader,
+  TopNavHeader,
   ModalTitle,
   InfoBody,
   buttonStyle,
@@ -454,6 +454,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const currentSubtitle = titleTexts[currentScreen].body
     const currentSubtitleTips = titleTexts[currentScreen].bodyWithTip
     const currentTitle = titleTexts[currentScreen].title
+    const showTopNav = currentTitle.length || currentSubtitle.length || currentSubtitleTips.length
+
     return (
       <Layout
         {...{ history, intl }}
@@ -464,13 +466,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         darkMode={true}
       >
       <Container>
-        {isMobile &&
-            (<MobileMenu
-              onContinue={this.handleOnContinue}
-              onPrevious={this.handleOnPrevious}
-              {...{validations, savingIntake}}
-            />
-            )}
+        {isMobile ?
+          (<MobileMenuNav
+            onContinue={this.handleOnContinue}
+            onPrevious={this.handleOnPrevious}
+            {...{validations, savingIntake}}
+          />) : null}
         {!isMobile && (
           <>
             <Header
@@ -493,7 +494,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             />
           </>
         )}
-        <NavHeader>
+        {showTopNav ? <TopNavHeader>
           {currentTitle.length ? <Title>
             {formatMessage(messages[currentTitle])}
           </Title> : null}
@@ -504,7 +505,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             onClick={currentTitleHasAction ? this.showTips : null}>
               {formatMessage(messages[currentSubtitleTips])}
           </Subtitle> : null}
-        </NavHeader>
+        </TopNavHeader> : null}
         {currentScreen === Sections.PRODUCTS && <ProductCatalogue
             onSelectProduct={this.handleOnselectElementAction}
             onDeselectProduct={deselectElementAction}

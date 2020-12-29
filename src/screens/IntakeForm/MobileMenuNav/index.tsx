@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import {
-  Container,
+  MobileContainer,
   Previous,
   Continue
 } from './styledComponents'
@@ -25,7 +25,7 @@ interface Props {
   onPrevious: () => void
 }
 
-const MobileMenu = ({ validations, onContinue, onPrevious, savingIntake = false }: Props) => {
+const MobileMenuNav = ({ validations, onContinue, onPrevious, savingIntake = false }: Props) => {
   const {
     continueDisable = false,
     showPreviousButton = true,
@@ -34,22 +34,27 @@ const MobileMenu = ({ validations, onContinue, onPrevious, savingIntake = false 
     continueButtonText = '',
     previousButtonText = ''
   } = validations
+  console.log('ENTRANDO')
   return (
-    <Container>
+    <MobileContainer>
        <Previous
         text={previousButtonText}
         onClick={!previousDisable ? onPrevious : null}
         show={showPreviousButton}
         disabled={previousDisable}
-       />
+       >
+         {previousButtonText}
+      </Previous>
        {!savingIntake ? <Continue
         text={continueButtonText}
         onClick={!continueDisable  ? onContinue : null}
         disabled={continueDisable}
-        show={savingIntake || showContinueButton} /> :
+        show={savingIntake || showContinueButton}>
+          {continueButtonText}
+        </Continue> :
         <Spin />}
-    </Container>
+    </MobileContainer>
   )
 }
 
-export default MobileMenu
+export default MobileMenuNav

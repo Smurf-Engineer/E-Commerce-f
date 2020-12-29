@@ -124,7 +124,7 @@ const ProductSlide = ({
         </ImageTop>
         <Page>
           {/* <a href={urlProduct}> TODO: WIP new way to right click */}
-          <Image src={image} onClick={!selectProduct && onPressThumbnail} />
+          <Image src={image} onClick={!selectProduct ? onPressThumbnail : undefined} />
           {/* </a> TODO: WIP new way to right click */}
         </Page>
         <AboveTablet>
@@ -163,7 +163,7 @@ const ProductSlide = ({
           </TopContainer>
         )}
       </ImageTop>
-      <ThumbnailImage onClick={!selectProduct && onPressThumbnail} src={thumbnail} />
+      <ThumbnailImage onClick={!selectProduct ? onPressThumbnail : undefined} src={thumbnail} />
       {isHovered && !selectProduct && (
         <ButtonContainer
           {...{ myLockerList }}
