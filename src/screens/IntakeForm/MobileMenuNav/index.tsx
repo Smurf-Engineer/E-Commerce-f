@@ -34,7 +34,6 @@ const MobileMenuNav = ({ validations, onContinue, onPrevious, savingIntake = fal
     continueButtonText = '',
     previousButtonText = ''
   } = validations
-  console.log('ENTRANDO')
   return (
     <MobileContainer>
        <Previous
