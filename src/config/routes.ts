@@ -26,6 +26,7 @@ import Account from '../screens/Account'
 import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
 import Designs from '../screens/Designs'
+import DesignApproval from '../screens/DesignApproval'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
@@ -206,6 +207,11 @@ const routes = [
     path: '/designs',
     name: 'designs',
     component: Designs
+  },
+  {
+    path: '/approval',
+    name: 'approval',
+    component: DesignApproval
   },
   {
     path: '/product',
