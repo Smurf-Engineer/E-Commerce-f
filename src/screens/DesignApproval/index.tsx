@@ -10,48 +10,68 @@ import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { compose, graphql, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
+import AntdMessage from 'antd/lib/message'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import colorIcon from '../../assets/color_white.svg'
 import { getFonts, getProdesignItemQuery } from './data'
 import { restoreUserSession } from '../../components/MainLayout/api'
 import * as designsActions from './actions'
+import * as designsApiActions from './api'
 import AntdTabs from 'antd/lib/tabs'
-import { QueryProps, Font, UserType, ProDesignItem, ProDesignMessage } from '../../types/common'
+import { QueryProps, Font, UserType, ProDesignItem, ProDesignMessage, UploadFile } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
 import {
+  ApprovalTitle,
   ButtonContainer,
+  CancelButton,
   ChatMessages,
+  Clip,
   Container,
   DateMessage,
   DesignChat,
+  FileLabel,
+  FileName,
   IncomingMessage,
   InfoDiv,
   Initials,
   JakrooLogo,
   Layout,
+  LoadingContainer,
   MessageBody,
   MessageBox,
   MessageHeader,
   MessageType,
+  ModalSubtitle,
+  ModalTitle,
   ParentText,
+  PurchaseButton,
+  RequestButtons,
+  RequestEdit,
+  RequestText,
   RequiredText,
   SaveButton,
+  StyledIcon,
   StyledTabs,
+  StyledUpload,
   TabContent,
   TextAreaStyled,
+  UploadButton,
   UserIcon,
   UserName
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Tab from './Tab'
-import { COLOR, APPROVAL } from './constants'
+import { COLOR, APPROVAL, LIMIT_REQUESTS } from './constants'
 import { EDIT, FROM_ADMIN } from '../../constants'
 import moment from 'moment'
 import messages from './messages'
-import Modal from 'antd/lib/modal/Modal'
+import Modal from 'antd/lib/modal'
+import Spin from 'antd/lib/spin'
+import { getFileWithExtension } from '../../utils/utilsFiles'
+import { UploadChangeParam } from 'antd/lib/upload'
 
 const { TabPane } = AntdTabs
 
@@ -64,13 +84,19 @@ interface Props extends RouteComponentProps<any> {
   data: Data
   client: any
   user: UserType
-  // openQuickViewAction: (index: number) => void
-  loadingModel: boolean
+  openRequest: boolean
+  note: string
+  file: string
+  sendingNote: boolean
   fontsData: any
-  phone: boolean
-  // Redux actions
+  uploadingFile: boolean
+  parentMessageId: string
+  parentMessage: string
+  setReplyAction: (id: string, message: string) => void
+  changeNoteAction: (value: string) => void
+  uploadFileAction: (file: UploadFile) => void
   restoreUserSessionAction: (client: any) => void
-  setLoadingAction: (loading: boolean) => void
+  setOpenModal: (open: boolean) => void
 }
 
 export class DesignApproval extends React.Component<Props, {}> {
@@ -86,17 +112,49 @@ export class DesignApproval extends React.Component<Props, {}> {
     }
   }
   async componentDidMount() {
-    await LoadScripts(threeDScripts, this.handleModelLoaded)
+    await LoadScripts(threeDScripts)
   }
   onTabClickAction = (selectedKey: string) => {
     this.setState({ selectedKey })
   }
-  handleModelLoaded = () => {
-    const { setLoadingAction } = this.props
-    setLoadingAction(false)
+  handleOpenRequest = () => {
+    const { setOpenModal } = this.props
+    setOpenModal(true)
+  }
+  handleCloseRequest = () => {
+    const { setOpenModal } = this.props
+    setOpenModal(false)
   }
   handleOnPressBack = () => {
     window.location.replace('/')
+  }
+
+  uploadFile = (event: UploadChangeParam) => {
+    const { uploadFileAction } = this.props
+    const { file } = event
+    uploadFileAction(file)
+  }
+
+  beforeUpload = (file: any) => {
+    const { intl: { formatMessage } } = this.props
+    const isLt2M = file.size / 1024 / 1024 < 20
+    if (!isLt2M) {
+      AntdMessage.error(formatMessage(messages.sizeError))
+    }
+    return isLt2M
+  }
+
+  handleChangeNote = (evt: React.FormEvent<HTMLTextAreaElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    const { changeNoteAction } = this.props
+    changeNoteAction(value)
+  }
+
+  replyMessage = (id: string, message: string) => () => {
+    const { setReplyAction } = this.props
+    setReplyAction(id, message)
   }
 
   // handleOpenQuickView = () => {
@@ -110,11 +168,19 @@ export class DesignApproval extends React.Component<Props, {}> {
   // }
 
   render() {
-    const { location, fontsData, data, intl: { formatMessage } } = this.props
+    const {
+      fontsData,
+      data,
+      openRequest,
+      parentMessageId,
+      parentMessage,
+      note,
+      uploadingFile,
+      file,
+      sendingNote,
+      intl: { formatMessage }
+    } = this.props
     const { selectedKey } = this.state
-    const { search } = location
-    const queryParams = queryString.parse(search)
-    const designId = queryParams.id || ''
     const fontList: Font[] = get(fontsData, 'fonts', [])
     const { loading = true, projectItem } = data || {}
     const requestMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
@@ -127,26 +193,30 @@ export class DesignApproval extends React.Component<Props, {}> {
       },
       []
     )
+    const requestedEdits = requestMessages.filter(({ type }) => type === EDIT).length
+    const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
         {installedFonts.length ? (
           <GoogleFontLoader fonts={installedFonts} />
         ) : null}
         <Layout>
+          {loading && <LoadingContainer><Spin size="large" /></LoadingContainer> }
           <StyledTabs activeKey={selectedKey} onTabClick={this.onTabClickAction}>
             <TabPane tab={<Tab label={APPROVAL} icon={messageIcon} />} key={APPROVAL}>
               <TabContent>
                 <DesignChat>
+                  <ApprovalTitle>{formatMessage(messages.approvalLog)}</ApprovalTitle>
                   <ChatMessages ref={(listMsgs: any) => { this.listMsg = listMsgs }}>
                     {requestMessages.map((
                       { 
+                        id,
                         message: incomingMessage,
-                        userName,
                         createdAt: createdMessage,
                         type: messageType,
                         requireAnswer: required,
                         answer,
-                        parentMessageId
+                        parentMessageId: parentId,
                       }, 
                       key: number
                       ) =>
@@ -160,7 +230,7 @@ export class DesignApproval extends React.Component<Props, {}> {
                         </MessageHeader>
                         <InfoDiv isAdmin={messageType === FROM_ADMIN}>
                           <MessageBox>
-                            {(!!parentMessageId && answer) &&
+                            {(!!parentId && answer) &&
                               <ParentText>
                                 {answer.message}
                               </ParentText>
@@ -168,7 +238,11 @@ export class DesignApproval extends React.Component<Props, {}> {
                             <MessageBody>
                               {incomingMessage}
                             </MessageBody>
-                            {required && <RequiredText>{formatMessage(messages.required)}</RequiredText>}
+                            {required && 
+                              <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
+                                {formatMessage(messages.required)}
+                              </RequiredText>
+                            }
                           </MessageBox>
                           <DateMessage>
                             {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
@@ -177,6 +251,15 @@ export class DesignApproval extends React.Component<Props, {}> {
                       </IncomingMessage>
                     )}
                   </ChatMessages>
+                  <RequestButtons>
+                    <RequestEdit onClick={this.handleOpenRequest}>
+                      <RequestText>{formatMessage(messages.requestEdit)}</RequestText>
+                      {requestedEdits} of {LIMIT_REQUESTS}
+                    </RequestEdit>
+                    <PurchaseButton>
+                      {formatMessage(messages.purchaseMore)}
+                    </PurchaseButton>
+                  </RequestButtons>
                 </DesignChat>
               </TabContent>
             </TabPane>
@@ -184,22 +267,69 @@ export class DesignApproval extends React.Component<Props, {}> {
               I EAT PEARS
             </TabPane>
           </StyledTabs>
-          <Modal open={false}>
+          <Modal 
+            visible={openRequest}
+            footer={null}
+            closable={false}
+            width={'612px'}
+          >
+            <ModalTitle>{formatMessage(messages[!!parentMessageId ? 'enterAnswer' : 'enterEditNotes'])}</ModalTitle>
+            {!!parentMessageId ?
+              <ParentText>
+                {parentMessage}
+              </ParentText> :
+              <ModalSubtitle>
+                {requestedEdits} of {LIMIT_REQUESTS}
+              </ModalSubtitle>
+            }
             <TextAreaStyled
-              value={'note'}
-              disabled={false}
+              value={note}
+              disabled={sendingNote}
               placeholder={formatMessage(messages.sendCustomerMessage)}
-              onChange={() => {}}
-              autosize={{ minRows: 2, maxRows: 8 }}
+              onChange={this.handleChangeNote}
+              autosize={{ minRows: 4, maxRows: 12 }}
               rows={4}
             />
+            <ModalSubtitle>{formatMessage(messages.fileQuestion)}</ModalSubtitle>
+            <StyledUpload
+              listType="picture-card"
+              className="avatar-uploader"
+              disabled={uploadingFile}
+              customRequest={this.uploadFile}
+              showUploadList={false}
+              beforeUpload={this.beforeUpload}
+            >
+              <UploadButton>
+                {uploadingFile ? 
+                  <Spin size="small" />
+                  : <>
+                      <StyledIcon type="upload" />
+                      {formatMessage(messages.selectFile)}
+                    </>
+                  }
+              </UploadButton>
+            </StyledUpload>
+            {!!fileName &&
+              <FileLabel>
+                <Clip type="paper-clip" />
+                <FileName>
+                  {fileName}
+                </FileName>
+              </FileLabel>
+            }
             <ButtonContainer>
+              <CancelButton
+                disabled={sendingNote}
+                onClick={this.handleCloseRequest}
+              >
+                {formatMessage(messages.cancel)}
+              </CancelButton>
               <SaveButton
-                loading={false}
-                disabled={!'note' || false}
+                loading={sendingNote}
+                disabled={!note || sendingNote}
                 onClick={() => {}}
               >
-                {formatMessage(messages.send)}
+                {formatMessage(messages[!!parentMessageId ? 'reply' : 'send'])}
               </SaveButton>
             </ButtonContainer>
           </Modal>
@@ -230,6 +360,7 @@ const DesignsEnhance = compose(
   withApollo,
   connect(mapStateToProps, {
     ...designsActions,
+    ...designsApiActions,
     openQuickViewAction,
     restoreUserSessionAction: restoreUserSession
   }),

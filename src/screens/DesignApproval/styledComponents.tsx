@@ -15,11 +15,17 @@ import {
   ORANGE_SELECTED,
   WHITE,
   GRAY_SNOW,
-  RED_TRANSPARENT
+  RED_TRANSPARENT,
+  RED,
+  RED_DARK,
+  WHITE_TRANSPARENT,
+  GRAY_DARK
 } from '../../theme/colors'
 import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
+import Upload from 'antd/lib/upload'
 import Icon from 'antd/lib/icon'
+import { AVENIR_MEDIUM } from '../../theme/fonts'
 
 interface RowProps {
   margin?: string
@@ -113,8 +119,93 @@ export const InfoDiv = styled.div`
   flex-flow: column;
 `
 
+export const RequestButtons = styled.div`
+  margin: 12px 2px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const RequestEdit = styled.div`
+  display: flex;
+  flex-flow: column;
+  border: 1px solid ${RED};
+  width: 90%;
+  padding: 4px;
+  font-size: 12px;
+  border-radius: 3px;
+  background: ${WHITE};
+  transition: all .25s;
+  &:hover {
+    span {
+      color: ${WHITE};
+    }
+    cursor: pointer;
+    background: ${RED};
+    color: ${WHITE};
+  }
+`
+
+export const RequestText = styled.span`
+  color: ${RED};
+  transition: all .25s;
+`
+
+export const PurchaseButton = styled.div`
+  display: flex;
+  flex-flow: column;
+  color: ${WHITE};
+  width: 90%;
+  padding: 14px 4px;
+  font-size: 12px;
+  margin-top: 12px;
+  border-radius: 3px;
+  background: ${RED};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    background: ${RED_DARK};
+  }
+`
+
+export const ModalTitle = styled.div`
+  font-weight: 900;
+  font-size: 16px;
+  font-family: ${AVENIR_MEDIUM};
+  margin-bottom: 22px;
+`
+
+export const ModalSubtitle = styled.div`
+  font-size: 12px;
+  color: ${GRAY_DARK};
+  margin: 16px 0;
+`
+
+export const ApprovalTitle = styled.div`
+  background: ${GRAY_LIGHTEST};
+  width: 108%;
+  margin-left: -14px;
+  padding: 8px 18px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 13px;
+`
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  position: absolute;
+  width: 100vw;
+  background: ${WHITE_TRANSPARENT};
+  height: 100vh;
+  z-index: 2;
+  justify-content: center;
+  align-items: center;
+`
+
 export const DesignChat = styled.div`
   padding: 0 14px;
+  height: 100%;
   position: relative;
   display: flex;
   flex-flow: column;
@@ -124,18 +215,15 @@ export const DesignChat = styled.div`
 
 export const TextAreaStyled = styled(TextArea)`
   border-radius: 0;
-  border-bottom: 0px;
   outline: none;
   box-shadow: none;
   resize: none;
   padding-right: 128px;
   &:hover {
     border: 1px solid ${GRAY_LIGHT};
-    border-bottom: 0px;
   }
   &:focus {
     border: 1px solid ${GRAY_LIGHT};
-    border-bottom: 0px;
     outline: none;
     box-shadow: none;
     resize: none;
@@ -143,22 +231,72 @@ export const TextAreaStyled = styled(TextArea)`
 `
 
 export const ButtonContainer = styled.div`
-  padding: 5px 2px;
-  text-align: left;
+  margin-top: 22px;
+  text-align: right;
   background: ${WHITE};
-  border: 1px solid ${GRAY_LIGHT};
-  border-top: 0;
+`
+
+export const StyledUpload = styled(Upload)`
+  margin-bottom: 16px;
+  .ant-upload-select-picture-card {
+    border: 1px solid ${RED};
+    max-width: 128px;
+    width: 100%;
+    height: 36px;
+    background: ${WHITE};
+    border-radius: 1px;
+    @media (max-width: 767px) {
+      width: 100%;
+      height: 54px;
+    }
+  }
+`
+
+export const UploadButton = styled.div`
+  color: ${RED};
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  justify-content: center;
+`
+
+export const StyledIcon = styled(Icon)`
+  margin-right: 16px;
+`
+
+export const Clip = styled(Icon)`
+  color: ${RED};
+  margin-right: 12px;
+`
+
+export const FileLabel = styled.div`
+  display: flex;
+`
+
+export const FileName = styled.div`
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
 
 export const SaveButton = styled(Button)`
   border-radius: 2px;
   font-size: 12px;
-  height: 26px;
-  padding: 0 18px;
+  height: 34px;
+  padding: 0 28px;
   margin-left: 4px;
   background: ${BLUE};
   color: ${WHITE};
   border: none;
+`
+
+export const CancelButton = styled(Button)`
+  border-radius: 2px;
+  font-size: 12px;
+  height: 34px;
+  padding: 0 28px;
+  margin-right: 4px;
 `
 
 export const ChatMessages = styled.div`
