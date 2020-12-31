@@ -9,14 +9,22 @@ interface StyleProps {
 }
 
 export const Container = styled.div`
-  width: 60%;
+  width: 70%;
   background-color: ${WHITE};
   display: inline-flex;
   flex-direction: column;
-  padding: 0 240px;
-  @media (max-width: 768px) {
+  padding: 0 180px;
+  @media (max-width: 880px) {
     width: 100%;
+    padding: 0;
+  }
+  @media (max-width: 1600px) {
+    width: 80%;
     padding: 0 20px;
+  }
+  @media (max-width: 980px) {
+    width: 90%;
+    padding: 0;
   }
 `
 
@@ -38,6 +46,9 @@ export const SelectPaletteContainer = styled.div`
   border: 1px solid ${GRAY_LIGHTEST};
   border-bottom: none;
   flex-direction: column;
+  @media (max-width: 768px) {
+    border-bottom: 1px solid ${GRAY_LIGHTEST};
+  }
 `
 
 export const PaletteTitle = styled.div`
@@ -59,6 +70,17 @@ export const Palettes = styled.div`
 export const CreatePalette = styled.div`
   flex: 2;
   padding: 10px;
+  flex-direction: row;
+  display: flex;
+  &:last-child {
+    margin-left: 10px;
+  }
+  @media (max-width: 900px) {
+    flex-direction: column;
+    &:last-child {
+      margin-left: 0;
+    }
+  }
 `
 
 export const PaletteContainer = styled.div`
@@ -66,7 +88,6 @@ export const PaletteContainer = styled.div`
   position: relative;
   transition: opacity 0.3s ease;
   border: 2px solid ${({ selected }: StyleProps) => (selected ? RED : TRANSPARENT)};
-
   &:hover {
     opacity: 0.8;
     cursor: pointer;
@@ -104,11 +125,26 @@ export const Text = styled.div`
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 10px;
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+  }
 `
 
 export const Palette = styled.div`
   margin-bottom: 20px;
+  &:last-child {
+    margin-left: 45px;
+  }
+  @media (max-width: 900px) {
+    &:last-child {
+      margin-left: 0;
+    }
+    &:first-child {
+      border-bottom: 1px solid ${GRAY_LIGHTEST};
+    }
+  }
 `
 
 export const Image = styled.img`
+  margin-right: 5px;
 `
