@@ -12,7 +12,6 @@ import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
 import { saveProject } from './data'
 import SwipeableViews from 'react-swipeable-views'
-import MediaQuery from 'react-responsive'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import Modal from 'antd/lib/modal'
@@ -482,7 +481,15 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         {navSubtitle}
         {navTips}
       </TopNavHeader> : null
-
+    
+    const navBar = currentScreen > Sections.PATHWAY ?
+      <Tabs
+      onSelectTab={this.handleOnSelectTab}
+      currentTab={currentScreen}
+      validate={this.getNavButtonsValidation}
+      cantContinue={validations.continueDisable}
+      {...{ fromScratch }}
+    /> : null
     return (
       <Layout
         {...{ history, intl }}
@@ -493,32 +500,23 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         darkMode={true}
       >
       <IntakeContainer>
-        <MediaQuery minDeviceWidth={1224}>
+        {!isMobile ? <>
           <DesignCenterHeader
             proDesign={true}
             onPressBack={this.handleOnPressBack}
           />
-          {currentScreen > Sections.PATHWAY ?
-            <Tabs
-            onSelectTab={this.handleOnSelectTab}
-            currentTab={currentScreen}
-            validate={this.getNavButtonsValidation}
-            cantContinue={validations.continueDisable}
-            {...{ fromScratch }}
-          /> : null}
+          {navBar}
           <Menu
             {...{validations, savingIntake}}
             onPrevious={this.handleOnPrevious}
             onContinue={this.handleOnContinue}
-          />
-        </MediaQuery>
-        <MediaQuery maxDeviceWidth={1224}>
-          <MobileMenuNav
+          /></> : null }
+          {isMobile ?
+          (<MobileMenuNav
             onContinue={this.handleOnContinue}
             onPrevious={this.handleOnPrevious}
             {...{validations, savingIntake}}
-          />
-        </MediaQuery>
+          />) : null}
 
         {topNavHeader}
         {currentScreen === Sections.PRODUCTS ? <ProductCatalogue
