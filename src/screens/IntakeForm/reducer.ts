@@ -26,6 +26,7 @@ import {
   ON_EXPAND_INSPIRATION,
   ON_CLOSE_INSPIRATION,
   SET_FROM_SCRATCH,
+  RESET_COLOR_SELECTION,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -39,7 +40,7 @@ export const initialState = fromJS({
   inspirationSelectedItems: [],
   selectedColors: [],
   selectedPrimaryColor: [],
-  selectedPaletteIndex: -1,
+  selectedPaletteIndex: -2,
   selectedEditColors: [],
   selectedEditPrimaryColor: [],
   uploadingFile: false,
@@ -175,6 +176,10 @@ const intakeFormReducer: Reducer<any> = (
       })
     case SET_FROM_SCRATCH:
       return state.set('fromScratch', action.fromScratch)
+    case RESET_COLOR_SELECTION:
+      return state.merge({
+        selectedPaletteIndex: -2
+        })
     default:
       return state
   }

@@ -117,22 +117,6 @@ export class Colors extends React.Component<Props, {}> {
               </PaletteTitle>
               <PaletteColumns>
                 <Palettes>
-                  {/* <PaletteContainer
-                    selected={selectedPaletteIndex === CUSTOM_PALETTE_INDEX}
-                    onClick={onSelectCustomPalette}
-                    >
-                    <Header>
-                      {formatMessage(messages.custom)}
-                      <img src={rightArrow} />
-                    </Header>
-                    <Body>
-                      <ColorBar
-                        {...{formatMessage}}
-                        primary={selectedPrimaryColor[0]}
-                        accent={selectedColors}
-                      />
-                    </Body>
-                  </PaletteContainer> */}
                   {!data.loading && data.rows.map((palette, index) => {
                     const { accent1, accent2, accent3, id, name, primary } = palette
                     const accentColors = [ accent1, accent2, accent3]
@@ -159,8 +143,8 @@ export class Colors extends React.Component<Props, {}> {
                         <Body>
                           <ColorBar
                             {...{formatMessage}}
-                            primary={index !== selectedPaletteIndex ? primary : selectedEditPrimaryColor[0]}
-                            accent={index !== selectedPaletteIndex ? filteredAccentColors : selectedEditColors}
+                            primary={primary}
+                            accent={filteredAccentColors}
                           />
                         </Body>
                       </PaletteContainer>

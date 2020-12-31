@@ -25,7 +25,8 @@ import {
   SET_SUCCESS_MODAL_OPEN,
   ON_EXPAND_INSPIRATION,
   ON_CLOSE_INSPIRATION,
-  SET_FROM_SCRATCH
+  SET_FROM_SCRATCH,
+  RESET_COLOR_SELECTION
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -154,4 +155,8 @@ export const onCloseInspirationAction = () => ({
 export const setFromScratchAction = (fromScratch: boolean) => ({
   type: SET_FROM_SCRATCH,
   fromScratch
+})
+
+export const resetColorSelectionAction = () => ({
+  type: RESET_COLOR_SELECTION
 })

@@ -117,6 +117,7 @@ interface Props extends RouteComponentProps<any> {
   onExpandInspirationAction: (inspirationId: number, image: string, name: string, isSelected: boolean) => void
   onCloseInspirationAction: () => void
   setFromScratchAction: (fromScratch: boolean) => void
+  resetColorSelectionAction: () => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
@@ -453,7 +454,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       onCheckSmsChangeAction,
       onCheckEmailChangeAction,
       onExpandInspirationAction,
-      onCloseInspirationAction
+      onCloseInspirationAction,
+      resetColorSelectionAction
     } = this.props
     const { isMobile } = this.state
 
@@ -561,6 +563,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onSelect={(this.handleOnselectElementAction)}
               onDeselect={deselectElementAction}
               selectPalette={selectPaletteAction}
+              resetSelection={resetColorSelectionAction}
             />
             <Files
               {...{
