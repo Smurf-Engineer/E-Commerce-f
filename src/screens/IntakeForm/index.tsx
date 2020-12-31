@@ -60,10 +60,6 @@ import {
 
 const { info } = Modal
 
-const isMobile = window.matchMedia(
-  '(min-width: 220px) and (max-width: 680px)'
-).matches
-
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   responsive: Responsive
@@ -126,11 +122,18 @@ interface Props extends RouteComponentProps<any> {
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
   swipeableActions = null
+  state = {
+    isMobile: false
+  }
   componentDidMount() {
     const { location, selectElementAction, selectedItems } = this.props
     if (location.state && !selectedItems.length) {
       selectElementAction(location.state.productId, SELECTED_ITEMS)
     }
+    const isMobile = window.matchMedia(
+      '(min-width: 320px) and (max-width: 480px)'
+    ).matches
+    this.setState({ isMobile })
   }
   handleClick = () => {
     const { history } = this.props
@@ -453,6 +456,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       onExpandInspirationAction,
       onCloseInspirationAction
     } = this.props
+    const { isMobile } = this.state
+
     const validations = this.getNavButtonsValidation()
     const currentTitleHasAction = titleTexts[currentScreen].action
     const currentSubtitle = titleTexts[currentScreen].body

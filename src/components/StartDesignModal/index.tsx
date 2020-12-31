@@ -22,7 +22,6 @@ import {
   MobileContainer,
   CloseIcon
 } from './styledComponents'
-
 import closeIcon from '../../assets/cancel-button.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
@@ -33,9 +32,6 @@ import CustomModal from '../Common/JakrooModal'
 import SimpleLi from '../SimpleLi'
 import { Message } from '../../types/common'
 
-const isMobile = window.matchMedia(
-  '(min-width: 220px) and (max-width: 680px)'
-).matches
 interface Props {
   visible: boolean
   open: boolean
@@ -66,7 +62,15 @@ export class StartDesignModal extends React.Component<Props, {}> {
   state = {
     designCardFolded: true,
     proDesignCardFolded: true,
-    animationInProgress: false
+    animationInProgress: false,
+    isMobile: false
+  }
+
+  componentDidMount() {
+    const isMobile = window.matchMedia(
+      '(min-width: 320px) and (max-width: 480px)'
+    ).matches
+    this.setState({ isMobile })
   }
 
   toggleDesignAnimation = () => {
@@ -78,7 +82,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
   }
 
   render() {
-    const { designCardFolded, proDesignCardFolded } = this.state
+    const { designCardFolded, proDesignCardFolded, isMobile } = this.state
     const {
       formatMessage,
       goToCustomize,

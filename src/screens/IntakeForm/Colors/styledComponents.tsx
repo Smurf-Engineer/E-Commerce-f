@@ -109,3 +109,6 @@ export const Text = styled.div`
 export const Palette = styled.div`
   margin-bottom: 20px;
 `
+
+export const Image = styled.img`
+`

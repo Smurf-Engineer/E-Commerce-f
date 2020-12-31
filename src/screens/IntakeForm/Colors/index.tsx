@@ -6,6 +6,8 @@ import { compose, graphql } from 'react-apollo'
 import ColorBar from '../../../components/ColorBar'
 import ColorSelector from '../../../components/ColorSelector'
 import { GetColorPalettes, GetColorsQuery } from './data'
+import BackIcon from '../../../assets/leftarrow.svg'
+import SwipeableViews from 'react-swipeable-views'
 import rightArrow from '../../../assets/arrow.svg'
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -22,7 +24,8 @@ import {
   Header,
   MainContainer,
   Text,
-  Palette
+  Palette,
+  Image
 } from './styledComponents'
 import messages from './messages'
 import { CUSTOM_PALETTE_INDEX } from '../constants'
@@ -50,6 +53,7 @@ interface Props extends RouteComponentProps<any> {
   onSelect: (color: string, listName: string, index?: number) => void
   onDeselect: (color: string, listName: string) => void
   selectPalette: (primaryColor: string, accentColors: string[], index: number) => void
+  resetSelection: () => void
 }
 
 export class Colors extends React.Component<Props, {}> {
@@ -66,7 +70,8 @@ export class Colors extends React.Component<Props, {}> {
       selectedPaletteIndex,
       selectedEditPrimaryColor,
       selectedEditColors,
-      isMobile
+      isMobile,
+      resetSelection
     } = this.props
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
     selectedColors.length : selectedEditColors.length
@@ -82,7 +87,7 @@ export class Colors extends React.Component<Props, {}> {
         SELECTED_COLORS : SELECTED_EDIT_COLORS,
                accentColorsLength >= 3 ? 0 : undefined)
 
-    const onSelectCustomPalette = () => selectPalette(selectedPrimaryColor[0], selectedColors, CUSTOM_PALETTE_INDEX)
+    // const onSelectCustomPalette = () => selectPalette(selectedPrimaryColor[0], selectedColors, CUSTOM_PALETTE_INDEX)
     return (
       <MainContainer>
         <Container>
@@ -101,85 +106,123 @@ export class Colors extends React.Component<Props, {}> {
             {formatMessage(messages.colorsInfo)}
           </InfoText>
           <SelectPaletteContainer>
-            <PaletteTitle>
-              {formatMessage(messages.selectPalette)}
-            </PaletteTitle>
-            <PaletteColumns>
-              <Palettes>
-                <PaletteContainer
-                  selected={selectedPaletteIndex === CUSTOM_PALETTE_INDEX}
-                  onClick={onSelectCustomPalette}
-                  >
-                  <Header>
-                    {formatMessage(messages.custom)}
-                    <img src={rightArrow} />
-                  </Header>
-                  <Body>
-                    <ColorBar
-                      {...{formatMessage}}
-                      primary={selectedPrimaryColor[0]}
-                      accent={selectedColors}
-                    />
-                  </Body>
-                </PaletteContainer>
-                {!data.loading && data.rows.map((palette, index) => {
-                  const { accent1, accent2, accent3, id, name, primary } = palette
-                  const accentColors = [ accent1, accent2, accent3]
-                  var filteredAccentColors = accentColors.reduce((result: string[], accent: string) => {
-                    if (accent) {
-                      result.push(accent)
-                    }
-                    return result
-                  // tslint:disable-next-line: align
-                  }, [])
-                  
-                  const onSelectPalette = () => selectPalette(palette.primary, filteredAccentColors, index)
-                  return (
-                    <>
-                    <PaletteContainer
-                      key={id}
-                      selected={selectedPaletteIndex === index}
-                      onClick={onSelectPalette}
+            <SwipeableViews
+              disabled={true}
+              className={'intake'}
+              index={isMobile && selectedPaletteIndex >= -1 ? 1 : 0}
+              >
+              <>
+              <PaletteTitle>
+                {formatMessage(messages.selectPalette)}
+              </PaletteTitle>
+              <PaletteColumns>
+                <Palettes>
+                  {/* <PaletteContainer
+                    selected={selectedPaletteIndex === CUSTOM_PALETTE_INDEX}
+                    onClick={onSelectCustomPalette}
                     >
-                      <Header>
-                        {name}
-                        <img src={rightArrow} />
-                      </Header>
-                      <Body>
-                        <ColorBar
-                          {...{formatMessage}}
-                          primary={index !== selectedPaletteIndex ? primary : selectedEditPrimaryColor[0]}
-                          accent={index !== selectedPaletteIndex ? filteredAccentColors : selectedEditColors}
-                        />
-                      </Body>
-                    </PaletteContainer>
-                  </>)
-                })} :
+                    <Header>
+                      {formatMessage(messages.custom)}
+                      <img src={rightArrow} />
+                    </Header>
+                    <Body>
+                      <ColorBar
+                        {...{formatMessage}}
+                        primary={selectedPrimaryColor[0]}
+                        accent={selectedColors}
+                      />
+                    </Body>
+                  </PaletteContainer> */}
+                  {!data.loading && data.rows.map((palette, index) => {
+                    const { accent1, accent2, accent3, id, name, primary } = palette
+                    const accentColors = [ accent1, accent2, accent3]
+                    var filteredAccentColors = accentColors.reduce((result: string[], accent: string) => {
+                      if (accent) {
+                        result.push(accent)
+                      }
+                      return result
+                    // tslint:disable-next-line: align
+                    }, [])
+                    
+                    const onSelectPalette = () => selectPalette(palette.primary, filteredAccentColors, index)
+                    return (
+                      <>
+                      <PaletteContainer
+                        key={id}
+                        selected={selectedPaletteIndex === index}
+                        onClick={onSelectPalette}
+                      >
+                        <Header>
+                          {name}
+                          <img src={rightArrow} />
+                        </Header>
+                        <Body>
+                          <ColorBar
+                            {...{formatMessage}}
+                            primary={index !== selectedPaletteIndex ? primary : selectedEditPrimaryColor[0]}
+                            accent={index !== selectedPaletteIndex ? filteredAccentColors : selectedEditColors}
+                          />
+                        </Body>
+                      </PaletteContainer>
+                    </>)
+                  })}
 
-              </Palettes>
-              {!isMobile ? <CreatePalette>
-                <Palette>
-                  <Text>{formatMessage(messages.primaryColor)}</Text>
-                  {!colorsList.loading &&
-                    <ColorSelector
-                      selectedColors={
-                        selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedPrimaryColor : selectedEditPrimaryColor}
-                      colorsList={colorsList}
-                      onSelect={handleOnSelectPrimary}
-                      onDeselect={handleOnDeselect} />}
-                </Palette>
-                <Palette>
-                  <Text>{formatMessage(messages.accentColor)}</Text>
-                  {!colorsList.loading &&
-                    <ColorSelector
-                      selectedColors={
-                        selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedColors : selectedEditColors}
-                      colorsList={colorsList}
-                      onSelect={handleOnSelectAccent}
-                      onDeselect={handleOnDeselect} />}
-                </Palette>
-              </CreatePalette> : null}
-            </PaletteColumns>
+                </Palettes>
+                {!isMobile ? <CreatePalette>
+                  <Palette>
+                    <Text>{formatMessage(messages.primaryColor)}</Text>
+                    {!colorsList.loading &&
+                      <ColorSelector
+                        selectedColors={
+                          selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
+                            selectedPrimaryColor : selectedEditPrimaryColor}
+                        colorsList={colorsList}
+                        onSelect={handleOnSelectPrimary}
+                        onDeselect={handleOnDeselect} />}
+                  </Palette>
+                  <Palette>
+                    <Text>{formatMessage(messages.accentColor)}</Text>
+                    {!colorsList.loading &&
+                      <ColorSelector
+                        selectedColors={
+                          selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedColors : selectedEditColors}
+                        colorsList={colorsList}
+                        onSelect={handleOnSelectAccent}
+                        onDeselect={handleOnDeselect} />}
+                  </Palette>
+                </CreatePalette> : null}
+              </PaletteColumns>
+            </>
+            <>
+              <PaletteTitle onClick={resetSelection}>
+                <Image src={BackIcon} />
+                {formatMessage(messages.selectPalette)}
+              </PaletteTitle>
+              <CreatePalette>
+                  <Palette>
+                    <Text>{formatMessage(messages.primaryColor)}</Text>
+                    {!colorsList.loading &&
+                      <ColorSelector
+                        selectedColors={
+                          selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
+                            selectedPrimaryColor : selectedEditPrimaryColor}
+                        colorsList={colorsList}
+                        onSelect={handleOnSelectPrimary}
+                        onDeselect={handleOnDeselect} />}
+                  </Palette>
+                  <Palette>
+                    <Text>{formatMessage(messages.accentColor)}</Text>
+                    {!colorsList.loading &&
+                      <ColorSelector
+                        selectedColors={
+                          selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedColors : selectedEditColors}
+                        colorsList={colorsList}
+                        onSelect={handleOnSelectAccent}
+                        onDeselect={handleOnDeselect} />}
+                  </Palette>
+                </CreatePalette>
+            </>
+            </SwipeableViews>
           </SelectPaletteContainer>
         </Container>
       </MainContainer>
