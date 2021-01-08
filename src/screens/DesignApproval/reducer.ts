@@ -2,7 +2,15 @@
  * DesignApproval Reducer - Created by Jesús on 28/12/20.
  */
 import { fromJS } from 'immutable'
-import { SET_OPEN_MODAL, SET_UPLOADING, SET_FILE, SET_NOTE, SET_REPLY } from './constants'
+import {
+  SET_OPEN_MODAL,
+  SET_UPLOADING,
+  SET_FILE,
+  SET_NOTE,
+  SET_REPLY,
+  SET_SENDING_NOTE,
+  SET_APPROVE_LOADING
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -13,6 +21,7 @@ export const initialState = fromJS({
   uploadingFile: false,
   parentMessageId: '',
   parentMessage: '',
+  approveLoading: false
 })
 
 const designApprovalReducer: Reducer<any> = (state = initialState, action) => {
@@ -32,6 +41,10 @@ const designApprovalReducer: Reducer<any> = (state = initialState, action) => {
         parentMessageId: action.id,
         parentMessage: action.message
       })
+    case SET_APPROVE_LOADING:
+      return state.set('approveLoading', action.loading)
+    case SET_SENDING_NOTE:
+      return state.set('sendingNote', action.loading)
     case SET_OPEN_MODAL:
       return state.merge({
         openRequest: action.open,

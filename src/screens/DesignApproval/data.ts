@@ -71,7 +71,7 @@ export const getProdesignItemQuery = gql`
         code 
         canvas 
         style_id 
-        output_svg 
+        outputSvg: output_svg 
         createdAt: created_at
         canvas_files
         pro_design
@@ -114,6 +114,23 @@ export const getProdesignItemQuery = gql`
         status
         createdAt: created_at
         updatedAt: updated_at
+        designs {
+          id: short_id
+          name
+          code
+          createdAt: created_at
+          image
+          status
+          product {
+            id
+            code
+            name
+            shortDescription: short_description
+            pictures {
+              front: front_image
+            }
+          }
+        }
         files {
           id
           fileUrl: file_url
@@ -135,6 +152,97 @@ export const getProdesignItemQuery = gql`
           tags
         }
       }
+    }
+  }
+`
+
+export const addProMessageMutation = gql`
+  mutation sendNoteProdesign(
+    $itemId: String!,
+    $message: String!,
+    $file: String,
+    $parentMessageId: String
+  ) {
+    messageData: sendNoteProdesign(
+      itemId: $itemId,
+      message: $message,
+      file: $file,
+      parentMessageId: $parentMessageId
+    ) {
+      id
+      createdAt: created_at
+      type
+      message
+      parentMessageId: parent_message_id
+      requireAnswer: require_answer
+      userName: user_name
+      answer {
+        message
+      }
+    }
+  }
+`
+
+export const approveDesignMutation = gql`
+  mutation setApproveDesign($itemId: String!) {
+    messageData: setApproveDesign(itemId: $itemId) {
+      id
+      status
+    }
+  }
+`
+
+export const getColorsQuery = gql`
+  query GetColors {
+    colorsResult: getColors {
+      colors
+    }
+  }
+`
+
+export const getPredyedColors = gql`
+  query getPredyedColors {
+    getPredyedColors {
+      id: short_id
+      name
+      code
+    }
+  }
+`
+
+export const getVariantsFromProduct = gql`
+  query getVariants($id: Int!) {
+    getVariants(id: $id) {
+      id: short_id
+      name
+      icon
+      default: is_default
+      bumpMap: bumpmap
+      obj
+      label
+      mtl
+      branding
+      flatlock
+      bibraceWhite: bibrace_white
+      bibraceBlack: bibrace_black
+      zipperWhite: zipper_white
+      zipperBlack: zipper_black
+      bindingWhite: binding_white
+      bindingBlack: binding_black
+    }
+  }
+`
+
+export const addTeamStoreItemMutation = gql`
+  mutation AddTeamStoreItem(
+    $teamStoreItem: TeamStoreItem!
+    $teamStoreId: String!
+  ) {
+    addTeamStoreItem(
+      teamStoreItem: $teamStoreItem
+      teamStoreId: $teamStoreId
+    ) {
+      message
     }
   }
 `

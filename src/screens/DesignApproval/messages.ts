@@ -21,6 +21,58 @@ export default defineMessages({
     id: 'screens.DesignApproval.enterAnswer',
     defaultMessage: 'ENTER REPLY NOTES'
   },
+  shareButton: {
+    id: 'screens.DesignApproval.shareButton',
+    defaultMessage: 'Share'
+  },
+  addedToStore: {
+    id: 'screens.DesignApproval.addedToStore',
+    defaultMessage: 'Added to team store!'
+  },
+  addToCart: {
+    id: 'screens.DesignApproval.addToCart',
+    defaultMessage: 'Add to Cart'
+  },
+  addToTeam: {
+    id: 'screens.DesignApproval.addToTeam',
+    defaultMessage: 'Add to Team Store'
+  },
+  savedNote: {
+    id: 'screens.DesignApproval.savedNote',
+    defaultMessage: 'Saved Note!'
+  },
+  infoApprove: {
+    id: 'screens.DesignApproval.infoApprove',
+    defaultMessage: 'By approving this design you will not be able to request more edits.'
+  },
+  products: {
+    id: 'screens.DesignApproval.products',
+    defaultMessage: 'Pro Design Project Products'
+  },
+  confirm: {
+    id: 'screens.DesignApproval.confirm',
+    defaultMessage: 'Confirm'
+  },
+  areYouSure: {
+    id: 'screens.DesignApproval.areYouSure',
+    defaultMessage: 'ARE YOU SURE?'
+  },
+  approved: {
+    id: 'screens.DesignApproval.approved',
+    defaultMessage: 'Design Approved!'
+  },
+  approve: {
+    id: 'screens.DesignApproval.approve',
+    defaultMessage: 'Approve'
+  },
+  colors: {
+    id: 'screens.DesignApproval.colors',
+    defaultMessage: 'Colors List'
+  },
+  back: {
+    id: 'screens.DesignApproval.back',
+    defaultMessage: 'Back to Jakroo'
+  },
   selectFile: {
     id: 'screens.DesignApproval.selectFile',
     defaultMessage: 'Select File'
