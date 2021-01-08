@@ -72,10 +72,11 @@ interface Props {
   selectProduct?: boolean
   isSelected?: boolean
   selectedIndex?: number
+  clickDisabled?: boolean
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
-  handleCheckChange: (productId: number, checked: boolean) => void
+  handleCheckChange: (product: Product, checked: boolean) => void
 }
 
 export class ProductThumbnail extends React.Component<Props, {}> {
@@ -152,11 +153,13 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { history, onPressThumbnail } = this.props
+    const { history, onPressThumbnail, clickDisabled = false } = this.props
     if (onPressThumbnail) {
       onPressThumbnail()
     }
-    history.push(this.getUrlProduct())
+    if (!clickDisabled) {
+      history.push(this.getUrlProduct())
+    }
   }
 
   handleOnBuyNow = async () => {
@@ -213,7 +216,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     event.stopPropagation()
     const { isSelected } = this.props
     const { product, handleCheckChange } = this.props
-    handleCheckChange(product.id, !isSelected)
+    handleCheckChange(product, !isSelected)
   }
   render() {
     const {
@@ -244,13 +247,11 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       selectedIndex = 0
     } = this.props
     const { isHovered, currentImage, loading } = this.state
-
     const currencyPrices =
       priceRange &&
       filter(priceRange, {
         abbreviation: currentCurrency
       })
-
     const symbol = get(currencyPrices, '[0].shortName', '')
 
     let lastPriceIndex = LIMIT_PRICE_RANGE
@@ -266,7 +267,6 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       const lastPrice = currencyPrices[lastPriceIndex].price
 
       price = `${symbol} ${basePrice}`
-
       if (customizable) {
         if (reversePriceRange) {
           price = `${symbol} ${lastPrice} - ${basePrice}`

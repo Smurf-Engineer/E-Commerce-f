@@ -1,7 +1,7 @@
 /**
  * ProductCatalog  Actions - Created by cazarez on 27/02/18.
  */
-import { InspirationType, ImageFile } from '../../types/common'
+import { InspirationType, ImageFile, Product } from '../../types/common'
 import { Moment } from 'moment'
 import {
   SELECT_ELEMENT,
@@ -26,7 +26,8 @@ import {
   ON_EXPAND_INSPIRATION,
   ON_CLOSE_INSPIRATION,
   SET_FROM_SCRATCH,
-  RESET_COLOR_SELECTION
+  RESET_COLOR_SELECTION,
+  SELECT_PRODUCT
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -159,4 +160,9 @@ export const setFromScratchAction = (fromScratch: boolean) => ({
 
 export const resetColorSelectionAction = () => ({
   type: RESET_COLOR_SELECTION
+})
+
+export const selectProductAction = (product: Product) => ({
+  type: SELECT_PRODUCT,
+  product
 })

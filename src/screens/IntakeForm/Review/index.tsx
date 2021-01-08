@@ -28,7 +28,7 @@ import {
 import { getFileNameFromUrl } from '../../../utils/utilsFiles'
 import ColorBar from '../../../components/ColorBar'
 import messages from './messages'
-import { Message, InspirationType, ImageFile, UserType } from '../../../types/common'
+import { Message, InspirationType, ImageFile, UserType, Product } from '../../../types/common'
 import { Sections,  CUSTOM_PALETTE_INDEX } from '../constants'
 import { DATE_FORMAT } from '../../../constants'
 
@@ -44,8 +44,9 @@ interface Props extends RouteComponentProps<any> {
   projectName: string
   projectDescription: string
   user: UserType
-  selectedItems: number[]
+  selectedItems: Product[]
   fromScratch: boolean
+  currentCurrency: string
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
 }
@@ -86,7 +87,8 @@ export class Review extends React.Component<Props, {}> {
       projectDescription,
       user,
       selectedItems,
-      fromScratch
+      fromScratch,
+      currentCurrency
     } = this.props
     const inspirationItems =
       filter(inspiration, (inspirationItem: InspirationType) => includes(inspirationSelectedItems, inspirationItem.id))
@@ -197,9 +199,39 @@ export class Review extends React.Component<Props, {}> {
                 </Column>
               </Row>
               <Row>
-                {selectedItems.map((productId) => (<ProductThumbnail
-                  id={productId}
-                />))}
+                {selectedItems.map((product: Product) => {
+                  const {
+                    images,
+                    type,
+                    description,
+                    isTopProduct,
+                    priceRange,
+                    customizable,
+                    colors,
+                    collections
+                  } = product
+
+                  return (<ProductThumbnail
+                    key={product.id}
+                    id={product.id}
+                    images={images[0]}
+                    product={product}
+                    yotpoId={product.yotpoId}
+                    disableSlider={true}
+                    hideCustomButton={true}
+                    hideQuickView={true}
+                    clickDisabled={true}
+                    {...{
+                      currentCurrency,
+                      type,
+                      description,
+                      isTopProduct,
+                      priceRange,
+                      customizable,
+                      colors,
+                      collections
+                    }}
+                  />)})}
               </Row>
             </Products>
         </Container>

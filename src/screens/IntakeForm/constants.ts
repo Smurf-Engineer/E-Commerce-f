@@ -26,6 +26,7 @@ export const ON_EXPAND_INSPIRATION = `${namespace}/ON_EXPAND_INSPIRATION`
 export const ON_CLOSE_INSPIRATION = `${namespace}/ON_CLOSE_INSPIRATION`
 export const SET_FROM_SCRATCH = `${namespace}/SET_FROM_SCRATCH`
 export const RESET_COLOR_SELECTION = `${namespace}/RESET_COLOR_SELECTION`
+export const SELECT_PRODUCT = `${namespace}/SELECT_PRODUCT`
 
 export enum Sections {
   PRODUCTS = -2,

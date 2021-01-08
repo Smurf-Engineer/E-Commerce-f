@@ -6,7 +6,7 @@ interface ImagePreviewProps {
 }
 
 export const Container = styled.div`
-  width: 70%;
+  width: 75%;
   background-color: ${WHITE};
   display: inline-flex;
   flex-direction: column;

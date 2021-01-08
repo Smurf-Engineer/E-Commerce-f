@@ -27,6 +27,7 @@ import {
   ON_CLOSE_INSPIRATION,
   SET_FROM_SCRATCH,
   RESET_COLOR_SELECTION,
+  SELECT_PRODUCT,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -77,8 +78,8 @@ const intakeFormReducer: Reducer<any> = (
       const { listName, elementId } = action
       const indexOfListingToDelete = state
         .get(listName)
-        .findIndex((productType: number) => {
-          return productType === elementId
+        .findIndex((productType: any) => {
+          return  (listName === 'selectedItems' ? productType.get('id') : productType) === elementId
         })
       const selectedItems = state.get(listName)
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
@@ -180,6 +181,12 @@ const intakeFormReducer: Reducer<any> = (
       return state.merge({
         selectedPaletteIndex: -2
         })
+    case SELECT_PRODUCT: {
+        const { product } = action
+        const selectedItems = state.get('selectedItems')
+        const addItem = selectedItems.push(fromJS(product))
+        return state.merge({ selectedItems: addItem })
+      }
     default:
       return state
   }

@@ -128,7 +128,7 @@ const ProductSlide = ({
           {/* </a> TODO: WIP new way to right click */}
         </Page>
         <AboveTablet>
-          {isHovered && !selectProduct && (
+          {isHovered && (!selectProduct && !hideCustomButton) && (
             <ButtonContainer {...{ myLockerList }} onClick={onPressCustomize}>
               {labelButton}
             </ButtonContainer>
@@ -144,9 +144,11 @@ const ProductSlide = ({
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
       <ImageTop {...{selectProduct, selectedIndex}}>
         <AboveTablet>
+        {!hideQuickView && (
           <QuickView onClick={onPressQuickView}>
             <img src={quickViewIcon} />
-          </QuickView>
+          </QuickView>)
+        }
         </AboveTablet>
         {selectProduct && <BelowTablet><QuickView onClick={onPressQuickView}>
           <img src={quickViewIcon} />
@@ -164,7 +166,7 @@ const ProductSlide = ({
         )}
       </ImageTop>
       <ThumbnailImage onClick={!selectProduct ? onPressThumbnail : undefined} src={thumbnail} />
-      {isHovered && !selectProduct && (
+      {isHovered && (!selectProduct && !hideCustomButton) && (
         <ButtonContainer
           {...{ myLockerList }}
           onClick={customizable ? onPressCustomize : onPressThumbnail}

@@ -17,7 +17,8 @@ import {
   QueryProps,
   ProductType,
   DesignType,
-  ClickParam
+  ClickParam,
+  Product
 } from '../../types/common'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import {
@@ -71,8 +72,8 @@ interface Props {
   currentCurrency: string
   genderFilters: string
   selectProduct?: boolean
-  selectedItems?: number[]
-  handleCheckChange: (productId: number, checked: boolean) => void
+  selectedItems?: Product[]
+  handleCheckChange: (product: Product, checked: boolean) => void
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -121,7 +122,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           },
           index
         ) => {
-          const isSelected = includes(selectedItems, product.id)
+          const selectedProductIds = selectedItems.map((sectedProduct: Product) => sectedProduct.id)
+          const isSelected = includes(selectedProductIds, product.id)
 
           const addToCartButton = product.active || product.onlyProDesign ? (
             <AddToCartButton
@@ -263,8 +265,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           )
 
           const productImages = images ? imgsByGender || images[0] : {}
-          const isSelected = includes(selectedItems, product.id)
-
+          const selectedProductIds = selectedItems.map((sectedProduct: Product) => sectedProduct.id)
+          const isSelected = includes(selectedProductIds, product.id)
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail

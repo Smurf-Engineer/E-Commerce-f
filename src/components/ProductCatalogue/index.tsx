@@ -26,7 +26,7 @@ import {
   ResultsColumn,
   Icon
 } from './styledComponents'
-import { QueryProps, ClickParam, Filter } from '../../types/common'
+import { QueryProps, ClickParam, Filter, Product } from '../../types/common'
 import { GetFiltersQuery } from './data'
 import { filtersNames, ALL_GENDERS } from './constants'
 
@@ -73,7 +73,7 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   openSidebar: boolean
   currentCurrency: string
-  selectedItems: number[]
+  selectedItems: Product[]
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
@@ -84,7 +84,7 @@ interface Props extends RouteComponentProps<any> {
   setHomeSelectedFilters: () => void
   resetReducerAction: () => void
   setAllGendersAction: () => void
-  onSelectProduct: (productId: number, listName: string) => void
+  onSelectProduct: (product: Product) => void
   onDeselectProduct: (productId: number, listName: string) => void
 }
 
@@ -161,13 +161,13 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     }
   }
 
-  onCheckChange = (productId: number, checked: boolean) => {
+  onCheckChange = (product: Product, checked: boolean) => {
     const { onSelectProduct, onDeselectProduct } = this.props
     if (checked) {
-      onSelectProduct(productId, SELECTEED_ITEMS)
+      onSelectProduct(product)
       return
     }
-    onDeselectProduct(productId, SELECTEED_ITEMS)
+    onDeselectProduct(product.id, SELECTEED_ITEMS)
   }
 
   render() {

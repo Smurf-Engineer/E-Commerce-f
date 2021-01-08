@@ -23,6 +23,7 @@ import MobileMenuNav from './MobileMenuNav'
 import Menu from './Menu'
 import Inspiration from './Inspiration'
 import Colors from './Colors'
+import SelectedProducts from './SelectedProducts'
 import Files from './Files'
 import DesignPathway from './DesignPathway'
 import Review from './Review'
@@ -46,7 +47,8 @@ import {
   InspirationType,
   ImageFile,
   UserType,
-  MessagePayload
+  MessagePayload,
+  Product
 } from '../../types/common'
 import {
   Sections,
@@ -62,7 +64,7 @@ const { info } = Modal
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   responsive: Responsive
-  selectedItems: number[]
+  selectedItems: Product[]
   currentScreen: number
   inspirationPage: number
   inspirationSkip: number
@@ -93,6 +95,7 @@ interface Props extends RouteComponentProps<any> {
   expandedInspiration: boolean
   expandedInspirationOpen: boolean
   fromScratch: boolean
+  currentCurrency: string
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -118,6 +121,7 @@ interface Props extends RouteComponentProps<any> {
   onCloseInspirationAction: () => void
   setFromScratchAction: (fromScratch: boolean) => void
   resetColorSelectionAction: () => void
+  selectProductAction: (product: Product) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
@@ -126,9 +130,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     isMobile: false
   }
   componentDidMount() {
-    const { location, selectElementAction, selectedItems } = this.props
+    const { location, selectedItems } = this.props
     if (location.state && !selectedItems.length) {
-      selectElementAction(location.state.productId, SELECTED_ITEMS)
+      // selectElementAction(location.state.productId, SELECTED_ITEMS)
     }
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
@@ -376,6 +380,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     this.showAlert(title, body, accept)
   }
 
+  handleOnselectProductAction = (product: Product) => {
+    const { selectProductAction } = this.props
+    selectProductAction(product)
+  }
+
   showAlert = (title: string, body: string, accept: string) => {
     info({
       title: (
@@ -440,6 +449,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       expandedInspiration,
       expandedInspirationOpen,
       fromScratch,
+      currentCurrency,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -521,10 +531,15 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           />) : null}
 
         {topNavHeader}
-        {currentScreen === Sections.PRODUCTS ? <ProductCatalogue
-            onSelectProduct={this.handleOnselectElementAction}
-            onDeselectProduct={deselectElementAction}
-            {...{ history, formatMessage, selectedItems }} /> : null}
+        {currentScreen === Sections.PRODUCTS ? <>
+          <SelectedProducts
+            {...{currentCurrency}}
+            products={selectedItems}
+          />
+          <ProductCatalogue
+              onSelectProduct={this.handleOnselectProductAction}
+              onDeselectProduct={deselectElementAction}
+              {...{ history, formatMessage, selectedItems }} /></> : null}
         {currentScreen === Sections.PATHWAY ? (
           <DesignPathway 
             fromScratch={this.handleFromScratch}
@@ -608,7 +623,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 user,
                 projectDescription,
                 selectedItems,
-                fromScratch
+                fromScratch,
+                currentCurrency
               }}
               goToPage={this.handleOnSelectTab}
             />
