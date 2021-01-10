@@ -68,5 +68,9 @@ export default defineMessages({
   makeCopy: {
     id: 'components.ProductCatalogueThumbnailsList.makeCopy',
     defaultMessage: 'MAKE A COPY'
+  },
+  selectedProducts: {
+    id: 'components.ProductCatalogueThumbnailsList.selectedProducts',
+    defaultMessage: 'Selected Products'
   }
 })

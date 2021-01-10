@@ -11,6 +11,7 @@ import Menu from 'antd/lib/menu'
 import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
+import SelectedProducts from '../../screens/IntakeForm/SelectedProducts'
 import FooterThumbnailLocker from '../FooterThumbnailLocker'
 import AddToCartButton from '../AddToCartButton'
 import {
@@ -49,7 +50,7 @@ interface Data extends QueryProps {
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  openQuickView: (id: number, yotpoId: string) => void
+  openQuickView: (id: number, yotpoId: string, gender?: number, hideSliderButtons?: boolean) => void
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
@@ -73,6 +74,7 @@ interface Props {
   genderFilters: string
   selectProduct?: boolean
   selectedItems?: Product[]
+  fromIntakeForm?: boolean
   handleCheckChange: (product: Product, checked: boolean) => void
 }
 
@@ -328,6 +330,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
     return (
       <Container>
+        <SelectedProducts
+          products={selectedItems}
+          title={formatMessage(messages.selectedProducts)}
+          handleDeleteProduct={handleCheckChange}
+        />
         <HeadRow withoutPadding={!!withoutPadding}>
           {total ? <TotalItems>{`${total} Items`}</TotalItems> : null}
           {sortOptions && !!sortByLabel.length && (
@@ -375,8 +382,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     setCurrentShare(shortId, openModal)
   }
   handlePressQuickView = (id: number, yotpoId: string) => {
-    const { openQuickView } = this.props
-    openQuickView(id, yotpoId)
+    const { openQuickView, fromIntakeForm } = this.props
+    !fromIntakeForm ? openQuickView(id, yotpoId) : openQuickView(id, yotpoId, null, true)
   }
 
   openPreview = (designId: string) => () => {

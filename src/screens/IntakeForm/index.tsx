@@ -23,7 +23,6 @@ import MobileMenuNav from './MobileMenuNav'
 import Menu from './Menu'
 import Inspiration from './Inspiration'
 import Colors from './Colors'
-import SelectedProducts from './SelectedProducts'
 import Files from './Files'
 import DesignPathway from './DesignPathway'
 import Review from './Review'
@@ -130,9 +129,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     isMobile: false
   }
   componentDidMount() {
-    const { location, selectedItems } = this.props
+    const { location, selectedItems, selectProductAction } = this.props
     if (location.state && !selectedItems.length) {
-      // selectElementAction(location.state.productId, SELECTED_ITEMS)
+      selectProductAction(location.state.product)
     }
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
@@ -532,13 +531,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
         {topNavHeader}
         {currentScreen === Sections.PRODUCTS ? <>
-          <SelectedProducts
-            {...{currentCurrency}}
-            products={selectedItems}
-          />
           <ProductCatalogue
               onSelectProduct={this.handleOnselectProductAction}
               onDeselectProduct={deselectElementAction}
+              hideFilters={['collection']}
+              fromIntakeForm={true}
               {...{ history, formatMessage, selectedItems }} /></> : null}
         {currentScreen === Sections.PATHWAY ? (
           <DesignPathway 

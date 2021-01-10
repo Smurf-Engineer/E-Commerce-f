@@ -753,12 +753,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       history,
       data: { product }
     } = this.props
-    const productId = get(product, 'id')
 
     history.push({
       pathname: `/pro-design`,
       state: {
-        productId
+        product
       }
     })
   }

@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import UpperCase from 'lodash/upperCase'
 import MediaQuery from 'react-responsive'
 import Drawer from 'rc-drawer'
+import includes from 'lodash/includes'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
@@ -74,6 +75,8 @@ interface Props extends RouteComponentProps<any> {
   openSidebar: boolean
   currentCurrency: string
   selectedItems: Product[]
+  hideFilters?: string []
+  fromIntakeForm?: boolean
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
@@ -190,7 +193,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       openQuickViewAction: openQuickView,
       currentCurrency,
       data: { loading, filters: filtersGraph },
-      selectedItems
+      selectedItems,
+      hideFilters = [],
+      fromIntakeForm = false
     } = this.props
     if (loading || !filtersGraph || !filtersGraph.length) {
       return null
@@ -223,14 +228,15 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       (filter: FilterType, index: number) => {
         const filterToShow = this.state[`show${filter.name}Filters`]
         const activeFilters = filters[index]
-        return (
+
+        return !includes(hideFilters, filter.name) && (
           <div key={index}>
             <FilterComponent
               key={filter.id}
               id={filter.name}
               title={UpperCase(filter.name)}
               options={filter.options}
-              showOptions={filterToShow}
+              showOptions={fromIntakeForm && filterToShow === undefined ? true : filterToShow}
               toggleOptions={this.toggleFilter}
               selectOption={this.handleSelect}
               {...{ activeFilters }}
@@ -340,7 +346,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             sortByLabel: '',
                             currentPage,
                             contentTile,
-                            selectedItems
+                            selectedItems,
+                            fromIntakeForm
                           }}
                         />
                       </ResultsColumn>
@@ -382,7 +389,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       sortByLabel: '',
                       currentPage,
                       contentTile,
-                      selectedItems
+                      selectedItems,
+                      fromIntakeForm
                     }}
                   />
                 </ResultsColumn>

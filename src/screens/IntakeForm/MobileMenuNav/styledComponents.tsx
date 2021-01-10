@@ -36,6 +36,19 @@ export const Previous = styled(Button)`
 `
 
 export const Continue = styled(Button)`
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  left: 0;
+  border-radius: 0;
+  text-align: center;
+  text-transform: uppercase;
+  height: 50px;
+  justify-content: center;
+  border: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
   &::after {
     content: ${({ text }: ButtonProps) => `"${text}"`};
   }

@@ -72,6 +72,7 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   openSidebar: boolean
   currentCurrency: string
+  fromIntakeForm?: boolean
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
@@ -183,7 +184,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       openSidebar,
       openQuickViewAction: openQuickView,
       currentCurrency,
-      data: { loading, filters: filtersGraph }
+      data: { loading, filters: filtersGraph },
+      fromIntakeForm
     } = this.props
 
     let sortByLabel = ''
@@ -345,7 +347,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             history,
                             sortByLabel,
                             currentPage,
-                            contentTile
+                            contentTile,
+                            fromIntakeForm
                           }}
                         />
                       </ResultsColumn>
@@ -386,7 +389,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         history,
                         sortByLabel,
                         currentPage,
-                        contentTile
+                        contentTile,
+                        fromIntakeForm
                       }}
                     />
                   </ResultsColumn>
