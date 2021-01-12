@@ -335,7 +335,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         this.scrollMessages()
       }
     } catch (e) {
-      AntdMessage.error(e.message)
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      AntdMessage.error(errorMessage)
     } finally {
       setSendingAction(false)
     }
@@ -741,13 +742,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 }
               </ButtonsContainer>
               {variants.length > 1 && (
-                <Variants>
+                <Variants secondary={itemStatus === CUSTOMER_APPROVED}>
                   {variants.map(({ icon }, index) => (
                     <VariantButton
                       key={index}
                       onClick={this.handleSelectVariant(index)}
                       selected={selectedVariant === index}
-                      src={icon || JakrooLogo}
+                      src={icon || JakRooLogo}
                     />
                   ))}
                 </Variants>
