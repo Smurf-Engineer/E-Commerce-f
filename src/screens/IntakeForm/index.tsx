@@ -54,7 +54,7 @@ import {
   titleTexts,
   CUSTOM_PALETTE_INDEX,
   SELECTED_LCOKER_FILES,
-  SELECTED_FILES, SELECTED_ITEMS,
+  SELECTED_FILES,
   INSPIRATION_SELECTEED_ITEMS
 } from './constants'
 
@@ -95,6 +95,8 @@ interface Props extends RouteComponentProps<any> {
   expandedInspirationOpen: boolean
   fromScratch: boolean
   currentCurrency: string
+  inspirationTags: string[]
+  inspirationFilters: string[]
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -116,11 +118,17 @@ interface Props extends RouteComponentProps<any> {
   createProject: (variables: {}) => Promise<MessagePayload>
   onSetSavingIntake: (saving: boolean) => void
   onSetSuccessModalOpen: (open: boolean) => void
-  onExpandInspirationAction: (inspirationId: number, image: string, name: string, isSelected: boolean) => void
+  onExpandInspirationAction: 
+    (inspirationId: number, image: string, name: string, isSelected: boolean, tags: string[]) => void
   onCloseInspirationAction: () => void
   setFromScratchAction: (fromScratch: boolean) => void
   resetColorSelectionAction: () => void
   selectProductAction: (product: Product) => void
+  addTagAction: (value: string) => void
+  removeTagAction: (value: string) => void
+  resetInspirationDataAction: () => void
+  removeFilterAction: (name: string) => void
+  addFilterAction: (name: string) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
@@ -265,7 +273,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       Sections.REVIEW ? formatMessage(messages.submitButtonText) :
         formatMessage(messages.continueButtonText)
     const previousButtonText = formatMessage(messages.previousButtonText)
-
     switch (screen || currentScreen) {
       case Sections.PRODUCTS:
         return {
@@ -347,25 +354,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   handleOnselectElementAction = (elementId: number | string, listName: string, index?: number) => {
     const {
-      intl: { formatMessage },
       selectElementAction,
       onCloseInspirationAction,
       inspirationSelectedItems
     } = this.props
-    let title = ''
-    let body = ''
-    let accept = ''
     switch (listName) {
-      case SELECTED_ITEMS: {
-        const { selectedItems } = this.props
-        if (selectedItems.length < 5) {
-          return selectElementAction(elementId, listName, index)
-        }
-        title = formatMessage(messages.maxProductsTitle)
-        body = formatMessage(messages.maxProductsBody)
-        accept = formatMessage(messages.gotIt)
-        break
-      }
       case INSPIRATION_SELECTEED_ITEMS: { 
         if (inspirationSelectedItems.length < 5) {
           onCloseInspirationAction()
@@ -376,12 +369,17 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       default:
         return selectElementAction(elementId, listName, index)
     }
-    this.showAlert(title, body, accept)
   }
 
   handleOnselectProductAction = (product: Product) => {
-    const { selectProductAction } = this.props
-    selectProductAction(product)
+    const { selectProductAction, selectedItems, intl: { formatMessage } } = this.props
+    if (selectedItems.length < 5) {
+      return selectProductAction(product)
+    }
+    const title = formatMessage(messages.maxProductsTitle)
+    const body = formatMessage(messages.maxProductsBody)
+    const accept = formatMessage(messages.gotIt)
+    this.showAlert(title, body, accept)
   }
 
   showAlert = (title: string, body: string, accept: string) => {
@@ -449,6 +447,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       expandedInspirationOpen,
       fromScratch,
       currentCurrency,
+      inspirationTags,
+      inspirationFilters,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -464,7 +464,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       onCheckEmailChangeAction,
       onExpandInspirationAction,
       onCloseInspirationAction,
-      resetColorSelectionAction
+      resetColorSelectionAction,
+      addTagAction,
+      removeTagAction,
+      resetInspirationDataAction,
+      removeFilterAction,
+      addFilterAction
     } = this.props
     const { isMobile } = this.state
 
@@ -561,6 +566,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onDeselect={deselectElementAction}
               selectedItems={inspirationSelectedItems}
               onExpandInspiration={onExpandInspirationAction}
+              addTag={addTagAction}
+              removeTag={removeTagAction}
+              selectedTags={inspirationTags}
+              filters={inspirationFilters}
+              resetInspirationData={resetInspirationDataAction}
+              removeFilter={removeFilterAction}
+              addFilter={addFilterAction}
             />
             <Colors
               {...{
@@ -639,6 +651,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         {...{expandedInspiration, expandedInspirationOpen, formatMessage}}
         onCloseInspiration={onCloseInspirationAction}
         onSelect={this.handleOnselectElementAction}
+        addTag={addTagAction}
+        removeTag={removeTagAction}
+        selectedTags={inspirationTags}
       /> : null}
     </Layout>)
   }

@@ -146,5 +146,29 @@ export default defineMessages({
   inspirationTip: {
     id: 'screens.IntakeForm.inspirationTip',
     defaultMessage: 'Tip: Focus on design elements. You will have a chance to select colors on next step.'
+  },
+  inspirationSample: {
+    id: 'screens.IntakeForm.inspirationSample',
+    defaultMessage: 'Ex. geometric'
+  },
+  showOnly: {
+    id: 'screens.IntakeForm.showOnly',
+    defaultMessage: 'Show Only:'
+  },
+  photos: {
+    id: 'screens.IntakeForm.photos',
+    defaultMessage: 'Photos'
+  },
+  graphics: {
+    id: 'screens.IntakeForm.graphics',
+    defaultMessage: 'Graphics / Patherns'
+  },
+  kickstart: {
+    id: 'screens.IntakeForm.kickstart',
+    defaultMessage: 'Kickstart Design'
+  },
+  emptyInspiration: {
+    id: 'screens.IntakeForm.emptyInspiration',
+    defaultMessage: `Didn't found results`
   }
 })

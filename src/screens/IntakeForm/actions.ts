@@ -27,7 +27,12 @@ import {
   ON_CLOSE_INSPIRATION,
   SET_FROM_SCRATCH,
   RESET_COLOR_SELECTION,
-  SELECT_PRODUCT
+  SELECT_PRODUCT,
+  ADD_TAG,
+  REMOVE_TAG,
+  RESET_INSPIRATION,
+  REMOVE_FILTER,
+  ADD_FILTER
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -140,13 +145,15 @@ export const onExpandInspirationAction = (
   inspirationId: number,
   image: string,
   name: string,
-  isSelected: boolean
+  isSelected: boolean,
+  tags: string[]
   ) => ({
   type: ON_EXPAND_INSPIRATION,
   inspirationId,
   image,
   name,
-  isSelected
+  isSelected,
+  tags
 })
 
 export const onCloseInspirationAction = () => ({
@@ -165,4 +172,28 @@ export const resetColorSelectionAction = () => ({
 export const selectProductAction = (product: Product) => ({
   type: SELECT_PRODUCT,
   product
+})
+
+export const addTagAction = (value: string) => ({
+  type: ADD_TAG,
+  value
+})
+
+export const removeTagAction = (value: string) => ({
+  type: REMOVE_TAG,
+  value
+})
+
+export const resetInspirationDataAction = () => ({
+  type: RESET_INSPIRATION,
+})
+
+export const removeFilterAction = (name: string) => ({
+  type: REMOVE_FILTER,
+  name
+})
+
+export const addFilterAction = (name: string) => ({
+  type: ADD_FILTER,
+  name
 })

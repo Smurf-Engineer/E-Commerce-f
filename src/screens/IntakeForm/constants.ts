@@ -27,6 +27,11 @@ export const ON_CLOSE_INSPIRATION = `${namespace}/ON_CLOSE_INSPIRATION`
 export const SET_FROM_SCRATCH = `${namespace}/SET_FROM_SCRATCH`
 export const RESET_COLOR_SELECTION = `${namespace}/RESET_COLOR_SELECTION`
 export const SELECT_PRODUCT = `${namespace}/SELECT_PRODUCT`
+export const ADD_TAG = `${namespace}/ADD_TAG`
+export const REMOVE_TAG = `${namespace}/REMOVE_TAG`
+export const RESET_INSPIRATION = `${namespace}/RESET_INSPIRATION`
+export const REMOVE_FILTER = `${namespace}/REMOVE_FILTER`
+export const ADD_FILTER = `${namespace}/ADD_FILTER`
 
 export enum Sections {
   PRODUCTS = -2,

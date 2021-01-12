@@ -1744,6 +1744,7 @@ export type InspirationType = {
   width?: number
   height?: number
   selected?: boolean
+  tags?: string[]
 }
 
 export type ProDesignPalette = {
