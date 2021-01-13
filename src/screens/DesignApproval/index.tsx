@@ -16,6 +16,7 @@ import Button from 'antd/lib/button'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
+import messageSent from '../../assets/message_sent.wav'
 import colorIcon from '../../assets/color_white.svg'
 import JakrooProLogo from '../../assets/pro_design_white.png'
 import {
@@ -134,8 +135,8 @@ import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Tab from './Tab'
 import Modal from 'antd/lib/modal'
-import { COLOR, APPROVAL, LIMIT_REQUESTS, MESSAGE_SOUND_BASE64 } from './constants'
-import { CUSTOMER_APPROVED, EDIT, FROM_ADMIN, PREDYED_DEFAULT } from '../../constants'
+import { COLOR, APPROVAL, LIMIT_REQUESTS } from './constants'
+import { CUSTOMER_APPROVED, EDIT, FROM_ADMIN, PREDYED_DEFAULT, PREDYED_TRANSPARENT } from '../../constants'
 import moment from 'moment'
 import messages from './messages'
 import Spin from 'antd/lib/spin'
@@ -329,7 +330,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         })
         this.handleCloseRequest()
         AntdMessage.success(formatMessage(messages.savedNote))
-        const snd = new Audio(MESSAGE_SOUND_BASE64)
+        const snd = new Audio(messageSent)
         snd.play()
         snd.remove()
         this.scrollMessages()
@@ -541,7 +542,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelMtl = mtl
     }
     const predyedValue = predyedName || PREDYED_DEFAULT
-    // const hidePredyed = predyedValue === PREDYED_TRANSPARENT
+    const hidePredyed = predyedValue === PREDYED_TRANSPARENT
     const predyedItem = predyedColors.find(({ name: colorName }) => colorName === predyedValue)
     const predyedCode = predyedItem ? predyedItem.code : predyedValue
     const installedFonts = fontList.reduce<{ font: string }[]>(
@@ -780,7 +781,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       designId,
                       modelSize,
                       modelObj,
-                      modelMtl
+                      modelMtl,
+                      hidePredyed
                     }}
                     zoomedIn={true}
                   />

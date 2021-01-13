@@ -48,7 +48,7 @@ interface ColorProps {
 }
 
 export const Container = styled.div`
-  background-color: #fff;
+  background-color: ${WHITE};
   display: flex;
   flex-flow: column;
   @media (max-width: 1023px) {
@@ -292,7 +292,7 @@ export const StyledTabs = styled(AntdTabs)`
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
