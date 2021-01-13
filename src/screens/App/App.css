@@ -1,7 +1,7 @@
 body {
   margin: 0 !important;
   padding: 0;
-  font-family: 'Avenir Next W01';
+  font-family: "Avenir Next W01";
   line-height: normal;
 }
 
@@ -13,16 +13,17 @@ body {
   z-index: 11;
 }
 
-.transparent-modal .ant-modal-content{
+.transparent-modal .ant-modal-content {
   background: transparent;
   box-shadow: none;
 }
 
-.transparent-modal .ant-modal-content .ant-modal-body{
+.transparent-modal .ant-modal-content .ant-modal-body {
   padding: 0;
 }
 
-.rc-drawer, .rc-drawer-content{
+.rc-drawer,
+.rc-drawer-content {
   position: relative;
 }
 
@@ -40,4 +41,26 @@ body {
 
 .masonry-grid_column > div {
   margin: 2px auto;
+}
+
+.richTextWrapper {
+  position: relative;
+}
+
+.richTextEditor {
+  border: 1px solid #f1f1f1;
+  padding: 35px 10px;
+}
+
+.richTextToolBar {
+  margin-bottom: 0 !important;
+  border-bottom: none;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.bordered-option {
+  border: none !important;
 }

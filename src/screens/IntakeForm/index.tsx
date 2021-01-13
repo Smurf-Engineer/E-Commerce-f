@@ -608,14 +608,34 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               deleteImage={this.handleOnDeleteImage}
             />
             <Notes
-              {...{formatMessage, user, selectedTeamSize, projectDescription,
-                projectName, phone, sendSms, sendEmail}}
+              {...{
+                formatMessage,
+                user,
+                selectedTeamSize,
+                projectDescription,
+                projectName,
+                phone,
+                sendSms,
+                sendEmail,
+                inspiration,
+                inspirationSelectedItems,
+                selectedColors,
+                selectedPrimaryColor,
+                selectedPaletteIndex,
+                selectedEditColors,
+                selectedEditPrimaryColor,
+                selectedFiles,
+                selectedItems,
+                fromScratch,
+                currentCurrency
+              }}
               estimatedDate={estimatedDateMoment}
               onSelectTeamSize={onSelectTeamSizeAction}
               onChangeInput={onSetInputAction}
               onSelectDate={onSelectDateAction}
               onCheckSms={onCheckSmsChangeAction}
               onCheckEmail={onCheckEmailChangeAction}
+              goToPage={this.handleOnSelectTab}
             />
             <Review
               {...{

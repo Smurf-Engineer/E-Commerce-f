@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY, RED, WHITE, GRAY_LIGHT } from '../../../theme/colors'
+import { GRAY_DARK, GRAY, RED, WHITE, GRAY_LIGHT, GRAY_LIGHTEST } from '../../../theme/colors'
 
 interface ButtonProps {
   selected: boolean
@@ -8,11 +8,13 @@ interface ButtonProps {
 }
 
 export const Container = styled.div`
-  width: 70%;
   background-color: ${WHITE};
   display: inline-flex;
   flex-direction: column;
-  padding: 0 240px;
+  margin-right: 20px;
+  &:last-child {
+    margin: 0;
+  }
   @media (max-width: 768px) {
     width: 100%;
     padding: 0 20px;
@@ -30,7 +32,9 @@ export const MainContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0 240px;
 `
 
 export const Text = styled.div`
@@ -122,6 +126,18 @@ export const SectionButtonsContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   column-gap: 5px;
+`
+export const InfoTitle = styled.div`
+  display: flex;
+  background-color: ${GRAY_LIGHTEST};
+  padding: 10px;
+  font-weight: 600;
+`
+
+export const ReviewContainer = styled.div`
+  display: flex;
+  border: 1px solid ${GRAY_LIGHTEST};
+  width: 30%;
 `
 
 export const inputStyle = {

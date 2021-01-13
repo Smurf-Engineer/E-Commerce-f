@@ -6,9 +6,12 @@ import Input from 'antd/lib/input'
 import message from 'antd/lib/message'
 import { isPhoneNumber } from '../../../utils/utilsFiles'
 import moment, { Moment } from 'moment'
+import DataSelected from '../Review/DataSelected'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { DATE_FORMAT_STARTING_YEAR } from '../../../constants'
-
+import { Editor } from 'react-draft-wysiwyg'
+import { EditorState } from 'draft-js'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
   Container,
   Title,
@@ -26,11 +29,19 @@ import {
   Row,
   CheckBoxContainer,
   SectionButton,
-  SectionButtonsContainer
+  SectionButtonsContainer,
+  InfoTitle,
+  ReviewContainer
 } from './styledComponents'
 import { TEAM_SIZES } from './constants'
 import messages from './messages'
-import { Message, UserType } from '../../../types/common'
+import {
+  Message,
+  UserType,
+  InspirationType,
+  ImageFile,
+  Product
+} from '../../../types/common'
 
 interface Props extends RouteComponentProps<any> {
   user?: UserType
@@ -41,17 +52,32 @@ interface Props extends RouteComponentProps<any> {
   estimatedDate: Moment
   sendSms: boolean
   sendEmail: boolean
+  inspiration: InspirationType[]
+  inspirationSelectedItems: number[]
+  selectedColors: string[]
+  selectedPrimaryColor: string[]
+  selectedPaletteIndex: number
+  selectedEditColors: string[]
+  selectedEditPrimaryColor: string[]
+  selectedFiles: ImageFile[]
+  selectedItems: Product[]
+  fromScratch: boolean
+  currentCurrency: string
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onSelectTeamSize: (size: string) => void
   onSelectDate: (dateMoment: Moment | null, date: string) => void
   onCheckSms: (checked: boolean) => void
   onCheckEmail: (checked: boolean) => void
+  goToPage: (page: number) => void
 }
 
-const { TextArea } = Input
-
 export class Notes extends React.Component<Props, {}> {
+  state = {
+    editorState: EditorState.createEmpty(),
+    contentState: null
+  }
+
   handleOnChangeInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const { onChangeInput } = this.props
     const { value, id: inputId } = event.target
@@ -59,7 +85,6 @@ export class Notes extends React.Component<Props, {}> {
       return
     }
     onChangeInput(inputId, value)
-
   }
 
   disabledDate = (current: any) => {
@@ -107,18 +132,41 @@ export class Notes extends React.Component<Props, {}> {
     onCheckEmail(checked)
   }
 
+  onEditorStateChange = (editorState: any) => {
+    this.setState({
+      editorState,
+    })
+  }
+
+  onContentStateChange = (contentState: any) => {
+    this.setState({
+      contentState,
+    })
+  }
+
   render() {
     const {
       formatMessage,
       user,
       selectedTeamSize,
-      projectDescription,
       projectName,
       phone,
       estimatedDate,
       sendSms,
       sendEmail,
-      onSelectTeamSize
+      inspiration,
+      inspirationSelectedItems,
+      selectedColors,
+      selectedPrimaryColor,
+      selectedPaletteIndex,
+      selectedEditColors,
+      selectedEditPrimaryColor,
+      selectedFiles,
+      selectedItems,
+      fromScratch,
+      currentCurrency,
+      onSelectTeamSize,
+      goToPage
     } = this.props
     const email = get(user, 'email')
     const availableSizes =
@@ -134,7 +182,7 @@ export class Notes extends React.Component<Props, {}> {
           </SectionButton>
         </div>
       )})
-  
+    
     return (
       <MainContainer>
         <Container>
@@ -154,11 +202,27 @@ export class Notes extends React.Component<Props, {}> {
             <Label>
               {formatMessage(messages.ideas)} <Required>*</Required>
             </Label>
-            <TextArea
-              id="projectDescription"
-              value={projectDescription}
-              rows={5}
-              onChange={this.handleOnChangeInput}
+            <Editor
+              editorState={this.state.editorState}    
+              wrapperClassName="richTextWrapper"
+              editorClassName="richTextEditor"
+              toolbarClassName="richTextToolBar"
+              onEditorStateChange={this.onEditorStateChange}
+              onContentStateChange={this.onContentStateChange}
+              toolbar={{
+                options: ['inline', 'list'],
+                inline: {
+                  options: ['bold', 'italic', 'underline', 'strikethrough'],
+                  bold: { className: 'bordered-option' },
+                  italic: { className: 'bordered-option' },
+                  underline: { className: 'bordered-option' },
+                  strikethrough: { className: 'bordered-option' },
+                  code: { className: 'bordered-option' },
+                },
+                list : {
+                  options: ['unordered', 'ordered']
+                }
+              }}
             />
           </Field>
           <Field>
@@ -230,6 +294,30 @@ export class Notes extends React.Component<Props, {}> {
               </ValueContainer>
             </Row>
           </NotificationSettings>
+        </Container>
+        <Container>
+          <ReviewContainer>
+            <InfoTitle>
+              {formatMessage(messages.currentInformation)}
+            </InfoTitle>
+            <DataSelected
+              {...{
+                inspiration,
+                inspirationSelectedItems,
+                selectedColors,
+                selectedPrimaryColor,
+                selectedPaletteIndex,
+                selectedEditColors,
+                selectedEditPrimaryColor,
+                selectedFiles,
+                selectedItems,
+                fromScratch,
+                currentCurrency,
+                formatMessage,
+                goToPage
+              }}
+            />
+          </ReviewContainer>
         </Container>
       </MainContainer>
     )

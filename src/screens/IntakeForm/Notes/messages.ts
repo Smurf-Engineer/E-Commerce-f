@@ -70,4 +70,8 @@ export default defineMessages({
     id: 'components.IntakeForm.Notes.errorMsg',
     defaultMessage: 'Something wrong happened. Please try again!'
   },
+  currentInformation: {
+    id: 'components.IntakeForm.Notes.currentInformation',
+    defaultMessage: 'Your current information'
+  }
 })
