@@ -21,6 +21,11 @@ export const Container = styled.div`
 `
 
 export const StyledInfiniteScroll = styled(InfiniteScroll)`
+  width: 70%;
+  align-self: center;
+  @media (max-width: 768px) {
+    width: 97%;
+  }
 `
 
 export const LoadingContainer = styled.div`

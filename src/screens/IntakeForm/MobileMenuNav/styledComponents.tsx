@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardoquintero on 17/11/20.
  */
 import styled from 'styled-components'
-import { BLACK_SEMILIGHT, BLUE, GRAY, WHITE } from '../../../theme/colors'
+import { BLACK_SEMILIGHT, BLUE, GRAY, WHITE, GRAY_LIGHT } from '../../../theme/colors'
 
 interface ButtonProps {
   disabled?: boolean
@@ -24,12 +24,21 @@ const Button = styled.div`
   padding: 10px;
   border-radius: 4px;
   background-color: ${({ disabled }: ButtonProps) =>
-  disabled ? GRAY : BLUE};
+  disabled ? GRAY_LIGHT : BLUE};
   visibility: ${({ show }: ButtonProps) =>
   show ? 'visible' : 'hidden'};
 `
 
-export const Previous = styled(Button)`
+const GrayButton = styled.div`
+  padding: 10px;
+  border-radius: 4px;
+  background-color: ${({ disabled }: ButtonProps) =>
+  disabled ? GRAY_LIGHT : GRAY};
+  visibility: ${({ show }: ButtonProps) =>
+  show ? 'visible' : 'hidden'};
+`
+
+export const Previous = styled(GrayButton)`
   &::after {
     content: ${({ text }: ButtonProps) => `"${text}"`};
   }

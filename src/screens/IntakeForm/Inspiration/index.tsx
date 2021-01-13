@@ -83,9 +83,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 const gridBreakPoints = {
-  default: 4,
+  default: 5,
   900: 2,
-  1200: 3
+  1200: 4
 }
 
 export class Inspiration extends React.Component<Props, {}> {

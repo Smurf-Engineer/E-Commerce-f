@@ -3,7 +3,8 @@ import { Message } from '../../../types/common'
 import {
   MenuContainer,
   StyledButton,
-  ButtonWrapper
+  ButtonWrapper,
+  GrayButtonWrapper
 } from './styledComponents'
 
 interface NavValidation {
@@ -33,7 +34,7 @@ const Menu = ({ validations, savingIntake = false, onContinue, onPrevious }: Pro
   } = validations
   return (
     <MenuContainer>
-      <ButtonWrapper
+      <GrayButtonWrapper
         disabled={savingIntake || previousDisable}
         show={showPreviousButton}
         onClick={!previousDisable ? onPrevious : null}
@@ -44,7 +45,7 @@ const Menu = ({ validations, savingIntake = false, onContinue, onPrevious }: Pro
         >
           {previousButtonText}
         </StyledButton>
-      </ButtonWrapper>
+      </GrayButtonWrapper>
       <ButtonWrapper
         show={showContinueButton}
         disabled={savingIntake || continueDisable}
