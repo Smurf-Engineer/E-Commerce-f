@@ -98,6 +98,7 @@ export const getProdesignItemQuery = gql`
         createdAt: created_at
         type
         message
+        file
         requireAnswer: require_answer
         parentMessageId: parent_message_id
         answer {
@@ -173,6 +174,7 @@ export const addProMessageMutation = gql`
       createdAt: created_at
       type
       message
+      file
       parentMessageId: parent_message_id
       requireAnswer: require_answer
       userName: user_name
