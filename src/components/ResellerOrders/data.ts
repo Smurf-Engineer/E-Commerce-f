@@ -29,6 +29,11 @@ export const getResellerPayments = gql`
         status
         amount
         store
+        netsuite: netsuite_order {
+          orderStatus {
+            orderStatus
+          }
+        }
         orderAmount: order_amount
         orderStatus: order_status
         paidAt: paid_at
