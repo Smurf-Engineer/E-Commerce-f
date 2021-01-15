@@ -204,7 +204,7 @@ class ResellerOrders extends React.Component<Props, {}> {
                       paidAt,
                     }: ResellerPayment,
                     index: number) => {
-                      const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus', '')
+                      const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus')
                       return (
                         <RepDiv onClick={this.goToOrder(orderId)} key={index}>
                           <Cell>
