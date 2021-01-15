@@ -199,31 +199,35 @@ class ResellerOrders extends React.Component<Props, {}> {
                       amount,
                       orderId,
                       store,
+                      netsuite,
                       orderStatus,
                       paidAt,
                     }: ResellerPayment,
-                    index: number) =>
-                    <RepDiv onClick={this.goToOrder(orderId)} key={index}>
-                      <Cell>
-                        {createdAt ? moment(createdAt).format(NOTE_FORMAT) : '-'}
-                      </Cell>
-                      <Cell>{orderId}</Cell>
-                      <MediaQuery minWidth={769}>
-                        {matches => matches &&
-                          <>
-                            <Cell>{store}</Cell>
-                            <Cell>{orderStatus}</Cell>
-                            <Cell>${orderAmount.toFixed(2)}</Cell>
-                          </>
-                        }
-                      </MediaQuery>
-                      <Cell>{status}</Cell>
-                      <Cell>${amount.toFixed(2)}</Cell>
-                      <Cell>
-                        {paidAt ? moment(paidAt).format(NOTE_FORMAT) : '-'}
-                      </Cell>
-                    </RepDiv>
-
+                    index: number) => {
+                      const netsuiteStatus = get(netsuite, 'orderStatus.orderStatus')
+                      return (
+                        <RepDiv onClick={this.goToOrder(orderId)} key={index}>
+                          <Cell>
+                            {createdAt ? moment(createdAt).format(NOTE_FORMAT) : '-'}
+                          </Cell>
+                          <Cell>{orderId}</Cell>
+                          <MediaQuery minWidth={769}>
+                            {matches => matches &&
+                              <>
+                                <Cell>{store}</Cell>
+                                <Cell>{netsuiteStatus || orderStatus}</Cell>
+                                <Cell>${orderAmount.toFixed(2)}</Cell>
+                              </>
+                            }
+                          </MediaQuery>
+                          <Cell>{status}</Cell>
+                          <Cell>${amount.toFixed(2)}</Cell>
+                          <Cell>
+                            {paidAt ? moment(paidAt).format(NOTE_FORMAT) : '-'}
+                          </Cell>
+                      </RepDiv>
+                      )
+                    }
                   )
                 ) : (
                     <EmptyContainer message={formatMessage(messages.empty)} />
