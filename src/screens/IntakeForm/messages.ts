@@ -151,6 +151,14 @@ export default defineMessages({
     id: 'screens.IntakeForm.inspirationSample',
     defaultMessage: 'Ex. geometric'
   },
+  notifications: {
+    id: 'screens.IntakeForm.notifications',
+    defaultMessage: 'DELIVERY NOTES & NOTIFICATIONS SETTINGS'
+  },
+  notificationsBody: {
+    id: 'screens.IntakeForm.notificationsBody',
+    defaultMessage: 'If you have any special instructions, let us know. We want to get it right!'
+  },
   showOnly: {
     id: 'screens.IntakeForm.showOnly',
     defaultMessage: 'Show Only:'

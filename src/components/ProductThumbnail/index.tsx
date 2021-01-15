@@ -73,6 +73,7 @@ interface Props {
   isSelected?: boolean
   selectedIndex?: number
   clickDisabled?: boolean
+  fitContainer?: boolean
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
@@ -244,7 +245,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       proDesignAssigned,
       selectProduct,
       isSelected = false,
-      selectedIndex = 0
+      selectedIndex = 0,
+      fitContainer = false
     } = this.props
     const { isHovered, currentImage, loading } = this.state
     const currencyPrices =
@@ -314,7 +316,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     }
     return (
       <Container
-      {...{ withMargin, selectProduct, isSelected  }}
+      {...{ withMargin, selectProduct, isSelected, fitContainer  }}
       onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
         <ImageSlide
           {...{
@@ -336,7 +338,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             proDesignAssigned,
             selectProduct,
             isSelected,
-            selectedIndex
+            selectedIndex,
+            fitContainer
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
@@ -351,14 +354,14 @@ export class ProductThumbnail extends React.Component<Props, {}> {
           footer
         ) : (
           <Footer>
-            <Type>
+            <Type {...{fitContainer}}>
               {type}
               <GendersContainer>
                 {menAvailable && <MenIcon type="man" />}
                 {womenAvailable && <WomenIcon type="woman" />}
               </GendersContainer>
             </Type>
-            <Description>{description}</Description>
+            <Description {...{fitContainer}}>{description}</Description>
             <InfoContainer>
               {colorOptions}
               <Price>{price}</Price>

@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { BLUE, WHITE_SMOKE } from '../../../theme/colors'
+import { BLUE, GRAY, WHITE_SMOKE } from '../../../theme/colors'
 
 interface ButtonProps {
   disabled?: boolean
@@ -17,6 +17,9 @@ export const MenuContainer = styled.div`
   padding: 10px 100px;
   position: absolute;
   pointer-events: none;
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `
 
 interface ButtonWrapperProps {
@@ -40,6 +43,26 @@ export const ButtonWrapper = styled.div`
       disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
       disabled ? WHITE_SMOKE : BLUE};
+  }
+`
+
+export const GrayButtonWrapper = styled.div`
+  pointer-events: all;
+  visibility: ${({ show }: ButtonProps) => show ? 'visible' : 'hidden'};
+  margin-top: 25px;
+  text-align: right;
+  align-self: right;
+  .ant-btn-primary {
+    background-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? WHITE_SMOKE : GRAY};
+    border-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? WHITE_SMOKE : GRAY};
+  }
+  .ant-btn-primary:hover {
+    background-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? WHITE_SMOKE : GRAY};
+    border-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? WHITE_SMOKE : GRAY};
   }
 `
 

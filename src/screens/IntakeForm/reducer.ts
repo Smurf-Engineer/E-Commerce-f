@@ -31,8 +31,9 @@ import {
   ADD_TAG,
   REMOVE_TAG,
   RESET_INSPIRATION,
-  REMOVE_FILTER,
-  ADD_FILTER,
+  REMOVE_FROM_LIST,
+  ADD_TO_LIST,
+  SET_DESCRIPTION,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -53,8 +54,8 @@ export const initialState = fromJS({
   selectedFiles: [],
   lockerSelectedFiles: [],
   userLockerModalOpen: false,
-  selectedTeamSize: '1',
-  projectDescription: '',
+  selectedTeamSize: null,
+  editorState: null,
   projectName: '',
   phone: '',
   estimatedDate: '',
@@ -67,7 +68,9 @@ export const initialState = fromJS({
   expandedInspirationOpen: false,
   fromScratch: true,
   inspirationTags: [],
-  inspirationFilters: []
+  inspirationFilters: [],
+  projectDescription: null,
+  projectCategories: []
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -79,7 +82,7 @@ const intakeFormReducer: Reducer<any> = (
       const { listName, elementId, index } = action
       const selectedItems = state.get(listName)
       const addItem = index >= 0  ? selectedItems.splice(index, 1, elementId) : selectedItems.push(elementId)
-      return state.merge({ [listName]: addItem })
+      return state.merge({ [listName]: addItem, selectedPaletteIndex: -2})
     }
     case DESELECT_ELEMENT: {
       const { listName, elementId } = action
@@ -90,7 +93,7 @@ const intakeFormReducer: Reducer<any> = (
         })
       const selectedItems = state.get(listName)
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
-      return state.set(listName, updatedSelectedItems)
+      return state.merge({ [listName]: updatedSelectedItems, selectedPaletteIndex: -2 })
     }
     case GO_TO_NEXT_PAGE:
       return state.set('currentScreen', action.page)
@@ -219,23 +222,25 @@ const intakeFormReducer: Reducer<any> = (
         inspirationLoading: true,
         inspiration: []
       })
-    case REMOVE_FILTER: {
-      const { name } = action
+    case REMOVE_FROM_LIST: {
+      const { listName, name } = action
       const indexOfListingToDelete = state
-        .get('inspirationFilters')
+        .get(listName)
         .findIndex((filter: string) => {
           return filter === name
         })
-      const filterItems = state.get('inspirationFilters')
+      const filterItems = state.get(listName)
       const updatedFiltertems = filterItems.delete(indexOfListingToDelete)
-      return state.set('inspirationFilters', updatedFiltertems)
+      return state.set(listName, updatedFiltertems)
     }
-    case ADD_FILTER: {
-      const { name } = action
-      const inspirationFilters = state.get('inspirationFilters')
-      const addItem = inspirationFilters.push(name)
-      return state.merge({ inspirationFilters: addItem })
+    case ADD_TO_LIST: {
+      const { listName, name } = action
+      const listNameState = state.get(listName)
+      const addItem = listNameState.push(name)
+      return state.merge({ [listName]: addItem })
     }
+    case SET_DESCRIPTION:
+      return state.merge({ projectDescription: action.contentState })
     default:
       return state
   }

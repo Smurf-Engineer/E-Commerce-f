@@ -5,11 +5,9 @@ import zenscroll from 'zenscroll'
 import filter from 'lodash/filter'
 import includes from 'lodash/includes'
 import {
-  Container,
   StrongText,
   Column,
   Row,
-  MainContainer,
   EditButton,
   Inspiration,
   ImageContainer,
@@ -18,8 +16,9 @@ import {
   Color,
   Files,
   ImageText,
-  Products
-} from '../styledComponents'
+  Products,
+  Grid
+} from './styledComponents'
 import { getFileNameFromUrl } from '../../../../utils/utilsFiles'
 import ColorBar from '../../../../components/ColorBar'
 import messages from '../messages'
@@ -76,8 +75,7 @@ export class DataSelected extends React.Component<Props, {}> {
     const inspirationItems =
       filter(inspiration, (inspirationItem: InspirationType) => includes(inspirationSelectedItems, inspirationItem.id))
     return (
-      <MainContainer>
-        <Container>
+      <>
           {fromScratch ? <Inspiration>
             <EditButton onClick={this.goToInspiration}>
               {formatMessage(messages.edit)}
@@ -145,6 +143,7 @@ export class DataSelected extends React.Component<Props, {}> {
                 </Column>
               </Row>
               <Row>
+                <Grid>
                 {selectedItems.map((product: Product) => {
                   const {
                     images,
@@ -167,6 +166,7 @@ export class DataSelected extends React.Component<Props, {}> {
                     hideCustomButton={true}
                     hideQuickView={true}
                     clickDisabled={true}
+                    fitContainer={true}
                     {...{
                       currentCurrency,
                       type,
@@ -178,10 +178,10 @@ export class DataSelected extends React.Component<Props, {}> {
                       collections
                     }}
                   />)})}
+                  </Grid>
               </Row>
             </Products>
-        </Container>
-      </MainContainer>
+      </>
     )
   }
 }

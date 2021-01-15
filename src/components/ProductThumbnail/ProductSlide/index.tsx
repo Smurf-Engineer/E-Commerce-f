@@ -49,6 +49,7 @@ interface Props {
   selectProduct?: boolean
   isSelected?: boolean
   selectedIndex?: number
+  fitContainer?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -85,7 +86,8 @@ const ProductSlide = ({
   selectProduct,
   isSelected = false,
   selectedIndex,
-  handleCheckChange
+  handleCheckChange,
+  fitContainer = false
 }: Props) => {
   if (image) {
     return (
@@ -165,7 +167,11 @@ const ProductSlide = ({
           </TopContainer>
         )}
       </ImageTop>
-      <ThumbnailImage onClick={!selectProduct ? onPressThumbnail : undefined} src={thumbnail} />
+      <ThumbnailImage
+        onClick={!selectProduct ? onPressThumbnail : undefined}
+        src={thumbnail}
+        {...{fitContainer}}
+      />
       {isHovered && (!selectProduct && !hideCustomButton) && (
         <ButtonContainer
           {...{ myLockerList }}

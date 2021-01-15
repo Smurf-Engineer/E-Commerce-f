@@ -78,14 +78,14 @@ interface Props extends RouteComponentProps<any> {
   addTag: (value: string) => void
   removeTag: (value: string) => void
   resetInspirationData: () => void
-  removeFilter: (name: string) => void
-  addFilter: (name: string) => void
+  removeFilter: (listName: string, name: string) => void
+  addFilter: (listName: string, name: string) => void
 }
 
 const gridBreakPoints = {
-  default: 4,
+  default: 5,
   900: 2,
-  1200: 3
+  1200: 4
 }
 
 export class Inspiration extends React.Component<Props, {}> {
@@ -155,7 +155,7 @@ export class Inspiration extends React.Component<Props, {}> {
   checkFilter = (event: CheckboxChangeEvent) => {
     const { removeFilter, addFilter } = this.props
     const { target: { name, checked } } = event
-    !!checked ? addFilter(name) : removeFilter(name)
+    !!checked ? addFilter('inspirationFilters', name) : removeFilter('inspirationFilters', name)
   }
 
   render() {

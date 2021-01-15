@@ -31,8 +31,9 @@ import {
   ADD_TAG,
   REMOVE_TAG,
   RESET_INSPIRATION,
-  REMOVE_FILTER,
-  ADD_FILTER
+  REMOVE_FROM_LIST,
+  ADD_TO_LIST,
+  SET_DESCRIPTION
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -188,12 +189,19 @@ export const resetInspirationDataAction = () => ({
   type: RESET_INSPIRATION,
 })
 
-export const removeFilterAction = (name: string) => ({
-  type: REMOVE_FILTER,
+export const removeFromListAction = (listName: string, name: string) => ({
+  type: REMOVE_FROM_LIST,
+  listName,
   name
 })
 
-export const addFilterAction = (name: string) => ({
-  type: ADD_FILTER,
+export const addToListAction = (listName: string, name: string) => ({
+  type: ADD_TO_LIST,
+  listName,
   name
+})
+
+export const setDescriptionAction = (contentState: string | null) => ({
+  type: SET_DESCRIPTION,
+  contentState
 })

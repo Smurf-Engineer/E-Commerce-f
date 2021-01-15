@@ -30,8 +30,9 @@ export const SELECT_PRODUCT = `${namespace}/SELECT_PRODUCT`
 export const ADD_TAG = `${namespace}/ADD_TAG`
 export const REMOVE_TAG = `${namespace}/REMOVE_TAG`
 export const RESET_INSPIRATION = `${namespace}/RESET_INSPIRATION`
-export const REMOVE_FILTER = `${namespace}/REMOVE_FILTER`
-export const ADD_FILTER = `${namespace}/ADD_FILTER`
+export const REMOVE_FROM_LIST = `${namespace}/REMOVE_FROM_LIST`
+export const ADD_TO_LIST = `${namespace}/ADD_TO_LIST`
+export const SET_DESCRIPTION = `${namespace}/SET_DESCRIPTION`
 
 export enum Sections {
   PRODUCTS = -2,
@@ -40,7 +41,8 @@ export enum Sections {
   COLORS = 1,
   FILES = 2,
   NOTES = 3,
-  REVIEW = 4
+  NOTIFICATIONS = 4,
+  REVIEW = 5
 }
 
 export const CUSTOM_PALETTE_INDEX = -1
@@ -105,6 +107,16 @@ export const titleTexts = {
       title: 'designNotes',
       body: 'designNotesBody',
       bodyWithTip: 'designNotesBodyTip',
+      action: false,
+      tipTitle: '',
+      tipBody: '',
+      tipAccept: ''
+    },
+  [Sections.NOTIFICATIONS]:
+    {
+      title: 'notifications',
+      body: 'notificationsBody',
+      bodyWithTip: '',
       action: false,
       tipTitle: '',
       tipBody: '',

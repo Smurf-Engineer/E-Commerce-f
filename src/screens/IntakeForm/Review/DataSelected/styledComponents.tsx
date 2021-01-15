@@ -1,21 +1,9 @@
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHT, RED, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHT, RED } from '../../../../theme/colors'
 
 interface ImagePreviewProps {
   src: string
 }
-
-export const Container = styled.div`
-  width: 75%;
-  background-color: ${WHITE};
-  display: inline-flex;
-  flex-direction: column;
-  padding: 0 240px;
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 0 20px;
-  }
-`
 
 export const StrongText = styled.div`
   color: ${GRAY_DARK};
@@ -25,13 +13,6 @@ export const StrongText = styled.div`
   @media (max-width: 768px) {
     width: 50%;
   }
-`
-
-export const MainContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
 `
 
 export const Text = styled.div`
@@ -88,7 +69,7 @@ export const Inspiration = styled.div`
 export const Images = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   column-gap: 15px;
   row-gap: 10px;
   justify-items: flex-start;
@@ -99,7 +80,7 @@ export const Images = styled.div`
 `
 
 export const ImageContainer = styled.div`
-  width: 200px;
+  width: 110px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -112,8 +93,8 @@ export const Image = styled.div`
   background-size: cover;
   background-position: center;
   background-image: url('${({ src }: ImagePreviewProps) => src || ''}');
-  width: 200px;
-  height: 200px;
+  width: 110px;
+  height: 110px;
   @media (max-width: 768px) {
     width: 160px;
     height: 160px;
@@ -145,4 +126,9 @@ export const Products = styled.div`
   margin-bottom: 50px;
   display: flex;
   flex-direction: column;
+`
+
+export const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
 `

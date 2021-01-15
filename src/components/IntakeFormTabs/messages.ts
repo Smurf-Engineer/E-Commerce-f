@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.IntakeFormTabs.designNotes',
     defaultMessage: 'Design Notes'
   },
+  notifications: {
+    id: 'components.IntakeFormTabs.notifications',
+    defaultMessage: 'Notifications Settings'
+  },
   review: {
     id: 'components.IntakeFormTabs.review',
     defaultMessage: 'Review Request'

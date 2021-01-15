@@ -13,8 +13,8 @@ interface Props {
   validate: (screen: number) => void
 }
 
-const fromScratchSteps = ['inspiration', 'colors', 'uploadFiles', 'designNotes', 'review']
-const fromExistingArtworkSteps = [null, null, 'uploadFiles', 'designNotes', 'review']
+const fromScratchSteps = ['inspiration', 'colors', 'uploadFiles', 'designNotes', 'notifications', 'review']
+const fromExistingArtworkSteps = [null, null, 'uploadFiles', 'designNotes', 'notifications', 'review']
 const IntakeFormTabs = ({
   currentTab,
   onSelectTab,

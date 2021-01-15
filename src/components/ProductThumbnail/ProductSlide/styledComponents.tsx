@@ -105,7 +105,7 @@ export const TopContainer = styled.div`
 export const ThumbnailImage = styled.img`
   width: 100%;
   max-width: 220px;
-  height: 212px;
+  height: ${({ fitContainer }: StyleProps) => (fitContainer ? '110px' : '212px')};
   object-fit: cover;
   border-radius: 3px;
 `

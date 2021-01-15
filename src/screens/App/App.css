@@ -35,12 +35,12 @@ body {
 }
 
 .masonry-grid_column {
-  padding-left: 2px;
+  padding-left: 3px;
   background-clip: padding-box;
 }
 
 .masonry-grid_column > div {
-  margin: 2px auto;
+  margin: 3px auto;
 }
 
 .richTextWrapper {

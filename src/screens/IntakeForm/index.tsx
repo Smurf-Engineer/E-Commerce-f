@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import get from 'lodash/get'
+import draftToHtml from 'draftjs-to-html'
 import message from 'antd/lib/message'
 import DesignCenterHeader from '../../components/DesignCenterHeader'
 import { Moment } from 'moment'
@@ -25,6 +26,7 @@ import Inspiration from './Inspiration'
 import Colors from './Colors'
 import Files from './Files'
 import DesignPathway from './DesignPathway'
+import Notifications from './Notifications'
 import Review from './Review'
 import Notes from './Notes'
 import {
@@ -97,6 +99,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   inspirationTags: string[]
   inspirationFilters: string[]
+  projectCategories: string[]
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -127,14 +130,16 @@ interface Props extends RouteComponentProps<any> {
   addTagAction: (value: string) => void
   removeTagAction: (value: string) => void
   resetInspirationDataAction: () => void
-  removeFilterAction: (name: string) => void
-  addFilterAction: (name: string) => void
+  removeFromListAction: (listName: string, name: string) => void
+  addToListAction: (listName: string, name: string) => void
+  setDescriptionAction: (contentState: string | null) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
   swipeableActions = null
   state = {
-    isMobile: false
+    isMobile: false,
+    isTablet: false
   }
   componentDidMount() {
     const { location, selectedItems, selectProductAction } = this.props
@@ -144,7 +149,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
-    this.setState({ isMobile })
+    const isTablet = window.matchMedia(
+      '(max-width: 768px)'
+    ).matches
+    this.setState({ isMobile, isTablet })
   }
   handleClick = () => {
     const { history } = this.props
@@ -188,6 +196,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendSms,
       sendEmail,
       fromScratch,
+      projectCategories,
       createProject,
       onSetSavingIntake,
       onSetSuccessModalOpen
@@ -203,19 +212,28 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       accent_2: accents.length >= 1 ? accents[1] : null,
       accent_3: accents.length >= 2 ? accents[2] : null
     }
+
+    let contentState = null
+    try {
+      contentState = JSON.parse(projectDescription)
+    } catch (e) {
+      console.error('Error ', e)
+    }
+
     const proDesignProject = {
       name: projectName,
       phone,
-      notes: projectDescription,
+      notes: draftToHtml(contentState),
       teamSize: selectedTeamSize,
       deliveryDate: estimatedDate,
       sendEmail,
       sendSms,
       files: selectedFiles.map((file) => file.id),
-      products: selectedItems,
+      products: selectedItems.map((item) => item.id),
       inspiration: inspirationSelectedItems,
       palette,
-      fromScratch
+      fromScratch,
+      categories: projectCategories
     }
     try {
       const results = await createProject({
@@ -315,8 +333,15 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.NOTES:
         return {
-          continueDisable: !projectName || !selectedTeamSize || !user
-          || !estimatedDate || !projectDescription,
+          continueDisable: !projectName || !user || !projectDescription,
+          showPreviousButton: true,
+          continueButtonText,
+          previousButtonText
+        }
+      case Sections.NOTIFICATIONS:
+        return {
+          continueDisable: !selectedTeamSize || !user
+          || !estimatedDate,
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
@@ -382,7 +407,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     this.showAlert(title, body, accept)
   }
 
-  showAlert = (title: string, body: string, accept: string) => {
+  showAlert = (title: string, body: string, accept: string, cancel: string = '') => {
     info({
       title: (
         <ModalTitle>
@@ -390,6 +415,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         </ModalTitle>
       ),
       okText: accept,
+      cancelText: 'Cancel',
       okButtonProps: {
         style: buttonStyle
       },
@@ -449,6 +475,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       currentCurrency,
       inspirationTags,
       inspirationFilters,
+      projectCategories,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -468,10 +495,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       addTagAction,
       removeTagAction,
       resetInspirationDataAction,
-      removeFilterAction,
-      addFilterAction
+      removeFromListAction,
+      addToListAction,
+      setDescriptionAction
     } = this.props
-    const { isMobile } = this.state
+    const { isMobile, isTablet } = this.state
 
     const validations = this.getNavButtonsValidation()
     const currentTitleHasAction = titleTexts[currentScreen].action
@@ -516,7 +544,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         darkMode={true}
       >
       <IntakeContainer>
-        {!isMobile ? <>
+        {!isMobile && !isTablet ? <>
           <DesignCenterHeader
             proDesign={true}
             onPressBack={this.handleOnPressBack}
@@ -527,7 +555,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             onPrevious={this.handleOnPrevious}
             onContinue={this.handleOnContinue}
           /></> : null }
-          {isMobile ?
+          {isMobile || isTablet ?
           (<MobileMenuNav
             onContinue={this.handleOnContinue}
             onPrevious={this.handleOnPrevious}
@@ -571,8 +599,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               selectedTags={inspirationTags}
               filters={inspirationFilters}
               resetInspirationData={resetInspirationDataAction}
-              removeFilter={removeFilterAction}
-              addFilter={addFilterAction}
+              removeFilter={removeFromListAction}
+              addFilter={addToListAction}
             />
             <Colors
               {...{
@@ -611,12 +639,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               {...{
                 formatMessage,
                 user,
-                selectedTeamSize,
                 projectDescription,
                 projectName,
                 phone,
-                sendSms,
-                sendEmail,
                 inspiration,
                 inspirationSelectedItems,
                 selectedColors,
@@ -629,13 +654,30 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 fromScratch,
                 currentCurrency
               }}
+              onChangeInput={onSetInputAction}
+              goToPage={this.handleOnSelectTab}
+              setDescription={setDescriptionAction}
+              removeCategory={removeFromListAction}
+              addCategory={addToListAction}
+              categories={projectCategories}
+            />
+            <Notifications
+              {...{
+                formatMessage,
+                user,
+                selectedTeamSize,
+                phone,
+                sendSms,
+                sendEmail,
+                history
+              }}
               estimatedDate={estimatedDateMoment}
               onSelectTeamSize={onSelectTeamSizeAction}
               onChangeInput={onSetInputAction}
               onSelectDate={onSelectDateAction}
               onCheckSms={onCheckSmsChangeAction}
               onCheckEmail={onCheckEmailChangeAction}
-              goToPage={this.handleOnSelectTab}
+              mainProduct={selectedItems.length ? selectedItems[0].id : null}
             />
             <Review
               {...{

@@ -1,39 +1,27 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import get from 'lodash/get'
-import DatePicker from 'antd/lib/date-picker'
 import Input from 'antd/lib/input'
-import message from 'antd/lib/message'
 import { isPhoneNumber } from '../../../utils/utilsFiles'
-import moment, { Moment } from 'moment'
 import DataSelected from '../Review/DataSelected'
-import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import { DATE_FORMAT_STARTING_YEAR } from '../../../constants'
+import Checkbox from 'antd/lib/checkbox'
+import includes from 'lodash/includes'
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
   Container,
-  Title,
   MainContainer,
-  Text,
   Label,
   Required,
   Field,
-  inputStyle,
-  ItalicText,
-  NotificationSettings,
-  InfoText,
-  CheckboxLabel,
-  ValueContainer,
-  Row,
-  CheckBoxContainer,
-  SectionButton,
-  SectionButtonsContainer,
   InfoTitle,
-  ReviewContainer
+  ReviewContainer,
+  DataSelectedContainer,
+  CheckboxLabel,
+  CheckBoxContainer,
+  ProjectInfoContainer,
+  Title
 } from './styledComponents'
-import { TEAM_SIZES } from './constants'
 import messages from './messages'
 import {
   Message,
@@ -45,13 +33,8 @@ import {
 
 interface Props extends RouteComponentProps<any> {
   user?: UserType
-  selectedTeamSize: string
   projectDescription: string
   projectName: string
-  phone: string
-  estimatedDate: Moment
-  sendSms: boolean
-  sendEmail: boolean
   inspiration: InspirationType[]
   inspirationSelectedItems: number[]
   selectedColors: string[]
@@ -63,20 +46,45 @@ interface Props extends RouteComponentProps<any> {
   selectedItems: Product[]
   fromScratch: boolean
   currentCurrency: string
+  categories: string[]
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
-  onSelectTeamSize: (size: string) => void
-  onSelectDate: (dateMoment: Moment | null, date: string) => void
-  onCheckSms: (checked: boolean) => void
-  onCheckEmail: (checked: boolean) => void
   goToPage: (page: number) => void
+  setDescription: (contentState: string | null) => void
+  removeCategory: (listName: string, value: string) => void
+  addCategory: (listName: string, value: string) => void
 }
 
+const checkBoxes = [
+  'event',
+  'team',
+  'club',
+  'company',
+  'other'
+]
 export class Notes extends React.Component<Props, {}> {
   state = {
-    editorState: EditorState.createEmpty(),
+    editorReady: false,
+    editorState: undefined,
     contentState: null
   }
+
+  constructor(props: Props) {
+    super(props)
+    if (typeof window !== undefined) {
+      this.setState({
+        editorState: EditorState.createEmpty()
+      })
+    }
+  }
+
+  componentDidMount() {
+    if (typeof window !== undefined) {
+      this.setState({
+        editorReady: true,
+      })
+    }
+  } 
 
   handleOnChangeInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const { onChangeInput } = this.props
@@ -85,51 +93,6 @@ export class Notes extends React.Component<Props, {}> {
       return
     }
     onChangeInput(inputId, value)
-  }
-
-  disabledDate = (current: any) => {
-    if (!current) {
-      return false
-    }
-  
-    const date = moment()
-    date.hour(0)
-    date.minute(0)
-    date.second(0)
-
-    const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
-    date.add(7, 'days')
-
-    return (
-      isBeforeOfCurrentDay || current.valueOf() < date.valueOf()
-    )
-  }
-
-  handleOnSelectDate = async (date: Moment, dateString: string) => {
-    const { formatMessage, onSelectDate } = this.props
-    if (date) {
-      try {
-        if (date && (date.weekday() === 0 || date.weekday() === 6)) {
-          message.warning(formatMessage(messages.deliveryErrorLabel))
-          return
-        }
-      } catch (error) {
-        message.error(formatMessage(messages.errorMsg))
-      }
-    }
-    onSelectDate(date, dateString)
-  }
-
-  handleCheckSmsChange = (event: CheckboxChangeEvent) => {
-    const { onCheckSms } = this.props
-    const { target: { checked } } = event
-    onCheckSms(checked)
-  }
-
-  handleCheckEmailChange = (event: CheckboxChangeEvent) => {
-    const { onCheckEmail } = this.props
-    const { target: { checked } } = event
-    onCheckEmail(checked)
   }
 
   onEditorStateChange = (editorState: any) => {
@@ -144,16 +107,15 @@ export class Notes extends React.Component<Props, {}> {
     })
   }
 
+  setDescription = () => {
+    const { setDescription } = this.props
+    setDescription(JSON.stringify(this.state.contentState))
+  }
+
   render() {
     const {
       formatMessage,
-      user,
-      selectedTeamSize,
       projectName,
-      phone,
-      estimatedDate,
-      sendSms,
-      sendEmail,
       inspiration,
       inspirationSelectedItems,
       selectedColors,
@@ -165,27 +127,36 @@ export class Notes extends React.Component<Props, {}> {
       selectedItems,
       fromScratch,
       currentCurrency,
-      onSelectTeamSize,
+      categories,
+      removeCategory,
+      addCategory,
       goToPage
     } = this.props
-    const email = get(user, 'email')
-    const availableSizes =
-      TEAM_SIZES.map((size, index) => {
-        const handleOnSelectSize = () => onSelectTeamSize(size)
-        return (
-        <div key={index}>
-          <SectionButton
-            selected={size === selectedTeamSize}
-            onClick={handleOnSelectSize}
-          >
-            {size}
-          </SectionButton>
-        </div>
-      )})
-    
+    const { editorReady, editorState } = this.state
     return (
       <MainContainer>
         <Container>
+          <ProjectInfoContainer>
+            <Title>
+              {formatMessage(messages.isThis)}
+            </Title>
+            <CheckBoxContainer>
+              {checkBoxes.map((checkBox) => {
+                const isSelected = includes(categories, checkBox)
+                const handleAddCategory = () => isSelected
+                  ? removeCategory('projectCategories', checkBox)
+                  : addCategory('projectCategories', checkBox)
+                return(<Checkbox
+                key={checkBox}
+                checked={isSelected}
+                onChange={handleAddCategory}>
+                <CheckboxLabel>
+                  {formatMessage(messages[checkBox])}
+                </CheckboxLabel>
+              </Checkbox>
+              )})}
+            </CheckBoxContainer>
+          </ProjectInfoContainer>
           <Field>
             <Label>
               {formatMessage(messages.projectName)} <Required>*</Required>
@@ -202,13 +173,14 @@ export class Notes extends React.Component<Props, {}> {
             <Label>
               {formatMessage(messages.ideas)} <Required>*</Required>
             </Label>
-            <Editor
-              editorState={this.state.editorState}    
+            {editorReady && typeof window !== 'undefined' ? <Editor
+              editorState={editorState}    
               wrapperClassName="richTextWrapper"
               editorClassName="richTextEditor"
               toolbarClassName="richTextToolBar"
               onEditorStateChange={this.onEditorStateChange}
               onContentStateChange={this.onContentStateChange}
+              onBlur={this.setDescription}
               toolbar={{
                 options: ['inline', 'list'],
                 inline: {
@@ -223,83 +195,14 @@ export class Notes extends React.Component<Props, {}> {
                   options: ['unordered', 'ordered']
                 }
               }}
-            />
+            /> : null}
           </Field>
-          <Field>
-            <Label>
-              {formatMessage(messages.teamSize)} <Required>*</Required>
-            </Label>
-            <SectionButtonsContainer>
-              {availableSizes}
-            </SectionButtonsContainer>
-          </Field>
-          <Field>
-            <Label>
-              {formatMessage(messages.deliveryDate)} <Required>*</Required>
-            </Label>
-            <DatePicker
-              id="estimatedDate"
-              format={DATE_FORMAT_STARTING_YEAR}
-              size="large"
-              style={inputStyle}
-              value={estimatedDate}
-              disabledDate={this.disabledDate}
-              onChange={this.handleOnSelectDate}
-            />
-          </Field>
-          <Title>
-            {formatMessage(messages.preferences)}
-          </Title>
-          <Text>
-            {formatMessage(messages.receiveNotifications)}
-          </Text>
-          <ItalicText>
-            {formatMessage(messages.setUpNotifications)}
-          </ItalicText>
-          <NotificationSettings>
-            {!!email && <Row>
-              <CheckBoxContainer>
-                <Checkbox
-                  checked={sendEmail}
-                  onChange={this.handleCheckEmailChange}>
-                  <CheckboxLabel>
-                    {formatMessage(messages.sendEmail)}
-                  </CheckboxLabel>
-                </Checkbox>
-              </CheckBoxContainer>
-              <ValueContainer>
-                <InfoText>{`(${email})`}</InfoText>
-              </ValueContainer>
-            </Row>}
-            <Row>
-              <CheckBoxContainer>
-                <Checkbox
-                  checked={sendSms}
-                  onChange={this.handleCheckSmsChange}>
-                  <CheckboxLabel>
-                    {formatMessage(messages.sendSms)}
-                  </CheckboxLabel>
-                </Checkbox>
-              </CheckBoxContainer>
-              <ValueContainer>
-                <Input
-                    id="phone"
-                    value={phone}
-                    placeholder={formatMessage(messages.addPhone)}
-                    onChange={this.handleOnChangeInput}
-                  />
-                  <ItalicText>
-                {formatMessage(messages.changes)}
-              </ItalicText>
-              </ValueContainer>
-            </Row>
-          </NotificationSettings>
         </Container>
-        <Container>
-          <ReviewContainer>
-            <InfoTitle>
-              {formatMessage(messages.currentInformation)}
-            </InfoTitle>
+        <ReviewContainer>
+          <InfoTitle>
+            {formatMessage(messages.currentInformation)}
+          </InfoTitle>
+          <DataSelectedContainer>
             <DataSelected
               {...{
                 inspiration,
@@ -317,8 +220,8 @@ export class Notes extends React.Component<Props, {}> {
                 goToPage
               }}
             />
-          </ReviewContainer>
-        </Container>
+          </DataSelectedContainer>
+        </ReviewContainer>
       </MainContainer>
     )
   }

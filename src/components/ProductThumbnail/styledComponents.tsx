@@ -11,12 +11,13 @@ interface StyleProps {
   withMargin?: boolean
   selectProduct?: boolean
   isSelected?: boolean
+  fitContainer?: boolean
 }
 
 export const Container = styled.section`
   margin: ${({ withMargin }: StyleProps) => (withMargin ? '0px 16px' : '0')};
   margin-bottom: ${({ selectProduct }: StyleProps) => (selectProduct ? '16px' : '0')};
-  width: 220px;
+  width: ${({ fitContainer }: StyleProps) => (fitContainer ? '100%' : '220px')};
   border: 3px solid;
   border-radius: 6px;
   border-color: ${({ isSelected }: StyleProps) => (isSelected ? RED : TRANSPARENT)};
@@ -58,7 +59,7 @@ export const ImageContainer = styled.div`
   cursor: pointer;
   background-color: #f1f4f5;
   height: 214.13px;
-  width: 220px;
+  width: ${({ fitContainer }: StyleProps) => (fitContainer ? '100%' : '220px')};
   padding: 10px;
   text-align: center;
 `
@@ -106,7 +107,7 @@ export const Type = styled.div`
   line-height: 19px;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 212px;
+  width: ${({ fitContainer }: StyleProps) => (fitContainer ? '100%' : '212px')};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -136,7 +137,7 @@ export const Description = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 220px;
+  width: ${({ fitContainer }: StyleProps) => (fitContainer ? '100%' : '220px')};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;

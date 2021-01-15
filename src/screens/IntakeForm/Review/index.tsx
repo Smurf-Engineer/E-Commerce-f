@@ -3,6 +3,8 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import ProductThumbnail from '../../../components/ProductThumbnail'
 import zenscroll from 'zenscroll'
+import parse from 'html-react-parser'
+import draftToHtml from 'draftjs-to-html'
 import moment from 'moment'
 import filter from 'lodash/filter'
 import includes from 'lodash/includes'
@@ -92,6 +94,14 @@ export class Review extends React.Component<Props, {}> {
     } = this.props
     const inspirationItems =
       filter(inspiration, (inspirationItem: InspirationType) => includes(inspirationSelectedItems, inspirationItem.id))
+    
+    let contentState = null
+    try {
+      contentState = typeof window !== 'undefined' ? JSON.parse(projectDescription) : null
+    } catch (e) {
+      console.error('Error ', e)
+    }
+
     return (
       <MainContainer>
         <Container>
@@ -128,7 +138,9 @@ export class Review extends React.Component<Props, {}> {
                 <StrongText>{formatMessage(messages.designNotes)}</StrongText>
               </Column>
               <Column>
-                <Text>{projectDescription || '-'}</Text>
+                <Text>
+                  {contentState ?  parse(draftToHtml(contentState)) : '-'}
+                </Text>
               </Column>
             </Row>
           </Ideas>

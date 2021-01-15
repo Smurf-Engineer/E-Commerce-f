@@ -298,18 +298,31 @@ body {
   width: 100%;
 }
 .masonry-grid_column {
-  padding-left: 2px;
+  padding-left: 3px;
   background-clip: padding-box;
   > div {
-    margin: 2px auto;
+    margin: 3px auto;
   }
 }
 
 .richTextWrapper {
+  position: relative;
+}
+
+.richTextEditor {
   border: 1px solid #f1f1f1;
+  padding: 35px 10px;
 }
 
 .richTextToolBar {
   margin-bottom: 0 !important;
   border-bottom: none;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.bordered-option {
+  border: none !important;
 }
