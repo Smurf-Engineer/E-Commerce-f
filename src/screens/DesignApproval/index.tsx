@@ -96,6 +96,7 @@ import {
   LoadingContainer,
   MessageBody,
   MessageBox,
+  MessageFile,
   MessageHeader,
   ModalSubtitle,
   ModalTitle,
@@ -465,6 +466,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     this.setState({ selectedVariant: value })
   }
 
+  openFile = (url: string) => () => {
+    window.open(url)
+  }
+
   handleOpenQuickView = () => {
     const {
       data
@@ -596,6 +601,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               type: messageType,
               requireAnswer: required,
               answer,
+              file: messageFile,
               parentMessageId: parentId,
             }, 
             key: number
@@ -622,6 +628,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
                       {formatMessage(messages.required)}
                     </RequiredText>
+                  }
+                  {!!messageFile &&
+                    <MessageFile onClick={this.openFile(messageFile)}>
+                      <Clip type="paper-clip" />
+                      <FileName>
+                        {getFileWithExtension(messageFile || '')}
+                      </FileName>
+                    </MessageFile>
                   }
                 </MessageBox>
                 <DateMessage>

@@ -486,6 +486,17 @@ export const FileLabel = styled.div`
   display: flex;
 `
 
+export const MessageFile = styled.div`
+  display: flex;
+  margin-top: 6px;
+  font-size: 12px;
+  color: ${BLUE};
+  text-decoration: underline;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 export const FileName = styled.div`
   width: 100%;
   text-overflow: ellipsis;
