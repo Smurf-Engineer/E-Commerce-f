@@ -5,7 +5,6 @@ import { isPhoneNumber } from '../../../utils/utilsFiles'
 import DataSelected from '../Review/DataSelected'
 import Checkbox from 'antd/lib/checkbox'
 import includes from 'lodash/includes'
-// import { Editor } from 'react-draft-wysiwyg'
 import { EditorState } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
@@ -68,6 +67,8 @@ const checkBoxes = [
   'company',
   'other'
 ]
+
+let Editor = () => <></>
 export class Notes extends React.Component<Props, {}> {
   state = {
     editorReady: false,
@@ -86,6 +87,7 @@ export class Notes extends React.Component<Props, {}> {
 
   componentDidMount() {
     if (typeof window !== undefined) {
+      Editor = require('react-draft-wysiwyg').Editor
       this.setState({
         editorReady: true,
       })
@@ -155,12 +157,12 @@ export class Notes extends React.Component<Props, {}> {
       fromScratch,
       currentCurrency,
       categories,
-      // richTextEditorReady,
+      richTextEditorReady,
       removeCategory,
       addCategory,
       goToPage
     } = this.props
-    // const { editorReady, editorState } = this.state
+    const { editorReady, editorState } = this.state
     return (
       <MainContainer>
         <Container>
@@ -209,7 +211,7 @@ export class Notes extends React.Component<Props, {}> {
                 {formatMessage(messages.multipleProducts)}
               </MultipleItemsButton>
             </TopContainer>
-            {/* richTextEditorReady && editorReady && typeof window !== 'undefined' ? <Editor
+            {richTextEditorReady && editorReady && typeof window !== 'undefined' ? <Editor
               editorState={editorState}    
               wrapperClassName="richTextWrapper"
               editorClassName="richTextEditor"
@@ -231,7 +233,7 @@ export class Notes extends React.Component<Props, {}> {
                   options: ['unordered', 'ordered']
                 }
               }}
-            /> : null */}
+            /> : null}
           </Field>
         </Container>
         <ReviewContainer>
