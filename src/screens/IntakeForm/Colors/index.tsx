@@ -8,6 +8,7 @@ import ColorSelector from '../../../components/ColorSelector'
 import { GetColorPalettes, GetColorsQuery } from './data'
 import BackIcon from '../../../assets/leftarrow.svg'
 import SwipeableViews from 'react-swipeable-views'
+import isEqual from 'lodash/isEqual'
 import rightArrow from '../../../assets/arrow.svg'
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -127,13 +128,15 @@ export class Colors extends React.Component<Props, {}> {
                       return result
                     // tslint:disable-next-line: align
                     }, [])
-                    
+                    const colorsWithoutChanges = isEqual(accentColors, selectedEditColors)
+                    const primaryColorWithoutChanges = primary === selectedEditPrimaryColor[0]
                     const onSelectPalette = () => selectPalette(palette.primary, filteredAccentColors, index)
                     return (
                       <>
                       <PaletteContainer
                         key={id}
-                        selected={selectedPaletteIndex === index}
+                        selected={selectedPaletteIndex === index &&
+                          (colorsWithoutChanges && primaryColorWithoutChanges)}
                         onClick={onSelectPalette}
                       >
                         <Header>

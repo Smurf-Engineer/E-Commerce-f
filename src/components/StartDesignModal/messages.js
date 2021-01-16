@@ -11,31 +11,31 @@ export default defineMessages({
   },
   createUnlimited: {
     id: 'components.AddProDesignModal.createUnlimited',
-    defaultMessage: 'Create unlimited designs from our kickstart design library for free.'
+    defaultMessage: 'Create unlimited free designs from our Kickstart Design Library.'
   },
   themedDesign: {
     id: 'screens.AddProDesignModal.themedDesign',
-    defaultMessage: 'Use the Themed Design Collections to get those creative ideas flowing.'
+    defaultMessage: 'Access to Jakroo Designers with the ProAssist chat.'
   },
   expanded: {
     id: 'screens.AddProDesignModal.expanded',
-    defaultMessage: 'Expanded Clipart and Font Libraries.'
+    defaultMessage: 'Expanded font, clip art and trend color palette libraries.'
   },
   connect: {
     id: 'screens.AddProDesignModal.connect',
     defaultMessage: 'Conect with a Pro Desinger with Jakroo Pro Assist.'
   },
-  ideas: {
-    id: 'screens.AddProDesignModal.ideas',
-    defaultMessage: 'Ideas for individuals or small groups looking for 1-3 items or anyone who enjoys creating their own designs.'
+  ideal: {
+    id: 'screens.AddProDesignModal.ideal',
+    defaultMessage: 'Ideal for individuals or small groups needing only a few products.'
   },
   dedicatedAccount: {
     id: 'components.AddProDesignModal.dedicatedAccount',
-    defaultMessage: 'Dedicated Account Manager and Design team to assist with design and ordering.'
+    defaultMessage: 'Dedicated Account Manager to assist with design and ordering.'
   },
-  createUnlimited: {
-    id: 'components.AddProDesignModal.createUnlimited',
-    defaultMessage: 'Create unlimited designs from our kickstart design library for free.'
+  customKits: {
+    id: 'components.AddProDesignModal.customKits',
+    defaultMessage: '100% Full Custom kits designed on spec by our Jakroo Designers'
   },
   freeDesign: {
     id: 'components.AddProDesignModal.freeDesign',
@@ -47,11 +47,11 @@ export default defineMessages({
   },
   customColor: {
     id: 'components.AddProDesignModal.customColor',
-    defaultMessage: 'Custom color and Pantone matching to your branding requirements.'
+    defaultMessage: 'Customization of color and aesthetic to match branding requirements.'
   },
   idealForTeams: {
     id: 'components.AddProDesignModal.idealForTeams',
-    defaultMessage: 'Ideal for Teams and Clubs requiring multiple items and have specific design requirements.'
+    defaultMessage: 'Ideal for teams, clubs or organizations needing multiple products.'
   },
   customizeLabel: {
     id: 'components.AddProDesignModal.customizeLabel',

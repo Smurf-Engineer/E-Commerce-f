@@ -20,7 +20,11 @@ import {
   CheckboxLabel,
   CheckBoxContainer,
   ProjectInfoContainer,
-  Title
+  Title,
+  QuestionSpan,
+  LabelContainer,
+  TopContainer,
+  MultipleItemsButton
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -47,12 +51,14 @@ interface Props extends RouteComponentProps<any> {
   fromScratch: boolean
   currentCurrency: string
   categories: string[]
+  richTextEditorReady: boolean
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
   setDescription: (contentState: string | null) => void
   removeCategory: (listName: string, value: string) => void
   addCategory: (listName: string, value: string) => void
+  showModal: (title: string, body: string[] | string, accept: string) => void
 }
 
 const checkBoxes = [
@@ -112,6 +118,27 @@ export class Notes extends React.Component<Props, {}> {
     setDescription(JSON.stringify(this.state.contentState))
   }
 
+  showMultipleItems = () => {
+    const { showModal, formatMessage } = this.props
+    showModal(
+      formatMessage(messages.multipleProducts).toUpperCase(),
+      formatMessage(messages.multipleProductsDescription),
+      ''
+    )
+  }
+
+  describeIdeas = () => {
+    const { showModal, formatMessage } = this.props
+    showModal(
+      formatMessage(messages.designIdeas).toUpperCase(),
+      [formatMessage(messages.descriptionHelp),
+      formatMessage(messages.descriptionHelp1),
+      formatMessage(messages.descriptionHelp2),
+      formatMessage(messages.descriptionHelp3)],
+      ''
+    )
+  }
+
   render() {
     const {
       formatMessage,
@@ -128,6 +155,7 @@ export class Notes extends React.Component<Props, {}> {
       fromScratch,
       currentCurrency,
       categories,
+      richTextEditorReady,
       removeCategory,
       addCategory,
       goToPage
@@ -170,10 +198,18 @@ export class Notes extends React.Component<Props, {}> {
             />
           </Field>
           <Field>
-            <Label>
-              {formatMessage(messages.ideas)} <Required>*</Required>
-            </Label>
-            {editorReady && typeof window !== 'undefined' ? <Editor
+            <TopContainer>
+              <LabelContainer>
+                <Label>
+                  {formatMessage(messages.ideas)} <Required>*</Required>
+                </Label>
+                <QuestionSpan onClick={this.describeIdeas}>?</QuestionSpan>
+              </LabelContainer>
+              <MultipleItemsButton onClick={this.showMultipleItems}>
+                {formatMessage(messages.multipleProducts)}
+              </MultipleItemsButton>
+            </TopContainer>
+            {richTextEditorReady && editorReady && typeof window !== 'undefined' ? <Editor
               editorState={editorState}    
               wrapperClassName="richTextWrapper"
               editorClassName="richTextEditor"

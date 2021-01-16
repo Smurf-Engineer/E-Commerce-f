@@ -7,15 +7,20 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   chooseProducts: {
     id: 'screens.IntakeForm.chooseProducts',
-    defaultMessage: 'CHOOSE PRODUCTS '
+    defaultMessage: 'Select Your Products '
+  },
+  productsDescription: {
+    id: 'screens.IntakeForm.productsDescription',
+    defaultMessage: `Select up to 5 products to complete your kit. If you need 
+    more, you will have a chance to add them later with the help of your account manager.`
   },
   designPathway: {
     id: 'screens.IntakeForm.designPathway',
-    defaultMessage: 'DESIGN PATHWAY '
+    defaultMessage: 'Design Path '
   },
   designPathwaySubtitle: {
     id: 'screens.IntakeForm.designPathwaySubtitle',
-    defaultMessage: 'Select ideal pathway to continue with your project'
+    defaultMessage: 'Select the design path that best suits your project.'
   },
   continueButtonText: {
     id: 'screens.IntakeForm.continueButtonText',
@@ -72,14 +77,15 @@ export default defineMessages({
   },
   inspiration: {
     id: 'screens.IntakeForm.inspiration',
-    defaultMessage: 'INSPIRATION'
+    defaultMessage: 'Get Inspired'
   },
   inspirationBody: {
     id: 'screens.IntakeForm.inspirationBody',
-    defaultMessage: 'Choose up to 5 images that best represent your design ideas.'
+    defaultMessage: `Select up to 5 images that best represent the artistic concepts 
+    or design elements you’d like in your design.`
   },
   colors: {
-    id: 'screens.IntakeForm.inspiration',
+    id: 'screens.IntakeForm.colors',
     defaultMessage: 'CHOOSE YOUR COLORS'
   },
   colorsBody: {
@@ -105,11 +111,11 @@ export default defineMessages({
   },
   fileUploadBody: {
     id: 'screens.IntakeForm.fileUploadBody',
-    defaultMessage: 'Upload any company or sponsor logos you want added to your designs'
+    defaultMessage: 'Upload any art file or sponsor logos you want added to your design.'
   },
   fileUploadTips: {
     id: 'screens.IntakeForm.fileUploadBody',
-    defaultMessage: 'Important tips about files'
+    defaultMessage: 'Important tips about art files.'
   },
   fileUploadTipTitle: {
     id: 'screens.IntakeForm.fileUploadTipTitle',
@@ -145,7 +151,7 @@ export default defineMessages({
   },
   inspirationTip: {
     id: 'screens.IntakeForm.inspirationTip',
-    defaultMessage: 'Tip: Focus on design elements. You will have a chance to select colors on next step.'
+    defaultMessage: 'Tip: Focus on design elements. You will have a chance to select colors on the next step.'
   },
   inspirationSample: {
     id: 'screens.IntakeForm.inspirationSample',
@@ -169,7 +175,7 @@ export default defineMessages({
   },
   graphics: {
     id: 'screens.IntakeForm.graphics',
-    defaultMessage: 'Graphics / Patherns'
+    defaultMessage: 'Graphics / Patterns'
   },
   kickstart: {
     id: 'screens.IntakeForm.kickstart',

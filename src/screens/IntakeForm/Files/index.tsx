@@ -1,16 +1,18 @@
 import * as React from 'react'
 import { compose, withApollo } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
+import RenameModal from './RenameModal'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import Button from 'antd/lib/button'
 import indexOf from 'lodash/indexOf'
+import find from 'lodash/find'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { getFileNameFromUrl } from '../../../utils/utilsFiles'
 import {
   Container,
   DraggerContainer,
   ButtonContainer,
   Icon,
-  Description,
   Images,
   Image,
   ImageContainer,
@@ -18,7 +20,11 @@ import {
   CustomButton,
   LoginText,
   DeleteButton,
-  ImageText
+  ImageText,
+  ActionButtons,
+  EditButton,
+  StyledCheckbox,
+  CheckboxLabel
 } from './styledComponents'
 import LockerModal from '../../../components/AssetsModal'
 import message from 'antd/lib/message'
@@ -35,6 +41,11 @@ interface Props extends RouteComponentProps<any> {
   user?: UserType
   lockerSelectedFiles: ImageFile[]
   isMobile?: boolean
+  renameFileOpen: boolean
+  fileIdToRename?: number
+  newFileName: string
+  renamingFile: boolean
+  fileTermsAccepted: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onUploadFile: (file: File) => void
   openUserLocker: (open: boolean) => void
@@ -43,6 +54,10 @@ interface Props extends RouteComponentProps<any> {
   onAddItems: () => void
   deselectLockerItem: (elementId: number) => void
   deleteImage: (id: number) => void
+  onOpenRenameModal: (open: boolean, id?: number) => void
+  handleOnRenameChange: (value: string) => void
+  onSaveName: () => void
+  setFileTerms: (checked: boolean) => void
 }
 
 export class Files extends React.Component<Props, {}> {
@@ -70,6 +85,11 @@ export class Files extends React.Component<Props, {}> {
     const { onOpenLogin } = this.props
     onOpenLogin(true)
   }
+  checkFileTerms = (event: CheckboxChangeEvent) => {
+    const { setFileTerms } = this.props
+    const { target: { checked } } = event
+    setFileTerms(checked)
+  }
   render() {
     const {
       uploadingFile,
@@ -78,15 +98,25 @@ export class Files extends React.Component<Props, {}> {
       user,
       lockerSelectedFiles,
       isMobile,
+      renameFileOpen,
+      fileIdToRename,
+      newFileName,
+      renamingFile,
+      fileTermsAccepted,
       formatMessage,
       openUserLocker,
       onSelectItem,
       onAddItems,
       deselectLockerItem,
-      deleteImage
+      deleteImage,
+      onOpenRenameModal,
+      handleOnRenameChange,
+      onSaveName
     } = this.props
     const handleOpenLocker = () => openUserLocker(true)
     const handleCloseLocker = () => openUserLocker(false)
+    const currentFile = fileIdToRename ? find(selectedFiles, ['id', fileIdToRename]) : ''
+    const fileNameToEdit = currentFile ? currentFile.name || currentFile.fileUrl : ''
     return (
       <Container>
         {user ? <><DraggerContainer>
@@ -106,15 +136,26 @@ export class Files extends React.Component<Props, {}> {
             </Button>
           </DraggerWithLoading>
         </DraggerContainer>
-        <Description>{formatMessage(messages.description)}</Description>
+        <StyledCheckbox
+            checked={fileTermsAccepted}
+            onChange={this.checkFileTerms}
+          >
+          <CheckboxLabel>
+            {formatMessage(messages.description)}
+          </CheckboxLabel>
+        </StyledCheckbox>
         <Images>
           {selectedFiles.map((file, index) => {
-            const { fileUrl, id } = file
+            const { fileUrl, id, name } = file
             const handleDeleteItem = () => deleteImage(id)
+            const handleOpenRename = () => onOpenRenameModal(true, id)
             return (<ImageContainer key={index}>
                 <Image src={fileUrl} />
-                <ImageText>{getFileNameFromUrl(fileUrl)}</ImageText>
-                <DeleteButton onClick={handleDeleteItem}>{formatMessage(messages.delete)}</DeleteButton>
+                <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
+                <ActionButtons>
+                  <EditButton onClick={handleOpenRename}>{formatMessage(messages.edit)}</EditButton>
+                  <DeleteButton onClick={handleDeleteItem}>{formatMessage(messages.delete)}</DeleteButton>
+                </ActionButtons>
             </ImageContainer>)
           })}
         </Images></> :
@@ -137,6 +178,14 @@ export class Files extends React.Component<Props, {}> {
           onSelectItem={onSelectItem}
           onUnselectItem={deselectLockerItem}
         />}
+        <RenameModal
+          open={renameFileOpen}
+          name={fileNameToEdit ? getFileNameFromUrl(fileNameToEdit) : ''}
+          onRenameChange={handleOnRenameChange}
+          handleOnSaveName={onSaveName}
+          loading={renamingFile}
+          {...{ formatMessage, newFileName }}
+          openRenameModal={onOpenRenameModal} />
       </Container>
     )
   }

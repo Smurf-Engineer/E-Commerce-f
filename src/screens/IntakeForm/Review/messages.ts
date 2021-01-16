@@ -47,6 +47,6 @@ export default defineMessages({
   },
   products: {
     id: 'screens.IntakeForm.Review.products',
-    defaultMessage: 'Pro Design Project Products'
+    defaultMessage: 'Products'
   }
 })

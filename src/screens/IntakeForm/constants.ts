@@ -33,6 +33,11 @@ export const RESET_INSPIRATION = `${namespace}/RESET_INSPIRATION`
 export const REMOVE_FROM_LIST = `${namespace}/REMOVE_FROM_LIST`
 export const ADD_TO_LIST = `${namespace}/ADD_TO_LIST`
 export const SET_DESCRIPTION = `${namespace}/SET_DESCRIPTION`
+export const OPEN_RENAME_MODAL = `${namespace}/OPEN_RENAME_MODAL`
+export const ON_RENAME_FILE = `${namespace}/ON_RENAME_FILE`
+export const ON_SET_RENAMING = `${namespace}/ON_SET_RENAMING`
+export const CHANGE_LOCAL_NAME = `${namespace}/CHANGE_LOCAL_NAME`
+export const SET_FILE_TERMS = `${namespace}/SET_FILE_TERMS`
 
 export enum Sections {
   PRODUCTS = -2,
@@ -55,7 +60,7 @@ export const titleTexts = {
   [Sections.PRODUCTS]:
     {
       title: 'chooseProducts',
-      body: '',
+      body: 'productsDescription',
       bodyWithTip: '',
       action: false,
       tipTitle: '',

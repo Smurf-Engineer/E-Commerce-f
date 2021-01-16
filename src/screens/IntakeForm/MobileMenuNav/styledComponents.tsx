@@ -2,12 +2,15 @@
  * Styled Components - Created by eduardoquintero on 17/11/20.
  */
 import styled from 'styled-components'
-import { BLACK_SEMILIGHT, BLUE, GRAY, WHITE, GRAY_LIGHT } from '../../../theme/colors'
+import Dropdown from 'antd/lib/dropdown'
+import Menu from 'antd/lib/menu'
+import { BLACK_SEMILIGHT, BLUE, GRAY, WHITE, GRAY_LIGHT, DARKER_GRAY } from '../../../theme/colors'
 
 interface ButtonProps {
   disabled?: boolean
   show?: boolean
   text?: string
+  active?: boolean
 }
 
 export const MobileNavContainer = styled.div`
@@ -18,6 +21,7 @@ export const MobileNavContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 `
 
 const Button = styled.div`
@@ -60,5 +64,34 @@ export const Continue = styled(Button)`
   align-items: center;
   &::after {
     content: ${({ text }: ButtonProps) => `"${text}"`};
+  }
+`
+
+export const StyledDropdown = styled(Dropdown)`
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 180px;
+  color: ${WHITE};
+`
+
+export const StyledMenu = styled(Menu)`
+  left: 0;
+  right: 0;
+  position: absolute;
+  margin: 0 auto;
+  max-width: 180px;
+`
+
+export const Image = styled.img`
+  margin-left: 5px;
+`
+
+export const ItemText = styled.div`
+  color: ${({ active }: ButtonProps) => active ? DARKER_GRAY : GRAY_LIGHT};
+  &.selected{
+    font-weight: 600;
   }
 `

@@ -11,7 +11,7 @@ import message from 'antd/lib/message'
 import DesignCenterHeader from '../../components/DesignCenterHeader'
 import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
-import { saveProject } from './data'
+import { saveProject, renameFile } from './data'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
@@ -100,6 +100,11 @@ interface Props extends RouteComponentProps<any> {
   inspirationTags: string[]
   inspirationFilters: string[]
   projectCategories: string[]
+  renameFileOpen: boolean
+  fileIdToRename: string
+  newFileName: string
+  renamingFile: boolean
+  fileTermsAccepted: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -133,13 +138,20 @@ interface Props extends RouteComponentProps<any> {
   removeFromListAction: (listName: string, name: string) => void
   addToListAction: (listName: string, name: string) => void
   setDescriptionAction: (contentState: string | null) => void
+  openRenameModalAction: (open: boolean, id?: number) => void
+  onRenameChangeAction: (value: string) => void
+  renameFileName: (variables: {}) => Promise<MessagePayload>
+  onSetRenamingFile: (loading: boolean) => void
+  changeLocalNameAction: (id: number, value: string) => void
+  setFileTermsAction: (checked: boolean) => void
 }
 
 export class IntakeFormPage extends React.Component<Props, {}> {  
   swipeableActions = null
   state = {
     isMobile: false,
-    isTablet: false
+    isTablet: false,
+    richTextEditorReady: false
   }
   componentDidMount() {
     const { location, selectedItems, selectProductAction } = this.props
@@ -152,6 +164,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const isTablet = window.matchMedia(
       '(max-width: 768px)'
     ).matches
+    if (typeof window !== undefined) {
+      this.setState({
+        richTextEditorReady: true,
+      })
+    }
     this.setState({ isMobile, isTablet })
   }
   handleClick = () => {
@@ -169,6 +186,32 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { setFromScratchAction } = this.props
     setFromScratchAction(false)
     this.handleOnContinue(false)
+  }
+
+  handleOnRenameFileName = async () => {
+    const {
+      renameFileName,
+      onSetRenamingFile,
+      openRenameModalAction,
+      changeLocalNameAction
+    } = this.props
+    onSetRenamingFile(true)
+    try {
+      const { fileIdToRename, newFileName } = this.props
+      const results = await renameFileName({
+        variables: { id: fileIdToRename, value: newFileName }
+      })
+      const successMessage = get(results, 'data.renameFileName.message')
+      message.success(successMessage)
+      changeLocalNameAction(fileIdToRename, newFileName)
+      onSetRenamingFile(false)
+      openRenameModalAction(false)
+    } catch (e) {
+      onSetRenamingFile(false)
+      message.error(
+        `Something wrong happened. Please try again! ${e.message}`
+      )
+    }
   }
 
   handleOnContinue = async (isFromScratch?: boolean) => {
@@ -285,7 +328,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       estimatedDate,
       projectDescription,
       intl: { formatMessage },
-      fromScratch
+      fromScratch,
+      fileTermsAccepted
     } = this.props
     const continueButtonText = currentScreen ===
       Sections.REVIEW ? formatMessage(messages.submitButtonText) :
@@ -326,7 +370,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.FILES:
         return {
-          continueDisable: !user,
+          continueDisable: !user || !fileTermsAccepted,
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
@@ -407,23 +451,23 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     this.showAlert(title, body, accept)
   }
 
-  showAlert = (title: string, body: string, accept: string, cancel: string = '') => {
+  showAlert = (title: string, bodyNodes: string[] | string, accept: string) => {
+    const { intl: { formatMessage } } = this.props
+    const render = 
+      typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
+      : (<InfoBody>{bodyNodes}</InfoBody>)
     info({
       title: (
         <ModalTitle>
           {title}
         </ModalTitle>
       ),
-      okText: accept,
+      okText: accept || formatMessage(messages.gotIt),
       cancelText: 'Cancel',
       okButtonProps: {
         style: buttonStyle
       },
-      content: (
-        <InfoBody>
-          {body}
-        </InfoBody>
-      )
+      content: render
     })
   }
 
@@ -476,6 +520,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       inspirationTags,
       inspirationFilters,
       projectCategories,
+      renameFileOpen,
+      fileIdToRename,
+      newFileName,
+      renamingFile,
+      fileTermsAccepted,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -497,9 +546,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       resetInspirationDataAction,
       removeFromListAction,
       addToListAction,
-      setDescriptionAction
+      setDescriptionAction,
+      openRenameModalAction,
+      onRenameChangeAction,
+      setFileTermsAction
     } = this.props
-    const { isMobile, isTablet } = this.state
+    const { isMobile, isTablet, richTextEditorReady } = this.state
 
     const validations = this.getNavButtonsValidation()
     const currentTitleHasAction = titleTexts[currentScreen].action
@@ -559,7 +611,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           (<MobileMenuNav
             onContinue={this.handleOnContinue}
             onPrevious={this.handleOnPrevious}
-            {...{validations, savingIntake}}
+            onSelectTab={this.handleOnSelectTab}
+            validate={this.getNavButtonsValidation}
+            currentTab={currentScreen}      
+            {...{validations, savingIntake, fromScratch, formatMessage}}
           />) : null}
 
         {topNavHeader}
@@ -625,7 +680,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 userLockerModalOpen,
                 user,
                 lockerSelectedFiles,
-                isMobile
+                isMobile,
+                renameFileOpen,
+                fileIdToRename,
+                newFileName,
+                renamingFile,
+                fileTermsAccepted
               }}
               onUploadFile={uploadFileAction}
               openUserLocker={openUserLockerAction}
@@ -634,6 +694,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onAddItems={onAddItemsAction}
               deselectLockerItem={this.handleOnDeselectLockerFile}
               deleteImage={this.handleOnDeleteImage}
+              onOpenRenameModal={openRenameModalAction}
+              handleOnRenameChange={onRenameChangeAction}
+              onSaveName={this.handleOnRenameFileName}
+              setFileTerms={setFileTermsAction}
             />
             <Notes
               {...{
@@ -652,7 +716,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 selectedFiles,
                 selectedItems,
                 fromScratch,
-                currentCurrency
+                currentCurrency,
+                richTextEditorReady
               }}
               onChangeInput={onSetInputAction}
               goToPage={this.handleOnSelectTab}
@@ -660,6 +725,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               removeCategory={removeFromListAction}
               addCategory={addToListAction}
               categories={projectCategories}
+              showModal={this.showAlert}
             />
             <Notifications
               {...{
@@ -737,6 +803,7 @@ const mapStateToProps = (state: any) => {
 
 const IntakeFormPageEnhance = compose(
   saveProject,
+  renameFile,
   withApollo,
   injectIntl,
   connect(

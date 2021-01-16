@@ -25,7 +25,7 @@ export const Subtitle = styled.div`
   margin-top: 5px;
   color: ${({ action }: StyleProps) => (action ? BLUE : GRAY_DARK)};
   cursor: ${({ action }: StyleProps) => (action ? 'pointer' : 'normal')};
-  max-width: 525px;
+  max-width: 590px;
 `
 
 export const TopNavHeader = styled.div`

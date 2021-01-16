@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { GRAY_DARK, RED, WHITE, GRAY_LIGHTEST } from '../../../theme/colors'
+import { GRAY_DARK, RED, WHITE, GRAY_LIGHTEST, BLUE } from '../../../theme/colors'
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -83,6 +83,9 @@ export const CheckBoxContainer = styled.div`
   flex: 1.2;
   @media (max-width: 768px) {
     flex: 4;
+    & .ant-checkbox-wrapper {
+      margin: 0 5px 5px 0;
+    }
   }
 `
 
@@ -98,5 +101,39 @@ export const ProjectInfoContainer = styled.div`
   margin-bottom: 10px;
   @media (max-width: 768px) {
     flex-direction: column;
+  }
+`
+
+export const LabelContainer = styled.div`
+  display: flex;
+`
+
+export const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const QuestionSpan = styled.span`
+  height: 14px;
+  width: 14px;
+  color: ${GRAY_DARK};
+  line-height: 23px;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 9px;
+  margin-left: 5px;
+  border: 1px solid ${GRAY_DARK};
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const MultipleItemsButton = styled.div`
+  color: ${BLUE};
+  &:hover {
+    cursor: pointer;
   }
 `

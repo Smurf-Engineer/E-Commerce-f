@@ -19,6 +19,6 @@ export default defineMessages({
   },
   addFromGallery: {
     id: 'components.addFromGallery',
-    defaultMessage: 'Add from your Jakroo Gallery'
+    defaultMessage: 'Add from your Jakroo File Uploads'
   }
 })

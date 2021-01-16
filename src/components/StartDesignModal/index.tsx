@@ -26,7 +26,8 @@ import closeIcon from '../../assets/cancel-button.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
 import ProDesignImg from '../../assets/Jakroo_Pro.png'
 import DesignCenterImg from '../../assets/DesignLAB.png'
-import DesignCenterBanner from '../../assets/design_lab.png'
+import DesignCenterBanner from '../../assets/start_design_lab.jpg'
+import ProDesignBanner from '../../assets/start_pro_design.jpg'
 import UnfoldList from '../UnfoldList'
 import CustomModal from '../Common/JakrooModal'
 import SimpleLi from '../SimpleLi'
@@ -43,19 +44,16 @@ interface Props {
 
 const designCenterMessages = [
   'createUnlimited',
+  'ideal',
   'themedDesign',
   'expanded',
-  'connect',
-  'ideas'
 ]
 
 const proDesignMessages = [
+  'customKits',
+  'idealForTeams',
   'dedicatedAccount',
-  'createUnlimited',
-  'freeDesign',
-  'extended',
-  'customColor',
-  'idealForTeams'
+  'customColor'
 ]
 
 export class StartDesignModal extends React.Component<Props, {}> {
@@ -136,7 +134,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
               </UnfoldContainer>
               <UnfoldContainer>
                 <BannerBack onClick={this.toggleProDesignAnimation}>
-                  <Banner src={DesignCenterBanner} />
+                  <Banner src={ProDesignBanner} />
                 </BannerBack>
                 {proDesignMessages.map((item: string, index: number) => (
                   <FoldContent

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { WHITE, GRAY_DARK, GRAY_LIGHT, RED } from '../../../theme/colors'
+import { WHITE, GRAY_DARK, GRAY_LIGHT, RED, BLUE } from '../../../theme/colors'
+import Checkbox from 'antd/lib/checkbox'
 import icon from 'antd/lib/icon'
 
 interface ImagePreviewProps {
@@ -42,12 +43,16 @@ export const Description = styled.div`
 `
 
 export const Images = styled.div`
+  margin-top: 10px;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   column-gap: 15px;
   row-gap: 15px;
   justify-items: center;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
 `
 
 export const ImageContainer = styled.div`
@@ -55,6 +60,9 @@ export const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  @media (max-width: 768px) {
+    width: 130px;
+  }
 `
 
 export const Image = styled.div`
@@ -64,6 +72,10 @@ export const Image = styled.div`
   width: 300px;
   height: 300px;
   background-color: ${GRAY_LIGHT};
+  @media (max-width: 768px) {
+    width: 130px;
+    height: 130px;
+  }
 `
 
 export const LoginMessage = styled.div`
@@ -100,10 +112,39 @@ export const ImageText = styled.div`
   white-space: nowrap;
 `
 
-export const DeleteButton = styled.div`
-  color: ${RED};
+export const Button = styled.div`
   margin-top: 2px;
   &:hover {
     cursor: pointer;
   }
+`
+export const DeleteButton = styled(Button)`
+  color: ${RED};
+`
+export const EditButton = styled.div`
+  color: ${BLUE};
+`
+
+export const ActionButtons = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`
+
+export const CheckboxLabel = styled.div`
+  display: inline-block;
+`
+
+export const EmptyMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  margin-top: 35px;
+`
+
+export const StyledCheckbox = styled(Checkbox)`
+@media (max-width: 768px) {
+  display: flex;
+  font-size: 13px;
+}
 `

@@ -7,13 +7,13 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   fromScratch: {
     id: 'screens.DesignPathway.fromScratch',
-    defaultMessage: `This option is for those who have an idea of what they want but 
-    are looking for some creative support.`
+    defaultMessage: `You have an idea of what you want but are looking for some 
+    additional inspiration and creative support to bring them to life.`
   },
   existingArtowrk: {
     id: 'screens.DesignPathway.existingArtowrk',
-    defaultMessage: `This option is for those who have already created their design on a JAKROO pattern 
-    template OR have an art template from another supplier.`
+    defaultMessage: `You already have your art completed on a Jakroo design or other 
+    supplier template and only need upload and provide instructions.`
   },
   select: {
     id: 'screens.DesignPathway.select',

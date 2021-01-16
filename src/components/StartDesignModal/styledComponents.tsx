@@ -106,6 +106,7 @@ justify-content: space-between;
 color: ${WHITE};
 width: 100%;
 animation-fill-mode: both;
+-webkit-animation-fill-mode: both;
 
 transform-style: preserve-3d;
 -webkit-transform-style: preserve-3d;
@@ -165,6 +166,7 @@ transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.
   width: 100%;
   mix-blend-mode: normal;
   transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
 }
 `
 
@@ -179,13 +181,13 @@ export const BannerDesign = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin-bottom
 `
 
 export const Banner = styled.img`
   width: 100%;
   border-radius: 8px;
   border: 1px solid ${WHITE};
+  object-fit: cover;
 `
 
 export const UnfoldContainer = styled.div`

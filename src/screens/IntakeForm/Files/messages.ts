@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   description: {
     id: 'screens.IntakeForm.Files.description',
-    defaultMessage: 'I hereby agree that I have permission and the rights to  use this logo art. '
+    defaultMessage: 'I agree that I have the permission and/or rights of use for the uploaded files'
   },
   imageExtensionError: {
     id: 'components.IntakeForm.Files.imageExtensionError',
@@ -28,5 +28,9 @@ export default defineMessages({
   delete: {
     id: 'components.IntakeForm.Files.delete',
     defaultMessage: `Delete`
+  },
+  edit: {
+    id: 'components.IntakeForm.Files.edit',
+    defaultMessage: `Rename`
   },
 })

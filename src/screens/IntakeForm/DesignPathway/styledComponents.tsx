@@ -23,7 +23,7 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   background: ${WHITE};
-  min-height: 608px;
+  min-height: 533px;
   width: 400px;
   transition: all 0.25s;
   cursor: pointer;
@@ -55,7 +55,7 @@ export const CardTitle = styled.div`
   color: ${BLACK};
   background: ${GRAY_LIGHTEST};
   text-align: center;
-  padding: 30px;
+  padding: 60px;
   min-height: 330px;
   display: flex;
   & img {

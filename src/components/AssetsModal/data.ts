@@ -13,6 +13,7 @@ export const userfilesQuery = gql`
         width
         height
       }
+      name: fileName
     }
   }
 `

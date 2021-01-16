@@ -13,3 +13,16 @@ export const saveProject = graphql(
     name: 'createProject'
   }
 )
+
+export const renameFile = graphql(
+  gql`
+    mutation renameFileName($id: Int, $value: String) {
+      renameFileName(id: $id, value: $value) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'renameFileName'
+  }
+)

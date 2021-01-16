@@ -33,7 +33,12 @@ import {
   RESET_INSPIRATION,
   REMOVE_FROM_LIST,
   ADD_TO_LIST,
-  SET_DESCRIPTION
+  SET_DESCRIPTION,
+  OPEN_RENAME_MODAL,
+  ON_RENAME_FILE,
+  ON_SET_RENAMING,
+  CHANGE_LOCAL_NAME,
+  SET_FILE_TERMS
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -204,4 +209,31 @@ export const addToListAction = (listName: string, name: string) => ({
 export const setDescriptionAction = (contentState: string | null) => ({
   type: SET_DESCRIPTION,
   contentState
+})
+
+export const openRenameModalAction = (open: boolean, id?: number) => ({
+  type: OPEN_RENAME_MODAL,
+  open,
+  id
+})
+
+export const onRenameChangeAction = (value: string) => ({
+  type: ON_RENAME_FILE,
+  value
+})
+
+export const onSetRenamingFile = (loading: boolean) => ({
+  type: ON_SET_RENAMING,
+  loading
+})
+
+export const changeLocalNameAction = (id: number, value: string) => ({
+  type: CHANGE_LOCAL_NAME,
+  id,
+  value
+})
+
+export const setFileTermsAction = (checked: boolean) => ({
+  type: SET_FILE_TERMS,
+  checked
 })

@@ -1205,6 +1205,7 @@ export interface ImageFile {
     height: number
   }
   type: string
+  name?: string
 }
 
 export type MessagePayload = {

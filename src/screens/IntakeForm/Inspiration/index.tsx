@@ -84,7 +84,7 @@ interface Props extends RouteComponentProps<any> {
 
 const gridBreakPoints = {
   default: 5,
-  900: 2,
+  900: 3,
   1200: 4
 }
 

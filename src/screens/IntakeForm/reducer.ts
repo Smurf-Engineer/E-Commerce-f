@@ -34,6 +34,11 @@ import {
   REMOVE_FROM_LIST,
   ADD_TO_LIST,
   SET_DESCRIPTION,
+  OPEN_RENAME_MODAL,
+  ON_RENAME_FILE,
+  ON_SET_RENAMING,
+  CHANGE_LOCAL_NAME,
+  SET_FILE_TERMS,
   Sections
 } from './constants'
 export const initialState = fromJS({
@@ -70,7 +75,12 @@ export const initialState = fromJS({
   inspirationTags: [],
   inspirationFilters: [],
   projectDescription: null,
-  projectCategories: []
+  projectCategories: [],
+  renameFileOpen: false,
+  fileIdToRename: null,
+  newFileName: '',
+  renamingFile: false,
+  fileTermsAccepted: false
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -82,7 +92,7 @@ const intakeFormReducer: Reducer<any> = (
       const { listName, elementId, index } = action
       const selectedItems = state.get(listName)
       const addItem = index >= 0  ? selectedItems.splice(index, 1, elementId) : selectedItems.push(elementId)
-      return state.merge({ [listName]: addItem, selectedPaletteIndex: -2})
+      return state.merge({ [listName]: addItem })
     }
     case DESELECT_ELEMENT: {
       const { listName, elementId } = action
@@ -93,7 +103,7 @@ const intakeFormReducer: Reducer<any> = (
         })
       const selectedItems = state.get(listName)
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
-      return state.merge({ [listName]: updatedSelectedItems, selectedPaletteIndex: -2 })
+      return state.merge({ [listName]: updatedSelectedItems })
     }
     case GO_TO_NEXT_PAGE:
       return state.set('currentScreen', action.page)
@@ -241,6 +251,25 @@ const intakeFormReducer: Reducer<any> = (
     }
     case SET_DESCRIPTION:
       return state.merge({ projectDescription: action.contentState })
+    case OPEN_RENAME_MODAL:
+      return state.merge({ renameFileOpen: action.open, fileIdToRename: action.id, newFileName: '' })
+    case ON_RENAME_FILE:
+      return state.merge({ newFileName: action.value })
+    case ON_SET_RENAMING:
+      return state.set('renamingFile', action.loading)
+    case CHANGE_LOCAL_NAME: {
+      const { id, value } = action
+      const indexOfListingToUpdate = state
+        .get('selectedFiles')
+        .findIndex((object: any) => {
+          return object.id === id
+        })
+      return state.updateIn(['selectedFiles', indexOfListingToUpdate], (file: any) => {
+        return file.set('name', value)
+      })
+    }
+    case SET_FILE_TERMS:
+      return state.set('fileTermsAccepted', action.checked)
     default:
       return state
   }

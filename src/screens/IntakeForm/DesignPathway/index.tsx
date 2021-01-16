@@ -12,9 +12,7 @@ import {
   Text
 } from './styledComponents'
 import FromScratch from '../../../assets/from_scratch.svg'
-import FromScratchMobile from '../../../assets/from_scratch_mobile.svg'
 import ExistingArtwork from '../../../assets/existing_artwork.svg'
-import ExistingArtworkMobile from '../../../assets/existing_artwork_mobile.svg'
 
 import { Message } from '../../../types/common'
 
@@ -25,13 +23,13 @@ interface Props {
   existingArtwork: () => void
 }
 
-const MobileMenu = ({ isMobile, formatMessage, fromScratch, existingArtwork }: Props) => {
+const MobileMenu = ({ formatMessage, fromScratch, existingArtwork }: Props) => {
   return (
     <Container>
       <DesignsCardsContainer>
         <Card onClick={fromScratch}>
           <CardTitle>
-            <img src={isMobile ? FromScratchMobile : FromScratch} />
+            <img src={FromScratch} />
           </CardTitle>
           <Text>{formatMessage(messages.fromScratch)}</Text>
           <Button>
@@ -40,7 +38,7 @@ const MobileMenu = ({ isMobile, formatMessage, fromScratch, existingArtwork }: P
         </Card>
         <Card onClick={existingArtwork}>
           <CardTitle>
-            <img src={isMobile ? ExistingArtworkMobile : ExistingArtwork} />
+            <img src={ExistingArtwork} />
           </CardTitle>
           <Text>{formatMessage(messages.existingArtowrk)}</Text>
           <Button>
