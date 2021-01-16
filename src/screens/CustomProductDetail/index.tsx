@@ -49,7 +49,8 @@ import {
   ProApproved,
   ProApprovedLabel,
   layoutStyle,
-  LoadingContainer
+  LoadingContainer,
+  SizeChart
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -63,6 +64,7 @@ import {
   UserType,
   BreadRoute, IProfileSettings
 } from '../../types/common'
+import sizeChartSvg from '../../assets/sizechart.svg'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
 import ImagesSlider from '../../components/ImageSlider'
@@ -226,6 +228,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       fitStyles,
       details,
       materials,
+      chart,
       mediaFiles,
       active,
       onlyProDesign,
@@ -485,12 +488,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </ButtonsRow>
     )
 
+    const sizeChartButton = !!chart && <SizeChart onClick={this.goToChart} src={sizeChartSvg} />
+
     const collectionSelection = (
       <BuyNowOptions>
         {gendersSection}
         {!twoPieces && sizeSection}
         {twoPieces && topSizeSection}
         {twoPieces && bottomSizeSection}
+        {sizeChartButton}
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
@@ -680,6 +686,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   handleSelectedGender = (gender: SelectedType) => () => {
     const { setSelectedGenderAction } = this.props
     setSelectedGenderAction(gender)
+  }
+
+  goToChart = () => {
+    const { data } = this.props
+    const chart = get(data, 'design.product.chart', '')
+    window.open(chart)
   }
 
   handleSetLoading = (loading: boolean) => {

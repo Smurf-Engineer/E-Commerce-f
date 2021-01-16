@@ -62,8 +62,10 @@ import {
   WomenIcon,
   layoutStyle,
   CustomizeButton,
-  DealerTitle
+  DealerTitle,
+  SizeChart
 } from './styledComponents'
+import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
 import { APPROVED, MAIN_TITLE } from '../../constants'
@@ -256,6 +258,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       obj,
       id: productId,
       mtl,
+      chart,
       bannerMaterials,
       details: detailsOptions,
       mediaFiles,
@@ -507,11 +510,14 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </ButtonsRow>
     )
 
+    const sizeChartButton = !!chart && <SizeChart onClick={this.goToChart} src={sizeChartSvg} />
+
     const collectionSelection = (
       <BuyNowOptions>
         {gendersSection}
         {colorsSection}
         {sizeSection}
+        {sizeChartButton}
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
@@ -787,6 +793,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   gotoGetFittedPage = () => {
     const { history } = this.props
     history.push('/fit-widget')
+  }
+
+  goToChart = () => {
+    const { data } = this.props
+    const chart = get(data, 'product.chart', '')
+    window.open(chart)
   }
 
   gotoCompare = () => {

@@ -46,6 +46,7 @@ import productForm from '../components/ProductForm/reducer'
 import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
+import designApproval from '../screens/DesignApproval/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
@@ -90,6 +91,7 @@ export interface ReducersObject {
   shoppingCartPage: any
   resellerAbout: any
   storeFront: any
+  designApproval: any
   createStore: any
   designSearchAdmin: any
   roleCatalog: any
@@ -227,6 +229,7 @@ const rootReducer = combineReducers({
   resellerOptions,
   checkout,
   designerTool,
+  designApproval,
   resellerPayouts,
   shoppingCartPage,
   resellerOrders,

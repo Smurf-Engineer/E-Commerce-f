@@ -14,6 +14,7 @@ export const GetProductsByIdQuery = gql`
       sport_id
       mpn
       flatlock
+      chart
       branding
       title
       bibBrace {

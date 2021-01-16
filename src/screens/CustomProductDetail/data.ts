@@ -34,6 +34,7 @@ export const GetDesignByIdQuery = gql`
         yotpoId: yotpo_id
         name
         active
+        chart
         modelSize: model_size
         type: short_description
         onlyProDesign: only_pro_design

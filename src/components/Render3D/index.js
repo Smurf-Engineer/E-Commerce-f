@@ -143,10 +143,12 @@ class Render3D extends PureComponent {
       actualImage = '',
       colorAccessories,
       product: newProduct,
+      modelMtl,
       hidePredyed: newPredyed
     } = nextProps
     const {
       product,
+      modelMtl: oldMtl,
       isProduct,
       designId,
       data: { design: oldDesign = {} } = {},
@@ -156,7 +158,7 @@ class Render3D extends PureComponent {
     } = this.props
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
-    const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories)
+    const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories) || (modelMtl !== oldMtl)
     const productChanged =
       (product && newProduct && product.obj !== newProduct.obj) || (hidePredyed !== newPredyed)
     const productToRender = productChanged ? newProduct : product
@@ -624,7 +626,7 @@ class Render3D extends PureComponent {
     fromImage = false
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
-    const { stitchingValue, asImage, designSearch, hidePredyed } = this.props
+    const { stitchingValue, asImage, designSearch, hidePredyed, modelObj, modelMtl } = this.props
     if (design.canvas && asImage) {
       await this.getFontsFromCanvas(design.canvas)
     }
@@ -635,13 +637,13 @@ class Render3D extends PureComponent {
     )
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
-    mtlLoader.load(product.mtl, (materials) => {
+    mtlLoader.load(modelMtl || product.mtl, (materials) => {
       this.handleOnLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
       objLoader.setMaterials(materials)
       objLoader.load(
-        product.obj,
+        modelObj || product.obj,
         async (object) => {
           const {
             areas = [],
@@ -757,15 +759,15 @@ class Render3D extends PureComponent {
           if (!proDesign && !fromImage && !asImage) {
             areas.forEach(
               (map, index) =>
-                (children[
-                  objectChildCount + index
-                ].material = new THREE.MeshPhongMaterial({
-                  map,
-                  side: THREE.FrontSide,
-                  color: colors[index],
-                  bumpMap,
-                  transparent: true
-                }))
+              (children[
+                objectChildCount + index
+              ].material = new THREE.MeshPhongMaterial({
+                map,
+                side: THREE.FrontSide,
+                color: colors[index],
+                bumpMap,
+                transparent: true
+              }))
             )
             /* Canvas */
             const canvas = document.createElement('canvas')

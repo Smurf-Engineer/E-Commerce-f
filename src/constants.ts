@@ -41,6 +41,15 @@ export const PREDYED_DEFAULT = 'black'
 /* Routes  */
 export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
 
+/* Prodesign Message status */
+export const EDIT = 'edit'
+export const FROM_ADMIN = 'admin'
+
+/* Prodesign Design status */
+export const PREFLIGHT_STATUS = 'preflight'
+export const CUSTOMER_PREVIEW = 'customer_preview'
+export const CUSTOMER_APPROVED = 'approved'
+
 /* Link Types */
 export const LINK_TYPE_ROUTE = 'route'
 export const LINK_TYPE_URL = 'url'

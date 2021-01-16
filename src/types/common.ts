@@ -93,6 +93,66 @@ export type WorkHours = {
   timeZone: string
 }
 
+export type ProDesignItem = {
+  id: number
+  name: string
+  code: string
+  createdAt: string
+  shortId?: string
+  image: string
+  status: string
+  design: Design
+  project: ProDesignProject
+  product: Product
+  messages: ProDesignMessage[]
+}
+
+export type ProDesignProject = {
+  id: number
+  name: string
+  shortId: string
+  teamSize: number
+  status: string
+  totalDesigns: number
+  createdAt: string
+  notes: string
+  inspiration: ProjectInspiration[]
+  palette: ProjectPalette[]
+  files: UserFiles[]
+  updatedAt: string
+  designs: ProDesignItem[]
+  customer: string
+}
+
+export type ProDesignMessage = {
+  id: number
+  createdAt: string
+  type: string
+  message: string
+  file?: string
+  requireAnswer?: boolean
+  answer?: ProDesignMessage
+  parentMessageId?: number
+  userName: string
+}
+
+export type ProjectInspiration = {
+  id: number
+  name: string
+  image?: string
+  tags: string
+}
+
+export type ProjectPalette = {
+  id: number
+  short_id: string
+  name: string
+  primaryColor: string
+  accent1: string
+  accent2: string
+  accent3: string
+}
+
 export interface GenderType {
   id: number
   name?: string
