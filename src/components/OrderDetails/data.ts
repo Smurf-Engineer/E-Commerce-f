@@ -75,6 +75,7 @@ export const getOrderQuery = gql`
           isTopProduct
           weight
           mpn
+          twoPieces: two_pieces
           priceRange {
             quantity
             price
@@ -119,6 +120,12 @@ export const getOrderQuery = gql`
           color {
             name
           }
+          topSize {
+            name
+          }
+          bottomSize {
+            name
+          }
           colorImage
           quantity
         }
@@ -130,9 +137,11 @@ export const getOrderQuery = gql`
         designCode
         teamStoreId
         teamStoreItem
+        isReseller
         teamStoreName
       }
       status
+      owner
       shippingAmount: shipping_amount
       proDesign: pro_design
       discount: discount_amount

@@ -24,7 +24,9 @@ import {
   SELECTED_FONT,
   SELECTED_COLOR,
   SELECTED_SYMBOL,
-  SELECTED_PRODUCT
+  SELECTED_PRODUCT,
+  TABLET_RES,
+  DESKTOP_RES
 } from '../../constants'
 import {
   openQuickViewAction,
@@ -328,6 +330,9 @@ interface Props extends RouteComponentProps<any> {
 
 export class DesignCenter extends React.Component<Props, {}> {
   state = {
+    isPhoneRes: false,
+    isTabletRes: false,
+    isDesktopRes: false,
     openBottomSheet: false
   }
 
@@ -355,6 +360,13 @@ export class DesignCenter extends React.Component<Props, {}> {
       }
       return null
     }
+    if (window && window.screen) {
+      const { width } = window.screen
+      const isPhoneRes = width < TABLET_RES
+      const isTabletRes = width >= TABLET_RES && width <= DESKTOP_RES
+      const isDesktopRes = width > DESKTOP_RES
+      this.setState({ isPhoneRes, isTabletRes, isDesktopRes })
+    }
   }
 
   toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
@@ -375,9 +387,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       saveToCartAction,
       responsive
     } = this.props
+    const {
+      isPhoneRes
+    } = this.state
     saveDesignIdAction(id, svgUrl, design, updateColors)
     if (!goToCart) {
-      const isMobile = !!responsive && responsive.phone
+      const isMobile = (!!responsive && responsive.phone) || isPhoneRes
       if (!isMobile) {
         this.handleOnSelectTab(DesignTabs.PreviewTab)
       }
@@ -647,7 +662,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       dataVariants,
       predyedChanged,
       selectedPredyed: storedPredyed,
-      responsive,
+      responsive: responsiveValues,
       onReApplyImageElementAction,
       onCanvasElementDuplicatedAction,
       setEditConfigAction,
@@ -681,13 +696,19 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = this.props
 
     const { formatMessage } = intl
-    const { openBottomSheet } = this.state
+    const { openBottomSheet, isPhoneRes, isTabletRes, isDesktopRes } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
       PreviewTab: PreviewTabIndex,
       ThemeTab: ThemeTabIndex,
       StyleTab: StyleTabIndex
     } = DesignTabs
+    const { phone, tablet, desktop } = responsiveValues
+    const responsive = {
+      phone: phone || isPhoneRes,
+      tablet: tablet || isTabletRes,
+      desktop: desktop || isDesktopRes
+    }
     const isMobile = !!responsive && responsive.phone
     const redirect = <Redirect to={DEFAULT_ROUTE} />
     /**

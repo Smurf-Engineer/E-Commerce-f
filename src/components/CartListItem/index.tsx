@@ -86,6 +86,16 @@ interface Props {
     detailIndex: number,
     size: ItemDetailType
   ) => void
+  setTopDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+  setBottomDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
   onClickReorder?: () => void
   openFitInfoAction: (open: boolean, selectedIndex: number) => void
 
@@ -253,6 +263,8 @@ export class CartListItem extends React.Component<Props, {}> {
       setDetailGender = () => { },
       setDetailColor = () => { },
       setDetailSize = () => { },
+      setTopDetailSize = () => { },
+      setBottomDetailSize = () => { },
       removeItem = () => { },
       openFitInfoAction = () => { },
       openFitInfo,
@@ -263,6 +275,7 @@ export class CartListItem extends React.Component<Props, {}> {
       designId,
       designName,
       designImage,
+      isReseller = false,
       totalOrder = 0,
       designCode,
       fixedPrices = [],
@@ -323,6 +336,8 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailFit,
           setDetailGender,
           setDetailSize,
+          setTopDetailSize,
+          setBottomDetailSize,
           openFitInfoAction,
           openFitInfo,
           teamStoreName,
@@ -361,18 +376,20 @@ export class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderPrice>
             {`${symbol} ${(total || 0).toFixed(2)}`}
           </ItemDetailsHeaderPrice>
-          <ItemDetailsHeaderPriceDetail highlighted={true}>
-            {formatMessage(
-              !isTeamStore ? messages.unitPrice : messages.teamPrice,
-              { symbol, price: (unitaryPrice || 0).toFixed(2) }
-            )}
-          </ItemDetailsHeaderPriceDetail>
-          <ItemDetailsHeaderPriceDetail>
-            {formatMessage(messages.regularPrice, {
-              symbol,
-              price: personalPrice
-            })}
-          </ItemDetailsHeaderPriceDetail>
+         {!isReseller && <>
+            <ItemDetailsHeaderPriceDetail highlighted={true}>
+              {formatMessage(
+                !isTeamStore ? messages.unitPrice : messages.teamPrice,
+                { symbol, price: (Number(unitaryPrice) || 0).toFixed(2) }
+              )}
+            </ItemDetailsHeaderPriceDetail>
+            <ItemDetailsHeaderPriceDetail>
+              {formatMessage(messages.regularPrice, {
+                symbol,
+                price: personalPrice
+              })}
+            </ItemDetailsHeaderPriceDetail> </>
+          }
           <HeaderPriceDetailEmpty />
         </PriceContainer>
       </ItemDetailsHeader>

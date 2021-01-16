@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
 import { GRAY_DARK, BLUE } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
+import Popover from 'antd/lib/popover'
 
 export const Container = styled.div``
 
@@ -21,6 +22,24 @@ export const Table = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin-bottom: 0;
+  }
+`
+
+export const InfoIcon = styled(Icon)`
+`
+
+export const PopoverStyled = styled(Popover)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  max-width: 382px;
+  width: 100%;
+  span {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
   }
 `
 
@@ -74,8 +93,9 @@ interface TitleProps {
 }
 
 export const Title = styled.div`
-  width: 58px;
-  color: #5f6062;
+  max-width: 58px;
+  width: 100%;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -84,10 +104,11 @@ export const Title = styled.div`
 `
 
 export const Price = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 43px;
+  text-transform: uppercase;
   width: 58px;
   text-align: ${({ align }: TitleProps) => (align ? align : 'center')};
 `
@@ -134,23 +155,27 @@ export const Center = styled.div`
 `
 
 export const Name = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
   margin-right: 20px;
+  overflow-wrap: anywhere;
+  @media (max-width: 480px) {
+    margin-right: 4px;
+  }
 `
 
 export const Description = styled.div`
-  color: #5f6062;
-  width: 40%;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
-
+  margin: 0 12px;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
+    margin: 0;
   }
 `
 export const MobileEmtpytable = styled.div`

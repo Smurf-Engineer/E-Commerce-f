@@ -26,6 +26,7 @@ export const getSingleTeamStore = gql`
       banner
       private
       bulletin
+      isResellerStore
       owner
       featured
       owner_name
@@ -57,6 +58,12 @@ export const getSingleTeamStore = gql`
           quantity
           abbreviation
         }
+        resellerRange {
+          price
+          shortName: short_name
+          quantity
+          abbreviation
+        }
         design {
           id
           code
@@ -76,6 +83,7 @@ export const getSingleTeamStore = gql`
             collections
             isTopProduct
             weight
+            twoPieces: two_pieces
             genders {
               id
               name: gender
@@ -106,6 +114,25 @@ export const getSingleTeamStore = gql`
       }
       totalItems
       totalDesigns
+    }
+  }
+`
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        firstName: first_name
+        lastName: last_name
+        email
+        phone
+      }
+      reseller {
+        status
+        currency
+        comission: margin
+        paypalAccount: paypal_account
+      }
     }
   }
 `

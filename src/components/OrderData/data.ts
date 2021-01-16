@@ -48,6 +48,7 @@ export const getOrderQuery = gql`
           mpn
           name
           shortDescription: short_description
+          twoPieces: two_pieces
           images: pictures {
             front: front_image
           }
@@ -70,6 +71,12 @@ export const getOrderQuery = gql`
           fit {
             name
           }
+          topSize {
+            name
+          }
+          bottomSize {
+            name
+          }
           colorImage
         }
         designId
@@ -77,6 +84,7 @@ export const getOrderQuery = gql`
         designImage
         designCode
         unitPrice
+        isReseller
         teamStoreName
         productTotal
         teamStoreId

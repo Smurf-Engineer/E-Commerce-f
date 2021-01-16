@@ -113,6 +113,7 @@ export const getDesignQuery = gql`
         bumpMap: bump_map
         flatlock
         mpn
+        twoPieces: two_pieces
         binding {
           white
           black

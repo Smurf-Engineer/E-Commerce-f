@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'components.affiliateOptions.currency',
     defaultMessage: 'Payout Currency'
   },
+  warningPaypal: {
+    id: 'components.affiliateOptions.warningPaypal',
+    defaultMessage: 'You need to connect a PayPal account in order to receive Payouts'
+  },
   region: {
     id: 'components.affiliateOptions.region',
     defaultMessage: 'Region'

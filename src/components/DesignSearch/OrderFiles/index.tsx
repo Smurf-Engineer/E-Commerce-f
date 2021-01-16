@@ -66,14 +66,14 @@ import {
   StitchingColor,
   DesignNote,
   RolePermission,
-  User
+  User, PredyedColor
 } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
 import ProassistNotes from '../../ProassistNotes'
-import { DATE_FORMAT } from '../../../constants'
+import { DATE_FORMAT, PREDYED_DEFAULT, PREDYED_TRANSPARENT } from '../../../constants'
 
 const Option = Select.Option
 const Confirm = Modal.confirm
@@ -95,6 +95,7 @@ interface Props {
   accessAssets: RolePermission
   salesRepUsers: User[]
   managersUsers: User[]
+  predyedColors: PredyedColor[]
   history: History
   changeManager: (
     value: string,
@@ -117,6 +118,7 @@ interface Props {
   formatMessage: (messageDescriptor: any, params?: any) => string
   onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
+  onSelectPredyed: (predyedValue: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectColor: (color: string, id: string) => void
   onGeneratePdf: () => void
@@ -131,6 +133,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         svgUrl = '',
         assets,
         stitchingName,
+        predyedName,
         stitchingValue,
         salesRep,
         legacyNumber,
@@ -149,7 +152,7 @@ export class OrderFiles extends React.PureComponent<Props> {
         name,
         notes = [],
         pngUrl = '',
-        product: { name: modelName, zipper },
+        product: { name: modelName, zipper, hasPredyed },
         colors = []
       },
       uploadingFile,
@@ -171,6 +174,8 @@ export class OrderFiles extends React.PureComponent<Props> {
       uploadingThumbnail,
       setUploadingThumbnailAction,
       changes,
+      predyedColors = [],
+      onSelectPredyed,
       onSelectStitchingColor,
       colorAccessories,
       onSelectColor,
@@ -188,6 +193,10 @@ export class OrderFiles extends React.PureComponent<Props> {
     } catch (e) {
       console.error(e)
     }
+    const predyedValue = colorAccessories.predyed || predyedName || PREDYED_DEFAULT
+    const hidePredyed = predyedValue === PREDYED_TRANSPARENT
+    const predyedItem = predyedColors.find(({ name: colorName }) => colorName === predyedValue)
+    const predyedCode = predyedItem ? predyedItem.code : predyedValue
     const statusOrder = status.replace(/_/g, ' ')
     const selectedRep = salesRep
       ? `${salesRep.firstName} ${salesRep.lastName}`
@@ -357,6 +366,11 @@ export class OrderFiles extends React.PureComponent<Props> {
                   bindingColor,
                   onSelectStitchingColor,
                   onSelectColor,
+                  hasPredyed,
+                  onSelectPredyed,
+                  predyedValue,
+                  predyedColors,
+                  predyedCode,
                   allowZipperSelection
                 }}
                 stitchingValue={colorAccessories.stitching || stitchingValue}
@@ -377,7 +391,7 @@ export class OrderFiles extends React.PureComponent<Props> {
                 onUploadingThumbnail={setUploadingThumbnailAction}
                 colorAccessories={colorAccessories}
                 ref={(render3D: any) => (this.render3D = render3D)}
-                {...{ stitchingValue }}
+                {...{ stitchingValue, hidePredyed }}
               />
             </RenderContainer>
           </RenderLayout>

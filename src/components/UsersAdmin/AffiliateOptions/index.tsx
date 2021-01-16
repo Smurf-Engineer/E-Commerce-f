@@ -20,16 +20,22 @@ import {
   InfoIcon,
   PopoverText,
   MessageText,
+  PaypalLogo,
+  WarningLabel,
+  WarningIcon,
 } from './styledComponents'
 
 import PaymentsList from './PaymentsList'
-import { PENDING, APPROVED, REJECTED, RETRY, DATE_FORMAT } from '../../../constants'
+import { PENDING, APPROVED, REJECTED, RETRY, DATE_FORMAT, PAUSED } from '../../../constants'
 import moment from 'moment'
 import { getFileWithExtension } from '../../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import paypalLogo from '../../../assets/paypal_logo.png'
 import Popover from 'antd/lib/popover'
 
 const DECIMAL_REGEX = /[^0-9.]|\.(?=.*\.)/g
+
+const MAX_COMISSION = 15
 
 interface Props {
   status: string
@@ -55,8 +61,8 @@ interface Props {
 class AffiliateOptions extends React.Component<Props, {}> {
   debounceComission = debounce((value) => this.handleChangeComission(value), 800)
   enableStatus = () => {
-    const { enableAffiliate } = this.props
-    enableAffiliate(APPROVED)
+    const { enableAffiliate, status } = this.props
+    enableAffiliate(status === APPROVED ? PAUSED : APPROVED)
   }
   rejectStatus = () => {
     const { enableAffiliate } = this.props
@@ -74,9 +80,11 @@ class AffiliateOptions extends React.Component<Props, {}> {
     const { openAffiliate } = this.props
     openAffiliate(true)
   }
-  handleChangeComission = (value: number | undefined) => {
-    const { changeComission } = this.props
-    changeComission(value || 0)
+  handleChangeComission = (value = 0) => {
+    const { changeComission, comission } = this.props
+    if (value <= MAX_COMISSION && value > 0 && comission !== value) {
+      changeComission(value)
+    }
   }
   render() {
     const {
@@ -96,8 +104,8 @@ class AffiliateOptions extends React.Component<Props, {}> {
       region,
       currency
     } = this.props
-    const hasChanged = status !== PENDING || !status
-    const isActive = status === APPROVED
+    const hasChanged = status === REJECTED || status === RETRY || !status
+    const isActive = status === APPROVED || status === PAUSED
     const fileName = file ? getFileWithExtension(file) : ''
     return (
       <Container>
@@ -121,7 +129,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
               {isAdmin ?
                 <StyledSwitch
                   disabled={hasChanged}
-                  checked={isActive}
+                  checked={status === APPROVED}
                   onChange={this.enableStatus}
                 /> :
                 <BoldLabel>
@@ -175,7 +183,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
                   onChange={this.debounceComission}
                   value={comission}
                   min={0}
-                  max={100}
+                  max={MAX_COMISSION}
                   formatter={rawValue => `${rawValue}%`}
                   parser={value => value.replace(DECIMAL_REGEX, '')}
                 />
@@ -208,6 +216,7 @@ class AffiliateOptions extends React.Component<Props, {}> {
               </BoldLabel>
             </LabelButton>
             {isActive && <LabelButton>
+              {!isAdmin && <PaypalLogo src={paypalLogo} />}
               <Title>
                 {formatMessage(messages.paypalAccount)}
                 {!isAdmin &&
@@ -217,7 +226,13 @@ class AffiliateOptions extends React.Component<Props, {}> {
                 }
               </Title>
               <BoldLabel>
-                {paypalAccount}
+                {paypalAccount ||
+                  !isAdmin && 
+                    <WarningLabel>
+                      <WarningIcon theme="filled" type="warning" />
+                      {formatMessage(messages.warningPaypal)}
+                    </WarningLabel>
+                }
               </BoldLabel>
             </LabelButton>
             }

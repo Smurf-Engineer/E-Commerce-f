@@ -354,7 +354,7 @@ class Checkout extends React.Component<Props, {}> {
     const { cart } = stateLocation
     const reorder = some(cart, 'fixedCart')
     const isFixedTeamstore = some(cart, 'isFixed')
-
+    const showDiscount = some(cart, ['isReseller', false])
     const preorder = isFixedTeamstore && !reorder
 
     const shoppingCart = cloneDeep(cart) as CartItems[]
@@ -524,6 +524,7 @@ class Checkout extends React.Component<Props, {}> {
                 {...{
                   showOrderButton,
                   couponCode,
+                  showDiscount,
                   setCouponCodeAction,
                   deleteCouponCodeAction,
                   proDesignReview,
@@ -1091,7 +1092,7 @@ class Checkout extends React.Component<Props, {}> {
           item.product = productItem
           item.teamStoreId = teamStoreId
           item.itemDetails = itemDetails.map(
-            ({ gender, quantity, size, fit, color }: CartItemDetail) => {
+            ({ gender, quantity, size, fit, color, topSize, bottomSize }: CartItemDetail) => {
               const fitId = get(fit, 'id', 0)
               const fitName = get(fit, 'name', '')
               const fitObj: ItemDetailType = {
@@ -1102,7 +1103,10 @@ class Checkout extends React.Component<Props, {}> {
               unset(quantity, '__typename')
               unset(size, '__typename')
               unset(color, '__typename')
-              return { gender, quantity, size, fit: fitObj, color }
+              unset(topSize, '__typename')
+              unset(bottomSize, '__typename')
+
+              return { gender, quantity, size, fit: fitObj, color, topSize, bottomSize }
             }
           )
 

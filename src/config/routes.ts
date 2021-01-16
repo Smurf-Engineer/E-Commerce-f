@@ -8,6 +8,7 @@ import JerseyComparison from '../screens/JerseyComparison'
 import WarrantyProgram from '../screens/WarrantyProgram'
 import Technology from '../screens/Technology'
 import ArtworkSpecs from '../screens/ArtworkSpecs'
+import ResellerSignup from '../screens/ResellerSignup'
 import TeamKits from '../screens/TeamKits'
 import TermsOfUse from '../screens/TermsOfUse'
 import Faq from '../screens/Faq'
@@ -121,6 +122,11 @@ const routes = [
     path: '/artwork-specs',
     name: 'artworkSpecs',
     component: ArtworkSpecs
+  },
+  {
+    path: '/reseller-signup',
+    name: 'resellerSignup',
+    component: ResellerSignup
   },
   {
     path: '/team-kits',

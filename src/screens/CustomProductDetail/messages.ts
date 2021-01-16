@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.regularPrice',
     defaultMessage: 'Regular Price'
   },
+  purchasePrice: {
+    id: 'screens.CustomProductDetail.purchasePrice',
+    defaultMessage: 'Purchase Price'
+  },
+  listPrice: {
+    id: 'screens.CustomProductDetail.listPrice',
+    defaultMessage: 'List Price'
+  },
   maleGenderLabel: {
     id: 'screens.CustomProductDetail.maleGenderLabel',
     defaultMessage: 'Available for Men'
@@ -56,6 +64,14 @@ export default defineMessages({
   size: {
     id: 'screens.CustomProductDetail.size',
     defaultMessage: 'Size'
+  },
+  topSize: {
+    id: 'screens.CustomProductDetail.topSize',
+    defaultMessage: 'Top Size'
+  },
+  bottomSize: {
+    id: 'screens.CustomProductDetail.bottomSize',
+    defaultMessage: 'Bottom Size'
   },
   fit: {
     id: 'screens.CustomProductDetail.fit',

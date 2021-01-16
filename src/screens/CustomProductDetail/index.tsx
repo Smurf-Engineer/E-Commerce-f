@@ -13,7 +13,7 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
-import { GetDesignByIdQuery } from './data'
+import { GetDesignByIdQuery, profileSettingsQuery } from './data'
 import {
   Container,
   Content,
@@ -61,7 +61,7 @@ import {
   ProductFile,
   PriceRange,
   UserType,
-  BreadRoute
+  BreadRoute, IProfileSettings
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
@@ -79,13 +79,21 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
+import { APPROVED } from '../../constants'
+import { getRangeLabel } from '../../utils/utilsShoppingCart'
 
 const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
+const purchaseLabels = ['regularPrice', 'listPrice']
+const resellerLabels = ['purchasePrice', 'listPrice']
 const { Men, Women, Unisex } = ProductGenders
 
 interface Data extends QueryProps {
   design: DesignType
+}
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -101,6 +109,9 @@ interface Props extends RouteComponentProps<any> {
   showFitsModal: boolean
   phone: boolean
   loading: boolean
+  profileData: ProfileData
+  selectedTopSize: SelectedType
+  selectedBottomSize: SelectedType
   setLoadingAction: (loading: boolean) => void
   setFitsModal: (showFits: boolean) => void
   setLoadingModel: (loading: boolean) => void
@@ -112,6 +123,8 @@ interface Props extends RouteComponentProps<any> {
   setShowDetailsAction: (show: boolean) => void
   setShowSpecsAction: (show: boolean) => void
   resetDataAction: () => void
+  setSelectedTopSizeAction: (selected: SelectedType) => void
+  setSelectedBottomSizeAction: (selected: SelectedType) => void
 }
 
 export class CustomProductDetail extends React.Component<Props, {}> {
@@ -136,22 +149,34 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedFit,
       openFitInfo,
       setLoadingModel,
+      profileData,
       showDetails,
       currentCurrency,
       showFitsModal,
       loading,
-      phone
+      phone,
+      selectedTopSize,
+      selectedBottomSize
     } = this.props
     const { formatMessage } = intl
 
     const queryParams = queryString.parse(search)
-
+    const { comission = 0, margin = 0, status: resellerStatus } = get(profileData, 'profileData.reseller', {})
     const ownedDesign = get(design, 'canEdit', false)
-    const product = get(design, 'product', null)
-    const shared = get(design, 'shared', false)
-    const productPriceRange = get(product, 'priceRange', null)
-    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
+    let product = get(design, 'product', null)
     const teamStoreItem = queryParams.item
+    const comissionToApply = teamStoreItem ? margin : comission
+    if (resellerStatus === APPROVED && ownedDesign) {
+      const originalPriceRange = get(product, 'priceRange', [])
+      const purchasePrices = originalPriceRange.map((priceItem) => {
+        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+        return { ...priceItem, price }
+      })
+      product = { ...product, priceRange: purchasePrices }
+    }
+    const productPriceRange = get(product, 'priceRange', [])
+    const shared = get(design, 'shared', false)
+    const proDesignAssigned = get(design, 'png', '') && !get(design, 'svg', '')
 
     if (loading || dataLoading) {
       return (
@@ -181,9 +206,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
-    const teamPrice = get(design, 'teamPrice', '')
+    const totalOrders = get(design, 'totalOrders', 0)
+    const fixedPrices = get(design, 'teamPrice', [])
+    const resellerPrice = get(design, 'resellerPrice', [])
     const teamEnable = get(design, 'teamEnable', '')
     const teamOnDemand = get(design, 'teamOnDemand', false)
+    const isReseller = get(design, 'isReseller', false)
     const teamName = get(design, 'teamName', '')
     const proDesign = get(design, 'proDesign', false)
     const {
@@ -204,11 +232,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       modelSize,
       id: productId,
       bannerMaterials,
-      relatedItemTag
+      relatedItemTag,
+      twoPieces
     } = product
     const totalReviews = get(yotpoAverageScore, 'total', 0)
     const rating = get(yotpoAverageScore, 'averageScore', 0)
     const genderId = selectedGender ? selectedGender.id : 0
+    const rangeLabel = totalOrders > 5 && !teamOnDemand ? getRangeLabel(totalOrders) : '2-5' 
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/, ' ') : ''
     let images = null
@@ -219,14 +249,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ genderId: imageGender }) => imageGender !== images.genderId
       )
     }
-
-    const hasFixedPrices = teamPrice && teamPrice.length
+    const teamPrice = isReseller ? resellerPrice : fixedPrices
+    const hasFixedPrices = teamPrice && teamPrice.length && !isReseller
     let priceRange: PriceRange[] = []
     if (teamStoreItem) {
       const regularPrices = filter(
         productPriceRange,
         ({ quantity }) =>
-          quantity === 'Personal' || (quantity === '2-5' && !hasFixedPrices)
+          (quantity === 'Personal' && !isReseller) || (quantity === rangeLabel && !hasFixedPrices)
       )
       priceRange = [...regularPrices, ...teamPrice]
     } else {
@@ -238,21 +268,24 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       filter(priceRange, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
-
+    let priceLabels = teamStoreLabels
+    if (isReseller) {
+      priceLabels = ownedDesign ? resellerLabels : purchaseLabels
+    }
     const symbol = currencyPrices.length ? currencyPrices[0].shortName : ''
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
       currencyPrices.map(
         ({ price, quantity }, index: number) =>
-          index < MAX_AMOUNT_PRICES && (
+          index < MAX_AMOUNT_PRICES && (!(isReseller && !ownedDesign && index === 0) || !isReseller) && (
             <AvailablePrices key={index}>
               <PriceQuantity
                 {...{ index, price, symbol, teamStoreItem }}
                 priceColor={index > 0 && teamStoreItem ? BLUE : GRAY_DARK}
                 quantity={
                   teamStoreItem
-                    ? formatMessage(messages[teamStoreLabels[index]])
+                    ? formatMessage(messages[priceLabels[index]])
                     : quantity
                 }
               />
@@ -288,12 +321,47 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     )
 
     const availableSizes =
+      !twoPieces &&
       sizeRange &&
       sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
             selected={id === selectedSize.id}
             onClick={this.handleSelectedSize({
+              id: Number(id),
+              name: String(sizeName)
+            })}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      ))
+
+    const availableTopSizes =
+      twoPieces &&
+      sizeRange &&
+      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
+        <div {...{ key }}>
+          <SectionButton
+            selected={id === selectedTopSize.id}
+            onClick={this.handleSelectedTopSize({
+              id: Number(id),
+              name: String(sizeName)
+            })}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      ))
+
+    const availableBottomSizes =
+      twoPieces &&
+      sizeRange &&
+      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
+        <div {...{ key }}>
+          <SectionButton
+            selected={id === selectedBottomSize.id}
+            onClick={this.handleSelectedBottomSize({
               id: Number(id),
               name: String(sizeName)
             })}
@@ -335,7 +403,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
-    const sizeSection = (
+    const sizeSection = !twoPieces && (
       <SectionRow>
         <SizeRowTitleRow>
           <SectionTitleContainer>
@@ -344,6 +412,30 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           </SectionTitleContainer>
         </SizeRowTitleRow>
         <SectionButtonsContainer>{availableSizes}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
+    const topSizeSection = twoPieces && (
+      <SectionRow>
+        <SizeRowTitleRow>
+          <SectionTitleContainer>
+            <SectionTitle>{formatMessage(messages.topSize)}</SectionTitle>
+            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+          </SectionTitleContainer>
+        </SizeRowTitleRow>
+        <SectionButtonsContainer>{availableTopSizes}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
+    const bottomSizeSection = twoPieces && (
+      <SectionRow>
+        <SizeRowTitleRow>
+          <SectionTitleContainer>
+            <SectionTitle>{formatMessage(messages.bottomSize)}</SectionTitle>
+            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+          </SectionTitleContainer>
+        </SizeRowTitleRow>
+        <SectionButtonsContainer>{availableBottomSizes}</SectionButtonsContainer>
       </SectionRow>
     )
 
@@ -364,6 +456,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         fit: selectedFit,
         size: selectedSize,
         gender: selectedGender,
+        topSize: selectedTopSize,
+        bottomSize: selectedBottomSize,
         quantity: 1
       }
       itemDetails.push(detail)
@@ -379,9 +473,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             item={itemToAdd}
             itemProdPage={true}
             withoutTop={true}
+            promptReseller={isReseller && ownedDesign}
             isFixed={teamStoreItem && !teamOnDemand}
             teamStoreId={teamStoreShortId}
-            fixedPrices={teamPrice}
+            isReseller={isReseller && !ownedDesign}
+            fixedPrices={isReseller && ownedDesign ? [] : teamPrice}
             {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
             teamStoreName={teamName}
           />
@@ -392,7 +488,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const collectionSelection = (
       <BuyNowOptions>
         {gendersSection}
-        {sizeSection}
+        {!twoPieces && sizeSection}
+        {twoPieces && topSizeSection}
+        {twoPieces && bottomSizeSection}
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
@@ -549,6 +647,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               formatMessage,
               currentCurrency
             }}
+            hideFeatured={true}
           />
         </Container>
       </Layout>
@@ -566,6 +665,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   handleSelectedSize = (size: SelectedType) => () => {
     const { setSelectedSizeAction } = this.props
     setSelectedSizeAction(size)
+  }
+
+  handleSelectedTopSize = (size: SelectedType) => () => {
+    const { setSelectedTopSizeAction } = this.props
+    setSelectedTopSizeAction(size)
+  }
+
+  handleSelectedBottomSize = (size: SelectedType) => () => {
+    const { setSelectedBottomSizeAction } = this.props
+    setSelectedBottomSizeAction(size)
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
@@ -598,18 +707,24 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedSize,
       selectedGender,
       selectedFit,
+      selectedTopSize,
+      selectedBottomSize,
       data: { design }
     } = this.props
     const fitStyles = get(design.product, 'fitStyles', []) as SelectedType[]
+    const twoPieces = get(design.product, 'twoPieces', false)
     if (fitStyles.length && fitStyles[0].id) {
       return (
-        selectedSize.id >= 0 &&
+        ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
+          selectedBottomSize.id > 0)) &&
         selectedFit &&
         selectedFit.id &&
         selectedGender.id
       )
     }
-    return selectedSize.id >= 0 && selectedGender.id
+
+    return ((!twoPieces && selectedSize.id >= 0) || (twoPieces && selectedTopSize.id > 0 &&
+      selectedBottomSize.id > 0)) && selectedGender.id
   }
 
   toggleProductInfo = (id: string) => {
@@ -642,6 +757,13 @@ type OwnProps = {
 const CustomProductDetailEnhance = compose(
   injectIntl,
   connect(mapStateToProps, { ...customProductDetailActions }),
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {

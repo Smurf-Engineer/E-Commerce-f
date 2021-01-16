@@ -333,20 +333,17 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
 
     controls.enableKeys = false
-    controls.enableZoom = false
+    controls.enableZoom = isMobile
     controls.minDistance = CAMERA_MIN_ZOOM
     controls.maxDistance = CAMERA_MAX_ZOOM
     // controls.enableZoom = isMobile TODO: Pan zoom
-
+    const { down, up, move, wheel } = this.configureEventListeners()
     if (!isMobile) {
-      const { down, up, move, wheel } = this.configureEventListeners()
       this.container.addEventListener(down, this.onMouseDown, false)
-      this.container.addEventListener(down, this.onMouseDown, false)
-      this.container.addEventListener(wheel, this.onWheel, false)
       this.container.addEventListener(up, this.onMouseUp, false)
       this.container.addEventListener(move, this.onMouseMove, false)
+      this.container.addEventListener(wheel, this.onWheel, false)
     }
-
     this.controls = controls
     this.start()
   }
@@ -360,10 +357,11 @@ class Render3D extends PureComponent {
     if (this.renderer) {
       this.stop()
       if (!isMobile) {
-        const { down, up, move } = this.configureEventListeners()
+        const { down, up, move, wheel } = this.configureEventListeners()
         this.container.removeEventListener(down, this.onMouseDown, false)
         this.container.removeEventListener(up, this.onMouseUp, false)
         this.container.removeEventListener(move, this.onMouseMove, false)
+        this.container.removeEventListener(wheel, this.onWheel, false)
       }
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
@@ -1651,7 +1649,9 @@ class Render3D extends PureComponent {
     const el = this.getElementById(id)
     const opacity = hover ? 0.5 : 1
     const backgroundColor = hover ? RED_TRANSPARENT : null
-    el.set({ opacity, backgroundColor })
+    if (el) {
+      el.set({ opacity, backgroundColor })
+    }
     this.canvasTexture.renderAll()
   }
 
@@ -2005,7 +2005,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyGroup = (file = {}, position = {}, idElement, rotation) => {
+  applyGroup = (file = {}, position = {}, idElement, rotation, isImage = false) => {
     const { scaleFactorX, scaleFactorY } = this.state
     const { fileUrl: src, size: imageSize, id: fileId, type } = file
     fabric.loadSVGFromURL(src, (objects, options) => {
@@ -2016,6 +2016,7 @@ class Render3D extends PureComponent {
         fileId,
         fileUrl: src,
         isImageGroup: true,
+        isImage,
         hasRotatingPoint: false,
         ...position
       }
@@ -2033,7 +2034,7 @@ class Render3D extends PureComponent {
       shape.setCoords()
       this.canvasTexture.add(shape)
 
-      const el = { id, imageSize, type, fileId, src, scaleX, scaleY }
+      const el = { id, imageSize, type, fileId, src, scaleX, scaleY, isImage }
       position.scaleX = scaleX
       position.scaleY = scaleY
       if (!idElement) {
@@ -2056,6 +2057,7 @@ class Render3D extends PureComponent {
   deleteElement = (el) => {
     const { canvas } = this.props
     const type = el.get('type')
+    const isImage = el.get('isImage')
     const { id, left, top, scaleX, scaleY, isClipArtGroup, angle } = el
     let rotation = null
     if (angle > 0) {
@@ -2139,8 +2141,12 @@ class Render3D extends PureComponent {
         }
         break
     }
+    let typeRemove = isImage ? CanvasElements.Image : type
+    if (type === CanvasElements.Group && !isImage) {
+      typeRemove = CanvasElements.Path
+    }
     const { onRemoveEl } = this.props
-    onRemoveEl(id, type, canvasObject)
+    onRemoveEl(id, typeRemove, canvasObject)
     this.canvasTexture.remove(el)
   }
 
@@ -2179,7 +2185,7 @@ class Render3D extends PureComponent {
     const { onCanvasElementDuplicated } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const { type, fileId, fileUrl, src, isClipArtGroup } = el
+    const { type, fileId, fileUrl, src, isClipArtGroup, isImage } = el
     let elementType = type
     if (type === CanvasElements.Group) {
       elementType = !isClipArtGroup ? CanvasElements.Image : CanvasElements.Path
@@ -2195,6 +2201,7 @@ class Render3D extends PureComponent {
         top: boundingBox.top + EXTRA_POSITION,
         stroke: el.stroke,
         fileId,
+        isImage,
         fileUrl,
         src,
         isClipArtGroup
@@ -2420,7 +2427,7 @@ class Render3D extends PureComponent {
               this.applyImage(el.file, { left, top })
               break
             case CanvasElements.Group:
-              this.applyGroup(el.file, { left, top })
+              this.applyGroup(el.file, { left, top }, null, null, el.isImage)
               break
             case CanvasElements.Polygon:
             case CanvasElements.Path:
@@ -2516,7 +2523,8 @@ class Render3D extends PureComponent {
           const isInside = isMouseOver(boundingBox, uv, CANVAS_SIZE)
           if (isInside) {
             allDeactive = false
-            onSelectEl(el.id, el.get('type'))
+            const typeEl = el.get('isImage') ? CanvasElements.Image : el.get('type')
+            onSelectEl(el.id, typeEl)
             const left = uv.x * CANVAS_SIZE
             const top = (1 - uv.y) * CANVAS_SIZE
             const differenceX = left - el.left

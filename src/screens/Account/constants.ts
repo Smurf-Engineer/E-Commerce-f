@@ -8,7 +8,13 @@ export const ORDER_HISTORY = 'orderHistory'
 export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
+export const PROFILE_MENU = 'profileMenu'
 export const TEAMSTORES = 'myTeamStores'
+export const MY_STORES = 'myStores'
+export const RESELLER = 'reseller'
+export const RESELLER_ABOUT = 'resellerAbout'
+export const RESELLER_PAYOUTS = 'resellerPayouts'
+export const RESELLER_ORDERS = 'resellerOrders'
 export const AFFILIATES = 'affiliate'
 export const AFFILIATES_ABOUT = 'affiliateAbout'
 export const AFFILIATES_ORDERS = 'affiliateOrders'
@@ -19,6 +25,38 @@ export const SCREEN_LOCKER = 'myLocker'
 
 // USE UNIQUE KEYS
 export const options = [
+  {
+    title: OVERVIEW,
+    options: []
+  },
+  {
+    title: ORDER_HISTORY,
+    options: []
+  },
+  {
+    title: PROFILE_MENU,
+    options: [PROFILE_SETTINGS, ADDRESSES, CREDIT_CARDS]
+  },
+  // TODO: hide teamstores for phase I
+  {
+    title: TEAMSTORES,
+    options: []
+  },
+  {
+    title: RESELLER,
+    options: [RESELLER_ABOUT, RESELLER_ORDERS, RESELLER_PAYOUTS]
+  },
+  {
+    title: AFFILIATES,
+    options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
+  },
+  {
+    title: CREATIONS,
+    options: [SCREEN_LOCKER, MY_FILES]
+  }
+]
+
+export const resellerOptions = [
   {
     title: OVERVIEW,
     options: []
@@ -39,18 +77,32 @@ export const options = [
     title: PROFILE_SETTINGS,
     options: []
   },
-  // TODO: hide teamstores for phase I
   {
-    title: TEAMSTORES,
-    options: []
-  },
-  {
-    title: AFFILIATES,
-    options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
+    title: RESELLER,
+    options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
     title: CREATIONS,
     options: [SCREEN_LOCKER, MY_FILES]
+  }
+]
+
+export const resellerShortOptions = [
+  {
+    title: ADDRESSES,
+    options: []
+  },
+  {
+    title: CREDIT_CARDS,
+    options: []
+  },
+  {
+    title: PROFILE_SETTINGS,
+    options: []
+  },
+  {
+    title: RESELLER,
+    options: [RESELLER_ABOUT]
   }
 ]
 

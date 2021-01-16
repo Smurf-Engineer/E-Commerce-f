@@ -23,7 +23,9 @@ import {
   OPEN_FITINFO,
   OPEN_STORE_INFO,
   SET_STORE_TERMS,
-  HIGHLIGHT_FIELDS
+  HIGHLIGHT_FIELDS,
+  SET_TOP_SIZE_ITEM_DETAIL_ACTION,
+  SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -106,6 +108,22 @@ const shoppingCartPageReducer: Reducer<any> = (
         ['cart', action.index, 'itemDetails', action.detailIndex],
         (detailItem: any) => {
           const updateItem = detailItem.set('size', action.size)
+          return updateItem
+        }
+      )
+    case SET_TOP_SIZE_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('topSize', action.size)
+          return updateItem
+        }
+      )
+    case SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('bottomSize', action.size)
           return updateItem
         }
       )

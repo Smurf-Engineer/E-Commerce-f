@@ -9,8 +9,11 @@ export const profileSettingsQuery = gql`
         firstName: first_name
         lastName: last_name
         email
+        taxExempt: tax_exempt
+        taxItem: tax_item
         netsuiteInternal: netsuite_internal
         affiliateEnabled: affiliate_enabled
+        resellerEnabled: reseller_enabled
         phone
       }
       stats {
@@ -19,6 +22,20 @@ export const profileSettingsQuery = gql`
           total
           currency
         }
+      }
+      reseller {
+        status
+        file
+        paypalAccount: paypal_account
+        comission
+        margin
+        inline
+        gst
+        region
+        businessName: business_name
+        stateProvince: state_province
+        currency
+        activatedAt: activated_at
       }
       affiliate {
         status
@@ -114,10 +131,115 @@ export const setAffiliateStatusMutation = gql`
   }
 `
 
+export const setTaxEnabledMutation = gql`
+  mutation setTaxExempt($userId: String!, $enabled: Boolean) {
+    userData: setTaxExempt(userId: $userId ,enabled: $enabled) {
+      enabled: tax_exempt
+    }
+  }
+`
+
+export const setTaxItemMutation = gql`
+  mutation setTaxItem($userId: String!, $value: String) {
+    userData: setTaxItem(userId: $userId ,value: $value) {
+      taxItem: tax_item
+    }
+  }
+`
+
+export const setResellerEnabledMutation = gql`
+  mutation enableReseller($userId: String!, $enabled: Boolean) {
+    resellerData: enableReseller(userId: $userId ,enabled: $enabled) {
+      enabled: reseller_enabled
+    }
+  }
+`
+
 export const changeNetsuiteInternal = gql`
   mutation setNetsuiteId($userId: String!, $netsuiteId: String) {
     profile: setNetsuiteId(userId: $userId, netsuiteId: $netsuiteId) {
       netsuiteInternal: netsuite_internal
+    }
+  }
+`
+
+export const changeResellerComissionMutation = gql`
+  mutation changeResellerComission($value: Float, $userId: String!) {
+    changeResellerComission(value: $value, userId: $userId) {
+      status
+      comission
+    }
+  }
+`
+
+export const changeGstMutation = gql`
+  mutation changeGst($value: String, $userId: String!) {
+    changeGst(value: $value, userId: $userId) {
+      gst
+    }
+  }
+`
+
+export const changeResellerMarginMutation = gql`
+  mutation changeResellerMargin($value: Float, $userId: String!) {
+    changeResellerMargin(value: $value, userId: $userId) {
+      status
+      margin
+    }
+  }
+`
+
+export const changeResellerInlineMutation = gql`
+  mutation changeResellerInline($value: Float, $userId: String!) {
+    changeResellerInline(value: $value, userId: $userId) {
+      status
+      inline
+    }
+  }
+`
+
+export const setResellerStatusMutation = gql`
+  mutation changeResellerStatus($status: String!, $userId: String!) {
+    changeResellerStatus(status: $status, userId: $userId) {
+      status
+      file
+      paypalAccount: paypal_account
+      comission
+      margin
+      inline
+      gst
+      region
+      businessName: business_name
+      stateProvince: state_province
+      currency
+      activatedAt: activated_at
+    }
+  }
+`
+
+export const changeCurrencyMutation = gql`
+  mutation changeCurrencyReseller($currency: String!, $userId: String!) {
+    changeCurrencyReseller(currency: $currency, userId: $userId) {
+      status
+      currency
+    }
+  }
+`
+
+export const changeRegionMutation = gql`
+  mutation changeRegionReseller($region: String!, $userId: String!) {
+    changeRegionReseller(region: $region, userId: $userId) {
+      status
+      stateProvince: state_province
+    }
+  }
+`
+
+export const changeBusinessMutation = gql`
+  mutation changeBusinessReseller($business: String!, $userId: String!) {
+    changeBusinessReseller(business: $business, userId: $userId) {
+      status
+      businessName: business_name
     }
   }
 `

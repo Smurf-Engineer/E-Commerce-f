@@ -13,7 +13,9 @@ interface DraggerProps {
 
 export const Container = styled.div`
   height: 120px;
+  width: 222px;
   display: flex;
+  margin: 0 auto;
   justify-content: center;
   align-items: center;
 `

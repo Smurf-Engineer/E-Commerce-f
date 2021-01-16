@@ -44,9 +44,22 @@ export default defineMessages({
     id: 'components.UploadTab.login',
     defaultMessage: `Log in / Sign up`
   },
+  somethingWrong: {
+    id: 'components.UploadTab.somethingWrong',
+    defaultMessage: 'Oops, something went wrong!'
+  },
+  sizeBody: {
+    id: 'components.UploadTab.sizeBody',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>Your file is <strong>{width}cm x {height}cm</strong> and exceeds the allowable size. The maximum dimension must be under 25cm x 25cm. Please reduce the dimensional size of your file and upload again.</p><p>If you need further assistance, please use the <span>Pro Assist</span> chat to speak with a Designer.</p>'
+  },
   uploadFile: {
     id: 'components.UploadTab.uploadFile',
     defaultMessage: `+ UPLOAD FILE`
+  },
+  imageCmError: {
+    id: 'components.UploadTab.imageCmError',
+    defaultMessage: `Oh no! Image size is limited to 25x25cm`
   },
   uploadLayers: {
     id: 'components.UploadTab.uploadLayers',

@@ -18,9 +18,10 @@ import {
   BottomRow,
   LogoIcon,
   TeamStoresMenuContainer,
-  TeamStoresMenuTitle
+  TeamStoresMenuTitle,
+  Icon
 } from './styledComponents'
-import { regionsQuery } from './data'
+import { profileSettingsQuery, regionsQuery } from './data'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -31,17 +32,30 @@ import Cart from '../CartForHeader'
 import {
   RegionConfig,
   Region as RegionType,
-  QueryProps
+  QueryProps,
+  IProfileSettings,
+  User
 } from '../../types/common'
 import { OVERVIEW } from '../../screens/Account/constants'
+import get from 'lodash/get'
+import { APPROVED, PENDING } from '../../constants'
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
 }
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
+
 interface Props {
   regionsData: RegionsData
   history: any
+  profileData: ProfileData
   searchFunc: (param: string) => void
   openLogin?: boolean
   setAccountScreen: (screen: string, openCreations?: boolean) => void
@@ -68,6 +82,7 @@ interface Props {
 
 interface StateProps {
   openForgotPassword: boolean
+  openMenu: boolean
   isMobile: boolean
 }
 
@@ -77,6 +92,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
   state = {
     openForgotPassword: false,
+    openMenu: false,
     isMobile: false
   }
 
@@ -105,8 +121,16 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     window.location.replace(
       `/${regionCode}?lang=${currentLanguage ||
-        'en'}&currency=${currentCurrency}`
+      'en'}&currency=${currentCurrency}`
     )
+  }
+
+  openMenu = () => {
+    this.setState({ openMenu: true })
+  }
+
+  closeMenu = () => {
+    this.setState({ openMenu: false })
   }
 
   handleGoTo = (path: string) => {
@@ -136,7 +160,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { openForgotPassword, isMobile } = this.state
+    const { openForgotPassword, isMobile, openMenu } = this.state
     const {
       history,
       searchFunc,
@@ -145,6 +169,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       currentRegion,
       currentLanguage,
       currentCurrency,
+      profileData,
       hideTop,
       hideBottom,
       intl,
@@ -162,25 +187,42 @@ class MenuBar extends React.Component<Props, StateProps> {
       darkMode = false
     } = this.props
 
-    let user: any
+    let user: any = {}
     if (typeof window !== 'undefined') {
       user = JSON.parse(localStorage.getItem('user') as string)
     }
 
     const { formatMessage } = intl
+    const { status } = get(profileData, 'profileData.reseller', {})
+    const resellerPending = status === PENDING
+    const approvedReseller = status === APPROVED
+    const userName = !!user ? String(user.name).toUpperCase() : ''
+    const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
+    const resellerEnabled = get(profileData, 'profileData.userProfile.resellerEnabled', false)
 
     const loggedUser = !user ? (
       <TopText onClick={this.handleOpenLogin} {...{darkMode}}>
+        <Icon type="user" />
         {formatMessage(messages.title)}
       </TopText>
     ) : (
-      <Logout
-        {...{ history, darkMode }}
-        title={`${String(user.name).toUpperCase()}`}
-        logout={logoutAction}
-        goTo={this.handleOnGoTo}
-      />
-    )
+        <Logout
+          {...{
+            history,
+            formatMessage,
+            affiliateEnabled,
+            resellerPending,
+            approvedReseller,
+            resellerEnabled,
+            darkMode }}
+          title={formatMessage(messages.myAccount, { user: userName })}
+          logout={logoutAction}
+          openMenu={this.openMenu}
+          openedMenu={openMenu}
+          closeMenu={this.closeMenu}
+          goTo={this.handleOnGoTo}
+        />
+      )
 
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
@@ -210,14 +252,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         <div />
       </BottomRow>
     ) : (
-      <BottomRow>
-        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList
-          {...{ history, formatMessage, currentCurrency, regionsCodes }}
-        />
-        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
-      </BottomRow>
-    )
+        <BottomRow>
+          <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+          <DropdownList
+            {...{ history, formatMessage, currentCurrency, regionsCodes, user }}
+          />
+          <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
+        </BottomRow>
+      )
 
     return (
       <div>
@@ -268,6 +310,11 @@ class MenuBar extends React.Component<Props, StateProps> {
                       openWithoutSaveModalAction,
                       formatMessage,
                       buyNowHeader,
+                      openMenu,
+                      approvedReseller,
+                      resellerPending,
+                      resellerEnabled,
+                      affiliateEnabled,
                       saveAndBuy
                     }}
                     handleOnGoHome={this.handleOnGoHome}
@@ -320,7 +367,18 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 }
 
+type OwnProps = {
+  user?: User
+}
+
 const MenuBarEnhanced = compose(
+  graphql(profileSettingsQuery, {
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
+    name: 'profileData',
+  }),
   graphql<RegionsData>(regionsQuery, {
     name: 'regionsData',
     options: () => ({

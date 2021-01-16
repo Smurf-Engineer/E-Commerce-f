@@ -28,7 +28,7 @@ export class CartForHeader extends React.PureComponent<Props, {}> {
   render() {
     const { totalItems, darkMode = false } = this.props
     return (
-      <Container>
+      <Container onClick={this.gotoCartpage}>
         <Badge count={totalItems} overflowCount={9}>
           <Image src={darkMode ? cartWhite : cart} onClick={this.gotoCartpage} />
         </Badge>

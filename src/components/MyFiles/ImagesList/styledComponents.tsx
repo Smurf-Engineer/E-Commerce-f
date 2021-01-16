@@ -4,17 +4,15 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  display: inline-flex;
+  width: 100%;
+  flex-wrap: wrap;
   margin-top: 36px;
-  display: grid;
-  grid-gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-
-  @media (min-width: 388px) and (max-width: 467px) {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-  @media (min-width: 320px) and (max-width: 387px) {
-    grid-gap: 7px 12px;
-    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 22px;
+  justify-content: flex-start;
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    justify-content: space-evenly;
   }
 `
 

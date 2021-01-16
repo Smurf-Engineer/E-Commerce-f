@@ -25,6 +25,8 @@ export const PHONE_FIELD = 'phone'
 export const AMBIENT_LIGHT_INTENSITY = 0.2
 export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
 export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
+export const TABLET_RES = 768
+export const DESKTOP_RES = 1024
 
 /* Date formats */
 export const DATE_FORMAT = 'MM/DD/YYYY'
@@ -34,6 +36,7 @@ export const DATE_FORMAT_STARTING_YEAR = 'YYYY-MM-DD'
 export const ACCESSORY_WHITE = 'white'
 export const ACCESSORY_BLACK = 'black'
 export const PREDYED_TRANSPARENT = 'white'
+export const PREDYED_DEFAULT = 'black'
 
 /* Routes  */
 export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
@@ -68,6 +71,7 @@ export const ERROR = 'Error'
 
 /* Quantity */
 export const PERSONAL = 'Personal'
+export const MESSAGE_TIME = 4
 
 /* Files Constants */
 export const MP4_EXTENSION = '.mp4'
@@ -95,6 +99,7 @@ export const PENDING = `Pending approval`
 export const APPROVED = 'Approved'
 export const REJECTED = 'Rejected'
 export const RETRY = 'Retry'
+export const PAUSED = 'Paused'
 
 // Affiliate payment status
 export const PENDING_PAY = 'Pending'

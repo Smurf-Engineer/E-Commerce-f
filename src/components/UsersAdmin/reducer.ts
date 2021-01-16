@@ -18,6 +18,8 @@ import {
   SET_DESIGN,
   CHANGE_NOTE,
   SET_AFFILIATE_PAGE,
+  SET_RESELLER_PAGE,
+  SET_CHECKED,
   CLOSE_INTERNAL,
   OPEN_INTERNAL,
   CHANGE_INTERNAL
@@ -33,6 +35,8 @@ export const initialState = fromJS({
   managerSearchText: '',
   firstName: '',
   name: '',
+  isReseller: false,
+  isAffiliate: false,
   designSelected: '',
   note: '',
   lastName: '',
@@ -42,11 +46,14 @@ export const initialState = fromJS({
   openInternalModal: false,
   netsuiteId: '',
   loading: false,
+  pageReseller: 0,
   pageAffiliate: 1
 })
 
 const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
+    case SET_CHECKED:
+      return state.set(action.name, action.checked)
     case SET_SEARCH_MANAGER:
       return state.set('managerSearchText', action.value)
     case SET_SEARCH:
@@ -57,6 +64,8 @@ const usersAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ orderBy: action.orderBy, sort: action.sort })
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
+    case SET_RESELLER_PAGE:
+      return state.set('pageReseller', action.page)
     case CHANGE_NOTE:
       return state.set('note', action.text)
     case CHANGE_INTERNAL:

@@ -16,7 +16,8 @@ import {
   setSearchManager,
   setUserRepAction,
   setManagerAction,
-  changeLegacy
+  changeLegacy,
+  selectPredyedAction
 } from './actions'
 import {
   SET_LOADING,
@@ -26,6 +27,7 @@ import {
   SET_NOTE,
   SET_LOADING_NOTE,
   OPEN_NOTES,
+  SET_PREDYED_VALUE,
   SET_SEARCH_REP,
   SET_SEARCH_MANAGER,
   SET_USER_REP,
@@ -61,6 +63,14 @@ describe('Design Search Admin Screen', () => {
       expect(setSearchRep(value)).toEqual({
         type,
         value
+      })
+    })
+    it('selectPredyedAction', () => {
+      const type = SET_PREDYED_VALUE
+      const prededValue = 'Test'
+      expect(selectPredyedAction(prededValue)).toEqual({
+        type,
+        prededValue
       })
     })
     it('setSearchManager', () => {
@@ -252,6 +262,23 @@ describe('Design Search Admin Screen', () => {
             setSearchManager(value)
           )
           const customTextValue = designState.get('managerSearchText')
+          expect(customTextValue).toBe(value)
+        })
+      })
+    })
+    describe('SET_PREDYED_VALUE', () => {
+      describe('Set predyed value action', () => {
+        it('Handles undefined value in colorAccessories', () => {
+          const customInitialValue = initialState.get('colorAccessories')
+          expect(customInitialValue).not.toBeUndefined()
+        })
+        it('Handles custom values in predyed colorAccessories', () => {
+          const value = 'Test'
+          const designState = designSearchAdminReducer(
+            initialState,
+            selectPredyedAction(value)
+          )
+          const customTextValue = designState.getIn(['colorAccessories', 'predyed'])
           expect(customTextValue).toBe(value)
         })
       })

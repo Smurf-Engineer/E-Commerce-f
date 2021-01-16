@@ -32,6 +32,7 @@ export const desginsQuery = gql`
           collections
           isTopProduct
           weight
+          twoPieces: two_pieces
           priceRange {
             quantity
             price
@@ -104,6 +105,7 @@ export const duplicateDesignMutation = gql`
           collections
           isTopProduct
           weight
+          twoPieces: two_pieces
           priceRange {
             quantity
             price

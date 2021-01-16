@@ -2,11 +2,13 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled from 'styled-components'
-import { WHITE, BLACK_SEMILIGHT, DARK_TEXT } from '../../theme/colors'
+import { WHITE, BLACK_SEMILIGHT, DARK_TEXT, RED } from '../../theme/colors'
 
 type ThemeProps = {
   darkMode: boolean
 }
+import icon from 'antd/lib/icon'
+import { AVENIR_MEDIUM } from '../../theme/fonts'
 
 export const Container = styled.div`
   position: relative;
@@ -28,16 +30,23 @@ export const TopRow = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  @media (max-width: 1350px) {
+  @media (max-width: 1648px) {
     width: 26%;
   }
 `
 
+export const Icon = styled(icon)`
+  color: ${RED};
+  margin-right: 14px;
+  padding-left: 8px;
+  font-size: 15px;
+`
 export const TopText = styled.div`
   cursor: pointer;
   font-size: 14px;
   color: ${({ darkMode }: ThemeProps) =>
   darkMode ? WHITE : DARK_TEXT};
+  font-family: ${AVENIR_MEDIUM};
   @media (max-width: 991px) {
     align-items: center;
     display: flex;

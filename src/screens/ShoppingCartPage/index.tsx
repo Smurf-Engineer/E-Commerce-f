@@ -69,6 +69,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   isFixed?: boolean
+  isReseller?: boolean
   teamStoreId?: string
   fixedPrices: PriceRange[]
 }
@@ -131,6 +132,16 @@ interface Props extends RouteComponentProps<any> {
   showReviewDesignModalAction: (open: boolean) => void
   openFitInfoAction: (open: boolean, selectedIndex?: number) => void
   highlightRequiredFields: () => void
+  setTopSizeItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+  setBottomSizeItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -315,6 +326,24 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setSizeItemDetailAction(index, detailIndex, size)
   }
 
+  handleSetTopDetailSize = (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => {
+    const { setTopSizeItemDetailAction } = this.props
+    setTopSizeItemDetailAction(index, detailIndex, size)
+  }
+
+  handleSetBottomDetailSize = (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => {
+    const { setBottomSizeItemDetailAction } = this.props
+    setBottomSizeItemDetailAction(index, detailIndex, size)
+  }
+
   handleSetDetailFit = (
     index: number,
     detailIndex: number,
@@ -340,11 +369,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   isAllSetInProduct = (cartItem: CartItems) => {
     const {
       itemDetails,
-      product: { genders, fitStyles, sizeRange }
+      product: { genders, fitStyles, sizeRange, twoPieces }
     } = cartItem
     const checkGender = genders.length && genders[0].id
     const checkFit = fitStyles.length && fitStyles[0].id
     const checkSize = sizeRange.length && sizeRange[0].id
+
     for (const details of itemDetails) {
       if (checkGender && !has(details, 'gender')) {
         return false
@@ -352,7 +382,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       if (checkFit && !has(details, 'fit')) {
         return false
       }
-      if (checkSize && !has(details, 'size')) {
+      if (!twoPieces && checkSize && !has(details, 'size')) {
+        return false
+      }
+      if (twoPieces && checkSize && !has(details, 'bottomSize')) {
+        return false
+      }
+      if (twoPieces && checkSize && !has(details, 'topSize')) {
         return false
       }
     }
@@ -392,6 +428,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     let symbol = '$'
 
     const cartItems = cart || []
+    const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     let activeCheckout = true
     const renderList = cartItems.map((cartItem, index) => {
       if (!this.isAllSetInProduct(cartItem)) {
@@ -446,6 +483,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailColor={this.handleSetDetailColor}
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
+          setTopDetailSize={this.handleSetTopDetailSize}
+          setBottomDetailSize={this.handleSetBottomDetailSize}
           removeItem={this.handleRemoveItem}
           disable={cartItem.fixedCart}
           {...{ history, openFitInfoAction, openFitInfo, highlightFields }}
@@ -491,7 +530,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                     subtotal={total}
                     currencySymbol={symbol}
                     youSaved={totalWithoutDiscount - total}
-                    {...{ formatMessage, totalWithoutDiscount }}
+                    {...{ formatMessage, totalWithoutDiscount, showDiscount }}
                   />
                   <ButtonWrapper disabled={!activeCheckout}>
                     <CheckoutButton

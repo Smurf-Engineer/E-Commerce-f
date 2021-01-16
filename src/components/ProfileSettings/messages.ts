@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'components.ProfileSettings.passwordSuccessMessage',
     defaultMessage: 'New password saved'
   },
+  pendingStatus: {
+    id: 'components.ProfileSettings.pendingStatus',
+    defaultMessage: `Once you apply for Reseller Program and it's approved, your account settings will show here.`
+  },
   languageTitle: {
     id: 'components.ProfileSettings.languageTitle',
     defaultMessage: 'Language and Currency Settings'
@@ -36,6 +40,11 @@ export default defineMessages({
   languageSuccessMessage: {
     id: 'components.ProfileSettings.languageSuccessMessage',
     defaultMessage: 'Your language and currency settings has been updated!'
+  },
+  marginPopover: {
+    id: 'components.ProfileSettings.marginPopover',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>Dealer Margin</span><p><b>Custom products</b> are items which either you or Jakroo Designers have designed specifically for you. <b>Inline products</b> are items that have been pre-made by Jakroo and are sold as part of a retail collection and not customizable.</p><p>The Dealer margin is fixed and used to determine your purchase price of each type of product.</p>'
   },
   measurementsTitle: {
     id: 'components.ProfileSettings.measurementsTitle',
@@ -92,5 +101,33 @@ export default defineMessages({
   successLink: {
     id: 'components.ProfileSettings.successLink',
     defaultMessage: 'Linked successfully!'
+  },
+  resellerSettings: {
+    id: 'components.ProfileSettings.resellerSettings',
+    defaultMessage: 'Reseller Account Settings'
+  },
+  status: {
+    id: 'components.ProfileSettings.status',
+    defaultMessage: 'Status'
+  },
+  activatedAt: {
+    id: 'components.ProfileSettings.activatedAt',
+    defaultMessage: 'Activation Date'
+  },
+  taxForm: {
+    id: 'components.ProfileSettings.taxForm',
+    defaultMessage: 'Tax Form'
+  },
+  dealerMargin: {
+    id: 'components.ProfileSettings.dealerMargin',
+    defaultMessage: 'Dealer Margin'
+  },
+  customProducts: {
+    id: 'components.ProfileSettings.customProducts',
+    defaultMessage: 'Custom Products'
+  },
+  inlineProducts: {
+    id: 'components.ProfileSettings.inlineProducts',
+    defaultMessage: 'Inline Products'
   }
 })

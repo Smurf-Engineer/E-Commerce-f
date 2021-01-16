@@ -98,6 +98,20 @@ export const GetProductsByIdQuery = gql`
       template
       relatedItemTag: related_item_tag
       active
+      two_pieces
+    }
+  }
+`
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      reseller {
+        status
+        currency
+        inline
+        comission
+      }
     }
   }
 `

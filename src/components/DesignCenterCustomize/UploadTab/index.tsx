@@ -52,18 +52,23 @@ import {
   ModalTitle,
   buttonStyle,
   InfoBody,
-  WarningIcon
+  WarningIcon,
+  SizeTitle,
+  SizeBody
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
 import orderBy from 'lodash/orderBy'
 import Draggable from '../../Draggable'
+import { getSizeInCentimeters } from '../../../utils/utilsFiles'
 
 const { confirm, warning } = Modal
 
 interface Data extends QueryProps {
   images: ImageFile[]
 }
+
+const MAX_CM = 25
 
 const warningExtensions = [
   '.svg',
@@ -363,7 +368,30 @@ class UploadTab extends React.PureComponent<Props, State> {
           onOk: () => onUploadFile(file)
         })
       } else {
-        onUploadFile(file)
+        const img = new Image()
+        const objectUrl = URL.createObjectURL(file)
+        img.onload = async () => {
+          const width = getSizeInCentimeters(img.width)
+          const height = getSizeInCentimeters(img.height) 
+          if (width <= MAX_CM && height <= MAX_CM) {
+            onUploadFile(file)
+          } else {
+            warning({
+              title: <SizeTitle>{formatMessage(messages.somethingWrong)}</SizeTitle>,
+              icon: ' ',
+              okText: formatMessage(messages.gotIt),
+              okButtonProps: {
+                style: buttonStyle
+              },
+              content: 
+                <SizeBody 
+                  dangerouslySetInnerHTML={{__html: formatMessage(messages.sizeBody, { width, height })}}
+                />
+            })
+          }
+          URL.revokeObjectURL(objectUrl)
+        }
+        img.src = objectUrl 
       }
     }
     return false

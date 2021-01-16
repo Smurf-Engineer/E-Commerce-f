@@ -103,7 +103,7 @@ class SocialMedia extends React.Component<Props, {}> {
         window.location.href = 'https://www.instagram.com/jakroousa/'
         break
       case 'ytb':
-        window.location.href = 'https://www.youtube.com/user/jakroousa'
+        window.location.href = 'https://www.youtube.com/channel/UCbA-7_tX_0I5e8DCCJd4Tyw'
         break
       default:
         break

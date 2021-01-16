@@ -23,7 +23,7 @@ export default defineMessages({
   },
   affiliate: {
     id: 'components.UsersAdmin.Options.affiliate',
-    defaultMessage: 'Payday Options'
+    defaultMessage: 'Payday Settings'
   },
   saved: {
     id: 'components.UsersAdmin.Options.saved',
@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'components.UsersAdmin.Options.showAffiliate',
     defaultMessage: 'Show Affiliate Program'
   },
+  showReseller: {
+    id: 'components.UsersAdmin.Options.showReseller',
+    defaultMessage: 'Show Reseller Program'
+  },
   lastSale: {
     id: 'components.UsersAdmin.Options.lastSale',
     defaultMessage: 'Last Sale'
@@ -60,5 +64,17 @@ export default defineMessages({
   totalSales: {
     id: 'components.UsersAdmin.Options.totalSales',
     defaultMessage: 'Total Sales'
+  },
+  pstExempt: {
+    id: 'components.UsersAdmin.Options.pstExempt',
+    defaultMessage: 'PST Exempt'
+  },
+  taxItem: {
+    id: 'components.UsersAdmin.Options.taxItem',
+    defaultMessage: 'Tax Item'
+  },
+  resellerOptions: {
+    id: 'components.UsersAdmin.Options.resellerOptions',
+    defaultMessage: 'Reseller Settings'
   }
 })

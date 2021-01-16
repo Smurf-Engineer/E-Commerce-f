@@ -3,7 +3,11 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  &:hover{
+    cursor: pointer;
+  }
+`
 
 export const Text = styled.div`
   color: #fff;

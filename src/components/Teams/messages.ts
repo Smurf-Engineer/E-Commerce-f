@@ -20,5 +20,9 @@ export default defineMessages({
   sponsor: {
     id: 'components.footer.teams.sponsor',
     defaultMessage: 'Get Sponsored'
+  },
+  becomeReseller: {
+    id: 'components.footer.teams.becomeReseller',
+    defaultMessage: 'Become a reseller'
   }
 })

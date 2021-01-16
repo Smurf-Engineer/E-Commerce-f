@@ -32,6 +32,8 @@ interface Props {
   code: string
   targetRange?: Filter
   onDemandMode?: boolean
+  isResellerStore?: boolean
+  isResellerOwner?: boolean
   targetPrice: number | string
   currentPrice: number | string
   priceRange?: PriceRange[]
@@ -47,6 +49,8 @@ const FooterThumbnailTeamStore = ({
   onDemandMode,
   code,
   targetPrice,
+  isResellerStore,
+  isResellerOwner,
   currentPrice,
   priceRange = [],
   currentRangeAttributes,
@@ -60,7 +64,7 @@ const FooterThumbnailTeamStore = ({
     if (relativePercentParam !== MAX_PERCENT) {
       return Math.round(
         (relativePercentParam * PERCENT_BY_SECTION) / MAX_PERCENT +
-          currentRangeAttributes.index * PERCENT_BY_SECTION
+        currentRangeAttributes.index * PERCENT_BY_SECTION
       )
     } else {
       return (
@@ -84,17 +88,25 @@ const FooterThumbnailTeamStore = ({
       <Description>{description}</Description>
       <Description>{code}</Description>
       <BottomPrices>
+        {((isResellerStore && isResellerOwner) || !isResellerStore) &&
+          <PricesContainer>
+            <Label>
+              <FormattedMessage {...messages[isResellerStore && isResellerOwner ? 'purchasePrice' : 'regularPrice']} />
+            </Label>
+            <PriceLabel>{targetPrice}</PriceLabel>
+          </PricesContainer>}
         <PricesContainer>
           <Label>
-            <FormattedMessage {...messages.regularPrice} />
-          </Label>
-          <PriceLabel>{targetPrice}</PriceLabel>
-        </PricesContainer>
-        <PricesContainer>
-          <Label>
-            <FormattedMessage
-              {...(onDemandMode ? messages.teamPrice : messages.currentPrice)}
-            />
+            {isResellerStore && isResellerOwner ?
+              <FormattedMessage
+                {...messages.listPrice}
+              /> :
+              <FormattedMessage
+                {...(onDemandMode ? 
+                  messages[isResellerStore && !isResellerOwner ? 'listPrice' : 'teamPrice'] : messages.currentPrice
+                )}
+              />
+            }
           </Label>
           <PriceLabel color={BLUE}>{currentPrice}</PriceLabel>
         </PricesContainer>

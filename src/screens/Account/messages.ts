@@ -19,19 +19,27 @@ export default defineMessages({
   },
   addresses: {
     id: 'screens.Account.menu.addresses',
-    defaultMessage: 'ADDRESSES'
+    defaultMessage: 'Addresses'
+  },
+  goBack: {
+    id: 'screens.Account.menu.goBack',
+    defaultMessage: 'Back'
   },
   creditCards: {
     id: 'screens.Account.menu.creditCards',
-    defaultMessage: 'CREDIT CARDS'
+    defaultMessage: 'Credit Cards'
   },
   profileSettings: {
     id: 'screens.Account.menu.profileSettings',
-    defaultMessage: 'PROFILE SETTINGS'
+    defaultMessage: 'Profile'
   },
   myTeamStores: {
     id: 'screens.Account.menu.myTeamStores',
     defaultMessage: 'MY TEAM STORES'
+  },
+  myStores: {
+    id: 'screens.Account.menu.myStores',
+    defaultMessage: 'My Stores'
   },
   affiliate: {
     id: 'screens.Account.menu.affiliate',
@@ -72,5 +80,25 @@ export default defineMessages({
   addedToStore: {
     id: 'screens.Account.addedToStore',
     defaultMessage: 'Design added to "{storeName}"'
+  },
+  profileMenu: {
+    id: 'screens.Account.profileMenu',
+    defaultMessage: 'PROFILE SETTINGS'
+  },
+  reseller: {
+    id: 'screens.Account.reseller',
+    defaultMessage: 'DIRECTSHIP STORES'
+  },
+  resellerAbout: {
+    id: 'screens.Account.resellerAbout',
+    defaultMessage: 'About'
+  },
+  resellerPayouts: {
+    id: 'screens.Account.resellerPayouts',
+    defaultMessage: 'Payouts'
+  },
+  resellerOrders: {
+    id: 'screens.Account.resellerOrders',
+    defaultMessage: 'Orders'
   }
 })

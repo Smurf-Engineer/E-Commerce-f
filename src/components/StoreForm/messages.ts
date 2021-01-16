@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.StoreForm.teamStoreName',
     defaultMessage: 'Team Store Name'
   },
+  storeName: {
+    id: 'components.StoreForm.storeName',
+    defaultMessage: 'Store Name'
+  },
   orderCutOffLabel: {
     id: 'components.StoreForm.cutOff',
     defaultMessage: 'Cut Off Date'

@@ -39,6 +39,30 @@ export default defineMessages({
     id: 'components.LockerTable.fixedPrice',
     defaultMessage: 'Team Price'
   },
+  currency: {
+    id: 'components.LockerTable.currency',
+    defaultMessage: 'Base Currency'
+  },
+  teamPrice: {
+    id: 'components.LockerTable.teamPrice',
+    defaultMessage: 'MSRP'
+  },
+  purchasePrice: {
+    id: 'components.LockerTable.purchasePrice',
+    defaultMessage: 'Dealer Price'
+  },
+  yourPrice: {
+    id: 'components.LockerTable.yourPrice',
+    defaultMessage: 'Your List Price'
+  },
+  profit: {
+    id: 'components.LockerTable.profit',
+    defaultMessage: 'Your Profit'
+  },
+  yourMargin: {
+    id: 'components.LockerTable.yourMargin',
+    defaultMessage: 'Your Margin'
+  },
   regularPrice: {
     id: 'components.LockerTable.regularPrice',
     defaultMessage: 'Regular Price'
@@ -59,5 +83,25 @@ export default defineMessages({
   quantity: {
     id: 'components.LockerTable.quantity',
     defaultMessage: 'QTY Ordered'
-  }
+  },
+  currencyDesc: {
+    id: 'components.LockerTable.currencyDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>BASE CURRENCY</span>The <b>Base Currency</b> is your default store currency based on your region. For Canadian Resellers, the base currency is set to CAD. For Resellers in the USA, the base currency is USD.'
+  },
+  msrpDesc: {
+    id: 'components.LockerTable.msrpDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>MSRP</span>The <b>MSRP</b> is Jakroo’s default on-demand store price. This may serve as a benchmark for setting your list price.'
+  },
+  dealerPrice: {
+    id: 'components.LockerTable.dealerPrice',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>DEALER PRICE</span>The <b>Dealer Price</b> is the price used to calculate your profit. This price is static and will not change based on quantity sold.'
+  },
+  listPriceDesc: {
+    id: 'components.LockerTable.listPriceDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<span>LIST PRICE</span>The <b>List Price</b> is what your customers will see on the store. The minimum price allowed is the MSRP. You can set a higher price to increase your profit amount.'
+  },
 })

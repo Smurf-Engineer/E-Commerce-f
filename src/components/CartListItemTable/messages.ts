@@ -18,6 +18,14 @@ export default defineMessages({
     id: 'components.CartListItemTable.size',
     defaultMessage: 'Size'
   },
+  bottomSize: {
+    id: 'components.CartListItemTable.bottomSize',
+    defaultMessage: 'Bottom Size'
+  },
+  topSize: {
+    id: 'components.CartListItemTable.topSize',
+    defaultMessage: 'Top Size'
+  },
   fit: {
     id: 'components.CartListItemTable.fit',
     defaultMessage: 'Fit'
@@ -41,6 +49,14 @@ export default defineMessages({
   sizePlaceholder: {
     id: 'components.CartListItemTable.sizePlaceholder',
     defaultMessage: 'Select size'
+  },
+  topSizePlaceholder: {
+    id: 'components.CartListItemTable.topSizePlaceholder',
+    defaultMessage: 'Select top size'
+  },
+  bottomSizePlaceholder: {
+    id: 'components.CartListItemTable.bottomSizePlaceholder',
+    defaultMessage: 'Select bottom size'
   },
   fitPlaceholder: {
     id: 'components.CartListItemTable.fitPlaceholder',
