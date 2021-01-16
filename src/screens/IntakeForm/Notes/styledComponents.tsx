@@ -111,6 +111,7 @@ export const LabelContainer = styled.div`
 export const TopContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
 `
 
 export const QuestionSpan = styled.span`
