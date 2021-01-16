@@ -1,6 +1,5 @@
 @import '~antd/dist/antd.less';
 @import './base.less';
-@import './richtext.less';
 @import './range.less';
 
 @primary-color: #e61737;
