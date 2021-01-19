@@ -29,10 +29,15 @@ export const getAffiliatesPayments = gql`
         status
         amount
         store
+        netsuite: netsuite_order {
+          orderStatus {
+            orderStatus
+          }
+        }
         orderAmount: order_amount
         orderStatus: order_status
         paidAt: paid_at
-        orderId: order_id
+        orderId: order_short_id
       }
     }
   }
