@@ -44,9 +44,16 @@ export const Icon = styled(icon)`
 export const TopText = styled.div`
   cursor: pointer;
   font-size: 14px;
+<<<<<<< HEAD
   color: ${({ darkMode }: ThemeProps) =>
   darkMode ? WHITE : DARK_TEXT};
   font-family: ${AVENIR_MEDIUM};
+=======
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+>>>>>>> 7ca0d59ea51c7bca580998f7ad805b35add8a2b4
   @media (max-width: 991px) {
     align-items: center;
     display: flex;
@@ -98,3 +105,5 @@ export const TeamStoresMenuTitle = styled.div`
     cursor: pointer;
   }
 `
+
+export const notificationStyles = { cursor: 'pointer' }

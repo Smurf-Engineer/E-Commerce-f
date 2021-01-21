@@ -64,3 +64,6 @@ body {
 .bordered-option {
   border: none !important;
 }
+.ant-popover.notifications .ant-popover-inner-content{
+  padding: 0;
+}

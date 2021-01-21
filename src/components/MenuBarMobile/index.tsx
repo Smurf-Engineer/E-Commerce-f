@@ -5,8 +5,10 @@ import * as React from 'react'
 import logo from '../../assets/jakroo_logo.svg'
 import pro_design_logo from '../../assets/Jakroo_Pro_White.png'
 import Cart from '../CartForHeader'
+import Notifications from '../NotificationHeader'
 import Menu from '../MobileMenu'
 import messages from './messages'
+import { Notification } from '../../types/common'
 import { Container, Logo, Button } from './styledComponents'
 import { History } from 'history'
 
@@ -24,6 +26,8 @@ interface Props {
   resellerPending?: boolean
   resellerEnabled?: boolean
   approvedReseller?: boolean
+  notifications?: Notification[]
+  updatingNotifications?: boolean
   saveAndBuy: (buy: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -45,9 +49,11 @@ export const MenuBarMobile = ({
   openWithoutSaveModalAction,
   formatMessage,
   buyNowHeader,
+  notifications = [],
   saveAndBuy,
   handleOnGoHome,
-  proDesign = false
+  proDesign = false,
+  updatingNotifications
 }: Props) => {
   const handleOnSaveAndBuy = () => {
     saveAndBuy(true)
@@ -76,15 +82,26 @@ export const MenuBarMobile = ({
       />
       {regionButton}
       {!buyNowHeader && (
-        <Cart
-          {...{
-            totalItems,
-            history,
-            designHasChanges,
-            openWithoutSaveModalAction,
-          }}
-          darkMode={proDesign}
-        />
+        <>
+          <Notifications
+            {...{
+              notifications,
+              history,
+              formatMessage
+            }}
+            isMobile={true}
+            updating={updatingNotifications}
+          />
+          <Cart
+            {...{
+              totalItems,
+              history,
+              designHasChanges,
+              openWithoutSaveModalAction
+            }}
+            darkMode={proDesign}
+          />
+        </>
       )}
       {buyNowHeader ? (
         <Button onClick={handleOnSaveAndBuy} type="primary">

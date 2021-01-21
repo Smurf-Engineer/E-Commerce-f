@@ -72,6 +72,8 @@ import affiliatesOrders from '../components/AffiliatesOrders/reducer'
 import affiliatesPayouts from '../components/AffiliatesPayouts/reducer'
 import intakeForm from '../screens/IntakeForm/reducer'
 import intakeProductCatalog from '../components/ProductCatalogue/reducer'
+import proDesignProjects from '../components/ProDesignProjects/reducer'
+import notifications from '../components/Notifications/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -98,6 +100,7 @@ export interface ReducersObject {
   affiliatesAbout: any
   salesRep: any
   resellerOptions: any
+  proDesignProjects: any
   affiliates: any
   affiliatesOrders: any
   affiliatesPayouts: any
@@ -155,6 +158,7 @@ export interface ReducersObject {
   userFiles: any
   intakeForm: any
   intakeProductCatalog: any
+  notifications: any
 }
 
 const appInitialState = fromJS({
@@ -228,6 +232,7 @@ const rootReducer = combineReducers({
   affiliatesAbout,
   resellerOptions,
   checkout,
+  proDesignProjects,
   designerTool,
   designApproval,
   resellerPayouts,
@@ -291,7 +296,8 @@ const rootReducer = combineReducers({
   proAssist,
   userFiles,
   intakeForm,
-  intakeProductCatalog
+  intakeProductCatalog,
+  notifications
 })
 
 export default rootReducer

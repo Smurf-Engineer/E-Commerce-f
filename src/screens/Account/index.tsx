@@ -27,6 +27,7 @@ import {
   CREDIT_CARDS,
   TEAMSTORES,
   PROFILE_SETTINGS,
+  NOTIFICATIONS,
   ORDER_HISTORY,
   OVERVIEW,
   AFFILIATES_PAYOUTS,
@@ -36,7 +37,11 @@ import {
   RESELLER_ABOUT,
   RESELLER,
   RESELLER_PAYOUTS,
-  RESELLER_ORDERS, resellerOptions, MY_STORES, resellerShortOptions
+  RESELLER_ORDERS,
+  PRO_DESIGN_PROJECTS,
+  resellerOptions,
+  MY_STORES,
+  resellerShortOptions
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -53,6 +58,8 @@ import AffiliateAbout from '../../components/AffiliateAbout'
 import AffiliatesOrders from '../../components/AffiliatesOrders'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyLocker from '../../components/MyLocker'
+import ProDesignProjects from '../../components/ProDesignProjects'
+import Notifications from '../../components/Notifications'
 import {
   Container,
   SideBar,
@@ -245,6 +252,17 @@ export class Account extends React.Component<Props, {}> {
     logout()
     window.location.replace('/')
   }
+  handleUpdateScreen = () => {
+    const {
+      location: { search },
+      setCurrentScreenAction
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (option) {
+      setCurrentScreenAction(option)
+    }
+  }
 
   getScreenComponent = (screen: string) => {
     const {
@@ -283,11 +301,15 @@ export class Account extends React.Component<Props, {}> {
         return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, history, formatMessage }} onLogout={this.onLogout} />
+      case NOTIFICATIONS:
+        return <Notifications {...{ history, formatMessage, isMobile }} updateScreen={this.handleUpdateScreen} />
       case TEAMSTORES:
       case MY_STORES:
         return !pendingReseller && <MyTeamStores {...{ history, formatMessage, isReseller }} />
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
+      case PRO_DESIGN_PROJECTS:
+        return <ProDesignProjects {...{ history, formatMessage }} />
       case RESELLER_PAYOUTS:
         return (resellerEnabled && isReseller) && <ResellerOptions {...{ history, formatMessage }} />
       case RESELLER_ORDERS:
@@ -393,9 +415,9 @@ export class Account extends React.Component<Props, {}> {
     )
 
     const currentScreen = this.getScreenComponent(screen || defaultScreen)
+    const currentScreenValue = screen || defaultScreen
 
     const noOrderScreenFlag = screen !== ORDER_HISTORY && screen !== OVERVIEW
-
     const renderView = (
       <MediaQuery
         maxWidth={768}
@@ -420,8 +442,8 @@ export class Account extends React.Component<Props, {}> {
                             <Icon type="left" />
                             {intl.formatMessage(messages.goBack)}
                           </BackButton>
-                          {!!messages[screen] && (
-                            <FormattedMessage {...messages[screen]} />
+                          {!!messages[currentScreenValue] && (
+                            <FormattedMessage {...messages[currentScreenValue]} />
                           )}
                         </ScreenTitle>
                         {currentScreen}
@@ -446,7 +468,7 @@ export class Account extends React.Component<Props, {}> {
                     </Title>
                     <Menu
                       defaultSelectedKeys={[defaultScreen]}
-                      selectedKeys={[screen]}
+                      selectedKeys={[currentScreenValue]}
                       mode="inline"
                       onSelect={this.handleOnSelectItem}
                       onOpenChange={this.handleOnSelectedKeys}
@@ -459,8 +481,8 @@ export class Account extends React.Component<Props, {}> {
                   </SideBar>
                   <Content>
                     <ScreenTitle show={noOrderScreenFlag}>
-                      {!!messages[screen] && (
-                        <FormattedMessage {...messages[screen]} />
+                      {!!messages[currentScreenValue] && (
+                        <FormattedMessage {...messages[currentScreenValue]} />
                       )}
                     </ScreenTitle>
                     {currentScreen}

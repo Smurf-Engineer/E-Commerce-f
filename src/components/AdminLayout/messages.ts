@@ -5,6 +5,10 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
+  notifications: {
+    id: 'screens.AdminLayout.notifications',
+    defaultMessage: 'NOTIFICATIONS'
+  },
   aboutOrders: {
     id: 'screens.AdminLayout.aboutOrders',
     defaultMessage: 'ABOUT ORDERS'

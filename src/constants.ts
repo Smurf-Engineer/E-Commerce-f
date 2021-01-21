@@ -44,6 +44,7 @@ export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
 /* Prodesign Message status */
 export const EDIT = 'edit'
 export const FROM_ADMIN = 'admin'
+export const PROJECT_MESSAGE = 'PROJECT_MESSAGE'
 
 /* Prodesign Design status */
 export const PREFLIGHT_STATUS = 'preflight'
@@ -116,3 +117,9 @@ export const TO_PAY = 'To Pay'
 export const PAID = 'Paid'
 export const PROCESSING = 'Processing'
 export const FAILURE = 'Failed payment'
+
+// Dates format
+export const SIMPLE_DATE_FORMAT = 'DD-MM-YY'
+
+// Simple table headers data types
+export const DATE = 'date'

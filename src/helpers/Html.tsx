@@ -46,6 +46,18 @@ const Html = ({ content, state, reduxState }: Props) => (
       type="text/javascript"
       async={true}
     />
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"
+    />
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"
+    />
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js"
+    />
     <link
       type="text/css"
       rel="stylesheet"
@@ -61,6 +73,7 @@ const Html = ({ content, state, reduxState }: Props) => (
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
     />
+
   </body>
 )
 

@@ -1785,6 +1785,7 @@ export interface Header {
   width?: number
   tabletWidth?: number
   fieldName?: string
+  dataType?: string
 }
 
 export interface ColorsDataResult {
@@ -1855,4 +1856,37 @@ export type ProDesignPalette = {
   accent2: string
   accent3: string
   fromAdmin: boolean
+}
+
+export type Notification = {
+  id: string
+  senderId: string
+  notificationType: string
+  toAdmin: boolean
+  read: boolean
+  date: string
+  title: string
+  message: string
+  url?: string
+}
+
+export type PushNotificationData = {
+  id: string
+  senderId: string
+  toAdmin: string
+  title: string
+  message: string
+  url?: string
+}
+
+export type Project = {
+  id: number
+  name: string
+  status: string
+  createdAt: string
+}
+
+export type ProjectsResult = {
+  fullCount: number
+  projects: Project[]
 }

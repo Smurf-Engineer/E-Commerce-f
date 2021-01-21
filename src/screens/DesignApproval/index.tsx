@@ -47,7 +47,8 @@ import {
   DesignType,
   PredyedColor,
   MessagePayload,
-  ModelVariant
+  ModelVariant,
+  Notification
 } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
@@ -137,7 +138,14 @@ import { threeDScripts } from '../../utils/scripts'
 import Tab from './Tab'
 import Modal from 'antd/lib/modal'
 import { COLOR, APPROVAL, LIMIT_REQUESTS } from './constants'
-import { CUSTOMER_APPROVED, EDIT, FROM_ADMIN, PREDYED_DEFAULT, PREDYED_TRANSPARENT } from '../../constants'
+import {
+  CUSTOMER_APPROVED,
+  EDIT,
+  FROM_ADMIN,
+  PREDYED_DEFAULT,
+  PREDYED_TRANSPARENT,
+  PROJECT_MESSAGE
+} from '../../constants'
 import moment from 'moment'
 import messages from './messages'
 import Spin from 'antd/lib/spin'
@@ -225,6 +233,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   private listMsg: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
+    navigator.serviceWorker.addEventListener('message', this.reloadMessages)
+  }
+  componentWillUnmount() {
+    navigator.serviceWorker.removeEventListener('message', this.reloadMessages)
   }
   componentWillMount() {
     const { user, client } = this.props
@@ -240,6 +252,15 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const newMessages = get(data, 'projectItem.messages', [])
     if (oldMessages.length !== newMessages.length) {
       this.scrollMessages()
+    }
+  }
+  reloadMessages = async (notification: Notification) => {
+    const { data: notificationData } = notification
+    const payload = get(notificationData, 'firebase-messaging-msg-data.data', notificationData)
+    const { notification_type } = payload
+    if (notification_type === PROJECT_MESSAGE) {
+      const { data } = this.props
+      await data.refetch()
     }
   }
   onTabClickAction = (selectedKey: string) => {

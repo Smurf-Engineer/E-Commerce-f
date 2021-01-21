@@ -3,16 +3,22 @@
  */
 import * as React from 'react'
 import { TableRow, Cell, DeleteButton, Thumbnail } from '../styledComponents'
+import moment from 'moment'
 import messages from '../messages'
 import { Message, Header } from '../../../types/common'
+import { DATE, SIMPLE_DATE_FORMAT } from '../../../constants'
 
 interface Props {
   index: number
   item: any
   headerTitles: Header[]
   targetGroup: string
+  canDelete: boolean
+  unread?: boolean
+  clickable?: boolean
   onPressDelete: (index: number, section: string) => void
   formatMessage: (messageDescriptor: Message) => string
+  onPressRow?: (notificationId: number, url: string) => void
 }
 
 class Row extends React.PureComponent<Props, {}> {
@@ -23,33 +29,51 @@ class Row extends React.PureComponent<Props, {}> {
       formatMessage,
       item,
       headerTitles,
-      targetGroup
+      targetGroup,
+      canDelete,
+      unread = false,
+      clickable = false,
+      onPressRow
     } = this.props
 
     const handleOnClick = () => {
       onPressDelete(index, targetGroup)
     }
 
+    const handleOnClickRow = () => {
+      if (onPressRow && clickable) {
+        onPressRow(item.id, item.url)
+      }
+    }
     return (
       <div>
-        <TableRow>
+        <TableRow className={clickable && 'clickable'} onClick={handleOnClickRow}>
           {headerTitles.map(
-            (header) =>
-              header.fieldName && (
-                <Cell width={header.tabletWidth}>
+            (header, rowIndex) => {
+              const currentItem = item[header.fieldName] || item
+              const value = header.dataType === DATE ? moment(currentItem).format(SIMPLE_DATE_FORMAT) : currentItem
+
+              return header.fieldName ? (
+                <Cell
+                  key={rowIndex}
+                  width={header.tabletWidth}
+                  className={unread && header.fieldName === 'message' && 'unread'}
+                >
                   {header.fieldName !== 'image' ? (
-                    item[header.fieldName] || item
+                    value
                   ) : (
-                    <Thumbnail src={item[header.fieldName]} />
-                  )}
+                      <Thumbnail src={currentItem} />
+                    )}
                 </Cell>
-              )
+              ) :
+                <Cell key={rowIndex} width={header.tabletWidth} className={unread && 'badge'} />
+            }
           )}
-          <Cell>
+          {canDelete && <Cell>
             <DeleteButton onClick={handleOnClick}>
               {formatMessage(messages.delete)}
             </DeleteButton>
-          </Cell>
+          </Cell>}
         </TableRow>
       </div>
     )

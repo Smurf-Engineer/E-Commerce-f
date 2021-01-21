@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'screens.Account.menu.addresses',
     defaultMessage: 'Addresses'
   },
+  proDesign: {
+    id: 'screens.Account.proDesign',
+    defaultMessage: 'PRO DESIGN'
+  },
+  proDesignProjects: {
+    id: 'screens.Account.proDesignProjects',
+    defaultMessage: 'My Pro Designs'
+  },
   goBack: {
     id: 'screens.Account.menu.goBack',
     defaultMessage: 'Back'
@@ -32,6 +40,10 @@ export default defineMessages({
   profileSettings: {
     id: 'screens.Account.menu.profileSettings',
     defaultMessage: 'Profile'
+  },
+  notifications: {
+    id: 'screens.Account.menu.notifications',
+    defaultMessage: 'NOTIFICATIONS'
   },
   myTeamStores: {
     id: 'screens.Account.menu.myTeamStores',

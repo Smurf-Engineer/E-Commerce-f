@@ -153,7 +153,7 @@ export class PayList extends React.Component<Props, {}> {
       currentTarget: { id }
     } = event
     const { history } = this.props
-    history.push(`/admin?order=${id}&from=affiliates`)
+    history.push(`/admin/orders?order=${id}&from=affiliates`)
   }
 
   render() {

@@ -18,7 +18,7 @@ export const Text = styled.div`
   text-align: center;
 `
 export const Icon = styled.img`
-  min-height: 31px;
+  max-height: 31px;
   height: 100%;
   object-fit: contain;
 `
