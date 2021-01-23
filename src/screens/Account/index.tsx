@@ -282,7 +282,7 @@ export class Account extends React.Component<Props, {}> {
       case CREDIT_CARDS:
         return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
-        return <ProfileSettings {...{ isMobile, history, formatMessage }} />
+        return <ProfileSettings {...{ isMobile, history, formatMessage }} onLogout={this.onLogout} />
       case TEAMSTORES:
       case MY_STORES:
         return !pendingReseller && <MyTeamStores {...{ history, formatMessage, isReseller }} />

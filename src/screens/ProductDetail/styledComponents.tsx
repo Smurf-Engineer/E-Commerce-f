@@ -38,6 +38,25 @@ export const MenIcon = styled(Icon)`
   margin-left: 8px;
   color: #2196f3;
 `
+
+export const SizeChart = styled.img`
+  max-width: 128px;
+  width: 100%;
+  object-fit: contain;
+  margin: 6px 0 28px 0;
+  &:hover {
+    cursor: pointer;
+  }
+  @media (min-width: 320px) and (max-width: 480px) {
+    max-width: 100%;
+    object-fit: contain;
+    margin: 0 0 22px 0;
+    padding-right: 22px;
+    height: 54px;
+    width: 100%;
+  }
+`
+
 export const WomenIcon = styled(Icon)`
   margin-left: 8px;
   color: deeppink;

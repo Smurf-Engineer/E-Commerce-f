@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.ProfileSettings.save',
     defaultMessage: 'Save'
   },
+  badFormat: {
+    id: 'components.ProfileSettings.badFormat',
+    defaultMessage: 'Bad email format or empty.'
+  },
   passwordSuccessMessage: {
     id: 'components.ProfileSettings.passwordSuccessMessage',
     defaultMessage: 'New password saved'

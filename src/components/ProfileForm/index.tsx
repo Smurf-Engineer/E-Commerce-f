@@ -10,7 +10,8 @@ import {
   InputTitleContainer,
   Label,
   StyledInput,
-  StyledButton
+  StyledButton,
+  Advise
 } from './styledComponents'
 import { UserProfileSettings } from '../../types/common'
 
@@ -99,14 +100,14 @@ const ProfileForm = ({
             <Label>{formatMessage(messages.email)}</Label>
           </InputTitleContainer>
           <StyledInput
-            disabled={true} // TODO: ask flow to change email
             id="email"
-            value={email !== null ? email : emailUP}
+            disabled={true} // Disabled until they approve client modify
+            defaultValue={emailUP}
             onChange={handleInputChange}
-            maxLength={50}
           />
         </Column>
       </Row>
+      <Advise>{formatMessage(messages.mailAdvise)}</Advise>
       <Row>
         <Column inputhWidth={'100%'}>
           <InputTitleContainer>
