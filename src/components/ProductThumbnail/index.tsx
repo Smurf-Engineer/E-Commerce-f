@@ -68,6 +68,7 @@ interface Props {
   backgroundColor?: string
   colors: ProductColors[]
   proDesign: boolean
+  fromIntakeForm?: boolean
   proDesignAssigned?: boolean
   selectProduct?: boolean
   isSelected?: boolean
@@ -210,8 +211,10 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
   onHandleCheckChange = (event: CheckboxChangeEvent) => {
     const { target: { checked } } = event
-    const { product, handleCheckChange } = this.props
-    handleCheckChange(product.id, checked)
+    const { product, handleCheckChange, fromIntakeForm } = this.props
+    if (!fromIntakeForm) {
+      handleCheckChange(product.id, checked)
+    }
   }
   onHandleCheckChangeImage = (event: any) => {
     event.stopPropagation()

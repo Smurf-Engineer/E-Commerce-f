@@ -25,6 +25,13 @@ export const Bar = styled.div`
 export const ColorContent = styled.div`
   display: flex;
   flex: 1;
+  position: relative;
+`
+
+export const ColorLabel = styled.div`
+  position: absolute;
+  top: 44px;
+  font-size: 12px;
 `
 
 export const Color = styled.div`

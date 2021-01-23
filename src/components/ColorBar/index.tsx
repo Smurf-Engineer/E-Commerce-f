@@ -2,16 +2,17 @@ import React from 'react'
 import { Message } from '../../types/common'
 import every from 'lodash/every'
 import messages from './messages'
-import { Container, ColorContent, Color, Text, Bar, LegendText } from './styledComponents'
+import { Container, ColorContent, Color, Text, Bar, LegendText, ColorLabel } from './styledComponents'
 
 interface Props {
   primary: string
   accent?: string[]
+  colorLabels?: { [name: string]: string }
   withLegend?: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
 }
 
-const ColorBar = ({ primary, accent = [], withLegend = false, formatMessage}: Props) => {
+const ColorBar = ({ colorLabels = {}, primary, accent = [], withLegend = false, formatMessage}: Props) => {
   const noAccent = !!every(accent, (accentColor) => !accentColor)
   return (
     <Container>
@@ -22,11 +23,23 @@ const ColorBar = ({ primary, accent = [], withLegend = false, formatMessage}: Pr
       <Bar>
         <ColorContent>
           <Color color={primary} />
+          {colorLabels && 
+            <ColorLabel>
+              {colorLabels[primary]}
+            </ColorLabel>
+          }
         </ColorContent>
         {!!accent.length && !noAccent &&
-        <ColorContent>
-          {accent.map((color) => !!color && <Color key={color} color={color} />)}
-        </ColorContent>}
+          accent.map((color) => !!color && 
+            <ColorContent>
+              <Color key={color} color={color} />
+              {colorLabels && 
+                <ColorLabel>
+                {colorLabels[color]}
+                </ColorLabel>
+              }
+            </ColorContent>
+        )}
       </Bar>
     </Container>
   )

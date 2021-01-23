@@ -40,7 +40,7 @@ const ColorList = ({
   const regularColors: React.ReactNodeArray = []
   const fluorescentColors: React.ReactNodeArray = []
 
-  arrayColors.forEach(({ value, type }: Color, index: number) => {
+  arrayColors.forEach(({ value, type, name }: Color, index: number) => {
     const isSelected = includes(selectedColors, value) 
     const handleOnSelectColor = () =>  !isSelected ? onSelect(value) : onDeselect(value)
     if (type) {

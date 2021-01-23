@@ -9,6 +9,7 @@ import { GetColorPalettes, GetColorsQuery } from './data'
 import BackIcon from '../../../assets/leftarrow.svg'
 import SwipeableViews from 'react-swipeable-views'
 import isEqual from 'lodash/isEqual'
+import AntdMessage from 'antd/lib/message'
 import rightArrow from '../../../assets/arrow.svg'
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -26,11 +27,14 @@ import {
   MainContainer,
   Text,
   Palette,
-  Image
+  Image,
+  PaletteLabel,
+  LeftPaletteLabel
 } from './styledComponents'
 import messages from './messages'
 import { CUSTOM_PALETTE_INDEX } from '../constants'
-import { Message, ProDesignPalette, QueryProps, ColorsDataResult } from '../../../types/common'
+import { Message, ProDesignPalette, QueryProps, ColorsDataResult, Color } from '../../../types/common'
+import get from 'lodash/get'
 
 const SELECTED_PRIMARY_COLOR = 'selectedPrimaryColor'
 const SELECTED_COLORS = 'selectedColors'
@@ -77,6 +81,22 @@ export class Colors extends React.Component<Props, {}> {
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
     selectedColors.length : selectedEditColors.length
 
+    let arrayColors = []
+
+    if (colorsList) {
+      try {
+        arrayColors = JSON.parse(get(colorsList, 'colorsResult.colors', []))
+      } catch (e) {
+        AntdMessage.error(e)
+      }
+    }
+
+    const colorLabels = arrayColors.reduce((obj, { value, name }: Color) => {
+      obj[value] = name
+      return obj
+      // tslint:disable-next-line: align
+    }, {})
+
     const handleOnSelectPrimary = (color: string) =>
       onSelect(color, selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
         SELECTED_PRIMARY_COLOR : SELECTED_EDIT_PRIMARY_COLOR,
@@ -96,7 +116,7 @@ export class Colors extends React.Component<Props, {}> {
             {formatMessage(messages.currentPalette)}
           </Title>
           <ColorBar
-            {...{formatMessage}}
+            {...{ formatMessage, colorLabels }}
             primary={selectedPaletteIndex === CUSTOM_PALETTE_INDEX
               ? selectedPrimaryColor[0] : selectedEditPrimaryColor[0]}
             accent={selectedPaletteIndex === CUSTOM_PALETTE_INDEX
@@ -114,7 +134,12 @@ export class Colors extends React.Component<Props, {}> {
               >
               <>
               <PaletteTitle>
-                {formatMessage(messages.selectPalette)}
+                <LeftPaletteLabel>
+                  {formatMessage(messages.trendingPalette)}
+                </LeftPaletteLabel>
+                <PaletteLabel>
+                  {formatMessage(messages.buildYourOwn)}
+                </PaletteLabel>
               </PaletteTitle>
               <PaletteColumns>
                 <Palettes>

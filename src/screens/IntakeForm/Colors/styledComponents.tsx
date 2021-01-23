@@ -36,7 +36,7 @@ export const Title = styled.div`
 `
 
 export const InfoText = styled.div`
-  margin: 10px 0;
+  margin: 40px 0 10px;
   font-style: italic;
 `
 
@@ -56,6 +56,15 @@ export const PaletteTitle = styled.div`
   background-color: ${GRAY_LIGHTEST};
   padding: 10px;
   font-weight: 600;
+`
+
+export const PaletteLabel = styled.div`
+  flex: 2;
+  text-align: center;
+`
+
+export const LeftPaletteLabel = styled.div`
+  flex: 1.5;
 `
 
 export const PaletteColumns = styled.div`

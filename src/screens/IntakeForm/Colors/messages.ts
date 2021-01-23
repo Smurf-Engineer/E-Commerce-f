@@ -30,4 +30,12 @@ export default defineMessages({
     id: 'screens.IntakeForm.Colors.custom',
     defaultMessage: 'Custom'
   },
+  trendingPalette: {
+    id: 'screens.IntakeForm.Colors.trendingPalette',
+    defaultMessage: 'Trending Palettes'
+  },
+  buildYourOwn: {
+    id: 'screens.IntakeForm.Colors.buildYourOwn',
+    defaultMessage: 'BUILD YOUR OWN'
+  },
 })

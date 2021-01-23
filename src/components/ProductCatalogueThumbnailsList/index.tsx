@@ -97,6 +97,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       handleChangePage,
       handleOrderBy,
       profileData,
+      fromIntakeForm,
       data,
       designs,
       onPressPrivate = () => { },
@@ -160,7 +161,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                {...{ currentCurrency, handleCheckChange, isSelected }}
+                {...{ currentCurrency, fromIntakeForm, handleCheckChange, isSelected }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
@@ -306,6 +307,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 {...{
                   currentCurrency,
                   id,
+                  fromIntakeForm,
                   yotpoId,
                   type,
                   description,
