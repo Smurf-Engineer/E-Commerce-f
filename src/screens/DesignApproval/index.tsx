@@ -23,7 +23,6 @@ import {
   addProMessageMutation,
   addTeamStoreItemMutation,
   approveDesignMutation,
-  getColorsQuery,
   getFonts,
   getPredyedColors,
   getProdesignItemQuery,
@@ -42,7 +41,7 @@ import {
   ProDesignItem,
   ProDesignMessage,
   UploadFile,
-  Colors as ColorsTypes,
+  Color as ColorType,
   Product,
   DesignType,
   PredyedColor,
@@ -152,7 +151,6 @@ import Spin from 'antd/lib/spin'
 import { getFileWithExtension } from '../../utils/utilsFiles'
 import { UploadChangeParam } from 'antd/lib/upload'
 import AccessoryColors from './AccessoryColors'
-import find from 'lodash/find'
 import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
 // import clone from 'lodash/clone'
 import ShareDesignModal from '../../components/ShareDesignModal'
@@ -165,10 +163,6 @@ const { TabPane } = AntdTabs
 
 interface PredyedData extends QueryProps {
   getPredyedColors: PredyedColor[]
-}
-
-interface ColorsData extends QueryProps {
-  colorsResult: ColorsTypes
 }
 
 interface DataVariants extends QueryProps {
@@ -203,7 +197,6 @@ interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
   parentMessageId: string
   parentMessage: string
-  colorList: ColorsData
   predyedData: PredyedData
   approveLoading: boolean
   dataVariants: DataVariants
@@ -511,7 +504,6 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       note,
       history,
       dataVariants,
-      colorList,
       predyedData,
       uploadingFile,
       file,
@@ -532,12 +524,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const requestMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
     const product = get(projectItem, 'product', {}) as Product
     const design = get(projectItem, 'design', {}) as DesignType
+    const colors = get(projectItem, 'colors', []) as ColorType[]
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
     const itemStatus = get(projectItem, 'status', '') as string
     const predyedColors = get(predyedData, 'getPredyedColors', [])
     const {
       id: designSerialId,
-      colors = [],
       predyedName,
       stitchingValue,
       stitchingName,
@@ -558,7 +550,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelSize,
       name: productName
     } = product || {}
-    const colorsResult = get(colorList, 'colorsResult.colors', [])
+
     const variants = get(dataVariants, 'getVariants', [])
     let modelObj
     let modelMtl
@@ -580,15 +572,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       },
       []
     )
-    let colorsObject = []
-    if (colorsResult && colorsResult.length) {
-      try {
-        colorsObject = JSON.parse(colorsResult)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    // const productConfig = clone(product)
+
     const proDesignModel = {
       createdAt: createdAtDesign,
       designCode,
@@ -682,11 +666,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         <ApprovalTitle>{formatMessage(messages.colors)}</ApprovalTitle>
         <ColorBlock>
           <CodeColor>Colors:</CodeColor>
-          {colors.map(({ color }, index) =>
+          {colors.map(({ name, value }, index) =>
             <ColorContainer key={index}>
-              <Color color={color} />
+              <Color color={value} />
               <ColorName>
-                {get(find(colorsObject, ['value', color]), 'name', color)}
+                {name}
               </ColorName>
             </ColorContainer>
           )}
@@ -1011,7 +995,6 @@ const DesignsEnhance = compose(
     restoreUserSessionAction: restoreUserSession
   }),
   graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
-  graphql(getColorsQuery, { name: 'colorList' }),
   graphql(getPredyedColors, { name: 'predyedData' }),
   graphql(approveDesignMutation, { name: 'setApproveDesign' }),
   graphql(addProMessageMutation, { name: 'sendNoteProdesign' }),

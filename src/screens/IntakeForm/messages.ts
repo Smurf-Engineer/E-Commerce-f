@@ -111,7 +111,7 @@ export default defineMessages({
   },
   fileUploadBody: {
     id: 'screens.IntakeForm.fileUploadBody',
-    defaultMessage: 'Upload any art file or sponsor logos you want added to your design.'
+    defaultMessage: 'Do you have any company or sponsor logos or art files you want to include in your design?'
   },
   fileUploadTips: {
     id: 'screens.IntakeForm.fileUploadBody',
@@ -184,5 +184,20 @@ export default defineMessages({
   emptyInspiration: {
     id: 'screens.IntakeForm.emptyInspiration',
     defaultMessage: `Didn't found results`
+  },
+  fileTitle: {
+    id: 'screens.IntakeForm.fileTitle',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Graphics and logos are usually designed in one of two ways: <strong>VECTOR</strong> or <strong>RASTER</strong>'
+  },
+  vectorBody: {
+    id: 'screens.IntakeForm.vectorBody',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p><strong>VECTOR ARTWORK</strong></p>Most professional designers create logos in vector format for one main reason — they can be resized without pixelating. This sample of the JAKROO logo shows a logo created in vector format that can be enlarged to any size and the lines will always be crisp and sharp.'
+  },
+  rasterBody: {
+    id: 'screens.IntakeForm.rasterBody',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `<p><strong>RASTER ARTWORK</strong></p>Raster based software, such as Photoshop, generates images in a grid of millions of color pixels. When you try to scale a raster logo those little pixels become big, which result as blurry images. The sample of the JAKROO logo gives an idea how a raster logo could appear once enlarged. We can't guarantee the clarity of your artwork if raster images are used.`
   }
 })

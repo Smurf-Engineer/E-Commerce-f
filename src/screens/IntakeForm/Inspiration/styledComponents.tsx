@@ -17,7 +17,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding-right: 2px;
-  overflow: hidden;
+  min-height: 1024px;
+  height: 100%;
+  overflow-y: scroll;
 `
 
 export const StyledInfiniteScroll = styled(InfiniteScroll)`

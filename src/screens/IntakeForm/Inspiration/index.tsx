@@ -33,6 +33,7 @@ import {
   StyledCheckbox
 } from './styledComponents'
 import { Message, QueryProps, InspirationType } from '../../../types/common'
+import { capitalizeFirstLetter } from '../../../utils/utilsFunctions'
 
 const LIMIT = 10
 const INSPIRATION_SELECTEED_ITEMS = 'inspirationSelectedItems'
@@ -144,7 +145,9 @@ export class Inspiration extends React.Component<Props, {}> {
 
   handleSelectTag = (value: string) => {
     const { addTag } = this.props
-    addTag(value)
+    if (value) {
+      addTag(capitalizeFirstLetter(value))
+    }
   }
 
   handleRemoveTag = (value: string) => {
@@ -198,7 +201,7 @@ export class Inspiration extends React.Component<Props, {}> {
         <TagsContainer>
           <Select
             size="large"
-            mode="multiple"
+            mode="tags"
             value={selectedTags}
             onSelect={this.handleSelectTag}
             onDeselect={this.handleRemoveTag}
@@ -211,10 +214,10 @@ export class Inspiration extends React.Component<Props, {}> {
             ))}
           </Select>
           <TagPickers>
-            {tags.map((tag: Tag) => {
+            {tags.map((tag: Tag, key: number) => {
               const isSelected = includes(selectedTags, tag.value)
               const selectTag = () => isSelected ? this.handleRemoveTag(tag.value) : this.handleSelectTag(tag.value)
-              return(
+              return key < 10 && (
               <TagPicker
                 key={tag.value}
                 className={isSelected ? 'selected' : ''}
@@ -261,7 +264,7 @@ export class Inspiration extends React.Component<Props, {}> {
           useWindow={true}
           pageStart={0}
           loadMore={this.handleLoadData}
-          initialLoad={false}
+          initialLoad={true}
           hasMore={total > inspiration.length}
           {...{loader}}
         >

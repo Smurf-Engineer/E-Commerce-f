@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardoquintero on 02/12/20.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHTEST, RED, TRANSPARENT, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED, TRANSPARENT, WHITE } from '../../../theme/colors'
 
 interface StyleProps {
   selected?: boolean
@@ -54,17 +54,20 @@ export const SelectPaletteContainer = styled.div`
 export const PaletteTitle = styled.div`
   display: flex;
   background-color: ${GRAY_LIGHTEST};
-  padding: 10px;
   font-weight: 600;
 `
 
 export const PaletteLabel = styled.div`
   flex: 2;
   text-align: center;
+  padding: 10px;
+  margin-left: 44px;
 `
 
 export const LeftPaletteLabel = styled.div`
   flex: 1.5;
+  padding: 10px;
+  background-color: ${GRAY_LIGHT};
 `
 
 export const PaletteColumns = styled.div`

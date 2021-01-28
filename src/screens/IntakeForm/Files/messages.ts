@@ -33,4 +33,12 @@ export default defineMessages({
     id: 'components.IntakeForm.Files.edit',
     defaultMessage: `Rename`
   },
+  yesUpload: {
+    id: 'components.IntakeForm.Files.yesUpload',
+    defaultMessage: `<strong>YES</strong> • Upload`
+  },
+  noUpload: {
+    id: 'components.IntakeForm.Files.noUpload',
+    defaultMessage: `<strong>NO</strong> • Not now`
+  },
 })

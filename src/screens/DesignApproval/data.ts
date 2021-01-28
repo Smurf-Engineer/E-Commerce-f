@@ -93,6 +93,10 @@ export const getProdesignItemQuery = gql`
           lastName: last_name
         }
       }
+      colors {
+        name
+        value
+      }
       messages {
         id
         createdAt: created_at
@@ -190,14 +194,6 @@ export const approveDesignMutation = gql`
     messageData: setApproveDesign(itemId: $itemId) {
       id
       status
-    }
-  }
-`
-
-export const getColorsQuery = gql`
-  query GetColors {
-    colorsResult: getColors {
-      colors
     }
   }
 `

@@ -53,7 +53,6 @@ export const CardTitle = styled.div`
   color: ${BLACK};
   background: ${GRAY_LIGHTEST};
   text-align: center;
-  padding: 30px;
   & img {
     width: 100%;
   }

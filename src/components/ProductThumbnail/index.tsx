@@ -245,6 +245,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       colors,
       reversePriceRange,
       proDesign,
+      fromIntakeForm,
       proDesignAssigned,
       selectProduct,
       isSelected = false,
@@ -341,6 +342,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             proDesignAssigned,
             selectProduct,
             isSelected,
+            fromIntakeForm,
             selectedIndex,
             fitContainer
           }}

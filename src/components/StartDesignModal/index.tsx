@@ -24,8 +24,6 @@ import {
 } from './styledComponents'
 import closeIcon from '../../assets/cancel-button.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
-import ProDesignImg from '../../assets/Jakroo_Pro.png'
-import DesignCenterImg from '../../assets/DesignLAB.png'
 import DesignCenterBanner from '../../assets/start_design_lab.jpg'
 import ProDesignBanner from '../../assets/start_pro_design.jpg'
 import UnfoldList from '../UnfoldList'
@@ -94,8 +92,9 @@ export class StartDesignModal extends React.Component<Props, {}> {
         <CustomModal
           {... {open}}
           withLogo={false}
-          width={'1200px'}
+          width={'100%'}
           requestClose={onClose}
+          style={{ maxWidth: '1200px' }}
           wrapClassName={isMobile && 'transparent-modal'}
           withCross={!isMobile}
           maskStyle={isMobile && { background: 'rgba(0,0,0,0.9)' }}
@@ -163,7 +162,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
             <DesignsCardsContainer>
               <Card onClick={goToCustomize}>
                 <CardTitle>
-                  <img src={DesignCenterImg} />
+                  <img src={DesignCenterBanner} />
                 </CardTitle>
                 <List>
                   {designCenterMessages.map((item: string, index: number) => (
@@ -184,7 +183,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
               </Card>
               <Card onClick={goToProDesign}>
                 <CardTitle>
-                  <img src={ProDesignImg} />
+                  <img src={ProDesignBanner} />
                 </CardTitle>
                 <List>
                   {proDesignMessages.map((item: string, index: number) => (

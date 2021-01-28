@@ -48,6 +48,39 @@ export const ModalTitle = styled.div`
   margin-bottom: 5px;
 `
 
+export const FileTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 18px;
+  margin-bottom: 15px;
+`
+
+export const ComparisonDiv = styled.div`
+  margin-left: -22px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-flow: row;
+  @media (max-width: 767px) {
+    flex-flow: column;
+  }
+`
+
+export const RasterDiv = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  flex: 1;
+`
+
+export const RasterImage = styled.img`
+  max-width: 228px;
+  width: 100%;
+`
+
+export const RasterText = styled.div``
+
 export const InfoBody = styled.div`
   color: ${GRAY_DARK};
   font-family: ${AVENIR_NEXT};

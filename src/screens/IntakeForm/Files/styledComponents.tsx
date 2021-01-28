@@ -12,7 +12,7 @@ export const Container = styled.div`
   background-color: ${WHITE};
   display: flex;
   padding-right: 2px;
-  overflow: hidden;
+  height: 100vh;
   padding: 10px 180px;
   flex-direction: column;
   @media (max-width: 768px) {
@@ -32,6 +32,27 @@ export const DraggerContainer = styled.div`
 export const ButtonContainer = styled.div`
   display: inline-block;
   margin-left: 8px;
+`
+
+export const AskButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+`
+
+export const AskButton = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid ${RED};
+  color: ${RED};
+  padding: 8px 16px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    background: ${RED};
+    color: ${WHITE};
+  }
 `
 
 export const Icon = styled(icon)`

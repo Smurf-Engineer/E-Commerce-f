@@ -16,6 +16,8 @@ import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import Modal from 'antd/lib/modal'
+import vector from '../../assets/vector.svg'
+import raster from '../../assets/raster.png'
 import ProductCatalogue from '../../components/ProductCatalogue'
 import SuccessModal from '../../components/SuccessModal'
 import Tabs from '../../components/IntakeFormTabs'
@@ -41,7 +43,12 @@ import {
   ModalTitle,
   InfoBody,
   buttonStyle,
-  Subtitle
+  Subtitle,
+  FileTitle,
+  ComparisonDiv,
+  RasterDiv,
+  RasterImage,
+  RasterText
 } from './styledComponents'
 import {
   Responsive,
@@ -186,6 +193,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { setFromScratchAction } = this.props
     setFromScratchAction(false)
     this.handleOnContinue(false)
+  }
+
+  skipFileAction = () => {
+    const { setFileTermsAction } = this.props
+    setFileTermsAction(true)
+    this.handleOnContinue()
   }
 
   handleOnRenameFileName = async () => {
@@ -345,7 +358,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.PATHWAY:
         return {
-          showPreviousButton: false,
+          showPreviousButton: true,
           showContinueButton: false,
           continueButtonText,
           previousButtonText
@@ -452,23 +465,66 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   showAlert = (title: string, bodyNodes: string[] | string, accept: string) => {
-    const { intl: { formatMessage } } = this.props
-    const render = 
-      typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
-      : (<InfoBody>{bodyNodes}</InfoBody>)
-    info({
-      title: (
-        <ModalTitle>
-          {title}
-        </ModalTitle>
-      ),
-      okText: accept || formatMessage(messages.gotIt),
-      cancelText: 'Cancel',
-      okButtonProps: {
-        style: buttonStyle
-      },
-      content: render
-    })
+    const { intl: { formatMessage }, currentScreen } = this.props
+    switch (currentScreen) {
+      case Sections.FILES:
+        info({
+          icon: ' ',
+          width: 762,
+          title: (
+            <FileTitle
+              dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.fileTitle)
+              }}
+            />
+          ),
+          okText: accept || formatMessage(messages.gotIt),
+          cancelText: 'Cancel',
+          okButtonProps: {
+            style: buttonStyle
+          },
+          content:
+            <ComparisonDiv>
+              <RasterDiv>
+                <RasterImage src={vector} />
+                <RasterText
+                  dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.vectorBody)
+                  }}
+                />
+              </RasterDiv>
+              <RasterDiv>
+                <RasterImage src={raster} />
+                <RasterText
+                  dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.rasterBody)
+                  }}
+                />
+              </RasterDiv>
+            </ComparisonDiv>
+        })
+        break
+      default: {
+        const render = 
+          typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
+          : (<InfoBody>{bodyNodes}</InfoBody>)
+        info({
+          title: (
+            <ModalTitle>
+              {title}
+            </ModalTitle>
+          ),
+          okText: accept || formatMessage(messages.gotIt),
+          cancelText: 'Cancel',
+          okButtonProps: {
+            style: buttonStyle
+          },
+          content: render
+        })
+      }
+      // tslint:disable-next-line: align
+      break
+    }
   }
 
   showTips = () => {
@@ -634,6 +690,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
        {currentScreen > Sections.PATHWAY ?
         <SwipeableViews
           disabled={true}
+          animateHeight={true}
           index={currentScreen}>
             <Inspiration
               {...{ formatMessage, inspiration }}
@@ -687,6 +744,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 renamingFile,
                 fileTermsAccepted
               }}
+              skipFileAction={this.skipFileAction}
               onUploadFile={uploadFileAction}
               openUserLocker={openUserLockerAction}
               onOpenLogin={this.handleOnOpenLogin}
