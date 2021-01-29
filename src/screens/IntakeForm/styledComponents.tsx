@@ -4,6 +4,7 @@ import { AVENIR_NEXT } from '../../theme/fonts'
 
 interface StyleProps {
   action?: boolean
+  small?: boolean
 }
 
 export const IntakeContainer = styled.div`
@@ -25,8 +26,8 @@ export const Title = styled.div`
 `
 
 export const Subtitle = styled.div`
-  font-size: 18px;
-  margin-top: 5px;
+  font-size: ${({ small }: StyleProps) => (small ? '14px' : '18px')};
+  margin-top: 14px;
   color: ${({ action }: StyleProps) => (action ? BLUE : GRAY_DARK)};
   cursor: ${({ action }: StyleProps) => (action ? 'pointer' : 'normal')};
   max-width: 590px;

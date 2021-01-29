@@ -199,7 +199,11 @@ const intakeFormReducer: Reducer<any> = (
       return state.set('fromScratch', action.fromScratch)
     case RESET_COLOR_SELECTION:
       return state.merge({
-        selectedPaletteIndex: -2
+        selectedPaletteIndex: -2,
+        selectedColors: [],
+        selectedPrimaryColor: [],
+        selectedEditColors: [],
+        selectedEditPrimaryColor: [],
         })
     case SELECT_PRODUCT: {
         const { product } = action

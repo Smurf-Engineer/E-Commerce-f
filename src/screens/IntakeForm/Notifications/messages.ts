@@ -88,7 +88,8 @@ export default defineMessages({
   },
   teamSizeAlert: {
     id: 'components.IntakeForm.Notifications.teamSizeAlert',
-    defaultMessage: 'Hey looks like you maybe be designing just for yourself. Why not try Designlab'
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `It looks like you may be designing just for yourself. You may want to try out Designlab, our self-design tool with Pro Assist support...`
   },
   designLab: {
     id: 'components.IntakeForm.Notifications.designLab',

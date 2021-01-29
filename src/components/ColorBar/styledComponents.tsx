@@ -32,6 +32,9 @@ export const ColorLabel = styled.div`
   position: absolute;
   top: 44px;
   font-size: 12px;
+  @media (max-width: 767px) {
+    font-size: 8px;
+  }
 `
 
 export const Color = styled.div`

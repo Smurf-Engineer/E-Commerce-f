@@ -111,21 +111,21 @@ export const titleTexts = {
     {
       title: 'designNotes',
       body: 'designNotesBody',
-      bodyWithTip: 'designNotesBodyTip',
-      action: true,
-      tipTitle: 'artAndDelivery',
-      tipBody: 'designNotesModal',
-      tipAccept: 'gotIt'
-    },
-  [Sections.NOTIFICATIONS]:
-    {
-      title: 'notifications',
-      body: 'notificationsBody',
       bodyWithTip: '',
       action: false,
       tipTitle: '',
       tipBody: '',
       tipAccept: ''
+    },
+  [Sections.NOTIFICATIONS]:
+    {
+      title: 'notifications',
+      body: 'notificationsBody',
+      bodyWithTip: 'designNotesBodyTip',
+      action: true,
+      tipTitle: 'artAndDelivery',
+      tipBody: 'designNotesModal',
+      tipAccept: 'gotIt'
     },
   [Sections.REVIEW]:
     {

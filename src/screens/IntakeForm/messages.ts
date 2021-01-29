@@ -55,7 +55,7 @@ export default defineMessages({
   },
   returnToHome: {
     id: 'screens.IntakeForm.returnToHome',
-    defaultMessage: 'Return to Home Page'
+    defaultMessage: 'Return to My Projects'
   },
   maxProductsTitle: {
     id: 'screens.IntakeForm.maxProductsTitle',
@@ -131,11 +131,11 @@ export default defineMessages({
   },
   designNotes: {
     id: 'screens.IntakeForm.designNotes',
-    defaultMessage: 'DESIGN PROFILE'
+    defaultMessage: 'DESIGN NOTES'
   },
   designNotesBody: {
     id: 'screens.IntakeForm.designNotesBody',
-    defaultMessage: 'This helps us with scheduling.'
+    defaultMessage: 'If you have any special instructions, let us know. We want to get it right!'
   },
   designNotesBodyTip: {
     id: 'screens.IntakeForm.designNotesBodyTip',
@@ -164,11 +164,11 @@ export default defineMessages({
   },
   notifications: {
     id: 'screens.IntakeForm.notifications',
-    defaultMessage: 'DELIVERY NOTES & NOTIFICATIONS SETTINGS'
+    defaultMessage: 'DESIGN PROFILE'
   },
   notificationsBody: {
     id: 'screens.IntakeForm.notificationsBody',
-    defaultMessage: 'If you have any special instructions, let us know. We want to get it right!'
+    defaultMessage: 'This helps us with scheduling'
   },
   showOnly: {
     id: 'screens.IntakeForm.showOnly',

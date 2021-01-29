@@ -169,7 +169,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
     const isTablet = window.matchMedia(
-      '(max-width: 768px)'
+      '(min-width: 481px) and (max-width: 768px)'
     ).matches
     if (typeof window !== undefined) {
       this.setState({
@@ -622,7 +622,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           {formatMessage(messages[currentSubtitle])}
       </Subtitle> : null
 
-    const navTips = currentSubtitleTips.length ? (<Subtitle action={currentTitleHasAction} 
+    const navTips = currentSubtitleTips.length ? (<Subtitle small={true} action={currentTitleHasAction} 
         onClick={currentTitleHasAction ? this.showTips : null}>
           {formatMessage(messages[currentSubtitleTips])}
         </Subtitle>) : null
@@ -693,7 +693,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           animateHeight={true}
           index={currentScreen}>
             <Inspiration
-              {...{ formatMessage, inspiration }}
+              {...{ formatMessage, inspiration, isMobile, isTablet }}
               windowWidth={responsive.fakeWidth}
               currentPage={inspirationPage}
               setPage={setInspirationPageAction}

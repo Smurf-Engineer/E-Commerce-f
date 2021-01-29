@@ -6,6 +6,7 @@ import { GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED, TRANSPARENT, WHITE } from '.
 
 interface StyleProps {
   selected?: boolean
+  withPadding?: boolean
 }
 
 export const Container = styled.div`
@@ -53,7 +54,9 @@ export const SelectPaletteContainer = styled.div`
 
 export const PaletteTitle = styled.div`
   display: flex;
+  align-items: center;
   background-color: ${GRAY_LIGHTEST};
+  padding: ${({ withPadding }: StyleProps) => withPadding ? '10px' : '0'};
   font-weight: 600;
 `
 
@@ -62,6 +65,12 @@ export const PaletteLabel = styled.div`
   text-align: center;
   padding: 10px;
   margin-left: 44px;
+  @media (max-width: 767px) {
+    margin-left: 0;
+  }
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const LeftPaletteLabel = styled.div`

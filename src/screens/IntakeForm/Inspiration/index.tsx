@@ -58,6 +58,7 @@ interface Tag extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   data: Data
   isMobile: boolean
+  isTablet: boolean
   currentPage: number
   client: any
   skip: number
@@ -170,6 +171,8 @@ export class Inspiration extends React.Component<Props, {}> {
       selectedTags,
       filters,
       loading,
+      isMobile,
+      isTablet,
       onSelect,
       onDeselect,
       onExpandInspiration,
@@ -217,7 +220,7 @@ export class Inspiration extends React.Component<Props, {}> {
             {tags.map((tag: Tag, key: number) => {
               const isSelected = includes(selectedTags, tag.value)
               const selectTag = () => isSelected ? this.handleRemoveTag(tag.value) : this.handleSelectTag(tag.value)
-              return key < 10 && (
+              return key < (isMobile && !isTablet ? 6 : 10) && (
               <TagPicker
                 key={tag.value}
                 className={isSelected ? 'selected' : ''}

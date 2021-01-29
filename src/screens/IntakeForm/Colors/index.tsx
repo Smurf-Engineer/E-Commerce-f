@@ -62,6 +62,22 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class Colors extends React.Component<Props, {}> {
+  state = {
+    openBuild: false
+  }
+  openBuildAction = () => {
+    this.setState({ openBuild: true })
+  }
+  closeBuildAction = () => {
+    this.setState({ openBuild: false })
+  }
+  buildFromZero = () => {
+    const { resetSelection, selectedPaletteIndex } = this.props
+    if (selectedPaletteIndex >= -1) {
+      resetSelection()
+    } 
+    this.setState({ openBuild: true })
+  }
   render() {
     const {
       formatMessage,
@@ -75,9 +91,9 @@ export class Colors extends React.Component<Props, {}> {
       selectedPaletteIndex,
       selectedEditPrimaryColor,
       selectedEditColors,
-      isMobile,
-      resetSelection
+      isMobile
     } = this.props
+    const { openBuild } = this.state
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
     selectedColors.length : selectedEditColors.length
 
@@ -130,14 +146,14 @@ export class Colors extends React.Component<Props, {}> {
             <SwipeableViews
               disabled={true}
               className={'intake'}
-              index={isMobile && selectedPaletteIndex >= -1 ? 1 : 0}
+              index={isMobile && openBuild ? 1 : 0}
               >
               <>
               <PaletteTitle>
                 <LeftPaletteLabel>
                   {formatMessage(messages.trendingPalette)}
                 </LeftPaletteLabel>
-                <PaletteLabel>
+                <PaletteLabel onClick={this.buildFromZero}>
                   {formatMessage(messages.buildYourOwn)}
                 </PaletteLabel>
               </PaletteTitle>
@@ -166,7 +182,7 @@ export class Colors extends React.Component<Props, {}> {
                       >
                         <Header>
                           {name}
-                          <img src={rightArrow} />
+                          <img onClick={this.openBuildAction} src={rightArrow} />
                         </Header>
                         <Body>
                           <ColorBar
@@ -206,7 +222,7 @@ export class Colors extends React.Component<Props, {}> {
               </PaletteColumns>
             </>
             <>
-              <PaletteTitle onClick={resetSelection}>
+              <PaletteTitle withPadding={true} onClick={this.closeBuildAction}>
                 <Image src={BackIcon} />
                 {formatMessage(messages.selectPalette)}
               </PaletteTitle>

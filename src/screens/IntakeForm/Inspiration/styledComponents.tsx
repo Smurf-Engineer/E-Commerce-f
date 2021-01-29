@@ -95,7 +95,7 @@ export const TagPicker = styled.div`
   min-width: 110px;
   text-align: center;
   transition: background-color 0.3s ease;
-  margin: 10px 10px 0 0;
+  margin-top: 10px
   &:last-child {
     margin-right: 0;
   }
@@ -112,6 +112,8 @@ export const TagPickers = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
   justify-content: center;
 `
 

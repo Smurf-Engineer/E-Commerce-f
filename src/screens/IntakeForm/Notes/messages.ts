@@ -51,7 +51,7 @@ export default defineMessages({
   },
   multipleProducts: {
     id: 'components.IntakeForm.Notes.multipleProducts',
-    defaultMessage: 'Have multiple products?'
+    defaultMessage: 'Designing multiple products?'
   },
   multipleProductsDescription: {
     id: 'components.IntakeForm.Notes.multipleProductsDescription',

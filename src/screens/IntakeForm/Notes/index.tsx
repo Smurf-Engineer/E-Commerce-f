@@ -169,9 +169,6 @@ export class Notes extends React.Component<Props, {}> {
                 </Label>
                 <QuestionSpan onClick={this.describeIdeas}>?</QuestionSpan>
               </LabelContainer>
-              <MultipleItemsButton onClick={this.showMultipleItems}>
-                {formatMessage(messages.multipleProducts)}
-              </MultipleItemsButton>
             </TopContainer>
             {richTextEditorReady && editorReady && typeof window !== 'undefined' ? 
               <Editor
@@ -198,6 +195,9 @@ export class Notes extends React.Component<Props, {}> {
                 }}
               /> : null
             }
+            <MultipleItemsButton onClick={this.showMultipleItems}>
+              {formatMessage(messages.multipleProducts)}
+            </MultipleItemsButton>
           </Field>
         </Container>
         <ReviewContainer>

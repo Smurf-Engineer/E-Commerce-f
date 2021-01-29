@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY, RED, WHITE, GRAY_LIGHT, BLUE } from '../../../theme/colors'
+import { GRAY_DARK, GRAY, RED, WHITE, BLUE } from '../../../theme/colors'
 import { AVENIR_NEXT } from '../../../theme/fonts'
 
 interface ButtonProps {
@@ -143,7 +143,7 @@ export const SectionButton = styled.div`
   align-content: center;
   background-color: ${WHITE};
   border: ${({ selected }: ButtonProps) =>
-    selected ? `2px solid ${RED}` : `0.5px solid ${GRAY_LIGHT}`};
+    selected ? `2px solid ${RED}` : `0.5px solid ${GRAY_DARK}`};
   border-radius: 2px;
   display: flex;
   height: 50px;

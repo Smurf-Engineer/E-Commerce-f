@@ -242,9 +242,6 @@ export class Notifications extends React.Component<Props, {}> {
           <Text>
             {formatMessage(messages.receiveNotifications)}
           </Text>
-          <ItalicText>
-            {formatMessage(messages.setUpNotifications)}
-          </ItalicText>
           <NotificationSettings>
             {!!email && <Row>
               <CheckBoxContainer>
@@ -283,6 +280,9 @@ export class Notifications extends React.Component<Props, {}> {
               </ValueContainer>
             </Row>
           </NotificationSettings>
+          <ItalicText>
+            {formatMessage(messages.setUpNotifications)}
+          </ItalicText>
         </Container>
       </MainContainer>
     )
