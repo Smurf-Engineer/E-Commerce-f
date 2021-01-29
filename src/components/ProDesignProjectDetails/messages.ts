@@ -27,7 +27,7 @@ export default defineMessages({
   },
   designNotes: {
     id: 'components.Review.designNotes',
-    defaultMessage: 'Design Notes'
+    defaultMessage: 'Design Profile'
   },
   inspiration: {
     id: 'components.Review.inspiration',

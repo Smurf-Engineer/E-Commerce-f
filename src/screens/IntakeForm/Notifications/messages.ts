@@ -26,6 +26,30 @@ export default defineMessages({
     // tslint:disable-next-line
     defaultMessage: 'Notifications will always appear in your account dashboard by default. You can set up external notifications to ensure you don’t miss anything important.'
   },
+  isThis: {
+    id: 'components.IntakeForm.Notifications.isThis',
+    defaultMessage: 'Is this for...'
+  },
+  event: {
+    id: 'components.IntakeForm.Notifications.event',
+    defaultMessage: 'Event'
+  },
+  team: {
+    id: 'components.IntakeForm.Notifications.team',
+    defaultMessage: 'Team'
+  },
+  club: {
+    id: 'components.IntakeForm.Notifications.club',
+    defaultMessage: 'Club'
+  },
+  company: {
+    id: 'components.IntakeForm.Notifications.company',
+    defaultMessage: 'Company'
+  },
+  other: {
+    id: 'components.IntakeForm.Notifications.other',
+    defaultMessage: 'Other'
+  },
   notifyMe: {
     id: 'screens.IntakeForm.Notifications.notifyMe',
     defaultMessage: 'Notify me via'

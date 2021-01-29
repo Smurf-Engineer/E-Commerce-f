@@ -9,6 +9,10 @@ interface StyleProps {
 export const IntakeContainer = styled.div`
   background-color: ${WHITE};
   width: 100%;
+  @media (max-width: 768px) {
+    overflow-y: scroll;
+    height: calc(100vh - 120px);
+  }
 `
 
 export const Title = styled.div`

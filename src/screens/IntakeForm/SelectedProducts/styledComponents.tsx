@@ -21,21 +21,21 @@ export const Container = styled.div`
   opacity: ${({ total }: ProductsProps) => total > 0 ? '1' : '0'};
   @media (max-width: 768px) {
     width: 100%;
-    bottom: -10;
+    top: -10;
     position: fixed;
-    z-index: 999;
+    z-index: 3;
     left: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
     box-shadow: -5px 2px 15px ${BLACK};
     border-color: transparent;
     opacity: 1;
     opacity: ${({ total = 0 }: ProductsProps) => total > 0 ? '1' : '0'};
-    bottom:  ${({ total = 0, open }: ProductsProps) => total > 0 ?
-      (!open ? '-150px' : '50px') : '50px'};
+    top:  ${({ total = 0, open }: ProductsProps) => total > 0 ?
+      (!open ? '-132px' : '50px') : '50px'};
   }
 `
 
@@ -43,6 +43,18 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media (max-width: 767px) {
+    display: none;
+  }
+`
+
+export const HeaderMobile = styled.div`
+  display: none;
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 `
 
 export const Products = styled.div`

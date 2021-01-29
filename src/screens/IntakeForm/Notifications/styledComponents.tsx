@@ -31,6 +31,32 @@ export const Title = styled.div`
   margin-bottom: 25px;
 `
 
+export const CheckTitle = styled.div`
+  margin-right: 20px
+  @media (max-width: 768px) {
+    margin: 10px 0;
+  }
+`
+
+export const ProjectInfoContainer = styled.div`
+  display: flex;
+  margin: 10px 0;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
+
+export const BoxContainer = styled.div`
+  margin-right: 10px;
+  flex: 1.2;
+  @media (max-width: 768px) {
+    flex: 4;
+    & .ant-checkbox-wrapper {
+      margin: 0 8px 12px 0;
+    }
+  }
+`
+
 export const MainContainer = styled.div`
   width: 100%;
   display: flex;

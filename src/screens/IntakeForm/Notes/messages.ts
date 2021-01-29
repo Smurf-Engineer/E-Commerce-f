@@ -23,7 +23,7 @@ export default defineMessages({
   },
   currentInformation: {
     id: 'components.IntakeForm.Notes.currentInformation',
-    defaultMessage: 'Project Profile'
+    defaultMessage: 'Project Info'
   },
   event: {
     id: 'components.IntakeForm.Notes.event',

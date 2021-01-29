@@ -19,7 +19,7 @@ export default defineMessages({
   },
   designNotes: {
     id: 'components.IntakeFormTabs.designNotes',
-    defaultMessage: 'Design Notes'
+    defaultMessage: 'Design Profile'
   },
   notifications: {
     id: 'components.IntakeFormTabs.notifications',

@@ -431,7 +431,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   handleOnReturnHome = () => {
     const { onSetSuccessModalOpen } = this.props
     onSetSuccessModalOpen(false)
-    window.location.replace(`/us?lang=en&currency=usd`)
+    window.location.replace(`/account?option=proDesignProjects`)
   }
 
   handleOnselectElementAction = (elementId: number | string, listName: string, index?: number) => {
@@ -507,7 +507,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       default: {
         const render = 
           typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
-          : (<InfoBody>{bodyNodes}</InfoBody>)
+          : <InfoBody dangerouslySetInnerHTML={{ __html: bodyNodes}} />
         info({
           title: (
             <ModalTitle>
@@ -795,6 +795,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 sendEmail,
                 history
               }}
+              removeCategory={removeFromListAction}
+              addCategory={addToListAction}
+              categories={projectCategories}
               estimatedDate={estimatedDateMoment}
               onSelectTeamSize={onSelectTeamSizeAction}
               onChangeInput={onSetInputAction}

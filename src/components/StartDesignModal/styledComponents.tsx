@@ -6,6 +6,7 @@ import CheckImg from '../../assets/green_check.svg'
 import { BLACK, GRAY_DARK, GRAY_LIGHTEST, WHITE, GRAY_LIGHT, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
+  height: 100vh;
 `
 
 export const Title = styled.div`
@@ -116,10 +117,10 @@ transform-origin: bottom
 transform-origin: top
 -webkit-transform-origin: top;
 
-transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
-  opacity 0.4s, max-height 0.4s;
--webkit-transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
-  opacity 0.4s, max-height 0.4s;
+transition: visibility 0.1s, transform 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
+  opacity 0.1s, max-height 0.1s;
+-webkit-transition: visibility 0.1s, transform 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000), 
+  opacity 0.1s, max-height 0.1s;
 
 &.folded {
   opacity: 0;
@@ -145,14 +146,14 @@ transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.
   transform: rotateX(0);
   -webkit-transform: rotateX(0);
 
-  transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
-  -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
+  transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.1}s;
+  -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.1}s;
 
   &::after {
     visibility: visible;
     background: rgba(200, 55, 55, 0);
-    transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
-    -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.3}s;
+    transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.1}s;
+    -webkit-transition-delay: ${({ order }: FoldAnimationProps) => order === 1 ? 0 : order * 0.1}s;
   }
 }
 &::after {
@@ -164,8 +165,8 @@ transition: visibility 0.3s, transform 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.
   height: 100%;
   width: 100%;
   mix-blend-mode: normal;
-  transition: all 0.4s ease;
-  -webkit-transition: all 0.4s ease;
+  transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
 }
 `
 
@@ -230,6 +231,7 @@ export const ColorWheel = styled.img`
 
 export const MobileContainer = styled.div`
   perspective: 340px;
+  margin: 0 18px;
   -webkit-perspective: 340px;
 `
 

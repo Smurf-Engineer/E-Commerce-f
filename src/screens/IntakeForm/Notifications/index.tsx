@@ -30,7 +30,10 @@ import {
   SectionButtonsContainer,
   InfoBody,
   cancelButtonStyle,
-  acceptButtonStyle
+  acceptButtonStyle,
+  ProjectInfoContainer,
+  CheckTitle,
+  BoxContainer
 } from './styledComponents'
 import { TEAM_SIZES } from './constants'
 import messages from './messages'
@@ -38,6 +41,15 @@ import {
   Message,
   UserType
 } from '../../../types/common'
+import includes from 'lodash/includes'
+
+const checkBoxes = [
+  'event',
+  'team',
+  'club',
+  'company',
+  'other'
+]
 
 const { confirm } = Modal
 
@@ -50,6 +62,9 @@ interface Props extends RouteComponentProps<any> {
   sendEmail: boolean
   mainProduct: number | null
   history: any
+  categories: string[]
+  removeCategory: (listName: string, value: string) => void
+  addCategory: (listName: string, value: string) => void
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onSelectTeamSize: (size: string) => void
@@ -149,6 +164,9 @@ export class Notifications extends React.Component<Props, {}> {
       user,
       selectedTeamSize,
       estimatedDate,
+      removeCategory,
+      categories,
+      addCategory,
       sendSms,
       sendEmail,
       phone
@@ -171,6 +189,31 @@ export class Notifications extends React.Component<Props, {}> {
     return (
       <MainContainer>
         <Container>
+          <ProjectInfoContainer>
+            <CheckTitle>
+              {formatMessage(messages.isThis)}
+            </CheckTitle>
+            <BoxContainer>
+              {checkBoxes.map((checkBox) => {
+                const isSelected = includes(categories, checkBox)
+                const handleAddCategory = () => isSelected
+                  ? removeCategory('projectCategories', checkBox)
+                  : addCategory('projectCategories', checkBox)
+                return (
+                  <Checkbox
+                    key={checkBox}
+                    checked={isSelected}
+                    onChange={handleAddCategory}
+                  >
+                    <CheckboxLabel>
+                      {formatMessage(messages[checkBox])}
+                    </CheckboxLabel>
+                  </Checkbox>
+                  )
+                })
+              }
+            </BoxContainer>
+          </ProjectInfoContainer>
           <Field>
             <Label>
               {formatMessage(messages.teamSize)} <Required>*</Required>

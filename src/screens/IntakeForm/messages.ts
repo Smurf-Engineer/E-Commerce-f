@@ -131,19 +131,24 @@ export default defineMessages({
   },
   designNotes: {
     id: 'screens.IntakeForm.designNotes',
-    defaultMessage: 'DESIGN NOTES'
+    defaultMessage: 'DESIGN PROFILE'
   },
   designNotesBody: {
     id: 'screens.IntakeForm.designNotesBody',
-    defaultMessage: 'LET’S WRAP UP!'
+    defaultMessage: 'This helps us with scheduling.'
   },
   designNotesBodyTip: {
     id: 'screens.IntakeForm.designNotesBodyTip',
-    defaultMessage: 'If you have any special instructions, let us know. We want to get it right!'
+    defaultMessage: 'About Delivery Times'
+  },
+  designNotesModal: {
+    id: 'screens.IntakeForm.designNotesModal',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `<p>Jakroo's advanced 3D design and on-demand production system allows us, in most cases, to deliver orders in 2 weeks.</p><p>Initial designs are turned around in 2 business days. If you want to make changes please allow an additional 1-3 business days.</p><p>Once your order is placed and paid, production begins! Delivery for orders under 25pc will typically take 2 weeks or less. Larger orders may take up to 3 weeks.</p>`
   },
   reviewTitle: {
     id: 'screens.IntakeForm.reviewTitle',
-    defaultMessage: 'PRO DESING REQUEST REVIEW'
+    defaultMessage: 'PRO DESIGN REQUEST REVIEW'
   },
   reviewBody: {
     id: 'screens.IntakeForm.reviewBody',
@@ -176,6 +181,10 @@ export default defineMessages({
   graphics: {
     id: 'screens.IntakeForm.graphics',
     defaultMessage: 'Graphics / Patterns'
+  },
+  artAndDelivery: {
+    id: 'screens.IntakeForm.artAndDelivery',
+    defaultMessage: 'Art & Delivery Timelines'
   },
   kickstart: {
     id: 'screens.IntakeForm.kickstart',

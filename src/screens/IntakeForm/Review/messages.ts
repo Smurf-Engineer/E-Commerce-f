@@ -27,7 +27,7 @@ export default defineMessages({
   },
   designNotes: {
     id: 'screens.IntakeForm.Review.designNotes',
-    defaultMessage: 'Design Notes'
+    defaultMessage: 'Design Profile'
   },
   inspiration: {
     id: 'screens.IntakeForm.Review.inspiration',

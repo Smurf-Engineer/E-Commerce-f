@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Product } from '../../../types/common'
 import get from 'lodash/get'
 import upArrow from '../../../assets/uparrow.svg'
+import downArrow from '../../../assets/downarrow.svg'
 import TrashImg from '../../../assets/trash.svg'
 import {
   Container,
@@ -15,7 +16,8 @@ import {
   Badge,
   Header,
   ActionsContainer,
-  Arrow
+  Arrow,
+  HeaderMobile
 } from './styledComponents'
 
 interface Props {
@@ -65,6 +67,13 @@ export class SelectedProducts extends React.Component<Props, {}> {
                     </Bottom>
               </ProductThumbnail>)})}
         </Products>
+        <HeaderMobile>
+          <Title>{title}</Title>
+          <ActionsContainer>
+            <Badge>{products.length}</Badge>
+            <Arrow src={downArrow} onClick={this.toggleMenu} className={open ? 'open' : ''} />
+          </ActionsContainer>
+        </HeaderMobile>
       </Container>
     )
   }
