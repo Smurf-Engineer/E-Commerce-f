@@ -38,6 +38,7 @@ export const ON_RENAME_FILE = `${namespace}/ON_RENAME_FILE`
 export const ON_SET_RENAMING = `${namespace}/ON_SET_RENAMING`
 export const CHANGE_LOCAL_NAME = `${namespace}/CHANGE_LOCAL_NAME`
 export const SET_FILE_TERMS = `${namespace}/SET_FILE_TERMS`
+export const SET_OPEN_BUILD = `${namespace}/SET_OPEN_BUILD`
 
 export enum Sections {
   PRODUCTS = -2,
@@ -111,7 +112,7 @@ export const titleTexts = {
     {
       title: 'designNotes',
       body: 'designNotesBody',
-      bodyWithTip: 'designNotesBodyTip',
+      bodyWithTip: '',
       action: false,
       tipTitle: '',
       tipBody: '',
@@ -121,11 +122,11 @@ export const titleTexts = {
     {
       title: 'notifications',
       body: 'notificationsBody',
-      bodyWithTip: '',
-      action: false,
-      tipTitle: '',
-      tipBody: '',
-      tipAccept: ''
+      bodyWithTip: 'designNotesBodyTip',
+      action: true,
+      tipTitle: 'artAndDelivery',
+      tipBody: 'designNotesModal',
+      tipAccept: 'gotIt'
     },
   [Sections.REVIEW]:
     {

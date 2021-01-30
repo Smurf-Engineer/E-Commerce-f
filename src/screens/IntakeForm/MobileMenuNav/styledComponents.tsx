@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
-import { BLACK_SEMILIGHT, BLUE, GRAY, WHITE, GRAY_LIGHT, DARKER_GRAY } from '../../../theme/colors'
+import { BLACK_SEMILIGHT, BLUE, GRAY, WHITE, GRAY_LIGHT, DARKER_GRAY, BLACK } from '../../../theme/colors'
 
 interface ButtonProps {
   disabled?: boolean
@@ -36,6 +36,8 @@ const Button = styled.div`
 const GrayButton = styled.div`
   padding: 10px;
   border-radius: 4px;
+  color: ${({ disabled }: ButtonProps) =>
+  disabled ? WHITE : BLACK};
   background-color: ${({ disabled }: ButtonProps) =>
   disabled ? GRAY_LIGHT : GRAY};
   visibility: ${({ show }: ButtonProps) =>

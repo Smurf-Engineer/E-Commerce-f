@@ -1,6 +1,8 @@
 /**
  * ShoppingCartPage Reducer - Created by gustavomedina on 02/05/18.
  */
+
+ // TODO: Unit tests for each case
 import { fromJS } from 'immutable'
 import { ImageFile, Reducer } from '../../types/common'
 import {
@@ -39,7 +41,8 @@ import {
   ON_SET_RENAMING,
   CHANGE_LOCAL_NAME,
   SET_FILE_TERMS,
-  Sections
+  Sections,
+  SET_OPEN_BUILD
 } from './constants'
 export const initialState = fromJS({
   selectedItems: [],
@@ -66,6 +69,7 @@ export const initialState = fromJS({
   estimatedDate: '',
   estimatedDateMoment: null,
   sendSms: false,
+  openBuild: false,
   sendEmail: false,
   savingIntake: false,
   successModal: false,
@@ -105,6 +109,8 @@ const intakeFormReducer: Reducer<any> = (
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
       return state.merge({ [listName]: updatedSelectedItems })
     }
+    case SET_OPEN_BUILD:
+      return state.set('openBuild', action.open)
     case GO_TO_NEXT_PAGE:
       return state.set('currentScreen', action.page)
     case SET_INSPIRATION_PAGE:
@@ -199,7 +205,12 @@ const intakeFormReducer: Reducer<any> = (
       return state.set('fromScratch', action.fromScratch)
     case RESET_COLOR_SELECTION:
       return state.merge({
-        selectedPaletteIndex: -2
+        openBuild: true,
+        selectedPaletteIndex: -2,
+        selectedColors: [],
+        selectedPrimaryColor: [],
+        selectedEditColors: [],
+        selectedEditPrimaryColor: [],
         })
     case SELECT_PRODUCT: {
         const { product } = action

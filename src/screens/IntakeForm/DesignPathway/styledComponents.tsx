@@ -36,6 +36,7 @@ export const Card = styled.div`
   }
   @media (min-width: 320px) and (max-width: 748px) {
     width: 100%;
+    min-height: 390px;
     &:last-child {
       margin-left: 0px;
       margin-top: 32px;
@@ -58,11 +59,14 @@ export const CardTitle = styled.div`
   padding: 60px;
   min-height: 330px;
   display: flex;
+  justify-content: center;
   & img {
+    max-width: 128px;
     width: 100%;
   }
   @media (min-width: 320px) and (max-width: 748px) {
-    padding: 90px;
+    padding: 20px;
+    min-height: 178px;
   }
 `
 

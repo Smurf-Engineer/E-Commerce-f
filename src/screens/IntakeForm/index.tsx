@@ -112,6 +112,7 @@ interface Props extends RouteComponentProps<any> {
   newFileName: string
   renamingFile: boolean
   fileTermsAccepted: boolean
+  openBuild: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -138,6 +139,7 @@ interface Props extends RouteComponentProps<any> {
   onCloseInspirationAction: () => void
   setFromScratchAction: (fromScratch: boolean) => void
   resetColorSelectionAction: () => void
+  setOpenBuild: (open: boolean) => void
   selectProductAction: (product: Product) => void
   addTagAction: (value: string) => void
   removeTagAction: (value: string) => void
@@ -169,7 +171,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
     const isTablet = window.matchMedia(
-      '(max-width: 768px)'
+      '(min-width: 481px) and (max-width: 768px)'
     ).matches
     if (typeof window !== undefined) {
       this.setState({
@@ -431,7 +433,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   handleOnReturnHome = () => {
     const { onSetSuccessModalOpen } = this.props
     onSetSuccessModalOpen(false)
-    window.location.replace(`/us?lang=en&currency=usd`)
+    window.location.replace(`/account?option=proDesignProjects`)
   }
 
   handleOnselectElementAction = (elementId: number | string, listName: string, index?: number) => {
@@ -507,7 +509,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       default: {
         const render = 
           typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
-          : (<InfoBody>{bodyNodes}</InfoBody>)
+          : <InfoBody dangerouslySetInnerHTML={{ __html: bodyNodes}} />
         info({
           title: (
             <ModalTitle>
@@ -559,6 +561,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedFiles,
       userLockerModalOpen,
       user,
+      setOpenBuild,
+      openBuild,
       lockerSelectedFiles,
       selectedTeamSize,
       projectDescription,
@@ -622,7 +626,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           {formatMessage(messages[currentSubtitle])}
       </Subtitle> : null
 
-    const navTips = currentSubtitleTips.length ? (<Subtitle action={currentTitleHasAction} 
+    const navTips = currentSubtitleTips.length ? (<Subtitle small={true} action={currentTitleHasAction} 
         onClick={currentTitleHasAction ? this.showTips : null}>
           {formatMessage(messages[currentSubtitleTips])}
         </Subtitle>) : null
@@ -693,7 +697,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           animateHeight={true}
           index={currentScreen}>
             <Inspiration
-              {...{ formatMessage, inspiration }}
+              {...{ formatMessage, inspiration, isMobile, isTablet }}
               windowWidth={responsive.fakeWidth}
               currentPage={inspirationPage}
               setPage={setInspirationPageAction}
@@ -719,6 +723,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 formatMessage,
                 selectedColors,
                 selectedPrimaryColor,
+                setOpenBuild,
+                openBuild,
                 selectedPaletteIndex,
                 selectedEditColors,
                 selectedEditPrimaryColor,
@@ -795,6 +801,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 sendEmail,
                 history
               }}
+              removeCategory={removeFromListAction}
+              addCategory={addToListAction}
+              categories={projectCategories}
               estimatedDate={estimatedDateMoment}
               onSelectTeamSize={onSelectTeamSizeAction}
               onChangeInput={onSetInputAction}

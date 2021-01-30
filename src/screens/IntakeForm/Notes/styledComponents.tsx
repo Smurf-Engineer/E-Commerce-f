@@ -115,16 +115,17 @@ export const TopContainer = styled.div`
 `
 
 export const QuestionSpan = styled.span`
-  height: 14px;
-  width: 14px;
+  height: 24px;
+  max-width: 24px;
+  width: 100%;
   color: ${GRAY_DARK};
   line-height: 23px;
-  border-radius: 7px;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 9px;
-  margin-left: 5px;
+  font-size: 16px;
+  margin: 0 7px;
   border: 1px solid ${GRAY_DARK};
 
   &:hover {
@@ -134,6 +135,7 @@ export const QuestionSpan = styled.span`
 
 export const MultipleItemsButton = styled.div`
   color: ${BLUE};
+  margin-top: 10px;
   &:hover {
     cursor: pointer;
   }
