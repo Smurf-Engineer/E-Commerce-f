@@ -23,7 +23,7 @@ export default defineMessages({
   },
   notifications: {
     id: 'components.IntakeFormTabs.notifications',
-    defaultMessage: 'Notifications Settings'
+    defaultMessage: 'Design Profile'
   },
   review: {
     id: 'components.IntakeFormTabs.review',
