@@ -31,9 +31,9 @@ const ColorBar = ({ colorLabels = {}, primary, accent = [], withLegend = false, 
         </ColorContent>
         {!!accent.length && !noAccent &&
           <ColorContent>
-          {accent.map((color) => !!color && 
+          {accent.map((color, key) => !!color && 
               <ColorContent>
-                <Color key={color} color={color} />
+                <Color {...{ key }} color={color} />
                 {colorLabels && 
                   <ColorLabel>
                   {colorLabels[color]}

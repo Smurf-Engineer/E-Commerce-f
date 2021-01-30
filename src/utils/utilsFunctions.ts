@@ -13,10 +13,6 @@ export const changePosition = (
   }
 }
 
-export const capitalizeFirstLetter = (value: string) => {
-  return value.charAt(0).toUpperCase() + value.slice(1)
-}
-
 export const validateEmail = (email: string) => {
   // tslint:disable-next-line:max-line-length
   const emailPattern = /[a-z0-9!#$%&'*+\=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g

@@ -7,12 +7,12 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   chooseProducts: {
     id: 'screens.IntakeForm.chooseProducts',
-    defaultMessage: 'Select Your Products '
+    defaultMessage: 'Select Your Products'
   },
   productsDescription: {
     id: 'screens.IntakeForm.productsDescription',
-    defaultMessage: `Select up to 5 products to complete your kit. If you need 
-    more, you will have a chance to add them later with the help of your account manager.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Select up to 5 products to complete your kit. If you need more, you will have a chance to add them later with the help of your account manager.`
   },
   designPathway: {
     id: 'screens.IntakeForm.designPathway',
@@ -40,10 +40,8 @@ export default defineMessages({
   },
   successMessage: {
     id: 'screens.IntakeForm.successMessage',
-    defaultMessage: `Our Design Team will review all details of your submission and get back to if 
-    there are any questions. You will be assigned a dedicated Account Manager who will 
-    guide you through the entire process to ensure you have the best experience.
-    You can review and track the progress of your Design Project on your Account Dashboard.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Our Design Team will review all details of your submission and get back to if there are any questions. You will be assigned a dedicated Account Manager who will guide you through the entire process to ensure you have the best experience. You can review and track the progress of your Design Project on your Account Dashboard.`
   },
   successMessageCenter: {
     id: 'screens.IntakeForm.successMessageCenter',
@@ -63,9 +61,8 @@ export default defineMessages({
   },
   maxProductsBody: {
     id: 'screens.IntakeForm.maxProductsBody',
-    defaultMessage: `You've reached the maximum number of items.
-    No worries thoug. You will, however have the opportunity to add more items to your project once 
-    your initial submission has been reviewed by our Team.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `You've reached the maximum number of items. No worries thoug. You will, however have the opportunity to add more items to your project once your initial submission has been reviewed by our Team.`
   },
   gotIt: {
     id: 'screens.IntakeForm.gotIt',
@@ -81,8 +78,8 @@ export default defineMessages({
   },
   inspirationBody: {
     id: 'screens.IntakeForm.inspirationBody',
-    defaultMessage: `Select up to 5 images that best represent the artistic concepts 
-    or design elements you’d like in your design.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Select up to 5 images that best represent the artistic concepts or design elements you’d like in your design.`
   },
   colors: {
     id: 'screens.IntakeForm.colors',
@@ -97,13 +94,9 @@ export default defineMessages({
     defaultMessage: 'COLOR SELECTION TIP'
   },
   colorsTipBody: {
-    id: 'screens.IntakeForm.colorsTipTitle',
-    defaultMessage: `Screen colors will vary from actual printed colors,
-    colors listed here are representational. If you would like specific colors such
-    as those required by a corporate branding guide, please provide SOLID COATED
-    PANTONE values in your Design Notes.
-    Fabric color test prints are sometimes suggested and aways available upon request
-    for a small fee, and tipically take on week to produce and deliver.`
+    id: 'screens.IntakeForm.colorsTipBody',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Screen colors will vary from actual printed colors, colors listed here are representational. If you would like specific colors such as those required by a corporate branding guide, please provide SOLID COATED PANTONE values in your Design Notes. Fabric color test prints are sometimes suggested and aways available upon request for a small fee, and tipically take on week to produce and deliver.`
   },
   fileUploadTitle: {
     id: 'screens.IntakeForm.fileUploadTitle',
@@ -114,7 +107,7 @@ export default defineMessages({
     defaultMessage: 'Do you have any company or sponsor logos or art files you want to include in your design?'
   },
   fileUploadTips: {
-    id: 'screens.IntakeForm.fileUploadBody',
+    id: 'screens.IntakeForm.fileUploadTips',
     defaultMessage: 'Important tips about art files.'
   },
   fileUploadTipTitle: {
@@ -122,12 +115,9 @@ export default defineMessages({
     defaultMessage: 'IMPORTANT TIPS FOR MAXIMIZING QUALITY'
   },
   fileUploadTipBody: {
-    id: 'screens.IntakeForm.fileUploadTipTitle',
-    defaultMessage: `Most artwork and logos created in Adobe Illustrator, Freehand or 
-    CorelDraw are classified as vector (.ai or .eps) These file types are necessary for 
-    high quality and crisp print quality.
-    JPGEG, GIF, PNG or TIFF files are classified as low resolution and typically are not 
-    recommended to produce high quality printed graphics.`
+    id: 'screens.IntakeForm.fileUploadTipBody',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Most artwork and logos created in Adobe Illustrator, Freehand or CorelDraw are classified as vector (.ai or .eps) These file types are necessary for high quality and crisp print quality. JPGEG, GIF, PNG or TIFF files are classified as low resolution and typically are not recommended to produce high quality printed graphics.`
   },
   designNotes: {
     id: 'screens.IntakeForm.designNotes',

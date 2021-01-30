@@ -14,15 +14,9 @@ import {
   ButtonContainer,
   Icon,
   Images,
-  Image,
-  ImageContainer,
   LoginMessage,
   CustomButton,
   LoginText,
-  DeleteButton,
-  ImageText,
-  ActionButtons,
-  EditButton,
   StyledCheckbox,
   CheckboxLabel,
   AskButtons,
@@ -33,6 +27,7 @@ import message from 'antd/lib/message'
 import { getFileExtension, bytesToMb } from '../../../utils/utilsFiles'
 import messages from './messages'
 import { Message, ImageFile, UserType } from '../../../types/common'
+import ImageList from './ImageList'
 
 const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.ai', '.eps', 'svg']
 
@@ -177,19 +172,14 @@ export class Files extends React.Component<Props, {}> {
                 </CheckboxLabel>
               </StyledCheckbox>
               <Images>
-                {selectedFiles.map((file, index) => {
-                  const { fileUrl, id, name } = file
-                  const handleDeleteItem = () => deleteImage(id)
-                  const handleOpenRename = () => onOpenRenameModal(true, id)
-                  return (<ImageContainer key={index}>
-                      <Image src={fileUrl} />
-                      <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
-                      <ActionButtons>
-                        <EditButton onClick={handleOpenRename}>{formatMessage(messages.edit)}</EditButton>
-                        <DeleteButton onClick={handleDeleteItem}>{formatMessage(messages.delete)}</DeleteButton>
-                      </ActionButtons>
-                  </ImageContainer>)
-                })}
+                <ImageList 
+                  {...{
+                    formatMessage,
+                    deleteImage,
+                    onOpenRenameModal,
+                    selectedFiles,
+                  }}
+                />
               </Images>
             </>
           }

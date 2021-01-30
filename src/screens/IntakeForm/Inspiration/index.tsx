@@ -14,6 +14,7 @@ import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import LazyImage from '../../../components/LazyImage'
 import expandIcon from '../../../assets/expand.png'
+import upperFirst from 'lodash/upperFirst'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   Container,
@@ -33,7 +34,6 @@ import {
   StyledCheckbox
 } from './styledComponents'
 import { Message, QueryProps, InspirationType } from '../../../types/common'
-import { capitalizeFirstLetter } from '../../../utils/utilsFunctions'
 
 const LIMIT = 10
 const INSPIRATION_SELECTEED_ITEMS = 'inspirationSelectedItems'
@@ -146,7 +146,7 @@ export class Inspiration extends React.Component<Props, {}> {
   handleSelectTag = (value: string) => {
     const { addTag } = this.props
     if (value) {
-      addTag(capitalizeFirstLetter(value))
+      addTag(upperFirst(value))
     }
   }
 
