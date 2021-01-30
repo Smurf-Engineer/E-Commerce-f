@@ -23,7 +23,7 @@ export default defineMessages({
   },
   currentInformation: {
     id: 'components.IntakeForm.Notes.currentInformation',
-    defaultMessage: 'Project Profile'
+    defaultMessage: 'Project Info'
   },
   event: {
     id: 'components.IntakeForm.Notes.event',
@@ -51,12 +51,12 @@ export default defineMessages({
   },
   multipleProducts: {
     id: 'components.IntakeForm.Notes.multipleProducts',
-    defaultMessage: 'Have multiple products?'
+    defaultMessage: 'Designing multiple products?'
   },
   multipleProductsDescription: {
     id: 'components.IntakeForm.Notes.multipleProductsDescription',
-    defaultMessage: `We can match your design across your products. 
-    Let us know if you have specific requirements for the branding or design.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `We can match your design across your products. Let us know if you have specific requirements for the branding or design.`
   },
   designIdeas: {
     id: 'components.IntakeForm.Notes.designIdeas',

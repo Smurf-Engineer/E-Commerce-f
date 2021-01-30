@@ -12,7 +12,7 @@ export const Container = styled.div`
   background-color: ${WHITE};
   display: flex;
   padding-right: 2px;
-  overflow: hidden;
+  height: 120vh;
   padding: 10px 180px;
   flex-direction: column;
   @media (max-width: 768px) {
@@ -34,6 +34,27 @@ export const ButtonContainer = styled.div`
   margin-left: 8px;
 `
 
+export const AskButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+`
+
+export const AskButton = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid ${RED};
+  color: ${RED};
+  padding: 8px 16px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    background: ${RED};
+    color: ${WHITE};
+  }
+`
+
 export const Icon = styled(icon)`
   margin-right: 8px;
 `
@@ -45,14 +66,7 @@ export const Description = styled.div`
 export const Images = styled.div`
   margin-top: 10px;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  column-gap: 15px;
-  row-gap: 15px;
-  justify-items: center;
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  }
+  display: flex;
 `
 
 export const ImageContainer = styled.div`

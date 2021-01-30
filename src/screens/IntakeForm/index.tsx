@@ -16,6 +16,8 @@ import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import Modal from 'antd/lib/modal'
+import vector from '../../assets/vector.svg'
+import raster from '../../assets/raster.png'
 import ProductCatalogue from '../../components/ProductCatalogue'
 import SuccessModal from '../../components/SuccessModal'
 import Tabs from '../../components/IntakeFormTabs'
@@ -41,7 +43,12 @@ import {
   ModalTitle,
   InfoBody,
   buttonStyle,
-  Subtitle
+  Subtitle,
+  FileTitle,
+  ComparisonDiv,
+  RasterDiv,
+  RasterImage,
+  RasterText
 } from './styledComponents'
 import {
   Responsive,
@@ -105,6 +112,7 @@ interface Props extends RouteComponentProps<any> {
   newFileName: string
   renamingFile: boolean
   fileTermsAccepted: boolean
+  openBuild: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -131,6 +139,7 @@ interface Props extends RouteComponentProps<any> {
   onCloseInspirationAction: () => void
   setFromScratchAction: (fromScratch: boolean) => void
   resetColorSelectionAction: () => void
+  setOpenBuild: (open: boolean) => void
   selectProductAction: (product: Product) => void
   addTagAction: (value: string) => void
   removeTagAction: (value: string) => void
@@ -162,7 +171,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
     const isTablet = window.matchMedia(
-      '(max-width: 768px)'
+      '(min-width: 481px) and (max-width: 768px)'
     ).matches
     if (typeof window !== undefined) {
       this.setState({
@@ -186,6 +195,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { setFromScratchAction } = this.props
     setFromScratchAction(false)
     this.handleOnContinue(false)
+  }
+
+  skipFileAction = () => {
+    const { setFileTermsAction } = this.props
+    setFileTermsAction(true)
+    this.handleOnContinue()
   }
 
   handleOnRenameFileName = async () => {
@@ -345,7 +360,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.PATHWAY:
         return {
-          showPreviousButton: false,
+          showPreviousButton: true,
           showContinueButton: false,
           continueButtonText,
           previousButtonText
@@ -418,7 +433,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   handleOnReturnHome = () => {
     const { onSetSuccessModalOpen } = this.props
     onSetSuccessModalOpen(false)
-    window.location.replace(`/us?lang=en&currency=usd`)
+    window.location.replace(`/account?option=proDesignProjects`)
   }
 
   handleOnselectElementAction = (elementId: number | string, listName: string, index?: number) => {
@@ -452,23 +467,66 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   showAlert = (title: string, bodyNodes: string[] | string, accept: string) => {
-    const { intl: { formatMessage } } = this.props
-    const render = 
-      typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
-      : (<InfoBody>{bodyNodes}</InfoBody>)
-    info({
-      title: (
-        <ModalTitle>
-          {title}
-        </ModalTitle>
-      ),
-      okText: accept || formatMessage(messages.gotIt),
-      cancelText: 'Cancel',
-      okButtonProps: {
-        style: buttonStyle
-      },
-      content: render
-    })
+    const { intl: { formatMessage }, currentScreen } = this.props
+    switch (currentScreen) {
+      case Sections.FILES:
+        info({
+          icon: ' ',
+          width: 762,
+          title: (
+            <FileTitle
+              dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.fileTitle)
+              }}
+            />
+          ),
+          okText: accept || formatMessage(messages.gotIt),
+          cancelText: 'Cancel',
+          okButtonProps: {
+            style: buttonStyle
+          },
+          content:
+            <ComparisonDiv>
+              <RasterDiv>
+                <RasterImage src={vector} />
+                <RasterText
+                  dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.vectorBody)
+                  }}
+                />
+              </RasterDiv>
+              <RasterDiv>
+                <RasterImage src={raster} />
+                <RasterText
+                  dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.rasterBody)
+                  }}
+                />
+              </RasterDiv>
+            </ComparisonDiv>
+        })
+        break
+      default: {
+        const render = 
+          typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
+          : <InfoBody dangerouslySetInnerHTML={{ __html: bodyNodes}} />
+        info({
+          title: (
+            <ModalTitle>
+              {title}
+            </ModalTitle>
+          ),
+          okText: accept || formatMessage(messages.gotIt),
+          cancelText: 'Cancel',
+          okButtonProps: {
+            style: buttonStyle
+          },
+          content: render
+        })
+      }
+      // tslint:disable-next-line: align
+      break
+    }
   }
 
   showTips = () => {
@@ -503,6 +561,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedFiles,
       userLockerModalOpen,
       user,
+      setOpenBuild,
+      openBuild,
       lockerSelectedFiles,
       selectedTeamSize,
       projectDescription,
@@ -566,7 +626,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           {formatMessage(messages[currentSubtitle])}
       </Subtitle> : null
 
-    const navTips = currentSubtitleTips.length ? (<Subtitle action={currentTitleHasAction} 
+    const navTips = currentSubtitleTips.length ? (<Subtitle small={true} action={currentTitleHasAction} 
         onClick={currentTitleHasAction ? this.showTips : null}>
           {formatMessage(messages[currentSubtitleTips])}
         </Subtitle>) : null
@@ -634,9 +694,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
        {currentScreen > Sections.PATHWAY ?
         <SwipeableViews
           disabled={true}
+          animateHeight={true}
           index={currentScreen}>
             <Inspiration
-              {...{ formatMessage, inspiration }}
+              {...{ formatMessage, inspiration, isMobile, isTablet }}
               windowWidth={responsive.fakeWidth}
               currentPage={inspirationPage}
               setPage={setInspirationPageAction}
@@ -662,6 +723,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 formatMessage,
                 selectedColors,
                 selectedPrimaryColor,
+                setOpenBuild,
+                openBuild,
                 selectedPaletteIndex,
                 selectedEditColors,
                 selectedEditPrimaryColor,
@@ -687,6 +750,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 renamingFile,
                 fileTermsAccepted
               }}
+              skipFileAction={this.skipFileAction}
               onUploadFile={uploadFileAction}
               openUserLocker={openUserLockerAction}
               onOpenLogin={this.handleOnOpenLogin}
@@ -737,6 +801,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 sendEmail,
                 history
               }}
+              removeCategory={removeFromListAction}
+              addCategory={addToListAction}
+              categories={projectCategories}
               estimatedDate={estimatedDateMoment}
               onSelectTeamSize={onSelectTeamSizeAction}
               onChangeInput={onSetInputAction}

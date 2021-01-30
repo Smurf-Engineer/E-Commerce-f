@@ -14,23 +14,20 @@ import {
   ButtonContainer,
   Icon,
   Images,
-  Image,
-  ImageContainer,
   LoginMessage,
   CustomButton,
   LoginText,
-  DeleteButton,
-  ImageText,
-  ActionButtons,
-  EditButton,
   StyledCheckbox,
-  CheckboxLabel
+  CheckboxLabel,
+  AskButtons,
+  AskButton
 } from './styledComponents'
 import LockerModal from '../../../components/AssetsModal'
 import message from 'antd/lib/message'
 import { getFileExtension, bytesToMb } from '../../../utils/utilsFiles'
 import messages from './messages'
 import { Message, ImageFile, UserType } from '../../../types/common'
+import ImageList from './ImageList'
 
 const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.ai', '.eps', 'svg']
 
@@ -46,6 +43,7 @@ interface Props extends RouteComponentProps<any> {
   newFileName: string
   renamingFile: boolean
   fileTermsAccepted: boolean
+  skipFileAction: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onUploadFile: (file: File) => void
   openUserLocker: (open: boolean) => void
@@ -61,6 +59,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class Files extends React.Component<Props, {}> {
+  state = {
+    askUpload: true
+  }
   beforeUpload = (file: File) => {
     const { formatMessage, onUploadFile } = this.props
     if (file) {
@@ -90,6 +91,13 @@ export class Files extends React.Component<Props, {}> {
     const { target: { checked } } = event
     setFileTerms(checked)
   }
+  openUpload = () => {
+    this.setState({ askUpload: false })
+  }
+  skipFile = () => {
+    const { skipFileAction } = this.props
+    skipFileAction()
+  }
   render() {
     const {
       uploadingFile,
@@ -113,58 +121,76 @@ export class Files extends React.Component<Props, {}> {
       handleOnRenameChange,
       onSaveName
     } = this.props
+    const { askUpload } = this.state
     const handleOpenLocker = () => openUserLocker(true)
     const handleCloseLocker = () => openUserLocker(false)
     const currentFile = fileIdToRename ? find(selectedFiles, ['id', fileIdToRename]) : ''
     const fileNameToEdit = currentFile ? currentFile.name || currentFile.fileUrl : ''
     return (
       <Container>
-        {user ? <><DraggerContainer>
-          <DraggerWithLoading
-            className="upload"
-            loading={uploadingFile}
-            onSelectImage={this.beforeUpload}
-            formatMessage={formatMessage}
-            galleryButton={true}
-            handleOnClickGallery={handleOpenLocker}
-            extensions={imageFileExtensions}
-          >
-            <Button>
-              <ButtonContainer>
-                <Icon type="upload" />
-              </ButtonContainer>
-            </Button>
-          </DraggerWithLoading>
-        </DraggerContainer>
-        <StyledCheckbox
-            checked={fileTermsAccepted}
-            onChange={this.checkFileTerms}
-          >
-          <CheckboxLabel>
-            {formatMessage(messages.description)}
-          </CheckboxLabel>
-        </StyledCheckbox>
-        <Images>
-          {selectedFiles.map((file, index) => {
-            const { fileUrl, id, name } = file
-            const handleDeleteItem = () => deleteImage(id)
-            const handleOpenRename = () => onOpenRenameModal(true, id)
-            return (<ImageContainer key={index}>
-                <Image src={fileUrl} />
-                <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
-                <ActionButtons>
-                  <EditButton onClick={handleOpenRename}>{formatMessage(messages.edit)}</EditButton>
-                  <DeleteButton onClick={handleDeleteItem}>{formatMessage(messages.delete)}</DeleteButton>
-                </ActionButtons>
-            </ImageContainer>)
-          })}
-        </Images></> :
-        <LoginMessage>
+        {user ? 
+          <>
+          {askUpload ? 
+            <AskButtons>
+              <AskButton
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.yesUpload)
+                }}
+                onClick={this.openUpload}
+              />
+              <AskButton
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(messages.noUpload)
+                }}
+                onClick={this.skipFile}
+              />
+            </AskButtons> :
+            <>
+              <DraggerContainer>
+                <DraggerWithLoading
+                  className="upload"
+                  loading={uploadingFile}
+                  onSelectImage={this.beforeUpload}
+                  formatMessage={formatMessage}
+                  galleryButton={true}
+                  handleOnClickGallery={handleOpenLocker}
+                  extensions={imageFileExtensions}
+                >
+                  <Button>
+                    <ButtonContainer>
+                      <Icon type="upload" />
+                    </ButtonContainer>
+                  </Button>
+                </DraggerWithLoading>
+              </DraggerContainer>
+              <StyledCheckbox
+                  checked={fileTermsAccepted}
+                  onChange={this.checkFileTerms}
+                >
+                <CheckboxLabel>
+                  {formatMessage(messages.description)}
+                </CheckboxLabel>
+              </StyledCheckbox>
+              <Images>
+                <ImageList 
+                  {...{
+                    formatMessage,
+                    deleteImage,
+                    onOpenRenameModal,
+                    selectedFiles,
+                  }}
+                />
+              </Images>
+            </>
+          }
+          </> :
+          <LoginMessage>
             <LoginText>{formatMessage(messages.loginMessage)}</LoginText>
             <CustomButton onClick={this.handleLogin}>
               {formatMessage(messages.login)}
             </CustomButton>
-          </LoginMessage>}
+          </LoginMessage>
+        }
         {user && <LockerModal
           {...{
             selectedFiles,

@@ -14,6 +14,7 @@ import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import LazyImage from '../../../components/LazyImage'
 import expandIcon from '../../../assets/expand.png'
+import upperFirst from 'lodash/upperFirst'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   Container,
@@ -57,6 +58,7 @@ interface Tag extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   data: Data
   isMobile: boolean
+  isTablet: boolean
   currentPage: number
   client: any
   skip: number
@@ -144,7 +146,9 @@ export class Inspiration extends React.Component<Props, {}> {
 
   handleSelectTag = (value: string) => {
     const { addTag } = this.props
-    addTag(value)
+    if (value) {
+      addTag(upperFirst(value))
+    }
   }
 
   handleRemoveTag = (value: string) => {
@@ -167,6 +171,8 @@ export class Inspiration extends React.Component<Props, {}> {
       selectedTags,
       filters,
       loading,
+      isMobile,
+      isTablet,
       onSelect,
       onDeselect,
       onExpandInspiration,
@@ -198,7 +204,7 @@ export class Inspiration extends React.Component<Props, {}> {
         <TagsContainer>
           <Select
             size="large"
-            mode="multiple"
+            mode="tags"
             value={selectedTags}
             onSelect={this.handleSelectTag}
             onDeselect={this.handleRemoveTag}
@@ -211,10 +217,10 @@ export class Inspiration extends React.Component<Props, {}> {
             ))}
           </Select>
           <TagPickers>
-            {tags.map((tag: Tag) => {
+            {tags.map((tag: Tag, key: number) => {
               const isSelected = includes(selectedTags, tag.value)
               const selectTag = () => isSelected ? this.handleRemoveTag(tag.value) : this.handleSelectTag(tag.value)
-              return(
+              return key < (isMobile && !isTablet ? 6 : 10) && (
               <TagPicker
                 key={tag.value}
                 className={isSelected ? 'selected' : ''}
@@ -261,7 +267,7 @@ export class Inspiration extends React.Component<Props, {}> {
           useWindow={true}
           pageStart={0}
           loadMore={this.handleLoadData}
-          initialLoad={false}
+          initialLoad={true}
           hasMore={total > inspiration.length}
           {...{loader}}
         >

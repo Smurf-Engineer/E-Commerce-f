@@ -86,7 +86,7 @@ export const Images = styled.div`
   justify-items: flex-start;
   margin-top: 10px;
   @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 `
 

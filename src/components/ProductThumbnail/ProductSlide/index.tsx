@@ -50,6 +50,7 @@ interface Props {
   isSelected?: boolean
   selectedIndex?: number
   fitContainer?: boolean
+  fromIntakeForm?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -84,6 +85,7 @@ const ProductSlide = ({
   proDesign,
   proDesignAssigned,
   selectProduct,
+  fromIntakeForm = false,
   isSelected = false,
   selectedIndex,
   handleCheckChange,
@@ -155,7 +157,7 @@ const ProductSlide = ({
         {selectProduct && <BelowTablet><QuickView onClick={onPressQuickView}>
           <img src={quickViewIcon} />
         </QuickView></BelowTablet>}
-        {selectProduct && <CheckboxContainer {...{selectedIndex}}>
+        {(selectProduct && !fromIntakeForm) && <CheckboxContainer {...{selectedIndex}}>
           <Checkbox
           {...{ indeterminate: false }}
           onChange={handleCheckChange}
