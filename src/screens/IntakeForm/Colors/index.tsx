@@ -54,6 +54,8 @@ interface Props extends RouteComponentProps<any> {
   selectedEditColors: string[]
   selectedEditPrimaryColor: string[]
   isMobile: boolean
+  openBuild: boolean
+  setOpenBuild: (open: boolean) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onSelect: (color: string, listName: string, index?: number) => void
   onDeselect: (color: string, listName: string) => void
@@ -66,17 +68,18 @@ export class Colors extends React.Component<Props, {}> {
     openBuild: false
   }
   openBuildAction = () => {
-    this.setState({ openBuild: true })
+    const { setOpenBuild } = this.props
+    setOpenBuild(true)
   }
   closeBuildAction = () => {
-    this.setState({ openBuild: false })
+    const { setOpenBuild } = this.props
+    setOpenBuild(false)
   }
   buildFromZero = () => {
     const { resetSelection, selectedPaletteIndex } = this.props
     if (selectedPaletteIndex >= -1) {
       resetSelection()
     } 
-    this.setState({ openBuild: true })
   }
   render() {
     const {
@@ -85,6 +88,7 @@ export class Colors extends React.Component<Props, {}> {
       onSelect,
       selectPalette,
       data,
+      openBuild,
       colorsList,
       selectedColors,
       selectedPrimaryColor,
@@ -93,7 +97,6 @@ export class Colors extends React.Component<Props, {}> {
       selectedEditColors,
       isMobile
     } = this.props
-    const { openBuild } = this.state
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
     selectedColors.length : selectedEditColors.length
 

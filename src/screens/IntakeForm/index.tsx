@@ -112,6 +112,7 @@ interface Props extends RouteComponentProps<any> {
   newFileName: string
   renamingFile: boolean
   fileTermsAccepted: boolean
+  openBuild: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -138,6 +139,7 @@ interface Props extends RouteComponentProps<any> {
   onCloseInspirationAction: () => void
   setFromScratchAction: (fromScratch: boolean) => void
   resetColorSelectionAction: () => void
+  setOpenBuild: (open: boolean) => void
   selectProductAction: (product: Product) => void
   addTagAction: (value: string) => void
   removeTagAction: (value: string) => void
@@ -559,6 +561,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedFiles,
       userLockerModalOpen,
       user,
+      setOpenBuild,
+      openBuild,
       lockerSelectedFiles,
       selectedTeamSize,
       projectDescription,
@@ -719,6 +723,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 formatMessage,
                 selectedColors,
                 selectedPrimaryColor,
+                setOpenBuild,
+                openBuild,
                 selectedPaletteIndex,
                 selectedEditColors,
                 selectedEditPrimaryColor,

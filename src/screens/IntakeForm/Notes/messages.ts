@@ -55,8 +55,8 @@ export default defineMessages({
   },
   multipleProductsDescription: {
     id: 'components.IntakeForm.Notes.multipleProductsDescription',
-    defaultMessage: `We can match your design across your products. 
-    Let us know if you have specific requirements for the branding or design.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `We can match your design across your products. Let us know if you have specific requirements for the branding or design.`
   },
   designIdeas: {
     id: 'components.IntakeForm.Notes.designIdeas',

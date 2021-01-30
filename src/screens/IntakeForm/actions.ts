@@ -38,7 +38,8 @@ import {
   ON_RENAME_FILE,
   ON_SET_RENAMING,
   CHANGE_LOCAL_NAME,
-  SET_FILE_TERMS
+  SET_FILE_TERMS,
+  SET_OPEN_BUILD
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -58,6 +59,11 @@ export const deselectElementAction = (elementId: number | string, listName: stri
 export const goToPage = (page: number) => ({
   type: GO_TO_NEXT_PAGE,
   page
+})
+
+export const setOpenBuild = (open: boolean) => ({
+  type: SET_OPEN_BUILD,
+  open
 })
 
 export const setInspirationPageAction = (skip: number, newPage: number) => ({

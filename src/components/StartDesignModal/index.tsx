@@ -119,6 +119,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
               </BannerBack>
               {designCenterMessages.map((item: string, index: number) => (
                 <FoldContent
+                key={index}
                 order={index + 1}
                 className={designCardFolded ? 'folded' : 'unfolded'}
                 >
