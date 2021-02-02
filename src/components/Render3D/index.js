@@ -757,15 +757,15 @@ class Render3D extends PureComponent {
           if (!proDesign && !fromImage && !asImage) {
             areas.forEach(
               (map, index) =>
-                (children[
-                  objectChildCount + index
-                ].material = new THREE.MeshPhongMaterial({
-                  map,
-                  side: THREE.FrontSide,
-                  color: colors[index],
-                  bumpMap,
-                  transparent: true
-                }))
+              (children[
+                objectChildCount + index
+              ].material = new THREE.MeshPhongMaterial({
+                map,
+                side: THREE.FrontSide,
+                color: colors[index],
+                bumpMap,
+                transparent: true
+              }))
             )
             /* Canvas */
             const canvas = document.createElement('canvas')
@@ -825,6 +825,21 @@ class Render3D extends PureComponent {
             object.add(cloneObject)
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
+            if ((!!product.branding || !!branding) && design.predyedColor !== PREDYED_TRANSPARENT) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const textureLoader = new THREE.TextureLoader()
+              const brandingTexture = textureLoader.load(branding || product.branding)
+              brandingTexture.minFilter = THREE.LinearFilter
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                map: brandingTexture,
+                side: THREE.FrontSide,
+                bumpMap,
+                transparent: true
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
           }
 
           /* Object Conig */
