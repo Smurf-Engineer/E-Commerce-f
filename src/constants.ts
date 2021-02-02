@@ -72,6 +72,9 @@ export const ERROR = 'Error'
 export const PERSONAL = 'Personal'
 export const MESSAGE_TIME = 4
 
+/* File extensions */
+export const PNG_EXTENSION = '.png'
+
 /* Files Constants */
 export const MP4_EXTENSION = '.mp4'
 
