@@ -36,7 +36,7 @@ export const Label = styled.div`
   font-size: 14px;
   line-height: 19px;
   margin-bottom: 6px;
-
+  align-items: center;
   @media (min-width: 320px) and (max-width: 480px) {
     margin-bottom: 0;
   }
@@ -106,6 +106,8 @@ export const ProjectInfoContainer = styled.div`
 
 export const LabelContainer = styled.div`
   display: flex;
+  width: 100%;
+  margin-bottom: 8px;
 `
 
 export const TopContainer = styled.div`

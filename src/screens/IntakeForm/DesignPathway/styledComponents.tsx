@@ -94,7 +94,7 @@ export const ButtonWrapper = styled.div`
 `
 
 export const Text = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: 0.8px;
 `
 
@@ -105,7 +105,6 @@ export const Button = styled.div`
   color: ${RED};
   border-radius: 2px;
   transition: all 0.25s ease;
-  margin-left: 20px;
   text-align: center;
   &:hover {
     cursor: pointer;

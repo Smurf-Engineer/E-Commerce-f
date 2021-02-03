@@ -28,7 +28,7 @@ export default defineMessages({
   },
   isThis: {
     id: 'components.IntakeForm.Notifications.isThis',
-    defaultMessage: 'Is this for...'
+    defaultMessage: 'This is for...'
   },
   event: {
     id: 'components.IntakeForm.Notifications.event',

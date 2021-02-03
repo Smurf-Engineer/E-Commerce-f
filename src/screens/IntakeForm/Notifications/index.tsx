@@ -51,6 +51,13 @@ const checkBoxes = [
   'other'
 ]
 
+const checkBoxesMobile = [
+  'event',
+  'team',
+  'company',
+  'other'
+]
+
 const { confirm } = Modal
 
 interface Props extends RouteComponentProps<any> {
@@ -63,6 +70,7 @@ interface Props extends RouteComponentProps<any> {
   mainProduct: number | null
   history: any
   categories: string[]
+  isMobile: boolean
   removeCategory: (listName: string, value: string) => void
   addCategory: (listName: string, value: string) => void
   onChangeInput: (key: string, value: string) => void
@@ -167,6 +175,7 @@ export class Notifications extends React.Component<Props, {}> {
       removeCategory,
       categories,
       addCategory,
+      isMobile,
       sendSms,
       sendEmail,
       phone
@@ -185,6 +194,8 @@ export class Notifications extends React.Component<Props, {}> {
           </SectionButton>
         </div>
       )})
+
+    const arrayBoxes = isMobile ? checkBoxesMobile : checkBoxes
     
     return (
       <MainContainer>
@@ -194,7 +205,7 @@ export class Notifications extends React.Component<Props, {}> {
               {formatMessage(messages.isThis)}
             </CheckTitle>
             <BoxContainer>
-              {checkBoxes.map((checkBox) => {
+              {arrayBoxes.map((checkBox) => {
                 const isSelected = includes(categories, checkBox)
                 const handleAddCategory = () => isSelected
                   ? removeCategory('projectCategories', checkBox)

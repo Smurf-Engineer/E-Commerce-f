@@ -9,10 +9,11 @@ interface Props {
   accent?: string[]
   colorLabels?: { [name: string]: string }
   withLegend?: boolean
+  small?: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
 }
 
-const ColorBar = ({ colorLabels = {}, primary, accent = [], withLegend = false, formatMessage}: Props) => {
+const ColorBar = ({ colorLabels = {}, primary, accent = [], withLegend = false, formatMessage, small }: Props) => {
   const noAccent = !!every(accent, (accentColor) => !accentColor)
   return (
     <Container>
@@ -24,7 +25,7 @@ const ColorBar = ({ colorLabels = {}, primary, accent = [], withLegend = false, 
         <ColorContent>
           <Color color={primary} />
           {colorLabels && 
-            <ColorLabel>
+            <ColorLabel {...{ small }}>
               {colorLabels[primary]}
             </ColorLabel>
           }
@@ -35,7 +36,7 @@ const ColorBar = ({ colorLabels = {}, primary, accent = [], withLegend = false, 
               <ColorContent>
                 <Color {...{ key }} color={color} />
                 {colorLabels && 
-                  <ColorLabel>
+                  <ColorLabel {...{ small }}>
                   {colorLabels[color]}
                   </ColorLabel>
                 }

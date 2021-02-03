@@ -61,6 +61,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
     animationInProgress: false,
     isMobile: false
   }
+  private btnBottom: any
   componentDidMount() {
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
@@ -70,6 +71,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
 
   toggleDesignAnimation = () => {
     this.setState({ designCardFolded: !this.state.designCardFolded })
+    setTimeout(() => this.scrollToDesign(), 700)
   }
 
   toggleProDesignAnimation = () => {
@@ -83,6 +85,17 @@ export class StartDesignModal extends React.Component<Props, {}> {
       if (node) {
         const modalScroller = zenscroll.createScroller(node, 0)
         modalScroller.toY(node.scrollHeight)
+      }
+    }
+  }
+
+  scrollToDesign = () => {
+    if (window) {
+      const node = document.querySelector('.ant-modal-wrap')
+      if (node) {
+        console.log('-----enters scroll')
+        const modalScroller = zenscroll.createScroller(node, 0)
+        modalScroller.center(this.btnBottom)
       }
     }
   }
@@ -128,6 +141,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
                   </MobileCard>
                 </FoldContent>
               ))}
+              <div ref={btn => { this.btnBottom = btn }} />
               <FoldContent
                 order={designCenterMessages.length + 1}
                 className={designCardFolded ? 'folded' : 'unfolded'}

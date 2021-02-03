@@ -95,9 +95,10 @@ export const TagPicker = styled.div`
   min-width: 110px;
   text-align: center;
   transition: background-color 0.3s ease;
-  margin-top: 10px
-  &:last-child {
-    margin-right: 0;
+  flex: 0 1 10px;
+  margin: 10px;
+  @media (max-width: 768px) {
+    margin: 10px 5px;
   }
   &:hover {
     cursor: pointer;
@@ -112,7 +113,6 @@ export const TagPickers = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  gap: 10px;
   margin: 10px 0;
   justify-content: center;
 `

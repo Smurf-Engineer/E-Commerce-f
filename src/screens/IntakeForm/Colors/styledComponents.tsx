@@ -64,12 +64,14 @@ export const PaletteLabel = styled.div`
   flex: 2;
   text-align: center;
   padding: 10px;
-  margin-left: 44px;
+  padding-left: 54px;
+  transition: all .25s;
   @media (max-width: 767px) {
-    margin-left: 0;
+    padding-left: 0;
   }
   &:hover {
     cursor: pointer;
+    background-color: ${GRAY_LIGHT};
   }
 `
 
@@ -122,6 +124,12 @@ export const PaletteContainer = styled.div`
     bottom: 0;
     left: 0;
   }
+`
+
+export const EditButton = styled.div`
+  color: ${RED};
+  font-size: 12px;
+  font-weight: normal;
 `
 
 export const Header = styled.div`

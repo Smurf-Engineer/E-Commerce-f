@@ -2,14 +2,11 @@
  * Colors Component - Created by eduardoquintero on 02/12/20.
  */
 import * as React from 'react'
-import { compose, graphql } from 'react-apollo'
 import ColorBar from '../../../components/ColorBar'
 import ColorSelector from '../../../components/ColorSelector'
-import { GetColorPalettes, GetColorsQuery } from './data'
 import BackIcon from '../../../assets/leftarrow.svg'
 import SwipeableViews from 'react-swipeable-views'
 import isEqual from 'lodash/isEqual'
-import AntdMessage from 'antd/lib/message'
 import rightArrow from '../../../assets/arrow.svg'
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -29,12 +26,12 @@ import {
   Palette,
   Image,
   PaletteLabel,
-  LeftPaletteLabel
+  LeftPaletteLabel,
+  EditButton
 } from './styledComponents'
 import messages from './messages'
 import { CUSTOM_PALETTE_INDEX } from '../constants'
-import { Message, ProDesignPalette, QueryProps, ColorsDataResult, Color } from '../../../types/common'
-import get from 'lodash/get'
+import { Message, ProDesignPalette, QueryProps, ColorsDataResult } from '../../../types/common'
 
 const SELECTED_PRIMARY_COLOR = 'selectedPrimaryColor'
 const SELECTED_COLORS = 'selectedColors'
@@ -48,6 +45,7 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   data: Data
   colorsList: ColorsDataResult
+  colorLabels?: { [name: string]: string }
   selectedColors: string[]
   selectedPrimaryColor: string[]
   selectedPaletteIndex: number
@@ -76,10 +74,8 @@ export class Colors extends React.Component<Props, {}> {
     setOpenBuild(false)
   }
   buildFromZero = () => {
-    const { resetSelection, selectedPaletteIndex } = this.props
-    if (selectedPaletteIndex >= -1) {
-      resetSelection()
-    } 
+    const { resetSelection } = this.props
+    resetSelection()
   }
   render() {
     const {
@@ -88,6 +84,7 @@ export class Colors extends React.Component<Props, {}> {
       onSelect,
       selectPalette,
       data,
+      colorLabels,
       openBuild,
       colorsList,
       selectedColors,
@@ -99,22 +96,6 @@ export class Colors extends React.Component<Props, {}> {
     } = this.props
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
     selectedColors.length : selectedEditColors.length
-
-    let arrayColors = []
-
-    if (colorsList) {
-      try {
-        arrayColors = JSON.parse(get(colorsList, 'colorsResult.colors', []))
-      } catch (e) {
-        AntdMessage.error(e)
-      }
-    }
-
-    const colorLabels = arrayColors.reduce((obj, { value, name }: Color) => {
-      obj[value] = name
-      return obj
-      // tslint:disable-next-line: align
-    }, {})
 
     const handleOnSelectPrimary = (color: string) =>
       onSelect(color, selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
@@ -185,7 +166,12 @@ export class Colors extends React.Component<Props, {}> {
                       >
                         <Header>
                           {name}
-                          <img onClick={this.openBuildAction} src={rightArrow} />
+                          {isMobile ?
+                            <EditButton onClick={this.openBuildAction}>
+                              {formatMessage(messages.edit)}
+                            </EditButton>
+                            : <img onClick={this.openBuildAction} src={rightArrow} />
+                          }
                         </Header>
                         <Body>
                           <ColorBar
@@ -261,21 +247,4 @@ export class Colors extends React.Component<Props, {}> {
   }
 }
 
-type OwnProps = {
-  colorsList?: ColorsDataResult
-}
-
-const ColorsEnhance = compose(
-  graphql<Data>(GetColorPalettes, {}),
-  graphql<ColorsDataResult>(GetColorsQuery, {
-    options: (ownprops: OwnProps) => {
-      const { colorsList } = ownprops
-      return {
-        skip: !!colorsList
-      }
-    },
-    name: 'colorsList'
-  }),
-)(Colors)
-
-export default ColorsEnhance
+export default Colors

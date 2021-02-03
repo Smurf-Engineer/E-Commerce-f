@@ -51,6 +51,7 @@ export const BoxContainer = styled.div`
   flex: 1.2;
   @media (max-width: 768px) {
     flex: 4;
+    margin-right: 0px;
     & .ant-checkbox-wrapper {
       margin: 0 8px 12px 0;
     }
@@ -64,6 +65,7 @@ export const MainContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   padding: 0 240px;
+  height: 100vh;
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 0;
@@ -143,13 +145,13 @@ export const SectionButton = styled.div`
   align-content: center;
   background-color: ${WHITE};
   border: ${({ selected }: ButtonProps) =>
-    selected ? `2px solid ${RED}` : `0.5px solid ${GRAY_DARK}`};
+    selected ? `2px solid ${RED}` : `1px solid ${GRAY_DARK}`};
   border-radius: 2px;
   display: flex;
   height: 50px;
   padding: 14px;
   justify-content: center;
-
+  -webkit-transform: translate3d(0,0,0);
   &:hover {
     cursor: pointer;
   }

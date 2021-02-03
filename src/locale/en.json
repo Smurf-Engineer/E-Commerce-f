@@ -765,6 +765,7 @@
   "screens.IntakeForm.inspiration": "Get Inspired",
   "screens.IntakeForm.inspirationBody": "Select up to 5 images that best represent the artistic concepts or design elements you’d like in your design.",
   "screens.IntakeForm.colors": "CHOOSE YOUR COLORS",
+  "screens.IntakeForm.Colors.edit": "Edit",
   "screens.IntakeForm.colorsBody": "Tips on color selection",
   "screens.IntakeForm.colorsTipTitle": "COLOR SELECTION TIP",
   "screens.IntakeForm.colorsTipBody": "Screen colors will vary from actual printed colors, colors listed here are representational. If you would like specific colors such as those required by a corporate branding guide, please provide SOLID COATED PANTONE values in your Design Notes. Fabric color test prints are sometimes suggested and aways available upon request for a small fee, and tipically take on week to produce and deliver.",

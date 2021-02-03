@@ -27,6 +27,8 @@ export const StrongText = styled.div`
   }
 `
 
+export const PaletteName = styled.div``
+
 export const MainContainer = styled.div`
   width: 100%;
   display: flex;

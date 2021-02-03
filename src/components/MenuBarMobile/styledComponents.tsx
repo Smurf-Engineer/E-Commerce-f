@@ -19,6 +19,7 @@ export const Container = styled.div`
   height: ${({ hide }: ThemeProps) => (!!hide ? 0 : 70)}px;
   justify-content: space-between;
   line-height: 16px;
+  z-index: 9;
   padding: 0px 16px 0 10px;
   position: relative;
 `

@@ -35,7 +35,7 @@ export const Header = styled.div`
   line-height: 0px;
   padding: 0px;
   z-index: 10;
-
+  -webkit-transform: translate3d(0,0,0);
   @media (min-width: 992px) {
     height: ${HEADER_HEIGHT}px;
   }

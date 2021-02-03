@@ -23,6 +23,8 @@ export const Text = styled.div`
   }
 `
 
+export const PaletteName = styled.div``
+
 export const Column = styled.div`
   display: flex;
   flex-direction: column;

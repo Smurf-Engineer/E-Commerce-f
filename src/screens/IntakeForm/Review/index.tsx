@@ -25,7 +25,8 @@ import {
   Color,
   Files,
   ImageText,
-  Products
+  Products,
+  PaletteName
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../../utils/utilsFiles'
 import ColorBar from '../../../components/ColorBar'
@@ -49,6 +50,8 @@ interface Props extends RouteComponentProps<any> {
   selectedItems: Product[]
   fromScratch: boolean
   currentCurrency: string
+  paletteName?: string
+  colorLabels?: { [name: string]: string }
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
 }
@@ -89,6 +92,8 @@ export class Review extends React.Component<Props, {}> {
       projectDescription,
       user,
       selectedItems,
+      colorLabels,
+      paletteName,
       fromScratch,
       currentCurrency
     } = this.props
@@ -173,11 +178,18 @@ export class Review extends React.Component<Props, {}> {
                 <StrongText>{formatMessage(messages.colorPalette)}</StrongText>
               </Column>
             </Row>
+            {!!paletteName &&
+              <PaletteName>
+                {paletteName}
+              </PaletteName>
+            }
             <ColorBar
+              {...{ colorLabels, formatMessage }}
               primary={selectedPaletteIndex === CUSTOM_PALETTE_INDEX
                 ? selectedPrimaryColor[0] : selectedEditPrimaryColor[0]}
               accent={selectedPaletteIndex === CUSTOM_PALETTE_INDEX
                 ? selectedColors : selectedEditColors}
+              small={true}
             />
           </Color> : null}
           <Files>
@@ -192,10 +204,10 @@ export class Review extends React.Component<Props, {}> {
             <Row>
               <Images>
                 {selectedFiles.length ? selectedFiles.map((assetItem, index) => {
-                  const { fileUrl } = assetItem
+                  const { fileUrl, name } = assetItem
                   return (<ImageContainer key={index}>
                     <Image src={fileUrl} />
-                    <ImageText>{getFileNameFromUrl(fileUrl)}</ImageText>
+                    <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
                   </ImageContainer>)
                 }) : formatMessage(messages.noFiles)}
                 </Images>

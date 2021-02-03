@@ -12,9 +12,10 @@ export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 36px;
-  justify-content: space-between;
+  justify-content: flex-start;
   @media (max-width: 768px) {
     max-width: 300px;
+    justify-content: space-between;
   }
 `
 

@@ -38,20 +38,24 @@ export const AskButtons = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
 `
 
 export const AskButton = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid ${RED};
-  color: ${RED};
+  border: 1px solid ${GRAY_DARK};
   padding: 8px 16px;
   transition: all .25s;
+  &:last-child {
+    margin-left: 18px;
+  }
   &:hover {
     cursor: pointer;
     background: ${RED};
     color: ${WHITE};
+  }
+  strong {
+    margin-right: 6px;
   }
 `
 
@@ -67,6 +71,10 @@ export const Images = styled.div`
   margin-top: 10px;
   width: 100%;
   display: flex;
+  justify-content: flex-start;
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `
 
 export const ImageContainer = styled.div`

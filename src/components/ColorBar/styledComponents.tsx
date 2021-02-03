@@ -7,6 +7,7 @@ import { GRAY_LIGHT } from '../../theme/colors'
 type StyledProps = {
   color?: string
   highlightFields?: boolean
+  small?: boolean
 }
 
 export const Container = styled.div`
@@ -31,7 +32,8 @@ export const ColorContent = styled.div`
 export const ColorLabel = styled.div`
   position: absolute;
   top: 44px;
-  font-size: 12px;
+  font-size: ${({ small }: StyledProps) => small ? '8px' : '12px'};
+  
   @media (max-width: 767px) {
     font-size: 8px;
   }

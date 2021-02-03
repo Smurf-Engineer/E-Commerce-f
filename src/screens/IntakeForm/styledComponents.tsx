@@ -26,7 +26,7 @@ export const Title = styled.div`
 `
 
 export const Subtitle = styled.div`
-  font-size: ${({ small }: StyleProps) => (small ? '14px' : '18px')};
+  font-size: ${({ small }: StyleProps) => (small ? '14px' : '16px')};
   margin-top: 14px;
   color: ${({ action }: StyleProps) => (action ? BLUE : GRAY_DARK)};
   cursor: ${({ action }: StyleProps) => (action ? 'pointer' : 'normal')};

@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
+import { compose, graphql, withApollo } from 'react-apollo'
 import messages from './messages'
 import get from 'lodash/get'
 import draftToHtml from 'draftjs-to-html'
@@ -11,7 +11,7 @@ import message from 'antd/lib/message'
 import DesignCenterHeader from '../../components/DesignCenterHeader'
 import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
-import { saveProject, renameFile } from './data'
+import { saveProject, renameFile, GetColorsQuery, GetColorPalettes } from './data'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
@@ -56,7 +56,10 @@ import {
   ImageFile,
   UserType,
   MessagePayload,
-  Product
+  Product,
+  ColorsDataResult,
+  QueryProps,
+  ProDesignPalette
 } from '../../types/common'
 import {
   Sections,
@@ -69,12 +72,17 @@ import {
 
 const { info } = Modal
 
+interface DataColor extends QueryProps {
+  rows: ProDesignPalette[]
+}
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   responsive: Responsive
   selectedItems: Product[]
   currentScreen: number
   inspirationPage: number
+  dataColor: DataColor
   inspirationSkip: number
   inspiration: InspirationType[]
   inspirationTotal: number
@@ -113,6 +121,7 @@ interface Props extends RouteComponentProps<any> {
   renamingFile: boolean
   fileTermsAccepted: boolean
   openBuild: boolean
+  colorsList: ColorsDataResult
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -561,6 +570,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedFiles,
       userLockerModalOpen,
       user,
+      dataColor,
       setOpenBuild,
       openBuild,
       lockerSelectedFiles,
@@ -585,6 +595,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       newFileName,
       renamingFile,
       fileTermsAccepted,
+      colorsList,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -612,7 +623,23 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       setFileTermsAction
     } = this.props
     const { isMobile, isTablet, richTextEditorReady } = this.state
+    
+    let arrayColors = []
+    if (colorsList && !colorsList.loading) {
+      try {
+        arrayColors = JSON.parse(get(colorsList, 'colorsResult.colors', []))
+      } catch (e) {
+        message.error(e)
+      }
+    }
 
+    const paletteName = get(dataColor, ['rows', selectedPaletteIndex, 'name'], '')
+
+    const colorLabels = arrayColors.reduce((obj, { value, name }: Color) => {
+      obj[value] = name
+      return obj
+      // tslint:disable-next-line: align
+    }, {})
     const validations = this.getNavButtonsValidation()
     const currentTitleHasAction = titleTexts[currentScreen].action
     const currentSubtitle = titleTexts[currentScreen].body
@@ -649,7 +676,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     return (
       <Layout
         {...{ history, intl }}
-        hideTopHeader={responsive.tablet}
         hideBottomHeader={true}
         disableAssist={true}
         hideFooter={true}
@@ -725,11 +751,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 selectedPrimaryColor,
                 setOpenBuild,
                 openBuild,
+                colorLabels,
+                colorsList,
                 selectedPaletteIndex,
                 selectedEditColors,
                 selectedEditPrimaryColor,
                 isMobile
               }}
+              data={dataColor}
               onSelect={(this.handleOnselectElementAction)}
               onDeselect={deselectElementAction}
               selectPalette={selectPaletteAction}
@@ -778,6 +807,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 selectedEditColors,
                 selectedEditPrimaryColor,
                 selectedFiles,
+                colorLabels,
+                paletteName,
                 selectedItems,
                 fromScratch,
                 currentCurrency,
@@ -799,6 +830,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 phone,
                 sendSms,
                 sendEmail,
+                isMobile,
                 history
               }}
               removeCategory={removeFromListAction}
@@ -825,6 +857,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 selectedFiles,
                 projectName,
                 user,
+                colorLabels,
+                paletteName,
                 projectDescription,
                 selectedItems,
                 fromScratch,
@@ -854,6 +888,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 }
 
+type OwnProps = {
+  colorsList?: ColorsDataResult
+}
+
 const mapStateToProps = (state: any) => {
   const intakeForm = state.get('intakeForm').toJS()
   const langProps = state.get('languageProvider').toJS()
@@ -876,7 +914,17 @@ const IntakeFormPageEnhance = compose(
   connect(
     mapStateToProps,
     { ...intakeFormActions, ...apiActions, openLoginAction }
-  )
+  ),
+  graphql<DataColor>(GetColorPalettes, { name: 'dataColor' }),
+  graphql<ColorsDataResult>(GetColorsQuery, {
+    options: (ownprops: OwnProps) => {
+      const { colorsList } = ownprops
+      return {
+        skip: !!colorsList
+      }
+    },
+    name: 'colorsList'
+  })
 )(IntakeFormPage)
 
 export default IntakeFormPageEnhance

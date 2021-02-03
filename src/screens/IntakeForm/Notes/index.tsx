@@ -45,6 +45,8 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   categories: string[]
   richTextEditorReady: boolean
+  colorLabels?: { [name: string]: string }
+  paletteName?: string
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
@@ -135,6 +137,8 @@ export class Notes extends React.Component<Props, {}> {
       inspirationSelectedItems,
       selectedColors,
       selectedPrimaryColor,
+      colorLabels,
+      paletteName,
       selectedPaletteIndex,
       selectedEditColors,
       selectedEditPrimaryColor,
@@ -208,6 +212,8 @@ export class Notes extends React.Component<Props, {}> {
             <DataSelected
               {...{
                 inspiration,
+                colorLabels,
+                paletteName,
                 inspirationSelectedItems,
                 selectedColors,
                 selectedPrimaryColor,
