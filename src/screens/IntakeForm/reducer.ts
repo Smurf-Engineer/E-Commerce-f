@@ -121,9 +121,9 @@ const intakeFormReducer: Reducer<any> = (
         inspirationPage: newPage
       })
     case SET_INSPIRATION_DATA:
-      const { data, fullCount } = action
+      const { data, fullCount, reset } = action
       const items = state.get('inspiration')
-      const itemToAdd = items.push(...data)
+      const itemToAdd = reset ? data : items.push(...data)
       const itemsMap = itemToAdd.map((item: any) => fromJS(item))
       return state.merge({
         inspiration: itemsMap,

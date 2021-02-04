@@ -129,7 +129,7 @@ interface Props extends RouteComponentProps<any> {
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
   setInspirationPageAction: (skip: number, newPage: number) => void
-  setInspirationDataAction: (data: InspirationType[], fullCount: number) => void
+  setInspirationDataAction: (data: InspirationType[], fullCount: number, reset: boolean) => void
   setInspirationLoadingAction: (loading: boolean) => void
   selectPaletteAction: (primaryColor: string, accentColors: string[], index: number) => void
   uploadFileAction: (file: File) => void

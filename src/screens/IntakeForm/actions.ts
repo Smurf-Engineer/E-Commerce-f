@@ -72,10 +72,11 @@ export const setInspirationPageAction = (skip: number, newPage: number) => ({
   newPage
 })
 
-export const setInspirationDataAction = (data: InspirationType[], fullCount: number) => ({
+export const setInspirationDataAction = (data: InspirationType[], fullCount: number, reset: boolean) => ({
   type: SET_INSPIRATION_DATA,
   data,
-  fullCount
+  fullCount,
+  reset
 })
 
 export const setInspirationLoadingAction = (loading: boolean) => ({

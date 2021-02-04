@@ -71,7 +71,7 @@ interface Props extends RouteComponentProps<any> {
   filters: string[]
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   setPage: (skip: number, newPage: number) => void
-  setInspirationData: (data: InspirationType[], fullCount: number) => void
+  setInspirationData: (data: InspirationType[], fullCount: number, reset: boolean) => void
   setLoading: (loading: boolean) => void
   onSelect: (inspirationId: number, listName: string) => void
   onDeselect: (inspirationId: number, listName: string) => void
@@ -128,7 +128,7 @@ export class Inspiration extends React.Component<Props, {}> {
       })
       const inspirationResults = get(response, 'data.rows.inspiration', [])
       const fullCount = get(response, 'data.rows.fullCount', 0)
-      setInspirationData(inspirationResults, fullCount)
+      setInspirationData(inspirationResults, fullCount, skip === 0)
     } catch (e) {
       setLoading(false)
       message.error(e.message)
