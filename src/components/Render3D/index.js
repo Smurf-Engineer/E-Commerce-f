@@ -825,12 +825,12 @@ class Render3D extends PureComponent {
             object.add(cloneObject)
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
-            if ((!!product.branding || !!branding) && design.predyedColor !== PREDYED_TRANSPARENT) {
+            if (!!product.branding && design.predyedColor !== PREDYED_TRANSPARENT) {
               const brandingObj = children[meshIndex].clone()
               object.add(brandingObj)
               const brandingIndex = children.length - 1
               const textureLoader = new THREE.TextureLoader()
-              const brandingTexture = textureLoader.load(branding || product.branding)
+              const brandingTexture = textureLoader.load(product.branding)
               brandingTexture.minFilter = THREE.LinearFilter
               const brandingMaterial = new THREE.MeshPhongMaterial({
                 map: brandingTexture,
