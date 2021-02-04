@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.IntakeForm.Notes.ideas',
     defaultMessage: 'Briefly describe your design ideas'
   },
+  placeholder: {
+    id: 'screens.IntakeForm.Notes.placeholder',
+    defaultMessage: '15 characters minimum required.'
+  },
   errorMsg: {
     id: 'components.IntakeForm.Notes.errorMsg',
     defaultMessage: 'Something wrong happened. Please try again!'

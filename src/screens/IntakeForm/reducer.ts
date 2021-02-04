@@ -71,6 +71,7 @@ export const initialState = fromJS({
   sendSms: false,
   openBuild: false,
   sendEmail: false,
+  validLength: false,
   savingIntake: false,
   successModal: false,
   expandedInspiration: null,
@@ -261,7 +262,7 @@ const intakeFormReducer: Reducer<any> = (
       return state.merge({ [listName]: addItem })
     }
     case SET_DESCRIPTION:
-      return state.merge({ projectDescription: action.contentState })
+      return state.merge({ projectDescription: action.contentState, validLength: action.validLength })
     case OPEN_RENAME_MODAL:
       return state.merge({ renameFileOpen: action.open, fileIdToRename: action.id, newFileName: '' })
     case ON_RENAME_FILE:

@@ -43,6 +43,10 @@ body {
   margin: 3px auto;
 }
 
+.hide-date-input > .ant-calendar-input-wrap {
+  display: none;
+}
+
 .richTextWrapper {
   position: relative;
 }

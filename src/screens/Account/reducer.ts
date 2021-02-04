@@ -11,7 +11,9 @@ import {
   SET_CURRENT_SHARE,
   OPEN_SIDEBAR_MOBILE,
   OPEN_ADD_TOTEAMSTORE,
-  SET_ITEM_TOADD
+  SET_ITEM_TOADD,
+  PRO_DESIGN_PROJECTS,
+  PRO_DESIGN
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -46,6 +48,13 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_DEFAULT_SCREEN: {
       const { screen, openCreations } = action
+      if (screen === PRO_DESIGN_PROJECTS) {
+        return state.merge({
+          screen,
+          defaultScreen: screen,
+          openKeys: ['', PRO_DESIGN]
+        })
+      }
       if (openCreations) {
         return state.merge({
           screen,

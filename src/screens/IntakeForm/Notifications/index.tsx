@@ -46,14 +46,6 @@ import includes from 'lodash/includes'
 const checkBoxes = [
   'event',
   'team',
-  'club',
-  'company',
-  'other'
-]
-
-const checkBoxesMobile = [
-  'event',
-  'team',
   'company',
   'other'
 ]
@@ -97,13 +89,10 @@ export class Notifications extends React.Component<Props, {}> {
       return false
     }
   
-    const date = moment()
-    date.hour(0)
-    date.minute(0)
-    date.second(0)
+    const date = moment({ hour: 0, minute: 0, second: 0 })
 
     const isBeforeOfCurrentDay = current.valueOf() < date.valueOf()
-    date.add(7, 'days')
+    date.add(16, 'days')
 
     return (
       isBeforeOfCurrentDay || current.valueOf() < date.valueOf()
@@ -156,9 +145,11 @@ export class Notifications extends React.Component<Props, {}> {
           style: cancelButtonStyle
         },
         content: (
-          <InfoBody>
-            {formatMessage(messages.teamSizeAlert)}
-          </InfoBody>
+          <InfoBody
+            dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.teamSizeAlert)
+            }}
+          />
         )
       })
     } else {
@@ -175,7 +166,6 @@ export class Notifications extends React.Component<Props, {}> {
       removeCategory,
       categories,
       addCategory,
-      isMobile,
       sendSms,
       sendEmail,
       phone
@@ -194,8 +184,6 @@ export class Notifications extends React.Component<Props, {}> {
           </SectionButton>
         </div>
       )})
-
-    const arrayBoxes = isMobile ? checkBoxesMobile : checkBoxes
     
     return (
       <MainContainer>
@@ -205,7 +193,7 @@ export class Notifications extends React.Component<Props, {}> {
               {formatMessage(messages.isThis)}
             </CheckTitle>
             <BoxContainer>
-              {arrayBoxes.map((checkBox) => {
+              {checkBoxes.map((checkBox) => {
                 const isSelected = includes(categories, checkBox)
                 const handleAddCategory = () => isSelected
                   ? removeCategory('projectCategories', checkBox)
@@ -242,7 +230,9 @@ export class Notifications extends React.Component<Props, {}> {
               format={DATE_FORMAT_STARTING_YEAR}
               size="large"
               style={inputStyle}
+              allowClear={false}
               value={estimatedDate}
+              dropdownClassName="hide-date-input"
               disabledDate={this.disabledDate}
               onChange={this.handleOnSelectDate}
             />

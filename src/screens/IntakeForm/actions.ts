@@ -212,9 +212,10 @@ export const addToListAction = (listName: string, name: string) => ({
   name
 })
 
-export const setDescriptionAction = (contentState: string | null) => ({
+export const setDescriptionAction = (contentState: string | null, validLength: boolean) => ({
   type: SET_DESCRIPTION,
-  contentState
+  contentState,
+  validLength
 })
 
 export const openRenameModalAction = (open: boolean, id?: number) => ({

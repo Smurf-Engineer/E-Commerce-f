@@ -48,7 +48,9 @@ import {
   ComparisonDiv,
   RasterDiv,
   RasterImage,
-  RasterText
+  RasterText,
+  RasterContent,
+  BottomText
 } from './styledComponents'
 import {
   Responsive,
@@ -122,6 +124,7 @@ interface Props extends RouteComponentProps<any> {
   fileTermsAccepted: boolean
   openBuild: boolean
   colorsList: ColorsDataResult
+  validLength: boolean
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -155,7 +158,7 @@ interface Props extends RouteComponentProps<any> {
   resetInspirationDataAction: () => void
   removeFromListAction: (listName: string, name: string) => void
   addToListAction: (listName: string, name: string) => void
-  setDescriptionAction: (contentState: string | null) => void
+  setDescriptionAction: (contentState: string | null, validLength: boolean) => void
   openRenameModalAction: (open: boolean, id?: number) => void
   onRenameChangeAction: (value: string) => void
   renameFileName: (variables: {}) => Promise<MessagePayload>
@@ -204,12 +207,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { setFromScratchAction } = this.props
     setFromScratchAction(false)
     this.handleOnContinue(false)
-  }
-
-  skipFileAction = () => {
-    const { setFileTermsAction } = this.props
-    setFileTermsAction(true)
-    this.handleOnContinue()
   }
 
   handleOnRenameFileName = async () => {
@@ -347,6 +344,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedPrimaryColor,
       selectedEditPrimaryColor,
       user,
+      validLength,
       projectName,
       selectedTeamSize,
       estimatedDate,
@@ -401,7 +399,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.NOTES:
         return {
-          continueDisable: !projectName || !user || !projectDescription,
+          continueDisable: !projectName || !user || !projectDescription || !validLength,
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
@@ -495,24 +493,27 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             style: buttonStyle
           },
           content:
-            <ComparisonDiv>
-              <RasterDiv>
-                <RasterImage src={vector} />
-                <RasterText
-                  dangerouslySetInnerHTML={{
-                  __html: formatMessage(messages.vectorBody)
-                  }}
-                />
-              </RasterDiv>
-              <RasterDiv>
-                <RasterImage src={raster} />
-                <RasterText
-                  dangerouslySetInnerHTML={{
-                  __html: formatMessage(messages.rasterBody)
-                  }}
-                />
-              </RasterDiv>
-            </ComparisonDiv>
+            <RasterContent>
+              <ComparisonDiv>
+                <RasterDiv>
+                  <RasterImage src={vector} />
+                  <RasterText
+                    dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.vectorBody)
+                    }}
+                  />
+                </RasterDiv>
+                <RasterDiv>
+                  <RasterImage src={raster} />
+                  <RasterText
+                    dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.rasterBody)
+                    }}
+                  />
+                </RasterDiv>
+              </ComparisonDiv>
+              <BottomText>{formatMessage(messages.rasterService)}</BottomText>
+            </RasterContent>
         })
         break
       default: {
@@ -779,7 +780,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 renamingFile,
                 fileTermsAccepted
               }}
-              skipFileAction={this.skipFileAction}
               onUploadFile={uploadFileAction}
               openUserLocker={openUserLockerAction}
               onOpenLogin={this.handleOnOpenLogin}

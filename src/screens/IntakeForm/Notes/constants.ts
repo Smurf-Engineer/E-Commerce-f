@@ -4,3 +4,5 @@ export const TEAM_SIZES = [
   '6-24',
   '25+'
 ]
+
+export const MINIMUM_LENGTH = 15

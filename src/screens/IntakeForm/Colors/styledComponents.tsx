@@ -46,6 +46,7 @@ export const SelectPaletteContainer = styled.div`
   display: flex;
   border: 1px solid ${GRAY_LIGHTEST};
   border-bottom: none;
+  border-top: none;
   flex-direction: column;
   @media (max-width: 768px) {
     border-bottom: 1px solid ${GRAY_LIGHTEST};
@@ -55,7 +56,6 @@ export const SelectPaletteContainer = styled.div`
 export const PaletteTitle = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${GRAY_LIGHTEST};
   padding: ${({ withPadding }: StyleProps) => withPadding ? '10px' : '0'};
   font-weight: 600;
 `
@@ -64,8 +64,9 @@ export const PaletteLabel = styled.div`
   flex: 2;
   text-align: center;
   padding: 10px;
-  padding-left: 54px;
+  padding-left: 44px;
   transition: all .25s;
+  background-color: ${GRAY_LIGHTEST};
   @media (max-width: 767px) {
     padding-left: 0;
   }
@@ -76,7 +77,12 @@ export const PaletteLabel = styled.div`
 `
 
 export const LeftPaletteLabel = styled.div`
-  flex: 1.5;
+  flex: 1.47;
+  margin-right: 10px;
+  @media (max-width: 767px) {
+    flex: 1.5;
+    margin-right: 0px;
+  }
   padding: 10px;
   background-color: ${GRAY_LIGHT};
 `

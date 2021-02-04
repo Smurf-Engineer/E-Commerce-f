@@ -7,6 +7,10 @@ interface ImagePreviewProps {
   src: string
 }
 
+interface DivProps {
+  selected?: boolean
+}
+
 export const Container = styled.div`
   width: 100%;
   background-color: ${WHITE};
@@ -38,6 +42,7 @@ export const AskButtons = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 28px;
 `
 
 export const AskButton = styled.div`
@@ -45,6 +50,9 @@ export const AskButton = styled.div`
   align-items: center;
   border: 1px solid ${GRAY_DARK};
   padding: 8px 16px;
+  border-color: ${({ selected }: DivProps) => selected ? RED : GRAY_DARK };
+  color: ${({ selected }: DivProps) => selected ? WHITE : GRAY_DARK };
+  background: ${({ selected }: DivProps) => selected ? RED : WHITE };
   transition: all .25s;
   &:last-child {
     margin-left: 18px;
@@ -52,6 +60,7 @@ export const AskButton = styled.div`
   &:hover {
     cursor: pointer;
     background: ${RED};
+    border-color: ${RED};
     color: ${WHITE};
   }
   strong {

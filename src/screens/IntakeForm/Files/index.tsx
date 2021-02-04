@@ -43,7 +43,6 @@ interface Props extends RouteComponentProps<any> {
   newFileName: string
   renamingFile: boolean
   fileTermsAccepted: boolean
-  skipFileAction: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onUploadFile: (file: File) => void
   openUserLocker: (open: boolean) => void
@@ -60,7 +59,7 @@ interface Props extends RouteComponentProps<any> {
 
 export class Files extends React.Component<Props, {}> {
   state = {
-    askUpload: true
+    showUpload: false
   }
   beforeUpload = (file: File) => {
     const { formatMessage, onUploadFile } = this.props
@@ -92,11 +91,14 @@ export class Files extends React.Component<Props, {}> {
     setFileTerms(checked)
   }
   openUpload = () => {
-    this.setState({ askUpload: false })
+    const { setFileTerms } = this.props
+    this.setState({ showUpload: true })
+    setFileTerms(false)
   }
   skipFile = () => {
-    const { skipFileAction } = this.props
-    skipFileAction()
+    const { setFileTerms } = this.props
+    setFileTerms(true)
+    this.setState({ showUpload: false })
   }
   render() {
     const {
@@ -121,7 +123,7 @@ export class Files extends React.Component<Props, {}> {
       handleOnRenameChange,
       onSaveName
     } = this.props
-    const { askUpload } = this.state
+    const { showUpload } = this.state
     const handleOpenLocker = () => openUserLocker(true)
     const handleCloseLocker = () => openUserLocker(false)
     const currentFile = fileIdToRename ? find(selectedFiles, ['id', fileIdToRename]) : ''
@@ -130,59 +132,61 @@ export class Files extends React.Component<Props, {}> {
       <Container>
         {user ? 
           <>
-          {askUpload ? 
             <AskButtons>
               <AskButton
                 dangerouslySetInnerHTML={{
                   __html: formatMessage(messages.yesUpload)
                 }}
+                selected={showUpload}
                 onClick={this.openUpload}
               />
               <AskButton
                 dangerouslySetInnerHTML={{
                   __html: formatMessage(messages.noUpload)
                 }}
+                selected={!showUpload && fileTermsAccepted}
                 onClick={this.skipFile}
               />
-            </AskButtons> :
-            <>
-              <DraggerContainer>
-                <DraggerWithLoading
-                  className="upload"
-                  loading={uploadingFile}
-                  onSelectImage={this.beforeUpload}
-                  formatMessage={formatMessage}
-                  galleryButton={true}
-                  handleOnClickGallery={handleOpenLocker}
-                  extensions={imageFileExtensions}
-                >
-                  <Button>
-                    <ButtonContainer>
-                      <Icon type="upload" />
-                    </ButtonContainer>
-                  </Button>
-                </DraggerWithLoading>
-              </DraggerContainer>
-              <StyledCheckbox
-                  checked={fileTermsAccepted}
-                  onChange={this.checkFileTerms}
-                >
-                <CheckboxLabel>
-                  {formatMessage(messages.description)}
-                </CheckboxLabel>
-              </StyledCheckbox>
-              <Images>
-                <ImageList 
-                  {...{
-                    formatMessage,
-                    deleteImage,
-                    onOpenRenameModal,
-                    selectedFiles,
-                  }}
-                />
-              </Images>
-            </>
-          }
+            </AskButtons>
+            {showUpload &&
+              <>
+                <DraggerContainer>
+                  <DraggerWithLoading
+                    className="upload"
+                    loading={uploadingFile}
+                    onSelectImage={this.beforeUpload}
+                    formatMessage={formatMessage}
+                    galleryButton={true}
+                    handleOnClickGallery={handleOpenLocker}
+                    extensions={imageFileExtensions}
+                  >
+                    <Button>
+                      <ButtonContainer>
+                        <Icon type="upload" />
+                      </ButtonContainer>
+                    </Button>
+                  </DraggerWithLoading>
+                </DraggerContainer>
+                <StyledCheckbox
+                    checked={fileTermsAccepted}
+                    onChange={this.checkFileTerms}
+                  >
+                  <CheckboxLabel>
+                    {formatMessage(messages.description)}
+                  </CheckboxLabel>
+                </StyledCheckbox>
+                <Images>
+                  <ImageList 
+                    {...{
+                      formatMessage,
+                      deleteImage,
+                      onOpenRenameModal,
+                      selectedFiles,
+                    }}
+                  />
+                </Images>
+              </>
+            }
           </> :
           <LoginMessage>
             <LoginText>{formatMessage(messages.loginMessage)}</LoginText>

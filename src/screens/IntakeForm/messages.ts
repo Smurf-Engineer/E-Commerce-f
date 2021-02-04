@@ -192,11 +192,15 @@ export default defineMessages({
   vectorBody: {
     id: 'screens.IntakeForm.vectorBody',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p><strong>VECTOR ARTWORK</strong></p>Most professional designers create logos in vector format for one main reason — they can be resized without pixelating. This sample of the JAKROO logo shows a logo created in vector format that can be enlarged to any size and the lines will always be crisp and sharp.'
+    defaultMessage: '<p><strong>VECTOR ARTWORK</strong></p><p>Most professional designers create logos in vector format for one main reason — they can be resized without pixelating. This sample of the JAKROO logo shows a logo created in vector format that can be enlarged to any size and the lines will always be crisp and sharp.</p><p>Files with the extension (.ai) or (.eps) typically represent VECTOR files.</p>'
   },
   rasterBody: {
     id: 'screens.IntakeForm.rasterBody',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `<p><strong>RASTER ARTWORK</strong></p>Raster based software, such as Photoshop, generates images in a grid of millions of color pixels. When you try to scale a raster logo those little pixels become big, which result as blurry images. The sample of the JAKROO logo gives an idea how a raster logo could appear once enlarged. We can't guarantee the clarity of your artwork if raster images are used.`
+    defaultMessage: `<p><strong>RASTER ARTWORK</strong></p><p>Raster based software, such as Photoshop, generates images in a grid of millions of color pixels. When you try to scale a raster logo those little pixels become big, which result as blurry images. The sample of the JAKROO logo gives an idea how a raster logo could appear once enlarged. We can't guarantee the clarity of your artwork if raster images are used.</p><p>Files with the extension (.jpg) or (.png) typically represent RASTER files.</p>`
+  },
+  rasterService: {
+    id: 'screens.IntakeForm.rasterService',
+    defaultMessage: 'File vectorization services are available. Ask your account manager for details.'
   }
 })

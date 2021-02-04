@@ -58,18 +58,31 @@ export const FileTitle = styled.div`
   font-family: ${AVENIR_NEXT};
   font-size: 18px;
   margin-bottom: 15px;
+  @media (max-width: 767px) {
+    font-size: 16px;
+  }
 `
 
 export const ComparisonDiv = styled.div`
-  margin-left: -22px;
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 32px;
   flex-flow: row;
   @media (max-width: 767px) {
     flex-flow: column;
   }
+`
+
+export const RasterContent = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+  margin-left: -22px;
+`
+
+export const BottomText = styled.div`
+  text-align: center;
+  margin-top: 20px;
 `
 
 export const RasterDiv = styled.div`
@@ -77,6 +90,13 @@ export const RasterDiv = styled.div`
   flex-flow: column;
   align-items: center;
   flex: 1;
+  margin-right: 32px;
+  &:last-child {
+    margin-right: 0px;
+  }
+  @media (max-width: 767px) {
+    margin-right: 0px;
+  }
 `
 
 export const RasterImage = styled.img`

@@ -27,6 +27,7 @@ import {
   ImageFile,
   Product
 } from '../../../types/common'
+import { MINIMUM_LENGTH } from './constants'
 
 interface Props extends RouteComponentProps<any> {
   user?: UserType
@@ -50,7 +51,7 @@ interface Props extends RouteComponentProps<any> {
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
-  setDescription: (contentState: string | null) => void
+  setDescription: (contentState: string | null, validLength: boolean) => void
   removeCategory: (listName: string, value: string) => void
   addCategory: (listName: string, value: string) => void
   showModal: (title: string, body: string[] | string, accept: string) => void
@@ -101,11 +102,18 @@ export class Notes extends React.Component<Props, {}> {
     this.setState({
       contentState,
     })
+    this.setDescription()
   }
 
   setDescription = () => {
     const { setDescription } = this.props
-    setDescription(JSON.stringify(this.state.contentState))
+    const { editorState, editorReady } = this.state
+    let validLength = false
+    if (editorState && editorReady) {
+      const contentState = editorState.getCurrentContent()
+      validLength = contentState.getPlainText().length >= MINIMUM_LENGTH
+    }
+    setDescription(JSON.stringify(this.state.contentState), validLength)
   }
 
   showMultipleItems = () => {
@@ -180,6 +188,7 @@ export class Notes extends React.Component<Props, {}> {
                 wrapperClassName="richTextWrapper"
                 editorClassName="richTextEditor"
                 toolbarClassName="richTextToolBar"
+                placeholder={formatMessage(messages.placeholder)}
                 onEditorStateChange={this.onEditorStateChange}
                 onContentStateChange={this.onContentStateChange}
                 onBlur={this.setDescription}

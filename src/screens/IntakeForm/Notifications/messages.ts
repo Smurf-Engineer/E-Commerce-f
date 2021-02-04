@@ -89,18 +89,18 @@ export default defineMessages({
   teamSizeAlert: {
     id: 'components.IntakeForm.Notifications.teamSizeAlert',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `It looks like you may be designing just for yourself. You may want to try out Designlab, our self-design tool with Pro Assist support...`
+    defaultMessage: `<p>It looks like you may be designing just for yourself. You may want to try out DesignLab, our online self design tool. With DesignLab you can access our robust Kickstart Design library or upload your own artwork.</p><p>Use our color palette and clip art libraries to customize even more.</p><p>You can also connect with a live Designer through our ProAssist chat.</p>`
   },
   designLab: {
     id: 'components.IntakeForm.Notifications.designLab',
-    defaultMessage: 'Take me to design lab'
+    defaultMessage: 'Take me to Design Lab'
   },
   stillPro: {
     id: 'components.IntakeForm.Notifications.stillPro',
-    defaultMessage: 'I still want a pro design'
+    defaultMessage: 'I still want a Pro Design'
   },
   information: {
-    id: 'components.IntakeForm.Notifications.stillPro',
+    id: 'components.IntakeForm.Notifications.information',
     defaultMessage: 'INFORMATION'
   }
 })
