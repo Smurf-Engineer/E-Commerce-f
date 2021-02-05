@@ -93,7 +93,6 @@ export class StartDesignModal extends React.Component<Props, {}> {
     if (window) {
       const node = document.querySelector('.ant-modal-wrap')
       if (node) {
-        console.log('-----enters scroll')
         const modalScroller = zenscroll.createScroller(node, 0)
         modalScroller.center(this.btnBottom)
       }
