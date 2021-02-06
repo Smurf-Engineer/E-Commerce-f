@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose, graphql, withApollo } from 'react-apollo'
 import messages from './messages'
 import get from 'lodash/get'
+import zenscroll from 'zenscroll'
 import draftToHtml from 'draftjs-to-html'
 import message from 'antd/lib/message'
 import DesignCenterHeader from '../../components/DesignCenterHeader'
@@ -71,6 +72,7 @@ import {
   SELECTED_FILES,
   INSPIRATION_SELECTEED_ITEMS
 } from './constants'
+import ReactDOM from 'react-dom'
 
 const { info } = Modal
 
@@ -125,6 +127,8 @@ interface Props extends RouteComponentProps<any> {
   openBuild: boolean
   colorsList: ColorsDataResult
   validLength: boolean
+  highlight: boolean
+  setHighlight: (active: boolean) => void
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -174,6 +178,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     isTablet: false,
     richTextEditorReady: false
   }
+  private intakeRef: any
   componentDidMount() {
     const { location, selectedItems, selectProductAction } = this.props
     if (location.state && !selectedItems.length) {
@@ -237,6 +242,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   handleOnContinue = async (isFromScratch?: boolean) => {
     const { goToPage, currentScreen} = this.props
+    const { isMobile, isTablet } = this.state
+    if (isMobile || isTablet) {
+      const node = ReactDOM.findDOMNode(this.intakeRef) as HTMLElement
+      const intakeScroller = zenscroll.createScroller(node, 0)
+      intakeScroller.toY(0, 0)
+    } else {
+      window.scrollTo(0, 0)
+    }
     if (currentScreen !== Sections.REVIEW) {
       if (currentScreen === Sections.PATHWAY && !isFromScratch) {
         return goToPage(currentScreen + 3)
@@ -539,6 +552,41 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     }
   }
 
+  showMissingFields = () => {
+    const { currentScreen, fileTermsAccepted, projectName, validLength, intl: { formatMessage } } = this.props
+    let highlight = false
+    let scrollCoords = 0
+    switch (currentScreen) {
+      case Sections.FILES: 
+        highlight = !fileTermsAccepted
+        scrollCoords = 150
+        break
+      case Sections.NOTES:
+        highlight = !validLength || !projectName
+        scrollCoords = !projectName ? 30 : 80
+        break
+      default:
+        highlight = false
+    }
+    if (highlight) {
+      this.showHighlight(highlight, scrollCoords)
+      message.error(formatMessage(messages.missingField))
+    }
+  }
+
+  showHighlight = (active: boolean, coords: number) => {
+    const { setHighlight } = this.props
+    const { isTablet, isMobile } = this.state
+    if (isTablet || isMobile) {
+      const node = ReactDOM.findDOMNode(this.intakeRef) as HTMLElement
+      const intakeScroller = zenscroll.createScroller(node, 0)
+      intakeScroller.toY(coords, 50)
+    } else {
+      window.scrollTo(0, coords)
+    }
+    setHighlight(active)
+  }
+
   showTips = () => {
     const { intl: { formatMessage }, currentScreen } = this.props
     const title = formatMessage(messages[titleTexts[currentScreen].tipTitle])
@@ -570,6 +618,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       uploadingFile,
       selectedFiles,
       userLockerModalOpen,
+      highlight,
       user,
       dataColor,
       setOpenBuild,
@@ -597,6 +646,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       renamingFile,
       fileTermsAccepted,
       colorsList,
+      validLength,
       deselectElementAction,
       setInspirationPageAction,
       setInspirationDataAction,
@@ -682,7 +732,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         hideFooter={true}
         darkMode={true}
       >
-      <IntakeContainer>
+      <IntakeContainer
+        ref={(listObject: any) => {
+          this.intakeRef = listObject
+        }}
+      >
         {!isMobile && !isTablet ? <>
           <DesignCenterHeader
             proDesign={true}
@@ -693,6 +747,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             {...{validations, savingIntake}}
             onPrevious={this.handleOnPrevious}
             onContinue={this.handleOnContinue}
+            showMissingFields={this.showMissingFields}
           /></> : null }
           {isMobile || isTablet ?
           (<MobileMenuNav
@@ -700,6 +755,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             onPrevious={this.handleOnPrevious}
             onSelectTab={this.handleOnSelectTab}
             validate={this.getNavButtonsValidation}
+            showMissingFields={this.showMissingFields}
             currentTab={currentScreen}      
             {...{validations, savingIntake, fromScratch, formatMessage}}
           />) : null}
@@ -757,6 +813,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 selectedPaletteIndex,
                 selectedEditColors,
                 selectedEditPrimaryColor,
+                isTablet,
                 isMobile
               }}
               data={dataColor}
@@ -774,6 +831,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 user,
                 lockerSelectedFiles,
                 isMobile,
+                highlight,
                 renameFileOpen,
                 fileIdToRename,
                 newFileName,
@@ -799,6 +857,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 projectDescription,
                 projectName,
                 phone,
+                validLength,
+                highlight,
                 inspiration,
                 inspirationSelectedItems,
                 selectedColors,

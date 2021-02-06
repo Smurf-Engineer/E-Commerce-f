@@ -41,7 +41,8 @@ import {
   PRO_DESIGN_PROJECTS,
   resellerOptions,
   MY_STORES,
-  resellerShortOptions
+  resellerShortOptions,
+  excludeBack
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -438,10 +439,12 @@ export class Account extends React.Component<Props, {}> {
                     <Container>
                       <Content width={'100%'}>
                         <ScreenTitle show={noOrderScreenFlag}>
-                          <BackButton onClick={this.handleGoBack}>
-                            <Icon type="left" />
-                            {intl.formatMessage(messages.goBack)}
-                          </BackButton>
+                          {!excludeBack[currentScreenValue] && 
+                            <BackButton onClick={this.handleGoBack}>
+                              <Icon type="left" />
+                              {intl.formatMessage(messages.goBack)}
+                            </BackButton>
+                          }
                           {!!messages[currentScreenValue] && (
                             <FormattedMessage {...messages[currentScreenValue]} />
                           )}

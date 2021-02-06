@@ -7,6 +7,7 @@ import ColorSelector from '../../../components/ColorSelector'
 import BackIcon from '../../../assets/leftarrow.svg'
 import SwipeableViews from 'react-swipeable-views'
 import isEqual from 'lodash/isEqual'
+import zenscroll from 'zenscroll'
 import rightArrow from '../../../assets/arrow.svg'
 import { RouteComponentProps } from 'react-router-dom'
 import {
@@ -32,6 +33,7 @@ import {
 import messages from './messages'
 import { CUSTOM_PALETTE_INDEX } from '../constants'
 import { Message, ProDesignPalette, QueryProps, ColorsDataResult } from '../../../types/common'
+import ReactDOM from 'react-dom'
 
 const SELECTED_PRIMARY_COLOR = 'selectedPrimaryColor'
 const SELECTED_COLORS = 'selectedColors'
@@ -52,6 +54,7 @@ interface Props extends RouteComponentProps<any> {
   selectedEditColors: string[]
   selectedEditPrimaryColor: string[]
   isMobile: boolean
+  isTablet: boolean
   openBuild: boolean
   setOpenBuild: (open: boolean) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
@@ -65,6 +68,8 @@ export class Colors extends React.Component<Props, {}> {
   state = {
     openBuild: false
   }
+  private createRef: any
+  private paletteRef: any
   openBuildAction = () => {
     const { setOpenBuild } = this.props
     setOpenBuild(true)
@@ -76,6 +81,16 @@ export class Colors extends React.Component<Props, {}> {
   buildFromZero = () => {
     const { resetSelection } = this.props
     resetSelection()
+  }
+  handleOnSelectPrimary = (color: string) =>  {
+    const { onSelect, selectedPaletteIndex, isTablet, isMobile } = this.props
+    const index = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? SELECTED_PRIMARY_COLOR : SELECTED_EDIT_PRIMARY_COLOR
+    onSelect(color, index, 0)
+    if (isMobile || isTablet) {
+      const node = ReactDOM.findDOMNode(isTablet ? this.paletteRef : this.createRef) as HTMLElement
+      const intakeScroller = zenscroll.createScroller(node, 0)
+      intakeScroller.toY(590, 1200)
+    }
   }
   render() {
     const {
@@ -97,10 +112,6 @@ export class Colors extends React.Component<Props, {}> {
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
     selectedColors.length : selectedEditColors.length
 
-    const handleOnSelectPrimary = (color: string) =>
-      onSelect(color, selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
-        SELECTED_PRIMARY_COLOR : SELECTED_EDIT_PRIMARY_COLOR,
-               0)
     const handleOnDeselect = (color: string) =>
       onDeselect(color, selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? SELECTED_COLORS : SELECTED_EDIT_COLORS)
     const handleOnSelectAccent = (color: string) =>
@@ -131,7 +142,7 @@ export class Colors extends React.Component<Props, {}> {
               disabled={true}
               className={'intake'}
               index={isMobile && openBuild ? 1 : 0}
-              >
+            >
               <>
               <PaletteTitle>
                 <LeftPaletteLabel>
@@ -185,29 +196,36 @@ export class Colors extends React.Component<Props, {}> {
                   })}
 
                 </Palettes>
-                {!isMobile ? <CreatePalette>
-                  <Palette>
-                    <Text>{formatMessage(messages.primaryColor)}</Text>
-                    {!colorsList.loading &&
-                      <ColorSelector
-                        selectedColors={
-                          selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
-                            selectedPrimaryColor : selectedEditPrimaryColor}
-                        colorsList={colorsList}
-                        onSelect={handleOnSelectPrimary}
-                        onDeselect={handleOnDeselect} />}
-                  </Palette>
-                  <Palette>
-                    <Text>{formatMessage(messages.accentColor)}</Text>
-                    {!colorsList.loading &&
-                      <ColorSelector
-                        selectedColors={
-                          selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedColors : selectedEditColors}
-                        colorsList={colorsList}
-                        onSelect={handleOnSelectAccent}
-                        onDeselect={handleOnDeselect} />}
-                  </Palette>
-                </CreatePalette> : null}
+                {!isMobile ?
+                  <CreatePalette
+                    ref={(listObject: any) => {
+                      this.paletteRef = listObject
+                    }}
+                  >
+                    <Palette>
+                      <Text>{formatMessage(messages.primaryColor)}</Text>
+                      {!colorsList.loading &&
+                        <ColorSelector
+                          selectedColors={
+                            selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
+                              selectedPrimaryColor : selectedEditPrimaryColor}
+                          colorsList={colorsList}
+                          onSelect={this.handleOnSelectPrimary}
+                          onDeselect={handleOnDeselect} />}
+                    </Palette>
+                    <Palette>
+                      <Text>{formatMessage(messages.accentColor)}</Text>
+                      {!colorsList.loading &&
+                        <ColorSelector
+                          selectedColors={
+                            selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedColors : selectedEditColors}
+                          colorsList={colorsList}
+                          onSelect={handleOnSelectAccent}
+                          onDeselect={handleOnDeselect} />}
+                    </Palette>
+                  </CreatePalette>
+                  : null
+                }
               </PaletteColumns>
             </>
             <>
@@ -215,7 +233,11 @@ export class Colors extends React.Component<Props, {}> {
                 <Image src={BackIcon} />
                 {formatMessage(messages.selectPalette)}
               </PaletteTitle>
-              <CreatePalette>
+              <CreatePalette
+                ref={(listObject: any) => {
+                  this.createRef = listObject
+                }}
+              >
                   <Palette>
                     <Text>{formatMessage(messages.primaryColor)}</Text>
                     {!colorsList.loading &&
@@ -224,7 +246,7 @@ export class Colors extends React.Component<Props, {}> {
                           selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
                             selectedPrimaryColor : selectedEditPrimaryColor}
                         colorsList={colorsList}
-                        onSelect={handleOnSelectPrimary}
+                        onSelect={this.handleOnSelectPrimary}
                         onDeselect={handleOnDeselect} />}
                   </Palette>
                   <Palette>

@@ -39,7 +39,8 @@ import {
   ON_SET_RENAMING,
   CHANGE_LOCAL_NAME,
   SET_FILE_TERMS,
-  SET_OPEN_BUILD
+  SET_OPEN_BUILD,
+  SET_HIGHLIGHT
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -64,6 +65,11 @@ export const goToPage = (page: number) => ({
 export const setOpenBuild = (open: boolean) => ({
   type: SET_OPEN_BUILD,
   open
+})
+
+export const setHighlight = (active: boolean) => ({
+  type: SET_HIGHLIGHT,
+  active
 })
 
 export const setInspirationPageAction = (skip: number, newPage: number) => ({

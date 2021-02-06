@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'screens.IntakeForm.previousButtonText',
     defaultMessage: 'Previous'
   },
+  missingField: {
+    id: 'screens.IntakeForm.missingField',
+    defaultMessage: `You're missing a required field!`
+  },
   submitButtonText: {
     id: 'screens.IntakeForm.submitButtonText',
     defaultMessage: 'Submit'

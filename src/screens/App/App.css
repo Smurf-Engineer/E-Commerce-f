@@ -57,6 +57,12 @@ body {
   border-radius: 4px;
 }
 
+.richtTextHighlight {
+  border: 1px solid #fb0000;
+  padding: 35px 10px;
+  border-radius: 4px;
+}
+
 .richTextToolBar {
   margin-bottom: 0 !important;
   border-bottom: none;

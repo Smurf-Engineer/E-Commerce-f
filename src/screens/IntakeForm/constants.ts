@@ -39,6 +39,7 @@ export const ON_SET_RENAMING = `${namespace}/ON_SET_RENAMING`
 export const CHANGE_LOCAL_NAME = `${namespace}/CHANGE_LOCAL_NAME`
 export const SET_FILE_TERMS = `${namespace}/SET_FILE_TERMS`
 export const SET_OPEN_BUILD = `${namespace}/SET_OPEN_BUILD`
+export const SET_HIGHLIGHT = `${namespace}/SET_HIGHLIGHT`
 
 export enum Sections {
   PRODUCTS = -2,

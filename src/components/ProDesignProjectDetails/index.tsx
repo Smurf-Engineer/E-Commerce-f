@@ -95,7 +95,7 @@ export class Review extends React.Component<Props, {}> {
                 <StrongText>{formatMessage(messages.designNotes)}</StrongText>
               </Column>
               <Column>
-                <Text>{projectDescription ? parse(projectDescription) : '-'}</Text>
+                <Text fullWidth={true}>{projectDescription ? parse(projectDescription) : '-'}</Text>
               </Column>
             </Row>
           </Ideas>

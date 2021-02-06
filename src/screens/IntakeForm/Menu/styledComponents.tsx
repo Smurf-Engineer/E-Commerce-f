@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { BLUE, GRAY, WHITE_SMOKE } from '../../../theme/colors'
+import { BLUE, GRAY } from '../../../theme/colors'
 
 interface ButtonProps {
   disabled?: boolean
@@ -23,7 +23,7 @@ export const MenuContainer = styled.div`
 `
 
 interface ButtonWrapperProps {
-  disabled: boolean
+  unable: boolean
 }
 
 export const ButtonWrapper = styled.div`
@@ -33,16 +33,18 @@ export const ButtonWrapper = styled.div`
   text-align: right;
   align-self: right;
   .ant-btn-primary {
-    background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
-    border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    text-shadow: none;
+    box-shadow: none;
+    background-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
+    border-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
   }
   .ant-btn-primary:hover {
-    background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
-    border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : BLUE};
+    background-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
+    border-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
   }
 `
 
@@ -53,20 +55,22 @@ export const GrayButtonWrapper = styled.div`
   text-align: right;
   align-self: right;
   .ant-btn-primary {
-    background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : GRAY};
-    border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : GRAY};
+    text-shadow: none;
+    box-shadow: none;
+    background-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
+    border-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
   }
   .ant-btn-primary:hover {
-    background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : GRAY};
-    border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? WHITE_SMOKE : GRAY};
+    background-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
+    border-color: ${({ unable }: ButtonWrapperProps) =>
+      unable ? GRAY : BLUE};
   }
 `
 
 export const StyledButton = styled(Button)`
   height: 40px;
-  border-radius: 0;
+  border-radius: 2px;
 `

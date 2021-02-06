@@ -18,12 +18,13 @@ interface NavValidation {
 interface Props {
   validations: NavValidation
   savingIntake: boolean
+  showMissingFields: () => void
   onContinue: () => void
   onPrevious: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
 }
 
-const Menu = ({ validations, savingIntake = false, onContinue, onPrevious }: Props) => {
+const Menu = ({ validations, savingIntake = false, onContinue, onPrevious, showMissingFields }: Props) => {
   const {
     continueDisable = false,
     showPreviousButton = true,
@@ -35,26 +36,24 @@ const Menu = ({ validations, savingIntake = false, onContinue, onPrevious }: Pro
   return (
     <MenuContainer>
       <GrayButtonWrapper
-        disabled={savingIntake || previousDisable}
+        unable={savingIntake || previousDisable}
         show={showPreviousButton}
-        onClick={!previousDisable ? onPrevious : null}
-        >
+      >
         <StyledButton
           type="primary"
-          disabled={previousDisable}
+          onClick={!previousDisable ? onPrevious : null}
         >
           {previousButtonText}
         </StyledButton>
       </GrayButtonWrapper>
       <ButtonWrapper
         show={showContinueButton}
-        disabled={savingIntake || continueDisable}
-        onClick={!continueDisable  ? onContinue : null}
->
+        unable={savingIntake || continueDisable}
+      >
         <StyledButton
           type="primary"
           loading={savingIntake}
-          disabled={continueDisable}
+          onClick={!continueDisable  ? onContinue : showMissingFields}
         >
           {continueButtonText}
         </StyledButton>

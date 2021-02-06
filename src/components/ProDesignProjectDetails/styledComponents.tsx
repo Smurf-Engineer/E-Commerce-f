@@ -5,6 +5,10 @@ interface ImagePreviewProps {
   src: string
 }
 
+interface DivProps {
+  fullWidth?: boolean
+}
+
 export const Container = styled.div`
   width: 70%;
   background-color: ${WHITE};
@@ -36,8 +40,9 @@ export const MainContainer = styled.div`
 export const Text = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
+  word-break: break-all;
   @media (max-width: 768px) {
-    width: 40%
+    width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '40%'};
   }
 `
 
@@ -142,7 +147,10 @@ export const Products = styled.div`
 export const BackContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 24px;
+  margin: 24px 0;
+  @media (max-width: 768px) {
+    display: none;
+  }
   &:hover {
     cursor: pointer;
   }

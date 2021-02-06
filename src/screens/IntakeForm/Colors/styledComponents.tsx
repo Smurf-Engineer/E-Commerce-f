@@ -95,12 +95,22 @@ export const PaletteColumns = styled.div`
 export const Palettes = styled.div`
   flex: 1.5;
   border-right: 1px solid ${GRAY_LIGHTEST};
+  max-height: 570px;
+  overflow-y: scroll;
+  @media (max-width: 768px) {
+    max-height: calc(100vh - 550px);
+  }
 `
 export const CreatePalette = styled.div`
   flex: 2;
   padding: 10px;
   flex-direction: row;
   display: flex;
+  max-height: 100%;
+  overflow-y: scroll;
+  @media (max-width: 768px) {
+    max-height: calc(100vh - 550px);
+  }
   &:last-child {
     margin-left: 10px;
   }

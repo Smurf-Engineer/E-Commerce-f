@@ -33,6 +33,7 @@ interface Props {
   currentTab: number
   onContinue: () => void
   onPrevious: () => void
+  showMissingFields: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   validate: (screen: number) => void
   onSelectTab: (index: number) => void
@@ -47,6 +48,7 @@ const MobileMenuNav = ({
   onPrevious,
   savingIntake = false,
   fromScratch,
+  showMissingFields,
   formatMessage,
   currentTab,
   validate,
@@ -102,7 +104,7 @@ const MobileMenuNav = ({
       </StyledDropdown> : null}
       {!savingIntake ? <Continue
         text={continueButtonText}
-        onClick={!continueDisable  ? onContinue : null}
+        onClick={!continueDisable  ? onContinue : showMissingFields}
         disabled={continueDisable}
         show={savingIntake || showContinueButton} /> :
       <Spin />}

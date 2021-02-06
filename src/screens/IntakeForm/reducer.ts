@@ -42,7 +42,8 @@ import {
   CHANGE_LOCAL_NAME,
   SET_FILE_TERMS,
   Sections,
-  SET_OPEN_BUILD
+  SET_OPEN_BUILD,
+  SET_HIGHLIGHT
 } from './constants'
 export const initialState = fromJS({
   selectedItems: [],
@@ -73,6 +74,7 @@ export const initialState = fromJS({
   sendEmail: false,
   validLength: false,
   savingIntake: false,
+  highlight: false,
   successModal: false,
   expandedInspiration: null,
   expandedInspirationOpen: false,
@@ -97,8 +99,10 @@ const intakeFormReducer: Reducer<any> = (
       const { listName, elementId, index } = action
       const selectedItems = state.get(listName)
       const addItem = index >= 0  ? selectedItems.splice(index, 1, elementId) : selectedItems.push(elementId)
-      return state.merge({ [listName]: addItem })
+      return state.merge({ [listName]: addItem, selectedPaletteIndex: -2 })
     }
+    case SET_HIGHLIGHT:
+      return state.set('highlight', action.active)
     case DESELECT_ELEMENT: {
       const { listName, elementId } = action
       const indexOfListingToDelete = state
@@ -262,7 +266,7 @@ const intakeFormReducer: Reducer<any> = (
       return state.merge({ [listName]: addItem })
     }
     case SET_DESCRIPTION:
-      return state.merge({ projectDescription: action.contentState, validLength: action.validLength })
+      return state.merge({ projectDescription: action.contentState, validLength: action.validLength, highlight: false })
     case OPEN_RENAME_MODAL:
       return state.merge({ renameFileOpen: action.open, fileIdToRename: action.id, newFileName: '' })
     case ON_RENAME_FILE:
@@ -281,7 +285,7 @@ const intakeFormReducer: Reducer<any> = (
       })
     }
     case SET_FILE_TERMS:
-      return state.set('fileTermsAccepted', action.checked)
+      return state.merge({ fileTermsAccepted: action.checked, highlight: false })
     default:
       return state
   }

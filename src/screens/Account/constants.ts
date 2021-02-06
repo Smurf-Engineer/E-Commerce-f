@@ -130,6 +130,10 @@ export const resellerShortOptions = [
   }
 ]
 
+export const excludeBack = {
+  [PRO_DESIGN_PROJECTS]: true
+}
+
 export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
 export const SET_OPEN_KEYS = `${namespace}/SET_OPEN_KEYS`
 export const SET_CURRENT_SCREEN = `${namespace}/SET_CURRENT_SCREEN`

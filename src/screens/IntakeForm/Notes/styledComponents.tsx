@@ -1,5 +1,10 @@
 import styled from 'styled-components'
-import { GRAY_DARK, RED, WHITE, GRAY_LIGHTEST, BLUE } from '../../../theme/colors'
+import Input from 'antd/lib/input'
+import { GRAY_DARK, RED, WHITE, GRAY_LIGHTEST, BLUE, GRAY_ANTDESIGN } from '../../../theme/colors'
+
+interface DivProps {
+  highlight?: boolean
+}
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -114,6 +119,10 @@ export const TopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`
+
+export const StyledInput = styled(Input)`
+  border: 1px solid ${({ highlight }: DivProps) => highlight ? RED : GRAY_ANTDESIGN};
 `
 
 export const QuestionSpan = styled.span`

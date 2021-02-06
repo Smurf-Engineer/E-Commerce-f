@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import Input from 'antd/lib/input'
 import { isPhoneNumber } from '../../../utils/utilsFiles'
 import DataSelected from '../Review/DataSelected'
 import { EditorState } from 'draft-js'
@@ -17,7 +16,8 @@ import {
   QuestionSpan,
   LabelContainer,
   TopContainer,
-  MultipleItemsButton
+  MultipleItemsButton,
+  StyledInput
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -48,6 +48,8 @@ interface Props extends RouteComponentProps<any> {
   richTextEditorReady: boolean
   colorLabels?: { [name: string]: string }
   paletteName?: string
+  highlight?: boolean
+  validLength?: boolean
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
@@ -147,6 +149,8 @@ export class Notes extends React.Component<Props, {}> {
       selectedPrimaryColor,
       colorLabels,
       paletteName,
+      validLength,
+      highlight,
       selectedPaletteIndex,
       selectedEditColors,
       selectedEditPrimaryColor,
@@ -165,7 +169,8 @@ export class Notes extends React.Component<Props, {}> {
             <Label>
               {formatMessage(messages.projectName)} <Required>*</Required>
             </Label>
-            <Input
+            <StyledInput
+              highlight={highlight && !projectName}
               id="projectName"
               value={projectName}
               placeholder={formatMessage(messages.name)}
@@ -186,7 +191,7 @@ export class Notes extends React.Component<Props, {}> {
               <Editor
                 editorState={editorState}    
                 wrapperClassName="richTextWrapper"
-                editorClassName="richTextEditor"
+                editorClassName={highlight && !validLength ? 'richtTextHighlight' : 'richTextEditor'}
                 toolbarClassName="richTextToolBar"
                 placeholder={formatMessage(messages.placeholder)}
                 onEditorStateChange={this.onEditorStateChange}

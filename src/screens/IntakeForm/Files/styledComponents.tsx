@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { WHITE, GRAY_DARK, GRAY_LIGHT, RED, BLUE } from '../../../theme/colors'
+import { WHITE, GRAY_DARK, GRAY_LIGHT, RED, BLUE, RED_TRANSPARENT_BRIGHT } from '../../../theme/colors'
 import Checkbox from 'antd/lib/checkbox'
 import icon from 'antd/lib/icon'
 
@@ -9,6 +9,7 @@ interface ImagePreviewProps {
 
 interface DivProps {
   selected?: boolean
+  highlight?: boolean
 }
 
 export const Container = styled.div`
@@ -174,6 +175,9 @@ export const EmptyMessage = styled.div`
 `
 
 export const StyledCheckbox = styled(Checkbox)`
+background: ${({ highlight }: DivProps) => highlight ? RED_TRANSPARENT_BRIGHT : 'unset'};
+transition: all .25s;
+color: ${({ highlight }: DivProps) => highlight ? RED : 'unset'};
 @media (max-width: 768px) {
   display: flex;
   font-size: 13px;

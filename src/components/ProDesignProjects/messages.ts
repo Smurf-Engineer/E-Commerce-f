@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.ProDesignProjects.createdDate',
     defaultMessage: 'Created Date'
   },
+  back: {
+    id: 'components.ProDesignProjects.back',
+    defaultMessage: 'Back to Pro Design Project List'
+  },
   projectNo: {
     id: 'components.ProDesignProjects.projectNo',
     defaultMessage: 'Project No.'

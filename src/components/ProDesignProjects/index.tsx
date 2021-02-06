@@ -5,6 +5,7 @@ import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
+import Icon from 'antd/lib/icon'
 import Review from '../ProDesignProjectDetails'
 import { FormattedMessage } from 'react-intl'
 import * as AffiliatesActions from './actions'
@@ -16,7 +17,8 @@ import {
   Header,
   TableRow,
   Cell,
-  LoadingContainer
+  LoadingContainer,
+  BackContainer
 } from './styledComponents'
 import messages from './messages'
 import { QueryProps, Project, Message, ProjectsResult } from '../../types/common'
@@ -91,6 +93,12 @@ class ProDesignProjects extends React.Component<Props, {}> {
    
     return (
       <Container>
+        {!!projectId &&
+          <BackContainer onClick={this.goToList}>
+            <Icon type="left" />
+            <span>{formatMessage(messages.back)}</span>
+          </BackContainer>
+        }
         <SwipeableViews disabled={true} index={currentSection}>
           <>
             <FormattedMessage {...messages.subtitle} />

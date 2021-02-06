@@ -43,6 +43,7 @@ interface Props extends RouteComponentProps<any> {
   newFileName: string
   renamingFile: boolean
   fileTermsAccepted: boolean
+  highlight: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   onUploadFile: (file: File) => void
   openUserLocker: (open: boolean) => void
@@ -113,6 +114,7 @@ export class Files extends React.Component<Props, {}> {
       newFileName,
       renamingFile,
       fileTermsAccepted,
+      highlight,
       formatMessage,
       openUserLocker,
       onSelectItem,
@@ -168,9 +170,10 @@ export class Files extends React.Component<Props, {}> {
                   </DraggerWithLoading>
                 </DraggerContainer>
                 <StyledCheckbox
-                    checked={fileTermsAccepted}
-                    onChange={this.checkFileTerms}
-                  >
+                  {...{ highlight }}
+                  checked={fileTermsAccepted}
+                  onChange={this.checkFileTerms}
+                >
                   <CheckboxLabel>
                     {formatMessage(messages.description)}
                   </CheckboxLabel>

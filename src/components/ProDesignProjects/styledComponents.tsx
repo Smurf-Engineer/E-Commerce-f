@@ -22,8 +22,28 @@ export const Container = styled.div`
   padding-bottom: 36px;
   width: 100%;
   margin-top: -64px;
+  position: relative;
   @media (max-width: 768px) {
     margin-top: -14px;
+  }
+`
+
+export const BackContainer = styled.div`
+  display: none;
+  align-items: center;
+  margin-bottom: 24px;
+  position: absolute;
+  left: 8px;
+  top: -59px;
+  width: 76px;
+  font-size: 12px;
+  color: ${RED};
+  font-size: 12px;
+  @media (max-width: 768px) {
+    display: flex;
+  }
+  &:hover {
+    cursor: pointer;
   }
 `
 
