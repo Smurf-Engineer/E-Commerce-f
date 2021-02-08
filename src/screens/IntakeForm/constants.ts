@@ -40,6 +40,7 @@ export const CHANGE_LOCAL_NAME = `${namespace}/CHANGE_LOCAL_NAME`
 export const SET_FILE_TERMS = `${namespace}/SET_FILE_TERMS`
 export const SET_OPEN_BUILD = `${namespace}/SET_OPEN_BUILD`
 export const SET_HIGHLIGHT = `${namespace}/SET_HIGHLIGHT`
+export const CHANGE_QUANTITY = `${namespace}/CHANGE_QUANTITY`
 
 export enum Sections {
   PRODUCTS = -2,

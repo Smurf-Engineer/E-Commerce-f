@@ -64,6 +64,13 @@ export const Image = styled.img`
   }
 `
 
+export const QuantityLabel = styled.div`
+  position: absolute;
+  right: 5px;
+  top: 12px;
+  color: ${WHITE};
+`
+
 export const ImageTop = styled.div`
   user-select: none;
   display: flex;

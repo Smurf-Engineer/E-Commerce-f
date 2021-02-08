@@ -17,12 +17,17 @@ import {
   Header,
   ActionsContainer,
   Arrow,
-  HeaderMobile
+  HeaderMobile,
+  QuantityDiv,
+  QuantityLabel,
+  StyledNumber
 } from './styledComponents'
 
 interface Props {
   products: Product[]
   title: string
+  quantityLabel: string
+  changeQuantity: (value: number, key: number) => void
   handleDeleteProduct: (product: Product, checked: boolean) => void
 }
 
@@ -35,7 +40,7 @@ export class SelectedProducts extends React.Component<Props, {}> {
   }
   render() {
     const {
-      products = [], title, handleDeleteProduct
+      products = [], title, handleDeleteProduct, quantityLabel, changeQuantity
     } = this.props
     const { open } = this.state
     return (
@@ -48,24 +53,43 @@ export class SelectedProducts extends React.Component<Props, {}> {
           </ActionsContainer>
         </Header>
         <Products total={products.length} {...{open}}>
-          {products.map((product: Product) => {
+          {products.map((product: Product, key: number) => {
             const {
               images,
               name,
-              id
+              id,
+              quantity
             } = product
             const deleteProduct = () => handleDeleteProduct(product, false)
             const thumbnail = get(images[0], 'thumbnail')
             const imageSrc = thumbnail.length ? thumbnail : images[0].front
-            return (<ProductThumbnail key={id}>
-                  <Image src={imageSrc} />
-                  <Bottom>
-                    <Description>
-                      {name}
-                    </Description>
-                    <Trash src={TrashImg} onClick={deleteProduct} />
-                    </Bottom>
-              </ProductThumbnail>)})}
+            const changeQuantityValue = (value: number) => changeQuantity(value, key)
+            return (
+              <ProductThumbnail key={id}>
+                <Image src={imageSrc} />
+                <Bottom>
+                  <Description>
+                    {name}
+                  </Description>
+                  <Trash src={TrashImg} onClick={deleteProduct} />
+                </Bottom>
+                {quantity > 0 &&
+                  <QuantityDiv>
+                    <QuantityLabel>
+                      {quantityLabel}
+                    </QuantityLabel>
+                    <StyledNumber
+                      min={1}
+                      max={5}
+                      size="small"
+                      defaultValue={quantity}
+                      onChange={changeQuantityValue}
+                    />
+                  </QuantityDiv>
+                }
+              </ProductThumbnail>
+            )}
+          )}
         </Products>
         <HeaderMobile>
           <Title>{title}</Title>

@@ -77,6 +77,7 @@ interface Props extends RouteComponentProps<any> {
   selectedItems: Product[]
   hideFilters?: string []
   fromIntakeForm?: boolean
+  changeQuantity: (value: number, key: number) => void
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
@@ -187,6 +188,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       orderBy,
       limit,
       skip,
+      changeQuantity,
       currentPage,
       fakeWidth,
       openSidebar,
@@ -341,6 +343,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             skip,
                             orderBy,
                             limit,
+                            changeQuantity,
                             openQuickView,
                             history,
                             sortByLabel: '',
@@ -387,6 +390,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       openQuickView,
                       history,
                       sortByLabel: '',
+                      changeQuantity,
                       currentPage,
                       contentTile,
                       selectedItems,

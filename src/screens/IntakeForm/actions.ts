@@ -40,7 +40,8 @@ import {
   CHANGE_LOCAL_NAME,
   SET_FILE_TERMS,
   SET_OPEN_BUILD,
-  SET_HIGHLIGHT
+  SET_HIGHLIGHT,
+  CHANGE_QUANTITY
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -76,6 +77,12 @@ export const setInspirationPageAction = (skip: number, newPage: number) => ({
   type: SET_INSPIRATION_PAGE,
   skip,
   newPage
+})
+
+export const changeQuantityAction = (value: number, index: number) => ({
+  type: CHANGE_QUANTITY,
+  value,
+  index
 })
 
 export const setInspirationDataAction = (data: InspirationType[], fullCount: number, reset: boolean) => ({

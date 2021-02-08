@@ -129,6 +129,7 @@ interface Props extends RouteComponentProps<any> {
   validLength: boolean
   highlight: boolean
   setHighlight: (active: boolean) => void
+  changeQuantityAction: (value: number, index: number) => void
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string) => void
   goToPage: (page: number) => void
@@ -182,7 +183,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   componentDidMount() {
     const { location, selectedItems, selectProductAction } = this.props
     if (location.state && !selectedItems.length) {
-      selectProductAction(location.state.product)
+      const { state: { product } } = location
+      selectProductAction({...product, quantity: 1 })
     }
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
@@ -297,6 +299,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       console.error('Error ', e)
     }
 
+    const productsArray = selectedItems.reduce(
+      (arr: number[], product) => [...arr, ...Array(product.quantity || 1).fill(product.id)]
+      // tslint:disable-next-line: align
+      , [])
+
     const proDesignProject = {
       name: projectName,
       phone,
@@ -306,7 +313,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       sendSms,
       files: selectedFiles.map((file) => file.id),
-      products: selectedItems.map((item) => item.id),
+      products: productsArray,
       inspiration: inspirationSelectedItems,
       palette,
       fromScratch,
@@ -349,7 +356,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   getNavButtonsValidation = (screen?: number) => {
     const {
       currentScreen,
-      selectedItems,
+      selectedItems = [],
       inspirationSelectedItems,
       selectedPaletteIndex,
       selectedColors,
@@ -370,10 +377,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       Sections.REVIEW ? formatMessage(messages.submitButtonText) :
         formatMessage(messages.continueButtonText)
     const previousButtonText = formatMessage(messages.previousButtonText)
+    const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
     switch (screen || currentScreen) {
       case Sections.PRODUCTS:
         return {
-          continueDisable: selectedItems.length < 1,
+          continueDisable: selectedItems.length < 1 || quantities > 5,
           showPreviousButton: false,
           continueButtonText,
           previousButtonText
@@ -553,10 +561,26 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   showMissingFields = () => {
-    const { currentScreen, fileTermsAccepted, projectName, validLength, intl: { formatMessage } } = this.props
+    const {
+      currentScreen,
+      fileTermsAccepted,
+      selectedItems,
+      projectName,
+      validLength,
+      intl: { formatMessage }
+    } = this.props
     let highlight = false
     let scrollCoords = 0
+    const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
     switch (currentScreen) {
+      case Sections.PRODUCTS:
+        if (quantities > 5 || selectedItems.length < 1) {
+          const title = formatMessage(messages.maxProductsTitle)
+          const body = formatMessage(messages.maxProductsBody)
+          const accept = formatMessage(messages.gotIt)
+          this.showAlert(title, body, accept)
+        }
+        break
       case Sections.FILES: 
         highlight = !fileTermsAccepted
         scrollCoords = 150
@@ -571,6 +595,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     if (highlight) {
       this.showHighlight(highlight, scrollCoords)
       message.error(formatMessage(messages.missingField))
+    }
+  }
+
+  handleChangeQuantity = (value: number, key: number) => {
+    const { changeQuantityAction } = this.props
+    if (value > 0 && value <= 5) {
+      changeQuantityAction(value, key)
     }
   }
 
@@ -767,6 +798,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onDeselectProduct={deselectElementAction}
               hideFilters={['collection']}
               fromIntakeForm={true}
+              changeQuantity={this.handleChangeQuantity}
               {...{ history, formatMessage, selectedItems }} /></> : null}
         {currentScreen === Sections.PATHWAY ? (
           <DesignPathway 

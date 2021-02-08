@@ -1,3 +1,4 @@
+import InputNumber from 'antd/lib/input-number'
 import styled from 'styled-components'
 import { GRAY, GRAY_LIGHT, WHITE, RED } from '../../../theme/colors'
 import { BLACK } from '../../DesignerTool/constants'
@@ -35,7 +36,7 @@ export const Container = styled.div`
     opacity: 1;
     opacity: ${({ total = 0 }: ProductsProps) => total > 0 ? '1' : '0'};
     top:  ${({ total = 0, open }: ProductsProps) => total > 0 ?
-      (!open ? '-132px' : '50px') : '50px'};
+      (!open ? '-169px' : '50px') : '50px'};
   }
 `
 
@@ -78,6 +79,21 @@ export const ProductThumbnail = styled.div`
   @media (max-width: 768px) {
     display: inline-block;
   }
+`
+
+export const QuantityDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 2px;
+`
+
+export const QuantityLabel = styled.div`
+  font-size: 12px;
+`
+
+export const StyledNumber = styled(InputNumber)`
+  max-width: 44px;
 `
 
 export const Image = styled.img`

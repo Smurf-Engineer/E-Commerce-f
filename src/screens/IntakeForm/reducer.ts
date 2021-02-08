@@ -40,6 +40,7 @@ import {
   ON_RENAME_FILE,
   ON_SET_RENAMING,
   CHANGE_LOCAL_NAME,
+  CHANGE_QUANTITY,
   SET_FILE_TERMS,
   Sections,
   SET_OPEN_BUILD,
@@ -114,6 +115,8 @@ const intakeFormReducer: Reducer<any> = (
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
       return state.merge({ [listName]: updatedSelectedItems })
     }
+    case CHANGE_QUANTITY:
+      return state.setIn(['selectedItems', action.index, 'quantity'], action.value)
     case SET_OPEN_BUILD:
       return state.set('openBuild', action.open)
     case GO_TO_NEXT_PAGE:

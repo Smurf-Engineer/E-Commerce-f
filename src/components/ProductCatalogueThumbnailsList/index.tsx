@@ -73,6 +73,7 @@ interface Props {
   profileData: ProfileData
   makeCopy: (shortId: string) => void
   setDesignSelected: (shortId: string) => void
+  changeQuantity: (value: number, key: number) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
@@ -100,6 +101,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       fromIntakeForm,
       data,
       designs,
+      changeQuantity,
       onPressPrivate = () => { },
       onPressDelete = () => { },
       onPressRename = () => { },
@@ -358,7 +360,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     return (
       <Container>
         <SelectedProducts
+          {...{ changeQuantity }}
           products={selectedItems}
+          quantityLabel={formatMessage(messages.quantity)}
           title={formatMessage(messages.selectedProducts)}
           handleDeleteProduct={handleCheckChange}
         />
