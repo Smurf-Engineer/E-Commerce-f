@@ -47,7 +47,8 @@ import {
   MESH_NAME,
   MODEL_SIZES,
   AMBIENT_LIGHT_INTENSITY,
-  DIRECTIONAL_LIGHT_INTENSITY
+  DIRECTIONAL_LIGHT_INTENSITY,
+  ACCESSORY_BLACK
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
@@ -825,7 +826,7 @@ class Render3D extends PureComponent {
             object.add(cloneObject)
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
-            if (!!product.branding && design.predyedColor !== PREDYED_TRANSPARENT) {
+            if (!!product.branding && (!product.hasPredyed || design.predyedColor === ACCESSORY_BLACK)) {
               const brandingObj = children[meshIndex].clone()
               object.add(brandingObj)
               const brandingIndex = children.length - 1
