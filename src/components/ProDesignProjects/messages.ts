@@ -23,7 +23,7 @@ export default defineMessages({
   },
   back: {
     id: 'components.ProDesignProjects.back',
-    defaultMessage: 'Back to Pro Design Project List'
+    defaultMessage: 'Back'
   },
   projectNo: {
     id: 'components.ProDesignProjects.projectNo',

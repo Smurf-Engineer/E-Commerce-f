@@ -33,12 +33,11 @@ export const BackContainer = styled.div`
   align-items: center;
   margin-bottom: 24px;
   position: absolute;
-  left: 8px;
-  top: -59px;
+  left: 18px;
+  top: -48px;
   width: 76px;
-  font-size: 12px;
+  font-size: 14px;
   color: ${RED};
-  font-size: 12px;
   @media (max-width: 768px) {
     display: flex;
   }
