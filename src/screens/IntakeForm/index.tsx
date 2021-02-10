@@ -129,9 +129,8 @@ interface Props extends RouteComponentProps<any> {
   validLength: boolean
   highlight: boolean
   setHighlight: (active: boolean) => void
-  changeQuantityAction: (value: number, index: number) => void
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
-  deselectElementAction: (elementId: number | string, listName: string) => void
+  deselectElementAction: (elementId: number | string, listName: string, key?: number) => void
   goToPage: (page: number) => void
   setInspirationPageAction: (skip: number, newPage: number) => void
   setInspirationDataAction: (data: InspirationType[], fullCount: number, reset: boolean) => void
@@ -184,7 +183,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { location, selectedItems, selectProductAction } = this.props
     if (location.state && !selectedItems.length) {
       const { state: { product } } = location
-      selectProductAction({...product, quantity: 1 })
+      selectProductAction(product)
     }
     const isMobile = window.matchMedia(
       '(min-width: 320px) and (max-width: 480px)'
@@ -299,11 +298,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       console.error('Error ', e)
     }
 
-    const productsArray = selectedItems.reduce(
-      (arr: number[], product) => [...arr, ...Array(product.quantity || 1).fill(product.id)]
-      // tslint:disable-next-line: align
-      , [])
-
     const proDesignProject = {
       name: projectName,
       phone,
@@ -313,7 +307,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       sendSms,
       files: selectedFiles.map((file) => file.id),
-      products: productsArray,
+      products: selectedItems.map((item) => item.id),
       inspiration: inspirationSelectedItems,
       palette,
       fromScratch,
@@ -598,11 +592,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     }
   }
 
-  handleChangeQuantity = (value: number, key: number) => {
-    const { changeQuantityAction } = this.props
-    if (value > 0 && value <= 5) {
-      changeQuantityAction(value, key)
-    }
+  handleChangeQuantity = (key: number) => {
+    const { selectedItems } = this.props
+    this.handleOnselectProductAction(selectedItems[key])
   }
 
   showHighlight = (active: boolean, coords: number) => {

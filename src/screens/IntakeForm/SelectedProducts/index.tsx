@@ -4,6 +4,7 @@ import get from 'lodash/get'
 import upArrow from '../../../assets/uparrow.svg'
 import downArrow from '../../../assets/downarrow.svg'
 import TrashImg from '../../../assets/trash.svg'
+import DuplicateImg from '../../../assets/duplicate.svg'
 import {
   Container,
   Products,
@@ -18,17 +19,15 @@ import {
   ActionsContainer,
   Arrow,
   HeaderMobile,
-  QuantityDiv,
-  QuantityLabel,
-  StyledNumber
+  DuplicateButton
 } from './styledComponents'
 
 interface Props {
   products: Product[]
   title: string
-  quantityLabel: string
-  changeQuantity: (value: number, key: number) => void
-  handleDeleteProduct: (product: Product, checked: boolean) => void
+  fromIntakeForm: boolean
+  changeQuantity: (key: number) => void
+  handleDeleteProduct: (product: Product, checked: boolean, key?: number) => void
 }
 
 export class SelectedProducts extends React.Component<Props, {}> {  
@@ -40,7 +39,7 @@ export class SelectedProducts extends React.Component<Props, {}> {
   }
   render() {
     const {
-      products = [], title, handleDeleteProduct, quantityLabel, changeQuantity
+      products = [], title, handleDeleteProduct, changeQuantity, fromIntakeForm
     } = this.props
     const { open } = this.state
     return (
@@ -56,37 +55,22 @@ export class SelectedProducts extends React.Component<Props, {}> {
           {products.map((product: Product, key: number) => {
             const {
               images,
-              name,
-              id,
-              quantity
+              name
             } = product
-            const deleteProduct = () => handleDeleteProduct(product, false)
+            const deleteProduct = () => handleDeleteProduct(product, false, key)
             const thumbnail = get(images[0], 'thumbnail')
             const imageSrc = thumbnail.length ? thumbnail : images[0].front
-            const changeQuantityValue = (value: number) => changeQuantity(value, key)
+            const changeQuantityValue = () => changeQuantity(key)
             return (
-              <ProductThumbnail key={id}>
+              <ProductThumbnail {...{ key }}>
                 <Image src={imageSrc} />
                 <Bottom>
                   <Description>
                     {name}
                   </Description>
+                  {fromIntakeForm && <DuplicateButton onClick={changeQuantityValue} src={DuplicateImg} />}
                   <Trash src={TrashImg} onClick={deleteProduct} />
                 </Bottom>
-                {quantity > 0 &&
-                  <QuantityDiv>
-                    <QuantityLabel>
-                      {quantityLabel}
-                    </QuantityLabel>
-                    <StyledNumber
-                      min={1}
-                      max={5}
-                      size="small"
-                      defaultValue={quantity}
-                      onChange={changeQuantityValue}
-                    />
-                  </QuantityDiv>
-                }
               </ProductThumbnail>
             )}
           )}

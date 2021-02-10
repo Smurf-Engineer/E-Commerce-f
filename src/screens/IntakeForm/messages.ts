@@ -100,7 +100,7 @@ export default defineMessages({
   colorsTipBody: {
     id: 'screens.IntakeForm.colorsTipBody',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `Screen colors will vary from actual printed colors, colors listed here are representational. If you would like specific colors such as those required by a corporate branding guide, please provide SOLID COATED PANTONE values in your Design Notes. Fabric color test prints are sometimes suggested and aways available upon request for a small fee, and tipically take on week to produce and deliver.`
+    defaultMessage: `<p>Screen colors will vary from actual printed colors, the colors listed here are representational.</p><p>If you would like specific colors such as those required by a corporate branding guide, please provide SOLID COATED PANTONE values in your Design Notes.</p><p>Fabric color test prints are sometimes suggested and always available upon request for a small fee, and typically take a week to produce and deliver.</p>`
   },
   fileUploadTitle: {
     id: 'screens.IntakeForm.fileUploadTitle',

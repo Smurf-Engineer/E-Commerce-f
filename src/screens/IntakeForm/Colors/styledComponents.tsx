@@ -42,7 +42,7 @@ export const InfoText = styled.div`
 `
 
 export const SelectPaletteContainer = styled.div`
-  margin-top: 10px;
+  margin-top: 30px;
   display: flex;
   border: 1px solid ${GRAY_LIGHTEST};
   border-bottom: none;
@@ -98,7 +98,7 @@ export const Palettes = styled.div`
   max-height: 570px;
   overflow-y: scroll;
   @media (max-width: 768px) {
-    max-height: calc(100vh - 550px);
+    max-height: calc(100vh - 466px);
   }
 `
 export const CreatePalette = styled.div`
@@ -109,7 +109,7 @@ export const CreatePalette = styled.div`
   max-height: 100%;
   overflow-y: scroll;
   @media (max-width: 768px) {
-    max-height: calc(100vh - 550px);
+    max-height: calc(100vh - 466px);
   }
   &:last-child {
     margin-left: 10px;

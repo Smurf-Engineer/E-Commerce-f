@@ -16,8 +16,7 @@ import {
   ProApproved,
   ThumbnailImage,
   CustomizeButton,
-  CheckboxContainer,
-  QuantityLabel
+  CheckboxContainer
 } from './styledComponents'
 import messages from './messages'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
@@ -52,7 +51,6 @@ interface Props {
   selectedIndex?: number
   fitContainer?: boolean
   fromIntakeForm?: boolean
-  quantity?: number
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -74,7 +72,6 @@ const ProductSlide = ({
   currentImage,
   onPressCustomize,
   onPressQuickView,
-  quantity,
   onPressBack,
   onPressNext,
   onPressThumbnail,
@@ -149,7 +146,6 @@ const ProductSlide = ({
     : JackrooLogo
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
-      {quantity && <QuantityLabel>x{quantity}</QuantityLabel>}
       <ImageTop {...{selectProduct, selectedIndex}}>
         <AboveTablet>
         {!hideQuickView && (

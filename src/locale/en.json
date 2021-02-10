@@ -770,7 +770,7 @@
   "screens.IntakeForm.Colors.edit": "Edit",
   "screens.IntakeForm.colorsBody": "Tips on color selection",
   "screens.IntakeForm.colorsTipTitle": "COLOR SELECTION TIP",
-  "screens.IntakeForm.colorsTipBody": "Screen colors will vary from actual printed colors, colors listed here are representational. If you would like specific colors such as those required by a corporate branding guide, please provide SOLID COATED PANTONE values in your Design Notes. Fabric color test prints are sometimes suggested and aways available upon request for a small fee, and tipically take on week to produce and deliver.",
+  "screens.IntakeForm.colorsTipBody": "<p>Screen colors will vary from actual printed colors, the colors listed here are representational.</p><p>If you would like specific colors such as those required by a corporate branding guide, please provide SOLID COATED PANTONE values in your Design Notes.</p><p>Fabric color test prints are sometimes suggested and always available upon request for a small fee, and typically take a week to produce and deliver.</p>",
   "screens.IntakeForm.fileUploadTitle": "FILE UPLOAD",
   "screens.IntakeForm.fileUploadBody": "Do you have any company or sponsor logos or art files you want to include in your design?",
   "screens.IntakeForm.fileUploadTips": "Important tips about art files.",

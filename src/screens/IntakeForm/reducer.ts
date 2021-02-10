@@ -40,7 +40,6 @@ import {
   ON_RENAME_FILE,
   ON_SET_RENAMING,
   CHANGE_LOCAL_NAME,
-  CHANGE_QUANTITY,
   SET_FILE_TERMS,
   Sections,
   SET_OPEN_BUILD,
@@ -105,8 +104,9 @@ const intakeFormReducer: Reducer<any> = (
     case SET_HIGHLIGHT:
       return state.set('highlight', action.active)
     case DESELECT_ELEMENT: {
-      const { listName, elementId } = action
-      const indexOfListingToDelete = state
+      const { listName, elementId, index } = action
+      const indexOfListingToDelete = index ||
+        state
         .get(listName)
         .findIndex((productType: any) => {
           return  (listName === 'selectedItems' ? productType.get('id') : productType) === elementId
@@ -115,8 +115,6 @@ const intakeFormReducer: Reducer<any> = (
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
       return state.merge({ [listName]: updatedSelectedItems })
     }
-    case CHANGE_QUANTITY:
-      return state.setIn(['selectedItems', action.index, 'quantity'], action.value)
     case SET_OPEN_BUILD:
       return state.set('openBuild', action.open)
     case GO_TO_NEXT_PAGE:

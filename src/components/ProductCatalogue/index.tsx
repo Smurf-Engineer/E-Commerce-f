@@ -77,7 +77,7 @@ interface Props extends RouteComponentProps<any> {
   selectedItems: Product[]
   hideFilters?: string []
   fromIntakeForm?: boolean
-  changeQuantity: (value: number, key: number) => void
+  changeQuantity: (key: number) => void
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
@@ -89,7 +89,7 @@ interface Props extends RouteComponentProps<any> {
   resetReducerAction: () => void
   setAllGendersAction: () => void
   onSelectProduct: (product: Product) => void
-  onDeselectProduct: (productId: number, listName: string) => void
+  onDeselectProduct: (productId: number, listName: string, key?: number) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
@@ -165,13 +165,13 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     }
   }
 
-  onCheckChange = (product: Product, checked: boolean) => {
+  onCheckChange = (product: Product, checked: boolean, key = 0) => {
     const { onSelectProduct, onDeselectProduct } = this.props
     if (checked) {
       onSelectProduct(product)
       return
     }
-    onDeselectProduct(product.id, SELECTEED_ITEMS)
+    onDeselectProduct(product.id, SELECTEED_ITEMS, key)
   }
 
   render() {

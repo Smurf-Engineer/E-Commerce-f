@@ -13,7 +13,6 @@ import { RouteComponentProps } from 'react-router-dom'
 import {
   Container,
   Title,
-  InfoText,
   SelectPaletteContainer,
   PaletteTitle,
   PaletteColumns,
@@ -134,9 +133,6 @@ export class Colors extends React.Component<Props, {}> {
               ? selectedColors : selectedEditColors}
             withLegend={true}
           />
-          <InfoText>
-            {formatMessage(messages.colorsInfo)}
-          </InfoText>
           <SelectPaletteContainer>
             <SwipeableViews
               disabled={true}

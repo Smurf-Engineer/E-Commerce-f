@@ -36,7 +36,7 @@ export const Container = styled.div`
     opacity: 1;
     opacity: ${({ total = 0 }: ProductsProps) => total > 0 ? '1' : '0'};
     top:  ${({ total = 0, open }: ProductsProps) => total > 0 ?
-      (!open ? '-169px' : '50px') : '50px'};
+      (!open ? '-134px' : '50px') : '50px'};
   }
 `
 
@@ -118,11 +118,23 @@ export const Description = styled.div`
   overflow: hidden;
   max-width: 120px;
   white-space: nowrap;
+  flex: 1;
 `
 
 export const Trash = styled.img`
   &:hover {
     cursor: pointer;
+  }
+`
+
+export const DuplicateButton = styled.img`
+  margin-right: 12px;
+  max-width: 14px;
+  opacity: 0.5;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.25
   }
 `
 

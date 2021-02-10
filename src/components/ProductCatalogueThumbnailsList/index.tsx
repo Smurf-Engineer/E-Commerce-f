@@ -73,7 +73,7 @@ interface Props {
   profileData: ProfileData
   makeCopy: (shortId: string) => void
   setDesignSelected: (shortId: string) => void
-  changeQuantity: (value: number, key: number) => void
+  changeQuantity: (key: number) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
@@ -85,7 +85,7 @@ interface Props {
   selectProduct?: boolean
   selectedItems?: Product[]
   fromIntakeForm?: boolean
-  handleCheckChange: (product: Product, checked: boolean) => void
+  handleCheckChange: (product: Product, checked: boolean, key?: number) => void
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -360,9 +360,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     return (
       <Container>
         <SelectedProducts
-          {...{ changeQuantity }}
+          {...{ changeQuantity, fromIntakeForm }}
           products={selectedItems}
-          quantityLabel={formatMessage(messages.quantity)}
           title={formatMessage(messages.selectedProducts)}
           handleDeleteProduct={handleCheckChange}
         />

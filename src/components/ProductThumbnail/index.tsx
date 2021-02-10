@@ -220,7 +220,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     event.stopPropagation()
     const { isSelected } = this.props
     const { product, handleCheckChange } = this.props
-    handleCheckChange({ ...product, quantity: 1 }, !isSelected)
+    handleCheckChange(product, !isSelected)
   }
   render() {
     const {
@@ -346,7 +346,6 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             selectedIndex,
             fitContainer
           }}
-          quantity={product ? product.quantity : 1}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
           onPressQuickView={this.handleOnPressQuickView}
