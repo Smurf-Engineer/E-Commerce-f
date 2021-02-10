@@ -66,7 +66,7 @@ export default defineMessages({
   maxProductsBody: {
     id: 'screens.IntakeForm.maxProductsBody',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `You've reached the maximum number of items. No worries thoug. You will, however have the opportunity to add more items to your project once your initial submission has been reviewed by our Team.`
+    defaultMessage: `You’ve reached the maximum number of products to start a ProDesign project. No worries though, you will have the opportunity to add more product designs to your project once your initial submission has been reviewed by our Team.`
   },
   gotIt: {
     id: 'screens.IntakeForm.gotIt',

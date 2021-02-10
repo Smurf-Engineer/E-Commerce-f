@@ -761,7 +761,7 @@
   "screens.IntakeForm.sucessMessageBottom": "We’re excited to work on this project.",
   "screens.IntakeForm.returnToHome": "Return to My Projects",
   "screens.IntakeForm.maxProductsTitle": "MAXIMUM REACHED",
-  "screens.IntakeForm.maxProductsBody": "You've reached the maximum number of items. No worries thoug. You will, however have the opportunity to add more items to your project once your initial submission has been reviewed by our Team.",
+  "screens.IntakeForm.maxProductsBody": "You’ve reached the maximum number of products to start a ProDesign project. No worries though, you will have the opportunity to add more product designs to your project once your initial submission has been reviewed by our Team.",
   "screens.IntakeForm.gotIt": "Got It!",
   "screens.IntakeForm.designPathwayBody": "Select ideal pathway to continue with your project",
   "screens.IntakeForm.inspiration": "Get Inspired",
