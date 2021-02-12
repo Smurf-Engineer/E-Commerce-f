@@ -26,13 +26,15 @@ import {
   ImageText,
   Products,
   BackContainer,
-  SpinContainer
+  SpinContainer,
+  InspirationName
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
 import messages from './messages'
 import { Message, InspirationType } from '../../types/common'
 import { DATE_FORMAT } from '../../constants'
+import { InspirationTag } from '../../screens/IntakeForm/constants'
 
 interface Props extends RouteComponentProps<any> {
   history: any
@@ -114,12 +116,16 @@ export class Review extends React.Component<Props, {}> {
             </Row>
             <Row>
               <Images>
-                {inspiration.map((assetItem, index) => {
-                  const { image } = assetItem
-                  return (<ImageContainer key={index}>
-                  <Image src={image} />
-                  </ImageContainer>)
-                })}
+                {inspiration.map(({ image, assetType, id }, index) => 
+                  <ImageContainer key={index}>
+                    <Image src={image} />
+                    <InspirationName>
+                      {assetType && 
+                        `${InspirationTag[assetType]}${id ? id.toString().padStart(4, '0') : '-'}`
+                      }
+                    </InspirationName>
+                  </ImageContainer>
+                )}
               </Images>
             </Row>
           </Inspiration> : null}
@@ -154,7 +160,7 @@ export class Review extends React.Component<Props, {}> {
             </Files>
             <Products>
               <Row>
-                <Column>
+                <Column fullWidth={true}>
                   <StrongText>{formatMessage(messages.products)}</StrongText>
                 </Column>
               </Row>

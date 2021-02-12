@@ -12,7 +12,9 @@ export const getProDesignProject = gql`
       phone
       notes
       inspiration {
+        id
         image
+        assetType: asset_type
       }
       palette {
         id

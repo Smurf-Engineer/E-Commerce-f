@@ -34,6 +34,13 @@ export const MainContainer = styled.div`
   flex-direction: column;
 `
 
+export const InspirationName = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 12px;
+`
+
 export const Text = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
@@ -47,7 +54,7 @@ export const Text = styled.div`
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 190px;
+  max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '190px'};
   width: 100%;
   @media (max-width: 768px) {
     flex-direction: row;
