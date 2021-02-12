@@ -26,13 +26,18 @@ import {
   Files,
   ImageText,
   Products,
-  PaletteName
+  PaletteName,
+  InspirationName,
+  ProjectData,
+  DataRow,
+  DataText,
+  DataValue
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../../utils/utilsFiles'
 import ColorBar from '../../../components/ColorBar'
 import messages from './messages'
 import { Message, InspirationType, ImageFile, UserType, Product } from '../../../types/common'
-import { Sections,  CUSTOM_PALETTE_INDEX } from '../constants'
+import { Sections,  CUSTOM_PALETTE_INDEX, InspirationTag } from '../constants'
 import { DATE_FORMAT } from '../../../constants'
 
 interface Props extends RouteComponentProps<any> {
@@ -52,6 +57,8 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   paletteName?: string
   colorLabels?: { [name: string]: string }
+  selectedTeamSize?: string
+  estimatedDate?: string
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
 }
@@ -77,6 +84,11 @@ export class Review extends React.Component<Props, {}> {
     zenscroll.toY(0, 0)
     goToPage(Sections.FILES)
   }
+  goToNotifications = () => {
+    const { goToPage } = this.props
+    zenscroll.toY(0, 0)
+    goToPage(Sections.NOTIFICATIONS)
+  }
   render() {
     const {
       formatMessage,
@@ -90,7 +102,8 @@ export class Review extends React.Component<Props, {}> {
       selectedFiles,
       projectName,
       projectDescription,
-      user,
+      selectedTeamSize,
+      estimatedDate,
       selectedItems,
       colorLabels,
       paletteName,
@@ -111,28 +124,33 @@ export class Review extends React.Component<Props, {}> {
       <MainContainer>
         <Container>
           <Notes>
-            <EditButton onClick={this.goToNotes}>
-              {formatMessage(messages.edit)}
-            </EditButton>
-            <Row>
-              <Column>
-                <Text>{formatMessage(messages.name)}</Text>
-                <StrongText>{projectName || '-'}</StrongText>
-              </Column>
-              <Column>
-                <Text>{formatMessage(messages.customerName)}</Text>
-                <StrongText>{user ? `${user.name} ${user.lastName}` : '-'}</StrongText>
-              </Column>
-              <Column>
-                <Text>{formatMessage(messages.email)}</Text>
-                <StrongText>{user ? user.email : '-'}</StrongText>
-              </Column>
-              <Column>
-                <Text>{formatMessage(messages.dateCreated)}</Text>
-                <StrongText>{moment(new Date()).format(DATE_FORMAT)}</StrongText>
-              </Column>
-              <Column />
-            </Row>
+            <ProjectData>
+              <DataRow>
+                <DataText>{formatMessage(messages.name)}</DataText>
+                <DataValue>{projectName || '-'}</DataValue>
+                <EditButton onClick={this.goToNotes}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+              </DataRow>
+              <DataRow>
+                <DataText>{formatMessage(messages.dateCreated)}</DataText>
+                <DataValue>{moment(new Date()).format(DATE_FORMAT)}</DataValue>
+              </DataRow>
+              <DataRow>
+                <DataText>{formatMessage(messages.teamSize)}</DataText>
+                <DataValue>{selectedTeamSize || '-'}</DataValue>
+                <EditButton onClick={this.goToNotifications}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+              </DataRow>
+              <DataRow>
+                <DataText>{formatMessage(messages.deliveryDate)}</DataText>
+                <DataValue>{estimatedDate ? moment(estimatedDate).format(DATE_FORMAT) : '-'}</DataValue>
+                <EditButton onClick={this.goToNotifications}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+              </DataRow>
+            </ProjectData>
           </Notes>
           <Ideas>
             <EditButton onClick={this.goToNotes}>
@@ -160,12 +178,16 @@ export class Review extends React.Component<Props, {}> {
             </Row>
             <Row>
               <Images>
-                {inspirationItems.map((assetItem, index) => {
-                  const { image } = assetItem
-                  return (<ImageContainer key={index}>
-                  <Image src={image} />
-                  </ImageContainer>)
-                })}
+                {inspirationItems.map(({ image, assetType, id }, index) => 
+                  <ImageContainer key={index}>
+                    <Image src={image} />
+                    <InspirationName>
+                      {assetType && 
+                        `${InspirationTag[assetType]}${id ? id.toString().padStart(4, '0') : '-'}`
+                      }
+                    </InspirationName>
+                  </ImageContainer>
+                )}
               </Images>
             </Row>
           </Inspiration> : null}

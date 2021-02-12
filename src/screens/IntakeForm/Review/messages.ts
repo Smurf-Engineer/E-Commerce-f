@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'screens.IntakeForm.Review.dateCreated',
     defaultMessage: 'Date Created'
   },
+  teamSize: {
+    id: 'screens.IntakeForm.Review.teamSize',
+    defaultMessage: 'Team Size'
+  },
+  deliveryDate: {
+    id: 'screens.IntakeForm.Review.deliveryDate',
+    defaultMessage: 'Delivery Date'
+  },
   designNotes: {
     id: 'screens.IntakeForm.Review.designNotes',
     defaultMessage: 'Design Notes'

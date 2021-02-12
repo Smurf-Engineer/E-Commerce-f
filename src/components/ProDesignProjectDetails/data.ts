@@ -28,6 +28,10 @@ export const getProDesignProject = gql`
         name: first_name
         lastName: last_name
         email
+        accountManager {
+          firstName: first_name
+          lastName: last_name
+        }
       }
       products {
         id

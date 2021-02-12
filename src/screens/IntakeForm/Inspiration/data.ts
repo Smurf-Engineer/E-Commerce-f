@@ -11,6 +11,7 @@ export const GetInspirationQuery = gql`
         width
         height
         tags
+        assetType: asset_type
       }
     }
   }

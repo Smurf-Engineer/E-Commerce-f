@@ -104,6 +104,13 @@ export const Image = styled.div`
   background-color: ${GRAY_LIGHT};
 `
 
+export const InspirationName = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 12px;
+`
+
 export const Color = styled.div`
   margin-bottom: 50px;
   display: flex;
@@ -132,5 +139,6 @@ export const Products = styled.div`
 
 export const Grid = styled.div`
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
 `

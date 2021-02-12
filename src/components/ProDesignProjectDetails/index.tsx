@@ -60,6 +60,7 @@ export class Review extends React.Component<Props, {}> {
     const files = get(data, 'project.files', [])
     const inspiration = get(data, 'project.inspiration', [])
     const user = get(data, 'project.user', {})
+    const accountManager = get(data, 'project.user.accountManager', {})
 
     return (
       <MainContainer>
@@ -85,6 +86,12 @@ export class Review extends React.Component<Props, {}> {
               <Column>
                 <Text>{formatMessage(messages.dateCreated)}</Text>
                 <StrongText>{moment(new Date()).format(DATE_FORMAT)}</StrongText>
+              </Column>
+              <Column>
+                <Text>{formatMessage(messages.accountManager)}</Text>
+                <StrongText>
+                  {accountManager.firstName ? `${accountManager.firstName} ${accountManager.lastName}` : '-'}
+                </StrongText>
               </Column>
               <Column />
             </Row>

@@ -1845,6 +1845,7 @@ export type InspirationType = {
   width?: number
   height?: number
   selected?: boolean
+  assetType?: string
   tags?: string[]
 }
 

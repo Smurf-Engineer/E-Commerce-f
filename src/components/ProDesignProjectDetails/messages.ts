@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.Review.dateCreated',
     defaultMessage: 'Date Created'
   },
+  accountManager: {
+    id: 'components.Review.accountManager',
+    defaultMessage: 'Account Manager'
+  },
   designNotes: {
     id: 'components.Review.designNotes',
     defaultMessage: 'Design Notes'

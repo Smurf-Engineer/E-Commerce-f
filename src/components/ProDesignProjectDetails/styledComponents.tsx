@@ -10,12 +10,11 @@ interface DivProps {
 }
 
 export const Container = styled.div`
-  width: 70%;
+  width: 100%;
   background-color: ${WHITE};
   display: inline-flex;
   flex-direction: column;
   @media (max-width: 768px) {
-    width: 100%;
     padding: 0 20px;
   }
 `
@@ -25,9 +24,7 @@ export const StrongText = styled.div`
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 10px;
-  @media (max-width: 768px) {
-    width: 50%
-  }
+  width: 100%;
 `
 
 export const MainContainer = styled.div`
@@ -41,19 +38,20 @@ export const Text = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
   word-break: break-all;
+  width: 100%;
   @media (max-width: 768px) {
-    width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '40%'};
+    max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '198px'};
   }
 `
 
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 120px;
+  max-width: 190px;
+  width: 100%;
   @media (max-width: 768px) {
     flex-direction: row;
-    margin: 0;
-    width: 100%;
+    max-width: 100%;
   }
 `
 
@@ -121,6 +119,7 @@ export const Image = styled.div`
 export const Color = styled.div`
   margin-bottom: 50px;
   display: flex;
+  width: 70%;
   flex-direction: column;
 `
 export const Files = styled.div`

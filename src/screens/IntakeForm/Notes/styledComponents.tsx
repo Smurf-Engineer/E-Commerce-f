@@ -25,13 +25,14 @@ export const Container = styled.div`
 export const MainContainer = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
+  padding: 0 28px;
+  max-width: 1016px;
   flex-direction: row;
   align-items: flex-start;
-  padding: 0 240px;
+  margin: 0 auto;
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 0;
+    padding: 0 4px;
   }
 `
 

@@ -22,6 +22,7 @@ export const StrongText = styled.div`
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 10px;
+  word-break: break-all;
   @media (max-width: 768px) {
     width: 50%;
   }
@@ -62,10 +63,37 @@ export const Row = styled.div`
   flex-wrap: wrap;
 `
 
+export const ProjectData = styled.div`
+  display: flex;
+  flex-flow: column;
+`
+
+export const DataRow = styled.div`
+  display: flex;
+  margin-bottom: 16px;
+  align-items: center;
+`
+
+export const DataText = styled.div`
+  font-size: 16px;
+  max-width: 218px;
+  width: 100%;
+  @media (max-width: 768px) {
+    max-width: 140px;
+  }
+`
+
+export const DataValue = styled.div`
+  color: ${GRAY_DARK};
+  font-weight: 600;
+  font-size: 16px;
+  word-break: break-all;
+  flex: 1;
+`
+
 export const EditButton = styled.div`
   color: ${RED};
   align-self: flex-end;
-  margin-bottom: 10px;
   cursor: pointer;
 `
 
@@ -121,6 +149,13 @@ export const Image = styled.div`
     height: 160px;
   }
   background-color: ${GRAY_LIGHT};
+`
+
+export const InspirationName = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 12px;
 `
 
 export const Color = styled.div`

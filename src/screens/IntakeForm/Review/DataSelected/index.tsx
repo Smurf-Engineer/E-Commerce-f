@@ -18,13 +18,14 @@ import {
   ImageText,
   Products,
   Grid,
-  PaletteName
+  PaletteName,
+  InspirationName
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../../../utils/utilsFiles'
 import ColorBar from '../../../../components/ColorBar'
 import messages from '../messages'
 import { Message, InspirationType, ImageFile, Product } from '../../../../types/common'
-import { Sections,  CUSTOM_PALETTE_INDEX } from '../../constants'
+import { Sections, CUSTOM_PALETTE_INDEX, InspirationTag } from '../../constants'
 
 interface Props extends RouteComponentProps<any> {
   inspiration: InspirationType[]
@@ -92,12 +93,16 @@ export class DataSelected extends React.Component<Props, {}> {
             </Row>
             <Row>
               <Images>
-                {inspirationItems.map((assetItem, index) => {
-                  const { image } = assetItem
-                  return (<ImageContainer key={index}>
-                  <Image src={image} />
-                  </ImageContainer>)
-                })}
+                {inspirationItems.map(({ image, assetType, id }, index) => 
+                  <ImageContainer key={index}>
+                    <Image src={image} />
+                    <InspirationName>
+                      {assetType && 
+                        `${InspirationTag[assetType]}${id ? id.toString().padStart(4, '0') : '-'}`
+                      }
+                    </InspirationName>
+                  </ImageContainer>
+                )}
               </Images>
             </Row>
           </Inspiration> : null}

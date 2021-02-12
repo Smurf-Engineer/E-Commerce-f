@@ -41,6 +41,10 @@ export const SET_FILE_TERMS = `${namespace}/SET_FILE_TERMS`
 export const SET_OPEN_BUILD = `${namespace}/SET_OPEN_BUILD`
 export const SET_HIGHLIGHT = `${namespace}/SET_HIGHLIGHT`
 
+export const KICKSTART = 'kickstart'
+export const GRAPHIC = 'graphic'
+export const PHOTO = 'photo'
+
 export enum Sections {
   PRODUCTS = -2,
   PATHWAY = -1,
@@ -50,6 +54,12 @@ export enum Sections {
   NOTES = 3,
   NOTIFICATIONS = 4,
   REVIEW = 5
+}
+
+export const InspirationTag = {
+  [KICKSTART]: 'K',
+  [GRAPHIC]: 'A',
+  [PHOTO]: 'P'
 }
 
 export const CUSTOM_PALETTE_INDEX = -1
