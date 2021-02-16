@@ -196,7 +196,7 @@ export class Notes extends React.Component<Props, {}> {
                 placeholder={formatMessage(messages.placeholder)}
                 onEditorStateChange={this.onEditorStateChange}
                 onContentStateChange={this.onContentStateChange}
-                onBlur={this.setDescription}
+                spellCheck={false}
                 toolbar={{
                   options: ['inline', 'list'],
                   inline: {

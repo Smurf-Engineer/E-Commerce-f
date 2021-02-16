@@ -61,7 +61,8 @@ export class Review extends React.Component<Props, {}> {
     const products = get(data, 'project.products', [])
     const files = get(data, 'project.files', [])
     const inspiration = get(data, 'project.inspiration', [])
-    const user = get(data, 'project.user', {})
+    const teamSize = get(data, 'project.teamSize', '')
+    const deliveryDate = get(data, 'project.deliveryDate', '')
     const accountManager = get(data, 'project.user.accountManager', {})
 
     return (
@@ -78,12 +79,12 @@ export class Review extends React.Component<Props, {}> {
                 <StrongText>{projectName || '-'}</StrongText>
               </Column>
               <Column>
-                <Text>{formatMessage(messages.customerName)}</Text>
-                <StrongText>{user ? `${user.name} ${user.lastName}` : '-'}</StrongText>
+                <Text>{formatMessage(messages.teamSize)}</Text>
+                <StrongText>{teamSize || '-'}</StrongText>
               </Column>
               <Column>
-                <Text>{formatMessage(messages.email)}</Text>
-                <StrongText>{user ? user.email : '-'}</StrongText>
+                <Text>{formatMessage(messages.deliveryDate)}</Text>
+                <StrongText>{deliveryDate ? moment(deliveryDate).format(DATE_FORMAT) : '-'}</StrongText>
               </Column>
               <Column>
                 <Text>{formatMessage(messages.dateCreated)}</Text>

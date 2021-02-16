@@ -781,11 +781,15 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       history,
       data: { product }
     } = this.props
-
+    const productObj = {
+      ...product,
+      type: product.name,
+      description: product.shortDescription
+    }
     history.push({
       pathname: `/pro-design`,
       state: {
-        product
+        product: productObj
       }
     })
   }

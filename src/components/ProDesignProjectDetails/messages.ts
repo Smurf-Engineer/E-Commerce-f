@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'components.Review.email',
     defaultMessage: 'Email'
   },
+  teamSize: {
+    id: 'components.Review.teamSize',
+    defaultMessage: 'Team Size'
+  },
+  deliveryDate: {
+    id: 'components.Review.deliveryDate',
+    defaultMessage: 'Delivery Date'
+  },
   dateCreated: {
     id: 'components.Review.dateCreated',
     defaultMessage: 'Date Created'

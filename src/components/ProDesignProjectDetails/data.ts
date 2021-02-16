@@ -9,6 +9,8 @@ export const getProDesignProject = gql`
       createdAt: created_at
       name
       status
+      teamSize: team_size
+      deliveryDate: delivery_date
       phone
       notes
       inspiration {

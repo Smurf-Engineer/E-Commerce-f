@@ -40,9 +40,8 @@ export const MainContainer = styled.div`
 export const Text = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
-  @media (max-width: 768px) {
-    width: 40%;
-  }
+  width: 100%;
+  word-break: break-all;
 `
 
 export const Column = styled.div`
