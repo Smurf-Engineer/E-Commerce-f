@@ -48,6 +48,7 @@ export const PROJECT_MESSAGE = 'PROJECT_MESSAGE'
 
 /* Prodesign Design status */
 export const PREFLIGHT_STATUS = 'preflight'
+export const IN_DESIGN = 'in_design'
 export const CUSTOMER_PREVIEW = 'customer_preview'
 export const CUSTOMER_APPROVED = 'approved'
 

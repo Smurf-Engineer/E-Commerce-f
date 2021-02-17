@@ -29,9 +29,21 @@ export default defineMessages({
     id: 'components.ProDesignProjects.projectNo',
     defaultMessage: 'Project No.'
   },
-  projectStatus: {
-    id: 'components.ProDesignProjects.projectStatus',
-    defaultMessage: 'Project Status'
+  products: {
+    id: 'components.ProDesignProjects.products',
+    defaultMessage: 'Products'
+  },
+  addProject: {
+    id: 'components.ProDesignProjects.addProject',
+    defaultMessage: '+ ADD PROJECT'
+  },
+  updatedAt: {
+    id: 'components.ProDesignProjects.updatedAt',
+    defaultMessage: 'Last Updated'
+  },
+  notifications: {
+    id: 'components.ProDesignProjects.notifications',
+    defaultMessage: 'Notifications'
   },
   empty: {
     id: 'components.ProDesignProjects.empty',

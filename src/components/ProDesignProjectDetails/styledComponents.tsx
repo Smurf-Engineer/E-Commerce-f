@@ -62,6 +62,8 @@ export const Column = styled.div`
   }
 `
 
+export const PaletteName = styled.div``
+
 export const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -128,6 +130,9 @@ export const Color = styled.div`
   display: flex;
   width: 70%;
   flex-direction: column;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `
 export const Files = styled.div`
   margin-bottom: 50px;

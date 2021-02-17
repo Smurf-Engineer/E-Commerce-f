@@ -20,6 +20,7 @@ export const getProDesignProject = gql`
       }
       palette {
         id
+        name
         primary: primary_color
         accent1: accent_1
         accent2: accent_2
@@ -37,50 +38,66 @@ export const getProDesignProject = gql`
           lastName: last_name
         }
       }
-      products {
-        id
-        code
-        yotpoId: yotpo_id
+      designs {
+        id: short_id
         name
-        type: name
-        description: short_description
-        shortDescription: short_description
-        collections
-        isTopProduct
-        weight
-        customizable: design_center
-        retailMen: men_retail
-        retailWomen: women_retail
-        genders {
+        code
+        createdAt: created_at
+        image
+        status
+        product {
           id
-          name: gender
-        }
-        fitStyles {
-          id
-          name: description
-        }
-        priceRange {
-          quantity
-          price
-          abbreviation
-          shortName: short_name
-        }
-        images: pictures {
-          front: front_image
-          back: back_image
-          left: left_image
-          right: right_image
-          genderId: gender_id
-        }
-        sizeRange: size_range {
-          id
+          code
+          yotpoId: yotpo_id
           name
-        }
-        colors {
-          name
-          image
+          type: name
+          description: short_description
+          shortDescription: short_description
+          collections
+          isTopProduct
+          weight
+          customizable: design_center
+          retailMen: men_retail
+          retailWomen: women_retail
+          genders {
+            id
+            name: gender
+          }
+          fitStyles {
+            id
+            name: description
+          }
+          priceRange {
+            quantity
+            price
+            abbreviation
+            shortName: short_name
+          }
+          images: pictures {
+            front: front_image
+            back: back_image
+            left: left_image
+            right: right_image
+            genderId: gender_id
+          }
+          sizeRange: size_range {
+            id
+            name
+          }
+          colors {
+            name
+            image
+          }
         }
       }
+    }
+  }
+`
+
+export const GetColorsQuery = gql`
+  query GetColors {
+    colorsResult: getColors {
+      colors
     }
   }
 `

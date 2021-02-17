@@ -16,13 +16,17 @@ import {
   ProApproved,
   ThumbnailImage,
   CustomizeButton,
-  CheckboxContainer
+  CheckboxContainer,
+  ProStatus,
+  ProLabel
 } from './styledComponents'
 import messages from './messages'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { ImageType } from '../../../types/common'
+import { BLUE_LIGHT, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
+import { CUSTOMER_PREVIEW, IN_DESIGN, CUSTOMER_APPROVED } from '../../../constants'
 
 const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
 const BelowTablet = (props: any) => <Responsive {...props} maxWidth={767} />
@@ -51,6 +55,8 @@ interface Props {
   selectedIndex?: number
   fitContainer?: boolean
   fromIntakeForm?: boolean
+  isProDesign?: boolean
+  proStatus?: string
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -64,6 +70,8 @@ const imagesOrder = ['thumbnail', 'front', 'left', 'right', 'back']
 const ProductSlide = ({
   onMouseEnter,
   onMouseLeave,
+  isProDesign,
+  proStatus,
   isHovered,
   isTopProduct,
   images,
@@ -141,6 +149,23 @@ const ProductSlide = ({
       </ImageContainer>
     )
   }
+  let statusColor = null
+  if (isProDesign && proStatus) {
+    switch (proStatus) {
+      case CUSTOMER_APPROVED:
+        statusColor = GREEN_STATUS
+        break
+      case IN_DESIGN:
+        statusColor = BLUE_LIGHT
+        break
+      case CUSTOMER_PREVIEW:
+        statusColor = ORANGE_STATUS
+        break
+      default:
+        statusColor = WHITE
+        break
+    }
+  }
   let thumbnail = images
     ? images[imagesOrder.find(key => images[key]) || 'thumbnail']
     : JackrooLogo
@@ -169,6 +194,14 @@ const ProductSlide = ({
           </TopContainer>
         )}
       </ImageTop>
+      {isProDesign && proStatus ? 
+        <ProLabel>
+          <ProStatus backgroundColor={statusColor}>
+          {proStatus.replace(/_/g, ' ')}
+          </ProStatus>
+        </ProLabel>
+         : null
+      }
       <ThumbnailImage
         onClick={!selectProduct ? onPressThumbnail : undefined}
         src={thumbnail}

@@ -75,6 +75,8 @@ interface Props {
   selectedIndex?: number
   clickDisabled?: boolean
   fitContainer?: boolean
+  isProDesign?: boolean
+  proStatus?: string
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
@@ -155,11 +157,11 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { history, onPressThumbnail, clickDisabled = false } = this.props
+    const { history, onPressThumbnail, isProDesign, clickDisabled = false } = this.props
     if (onPressThumbnail) {
       onPressThumbnail()
     }
-    if (!clickDisabled) {
+    if (!clickDisabled && !isProDesign) {
       history.push(this.getUrlProduct())
     }
   }
@@ -243,6 +245,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       disableSlider,
       backgroundColor,
       colors,
+      proStatus,
+      isProDesign,
       reversePriceRange,
       proDesign,
       fromIntakeForm,
@@ -324,6 +328,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
         <ImageSlide
           {...{
+            isProDesign,
+            proStatus,
             isTopProduct,
             isHovered,
             images,
@@ -368,7 +374,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             </Type>
             <Description {...{fitContainer}}>{description}</Description>
             <InfoContainer>
-              {colorOptions}
+              {!isProDesign ? colorOptions : null}
               <Price>{price}</Price>
             </InfoContainer>
           </Footer>

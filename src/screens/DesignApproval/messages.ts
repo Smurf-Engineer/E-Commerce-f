@@ -71,7 +71,7 @@ export default defineMessages({
   },
   back: {
     id: 'screens.DesignApproval.back',
-    defaultMessage: 'Back to Jakroo'
+    defaultMessage: 'Back to Project'
   },
   selectFile: {
     id: 'screens.DesignApproval.selectFile',

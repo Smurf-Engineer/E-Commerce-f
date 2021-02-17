@@ -418,7 +418,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   goToHome = () => {
-    window.location.replace('/')
+    const { history, data } = this.props
+    const projectId = get(data, 'projectItem.project.id', '')
+    if (projectId) {
+      history.push(`/account?option=proDesignProjects&id=${projectId}`)
+    }
   }
 
   toggleBottomSheet = () => {

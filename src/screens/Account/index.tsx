@@ -285,6 +285,7 @@ export class Account extends React.Component<Props, {}> {
     const pendingReseller = resellerStatus === PENDING
     const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
+    const userId = get(data, 'profileData.userProfile.userId', '')
     switch (screen) {
       case OVERVIEW:
         return !pendingReseller && (
@@ -310,7 +311,7 @@ export class Account extends React.Component<Props, {}> {
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
       case PRO_DESIGN_PROJECTS:
-        return <ProDesignProjects {...{ history, formatMessage }} />
+        return <ProDesignProjects {...{ history, formatMessage, userId }} />
       case RESELLER_PAYOUTS:
         return (resellerEnabled && isReseller) && <ResellerOptions {...{ history, formatMessage }} />
       case RESELLER_ORDERS:

@@ -11,7 +11,7 @@ export const getProDesignProjects = gql`
       $order: String,
       $orderAs: String
     ) {
-    rows: getProDesignProjects(
+      projectsResult: getProDesignProjects(
         limit: $limit,
         offset: $offset,
         order: $order,
@@ -22,7 +22,12 @@ export const getProDesignProjects = gql`
         id
         createdAt: created_at
         name
+        updatedAt: updated_at
         status
+        designs {
+          shortId: short_id
+          notifications
+        }
       }
     }
   }

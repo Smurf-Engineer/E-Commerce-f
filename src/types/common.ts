@@ -104,6 +104,7 @@ export type ProDesignItem = {
   design: Design
   project: ProDesignProject
   product: Product
+  notifications: number
   messages: ProDesignMessage[]
 }
 
@@ -1885,6 +1886,8 @@ export type Project = {
   name: string
   status: string
   createdAt: string
+  designs: ProDesignItem[]
+  updatedAt?: string
 }
 
 export type ProjectsResult = {

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
+import queryString from 'query-string'
 import Icon from 'antd/lib/icon'
 import Review from '../ProDesignProjectDetails'
 import { FormattedMessage } from 'react-intl'
@@ -18,7 +19,10 @@ import {
   TableRow,
   Cell,
   LoadingContainer,
-  BackContainer
+  BackContainer,
+  AddButton,
+  Head,
+  StyledBadge
 } from './styledComponents'
 import messages from './messages'
 import { QueryProps, Project, Message, ProjectsResult } from '../../types/common'
@@ -33,14 +37,16 @@ import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { DATE_FORMAT } from '../../constants'
 
 interface Data extends QueryProps {
-  rows: ProjectsResult
+  projectsResult: ProjectsResult
 }
 
 interface Props {
-  data: Data
+  list: Data
   currentPage: number
   projectId: number
   currentSection: number
+  userId: number
+  history: History
   formatMessage: (messageDescriptor: Message) => string
   setCurrentPageAction: (page: number) => void
   setCurrentSectionAction: (page: number, projectId?: number) => void
@@ -49,6 +55,19 @@ interface Props {
 }
 
 class ProDesignProjects extends React.Component<Props, {}> {
+  componentDidMount() {
+    const {
+      history: {
+        location: { search }
+      }
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { id } = queryParams
+    if (!!id) {
+      this.handleOnClickProject(parseInt(id, 10))
+    }
+  }
+
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -70,26 +89,30 @@ class ProDesignProjects extends React.Component<Props, {}> {
   }
 
   goToList = () => {
-    const { setCurrentSectionAction } = this.props
+    const { setCurrentSectionAction, list } = this.props
     setCurrentSectionAction(Pages.LIST)
+    list.refetch()
+  }
+
+  goToCreate = () => {
+    const { history } = this.props
+    history.push('/pro-design')
   }
 
   render() {
     const {
-      data,
+      list,
+      history,
       currentPage,
       projectId,
+      userId,
       currentSection,
       formatMessage,
     } = this.props
 
-    const { loading } = data || {}
-    const projects = get<ProjectsResult, 'projects', Project[]>(
-      data.rows,
-      'projects',
-      []
-    )
-    const fullCount = get(data, 'rows.fullCount', 0)
+    const { loading } = list || {}
+    const projects = get(list, 'projectsResult.projects', [])
+    const fullCount = get(list, 'projectsResult.fullCount', 0)
    
     return (
       <Container>
@@ -100,8 +123,11 @@ class ProDesignProjects extends React.Component<Props, {}> {
           </BackContainer>
         }
         <SwipeableViews disabled={true} index={currentSection}>
-          <>
-            <FormattedMessage {...messages.subtitle} />
+          <div>
+            <Head>
+              <FormattedMessage {...messages.subtitle} />
+              <AddButton onClick={this.goToCreate}><FormattedMessage {...messages.addProject} /></AddButton>
+            </Head>
             <ListContainer>
               <Table>
                 <thead>
@@ -109,34 +135,38 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     <Header>{formatMessage(messages.projectName)}</Header>
                     <Header>{formatMessage(messages.createdDate)}</Header>
                     <Header>{formatMessage(messages.projectNo)}</Header>
-                    <Header>{formatMessage(messages.projectStatus)}</Header>
+                    <Header textAlign="center">{formatMessage(messages.products)}</Header>
+                    <Header textAlign="center">{formatMessage(messages.updatedAt)}</Header>
+                    <Header textAlign="center">{formatMessage(messages.notifications)}</Header>
                   </Row>
                 </thead>
-                {loading ?
-                  <LoadingContainer><Spin /></LoadingContainer>
-                  : <tbody>
-                      {projects.length ? projects.map((
-                        {
-                          createdAt,
-                          status,
-                          id,
-                          name
-                        }: Project,
-                        index: number) => {
-                        const handleOnClickRow = () => this.handleOnClickProject(id)
-                        return (<TableRow key={index} onClick={handleOnClickRow}>
-                          <Cell>{name}</Cell>
-                          <Cell>
-                            {createdAt ? moment(createdAt).format(DATE_FORMAT) : '-'}
-                          </Cell>
-                          <Cell>{id}</Cell>
-                          <Cell>{status}</Cell>
-                        </TableRow>)
-                        }
-                      )
-                      : null }
-                  </tbody>}
+                <tbody>
+                  {projects.length ? projects.map((
+                    {
+                      createdAt,
+                      id,
+                      name,
+                      updatedAt,
+                      designs = []
+                    }: Project,
+                    index: number) => {
+                    const handleOnClickRow = () => this.handleOnClickProject(id)
+                    const notifications = designs.reduce((sum, item) => sum + item.notifications, 0)
+                    return (<TableRow key={index} onClick={handleOnClickRow}>
+                      <Cell>{name}</Cell>
+                      <Cell>
+                        {createdAt ? moment(createdAt).format(DATE_FORMAT) : '-'}
+                      </Cell>
+                      <Cell>JV2-{userId}-PD-{id}</Cell>
+                      <Cell textAlign="center">{designs.length}</Cell>
+                      <Cell textAlign="center">{updatedAt ? moment(updatedAt).format(DATE_FORMAT) : '-'}</Cell>
+                      <Cell textAlign="center">{notifications > 0 && <StyledBadge count={notifications} />}</Cell>
+                    </TableRow>)
+                    }
+                  ) : null}
+                </tbody>
               </Table>
+              {loading && <LoadingContainer><Spin /></LoadingContainer>}
               {!loading && !projects.length ? 
                 (<EmptyContainer message={formatMessage(messages.empty)} />) : null}
               <Pagination
@@ -146,13 +176,15 @@ class ProDesignProjects extends React.Component<Props, {}> {
                 onChange={this.handleOnChangePage}
               />
             </ListContainer>
-          </>
-          <Review
-            {...{formatMessage}}
-            project={projectId}
-            onOpenQuickView={this.handleOnOpenQuickView}
-            goBack={this.goToList}
-          />
+          </div>
+          <div>
+            <Review
+              {...{ formatMessage, history }}
+              project={projectId}
+              onOpenQuickView={this.handleOnOpenQuickView}
+              goBack={this.goToList}
+            />
+          </div>
         </SwipeableViews>
       </Container>
     )
@@ -169,7 +201,8 @@ const mapStateToProps = (state: any) => state.get('proDesignProjects').toJS()
 
 const ProDesignProjectsEnhance = compose(
   connect(mapStateToProps, { ...AffiliatesActions, openQuickViewAction }),
-  graphql(getProDesignProjects, {
+  graphql<Data>(getProDesignProjects, {
+    name: 'list',
     options: ({ currentPage, orderBy, sort }: OwnProps) => {
       const offset = currentPage ? (currentPage - 1) * PROJECTS_LIMIT : 0
       return {

@@ -2,7 +2,8 @@
  * Styled Components - Created by eduardoquintero on 17/12/20.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHT, RED, WHITE_TRANSPARENT } from '../../theme/colors'
+import Badge from 'antd/lib/badge'
+import { GRAY_DARK, GRAY_LIGHT, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -25,6 +26,39 @@ export const Container = styled.div`
   position: relative;
   @media (max-width: 768px) {
     margin-top: -14px;
+  }
+`
+
+export const StyledBadge = styled(Badge)``
+
+export const Head = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-right: 32px;
+  align-items: center;
+  @media (max-width: 768px) {
+    padding-left: 32px;
+  }
+  @media (max-width: 425px) {
+    flex-flow: column;
+    text-align: center;
+  }
+`
+
+export const AddButton = styled.div`
+  width: 100%;
+  padding: 10px 6px;
+  max-width: 128px;
+  border: 2px solid ${RED};
+  color: ${RED};
+  transition: all .25s;
+  @media (max-width: 425px) {
+    margin-top: 28px;
+  }
+  &:hover {
+    cursor: pointer;
+    background: ${RED};
+    color: ${WHITE};
   }
 `
 
@@ -115,7 +149,8 @@ export const Cell = styled.td`
   letter-spacing: 0.1px;
   text-transform: capitalize;
   line-height: 35px;
-  text-align: start;
+  text-align: ${({ textAlign }: HeaderProps) =>
+    textAlign ? textAlign : 'start'};
   font-weight: ${({ bold }: CellProps) => bold ? 'bold' : 'normal'};
   &.error {
     color: ${RED};

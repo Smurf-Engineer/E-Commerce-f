@@ -2,7 +2,7 @@
  * Styled Components - Created by david on 12/02/18.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED } from '../../../theme/colors'
+import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED, BLACK_LABEL } from '../../../theme/colors'
 
 type StyledProps = {
   backgroundColor?: string
@@ -112,9 +112,29 @@ export const TopContainer = styled.div`
 export const ThumbnailImage = styled.img`
   width: 100%;
   max-width: 220px;
-  height: ${({ fitContainer }: StyleProps) => (fitContainer ? '110px' : '212px')};
+  height: ${({ fitContainer }: StyledProps) => (fitContainer ? '110px' : '212px')};
   object-fit: cover;
   border-radius: 3px;
+`
+
+export const ProStatus = styled.div`
+  width: 70%;
+  padding: 10px 0;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: ${BLACK_LABEL};
+  border-radius: 3px;
+  color: ${({ backgroundColor }: StyledProps) => backgroundColor || WHITE};
+`
+
+export const ProLabel = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 40%;
 `
 
 export const TopText = styled.div`
