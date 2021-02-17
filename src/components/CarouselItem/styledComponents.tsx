@@ -13,5 +13,6 @@ export const ImagePreview = styled.img`
 export const VideoPreview = styled.video`
   width: 100%;
   object-fit: cover;
-  height: 550px;
+  height: 100%;
+  max-height: 550px;
 `
