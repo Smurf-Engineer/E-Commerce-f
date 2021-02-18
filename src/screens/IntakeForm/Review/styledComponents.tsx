@@ -1,5 +1,6 @@
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHT, RED, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED, WHITE } from '../../../theme/colors'
 
 interface ImagePreviewProps {
   src: string
@@ -148,6 +149,21 @@ export const Image = styled.div`
     height: 160px;
   }
   background-color: ${GRAY_LIGHT};
+`
+
+export const DocIcon = styled(Icon)`
+  width: 200px;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 32px;
+  color: ${GRAY_DARK};
+  background: ${GRAY_LIGHTEST};
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 160px;
+  }
 `
 
 export const InspirationName = styled.div`

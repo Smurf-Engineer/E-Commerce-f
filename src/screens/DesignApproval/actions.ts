@@ -9,7 +9,8 @@ import {
   SET_NOTE,
   SET_REPLY,
   SET_SENDING_NOTE,
-  SET_APPROVE_LOADING
+  SET_APPROVE_LOADING,
+  SET_EDIT_PROJECT
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -26,6 +27,12 @@ export const setOpenModal = (open: boolean): AnyAction => ({
 export const setUploadingAction = (loading: boolean): AnyAction => ({
   type: SET_UPLOADING,
   loading
+})
+
+export const setEditProject = (project: number, product: number): AnyAction => ({
+  type: SET_EDIT_PROJECT,
+  project,
+  product
 })
 
 export const setFileAction = (file: string): AnyAction => ({

@@ -29,7 +29,22 @@ import messages from './messages'
 import { Message, ImageFile, UserType } from '../../../types/common'
 import ImageList from './ImageList'
 
-const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.ai', '.eps', 'svg']
+const fileExtensions = [
+'.jpg',
+'.jpeg',
+'.png',
+'.gif',
+'.ai',
+'.eps',
+'.svg',
+'.pdf',
+'.doc',
+'.docx',
+'.zip',
+'.psd'
+]
+
+const FILE_LIMIT = 256
 
 interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
@@ -66,13 +81,13 @@ export class Files extends React.Component<Props, {}> {
     const { formatMessage, onUploadFile } = this.props
     if (file) {
       const { size, name } = file
-      if (bytesToMb(size) > 20) {
+      if (bytesToMb(size) > FILE_LIMIT) {
         message.error(formatMessage(messages.imageSizeError))
         return false
       }
       const fileExtension = getFileExtension(name)
       const validateExtension =
-        indexOf(imageFileExtensions, (fileExtension as String).toLowerCase()) === -1
+        indexOf(fileExtensions, (fileExtension as String).toLowerCase()) === -1
 
       if (validateExtension) {
         message.error(formatMessage(messages.imageExtensionError))
@@ -160,7 +175,7 @@ export class Files extends React.Component<Props, {}> {
                     formatMessage={formatMessage}
                     galleryButton={true}
                     handleOnClickGallery={handleOpenLocker}
-                    extensions={imageFileExtensions}
+                    extensions={fileExtensions}
                   >
                     <Button>
                       <ButtonContainer>

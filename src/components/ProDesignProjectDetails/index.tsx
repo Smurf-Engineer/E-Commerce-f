@@ -28,15 +28,20 @@ import {
   BackContainer,
   SpinContainer,
   InspirationName,
-  PaletteName
+  PaletteName,
+  AddProductButton,
+  AddLabel,
+  DocIcon
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
 import messages from './messages'
 import { Message, InspirationType, ColorsDataResult, ProDesignItem } from '../../types/common'
-import { DATE_FORMAT } from '../../constants'
+import { DATE_FORMAT, DOCX_TYPE, DOC_TYPE, PDF_TYPE, ZIP_TYPE } from '../../constants'
 import { InspirationTag } from '../../screens/IntakeForm/constants'
 import message from 'antd/lib/message'
+
+const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
 interface Props extends RouteComponentProps<any> {
   history: History
@@ -54,6 +59,10 @@ export class Review extends React.Component<Props, {}> {
   handleGoItem = (id: number) => {
     const { history } = this.props
     history.push(`/approval?id=${id}`)
+  }
+  addNewProduct = () => {
+    const { history, project } = this.props
+    history.push(`/pro-design?id=${project}`)
   }
   render() {
     const {
@@ -178,10 +187,14 @@ export class Review extends React.Component<Props, {}> {
             <Row>
               <Images>
                 {files.length ? files.map((assetItem, index) => {
-                  const { fileUrl } = assetItem
+                  const { fileUrl, type, name } = assetItem
+                  const openFile = () => window.open(fileUrl)
                   return (<ImageContainer key={index}>
-                    <Image src={fileUrl} />
-                    <ImageText>{getFileNameFromUrl(fileUrl)}</ImageText>
+                    {docTypes.includes(type) ?
+                      <DocIcon onClick={openFile} type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> 
+                      : <Image src={fileUrl} />
+                    }
+                    <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
                   </ImageContainer>)
                 }) : formatMessage(messages.noFiles)}
                 </Images>
@@ -234,6 +247,15 @@ export class Review extends React.Component<Props, {}> {
                     />
                   )
                 })}
+                {designs.length < 5 &&
+                  <AddProductButton onClick={this.addNewProduct}>
+                    <AddLabel 
+                      dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.addProduct)
+                      }}
+                    />
+                  </AddProductButton>
+                }
               </Row>
             </Products>
         </Container> : <SpinContainer><Spin /></SpinContainer>}

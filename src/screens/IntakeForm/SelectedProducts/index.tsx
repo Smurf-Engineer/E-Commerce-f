@@ -26,6 +26,7 @@ interface Props {
   products: Product[]
   title: string
   fromIntakeForm: boolean
+  isEdit?: boolean
   changeQuantity: (key: number) => void
   handleDeleteProduct: (product: Product, checked: boolean, key?: number) => void
 }
@@ -39,7 +40,12 @@ export class SelectedProducts extends React.Component<Props, {}> {
   }
   render() {
     const {
-      products = [], title, handleDeleteProduct, changeQuantity, fromIntakeForm
+      products = [],
+      title,
+      handleDeleteProduct,
+      changeQuantity,
+      fromIntakeForm,
+      isEdit
     } = this.props
     const { open } = this.state
     return (
@@ -68,7 +74,7 @@ export class SelectedProducts extends React.Component<Props, {}> {
                   <Description>
                     {name}
                   </Description>
-                  {fromIntakeForm && <DuplicateButton onClick={changeQuantityValue} src={DuplicateImg} />}
+                  {fromIntakeForm && !isEdit && <DuplicateButton onClick={changeQuantityValue} src={DuplicateImg} />}
                   <Trash src={TrashImg} onClick={deleteProduct} />
                 </Bottom>
               </ProductThumbnail>

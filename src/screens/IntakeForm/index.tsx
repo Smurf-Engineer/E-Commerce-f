@@ -17,6 +17,7 @@ import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
 import Modal from 'antd/lib/modal'
+import queryString from 'query-string'
 import vector from '../../assets/vector.svg'
 import raster from '../../assets/raster.png'
 import ProductCatalogue from '../../components/ProductCatalogue'
@@ -242,8 +243,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnContinue = async (isFromScratch?: boolean) => {
-    const { goToPage, currentScreen} = this.props
+    const { goToPage, location: { search }, currentScreen, selectedItems, history } = this.props
     const { isMobile, isTablet } = this.state
+    const queryParams = queryString.parse(search)
+    const { id: projectId } = queryParams || {}
+    const productId = get(selectedItems, '[0].id', '')
+    if (!!projectId && !!productId) {
+      return history.push(`/approval?project=${projectId}&product=${productId}`)
+    }
     if (isMobile || isTablet) {
       const node = ReactDOM.findDOMNode(this.intakeRef) as HTMLElement
       const intakeScroller = zenscroll.createScroller(node, 0)
@@ -259,7 +266,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     }
     const {
       selectedPaletteIndex,
-      selectedItems,
       inspirationSelectedItems,
       selectedColors,
       selectedPrimaryColor,
@@ -478,8 +484,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnselectProductAction = (product: Product) => {
-    const { selectProductAction, selectedItems, intl: { formatMessage } } = this.props
-    if (selectedItems.length < 5) {
+    const { selectProductAction, location: { search }, selectedItems, intl: { formatMessage } } = this.props
+    const queryParams = queryString.parse(search)
+    const { id: projectId } = queryParams || {}
+    if (selectedItems.length < (!projectId ? 5 : 1)) {
       return selectProductAction(product)
     }
     const title = formatMessage(messages.maxProductsTitle)
@@ -660,6 +668,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       expandedInspiration,
       expandedInspirationOpen,
       fromScratch,
+      location: {
+        search
+      },
       currentCurrency,
       inspirationTags,
       inspirationFilters,
@@ -707,6 +718,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         message.error(e)
       }
     }
+
+    const queryParams = queryString.parse(search)
+
+    const { id: projectId } = queryParams || {}
 
     const paletteName = get(dataColor, ['rows', selectedPaletteIndex, 'name'], '')
 
@@ -792,6 +807,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               hideFilters={['collection']}
               fromIntakeForm={true}
               changeQuantity={this.handleChangeQuantity}
+              isEdit={!!projectId}
               {...{ history, formatMessage, selectedItems }} /></> : null}
         {currentScreen === Sections.PATHWAY ? (
           <DesignPathway 

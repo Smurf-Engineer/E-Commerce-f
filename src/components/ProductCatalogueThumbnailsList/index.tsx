@@ -71,6 +71,7 @@ interface Props {
   designs?: DesignType[]
   previewOnly?: boolean
   profileData: ProfileData
+  isEdit?: boolean
   makeCopy: (shortId: string) => void
   setDesignSelected: (shortId: string) => void
   changeQuantity: (key: number) => void
@@ -100,6 +101,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       profileData,
       fromIntakeForm,
       data,
+      isEdit,
       designs,
       changeQuantity,
       onPressPrivate = () => { },
@@ -360,7 +362,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     return (
       <Container>
         <SelectedProducts
-          {...{ changeQuantity, fromIntakeForm }}
+          {...{ changeQuantity, fromIntakeForm, isEdit }}
           products={selectedItems}
           title={formatMessage(messages.selectedProducts)}
           handleDeleteProduct={handleCheckChange}

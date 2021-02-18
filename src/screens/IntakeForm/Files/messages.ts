@@ -15,7 +15,7 @@ export default defineMessages({
   },
   imageSizeError: {
     id: 'components.IntakeForm.Files.imageSizeError',
-    defaultMessage: 'Oh no! Max file size is limited to 20MB'
+    defaultMessage: 'Oh no! Max file size is limited to 256MB'
   },
   loginMessage: {
     id: 'components.IntakeForm.Files.loginMessage',

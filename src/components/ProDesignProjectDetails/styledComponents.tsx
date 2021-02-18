@@ -1,5 +1,6 @@
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHT, WHITE } from '../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED, RED_TRANSPARENT_BRIGHT, WHITE } from '../../theme/colors'
 
 interface ImagePreviewProps {
   src: string
@@ -125,6 +126,25 @@ export const Image = styled.div`
   background-color: ${GRAY_LIGHT};
 `
 
+export const DocIcon = styled(Icon)`
+  width: 200px;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 30px;
+  color: ${GRAY_DARK};
+  background: ${GRAY_LIGHTEST};
+  &:hover {
+    cursor: pointer;
+    background: ${GRAY_LIGHT};
+  }
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 160px;
+  }
+`
+
 export const Color = styled.div`
   margin-bottom: 50px;
   display: flex;
@@ -173,4 +193,39 @@ export const SpinContainer = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+`
+
+export const AddProductButton = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed ${RED};
+  height: 216px;
+  margin-top: 13px;
+  margin-left: 18px;
+  max-width: 198px;
+  width: 100%;
+  border-radius: 3px;
+  color: ${RED};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    background: ${RED_TRANSPARENT_BRIGHT};
+  }
+  @media (max-width: 480px) {
+    margin: 0 auto;
+    margin-top: 32px;
+  }
+`
+
+export const AddLabel = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
 `

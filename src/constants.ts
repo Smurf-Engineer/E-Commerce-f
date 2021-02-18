@@ -124,3 +124,9 @@ export const SIMPLE_DATE_FORMAT = 'DD-MM-YY'
 
 // Simple table headers data types
 export const DATE = 'date'
+
+// Mime Types
+export const DOC_TYPE = 'application/msword' // .doc
+export const ZIP_TYPE = 'application/zip' // .zip
+export const DOCX_TYPE = 'application/application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
+export const PDF_TYPE = 'application/pdf' // .pdf

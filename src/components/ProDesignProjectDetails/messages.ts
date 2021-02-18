@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.Review.teamSize',
     defaultMessage: 'Team Size'
   },
+  addProduct: {
+    id: 'components.Review.addProduct',
+    defaultMessage: '<p>+</p>Add Product'
+  },
   deliveryDate: {
     id: 'components.Review.deliveryDate',
     defaultMessage: 'Delivery Date'

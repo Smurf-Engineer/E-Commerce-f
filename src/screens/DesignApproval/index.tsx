@@ -200,6 +200,7 @@ interface Props extends RouteComponentProps<any> {
   predyedData: PredyedData
   approveLoading: boolean
   dataVariants: DataVariants
+  setEditProject: (project: number, product: number) => void
   openQuickViewAction: (index: number) => void
   setApproveLoading: (loading: boolean) => void
   addItemToStore: (variables: {}) => Promise<MessagePayload>
@@ -227,6 +228,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     navigator.serviceWorker.addEventListener('message', this.reloadMessages)
+    const { history } = this.props
+    const search = get(history, 'location.search', '')
+    const { project, product } = queryString.parse(search)
+    if (!!project && !!product) {
+      this.handleEditProject(project, product)
+    }
   }
   componentWillUnmount() {
     navigator.serviceWorker.removeEventListener('message', this.reloadMessages)
@@ -246,6 +253,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (oldMessages.length !== newMessages.length) {
       this.scrollMessages()
     }
+  }
+  handleEditProject = (project: number, product: number) => {
+    const { setEditProject } = this.props 
+    setEditProject(project, product)
   }
   reloadMessages = async (notification: Notification) => {
     const { data: notificationData } = notification
@@ -501,6 +512,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const {
       fontsData,
       data,
+      project,
       openRequest,
       parentMessageId,
       parentMessage,
@@ -901,7 +913,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             />
           </Modal>
           <Modal 
-            visible={openRequest}
+            visible={openRequest || !!project}
             footer={null}
             closable={false}
             width={'612px'}

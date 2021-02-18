@@ -27,7 +27,9 @@ export const getProDesignProject = gql`
         accent3: accent_3
       }
       files {
+        name
         fileUrl: file_url
+        type
       }
       user {
         name: first_name

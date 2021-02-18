@@ -11,6 +11,7 @@ export const SET_NOTE = `${namespace}/SET_NOTE`
 export const SET_REPLY = `${namespace}/SET_REPLY`
 export const SET_SENDING_NOTE = `${namespace}/SET_SENDING_NOTE`
 export const SET_APPROVE_LOADING = `${namespace}/SET_APPROVE_LOADING`
+export const SET_EDIT_PROJECT = `${namespace}/SET_EDIT_PROJECT`
 
 // Tabs Key
 export const APPROVAL = 'approval'

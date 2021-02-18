@@ -9,7 +9,8 @@ import {
   SET_NOTE,
   SET_REPLY,
   SET_SENDING_NOTE,
-  SET_APPROVE_LOADING
+  SET_APPROVE_LOADING,
+  SET_EDIT_PROJECT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -21,7 +22,9 @@ export const initialState = fromJS({
   uploadingFile: false,
   parentMessageId: '',
   parentMessage: '',
-  approveLoading: false
+  approveLoading: false,
+  project: null,
+  product: null
 })
 
 const designApprovalReducer: Reducer<any> = (state = initialState, action) => {
@@ -40,6 +43,11 @@ const designApprovalReducer: Reducer<any> = (state = initialState, action) => {
         openRequest: true,
         parentMessageId: action.id,
         parentMessage: action.message
+      })
+    case SET_EDIT_PROJECT:
+      return state.merge({
+        project: action.project,
+        product: action.product
       })
     case SET_APPROVE_LOADING:
       return state.set('approveLoading', action.loading)

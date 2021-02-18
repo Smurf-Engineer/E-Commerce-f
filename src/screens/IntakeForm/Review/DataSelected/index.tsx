@@ -19,13 +19,17 @@ import {
   Products,
   Grid,
   PaletteName,
-  InspirationName
+  InspirationName,
+  DocIcon
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../../../utils/utilsFiles'
 import ColorBar from '../../../../components/ColorBar'
 import messages from '../messages'
 import { Message, InspirationType, ImageFile, Product } from '../../../../types/common'
 import { Sections, CUSTOM_PALETTE_INDEX, InspirationTag } from '../../constants'
+import { DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE } from '../../../../constants'
+
+const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
 interface Props extends RouteComponentProps<any> {
   inspiration: InspirationType[]
@@ -141,9 +145,11 @@ export class DataSelected extends React.Component<Props, {}> {
             <Row>
               <Images>
                 {selectedFiles.length ? selectedFiles.map((assetItem, index) => {
-                  const { fileUrl, name } = assetItem
+                  const { fileUrl, name, type } = assetItem
                   return (<ImageContainer key={index}>
-                    <Image src={fileUrl} />
+                    {docTypes.includes(type) ?
+                      <DocIcon type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> : <Image src={fileUrl} />
+                    }
                     <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
                   </ImageContainer>)
                 }) : formatMessage(messages.noFiles)}

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY, RED, WHITE, BLUE } from '../../../theme/colors'
+import { GRAY_DARK, GRAY, RED, WHITE, BLUE, RED_TRANSPARENT } from '../../../theme/colors'
 import { AVENIR_NEXT } from '../../../theme/fonts'
 
 interface ButtonProps {
@@ -143,17 +143,26 @@ export const CheckBoxContainer = styled.div`
 
 export const SectionButton = styled.div`
   align-content: center;
-  background-color: ${WHITE};
-  border: ${({ selected }: ButtonProps) =>
-    selected ? `2px solid ${RED}` : `1px solid ${GRAY_DARK}`};
+  background-color: ${({ selected }: ButtonProps) =>
+    selected ? RED : WHITE};
   border-radius: 2px;
   display: flex;
   height: 50px;
   padding: 14px;
   justify-content: center;
+  border: 1px solid ${({ selected }: ButtonProps) =>
+  selected ? RED : GRAY_DARK};
+  transition: all .25s;
+  color: ${({ selected }: ButtonProps) =>
+  selected ? WHITE : GRAY_DARK};
   -webkit-transform: translate3d(0,0,0);
   &:hover {
     cursor: pointer;
+    color: ${WHITE};
+    border: 1px solid ${({ selected }: ButtonProps) =>
+    selected ? RED : RED_TRANSPARENT};
+    background-color: ${({ selected }: ButtonProps) =>
+    selected ? RED : RED_TRANSPARENT};
   }
 `
 

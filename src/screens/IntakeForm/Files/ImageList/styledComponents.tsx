@@ -1,5 +1,6 @@
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { BLUE, GRAY_LIGHT, RED } from '../../../../theme/colors'
+import { BLUE, GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED } from '../../../../theme/colors'
 
 interface ImagePreviewProps {
   src: string
@@ -16,6 +17,21 @@ export const Container = styled.div`
   @media (max-width: 768px) {
     max-width: 300px;
     justify-content: space-between;
+  }
+`
+
+export const DocIcon = styled(Icon)`
+  width: 300px;
+  height: 300px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 48px;
+  color: ${GRAY_DARK};
+  background: ${GRAY_LIGHTEST};
+  @media (max-width: 768px) {
+    width: 130px;
+    height: 130px;
   }
 `
 

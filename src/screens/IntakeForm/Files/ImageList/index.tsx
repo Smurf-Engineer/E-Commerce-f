@@ -11,9 +11,13 @@ import {
   ImageContainer,
   EditButton,
   DeleteButton,
+  DocIcon,
 } from './styledComponents'
 import { ImageFile, Message } from '../../../../types/common'
 import { getFileNameFromUrl } from '../../../../utils/utilsFiles'
+import { DOCX_TYPE, DOC_TYPE, PDF_TYPE, ZIP_TYPE } from '../../../../constants'
+
+const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
 interface Props {
   selectedFiles: ImageFile[]
@@ -31,12 +35,14 @@ const ImageList = ({
   return (
     <Container>
       {selectedFiles.map((file, index) => {
-        const { fileUrl, id, name } = file
+        const { fileUrl, id, name, type } = file
         const handleDeleteItem = () => deleteImage(id)
         const handleOpenRename = () => onOpenRenameModal(true, id)
         return (
           <ImageContainer key={index}>
-            <Image src={fileUrl} />
+            {docTypes.includes(type) ?
+              <DocIcon type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> : <Image src={fileUrl} />
+            }
             <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
             <ActionButtons>
               <EditButton onClick={handleOpenRename}>{formatMessage(messages.edit)}</EditButton>
