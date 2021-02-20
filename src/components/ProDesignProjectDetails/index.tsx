@@ -61,8 +61,11 @@ export class Review extends React.Component<Props, {}> {
     history.push(`/approval?id=${id}`)
   }
   addNewProduct = () => {
-    const { history, project } = this.props
-    history.push(`/pro-design?id=${project}`)
+    const { history, data } = this.props
+    const id = get(data, 'project.shortId', '')
+    if (id) {
+      history.push(`/pro-design?id=${id}`)
+    }
   }
   render() {
     const {

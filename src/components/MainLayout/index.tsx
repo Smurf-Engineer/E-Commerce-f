@@ -84,6 +84,7 @@ interface Props extends RouteComponentProps<any> {
   fontsData: any
   fonts: []
   darkMode?: boolean
+  hideDetails: boolean
   openResellerAction: (open: boolean) => void
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
@@ -211,6 +212,7 @@ class MainLayout extends React.Component<Props, {}> {
       productId,
       yotpoId,
       productGender,
+      hideDetails,
       openLogin,
       openLoginAction,
       setRegionAction,
@@ -322,7 +324,7 @@ class MainLayout extends React.Component<Props, {}> {
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
           gender={productGender}
-          {...{ productId, history, yotpoId, formatMessage }}
+          {...{ productId, history, yotpoId, hideDetails, formatMessage }}
         />
         <LogoutModal
           open={openLogoutModal}

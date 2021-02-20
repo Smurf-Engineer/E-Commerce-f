@@ -25,7 +25,7 @@ import JackrooLogo from '../../../assets/Jackroologo.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { ImageType } from '../../../types/common'
-import { BLUE_LIGHT, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
+import { BLUE_STATUS, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
 import { CUSTOMER_PREVIEW, IN_DESIGN, CUSTOMER_APPROVED } from '../../../constants'
 
 const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
@@ -156,7 +156,7 @@ const ProductSlide = ({
         statusColor = GREEN_STATUS
         break
       case IN_DESIGN:
-        statusColor = BLUE_LIGHT
+        statusColor = BLUE_STATUS
         break
       case CUSTOMER_PREVIEW:
         statusColor = ORANGE_STATUS

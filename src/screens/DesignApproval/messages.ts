@@ -21,9 +21,26 @@ export default defineMessages({
     id: 'screens.DesignApproval.enterAnswer',
     defaultMessage: 'ENTER REPLY NOTES'
   },
+  review: {
+    id: 'screens.DesignApproval.review',
+    defaultMessage: 'Ready for Review'
+  },
   shareButton: {
     id: 'screens.DesignApproval.shareButton',
     defaultMessage: 'Share'
+  },
+  designName: {
+    id: 'screens.DesignApproval.designName',
+    defaultMessage: 'Design Name:'
+  },
+  designNo: {
+    id: 'screens.DesignApproval.designNo',
+    defaultMessage: 'Design No:'
+  },
+  initialMessage: {
+    id: 'screens.DesignApproval.initialMessage',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Welcome to the Jakroo Design Approval Center. This is where you will review your Pro Designs and be able to request edits and approve them for ordering.'
   },
   addedToStore: {
     id: 'screens.DesignApproval.addedToStore',
@@ -41,13 +58,25 @@ export default defineMessages({
     id: 'screens.DesignApproval.savedNote',
     defaultMessage: 'Saved Note!'
   },
+  available: {
+    id: 'screens.DesignApproval.available',
+    defaultMessage: 'Available Free Edits'
+  },
+  savedProduct: {
+    id: 'screens.DesignApproval.savedProduct',
+    defaultMessage: 'Saved Product!'
+  },
+  newDesign: {
+    id: 'screens.DesignApproval.newDesign',
+    defaultMessage: 'NEW DESIGN'
+  },
   infoApprove: {
     id: 'screens.DesignApproval.infoApprove',
     defaultMessage: 'By approving this design you will not be able to request more edits.'
   },
   products: {
     id: 'screens.DesignApproval.products',
-    defaultMessage: 'Pro Design Project Products'
+    defaultMessage: 'View all Pro Designs'
   },
   confirm: {
     id: 'screens.DesignApproval.confirm',

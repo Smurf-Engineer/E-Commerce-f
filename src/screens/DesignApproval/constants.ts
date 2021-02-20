@@ -16,5 +16,3 @@ export const SET_EDIT_PROJECT = `${namespace}/SET_EDIT_PROJECT`
 // Tabs Key
 export const APPROVAL = 'approval'
 export const COLOR = 'color'
-
-export const LIMIT_REQUESTS = 4

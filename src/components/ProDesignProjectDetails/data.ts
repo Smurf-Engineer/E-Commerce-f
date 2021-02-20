@@ -6,6 +6,7 @@ export const getProDesignProject = gql`
     ) {
     project: getProDesignProject(projectId: $projectId) {
       id
+      shortId: short_id
       createdAt: created_at
       name
       status

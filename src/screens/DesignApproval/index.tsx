@@ -24,6 +24,7 @@ import {
   addTeamStoreItemMutation,
   approveDesignMutation,
   getFonts,
+  addProductProjectMutation,
   getPredyedColors,
   getProdesignItemQuery,
   getVariantsFromProduct
@@ -55,7 +56,8 @@ import {
   Accesories,
   ApprovalTitle,
   ApproveButton,
-  ApprovedIcon,
+  AvailableCircle,
+  AvailableLabel,
   BackButton,
   BlackBar,
   BlackBarMobile,
@@ -79,8 +81,10 @@ import {
   Container,
   CountCircle,
   DateMessage,
+  DescLabel,
   DesignChat,
   DesignImage,
+  DesignLabel,
   DesignName,
   FileLabel,
   FileName,
@@ -101,6 +105,7 @@ import {
   ModalSubtitle,
   ModalTitle,
   ModelTitle,
+  NameLabel,
   okButtonStyles,
   PanelIcon,
   PanelMobile,
@@ -110,11 +115,11 @@ import {
   Products,
   ProjectDesign,
   PromptTitle,
-  PurchaseButton,
   QuickView,
   RenderSection,
   RequestButtons,
   RequestEdit,
+  RequestsTitle,
   RequestText,
   RequiredText,
   RowTitle,
@@ -126,23 +131,27 @@ import {
   StyledUpload,
   TabContent,
   TextAreaStyled,
+  TypeLabel,
   UploadButton,
   UserIcon,
   VariantButton,
-  Variants,
-  WarningIcon
+  Variants
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Tab from './Tab'
 import Modal from 'antd/lib/modal'
-import { COLOR, APPROVAL, LIMIT_REQUESTS } from './constants'
+import { COLOR, APPROVAL } from './constants'
 import {
   CUSTOMER_APPROVED,
+  CUSTOMER_PREVIEW,
   EDIT,
   FROM_ADMIN,
+  IN_DESIGN,
+  NEW_PRODUCT,
   PREDYED_DEFAULT,
   PREDYED_TRANSPARENT,
+  PREFLIGHT_STATUS,
   PROJECT_MESSAGE
 } from '../../constants'
 import moment from 'moment'
@@ -152,11 +161,11 @@ import { getFileWithExtension } from '../../utils/utilsFiles'
 import { UploadChangeParam } from 'antd/lib/upload'
 import AccessoryColors from './AccessoryColors'
 import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
-// import clone from 'lodash/clone'
 import ShareDesignModal from '../../components/ShareDesignModal'
 import AddToCartButton from '../../components/AddToCartButton'
 import AddToTeamStore from '../../components/AddToTeamStore'
 import unset from 'lodash/unset'
+import { BLUE_STATUS, BLACK, GREEN_STATUS, ORANGE_STATUS } from '../../theme/colors'
 
 const { confirm } = Modal
 const { TabPane } = AntdTabs
@@ -200,9 +209,17 @@ interface Props extends RouteComponentProps<any> {
   predyedData: PredyedData
   approveLoading: boolean
   dataVariants: DataVariants
-  setEditProject: (project: number, product: number) => void
-  openQuickViewAction: (index: number) => void
+  project: string
+  product: string
+  setEditProject: (project?: number, product?: number) => void
+  openQuickViewAction: (
+    id: number,
+    yotpoId: string | null,
+    gender?: number,
+    hideSliderButtons?: boolean
+  ) => void
   setApproveLoading: (loading: boolean) => void
+  addProductProject: (variables: {}) => Promise<MessagePayload>
   addItemToStore: (variables: {}) => Promise<MessagePayload>
   setApproveDesign: (variables: {}) => Promise<ProDesignMessage>
   sendNoteProdesign: (variables: {}) => Promise<ProDesignMessage>
@@ -254,7 +271,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       this.scrollMessages()
     }
   }
-  handleEditProject = (project: number, product: number) => {
+  handleEditProject = (project?: number, product?: number) => {
     const { setEditProject } = this.props 
     setEditProject(project, product)
   }
@@ -284,8 +301,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     this.setState({ teamStoreId, itemToAdd })
   }
   handleCloseRequest = () => {
-    const { setOpenModal } = this.props
-    setOpenModal(false)
+    const { setOpenModal, project, product, history } = this.props
+    if (project && product) {
+      history.replace(`/pro-design?id=${project}`)
+    } else {
+      setOpenModal(false)
+    }
   }
   handleOnPressBack = () => {
     window.location.replace('/')
@@ -322,12 +343,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       note,
       parentMessageId,
       file,
+      history,
+      project,
+      product,
+      addProductProject,
       location,
     } = this.props
     try {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
-      const itemId = queryParams.id
+      const { id: itemId } = queryParams || {}
       if (itemId) {
         setSendingAction(true)
         await sendNoteProdesign({
@@ -360,6 +385,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         snd.play()
         snd.remove()
         this.scrollMessages()
+      } else if (project && product) {
+        setSendingAction(true)
+        const response = await addProductProject({
+          variables: {
+            project,
+            product,
+            message: note,
+            file
+          }
+        })
+        const responseId = get(response, 'data.addProductProject.shortId', '')
+        history.replace(`/approval?id=${responseId}`)
+        this.handleEditProject()
+        AntdMessage.success(formatMessage(messages.savedProduct))
       }
     } catch (e) {
       const errorMessage = e.graphQLErrors.map((x: any) => x.message)
@@ -505,7 +544,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     const productId = get(data, 'projectItem.product.id', '')
     const { openQuickViewAction: openQuickView } = this.props
-    openQuickView(productId)
+    openQuickView(productId, null, undefined, true)
   }
 
   render() {
@@ -543,6 +582,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const colors = get(projectItem, 'colors', []) as ColorType[]
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
     const itemStatus = get(projectItem, 'status', '') as string
+    const limitRequests = get(projectItem, 'limitRequests', 0) as number
     const predyedColors = get(predyedData, 'getPredyedColors', [])
     const {
       id: designSerialId,
@@ -588,6 +628,23 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       },
       []
     )
+    let statusColor = null
+    if (!!itemStatus) {
+      switch (itemStatus) {
+        case CUSTOMER_APPROVED:
+          statusColor = GREEN_STATUS
+          break
+        case IN_DESIGN:
+          statusColor = BLUE_STATUS
+          break
+        case CUSTOMER_PREVIEW:
+          statusColor = ORANGE_STATUS
+          break
+        default:
+          statusColor = BLACK
+          break
+      }
+    }
 
     const proDesignModel = {
       createdAt: createdAtDesign,
@@ -610,11 +667,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const requestedEdits = requestMessages.filter(({ type }) => type === EDIT).length
     const fileName = file ? getFileWithExtension(file) : ''
     const adminMessages = requestMessages.filter(({ type }) => type === FROM_ADMIN).length
-    const chatComponent = (!!itemStatus && itemStatus !== CUSTOMER_APPROVED) ?
+    const chatLog = requestMessages.length > 0 ?
+      requestMessages :
+      [{
+        id: 1,
+        message: formatMessage(messages.initialMessage),
+        createdAt: new Date(),
+        type: FROM_ADMIN,
+        requireAnswer: false,
+      }]
+    const chatComponent = !!itemStatus ?
       <DesignChat>
         <ApprovalTitle>{formatMessage(messages.approvalLog)}</ApprovalTitle>
         <ChatMessages ref={(listMsgs: any) => { this.listMsg = listMsgs }}>
-          {requestMessages.map((
+          {chatLog.map((
             { 
               id,
               message: incomingMessage,
@@ -624,7 +690,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               answer,
               file: messageFile,
               parentMessageId: parentId,
-            }, 
+            }: ProDesignMessage, 
             key: number
             ) =>
             <IncomingMessage isAdmin={messageType === FROM_ADMIN} {...{ key }} >
@@ -658,6 +724,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       </FileName>
                     </MessageFile>
                   }
+                  {messageType === NEW_PRODUCT &&
+                    <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
+                  }
                 </MessageBox>
                 <DateMessage>
                   {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
@@ -667,17 +736,21 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           )}
         </ChatMessages>
         <RequestButtons>
+          <ApproveButton
+            loading={approveLoading}
+            disabled={approveLoading || itemStatus === CUSTOMER_APPROVED || itemStatus === PREFLIGHT_STATUS}
+            onClick={this.handlePromptApprove}
+          >
+            {formatMessage(messages.approve)}
+          </ApproveButton>
           <RequestEdit onClick={this.handleOpenRequest}>
             <RequestText>{formatMessage(messages.requestEdit)}</RequestText>
-            {requestedEdits} of {LIMIT_REQUESTS}
+            {requestedEdits} of {limitRequests}
           </RequestEdit>
-          <PurchaseButton>
-            {formatMessage(messages.purchaseMore)}
-          </PurchaseButton>
         </RequestButtons>
       </DesignChat> : null
 
-    const colorComponent = (!!itemStatus && itemStatus !== CUSTOMER_APPROVED) ?
+    const colorComponent = !!itemStatus ?
       <Colors>
         <ApprovalTitle>{formatMessage(messages.colors)}</ApprovalTitle>
         <ColorBlock>
@@ -719,13 +792,6 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               <LeftArrow type="left-circle" />
               {designName || productName}
             </BackButton>
-            <StatusLabel>
-              {itemStatus === CUSTOMER_APPROVED ? 
-                <ApprovedIcon theme="filled" type="check-circle" />
-                : <WarningIcon theme="filled" type="exclamation-circle" />
-              }
-              {itemStatus}
-            </StatusLabel>
           </BlackBarMobile>
           <BlackBar>
             <BackButton onClick={this.goToHome}>
@@ -733,16 +799,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               {formatMessage(messages.back)}
             </BackButton>
             <JakrooProDesign src={JakrooProLogo} />
-            <StatusLabel>
-              {itemStatus === CUSTOMER_APPROVED ? 
-                <ApprovedIcon theme="filled" type="check-circle" />
-                : <WarningIcon theme="filled" type="exclamation-circle" />
-              }
-              {itemStatus}
-            </StatusLabel>
           </BlackBar>
           <Layouts>
-            {(!!itemStatus && itemStatus !== CUSTOMER_APPROVED) &&
+            {!!itemStatus &&
               <StyledTabs activeKey={selectedKey} onTabClick={this.onTabClickAction}>
                 <TabPane tab={<Tab label={APPROVAL} icon={messageIcon} />} key={APPROVAL}>
                   <TabContent>
@@ -757,28 +816,40 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </StyledTabs>
             }
             <LayoutRight>
-              <ApproveButton
-                loading={approveLoading}
-                disabled={approveLoading || itemStatus === CUSTOMER_APPROVED}
-                onClick={this.handlePromptApprove}
-              >
-                {formatMessage(messages.approve)}
-              </ApproveButton>
+              {!!designId &&
+                <NameLabel>
+                  <DesignLabel>
+                    <DescLabel>{formatMessage(messages.designName)}</DescLabel>
+                    {designName}
+                  </DesignLabel>
+                  <DesignLabel>
+                    <DescLabel>{formatMessage(messages.designNo)}</DescLabel>
+                    {designCode}
+                  </DesignLabel>
+                </NameLabel>
+              }
+              {!!itemStatus && 
+                <StatusLabel color={statusColor}>
+                  {itemStatus === CUSTOMER_PREVIEW ?
+                    formatMessage(messages.review)
+                    : itemStatus.replace(/_/g, ' ')}
+                </StatusLabel>
+              }
               <ButtonsContainer>
-                <RowTitle>
-                  <ModelTitle>{productName}</ModelTitle>
-                  <QuickView onClick={this.handleOpenQuickView} src={quickView} />
-                </RowTitle>
-                {itemStatus === CUSTOMER_APPROVED &&
-                  <ButtonWrapper>
+                {itemStatus !== PREFLIGHT_STATUS && !!designId &&
+                  <ButtonWrapper secondary={true}>
                     <Button type="primary" onClick={this.handleOpenShare}>
                       {formatMessage(messages.shareButton)}
                     </Button>
                   </ButtonWrapper>
                 }
+                <RowTitle>
+                  <ModelTitle>{productName}</ModelTitle>
+                  <QuickView onClick={this.handleOpenQuickView} src={quickView} />
+                </RowTitle>
               </ButtonsContainer>
               {variants.length > 1 && (
-                <Variants secondary={itemStatus === CUSTOMER_APPROVED}>
+                <Variants secondary={itemStatus !== PREFLIGHT_STATUS && !!designId}>
                   {variants.map(({ icon }, index) => (
                     <VariantButton
                       key={index}
@@ -789,7 +860,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   ))}
                 </Variants>
               )}
-              {(itemStatus === CUSTOMER_APPROVED) &&
+              {itemStatus !== PREFLIGHT_STATUS && !!designId &&
                 <BottomButtons>
                   <ButtonWrapper noMargin={true}>
                     <Button onClick={this.openAddToStoreModal}>
@@ -807,25 +878,33 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </ButtonWrapper>
                 </BottomButtons>
               }
-              {!!designId && 
+              {!!itemStatus &&
                 <RenderSection>
-                  <Render3D
-                    customProduct={true}
-                    textColor="white"
-                    {...{
-                      designId,
-                      modelSize,
-                      modelObj,
-                      modelMtl,
-                      hidePredyed
-                    }}
-                    zoomedIn={true}
-                  />
+                  {!designId ?
+                    <Render3D
+                      customProduct={true}
+                      designId={0}
+                      isProduct={true}
+                      {...{ product, modelObj, modelMtl }}
+                    /> : 
+                    <Render3D
+                      customProduct={true}
+                      textColor="white"
+                      {...{
+                        designId,
+                        modelSize,
+                        modelObj,
+                        modelMtl,
+                        hidePredyed
+                      }}
+                      zoomedIn={true}
+                    />
+                  }
                 </RenderSection>
               }
             </LayoutRight>
           </Layouts>
-          {(!!itemStatus && itemStatus !== CUSTOMER_APPROVED) &&
+          {!!itemStatus &&
             <CollapseWrapper>
               <CollapseMobile accordion={true} destroyInactivePanel={true}>
                 <PanelMobile 
@@ -919,13 +998,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             width={'612px'}
           >
             <ModalTitle>{formatMessage(messages[!!parentMessageId ? 'enterAnswer' : 'enterEditNotes'])}</ModalTitle>
-            {!!parentMessageId ?
+            {!!parentMessageId &&
               <ParentText>
                 {parentMessage}
-              </ParentText> :
-              <ModalSubtitle>
-                {requestedEdits} of {LIMIT_REQUESTS}
-              </ModalSubtitle>
+              </ParentText>
+            }
+            {(!parentMessageId && !project) &&
+              <RequestsTitle>
+                <AvailableLabel>
+                  {formatMessage(messages.available)}
+                </AvailableLabel>
+                <AvailableCircle>
+                  {limitRequests - requestedEdits}
+                </AvailableCircle>
+              </RequestsTitle>
             }
             <TextAreaStyled
               value={note}
@@ -1012,6 +1098,7 @@ const DesignsEnhance = compose(
   }),
   graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
   graphql(getPredyedColors, { name: 'predyedData' }),
+  graphql(addProductProjectMutation, { name: 'addProductProject' }),
   graphql(approveDesignMutation, { name: 'setApproveDesign' }),
   graphql(addProMessageMutation, { name: 'sendNoteProdesign' }),
   graphql(getProdesignItemQuery, {

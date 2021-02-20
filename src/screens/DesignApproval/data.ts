@@ -22,6 +22,7 @@ export const getProdesignItemQuery = gql`
     projectItem: getProdesignItem(shortId: $shortId) {
       id: short_id
       status
+      limitRequests: limit_requests
       product {
         id
         productId: id
@@ -185,6 +186,24 @@ export const addProMessageMutation = gql`
       answer {
         message
       }
+    }
+  }
+`
+
+export const addProductProjectMutation = gql`
+  mutation addProductProject(
+    $project: String!,
+    $product: Int!,
+    $message: String!,
+    $file: String
+  ) {
+    addProductProject(
+      project: $project,
+      product: $product,
+      message: $message,
+      file: $file
+    ) {
+      shortId: short_id
     }
   }
 `

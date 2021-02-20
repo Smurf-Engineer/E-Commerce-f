@@ -134,7 +134,7 @@ export type ProDesignMessage = {
   requireAnswer?: boolean
   answer?: ProDesignMessage
   parentMessageId?: number
-  userName: string
+  userName?: string
 }
 
 export type ProjectInspiration = {

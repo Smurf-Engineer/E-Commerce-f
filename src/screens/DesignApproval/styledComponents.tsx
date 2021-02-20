@@ -21,7 +21,8 @@ import {
   WHITE_TRANSPARENT,
   GRAY_DARK,
   GRAY,
-  BLACK
+  BLACK,
+  GREEN_PAYDAY
 } from '../../theme/colors'
 import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
@@ -140,7 +141,7 @@ export const BlackBar = styled.div`
   color: ${WHITE};
   display: flex;
   height: 38px;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 28px;
   align-items: center;
   margin-top: 2px;
@@ -175,17 +176,57 @@ export const BackButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  left: 28px;
   &:hover {
     cursor: pointer;
   }
+  @media (max-width: 1023px) {
+    left: 18px;
+  }
+`
+
+export const RequestsTitle = styled.div`
+  font-size: 12px;
+  color: ${GRAY_DARK};
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -18px;
+  margin-bottom: 28px;
+  font-weight: bold;
+  align-items: center;
+`
+
+export const AvailableLabel = styled.div``
+
+export const AvailableCircle = styled.div`
+  background: ${GRAY_DARK};
+  width: 26px;
+  height: 26px;
+  margin-left: 12px;
+  display: flex;
+  font-size: 14px;
+  justify-content: center;
+  border-radius: 50%;
+  align-items: center;
+  color: ${WHITE};
 `
 
 export const StatusLabel = styled.div`
-  padding: 8px 10px;
-  background: ${GRAY_DARK};
+  background: ${({ color }: ColorProps) => color || GRAY_STRONG};
   border-radius: 2px;
   text-transform: uppercase;
   font-size: 12px;
+  position: absolute !important;
+  top: 12px;
+  right: 28px;
+  padding: 9px;
+  height: auto;
+  color: white;
+  font-weight: bold;
+  max-width: 142px;
+  text-align: center;
+  width: 100%;
 `
 
 export const Layouts = styled.div`
@@ -260,7 +301,7 @@ export const StyledTitle = styled.div`
   flex: 1;
   margin-left: 15px;
   cursor: pointer;
-  color: ${GRAY_DARK};
+  color: ${BLUE};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -460,7 +501,6 @@ export const StyledUpload = styled(Upload)`
     border-radius: 1px;
     @media (max-width: 767px) {
       width: 100%;
-      height: 54px;
     }
   }
 `
@@ -495,6 +535,15 @@ export const MessageFile = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+export const TypeLabel = styled.div`
+  font-size: 10px;
+  background: ${GREEN_PAYDAY};
+  padding: 2px 8px;
+  margin-top: 8px;
+  color: white;
+  border-radius: 3px;
 `
 
 export const FileName = styled.div`
@@ -595,13 +644,10 @@ export const ProductName = styled.div`
 `
 
 export const ApproveButton = styled(Button)`
-  position: absolute !important;
-  top: 12px;
-  right: 28px;
   padding: 9px;
-  width: 100%;
-  max-width: 118px;
+  width: 90%;
   height: auto;
+  margin-bottom: 12px;
   border-radius: 2px;
   color: white;
   background: ${BLUE};
@@ -793,6 +839,43 @@ export const BottomButtons = styled.div`
   }
 `
 
+export const NameLabel = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+  align-items: center;
+  flex-flow: row;
+  position: absolute;
+  width: 100%;
+  @media (min-width: 1024px) and (max-width: 1176px) {
+    flex-flow: column;
+  }
+  @media (max-width: 767px) {
+    right: 30px;
+    flex-flow: column;
+    top: 44px;
+    align-items: flex-end;
+    width: auto;
+  }
+`
+
+export const DesignLabel = styled.div`
+  display: flex;
+  font-weight: bold;
+  text-transform: uppercase;
+  &:last-child {
+    margin-left: 24px;
+  }
+  @media (max-width: 1024px) {
+    margin-left: 0px;
+  }
+`
+
+export const DescLabel = styled.div`
+  font-weight: normal;
+  margin-right: 10px;
+`
+
 export const ModelTitle = styled.div`
   color: ${GRAY_DARK};
   font-size: 16px;
@@ -821,13 +904,13 @@ export const ButtonWrapper = styled.div`
   margin-bottom: ${({ noMargin}: RowProps) => noMargin ? 'unset' : '16px'};
   margin-top: ${({ marginTop }: RowProps) => marginTop ? '-4px' : 'unset'};
   .ant-btn-primary  {
-    background-color: ${BLUE};
-    border-color: ${BLUE};
+    background-color: ${({ secondary }: RowProps) => secondary  ? GRAY_STRONG : BLUE};
+    border-color: ${({ secondary }: RowProps) => secondary  ? GRAY_STRONG : BLUE};
     width: 138px;
   }
   .ant-btn-primary:hover {
-    background-color: ${BLUE};
-    border-color: ${BLUE};
+    background-color: ${({ secondary }: RowProps) => secondary  ? GRAY_LIGHT : BLUE};
+    border-color: ${({ secondary }: RowProps) => secondary  ? GRAY_LIGHT : BLUE};
   }
 `
 

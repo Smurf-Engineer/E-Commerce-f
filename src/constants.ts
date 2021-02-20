@@ -43,6 +43,7 @@ export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
 
 /* Prodesign Message status */
 export const EDIT = 'edit'
+export const NEW_PRODUCT = 'new'
 export const FROM_ADMIN = 'admin'
 export const PROJECT_MESSAGE = 'PROJECT_MESSAGE'
 
