@@ -21,17 +21,21 @@ const CarouselItem = ({ item, onClick }: Props) => {
           }}
         </MediaQuery>
       ) : (
-        <VideoPreview
-          autoPlay={true}
-          loop={true}
-          muted={true}
-          playsInline={true}
-          controls={true}
-          disablePictureInPicture={true}
-          controlsList="nofullscreen nodownload noremoteplayback"
-        >
-          <source src={item.desktopImage} type="video/mp4" />
-        </VideoPreview>
+        <MediaQuery maxWidth={640}>
+          {matches => 
+            <VideoPreview
+              autoPlay={true}
+              loop={true}
+              muted={true}
+              playsInline={true}
+              controls={true}
+              disablePictureInPicture={true}
+              controlsList="nofullscreen nodownload noremoteplayback"
+            >
+              <source src={matches && item.mobileImage ? item.mobileImage : item.desktopImage} type="video/mp4" />
+            </VideoPreview>
+          }
+        </MediaQuery>
       )}
     </Container>
   )
