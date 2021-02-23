@@ -37,7 +37,6 @@ export const Container = styled.div`
   max-width: 744px;
   width: 100%;
   margin: 0 auto;
-  margin-top: 38px;
   margin-bottom: 58px;
 `
 
@@ -198,9 +197,8 @@ export const BannerLogo = styled.img`
 `
 
 export const TopSection = styled.section`
-  margin: 0 auto;
+  margin: 38px auto;
   width: 100%;
-  margin-top: 38px;
   max-width: 980px;
 `
 

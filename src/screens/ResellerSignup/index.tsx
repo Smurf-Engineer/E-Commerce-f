@@ -299,9 +299,6 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       terms,
       fileName
     } = this.state
-    if (!!user) {
-      history.replace('/')
-    }
     const { formatMessage } = intl
     const file = fileName ? getFileWithExtension(fileName) : ''
     return (
@@ -447,7 +444,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
           }
           </MediaQuery>
         </TopSection>
-        <Container>
+        {!user && <Container>
           {saving &&
             <SavingContainer>
               <Spin />
@@ -701,7 +698,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
               </CancelButton>
             </ButtonsContainer>
           </Signup>
-        </Container>
+        </Container>}
       </Layout>
     )
   }
