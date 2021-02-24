@@ -592,6 +592,8 @@
   "components.AddToTeamStore.addDesignButtonLabel": "Add",
   "screens.StoreFrontContent.tittle": "My team store",
   "screens.StoreFrontContent.orderTitle": "Order by",
+  "screens.StoreFrontContent.needAssistance": "Need help determining your size?",
+  "screens.StoreFrontContent.tryFreeService": "Try our free Size Recommendation Service",
   "screens.StoreFrontContent.orderTitle2": "and receive your order by",
   "screens.StoreFrontContent.priceDropTitle": "DYNAMIC PRICE DROP",
   "screens.StoreFrontContent.tierTitle": "This store’s estimate price tier is ",

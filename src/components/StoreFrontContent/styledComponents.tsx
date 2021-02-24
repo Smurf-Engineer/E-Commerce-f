@@ -324,7 +324,7 @@ export const FlexContainer = styled.div`
   flex-direction: row;
   align-items: center;
   @media (max-width: 764px) {
-    flex-flow: column-reverse;
+    flex-flow: column;
     justify-content: center;
   }
 `
@@ -358,6 +358,26 @@ export const DatesTitle = styled.div`
   text-align: center;
   padding-bottom: 5px;
   font-weight: ${({ onDemandMode }: DivProps) => onDemandMode ? 'bold' : 'normal'};
+`
+
+export const AssistanceDiv = styled.div`
+  position: absolute;
+  width: 100%;
+  left: 0;
+  margin-top: 8px;
+  text-align: center;
+  @media (max-width: 764px) {
+    justify-content: center;
+    margin-top: 18px;
+    position: unset;
+  }
+`
+
+export const SectionLink = styled.a`
+  color: ${BLUE}; 
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const ListContainer = styled.div`
