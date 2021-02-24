@@ -347,6 +347,7 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  z-index: 3;
 `
 
 export const DatesTitle = styled.div`
