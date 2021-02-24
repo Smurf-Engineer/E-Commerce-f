@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.welcome',
     defaultMessage: 'Welcome to {teamStoreName} store'
   },
+  needAssistance: {
+    id: 'screens.StoreFrontContent.needAssistance',
+    defaultMessage: 'Need help determining your size?'
+  },
+  tryFreeService: {
+    id: 'screens.StoreFrontContent.tryFreeService',
+    defaultMessage: 'Try our free Size Recommendation Service'
+  },
   storeOpen: {
     id: 'screens.StoreFrontContent.storeOpen',
     defaultMessage: 'STORE OPEN'
