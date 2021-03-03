@@ -9,7 +9,8 @@ import {
   GRAY_DARK,
   WHITE,
   WHITE_TRANSPARENT,
-  GRAY
+  GRAY,
+  BLACK
 } from '../../theme/colors'
 
 interface DivProps {
@@ -96,6 +97,12 @@ export const MessageText = styled.div`
   padding-bottom: ${({ admin }: DivProps) => admin ? `12px` : 'none'};;
   font-weight: ${({ admin }: DivProps) => admin ? `bold` : 'none'};;
   border-bottom: ${({ admin }: DivProps) => admin ? `1px solid ${GRAY}` : 'none'};
+`
+
+export const MessagePrevent = styled.div`
+  color: ${BLACK};
+  margin-bottom: 18px;
+  margin-top: -4px;
 `
 
 export const InputWrapper = styled.div`
