@@ -34,7 +34,8 @@ import {
   ConfirmMessage,
   InputWrapper,
   StyledInput,
-  TransparentLoader
+  TransparentLoader,
+  MessagePrevent
 } from './styledComponents'
 import {
   DesignResultType,
@@ -378,6 +379,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             ? formatMessage(messages.userLocker, { userName })
             : formatMessage(messages.message)}
         </MessageText>
+        {!admin && <MessagePrevent>{formatMessage(messages.messagePrevent)}</MessagePrevent>}
         {alternativeContent}
         <PaginationRow>
           <ProductList

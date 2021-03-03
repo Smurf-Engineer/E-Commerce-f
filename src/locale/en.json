@@ -989,6 +989,7 @@
   "components.Image.cropper.scroll": "Scroll to zoom",
   "components.Image.cropper.save": "Save",
   "components.MyLocker.message": "These are your saved designs",
+  "components.MyLocker.messagePrevent": "If you have saved a design that is not displaying, please try logging out and back in to refresh your locker.",
   "components.MyLocker.messageError": "Something went wrong",
   "components.MyLocker.messageEmpty": "Your Locker is empty. Go to the design app and start an awesome design!",
   "components.MyLocker.deleteDesign": "Delete",

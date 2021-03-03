@@ -9,6 +9,11 @@ export default defineMessages({
     id: 'components.MyLocker.message',
     defaultMessage: 'These are your saved designs'
   },
+  messagePrevent: {
+    id: 'components.MyLocker.messagePrevent',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'If you have saved a design that is not displaying, please try logging out and back in to refresh your locker.'
+  },
   titleError: {
     id: 'components.MyLocker.titleError',
     defaultMessage: 'Oops!'
