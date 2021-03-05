@@ -165,6 +165,9 @@ export const ViewControls = styled.div`
   right: 26px;
   display: flex;
   flex-direction: column;
+  @media (max-width: 1024px) {
+    top: ${({ proAssistId }) => proAssistId ? '84px' : '128px'};
+  }
 `
 
 export const BottomControls = styled.div`
@@ -193,6 +196,10 @@ export const ButtonWrapper = styled.div`
   .ant-btn-primary:hover {
     background-color: ${BLUE};
     border-color: ${BLUE};
+  }
+  @media (max-width: 1024px) {
+    flex-flow: column-reverse;
+    top: 18px;
   }
 `
 
@@ -287,6 +294,9 @@ export const DesignCheckButton = styled(AntdButton)`
     border: 1px solid ${GREEN_BRIGHT};
     background: ${WHITE_SMOKE};
   }
+  @media (max-width: 1024px) {
+    margin-top: 12px;
+  }
 `
 
 export const ProAssistText = styled.span`
@@ -309,6 +319,33 @@ export const Variants = styled.div`
   flex-flow: column;
 `
 
+export const ModalLinkText = styled.div`
+  position: absolute;
+  top: 24px;
+  color: ${BLUE};
+  z-index: 8;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    color: ${RED};
+  }
+  @media (max-width: 768px) {
+    top: unset;
+    bottom: 24px;  
+  }
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+  text-align: center;
+`
+
 export const VariantButton = styled.img`
   width: 40px;
   object-fit: contain;
@@ -323,3 +360,9 @@ export const VariantButton = styled.img`
     background: ${GRAY_LIGHTEST};
   }
 `
+
+export const buttonStyle = {
+  background: WHITE,
+  color: BLUE,
+  border: `1px solid ${BLUE}`
+}

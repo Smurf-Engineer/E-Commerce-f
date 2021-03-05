@@ -12,6 +12,7 @@ import { FormattedMessage } from 'react-intl'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
+import parse from 'html-react-parser'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
@@ -32,9 +33,9 @@ import {
   ViewButton,
   ButtonWrapper,
   ModalMessage,
-  MeasurementBox,
-  MeasurementLabel,
-  Measurement,
+  ModalLinkText,
+  InfoBody,
+  buttonStyle,
   BottomControls,
   TopButton,
   HintModalImage,
@@ -785,15 +786,15 @@ class Render3D extends PureComponent {
           const svgColors = designHasChanges ? areaColors : colors
           areas.forEach(
             (map, index) =>
-              (children[
-                objectChildCount + index
-              ].material = new THREE.MeshPhongMaterial({
-                map,
-                side: THREE.FrontSide,
-                color: svgColors[index],
-                bumpMap,
-                transparent: true
-              }))
+            (children[
+              objectChildCount + index
+            ].material = new THREE.MeshPhongMaterial({
+              map,
+              side: THREE.FrontSide,
+              color: svgColors[index],
+              bumpMap,
+              transparent: true
+            }))
           )
 
           /* Canvas */
@@ -1305,6 +1306,24 @@ class Render3D extends PureComponent {
     openResetDesignModalAction(true)
   }
 
+  openModalText = () => {
+    const { product, formatMessage } = this.props
+    const { modalText } = product || {}
+    if (modalText) {
+      Modal.info({
+        icon: ' ',
+        width: 616,
+        centered: true,
+        className: 'modal-link',
+        okText: formatMessage(messages.okGotIt),
+        okButtonProps: {
+          style: buttonStyle
+        },
+        content: <InfoBody>{parse(modalText)}</InfoBody>
+      })
+    }
+  }
+
   handleOnOpenPlaceholderModal = () => {
     const { openResetPlaceholderModalAction } = this.props
     openResetPlaceholderModalAction(true)
@@ -1412,14 +1431,14 @@ class Render3D extends PureComponent {
       variants,
       openResetDesignModal,
       designHasChanges,
-      canvas,
-      selectedElement,
+      product,
       isMobile,
       openResetPlaceholderModal,
       currentStyle,
       openDesignCheckModal,
       proAssistId
     } = this.props
+    const { hasModal, modalLinkText } = product || {}
     if (isMobile) {
       return (
         <MobileContainer>
@@ -1434,6 +1453,11 @@ class Render3D extends PureComponent {
               <FormattedMessage {...messages.drag} />
             </DragText>
           )}
+          {hasModal &&
+            <ModalLinkText onClick={this.openModalText}>
+              {modalLinkText}
+            </ModalLinkText>
+          }
           <HelpModal
             open={showHelpModal}
             withLogo={false}
@@ -1504,6 +1528,11 @@ class Render3D extends PureComponent {
             </Variants>
           )}
         </Row>
+        {hasModal &&
+          <ModalLinkText onClick={this.openModalText}>
+            {modalLinkText}
+          </ModalLinkText>
+        }
         <ButtonWrapper>
           {!proAssistId && (
             <DesignCheckButton onClick={openDesignCheckModal}>
@@ -1558,7 +1587,7 @@ class Render3D extends PureComponent {
             <TutorialIcon src={tutorials} />
           </TutorialButton>
         )}
-        <ViewControls>
+        <ViewControls {... { proAssistId }}>
           <TopButton onClick={this.handleOnPressTop} src={top} />
           <BottomControls>
             <ViewButton onClick={this.handleOnPressLeft} src={left} />
