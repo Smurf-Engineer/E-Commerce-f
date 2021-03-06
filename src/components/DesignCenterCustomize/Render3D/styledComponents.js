@@ -336,10 +336,6 @@ export const ModalLinkText = styled.div`
 `
 
 export const InfoBody = styled.div`
-  color: ${GRAY_DARK};
-  font-size: 16px;
-  letter-spacing: 0.2px;
-  line-height: 22px;
   margin-top: 12px;
   margin-bottom: 12px;
   margin-left: -38px;

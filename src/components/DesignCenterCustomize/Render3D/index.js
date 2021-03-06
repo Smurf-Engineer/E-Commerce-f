@@ -12,8 +12,8 @@ import { FormattedMessage } from 'react-intl'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
-import parse from 'html-react-parser'
 import shortid from 'shortid'
+import { EditorState, convertFromRaw } from 'draft-js'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
 import Checkbox from 'antd/lib/checkbox'
@@ -139,10 +139,9 @@ import PROAssistButton from '../../../assets/PROAssist-button.svg'
 import { initSlaask, closeSlaask } from '../../../slaask'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
-const { info } = Modal
 const MIN_ZOOM = 50
 const MAX_ZOOM = 400
-
+let Editor = null
 /* eslint-disable */
 class Render3D extends PureComponent {
   state = {
@@ -161,10 +160,21 @@ class Render3D extends PureComponent {
     scaleFactorY: 1,
     isFirstAdd: true,
     showHelpModal: true,
-    openSlaask: true
+    openSlaask: true,
+    editorState: false,
+    contentUpdated: false,
+    editorReady: false
   }
   canvasApplied = null
   dragComponent = null
+  constructor(props) {
+    super(props)
+    if (typeof window !== undefined) {
+      this.setState({
+        editorState: EditorState.createEmpty(),
+      })
+    }
+  }
   componentWillReceiveProps(nextProps) {
     const {
       colors,
@@ -257,6 +267,27 @@ class Render3D extends PureComponent {
     this.setState({ showHelpModal: !hideHint })
   }
 
+  componentDidUpdate() {
+    const { product } = this.props
+    if (typeof window !== undefined) {
+      Editor = require('react-draft-wysiwyg').Editor
+      const { editorReady, contentUpdated } = this.state
+      const { modalText } = product || {}
+      if (modalText && !contentUpdated && editorReady) {
+        try {
+          const blocksContent = JSON.parse(modalText)
+          const editorState = EditorState.createWithContent(convertFromRaw(blocksContent))
+          this.setState({
+            contentUpdated: true,
+            editorState
+          })
+        } catch (e) {
+          console.error('Error:', e)
+        }
+      }
+    }
+  }
+
   componentDidMount() {
     const { isEditing, design, showBranding = true } = this.props
     const cornerSize =
@@ -287,6 +318,14 @@ class Render3D extends PureComponent {
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
 
     camera.position.z = 150
+
+    /* Setting the react DraftJS to ready */
+    if (typeof window !== undefined) {
+      Editor = require('react-draft-wysiwyg').Editor
+      this.setState({
+        editorReady: true,
+      })
+    }
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -1308,6 +1347,7 @@ class Render3D extends PureComponent {
 
   openModalText = () => {
     const { product, formatMessage } = this.props
+    const { editorReady, editorState } = this.state
     const { modalText } = product || {}
     if (modalText) {
       Modal.info({
@@ -1319,7 +1359,16 @@ class Render3D extends PureComponent {
         okButtonProps: {
           style: buttonStyle
         },
-        content: <InfoBody>{parse(modalText)}</InfoBody>
+        content:
+          <InfoBody>
+            {modalText && editorReady && typeof window !== 'undefined' ?
+              <Editor
+                {...{ editorState }}
+                toolbarHidden={true}
+                readOnly={true}
+              /> : null
+            }
+          </InfoBody>
       })
     }
   }
