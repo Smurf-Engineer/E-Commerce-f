@@ -1333,9 +1333,8 @@ class Render3D extends PureComponent {
   }
 
   openModalText = () => {
-    const { product, formatMessage } = this.props
+    const { formatMessage } = this.props
     const { editorReady, editorState, Editor } = this.state
-    const { modalText } = product || {}
     if (editorReady) {
       Modal.info({
         icon: ' ',
@@ -1348,13 +1347,11 @@ class Render3D extends PureComponent {
         },
         content:
           <InfoBody>
-            {modalText && editorReady && typeof window !== 'undefined' ?
-              <Editor
-                {...{ editorState }}
-                toolbarHidden={true}
-                readOnly={true}
-              /> : null
-            }
+            <Editor
+              {...{ editorState }}
+              toolbarHidden={true}
+              readOnly={true}
+            />
           </InfoBody>
       })
     }
