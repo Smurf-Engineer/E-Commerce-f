@@ -141,7 +141,6 @@ import { initSlaask, closeSlaask } from '../../../slaask'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const MIN_ZOOM = 50
 const MAX_ZOOM = 400
-let Editor = null
 /* eslint-disable */
 class Render3D extends PureComponent {
   state = {
@@ -163,7 +162,8 @@ class Render3D extends PureComponent {
     openSlaask: true,
     editorState: false,
     contentUpdated: false,
-    editorReady: false
+    editorReady: false,
+    Editor: null
   }
   canvasApplied = null
   dragComponent = null
@@ -270,7 +270,6 @@ class Render3D extends PureComponent {
   componentDidUpdate() {
     const { product } = this.props
     if (typeof window !== undefined) {
-      Editor = require('react-draft-wysiwyg').Editor
       const { editorReady, contentUpdated } = this.state
       const { modalText } = product || {}
       if (modalText && !contentUpdated && editorReady) {
@@ -321,9 +320,10 @@ class Render3D extends PureComponent {
 
     /* Setting the react DraftJS to ready */
     if (typeof window !== undefined) {
-      Editor = require('react-draft-wysiwyg').Editor
+      const Editor = require('react-draft-wysiwyg').Editor
       this.setState({
         editorReady: true,
+        Editor
       })
     }
 
@@ -1347,7 +1347,7 @@ class Render3D extends PureComponent {
 
   openModalText = () => {
     const { product, formatMessage } = this.props
-    const { editorReady, editorState } = this.state
+    const { editorReady, editorState, Editor } = this.state
     const { modalText } = product || {}
     if (modalText) {
       Modal.info({
