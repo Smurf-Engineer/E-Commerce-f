@@ -161,7 +161,6 @@ class Render3D extends PureComponent {
     showHelpModal: true,
     openSlaask: true,
     editorState: false,
-    contentUpdated: false,
     editorReady: false,
     Editor: null
   }
@@ -267,28 +266,9 @@ class Render3D extends PureComponent {
     this.setState({ showHelpModal: !hideHint })
   }
 
-  componentDidUpdate() {
-    const { product } = this.props
-    if (typeof window !== undefined) {
-      const { editorReady, contentUpdated } = this.state
-      const { modalText } = product || {}
-      if (modalText && !contentUpdated && editorReady) {
-        try {
-          const blocksContent = JSON.parse(modalText)
-          const editorState = EditorState.createWithContent(convertFromRaw(blocksContent))
-          this.setState({
-            contentUpdated: true,
-            editorState
-          })
-        } catch (e) {
-          console.error('Error:', e)
-        }
-      }
-    }
-  }
-
   componentDidMount() {
-    const { isEditing, design, showBranding = true } = this.props
+    const { isEditing, design, showBranding = true, product } = this.props
+    const { modalText } = product || {}
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CORNER_SIZE
@@ -319,12 +299,19 @@ class Render3D extends PureComponent {
     camera.position.z = 150
 
     /* Setting the react DraftJS to ready */
-    if (typeof window !== undefined) {
-      const Editor = require('react-draft-wysiwyg').Editor
-      this.setState({
-        editorReady: true,
-        Editor
-      })
+    if (modalText && typeof window !== undefined) {
+      try {
+        const Editor = require('react-draft-wysiwyg').Editor
+        const blocksContent = JSON.parse(modalText)
+        const editorState = EditorState.createWithContent(convertFromRaw(blocksContent))
+        this.setState({
+          editorState,
+          editorReady: true,
+          Editor
+        })
+      } catch (e) {
+        console.error('Error:', e)
+      }
     }
 
     /* Scene and light */
@@ -1349,7 +1336,7 @@ class Render3D extends PureComponent {
     const { product, formatMessage } = this.props
     const { editorReady, editorState, Editor } = this.state
     const { modalText } = product || {}
-    if (modalText) {
+    if (editorReady) {
       Modal.info({
         icon: ' ',
         width: 616,
