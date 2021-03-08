@@ -12,3 +12,8 @@ body {
 .rc-drawer-sidebar {
   z-index: 11;
 }
+
+.modal-link .ant-modal-confirm-btns {
+  float: unset;
+  text-align: center;
+}

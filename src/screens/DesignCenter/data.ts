@@ -16,6 +16,9 @@ export const getProductQuery = gql`
       bumpMap: bump_map
       branding
       predyedlabel
+      hasModal: has_modal
+      modalText: modal_text
+      modalLinkText: modal_link_text
       isCustom: design_center
       flatlock
       mpn

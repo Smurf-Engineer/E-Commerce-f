@@ -13,6 +13,7 @@ import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
+import { EditorState, convertFromRaw } from 'draft-js'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
 import Checkbox from 'antd/lib/checkbox'
@@ -32,9 +33,9 @@ import {
   ViewButton,
   ButtonWrapper,
   ModalMessage,
-  MeasurementBox,
-  MeasurementLabel,
-  Measurement,
+  ModalLinkText,
+  InfoBody,
+  buttonStyle,
   BottomControls,
   TopButton,
   HintModalImage,
@@ -138,10 +139,8 @@ import PROAssistButton from '../../../assets/PROAssist-button.svg'
 import { initSlaask, closeSlaask } from '../../../slaask'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
-const { info } = Modal
 const MIN_ZOOM = 50
 const MAX_ZOOM = 400
-
 /* eslint-disable */
 class Render3D extends PureComponent {
   state = {
@@ -160,10 +159,21 @@ class Render3D extends PureComponent {
     scaleFactorY: 1,
     isFirstAdd: true,
     showHelpModal: true,
-    openSlaask: true
+    openSlaask: true,
+    editorState: false,
+    editorReady: false,
+    Editor: null
   }
   canvasApplied = null
   dragComponent = null
+  constructor(props) {
+    super(props)
+    if (typeof window !== undefined) {
+      this.setState({
+        editorState: EditorState.createEmpty(),
+      })
+    }
+  }
   componentWillReceiveProps(nextProps) {
     const {
       colors,
@@ -257,7 +267,8 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { isEditing, design, showBranding = true } = this.props
+    const { isEditing, design, showBranding = true, product } = this.props
+    const { modalText } = product || {}
     const cornerSize =
       (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CORNER_SIZE
@@ -286,6 +297,22 @@ class Render3D extends PureComponent {
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
 
     camera.position.z = 150
+
+    /* Setting the react DraftJS to ready */
+    if (modalText && typeof window !== undefined) {
+      try {
+        const Editor = require('react-draft-wysiwyg').Editor
+        const blocksContent = JSON.parse(modalText)
+        const editorState = EditorState.createWithContent(convertFromRaw(blocksContent))
+        this.setState({
+          editorState,
+          editorReady: true,
+          Editor
+        })
+      } catch (e) {
+        console.error('Error:', e)
+      }
+    }
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -785,15 +812,15 @@ class Render3D extends PureComponent {
           const svgColors = designHasChanges ? areaColors : colors
           areas.forEach(
             (map, index) =>
-              (children[
-                objectChildCount + index
-              ].material = new THREE.MeshPhongMaterial({
-                map,
-                side: THREE.FrontSide,
-                color: svgColors[index],
-                bumpMap,
-                transparent: true
-              }))
+            (children[
+              objectChildCount + index
+            ].material = new THREE.MeshPhongMaterial({
+              map,
+              side: THREE.FrontSide,
+              color: svgColors[index],
+              bumpMap,
+              transparent: true
+            }))
           )
 
           /* Canvas */
@@ -1305,6 +1332,31 @@ class Render3D extends PureComponent {
     openResetDesignModalAction(true)
   }
 
+  openModalText = () => {
+    const { formatMessage } = this.props
+    const { editorReady, editorState, Editor } = this.state
+    if (editorReady) {
+      Modal.info({
+        icon: ' ',
+        width: 616,
+        centered: true,
+        className: 'modal-link',
+        okText: formatMessage(messages.okGotIt),
+        okButtonProps: {
+          style: buttonStyle
+        },
+        content:
+          <InfoBody>
+            <Editor
+              {...{ editorState }}
+              toolbarHidden={true}
+              readOnly={true}
+            />
+          </InfoBody>
+      })
+    }
+  }
+
   handleOnOpenPlaceholderModal = () => {
     const { openResetPlaceholderModalAction } = this.props
     openResetPlaceholderModalAction(true)
@@ -1412,14 +1464,14 @@ class Render3D extends PureComponent {
       variants,
       openResetDesignModal,
       designHasChanges,
-      canvas,
-      selectedElement,
+      product,
       isMobile,
       openResetPlaceholderModal,
       currentStyle,
       openDesignCheckModal,
       proAssistId
     } = this.props
+    const { hasModal, modalLinkText } = product || {}
     if (isMobile) {
       return (
         <MobileContainer>
@@ -1434,6 +1486,11 @@ class Render3D extends PureComponent {
               <FormattedMessage {...messages.drag} />
             </DragText>
           )}
+          {hasModal &&
+            <ModalLinkText onClick={this.openModalText}>
+              {modalLinkText}
+            </ModalLinkText>
+          }
           <HelpModal
             open={showHelpModal}
             withLogo={false}
@@ -1504,6 +1561,11 @@ class Render3D extends PureComponent {
             </Variants>
           )}
         </Row>
+        {hasModal &&
+          <ModalLinkText onClick={this.openModalText}>
+            {modalLinkText}
+          </ModalLinkText>
+        }
         <ButtonWrapper>
           {!proAssistId && (
             <DesignCheckButton onClick={openDesignCheckModal}>
@@ -1558,7 +1620,7 @@ class Render3D extends PureComponent {
             <TutorialIcon src={tutorials} />
           </TutorialButton>
         )}
-        <ViewControls>
+        <ViewControls {... { proAssistId }}>
           <TopButton onClick={this.handleOnPressTop} src={top} />
           <BottomControls>
             <ViewButton onClick={this.handleOnPressLeft} src={left} />
