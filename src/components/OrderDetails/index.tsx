@@ -384,6 +384,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             withoutTop={true}
             myLockerList={false}
             itemProdPage={true}
+            isFixed={teamStoreId && !onDemand}
             orderDetails={true}
             onClick={() => true}
             hide={true}
