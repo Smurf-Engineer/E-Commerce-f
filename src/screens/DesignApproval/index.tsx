@@ -86,6 +86,7 @@ import {
   DesignImage,
   DesignLabel,
   DesignName,
+  EditsLabel,
   FileLabel,
   FileName,
   IncomingMessage,
@@ -745,7 +746,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </ApproveButton>
           <RequestEdit onClick={this.handleOpenRequest}>
             <RequestText>{formatMessage(messages.requestEdit)}</RequestText>
-            {requestedEdits} of {limitRequests}
+            <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
           </RequestEdit>
         </RequestButtons>
       </DesignChat> : null

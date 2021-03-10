@@ -366,8 +366,9 @@ export const RequestButtons = styled.div`
   align-items: center;
 `
 
-export const RequestEdit = styled.div`
+export const RequestEdit = styled(Button)`
   display: flex;
+  height: auto;
   flex-flow: column;
   border: 1px solid ${RED};
   width: 90%;
@@ -386,6 +387,8 @@ export const RequestEdit = styled.div`
     color: ${WHITE};
   }
 `
+
+export const EditsLabel = styled.div``
 
 export const RequestText = styled.span`
   color: ${RED};
