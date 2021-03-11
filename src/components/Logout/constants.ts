@@ -21,6 +21,8 @@ export const RESELLER_ORDERS = 'resellerOrders'
 export const CREATIONS = 'myCreations'
 export const MY_FILES = 'myFiles'
 export const SCREEN_LOCKER = 'myLocker'
+export const PRO_DESIGN = 'proDesign'
+export const PRO_DESIGN_PROJECTS = 'proDesignProjects'
 
 // USE UNIQUE KEYS
 export const menuOptions = [
@@ -49,6 +51,10 @@ export const menuOptions = [
     options: []
   },
   {
+    titleLabel: PRO_DESIGN,
+    options: [PRO_DESIGN_PROJECTS]
+  },
+  {
     titleLabel: MY_FILES,
     options: []
   }
@@ -70,6 +76,10 @@ export const resellerOptions = [
   {
     titleLabel: SCREEN_LOCKER,
     options: []
+  },
+  {
+    titleLabel: PRO_DESIGN,
+    options: [PRO_DESIGN_PROJECTS]
   },
   {
     titleLabel: MY_FILES,

@@ -26,7 +26,7 @@ import quickViewIcon from '../../../assets/quickview.svg'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { ImageType } from '../../../types/common'
 import { BLUE_STATUS, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
-import { CUSTOMER_PREVIEW, IN_DESIGN, CUSTOMER_APPROVED } from '../../../constants'
+import { CUSTOMER_PREVIEW, CUSTOMER_APPROVED, PREFLIGHT_STATUS, IN_DESIGN, itemLabels } from '../../../constants'
 
 const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
 const BelowTablet = (props: any) => <Responsive {...props} maxWidth={767} />
@@ -152,17 +152,17 @@ const ProductSlide = ({
   let statusColor = null
   if (isProDesign && proStatus) {
     switch (proStatus) {
+      case PREFLIGHT_STATUS:
+        statusColor = WHITE
+        break
       case CUSTOMER_APPROVED:
         statusColor = GREEN_STATUS
-        break
-      case IN_DESIGN:
-        statusColor = BLUE_STATUS
         break
       case CUSTOMER_PREVIEW:
         statusColor = ORANGE_STATUS
         break
       default:
-        statusColor = WHITE
+        statusColor = BLUE_STATUS
         break
     }
   }
@@ -197,7 +197,7 @@ const ProductSlide = ({
       {isProDesign && proStatus ? 
         <ProLabel>
           <ProStatus backgroundColor={statusColor}>
-          {proStatus.replace(/_/g, ' ')}
+          {itemLabels[proStatus] || itemLabels[IN_DESIGN]}
           </ProStatus>
         </ProLabel>
          : null

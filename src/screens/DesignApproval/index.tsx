@@ -71,6 +71,7 @@ import {
   ChatMessages,
   Clip,
   CodeColor,
+  CodeLabel,
   CollapseMobile,
   CollapseWrapper,
   Color,
@@ -86,6 +87,7 @@ import {
   DesignImage,
   DesignLabel,
   DesignName,
+  DraggableModalStyled,
   EditsLabel,
   FileLabel,
   FileName,
@@ -130,6 +132,8 @@ import {
   StyledTabs,
   StyledTitle,
   StyledUpload,
+  stylesDraggable,
+  stylesDraggableMobile,
   TabContent,
   TextAreaStyled,
   TypeLabel,
@@ -148,12 +152,13 @@ import {
   CUSTOMER_PREVIEW,
   EDIT,
   FROM_ADMIN,
-  IN_DESIGN,
+  itemLabels,
   NEW_PRODUCT,
   PREDYED_DEFAULT,
   PREDYED_TRANSPARENT,
   PREFLIGHT_STATUS,
-  PROJECT_MESSAGE
+  PROJECT_MESSAGE,
+  PROJECT_REVIEW
 } from '../../constants'
 import moment from 'moment'
 import messages from './messages'
@@ -280,7 +285,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const { data: notificationData } = notification
     const payload = get(notificationData, 'firebase-messaging-msg-data.data', notificationData)
     const { notification_type } = payload
-    if (notification_type === PROJECT_MESSAGE) {
+    if (notification_type === PROJECT_MESSAGE || notification_type === PROJECT_REVIEW) {
       const { data } = this.props
       await data.refetch()
     }
@@ -616,6 +621,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelObj = obj
       modelMtl = mtl
     }
+    const stylesToApply = typeof window !== 'undefined' && 
+      window.innerWidth > 614 ? stylesDraggable : stylesDraggableMobile
     const predyedValue = predyedName || PREDYED_DEFAULT
     const hidePredyed = predyedValue === PREDYED_TRANSPARENT
     const predyedItem = predyedColors.find(({ name: colorName }) => colorName === predyedValue)
@@ -632,17 +639,17 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     let statusColor = null
     if (!!itemStatus) {
       switch (itemStatus) {
+        case PREFLIGHT_STATUS:
+          statusColor = BLACK
+          break
         case CUSTOMER_APPROVED:
           statusColor = GREEN_STATUS
-          break
-        case IN_DESIGN:
-          statusColor = BLUE_STATUS
           break
         case CUSTOMER_PREVIEW:
           statusColor = ORANGE_STATUS
           break
         default:
-          statusColor = BLACK
+          statusColor = BLUE_STATUS
           break
       }
     }
@@ -689,6 +696,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               type: messageType,
               requireAnswer: required,
               answer,
+              code: messageCode,
               file: messageFile,
               parentMessageId: parentId,
             }: ProDesignMessage, 
@@ -728,6 +736,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {messageType === NEW_PRODUCT &&
                     <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
                   }
+                  {!!messageCode &&
+                    <CodeLabel isAdmin={messageType === FROM_ADMIN}>
+                      {messageCode}
+                    </CodeLabel>
+                  }
                 </MessageBox>
                 <DateMessage>
                   {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
@@ -744,8 +757,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           >
             {formatMessage(messages.approve)}
           </ApproveButton>
-          <RequestEdit onClick={this.handleOpenRequest}>
-            <RequestText>{formatMessage(messages.requestEdit)}</RequestText>
+          <RequestEdit
+            disabled={itemStatus === PREFLIGHT_STATUS}
+            onClick={this.handleOpenRequest}
+          >
+            <RequestText secondary={itemStatus === PREFLIGHT_STATUS}>
+              {formatMessage(messages.requestEdit)}
+            </RequestText>
             <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
           </RequestEdit>
         </RequestButtons>
@@ -831,9 +849,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               }
               {!!itemStatus && 
                 <StatusLabel color={statusColor}>
-                  {itemStatus === CUSTOMER_PREVIEW ?
-                    formatMessage(messages.review)
-                    : itemStatus.replace(/_/g, ' ')}
+                  {itemLabels[itemStatus] || formatMessage(messages.inDesign)}
                 </StatusLabel>
               }
               <ButtonsContainer>
@@ -861,7 +877,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   ))}
                 </Variants>
               )}
-              {itemStatus !== PREFLIGHT_STATUS && !!designId &&
+              {itemStatus === CUSTOMER_APPROVED && !!designId &&
                 <BottomButtons>
                   <ButtonWrapper noMargin={true}>
                     <Button onClick={this.openAddToStoreModal}>
@@ -992,11 +1008,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               savedDesignId={designId}
             />
           </Modal>
-          <Modal 
-            visible={openRequest || !!project}
-            footer={null}
-            closable={false}
-            width={'612px'}
+          {(itemStatus || project) &&
+          <DraggableModalStyled
+            {...stylesToApply}
+            isOpen={openRequest || !!project}
+            disableResize={true}
           >
             <ModalTitle>{formatMessage(messages[!!parentMessageId ? 'enterAnswer' : 'enterEditNotes'])}</ModalTitle>
             {!!parentMessageId &&
@@ -1058,13 +1074,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </CancelButton>
               <SaveButton
                 loading={sendingNote}
-                disabled={!note || sendingNote}
+                disabled={!note || sendingNote || note.length < 15}
                 onClick={this.addMessage}
               >
                 {formatMessage(messages[!!parentMessageId ? 'reply' : 'send'])}
               </SaveButton>
             </ButtonContainer>
-          </Modal>
+          </DraggableModalStyled>}
         </Container>
       </Layout>
     )

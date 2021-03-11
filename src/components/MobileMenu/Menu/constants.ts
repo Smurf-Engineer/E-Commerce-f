@@ -51,13 +51,13 @@ export const menuOptions = [
     options: []
   },
   {
+    title: PRO_DESIGN,
+    options: [PRO_DESIGN_PROJECTS]
+  },
+  {
     title: MY_FILES,
     options: []
   },
-  {
-    title: PRO_DESIGN,
-    options: [PRO_DESIGN_PROJECTS]
-  }
 ]
 
 export const resellerOptions = [
@@ -78,12 +78,12 @@ export const resellerOptions = [
     options: []
   },
   {
-    title: MY_FILES,
-    options: []
-  },
-  {
     title: PRO_DESIGN,
     options: [PRO_DESIGN_PROJECTS]
+  },
+  {
+    title: MY_FILES,
+    options: []
   }
 ]
 

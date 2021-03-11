@@ -104,6 +104,7 @@ export const getProdesignItemQuery = gql`
         type
         message
         file
+        code
         requireAnswer: require_answer
         parentMessageId: parent_message_id
         answer {

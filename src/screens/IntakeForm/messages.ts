@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'screens.IntakeForm.chooseProducts',
     defaultMessage: 'Select Your Products'
   },
+  addProduct: {
+    id: 'screens.IntakeForm.addProduct',
+    defaultMessage: 'Select a Product to Add'
+  },
   productsDescription: {
     id: 'screens.IntakeForm.productsDescription',
     // tslint:disable-next-line: max-line-length

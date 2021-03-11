@@ -734,12 +734,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const currentTitleHasAction = titleTexts[currentScreen].action
     const currentSubtitle = titleTexts[currentScreen].body
     const currentSubtitleTips = titleTexts[currentScreen].bodyWithTip
-    const currentTitle = titleTexts[currentScreen].title
+    const currentTitle = !projectId ? titleTexts[currentScreen].title : 'addProduct'
     const showTopNav = currentTitle.length || currentSubtitle.length || currentSubtitleTips.length
     const navTitle = currentTitle.length ? (<Title>
         {formatMessage(messages[currentTitle])}
       </Title>) : null
-    const navSubtitle = currentSubtitle.length ? <Subtitle>
+    const navSubtitle = currentSubtitle.length && !projectId ? <Subtitle>
           {formatMessage(messages[currentSubtitle])}
       </Subtitle> : null
 

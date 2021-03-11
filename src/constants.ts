@@ -46,12 +46,24 @@ export const EDIT = 'edit'
 export const NEW_PRODUCT = 'new'
 export const FROM_ADMIN = 'admin'
 export const PROJECT_MESSAGE = 'PROJECT_MESSAGE'
+export const PROJECT_REVIEW = 'PROJECT_REVIEW'
 
 /* Prodesign Design status */
 export const PREFLIGHT_STATUS = 'preflight'
+export const ISSUE = 'issue'
 export const IN_DESIGN = 'in_design'
+export const AM_REVIEW = 'am_review'
 export const CUSTOMER_PREVIEW = 'customer_preview'
+export const EDITING = 'editing'
 export const CUSTOMER_APPROVED = 'approved'
+
+// Status Labels
+export const itemLabels = {
+  [PREFLIGHT_STATUS]: 'Pending',
+  [CUSTOMER_PREVIEW]: 'Ready for Review',
+  [CUSTOMER_APPROVED]: 'Approved',
+  [IN_DESIGN]: 'In Design'
+}
 
 /* Link Types */
 export const LINK_TYPE_ROUTE = 'route'

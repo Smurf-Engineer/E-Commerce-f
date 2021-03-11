@@ -102,6 +102,7 @@
     "react-intl": "^2.4.0",
     "react-lazy-load-image-component": "^1.5.1",
     "react-masonry-css": "^1.0.14",
+    "react-modal-resizable-draggable": "^0.1.4",
     "react-paypal-express-checkout-authorize": "^1.0.4",
     "react-rangeslider": "^2.2.0",
     "react-redux": "^5.0.6",

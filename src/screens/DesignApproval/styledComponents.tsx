@@ -28,6 +28,7 @@ import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import Icon from 'antd/lib/icon'
+import DraggableModal from 'react-modal-resizable-draggable'
 import { AVENIR_MEDIUM } from '../../theme/fonts'
 
 const Panel = Collapse.Panel
@@ -41,6 +42,7 @@ interface RowProps {
   isAdmin?: boolean
   noMargin?: boolean
   marginTop?: boolean
+  disabled?: boolean
   selected?: boolean
 }
 
@@ -55,6 +57,11 @@ export const Container = styled.div`
   @media (max-width: 1023px) {
     height: calc(100vh - 128px);
     position: relative;
+  }
+  .flexible-modal-mask {
+    z-index: 10;
+    position: absolute;
+    height: 100vh;
   }
 `
 
@@ -380,7 +387,7 @@ export const RequestEdit = styled(Button)`
   transition: all .25s;
   &:hover {
     span {
-      color: ${WHITE};
+      color: ${({ disabled }: RowProps) => disabled ? GRAY : WHITE};
     }
     cursor: pointer;
     background: ${RED};
@@ -391,7 +398,7 @@ export const RequestEdit = styled(Button)`
 export const EditsLabel = styled.div``
 
 export const RequestText = styled.span`
-  color: ${RED};
+  color: ${({ secondary }: RowProps) => secondary ? GRAY : RED};
   transition: all .25s;
 `
 
@@ -418,7 +425,36 @@ export const ModalTitle = styled.div`
   font-size: 16px;
   font-family: ${AVENIR_MEDIUM};
   margin-bottom: 22px;
+  cursor: move;
 `
+
+export const DraggableModalStyled = styled(DraggableModal)`
+  z-index: 10;
+  padding: 27px;
+  border-radius: 3px;
+  max-width: 612px;
+  width: 100% !important;
+  max-height: 366px;
+  height: 100% !important;
+  align-self: center;
+  box-shadow: 0px 2px 7px 0px ${GRAY_DARK};
+  .flexible-modal-drag-area {
+    background: unset;
+  }
+  @media (max-width: 612px) {
+    left: 0;
+  }
+`
+
+export const stylesDraggable = {
+  top: 'calc(50vh - 183px)',
+  left: 'calc(50vw - 306px)'
+}
+
+export const stylesDraggableMobile = {
+  top: 'calc(50vh - 200px)',
+  left: '0'
+}
 
 export const PromptTitle = styled.div`
   font-weight: 900;
@@ -475,7 +511,6 @@ export const TextAreaStyled = styled(TextArea)`
   outline: none;
   box-shadow: none;
   resize: none;
-  padding-right: 128px;
   &:hover {
     border: 1px solid ${GRAY_LIGHT};
   }
@@ -776,6 +811,17 @@ export const ColorBlock = styled.div`
   margin-left: 12px;
 `
 
+export const CodeLabel = styled.div`
+  background: ${({ isAdmin }: RowProps) => isAdmin ? GRAY_DARK : ORANGE};
+  color: ${WHITE};
+  align-self: ${({ isAdmin }: RowProps) => isAdmin ? 'flex-end' : 'flex-start'};
+  padding: 2px 8px;
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 3px;
+`
+
 export const CodeColor = styled.div`
   font-weight: bold;
   font-size: 16px;
@@ -907,9 +953,10 @@ export const ButtonWrapper = styled.div`
   margin-bottom: ${({ noMargin}: RowProps) => noMargin ? 'unset' : '16px'};
   margin-top: ${({ marginTop }: RowProps) => marginTop ? '-4px' : 'unset'};
   .ant-btn-primary  {
-    background-color: ${({ secondary }: RowProps) => secondary  ? GRAY_STRONG : BLUE};
+    background-color: ${({ secondary }: RowProps) => secondary  ? WHITE : BLUE};
     border-color: ${({ secondary }: RowProps) => secondary  ? GRAY_STRONG : BLUE};
     width: 138px;
+    color: ${GRAY_DARK};
   }
   .ant-btn-primary:hover {
     background-color: ${({ secondary }: RowProps) => secondary  ? GRAY_LIGHT : BLUE};

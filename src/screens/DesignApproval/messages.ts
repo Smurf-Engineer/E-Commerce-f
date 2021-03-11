@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'screens.DesignApproval.enterAnswer',
     defaultMessage: 'ENTER REPLY NOTES'
   },
-  review: {
-    id: 'screens.DesignApproval.review',
-    defaultMessage: 'Ready for Review'
+  inDesign: {
+    id: 'screens.DesignApproval.inDesign',
+    defaultMessage: 'In Design'
   },
   shareButton: {
     id: 'screens.DesignApproval.shareButton',

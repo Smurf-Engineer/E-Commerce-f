@@ -37,7 +37,15 @@ import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
 import messages from './messages'
 import { Message, InspirationType, ColorsDataResult, ProDesignItem } from '../../types/common'
-import { DATE_FORMAT, DOCX_TYPE, DOC_TYPE, PDF_TYPE, ZIP_TYPE } from '../../constants'
+import {
+  CUSTOMER_APPROVED,
+  CUSTOMER_PREVIEW,
+  DATE_FORMAT,
+  DOCX_TYPE,
+  DOC_TYPE,
+  PDF_TYPE,
+  ZIP_TYPE
+} from '../../constants'
 import { InspirationTag } from '../../screens/IntakeForm/constants'
 import message from 'antd/lib/message'
 
@@ -223,7 +231,8 @@ export class Review extends React.Component<Props, {}> {
                     customizable,
                     colors
                   } = product
-                  const imagesToShow = !!code ? { thumbnail: image } : images[0]
+                  const imagesToShow = !!code && 
+                  (status === CUSTOMER_PREVIEW || status === CUSTOMER_APPROVED) ? { thumbnail: image } : images[0]
                   const goToItem = () => this.handleGoItem(itemId)
                   return (
                     <ProductThumbnail
