@@ -1888,6 +1888,7 @@ export type Project = {
   status: string
   createdAt: string
   designs: ProDesignItem[]
+  totalNotifications?: number
   updatedAt?: string
 }
 
