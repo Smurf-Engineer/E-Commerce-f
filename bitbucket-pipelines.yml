@@ -79,6 +79,7 @@ pipelines:
   branches:
     master:
       - step:
+          size: 2x
           name: Test
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -120,6 +121,7 @@ pipelines:
             - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT --record --namespace=production
     staging:
       - step:
+          size: 2x
           name: Test
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
