@@ -8,7 +8,7 @@ options:
 definitions:
   services:
     docker:
-      memory: 3072
+      memory: 2048
 
 pipelines:
   # custom:
@@ -86,6 +86,7 @@ pipelines:
             - yarn lint
             - yarn test
       - step:
+          size: 2x
           name: Deploy to production
           trigger: manual
           deployment: production
@@ -126,6 +127,7 @@ pipelines:
             - yarn lint
             - yarn test
       - step:
+          size: 2x
           name: Deploy to staging
           trigger: manual
           deployment: Staging
