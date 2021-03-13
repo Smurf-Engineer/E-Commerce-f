@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "razzle start",
-    "build": "razzle build --max_old_space_size=4096",
+    "build": "razzle build",
     "lint": "tslint --project . -c tslint.json",
     "generate": "plop --plopfile ./node_modules/react-components-generator/index.js",
     "test:dev": "jest --env jsdom --config ./jest.config.js --watch",
