@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.orderTitle2',
     defaultMessage: 'and receive your order by'
   },
+  aboutDirectship: {
+    id: 'screens.StoreFrontContent.aboutDirectship',
+    defaultMessage: 'About Directship Ordering'
+  },
   priceDropTitle: {
     id: 'screens.StoreFrontContent.priceDropTitle',
     defaultMessage: 'DYNAMIC PRICE DROP'
