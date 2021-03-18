@@ -480,26 +480,28 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
                     <AboutContainer>
                       <AboutTitle>
-                        <FormattedMessage {...messages.aboutOrdering}
+                        <FormattedMessage {...messages[isResellerStore ? 'aboutDirectship' : 'aboutOrdering']}
                           values={{ teamType: onDemandMode ? ON_DEMAND_ORDERING : BATCH_ORDERING }}
                         />
                       </AboutTitle>
-                      <ProductInfo
-                        id="Much"
-                        title={formatMessage(messages.howMuchTitle)}
-                        showContent={showMuch}
-                        toggleView={this.toggleProductInfo}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: formatMessage(
-                              onDemandMode
-                                ? messages.howMuchDesc
-                                : messages.howMuchDescBatch
-                            )
-                          }}
-                        />
-                      </ProductInfo>
+                      {!isResellerStore && 
+                        <ProductInfo
+                          id="Much"
+                          title={formatMessage(messages.howMuchTitle)}
+                          showContent={showMuch}
+                          toggleView={this.toggleProductInfo}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(
+                                onDemandMode
+                                  ? messages.howMuchDesc
+                                  : messages.howMuchDescBatch
+                              )
+                            }}
+                          />
+                        </ProductInfo>
+                      }
 
                       <ProductInfo
                         id="When"
@@ -548,22 +550,24 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           }}
                         />
                       </ProductInfo>
-                      <ProductInfo
-                        id="Cani"
-                        title={formatMessage(messages.canIORder)}
-                        showContent={showCani}
-                        toggleView={this.toggleProductInfo}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: formatMessage(
-                              onDemandMode
-                                ? messages.canIORderDesc
-                                : messages.canIORderDescBatch
-                            )
-                          }}
-                        />
-                      </ProductInfo>
+                      {!isResellerStore &&
+                        <ProductInfo
+                          id="Cani"
+                          title={formatMessage(messages.canIORder)}
+                          showContent={showCani}
+                          toggleView={this.toggleProductInfo}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(
+                                onDemandMode
+                                  ? messages.canIORderDesc
+                                  : messages.canIORderDescBatch
+                              )
+                            }}
+                          />
+                        </ProductInfo>
+                      }
                       <ProductInfo
                         id="Return"
                         title={formatMessage(messages.returnMessage)}
