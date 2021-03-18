@@ -171,7 +171,7 @@ import ShareDesignModal from '../../components/ShareDesignModal'
 import AddToCartButton from '../../components/AddToCartButton'
 import AddToTeamStore from '../../components/AddToTeamStore'
 import unset from 'lodash/unset'
-import { BLUE_STATUS, BLACK, GREEN_STATUS, ORANGE_STATUS } from '../../theme/colors'
+import { BLUE_STATUS, BLACK, GREEN_STATUS, ORANGE_STATUS, ORANGE, GRAY_DARK } from '../../theme/colors'
 
 const { confirm } = Modal
 const { TabPane } = AntdTabs
@@ -361,30 +361,46 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       const { id: itemId } = queryParams || {}
       if (itemId) {
         setSendingAction(true)
-        await sendNoteProdesign({
-          variables: {
-            itemId,
-            message: note,
-            file,
-            parentMessageId
-          },
-          update: (store: any, responseData: ProDesignMessage) => {
-            const responseMessage = get(responseData, 'data.messageData', {})
-            const data = store.readQuery({
+        if (parentMessageId) {
+          await sendNoteProdesign({
+            variables: {
+              itemId,
+              message: note,
+              file,
+              parentMessageId
+            },
+            update: (store: any, responseData: ProDesignMessage) => {
+              const responseMessage = get(responseData, 'data.messageData', {})
+              const storedData = store.readQuery({
+                query: getProdesignItemQuery,
+                variables: { shortId: itemId }
+              })
+              const messagesArray = get(storedData, 'projectItem.messages', [])
+              messagesArray.push(responseMessage)
+              store.writeQuery({
+                query: getProdesignItemQuery,
+                variables: { shortId: itemId },
+                data: storedData
+              })
+            },
+          })
+        } else {
+          await sendNoteProdesign({
+            variables: {
+              itemId,
+              message: note,
+              file,
+              parentMessageId
+            },
+            refetchQueries: [{
               query: getProdesignItemQuery,
               variables: { shortId: itemId },
-              fetchPolicy: 'network-only'
-            })
-            const messagesArray = get(data, 'projectItem.messages', [])
-            messagesArray.push(responseMessage)
-            store.writeQuery({
-              query: getProdesignItemQuery,
-              variables: { shortId: itemId },
-              fetchPolicy: 'network-only',
-              data,
-            })
-          }
-        })
+              options: {
+                fetchPolicy: 'network-only'
+              }
+            }]
+          })
+        }
         this.handleCloseRequest()
         AntdMessage.success(formatMessage(messages.savedNote))
         const snd = new Audio(messageSent)
@@ -609,6 +625,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = design
     const {
       hasPredyed,
+      predyedlabel,
       modelSize,
       name: productName
     } = product || {}
@@ -625,6 +642,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       window.innerWidth > 614 ? stylesDraggable : stylesDraggableMobile
     const predyedValue = predyedName || PREDYED_DEFAULT
     const hidePredyed = predyedValue === PREDYED_TRANSPARENT
+    const readyToShow = !!designId && (itemStatus === CUSTOMER_APPROVED || itemStatus === CUSTOMER_PREVIEW)
     const predyedItem = predyedColors.find(({ name: colorName }) => colorName === predyedValue)
     const predyedCode = predyedItem ? predyedItem.code : predyedValue
     const installedFonts = fontList.reduce<{ font: string }[]>(
@@ -701,67 +719,79 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               parentMessageId: parentId,
             }: ProDesignMessage, 
             key: number
-            ) =>
-            <IncomingMessage isAdmin={messageType === FROM_ADMIN} {...{ key }} >
-              <MessageHeader isAdmin={messageType === FROM_ADMIN}>
-                <Initials>
-                  {messageType === FROM_ADMIN ?
-                    <JakrooLogo src={JakRooLogo} /> : <UserIcon type="user" />
-                  }
-                </Initials>                        
-              </MessageHeader>
-              <InfoDiv isAdmin={messageType === FROM_ADMIN}>
-                <MessageBox>
-                  {(!!parentId && answer) &&
-                    <ParentText>
-                      {answer.message}
-                    </ParentText>
-                  }
-                  <MessageBody>
-                    {incomingMessage}
-                  </MessageBody>
-                  {required && 
-                    <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
-                      {formatMessage(messages.required)}
-                    </RequiredText>
-                  }
-                  {!!messageFile &&
-                    <MessageFile onClick={this.openFile(messageFile)}>
-                      <Clip type="paper-clip" />
-                      <FileName>
-                        {getFileWithExtension(messageFile || '')}
-                      </FileName>
-                    </MessageFile>
-                  }
-                  {messageType === NEW_PRODUCT &&
-                    <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
-                  }
-                  {!!messageCode &&
-                    <CodeLabel isAdmin={messageType === FROM_ADMIN}>
-                      {messageCode}
-                    </CodeLabel>
-                  }
-                </MessageBox>
-                <DateMessage>
-                  {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
-                </DateMessage>
-              </InfoDiv>
-            </IncomingMessage>
+            ) => {
+              const fromSystem = messageType === FROM_ADMIN || messageType === CUSTOMER_APPROVED
+              let codeColor = ORANGE
+              if (messageType === FROM_ADMIN) {
+                codeColor = GRAY_DARK
+              } else if (messageType === CUSTOMER_APPROVED) {
+                codeColor = GREEN_STATUS
+              }
+              return (
+                <IncomingMessage isAdmin={fromSystem} {...{ key }} >
+                  <MessageHeader isAdmin={fromSystem}>
+                    <Initials>
+                      {fromSystem ?
+                        <JakrooLogo src={JakRooLogo} /> : <UserIcon type="user" />
+                      }
+                    </Initials>                        
+                  </MessageHeader>
+                  <InfoDiv isAdmin={fromSystem}>
+                    <MessageBox>
+                      {(!!parentId && answer) &&
+                        <ParentText>
+                          {answer.message}
+                        </ParentText>
+                      }
+                      <MessageBody>
+                        {messageType === CUSTOMER_APPROVED ? 
+                          formatMessage(messages.congratulations) :
+                          incomingMessage
+                        }
+                      </MessageBody>
+                      {required && 
+                        <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
+                          {formatMessage(messages.required)}
+                        </RequiredText>
+                      }
+                      {!!messageFile &&
+                        <MessageFile onClick={this.openFile(messageFile)}>
+                          <Clip type="paper-clip" />
+                          <FileName>
+                            {getFileWithExtension(messageFile || '')}
+                          </FileName>
+                        </MessageFile>
+                      }
+                      {messageType === NEW_PRODUCT &&
+                        <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
+                      }
+                      {(!!messageCode || messageType === CUSTOMER_APPROVED) &&
+                        <CodeLabel {...{ codeColor }} isAdmin={fromSystem}>
+                          {messageType === CUSTOMER_APPROVED ? formatMessage(messages.approvedCode) : messageCode}
+                        </CodeLabel>
+                      }
+                    </MessageBox>
+                    <DateMessage>
+                      {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
+                    </DateMessage>
+                  </InfoDiv>
+                </IncomingMessage>
+            )}
           )}
         </ChatMessages>
         <RequestButtons>
           <ApproveButton
             loading={approveLoading}
-            disabled={approveLoading || itemStatus === CUSTOMER_APPROVED || itemStatus === PREFLIGHT_STATUS}
+            disabled={approveLoading || itemStatus !== CUSTOMER_PREVIEW}
             onClick={this.handlePromptApprove}
           >
             {formatMessage(messages.approve)}
           </ApproveButton>
           <RequestEdit
-            disabled={itemStatus === PREFLIGHT_STATUS}
+            disabled={!readyToShow}
             onClick={this.handleOpenRequest}
           >
-            <RequestText secondary={itemStatus === PREFLIGHT_STATUS}>
+            <RequestText secondary={!readyToShow}>
               {formatMessage(messages.requestEdit)}
             </RequestText>
             <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
@@ -773,7 +803,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       <Colors>
         <ApprovalTitle>{formatMessage(messages.colors)}</ApprovalTitle>
         <ColorBlock>
-          <CodeColor>Colors:</CodeColor>
+          <CodeColor>{formatMessage(messages.baseColors)}</CodeColor>
           {colors.map(({ name, value }, index) =>
             <ColorContainer key={index}>
               <Color color={value} />
@@ -787,6 +817,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           <AccessoryColors
             {...{
               hasPredyed,
+              predyedlabel,
               predyedValue,
               predyedCode,
               stitchingValue,
@@ -835,7 +866,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </StyledTabs>
             }
             <LayoutRight>
-              {!!designId &&
+              {readyToShow &&
                 <NameLabel>
                   <DesignLabel>
                     <DescLabel>{formatMessage(messages.designName)}</DescLabel>
@@ -853,7 +884,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </StatusLabel>
               }
               <ButtonsContainer>
-                {itemStatus !== PREFLIGHT_STATUS && !!designId &&
+                {readyToShow &&
                   <ButtonWrapper secondary={true}>
                     <Button type="primary" onClick={this.handleOpenShare}>
                       {formatMessage(messages.shareButton)}
@@ -897,13 +928,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               }
               {!!itemStatus &&
                 <RenderSection>
-                  {!designId ?
-                    <Render3D
-                      customProduct={true}
-                      designId={0}
-                      isProduct={true}
-                      {...{ product, modelObj, modelMtl }}
-                    /> : 
+                  {readyToShow && designId &&
                     <Render3D
                       customProduct={true}
                       textColor="white"
@@ -915,6 +940,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                         hidePredyed
                       }}
                       zoomedIn={true}
+                    />
+                  }
+                  {!readyToShow && product &&
+                    <Render3D
+                      customProduct={true}
+                      designId={0}
+                      isProduct={true}
+                      {...{ product, modelObj, modelMtl }}
                     />
                   }
                 </RenderSection>

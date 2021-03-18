@@ -43,6 +43,7 @@ export const getProdesignItemQuery = gql`
         twoPieces: two_pieces
         collections
         isTopProduct
+        predyedlabel
         hasPredyed: has_predyed
         intendedUse: intended_use
         obj
@@ -180,6 +181,7 @@ export const addProMessageMutation = gql`
       createdAt: created_at
       type
       message
+      code
       file
       parentMessageId: parent_message_id
       requireAnswer: require_answer

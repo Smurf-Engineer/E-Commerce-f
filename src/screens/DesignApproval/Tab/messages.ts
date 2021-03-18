@@ -11,6 +11,6 @@ export default defineMessages({
   },
   color: {
     id: 'screens.ProDesignTab.color',
-    defaultMessage: 'Color'
+    defaultMessage: 'Color Specs'
   }
 })

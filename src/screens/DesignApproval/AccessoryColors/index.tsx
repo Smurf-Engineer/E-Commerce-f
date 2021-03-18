@@ -16,6 +16,7 @@ interface Props {
   zipperColor?: AccesoryColor
   bindingColor?: AccesoryColor
   predyedValue?: string
+  predyedlabel?: string
   predyedCode?: string
   hasPredyed?: boolean
 }
@@ -26,6 +27,7 @@ const AccessoryColors = ({
   bibColor,
   zipperColor,
   hasPredyed,
+  predyedlabel,
   predyedValue,
   predyedCode,
   bindingColor
@@ -55,14 +57,14 @@ const AccessoryColors = ({
       )}
       {stitchingName && stitchingValue && (
         <StitchingColorComponent
-          name="Stitching"
+          name="Stitching Color"
           stitchingColor={{ name: stitchingName, value: stitchingValue }}
         />
       )}
       {hasPredyed && (
         <PredyedColorComponent
           {...{ predyedValue, predyedCode }}
-          name="Predyed"
+          name={predyedlabel || 'Predyed'}
         />
       )}
     </div>

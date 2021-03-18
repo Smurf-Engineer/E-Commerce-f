@@ -21,6 +21,15 @@ export default defineMessages({
     id: 'screens.DesignApproval.enterAnswer',
     defaultMessage: 'ENTER REPLY NOTES'
   },
+  congratulations: {
+    id: 'screens.DesignApproval.congratulations',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Congratulations! You have approved your design. Your design is now available in your LOCKER to purchase or Add to a Team Store'
+  },
+  approvedCode: {
+    id: 'screens.DesignApproval.approvedCode',
+    defaultMessage: 'APPROVED'
+  },
   inDesign: {
     id: 'screens.DesignApproval.inDesign',
     defaultMessage: 'In Design'
@@ -97,6 +106,10 @@ export default defineMessages({
   colors: {
     id: 'screens.DesignApproval.colors',
     defaultMessage: 'Colors List'
+  },
+  baseColors: {
+    id: 'screens.DesignApproval.baseColors',
+    defaultMessage: 'Base Colors'
   },
   back: {
     id: 'screens.DesignApproval.back',

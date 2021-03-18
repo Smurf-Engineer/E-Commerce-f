@@ -42,6 +42,7 @@ interface RowProps {
   isAdmin?: boolean
   noMargin?: boolean
   marginTop?: boolean
+  codeColor?: string
   disabled?: boolean
   selected?: boolean
 }
@@ -767,6 +768,7 @@ export const MessageBody = styled.div`
   display: inline-flex;
   text-align: start;
   width: 100%;
+  word-break: break-word;
 `
 
 export const ColorName = styled.p`
@@ -812,7 +814,7 @@ export const ColorBlock = styled.div`
 `
 
 export const CodeLabel = styled.div`
-  background: ${({ isAdmin }: RowProps) => isAdmin ? GRAY_DARK : ORANGE};
+  background: ${({ codeColor }: RowProps) => codeColor || GRAY_DARK};
   color: ${WHITE};
   align-self: ${({ isAdmin }: RowProps) => isAdmin ? 'flex-end' : 'flex-start'};
   padding: 2px 8px;
@@ -820,6 +822,7 @@ export const CodeLabel = styled.div`
   font-size: 10px;
   font-weight: bold;
   border-radius: 3px;
+  word-break: keep-all;
 `
 
 export const CodeColor = styled.div`
