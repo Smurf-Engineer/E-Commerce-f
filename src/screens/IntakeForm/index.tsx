@@ -820,7 +820,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           disabled={true}
           animateHeight={true}
           index={currentScreen}>
-            <Inspiration
+            {currentScreen === Sections.INSPIRATION ? <Inspiration
               {...{ formatMessage, inspiration, isMobile, isTablet }}
               windowWidth={responsive.fakeWidth}
               currentPage={inspirationPage}
@@ -841,8 +841,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               resetInspirationData={resetInspirationDataAction}
               removeFilter={removeFromListAction}
               addFilter={addToListAction}
-            />
-            <Colors
+            /> : <div />}
+            {currentScreen === Sections.COLORS ? <Colors
               {...{
                 formatMessage,
                 selectedColors,
@@ -862,8 +862,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onDeselect={deselectElementAction}
               selectPalette={selectPaletteAction}
               resetSelection={resetColorSelectionAction}
-            />
-            <Files
+            /> : <div />}
+            {currentScreen === Sections.FILES ? <Files
               {...{
                 formatMessage,
                 uploadingFile,
@@ -890,8 +890,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               handleOnRenameChange={onRenameChangeAction}
               onSaveName={this.handleOnRenameFileName}
               setFileTerms={setFileTermsAction}
-            />
-            <Notes
+            /> : <div />}
+            {currentScreen === Sections.NOTES ? <Notes
               {...{
                 formatMessage,
                 user,
@@ -922,8 +922,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               addCategory={addToListAction}
               categories={projectCategories}
               showModal={this.showAlert}
-            />
-            <Notifications
+            /> : <div />}
+            {currentScreen === Sections.NOTIFICATIONS ? <Notifications
               {...{
                 formatMessage,
                 user,
@@ -944,8 +944,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               onCheckSms={onCheckSmsChangeAction}
               onCheckEmail={onCheckEmailChangeAction}
               mainProduct={selectedItems.length ? selectedItems[0].id : null}
-            />
-            <Review
+            /> : <div />}
+            {currentScreen === Sections.REVIEW ? <Review
               {...{
                 formatMessage,
                 inspiration,
@@ -968,7 +968,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                 currentCurrency
               }}
               goToPage={this.handleOnSelectTab}
-            />
+            /> : <div />}
           </SwipeableViews> : null}
       </IntakeContainer>
       {successModal ? <SuccessModal

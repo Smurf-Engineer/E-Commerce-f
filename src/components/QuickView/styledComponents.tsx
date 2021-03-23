@@ -42,7 +42,14 @@ export const CloseIcon = styled.img`
 
 export const StyledRow = styled(Row)`
   margin-top: 30px;
-  display: list-item;
+  display: inline-flex;
+  flex-flow: row;
+  @media (max-width: 654px) {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
 `
 
 export const PriceQuantityRow = styled(Row)`
@@ -52,6 +59,9 @@ export const PriceQuantityRow = styled(Row)`
 `
 export const AvailablePrices = styled.div`
   width: 25%;
+  @media (max-width: 654px) {
+    margin-right: 12px;
+  }
 `
 
 export const ProductInfContainer = styled.div`
@@ -106,6 +116,16 @@ export const FullDetails = styled.div`
     cursor: pointer;
   }
 `
+
+export const ColDiv = styled.div`
+  display: block;
+  box-sizing: border-box;
+  width: 50%;
+  @media (max-width: 654px) {
+    width: 100%;
+  }
+`
+
 export const DetailsList = styled.ul`
   padding: 10px 0px 0px 20px;
 `

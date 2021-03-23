@@ -292,7 +292,7 @@ export const CountCircle = styled.div`
 `
 
 export const BottomSheetWrapper = styled.div`
-  z-index: 5;
+  z-index: 8;
   .react-swipeable-view-container {
     box-shadow: rgba(0, 0, 0, 0.157) 0px -1px 5px !important;
   }
@@ -959,7 +959,7 @@ export const ButtonWrapper = styled.div`
     background-color: ${({ secondary }: RowProps) => secondary  ? WHITE : BLUE};
     border-color: ${({ secondary }: RowProps) => secondary  ? GRAY_STRONG : BLUE};
     width: 138px;
-    color: ${GRAY_DARK};
+    color: ${({ selected }: RowProps) => selected ? WHITE : GRAY_DARK};
   }
   .ant-btn-primary:hover {
     background-color: ${({ secondary }: RowProps) => secondary  ? GRAY_LIGHT : BLUE};

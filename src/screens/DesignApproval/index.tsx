@@ -788,10 +788,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             {formatMessage(messages.approve)}
           </ApproveButton>
           <RequestEdit
-            disabled={!readyToShow}
+            disabled={itemStatus !== CUSTOMER_PREVIEW}
             onClick={this.handleOpenRequest}
           >
-            <RequestText secondary={!readyToShow}>
+            <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
               {formatMessage(messages.requestEdit)}
             </RequestText>
             <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
@@ -915,7 +915,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       {formatMessage(messages.addToTeam)}
                     </Button>
                   </ButtonWrapper>
-                  <ButtonWrapper marginTop={true} noMargin={true}>
+                  <ButtonWrapper selected={true} marginTop={true} noMargin={true}>
                     <AddToCartButton
                       orderDetails={true}
                       label={formatMessage(messages.addToCart)}

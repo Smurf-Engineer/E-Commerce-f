@@ -45,7 +45,7 @@ export const InspirationName = styled.div`
 export const Text = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
-  word-break: break-all;
+  word-break: break-word;
   width: 100%;
   @media (max-width: 768px) {
     max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '198px'};

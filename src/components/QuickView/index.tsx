@@ -22,10 +22,10 @@ import {
   DetailsList,
   DetailsListItem,
   ArrowRight,
-  Loading
+  Loading,
+  ColDiv
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
-import Col from 'antd/lib/col'
 import Spin from 'antd/lib/spin'
 
 import closeIcon from '../../assets/cancel-button.svg'
@@ -212,14 +212,13 @@ export class QuickView extends React.Component<Props, State> {
           visible={open}
           footer={null}
           closable={false}
-          width={'auto'}
+          width={'800px'}
           destroyOnClose={true}
           afterClose={this.resetState}
-          style={{ maxWidth: 800 }}
         >
           <CloseIcon src={closeIcon} onClick={handleClose} />
           <StyledRow>
-            <Col span={12}>
+            <ColDiv>
               {imageSlider}
               {!hideSliderButtons && (
                 <FullDetails>
@@ -229,8 +228,8 @@ export class QuickView extends React.Component<Props, State> {
                   <ArrowRight />
                 </FullDetails>
               )}
-            </Col>
-            <Col span={12}>
+            </ColDiv>
+            <ColDiv>
               <Title>{name}</Title>
               <PriceQuantityRow>
                 {!isRetail ? renderPrices : retailPrice}
@@ -242,7 +241,7 @@ export class QuickView extends React.Component<Props, State> {
                 totalReviews={get(yotpoAverageScore, 'total', 0)}
               />
               {productInfo}
-            </Col>
+            </ColDiv>
           </StyledRow>
         </Modal>
       </Container>
