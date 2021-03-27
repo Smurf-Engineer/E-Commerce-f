@@ -200,7 +200,7 @@ export default defineMessages({
   vectorBody: {
     id: 'screens.IntakeForm.vectorBody',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: '<p><strong>VECTOR ARTWORK</strong></p><p>Most professional designers create logos in vector format for one main reason — they can be resized without pixelating. This sample of the JAKROO logo shows a logo created in vector format that can be enlarged to any size and the lines will always be crisp and sharp.</p><p>Files with the extension (.ai) or (.eps) typically represent VECTOR files.</p>'
+    defaultMessage: '<p><strong>VECTOR ARTWORK</strong></p><p>Most professional designers create logos in vector format for one main reason — they can be resized without pixelating. This sample of the JAKROO logo shows a logo created in vector format that can be enlarged to any size and the lines will always be crisp and sharp.</p><p>Files with the extension AI, EPS, SVG, or PDF will typically represent VECTOR files.</p>'
   },
   rasterBody: {
     id: 'screens.IntakeForm.rasterBody',

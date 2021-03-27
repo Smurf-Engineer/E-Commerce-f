@@ -1,6 +1,7 @@
 /**
  * Styled Components - Created by david on 12/02/18.
  */
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
 import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED, BLACK_LABEL } from '../../../theme/colors'
 
@@ -32,6 +33,22 @@ export const ImageContainer = styled.div`
   @media only screen and (max-width: 320px) {
     height: 130px;
     width: 100%;
+  }
+`
+
+export const DeleteButton = styled(Icon)`
+  font-size: 16px;
+  top: 5px;
+  right: 5px;
+  display: block;
+  position: absolute;
+  z-index: 9;
+  transition: all .25s;
+  padding: 6px;
+  border-radius: 50%;
+  &:hover {
+    color: ${WHITE};
+    background: ${RED};
   }
 `
 

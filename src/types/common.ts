@@ -1884,6 +1884,7 @@ export type PushNotificationData = {
 
 export type Project = {
   id: number
+  shortId: string
   name: string
   status: string
   createdAt: string

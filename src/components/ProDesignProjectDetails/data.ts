@@ -104,3 +104,11 @@ export const GetColorsQuery = gql`
     }
   }
 `
+
+export const deleteProItemMutation = gql`
+  mutation deleteProItem($itemId: String!) {
+    deleteProItem(itemId: $itemId) {
+      message
+    }
+  }
+`

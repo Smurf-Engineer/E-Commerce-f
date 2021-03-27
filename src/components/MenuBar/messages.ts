@@ -16,5 +16,9 @@ export default defineMessages({
   myAccount: {
     id: 'components.menuBar.myAccount',
     defaultMessage: '{user} | MY ACCOUNT'
+  },
+  errorUpdating: {
+    id: 'components.menuBar.errorUpdating',
+    defaultMessage: 'Error Updating Notifications'
   }
 })

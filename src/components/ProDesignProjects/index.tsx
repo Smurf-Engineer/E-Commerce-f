@@ -22,19 +22,22 @@ import {
   BackContainer,
   AddButton,
   Head,
-  StyledBadge
+  StyledBadge,
+  Subtitle,
+  DeleteButton
 } from './styledComponents'
 import messages from './messages'
-import { QueryProps, Project, Message, ProjectsResult } from '../../types/common'
+import { QueryProps, Project, Message, ProjectsResult, MessagePayload } from '../../types/common'
 import EmptyContainer from '../EmptyContainer'
 import Pagination from 'antd/lib/pagination/Pagination'
 import moment from 'moment'
 import get from 'lodash/get'
 import { PROJECTS_LIMIT, Pages } from './constants'
-import { getProDesignProjects } from './data'
+import { deleteProjectMutation, getProDesignProjects } from './data'
 import Spin from 'antd/lib/spin'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { DATE_FORMAT } from '../../constants'
+import message from 'antd/lib/message'
 
 interface Data extends QueryProps {
   projectsResult: ProjectsResult
@@ -47,6 +50,7 @@ interface Props {
   currentSection: number
   userId: number
   history: History
+  deleteProject: (variables: {}) => Promise<MessagePayload>
   formatMessage: (messageDescriptor: Message) => string
   setCurrentPageAction: (page: number) => void
   setCurrentSectionAction: (page: number, projectId?: number) => void
@@ -55,6 +59,9 @@ interface Props {
 }
 
 class ProDesignProjects extends React.Component<Props, {}> {
+  state = {
+    deleting: false
+  }
   componentDidMount() {
     const {
       history: {
@@ -81,6 +88,30 @@ class ProDesignProjects extends React.Component<Props, {}> {
   handleOnClickProject = (projectId: number) => {
     const { setCurrentSectionAction } = this.props
     setCurrentSectionAction(Pages.DETAILS, projectId)
+  }
+
+  handleDeleteProject = async (event: React.MouseEvent<EventTarget>, projectId: string) => {
+    if (event) {
+      event.stopPropagation()
+    }
+    const {
+      formatMessage,
+      deleteProject,
+      list: { refetch }
+    } = this.props
+    try {
+      this.setState({ deleting: true })
+      await deleteProject({
+        variables: { projectId }
+      })
+      refetch()
+      message.success(formatMessage(messages.success))
+    } catch (e) {
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, 5)
+    } finally {
+      this.setState({ deleting: false })
+    }
   }
 
   handleOnOpenQuickView = (id: number, yotpoId: string, gender: number) => {
@@ -111,6 +142,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
     } = this.props
 
     const { loading } = list || {}
+    const { deleting } = this.state
     const projects = get(list, 'projectsResult.projects', [])
     const fullCount = get(list, 'projectsResult.fullCount', 0)
    
@@ -125,7 +157,9 @@ class ProDesignProjects extends React.Component<Props, {}> {
         <SwipeableViews disabled={true} index={currentSection}>
           <div>
             <Head>
-              <FormattedMessage {...messages.subtitle} />
+              <Subtitle>
+                <FormattedMessage {...messages.subtitle} />
+              </Subtitle>
               <AddButton onClick={this.goToCreate}><FormattedMessage {...messages.addProject} /></AddButton>
             </Head>
             <ListContainer>
@@ -138,6 +172,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     <Header textAlign="center">{formatMessage(messages.products)}</Header>
                     <Header textAlign="center">{formatMessage(messages.updatedAt)}</Header>
                     <Header textAlign="center">{formatMessage(messages.notifications)}</Header>
+                    <Header />
                   </Row>
                 </thead>
                 <tbody>
@@ -145,6 +180,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     {
                       createdAt,
                       id,
+                      shortId,
                       name,
                       totalNotifications = 0,
                       updatedAt,
@@ -152,6 +188,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     }: Project,
                     index: number) => {
                     const handleOnClickRow = () => this.handleOnClickProject(id)
+                    const handleDelete = (e) => this.handleDeleteProject(e, shortId)
                     return (<TableRow key={index} onClick={handleOnClickRow}>
                       <Cell>{name}</Cell>
                       <Cell>
@@ -163,12 +200,13 @@ class ProDesignProjects extends React.Component<Props, {}> {
                       <Cell textAlign="center">
                         {totalNotifications > 0 && <StyledBadge count={totalNotifications} />}
                       </Cell>
+                      <Cell><DeleteButton onClick={handleDelete} type="delete"/></Cell>
                     </TableRow>)
                     }
                   ) : null}
                 </tbody>
               </Table>
-              {loading && <LoadingContainer><Spin /></LoadingContainer>}
+              {(loading || deleting) && <LoadingContainer><Spin /></LoadingContainer>}
               {!loading && !projects.length ? 
                 (<EmptyContainer message={formatMessage(messages.empty)} />) : null}
               <Pagination
@@ -203,6 +241,7 @@ const mapStateToProps = (state: any) => state.get('proDesignProjects').toJS()
 
 const ProDesignProjectsEnhance = compose(
   connect(mapStateToProps, { ...AffiliatesActions, openQuickViewAction }),
+  graphql(deleteProjectMutation, { name: 'deleteProject' }),
   graphql<Data>(getProDesignProjects, {
     name: 'list',
     options: ({ currentPage, orderBy, sort }: OwnProps) => {

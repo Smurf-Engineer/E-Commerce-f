@@ -77,6 +77,7 @@ interface Props {
   fitContainer?: boolean
   isProDesign?: boolean
   proStatus?: string
+  deleteItem?: () => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
@@ -241,6 +242,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       customizable,
       currentCurrency,
       customizableLabel,
+      deleteItem,
       myLockerList,
       disableSlider,
       backgroundColor,
@@ -348,6 +350,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             proDesignAssigned,
             selectProduct,
             isSelected,
+            deleteItem,
             fromIntakeForm,
             selectedIndex,
             fitContainer

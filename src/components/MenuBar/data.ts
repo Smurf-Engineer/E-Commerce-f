@@ -126,6 +126,6 @@ export const setAllAsRead = graphql(
     }
   `,
   {
-    name: 'readNAllotification'
+    name: 'readAllNotifications'
   }
 )

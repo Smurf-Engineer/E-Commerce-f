@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Badge from 'antd/lib/badge'
 import { GRAY_DARK, GRAY_LIGHT, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -30,6 +31,15 @@ export const Container = styled.div`
 `
 
 export const StyledBadge = styled(Badge)``
+
+export const Subtitle = styled.div`
+  max-width: 866px;
+  width: 100%;
+  margin-right: 28px;
+  @media (max-width: 768px) {
+    margin-right: 0;
+  }
+`
 
 export const Head = styled.div`
   display: flex;
@@ -157,6 +167,22 @@ export const Cell = styled.td`
   }
   @media (max-width: 768px) {
     font-size: 11px;
+  }
+`
+
+export const DeleteButton = styled(Icon)`
+  font-size: 14px;
+  display: block;
+  z-index: 9;
+  margin-right: 8px;
+  max-width: 30px;
+  width: 100%;
+  transition: all .25s;
+  padding: 8px 0px;
+  border-radius: 50%;
+  &:hover {
+    color: ${WHITE};
+    background: ${RED};
   }
 `
 

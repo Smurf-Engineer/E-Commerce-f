@@ -27,7 +27,7 @@ export default defineMessages({
   },
   proDesignProjects: {
     id: 'screens.Account.proDesignProjects',
-    defaultMessage: 'My Pro Designs'
+    defaultMessage: 'My Projects'
   },
   goBack: {
     id: 'screens.Account.menu.goBack',

@@ -1,6 +1,14 @@
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED, RED_TRANSPARENT_BRIGHT, WHITE } from '../../theme/colors'
+import {
+  GRAY_DARK,
+  GRAY_LIGHT,
+  GRAY_LIGHTEST,
+  RED,
+  RED_TRANSPARENT_BRIGHT,
+  WHITE,
+  WHITE_TRANSPARENT
+} from '../../theme/colors'
 
 interface ImagePreviewProps {
   src: string
@@ -14,6 +22,7 @@ export const Container = styled.div`
   width: 100%;
   background-color: ${WHITE};
   display: inline-flex;
+  position: relative;
   flex-direction: column;
   @media (max-width: 768px) {
     padding: 0 20px;
@@ -26,6 +35,17 @@ export const StrongText = styled.div`
   font-size: 16px;
   margin-bottom: 10px;
   width: 100%;
+`
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  position: absolute;
+  z-index: 10;
+  height: 100%;
+  background: ${WHITE_TRANSPARENT};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const MainContainer = styled.div`
@@ -57,9 +77,11 @@ export const Column = styled.div`
   flex-direction: column;
   max-width: ${({ fullWidth }: DivProps) => fullWidth ? '100%' : '190px'};
   width: 100%;
+  flex: 1;
   @media (max-width: 768px) {
     flex-direction: row;
     max-width: 100%;
+    flex: unset;
   }
 `
 

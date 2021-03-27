@@ -29,6 +29,8 @@ interface Props {
   notifications?: Notification[]
   updatingNotifications?: boolean
   saveAndBuy: (buy: boolean) => void
+  onPressNotification?: (id: number, url: string) => void
+  onPressMarkAllAsRead: () => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
   handleOnGoHome: () => void
@@ -49,6 +51,8 @@ export const MenuBarMobile = ({
   openWithoutSaveModalAction,
   formatMessage,
   buyNowHeader,
+  onPressNotification,
+  onPressMarkAllAsRead,
   notifications = [],
   saveAndBuy,
   handleOnGoHome,
@@ -87,6 +91,8 @@ export const MenuBarMobile = ({
             {...{
               notifications,
               history,
+              onPressNotification,
+              onPressMarkAllAsRead,
               formatMessage
             }}
             isMobile={true}

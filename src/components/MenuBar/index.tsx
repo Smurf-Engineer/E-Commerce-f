@@ -114,7 +114,7 @@ interface Props {
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
   readNotification: (variables: {}) => Promise<NotificationsRead>
-  readAllotification: (variables: {}) => Promise<MessagePayload>
+  readAllNotifications: (variables: {}) => Promise<MessagePayload>
   upsertNotification: (variables: {}) => Promise<MessagePayload>
 }
 
@@ -263,15 +263,16 @@ class MenuBar extends React.Component<Props, StateProps> {
     window.location.href = `${config.baseUrl}${url}`
   }
   markAllNotificationsAsRead = async () => {
-    const { readAllotification, notificationsData, intl: { formatMessage } } = this.props
+    const { readAllNotifications, notificationsData, intl: { formatMessage } } = this.props
     try {
       this.setState({ updating: true })
-      await readAllotification({ variables: {} })
+      await readAllNotifications({ variables: {} })
       await notificationsData.refetch()
       this.setState({ updating: false })
     } catch (e) {
+      console.error(e)
       this.setState({ updating: false })
-      AntdMessage.error(formatMessage(messages.readError))
+      AntdMessage.error(formatMessage(messages.errorUpdating))
     }
   }
 

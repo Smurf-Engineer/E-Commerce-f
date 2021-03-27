@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo, graphql } from 'react-apollo'
 import ProductThumbnail from '../ProductThumbnail'
-import { GetColorsQuery, getProDesignProject } from './data'
+import { deleteProItemMutation, GetColorsQuery, getProDesignProject } from './data'
 import moment from 'moment'
 import parse from 'html-react-parser'
 import Spin from 'antd/lib/spin'
@@ -31,12 +31,13 @@ import {
   PaletteName,
   AddProductButton,
   AddLabel,
-  DocIcon
+  DocIcon,
+  LoadingContainer
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
 import messages from './messages'
-import { Message, InspirationType, ColorsDataResult, ProDesignItem } from '../../types/common'
+import { Message, InspirationType, ColorsDataResult, ProDesignItem, MessagePayload } from '../../types/common'
 import {
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
@@ -51,12 +52,15 @@ import message from 'antd/lib/message'
 
 const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
+const LIMIT_PRODUCTS = 25
+
 interface Props extends RouteComponentProps<any> {
   history: History
   inspiration: InspirationType[]
   project: number
   data: any
   colorsList: ColorsDataResult
+  deleteProItem: (variables: {}) => Promise<MessagePayload>
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
   onOpenQuickView: (id: number, yotpoId: string, gender: number) => void
@@ -64,6 +68,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class Review extends React.Component<Props, {}> {
+  state = {
+    deleting: false
+  }
   handleGoItem = (id: number) => {
     const { history } = this.props
     history.push(`/approval?id=${id}`)
@@ -75,6 +82,26 @@ export class Review extends React.Component<Props, {}> {
       history.push(`/pro-design?id=${id}`)
     }
   }
+  deleteItem = async (itemId: string) => {
+    const {
+      formatMessage,
+      deleteProItem,
+      data: { refetch }
+    } = this.props
+    try {
+      this.setState({ deleting: true })
+      await deleteProItem({
+        variables: { itemId }
+      })
+      refetch()
+      message.success(formatMessage(messages.success))
+    } catch (e) {
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage, 5)
+    } finally {
+      this.setState({ deleting: false })
+    }
+  }
   render() {
     const {
       formatMessage,
@@ -83,6 +110,7 @@ export class Review extends React.Component<Props, {}> {
       onOpenQuickView,
       goBack
     } = this.props
+    const { deleting } = this.state
     const palette = get(data, 'project.palette', {})
     const projectName = get(data, 'project.name', '')
     const projectDescription = get(data, 'project.notes', '')
@@ -107,7 +135,10 @@ export class Review extends React.Component<Props, {}> {
     }, {})
     return (
       <MainContainer>
-        {data && !data.loading ? <Container>
+        {deleting &&
+          <LoadingContainer><Spin /></LoadingContainer>
+        }
+        {data && !data.loading && projectName ? <Container>
           <BackContainer onClick={goBack}>
             <Icon type="left" />
             <span>{formatMessage(messages.back)}</span>
@@ -144,7 +175,7 @@ export class Review extends React.Component<Props, {}> {
               <Column>
                 <StrongText>{formatMessage(messages.designNotes)}</StrongText>
               </Column>
-              <Column>
+              <Column fullWidth={true}>
                 <Text fullWidth={true}>{projectDescription ? parse(projectDescription) : '-'}</Text>
               </Column>
             </Row>
@@ -234,6 +265,7 @@ export class Review extends React.Component<Props, {}> {
                   const imagesToShow = !!code && 
                   (status === CUSTOMER_PREVIEW || status === CUSTOMER_APPROVED) ? { thumbnail: image } : images[0]
                   const goToItem = () => this.handleGoItem(itemId)
+                  const deleteItem = () => this.deleteItem(itemId)
                   return (
                     <ProductThumbnail
                       images={imagesToShow}
@@ -242,6 +274,7 @@ export class Review extends React.Component<Props, {}> {
                       disableSlider={true}
                       onlyView={true}
                       isProDesign={true}
+                      hideQuickView={true}
                       proStatus={status}
                       onPressThumbnail={goToItem}
                       type={!code ? type : name}
@@ -251,6 +284,7 @@ export class Review extends React.Component<Props, {}> {
                         key,
                         id,
                         yotpoId,
+                        deleteItem,
                         isTopProduct,
                         priceRange,
                         customizable,
@@ -259,7 +293,7 @@ export class Review extends React.Component<Props, {}> {
                     />
                   )
                 })}
-                {designs.length < 5 &&
+                {designs.length < LIMIT_PRODUCTS &&
                   <AddProductButton onClick={this.addNewProduct}>
                     <AddLabel 
                       dangerouslySetInnerHTML={{
@@ -283,6 +317,7 @@ interface OwnProps {
 
 const ReviewEnhance = compose(
   withApollo,
+  graphql(deleteProItemMutation, { name: 'deleteProItem' }),
   graphql(getProDesignProject, {
     options: ({ project }: OwnProps) => {
       return {

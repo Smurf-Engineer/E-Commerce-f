@@ -10,20 +10,20 @@ interface StyleProps {
 }
 
 export const Container = styled.div`
-  width: 70%;
+  width: 80%;
   background-color: ${WHITE};
   display: inline-flex;
   flex-direction: column;
   padding: 0 180px;
-  @media (max-width: 880px) {
-    width: 100%;
-    padding: 0;
+  @media (max-width: 1800px) {
+    width: 70%;
+    padding: 0 20px;
   }
   @media (max-width: 1600px) {
     width: 80%;
     padding: 0 20px;
   }
-  @media (max-width: 980px) {
+  @media (max-width: 1360px) {
     width: 90%;
     padding: 0;
   }
@@ -48,7 +48,7 @@ export const SelectPaletteContainer = styled.div`
   border-bottom: none;
   border-top: none;
   flex-direction: column;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     border-bottom: 1px solid ${GRAY_LIGHTEST};
   }
 `
@@ -64,10 +64,10 @@ export const PaletteLabel = styled.div`
   flex: 2;
   text-align: center;
   padding: 10px;
-  padding-left: 44px;
+  padding-left: 24px;
   transition: all .25s;
   background-color: ${GRAY_LIGHTEST};
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     padding-left: 0;
   }
   &:hover {
@@ -79,7 +79,7 @@ export const PaletteLabel = styled.div`
 export const LeftPaletteLabel = styled.div`
   flex: 1.47;
   margin-right: 10px;
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     flex: 1.5;
     margin-right: 0px;
   }
@@ -97,7 +97,7 @@ export const Palettes = styled.div`
   border-right: 1px solid ${GRAY_LIGHTEST};
   max-height: 570px;
   overflow-y: scroll;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     max-height: calc(100vh - 466px);
   }
 `
@@ -108,13 +108,13 @@ export const CreatePalette = styled.div`
   display: flex;
   max-height: 100%;
   overflow-y: scroll;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     max-height: calc(100vh - 466px);
   }
   &:last-child {
     margin-left: 10px;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 1224px) {
     flex-direction: column;
     &:last-child {
       margin-left: 0;
@@ -170,7 +170,7 @@ export const Text = styled.div`
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 10px;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     margin-bottom: 0;
   }
 `
@@ -180,7 +180,7 @@ export const Palette = styled.div`
   &:last-child {
     margin-left: 45px;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 1224px) {
     &:last-child {
       margin-left: 0;
     }

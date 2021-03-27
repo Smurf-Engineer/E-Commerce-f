@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'screens.DesignApproval.sendCustomerMessage',
     defaultMessage: 'Add edit notes'
   },
+  addNotes: {
+    id: 'screens.DesignApproval.addNotes',
+    defaultMessage: 'Add instruction notes'
+  },
   cancel: {
     id: 'screens.DesignApproval.cancel',
     defaultMessage: 'Cancel'
@@ -37,6 +41,10 @@ export default defineMessages({
   shareButton: {
     id: 'screens.DesignApproval.shareButton',
     defaultMessage: 'Share'
+  },
+  enterDesignInstructions: {
+    id: 'screens.DesignApproval.enterDesignInstructions',
+    defaultMessage: 'ENTER DESIGN INSTRUCTIONS'
   },
   designName: {
     id: 'screens.DesignApproval.designName',

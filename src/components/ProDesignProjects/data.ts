@@ -20,6 +20,7 @@ export const getProDesignProjects = gql`
       fullCount
       projects {
         id
+        shortId: short_id
         createdAt: created_at
         name
         updatedAt: updated_at
@@ -30,6 +31,14 @@ export const getProDesignProjects = gql`
           notifications
         }
       }
+    }
+  }
+`
+
+export const deleteProjectMutation = gql`
+  mutation deleteProject($projectId: String!) {
+    deleteProject(projectId: $projectId) {
+      message
     }
   }
 `

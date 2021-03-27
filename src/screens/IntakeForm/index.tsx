@@ -190,7 +190,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       '(min-width: 320px) and (max-width: 480px)'
     ).matches
     const isTablet = window.matchMedia(
-      '(min-width: 481px) and (max-width: 768px)'
+      '(min-width: 481px) and (max-width: 1024px)'
     ).matches
     if (typeof window !== undefined) {
       this.setState({

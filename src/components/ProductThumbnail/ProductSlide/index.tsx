@@ -18,7 +18,8 @@ import {
   CustomizeButton,
   CheckboxContainer,
   ProStatus,
-  ProLabel
+  ProLabel,
+  DeleteButton
 } from './styledComponents'
 import messages from './messages'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
@@ -61,6 +62,7 @@ interface Props {
   onPressNext: () => void
   onPressQuickView: () => void
   onPressCustomize: () => void
+  deleteItem: () => void
   onPressThumbnail: () => void
   handleCheckChange: (event: CheckboxChangeEvent) => void
 }
@@ -73,6 +75,7 @@ const ProductSlide = ({
   isProDesign,
   proStatus,
   isHovered,
+  deleteItem,
   isTopProduct,
   images,
   image,
@@ -177,6 +180,9 @@ const ProductSlide = ({
           <QuickView onClick={onPressQuickView}>
             <img src={quickViewIcon} />
           </QuickView>)
+        }
+        {(isProDesign && proStatus === PREFLIGHT_STATUS) &&
+          <DeleteButton onClick={deleteItem} type="delete"/>
         }
         </AboveTablet>
         {selectProduct && <BelowTablet><QuickView onClick={onPressQuickView}>

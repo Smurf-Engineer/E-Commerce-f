@@ -1047,7 +1047,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             isOpen={openRequest || !!project}
             disableResize={true}
           >
-            <ModalTitle>{formatMessage(messages[!!parentMessageId ? 'enterAnswer' : 'enterEditNotes'])}</ModalTitle>
+            <ModalTitle>
+              {!project ? 
+                formatMessage(messages[!!parentMessageId ? 'enterAnswer' : 'enterEditNotes']) :
+                formatMessage(messages.enterDesignInstructions)
+              }</ModalTitle>
             {!!parentMessageId &&
               <ParentText>
                 {parentMessage}
@@ -1066,7 +1070,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             <TextAreaStyled
               value={note}
               disabled={sendingNote}
-              placeholder={formatMessage(messages.sendCustomerMessage)}
+              placeholder={formatMessage(messages[!project ? 'sendCustomerMessage' : 'addNotes'])}
               onChange={this.handleChangeNote}
               autosize={{ minRows: 4, maxRows: 12 }}
               rows={4}
