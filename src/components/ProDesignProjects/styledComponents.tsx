@@ -3,8 +3,9 @@
  */
 import styled from 'styled-components'
 import Badge from 'antd/lib/badge'
-import { GRAY_DARK, GRAY_LIGHT, RED, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHT, RED, RED_TRANSPARENT, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
+import { AVENIR_NEXT } from '../../theme/fonts'
 
 interface ContainerProps {
   withoutPadding?: boolean
@@ -28,6 +29,24 @@ export const Container = styled.div`
   @media (max-width: 768px) {
     margin-top: -14px;
   }
+`
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 12px 0 12px -38px;
 `
 
 export const StyledBadge = styled(Badge)``
@@ -207,3 +226,17 @@ export const InfoSection = styled.div`
   font-style: italic;
   justify-content: space-between;
 `
+
+export const buttonStyle = {
+  background: RED_TRANSPARENT,
+  color: WHITE,
+  border: 'none',
+  boxShadow: 'none'
+}
+
+export const cancelButtonStyle = {
+  background: WHITE,
+  color: GRAY_DARK,
+  borderColor: GRAY_LIGHT,
+  boxShadow: 'none'
+}

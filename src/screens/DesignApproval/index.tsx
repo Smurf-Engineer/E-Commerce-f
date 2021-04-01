@@ -18,6 +18,7 @@ import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
 import messageSent from '../../assets/message_sent.wav'
 import colorIcon from '../../assets/color_white.svg'
+import viewDesignsIcon from '../../assets/view_designs_icon.svg'
 import JakrooProLogo from '../../assets/pro_design_white.png'
 import {
   addProMessageMutation,
@@ -64,6 +65,7 @@ import {
   BottomButtons,
   BottomSheetWrapper,
   ButtonContainer,
+  buttonPrompt,
   ButtonsContainer,
   ButtonWrapper,
   CancelButton,
@@ -91,6 +93,7 @@ import {
   EditsLabel,
   FileLabel,
   FileName,
+  FullTitle,
   IncomingMessage,
   InfoDiv,
   InfoText,
@@ -117,7 +120,13 @@ import {
   ProductName,
   Products,
   ProjectDesign,
+  ProLabel,
+  PromptBody,
+  PrompText,
+  PromptLink,
+  PromptSubtitle,
   PromptTitle,
+  ProStatus,
   QuickView,
   RenderSection,
   RequestButtons,
@@ -152,6 +161,7 @@ import {
   CUSTOMER_PREVIEW,
   EDIT,
   FROM_ADMIN,
+  IN_DESIGN,
   itemLabels,
   NEW_PRODUCT,
   PREDYED_DEFAULT,
@@ -171,9 +181,18 @@ import ShareDesignModal from '../../components/ShareDesignModal'
 import AddToCartButton from '../../components/AddToCartButton'
 import AddToTeamStore from '../../components/AddToTeamStore'
 import unset from 'lodash/unset'
-import { BLUE_STATUS, BLACK, GREEN_STATUS, ORANGE_STATUS, ORANGE, GRAY_DARK } from '../../theme/colors'
+import {
+  BLUE_STATUS,
+  BLACK,
+  GREEN_STATUS,
+  ORANGE_STATUS,
+  ORANGE,
+  GRAY_DARK,
+  WHITE,
+  FACEBOOKBLUE
+} from '../../theme/colors'
 
-const { confirm } = Modal
+const { confirm, info } = Modal
 const { TabPane } = AntdTabs
 
 interface PredyedData extends QueryProps {
@@ -245,6 +264,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     openAddToStoreModal: false,
     teamStoreId: '',
     itemToAdd: {},
+    designToApply: '',
     selectedVariant: -1
   }
   private listMsg: any
@@ -275,6 +295,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const newMessages = get(data, 'projectItem.messages', [])
     if (oldMessages.length !== newMessages.length) {
       this.scrollMessages()
+    }
+    if (window._slaask) {
+      window._slaask.destroy()
     }
   }
   handleEditProject = (project?: number, product?: number) => {
@@ -343,7 +366,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
   addMessage = async () => {
     const {
-      intl: { formatMessage } ,
+      intl: { formatMessage },
       sendNoteProdesign,
       setSendingAction,
       note,
@@ -407,6 +430,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         snd.play()
         snd.remove()
         this.scrollMessages()
+        if (!parentMessageId) {
+          this.promptEditRequest()
+        }
       } else if (project && product) {
         setSendingAction(true)
         const response = await addProductProject({
@@ -428,6 +454,79 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } finally {
       setSendingAction(false)
     }
+  }
+
+  promptEditRequest = (approved?: boolean) => {
+    const { data, intl: { formatMessage }, location } = this.props
+    const projectDesigns = get(data, 'projectItem.project.designs', []) as DesignType[]
+    const search = location ? location.search : ''
+    const queryParams = queryString.parse(search)
+    const filteredDesigns = projectDesigns.filter((item: DesignType) => 
+      item.status === CUSTOMER_PREVIEW && item.id !== queryParams.id
+    )
+    info({
+      title: <FullTitle secondary={approved}>
+              {formatMessage(messages[approved ? 'approvedCode' : 'editRequestedTitle'])}
+            </FullTitle>,
+      icon: ' ',
+      width: '470px',
+      className: 'centeredButtons',
+      okText: formatMessage(messages.close),
+      okButtonProps: {
+        style: buttonPrompt
+      },
+      content:
+        <PromptBody>
+          <PromptSubtitle>
+            {formatMessage(messages[approved ? 'congratulations' : 'editRequestedSubtitle'])}
+          </PromptSubtitle>
+          {!approved && 
+            <PrompText>
+              {formatMessage(messages.editRequestedBody)}
+            </PrompText>
+          }
+          {filteredDesigns.length > 0 ?
+            <>
+              <PromptSubtitle>
+                {formatMessage(messages.editsLeft, { amount: filteredDesigns.length })}
+              </PromptSubtitle>
+              <PromptLink onClick={this.reviewAnother}>
+                  {formatMessage(messages.continueWithReview)}
+              </PromptLink>
+            </> :
+            <PromptLink onClick={approved ? this.goToLocker : this.backToProjects}>
+              {formatMessage(messages[approved ? 'takeToLocker' : 'backToMyProject'])}
+            </PromptLink>
+          }
+        </PromptBody>
+    })
+  }
+
+  goToLocker = () => {
+    const { history } = this.props
+    Modal.destroyAll()
+    history.push('/account?option=myLocker')
+  }
+
+  reviewAnother = () => {
+    const { location, data, history } = this.props
+    const search = location ? location.search : ''
+    const queryParams = queryString.parse(search)
+    const projectDesigns = get(data, 'projectItem.project.designs', []) as DesignType[]
+    const nextDesign = projectDesigns.find((item: DesignType) => 
+      item.status === CUSTOMER_PREVIEW && item.id !== queryParams.id
+    )
+    if (nextDesign && projectDesigns.length > 0) {
+      const { id } = nextDesign
+      Modal.destroyAll()
+      history.replace(`/approval?id=${id}`)
+    }
+  }
+
+  backToProjects = () => {
+    const { history } = this.props
+    Modal.destroyAll()
+    history.push('/account?option=proDesignProjects')
   }
 
   handlePromptApprove = () => {
@@ -474,6 +573,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         await setApproveDesign({ variables: { itemId } })
         data.refetch()
         AntdMessage.success(formatMessage(messages.approved))
+        this.promptEditRequest(true)
       }
     } catch (e) {
       AntdMessage.error(e.message)
@@ -552,6 +652,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
   }
 
+  changeDesign = (design: string) => () => {
+    if (design) {
+      const { intl: { formatMessage } } = this.props
+      this.setState({ designToApply: design })
+      AntdMessage.success(formatMessage(messages.designApplied))
+    }
+  }
+
   handleSelectVariant = (value: number) => () => {
     this.setState({ selectedVariant: value })
   }
@@ -592,13 +700,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       selectedKey,
       openBottom,
       openShare,
+      designToApply,
       openAddToStoreModal,
       teamStoreId,
       selectedVariant
     } = this.state
     const fontList: Font[] = get(fontsData, 'fonts', [])
     const { loading = true, projectItem } = data || {}
-    const requestMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
+    const incomingMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
     const product = get(projectItem, 'product', {}) as Product
     const design = get(projectItem, 'design', {}) as DesignType
     const colors = get(projectItem, 'colors', []) as ColorType[]
@@ -613,6 +722,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       stitchingName,
       zipperColor,
       outputSvg,
+      outputPng,
       canvas,
       bibColor,
       bindingColor,
@@ -690,9 +800,27 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       zipperColor,
       itemDetails: [{ quantity: 1 }]
     }
-    const requestedEdits = requestMessages.filter(({ type }) => type === EDIT).length
+    let requestedEdits = 0
+    let adminMessages = 0
+    const requestMessages = incomingMessages.reduce((arr: ProDesignMessage[], messageItem: ProDesignMessage) => {
+      const { type, createdAt, code } = messageItem
+      arr.push(messageItem)
+      if (type === EDIT) {
+        arr.push({
+          id: -1,
+          createdAt,
+          type: FROM_ADMIN,
+          message: formatMessage(messages.editAutoMessage),
+          code
+        })
+        requestedEdits += 1
+      } else if (type === FROM_ADMIN) {
+        adminMessages += 1
+      }
+      return arr
+    // tslint:disable-next-line: align
+    }, [])
     const fileName = file ? getFileWithExtension(file) : ''
-    const adminMessages = requestMessages.filter(({ type }) => type === FROM_ADMIN).length
     const chatLog = requestMessages.length > 0 ?
       requestMessages :
       [{
@@ -714,6 +842,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               type: messageType,
               requireAnswer: required,
               answer,
+              design: designFile,
               code: messageCode,
               file: messageFile,
               parentMessageId: parentId,
@@ -722,7 +851,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             ) => {
               const fromSystem = messageType === FROM_ADMIN || messageType === CUSTOMER_APPROVED
               let codeColor = ORANGE
-              if (messageType === FROM_ADMIN) {
+              if (messageType === FROM_ADMIN && id !== -1) {
                 codeColor = GRAY_DARK
               } else if (messageType === CUSTOMER_APPROVED) {
                 codeColor = GREEN_STATUS
@@ -766,7 +895,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                         <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
                       }
                       {(!!messageCode || messageType === CUSTOMER_APPROVED) &&
-                        <CodeLabel {...{ codeColor }} isAdmin={fromSystem}>
+                        <CodeLabel
+                          {...{ codeColor }}
+                          codeColor={designToApply !== designFile ? codeColor : FACEBOOKBLUE}
+                          isAdmin={fromSystem}
+                          onClick={this.changeDesign(designFile)}
+                          secondary={!!designFile}
+                        >
                           {messageType === CUSTOMER_APPROVED ? formatMessage(messages.approvedCode) : messageCode}
                         </CodeLabel>
                       }
@@ -782,7 +917,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         <RequestButtons>
           <ApproveButton
             loading={approveLoading}
-            disabled={approveLoading || itemStatus !== CUSTOMER_PREVIEW}
+            disabled={
+              approveLoading || 
+              itemStatus !== CUSTOMER_PREVIEW || 
+              (!!designToApply && outputPng !== designToApply)
+            }
             onClick={this.handlePromptApprove}
           >
             {formatMessage(messages.approve)}
@@ -928,9 +1067,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               }
               {!!itemStatus &&
                 <RenderSection>
-                  {readyToShow && designId &&
+                  {(readyToShow || designToApply) && designId &&
                     <Render3D
                       customProduct={true}
+                      actualImage={designToApply}
                       textColor="white"
                       {...{
                         designId,
@@ -939,6 +1079,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                         modelMtl,
                         hidePredyed
                       }}
+                      proDesign={true}
                       zoomedIn={true}
                     />
                   }
@@ -963,9 +1104,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       <PanelIcon src={messageIcon} />
                       {formatMessage(messages.approvalLog)}
                       <ChatCount>
-                        <CountCircle>
-                          {adminMessages}
-                        </CountCircle>
+                        {adminMessages > 0 &&
+                          <CountCircle>
+                            {adminMessages}
+                          </CountCircle>
+                        }
                       </ChatCount>
                     </PanelTitle>
                   }
@@ -984,6 +1127,59 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 >
                   {colorComponent}
                 </PanelMobile>
+                <PanelMobile
+                  header={
+                    <PanelTitle>
+                      <PanelIcon src={viewDesignsIcon} />
+                      {formatMessage(messages.viewDesigns)}
+                    </PanelTitle>
+                  }
+                  key="3"
+                >
+                  {(!loading && product) && 
+                    <Products>
+                      {projectDesigns.map((
+                        { 
+                          id,
+                          name: nameDesign,
+                          image,
+                          status: designStatus,
+                          product: { name: nameProduct, pictures = [{ front: ''}] }
+                        }: DesignType, 
+                        index: number) => {
+                          const designReady = 
+                            designStatus === CUSTOMER_APPROVED || designStatus === CUSTOMER_PREVIEW
+                          let colorStatus = null
+                          switch (designStatus) {
+                            case PREFLIGHT_STATUS:
+                              colorStatus = WHITE
+                              break
+                            case CUSTOMER_APPROVED:
+                              colorStatus = GREEN_STATUS
+                              break
+                            case CUSTOMER_PREVIEW:
+                              colorStatus = ORANGE_STATUS
+                              break
+                            default:
+                              colorStatus = BLUE_STATUS
+                              break
+                          }
+                          return (
+                            <ProjectDesign onClick={this.goToDesign(id)} key={index}>
+                              <ProLabel>
+                                <ProStatus backgroundColor={colorStatus}>
+                                  {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
+                                </ProStatus>
+                              </ProLabel>
+                              <DesignImage src={designReady ? image : pictures[0].front} />
+                              <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
+                              <ProductName>{nameProduct}</ProductName>
+                            </ProjectDesign>
+                        )}
+                      )}
+                    </Products>
+                  }
+                </PanelMobile>
               </CollapseMobile>
             </CollapseWrapper>
           }
@@ -999,20 +1195,49 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {formatMessage(messages.products)}
                 </StyledTitle>
                 <Products>
-                  {projectDesigns.map((
-                    { 
-                      id,
-                      name: nameDesign,
-                      image,
-                      product: { name: nameProduct, pictures = [{ front: ''}] }
-                    }: DesignType, 
-                    index: number) => 
-                    <ProjectDesign onClick={this.goToDesign(id)} key={index}>
-                      <DesignImage src={image || pictures[0].front} />
-                      <DesignName>{nameDesign || '<Pending>'}</DesignName>
-                      <ProductName>{nameProduct}</ProductName>
-                    </ProjectDesign>
-                  )}
+                {(!loading && product) && 
+                    <Products>
+                      {projectDesigns.map((
+                        { 
+                          id,
+                          name: nameDesign,
+                          image,
+                          status: designStatus,
+                          product: { name: nameProduct, pictures = [{ front: ''}] }
+                        }: DesignType, 
+                        index: number) => {
+                          const designReady = 
+                            designStatus === CUSTOMER_APPROVED || designStatus === CUSTOMER_PREVIEW
+                          let colorStatus = null
+                          switch (designStatus) {
+                            case PREFLIGHT_STATUS:
+                              colorStatus = WHITE
+                              break
+                            case CUSTOMER_APPROVED:
+                              colorStatus = GREEN_STATUS
+                              break
+                            case CUSTOMER_PREVIEW:
+                              colorStatus = ORANGE_STATUS
+                              break
+                            default:
+                              colorStatus = BLUE_STATUS
+                              break
+                          }
+                          return (
+                            <ProjectDesign onClick={this.goToDesign(id)} key={index}>
+                              <ProLabel>
+                                <ProStatus backgroundColor={colorStatus}>
+                                  {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
+                                </ProStatus>
+                              </ProLabel>
+                              <DesignImage src={designReady ? image : pictures[0].front} />
+                              <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
+                              <ProductName>{nameProduct}</ProductName>
+                            </ProjectDesign>
+                        )}
+                      )}
+                    </Products>
+                  }
                 </Products>
               </SwipeableBottomSheet>
             }
@@ -1111,7 +1336,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </CancelButton>
               <SaveButton
                 loading={sendingNote}
-                disabled={!note || sendingNote || note.length < 15}
+                disabled={!note || sendingNote || (!parentMessageId && note.length < 15)}
                 onClick={this.addMessage}
               >
                 {formatMessage(messages[!!parentMessageId ? 'reply' : 'send'])}

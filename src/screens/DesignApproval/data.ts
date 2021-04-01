@@ -85,7 +85,7 @@ export const getProdesignItemQuery = gql`
         bindingColor: binding_color
         bibColor: bib_brace_color
         high_resolution
-        output_png
+        outputPng: output_png
         colors {
           id
           color
@@ -105,6 +105,7 @@ export const getProdesignItemQuery = gql`
         type
         message
         file
+        design
         code
         requireAnswer: require_answer
         parentMessageId: parent_message_id

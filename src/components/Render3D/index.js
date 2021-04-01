@@ -39,6 +39,7 @@ import {
   ZIPPER,
   RED_TAG,
   FLATLOCK,
+  PNG_EXTENSION,
   PROPEL_PALMS,
   GRIP_TAPE,
   REGULAR_CANVAS,
@@ -51,6 +52,7 @@ import {
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
+import { getFileExtension } from '../../utils/utilsFiles'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
@@ -269,12 +271,19 @@ class Render3D extends PureComponent {
 
         if (proDesign || (outputSvg && fromImage) || asImage) {
           if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
-            const imageCanvas = document.createElement('canvas')
-            canvg(
-              imageCanvas,
-              `${actualImage || outputSvg}${this.getCacheQuery()}`
-            )
-            loadedTextures.texture = new THREE.Texture(imageCanvas)
+            const imageExtension = getFileExtension(actualImage)
+            if (imageExtension === PNG_EXTENSION) {
+              loadedTextures.texture = textureLoader.load(
+                `${actualImage}${this.getCacheQuery()}`
+              )
+            } else {
+              const imageCanvas = document.createElement('canvas')
+              canvg(
+                imageCanvas,
+                `${actualImage || outputSvg}${this.getCacheQuery()}`
+              )
+              loadedTextures.texture = new THREE.Texture(imageCanvas)
+            }
           } else if (!outputPng && outputSvg) {
             const imageCanvas = document.createElement('canvas')
             canvg(

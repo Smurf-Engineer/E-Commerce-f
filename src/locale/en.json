@@ -875,7 +875,7 @@
   "components.IntakeForm.Notifications.information": "INFORMATION",
   "screens.IntakeForm.graphics": "Graphics / Patterns",
   "screens.IntakeForm.kickstart": "Kickstart Design",
-  "screens.IntakeForm.emptyInspiration": "Didn't found results",
+  "screens.IntakeForm.emptyInspiration": "No results found",
   "screens.IntakeForm.fileTitle": "Graphics and logos are usually designed in one of two ways: <strong>VECTOR</strong> or <strong>RASTER</strong>",
   "screens.IntakeForm.vectorBody": "<p><strong>VECTOR ARTWORK</strong></p><p>Most professional designers create logos in vector format for one main reason — they can be resized without pixelating. This sample of the JAKROO logo shows a logo created in vector format that can be enlarged to any size and the lines will always be crisp and sharp.</p><p>Files with the extension AI, EPS, SVG, or PDF will typically represent VECTOR files.</p>",
   "screens.IntakeForm.rasterBody": "<p><strong>RASTER ARTWORK</strong></p><p>Raster based software, such as Photoshop, generates images in a grid of millions of color pixels. When you try to scale a raster logo those little pixels become big, which result as blurry images. The sample of the JAKROO logo gives an idea how a raster logo could appear once enlarged. We can't guarantee the clarity of your artwork if raster images are used.</p><p>Files with the extension (.jpg) or (.png) typically represent RASTER files.</p>",

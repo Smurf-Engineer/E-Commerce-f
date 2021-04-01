@@ -132,6 +132,7 @@ export type ProDesignMessage = {
   message: string
   file?: string
   code?: string
+  design?: string
   requireAnswer?: boolean
   answer?: ProDesignMessage
   parentMessageId?: number

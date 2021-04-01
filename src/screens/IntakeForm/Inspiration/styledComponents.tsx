@@ -17,13 +17,24 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding-right: 2px;
-  min-height: 1024px;
-  height: 100%;
-  overflow-y: scroll;
+  height: calc(100vh - 20px);
+  @media (max-width: 1024px) {
+    height: calc(100vh - 130px);
+  }
+`
+
+export const Images = styled.div`
+  height: calc(100vh - 252px);
+  overflow: auto;
+  text-align: center;
+  @media (max-width: 1024px) {
+    height: calc(100vh - 382px);
+  }
 `
 
 export const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 70%;
+  margin: 0 auto;
   align-self: center;
   @media (max-width: 768px) {
     width: 97%;

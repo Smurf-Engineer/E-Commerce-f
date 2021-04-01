@@ -21,6 +21,57 @@ export default defineMessages({
     id: 'screens.DesignApproval.send',
     defaultMessage: 'Send'
   },
+  viewDesigns: {
+    id: 'screens.DesignApproval.viewDesigns',
+    defaultMessage: 'View Designs'
+  },
+  designApplied: {
+    id: 'screens.DesignApproval.designApplied',
+    defaultMessage: 'Design applied'
+  },
+  editAutoMessage: {
+    id: 'screens.DesignApproval.editAutoMessage',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Your Edit Request has been received. Edit requests are typically completed within 1-2 business days. You will receive a notification when your edit has been completed.'
+  },
+  editRequestedTitle: {
+    id: 'screens.DesignApproval.editRequestedTitle',
+    defaultMessage: 'EDIT REQUESTED'
+  },
+  takeToLocker: {
+    id: 'screens.DesignApproval.takeToLocker',
+    defaultMessage: 'Take me to My Locker'
+  },
+  congratulations: {
+    id: 'screens.DesignApproval.congratulations',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Congratulations! Your Design is approved and available in your LOCKER to purchase or add to a Team Store.'
+  },
+  editsLeft: {
+    id: 'screens.DesignApproval.editsLeft',
+    defaultMessage: 'You have {amount, plural, one {1 item} other {{amount} items}} waiting for review.'
+  },
+  continueWithReview: {
+    id: 'screens.DesignApproval.continueWithReview',
+    defaultMessage: 'Continue with Review'
+  },
+  backToMyProject: {
+    id: 'screens.DesignApproval.backToMyProject',
+    defaultMessage: 'Back to My Pro Projects'
+  },
+  close: {
+    id: 'screens.DesignApproval.close',
+    defaultMessage: 'CLOSE'
+  },
+  editRequestedSubtitle: {
+    id: 'screens.DesignApproval.editRequestedSubtitle',
+    defaultMessage: 'Your Edit Request has been received!'
+  },
+  editRequestedBody: {
+    id: 'screens.DesignApproval.editRequestedBody',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Edit requests are typically completed within 1-2 business days. You will receive a notification when your edit has been completed.'
+  },
   enterAnswer: {
     id: 'screens.DesignApproval.enterAnswer',
     defaultMessage: 'ENTER REPLY NOTES'

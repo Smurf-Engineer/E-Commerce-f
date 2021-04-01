@@ -190,7 +190,7 @@ export default defineMessages({
   },
   emptyInspiration: {
     id: 'screens.IntakeForm.emptyInspiration',
-    defaultMessage: `Didn't found results`
+    defaultMessage: `No results found`
   },
   fileTitle: {
     id: 'screens.IntakeForm.fileTitle',

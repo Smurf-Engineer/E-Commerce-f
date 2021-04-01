@@ -24,7 +24,11 @@ import {
   Head,
   StyledBadge,
   Subtitle,
-  DeleteButton
+  DeleteButton,
+  ModalTitle,
+  cancelButtonStyle,
+  buttonStyle,
+  InfoBody
 } from './styledComponents'
 import messages from './messages'
 import { QueryProps, Project, Message, ProjectsResult, MessagePayload } from '../../types/common'
@@ -38,6 +42,9 @@ import Spin from 'antd/lib/spin'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { DATE_FORMAT } from '../../constants'
 import message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
+
+const { confirm } = Modal
 
 interface Data extends QueryProps {
   projectsResult: ProjectsResult
@@ -90,10 +97,29 @@ class ProDesignProjects extends React.Component<Props, {}> {
     setCurrentSectionAction(Pages.DETAILS, projectId)
   }
 
-  handleDeleteProject = async (event: React.MouseEvent<EventTarget>, projectId: string) => {
+  handleDeleteItem = (event: React.MouseEvent<EventTarget>, projectId: string) => {
+    const { formatMessage } = this.props
     if (event) {
       event.stopPropagation()
     }
+    confirm({
+      title: <ModalTitle>{formatMessage(messages.areYouSure)}</ModalTitle>,
+      icon: ' ',
+      centered: true,
+      cancelText: formatMessage(messages.cancel),
+      okText: formatMessage(messages.yesDelete),
+      cancelButtonProps: {
+        style: cancelButtonStyle
+      },
+      okButtonProps: {
+        style: buttonStyle
+      },
+      onOk: async () => await this.handleDeleteProject(projectId),
+      content: <InfoBody>{formatMessage(messages.promptDelete)}</InfoBody>
+    })
+  }
+
+  handleDeleteProject = async (projectId: string) => {
     const {
       formatMessage,
       deleteProject,
@@ -188,7 +214,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
                     }: Project,
                     index: number) => {
                     const handleOnClickRow = () => this.handleOnClickProject(id)
-                    const handleDelete = (e) => this.handleDeleteProject(e, shortId)
+                    const handleDelete = (e) => this.handleDeleteItem(e, shortId)
                     return (<TableRow key={index} onClick={handleOnClickRow}>
                       <Cell>{name}</Cell>
                       <Cell>

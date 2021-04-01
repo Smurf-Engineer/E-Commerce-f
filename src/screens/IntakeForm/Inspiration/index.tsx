@@ -31,7 +31,8 @@ import {
   Checkboxes,
   CheckboxLabel,
   EmptyMessage,
-  StyledCheckbox
+  StyledCheckbox,
+  Images
 } from './styledComponents'
 import { Message, QueryProps, InspirationType } from '../../../types/common'
 
@@ -136,6 +137,7 @@ export class Inspiration extends React.Component<Props, {}> {
   }
   handleLoadData = async () => {
     const { setPage, currentPage, loading } = this.props
+    console.log('🔴enters LOAD')
     if (!loading) {
       const newPage = currentPage + 1
       const skip = (newPage) * LIMIT
@@ -263,25 +265,31 @@ export class Inspiration extends React.Component<Props, {}> {
             </StyledCheckbox>
           </Checkboxes>
         </Filters>
-        <StyledInfiniteScroll
-          useWindow={true}
-          pageStart={0}
-          loadMore={this.handleLoadData}
-          initialLoad={true}
-          hasMore={total > inspiration.length}
-          {...{loader}}
-        >
-          {inspiration.length ? <Masonry
-            key="masonry"
-            breakpointCols={gridBreakPoints}
-            className="masonry-grid"
-            columnClassName="masonry-grid_column"
+        <Images>
+          <StyledInfiniteScroll
+            pageStart={0}
+            useWindow={false}
+            threshold={10}
+            loadMore={this.handleLoadData}
+            initialLoad={true}
+            hasMore={total > inspiration.length}
+            {...{ loader }}
           >
-            {items}
-          </Masonry> : null}
-          {!inspiration.length && !loading ?
-            <EmptyMessage>{formatMessage(messages.emptyInspiration)}</EmptyMessage> : null}
-        </StyledInfiniteScroll>
+            {inspiration.length ? <Masonry
+              key="masonry"
+              breakpointCols={gridBreakPoints}
+              className="masonry-grid"
+              columnClassName="masonry-grid_column"
+            >
+              {items}
+            </Masonry> : null}
+            {!inspiration.length && !loading ?
+              <EmptyMessage>
+                {formatMessage(messages.emptyInspiration)}
+              </EmptyMessage> 
+            : null}
+          </StyledInfiniteScroll>
+        </Images>
       </Container>
     )
   }

@@ -22,6 +22,23 @@ export default defineMessages({
     id: 'components.ProDesignProjects.createdDate',
     defaultMessage: 'Date Created'
   },
+  areYouSure: {
+    id: 'components.ProDesignProjects.areYouSure',
+    defaultMessage: 'Are you sure?'
+  },
+  cancel: {
+    id: 'components.ProDesignProjects.cancel',
+    defaultMessage: 'Cancel'
+  },
+  yesDelete: {
+    id: 'components.ProDesignProjects.yesDelete',
+    defaultMessage: 'YES, DELETE'
+  },
+  promptDelete: {
+    id: 'components.ProDesignProjects.promptDelete',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'You are about to delete a Project. This is irreversible and all items on this project will be deleted.'
+  },
   back: {
     id: 'components.ProDesignProjects.back',
     defaultMessage: 'Back'

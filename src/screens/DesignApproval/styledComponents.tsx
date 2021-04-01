@@ -22,7 +22,10 @@ import {
   GRAY_DARK,
   GRAY,
   BLACK,
-  GREEN_PAYDAY
+  GREEN_PAYDAY,
+  BLACK_LABEL,
+  GREEN_STATUS,
+  BLUE_SOFT
 } from '../../theme/colors'
 import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
@@ -43,6 +46,7 @@ interface RowProps {
   noMargin?: boolean
   marginTop?: boolean
   codeColor?: string
+  backgroundColor?: string
   disabled?: boolean
   selected?: boolean
 }
@@ -56,7 +60,7 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column;
   @media (max-width: 1023px) {
-    height: calc(100vh - 128px);
+    height: calc(100vh - 70px);
     position: relative;
   }
   .flexible-modal-mask {
@@ -79,9 +83,25 @@ export const CollapseWrapper = styled.div`
     line-height: 16px;
     padding: 14px 0 12px 0;
   }
-  .ant-collapse .ant-collapse-item .ant-collapse-header .arrow {
+  .ant-collapse .ant-collapse-item {
+    border-bottom: none;
+  }
+  .ant-collapse-item-active {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 72px;
+    z-index: 9;
+    width: 100vw;
+    height: calc(100vh - 158px);
+    background: ${WHITE};
+  }
+  .ant-collapse-item .ant-collapse-header .arrow {
+    display: none;
+  }
+  .ant-collapse-item-active .ant-collapse-header .arrow {
     position: absolute;
-    left: 95%;
+    left: calc(100% - 40px);
     display: inline;
     width: auto;
   }
@@ -99,24 +119,26 @@ export const CollapseWrapper = styled.div`
   }
 `
 
-export const CollapseMobile = styled(Collapse)``
+export const CollapseMobile = styled(Collapse)`
+  display: flex;
+  justify-content: space-evenly;
+`
 
 export const PanelMobile = styled(Panel)``
 
 export const PanelTitle = styled.div`
   display: flex;
-  margin-left: 18px;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
   width: 100%;
-  margin-right: 46px;
+  flex-flow: column;
 `
 
 export const PanelIcon = styled.img`
-  max-width: 24px;
+  max-width: 32px;
   width: 100%;
+  margin-bottom: 8px;
   object-fit: contain;
-  margin-right: 12px;
 `
 
 export const ContainerError = styled.div`
@@ -288,6 +310,9 @@ export const CountCircle = styled.div`
   width: 22px;
   font-size: 10px;
   border-radius: 50%;
+  position: absolute;
+  right: 4px;
+  top: 6px;
   color: ${WHITE};
 `
 
@@ -295,6 +320,9 @@ export const BottomSheetWrapper = styled.div`
   z-index: 8;
   .react-swipeable-view-container {
     box-shadow: rgba(0, 0, 0, 0.157) 0px -1px 5px !important;
+  }
+  @media (max-width: 1023px) {
+    display: none;
   }
 `
 
@@ -503,7 +531,7 @@ export const DesignChat = styled.div`
   flex: 1;
   @media (max-width: 1023px) {
     padding: 0;
-    height: calc(100vh - 315px);
+    height: calc(100vh - 277px);
   }
 `
 
@@ -647,40 +675,121 @@ export const LayoutRight = styled.div`
 export const Products = styled.div`
   display: flex;
   flex-flow: row;
-  align-items: center;
   justify-content: center;
-  margin-bottom: 22px;
+  flex-wrap: wrap;
+  align-items: flex-start;
 `
 
 export const ProjectDesign = styled.div`
   display: flex;
+  position: relative;
   flex-flow: column;
   align-items: center;
   justify-content: flex-start;
   margin-left: 22px;
   z-index: 3;
+  margin-bottom: 24px;
+  transition: all .2s;
+  opacity: 1;
   &:hover {
     cursor: pointer;
+    opacity: 0.7;
   }
+  &:first-child {
+    margin-left: 0;
+  }
+`
+
+export const ProStatus = styled.div`
+  width: 85%;
+  padding: 8px 0;
+  font-size: 10px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: ${BLACK_LABEL};
+  border-radius: 3px;
+  color: ${({ backgroundColor }: RowProps) => backgroundColor || WHITE};
+`
+
+export const ProLabel = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 32%;
 `
 
 export const DesignImage = styled.img`
   object-fit: cover;
-  max-width: 128px;
-  max-height: 94px;
-  height: 100%;
+  max-width: 130px;
+  height: 130px;
   background: ${GRAY_LIGHTEST};
 `
 
 export const DesignName = styled.div`
-  margin: 8px 0;
+  margin-top: 18px;
   font-weight: bold;
-  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: ${({ secondary }: RowProps) => secondary ? GRAY_SOFT : GRAY_DARK};
 `
 
 export const ProductName = styled.div`
   font-size: 12px;
+  text-transform: uppercase;
 `
+
+export const FullTitle = styled.div`
+  background: ${({ secondary }: RowProps) => secondary ? GREEN_STATUS : ORANGE};
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 4px;
+  font-size: 14px;
+  color: ${WHITE};
+  font-weight: bold;
+`
+
+export const PromptBody = styled.div`
+  margin-top: 32px;
+  text-align: center;
+  margin-left: -32px;
+`
+
+export const PromptSubtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 10px;
+`
+
+export const PromptLink = styled.div`
+  margin-top: 20px;
+  color: ${BLUE};
+  font-weight: bold;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    color: ${BLUE_SOFT};
+  }
+`
+
+export const PrompText = styled.div`
+  margin-bottom: 20px;
+`
+
+export const buttonPrompt = {
+  background: WHITE,
+  color: GRAY_STRONG,
+  boxShadow: 'none',
+  textShadow: 'none',
+  borderColor: GRAY_SOFT,
+  fontSize: '12px',
+}
 
 export const ApproveButton = styled(Button)`
   padding: 9px;
@@ -823,6 +932,16 @@ export const CodeLabel = styled.div`
   font-weight: bold;
   border-radius: 3px;
   word-break: keep-all;
+  transition: all .2s;
+  ${({ secondary }: RowProps) => secondary && `
+    border: 1px solid ${({ codeColor }: RowProps) => codeColor || GRAY_DARK};
+    &:hover {
+      cursor: pointer;
+      background: ${WHITE};
+      color: ${GRAY_DARK};
+    }
+  `};
+  
 `
 
 export const CodeColor = styled.div`

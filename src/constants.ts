@@ -99,6 +99,7 @@ export const MESSAGE_TIME = 4
 
 /* Files Constants */
 export const MP4_EXTENSION = '.mp4'
+export const PNG_EXTENSION = '.png'
 
 /* Keys Constants */
 export const KEY_ENTER = 'Enter'
