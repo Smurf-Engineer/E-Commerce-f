@@ -818,6 +818,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
        {currentScreen > Sections.PATHWAY ?
         <SwipeableViews
           disabled={true}
+          enableMouseEvents={false}
           animateHeight={true}
           index={currentScreen}>
             {currentScreen === Sections.INSPIRATION ? <Inspiration

@@ -17,6 +17,23 @@ export default defineMessages({
     id: 'components.ReviewProject.customerName',
     defaultMessage: 'Customer Name'
   },
+  areYouSure: {
+    id: 'components.ReviewProject.areYouSure',
+    defaultMessage: 'Are you sure?'
+  },
+  cancel: {
+    id: 'components.ReviewProject.cancel',
+    defaultMessage: 'Cancel'
+  },
+  yesDelete: {
+    id: 'components.ReviewProject.yesDelete',
+    defaultMessage: 'YES DELETE'
+  },
+  promptDelete: {
+    id: 'components.ReviewProject.promptDelete',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'You are about to delete a design item. This is irreversible and all content related to this item will be deleted.'
+  },
   email: {
     id: 'components.ReviewProject.email',
     defaultMessage: 'Email'

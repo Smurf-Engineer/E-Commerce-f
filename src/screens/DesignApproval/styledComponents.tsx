@@ -132,12 +132,15 @@ export const PanelTitle = styled.div`
   font-size: 12px;
   width: 100%;
   flex-flow: column;
+  justify-content: flex-end;
+  height: 56px;
 `
 
 export const PanelIcon = styled.img`
   max-width: 32px;
   width: 100%;
   margin-bottom: 8px;
+  filter: contrast(0.15);
   object-fit: contain;
 `
 

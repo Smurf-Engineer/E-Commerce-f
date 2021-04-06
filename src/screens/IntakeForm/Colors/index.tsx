@@ -136,6 +136,7 @@ export class Colors extends React.Component<Props, {}> {
           <SelectPaletteContainer>
             <SwipeableViews
               disabled={true}
+              enableMouseEvents={false}
               className={'intake'}
               index={isMobile && openBuild ? 1 : 0}
             >

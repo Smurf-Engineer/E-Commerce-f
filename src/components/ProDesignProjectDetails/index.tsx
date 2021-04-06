@@ -32,7 +32,11 @@ import {
   AddProductButton,
   AddLabel,
   DocIcon,
-  LoadingContainer
+  LoadingContainer,
+  ModalTitle,
+  InfoBody,
+  cancelButtonStyle,
+  buttonStyle
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
@@ -49,7 +53,9 @@ import {
 } from '../../constants'
 import { InspirationTag } from '../../screens/IntakeForm/constants'
 import message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
 
+const { confirm } = Modal
 const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
 const LIMIT_PRODUCTS = 25
@@ -82,7 +88,27 @@ export class Review extends React.Component<Props, {}> {
       history.push(`/pro-design?id=${id}`)
     }
   }
-  deleteItem = async (itemId: string) => {
+  
+  deleteItem = (itemId: string) => {
+    const { formatMessage } = this.props
+    confirm({
+      title: <ModalTitle>{formatMessage(messages.areYouSure)}</ModalTitle>,
+      icon: ' ',
+      centered: true,
+      cancelText: formatMessage(messages.cancel),
+      okText: formatMessage(messages.yesDelete),
+      cancelButtonProps: {
+        style: cancelButtonStyle
+      },
+      okButtonProps: {
+        style: buttonStyle
+      },
+      onOk: async () => await this.deleteDesign(itemId),
+      content: <InfoBody>{formatMessage(messages.promptDelete)}</InfoBody>
+    })
+  }
+
+  deleteDesign = async (itemId: string) => {
     const {
       formatMessage,
       deleteProItem,

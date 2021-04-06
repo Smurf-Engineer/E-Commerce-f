@@ -5,10 +5,12 @@ import {
   GRAY_LIGHT,
   GRAY_LIGHTEST,
   RED,
+  RED_TRANSPARENT,
   RED_TRANSPARENT_BRIGHT,
   WHITE,
   WHITE_TRANSPARENT
 } from '../../theme/colors'
+import { AVENIR_NEXT } from '../../theme/fonts'
 
 interface ImagePreviewProps {
   src: string
@@ -110,6 +112,24 @@ export const Inspiration = styled.div`
   margin-bottom: 50px;
   display: flex;
   flex-direction: column;
+`
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 12px 0 12px -38px;
 `
 
 export const Images = styled.div`
@@ -251,3 +271,17 @@ export const AddLabel = styled.div`
     margin-bottom: 8px;
   }
 `
+
+export const buttonStyle = {
+  background: RED_TRANSPARENT,
+  color: WHITE,
+  border: 'none',
+  boxShadow: 'none'
+}
+
+export const cancelButtonStyle = {
+  background: WHITE,
+  color: GRAY_DARK,
+  borderColor: GRAY_LIGHT,
+  boxShadow: 'none'
+}
