@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'components.TeamDragger.tittle',
     defaultMessage: 'Click or drag files to this area'
   },
+  titlePro: {
+    id: 'components.TeamDragger.titlePro',
+    defaultMessage: 'Click or drag files to upload'
+  },
+  or: {
+    id: 'components.TeamDragger.or',
+    defaultMessage: 'or'
+  },
   files: {
     id: 'components.TeamDragger.files',
     defaultMessage: 'Files in {extensions}'

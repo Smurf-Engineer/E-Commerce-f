@@ -137,7 +137,6 @@ export class Inspiration extends React.Component<Props, {}> {
   }
   handleLoadData = async () => {
     const { setPage, currentPage, loading } = this.props
-    console.log('🔴enters LOAD')
     if (!loading) {
       const newPage = currentPage + 1
       const skip = (newPage) * LIMIT
@@ -203,34 +202,36 @@ export class Inspiration extends React.Component<Props, {}> {
     const loader = <LoadingContainer><Spin /></LoadingContainer>
     return (
       <Container>
-        <TagsContainer>
-          <Select
-            size="large"
-            mode="tags"
-            value={selectedTags}
-            onSelect={this.handleSelectTag}
-            onDeselect={this.handleRemoveTag}
-            placeholder={formatMessage(messages.inspirationSample)}
-            showSearch={true}
-            style={SearchTagStyle}
-          >
-            {tags.map((tag: Tag) => (
-              <Option key={tag.value} value={tag.value}>{tag.value}</Option>
-            ))}
-          </Select>
-          <TagPickers>
-            {tags.map((tag: Tag, key: number) => {
-              const isSelected = includes(selectedTags, tag.value)
-              const selectTag = () => isSelected ? this.handleRemoveTag(tag.value) : this.handleSelectTag(tag.value)
-              return key < (isMobile && !isTablet ? 6 : 10) && (
-              <TagPicker
-                key={tag.value}
-                className={isSelected ? 'selected' : ''}
-                onClick={selectTag}
-              >{tag.value}</TagPicker>
-            )})}
-          </TagPickers>
-        </TagsContainer>
+        {!isMobile && !isTablet && 
+          <TagsContainer>
+            <Select
+              size="large"
+              mode="tags"
+              value={selectedTags}
+              onSelect={this.handleSelectTag}
+              onDeselect={this.handleRemoveTag}
+              placeholder={formatMessage(messages.inspirationSample)}
+              showSearch={true}
+              style={SearchTagStyle}
+            >
+              {tags.map((tag: Tag) => (
+                <Option key={tag.value} value={tag.value}>{tag.value}</Option>
+              ))}
+            </Select>
+            <TagPickers>
+              {tags.map((tag: Tag, key: number) => {
+                const isSelected = includes(selectedTags, tag.value)
+                const selectTag = () => isSelected ? this.handleRemoveTag(tag.value) : this.handleSelectTag(tag.value)
+                return key < (isMobile && !isTablet ? 6 : 10) && (
+                <TagPicker
+                  key={tag.value}
+                  className={isSelected ? 'selected' : ''}
+                  onClick={selectTag}
+                >{tag.value}</TagPicker>
+              )})}
+            </TagPickers>
+          </TagsContainer>
+        }
         <Filters>
           <Label>
               {formatMessage(messages.showOnly)}
@@ -265,6 +266,24 @@ export class Inspiration extends React.Component<Props, {}> {
             </StyledCheckbox>
           </Checkboxes>
         </Filters>
+        {(isTablet || isMobile) &&
+          <TagsContainer>
+            <Select
+              size="large"
+              mode="tags"
+              value={selectedTags}
+              onSelect={this.handleSelectTag}
+              onDeselect={this.handleRemoveTag}
+              placeholder={formatMessage(messages.inspirationSample)}
+              showSearch={true}
+              style={SearchTagStyle}
+            >
+              {tags.map((tag: Tag) => (
+                <Option key={tag.value} value={tag.value}>{tag.value}</Option>
+              ))}
+            </Select>
+          </TagsContainer>
+        }
         <Images>
           <StyledInfiniteScroll
             pageStart={0}

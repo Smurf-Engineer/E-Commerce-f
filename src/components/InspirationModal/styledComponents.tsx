@@ -1,3 +1,4 @@
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
 import {
   LEAF,
@@ -43,6 +44,7 @@ export const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  flex-flow: column;
 `
 
 export const EditButton = styled.div`
@@ -63,25 +65,32 @@ export const EditButton = styled.div`
   }
   background-color: ${({ disabled }: ButtonProps) =>
     disabled ? GRAY_LIGHT : BLUE};
-  flex: 1;
 `
 
 export const Image = styled.img`
   width: 100%;
 `
 
+export const CloseIcon = styled(Icon)`
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  font-size: 24px;
+`
+
 export const TagsContainer = styled.div`
-  flex: 2;
+  flex: 1;
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  margin-bottom: 20px;
 `
 
 export const Tag = styled.div`
   background: ${COD_GRAY};
   padding: 10px;
   border-radius: 20px;
-  min-width: 110px;
+  min-width: 88px;
   text-align: center;
   transition: background-color 0.3s ease;
   margin: 10px 10px 0 0;

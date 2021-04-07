@@ -106,6 +106,7 @@ export class Colors extends React.Component<Props, {}> {
       selectedPaletteIndex,
       selectedEditPrimaryColor,
       selectedEditColors,
+      isTablet,
       isMobile
     } = this.props
     const accentColorsLength = selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
@@ -203,6 +204,7 @@ export class Colors extends React.Component<Props, {}> {
                       <Text>{formatMessage(messages.primaryColor)}</Text>
                       {!colorsList.loading &&
                         <ColorSelector
+                          isMobile={isTablet || isMobile}
                           selectedColors={
                             selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
                               selectedPrimaryColor : selectedEditPrimaryColor}
@@ -214,6 +216,7 @@ export class Colors extends React.Component<Props, {}> {
                       <Text>{formatMessage(messages.accentColor)}</Text>
                       {!colorsList.loading &&
                         <ColorSelector
+                          isMobile={isTablet || isMobile}
                           selectedColors={
                             selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedColors : selectedEditColors}
                           colorsList={colorsList}
@@ -239,6 +242,7 @@ export class Colors extends React.Component<Props, {}> {
                     <Text>{formatMessage(messages.primaryColor)}</Text>
                     {!colorsList.loading &&
                       <ColorSelector
+                        isMobile={isTablet || isMobile}
                         selectedColors={
                           selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
                             selectedPrimaryColor : selectedEditPrimaryColor}
@@ -250,6 +254,7 @@ export class Colors extends React.Component<Props, {}> {
                     <Text>{formatMessage(messages.accentColor)}</Text>
                     {!colorsList.loading &&
                       <ColorSelector
+                        isMobile={isTablet || isMobile}
                         selectedColors={
                           selectedPaletteIndex === CUSTOM_PALETTE_INDEX ? selectedColors : selectedEditColors}
                         colorsList={colorsList}

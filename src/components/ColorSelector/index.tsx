@@ -15,6 +15,7 @@ interface Props {
   onSelect: (color: string) => void
   onDeselect: (color: string) => void
   height?: string
+  isMobile?: boolean
   colorsList: ColorsDataResult
   selectedColors: string[]
 }
@@ -23,7 +24,8 @@ const ColorList = ({
   colorsList,
   selectedColors,
   onSelect,
-  onDeselect
+  onDeselect,
+  isMobile
 }: Props) => {
   let arrayColors = []
 
@@ -45,7 +47,7 @@ const ColorList = ({
     const handleOnSelectColor = () =>  !isSelected ? onSelect(value) : onDeselect(value)
     if (type) {
       const node = (
-        <Tooltip key={index} title={name}>
+        <Tooltip visible={!isMobile} key={index} title={name}>
           <Col>
             <Color color={value} onClick={handleOnSelectColor} selected={isSelected} />
           </Col>
@@ -54,7 +56,7 @@ const ColorList = ({
       fluorescentColors.push(node)
     } else {
       const node = (
-        <Tooltip key={index} title={name}>
+        <Tooltip visible={!isMobile} key={index} title={name}>
           <Col>
             <Color color={value} onClick={handleOnSelectColor} selected={isSelected} />
           </Col>

@@ -1,3 +1,4 @@
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
 import { WHITE, GRAY_DARK, BLUE } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
@@ -102,6 +103,12 @@ export const RasterDiv = styled.div`
 export const RasterImage = styled.img`
   max-width: 228px;
   width: 100%;
+`
+
+export const ModalIcon = styled(Icon)`
+  right: 26px;
+  position: absolute;
+  font-size: 18px;
 `
 
 export const RasterText = styled.div``

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import get from 'lodash/get'
+// import get from 'lodash/get'
 import DatePicker from 'antd/lib/date-picker'
-import Input from 'antd/lib/input'
+// import Input from 'antd/lib/input'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import { isPhoneNumber } from '../../../utils/utilsFiles'
@@ -12,20 +12,20 @@ import { DATE_FORMAT_STARTING_YEAR } from '../../../constants'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
   Container,
-  Title,
+  // Title,
   MainContainer,
-  Text,
+  // Text,
   Label,
   Required,
   Field,
   inputStyle,
-  ItalicText,
-  NotificationSettings,
-  InfoText,
+  // ItalicText,
+  // NotificationSettings,
+  // InfoText,
   CheckboxLabel,
-  ValueContainer,
-  Row,
-  CheckBoxContainer,
+  // ValueContainer,
+  // Row,
+  // CheckBoxContainer,
   SectionButton,
   SectionButtonsContainer,
   InfoBody,
@@ -160,17 +160,17 @@ export class Notifications extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
-      user,
+      // user,
       selectedTeamSize,
       estimatedDate,
       removeCategory,
       categories,
       addCategory,
-      sendSms,
-      sendEmail,
-      phone
+      // sendSms,
+      // sendEmail,
+      // phone
     } = this.props
-    const email = get(user, 'email')
+    // const email = get(user, 'email')
     const availableSizes =
       TEAM_SIZES.map((size, index) => {
         const handleOnSelectSize = () => this.handleOnSelectTeamSize(size)
@@ -237,7 +237,7 @@ export class Notifications extends React.Component<Props, {}> {
               onChange={this.handleOnSelectDate}
             />
           </Field>
-          <Title>
+          {/* <Title>
             {formatMessage(messages.preferences)}
           </Title>
           <Text>
@@ -283,7 +283,7 @@ export class Notifications extends React.Component<Props, {}> {
           </NotificationSettings>
           <ItalicText>
             {formatMessage(messages.setUpNotifications)}
-          </ItalicText>
+          </ItalicText> */}
         </Container>
       </MainContainer>
     )

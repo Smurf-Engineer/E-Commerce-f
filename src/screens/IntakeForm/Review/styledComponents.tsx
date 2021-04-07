@@ -1,6 +1,6 @@
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED, WHITE } from '../../../theme/colors'
+import { GRAY, GRAY_DARK, GRAY_LIGHT, GRAY_LIGHTEST, RED, WHITE } from '../../../theme/colors'
 
 interface ImagePreviewProps {
   src: string
@@ -43,6 +43,8 @@ export const Text = styled.div`
   margin-bottom: 10px;
   width: 100%;
   word-break: break-all;
+  border: 1px solid ${GRAY};
+  padding: 8px;
 `
 
 export const Column = styled.div`

@@ -23,7 +23,7 @@ export const Container = styled.section`
   border-color: ${({ isSelected }: StyleProps) => (isSelected ? RED : TRANSPARENT)};
 
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
+    margin: 0 auto;
   }
 `
 

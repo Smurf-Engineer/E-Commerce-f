@@ -19,7 +19,7 @@ export const Container = styled.div`
   padding-right: 2px;
   height: calc(100vh - 20px);
   @media (max-width: 1024px) {
-    height: calc(100vh - 130px);
+    height: calc(100vh - 248px);
   }
 `
 
@@ -28,7 +28,7 @@ export const Images = styled.div`
   overflow: auto;
   text-align: center;
   @media (max-width: 1024px) {
-    height: calc(100vh - 382px);
+    height: calc(100vh - 360px);
   }
 `
 

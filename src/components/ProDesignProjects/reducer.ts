@@ -15,7 +15,7 @@ export const initialState = fromJS({
   currentPage: 1,
   startDate: '',
   orderBy: 'id',
-  sort: 'ASC',
+  sort: 'DESC',
   projectId: null,
   currentSection: Pages.LIST
 })

@@ -52,7 +52,8 @@ import {
   RasterImage,
   RasterText,
   RasterContent,
-  BottomText
+  BottomText,
+  ModalIcon
 } from './styledComponents'
 import {
   Responsive,
@@ -206,8 +207,25 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   handleFromScratch = () => {
     const { setFromScratchAction } = this.props
+    const { isMobile, isTablet } = this.state
     setFromScratchAction(true)
     this.handleOnContinue(true)
+    if (isMobile || isTablet) {
+      this.showInspirationModal()
+    }
+  }
+
+  showInspirationModal = () => {
+    const { intl: { formatMessage } } = this.props
+    const title = formatMessage(messages.inspiration)
+    const body = [
+      formatMessage(messages.inspirationBody), 
+      <Subtitle key={1} small={true} action={true}>
+        {formatMessage(messages.inspirationTip)}
+      </Subtitle>
+    ]
+    const accept = formatMessage(messages.gotIt)
+    this.showAlert(title, body, accept)
   }
 
   handleFromExistingArtwork = () => {
@@ -747,12 +765,19 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         onClick={currentTitleHasAction ? this.showTips : null}>
           {formatMessage(messages[currentSubtitleTips])}
         </Subtitle>) : null
+
+    const showModal = (isTablet || isMobile) && currentScreen === Sections.INSPIRATION
   
     const topNavHeader = showTopNav ?
       <TopNavHeader>
         {navTitle}
-        {navSubtitle}
-        {navTips}
+        {showModal ?
+          <ModalIcon onClick={this.showInspirationModal} theme="filled" type="question-circle" /> :
+          <>
+            {navSubtitle}
+            {navTips}
+          </>
+        }
       </TopNavHeader> : null
     
     const navBar = currentScreen > Sections.PATHWAY ?

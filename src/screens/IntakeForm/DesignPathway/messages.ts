@@ -12,8 +12,8 @@ export default defineMessages({
   },
   existingArtowrk: {
     id: 'screens.DesignPathway.existingArtowrk',
-    defaultMessage: `You already have your art completed on a Jakroo design or other 
-    supplier template and only need upload and provide instructions.`
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `You already have your art completed on a JAKROO or other supplier template and only need to upload and provide instructions.`
   },
   select: {
     id: 'screens.DesignPathway.select',

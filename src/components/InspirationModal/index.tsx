@@ -1,5 +1,14 @@
 import * as React from 'react'
-import { ModalContainer, Image, Footer, EditButton, BodyContent, TagsContainer, Tag } from './styledComponents'
+import {
+  ModalContainer,
+  Image,
+  Footer,
+  EditButton,
+  BodyContent,
+  TagsContainer,
+  Tag,
+  CloseIcon
+} from './styledComponents'
 import Modal from 'antd/lib/modal'
 import includes from 'lodash/includes'
 import messages from './messages'
@@ -42,6 +51,7 @@ const SuccessModal = ({
   <ModalContainer>
     <BodyContent>
       <Image src={image} />
+      <CloseIcon onClick={onCloseInspiration} theme="filled" type="close-circle" />
       <Footer>
         <TagsContainer>
           {tags.map((tag) => {

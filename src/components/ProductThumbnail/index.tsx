@@ -32,6 +32,8 @@ import { saveInLocalStorage } from './api'
 import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { DATE_FORMAT } from '../../constants'
+import moment from 'moment'
 
 const LIMIT_PRICE_RANGE = 3
 const WHITENAME = 'White'
@@ -49,6 +51,7 @@ interface Props {
   itemId?: string
   footer?: React.ReactNode
   gender?: number
+  createdAt?: string
   hideCustomButton?: boolean
   hideQuickView?: boolean
   yotpoId: string
@@ -236,6 +239,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       labelButton,
       image,
       product,
+      createdAt,
       withMargin,
       hideCustomButton,
       hideQuickView,
@@ -380,6 +384,11 @@ export class ProductThumbnail extends React.Component<Props, {}> {
               {!isProDesign ? colorOptions : null}
               <Price>{price}</Price>
             </InfoContainer>
+            {isProDesign &&
+              <Description fitContainer={true}>
+                {createdAt ? moment(createdAt).format(DATE_FORMAT) : '-'}
+              </Description>
+            }
           </Footer>
         )}
       </Container>

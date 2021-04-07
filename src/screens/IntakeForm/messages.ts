@@ -49,7 +49,7 @@ export default defineMessages({
   successMessage: {
     id: 'screens.IntakeForm.successMessage',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `Our Design Team will review all details of your submission and get back to if there are any questions. You will be assigned a dedicated Account Manager who will guide you through the entire process to ensure you have the best experience. You can review and track the progress of your Design Project on your Account Dashboard.`
+    defaultMessage: `Our Design Team will review all details of your submission and get back to you if there are any questions. You will be assigned a dedicated Account Manager who will guide you through the entire process to ensure you have the best experience.`
   },
   successMessageCenter: {
     id: 'screens.IntakeForm.successMessageCenter',
@@ -57,7 +57,7 @@ export default defineMessages({
   },
   sucessMessageBottom: {
     id: 'screens.IntakeForm.sucessMessageBottom',
-    defaultMessage: 'We’re excited to work on this project.'
+    defaultMessage: `Thank you for choosing JAKROO. We're excited to work on your project.`
   },
   returnToHome: {
     id: 'screens.IntakeForm.returnToHome',
@@ -146,7 +146,7 @@ export default defineMessages({
   },
   reviewTitle: {
     id: 'screens.IntakeForm.reviewTitle',
-    defaultMessage: 'PRO DESIGN REQUEST REVIEW'
+    defaultMessage: 'PROJECT REVIEW'
   },
   reviewBody: {
     id: 'screens.IntakeForm.reviewBody',

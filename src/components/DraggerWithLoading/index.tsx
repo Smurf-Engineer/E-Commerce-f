@@ -52,18 +52,25 @@ class TeamDragger extends React.PureComponent<Props, {}> {
           </Container>
         ) : (
           <div>
-            <Icon src={uploadIcon} />
-            <DragTypes>
-              <FormattedMessage {...messages.title} />
+            <Icon gallery={galleryButton} src={uploadIcon} />
+            <DragTypes gallery={galleryButton}>
+              <FormattedMessage {...messages[galleryButton ? 'titlePro' : 'title']} />
             </DragTypes>
-            <DragMessage>
-              <FormattedMessage {...messages.size} />
-            </DragMessage>
+            {!galleryButton && 
+              <DragMessage gallery={false}>
+                <FormattedMessage {...messages.size} />
+              </DragMessage>
+            }
             <DragTypes>
               {formatMessage(messages.files, {
                 extensions: map(extensions).join(' ')
               })}
             </DragTypes>
+            {galleryButton &&
+              <DragMessage gallery={true}>
+                <FormattedMessage {...messages.or} />
+              </DragMessage>
+            }
             {galleryButton && <GalleryButton onClick={onClickGallery}>
               {formatMessage(messages.addFromGallery)}
             </GalleryButton>}

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { LEAF, WHITE, RED } from '../../theme/colors'
+import { LEAF, WHITE, BLACK } from '../../theme/colors'
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ export const BodyContent = styled.div`
   flex-direction: column;
 `
 export const Title = styled.div`
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   text-transform: uppercase;
   background: ${LEAF};
@@ -28,6 +28,8 @@ export const Description = styled.div`
 
 export const Strong = styled.div`
   font-weight: 600;
+  font-size: 15px;
+  text-align: center;
 `
 
 export const EditButton = styled.div`
@@ -35,15 +37,14 @@ export const EditButton = styled.div`
   padding: 13px;
   margin: 15px 0 20px 0;
   font-size: 14px;
-  width: 300px;
+  width: 100%;
   text-align: center;
-  border: 2px solid ${RED};
-  color: ${RED};
-  border-radius: 2px;
+  color: ${WHITE};
+  background: ${BLACK};
   transition: all 0.25s ease;
   &:hover {
     cursor: pointer;
-    background: ${RED};
-    color: ${WHITE};
+    background: ${WHITE};
+    color: ${BLACK};
   }
 `
