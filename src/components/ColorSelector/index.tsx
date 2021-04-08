@@ -46,22 +46,22 @@ const ColorList = ({
     const isSelected = includes(selectedColors, value) 
     const handleOnSelectColor = () =>  !isSelected ? onSelect(value) : onDeselect(value)
     if (type) {
-      const node = (
-        <Tooltip visible={!isMobile} key={index} title={name}>
+      const node = !isMobile ? (
+        <Tooltip key={index} title={name}>
           <Col>
             <Color color={value} onClick={handleOnSelectColor} selected={isSelected} />
           </Col>
         </Tooltip>
-      )
+      ) : <Col><Color color={value} onClick={handleOnSelectColor} selected={isSelected} /></Col>
       fluorescentColors.push(node)
     } else {
-      const node = (
-        <Tooltip visible={!isMobile} key={index} title={name}>
+      const node = !isMobile ? (
+        <Tooltip key={index} title={name}>
           <Col>
             <Color color={value} onClick={handleOnSelectColor} selected={isSelected} />
           </Col>
         </Tooltip>
-      )
+      ) : <Col><Color color={value} onClick={handleOnSelectColor} selected={isSelected} /></Col>
       regularColors.push(node)
     }
   })

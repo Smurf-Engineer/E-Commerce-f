@@ -24,8 +24,6 @@ import {
   ImageContainer,
   TagsContainer,
   SearchTagStyle,
-  TagPicker,
-  TagPickers,
   Filters,
   Label,
   Checkboxes,
@@ -218,18 +216,6 @@ export class Inspiration extends React.Component<Props, {}> {
                 <Option key={tag.value} value={tag.value}>{tag.value}</Option>
               ))}
             </Select>
-            <TagPickers>
-              {tags.map((tag: Tag, key: number) => {
-                const isSelected = includes(selectedTags, tag.value)
-                const selectTag = () => isSelected ? this.handleRemoveTag(tag.value) : this.handleSelectTag(tag.value)
-                return key < (isMobile && !isTablet ? 6 : 10) && (
-                <TagPicker
-                  key={tag.value}
-                  className={isSelected ? 'selected' : ''}
-                  onClick={selectTag}
-                >{tag.value}</TagPicker>
-              )})}
-            </TagPickers>
           </TagsContainer>
         }
         <Filters>

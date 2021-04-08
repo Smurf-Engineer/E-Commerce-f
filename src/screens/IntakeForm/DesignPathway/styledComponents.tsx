@@ -57,7 +57,7 @@ export const CardTitle = styled.div`
   background: ${GRAY_LIGHTEST};
   text-align: center;
   padding: 60px;
-  min-height: 330px;
+  height: 279px;
   display: flex;
   justify-content: center;
   & img {

@@ -93,8 +93,14 @@ export const CollapseWrapper = styled.div`
     top: 72px;
     z-index: 9;
     width: 100vw;
-    height: calc(100vh - 158px);
+    height: calc(100vh - 163px);
     background: ${WHITE};
+    .ant-collapse-header {
+      background: #ededed;
+    }
+    .counter {
+      right: 40%;
+    }
   }
   .ant-collapse-item .ant-collapse-header .arrow {
     display: none;
@@ -102,8 +108,16 @@ export const CollapseWrapper = styled.div`
   .ant-collapse-item-active .ant-collapse-header .arrow {
     position: absolute;
     left: calc(100% - 40px);
-    display: inline;
-    width: auto;
+    display: inline-flex;
+    border: 1px solid ${GRAY_DARK};
+    height: 24px;
+    align-items: center;
+    width: 24px;
+    justify-content: center;
+    border-radius: 50%;
+    color: ${GRAY_DARK};
+    top: unset;
+    bottom: 0;
   }
 
   .ant-collapse-borderless .ant-collapse-item .ant-collapse-content {
@@ -140,8 +154,8 @@ export const PanelIcon = styled.img`
   max-width: 32px;
   width: 100%;
   margin-bottom: 8px;
-  filter: contrast(0.15);
   object-fit: contain;
+  filter: ${({ secondary }: RowProps) => (secondary ? `contrast(0.15) drop-shadow(0px 0px 1px ${GRAY})` : 'unset')};
 `
 
 export const ContainerError = styled.div`
@@ -305,18 +319,16 @@ export const ChatCount = styled.div`
 `
 
 export const CountCircle = styled.div`
-  background: ${RED_TRANSPARENT};
   height: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 22px;
-  font-size: 10px;
+  font-size: 12px;
   border-radius: 50%;
   position: absolute;
-  right: 4px;
+  right: 0px;
   top: 6px;
-  color: ${WHITE};
 `
 
 export const BottomSheetWrapper = styled.div`
@@ -403,6 +415,21 @@ export const RequestButtons = styled.div`
   flex-flow: column;
   justify-content: center;
   align-items: center;
+  @media (max-width: 1023px) {
+    display: none;
+  }
+`
+
+export const MobileRequestButtons = styled.div`
+  display: none;
+  bottom: 100px;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  padding: 0 28px;
+  @media (max-width: 1023px) {
+    display: flex;
+  }
 `
 
 export const RequestEdit = styled(Button)`
@@ -810,6 +837,10 @@ export const ApproveButton = styled(Button)`
     background: ${WHITE};
     color: ${BLUE};
   }
+  @media (max-width: 1023px) {
+    margin-bottom: 0;
+    margin-right: 20px;
+  }
 `
 
 export const RenderSection = styled.div`
@@ -818,6 +849,9 @@ export const RenderSection = styled.div`
   align-items: center;
   display: flex;
   margin-bottom: 28px;
+  @media (max-width: 1023px) {
+    margin-bottom: 168px;
+  }
 `
 
 export const Initials = styled.div`

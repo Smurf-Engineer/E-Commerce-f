@@ -108,6 +108,7 @@ import {
   MessageBox,
   MessageFile,
   MessageHeader,
+  MobileRequestButtons,
   ModalSubtitle,
   ModalTitle,
   ModelTitle,
@@ -268,6 +269,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     selectedVariant: -1
   }
   private listMsg: any
+  private chatDiv: any
+  private catalogDiv: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     navigator.serviceWorker.addEventListener('message', this.reloadMessages)
@@ -294,7 +297,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const oldMessages = get(oldData, 'projectItem.messages', [])
     const newMessages = get(data, 'projectItem.messages', [])
     if (oldMessages.length !== newMessages.length) {
-      this.scrollMessages()
+      setTimeout(() => { this.scrollMessages() }, 2000)
     }
     if (window._slaask) {
       window._slaask.destroy()
@@ -364,6 +367,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     changeNoteAction(value)
   }
 
+  openMessages = () => {
+    const node = ReactDOM.findDOMNode(this.chatDiv) as HTMLElement
+    if (node) {
+      node.click()
+    }
+  }
+
+  clickCatalog = () => {
+    const node = ReactDOM.findDOMNode(this.catalogDiv) as HTMLElement
+    if (node) {
+      node.click()
+    }
+  }
+
   addMessage = async () => {
     const {
       intl: { formatMessage },
@@ -400,6 +417,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               })
               const messagesArray = get(storedData, 'projectItem.messages', [])
               messagesArray.push(responseMessage)
+              setTimeout(() => { this.scrollMessages() }, 1000)
               store.writeQuery({
                 query: getProdesignItemQuery,
                 variables: { shortId: itemId },
@@ -429,8 +447,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         const snd = new Audio(messageSent)
         snd.play()
         snd.remove()
-        this.scrollMessages()
         if (!parentMessageId) {
+          this.openMessages()
           this.promptEditRequest()
         }
       } else if (project && product) {
@@ -573,6 +591,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         await setApproveDesign({ variables: { itemId } })
         data.refetch()
         AntdMessage.success(formatMessage(messages.approved))
+        this.openMessages()
         this.promptEditRequest(true)
       }
     } catch (e) {
@@ -584,8 +603,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
   scrollMessages = () => {
     if (window && this.listMsg) {
-      const node = ReactDOM.findDOMNode(this.listMsg) as HTMLElement
-      node.scrollTop = node.scrollHeight
+      const node = document.getElementsByClassName('chatLog')[0] as HTMLElement
+      if (node) {
+        node.scrollTop = node.scrollHeight
+      }
     }
   }
 
@@ -619,6 +640,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const { history } = this.props
     history.push(`/approval?id=${id}`)
     this.setState({ openBottom: false })
+    this.clickCatalog()
   }
 
   closeAddToStoreModal = () => {
@@ -833,7 +855,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const chatComponent = !!itemStatus ?
       <DesignChat>
         <ApprovalTitle>{formatMessage(messages.approvalLog)}</ApprovalTitle>
-        <ChatMessages ref={(listMsgs: any) => { this.listMsg = listMsgs }}>
+        <ChatMessages className="chatLog" ref={(listMsgs: any) => { this.listMsg = listMsgs }}>
           {chatLog.map((
             { 
               id,
@@ -1065,6 +1087,28 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </ButtonWrapper>
                 </BottomButtons>
               }
+              <MobileRequestButtons>
+                <ApproveButton
+                  loading={approveLoading}
+                  disabled={
+                    approveLoading || 
+                    itemStatus !== CUSTOMER_PREVIEW || 
+                    (!!designToApply && outputPng !== designToApply)
+                  }
+                  onClick={this.handlePromptApprove}
+                >
+                  {formatMessage(messages.approve)}
+                </ApproveButton>
+                <RequestEdit
+                  disabled={itemStatus !== CUSTOMER_PREVIEW}
+                  onClick={this.handleOpenRequest}
+                >
+                  <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
+                    {formatMessage(messages.requestEdit)}
+                  </RequestText>
+                  <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
+                </RequestEdit>
+              </MobileRequestButtons>
               {!!itemStatus &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId &&
@@ -1100,13 +1144,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               <CollapseMobile accordion={true} destroyInactivePanel={true}>
                 <PanelMobile 
                   header={
-                    <PanelTitle>
+                    <PanelTitle ref={e => { this.chatDiv = e }}>
                       <PanelIcon src={messageIcon} />
                       {formatMessage(messages.approvalLog)}
                       <ChatCount>
                         {adminMessages > 0 &&
-                          <CountCircle>
-                            {adminMessages}
+                          <CountCircle className="counter">
+                            ({adminMessages})
                           </CountCircle>
                         }
                       </ChatCount>
@@ -1129,8 +1173,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </PanelMobile>
                 <PanelMobile
                   header={
-                    <PanelTitle>
-                      <PanelIcon src={viewDesignsIcon} />
+                    <PanelTitle ref={e => { this.catalogDiv = e }}>
+                      <PanelIcon secondary={true} src={viewDesignsIcon} />
                       {formatMessage(messages.viewDesigns)}
                     </PanelTitle>
                   }

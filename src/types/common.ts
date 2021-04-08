@@ -1888,6 +1888,7 @@ export type Project = {
   shortId: string
   name: string
   status: string
+  lastUpdated: string
   createdAt: string
   designs: ProDesignItem[]
   totalNotifications?: number

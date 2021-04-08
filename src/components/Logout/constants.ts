@@ -47,12 +47,12 @@ export const menuOptions = [
     options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
   },
   {
-    titleLabel: SCREEN_LOCKER,
-    options: []
-  },
-  {
     titleLabel: PRO_DESIGN,
     options: [PRO_DESIGN_PROJECTS]
+  },
+  {
+    titleLabel: SCREEN_LOCKER,
+    options: []
   },
   {
     titleLabel: MY_FILES,
@@ -74,12 +74,12 @@ export const resellerOptions = [
     options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
-    titleLabel: SCREEN_LOCKER,
-    options: []
-  },
-  {
     titleLabel: PRO_DESIGN,
     options: [PRO_DESIGN_PROJECTS]
+  },
+  {
+    titleLabel: SCREEN_LOCKER,
+    options: []
   },
   {
     titleLabel: MY_FILES,

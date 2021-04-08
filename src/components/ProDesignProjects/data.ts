@@ -24,6 +24,7 @@ export const getProDesignProjects = gql`
         createdAt: created_at
         name
         updatedAt: updated_at
+        lastUpdated: last_updated
         status
         totalNotifications: total_notifications
         designs {

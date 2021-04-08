@@ -24,7 +24,7 @@ export const Container = styled.div`
 `
 
 export const Images = styled.div`
-  height: calc(100vh - 252px);
+  height: calc(100vh - 112px);
   overflow: auto;
   text-align: center;
   @media (max-width: 1024px) {

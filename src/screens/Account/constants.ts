@@ -62,8 +62,12 @@ export const options = [
     options: [PRO_DESIGN_PROJECTS]
   },
   {
-    title: CREATIONS,
-    options: [SCREEN_LOCKER, MY_FILES]
+    title: SCREEN_LOCKER,
+    options: []
+  },
+  {
+    title: MY_FILES,
+    options: []
   }
 ]
 
@@ -96,14 +100,17 @@ export const resellerOptions = [
     title: PRO_DESIGN,
     options: [PRO_DESIGN_PROJECTS]
   },
-  // TODO: hide teamstores for phase I
+  {
+    title: SCREEN_LOCKER,
+    options: []
+  },
+  {
+    title: MY_FILES,
+    options: []
+  },
   {
     title: RESELLER,
     options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
-  },
-  {
-    title: CREATIONS,
-    options: [SCREEN_LOCKER, MY_FILES]
   }
 ]
 

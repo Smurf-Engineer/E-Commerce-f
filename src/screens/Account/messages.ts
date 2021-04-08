@@ -79,11 +79,11 @@ export default defineMessages({
   },
   myLocker: {
     id: 'screens.Account.submenu.myLocker',
-    defaultMessage: 'My Locker'
+    defaultMessage: 'MY LOCKER'
   },
   myFiles: {
     id: 'screens.Account.submenu.myFiles',
-    defaultMessage: 'My Files'
+    defaultMessage: 'MY FILES'
   },
   filtersTitle: {
     id: 'screens.Account.submenu.filtersTitle',

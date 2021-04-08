@@ -133,6 +133,7 @@ export class Review extends React.Component<Props, {}> {
       formatMessage,
       data,
       colorsList,
+      project,
       onOpenQuickView,
       goBack
     } = this.props
@@ -164,7 +165,7 @@ export class Review extends React.Component<Props, {}> {
         {deleting &&
           <LoadingContainer><Spin /></LoadingContainer>
         }
-        {data && !data.loading && projectName ? <Container>
+        {data && project && projectName ? <Container>
           <BackContainer onClick={goBack}>
             <Icon type="left" />
             <span>{formatMessage(messages.back)}</span>

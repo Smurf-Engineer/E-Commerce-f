@@ -164,7 +164,7 @@ export default defineMessages({
   },
   colors: {
     id: 'screens.DesignApproval.colors',
-    defaultMessage: 'Colors List'
+    defaultMessage: 'Color Specs'
   },
   baseColors: {
     id: 'screens.DesignApproval.baseColors',

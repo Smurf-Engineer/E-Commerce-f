@@ -209,6 +209,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
                       shortId,
                       name,
                       totalNotifications = 0,
+                      lastUpdated,
                       updatedAt,
                       designs = []
                     }: Project,
@@ -222,7 +223,9 @@ class ProDesignProjects extends React.Component<Props, {}> {
                       </Cell>
                       <Cell>JV2-{userId}-PD-{((currentPage - 1) * PROJECTS_LIMIT) + (index + 1)}</Cell>
                       <Cell textAlign="center">{designs.length}</Cell>
-                      <Cell textAlign="center">{updatedAt ? moment(updatedAt).format(DATE_FORMAT) : '-'}</Cell>
+                      <Cell textAlign="center">
+                        {lastUpdated || updatedAt ? moment(lastUpdated || updatedAt).format(DATE_FORMAT) : '-'}
+                      </Cell>
                       <Cell textAlign="center">
                         {totalNotifications > 0 && <StyledBadge count={totalNotifications} />}
                       </Cell>

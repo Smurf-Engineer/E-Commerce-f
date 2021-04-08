@@ -50,11 +50,9 @@ export const Text = styled.div`
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 120px;
+  width: 100%;
   @media (max-width: 768px) {
     flex-direction: row;
-    margin: 0;
-    width: 100%;
   }
 `
 
