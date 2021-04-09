@@ -15,13 +15,15 @@ export const Container = styled.div`
   background-color: ${({ darkMode }: ThemeProps) =>
   darkMode ? BLACK_SEMILIGHT : WHITE};
   border-bottom: 1px solid gainsboro;
-  display: flex;
-  height: ${({ hide }: ThemeProps) => (!!hide ? 0 : 70)}px;
+  display: ${({ hide }: ThemeProps) => (!hide ? 'flex' : 'none')};
+  height: 70px;
   justify-content: space-between;
   line-height: 16px;
   z-index: 9;
   padding: 0px 16px 0 10px;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  -webkit-transform:translateZ(10px);
 `
 
 export const Logo = styled.img`

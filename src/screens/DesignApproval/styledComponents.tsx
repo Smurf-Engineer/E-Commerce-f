@@ -71,7 +71,6 @@ export const Container = styled.div`
 `
 
 export const CollapseWrapper = styled.div`
-  margin-bottom: 10px;
   display: none;
   z-index: 9;
   .ant-collapse .ant-collapse-item .ant-collapse-header {
@@ -91,7 +90,7 @@ export const CollapseWrapper = styled.div`
     position: fixed;
     left: 0;
     top: 72px;
-    z-index: 9;
+    z-index: 0;
     width: 100vw;
     height: calc(100vh - 163px);
     background: ${WHITE};
@@ -125,8 +124,8 @@ export const CollapseWrapper = styled.div`
   }
   @media (max-width: 1023px) {
     display: block;
-    position: absolute;
-    bottom: 0px;
+    position: fixed;
+    bottom: 0;
     width: 100%;
     left: 0;
     z-index: 8;
@@ -423,8 +422,9 @@ export const RequestButtons = styled.div`
 export const MobileRequestButtons = styled.div`
   display: none;
   bottom: 100px;
-  position: absolute;
+  position: fixed;
   left: 0;
+  z-index: 8;
   width: 100%;
   padding: 0 28px;
   @media (max-width: 1023px) {
