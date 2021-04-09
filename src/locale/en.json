@@ -1381,6 +1381,7 @@
   "screens.Checkout.errorSavingCart": "Error trying to save card information",
   "screens.Checkout.confirm": "Confirm",
   "screens.Checkout.goBack": "Go Back",
+  "screens.Checkout.warningQuantity": "This may take time due the quantity of orders already placed, Please be patient (Verify your order history for more info)",
   "screens.Checkout.correctCurrency": "Your selected Currency is {currentCurrency}. Is this the currency you wish to proceed?",
   "screens.Checkout.couponApplied": "Coupon applied",
   "screens.Checkout.couponError": "Invalid promo code",

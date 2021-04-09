@@ -17,6 +17,11 @@ export default defineMessages({
     id: 'screens.Checkout.confirm',
     defaultMessage: 'Confirm'
   },
+  warningQuantity: {
+    id: 'screens.Checkout.warningQuantity',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'This may take time due the quantity of orders already placed, Please be patient (Verify your order history for more info)'
+  },
   correctCurrency: {
     id: 'screens.Checkout.correctCurrency',
     defaultMessage:
