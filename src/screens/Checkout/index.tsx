@@ -924,12 +924,28 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       stripeToken,
+      location,
+      intl: {
+        formatMessage
+      },
       paymentClientSecret
     } = this.props
 
     try {
       setLoadingPlaceOrderAction(true)
-
+      const {
+        state: { cart }
+      } = location
+      const orderTotal = cart.reduce((sum: number, { isFixed, totalOrder = 0 }: CartItems) => {
+        if (isFixed) {
+          sum += totalOrder
+        }
+        return sum
+      // tslint:disable-next-line: align
+      }, 0)
+      if (orderTotal > 20) {
+        Message.loading(formatMessage(messages.warningQuantity), 14)
+      }
       const orderObj = await this.getOrderObject(paypalObj, sca)
       const response = await placeOrder({
         variables: { orderObj }
