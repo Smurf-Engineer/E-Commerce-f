@@ -218,13 +218,49 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       this.checkFilters()
     }
 
+    const defaultGenders = {}
+    const defaultSports = {}
+    const defaultCategories = {}
+    const defaultSeasons = {}
+    const defaultFitStyles = {}
+
+    selectedItems.forEach((item: Product) => {
+      const { genders, sports, categoryName, season, fitStyles } = item
+      if (genders.length) {
+        genders.forEach(({ name: genderName }) => {
+          defaultGenders[genderName] = true
+        })
+      }
+      if (sports && sports.length) {
+        sports.forEach(({ name: sportName }) => {
+          defaultSports[sportName] = true
+        })
+      }
+      if (fitStyles && fitStyles.length) {
+        fitStyles.forEach(({ name: fitName }) => {
+          defaultFitStyles[fitName] = true
+        })
+      }
+      if (categoryName) {
+        defaultCategories[categoryName] = true
+      }
+      if (season) {
+        defaultSeasons[season] = true
+      }
+    })
+
+    const gendersFiltered = {...defaultGenders, ...genderFilters}
+    const sportsFiltered = {...defaultSports, ...sportFilters}
+    const categoriesFiltered = {...defaultCategories, ...categoryFilters}
+    const seasonsFiltered = {...defaultSeasons, ...seasonFilters}
+    const stylesFiltered = {...defaultFitStyles, ...fitStyleFilters}
     const filters = [
       collectionFilters,
-      genderFilters,
-      sportFilters,
-      categoryFilters,
-      seasonFilters,
-      fitStyleFilters,
+      gendersFiltered,
+      sportsFiltered,
+      categoriesFiltered,
+      seasonsFiltered,
+      stylesFiltered,
       typeFilters
     ]
 
@@ -447,12 +483,13 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   handleSelect = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { setSelectedFilters } = this.props
     const {
-      target: { name, value }
+      target: { name, checked, value }
     } = evt
     const noSpacesValue = value.replace(/\s/g, '')
     const filterObject = {
       type: `${noSpacesValue}Filters`,
-      name
+      name,
+      value: checked
     }
     setSelectedFilters(filterObject)
   }

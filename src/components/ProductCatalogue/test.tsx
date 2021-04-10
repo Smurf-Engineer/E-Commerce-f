@@ -45,7 +45,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Custom filters', () => {
           const collectionFiltersCustom = {
             type: 'collectionFilters',
-            name: 'Custom'
+            name: 'Custom',
+            value: true
           }
           const customFilterState = productCatalogReducer(
             initialState,
@@ -62,7 +63,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['collectionFilters', 'Inline'], true)
           const collectionFiltersCustom = {
             type: 'collectionFilters',
-            name: 'Custom'
+            name: 'Custom',
+            value: true
           }
           const customFilterState = productCatalogReducer(
             initialState,
@@ -88,7 +90,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Inline Filter', () => {
           const collectionFiltersInline = {
             type: 'collectionFilters',
-            name: 'Inline'
+            name: 'Inline',
+            value: true
           }
           const inlineFilterState = productCatalogReducer(
             initialState,
@@ -105,7 +108,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['collectionFilters', 'Inline'], true)
           const collectionFiltersInline = {
             type: 'collectionFilters',
-            name: 'Inline'
+            name: 'Inline',
+            value: true
           }
           const inlineFilterState = productCatalogReducer(
             initialState,
@@ -131,7 +135,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in men filter', () => {
           const genderFiltersMen = {
             type: 'genderFilters',
-            name: 'Men'
+            name: 'Men',
+            value: true
           }
           const menFilterState = productCatalogReducer(
             initialState,
@@ -148,7 +153,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['genderFilters', 'Men'], true)
           const genderFiltersMen = {
             type: 'genderFilters',
-            name: 'Men'
+            name: 'Men',
+            value: true
           }
           const menFilterState = productCatalogReducer(
             initialState,
@@ -180,7 +186,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Women filter', () => {
           const genderFiltersWomen = {
             type: 'genderFilters',
-            name: 'Women'
+            name: 'Women',
+            value: true
           }
           const womenFilterState = productCatalogReducer(
             initialState,
@@ -197,7 +204,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['genderFilters', 'Women'], true)
           const genderFiltersWomen = {
             type: 'genderFilters',
-            name: 'Women'
+            name: 'Women',
+            value: true
           }
           const womenFilterState = productCatalogReducer(
             initialState,
@@ -215,7 +223,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Unisex filter', () => {
           const genderFiltersUnisex = {
             type: 'genderFilters',
-            name: 'Unisex'
+            name: 'Unisex',
+            value: true
           }
           const unisexFilterState = productCatalogReducer(
             initialState,
@@ -232,7 +241,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['genderFilters', 'Unisex'], true)
           const genderFiltersUnisex = {
             type: 'genderFilters',
-            name: 'Unisex'
+            name: 'Unisex',
+            value: true
           }
           const unisexFilterState = productCatalogReducer(
             initialState,
@@ -258,7 +268,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Triathlon filter', () => {
           const sportFiltersTriathlon = {
             type: 'sportFilters',
-            name: 'Triathlon'
+            name: 'Triathlon',
+            value: true
           }
           const triathlonFilterState = productCatalogReducer(
             initialState,
@@ -275,7 +286,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['sportFilters', 'Triathlon'], false)
           const sportFiltersTriathlon = {
             type: 'sportFilters',
-            name: 'Triathlon'
+            name: 'Triathlon',
+            value: true
           }
           const triathlonFilterState = productCatalogReducer(
             initialState,
@@ -301,7 +313,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Active filter', () => {
           const sportFiltersActive = {
             type: 'sportFilters',
-            name: 'Active'
+            name: 'Active',
+            value: true
           }
 
           const activeFilterState = productCatalogReducer(
@@ -318,7 +331,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles false value in Active filter', () => {
           const sportFiltersActive = {
             type: 'sportFilters',
-            name: 'Active'
+            name: 'Active',
+            value: true
           }
 
           const activeFilterState = productCatalogReducer(
@@ -345,7 +359,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Mountain Bike filter', () => {
           const sportFilterMountainBike = {
             type: 'sportFilters',
-            name: 'Mountain Bike'
+            name: 'Mountain Bike',
+            value: true
           }
           const mountainBikeFilterState = productCatalogReducer(
             initialState,
@@ -361,7 +376,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles false value for Mountain Bike filter', () => {
           const sportFilterMountainBike = {
             type: 'sportFilters',
-            name: 'Mountain Bike'
+            name: 'Mountain Bike',
+            value: true
           }
           const mountainBikeFilterState = productCatalogReducer(
             initialState,
@@ -387,7 +403,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Road Bike filter', () => {
           const sportFilterRoadBike = {
             type: 'sportFilters',
-            name: 'Road Bike'
+            name: 'Road Bike',
+            value: true
           }
           const roadBikeFilterState = productCatalogReducer(
             initialState,
@@ -403,7 +420,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles false value for Road Bike filter', () => {
           const sportFilterRoadBike = {
             type: 'sportFilters',
-            name: 'Road Bike'
+            name: 'Road Bike',
+            value: true
           }
           const roadBikeFilterState = productCatalogReducer(
             initialState,
@@ -429,7 +447,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Jersey & Tops filter', () => {
           const categoryFiltersJerseyTops = {
             type: 'categoryFilters',
-            name: 'Jerseys & Tops'
+            name: 'Jerseys & Tops',
+            value: true
           }
           const jerseyTopsFilterState = productCatalogReducer(
             initialState,
@@ -446,7 +465,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['categoryFilters', 'Jerseys & Tops'], true)
           const categoryFiltersJerseyTops = {
             type: 'categoryFilters',
-            name: 'Jerseys & Tops'
+            name: 'Jerseys & Tops',
+            value: true
           }
           const jerseyTopsFilterState = productCatalogReducer(
             initialState,
@@ -471,7 +491,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Shorts & Bib', () => {
           const categoryFiltersShortsBibs = {
             type: 'categoryFilters',
-            name: 'Shorts & Bibs'
+            name: 'Shorts & Bibs',
+            value: true
           }
           const shortBibsFilterState = productCatalogReducer(
             initialState,
@@ -488,7 +509,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['categoryFilters', 'Shorts & Bibs'], true)
           const categoryFiltersShortsBibs = {
             type: 'categoryFilters',
-            name: 'Shorts & Bibs'
+            name: 'Shorts & Bibs',
+            value: true
           }
           const shortBibsFilterState = productCatalogReducer(
             initialState,
@@ -514,7 +536,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Suits filter', () => {
           const categoryFiltersSuits = {
             type: 'categoryFilters',
-            name: 'Suits'
+            name: 'Suits',
+            value: true
           }
           const suitsFilterState = productCatalogReducer(
             initialState,
@@ -531,7 +554,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['categoryFilters', 'Suits'], true)
           const categoryFiltersSuits = {
             type: 'categoryFilters',
-            name: 'Suits'
+            name: 'Suits',
+            value: true
           }
           const suitsFilterState = productCatalogReducer(
             initialState,
@@ -557,7 +581,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Accessories filter', () => {
           const categoryFiltersAccessories = {
             type: 'categoryFilters',
-            name: 'Accessories'
+            name: 'Accessories',
+            value: true
           }
           const accessoriesFilterState = productCatalogReducer(
             initialState,
@@ -574,7 +599,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['categoryFilters', 'Accessories'], true)
           const categoryFiltersAccessories = {
             type: 'categoryFilters',
-            name: 'Accessories'
+            name: 'Accessories',
+            value: true
           }
           const accessoriesFilterState = productCatalogReducer(
             initialState,
@@ -600,7 +626,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Outwear filter', () => {
           const categoryFiltersOutwear = {
             type: 'categoryFilters',
-            name: 'Outwear'
+            name: 'Outwear',
+            value: true
           }
           const outwearFilterState = productCatalogReducer(
             initialState,
@@ -617,7 +644,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['categoryFilters', 'Outwear'], true)
           const categoryFiltersOutwear = {
             type: 'categoryFilters',
-            name: 'Outwear'
+            name: 'Outwear',
+            value: true
           }
           const outwearFilterState = productCatalogReducer(
             initialState,
@@ -643,7 +671,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Racesuits filter', () => {
           const categoryFiltersRacesuits = {
             type: 'categoryFilters',
-            name: 'Racesuits'
+            name: 'Racesuits',
+            value: true
           }
           const racesuitsFilterState = productCatalogReducer(
             initialState,
@@ -660,7 +689,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['categoryFilters', 'Racesuits'], true)
           const categoryFiltersRacesuits = {
             type: 'categoryFilters',
-            name: 'Racesuits'
+            name: 'Racesuits',
+            value: true
           }
           const racesuitsFilterState = productCatalogReducer(
             initialState,
@@ -686,7 +716,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in Spring/Summer filter', () => {
           const seasonFiltersSpringSummer = {
             type: 'seasonFilters',
-            name: 'Spring/Summer'
+            name: 'Spring/Summer',
+            value: true
           }
 
           const springSummerFilterState = productCatalogReducer(
@@ -704,7 +735,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['seasonFilters', 'Spring/Summer'], true)
           const seasonFiltersSpringSummer = {
             type: 'seasonFilters',
-            name: 'Spring/Summer'
+            name: 'Spring/Summer',
+            value: true
           }
 
           const springSummerFilterState = productCatalogReducer(
@@ -732,7 +764,8 @@ describe(' ProductCatalog Screen', () => {
           it('Handles true value in Season Filters Fall/')
           const seasonFiltersFallWinter = {
             type: 'seasonFilters',
-            name: 'Fall/Winter'
+            name: 'Fall/Winter',
+            value: true
           }
 
           const fallWinterFilterState = productCatalogReducer(
@@ -750,7 +783,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['seasonFilters', 'Fall/Winter'], true)
           const seasonFiltersFallWinter = {
             type: 'seasonFilters',
-            name: 'Fall/Winter'
+            name: 'Fall/Winter',
+            value: true
           }
 
           const fallWinterFilterState = productCatalogReducer(
@@ -777,7 +811,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value in All Season Filter', () => {
           const seasonFiltersAllSeason = {
             type: 'seasonFilters',
-            name: 'All Season'
+            name: 'All Season',
+            value: true
           }
           const allSeasonFilterState = productCatalogReducer(
             initialState,
@@ -794,7 +829,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['seasonFilters', 'All Season'], true)
           const seasonFiltersAllSeason = {
             type: 'seasonFilters',
-            name: 'All Season'
+            name: 'All Season',
+            value: true
           }
           const allSeasonFilterState = productCatalogReducer(
             initialState,
@@ -820,7 +856,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Standard filter', () => {
           const fitStyleFiltersStandard = {
             type: 'fit_styleFilters',
-            name: 'Standard'
+            name: 'Standard',
+            value: true
           }
           const standardFilterState = productCatalogReducer(
             initialState,
@@ -837,7 +874,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['fit_styleFilters', 'Standard'], true)
           const fitStyleFiltersStandard = {
             type: 'fit_styleFilters',
-            name: 'Standard'
+            name: 'Standard',
+            value: true
           }
           const standardFilterState = productCatalogReducer(
             initialState,
@@ -863,7 +901,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Relaxed filter', () => {
           const fitStyleFiltersRelaxed = {
             type: 'fit_styleFilters',
-            name: 'Relaxed'
+            name: 'Relaxed',
+            value: true
           }
           const relaxedFilterState = productCatalogReducer(
             initialState,
@@ -880,7 +919,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['fit_styleFilters', 'Relaxed'], true)
           const fitStyleFiltersRelaxed = {
             type: 'fit_styleFilters',
-            name: 'Relaxed'
+            name: 'Relaxed',
+            value: true
           }
           const relaxedFilterState = productCatalogReducer(
             initialState,
@@ -906,7 +946,8 @@ describe(' ProductCatalog Screen', () => {
         it('Handles true value for Slim filter', () => {
           const fitStyleFiltersSlim = {
             type: 'fit_styleFilters',
-            name: 'Slim'
+            name: 'Slim',
+            value: true
           }
           const slimFilterState = productCatalogReducer(
             initialState,
@@ -923,7 +964,8 @@ describe(' ProductCatalog Screen', () => {
           initialState.setIn(['fit_styleFilters', 'Slim'], true)
           const fitStyleFiltersSlim = {
             type: 'fit_styleFilters',
-            name: 'Slim'
+            name: 'Slim',
+            value: true
           }
           const slimFilterState = productCatalogReducer(
             initialState,

@@ -52,7 +52,7 @@ const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action)
       return state.merge({ [action.key]: action.filter })
     case SET_SELECTED_FILTERS:
       const {
-        filter: { type, name, firstGenderSet }
+        filter: { type, name, firstGenderSet, value }
       } = action
       if (name === CYCLING) {
         return state.merge({
@@ -63,9 +63,7 @@ const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action)
         })
       }
       return state
-        .updateIn([type, name], (value: any) =>
-          firstGenderSet ? true : !!!value
-        )
+        .setIn([type, name], firstGenderSet ? true : value)
         .merge({ skip: 0, currentPage: 1 })
     case ORDERBY_SELECTED:
       return state.set('orderBy', action.orderBy)
