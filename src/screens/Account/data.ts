@@ -30,6 +30,7 @@ export const profileSettingsQuery = gql`
         lastName: last_name
         email
         affiliateEnabled: affiliate_enabled
+        showProDesign: show_pro_design
         resellerEnabled: reseller_enabled
         phone
       }

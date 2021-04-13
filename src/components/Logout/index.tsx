@@ -26,7 +26,7 @@ import {
 import {
   OVERVIEW
 } from '../../screens/Account/constants'
-import { AFFILIATES, menuOptions, RESELLER, resellerOptions, resellerShortOptions } from './constants'
+import { AFFILIATES, menuOptions, PRO_DESIGN, RESELLER, resellerOptions, resellerShortOptions } from './constants'
 import { Message } from '../../types/common'
 
 interface Props {
@@ -36,6 +36,7 @@ interface Props {
   openedMenu: boolean
   resellerEnabled: boolean
   affiliateEnabled: boolean
+  showProDesign: boolean
   approvedReseller?: boolean
   logout: () => void
   openMenu: () => void
@@ -76,6 +77,7 @@ class Logout extends React.PureComponent<Props, {}> {
       affiliateEnabled,
       resellerPending,
       resellerEnabled,
+      showProDesign,
       approvedReseller,
       darkMode
     } = this.props
@@ -101,8 +103,11 @@ class Logout extends React.PureComponent<Props, {}> {
         </TitleItem>
         {sideMenu.map(({ titleLabel, options: submenus }) =>
           submenus.length ?
-          (((titleLabel === AFFILIATES && affiliateEnabled) || (titleLabel === RESELLER && resellerEnabled))
-            || (titleLabel !== AFFILIATES && titleLabel !== RESELLER)) &&
+          (((titleLabel === AFFILIATES && affiliateEnabled) || 
+            (titleLabel === RESELLER && resellerEnabled) ||
+            (titleLabel === PRO_DESIGN && showProDesign)
+          )
+            || (titleLabel !== AFFILIATES && titleLabel !== RESELLER && titleLabel !== PRO_DESIGN)) &&
             <StyledSubMenu
               key={titleLabel}
               title={formatMessage(messagesMenu[titleLabel])}

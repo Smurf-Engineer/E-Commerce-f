@@ -12,7 +12,7 @@ import {
 import { Container, Bottom, menuStyle, BottomDiv, Item, StyledSubMenu, containerStyle } from './styledComponents'
 import messages from './messages'
 import messagesMenu from '../../../screens/Account/messages'
-import { menuOptions, AFFILIATES, RESELLER, resellerShortOptions, resellerOptions } from './constants'
+import { menuOptions, AFFILIATES, RESELLER, resellerShortOptions, resellerOptions, PRO_DESIGN } from './constants'
 import { setCurrentScreenAction } from '../../../screens/Account/actions'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -22,6 +22,7 @@ interface Props {
   data?: any
   history: any
   resellerEnabled?: boolean
+  showProDesign?: boolean
   affiliateEnabled?: boolean
   openMenuAccount: boolean
   resellerPending?: boolean
@@ -134,6 +135,7 @@ class Menu extends React.PureComponent<Props, {}> {
       affiliateEnabled,
       approvedReseller,
       resellerPending,
+      showProDesign,
       resellerEnabled,
       formatMessage
     } = this.props
@@ -159,8 +161,11 @@ class Menu extends React.PureComponent<Props, {}> {
 
     const menuAccount = sideMenu.map(({ title, options: submenus }) =>
       submenus.length ?
-      (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
-      || (title !== AFFILIATES && title !== RESELLER)) &&
+      (((title === AFFILIATES && affiliateEnabled) || 
+        (title === RESELLER && resellerEnabled) ||
+        (title === PRO_DESIGN && showProDesign)
+      )
+      || (title !== AFFILIATES && title !== RESELLER && title !== PRO_DESIGN)) &&
         <StyledSubMenu
           key={title}
           title={formatMessage(messagesMenu[title])}

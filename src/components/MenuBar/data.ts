@@ -24,6 +24,7 @@ export const profileSettingsQuery = gql`
       }
       userProfile {
         email
+        showProDesign: show_pro_design
         resellerEnabled: reseller_enabled
         affiliateEnabled: affiliate_enabled
       }

@@ -317,6 +317,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     const userName = !!user ? String(user.name).toUpperCase() : ''
     const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(profileData, 'profileData.userProfile.resellerEnabled', false)
+    const showProDesign = get(profileData, 'profileData.userProfile.showProDesign', false)
 
     const notifications = get(notificationsData, 'notifications.list', [])
     const loggedUser = !user ? (
@@ -332,6 +333,7 @@ class MenuBar extends React.Component<Props, StateProps> {
             affiliateEnabled,
             resellerPending,
             approvedReseller,
+            showProDesign,
             resellerEnabled,
             darkMode }}
           title={formatMessage(messages.myAccount, { user: userName })}
@@ -443,6 +445,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                       openMenu,
                       approvedReseller,
                       resellerPending,
+                      showProDesign,
                       resellerEnabled,
                       affiliateEnabled,
                       saveAndBuy,

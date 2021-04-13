@@ -48,3 +48,17 @@ export const GetColorPalettes = gql`
     }
   }
 `
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        firstName: first_name
+        lastName: last_name
+        email
+        phone
+        showProDesign: show_pro_design
+      }
+    }
+  }
+`

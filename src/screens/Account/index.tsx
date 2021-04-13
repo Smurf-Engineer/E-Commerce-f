@@ -42,7 +42,8 @@ import {
   resellerOptions,
   MY_STORES,
   resellerShortOptions,
-  excludeBack
+  excludeBack,
+  PRO_DESIGN
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -285,6 +286,7 @@ export class Account extends React.Component<Props, {}> {
     const pendingReseller = resellerStatus === PENDING
     const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
+    const showProDesign = get(data, 'profileData.userProfile.showProDesign', false)
     const userId = get(data, 'profileData.userProfile.userId', '')
     switch (screen) {
       case OVERVIEW:
@@ -311,7 +313,7 @@ export class Account extends React.Component<Props, {}> {
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
       case PRO_DESIGN_PROJECTS:
-        return <ProDesignProjects {...{ history, formatMessage, userId }} />
+        return showProDesign && <ProDesignProjects {...{ history, formatMessage, userId }} />
       case RESELLER_PAYOUTS:
         return (resellerEnabled && isReseller) && <ResellerOptions {...{ history, formatMessage }} />
       case RESELLER_ORDERS:
@@ -361,7 +363,7 @@ export class Account extends React.Component<Props, {}> {
     } = this.props
     const userProfile = get(data, 'profileData.userProfile', {})
     const reseller = get(data, 'profileData.reseller', {})
-    const { affiliateEnabled, resellerEnabled } = userProfile || {}
+    const { affiliateEnabled, resellerEnabled, showProDesign } = userProfile || {}
     const { status } = reseller || {}
     const approvedReseller = status === APPROVED
     let sideMenu = options
@@ -370,8 +372,11 @@ export class Account extends React.Component<Props, {}> {
     }
     const menuOptions = sideMenu.map(({ title, options: submenus }) =>
       submenus.length ?
-        (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
-          || (title !== AFFILIATES && title !== RESELLER)) &&
+        (((title === AFFILIATES && affiliateEnabled) ||
+          (title === RESELLER && resellerEnabled) ||
+          (title === PRO_DESIGN && showProDesign)
+        )
+          || (title !== AFFILIATES && title !== RESELLER && title !== PRO_DESIGN)) &&
         <SubMenu
           key={title}
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}

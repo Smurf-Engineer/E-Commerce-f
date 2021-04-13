@@ -25,6 +25,7 @@ interface Props {
   affiliateEnabled?: boolean
   resellerPending?: boolean
   resellerEnabled?: boolean
+  showProDesign?: boolean
   approvedReseller?: boolean
   notifications?: Notification[]
   updatingNotifications?: boolean
@@ -43,6 +44,7 @@ export const MenuBarMobile = ({
   totalItems,
   affiliateEnabled,
   resellerEnabled,
+  showProDesign,
   resellerPending,
   openMenu,
   designHasChanges,
@@ -69,6 +71,7 @@ export const MenuBarMobile = ({
           {...{
             history,
             resellerEnabled,
+            showProDesign,
             loginButton,
             openMenu,
             formatMessage,

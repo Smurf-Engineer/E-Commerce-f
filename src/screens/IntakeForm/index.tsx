@@ -12,7 +12,7 @@ import message from 'antd/lib/message'
 import DesignCenterHeader from '../../components/DesignCenterHeader'
 import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
-import { saveProject, renameFile, GetColorsQuery, GetColorPalettes } from './data'
+import { saveProject, renameFile, GetColorsQuery, GetColorPalettes, profileSettingsQuery } from './data'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
@@ -64,7 +64,8 @@ import {
   Product,
   ColorsDataResult,
   QueryProps,
-  ProDesignPalette
+  ProDesignPalette,
+  IProfileSettings
 } from '../../types/common'
 import {
   Sections,
@@ -82,6 +83,10 @@ interface DataColor extends QueryProps {
   rows: ProDesignPalette[]
 }
 
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
+}
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   responsive: Responsive
@@ -90,6 +95,7 @@ interface Props extends RouteComponentProps<any> {
   inspirationPage: number
   dataColor: DataColor
   inspirationSkip: number
+  profileData: ProfileData
   inspiration: InspirationType[]
   inspirationTotal: number
   inspirationLoading: boolean
@@ -666,6 +672,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedEditPrimaryColor,
       uploadingFile,
       selectedFiles,
+      profileData,
       userLockerModalOpen,
       highlight,
       user,
@@ -740,7 +747,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const queryParams = queryString.parse(search)
 
     const { id: projectId } = queryParams || {}
-
+    const showProDesign = get(profileData, 'profileData.userProfile.showProDesign', false)
     const paletteName = get(dataColor, ['rows', selectedPaletteIndex, 'name'], '')
 
     const colorLabels = arrayColors.reduce((obj, { value, name }: Color) => {
@@ -796,207 +803,209 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         hideFooter={true}
         darkMode={true}
       >
-      <IntakeContainer
-        ref={(listObject: any) => {
-          this.intakeRef = listObject
-        }}
-      >
-        {!isMobile && !isTablet ? <>
-          <DesignCenterHeader
-            proDesign={true}
-            onPressBack={this.handleOnPressBack}
-          />
-          {navBar}
-          <Menu
-            {...{validations, savingIntake}}
-            onPrevious={this.handleOnPrevious}
-            onContinue={this.handleOnContinue}
-            showMissingFields={this.showMissingFields}
-          /></> : null }
-          {isMobile || isTablet ?
-          (<MobileMenuNav
-            onContinue={this.handleOnContinue}
-            onPrevious={this.handleOnPrevious}
-            onSelectTab={this.handleOnSelectTab}
-            validate={this.getNavButtonsValidation}
-            showMissingFields={this.showMissingFields}
-            currentTab={currentScreen}      
-            {...{validations, savingIntake, fromScratch, formatMessage}}
-          />) : null}
+        {showProDesign &&
+          <IntakeContainer
+            ref={(listObject: any) => {
+              this.intakeRef = listObject
+            }}
+          >
+            {!isMobile && !isTablet ? <>
+              <DesignCenterHeader
+                proDesign={true}
+                onPressBack={this.handleOnPressBack}
+              />
+              {navBar}
+              <Menu
+                {...{validations, savingIntake}}
+                onPrevious={this.handleOnPrevious}
+                onContinue={this.handleOnContinue}
+                showMissingFields={this.showMissingFields}
+              /></> : null }
+              {isMobile || isTablet ?
+              (<MobileMenuNav
+                onContinue={this.handleOnContinue}
+                onPrevious={this.handleOnPrevious}
+                onSelectTab={this.handleOnSelectTab}
+                validate={this.getNavButtonsValidation}
+                showMissingFields={this.showMissingFields}
+                currentTab={currentScreen}      
+                {...{validations, savingIntake, fromScratch, formatMessage}}
+              />) : null}
 
-        {topNavHeader}
-        {currentScreen === Sections.PRODUCTS ? <>
-          <ProductCatalogue
-              onSelectProduct={this.handleOnselectProductAction}
-              onDeselectProduct={deselectElementAction}
-              hideFilters={['collection']}
-              fromIntakeForm={true}
-              changeQuantity={this.handleChangeQuantity}
-              isEdit={!!projectId}
-              {...{ history, formatMessage, selectedItems }} /></> : null}
-        {currentScreen === Sections.PATHWAY ? (
-          <DesignPathway 
-            fromScratch={this.handleFromScratch}
-            existingArtwork={this.handleFromExistingArtwork}
-            {...{formatMessage, isMobile}} />
-        ) : null}
-       {currentScreen > Sections.PATHWAY ?
-        <SwipeableViews
-          disabled={true}
-          enableMouseEvents={false}
-          animateHeight={true}
-          index={currentScreen}>
-            {currentScreen === Sections.INSPIRATION ? <Inspiration
-              {...{ formatMessage, inspiration, isMobile, isTablet }}
-              windowWidth={responsive.fakeWidth}
-              currentPage={inspirationPage}
-              setPage={setInspirationPageAction}
-              skip={inspirationSkip}
-              setInspirationData={setInspirationDataAction}
-              total={inspirationTotal}
-              setLoading={setInspirationLoadingAction}
-              loading={inspirationLoading}
-              onSelect={this.handleOnselectElementAction}
-              onDeselect={deselectElementAction}
-              selectedItems={inspirationSelectedItems}
-              onExpandInspiration={onExpandInspirationAction}
-              addTag={addTagAction}
-              removeTag={removeTagAction}
-              selectedTags={inspirationTags}
-              filters={inspirationFilters}
-              resetInspirationData={resetInspirationDataAction}
-              removeFilter={removeFromListAction}
-              addFilter={addToListAction}
-            /> : <div />}
-            {currentScreen === Sections.COLORS ? <Colors
-              {...{
-                formatMessage,
-                selectedColors,
-                selectedPrimaryColor,
-                setOpenBuild,
-                openBuild,
-                colorLabels,
-                colorsList,
-                selectedPaletteIndex,
-                selectedEditColors,
-                selectedEditPrimaryColor,
-                isTablet,
-                isMobile
-              }}
-              data={dataColor}
-              onSelect={(this.handleOnselectElementAction)}
-              onDeselect={deselectElementAction}
-              selectPalette={selectPaletteAction}
-              resetSelection={resetColorSelectionAction}
-            /> : <div />}
-            {currentScreen === Sections.FILES ? <Files
-              {...{
-                formatMessage,
-                uploadingFile,
-                selectedFiles,
-                userLockerModalOpen,
-                user,
-                lockerSelectedFiles,
-                isMobile,
-                highlight,
-                renameFileOpen,
-                fileIdToRename,
-                newFileName,
-                renamingFile,
-                fileTermsAccepted
-              }}
-              onUploadFile={uploadFileAction}
-              openUserLocker={openUserLockerAction}
-              onOpenLogin={this.handleOnOpenLogin}
-              onSelectItem={this.handleOnSelectLockerFile}
-              onAddItems={onAddItemsAction}
-              deselectLockerItem={this.handleOnDeselectLockerFile}
-              deleteImage={this.handleOnDeleteImage}
-              onOpenRenameModal={openRenameModalAction}
-              handleOnRenameChange={onRenameChangeAction}
-              onSaveName={this.handleOnRenameFileName}
-              setFileTerms={setFileTermsAction}
-            /> : <div />}
-            {currentScreen === Sections.NOTES ? <Notes
-              {...{
-                formatMessage,
-                user,
-                projectDescription,
-                projectName,
-                phone,
-                validLength,
-                highlight,
-                inspiration,
-                inspirationSelectedItems,
-                selectedColors,
-                selectedPrimaryColor,
-                selectedPaletteIndex,
-                selectedEditColors,
-                selectedEditPrimaryColor,
-                selectedFiles,
-                colorLabels,
-                paletteName,
-                selectedItems,
-                fromScratch,
-                currentCurrency,
-                richTextEditorReady
-              }}
-              onChangeInput={onSetInputAction}
-              goToPage={this.handleOnSelectTab}
-              setDescription={setDescriptionAction}
-              removeCategory={removeFromListAction}
-              addCategory={addToListAction}
-              categories={projectCategories}
-              showModal={this.showAlert}
-            /> : <div />}
-            {currentScreen === Sections.NOTIFICATIONS ? <Notifications
-              {...{
-                formatMessage,
-                user,
-                selectedTeamSize,
-                phone,
-                sendSms,
-                sendEmail,
-                isMobile,
-                history
-              }}
-              removeCategory={removeFromListAction}
-              addCategory={addToListAction}
-              categories={projectCategories}
-              estimatedDate={estimatedDateMoment}
-              onSelectTeamSize={onSelectTeamSizeAction}
-              onChangeInput={onSetInputAction}
-              onSelectDate={onSelectDateAction}
-              onCheckSms={onCheckSmsChangeAction}
-              onCheckEmail={onCheckEmailChangeAction}
-              mainProduct={selectedItems.length ? selectedItems[0].id : null}
-            /> : <div />}
-            {currentScreen === Sections.REVIEW ? <Review
-              {...{
-                formatMessage,
-                inspiration,
-                inspirationSelectedItems,
-                selectedColors,
-                selectedPrimaryColor,
-                selectedPaletteIndex,
-                selectedEditColors,
-                selectedEditPrimaryColor,
-                selectedFiles,
-                estimatedDate,
-                selectedTeamSize,
-                projectName,
-                user,
-                colorLabels,
-                paletteName,
-                projectDescription,
-                selectedItems,
-                fromScratch,
-                currentCurrency
-              }}
-              goToPage={this.handleOnSelectTab}
-            /> : <div />}
-          </SwipeableViews> : null}
-      </IntakeContainer>
+            {topNavHeader}
+            {currentScreen === Sections.PRODUCTS ? <>
+              <ProductCatalogue
+                  onSelectProduct={this.handleOnselectProductAction}
+                  onDeselectProduct={deselectElementAction}
+                  hideFilters={['collection']}
+                  fromIntakeForm={true}
+                  changeQuantity={this.handleChangeQuantity}
+                  isEdit={!!projectId}
+                  {...{ history, formatMessage, selectedItems }} /></> : null}
+            {currentScreen === Sections.PATHWAY ? (
+              <DesignPathway 
+                fromScratch={this.handleFromScratch}
+                existingArtwork={this.handleFromExistingArtwork}
+                {...{formatMessage, isMobile}} />
+            ) : null}
+          {currentScreen > Sections.PATHWAY ?
+            <SwipeableViews
+              disabled={true}
+              enableMouseEvents={false}
+              animateHeight={true}
+              index={currentScreen}>
+                {currentScreen === Sections.INSPIRATION ? <Inspiration
+                  {...{ formatMessage, inspiration, isMobile, isTablet }}
+                  windowWidth={responsive.fakeWidth}
+                  currentPage={inspirationPage}
+                  setPage={setInspirationPageAction}
+                  skip={inspirationSkip}
+                  setInspirationData={setInspirationDataAction}
+                  total={inspirationTotal}
+                  setLoading={setInspirationLoadingAction}
+                  loading={inspirationLoading}
+                  onSelect={this.handleOnselectElementAction}
+                  onDeselect={deselectElementAction}
+                  selectedItems={inspirationSelectedItems}
+                  onExpandInspiration={onExpandInspirationAction}
+                  addTag={addTagAction}
+                  removeTag={removeTagAction}
+                  selectedTags={inspirationTags}
+                  filters={inspirationFilters}
+                  resetInspirationData={resetInspirationDataAction}
+                  removeFilter={removeFromListAction}
+                  addFilter={addToListAction}
+                /> : <div />}
+                {currentScreen === Sections.COLORS ? <Colors
+                  {...{
+                    formatMessage,
+                    selectedColors,
+                    selectedPrimaryColor,
+                    setOpenBuild,
+                    openBuild,
+                    colorLabels,
+                    colorsList,
+                    selectedPaletteIndex,
+                    selectedEditColors,
+                    selectedEditPrimaryColor,
+                    isTablet,
+                    isMobile
+                  }}
+                  data={dataColor}
+                  onSelect={(this.handleOnselectElementAction)}
+                  onDeselect={deselectElementAction}
+                  selectPalette={selectPaletteAction}
+                  resetSelection={resetColorSelectionAction}
+                /> : <div />}
+                {currentScreen === Sections.FILES ? <Files
+                  {...{
+                    formatMessage,
+                    uploadingFile,
+                    selectedFiles,
+                    userLockerModalOpen,
+                    user,
+                    lockerSelectedFiles,
+                    isMobile,
+                    highlight,
+                    renameFileOpen,
+                    fileIdToRename,
+                    newFileName,
+                    renamingFile,
+                    fileTermsAccepted
+                  }}
+                  onUploadFile={uploadFileAction}
+                  openUserLocker={openUserLockerAction}
+                  onOpenLogin={this.handleOnOpenLogin}
+                  onSelectItem={this.handleOnSelectLockerFile}
+                  onAddItems={onAddItemsAction}
+                  deselectLockerItem={this.handleOnDeselectLockerFile}
+                  deleteImage={this.handleOnDeleteImage}
+                  onOpenRenameModal={openRenameModalAction}
+                  handleOnRenameChange={onRenameChangeAction}
+                  onSaveName={this.handleOnRenameFileName}
+                  setFileTerms={setFileTermsAction}
+                /> : <div />}
+                {currentScreen === Sections.NOTES ? <Notes
+                  {...{
+                    formatMessage,
+                    user,
+                    projectDescription,
+                    projectName,
+                    phone,
+                    validLength,
+                    highlight,
+                    inspiration,
+                    inspirationSelectedItems,
+                    selectedColors,
+                    selectedPrimaryColor,
+                    selectedPaletteIndex,
+                    selectedEditColors,
+                    selectedEditPrimaryColor,
+                    selectedFiles,
+                    colorLabels,
+                    paletteName,
+                    selectedItems,
+                    fromScratch,
+                    currentCurrency,
+                    richTextEditorReady
+                  }}
+                  onChangeInput={onSetInputAction}
+                  goToPage={this.handleOnSelectTab}
+                  setDescription={setDescriptionAction}
+                  removeCategory={removeFromListAction}
+                  addCategory={addToListAction}
+                  categories={projectCategories}
+                  showModal={this.showAlert}
+                /> : <div />}
+                {currentScreen === Sections.NOTIFICATIONS ? <Notifications
+                  {...{
+                    formatMessage,
+                    user,
+                    selectedTeamSize,
+                    phone,
+                    sendSms,
+                    sendEmail,
+                    isMobile,
+                    history
+                  }}
+                  removeCategory={removeFromListAction}
+                  addCategory={addToListAction}
+                  categories={projectCategories}
+                  estimatedDate={estimatedDateMoment}
+                  onSelectTeamSize={onSelectTeamSizeAction}
+                  onChangeInput={onSetInputAction}
+                  onSelectDate={onSelectDateAction}
+                  onCheckSms={onCheckSmsChangeAction}
+                  onCheckEmail={onCheckEmailChangeAction}
+                  mainProduct={selectedItems.length ? selectedItems[0].id : null}
+                /> : <div />}
+                {currentScreen === Sections.REVIEW ? <Review
+                  {...{
+                    formatMessage,
+                    inspiration,
+                    inspirationSelectedItems,
+                    selectedColors,
+                    selectedPrimaryColor,
+                    selectedPaletteIndex,
+                    selectedEditColors,
+                    selectedEditPrimaryColor,
+                    selectedFiles,
+                    estimatedDate,
+                    selectedTeamSize,
+                    projectName,
+                    user,
+                    colorLabels,
+                    paletteName,
+                    projectDescription,
+                    selectedItems,
+                    fromScratch,
+                    currentCurrency
+                  }}
+                  goToPage={this.handleOnSelectTab}
+                /> : <div />}
+              </SwipeableViews> : null}
+          </IntakeContainer>
+      }
       {successModal ? <SuccessModal
         title={formatMessage(messages.successTitle)}
         text={formatMessage(messages.successMessage)}
@@ -1044,6 +1053,12 @@ const IntakeFormPageEnhance = compose(
     mapStateToProps,
     { ...intakeFormActions, ...apiActions, openLoginAction }
   ),
+  graphql(profileSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'profileData'
+  }),
   graphql<DataColor>(GetColorPalettes, { name: 'dataColor' }),
   graphql<ColorsDataResult>(GetColorsQuery, {
     options: (ownprops: OwnProps) => {

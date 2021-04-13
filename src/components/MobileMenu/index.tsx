@@ -22,6 +22,7 @@ interface Props {
   history: any
   openMenu: boolean
   resellerPending?: boolean
+  showProDesign?: boolean
   resellerEnabled?: boolean
   approvedReseller?: boolean
   affiliateEnabled?: boolean
@@ -49,6 +50,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
       formatMessage,
       affiliateEnabled,
       resellerEnabled,
+      showProDesign,
       resellerPending,
       proDesign = false
     } = this.props
@@ -65,6 +67,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
               formatMessage,
               affiliateEnabled,
               resellerEnabled,
+              showProDesign,
               resellerPending,
               approvedReseller
             }}
