@@ -51,8 +51,12 @@ export const options = [
     options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
   },
   {
-    title: CREATIONS,
-    options: [SCREEN_LOCKER, MY_FILES]
+    title: SCREEN_LOCKER,
+    options: []
+  },
+  {
+    title: MY_FILES,
+    options: []
   }
 ]
 
@@ -82,8 +86,12 @@ export const resellerOptions = [
     options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
   {
-    title: CREATIONS,
-    options: [SCREEN_LOCKER, MY_FILES]
+    title: SCREEN_LOCKER,
+    options: []
+  },
+  {
+    title: MY_FILES,
+    options: []
   }
 ]
 
