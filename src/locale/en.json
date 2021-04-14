@@ -1222,7 +1222,7 @@
   "components.OrderDetails.lastUpdated": "Last Updated",
   "components.OrderDetails.annotation": "* For order cancellations or information on refunds, please contact Customer Service.",
   "components.OrderDetails.updatePayment": "Edit Order",
-  "components.OrderDetails.paymentIssue": "We encountered a problem when attemping to process your payment. Use the <strong>EDIT</strong> button below to update your payment information and complete the checkout once again",
+  "components.OrderDetails.paymentIssue": "We've encountered a problem when attempting to process your payment. Please contact <a href=\"mailto:customdesign@jakroousa.com\">Customer Support</a> via email or chat within 48 hours or next business day to avoid delays and maintain your original delivery date.",
   "components.OrderDetails.deleteOrder": "Delete Order",
   "components.OrderDetails.edit": "Edit Order",
   "components.OrderDetails.editOrderTitle": "ARE YOU SURE?",

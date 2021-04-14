@@ -393,8 +393,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           />
         }
         {(teamStoreId && owner) &&
-          (status === PREORDER ||
-            (status === PAYMENT_ISSUE && canUpdatePayment)) ? (
+          (status === PREORDER || canUpdatePayment) ? (
             <OrderActions>
               <ButtonWrapper>
                 <Button type="primary" onClick={this.handleOnEditOrder}>
