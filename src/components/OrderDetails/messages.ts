@@ -155,8 +155,7 @@ export default defineMessages({
   },
   paymentIssue: {
     id: 'components.OrderDetails.paymentIssue',
-    defaultMessage:
-      // tslint:disable-next-line:max-line-length
-      'We encountered a problem when attemping to process your payment. Use the <strong>EDIT</strong> button below to update your payment information and complete the checkout once again'
+    // tslint:disable-next-line:max-line-length
+    defaultMessage: `We've encountered a problem when attempting to process your payment. Please contact <a href="mailto:customdesign@jakroousa.com">Customer Support</a> via email or chat within 48 hours or next business day to avoid delays and maintain your original delivery date.`
   }
 })
