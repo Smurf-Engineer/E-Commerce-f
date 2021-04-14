@@ -39,6 +39,7 @@ export const getProDesignProject = gql`
         accountManager {
           firstName: first_name
           lastName: last_name
+          email
         }
       }
       designs {

@@ -802,6 +802,7 @@
   "screens.TermsOfUse.tittle": "TERMS OF USE",
   "screens.IntakeForm.chooseProducts": "Select Your Products",
   "screens.IntakeForm.addProduct": "Select a Product to Add",
+  "screens.IntakeForm.addToProject": "Add to Project",
   "screens.IntakeForm.productsDescription": "Select up to 5 products to complete your kit. If you need more, you will have a chance to add them later with the help of your account manager.",
   "screens.IntakeForm.designPathway": "Design Path ",
   "screens.IntakeForm.designPathwaySubtitle": "Select the design path that best suits your project.",

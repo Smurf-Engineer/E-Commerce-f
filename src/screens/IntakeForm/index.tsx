@@ -12,7 +12,14 @@ import message from 'antd/lib/message'
 import DesignCenterHeader from '../../components/DesignCenterHeader'
 import { Moment } from 'moment'
 import Layout from '../../components/MainLayout'
-import { saveProject, renameFile, GetColorsQuery, GetColorPalettes, profileSettingsQuery } from './data'
+import {
+  saveProject,
+  renameFile,
+  GetColorsQuery,
+  GetColorPalettes,
+  profileSettingsQuery,
+  addProductsProjectMutation
+} from './data'
 import SwipeableViews from 'react-swipeable-views'
 import * as intakeFormActions from './actions'
 import * as apiActions from './api'
@@ -53,7 +60,8 @@ import {
   RasterText,
   RasterContent,
   BottomText,
-  ModalIcon
+  ModalIcon,
+  InfoText
 } from './styledComponents'
 import {
   Responsive,
@@ -77,7 +85,7 @@ import {
 } from './constants'
 import ReactDOM from 'react-dom'
 
-const { info } = Modal
+const { info, confirm } = Modal
 
 interface DataColor extends QueryProps {
   rows: ProDesignPalette[]
@@ -137,6 +145,7 @@ interface Props extends RouteComponentProps<any> {
   validLength: boolean
   highlight: boolean
   setHighlight: (active: boolean) => void
+  addProductsProject: (variable: {}) => Promise<MessagePayload>
   selectElementAction: (elementId: number | string, listName: string, index?: number) => void
   deselectElementAction: (elementId: number | string, listName: string, key?: number) => void
   goToPage: (page: number) => void
@@ -266,13 +275,62 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     }
   }
 
+  addManyProducts = async () => {
+    const { selectedItems, history, onSetSavingIntake, addProductsProject, location: { search } } = this.props
+    try {
+      onSetSavingIntake(true)
+      const queryParams = queryString.parse(search)
+      const { id: projectId, admUser } = queryParams || {}
+
+      const products = selectedItems.map(({ id }) => id)
+      const results = await addProductsProject({
+        variables: { projectId, products, admUser }
+      })
+      const successMessage = get(results, 'data.addProductsProject.message')
+      message.success(successMessage)
+      history.push(`/admin/kanban?id=${projectId}`)
+    } catch (e) {
+      message.error(
+        `Something wrong happened. Please try again! ${e.message}`
+      )
+    } finally {
+      onSetSavingIntake(false)
+    }
+  }
+
   handleOnContinue = async (isFromScratch?: boolean) => {
-    const { goToPage, location: { search }, currentScreen, selectedItems, history } = this.props
+    const {
+      goToPage,
+      location: { search },
+      currentScreen,
+      selectedItems,
+      history,
+      intl: { formatMessage } 
+    } = this.props
     const { isMobile, isTablet } = this.state
     const queryParams = queryString.parse(search)
-    const { id: projectId } = queryParams || {}
+    const { id: projectId, admUser } = queryParams || {}
     const productId = get(selectedItems, '[0].id', '')
-    if (!!projectId && !!productId) {
+    if (!!admUser && !!projectId) {
+      return confirm({
+        icon: ' ',
+        className: 'centeredButtons',
+        okText: formatMessage(messages.addToProject),
+        okButtonProps: {
+          style: buttonStyle
+        },
+        onOk: async () => await this.addManyProducts(),
+        content: 
+          <RasterContent>
+            <InfoText
+              dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.addMany, { count: selectedItems.length })
+              }}
+            />
+          </RasterContent>
+      })
+    }
+    if (!!projectId && !!productId && !admUser) {
       return history.push(`/approval?project=${projectId}&product=${productId}`)
     }
     if (isMobile || isTablet) {
@@ -510,8 +568,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   handleOnselectProductAction = (product: Product) => {
     const { selectProductAction, location: { search }, selectedItems, intl: { formatMessage } } = this.props
     const queryParams = queryString.parse(search)
-    const { id: projectId } = queryParams || {}
-    if (selectedItems.length < (!projectId ? 5 : 1)) {
+    const { id: projectId, admUser } = queryParams || {}
+    if (selectedItems.length < (!!projectId && !admUser ? 1 : 5)) {
       return selectProductAction(product)
     }
     const title = formatMessage(messages.maxProductsTitle)
@@ -746,7 +804,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
-    const { id: projectId } = queryParams || {}
+    const { id: projectId, admUser } = queryParams || {}
     const showProDesign = get(profileData, 'profileData.userProfile.showProDesign', false)
     const paletteName = get(dataColor, ['rows', selectedPaletteIndex, 'name'], '')
 
@@ -759,12 +817,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const currentTitleHasAction = titleTexts[currentScreen].action
     const currentSubtitle = titleTexts[currentScreen].body
     const currentSubtitleTips = titleTexts[currentScreen].bodyWithTip
-    const currentTitle = !projectId ? titleTexts[currentScreen].title : 'addProduct'
+    const currentTitle = !!projectId && !admUser ? 'addProduct' : titleTexts[currentScreen].title
     const showTopNav = currentTitle.length || currentSubtitle.length || currentSubtitleTips.length
     const navTitle = currentTitle.length ? (<Title>
         {formatMessage(messages[currentTitle])}
       </Title>) : null
-    const navSubtitle = currentSubtitle.length && !projectId ? <Subtitle>
+    const navSubtitle = currentSubtitle.length && (!projectId || !!admUser) ? <Subtitle>
           {formatMessage(messages[currentSubtitle])}
       </Subtitle> : null
 
@@ -840,7 +898,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   hideFilters={['collection']}
                   fromIntakeForm={true}
                   changeQuantity={this.handleChangeQuantity}
-                  isEdit={!!projectId}
+                  isEdit={!!projectId && !admUser}
                   {...{ history, formatMessage, selectedItems }} /></> : null}
             {currentScreen === Sections.PATHWAY ? (
               <DesignPathway 
@@ -1047,6 +1105,7 @@ const mapStateToProps = (state: any) => {
 const IntakeFormPageEnhance = compose(
   saveProject,
   renameFile,
+  addProductsProjectMutation,
   withApollo,
   injectIntl,
   connect(

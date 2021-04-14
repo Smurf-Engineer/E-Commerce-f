@@ -1,6 +1,7 @@
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
 import {
+  BLUE,
   GRAY_DARK,
   GRAY_LIGHT,
   GRAY_LIGHTEST,
@@ -34,6 +35,13 @@ export const Container = styled.div`
 export const StrongText = styled.div`
   color: ${GRAY_DARK};
   font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 10px;
+  width: 100%;
+`
+
+export const MailLink = styled.a`
+  color: ${BLUE};
   font-size: 16px;
   margin-bottom: 10px;
   width: 100%;

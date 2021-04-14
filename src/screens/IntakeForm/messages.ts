@@ -22,6 +22,15 @@ export default defineMessages({
     id: 'screens.IntakeForm.designPathway',
     defaultMessage: 'Design Path '
   },
+  addToProject: {
+    id: 'screens.IntakeForm.addToProject',
+    defaultMessage: 'Add to Project'
+  },
+  addMany: {
+    id: 'screens.IntakeForm.addMany',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `<p>You have selected <strong>{count, plural, one {1 product} other {{count} products}}</strong> to add to the project.</p><p>Are you sure?</p>`
+  },
   designPathwaySubtitle: {
     id: 'screens.IntakeForm.designPathwaySubtitle',
     defaultMessage: 'Select the design path that best suits your project.'

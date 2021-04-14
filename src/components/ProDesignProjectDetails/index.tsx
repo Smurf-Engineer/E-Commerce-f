@@ -36,7 +36,8 @@ import {
   ModalTitle,
   InfoBody,
   cancelButtonStyle,
-  buttonStyle
+  buttonStyle,
+  MailLink
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
@@ -190,9 +191,9 @@ export class Review extends React.Component<Props, {}> {
               </Column>
               <Column>
                 <Text>{formatMessage(messages.accountManager)}</Text>
-                <StrongText>
+                <MailLink href={`mailto:${accountManager.email}`}>
                   {accountManager.firstName ? `${accountManager.firstName} ${accountManager.lastName}` : '-'}
-                </StrongText>
+                </MailLink>
               </Column>
               <Column />
             </Row>

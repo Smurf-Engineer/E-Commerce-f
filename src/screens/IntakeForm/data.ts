@@ -14,6 +14,19 @@ export const saveProject = graphql(
   }
 )
 
+export const addProductsProjectMutation = graphql(
+  gql`
+    mutation addProductsProject($projectId: String!, $products: [String], $admUser: String!) {
+      addProductsProject(projectId: $projectId, products: $products, admUser: $admUser) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'addProductsProject'
+  }
+)
+
 export const renameFile = graphql(
   gql`
     mutation renameFileName($id: Int, $value: String) {

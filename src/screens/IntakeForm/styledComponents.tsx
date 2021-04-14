@@ -113,6 +113,10 @@ export const ModalIcon = styled(Icon)`
 
 export const RasterText = styled.div``
 
+export const InfoText = styled.div`
+  text-align: center;
+`
+
 export const InfoBody = styled.div`
   color: ${GRAY_DARK};
   font-family: ${AVENIR_NEXT};

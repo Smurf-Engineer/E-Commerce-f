@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { isPhoneNumber } from '../../../utils/utilsFiles'
 import DataSelected from '../Review/DataSelected'
-import { EditorState } from 'draft-js'
+import { EditorState, convertFromRaw } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
   Container,
@@ -79,9 +79,23 @@ export class Notes extends React.Component<Props, {}> {
   componentDidMount() {
     if (typeof window !== undefined) {
       Editor = require('react-draft-wysiwyg').Editor
-      this.setState({
-        editorReady: true,
-      })
+      const { projectDescription } = this.props
+      if (projectDescription) {
+        try {
+          const blocksContent = JSON.parse( projectDescription)
+          const editorState = EditorState.createWithContent(convertFromRaw(blocksContent))
+          this.setState({
+            editorReady: true,
+            editorState
+          })
+        } catch (e) {
+          console.error('Error:', e)
+        }
+      } else {
+        this.setState({
+          editorReady: true,
+        })
+      }
     }
   } 
 
