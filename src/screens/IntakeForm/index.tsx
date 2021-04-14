@@ -276,7 +276,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   addManyProducts = async () => {
-    const { selectedItems, history, onSetSavingIntake, addProductsProject, location: { search } } = this.props
+    const { selectedItems, onSetSavingIntake, addProductsProject, location: { search } } = this.props
     try {
       onSetSavingIntake(true)
       const queryParams = queryString.parse(search)
@@ -288,7 +288,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       })
       const successMessage = get(results, 'data.addProductsProject.message')
       message.success(successMessage)
-      history.push(`/admin/kanban?id=${projectId}`)
+      window.location.href = `/admin/kanban?id=${projectId}`
     } catch (e) {
       message.error(
         `Something wrong happened. Please try again! ${e.message}`
