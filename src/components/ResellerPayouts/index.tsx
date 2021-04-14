@@ -46,7 +46,7 @@ interface Props {
   history: History
   setSearchTextAction: (searchText: string) => void
   formatMessage: (messageDescriptor: Message) => string
-  onChangePage: (page: number) => void
+  setCurrentPageAction: (page: number) => void
   onRowClick: (url: string) => void
 }
 
@@ -64,8 +64,8 @@ export class ResellerPayouts extends React.Component<Props, {}> {
     this.debounceSearch(value)
   }
   handleOnChangePage = (page: number) => {
-    const { onChangePage } = this.props
-    onChangePage(page)
+    const { setCurrentPageAction } = this.props
+    setCurrentPageAction(page)
   }
   openReceipt = (evt: React.MouseEvent<EventTarget>) => {
     const {
