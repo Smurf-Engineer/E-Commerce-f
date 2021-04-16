@@ -137,7 +137,7 @@ export const DragCell = styled.div`
   }
 `
 
-export const DeleteButton = styled.div`
+export const DeleteButton = styled(Icon)`
   text-align: right;
   user-select: none;
   color: #e61737;
@@ -145,6 +145,10 @@ export const DeleteButton = styled.div`
   letter-spacing: 0.1px;
   line-height: 43px;
   cursor: pointer;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.4;
+  }
 `
 
 export const Center = styled.div`

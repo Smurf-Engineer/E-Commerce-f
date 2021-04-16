@@ -47,10 +47,6 @@ const notificationsHeader: Header[] = [
   { message: 'date', width: 30, tabletWidth: 30, fieldName: 'date', dataType: DATE }
 ]
 
-const sourceHeader: Header[] = [
-  { message: 'source', width: 20, tabletWidth: 20, fieldName: 'notificationType' }
-]
-
 const optionalHeaders: Header[] = [
   { message: 'user', width: 20, tabletWidth: 20, fieldName: 'user' },
   { message: 'email', width: 20, tabletWidth: 20, fieldName: 'email' },
@@ -128,13 +124,11 @@ class Notifications extends React.Component<Props, {}> {
       formatMessage,
       notificationsData: { notifications, loading },
       fromAdmin = false,
-      isMobile = false,
       currentPage,
     } = this.props
     const notificationsList = get(notifications, 'list', [])
     const fullCount = get(notifications, 'fullCount', 0)
 
-    const headers = !isMobile ? [...notificationsHeader, ...sourceHeader] : notificationsHeader
     return (
       <Container>
         {fromAdmin && <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>}
@@ -150,9 +144,8 @@ class Notifications extends React.Component<Props, {}> {
                 formatMessage
               }}
               data={notificationsList || []}
-              headerTitles={fromAdmin ? [...notificationsHeader, ...optionalHeaders] : headers}
+              headerTitles={fromAdmin ? [...notificationsHeader, ...optionalHeaders] : notificationsHeader}
               targetGroup={NOTIFICATIONS}
-              canDelete={false}
               notifications={true}
               onPressRow={this.handleOnPressNotification}
             />

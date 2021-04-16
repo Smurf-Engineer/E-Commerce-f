@@ -6,7 +6,7 @@ import { TableRow, Cell, DeleteButton, Thumbnail } from '../styledComponents'
 import moment from 'moment'
 import messages from '../messages'
 import { Message, Header } from '../../../types/common'
-import { DATE, SIMPLE_DATE_FORMAT } from '../../../constants'
+import { DATE } from '../../../constants'
 
 interface Props {
   index: number
@@ -36,7 +36,10 @@ class Row extends React.PureComponent<Props, {}> {
       onPressRow
     } = this.props
 
-    const handleOnClick = () => {
+    const handleOnClick = (event: React.MouseEvent<EventTarget>) => {
+      if (event) {
+        event.stopPropagation()
+      }
       onPressDelete(index, targetGroup)
     }
 
@@ -51,7 +54,7 @@ class Row extends React.PureComponent<Props, {}> {
           {headerTitles.map(
             (header, rowIndex) => {
               const currentItem = item[header.fieldName] || item
-              const value = header.dataType === DATE ? moment(currentItem).format(SIMPLE_DATE_FORMAT) : currentItem
+              const value = header.dataType === DATE ? moment(currentItem).format('MM/DD/YYYY HH:mm') : currentItem
 
               return header.fieldName ? (
                 <Cell
@@ -70,7 +73,7 @@ class Row extends React.PureComponent<Props, {}> {
             }
           )}
           {canDelete && <Cell>
-            <DeleteButton onClick={handleOnClick}>
+            <DeleteButton type="delete" onClick={handleOnClick}>
               {formatMessage(messages.delete)}
             </DeleteButton>
           </Cell>}

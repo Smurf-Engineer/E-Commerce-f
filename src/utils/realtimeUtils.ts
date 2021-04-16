@@ -15,7 +15,7 @@ const config = {
 export const firebaseInit = async () => {
   try {
     if (!firebase.apps.length) {
-        firebase.initializeApp(config)
+      firebase.initializeApp(config)
     }
   } catch (e) {
     console.error('SW error: ', e)
@@ -26,7 +26,13 @@ export const requirePermission = async () => {
 }
 export const getToken = async () => {
   try {
-    const token = await firebase.messaging().getToken()
+    const token = await requirePermission()
+    .then(async() => {
+      return await firebase.messaging().getToken()
+    })
+    .catch((err) => {
+        console.log('Unable to get permission to notify.', err)
+    })
     return token
   } catch (e) {
     console.error(e)

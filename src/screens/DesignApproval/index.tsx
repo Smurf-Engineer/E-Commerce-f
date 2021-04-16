@@ -894,12 +894,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                           {answer.message}
                         </ParentText>
                       }
-                      <MessageBody>
-                        {messageType === CUSTOMER_APPROVED ? 
-                          formatMessage(messages.congratulations) :
-                          incomingMessage
-                        }
-                      </MessageBody>
+                      <MessageBody
+                        dangerouslySetInnerHTML={{
+                          __html: messageType === CUSTOMER_APPROVED ? 
+                            formatMessage(messages.congratulations) :
+                            incomingMessage
+                        }}
+                      />
+                        
                       {required && 
                         <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
                           {formatMessage(messages.required)}

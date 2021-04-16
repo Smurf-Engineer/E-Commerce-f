@@ -108,7 +108,7 @@ export default defineMessages({
   initialMessage: {
     id: 'screens.DesignApproval.initialMessage',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: 'Welcome to the Jakroo Design Approval Center. This is where you will review your Pro Designs and be able to request edits and approve them for ordering.'
+    defaultMessage: 'Welcome to the Jakroo Design Approval Center. Your design instructions are currently being reviewed by your Account Manager. We will send you a message if we have any questions or need any clarification. <br/><br/>If everything is clear, your design will be available in 2 business days.'
   },
   addedToStore: {
     id: 'screens.DesignApproval.addedToStore',
