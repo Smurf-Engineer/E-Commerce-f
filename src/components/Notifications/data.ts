@@ -40,6 +40,19 @@ export const setAsRead = graphql(
   }
 )
 
+export const deleteMutation = graphql(
+  gql`
+    mutation deleteNotification($shortId: String!, $isAdmin: Boolean) {
+      notification: deleteNotification(shortId: $shortId, isAdmin: $isAdmin) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'deleteNotification'
+  }
+)
+
 export const setAllAsRead = graphql(
   gql`
     mutation setAllNotificationRead($isAdmin: Boolean) {

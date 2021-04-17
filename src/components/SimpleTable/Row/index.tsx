@@ -2,7 +2,7 @@
  * Row Component - Created by eduardoquintero on 21/11/19.
  */
 import * as React from 'react'
-import { TableRow, Cell, DeleteButton, Thumbnail } from '../styledComponents'
+import { TableRow, Cell, DeleteButton, Thumbnail, MarkLabel } from '../styledComponents'
 import moment from 'moment'
 import messages from '../messages'
 import { Message, Header } from '../../../types/common'
@@ -16,6 +16,7 @@ interface Props {
   canDelete: boolean
   unread?: boolean
   clickable?: boolean
+  markAsRead?: (notificationId: number) => void
   onPressDelete: (index: number, section: string) => void
   formatMessage: (messageDescriptor: Message) => string
   onPressRow?: (notificationId: number, url: string) => void
@@ -24,11 +25,11 @@ interface Props {
 class Row extends React.PureComponent<Props, {}> {
   render() {
     const {
-      index,
       onPressDelete,
       formatMessage,
       item,
       headerTitles,
+      markAsRead,
       targetGroup,
       canDelete,
       unread = false,
@@ -40,7 +41,7 @@ class Row extends React.PureComponent<Props, {}> {
       if (event) {
         event.stopPropagation()
       }
-      onPressDelete(index, targetGroup)
+      onPressDelete(item.id, targetGroup)
     }
 
     const handleOnClickRow = () => {
@@ -48,6 +49,16 @@ class Row extends React.PureComponent<Props, {}> {
         onPressRow(item.id, item.url)
       }
     }
+
+    const handleClickRead = (event: React.MouseEvent<EventTarget>) => {
+      if (event) {
+        event.stopPropagation()
+      }
+      if (markAsRead && item.id) {
+        markAsRead(item.id)
+      }
+    }
+
     return (
       <div>
         <TableRow className={clickable && 'clickable'} onClick={handleOnClickRow}>
@@ -72,6 +83,11 @@ class Row extends React.PureComponent<Props, {}> {
                 <Cell key={rowIndex} width={header.tabletWidth} className={unread && 'badge'} />
             }
           )}
+          <Cell>
+            <MarkLabel onClick={handleClickRead}>
+              {formatMessage(messages.markRead)}
+            </MarkLabel>
+          </Cell>
           {canDelete && <Cell>
             <DeleteButton type="delete" onClick={handleOnClick}>
               {formatMessage(messages.delete)}

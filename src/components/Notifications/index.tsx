@@ -6,7 +6,7 @@ import messages from './messages'
 import { connect } from 'react-redux'
 import zenscroll from 'zenscroll'
 import * as NotificationsActions from './actions'
-import { notificationsQuery, setAsRead, setAllAsRead } from './data'
+import { notificationsQuery, setAsRead, setAllAsRead, deleteMutation } from './data'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import AntdMessage from 'antd/lib/message'
@@ -34,6 +34,7 @@ interface Props {
   currentPage: number
   formatMessage: (messageDescriptor: Message) => string
   readNotification: (variables: {}) => Promise<NotificationsRead>
+  deleteNotification: (variables: {}) => Promise<MessagePayload>
   updateScreen?: () => void
   readNAllotification: (variables: {}) => Promise<MessagePayload>
   setCurrentPageAction: (page: number) => void
@@ -110,6 +111,28 @@ class Notifications extends React.Component<Props, {}> {
     }
   }
 
+  markAsRead = async (notificationId: number) => {
+    const { readNotification, notificationsData, fromAdmin } = this.props
+    await readNotification({
+      variables: {
+        shortId: notificationId,
+        isAdmin: fromAdmin
+      }
+    })
+    await notificationsData.refetch()
+  }
+
+  handleDelete = async (notificationId: number) => {
+    const { deleteNotification, notificationsData, fromAdmin } = this.props
+    await deleteNotification({
+      variables: {
+        shortId: notificationId,
+        isAdmin: fromAdmin
+      }
+    })
+    await notificationsData.refetch()
+  }
+  
   changePage = (page: number) => {
     const { setCurrentPageAction } = this.props
     setCurrentPageAction(page)
@@ -143,10 +166,12 @@ class Notifications extends React.Component<Props, {}> {
               {...{
                 formatMessage
               }}
+              markAsRead={this.markAsRead}
               data={notificationsList || []}
               headerTitles={fromAdmin ? [...notificationsHeader, ...optionalHeaders] : notificationsHeader}
               targetGroup={NOTIFICATIONS}
               notifications={true}
+              onPressDelete={this.handleDelete}
               onPressRow={this.handleOnPressNotification}
             />
             <PaginationContainer>
@@ -190,6 +215,7 @@ const NotificationsEnhance = compose(
       }
     }
   }),
+  deleteMutation,
   setAsRead,
   setAllAsRead
 )(Notifications)

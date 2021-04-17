@@ -140,9 +140,10 @@ export const DragCell = styled.div`
 export const DeleteButton = styled(Icon)`
   text-align: right;
   user-select: none;
-  color: #e61737;
+  color: ${RED};
   font-size: 14px;
   letter-spacing: 0.1px;
+  margin-left: 28px;
   line-height: 43px;
   cursor: pointer;
   transition: all .25s;
@@ -161,4 +162,12 @@ export const Thumbnail = styled.img`
   width: 180px;
   height: 100px;
   object-fit: contain;
+`
+
+export const MarkLabel = styled.div`
+  color: ${RED};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.4;
+  }
 `

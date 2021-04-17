@@ -16,6 +16,7 @@ interface Props {
   targetGroup: string
   canDelete?: boolean
   notifications?: boolean
+  markAsRead: (notificationId: number) => void
   onPressDelete: (index: number) => void
   onPressRow?: (notificationId: number, url: string) => void
 }
@@ -26,6 +27,7 @@ class SimpleTable extends React.PureComponent<Props, {}> {
       formatMessage,
       onPressDelete,
       headerTitles,
+      markAsRead,
       data,
       targetGroup,
       canDelete = true,
@@ -40,6 +42,7 @@ class SimpleTable extends React.PureComponent<Props, {}> {
           item,
           headerTitles,
           formatMessage,
+          markAsRead,
           onPressDelete,
           targetGroup,
           canDelete,
