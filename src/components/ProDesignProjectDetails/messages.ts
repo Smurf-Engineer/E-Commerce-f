@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.ReviewProject.areYouSure',
     defaultMessage: 'Are you sure?'
   },
+  projectDetails: {
+    id: 'components.ReviewProject.projectDetails',
+    defaultMessage: 'Project Details'
+  },
   cancel: {
     id: 'components.ReviewProject.cancel',
     defaultMessage: 'Cancel'

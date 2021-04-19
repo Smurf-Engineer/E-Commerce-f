@@ -16,7 +16,7 @@ export default defineMessages({
   productsDescription: {
     id: 'screens.IntakeForm.productsDescription',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `Select up to 5 products to complete your kit. If you need more, you will have a chance to add them later with the help of your account manager.`
+    defaultMessage: `Select up to 3 products to complete your kit. If you need more, you will have a chance to add them later with the help of your account manager.`
   },
   designPathway: {
     id: 'screens.IntakeForm.designPathway',

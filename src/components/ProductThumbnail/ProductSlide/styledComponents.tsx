@@ -8,6 +8,7 @@ import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED, BLACK_LABEL } from '../../../theme
 type StyledProps = {
   backgroundColor?: string
   selectProduct?: boolean
+  isProDesign?: boolean
   selectedIndex?: number
 }
 
@@ -132,6 +133,9 @@ export const ThumbnailImage = styled.img`
   height: ${({ fitContainer }: StyledProps) => (fitContainer ? '110px' : '212px')};
   object-fit: cover;
   border-radius: 3px;
+  @media (max-width: 767px) {
+    max-width: ${({ isProDesign }: StyledProps) => (isProDesign ? '162px' : '220px')};
+  }
 `
 
 export const ProStatus = styled.div`

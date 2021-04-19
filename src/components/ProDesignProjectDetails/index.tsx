@@ -37,7 +37,12 @@ import {
   InfoBody,
   cancelButtonStyle,
   buttonStyle,
-  MailLink
+  MailLink,
+  CollapsePanel,
+  PanelDiv,
+  TitleDiv,
+  ProjectDescriptor,
+  ProjectContainer
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
@@ -198,78 +203,89 @@ export class Review extends React.Component<Props, {}> {
               <Column />
             </Row>
           </Notes>
-          <Ideas>
-            <Row>
-              <Column>
-                <StrongText>{formatMessage(messages.designNotes)}</StrongText>
-              </Column>
-              <Column fullWidth={true}>
-                <Text fullWidth={true}>{projectDescription ? parse(projectDescription) : '-'}</Text>
-              </Column>
-            </Row>
-          </Ideas>
-          {inspiration.length ? <Inspiration>
-            <Row>
-              <Column>
-                <StrongText>{formatMessage(messages.inspiration)}</StrongText>
-              </Column>
-            </Row>
-            <Row>
-              <Images>
-                {inspiration.map(({ image, assetType, id }, index) => 
-                  <ImageContainer key={index}>
-                    <Image src={image} />
-                    <InspirationName>
-                      {assetType && 
-                        `${InspirationTag[assetType]}${id ? id.toString().padStart(4, '0') : '-'}`
-                      }
-                    </InspirationName>
-                  </ImageContainer>
-                )}
-              </Images>
-            </Row>
-          </Inspiration> : null}
-          {palette && 
-            <Color>
-              <Row>
-                <Column>
-                  <StrongText>{formatMessage(messages.colorPalette)}</StrongText>
-                </Column>
-              </Row>
-              {palette.name &&
-                <PaletteName>
-                  {palette.name}
-                </PaletteName>
+          <CollapsePanel bordered={false}>
+            <PanelDiv 
+              header={
+                <TitleDiv>
+                  {formatMessage(messages.projectDetails)}
+                </TitleDiv>
               }
-              <ColorBar
-                {...{ colorLabels, formatMessage }}
-                primary={palette.primary}
-                accent={[palette.accent1, palette.accent2, palette.accent3]}
-              />
-            </Color>
-          }
-          <Files>
-            <Row>
-              <Column>
-                <StrongText>{formatMessage(messages.uploadedFiles)}</StrongText>
-              </Column>
-            </Row>
-            <Row>
-              <Images>
-                {files.length ? files.map((assetItem, index) => {
-                  const { fileUrl, type, name } = assetItem
-                  const openFile = () => window.open(fileUrl)
-                  return (<ImageContainer key={index}>
-                    {docTypes.includes(type) ?
-                      <DocIcon onClick={openFile} type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> 
-                      : <Image src={fileUrl} />
-                    }
-                    <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
-                  </ImageContainer>)
-                }) : formatMessage(messages.noFiles)}
-                </Images>
-              </Row>
-            </Files>
+              key="1"
+            >
+              <Ideas>
+                <Row>
+                  <Column>
+                    <StrongText>{formatMessage(messages.designNotes)}</StrongText>
+                  </Column>
+                  <ProjectContainer>
+                    <ProjectDescriptor>{projectDescription ? parse(projectDescription) : '-'}</ProjectDescriptor>
+                  </ProjectContainer>
+                </Row>
+              </Ideas>
+              {inspiration.length ? <Inspiration>
+                <Row>
+                  <Column>
+                    <StrongText>{formatMessage(messages.inspiration)}</StrongText>
+                  </Column>
+                </Row>
+                <Row>
+                  <Images>
+                    {inspiration.map(({ image, assetType, id }, index) => 
+                      <ImageContainer key={index}>
+                        <Image src={image} />
+                        <InspirationName>
+                          {assetType && 
+                            `${InspirationTag[assetType]}${id ? id.toString().padStart(4, '0') : '-'}`
+                          }
+                        </InspirationName>
+                      </ImageContainer>
+                    )}
+                  </Images>
+                </Row>
+              </Inspiration> : null}
+              {palette && 
+                <Color>
+                  <Row>
+                    <Column>
+                      <StrongText>{formatMessage(messages.colorPalette)}</StrongText>
+                    </Column>
+                  </Row>
+                  {palette.name &&
+                    <PaletteName>
+                      {palette.name}
+                    </PaletteName>
+                  }
+                  <ColorBar
+                    {...{ colorLabels, formatMessage }}
+                    primary={palette.primary}
+                    accent={[palette.accent1, palette.accent2, palette.accent3]}
+                  />
+                </Color>
+              }
+              <Files>
+                <Row>
+                  <Column>
+                    <StrongText>{formatMessage(messages.uploadedFiles)}</StrongText>
+                  </Column>
+                </Row>
+                <Row>
+                  <Images>
+                    {files.length ? files.map((assetItem, index) => {
+                      const { fileUrl, type, name } = assetItem
+                      const openFile = () => window.open(fileUrl)
+                      return (<ImageContainer key={index}>
+                        {docTypes.includes(type) ?
+                          <DocIcon onClick={openFile} type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> 
+                          : <Image src={fileUrl} />
+                        }
+                        <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
+                      </ImageContainer>)
+                    }) : formatMessage(messages.noFiles)}
+                    </Images>
+                  </Row>
+                </Files>
+              </PanelDiv>
+            </CollapsePanel>
             <Products>
               <Row>
                 <Column fullWidth={true}>

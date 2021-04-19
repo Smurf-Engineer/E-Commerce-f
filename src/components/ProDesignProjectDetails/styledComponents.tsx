@@ -1,3 +1,4 @@
+import Collapse from 'antd/lib/collapse'
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
 import {
@@ -12,6 +13,8 @@ import {
   WHITE_TRANSPARENT
 } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
+
+const Panel = Collapse.Panel
 
 interface ImagePreviewProps {
   src: string
@@ -28,7 +31,37 @@ export const Container = styled.div`
   position: relative;
   flex-direction: column;
   @media (max-width: 768px) {
-    padding: 0 20px;
+    padding: 0 8px;
+  }
+  .ant-collapse .ant-collapse-item .ant-collapse-header {
+    display: flex;
+    flex-direction: row;
+    color: ${GRAY_DARK};
+    font-size: 12px;
+    letter-spacing: 0.15px;
+    line-height: 16px;
+    padding: 0 !important;
+    max-width: 168px;
+    width: 100%;
+  }
+  .ant-collapse .ant-collapse-item {
+    border-bottom: none;
+  }
+  .ant-collapse-item .ant-collapse-header .arrow {
+    position: absolute;
+    left: calc(100% - 40px);
+    display: inline-flex;
+    border: 1px solid ${BLUE};
+    height: 24px;
+    align-items: center;
+    width: 24px;
+    justify-content: center;
+    border-radius: 50%;
+    color: ${BLUE};
+    bottom: 0;
+  }
+  .ant-collapse-item .ant-collapse-content-box {
+    padding: 32px 0 0 8px!important;
   }
 `
 
@@ -82,6 +115,20 @@ export const Text = styled.div`
   }
 `
 
+export const ProjectDescriptor = styled.div`
+  font-size: 16px;
+  margin-bottom: 10px;
+  word-break: break-word;
+  width: 100%;
+  background: ${GRAY_LIGHTEST};
+  padding: 11px;
+`
+
+export const ProjectContainer = styled.div`
+  flex: 1;
+  margin-right: 28px;
+`
+
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -105,9 +152,25 @@ export const Row = styled.div`
 `
 
 export const Notes = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
+`
+
+export const CollapsePanel = styled(Collapse)`
+  display: flex;
+  justify-content: flex-start;
+`
+
+export const PanelDiv = styled(Panel)`
+  width: 100%;
+  border-bottom: none !important;
+`
+
+export const TitleDiv = styled.div`
+  font-weight: bold;
+  color: ${GRAY_DARK} !important;
+  font-size: 16px;
 `
 
 export const Ideas = styled.div`
@@ -205,7 +268,6 @@ export const Color = styled.div`
   }
 `
 export const Files = styled.div`
-  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
 `
@@ -220,7 +282,7 @@ export const ImageText = styled.div`
 `
 
 export const Products = styled.div`
-  margin-bottom: 50px;
+  margin: 42px 0;
   display: flex;
   flex-direction: column;
 `

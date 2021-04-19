@@ -211,7 +211,7 @@ const ProductSlide = ({
       <ThumbnailImage
         onClick={!selectProduct ? onPressThumbnail : undefined}
         src={thumbnail}
-        {...{fitContainer}}
+        {...{ fitContainer, isProDesign }}
       />
       {isHovered && (!selectProduct && !hideCustomButton) && (
         <ButtonContainer
