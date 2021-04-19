@@ -13,7 +13,10 @@ import {
   SET_RENAME_MODAL_DATA,
   RESET_RENAME_MODAL_DATA,
   ON_CHANGE_DESIGN_NAME,
-  SET_RENAME_MODAL_LOADING
+  SET_RENAME_MODAL_LOADING,
+  SET_SEARCH_TEXT,
+  SET_FILTERS,
+  RESET_FILTERS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -37,7 +40,12 @@ export const initialState = fromJS({
     modalLoading: false,
     newName: ''
   },
-  userName: ''
+  userName: '',
+  searchText: '',
+  filter: '',
+  filterProDesign: false,
+  startDate: null,
+  endDate: null
 })
 
 const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -88,6 +96,28 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       return state.setIn(['renameModal', 'newName'], action.name)
     case SET_RENAME_MODAL_LOADING:
       return state.setIn(['renameModal', 'modalLoading'], action.loading)
+    case SET_SEARCH_TEXT:
+      return state.merge({ searchText: action.searchText, currentPage: 1 })
+    case SET_FILTERS: {
+      const { filter, filterProDesign, startDate, endDate } = action
+      return state.merge({
+        filter,
+        filterProDesign,
+        startDate,
+        endDate,
+        currentPage: 1
+      })
+    }
+    case RESET_FILTERS: {
+      return state.merge({
+        searchText: '',
+        filter: '',
+        filterProDesign: false,
+        startDate: null,
+        endDate: null,
+        currentPage: 1
+      })
+    }
     default:
       return state
   }

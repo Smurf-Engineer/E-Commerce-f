@@ -12,8 +12,13 @@ import {
   SET_RENAME_MODAL_DATA,
   RESET_RENAME_MODAL_DATA,
   ON_CHANGE_DESIGN_NAME,
-  SET_RENAME_MODAL_LOADING
+  SET_RENAME_MODAL_LOADING,
+  SET_SEARCH_TEXT,
+  SET_FILTERS,
+  RESET_FILTERS
 } from './constants'
+import { Moment } from 'moment'
+
 import {
   AnyAction,
   DeleteDesignModal,
@@ -72,4 +77,26 @@ export const onChangeDesignName = (name: string) => ({
 export const setRenameModalLoadingAction = (loading: boolean) => ({
   type: SET_RENAME_MODAL_LOADING,
   loading
+})
+
+export const setSearchTextAction = (searchText: string) => ({
+  type: SET_SEARCH_TEXT,
+  searchText
+})
+
+export const setFiltersAction = (
+  filter: string,
+  filterProDesign: boolean,
+  startDate: Moment,
+  endDate: Moment
+) => ({
+  type: SET_FILTERS,
+  filter,
+  filterProDesign,
+  startDate,
+  endDate
+})
+
+export const resetFiltersAction = () => ({
+  type: RESET_FILTERS
 })

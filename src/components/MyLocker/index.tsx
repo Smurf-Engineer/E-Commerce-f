@@ -4,7 +4,9 @@
 import * as React from 'react'
 import { withApollo, compose, graphql, QueryProps } from 'react-apollo'
 import { connect } from 'react-redux'
+import debounce from 'lodash/debounce'
 import Message from 'antd/lib/message'
+import { Moment } from 'moment'
 import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
@@ -35,7 +37,15 @@ import {
   InputWrapper,
   StyledInput,
   TransparentLoader,
-  MessagePrevent
+  MessagePrevent,
+  Filters,
+  FilterTitle,
+  Options,
+  StyledSelect,
+  StyledDatePicker,
+  ButtonWrapper,
+  StyledButton,
+  SearchInput
 } from './styledComponents'
 import {
   DesignResultType,
@@ -46,6 +56,12 @@ import {
   DesignCopyResult,
   User
 } from '../../types/common'
+import {
+  FILTER_OPTIONS,
+  FILTER_TYPE_OPTIONS,
+  DATE_FORMAT,
+  FILTER_TYPE_FIELD
+} from './constants'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
 interface Props {
@@ -66,6 +82,11 @@ interface Props {
   userName: string
   data: Data
   loading: boolean
+  searchText: string
+  filter: string
+  filterProDesign: boolean
+  startDate: Moment
+  endDate: Moment
   duplicateDesign: (variables: {}) => Promise<MessagePayload>
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   addItemToStore: () => void
@@ -85,6 +106,14 @@ interface Props {
   onChangeDesignName: (name: string) => void
   setRenameModalLoadingAction: (loading: boolean) => void
   onGoBack: (id: string) => void
+  setSearchTextAction: (searchText: string) => void
+  setFiltersAction: (
+    filter: string,
+    filterProDesign: boolean,
+    startDate: Moment,
+    endDate: Moment
+  ) => void
+  resetFiltersAction: () => void
 }
 
 interface Data extends QueryProps {
@@ -92,6 +121,50 @@ interface Data extends QueryProps {
 }
 
 export class MyLocker extends React.PureComponent<Props, {}> {
+  state = {
+    searchValue: '',
+    filter: '',
+    startDateFilter: null,
+    endDateFilter: null,
+    proDesignFilter: false
+  }
+  raiseSearchWhenUserStopsTyping = debounce(
+    () => this.props.setSearchTextAction(this.state.searchValue),
+    600
+  )
+
+  onSelectFilter = (value: string) => {
+    this.setState({ filter: value })
+  }
+
+  onSelectTypeFilter = (value: boolean) => {
+    this.setState({ proDesignFilter: value })
+  }
+
+  handleOnSelectStart = (date: Moment) => {
+    this.setState({ startDateFilter: date })
+  }
+
+  handleOnSelectEnd = (date: Moment) => {
+    this.setState({ endDateFilter: date })
+  }
+
+  onSaveFilters = () => {
+    const { setFiltersAction } = this.props
+    const { filter, proDesignFilter, startDateFilter, endDateFilter } = this.state
+    setFiltersAction(filter, proDesignFilter, startDateFilter, endDateFilter)
+  }
+
+  handleSearchInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    this.setState({ searchValue: value }, () => {
+      this.raiseSearchWhenUserStopsTyping()
+    })
+  }
+
   handleOnPressPrivate = async (id: string, isPrivate: boolean) => {
     const {
       client: { mutate },
@@ -309,6 +382,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   }
 
   componentWillUnmount() {
+    const { resetFiltersAction } = this.props
+    resetFiltersAction()
     this.cancelModal()
   }
 
@@ -338,11 +413,32 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       },
       admin = false
     } = this.props
+    const {
+      searchValue,
+      filter: stateFilter,
+      proDesignFilter,
+      startDateFilter,
+      endDateFilter
+    } = this.state
 
     let alternativeContent = null
     const userName = get(data, 'designsResults.userName', '')
     const designs = get(data, 'designsResults.designs', [])
     const fullCount = get(data, 'designsResults.fullCount', 0)
+    const selectOptions = FILTER_OPTIONS.map(
+      ({ name: filterName, field }, index) => (
+        <Option key={index} value={field}>
+          {formatMessage(messages[filterName])}
+        </Option>
+      )
+    )
+    const selectTypes = FILTER_TYPE_OPTIONS.map(
+      ({ name: filterName, value }, index) => (
+        <Option key={index} value={value}>
+          {formatMessage(messages[filterName])}
+        </Option>
+      )
+    )
 
     if (data.loading) {
       alternativeContent = (
@@ -380,6 +476,54 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             : formatMessage(messages.message)}
         </MessageText>
         {!admin && <MessagePrevent>{formatMessage(messages.messagePrevent)}</MessagePrevent>}
+        <Filters>
+          <FilterTitle>{formatMessage(messages.filters)}</FilterTitle>
+          <Options>
+            <StyledSelect
+              onChange={this.onSelectFilter}
+              showSearch={false}
+              value={stateFilter}
+              placeholder={formatMessage(messages.select)}
+            >
+              {selectOptions}
+            </StyledSelect>
+            <StyledSelect
+              onChange={this.onSelectTypeFilter}
+              showSearch={false}
+              value={proDesignFilter}
+              placeholder={formatMessage(messages.select)}
+              disabled={stateFilter !== FILTER_TYPE_FIELD}
+            >
+              {selectTypes}
+            </StyledSelect>
+            <StyledDatePicker
+              value={startDateFilter}
+              onChange={this.handleOnSelectStart}
+              format={DATE_FORMAT}
+              size="large"
+              disabled={!stateFilter || stateFilter === FILTER_TYPE_FIELD}
+              placeholder={formatMessage(messages.from)}
+            />
+            <StyledDatePicker
+              value={endDateFilter}
+              onChange={this.handleOnSelectEnd}
+              format={DATE_FORMAT}
+              size="large"
+              disabled={!stateFilter || stateFilter === FILTER_TYPE_FIELD}
+              placeholder={formatMessage(messages.to)}
+            />
+            <ButtonWrapper disabled={false}>
+              <StyledButton type="primary" onClick={this.onSaveFilters}>
+                {formatMessage(messages.show)}
+              </StyledButton>
+            </ButtonWrapper>
+          </Options>
+        </Filters>
+        <SearchInput
+          value={searchValue}
+          onChange={this.handleSearchInputChange}
+          placeholder={formatMessage(messages.search)}
+        />
         {alternativeContent}
         <PaginationRow>
           <ProductList
@@ -494,6 +638,11 @@ type OwnProps = {
   user?: UserType
   userId?: string
   currentPage?: number
+  searchText?: string
+  filter?: string
+  filterProDesign?: boolean
+  startDate?: Moment
+  endDate?: Moment
 }
 const MyLockerEnhance = compose(
   withApollo,
@@ -501,7 +650,18 @@ const MyLockerEnhance = compose(
   graphql(duplicateDesignMutation, { name: 'duplicateDesign' }),
   graphql<Data>(desginsQuery, {
     options: (ownprops: OwnProps) => {
-      const { limit, offset, admin, userId, user } = ownprops
+      const {
+        limit,
+        offset,
+        admin,
+        userId,
+        user,
+        searchText,
+        filter,
+        filterProDesign,
+        startDate,
+        endDate
+      } = ownprops
       const personalId = user ? user.id : ''
       const userShortId = admin ? userId : personalId
 
@@ -510,7 +670,12 @@ const MyLockerEnhance = compose(
         variables: {
           limit,
           offset,
-          userId: userShortId
+          userId: userShortId,
+          searchText,
+          filter,
+          filterProDesign,
+          startDate,
+          endDate
         }
       }
     }
