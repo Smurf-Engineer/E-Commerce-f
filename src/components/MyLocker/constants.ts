@@ -33,5 +33,3 @@ export const FILTER_TYPE_OPTIONS = [
     { name: 'proDesign', value: true },
     { name: 'selfDesign', value: false }
 ]
-
-export const DATE_FORMAT = 'YYYY-MM-DD'

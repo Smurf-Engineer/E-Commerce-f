@@ -59,9 +59,11 @@ import {
 import {
   FILTER_OPTIONS,
   FILTER_TYPE_OPTIONS,
-  DATE_FORMAT,
   FILTER_TYPE_FIELD
 } from './constants'
+import {
+  DATE_FORMAT_STARTING_YEAR
+} from '../../constants'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
 interface Props {
@@ -499,7 +501,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             <StyledDatePicker
               value={startDateFilter}
               onChange={this.handleOnSelectStart}
-              format={DATE_FORMAT}
+              format={DATE_FORMAT_STARTING_YEAR}
               size="large"
               disabled={!stateFilter || stateFilter === FILTER_TYPE_FIELD}
               placeholder={formatMessage(messages.from)}
@@ -507,7 +509,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             <StyledDatePicker
               value={endDateFilter}
               onChange={this.handleOnSelectEnd}
-              format={DATE_FORMAT}
+              format={DATE_FORMAT_STARTING_YEAR}
               size="large"
               disabled={!stateFilter || stateFilter === FILTER_TYPE_FIELD}
               placeholder={formatMessage(messages.to)}
