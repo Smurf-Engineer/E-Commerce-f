@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.menuBar.nordic',
     defaultMessage: 'NORDIC'
   },
+  beta: {
+    id: 'components.menuBar.beta',
+    defaultMessage: 'BETA'
+  },
   active: {
     id: 'components.menuBar.active',
     defaultMessage: 'ACTIVE'

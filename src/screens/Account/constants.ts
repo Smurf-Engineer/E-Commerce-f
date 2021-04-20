@@ -59,6 +59,7 @@ export const options = [
   },
   {
     title: PRO_DESIGN,
+    beta: true,
     options: [PRO_DESIGN_PROJECTS]
   },
   {
@@ -98,6 +99,7 @@ export const resellerOptions = [
   },
   {
     title: PRO_DESIGN,
+    beta: true,
     options: [PRO_DESIGN_PROJECTS]
   },
   {

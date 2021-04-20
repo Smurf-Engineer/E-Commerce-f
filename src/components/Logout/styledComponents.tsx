@@ -9,7 +9,8 @@ import {
   RED,
   GRAY_LIGHTEST,
   DARK_TEXT,
-  WHITE
+  WHITE,
+  BLUE_LIGHT
 } from '../../theme/colors'
 
 const { SubMenu } = MenuAntd
@@ -81,6 +82,19 @@ export const StyledSubMenu = styled(SubMenu)`
   .ant-menu-submenu-arrow {
     right: 12px;
   }
+`
+
+export const MenuTitle = styled.div``
+
+export const BetaLabel = styled.div`
+  display: inline-block;
+  font-size: 8px;
+  color: ${BLUE_LIGHT};
+  font-style: italic;
+  margin-left: 4px;
+  vertical-align: top;
+  margin-top: -3px;
+  font-weight: bold;
 `
 
 export const RightIcon = styled(icon)`

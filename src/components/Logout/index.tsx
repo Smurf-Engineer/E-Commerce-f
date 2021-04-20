@@ -21,7 +21,9 @@ import {
   Item,
   overStyle,
   TitleItem,
-  UserIcon
+  UserIcon,
+  MenuTitle,
+  BetaLabel
 } from './styledComponents'
 import {
   OVERVIEW
@@ -101,7 +103,7 @@ class Logout extends React.PureComponent<Props, {}> {
           <UserIcon type="user" />
           {title}
         </TitleItem>
-        {sideMenu.map(({ titleLabel, options: submenus }) =>
+        {sideMenu.map(({ titleLabel, options: submenus, beta }) =>
           submenus.length ?
           (((titleLabel === AFFILIATES && affiliateEnabled) || 
             (titleLabel === RESELLER && resellerEnabled) ||
@@ -110,7 +112,12 @@ class Logout extends React.PureComponent<Props, {}> {
             || (titleLabel !== AFFILIATES && titleLabel !== RESELLER && titleLabel !== PRO_DESIGN)) &&
             <StyledSubMenu
               key={titleLabel}
-              title={formatMessage(messagesMenu[titleLabel])}
+              title={
+                <MenuTitle>
+                  {formatMessage(messagesMenu[titleLabel])}
+                  {beta && <BetaLabel>{formatMessage(messages.beta)}</BetaLabel>}
+                </MenuTitle>
+              }
             >
               {submenus.map((label: string) => (
                 <Item key={label}>

@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'screens.Account.menu.addresses',
     defaultMessage: 'Addresses'
   },
+  beta: {
+    id: 'screens.Account.menu.beta',
+    defaultMessage: 'BETA'
+  },
   proDesign: {
     id: 'screens.Account.proDesign',
     defaultMessage: 'PRO DESIGN'

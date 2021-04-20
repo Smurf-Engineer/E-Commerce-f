@@ -18,7 +18,7 @@ import {
   BackIcon
 } from './styledComponents'
 import expressLogo from '../../assets/JakrooDesignLogo.png'
-import proDesignLogo from '../../assets/Jakroo_Pro_White.png'
+import proDesignLogo from '../../assets/pro-design-beta-logo.png'
 
 interface Props {
   deliveryDays?: string

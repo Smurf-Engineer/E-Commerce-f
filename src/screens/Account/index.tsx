@@ -73,7 +73,8 @@ import {
   FiltersTitle,
   menuDeviceStyle,
   DrawerSidebar,
-  BackButton
+  BackButton,
+  BetaLabel
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
@@ -370,7 +371,7 @@ export class Account extends React.Component<Props, {}> {
     if (!!status && resellerEnabled) {
       sideMenu = approvedReseller ? resellerOptions : resellerShortOptions
     }
-    const menuOptions = sideMenu.map(({ title, options: submenus }) =>
+    const menuOptions = sideMenu.map(({ title, options: submenus, beta }) =>
       submenus.length ?
         (((title === AFFILIATES && affiliateEnabled) ||
           (title === RESELLER && resellerEnabled) ||
@@ -379,7 +380,12 @@ export class Account extends React.Component<Props, {}> {
           || (title !== AFFILIATES && title !== RESELLER && title !== PRO_DESIGN)) &&
         <SubMenu
           key={title}
-          title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
+          title={
+            <OptionMenu>
+              {intl.formatMessage(messages[title])}
+              {beta && <BetaLabel>{intl.formatMessage(messages.beta)}</BetaLabel>}
+            </OptionMenu>
+          }
         >
           {submenus.map((label) => (
             <Menu.Item key={label}>

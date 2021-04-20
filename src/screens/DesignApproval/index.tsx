@@ -280,6 +280,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (!!project && !!product) {
       this.handleEditProject(project, product)
     }
+    if (/mobile/i.test(navigator.userAgent)) {
+      setTimeout(() => { window.scrollTo(0, 1) }, 3000)
+    }
   }
   componentWillUnmount() {
     navigator.serviceWorker.removeEventListener('message', this.reloadMessages)
@@ -1111,7 +1114,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
                 </RequestEdit>
               </MobileRequestButtons>
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId &&
                     <Render3D

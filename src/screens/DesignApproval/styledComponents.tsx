@@ -90,7 +90,7 @@ export const CollapseWrapper = styled.div`
     position: fixed;
     left: 0;
     top: 72px;
-    z-index: 0;
+    z-index: 1;
     width: 100vw;
     height: calc(100vh - 163px);
     background: ${WHITE};

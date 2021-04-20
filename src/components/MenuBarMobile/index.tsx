@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import logo from '../../assets/jakroo_logo.svg'
-import pro_design_logo from '../../assets/Jakroo_Pro_White.png'
+import pro_design_logo from '../../assets/pro-design-beta-logo.png'
 import Cart from '../CartForHeader'
 import Notifications from '../NotificationHeader'
 import Menu from '../MobileMenu'

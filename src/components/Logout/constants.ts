@@ -48,6 +48,7 @@ export const menuOptions = [
   },
   {
     titleLabel: PRO_DESIGN,
+    beta: true,
     options: [PRO_DESIGN_PROJECTS]
   },
   {
@@ -75,6 +76,7 @@ export const resellerOptions = [
   },
   {
     titleLabel: PRO_DESIGN,
+    beta: true,
     options: [PRO_DESIGN_PROJECTS]
   },
   {
