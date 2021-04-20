@@ -28,6 +28,24 @@ export const Container = styled.section`
   }
 `
 
+export const NotificationsBadge = styled.div`
+  position: relative;
+  z-index: 3;
+  float: right;
+  margin-top: -17px;
+  top: 17px;
+  background: ${RED};
+  width: 19px;
+  text-align: center;
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  height: 19px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`
+
 export const Text = styled.div`
   color: ${WHITE};
 `

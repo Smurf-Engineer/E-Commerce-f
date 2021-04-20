@@ -49,6 +49,7 @@ export const getProDesignProject = gql`
         createdAt: created_at
         image
         status
+        notifications
         product {
           id
           code

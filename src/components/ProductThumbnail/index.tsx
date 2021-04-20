@@ -22,7 +22,8 @@ import {
   BuyNow,
   BuyLoader,
   ImgIcon,
-  RetailColors
+  RetailColors,
+  NotificationsBadge
 } from './styledComponents'
 import messages from './messages'
 import { getProductQuery } from './data'
@@ -57,6 +58,7 @@ interface Props {
   yotpoId: string
   client: any
   designId?: string
+  notifications?: number
   match: any
   history: any
   isStoreThumbnail?: boolean
@@ -246,6 +248,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       customizable,
       currentCurrency,
       customizableLabel,
+      notifications,
       deleteItem,
       myLockerList,
       disableSlider,
@@ -332,6 +335,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       <Container
       {...{ withMargin, selectProduct, isSelected, fitContainer  }}
       onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
+        {!!notifications && <NotificationsBadge>{notifications > 9 ? '+9' : notifications}</NotificationsBadge>}
         <ImageSlide
           {...{
             isProDesign,
