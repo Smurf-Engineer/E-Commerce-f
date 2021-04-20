@@ -42,8 +42,8 @@ export const initialState = fromJS({
   },
   userName: '',
   searchText: '',
-  filter: '',
-  filterProDesign: false,
+  filterType: '',
+  filterDate: '',
   startDate: null,
   endDate: null
 })
@@ -99,10 +99,10 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SEARCH_TEXT:
       return state.merge({ searchText: action.searchText, currentPage: 1 })
     case SET_FILTERS: {
-      const { filter, filterProDesign, startDate, endDate } = action
+      const { filterType, filterDate, startDate, endDate } = action
       return state.merge({
-        filter,
-        filterProDesign,
+        filterType,
+        filterDate,
         startDate,
         endDate,
         currentPage: 1
@@ -111,8 +111,8 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
     case RESET_FILTERS: {
       return state.merge({
         searchText: '',
-        filter: '',
-        filterProDesign: false,
+        filterType: '',
+        filterDate: '',
         startDate: null,
         endDate: null,
         currentPage: 1

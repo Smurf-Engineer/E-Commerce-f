@@ -9,8 +9,8 @@ export const desginsQuery = gql`
     $offset: Int,
     $userId: String,
     $searchText: String,
-    $filter: String,
-    $filterProDesign: Boolean,
+    $filterType: String,
+    $filterDate: String,
     $startDate: String,
     $endDate: String
   ) {
@@ -19,8 +19,8 @@ export const desginsQuery = gql`
       offset: $offset,
       userId: $userId,
       searchText: $searchText,
-      filter: $filter,
-      filterProDesign: $filterProDesign,
+      filterType: $filterType,
+      filterDate: $filterDate,
       startDate: $startDate,
       endDate: $endDate
     ) {

@@ -85,14 +85,14 @@ export const setSearchTextAction = (searchText: string) => ({
 })
 
 export const setFiltersAction = (
-  filter: string,
-  filterProDesign: boolean,
+  filterType: string,
+  filterDate: string,
   startDate: Moment,
   endDate: Moment
 ) => ({
   type: SET_FILTERS,
-  filter,
-  filterProDesign,
+  filterType,
+  filterDate,
   startDate,
   endDate
 })

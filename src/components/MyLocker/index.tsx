@@ -57,9 +57,9 @@ import {
   User
 } from '../../types/common'
 import {
-  FILTER_OPTIONS,
   FILTER_TYPE_OPTIONS,
-  FILTER_TYPE_FIELD
+  FILTER_DESIGN_PRO,
+  FILTER_DATE_OPTIONS
 } from './constants'
 import {
   DATE_FORMAT_STARTING_YEAR
@@ -85,8 +85,8 @@ interface Props {
   data: Data
   loading: boolean
   searchText: string
-  filter: string
-  filterProDesign: boolean
+  filterType: string
+  filterDate: string
   startDate: Moment
   endDate: Moment
   duplicateDesign: (variables: {}) => Promise<MessagePayload>
@@ -110,8 +110,8 @@ interface Props {
   onGoBack: (id: string) => void
   setSearchTextAction: (searchText: string) => void
   setFiltersAction: (
-    filter: string,
-    filterProDesign: boolean,
+    filterType: string,
+    filterDate: string,
     startDate: Moment,
     endDate: Moment
   ) => void
@@ -125,22 +125,22 @@ interface Data extends QueryProps {
 export class MyLocker extends React.PureComponent<Props, {}> {
   state = {
     searchValue: '',
-    filter: '',
+    filterType: '',
+    filterDate: '',
     startDateFilter: null,
     endDateFilter: null,
-    proDesignFilter: false
   }
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.setSearchTextAction(this.state.searchValue),
     600
   )
 
-  onSelectFilter = (value: string) => {
-    this.setState({ filter: value })
+  onSelectTypeFilter = (value: string) => {
+    this.setState({ filterType: value })
   }
 
-  onSelectTypeFilter = (value: boolean) => {
-    this.setState({ proDesignFilter: value })
+  onSelectDateFilter = (value: string) => {
+    this.setState({ filterDate: value })
   }
 
   handleOnSelectStart = (date: Moment) => {
@@ -153,8 +153,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
   onSaveFilters = () => {
     const { setFiltersAction } = this.props
-    const { filter, proDesignFilter, startDateFilter, endDateFilter } = this.state
-    setFiltersAction(filter, proDesignFilter, startDateFilter, endDateFilter)
+    const { filterType, filterDate, startDateFilter, endDateFilter } = this.state
+    setFiltersAction(filterType, filterDate, startDateFilter, endDateFilter)
   }
 
   handleSearchInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -417,8 +417,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     } = this.props
     const {
       searchValue,
-      filter: stateFilter,
-      proDesignFilter,
+      filterType: stateFilterType,
+      filterDate: stateFilterDate,
       startDateFilter,
       endDateFilter
     } = this.state
@@ -427,16 +427,16 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     const userName = get(data, 'designsResults.userName', '')
     const designs = get(data, 'designsResults.designs', [])
     const fullCount = get(data, 'designsResults.fullCount', 0)
-    const selectOptions = FILTER_OPTIONS.map(
+    const selectTypeOptions = FILTER_TYPE_OPTIONS.map(
       ({ name: filterName, field }, index) => (
         <Option key={index} value={field}>
           {formatMessage(messages[filterName])}
         </Option>
       )
     )
-    const selectTypes = FILTER_TYPE_OPTIONS.map(
-      ({ name: filterName, value }, index) => (
-        <Option key={index} value={value}>
+    const selectDateOptions = FILTER_DATE_OPTIONS.map(
+      ({ name: filterName, field }, index) => (
+        <Option key={index} value={field}>
           {formatMessage(messages[filterName])}
         </Option>
       )
@@ -482,28 +482,27 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           <FilterTitle>{formatMessage(messages.filters)}</FilterTitle>
           <Options>
             <StyledSelect
-              onChange={this.onSelectFilter}
-              showSearch={false}
-              value={stateFilter}
-              placeholder={formatMessage(messages.select)}
-            >
-              {selectOptions}
-            </StyledSelect>
-            <StyledSelect
               onChange={this.onSelectTypeFilter}
               showSearch={false}
-              value={proDesignFilter}
-              placeholder={formatMessage(messages.select)}
-              disabled={stateFilter !== FILTER_TYPE_FIELD}
+              value={stateFilterType}
+              placeholder={formatMessage(messages.selectDesignType)}
             >
-              {selectTypes}
+              {selectTypeOptions}
+            </StyledSelect>
+            <StyledSelect
+              onChange={this.onSelectDateFilter}
+              showSearch={false}
+              value={stateFilterDate}
+              placeholder={formatMessage(messages.selectDateType)}
+            >
+              {selectDateOptions}
             </StyledSelect>
             <StyledDatePicker
               value={startDateFilter}
               onChange={this.handleOnSelectStart}
               format={DATE_FORMAT_STARTING_YEAR}
               size="large"
-              disabled={!stateFilter || stateFilter === FILTER_TYPE_FIELD}
+              disabled={!stateFilterDate}
               placeholder={formatMessage(messages.from)}
             />
             <StyledDatePicker
@@ -511,7 +510,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
               onChange={this.handleOnSelectEnd}
               format={DATE_FORMAT_STARTING_YEAR}
               size="large"
-              disabled={!stateFilter || stateFilter === FILTER_TYPE_FIELD}
+              disabled={!stateFilterDate}
               placeholder={formatMessage(messages.to)}
             />
             <ButtonWrapper disabled={false}>
@@ -641,8 +640,8 @@ type OwnProps = {
   userId?: string
   currentPage?: number
   searchText?: string
-  filter?: string
-  filterProDesign?: boolean
+  filterType?: string
+  filterDate?: string
   startDate?: Moment
   endDate?: Moment
 }
@@ -659,8 +658,8 @@ const MyLockerEnhance = compose(
         userId,
         user,
         searchText,
-        filter,
-        filterProDesign,
+        filterType,
+        filterDate,
         startDate,
         endDate
       } = ownprops
@@ -674,8 +673,8 @@ const MyLockerEnhance = compose(
           offset,
           userId: userShortId,
           searchText,
-          filter,
-          filterProDesign,
+          filterType,
+          filterDate,
           startDate,
           endDate
         }
