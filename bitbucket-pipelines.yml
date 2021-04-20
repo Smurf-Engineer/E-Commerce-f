@@ -158,6 +158,7 @@ pipelines:
   pull-requests:
     "**":
       - step:
+          size: 2x
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
             - yarn
