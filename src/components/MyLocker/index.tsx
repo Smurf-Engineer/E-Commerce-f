@@ -58,7 +58,6 @@ import {
 } from '../../types/common'
 import {
   FILTER_TYPE_OPTIONS,
-  FILTER_DESIGN_PRO,
   FILTER_DATE_OPTIONS
 } from './constants'
 import {
