@@ -48,7 +48,8 @@ import {
   MESH_NAME,
   MODEL_SIZES,
   AMBIENT_LIGHT_INTENSITY,
-  DIRECTIONAL_LIGHT_INTENSITY
+  DIRECTIONAL_LIGHT_INTENSITY,
+  ACCESSORY_BLACK
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
@@ -836,6 +837,21 @@ class Render3D extends PureComponent {
             object.add(cloneObject)
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
+            if (!!product.branding && (!product.hasPredyed || design.predyedColor === ACCESSORY_BLACK)) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const textureLoader = new THREE.TextureLoader()
+              const brandingTexture = textureLoader.load(product.branding)
+              brandingTexture.minFilter = THREE.LinearFilter
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                map: brandingTexture,
+                side: THREE.FrontSide,
+                bumpMap,
+                transparent: true
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
           }
 
           /* Object Conig */

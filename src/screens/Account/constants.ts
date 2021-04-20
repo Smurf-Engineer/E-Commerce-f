@@ -103,16 +103,16 @@ export const resellerOptions = [
     options: [PRO_DESIGN_PROJECTS]
   },
   {
+    title: RESELLER,
+    options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
+  },
+  {
     title: SCREEN_LOCKER,
     options: []
   },
   {
     title: MY_FILES,
     options: []
-  },
-  {
-    title: RESELLER,
-    options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
   }
 ]
 

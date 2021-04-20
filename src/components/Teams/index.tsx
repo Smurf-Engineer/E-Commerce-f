@@ -9,11 +9,10 @@ import Span from '../Common/UnderlinedLink'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   openReseller: () => void
-  showReseller: boolean
   history?: any
 }
 
-const Teams = ({ formatMessage, history, openReseller, showReseller }: Props) => {
+const Teams = ({ formatMessage, history, openReseller }: Props) => {
   const goTo = (link: string) => () => {
     history.push(`/${link}`)
   }
@@ -24,11 +23,9 @@ const Teams = ({ formatMessage, history, openReseller, showReseller }: Props) =>
       <Text onClick={goTo('search-teamstores')}>
         <Span>{formatMessage(messages.stores)}</Span>
       </Text>
-      {showReseller &&
-        <Text onClick={openReseller}>
-          <Span>{formatMessage(messages.becomeReseller)}</Span>
-        </Text>
-      }
+      <Text onClick={openReseller}>
+        <Span>{formatMessage(messages.becomeReseller)}</Span>
+      </Text>
       {/* TODO: Remove after verify it wount be needed 
       <Text onClick={goTo('team-kits')}>
         <Span>{formatMessage(messages.kits)}</Span>

@@ -97,9 +97,9 @@ export const ERROR = 'Error'
 export const PERSONAL = 'Personal'
 export const MESSAGE_TIME = 4
 
-/* Files Constants */
-export const MP4_EXTENSION = '.mp4'
+/* File extensions */
 export const PNG_EXTENSION = '.png'
+export const MP4_EXTENSION = '.mp4'
 
 /* Keys Constants */
 export const KEY_ENTER = 'Enter'

@@ -37,7 +37,7 @@ export const getResellerPayments = gql`
         orderAmount: order_amount
         orderStatus: order_status
         paidAt: paid_at
-        orderId: order_id
+        orderId: order_short_id
       }
     }
   }

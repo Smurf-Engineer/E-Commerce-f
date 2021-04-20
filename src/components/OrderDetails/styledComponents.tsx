@@ -248,4 +248,9 @@ export const ErrorMessage = styled.div`
   }
 `
 
-export const Paragraph = styled.div``
+export const Paragraph = styled.div`
+  a {
+    color: ${BLUE};
+    text-decoration: underline;
+  }
+`

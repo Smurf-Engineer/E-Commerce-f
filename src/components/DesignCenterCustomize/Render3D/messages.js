@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.Render3D.onBike',
     defaultMessage: 'On Bike'
   },
+  okGotIt: {
+    id: 'components.Render3D.okGotIt',
+    defaultMessage: 'OK, got it!'
+  },
   modalResetTitle: {
     id: 'components.Render3D.modalResetTitle',
     defaultMessage: 'RESET'

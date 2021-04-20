@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.orderTitle2',
     defaultMessage: 'and receive your order by'
   },
+  aboutDirectship: {
+    id: 'screens.StoreFrontContent.aboutDirectship',
+    defaultMessage: 'About Directship Ordering'
+  },
   priceDropTitle: {
     id: 'screens.StoreFrontContent.priceDropTitle',
     defaultMessage: 'DYNAMIC PRICE DROP'
@@ -24,6 +28,14 @@ export default defineMessages({
   welcome: {
     id: 'screens.StoreFrontContent.welcome',
     defaultMessage: 'Welcome to {teamStoreName} store'
+  },
+  needAssistance: {
+    id: 'screens.StoreFrontContent.needAssistance',
+    defaultMessage: 'Need help determining your size?'
+  },
+  tryFreeService: {
+    id: 'screens.StoreFrontContent.tryFreeService',
+    defaultMessage: 'Try our free Size Recommendation Service'
   },
   storeOpen: {
     id: 'screens.StoreFrontContent.storeOpen',

@@ -814,6 +814,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   validateAddtoCart = () => {
     const {
       selectedSize,
+      selectedGender,
       selectedColor,
       selectedFit,
       data: { product }
@@ -824,10 +825,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         selectedSize.id >= 0 &&
         selectedFit &&
         selectedFit.id &&
-        selectedColor.id
+        selectedColor.id &&
+        selectedGender.id
       )
     }
-    return selectedSize.id >= 0 && selectedColor.id
+    return selectedSize.id >= 0 && selectedColor.id && selectedGender.id
   }
 
   handleSelectColor = (color: SelectedType) => () => {

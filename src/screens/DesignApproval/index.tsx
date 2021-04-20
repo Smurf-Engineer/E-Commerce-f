@@ -1114,7 +1114,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
                 </RequestEdit>
               </MobileRequestButtons>
-              {!!itemStatus && false &&
+              {!!itemStatus &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId &&
                     <Render3D

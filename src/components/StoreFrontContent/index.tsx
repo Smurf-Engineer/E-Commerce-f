@@ -55,7 +55,9 @@ import {
   FlexColumnContainer,
   DynamicDropLogo,
   PricesButton,
-  MainContainer
+  MainContainer,
+  AssistanceDiv,
+  SectionLink
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
@@ -67,6 +69,7 @@ import EmailContact from '../../components/EmailContact'
 import TeamPassCode from '../../components/TeamPassCode'
 import DropPricingModal from '../../components/DropPricingModal'
 import { APPROVED } from '../../constants'
+import { FIT_FORM } from './constants'
 const STORE_PRIVATE_CODE = -1
 const PASS_CODE_INVALID = -2
 const STORE_CLOSED_CODE = -3
@@ -347,6 +350,12 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                             )
                           )}
                       </ButtonsContainer>
+                      <AssistanceDiv>
+                        <FormattedMessage {...messages.needAssistance} />
+                        <SectionLink target="_blank" href={FIT_FORM}>
+                          <FormattedMessage {...messages.tryFreeService} />
+                        </SectionLink>
+                      </AssistanceDiv>
                     </FlexContainer>
                     <TopContainer>
                       <FlexColumnContainer>
@@ -471,26 +480,28 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
                     <AboutContainer>
                       <AboutTitle>
-                        <FormattedMessage {...messages.aboutOrdering}
+                        <FormattedMessage {...messages[isResellerStore ? 'aboutDirectship' : 'aboutOrdering']}
                           values={{ teamType: onDemandMode ? ON_DEMAND_ORDERING : BATCH_ORDERING }}
                         />
                       </AboutTitle>
-                      <ProductInfo
-                        id="Much"
-                        title={formatMessage(messages.howMuchTitle)}
-                        showContent={showMuch}
-                        toggleView={this.toggleProductInfo}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: formatMessage(
-                              onDemandMode
-                                ? messages.howMuchDesc
-                                : messages.howMuchDescBatch
-                            )
-                          }}
-                        />
-                      </ProductInfo>
+                      {!isResellerStore && 
+                        <ProductInfo
+                          id="Much"
+                          title={formatMessage(messages.howMuchTitle)}
+                          showContent={showMuch}
+                          toggleView={this.toggleProductInfo}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(
+                                onDemandMode
+                                  ? messages.howMuchDesc
+                                  : messages.howMuchDescBatch
+                              )
+                            }}
+                          />
+                        </ProductInfo>
+                      }
 
                       <ProductInfo
                         id="When"
@@ -539,22 +550,24 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                           }}
                         />
                       </ProductInfo>
-                      <ProductInfo
-                        id="Cani"
-                        title={formatMessage(messages.canIORder)}
-                        showContent={showCani}
-                        toggleView={this.toggleProductInfo}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: formatMessage(
-                              onDemandMode
-                                ? messages.canIORderDesc
-                                : messages.canIORderDescBatch
-                            )
-                          }}
-                        />
-                      </ProductInfo>
+                      {!isResellerStore &&
+                        <ProductInfo
+                          id="Cani"
+                          title={formatMessage(messages.canIORder)}
+                          showContent={showCani}
+                          toggleView={this.toggleProductInfo}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: formatMessage(
+                                onDemandMode
+                                  ? messages.canIORderDesc
+                                  : messages.canIORderDescBatch
+                              )
+                            }}
+                          />
+                        </ProductInfo>
+                      }
                       <ProductInfo
                         id="Return"
                         title={formatMessage(messages.returnMessage)}
