@@ -74,5 +74,49 @@ export default defineMessages({
   userLocker: {
     id: 'components.MyLocker.userLocker',
     defaultMessage: '{userName} Locker'
+  },
+  filters: {
+    id: 'components.MyLocker.filters',
+    defaultMessage: 'FILTER BY'
+  },
+  from: {
+    id: 'components.MyLocker.from',
+    defaultMessage: 'From'
+  },
+  to: {
+    id: 'components.MyLocker.to',
+    defaultMessage: 'To'
+  },
+  selectDesignType: {
+    id: 'components.MyLocker.selectDesignType',
+    defaultMessage: 'Select a Design Type'
+  },
+  proDesign: {
+    id: 'components.MyLocker.proDesign',
+    defaultMessage: 'Pro Design'
+  },
+  selectDateType: {
+    id: 'components.MyLocker.selectDateType',
+    defaultMessage: 'Select a Date Type'
+  },
+  dateCreated: {
+    id: 'components.MyLocker.dateCreated',
+    defaultMessage: 'Date Created'
+  },
+  dateModified: {
+    id: 'components.MyLocker.dateModified',
+    defaultMessage: 'Date Modified'
+  },
+  selfDesign: {
+    id: 'components.MyLocker.selfDesign',
+    defaultMessage: 'Self Design'
+  },
+  show: {
+    id: 'components.MyLocker.show',
+    defaultMessage: 'Show'
+  },
+  search: {
+    id: 'components.MyLocker.search',
+    defaultMessage: 'Search for a design'
   }
 })
