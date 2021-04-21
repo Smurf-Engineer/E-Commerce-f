@@ -145,11 +145,17 @@ export const SearchInput = styled(Search)`
   margin-top: 0px;
   border-radius: 0;
   margin-left: 4px;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   & input {
     border-radius: 0;
     padding: 7px;
     height: 48px;
+  }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    width: 98%;
+    margin: 1%;
   }
 `
 
@@ -160,7 +166,7 @@ export const FilterTitle = styled.div`
   line-height: 27px;
   margin-bottom: 26px;
   @media (max-width: 768px) and (min-width: 320px) {
-    margin-bottom: 24px;
+    margin-bottom: 10px;
   }
 `
 
@@ -173,6 +179,10 @@ export const Filters = styled.div`
   width: 98%;
   box-shadow: 2px 2px 7px ${GRAY_SHADOW};
   flex-direction: column;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    padding: 10px;
+  }
 `
 
 export const StyledSelect = styled(Select)`
@@ -187,11 +197,20 @@ export const StyledSelect = styled(Select)`
       line-height: 40px;
     }
   }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    width: 48%;
+    margin: 1%;
+  }
 `
 
 export const Options = styled.div`
   display: flex;
   align-items: center;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    flex-flow: wrap;
+  }
 `
 
 export const StyledDatePicker = styled(DatePicker)`
@@ -202,6 +221,11 @@ export const StyledDatePicker = styled(DatePicker)`
     border-radius: 0;
     height: 40px;
   }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    width: 48%;
+    margin: 1%;
+  }
 `
 
 interface ButtonWrapperProps {
@@ -211,6 +235,10 @@ interface ButtonWrapperProps {
 export const StyledButton = styled(Button)`
   height: 40px;
   border-radius: 0px;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 export const ButtonWrapper = styled.div`
@@ -225,5 +253,10 @@ export const ButtonWrapper = styled.div`
     disabled ? WHITE_SMOKE : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
     disabled ? WHITE_SMOKE : BLUE};
+  }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    margin: 1%;
+    width: 100%;
   }
 `
