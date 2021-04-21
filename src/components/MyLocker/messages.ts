@@ -97,7 +97,7 @@ export default defineMessages({
   },
   selectDateType: {
     id: 'components.MyLocker.selectDateType',
-    defaultMessage: 'Select a Date Type'
+    defaultMessage: 'Select Date'
   },
   dateCreated: {
     id: 'components.MyLocker.dateCreated',
