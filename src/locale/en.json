@@ -1004,7 +1004,7 @@
   "components.MyLocker.to": "To",
   "components.MyLocker.selectDesignType": "Select a Design Type",
   "components.MyLocker.proDesign": "Pro Design",
-  "components.MyLocker.selectDateType": "Select a Date Type",
+  "components.MyLocker.selectDateType": "Select Date",
   "components.MyLocker.dateCreated": "Date Created",
   "components.MyLocker.dateModified": "Date Modified",
   "components.MyLocker.selfDesign": "Self Design",
