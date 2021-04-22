@@ -1141,6 +1141,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               productId,
               formatMessage,
               colors,
+              colorsList,
               stitchingColor,
               bindingColor,
               zipperColor,
