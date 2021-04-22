@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 05/04/18.
  */
 import styled from 'styled-components'
+import { BLUE_LIGHT } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -23,6 +24,17 @@ export const OptionMenu = styled.div`
   line-height: 22px;
   padding-top: 8px;
   cursor: pointer;
+`
+
+export const BetaLabel = styled.div`
+  display: inline-block;
+  font-size: 9px;
+  color: ${BLUE_LIGHT};
+  font-style: italic;
+  margin-left: 4px;
+  vertical-align: top;
+  margin-top: -2px;
+  font-weight: bold;
 `
 
 interface ContentProps {

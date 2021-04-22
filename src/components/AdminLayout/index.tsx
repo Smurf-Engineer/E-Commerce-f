@@ -5,17 +5,35 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import GoogleFontLoader from 'react-google-font-loader'
+import AntdNotification from 'antd/lib/notification'
 import get from 'lodash/get'
+import find from 'lodash/find'
 import Menu from 'antd/lib/menu'
 import isEmpty from 'lodash/isEmpty'
 import messages from './messages'
 import { connect } from 'react-redux'
 import { MAIN_TITLE } from '../../constants'
 import { InjectedIntl, FormattedMessage } from 'react-intl'
+import { firebaseInit, getToken } from '../../utils/realtimeUtils'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { UserType, Font, SimpleFont, UserPermissions } from '../../types/common'
-import { getTeamStoreStatus, getFonts } from './data'
+import {
+  UserType,
+  Font,
+  SimpleFont,
+  UserPermissions,
+  QueryProps,
+  Notification as NotificationType,
+  MessagePayload,
+  PushNotificationData
+} from '../../types/common'
+import {
+  getTeamStoreStatus,
+  getFonts,
+  notificationsQuery,
+  upsertNotificationToken,
+  setAsRead
+} from './data'
 import * as adminLayoutActions from './api'
 import {
   options,
@@ -38,6 +56,8 @@ import {
   AFFILIATES_PAYOUTS,
   RESELLER_ORDERS,
   RESELLER_PAYOUTS,
+  NOTIFICATIONS,
+  BADGE,
 } from './constants'
 import {
   SideBar,
@@ -46,10 +66,33 @@ import {
   Content,
   LogoutButton,
   Advertisement,
+  MenuItem,
+  notificationStyles
 } from './styledComponents'
 import Helmet from 'react-helmet'
 
 const { SubMenu } = Menu
+
+export type NotificationResults = {
+  fullCount: number
+  list: NotificationType[]
+}
+interface NotificationsData extends QueryProps {
+  notifications: NotificationResults
+}
+
+interface NotificationsRead extends QueryProps {
+  notification: NotificationType
+  loading: boolean
+}
+
+interface PushNotification {
+  data: {
+    'firebase-messaging-msg-data': {
+      data: PushNotificationData
+    }
+  }
+}
 
 interface Props extends RouteComponentProps<any> {
   children: React.ReactChildren
@@ -61,6 +104,7 @@ interface Props extends RouteComponentProps<any> {
   openKeys: string[]
   screen: string
   permissions: UserPermissions
+  notificationsData: NotificationsData
   onLogout: () => void
   restoreUserSession: (client: any) => void
   deleteUserSession: () => void
@@ -68,6 +112,8 @@ interface Props extends RouteComponentProps<any> {
   setInstalledFontsAction: (fonts: any) => void
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
+  readNotification: (variables: {}) => Promise<NotificationsRead>
+  upsertNotification: (variables: {}) => Promise<MessagePayload>
 }
 
 class AdminLayout extends React.Component<Props, {}> {
@@ -79,8 +125,27 @@ class AdminLayout extends React.Component<Props, {}> {
     }
   }
 
+  componentWillUnmount() {
+    navigator.serviceWorker.removeEventListener('message', this.drawNotification)
+  }
+
   async componentDidMount() {
     const { getFontsData, setInstalledFontsAction } = this.props
+    const {
+      upsertNotification
+    } = this.props
+
+    let user = JSON.parse(localStorage.getItem('user') as string)
+    if (user) {
+      if (user) {
+        await firebaseInit()
+        const token = await getToken()
+        await upsertNotification({
+          variables: { token }
+        })
+        navigator.serviceWorker.addEventListener('message', this.drawNotification)
+      }
+    }
 
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
@@ -88,6 +153,47 @@ class AdminLayout extends React.Component<Props, {}> {
       font: font.family
     }))
     setInstalledFontsAction(fonts)
+  }
+
+  drawNotification = (notification: PushNotification) => {
+    const { data } = notification
+    const payload = data['firebase-messaging-msg-data'].data
+    const goToUrl = () => this.handleOnPressNotification(payload.id, payload.url)
+    if (!this.notificationAlreadyExist(payload.id) && payload.toAdmin === 'true') {
+      this.displayNotification(payload, goToUrl)
+    }
+  }
+
+  notificationAlreadyExist = (notificationId: string) => {
+    const { notificationsData } = this.props
+    const notifications = get(notificationsData, 'notifications', [])
+    const alreadyExist = find(notifications, ['id', notificationId])
+    return !!alreadyExist
+  }
+
+  displayNotification = async (payload: PushNotificationData, goToUrl: () => void) => {
+    AntdNotification.open({
+      message: payload.title,
+      description: payload.message,
+      onClick: goToUrl,
+      style: notificationStyles
+    })
+    this.reloadNotifications()
+  }
+
+  reloadNotifications = async () => {
+    const { notificationsData } = this.props
+    await notificationsData.refetch()
+  }
+
+  handleOnPressNotification = async (notificationId: string, url: string) => {
+    const { readNotification, history } = this.props
+    await readNotification({
+      variables: {
+        shortId: notificationId
+      }
+    })
+    history.push(url)
   }
 
   handleOnSelectedKeys = (keys: string[]) => {
@@ -103,8 +209,11 @@ class AdminLayout extends React.Component<Props, {}> {
   handleOnSelectItem = ({ key }: any) => {
     const { setCurrentScreenAction, history } = this.props
     switch (key) {
-      case ORDER_STATUS:
+      case NOTIFICATIONS:
         history.push('/admin')
+        break
+      case ORDER_STATUS:
+        history.push('/admin/orders')
         break
       case DISCOUNTS:
         history.push('/admin/discounts')
@@ -175,7 +284,12 @@ class AdminLayout extends React.Component<Props, {}> {
       screen,
       onLogout,
       permissions = {},
+      notificationsData
     } = this.props
+
+    const notifications = get(notificationsData, 'notifications.list', [])
+    const unread = notifications.filter((notification) => !notification.read).length
+
     if (!Object.keys(permissions).length) {
       return (
         <Advertisement>
@@ -188,7 +302,7 @@ class AdminLayout extends React.Component<Props, {}> {
       return obj
       // tslint:disable-next-line: align
     }, {})
-
+    const notificationsBadge = unread > 9 ? '+9' : unread
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length && !isHidden[title] ? (
         <SubMenu
@@ -208,9 +322,12 @@ class AdminLayout extends React.Component<Props, {}> {
       ) : (
           permissions[title] &&
           permissions[title].view && (
-            <Menu.Item className="ant-menu-item-custom" key={title}>
+            <MenuItem className={`ant-menu-item-custom 
+              ${title === NOTIFICATIONS && notificationsBadge > 0 && BADGE}`} key={title}
+              notifications={notificationsBadge}
+            >
               <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-            </Menu.Item>
+            </MenuItem>
           )
         )
     )
@@ -227,6 +344,7 @@ class AdminLayout extends React.Component<Props, {}> {
       <Container>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         <Helmet defaultTitle={MAIN_TITLE} />
+
         <SideBar>
           <Menu
             selectedKeys={[screen]}
@@ -262,6 +380,9 @@ const LayoutEnhance = compose(
   withApollo,
   getTeamStoreStatus,
   getFonts,
+  notificationsQuery,
+  setAsRead,
+  upsertNotificationToken,
   connect(
     mapStateToProps,
     {

@@ -23,15 +23,16 @@ import CreateStore from '../screens/CreateStore'
 import SearchTeamstores from '../screens/SearchTeamstores'
 import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
-import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
 import Designs from '../screens/Designs'
+import DesignApproval from '../screens/DesignApproval'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
 import ProductModels from '../screens/ProductModels'
 import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
+import IntakeForm from '../screens/IntakeForm'
 import ResetPassword from '../screens/ResetPassword'
 import Admin from '../screens/Admin'
 import ProDesign from '../screens/ProDesign'
@@ -70,6 +71,11 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: Admin
+  },
+  {
+    path: '/pro-design',
+    name: 'intakeForm',
+    component: IntakeForm
   },
   {
     path: '/custom-product',
@@ -193,11 +199,6 @@ const routes = [
     component: Account
   },
   {
-    path: '/subscription-test',
-    name: 'subscriptionTest',
-    component: SubscriptionTest
-  },
-  {
     path: '/fit-widget',
     name: 'fitWidget',
     component: FitWidget
@@ -206,6 +207,11 @@ const routes = [
     path: '/designs',
     name: 'designs',
     component: Designs
+  },
+  {
+    path: '/approval',
+    name: 'approval',
+    component: DesignApproval
   },
   {
     path: '/product',

@@ -8,6 +8,7 @@ interface RowProps {
 
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
+import { RED } from '../../theme/colors'
 
 export const Container = styled.div``
 
@@ -16,6 +17,7 @@ export const Table = styled.div`
   table-layout: fixed;
   width: 100%;
   margin-bottom: 20px;
+  text-align: left;
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin-bottom: 0;
@@ -34,6 +36,10 @@ export const TableRow = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     justify-content: space-between;
   }
+  &.clickable {
+    cursor: pointer;
+  }
+  min-height: 65px;
 `
 
 export const HeaderRow = styled.div`
@@ -59,9 +65,28 @@ interface CellProps {
 }
 export const Cell = styled.div`
  width ${({ width }: CellProps) => (width ? width : 10)}%;
+ position: relative;
+ &.unread {
+   color: ${RED} !important;
+ }
+ &.badge::after {
+  content: '';
+  display: flex;
+  position: absolute;
+  left: 30px;
+  width: 12px;
+  height: 12px;
+  background: ${RED};
+  border-radius: 6px;
+  top: calc(50% - 6px);
+  border: none;
+ }
  @media (min-width: 425px) and (max-width: 768px) {
   width ${({ tabletWidth }: CellProps) => (tabletWidth ? tabletWidth : 10)}%;
-}
+  &.badge::after {
+    display: none;
+  }
+ }
 `
 
 interface TitleProps {
@@ -112,14 +137,19 @@ export const DragCell = styled.div`
   }
 `
 
-export const DeleteButton = styled.div`
+export const DeleteButton = styled(Icon)`
   text-align: right;
   user-select: none;
-  color: #e61737;
+  color: ${RED};
   font-size: 14px;
   letter-spacing: 0.1px;
+  margin-left: 28px;
   line-height: 43px;
   cursor: pointer;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.4;
+  }
 `
 
 export const Center = styled.div`
@@ -132,4 +162,12 @@ export const Thumbnail = styled.img`
   width: 180px;
   height: 100px;
   object-fit: contain;
+`
+
+export const MarkLabel = styled.div`
+  color: ${RED};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.4;
+  }
 `

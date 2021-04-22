@@ -46,6 +46,7 @@ import productForm from '../components/ProductForm/reducer'
 import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
+import designApproval from '../screens/DesignApproval/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
@@ -69,6 +70,10 @@ import affiliates from '../components/Affiliates/reducer'
 import affiliatesAbout from '../components/AffiliateAbout/reducer'
 import affiliatesOrders from '../components/AffiliatesOrders/reducer'
 import affiliatesPayouts from '../components/AffiliatesPayouts/reducer'
+import intakeForm from '../screens/IntakeForm/reducer'
+import intakeProductCatalog from '../components/ProductCatalogue/reducer'
+import proDesignProjects from '../components/ProDesignProjects/reducer'
+import notifications from '../components/Notifications/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -88,12 +93,14 @@ export interface ReducersObject {
   shoppingCartPage: any
   resellerAbout: any
   storeFront: any
+  designApproval: any
   createStore: any
   designSearchAdmin: any
   roleCatalog: any
   affiliatesAbout: any
   salesRep: any
   resellerOptions: any
+  proDesignProjects: any
   affiliates: any
   affiliatesOrders: any
   affiliatesPayouts: any
@@ -149,6 +156,9 @@ export interface ReducersObject {
   designTools: any
   proAssist: any
   userFiles: any
+  intakeForm: any
+  intakeProductCatalog: any
+  notifications: any
 }
 
 const appInitialState = fromJS({
@@ -222,7 +232,9 @@ const rootReducer = combineReducers({
   affiliatesAbout,
   resellerOptions,
   checkout,
+  proDesignProjects,
   designerTool,
+  designApproval,
   resellerPayouts,
   shoppingCartPage,
   resellerOrders,
@@ -282,7 +294,10 @@ const rootReducer = combineReducers({
   publishingTool,
   designTools,
   proAssist,
-  userFiles
+  userFiles,
+  intakeForm,
+  intakeProductCatalog,
+  notifications
 })
 
 export default rootReducer

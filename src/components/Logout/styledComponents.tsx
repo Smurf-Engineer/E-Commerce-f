@@ -5,10 +5,15 @@ import styled from 'styled-components'
 import icon from 'antd/lib/icon'
 import MenuAntd from 'antd/lib/menu'
 import Popover from 'antd/lib/popover'
-import { RED, GRAY_DARK, GRAY_LIGHTEST } from '../../theme/colors'
+import {
+  RED,
+  GRAY_LIGHTEST,
+  DARK_TEXT,
+  WHITE,
+  BLUE_LIGHT
+} from '../../theme/colors'
 
 const { SubMenu } = MenuAntd
-
 interface DivProps {
   withBorder?: boolean
   bold?: boolean
@@ -17,15 +22,21 @@ interface DivProps {
 export const Container = styled.div`
   align-items: center;
   display: flex;
+  color: ${({ darkMode }: ThemeProps) =>
+    darkMode ? WHITE : DARK_TEXT};
 `
 
+interface ThemeProps {
+  darkMode?: boolean
+}
+
 export const Text = styled.div`
-  color: ${GRAY_DARK};
+  color: ${({ darkMode }: ThemeProps) =>
+    darkMode ? WHITE : DARK_TEXT};
   cursor: pointer;
   font-size: 14px;
   @media (max-width: 991px) {
     align-items: center;
-    color: ${GRAY_DARK};
     display: flex;
     font-weight: 600;
     height: 40px;
@@ -71,6 +82,19 @@ export const StyledSubMenu = styled(SubMenu)`
   .ant-menu-submenu-arrow {
     right: 12px;
   }
+`
+
+export const MenuTitle = styled.div``
+
+export const BetaLabel = styled.div`
+  display: inline-block;
+  font-size: 8px;
+  color: ${BLUE_LIGHT};
+  font-style: italic;
+  margin-left: 4px;
+  vertical-align: top;
+  margin-top: -3px;
+  font-weight: bold;
 `
 
 export const RightIcon = styled(icon)`

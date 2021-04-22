@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.ProductCatalogueThumbnailsList.hightestPriceLabel',
     defaultMessage: 'Highest Price'
   },
+  quantity: {
+    id: 'components.ProductCatalogueThumbnailsList.quantity',
+    defaultMessage: 'Quantity:'
+  },
   emptyResults: {
     id: 'components.ProductCatalogueThumbnailsList.emptyResults',
     defaultMessage: 'No results found'
@@ -68,5 +72,9 @@ export default defineMessages({
   makeCopy: {
     id: 'components.ProductCatalogueThumbnailsList.makeCopy',
     defaultMessage: 'MAKE A COPY'
+  },
+  selectedProducts: {
+    id: 'components.ProductCatalogueThumbnailsList.selectedProducts',
+    defaultMessage: 'Selected Products'
   }
 })

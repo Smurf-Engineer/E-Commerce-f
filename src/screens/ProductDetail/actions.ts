@@ -12,7 +12,8 @@ import {
   LOADING_IMAGE,
   ADD_ITEM_TO_CART,
   RESET_DATA,
-  SET_SELECTED_COLOR
+  SET_SELECTED_COLOR,
+  DESIGN_MODAL_OPEN
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
 
@@ -68,4 +69,9 @@ export const setSelectedColorAction = (selected: SelectedType): AnyAction => ({
 export const setLoadingImageAction = (loading: boolean): AnyAction => ({
   type: LOADING_IMAGE,
   loading
+})
+
+export const setDesignModalOpenAction = (open: boolean): AnyAction => ({
+  type: DESIGN_MODAL_OPEN,
+  open
 })

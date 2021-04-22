@@ -3,9 +3,12 @@
  */
 import * as React from 'react'
 import logo from '../../assets/jakroo_logo.svg'
+import pro_design_logo from '../../assets/pro-design-beta-logo.png'
 import Cart from '../CartForHeader'
+import Notifications from '../NotificationHeader'
 import Menu from '../MobileMenu'
 import messages from './messages'
+import { Notification } from '../../types/common'
 import { Container, Logo, Button } from './styledComponents'
 import { History } from 'history'
 
@@ -18,11 +21,17 @@ interface Props {
   openMenu: boolean
   hide?: boolean
   buyNowHeader?: boolean
+  proDesign?: boolean
   affiliateEnabled?: boolean
   resellerPending?: boolean
   resellerEnabled?: boolean
+  showProDesign?: boolean
   approvedReseller?: boolean
+  notifications?: Notification[]
+  updatingNotifications?: boolean
   saveAndBuy: (buy: boolean) => void
+  onPressNotification?: (id: number, url: string) => void
+  onPressMarkAllAsRead: () => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
   handleOnGoHome: () => void
@@ -35,6 +44,7 @@ export const MenuBarMobile = ({
   totalItems,
   affiliateEnabled,
   resellerEnabled,
+  showProDesign,
   resellerPending,
   openMenu,
   designHasChanges,
@@ -43,43 +53,64 @@ export const MenuBarMobile = ({
   openWithoutSaveModalAction,
   formatMessage,
   buyNowHeader,
+  onPressNotification,
+  onPressMarkAllAsRead,
+  notifications = [],
   saveAndBuy,
-  handleOnGoHome
+  handleOnGoHome,
+  proDesign = false,
+  updatingNotifications
 }: Props) => {
   const handleOnSaveAndBuy = () => {
     saveAndBuy(true)
   }
   return (
-    <Container {...{ hide }}>
+    <Container darkMode={proDesign} {...{ hide }}>
       {!buyNowHeader &&
         <Menu 
           {...{
             history,
             resellerEnabled,
+            showProDesign,
             loginButton,
             openMenu,
             formatMessage,
             affiliateEnabled,
             approvedReseller,
-            resellerPending
+            resellerPending,
+            proDesign
           }}
         />
       }
       <Logo
-        src={logo}
+        src={proDesign ? pro_design_logo : logo}
         onClick={handleOnGoHome}
         className={buyNowHeader ? 'alignLeft' : ''}
       />
       {regionButton}
       {!buyNowHeader && (
-        <Cart
-          {...{
-            totalItems,
-            history,
-            designHasChanges,
-            openWithoutSaveModalAction
-          }}
-        />
+        <>
+          <Notifications
+            {...{
+              notifications,
+              history,
+              onPressNotification,
+              onPressMarkAllAsRead,
+              formatMessage
+            }}
+            isMobile={true}
+            updating={updatingNotifications}
+          />
+          <Cart
+            {...{
+              totalItems,
+              history,
+              designHasChanges,
+              openWithoutSaveModalAction
+            }}
+            darkMode={proDesign}
+          />
+        </>
       )}
       {buyNowHeader ? (
         <Button onClick={handleOnSaveAndBuy} type="primary">

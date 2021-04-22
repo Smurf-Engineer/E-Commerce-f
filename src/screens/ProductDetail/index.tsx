@@ -76,6 +76,7 @@ import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
+import StartDesignModal from '../../components/StartDesignModal'
 import AddtoCartButton from '../../components/AddToCartButton'
 import {
   Product,
@@ -129,7 +130,9 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   loadingImage: boolean
   phone: boolean
+  isMobile: boolean
   profileData: ProfileData
+  designModalOpen: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -140,6 +143,7 @@ interface Props extends RouteComponentProps<any> {
   addItemToCartAction: (item: any) => void
   setLoadingImageAction: (loading: boolean) => void
   resetReducerAction: () => void
+  setDesignModalOpenAction: (open: boolean) => void
 }
 
 interface StateProps {
@@ -201,7 +205,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       setLoadingImageAction,
       currentCurrency,
       data: { product: productData, error, loading },
-      phone
+      phone,
+      designModalOpen
     } = this.props
 
     const { formatMessage } = intl
@@ -562,6 +567,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selected: true,
       label: name
     })
+
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
@@ -663,7 +669,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 />
                 {!isRetail && (
                   <MobileButtonWrapper>
-                    <MobileButton onClick={this.gotoCustomize}>
+                    <MobileButton onClick={this.openDesignModal}>
                       <ColorWheel src={colorWheel} />
                       {formatMessage(messages.customizeLabel)}
                     </MobileButton>
@@ -678,7 +684,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 <ButtonsRow>
                   {!isRetail && (
                     <StyledButtonWrapper>
-                      <StyledButton onClick={this.gotoCustomize}>
+                      <StyledButton onClick={this.openDesignModal}>
                         <ColorWheel src={colorWheel} />
                         {formatMessage(messages.customizeLabel)}
                       </StyledButton>
@@ -709,8 +715,24 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             }}
           />
         </Container>
+        <StartDesignModal
+          open={designModalOpen}
+          onClose={this.closeDesignModal}
+          {...{ formatMessage }}
+          goToCustomize={this.gotoCustomize}
+          goToProDesign={this.goToProDesign}
+        />
       </Layout>
     )
+  }
+  closeDesignModal = () => {
+    const { setDesignModalOpenAction } = this.props
+    setDesignModalOpenAction(false)
+  }
+  openDesignModal = () => {
+    // const { setDesignModalOpenAction } = this.props
+    // setDesignModalOpenAction(true)
+    this.gotoCustomize()
   }
   toggleFitsModal = (showFits: boolean) => () => {
     this.setState({ showFits })
@@ -751,9 +773,28 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       data: { product }
     } = this.props
     const productId = get(product, 'id')
+
     history.push(`/design-center?id=${productId}`)
   }
 
+  goToProDesign = () => {
+    const {
+      history,
+      data: { product }
+    } = this.props
+    const productObj = {
+      ...product,
+      type: product.name,
+      description: product.shortDescription
+    }
+    history.push({
+      pathname: `/pro-design`,
+      state: {
+        product: productObj
+      }
+    })
+  }
+ 
   gotoGetFittedPage = () => {
     const { history } = this.props
     history.push('/fit-widget')

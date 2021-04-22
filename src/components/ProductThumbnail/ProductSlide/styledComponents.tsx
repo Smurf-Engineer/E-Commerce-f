@@ -1,11 +1,15 @@
 /**
  * Styled Components - Created by david on 12/02/18.
  */
+import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GRAY_DARK, GREEN_BRIGHT, WHITE } from '../../../theme/colors'
+import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED, BLACK_LABEL } from '../../../theme/colors'
 
 type StyledProps = {
   backgroundColor?: string
+  selectProduct?: boolean
+  isProDesign?: boolean
+  selectedIndex?: number
 }
 
 export const ImageContainer = styled.div`
@@ -15,19 +19,37 @@ export const ImageContainer = styled.div`
   ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? `background-color: ${backgroundColor}` : ''};
   width: 100%;
-  padding: ${({ backgroundColor }: StyledProps) =>
-    backgroundColor ? '10px' : '10px 0'};
+  padding: ${({ backgroundColor, selectProduct }: StyledProps) => {
+    if (selectProduct) {
+      return '0'
+    }
+    return backgroundColor ? '10px' : '10px 0'
+  }}
   text-align: center;
   border: ${({ backgroundColor }: StyledProps) =>
     backgroundColor ? `1px solid ${WHITE}` : 'none'};
   @media (min-width: 321px) and (max-width: 480px) {
     width: 100%;
-    margin: 0;
   }
   @media only screen and (max-width: 320px) {
     height: 130px;
     width: 100%;
-    margin: 0;
+  }
+`
+
+export const DeleteButton = styled(Icon)`
+  font-size: 16px;
+  top: 5px;
+  right: 5px;
+  display: block;
+  position: absolute;
+  z-index: 9;
+  transition: all .25s;
+  padding: 6px;
+  border-radius: 50%;
+  &:hover {
+    color: ${WHITE};
+    background: ${RED};
   }
 `
 
@@ -60,6 +82,13 @@ export const Image = styled.img`
   }
 `
 
+export const QuantityLabel = styled.div`
+  position: absolute;
+  right: 5px;
+  top: 12px;
+  color: ${WHITE};
+`
+
 export const ImageTop = styled.div`
   user-select: none;
   display: flex;
@@ -70,7 +99,22 @@ export const ImageTop = styled.div`
   width: 100%;
   cursor: pointer;
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 100px;
+    width: ${({ selectProduct }: StyledProps) =>
+    selectProduct ? `100%` : '100px'};
+    &::after {
+      content: "${({ selectedIndex }: StyledProps) => selectedIndex}";
+      color: ${WHITE};
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      background: ${RED};
+      right: 5px;
+      top: 5px;
+      display: ${({ selectedIndex }: StyledProps) => selectedIndex ? 'flex' : 'none'};
+      justify-content: center;
+      align-items: center;
+    }
   }
 `
 export const TopContainer = styled.div`
@@ -86,9 +130,32 @@ export const TopContainer = styled.div`
 export const ThumbnailImage = styled.img`
   width: 100%;
   max-width: 220px;
-  height: 212px;
+  height: ${({ fitContainer }: StyledProps) => (fitContainer ? '110px' : '212px')};
   object-fit: cover;
   border-radius: 3px;
+  @media (max-width: 767px) {
+    max-width: ${({ isProDesign }: StyledProps) => (isProDesign ? '162px' : '220px')};
+  }
+`
+
+export const ProStatus = styled.div`
+  width: 70%;
+  padding: 10px 0;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: ${BLACK_LABEL};
+  border-radius: 3px;
+  color: ${({ backgroundColor }: StyledProps) => backgroundColor || WHITE};
+`
+
+export const ProLabel = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 40%;
 `
 
 export const TopText = styled.div`
@@ -163,4 +230,11 @@ export const ProApproved = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
+`
+
+export const CheckboxContainer = styled.div`
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: ${({ selectedIndex }: StyledProps) =>
+    selectedIndex ? 'none' : 'inline-block'};
+  }
 `

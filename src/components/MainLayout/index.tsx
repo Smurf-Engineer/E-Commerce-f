@@ -83,6 +83,8 @@ interface Props extends RouteComponentProps<any> {
   openReseller: boolean
   fontsData: any
   fonts: []
+  darkMode?: boolean
+  hideDetails: boolean
   openResellerAction: (open: boolean) => void
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
@@ -210,6 +212,7 @@ class MainLayout extends React.Component<Props, {}> {
       productId,
       yotpoId,
       productGender,
+      hideDetails,
       openLogin,
       openLoginAction,
       setRegionAction,
@@ -235,7 +238,8 @@ class MainLayout extends React.Component<Props, {}> {
       saveAndBuyAction,
       style,
       fonts,
-      setAccountScreen
+      setAccountScreen,
+      darkMode
     } = this.props
     const { formatMessage } = intl
     let numberOfProducts = 0
@@ -281,8 +285,9 @@ class MainLayout extends React.Component<Props, {}> {
               currentRegion,
               currentLanguage,
               buyNowHeader,
-              user,
-              setAccountScreen
+              setAccountScreen,
+              darkMode,
+              user
             }}
             loggedIn={!!user}
             saveAndBuy={saveAndBuyAction}
@@ -318,7 +323,7 @@ class MainLayout extends React.Component<Props, {}> {
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
           gender={productGender}
-          {...{ productId, history, yotpoId, formatMessage }}
+          {...{ productId, history, yotpoId, hideDetails, formatMessage }}
         />
         <LogoutModal
           open={openLogoutModal}

@@ -17,7 +17,8 @@ export const initialState = fromJS({
   defaultScreen: '',
   openKeys: [''],
   loading: true,
-  forgotPasswordOpen: false
+  forgotPasswordOpen: false,
+  notificationPage: 1
 })
 
 const adminReducer: Reducer<any> = (state = initialState, action) => {

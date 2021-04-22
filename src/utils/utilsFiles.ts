@@ -93,7 +93,7 @@ export const getFileNameFromUrl = (url: string): string => {
     .slice(0, -1)
     .join('.')
 
-  return name || ''
+  return name || url
 }
 
 export const converToBytes = (file: File) => {

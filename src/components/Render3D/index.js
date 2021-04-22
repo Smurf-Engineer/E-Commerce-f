@@ -39,6 +39,7 @@ import {
   ZIPPER,
   RED_TAG,
   FLATLOCK,
+  PNG_EXTENSION,
   PROPEL_PALMS,
   GRIP_TAPE,
   REGULAR_CANVAS,
@@ -52,6 +53,7 @@ import {
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
+import { getFileExtension } from '../../utils/utilsFiles'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
@@ -144,10 +146,12 @@ class Render3D extends PureComponent {
       actualImage = '',
       colorAccessories,
       product: newProduct,
+      modelMtl,
       hidePredyed: newPredyed
     } = nextProps
     const {
       product,
+      modelMtl: oldMtl,
       isProduct,
       designId,
       data: { design: oldDesign = {} } = {},
@@ -157,7 +161,7 @@ class Render3D extends PureComponent {
     } = this.props
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
-    const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories)
+    const accessoriesChanged = !isEqual(colorAccessories, oldColorAccessories) || (modelMtl !== oldMtl)
     const productChanged =
       (product && newProduct && product.obj !== newProduct.obj) || (hidePredyed !== newPredyed)
     const productToRender = productChanged ? newProduct : product
@@ -268,12 +272,19 @@ class Render3D extends PureComponent {
 
         if (proDesign || (outputSvg && fromImage) || asImage) {
           if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
-            const imageCanvas = document.createElement('canvas')
-            canvg(
-              imageCanvas,
-              `${actualImage || outputSvg}${this.getCacheQuery()}`
-            )
-            loadedTextures.texture = new THREE.Texture(imageCanvas)
+            const imageExtension = getFileExtension(actualImage)
+            if (imageExtension === PNG_EXTENSION) {
+              loadedTextures.texture = textureLoader.load(
+                `${actualImage}${this.getCacheQuery()}`
+              )
+            } else {
+              const imageCanvas = document.createElement('canvas')
+              canvg(
+                imageCanvas,
+                `${actualImage || outputSvg}${this.getCacheQuery()}`
+              )
+              loadedTextures.texture = new THREE.Texture(imageCanvas)
+            }
           } else if (!outputPng && outputSvg) {
             const imageCanvas = document.createElement('canvas')
             canvg(
@@ -625,7 +636,7 @@ class Render3D extends PureComponent {
     fromImage = false
   ) => {
     const { product = {}, flatlockColor, proDesign, highResolution } = design
-    const { stitchingValue, asImage, designSearch, hidePredyed } = this.props
+    const { stitchingValue, asImage, designSearch, hidePredyed, modelObj, modelMtl } = this.props
     if (design.canvas && asImage) {
       await this.getFontsFromCanvas(design.canvas)
     }
@@ -636,13 +647,13 @@ class Render3D extends PureComponent {
     )
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
-    mtlLoader.load(product.mtl, (materials) => {
+    mtlLoader.load(modelMtl || product.mtl, (materials) => {
       this.handleOnLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
       objLoader.setMaterials(materials)
       objLoader.load(
-        product.obj,
+        modelObj || product.obj,
         async (object) => {
           const {
             areas = [],

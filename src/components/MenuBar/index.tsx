@@ -5,6 +5,9 @@ import * as React from 'react'
 import { InjectedIntl } from 'react-intl'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
+import AntdNotification from 'antd/lib/notification'
+import find from 'lodash/find'
+import AntdMessage from 'antd/lib/message'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -19,9 +22,18 @@ import {
   LogoIcon,
   TeamStoresMenuContainer,
   TeamStoresMenuTitle,
+  notificationStyles,
   Icon
 } from './styledComponents'
-import { profileSettingsQuery, regionsQuery } from './data'
+import {
+  profileSettingsQuery,
+  regionsQuery,
+  notificationsQuery,
+  setAsRead,
+  setAllAsRead,
+  upsertNotificationToken
+} from './data'
+import messageSent from '../../assets/message_sent.wav'
 import logo from '../../assets/jakroo_logo.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
@@ -29,20 +41,22 @@ import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
 import Cart from '../CartForHeader'
+import Notifications from '../NotificationHeader'
 import {
   RegionConfig,
   Region as RegionType,
   QueryProps,
+  Notification as NotificationType,
+  MessagePayload,
+  PushNotificationData,
   IProfileSettings,
   User
 } from '../../types/common'
+import { APPROVED, PENDING } from '../../constants'
 import { OVERVIEW } from '../../screens/Account/constants'
 import get from 'lodash/get'
-import { APPROVED, PENDING } from '../../constants'
-
-interface ProfileData extends QueryProps {
-  profileData: IProfileSettings
-}
+import config from '../../config'
+import { firebaseInit, getToken } from '../../utils/realtimeUtils'
 
 interface RegionsData extends QueryProps {
   regionsResult: RegionType[]
@@ -50,6 +64,26 @@ interface RegionsData extends QueryProps {
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
+}
+
+export type NotificationResults = {
+  fullCount: number
+  list: NotificationType[]
+}
+interface NotificationsData extends QueryProps {
+  notifications: NotificationResults
+}
+
+interface NotificationsRead extends QueryProps {
+  notification: NotificationType
+}
+
+interface PushNotification {
+  data: {
+    'firebase-messaging-msg-data': {
+      data: PushNotificationData
+    }
+  }
 }
 
 interface Props {
@@ -75,8 +109,13 @@ interface Props {
   designHasChanges: boolean
   initialCountryCode: string
   buyNowHeader: boolean
+  darkMode?: boolean
+  notificationsData: NotificationsData
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
+  readNotification: (variables: {}) => Promise<NotificationsRead>
+  readAllNotifications: (variables: {}) => Promise<MessagePayload>
+  upsertNotification: (variables: {}) => Promise<MessagePayload>
 }
 
 interface StateProps {
@@ -92,7 +131,63 @@ class MenuBar extends React.Component<Props, StateProps> {
   state = {
     openForgotPassword: false,
     openMenu: false,
-    isMobile: false
+    isMobile: false,
+    updating: false
+  }
+  componentWillUnmount() {
+    navigator.serviceWorker.removeEventListener('message', this.drawNotification)
+  }
+  async componentWillMount() {
+    const {
+      upsertNotification
+    } = this.props
+
+    let user
+    if (typeof window !== 'undefined') {
+      user = JSON.parse(localStorage.getItem('user') as string)
+    }
+    if (user) {
+      await firebaseInit()
+      const token = await getToken()
+      await upsertNotification({
+        variables: { token }
+      })
+      navigator.serviceWorker.addEventListener('message', this.drawNotification)
+    }
+  }
+
+  drawNotification = (notification: PushNotification) => {
+    const { data } = notification
+    const payload = get(data, 'firebase-messaging-msg-data.data', data)
+    const snd = new Audio(messageSent)
+    snd.play()
+    snd.remove()
+    const goToUrl = () => this.handleOnPressNotification(payload.id, payload.url)
+    if (!this.notificationAlreadyExist(payload.id) && payload.toAdmin === 'false') {
+      this.displayNotification(payload, goToUrl)
+    }
+  }
+
+  notificationAlreadyExist = (notificationId: string) => {
+    const { notificationsData } = this.props
+    const notifications = get(notificationsData, 'notifications', [])
+    const alreadyExist = find(notifications, ['id', notificationId])
+    return !!alreadyExist
+  }
+
+  displayNotification = async (payload: PushNotificationData, goToUrl: () => void) => {
+    AntdNotification.open({
+      message: payload.title,
+      description: payload.message,
+      onClick: goToUrl,
+      style: notificationStyles
+    })
+    this.reloadNotifications()
+  }
+
+  reloadNotifications = async () => {
+    const { notificationsData } = this.props
+    await notificationsData.refetch()
   }
 
   componentDidMount() {
@@ -158,8 +253,31 @@ class MenuBar extends React.Component<Props, StateProps> {
     push(route)
   }
 
+  handleOnPressNotification = async (notificationId: string, url: string) => {
+    const { readNotification } = this.props
+    await readNotification({
+      variables: {
+        shortId: notificationId
+      }
+    })
+    window.location.href = `${config.baseUrl}${url}`
+  }
+  markAllNotificationsAsRead = async () => {
+    const { readAllNotifications, notificationsData, intl: { formatMessage } } = this.props
+    try {
+      this.setState({ updating: true })
+      await readAllNotifications({ variables: {} })
+      await notificationsData.refetch()
+      this.setState({ updating: false })
+    } catch (e) {
+      console.error(e)
+      this.setState({ updating: false })
+      AntdMessage.error(formatMessage(messages.errorUpdating))
+    }
+  }
+
   render() {
-    const { openForgotPassword, isMobile, openMenu } = this.state
+    const { openForgotPassword, isMobile, openMenu, updating } = this.state
     const {
       history,
       searchFunc,
@@ -182,7 +300,9 @@ class MenuBar extends React.Component<Props, StateProps> {
       initialCountryCode,
       buyNowHeader,
       saveAndBuy,
-      regionsData: { regionsResult, loading: loadingRegions }
+      regionsData: { regionsResult, loading: loadingRegions },
+      darkMode = false,
+      notificationsData
     } = this.props
 
     let user: any = {}
@@ -197,15 +317,25 @@ class MenuBar extends React.Component<Props, StateProps> {
     const userName = !!user ? String(user.name).toUpperCase() : ''
     const affiliateEnabled = get(profileData, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(profileData, 'profileData.userProfile.resellerEnabled', false)
+    const showProDesign = get(profileData, 'profileData.userProfile.showProDesign', false)
 
+    const notifications = get(notificationsData, 'notifications.list', [])
     const loggedUser = !user ? (
-      <TopText onClick={this.handleOpenLogin}>
+      <TopText onClick={this.handleOpenLogin} {...{darkMode}}>
         <Icon type="user" />
         {formatMessage(messages.title)}
       </TopText>
     ) : (
         <Logout
-          {...{ history, formatMessage, affiliateEnabled, resellerPending, approvedReseller, resellerEnabled }}
+          {...{
+            history,
+            formatMessage,
+            affiliateEnabled,
+            resellerPending,
+            approvedReseller,
+            showProDesign,
+            resellerEnabled,
+            darkMode }}
           title={formatMessage(messages.myAccount, { user: userName })}
           logout={logoutAction}
           openMenu={this.openMenu}
@@ -226,7 +356,8 @@ class MenuBar extends React.Component<Props, StateProps> {
           currentLanguage,
           currentCurrency,
           isMobile,
-          regionsResult
+          regionsResult,
+          darkMode
         }}
       />
     )
@@ -260,11 +391,12 @@ class MenuBar extends React.Component<Props, StateProps> {
           {(matches) => {
             if (matches) {
               return (
-                <Container>
+                <Container {...{darkMode}}>
                   {!hideTop && (
                     <Row>
                       <MenuSupport
                         {...{
+                          darkMode,
                           history,
                           designHasChanges,
                           openWithoutSaveModalAction
@@ -277,8 +409,20 @@ class MenuBar extends React.Component<Props, StateProps> {
                           {...{
                             history,
                             designHasChanges,
-                            openWithoutSaveModalAction
+                            openWithoutSaveModalAction,
+                            darkMode
                           }}
+                        />
+                        <Notifications
+                          {...{
+                            notifications,
+                            history,
+                            isMobile,
+                            formatMessage,
+                            updating
+                          }}
+                          onPressNotification={this.handleOnPressNotification}
+                          onPressMarkAllAsRead={this.markAllNotificationsAsRead}
                         />
                         {loggedUser}
                       </TopRow>
@@ -301,15 +445,21 @@ class MenuBar extends React.Component<Props, StateProps> {
                       openMenu,
                       approvedReseller,
                       resellerPending,
+                      showProDesign,
                       resellerEnabled,
                       affiliateEnabled,
-                      saveAndBuy
+                      saveAndBuy,
+                      notifications
                     }}
                     handleOnGoHome={this.handleOnGoHome}
                     totalItems={itemsInCart}
                     hide={hideTop}
                     loginButton={loggedUser}
                     regionButton={menuRegion}
+                    proDesign={darkMode}
+                    onPressNotification={this.handleOnPressNotification}
+                    onPressMarkAllAsRead={this.markAllNotificationsAsRead}
+                    updatingNotifications={updating}
                   />
                 )
               )
@@ -372,6 +522,21 @@ const MenuBarEnhanced = compose(
       fetchPolicy: 'network-only',
       variables: {}
     })
-  })
+  }),
+  graphql<NotificationsData>(notificationsQuery, {
+    name: 'notificationsData',
+    options: () => {
+      let user
+      if (typeof window !== 'undefined') {
+        user = JSON.parse(localStorage.getItem('user') as string)
+      }
+      return {
+        skip: !user
+      }
+    }
+  }),
+  setAsRead,
+  setAllAsRead,
+  upsertNotificationToken
 )(MenuBar)
 export default MenuBarEnhanced

@@ -46,14 +46,20 @@ export const Available = styled.div`
 export const SliderPage = styled.div``
 export const StyledImage = styled.img`
   width: 95%;
+  @media (max-width: 654px) {
+    width: 100%;
+  }
 `
 export const Arrows = styled.div`
   display: flex;
   justify-content: space-between;
   position: absolute;
   top: 210px;
-  width: 96%;
+  width: 47%;
   padding: 0 15px 0 10px;
+  @media (max-width: 654px) {
+    width: 100%;
+  }
 `
 export const ArrowRight = styled.img`
   &:hover {

@@ -8,7 +8,7 @@ options:
 definitions:
   services:
     docker:
-      memory: 2048
+      memory: 4096
 
 pipelines:
   # custom:
@@ -79,6 +79,7 @@ pipelines:
   branches:
     master:
       - step:
+          size: 2x
           name: Test
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -86,6 +87,7 @@ pipelines:
             - yarn lint
             - yarn test
       - step:
+          size: 2x
           name: Deploy to production
           trigger: manual
           deployment: production
@@ -119,6 +121,7 @@ pipelines:
             - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT --record --namespace=production
     staging:
       - step:
+          size: 2x
           name: Test
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -126,6 +129,7 @@ pipelines:
             - yarn lint
             - yarn test
       - step:
+          size: 2x
           name: Deploy to staging
           trigger: manual
           deployment: Staging
@@ -154,6 +158,7 @@ pipelines:
   pull-requests:
     "**":
       - step:
+          size: 2x
           script:
             - curl -o- -L https://yarnpkg.com/install.sh | bash
             - yarn

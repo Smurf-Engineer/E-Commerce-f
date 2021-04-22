@@ -2,12 +2,18 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled from 'styled-components'
+import { WHITE, BLACK_SEMILIGHT, DARK_TEXT, RED } from '../../theme/colors'
+
+type ThemeProps = {
+  darkMode: boolean
+}
 import icon from 'antd/lib/icon'
-import { RED } from '../../theme/colors'
 import { AVENIR_MEDIUM } from '../../theme/fonts'
 
 export const Container = styled.div`
   position: relative;
+  background-color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? BLACK_SEMILIGHT : WHITE};
 `
 
 export const Row = styled.div`
@@ -36,10 +42,15 @@ export const Icon = styled(icon)`
   font-size: 15px;
 `
 export const TopText = styled.div`
-  color: #5f6062;
   cursor: pointer;
   font-size: 14px;
+  color: ${({ darkMode }: ThemeProps) =>
+  darkMode ? WHITE : DARK_TEXT};
   font-family: ${AVENIR_MEDIUM};
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media (max-width: 991px) {
     align-items: center;
     display: flex;
@@ -91,3 +102,5 @@ export const TeamStoresMenuTitle = styled.div`
     cursor: pointer;
   }
 `
+
+export const notificationStyles = { cursor: 'pointer' }

@@ -2,10 +2,18 @@
  * Styled Components - Created by david on 23/02/18.
  */
 import styled from 'styled-components'
+import { WHITE, BLACK_SEMILIGHT, DARK_TEXT } from '../../theme/colors'
 
-export const Container = styled.div`
+type ContainerProps = {
+  dark: boolean
+}
+
+export const HeaderContainer = styled.div`
   flex: 1;
-  background-color: #fff;
+  background-color: ${({ dark }: ContainerProps) =>
+  dark ? BLACK_SEMILIGHT : WHITE};
+  color: ${({ dark }: ContainerProps) =>
+  dark ? WHITE : DARK_TEXT};
 `
 
 export const Row = styled.div`
@@ -37,7 +45,6 @@ export const BackButton = styled.div`
 `
 
 export const Back = styled.div`
-  color: #5f6062;
   font-size: 14px;
   line-height: 19px;
 `

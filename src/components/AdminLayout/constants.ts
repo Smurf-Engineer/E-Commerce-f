@@ -10,6 +10,7 @@ export const SET_INSTALLED_FONTS_ACTION = `${namespace}/SET_INSTALLED_FONTS_ACTI
 
 export const ADMIN_ROUTE = '/admin'
 
+export const NOTIFICATIONS = 'notifications'
 export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
@@ -44,7 +45,13 @@ export const PUBLISHING_TOOL = 'publishingTool'
 export const CREATE_DESIGNS = 'createDesigns'
 export const DESIGN_LAB_TOOLS = 'designLabTools'
 
+export const BADGE = 'badge'
+
 export const options = [
+  {
+    title: NOTIFICATIONS,
+    options: []
+  },
   {
     title: ORDERS,
     options: [ORDER_STATUS, DISCOUNTS, DESIGN_SEARCH, PRO_ASSIST]

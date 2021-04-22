@@ -4,19 +4,24 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
+import includes from 'lodash/includes'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu from 'antd/lib/menu'
 import messages from './messages'
 import { GetProductsQuery, profileSettingsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
+import SelectedProducts from '../../screens/IntakeForm/SelectedProducts'
 import FooterThumbnailLocker from '../FooterThumbnailLocker'
 import AddToCartButton from '../AddToCartButton'
 import {
   QueryProps,
   ProductType,
   DesignType,
-  ClickParam, IProfileSettings, Product, User
+  ClickParam,
+  Product,
+  IProfileSettings,
+  User
 } from '../../types/common'
 import { GRAY_LIGHTEST } from '../../theme/colors'
 import {
@@ -53,7 +58,7 @@ interface Data extends QueryProps {
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  openQuickView: (id: number, yotpoId: string) => void
+  openQuickView: (id: number, yotpoId: string, gender?: number, hideSliderButtons?: boolean) => void
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
@@ -66,8 +71,10 @@ interface Props {
   designs?: DesignType[]
   previewOnly?: boolean
   profileData: ProfileData
+  isEdit?: boolean
   makeCopy: (shortId: string) => void
   setDesignSelected: (shortId: string) => void
+  changeQuantity: (key: number) => void
   openAddToTeamStoreModalAction: (open: boolean, id: string) => void
   setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
@@ -76,6 +83,10 @@ interface Props {
   withoutPadding?: boolean
   currentCurrency: string
   genderFilters: string
+  selectProduct?: boolean
+  selectedItems?: Product[]
+  fromIntakeForm?: boolean
+  handleCheckChange: (product: Product, checked: boolean, key?: number) => void
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -88,15 +99,21 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       handleChangePage,
       handleOrderBy,
       profileData,
+      fromIntakeForm,
       data,
+      isEdit,
       designs,
+      changeQuantity,
       onPressPrivate = () => { },
       onPressDelete = () => { },
       onPressRename = () => { },
       withoutPadding,
       currentCurrency,
       genderFilters,
-      previewOnly = false
+      previewOnly = false,
+      selectProduct,
+      selectedItems = [],
+      handleCheckChange
     } = this.props
 
     let thumbnailsList
@@ -128,6 +145,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           if (isReseller) {
             product = this.calculateReseller(product, resellerComission)
           }
+          const selectedProductIds = selectedItems.map((sectedProduct: Product) => sectedProduct.id)
+          const isSelected = includes(selectedProductIds, product.id)
+
           const addToCartButton = product.active || product.onlyProDesign ? (
             <AddToCartButton
               label={formatMessage(messages.addToCart)}
@@ -145,7 +165,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                {...{ currentCurrency }}
+                {...{ currentCurrency, fromIntakeForm, handleCheckChange, isSelected }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
@@ -279,6 +299,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           )
 
           const productImages = images ? imgsByGender || images[0] : {}
+          const selectedProductIds = selectedItems.map((sectedProduct: Product) => sectedProduct.id)
+          const isSelected = includes(selectedProductIds, product.id)
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -287,9 +309,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 images={productImages}
                 product={product}
                 customizableLabel={formatMessage(messages.customizable)}
+                selectedIndex={isSelected && selectedItems.findIndex((item) => item === product.id) + 1}
                 {...{
                   currentCurrency,
                   id,
+                  fromIntakeForm,
                   yotpoId,
                   type,
                   description,
@@ -297,7 +321,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   collections,
                   priceRange,
                   customizable,
-                  colors
+                  colors,
+                  selectProduct,
+                  handleCheckChange,
+                  isSelected
                 }}
                 labelButton={
                   customizable
@@ -336,9 +363,15 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
     return (
       <Container>
+        <SelectedProducts
+          {...{ changeQuantity, fromIntakeForm, isEdit }}
+          products={selectedItems}
+          title={formatMessage(messages.selectedProducts)}
+          handleDeleteProduct={handleCheckChange}
+        />
         <HeadRow withoutPadding={!!withoutPadding}>
           {total ? <TotalItems>{`${total} Items`}</TotalItems> : null}
-          {sortOptions && (
+          {sortOptions && !!sortByLabel.length && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
               <Dropdown overlay={sortOptions} placement="bottomCenter">
@@ -394,8 +427,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     setCurrentShare(shortId, openModal)
   }
   handlePressQuickView = (id: number, yotpoId: string) => {
-    const { openQuickView } = this.props
-    openQuickView(id, yotpoId)
+    const { openQuickView, fromIntakeForm } = this.props
+    !fromIntakeForm ? openQuickView(id, yotpoId) : openQuickView(id, yotpoId, null, true)
   }
 
   openPreview = (designId: string) => () => {
@@ -430,6 +463,7 @@ type OwnProps = {
   orderBy?: string
   skip?: number
   designs?: DesignType[]
+  selectProduct?: boolean
 }
 
 const ThumbnailsListEnhance = compose(
@@ -452,13 +486,14 @@ const ThumbnailsListEnhance = compose(
       limit,
       orderBy,
       skip,
-      designs
+      designs,
+      selectProduct
     }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
         variables: {
           contentTile: contentTile ? contentTile : null,
-          collection: collectionFilters ? collectionFilters : null,
+          collection: selectProduct ? 1 : (collectionFilters ? collectionFilters : 1),
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,
           sport: sportFilters ? sportFilters : null,

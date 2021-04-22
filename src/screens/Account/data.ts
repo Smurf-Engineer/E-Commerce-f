@@ -25,10 +25,12 @@ export const profileSettingsQuery = gql`
   query profile {
     profileData: getUserProfile {
       userProfile {
+        userId: id
         firstName: first_name
         lastName: last_name
         email
         affiliateEnabled: affiliate_enabled
+        showProDesign: show_pro_design
         resellerEnabled: reseller_enabled
         phone
       }

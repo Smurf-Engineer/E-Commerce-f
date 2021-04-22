@@ -93,6 +93,69 @@ export type WorkHours = {
   timeZone: string
 }
 
+export type ProDesignItem = {
+  id: number
+  name: string
+  code: string
+  createdAt: string
+  shortId?: string
+  image: string
+  status: string
+  design: Design
+  project: ProDesignProject
+  product: Product
+  notifications: number
+  messages: ProDesignMessage[]
+}
+
+export type ProDesignProject = {
+  id: number
+  name: string
+  shortId: string
+  teamSize: number
+  status: string
+  totalDesigns: number
+  createdAt: string
+  notes: string
+  inspiration: ProjectInspiration[]
+  palette: ProjectPalette[]
+  files: UserFiles[]
+  updatedAt: string
+  designs: ProDesignItem[]
+  customer: string
+}
+
+export type ProDesignMessage = {
+  id: number
+  createdAt: string
+  type: string
+  message: string
+  file?: string
+  code?: string
+  design?: string
+  requireAnswer?: boolean
+  answer?: ProDesignMessage
+  parentMessageId?: number
+  userName?: string
+}
+
+export type ProjectInspiration = {
+  id: number
+  name: string
+  image?: string
+  tags: string
+}
+
+export type ProjectPalette = {
+  id: number
+  short_id: string
+  name: string
+  primaryColor: string
+  accent1: string
+  accent2: string
+  accent3: string
+}
+
 export interface GenderType {
   id: number
   name?: string
@@ -1242,6 +1305,7 @@ export interface ImageFile {
     height: number
   }
   type: string
+  name?: string
 }
 
 export type MessagePayload = {
@@ -1724,10 +1788,12 @@ export interface Header {
   width?: number
   tabletWidth?: number
   fieldName?: string
+  dataType?: string
 }
 
 export interface ColorsDataResult {
   colorsResult: Colors
+  loading?: boolean
 }
 
 export type Thumbnail = {
@@ -1773,4 +1839,63 @@ export type SubsidiarySCA = {
 
 export type DeliveryDays = {
   deliveryDays: string
+}
+
+export type InspirationType = {
+  id: number
+  name: string
+  image: string
+  width?: number
+  height?: number
+  selected?: boolean
+  assetType?: string
+  tags?: string[]
+}
+
+export type ProDesignPalette = {
+  id: number
+  name: string
+  primary: string
+  accent1: string
+  accent2: string
+  accent3: string
+  fromAdmin: boolean
+}
+
+export type Notification = {
+  id: string
+  senderId: string
+  notificationType: string
+  toAdmin: boolean
+  read: boolean
+  date: string
+  title: string
+  message: string
+  url?: string
+}
+
+export type PushNotificationData = {
+  id: string
+  senderId: string
+  toAdmin: string
+  title: string
+  message: string
+  url?: string
+}
+
+export type Project = {
+  id: number
+  shortId: string
+  name: string
+  status: string
+  lastUpdated: string
+  createdAt: string
+  designs: ProDesignItem[]
+  totalNotifications?: number
+  updatedAt?: string
+}
+
+export type ProjectsResult = {
+  fullCount: number
+  projects: Project[]
 }

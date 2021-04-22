@@ -9,6 +9,7 @@ export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
 export const PROFILE_MENU = 'profileMenu'
+export const NOTIFICATIONS = 'notifications'
 export const TEAMSTORES = 'myTeamStores'
 export const MY_STORES = 'myStores'
 export const RESELLER = 'reseller'
@@ -22,11 +23,17 @@ export const AFFILIATES_PAYOUTS = 'affiliatePayouts'
 export const CREATIONS = 'myCreations'
 export const MY_FILES = 'myFiles'
 export const SCREEN_LOCKER = 'myLocker'
+export const PRO_DESIGN = 'proDesign'
+export const PRO_DESIGN_PROJECTS = 'proDesignProjects'
 
 // USE UNIQUE KEYS
 export const options = [
   {
     title: OVERVIEW,
+    options: []
+  },
+  {
+    title: NOTIFICATIONS,
     options: []
   },
   {
@@ -49,6 +56,11 @@ export const options = [
   {
     title: AFFILIATES,
     options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
+  },
+  {
+    title: PRO_DESIGN,
+    beta: true,
+    options: [PRO_DESIGN_PROJECTS]
   },
   {
     title: SCREEN_LOCKER,
@@ -82,6 +94,15 @@ export const resellerOptions = [
     options: []
   },
   {
+    title: NOTIFICATIONS,
+    options: []
+  },
+  {
+    title: PRO_DESIGN,
+    beta: true,
+    options: [PRO_DESIGN_PROJECTS]
+  },
+  {
     title: RESELLER,
     options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
   },
@@ -96,6 +117,10 @@ export const resellerOptions = [
 ]
 
 export const resellerShortOptions = [
+  {
+    title: NOTIFICATIONS,
+    options: []
+  },
   {
     title: ADDRESSES,
     options: []
@@ -113,6 +138,10 @@ export const resellerShortOptions = [
     options: [RESELLER_ABOUT]
   }
 ]
+
+export const excludeBack = {
+  [PRO_DESIGN_PROJECTS]: true
+}
 
 export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
 export const SET_OPEN_KEYS = `${namespace}/SET_OPEN_KEYS`

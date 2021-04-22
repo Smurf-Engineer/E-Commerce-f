@@ -1,4 +1,4 @@
-@popover-prefix-cls: ~'@{ant-prefix}-popover';
+@popover-prefix-cls: ~"@{ant-prefix}-popover";
 
 .@{popover-prefix-cls} {
   &-inner {
@@ -35,7 +35,7 @@
     border-right: 0px @border-style-base @border-color-split;
 
     .@{menu-prefix-cls}-submenu-title {
-      width: ~'calc(100% + 24px)';
+      width: ~"calc(100% + 24px)";
     }
   }
 }
@@ -264,4 +264,110 @@ body {
       color: #fff;
     }
   }
+  margin: 0 !important;
+  padding: 0;
+  font-family: "Avenir Next", sans-serif;
+  line-height: normal;
+}
+
+.hide-date-input .ant-calendar-input-wrap {
+    display: none;
+}
+
+
+.ant-modal-body {
+  line-height: normal;
+}
+.rc-drawer-sidebar {
+  z-index: 11;
+}
+.transparent-modal {
+  .ant-modal-content {
+    background: transparent;
+    box-shadow: none;
+    .ant-modal-body {
+      padding: 0;
+    }
+  }
+}
+.rc-drawer {
+  position: relative;
+}
+.rc-drawer-content {
+  position: relative;
+}
+.masonry-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+.masonry-grid_column {
+  padding-left: 3px;
+  background-clip: padding-box;
+  > div {
+    margin: 3px auto;
+  }
+}
+
+.richTextWrapper {
+  position: relative;
+}
+.richTextEditor {
+  border: 1px solid #d9d9d9;
+  padding: 35px 10px;
+  border-radius: 4px;
+}
+.richtTextHighlight {
+  border: 1px solid #fb0000;
+  padding: 35px 10px;
+  border-radius: 4px;
+}
+.richTextToolBar {
+  margin-bottom: 0 !important;
+  border-bottom: none;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
+}
+.bordered-option {
+  border: none !important;
+}
+
+.flexible-modal {
+	position: absolute;
+	z-index: 1;
+	border: 1px solid #ccc;
+	background: white;
+}
+.flexible-modal-mask {
+	position: fixed;
+	height: 100%;
+	background: rgba(55, 55, 55, 0.6);
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.flexible-modal-resizer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	cursor: se-resize;
+	margin: 5px;
+	border-bottom: solid 2px #333;
+	border-right: solid 2px #333;
+}
+.flexible-modal-drag-area {
+	background: rgba(22, 22, 333, 0.2);
+	height: 50px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	cursor: move;
+}
+.centeredButtons .ant-modal-confirm-btns {
+  text-align: center;
+  float: unset;
 }

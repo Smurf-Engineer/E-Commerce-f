@@ -21,6 +21,8 @@ export const RESELLER_ORDERS = 'resellerOrders'
 export const CREATIONS = 'myCreations'
 export const MY_FILES = 'myFiles'
 export const SCREEN_LOCKER = 'myLocker'
+export const PRO_DESIGN = 'proDesign'
+export const PRO_DESIGN_PROJECTS = 'proDesignProjects'
 
 // USE UNIQUE KEYS
 export const menuOptions = [
@@ -45,13 +47,18 @@ export const menuOptions = [
     options: [AFFILIATES_ABOUT, AFFILIATES_ORDERS, AFFILIATES_PAYOUTS]
   },
   {
+    title: PRO_DESIGN,
+    beta: true,
+    options: [PRO_DESIGN_PROJECTS]
+  },
+  {
     title: SCREEN_LOCKER,
     options: []
   },
   {
     title: MY_FILES,
     options: []
-  }
+  },
 ]
 
 export const resellerOptions = [
@@ -66,6 +73,11 @@ export const resellerOptions = [
   {
     title: RESELLER,
     options: [RESELLER_ABOUT, MY_STORES, RESELLER_ORDERS, RESELLER_PAYOUTS]
+  },
+  {
+    title: PRO_DESIGN,
+    beta: true,
+    options: [PRO_DESIGN_PROJECTS]
   },
   {
     title: SCREEN_LOCKER,

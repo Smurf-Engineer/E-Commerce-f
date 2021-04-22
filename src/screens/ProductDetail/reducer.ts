@@ -12,7 +12,8 @@ import {
   SET_SELECTED_COLOR,
   LOADING_3D_MODEL,
   LOADING_IMAGE,
-  RESET_DATA
+  RESET_DATA,
+  DESIGN_MODAL_OPEN
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -50,6 +51,8 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loadingModel', action.loading)
     case LOADING_IMAGE:
       return state.set('loadingImage', action.loading)
+    case DESIGN_MODAL_OPEN:
+      return state.set('designModalOpen', action.open)
     case RESET_DATA:
       return initialState
     default:

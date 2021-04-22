@@ -21,6 +21,18 @@ export default defineMessages({
     id: 'screens.Account.menu.addresses',
     defaultMessage: 'Addresses'
   },
+  beta: {
+    id: 'screens.Account.menu.beta',
+    defaultMessage: 'BETA'
+  },
+  proDesign: {
+    id: 'screens.Account.proDesign',
+    defaultMessage: 'PRO DESIGN'
+  },
+  proDesignProjects: {
+    id: 'screens.Account.proDesignProjects',
+    defaultMessage: 'My Projects'
+  },
   goBack: {
     id: 'screens.Account.menu.goBack',
     defaultMessage: 'Back'
@@ -32,6 +44,10 @@ export default defineMessages({
   profileSettings: {
     id: 'screens.Account.menu.profileSettings',
     defaultMessage: 'Profile'
+  },
+  notifications: {
+    id: 'screens.Account.menu.notifications',
+    defaultMessage: 'NOTIFICATIONS'
   },
   myTeamStores: {
     id: 'screens.Account.menu.myTeamStores',
@@ -67,11 +83,11 @@ export default defineMessages({
   },
   myLocker: {
     id: 'screens.Account.submenu.myLocker',
-    defaultMessage: 'My Locker'
+    defaultMessage: 'MY LOCKER'
   },
   myFiles: {
     id: 'screens.Account.submenu.myFiles',
-    defaultMessage: 'My Files'
+    defaultMessage: 'MY FILES'
   },
   filtersTitle: {
     id: 'screens.Account.submenu.filtersTitle',

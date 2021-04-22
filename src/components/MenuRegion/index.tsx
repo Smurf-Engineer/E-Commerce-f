@@ -24,6 +24,7 @@ interface Props {
   currentLanguage?: string
   currentCurrency?: string
   isMobile?: boolean
+  darkMode?: boolean
 }
 
 interface State {
@@ -150,7 +151,8 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       currentLanguage = '',
       currentCurrency = '',
       isMobile,
-      regionsResult = []
+      regionsResult = [],
+      darkMode = false
     } = this.props
 
     let region = {} as RegionType
@@ -206,7 +208,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       >
         <Regions>
           <img src={region.icon} />
-          <TopText>
+          <TopText {...{darkMode}}>
             {!currency.shortName ? null : currency.shortName.toUpperCase()}
           </TopText>
         </Regions>
@@ -215,7 +217,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       <div>
         <Regions onClick={this.handleModalClick}>
           <img src={region.icon} />
-          <TopText>
+          <TopText {...{darkMode}}>
             {!currency.shortName ? null : currency.shortName.toUpperCase()}
           </TopText>
         </Regions>

@@ -22,7 +22,8 @@ import {
   BuyNow,
   BuyLoader,
   ImgIcon,
-  RetailColors
+  RetailColors,
+  NotificationsBadge
 } from './styledComponents'
 import messages from './messages'
 import { getProductQuery } from './data'
@@ -31,6 +32,9 @@ import ImageSlide from './ProductSlide'
 import { saveInLocalStorage } from './api'
 import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { DATE_FORMAT } from '../../constants'
+import moment from 'moment'
 
 const LIMIT_PRICE_RANGE = 3
 const WHITENAME = 'White'
@@ -48,11 +52,13 @@ interface Props {
   itemId?: string
   footer?: React.ReactNode
   gender?: number
+  createdAt?: string
   hideCustomButton?: boolean
   hideQuickView?: boolean
   yotpoId: string
   client: any
   designId?: string
+  notifications?: number
   match: any
   history: any
   isStoreThumbnail?: boolean
@@ -67,10 +73,20 @@ interface Props {
   backgroundColor?: string
   colors: ProductColors[]
   proDesign: boolean
+  fromIntakeForm?: boolean
   proDesignAssigned?: boolean
+  selectProduct?: boolean
+  isSelected?: boolean
+  selectedIndex?: number
+  clickDisabled?: boolean
+  fitContainer?: boolean
+  isProDesign?: boolean
+  proStatus?: string
+  deleteItem?: () => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
+  handleCheckChange: (product: Product, checked: boolean) => void
 }
 
 export class ProductThumbnail extends React.Component<Props, {}> {
@@ -119,7 +135,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     onPressCustomize(id)
   }
 
-  handleOnPressQuickView = () => {
+  handleOnPressQuickView = (event: React.MouseEvent) => {
+    event.stopPropagation()
     const { onPressQuickView, id, yotpoId, gender } = this.props
     onPressQuickView(id, yotpoId, gender || 0)
   }
@@ -146,11 +163,13 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { history, onPressThumbnail } = this.props
+    const { history, onPressThumbnail, isProDesign, clickDisabled = false } = this.props
     if (onPressThumbnail) {
       onPressThumbnail()
     }
-    history.push(this.getUrlProduct())
+    if (!clickDisabled && !isProDesign) {
+      history.push(this.getUrlProduct())
+    }
   }
 
   handleOnBuyNow = async () => {
@@ -198,6 +217,19 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       this.setState({ loading: false })
     }
   }
+  onHandleCheckChange = (event: CheckboxChangeEvent) => {
+    const { target: { checked } } = event
+    const { product, handleCheckChange, fromIntakeForm } = this.props
+    if (!fromIntakeForm) {
+      handleCheckChange(product.id, checked)
+    }
+  }
+  onHandleCheckChangeImage = (event: any) => {
+    event.stopPropagation()
+    const { isSelected } = this.props
+    const { product, handleCheckChange } = this.props
+    handleCheckChange(product, !isSelected)
+  }
   render() {
     const {
       type,
@@ -209,28 +241,36 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       labelButton,
       image,
       product,
+      createdAt,
       withMargin,
       hideCustomButton,
       hideQuickView,
       customizable,
       currentCurrency,
       customizableLabel,
+      notifications,
+      deleteItem,
       myLockerList,
       disableSlider,
       backgroundColor,
       colors,
+      proStatus,
+      isProDesign,
       reversePriceRange,
       proDesign,
-      proDesignAssigned
+      fromIntakeForm,
+      proDesignAssigned,
+      selectProduct,
+      isSelected = false,
+      selectedIndex = 0,
+      fitContainer = false
     } = this.props
     const { isHovered, currentImage, loading } = this.state
-
     const currencyPrices =
       priceRange &&
       filter(priceRange, {
         abbreviation: currentCurrency
       })
-
     const symbol = get(currencyPrices, '[0].shortName', '')
 
     let lastPriceIndex = LIMIT_PRICE_RANGE
@@ -246,7 +286,6 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       const lastPrice = currencyPrices[lastPriceIndex].price
 
       price = `${symbol} ${basePrice}`
-
       if (customizable) {
         if (reversePriceRange) {
           price = `${symbol} ${lastPrice} - ${basePrice}`
@@ -293,9 +332,14 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       })
     }
     return (
-      <Container {...{ withMargin }}>
+      <Container
+      {...{ withMargin, selectProduct, isSelected, fitContainer  }}
+      onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
+        {!!notifications && <NotificationsBadge>{notifications > 9 ? '+9' : notifications}</NotificationsBadge>}
         <ImageSlide
           {...{
+            isProDesign,
+            proStatus,
             isTopProduct,
             isHovered,
             images,
@@ -311,7 +355,13 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             customizable,
             backgroundColor,
             proDesign,
-            proDesignAssigned
+            proDesignAssigned,
+            selectProduct,
+            isSelected,
+            deleteItem,
+            fromIntakeForm,
+            selectedIndex,
+            fitContainer
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
@@ -320,23 +370,29 @@ export class ProductThumbnail extends React.Component<Props, {}> {
           onPressNext={this.handleOnPressNext}
           onPressCustomize={this.handleOnPressCustomize}
           onPressThumbnail={this.handlePressThumbnail}
+          handleCheckChange={this.onHandleCheckChange}
         />
         {footer ? (
           footer
         ) : (
           <Footer>
-            <Type>
+            <Type {...{fitContainer}}>
               {type}
               <GendersContainer>
                 {menAvailable && <MenIcon type="man" />}
                 {womenAvailable && <WomenIcon type="woman" />}
               </GendersContainer>
             </Type>
-            <Description>{description}</Description>
+            <Description {...{fitContainer}}>{description}</Description>
             <InfoContainer>
-              {colorOptions}
+              {!isProDesign ? colorOptions : null}
               <Price>{price}</Price>
             </InfoContainer>
+            {isProDesign &&
+              <Description fitContainer={true}>
+                {createdAt ? moment(createdAt).format(DATE_FORMAT) : '-'}
+              </Description>
+            }
           </Footer>
         )}
       </Container>

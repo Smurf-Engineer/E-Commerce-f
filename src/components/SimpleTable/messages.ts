@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'components.SimpleTable.delete',
     defaultMessage: 'Delete'
   },
+  markRead: {
+    id: 'components.SimpleTable.markRead',
+    defaultMessage: 'Mark as read'
+  },
   clientId: {
     id: 'components.SimpleTable.clientId',
     defaultMessage: 'Client ID'
@@ -24,5 +28,21 @@ export default defineMessages({
   email: {
     id: 'components.SimpleTable.email',
     defaultMessage: 'Email'
+  },
+  date: {
+    id: 'components.SimpleTable.date',
+    defaultMessage: 'Date'
+  },
+  notification: {
+    id: 'components.SimpleTable.notification',
+    defaultMessage: 'Notification'
+  },
+  source: {
+    id: 'components.SimpleTable.notifications',
+    defaultMessage: 'Source'
+  },
+  user: {
+    id: 'components.SimpleTable.user',
+    defaultMessage: 'User'
   }
 })

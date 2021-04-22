@@ -22,3 +22,7 @@ export const validateEmail = (email: string) => {
 export const formatAmount = (value: Number = 0) => {
   return value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+export const sleep = (milliseconds: number) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}

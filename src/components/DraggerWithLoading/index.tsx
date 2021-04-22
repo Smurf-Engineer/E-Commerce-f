@@ -4,21 +4,21 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import map from 'lodash/map'
-import Upload from 'antd/lib/upload'
 import Spin from 'antd/lib/spin'
 import uploadIcon from '../../assets/upload_white.svg'
 import messages from './messages'
-import { DragMessage, DragTypes, Icon, Container } from './styledComponents'
+import { DragMessage, DragTypes, Icon, Container, StyledDragger, GalleryButton } from './styledComponents'
+import { Message } from '../../types/common'
 
 interface Props {
   loading: boolean
   extensions?: string[]
   onSelectImage: (file: any) => boolean
   className?: string
-  formatMessage: (messageDescriptor: any, extensions: any) => string
+  galleryButton?: boolean
+  formatMessage: (messageDescriptor: Message, extensions?: any) => string
+  handleOnClickGallery: () => void
 }
-
-const { Dragger } = Upload
 
 class TeamDragger extends React.PureComponent<Props, {}> {
   static defaultProps = {
@@ -28,18 +28,23 @@ class TeamDragger extends React.PureComponent<Props, {}> {
     const {
       onSelectImage,
       loading,
-      className,
       formatMessage,
-      extensions
+      extensions,
+      handleOnClickGallery,
+      galleryButton = false
     } = this.props
+    const onClickGallery = (event: React.MouseEvent) => {
+      event.stopPropagation()
+      handleOnClickGallery()
+    }
     return (
-      <Dragger
+      <StyledDragger
         beforeUpload={onSelectImage}
         multiple={false}
         disabled={loading}
         showUploadList={false}
         supportServerRender={true}
-        className={className}
+        gallery={galleryButton}
       >
         {loading ? (
           <Container>
@@ -47,21 +52,31 @@ class TeamDragger extends React.PureComponent<Props, {}> {
           </Container>
         ) : (
           <div>
-            <Icon src={uploadIcon} />
-            <DragTypes>
-              <FormattedMessage {...messages.title} />
+            <Icon gallery={galleryButton} src={uploadIcon} />
+            <DragTypes gallery={galleryButton}>
+              <FormattedMessage {...messages[galleryButton ? 'titlePro' : 'title']} />
             </DragTypes>
-            <DragMessage>
-              <FormattedMessage {...messages.size} />
-            </DragMessage>
+            {!galleryButton && 
+              <DragMessage gallery={false}>
+                <FormattedMessage {...messages.size} />
+              </DragMessage>
+            }
             <DragTypes>
               {formatMessage(messages.files, {
                 extensions: map(extensions).join(' ')
               })}
             </DragTypes>
+            {galleryButton &&
+              <DragMessage gallery={true}>
+                <FormattedMessage {...messages.or} />
+              </DragMessage>
+            }
+            {galleryButton && <GalleryButton onClick={onClickGallery}>
+              {formatMessage(messages.addFromGallery)}
+            </GalleryButton>}
           </div>
         )}
-      </Dragger>
+      </StyledDragger>
     )
   }
 }

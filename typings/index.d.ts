@@ -106,6 +106,16 @@ declare module 'rc-drawer' {
   export default Drawer
 }
 
+declare module 'react-modal-resizable-draggable' {
+  interface Props {
+    initWidth?: string
+    isOpen: boolean
+  }
+
+  class DraggableModal extends React.Component<Props, any> {}
+  export default DraggableModal
+}
+
 declare module 'react-swipeable-clickeable-bottom-sheet' {
   interface Props {
     defaultOpen?: boolean

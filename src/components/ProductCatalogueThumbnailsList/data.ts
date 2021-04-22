@@ -39,6 +39,18 @@ export const GetProductsQuery = gql`
         customizable: design_center
         retailMen: men_retail
         retailWomen: women_retail
+        season
+        category_id
+        categoryName: category_name
+        fitStyles {
+          id
+          name: description
+          info
+        }
+        sports {
+          id
+          name
+        }
         genders {
           id
           name: gender

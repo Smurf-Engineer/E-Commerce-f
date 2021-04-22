@@ -21,20 +21,24 @@ import {
   Item,
   overStyle,
   TitleItem,
-  UserIcon
+  UserIcon,
+  MenuTitle,
+  BetaLabel
 } from './styledComponents'
 import {
   OVERVIEW
 } from '../../screens/Account/constants'
-import { AFFILIATES, menuOptions, RESELLER, resellerOptions, resellerShortOptions } from './constants'
+import { AFFILIATES, menuOptions, PRO_DESIGN, RESELLER, resellerOptions, resellerShortOptions } from './constants'
 import { Message } from '../../types/common'
 
 interface Props {
   title: string
+  darkMode?: boolean
   resellerPending?: boolean
   openedMenu: boolean
   resellerEnabled: boolean
   affiliateEnabled: boolean
+  showProDesign: boolean
   approvedReseller?: boolean
   logout: () => void
   openMenu: () => void
@@ -75,7 +79,9 @@ class Logout extends React.PureComponent<Props, {}> {
       affiliateEnabled,
       resellerPending,
       resellerEnabled,
-      approvedReseller
+      showProDesign,
+      approvedReseller,
+      darkMode
     } = this.props
     let sideMenu = menuOptions
     if (resellerPending) {
@@ -97,13 +103,21 @@ class Logout extends React.PureComponent<Props, {}> {
           <UserIcon type="user" />
           {title}
         </TitleItem>
-        {sideMenu.map(({ titleLabel, options: submenus }) =>
+        {sideMenu.map(({ titleLabel, options: submenus, beta }) =>
           submenus.length ?
-          (((titleLabel === AFFILIATES && affiliateEnabled) || (titleLabel === RESELLER && resellerEnabled))
-            || (titleLabel !== AFFILIATES && titleLabel !== RESELLER)) &&
+          (((titleLabel === AFFILIATES && affiliateEnabled) || 
+            (titleLabel === RESELLER && resellerEnabled) ||
+            (titleLabel === PRO_DESIGN && showProDesign)
+          )
+            || (titleLabel !== AFFILIATES && titleLabel !== RESELLER && titleLabel !== PRO_DESIGN)) &&
             <StyledSubMenu
               key={titleLabel}
-              title={formatMessage(messagesMenu[titleLabel])}
+              title={
+                <MenuTitle>
+                  {formatMessage(messagesMenu[titleLabel])}
+                  {beta && <BetaLabel>{formatMessage(messages.beta)}</BetaLabel>}
+                </MenuTitle>
+              }
             >
               {submenus.map((label: string) => (
                 <Item key={label}>
@@ -128,7 +142,7 @@ class Logout extends React.PureComponent<Props, {}> {
           if (matches) {
             return (
               <PopoverStyled overlayStyle={overStyle} trigger="hover" placement="bottomRight" content={logoutMenu}>
-                <Text>{toUpper(title)}</Text>
+                <Text {...{darkMode}}>{toUpper(title)}</Text>
               </PopoverStyled>
             )
           } else {
@@ -136,7 +150,7 @@ class Logout extends React.PureComponent<Props, {}> {
               <Container>
                 {openedMenu && <LeftIcon onClick={closeMenu} type="left" />}
                 <Icon type="user" />
-                <Text>
+                <Text {...{darkMode}}>
                   <Menu onClick={openMenu} style={OverviewStyle}>
                     <Menu.Item style={titleStyle} key={OVERVIEW}>{toUpper(title)}</Menu.Item>
                   </Menu>

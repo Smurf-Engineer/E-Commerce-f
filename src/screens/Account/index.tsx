@@ -27,6 +27,7 @@ import {
   CREDIT_CARDS,
   TEAMSTORES,
   PROFILE_SETTINGS,
+  NOTIFICATIONS,
   ORDER_HISTORY,
   OVERVIEW,
   AFFILIATES_PAYOUTS,
@@ -36,7 +37,13 @@ import {
   RESELLER_ABOUT,
   RESELLER,
   RESELLER_PAYOUTS,
-  RESELLER_ORDERS, resellerOptions, MY_STORES, resellerShortOptions
+  RESELLER_ORDERS,
+  PRO_DESIGN_PROJECTS,
+  resellerOptions,
+  MY_STORES,
+  resellerShortOptions,
+  excludeBack,
+  PRO_DESIGN
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
@@ -53,6 +60,8 @@ import AffiliateAbout from '../../components/AffiliateAbout'
 import AffiliatesOrders from '../../components/AffiliatesOrders'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyLocker from '../../components/MyLocker'
+import ProDesignProjects from '../../components/ProDesignProjects'
+import Notifications from '../../components/Notifications'
 import {
   Container,
   SideBar,
@@ -64,7 +73,8 @@ import {
   FiltersTitle,
   menuDeviceStyle,
   DrawerSidebar,
-  BackButton
+  BackButton,
+  BetaLabel
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
 import config from '../../config'
@@ -245,6 +255,17 @@ export class Account extends React.Component<Props, {}> {
     logout()
     window.location.replace('/')
   }
+  handleUpdateScreen = () => {
+    const {
+      location: { search },
+      setCurrentScreenAction
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (option) {
+      setCurrentScreenAction(option)
+    }
+  }
 
   getScreenComponent = (screen: string) => {
     const {
@@ -266,6 +287,8 @@ export class Account extends React.Component<Props, {}> {
     const pendingReseller = resellerStatus === PENDING
     const affiliateEnabled = get(data, 'profileData.userProfile.affiliateEnabled', false)
     const resellerEnabled = get(data, 'profileData.userProfile.resellerEnabled', false)
+    const showProDesign = get(data, 'profileData.userProfile.showProDesign', false)
+    const userId = get(data, 'profileData.userProfile.userId', '')
     switch (screen) {
       case OVERVIEW:
         return !pendingReseller && (
@@ -283,11 +306,15 @@ export class Account extends React.Component<Props, {}> {
         return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, history, formatMessage }} onLogout={this.onLogout} />
+      case NOTIFICATIONS:
+        return <Notifications {...{ history, formatMessage, isMobile }} updateScreen={this.handleUpdateScreen} />
       case TEAMSTORES:
       case MY_STORES:
         return !pendingReseller && <MyTeamStores {...{ history, formatMessage, isReseller }} />
       case RESELLER_ABOUT:
         return resellerEnabled && <ResellerAbout {...{ history, formatMessage }} />
+      case PRO_DESIGN_PROJECTS:
+        return showProDesign && <ProDesignProjects {...{ history, formatMessage, userId }} />
       case RESELLER_PAYOUTS:
         return (resellerEnabled && isReseller) && <ResellerOptions {...{ history, formatMessage }} />
       case RESELLER_ORDERS:
@@ -337,20 +364,28 @@ export class Account extends React.Component<Props, {}> {
     } = this.props
     const userProfile = get(data, 'profileData.userProfile', {})
     const reseller = get(data, 'profileData.reseller', {})
-    const { affiliateEnabled, resellerEnabled } = userProfile || {}
+    const { affiliateEnabled, resellerEnabled, showProDesign } = userProfile || {}
     const { status } = reseller || {}
     const approvedReseller = status === APPROVED
     let sideMenu = options
     if (!!status && resellerEnabled) {
       sideMenu = approvedReseller ? resellerOptions : resellerShortOptions
     }
-    const menuOptions = sideMenu.map(({ title, options: submenus }) =>
+    const menuOptions = sideMenu.map(({ title, options: submenus, beta }) =>
       submenus.length ?
-        (((title === AFFILIATES && affiliateEnabled) || (title === RESELLER && resellerEnabled))
-          || (title !== AFFILIATES && title !== RESELLER)) &&
+        (((title === AFFILIATES && affiliateEnabled) ||
+          (title === RESELLER && resellerEnabled) ||
+          (title === PRO_DESIGN && showProDesign)
+        )
+          || (title !== AFFILIATES && title !== RESELLER && title !== PRO_DESIGN)) &&
         <SubMenu
           key={title}
-          title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
+          title={
+            <OptionMenu>
+              {intl.formatMessage(messages[title])}
+              {beta && <BetaLabel>{intl.formatMessage(messages.beta)}</BetaLabel>}
+            </OptionMenu>
+          }
         >
           {submenus.map((label) => (
             <Menu.Item key={label}>
@@ -393,9 +428,9 @@ export class Account extends React.Component<Props, {}> {
     )
 
     const currentScreen = this.getScreenComponent(screen || defaultScreen)
+    const currentScreenValue = screen || defaultScreen
 
     const noOrderScreenFlag = screen !== ORDER_HISTORY && screen !== OVERVIEW
-
     const renderView = (
       <MediaQuery
         maxWidth={768}
@@ -416,12 +451,14 @@ export class Account extends React.Component<Props, {}> {
                     <Container>
                       <Content width={'100%'}>
                         <ScreenTitle show={noOrderScreenFlag}>
-                          <BackButton onClick={this.handleGoBack}>
-                            <Icon type="left" />
-                            {intl.formatMessage(messages.goBack)}
-                          </BackButton>
-                          {!!messages[screen] && (
-                            <FormattedMessage {...messages[screen]} />
+                          {!excludeBack[currentScreenValue] && 
+                            <BackButton onClick={this.handleGoBack}>
+                              <Icon type="left" />
+                              {intl.formatMessage(messages.goBack)}
+                            </BackButton>
+                          }
+                          {!!messages[currentScreenValue] && (
+                            <FormattedMessage {...messages[currentScreenValue]} />
                           )}
                         </ScreenTitle>
                         {currentScreen}
@@ -446,7 +483,7 @@ export class Account extends React.Component<Props, {}> {
                     </Title>
                     <Menu
                       defaultSelectedKeys={[defaultScreen]}
-                      selectedKeys={[screen]}
+                      selectedKeys={[currentScreenValue]}
                       mode="inline"
                       onSelect={this.handleOnSelectItem}
                       onOpenChange={this.handleOnSelectedKeys}
@@ -459,8 +496,8 @@ export class Account extends React.Component<Props, {}> {
                   </SideBar>
                   <Content>
                     <ScreenTitle show={noOrderScreenFlag}>
-                      {!!messages[screen] && (
-                        <FormattedMessage {...messages[screen]} />
+                      {!!messages[currentScreenValue] && (
+                        <FormattedMessage {...messages[currentScreenValue]} />
                       )}
                     </ScreenTitle>
                     {currentScreen}

@@ -222,6 +222,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       : null
 
     const card = get(stripeCharge, 'cardData')
+
     const paymentMethodInfo =
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />

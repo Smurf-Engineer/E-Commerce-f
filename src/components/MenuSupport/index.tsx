@@ -13,6 +13,7 @@ import { LINK_TYPE_URL } from '../../constants'
 interface Props {
   history?: any
   designHasChanges: boolean
+  darkMode?: boolean
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
@@ -28,6 +29,7 @@ export class MenuSupport extends React.PureComponent<Props, {}> {
   }
 
   render() {
+    const { darkMode = false } = this.props
     const items = links.map(({ label, url, type }, index) => {
       return (
         <Menu.Item key={index}>
@@ -42,7 +44,7 @@ export class MenuSupport extends React.PureComponent<Props, {}> {
 
     return (
       <Dropdown overlay={menu}>
-        <Text>
+        <Text {...{ darkMode}} >
           <FormattedMessage {...messages.title} />
         </Text>
       </Dropdown>
