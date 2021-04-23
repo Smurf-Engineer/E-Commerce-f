@@ -27,12 +27,18 @@ import {
   CanvasType,
   DesignFiles,
   SaveDesignData,
-  Message
+  Message,
+  Colors,
+  QueryProps,
+  Color
 } from '../../types/common'
 import { NEW_DESIGN_SAVED } from '../../constants'
 import { saveDesignName, saveDesignChanges } from './data'
 import { getDesignQuery } from '../../screens/DesignCenter/data'
 import { BLUE, GRAY_DISABLE } from '../../theme/colors'
+import get from 'lodash/get'
+
+const FLUORESCENT_COLOR = 'fluorescent'
 
 type DesignInput = {
   name?: string
@@ -43,6 +49,7 @@ type DesignInput = {
   flatlock?: string
   predyed_name?: string
   flatlock_code?: string
+  hasFluorescent?: boolean
   zipper_color?: string
   binding_color?: string
   bib_brace_color?: string
@@ -57,10 +64,15 @@ interface Data {
   }
 }
 
+interface ColorsData extends QueryProps {
+  colorsResult: Colors
+}
+
 interface Props {
   productId: string
   open: boolean
   designName: string
+  colorsList: ColorsData
   savedDesignId: string
   colors: string[]
   checkedTerms: boolean
@@ -152,6 +164,7 @@ export class SaveDesign extends React.Component<Props, State> {
       stitchingColor,
       zipperColor,
       bindingColor,
+      colorsList,
       bibColor,
       isUserAuthenticated,
       isEditing,
@@ -169,6 +182,19 @@ export class SaveDesign extends React.Component<Props, State> {
       message.error(formatMessage(messages.invalidUser))
       return
     }
+    let arrayColors: Color[] = []
+    let hasFluorescent = false
+    if (colors.length && colorsList && !colorsList.loading) {
+      try {
+        const colorListResult = get(colorsList, 'colorsResult.colors', [])
+        arrayColors = JSON.parse(colorListResult)
+        hasFluorescent = arrayColors.some(({ type, value }: Color) => 
+          colors.includes(value) && type === FLUORESCENT_COLOR
+        )
+      } catch (e) {
+        message.error(e)
+      }
+    }
     const { designBase64, canvasJson, styleId, highResolution } = design
     try {
       const finalDesignName = designName || productMpn
@@ -178,6 +204,7 @@ export class SaveDesign extends React.Component<Props, State> {
         image: designBase64,
         styleId,
         canvas: canvasJson,
+        hasFluorescent,
         high_resolution: highResolution === void 0 ? true : highResolution
       }
 
@@ -250,17 +277,31 @@ export class SaveDesign extends React.Component<Props, State> {
       hasBinding,
       stitchingColor,
       zipperColor,
+      colorsList,
       bindingColor,
       bibColor,
       afterSaveDesign,
       isEditing
     } = this.props
     const { designBase64, canvasJson, styleId } = design
-
+    let arrayColors: Color[] = []
+    let hasFluorescent = false
+    if (colors.length && colorsList && !colorsList.loading) {
+      try {
+        const colorListResult = get(colorsList, 'colorsResult.colors', [])
+        arrayColors = JSON.parse(colorListResult)
+        hasFluorescent = arrayColors.some(({ type, value }: Color) => 
+          colors.includes(value) && type === FLUORESCENT_COLOR
+        )
+      } catch (e) {
+        message.error(e)
+      }
+    }
     const designObj: DesignInput = {
       name: '',
       product_id: productId,
       image: designBase64,
+      hasFluorescent,
       canvas: canvasJson,
       styleId
     }
