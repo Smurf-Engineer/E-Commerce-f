@@ -14,6 +14,10 @@ export const Container = styled.div`
   width: 25.4%;
   z-index: 1;
 
+  & .ant-tabs-nav .ant-tabs-tab {
+    margin: 0 8px;
+  }
+
   @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
     width: 35%;
   }
