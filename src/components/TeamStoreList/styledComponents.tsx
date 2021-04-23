@@ -24,11 +24,12 @@ export const ListContainer = styled.div`
   width: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 100%;
   max-width: 1340px;
   max-height: 600px;
   overflow-y: scroll;
-
+  @media (max-width: 1375px) {
+    max-width: 890px;
+  }
   @media (max-width: 914px) {
     justify-content: center;
   }
