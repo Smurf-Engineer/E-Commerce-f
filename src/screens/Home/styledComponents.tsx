@@ -335,6 +335,10 @@ export const HeaderInfoTitle = styled.div`
   letter-spacing: 0.5px;
   width: 250px;
   margin-bottom: 5px;
+  @media (max-width: 600px) {
+    font-size: 12px;
+    width: 200px;
+  }
   @media (max-width: 400px) {
     font-size: 10px;
     width: 180px;
