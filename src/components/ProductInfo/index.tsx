@@ -20,6 +20,7 @@ interface Props {
   titleWidth?: string
   titleColor?: string
   showContent: boolean
+  richText?: boolean
   toggleView: (id: string) => void
   children?: React.ReactNode
 }
@@ -30,6 +31,7 @@ const ProductInfo = ({
   titleWidth,
   titleColor,
   showContent,
+  richText,
   toggleView,
   children
 }: Props) => {
@@ -42,7 +44,9 @@ const ProductInfo = ({
   return (
     <Container>
       <ProductInfoTitle {...{ id }} onClick={onToggleView}>
-        <Title {...{ titleWidth, titleColor }}>{title}</Title>
+        {richText ? <Title {...{ titleWidth, titleColor }} dangerouslySetInnerHTML={{ __html: title }}/> :
+          <Title {...{ titleWidth, titleColor }}>{title}</Title>
+        }
         <UpDownArrow src={showContent ? upArrowIcon : downArrowIcon} />
       </ProductInfoTitle>
       <StyledDivider />
