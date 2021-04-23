@@ -25,7 +25,10 @@ export const ListContainer = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-  max-width: 890px;
+  max-width: 1340px;
+  max-height: 600px;
+  overflow-y: scroll;
+
   @media (max-width: 914px) {
     justify-content: center;
   }

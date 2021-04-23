@@ -6,14 +6,13 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
-import Pagination from 'antd/lib/pagination'
+// import Pagination from 'antd/lib/pagination'
 import messages from './messages'
 import { GetTeamStoresQuery, SearchStoresQuery } from './data'
 import {
   Container,
   Notfound,
   LoadingContainer,
-  PaginationRow,
   ListContainer,
   TeamStoreContainer
 } from './styledComponents'
@@ -40,7 +39,6 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
       featuredStores,
       foundStores,
       searchString,
-      currentPage,
       openShareModalAction
     } = this.props
     const featuredStoresArray = get(
@@ -53,12 +51,25 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
       'searchTeamStores.teamStores',
       []
     )
-    const fullCountFeatured = get(featuredStores, 'teamStoresList.fullCount', 0)
-    const fullCountSearch = get(foundStores, 'searchTeamStores.fullCount', 0)
-    const fullCount = searchString ? fullCountSearch : fullCountFeatured
+    // const fullCountFeatured = get(featuredStores, 'teamStoresList.fullCount', 0)
+    // const fullCountSearch = get(foundStores, 'searchTeamStores.fullCount', 0)
+    // const fullCount = searchString ? fullCountSearch : fullCountFeatured
     const loadingFound = get(foundStores, 'loading', false)
     const loadingFeatured = get(featuredStores, 'loading', false)
     const arrayList = searchString ? foundTeamStoresArray : featuredStoresArray
+
+    // const pagination = fullCount > 0 ? (
+    //   <PaginationRow>
+    //     <Pagination
+    //       current={currentPage}
+    //       total={fullCount}
+    //       onChange={this.handleChangePage}
+    //     />
+    //   </PaginationRow>
+    // )
+    //   : null
+    const pagination = null
+
     return (
       <Container>
         {loadingFound || loadingFeatured ? (
@@ -87,15 +98,7 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
                     <Notfound>{formatMessage(messages.notFoundMessage)}</Notfound>
                   )}
               </ListContainer>
-              {fullCount > 0 && (
-                <PaginationRow>
-                  <Pagination
-                    current={currentPage}
-                    total={fullCount}
-                    onChange={this.handleChangePage}
-                  />
-                </PaginationRow>
-              )}
+              {pagination}
             </React.Fragment>
           )}
       </Container>
