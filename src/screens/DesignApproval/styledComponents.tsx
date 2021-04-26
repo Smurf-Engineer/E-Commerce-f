@@ -915,6 +915,7 @@ export const MessageBody = styled.div`
   text-align: start;
   width: 100%;
   word-break: break-word;
+  flex-flow: column;
 `
 
 export const ColorName = styled.p`

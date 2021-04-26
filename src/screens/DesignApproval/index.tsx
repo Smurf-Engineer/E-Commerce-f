@@ -830,17 +830,31 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const requestMessages = incomingMessages.reduce((arr: ProDesignMessage[], messageItem: ProDesignMessage) => {
       const { type, createdAt, code } = messageItem
       arr.push(messageItem)
-      if (type === EDIT) {
-        arr.push({
-          id: -1,
-          createdAt,
-          type: FROM_ADMIN,
-          message: formatMessage(messages.editAutoMessage),
-          code
-        })
-        requestedEdits += 1
-      } else if (type === FROM_ADMIN) {
-        adminMessages += 1
+      switch (type) {
+        case EDIT:
+          arr.push({
+            id: -1,
+            createdAt,
+            type: FROM_ADMIN,
+            message: formatMessage(messages.editAutoMessage),
+            code
+          })
+          requestedEdits += 1
+          break
+        case FROM_ADMIN:
+          adminMessages += 1
+          break
+        case NEW_PRODUCT:
+          arr.push({
+            id: 0,
+            createdAt,
+            type: FROM_ADMIN,
+            message: formatMessage(messages.newProduct),
+            code
+          })
+          break
+        default:
+          break
       }
       return arr
     // tslint:disable-next-line: align

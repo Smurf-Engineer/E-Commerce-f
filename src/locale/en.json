@@ -48,6 +48,7 @@
   "screens.DesignApproval.sendCustomerMessage": "Add edit notes",
   "screens.DesignApproval.cancel": "Cancel",
   "screens.DesignApproval.send": "Send",
+  "screens.DesignApproval.newProduct": "<p>Your design request has been received and will be reviewed by your Account Manager. We will send you a message if we have any questions or need any clarification.</p><p>If everything is clear, your design will be available in 2 business days.</p>",
   "screens.DesignApproval.enterDesignInstructions": "ENTER DESIGN INSTRUCTIONS",
   "screens.DesignApproval.addNotes": "Add instruction notes",
   "screens.DesignApproval.baseColors": "Base Colors",
