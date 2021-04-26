@@ -6,16 +6,16 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
-import Pagination from 'antd/lib/pagination'
 import messages from './messages'
 import { GetTeamStoresQuery, SearchStoresQuery } from './data'
 import {
   Container,
   Notfound,
+  InitialLoadingContainer,
   LoadingContainer,
-  PaginationRow,
   ListContainer,
-  TeamStoreContainer
+  TeamStoreContainer,
+  StyledInfiniteScroll
 } from './styledComponents'
 
 import { TeamstoreResult } from '../../types/common'
@@ -34,40 +34,85 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class TeamStoreList extends React.PureComponent<Props, {}> {
+  state = {
+    featuredStoresArray: [],
+    foundTeamStoresArray: []
+  }
+  async componentDidUpdate(oldProps: Props) {
+    const { featuredStores: oldFeaturedStores, foundStores: oldFoundStores, currentPage: oldCurrentPage } = oldProps
+    const { featuredStores, foundStores, currentPage, skip } = this.props
+
+    if ((featuredStores !== oldFeaturedStores || foundStores !== oldFoundStores)
+      && oldCurrentPage === currentPage
+    ) {
+      const newFeaturedStoresArray = get(
+        featuredStores,
+        'teamStoresList.teamStores',
+        []
+      )
+      const newFoundTeamStoresArray = get(
+        foundStores,
+        'searchTeamStores.teamStores',
+        []
+      )
+
+      if (skip === 0) {
+        this.setState({
+          featuredStoresArray: newFeaturedStoresArray,
+          foundTeamStoresArray: newFoundTeamStoresArray
+        })
+      } else {
+        const { featuredStoresArray, foundTeamStoresArray } = this.state
+        const updatedFeaturedStoresArray = [...featuredStoresArray, ...newFeaturedStoresArray]
+        const updatedFoundStoresArray = [...foundTeamStoresArray, ...newFoundTeamStoresArray]
+
+        this.setState({
+          featuredStoresArray: updatedFeaturedStoresArray,
+          foundTeamStoresArray: updatedFoundStoresArray
+        })
+      }
+    }
+  }
   render() {
     const {
       formatMessage,
       featuredStores,
       foundStores,
       searchString,
-      currentPage,
-      openShareModalAction
+      openShareModalAction,
+      limit,
+      currentPage
     } = this.props
-    const featuredStoresArray = get(
-      featuredStores,
-      'teamStoresList.teamStores',
-      []
-    )
-    const foundTeamStoresArray = get(
-      foundStores,
-      'searchTeamStores.teamStores',
-      []
-    )
+
+    const {
+      featuredStoresArray,
+      foundTeamStoresArray
+    } = this.state
+
     const fullCountFeatured = get(featuredStores, 'teamStoresList.fullCount', 0)
     const fullCountSearch = get(foundStores, 'searchTeamStores.fullCount', 0)
     const fullCount = searchString ? fullCountSearch : fullCountFeatured
     const loadingFound = get(foundStores, 'loading', false)
     const loadingFeatured = get(featuredStores, 'loading', false)
     const arrayList = searchString ? foundTeamStoresArray : featuredStoresArray
+    const loader = <LoadingContainer><Spin /></LoadingContainer>
     return (
       <Container>
-        {loadingFound || loadingFeatured ? (
-          <LoadingContainer>
+        {(loadingFound || loadingFeatured) && currentPage === 0 ? (
+          <InitialLoadingContainer>
             <Spin size="large" />
-          </LoadingContainer>
+          </InitialLoadingContainer>
         ) : (
-            <React.Fragment>
-              <ListContainer>
+            <ListContainer>
+              <StyledInfiniteScroll
+                pageStart={0}
+                useWindow={false}
+                threshold={limit}
+                loadMore={this.handleLoadData}
+                initialLoad={false}
+                hasMore={fullCount > arrayList.length}
+                {...{ loader }}
+              >
                 {arrayList.length ? (
                   arrayList.map((store: any, index: number) => (
                     <TeamStoreContainer key={index}>
@@ -86,22 +131,13 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
                 ) : (
                     <Notfound>{formatMessage(messages.notFoundMessage)}</Notfound>
                   )}
-              </ListContainer>
-              {fullCount > 0 && (
-                <PaginationRow>
-                  <Pagination
-                    current={currentPage}
-                    total={fullCount}
-                    onChange={this.handleChangePage}
-                  />
-                </PaginationRow>
-              )}
-            </React.Fragment>
+              </StyledInfiniteScroll>
+            </ListContainer>
           )}
       </Container>
     )
   }
-  handleChangePage = (pageNumber: number) => {
+  handleLoadData = (pageNumber: number) => {
     const { setSkipValueAction, limit } = this.props
     const skip = (pageNumber - 1) * limit
     setSkipValueAction(skip, pageNumber)

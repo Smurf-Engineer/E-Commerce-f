@@ -13,7 +13,7 @@ import { AVENIR_MEDIUM } from '../../theme/fonts'
 export const Container = styled.div`
   position: relative;
   background-color: ${({ darkMode }: ThemeProps) =>
-  darkMode ? BLACK_SEMILIGHT : WHITE};
+    darkMode ? BLACK_SEMILIGHT : WHITE};
 `
 
 export const Row = styled.div`
@@ -26,7 +26,7 @@ export const Row = styled.div`
 
 export const TopRow = styled.div`
   display: flex;
-  width: 16%;
+  width: 17%;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
@@ -45,7 +45,7 @@ export const TopText = styled.div`
   cursor: pointer;
   font-size: 14px;
   color: ${({ darkMode }: ThemeProps) =>
-  darkMode ? WHITE : DARK_TEXT};
+    darkMode ? WHITE : DARK_TEXT};
   font-family: ${AVENIR_MEDIUM};
   height: 16px;
   display: flex;
