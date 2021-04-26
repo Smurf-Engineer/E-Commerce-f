@@ -8,6 +8,7 @@ interface TitleProps {
 
 import styled from 'styled-components'
 import Divider from 'antd/lib/divider'
+import { RED } from '../../theme/colors'
 
 export const Container = styled.div`
   margin-bottom: 10px;
@@ -21,6 +22,9 @@ export const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
+  span {
+    color: ${RED};
+  }
 `
 
 export const ProductInfoTitle = styled.div`

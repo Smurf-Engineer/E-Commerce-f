@@ -34,6 +34,20 @@ export const InfoContainer = styled.div`
   }
 `
 
+export const FAQSection = styled.div`
+  text-align: center;
+  margin-top: 44px;
+`
+
+export const FAQBody = styled.div`
+  text-align: left;
+  font-size: 15px;
+  margin-bottom: 54px;
+  b {
+    display: block;
+  }
+`
+
 export const SummaryContainer = styled.div`
   width: 25%;
   padding-left: 20px;
