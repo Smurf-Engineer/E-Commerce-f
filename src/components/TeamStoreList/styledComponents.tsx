@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import { GRAY_DARK } from '../../theme/colors'
 import { WHITE } from '../../screens/DesignerTool/constants'
+import InfiniteScroll from 'react-infinite-scroller'
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -20,10 +21,7 @@ export const Text = styled.div`
 `
 
 export const ListContainer = styled.div`
-  display: flex;
   width: 100%;
-  flex-wrap: wrap;
-  justify-content: space-between;
   max-width: 1340px;
   max-height: 600px;
   overflow-y: scroll;
@@ -35,11 +33,23 @@ export const ListContainer = styled.div`
   }
 `
 
-export const PaginationRow = styled.div`
-  margin-top: 24px;
+export const StyledInfiniteScroll = styled(InfiniteScroll)`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `
 
 export const LoadingContainer = styled.div`
+  display: flex;
+  height: 12px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 40px;
+`
+
+export const InitialLoadingContainer = styled.div`
   height: 256px;
   display: flex;
   justify-content: center;
