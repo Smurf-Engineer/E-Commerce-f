@@ -56,6 +56,19 @@ export const TitleName = styled.div`
 export const TeamStoreCard = styled.div`
   width: ${({ small }: DivProps) => (small ? '428px' : '658px')};
 
+  @media (max-width: 1648px) {
+    width: ${({ small }: DivProps) => (small ? '390px' : '600px')};
+  }
+  @media (max-width: 1375px) {
+    width: ${({ small }: DivProps) => (small ? '355px' : '545px')};
+  }
+  @media (max-width: 1224px) {
+    width: ${({ small }: DivProps) => (small ? '280px' : '430px')};
+  }
+  @media (max-width: 1024px) {
+    width: ${({ small }: DivProps) => (small ? '270px' : '415px')};
+  }
+
   @media (min-width: 370px) and (max-width: 767px) {
     width: 100%;
   }
@@ -71,7 +84,7 @@ export const CardContent = styled.div`
   position: relative;
   &: before {
     background: ${({ closedMessage }: CardProps) =>
-      closedMessage ? RED_TRANSPARENT : 'none'};
+    closedMessage ? RED_TRANSPARENT : 'none'};
     color: ${BLACK};
     top: 8px;
     padding: 5px;
