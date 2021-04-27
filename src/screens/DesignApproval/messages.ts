@@ -138,6 +138,11 @@ export default defineMessages({
     id: 'screens.DesignApproval.newDesign',
     defaultMessage: 'NEW DESIGN'
   },
+  newProduct: {
+    id: 'screens.DesignApproval.newProduct',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>Your design request has been received and will be reviewed by your Account Manager. We will send you a message if we have any questions or need any clarification.</p><p>If everything is clear, your design will be available in 2 business days.</p>'
+  },
   infoApprove: {
     id: 'screens.DesignApproval.infoApprove',
     defaultMessage: 'By approving this design you will not be able to request more edits.'
