@@ -44,7 +44,10 @@ import {
   DeleteButton,
   StyledText,
   ErrorMessage,
-  Paragraph
+  Paragraph,
+  FAQSection,
+  Title,
+  FAQBody
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -56,6 +59,7 @@ import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 import { PREORDER, PAYMENT_ISSUE } from '../../constants'
+import ProductInfo from '../ProductInfo'
 
 const PRO_DESIGN_FEE = 15
 
@@ -78,6 +82,15 @@ const { confirm } = Modal
 
 export class OrderDetails extends React.Component<Props, {}> {
   editOrderButton: any
+  state = {
+    showPricing: false,
+    showOrder: false,
+    showIssue: false
+  }
+  toggleProductInfo = (id: string) => {
+    const stateValue = this.state[id]
+    this.setState({ [id]: !stateValue } as any)
+  }
   render() {
     const {
       data,
@@ -95,6 +108,12 @@ export class OrderDetails extends React.Component<Props, {}> {
         </LoadingContainer>
       )
     }
+
+    const {
+      showPricing,
+      showOrder,
+      showIssue
+    } = this.state
 
     const handleOnReturn = () => onReturn('')
 
@@ -411,6 +430,53 @@ export class OrderDetails extends React.Component<Props, {}> {
           ) : (
             <Annotation>{formatMessage(messages.annotation)}</Annotation>
           )}
+        {!!teamStoreId &&
+          <FAQSection>
+            <Title>
+              {formatMessage(messages.faqTitle)}
+            </Title>
+            <FAQBody>
+              <ProductInfo
+                id="showPricing"
+                titleWidth={'100%'}
+                title={formatMessage(messages.priceQuestion)}
+                showContent={showPricing}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.priceAnswer)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showIssue"
+                richText={true}
+                title={formatMessage(messages.issueQuestion)}
+                showContent={showIssue}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.issueAnswer)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showOrder"
+                title={formatMessage(messages.orderQuestion)}
+                showContent={showOrder}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.orderAnswer)
+                  }}
+                />
+              </ProductInfo>
+            </FAQBody>
+          </FAQSection>
+        }
       </Container>
     )
   }

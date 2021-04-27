@@ -216,6 +216,34 @@ export const OrderActions = styled.div`
   width: 95%;
 `
 
+export const FAQSection = styled.div`
+  text-align: center;
+  margin-top: 44px;
+  margin-right: 28px;
+  @media (max-width: 767px) {
+    margin-right: 0;
+  }
+`
+
+export const Title = styled.div`
+  height: 27px;
+  color: #5f6062;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  margin-bottom: 40px;
+`
+
+export const FAQBody = styled.div`
+  text-align: left;
+  font-size: 15px;
+  margin-bottom: 54px;
+  b {
+    display: block;
+  }
+`
+
 export const DeleteButton = styled(AntdButton)`
   height: 40px;
   width: 93px;
