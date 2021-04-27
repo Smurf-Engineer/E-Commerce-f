@@ -31,7 +31,13 @@ export const TopRow = styled.div`
   align-items: center;
   flex-direction: row;
   @media (max-width: 1648px) {
-    width: 26%;
+    width: 22%;
+  }
+  @media (max-width: 1440px) {
+    width: 27%;
+  }
+  @media (max-width: 1224px) {
+    width: 30%;
   }
 `
 
