@@ -26,8 +26,11 @@ export const Icon = styled.img`
   max-width: 28px;
   object-fit: contain;
   width: 100%;
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (max-width: 1360px) {
     align-self: center;
-    max-width: 25px;
+    max-width: 24px;
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    max-width: 20px;
   }
 `

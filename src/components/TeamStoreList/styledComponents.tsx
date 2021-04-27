@@ -25,7 +25,16 @@ export const ListContainer = styled.div`
   max-width: 1340px;
   max-height: 600px;
   overflow-y: scroll;
+  @media (max-width: 1648px) {
+    max-width: 1220px;
+  }
   @media (max-width: 1375px) {
+    max-width: 1100px;
+  }
+  @media (max-width: 1224px) {
+    max-width: 960px;
+  }
+  @media (max-width: 1224px) {
     max-width: 890px;
   }
   @media (max-width: 914px) {

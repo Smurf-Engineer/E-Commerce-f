@@ -30,6 +30,25 @@ export const Container = styled.div`
     height: 85vh;
   }
 
+  @media (max-width: 1700px) {
+    & .ant-tabs-nav .ant-tabs-tab {
+      margin: 0 1px;
+    }
+  }
+  
+  @media (max-width: 1600px) {
+    & .ant-tabs-nav .ant-tabs-tab {
+      margin: 0px;
+      padding: 12px;
+    }
+  }
+
+  @media (max-width: 1360px) {
+    & .ant-tabs-nav .ant-tabs-tab {
+      padding: 10px;
+    }
+  }
+
   @media (min-width: 768px) and (max-width: 991px) {
     & .ant-tabs-tab-prev,
     & .ant-tabs-tab-next {
