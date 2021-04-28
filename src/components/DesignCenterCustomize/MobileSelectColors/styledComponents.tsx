@@ -28,7 +28,7 @@ export const Label = styled.p`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 7px 10px;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 14px;
