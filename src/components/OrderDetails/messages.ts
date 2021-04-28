@@ -21,6 +21,38 @@ export default defineMessages({
     id: 'components.OrderDetails.receipt',
     defaultMessage: 'Receipt'
   },
+  faqTitle: {
+    id: 'components.OrderDetails.faqTitle',
+    defaultMessage: 'FREQUENTLY ASKED QUESTIONS'
+  },
+  priceQuestion: {
+    id: 'components.OrderDetails.priceQuestion',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'The pricing displayed on my order is different than pricing on the Batch Order Team Store Page or checkout.'
+  },
+  priceAnswer: {
+    id: 'components.OrderDetails.priceAnswer',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Batch Order team stores provide the convenience of individual ordering with the benefit of group discounting. During high volume transaction periods, there may be a delay in price updates on screen after placing your order as our price engine reviews and update all orders. In most cases, your order will update and reflect the current pricing as shown on the team store page within 30-60 minutes after the order was placed or once the next member has their order. Payment is NOT taken until after the store closes to ensure everyone gets the same low price no matter when their order was placed.'
+  },
+  issueQuestion: {
+    id: 'components.OrderDetails.issueQuestion',
+    defaultMessage: 'My order status shows <span>payment Issue</span>. What do I do?'
+  },
+  issueAnswer: {
+    id: 'components.OrderDetails.issueAnswer',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Payment issues may indicate there was a problem during the payment process. There are several reasons why this could occur including fraud protection by your card issuer, card updates, or discrepancies in transaction amounts in the case of PayPal. Please contact our customer service via our chat service, email, or phone to ensure your order moves forward into production in a timely manner.'
+  },
+  orderQuestion: {
+    id: 'components.OrderDetails.orderQuestion',
+    defaultMessage: 'I need to make a change to my order. What can I do?'
+  },
+  orderAnswer: {
+    id: 'components.OrderDetails.orderAnswer',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'You can make changes to your order only during the <strong>open order period</strong> as shown on the Team Store page. To make a change to your order, click the EDIT button at the bottom of the order screen and follow the prompts. <br /> Once the store closes, payments are processed and orders enter the pre-production process immediately. Assembly production typically starts within 12-24 hours thereafter so changes may not be possible.'
+  },
   deliveryDate: {
     id: 'components.OrderDetails.deliveryDate',
     defaultMessage: 'Estimated Delivery Date'
