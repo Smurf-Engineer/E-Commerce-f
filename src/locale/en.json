@@ -1808,6 +1808,7 @@
   "components.designCenterCustomize.ColorButtons.color3": "Area 3",
   "components.designCenterCustomize.ColorButtons.color4": "Area 4",
   "components.designCenterCustomize.ColorButtons.color5": "Area 5",
+  "components.designCenterCustomize.ColorButtons.shuffle": "Shuffle Colors",
   "components.DesignCenterCustomize.invalidUser": "You must be logged in.",
   "components.CheckoutSummary.placeOrder": "Place Order",
   "components.ImageList.delete": "Delete",
