@@ -25,6 +25,9 @@ export const Container = styled.div`
 `
 
 export const Label = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px;
   color: #5f6062;
   font-family: 'Avenir Next';
@@ -32,6 +35,19 @@ export const Label = styled.p`
   font-weight: 600;
   letter-spacing: 0.13px;
   margin: 0;
+`
+
+export const ShuffleButton = styled.div`
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 6px;
+`
+
+export const Icon = styled.img`
+  width: 15px;
+  object-fit: contain;
+  opacity: 50%;
+  margin-left: 5px;
 `
 
 export const ColorSlider = styled.div`
@@ -62,9 +78,9 @@ export const ColorOval = styled.div`
   border-radius: 50%;
   border: 1px solid
     ${({ currentColor }: OvalProps) =>
-      currentColor && currentColor.toLowerCase() !== '#ffffff'
-        ? currentColor
-        : '#bebebe'};
+    currentColor && currentColor.toLowerCase() !== '#ffffff'
+      ? currentColor
+      : '#bebebe'};
   background-color: ${({ currentColor }: OvalProps) => currentColor || '#fff'};
 `
 

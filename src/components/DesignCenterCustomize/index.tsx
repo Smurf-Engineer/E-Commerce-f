@@ -542,6 +542,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             {...{
               formatMessage,
               onSelectColorBlock,
+              onSelectPalette,
               colorBlock,
               onSelectColor,
               colors,
