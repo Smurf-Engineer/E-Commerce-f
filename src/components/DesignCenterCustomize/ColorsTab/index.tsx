@@ -4,6 +4,7 @@
 import * as React from 'react'
 import messages from './messages'
 import get from 'lodash/get'
+import shuffle from 'lodash/shuffle'
 import findIndex from 'lodash/findIndex'
 import isEqual from 'lodash/isEqual'
 import {
@@ -221,6 +222,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
           <BaseColors
             showContent={baseColorsTab}
             onSelectColor={this.handleOnSelectColor}
+            onSelectShuffle={this.handleShuffleColors}
             {...{
               onSelectColorBlock,
               onHoverColorBlock,
@@ -300,6 +302,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
       updatedNames[colorBlock] = name
       return { names: updatedNames }
     })
+  }
+
+  handleShuffleColors = () => {
+    const { colors, onSelectPalette } = this.props
+    onSelectPalette(shuffle(colors))
   }
 }
 

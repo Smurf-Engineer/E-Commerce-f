@@ -16,6 +16,7 @@ interface Props {
   disableTooltip: boolean
   colorsList: any
   onSelectColor: (color: string, name: string) => void
+  onSelectShuffle: () => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -27,6 +28,7 @@ class ColorTab extends React.PureComponent<Props, {}> {
       onSelectColor,
       onSelectColorBlock,
       onHoverColorBlock,
+      onSelectShuffle,
       colorBlock,
       colorBlockHovered,
       colors,
@@ -47,6 +49,7 @@ class ColorTab extends React.PureComponent<Props, {}> {
             colors,
             colorBlock,
             onSelectColorBlock,
+            onSelectShuffle,
             colorBlockHovered,
             onHoverColorBlock,
             formatMessage

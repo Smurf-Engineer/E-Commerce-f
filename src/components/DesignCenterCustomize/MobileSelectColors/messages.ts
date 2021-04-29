@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.MobileSelectColors.area',
     defaultMessage: 'Area {index}'
   },
+  shuffleColors: {
+    id: 'components.MobileSelectColors.shuffle',
+    defaultMessage: 'Shuffle Colors'
+  },
   stitching: {
     id: 'components.MobileSelectColors.stitching',
     defaultMessage: 'Stitching'

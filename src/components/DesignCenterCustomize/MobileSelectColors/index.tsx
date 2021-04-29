@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import shuffle from 'lodash/shuffle'
 import MobileAccessoryColor from '../MobileAccessoryColor'
 import Tabs from 'antd/lib/tabs'
 import MobileColorList from '../MobileColorList'
@@ -14,7 +15,9 @@ import {
   TabContainer,
   Row,
   Divider,
-  StyledTabs
+  StyledTabs,
+  ShuffleButton,
+  Icon
 } from './styledComponents'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import {
@@ -24,6 +27,7 @@ import {
   Message,
   Index
 } from '../../../types/common'
+import shuffleIcon from '../../../assets/shuffle.png'
 
 interface Props {
   colors: string[]
@@ -39,6 +43,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
+  onSelectPalette: (colors: string[]) => void
   formatMessage: (messageDescriptor: Message, params?: Index) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
@@ -92,7 +97,13 @@ class MobileSelectColors extends React.PureComponent<Props> {
     })
     return (
       <Container>
-        <Label>{formatMessage({ ...messages.selectColors })}</Label>
+        <Label>
+          {formatMessage({ ...messages.selectColors })}
+          <ShuffleButton onClick={this.handleShuffleColors}>
+            {formatMessage({ ...messages.shuffleColors })}
+            <Icon src={shuffleIcon} />
+          </ShuffleButton>
+        </Label>
         <StyledTabs
           size="small"
           onChange={this.handleOnTabChange}
@@ -160,6 +171,10 @@ class MobileSelectColors extends React.PureComponent<Props> {
   handleOnTabChange = (activeKey: string) => {
     const { onSelectColorBlock } = this.props
     onSelectColorBlock(Number(activeKey))
+  }
+  handleShuffleColors = () => {
+    const { colors, onSelectPalette } = this.props
+    onSelectPalette(shuffle(colors))
   }
 }
 
