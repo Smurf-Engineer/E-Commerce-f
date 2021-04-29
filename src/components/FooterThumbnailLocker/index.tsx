@@ -26,6 +26,7 @@ interface Props {
   isPrivate: boolean
   addToCartButton: React.ReactNode
   canShare: boolean
+  showDelete: boolean
   onPressPrivate: (id: string, isPrivate: boolean) => void
   onPressDelete: (id: string, name: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -48,6 +49,7 @@ const FooterThumbnailLocker = ({
   onPressDelete,
   formatMessage,
   isPrivate,
+  showDelete,
   addToCartButton,
   onPressRename,
   setShare,
@@ -83,9 +85,11 @@ const FooterThumbnailLocker = ({
         <ActionButton onClick={handleOnPressRename}>
           <FormattedMessage {...messages.rename} />
         </ActionButton>
-        <Delete onClick={handleOnPressDelete}>
-          <FormattedMessage {...messages.delete} />
-        </Delete>
+        {showDelete && 
+          <Delete onClick={handleOnPressDelete}>
+            <FormattedMessage {...messages.delete} />
+          </Delete>
+        }
       </Bottom>
       {showCartButton && addToCartButton}
     </Footer>
