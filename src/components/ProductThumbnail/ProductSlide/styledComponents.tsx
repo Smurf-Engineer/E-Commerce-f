@@ -51,6 +51,10 @@ export const DeleteButton = styled(Icon)`
     color: ${WHITE};
     background: ${RED};
   }
+  @media (min-width: 320px) and (max-width: 767px) {
+    filter: drop-shadow(0px 0px 2px black);
+    color: ${WHITE};
+  }
 `
 
 export const Page = styled.div`
@@ -99,8 +103,8 @@ export const ImageTop = styled.div`
   width: 100%;
   cursor: pointer;
   @media (min-width: 320px) and (max-width: 480px) {
-    width: ${({ selectProduct }: StyledProps) =>
-    selectProduct ? `100%` : '100px'};
+    width: ${({ selectProduct, isProDesign }: StyledProps) =>
+    selectProduct || isProDesign ? `100%` : '100px'};
     &::after {
       content: "${({ selectedIndex }: StyledProps) => selectedIndex}";
       color: ${WHITE};
