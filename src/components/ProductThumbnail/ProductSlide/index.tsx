@@ -174,17 +174,17 @@ const ProductSlide = ({
     : JackrooLogo
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
-      <ImageTop {...{selectProduct, selectedIndex}}>
+      <ImageTop {...{selectProduct, isProDesign, selectedIndex}}>
         <AboveTablet>
         {!hideQuickView && (
           <QuickView onClick={onPressQuickView}>
             <img src={quickViewIcon} />
           </QuickView>)
         }
+        </AboveTablet>
         {(isProDesign && proStatus === PREFLIGHT_STATUS) &&
           <DeleteButton onClick={deleteItem} type="delete"/>
         }
-        </AboveTablet>
         {selectProduct && <BelowTablet><QuickView onClick={onPressQuickView}>
           <img src={quickViewIcon} />
         </QuickView></BelowTablet>}
