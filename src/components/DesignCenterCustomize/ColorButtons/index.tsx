@@ -53,10 +53,12 @@ class ColorButtons extends React.Component<Props, {}> {
     return (
       <Container>
         {colorButtons}
-        <ShuffleButton onClick={onSelectShuffle} className="custom-tooltip">
-          <Icon src={shuffleIcon} />
-          <div className="tooltip-content">{formatMessage({ ...messages.shuffleColors })}</div>
-        </ShuffleButton>
+        {colorButtons.length > 0 && (
+          <ShuffleButton onClick={onSelectShuffle} className="custom-tooltip">
+            <Icon src={shuffleIcon} />
+            <div className="tooltip-content">{formatMessage({ ...messages.shuffleColors })}</div>
+          </ShuffleButton>
+        )}
       </Container>
     )
   }
