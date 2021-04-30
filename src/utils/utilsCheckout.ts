@@ -7,7 +7,7 @@ import {
   DESIGN
 } from '../screens/Checkout/constants'
 
-const CANADA_SHIPPING_TAX_RATE = 5
+// const CANADA_SHIPPING_TAX_RATE = 5
 
 export const getTaxesAndDiscount = (
   countrySubsidiary: string,
@@ -83,12 +83,9 @@ export const getTaxesAndDiscount = (
         ) {
           // for CANADA the taxes are calculated
           // GST = ((subtotal + proDesignReview - discountAmount) * gstRate%) + (shipping * shippingRate%)
-          taxGst =
-            (subtotal + proDesignFee - realDiscount) * (taxRates.rateGst / 100) // calculate tax
-          taxGst += shippingTotal * (CANADA_SHIPPING_TAX_RATE / 100)
           // PST = (subtotal + proDesignReview - discountAmount) * pstRate%
-          taxPst =
-            (subtotal + proDesignFee - discount) * (taxRates.ratePst / 100) // calculate tax
+          taxGst = (subtotal + proDesignFee + shippingTotal - realDiscount) * (taxRates.rateGst / 100)
+          taxPst = (subtotal + proDesignFee - realDiscount) * (taxRates.ratePst / 100) // calculate tax
           taxGst = roundDecimals(taxGst) // round to 2 decimals
           taxPst = roundDecimals(taxPst) // round to 2 decimals
         }
