@@ -494,7 +494,7 @@ const ThumbnailsListEnhance = compose(
         fetchPolicy: 'network-only',
         variables: {
           contentTile: contentTile ? contentTile : null,
-          collection: selectProduct ? 1 : (collectionFilters ? collectionFilters : 1),
+          collection: selectProduct ? 1 : ((collectionFilters || contentTile) ? collectionFilters : 1),
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,
           sport: sportFilters ? sportFilters : null,
