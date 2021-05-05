@@ -127,7 +127,9 @@ interface Props {
   tutorialPlaylist: string
   userCode: string
   selectedPredyed: string
+  showGuidelines: boolean
   // Redux actions
+  onClickGuides: () => void
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -310,6 +312,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       originalPaths,
       onResetEditing,
       onSelectedItem,
+      onClickGuides,
       selectedItem,
       isMobile,
       responsive,
@@ -330,6 +333,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       fonts,
       variants,
       colorsList,
+      showGuidelines,
       placeholders,
       openResetPlaceholderModal,
       onRequestColorChart,
@@ -472,6 +476,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               name,
               lastName,
               colors,
+              onClickGuides,
+              showGuidelines,
               design,
               colorBlockHovered,
               styleColors,

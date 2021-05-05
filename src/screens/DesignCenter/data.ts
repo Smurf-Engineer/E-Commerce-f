@@ -20,6 +20,7 @@ export const getProductQuery = gql`
       modalText: modal_text
       modalLinkText: modal_link_text
       isCustom: design_center
+      guideline
       flatlock
       mpn
       binding {
@@ -111,6 +112,7 @@ export const getDesignQuery = gql`
         mtl
         label
         branding
+        guideline
         predyedlabel
         hasPredyed: has_predyed
         bumpMap: bump_map

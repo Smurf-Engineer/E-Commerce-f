@@ -2,11 +2,12 @@
  * DesignCenter Test - Created by david on 23/02/18.
  */
 import designCenterReducer, { initialState } from './reducer'
-import { setCurrentTabAction, setLoadingPro, setTicketAction } from './actions'
+import { onClickGuides, setCurrentTabAction, setLoadingPro, setTicketAction } from './actions'
 import {
   SET_CURRENT_TAB_ACTION,
   SET_LOADING_PRO,
-  SET_TICKET
+  SET_TICKET,
+  SHOW_GUIDELINE
 } from './constants'
 
 describe(' DesignCenter Screen', () => {
@@ -36,6 +37,14 @@ describe(' DesignCenter Screen', () => {
         type,
         ticket,
         userId
+      })
+    })
+    it('onClickGuides', () => {
+      const type = SHOW_GUIDELINE
+      const value = true
+      expect(onClickGuides(value)).toEqual({
+        type,
+        value
       })
     })
   })
@@ -72,6 +81,26 @@ describe(' DesignCenter Screen', () => {
         const customLoadingValue = loadingState.get('loadingPro')
         expect(typeof customLoadingValue).toBe('boolean')
         expect(customLoadingValue).toBeTruthy()
+      })
+    })
+  })
+  describe('SHOW_GUIDELINE', () => {
+    describe('Update onClickGuides correctly', () => {
+      it('Handles initial value in showGuidelines', () => {
+        const customInitialValue = initialState.get('showGuidelines')
+        expect(customInitialValue).not.toBeUndefined()
+        expect(typeof customInitialValue).toBe('boolean')
+        expect(customInitialValue).toBeFalsy()
+      })
+      it('Handles custom value in showGuidelines', () => {
+        const value = true
+        const loadingState = designCenterReducer(
+          initialState,
+          onClickGuides(value)
+        )
+        const customGuideValue = loadingState.get('showGuidelines')
+        expect(typeof customGuideValue).toBe('boolean')
+        expect(customGuideValue).toBeTruthy()
       })
     })
   })

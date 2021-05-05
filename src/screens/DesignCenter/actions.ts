@@ -70,6 +70,7 @@ import {
   OPEN_RESET_PLACEHOLDER_MODAL,
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
+  SHOW_GUIDELINE,
   OPEN_DESIGN_CHECK_MODAL,
   ON_OPEN_COLOR_CHART_FORM,
   SELECT_VARIANT,
@@ -102,6 +103,11 @@ export const defaultAction = (someValue: string): AnyAction => ({
 
 export const clearStoreAction = (): AnyAction => ({
   type: CLEAR_STORE_ACTION
+})
+
+export const onClickGuides = (value: boolean): AnyAction => ({
+  type: SHOW_GUIDELINE,
+  value
 })
 
 export const setCurrentTabAction = (index: number): AnyAction => ({

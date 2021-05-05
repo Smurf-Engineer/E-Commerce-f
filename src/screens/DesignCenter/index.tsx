@@ -213,9 +213,11 @@ interface Props extends RouteComponentProps<any> {
   selectedVariant: number
   tutorialPlaylist: string
   designCheckModalOpen: boolean
+  showGuidelines: boolean
   predyedChanged: boolean
   // Redux Actions
   clearStoreAction: () => void
+  onClickGuides: (value: boolean) => void
   setPredyedColor: (predyedColor: string) => void
   selectVariantAction: (index: number) => void
   setCurrentTabAction: (index: number) => void
@@ -411,6 +413,11 @@ export class DesignCenter extends React.Component<Props, {}> {
     const productId = get(dataDesign, 'designData.product.id', queryParams.id)
     const { openQuickViewAction: openQuickView } = this.props
     openQuickView(productId)
+  }
+
+  handleClickGuides = () => {
+    const { onClickGuides, showGuidelines } = this.props
+    onClickGuides(!showGuidelines)
   }
 
   handleOnPressBack = () => {
@@ -673,6 +680,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       openLoginAction: openLoginModalAction,
       layout,
       handleOnCloseInfo,
+      showGuidelines,
       infoModalOpen,
       automaticSave,
       saveAndBuyAction: handleOnSaveAndBuy,
@@ -1005,6 +1013,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     currentStyle,
                     undoChanges,
                     redoChanges,
+                    showGuidelines,
                     setPredyedColor,
                     setStitchingColorAction,
                     stitchingColor,
@@ -1066,6 +1075,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   onRedoAction={designRedoAction}
                   onResetAction={designResetAction}
                   onClearAction={designClearAction}
+                  onClickGuides={this.handleClickGuides}
                   onPressQuickView={this.handleOpenQuickView}
                   onOpenSaveDesign={openSaveDesignAction}
                   onApplyCanvasEl={setCanvasElement}

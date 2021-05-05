@@ -7,6 +7,7 @@ import undoIcon from '../../../assets/Undo.svg'
 import redoIcon from '../../../assets/Redo.svg'
 import resetIcon from '../../../assets/Reset.svg'
 import clearContentIcon from '../../../assets/clear-content-icon.svg'
+import guideLineIcon from '../../../assets/guideline_icon.svg'
 import messages from './messages'
 // TODO: Waiting for client definition
 // import blankIcon from '../../../assets/Blank.svg'
@@ -15,7 +16,9 @@ import {
   Options,
   OptionButton,
   Divider,
-  ClearPlaceholderIcon
+  ClearPlaceholderIcon,
+  GuideIcon,
+  GuideButton
 } from './styledComponents'
 
 interface Props {
@@ -23,10 +26,13 @@ interface Props {
   redoEnabled: boolean
   resetEnabled: boolean
   placeholders: boolean
+  showGuidelines: boolean
+  guideline: boolean
   onClickUndo: () => void
   onClickRedo: () => void
   onClickReset: () => void
   onClickClear: () => void
+  onClickGuides: () => void
   onClickResetPlaceholder: () => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -35,6 +41,9 @@ const OptionsController = ({
   undoEnabled,
   redoEnabled,
   resetEnabled,
+  guideline,
+  showGuidelines,
+  onClickGuides,
   onClickUndo,
   onClickRedo,
   onClickReset,
@@ -63,6 +72,18 @@ const OptionsController = ({
 
   return (
     <OptionsContainer>
+      {!!guideline &&
+        <Options>
+          <Tooltip
+            placement="right"
+            title={formatMessage(messages.guidelines)}
+          >
+            <GuideButton active={showGuidelines} onClick={onClickGuides}>
+              <GuideIcon src={guideLineIcon} />
+            </GuideButton>
+          </Tooltip>
+        </Options>
+      }
       {placeholders && (
         <Options>
           <Tooltip
