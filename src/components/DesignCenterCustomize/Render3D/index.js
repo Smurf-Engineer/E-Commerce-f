@@ -594,6 +594,9 @@ class Render3D extends PureComponent {
         }
         loadedTextures.bumpMap = this.textureLoader.load(bumpMap)
         loadedTextures.bumpMap.minFilter = THREE.LinearFilter
+
+        loadedTextures.guideline = this.textureLoader.load('https://storage.googleapis.com/jakroo/config/guidelines-example.svg')
+        loadedTextures.guideline.minFilter = THREE.LinearFilter
         /**
          * I had to implement this because when we load one design
          * the colors had a propert from apollo, that causes fail on
@@ -712,7 +715,7 @@ class Render3D extends PureComponent {
 
           const meshIndex = getMeshIndex(MESH)
 
-          const { flatlock, areas, bumpMap, branding, colors } = loadedTextures
+          const { flatlock, areas, bumpMap, branding, colors, guideline } = loadedTextures
           /* Stitching */
           if (!!flatlock) {
             const color =
@@ -885,6 +888,20 @@ class Render3D extends PureComponent {
             children[brandingIndex].material = brandingMaterial
             children[brandingIndex].name = BRANDING_MESH
           }
+
+          const guideLineObj = children[meshIndex].clone()
+          object.add(guideLineObj)
+          const guideLineIndex = children.length - 1
+
+          const guideLineMaterial = new THREE.MeshPhongMaterial({
+            map: guideline,
+            side: THREE.FrontSide,
+            transparent: true,
+          })
+          children[guideLineIndex].material = guideLineMaterial
+          children[guideLineIndex].name = 'GUIDELINE'
+
+          console.log('SIIIIUUUUUUUUUUUUUUUU🔴:', children)
 
           /* Object Config */
           object.position.y = 0
