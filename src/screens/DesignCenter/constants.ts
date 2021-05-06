@@ -83,6 +83,7 @@ export const SET_SENDING_CHART = `${namespace}/SET_SENDING_CHART`
 export const ON_OPEN_COLOR_CHART = `${namespace}/ON_OPEN_COLOR_CHART`
 export const ON_OPEN_COLOR_CHART_FORM = `${namespace}/ON_OPEN_COLOR_CHART_FORM`
 export const SELECT_VARIANT = `${namespace}/SELECT_VARIANT`
+export const SHOW_GUIDELINE = `${namespace}/SHOW_GUIDELINE`
 export const SET_LOADING_PRO = `${namespace}/SET_LOADING_PRO`
 export const OPEN_DESIGN_CHECK_MODAL = `${namespace}/OPEN_DESIGN_CHECK_MODAL`
 export const SET_TICKET = `${namespace}/SET_TICKET`

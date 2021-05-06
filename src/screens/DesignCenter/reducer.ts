@@ -22,6 +22,7 @@ import {
   OPEN_SHARE_MODAL,
   OPEN_SAVE_DESIGN_ACTION,
   SET_DESIGN_NAME,
+  SHOW_GUIDELINE,
   SAVE_DESIGN_ID,
   COLOR_BLOCK_HOVERED_ACTION,
   SET_CHECKED_TERMS,
@@ -112,6 +113,7 @@ export const initialState = fromJS({
   selectedVariant: -1,
   openSaveDesign: false,
   checkedTerms: false,
+  showGuidelines: false,
   savedDesignId: '',
   design: {},
   style: {},
@@ -268,6 +270,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         redoChanges: redoChanges.clear()
       })
     }
+    case SHOW_GUIDELINE:
+      return state.set('showGuidelines', action.value)
     case SET_PREDYED_COLOR: {
       const color = action.predyedColor
       const undoChanges = state.get('undoChanges')

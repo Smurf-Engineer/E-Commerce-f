@@ -407,6 +407,7 @@
   "components.SaveDesign.checkCopyright": "I hereby agree that I have permission and the rights to  use all images I have uploaded to this design",
   "components.OptionsController.undo": "Undo",
   "components.OptionsController.redo": "Redo",
+  "components.OptionsController.guidelines": "Guidelines",
   "components.OptionsController.reset": "Reset",
   "components.ResellerPayouts.title": "Payment History",
   "components.ResellerPayouts.emptyMessage": "Applied payments will show here",

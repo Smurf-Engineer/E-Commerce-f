@@ -92,6 +92,7 @@ export const CHANGE_ACTIONS = [SCALE_ACTION, DRAG_ACTION, ROTATE_ACTION]
 export const MESH_NAME = 'JV2_3D_MODEL'
 export const CANVAS_MESH = 'Canvas_Mesh'
 export const BRANDING_MESH = 'Branding_Mesh'
+export const GUIDELINE_MESH = 'Guideline_Mesh'
 
 export const BIB_BRACE_NAME = 'bibBrace'
 export const ZIPPER_NAME = 'zipper'

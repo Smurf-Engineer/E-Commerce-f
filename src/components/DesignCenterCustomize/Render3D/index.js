@@ -60,6 +60,7 @@ import {
   MESH_NAME,
   CANVAS_MESH,
   BRANDING_MESH,
+  GUIDELINE_MESH,
   REGULAR_CANVAS,
   BIB_BRACE_NAME,
   ZIPPER_NAME,
@@ -183,7 +184,8 @@ class Render3D extends PureComponent {
       zipperColor: oldZipperColor,
       bibColor: oldBibColor,
       selectedVariant: oldSelected,
-      showBranding: oldShowBranding
+      showBranding: oldShowBranding,
+      showGuidelines: oldShowGuidelines
     } = this.props
     const {
       colors: nextColors,
@@ -203,6 +205,7 @@ class Render3D extends PureComponent {
       designId,
       loggedUserId,
       showBranding,
+      showGuidelines,
       userCode
     } = nextProps
     const { openSlaask } = this.state
@@ -243,9 +246,9 @@ class Render3D extends PureComponent {
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
     }
-    if ((selectedVariant !== oldSelected) || (oldShowBranding !== showBranding)) {
+    if ((selectedVariant !== oldSelected) || (oldShowBranding !== showBranding) || (oldShowGuidelines !== showGuidelines)) {
       this.clearScene()
-      this.render3DModel(showBranding, newProduct)
+      this.render3DModel(showBranding, newProduct, showGuidelines)
     }
     if (openSlaask && proAssistId) {
       initSlaask({
@@ -556,7 +559,7 @@ class Render3D extends PureComponent {
       try {
         const loadedTextures = {}
         const { brandingPng, colors } = design
-        const { flatlock, bumpMap, zipper, binding, bibBrace } = product
+        const { flatlock, bumpMap, zipper, binding, bibBrace, guideline } = product
         if (!!zipper) {
           const { white, black } = zipper
           this.zipper = {}
@@ -594,6 +597,12 @@ class Render3D extends PureComponent {
         }
         loadedTextures.bumpMap = this.textureLoader.load(bumpMap)
         loadedTextures.bumpMap.minFilter = THREE.LinearFilter
+
+        if (!!guideline) {
+          loadedTextures.guideline = this.textureLoader.load(guideline)
+          loadedTextures.guideline.minFilter = THREE.LinearFilter
+        }
+
         /**
          * I had to implement this because when we load one design
          * the colors had a propert from apollo, that causes fail on
@@ -657,7 +666,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  render3DModel = async (showBranding = true, newProduct) => {
+  render3DModel = async (showBranding = true, newProduct, showGuidelines = false) => {
     /* Object and MTL load */
     const {
       onLoadModel,
@@ -712,7 +721,7 @@ class Render3D extends PureComponent {
 
           const meshIndex = getMeshIndex(MESH)
 
-          const { flatlock, areas, bumpMap, branding, colors } = loadedTextures
+          const { flatlock, areas, bumpMap, branding, colors, guideline } = loadedTextures
           /* Stitching */
           if (!!flatlock) {
             const color =
@@ -884,6 +893,21 @@ class Render3D extends PureComponent {
             })
             children[brandingIndex].material = brandingMaterial
             children[brandingIndex].name = BRANDING_MESH
+          }
+
+          /* Guidelines */
+          if (!!guideline && showGuidelines) {
+            const guideLineObj = children[meshIndex].clone()
+            object.add(guideLineObj)
+            const guideLineIndex = children.length - 1
+
+            const guideLineMaterial = new THREE.MeshPhongMaterial({
+              map: guideline,
+              side: THREE.FrontSide,
+              transparent: true,
+            })
+            children[guideLineIndex].material = guideLineMaterial
+            children[guideLineIndex].name = GUIDELINE_MESH
           }
 
           /* Object Config */
@@ -1394,6 +1418,11 @@ class Render3D extends PureComponent {
     }
   }
 
+  handleOnClickGuides = () => {
+    const { onClickGuides } = this.props
+    onClickGuides()
+  }
+
   handleOnClickClear = () => this.props.onClearAction()
 
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
@@ -1403,8 +1432,10 @@ class Render3D extends PureComponent {
       isUserAuthenticated,
       openLoginAction,
       selectedVariant,
-      selectVariantAction
+      selectVariantAction,
+      onClickGuides
     } = this.props
+    onClickGuides(false)
     selectVariantAction(-1)
     if (!isUserAuthenticated) {
       openLoginAction(true)
@@ -1469,9 +1500,10 @@ class Render3D extends PureComponent {
       openResetPlaceholderModal,
       currentStyle,
       openDesignCheckModal,
+      showGuidelines,
       proAssistId
     } = this.props
-    const { hasModal, modalLinkText } = product || {}
+    const { hasModal, modalLinkText, guideline } = product || {}
     if (isMobile) {
       return (
         <MobileContainer>
@@ -1605,10 +1637,11 @@ class Render3D extends PureComponent {
         </Dropdown>
         */}
         <OptionsController
-          {...{ undoEnabled, redoEnabled, formatMessage }}
+          {...{ undoEnabled, redoEnabled, formatMessage, guideline, showGuidelines }}
           placeholders={currentStyle.canvas}
           resetEnabled={designHasChanges}
           onClickUndo={this.handleOnClickUndo}
+          onClickGuides={this.handleOnClickGuides}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnOpenResetModal}
           onClickClear={this.handleOnClickClear}

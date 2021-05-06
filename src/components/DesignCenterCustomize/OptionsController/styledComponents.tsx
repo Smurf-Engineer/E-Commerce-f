@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdDivider from 'antd/lib/divider'
+import { GRAY_LIGHT, WHITE } from '../../../theme/colors'
 
 export const OptionsContainer = styled.div`
   position: absolute;
@@ -18,6 +19,7 @@ export const Options = styled.div`
 interface OptionsProps {
   withMargin?: boolean
   disabled?: boolean
+  active?: boolean
 }
 
 export const OptionButton = styled.div`
@@ -33,6 +35,23 @@ export const OptionButton = styled.div`
     disabled ? '#f5f5f5' : '#fff'};
   margin: ${({ withMargin }: OptionsProps) =>
     withMargin ? '16px 0px' : '0px'};
+`
+
+export const GuideButton = styled.div`
+  width: 40px;
+  user-select: none;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: ${({ active }: OptionsProps) =>
+    active ? GRAY_LIGHT : WHITE};
+  margin: 16px 0px;
+`
+
+export const GuideIcon = styled.img`
+  padding: 5px;
 `
 
 export const Divider = styled(AntdDivider)`
