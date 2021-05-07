@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdDivider from 'antd/lib/divider'
-import { GRAY_LIGHT, WHITE } from '../../../theme/colors'
+import { WHITE } from '../../../theme/colors'
 
 export const OptionsContainer = styled.div`
   position: absolute;
@@ -45,13 +45,18 @@ export const GuideButton = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: ${({ active }: OptionsProps) =>
-    active ? GRAY_LIGHT : WHITE};
+  background-color: ${WHITE};
   margin: 16px 0px;
+`
+
+export const ToolTipText = styled.div`
+  text-align: center;
 `
 
 export const GuideIcon = styled.img`
   padding: 5px;
+  filter: ${({ active }: OptionsProps) =>
+    active ? 'invert(1) sepia(1) saturate(5) hue-rotate(175deg)' : 'unset'};
 `
 
 export const Divider = styled(AntdDivider)`

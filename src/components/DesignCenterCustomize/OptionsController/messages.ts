@@ -19,7 +19,8 @@ export default defineMessages({
   },
   guidelines: {
     id: 'components.OptionsController.guidelines',
-    defaultMessage: 'Guidelines'
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Art Guidelines<br/>Guidelines can assist positioning and aligning text and art on the design. Guidelines will not print on the product.'
   },
   clearContent: {
     id: 'components.OptionsController.clearContent',

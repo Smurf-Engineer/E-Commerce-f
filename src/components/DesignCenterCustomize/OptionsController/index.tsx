@@ -18,7 +18,8 @@ import {
   Divider,
   ClearPlaceholderIcon,
   GuideIcon,
-  GuideButton
+  GuideButton,
+  ToolTipText
 } from './styledComponents'
 
 interface Props {
@@ -76,10 +77,14 @@ const OptionsController = ({
         <Options>
           <Tooltip
             placement="right"
-            title={formatMessage(messages.guidelines)}
+            title={
+              <ToolTipText dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.guidelines)
+              }}/>
+            }
           >
-            <GuideButton active={showGuidelines} onClick={onClickGuides}>
-              <GuideIcon src={guideLineIcon} />
+            <GuideButton onClick={onClickGuides}>
+              <GuideIcon active={showGuidelines} src={guideLineIcon} />
             </GuideButton>
           </Tooltip>
         </Options>
