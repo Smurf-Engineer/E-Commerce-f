@@ -55,6 +55,7 @@ export const ToolTipText = styled.div`
 
 export const GuideIcon = styled.img`
   padding: 5px;
+  width: 100%;
   filter: ${({ active }: OptionsProps) =>
     active ? 'invert(1) sepia(1) saturate(5) hue-rotate(175deg)' : 'unset'};
 `
