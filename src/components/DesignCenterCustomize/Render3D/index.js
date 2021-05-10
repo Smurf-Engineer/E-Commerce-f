@@ -1432,10 +1432,13 @@ class Render3D extends PureComponent {
       isUserAuthenticated,
       openLoginAction,
       selectedVariant,
+      showGuidelines,
       selectVariantAction,
       onClickGuides
     } = this.props
-    onClickGuides(false)
+    if (showGuidelines) {
+      onClickGuides(false)
+    }
     selectVariantAction(-1)
     if (!isUserAuthenticated) {
       openLoginAction(true)
@@ -1477,7 +1480,7 @@ class Render3D extends PureComponent {
             }
             onOpenSaveDesign(true, saveDesign, automaticSave)
           },
-          selectedVariant === -1 ? 200 : 800
+          selectedVariant === -1 || !showGuidelines ? 200 : 800
         )
       )
     }
