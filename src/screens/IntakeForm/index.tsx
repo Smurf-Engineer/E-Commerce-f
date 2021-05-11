@@ -73,7 +73,8 @@ import {
   ColorsDataResult,
   QueryProps,
   ProDesignPalette,
-  IProfileSettings
+  IProfileSettings,
+  User
 } from '../../types/common'
 import {
   Sections,
@@ -1081,6 +1082,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 }
 
 type OwnProps = {
+  user?: User
   colorsList?: ColorsDataResult
 }
 
@@ -1109,9 +1111,10 @@ const IntakeFormPageEnhance = compose(
     { ...intakeFormActions, ...apiActions, openLoginAction }
   ),
   graphql(profileSettingsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
+    options: ({ user }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      skip: !user
+    }),
     name: 'profileData'
   }),
   graphql<DataColor>(GetColorPalettes, { name: 'dataColor' }),

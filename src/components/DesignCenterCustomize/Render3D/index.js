@@ -161,6 +161,7 @@ class Render3D extends PureComponent {
     isFirstAdd: true,
     showHelpModal: true,
     openSlaask: true,
+    retrySave: false,
     editorState: false,
     editorReady: false,
     Editor: null
@@ -683,6 +684,7 @@ class Render3D extends PureComponent {
       designHasChanges,
       isMobile,
     } = this.props
+    const { retrySave } = this.state
     const product = newProduct || oldProduct
     const loadedTextures = await this.loadTextures(
       currentStyle,
@@ -920,8 +922,10 @@ class Render3D extends PureComponent {
           ) {
             this.loadCanvasTexture(design.canvasJson || currentStyle.canvas)
           }
-
           onLoadModel(false)
+          if (retrySave) {
+            this.setState({ retrySave: false }, () => this.takeDesignPicture(false))
+          }
         },
         this.onProgress,
         this.onError
@@ -1436,8 +1440,10 @@ class Render3D extends PureComponent {
       selectVariantAction,
       onClickGuides
     } = this.props
-    if (showGuidelines) {
-      onClickGuides(false)
+    const { retrySave } = this.state
+    if (showGuidelines && !retrySave) {
+      this.setState({ retrySave: true }, () => onClickGuides(false))
+      return
     }
     selectVariantAction(-1)
     if (!isUserAuthenticated) {
@@ -1480,7 +1486,7 @@ class Render3D extends PureComponent {
             }
             onOpenSaveDesign(true, saveDesign, automaticSave)
           },
-          selectedVariant === -1 || !showGuidelines ? 200 : 800
+          selectedVariant !== -1 || showGuidelines ? 5000 : 200
         )
       )
     }
