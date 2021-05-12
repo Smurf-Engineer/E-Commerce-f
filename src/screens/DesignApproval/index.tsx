@@ -1360,6 +1360,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               disabled={sendingNote}
               placeholder={formatMessage(messages[!project ? 'sendCustomerMessage' : 'addNotes'])}
               onChange={this.handleChangeNote}
+              maxLength={768}
               autosize={{ minRows: 4, maxRows: 12 }}
               rows={4}
             />
