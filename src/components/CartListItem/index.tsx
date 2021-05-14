@@ -81,6 +81,12 @@ interface Props {
     detailIndex: number,
     color: ProductColors
   ) => void
+  setUpgradeOption: (
+    index: number,
+    detailIndex: number,
+    isFirst: boolean,
+    upgrade: ItemDetailType
+  ) => void
   setDetailSize?: (
     index: number,
     detailIndex: number,
@@ -261,6 +267,7 @@ export class CartListItem extends React.Component<Props, {}> {
       setDetailQuantity = () => { },
       setDetailFit = () => { },
       setDetailGender = () => { },
+      setUpgradeOption = () => { },
       setDetailColor = () => { },
       setDetailSize = () => { },
       setTopDetailSize = () => { },
@@ -336,6 +343,7 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailFit,
           setDetailGender,
           setDetailSize,
+          setUpgradeOption,
           setTopDetailSize,
           setBottomDetailSize,
           openFitInfoAction,

@@ -11,7 +11,9 @@ import {
   GRAY,
   GRAY_SOFT,
   GRAY_DARK,
-  GRAY_ANTDESIGN
+  GRAY_ANTDESIGN,
+  BLUE,
+  WHITE
 } from '../../theme/colors'
 
 type SelectType = {
@@ -40,15 +42,24 @@ type RowProps = {
   withColor?: boolean
   onlyRead?: boolean
   withTwoPieces?: boolean
+  upgradeOne?: boolean
+  upgradeTwo?: boolean
 }
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo }: RowProps) => {
+    let upgrade = 0
+    if (upgradeOne) {
+      upgrade += 1 
+    }
+    if (upgradeTwo) {
+      upgrade += 1
+    }
     if (withColor) {
       return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
     }
-    return !withTwoPieces ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
+    return !withTwoPieces ? `repeat(${4 + upgrade}, 1fr)` : `repeat(${5 + upgrade}, 1fr)`
   }};
   grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '3px')};
 
@@ -73,11 +84,18 @@ export const Row = styled.div`
 
 export const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo }: RowProps) => {
+    let upgrade = 0
+    if (upgradeOne) {
+      upgrade += 1 
+    }
+    if (upgradeTwo) {
+      upgrade += 1
+    }
     if (withColor) {
       return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
     }
-    return !withTwoPieces ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
+    return !withTwoPieces ? `repeat(${4 + upgrade}, 1fr)` : `repeat(${5 + upgrade}, 1fr)`
   }};
   grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '5px')};
   align-items: center;
@@ -152,6 +170,49 @@ export const Price = styled.div`
   width: 58px;
   text-align: ${({ align }: TitleProps) => (align ? align : 'center')};
 `
+
+export const InfoBody = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: -38px;
+`
+
+export const InfoTitle = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+`
+
+export const InfoImage = styled.img`
+  max-width: 886px;
+  margin: 26px 0;
+  display: block;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+export const InfoImageMobile = styled.img`
+  max-width: 886px;
+  margin: 26px 0;
+  width: 100%;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`
+
+export const InfoURL = styled.a`
+  color: ${BLUE};
+`
+
+export const buttonStyle = {
+  background: WHITE,
+  color: GRAY_DARK,
+  borderColor: GRAY_LIGHT,
+  boxShadow: 'none'
+}
 
 export const MobileEmtpytable = styled.div`
   padding: 50px 40px 50px;

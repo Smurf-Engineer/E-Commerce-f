@@ -373,7 +373,7 @@ class Checkout extends React.Component<Props, {}> {
       europeStripeAccount &&
       !preorder
 
-    const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
+    const { total, totalWithoutDiscount, weightSum, symbol, upgradesTotal } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
@@ -520,6 +520,7 @@ class Checkout extends React.Component<Props, {}> {
                 onPaypalSuccess={this.onPaypalSuccess}
                 onPaypalCancel={this.onPaypalCancel}
                 onPaypalError={this.onPaypalError}
+                upgrades={upgradesTotal}
                 onPlaceOrder={this.handleOnPlaceOrder}
                 {...{
                   showOrderButton,
@@ -1108,13 +1109,25 @@ class Checkout extends React.Component<Props, {}> {
           item.product = productItem
           item.teamStoreId = teamStoreId
           item.itemDetails = itemDetails.map(
-            ({ gender, quantity, size, fit, color, topSize, bottomSize }: CartItemDetail) => {
+            ({
+              gender,
+              quantity,
+              size,
+              fit,
+              color,
+              topSize,
+              bottomSize,
+              firstUpgrade: firstUpObj,
+              secondUpgrade: secondUpObj
+            }: CartItemDetail) => {
               const fitId = get(fit, 'id', 0)
               const fitName = get(fit, 'name', '')
               const fitObj: ItemDetailType = {
                 id: fitId,
                 name: fitName
               }
+              const firstUpgrade = get(firstUpObj, 'name', '')
+              const secondUpgrade = get(secondUpObj, 'name', '')
               unset(gender, '__typename')
               unset(quantity, '__typename')
               unset(size, '__typename')
@@ -1122,7 +1135,7 @@ class Checkout extends React.Component<Props, {}> {
               unset(topSize, '__typename')
               unset(bottomSize, '__typename')
 
-              return { gender, quantity, size, fit: fitObj, color, topSize, bottomSize }
+              return { gender, quantity, size, fit: fitObj, color, topSize, bottomSize, firstUpgrade, secondUpgrade }
             }
           )
 

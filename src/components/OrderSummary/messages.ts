@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'screens.ShoppingCartPage.taxesVat',
     defaultMessage: 'VAT'
   },
+  upgrades: {
+    id: 'screens.ShoppingCartPage.upgrades',
+    defaultMessage: 'Upgrades'
+  },
   shipping: {
     id: 'screens.ShoppingCartPage.shipping',
     defaultMessage: 'Shipping'

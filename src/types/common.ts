@@ -162,6 +162,31 @@ export interface GenderType {
   gender?: string
 }
 
+export type UpgradeItem = {
+  id: number
+  short_id: string
+  enabled: boolean
+  name: string
+  url: string
+  product_id: number
+  modal_image: string
+  primary: boolean
+  mobile_image: string
+  options: UpgradeOptions[]
+}
+
+export type UpgradeOptions = {
+  id: number
+  usd: number
+  short_id: string
+  cad: number
+  aud: number
+  name: string
+  eur: number
+  product_upgrade: string
+  gbp: number
+}
+
 export type BreadRoute = {
   label: string
   url?: string
@@ -765,6 +790,8 @@ export type CartItemDetail = {
   colorImage?: string
   topSize?: ItemDetailType
   bottomSize?: ItemDetailType
+  firstUpgrade?: ItemDetailType
+  secondUpgrade?: ItemDetailType
 }
 
 export interface AddressType {

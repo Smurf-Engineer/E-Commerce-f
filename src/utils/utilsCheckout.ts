@@ -18,7 +18,8 @@ export const getTaxesAndDiscount = (
   couponCode?: CouponCode,
   taxRates?: NetsuiteTax,
   country?: string,
-  productsPrices?: ProductPrice[]
+  productsPrices?: ProductPrice[],
+  upgrades?: number = 0
 ) => {
   // get tax fee
   const taxesAmount = taxRates && taxRates.total
@@ -34,7 +35,7 @@ export const getTaxesAndDiscount = (
       case PERCENTAGE_PROMO: // '%'
         if (!restrictions.includes(DESIGN)) {
           // calculate discount with (subtotal + proDesignFee) * percentageDiscount
-          discount = (subtotal + proDesignFee) * (Number(rate) / 100)
+          discount = (subtotal + proDesignFee + upgrades) * (Number(rate) / 100)
         } else {
           discount = productsPrices.reduce((totalDiscount: number, design) => {
             if (!products.includes(design.designId)) {
@@ -71,7 +72,7 @@ export const getTaxesAndDiscount = (
         // for USA the tax is calculated with this formula (subtotal + proDesignReview - discountAmount) * taxRate%
         if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
           taxTotal =
-            (subtotal + proDesignFee + shippingTotal - realDiscount) *
+            (subtotal + proDesignFee + upgrades + shippingTotal - realDiscount) *
             (taxesAmount / 100) // calculate tax
           taxFee = roundDecimals(taxTotal) // round to 2 decimals
         }
@@ -84,8 +85,8 @@ export const getTaxesAndDiscount = (
           // for CANADA the taxes are calculated
           // GST = ((subtotal + proDesignReview - discountAmount) * gstRate%) + (shipping * shippingRate%)
           // PST = (subtotal + proDesignReview - discountAmount) * pstRate%
-          taxGst = (subtotal + proDesignFee + shippingTotal - realDiscount) * (taxRates.rateGst / 100)
-          taxPst = (subtotal + proDesignFee - realDiscount) * (taxRates.ratePst / 100) // calculate tax
+          taxGst = (subtotal + proDesignFee + upgrades + shippingTotal - realDiscount) * (taxRates.rateGst / 100)
+          taxPst = (subtotal + proDesignFee + upgrades - realDiscount) * (taxRates.ratePst / 100) // calculate tax
           taxGst = roundDecimals(taxGst) // round to 2 decimals
           taxPst = roundDecimals(taxPst) // round to 2 decimals
         }
@@ -114,12 +115,13 @@ export const calculateTaxVat = (
   taxVatTotal: number,
   proDesignFee: number,
   shippingTotal: number,
-  discount: number
+  discount: number,
+  upgrades: number = 0
 ) => {
   // totalNet = subtotal / (1 + taxVatTotal) NOTE: this only apply for Austria and Germany
   // taxVat = (totalNet + proDesignReview + shipping - discount) * vatRate%
   const totalNet = subtotal / (1 + taxVatTotal)
   const taxVat =
-    (totalNet + proDesignFee + shippingTotal - discount) * taxVatTotal
+    (totalNet + proDesignFee + upgrades + shippingTotal - discount) * taxVatTotal
   return roundDecimals(taxVat) // round to 2 decimals
 }

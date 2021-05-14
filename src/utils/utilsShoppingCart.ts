@@ -18,6 +18,7 @@ export const getShoppingCartData = (
   let nameOfFirstProduct = ''
   let symbol = '$'
   let moreThanOneItem = false
+  let upgradesTotal = 0
   if (shoppingCart) {
     shoppingCart.map((cartItem, index) => {
       const quantities = cartItem.itemDetails.map(itemDetail => {
@@ -43,6 +44,22 @@ export const getShoppingCartData = (
       if (quantitySum > maxquantity) {
         maxquantity = quantitySum
       }
+
+      const sumUpgrade = cartItem.itemDetails.reduce((sum, itemDetail) => {
+        if (itemDetail.firstUpgrade) {
+          const price = itemDetail.firstUpgrade[currency] || 0
+          const priceTotal = price * itemDetail.quantity
+          sum += priceTotal
+        }
+        if (itemDetail.secondUpgrade) {
+          const price = itemDetail.secondUpgrade[currency] || 0
+          const priceTotal = price * itemDetail.quantity
+          sum += priceTotal
+        }
+        return sum
+      // tslint:disable-next-line: align
+      }, 0)
+      upgradesTotal += sumUpgrade
 
       // Check for fixed prices
       const productPriceRanges = get(cartItem, 'product.priceRange', [])
@@ -117,6 +134,7 @@ export const getShoppingCartData = (
   return {
     total: totalSum,
     weightSum,
+    upgradesTotal,
     totalWithoutDiscount,
     priceRangeToApply,
     nameOfFirstProduct,

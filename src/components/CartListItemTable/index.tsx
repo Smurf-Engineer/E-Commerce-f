@@ -21,7 +21,13 @@ import {
   StyledInputNumber,
   ProductColor,
   QuestionSpan,
-  CellContainer
+  CellContainer,
+  buttonStyle,
+  InfoBody,
+  InfoTitle,
+  InfoImage,
+  InfoURL,
+  InfoImageMobile
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import {
@@ -30,7 +36,8 @@ import {
   Filter,
   SizeFilter,
   CartItems,
-  ProductColors
+  ProductColors,
+  UpgradeItem
 } from '../../types/common'
 
 const Option = Select.Option
@@ -64,6 +71,12 @@ interface Props {
     index: number,
     detailIndex: number,
     gender: ItemDetailType
+  ) => void
+  setUpgradeOption: (
+    index: number,
+    detailIndex: number,
+    isFirst: boolean,
+    upgrade: ItemDetailType,
   ) => void
   setDetailColor: (
     index: number,
@@ -110,6 +123,8 @@ const headerTitles: Header[] = [
   { message: 'topSize' },
   { message: 'bottomSize' },
   { message: 'fit' },
+  { message: 'upgradeOne' },
+  { message: 'upgradeTwo' },
   { message: 'quantity' },
   { message: '', width: 10 }
 ]
@@ -187,6 +202,15 @@ class CartListItemTable extends React.Component<Props, State> {
     setDetailGender(itemIndex, detail, selectedGender)
   }
 
+  handleUpgradeChange = (value: string, detail: number, isFirst: boolean) => {
+    const { setUpgradeOption, itemIndex, cartItem } = this.props
+
+    const upgradeSelected = get(cartItem, ['product', isFirst ? 'upgradeOne' : 'upgradeTwo', 'options'], [])
+    const selectedOption = find(upgradeSelected, { name: value }) as ItemDetailType
+
+    setUpgradeOption(itemIndex, detail, isFirst, selectedOption)
+  }
+
   handleSizeChange = (value: any, detail: number) => {
     const { setDetailSize, itemIndex, cartItem } = this.props
     const selectedSize = find(cartItem.product.sizeRange, {
@@ -238,6 +262,28 @@ class CartListItemTable extends React.Component<Props, State> {
     openFitInfoAction(true, itemIndex)
   }
 
+  handleOpenUpgrade = (upgrade: UpgradeItem) => () => {
+    const { name, modalImage, mobileImage, url } = upgrade || {}
+    const { formatMessage } = this.props
+    info({
+      icon: ' ',
+      width: 'auto',
+      centered: true,
+      className: 'centeredButtons',
+      okText: formatMessage(messages.close),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content:
+        <InfoBody>
+          <InfoTitle>{`${name} options`}</InfoTitle>
+          <InfoImage src={modalImage} />
+          <InfoImageMobile src={mobileImage} />
+          <InfoURL target="_blank" href={url}>{url}</InfoURL>
+        </InfoBody>
+    })
+  }
+
   render() {
     const {
       formatMessage,
@@ -255,10 +301,14 @@ class CartListItemTable extends React.Component<Props, State> {
     const colorImg = get(cartItem, 'itemDetails[0].colorImage', '')
     const withColorColumn = (isRetailProduct && !!colors.length) || !!colorImg
     const withTwoPieces = get(cartItem, 'product.twoPieces', false)
+    const upgradeOne = get(cartItem, 'product.upgradeOne', {})
+    const upgradeTwo = get(cartItem, 'product.upgradeTwo', {})
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
       if (index === 1 && !withColorColumn || index === 2 && withTwoPieces ||
-        (index === 3 || index === 4) && !withTwoPieces) return
+        (index === 3 || index === 4) && !withTwoPieces || 
+        (index === 6 && (!upgradeOne || !upgradeOne.enabled)) ||
+        (index === 7 && (!upgradeTwo || !upgradeTwo.enabled))) return
       return (
         <HeaderCell key={index} {...{ width }}>
           <CellContainer>
@@ -268,11 +318,19 @@ class CartListItemTable extends React.Component<Props, State> {
                 index === headers.length - 1 && onlyRead ? 'center' : 'left'
               }
             >
-              {message ? formatMessage(messages[message]) : ''}
+              {index === 6 && upgradeOne && upgradeOne.enabled ? upgradeOne.name : ''}
+              {message && (index !== 6 && index !== 7) ? formatMessage(messages[message]) : ''}
+              {index === 7 && upgradeTwo && upgradeTwo.enabled ? upgradeTwo.name : ''}
             </Title>
+            {index === 6 && upgradeOne.enabled &&
+              <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeOne)} />
+            }
             {(message === 'size' || message === 'topSize' || message === 'bottomSize') && !hideSizeHelp && (
               <QuestionSpan key={index} onClick={this.handleOpenFitInfo} />
             )}
+            {index === 7 && upgradeTwo.enabled &&
+              <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeTwo)} />
+            }
           </CellContainer>
         </HeaderCell>
       )
@@ -307,13 +365,48 @@ class CartListItemTable extends React.Component<Props, State> {
       )
     })
 
+    const oneOptions = get(upgradeOne, 'options', [])
+    const upgradeOneOptions = oneOptions.map(({ name, id }) => {
+      return (
+        <Option key={id} value={name}>
+          {name}
+        </Option>
+      )
+    })
+
+    const twoOptions = get(upgradeTwo, 'options', [])
+    const upgradeTwoOptions = twoOptions.map(({ name, id }) => {
+      return (
+        <Option key={id} value={name}>
+          {name}
+        </Option>
+      )
+    })
+
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-        const { gender, size, topSize, bottomSize, fit, quantity, color, colorImage } = item
+        const {
+          gender,
+          size,
+          topSize,
+          bottomSize,
+          fit,
+          quantity,
+          color,
+          colorImage,
+          firstUpgrade,
+          secondUpgrade
+        } = item
         const colorName = color && color.name
         const colorObject = find(colors, { name: colorName })
         return !onlyRead ? (
-          <Row key={index} withColor={withColorColumn} withTwoPieces={withTwoPieces}>
+          <Row 
+            key={index}
+            withColor={withColorColumn}
+            withTwoPieces={withTwoPieces}
+            upgradeOne={upgradeOne && upgradeOne.enabled}
+            upgradeTwo={upgradeTwo && upgradeTwo.enabled}
+          >
             <Cell>
               <StyledSelect
                 onChange={(e) => this.handleGenderChange(e, index)}
@@ -396,6 +489,36 @@ class CartListItemTable extends React.Component<Props, State> {
                 {fitOptions}
               </StyledSelect>
             </Cell>
+            {upgradeOne.enabled &&
+              <Cell>
+                <StyledSelect
+                  onChange={(e) => this.handleUpgradeChange(e, index, true)}
+                  showSearch={false}
+                  placeholder={formatMessage(messages.upgradeOne)}
+                  optionFilterProp="children"
+                  value={firstUpgrade ? firstUpgrade.name : undefined}
+                  selectWidth={fitSelectWidth}
+                  allowClear={true}
+                >
+                  {upgradeOneOptions}
+                </StyledSelect>
+              </Cell>
+            }
+            {upgradeTwo.enabled &&
+              <Cell>
+                <StyledSelect
+                  onChange={(e) => this.handleUpgradeChange(e, index, false)}
+                  showSearch={false}
+                  placeholder={formatMessage(messages.upgradeTwo)}
+                  optionFilterProp="children"
+                  value={secondUpgrade ? secondUpgrade.name : undefined}
+                  selectWidth={fitSelectWidth}
+                  allowClear={true}
+                >
+                  {upgradeTwoOptions}
+                </StyledSelect>
+              </Cell>
+            }
             {/* TODO: Delete after confirm label won't be necessary in table
               <Cell>
                 <StyledInput
@@ -422,7 +545,13 @@ class CartListItemTable extends React.Component<Props, State> {
             </Cell>
           </Row>
         ) : (
-            <Row key={index} withColor={withColorColumn} {...{ onlyRead, withTwoPieces }}>
+            <Row 
+              key={index}
+              withColor={withColorColumn}
+              {...{ onlyRead, withTwoPieces }}
+              upgradeOne={upgradeOne && upgradeOne.enabled}
+              upgradeTwo={upgradeTwo && upgradeTwo.enabled}
+            >
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
               {((withColorColumn && !!colorObject) || colorImage) && (
                 <InfoCell>
@@ -435,6 +564,12 @@ class CartListItemTable extends React.Component<Props, State> {
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
               {/* TODO: Delete after confirm label won't be necessary in table
                 <InfoCell>{label || '-'}</InfoCell> */}
+              {upgradeOne && upgradeOne.enabled &&
+                <InfoCell>{firstUpgrade && firstUpgrade.name ? firstUpgrade.name : '-'}</InfoCell>
+              }
+              {upgradeTwo && upgradeTwo.enabled &&
+                <InfoCell>{secondUpgrade && secondUpgrade.name ? secondUpgrade.name : '-'}</InfoCell>
+              }
               <InfoCell align={'center'}>{quantity || '-'}</InfoCell>
             </Row>
           )
@@ -443,7 +578,12 @@ class CartListItemTable extends React.Component<Props, State> {
 
     return (
       <Table>
-        <HeaderRow withColor={withColorColumn} {...{ onlyRead, withTwoPieces }}>
+        <HeaderRow 
+          {...{ onlyRead, withTwoPieces }} 
+          withColor={withColorColumn}
+          upgradeOne={upgradeOne && upgradeOne.enabled}
+          upgradeTwo={upgradeTwo && upgradeTwo.enabled}
+        >
           {header}
         </HeaderRow>
         {renderList}

@@ -22,6 +22,14 @@ export default defineMessages({
     id: 'components.CartListItemTable.bottomSize',
     defaultMessage: 'Bottom Size'
   },
+  upgradeOne: {
+    id: 'components.CartListItemTable.upgradeOne',
+    defaultMessage: 'Upgrade #1'
+  },
+  upgradeTwo: {
+    id: 'components.CartListItemTable.upgradeTwo',
+    defaultMessage: 'Upgrade #2'
+  },
   topSize: {
     id: 'components.CartListItemTable.topSize',
     defaultMessage: 'Top Size'
@@ -74,6 +82,10 @@ export default defineMessages({
   maxQuantityAlert: {
     id: 'components.CartListItemTable.maxQuantityAlert',
     defaultMessage: 'MAXIMUM QUANTITY ALERT'
+  },
+  close: {
+    id: 'components.CartListItemTable.close',
+    defaultMessage: 'Close'
   },
   gotIt: {
     id: 'components.CartListItemTable.gotIt',
