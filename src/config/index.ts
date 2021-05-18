@@ -34,6 +34,7 @@ interface ConfigType {
   tutorialsTabActive?: string
   colorSwatchZip?: string
   websocketUriBase?: string
+  googlePlaceApiUrl?: string
 }
 
 const config: ConfigType = {
@@ -65,7 +66,8 @@ const config: ConfigType = {
   googleFontsUrl: process.env.GOOGLE_FONTS_URL,
   tutorialsTabActive: process.env.TUTORIALS_TAB_ACTIVE,
   colorSwatchZip: process.env.COLOR_SWATCH_ZIP,
-  websocketUriBase: process.env.WEBSOCKET_URI_BASE
+  websocketUriBase: process.env.WEBSOCKET_URI_BASE,
+  googlePlaceApiUrl: process.env.GOOGLE_PLACE_API_URL
 }
 
 export default config

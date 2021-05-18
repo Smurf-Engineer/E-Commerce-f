@@ -9,15 +9,15 @@ describe('<CountrySelect />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const data: any = {
-      countries: [],
-      fetchMore: () => {}
+      fetchMore: () => { }
     }
+    const countries = []
     const selectedCountry = ''
-    const handleCountryChange = (value: any) => {}
+    const handleCountryChange = (value: any) => { }
     const formatMessage = (message: any) => 'string'
     ReactDOM.render(
       <CountrySelect
-        {...{ data, selectedCountry, handleCountryChange, formatMessage }}
+        {...{ data, selectedCountry, handleCountryChange, formatMessage, countries }}
       />,
       div
     )

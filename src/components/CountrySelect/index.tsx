@@ -4,20 +4,15 @@
 import * as React from 'react'
 import Select from 'antd/lib/select'
 import Spin from 'antd/lib/spin'
-import { withApollo, graphql, compose } from 'react-apollo'
 import messages from './messages'
 import { Container, StyledSelect } from './styledComponents'
-import { countriesQuery } from './data'
 import { QueryProps, Country } from '../../types/common'
 
 const Option = Select.Option
 
-interface Data extends QueryProps {
-  countries: Country[]
-}
-
 interface Props {
-  data: Data
+  data: QueryProps
+  countries: Country[]
   selectedCountry: string
   handleCountryChange: (
     value: string,
@@ -42,10 +37,10 @@ export class CountrySelect extends React.Component<Props, {}> {
     props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 
   render() {
-    const { data, selectedCountry, formatMessage } = this.props
+    const { data, countries, selectedCountry, formatMessage } = this.props
     let dropdownOptions: any = []
-    if (data && data.countries && data.countries.length) {
-      dropdownOptions = data.countries.map(
+    if (countries && countries.length) {
+      dropdownOptions = countries.map(
         ({ name, code, geonameId }, index) => (
           <Option value={`${code}-${geonameId}`} key={index}>
             {name}
@@ -73,13 +68,4 @@ export class CountrySelect extends React.Component<Props, {}> {
   }
 }
 
-const CountrySelectEnhance = compose(
-  withApollo,
-  graphql(countriesQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    }
-  })
-)(CountrySelect)
-
-export default CountrySelectEnhance
+export default CountrySelect
