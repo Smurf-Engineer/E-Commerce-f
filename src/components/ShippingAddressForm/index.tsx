@@ -304,8 +304,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   }
 
   handleAddressSelect = async (placeId: string) => {
-    const response = await getAddressDetails(placeId)
-    const addressDetails = response.result.address_components
+    const addressDetails = await getAddressDetails(placeId)
     const { inputChangeAction, data } = this.props
 
     if (addressDetails) {
@@ -367,8 +366,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   }
 
   fetchAddressPredictions = async (value: string) => {
-    const response = await getAddressPredictions(value)
-    const predictions = response.predictions
+    const predictions = await getAddressPredictions(value)
 
     const dataSource: AddressPrediction[] = []
     for (const prediction of predictions) {
