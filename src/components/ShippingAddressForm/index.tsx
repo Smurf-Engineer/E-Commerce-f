@@ -369,11 +369,13 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     const predictions = await getAddressPredictions(value)
 
     const dataSource: AddressPrediction[] = []
-    for (const prediction of predictions) {
-      dataSource.push({
-        description: prediction.description,
-        placeId: prediction.place_id
-      })
+    if (predictions && predictions.length) {
+      for (const prediction of predictions) {
+        dataSource.push({
+          description: prediction.description,
+          placeId: prediction.place_id
+        })
+      }
     }
 
     this.setState({
