@@ -170,6 +170,7 @@ class OrderData extends React.Component<Props, {}> {
           />
         )
     let subtotal = 0
+    let upgrades = 0
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderList = cart
@@ -180,9 +181,15 @@ class OrderData extends React.Component<Props, {}> {
           designName,
           product: { images, name, shortDescription, priceRange },
           productTotal,
-          unitPrice
+          unitPrice,
+          itemDetails,
         } = cartItem
 
+        const subUpgrade = itemDetails.reduce((sum, { quantity, upgradeOnePrice = 0, upgradeTwoPrice = 0}) =>
+          sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
+        // tslint:disable-next-line: align
+        , 0)
+        upgrades += subUpgrade || 0
         subtotal += productTotal || 0
 
         const itemImage = designId ? designImage || '' : images[0].front
@@ -323,6 +330,7 @@ class OrderData extends React.Component<Props, {}> {
                 formatMessage,
                 taxGst,
                 taxPst,
+                upgrades,
                 taxVat,
                 taxFee,
                 showDiscount,

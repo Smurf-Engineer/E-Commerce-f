@@ -27,7 +27,8 @@ import {
   InfoTitle,
   InfoImage,
   InfoURL,
-  InfoImageMobile
+  InfoImageMobile,
+  UpgradeTitle
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import {
@@ -108,6 +109,7 @@ interface Props {
 
 interface State {
   genderSelectWidth: string
+  isMobile: boolean
   fitSelectWidth: string
 }
 
@@ -141,6 +143,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     let genderSelectWidth = '100%'
     let fitSelectWidth = '100%'
+    let isMobile = false
     if (typeof window !== 'undefined') {
       if (window.matchMedia('(max-width: 320px)').matches) {
         genderSelectWidth = withColorColumn ? '80px' : '90px'
@@ -156,10 +159,12 @@ class CartListItemTable extends React.Component<Props, State> {
         genderSelectWidth = withColorColumn ? '90px' : '100px'
         fitSelectWidth = withColorColumn ? '90px' : '100px'
       }
+      isMobile = window.matchMedia('(max-width: 767px)').matches
     }
 
     this.state = {
       genderSelectWidth,
+      isMobile,
       fitSelectWidth
     }
   }
@@ -293,7 +298,7 @@ class CartListItemTable extends React.Component<Props, State> {
       hideSizeHelp,
       highlightFields
     } = this.props
-    const { genderSelectWidth, fitSelectWidth } = this.state
+    const { genderSelectWidth, fitSelectWidth, isMobile } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
     const isRetailProduct = !cartItem.designId
 
@@ -307,8 +312,8 @@ class CartListItemTable extends React.Component<Props, State> {
       // tslint:disable-next-line:curly
       if (index === 1 && !withColorColumn || index === 2 && withTwoPieces ||
         (index === 3 || index === 4) && !withTwoPieces || 
-        (index === 6 && (!upgradeOne || !upgradeOne.enabled)) ||
-        (index === 7 && (!upgradeTwo || !upgradeTwo.enabled))) return
+        (index === 6 && (!upgradeOne || !upgradeOne.enabled || isMobile)) ||
+        (index === 7 && (!upgradeTwo || !upgradeTwo.enabled || isMobile))) return
       return (
         <HeaderCell key={index} {...{ width }}>
           <CellContainer>
@@ -391,6 +396,8 @@ class CartListItemTable extends React.Component<Props, State> {
           topSize,
           bottomSize,
           fit,
+          upgradeOne: defaultUpgradeOne,
+          upgradeTwo: defaultUpgradeTwo,
           quantity,
           color,
           colorImage,
@@ -401,6 +408,7 @@ class CartListItemTable extends React.Component<Props, State> {
         const colorObject = find(colors, { name: colorName })
         return !onlyRead ? (
           <Row 
+            {...{ isMobile }}
             key={index}
             withColor={withColorColumn}
             withTwoPieces={withTwoPieces}
@@ -489,7 +497,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 {fitOptions}
               </StyledSelect>
             </Cell>
-            {upgradeOne.enabled &&
+            {upgradeOne.enabled && !isMobile &&
               <Cell>
                 <StyledSelect
                   onChange={(e) => this.handleUpgradeChange(e, index, true)}
@@ -504,7 +512,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 </StyledSelect>
               </Cell>
             }
-            {upgradeTwo.enabled &&
+            {upgradeTwo.enabled && !isMobile &&
               <Cell>
                 <StyledSelect
                   onChange={(e) => this.handleUpgradeChange(e, index, false)}
@@ -543,12 +551,50 @@ class CartListItemTable extends React.Component<Props, State> {
                 </DeleteItem>
               )}
             </Cell>
+            {upgradeOne.enabled && isMobile &&
+              <Cell start={1} end={3} align="column">
+                <UpgradeTitle>
+                  {upgradeOne.name}
+                  <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeOne)} />
+                </UpgradeTitle>
+                <StyledSelect
+                  onChange={(e) => this.handleUpgradeChange(e, index, true)}
+                  showSearch={false}
+                  placeholder={formatMessage(messages.upgradeOne)}
+                  optionFilterProp="children"
+                  value={firstUpgrade ? firstUpgrade.name : undefined}
+                  selectWidth="100%"
+                  allowClear={true}
+                >
+                  {upgradeOneOptions}
+                </StyledSelect>
+              </Cell>
+            }
+            {upgradeTwo.enabled && isMobile &&
+              <Cell start={3} end={5} align="column">
+                <UpgradeTitle>
+                  {upgradeTwo.name}
+                  <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeTwo)} />
+                </UpgradeTitle>
+                <StyledSelect
+                  onChange={(e) => this.handleUpgradeChange(e, index, false)}
+                  showSearch={false}
+                  placeholder={formatMessage(messages.upgradeTwo)}
+                  optionFilterProp="children"
+                  value={secondUpgrade ? secondUpgrade.name : undefined}
+                  selectWidth="100%"
+                  allowClear={true}
+                >
+                  {upgradeTwoOptions}
+                </StyledSelect>
+              </Cell>
+            }
           </Row>
         ) : (
             <Row 
               key={index}
               withColor={withColorColumn}
-              {...{ onlyRead, withTwoPieces }}
+              {...{ onlyRead, withTwoPieces, isMobile }}
               upgradeOne={upgradeOne && upgradeOne.enabled}
               upgradeTwo={upgradeTwo && upgradeTwo.enabled}
             >
@@ -564,13 +610,30 @@ class CartListItemTable extends React.Component<Props, State> {
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
               {/* TODO: Delete after confirm label won't be necessary in table
                 <InfoCell>{label || '-'}</InfoCell> */}
+              {isMobile && <InfoCell align={'center'}>{quantity || '-'}</InfoCell>}
               {upgradeOne && upgradeOne.enabled &&
-                <InfoCell>{firstUpgrade && firstUpgrade.name ? firstUpgrade.name : '-'}</InfoCell>
+                <InfoCell start={isMobile ? 1 : 0} end={isMobile ? 3 : 0}>
+                  {isMobile &&
+                    <UpgradeTitle>
+                      {upgradeOne.name}
+                      <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeOne)} />
+                    </UpgradeTitle>
+                  }
+                  {firstUpgrade && firstUpgrade.name ? firstUpgrade.name : (defaultUpgradeOne || '-')}
+                </InfoCell>
               }
               {upgradeTwo && upgradeTwo.enabled &&
-                <InfoCell>{secondUpgrade && secondUpgrade.name ? secondUpgrade.name : '-'}</InfoCell>
+                <InfoCell start={isMobile ? 3 : 0} end={isMobile ? 5 : 0}>
+                  {isMobile && 
+                    <UpgradeTitle>
+                      {upgradeTwo.name}
+                      <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeTwo)} />
+                    </UpgradeTitle>
+                  }
+                  {secondUpgrade && secondUpgrade.name ? secondUpgrade.name : (defaultUpgradeTwo || '-')}
+                </InfoCell>
               }
-              <InfoCell align={'center'}>{quantity || '-'}</InfoCell>
+              {!isMobile && <InfoCell align={'center'}>{quantity || '-'}</InfoCell>}
             </Row>
           )
       })
@@ -581,8 +644,8 @@ class CartListItemTable extends React.Component<Props, State> {
         <HeaderRow 
           {...{ onlyRead, withTwoPieces }} 
           withColor={withColorColumn}
-          upgradeOne={upgradeOne && upgradeOne.enabled}
-          upgradeTwo={upgradeTwo && upgradeTwo.enabled}
+          upgradeOne={upgradeOne && upgradeOne.enabled && !isMobile}
+          upgradeTwo={upgradeTwo && upgradeTwo.enabled && !isMobile}
         >
           {header}
         </HeaderRow>

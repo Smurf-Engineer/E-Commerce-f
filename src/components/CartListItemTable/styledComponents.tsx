@@ -13,7 +13,8 @@ import {
   GRAY_DARK,
   GRAY_ANTDESIGN,
   BLUE,
-  WHITE
+  WHITE,
+  GRAY_STRONG
 } from '../../theme/colors'
 
 type SelectType = {
@@ -43,17 +44,18 @@ type RowProps = {
   onlyRead?: boolean
   withTwoPieces?: boolean
   upgradeOne?: boolean
+  isMobile?: boolean
   upgradeTwo?: boolean
 }
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo, isMobile }: RowProps) => {
     let upgrade = 0
-    if (upgradeOne) {
+    if (upgradeOne && !isMobile) {
       upgrade += 1 
     }
-    if (upgradeTwo) {
+    if (upgradeTwo && !isMobile) {
       upgrade += 1
     }
     if (withColor) {
@@ -70,14 +72,18 @@ export const Row = styled.div`
   padding-top: 8px;
 
   @media (min-width: 426px) and (max-width: 640px) {
-    padding: 0 5px;
-    height: 50px;
+    padding: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '10px 5px' : '0 5px'};
+    height: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '140px' : '50px'};
     grid-gap: 5px;
   }
 
   @media (max-width: 425px) {
-    padding: 0 5px;
-    height: 50px;
+    padding: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '10px 5px' : '0 5px'};
+    height: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '140px' : '50px'};
     grid-gap: 3px;
   }
 `
@@ -126,12 +132,17 @@ export const Column = styled.td`
 interface CellProps {
   width?: number
   align?: string
+  start?: number
+  end?: number
 }
 export const Cell = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: left;
+  grid-column-start: ${({ start }: CellProps) => start || 'unset'};
+  grid-column-end: ${({ end }: CellProps) => end || 'unset'};
+  flex-flow: ${({ align }: CellProps) => align || 'row'};
   width: ${({ width }: CellProps) => (width ? width : 100)}%;
 `
 
@@ -139,6 +150,8 @@ export const InfoCell = styled.div`
   width: 100%;
   text-align: ${({ align }: CellProps) => (align ? align : 'left')};
   color: ${GRAY_DARK};
+  grid-column-start: ${({ start }: CellProps) => start || 'unset'};
+  grid-column-end: ${({ end }: CellProps) => end || 'unset'};
   font-size: 14px;
 `
 
@@ -169,6 +182,18 @@ export const Price = styled.div`
   line-height: 43px;
   width: 58px;
   text-align: ${({ align }: TitleProps) => (align ? align : 'center')};
+`
+
+export const UpgradeTitle = styled.div`
+  color: ${GRAY_STRONG};
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  line-height: 23px;
+  text-align: left;
+  display: flex;
+  width: auto;
+  word-break: break-all;
 `
 
 export const InfoBody = styled.div`

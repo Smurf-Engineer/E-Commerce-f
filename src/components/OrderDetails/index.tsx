@@ -185,6 +185,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const trackingNumber = packages && packages.replace('<BR>', ', ')
 
     let subtotal = 0
+    let upgrades = 0
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderItemList = cart
@@ -196,9 +197,14 @@ export class OrderDetails extends React.Component<Props, {}> {
           product: { images, name, shortDescription },
           productTotal,
           unitPrice,
-          teamStoreItem
+          teamStoreItem,
+          itemDetails
         } = cartItem
-
+        const subUpgrade = itemDetails.reduce((sum, { quantity, upgradeOnePrice = 0, upgradeTwoPrice = 0}) =>
+          sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
+        // tslint:disable-next-line: align
+        , 0)
+        upgrades += subUpgrade || 0
         subtotal += productTotal || 0
         cartItem.isFixed = onDemand === false
         cartItem.teamStoreItem = teamStoreItem
@@ -325,6 +331,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 formatMessage,
                 taxGst,
                 taxPst,
+                upgrades,
                 taxVat,
                 taxFee,
                 showDiscount,

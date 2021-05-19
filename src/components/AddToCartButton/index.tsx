@@ -126,7 +126,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         onCancel: () => {
           window.location.replace('/account?option=myLocker')
         },
-        onOk: async() => await this.addToCart,
+        onOk: async() => await this.addToCart(),
         content: <InfoBody>{formatMessage(messages.resellerPrompt)}</InfoBody>
       })
     } else {
