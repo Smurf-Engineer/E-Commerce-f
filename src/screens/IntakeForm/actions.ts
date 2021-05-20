@@ -40,7 +40,10 @@ import {
   CHANGE_LOCAL_NAME,
   SET_FILE_TERMS,
   SET_OPEN_BUILD,
-  SET_HIGHLIGHT
+  SET_HIGHLIGHT,
+  SET_FROM_DESIGN,
+  SET_PAGINATION_DATA,
+  SET_SELECTED_DESIGN
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -55,6 +58,17 @@ export const deselectElementAction = (elementId: number | string, listName: stri
   elementId,
   listName,
   index
+})
+
+export const setPaginationDataAction = (offset: number, page: number) => ({
+  type: SET_PAGINATION_DATA,
+  offset,
+  page
+})
+
+export const setDesignSelectedAction = (id: string) => ({
+  type: SET_SELECTED_DESIGN,
+  id
 })
 
 export const goToPage = (page: number) => ({
@@ -182,6 +196,11 @@ export const onCloseInspirationAction = () => ({
 export const setFromScratchAction = (fromScratch: boolean) => ({
   type: SET_FROM_SCRATCH,
   fromScratch
+})
+
+export const setFromDesignAction = (fromDesign: boolean) => ({
+  type: SET_FROM_DESIGN,
+  fromDesign
 })
 
 export const resetColorSelectionAction = () => ({

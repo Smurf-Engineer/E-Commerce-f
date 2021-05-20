@@ -24,7 +24,8 @@ export const Card = styled.div`
   flex-direction: column;
   background: ${WHITE};
   min-height: 533px;
-  width: 400px;
+  width: 340px;
+  margin-right: 30px;
   transition: all 0.25s;
   cursor: pointer;
   padding: 20px;
@@ -32,14 +33,15 @@ export const Card = styled.div`
     box-shadow: 0 3px 11px 1px rgba(0, 0, 0, 0.15);
   }
   &:last-child {
-    margin-left: 30px;
+    margin-right: 0;
   }
   @media (min-width: 320px) and (max-width: 748px) {
     width: 100%;
     min-height: 390px;
-    &:last-child {
-      margin-left: 0px;
-      margin-top: 32px;
+    margin-right: 0px;
+    margin-top: 32px;
+    &:first-child {
+      margin-top: 0px;
     }
   }
   border: 1px solid ${GRAY_LIGHT};
