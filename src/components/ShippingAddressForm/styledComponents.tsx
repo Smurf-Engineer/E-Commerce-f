@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import { AutoComplete } from 'antd'
 
 interface InputProps {
   inputhWidth?: string
@@ -42,6 +43,18 @@ export const StyledInput = styled(Input)`
   border: 1px solid #bebebe;
   border-radius: 0;
   margin-top: 5px;
+`
+
+export const StreetInput = styled(Input)`
+  height: 40px !important;
+  width: 100% !important;
+  border: 1px solid #bebebe;
+  border-radius: 0 !important;
+  margin-top: 5px !important;
+`
+
+export const StreetInputContainer = styled(AutoComplete)`
+  width: 100%;
 `
 
 export const StyledCityInput = styled(Input)`

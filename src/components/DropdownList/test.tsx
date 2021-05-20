@@ -27,7 +27,7 @@ describe('<DropdownList />', () => {
       genders,
       sports,
       categories,
-      fetchMore: () => {}
+      fetchMore: () => { }
     }
 
     const formatMessage = () => ''
@@ -35,7 +35,7 @@ describe('<DropdownList />', () => {
     ReactDOM.render(
       <DropdownList
         {...{ history, sportOptions, genderOptions, data, formatMessage }}
-        dispatch={{}}
+        dispatch={() => { }}
         menuGender={{}}
         genderSportSelected={0}
         regionsCodes={[]}
@@ -82,5 +82,5 @@ describe('Reducer', () => {
     })
   })
 
-  describe('SET_MENU_SPORT_SELECTED', () => {})
+  describe('SET_MENU_SPORT_SELECTED', () => { })
 })

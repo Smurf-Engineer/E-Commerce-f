@@ -3,7 +3,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
-  modify(baseConfig, { target, dev }, webpack) {
+  modify(baseConfig, {
+    target,
+    dev
+  }, webpack) {
     const config = Object.assign({}, baseConfig)
 
     config.resolve.extensions = config.resolve.extensions.concat([
@@ -16,12 +19,12 @@ module.exports = {
     // Locate eslint-loader and remove it (we're using tslint instead)
     config.module.rules = config.module.rules.filter(
       rule =>
-        !(
-          Array.isArray(rule.use) &&
-          rule.use.length > 0 &&
-          rule.use[0].options &&
-          'useEslintrc' in rule.use[0].options
-        )
+      !(
+        Array.isArray(rule.use) &&
+        rule.use.length > 0 &&
+        rule.use[0].options &&
+        'useEslintrc' in rule.use[0].options
+      )
     )
 
     config.module.rules[1].exclude.push(/\.mjs$/)
@@ -33,7 +36,9 @@ module.exports = {
 
     // Get the correct `include` option, since that hasn't changed.
     // This tells Razzle which directories to transform.
-    const { include } = config.module.rules[babelLoader]
+    const {
+      include
+    } = config.module.rules[babelLoader]
 
     // Declare our TypeScript loader configuration
     const tsLoader = {
@@ -71,19 +76,16 @@ module.exports = {
     //
     config.module.rules.push(tsLoader)
 
-    config.module.rules.push(
-      {
-        test: /\.ant$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader!less-loader'
-        })
-      },
-      {
-        test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
-      }
-    )
+    config.module.rules.push({
+      test: /\.ant$/,
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader!less-loader'
+      })
+    }, {
+      test: /\.less$/,
+      use: ['style-loader', 'css-loader', 'less-loader']
+    })
 
     if (!dev) {
       const index = config.plugins.findIndex(

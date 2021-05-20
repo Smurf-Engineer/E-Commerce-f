@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import { getAddressPredictions, getAddressDetails } from './api'
 import {
   isNumberValue,
   isPoBox,
@@ -14,6 +15,8 @@ import {
   Row,
   Column,
   StyledInput,
+  StreetInput,
+  StreetInputContainer,
   RequiredSpan,
   Label,
   InputTitleContainer,
@@ -24,11 +27,27 @@ import {
 import { ClickParam } from '../../types/common'
 import CountrySelect from '../CountrySelect'
 import RegionSelect from '../RegionSelect'
+import { AutoComplete } from 'antd'
+import debounce from 'lodash/debounce'
+import { withApollo, graphql, compose } from 'react-apollo'
+import { countriesQuery } from './data'
+import { QueryProps, Country } from '../../types/common'
+
+const { Option } = AutoComplete
 
 const COUNTRY_VALUE_ID = 'country'
 const STATE_VALUE_ID = 'stateProvince'
 const STATE_CODE_VALUE_ID = 'stateProvinceCode'
 const CITY_VALUE_ID = 'city'
+
+interface Data extends QueryProps {
+  countries: Country[]
+}
+
+interface AddressPrediction {
+  description: string
+  placeId: string
+}
 
 interface StateProps {
   selectedCountry: string | undefined
@@ -36,9 +55,11 @@ interface StateProps {
   selectedRegion: string | undefined
   selectedCity: string | undefined
   selectedRegionCode: string | undefined
+  addressDataSource: any
 }
 
 interface Props {
+  data: Data
   firstName: string
   lastName: string
   street: string
@@ -61,11 +82,18 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     selectedCountryId: '',
     selectedRegion: '',
     selectedCity: '',
-    selectedRegionCode: ''
+    selectedRegionCode: '',
+    addressDataSource: []
+  }
+
+  constructor(props: Props) {
+    super(props)
+    this.getAddressPredictionsDebounced = debounce(this.fetchAddressPredictions, 500)
   }
 
   render() {
     const {
+      data,
       firstName,
       lastName,
       street,
@@ -79,11 +107,17 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       formatMessage
     } = this.props
 
+    const { addressDataSource } = this.state
+    const addressDataSourceMap = addressDataSource.map((address: AddressPrediction) => (
+      <Option key={address.placeId} value={address.placeId}>
+        {address.description}
+      </Option>
+    ))
+
     const {
       selectedCountry,
       selectedRegion,
       selectedCountryId,
-      selectedRegionCode,
       selectedCountryName
     } = this.state
 
@@ -99,7 +133,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               id="firstName"
               value={firstName}
               onChange={this.handleInputChange}
-              maxLength="50"
+              maxLength={50}
             />
             {!firstName && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -114,7 +148,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               id="lastName"
               value={lastName}
               onChange={this.handleInputChange}
-              maxLength="50"
+              maxLength={50}
             />
             {!lastName && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -130,12 +164,16 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
                 {formatMessage(messages.shipTopPoApoLabel)}
               </ShipTopPoAPO>
             </InputTitleContainer>
-            <StyledInput
-              id="street"
-              placeholder={formatMessage(messages.streetAddressLabel)}
+            <StreetInputContainer
+              dataSource={addressDataSourceMap}
+              onSelect={this.handleAddressSelect}
+              onSearch={this.handleAddressLookup}
               value={street}
-              onChange={this.handleInputChange}
-            />
+            >
+              <StreetInput
+                placeholder={formatMessage(messages.streetAddressLabel)}
+              />
+            </StreetInputContainer>
             {!street && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
             )}
@@ -166,6 +204,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
                   : undefined
               }
               handleCountryChange={this.handleCountryChange}
+              countries={data.countries}
             />
             {!country && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -183,7 +222,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               countryName={selectedCountryName}
               region={
                 selectedRegion
-                  ? `${selectedRegion}-${selectedRegionCode}`
+                  ? `${selectedRegion}`
                   : undefined
               }
               handleRegionChange={this.handleRegionChange}
@@ -201,7 +240,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               id="city"
               value={city}
               onChange={this.handleInputChange}
-              maxLength="100"
+              maxLength={100}
             />
             {!city && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -218,7 +257,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               id="zipCode"
               value={zipCode}
               onChange={this.handleInputChange}
-              maxLength="20"
+              maxLength={20}
             />
             {!zipCode && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -233,7 +272,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               id="phone"
               value={phone}
               onChange={this.handleInputChange}
-              maxLength="20"
+              maxLength={20}
             />
             {!phone && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -262,6 +301,86 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       selectedCity: ''
     })
     inputChangeAction(COUNTRY_VALUE_ID, value)
+  }
+
+  handleAddressSelect = async (placeId: string) => {
+    const addressDetails = await getAddressDetails(placeId)
+    const { inputChangeAction, data } = this.props
+
+    if (addressDetails) {
+      let city = '', zipCode = ''
+
+      for (const component of addressDetails) {
+        switch (component.types[0]) {
+          case 'route':
+            inputChangeAction('street', component.long_name)
+            break
+          case 'country':
+            for (const country of data.countries) {
+              if (country.code === component.short_name) {
+                this.setState({
+                  selectedCountry: country.code,
+                  selectedCountryId: country.geonameId,
+                  selectedCountryName: country.name
+                })
+                inputChangeAction(COUNTRY_VALUE_ID, component.short_name)
+                break
+              }
+            }
+            break
+          case 'administrative_area_level_1':
+            this.setState({
+              selectedRegion: component.long_name,
+              selectedRegionCode: component.short_name
+            })
+            inputChangeAction(STATE_VALUE_ID, component.long_name)
+            inputChangeAction(STATE_CODE_VALUE_ID, component.short_name)
+            break
+          case 'locality':
+            city = component.long_name
+            inputChangeAction(CITY_VALUE_ID, component.long_name)
+            break
+          case 'postal_code':
+            zipCode = component.long_name
+            inputChangeAction('zipCode', component.long_name)
+            break
+          default:
+            break
+        }
+      }
+
+      if (!city) {
+        inputChangeAction(CITY_VALUE_ID, '')
+      }
+      if (!zipCode) {
+        inputChangeAction('zipCode', '')
+      }
+    }
+  }
+
+  handleAddressLookup = async (value: string) => {
+    const { inputChangeAction } = this.props
+    inputChangeAction('street', value)
+
+    this.getAddressPredictionsDebounced(value)
+  }
+
+  fetchAddressPredictions = async (value: string) => {
+    const predictions = await getAddressPredictions(value)
+
+    const dataSource: AddressPrediction[] = []
+    if (predictions && predictions.length) {
+      for (const prediction of predictions) {
+        dataSource.push({
+          description: prediction.description,
+          placeId: prediction.place_id
+        })
+      }
+    }
+
+    this.setState({
+      addressDataSource: dataSource
+    })
   }
 
   handleRegionChange = (value: any, regionCode: string) => {
@@ -308,4 +427,13 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   }
 }
 
-export default ShippingAddressForm
+const ShippingAddressFormEnhance = compose(
+  withApollo,
+  graphql(countriesQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
+)(ShippingAddressForm)
+
+export default ShippingAddressFormEnhance
