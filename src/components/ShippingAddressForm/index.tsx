@@ -309,11 +309,15 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
 
     if (addressDetails) {
       let city = '', zipCode = ''
+      let streetAddress = '', streetNumber = ''
 
       for (const component of addressDetails) {
         switch (component.types[0]) {
           case 'route':
-            inputChangeAction('street', component.long_name)
+            streetAddress = component.long_name
+            break
+          case 'street_number':
+            streetNumber = component.long_name
             break
           case 'country':
             for (const country of data.countries) {
@@ -348,6 +352,8 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             break
         }
       }
+
+      inputChangeAction('street', (streetNumber + ' ' + streetAddress).trim())
 
       if (!city) {
         inputChangeAction(CITY_VALUE_ID, '')
