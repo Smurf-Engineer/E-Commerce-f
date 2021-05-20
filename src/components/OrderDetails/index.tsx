@@ -200,11 +200,15 @@ export class OrderDetails extends React.Component<Props, {}> {
           teamStoreItem,
           itemDetails
         } = cartItem
+
+        // This function is used to SUM all the upgrades prices applied to a product and have it on the subtotal
+        // Upgrades prices * quantities
         const subUpgrade = itemDetails.reduce((sum, { quantity, upgradeOnePrice = 0, upgradeTwoPrice = 0}) =>
           sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
         // tslint:disable-next-line: align
         , 0)
         upgrades += subUpgrade || 0
+
         subtotal += productTotal || 0
         cartItem.isFixed = onDemand === false
         cartItem.teamStoreItem = teamStoreItem

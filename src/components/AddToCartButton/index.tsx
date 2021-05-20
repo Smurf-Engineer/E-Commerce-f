@@ -171,7 +171,6 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       if (upgradeTwo && upgradeTwo.enabled) {
         set(item, 'product.upgradeTwo', upgradeTwo)
       }
-      console.log('item:', item)
     }
     if (renderForThumbnail && item) {
       const itemToAdd = this.getItemWithDetails(

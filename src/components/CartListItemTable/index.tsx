@@ -40,6 +40,7 @@ import {
   ProductColors,
   UpgradeItem
 } from '../../types/common'
+import SelectUpgrade from './UpgradCell'
 
 const Option = Select.Option
 
@@ -552,42 +553,30 @@ class CartListItemTable extends React.Component<Props, State> {
               )}
             </Cell>
             {upgradeOne.enabled && isMobile &&
-              <Cell start={1} end={3} align="column">
-                <UpgradeTitle>
-                  {upgradeOne.name}
-                  <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeOne)} />
-                </UpgradeTitle>
-                <StyledSelect
-                  onChange={(e) => this.handleUpgradeChange(e, index, true)}
-                  showSearch={false}
-                  placeholder={formatMessage(messages.upgradeOne)}
-                  optionFilterProp="children"
-                  value={firstUpgrade ? firstUpgrade.name : undefined}
-                  selectWidth="100%"
-                  allowClear={true}
-                >
-                  {upgradeOneOptions}
-                </StyledSelect>
-              </Cell>
+              <SelectUpgrade
+                {...{ formatMessage }}
+                startColumn={1}
+                endColumn={3}
+                upgrade={upgradeOne}
+                upgradeTitle="upgradeOne"
+                upgradeOptions={upgradeOneOptions}
+                openUpgrade={this.handleOpenUpgrade(upgradeOne)}
+                upgradeChange={(e) => this.handleUpgradeChange(e, index, true)}
+                selectedUpgrade={firstUpgrade}
+              />
             }
             {upgradeTwo.enabled && isMobile &&
-              <Cell start={3} end={5} align="column">
-                <UpgradeTitle>
-                  {upgradeTwo.name}
-                  <QuestionSpan key={index} onClick={this.handleOpenUpgrade(upgradeTwo)} />
-                </UpgradeTitle>
-                <StyledSelect
-                  onChange={(e) => this.handleUpgradeChange(e, index, false)}
-                  showSearch={false}
-                  placeholder={formatMessage(messages.upgradeTwo)}
-                  optionFilterProp="children"
-                  value={secondUpgrade ? secondUpgrade.name : undefined}
-                  selectWidth="100%"
-                  allowClear={true}
-                >
-                  {upgradeTwoOptions}
-                </StyledSelect>
-              </Cell>
+              <SelectUpgrade
+                {...{ formatMessage }}
+                startColumn={3}
+                endColumn={5}
+                upgrade={upgradeTwo}
+                upgradeTitle="upgradeTwo"
+                upgradeOptions={upgradeTwoOptions}
+                openUpgrade={this.handleOpenUpgrade(upgradeTwo)}
+                upgradeChange={(e) => this.handleUpgradeChange(e, index, false)}
+                selectedUpgrade={secondUpgrade}
+              />
             }
           </Row>
         ) : (
