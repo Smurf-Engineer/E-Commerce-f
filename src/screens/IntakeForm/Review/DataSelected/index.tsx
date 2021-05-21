@@ -20,14 +20,16 @@ import {
   Grid,
   PaletteName,
   InspirationName,
-  DocIcon
+  DocIcon,
+  LockerGrid
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../../../utils/utilsFiles'
 import ColorBar from '../../../../components/ColorBar'
 import messages from '../messages'
-import { Message, InspirationType, ImageFile, Product } from '../../../../types/common'
+import { Message, InspirationType, ImageFile, Product, DesignType } from '../../../../types/common'
 import { Sections, CUSTOM_PALETTE_INDEX, InspirationTag } from '../../constants'
 import { DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE } from '../../../../constants'
+import ProductThumbnailStore from '../../../../components/ProductThumbnailStore'
 
 const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
@@ -38,6 +40,7 @@ interface Props extends RouteComponentProps<any> {
   selectedPrimaryColor: string[]
   selectedPaletteIndex: number
   selectedEditColors: string[]
+  lockerDesign: DesignType
   selectedEditPrimaryColor: string[]
   selectedFiles: ImageFile[]
   selectedItems: Product[]
@@ -65,6 +68,11 @@ export class DataSelected extends React.Component<Props, {}> {
     zenscroll.toY(0, 0)
     goToPage(Sections.FILES)
   }
+  goToLocker = () => {
+    const {goToPage } = this.props
+    zenscroll.toY(0, 0)
+    goToPage(Sections.LOCKER)
+  }
   render() {
     const {
       formatMessage,
@@ -78,12 +86,22 @@ export class DataSelected extends React.Component<Props, {}> {
       selectedFiles,
       colorLabels,
       paletteName,
+      lockerDesign,
       selectedItems,
       fromScratch,
       currentCurrency
     } = this.props
     const inspirationItems =
       filter(inspiration, (inspirationItem: InspirationType) => includes(inspirationSelectedItems, inspirationItem.id))
+    const {
+      id: designId,
+      shortId,
+      product: productLocker,
+      name: designName,
+      image: lockerImage,
+      createdAt
+    } = lockerDesign || {}
+    const { id: productId, description: lockerDescription, type: lockerType } = productLocker || {}
     return (
       <>
           {fromScratch ? <Inspiration>
@@ -204,6 +222,38 @@ export class DataSelected extends React.Component<Props, {}> {
                   </Grid>
               </Row>
             </Products>
+            {lockerDesign && designId &&
+              <Products>
+                <EditButton onClick={this.goToLocker}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+                <Row>
+                  <Column>
+                    <StrongText>{formatMessage(messages.locker)}</StrongText>
+                  </Column>
+                </Row>
+                <Row>
+                  <LockerGrid>
+                    <ProductThumbnailStore
+                      {...{ productId }}
+                      type={lockerType}
+                      description={lockerDescription}
+                      product={productLocker}
+                      name={designName}
+                      image={lockerImage}
+                      key={designId}
+                      id={shortId}
+                      withCheckbox={false}
+                      disableSlider={true}
+                      hideCustomButton={true}
+                      hideQuickView={true}
+                      clickDisabled={true}  
+                      date={createdAt}
+                    />
+                  </LockerGrid>
+                </Row>
+              </Products>
+            }
       </>
     )
   }

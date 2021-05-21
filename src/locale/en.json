@@ -1719,6 +1719,7 @@
   "components.Review.payment": "Payment",
   "components.Review.edit": "Edit",
   "components.ReviewProject.edit": "Edit",
+  "components.ReviewProject.designs": "Designs",
   "components.ReviewProject.success": "Item deleted!",
   "components.ReviewProject.name": "Project Name",
   "components.ReviewProject.customerName": "Customer Name",

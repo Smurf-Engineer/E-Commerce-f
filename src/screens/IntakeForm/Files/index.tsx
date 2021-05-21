@@ -151,7 +151,7 @@ export class Files extends React.Component<Props, {}> {
     const handleCloseLocker = () => openUserLocker(false)
     const currentFile = fileIdToRename ? find(selectedFiles, ['id', fileIdToRename]) : ''
     const fileNameToEdit = currentFile ? currentFile.name || currentFile.fileUrl : ''
-    const showUpload = showUploadValue || !fromScratch
+    const showUpload = showUploadValue || (!fromScratch && !fromDesign)
     return (
       <Container>
           <AskButtons>
@@ -159,7 +159,7 @@ export class Files extends React.Component<Props, {}> {
               dangerouslySetInnerHTML={{
                 __html: formatMessage(messages.yesUpload)
               }}
-              selected={showUpload || !fromScratch}
+              selected={showUpload || (!fromScratch && !fromDesign)}
               onClick={this.openUpload}
             />
             {(fromScratch || fromDesign) &&

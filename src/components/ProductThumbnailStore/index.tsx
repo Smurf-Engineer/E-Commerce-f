@@ -20,9 +20,11 @@ interface Props {
   date: string
   type?: string
   image?: string
+  wide?: boolean
   description?: string
   checked: boolean
   disabled: boolean
+  withCheckbox: boolean
   onSelectItem?: (id: number, checked: boolean) => void
 }
 
@@ -42,14 +44,16 @@ class ProductThumbnail extends React.Component<Props, {}> {
       description,
       image,
       date,
+      withCheckbox = true,
+      wide,
       checked,
       disabled
     } = this.props
 
     return (
-      <Container>
+      <Container {...{ wide, withCheckbox }}>
         <Image
-          {...{ image, checked, disabled }}
+          {...{ image, checked, disabled, withCheckbox }}
           onChange={this.handleOnPressSelect}
         />
         <Footer>

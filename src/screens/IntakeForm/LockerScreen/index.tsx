@@ -35,7 +35,7 @@ interface Props {
   currentPage: number
   limit: number
   userId?: string
-  onSelectItem: (id?: string) => void
+  onSelectItem: (id?: string, design?: DesignType) => void
   changePage: (offset: number) => void
 }
 
@@ -50,7 +50,7 @@ export class LockerScreen extends React.PureComponent<Props, {}> {
       }
     } = this.props
     const designId = get(designs[index], 'shortId', '')
-    onSelectItem(designId === selectedItem ? '' : designId)
+    onSelectItem(designId === selectedItem ? '' : designId, designs[index])
   }
   onChangePage = (page: number) => {
     const { changePage } = this.props
@@ -89,6 +89,7 @@ export class LockerScreen extends React.PureComponent<Props, {}> {
                 checked={selectedItem === shortId}
                 disabled={!active}
                 id={index}
+                wide={true}
                 product={product}
                 onSelectItem={this.handleOnItemSelect}
                 {...{ name, image, productId, description, type }}

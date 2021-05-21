@@ -44,6 +44,12 @@ export const Row = styled.div`
   flex-wrap: wrap;
 `
 
+export const LockerGrid = styled.div`
+  max-width: 446px;
+  width: 100%;
+  padding-bottom: 38px;
+`
+
 export const EditButton = styled.div`
   color: ${RED};
   align-self: flex-end;

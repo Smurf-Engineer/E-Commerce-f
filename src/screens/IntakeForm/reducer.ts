@@ -87,6 +87,7 @@ export const initialState = fromJS({
   offset: 0,
   currentPage: 1,
   selectedDesign: '',
+  lockerDesign: null,
   inspirationTags: [],
   inspirationFilters: [],
   projectDescription: null,
@@ -134,7 +135,7 @@ const intakeFormReducer: Reducer<any> = (
         inspirationPage: newPage
       })
     case SET_SELECTED_DESIGN:
-      return state.set('selectedDesign', action.id)
+      return state.merge({ selectedDesign: action.id, lockerDesign: action.design })
     case SET_PAGINATION_DATA: {
       return state.merge({
         offset: action.offset,
@@ -229,7 +230,12 @@ const intakeFormReducer: Reducer<any> = (
         fromDesign: action.fromDesign
       })
     case SET_FROM_SCRATCH:
-      return state.merge({ fromDesign: false, fromScratch: action.fromScratch})
+      return state.merge({
+        fromDesign: false,
+        fromScratch: action.fromScratch,
+        selectedDesign: '',
+        lockerDesign: null,
+      })
     case RESET_COLOR_SELECTION:
       return state.merge({
         openBuild: true,

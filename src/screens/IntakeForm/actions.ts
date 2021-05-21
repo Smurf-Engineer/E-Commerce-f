@@ -1,7 +1,7 @@
 /**
  * ProductCatalog  Actions - Created by cazarez on 27/02/18.
  */
-import { InspirationType, ImageFile, Product } from '../../types/common'
+import { InspirationType, ImageFile, Product, DesignType } from '../../types/common'
 import { Moment } from 'moment'
 import {
   SELECT_ELEMENT,
@@ -66,9 +66,10 @@ export const setPaginationDataAction = (offset: number, page: number) => ({
   page
 })
 
-export const setDesignSelectedAction = (id: string) => ({
+export const setDesignSelectedAction = (id: string, design: DesignType) => ({
   type: SET_SELECTED_DESIGN,
-  id
+  id,
+  design
 })
 
 export const goToPage = (page: number) => ({

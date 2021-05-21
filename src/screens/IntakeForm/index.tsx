@@ -74,7 +74,8 @@ import {
   QueryProps,
   ProDesignPalette,
   IProfileSettings,
-  User
+  User,
+  DesignType
 } from '../../types/common'
 import {
   Sections,
@@ -151,7 +152,8 @@ interface Props extends RouteComponentProps<any> {
   offset: number
   currentPage: number
   selectedDesign: string
-  setDesignSelectedAction: (id: string) => void
+  lockerDesign: DesignType
+  setDesignSelectedAction: (id: string, design: DesignType) => void
   setPaginationDataAction: (offset: number, page: number) => void
   setHighlight: (active: boolean) => void
   addProductsProject: (variable: {}) => Promise<MessagePayload>
@@ -402,6 +404,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       projectDescription,
       projectName,
       phone,
+      selectedDesign,
       estimatedDate,
       sendSms,
       sendEmail,
@@ -436,6 +439,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       teamSize: selectedTeamSize,
       deliveryDate: estimatedDate,
       sendEmail,
+      selectedDesign,
       sendSms,
       files: selectedFiles.map((file) => file.id),
       products: selectedItems.map((item) => item.id),
@@ -461,10 +465,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnPrevious = () => {
-    const { goToPage, currentScreen, fromScratch } = this.props
-    if (currentScreen === Sections.FILES && !fromScratch) {
+    const { goToPage, currentScreen, fromScratch, fromDesign } = this.props
+    if (currentScreen === Sections.PRODUCTS && fromDesign) {
+      return goToPage(Sections.LOCKER)
+    }
+    if (currentScreen === Sections.FILES && (!fromScratch || fromDesign)) {
       return goToPage(currentScreen - 3)
     }
+    if (currentScreen === Sections.LOCKER && fromDesign) {
+      return goToPage(Sections.PATHWAY)
+    } 
     return goToPage(currentScreen - 1)
   }
 
@@ -486,6 +496,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedPaletteIndex,
       selectedColors,
       selectedEditColors,
+      selectedDesign,
+      fromDesign,
       selectedPrimaryColor,
       selectedEditPrimaryColor,
       user,
@@ -504,6 +516,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const previousButtonText = formatMessage(messages.previousButtonText)
     const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
     switch (screen || currentScreen) {
+      case Sections.LOCKER:
+        return {
+          continueDisable: !selectedDesign && fromDesign,
+          continueButtonText,
+          previousButtonText
+        }
       case Sections.PRODUCTS:
         return {
           continueDisable: selectedItems.length < 1 || quantities > 3,
@@ -823,6 +841,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendEmail,
       savingIntake,
       successModal,
+      fromDesign,
+      lockerDesign,
       expandedInspiration,
       expandedInspirationOpen,
       fromScratch,
@@ -1055,6 +1075,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   highlight,
                   renameFileOpen,
                   fileIdToRename,
+                  fromDesign,
                   newFileName,
                   fromScratch,
                   renamingFile,
@@ -1081,6 +1102,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   phone,
                   validLength,
                   highlight,
+                  lockerDesign,
                   inspiration,
                   inspirationSelectedItems,
                   selectedColors,
@@ -1138,6 +1160,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   selectedEditPrimaryColor,
                   selectedFiles,
                   estimatedDate,
+                  lockerDesign,
                   selectedTeamSize,
                   projectName,
                   user,

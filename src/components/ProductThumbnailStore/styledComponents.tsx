@@ -3,15 +3,24 @@
  */
 import styled from 'styled-components'
 
+interface DivProps {
+  wide?: boolean
+  withCheckbox?: boolean
+}
+
 export const Container = styled.div`
   list-style: none;
   display: inline-block;
-  width: calc(100% / 2);
+  width: calc(100% / ${({ wide }: DivProps) => wide ? '4' : '2'});
   margin-bottom: 25px;
   padding: 0px 4px;
   @media (min-width: 320px) and (max-width: 480px) {
-    width: calc(95% / 2);
+    width: ${({ withCheckbox }: DivProps) => withCheckbox ? 'calc(95% / 2)' : '230px'};
     margin-left: 6px;
+    ${({ withCheckbox }: DivProps) => !withCheckbox ? `
+      margin: 0 auto;
+      display: block;
+    ` : ''}
   }
 `
 
