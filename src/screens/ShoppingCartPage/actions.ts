@@ -24,7 +24,8 @@ import {
   SET_STORE_TERMS,
   HIGHLIGHT_FIELDS,
   SET_TOP_SIZE_ITEM_DETAIL_ACTION,
-  SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION
+  SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION,
+  SET_UPGRADE_ITEM_DETAIL_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -87,6 +88,19 @@ export const setGenderItemDetailAction = (
   index,
   detailIndex,
   gender
+})
+
+export const setUpgradeItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  isFirst: boolean,
+  upgrade: ItemDetailType
+): AnyAction => ({
+  type: SET_UPGRADE_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  isFirst,
+  upgrade
 })
 
 export const setColorItemDetailAction = (

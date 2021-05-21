@@ -11,7 +11,10 @@ import {
   GRAY,
   GRAY_SOFT,
   GRAY_DARK,
-  GRAY_ANTDESIGN
+  GRAY_ANTDESIGN,
+  BLUE,
+  WHITE,
+  GRAY_STRONG
 } from '../../theme/colors'
 
 type SelectType = {
@@ -40,15 +43,25 @@ type RowProps = {
   withColor?: boolean
   onlyRead?: boolean
   withTwoPieces?: boolean
+  upgradeOne?: boolean
+  isMobile?: boolean
+  upgradeTwo?: boolean
 }
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo, isMobile }: RowProps) => {
+    let upgrade = 0
+    if (upgradeOne && !isMobile) {
+      upgrade += 1 
+    }
+    if (upgradeTwo && !isMobile) {
+      upgrade += 1
+    }
     if (withColor) {
       return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
     }
-    return !withTwoPieces ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
+    return !withTwoPieces ? `repeat(${4 + upgrade}, 1fr)` : `repeat(${5 + upgrade}, 1fr)`
   }};
   grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '3px')};
 
@@ -59,25 +72,36 @@ export const Row = styled.div`
   padding-top: 8px;
 
   @media (min-width: 426px) and (max-width: 640px) {
-    padding: 0 5px;
-    height: 50px;
+    padding: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '10px 5px' : '0 5px'};
+    height: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '140px' : '50px'};
     grid-gap: 5px;
   }
 
   @media (max-width: 425px) {
-    padding: 0 5px;
-    height: 50px;
+    padding: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '10px 5px' : '0 5px'};
+    height: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
+      (upgradeOne || upgradeTwo) && isMobile ? '140px' : '50px'};
     grid-gap: 3px;
   }
 `
 
 export const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces }: RowProps) => {
+  grid-template-columns: ${({ withColor, onlyRead, withTwoPieces, upgradeOne, upgradeTwo }: RowProps) => {
+    let upgrade = 0
+    if (upgradeOne) {
+      upgrade += 1 
+    }
+    if (upgradeTwo) {
+      upgrade += 1
+    }
     if (withColor) {
       return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
     }
-    return !withTwoPieces ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
+    return !withTwoPieces ? `repeat(${4 + upgrade}, 1fr)` : `repeat(${5 + upgrade}, 1fr)`
   }};
   grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '5px')};
   align-items: center;
@@ -108,12 +132,17 @@ export const Column = styled.td`
 interface CellProps {
   width?: number
   align?: string
+  start?: number
+  end?: number
 }
 export const Cell = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: left;
+  grid-column-start: ${({ start }: CellProps) => start || 'unset'};
+  grid-column-end: ${({ end }: CellProps) => end || 'unset'};
+  flex-flow: ${({ align }: CellProps) => align || 'row'};
   width: ${({ width }: CellProps) => (width ? width : 100)}%;
 `
 
@@ -121,6 +150,8 @@ export const InfoCell = styled.div`
   width: 100%;
   text-align: ${({ align }: CellProps) => (align ? align : 'left')};
   color: ${GRAY_DARK};
+  grid-column-start: ${({ start }: CellProps) => start || 'unset'};
+  grid-column-end: ${({ end }: CellProps) => end || 'unset'};
   font-size: 14px;
 `
 
@@ -152,6 +183,61 @@ export const Price = styled.div`
   width: 58px;
   text-align: ${({ align }: TitleProps) => (align ? align : 'center')};
 `
+
+export const UpgradeTitle = styled.div`
+  color: ${GRAY_STRONG};
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  line-height: 23px;
+  text-align: left;
+  display: flex;
+  width: auto;
+  word-break: break-all;
+`
+
+export const InfoBody = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: -38px;
+`
+
+export const InfoTitle = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+`
+
+export const InfoImage = styled.img`
+  max-width: 886px;
+  margin: 26px 0;
+  display: block;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+export const InfoImageMobile = styled.img`
+  max-width: 886px;
+  margin: 26px 0;
+  width: 100%;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`
+
+export const InfoURL = styled.a`
+  color: ${BLUE};
+`
+
+export const buttonStyle = {
+  background: WHITE,
+  color: GRAY_DARK,
+  borderColor: GRAY_LIGHT,
+  boxShadow: 'none'
+}
 
 export const MobileEmtpytable = styled.div`
   padding: 50px 40px 50px;

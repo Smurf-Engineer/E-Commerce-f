@@ -48,6 +48,7 @@ interface Props {
   onlyRead?: boolean
   country?: string
   weight: number
+  upgrades?: number
   shipAddress?: TaxAddressObj
   shipAddressCountry?: string
   proDesignReview?: number
@@ -77,6 +78,7 @@ const CheckoutSummary = ({
   proDesignReview,
   currencySymbol,
   showDiscount,
+  upgrades = 0,
   couponCode,
   totalWithoutDiscount = 0,
   setCouponCodeAction,
@@ -137,7 +139,8 @@ const CheckoutSummary = ({
     couponCode,
     taxRates,
     country,
-    productsPrices
+    productsPrices,
+    upgrades
   )
 
   const discount =
@@ -150,11 +153,13 @@ const CheckoutSummary = ({
       subtotal / (1 + taxVatTotal) +
       taxVat +
       shippingTotal +
+      upgrades +
       proDesignFee -
       discount
   } else {
     totalSum =
       subtotal +
+      upgrades +
       proDesignFee +
       shippingTotal +
       taxFee +
@@ -205,6 +210,7 @@ const CheckoutSummary = ({
           currencySymbol,
           showDiscount,
           couponCode,
+          upgrades,
           totalWithoutDiscount,
           setCouponCodeAction,
           deleteCouponCodeAction,

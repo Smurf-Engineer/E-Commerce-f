@@ -3,7 +3,7 @@
  */
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Message from 'antd/lib/message'
@@ -23,6 +23,8 @@ import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
 import { Product, CartItemDetail, PriceRange, User } from '../../types/common'
 import find from 'lodash/find'
+import { getProductQuery } from '../../screens/ShoppingCartPage/data'
+import set from 'lodash/set'
 
 const { confirm } = Modal
 
@@ -58,6 +60,7 @@ interface Props {
   withoutTop?: boolean
   itemProdPage?: boolean
   promptReseller?: boolean
+  client: any
   user?: User
   onClick: () => boolean
   myLockerList?: boolean
@@ -104,7 +107,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     return renderView
   }
 
-  checkReseller = () => {
+  checkReseller = async() => {
     const { promptReseller, formatMessage, user } = this.props
     if (promptReseller) {
       const name = user ? user.name : ''
@@ -123,15 +126,15 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         onCancel: () => {
           window.location.replace('/account?option=myLocker')
         },
-        onOk: this.addToCart,
+        onOk: async() => await this.addToCart(),
         content: <InfoBody>{formatMessage(messages.resellerPrompt)}</InfoBody>
       })
     } else {
-      this.addToCart()
+      await this.addToCart()
     }
   }
 
-  addToCart = () => {
+  addToCart = async () => {
     const {
       onClick,
       renderForThumbnail,
@@ -150,8 +153,25 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       teamStoreName,
       formatMessage,
       fixedCart = false,
-      replaceOrder = ''
+      replaceOrder = '',
+      client: { query }
     } = this.props
+    const productId = get(item, 'product.id' , 0)
+    if (productId) {
+      const response = await query({
+        query: getProductQuery,
+        variables: { id: productId },
+        fetchPolicy: 'no-cache'
+      })
+      const upgradeOne = get(response, 'data.product.upgradeOne', {})
+      if (upgradeOne && upgradeOne.enabled) {
+        set(item, 'product.upgradeOne', upgradeOne)
+      }
+      const upgradeTwo = get(response, 'data.product.upgradeTwo', {})
+      if (upgradeTwo && upgradeTwo.enabled) {
+        set(item, 'product.upgradeTwo', upgradeTwo)
+      }
+    }
     if (renderForThumbnail && item) {
       const itemToAdd = this.getItemWithDetails(
         item,
@@ -338,6 +358,7 @@ const mapStateToProps = (state: any) => {
 }
 
 const AddToCartEnhanced = compose(
+  withApollo,
   connect(
     mapStateToProps,
     { getTotalItemsIncart },

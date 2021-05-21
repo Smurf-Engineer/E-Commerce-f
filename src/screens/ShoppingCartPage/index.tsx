@@ -125,6 +125,12 @@ interface Props extends RouteComponentProps<any> {
     detailIndex: number,
     quantity: number
   ) => void
+  setUpgradeItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    isFirst: boolean,
+    upgrade: ItemDetailType
+  ) => void
   setInitialData: (query: any) => void
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
@@ -308,6 +314,15 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const { setGenderItemDetailAction } = this.props
     setGenderItemDetailAction(index, detailIndex, gender)
   }
+  handleSetUpgradeOption = (
+    index: number,
+    detailIndex: number,
+    isFirst: boolean,
+    upgrade: ItemDetailType
+  ) => {
+    const { setUpgradeItemDetailAction } = this.props
+    setUpgradeItemDetailAction(index, detailIndex, isFirst, upgrade)
+  }
   handleSetDetailColor = (
     index: number,
     detailIndex: number,
@@ -419,12 +434,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
     const {
       total,
+      upgradesTotal,
       totalWithoutDiscount,
       nameOfFirstProduct,
       numberOfProducts,
       moreThanOneItem
     } = shoppingCartData
-
     let symbol = '$'
 
     const cartItems = cart || []
@@ -482,6 +497,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailFit={this.handleSetDetailFit}
           setDetailColor={this.handleSetDetailColor}
           setDetailGender={this.handleSetDetailGender}
+          setUpgradeOption={this.handleSetUpgradeOption}
           setDetailSize={this.handleSetDetailSize}
           setTopDetailSize={this.handleSetTopDetailSize}
           setBottomDetailSize={this.handleSetBottomDetailSize}
@@ -529,6 +545,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                   <Ordersummary
                     subtotal={total}
                     currencySymbol={symbol}
+                    upgrades={upgradesTotal}
                     youSaved={totalWithoutDiscount - total}
                     {...{ formatMessage, totalWithoutDiscount, showDiscount }}
                   />
