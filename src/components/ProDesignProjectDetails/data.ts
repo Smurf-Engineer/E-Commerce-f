@@ -14,6 +14,31 @@ export const getProDesignProject = gql`
       deliveryDate: delivery_date
       phone
       notes
+      locker {
+        id
+        code
+        name
+        shared
+        image
+        shortId: short_id
+        createdAt: created_at
+        product {
+          id
+          code
+          active
+          yotpoId: yotpo_id
+          type: name
+          weight
+          onlyProDesign: only_pro_design
+          description: short_description
+          priceRange {
+            quantity
+            price
+            abbreviation
+            shortName: short_name
+          }
+        }
+      }
       inspiration {
         id
         image

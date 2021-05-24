@@ -42,7 +42,9 @@ import {
   PanelDiv,
   TitleDiv,
   ProjectDescriptor,
-  ProjectContainer
+  ProjectContainer,
+  LockerGrid,
+  Designs
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
@@ -60,6 +62,7 @@ import {
 import { InspirationTag } from '../../screens/IntakeForm/constants'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
+import ProductThumbnailStore from '../ProductThumbnailStore'
 
 const { confirm } = Modal
 const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
@@ -151,8 +154,18 @@ export class Review extends React.Component<Props, {}> {
     const files = get(data, 'project.files', [])
     const inspiration = get(data, 'project.inspiration', [])
     const teamSize = get(data, 'project.teamSize', '')
+    const lockerDesign = get(data, 'project.locker', {})
     const deliveryDate = get(data, 'project.deliveryDate', '')
     const accountManager = get(data, 'project.user.accountManager', {})
+    const {
+      id: designId,
+      shortId,
+      product: productLocker,
+      name: designName,
+      image: lockerImage,
+      createdAt: designDate
+    } = lockerDesign || {}
+    const { id: productId, description: lockerDescription, type: lockerType } = productLocker || {}
     let arrayColors = []
     if (colorsList && !colorsList.loading) {
       try {
@@ -350,6 +363,35 @@ export class Review extends React.Component<Props, {}> {
                 }
               </Row>
             </Products>
+            {lockerDesign && designId &&
+              <Designs>
+                <Row>
+                  <Column fullWidth={true}>
+                    <StrongText>{formatMessage(messages.designs)}</StrongText>
+                  </Column>
+                </Row>
+                <Row>
+                  <LockerGrid>
+                    <ProductThumbnailStore
+                      {...{ productId }}
+                      type={lockerType}
+                      description={lockerDescription}
+                      product={productLocker}
+                      name={designName}
+                      image={lockerImage}
+                      key={designId}
+                      id={shortId}
+                      withCheckbox={false}
+                      disableSlider={true}
+                      hideCustomButton={true}
+                      hideQuickView={true}
+                      clickDisabled={true}  
+                      date={designDate}
+                    />
+                  </LockerGrid>
+                </Row>
+              </Designs>
+            }
         </Container> : <SpinContainer><Spin /></SpinContainer>}
       </MainContainer>
     )

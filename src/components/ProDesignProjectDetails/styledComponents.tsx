@@ -157,6 +157,12 @@ export const Notes = styled.div`
   flex-direction: column;
 `
 
+export const LockerGrid = styled.div`
+  max-width: 446px;
+  width: 100%;
+  padding-bottom: 38px;
+`
+
 export const CollapsePanel = styled(Collapse)`
   display: flex;
   justify-content: flex-start;
@@ -283,6 +289,12 @@ export const ImageText = styled.div`
 
 export const Products = styled.div`
   margin: 42px 0;
+  display: flex;
+  flex-direction: column;
+`
+
+export const Designs = styled.div`
+  margin-bottom: 42px;
   display: flex;
   flex-direction: column;
 `

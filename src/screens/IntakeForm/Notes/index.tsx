@@ -25,7 +25,8 @@ import {
   UserType,
   InspirationType,
   ImageFile,
-  Product
+  Product,
+  DesignType
 } from '../../../types/common'
 import { MINIMUM_LENGTH } from './constants'
 
@@ -50,6 +51,7 @@ interface Props extends RouteComponentProps<any> {
   paletteName?: string
   highlight?: boolean
   validLength?: boolean
+  lockerDesign: DesignType
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
@@ -164,6 +166,7 @@ export class Notes extends React.Component<Props, {}> {
       colorLabels,
       paletteName,
       validLength,
+      lockerDesign,
       highlight,
       selectedPaletteIndex,
       selectedEditColors,
@@ -242,6 +245,7 @@ export class Notes extends React.Component<Props, {}> {
                 inspiration,
                 colorLabels,
                 paletteName,
+                lockerDesign,
                 inspirationSelectedItems,
                 selectedColors,
                 selectedPrimaryColor,

@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.IntakeForm.Review.customerName',
     defaultMessage: 'Customer Name'
   },
+  locker: {
+    id: 'screens.IntakeForm.Review.locker',
+    defaultMessage: 'Designs'
+  },
   email: {
     id: 'screens.IntakeForm.Review.email',
     defaultMessage: 'Email'

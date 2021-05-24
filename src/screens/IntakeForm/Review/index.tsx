@@ -32,14 +32,16 @@ import {
   DataRow,
   DataText,
   DataValue,
-  DocIcon
+  DocIcon,
+  LockerGrid
 } from './styledComponents'
 import { getFileNameFromUrl } from '../../../utils/utilsFiles'
 import ColorBar from '../../../components/ColorBar'
 import messages from './messages'
-import { Message, InspirationType, ImageFile, UserType, Product } from '../../../types/common'
+import { Message, InspirationType, ImageFile, UserType, Product, DesignType } from '../../../types/common'
 import { Sections,  CUSTOM_PALETTE_INDEX, InspirationTag } from '../constants'
 import { DATE_FORMAT, DOCX_TYPE, DOC_TYPE, PDF_TYPE, ZIP_TYPE } from '../../../constants'
+import ProductThumbnailStore from '../../../components/ProductThumbnailStore'
 
 const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
@@ -61,6 +63,7 @@ interface Props extends RouteComponentProps<any> {
   paletteName?: string
   colorLabels?: { [name: string]: string }
   selectedTeamSize?: string
+  lockerDesign: DesignType
   estimatedDate?: string
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
@@ -92,6 +95,11 @@ export class Review extends React.Component<Props, {}> {
     zenscroll.toY(0, 0)
     goToPage(Sections.NOTIFICATIONS)
   }
+  goToLocker = () => {
+    const {goToPage } = this.props
+    zenscroll.toY(0, 0)
+    goToPage(Sections.LOCKER)
+  }
   render() {
     const {
       formatMessage,
@@ -108,6 +116,7 @@ export class Review extends React.Component<Props, {}> {
       selectedTeamSize,
       estimatedDate,
       selectedItems,
+      lockerDesign,
       colorLabels,
       paletteName,
       fromScratch,
@@ -122,7 +131,15 @@ export class Review extends React.Component<Props, {}> {
     } catch (e) {
       console.error('Error ', e)
     }
-
+    const {
+      id: designId,
+      shortId,
+      product: productLocker,
+      name: designName,
+      image: lockerImage,
+      createdAt
+    } = lockerDesign || {}
+    const { id: productId, description: lockerDescription, type: lockerType } = productLocker || {}
     return (
       <MainContainer>
         <Container>
@@ -285,6 +302,38 @@ export class Review extends React.Component<Props, {}> {
                   />)})}
               </Row>
             </Products>
+            {lockerDesign && designId &&
+              <Products>
+                <EditButton onClick={this.goToLocker}>
+                  {formatMessage(messages.edit)}
+                </EditButton>
+                <Row>
+                  <Column>
+                    <StrongText>{formatMessage(messages.locker)}</StrongText>
+                  </Column>
+                </Row>
+                <Row>
+                  <LockerGrid>
+                    <ProductThumbnailStore
+                      {...{ productId }}
+                      type={lockerType}
+                      description={lockerDescription}
+                      product={productLocker}
+                      name={designName}
+                      image={lockerImage}
+                      key={designId}
+                      id={shortId}
+                      withCheckbox={false}
+                      disableSlider={true}
+                      hideCustomButton={true}
+                      hideQuickView={true}
+                      clickDisabled={true}  
+                      date={createdAt}
+                    />
+                  </LockerGrid>
+                </Row>
+              </Products>
+            }
         </Container>
       </MainContainer>
     )

@@ -1,7 +1,7 @@
 /**
  * ProductCatalog  Actions - Created by cazarez on 27/02/18.
  */
-import { InspirationType, ImageFile, Product } from '../../types/common'
+import { InspirationType, ImageFile, Product, DesignType } from '../../types/common'
 import { Moment } from 'moment'
 import {
   SELECT_ELEMENT,
@@ -40,7 +40,10 @@ import {
   CHANGE_LOCAL_NAME,
   SET_FILE_TERMS,
   SET_OPEN_BUILD,
-  SET_HIGHLIGHT
+  SET_HIGHLIGHT,
+  SET_FROM_DESIGN,
+  SET_PAGINATION_DATA,
+  SET_SELECTED_DESIGN
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -55,6 +58,18 @@ export const deselectElementAction = (elementId: number | string, listName: stri
   elementId,
   listName,
   index
+})
+
+export const setPaginationDataAction = (offset: number, page: number) => ({
+  type: SET_PAGINATION_DATA,
+  offset,
+  page
+})
+
+export const setDesignSelectedAction = (id: string, design: DesignType) => ({
+  type: SET_SELECTED_DESIGN,
+  id,
+  design
 })
 
 export const goToPage = (page: number) => ({
@@ -182,6 +197,11 @@ export const onCloseInspirationAction = () => ({
 export const setFromScratchAction = (fromScratch: boolean) => ({
   type: SET_FROM_SCRATCH,
   fromScratch
+})
+
+export const setFromDesignAction = (fromDesign: boolean) => ({
+  type: SET_FROM_DESIGN,
+  fromDesign
 })
 
 export const resetColorSelectionAction = () => ({

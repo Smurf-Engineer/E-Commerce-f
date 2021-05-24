@@ -41,13 +41,16 @@ import {
   ON_SET_RENAMING,
   CHANGE_LOCAL_NAME,
   SET_FILE_TERMS,
+  SET_FROM_DESIGN,
   Sections,
   SET_OPEN_BUILD,
-  SET_HIGHLIGHT
+  SET_HIGHLIGHT,
+  SET_PAGINATION_DATA,
+  SET_SELECTED_DESIGN
 } from './constants'
 export const initialState = fromJS({
   selectedItems: [],
-  currentScreen: Sections.PRODUCTS,
+  currentScreen: Sections.PATHWAY,
   inspirationPage: -1,
   inspirationSkip: 0,
   inspirationTotal: 0,
@@ -79,6 +82,12 @@ export const initialState = fromJS({
   expandedInspiration: null,
   expandedInspirationOpen: false,
   fromScratch: true,
+  fromDesign: false,
+  limit: 12,
+  offset: 0,
+  currentPage: 1,
+  selectedDesign: '',
+  lockerDesign: null,
   inspirationTags: [],
   inspirationFilters: [],
   projectDescription: null,
@@ -125,6 +134,14 @@ const intakeFormReducer: Reducer<any> = (
         inspirationSkip:  skip,
         inspirationPage: newPage
       })
+    case SET_SELECTED_DESIGN:
+      return state.merge({ selectedDesign: action.id, lockerDesign: action.design })
+    case SET_PAGINATION_DATA: {
+      return state.merge({
+        offset: action.offset,
+        currentPage: action.page
+      })
+    }
     case SET_INSPIRATION_DATA:
       const { data, fullCount, reset } = action
       const items = state.get('inspiration')
@@ -207,8 +224,18 @@ const intakeFormReducer: Reducer<any> = (
       return state.merge({
         expandedInspirationOpen: false
       })
+    case SET_FROM_DESIGN:
+      return state.merge({
+        fromScratch: false,
+        fromDesign: action.fromDesign
+      })
     case SET_FROM_SCRATCH:
-      return state.set('fromScratch', action.fromScratch)
+      return state.merge({
+        fromDesign: false,
+        fromScratch: action.fromScratch,
+        selectedDesign: '',
+        lockerDesign: null,
+      })
     case RESET_COLOR_SELECTION:
       return state.merge({
         openBuild: true,

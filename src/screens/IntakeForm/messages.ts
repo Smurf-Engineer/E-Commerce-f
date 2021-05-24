@@ -13,6 +13,15 @@ export default defineMessages({
     id: 'screens.IntakeForm.addProduct',
     defaultMessage: 'Select a Product to Add'
   },
+  chooseDesigns: {
+    id: 'screens.IntakeForm.chooseDesigns',
+    defaultMessage: 'My Locker'
+  },
+  designsDescription: {
+    id: 'screens.IntakeForm.designsDescription',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Select the Design to have matching items created.`
+  },
   productsDescription: {
     id: 'screens.IntakeForm.productsDescription',
     // tslint:disable-next-line: max-line-length

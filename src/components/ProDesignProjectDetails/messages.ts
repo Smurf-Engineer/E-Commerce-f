@@ -42,6 +42,10 @@ export default defineMessages({
     id: 'components.ReviewProject.email',
     defaultMessage: 'Email'
   },
+  designs: {
+    id: 'components.ReviewProject.designs',
+    defaultMessage: 'Designs'
+  },
   success: {
     id: 'components.ReviewProject.success',
     defaultMessage: 'Item deleted!'

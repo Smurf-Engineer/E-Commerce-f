@@ -38,7 +38,9 @@ export const DraggerContainer = styled.div`
 
 export const DraggerBottom = styled.div`
   padding: 8px;
-
+  .ant-upload {
+    width: 100% !important;
+  }
   .ant-upload.ant-upload-drag {
     background: ${WHITE};
     padding: 8px 0;

@@ -38,6 +38,9 @@ export const ON_RENAME_FILE = `${namespace}/ON_RENAME_FILE`
 export const ON_SET_RENAMING = `${namespace}/ON_SET_RENAMING`
 export const CHANGE_LOCAL_NAME = `${namespace}/CHANGE_LOCAL_NAME`
 export const SET_FILE_TERMS = `${namespace}/SET_FILE_TERMS`
+export const SET_FROM_DESIGN = `${namespace}/SET_FROM_DESIGN`
+export const SET_PAGINATION_DATA = `${namespace}/SET_PAGINATION_DATA`
+export const SET_SELECTED_DESIGN = `${namespace}/SET_SELECTED_DESIGN`
 export const SET_OPEN_BUILD = `${namespace}/SET_OPEN_BUILD`
 export const SET_HIGHLIGHT = `${namespace}/SET_HIGHLIGHT`
 
@@ -46,8 +49,9 @@ export const GRAPHIC = 'graphic'
 export const PHOTO = 'photo'
 
 export enum Sections {
-  PRODUCTS = -2,
-  PATHWAY = -1,
+  LOCKER = -3,
+  PATHWAY = -2,
+  PRODUCTS = -1,
   INSPIRATION = 0,
   COLORS = 1,
   FILES = 2,
@@ -69,10 +73,10 @@ export const SELECTED_ITEMS = 'selectedItems'
 export const INSPIRATION_SELECTEED_ITEMS = 'inspirationSelectedItems'
 
 export const titleTexts = {
-  [Sections.PRODUCTS]:
+  [Sections.LOCKER]:
     {
-      title: 'chooseProducts',
-      body: 'productsDescription',
+      title: 'chooseDesigns',
+      body: 'designsDescription',
       bodyWithTip: '',
       action: false,
       tipTitle: '',
@@ -83,6 +87,16 @@ export const titleTexts = {
     {
       title: 'designPathway',
       body: 'designPathwayBody',
+      bodyWithTip: '',
+      action: false,
+      tipTitle: '',
+      tipBody: '',
+      tipAccept: ''
+    },
+  [Sections.PRODUCTS]:
+    {
+      title: 'chooseProducts',
+      body: 'productsDescription',
       bodyWithTip: '',
       action: false,
       tipTitle: '',
