@@ -157,7 +157,7 @@ export class Files extends React.Component<Props, {}> {
           <AskButtons>
             <AskButton
               dangerouslySetInnerHTML={{
-                __html: formatMessage(messages.yesUpload)
+                __html: formatMessage(messages[(!fromScratch && !fromDesign) ? 'templateUpload' : 'yesUpload'])
               }}
               selected={showUpload || (!fromScratch && !fromDesign)}
               onClick={this.openUpload}

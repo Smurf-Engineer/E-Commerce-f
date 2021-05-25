@@ -19,7 +19,7 @@ export default defineMessages({
   },
   locker: {
     id: 'screens.IntakeForm.Review.locker',
-    defaultMessage: 'Designs'
+    defaultMessage: 'Base Locker Design'
   },
   email: {
     id: 'screens.IntakeForm.Review.email',

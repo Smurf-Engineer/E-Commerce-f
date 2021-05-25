@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'components.IntakeForm.Files.edit',
     defaultMessage: `Rename`
   },
+  templateUpload: {
+    id: 'components.IntakeForm.Files.templateUpload',
+    defaultMessage: `<strong>Template</strong> • Upload`
+  },
   yesUpload: {
     id: 'components.IntakeForm.Files.yesUpload',
     defaultMessage: `<strong>YES</strong> • Upload`

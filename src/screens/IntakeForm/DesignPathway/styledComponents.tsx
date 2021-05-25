@@ -9,14 +9,17 @@ export const Container = styled.div`
 `
 
 export const Title = styled.div`
-  margin-bottom: 25px;
   color: ${GRAY_DARK};
-  font-size: 20px;
+  font-size: 14px;
   font-weight: bold;
-  line-height: 27px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  margin-bottom: 12px;
+`
+
+export const TextDiv = styled.div`
+  height: 118px;
+  margin: 12px;
 `
 
 export const Card = styled.div`

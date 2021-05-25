@@ -127,6 +127,7 @@ export const titleTexts = {
     {
       title: 'fileUploadTitle',
       body: 'fileUploadBody',
+      secondaryBody: 'fileUploadSecondary',
       bodyWithTip: 'fileUploadTips',
       action: true,
       tipTitle: 'fileUploadTipTitle',

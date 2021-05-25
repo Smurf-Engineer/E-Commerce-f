@@ -44,7 +44,7 @@ export default defineMessages({
   },
   designs: {
     id: 'components.ReviewProject.designs',
-    defaultMessage: 'Designs'
+    defaultMessage: 'Base Locker Design'
   },
   success: {
     id: 'components.ReviewProject.success',

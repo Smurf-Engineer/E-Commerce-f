@@ -9,7 +9,9 @@ import {
   Card,
   CardTitle,
   Button,
-  Text
+  Text,
+  Title,
+  TextDiv
 } from './styledComponents'
 import FromScratch from '../../../assets/from_scratch.svg'
 import FromDesignImage from '../../../assets/locker_view.svg'
@@ -34,7 +36,10 @@ const MobileMenu = ({ formatMessage, loggedIn, fromDesign, fromScratch, existing
           <CardTitle>
             <img src={FromScratch} />
           </CardTitle>
-          <Text>{formatMessage(messages.fromScratch)}</Text>
+          <TextDiv>
+            <Title>{formatMessage(messages.getInspired)}</Title>
+            <Text>{formatMessage(messages.fromScratch)}</Text>
+          </TextDiv>
           <Button>
             {formatMessage(messages.select)}
           </Button>
@@ -43,7 +48,10 @@ const MobileMenu = ({ formatMessage, loggedIn, fromDesign, fromScratch, existing
           <CardTitle>
             <img src={FromDesignImage} />
           </CardTitle>
-          <Text>{formatMessage(messages.fromDesign)}</Text>
+          <TextDiv>
+            <Title>{formatMessage(messages.addMatching)}</Title>
+            <Text>{formatMessage(messages.fromDesign)}</Text>
+          </TextDiv>
           <Button>
             {formatMessage(messages[loggedIn ? 'select' : 'login'])}
           </Button>
@@ -52,7 +60,10 @@ const MobileMenu = ({ formatMessage, loggedIn, fromDesign, fromScratch, existing
           <CardTitle>
             <img src={ExistingArtwork} />
           </CardTitle>
-          <Text>{formatMessage(messages.existingArtowrk)}</Text>
+          <TextDiv>
+            <Title>{formatMessage(messages.artTemplate)}</Title>
+            <Text>{formatMessage(messages.existingArtowrk)}</Text>
+          </TextDiv>
           <Button>
             {formatMessage(messages.select)}
           </Button>

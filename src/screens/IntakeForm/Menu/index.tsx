@@ -33,6 +33,9 @@ const Menu = ({ validations, savingIntake = false, onContinue, onPrevious, showM
     continueButtonText = '',
     previousButtonText = ''
   } = validations
+  const continueAction = () => {
+    onContinue()
+  }
   return (
     <MenuContainer>
       <GrayButtonWrapper
@@ -53,7 +56,7 @@ const Menu = ({ validations, savingIntake = false, onContinue, onPrevious, showM
         <StyledButton
           type="primary"
           loading={savingIntake}
-          onClick={!continueDisable  ? onContinue : showMissingFields}
+          onClick={!continueDisable  ? continueAction : showMissingFields}
         >
           {continueButtonText}
         </StyledButton>

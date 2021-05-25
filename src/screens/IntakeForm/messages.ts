@@ -132,6 +132,11 @@ export default defineMessages({
     id: 'screens.IntakeForm.fileUploadBody',
     defaultMessage: 'Do you have any company or sponsor logos or art files you want to include in your design?'
   },
+  fileUploadSecondary: {
+    id: 'screens.IntakeForm.fileUploadSecondary',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Upload your completed design template to be used by our Pro Design team to create and render the design on our 3D models.'
+  },
   fileUploadTips: {
     id: 'screens.IntakeForm.fileUploadTips',
     defaultMessage: 'Important tips about art files.'
