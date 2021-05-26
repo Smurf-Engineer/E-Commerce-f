@@ -160,7 +160,6 @@ export const Notes = styled.div`
 export const LockerGrid = styled.div`
   max-width: 446px;
   width: 100%;
-  padding-bottom: 38px;
 `
 
 export const CollapsePanel = styled(Collapse)`
@@ -294,7 +293,7 @@ export const Products = styled.div`
 `
 
 export const Designs = styled.div`
-  margin-bottom: 42px;
+  margin-top: 42px;
   display: flex;
   flex-direction: column;
 `

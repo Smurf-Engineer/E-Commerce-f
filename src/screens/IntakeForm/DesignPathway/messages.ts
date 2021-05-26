@@ -5,15 +5,27 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
+  getInspired: {
+    id: 'screens.DesignPathway.getInspired',
+    defaultMessage: `Get Inspired!`
+  },
+  addMatching: {
+    id: 'screens.DesignPathway.addMatching',
+    defaultMessage: `Add matching items`
+  },
+  artTemplate: {
+    id: 'screens.DesignPathway.artTemplate',
+    defaultMessage: `Art Template ready!`
+  },
   fromScratch: {
     id: 'screens.DesignPathway.fromScratch',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `You have an idea of what you want but are looking for some additional inspiration and creative support to bring them to life.`
+    defaultMessage: `You have ideas of what you want but are looking for some additional inspiration and creative support to bring them to life.`
   },
   existingArtowrk: {
     id: 'screens.DesignPathway.existingArtowrk',
     // tslint:disable-next-line: max-line-length
-    defaultMessage: `You already have your art completed on a JAKROO or other supplier template and only need to upload and provide instructions.`
+    defaultMessage: `You already have 2D art completed on a JAKROO or other supplier template and only need to upload and provide instructions.`
   },
   fromDesign: {
     id: 'screens.DesignPathway.fromDesign',

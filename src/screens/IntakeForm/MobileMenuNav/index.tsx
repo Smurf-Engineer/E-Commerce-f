@@ -80,6 +80,9 @@ const MobileMenuNav = ({
       )
     }
   })
+  const continueAction = () => {
+    onContinue()
+  }
   const menu = (
     <StyledMenu>
       {tabs}
@@ -104,7 +107,7 @@ const MobileMenuNav = ({
       </StyledDropdown> : null}
       {!savingIntake ? <Continue
         text={continueButtonText}
-        onClick={!continueDisable  ? onContinue : showMissingFields}
+        onClick={!continueDisable  ? continueAction : showMissingFields}
         disabled={continueDisable}
         show={savingIntake || showContinueButton} /> :
       <Spin />}

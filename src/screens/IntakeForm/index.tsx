@@ -331,13 +331,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     }
   }
 
-  handleOnContinue = async (fromDesign?: boolean) => {
+  handleOnContinue = async (designMode?: boolean) => {
     const {
       goToPage,
       location: { search },
       currentScreen,
       selectedItems,
       user,
+      fromDesign: fromLocker,
       fromScratch,
       history,
       intl: { formatMessage } 
@@ -346,6 +347,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const queryParams = queryString.parse(search)
     const { id: projectId, admUser } = queryParams || {}
     const productId = get(selectedItems, '[0].id', '')
+    const fromDesign = designMode || fromLocker
     if (!!admUser && !!projectId) {
       return confirm({
         icon: ' ',
@@ -465,7 +467,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnPrevious = () => {
-    const { goToPage, currentScreen, fromScratch, fromDesign } = this.props
+    const { goToPage, currentScreen, fromScratch, fromDesign, setFromDesignAction } = this.props
     if (currentScreen === Sections.PRODUCTS && fromDesign) {
       return goToPage(Sections.LOCKER)
     }
@@ -473,6 +475,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       return goToPage(currentScreen - 3)
     }
     if (currentScreen === Sections.LOCKER && fromDesign) {
+      setFromDesignAction(false)
       return goToPage(Sections.PATHWAY)
     } 
     return goToPage(currentScreen - 1)
@@ -909,7 +912,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     }, {})
     const validations = this.getNavButtonsValidation()
     const currentTitleHasAction = titleTexts[currentScreen].action
-    const currentSubtitle = titleTexts[currentScreen].body
+    let currentSubtitle = titleTexts[currentScreen].body
+    if (currentScreen === Sections.FILES && (!fromDesign && !fromScratch)) {
+      currentSubtitle = titleTexts[currentScreen].secondaryBody
+    }
     const currentSubtitleTips = titleTexts[currentScreen].bodyWithTip
     const currentTitle = !!projectId && !admUser ? 'addProduct' : titleTexts[currentScreen].title
     const showTopNav = currentTitle.length || currentSubtitle.length || currentSubtitleTips.length

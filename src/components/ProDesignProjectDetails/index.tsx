@@ -297,6 +297,35 @@ export class Review extends React.Component<Props, {}> {
                     </Images>
                   </Row>
                 </Files>
+                {lockerDesign && designId &&
+                  <Designs>
+                    <Row>
+                      <Column fullWidth={true}>
+                        <StrongText>{formatMessage(messages.designs)}</StrongText>
+                      </Column>
+                    </Row>
+                    <Row>
+                      <LockerGrid>
+                        <ProductThumbnailStore
+                          {...{ productId }}
+                          type={lockerType}
+                          description={lockerDescription}
+                          product={productLocker}
+                          name={designName}
+                          image={lockerImage}
+                          key={designId}
+                          id={shortId}
+                          withCheckbox={false}
+                          disableSlider={true}
+                          hideCustomButton={true}
+                          hideQuickView={true}
+                          clickDisabled={true}  
+                          date={designDate}
+                        />
+                      </LockerGrid>
+                    </Row>
+                  </Designs>
+                }
               </PanelDiv>
             </CollapsePanel>
             <Products>
@@ -363,35 +392,6 @@ export class Review extends React.Component<Props, {}> {
                 }
               </Row>
             </Products>
-            {lockerDesign && designId &&
-              <Designs>
-                <Row>
-                  <Column fullWidth={true}>
-                    <StrongText>{formatMessage(messages.designs)}</StrongText>
-                  </Column>
-                </Row>
-                <Row>
-                  <LockerGrid>
-                    <ProductThumbnailStore
-                      {...{ productId }}
-                      type={lockerType}
-                      description={lockerDescription}
-                      product={productLocker}
-                      name={designName}
-                      image={lockerImage}
-                      key={designId}
-                      id={shortId}
-                      withCheckbox={false}
-                      disableSlider={true}
-                      hideCustomButton={true}
-                      hideQuickView={true}
-                      clickDisabled={true}  
-                      date={designDate}
-                    />
-                  </LockerGrid>
-                </Row>
-              </Designs>
-            }
         </Container> : <SpinContainer><Spin /></SpinContainer>}
       </MainContainer>
     )
