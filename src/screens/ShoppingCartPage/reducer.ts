@@ -26,7 +26,8 @@ import {
   HIGHLIGHT_FIELDS,
   SET_TOP_SIZE_ITEM_DETAIL_ACTION,
   SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION,
-  SET_UPGRADE_ITEM_DETAIL_ACTION
+  SET_UPGRADE_ITEM_DETAIL_ACTION,
+  SET_VARIABLE_VALUE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -87,7 +88,14 @@ const shoppingCartPageReducer: Reducer<any> = (
           return updateItem
         }
       )
-
+    case SET_VARIABLE_VALUE:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set(action.variable, action.value)
+          return updateItem
+        }
+      )
     case SET_GENDER_ITEM_DETAIL_ACTION:
       return state.updateIn(
         ['cart', action.index, 'itemDetails', action.detailIndex],

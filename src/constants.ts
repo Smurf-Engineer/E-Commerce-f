@@ -22,6 +22,7 @@ export const REGULAR_CANVAS = 1024
 export const HIGH_RESOLUTION_CANVAS = 2048
 export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
+export const VARIABLE_PRICE = 10.00
 export const AMBIENT_LIGHT_INTENSITY = 0.2
 export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
 export const ILLUSTRATOR_PIXELS_PER_CM = 28.346

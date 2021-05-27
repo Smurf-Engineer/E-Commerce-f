@@ -25,7 +25,8 @@ import {
   HIGHLIGHT_FIELDS,
   SET_TOP_SIZE_ITEM_DETAIL_ACTION,
   SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION,
-  SET_UPGRADE_ITEM_DETAIL_ACTION
+  SET_UPGRADE_ITEM_DETAIL_ACTION,
+  SET_VARIABLE_VALUE
 } from './constants'
 import {
   AnyAction,
@@ -88,6 +89,19 @@ export const setGenderItemDetailAction = (
   index,
   detailIndex,
   gender
+})
+
+export const setVariableValueAction = (
+  index: number,
+  detailIndex: number,
+  variable: string,
+  value: string
+): AnyAction => ({
+  type: SET_VARIABLE_VALUE,
+  index,
+  detailIndex,
+  variable,
+  value
 })
 
 export const setUpgradeItemDetailAction = (

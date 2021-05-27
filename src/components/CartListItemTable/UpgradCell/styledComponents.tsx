@@ -38,6 +38,9 @@ export const UpgradeTitle = styled.div`
   display: flex;
   width: auto;
   word-break: break-all;
+  @media (max-width: 640px) {
+    margin-top: 12px;
+  }
 `
 
 export const QuestionSpan = styled.span`

@@ -47,6 +47,7 @@ interface Props {
   couponCode?: CouponCode
   admin?: boolean
   upgrades?: number
+  variables?: number
   formatMessage: (messageDescriptor: Message, params?: PercentParams) => string
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
@@ -68,6 +69,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       formatMessage,
       showCouponInput,
       onlyRead,
+      variables = 0,
       showDiscount = true,
       proDesignReview = 0,
       currencySymbol,
@@ -93,7 +95,7 @@ export class OrderSummary extends React.Component<Props, {}> {
 
     const savedPercent = Math.round((saved * 100) / totalWithoutDiscount)
     const netTotal =
-      totalWithDiscount || discount ? totalWithDiscount : subtotal + extraFee + upgrades
+      totalWithDiscount || discount ? totalWithDiscount : subtotal + extraFee + upgrades + variables
     const amountsDivider =
       !!proDesignReview ||
       !!taxFee ||
@@ -127,6 +129,10 @@ export class OrderSummary extends React.Component<Props, {}> {
         <OrderItem hide={!upgrades}>
           <FormattedMessage {...messages.upgrades} />
           <div>{`${symbol} ${upgrades.toFixed(2)}`}</div>
+        </OrderItem>
+        <OrderItem hide={!variables}>
+          <FormattedMessage {...messages.variables} />
+          <div>{`${symbol} ${variables.toFixed(2)}`}</div>
         </OrderItem>
         <CalculationsWrapper>
           <Divider withMargin={amountsDivider} />

@@ -71,6 +71,12 @@ interface Props {
     detailIndex: number,
     fit: ItemDetailType
   ) => void
+  setVariableValue?: (
+    index: number,
+    detailIndex: number,
+    variable: string,
+    value: string
+  ) => void
   setDetailGender?: (
     index: number,
     detailIndex: number,
@@ -267,6 +273,7 @@ export class CartListItem extends React.Component<Props, {}> {
       setDetailQuantity = () => { },
       setDetailFit = () => { },
       setDetailGender = () => { },
+      setVariableValue = () => { },
       setUpgradeOption = () => { },
       setDetailColor = () => { },
       setDetailSize = () => { },
@@ -342,6 +349,7 @@ export class CartListItem extends React.Component<Props, {}> {
           setDetailQuantity,
           setDetailFit,
           setDetailGender,
+          setVariableValue,
           setDetailSize,
           setUpgradeOption,
           setTopDetailSize,

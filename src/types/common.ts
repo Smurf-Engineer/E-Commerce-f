@@ -788,6 +788,8 @@ export type CartItemDetail = {
   label?: string
   quantity: number
   colorImage?: string
+  variableOneValue?: string
+  variableTwoValue?: string
   topSize?: ItemDetailType
   bottomSize?: ItemDetailType
   firstUpgrade?: ItemDetailType

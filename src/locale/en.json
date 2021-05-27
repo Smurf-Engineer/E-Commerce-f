@@ -1649,6 +1649,7 @@
   "screens.ShoppingCartPage.checkout": "Checkout",
   "screens.ShoppingCartPage.subtotal": "Subtotal",
   "screens.ShoppingCartPage.taxes": "Taxes",
+  "screens.ShoppingCartPage.variables": "Variable Data",
   "screens.ShoppingCartPage.shipping": "Shipping",
   "screens.ShoppingCartPage.youSaved": "You Saved {percent}%",
   "screens.ShoppingCartPage.total": "Total",

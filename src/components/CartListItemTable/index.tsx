@@ -28,7 +28,9 @@ import {
   InfoImage,
   InfoURL,
   InfoImageMobile,
-  UpgradeTitle
+  UpgradeTitle,
+  StyledInput,
+  VariableTitle
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import {
@@ -43,7 +45,7 @@ import {
 import SelectUpgrade from './UpgradCell'
 
 const Option = Select.Option
-
+const EMOJI_REGEX = /[\uD800-\uDBFF]|[\u2702-\u27B0]|[\uF680-\uF6C0]|[\u24C2-\uF251]|[\,*/]/g
 const MAX_INDIVIDUAL_ITEMS = 249
 
 interface Props {
@@ -73,6 +75,12 @@ interface Props {
     index: number,
     detailIndex: number,
     gender: ItemDetailType
+  ) => void
+  setVariableValue: (
+    index: number,
+    detailIndex: number,
+    variable: string,
+    value: string
   ) => void
   setUpgradeOption: (
     index: number,
@@ -268,6 +276,15 @@ class CartListItemTable extends React.Component<Props, State> {
     openFitInfoAction(true, itemIndex)
   }
 
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { itemIndex, setVariableValue } = this.props
+    const {
+      currentTarget: { id, value, name }
+    } = evt
+    const newText = value ? value.replace(EMOJI_REGEX, '') : ''
+    setVariableValue(itemIndex, id, name, newText)
+  }
+
   handleOpenUpgrade = (upgrade: UpgradeItem) => () => {
     const { name, modalImage, mobileImage, url } = upgrade || {}
     const { formatMessage } = this.props
@@ -309,6 +326,10 @@ class CartListItemTable extends React.Component<Props, State> {
     const withTwoPieces = get(cartItem, 'product.twoPieces', false)
     const upgradeOne = get(cartItem, 'product.upgradeOne', {})
     const upgradeTwo = get(cartItem, 'product.upgradeTwo', {})
+    const variableOne = get(cartItem, 'product.variableOne', {})
+    const variableOneLength = get(cartItem, 'product.oneLength', 0)
+    const variableTwo = get(cartItem, 'product.variableTwo', {})
+    const variableTwoLength = get(cartItem, 'product.twoLength', 0)
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
       if (index === 1 && !withColorColumn || index === 2 && withTwoPieces ||
@@ -402,6 +423,8 @@ class CartListItemTable extends React.Component<Props, State> {
           quantity,
           color,
           colorImage,
+          variableOneValue,
+          variableTwoValue,
           firstUpgrade,
           secondUpgrade
         } = item
@@ -577,6 +600,40 @@ class CartListItemTable extends React.Component<Props, State> {
                 upgradeChange={(e) => this.handleUpgradeChange(e, index, false)}
                 selectedUpgrade={secondUpgrade}
               />
+            }
+            {variableOne &&
+              <Cell start={1} end={(upgradeOne.enabled || isMobile) ? 3 : 2} align="column">
+                <VariableTitle>
+                  {variableOne}
+                  <QuestionSpan onClick={() => {}} />
+                </VariableTitle>
+                <StyledInput
+                  id={index}
+                  name="variableOneValue"
+                  onChange={this.handleInputChange}
+                  maxLength={variableOneLength}
+                  value={variableOneValue}
+                />
+              </Cell>
+            }
+            {variableTwo &&
+              <Cell
+                start={(upgradeOne.enabled || isMobile) ? 3 : 2}
+                end={(upgradeOne.enabled || isMobile) ? 5 : 3}
+                align="column"
+              >
+                <VariableTitle>
+                  {variableTwo}
+                  <QuestionSpan onClick={() => {}} />
+                </VariableTitle>
+                <StyledInput
+                  id={index}
+                  name="variableTwoValue"
+                  onChange={this.handleInputChange}
+                  maxLength={variableTwoLength}
+                  value={variableTwoValue}
+                />
+              </Cell>
             }
           </Row>
         ) : (

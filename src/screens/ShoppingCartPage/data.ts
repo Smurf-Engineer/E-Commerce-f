@@ -57,3 +57,15 @@ export const getProductQuery = gql`
     }
   }
 `
+
+export const getDesignVariables = gql`
+  query GetDesignVariables($id: String!) {
+    designVariables: getDesignVariables(id: $id) {
+      id
+      variableOne: variable_one
+      variableTwo: variable_two
+      oneLength: variable_one_length
+      twoLength: variable_two_length
+    }
+  }
+`
