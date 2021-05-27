@@ -209,6 +209,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     richTextEditorReady: false
   }
   private intakeRef: any
+  componentWillMount() {
+    const { location: { search }, goToPage } = this.props
+    const queryParams = queryString.parse(search)
+    const { id: projectId } = queryParams || {}
+    if (!!projectId) {
+      goToPage(Sections.PRODUCTS)
+    }
+  }
   componentDidMount() {
     const { location, selectedItems, selectProductAction } = this.props
     if (location.state && !selectedItems.length) {
@@ -506,6 +514,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       user,
       validLength,
       projectName,
+      location: { search },
       selectedTeamSize,
       estimatedDate,
       projectDescription,
@@ -516,6 +525,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const continueButtonText = currentScreen ===
       Sections.REVIEW ? formatMessage(messages.submitButtonText) :
         formatMessage(messages.continueButtonText)
+    const queryParams = queryString.parse(search)
+    const { id: projectId } = queryParams || {}
     const previousButtonText = formatMessage(messages.previousButtonText)
     const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
     switch (screen || currentScreen) {
@@ -528,7 +539,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       case Sections.PRODUCTS:
         return {
           continueDisable: selectedItems.length < 1 || quantities > 3,
-          showPreviousButton: true,
+          showPreviousButton: !projectId,
           continueButtonText,
           previousButtonText
         }
