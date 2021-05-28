@@ -25,7 +25,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE, PAYMENT_ISSUE } from '../../constants'
+import { PURCHASE, PAYMENT_ISSUE, VARIABLE_PRICE } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -171,6 +171,7 @@ class OrderData extends React.Component<Props, {}> {
         )
     let subtotal = 0
     let upgrades = 0
+    let variables = 0
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderList = cart
@@ -189,6 +190,18 @@ class OrderData extends React.Component<Props, {}> {
           sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
         // tslint:disable-next-line: align
         , 0)
+        const subVariables = itemDetails.reduce((sum, { quantity, variableOneValue, variableTwoValue }) => {
+          if (variableOneValue && variableOneValue.trim()) {
+            sum += (VARIABLE_PRICE * quantity)
+          }
+          if (variableTwoValue && variableTwoValue.trim()) {
+            sum += (VARIABLE_PRICE * quantity)
+          }
+          return sum
+        }
+        // tslint:disable-next-line: align
+        , 0)
+        variables += subVariables || 0
         upgrades += subUpgrade || 0
         subtotal += productTotal || 0
 
@@ -332,6 +345,7 @@ class OrderData extends React.Component<Props, {}> {
                 taxPst,
                 upgrades,
                 taxVat,
+                variables,
                 taxFee,
                 showDiscount,
                 discount,
