@@ -62,6 +62,7 @@ export const Container = styled.div`
   @media (max-width: 1023px) {
     height: calc(100vh - 70px);
     position: relative;
+    z-index: 11;
   }
   .flexible-modal-mask {
     z-index: 10;
@@ -89,7 +90,7 @@ export const CollapseWrapper = styled.div`
     display: block;
     position: fixed;
     left: 0;
-    top: 72px;
+    top: 0px;
     z-index: 1;
     width: 100vw;
     height: calc(100vh - 163px);

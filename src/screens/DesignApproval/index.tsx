@@ -1130,7 +1130,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </MobileRequestButtons>
               {!!itemStatus &&
                 <RenderSection>
-                  {(readyToShow || designToApply) && designId &&
+                  {(readyToShow || designToApply) && designId && false &&
                     <Render3D
                       customProduct={true}
                       actualImage={designToApply}
@@ -1146,7 +1146,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       zoomedIn={true}
                     />
                   }
-                  {!readyToShow && product &&
+                  {!readyToShow && product && false &&
                     <Render3D
                       customProduct={true}
                       designId={0}
