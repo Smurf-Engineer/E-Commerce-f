@@ -209,14 +209,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     richTextEditorReady: false
   }
   private intakeRef: any
-  componentWillMount() {
-    const { location: { search }, goToPage } = this.props
-    const queryParams = queryString.parse(search)
-    const { id: projectId } = queryParams || {}
-    if (!!projectId) {
-      goToPage(Sections.PRODUCTS)
-    }
-  }
   componentDidMount() {
     const { location, selectedItems, selectProductAction } = this.props
     if (location.state && !selectedItems.length) {
@@ -235,6 +227,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       })
     }
     this.setState({ isMobile, isTablet })
+    const { location: { search }, goToPage } = this.props
+    const queryParams = queryString.parse(search)
+    const { id: projectId } = queryParams || {}
+    if (!!projectId) {
+      goToPage(Sections.PRODUCTS)
+    }
   }
   componentDidUpdate(oldProps: Props) {
     const { user: oldUser } = oldProps
