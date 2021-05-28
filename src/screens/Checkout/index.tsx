@@ -82,7 +82,7 @@ import { getShoppingCartData, getPriceRangeToApply } from '../../utils/utilsShop
 import Modal from 'antd/lib/modal'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
-import { DEFAULT_ROUTE } from '../../constants'
+import { DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
 import Spin from 'antd/lib/spin'
 import { message } from 'antd'
 import some from 'lodash/some'
@@ -593,12 +593,17 @@ class Checkout extends React.Component<Props, {}> {
       billingLastName,
       billingStreet,
       billingApartment,
+      intl: { formatMessage },
       billingCountry,
       billingStateProvince,
       billingCity,
       billingZipCode,
       billingPhone
     } = this.props
+    if (billingPhone && billingPhone.length < PHONE_MINIMUM) {
+      message.error(formatMessage(messages.phoneError))
+      return
+    }
     if (
       paymentMethod === PaymentOptions.CREDITCARD &&
       !sameBillingAndShipping &&
@@ -626,6 +631,7 @@ class Checkout extends React.Component<Props, {}> {
       currentStep,
       stepAdvanceAction,
       firstName,
+      intl: { formatMessage },
       lastName,
       street,
       country,
@@ -650,6 +656,11 @@ class Checkout extends React.Component<Props, {}> {
       !phone ||
       isPoBox(street) ||
       isApoCity(city)
+    
+    if (phone && phone.length < PHONE_MINIMUM) {
+      message.error(formatMessage(messages.phoneError))
+      return
+    }
 
     if (error) {
       validFormAction(error)
