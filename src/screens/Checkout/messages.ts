@@ -39,6 +39,10 @@ export default defineMessages({
     id: 'screens.Checkout.proceed',
     defaultMessage: 'Proceed'
   },
+  phoneError: {
+    id: 'screens.Checkout.phoneError',
+    defaultMessage: 'Phone number must be at least 7 digits'
+  },
   goBack: {
     id: 'screens.Checkout.goBack',
     defaultMessage: 'Go Back'
