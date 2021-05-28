@@ -326,9 +326,9 @@ class CartListItemTable extends React.Component<Props, State> {
     const withTwoPieces = get(cartItem, 'product.twoPieces', false)
     const upgradeOne = get(cartItem, 'product.upgradeOne', {})
     const upgradeTwo = get(cartItem, 'product.upgradeTwo', {})
-    const variableOne = get(cartItem, 'product.variableOne', {})
+    const variableOne = get(cartItem, 'product.variableOne', '')
     const variableOneLength = get(cartItem, 'product.oneLength', 0)
-    const variableTwo = get(cartItem, 'product.variableTwo', {})
+    const variableTwo = get(cartItem, 'product.variableTwo', '')
     const variableTwoLength = get(cartItem, 'product.twoLength', 0)
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
@@ -680,6 +680,28 @@ class CartListItemTable extends React.Component<Props, State> {
                 </InfoCell>
               }
               {!isMobile && <InfoCell align={'center'}>{quantity || '-'}</InfoCell>}
+              {variableOne && 
+                <InfoCell start={1} end={(upgradeOne.enabled || isMobile) ? 3 : 2} align="column">
+                  <VariableTitle>
+                    {variableOne}
+                    <QuestionSpan onClick={() => {}} />
+                  </VariableTitle>
+                  {variableOneValue || '-'}
+                </InfoCell>
+              }
+              {variableTwo && 
+                <InfoCell
+                  start={(upgradeOne.enabled || isMobile) ? 3 : 2}
+                  end={(upgradeOne.enabled || isMobile) ? 5 : 3}
+                  align="column"
+                >
+                  <VariableTitle>
+                    {variableTwo}
+                    <QuestionSpan onClick={() => {}} />
+                  </VariableTitle>
+                  {variableTwoValue || '-'}
+                </InfoCell>
+              }
             </Row>
           )
       })

@@ -373,7 +373,7 @@ class Checkout extends React.Component<Props, {}> {
       europeStripeAccount &&
       !preorder
 
-    const { total, totalWithoutDiscount, weightSum, symbol, upgradesTotal } = shoppingCartData
+    const { total, totalWithoutDiscount, weightSum, symbol, upgradesTotal, variablesTotal } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
@@ -521,6 +521,7 @@ class Checkout extends React.Component<Props, {}> {
                 onPaypalCancel={this.onPaypalCancel}
                 onPaypalError={this.onPaypalError}
                 upgrades={upgradesTotal}
+                variables={variablesTotal}
                 onPlaceOrder={this.handleOnPlaceOrder}
                 {...{
                   showOrderButton,
@@ -1117,6 +1118,8 @@ class Checkout extends React.Component<Props, {}> {
               color,
               topSize,
               bottomSize,
+              variableOneValue,
+              variableTwoValue,
               firstUpgrade: firstUpObj,
               secondUpgrade: secondUpObj
             }: CartItemDetail) => {
@@ -1135,7 +1138,19 @@ class Checkout extends React.Component<Props, {}> {
               unset(topSize, '__typename')
               unset(bottomSize, '__typename')
 
-              return { gender, quantity, size, fit: fitObj, color, topSize, bottomSize, firstUpgrade, secondUpgrade }
+              return {
+                gender,
+                quantity,
+                size,
+                fit: fitObj,
+                color,
+                topSize,
+                bottomSize,
+                firstUpgrade,
+                secondUpgrade,
+                variableOneValue,
+                variableTwoValue
+              }
             }
           )
 

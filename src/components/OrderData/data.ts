@@ -100,6 +100,8 @@ export const getOrderQuery = gql`
         itemDetails {
           label
           quantity
+          variableOneValue
+          variableTwoValue
           upgradeOne
           upgradeTwo
           upgradeOnePrice
@@ -124,6 +126,8 @@ export const getOrderQuery = gql`
         designId
         designName
         designImage
+        variableOne
+        variableTwo
         designCode
         unitPrice
         isReseller
