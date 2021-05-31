@@ -219,6 +219,11 @@ export const VariableTitle = styled.div`
 export const InfoTitle = styled.div`
   font-weight: bold;
   font-size: 16px;
+  text-align: center;
+`
+
+export const InfoDescription = styled.div`
+  margin-top: 28px;
 `
 
 export const InfoImage = styled.img`

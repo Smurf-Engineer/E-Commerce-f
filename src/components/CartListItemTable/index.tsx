@@ -30,7 +30,8 @@ import {
   InfoImageMobile,
   UpgradeTitle,
   StyledInput,
-  VariableTitle
+  VariableTitle,
+  InfoDescription
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import {
@@ -283,6 +284,29 @@ class CartListItemTable extends React.Component<Props, State> {
     } = evt
     const newText = value ? value.replace(EMOJI_REGEX, '') : ''
     setVariableValue(itemIndex, id, name, newText)
+  }
+
+  handleOpenVariableModal = () => {
+    const { formatMessage } = this.props
+    info({
+      icon: ' ',
+      width: '648px',
+      centered: true,
+      className: 'centeredButtons',
+      okText: formatMessage(messages.close),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content:
+        <InfoBody>
+          <InfoTitle>{formatMessage(messages.variablesTitle)}</InfoTitle>
+          <InfoDescription
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.variablesInfo)
+            }}
+          />
+        </InfoBody>
+    })
   }
 
   handleOpenUpgrade = (upgrade: UpgradeItem) => () => {
@@ -607,7 +631,7 @@ class CartListItemTable extends React.Component<Props, State> {
               <Cell start={1} end={(upgradeOne.enabled || isMobile) ? 3 : 2} align="column">
                 <VariableTitle>
                   {variableOne}
-                  <QuestionSpan onClick={() => {}} />
+                  <QuestionSpan onClick={this.handleOpenVariableModal} />
                 </VariableTitle>
                 <StyledInput
                   id={index}
@@ -626,7 +650,7 @@ class CartListItemTable extends React.Component<Props, State> {
               >
                 <VariableTitle>
                   {variableTwo}
-                  <QuestionSpan onClick={() => {}} />
+                  <QuestionSpan onClick={this.handleOpenVariableModal} />
                 </VariableTitle>
                 <StyledInput
                   id={index}
@@ -686,7 +710,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 <InfoCell start={1} end={(upgradeOne.enabled || isMobile) ? 3 : 2} align="column">
                   <VariableTitle>
                     {variableOne}
-                    <QuestionSpan onClick={() => {}} />
+                    <QuestionSpan onClick={this.handleOpenVariableModal} />
                   </VariableTitle>
                   {variableOneValue || '-'}
                 </InfoCell>
@@ -699,7 +723,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 >
                   <VariableTitle>
                     {variableTwo}
-                    <QuestionSpan onClick={() => {}} />
+                    <QuestionSpan onClick={this.handleOpenVariableModal} />
                   </VariableTitle>
                   {variableTwoValue || '-'}
                 </InfoCell>
