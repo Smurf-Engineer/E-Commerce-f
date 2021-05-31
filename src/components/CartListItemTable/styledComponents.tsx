@@ -72,18 +72,14 @@ export const Row = styled.div`
   padding-top: 8px;
 
   @media (min-width: 426px) and (max-width: 640px) {
-    padding: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
-      (upgradeOne || upgradeTwo) && isMobile ? '10px 5px' : '0 5px'};
-    height: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
-      (upgradeOne || upgradeTwo) && isMobile ? '140px' : '50px'};
+    padding: ${({ isMobile }: RowProps) => 
+      isMobile ? '10px 5px' : '0 5px'};
     grid-gap: 5px;
   }
 
   @media (max-width: 425px) {
-    padding: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
-      (upgradeOne || upgradeTwo) && isMobile ? '10px 5px' : '0 5px'};
-    height: ${({ upgradeOne, upgradeTwo, isMobile }: RowProps) => 
-      (upgradeOne || upgradeTwo) && isMobile ? '140px' : '50px'};
+    padding: ${({ isMobile }: RowProps) => 
+      isMobile ? '10px 5px' : '0 5px'};
     grid-gap: 3px;
   }
 `
@@ -204,9 +200,30 @@ export const InfoBody = styled.div`
   margin-left: -38px;
 `
 
+export const VariableTitle = styled.div`
+  font-size: 14px;
+  margin-top: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  line-height: 23px;
+  display: flex;
+  width: 100%;
+  color: ${GRAY_STRONG};
+  text-align: left;
+  word-break: break-all;
+  @media (max-width: 640px) {
+    width: auto;
+  }
+`
+
 export const InfoTitle = styled.div`
   font-weight: bold;
   font-size: 16px;
+  text-align: center;
+`
+
+export const InfoDescription = styled.div`
+  margin-top: 28px;
 `
 
 export const InfoImage = styled.img`
@@ -265,7 +282,7 @@ export const StyledSelect = styled(Select)`
 `
 
 export const StyledInput = styled(Input)`
-  width: '100%';
+  width: 100%;
 `
 
 export const StyledInputNumber = styled(InputNumber)`

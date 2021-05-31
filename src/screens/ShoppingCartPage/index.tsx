@@ -115,6 +115,12 @@ interface Props extends RouteComponentProps<any> {
     detailIndex: number,
     size: ItemDetailType
   ) => void
+  setVariableValueAction: (
+    index: number,
+    detailIndex: number,
+    variable: string,
+    value: string
+  ) => void
   setFitItemDetailAction: (
     index: number,
     detailIndex: number,
@@ -314,6 +320,17 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const { setGenderItemDetailAction } = this.props
     setGenderItemDetailAction(index, detailIndex, gender)
   }
+
+  handleSetVariableValue = (
+    index: number,
+    detailIndex: number,
+    variable: string,
+    value: string
+  ) => {
+    const { setVariableValueAction } = this.props
+    setVariableValueAction(index, detailIndex, variable, value)
+  }
+
   handleSetUpgradeOption = (
     index: number,
     detailIndex: number,
@@ -434,6 +451,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
     const {
       total,
+      variablesTotal,
       upgradesTotal,
       totalWithoutDiscount,
       nameOfFirstProduct,
@@ -497,6 +515,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailFit={this.handleSetDetailFit}
           setDetailColor={this.handleSetDetailColor}
           setDetailGender={this.handleSetDetailGender}
+          setVariableValue={this.handleSetVariableValue}
           setUpgradeOption={this.handleSetUpgradeOption}
           setDetailSize={this.handleSetDetailSize}
           setTopDetailSize={this.handleSetTopDetailSize}
@@ -546,6 +565,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                     subtotal={total}
                     currencySymbol={symbol}
                     upgrades={upgradesTotal}
+                    variables={variablesTotal}
                     youSaved={totalWithoutDiscount - total}
                     {...{ formatMessage, totalWithoutDiscount, showDiscount }}
                   />

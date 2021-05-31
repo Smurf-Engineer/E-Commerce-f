@@ -146,6 +146,8 @@ export const getOrderQuery = gql`
         }
         itemDetails {
           label
+          variableOneValue
+          variableTwoValue
           upgradeOne
           upgradeTwo
           upgradeOnePrice
@@ -173,6 +175,8 @@ export const getOrderQuery = gql`
         }
         designId
         unitPrice
+        variableOne
+        variableTwo
         productTotal
         designName
         designImage

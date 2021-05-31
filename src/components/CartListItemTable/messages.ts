@@ -34,6 +34,15 @@ export default defineMessages({
     id: 'components.CartListItemTable.topSize',
     defaultMessage: 'Top Size'
   },
+  variablesTitle: {
+    id: 'components.CartListItemTable.variablesTitle',
+    defaultMessage: 'Important Guidelines for Personalization'
+  },
+  variablesInfo: {
+    id: 'components.CartListItemTable.variablesInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>When personalizing your item with text such as names, countries, or other pre-determined values, please note the following;<p><p><ol><li>We do NOT spell check prior to printing. Please ensure YOU have checked your spelling. </li><li>Text IS case sensitive. Personalization will appear just as you entered it.</li><li>The following characters are not allowed; (* /, emojis)</li><li>Some foreign language characters/symbols may not print due to restrictions in the Font.</li><li>Spaces count towards the character limit.</li></ol></p><p>If you have any question, please contact our customer service via chat, or email.</p>'
+  },
   fit: {
     id: 'components.CartListItemTable.fit',
     defaultMessage: 'Fit'

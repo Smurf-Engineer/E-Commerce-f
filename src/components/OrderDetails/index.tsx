@@ -58,7 +58,7 @@ import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
-import { PREORDER, PAYMENT_ISSUE } from '../../constants'
+import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE } from '../../constants'
 import ProductInfo from '../ProductInfo'
 
 const PRO_DESIGN_FEE = 15
@@ -186,6 +186,7 @@ export class OrderDetails extends React.Component<Props, {}> {
 
     let subtotal = 0
     let upgrades = 0
+    let variables = 0
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderItemList = cart
@@ -207,8 +208,18 @@ export class OrderDetails extends React.Component<Props, {}> {
           sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
         // tslint:disable-next-line: align
         , 0)
+        const subVariables = itemDetails.reduce((sum, { quantity, variableOneValue, variableTwoValue }) => {
+          if (variableOneValue && variableOneValue.trim()) {
+            sum += (VARIABLE_PRICE * quantity)
+          }
+          if (variableTwoValue && variableTwoValue.trim()) {
+            sum += (VARIABLE_PRICE * quantity)
+          }
+          return sum
+        }// tslint:disable-next-line: align
+        , 0)
+        variables += subVariables || 0
         upgrades += subUpgrade || 0
-
         subtotal += productTotal || 0
         cartItem.isFixed = onDemand === false
         cartItem.teamStoreItem = teamStoreItem
@@ -335,6 +346,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 formatMessage,
                 taxGst,
                 taxPst,
+                variables,
                 upgrades,
                 taxVat,
                 taxFee,

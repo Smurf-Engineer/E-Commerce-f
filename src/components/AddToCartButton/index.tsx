@@ -23,7 +23,7 @@ import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
 import { Product, CartItemDetail, PriceRange, User } from '../../types/common'
 import find from 'lodash/find'
-import { getProductQuery } from '../../screens/ShoppingCartPage/data'
+import { getDesignVariables, getProductQuery } from '../../screens/ShoppingCartPage/data'
 import set from 'lodash/set'
 
 const { confirm } = Modal
@@ -170,6 +170,24 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       const upgradeTwo = get(response, 'data.product.upgradeTwo', {})
       if (upgradeTwo && upgradeTwo.enabled) {
         set(item, 'product.upgradeTwo', upgradeTwo)
+      }
+    }
+    if (designId) {
+      const response = await query({
+        query: getDesignVariables,
+        variables: { id: designId },
+        fetchPolicy: 'no-cache'
+      })
+      if (response) {
+        const { variableOne, variableTwo, oneLength, twoLength } = get(response, 'data.designVariables', {})
+        if (variableOne) {
+          set(item, 'product.variableOne', variableOne)
+          set(item, 'product.oneLength', oneLength)
+        }
+        if (variableTwo) {
+          set(item, 'product.variableTwo', variableTwo)
+          set(item, 'product.twoLength', twoLength)
+        }
       }
     }
     if (renderForThumbnail && item) {

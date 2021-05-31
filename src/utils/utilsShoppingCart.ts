@@ -1,6 +1,7 @@
 import { CartItems, PriceRange } from '../types/common'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
+import { VARIABLE_PRICE } from '../constants'
 
 export const getShoppingCartData = (
   shoppingCart: CartItems[],
@@ -19,6 +20,7 @@ export const getShoppingCartData = (
   let symbol = '$'
   let moreThanOneItem = false
   let upgradesTotal = 0
+  let variablesTotal = 0
   if (shoppingCart) {
     shoppingCart.map((cartItem, index) => {
       const quantities = cartItem.itemDetails.map(itemDetail => {
@@ -46,10 +48,16 @@ export const getShoppingCartData = (
       }
 
       const sumUpgrade = cartItem.itemDetails.reduce((sum, itemDetail) => {
+        if (itemDetail.variableOneValue && itemDetail.variableOneValue.trim()) {
+          variablesTotal += (VARIABLE_PRICE * itemDetail.quantity)
+        }
         if (itemDetail.firstUpgrade) {
           const price = itemDetail.firstUpgrade[currency] || 0
           const priceTotal = price * itemDetail.quantity
           sum += priceTotal
+        }
+        if (itemDetail.variableTwoValue && itemDetail.variableTwoValue.trim()) {
+          variablesTotal += (VARIABLE_PRICE * itemDetail.quantity)
         }
         if (itemDetail.secondUpgrade) {
           const price = itemDetail.secondUpgrade[currency] || 0
@@ -135,6 +143,7 @@ export const getShoppingCartData = (
     total: totalSum,
     weightSum,
     upgradesTotal,
+    variablesTotal,
     totalWithoutDiscount,
     priceRangeToApply,
     nameOfFirstProduct,

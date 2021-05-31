@@ -28,7 +28,10 @@ import {
   InfoImage,
   InfoURL,
   InfoImageMobile,
-  UpgradeTitle
+  UpgradeTitle,
+  StyledInput,
+  VariableTitle,
+  InfoDescription
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import {
@@ -43,7 +46,7 @@ import {
 import SelectUpgrade from './UpgradCell'
 
 const Option = Select.Option
-
+const EMOJI_REGEX = /[\uD800-\uDBFF]|[\u2702-\u27B0]|[\uF680-\uF6C0]|[\u24C2-\uF251]|[\,*/]/g
 const MAX_INDIVIDUAL_ITEMS = 249
 
 interface Props {
@@ -73,6 +76,12 @@ interface Props {
     index: number,
     detailIndex: number,
     gender: ItemDetailType
+  ) => void
+  setVariableValue: (
+    index: number,
+    detailIndex: number,
+    variable: string,
+    value: string
   ) => void
   setUpgradeOption: (
     index: number,
@@ -268,6 +277,38 @@ class CartListItemTable extends React.Component<Props, State> {
     openFitInfoAction(true, itemIndex)
   }
 
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { itemIndex, setVariableValue } = this.props
+    const {
+      currentTarget: { id, value, name }
+    } = evt
+    const newText = value ? value.replace(EMOJI_REGEX, '') : ''
+    setVariableValue(itemIndex, id, name, newText)
+  }
+
+  handleOpenVariableModal = () => {
+    const { formatMessage } = this.props
+    info({
+      icon: ' ',
+      width: '648px',
+      centered: true,
+      className: 'centeredButtons',
+      okText: formatMessage(messages.close),
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content:
+        <InfoBody>
+          <InfoTitle>{formatMessage(messages.variablesTitle)}</InfoTitle>
+          <InfoDescription
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages.variablesInfo)
+            }}
+          />
+        </InfoBody>
+    })
+  }
+
   handleOpenUpgrade = (upgrade: UpgradeItem) => () => {
     const { name, modalImage, mobileImage, url } = upgrade || {}
     const { formatMessage } = this.props
@@ -309,6 +350,12 @@ class CartListItemTable extends React.Component<Props, State> {
     const withTwoPieces = get(cartItem, 'product.twoPieces', false)
     const upgradeOne = get(cartItem, 'product.upgradeOne', {})
     const upgradeTwo = get(cartItem, 'product.upgradeTwo', {})
+    const variableFrist = get(cartItem, 'product.variableOne', '')
+    const variableOne = variableFrist || cartItem.variableOne
+    const variableOneLength = get(cartItem, 'product.oneLength', 0)
+    const variableSecond = get(cartItem, 'product.variableTwo', '')
+    const variableTwo = variableSecond || cartItem.variableTwo
+    const variableTwoLength = get(cartItem, 'product.twoLength', 0)
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
       if (index === 1 && !withColorColumn || index === 2 && withTwoPieces ||
@@ -402,6 +449,8 @@ class CartListItemTable extends React.Component<Props, State> {
           quantity,
           color,
           colorImage,
+          variableOneValue,
+          variableTwoValue,
           firstUpgrade,
           secondUpgrade
         } = item
@@ -578,6 +627,40 @@ class CartListItemTable extends React.Component<Props, State> {
                 selectedUpgrade={secondUpgrade}
               />
             }
+            {variableOne &&
+              <Cell start={1} end={(upgradeOne.enabled || isMobile) ? 3 : 2} align="column">
+                <VariableTitle>
+                  {variableOne}
+                  <QuestionSpan onClick={this.handleOpenVariableModal} />
+                </VariableTitle>
+                <StyledInput
+                  id={index}
+                  name="variableOneValue"
+                  onChange={this.handleInputChange}
+                  maxLength={variableOneLength}
+                  value={variableOneValue}
+                />
+              </Cell>
+            }
+            {variableTwo &&
+              <Cell
+                start={(upgradeOne.enabled || isMobile) ? 3 : 2}
+                end={(upgradeOne.enabled || isMobile) ? 5 : 3}
+                align="column"
+              >
+                <VariableTitle>
+                  {variableTwo}
+                  <QuestionSpan onClick={this.handleOpenVariableModal} />
+                </VariableTitle>
+                <StyledInput
+                  id={index}
+                  name="variableTwoValue"
+                  onChange={this.handleInputChange}
+                  maxLength={variableTwoLength}
+                  value={variableTwoValue}
+                />
+              </Cell>
+            }
           </Row>
         ) : (
             <Row 
@@ -623,6 +706,28 @@ class CartListItemTable extends React.Component<Props, State> {
                 </InfoCell>
               }
               {!isMobile && <InfoCell align={'center'}>{quantity || '-'}</InfoCell>}
+              {variableOne && 
+                <InfoCell start={1} end={(upgradeOne.enabled || isMobile) ? 3 : 2} align="column">
+                  <VariableTitle>
+                    {variableOne}
+                    <QuestionSpan onClick={this.handleOpenVariableModal} />
+                  </VariableTitle>
+                  {variableOneValue || '-'}
+                </InfoCell>
+              }
+              {variableTwo && 
+                <InfoCell
+                  start={(upgradeOne.enabled || isMobile) ? 3 : 2}
+                  end={(upgradeOne.enabled || isMobile) ? 5 : 3}
+                  align="column"
+                >
+                  <VariableTitle>
+                    {variableTwo}
+                    <QuestionSpan onClick={this.handleOpenVariableModal} />
+                  </VariableTitle>
+                  {variableTwoValue || '-'}
+                </InfoCell>
+              }
             </Row>
           )
       })
