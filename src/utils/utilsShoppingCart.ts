@@ -48,16 +48,16 @@ export const getShoppingCartData = (
       }
 
       const sumUpgrade = cartItem.itemDetails.reduce((sum, itemDetail) => {
-        if (itemDetail.variableOneValue && itemDetail.variableOneValue.trim()) {
+        if (
+          (itemDetail.variableOneValue && itemDetail.variableOneValue.trim()) || 
+          (itemDetail.variableTwoValue && itemDetail.variableTwoValue.trim())
+        ) {
           variablesTotal += (VARIABLE_PRICE * itemDetail.quantity)
         }
         if (itemDetail.firstUpgrade) {
           const price = itemDetail.firstUpgrade[currency] || 0
           const priceTotal = price * itemDetail.quantity
           sum += priceTotal
-        }
-        if (itemDetail.variableTwoValue && itemDetail.variableTwoValue.trim()) {
-          variablesTotal += (VARIABLE_PRICE * itemDetail.quantity)
         }
         if (itemDetail.secondUpgrade) {
           const price = itemDetail.secondUpgrade[currency] || 0
