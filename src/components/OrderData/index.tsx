@@ -191,10 +191,7 @@ class OrderData extends React.Component<Props, {}> {
         // tslint:disable-next-line: align
         , 0)
         const subVariables = itemDetails.reduce((sum, { quantity, variableOneValue, variableTwoValue }) => {
-          if (variableOneValue && variableOneValue.trim()) {
-            sum += (VARIABLE_PRICE * quantity)
-          }
-          if (variableTwoValue && variableTwoValue.trim()) {
+          if ((variableOneValue && variableOneValue.trim()) || (variableTwoValue && variableTwoValue.trim())) {
             sum += (VARIABLE_PRICE * quantity)
           }
           return sum

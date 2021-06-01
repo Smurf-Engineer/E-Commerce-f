@@ -39,7 +39,7 @@ export default defineMessages({
   },
   variables: {
     id: 'screens.ShoppingCartPage.variables',
-    defaultMessage: 'Variable Data'
+    defaultMessage: 'Personalization'
   },
   shipping: {
     id: 'screens.ShoppingCartPage.shipping',
