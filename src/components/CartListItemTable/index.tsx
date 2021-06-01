@@ -282,7 +282,7 @@ class CartListItemTable extends React.Component<Props, State> {
     const {
       currentTarget: { id, value, name }
     } = evt
-    const newText = value ? value.replace(EMOJI_REGEX, '') : ''
+    const newText = value ? value.replace(EMOJI_REGEX, '').toUpperCase() : ''
     setVariableValue(itemIndex, id, name, newText)
   }
 
