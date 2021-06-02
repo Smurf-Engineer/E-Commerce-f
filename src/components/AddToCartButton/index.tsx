@@ -179,14 +179,23 @@ export class AddToCartButton extends PureComponent<Props, {}> {
         fetchPolicy: 'no-cache'
       })
       if (response) {
-        const { variableOne, variableTwo, oneLength, twoLength } = get(response, 'data.designVariables', {})
+        const {
+          variableOne,
+          variableTwo,
+          oneLength,
+          twoLength,
+          variableOneCaps,
+          variableTwoCaps
+        } = get(response, 'data.designVariables', {})
         if (variableOne) {
           set(item, 'product.variableOne', variableOne)
           set(item, 'product.oneLength', oneLength)
+          set(item, 'product.variableOneCaps', variableOneCaps)
         }
         if (variableTwo) {
           set(item, 'product.variableTwo', variableTwo)
           set(item, 'product.twoLength', twoLength)
+          set(item, 'product.variableTwoCaps', variableTwoCaps)
         }
       }
     }
