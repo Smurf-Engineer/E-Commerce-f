@@ -48,6 +48,8 @@ import SelectUpgrade from './UpgradCell'
 const Option = Select.Option
 const EMOJI_REGEX = /[\uD800-\uDBFF]|[\u2702-\u27B0]|[\uF680-\uF6C0]|[\u24C2-\uF251]|[\,*/]/g
 const MAX_INDIVIDUAL_ITEMS = 249
+const VARIABLE_ONE_TYPE = 'variableOneValue'
+const VARIABLE_TWO_TYPE = 'variableTwoValue'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -278,11 +280,16 @@ class CartListItemTable extends React.Component<Props, State> {
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { itemIndex, setVariableValue } = this.props
+    const { itemIndex, setVariableValue, cartItem } = this.props
     const {
       currentTarget: { id, value, name }
     } = evt
-    const newText = value ? value.replace(EMOJI_REGEX, '').toUpperCase() : ''
+    const variableOneCaps = get(cartItem, 'product.variableOneCaps', false)
+    const variableTwoCaps = get(cartItem, 'product.variableTwoCaps', false)
+    let newText = value ? value.replace(EMOJI_REGEX, '') : ''
+    if ((name === VARIABLE_ONE_TYPE && variableOneCaps) || (name === VARIABLE_TWO_TYPE && variableTwoCaps)) {
+      newText = newText.toUpperCase()
+    }
     setVariableValue(itemIndex, id, name, newText)
   }
 
@@ -635,7 +642,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 </VariableTitle>
                 <StyledInput
                   id={index}
-                  name="variableOneValue"
+                  name={VARIABLE_ONE_TYPE}
                   onChange={this.handleInputChange}
                   maxLength={variableOneLength}
                   value={variableOneValue}
@@ -654,7 +661,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 </VariableTitle>
                 <StyledInput
                   id={index}
-                  name="variableTwoValue"
+                  name={VARIABLE_TWO_TYPE}
                   onChange={this.handleInputChange}
                   maxLength={variableTwoLength}
                   value={variableTwoValue}

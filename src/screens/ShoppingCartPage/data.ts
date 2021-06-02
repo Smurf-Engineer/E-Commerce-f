@@ -66,6 +66,8 @@ export const getDesignVariables = gql`
       variableTwo: variable_two
       oneLength: variable_one_length
       twoLength: variable_two_length
+      variableOneCaps: variable_one_caps
+      variableTwoCaps: variable_two_caps
     }
   }
 `
