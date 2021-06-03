@@ -102,8 +102,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         variables: {
           token,
           countryCode: initialCountryCode,
-          country_name: countryName,
-          region_name: regionName,
+          countryName,
+          regionName,
           city
         }
       })
@@ -151,8 +151,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           token,
           countryCode: initialCountryCode,
           isAdmin: adminLogin,
-          country_name: countryName,
-          region_name: regionName,
+          countryName,
+          regionName,
           city
         }
       })
