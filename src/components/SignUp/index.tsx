@@ -224,8 +224,8 @@ class SignUp extends React.Component<Props, StateProps> {
       password,
       newsletter_subscribed: newsLetter,
       countryCode: initialCountryCode,
-      countryName,
-      regionName,
+      country_name: countryName,
+      region_name: regionName,
       city
     }
 
