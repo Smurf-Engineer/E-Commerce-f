@@ -37,6 +37,7 @@ import { setDefaultScreenAction } from '../../screens/Account/actions'
 import Helmet from 'react-helmet'
 import { closeSlaask } from '../../slaask'
 import { openSupport } from './api'
+import { ipLocation } from '../../utils/utilsIpLocation'
 
 const { Content } = Layout
 
@@ -85,6 +86,9 @@ interface Props extends RouteComponentProps<any> {
   fonts: []
   darkMode?: boolean
   hideDetails: boolean
+  countryName: string
+  regionName: string
+  city: string
   openResellerAction: (open: boolean) => void
   setAccountScreen: (screen: string, openCreations?: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
@@ -95,6 +99,7 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
+  setUserLocationInfoAction: (countryName: string, regionName: string, city: string) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -121,7 +126,8 @@ class MainLayout extends React.Component<Props, {}> {
       },
       user,
       getFontsData,
-      setInstalledFontsAction
+      setInstalledFontsAction,
+      setUserLocationInfoAction
     } = this.props
 
     const { login } = queryString.parse(search)
@@ -140,6 +146,13 @@ class MainLayout extends React.Component<Props, {}> {
     const fonts: SimpleFont[] = []
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
+
+    try {
+      const { country_name, region, city } = await ipLocation()
+      setUserLocationInfoAction(country_name, region, city)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   componentDidUpdate() {
@@ -239,7 +252,10 @@ class MainLayout extends React.Component<Props, {}> {
       style,
       fonts,
       setAccountScreen,
-      darkMode
+      darkMode,
+      countryName,
+      regionName,
+      city
     } = this.props
     const { formatMessage } = intl
     let numberOfProducts = 0
@@ -287,7 +303,10 @@ class MainLayout extends React.Component<Props, {}> {
               buyNowHeader,
               setAccountScreen,
               darkMode,
-              user
+              user,
+              countryName,
+              regionName,
+              city
             }}
             loggedIn={!!user}
             saveAndBuy={saveAndBuyAction}

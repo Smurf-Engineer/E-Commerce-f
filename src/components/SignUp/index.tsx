@@ -38,6 +38,9 @@ interface Props {
   formatMessage: (messageDescriptor: any, values?: object) => string
   initialCountryCode: string
   login: (user: object) => void
+  countryName: string
+  regionName: string
+  city: string
 }
 interface StateProps {
   name: string
@@ -63,7 +66,10 @@ class SignUp extends React.Component<Props, StateProps> {
       requestClose,
       formatMessage,
       initialCountryCode,
-      login
+      login,
+      countryName,
+      regionName,
+      city
     } = this.props
     const {
       name,
@@ -84,7 +90,14 @@ class SignUp extends React.Component<Props, StateProps> {
           <FacebookGmailLogin
             signUpView={true}
             handleLogin={login}
-            {...{ requestClose, formatMessage, initialCountryCode }}
+            {...{
+              requestClose,
+              formatMessage,
+              initialCountryCode,
+              countryName,
+              regionName,
+              city
+            }}
           />
         </SocialMediaContainer>
         <HaveAnAccountRow>
@@ -189,7 +202,10 @@ class SignUp extends React.Component<Props, StateProps> {
       formatMessage,
       closeSignUp,
       initialCountryCode,
-      login
+      login,
+      countryName,
+      regionName,
+      city
     } = this.props
 
     if (password.length < 8) {
@@ -207,7 +223,10 @@ class SignUp extends React.Component<Props, StateProps> {
       last_name: lastName,
       password,
       newsletter_subscribed: newsLetter,
-      countryCode: initialCountryCode
+      countryCode: initialCountryCode,
+      countryName,
+      regionName,
+      city
     }
 
     if (!validateEmail(email.toLowerCase())) {
