@@ -1088,7 +1088,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   ))}
                 </Variants>
               )}
-              {itemStatus === CUSTOMER_APPROVED && !!designId &&
+              {itemStatus === CUSTOMER_APPROVED && !designId &&
                 <BottomButtons>
                   <ButtonWrapper noMargin={true}>
                     <Button onClick={this.openAddToStoreModal}>

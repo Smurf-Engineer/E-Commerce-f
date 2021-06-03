@@ -224,6 +224,9 @@ export const InfoTitle = styled.div`
 
 export const InfoDescription = styled.div`
   margin-top: 28px;
+  center {
+    font-size: 16px;
+  }
 `
 
 export const InfoImage = styled.img`
