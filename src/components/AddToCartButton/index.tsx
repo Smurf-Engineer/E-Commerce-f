@@ -313,9 +313,22 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     replaceOrder: string = ''
   ) => {
     const details = [] as CartItemDetail[]
-    const detail = {
+    const upgradeOne = get(item, 'product.upgradeOne', {})
+    const upgradeTwo = get(item, 'product.upgradeTwo', {})
+    const detail: CartItemDetail = {
       quantity: 1
     }
+    if (upgradeOne.enabled && upgradeOne.defaultOption !== -1) {
+      const { options = [] } = upgradeOne || {}
+      const firstUpgrade = options[upgradeOne.defaultOption]
+      detail.firstUpgrade = firstUpgrade
+    }
+    if (upgradeTwo.enabled && upgradeTwo.defaultOption !== -1) {
+      const { options = [] } = upgradeTwo || {}
+      const secondUpgrade = options[upgradeTwo.defaultOption]
+      detail.secondUpgrade = secondUpgrade
+    }
+    
     details.push(detail)
     const itemToAdd = Object.assign(
       {},

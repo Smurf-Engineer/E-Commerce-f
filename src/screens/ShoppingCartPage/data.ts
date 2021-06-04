@@ -22,6 +22,7 @@ export const getProductQuery = gql`
         enabled
         name
         url
+        defaultOption: default_option
         modalImage: modal_image
         mobileImage: mobile_image
         options {
@@ -41,6 +42,7 @@ export const getProductQuery = gql`
         enabled
         name
         url
+        defaultOption: default_option
         modalImage: modal_image
         mobileImage: mobile_image
         options {
