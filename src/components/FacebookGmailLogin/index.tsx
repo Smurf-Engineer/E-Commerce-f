@@ -30,6 +30,9 @@ interface Props {
   initialCountryCode: string
   signUpView: boolean
   adminLogin?: boolean
+  countryName: string
+  regionName: string
+  city: string
 }
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
@@ -79,7 +82,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       </Container>
     )
   }
-  componentClicked = (evt: any) => {}
+  componentClicked = (evt: any) => { }
 
   responseFacebook = async (facebookResp: {}) => {
     const {
@@ -87,13 +90,22 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       requestClose,
       handleLogin,
       initialCountryCode,
-      formatMessage
+      formatMessage,
+      countryName,
+      regionName,
+      city
     } = this.props
     const token = get(facebookResp, 'accessToken')
 
     try {
       const response = await loginWithFacebook({
-        variables: { token, countryCode: initialCountryCode }
+        variables: {
+          token,
+          countryCode: initialCountryCode,
+          countryName,
+          regionName,
+          city
+        }
       })
       const data = get(response, 'data.facebookSignIn', false)
 
@@ -126,7 +138,10 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       handleLogin,
       initialCountryCode,
       formatMessage,
-      adminLogin = false
+      adminLogin = false,
+      countryName,
+      regionName,
+      city
     } = this.props
     const token = get(resp, 'tokenId', false)
 
@@ -135,7 +150,10 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         variables: {
           token,
           countryCode: initialCountryCode,
-          isAdmin: adminLogin
+          isAdmin: adminLogin,
+          countryName,
+          regionName,
+          city
         }
       })
       const data = get(response, 'data.googleSignIn', false)

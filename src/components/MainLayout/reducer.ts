@@ -9,7 +9,9 @@ import {
   GET_TOTAL_CART_ITEMS,
   OPEN_LOGOUT_MODAL,
   SAVE_AND_BUY,
-  SET_INSTALLED_FONTS_ACTION, OPEN_RESELLER
+  SET_INSTALLED_FONTS_ACTION,
+  OPEN_RESELLER,
+  SET_USER_LOCATION_INFO_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -28,7 +30,10 @@ export const initialState = fromJS({
   currentLanguage: 'en',
   callback: false,
   saveAndBuy: false,
-  fonts: {}
+  fonts: {},
+  countryName: '',
+  regionName: '',
+  city: ''
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -82,6 +87,12 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_INSTALLED_FONTS_ACTION:
       return state.set('fonts', fromJS(action.fonts))
+    case SET_USER_LOCATION_INFO_ACTION:
+      return state.merge({
+        countryName: action.countryName,
+        regionName: action.regionName,
+        city: action.city
+      })
     default:
       return state
   }

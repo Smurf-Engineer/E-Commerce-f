@@ -111,6 +111,9 @@ interface Props {
   buyNowHeader: boolean
   darkMode?: boolean
   notificationsData: NotificationsData
+  countryName: string
+  regionName: string
+  city: string
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
   readNotification: (variables: {}) => Promise<NotificationsRead>
@@ -302,7 +305,10 @@ class MenuBar extends React.Component<Props, StateProps> {
       saveAndBuy,
       regionsData: { regionsResult, loading: loadingRegions },
       darkMode = false,
-      notificationsData
+      notificationsData,
+      countryName,
+      regionName,
+      city
     } = this.props
 
     let user: any = {}
@@ -321,7 +327,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
     const notifications = get(notificationsData, 'notifications.list', [])
     const loggedUser = !user ? (
-      <TopText onClick={this.handleOpenLogin} {...{darkMode}}>
+      <TopText onClick={this.handleOpenLogin} {...{ darkMode }}>
         <Icon type="user" />
         {formatMessage(messages.title)}
       </TopText>
@@ -335,7 +341,8 @@ class MenuBar extends React.Component<Props, StateProps> {
             approvedReseller,
             showProDesign,
             resellerEnabled,
-            darkMode }}
+            darkMode
+          }}
           title={formatMessage(messages.myAccount, { user: userName })}
           logout={logoutAction}
           openMenu={this.openMenu}
@@ -391,7 +398,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           {(matches) => {
             if (matches) {
               return (
-                <Container {...{darkMode}}>
+                <Container {...{ darkMode }}>
                   {!hideTop && (
                     <Row>
                       <MenuSupport
@@ -471,7 +478,13 @@ class MenuBar extends React.Component<Props, StateProps> {
           requestClose={this.handleCloseLogin}
           handleForgotPassword={this.handleOpenForgotPassword}
           login={saveUserToLocal}
-          {...{ formatMessage, initialCountryCode }}
+          {...{
+            formatMessage,
+            initialCountryCode,
+            countryName,
+            regionName,
+            city
+          }}
         />
         <ForgotPassword
           open={openForgotPassword}

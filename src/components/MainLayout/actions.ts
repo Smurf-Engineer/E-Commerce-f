@@ -8,7 +8,9 @@ import {
   GET_TOTAL_CART_ITEMS,
   OPEN_LOGOUT_MODAL,
   SAVE_AND_BUY,
-  SET_INSTALLED_FONTS_ACTION, OPEN_RESELLER
+  SET_INSTALLED_FONTS_ACTION,
+  OPEN_RESELLER,
+  SET_USER_LOCATION_INFO_ACTION
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -75,4 +77,11 @@ export const saveAndBuyAction = (buy: boolean) => ({
 export const setInstalledFontsAction = (fonts: any) => ({
   type: SET_INSTALLED_FONTS_ACTION,
   fonts
+})
+
+export const setUserLocationInfoAction = (countryName: string, regionName: string, city: string) => ({
+  type: SET_USER_LOCATION_INFO_ACTION,
+  countryName,
+  regionName,
+  city
 })
