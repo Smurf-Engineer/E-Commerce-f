@@ -13,6 +13,7 @@ interface Props {
   endColumn: number
   upgrade: UpgradeItem
   upgradeTitle: string
+  allowClear?: boolean
   upgradeOptions: UpgradeOptions[]
   formatMessage: (messageDescriptor: Message) => string
   openUpgrade: () => void
@@ -29,7 +30,16 @@ class SelectUpgrade extends React.PureComponent<Props> {
     upgradeChange(value)
   }
   render() {
-    const { upgrade, upgradeTitle, startColumn, endColumn, upgradeOptions, formatMessage, selectedUpgrade } = this.props
+    const {
+      upgrade,
+      upgradeTitle,
+      startColumn,
+      endColumn,
+      upgradeOptions,
+      formatMessage,
+      selectedUpgrade,
+      allowClear
+    } = this.props
     
     return (
       <Cell start={startColumn} end={endColumn} align="column">
@@ -38,13 +48,13 @@ class SelectUpgrade extends React.PureComponent<Props> {
           <QuestionSpan onClick={this.handleOpenUpgrade} />
         </UpgradeTitle>
         <StyledSelect
+          {...{ allowClear }}
           onChange={this.handleUpgradeChange}
           showSearch={false}
           placeholder={formatMessage(messages[upgradeTitle])}
           optionFilterProp="children"
           value={selectedUpgrade ? selectedUpgrade.name : undefined}
           selectWidth="100%"
-          allowClear={true}
         >
           {upgradeOptions}
         </StyledSelect>

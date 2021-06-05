@@ -563,7 +563,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   optionFilterProp="children"
                   value={firstUpgrade ? firstUpgrade.name : undefined}
                   selectWidth={fitSelectWidth}
-                  allowClear={true}
+                  allowClear={upgradeOne.defaultOption === -1}
                 >
                   {upgradeOneOptions}
                 </StyledSelect>
@@ -578,7 +578,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   optionFilterProp="children"
                   value={secondUpgrade ? secondUpgrade.name : undefined}
                   selectWidth={fitSelectWidth}
-                  allowClear={true}
+                  allowClear={upgradeTwo.defaultOption === -1}
                 >
                   {upgradeTwoOptions}
                 </StyledSelect>
@@ -613,6 +613,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 {...{ formatMessage }}
                 startColumn={1}
                 endColumn={3}
+                allowClear={upgradeOne.defaultOption === -1}
                 upgrade={upgradeOne}
                 upgradeTitle="upgradeOne"
                 upgradeOptions={upgradeOneOptions}
@@ -626,6 +627,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 {...{ formatMessage }}
                 startColumn={3}
                 endColumn={5}
+                allowClear={upgradeTwo.defaultOption === -1}
                 upgrade={upgradeTwo}
                 upgradeTitle="upgradeTwo"
                 upgradeOptions={upgradeTwoOptions}
