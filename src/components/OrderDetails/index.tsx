@@ -364,6 +364,9 @@ export class OrderDetails extends React.Component<Props, {}> {
             <TitleStyled>
               {formatMessage(messages.items)}
               <AddToCartButton
+                ref={(addToCartButton: any) => {
+                  this.editOrderButton = addToCartButton
+                }}
                 label={formatMessage(messages.reorderAll)}
                 renderForThumbnail={false}
                 items={cart}
@@ -413,9 +416,9 @@ export class OrderDetails extends React.Component<Props, {}> {
         </ShippingBillingContainer>
         {owner &&
           <AddToCartButton
-            ref={(addToCartButton: any) =>
-              (this.editOrderButton = addToCartButton)
-            }
+            ref={(addToCartButton: any) => {
+              this.editOrderButton = addToCartButton
+            }}
             label={formatMessage(messages.edit)}
             renderForThumbnail={false}
             items={cart}
@@ -510,7 +513,9 @@ export class OrderDetails extends React.Component<Props, {}> {
       onOk: async () => {
         try {
           await this.deleteOrder()
-          this.editOrderButton.getWrappedInstance().addToCart()
+          const wrapper = this.editOrderButton.getWrappedInstance()
+          const editButton = wrapper.getWrappedInstance()
+          await editButton.addToCart()
           goToCart()
         } catch (e) {
           message.error(e.message)
