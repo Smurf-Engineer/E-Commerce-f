@@ -93,7 +93,19 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   state = {
     isHovered: false,
     loading: false,
+    isMobile: false,
+    isTablet: false,
     currentImage: 0
+  }
+
+  componentDidMount() {
+    const isMobile = window.matchMedia(
+      '(min-width: 320px) and (max-width: 480px)'
+    ).matches
+    const isTablet = window.matchMedia(
+      '(min-width: 481px) and (max-width: 1024px)'
+    ).matches
+    this.setState({ isMobile, isTablet })
   }
 
   handleOnHover = () => this.setState({ isHovered: true })
@@ -164,11 +176,16 @@ export class ProductThumbnail extends React.Component<Props, {}> {
 
   handlePressThumbnail = () => {
     const { history, onPressThumbnail, isProDesign, clickDisabled = false } = this.props
+    const { isTablet, isMobile } = this.state
     if (onPressThumbnail) {
       onPressThumbnail()
     }
     if (!clickDisabled && !isProDesign) {
-      history.push(this.getUrlProduct())
+      if (isTablet || isMobile) {
+        window.open(this.getUrlProduct())
+      } else {
+        history.push(this.getUrlProduct())
+      }
     }
   }
 
