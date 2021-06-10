@@ -117,6 +117,8 @@ interface Props extends RouteComponentProps<any> {
   featuredProducts: Product[]
   homepageImages: HomepageImagesType[]
   mainHeaderImages: HomepageImagesType[]
+  featuredImages: HomepageImagesType[]
+  secondaryFeaturedImages: HomepageImagesType[]
   title: string
   carouselSettings: HomepageCarousel
   dataDesignLabInfo: DesignLab
@@ -197,6 +199,8 @@ export class Home extends React.Component<Props, {}> {
       profileData,
       loading,
       homepageImages,
+      featuredImages,
+      secondaryFeaturedImages,
       user,
       carouselSettings: {
         slideTransition,
@@ -262,11 +266,35 @@ export class Home extends React.Component<Props, {}> {
         </div>
       )
     )
+    const featuredItems = featuredImages.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <div>
+          <CarouselItem
+            key={index}
+            onClick={() => { }}
+            {...{ item }}
+          />
+        </div>
+      )
+    )
+    const secondaryFeaturedItems = secondaryFeaturedImages.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <div>
+          <CarouselItem
+            key={index}
+            onClick={() => { }}
+            {...{ item }}
+          />
+        </div>
+      )
+    )
+
     return (
       <Layout {...{ history, intl }} style={layoutStyle}>
         <Helmet {...{ title }} />
         <Container {...{ loading }}>
           <SearchContainer>
+            {featuredItems.length && featuredItems}
             {mainHeaderItems.length && (
               <CarouselContainer>
                 <Carousel
@@ -352,6 +380,7 @@ export class Home extends React.Component<Props, {}> {
               </Carousel>
             </CarouselContainer>
           )}
+          {secondaryFeaturedItems.length && secondaryFeaturedItems}
           {/* <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />
