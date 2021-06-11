@@ -25,12 +25,17 @@ export const uploadFileAction = (file: any) => {
         },
         body: formData
       })
-
-      const data = await response.json()
-      dispatch(uploadFileSuccessAction(data))
+      if (response.ok) {
+        const data = await response.json()
+        dispatch(uploadFileSuccessAction(data))
+      } else {
+        const error = await response.text()
+        throw error
+      }
+      
     } catch (e) {
       dispatch(setUploadingAction(false))
-      message.error(e.message)
+      message.error(e)
     }
   }
 }
