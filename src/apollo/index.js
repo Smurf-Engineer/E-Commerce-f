@@ -24,13 +24,15 @@ const errorLink = onError(({ response, operation }) => {
     const errorMessage =
       response.errors.length &&
       head(response.errors.map(error => error.message))
-
     if (errorMessage.length && unauthorizedExp.test(errorMessage)) {
-      message.error('User session has expired!')
+      const isProDesign = operation.operationName === 'getProdesignItem'
+      message.error(isProDesign ? 'You must login to view your design!' : 'User session has expired!')
       setTimeout(() => {
         try {
           localStorage.removeItem('user')
-          window.location.replace('/')
+          if (!isProDesign) {
+            window.location.replace('/')
+          }
         } catch (e) {
           console.error(e)
         }

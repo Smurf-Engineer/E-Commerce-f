@@ -30,6 +30,9 @@ import {
   getProdesignItemQuery,
   getVariantsFromProduct
 } from './data'
+import {
+  openLoginAction
+} from '../../components/MainLayout/actions'
 import { restoreUserSession } from '../../components/MainLayout/api'
 import Render3D from '../../components/Render3D'
 import Layout from '../../components/MainLayout'
@@ -237,6 +240,7 @@ interface Props extends RouteComponentProps<any> {
   dataVariants: DataVariants
   project: string
   product: string
+  openLoginAction: (open: boolean, callback?: boolean) => void
   setEditProject: (project?: number, product?: number) => void
   openQuickViewAction: (
     id: number,
@@ -266,7 +270,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     teamStoreId: '',
     itemToAdd: {},
     designToApply: '',
-    selectedVariant: -1
+    selectedVariant: -1,
+    retryLoad: false
   }
   private listMsg: any
   private chatDiv: any
@@ -274,7 +279,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     navigator.serviceWorker.addEventListener('message', this.reloadMessages)
-    const { history } = this.props
+    const { history, user, openLoginAction: openLoginModalAction } = this.props
+    const userSaved = localStorage.getItem('user')
+    if (!user && !userSaved) {
+      this.setState({ retryLoad: true })
+      openLoginModalAction(true)
+      return
+    }
     const search = get(history, 'location.search', '')
     const { project, product } = queryString.parse(search)
     if (!!project && !!product) {
@@ -295,10 +306,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
   }
   componentDidUpdate(prevProps: Props) {
-    const { data } = this.props
-    const { data: oldData } = prevProps
+    const { data, user } = this.props
+    const { data: oldData, user: oldUser } = prevProps
+    const { retryLoad } = this.state
     const oldMessages = get(oldData, 'projectItem.messages', [])
     const newMessages = get(data, 'projectItem.messages', [])
+    if (user !== oldUser && retryLoad) {
+      location.reload()
+    }
     if (oldMessages.length !== newMessages.length) {
       setTimeout(() => { this.scrollMessages() }, 2000)
     }
@@ -1437,13 +1452,9 @@ const DesignsEnhance = compose(
     ...designsActions,
     ...designsApiActions,
     openQuickViewAction,
+    openLoginAction,
     restoreUserSessionAction: restoreUserSession
   }),
-  graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
-  graphql(getPredyedColors, { name: 'predyedData' }),
-  graphql(addProductProjectMutation, { name: 'addProductProject' }),
-  graphql(approveDesignMutation, { name: 'setApproveDesign' }),
-  graphql(addProMessageMutation, { name: 'sendNoteProdesign' }),
   graphql(getProdesignItemQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
@@ -1455,6 +1466,11 @@ const DesignsEnhance = compose(
       }
     }
   }),
+  graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
+  graphql(getPredyedColors, { name: 'predyedData' }),
+  graphql(addProductProjectMutation, { name: 'addProductProject' }),
+  graphql(approveDesignMutation, { name: 'setApproveDesign' }),
+  graphql(addProMessageMutation, { name: 'sendNoteProdesign' }),
   graphql(getVariantsFromProduct, {
     options: ({ data }: OwnProps) => {
       const productId = get(data, 'projectItem.product.id', '')
