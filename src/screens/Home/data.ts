@@ -36,6 +36,18 @@ export const getHomepageInfo = gql`
         sportId: sport_id
         isVideo: is_video
       }
+      featuredImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        assetType: type
+      }
+      secondaryFeaturedImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        assetType: type
+      }
       featuredProducts {
         id
         code
