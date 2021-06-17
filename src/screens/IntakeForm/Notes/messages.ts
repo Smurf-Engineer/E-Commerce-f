@@ -81,5 +81,13 @@ export default defineMessages({
   descriptionHelp3: {
     id: 'components.IntakeForm.Notes.descriptionHelp3',
     defaultMessage: '3. I like the image of the carbon fiber. Please use on the back of the jacket'
+  },
+  searchBy: {
+    id: 'components.IntakeForm.Notes.searchBy',
+    defaultMessage: 'Name, Email or Client ID'
+  },
+  selectUser: {
+    id: 'components.IntakeForm.Notes.selectUser',
+    defaultMessage: 'Select User for this Project'
   }
 })

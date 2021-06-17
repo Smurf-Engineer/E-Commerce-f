@@ -86,6 +86,7 @@ interface Props {
   selectProduct?: boolean
   selectedItems?: Product[]
   fromIntakeForm?: boolean
+  adminProject?: boolean
   handleCheckChange: (product: Product, checked: boolean, key?: number) => void
 }
 
@@ -100,6 +101,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       handleOrderBy,
       profileData,
       fromIntakeForm,
+      adminProject,
       data,
       isEdit,
       designs,
@@ -195,7 +197,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   <ButtonsContainer>
                     {!previewOnly ? (
                       <div>
-                         {!proDesign && 
+                        {!proDesign &&
                           <ButtonContainer>
                             <CopyButton onClick={this.handleMakeCopy(shortId)}>
                               {formatMessage(messages.makeCopy)}
@@ -221,27 +223,27 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                         }
                       </div>
                     ) : (
-                        <>
-                          <ButtonContainer>
-                            <CopyButton onClick={this.handleMakeCopy(shortId)}>
-                              {formatMessage(messages.makeCopy)}
-                            </CopyButton>
-                          </ButtonContainer>
-                          <ButtonContainer>
-                            <ActionButton onClick={this.openPreview(shortId)}>
-                              {formatMessage(messages.preview)}
-                            </ActionButton>
-                          </ButtonContainer>
-                          <ButtonContainer>
-                            <ActionButton
-                              secondary={true}
-                              onClick={this.openAssistModal(shortId)}
-                            >
-                              {formatMessage(messages.proassist)}
-                            </ActionButton>
-                          </ButtonContainer>
-                        </>
-                      )}
+                      <>
+                        <ButtonContainer>
+                          <CopyButton onClick={this.handleMakeCopy(shortId)}>
+                            {formatMessage(messages.makeCopy)}
+                          </CopyButton>
+                        </ButtonContainer>
+                        <ButtonContainer>
+                          <ActionButton onClick={this.openPreview(shortId)}>
+                            {formatMessage(messages.preview)}
+                          </ActionButton>
+                        </ButtonContainer>
+                        <ButtonContainer>
+                          <ActionButton
+                            secondary={true}
+                            onClick={this.openAssistModal(shortId)}
+                          >
+                            {formatMessage(messages.proassist)}
+                          </ActionButton>
+                        </ButtonContainer>
+                      </>
+                    )}
                   </ButtonsContainer>
                 }
                 myLockerList={true}
@@ -342,10 +344,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-            <NoResultsFound>
-              {formatMessage(messages.emptyResults)}
-            </NoResultsFound>
-          )
+          <NoResultsFound>
+            {formatMessage(messages.emptyResults)}
+          </NoResultsFound>
+        )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -365,7 +367,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     return (
       <Container>
         <SelectedProducts
-          {...{ changeQuantity, fromIntakeForm, isEdit }}
+          {...{ changeQuantity, fromIntakeForm, adminProject, isEdit }}
           products={selectedItems}
           title={formatMessage(messages.selectedProducts)}
           handleDeleteProduct={handleCheckChange}

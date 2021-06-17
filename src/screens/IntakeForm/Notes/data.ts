@@ -21,3 +21,14 @@ export const GetColorsQuery = gql`
     }
   }
 `
+
+export const getUsers = gql`
+  query GetUsersNameQuery($pattern: String!) {
+    userSearch: getUserSearch(pattern: $pattern) {
+      id
+      name
+      email
+      shortId: short_id
+    }
+  }
+`

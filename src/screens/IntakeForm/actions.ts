@@ -43,7 +43,9 @@ import {
   SET_HIGHLIGHT,
   SET_FROM_DESIGN,
   SET_PAGINATION_DATA,
-  SET_SELECTED_DESIGN
+  SET_SELECTED_DESIGN,
+  SET_ADMIN_PROJECT_USER_ID,
+  SET_USER_TO_SEARCH
 } from './constants'
 
 export const selectElementAction = (elementId: number, listName: string, index?: number) => ({
@@ -141,7 +143,7 @@ export const deselectLockerItemAction = (elementId: number, listName: string) =>
 export const onSelectTeamSizeAction = (size: string) => ({
   type: SELECT_TEAM_SIZE,
   size
-}) 
+})
 
 export const onSetInputAction = (key: string, value: string) => ({
   type: SET_INPUT,
@@ -181,7 +183,7 @@ export const onExpandInspirationAction = (
   name: string,
   isSelected: boolean,
   tags: string[]
-  ) => ({
+) => ({
   type: ON_EXPAND_INSPIRATION,
   inspirationId,
   image,
@@ -270,4 +272,14 @@ export const changeLocalNameAction = (id: number, value: string) => ({
 export const setFileTermsAction = (checked: boolean) => ({
   type: SET_FILE_TERMS,
   checked
+})
+
+export const setAdminProjectUserIdAction = (userId: string) => ({
+  type: SET_ADMIN_PROJECT_USER_ID,
+  userId
+})
+
+export const setUserToSearchAction = (value: string) => ({
+  type: SET_USER_TO_SEARCH,
+  value
 })

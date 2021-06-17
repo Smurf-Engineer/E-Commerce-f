@@ -398,13 +398,13 @@ const mapStateToProps = (state: any) => {
 }
 
 const AddToCartEnhanced = compose(
-  withApollo,
+  (comp) => withApollo(comp, { withRef: true }),
   connect(
     mapStateToProps,
     { getTotalItemsIncart },
     null,
     { withRef: true }
-  )
+  ),
 )(AddToCartButton)
 
 export default AddToCartEnhanced

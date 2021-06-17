@@ -7,6 +7,7 @@ interface ProductsProps {
   total?: number
   src?: string
   open?: boolean
+  displayBlock?: boolean
 }
 
 export const Container = styled.div`
@@ -36,7 +37,7 @@ export const Container = styled.div`
     opacity: 1;
     opacity: ${({ total = 0 }: ProductsProps) => total > 0 ? '1' : '0'};
     top:  ${({ total = 0, open }: ProductsProps) => total > 0 ?
-      (!open ? '-134px' : '50px') : '50px'};
+    (!open ? '-134px' : '50px') : '50px'};
   }
 `
 
@@ -59,7 +60,8 @@ export const HeaderMobile = styled.div`
 `
 
 export const Products = styled.div`
-  display: flex;
+  display: ${({ displayBlock }: ProductsProps) => displayBlock ? 'block' : 'flex'};
+  overflow-y: ${({ displayBlock }: ProductsProps) => displayBlock ? 'auto' : 'visible'};
   max-height: ${({ total }: ProductsProps) => total > 0 ? '400px' : '0'};
   transition: all 0.4s ease;
   @media (max-width: 768px) {
@@ -76,6 +78,10 @@ export const ProductThumbnail = styled.div`
   width: 160px;
   padding: 6px;
   margin-right: 10px;
+  max-width: 160px;
+  display: ${({ displayBlock }: ProductsProps) => displayBlock ? 'inline-block' : 'block'};
+  margin-top: ${({ displayBlock }: ProductsProps) => displayBlock ? '3px' : '0px'};
+  margin-bottom: ${({ displayBlock }: ProductsProps) => displayBlock ? '3px' : '0px'};
   @media (max-width: 768px) {
     display: inline-block;
   }
