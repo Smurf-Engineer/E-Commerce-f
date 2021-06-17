@@ -35,11 +35,11 @@ import {
   DocIcon,
   LockerGrid
 } from './styledComponents'
-import { getFileNameFromUrl } from '../../../utils/utilsFiles'
+import { getFileNameFromUrl } from '../../../utils/utilsFiles'
 import ColorBar from '../../../components/ColorBar'
 import messages from './messages'
 import { Message, InspirationType, ImageFile, UserType, Product, DesignType } from '../../../types/common'
-import { Sections,  CUSTOM_PALETTE_INDEX, InspirationTag } from '../constants'
+import { Sections, CUSTOM_PALETTE_INDEX, InspirationTag } from '../constants'
 import { DATE_FORMAT, DOCX_TYPE, DOC_TYPE, PDF_TYPE, ZIP_TYPE } from '../../../constants'
 import ProductThumbnailStore from '../../../components/ProductThumbnailStore'
 
@@ -65,38 +65,39 @@ interface Props extends RouteComponentProps<any> {
   selectedTeamSize?: string
   lockerDesign: DesignType
   estimatedDate?: string
+  adminProject?: boolean
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
 }
 
 export class Review extends React.Component<Props, {}> {
   goToNotes = () => {
-    const { goToPage } = this.props
+    const { goToPage } = this.props
     zenscroll.toY(0, 0)
     goToPage(Sections.NOTES)
   }
   goToInspiration = () => {
-    const { goToPage } = this.props
+    const { goToPage } = this.props
     zenscroll.toY(0, 0)
     goToPage(Sections.INSPIRATION)
   }
   goToColor = () => {
-    const { goToPage } = this.props
+    const { goToPage } = this.props
     zenscroll.toY(0, 0)
     goToPage(Sections.COLORS)
   }
   goToFiles = () => {
-    const {goToPage } = this.props
+    const { goToPage } = this.props
     zenscroll.toY(0, 0)
     goToPage(Sections.FILES)
   }
   goToNotifications = () => {
-    const { goToPage } = this.props
+    const { goToPage } = this.props
     zenscroll.toY(0, 0)
     goToPage(Sections.NOTIFICATIONS)
   }
   goToLocker = () => {
-    const {goToPage } = this.props
+    const { goToPage } = this.props
     zenscroll.toY(0, 0)
     goToPage(Sections.LOCKER)
   }
@@ -120,11 +121,12 @@ export class Review extends React.Component<Props, {}> {
       colorLabels,
       paletteName,
       fromScratch,
-      currentCurrency
+      currentCurrency,
+      adminProject
     } = this.props
     const inspirationItems =
       filter(inspiration, (inspirationItem: InspirationType) => includes(inspirationSelectedItems, inspirationItem.id))
-    
+
     let contentState = null
     try {
       contentState = typeof window !== 'undefined' ? JSON.parse(projectDescription) : null
@@ -138,8 +140,8 @@ export class Review extends React.Component<Props, {}> {
       name: designName,
       image: lockerImage,
       createdAt
-    } = lockerDesign || {}
-    const { id: productId, description: lockerDescription, type: lockerType } = productLocker || {}
+    } = lockerDesign || {}
+    const { id: productId, description: lockerDescription, type: lockerType } = productLocker || {}
     return (
       <MainContainer>
         <Container>
@@ -147,7 +149,7 @@ export class Review extends React.Component<Props, {}> {
             <ProjectData>
               <DataRow>
                 <DataText>{formatMessage(messages.name)}</DataText>
-                <DataValue>{projectName || '-'}</DataValue>
+                <DataValue>{projectName || '-'}</DataValue>
                 <EditButton onClick={this.goToNotes}>
                   {formatMessage(messages.edit)}
                 </EditButton>
@@ -158,7 +160,7 @@ export class Review extends React.Component<Props, {}> {
               </DataRow>
               <DataRow>
                 <DataText>{formatMessage(messages.teamSize)}</DataText>
-                <DataValue>{selectedTeamSize || '-'}</DataValue>
+                <DataValue>{selectedTeamSize || '-'}</DataValue>
                 <EditButton onClick={this.goToNotifications}>
                   {formatMessage(messages.edit)}
                 </EditButton>
@@ -182,12 +184,12 @@ export class Review extends React.Component<Props, {}> {
               </Column>
               <Column>
                 <Text>
-                  {contentState ?  parse(draftToHtml(contentState)) : '-'}
+                  {contentState ? parse(draftToHtml(contentState)) : '-'}
                 </Text>
               </Column>
             </Row>
           </Ideas>
-          {fromScratch ? <Inspiration>
+          {!adminProject && fromScratch ? <Inspiration>
             <EditButton onClick={this.goToInspiration}>
               {formatMessage(messages.edit)}
             </EditButton>
@@ -198,11 +200,11 @@ export class Review extends React.Component<Props, {}> {
             </Row>
             <Row>
               <Images>
-                {inspirationItems.map(({ image, assetType, id }, index) => 
+                {inspirationItems.map(({ image, assetType, id }, index) =>
                   <ImageContainer key={index}>
                     <Image src={image} />
                     <InspirationName>
-                      {assetType && 
+                      {assetType &&
                         `${InspirationTag[assetType]}${id ? id.toString().padStart(4, '0') : '-'}`
                       }
                     </InspirationName>
@@ -211,7 +213,7 @@ export class Review extends React.Component<Props, {}> {
               </Images>
             </Row>
           </Inspiration> : null}
-          {fromScratch ? <Color>
+          {!adminProject && fromScratch ? <Color>
             <EditButton onClick={this.goToColor}>
               {formatMessage(messages.edit)}
             </EditButton>
@@ -234,7 +236,7 @@ export class Review extends React.Component<Props, {}> {
               small={true}
             />
           </Color> : null}
-          <Files>
+          {!adminProject && <Files>
             <EditButton onClick={this.goToFiles}>
               {formatMessage(messages.edit)}
             </EditButton>
@@ -254,22 +256,43 @@ export class Review extends React.Component<Props, {}> {
                     <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
                   </ImageContainer>)
                 }) : formatMessage(messages.noFiles)}
-                </Images>
-              </Row>
-            </Files>
-            <Products>
-              <EditButton onClick={this.goToFiles}>
-                {formatMessage(messages.edit)}
-              </EditButton>
-              <Row>
-                <Column>
-                  <StrongText>{formatMessage(messages.products)}</StrongText>
-                </Column>
-              </Row>
-              <Row>
-                {selectedItems.map((product: Product) => {
-                  const {
-                    images,
+              </Images>
+            </Row>
+          </Files>}
+          <Products>
+            <EditButton onClick={this.goToFiles}>
+              {formatMessage(messages.edit)}
+            </EditButton>
+            <Row>
+              <Column>
+                <StrongText>{formatMessage(messages.products)}</StrongText>
+              </Column>
+            </Row>
+            <Row>
+              {selectedItems.map((product: Product) => {
+                const {
+                  images,
+                  type,
+                  description,
+                  isTopProduct,
+                  priceRange,
+                  customizable,
+                  colors,
+                  collections
+                } = product
+
+                return (<ProductThumbnail
+                  key={product.id}
+                  id={product.id}
+                  images={images[0]}
+                  product={product}
+                  yotpoId={product.yotpoId}
+                  disableSlider={true}
+                  hideCustomButton={true}
+                  hideQuickView={true}
+                  clickDisabled={true}
+                  {...{
+                    currentCurrency,
                     type,
                     description,
                     isTopProduct,
@@ -277,63 +300,43 @@ export class Review extends React.Component<Props, {}> {
                     customizable,
                     colors,
                     collections
-                  } = product
-
-                  return (<ProductThumbnail
-                    key={product.id}
-                    id={product.id}
-                    images={images[0]}
-                    product={product}
-                    yotpoId={product.yotpoId}
+                  }}
+                />)
+              })}
+            </Row>
+          </Products>
+          {lockerDesign && designId &&
+            <Products>
+              <EditButton onClick={this.goToLocker}>
+                {formatMessage(messages.edit)}
+              </EditButton>
+              <Row>
+                <Column>
+                  <StrongText>{formatMessage(messages.locker)}</StrongText>
+                </Column>
+              </Row>
+              <Row>
+                <LockerGrid>
+                  <ProductThumbnailStore
+                    {...{ productId }}
+                    type={lockerType}
+                    description={lockerDescription}
+                    product={productLocker}
+                    name={designName}
+                    image={lockerImage}
+                    key={designId}
+                    id={shortId}
+                    withCheckbox={false}
                     disableSlider={true}
                     hideCustomButton={true}
                     hideQuickView={true}
                     clickDisabled={true}
-                    {...{
-                      currentCurrency,
-                      type,
-                      description,
-                      isTopProduct,
-                      priceRange,
-                      customizable,
-                      colors,
-                      collections
-                    }}
-                  />)})}
+                    date={createdAt}
+                  />
+                </LockerGrid>
               </Row>
             </Products>
-            {lockerDesign && designId &&
-              <Products>
-                <EditButton onClick={this.goToLocker}>
-                  {formatMessage(messages.edit)}
-                </EditButton>
-                <Row>
-                  <Column>
-                    <StrongText>{formatMessage(messages.locker)}</StrongText>
-                  </Column>
-                </Row>
-                <Row>
-                  <LockerGrid>
-                    <ProductThumbnailStore
-                      {...{ productId }}
-                      type={lockerType}
-                      description={lockerDescription}
-                      product={productLocker}
-                      name={designName}
-                      image={lockerImage}
-                      key={designId}
-                      id={shortId}
-                      withCheckbox={false}
-                      disableSlider={true}
-                      hideCustomButton={true}
-                      hideQuickView={true}
-                      clickDisabled={true}  
-                      date={createdAt}
-                    />
-                  </LockerGrid>
-                </Row>
-              </Products>
-            }
+          }
         </Container>
       </MainContainer>
     )

@@ -3,8 +3,16 @@ import gql from 'graphql-tag'
 
 export const saveProject = graphql(
   gql`
-    mutation createProDesignProject($proDesignProject: ProDesignProjectInput!) {
-      createProDesignProject(proDesignProject: $proDesignProject) {
+    mutation createProDesignProject(
+      $proDesignProject: ProDesignProjectInput!,
+      $admProject: Boolean,
+      $userId: String
+    ) {
+      createProDesignProject(
+        proDesignProject: $proDesignProject,
+        admProject: $admProject,
+        userId: $userId
+      ) {
         message
       }
     }

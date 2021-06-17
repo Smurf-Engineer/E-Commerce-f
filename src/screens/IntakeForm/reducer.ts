@@ -2,7 +2,7 @@
  * ShoppingCartPage Reducer - Created by gustavomedina on 02/05/18.
  */
 
- // TODO: Unit tests for each case
+// TODO: Unit tests for each case
 import { fromJS } from 'immutable'
 import { ImageFile, Reducer } from '../../types/common'
 import {
@@ -46,7 +46,9 @@ import {
   SET_OPEN_BUILD,
   SET_HIGHLIGHT,
   SET_PAGINATION_DATA,
-  SET_SELECTED_DESIGN
+  SET_SELECTED_DESIGN,
+  SET_ADMIN_PROJECT_USER_ID,
+  SET_USER_TO_SEARCH
 } from './constants'
 export const initialState = fromJS({
   selectedItems: [],
@@ -96,7 +98,9 @@ export const initialState = fromJS({
   fileIdToRename: null,
   newFileName: '',
   renamingFile: false,
-  fileTermsAccepted: false
+  fileTermsAccepted: false,
+  adminProjectUserId: '',
+  userToSearch: ''
 })
 
 const intakeFormReducer: Reducer<any> = (
@@ -105,21 +109,21 @@ const intakeFormReducer: Reducer<any> = (
 ) => {
   switch (action.type) {
     case SELECT_ELEMENT: {
-      const { listName, elementId, index } = action
+      const { listName, elementId, index } = action
       const selectedItems = state.get(listName)
-      const addItem = index >= 0  ? selectedItems.splice(index, 1, elementId) : selectedItems.push(elementId)
+      const addItem = index >= 0 ? selectedItems.splice(index, 1, elementId) : selectedItems.push(elementId)
       return state.merge({ [listName]: addItem, selectedPaletteIndex: -2 })
     }
     case SET_HIGHLIGHT:
       return state.set('highlight', action.active)
     case DESELECT_ELEMENT: {
-      const { listName, elementId, index } = action
+      const { listName, elementId, index } = action
       const indexOfListingToDelete = index ||
         state
-        .get(listName)
-        .findIndex((productType: any) => {
-          return  (listName === 'selectedItems' ? productType.get('id') : productType) === elementId
-        })
+          .get(listName)
+          .findIndex((productType: any) => {
+            return (listName === 'selectedItems' ? productType.get('id') : productType) === elementId
+          })
       const selectedItems = state.get(listName)
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
       return state.merge({ [listName]: updatedSelectedItems })
@@ -129,9 +133,9 @@ const intakeFormReducer: Reducer<any> = (
     case GO_TO_NEXT_PAGE:
       return state.set('currentScreen', action.page)
     case SET_INSPIRATION_PAGE:
-      const { skip, newPage } = action
+      const { skip, newPage } = action
       return state.merge({
-        inspirationSkip:  skip,
+        inspirationSkip: skip,
         inspirationPage: newPage
       })
     case SET_SELECTED_DESIGN:
@@ -155,7 +159,7 @@ const intakeFormReducer: Reducer<any> = (
     case SET_INSPIRATION_LOADING:
       return state.set('inspirationLoading', action.loading)
     case SET_PALETTE: {
-      const { accentColors, primaryColor, index } = action
+      const { accentColors, primaryColor, index } = action
       return state.merge({
         selectedEditColors: accentColors,
         selectedEditPrimaryColor: [primaryColor],
@@ -184,7 +188,7 @@ const intakeFormReducer: Reducer<any> = (
       })
     }
     case DESELECT_LOCKER_FILE: {
-      const { listName, elementId } = action
+      const { listName, elementId } = action
       const indexOfListingToDelete = state
         .get(listName)
         .findIndex((file: ImageFile) => {
@@ -197,7 +201,7 @@ const intakeFormReducer: Reducer<any> = (
     case SELECT_TEAM_SIZE:
       return state.set('selectedTeamSize', action.size)
     case SET_INPUT:
-      return state.merge({ [action.key]: action.value})
+      return state.merge({ [action.key]: action.value })
     case ON_SELECT_DATE:
       return state.merge({
         estimatedDate: action.date,
@@ -244,13 +248,13 @@ const intakeFormReducer: Reducer<any> = (
         selectedPrimaryColor: [],
         selectedEditColors: [],
         selectedEditPrimaryColor: [],
-        })
+      })
     case SELECT_PRODUCT: {
-        const { product } = action
-        const selectedItems = state.get('selectedItems')
-        const addItem = selectedItems.push(fromJS(product))
-        return state.merge({ selectedItems: addItem })
-      }
+      const { product } = action
+      const selectedItems = state.get('selectedItems')
+      const addItem = selectedItems.push(fromJS(product))
+      return state.merge({ selectedItems: addItem })
+    }
     case ADD_TAG: {
       const { value } = action
       const inspirationTags = state.get('inspirationTags')
@@ -314,6 +318,10 @@ const intakeFormReducer: Reducer<any> = (
     }
     case SET_FILE_TERMS:
       return state.merge({ fileTermsAccepted: action.checked, highlight: false })
+    case SET_ADMIN_PROJECT_USER_ID:
+      return state.merge({ adminProjectUserId: action.userId })
+    case SET_USER_TO_SEARCH:
+      return state.merge({ userToSearch: action.value })
     default:
       return state
   }

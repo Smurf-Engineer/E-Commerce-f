@@ -43,6 +43,8 @@ export const SET_PAGINATION_DATA = `${namespace}/SET_PAGINATION_DATA`
 export const SET_SELECTED_DESIGN = `${namespace}/SET_SELECTED_DESIGN`
 export const SET_OPEN_BUILD = `${namespace}/SET_OPEN_BUILD`
 export const SET_HIGHLIGHT = `${namespace}/SET_HIGHLIGHT`
+export const SET_ADMIN_PROJECT_USER_ID = `${namespace}/SET_ADMIN_PROJECT_USER_ID`
+export const SET_USER_TO_SEARCH = `${namespace}/SET_USER_TO_SEARCH`
 
 export const KICKSTART = 'kickstart'
 export const GRAPHIC = 'graphic'
@@ -74,94 +76,94 @@ export const INSPIRATION_SELECTEED_ITEMS = 'inspirationSelectedItems'
 
 export const titleTexts = {
   [Sections.LOCKER]:
-    {
-      title: 'chooseDesigns',
-      body: 'designsDescription',
-      bodyWithTip: '',
-      action: false,
-      tipTitle: '',
-      tipBody: '',
-      tipAccept: ''
-    },
+  {
+    title: 'chooseDesigns',
+    body: 'designsDescription',
+    bodyWithTip: '',
+    action: false,
+    tipTitle: '',
+    tipBody: '',
+    tipAccept: ''
+  },
   [Sections.PATHWAY]:
-    {
-      title: 'designPathway',
-      body: 'designPathwayBody',
-      bodyWithTip: '',
-      action: false,
-      tipTitle: '',
-      tipBody: '',
-      tipAccept: ''
-    },
+  {
+    title: 'designPathway',
+    body: 'designPathwayBody',
+    bodyWithTip: '',
+    action: false,
+    tipTitle: '',
+    tipBody: '',
+    tipAccept: ''
+  },
   [Sections.PRODUCTS]:
-    {
-      title: 'chooseProducts',
-      body: 'productsDescription',
-      bodyWithTip: '',
-      action: false,
-      tipTitle: '',
-      tipBody: '',
-      tipAccept: ''
-    },
+  {
+    title: 'chooseProducts',
+    body: 'productsDescription',
+    bodyWithTip: '',
+    action: false,
+    tipTitle: '',
+    tipBody: '',
+    tipAccept: ''
+  },
   [Sections.INSPIRATION]:
-    {
-      title: 'inspiration',
-      body: 'inspirationBody',
-      bodyWithTip: 'inspirationTip',
-      action: false,
-      tipTitle: '',
-      tipBody: '',
-      tipAccept: ''
-    },
+  {
+    title: 'inspiration',
+    body: 'inspirationBody',
+    bodyWithTip: 'inspirationTip',
+    action: false,
+    tipTitle: '',
+    tipBody: '',
+    tipAccept: ''
+  },
   [Sections.COLORS]:
-    {
-      title: 'colors',
-      body: '',
-      bodyWithTip: 'colorsBody',
-      action: true,
-      tipTitle: 'colorsTipTitle',
-      tipBody: 'colorsTipBody',
-      tipAccept: 'gotIt'
-    },
-    [Sections.FILES]:
-    {
-      title: 'fileUploadTitle',
-      body: 'fileUploadBody',
-      secondaryBody: 'fileUploadSecondary',
-      bodyWithTip: 'fileUploadTips',
-      action: true,
-      tipTitle: 'fileUploadTipTitle',
-      tipBody: 'fileUploadTipBody',
-      tipAccept: 'gotIt'
-    },
+  {
+    title: 'colors',
+    body: '',
+    bodyWithTip: 'colorsBody',
+    action: true,
+    tipTitle: 'colorsTipTitle',
+    tipBody: 'colorsTipBody',
+    tipAccept: 'gotIt'
+  },
+  [Sections.FILES]:
+  {
+    title: 'fileUploadTitle',
+    body: 'fileUploadBody',
+    secondaryBody: 'fileUploadSecondary',
+    bodyWithTip: 'fileUploadTips',
+    action: true,
+    tipTitle: 'fileUploadTipTitle',
+    tipBody: 'fileUploadTipBody',
+    tipAccept: 'gotIt'
+  },
   [Sections.NOTES]:
-    {
-      title: 'designNotes',
-      body: 'designNotesBody',
-      bodyWithTip: '',
-      action: false,
-      tipTitle: '',
-      tipBody: '',
-      tipAccept: ''
-    },
+  {
+    title: 'designNotes',
+    body: 'designNotesBody',
+    bodyWithTip: '',
+    action: false,
+    tipTitle: '',
+    tipBody: '',
+    tipAccept: ''
+  },
   [Sections.NOTIFICATIONS]:
-    {
-      title: 'notifications',
-      body: 'notificationsBody',
-      bodyWithTip: 'designNotesBodyTip',
-      action: true,
-      tipTitle: 'artAndDelivery',
-      tipBody: 'designNotesModal',
-      tipAccept: 'gotIt'
-    },
+  {
+    title: 'notifications',
+    body: 'notificationsBody',
+    bodyWithTip: 'designNotesBodyTip',
+    action: true,
+    tipTitle: 'artAndDelivery',
+    tipBody: 'designNotesModal',
+    tipAccept: 'gotIt'
+  },
   [Sections.REVIEW]:
-    {
-      title: 'reviewTitle',
-      body: 'reviewBody',
-      bodyWithTip: '',
-      action: false,
-      tipTitle: '',
-      tipBody: '',
-      tipAccept: ''
-    }
+  {
+    title: 'reviewTitle',
+    body: 'reviewBody',
+    bodyWithTip: '',
+    action: false,
+    tipTitle: '',
+    tipBody: '',
+    tipAccept: ''
+  }
 }

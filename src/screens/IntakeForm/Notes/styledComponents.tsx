@@ -1,5 +1,7 @@
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
 import Input from 'antd/lib/input'
+import Search from 'antd/lib/auto-complete'
 import { GRAY_DARK, RED, WHITE, GRAY_LIGHTEST, BLUE, GRAY_ANTDESIGN } from '../../../theme/colors'
 
 interface DivProps {
@@ -96,7 +98,7 @@ export const CheckBoxContainer = styled.div`
 `
 
 export const Title = styled.div`
-  margin-right: 20px
+  margin-right: 20px;
   @media (max-width: 768px) {
     margin-bottom: 10px;
   }
@@ -151,4 +153,14 @@ export const MultipleItemsButton = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+export const StyledSearch = styled(Search)`
+  width: 100%;
+`
+
+export const SearchButton = styled(Button)`
+  height: 100%;
+  border: none;
+  width: 35px;
 `

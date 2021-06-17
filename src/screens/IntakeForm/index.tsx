@@ -153,6 +153,8 @@ interface Props extends RouteComponentProps<any> {
   currentPage: number
   selectedDesign: string
   lockerDesign: DesignType
+  adminProjectUserId: string
+  userToSearch: string
   setDesignSelectedAction: (id: string, design: DesignType) => void
   setPaginationDataAction: (offset: number, page: number) => void
   setHighlight: (active: boolean) => void
@@ -178,8 +180,8 @@ interface Props extends RouteComponentProps<any> {
   createProject: (variables: {}) => Promise<MessagePayload>
   onSetSavingIntake: (saving: boolean) => void
   onSetSuccessModalOpen: (open: boolean) => void
-  onExpandInspirationAction: 
-    (inspirationId: number, image: string, name: string, isSelected: boolean, tags: string[]) => void
+  onExpandInspirationAction:
+  (inspirationId: number, image: string, name: string, isSelected: boolean, tags: string[]) => void
   onCloseInspirationAction: () => void
   setFromScratchAction: (fromScratch: boolean) => void
   setFromDesignAction: (fromDesign: boolean) => void
@@ -198,9 +200,11 @@ interface Props extends RouteComponentProps<any> {
   onSetRenamingFile: (loading: boolean) => void
   changeLocalNameAction: (id: number, value: string) => void
   setFileTermsAction: (checked: boolean) => void
+  setAdminProjectUserIdAction: (userId: string) => void
+  setUserToSearchAction: (value: string) => void
 }
 
-export class IntakeFormPage extends React.Component<Props, {}> {  
+export class IntakeFormPage extends React.Component<Props, {}> {
   swipeableActions = null
   state = {
     isMobile: false,
@@ -212,7 +216,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   componentDidMount() {
     const { location, selectedItems, selectProductAction } = this.props
     if (location.state && !selectedItems.length) {
-      const { state: { product } } = location
+      const { state: { product } } = location
       selectProductAction(product)
     }
     const isMobile = window.matchMedia(
@@ -227,17 +231,17 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       })
     }
     this.setState({ isMobile, isTablet })
-    const { location: { search }, goToPage } = this.props
+    const { location: { search }, goToPage } = this.props
     const queryParams = queryString.parse(search)
-    const { id: projectId } = queryParams || {}
-    if (!!projectId) {
+    const { id: projectId, admProject } = queryParams || {}
+    if (!!projectId || !!admProject) {
       goToPage(Sections.PRODUCTS)
     }
   }
   componentDidUpdate(oldProps: Props) {
     const { user: oldUser } = oldProps
     const { user, fromDesign } = this.props
-    const { retrySave } = this.state
+    const { retrySave } = this.state
     if (retrySave && oldUser !== user && user) {
       this.setState({ retrySave: false })
       this.handleOnContinue(fromDesign)
@@ -250,7 +254,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   handleFromScratch = () => {
     const { setFromScratchAction } = this.props
-    const { isMobile, isTablet } = this.state
+    const { isMobile, isTablet } = this.state
     setFromScratchAction(true)
     this.handleOnContinue()
     if (isMobile || isTablet) {
@@ -259,7 +263,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleFromDesign = () => {
-    const { setFromDesignAction, user } = this.props
+    const { setFromDesignAction, user } = this.props
     setFromDesignAction(true)
     if (!user) {
       this.setState({ retrySave: true })
@@ -270,10 +274,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   showInspirationModal = () => {
-    const { intl: { formatMessage } } = this.props
+    const { intl: { formatMessage } } = this.props
     const title = formatMessage(messages.inspiration)
     const body = [
-      formatMessage(messages.inspirationBody), 
+      formatMessage(messages.inspirationBody),
       <Subtitle key={1} small={true} action={true}>
         {formatMessage(messages.inspirationTip)}
       </Subtitle>
@@ -297,7 +301,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     } = this.props
     onSetRenamingFile(true)
     try {
-      const { fileIdToRename, newFileName } = this.props
+      const { fileIdToRename, newFileName } = this.props
       const results = await renameFileName({
         variables: { id: fileIdToRename, value: newFileName }
       })
@@ -315,11 +319,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   addManyProducts = async () => {
-    const { selectedItems, onSetSavingIntake, addProductsProject, location: { search } } = this.props
+    const { selectedItems, onSetSavingIntake, addProductsProject, location: { search } } = this.props
     try {
       onSetSavingIntake(true)
       const queryParams = queryString.parse(search)
-      const { id: projectId, admUser } = queryParams || {}
+      const { id: projectId, admUser } = queryParams || {}
 
       const products = selectedItems.map(({ id }) => id)
       const results = await addProductsProject({
@@ -347,11 +351,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       fromDesign: fromLocker,
       fromScratch,
       history,
-      intl: { formatMessage } 
+      intl: { formatMessage }
     } = this.props
-    const { isMobile, isTablet } = this.state
+    const { isMobile, isTablet } = this.state
     const queryParams = queryString.parse(search)
-    const { id: projectId, admUser } = queryParams || {}
+    const { id: projectId, admUser, admProject } = queryParams || {}
     const productId = get(selectedItems, '[0].id', '')
     const fromDesign = designMode || fromLocker
     if (!!admUser && !!projectId) {
@@ -363,11 +367,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           style: buttonStyle
         },
         onOk: async () => await this.addManyProducts(),
-        content: 
+        content:
           <RasterContent>
             <InfoText
               dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.addMany, { count: selectedItems.length })
+                __html: formatMessage(messages.addMany, { count: selectedItems.length })
               }}
             />
           </RasterContent>
@@ -376,7 +380,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     if (!!projectId && !!productId && !admUser) {
       return history.push(`/approval?project=${projectId}&product=${productId}`)
     }
-    if (isMobile || isTablet) {
+    if (isMobile || isTablet) {
       const node = ReactDOM.findDOMNode(this.intakeRef) as HTMLElement
       const intakeScroller = zenscroll.createScroller(node, 0)
       intakeScroller.toY(0, 0)
@@ -386,12 +390,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     if (currentScreen !== Sections.REVIEW) {
       if (currentScreen === Sections.LOCKER && fromDesign) {
         return goToPage(Sections.PRODUCTS)
-      } 
+      }
       if (currentScreen === Sections.PATHWAY && fromDesign) {
         return goToPage(Sections.LOCKER)
       }
-      if (currentScreen === Sections.PRODUCTS && (!fromScratch || fromDesign)) {
-        return goToPage(currentScreen + 3)
+      if (currentScreen === Sections.PRODUCTS) {
+        if (!fromScratch || fromDesign) {
+          return goToPage(currentScreen + 3)
+        } else if (!!admProject) {
+          return goToPage(Sections.NOTES)
+        }
       }
       return goToPage(currentScreen + 1)
     }
@@ -417,6 +425,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       sendSms,
       sendEmail,
       projectCategories,
+      adminProjectUserId,
       createProject,
       onSetSavingIntake,
       onSetSuccessModalOpen
@@ -425,7 +434,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const primary = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
       ? selectedPrimaryColor[0] : selectedEditPrimaryColor[0]
     const accents = selectedPaletteIndex === CUSTOM_PALETTE_INDEX
-                ? selectedColors : selectedEditColors
+      ? selectedColors : selectedEditColors
     const palette = {
       primary_color: primary,
       accent_1: accents.length >= 0 ? accents[0] : null,
@@ -458,7 +467,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     }
     try {
       const results = await createProject({
-        variables: { proDesignProject }
+        variables: {
+          proDesignProject,
+          admProject,
+          userId: admProject ? adminProjectUserId : ''
+        }
       })
       const successMessage = get(results, 'data.createProDesignProject.message')
       message.success(successMessage)
@@ -473,7 +486,12 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnPrevious = () => {
-    const { goToPage, currentScreen, fromScratch, fromDesign, setFromDesignAction } = this.props
+    const { goToPage, currentScreen, fromScratch, fromDesign, setFromDesignAction, location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const { admProject } = queryParams || {}
+    if (currentScreen === Sections.NOTES && admProject) {
+      return goToPage(Sections.PRODUCTS)
+    }
     if (currentScreen === Sections.PRODUCTS && fromDesign) {
       return goToPage(Sections.LOCKER)
     }
@@ -483,7 +501,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     if (currentScreen === Sections.LOCKER && fromDesign) {
       setFromDesignAction(false)
       return goToPage(Sections.PATHWAY)
-    } 
+    }
     return goToPage(currentScreen - 1)
   }
 
@@ -516,18 +534,18 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedTeamSize,
       estimatedDate,
       projectDescription,
-      intl: { formatMessage },
+      intl: { formatMessage },
       fromScratch,
       fileTermsAccepted
     } = this.props
     const continueButtonText = currentScreen ===
       Sections.REVIEW ? formatMessage(messages.submitButtonText) :
-        formatMessage(messages.continueButtonText)
+      formatMessage(messages.continueButtonText)
     const queryParams = queryString.parse(search)
-    const { id: projectId } = queryParams || {}
+    const { id: projectId, admProject } = queryParams || {}
     const previousButtonText = formatMessage(messages.previousButtonText)
     const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
-    switch (screen || currentScreen) {
+    switch (screen || currentScreen) {
       case Sections.LOCKER:
         return {
           continueDisable: !selectedDesign && fromDesign,
@@ -536,8 +554,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.PRODUCTS:
         return {
-          continueDisable: selectedItems.length < 1 || quantities > 3,
-          showPreviousButton: !projectId,
+          continueDisable: selectedItems.length < 1 || (!admProject && quantities > 3),
+          showPreviousButton: !projectId && !admProject,
           continueButtonText,
           previousButtonText
         }
@@ -561,7 +579,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           continueDisable:
             fromScratch && (selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
               (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
-                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)),
+              (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)),
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
@@ -583,7 +601,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       case Sections.NOTIFICATIONS:
         return {
           continueDisable: !selectedTeamSize
-          || !estimatedDate,
+            || !estimatedDate,
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
@@ -597,7 +615,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         return {}
     }
   }
-  
+
   handleOnSelectLockerFile = (file: ImageFile) => {
     const { setFileAction } = this.props
     setFileAction(file, SELECTED_LCOKER_FILES)
@@ -614,13 +632,26 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnReturnHome = () => {
-    const { onSetSuccessModalOpen } = this.props
+    const { onSetSuccessModalOpen, location: { search } } = this.props
     onSetSuccessModalOpen(false)
-    window.location.replace(`/account?option=proDesignProjects`)
+    const queryParams = queryString.parse(search)
+    const { admProject } = queryParams || {}
+    if (admProject) {
+      window.location.href = `/admin/prodesign-dashboard`
+    } else {
+      window.location.replace(`/account?option=proDesignProjects`)
+    }
   }
 
   handleOnPressBack = () => {
-    window.location.replace('/')
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const { admProject } = queryParams || {}
+    if (admProject) {
+      window.location.href = `/admin/prodesign-dashboard`
+    } else {
+      window.location.replace('/')
+    }
   }
 
   handleOnselectElementAction = (elementId: number | string, listName: string, index?: number) => {
@@ -630,7 +661,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       inspirationSelectedItems
     } = this.props
     switch (listName) {
-      case INSPIRATION_SELECTEED_ITEMS: { 
+      case INSPIRATION_SELECTEED_ITEMS: {
         if (inspirationSelectedItems.length < 5) {
           onCloseInspirationAction()
           return selectElementAction(elementId, listName, index)
@@ -643,10 +674,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnselectProductAction = (product: Product) => {
-    const { selectProductAction, location: { search }, selectedItems, intl: { formatMessage } } = this.props
+    const { selectProductAction, location: { search }, selectedItems, intl: { formatMessage } } = this.props
     const queryParams = queryString.parse(search)
-    const { id: projectId, admUser } = queryParams || {}
-    if (selectedItems.length < (!!projectId && !admUser ? 1 : 3)) {
+    const { id: projectId, admUser, admProject } = queryParams || {}
+    if (admProject || (selectedItems.length < (!!projectId && !admUser ? 1 : 3))) {
       return selectProductAction(product)
     }
     const title = formatMessage(messages.maxProductsTitle)
@@ -665,7 +696,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           title: (
             <FileTitle
               dangerouslySetInnerHTML={{
-              __html: formatMessage(messages.fileTitle)
+                __html: formatMessage(messages.fileTitle)
               }}
             />
           ),
@@ -681,7 +712,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   <RasterImage src={vector} />
                   <RasterText
                     dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.vectorBody)
+                      __html: formatMessage(messages.vectorBody)
                     }}
                   />
                 </RasterDiv>
@@ -689,7 +720,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   <RasterImage src={raster} />
                   <RasterText
                     dangerouslySetInnerHTML={{
-                    __html: formatMessage(messages.rasterBody)
+                      __html: formatMessage(messages.rasterBody)
                     }}
                   />
                 </RasterDiv>
@@ -699,9 +730,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         })
         break
       default: {
-        const render = 
+        const render =
           typeof bodyNodes !== 'string' ? bodyNodes.map((node, index) => <InfoBody key={index}>{node}</InfoBody>)
-          : <InfoBody dangerouslySetInnerHTML={{ __html: bodyNodes}} />
+            : <InfoBody dangerouslySetInnerHTML={{ __html: bodyNodes }} />
         info({
           title: (
             <ModalTitle>
@@ -716,8 +747,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           content: render
         })
       }
-      // tslint:disable-next-line: align
-      break
+        // tslint:disable-next-line: align
+        break
     }
   }
 
@@ -742,7 +773,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           this.showAlert(title, body, accept)
         }
         break
-      case Sections.FILES: 
+      case Sections.FILES:
         highlight = !fileTermsAccepted
         scrollCoords = 150
         break
@@ -790,7 +821,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   showHighlight = (active: boolean, coords: number) => {
     const { setHighlight } = this.props
-    const { isTablet, isMobile } = this.state
+    const { isTablet, isMobile } = this.state
     if (isTablet || isMobile) {
       const node = ReactDOM.findDOMNode(this.intakeRef) as HTMLElement
       const intakeScroller = zenscroll.createScroller(node, 0)
@@ -802,7 +833,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   showTips = () => {
-    const { intl: { formatMessage }, currentScreen } = this.props
+    const { intl: { formatMessage }, currentScreen } = this.props
     const title = formatMessage(messages[titleTexts[currentScreen].tipTitle])
     const body = formatMessage(messages[titleTexts[currentScreen].tipBody])
     const accept = formatMessage(messages[titleTexts[currentScreen].tipAccept])
@@ -812,7 +843,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   render() {
     const {
-      intl: { formatMessage },
+      intl: { formatMessage },
       intl,
       history,
       responsive,
@@ -896,10 +927,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       setDescriptionAction,
       openRenameModalAction,
       onRenameChangeAction,
-      setFileTermsAction
+      setFileTermsAction,
+      setAdminProjectUserIdAction,
+      userToSearch,
+      setUserToSearchAction
     } = this.props
     const { isMobile, isTablet, richTextEditorReady } = this.state
-    
+
     let arrayColors = []
     if (colorsList && !colorsList.loading) {
       try {
@@ -911,7 +945,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
-    const { id: projectId, admUser } = queryParams || {}
+    const { id: projectId, admUser, admProject } = queryParams || {}
     const paletteName = get(dataColor, ['rows', selectedPaletteIndex, 'name'], '')
 
     const colorLabels = arrayColors.reduce((obj, { value, name }: Color) => {
@@ -929,19 +963,19 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const currentTitle = !!projectId && !admUser ? 'addProduct' : titleTexts[currentScreen].title
     const showTopNav = currentTitle.length || currentSubtitle.length || currentSubtitleTips.length
     const navTitle = currentTitle.length ? (<Title>
-        {formatMessage(messages[currentTitle])}
-      </Title>) : null
+      {formatMessage(messages[currentTitle])}
+    </Title>) : null
     const navSubtitle = currentSubtitle.length && (!projectId || !!admUser) ? <Subtitle>
-          {formatMessage(messages[currentSubtitle])}
-      </Subtitle> : null
+      {formatMessage(messages[currentSubtitle])}
+    </Subtitle> : null
 
-    const navTips = currentSubtitleTips.length ? (<Subtitle small={true} action={currentTitleHasAction} 
-        onClick={currentTitleHasAction ? this.showTips : null}>
-          {formatMessage(messages[currentSubtitleTips])}
-        </Subtitle>) : null
+    const navTips = currentSubtitleTips.length ? (<Subtitle small={true} action={currentTitleHasAction}
+      onClick={currentTitleHasAction ? this.showTips : null}>
+      {formatMessage(messages[currentSubtitleTips])}
+    </Subtitle>) : null
 
     const showModal = (isTablet || isMobile) && currentScreen === Sections.INSPIRATION
-  
+
     const topNavHeader = showTopNav ?
       <TopNavHeader>
         {navTitle}
@@ -953,15 +987,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           </>
         }
       </TopNavHeader> : null
-    
+
     const navBar = currentScreen > Sections.PATHWAY ?
       <Tabs
-      onSelectTab={this.handleOnSelectTab}
-      currentTab={currentScreen}
-      validate={this.getNavButtonsValidation}
-      cantContinue={validations.continueDisable}
-      {...{ fromScratch }}
-    /> : null
+        onSelectTab={this.handleOnSelectTab}
+        currentTab={currentScreen}
+        validate={this.getNavButtonsValidation}
+        cantContinue={validations.continueDisable}
+        adminProject={admProject}
+        {...{ fromScratch }}
+      /> : null
     return (
       <Layout
         {...{ history, intl }}
@@ -982,33 +1017,33 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             />
             {navBar}
             <Menu
-              {...{validations, savingIntake}}
+              {...{ validations, savingIntake }}
               onPrevious={this.handleOnPrevious}
               onContinue={this.handleOnContinue}
               showMissingFields={this.showMissingFields}
-            /></> : null }
-            {isMobile || isTablet ?
+            /></> : null}
+          {isMobile || isTablet ?
             (<MobileMenuNav
               onContinue={this.handleOnContinue}
               onPrevious={this.handleOnPrevious}
               onSelectTab={this.handleOnSelectTab}
               validate={this.getNavButtonsValidation}
               showMissingFields={this.showMissingFields}
-              currentTab={currentScreen}      
-              {...{validations, savingIntake, fromScratch, formatMessage}}
+              currentTab={currentScreen}
+              {...{ validations, savingIntake, fromScratch, formatMessage }}
             />) : null}
 
           {topNavHeader}
           {currentScreen === Sections.PATHWAY ? (
-            <DesignPathway 
+            <DesignPathway
               fromScratch={this.handleFromScratch}
               fromDesign={this.handleFromDesign}
               loggedIn={!!user}
               existingArtwork={this.handleFromExistingArtwork}
-              {...{formatMessage, isMobile}} />
+              {...{ formatMessage, isMobile }} />
           ) : null}
           {currentScreen === Sections.LOCKER ? (
-            <LockerScreen 
+            <LockerScreen
               {...{
                 currentPage,
                 limit,
@@ -1022,19 +1057,20 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           ) : null}
           {currentScreen === Sections.PRODUCTS ?
             <ProductCatalogue
-                onSelectProduct={this.handleOnselectProductAction}
-                onDeselectProduct={deselectElementAction}
-                hideFilters={['collection']}
-                fromIntakeForm={true}
-                changeQuantity={this.handleChangeQuantity}
-                isEdit={!!projectId && !admUser}
-                {...{ history, formatMessage, selectedItems }} /> : null}
-        {currentScreen > Sections.PATHWAY ?
-          <SwipeableViews
-            disabled={true}
-            enableMouseEvents={false}
-            animateHeight={true}
-            index={currentScreen}>
+              onSelectProduct={this.handleOnselectProductAction}
+              onDeselectProduct={deselectElementAction}
+              hideFilters={['collection']}
+              fromIntakeForm={true}
+              adminProject={admProject}
+              changeQuantity={this.handleChangeQuantity}
+              isEdit={!!projectId && !admUser}
+              {...{ history, formatMessage, selectedItems }} /> : null}
+          {currentScreen > Sections.PATHWAY ?
+            <SwipeableViews
+              disabled={true}
+              enableMouseEvents={false}
+              animateHeight={true}
+              index={currentScreen}>
               {currentScreen === Sections.INSPIRATION ? <Inspiration
                 {...{ formatMessage, inspiration, isMobile, isTablet }}
                 windowWidth={responsive.fakeWidth}
@@ -1131,15 +1167,19 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   selectedItems,
                   fromScratch,
                   currentCurrency,
-                  richTextEditorReady
+                  richTextEditorReady,
+                  userToSearch
                 }}
                 onChangeInput={onSetInputAction}
                 goToPage={this.handleOnSelectTab}
                 setDescription={setDescriptionAction}
+                setAdminProjectUser={setAdminProjectUserIdAction}
+                setUserToSearch={setUserToSearchAction}
                 removeCategory={removeFromListAction}
                 addCategory={addToListAction}
                 categories={projectCategories}
                 showModal={this.showAlert}
+                adminProject={admProject}
               /> : <div />}
               {currentScreen === Sections.NOTIFICATIONS ? <Notifications
                 {...{
@@ -1186,27 +1226,28 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   fromScratch,
                   currentCurrency
                 }}
+                adminProject={admProject}
                 goToPage={this.handleOnSelectTab}
               /> : <div />}
             </SwipeableViews> : null}
         </IntakeContainer>
-      {successModal ? <SuccessModal
-        title={formatMessage(messages.successTitle)}
-        text={formatMessage(messages.successMessage)}
-        center={formatMessage(messages.successMessageCenter)}
-        footer={formatMessage(messages.sucessMessageBottom)}
-        returnHomeText={formatMessage(messages.returnToHome)}
-        onReturnPage={this.handleOnReturnHome}
-      /> : null}
-      {expandedInspiration ? <InspirationModal
-        {...{expandedInspiration, expandedInspirationOpen, formatMessage}}
-        onCloseInspiration={onCloseInspirationAction}
-        onSelect={this.handleOnselectElementAction}
-        addTag={addTagAction}
-        removeTag={removeTagAction}
-        selectedTags={inspirationTags}
-      /> : null}
-    </Layout>)
+        {successModal ? <SuccessModal
+          title={formatMessage(messages.successTitle)}
+          text={formatMessage(messages.successMessage)}
+          center={formatMessage(messages.successMessageCenter)}
+          footer={formatMessage(messages.sucessMessageBottom)}
+          returnHomeText={formatMessage(messages.returnToHome)}
+          onReturnPage={this.handleOnReturnHome}
+        /> : null}
+        {expandedInspiration ? <InspirationModal
+          {...{ expandedInspiration, expandedInspirationOpen, formatMessage }}
+          onCloseInspiration={onCloseInspirationAction}
+          onSelect={this.handleOnselectElementAction}
+          addTag={addTagAction}
+          removeTag={removeTagAction}
+          selectedTags={inspirationTags}
+        /> : null}
+      </Layout>)
   }
 }
 

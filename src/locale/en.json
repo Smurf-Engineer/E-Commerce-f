@@ -765,6 +765,8 @@
   "components.IntakeForm.Notes.descriptionHelp1": "1. Place my uploaded logo on the front and back of the jersey",
   "components.IntakeForm.Notes.descriptionHelp2": "2. I want the shorts to be mostly black but the tops with more blue",
   "components.IntakeForm.Notes.descriptionHelp3": "3. I like the image of the carbon fiber. Please use on the back of the jacket",
+  "components.IntakeForm.Notes.searchBy": "Name, Email or Client ID",
+  "components.IntakeForm.Notes.selectUser": "Select User for this Project",
   "screens.Faq.tittle": "FREQUENTLY ASKED QUESTION & CUSTOMER SUPPORT",
   "screens.Faq.subtitle": "If you can’t find an answer to your questions, please contact us <a href=\"mailto:express@jakroousa.com\">here</a>",
   "screens.Faq.artworkAndDesignTitle": "ARTWORK & DESIGN",

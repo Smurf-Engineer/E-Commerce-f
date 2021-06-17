@@ -75,8 +75,9 @@ interface Props extends RouteComponentProps<any> {
   openSidebar: boolean
   currentCurrency: string
   selectedItems: Product[]
-  hideFilters?: string []
+  hideFilters?: string[]
   fromIntakeForm?: boolean
+  adminProject?: boolean
   isEdit?: boolean
   changeQuantity: (key: number) => void
   setFilterAction: (filter: {}) => void
@@ -199,7 +200,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       data: { loading, filters: filtersGraph },
       selectedItems,
       hideFilters = [],
-      fromIntakeForm = false
+      fromIntakeForm = false,
+      adminProject = false
     } = this.props
     if (loading || !filtersGraph || !filtersGraph.length) {
       return null
@@ -225,7 +227,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const defaultFitStyles = {}
 
     selectedItems.forEach((item: Product) => {
-      const { genders, sports, categoryName, season, fitStyles } = item
+      const { genders, sports, categoryName, season, fitStyles } = item
       if (genders.length) {
         genders.forEach(({ name: genderName }) => {
           defaultGenders[genderName] = true
@@ -249,11 +251,11 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       }
     })
 
-    const gendersFiltered = {...defaultGenders, ...genderFilters}
-    const sportsFiltered = {...defaultSports, ...sportFilters}
-    const categoriesFiltered = {...defaultCategories, ...categoryFilters}
-    const seasonsFiltered = {...defaultSeasons, ...seasonFilters}
-    const stylesFiltered = {...defaultFitStyles, ...fitStyleFilters}
+    const gendersFiltered = { ...defaultGenders, ...genderFilters }
+    const sportsFiltered = { ...defaultSports, ...sportFilters }
+    const categoriesFiltered = { ...defaultCategories, ...categoryFilters }
+    const seasonsFiltered = { ...defaultSeasons, ...seasonFilters }
+    const stylesFiltered = { ...defaultFitStyles, ...fitStyleFilters }
     const filters = [
       collectionFilters,
       gendersFiltered,
@@ -353,47 +355,48 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                   touch={true}
                   onOpenChange={this.handleOpenSidebar}
                 >
-                    <Container>
-                      <ResultsColumn>
-                        <FiltersTitle
-                          onClick={this.handleOpenSidebar}
-                          showChildren={true}
-                        >
-                          {intl.formatMessage(messages.filtersTitle)}
-                          <Icon type="down" />
-                        </FiltersTitle>
-                        <ProductsThumbnailList
-                          formatMessage={intl.formatMessage}
-                          collectionFilters={collectionIndexes}
-                          genderFilters={genderIndexes}
-                          sportFilters={sportIndexes}
-                          categoryFilters={categoryIndexes}
-                          seasonFilters={seasonsIndexes}
-                          fitFilters={fitSizeIndexes}
-                          handleChangePage={this.handlechangePage}
-                          handleOrderBy={this.handleOrderBy}
-                          selectProduct={true}
-                          handleCheckChange={this.onCheckChange}
-                          currentCurrency={
-                            currentCurrency || config.defaultCurrency
-                          }
-                          {...{
-                            skip,
-                            orderBy,
-                            limit,
-                            isEdit,
-                            changeQuantity,
-                            openQuickView,
-                            history,
-                            sortByLabel: '',
-                            currentPage,
-                            contentTile,
-                            selectedItems,
-                            fromIntakeForm
-                          }}
-                        />
-                      </ResultsColumn>
-                    </Container>
+                  <Container>
+                    <ResultsColumn>
+                      <FiltersTitle
+                        onClick={this.handleOpenSidebar}
+                        showChildren={true}
+                      >
+                        {intl.formatMessage(messages.filtersTitle)}
+                        <Icon type="down" />
+                      </FiltersTitle>
+                      <ProductsThumbnailList
+                        formatMessage={intl.formatMessage}
+                        collectionFilters={collectionIndexes}
+                        genderFilters={genderIndexes}
+                        sportFilters={sportIndexes}
+                        categoryFilters={categoryIndexes}
+                        seasonFilters={seasonsIndexes}
+                        fitFilters={fitSizeIndexes}
+                        handleChangePage={this.handlechangePage}
+                        handleOrderBy={this.handleOrderBy}
+                        selectProduct={true}
+                        handleCheckChange={this.onCheckChange}
+                        currentCurrency={
+                          currentCurrency || config.defaultCurrency
+                        }
+                        {...{
+                          skip,
+                          orderBy,
+                          limit,
+                          isEdit,
+                          changeQuantity,
+                          openQuickView,
+                          history,
+                          sortByLabel: '',
+                          currentPage,
+                          contentTile,
+                          selectedItems,
+                          fromIntakeForm,
+                          adminProject
+                        }}
+                      />
+                    </ResultsColumn>
+                  </Container>
                 </Drawer>
               </div>
             )
@@ -434,7 +437,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       currentPage,
                       contentTile,
                       selectedItems,
-                      fromIntakeForm
+                      fromIntakeForm,
+                      adminProject
                     }}
                   />
                 </ResultsColumn>
