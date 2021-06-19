@@ -126,7 +126,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           <FormattedMessage {...messages.subtotal} />
           <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
         </OrderItem>
-        <OrderItem hide={!upgrades}>
+        <OrderItem hide={!upgrades} secondary={true}>
           <FormattedMessage {...messages.upgrades} />
           <div>{`${symbol} ${upgrades.toFixed(2)}`}</div>
         </OrderItem>

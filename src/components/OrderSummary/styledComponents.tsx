@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, BLUE, GRAY_LIGHT, GRAY_DARK, RED } from '../../theme/colors'
+import { WHITE, BLUE, GRAY_LIGHT, GRAY_DARK, RED, GREEN } from '../../theme/colors'
 
 interface TotalProps {
   onlyRead?: boolean
@@ -62,6 +62,7 @@ export const Divider = styled.div`
 
 interface DisplayProps {
   hide?: boolean
+  secondary?: boolean
 }
 
 export const OrderItem = styled.div`
@@ -70,7 +71,7 @@ export const OrderItem = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
 
-  color: ${GRAY_DARK};
+  color: ${({ secondary }: DisplayProps) => secondary ? GREEN : GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;

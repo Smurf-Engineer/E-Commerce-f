@@ -64,6 +64,7 @@ export const getOrderQuery = gql`
             enabled
             name
             url
+            defaultOption: default_option
             modalImage: modal_image
             mobileImage: mobile_image
             options {
@@ -83,6 +84,7 @@ export const getOrderQuery = gql`
             enabled
             name
             url
+            defaultOption: default_option
             modalImage: modal_image
             mobileImage: mobile_image
             options {
