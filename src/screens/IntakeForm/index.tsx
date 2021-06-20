@@ -1067,7 +1067,6 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             <SwipeableViews
               disabled={true}
               enableMouseEvents={false}
-              animateHeight={true}
               index={currentScreen}
               containerStyle={{ height: '100%' }}>
               {currentScreen === Sections.INSPIRATION ? <Inspiration
