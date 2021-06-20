@@ -1068,7 +1068,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               disabled={true}
               enableMouseEvents={false}
               animateHeight={true}
-              index={currentScreen}>
+              index={currentScreen}
+              containerStyle={{ height: '100%' }}>
               {currentScreen === Sections.INSPIRATION ? <Inspiration
                 {...{ formatMessage, inspiration, isMobile, isTablet }}
                 windowWidth={responsive.fakeWidth}
