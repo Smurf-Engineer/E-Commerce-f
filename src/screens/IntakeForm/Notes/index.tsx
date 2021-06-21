@@ -1,6 +1,12 @@
 import * as React from 'react'
+import debounce from 'lodash/debounce'
+import { compose, graphql } from 'react-apollo'
+import { getUsers } from './data'
 import { RouteComponentProps } from 'react-router-dom'
-import { isPhoneNumber } from '../../../utils/utilsFiles'
+import { SelectValue } from 'antd/lib/select'
+import Icon from 'antd/lib/icon'
+import message from 'antd/lib/message'
+import { isPhoneNumber, containsNumberAndLetters } from '../../../utils/utilsFiles'
 import DataSelected from '../Review/DataSelected'
 import { EditorState, convertFromRaw } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -17,7 +23,9 @@ import {
   LabelContainer,
   TopContainer,
   MultipleItemsButton,
-  StyledInput
+  StyledInput,
+  StyledSearch,
+  SearchButton
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -26,7 +34,9 @@ import {
   InspirationType,
   ImageFile,
   Product,
-  DesignType
+  DesignType,
+  UserSearchResult,
+  QueryProps
 } from '../../../types/common'
 import { MINIMUM_LENGTH } from './constants'
 
@@ -52,17 +62,28 @@ interface Props extends RouteComponentProps<any> {
   highlight?: boolean
   validLength?: boolean
   lockerDesign: DesignType
+  adminProject: boolean
+  userToSearch: string
+  data: Data
   onChangeInput: (key: string, value: string) => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
   goToPage: (page: number) => void
   setDescription: (contentState: string | null, validLength: boolean) => void
+  setAdminProjectUser: (userId: string) => void
   removeCategory: (listName: string, value: string) => void
   addCategory: (listName: string, value: string) => void
   showModal: (title: string, body: string[] | string, accept: string) => void
+  setUserToSearch: (value: string) => void
+}
+
+interface Data extends QueryProps {
+  userSearch: UserSearchResult[]
 }
 
 let Editor = () => <></>
 export class Notes extends React.Component<Props, {}> {
+  debounceSearchProduct = debounce(value => this.handleOnChange(value), 300)
+
   state = {
     editorReady: false,
     editorState: undefined,
@@ -81,10 +102,10 @@ export class Notes extends React.Component<Props, {}> {
   componentDidMount() {
     if (typeof window !== undefined) {
       Editor = require('react-draft-wysiwyg').Editor
-      const { projectDescription } = this.props
+      const { projectDescription } = this.props
       if (projectDescription) {
         try {
-          const blocksContent = JSON.parse( projectDescription)
+          const blocksContent = JSON.parse(projectDescription)
           const editorState = EditorState.createWithContent(convertFromRaw(blocksContent))
           this.setState({
             editorReady: true,
@@ -99,10 +120,28 @@ export class Notes extends React.Component<Props, {}> {
         })
       }
     }
-  } 
+  }
+
+  handleOnChange = async (value: SelectValue) => {
+    const { setUserToSearch } = this.props
+    try {
+      const parsedValue = value.toString()
+
+      if (containsNumberAndLetters(parsedValue)) {
+        setUserToSearch(parsedValue.trim())
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+
+  handleOnSelect = async (value: SelectValue) => {
+    const { setAdminProjectUser } = this.props
+    setAdminProjectUser(value.toString())
+  }
 
   handleOnChangeInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { onChangeInput } = this.props
+    const { onChangeInput } = this.props
     const { value, id: inputId } = event.target
     if (inputId === 'phone' && !isPhoneNumber(value) && value !== '') {
       return
@@ -135,7 +174,7 @@ export class Notes extends React.Component<Props, {}> {
   }
 
   showMultipleItems = () => {
-    const { showModal, formatMessage } = this.props
+    const { showModal, formatMessage } = this.props
     showModal(
       formatMessage(messages.multipleProducts).toUpperCase(),
       formatMessage(messages.multipleProductsDescription),
@@ -144,7 +183,7 @@ export class Notes extends React.Component<Props, {}> {
   }
 
   describeIdeas = () => {
-    const { showModal, formatMessage } = this.props
+    const { showModal, formatMessage } = this.props
     showModal(
       formatMessage(messages.designIdeas).toUpperCase(),
       [formatMessage(messages.descriptionHelp),
@@ -176,12 +215,47 @@ export class Notes extends React.Component<Props, {}> {
       fromScratch,
       currentCurrency,
       richTextEditorReady,
-      goToPage
+      adminProject,
+      goToPage,
+      data
     } = this.props
-    const { editorReady, editorState } = this.state
+    const { editorReady, editorState } = this.state
+    const searchResults = adminProject ?
+      data &&
+      !data.loading &&
+      data.userSearch.map(
+        (item: UserSearchResult) => {
+          return {
+            value: item.shortId,
+            text: `${item.id} - ${item.name} - ${item.email}`
+          }
+        }
+      )
+      : []
     return (
       <MainContainer>
         <Container>
+          {adminProject &&
+            <Field>
+              <Label>
+                {formatMessage(messages.selectUser)} <Required>*</Required>
+              </Label>
+              <StyledSearch
+                onChange={this.debounceSearchProduct}
+                dataSource={searchResults}
+                onSelect={this.handleOnSelect}
+                placeholder={formatMessage(messages.searchBy)}
+              >
+                <StyledInput
+                  suffix={
+                    <SearchButton className="search-btn" size="large" type="ghost">
+                      <Icon type="search" />
+                    </SearchButton>
+                  }
+                />
+              </StyledSearch>
+            </Field>
+          }
           <Field>
             <Label>
               {formatMessage(messages.projectName)} <Required>*</Required>
@@ -204,9 +278,9 @@ export class Notes extends React.Component<Props, {}> {
                 <QuestionSpan onClick={this.describeIdeas}>?</QuestionSpan>
               </LabelContainer>
             </TopContainer>
-            {richTextEditorReady && editorReady && typeof window !== 'undefined' ? 
+            {richTextEditorReady && editorReady && typeof window !== 'undefined' ?
               <Editor
-                editorState={editorState}    
+                editorState={editorState}
                 wrapperClassName="richTextWrapper"
                 editorClassName={highlight && !validLength ? 'richtTextHighlight' : 'richTextEditor'}
                 toolbarClassName="richTextToolBar"
@@ -224,7 +298,7 @@ export class Notes extends React.Component<Props, {}> {
                     strikethrough: { className: 'bordered-option' },
                     code: { className: 'bordered-option' },
                   },
-                  list : {
+                  list: {
                     options: ['unordered', 'ordered']
                   }
                 }}
@@ -257,7 +331,8 @@ export class Notes extends React.Component<Props, {}> {
                 fromScratch,
                 currentCurrency,
                 formatMessage,
-                goToPage
+                goToPage,
+                adminProject
               }}
             />
           </DataSelectedContainer>
@@ -267,4 +342,23 @@ export class Notes extends React.Component<Props, {}> {
   }
 }
 
-export default Notes
+type OwnProps = {
+  userToSearch?: string
+}
+
+const NotesEnhance = compose(
+  graphql<Data>(getUsers, {
+    options: (ownprops: OwnProps) => {
+      const { userToSearch } = ownprops
+      return {
+        variables: {
+          pattern: userToSearch
+        },
+        skip: !userToSearch,
+        fetchPolicy: 'network-only'
+      }
+    }
+  })
+)(Notes)
+
+export default NotesEnhance

@@ -26,12 +26,13 @@ interface Props {
   products: Product[]
   title: string
   fromIntakeForm: boolean
+  adminProject: boolean
   isEdit?: boolean
   changeQuantity: (key: number) => void
   handleDeleteProduct: (product: Product, checked: boolean, key?: number) => void
 }
 
-export class SelectedProducts extends React.Component<Props, {}> {  
+export class SelectedProducts extends React.Component<Props, {}> {
   state = {
     open: false
   }
@@ -45,11 +46,12 @@ export class SelectedProducts extends React.Component<Props, {}> {
       handleDeleteProduct,
       changeQuantity,
       fromIntakeForm,
+      adminProject,
       isEdit
     } = this.props
-    const { open } = this.state
+    const { open } = this.state
     return (
-      <Container total={products.length} {...{open}}>
+      <Container total={products.length} {...{ open }}>
         <Header>
           <Title>{title}</Title>
           <ActionsContainer>
@@ -57,7 +59,7 @@ export class SelectedProducts extends React.Component<Props, {}> {
             <Arrow src={upArrow} onClick={this.toggleMenu} className={open ? 'open' : ''} />
           </ActionsContainer>
         </Header>
-        <Products total={products.length} {...{open}}>
+        <Products total={products.length} {...{ open }} displayBlock={fromIntakeForm && adminProject}>
           {products.map((product: Product, key: number) => {
             const {
               images,
@@ -68,7 +70,7 @@ export class SelectedProducts extends React.Component<Props, {}> {
             const imageSrc = thumbnail.length ? thumbnail : images[0].front
             const changeQuantityValue = () => changeQuantity(key)
             return (
-              <ProductThumbnail {...{ key }}>
+              <ProductThumbnail {...{ key }} displayBlock={fromIntakeForm && adminProject}>
                 <Image src={imageSrc} />
                 <Bottom>
                   <Description>
@@ -78,7 +80,8 @@ export class SelectedProducts extends React.Component<Props, {}> {
                   <Trash src={TrashImg} onClick={deleteProduct} />
                 </Bottom>
               </ProductThumbnail>
-            )}
+            )
+          }
           )}
         </Products>
         <HeaderMobile>

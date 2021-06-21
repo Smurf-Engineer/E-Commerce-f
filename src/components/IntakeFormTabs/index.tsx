@@ -9,21 +9,24 @@ interface Props {
   designHasChanges: boolean
   cantContinue: boolean
   fromScratch: boolean
+  adminProject: boolean
   onSelectTab: (index: number) => void
   validate: (screen: number) => void
 }
 
 const fromScratchSteps = ['inspiration', 'colors', 'uploadFiles', 'designNotes', 'notifications', 'review']
 const fromExistingArtworkSteps = [null, null, 'uploadFiles', 'designNotes', 'notifications', 'review']
+const adminProjectSteps = [null, null, null, 'designNotes', 'notifications', 'review']
 const IntakeFormTabs = ({
   currentTab,
   onSelectTab,
   cantContinue,
   fromScratch,
+  adminProject,
   validate
 }: Props) => {
   const handleOnSelectTab = (index: any) => () => onSelectTab(index)
-  const steps = fromScratch ? fromScratchSteps : fromExistingArtworkSteps
+  const steps = adminProject ? adminProjectSteps : fromScratch ? fromScratchSteps : fromExistingArtworkSteps
   const tabs = steps.map((step, index) => {
     if (step) {
       const canNavigate = (index < currentTab) || !validate(index - 1).continueDisable
