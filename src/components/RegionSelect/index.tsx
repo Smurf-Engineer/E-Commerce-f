@@ -30,10 +30,12 @@ interface Props {
 export class RegionSelect extends React.Component<Props, {}> {
   handleSelectChange = async (value: any) => {
     const { handleRegionChange } = this.props
-    handleRegionChange(
-      value.substr(0, value.indexOf('-')),
-      value.substr(value.indexOf('-') + 1, value.length)
-    )
+    const valueArray = value ? value.split('-') : []
+    const stateName = valueArray[0]
+    const stateCode = valueArray[1]
+    if (stateName && stateCode) {
+      handleRegionChange(stateName, stateCode)
+    }
   }
 
   handleFilter = (input: string, { props }: any) =>

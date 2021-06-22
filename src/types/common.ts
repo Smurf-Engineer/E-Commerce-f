@@ -1436,6 +1436,7 @@ export type CanvasResized = {
 export interface AddressObj {
   country: string
   state: string
+  stateName?: string
   zipCode: string
 }
 

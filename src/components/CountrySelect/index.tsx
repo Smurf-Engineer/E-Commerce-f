@@ -13,6 +13,7 @@ const Option = Select.Option
 interface Props {
   data: QueryProps
   countries: Country[]
+  loading: boolean
   selectedCountry: string
   handleCountryChange: (
     value: string,
@@ -37,7 +38,7 @@ export class CountrySelect extends React.Component<Props, {}> {
     props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 
   render() {
-    const { data, countries, selectedCountry, formatMessage } = this.props
+    const { data, countries, selectedCountry, formatMessage, loading } = this.props
     let dropdownOptions: any = []
     if (countries && countries.length) {
       dropdownOptions = countries.map(
@@ -58,6 +59,7 @@ export class CountrySelect extends React.Component<Props, {}> {
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}
           showSearch={true}
+          loading={loading}
           optionFilterProp="children"
           filterOption={this.handleFilter}
         >

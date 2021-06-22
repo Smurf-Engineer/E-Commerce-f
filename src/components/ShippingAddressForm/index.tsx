@@ -32,6 +32,7 @@ import debounce from 'lodash/debounce'
 import { withApollo, graphql, compose } from 'react-apollo'
 import { countriesQuery } from './data'
 import { QueryProps, Country } from '../../types/common'
+import get from 'lodash/get'
 
 const { Option } = AutoComplete
 
@@ -51,6 +52,7 @@ interface AddressPrediction {
 
 interface StateProps {
   selectedCountry: string | undefined
+  selectedCountryName: string | undefined
   selectedCountryId: string | undefined
   selectedRegion: string | undefined
   selectedCity: string | undefined
@@ -77,18 +79,35 @@ interface Props {
 }
 
 class ShippingAddressForm extends React.Component<Props, StateProps> {
-  state = {
-    selectedCountry: '',
-    selectedCountryId: '',
-    selectedRegion: '',
-    selectedCity: '',
-    selectedRegionCode: '',
-    addressDataSource: []
-  }
-
   constructor(props: Props) {
     super(props)
     this.getAddressPredictionsDebounced = debounce(this.fetchAddressPredictions, 500)
+    const { stateProvince, stateProvinceCode} = props
+    this.state = {
+      selectedCountry: '',
+      selectedCountryId: '',
+      selectedRegion: stateProvince,
+      selectedCity: '',
+      selectedRegionCode: stateProvinceCode,
+      addressDataSource: []
+    }
+  }
+
+  componentDidUpdate() {
+    const { data, country } = this.props
+    const { selectedCountry } = this.state
+    if (!selectedCountry && country) {
+      const countriesData = get(data, 'countries', [])
+      const defaultCountry = countriesData.find((item) => item.code === country)
+      if (defaultCountry) {
+        const { name: countryName, code: countryCode, geonameId: countryId } = defaultCountry || {}
+        this.setState({
+          selectedCountryName: countryName,
+          selectedCountry: countryCode,
+          selectedCountryId: countryId
+        })
+      }
+    }
   }
 
   render() {
@@ -203,6 +222,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
                   ? `${selectedCountry}-${selectedCountryId}`
                   : undefined
               }
+              loading={data && data.loading}
               handleCountryChange={this.handleCountryChange}
               countries={data.countries}
             />

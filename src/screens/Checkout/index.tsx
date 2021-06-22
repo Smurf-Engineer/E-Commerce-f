@@ -339,6 +339,7 @@ class Checkout extends React.Component<Props, {}> {
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
       country: shippingAddress.country,
+      stateName: shippingAddress.stateProvince,
       state: shippingAddress.stateProvinceCode,
       zipCode: shippingAddress.zipCode
     }
@@ -1076,6 +1077,7 @@ class Checkout extends React.Component<Props, {}> {
 
     const taxAddress: TaxAddressObj = {
       country: shippingAddress.country,
+      stateName: shippingAddress.stateProvince,
       state: shippingAddress.stateProvinceCode,
       zipCode: shippingAddress.zipCode
     }
