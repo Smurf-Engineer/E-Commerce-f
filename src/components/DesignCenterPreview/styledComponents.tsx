@@ -31,7 +31,6 @@ export const Render = styled.div`
 
 export const ButtonRight = styled(AntdButton)`
   height: 40px;
-  width: 200px;
 `
 
 export const ButtonWrapperRight = styled.div`
@@ -43,7 +42,7 @@ export const ButtonWrapperRight = styled.div`
   .ant-btn-primary  {
     background-color: ${BLUE};
     border-color: ${BLUE};
-    width: 138px;
+    width: auto;
   }
 
   .ant-btn-primary:hover {
