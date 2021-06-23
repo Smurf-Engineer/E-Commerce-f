@@ -75,7 +75,7 @@ export const getTaxesAndDiscount = (
           taxTotal =
             (subtotal + proDesignFee + upgrades + variables + shippingTotal - realDiscount) *
             (taxesAmount / 100) // calculate tax
-          taxFee = roundDecimals(taxTotal) // round to 2 decimals
+          taxFee = roundTaxes(taxTotal) // round to 2 decimals
         }
         break
       case COUNTRY_CODE_CANADA:
@@ -90,8 +90,8 @@ export const getTaxesAndDiscount = (
                     (taxRates.rateGst / 100)
           taxPst = (subtotal + proDesignFee + upgrades + variables - realDiscount) * 
                     (taxRates.ratePst / 100) // calculate tax
-          taxGst = roundDecimals(taxGst) // round to 2 decimals
-          taxPst = roundDecimals(taxPst) // round to 2 decimals
+          taxGst = roundTaxes(taxGst) // round to 2 decimals
+          taxPst = roundTaxes(taxPst) // round to 2 decimals
         }
         break
       default:
@@ -113,6 +113,10 @@ export const roundDecimals = (n: number) => {
   return Math.round(n * 100) / 100
 }
 
+export const roundTaxes = (n: number) => {
+  return Math.ceil(n * 100) / 100
+}
+
 export const calculateTaxVat = (
   subtotal: number,
   taxVatTotal: number,
@@ -127,5 +131,5 @@ export const calculateTaxVat = (
   const totalNet = subtotal / (1 + taxVatTotal)
   const taxVat =
     (totalNet + proDesignFee + upgrades + variables + shippingTotal - discount) * taxVatTotal
-  return roundDecimals(taxVat) // round to 2 decimals
+  return roundTaxes(taxVat) // round to 2 decimals
 }
