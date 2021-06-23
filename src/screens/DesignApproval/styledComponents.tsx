@@ -709,6 +709,10 @@ export const Products = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   align-items: flex-start;
+  ${({ secondary }: RowProps) => secondary ? `
+    height: calc(100vh - 210px);
+    overflow-y: scroll;
+  ` : ''}
 `
 
 export const ProjectDesign = styled.div`

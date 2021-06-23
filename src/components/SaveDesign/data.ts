@@ -32,6 +32,8 @@ export const saveDesignName = graphql(
           yotpoId: yotpo_id
           name
           type: name
+          active
+          onlyProDesign: only_pro_design
           description: short_description
           shortDescription: short_description
           collections

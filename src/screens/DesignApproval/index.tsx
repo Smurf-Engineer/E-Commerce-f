@@ -1215,7 +1215,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   key="3"
                 >
                   {(!loading && product) && 
-                    <Products>
+                    <Products secondary={true}>
                       {projectDesigns.map((
                         { 
                           id,

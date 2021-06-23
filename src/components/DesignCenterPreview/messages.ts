@@ -23,6 +23,6 @@ export default defineMessages({
   },
   keepShoping: {
     id: 'components.DesignCenterPreview.Render3D.keepShoping',
-    defaultMessage: 'Keep Shopping'
+    defaultMessage: 'Start a New Design'
   }
 })
