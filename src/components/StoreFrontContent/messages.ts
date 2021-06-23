@@ -131,11 +131,10 @@ export default defineMessages({
       process upon receipt and review and typically ship out within 10-12 days from receipt. In the case of large 
       volume orders exceeding 100 pieces, delivery times may be slightly longer. Contact our staff to confirm the 
       delivery time of your order, if it exceeds 100 pieces.</p>
-      <p>While we have optimized our design, ordering and manufacturing processes, we have little to no control 
-      over carrier shipping times and potential delays related to customs clearance, weather, or force majeure. 
-      We use our best efforts to initiate shipment and meet scheduled delivery dates but <u>cannot guarantee</u>
-      the actual delivery date of your order. <b>If you have a specific deadline for your delivery, we recommend 
-      factoring a 2-3 additional days into the desired delivery date.</b></p>
+      <p>While we have optimized our design, ordering and manufacturing processes, we have little to no control over 
+      carrier shipping times and potential delays related to customs clearance, weather, or force majeure. We use our 
+      best efforts to initiate shipment and meet scheduled delivery dates but cannot guarantee the actual delivery date 
+      of your order.</p>
       `
   },
   canIORder: {
