@@ -19,7 +19,7 @@ export default defineMessages({
   },
   phone: {
     id: 'components.ProfileForm.phone',
-    defaultMessage: 'Phone'
+    defaultMessage: 'Mobile Number'
   },
   save: {
     id: 'components.ProfileForm.save',
