@@ -4,7 +4,11 @@
 
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { BLUE, GRAY_DARK } from '../../theme/colors'
+import { BLUE, GRAY_DARK, GREEN_BRIGHT } from '../../theme/colors'
+
+interface DivProps {
+  secondary?: boolean
+}
 
 export const Container = styled.div`
   display: flex;
@@ -55,13 +59,13 @@ export const ButtonWrapper = styled.div`
   margin-bottom: 16px;
 
   .ant-btn-primary  {
-    background-color: ${BLUE};
-    border-color: ${BLUE};
+    background-color: ${({ secondary }: DivProps) => secondary ? GREEN_BRIGHT : BLUE};
+    border-color: ${({ secondary }: DivProps) => secondary ? GREEN_BRIGHT : BLUE};
     width: 138px;
   }
   .ant-btn-primary:hover {
-    background-color: ${BLUE};
-    border-color: ${BLUE};
+    background-color: ${({ secondary }: DivProps) => secondary ? GREEN_BRIGHT : BLUE};
+    border-color: ${({ secondary }: DivProps) => secondary ? GREEN_BRIGHT : BLUE};
   }
 `
 
