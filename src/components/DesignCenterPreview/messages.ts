@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.DesignCenterPreview.Render3D.addToCart',
     defaultMessage: 'Add to Cart'
   },
+  viewCart: {
+    id: 'components.DesignCenterPreview.Render3D.viewCart',
+    defaultMessage: 'View Cart'
+  },
   keepShoping: {
     id: 'components.DesignCenterPreview.Render3D.keepShoping',
     defaultMessage: 'Start a New Design'
