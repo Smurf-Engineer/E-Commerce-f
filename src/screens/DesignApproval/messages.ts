@@ -11,7 +11,7 @@ export default defineMessages({
   },
   addNotes: {
     id: 'screens.DesignApproval.addNotes',
-    defaultMessage: 'Add instruction notes'
+    defaultMessage: 'Add design instructions here. Minimum 15 characters'
   },
   cancel: {
     id: 'screens.DesignApproval.cancel',
