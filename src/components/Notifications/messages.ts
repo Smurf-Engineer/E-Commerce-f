@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'You don´t have notifications yet'
   },
   readError: {
-    id: 'components.Notifications.notFound',
+    id: 'components.Notifications.readError',
     defaultMessage: 'There was an error trying to update notifications, please try again'
   }
 })
