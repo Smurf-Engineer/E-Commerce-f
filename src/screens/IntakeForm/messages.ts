@@ -90,6 +90,11 @@ export default defineMessages({
     // tslint:disable-next-line: max-line-length
     defaultMessage: `You’ve reached the maximum number of products to start a ProDesign project. No worries though, you will have the opportunity to add more product designs to your project once your initial submission has been reviewed by our Team.`
   },
+  maxProductsOne: {
+    id: 'screens.IntakeForm.maxProductsOne',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: `Additional products must be <strong>added one at a time</strong> so that you can provide our Design Team with specific design instructions for each product. This helps us ensure instructions are not missed for any item.`
+  },
   gotIt: {
     id: 'screens.IntakeForm.gotIt',
     defaultMessage: 'Got It!'
