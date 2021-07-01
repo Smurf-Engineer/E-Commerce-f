@@ -1062,7 +1062,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             <ProductCatalogue
               onSelectProduct={this.handleOnselectProductAction}
               onDeselectProduct={deselectElementAction}
-              hideFilters={['collection']}
+              hideFilters={['collection', 'season', 'fit_style']}
               fromIntakeForm={true}
               adminProject={admProject}
               changeQuantity={this.handleChangeQuantity}
