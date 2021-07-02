@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import Checkbox from 'antd/lib/checkbox'
 import MessageBar from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
@@ -18,10 +17,12 @@ import {
   Header,
   Title,
   Description,
-  LoadingContainer
+  LoadingContainer,
+  CheckBoxStyled
 } from './styledComponents'
 import { NotificationOption, NotificationSettings } from '../../../types/common'
 import { Message } from '../../../types/common'
+import { SPLIT_BY_CAPITAL_REGEX } from '../constants'
 
 interface NotificationSetting {
   notificationData: NotificationSettings
@@ -73,34 +74,45 @@ class Preferences extends React.Component<Props, {}> {
     } = this.props
     const currentValue = notificationData ? notificationData[key] : 0
     let newValue = -1
-    if (key === 'notifyOrderPayment' || key === 'notifyProDesign') {
-      if (selected === 'email') {
-        if (currentValue === NotificationOption.SMS) {
+    switch (currentValue) {
+      case NotificationOption.EMAIL:
+        if (selected === 'email') {
+          if (key === 'notifyProductService') {
+            newValue = NotificationOption.NONE
+          }
+        } else {
           newValue = NotificationOption.BOTH
-        } else if (currentValue === NotificationOption.BOTH) {
-          newValue = NotificationOption.SMS
         }
-      } else if (selected === 'sms') {
-        if (currentValue === NotificationOption.EMAIL) {
+        break
+      case NotificationOption.SMS:
+        if (selected === 'email') {
           newValue = NotificationOption.BOTH
-        } else if (currentValue === NotificationOption.BOTH) {
+        } else {
+          if (key === 'notifyProductService') {
+            newValue = NotificationOption.NONE
+          }
+        }
+        break
+      case NotificationOption.BOTH:
+        if (selected === 'email') {
+          newValue = NotificationOption.SMS
+        } else {
           newValue = NotificationOption.EMAIL
         }
-      }
-    } else {
-      if (currentValue === NotificationOption.EMAIL) {
-        newValue = selected === 'email' ? NotificationOption.NONE : NotificationOption.BOTH
-      } else if (currentValue === NotificationOption.SMS) {
-        newValue = selected === 'email' ? NotificationOption.BOTH : NotificationOption.NONE
-      } else if (currentValue === NotificationOption.BOTH) {
-        newValue = selected === 'email' ? NotificationOption.SMS : NotificationOption.EMAIL
-      } else {
-        newValue = selected === 'email' ? NotificationOption.EMAIL : NotificationOption.SMS
-      }
+        break
+      case NotificationOption.NONE:
+        if (selected === 'email') {
+          newValue = NotificationOption.EMAIL
+        } else {
+          newValue = NotificationOption.SMS
+        }
+        break
+      default:
+        break
     }
     if (newValue !== -1) {
       const payload = {
-        setting: key.split(/(?=[A-Z])/).join('_').toLowerCase(),
+        setting: key.split(SPLIT_BY_CAPITAL_REGEX).join('_').toLowerCase(),
         value: newValue
       }
       this.updateSetting(
@@ -172,20 +184,17 @@ class Preferences extends React.Component<Props, {}> {
           </Column>
           <Column marginLeft="50px">
             <Header>{formatMessage(messages.email)}</Header>
-            <Checkbox
+            <CheckBoxStyled
               checked={orderPaymentEmailChecked}
               onChange={this.changeNotificationSettings('notifyOrderPayment', 'email')}
             />
-            <Checkbox
-              style={{ marginLeft: 0 }}
+            <CheckBoxStyled
               checked={prodesignEmailChecked}
               onChange={this.changeNotificationSettings('notifyProDesign', 'email')} />
-            <Checkbox
-              style={{ marginLeft: 0 }}
+            <CheckBoxStyled
               checked={productServiceEmailChecked}
               onChange={this.changeNotificationSettings('notifyProductService', 'email')} />
-            <Checkbox
-              style={{ marginLeft: 0 }}
+            <CheckBoxStyled
               checked={notificationData && notificationData.newsletterSubscribed}
               onChange={this.changeNewsletterSetting} />
           </Column>
@@ -193,19 +202,17 @@ class Preferences extends React.Component<Props, {}> {
             <Header>
               SMS&nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
             </Header>
-            <Checkbox
+            <CheckBoxStyled
               checked={orderPaymentSmsChecked}
               onChange={this.changeNotificationSettings('notifyOrderPayment', 'sms')} />
-            <Checkbox
-              style={{ marginLeft: 0 }}
+            <CheckBoxStyled
               checked={prodesignSmsChecked}
               onChange={this.changeNotificationSettings('notifyProDesign', 'sms')} />
-            <Checkbox
-              style={{ marginLeft: 0 }}
+            <CheckBoxStyled
               checked={productServiceSmsChecked}
               onChange={this.changeNotificationSettings('notifyProductService', 'sms')} />
-            <Checkbox
-              style={{ visibility: 'hidden' }}
+            <CheckBoxStyled
+              hide={true}
               checked={false}
               onChange={() => { }} />
           </Column>

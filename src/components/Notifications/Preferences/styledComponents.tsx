@@ -1,8 +1,13 @@
 import styled from 'styled-components'
+import Checkbox from 'antd/lib/checkbox'
 import { WHITE_TRANSPARENT } from '../../../theme/colors'
 
 interface ColumnProps {
     marginLeft?: string
+}
+
+interface CheckboxProps {
+    hide?: boolean
 }
 
 export const Container = styled.div`
@@ -54,4 +59,10 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+export const CheckBoxStyled = styled(Checkbox)`
+  margin-left: 0;
+  visibility: ${({ hide }: CheckboxProps) =>
+        hide ? 'hidden' : 'visible'}
 `
