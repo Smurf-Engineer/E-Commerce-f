@@ -318,15 +318,30 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     const detail: CartItemDetail = {
       quantity: 1
     }
-    if (upgradeOne.enabled && upgradeOne.defaultOption !== -1) {
+    
+    if (upgradeOne.enabled) {
       const { options = [] } = upgradeOne || {}
-      const firstUpgrade = options[upgradeOne.defaultOption]
-      detail.firstUpgrade = firstUpgrade
+      const defaultUpgradeOne = upgradeOne.defaultOption !== -1 ? options[upgradeOne.defaultOption] : {}
+      if (itemProdPage) {
+        item.itemDetails.forEach((detailItem) => {
+          const upgradeItem = options.find(({ name }) => detailItem.upgradeOne === name)
+          detailItem.firstUpgrade = upgradeItem || defaultUpgradeOne
+        }) 
+      } else {
+        detail.firstUpgrade = defaultUpgradeOne
+      }
     }
-    if (upgradeTwo.enabled && upgradeTwo.defaultOption !== -1) {
+    if (upgradeTwo.enabled) {
       const { options = [] } = upgradeTwo || {}
-      const secondUpgrade = options[upgradeTwo.defaultOption]
-      detail.secondUpgrade = secondUpgrade
+      const defaultUpgradeTwo = upgradeTwo.defaultOption !== -1 ? options[upgradeTwo.defaultOption] : {}
+      if (itemProdPage) {
+        item.itemDetails.forEach((detailItem) => {
+          const upgradeItem = options.find(({ name }) => detailItem.upgradeTwo === name)
+          detailItem.secondUpgrade = upgradeItem || defaultUpgradeTwo
+        }) 
+      } else {
+        detail.secondUpgrade = defaultUpgradeTwo
+      }
     }
     
     details.push(detail)

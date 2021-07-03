@@ -475,7 +475,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       })
       const successMessage = get(results, 'data.createProDesignProject.message')
       message.success(successMessage)
-      onSetSuccessModalOpen(true)
+      if (!admProject) {
+        onSetSuccessModalOpen(true)
+      } else {
+        window.location.href = `/admin/prodesign-dashboard`
+      }
       onSetSavingIntake(false)
     } catch (e) {
       onSetSavingIntake(false)
@@ -632,15 +636,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
 
   handleOnReturnHome = () => {
-    const { onSetSuccessModalOpen, location: { search } } = this.props
+    const { onSetSuccessModalOpen } = this.props
     onSetSuccessModalOpen(false)
-    const queryParams = queryString.parse(search)
-    const { admProject } = queryParams || {}
-    if (admProject) {
-      window.location.href = `/admin/prodesign-dashboard`
-    } else {
-      window.location.replace(`/account?option=proDesignProjects`)
-    }
+    window.location.replace(`/account?option=proDesignProjects`)
   }
 
   handleOnPressBack = () => {
@@ -1069,8 +1067,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             <SwipeableViews
               disabled={true}
               enableMouseEvents={false}
-              animateHeight={true}
-              index={currentScreen}>
+              index={currentScreen}
+              containerStyle={{ height: '100%' }}>
               {currentScreen === Sections.INSPIRATION ? <Inspiration
                 {...{ formatMessage, inspiration, isMobile, isTablet }}
                 windowWidth={responsive.fakeWidth}

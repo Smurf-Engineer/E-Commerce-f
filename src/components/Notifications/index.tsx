@@ -22,6 +22,7 @@ import {
   EmptyMessage,
   PaginationContainer
 } from './styledComponents'
+import Preferences from './Preferences'
 import { NOTIFICATIONS_LIMIT } from './constants'
 import { Message, Header, Notification as NotificationType, QueryProps, MessagePayload } from '../../types/common'
 import { DATE } from '../../constants'
@@ -38,6 +39,7 @@ interface Props {
   updateScreen?: () => void
   readNAllotification: (variables: {}) => Promise<MessagePayload>
   setCurrentPageAction: (page: number) => void
+  setSettingsLoadingAction: (key: string, loading: boolean) => void
 }
 
 const NOTIFICATIONS = 'notifications'
@@ -132,7 +134,7 @@ class Notifications extends React.Component<Props, {}> {
     })
     await notificationsData.refetch()
   }
-  
+
   changePage = (page: number) => {
     const { setCurrentPageAction } = this.props
     setCurrentPageAction(page)
@@ -156,12 +158,18 @@ class Notifications extends React.Component<Props, {}> {
       <Container>
         {fromAdmin && <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>}
         {!loading &&
-          <><NotificationsHeader>
-            <Latest>{formatMessage(messages.latest)}</Latest>
-            <BorderlessButton type="ghost" loading={updating} onClick={this.markAllAsRead}>
-              {formatMessage(messages.markAll)}
-            </BorderlessButton>
-          </NotificationsHeader>
+          <>
+            <Preferences
+              {...{
+                formatMessage
+              }}
+            />
+            <NotificationsHeader>
+              <Latest>{formatMessage(messages.latest)}</Latest>
+              <BorderlessButton type="ghost" loading={updating} onClick={this.markAllAsRead}>
+                {formatMessage(messages.markAll)}
+              </BorderlessButton>
+            </NotificationsHeader>
             <SimpleTable
               {...{
                 formatMessage

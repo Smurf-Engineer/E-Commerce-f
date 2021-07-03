@@ -294,7 +294,7 @@ export class Home extends React.Component<Props, {}> {
         <Helmet {...{ title }} />
         <Container {...{ loading }}>
           <SearchContainer>
-            {featuredItems.length && featuredItems}
+            {featuredItems && featuredItems.length ? featuredItems : null}
             {mainHeaderItems.length && (
               <CarouselContainer>
                 <Carousel

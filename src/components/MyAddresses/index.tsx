@@ -254,6 +254,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       !street ||
       !country ||
       !stateProvince ||
+      !stateProvinceCode ||
       !city ||
       !zipCode ||
       !phone ||
