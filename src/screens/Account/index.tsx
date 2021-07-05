@@ -224,8 +224,8 @@ export class Account extends React.Component<Props, {}> {
     if (key === SCREEN_LOCKER) {
       history.replace(`/account?option=${SCREEN_LOCKER}`)
     }
-
     setCurrentScreenAction(key)
+    window.history.replaceState(null, null, `?option=${key}`)
   }
 
   handleGoBack = () => {
