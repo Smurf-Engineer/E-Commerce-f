@@ -68,6 +68,7 @@ interface Props {
   fixedPrices?: PriceRange[]
   teamStoreName?: string
   hide?: boolean
+  secondary?: boolean
   fixedCart?: boolean
   replaceOrder?: string
   addToCart: () => void
@@ -83,6 +84,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
       renderForThumbnail,
       withoutTop,
       myLockerList,
+      secondary,
       orderDetails,
       hide
     } = this.props
@@ -93,7 +95,7 @@ export class AddToCartButton extends PureComponent<Props, {}> {
     ) : (
         <Container>
           {orderDetails ? (
-            <ButtonWrapper individual={!!item} {...{ hide }}>
+            <ButtonWrapper individual={!!item} {...{ hide, secondary }}>
               <ReorderButton type="primary" onClick={this.checkReseller}>
                 {label}
               </ReorderButton>

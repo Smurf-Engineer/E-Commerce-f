@@ -295,7 +295,7 @@ export class Home extends React.Component<Props, {}> {
         <Container {...{ loading }}>
           <SearchContainer>
             {featuredItems && featuredItems.length ? featuredItems : null}
-            {mainHeaderItems.length && (
+            {mainHeaderItems.length ? (
               <CarouselContainer>
                 <Carousel
                   autoplaySpeed={slideDuration}
@@ -308,7 +308,7 @@ export class Home extends React.Component<Props, {}> {
                   {mainHeaderItems}
                 </Carousel>
               </CarouselContainer>
-            )}
+            ) : null}
             <SearchBarContent>
               <SearchBar search={this.onSearch} {...{ formatMessage }} />
               {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
@@ -366,7 +366,7 @@ export class Home extends React.Component<Props, {}> {
             </DeliveryContainer>
           )}
           {featured}
-          {secondaryHeaderItems.length && (
+          {secondaryHeaderItems.length ? (
             <CarouselContainer>
               <Carousel
                 autoplaySpeed={secondarySlideDuration}
@@ -379,8 +379,8 @@ export class Home extends React.Component<Props, {}> {
                 {secondaryHeaderItems}
               </Carousel>
             </CarouselContainer>
-          )}
-          {secondaryFeaturedItems.length && secondaryFeaturedItems}
+          ) : null}
+          {secondaryFeaturedItems && secondaryFeaturedItems.length ? secondaryFeaturedItems : null}
           {/* <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />

@@ -3,6 +3,8 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import { getAddressPredictions, getAddressDetails } from './api'
 import {
   isNumberValue,
@@ -82,7 +84,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   constructor(props: Props) {
     super(props)
     this.getAddressPredictionsDebounced = debounce(this.fetchAddressPredictions, 500)
-    const { stateProvince, stateProvinceCode} = props
+    const { stateProvince, stateProvinceCode } = props
     this.state = {
       selectedCountry: '',
       selectedCountryId: '',
@@ -94,13 +96,13 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   }
 
   componentDidUpdate() {
-    const { data, country } = this.props
-    const { selectedCountry } = this.state
+    const { data, country } = this.props
+    const { selectedCountry } = this.state
     if (!selectedCountry && country) {
       const countriesData = get(data, 'countries', [])
       const defaultCountry = countriesData.find((item) => item.code === country)
       if (defaultCountry) {
-        const { name: countryName, code: countryCode, geonameId: countryId } = defaultCountry || {}
+        const { name: countryName, code: countryCode, geonameId: countryId } = defaultCountry || {}
         this.setState({
           selectedCountryName: countryName,
           selectedCountry: countryCode,
@@ -288,11 +290,14 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               <Label>{formatMessage(messages.phoneLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <StyledInput
-              id="phone"
+            <PhoneInput
+              country={'us'}
               value={phone}
-              onChange={this.handleInputChange}
-              maxLength={20}
+              onChange={value => {
+                this.handleInputChange({ currentTarget: { id: 'phone', value } })
+              }}
+              inputStyle={{ borderRadius: 0 }}
+              copyNumbersOnly={false}
             />
             {!phone && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -428,7 +433,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     inputChangeAction(CITY_VALUE_ID, value)
   }
 
-  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+  handleInputChange = (evt: any) => {
     const { inputChangeAction } = this.props
     const {
       currentTarget: { id, value }

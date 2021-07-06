@@ -95,6 +95,7 @@ export const CustomizeButton = styled.div`
 
 interface Prop {
   individual?: boolean
+  secondary?: boolean
   hide?: boolean
 }
 
@@ -104,8 +105,9 @@ export const ButtonWrapper = styled.span`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
-  width: ${({ individual }: Prop) => (individual ? '93px' : '145px')};
-
+  transition: all .3s;
+  width: ${({ individual, secondary }: Prop) => (individual && !secondary ? '93px' : '145px')};
+  margin-left: ${({ secondary }: Prop) => secondary ? '16px' : 'auto'};
   @media (min-width: 320px) and (max-width: 480px) {
     margin-top: ${({ individual }: Prop) => (individual ? '5px' : '0px')};
     width: ${({ individual }: Prop) => (individual ? '139px' : '145px')};

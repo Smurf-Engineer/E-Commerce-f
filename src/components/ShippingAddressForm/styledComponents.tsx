@@ -42,7 +42,6 @@ export const StyledInput = styled(Input)`
   width: 100%;
   border: 1px solid #bebebe;
   border-radius: 0;
-  margin-top: 5px;
 `
 
 export const StreetInput = styled(Input)`
@@ -50,7 +49,7 @@ export const StreetInput = styled(Input)`
   width: 100% !important;
   border: 1px solid #bebebe;
   border-radius: 0 !important;
-  margin-top: 5px !important;
+  margin-bottom: 5px !important;
 `
 
 export const StreetInputContainer = styled(AutoComplete)`
@@ -62,7 +61,6 @@ export const StyledCityInput = styled(Input)`
   width: 100%;
   border: 1px solid #bebebe;
   border-radius: 0;
-  margin-top: 5px;
 `
 export const RequiredSpan = styled.span`
   color: #e61737;
@@ -70,6 +68,7 @@ export const RequiredSpan = styled.span`
 `
 export const InputTitleContainer = styled.div`
   display: flex;
+  margin-bottom: 5px;
 `
 export const Label = styled.div`
   height: 19px;

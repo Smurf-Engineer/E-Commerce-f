@@ -17,7 +17,6 @@ export const Text = styled.div`
 `
 
 export const StyledSelect = styled(Select)`
-  margin-top: ${({ reseller }: DivProps) => reseller ? '0' : '5px'};
   margin-bottom: ${({ reseller }: DivProps) => reseller ? '22px' : '0'};
   width: 100%;
   .ant-select-selection--single {

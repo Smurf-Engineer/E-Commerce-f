@@ -679,7 +679,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       return selectProductAction(product)
     }
     const title = formatMessage(messages.maxProductsTitle)
-    const body = formatMessage(messages.maxProductsBody)
+    const body = formatMessage(messages[!projectId ? 'maxProductsBody' : 'maxProductsOne'])
     const accept = formatMessage(messages.gotIt)
     this.showAlert(title, body, accept)
   }
@@ -755,6 +755,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       currentScreen,
       fileTermsAccepted,
       selectedItems,
+      location: {
+        search
+      },
       projectName,
       validLength,
       intl: { formatMessage }
@@ -762,11 +765,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     let highlight = false
     let scrollCoords = 0
     const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
+    const queryParams = queryString.parse(search)
+    const { id: projectId } = queryParams || {}
     switch (currentScreen) {
       case Sections.PRODUCTS:
         if (quantities > 3 || selectedItems.length < 1) {
           const title = formatMessage(messages.maxProductsTitle)
-          const body = formatMessage(messages.maxProductsBody)
+          const body = formatMessage(messages[!projectId ? 'maxProductsBody' : 'maxProductsOne'])
           const accept = formatMessage(messages.gotIt)
           this.showAlert(title, body, accept)
         }
@@ -1057,7 +1062,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
             <ProductCatalogue
               onSelectProduct={this.handleOnselectProductAction}
               onDeselectProduct={deselectElementAction}
-              hideFilters={['collection']}
+              hideFilters={['collection', 'season', 'fit_style']}
               fromIntakeForm={true}
               adminProject={admProject}
               changeQuantity={this.handleChangeQuantity}

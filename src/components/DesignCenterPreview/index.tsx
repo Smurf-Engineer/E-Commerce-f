@@ -62,6 +62,9 @@ interface Props {
 }
 
 class DesignCenterPreview extends React.PureComponent<Props, {}> {
+  state = {
+    added: false
+  }
   handleOnPressEdit = () => {
     const { editDesignAction } = this.props
     editDesignAction()
@@ -77,7 +80,17 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
     openShareModalAction(false)
   }
 
-  handleAddToCart = () => true
+  handleAddToCart = () => {
+    const { added } = this.state
+    if (added) {
+      const { history } = this.props
+      history.push('/shopping-cart')
+      return
+    } else {
+      this.setState({ added: true })
+    }
+    return true
+  }
 
   render() {
     const {
@@ -100,7 +113,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
     const itemToAdd = Object.assign({}, savedDesign, {
       itemDetails: [{ quantity: 1 }]
     })
-
+    const { added } = this.state
     const { shortId, designName, designImage } = savedDesign
     return (
       <Container>
@@ -129,10 +142,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                   <FormattedMessage {...messages.addToTeam} />
                 </Button>
               </ButtonWrapper>
-              <ButtonWrapper>
+              <ButtonWrapper secondary={added}>
                 <AddToCartButton
                   orderDetails={true}
-                  label={formatMessage(messages.addToCart)}
+                  secondary={added}
+                  label={formatMessage(messages[added ? 'viewCart' : 'addToCart'])}
                   onClick={this.handleAddToCart}
                   item={itemToAdd}
                   designId={shortId}

@@ -104,6 +104,7 @@
     "react-masonry-css": "^1.0.14",
     "react-modal-resizable-draggable": "^0.1.4",
     "react-paypal-express-checkout-authorize": "^1.0.4",
+    "react-phone-input-2": "^2.14.0",
     "react-rangeslider": "^2.2.0",
     "react-redux": "^5.0.6",
     "react-responsive": "^4.1.0",

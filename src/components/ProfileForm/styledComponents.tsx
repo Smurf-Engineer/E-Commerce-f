@@ -30,6 +30,7 @@ export const Column = styled.div`
 
 export const InputTitleContainer = styled.div`
   display: flex;
+  margin-bottom: 5px;
 `
 export const Label = styled.div`
   height: 19px;
@@ -50,7 +51,6 @@ export const StyledInput = styled(Input)`
   width: 100%;
   border: 1px solid #bebebe;
   border-radius: 0;
-  margin-top: 5px;
 `
 
 export const StyledButton = styled(Button)`
