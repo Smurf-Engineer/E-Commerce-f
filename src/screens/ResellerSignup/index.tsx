@@ -10,6 +10,8 @@ import message from 'antd/lib/message'
 import Select from 'antd/lib/select'
 import get from 'lodash/get'
 import AntdMessage from 'antd/lib/message'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import * as mainLayoutActions from '../../components/MainLayout/api'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
 import {
@@ -186,7 +188,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
       window.scrollTo(0, 0)
     }
   }
-  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+  handleInputChange = (evt: any) => {
     const {
       currentTarget: { value, id }
     } = evt
@@ -252,7 +254,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
         <InfoText
           dangerouslySetInnerHTML={{
             __html: formatMessage(messages.currencyDesc)
-        }} />
+          }} />
       )
     })
   }
@@ -393,55 +395,55 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
           <MediaQuery minWidth={768}>
             {(matches) => matches &&
               <BannerSection>
-              {bannerSelected === 0 && 
-                <BannerBack>
-                  <HalfImage src={shopImage} />
-                  <HalfDiv>
-                    <BannerTitle dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.yourKit)
-                    }} />
-                    <BannerDescription dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.kitFeatures)
-                    }} />
-                    <BannerLogos>
-                      <BannerLogo src={designLabWhite} />
-                      <BannerLogo src={proDesignWhite} />
-                    </BannerLogos>
-                  </HalfDiv>
-                </BannerBack>
-              }
-              {bannerSelected === 1 && 
-                <BannerBack>
-                  <HalfDiv>
-                    <BannerLogo large={true} src={directShipWhite} />
-                    <BannerDescription dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.directFeatures)
-                    }} />
-                    <BannerLogos>
-                      <BannerFooter dangerouslySetInnerHTML={{
-                        __html: formatMessage(messages.easyConvenient)
+                {bannerSelected === 0 &&
+                  <BannerBack>
+                    <HalfImage src={shopImage} />
+                    <HalfDiv>
+                      <BannerTitle dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.yourKit)
                       }} />
-                    </BannerLogos>
-                  </HalfDiv>
-                  <HalfImage src={resellerGuy} />
-                </BannerBack>
-              }
-              {bannerSelected === 2 && 
-                <BannerBack>
-                  <FullDiv>
-                    <BigTitle>{formatMessage(messages.justWhatYouNeed)}</BigTitle>
-                    <FeatureImage large={true} src={onDemandLogoMain} />
-                    <MiddleText dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.buildingDesc)
-                    }} />
-                    <BannerCheckList dangerouslySetInnerHTML={{
-                      __html: formatMessage(messages.buldingCheckList)
-                    }} />
-                  </FullDiv>
-                </BannerBack>
-              }
-            </BannerSection>
-          }
+                      <BannerDescription dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.kitFeatures)
+                      }} />
+                      <BannerLogos>
+                        <BannerLogo src={designLabWhite} />
+                        <BannerLogo src={proDesignWhite} />
+                      </BannerLogos>
+                    </HalfDiv>
+                  </BannerBack>
+                }
+                {bannerSelected === 1 &&
+                  <BannerBack>
+                    <HalfDiv>
+                      <BannerLogo large={true} src={directShipWhite} />
+                      <BannerDescription dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.directFeatures)
+                      }} />
+                      <BannerLogos>
+                        <BannerFooter dangerouslySetInnerHTML={{
+                          __html: formatMessage(messages.easyConvenient)
+                        }} />
+                      </BannerLogos>
+                    </HalfDiv>
+                    <HalfImage src={resellerGuy} />
+                  </BannerBack>
+                }
+                {bannerSelected === 2 &&
+                  <BannerBack>
+                    <FullDiv>
+                      <BigTitle>{formatMessage(messages.justWhatYouNeed)}</BigTitle>
+                      <FeatureImage large={true} src={onDemandLogoMain} />
+                      <MiddleText dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.buildingDesc)
+                      }} />
+                      <BannerCheckList dangerouslySetInnerHTML={{
+                        __html: formatMessage(messages.buldingCheckList)
+                      }} />
+                    </FullDiv>
+                  </BannerBack>
+                }
+              </BannerSection>
+            }
           </MediaQuery>
         </TopSection>
         {!user && <Container>
@@ -502,11 +504,14 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                     <FormattedMessage {...messages.phone} />
                     <RequiredSymbol>*</RequiredSymbol>
                   </Label>
-                  <StyledInput
-                    id="phone"
-                    placeholder={formatMessage(messages.phone)}
+                  <PhoneInput
+                    country={'us'}
                     value={phone}
-                    onChange={this.handleInputChange}
+                    onChange={value => {
+                      this.handleInputChange({ currentTarget: { id: 'phone', value } })
+                    }}
+                    inputStyle={{ borderRadius: 0 }}
+                    copyNumbersOnly={false}
                   />
                 </InputDiv>
               </InputRow>
@@ -632,7 +637,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                 __html: formatMessage(messages.resellerDesc)
               }}
             />
-            {currency === US_CURRENCY && 
+            {currency === US_CURRENCY &&
               <StyledUpload
                 listType="picture-card"
                 className="avatar-uploader"
@@ -665,7 +670,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                   value={gst}
                   onChange={this.handleInputChange}
                 />
-            </GSTInput>
+              </GSTInput>
             }
             {!!file &&
               <FileLabel>
@@ -675,7 +680,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                 </FileName>
               </FileLabel>
             }
-          {!!currency &&
+            {!!currency &&
               <TitleDesc
                 dangerouslySetInnerHTML={{
                   __html: formatMessage(messages.reviewText)
@@ -754,7 +759,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     if (password !== confirmPassword) {
       message.error(formatMessage(messages.passwordLengthError))
     }
-    if (!firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency 
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency
       || !website || !businessName || !selectedRegion
       || (currency === US_CURRENCY && !fileName) || (currency === CA_CURRENCY && !gst)
     ) {
@@ -764,7 +769,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     if ((
       (currency === US_CURRENCY && initialCountryCode.toUpperCase() !== US_COUNTRY) ||
       (currency === CA_CURRENCY && initialCountryCode.toUpperCase() !== CA_COUNTRY)
-      ) && !ignoreCurrency
+    ) && !ignoreCurrency
     ) {
       this.handlePromptCurrency()
       return
@@ -836,7 +841,7 @@ const mapStateToProps = (state: any) => {
 const loginEnhance = compose(
   injectIntl,
   withApollo,
-  connect(mapStateToProps, {...mainLayoutActions}), 
+  connect(mapStateToProps, { ...mainLayoutActions }),
   createUser
 )(ResellerSignup)
 export default loginEnhance

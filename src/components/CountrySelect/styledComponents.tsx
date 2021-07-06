@@ -13,6 +13,5 @@ export const Text = styled.div`
 `
 
 export const StyledSelect = styled(Select)`
-  margin-top: 5px;
   width: 100%;
 `
