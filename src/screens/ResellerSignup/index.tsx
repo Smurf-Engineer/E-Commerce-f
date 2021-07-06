@@ -11,7 +11,6 @@ import Select from 'antd/lib/select'
 import get from 'lodash/get'
 import AntdMessage from 'antd/lib/message'
 import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
 import * as mainLayoutActions from '../../components/MainLayout/api'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
 import {
