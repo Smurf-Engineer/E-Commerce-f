@@ -3,6 +3,8 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import {
   Container,
   Row,
@@ -24,7 +26,7 @@ interface Props {
   email: string
   phone: string
   formatMessage: (messageDescriptor: any) => string
-  handleInputChange: (evt: React.FormEvent<HTMLInputElement>) => void
+  handleInputChange: (evt: any) => void
   onSaveProfileSettings: () => void
   onToggleModalPassword: () => void
 }
@@ -113,11 +115,14 @@ const ProfileForm = ({
           <InputTitleContainer>
             <Label>{formatMessage(messages.phone)}</Label>
           </InputTitleContainer>
-          <StyledInput
-            id="phone"
+          <PhoneInput
+            country={'us'}
             value={phone !== null ? phone : phoneUP}
-            onChange={handleInputChange}
-            maxLength={50}
+            onChange={value => {
+              handleInputChange({ currentTarget: { id: 'phone', value } })
+            }}
+            inputStyle={{ borderRadius: 0 }}
+            copyNumbersOnly={false}
           />
         </Column>
       </Row>
