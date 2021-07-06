@@ -1,5 +1,6 @@
 @import '~antd/dist/antd.less';
 @import './base.less';
+@import './phoneinput.less';
 @import './richtext.less';
 @import './range.less';
 
