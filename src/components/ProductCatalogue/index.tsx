@@ -197,13 +197,13 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       openSidebar,
       openQuickViewAction: openQuickView,
       currentCurrency,
-      data: { loading, filters: filtersGraph },
+      data: { loading, filters: filtersArray },
       selectedItems,
       hideFilters = [],
       fromIntakeForm = false,
       adminProject = false
     } = this.props
-    if (loading || !filtersGraph || !filtersGraph.length) {
+    if (loading || !filtersArray || !filtersArray.length) {
       return null
     }
 
@@ -256,7 +256,16 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const categoriesFiltered = { ...defaultCategories, ...categoryFilters }
     const seasonsFiltered = { ...defaultSeasons, ...seasonFilters }
     const stylesFiltered = { ...defaultFitStyles, ...fitStyleFilters }
-    const filters = [
+    const filters = fromIntakeForm ? 
+    [
+      collectionFilters,
+      sportsFiltered,
+      categoriesFiltered,
+      seasonsFiltered,
+      stylesFiltered,
+      gendersFiltered
+    ] : 
+    [
       collectionFilters,
       gendersFiltered,
       sportsFiltered,
@@ -266,17 +275,38 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       typeFilters
     ]
 
+    const {
+      COLLECTION,
+      CATEGORY,
+      GENDER,
+      SPORT,
+      SEASON,
+      FITSTYLE
+    } = filtersNames
+
+    let filtersGraph = filtersArray
+
+    if (fromIntakeForm) {
+      const genderIndex = filtersGraph.findIndex((item) => item.name === GENDER)
+      if (genderIndex !== -1) {
+        filtersGraph.push(filtersGraph.splice(genderIndex, 1)[0])
+        filtersGraph = filtersGraph.slice()
+      }
+    }
     const renderFilters = filtersGraph.map(
       (filter: FilterType, index: number) => {
         const filterToShow = this.state[`show${filter.name}Filters`]
         const activeFilters = filters[index]
-
+        let filterName = filter.name || ''
+        if (fromIntakeForm && filterName === CATEGORY) {
+          filterName = 'Product'
+        }
         return !includes(hideFilters, filter.name) && (
           <div key={index}>
             <FilterComponent
               key={filter.id}
               id={filter.name}
-              title={UpperCase(filter.name)}
+              title={UpperCase(filterName)}
               options={filter.options}
               showOptions={fromIntakeForm && filterToShow === undefined ? true : filterToShow}
               toggleOptions={this.toggleFilter}
@@ -297,15 +327,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
         {renderFilters}
       </div>
     )
-
-    const {
-      COLLECTION,
-      CATEGORY,
-      GENDER,
-      SPORT,
-      SEASON,
-      FITSTYLE
-    } = filtersNames
 
     const collectionFilter = filtersGraph.find(
       filter => filter.name === COLLECTION
