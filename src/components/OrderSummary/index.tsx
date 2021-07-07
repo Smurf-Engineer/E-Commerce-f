@@ -87,7 +87,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       admin = false
     } = this.props
 
-    const extraFee = proDesignReview + taxFee + taxPst + taxGst + shippingTotal
+    const extraFee = proDesignReview + taxFee + taxPst + taxGst + shippingTotal + upgrades + variables
     const symbol = currencySymbol || '$'
     const saved =
       youSaved > totalWithoutDiscount ? totalWithoutDiscount : youSaved
@@ -95,7 +95,7 @@ export class OrderSummary extends React.Component<Props, {}> {
 
     const savedPercent = Math.round((saved * 100) / totalWithoutDiscount)
     const netTotal =
-      totalWithDiscount || discount ? totalWithDiscount : subtotal + extraFee + upgrades + variables
+      totalWithDiscount || discount ? totalWithDiscount : subtotal + extraFee
     const amountsDivider =
       !!proDesignReview ||
       !!taxFee ||
