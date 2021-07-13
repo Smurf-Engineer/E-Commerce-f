@@ -3,7 +3,7 @@
  */
 import Icon from 'antd/lib/icon'
 import styled from 'styled-components'
-import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED, BLACK_LABEL } from '../../../theme/colors'
+import { GRAY_DARK, GREEN_BRIGHT, WHITE, RED, BLACK_LABEL, GRAY_LIGHTEST } from '../../../theme/colors'
 
 type StyledProps = {
   backgroundColor?: string
@@ -137,6 +137,7 @@ export const ThumbnailImage = styled.img`
   height: ${({ fitContainer }: StyledProps) => (fitContainer ? '110px' : '212px')};
   object-fit: cover;
   border-radius: 3px;
+  background: ${({ isProDesign }: StyledProps) => (isProDesign ? GRAY_LIGHTEST : 'unset')};
   @media (max-width: 767px) {
     max-width: ${({ isProDesign }: StyledProps) => (isProDesign ? '162px' : '220px')};
   }
