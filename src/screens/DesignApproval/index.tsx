@@ -746,7 +746,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       selectedVariant
     } = this.state
     const fontList: Font[] = get(fontsData, 'fonts', [])
-    const { loading = true, projectItem } = data || {}
+    const { loading = true, projectItem, error } = data || {}
     const incomingMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
     const product = get(projectItem, 'product', {}) as Product
     const design = get(projectItem, 'design', {}) as DesignType
@@ -1031,7 +1031,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           {installedFonts.length ? (
             <GoogleFontLoader fonts={installedFonts} />
           ) : null}
-          {loading && <LoadingContainer><Spin size="large" /></LoadingContainer> }
+          {loading && !error && <LoadingContainer><Spin size="large" /></LoadingContainer> }
           <BlackBarMobile>
             <BackButton onClick={this.goToHome}>
               <LeftArrow type="left-circle" />
