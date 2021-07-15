@@ -59,7 +59,6 @@ import { threeDScripts } from '../../utils/scripts'
 import OwnYourStyle from '../../assets/OWNYOURSTYLE.svg'
 import JakrooLogoWhite from '../../assets/jakroo_logo_white.svg'
 import '../../screens/App/theme.ant'
-import { PNG_EXTENSION } from '../DesignSearch/constants'
 
 /* eslint-disable */
 class Render3D extends PureComponent {
