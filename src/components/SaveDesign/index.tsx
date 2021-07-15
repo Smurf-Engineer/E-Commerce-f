@@ -182,6 +182,22 @@ export class SaveDesign extends React.Component<Props, State> {
       message.error(formatMessage(messages.invalidUser))
       return
     }
+    const { designBase64, canvasJson, styleId, highResolution } = design
+    let objects = []
+    if (canvasJson) {
+      try {
+        const canvasObj = JSON.parse(canvasJson)
+        objects = get(canvasObj, 'objects', [])
+      } catch (e) {
+        message.error(e)
+      }
+    }
+    const objectColors = objects.reduce((arr, item) => {
+      const { fill, stroke } = item || {}
+      arr.push(fill, stroke)
+      return arr
+    // tslint:disable-next-line: align
+    }, [])
     let arrayColors: Color[] = []
     let hasFluorescent = false
     if (colors.length && colorsList && !colorsList.loading) {
@@ -189,13 +205,13 @@ export class SaveDesign extends React.Component<Props, State> {
         const colorListResult = get(colorsList, 'colorsResult.colors', [])
         arrayColors = JSON.parse(colorListResult)
         hasFluorescent = arrayColors.some(({ type, value }: Color) => 
-          colors.includes(value) && type === FLUORESCENT_COLOR
+          (colors.includes(value) || objectColors.includes(value)) &&
+          type === FLUORESCENT_COLOR
         )
       } catch (e) {
         message.error(e)
       }
     }
-    const { designBase64, canvasJson, styleId, highResolution } = design
     try {
       const finalDesignName = designName || productMpn
       const designObj: DesignInput = {
