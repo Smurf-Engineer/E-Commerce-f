@@ -22,6 +22,7 @@ export const getProdesignItemQuery = gql`
     projectItem: getProdesignItem(shortId: $shortId) {
       id: short_id
       status
+      showNotification
       limitRequests: limit_requests
       product {
         id
