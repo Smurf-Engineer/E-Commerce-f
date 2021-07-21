@@ -59,7 +59,7 @@ interface Props {
   fromIntakeForm?: boolean
   isProDesign?: boolean
   proStatus?: string
-  type?: string
+  qualityWarning?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -103,7 +103,7 @@ const ProductSlide = ({
   selectedIndex,
   handleCheckChange,
   fitContainer = false,
-  type
+  qualityWarning = false
 }: Props) => {
   if (image) {
     return (
@@ -120,7 +120,7 @@ const ProductSlide = ({
         {proDesign &&
           <StatusFlag src={proDesignAssigned ? ProFlag : ProCertFlag} />
         }
-        {(type && type === 'warning') &&
+        {qualityWarning &&
           <StatusFlag src={WarningQualityFlag} />
         }
         <ImageTop>

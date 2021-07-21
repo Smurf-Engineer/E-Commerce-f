@@ -82,6 +82,7 @@ interface Props {
   fitContainer?: boolean
   isProDesign?: boolean
   proStatus?: string
+  qualityWarning?: boolean
   deleteItem?: () => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
@@ -279,7 +280,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       selectProduct,
       isSelected = false,
       selectedIndex = 0,
-      fitContainer = false
+      fitContainer = false,
+      qualityWarning = false
     } = this.props
     const { isHovered, currentImage, loading } = this.state
     const currencyPrices =
@@ -378,7 +380,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             deleteItem,
             fromIntakeForm,
             selectedIndex,
-            fitContainer
+            fitContainer,
+            qualityWarning
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
