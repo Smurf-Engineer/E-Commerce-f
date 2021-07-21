@@ -169,9 +169,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     if (myLockerList) {
       return `/custom-product?${designId && `id=${designId}`}`
     }
-    return `/product?id=${id}&modelId=${yotpoId}${
-      gender ? `&gender=${gender}` : ''
-    }&ps=${location.pathname.replace('/', '')}`
+    return `/product?id=${id}&modelId=${yotpoId}${gender ? `&gender=${gender}` : ''
+      }&ps=${location.pathname.replace('/', '')}`
   }
 
   handlePressThumbnail = () => {
@@ -236,7 +235,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
   onHandleCheckChange = (event: CheckboxChangeEvent) => {
     const { target: { checked } } = event
-    const { product, handleCheckChange, fromIntakeForm } = this.props
+    const { product, handleCheckChange, fromIntakeForm } = this.props
     if (!fromIntakeForm) {
       handleCheckChange(product.id, checked)
     }
@@ -244,7 +243,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   onHandleCheckChangeImage = (event: any) => {
     event.stopPropagation()
     const { isSelected } = this.props
-    const { product, handleCheckChange } = this.props
+    const { product, handleCheckChange } = this.props
     handleCheckChange(product, !isSelected)
   }
   render() {
@@ -350,11 +349,12 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     }
     return (
       <Container
-      {...{ withMargin, selectProduct, isSelected, fitContainer  }}
-      onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
+        {...{ withMargin, selectProduct, isSelected, fitContainer }}
+        onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
         {!!notifications && <NotificationsBadge>{notifications > 9 ? '+9' : notifications}</NotificationsBadge>}
         <ImageSlide
           {...{
+            type,
             isProDesign,
             proStatus,
             isTopProduct,
@@ -393,14 +393,14 @@ export class ProductThumbnail extends React.Component<Props, {}> {
           footer
         ) : (
           <Footer>
-            <Type {...{fitContainer}}>
+            <Type {...{ fitContainer }}>
               {type}
               <GendersContainer>
                 {menAvailable && <MenIcon type="man" />}
                 {womenAvailable && <WomenIcon type="woman" />}
               </GendersContainer>
             </Type>
-            <Description {...{fitContainer}}>{description}</Description>
+            <Description {...{ fitContainer }}>{description}</Description>
             <InfoContainer>
               {!isProDesign ? colorOptions : null}
               <Price>{price}</Price>

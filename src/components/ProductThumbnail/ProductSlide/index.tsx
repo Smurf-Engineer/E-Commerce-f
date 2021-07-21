@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import Responsive from 'react-responsive'
-import { FormattedMessage } from 'react-intl'
 import {
   ImageContainer,
   ImageTop,
@@ -13,17 +12,19 @@ import {
   ButtonContainer,
   Page,
   QuickView,
-  ProApproved,
   ThumbnailImage,
   CustomizeButton,
   CheckboxContainer,
   ProStatus,
   ProLabel,
-  DeleteButton
+  DeleteButton,
+  StatusFlag
 } from './styledComponents'
-import messages from './messages'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
+import ProFlag from '../../../assets/pro_flag.png'
+import ProCertFlag from '../../../assets/procert_flag.png'
+import WarningQualityFlag from '../../../assets/warning_flag.png'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { ImageType } from '../../../types/common'
 import { BLUE_STATUS, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
@@ -58,6 +59,7 @@ interface Props {
   fromIntakeForm?: boolean
   isProDesign?: boolean
   proStatus?: string
+  type?: string
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -100,7 +102,8 @@ const ProductSlide = ({
   isSelected = false,
   selectedIndex,
   handleCheckChange,
-  fitContainer = false
+  fitContainer = false,
+  type
 }: Props) => {
   if (image) {
     return (
@@ -114,15 +117,12 @@ const ProductSlide = ({
           selectProduct
         }}
       >
-        {proDesign && (
-          <ProApproved proAssigned={proDesignAssigned}>
-            {
-              <FormattedMessage
-                {...messages[proDesignAssigned ? 'proAssigned' : 'approved']}
-              />
-            }
-          </ProApproved>
-        )}
+        {proDesign &&
+          <StatusFlag src={proDesignAssigned ? ProFlag : ProCertFlag} />
+        }
+        {(type && type === 'warning') &&
+          <StatusFlag src={WarningQualityFlag} />
+        }
         <ImageTop>
           <AboveTablet>
             {!hideQuickView && (
@@ -174,39 +174,39 @@ const ProductSlide = ({
     : JackrooLogo
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct, selectProduct }}>
-      <ImageTop {...{selectProduct, isProDesign, selectedIndex}}>
+      <ImageTop {...{ selectProduct, isProDesign, selectedIndex }}>
         <AboveTablet>
-        {!hideQuickView && (
-          <QuickView onClick={onPressQuickView}>
-            <img src={quickViewIcon} />
-          </QuickView>)
-        }
+          {!hideQuickView && (
+            <QuickView onClick={onPressQuickView}>
+              <img src={quickViewIcon} />
+            </QuickView>)
+          }
         </AboveTablet>
         {(isProDesign && proStatus === PREFLIGHT_STATUS) &&
-          <DeleteButton onClick={deleteItem} type="delete"/>
+          <DeleteButton onClick={deleteItem} type="delete" />
         }
         {selectProduct && <BelowTablet><QuickView onClick={onPressQuickView}>
           <img src={quickViewIcon} />
         </QuickView></BelowTablet>}
-        {(selectProduct && !fromIntakeForm) && <CheckboxContainer {...{selectedIndex}}>
+        {(selectProduct && !fromIntakeForm) && <CheckboxContainer {...{ selectedIndex }}>
           <Checkbox
-          {...{ indeterminate: false }}
-          onChange={handleCheckChange}
-          checked={isSelected}
-        /></CheckboxContainer>}
+            {...{ indeterminate: false }}
+            onChange={handleCheckChange}
+            checked={isSelected}
+          /></CheckboxContainer>}
         {isTopProduct && (
           <TopContainer>
             <TopText>TOP</TopText>
           </TopContainer>
         )}
       </ImageTop>
-      {isProDesign && proStatus ? 
+      {isProDesign && proStatus ?
         <ProLabel>
           <ProStatus backgroundColor={statusColor}>
-          {itemLabels[proStatus] || itemLabels[IN_DESIGN]}
+            {itemLabels[proStatus] || itemLabels[IN_DESIGN]}
           </ProStatus>
         </ProLabel>
-         : null
+        : null
       }
       <ThumbnailImage
         onClick={!selectProduct ? onPressThumbnail : undefined}
