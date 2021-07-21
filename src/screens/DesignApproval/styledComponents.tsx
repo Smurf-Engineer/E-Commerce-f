@@ -48,6 +48,7 @@ interface RowProps {
   codeColor?: string
   backgroundColor?: string
   disabled?: boolean
+  highlight?: boolean
   selected?: boolean
 }
 
@@ -673,6 +674,47 @@ export const CancelButton = styled(Button)`
 export const ChatMessages = styled.div`
   flex: 1;
   overflow-y: scroll;
+  ${({ highlight }: RowProps) => highlight ? `
+    animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) 1s both;
+    @keyframes shake-horizontal {
+      0% {
+        transform: translateY(45px);
+        animation-timing-function: ease-in;
+        opacity: 1;
+      }
+      24% {
+        opacity: 1;
+      }
+      40% {
+        transform: translateY(24px);
+        animation-timing-function: ease-in;
+      }
+      65% {
+        transform: translateY(12px);
+        animation-timing-function: ease-in;
+      }
+      82% {
+        transform: translateY(6px);
+        animation-timing-function: ease-in;
+      }
+      93% {
+        transform: translateY(4px);
+        animation-timing-function: ease-in;
+      }
+      25%,
+      55%,
+      75%,
+      87% {
+        transform: translateY(0px);
+        animation-timing-function: ease-out;
+      }
+      100% {
+        transform: translateY(0px);
+        animation-timing-function: ease-out;
+        opacity: 1;
+      }
+    }
+  ` : ''}
 `
 
 export const IncomingMessage = styled.div`
@@ -903,6 +945,17 @@ export const MessageBox = styled.div`
   border-radius: 5px;
   justify-content: space-between;
   align-items: flex-end;
+  ${({ highlight }: RowProps) => highlight ? `
+    animation: blink-1 1.5s 2s 2 ease-in-out;
+    @keyframes blink-1 {
+      0% {
+        box-shadow: 0 0 0 0 #ff6a6a;
+      }
+      100% {
+        box-shadow: 0 0 0 16px #ffebebb8;
+      }
+    }
+  ` : ''}
 `
 
 export const ParentText = styled.div`

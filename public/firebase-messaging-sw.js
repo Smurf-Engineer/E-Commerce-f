@@ -32,8 +32,32 @@ messaging.setBackgroundMessageHandler(function (notification) {
         })
     var notificationOptions = {
         body: payload.message,
-        title: payload.title
+        title: payload.title,
+        data: payload.url,
+        icon: 'https://storage.googleapis.com/jakroo/homepage/Red-J.jpg'
     }
     self.registration.showNotification(payload.title, notificationOptions)
     return promiseChain
+})
+
+self.addEventListener('notificationclick', function (event) {
+    const { notification: payload } = event
+    event.notification.close(); // Android needs explicit close.
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(windowClients => {
+            // Check if there is already a window/tab open with the target URL
+            for (var i = 0; i < windowClients.length; i++) {
+                var client = windowClients[i];
+                // If so, just focus it.
+                const path = client.url ? client.url.replace(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)\//g, '') : ''
+                if (path === payload.data && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            // If not, then open the target URL in a new window/tab.
+            if (clients.openWindow) {
+                return clients.openWindow(`/${payload.data}`);
+            }
+        })
+    )
 })
