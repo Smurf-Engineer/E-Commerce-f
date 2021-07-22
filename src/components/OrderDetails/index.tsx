@@ -312,7 +312,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 <DeliveryLabel>
                   {formatMessage(messages.orderDate)}
                 </DeliveryLabel>
-                {teamStoreId &&
+                {teamStoreId && cutoffDate &&
                   <DeliveryLabel>
                     {formatMessage(messages.cutoffDate)}
                   </DeliveryLabel>
@@ -334,7 +334,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 </Info>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
-                {teamStoreId && <Info>{cutoffDate}</Info>}
+                {teamStoreId && cutoffDate && <Info>{cutoffDate}</Info>}
                 <Info>
                   {trackingNumber ? 
                     <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
