@@ -1391,6 +1391,7 @@
   "components.OrderDetails.affiliates": "Back to Affiliates orders",
   "components.OrderDetails.backToOverview": "Back to Overview",
   "components.OrderDetails.receipt": "Receipt",
+  "components.OrderDetails.cutoffDate": "Store Cut-off Date",
   "components.OrderDetails.deliveryDate": "Estimated Delivery Date",
   "components.OrderDetails.orderNumber": "Order Number",
   "components.OrderDetails.orderDate": "Order Date",
