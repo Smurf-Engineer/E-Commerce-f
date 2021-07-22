@@ -166,6 +166,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       cart,
       status,
       currency,
+      cutoffDate,
       shippingAmount,
       proDesign,
       taxGst,
@@ -311,6 +312,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                 <DeliveryLabel>
                   {formatMessage(messages.orderDate)}
                 </DeliveryLabel>
+                {teamStoreId &&
+                  <DeliveryLabel>
+                    {formatMessage(messages.cutoffDate)}
+                  </DeliveryLabel>
+                }
                 <DeliveryLabel>
                   {formatMessage(messages.trackingNumber)}
                 </DeliveryLabel>
@@ -328,6 +334,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 </Info>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
+                {teamStoreId && <Info>{cutoffDate}</Info>}
                 <Info>
                   {trackingNumber ? 
                     <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>

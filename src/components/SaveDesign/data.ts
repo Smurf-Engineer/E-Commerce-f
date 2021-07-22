@@ -12,7 +12,6 @@ export const saveDesignName = graphql(
         svg: output_svg
         designCode: code
         shared
-        shortId: short_id
         createdAt: created_at
         colors {
           id
