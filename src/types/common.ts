@@ -1533,6 +1533,11 @@ export interface UserFiles {
   original?: string
 }
 
+export interface ShortenedURL {
+  id: string
+  url: string
+}
+
 export interface DesignFiles {
   files: number[]
   svgs: number[]

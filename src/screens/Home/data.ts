@@ -125,3 +125,12 @@ export const profileSettingsQuery = gql`
     }
   }
 `
+
+export const getShortenURLQuery = gql`
+  query getShortenURL($id: String) {
+    shortenURL: getShortenURL(id: $id) {
+      id
+      url
+    }
+  }
+`

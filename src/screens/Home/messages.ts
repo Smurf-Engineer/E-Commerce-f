@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'screens.Home.deliveryDate',
     defaultMessage: 'DELIVERY DATE'
   },
+  redirectMessage: {
+    id: 'screens.Home.redirectMessage',
+    defaultMessage: 'You are being redirected, please wait...'
+  },
   currentTurnaround: {
     id: 'screens.Home.currentTurnaround',
     defaultMessage: 'Current turnaround time for full custom kits'
