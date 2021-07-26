@@ -82,6 +82,7 @@ interface Props {
   fitContainer?: boolean
   isProDesign?: boolean
   proStatus?: string
+  qualityWarning?: boolean
   deleteItem?: () => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
@@ -169,9 +170,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     if (myLockerList) {
       return `/custom-product?${designId && `id=${designId}`}`
     }
-    return `/product?id=${id}&modelId=${yotpoId}${
-      gender ? `&gender=${gender}` : ''
-    }&ps=${location.pathname.replace('/', '')}`
+    return `/product?id=${id}&modelId=${yotpoId}${gender ? `&gender=${gender}` : ''
+      }&ps=${location.pathname.replace('/', '')}`
   }
 
   handlePressThumbnail = () => {
@@ -236,7 +236,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
   onHandleCheckChange = (event: CheckboxChangeEvent) => {
     const { target: { checked } } = event
-    const { product, handleCheckChange, fromIntakeForm } = this.props
+    const { product, handleCheckChange, fromIntakeForm } = this.props
     if (!fromIntakeForm) {
       handleCheckChange(product.id, checked)
     }
@@ -244,7 +244,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   onHandleCheckChangeImage = (event: any) => {
     event.stopPropagation()
     const { isSelected } = this.props
-    const { product, handleCheckChange } = this.props
+    const { product, handleCheckChange } = this.props
     handleCheckChange(product, !isSelected)
   }
   render() {
@@ -280,7 +280,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       selectProduct,
       isSelected = false,
       selectedIndex = 0,
-      fitContainer = false
+      fitContainer = false,
+      qualityWarning = false
     } = this.props
     const { isHovered, currentImage, loading } = this.state
     const currencyPrices =
@@ -350,11 +351,12 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     }
     return (
       <Container
-      {...{ withMargin, selectProduct, isSelected, fitContainer  }}
-      onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
+        {...{ withMargin, selectProduct, isSelected, fitContainer }}
+        onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
         {!!notifications && <NotificationsBadge>{notifications > 9 ? '+9' : notifications}</NotificationsBadge>}
         <ImageSlide
           {...{
+            type,
             isProDesign,
             proStatus,
             isTopProduct,
@@ -378,7 +380,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             deleteItem,
             fromIntakeForm,
             selectedIndex,
-            fitContainer
+            fitContainer,
+            qualityWarning
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
@@ -393,14 +396,14 @@ export class ProductThumbnail extends React.Component<Props, {}> {
           footer
         ) : (
           <Footer>
-            <Type {...{fitContainer}}>
+            <Type {...{ fitContainer }}>
               {type}
               <GendersContainer>
                 {menAvailable && <MenIcon type="man" />}
                 {womenAvailable && <WomenIcon type="woman" />}
               </GendersContainer>
             </Type>
-            <Description {...{fitContainer}}>{description}</Description>
+            <Description {...{ fitContainer }}>{description}</Description>
             <InfoContainer>
               {!isProDesign ? colorOptions : null}
               <Price>{price}</Price>

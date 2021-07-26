@@ -243,3 +243,10 @@ export const CheckboxContainer = styled.div`
     selectedIndex ? 'none' : 'inline-block'};
   }
 `
+
+export const StatusFlag = styled.img`
+  position: absolute;
+  height: 50px;
+  right: 5px;
+  top: 5px;
+`

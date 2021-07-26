@@ -139,7 +139,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             code,
             proDesign,
             outputSvg,
-            outputPng
+            outputPng,
+            qualityWarning
           },
           index
         ) => {
@@ -167,7 +168,13 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                {...{ currentCurrency, fromIntakeForm, handleCheckChange, isSelected }}
+                {...{
+                  currentCurrency,
+                  fromIntakeForm,
+                  handleCheckChange,
+                  isSelected,
+                  qualityWarning
+                }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}

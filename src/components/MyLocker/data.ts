@@ -37,6 +37,7 @@ export const desginsQuery = gql`
         createdAt: created_at
         outputSvg: output_svg
         outputPng: output_png
+        qualityWarning: quality_warning
         product {
           id
           code
