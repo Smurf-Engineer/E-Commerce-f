@@ -59,6 +59,7 @@ interface Props {
   fromIntakeForm?: boolean
   isProDesign?: boolean
   proStatus?: string
+  proCertified?: boolean
   qualityWarning?: boolean
   onPressBack: () => void
   onPressNext: () => void
@@ -103,6 +104,7 @@ const ProductSlide = ({
   selectedIndex,
   handleCheckChange,
   fitContainer = false,
+  proCertified = false,
   qualityWarning = false
 }: Props) => {
   if (image) {
@@ -118,7 +120,10 @@ const ProductSlide = ({
         }}
       >
         {proDesign &&
-          <StatusFlag src={proDesignAssigned ? ProFlag : ProCertFlag} />
+          <StatusFlag src={ProFlag} />
+        }
+        {proCertified &&
+          <StatusFlag src={ProCertFlag} />
         }
         {qualityWarning &&
           <StatusFlag src={WarningQualityFlag} />
