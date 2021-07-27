@@ -140,6 +140,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             proDesign,
             outputSvg,
             outputPng,
+            proCertified,
             qualityWarning
           },
           index
@@ -173,6 +174,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   fromIntakeForm,
                   handleCheckChange,
                   isSelected,
+                  proDesign,
+                  proCertified,
                   qualityWarning
                 }}
                 id={product.id}
@@ -258,7 +261,6 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 onPressCustomize={this.handleOnPressAddToCart}
                 onPressQuickView={this.handlePressQuickView}
                 image={image}
-                proDesign={proDesign}
                 proDesignAssigned={outputPng && !outputSvg}
                 hideQuickView={previewOnly}
               />

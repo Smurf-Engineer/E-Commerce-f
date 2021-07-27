@@ -82,6 +82,7 @@ interface Props {
   fitContainer?: boolean
   isProDesign?: boolean
   proStatus?: string
+  proCertified?: boolean
   qualityWarning?: boolean
   deleteItem?: () => void
   onPressCustomize: (id: number) => void
@@ -281,6 +282,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       isSelected = false,
       selectedIndex = 0,
       fitContainer = false,
+      proCertified = false,
       qualityWarning = false
     } = this.props
     const { isHovered, currentImage, loading } = this.state
@@ -381,6 +383,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             fromIntakeForm,
             selectedIndex,
             fitContainer,
+            proCertified,
             qualityWarning
           }}
           onMouseEnter={this.handleOnHover}
