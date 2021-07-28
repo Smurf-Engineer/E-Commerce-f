@@ -23,6 +23,9 @@ interface Props {
 }
 
 export class NotificationHeader extends React.PureComponent<Props, {}> {
+  state = {
+    visible: false
+  }
   goToNotifications = () => {
     const { history } = this.props
     history.push('/account?option=notifications')
@@ -36,14 +39,15 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
       onPressMarkAllAsRead,
       updating
     } = this.props
+    const { visible } = this.state
     const unreadTotal = notifications.length && notifications.filter((notification) => !notification.read).length
 
     const content = (
       <>
         {notifications.length ? <><NotificationList>
-          {notifications.map(({ title, message, date, read, id, url }) => (
+          {notifications.map(({ title, message, date, metaMessage, read, id, url }) => (
             <NotificationRow
-              {...{ title, message, date, read, id, url }}
+              {...{ title, message, date, read, metaMessage, id, url }}
               onPress={onPressNotification}
             />
           ))}
@@ -65,7 +69,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
       >
         <Container>
           <Badge count={unreadTotal} overflowCount={9}>
-            <Image src={bell} />
+            <Image active={visible} src={bell} />
           </Badge>
         </Container>
       </Popover>
@@ -73,6 +77,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
   }
 
   handleOnVisibleChange = (visible: boolean) => {
+    this.setState({ visible })
     if (!visible) {
       this.setState({
         currentRegionTemp: null,

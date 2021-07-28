@@ -15,6 +15,7 @@ export const notificationsQuery = gql`
         notificationType: notification_type
         toAdmin: to_admin
         read: user_read
+        metaMessage: meta_message
         date: created_at
         title
         message

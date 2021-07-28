@@ -8,7 +8,7 @@ interface RowProps {
 
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
-import { RED } from '../../theme/colors'
+import { BLUE, RED } from '../../theme/colors'
 
 export const Container = styled.div``
 
@@ -21,6 +21,21 @@ export const Table = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin-bottom: 0;
+  }
+`
+
+export const MetaMessage = styled.div`
+  b {
+    color: ${BLUE};
+    transition: all .25s;
+    &:hover {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+  }
+  i {
+    font-style: normal !important;
+    font-weight: bold;
   }
 `
 

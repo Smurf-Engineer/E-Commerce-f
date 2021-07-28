@@ -2,7 +2,7 @@
  * Row Component - Created by eduardoquintero on 21/11/19.
  */
 import * as React from 'react'
-import { TableRow, Cell, DeleteButton, Thumbnail, MarkLabel } from '../styledComponents'
+import { TableRow, Cell, DeleteButton, Thumbnail, MarkLabel, MetaMessage } from '../styledComponents'
 import moment from 'moment'
 import messages from '../messages'
 import { Message, Header } from '../../../types/common'
@@ -74,7 +74,13 @@ class Row extends React.PureComponent<Props, {}> {
                   className={unread && header.fieldName === 'message' && 'unread'}
                 >
                   {header.fieldName !== 'image' ? (
-                    value
+                    (clickable && header.fieldName === 'message' ?
+                      <MetaMessage
+                        dangerouslySetInnerHTML={{
+                          __html: item.metaMessage || item.message
+                        }}
+                      /> : value
+                    )
                   ) : (
                       <Thumbnail src={currentItem} />
                     )}
