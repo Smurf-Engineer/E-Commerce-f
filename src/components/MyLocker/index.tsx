@@ -599,7 +599,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
                 designName: designToRename
               })}
               onChange={this.handleInputChange}
-              maxLength={15}
+              maxLength={18}
             />
           </InputWrapper>
         </Modal>

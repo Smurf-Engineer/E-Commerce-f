@@ -445,7 +445,7 @@ export class SaveDesign extends React.Component<Props, State> {
                 value={designName}
                 placeholder={formatMessage(messages.placeholder)}
                 onChange={this.handleInputChange}
-                maxLength={15}
+                maxLength={18}
               />
             </InputWrapper>
             {!isMobile && (
