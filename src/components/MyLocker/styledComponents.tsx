@@ -141,12 +141,10 @@ export const StyledInput = styled(Input)`
 const Search = Input.Search
 
 export const SearchInput = styled(Search)`
-  margin-bottom: 20px;
-  margin-top: 0px;
   border-radius: 0;
   margin-left: 4px;
   width: 100%;
-  max-width: 500px;
+  max-width: 274px;
   & input {
     border-radius: 0;
     padding: 7px;
@@ -155,6 +153,7 @@ export const SearchInput = styled(Search)`
 
   @media (min-width: 320px) and (max-width: 768px) {
     width: 98%;
+    max-width: 100%;
     margin: 1%;
   }
 `
@@ -176,12 +175,13 @@ export const Filters = styled.div`
   padding: 20px;
   margin-bottom: 20px;
   display: flex;
-  width: 98%;
+  margin-right: 36px;
   box-shadow: 2px 2px 7px ${GRAY_SHADOW};
   flex-direction: column;
 
   @media (min-width: 320px) and (max-width: 768px) {
     padding: 10px;
+    margin-right: 12px;
   }
 `
 
@@ -210,6 +210,15 @@ export const Options = styled.div`
 
   @media (min-width: 320px) and (max-width: 768px) {
     flex-flow: wrap;
+  }
+`
+
+export const SubOptions = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    flex-flow: column;
   }
 `
 
