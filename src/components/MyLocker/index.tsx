@@ -46,7 +46,8 @@ import {
   StyledDatePicker,
   ButtonWrapper,
   StyledButton,
-  SearchInput
+  SearchInput,
+  SubOptions
 } from './styledComponents'
 import {
   DesignResultType,
@@ -520,14 +521,14 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             </ButtonWrapper>
           </Options>
         </Filters>
-        <Options>
+        <SubOptions>
           <SearchInput
             value={searchValue}
             onChange={this.handleSearchInputChange}
             placeholder={formatMessage(messages.search)}
           />
           <FlagDescription {...{ formatMessage }} />
-        </Options>
+        </SubOptions>
         {alternativeContent}
         <PaginationRow>
           <ProductList

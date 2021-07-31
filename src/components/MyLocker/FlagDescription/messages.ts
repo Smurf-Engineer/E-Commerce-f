@@ -19,14 +19,14 @@ export default defineMessages({
   },
   proCertifiedDesc: {
     id: 'components.MyLocker.FlagDescription.proCertifiedDesc',
-    defaultMessage: '( DIY designs checked by Jakroo Pro Designers )'
+    defaultMessage: '(DIY designs checked by Jakroo Pro Designers)'
   },
   proDesignDesc: {
     id: 'components.MyLocker.FlagDescription.proDesignDesc',
-    defaultMessage: '( Designed by Jakroo Pro Designers )'
+    defaultMessage: '(Designed by Jakroo Pro Designers)'
   },
   qualityWarningDesc: {
     id: 'components.MyLocker.FlagDescription.qualityWarningDesc',
-    defaultMessage: '( Contains low quality graphics )'
+    defaultMessage: '(Contains low quality graphics)'
   }
 })
