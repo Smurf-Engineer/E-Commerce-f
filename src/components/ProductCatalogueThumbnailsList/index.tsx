@@ -139,7 +139,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             code,
             proDesign,
             outputSvg,
-            outputPng
+            outputPng,
+            proCertified,
+            qualityWarning
           },
           index
         ) => {
@@ -167,7 +169,15 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                {...{ currentCurrency, fromIntakeForm, handleCheckChange, isSelected }}
+                {...{
+                  currentCurrency,
+                  fromIntakeForm,
+                  handleCheckChange,
+                  isSelected,
+                  proDesign,
+                  proCertified,
+                  qualityWarning
+                }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
@@ -251,7 +261,6 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 onPressCustomize={this.handleOnPressAddToCart}
                 onPressQuickView={this.handlePressQuickView}
                 image={image}
-                proDesign={proDesign}
                 proDesignAssigned={outputPng && !outputSvg}
                 hideQuickView={previewOnly}
               />

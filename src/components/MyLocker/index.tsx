@@ -26,6 +26,7 @@ import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
 import AddToTeamStore from '../AddToTeamStore'
 import EmptyContainer from '../EmptyContainer'
+import FlagDescription from './FlagDescription'
 import {
   Container,
   PaginationRow,
@@ -519,11 +520,14 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             </ButtonWrapper>
           </Options>
         </Filters>
-        <SearchInput
-          value={searchValue}
-          onChange={this.handleSearchInputChange}
-          placeholder={formatMessage(messages.search)}
-        />
+        <Options>
+          <SearchInput
+            value={searchValue}
+            onChange={this.handleSearchInputChange}
+            placeholder={formatMessage(messages.search)}
+          />
+          <FlagDescription {...{ formatMessage }} />
+        </Options>
         {alternativeContent}
         <PaginationRow>
           <ProductList

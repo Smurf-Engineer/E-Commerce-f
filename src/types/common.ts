@@ -303,6 +303,8 @@ export type DesignType = {
   proDesign?: boolean
   highResolution?: boolean
   outputPng?: string
+  proCertified?: boolean
+  qualityWarning?: boolean
 }
 
 export type DesignNote = {
