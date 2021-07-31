@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardoquintero on 25/08/20.
  */
 import styled from 'styled-components'
-import { GRAY_DARK } from '../../../theme/colors'
+import { RED } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -15,8 +15,13 @@ export const Container = styled.div`
 `
 
 export const Label = styled.div`
-  color: ${GRAY_DARK};
+  color: ${RED};
   font-size: 14px;
   text-transform: uppercase;
   user-select: none;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.4;
+  }
 `

@@ -74,6 +74,7 @@ import intakeForm from '../screens/IntakeForm/reducer'
 import intakeProductCatalog from '../components/ProductCatalogue/reducer'
 import proDesignProjects from '../components/ProDesignProjects/reducer'
 import notifications from '../components/Notifications/reducer'
+import notificationSettings from '../components/Notifications/Preferences/reducer'
 
 import { Reducer } from '../types/common'
 import {
@@ -159,6 +160,7 @@ export interface ReducersObject {
   intakeForm: any
   intakeProductCatalog: any
   notifications: any
+  notificationSettings: any
 }
 
 const appInitialState = fromJS({
@@ -297,7 +299,8 @@ const rootReducer = combineReducers({
   userFiles,
   intakeForm,
   intakeProductCatalog,
-  notifications
+  notifications,
+  notificationSettings
 })
 
 export default rootReducer

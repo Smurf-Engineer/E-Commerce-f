@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { Message } from '../../../types/common'
 import messages from './messages'
-import { Container, Label, BorderlessButton } from './styledComponents'
+import { Container, Label, BorderlessButton, TimeIcon } from './styledComponents'
 
 interface Props {
   updating: boolean
@@ -15,7 +15,7 @@ interface Props {
 const NotificationHeader = ({ onMarkAll, formatMessage, updating }: Props) => {
   return (
     <Container>
-      <Label>{formatMessage(messages.latest)}</Label>
+      <Label><TimeIcon type="clock-circle" />{formatMessage(messages.latest)}</Label>
       <BorderlessButton
         type="ghost"
         loading={updating}

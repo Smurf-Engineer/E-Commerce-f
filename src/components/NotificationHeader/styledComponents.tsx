@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import { WHITE } from '../../theme/colors'
 
+interface DivProps {
+  active?: boolean
+}
+
 export const Container = styled.div`
 `
 
@@ -14,6 +18,9 @@ export const Text = styled.div`
 export const Image = styled.img`
   cursor: pointer;
   width: 20px;
+  border-radius: 50%;
+  transition: all .25s;
+  opacity: ${({ active }: DivProps) => active ? 0.4 : 1};
 `
 
 export const NotificationList = styled.div`
@@ -21,6 +28,7 @@ export const NotificationList = styled.div`
   flex-direction: column;
   max-height: 300px;
   overflow-y: scroll;
+  padding-left: 16px;
 `
 
 export const Empty = styled.div`

@@ -66,6 +66,7 @@ export const notificationsQuery = gql`
         read: user_read
         date: created_at
         title
+        metaMessage: meta_message
         message
         user: sender_name
         email: sender_email

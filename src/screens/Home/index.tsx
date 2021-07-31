@@ -47,12 +47,16 @@ import {
   NumberOfDays,
   OrderingInfo,
   DeliveryContainer,
-  HeaderInfoTitle
+  HeaderInfoTitle,
+  RedirectDiv,
+  JakrooLogo,
+  LabelRedirect
 } from './styledComponents'
-import { getDesignLabInfo, profileSettingsQuery } from './data'
+import { getDesignLabInfo, getShortenURLQuery, profileSettingsQuery } from './data'
 import SearchResults from '../../components/SearchResults'
 import leftArrow from '../../assets/leftarrowwhite.svg'
 import rightArrow from '../../assets/rightarrowwhite.svg'
+import jakrooLogoWhite from '../../assets/jakroo_logo.svg'
 import { MAIN_TITLE, MP4_EXTENSION } from '../../constants'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
@@ -69,11 +73,12 @@ import {
   HeaderImagePlaceHolder,
   HomepageCarousel,
   ProductFile,
-  DeliveryDays, IProfileSettings, User
+  DeliveryDays, IProfileSettings, User, ShortenedURL
 } from '../../types/common'
 import { Helmet } from 'react-helmet'
 import CarouselItem from '../../components/CarouselItem'
 import { getFileExtension } from '../../utils/utilsFiles'
+import Spin from 'antd/lib/spin'
 
 interface Data extends QueryProps {
   files: any
@@ -81,6 +86,10 @@ interface Data extends QueryProps {
 
 interface ProfileData extends QueryProps {
   profileData: IProfileSettings
+}
+
+interface ShortenData extends QueryProps {
+  shortenURL: ShortenedURL
 }
 
 interface DesignLab extends QueryProps {
@@ -98,6 +107,7 @@ interface Props extends RouteComponentProps<any> {
   loading: boolean
   profileData: ProfileData
   user: User
+  shortenURLData: ShortenData
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -139,6 +149,14 @@ export class Home extends React.Component<Props, {}> {
     } = this.props
     const { getHomepage } = thunkActions
     dispatch(getHomepage(query, params.sportRoute))
+  }
+
+  componentDidUpdate() {
+    const { shortenURLData } = this.props
+    const url = get(shortenURLData, 'shortenURL.url', '')
+    if (!!url && !!url.trim()) {
+      window.location.replace(url)
+    }
   }
 
   handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
@@ -192,6 +210,7 @@ export class Home extends React.Component<Props, {}> {
       fakeWidth,
       currentCurrency,
       clientInfo,
+      match,
       mainHeaderImages,
       productTiles,
       featuredBanners,
@@ -213,7 +232,17 @@ export class Home extends React.Component<Props, {}> {
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
-
+    const { params } = match || {}
+    const shortUrl = params.region || ''
+    if (!!shortUrl && shortUrl.length > 0 && shortUrl.charAt(0) === '~') {
+      return (
+        <RedirectDiv>
+          <JakrooLogo src={jakrooLogoWhite} />
+          <LabelRedirect>{formatMessage(messages.redirectMessage)}</LabelRedirect>
+          <Spin size="large" />
+        </RedirectDiv>
+      )
+    }
     const deliveryDaysResponse = get(
       dataDesignLabInfo,
       'deliveryDays.days',
@@ -440,6 +469,7 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 type OwnProps = {
   user?: User
+  match?: any
 }
 
 const HomeEnhance = compose(
@@ -449,6 +479,17 @@ const HomeEnhance = compose(
   ),
   injectIntl,
   withApollo,
+  graphql(getShortenURLQuery, {
+    options: ({ match }: OwnProps) => {
+      const { params } = match || {}
+      return {
+        fetchPolicy: 'network-only',
+        variables: { id: params.region },
+        skip: !match
+      }
+    },
+    name: 'shortenURLData',
+  }),
   graphql(profileSettingsQuery, {
     options: ({ user }: OwnProps) => {
       return {

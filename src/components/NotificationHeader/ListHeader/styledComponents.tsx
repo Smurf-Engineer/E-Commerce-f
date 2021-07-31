@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Icon from 'antd/lib/icon'
 import { RED, GRAY_DARK } from '../../../theme/colors'
 
 export const Container = styled.div`
@@ -21,6 +22,10 @@ export const Label = styled.div`
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
+`
+
+export const TimeIcon = styled(Icon)`
+  margin-right: 10px;
 `
 
 export const MarkButton = styled.div`

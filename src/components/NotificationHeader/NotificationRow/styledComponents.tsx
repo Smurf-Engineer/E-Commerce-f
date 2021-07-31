@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardoquintero on 25/08/20.
  */
 import styled from 'styled-components'
-import { RED, GRAY_DARK, GRAY, RED_TRANSPARENT_BRIGHT } from '../../../theme/colors'
+import { RED, GRAY_DARK, GRAY, RED_TRANSPARENT_BRIGHT, BLUE } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -41,6 +41,18 @@ export const Description = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 93%;
+  b {
+    color: ${BLUE};
+    transition: all .25s;
+    &:hover {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+  }
+  i {
+    font-style: normal !important;
+    font-weight: bold;
+  }
 `
 
 export const Date = styled.div`

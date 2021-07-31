@@ -89,6 +89,26 @@ export const ImageRow = styled.div`
   width: 100%;
 `
 
+export const RedirectDiv = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 100vw;
+  position: fixed;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`
+
+export const JakrooLogo = styled.img`
+  max-width: 239px;
+  width: 100%;
+  margin-bottom: 32px;
+`
+
+export const LabelRedirect = styled.div`
+  margin-bottom: 44px;
+`
+
 export const SkeletonDiv = styled(Skeleton)`
   margin-left: -77px;
   li {

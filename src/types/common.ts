@@ -1132,6 +1132,20 @@ export interface UserRegionSettings {
   }
 }
 
+export enum NotificationOption {
+  EMAIL = 0,
+  SMS = 1,
+  BOTH = 2,
+  NONE = 3
+}
+
+export interface NotificationSettings {
+  notifyOrderPayment: number
+  notifyProDesign: number
+  notifyProductService: number
+  newsletterSubscribed: boolean
+}
+
 export interface MeasurementSettings {
   weight: string
   heightFirst: string
@@ -1519,6 +1533,11 @@ export interface FilesDownload {
 export interface UserFiles {
   fileUrl: string
   original?: string
+}
+
+export interface ShortenedURL {
+  id: string
+  url: string
 }
 
 export interface DesignFiles {

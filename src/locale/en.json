@@ -2427,5 +2427,20 @@
   "components.ProductForm.Steps.SecondStep.sizesAvailable": "Select Sizes available",
   "components.ProductForm.Steps.SecondStep.selectFitStyle": "Select fit style",
   "components.ProductForm.Steps.SecondStep.selectColors": "Select colors available",
-  "components.ProductForm.Steps.SecondStep.twoPieces": "2-Piece"
+  "components.ProductForm.Steps.SecondStep.twoPieces": "2-Piece",
+  "components.Notifications.title": "Notification Center",
+  "components.Notifications.latest": "LATEST",
+  "components.Notifications.markAll": "Mark all as read",
+  "components.Notifications.notFound": "You don´t have notifications yet",
+  "components.Notifications.readError": "There was an error trying to update notifications, please try again",
+  "components.Notifications.Preferences.title": "Notification Opt-in Preferences",
+  "components.Notifications.Preferences.notifyOrderPayments": "Order/Payment Notifications*",
+  "components.Notifications.Preferences.notifyProDesign": "Pro Design Notifications*",
+  "components.Notifications.Preferences.notifyProductService": "Important Product & Service notices",
+  "components.Notifications.Preferences.newsletter": "Newsletter",
+  "components.Notifications.Preferences.newsletterComment": "(new product and service release, special offers)",
+  "components.Notifications.Preferences.notificationComment": "* transactional and service notices may require customer action or response and are required",
+  "components.Notifications.Preferences.email": "Email",
+  "components.Notifications.Preferences.smsComment": "(rates may apply by your carrier)",
+  "components.Notifications.Preferences.updateNotificationSuccessMessage": "Notification Settings has been updated!"
 }
