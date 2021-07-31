@@ -26,6 +26,7 @@ import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
 import AddToTeamStore from '../AddToTeamStore'
 import EmptyContainer from '../EmptyContainer'
+import FlagDescription from './FlagDescription'
 import {
   Container,
   PaginationRow,
@@ -45,7 +46,8 @@ import {
   StyledDatePicker,
   ButtonWrapper,
   StyledButton,
-  SearchInput
+  SearchInput,
+  SubOptions
 } from './styledComponents'
 import {
   DesignResultType,
@@ -519,11 +521,14 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             </ButtonWrapper>
           </Options>
         </Filters>
-        <SearchInput
-          value={searchValue}
-          onChange={this.handleSearchInputChange}
-          placeholder={formatMessage(messages.search)}
-        />
+        <SubOptions>
+          <SearchInput
+            value={searchValue}
+            onChange={this.handleSearchInputChange}
+            placeholder={formatMessage(messages.search)}
+          />
+          <FlagDescription {...{ formatMessage }} />
+        </SubOptions>
         {alternativeContent}
         <PaginationRow>
           <ProductList
@@ -599,7 +604,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
                 designName: designToRename
               })}
               onChange={this.handleInputChange}
-              maxLength={15}
+              maxLength={18}
             />
           </InputWrapper>
         </Modal>

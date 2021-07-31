@@ -69,6 +69,10 @@ export default defineMessages({
     id: 'components.OrderDetails.trackingNumber',
     defaultMessage: 'Tracking Number'
   },
+  cutoffDate: {
+    id: 'components.OrderDetails.cutoffDate',
+    defaultMessage: 'Store Cut-off Date'
+  },
   status: {
     id: 'components.OrderDetails.status',
     defaultMessage: 'Order Status'

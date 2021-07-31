@@ -29,3 +29,8 @@ export const SET_USER_REP = `${namespace}/SET_USER_REP`
 export const SET_ACCOUNT_MANAGER = `${namespace}/SET_ACCOUNT_MANAGER`
 export const CHANGE_LEGACY = `${namespace}/CHANGE_LEGACY`
 export const SET_PREDYED_VALUE = `${namespace}/SET_PREDYED_VALUE`
+
+export const SVG_EXTENSION = '.svg'
+export const PNG_EXTENSION = '.png'
+
+export const ALLOWED_EXTENSIONS = [SVG_EXTENSION, PNG_EXTENSION]

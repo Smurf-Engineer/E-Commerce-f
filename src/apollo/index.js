@@ -11,6 +11,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '../config'
 import fetch from 'node-fetch'
 const unauthorizedExp = /\bUser is not authenticated\b/
+const unauthorizedDes = /\bYou are not authorized to see this design\b/
 
 /**
  * https://github.com/apollographql/react-apollo/issues/1321
@@ -37,6 +38,11 @@ const errorLink = onError(({ response, operation }) => {
           console.error(e)
         }
       }, 1500)
+    } else if (errorMessage && errorMessage.length) {
+      message.error(errorMessage)
+      if (unauthorizedDes.test(errorMessage)) {
+        window.location.replace('/')
+      }
     }
   }
 })

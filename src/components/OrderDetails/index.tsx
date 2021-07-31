@@ -47,7 +47,10 @@ import {
   Paragraph,
   FAQSection,
   Title,
-  FAQBody
+  FAQBody,
+  FedexLabel,
+  FedexIcon,
+  OpenIcon
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -55,12 +58,14 @@ import MyAddress from '../MyAddress'
 import AddToCartButton from '../AddToCartButton'
 
 import iconPaypal from '../../assets/Paypal.svg'
+import iconFedex from '../../assets/fedexicon.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE } from '../../constants'
 import ProductInfo from '../ProductInfo'
 
+const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
 const PRO_DESIGN_FEE = 15
 
 interface Data extends QueryProps {
@@ -90,6 +95,11 @@ export class OrderDetails extends React.Component<Props, {}> {
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[id]
     this.setState({ [id]: !stateValue } as any)
+  }
+  openFedexTracking = (trackingNumber: string) => () => {
+    if (trackingNumber) {
+      window.open(`${FEDEX_URL}?trknbr=${trackingNumber}`)
+    }
   }
   render() {
     const {
@@ -156,6 +166,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       cart,
       status,
       currency,
+      cutoffDate,
       shippingAmount,
       proDesign,
       taxGst,
@@ -301,6 +312,11 @@ export class OrderDetails extends React.Component<Props, {}> {
                 <DeliveryLabel>
                   {formatMessage(messages.orderDate)}
                 </DeliveryLabel>
+                {teamStoreId && cutoffDate &&
+                  <DeliveryLabel>
+                    {formatMessage(messages.cutoffDate)}
+                  </DeliveryLabel>
+                }
                 <DeliveryLabel>
                   {formatMessage(messages.trackingNumber)}
                 </DeliveryLabel>
@@ -318,7 +334,16 @@ export class OrderDetails extends React.Component<Props, {}> {
                 </Info>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
-                <Info>{trackingNumber || '-'}</Info>
+                {teamStoreId && cutoffDate && <Info>{cutoffDate}</Info>}
+                <Info>
+                  {trackingNumber ? 
+                    <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
+                      {trackingNumber}
+                      <OpenIcon type="select" />
+                      <FedexIcon src={iconFedex} />
+                    </FedexLabel> : '-'
+                  }
+                </Info>
                 <Info>{estimatedDate}</Info>
                 <Info redColor={status === PAYMENT_ISSUE}>
                   {netsuiteStatus || status}

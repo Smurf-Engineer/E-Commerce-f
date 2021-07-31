@@ -145,7 +145,6 @@ const CheckoutSummary = ({
     upgrades,
     variables
   )
-
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
 

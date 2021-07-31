@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
 import { RED, BLUE, GRAY_DARK, RED_TRANSPARENT_LIGHT } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const LoadingContainer = styled.div`
   display: flex;
@@ -161,6 +162,30 @@ export const Items = styled.div`
     padding-right: 0px;
   }
 `
+
+export const FedexLabel = styled.div`
+  color: ${BLUE};
+  text-decoration: underline;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
+export const OpenIcon = styled(Icon)`
+  margin-left: 8px;
+  transform: scaleX(-1);
+  font-size: 12px;
+`
+
+export const FedexIcon = styled.img`
+  max-width: 32px;
+  object-fit: contain;
+  margin-left: 8px;
+  margin-bottom: 2px;
+`
+
 export const TitleStyled = styled.div`
   color: #5f6062;
   display: flex;

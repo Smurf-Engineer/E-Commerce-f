@@ -51,7 +51,7 @@ interface Props {
   ) => void
   formatMessage: (messageDescriptor: any) => string
 }
-const INPUT_MAX_LENGTH = 25
+const INPUT_MAX_LENGTH = 30
 const StoreForm = ({
   hasError = false,
   onUpdateName,

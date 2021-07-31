@@ -11,6 +11,7 @@ export const getOrderQuery = gql`
       shortId: short_id
       charge_id
       netsuit_order_id
+      cutoffDate: cutoff_date
       paymentMethod: payment_method
       shippingFirstName: shipping_address_first_name
       shippingPhone: shipping_address_phone

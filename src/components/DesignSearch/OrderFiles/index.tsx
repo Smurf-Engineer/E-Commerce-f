@@ -74,6 +74,8 @@ import AccessoryColors from '../AccessoryColors'
 import moment from 'moment'
 import ProassistNotes from '../../ProassistNotes'
 import { DATE_FORMAT, PREDYED_DEFAULT, PREDYED_TRANSPARENT } from '../../../constants'
+import { ALLOWED_EXTENSIONS } from '../constants'
+import { bytesToMb } from '../../../utils/utilsFiles'
 
 const Option = Select.Option
 const Confirm = Modal.confirm
@@ -420,7 +422,7 @@ export class OrderFiles extends React.PureComponent<Props> {
                 loading={uploadingFile}
                 onSelectImage={this.beforeUpload}
                 formatMessage={formatMessage}
-                extensions={['.svg']}
+                extensions={ALLOWED_EXTENSIONS}
               >
                 <Button>
                   <ButtonContainer>
@@ -548,13 +550,13 @@ export class OrderFiles extends React.PureComponent<Props> {
     } = this.props
     if (file) {
       const { size, name } = file
-      // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
-      if (size / 1000000 > 20) {
+      const mbSize = bytesToMb(size)
+      if (mbSize > 20) {
         message.error(formatMessage(messages.imageSizeError))
         return false
       }
       const fileExtension = this.getFileExtension(name)
-      if (indexOf(['.svg'], (fileExtension as String).toLowerCase()) === -1) {
+      if (indexOf(ALLOWED_EXTENSIONS, (fileExtension as String).toLowerCase()) === -1) {
         message.error(formatMessage(messages.imageExtensionError))
         return false
       }

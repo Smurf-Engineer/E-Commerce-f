@@ -746,11 +746,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       selectedVariant
     } = this.state
     const fontList: Font[] = get(fontsData, 'fonts', [])
-    const { loading = true, projectItem } = data || {}
+    const { loading = true, projectItem, error } = data || {}
     const incomingMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
     const product = get(projectItem, 'product', {}) as Product
     const design = get(projectItem, 'design', {}) as DesignType
     const colors = get(projectItem, 'colors', []) as ColorType[]
+    const highlight = get(projectItem, 'showNotification', false) as boolean
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
     const itemStatus = get(projectItem, 'status', '') as string
     const limitRequests = get(projectItem, 'limitRequests', 0) as number
@@ -887,7 +888,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const chatComponent = !!itemStatus ?
       <DesignChat>
         <ApprovalTitle>{formatMessage(messages.approvalLog)}</ApprovalTitle>
-        <ChatMessages className="chatLog" ref={(listMsgs: any) => { this.listMsg = listMsgs }}>
+        <ChatMessages
+          highlight={chatLog && chatLog.length && highlight}
+          className="chatLog"
+          ref={(listMsgs: any) => { this.listMsg = listMsgs }}
+        >
           {chatLog.map((
             { 
               id,
@@ -920,7 +925,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     </Initials>                        
                   </MessageHeader>
                   <InfoDiv isAdmin={fromSystem}>
-                    <MessageBox>
+                    <MessageBox highlight={chatLog && chatLog.length && highlight}>
                       {(!!parentId && answer) &&
                         <ParentText>
                           {answer.message}
@@ -1031,7 +1036,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           {installedFonts.length ? (
             <GoogleFontLoader fonts={installedFonts} />
           ) : null}
-          {loading && <LoadingContainer><Spin size="large" /></LoadingContainer> }
+          {loading && !error && <LoadingContainer><Spin size="large" /></LoadingContainer> }
           <BlackBarMobile>
             <BackButton onClick={this.goToHome}>
               <LeftArrow type="left-circle" />
@@ -1175,8 +1180,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </Layouts>
           {!!itemStatus &&
             <CollapseWrapper>
-              <CollapseMobile accordion={true} destroyInactivePanel={true}>
-                <PanelMobile 
+              <CollapseMobile
+                defaultActiveKey={chatLog && chatLog.length && highlight ? '1' : ''}
+                accordion={true} 
+                destroyInactivePanel={true}
+              >
+                <PanelMobile
                   header={
                     <PanelTitle ref={e => { this.chatDiv = e }}>
                       <PanelIcon src={messageIcon} />
