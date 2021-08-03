@@ -107,6 +107,8 @@ export const GetDesignByIdQuery = gql`
           white
           black
         }
+        infoFlag: info_flag
+        infoMessage: info_message
       }
       colors {
         id
