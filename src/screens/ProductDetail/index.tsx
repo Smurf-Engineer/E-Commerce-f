@@ -63,7 +63,8 @@ import {
   layoutStyle,
   CustomizeButton,
   DealerTitle,
-  SizeChart
+  SizeChart,
+  InfoTag
 } from './styledComponents'
 import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
@@ -267,7 +268,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       fitStyles,
       sizeRange,
       modelSize,
-      title = MAIN_TITLE
+      title = MAIN_TITLE,
+      infoFlag,
+      infoMessage
     } = product
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
@@ -581,56 +584,59 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Spin />
                   </Loading>
                 ) : (
-                    <div>
-                      {customizable && obj && mtl ? (
-                        <ModelContainer>
-                          <Render3D
-                            customProduct={true}
-                            designId={0}
-                            textColor="white"
-                            isProduct={true}
-                            asImage={phone}
-                            {...{ product, modelSize }}
-                          />
-                          <HowItFits onClick={this.toggleFitsModal(true)}>
-                            <FormattedMessage {...messages.howItFits} />
-                          </HowItFits>
-                          {showFits && (
-                            <Modal
-                              open={showFits}
-                              requestClose={this.toggleFitsModal(false)}
-                              width={'90%'}
-                              style={{ maxWidth: '704px' }}
-                              withLogo={false}
-                            >
-                              <ImagesSlider
-                                onLoadModel={setLoadingModel}
-                                squareArrows={true}
-                                leftSide={true}
-                                {...{
-                                  images,
-                                  moreImages,
-                                  loadingImage,
-                                  setLoadingImageAction
-                                }}
-                              />
-                            </Modal>
-                          )}
-                        </ModelContainer>
-                      ) : (
-                          <ImagesSlider
-                            onLoadModel={setLoadingModel}
-                            squareArrows={true}
-                            {...{
-                              images,
-                              moreImages,
-                              loadingImage,
-                              setLoadingImageAction
-                            }}
-                          />
+                  <div>
+                    {customizable && obj && mtl ? (
+                      <ModelContainer>
+                        <Render3D
+                          customProduct={true}
+                          designId={0}
+                          textColor="white"
+                          isProduct={true}
+                          asImage={phone}
+                          {...{ product, modelSize }}
+                        />
+                        {
+                          infoFlag && <InfoTag>{infoMessage}</InfoTag>
+                        }
+                        <HowItFits onClick={this.toggleFitsModal(true)}>
+                          <FormattedMessage {...messages.howItFits} />
+                        </HowItFits>
+                        {showFits && (
+                          <Modal
+                            open={showFits}
+                            requestClose={this.toggleFitsModal(false)}
+                            width={'90%'}
+                            style={{ maxWidth: '704px' }}
+                            withLogo={false}
+                          >
+                            <ImagesSlider
+                              onLoadModel={setLoadingModel}
+                              squareArrows={true}
+                              leftSide={true}
+                              {...{
+                                images,
+                                moreImages,
+                                loadingImage,
+                                setLoadingImageAction
+                              }}
+                            />
+                          </Modal>
                         )}
-                    </div>
-                  )}
+                      </ModelContainer>
+                    ) : (
+                      <ImagesSlider
+                        onLoadModel={setLoadingModel}
+                        squareArrows={true}
+                        {...{
+                          images,
+                          moreImages,
+                          loadingImage,
+                          setLoadingImageAction
+                        }}
+                      />
+                    )}
+                  </div>
+                )}
                 {/* {!isRetail &&
                   template && (
                     <Desktop>
@@ -794,7 +800,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       }
     })
   }
- 
+
   gotoGetFittedPage = () => {
     const { history } = this.props
     history.push('/fit-widget')
