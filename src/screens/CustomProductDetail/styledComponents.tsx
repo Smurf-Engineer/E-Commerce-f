@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, BLACK_BG } from '../../theme/colors'
 
 interface DivProps {
   isTeamStore?: boolean
@@ -50,7 +50,7 @@ export const ProductData = styled.div`
 `
 export const RenderContainer = styled.div`
   position: relative;
-  background: #2b2b2c;
+  background: ${BLACK_BG};
   display: flex;
   justify-content: space-around;
   align-items: center;
