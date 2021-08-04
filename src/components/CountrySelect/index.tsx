@@ -2,13 +2,10 @@
  * CountrySelect Component - Created by gustavomedina on 30/07/18.
  */
 import * as React from 'react'
-import Select from 'antd/lib/select'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
-import { Container, StyledSelect } from './styledComponents'
+import { Container, StyledSelect, StyledOption, CountryIcon } from './styledComponents'
 import { QueryProps, Country } from '../../types/common'
-
-const Option = Select.Option
 
 interface Props {
   data: QueryProps
@@ -43,9 +40,10 @@ export class CountrySelect extends React.Component<Props, {}> {
     if (countries && countries.length) {
       dropdownOptions = countries.map(
         ({ name, code, geonameId }, index) => (
-          <Option value={`${code}-${geonameId}`} key={index}>
+          <StyledOption value={`${code}-${geonameId}`} key={index}>
+            <CountryIcon src={`https://www.countryflags.io/${code}/flat/24.png`} />
             {name}
-          </Option>
+          </StyledOption>
         )
       )
     }

@@ -16,7 +16,7 @@ export default defineMessages({
   },
   countryLabel: {
     id: 'components.signUp.countryLabel',
-    defaultMessage: 'Country'
+    defaultMessage: 'Select Your Country'
   },
   firtsNameLabel: {
     id: 'components.signUp.firstNameLabel',

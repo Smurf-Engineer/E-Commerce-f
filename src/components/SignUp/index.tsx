@@ -96,9 +96,12 @@ class SignUp extends React.Component<Props, StateProps> {
       repeatPassword,
       newsLetter,
       selectedCountry = '',
-      selectedCountryId = ''
+      selectedCountryId = '',
+      selectedCountryName = ''
     } = this.state
 
+    const countrySelected = countryName ? countryName : selectedCountryName
+    const countryCodeSelected = initialCountryCode ? initialCountryCode : selectedCountry
     return (
       <Container>
         <SocialMediaContainer>
@@ -106,33 +109,19 @@ class SignUp extends React.Component<Props, StateProps> {
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          <FacebookGmailLogin
-            signUpView={true}
-            handleLogin={login}
-            {...{
-              requestClose,
-              formatMessage,
-              initialCountryCode,
-              countryName,
-              regionName,
-              city
-            }}
-          />
-        </SocialMediaContainer>
-        <HaveAnAccountRow>
-          {formatMessage(messages.haveAccount)}
-          <LogInLabel onClick={closeSignUp}>
-            {formatMessage(messages.loginLabel)}
-          </LogInLabel>
-        </HaveAnAccountRow>
-        <DividerRow>
-          <LeftDivider />
-          <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
-          <RightDivider />
-        </DividerRow>
-        <FormContainer>
-          {!countryName &&
-            <CountryContainer>
+          {!!countrySelected ?
+            <FacebookGmailLogin
+              signUpView={true}
+              handleLogin={login}
+              {...{
+                requestClose,
+                formatMessage,
+                regionName,
+                city
+              }}
+              countryName={countrySelected}
+              initialCountryCode={countryCodeSelected}
+            /> : <CountryContainer>
               <Label>{formatMessage(messages.countryLabel)}</Label>
               <CountrySelect
                 {...{ formatMessage }}
@@ -147,57 +136,74 @@ class SignUp extends React.Component<Props, StateProps> {
               />
             </CountryContainer>
           }
-          <StyledInput
-            id="name"
-            topText={formatMessage(messages.firtsNameLabel)}
-            value={name}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="lastName"
-            topText={formatMessage(messages.lastNameLabel)}
-            value={lastName}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="email"
-            topText={'E-mail'}
-            value={email}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="password"
-            type="password"
-            topText={formatMessage(messages.passwordLabel)}
-            value={password}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="repeatPassword"
-            type="password"
-            topText={formatMessage(messages.repeatPasswordLabel)}
-            value={repeatPassword}
-            onChange={this.handleInputChange}
-          />
-          <NewsLetterRow>
-            <Checkbox checked={newsLetter} onChange={this.toggleCheckbox} />
-            <NewsLetterText>
-              {formatMessage(messages.newsLetterSignUp)}
-            </NewsLetterText>
-          </NewsLetterRow>
-          <CreateAccountContainer>
-            <CreateAccountText>
-              {formatMessage(messages.termsAndPolicyLegend)}
-            </CreateAccountText>
-            <StyledButton
-              type="danger"
-              ghost={true}
-              onClick={this.handleCreateAccount}
-            >
-              {formatMessage(messages.createAccountButtonLabel)}
-            </StyledButton>
-          </CreateAccountContainer>
-        </FormContainer>
+        </SocialMediaContainer>
+        {!!countrySelected &&
+          <>
+            <HaveAnAccountRow>
+              {formatMessage(messages.haveAccount)}
+              <LogInLabel onClick={closeSignUp}>
+                {formatMessage(messages.loginLabel)}
+              </LogInLabel>
+            </HaveAnAccountRow>
+            <DividerRow>
+              <LeftDivider />
+              <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
+              <RightDivider />
+            </DividerRow>
+            <FormContainer>
+              <StyledInput
+                id="name"
+                topText={formatMessage(messages.firtsNameLabel)}
+                value={name}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="lastName"
+                topText={formatMessage(messages.lastNameLabel)}
+                value={lastName}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="email"
+                topText={'E-mail'}
+                value={email}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="password"
+                type="password"
+                topText={formatMessage(messages.passwordLabel)}
+                value={password}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="repeatPassword"
+                type="password"
+                topText={formatMessage(messages.repeatPasswordLabel)}
+                value={repeatPassword}
+                onChange={this.handleInputChange}
+              />
+              <NewsLetterRow>
+                <Checkbox checked={newsLetter} onChange={this.toggleCheckbox} />
+                <NewsLetterText>
+                  {formatMessage(messages.newsLetterSignUp)}
+                </NewsLetterText>
+              </NewsLetterRow>
+              <CreateAccountContainer>
+                <CreateAccountText>
+                  {formatMessage(messages.termsAndPolicyLegend)}
+                </CreateAccountText>
+                <StyledButton
+                  type="danger"
+                  ghost={true}
+                  onClick={this.handleCreateAccount}
+                >
+                  {formatMessage(messages.createAccountButtonLabel)}
+                </StyledButton>
+              </CreateAccountContainer>
+            </FormContainer>
+          </>
+        }
       </Container>
     )
   }

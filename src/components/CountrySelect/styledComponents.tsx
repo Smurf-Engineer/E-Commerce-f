@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Select from 'antd/lib/select'
+const Option = Select.Option
 
 export const Container = styled.div`
   background-color: #ffffff;
@@ -14,4 +15,11 @@ export const Text = styled.div`
 
 export const StyledSelect = styled(Select)`
   width: 100%;
+`
+
+export const StyledOption = styled(Option)`
+`
+
+export const CountryIcon = styled.img`
+  margin-right: 5px;
 `

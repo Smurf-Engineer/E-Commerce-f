@@ -119,6 +119,7 @@ export const LogInLabel = styled.span`
 export const CountryContainer = styled.div`
   width: 50%;
   margin-bottom: 20px;
+  margin: 0 auto 15px;
 `
 
 export const Label = styled.div`
