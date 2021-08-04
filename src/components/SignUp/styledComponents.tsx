@@ -5,6 +5,10 @@ import styled from 'styled-components'
 import Input from '../Common/CustomInput'
 import Divider from 'antd/lib/divider'
 import Button from 'antd/lib/button'
+import {
+  GRAY_DARK,
+  GRAY_LIGHT
+} from '../../theme/colors'
 
 export const Container = styled.div`
   width: 100%;
@@ -12,7 +16,7 @@ export const Container = styled.div`
 
 export const SignUpLabel = styled.div`
   height: 25px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -20,7 +24,7 @@ export const SignUpLabel = styled.div`
 `
 export const Text = styled.div`
   height: 46px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 23px;
   text-align: center;
@@ -42,7 +46,7 @@ export const LeftDivider = styled(Divider)``
 export const OrLabel = styled.div`
   height: 27px;
   margin: 0 24px;
-  color: #dadada;
+  color: ${GRAY_LIGHT};
   font-size: 18px;
   line-height: 25px;
   text-align: center;
@@ -75,7 +79,7 @@ export const NewsLetterRow = styled.div`
 `
 export const NewsLetterText = styled.div`
   width: 301.35px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   line-height: 22px;
   padding-left: 10px;
@@ -86,7 +90,7 @@ export const CreateAccountContainer = styled.div`
 `
 export const CreateAccountText = styled.div`
   height: 32px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 12px;
   line-height: 16px;
   text-align: center;
@@ -110,4 +114,15 @@ export const LogInLabel = styled.span`
   &:hover {
     cursor: pointer;
   }
+`
+
+export const CountryContainer = styled.div`
+  width: 50%;
+  margin-bottom: 20px;
+`
+
+export const Label = styled.div`
+  padding-bottom: 5px;
+  color: ${GRAY_DARK};
+  font-size: 14px;
 `

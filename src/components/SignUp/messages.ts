@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'components.signUp.orLabel',
     defaultMessage: 'OR'
   },
+  countryLabel: {
+    id: 'components.signUp.countryLabel',
+    defaultMessage: 'Country'
+  },
   firtsNameLabel: {
     id: 'components.signUp.firstNameLabel',
     defaultMessage: 'First Name'
