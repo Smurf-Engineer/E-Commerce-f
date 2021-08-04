@@ -833,10 +833,14 @@ class Render3D extends PureComponent {
             }
           } else {
             // /* Assign materials */
-            const cloneObject = children[meshIndex].clone()
-            object.add(cloneObject)
-            children[meshIndex].material = insideMaterial
-            children[objectChildCount].material = frontMaterial
+            const isFirefox = navigator && navigator.userAgent.indexOf('Firefox') !== -1
+            if (!isFirefox) {
+              const cloneObject = children[meshIndex].clone()
+              object.add(cloneObject)
+              children[meshIndex].material = insideMaterial
+              children[objectChildCount].material = frontMaterial
+            }
+
             if (!!product.branding && (!product.hasPredyed || design.predyedColor === ACCESSORY_BLACK)) {
               const brandingObj = children[meshIndex].clone()
               object.add(brandingObj)
@@ -851,6 +855,12 @@ class Render3D extends PureComponent {
                 transparent: true
               })
               children[brandingIndex].material = brandingMaterial
+            }
+            if (isFirefox) {
+              const cloneObject = children[meshIndex].clone()
+              object.add(cloneObject)
+              children[meshIndex].material = insideMaterial
+              children[objectChildCount].material = frontMaterial
             }
           }
 
