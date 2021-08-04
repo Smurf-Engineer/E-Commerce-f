@@ -62,7 +62,7 @@ export const LoadingContainer = styled.div`
 `
 
 export const CheckBoxStyled = styled(Checkbox)`
-  margin-left: 0;
+  margin-left: 8px !important;
   visibility: ${({ hide }: CheckboxProps) =>
         hide ? 'hidden' : 'visible'}
 `
