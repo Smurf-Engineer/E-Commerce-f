@@ -157,9 +157,9 @@ class Preferences extends React.Component<Props, {}> {
     const orderPaymentEmailChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.EMAIL)
     const prodesignEmailChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.EMAIL)
     const productServiceEmailChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.EMAIL)
-    const orderPaymentSmsChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.SMS)
-    const prodesignSmsChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.SMS)
-    const productServiceSmsChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.SMS)
+    // const orderPaymentSmsChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.SMS)
+    // const prodesignSmsChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.SMS)
+    // const productServiceSmsChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.SMS)
 
     return (
       <Container>
@@ -198,7 +198,7 @@ class Preferences extends React.Component<Props, {}> {
               checked={notificationData && notificationData.newsletterSubscribed}
               onChange={this.changeNewsletterSetting} />
           </Column>
-          <Column marginLeft="30px">
+          {/* <Column marginLeft="30px">
             <Header>
               SMS&nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
             </Header>
@@ -215,7 +215,7 @@ class Preferences extends React.Component<Props, {}> {
               hide={true}
               checked={false}
               onChange={() => { }} />
-          </Column>
+          </Column> */}
         </NotificationContainer>
         <Description>{formatMessage(messages.notificationComment)}</Description>
       </Container>
