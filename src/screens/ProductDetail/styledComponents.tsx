@@ -5,7 +5,22 @@ import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
-import { RED, BLACK, BLUE_DARK, WHITE, BLUE } from '../../theme/colors'
+import {
+  RED,
+  BLACK,
+  BLUE_DARK,
+  DARKER_GRAY,
+  GRAY,
+  GRAY_DARK,
+  GRAY_LIGHT,
+  GRAY_HEADER,
+  WHITE,
+  BLUE,
+  BLUE_SKY,
+  GREEN_STATUS,
+  BLACK_3D_LIGHT,
+  BLACK_3D_DARK
+} from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 interface StyledProps {
@@ -36,7 +51,7 @@ export const Content = styled.div`
 `
 export const MenIcon = styled(Icon)`
   margin-left: 8px;
-  color: #2196f3;
+  color: ${BLUE_SKY};
 `
 
 export const SizeChart = styled.img`
@@ -87,7 +102,7 @@ export const ProductData = styled.div`
   }
 `
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
@@ -102,8 +117,8 @@ export const HowItFits = styled.div`
   margin-bottom: 16px;
   height: 40px;
   width: 190px;
-  color: white;
-  border: 2px solid #dcdcdc;
+  color: ${WHITE};
+  border: 2px solid ${GRAY_LIGHT};
   border-radius: 25px;
   display: flex;
   justify-content: center;
@@ -111,11 +126,11 @@ export const HowItFits = styled.div`
   font-size: 16px;
   transition: all 0.2s ease;
   z-index: 2;
-  background: #2b2b2c73;
+  background: ${BLACK_3D_LIGHT};
   cursor: pointer;
   &:hover {
     background: gainsboro;
-    color: #2b2b2c;
+    color: ${BLACK_3D_DARK};
     font-weight: bold;
   }
 `
@@ -134,7 +149,7 @@ export const BannerMaterial = styled.img`
 `
 
 export const Subtitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 19px;
 
@@ -152,26 +167,27 @@ export const StyledLink = styled.a`
 `
 
 export const ModelContainer = styled.div`
-  background: #2b2b2c;
+  background: ${BLACK_3D_DARK};
   display: flex;
   justify-content: space-around;
   align-items: center;
   text-align: center;
   flex-flow: column;
   border-radius: 3px;
+  position: relative;
 `
 
 export const StyledBreadCrumb = styled(Breadcrumb)`
-  border: 1px solid #dcdcdc;
+  border: 1px solid ${GRAY_LIGHT};
   padding: 10px 0 10px 49px;
-  background-color: #fff;
+  background-color: ${WHITE};
 `
 
 export const StyledInputNumber = styled(InputNumber)`
   border-radius: 0px;
   height: 40px;
   width: 138px;
-  border: 1px solid #bebebe;
+  border: 1px solid ${GRAY};
 `
 
 export const AvailablePrices = styled.div`
@@ -196,7 +212,7 @@ export const PricesRow = styled.div`
 `
 
 export const Description = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   line-height: 23px;
 `
@@ -248,7 +264,7 @@ export const Separator = styled.div`
   text-align: center;
   margin: 48px 10% 28px 10%;
   padding-bottom: 8px;
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${GRAY_LIGHT};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -282,7 +298,7 @@ export const StyledButton = styled.div`
   }
   &:hover {
     background: ${BLUE};
-    color: white;
+    color: ${WHITE};
   }
 `
 
@@ -303,7 +319,7 @@ export const CustomizeButton = styled.a`
   align-items: center;
   &:hover {
     background: ${BLUE};
-    color: white;
+    color: ${WHITE};
   }
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -345,9 +361,9 @@ export const TitleRow = styled.div`
   justify-content: space-between;
 `
 export const CompareButton = styled(Button)`
-  border: 2px solid #e61737;
+  border: 2px solid ${RED};
   border-radius: 2px;
-  color: #e61737;
+  color: ${RED};
   height: 40px;
   width: 120.79px;
 `
@@ -368,7 +384,7 @@ export const GenderRow = styled.div`
 `
 export const SectionTitle = styled.div`
   height: 25px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -388,7 +404,7 @@ export const SectionButton = styled.div`
   align-content: center;
   background-color: ${WHITE};
   border: ${({ selected }: ButtonProps) =>
-    selected ? '2px solid #e61737' : '0.5px solid #dcdcdc'};
+    selected ? `2px solid ${RED}` : `0.5px solid ${GRAY_LIGHT}`};
   border-radius: 2px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   display: flex;
@@ -434,7 +450,7 @@ export const SizeRowTitleRow = styled.div`
 
 export const GetFittedLabel = styled.div`
   height: 22px;
-  color: #e61737;
+  color: ${RED};
   font-size: 16px;
   line-height: 22px;
   &:hover {
@@ -446,7 +462,7 @@ export const QuestionSpan = styled.span`
   margin-left: 5px;
   height: 23px;
   width: 8.06px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   line-height: 23px;
   &:hover {
@@ -462,12 +478,12 @@ export const AddToCartButton = styled(Button)`
   width: 138.23px;
   border-radius: 2px;
   background-color: ${BLUE};
-  color: #fff;
+  color: ${WHITE};
   margin-left: 26px;
 
   &:hover {
     background-color: ${BLUE};
-    color: #fff;
+    color: ${WHITE};
     border-color: ${BLUE};
   }
 `
@@ -477,8 +493,8 @@ export const RelatedProductsContainer = styled.div`
 `
 export const ReviewsHeader = styled.div`
   align-items: center;
-  background-color: #f7f7f7;
-  color: #5f6062;
+  background-color: ${GRAY_HEADER};
+  color: ${GRAY_DARK};
   display: flex;
   font-size: 18px;
   font-weight: 600;
@@ -493,7 +509,7 @@ export const YotpoImageSlider = styled.div``
 
 export const Downloadtemplate = styled.div`
   height: 19px;
-  color: #8c8c8c;
+  color: ${DARKER_GRAY};
   font-size: 14px;
   line-height: 19px;
   margin-left: 10px;
@@ -550,3 +566,27 @@ export const Loading = styled.div`
 export const layoutStyle = {
   backgroundColor: WHITE
 }
+
+export const InfoTag = styled.div`
+  position: absolute;
+  right: 0;
+  top: 20px;
+  height: 30px;
+  padding: 3px 8px;
+  background: ${GREEN_STATUS};
+  font-family: 'Avenir Next';
+  font-style: italic;
+  font-weight: bold;
+  font-size: 17px;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-right: 22px solid ${GREEN_STATUS};
+    border-bottom: 30px solid transparent;
+    margin-left: -30px;
+    margin-top: -3px;
+  }
+`

@@ -50,7 +50,8 @@ import {
   ProApprovedLabel,
   layoutStyle,
   LoadingContainer,
-  SizeChart
+  SizeChart,
+  InfoTag
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -236,12 +237,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       id: productId,
       bannerMaterials,
       relatedItemTag,
-      twoPieces
+      twoPieces,
+      infoFlag,
+      infoMessage
     } = product
     const totalReviews = get(yotpoAverageScore, 'total', 0)
     const rating = get(yotpoAverageScore, 'averageScore', 0)
     const genderId = selectedGender ? selectedGender.id : 0
-    const rangeLabel = totalOrders > 5 && !teamOnDemand ? getRangeLabel(totalOrders) : '2-5' 
+    const rangeLabel = totalOrders > 5 && !teamOnDemand ? getRangeLabel(totalOrders) : '2-5'
     const genderIndex = findIndex(imagesArray, { genderId })
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/, ' ') : ''
     let images = null
@@ -564,6 +567,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     zoomedIn={true}
                     asImage={phone}
                   />
+                  {
+                    infoFlag && <InfoTag>{infoMessage}</InfoTag>
+                  }
                   <HowItFits onClick={this.toggleFitsModal(true)}>
                     <FormattedMessage {...messages.howItFits} />
                   </HowItFits>
@@ -604,16 +610,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                         {formatMessage(messages.editDesign)}
                       </EditDesignButton>
                     ) : (
-                        <ProApproved proAssigned={proDesignAssigned}>
-                          <ProApprovedLabel>
-                            {formatMessage(
-                              messages[
-                              proDesignAssigned ? 'proAssigned' : 'approved'
-                              ]
-                            )}
-                          </ProApprovedLabel>
-                        </ProApproved>
-                      ))}
+                      <ProApproved proAssigned={proDesignAssigned}>
+                        <ProApprovedLabel>
+                          {formatMessage(
+                            messages[
+                            proDesignAssigned ? 'proAssigned' : 'approved'
+                            ]
+                          )}
+                        </ProApprovedLabel>
+                      </ProApproved>
+                    ))}
                 </TitleRow>
                 <PricesRow isTeamStore={!!teamStoreItem}>
                   {renderPrices}

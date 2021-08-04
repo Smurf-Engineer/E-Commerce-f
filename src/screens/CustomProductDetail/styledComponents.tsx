@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GREEN_BRIGHT, GRAY_DARK } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, BLACK_BG } from '../../theme/colors'
 
 interface DivProps {
   isTeamStore?: boolean
@@ -49,7 +49,8 @@ export const ProductData = styled.div`
   }
 `
 export const RenderContainer = styled.div`
-  background: #2b2b2c;
+  position: relative;
+  background: ${BLACK_BG};
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -199,7 +200,7 @@ export const PricesRow = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     justify-content: ${({ isTeamStore }: DivProps) =>
-      isTeamStore ? 'flex-start' : 'space-between'};
+    isTeamStore ? 'flex-start' : 'space-between'};
   }
 `
 export const AvailablePrices = styled.div`
@@ -372,3 +373,27 @@ export const PrivateSubtitle = styled.div`
 export const layoutStyle = {
   background: WHITE
 }
+
+export const InfoTag = styled.div`
+  position: absolute;
+  right: 0;
+  top: 20px;
+  height: 30px;
+  padding: 3px 8px;
+  background: ${GREEN_STATUS};
+  font-family: 'Avenir Next';
+  font-style: italic;
+  font-weight: bold;
+  font-size: 17px;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-right: 22px solid ${GREEN_STATUS};
+    border-bottom: 30px solid transparent;
+    margin-left: -30px;
+    margin-top: -3px;
+  }
+`
