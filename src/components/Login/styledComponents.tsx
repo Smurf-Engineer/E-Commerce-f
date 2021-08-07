@@ -9,6 +9,7 @@ export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  transition: all .25s;
 `
 
 export const LoginLabel = styled.div`
@@ -21,7 +22,11 @@ export const LoginLabel = styled.div`
   text-align: center;
   margin-bottom: 40px;
 `
-export const FormContainer = styled.div``
+
+export const FormContainer = styled.div`
+  transition: all .25s;
+`
+
 export const StyledInput = styled(Input)`
   border-radius: 0px;
   margin-bottom: 20px;

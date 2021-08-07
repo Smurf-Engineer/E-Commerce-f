@@ -109,7 +109,21 @@ class SignUp extends React.Component<Props, StateProps> {
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          {!!countrySelected ?
+          <CountryContainer {...{ countrySelected }}>
+            <Label>{formatMessage(messages.countryLabel)}</Label>
+            <CountrySelect
+              {...{ formatMessage }}
+              selectedCountry={
+                selectedCountry
+                  ? `${selectedCountry}-${selectedCountryId}`
+                  : undefined
+              }
+              loading={data && data.loading}
+              handleCountryChange={this.handleCountryChange}
+              countries={data.countries}
+            />
+          </CountryContainer>
+          {!!countrySelected &&
             <FacebookGmailLogin
               signUpView={true}
               handleLogin={login}
@@ -121,20 +135,7 @@ class SignUp extends React.Component<Props, StateProps> {
               }}
               countryName={countrySelected}
               initialCountryCode={countryCodeSelected}
-            /> : <CountryContainer>
-              <Label>{formatMessage(messages.countryLabel)}</Label>
-              <CountrySelect
-                {...{ formatMessage }}
-                selectedCountry={
-                  selectedCountry
-                    ? `${selectedCountry}-${selectedCountryId}`
-                    : undefined
-                }
-                loading={data && data.loading}
-                handleCountryChange={this.handleCountryChange}
-                countries={data.countries}
-              />
-            </CountryContainer>
+            /> 
           }
         </SocialMediaContainer>
         {!!countrySelected &&

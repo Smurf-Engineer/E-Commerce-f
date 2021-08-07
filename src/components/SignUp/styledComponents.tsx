@@ -10,8 +10,13 @@ import {
   GRAY_LIGHT
 } from '../../theme/colors'
 
+interface DivProps {
+  countrySelected?: string
+}
+
 export const Container = styled.div`
   width: 100%;
+  transition: all .25s;
 `
 
 export const SignUpLabel = styled.div`
@@ -36,6 +41,17 @@ export const DividerRow = styled.div`
   align-items: center;
   margin-bottom: 16px;
   width: 42%;
+  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-top {
+    0% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0px auto;
     justify-content: center;
@@ -60,6 +76,18 @@ export const StyledInput = styled(Input)`
 
 export const SocialMediaContainer = styled.div`
   padding: 0 81px;
+  transition: all .25s;
+  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-top {
+    0% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   @media (min-width: 320px) {
     padding: 0;
   }
@@ -67,7 +95,17 @@ export const SocialMediaContainer = styled.div`
 
 export const FormContainer = styled.div`
   padding: 0 77px;
-
+  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-top {
+    0% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   @media (min-width: 320px) {
     padding: 0;
   }
@@ -106,6 +144,17 @@ export const StyledButton = styled(Button)`
 export const HaveAnAccountRow = styled.div`
   padding: 10px 0 10px;
   text-align: center;
+  animation: fade-in-top 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-top {
+    0% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `
 
 export const LogInLabel = styled.span`
@@ -118,8 +167,9 @@ export const LogInLabel = styled.span`
 
 export const CountryContainer = styled.div`
   width: 50%;
-  margin-bottom: 20px;
   margin: 0 auto 15px;
+  transition: all .25s;
+  margin-bottom: ${({ countrySelected }: DivProps) => countrySelected ? '32px' : '22px'};
 `
 
 export const Label = styled.div`
