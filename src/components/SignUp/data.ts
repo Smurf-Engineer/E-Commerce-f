@@ -18,3 +18,13 @@ export const createUser = graphql(
     name: 'signUpUser'
   }
 )
+
+export const countriesQuery = gql`
+  query getCountries {
+    countries: getCountries {
+      name: countryName
+      code: countryCode
+      geonameId
+    }
+  }
+`

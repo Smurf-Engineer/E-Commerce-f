@@ -2,7 +2,7 @@
  * SignUp Component - Created by cazarez on 21/02/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import get from 'lodash/get'
@@ -26,12 +26,22 @@ import {
   CreateAccountText,
   StyledButton,
   HaveAnAccountRow,
-  LogInLabel
+  LogInLabel,
+  CountryContainer,
+  Label
 } from './styledComponents'
 import messages from './messages'
 import { validateEmail } from '../../utils/utilsFunctions'
+import CountrySelect from '../CountrySelect'
+import { countriesQuery } from './data'
+import { QueryProps, Country } from '../../types/common'
+
+interface Data extends QueryProps {
+  countries: Country[]
+}
 
 interface Props {
+  data: Data
   closeSignUp: () => void
   signUpUser: (variables: {}) => void
   requestClose: () => void
@@ -49,6 +59,9 @@ interface StateProps {
   password: string
   repeatPassword: string
   newsLetter: boolean
+  selectedCountry: string | undefined
+  selectedCountryName: string | undefined
+  selectedCountryId: string | undefined
 }
 
 class SignUp extends React.Component<Props, StateProps> {
@@ -58,10 +71,14 @@ class SignUp extends React.Component<Props, StateProps> {
     email: '',
     password: '',
     repeatPassword: '',
-    newsLetter: false
+    newsLetter: false,
+    selectedCountry: '',
+    selectedCountryName: '',
+    selectedCountryId: ''
   }
   render() {
     const {
+      data,
       closeSignUp,
       requestClose,
       formatMessage,
@@ -77,9 +94,14 @@ class SignUp extends React.Component<Props, StateProps> {
       email,
       password,
       repeatPassword,
-      newsLetter
+      newsLetter,
+      selectedCountry = '',
+      selectedCountryId = '',
+      selectedCountryName = ''
     } = this.state
 
+    const countrySelected = countryName ? countryName : selectedCountryName
+    const countryCodeSelected = initialCountryCode ? initialCountryCode : selectedCountry
     return (
       <Container>
         <SocialMediaContainer>
@@ -87,82 +109,102 @@ class SignUp extends React.Component<Props, StateProps> {
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          <FacebookGmailLogin
-            signUpView={true}
-            handleLogin={login}
-            {...{
-              requestClose,
-              formatMessage,
-              initialCountryCode,
-              countryName,
-              regionName,
-              city
-            }}
-          />
+          <CountryContainer {...{ countrySelected }}>
+            <Label>{formatMessage(messages.countryLabel)}</Label>
+            <CountrySelect
+              {...{ formatMessage }}
+              selectedCountry={
+                selectedCountry
+                  ? `${selectedCountry}-${selectedCountryId}`
+                  : undefined
+              }
+              loading={data && data.loading}
+              handleCountryChange={this.handleCountryChange}
+              countries={data.countries}
+            />
+          </CountryContainer>
+          {!!countrySelected &&
+            <FacebookGmailLogin
+              signUpView={true}
+              handleLogin={login}
+              {...{
+                requestClose,
+                formatMessage,
+                regionName,
+                city
+              }}
+              countryName={countrySelected}
+              initialCountryCode={countryCodeSelected}
+            /> 
+          }
         </SocialMediaContainer>
-        <HaveAnAccountRow>
-          {formatMessage(messages.haveAccount)}
-          <LogInLabel onClick={closeSignUp}>
-            {formatMessage(messages.loginLabel)}
-          </LogInLabel>
-        </HaveAnAccountRow>
-        <DividerRow>
-          <LeftDivider />
-          <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
-          <RightDivider />
-        </DividerRow>
-        <FormContainer>
-          <StyledInput
-            id="name"
-            topText={formatMessage(messages.firtsNameLabel)}
-            value={name}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="lastName"
-            topText={formatMessage(messages.lastNameLabel)}
-            value={lastName}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="email"
-            topText={'E-mail'}
-            value={email}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="password"
-            type="password"
-            topText={formatMessage(messages.passwordLabel)}
-            value={password}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="repeatPassword"
-            type="password"
-            topText={formatMessage(messages.repeatPasswordLabel)}
-            value={repeatPassword}
-            onChange={this.handleInputChange}
-          />
-          <NewsLetterRow>
-            <Checkbox checked={newsLetter} onChange={this.toggleCheckbox} />
-            <NewsLetterText>
-              {formatMessage(messages.newsLetterSignUp)}
-            </NewsLetterText>
-          </NewsLetterRow>
-          <CreateAccountContainer>
-            <CreateAccountText>
-              {formatMessage(messages.termsAndPolicyLegend)}
-            </CreateAccountText>
-            <StyledButton
-              type="danger"
-              ghost={true}
-              onClick={this.handleCreateAccount}
-            >
-              {formatMessage(messages.createAccountButtonLabel)}
-            </StyledButton>
-          </CreateAccountContainer>
-        </FormContainer>
+        {!!countrySelected &&
+          <>
+            <HaveAnAccountRow>
+              {formatMessage(messages.haveAccount)}
+              <LogInLabel onClick={closeSignUp}>
+                {formatMessage(messages.loginLabel)}
+              </LogInLabel>
+            </HaveAnAccountRow>
+            <DividerRow>
+              <LeftDivider />
+              <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
+              <RightDivider />
+            </DividerRow>
+            <FormContainer>
+              <StyledInput
+                id="name"
+                topText={formatMessage(messages.firtsNameLabel)}
+                value={name}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="lastName"
+                topText={formatMessage(messages.lastNameLabel)}
+                value={lastName}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="email"
+                topText={'E-mail'}
+                value={email}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="password"
+                type="password"
+                topText={formatMessage(messages.passwordLabel)}
+                value={password}
+                onChange={this.handleInputChange}
+              />
+              <StyledInput
+                id="repeatPassword"
+                type="password"
+                topText={formatMessage(messages.repeatPasswordLabel)}
+                value={repeatPassword}
+                onChange={this.handleInputChange}
+              />
+              <NewsLetterRow>
+                <Checkbox checked={newsLetter} onChange={this.toggleCheckbox} />
+                <NewsLetterText>
+                  {formatMessage(messages.newsLetterSignUp)}
+                </NewsLetterText>
+              </NewsLetterRow>
+              <CreateAccountContainer>
+                <CreateAccountText>
+                  {formatMessage(messages.termsAndPolicyLegend)}
+                </CreateAccountText>
+                <StyledButton
+                  type="danger"
+                  ghost={true}
+                  onClick={this.handleCreateAccount}
+                >
+                  {formatMessage(messages.createAccountButtonLabel)}
+                </StyledButton>
+              </CreateAccountContainer>
+            </FormContainer>
+          </>
+        }
       </Container>
     )
   }
@@ -173,7 +215,10 @@ class SignUp extends React.Component<Props, StateProps> {
       email: '',
       password: '',
       repeatPassword: '',
-      newsLetter: false
+      newsLetter: false,
+      selectedCountry: '',
+      selectedCountryId: '',
+      selectedCountryName: ''
     })
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -181,6 +226,18 @@ class SignUp extends React.Component<Props, StateProps> {
       currentTarget: { id, value }
     } = evt
     this.setState({ [id]: value } as any)
+  }
+
+  handleCountryChange = (
+    value: any,
+    countryId: string,
+    countryName: string
+  ) => {
+    this.setState({
+      selectedCountry: value,
+      selectedCountryId: countryId,
+      selectedCountryName: countryName
+    })
   }
 
   toggleCheckbox = () => {
@@ -195,7 +252,9 @@ class SignUp extends React.Component<Props, StateProps> {
       email,
       password,
       repeatPassword,
-      newsLetter
+      newsLetter,
+      selectedCountry = '',
+      selectedCountryName = ''
     } = this.state
     const {
       signUpUser,
@@ -223,8 +282,8 @@ class SignUp extends React.Component<Props, StateProps> {
       last_name: lastName,
       password,
       newsletter_subscribed: newsLetter,
-      countryCode: initialCountryCode,
-      country_name: countryName,
+      countryCode: initialCountryCode ? initialCountryCode : selectedCountry,
+      country_name: countryName ? countryName : selectedCountryName,
       region_name: regionName,
       city
     }
@@ -263,5 +322,12 @@ class SignUp extends React.Component<Props, StateProps> {
     }
   }
 }
-const SingUpEnchance = compose(createUser)(SignUp)
+const SingUpEnchance = compose(
+  createUser,
+  graphql(countriesQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
+)(SignUp)
 export default SingUpEnchance

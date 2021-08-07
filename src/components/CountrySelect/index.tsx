@@ -2,13 +2,11 @@
  * CountrySelect Component - Created by gustavomedina on 30/07/18.
  */
 import * as React from 'react'
-import Select from 'antd/lib/select'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
-import { Container, StyledSelect } from './styledComponents'
+import { Container, StyledSelect, StyledOption, CountryIcon } from './styledComponents'
 import { QueryProps, Country } from '../../types/common'
-
-const Option = Select.Option
+import get from 'lodash/get'
 
 interface Props {
   data: QueryProps
@@ -26,7 +24,7 @@ interface Props {
 export class CountrySelect extends React.Component<Props, {}> {
   handleSelectChange = async (value: string, label: React.ReactPortal) => {
     const { handleCountryChange } = this.props
-    const countryName = label.props.children
+    const countryName = get(label, 'props.name', '')
     handleCountryChange(
       value.substr(0, value.indexOf('-')),
       value.substr(value.indexOf('-') + 1, value.length),
@@ -34,18 +32,16 @@ export class CountrySelect extends React.Component<Props, {}> {
     )
   }
 
-  handleFilter = (input: string, { props }: any) =>
-    props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-
   render() {
     const { data, countries, selectedCountry, formatMessage, loading } = this.props
     let dropdownOptions: any = []
     if (countries && countries.length) {
       dropdownOptions = countries.map(
         ({ name, code, geonameId }, index) => (
-          <Option value={`${code}-${geonameId}`} key={index}>
+          <StyledOption name={name} value={`${code}-${geonameId}`} key={index}>
+            <CountryIcon src={`https://www.countryflags.io/${code}/flat/24.png`} />
             {name}
-          </Option>
+          </StyledOption>
         )
       )
     }
@@ -60,8 +56,8 @@ export class CountrySelect extends React.Component<Props, {}> {
           onChange={this.handleSelectChange}
           showSearch={true}
           loading={loading}
-          optionFilterProp="children"
-          filterOption={this.handleFilter}
+          optionFilterProp="name"
+          filterOption={true}
         >
           {dropdownOptions}
         </StyledSelect>
