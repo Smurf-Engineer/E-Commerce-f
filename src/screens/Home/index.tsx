@@ -195,11 +195,6 @@ export class Home extends React.Component<Props, {}> {
     }
   }
 
-  redirectUrl = () => {
-    const { history } = this.props
-    history.push('/product?id=307&modelId=arrow_ss&ps=us')
-  }
-
   handleGoToUrl = (link?: string) => () => {
     const { history } = this.props
     if (link) {
@@ -306,7 +301,7 @@ export class Home extends React.Component<Props, {}> {
         <div>
           <CarouselItem
             key={index}
-            onClick={this.redirectUrl}
+            onClick={this.handleGoToUrl(item.url)}
             {...{ item }}
           />
         </div>
@@ -317,7 +312,7 @@ export class Home extends React.Component<Props, {}> {
         <div>
           <CarouselItem
             key={index}
-            onClick={() => { }}
+            onClick={this.handleGoToUrl(item.url)}
             {...{ item }}
           />
         </div>

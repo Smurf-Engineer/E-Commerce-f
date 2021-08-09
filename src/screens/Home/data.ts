@@ -41,12 +41,14 @@ export const getHomepageInfo = gql`
         desktopImage: image
         mobileImage: image_mobile
         assetType: type
+        url: link
       }
       secondaryFeaturedImages {
         id
         desktopImage: image
         mobileImage: image_mobile
         assetType: type
+        url: link
       }
       featuredProducts {
         id
