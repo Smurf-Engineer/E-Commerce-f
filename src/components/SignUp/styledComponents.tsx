@@ -166,10 +166,10 @@ export const LogInLabel = styled.span`
 `
 
 export const CountryContainer = styled.div`
-  width: 50%;
+  width: 100%;
   margin: 0 auto 15px;
   transition: all .25s;
-  margin-bottom: ${({ countrySelected }: DivProps) => countrySelected ? '32px' : '22px'};
+  margin-bottom: ${({ countrySelected }: DivProps) => countrySelected ? '32px' : '12px'};
 `
 
 export const Label = styled.div`
