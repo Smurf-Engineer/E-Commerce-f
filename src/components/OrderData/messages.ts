@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'components.OrderData.paymentTerms',
     defaultMessage: 'Payment Terms:'
   },
+  downloadInvoice: {
+    id: 'components.OrderData.downloadInvoice',
+    defaultMessage: 'Download Invoice'
+  },
   priceQuestion: {
     id: 'components.OrderData.priceQuestion',
     // tslint:disable-next-line: max-line-length

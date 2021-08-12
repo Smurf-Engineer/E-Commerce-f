@@ -25,7 +25,9 @@ import {
   InvoiceDiv,
   InvoiceTitle,
   InvoiceSubtitle,
-  InvoiceIcon
+  InvoiceIcon,
+  DownloadInvoice,
+  DownloadIcon
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -42,6 +44,7 @@ import CartListItem from '../CartListItem'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 import PaymentData from '../PaymentData'
 import ProductInfo from '../ProductInfo'
+import ReactDOM from 'react-dom'
 
 const PRO_DESIGN_FEE = 15
 
@@ -68,6 +71,9 @@ class OrderData extends React.Component<Props, {}> {
     showOrder: false,
     showIssue: false
   }
+  private copyInput: any
+  private html2pdf: any
+  private html2canvas: any
   componentDidMount() {
     const {
       orderId,
@@ -105,6 +111,21 @@ class OrderData extends React.Component<Props, {}> {
         transactionProducts: items
       })
     }
+  }
+  downloadInvoice = async () => {
+    const { orderId } = this.props
+    const element = ReactDOM.findDOMNode(this.copyInput) as HTMLElement
+    if (!this.html2pdf) {
+      this.html2pdf = new window.jsPDF('p', 'pt', 'a4')
+    }
+    if (!this.html2canvas) {
+      this.html2canvas = window.html2canvas
+    }
+    const image = await this.html2canvas(element)
+    var myImage = image.toDataURL('image/png')
+    window.open(myImage)
+    this.html2pdf.addImage(myImage, 'PNG', 10, 10)
+    this.html2pdf.save(`invoice-${orderId}.pdf`)
   }
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[id]
@@ -241,7 +262,11 @@ class OrderData extends React.Component<Props, {}> {
     return (
       <Container>
         <Title>{title}</Title>
-        <Content>
+        <DownloadInvoice onClick={this.downloadInvoice}>
+          <DownloadIcon type="download"/>
+          {formatMessage(messages.downloadInvoice)}
+        </DownloadInvoice>
+        <Content ref={content => (this.copyInput = content)}>
           <InfoContainer>
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderPoint)}</TitleStyled>
