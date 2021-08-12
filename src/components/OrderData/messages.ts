@@ -33,6 +33,14 @@ export default defineMessages({
     id: 'components.OrderData.faqTitle',
     defaultMessage: 'FREQUENTLY ASKED QUESTIONS'
   },
+  invoice: {
+    id: 'components.OrderData.invoice',
+    defaultMessage: 'Invoice'
+  },
+  paymentTerms: {
+    id: 'components.OrderData.paymentTerms',
+    defaultMessage: 'Payment Terms:'
+  },
   priceQuestion: {
     id: 'components.OrderData.priceQuestion',
     // tslint:disable-next-line: max-line-length

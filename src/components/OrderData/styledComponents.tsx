@@ -3,7 +3,8 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { GRAY_DARK, RED } from '../../theme/colors'
+import { BLUE, GRAY_DARK, RED } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div``
 
@@ -153,4 +154,25 @@ export const StyledEmailPhoneText = styled.div`
   line-height: 23px;
   font-size: 16px;
   white-space: pre;
+`
+
+export const InvoiceDiv = styled.div`
+  margin-bottom: 40px;
+`
+
+export const InvoiceTitle = styled.div`
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-family: Avenir-Medium;
+`
+
+export const InvoiceSubtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 12px;
+`
+
+export const InvoiceIcon = styled(Icon)`
+  margin-right: 8px;
+  color: ${BLUE};
 `

@@ -14,7 +14,8 @@ import {
   InvoiceDiv,
   InvoiceTitle,
   InvoiceSubtitle,
-  InvoiceInformation
+  InvoiceInformation,
+  InvoiceIcon
 } from './styledComponents'
 import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
@@ -256,7 +257,7 @@ class Payment extends React.PureComponent<Props, {}> {
         </ContainerMethods>
         {paymentMethod === INVOICE &&
           <InvoiceDiv>
-            <InvoiceTitle>{formatMessage(messages.invoice)}</InvoiceTitle>
+            <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
             <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
             <InvoiceInformation>{formatMessage(messages.paymentInfo)}</InvoiceInformation>
           </InvoiceDiv>

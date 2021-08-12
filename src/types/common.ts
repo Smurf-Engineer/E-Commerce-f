@@ -1025,6 +1025,7 @@ export interface OrderDataInfo {
   shippingTax: number
   payment: PaymentCharges
   cart: CartItems[]
+  invoiceTerms: string
   paymentMethod: string
   currency: Currency
   shippingAmount: number

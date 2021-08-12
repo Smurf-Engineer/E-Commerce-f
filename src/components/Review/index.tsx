@@ -15,8 +15,8 @@ import {
   Text,
   InvoiceDiv,
   InvoiceTitle,
-  InvoiceTitle,
-  InvoiceSubtitle
+  InvoiceSubtitle,
+  InvoiceIcon
 } from './styledComponents'
 import {
   AddressType,
@@ -181,7 +181,7 @@ class Review extends React.PureComponent<Props, {}> {
             <Title>{formatMessage(messages.payment)}</Title>
             {paymentMethod === PaymentOptions.INVOICE ?
               <InvoiceDiv>
-                <InvoiceTitle>{formatMessage(messages.invoice)}</InvoiceTitle>
+                <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
                 <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
               </InvoiceDiv>
               : isCCPayment ? (

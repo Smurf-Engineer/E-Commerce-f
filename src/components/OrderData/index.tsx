@@ -21,7 +21,11 @@ import {
   Title,
   Content,
   FAQSection,
-  FAQBody
+  FAQBody,
+  InvoiceDiv,
+  InvoiceTitle,
+  InvoiceSubtitle,
+  InvoiceIcon
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -120,6 +124,7 @@ class OrderData extends React.Component<Props, {}> {
           street,
           phone,
           city,
+          invoiceTerms,
           stateProvince,
           zipCode,
           country,
@@ -164,7 +169,11 @@ class OrderData extends React.Component<Props, {}> {
     const paymentMethodInfo =
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
-      ) : (
+      ) : paymentMethod === PaymentOptions.INVOICE ?
+          <InvoiceDiv>
+            <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
+            <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
+          </InvoiceDiv> : (
           <StyledImage
             src={paymentMethod === PaymentOptions.PAYPAL ? iconPaypal : iconSepa}
           />
@@ -248,6 +257,12 @@ class OrderData extends React.Component<Props, {}> {
               <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
               <StyledText>{orderDate}</StyledText>
             </OrderNumberContainer>
+            {paymentMethod === PaymentOptions.INVOICE && invoiceTerms &&
+              <OrderNumberContainer>
+                <TitleStyled>{formatMessage(messages.paymentTerms)}</TitleStyled>
+                <StyledText>{invoiceTerms}</StyledText>
+              </OrderNumberContainer>
+            }
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
               <StyledText>{estimatedDate}</StyledText>

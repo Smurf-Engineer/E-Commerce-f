@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import { GRAY_DARK, WHITE, GRAY_LIGHT, BLUE } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   width: 100%;
@@ -68,4 +69,9 @@ export const InvoiceSubtitle = styled.div`
 export const InvoiceInformation = styled.div`
   max-width: 388px;
   width: 100%;
+`
+
+export const InvoiceIcon = styled(Icon)`
+  margin-right: 8px;
+  color: ${BLUE};
 `
