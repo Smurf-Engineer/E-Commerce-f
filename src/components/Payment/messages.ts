@@ -17,6 +17,19 @@ export default defineMessages({
     id: 'components.Payment.methodPaypal',
     defaultMessage: 'Paypal'
   },
+  invoice: {
+    id: 'components.Payment.invoice',
+    defaultMessage: 'Invoice'
+  },
+  paymentTerms: {
+    id: 'components.Payment.paymentTerms',
+    defaultMessage: 'Payment Terms:'
+  },
+  paymentInfo: {
+    id: 'components.Payment.paymentInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Payment for orders will be due in full prior to shipment unless otherwise stated on your order terms and conditions.'
+  },
   methodBankTransfer: {
     id: 'components.Payment.methodBankTransfer',
     defaultMessage: 'Bank Transfer'

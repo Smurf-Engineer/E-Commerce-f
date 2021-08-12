@@ -71,3 +71,17 @@ export const isScaPaymentQuery = gql`
     }
   }
 `
+
+export const profileSettingsQuery = gql`
+  query profile {
+    profileData: getUserProfile {
+      userProfile {
+        firstName: first_name
+        lastName: last_name
+        email
+        invoice
+        invoiceTerms: invoice_terms
+      }
+    }
+  }
+`

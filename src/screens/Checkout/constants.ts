@@ -53,7 +53,15 @@ export enum CheckoutTabs {
 export enum PaymentOptions {
   PAYPAL = 'paypal',
   CREDITCARD = 'creditcard',
-  IBAN = 'iban'
+  IBAN = 'iban',
+  INVOICE = 'invoice'
+}
+
+export enum PaymentTerms {
+  RECEIPT = 'Due upon Receipt',
+  FIFTY = '50% Down, 50% at Shipping',
+  NET15 = 'Net 15 Days',
+  NET30 = 'Net 30 Days'
 }
 
 // PROMO TYPES

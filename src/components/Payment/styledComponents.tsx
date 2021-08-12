@@ -47,3 +47,25 @@ export const MethodButton = styled(Button)`
   border: 0.5px solid
     ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_LIGHT)};
 `
+
+export const InvoiceDiv = styled.div`
+  margin-top: 50px;
+  margin-bottom: 40px;
+`
+
+export const InvoiceTitle = styled.div`
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-family: Avenir-Medium;
+`
+
+export const InvoiceSubtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 12px;
+`
+
+export const InvoiceInformation = styled.div`
+  max-width: 388px;
+  width: 100%;
+`

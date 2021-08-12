@@ -12,7 +12,11 @@ import {
   EditInfoButton,
   CartList,
   CartContent,
-  Text
+  Text,
+  InvoiceDiv,
+  InvoiceTitle,
+  InvoiceTitle,
+  InvoiceSubtitle
 } from './styledComponents'
 import {
   AddressType,
@@ -39,6 +43,7 @@ interface Props {
   ibanData: IbanData
   selectedCard: CreditCardData
   currency: string
+  invoiceTerms: string
   formatMessage: (messageDescriptor: any) => string
   goToStep: (step: number) => void
 }
@@ -47,6 +52,7 @@ class Review extends React.PureComponent<Props, {}> {
   render() {
     const {
       showContent,
+      invoiceTerms,
       formatMessage,
       shippingAddress: {
         firstName,
@@ -173,23 +179,29 @@ class Review extends React.PureComponent<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.payment)}</Title>
-            {isCCPayment ? (
-              <div>
-                <PaymentData card={selectedCard} />
-                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-                  {formatMessage(messages.edit)}
-                </EditInfoButton>
-              </div>
-            ) : isIbanPayment ? (
-              <div>
-                <PaymentData iban={ibanData} />
-                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-                  {formatMessage(messages.edit)}
-                </EditInfoButton>
-              </div>
-            ) : (
-                  <img src={iconPaypal} />
-                )}
+            {paymentMethod === PaymentOptions.INVOICE ?
+              <InvoiceDiv>
+                <InvoiceTitle>{formatMessage(messages.invoice)}</InvoiceTitle>
+                <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
+              </InvoiceDiv>
+              : isCCPayment ? (
+                <div>
+                  <PaymentData card={selectedCard} />
+                  <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                    {formatMessage(messages.edit)}
+                  </EditInfoButton>
+                </div>
+              ) : isIbanPayment ? (
+                <div>
+                  <PaymentData iban={ibanData} />
+                  <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                    {formatMessage(messages.edit)}
+                  </EditInfoButton>
+                </div>
+              ) : (
+                    <img src={iconPaypal} />
+                  )
+            }
           </InfoContainer>
         </BottomContainer>
       </Container>

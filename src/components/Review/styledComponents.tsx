@@ -87,3 +87,19 @@ export const EditInfoButton = styled(Button)`
     color: #fff;
   }
 `
+
+export const InvoiceDiv = styled.div`
+  margin-bottom: 40px;
+`
+
+export const InvoiceTitle = styled.div`
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-family: Avenir-Medium;
+`
+
+export const InvoiceSubtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 12px;
+`
