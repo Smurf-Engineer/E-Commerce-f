@@ -593,12 +593,13 @@ class Render3D extends PureComponent {
               object.children[gripTapeIndex].material.color.set(WHITE)
             }
             /* Assign materials */
-            const canvasObj = children[meshIndex].clone()
-            object.add(canvasObj)
-
-            children[meshIndex].material = insideMaterial
-            children[objectChildCount].material = frontMaterial
-
+            const isFirefox = navigator && navigator.userAgent.indexOf('Firefox') !== -1
+            if (!isFirefox) {
+              const canvasObj = children[meshIndex].clone()
+              object.add(canvasObj)
+              children[meshIndex].material = insideMaterial
+              children[objectChildCount].material = frontMaterial
+            }
             /* Branding */
             if (!!branding && !hidePredyed) {
               const brandingObj = children[meshIndex].clone()
@@ -614,6 +615,12 @@ class Render3D extends PureComponent {
                 transparent: true
               })
               children[brandingIndex].material = brandingMaterial
+            }
+            if (isFirefox) {
+              const canvasObj = children[meshIndex].clone()
+              object.add(canvasObj)
+              children[meshIndex].material = insideMaterial
+              children[objectChildCount].material = frontMaterial
             }
             /* Object Conig */
             const verticalPosition = asImage ? PHONE_POSITION : 0
