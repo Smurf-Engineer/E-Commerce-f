@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import head from 'lodash/head'
+import domtoimage from 'dom-to-image'
 import messages from './messages'
 import { FormattedHTMLMessage } from 'react-intl'
 import {
@@ -31,7 +32,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE, PAYMENT_ISSUE, VARIABLE_PRICE } from '../../constants'
+import { PURCHASE, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64 } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -45,6 +46,8 @@ import { PaymentOptions } from '../../screens/Checkout/constants'
 import PaymentData from '../PaymentData'
 import ProductInfo from '../ProductInfo'
 import ReactDOM from 'react-dom'
+import { getSizeInCentimeters } from '../../utils/utilsFiles'
+import Spin from 'antd/lib/spin'
 
 const PRO_DESIGN_FEE = 15
 
@@ -69,11 +72,11 @@ class OrderData extends React.Component<Props, {}> {
   state = {
     showPricing: false,
     showOrder: false,
-    showIssue: false
+    showIssue: false,
+    savingPdf: false
   }
   private copyInput: any
   private html2pdf: any
-  private html2canvas: any
   componentDidMount() {
     const {
       orderId,
@@ -114,18 +117,35 @@ class OrderData extends React.Component<Props, {}> {
   }
   downloadInvoice = async () => {
     const { orderId } = this.props
-    const element = ReactDOM.findDOMNode(this.copyInput) as HTMLElement
-    if (!this.html2pdf) {
-      this.html2pdf = new window.jsPDF('p', 'pt', 'a4')
+    const { savingPdf } = this.state
+    if (!savingPdf) {
+      this.setState({ savingPdf: true })
+      const element = ReactDOM.findDOMNode(this.copyInput) as HTMLElement
+      element.style.fontFamily = 'Avenir'
+      if (!this.html2pdf) {
+        this.html2pdf = new window.jsPDF('p', 'cm', 'letter')
+      }
+      const image = await domtoimage.toPng(element)
+      const imageWidth = getSizeInCentimeters(element.clientWidth)
+      const imageHeight = getSizeInCentimeters(element.clientHeight)
+      let position = 2
+      const pdfWidth = this.html2pdf.internal.pageSize.width - 2 
+      const pdfHeight = (imageHeight * pdfWidth) / imageWidth
+      let heightLeft = imageHeight
+      const img = new Image()
+      img.src = JAKROO_LOGO_BASE64
+      this.html2pdf.addImage(img, 'JPEG', 0.75, 0.5, 4, 1)
+      this.html2pdf.addImage(image, 'PNG', 1, 2, pdfWidth, pdfHeight)
+      heightLeft -= this.html2pdf.internal.pageSize.height
+      while (heightLeft > 18) {
+        position += heightLeft - imageHeight // top padding for other pages
+        this.html2pdf.addPage()
+        this.html2pdf.addImage(image, 'PNG', 1, position, pdfWidth, pdfHeight)
+        heightLeft -= this.html2pdf.internal.pageSize.height
+      }
+      this.html2pdf.save(`invoice-${orderId}.pdf`)    
+      this.setState({ savingPdf: false })
     }
-    if (!this.html2canvas) {
-      this.html2canvas = window.html2canvas
-    }
-    const image = await this.html2canvas(element)
-    var myImage = image.toDataURL('image/png')
-    window.open(myImage)
-    this.html2pdf.addImage(myImage, 'PNG', 10, 10)
-    this.html2pdf.save(`invoice-${orderId}.pdf`)
   }
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[id]
@@ -182,7 +202,8 @@ class OrderData extends React.Component<Props, {}> {
     const {
       showPricing,
       showOrder,
-      showIssue
+      showIssue,
+      savingPdf
     } = this.state
 
     const card = get(payment, 'stripeCharge.cardData', {})
@@ -262,10 +283,17 @@ class OrderData extends React.Component<Props, {}> {
     return (
       <Container>
         <Title>{title}</Title>
-        <DownloadInvoice onClick={this.downloadInvoice}>
-          <DownloadIcon type="download"/>
-          {formatMessage(messages.downloadInvoice)}
-        </DownloadInvoice>
+        {paymentMethod === PaymentOptions.INVOICE &&
+          <DownloadInvoice onClick={this.downloadInvoice}>
+            {savingPdf ? 
+              <Spin size="small" /> :
+              <>
+                <DownloadIcon type="download"/>
+                {formatMessage(messages.downloadInvoice)}
+              </>
+            }
+          </DownloadInvoice>
+        }
         <Content ref={content => (this.copyInput = content)}>
           <InfoContainer>
             <OrderNumberContainer>

@@ -246,7 +246,7 @@ class Payment extends React.PureComponent<Props, {}> {
           >
             {formatMessage(messages.methodPaypal)}
           </MethodButton>
-          {invoice && invoiceTerms &&
+          {invoice && invoiceTerms && !isFixedTeamstore &&
             <MethodButton
               selected={paymentMethod === INVOICE}
               onClick={this.handleInvoiceClick}

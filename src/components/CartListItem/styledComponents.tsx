@@ -12,7 +12,6 @@ export const Container = styled.li`
   list-style-type: none;
   display: flex;
   flex-direction: row;
-  background-color: #fff;
   margin-bottom: 10px;
   width: 100%;
 

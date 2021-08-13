@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import { FormattedHTMLMessage } from 'react-intl'
 import message from 'antd/lib/message'
+import domtoimage from 'dom-to-image'
 import moment from 'moment'
 import get from 'lodash/get'
 import messages from './messages'
@@ -50,7 +51,14 @@ import {
   FAQBody,
   FedexLabel,
   FedexIcon,
-  OpenIcon
+  OpenIcon,
+  InvoiceDiv,
+  InvoiceTitle,
+  InvoiceIcon,
+  InvoiceSubtitle,
+  DownloadInvoice,
+  DownloadIcon,
+  DataDiv
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -62,8 +70,10 @@ import iconFedex from '../../assets/fedexicon.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
-import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE } from '../../constants'
+import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64 } from '../../constants'
 import ProductInfo from '../ProductInfo'
+import { getSizeInCentimeters } from '../../utils/utilsFiles'
+import ReactDOM from 'react-dom'
 
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
 const PRO_DESIGN_FEE = 15
@@ -90,8 +100,11 @@ export class OrderDetails extends React.Component<Props, {}> {
   state = {
     showPricing: false,
     showOrder: false,
-    showIssue: false
+    showIssue: false,
+    savingPdf: false
   }
+  private copyInput: any
+  private html2pdf: any
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[id]
     this.setState({ [id]: !stateValue } as any)
@@ -99,6 +112,38 @@ export class OrderDetails extends React.Component<Props, {}> {
   openFedexTracking = (trackingNumber: string) => () => {
     if (trackingNumber) {
       window.open(`${FEDEX_URL}?trknbr=${trackingNumber}`)
+    }
+  }
+  downloadInvoice = async () => {
+    const { orderId } = this.props
+    const { savingPdf } = this.state
+    if (!savingPdf) {
+      this.setState({ savingPdf: true })
+      const element = ReactDOM.findDOMNode(this.copyInput) as HTMLElement
+      element.style.fontFamily = 'Avenir'
+      if (!this.html2pdf) {
+        this.html2pdf = new window.jsPDF('p', 'cm', 'letter')
+      }
+      const image = await domtoimage.toPng(element)
+      const imageWidth = getSizeInCentimeters(element.clientWidth)
+      const imageHeight = getSizeInCentimeters(element.clientHeight)
+      let position = 2
+      const pdfWidth = this.html2pdf.internal.pageSize.width - 2 
+      const pdfHeight = (imageHeight * pdfWidth) / imageWidth
+      let heightLeft = imageHeight
+      const img = new Image()
+      img.src = JAKROO_LOGO_BASE64
+      this.html2pdf.addImage(img, 'JPEG', 0.75, 0.5, 4, 1)
+      this.html2pdf.addImage(image, 'PNG', 1, 2, pdfWidth, pdfHeight)
+      heightLeft -= this.html2pdf.internal.pageSize.height
+      while (heightLeft > 18) {
+        position += heightLeft - imageHeight // top padding for other pages
+        this.html2pdf.addPage()
+        this.html2pdf.addImage(image, 'PNG', 1, position, pdfWidth, pdfHeight)
+        heightLeft -= this.html2pdf.internal.pageSize.height
+      }
+      this.html2pdf.save(`invoice-${orderId}.pdf`)    
+      this.setState({ savingPdf: false })
     }
   }
   render() {
@@ -122,7 +167,8 @@ export class OrderDetails extends React.Component<Props, {}> {
     const {
       showPricing,
       showOrder,
-      showIssue
+      showIssue,
+      savingPdf
     } = this.state
 
     const handleOnReturn = () => onReturn('')
@@ -141,6 +187,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const {
       shortId,
       orderDate,
+      invoiceTerms,
       estimatedDate,
       paymentMethod,
       shippingFirstName,
@@ -259,7 +306,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             price={priceRange}
             itemIndex={index}
             onlyRead={true}
-            canReorder={!teamStoreId && owner}
+            canReorder={!teamStoreId && owner && !savingPdf}
           />
         )
       })
@@ -269,7 +316,11 @@ export class OrderDetails extends React.Component<Props, {}> {
     const paymentMethodInfo =
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
-      ) : (
+      ) : paymentMethod === PaymentOptions.INVOICE ?
+          <InvoiceDiv>
+            <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
+            <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
+          </InvoiceDiv> : (
           <StyledImage src={iconPaypal} />
         )
 
@@ -292,154 +343,167 @@ export class OrderDetails extends React.Component<Props, {}> {
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
-          {/* TODO: Hide receipt button until green light to continue with the development of the pdf receipt
-           <ButtonWrapper>
-            <Button type="primary" onClick={this.handleOnClickReceipt}>
-              {formatMessage(messages.receipt)}
-            </Button>
-          </ButtonWrapper> */}
+          {paymentMethod === PaymentOptions.INVOICE &&
+            <DownloadInvoice onClick={this.downloadInvoice}>
+              {savingPdf ? 
+                <Spin size="small" /> :
+                <>
+                  <DownloadIcon type="download"/>
+                  {formatMessage(messages.downloadInvoice)}
+                </>
+              }
+            </DownloadInvoice>
+          }
         </Div>
-        <OrderInfo>
-          <OrderDelivery>
-            <DeliveryInfo>
-              <DeliveryLabels>
-                <DeliveryLabel>
-                  {formatMessage(messages.orderPoint)}
-                </DeliveryLabel>
-                <DeliveryLabel>
-                  {formatMessage(messages.orderNumber)}
-                </DeliveryLabel>
-                <DeliveryLabel>
-                  {formatMessage(messages.orderDate)}
-                </DeliveryLabel>
-                {teamStoreId && cutoffDate &&
+        <DataDiv ref={content => (this.copyInput = content)}>
+          <OrderInfo>
+            <OrderDelivery>
+              <DeliveryInfo>
+                <DeliveryLabels>
                   <DeliveryLabel>
-                    {formatMessage(messages.cutoffDate)}
+                    {formatMessage(messages.orderPoint)}
                   </DeliveryLabel>
-                }
-                <DeliveryLabel>
-                  {formatMessage(messages.trackingNumber)}
-                </DeliveryLabel>
-                <DeliveryLabel>
-                  {formatMessage(messages.deliveryDate)}
-                </DeliveryLabel>
-                <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
-                <DeliveryLabel>
-                  {formatMessage(messages.lastUpdated)}
-                </DeliveryLabel>
-              </DeliveryLabels>
-              <DeliveryData>
-                <Info>
-                  {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
-                </Info>
-                <Info>{shortId}</Info>
-                <Info>{orderDate}</Info>
-                {teamStoreId && cutoffDate && <Info>{cutoffDate}</Info>}
-                <Info>
-                  {trackingNumber ? 
-                    <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
-                      {trackingNumber}
-                      <OpenIcon type="select" />
-                      <FedexIcon src={iconFedex} />
-                    </FedexLabel> : '-'
+                  <DeliveryLabel>
+                    {formatMessage(messages.orderNumber)}
+                  </DeliveryLabel>
+                  <DeliveryLabel>
+                    {formatMessage(messages.orderDate)}
+                  </DeliveryLabel>
+                  {teamStoreId && cutoffDate &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.cutoffDate)}
+                    </DeliveryLabel>
                   }
-                </Info>
-                <Info>{estimatedDate}</Info>
-                <Info redColor={status === PAYMENT_ISSUE}>
-                  {netsuiteStatus || status}
-                </Info>
-                <Info>
-                  {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
-                </Info>
-              </DeliveryData>
-            </DeliveryInfo>
-          </OrderDelivery>
-          <OrderSummaryContainer>
-            <OrderSummary
-              onlyRead={true}
-              totalSum={total}
-              shippingTotal={shippingAmount}
-              totalWithoutDiscount={subtotal}
-              youSaved={!!coupon && discount}
-              currencySymbol={currency.shortName}
-              proDesignReview={proDesign && PRO_DESIGN_FEE}
-              couponName={coupon}
-              {...{
-                formatMessage,
-                taxGst,
-                taxPst,
-                variables,
-                upgrades,
-                taxVat,
-                taxFee,
-                showDiscount,
-                discount,
-                subtotal
-              }}
-            />
-          </OrderSummaryContainer>
-        </OrderInfo>
-        <StyledText>
-          <FormattedHTMLMessage
-            {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
-          />
-        </StyledText>
-        <Items>
-          {!teamStoreId && owner && (
-            <TitleStyled>
-              {formatMessage(messages.items)}
-              <AddToCartButton
-                ref={(addToCartButton: any) => {
-                  this.editOrderButton = addToCartButton
+                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms &&
+                    <DeliveryLabel>
+                      {formatMessage(messages.paymentTerms)}
+                    </DeliveryLabel>
+                  }
+                  <DeliveryLabel>
+                    {formatMessage(messages.trackingNumber)}
+                  </DeliveryLabel>
+                  <DeliveryLabel>
+                    {formatMessage(messages.deliveryDate)}
+                  </DeliveryLabel>
+                  <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
+                  <DeliveryLabel>
+                    {formatMessage(messages.lastUpdated)}
+                  </DeliveryLabel>
+                </DeliveryLabels>
+                <DeliveryData>
+                  <Info>
+                    {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
+                  </Info>
+                  <Info>{shortId}</Info>
+                  <Info>{orderDate}</Info>
+                  {teamStoreId && cutoffDate && <Info>{cutoffDate}</Info>}
+                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && <Info>{invoiceTerms}</Info>}
+                  <Info>
+                    {trackingNumber ? 
+                      <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
+                        {trackingNumber}
+                        <OpenIcon type="select" />
+                        <FedexIcon src={iconFedex} />
+                      </FedexLabel> : '-'
+                    }
+                  </Info>
+                  <Info>{estimatedDate}</Info>
+                  <Info redColor={status === PAYMENT_ISSUE}>
+                    {netsuiteStatus || status}
+                  </Info>
+                  <Info>
+                    {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
+                  </Info>
+                </DeliveryData>
+              </DeliveryInfo>
+            </OrderDelivery>
+            <OrderSummaryContainer>
+              <OrderSummary
+                onlyRead={true}
+                totalSum={total}
+                shippingTotal={shippingAmount}
+                totalWithoutDiscount={subtotal}
+                youSaved={!!coupon && discount}
+                currencySymbol={currency.shortName}
+                proDesignReview={proDesign && PRO_DESIGN_FEE}
+                couponName={coupon}
+                {...{
+                  formatMessage,
+                  taxGst,
+                  taxPst,
+                  variables,
+                  upgrades,
+                  taxVat,
+                  taxFee,
+                  showDiscount,
+                  discount,
+                  subtotal
                 }}
-                label={formatMessage(messages.reorderAll)}
-                renderForThumbnail={false}
-                items={cart}
-                {...{ formatMessage }}
-                withoutTop={true}
-                myLockerList={false}
-                itemProdPage={true}
-                orderDetails={true}
-                onClick={() => true}
               />
-            </TitleStyled>
-          )}
-          <CartList>{renderItemList}</CartList>
-        </Items>
-        <ShippingBillingContainer>
-          <ShippingBillingCard>
-            <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
-            <MyAddress
-              hideBottomButtons={true}
-              name={`${shippingFirstName} ${shippingLastName}`}
-              city={`${shippingCity} ${shippingStateProvince}`}
-              street={shippingStreet}
-              phone={shippingPhone}
-              zipCode={shippingZipCode}
-              country={shippingCountry}
-              apartment={shippingApartment}
-              {...{ formatMessage }}
+            </OrderSummaryContainer>
+          </OrderInfo>
+          <StyledText>
+            <FormattedHTMLMessage
+              {...messages[teamStoreId ? 'messageTeamstore' : 'messageRetail']}
             />
-          </ShippingBillingCard>
-          <ShippingBillingCard>
-            <SubTitle>{formatMessage(messages.billingAddress)}</SubTitle>
-            <MyAddress
-              hideBottomButtons={true}
-              name={`${billingFirstName} ${billingLastName}`}
-              street={billingStreet}
-              city={`${billingCity} ${billingStateProvince}`}
-              zipCode={billingZipCode}
-              country={billingCountry}
-              apartment={billingApartment}
-              {...{ formatMessage }}
-            />
-          </ShippingBillingCard>
-          <ShippingBillingCard>
-            <SubTitle>{formatMessage(messages.payment)}</SubTitle>
-            {paymentMethodInfo}
-          </ShippingBillingCard>
-        </ShippingBillingContainer>
-        {owner &&
+          </StyledText>
+          <Items>
+            {!teamStoreId && owner && !savingPdf && (
+              <TitleStyled>
+                {formatMessage(messages.items)}
+                <AddToCartButton
+                  ref={(addToCartButton: any) => {
+                    this.editOrderButton = addToCartButton
+                  }}
+                  label={formatMessage(messages.reorderAll)}
+                  renderForThumbnail={false}
+                  items={cart}
+                  {...{ formatMessage }}
+                  withoutTop={true}
+                  myLockerList={false}
+                  itemProdPage={true}
+                  orderDetails={true}
+                  onClick={() => true}
+                />
+              </TitleStyled>
+            )}
+            <CartList>{renderItemList}</CartList>
+          </Items>
+          <ShippingBillingContainer>
+            <ShippingBillingCard>
+              <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
+              <MyAddress
+                hideBottomButtons={true}
+                name={`${shippingFirstName} ${shippingLastName}`}
+                city={`${shippingCity} ${shippingStateProvince}`}
+                street={shippingStreet}
+                phone={shippingPhone}
+                zipCode={shippingZipCode}
+                country={shippingCountry}
+                apartment={shippingApartment}
+                {...{ formatMessage }}
+              />
+            </ShippingBillingCard>
+            <ShippingBillingCard>
+              <SubTitle>{formatMessage(messages.billingAddress)}</SubTitle>
+              <MyAddress
+                hideBottomButtons={true}
+                name={`${billingFirstName} ${billingLastName}`}
+                street={billingStreet}
+                city={`${billingCity} ${billingStateProvince}`}
+                zipCode={billingZipCode}
+                country={billingCountry}
+                apartment={billingApartment}
+                {...{ formatMessage }}
+              />
+            </ShippingBillingCard>
+            <ShippingBillingCard>
+              <SubTitle>{formatMessage(messages.payment)}</SubTitle>
+              {paymentMethodInfo}
+            </ShippingBillingCard>
+          </ShippingBillingContainer>
+        </DataDiv>
+        {owner && !savingPdf &&
           <AddToCartButton
             ref={(addToCartButton: any) => {
               this.editOrderButton = addToCartButton
@@ -459,7 +523,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             replaceOrder={shortId}
           />
         }
-        {(teamStoreId && owner) &&
+        {(teamStoreId && owner) && !savingPdf &&
           (status === PREORDER || canUpdatePayment) ? (
             <OrderActions>
               <ButtonWrapper>
@@ -478,7 +542,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           ) : (
             <Annotation>{formatMessage(messages.annotation)}</Annotation>
           )}
-        {!!teamStoreId &&
+        {!!teamStoreId && !savingPdf &&
           <FAQSection>
             <Title>
               {formatMessage(messages.faqTitle)}

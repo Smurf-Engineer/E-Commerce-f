@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { BLUE, GRAY_DARK, RED, WHITE } from '../../theme/colors'
+import { BLUE, GRAY_DARK, RED } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
@@ -13,7 +13,6 @@ export const Container = styled.div`
 export const Content = styled.div`
   display: flex;
   justify-content: space-between;
-  background: ${WHITE};
   @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
   }
@@ -49,12 +48,14 @@ export const DownloadInvoice = styled.div`
   border: 1px solid ${RED};
   color: ${RED};
   padding: 7px 12px;
+  text-align: center;
+  height: 33px;
   border-radius: 3px;
+  min-width: 165.38px;
   transition: all .25s;
   &:hover {
+    opacity: 0.5;
     cursor: pointer;
-    background: ${RED};
-    color: ${WHITE};
   }
 `
 
