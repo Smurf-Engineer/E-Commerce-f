@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'components.Review.shippingAddress',
     defaultMessage: 'Shipping Address'
   },
+  invoice: {
+    id: 'components.Review.invoice',
+    defaultMessage: 'Invoice'
+  },
+  paymentTerms: {
+    id: 'components.Review.paymentTerms',
+    defaultMessage: 'Payment Terms:'
+  },
   billingAddress: {
     id: 'components.Review.billingAddress',
     defaultMessage: 'Billing Address'

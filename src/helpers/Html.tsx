@@ -73,6 +73,7 @@ const Html = ({ content, state, reduxState }: Props) => (
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js" />
     <script
       type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U&libraries=places"

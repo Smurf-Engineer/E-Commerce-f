@@ -13,6 +13,7 @@ export const getOrderQuery = gql`
       netsuit_order_id
       cutoffDate: cutoff_date
       paymentMethod: payment_method
+      invoiceTerms: invoice_terms
       shippingFirstName: shipping_address_first_name
       shippingPhone: shipping_address_phone
       shippingLastName: shipping_address_last_name

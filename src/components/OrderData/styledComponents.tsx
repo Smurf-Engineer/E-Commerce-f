@@ -3,14 +3,16 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { GRAY_DARK, RED } from '../../theme/colors'
+import { BLUE, GRAY_DARK, RED } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  position: relative;
+`
 
 export const Content = styled.div`
   display: flex;
   justify-content: space-between;
-
   @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
   }
@@ -37,6 +39,28 @@ export const InfoContainer = styled.div`
 export const FAQSection = styled.div`
   text-align: center;
   margin-top: 44px;
+`
+
+export const DownloadInvoice = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 1px solid ${RED};
+  color: ${RED};
+  padding: 7px 12px;
+  text-align: center;
+  height: 33px;
+  border-radius: 3px;
+  min-width: 165.38px;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+`
+
+export const DownloadIcon = styled(Icon)`
+  margin-right: 10px;
 `
 
 export const FAQBody = styled.div`
@@ -153,4 +177,25 @@ export const StyledEmailPhoneText = styled.div`
   line-height: 23px;
   font-size: 16px;
   white-space: pre;
+`
+
+export const InvoiceDiv = styled.div`
+  margin-bottom: 40px;
+`
+
+export const InvoiceTitle = styled.div`
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-family: Avenir-Medium;
+`
+
+export const InvoiceSubtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 12px;
+`
+
+export const InvoiceIcon = styled(Icon)`
+  margin-right: 8px;
+  color: ${BLUE};
 `

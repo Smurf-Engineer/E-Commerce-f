@@ -10,7 +10,12 @@ import {
   Container,
   Title,
   ContainerMethods,
-  MethodButton
+  MethodButton,
+  InvoiceDiv,
+  InvoiceTitle,
+  InvoiceSubtitle,
+  InvoiceInformation,
+  InvoiceIcon
 } from './styledComponents'
 import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
@@ -20,7 +25,7 @@ import {
   EU_SUBSIDIARY_COUNTRIES
 } from '../../screens/Checkout/constants'
 
-const { CREDITCARD, PAYPAL } = PaymentOptions
+const { CREDITCARD, PAYPAL, INVOICE } = PaymentOptions
 
 interface Props {
   billingAddress: AddressType
@@ -41,6 +46,8 @@ interface Props {
   showBillingForm: boolean
   paymentClientSecret: string
   isFixedTeamstore: boolean
+  invoice: boolean
+  invoiceTerms: string
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -134,6 +141,11 @@ class Payment extends React.PureComponent<Props, {}> {
     setPaymentMethodAction(CREDITCARD)
   }
 
+  handleInvoiceClick = () => {
+    const { setPaymentMethodAction } = this.props
+    setPaymentMethodAction(INVOICE)
+  }
+
   render() {
     const {
       formatMessage,
@@ -151,6 +163,8 @@ class Payment extends React.PureComponent<Props, {}> {
       nextStep,
       showContent,
       showCardForm,
+      invoice,
+      invoiceTerms,
       showCardFormAction,
       selectCardToPayAction,
       selectedCard,
@@ -208,6 +222,7 @@ class Payment extends React.PureComponent<Props, {}> {
           isFixedTeamstore,
           stripe
         }}
+        isInvoice={paymentMethod === INVOICE}
         setStripeCardDataAction={this.setStripeCardData}
         selectDropdownAction={this.handleOnDropdownAction}
         inputChangeAction={this.handleOnChangeInput}
@@ -231,9 +246,23 @@ class Payment extends React.PureComponent<Props, {}> {
           >
             {formatMessage(messages.methodPaypal)}
           </MethodButton>
+          {invoice && invoiceTerms && !isFixedTeamstore &&
+            <MethodButton
+              selected={paymentMethod === INVOICE}
+              onClick={this.handleInvoiceClick}
+            >
+              {formatMessage(messages.invoice)}
+            </MethodButton>
+          }
         </ContainerMethods>
-
-        {paymentMethod === CREDITCARD && (
+        {paymentMethod === INVOICE &&
+          <InvoiceDiv>
+            <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
+            <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
+            <InvoiceInformation>{formatMessage(messages.paymentInfo)}</InvoiceInformation>
+          </InvoiceDiv>
+        }
+        {(paymentMethod === CREDITCARD || paymentMethod === INVOICE) && (
           <StripeProvider stripe={stripe}>
             <Elements>{paymentForm}</Elements>
           </StripeProvider>

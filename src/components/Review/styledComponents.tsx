@@ -3,7 +3,8 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { GRAY_DARK } from '../../theme/colors'
+import { BLUE, GRAY_DARK } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   width: 100%;
@@ -86,4 +87,25 @@ export const EditInfoButton = styled(Button)`
     background-color: #4a90e2;
     color: #fff;
   }
+`
+
+export const InvoiceDiv = styled.div`
+  margin-bottom: 40px;
+`
+
+export const InvoiceTitle = styled.div`
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-family: Avenir-Medium;
+`
+
+export const InvoiceSubtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 12px;
+`
+
+export const InvoiceIcon = styled(Icon)`
+  margin-right: 8px;
+  color: ${BLUE};
 `

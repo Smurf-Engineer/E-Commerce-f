@@ -305,6 +305,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/dom-to-image@^2.6.3":
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/@types/dom-to-image/-/dom-to-image-2.6.3.tgz#126baa1207767ad1633c01961d39b59659ed7db2"
+  integrity sha512-Al9qrndYctlJRtTmZYTFeO7JKNqfkAnBXi9lbi0jtQtHbMi4Ygd4waGwalqOw7KXjs1jtmw84A9BPCaXWO/nQw==
+
 "@types/draft-js@*":
   version "0.10.44"
   resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.44.tgz#7cd59d1cc335df31a92e86d09429ea22ce2f6a4f"
@@ -3555,6 +3560,11 @@ dom-storage@^2.0.2:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/dom-storage/-/dom-storage-2.1.0.tgz#00fb868bc9201357ea243c7bcfd3304c1e34ea39"
   integrity sha512-g6RpyWXzl0RR6OTElHKBl7nwnK87GUyZMYC7JWsB/IA73vpqK2K6LT39x4VepLxlSsWBFrPVLnsSR5Jyty0+2Q==
+
+dom-to-image@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/dom-to-image/-/dom-to-image-2.6.0.tgz#8a503608088c87b1c22f9034ae032e1898955867"
+  integrity sha1-ilA2CAiMh7HCL5A0rgMuGJiVWGc=
 
 domain-browser@^1.1.1:
   version "1.2.0"

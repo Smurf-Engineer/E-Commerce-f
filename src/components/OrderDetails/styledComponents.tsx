@@ -36,6 +36,7 @@ export const Div = styled.div`
   margin-bottom: 64px;
   margin-top: 48px;
   padding-right: 34px;
+  position: relative;
 
   @media (max-width: 768px) and (min-width: 320px) {
     align-items: center;
@@ -43,6 +44,29 @@ export const Div = styled.div`
     padding-right: 0px;
   }
 `
+
+export const DownloadInvoice = styled.div`
+  position: absolute;
+  right: 34px;
+  top: 0;
+  border: 1px solid ${RED};
+  color: ${RED};
+  padding: 7px 12px;
+  text-align: center;
+  height: 33px;
+  border-radius: 3px;
+  min-width: 165.38px;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+`
+
+export const DownloadIcon = styled(Icon)`
+  margin-right: 10px;
+`
+
 export const ScreenTitle = styled.div`
   color: #5f6062;
   font-size: 18px;
@@ -68,6 +92,9 @@ export const Button = styled(AntdButton)`
   height: 40px;
   width: 93px;
 `
+
+export const DataDiv = styled.div``
+
 export const OrderInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -306,4 +333,25 @@ export const Paragraph = styled.div`
     color: ${BLUE};
     text-decoration: underline;
   }
+`
+
+export const InvoiceDiv = styled.div`
+  margin-bottom: 40px;
+`
+
+export const InvoiceTitle = styled.div`
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-family: Avenir-Medium;
+`
+
+export const InvoiceSubtitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 12px;
+`
+
+export const InvoiceIcon = styled(Icon)`
+  margin-right: 8px;
+  color: ${BLUE};
 `

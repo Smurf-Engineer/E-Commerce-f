@@ -48,6 +48,7 @@ interface Props {
   showBillingForm: boolean
   isEuSubsidiary: boolean
   isFixedTeamstore: boolean
+  isInvoice: boolean
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -78,6 +79,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
+      isInvoice,
       cardHolderName,
       billingAddress: {
         firstName,
@@ -137,7 +139,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <div>
+        {!isInvoice && <div>
           <Title>{formatMessage(messages.methodCreditCard)}</Title>
           <MyCardsRow>
             <MyCards
@@ -186,7 +188,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
               </Column>
             </Row>
           </AnimateHeight>
-        </div>
+        </div>}
         <ContainerBilling>
           <Title>{formatMessage(messages.billingAddress)}</Title>
           <StyledCheckbox
@@ -242,6 +244,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   handleOnContinue = async (ev: any) => {
     const {
       cardHolderName,
+      isInvoice,
       billingAddress: {
         firstName,
         lastName,
@@ -277,7 +280,10 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         !city ||
         !zipCode ||
         !phone)
-
+    if (isInvoice && !emptyForm) {
+      nextStep()
+      return
+    }
     if ((!cardHolderName && !selectedCardId) || emptyForm) {
       invalidBillingFormAction(true)
       return

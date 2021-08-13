@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
+import { compose, graphql, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import sumBy from 'lodash/sumBy'
 import find from 'lodash/find'
@@ -26,7 +26,8 @@ import {
   CurrencyQuery,
   CreatePaymentIntentMutation,
   AddCardMutation,
-  isScaPaymentQuery
+  isScaPaymentQuery,
+  profileSettingsQuery
 } from './data'
 import {
   CheckoutTabs,
@@ -75,7 +76,9 @@ import {
   TaxAddressObj,
   ItemDetailType,
   CouponCode,
-  PaymentIntent
+  PaymentIntent,
+  QueryProps,
+  IProfileSettings
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData, getPriceRangeToApply } from '../../utils/utilsShoppingCart'
@@ -92,6 +95,10 @@ type ProductCart = {
   code: string
   yotpoId: string
   name: string
+}
+
+interface ProfileData extends QueryProps {
+  profileData: IProfileSettings
 }
 
 interface CartItem {
@@ -168,6 +175,7 @@ interface Props extends RouteComponentProps<any> {
   selectedCard: CreditCardData
   currentCurrency: string
   couponCode?: CouponCode
+  profileData: ProfileData
   openCurrencyWarning: boolean
   paymentClientSecret: string
   intentId: string
@@ -264,6 +272,7 @@ class Checkout extends React.Component<Props, {}> {
       billingZipCode,
       billingPhone,
       billingHasError,
+      profileData,
       cardHolderName,
       cardNumber,
       cardExpDate,
@@ -359,6 +368,9 @@ class Checkout extends React.Component<Props, {}> {
     const preorder = isFixedTeamstore && !reorder
 
     const shoppingCart = cloneDeep(cart) as CartItems[]
+
+    const invoice = get(profileData, 'profileData.userProfile.invoice', false)
+    const invoiceTerms = get(profileData, 'profileData.userProfile.invoiceTerms', false)
 
     const shoppingCartData = getShoppingCartData(
       shoppingCart,
@@ -467,6 +479,8 @@ class Checkout extends React.Component<Props, {}> {
                     setPaymentMethodAction,
                     saveCountryAction,
                     showCardForm,
+                    invoice,
+                    invoiceTerms,
                     showCardFormAction,
                     selectCardToPayAction,
                     selectedCard,
@@ -496,6 +510,7 @@ class Checkout extends React.Component<Props, {}> {
                     billingAddress,
                     cardData,
                     ibanData,
+                    invoiceTerms,
                     cardHolderName,
                     paymentMethod,
                     selectedCard
@@ -607,7 +622,7 @@ class Checkout extends React.Component<Props, {}> {
       return
     }
     if (
-      paymentMethod === PaymentOptions.CREDITCARD &&
+      (paymentMethod === PaymentOptions.CREDITCARD || paymentMethod === PaymentOptions.INVOICE) &&
       !sameBillingAndShipping &&
       billingSave
     ) {
@@ -1231,7 +1246,14 @@ const CheckoutEnhance = compose(
       ...thunkActions,
       getTotalItemsIncart
     }
-  )
+  ),
+  graphql(profileSettingsQuery, {
+    options: ({ firstName }) => ({
+      fetchPolicy: 'network-only',
+      skip: !firstName
+    }),
+    name: 'profileData',
+  }),
 )(Checkout)
 
 export default CheckoutEnhance

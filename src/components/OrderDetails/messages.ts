@@ -44,6 +44,18 @@ export default defineMessages({
     // tslint:disable-next-line: max-line-length
     defaultMessage: 'Payment issues may indicate there was a problem during the payment process. There are several reasons why this could occur including fraud protection by your card issuer, card updates, or discrepancies in transaction amounts in the case of PayPal. Please contact our customer service via our chat service, email, or phone to ensure your order moves forward into production in a timely manner.'
   },
+  invoice: {
+    id: 'components.OrderDetails.invoice',
+    defaultMessage: 'Invoice'
+  },
+  paymentTerms: {
+    id: 'components.OrderDetails.paymentTerms',
+    defaultMessage: 'Payment Terms'
+  },
+  downloadInvoice: {
+    id: 'components.OrderDetails.downloadInvoice',
+    defaultMessage: 'Download Invoice'
+  },
   orderQuestion: {
     id: 'components.OrderDetails.orderQuestion',
     defaultMessage: 'I need to make a change to my order. What can I do?'

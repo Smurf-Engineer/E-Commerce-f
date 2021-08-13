@@ -8,6 +8,7 @@ export const getOrderQuery = gql`
       orderDate: created_at
       estimatedDate: estimated_date
       paymentMethod: payment_method
+      invoiceTerms: invoice_terms
       firstName: shipping_address_first_name
       lastName: shipping_address_last_name
       apartment: shipping_address_apartment
