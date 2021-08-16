@@ -31,11 +31,11 @@ const DesignSupport = ({ formatMessage, history }: Props) => {
           {formatMessage(messages.fit)}
         </UnderlinedLink>
       </Text>
-      <Text>
+      {/* <Text>
         <UnderlinedLink {...{ history }} link="/technology">
           {formatMessage(messages.technology)}
         </UnderlinedLink>
-      </Text>
+      </Text> */}
     </Container>
   )
 }
