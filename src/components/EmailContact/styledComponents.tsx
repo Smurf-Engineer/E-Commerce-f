@@ -56,6 +56,7 @@ export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   margin-top: 15px;
   text-align: right;
+  align-items: center;
 
   .ant-btn-primary {
     background-color: #4a90e2;
