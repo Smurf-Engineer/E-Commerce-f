@@ -336,19 +336,18 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                             <FormattedMessage {...messages.share} />
                           </Button>
                         </ButtonWrapper>
-                        {teamStoreOwner && !closed ? (
+                        {teamStoreOwner && !closed &&
                           <ButtonWrapper>
                             <Button type="primary" onClick={this.handleOnPressEdit}>
                               <FormattedMessage {...messages.edit} />
                             </Button>
                           </ButtonWrapper>
-                        ) : (
-                            !closed && (
-                              <DefaultButton onClick={this.handlContactClick}>
-                                <FormattedMessage {...messages.contactManager} />
-                              </DefaultButton>
-                            )
-                          )}
+                        }
+                        {!teamStoreOwner && 
+                          <DefaultButton onClick={this.handlContactClick}>
+                            <FormattedMessage {...messages.contactManager} />
+                          </DefaultButton>
+                        }
                       </ButtonsContainer>
                       <AssistanceDiv>
                         <FormattedMessage {...messages.needAssistance} />
