@@ -21,7 +21,8 @@ import { QueryProps, AddressType } from '../../types/common'
 import messages from './messages'
 import { addAddressMutation, updateAddressMutation } from './data'
 import { GetAddressListQuery } from '../MyAddressesList/data'
-import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
+import { isPoBox, isApoCity, isValidCity, isNumberValue, isValidZip } from '../../utils/utilsAddressValidation'
+import message from 'antd/lib/message'
 
 interface Data extends QueryProps {
   addresses: AddressType[]
@@ -243,6 +244,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       phone,
       defaultBilling,
       defaultShipping,
+      formatMessage,
       setModalLoadingAction,
       resetReducerDataAction,
       validFormAction
@@ -260,6 +262,16 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       !phone ||
       isPoBox(street) ||
       isApoCity(city)
+
+    if (!isValidCity(city) || isNumberValue(city)) {
+      message.error(formatMessage(messages.invalidCity))
+      return
+    }
+
+    if (!isValidZip(zipCode)) {
+      message.error(formatMessage(messages.invalidZip))
+      return
+    }
 
     if (error) {
       validFormAction(error)

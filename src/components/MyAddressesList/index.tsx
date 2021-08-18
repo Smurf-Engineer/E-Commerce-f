@@ -156,7 +156,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
           addressIndex={key}
           name={`${firstName} ${lastName}`}
           street={street}
-          city={`${city} ${stateProvince}`}
+          city={`${city}, ${stateProvince}`}
           zipCode={zipCode}
           country={country}
           apartment={listForMyAccount ? apartment : undefined}
