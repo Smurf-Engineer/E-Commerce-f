@@ -41,7 +41,7 @@ import {
   STEP_PAYMENT
 } from './constants'
 
-import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
+import { isPoBox, isApoCity, isValidCity, isValidZip, isNumberValue } from '../../utils/utilsAddressValidation'
 
 import {
   Container,
@@ -673,6 +673,16 @@ class Checkout extends React.Component<Props, {}> {
       !phone ||
       isPoBox(street) ||
       isApoCity(city)
+
+    if (!isValidCity(city) || isNumberValue(city)) {
+      message.error(formatMessage(messages.invalidCity))
+      return
+    }
+
+    if (!isValidZip(zipCode)) {
+      message.error(formatMessage(messages.invalidZip))
+      return
+    }
     
     if (phone && phone.length < PHONE_MINIMUM) {
       message.error(formatMessage(messages.phoneError))

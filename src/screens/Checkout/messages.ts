@@ -69,5 +69,13 @@ export default defineMessages({
   paymentError: {
     id: 'screens.Checkout.paymentError',
     defaultMessage: 'You cannot use this credit card. Please check with your credit card company for details.'
+  },
+  invalidCity: {
+    id: 'screens.Checkout.invalidCity',
+    defaultMessage: 'Enter a valid city name'
+  },
+  invalidZip: {
+    id: 'screens.Checkout.invalidZip',
+    defaultMessage: 'Enter a valid ZIP Code'
   }
 })

@@ -28,5 +28,13 @@ export default defineMessages({
   saveAddress: {
     id: 'components.MyAddresses.saveAddress',
     defaultMessage: 'Save'
+  },
+  invalidCity: {
+    id: 'components.MyAddresses.invalidCity',
+    defaultMessage: 'Enter a valid city name'
+  },
+  invalidZip: {
+    id: 'components.MyAddresses.invalidZip',
+    defaultMessage: 'Enter a valid ZIP Code'
   }
 })

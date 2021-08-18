@@ -339,7 +339,7 @@ class OrderData extends React.Component<Props, {}> {
                 <MyAddress
                   hideBottomButtons={true}
                   name={`${firstName} ${lastName}`}
-                  city={`${city} ${stateProvince}`}
+                  city={`${city}, ${stateProvince}`}
                   {...{ street, zipCode, country, apartment, phone, formatMessage }}
                 />
               </div>
@@ -349,7 +349,7 @@ class OrderData extends React.Component<Props, {}> {
                   hideBottomButtons={true}
                   name={`${billingFirstName} ${billingLastName}`}
                   street={billingStreet}
-                  city={`${billingCity} ${billingStateProvince}`}
+                  city={`${billingCity}, ${billingStateProvince}`}
                   zipCode={billingZipCode}
                   country={billingCountry}
                   apartment={billingApartment}

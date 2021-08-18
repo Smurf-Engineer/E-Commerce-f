@@ -30,7 +30,7 @@ const AddressData = ({ address, formatMessage }: Props) => {
         showSecondaryButtons={true}
         name={`${addressFirstName} ${addressLastName}`}
         street={street}
-        city={`${city} ${stateProvince}`}
+        city={`${city}, ${stateProvince}`}
         zipCode={zipCode}
         country={country}
         apartment={apartment}
