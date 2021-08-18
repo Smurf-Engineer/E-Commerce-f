@@ -475,7 +475,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               <MyAddress
                 hideBottomButtons={true}
                 name={`${shippingFirstName} ${shippingLastName}`}
-                city={`${shippingCity} ${shippingStateProvince}`}
+                city={`${shippingCity}, ${shippingStateProvince}`}
                 street={shippingStreet}
                 phone={shippingPhone}
                 zipCode={shippingZipCode}
@@ -490,7 +490,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 hideBottomButtons={true}
                 name={`${billingFirstName} ${billingLastName}`}
                 street={billingStreet}
-                city={`${billingCity} ${billingStateProvince}`}
+                city={`${billingCity}, ${billingStateProvince}`}
                 zipCode={billingZipCode}
                 country={billingCountry}
                 apartment={billingApartment}

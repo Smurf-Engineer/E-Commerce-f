@@ -148,7 +148,7 @@ class Review extends React.PureComponent<Props, {}> {
             <MyAddress
               hideBottomButtons={true}
               name={`${firstName} ${lastName}`}
-              city={`${city} ${stateProvince}`}
+              city={`${city}, ${stateProvince}`}
               {...{ street, zipCode, country, phone, formatMessage, apartment }}
             />
             <EditInfoButton onClick={this.handleOnGoToStepOne}>
@@ -165,7 +165,7 @@ class Review extends React.PureComponent<Props, {}> {
                     hideBottomButtons={true}
                     name={`${billingFirstName} ${billingLastName}`}
                     street={billingStreet}
-                    city={`${billingCity} ${billingStateProvince}`}
+                    city={`${billingCity}, ${billingStateProvince}`}
                     zipCode={billingZipCode}
                     country={billingCountry.toUpperCase()}
                     apartment={billingApartment}

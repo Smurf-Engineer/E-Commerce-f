@@ -201,7 +201,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
             <MyAddress
               {...{ street, zipCode, country, formatMessage }}
               name={`${firstName} ${lastName}`}
-              city={`${city} ${stateProvince}`}
+              city={`${city}, ${stateProvince}`}
               addressIndex={-1}
               hideBottomButtons={true}
             />
