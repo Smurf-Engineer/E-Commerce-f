@@ -55,6 +55,7 @@ export class CountrySelect extends React.Component<Props, {}> {
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}
           showSearch={true}
+          autoComplete="jv2"
           loading={loading}
           optionFilterProp="name"
           filterOption={true}

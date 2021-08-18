@@ -151,6 +151,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             </InputTitleContainer>
             <StyledInput
               id="firstName"
+              autoComplete="jv2"
               value={firstName}
               onChange={this.handleInputChange}
               maxLength={50}
@@ -166,6 +167,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             </InputTitleContainer>
             <StyledInput
               id="lastName"
+              autoComplete="jv2"
               value={lastName}
               onChange={this.handleInputChange}
               maxLength={50}
@@ -185,12 +187,14 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               </ShipTopPoAPO>
             </InputTitleContainer>
             <StreetInputContainer
+              autoComplete="jv2"
               dataSource={addressDataSourceMap}
               onSelect={this.handleAddressSelect}
               onSearch={this.handleAddressLookup}
               value={street}
             >
               <StreetInput
+                autoComplete="jv2"
                 placeholder={formatMessage(messages.streetAddressLabel)}
               />
             </StreetInputContainer>
@@ -204,6 +208,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             )}
             <StyledInput
               id="apartment"
+              autoComplete="jv2"
               placeholder={formatMessage(messages.apartmentSuiteLabel)}
               value={apartment}
               onChange={this.handleInputChange}
@@ -260,6 +265,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             <StyledCityInput
               id="city"
               value={city}
+              autoComplete="jv2"
               onChange={this.handleInputChange}
               maxLength={100}
             />
@@ -277,6 +283,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             <StyledInput
               id="zipCode"
               value={zipCode}
+              autoComplete="jv2"
               onChange={this.handleInputChange}
               maxLength={20}
             />
@@ -292,6 +299,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             <PhoneInput
               country={'us'}
               value={phone}
+              autoComplete="jv2"
               onChange={value => {
                 this.handleInputChange({ currentTarget: { id: 'phone', value } })
               }}

@@ -73,6 +73,7 @@ export class RegionSelect extends React.Component<Props, {}> {
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}
           showSearch={true}
+          autoComplete="jv2"
           optionFilterProp="children"
           filterOption={this.handleFilter}
         >
