@@ -74,6 +74,7 @@ interface Props {
   zipCode: string
   phone: string
   hasError: boolean
+  isCard: boolean
   formatMessage: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
@@ -124,6 +125,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       zipCode,
       phone,
       hasError,
+      isCard = false,
       formatMessage
     } = this.props
 
@@ -201,7 +203,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             {!street && hasError && (
               <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
             )}
-            {this.hasAddressError(street, city) && hasError && (
+            {this.hasAddressError(street, city, isCard) && hasError && (
               <ErrorMsg>
                 {formatMessage(messages.requiredAddressLabel)}
               </ErrorMsg>
@@ -315,8 +317,8 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     )
   }
 
-  hasAddressError = (street: string, city: string) => {
-    return isPoBox(street) || isApoCity(city)
+  hasAddressError = (street: string, city: string, isCard: boolean) => {
+    return (isPoBox(street) && !isCard) || isApoCity(city)
   }
 
   handleCountryChange = (
