@@ -31,6 +31,10 @@ export default defineMessages({
     id: 'screens.Checkout.errorSavingCart',
     defaultMessage: 'Error trying to save card information'
   },
+  shipTopPoApoLabel: {
+    id: 'components.Checkout.shipTopPoApoLabel',
+    defaultMessage: 'We do not ship to APO and PO Boxes'
+  },
   areYouSure: {
     id: 'screens.Checkout.areYouSure',
     defaultMessage: 'ARE YOU SURE?'

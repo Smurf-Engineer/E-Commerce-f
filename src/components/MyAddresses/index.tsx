@@ -260,7 +260,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       !city ||
       !zipCode ||
       !phone ||
-      isPoBox(street) ||
+      (isPoBox(street) && defaultShipping) ||
       isApoCity(city)
 
     if (!isValidCity(city) || isNumberValue(city)) {

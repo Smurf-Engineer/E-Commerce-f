@@ -673,6 +673,10 @@ class Checkout extends React.Component<Props, {}> {
       !phone ||
       isPoBox(street) ||
       isApoCity(city)
+    
+    if (isPoBox(street)) {
+      message.error(formatMessage(messages.shipTopPoApoLabel))
+    }
 
     if (!isValidCity(city) || isNumberValue(city)) {
       message.error(formatMessage(messages.invalidCity))

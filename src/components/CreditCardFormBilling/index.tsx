@@ -225,6 +225,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 inputChangeAction,
                 formatMessage
               }}
+              isCard={true}
             />
           </AnimateHeight>
         </ContainerBilling>
