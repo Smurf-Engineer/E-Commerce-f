@@ -56,6 +56,7 @@ export const getProDesignProject = gql`
         name
         fileUrl: file_url
         type
+        blurScore: blur_score
       }
       user {
         name: first_name

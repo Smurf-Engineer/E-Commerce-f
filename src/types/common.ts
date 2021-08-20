@@ -1352,6 +1352,7 @@ export interface ImageFile {
   }
   type: string
   name?: string
+  blurScore: string
 }
 
 export type MessagePayload = {
