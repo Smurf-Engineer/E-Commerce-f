@@ -538,6 +538,7 @@ class Checkout extends React.Component<Props, {}> {
                 onPaypalError={this.onPaypalError}
                 upgrades={upgradesTotal}
                 variables={variablesTotal}
+                placingOrder={loadingPlaceOrder || paymentIntentLoading}
                 onPlaceOrder={this.handleOnPlaceOrder}
                 {...{
                   showOrderButton,
@@ -768,31 +769,34 @@ class Checkout extends React.Component<Props, {}> {
       client: { query },
       billingCountry,
       currentCurrency,
+      loadingPlaceOrder,
+      setLoadingPlaceOrderAction,
       intl: { formatMessage }
     } = this.props
-
-    const { data } = await query({
-      query: CurrencyQuery,
-      variables: { countryCode: billingCountry },
-      fetchPolicy: 'network-only'
-    })
-    const selectedCurrency = currentCurrency || config.defaultCurrency
-
-    if (data && data.currency) {
-      if (data.currency.toLowerCase() !== selectedCurrency) {
-        confirm({
-          icon: ' ',
-          okText: formatMessage(messages.confirm),
-          title: formatMessage(messages.correctCurrency, {
-            currentCurrency: selectedCurrency.toUpperCase()
-          }),
-          okButtonProps: { style: okButtonStyles },
-          onOk: () => {
-            this.confirmOrder(false, sca)
-          }
-        })
-      } else {
-        this.confirmOrder(false, sca)
+    if (!loadingPlaceOrder) {
+      setLoadingPlaceOrderAction(true)
+      const { data } = await query({
+        query: CurrencyQuery,
+        variables: { countryCode: billingCountry },
+        fetchPolicy: 'network-only'
+      })
+      const selectedCurrency = currentCurrency || config.defaultCurrency
+      if (data && data.currency) {
+        if (data.currency.toLowerCase() !== selectedCurrency) {
+          confirm({
+            icon: ' ',
+            okText: formatMessage(messages.confirm),
+            title: formatMessage(messages.correctCurrency, {
+              currentCurrency: selectedCurrency.toUpperCase()
+            }),
+            okButtonProps: { style: okButtonStyles },
+            onOk: () => {
+              this.confirmOrder(false, sca)
+            }
+          })
+        } else {
+          this.confirmOrder(false, sca)
+        }
       }
     }
   }
@@ -989,6 +993,7 @@ class Checkout extends React.Component<Props, {}> {
       if (orderTotal > 20) {
         Message.loading(formatMessage(messages.warningQuantity), 14)
       }
+
       const orderObj = await this.getOrderObject(paypalObj, sca)
       const response = await placeOrder({
         variables: { orderObj }
