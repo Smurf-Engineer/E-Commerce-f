@@ -18,6 +18,7 @@ import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import * as checkoutActions from './actions'
 import * as thunkActions from './thunkActions'
+import invoiceAnimation from '../../assets/invoiceanimation.gif'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import {
@@ -60,7 +61,11 @@ import {
   InfoText,
   CheckList,
   CheckLabel,
-  CheckGreen
+  CheckGreen,
+  InfoDescription,
+  InvoiceAnimation,
+  StyledSpin,
+  InfoBatch
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -89,6 +94,8 @@ import { DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
 import Spin from 'antd/lib/spin'
 import { message } from 'antd'
 import some from 'lodash/some'
+
+const { info } = Modal
 
 type ProductCart = {
   id: number
@@ -750,6 +757,7 @@ class Checkout extends React.Component<Props, {}> {
       payment: payment.paymentID,
       payer: payment.payerID
     }
+    this.validateLargeStore()
     this.placeOrder(undefined, obj)
   }
 
@@ -774,6 +782,7 @@ class Checkout extends React.Component<Props, {}> {
       intl: { formatMessage }
     } = this.props
     if (!loadingPlaceOrder) {
+      this.validateLargeStore()
       setLoadingPlaceOrderAction(true)
       const { data } = await query({
         query: CurrencyQuery,
@@ -965,35 +974,55 @@ class Checkout extends React.Component<Props, {}> {
     }
     return STRIPE
   }
+  validateLargeStore = () => {
+    const {
+      location,
+      intl: {
+        formatMessage
+      },
+    } = this.props
+    const {
+      state: { cart }
+    } = location
+    const orderTotal = cart.reduce((sum: number, { isFixed, totalOrder = 0 }: CartItems) => {
+      if (isFixed) {
+        sum += totalOrder
+      }
+      return sum
+    // tslint:disable-next-line: align
+    }, 0)
+    if (orderTotal > 20) {
+      info({
+        icon: ' ',
+        width: '580px',
+        centered: true,
+        okButtonProps: {
+          style: { display: 'none'}
+        },
+        content:
+          <InfoBatch>
+            <InvoiceAnimation src={invoiceAnimation} />
+            <InfoDescription
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(messages.batchInfo)
+              }}
+            />
+            <StyledSpin size="large" />
+          </InfoBatch>
+      })
+    }
+  }
   placeOrder = async (event: any, paypalObj?: object, sca?: boolean) => {
     const {
       placeOrder,
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       stripeToken,
-      location,
-      intl: {
-        formatMessage
-      },
       paymentClientSecret
     } = this.props
 
     try {
       setLoadingPlaceOrderAction(true)
-      const {
-        state: { cart }
-      } = location
-      const orderTotal = cart.reduce((sum: number, { isFixed, totalOrder = 0 }: CartItems) => {
-        if (isFixed) {
-          sum += totalOrder
-        }
-        return sum
-      // tslint:disable-next-line: align
-      }, 0)
-      if (orderTotal > 20) {
-        Message.loading(formatMessage(messages.warningQuantity), 14)
-      }
-
       const orderObj = await this.getOrderObject(paypalObj, sca)
       const response = await placeOrder({
         variables: { orderObj }
