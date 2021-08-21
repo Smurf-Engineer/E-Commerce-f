@@ -58,6 +58,11 @@ export default defineMessages({
     the order enters production.</p>
     <p>Prior to placing your order, please be sure to double check the following:</p>`
   },
+  batchInfo: {
+    id: 'screens.Checkout.batchInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Your order has been submitted and is processing. <br /> This may take a few moments due to the quantity of orders being processed. <br /> Your order will show in your <strong>Order History</strong> within a few minutes.'
+  },
   shippingBilling: {
     id: 'screens.Checkout.shippingBilling',
     defaultMessage: 'Shipping and Billing Address'

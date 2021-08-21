@@ -14,6 +14,7 @@ import { Container } from './styledComponents'
 import OrderDataContent from '../../components/OrderData'
 import Layout from '../../components/MainLayout'
 import config from '../../config/index'
+import Modal from 'antd/lib/modal'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -26,6 +27,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class OrderPlaced extends React.Component<Props, {}> {
+  componentDidMount() {
+    Modal.destroyAll()
+  }
   render() {
     const {
       intl,
