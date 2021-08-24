@@ -6,6 +6,7 @@ import config from '../../config/index'
 import get from 'lodash/get'
 import { uploadFileSuccessAction, setUploadingAction } from './actions'
 import { DesignSaved, CartItemDetail } from '../../types/common'
+import { mesaureImageQuality } from '../../utils/utilsImage/utilsImage'
 
 export const uploadFileAction = (file: any) => {
   return async (dispatch: any) => {
@@ -16,6 +17,10 @@ export const uploadFileAction = (file: any) => {
       const formData = new FormData()
 
       formData.append('file', file)
+      try {
+        const blurScore = await mesaureImageQuality(file)
+        formData.append('blurScore', blurScore as string)
+      } catch (e) { }
 
       const response = await fetch(`${config.graphqlUriBase}upload/file`, {
         method: 'POST',
@@ -32,7 +37,7 @@ export const uploadFileAction = (file: any) => {
         const error = await response.text()
         throw error
       }
-      
+
     } catch (e) {
       dispatch(setUploadingAction(false))
       message.error(e)
