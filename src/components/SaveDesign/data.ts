@@ -147,3 +147,13 @@ export const saveDesignChanges = graphql(
     name: 'saveDesignAs'
   }
 )
+
+export const userfilesQuery = gql`
+  query GetUserFiles {
+    userFiles: getUserFiles {
+      id
+      type
+      lowQuality: low_quality
+    }
+  }
+`

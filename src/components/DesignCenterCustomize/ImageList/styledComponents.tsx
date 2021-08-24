@@ -129,6 +129,6 @@ export const Apply = styled(AntdButton)``
 export const LowQualityIcon = styled.img`
   position: absolute;
   width: 40px;
-  left: 49px;
-  top: 7px;
+  left:52px;
+  top: 4px;
 `

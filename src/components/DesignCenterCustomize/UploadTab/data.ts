@@ -14,8 +14,7 @@ export const userfilesQuery = gql`
         width
         height
       }
-      blurScore: blur_score
-      blurThreshold: blur_threshold
+      lowQuality: low_quality
     }
   }
 `

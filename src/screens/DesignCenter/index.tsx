@@ -363,7 +363,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       return null
     }
     if (window && window.screen) {
-      const { width } = window.screen
+      const { width } = window.screen
       const isPhoneRes = width < TABLET_RES
       const isTabletRes = width >= TABLET_RES && width <= DESKTOP_RES
       const isDesktopRes = width > DESKTOP_RES
@@ -713,7 +713,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = DesignTabs
     const { phone, tablet, desktop } = responsiveValues
     const responsive = {
-      phone: phone || isPhoneRes,
+      phone: phone || isPhoneRes,
       tablet: tablet || isTabletRes,
       desktop: desktop || isDesktopRes
     }
@@ -978,131 +978,131 @@ export class DesignCenter extends React.Component<Props, {}> {
             {loadingData ? (
               loadingView
             ) : (
-                <CustomizeTab
-                  {...{
-                    colorBlock,
-                    colorBlockHovered,
-                    colors,
-                    videos,
-                    loadingModel,
-                    swipingView,
-                    styleColors,
-                    paletteName,
-                    palettes,
-                    text,
-                    productName,
-                    canvas,
-                    selectedElement,
-                    selectVariantAction,
-                    selectedVariant,
-                    variants,
-                    selectedPredyed,
-                    textFormat,
-                    artFormat,
-                    proAssistId,
-                    openPaletteModalAction,
-                    myPaletteModals,
-                    openResetDesignModal,
-                    openResetDesignModalAction,
-                    openResetPlaceholderModalAction,
-                    designName,
-                    formatMessage,
-                    customize3dMounted,
-                    setCustomize3dMountedAction,
-                    loadingData,
-                    currentStyle,
-                    undoChanges,
-                    redoChanges,
-                    showGuidelines,
-                    setPredyedColor,
-                    setStitchingColorAction,
-                    stitchingColor,
-                    bindingColor,
-                    zipperColor,
-                    bibColor,
-                    images,
-                    uploadingFile,
-                    searchClipParam,
-                    setSearchClipParamAction,
-                    designHasChanges,
-                    isUserAuthenticated,
-                    isEditing,
-                    originalPaths,
-                    selectedItem,
-                    openLoginModalAction,
-                    isMobile,
-                    responsive,
-                    handleOnCloseInfo,
-                    infoModalOpen,
-                    selectedTab,
-                    colorsList,
-                    setVideos,
-                    placeholders,
-                    openResetPlaceholderModal,
-                    colorChartSending,
-                    colorChartModalOpen,
-                    colorChartModalFormOpen,
-                    tutorialPlaylist,
-                    loggedUserId,
-                    userCode
-                  }}
-                  designId={get(dataDesign, 'designData.shortId', '')}
-                  userEmail={email}
-                  name={firstName}
-                  lastName={lastName}
-                  callbackToSave={get(layout, 'callback', false)}
-                  saveAndBuy={get(layout, 'saveAndBuy', false)}
-                  fonts={get(layout, 'fonts', {})}
-                  handleOnSaveAndBuy={handleOnSaveAndBuy}
-                  handleOnGoBack={this.handleOnGoBack}
-                  onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
-                  product={productConfig}
-                  onUploadFile={uploadFileAction}
-                  onAccessoryColorSelected={setAccessoryColorAction}
-                  currentTab={tabSelected}
-                  design={designObject}
-                  onUpdateText={setTextAction}
-                  undoEnabled={undoChanges.length > 0}
-                  redoEnabled={redoChanges.length > 0}
-                  onSelectColorBlock={setColorBlockAction}
-                  onHoverColorBlock={setHoverColorBlockAction}
-                  onSelectColor={this.setColorEvent}
-                  onSelectPalette={setPaletteAction}
-                  onChangePaletteName={setPaletteNameAction}
-                  onSetPalettes={setPalettesAction}
-                  onLoadModel={setLoadingModel}
-                  onUndoAction={designUndoAction}
-                  onRedoAction={designRedoAction}
-                  onResetAction={designResetAction}
-                  onClearAction={designClearAction}
-                  onClickGuides={this.handleClickGuides}
-                  onPressQuickView={this.handleOpenQuickView}
-                  onOpenSaveDesign={openSaveDesignAction}
-                  onApplyCanvasEl={setCanvasElement}
-                  onSelectEl={setSelectedElement}
-                  onRemoveEl={removeCanvasElement}
-                  onSelectTextFormat={this.setTextEvent}
-                  onSelectArtFormat={setArtFormatAction}
-                  onUnmountTab={setCanvasJsonAction}
-                  onCanvasElementResized={onCanvasElementResizedAction}
-                  onCanvasElementDragged={onCanvasElementDraggedAction}
-                  onCanvasElementRotated={onCanvasElementRotatedAction}
-                  onCanvasElementTextChanged={onCanvasElementTextChangedAction}
-                  onReApplyImageEl={onReApplyImageElementAction}
-                  onSetEditConfig={setEditConfigAction}
-                  onSetCanvasObject={setLoadedCanvasAction}
-                  onResetEditing={onResetEditingAction}
-                  onSelectedItem={this.setSelectedItemEvent}
-                  onTabClick={onTabClickAction}
-                  onLockElement={onLockElementAction}
-                  onRequestColorChart={this.sendColorChartRequest}
-                  onCloseColorChart={this.handleOnCloseColorChart}
-                  onCloseColorChartForm={this.handleOnCloseColorChartForm}
-                  onOpenFormChart={this.handleOnOpenFormChart}
-                  onOpenColorChart={this.handleOnOpenColorChart}
-                  openDesignCheckModal={openDesignCheckModalAction}
-                />
-              )}
+              <CustomizeTab
+                {...{
+                  colorBlock,
+                  colorBlockHovered,
+                  colors,
+                  videos,
+                  loadingModel,
+                  swipingView,
+                  styleColors,
+                  paletteName,
+                  palettes,
+                  text,
+                  productName,
+                  canvas,
+                  selectedElement,
+                  selectVariantAction,
+                  selectedVariant,
+                  variants,
+                  selectedPredyed,
+                  textFormat,
+                  artFormat,
+                  proAssistId,
+                  openPaletteModalAction,
+                  myPaletteModals,
+                  openResetDesignModal,
+                  openResetDesignModalAction,
+                  openResetPlaceholderModalAction,
+                  designName,
+                  formatMessage,
+                  customize3dMounted,
+                  setCustomize3dMountedAction,
+                  loadingData,
+                  currentStyle,
+                  undoChanges,
+                  redoChanges,
+                  showGuidelines,
+                  setPredyedColor,
+                  setStitchingColorAction,
+                  stitchingColor,
+                  bindingColor,
+                  zipperColor,
+                  bibColor,
+                  images,
+                  uploadingFile,
+                  searchClipParam,
+                  setSearchClipParamAction,
+                  designHasChanges,
+                  isUserAuthenticated,
+                  isEditing,
+                  originalPaths,
+                  selectedItem,
+                  openLoginModalAction,
+                  isMobile,
+                  responsive,
+                  handleOnCloseInfo,
+                  infoModalOpen,
+                  selectedTab,
+                  colorsList,
+                  setVideos,
+                  placeholders,
+                  openResetPlaceholderModal,
+                  colorChartSending,
+                  colorChartModalOpen,
+                  colorChartModalFormOpen,
+                  tutorialPlaylist,
+                  loggedUserId,
+                  userCode
+                }}
+                designId={get(dataDesign, 'designData.shortId', '')}
+                userEmail={email}
+                name={firstName}
+                lastName={lastName}
+                callbackToSave={get(layout, 'callback', false)}
+                saveAndBuy={get(layout, 'saveAndBuy', false)}
+                fonts={get(layout, 'fonts', {})}
+                handleOnSaveAndBuy={handleOnSaveAndBuy}
+                handleOnGoBack={this.handleOnGoBack}
+                onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
+                product={productConfig}
+                onUploadFile={uploadFileAction}
+                onAccessoryColorSelected={setAccessoryColorAction}
+                currentTab={tabSelected}
+                design={designObject}
+                onUpdateText={setTextAction}
+                undoEnabled={undoChanges.length > 0}
+                redoEnabled={redoChanges.length > 0}
+                onSelectColorBlock={setColorBlockAction}
+                onHoverColorBlock={setHoverColorBlockAction}
+                onSelectColor={this.setColorEvent}
+                onSelectPalette={setPaletteAction}
+                onChangePaletteName={setPaletteNameAction}
+                onSetPalettes={setPalettesAction}
+                onLoadModel={setLoadingModel}
+                onUndoAction={designUndoAction}
+                onRedoAction={designRedoAction}
+                onResetAction={designResetAction}
+                onClearAction={designClearAction}
+                onClickGuides={this.handleClickGuides}
+                onPressQuickView={this.handleOpenQuickView}
+                onOpenSaveDesign={openSaveDesignAction}
+                onApplyCanvasEl={setCanvasElement}
+                onSelectEl={setSelectedElement}
+                onRemoveEl={removeCanvasElement}
+                onSelectTextFormat={this.setTextEvent}
+                onSelectArtFormat={setArtFormatAction}
+                onUnmountTab={setCanvasJsonAction}
+                onCanvasElementResized={onCanvasElementResizedAction}
+                onCanvasElementDragged={onCanvasElementDraggedAction}
+                onCanvasElementRotated={onCanvasElementRotatedAction}
+                onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+                onReApplyImageEl={onReApplyImageElementAction}
+                onSetEditConfig={setEditConfigAction}
+                onSetCanvasObject={setLoadedCanvasAction}
+                onResetEditing={onResetEditingAction}
+                onSelectedItem={this.setSelectedItemEvent}
+                onTabClick={onTabClickAction}
+                onLockElement={onLockElementAction}
+                onRequestColorChart={this.sendColorChartRequest}
+                onCloseColorChart={this.handleOnCloseColorChart}
+                onCloseColorChartForm={this.handleOnCloseColorChartForm}
+                onOpenFormChart={this.handleOnOpenFormChart}
+                onOpenColorChart={this.handleOnOpenColorChart}
+                openDesignCheckModal={openDesignCheckModalAction}
+              />
+            )}
             {!isMobile ? (
               <PreviewTab
                 {...{
@@ -1143,8 +1143,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 addItemToStore={this.saveItemToStore}
               />
             ) : (
-                <div />
-              )}
+              <div />
+            )}
           </SwipeableViews>
           <SaveDesign
             {...{
@@ -1205,21 +1205,21 @@ export class DesignCenter extends React.Component<Props, {}> {
               </SwipeableBottomSheet>
             </BottomSheetWrapper>
           ) : (
-              <div />
-            )}
+            <div />
+          )}
           {tabSelected === CustomizeTabIndex &&
             !loadingData &&
             isMobile &&
             !swipingView &&
             !loadingModel ? (
-              <MobileDesignCenterInspiration
-                styleId={currentStyle.id}
-                open={openBottomSheet}
-                setPaletteAction={this.setPaletteEvent}
-                {...{ formatMessage }}
-                hideList={this.toggleBottomSheet}
-              />
-            ) : null}
+            <MobileDesignCenterInspiration
+              styleId={currentStyle.id}
+              open={openBottomSheet}
+              setPaletteAction={this.setPaletteEvent}
+              {...{ formatMessage }}
+              hideList={this.toggleBottomSheet}
+            />
+          ) : null}
         </Container>
         <DesignCheckModal
           handleGetPro={this.handleGetPro}

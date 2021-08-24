@@ -219,6 +219,7 @@ export const ImageLeft = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `
 
 export const ArrowIcon = styled.img`
@@ -289,3 +290,10 @@ export const buttonStyle = {
   background: BLUE,
   border: 'none',
 }
+
+export const LowQualityIcon = styled.img`
+  position: absolute;
+  width: 40px;
+  right: 0px;
+  top: 0px;
+`

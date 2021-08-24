@@ -7,6 +7,7 @@ export const Container = styled.div`
   width: 220px;
   display: flex;
   flex-direction: column;
+  position: relative;
   @media (min-width: 388px) and (max-width: 467px) {
     width: 180px;
   }
@@ -60,4 +61,11 @@ export const Delete = styled.div`
   letter-spacing: 0.1px;
   line-height: 23px;
   cursor: pointer;
+`
+
+export const LowQualityIcon = styled.img`
+  position: absolute;
+  width: 50px;
+  right: 5px;
+  top: 5px;
 `
