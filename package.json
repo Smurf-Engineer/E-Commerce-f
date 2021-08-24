@@ -58,7 +58,7 @@
     "apollo-link-ws": "^1.0.7",
     "apollo-upload-client": "^8.0.0",
     "babel-plugin-styled-components": "^1.5.0",
-    "canvas": "^2.8.0",
+    "canvas": "2.3.1",
     "definitely-typed": "git+https://github.com/fertech/DefinitelyTyped.git",
     "dom-to-image": "^2.6.0",
     "draftjs-to-html": "^0.9.1",
