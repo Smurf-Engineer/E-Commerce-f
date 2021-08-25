@@ -34,6 +34,14 @@ export const Subtitle = styled.div`
   max-width: 590px;
 `
 
+export const SubTopDiv = styled.div`
+  margin-bottom: 10px;
+  @media (max-width: 748px) {
+    margin-bottom: 20px;
+    max-width: 250px;
+  }
+`
+
 export const TopNavHeader = styled.div`
   width: 100%;
   padding: 20px;
@@ -42,6 +50,17 @@ export const TopNavHeader = styled.div`
   text-align: center;
   flex-direction: column;
   align-items: center;
+  animation: fade-in-top 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-top {
+    0% {
+      transform: translateY(-4px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `
 
 export const ModalTitle = styled.div`

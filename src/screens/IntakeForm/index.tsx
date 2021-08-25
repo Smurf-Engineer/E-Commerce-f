@@ -61,7 +61,8 @@ import {
   RasterContent,
   BottomText,
   ModalIcon,
-  InfoText
+  InfoText,
+  SubTopDiv
 } from './styledComponents'
 import {
   Responsive,
@@ -977,10 +978,15 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       {formatMessage(messages[currentSubtitleTips])}
     </Subtitle>) : null
 
+    const subTop = titleTexts[currentScreen].subTopText || ''
+
+    const subTopLabel = subTop ? <SubTopDiv>{formatMessage(messages[subTop])}</SubTopDiv> : null
+
     const showModal = (isTablet || isMobile) && currentScreen === Sections.INSPIRATION
 
     const topNavHeader = showTopNav ?
       <TopNavHeader>
+        {subTopLabel}
         {navTitle}
         {showModal ?
           <ModalIcon onClick={this.showInspirationModal} theme="filled" type="question-circle" /> :
