@@ -29,7 +29,7 @@ export default defineMessages({
   },
   designPathway: {
     id: 'screens.IntakeForm.designPathway',
-    defaultMessage: 'Design Path'
+    defaultMessage: 'Design Options'
   },
   subTopPathWay: {
     id: 'screens.IntakeForm.subTopPathWay',
@@ -105,7 +105,7 @@ export default defineMessages({
   },
   designPathwayBody: {
     id: 'screens.IntakeForm.designPathwayBody',
-    defaultMessage: 'Select ideal pathway to continue with your project'
+    defaultMessage: 'Select the best option to start your Design Project'
   },
   inspiration: {
     id: 'screens.IntakeForm.inspiration',

@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import { GRAY_DARK, RED, GRAY_LIGHT, GRAY_LIGHTEST, BLACK , WHITE } from '../../../theme/colors'
 
+interface DivProps {
+  index?: number
+}
+
 export const Container = styled.div`
   width: 100%;
 `
@@ -50,8 +54,19 @@ export const Card = styled.div`
   border: 1px solid ${GRAY_LIGHT};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   position: relative;
-  display: flex;
   justify-content: space-between;
+  animation: scale-in-center 0.15s cubic-bezier(0.250, 0.460, 0.450, 0.940) 
+    ${({ index }: DivProps) => `${index ? (index * 0.15) : '1'}s`} both;
+  @keyframes scale-in-center {
+    0% {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
 `
 
 export const CardTitle = styled.div`
