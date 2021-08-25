@@ -115,7 +115,7 @@ export class StartDesignModal extends React.Component<Props, {}> {
         withLogo={false}
         width={'100%'}
         requestClose={onClose}
-        style={{ maxWidth: '1200px' }}
+        style={{ maxWidth: '888px', padding: '0 18px' }}
         wrapClassName={isMobile && 'transparent-modal'}
         withCross={!isMobile}
         maskStyle={isMobile && { background: 'rgba(0,0,0,0.9)' }}
