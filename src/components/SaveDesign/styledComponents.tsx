@@ -5,14 +5,24 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Spin from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
-import { BLUE, BLUE_SHADOW } from '../../theme/colors'
+import {
+  BLUE,
+  BLUE_SHADOW,
+  GRAY_DARK,
+  GRAY_LIGHT,
+  DARKER_GRAY,
+  RED_TRANSPARENT,
+  WHITE,
+  WHITE_BG
+} from '../../theme/colors'
+import { AVENIR_NEXT } from '../../theme/fonts'
 
 export const Container = styled.div``
 
 export const Title = styled.div`
   height: 27px;
   width: 210px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
@@ -21,7 +31,7 @@ export const Title = styled.div`
 export const Text = styled.span`
   height: 42px;
   width: 303.78px;
-  color: #8c8c8c;
+  color: ${DARKER_GRAY};
   font-size: 14px;
   line-height: 21px;
   margin-top: 10px;
@@ -94,7 +104,7 @@ export const InputWrapper = styled.div`
 export const SpinWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: ${WHITE_BG};
   position: absolute;
   left: 0;
   top: 0;
@@ -107,3 +117,34 @@ export const StyledSpin = styled(Spin)`
   right: 0;
   top: 35%;
 `
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 12px 0 12px -38px;
+`
+export const buttonStyle = {
+  background: RED_TRANSPARENT,
+  color: WHITE,
+  border: 'none',
+  boxShadow: 'none'
+}
+
+export const cancelButtonStyle = {
+  background: WHITE,
+  color: GRAY_DARK,
+  borderColor: GRAY_LIGHT,
+  boxShadow: 'none'
+}
