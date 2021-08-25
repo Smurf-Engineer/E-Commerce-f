@@ -54,13 +54,15 @@ import {
   InfoBody,
   WarningIcon,
   SizeTitle,
-  SizeBody
+  SizeBody,
+  LowQualityIcon
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 import PositionResize from '../PositionResize'
 import orderBy from 'lodash/orderBy'
 import Draggable from '../../Draggable'
 import { getSizeInCentimeters } from '../../../utils/utilsFiles'
+import LowQualityFlag from '../../../assets/warning_flag.png'
 
 const { confirm, warning } = Modal
 
@@ -182,7 +184,11 @@ class UploadTab extends React.PureComponent<Props, State> {
         onSelectImage={this.beforeUpload}
       />
     )
-    const layersArray = Object.keys(elements).map((id: string) => elements[id])
+    const layersArray = Object.keys(elements).map((id: string) => {
+      const imageOrigin = imagesData.find((image) => image.id === elements[id].fileId)
+      elements[id].lowQuality = imageOrigin ? imageOrigin.lowQuality : false
+      return elements[id]
+    })
     const arrayElements = orderBy(layersArray, ['index'], ['desc'])
     return (
       <Container>
@@ -204,68 +210,69 @@ class UploadTab extends React.PureComponent<Props, State> {
         {selectedElement ? (
           <PositionResize {...{ activeEl }} handleChange={onPositionChange} />
         ) : (
-            <LowerContainer>
-              {addImage ? (
-                <>
-                  <ImageList
-                    onClickImage={this.handleOnAddImage}
-                    images={imagesData}
-                    onClickDelete={this.handleOnDelete}
-                    currentSelected={selectedItem}
-                    {...{ formatMessage }}
-                  />
-                  <DraggerBottom>{dragger}</DraggerBottom>
-                  <Recommendation color={RED}>
-                    <FormattedMessage {...messages.recommendationTitle} />
-                  </Recommendation>
-                  <Recommendation>
-                    <FormattedMessage {...messages.recommendationMessage} />
-                  </Recommendation>
-                </>
-              ) : (
-                  <>
-                    <AddTextButton onClick={this.addImage}>
-                      {formatMessage(messages.uploadFile)}
-                    </AddTextButton>
-                    <LayersText>{formatMessage(messages.uploadLayers)}</LayersText>
-                    <ImageLayers>
-                      {arrayElements.length ? (
-                        arrayElements.map(({ id, src }, index: number) => (
-                          <Draggable
-                            {...{ id, index }}
-                            index={id}
-                            key={index}
-                            section="imageLayers"
-                            onDropRow={this.handleMoveLayer}
-                          >
-                            <Layer
-                              {...{ id }}
-                              onMouseEnter={this.hoverLayer}
-                              onMouseLeave={this.blurLayer}
-                            >
-                              <DragIcon src={dragDropIcon} />
-                              <ImageLeft>
-                                <ImageClip {...{ src }} />
-                              </ImageLeft>
-                              <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
-                                {formatMessage(messages.delete)}
-                              </DeleteLayer>
-                              <EditLayer {...{ id }} onClick={this.onSelectLayer}>
-                                {formatMessage(messages.edit)}
-                              </EditLayer>
-                            </Layer>
-                          </Draggable>
-                        ))
-                      ) : (
-                          <EmptyElements>
-                            {formatMessage(messages.empty)}
-                          </EmptyElements>
-                        )}
-                    </ImageLayers>
-                  </>
-                )}
-            </LowerContainer>
-          )}
+          <LowerContainer>
+            {addImage ? (
+              <>
+                <ImageList
+                  onClickImage={this.handleOnAddImage}
+                  images={imagesData}
+                  onClickDelete={this.handleOnDelete}
+                  currentSelected={selectedItem}
+                  {...{ formatMessage }}
+                />
+                <DraggerBottom>{dragger}</DraggerBottom>
+                <Recommendation color={RED}>
+                  <FormattedMessage {...messages.recommendationTitle} />
+                </Recommendation>
+                <Recommendation>
+                  <FormattedMessage {...messages.recommendationMessage} />
+                </Recommendation>
+              </>
+            ) : (
+              <>
+                <AddTextButton onClick={this.addImage}>
+                  {formatMessage(messages.uploadFile)}
+                </AddTextButton>
+                <LayersText>{formatMessage(messages.uploadLayers)}</LayersText>
+                <ImageLayers>
+                  {arrayElements.length ? (
+                    arrayElements.map(({ id, src, lowQuality }, index: number) => (
+                      <Draggable
+                        {...{ id, index }}
+                        index={id}
+                        key={index}
+                        section="imageLayers"
+                        onDropRow={this.handleMoveLayer}
+                      >
+                        <Layer
+                          {...{ id }}
+                          onMouseEnter={this.hoverLayer}
+                          onMouseLeave={this.blurLayer}
+                        >
+                          <DragIcon src={dragDropIcon} />
+                          <ImageLeft>
+                            {lowQuality && <LowQualityIcon src={LowQualityFlag} />}
+                            <ImageClip {...{ src }} />
+                          </ImageLeft>
+                          <DeleteLayer {...{ id }} onClick={this.onDeleteLayer}>
+                            {formatMessage(messages.delete)}
+                          </DeleteLayer>
+                          <EditLayer {...{ id }} onClick={this.onSelectLayer}>
+                            {formatMessage(messages.edit)}
+                          </EditLayer>
+                        </Layer>
+                      </Draggable>
+                    ))
+                  ) : (
+                    <EmptyElements>
+                      {formatMessage(messages.empty)}
+                    </EmptyElements>
+                  )}
+                </ImageLayers>
+              </>
+            )}
+          </LowerContainer>
+        )}
       </Container>
     )
   }
@@ -372,7 +379,7 @@ class UploadTab extends React.PureComponent<Props, State> {
         const objectUrl = URL.createObjectURL(file)
         img.onload = async () => {
           const width = getSizeInCentimeters(img.width)
-          const height = getSizeInCentimeters(img.height) 
+          const height = getSizeInCentimeters(img.height)
           if (width <= MAX_CM && height <= MAX_CM) {
             onUploadFile(file)
           } else {
@@ -383,15 +390,15 @@ class UploadTab extends React.PureComponent<Props, State> {
               okButtonProps: {
                 style: buttonStyle
               },
-              content: 
-                <SizeBody 
-                  dangerouslySetInnerHTML={{__html: formatMessage(messages.sizeBody, { width, height })}}
+              content:
+                <SizeBody
+                  dangerouslySetInnerHTML={{ __html: formatMessage(messages.sizeBody, { width, height }) }}
                 />
             })
           }
           URL.revokeObjectURL(objectUrl)
         }
-        img.src = objectUrl 
+        img.src = objectUrl
       }
     }
     return false

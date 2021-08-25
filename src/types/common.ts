@@ -1076,6 +1076,7 @@ export interface CanvasElement {
   src?: string
   canvasPath?: string
   lock: boolean
+  lowQuality?: boolean
 }
 
 export interface SelectedAsset {
@@ -1352,6 +1353,7 @@ export interface ImageFile {
   }
   type: string
   name?: string
+  lowQuality?: boolean
 }
 
 export type MessagePayload = {

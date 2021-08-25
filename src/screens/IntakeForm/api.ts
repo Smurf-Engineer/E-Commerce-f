@@ -1,15 +1,16 @@
 import message from 'antd/lib/message'
 import config from '../../config/index'
 import { setUploadingFileAction, setFileAction } from './actions'
-import { SELECTED_FILES } from './constants'
+import { SELECTED_FILES } from './constants'
 
-export const uploadFileAction = (file: File) => {
+export const uploadFileAction = (file: File, blurScore: number) => {
   return async (dispatch: any) => {
     try {
       dispatch(setUploadingFileAction(true))
       const user = JSON.parse(localStorage.getItem('user') || '')
       const formData = new FormData()
       formData.append('file', file)
+      formData.append('blurScore', blurScore.toString())
       const response = await fetch(`${config.graphqlUriBase}upload/proDesignFile`, {
         method: 'POST',
         headers: {

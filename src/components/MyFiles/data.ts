@@ -9,6 +9,7 @@ export const imagesQuery = gql`
     images: getUserFiles {
       id
       fileUrl
+      lowQuality: low_quality
     }
   }
 `

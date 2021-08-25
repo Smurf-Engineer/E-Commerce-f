@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
 import Checkbox from 'antd/lib/checkbox'
@@ -30,15 +30,20 @@ import {
   Message,
   Colors,
   QueryProps,
-  Color
+  Color,
+  ImageFile
 } from '../../types/common'
 import { NEW_DESIGN_SAVED } from '../../constants'
-import { saveDesignName, saveDesignChanges } from './data'
+import { saveDesignName, saveDesignChanges, userfilesQuery } from './data'
 import { getDesignQuery } from '../../screens/DesignCenter/data'
 import { BLUE, GRAY_DISABLE } from '../../theme/colors'
 import get from 'lodash/get'
 
 const FLUORESCENT_COLOR = 'fluorescent'
+
+interface ImageData extends QueryProps {
+  userFiles: ImageFile[]
+}
 
 type DesignInput = {
   name?: string
@@ -56,6 +61,7 @@ type DesignInput = {
   designFiles?: DesignFiles
   canvas_files?: string
   high_resolution?: boolean
+  quality_warning?: boolean
 }
 
 interface Data {
@@ -70,6 +76,7 @@ interface ColorsData extends QueryProps {
 
 interface Props {
   productId: string
+  data: ImageData
   open: boolean
   designName: string
   colorsList: ColorsData
@@ -171,7 +178,8 @@ export class SaveDesign extends React.Component<Props, State> {
       savedDesignId,
       goToCustomProductPage,
       isMobile,
-      productMpn
+      productMpn,
+      data: imageData
     } = this.props
     const { automaticSave } = this.state
     if (!designName && !automaticSave) {
@@ -193,10 +201,10 @@ export class SaveDesign extends React.Component<Props, State> {
       }
     }
     const objectColors = objects.reduce((arr, item) => {
-      const { fill, stroke } = item || {}
+      const { fill, stroke } = item || {}
       arr.push(fill, stroke)
       return arr
-    // tslint:disable-next-line: align
+      // tslint:disable-next-line: align
     }, [])
     let arrayColors: Color[] = []
     let hasFluorescent = false
@@ -204,7 +212,7 @@ export class SaveDesign extends React.Component<Props, State> {
       try {
         const colorListResult = get(colorsList, 'colorsResult.colors', [])
         arrayColors = JSON.parse(colorListResult)
-        hasFluorescent = arrayColors.some(({ type, value }: Color) => 
+        hasFluorescent = arrayColors.some(({ type, value }: Color) =>
           (colors.includes(value) || objectColors.includes(value)) &&
           type === FLUORESCENT_COLOR
         )
@@ -212,6 +220,13 @@ export class SaveDesign extends React.Component<Props, State> {
         message.error(e)
       }
     }
+    let qualityWarning = false
+    const { userFiles } = imageData
+    userFiles.forEach(userFile => {
+      if (!qualityWarning) {
+        qualityWarning = !!userFile.lowQuality
+      }
+    })
     try {
       const finalDesignName = designName || productMpn
       const designObj: DesignInput = {
@@ -221,7 +236,8 @@ export class SaveDesign extends React.Component<Props, State> {
         styleId,
         canvas: canvasJson,
         hasFluorescent,
-        high_resolution: highResolution === void 0 ? true : highResolution
+        high_resolution: highResolution === void 0 ? true : highResolution,
+        quality_warning: qualityWarning
       }
 
       /* Accessory colors */
@@ -297,7 +313,8 @@ export class SaveDesign extends React.Component<Props, State> {
       bindingColor,
       bibColor,
       afterSaveDesign,
-      isEditing
+      isEditing,
+      data: imageData
     } = this.props
     const { designBase64, canvasJson, styleId } = design
     let arrayColors: Color[] = []
@@ -306,20 +323,28 @@ export class SaveDesign extends React.Component<Props, State> {
       try {
         const colorListResult = get(colorsList, 'colorsResult.colors', [])
         arrayColors = JSON.parse(colorListResult)
-        hasFluorescent = arrayColors.some(({ type, value }: Color) => 
+        hasFluorescent = arrayColors.some(({ type, value }: Color) =>
           colors.includes(value) && type === FLUORESCENT_COLOR
         )
       } catch (e) {
         message.error(e)
       }
     }
+    let qualityWarning = false
+    const { userFiles } = imageData
+    userFiles.forEach(userFile => {
+      if (!qualityWarning) {
+        qualityWarning = !!userFile.lowQuality
+      }
+    })
     const designObj: DesignInput = {
       name: '',
       product_id: productId,
       image: designBase64,
       hasFluorescent,
       canvas: canvasJson,
-      styleId
+      styleId,
+      quality_warning: qualityWarning
     }
     try {
       /* Accessory colors  */
@@ -425,8 +450,8 @@ export class SaveDesign extends React.Component<Props, State> {
               {!isMobile ? (
                 <FormattedMessage {...messages.modalTitle} />
               ) : (
-                  <FormattedMessage {...messages.mobileModalTitle} />
-                )}
+                <FormattedMessage {...messages.mobileModalTitle} />
+              )}
             </Title>
             {!!savedDesignId ? (
               <StyledSaveAs>
@@ -435,10 +460,10 @@ export class SaveDesign extends React.Component<Props, State> {
                 </Text>
               </StyledSaveAs>
             ) : (
-                <Text>
-                  <FormattedMessage {...messages.modalText} />
-                </Text>
-              )}
+              <Text>
+                <FormattedMessage {...messages.modalText} />
+              </Text>
+            )}
             <InputWrapper>
               <StyledInput
                 id="saveDesignName"
@@ -481,10 +506,10 @@ export class SaveDesign extends React.Component<Props, State> {
             </ButtonWrapper>
           </Modal>
         ) : (
-            <SpinWrapper>
-              <StyledSpin tip={formatMessage(messages.saving)} />
-            </SpinWrapper>
-          )}
+          <SpinWrapper>
+            <StyledSpin tip={formatMessage(messages.saving)} />
+          </SpinWrapper>
+        )}
       </Container>
     )
   }
@@ -492,6 +517,12 @@ export class SaveDesign extends React.Component<Props, State> {
 
 const SaveDesignEnhance = compose(
   saveDesignName,
-  saveDesignChanges
+  saveDesignChanges,
+  graphql<ImageData, Props>(userfilesQuery, {
+    options: ({ isUserAuthenticated }) => ({
+      skip: !isUserAuthenticated,
+      notifyOnNetworkStatusChange: true
+    })
+  })
 )(SaveDesign)
 export default SaveDesignEnhance

@@ -14,6 +14,7 @@ export const userfilesQuery = gql`
         width
         height
       }
+      lowQuality: low_quality
     }
   }
 `

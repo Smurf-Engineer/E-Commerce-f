@@ -1001,9 +1001,12 @@ class Render3D extends PureComponent {
     if (canvas && this.canvasTexture) {
       const objects = this.canvasTexture.getObjects() || []
       objects.forEach((obj, index) => {
-        const { type, id } = obj
+        const { type, id, fileId = '' } = obj
         if (canvas[type] && canvas[type][id]) {
           canvas[type][id].index = index
+          if (type === 'image') {
+            canvas[type][id].fileId = fileId
+          }
         }
       })
     }

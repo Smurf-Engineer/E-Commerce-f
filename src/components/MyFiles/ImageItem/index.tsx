@@ -3,8 +3,9 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { Container, Image, Bottom, Name, Delete } from './styledComponents'
+import { Container, Image, Bottom, Name, Delete, LowQualityIcon } from './styledComponents'
 import { ImageFile } from '../../../types/common'
+import LowQualityFlag from '../../../assets/warning_flag.png'
 
 interface Props {
   image: ImageFile
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const ImageItem = ({
-  image: { id, fileUrl },
+  image: { id, fileUrl, lowQuality },
   formatMessage,
   onClickDelete
 }: Props) => {
@@ -22,6 +23,7 @@ const ImageItem = ({
   const name = completeName && completeName.split('-').pop()
   return (
     <Container>
+      {lowQuality && <LowQualityIcon src={LowQualityFlag} />}
       <Image src={fileUrl} />
       <Bottom>
         <Name>{name || completeName}</Name>

@@ -15,9 +15,11 @@ import {
   Apply,
   Footer,
   Buttons,
-  ButtonWrapper
+  ButtonWrapper,
+  LowQualityIcon
 } from './styledComponents'
 import messages from './messages'
+import LowQualityFlag from '../../../assets/warning_flag.png'
 
 const vectorImages = [
   'application/postscript',
@@ -53,7 +55,7 @@ class ImageList extends React.PureComponent<Props, {}> {
   render() {
     const { images, currentSelected, formatMessage } = this.props
     const imageList = images.map((file, index) => {
-      const { id, fileUrl, size, type } = file
+      const { id, fileUrl, size, type, lowQuality } = file
       const isVectorImage = vectorImages.includes(type)
       const name = getFileName(fileUrl)
       let width = 0
@@ -64,6 +66,7 @@ class ImageList extends React.PureComponent<Props, {}> {
       }
       return (
         <Row key={index} selected={currentSelected === id}>
+          {lowQuality && <LowQualityIcon src={LowQualityFlag} />}
           <Image src={fileUrl} />
           <Info>
             <div>

@@ -38,6 +38,7 @@ export const Row = styled.div`
   display: flex;
   flex: 1;
   padding: 4px;
+  position: relative;
 `
 
 export const Col = styled.li`
@@ -124,3 +125,10 @@ export const ButtonWrapper = styled.div`
 `
 
 export const Apply = styled(AntdButton)``
+
+export const LowQualityIcon = styled.img`
+  position: absolute;
+  width: 40px;
+  left:52px;
+  top: 4px;
+`

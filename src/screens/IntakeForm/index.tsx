@@ -166,7 +166,7 @@ interface Props extends RouteComponentProps<any> {
   setInspirationDataAction: (data: InspirationType[], fullCount: number, reset: boolean) => void
   setInspirationLoadingAction: (loading: boolean) => void
   selectPaletteAction: (primaryColor: string, accentColors: string[], index: number) => void
-  uploadFileAction: (file: File) => void
+  uploadFileAction: (file: File, blurScore: number) => void
   openUserLockerAction: (open: boolean) => void
   openLoginAction: (open: boolean, callback?: boolean) => void
   setFileAction: (file: ImageFile, listName: string) => void
@@ -766,7 +766,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     let scrollCoords = 0
     const quantities = selectedItems.reduce((sum, product) => sum + product.quantity, 0)
     const queryParams = queryString.parse(search)
-    const { id: projectId } = queryParams || {}
+    const { id: projectId } = queryParams || {}
     switch (currentScreen) {
       case Sections.PRODUCTS:
         if (quantities > 3 || selectedItems.length < 1) {
