@@ -89,6 +89,7 @@ export const titleTexts = {
   {
     title: 'designPathway',
     body: 'designPathwayBody',
+    subTopText: 'subTopPathWay',
     bodyWithTip: '',
     action: false,
     tipTitle: '',

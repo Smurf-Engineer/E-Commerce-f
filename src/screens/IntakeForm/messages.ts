@@ -29,7 +29,11 @@ export default defineMessages({
   },
   designPathway: {
     id: 'screens.IntakeForm.designPathway',
-    defaultMessage: 'Design Path '
+    defaultMessage: 'Design Path'
+  },
+  subTopPathWay: {
+    id: 'screens.IntakeForm.subTopPathWay',
+    defaultMessage: 'ProDesign includes a free initial design + 2 free edits per product.'
   },
   addToProject: {
     id: 'screens.IntakeForm.addToProject',

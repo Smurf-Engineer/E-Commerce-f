@@ -34,6 +34,14 @@ export const Subtitle = styled.div`
   max-width: 590px;
 `
 
+export const SubTopDiv = styled.div`
+  margin-bottom: 10px;
+  @media (max-width: 748px) {
+    margin-bottom: 20px;
+    max-width: 250px;
+  }
+`
+
 export const TopNavHeader = styled.div`
   width: 100%;
   padding: 20px;
