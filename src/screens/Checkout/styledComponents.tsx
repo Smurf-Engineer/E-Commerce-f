@@ -6,6 +6,7 @@ import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import { BLUE, WHITE, GRAY_DARK, BLACK_SHADOW, GREEN } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
+import Spin from 'antd/lib/spin'
 
 export const Container = styled.div`
   padding: 40px 32px;
@@ -162,6 +163,37 @@ export const ModalTitle = styled.div`
   font-weight: bold;
   letter-spacing: 0.25px;
   line-height: 27px;
+`
+
+export const InfoBatch = styled.div`
+  display: flex;
+  flex-flow: column;
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 30px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+`
+
+export const StyledSpin = styled(Spin)`
+  margin-top: 34px;
+  margin-bottom: -28px;
+`
+
+export const InfoDescription = styled.div`
+  text-align: center;
+  font-size: 14px;
+`
+
+export const InvoiceAnimation = styled.img`
+  max-width: 230px;
+  width: 100%;
+  object-fit: contain;
 `
 
 export const InfoBody = styled.div`

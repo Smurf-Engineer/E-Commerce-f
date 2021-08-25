@@ -31,6 +31,10 @@ export default defineMessages({
     id: 'screens.Checkout.errorSavingCart',
     defaultMessage: 'Error trying to save card information'
   },
+  shipTopPoApoLabel: {
+    id: 'components.Checkout.shipTopPoApoLabel',
+    defaultMessage: 'We do not ship to APO and PO Boxes'
+  },
   areYouSure: {
     id: 'screens.Checkout.areYouSure',
     defaultMessage: 'ARE YOU SURE?'
@@ -53,6 +57,11 @@ export default defineMessages({
     stage immediately upon receipt. All orders are custom made to order and <b>cannot be changed</b> once
     the order enters production.</p>
     <p>Prior to placing your order, please be sure to double check the following:</p>`
+  },
+  batchInfo: {
+    id: 'screens.Checkout.batchInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Your order has been submitted and is processing. <br /> This may take a few moments due to the quantity of orders being processed. <br /> Your order will show in your <strong>Order History</strong> within a few minutes.'
   },
   shippingBilling: {
     id: 'screens.Checkout.shippingBilling',

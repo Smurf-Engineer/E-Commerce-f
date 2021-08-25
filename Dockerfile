@@ -48,6 +48,20 @@ WORKDIR /app
 # if there are changes in package.json
 ADD package.json yarn.lock  /app/
 
+RUN apk add --no-cache \
+    sudo \
+    curl \
+    build-base \
+    g++ \
+    libpng \
+    libpng-dev \
+    jpeg-dev \
+    pango-dev \
+    cairo-dev \
+    giflib-dev \
+    python \
+    ;
+
 # --Don�t generate a yarn.lock lockfile
 RUN yarn --pure-lockfile
 
