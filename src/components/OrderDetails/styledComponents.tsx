@@ -6,6 +6,10 @@ import AntdButton from 'antd/lib/button'
 import { RED, BLUE, GRAY_DARK, RED_TRANSPARENT_LIGHT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
+interface DivProps {
+  savingPdf?: boolean
+}
+
 export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -61,6 +65,10 @@ export const DownloadInvoice = styled.div`
     opacity: 0.5;
     cursor: pointer;
   }
+  @media (max-width: 768px) {
+    right: 0;
+    top: 0;
+  }
 `
 
 export const DownloadIcon = styled(Icon)`
@@ -103,7 +111,8 @@ export const OrderInfo = styled.div`
   flex-direction: row;
 
   @media (max-width: 658px) and (min-width: 320px) {
-    display: block;
+    display: ${({ savingPdf }: DivProps) => savingPdf ? 'flex' : 'block'};
+    margin-top: ${({ savingPdf }: DivProps) => savingPdf ? '0' : '42px'};
     padding-right: 0px;
   }
 `
@@ -140,10 +149,13 @@ export const DeliveryLabels = styled.div`
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
-  width: 202px;
+  width: ${({ savingPdf }: DivProps) => savingPdf ? '300px' : '202px'};
 `
 export const DeliveryLabel = styled.div`
   margin-bottom: 12px;
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
 `
 export const DeliveryData = styled.div`
   color: #5f6062;
@@ -156,18 +168,23 @@ export const DeliveryData = styled.div`
 
   @media (max-width: 963px) and (min-width: 320px) {
     margin-left: 9%;
-    width: 100px;
+    width: 160px;
   }
 `
 
 interface InfoProps {
   redColor?: boolean
+  savingPdf?: boolean
 }
 
 export const Info = styled.div`
-  color: ${({ redColor }: InfoProps) => (redColor ? RED : GRAY_DARK)};
+  color: ${({ redColor }: InfoProps) => redColor ? RED : GRAY_DARK};
   height: 22px;
   margin-bottom: 12px;
+  @media (max-width: 768px) {
+    text-align: ${({ savingPdf }: InfoProps) => savingPdf ? 'left' : 'right'};
+    margin-bottom: 16px;
+  }
 `
 export const OrderSummaryContainer = styled.div`
   width: 25%;
@@ -177,8 +194,8 @@ export const OrderSummaryContainer = styled.div`
   }
 
   @media (max-width: 658px) and (min-width: 320px) {
-    margin-top: 50px;
-    width: 100%;
+    margin-top: ${({ savingPdf }: DivProps) => savingPdf ? '0' : '50px'};;
+    width: ${({ savingPdf }: DivProps) => savingPdf ? '30%' : '100%'};
   }
 `
 export const Items = styled.div`
@@ -354,4 +371,15 @@ export const InvoiceSubtitle = styled.div`
 export const InvoiceIcon = styled(Icon)`
   margin-right: 8px;
   color: ${BLUE};
+`
+
+export const SavingContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  background: #ffffffc9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 29;
 `

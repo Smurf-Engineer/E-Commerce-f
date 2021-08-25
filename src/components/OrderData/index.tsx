@@ -28,7 +28,9 @@ import {
   InvoiceSubtitle,
   InvoiceIcon,
   DownloadInvoice,
-  DownloadIcon
+  DownloadIcon,
+  StyledInfoText,
+  SavingContainer
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -121,7 +123,10 @@ class OrderData extends React.Component<Props, {}> {
     if (!savingPdf) {
       this.setState({ savingPdf: true })
       const element = ReactDOM.findDOMNode(this.copyInput) as HTMLElement
-      element.style.fontFamily = 'Avenir'
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+      element.style.fontFamily = isSafari ? 'Avenir-Medium' : 'Avenir'
+      element.style.width = '1280px'
+      element.style.flexWrap = 'nowrap'
       if (!this.html2pdf) {
         this.html2pdf = new window.jsPDF('p', 'cm', 'letter')
       }
@@ -145,6 +150,9 @@ class OrderData extends React.Component<Props, {}> {
       }
       this.html2pdf.save(`invoice-${orderId}.pdf`)    
       this.setState({ savingPdf: false })
+      element.style.fontFamily = 'unset'
+      element.style.flexWrap = 'wrap'
+      element.style.width = 'auto'
     }
   }
   toggleProductInfo = (id: string) => {
@@ -283,6 +291,7 @@ class OrderData extends React.Component<Props, {}> {
     return (
       <Container>
         <Title>{title}</Title>
+        {savingPdf && <SavingContainer><Spin size="large" /></SavingContainer>}
         {paymentMethod === PaymentOptions.INVOICE &&
           <DownloadInvoice onClick={this.downloadInvoice}>
             {savingPdf ? 
@@ -294,45 +303,49 @@ class OrderData extends React.Component<Props, {}> {
             }
           </DownloadInvoice>
         }
-        <Content ref={content => (this.copyInput = content)}>
-          <InfoContainer>
-            <OrderNumberContainer>
+        <Content
+          {...{ savingPdf }}
+          invoice={paymentMethod === PaymentOptions.INVOICE}
+          ref={content => (this.copyInput = content)}
+        >
+          <InfoContainer {...{ savingPdf }}>
+            <OrderNumberContainer {...{ savingPdf }}>
               <TitleStyled>{formatMessage(messages.orderPoint)}</TitleStyled>
               <StyledText>
                 {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
               </StyledText>
             </OrderNumberContainer>
-            <OrderNumberContainer>
+            <OrderNumberContainer {...{ savingPdf }}>
               <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
               <StyledText>{orderId}</StyledText>
             </OrderNumberContainer>
-            <OrderNumberContainer>
+            <OrderNumberContainer {...{ savingPdf }}>
               <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
               <StyledText>{orderDate}</StyledText>
             </OrderNumberContainer>
             {paymentMethod === PaymentOptions.INVOICE && invoiceTerms &&
-              <OrderNumberContainer>
+              <OrderNumberContainer {...{ savingPdf }}>
                 <TitleStyled>{formatMessage(messages.paymentTerms)}</TitleStyled>
                 <StyledText>{invoiceTerms}</StyledText>
               </OrderNumberContainer>
             }
-            <OrderNumberContainer>
+            <OrderNumberContainer {...{ savingPdf }}>
               <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
               <StyledText>{estimatedDate}</StyledText>
             </OrderNumberContainer>
-            <OrderNumberContainer>
+            <OrderNumberContainer {...{ savingPdf }}>
               <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
               <StyledText redColor={status === PAYMENT_ISSUE}>
                 {status}
               </StyledText>
             </OrderNumberContainer>
-            <StyledText>
+            <StyledInfoText>
               <FormattedHTMLMessage
                 {...messages[
                 teamStoreId ? 'messageTeamstore' : 'messageRetail'
                 ]}
               />
-            </StyledText>
+            </StyledInfoText>
             <ShippingBillingContainer>
               <div>
                 <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
@@ -394,7 +407,7 @@ class OrderData extends React.Component<Props, {}> {
               </div>
               ) : null */}
           </InfoContainer>
-          <SummaryContainer>
+          <SummaryContainer {...{ savingPdf }}>
             <OrderSummary
               totalSum={total}
               shippingTotal={shippingAmount}
