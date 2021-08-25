@@ -48,6 +48,13 @@ WORKDIR /app
 # if there are changes in package.json
 ADD package.json yarn.lock  /app/
 
+RUN apk add --no-cache --virtual .gyp \
+        python \
+        make \
+        g++ \
+    && npm install \
+    && apk del .gyp
+
 # --Don�t generate a yarn.lock lockfile
 RUN yarn --pure-lockfile
 
