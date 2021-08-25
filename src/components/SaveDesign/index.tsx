@@ -19,7 +19,11 @@ import {
   CheckWrapper,
   InputWrapper,
   SpinWrapper,
-  StyledSpin
+  StyledSpin,
+  ModalTitle,
+  InfoBody,
+  cancelButtonStyle,
+  buttonStyle,
 } from './styledComponents'
 import {
   SaveDesignType,
@@ -38,6 +42,7 @@ import { saveDesignName, saveDesignChanges, userfilesQuery } from './data'
 import { getDesignQuery } from '../../screens/DesignCenter/data'
 import { BLUE, GRAY_DISABLE } from '../../theme/colors'
 import get from 'lodash/get'
+const { confirm } = Modal
 
 const FLUORESCENT_COLOR = 'fluorescent'
 
@@ -291,7 +296,7 @@ export class SaveDesign extends React.Component<Props, State> {
     }
   }
 
-  handleSaveChanges = async (evt: React.MouseEvent<EventTarget>) => {
+  handleSaveChanges = async () => {
     const {
       colors,
       productId,
@@ -413,6 +418,32 @@ export class SaveDesign extends React.Component<Props, State> {
     }
   }
 
+  promptQuality = (isNewSave: boolean) => (evt: React.MouseEvent<EventTarget>) => {
+    const { formatMessage } = this.props
+
+    confirm({
+      title: <ModalTitle>{formatMessage(messages.imageQuality)}</ModalTitle>,
+      icon: ' ',
+      centered: true,
+      cancelText: formatMessage(messages.no),
+      okText: formatMessage(messages.yes),
+      cancelButtonProps: {
+        style: cancelButtonStyle
+      },
+      okButtonProps: {
+        style: buttonStyle
+      },
+      onOk: () => {
+        if (isNewSave) {
+          this.handleSaveName()
+        } else {
+          this.handleSaveChanges()
+        }
+      },
+      content: <InfoBody>{formatMessage(messages.lowQualityImageMessage)}</InfoBody>
+    })
+  }
+
   toggleChecked = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { setCheckedTerms } = this.props
     const { checked } = evt.target
@@ -485,7 +516,7 @@ export class SaveDesign extends React.Component<Props, State> {
                 <Button
                   type="ghost"
                   disabled={!checkedTerms || saveDesignLoading}
-                  onClick={this.handleSaveChanges}
+                  onClick={this.promptQuality(false)}
                   loading={saveDesignChangesLoading}
                 >
                   {formatMessage(messages.saveChanges)}
@@ -496,7 +527,7 @@ export class SaveDesign extends React.Component<Props, State> {
               <Button
                 type="primary"
                 disabled={disabledSaveButton}
-                onClick={this.handleSaveName}
+                onClick={this.promptQuality(true)}
                 loading={saveDesignLoading}
               >
                 {savedDesignId !== ''

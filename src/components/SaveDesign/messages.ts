@@ -58,5 +58,21 @@ export default defineMessages({
     id: 'components.SaveDesign.saving',
     defaultMessage:
       'Saving your design'
+  },
+  imageQuality: {
+    id: 'components.SaveDesign.imageQuality',
+    defaultMessage: 'Image Quality Warning'
+  },
+  yes: {
+    id: 'components.SaveDesign.yes',
+    defaultMessage: 'Yes'
+  },
+  no: {
+    id: 'components.SaveDesign.no',
+    defaultMessage: 'No'
+  },
+  lowQualityImageMessage: {
+    id: 'components.SaveDesign.lowQualityImageMessage',
+    defaultMessage: 'This design has low quality image, are you sure you want to save the design?'
   }
 })

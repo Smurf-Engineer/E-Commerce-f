@@ -5,6 +5,7 @@
 export const WHITE = '#FFFFFF'
 export const WHITE_SMOKE = '#F5F5F5'
 export const WHITE_TRANSPARENT = '#FFFFFF96'
+export const WHITE_BG = 'rgba(255, 255, 255, 0.8)'
 export const BLACK = '#000000'
 export const ALMOST_BLACK = '#232323'
 export const BLACK_SHADOW = 'rgba(0, 0, 0, 0.25)'
