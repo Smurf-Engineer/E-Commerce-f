@@ -6,6 +6,11 @@ import Checkbox from 'antd/lib/checkbox'
 import { BLUE, GRAY_DARK, RED } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
+interface DivProps {
+  invoice?: boolean
+  savingPdf?: boolean
+}
+
 export const Container = styled.div`
   position: relative;
 `
@@ -15,6 +20,7 @@ export const Content = styled.div`
   justify-content: space-between;
   @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
+    margin-top: ${({ invoice, savingPdf }: DivProps) => invoice && !savingPdf ? '78px' : 'auto'};
   }
 `
 
@@ -32,7 +38,7 @@ export const InfoContainer = styled.div`
   width: 70%;
 
   @media (min-width: 320px) and (max-width: 768px) {
-    width: 100%;
+    width: ${({ savingPdf }: DivProps) => savingPdf ? '70%' : '100%'};
   }
 `
 
@@ -56,6 +62,9 @@ export const DownloadInvoice = styled.div`
   &:hover {
     opacity: 0.5;
     cursor: pointer;
+  }
+  @media (min-width: 320px) and (max-width: 768px) {
+    top: 50px;
   }
 `
 
@@ -81,8 +90,9 @@ export const SummaryContainer = styled.div`
   }
 
   @media (min-width: 320px) and (max-width: 768px) {
-    padding-left: 8px;
-    width: 100%;
+    padding-left: ${({ savingPdf }: DivProps) => savingPdf ? '30px' : '8px'};
+    width: ${({ savingPdf }: DivProps) => savingPdf ? '30%' : '100%'};
+    margin-top: ${({ savingPdf }: DivProps) => savingPdf ? '-30px' : 'auto'};
   }
 `
 
@@ -117,7 +127,7 @@ export const OrderNumberContainer = styled.div`
   flex-direction: row;
 
   @media (min-width: 320px) and (max-width: 768px) {
-    justify-content: space-between;
+    justify-content: ${({ savingPdf }: DivProps) => savingPdf ? 'flex-start' : 'space-between'};
   }
 `
 
@@ -139,6 +149,17 @@ interface TextProps {
 }
 
 export const StyledText = styled.div`
+  color: ${({ redColor }: TextProps) => (redColor ? RED : GRAY_DARK)};
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  font-size: 16px;
+  @media (min-width: 320px) and (max-width: 768px) {
+    text-align: right;
+    margin-bottom: 10px;
+  }
+`
+
+export const StyledInfoText = styled.div`
   color: ${({ redColor }: TextProps) => (redColor ? RED : GRAY_DARK)};
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -198,4 +219,15 @@ export const InvoiceSubtitle = styled.div`
 export const InvoiceIcon = styled(Icon)`
   margin-right: 8px;
   color: ${BLUE};
+`
+
+export const SavingContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  background: #ffffffc9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 29;
 `

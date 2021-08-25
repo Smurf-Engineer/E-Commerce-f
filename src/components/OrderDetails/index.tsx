@@ -58,7 +58,8 @@ import {
   InvoiceSubtitle,
   DownloadInvoice,
   DownloadIcon,
-  DataDiv
+  DataDiv,
+  SavingContainer
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -121,6 +122,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       this.setState({ savingPdf: true })
       const element = ReactDOM.findDOMNode(this.copyInput) as HTMLElement
       element.style.fontFamily = 'Avenir'
+      element.style.width = '1280px'
+      element.style.flexWrap = 'nowrap'
       if (!this.html2pdf) {
         this.html2pdf = new window.jsPDF('p', 'cm', 'letter')
       }
@@ -144,6 +147,9 @@ export class OrderDetails extends React.Component<Props, {}> {
       }
       this.html2pdf.save(`invoice-${orderId}.pdf`)    
       this.setState({ savingPdf: false })
+      element.style.fontFamily = 'unset'
+      element.style.flexWrap = 'wrap'
+      element.style.width = 'auto'
     }
   }
   render() {
@@ -321,11 +327,12 @@ export class OrderDetails extends React.Component<Props, {}> {
             <InvoiceTitle><InvoiceIcon type="file-text" />{formatMessage(messages.invoice)}</InvoiceTitle>
             <InvoiceSubtitle>{formatMessage(messages.paymentTerms)} {invoiceTerms}</InvoiceSubtitle>
           </InvoiceDiv> : (
-          <StyledImage src={iconPaypal} />
+          <StyledImage crossOrigin="anonymous" src={iconPaypal} />
         )
 
     return (
       <Container>
+        {savingPdf && <SavingContainer><Spin size="large" /></SavingContainer>}
         {status === PAYMENT_ISSUE && (
           <ErrorMessage>
             <Paragraph
@@ -356,10 +363,10 @@ export class OrderDetails extends React.Component<Props, {}> {
           }
         </Div>
         <DataDiv ref={content => (this.copyInput = content)}>
-          <OrderInfo>
+          <OrderInfo {...{ savingPdf }}>
             <OrderDelivery>
               <DeliveryInfo>
-                <DeliveryLabels>
+                <DeliveryLabels {...{ savingPdf }}>
                   <DeliveryLabel>
                     {formatMessage(messages.orderPoint)}
                   </DeliveryLabel>
@@ -391,14 +398,16 @@ export class OrderDetails extends React.Component<Props, {}> {
                   </DeliveryLabel>
                 </DeliveryLabels>
                 <DeliveryData>
-                  <Info>
+                  <Info {...{ savingPdf }}>
                     {teamStoreId ? teamStoreName : formatMessage(messages.cart)}
                   </Info>
-                  <Info>{shortId}</Info>
-                  <Info>{orderDate}</Info>
-                  {teamStoreId && cutoffDate && <Info>{cutoffDate}</Info>}
-                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && <Info>{invoiceTerms}</Info>}
-                  <Info>
+                  <Info {...{ savingPdf }}>{shortId}</Info>
+                  <Info {...{ savingPdf }}>{orderDate}</Info>
+                  {teamStoreId && cutoffDate && <Info {...{ savingPdf }}>{cutoffDate}</Info>}
+                  {paymentMethod === PaymentOptions.INVOICE && invoiceTerms && 
+                    <Info {...{ savingPdf }}>{invoiceTerms}</Info>
+                  }
+                  <Info {...{ savingPdf }}>
                     {trackingNumber ? 
                       <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
                         {trackingNumber}
@@ -407,17 +416,17 @@ export class OrderDetails extends React.Component<Props, {}> {
                       </FedexLabel> : '-'
                     }
                   </Info>
-                  <Info>{estimatedDate}</Info>
-                  <Info redColor={status === PAYMENT_ISSUE}>
+                  <Info {...{ savingPdf }}>{estimatedDate}</Info>
+                  <Info {...{ savingPdf }} redColor={status === PAYMENT_ISSUE}>
                     {netsuiteStatus || status}
                   </Info>
-                  <Info>
+                  <Info {...{ savingPdf }}>
                     {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
                   </Info>
                 </DeliveryData>
               </DeliveryInfo>
             </OrderDelivery>
-            <OrderSummaryContainer>
+            <OrderSummaryContainer {...{ savingPdf }}>
               <OrderSummary
                 onlyRead={true}
                 totalSum={total}
