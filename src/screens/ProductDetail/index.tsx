@@ -736,9 +736,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     setDesignModalOpenAction(false)
   }
   openDesignModal = () => {
-    // const { setDesignModalOpenAction } = this.props
-    // setDesignModalOpenAction(true)
-    this.gotoCustomize()
+    const { setDesignModalOpenAction } = this.props
+    setDesignModalOpenAction(true)
   }
   toggleFitsModal = (showFits: boolean) => () => {
     this.setState({ showFits })
