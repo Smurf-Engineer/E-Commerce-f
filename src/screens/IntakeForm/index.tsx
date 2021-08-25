@@ -255,12 +255,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
   handleFromScratch = () => {
     const { setFromScratchAction } = this.props
-    const { isMobile, isTablet } = this.state
     setFromScratchAction(true)
     this.handleOnContinue()
-    if (isMobile || isTablet) {
-      this.showInspirationModal()
-    }
   }
 
   handleFromDesign = () => {
@@ -400,6 +396,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
           return goToPage(currentScreen + 3)
         } else if (!!admProject) {
           return goToPage(Sections.NOTES)
+        }
+        if (fromScratch && !admProject && (isMobile || isTablet)) {
+          this.showInspirationModal()
         }
       }
       return goToPage(currentScreen + 1)
