@@ -32,7 +32,7 @@ const MobileMenu = ({ formatMessage, loggedIn, fromDesign, fromScratch, existing
   return (
     <Container>
       <DesignsCardsContainer>
-        <Card index={1} onClick={fromScratch}>
+        <Card onClick={fromScratch}>
           <CardTitle>
             <img src={FromScratch} />
           </CardTitle>
@@ -44,7 +44,7 @@ const MobileMenu = ({ formatMessage, loggedIn, fromDesign, fromScratch, existing
             {formatMessage(messages.select)}
           </Button>
         </Card>
-        <Card index={2} onClick={fromDesign}>
+        <Card onClick={fromDesign}>
           <CardTitle>
             <img src={FromDesignImage} />
           </CardTitle>
@@ -56,7 +56,7 @@ const MobileMenu = ({ formatMessage, loggedIn, fromDesign, fromScratch, existing
             {formatMessage(messages[loggedIn ? 'select' : 'login'])}
           </Button>
         </Card>
-        <Card index={3} onClick={existingArtwork}>
+        <Card onClick={existingArtwork}>
           <CardTitle>
             <img src={ExistingArtwork} />
           </CardTitle>
