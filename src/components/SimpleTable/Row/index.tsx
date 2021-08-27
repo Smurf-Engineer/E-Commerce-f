@@ -82,16 +82,16 @@ class Row extends React.PureComponent<Props, {}> {
                       /> : value
                     )
                   ) : (
-                      <Thumbnail src={currentItem} />
-                    )}
+                    <Thumbnail src={currentItem} />
+                  )}
                 </Cell>
               ) :
                 <Cell key={rowIndex} width={header.tabletWidth} className={unread && 'badge'} />
             }
           )}
-          <Cell>
+          <Cell width={15}>
             <MarkLabel onClick={handleClickRead}>
-              {formatMessage(messages.markRead)}
+              {formatMessage(unread ? messages.markRead : messages.markUnRead)}
             </MarkLabel>
           </Cell>
           {canDelete && <Cell>

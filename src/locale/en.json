@@ -2232,6 +2232,7 @@
   "components.SimpleTable.image": "Image",
   "components.SimpleTable.delete": "Delete",
   "components.SimpleTable.markRead": "Mark as read",
+  "components.SimpleTable.markUnRead": "Mark as unread",
   "components.SimpleTable.clientId": "Client ID",
   "components.SimpleTable.email": "Email",
   "components.TeamStoreDetails.delete": "Delete",
