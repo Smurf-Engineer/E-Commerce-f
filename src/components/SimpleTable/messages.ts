@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.SimpleTable.markRead',
     defaultMessage: 'Mark as read'
   },
+  markUnRead: {
+    id: 'components.SimpleTable.markRead',
+    defaultMessage: 'Mark as unread'
+  },
   clientId: {
     id: 'components.SimpleTable.clientId',
     defaultMessage: 'Client ID'
