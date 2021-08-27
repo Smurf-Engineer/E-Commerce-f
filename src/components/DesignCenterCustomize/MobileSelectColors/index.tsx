@@ -38,6 +38,7 @@ interface Props {
   bibColor?: AccesoryColor
   product?: Product
   colorsList: any
+  bindingName: string
   selectedPredyed: string
   onSelectPredyed: (predyedColor: string) => void
   onSelectColorBlock: (index: number) => void
@@ -66,6 +67,7 @@ class MobileSelectColors extends React.PureComponent<Props> {
       stitchingColor,
       selectedPredyed,
       product,
+      bindingName,
       onSelectStitchingColor,
       onSelectPredyed,
       bibColor,
@@ -137,7 +139,7 @@ class MobileSelectColors extends React.PureComponent<Props> {
         )}
         {hasBinding && (
           <Row>
-            <Label>{formatMessage({ ...messages.binding })}</Label>
+            <Label>{bindingName || formatMessage({ ...messages.binding })}</Label>
             <MobileAccessoryColor
               id={AccessoryColors.Binding}
               colorSelected={bindingColor}

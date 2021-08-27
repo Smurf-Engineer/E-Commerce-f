@@ -85,6 +85,7 @@ interface Props {
   productName: string
   canvas: CanvasType
   selectedElement: string
+  bindingName: string
   textFormat: TextFormat
   artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
@@ -233,6 +234,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const {
       onSelectColorBlock,
       colorBlock,
+      bindingName,
       colorBlockHovered,
       onSelectColor,
       setStitchingColorAction,
@@ -362,6 +364,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           <Tabs
             {...{
               palettes,
+              bindingName,
               colorBlock,
               activeEl,
               colorBlockHovered,
@@ -550,6 +553,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectColorBlock,
               onSelectPalette,
               colorBlock,
+              bindingName,
               onSelectColor,
               colors,
               styleColors,

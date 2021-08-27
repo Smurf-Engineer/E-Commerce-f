@@ -69,6 +69,7 @@ interface Props {
   selectedTab: number
   fonts: SimpleFont[]
   colorsList: any
+  bindingName: string
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
@@ -161,6 +162,7 @@ const Tabs = ({
   selectedItem,
   disableTooltip = false,
   selectedTab,
+  bindingName,
   hoverBlurLayer,
   onTabClick,
   setVideos,
@@ -199,6 +201,7 @@ const Tabs = ({
               onChangePaletteName,
               paletteName,
               palettes,
+              bindingName,
               onSelectPalette,
               onSetPalettes,
               formatMessage,

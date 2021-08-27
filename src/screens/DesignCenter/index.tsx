@@ -107,7 +107,7 @@ import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
-import { DesignTabs } from './constants'
+import { defaultBindings, DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
 import DesignCheckModal from '../../components/DesignCheckModal'
 import moment from 'moment'
@@ -347,6 +347,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       designHasChanges,
       responsive,
+      location: { search },
       intl: { formatMessage }
     } = this.props
     LoadScripts(threeDScripts)
@@ -368,6 +369,13 @@ export class DesignCenter extends React.Component<Props, {}> {
       const isTabletRes = width >= TABLET_RES && width <= DESKTOP_RES
       const isDesktopRes = width > DESKTOP_RES
       this.setState({ isPhoneRes, isTabletRes, isDesktopRes })
+    }
+    const queryParams = queryString.parse(search)
+    const { id, designId } = queryParams || {}
+    if (id && !designId && defaultBindings[id]) {
+      const { setAccessoryColorAction } = this.props
+      const { value = 'black' } = defaultBindings[id] || {}
+      setAccessoryColorAction(value, 'bindingColor')
     }
   }
 
@@ -881,6 +889,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       </LoadingContainer>
     )
 
+    const bindingDefault = defaultBindings[productId] || {}
+    const { name: bindingName } = bindingDefault || {}
+
     const isUserAuthenticated = !!user
     const predyedColor = productConfig && productConfig.hasPredyed ? selectedPredyed : null
     return (
@@ -999,6 +1010,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   selectedPredyed,
                   textFormat,
                   artFormat,
+                  bindingName,
                   proAssistId,
                   openPaletteModalAction,
                   myPaletteModals,
