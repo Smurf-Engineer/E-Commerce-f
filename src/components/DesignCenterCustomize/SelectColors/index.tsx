@@ -48,6 +48,7 @@ interface Props {
   hasBranding: boolean
   hasBinding: boolean
   hasBibBrace: boolean
+  bindingName: string
   colorBlockHovered: number
   colorChartSending: boolean
   colorChartModalOpen: boolean
@@ -92,6 +93,7 @@ class SelectColors extends React.PureComponent<Props, State> {
       predyedLabel,
       showContent,
       stitchingColor,
+      bindingName,
       bindingColor,
       zipperColor,
       bibColor,
@@ -177,7 +179,7 @@ class SelectColors extends React.PureComponent<Props, State> {
           <AccessoryColor
             id={AccessoryColors.Binding}
             colorSelected={bindingColor}
-            name={formatMessage(messages.binding)}
+            name={bindingName || formatMessage(messages.binding)}
             {...{ onAccessoryColorSelected }}
           />
         )}

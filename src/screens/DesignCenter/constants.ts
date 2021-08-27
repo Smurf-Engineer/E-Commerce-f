@@ -135,4 +135,8 @@ export enum AccessoryColors {
   Predyed = 'predyed'
 }
 
+export const defaultBindings = {
+  '238': { value: 'white', name: 'Pom Pom' }
+}
+
 export const ElementsToApplyScale = [CanvasElements.Image]

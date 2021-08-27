@@ -49,6 +49,7 @@ interface Props {
   styleColors: string[]
   myPaletteModals: MyPaletteDesignCenterModals
   product?: Product
+  bindingName: string
   disableTooltip: boolean
   colorsList: any
   colorChartSending: boolean
@@ -124,6 +125,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       stitchingColor,
       bindingColor,
       zipperColor,
+      bindingName,
       bibColor,
       onAccessoryColorSelected,
       product,
@@ -203,6 +205,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
               selectedPredyed,
               hasBranding,
               hasStitching,
+              bindingName,
               hasZipper,
               hasBinding,
               hasBibBrace,
