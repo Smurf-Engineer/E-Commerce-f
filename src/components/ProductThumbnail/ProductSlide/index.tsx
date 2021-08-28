@@ -18,18 +18,29 @@ import {
   ProStatus,
   ProLabel,
   DeleteButton,
-  StatusFlag
+  StatusFlag,
+  InfoIcon,
+  StyledTooltip,
+  TooltipContent,
+  StatusIcon,
+  TooltipBody,
+  buttonStyle,
+  TooltipContentModal,
 } from './styledComponents'
+import Modal from 'antd/lib/modal'
 import JackrooLogo from '../../../assets/Jackroologo.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
 import ProFlag from '../../../assets/pro_flag.png'
+import infoIcon from '../../../assets/helpicon.png'
 import ProCertFlag from '../../../assets/procert_flag.png'
 import WarningQualityFlag from '../../../assets/warning_flag.png'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import { ImageType } from '../../../types/common'
+import { ImageType, Message } from '../../../types/common'
 import { BLUE_STATUS, GREEN_STATUS, ORANGE_STATUS, WHITE } from '../../../theme/colors'
 import { CUSTOMER_PREVIEW, CUSTOMER_APPROVED, PREFLIGHT_STATUS, IN_DESIGN, itemLabels } from '../../../constants'
+import messages from './messages'
 
+const { info } = Modal
 const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
 const BelowTablet = (props: any) => <Responsive {...props} maxWidth={767} />
 
@@ -58,6 +69,7 @@ interface Props {
   fitContainer?: boolean
   fromIntakeForm?: boolean
   isProDesign?: boolean
+  showTooltips?: boolean
   proStatus?: string
   proCertified?: boolean
   qualityWarning?: boolean
@@ -67,6 +79,8 @@ interface Props {
   onPressCustomize: () => void
   deleteItem: () => void
   onPressThumbnail: () => void
+  setSeen: () => void
+  formatMessage: (messageDescriptor: Message, values?: {}) => string
   handleCheckChange: (event: CheckboxChangeEvent) => void
 }
 
@@ -97,6 +111,9 @@ const ProductSlide = ({
   customizable,
   backgroundColor,
   proDesign,
+  formatMessage,
+  showTooltips,
+  setSeen,
   proDesignAssigned,
   selectProduct,
   fromIntakeForm = false,
@@ -107,6 +124,39 @@ const ProductSlide = ({
   proCertified = false,
   qualityWarning = false
 }: Props) => {
+  const openInfo = () => {
+    let infoMessage = ''
+    let imageShow = ''
+    if (proDesign) {
+      imageShow = ProFlag
+      infoMessage = 'tooltipProdesign'
+    } else if (proCertified) {
+      imageShow = ProCertFlag
+      infoMessage = 'tooltipProCert'
+    } else if (qualityWarning) {
+      imageShow = WarningQualityFlag
+      infoMessage = 'tooltipQuality'
+    }
+    setSeen()
+    info({
+      title: ' ',
+      icon: ' ',
+      okText: formatMessage(messages.close),
+      className: 'tightModal',
+      okButtonProps: {
+        style: buttonStyle
+      },
+      content: 
+        <TooltipContentModal>
+          <StatusIcon src={imageShow} />
+          <TooltipBody
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(messages[infoMessage])
+            }}
+          />
+        </TooltipContentModal>
+    })
+  }
   if (image) {
     return (
       <ImageContainer
@@ -119,15 +169,70 @@ const ProductSlide = ({
           selectProduct
         }}
       >
-        {proDesign &&
-          <StatusFlag src={ProFlag} />
+        {showTooltips && (proDesign || proCertified || qualityWarning ) &&
+          <InfoIcon src={infoIcon} />
         }
-        {proCertified &&
-          <StatusFlag src={ProCertFlag} />
-        }
-        {qualityWarning &&
-          <StatusFlag src={WarningQualityFlag} />
-        }
+        <BelowTablet>
+          {proDesign && <StatusFlag onClick={openInfo} {...{ showTooltips }} src={ProFlag} />}
+          {proCertified && <StatusFlag onClick={openInfo} {...{ showTooltips }} src={ProCertFlag} />}
+          {qualityWarning && <StatusFlag onClick={openInfo} {...{ showTooltips }} src={WarningQualityFlag} />}
+        </BelowTablet>
+        <AboveTablet>
+          {proDesign &&
+            <StyledTooltip
+              overlayClassName="arrowEnabled"
+              onVisibleChange={setSeen}
+              content={
+                <TooltipContent>
+                  <StatusIcon src={ProFlag} />
+                  <TooltipBody
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.tooltipProdesign)
+                    }}
+                  />
+                </TooltipContent>
+              }
+            >
+              <StatusFlag {...{ showTooltips }} src={ProFlag} />
+            </StyledTooltip>
+          }
+          {proCertified &&
+            <StyledTooltip
+              overlayClassName="arrowEnabled"
+              onVisibleChange={setSeen}
+              content={
+                <TooltipContent>
+                  <StatusIcon src={ProCertFlag} />
+                  <TooltipBody
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.tooltipProCert)
+                    }}
+                  />
+                </TooltipContent>
+              }
+            >
+              <StatusFlag {...{ showTooltips }} src={ProCertFlag} />
+            </StyledTooltip>
+          }
+          {qualityWarning &&
+            <StyledTooltip
+              overlayClassName="arrowEnabled"
+              onVisibleChange={setSeen}
+              content={
+                <TooltipContent>
+                  <StatusIcon src={WarningQualityFlag} />
+                  <TooltipBody
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.tooltipQuality)
+                    }}
+                  />
+                </TooltipContent>
+              }
+            >
+              <StatusFlag {...{ showTooltips }} src={WarningQualityFlag} />
+            </StyledTooltip>
+          }
+        </AboveTablet>
         <ImageTop>
           <AboveTablet>
             {!hideQuickView && (

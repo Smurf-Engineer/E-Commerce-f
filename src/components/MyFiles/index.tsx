@@ -107,6 +107,11 @@ class MyFiles extends React.Component<Props, {}> {
     setPalettesAction(palettes)
   }
 
+  setSeen = () => {
+    localStorage.setItem('hideTooltipsFile', 'true')
+    setTimeout(() => this.forceUpdate(), 1500)
+  }
+
   componentWillUnmount() {
     const { resetReducerDataAction } = this.props
     resetReducerDataAction()
@@ -256,6 +261,8 @@ class MyFiles extends React.Component<Props, {}> {
       indexPaletteToDelete,
       data: { loading, images }
     } = this.props
+    const hideTooltips = localStorage.getItem('hideTooltipsFile')
+    const showTooltips = !hideTooltips || hideTooltips !== 'true'
     return (
       <Container>
         <Message>{formatMessage(messages.message)}</Message>
@@ -278,9 +285,10 @@ class MyFiles extends React.Component<Props, {}> {
         <VerticalDivider />
         <Subtitle>{formatMessage(messages.uploadedImages)}</Subtitle>
         <ImagesList
-          {...{ formatMessage }}
+          {...{ formatMessage, showTooltips }}
           images={images || []}
           loading={!!loading}
+          setSeen={this.setSeen}
           onClickDelete={this.handleOnShowDeleteImageModal}
         />
         <VerticalDivider />

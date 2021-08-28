@@ -27,7 +27,7 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { getProductQuery } from './data'
-import { Product } from '../../types/common'
+import { Product, Message as MessageType } from '../../types/common'
 import ImageSlide from './ProductSlide'
 import { saveInLocalStorage } from './api'
 import { ImageType, PriceRange, ProductColors } from '../../types/common'
@@ -84,7 +84,10 @@ interface Props {
   proStatus?: string
   proCertified?: boolean
   qualityWarning?: boolean
+  showTooltips?: boolean
+  setSeen: () => void
   deleteItem?: () => void
+  formatMessage: (messageDescriptor: MessageType, values?: {}) => string
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   onPressThumbnail: () => void
@@ -260,6 +263,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       image,
       product,
       createdAt,
+      formatMessage,
+      showTooltips,
+      setSeen,
       withMargin,
       hideCustomButton,
       hideQuickView,
@@ -362,6 +368,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             isProDesign,
             proStatus,
             isTopProduct,
+            formatMessage,
             isHovered,
             images,
             currentImage,
@@ -383,6 +390,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             fromIntakeForm,
             selectedIndex,
             fitContainer,
+            showTooltips,
+            setSeen,
             proCertified,
             qualityWarning
           }}

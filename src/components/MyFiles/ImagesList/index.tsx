@@ -12,6 +12,8 @@ import EmptyContainer from '../../EmptyContainer'
 interface Props {
   images: ImageFile[]
   loading: boolean
+  showTooltips?: boolean
+  setSeen: () => void
   formatMessage: (messageDescriptor: any) => string
   onClickDelete: (id: number) => void
 }
@@ -20,6 +22,8 @@ const ImagesList = ({
   images,
   formatMessage,
   onClickDelete,
+  showTooltips,
+  setSeen,
   loading
 }: Props) => {
   if (loading) {
@@ -35,7 +39,7 @@ const ImagesList = ({
     )
   }
   const list = images.map((image, index) => (
-    <ImageItem key={index} {...{ image, formatMessage, onClickDelete }} />
+    <ImageItem key={index} {...{ setSeen, showTooltips, image, formatMessage, onClickDelete }} />
   ))
   return <Container>{list}</Container>
 }

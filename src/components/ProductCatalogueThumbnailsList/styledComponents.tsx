@@ -9,6 +9,10 @@ import {
   WHITE
 } from '../../theme/colors'
 
+interface DivProps {
+  index?: number
+}
+
 export const Container = styled.div``
 export const Content = styled.div``
 
@@ -85,7 +89,18 @@ export const ThumbnailsList = styled.ul`
 export const ThumbnailListItem = styled.li`
   list-style: none;
   width: calc(95% / 2);
-
+  animation: scale-in-center 0.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) 
+    ${({ index }: DivProps) => `${index ? (index * 0.1) : '1'}s`} both;
+  @keyframes scale-in-center {
+    0% {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
   @media (min-width: 481px) {
     justify-content: center;
     width: 50%;

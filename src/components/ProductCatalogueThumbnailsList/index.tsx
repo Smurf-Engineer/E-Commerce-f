@@ -91,6 +91,10 @@ interface Props {
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
+  setSeen = () => {
+    localStorage.setItem('hideTooltips', 'true')
+    setTimeout(() => this.forceUpdate(), 1500)
+  }
   render() {
     const {
       formatMessage,
@@ -124,6 +128,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
+    const hideTooltips = localStorage.getItem('hideTooltips')
+    const showTooltips = !hideTooltips || hideTooltips !== 'true'
     const { status, comission: resellerComission, inline } = get(profileData, 'profileData.reseller', {})
     const isReseller = status === APPROVED
     if (designs) {
@@ -167,7 +173,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             />
           ) : null
           return (
-            <ThumbnailListItem key={index}>
+            <ThumbnailListItem index={index + 1} key={index}>
               <ProductThumbnail
                 {...{
                   currentCurrency,
@@ -175,10 +181,13 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   handleCheckChange,
                   isSelected,
                   proDesign,
+                  showTooltips,
+                  formatMessage,
                   proCertified,
                   qualityWarning
                 }}
                 id={product.id}
+                setSeen={this.setSeen}
                 yotpoId={product.yotpoId}
                 designId={shortId}
                 product={product}
@@ -314,12 +323,13 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           const selectedProductIds = selectedItems.map((sectedProduct: Product) => sectedProduct.id)
           const isSelected = includes(selectedProductIds, product.id)
           return (
-            <ThumbnailListItem key={index}>
+            <ThumbnailListItem index={index + 1} key={index}>
               <ProductThumbnail
                 onPressCustomize={this.gotoDesignCenter}
                 onPressQuickView={this.handlePressQuickView}
                 images={productImages}
                 product={product}
+                setSeen={this.setSeen}
                 customizableLabel={formatMessage(messages.customizable)}
                 selectedIndex={isSelected && selectedItems.findIndex((item) => item === product.id) + 1}
                 {...{
@@ -328,6 +338,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   fromIntakeForm,
                   yotpoId,
                   type,
+                  showTooltips,
+                  formatMessage,
                   description,
                   isTopProduct,
                   collections,
