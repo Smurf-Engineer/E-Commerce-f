@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by david on 06/04/18.
  */
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import DatePicker from 'antd/lib/date-picker'
 import Button from 'antd/lib/button'
 import Input from 'antd/lib/input'
@@ -23,15 +23,7 @@ interface DivProps {
   admin?: boolean
 }
 
-export const fadeIn = keyframes`
-  to {
-    opacity: 1;
-  }
-`
-
 export const Container = styled.div`
-  opacity: 0;
-  animation: ${fadeIn} 0.6s cubic-bezier(0.67, 0.35, 0.565, 1) both;
   padding-bottom: 16px;
 `
 
@@ -103,12 +95,34 @@ export const MessageText = styled.div`
   padding-bottom: ${({ admin }: DivProps) => admin ? `12px` : 'none'};;
   font-weight: ${({ admin }: DivProps) => admin ? `bold` : 'none'};;
   border-bottom: ${({ admin }: DivProps) => admin ? `1px solid ${GRAY}` : 'none'};
+  animation: fade-in-hor 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-hor {
+    0% {
+      transform: translateX(-5px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 `
 
 export const MessagePrevent = styled.div`
   color: ${BLACK};
   margin-bottom: 18px;
   margin-top: -4px;
+  animation: fade-in-hor 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-hor {
+    0% {
+      transform: translateX(-5px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 `
 
 export const InputWrapper = styled.div`
@@ -178,7 +192,17 @@ export const Filters = styled.div`
   margin-right: 36px;
   box-shadow: 2px 2px 7px ${GRAY_SHADOW};
   flex-direction: column;
-
+  animation: fade-in-top 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.15s both;
+  @keyframes fade-in-top {
+    0% {
+      transform: translateY(-5px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   @media (min-width: 320px) and (max-width: 768px) {
     padding: 10px;
     margin-right: 12px;
@@ -216,7 +240,17 @@ export const Options = styled.div`
 export const SubOptions = styled.div`
   display: flex;
   align-items: center;
-
+  animation: fade-in-top 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.3s both;
+  @keyframes fade-in-top {
+    0% {
+      transform: translateY(-5px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   @media (min-width: 320px) and (max-width: 768px) {
     flex-flow: column;
   }
