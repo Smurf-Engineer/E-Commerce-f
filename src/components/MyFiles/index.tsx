@@ -39,6 +39,7 @@ import indexOf from 'lodash/indexOf'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
 import { bytesToMb, getSizeInCentimeters } from '../../utils/utilsFiles'
+import { mesaureImageQuality } from '../../utils/utilsImage/utilsImage'
 
 const { warning } = Modal
 
@@ -80,7 +81,7 @@ interface Props {
   deleteLoading: boolean
   uploading: boolean
   onUploadFile: (file: File) => void
-  uploadFileAction: (file: File) => void
+  uploadFileAction: (file: File, blurScore: number) => void
   formatMessage: (messageDescriptor: any, params?: any) => string
   // Apollo mutations
   deleteImage: (variables: {}) => void
@@ -164,7 +165,8 @@ class MyFiles extends React.Component<Props, {}> {
 
   uploadAction = async (file: File) => {
     const { uploadFileAction, data } = this.props
-    await uploadFileAction(file)
+    const blurScore = await mesaureImageQuality(file)
+    await uploadFileAction(file, blurScore as number)
     await data.refetch()
   }
 

@@ -78,7 +78,11 @@ const Html = ({ content, state, reduxState }: Props) => (
       type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U&libraries=places"
     />
-
+    {/* <script
+      async={true}
+      src="https://docs.opencv.org/master/opencv.js"
+      type="text/javascript"
+    /> */}
   </body>
 )
 
