@@ -1,26 +1,57 @@
-import { Image, loadImage, createCanvas } from 'canvas'
-var measureBlur = require('./measureBlur.ts')
+import { LoadScripts } from '../scriptLoader'
 
-export const mesaureImageQuality = async (file: File) => (new Promise((res, rej) => {
-  function drawImageOnCanvas(image: Image) {
-    var canvas = createCanvas(image.width, image.height), context
+export const mesaureImageQuality = async (file: File) => 
+  new Promise((resolve, rej) => {
+    const myImage = new Image()
+    myImage.onload = async () => {
+      if (window && window.cv) {
+        calculate(myImage, resolve)()
+      } else {
+        await LoadScripts(
+          [{ url: 'https://docs.opencv.org/master/opencv.js', scriptId: 'opencv', async: true }],
+          calculate(myImage, resolve)
+        )
+      }
+    }
+    myImage.src = URL.createObjectURL(file)
+} )
 
-    context = canvas.getContext('2d')
-    context.drawImage(image, 0, 0)
-
-    showBlurScore(context.getImageData(0, 0, canvas.width, canvas.height))
+export const calculate = (myImage: any, solve: any) => () => {
+  const cv = window.cv
+  if (cv.getBuildInformation) {
+    getScore(cv, solve, myImage)
+  } else {
+    cv.onRuntimeInitialized = () => {
+      getScore(cv, solve, myImage)
+    }
   }
+}
 
-  function showBlurScore(imageData: ImageData) {
-    var stats = measureBlur(imageData)
-    // console.log('Blur score:', Number((stats.avg_edge_width_perc).toFixed(2)))
-    // console.log(stats)
-    res(Number((stats.avg_edge_width_perc).toFixed(2)))
+export const getScore = (cv: any, solve: any, myImage: any) => {
+  let src = cv.imread(myImage)
+  let dst = new cv.Mat()
+  let men = new cv.Mat()
+  let menO = new cv.Mat()
+  cv.cvtColor(src, src, cv.COLOR_RGB2GRAY, 0)
+  // You can try more different parameters
+  var t = cv.Laplacian(src, dst, cv.CV_64F, 3, 1, 0, cv.BORDER_DEFAULT)
+  console.log(t, cv.meanStdDev(dst, menO, men), menO.data64F[0], men.data64F[0])
+  let limit = 50
+  const area = myImage.width * myImage.height
+  if (area <= 129600) {
+      limit = 69
+  } else if (area <= 241773) {
+      limit = 25
+  } else if (area <= 476100) {
+      limit = 45
+  } else if (area <= 1048576) {
+      limit = 70
+  } else if (area <= 1228800) {
+      limit = 25
   }
-
-  const reader = new FileReader()
-  reader.onloadend = () => {
-    loadImage(reader.result ? reader.result : '').then(drawImageOnCanvas)
-  }
-  reader.readAsDataURL(file)
-}))
+  const score = limit - men.data64F[0]
+  console.log('🔵limit:', limit)
+  console.log('🟢score:', score)
+  src.delete(); dst.delete()
+  solve(score)
+}

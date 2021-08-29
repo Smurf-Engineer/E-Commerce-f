@@ -2,14 +2,15 @@ type ScriptObjType = {
   url: string
   scriptId: string
   attr?: any
+  async?: boolean
   callback?: () => {}
 }
 export const LoadScripts = async (scriptObjects: ScriptObjType[], cb?: any) => {
   let counter = 0
-  scriptObjects.forEach(({ scriptId, url }) => {
+  scriptObjects.forEach(({ scriptId, url, async }) => {
     const isLoaded = document.getElementById(scriptId)
     if (!!!isLoaded) {
-      const script = createScript(url, scriptId)
+      const script = createScript(url, scriptId, async)
       script.addEventListener('load', () => {
         counter++
         if (counter === scriptObjects.length && cb) {
@@ -22,11 +23,11 @@ export const LoadScripts = async (scriptObjects: ScriptObjType[], cb?: any) => {
   })
 }
 
-const createScript = (src: string, id: string) => {
+const createScript = (src: string, id: string, async = false) => {
   const script = document.createElement('script')
   script.src = src
   script.id = id
-  script.async = false
+  script.async = async
   script.type = 'text/javascript'
   return script
 }

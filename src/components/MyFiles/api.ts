@@ -5,7 +5,7 @@ import message from 'antd/lib/message'
 import config from '../../config/index'
 import { uploadFileSuccessAction, setUploadingAction } from './actions'
 
-export const uploadFileAction = (file: File) => {
+export const uploadFileAction = (file: File, blurScore: string) => {
   return async (dispatch: any) => {
     try {
       dispatch(setUploadingAction(true))
@@ -14,7 +14,7 @@ export const uploadFileAction = (file: File) => {
       const formData = new FormData()
 
       formData.append('file', file)
-
+      formData.append('blurScore', blurScore.toString())
       const response = await fetch(`${config.graphqlUriBase}upload/file`, {
         method: 'POST',
         headers: {
