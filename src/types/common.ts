@@ -1145,6 +1145,8 @@ export interface NotificationSettings {
   notifyOrderPayment: number
   notifyProDesign: number
   notifyProductService: number
+  notifyTeamStore: number
+  notifyDesignLab: number
   newsletterSubscribed: boolean
 }
 

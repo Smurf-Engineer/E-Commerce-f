@@ -7,6 +7,8 @@ export const profileNotificationSettingsQuery = gql`
       notifyOrderPayment: notify_order_payment
       notifyProDesign: notify_pro_design
       notifyProductService: notify_product_service
+      notifyTeamStore: notify_team_store
+      notifyDesignLab: notify_design_lab
       newsletterSubscribed: newsletter_subscribed
     }
   }
