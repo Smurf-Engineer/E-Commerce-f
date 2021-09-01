@@ -509,6 +509,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                     onChange={value => {
                       this.handleInputChange({ currentTarget: { id: 'phone', value } })
                     }}
+                    inputProps={{ autoComplete: 'jv2' }}
                     inputStyle={{ borderRadius: 0 }}
                     copyNumbersOnly={false}
                   />

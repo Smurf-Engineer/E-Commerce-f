@@ -715,7 +715,7 @@ class Checkout extends React.Component<Props, {}> {
         stateProvince,
         stateProvinceCode,
         city,
-        zipCode,
+        zipCode: zipCode.trim(),
         phone
       }
       this.saveAddress(shippingAddress)

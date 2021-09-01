@@ -289,7 +289,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       stateProvince,
       stateProvinceCode,
       city,
-      zipCode,
+      zipCode: zipCode.trim(),
       phone,
       defaultBilling,
       defaultShipping
