@@ -35,6 +35,7 @@ import myTeamStores from '../components/MyTeamStores/reducer'
 import warrantyProgram from '../screens/WarrantyProgram/reducer'
 import myLocker from '../components/MyLocker/reducer'
 import myFiles from '../components/MyFiles/reducer'
+import payModal from '../components/PayModal/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import orderHistoryAdmin from '../components/OrderHistoryAdmin/reducer'
 import discountsAdmin from '../components/DiscountsAdmin/reducer'
@@ -108,6 +109,7 @@ export interface ReducersObject {
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
+  payModal: any
   subscriptionTest: any
   fitWidget: any
   resellers: any
@@ -240,6 +242,7 @@ const rootReducer = combineReducers({
   resellerPayouts,
   shoppingCartPage,
   resellerOrders,
+  payModal,
   storeFront,
   resellers,
   resellerAbout,

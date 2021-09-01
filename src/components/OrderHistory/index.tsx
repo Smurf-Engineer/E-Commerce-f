@@ -14,6 +14,7 @@ import OrderDetails from '../OrderDetails'
 import SwipeableViews from 'react-swipeable-views'
 import queryString from 'query-string'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
+import PayModal from '../PayModal'
 
 interface Props {
   history: any
@@ -71,6 +72,9 @@ class OrderHistory extends React.Component<Props, {}> {
           from={ORDER_HISTORY}
           goToCart={this.goToCart}
           {...{ orderId, formatMessage }}
+        />
+        <PayModal
+          open={true}
         />
       </SwipeableViews>
     )
