@@ -120,6 +120,7 @@ const ProfileForm = ({
             onChange={value => {
               handleInputChange({ currentTarget: { id: 'phone', value } })
             }}
+            inputProps={{ autoComplete: 'jv2' }}
             inputStyle={{ borderRadius: 0 }}
             copyNumbersOnly={false}
           />

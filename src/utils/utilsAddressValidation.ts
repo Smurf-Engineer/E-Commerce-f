@@ -19,6 +19,6 @@ export const isValidCity = (value: string) => {
 }
 
 export const isValidZip = (value: string) => {
-  const zipRegex = /^(?=.*\d.*)[A-Za-z0-9-]{3,10}$/g
+  const zipRegex = /^(?=.*\d.*)[A-Za-z0-9- ]{3,10}$/g
   return zipRegex.test(value)
 }
