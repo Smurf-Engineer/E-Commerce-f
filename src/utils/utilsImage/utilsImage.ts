@@ -1,7 +1,12 @@
 import { LoadScripts } from '../scriptLoader'
+const SVG_FILE = 'image/svg+xml'
 
 export const mesaureImageQuality = async (file: File) => 
   new Promise((resolve, rej) => {
+    if (file && file.type === SVG_FILE) {
+      resolve(-1)
+      return
+    }
     const myImage = new Image()
     myImage.onload = async () => {
       if (window && window.cv) {
