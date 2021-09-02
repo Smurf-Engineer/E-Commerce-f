@@ -13,13 +13,37 @@ export default defineMessages({
     id: 'components.Notifications.Preferences.notifyOrderPayments',
     defaultMessage: 'Order/Payment Notifications*'
   },
+  notifyOrderPaymentsComment: {
+    id: 'components.Notifications.Preferences.notifyOrderPaymentsComment',
+    defaultMessage: '( orders, payments, shipping )'
+  },
   notifyProDesign: {
     id: 'components.Notifications.Preferences.notifyProDesign',
     defaultMessage: 'Pro Design Notifications*'
   },
+  notifyProDesignComment: {
+    id: 'components.Notifications.Preferences.notifyProDesignComment',
+    defaultMessage: '( design reviews, messages, alerts )'
+  },
   notifyProductService: {
     id: 'components.Notifications.Preferences.notifyProductService',
     defaultMessage: 'Important Product & Service notices'
+  },
+  notifyTeamStore: {
+    id: 'components.Notifications.Preferences.notifyTeamStore',
+    defaultMessage: 'Team Store Notifications'
+  },
+  notifyTeamStoreComment: {
+    id: 'components.Notifications.Preferences.notifyTeamStoreComment',
+    defaultMessage: '( Alerts )'
+  },
+  notifyDesignLab: {
+    id: 'components.Notifications.Preferences.notifyDesignLab',
+    defaultMessage: 'Designlab Notifications'
+  },
+  notifyDesignLabComment: {
+    id: 'components.Notifications.Preferences.notifyDesignLabComment',
+    defaultMessage: '( Pro Assist messages, Alerts )'
   },
   newsletter: {
     id: 'components.Notifications.Preferences.newsletter',

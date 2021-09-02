@@ -77,7 +77,7 @@ class Preferences extends React.Component<Props, {}> {
     switch (currentValue) {
       case NotificationOption.EMAIL:
         if (selected === 'email') {
-          if (key === 'notifyProductService') {
+          if (key === 'notifyProductService' || key === 'notifyTeamStore' || key === 'notifyDesignLab') {
             newValue = NotificationOption.NONE
           }
         } else {
@@ -88,7 +88,7 @@ class Preferences extends React.Component<Props, {}> {
         if (selected === 'email') {
           newValue = NotificationOption.BOTH
         } else {
-          if (key === 'notifyProductService') {
+          if (key === 'notifyProductService' || key === 'notifyTeamStore' || key === 'notifyDesignLab') {
             newValue = NotificationOption.NONE
           }
         }
@@ -156,10 +156,14 @@ class Preferences extends React.Component<Props, {}> {
 
     const orderPaymentEmailChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.EMAIL)
     const prodesignEmailChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.EMAIL)
+    const teamStoreEmailChecked = this.isNotificationSetTo('notifyTeamStore', NotificationOption.EMAIL)
+    const designlabEmailChecked = this.isNotificationSetTo('notifyDesignLab', NotificationOption.EMAIL)
     const productServiceEmailChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.EMAIL)
-    // const orderPaymentSmsChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.SMS)
-    // const prodesignSmsChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.SMS)
-    // const productServiceSmsChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.SMS)
+    const orderPaymentSmsChecked = this.isNotificationSetTo('notifyOrderPayment', NotificationOption.SMS)
+    const prodesignSmsChecked = this.isNotificationSetTo('notifyProDesign', NotificationOption.SMS)
+    const teamStoreSmsChecked = this.isNotificationSetTo('notifyTeamStore', NotificationOption.SMS)
+    const designlabSmsChecked = this.isNotificationSetTo('notifyDesignLab', NotificationOption.SMS)
+    const productServiceSmsChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.SMS)
 
     return (
       <Container>
@@ -172,8 +176,30 @@ class Preferences extends React.Component<Props, {}> {
         <NotificationContainer>
           <Column>
             <Header>{formatMessage(messages.title)}</Header>
-            <Title>{formatMessage(messages.notifyOrderPayments)}</Title>
-            <Title>{formatMessage(messages.notifyProDesign)}</Title>
+            <Title>
+              {formatMessage(messages.notifyOrderPayments)}&nbsp;
+              <Description>
+                {formatMessage(messages.notifyOrderPaymentsComment)}
+              </Description>
+            </Title>
+            <Title>
+              {formatMessage(messages.notifyProDesign)}&nbsp;
+              <Description>
+                {formatMessage(messages.notifyProDesignComment)}
+              </Description>
+            </Title>
+            <Title>
+              {formatMessage(messages.notifyTeamStore)}&nbsp;
+              <Description>
+                {formatMessage(messages.notifyTeamStoreComment)}
+              </Description>
+            </Title>
+            <Title>
+              {formatMessage(messages.notifyDesignLab)}&nbsp;
+              <Description>
+                {formatMessage(messages.notifyDesignLabComment)}
+              </Description>
+            </Title>
             <Title>{formatMessage(messages.notifyProductService)}</Title>
             <Title>
               {formatMessage(messages.newsletter)}&nbsp;
@@ -192,13 +218,19 @@ class Preferences extends React.Component<Props, {}> {
               checked={prodesignEmailChecked}
               onChange={this.changeNotificationSettings('notifyProDesign', 'email')} />
             <CheckBoxStyled
+              checked={teamStoreEmailChecked}
+              onChange={this.changeNotificationSettings('notifyTeamStore', 'email')} />
+            <CheckBoxStyled
+              checked={designlabEmailChecked}
+              onChange={this.changeNotificationSettings('notifyDesignLab', 'email')} />
+            <CheckBoxStyled
               checked={productServiceEmailChecked}
               onChange={this.changeNotificationSettings('notifyProductService', 'email')} />
             <CheckBoxStyled
               checked={notificationData && notificationData.newsletterSubscribed}
               onChange={this.changeNewsletterSetting} />
           </Column>
-          {/* <Column marginLeft="30px">
+          <Column marginLeft="30px">
             <Header>
               SMS&nbsp;<Description>{formatMessage(messages.smsComment)}</Description>
             </Header>
@@ -209,13 +241,19 @@ class Preferences extends React.Component<Props, {}> {
               checked={prodesignSmsChecked}
               onChange={this.changeNotificationSettings('notifyProDesign', 'sms')} />
             <CheckBoxStyled
+              checked={teamStoreSmsChecked}
+              onChange={this.changeNotificationSettings('notifyTeamStore', 'sms')} />
+            <CheckBoxStyled
+              checked={designlabSmsChecked}
+              onChange={this.changeNotificationSettings('notifyDesignLab', 'sms')} />
+            <CheckBoxStyled
               checked={productServiceSmsChecked}
               onChange={this.changeNotificationSettings('notifyProductService', 'sms')} />
             <CheckBoxStyled
               hide={true}
               checked={false}
               onChange={() => { }} />
-          </Column> */}
+          </Column>
         </NotificationContainer>
         <Description>{formatMessage(messages.notificationComment)}</Description>
       </Container>
