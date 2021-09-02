@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const getOrderQuery = gql`
   query getOrderById($orderId: String!) {
@@ -155,3 +156,42 @@ export const getOrderQuery = gql`
     }
   }
 `
+
+export const CreatePaymentIntentMutation = graphql(
+  gql`
+    mutation createPaymentIntent($orderObj: OrderInput!) {
+      createPaymentIntent(order: $orderObj) {
+        paymentClientSecret
+        intentId
+      }
+    }
+  `,
+  {
+    name: 'createPaymentIntent'
+  }
+)
+
+export const isScaPaymentQuery = gql`
+  query isScaPayment($code: String!) {
+    subsidiarySCA: isScaPayment(code: $code) {
+      subsidiary
+      sca
+    }
+  }
+`
+
+export const PlaceOrderServiceMutation = graphql(
+  gql`
+    mutation chargeService($orderObj: OrderInput!) {
+      chargeService(order: $orderObj) {
+        id
+        short_id
+        created_at
+        client_secret
+      }
+    }
+  `,
+  {
+    name: 'placeOrderService'
+  }
+)

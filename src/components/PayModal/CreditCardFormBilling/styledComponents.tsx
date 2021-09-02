@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Checkbox from 'antd/lib/checkbox'
 import Button from 'antd/lib/button'
-import { GRAY, RED, GRAY_DARK, BLUE, WHITE } from '../../theme/colors'
+import { GRAY, RED, GRAY_DARK, BLUE, WHITE } from '../../../theme/colors'
 
 export const Container = styled.div`
   width: 100%;

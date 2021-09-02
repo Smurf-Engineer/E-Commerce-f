@@ -25,6 +25,15 @@ export default defineMessages({
     id: 'components.PayModal.orderNumber',
     defaultMessage: 'Order Number'
   },
+  confirm: {
+    id: 'components.PayModal.confirm',
+    defaultMessage: 'Confirm'
+  },
+  correctCurrency: {
+    id: 'components.PayModal.correctCurrency',
+    defaultMessage:
+      'Your selected Currency is {currentCurrency}. Is this the currency you wish to proceed?'
+  },
   orderDate: {
     id: 'components.PayModal.orderDate',
     defaultMessage: 'Order Date'
@@ -48,6 +57,10 @@ export default defineMessages({
   paymentTerms: {
     id: 'components.PayModal.paymentTerms',
     defaultMessage: 'Payment Terms:'
+  },
+  phoneError: {
+    id: 'components.PayModal.phoneError',
+    defaultMessage: 'Phone number must be at least 7 digits'
   },
   downloadInvoice: {
     id: 'components.PayModal.downloadInvoice',
