@@ -59,6 +59,15 @@ export const CUSTOMER_PREVIEW = 'customer_preview'
 export const EDITING = 'editing'
 export const CUSTOMER_APPROVED = 'approved'
 
+// MIME Types
+export const GIF_TYPE = 'image/gif' // .gif
+export const PNG_TYPE = 'image/png' // .png
+export const BMP_TYPE = 'image/bmp' // .bmp
+export const TIFF_TYPE = 'image/tiff' // .tif, .tiff
+export const JPEG_TYPE = 'image/jpeg' // .jpeg
+export const JPG_TYPE = 'image/jpg' // .jpg
+export const PHOTOSHOP_TYPE = 'image/vnd.adobe.photoshop' // .psd
+
 // Status Labels
 export const itemLabels = {
   [PREFLIGHT_STATUS]: 'Pending',

@@ -1,24 +1,35 @@
+import { GIF_TYPE, PNG_TYPE, BMP_TYPE, TIFF_TYPE, JPEG_TYPE, PHOTOSHOP_TYPE, JPG_TYPE } from '../../constants'
 import { LoadScripts } from '../scriptLoader'
-const SVG_FILE = 'image/svg+xml'
+
+const validTypes = [
+  GIF_TYPE,
+  PNG_TYPE,
+  BMP_TYPE,
+  TIFF_TYPE,
+  JPEG_TYPE,
+  JPG_TYPE,
+  PHOTOSHOP_TYPE
+]
 
 export const mesaureImageQuality = async (file: File) => 
   new Promise((resolve, rej) => {
-    if (file && file.type === SVG_FILE) {
+    if (file && validTypes.includes(file.type)) {
+      const myImage = new Image()
+      myImage.onload = async () => {
+        if (window && window.cv) {
+          calculate(myImage, resolve)()
+        } else {
+          await LoadScripts(
+            [{ url: 'https://docs.opencv.org/master/opencv.js', scriptId: 'opencv', async: true }],
+            calculate(myImage, resolve)
+          )
+        }
+      }
+      myImage.src = URL.createObjectURL(file)
+    } else {
       resolve(-1)
       return
     }
-    const myImage = new Image()
-    myImage.onload = async () => {
-      if (window && window.cv) {
-        calculate(myImage, resolve)()
-      } else {
-        await LoadScripts(
-          [{ url: 'https://docs.opencv.org/master/opencv.js', scriptId: 'opencv', async: true }],
-          calculate(myImage, resolve)
-        )
-      }
-    }
-    myImage.src = URL.createObjectURL(file)
 } )
 
 export const calculate = (myImage: any, solve: any) => () => {
