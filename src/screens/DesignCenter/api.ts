@@ -20,7 +20,9 @@ export const uploadFileAction = (file: any) => {
       try {
         const blurScore = await mesaureImageQuality(file)
         formData.append('blurScore', blurScore as string)
-      } catch (e) { }
+      } catch (e) {
+        message.error(e)
+      }
 
       const response = await fetch(`${config.graphqlUriBase}upload/file`, {
         method: 'POST',
