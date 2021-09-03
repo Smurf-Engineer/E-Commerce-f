@@ -16,13 +16,14 @@ import {
   SET_SELECTED_CARD_TO_PAY,
   SET_STRIPE_CARD_DATA,
   SET_STRIPE_ERROR,
+  SET_STRIPE_IBAN_DATA,
   SHOW_BILLING_ADDRESS_FORM,
   SHOW_CARD_FORM,
   STEP_ADVANCE,
   VALID_BILLING_FORM,
 } from './constants'
 
-import { AddressType, AnyAction, CreditCardData } from '../../types/common'
+import { AddressType, AnyAction, CreditCardData, IbanData } from '../../types/common'
 
 export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
@@ -131,4 +132,9 @@ export const setLoadingPlaceOrderAction = (loading: boolean): AnyAction => ({
 export const saveCountryAction = (countryCode: string | null): AnyAction => ({
   type: SAVE_COUNTRY,
   countryCode
+})
+
+export const setStripeIbanDataAction = (iban: IbanData): AnyAction => ({
+  type: SET_STRIPE_IBAN_DATA,
+  iban
 })

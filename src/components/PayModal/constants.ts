@@ -21,6 +21,7 @@ export const CHANGE_INPUT = `${namespace}/CHANGE_INPUT`
 export const SAVE_COUNTRY = `${namespace}/SAVE_COUNTRY`
 export const STEP_ADVANCE = `${namespace}/STEP_ADVANCE`
 export const SET_LOADING_PLACE_ORDER = `${namespace}/SET_LOADING_PLACE_ORDER`
+export const SET_STRIPE_IBAN_DATA = `${namespace}/SET_STRIPE_IBAN_DATA`
 
 export enum PaymentOptions {
     PAYPAL = 'paypal',

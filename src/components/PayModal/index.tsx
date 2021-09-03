@@ -32,7 +32,7 @@ import { connect } from 'react-redux'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { EU_SUBSIDIARY_COUNTRIES, PaymentOptions } from '../../screens/Checkout/constants'
 import messages from './messages'
-import { AddressType, CreditCardData, PaymentIntent, StripeCardData } from '../../types/common'
+import { AddressType, CreditCardData, IbanData, PaymentIntent, StripeCardData } from '../../types/common'
 import { PHONE_MINIMUM } from '../../constants'
 import { AddAddressMutation, CurrencyQuery } from '../../screens/Checkout/data'
 import { CreatePaymentIntentMutation, isScaPaymentQuery, PlaceOrderServiceMutation } from './data'
@@ -66,6 +66,9 @@ interface Props {
   billingCity: string
   billingZipCode: string
   billingPhone: string
+  intentId: string
+  stripeSource: string
+  ibanData: IbanData
   loadingPlaceOrder: boolean
   currentCurrency: string
   billingHasError: boolean
@@ -87,6 +90,7 @@ interface Props {
   ) => void
   callback: () => void
   requestClose: () => void
+  setStripeIbanDataAction: (iban: IbanData) => void
   saveCountryAction: (countryCode: string | null) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
   stepAdvanceAction: (step: number) => void
@@ -233,7 +237,7 @@ class PayModal extends React.Component<Props, {}> {
   createPaymentIntent = async () => {
     const { savePaymentId, createPaymentIntent } = this.props
     try {
-      const orderObj = {}
+      const orderObj = await this.getOrderObject()
       const response = await createPaymentIntent({
         variables: { orderObj }
       })
@@ -337,6 +341,59 @@ class PayModal extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
+  getOrderObject = async (
+    paypalObj?: object,
+    sca: boolean = false
+  ) => {
+    const {
+      billingFirstName,
+      billingLastName,
+      billingStreet,
+      billingApartment,
+      billingCountry,
+      billingStateProvince,
+      billingCity,
+      billingZipCode,
+      billingPhone,
+      paymentMethod,
+      stripeToken,
+      selectedCard,
+      stripeSource,
+      ibanData = {},
+      currentCurrency,
+      intentId
+    } = this.props
+
+    const billingAddress: AddressType = {
+      firstName: billingFirstName,
+      lastName: billingLastName,
+      street: billingStreet,
+      apartment: billingApartment,
+      country: billingCountry,
+      stateProvince: billingStateProvince,
+      stateProvinceCode: billingStateProvince,
+      city: billingCity,
+      zipCode: billingZipCode,
+      phone: billingPhone
+    }
+
+    const cardId = selectedCard && selectedCard.id
+
+    const orderObj = {
+      paymentMethod,
+      cardId,
+      total: 5,
+      tokenId: sca ? intentId : stripeToken,
+      sourceId: stripeSource,
+      billingAddress,
+      paymentData: paypalObj || null,
+      ibanSource: get(ibanData, 'id', null),
+      countrySubsidiary: billingCountry,
+      currency: currentCurrency || config.defaultCurrency
+    }
+    return orderObj
+  }
+
   placeOrder = async (event: any, paypalObj?: any, sca?: boolean) => {
     const {
       placeOrderService,
@@ -347,7 +404,7 @@ class PayModal extends React.Component<Props, {}> {
 
     try {
       setLoadingPlaceOrderAction(true)
-      const orderObj = { paymentMethod: '' }
+      const orderObj = await this.getOrderObject(paypalObj, sca)
       const response = await placeOrderService({
         variables: { orderObj }
       })
@@ -462,6 +519,7 @@ class PayModal extends React.Component<Props, {}> {
       setStripeErrorAction,
       showCardForm,
       loadingPlaceOrder,
+      setStripeIbanDataAction,
       selectedCard,
       indexAddressSelected,
       showCardFormAction,
@@ -561,6 +619,7 @@ class PayModal extends React.Component<Props, {}> {
                           setStripeErrorAction,
                           invalidBillingFormAction,
                           showCardForm,
+                          setStripeIbanDataAction,
                           selectedCard,
                           showCardFormAction,
                           selectCardToPayAction,

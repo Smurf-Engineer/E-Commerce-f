@@ -182,12 +182,9 @@ export const isScaPaymentQuery = gql`
 
 export const PlaceOrderServiceMutation = graphql(
   gql`
-    mutation chargeService($orderObj: OrderInput!) {
+    mutation chargeService($orderObj: ServiceInput!) {
       chargeService(order: $orderObj) {
-        id
-        short_id
-        created_at
-        client_secret
+        orderId
       }
     }
   `,

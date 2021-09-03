@@ -12,10 +12,12 @@ import {
   SET_LOADING_BILLING,
   SET_LOADING_PLACE_ORDER,
   SET_PAYMENT,
+  SET_PAYMENT_ID,
   SET_SELECTED_ADDRESS,
   SET_SELECTED_CARD_TO_PAY,
   SET_STRIPE_CARD_DATA,
   SET_STRIPE_ERROR,
+  SET_STRIPE_IBAN_DATA,
   SHOW_BILLING_ADDRESS_FORM,
   SHOW_CARD_FORM,
   STEP_ADVANCE,
@@ -52,6 +54,8 @@ export const initialState = fromJS({
   showBillingForm: false,
   loadingPlaceOrder: false,
   selectedCard: {},
+  ibanData: {},
+  intentId: '',
   paymentClientSecret: '',
   indexAddressSelected: -1,
 })
@@ -132,6 +136,12 @@ const payModalReducer: Reducer<any> = (state = initialState, action) => {
         showForm: false
       })
     }
+    case SET_STRIPE_IBAN_DATA:
+      return state.merge({
+        ibanData: action.iban,
+        loadingBilling: false,
+        stripeError: false
+      })
     case CHANGE_INPUT:
       return state.merge({ [action.id]: action.value })
     case SET_STRIPE_CARD_DATA:
@@ -161,6 +171,9 @@ const payModalReducer: Reducer<any> = (state = initialState, action) => {
         cardHolderName: ''
       })
     }
+    case SET_PAYMENT_ID:
+      const { paymentClientSecret, intentId } = action
+      return state.merge({ paymentClientSecret, intentId })
     case SELECT_DROPDOWN:
       return state.merge({ [action.id]: action.key })
     case REMOVE_CLIENT_SECRET:
