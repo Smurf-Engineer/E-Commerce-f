@@ -8,18 +8,29 @@ import {
   CloseIcon,
   Container,
   ContainerMethods,
+  HeaderImages,
+  HeadersDiv,
+  ItemColumn,
+  ItemList,
+  ItemRow,
+  JakrooImage,
   MethodButton,
   okButtonStyles,
+  PayAnimation,
   PayForm,
   PaymentDiv,
+  SelectPayment,
   StepIcon,
   StepWrapper,
+  StyledIcon,
   StyledSwipeableViews,
   SummaryContainer
 } from './styledComponents'
 import withError from '../WithError'
 import withLoading from '../WithLoading'
 import config from '../../config'
+import payAnimation from '../../assets/payanimation.png'
+import jakrooLogo from '../../assets/jakroo_logo.svg'
 import ModalCountry from '../ConfirmCountryDialog'
 import zenscroll from 'zenscroll'
 import Modal from 'antd/lib/modal/Modal'
@@ -32,7 +43,7 @@ import { connect } from 'react-redux'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { EU_SUBSIDIARY_COUNTRIES, PaymentOptions } from '../../screens/Checkout/constants'
 import messages from './messages'
-import { AddressType, CreditCardData, IbanData, PaymentIntent, StripeCardData } from '../../types/common'
+import { AddressType, CreditCardData, IbanData, PaymentIntent, ServiceItem, StripeCardData } from '../../types/common'
 import { PHONE_MINIMUM } from '../../constants'
 import { AddAddressMutation, CurrencyQuery } from '../../screens/Checkout/data'
 import { CreatePaymentIntentMutation, isScaPaymentQuery, PlaceOrderServiceMutation } from './data'
@@ -73,6 +84,7 @@ interface Props {
   currentCurrency: string
   billingHasError: boolean
   stripeError: string
+  items: ServiceItem[]
   loadingBilling: boolean
   showBillingForm: boolean
   billingSave: boolean
@@ -346,6 +358,7 @@ class PayModal extends React.Component<Props, {}> {
     sca: boolean = false
   ) => {
     const {
+      items,
       billingFirstName,
       billingLastName,
       billingStreet,
@@ -378,11 +391,12 @@ class PayModal extends React.Component<Props, {}> {
     }
 
     const cardId = selectedCard && selectedCard.id
+    const total = items.reduce((sum, item) => sum += item.price, 0)
 
     const orderObj = {
       paymentMethod,
       cardId,
-      total: 5,
+      total,
       tokenId: sca ? intentId : stripeToken,
       sourceId: stripeSource,
       billingAddress,
@@ -408,8 +422,8 @@ class PayModal extends React.Component<Props, {}> {
       const response = await placeOrderService({
         variables: { orderObj }
       })
-
-      const orderId = get(response, 'data.charge.short_id', '')
+      console.log('🔴response:', response)
+      const orderId = get(response, 'data.charge.orderId', '')
 
       if (
         sca &&
@@ -493,6 +507,7 @@ class PayModal extends React.Component<Props, {}> {
   render() {
     const {
       open,
+      items,
       paymentMethod,
       intl: {
         formatMessage
@@ -569,18 +584,42 @@ class PayModal extends React.Component<Props, {}> {
       this.confirmOrder(true)
     }
 
+    const total = items.reduce((sum, item) => sum += item.price, 0)
+
     return (
       <Modal
         visible={open}
         footer={null}
         closable={false}
-        width={'800px'}
+        width={'630px'}
       >
         <Container>
           {!loadingPlaceOrder && <CloseIcon onClick={requestClose} type="cross" />}
+          <HeaderImages>
+            <JakrooImage src={jakrooLogo} />
+            <PayAnimation src={payAnimation} />
+          </HeaderImages>
           <StepWrapper>
             <Steps current={currentStep}>{steps}</Steps>
           </StepWrapper>
+          <ItemList>
+            <SelectPayment>
+              <StyledIcon type="shopping-cart" />
+              {formatMessage(messages.details)}
+            </SelectPayment>
+            <HeadersDiv>
+              <ItemColumn bold={true} width="180px">{formatMessage(messages.item)}</ItemColumn>
+              <ItemColumn bold={true} width="310px">{formatMessage(messages.description)}</ItemColumn>
+              <ItemColumn bold={true} width="72px">{formatMessage(messages.price)}</ItemColumn>
+            </HeadersDiv>
+            {items.map(({ name, price, description }: ServiceItem, key: number) =>
+              <ItemRow {...{ key }}>
+                <ItemColumn width="180px">{name}</ItemColumn>
+                <ItemColumn width="310px">{description}</ItemColumn>
+                <ItemColumn width="72px">{price}</ItemColumn>
+              </ItemRow>
+            )}
+          </ItemList>
           <StyledSwipeableViews
             action={actions => {
               this.swipeableActions = actions
@@ -590,6 +629,10 @@ class PayModal extends React.Component<Props, {}> {
             disabled={true}
           >
             <PaymentDiv>
+              <SelectPayment>
+                <StyledIcon type="credit-card" />
+                {formatMessage(messages.selectPayment)}
+              </SelectPayment>
               <ContainerMethods>
                 <MethodButton
                   selected={paymentMethod === CREDITCARD}
@@ -645,7 +688,6 @@ class PayModal extends React.Component<Props, {}> {
             </PaymentDiv>
             <SummaryContainer>
               <CheckoutSummary
-                total={5}
                 country={billingCountry}
                 billing={billingAddress}
                 onPaypalSuccess={this.onPaypalSuccess}
@@ -654,9 +696,11 @@ class PayModal extends React.Component<Props, {}> {
                 placingOrder={loadingPlaceOrder || paymentIntentLoading}
                 onPlaceOrder={this.handleOnPlaceOrder}
                 {...{
+                  total,
                   showOrderButton,
                   formatMessage,
                   billingAddress,
+                  selectedCard,
                   paymentMethod,
                   currentCurrency,
                 }}

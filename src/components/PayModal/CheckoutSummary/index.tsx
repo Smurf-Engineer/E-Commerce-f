@@ -11,7 +11,10 @@ import {
   Container,
   OrderSummary,
   paypalButtonStyle,
-  PlaceOrderButton
+  PlaceOrderButton,
+  TotalDiv,
+  TotalLabel,
+  TotalValue
 } from './styledComponents'
 import { getTaxQuery, isScaPaymentQuery } from './data'
 import {
@@ -75,6 +78,7 @@ const CheckoutSummary = ({
   onPaypalError,
   onPaypalCancel,
   currentCurrency,
+  billingAddress,
   onPlaceOrder,
   placingOrder = false,
   subsidiaryQuery,
@@ -124,11 +128,17 @@ const CheckoutSummary = ({
   const orderButton = showOrderButton && orderButtonComponent
   return (
     <Container>
-      <MediaQuery maxWidth={480}>{orderButton}</MediaQuery>
       <OrderSummary>
-        {total}
+        <TotalDiv>
+          <TotalLabel>
+            {formatMessage(messages.total)}
+          </TotalLabel>
+          <TotalValue>
+            {total}
+          </TotalValue>
+        </TotalDiv>
       </OrderSummary>
-      <MediaQuery minWidth={481}>{orderButton}</MediaQuery>
+      {orderButton}
     </Container>
   )
 }

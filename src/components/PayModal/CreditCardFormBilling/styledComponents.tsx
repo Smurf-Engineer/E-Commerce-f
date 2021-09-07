@@ -18,7 +18,7 @@ export const Row = styled.div`
 `
 
 export const Column = styled.div`
-  width: 70%;
+  width: 100%;
 
  @media (max-width: 768px) {
     width: 100%;

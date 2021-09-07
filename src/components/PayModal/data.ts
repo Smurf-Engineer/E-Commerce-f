@@ -159,8 +159,8 @@ export const getOrderQuery = gql`
 
 export const CreatePaymentIntentMutation = graphql(
   gql`
-    mutation createPaymentIntent($orderObj: OrderInput!) {
-      createPaymentIntent(order: $orderObj) {
+    mutation createPaymentIntentService($orderObj: OrderInput!) {
+      createPaymentIntentService(order: $orderObj) {
         paymentClientSecret
         intentId
       }
@@ -184,7 +184,7 @@ export const PlaceOrderServiceMutation = graphql(
   gql`
     mutation chargeService($orderObj: ServiceInput!) {
       chargeService(order: $orderObj) {
-        orderId
+        orderId: short_id
       }
     }
   `,

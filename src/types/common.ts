@@ -900,6 +900,12 @@ export interface IbanData {
   last4: string
 }
 
+export interface ServiceItem {
+  name: string
+  description: string
+  price: number
+}
+
 export interface OrderHistory {
   id: number
   shortId: string

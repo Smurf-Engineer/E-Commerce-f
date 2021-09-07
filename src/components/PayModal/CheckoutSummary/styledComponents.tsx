@@ -23,6 +23,23 @@ export const PlaceOrderButton = styled(Button)`
   }
 `
 
+export const TotalDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 17px;
+  margin-bottom: 28px;
+`
+
+export const TotalLabel = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+`
+
+export const TotalValue = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+`
+
 export const paypalButtonStyle = {
   label: 'paypal',
   size: 'responsive',

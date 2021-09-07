@@ -5,10 +5,12 @@ import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import SwipeableViews from 'react-swipeable-views'
 import styled from 'styled-components'
-import { BLACK_SHADOW, BLUE, GRAY_LIGHT, WHITE } from '../../theme/colors'
+import { BLACK_SHADOW, BLUE, GRAY_DARK, GRAY_LIGHT, WHITE } from '../../theme/colors'
 
 interface DivProps {
   invoice?: boolean
+  width?: string
+  bold?: boolean
   savingPdf?: boolean
 }
 
@@ -131,6 +133,77 @@ export const PayForm = styled.div``
 export const SummaryContainer = styled.div``
 
 export const StyledSwipeableViews = styled(SwipeableViews)``
+
+export const SelectPayment = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  margin-bottom: 16px;
+`
+
+export const ItemList = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  margin-bottom: 22px;
+  box-shadow: 1px 2px 6px -2px grey;
+  padding: 13px 18px;
+  border-radius: 5px;
+`
+
+export const HeadersDiv = styled.div`
+  display: flex;
+  padding-bottom: 12px;
+  border-bottom: 1px solid ${GRAY_LIGHT};
+`
+
+export const ItemColumn = styled.div`
+  max-width: ${({ width }: DivProps) => width || '180px'};
+  width: 100%;
+  font-size: 12px;
+  font-weight: ${({ bold }: DivProps) => bold ? 'bold' : 'unset'};
+  &:last-child {
+    text-align: right;
+  }
+`
+
+export const ItemRow = styled.div`
+  display: flex;
+  margin: 12px 0;
+`
+
+export const StyledIcon = styled(Icon)`
+  width: 28px;
+  margin-right: 12px;
+  padding-right: 1px;
+  border: 1px solid ${BLUE};
+  color: ${BLUE};
+  border-radius: 50%;
+  text-align: center;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const HeaderImages = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 22px;
+  margin-top: 12px;
+`
+
+export const JakrooImage = styled.img``
+
+export const PayAnimation = styled.img`
+  max-width: 36px;
+  margin-right: -17px;
+  margin-left: 25px;
+  filter: saturate(0.75);
+`
 
 export const okButtonStyles = {
   background: BLUE,

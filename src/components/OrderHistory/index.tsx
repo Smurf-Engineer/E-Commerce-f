@@ -75,6 +75,18 @@ class OrderHistory extends React.Component<Props, {}> {
         />
         <PayModal
           open={true}
+          items={[
+            {
+              name: 'EDIT REQUEST',
+              price: 10,
+              description: `Add a new Edit Request for the ProDesign: JV2-UVUVEWE-OSSAS1`
+            },
+            {
+              name: 'EDIT REQUEST',
+              price: 24,
+              description: `Add a new Edit Request for the ProDesign: JV2-UVUVEWE-OSSAS1`
+            }
+          ]}
         />
       </SwipeableViews>
     )

@@ -29,6 +29,26 @@ export default defineMessages({
     id: 'components.PayModal.confirm',
     defaultMessage: 'Confirm'
   },
+  selectPayment: {
+    id: 'components.PayModal.selectPayment',
+    defaultMessage: 'Payment Method'
+  },
+  item: {
+    id: 'components.PayModal.item',
+    defaultMessage: 'Item'
+  },
+  details: {
+    id: 'components.PayModal.details',
+    defaultMessage: 'Details'
+  },
+  description: {
+    id: 'components.PayModal.description',
+    defaultMessage: 'Description'
+  },
+  price: {
+    id: 'components.PayModal.price',
+    defaultMessage: 'Price'
+  },
   correctCurrency: {
     id: 'components.PayModal.correctCurrency',
     defaultMessage:
