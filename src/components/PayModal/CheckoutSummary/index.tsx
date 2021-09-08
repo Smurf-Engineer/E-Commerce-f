@@ -9,6 +9,7 @@ import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
+  LoadingPaypal,
   OrderSummary,
   paypalButtonStyle,
   PlaceOrderButton,
@@ -30,6 +31,7 @@ import {
 } from '../../../types/common'
 import config from '../../../config/index'
 import { PaymentOptions } from '../constants'
+import Spin from 'antd/lib/spin'
 
 interface Data extends QueryProps {
   taxes: NetsuiteTax
@@ -134,10 +136,13 @@ const CheckoutSummary = ({
             {formatMessage(messages.total)}
           </TotalLabel>
           <TotalValue>
-            {total}
+            {total} {currency}
           </TotalValue>
         </TotalDiv>
       </OrderSummary>
+      {paymentMethod === PaymentOptions.PAYPAL && placingOrder &&
+        <LoadingPaypal><Spin /></LoadingPaypal>
+      }
       {orderButton}
     </Container>
   )

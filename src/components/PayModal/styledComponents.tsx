@@ -5,10 +5,11 @@ import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import SwipeableViews from 'react-swipeable-views'
 import styled from 'styled-components'
-import { BLACK_SHADOW, BLUE, GRAY_DARK, GRAY_LIGHT, WHITE } from '../../theme/colors'
+import { BLACK_SHADOW, BLUE, GRAY_DARK, GRAY_LIGHT, GREEN_BRIGHT, WHITE } from '../../theme/colors'
 
 interface DivProps {
   invoice?: boolean
+  uppercase?: boolean
   width?: string
   bold?: boolean
   savingPdf?: boolean
@@ -163,6 +164,7 @@ export const ItemColumn = styled.div`
   width: 100%;
   font-size: 12px;
   font-weight: ${({ bold }: DivProps) => bold ? 'bold' : 'unset'};
+  text-transform: ${({ uppercase }: DivProps) => uppercase ? 'uppercase' : 'auto'};
   &:last-child {
     text-align: right;
   }
@@ -196,6 +198,17 @@ export const HeaderImages = styled.div`
   margin-top: 12px;
 `
 
+export const CompletedDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 22px;
+  margin-top: 12px;
+  height: 171px;
+  flex-flow: column;
+`
+
 export const JakrooImage = styled.img``
 
 export const PayAnimation = styled.img`
@@ -203,6 +216,30 @@ export const PayAnimation = styled.img`
   margin-right: -17px;
   margin-left: 25px;
   filter: saturate(0.75);
+`
+
+export const PayCompletedImg = styled.img`
+  width: 100%;
+  max-width: 228px;
+  animation: fade-in-bottom 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-bottom {
+    0% {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+`
+
+export const PayCompleteInfo = styled.div`
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 15px;
+  color: #66b2dc;
+  font-family: Avenir-Medium;
 `
 
 export const okButtonStyles = {

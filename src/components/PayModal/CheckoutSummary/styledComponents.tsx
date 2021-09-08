@@ -3,9 +3,12 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { BLUE, WHITE } from '../../../theme/colors'
+import { BLUE, WHITE, WHITE_TRANSPARENT } from '../../../theme/colors'
+import Spin from 'antd/lib/spin'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  position: relative;
+`
 
 export const OrderSummary = styled.div``
 
@@ -38,6 +41,17 @@ export const TotalLabel = styled.div`
 export const TotalValue = styled.div`
   font-weight: bold;
   font-size: 16px;
+`
+
+export const LoadingPaypal = styled.div`
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+  height: 56px;
+  background: ${WHITE_TRANSPARENT};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const paypalButtonStyle = {

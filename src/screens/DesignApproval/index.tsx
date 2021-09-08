@@ -195,6 +195,7 @@ import {
   WHITE,
   FACEBOOKBLUE
 } from '../../theme/colors'
+import PayModal from '../../components/PayModal'
 
 const { confirm, info } = Modal
 const { TabPane } = AntdTabs
@@ -1148,7 +1149,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
                 </RequestEdit>
               </MobileRequestButtons>
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId &&
                     <Render3D
@@ -1431,6 +1432,17 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </SaveButton>
             </ButtonContainer>
           </DraggableModalStyled>}
+          <PayModal
+            open={true}
+            items={[
+              {
+                name: 'EDIT REQUEST',
+                price: 10,
+                itemId: 'sjiFmzNdA',
+                description: `Add a new Edit Request for the ProDesign: JV2-UVUVEWE-OSSAS1`
+              },
+            ]}
+          />
         </Container>
       </Layout>
     )

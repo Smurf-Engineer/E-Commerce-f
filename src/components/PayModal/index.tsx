@@ -6,6 +6,7 @@ import { graphql, compose, withApollo } from 'react-apollo'
 import {
   CheckIcon,
   CloseIcon,
+  CompletedDiv,
   Container,
   ContainerMethods,
   HeaderImages,
@@ -17,6 +18,8 @@ import {
   MethodButton,
   okButtonStyles,
   PayAnimation,
+  PayCompletedImg,
+  PayCompleteInfo,
   PayForm,
   PaymentDiv,
   SelectPayment,
@@ -30,6 +33,7 @@ import withError from '../WithError'
 import withLoading from '../WithLoading'
 import config from '../../config'
 import payAnimation from '../../assets/payanimation.png'
+import payCompletedGif from '../../assets/paycompletedcard.gif'
 import jakrooLogo from '../../assets/jakroo_logo.svg'
 import ModalCountry from '../ConfirmCountryDialog'
 import zenscroll from 'zenscroll'
@@ -100,7 +104,7 @@ interface Props {
     indexAddress: number,
     billing: boolean
   ) => void
-  callback: () => void
+  callback: (id: string) => void
   requestClose: () => void
   setStripeIbanDataAction: (iban: IbanData) => void
   saveCountryAction: (countryCode: string | null) => void
@@ -134,6 +138,7 @@ class PayModal extends React.Component<Props, {}> {
     checked: false,
     openConfirm: false,
     showPricing: false,
+    payCompleted: false
   }
   private swipeableActions: any
   componentDidMount() {
@@ -397,6 +402,7 @@ class PayModal extends React.Component<Props, {}> {
       paymentMethod,
       cardId,
       total,
+      items,
       tokenId: sca ? intentId : stripeToken,
       sourceId: stripeSource,
       billingAddress,
@@ -422,7 +428,6 @@ class PayModal extends React.Component<Props, {}> {
       const response = await placeOrderService({
         variables: { orderObj }
       })
-      console.log('🔴response:', response)
       const orderId = get(response, 'data.charge.orderId', '')
 
       if (
@@ -443,15 +448,16 @@ class PayModal extends React.Component<Props, {}> {
           return
         }
       }
-      setLoadingPlaceOrderAction(false)
+      this.setState({ payCompleted: true })
       const { callback } = this.props
       if (callback) {
-        callback()
+        setTimeout(() => callback(orderId), 2000)
       }
     } catch (error) {
-      setLoadingPlaceOrderAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
+    } finally {
+      setLoadingPlaceOrderAction(false)
     }
   }
 
@@ -542,7 +548,7 @@ class PayModal extends React.Component<Props, {}> {
       showBillingForm,
       showBillingAddressFormAction,
     } = this.props
-    const { stripe, checked, openConfirm } = this.state
+    const { stripe, checked, openConfirm, payCompleted } = this.state
     const billingAddress: AddressType = {
       firstName: billingFirstName,
       lastName: billingLastName,
@@ -585,7 +591,7 @@ class PayModal extends React.Component<Props, {}> {
     }
 
     const total = items.reduce((sum, item) => sum += item.price, 0)
-
+    const currency = currentCurrency || config.defaultCurrency
     return (
       <Modal
         visible={open}
@@ -599,120 +605,130 @@ class PayModal extends React.Component<Props, {}> {
             <JakrooImage src={jakrooLogo} />
             <PayAnimation src={payAnimation} />
           </HeaderImages>
-          <StepWrapper>
-            <Steps current={currentStep}>{steps}</Steps>
-          </StepWrapper>
-          <ItemList>
-            <SelectPayment>
-              <StyledIcon type="shopping-cart" />
-              {formatMessage(messages.details)}
-            </SelectPayment>
-            <HeadersDiv>
-              <ItemColumn bold={true} width="180px">{formatMessage(messages.item)}</ItemColumn>
-              <ItemColumn bold={true} width="310px">{formatMessage(messages.description)}</ItemColumn>
-              <ItemColumn bold={true} width="72px">{formatMessage(messages.price)}</ItemColumn>
-            </HeadersDiv>
-            {items.map(({ name, price, description }: ServiceItem, key: number) =>
-              <ItemRow {...{ key }}>
-                <ItemColumn width="180px">{name}</ItemColumn>
-                <ItemColumn width="310px">{description}</ItemColumn>
-                <ItemColumn width="72px">{price}</ItemColumn>
-              </ItemRow>
-            )}
-          </ItemList>
-          <StyledSwipeableViews
-            action={actions => {
-              this.swipeableActions = actions
-            }}
-            animateHeight={true}
-            index={currentStep}
-            disabled={true}
-          >
-            <PaymentDiv>
-              <SelectPayment>
-                <StyledIcon type="credit-card" />
-                {formatMessage(messages.selectPayment)}
-              </SelectPayment>
-              <ContainerMethods>
-                <MethodButton
-                  selected={paymentMethod === CREDITCARD}
-                  onClick={this.handleCreditCardClick}
-                >
-                  {formatMessage(messages.methodCreditCard)}
-                </MethodButton>
-                <MethodButton
-                  selected={paymentMethod === PAYPAL}
-                  onClick={this.handlePaypalClick}
-                >
-                  {formatMessage(messages.methodPaypal)}
-                </MethodButton>
-              </ContainerMethods>
-              <PayForm>
-                {paymentMethod === CREDITCARD && (
-                  <StripeProvider stripe={stripe}>
-                    <Elements>
-                      <CreditCardForm
-                        {...{
-                          formatMessage,
-                          cardHolderName,
-                          billingAddress,
-                          stripeError,
-                          loadingBilling,
-                          setLoadingBillingAction,
-                          setStripeErrorAction,
-                          invalidBillingFormAction,
-                          showCardForm,
-                          setStripeIbanDataAction,
-                          selectedCard,
-                          showCardFormAction,
-                          selectCardToPayAction,
-                          indexAddressSelected,
-                          showBillingForm,
-                          showBillingAddressFormAction,
-                          paymentClientSecret,
-                          stripe
-                        }}
-                        createPaymentIntent={this.createPaymentIntent}
-                        nextStep={this.nextStep}
-                        hasError={billingHasError}
-                        setSelectedAddress={this.handleOnSelectAddress}
-                        setStripeCardDataAction={this.setStripeCardData}
-                        selectDropdownAction={this.handleOnDropdownAction}
-                        inputChangeAction={this.handleOnChangeInput}
-                        isEuSubsidiary={europeStripeAccount}
-                      />
-                    </Elements>
-                  </StripeProvider>
+          {payCompleted ?
+            <CompletedDiv>
+              <PayCompletedImg src={payCompletedGif} />
+              <PayCompleteInfo>
+                {formatMessage(messages.paymentSuccess)}
+              </PayCompleteInfo>
+            </CompletedDiv> :
+            <>
+              <StepWrapper>
+                <Steps current={currentStep}>{steps}</Steps>
+              </StepWrapper>
+              <ItemList>
+                <SelectPayment>
+                  <StyledIcon type="shopping-cart" />
+                  {formatMessage(messages.details)}
+                </SelectPayment>
+                <HeadersDiv>
+                  <ItemColumn bold={true} width="180px">{formatMessage(messages.item)}</ItemColumn>
+                  <ItemColumn bold={true} width="310px">{formatMessage(messages.description)}</ItemColumn>
+                  <ItemColumn bold={true} width="72px">{formatMessage(messages.price)}</ItemColumn>
+                </HeadersDiv>
+                {items.map(({ name, price, description }: ServiceItem, key: number) =>
+                  <ItemRow {...{ key }}>
+                    <ItemColumn width="180px">{name}</ItemColumn>
+                    <ItemColumn width="310px">{description}</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{price} {currency}</ItemColumn>
+                  </ItemRow>
                 )}
-              </PayForm>
-            </PaymentDiv>
-            <SummaryContainer>
-              <CheckoutSummary
-                country={billingCountry}
-                billing={billingAddress}
-                onPaypalSuccess={this.onPaypalSuccess}
-                onPaypalCancel={this.onPaypalCancel}
-                onPaypalError={this.onPaypalError}
-                placingOrder={loadingPlaceOrder || paymentIntentLoading}
-                onPlaceOrder={this.handleOnPlaceOrder}
-                {...{
-                  total,
-                  showOrderButton,
-                  formatMessage,
-                  billingAddress,
-                  selectedCard,
-                  paymentMethod,
-                  currentCurrency,
+              </ItemList>
+              <StyledSwipeableViews
+                action={actions => {
+                  this.swipeableActions = actions
                 }}
+                animateHeight={true}
+                index={currentStep}
+                disabled={true}
+              >
+                <PaymentDiv>
+                  <SelectPayment>
+                    <StyledIcon type="credit-card" />
+                    {formatMessage(messages.selectPayment)}
+                  </SelectPayment>
+                  <ContainerMethods>
+                    <MethodButton
+                      selected={paymentMethod === CREDITCARD}
+                      onClick={this.handleCreditCardClick}
+                    >
+                      {formatMessage(messages.methodCreditCard)}
+                    </MethodButton>
+                    <MethodButton
+                      selected={paymentMethod === PAYPAL}
+                      onClick={this.handlePaypalClick}
+                    >
+                      {formatMessage(messages.methodPaypal)}
+                    </MethodButton>
+                  </ContainerMethods>
+                  <PayForm>
+                    {paymentMethod === CREDITCARD && (
+                      <StripeProvider stripe={stripe}>
+                        <Elements>
+                          <CreditCardForm
+                            {...{
+                              formatMessage,
+                              cardHolderName,
+                              billingAddress,
+                              stripeError,
+                              loadingBilling,
+                              setLoadingBillingAction,
+                              setStripeErrorAction,
+                              invalidBillingFormAction,
+                              showCardForm,
+                              setStripeIbanDataAction,
+                              selectedCard,
+                              showCardFormAction,
+                              selectCardToPayAction,
+                              indexAddressSelected,
+                              showBillingForm,
+                              showBillingAddressFormAction,
+                              paymentClientSecret,
+                              stripe
+                            }}
+                            createPaymentIntent={this.createPaymentIntent}
+                            nextStep={this.nextStep}
+                            hasError={billingHasError}
+                            setSelectedAddress={this.handleOnSelectAddress}
+                            setStripeCardDataAction={this.setStripeCardData}
+                            selectDropdownAction={this.handleOnDropdownAction}
+                            inputChangeAction={this.handleOnChangeInput}
+                            isEuSubsidiary={europeStripeAccount}
+                          />
+                        </Elements>
+                      </StripeProvider>
+                    )}
+                  </PayForm>
+                </PaymentDiv>
+                <SummaryContainer>
+                  <CheckoutSummary
+                    country={billingCountry}
+                    billing={billingAddress}
+                    onPaypalSuccess={this.onPaypalSuccess}
+                    onPaypalCancel={this.onPaypalCancel}
+                    onPaypalError={this.onPaypalError}
+                    placingOrder={loadingPlaceOrder || paymentIntentLoading}
+                    onPlaceOrder={this.handleOnPlaceOrder}
+                    {...{
+                      total,
+                      showOrderButton,
+                      formatMessage,
+                      billingAddress,
+                      selectedCard,
+                      paymentMethod,
+                      currentCurrency,
+                    }}
+                  />
+                </SummaryContainer>
+              </StyledSwipeableViews>
+              <ModalCountry
+                {...{ formatMessage }}
+                open={openConfirm}
+                requestClose={this.handleCancelConfirm}
+                onSave={this.handleConfirmSave}
               />
-            </SummaryContainer>
-          </StyledSwipeableViews>
-          <ModalCountry
-            {...{ formatMessage }}
-            open={openConfirm}
-            requestClose={this.handleCancelConfirm}
-            onSave={this.handleConfirmSave}
-          />
+            </>
+          }
         </Container>
       </Modal>
     )

@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.PayModal.orderNumber',
     defaultMessage: 'Order Number'
   },
+  paymentSuccess: {
+    id: 'components.PayModal.paymentSuccess',
+    defaultMessage: 'Payment Successful!'
+  },
   confirm: {
     id: 'components.PayModal.confirm',
     defaultMessage: 'Confirm'
