@@ -438,7 +438,7 @@
   "screens.Account.menu.proDesignProjects": "My Projects",
   "screens.Account.menu.goBack": "Back",
   "screens.Account.menu.creditCards": "Credit Cards",
-  "screens.Account.menu.creditCardsDescription": "Jakroo does not save any card information on its website or application servers.\nFor your security full credit card information is saved only on the STRIPE encrypted payment\nprocessor servers.",
+  "screens.Account.menu.creditCardsDescription": "Jakroo does not save any card information on its website or application servers.</br>For your security full credit card information is saved only on the STRIPE encrypted payment</br>processor servers.",
   "screens.Account.menu.profileSettings": "Profile",
   "screens.Account.menu.profileMenu": "PROFILE SETTINGS",
   "screens.Account.menu.teamStores": "MY TEAM STORES",

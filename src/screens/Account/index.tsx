@@ -463,9 +463,11 @@ export class Account extends React.Component<Props, {}> {
                           )}
                         </ScreenTitle>
                         {currentScreenValue === CREDIT_CARDS && (
-                          <ScreenTitleDescription>
-                            {intl.formatMessage(messages.creditCardsDescription)}
-                          </ScreenTitleDescription>
+                          <ScreenTitleDescription
+                            dangerouslySetInnerHTML={{
+                              __html: intl.formatMessage(messages.creditCardsDescription)
+                            }}
+                          />
                         )}
                         {currentScreen}
                       </Content>
@@ -506,9 +508,11 @@ export class Account extends React.Component<Props, {}> {
                         <FormattedMessage {...messages[currentScreenValue]} />
                       )}
                       {currentScreenValue === CREDIT_CARDS && (
-                        <ScreenTitleDescription>
-                          {intl.formatMessage(messages.creditCardsDescription)}
-                        </ScreenTitleDescription>
+                        <ScreenTitleDescription
+                          dangerouslySetInnerHTML={{
+                            __html: intl.formatMessage(messages.creditCardsDescription)
+                          }}
+                        />
                       )}
                     </ScreenTitle>
                     {currentScreen}
