@@ -4,7 +4,6 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import { BLUE, WHITE, WHITE_TRANSPARENT } from '../../../theme/colors'
-import Spin from 'antd/lib/spin'
 
 export const Container = styled.div`
   position: relative;

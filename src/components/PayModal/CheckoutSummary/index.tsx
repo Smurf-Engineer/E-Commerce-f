@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
-import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'

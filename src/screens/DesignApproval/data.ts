@@ -22,6 +22,7 @@ export const getProdesignItemQuery = gql`
     projectItem: getProdesignItem(shortId: $shortId) {
       id: short_id
       status
+      code: design_code
       showNotification
       limitRequests: limit_requests
       product {
@@ -266,6 +267,19 @@ export const addTeamStoreItemMutation = gql`
       teamStoreId: $teamStoreId
     ) {
       message
+    }
+  }
+`
+
+export const getEditRequestPrices = gql`
+  query getEditRequestPrices {
+    editRequestPrices: getEditRequestPrices {
+      usd
+      aud
+      cad
+      eur
+      chf
+      gbp
     }
   }
 `

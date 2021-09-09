@@ -2,7 +2,7 @@
  * PayModal Component - Created by miguelcanobbio on 23/05/18.
  */
 import * as React from 'react'
-import { graphql, compose, withApollo } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import {
   CheckIcon,
   CloseIcon,
@@ -428,7 +428,7 @@ class PayModal extends React.Component<Props, {}> {
       const response = await placeOrderService({
         variables: { orderObj }
       })
-      const orderId = get(response, 'data.charge.orderId', '')
+      const orderId = get(response, 'data.chargeService.orderId', '')
 
       if (
         sca &&
@@ -733,10 +733,6 @@ class PayModal extends React.Component<Props, {}> {
       </Modal>
     )
   }
-}
-
-type OwnProps = {
-  orderId?: string
 }
 
 const mapStateToProps = (state: any) => {

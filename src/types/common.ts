@@ -28,6 +28,16 @@ export interface DesignSaved {
   zipperColor?: string
 }
 
+export type ServicePrice = {
+  name: string
+  usd: number
+  aud: number
+  cad: number
+  eur: number
+  chf: number
+  gbp: number
+}
+
 export interface SelectedItem {
   [extraProp: number]: boolean
 }

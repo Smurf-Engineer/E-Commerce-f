@@ -5,7 +5,7 @@ import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import SwipeableViews from 'react-swipeable-views'
 import styled from 'styled-components'
-import { BLACK_SHADOW, BLUE, GRAY_DARK, GRAY_LIGHT, GREEN_BRIGHT, WHITE } from '../../theme/colors'
+import { BLACK_SHADOW, BLUE, GRAY_DARK, GRAY_LIGHT, WHITE } from '../../theme/colors'
 
 interface DivProps {
   invoice?: boolean
