@@ -1029,10 +1029,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </ApproveButton>
           <RequestEdit
             disabled={itemStatus !== CUSTOMER_PREVIEW}
-            onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
+            onClick={requestedEdits >= limitRequests ? this.handleOpenRequest : this.handleOpenRequest}
           >
             <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-              {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
+              {formatMessage(messages[requestedEdits >= limitRequests ? 'requestEdit' : 'requestEdit'])}
             </RequestText>
             <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
           </RequestEdit>
@@ -1180,10 +1180,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </ApproveButton>
                 <RequestEdit
                   disabled={itemStatus !== CUSTOMER_PREVIEW}
-                  onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
+                  onClick={requestedEdits >= limitRequests ? this.handleOpenRequest : this.handleOpenRequest}
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                    {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
+                    {formatMessage(messages[requestedEdits >= limitRequests ? 'requestEdit' : 'requestEdit'])}
                   </RequestText>
                   <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
                 </RequestEdit>
