@@ -99,7 +99,7 @@ export default defineMessages({
   },
   profileMenu: {
     id: 'screens.Account.profileMenu',
-    defaultMessage: 'PROFILE SETTINGS'
+    defaultMessage: 'ACCOUNT SETTINGS'
   },
   reseller: {
     id: 'screens.Account.reseller',
