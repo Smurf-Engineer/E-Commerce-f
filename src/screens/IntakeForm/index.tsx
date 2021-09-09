@@ -395,11 +395,14 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         if (!fromScratch || fromDesign) {
           return goToPage(currentScreen + 3)
         } else if (!!admProject) {
-          return goToPage(Sections.NOTES)
+          return goToPage(Sections.COLORS)
         }
         if (fromScratch && !admProject && (isMobile || isTablet)) {
           this.showInspirationModal()
         }
+      }
+      if (currentScreen === Sections.COLORS && !!admProject) {
+        return goToPage(Sections.NOTES)
       }
       return goToPage(currentScreen + 1)
     }
@@ -493,8 +496,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { goToPage, currentScreen, fromScratch, fromDesign, setFromDesignAction, location: { search } } = this.props
     const queryParams = queryString.parse(search)
     const { admProject } = queryParams || {}
-    if (currentScreen === Sections.NOTES && admProject) {
+    if (currentScreen === Sections.COLORS && admProject) {
       return goToPage(Sections.PRODUCTS)
+    }
+    if (currentScreen === Sections.NOTES && admProject) {
+      return goToPage(Sections.COLORS)
     }
     if (currentScreen === Sections.PRODUCTS && fromDesign) {
       return goToPage(Sections.LOCKER)

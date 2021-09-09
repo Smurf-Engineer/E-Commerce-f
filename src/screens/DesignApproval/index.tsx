@@ -28,7 +28,8 @@ import {
   addProductProjectMutation,
   getPredyedColors,
   getProdesignItemQuery,
-  getVariantsFromProduct
+  getVariantsFromProduct,
+  getEditRequestPrices
 } from './data'
 import {
   openLoginAction
@@ -52,7 +53,8 @@ import {
   PredyedColor,
   MessagePayload,
   ModelVariant,
-  Notification
+  Notification,
+  ServicePrice
 } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
@@ -195,6 +197,8 @@ import {
   WHITE,
   FACEBOOKBLUE
 } from '../../theme/colors'
+import PayModal from '../../components/PayModal'
+import config from '../../config'
 
 const { confirm, info } = Modal
 const { TabPane } = AntdTabs
@@ -211,10 +215,15 @@ interface Data extends QueryProps {
   projectItem: ProDesignItem
 }
 
+interface EditRequestData extends QueryProps {
+  editRequestPrices: ServicePrice
+}
+
 interface StateProps {
   selectedKey: string
   openShare: boolean
   openBottom: boolean
+  openPurchase: boolean
   teamStoreId: string
   itemToAdd: any
   openAddToStoreModal: boolean
@@ -231,11 +240,13 @@ interface Props extends RouteComponentProps<any> {
   file: string
   sendingNote: boolean
   history: History
+  currentCurrency: string
   fontsData: any
   uploadingFile: boolean
   parentMessageId: string
   parentMessage: string
   predyedData: PredyedData
+  editRequestData: EditRequestData
   approveLoading: boolean
   dataVariants: DataVariants
   project: string
@@ -266,6 +277,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     selectedKey: APPROVAL,
     openShare: false,
     openBottom: false,
+    openPurchase: false,
     openAddToStoreModal: false,
     teamStoreId: '',
     itemToAdd: {},
@@ -332,6 +344,27 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (notification_type === PROJECT_MESSAGE || notification_type === PROJECT_REVIEW) {
       const { data } = this.props
       await data.refetch()
+    }
+  }
+  openPurchaseModal = () => {
+    this.setState({ openPurchase: true })
+  }
+  closePurchaseModal = () => {
+    this.setState({ openPurchase: false })
+  }
+  successPurchase = (orderId: string) => {
+    if (orderId) {
+      const { client, data: storedData } = this.props
+      const projectItem = get(storedData, 'projectItem', {})
+      const itemId = get(projectItem, 'projectItem.id', '') as string
+      projectItem.limitRequests += 1
+      client.writeQuery({
+        query: getProdesignItemQuery,
+        variables: { shortId: itemId },
+        data: storedData
+      })
+      this.closePurchaseModal()
+      this.handleOpenRequest()
     }
   }
   onTabClickAction = (selectedKey: string) => {
@@ -724,6 +757,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       project,
       openRequest,
       parentMessageId,
+      editRequestData,
+      currentCurrency,
       parentMessage,
       approveLoading,
       note,
@@ -739,18 +774,23 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const {
       selectedKey,
       openBottom,
+      openPurchase,
       openShare,
       designToApply,
       openAddToStoreModal,
       teamStoreId,
       selectedVariant
     } = this.state
+    const currency = currentCurrency || config.defaultCurrency
     const fontList: Font[] = get(fontsData, 'fonts', [])
     const { loading = true, projectItem, error } = data || {}
     const incomingMessages = get(projectItem, 'messages', []) as ProDesignMessage[]
     const product = get(projectItem, 'product', {}) as Product
     const design = get(projectItem, 'design', {}) as DesignType
     const colors = get(projectItem, 'colors', []) as ColorType[]
+    const projectItemId = get(projectItem, 'id', '') as string
+    const itemCode = get(projectItem, 'code', '') as string
+    const editRequestPrice = get(editRequestData, ['editRequestPrices', currency], 0) as number
     const highlight = get(projectItem, 'showNotification', false) as boolean
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
     const itemStatus = get(projectItem, 'status', '') as string
@@ -825,7 +865,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
     const proDesignModel = {
       createdAt: createdAtDesign,
-      designCode,
+      designCode: designCode || itemCode,
       designId: designSerialId,
       designImage,
       designName,
@@ -989,10 +1029,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </ApproveButton>
           <RequestEdit
             disabled={itemStatus !== CUSTOMER_PREVIEW}
-            onClick={this.handleOpenRequest}
+            onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
           >
             <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-              {formatMessage(messages.requestEdit)}
+              {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
             </RequestText>
             <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
           </RequestEdit>
@@ -1074,7 +1114,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </DesignLabel>
                   <DesignLabel>
                     <DescLabel>{formatMessage(messages.designNo)}</DescLabel>
-                    {designCode}
+                    {designCode || itemCode}
                   </DesignLabel>
                 </NameLabel>
               }
@@ -1140,10 +1180,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </ApproveButton>
                 <RequestEdit
                   disabled={itemStatus !== CUSTOMER_PREVIEW}
-                  onClick={this.handleOpenRequest}
+                  onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                    {formatMessage(messages.requestEdit)}
+                    {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
                   </RequestText>
                   <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
                 </RequestEdit>
@@ -1431,6 +1471,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </SaveButton>
             </ButtonContainer>
           </DraggableModalStyled>}
+          <PayModal
+            open={openPurchase}
+            callback={this.successPurchase}
+            requestClose={this.closePurchaseModal}
+            items={[
+              {
+                name: 'Edit Request',
+                price: editRequestPrice,
+                itemId: projectItemId,
+                description: `Design edit request for ${itemCode}`
+              },
+            ]}
+          />
         </Container>
       </Layout>
     )
@@ -1445,11 +1498,13 @@ interface OwnProps {
 const mapStateToProps = (state: any) => {
   const designs = state.get('designApproval').toJS()
   const responsive = state.get('responsive').toJS()
+  const langProps = state.get('languageProvider').toJS()
   const app = state.get('app').toJS()
   return {
     ...app,
+    ...langProps,
     ...designs,
-    ...responsive
+    ...responsive,
   }
 }
 
@@ -1475,6 +1530,7 @@ const DesignsEnhance = compose(
       }
     }
   }),
+  graphql(getEditRequestPrices, {name: 'editRequestData' }),
   graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
   graphql(getPredyedColors, { name: 'predyedData' }),
   graphql(addProductProjectMutation, { name: 'addProductProject' }),

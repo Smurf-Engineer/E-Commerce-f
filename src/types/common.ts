@@ -28,6 +28,16 @@ export interface DesignSaved {
   zipperColor?: string
 }
 
+export type ServicePrice = {
+  name: string
+  usd: number
+  aud: number
+  cad: number
+  eur: number
+  chf: number
+  gbp: number
+}
+
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
@@ -898,6 +908,12 @@ export interface IbanData {
   name: string
   email: string
   last4: string
+}
+
+export interface ServiceItem {
+  name: string
+  description: string
+  price: number
 }
 
 export interface OrderHistory {

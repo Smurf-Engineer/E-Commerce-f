@@ -16,7 +16,7 @@ interface Props {
 
 const fromScratchSteps = ['inspiration', 'colors', 'uploadFiles', 'designNotes', 'notifications', 'review']
 const fromExistingArtworkSteps = [null, null, 'uploadFiles', 'designNotes', 'notifications', 'review']
-const adminProjectSteps = [null, null, null, 'designNotes', 'notifications', 'review']
+const adminProjectSteps = [null, 'colors', null, 'designNotes', 'notifications', 'review']
 const IntakeFormTabs = ({
   currentTab,
   onSelectTab,
