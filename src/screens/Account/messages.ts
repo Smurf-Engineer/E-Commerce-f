@@ -45,7 +45,7 @@ export default defineMessages({
     id: 'screens.Account.menu.creditCardsDescription',
     defaultMessage: 'Jakroo does not save any card information on its '
       + 'website or application servers.</br>For your security full credit '
-      + 'card information is saved only on the STRIPE encrypted payment</br>processor servers.'
+      + 'card information is saved only on the STRIPE encrypted payment processor servers.'
   },
   profileSettings: {
     id: 'screens.Account.menu.profileSettings',
