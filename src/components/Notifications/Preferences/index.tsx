@@ -3,12 +3,17 @@ import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import MessageBar from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
+import PhoneInput from 'react-phone-input-2'
+import debounce from 'lodash/debounce'
+import get from 'lodash/get'
 import messages from './messages'
 import * as NotificationSettingsActions from './actions'
 import {
   profileNotificationSettingsQuery,
   UpdateNotificationSettingMutation,
-  UpdateNewsletterSettingMutation
+  UpdateNewsletterSettingMutation,
+  profilePhoneSettingsQuery,
+  UpdatePhoneSettingMutation
 } from './data'
 import {
   Container,
@@ -18,7 +23,10 @@ import {
   Title,
   Description,
   LoadingContainer,
-  CheckBoxStyled
+  CheckBoxStyled,
+  PhoneColumn,
+  InputTitleContainer,
+  Label
 } from './styledComponents'
 import { NotificationOption, NotificationSettings } from '../../../types/common'
 import { Message } from '../../../types/common'
@@ -28,16 +36,25 @@ interface NotificationSetting {
   notificationData: NotificationSettings
 }
 
+interface PhoneSetting {
+  phoneData: {
+    phone: String
+  }
+}
+
 interface Props {
   loadingSettings: Boolean
   notificationSettings: NotificationSetting
+  phoneSettings: PhoneSetting
   formatMessage: (messageDescriptor: Message) => string
   updateNotification: (variables: {}) => void
   updateNewsletterSubscribed: (variables: {}) => void
+  updatePhone: (variables: {}) => void
   setSettingsLoadingAction: (loading: boolean) => void
 }
 
 class Preferences extends React.Component<Props, {}> {
+  debouncePhoneUpdate = debounce(value => this.handlePhoneChange(value), 1000)
 
   updateSetting = async (
     payload: {},
@@ -65,6 +82,43 @@ class Preferences extends React.Component<Props, {}> {
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       MessageBar.error(errorMessage, 5)
     }
+  }
+
+  updatePhoneSetting = async (
+    payload: {},
+    mutation: any,
+    successMessage: any
+  ) => {
+    const { setSettingsLoadingAction, formatMessage } = this.props
+    try {
+      setSettingsLoadingAction(true)
+      await mutation({
+        variables: payload,
+        refetchQueries: [
+          {
+            query: profilePhoneSettingsQuery,
+            options: {
+              fetchPolicy: 'network-only'
+            }
+          }
+        ]
+      })
+      setSettingsLoadingAction(false)
+      MessageBar.success(formatMessage(successMessage), 4)
+    } catch (error) {
+      setSettingsLoadingAction(false)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      MessageBar.error(errorMessage, 5)
+    }
+  }
+
+  handlePhoneChange = (phone: string) => {
+    const { updatePhone } = this.props
+    this.updatePhoneSetting(
+      { phone },
+      updatePhone,
+      messages.updateNotificationSuccessMessage
+    )
   }
 
   changeNotificationSettings = (key: string, selected: string) => () => {
@@ -151,6 +205,7 @@ class Preferences extends React.Component<Props, {}> {
     const {
       loadingSettings,
       notificationSettings: { notificationData },
+      phoneSettings: { phoneData },
       formatMessage
     } = this.props
 
@@ -164,6 +219,7 @@ class Preferences extends React.Component<Props, {}> {
     const teamStoreSmsChecked = this.isNotificationSetTo('notifyTeamStore', NotificationOption.SMS)
     const designlabSmsChecked = this.isNotificationSetTo('notifyDesignLab', NotificationOption.SMS)
     const productServiceSmsChecked = this.isNotificationSetTo('notifyProductService', NotificationOption.SMS)
+    const phone = get(phoneData, 'phone', '')
 
     return (
       <Container>
@@ -254,6 +310,25 @@ class Preferences extends React.Component<Props, {}> {
               checked={false}
               onChange={() => { }} />
           </Column>
+          <PhoneColumn>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.phone)}</Label>
+            </InputTitleContainer>
+            <PhoneInput
+              country={'us'}
+              value={phone}
+              onChange={value => {
+                this.debouncePhoneUpdate(value)
+              }}
+              inputProps={{ autoComplete: 'jv2' }}
+              inputStyle={{ borderRadius: 0, width: 250 }}
+              copyNumbersOnly={false}
+              disabled={!orderPaymentSmsChecked && !prodesignSmsChecked
+                && !teamStoreSmsChecked && !designlabSmsChecked
+                && !productServiceSmsChecked
+              }
+            />
+          </PhoneColumn>
         </NotificationContainer>
         <Description>{formatMessage(messages.notificationComment)}</Description>
       </Container>
@@ -270,8 +345,15 @@ const PreferencesEnhance = compose(
     },
     name: 'notificationSettings'
   }),
+  graphql(profilePhoneSettingsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'phoneSettings'
+  }),
   UpdateNotificationSettingMutation,
   UpdateNewsletterSettingMutation,
+  UpdatePhoneSettingMutation,
   connect(
     mapStateToProps,
     {
