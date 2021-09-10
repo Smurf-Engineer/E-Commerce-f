@@ -92,14 +92,16 @@ class Menu extends React.PureComponent<Props, {}> {
       const { location: { search } } = history
       const queryParams = queryString.parse(search)
       const { option } = queryParams
-      if (profileSubMenus.includes(option)) {
+      if (profileSubMenus.includes(option) && !this.state.openKeys.includes(PROFILE_MENU)) {
         this.setState({ openKeys: ['', PROFILE_MENU] })
-      } else if (directStoreSubMenus.includes(option)) {
+      } else if (directStoreSubMenus.includes(option) && !this.state.openKeys.includes(RESELLER)) {
         this.setState({ openKeys: ['', RESELLER] })
-      } else if (proDesignSubMenus.includes(option)) {
+      } else if (proDesignSubMenus.includes(option) && !this.state.openKeys.includes(PRO_DESIGN)) {
         this.setState({ openKeys: ['', PRO_DESIGN] })
       }
-      this.setState({ defaultSelected: [option] })
+      if (!this.state.defaultSelected.includes(option)) {
+        this.setState({ defaultSelected: [option] })
+      }
     }
   }
 
@@ -290,7 +292,7 @@ class Menu extends React.PureComponent<Props, {}> {
             defaultSelectedKeys={['']}
             defaultOpenKeys={['']}
             openKeys={this.state.openKeys}
-            selectedKeys={this.state.defaultSelected}
+            selectedKeys={[...this.state.defaultSelected]}
             onOpenChange={this.onOpenChange}
             style={menuStyle}
           >
