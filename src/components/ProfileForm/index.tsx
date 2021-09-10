@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import PhoneInput from 'react-phone-input-2'
 import {
   Container,
   Row,
@@ -109,7 +108,7 @@ const ProfileForm = ({
         </Column>
       </Row>
       <Advise>{formatMessage(messages.mailAdvise)}</Advise>
-      <Row>
+      {/* <Row>
         <Column inputhWidth={'100%'}>
           <InputTitleContainer>
             <Label>{formatMessage(messages.phone)}</Label>
@@ -125,7 +124,7 @@ const ProfileForm = ({
             copyNumbersOnly={false}
           />
         </Column>
-      </Row>
+      </Row> */}
       <Row>
         <Column inputhWidth={!isMobile ? '27%' : '37%'}>
           <StyledButton

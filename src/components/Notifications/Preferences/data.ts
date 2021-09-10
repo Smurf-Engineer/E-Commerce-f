@@ -14,6 +14,14 @@ export const profileNotificationSettingsQuery = gql`
   }
 `
 
+export const profilePhoneSettingsQuery = gql`
+  query phoneSettings {
+    phoneData: getProfilePhoneSettings {
+      phone
+    }
+  }
+`
+
 export const UpdateNotificationSettingMutation = graphql(
   gql`
     mutation updateNotification($setting: String!, $value: Int!) {
@@ -37,5 +45,18 @@ export const UpdateNewsletterSettingMutation = graphql(
   `,
   {
     name: 'updateNewsletterSubscribed'
+  }
+)
+
+export const UpdatePhoneSettingMutation = graphql(
+  gql`
+    mutation changeUserPhone($userId: String!, $phone: String!) {
+      profile: changeUserPhone(userId: $userId, phone: $phone) {
+        phone
+      }
+    }
+  `,
+  {
+    name: 'updatePhone'
   }
 )

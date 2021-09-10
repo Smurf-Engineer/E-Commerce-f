@@ -68,5 +68,9 @@ export default defineMessages({
   updateNotificationSuccessMessage: {
     id: 'components.Notifications.Preferences.updateNotificationSuccessMessage',
     defaultMessage: 'Notification Settings has been updated!'
-  }
+  },
+  phone: {
+    id: 'components.ProfileForm.phone',
+    defaultMessage: 'Mobile Number'
+  },
 })
