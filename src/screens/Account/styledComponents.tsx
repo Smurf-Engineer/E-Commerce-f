@@ -2,12 +2,18 @@
  * Styled Components - Created by david on 05/04/18.
  */
 import styled from 'styled-components'
-import { BLUE_LIGHT } from '../../theme/colors'
+import {
+  WHITE,
+  BLACK,
+  BLUE_LIGHT,
+  GRAY_DARK,
+  RED
+} from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: #fff;
+  background-color: ${WHITE};
   min-height: calc(100vh - 200px);
 `
 
@@ -18,7 +24,7 @@ export const SideBar = styled.div`
 `
 
 export const OptionMenu = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -60,14 +66,14 @@ export const BackButton = styled.div`
   left: 12px;
   font-size: 14px;
   font-weight: normal;
-  color: red;
+  color: ${RED};
 `
 
 export const FiltersTitle = styled.div`
   display: ${({ showChildren }: StyleProps) =>
     showChildren ? 'inline-block' : 'none'};
   height: 36.95px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
@@ -76,16 +82,17 @@ export const FiltersTitle = styled.div`
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: 600;
   line-height: 27px;
 `
+
 interface ScreenTitleProps {
   show?: boolean
 }
 export const ScreenTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   display: ${({ show }: ScreenTitleProps) => (show ? 'block' : 'none')};
   font-size: 18px;
   font-weight: 600;
@@ -98,6 +105,18 @@ export const ScreenTitle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+`
+
+export const ScreenTitleDescription = styled.div`
+  color: ${BLACK};
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 17px;
+  margin-top: 10px;
+
+  @media (max-width: 768px) and (min-width: 320px) {
+    margin-bottom: 38px;
   }
 `
 

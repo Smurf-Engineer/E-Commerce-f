@@ -13,9 +13,35 @@ import {
   OPEN_ADD_TOTEAMSTORE,
   SET_ITEM_TOADD,
   PRO_DESIGN_PROJECTS,
-  PRO_DESIGN
+  PRO_DESIGN,
+  PROFILE_SETTINGS,
+  ADDRESSES,
+  CREDIT_CARDS,
+  PROFILE_MENU,
+  RESELLER,
+  RESELLER_ABOUT,
+  MY_STORES,
+  RESELLER_ORDERS,
+  RESELLER_PAYOUTS
 } from './constants'
 import { Reducer } from '../../types/common'
+
+const profileSubMenus = [
+  PROFILE_SETTINGS,
+  ADDRESSES,
+  CREDIT_CARDS
+]
+
+const directStoreSubMenus = [
+  RESELLER_ABOUT,
+  MY_STORES,
+  RESELLER_ORDERS,
+  RESELLER_PAYOUTS
+]
+
+const proDesignSubMenus = [
+  PRO_DESIGN_PROJECTS
+]
 
 export const initialState = fromJS({
   openKeys: [''],
@@ -62,9 +88,18 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
           openKeys: ['', 'myCreations']
         })
       }
+      const openKeys = []
+      if (profileSubMenus.includes(screen)) {
+        openKeys.push(PROFILE_MENU)
+      } else if (directStoreSubMenus.includes(screen)) {
+        openKeys.push(RESELLER)
+      } else if (proDesignSubMenus.includes(screen)) {
+        openKeys.push(PRO_DESIGN)
+      }
       return state.merge({
         screen: action.screen,
         defaultScreen: action.screen,
+        openKeys
       })
     }
     case SET_CURRENT_SCREEN:

@@ -22,7 +22,23 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import messagesMenu from '../../../screens/Account/messages'
-import { menuOptions, AFFILIATES, RESELLER, resellerShortOptions, resellerOptions, PRO_DESIGN } from './constants'
+import {
+  menuOptions,
+  AFFILIATES,
+  RESELLER,
+  resellerShortOptions,
+  resellerOptions,
+  PRO_DESIGN,
+  PROFILE_SETTINGS,
+  ADDRESSES,
+  CREDIT_CARDS,
+  PROFILE_MENU,
+  RESELLER_ABOUT,
+  MY_STORES,
+  RESELLER_ORDERS,
+  RESELLER_PAYOUTS,
+  PRO_DESIGN_PROJECTS
+} from './constants'
 import { setCurrentScreenAction } from '../../../screens/Account/actions'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -45,15 +61,48 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
 }
 
+const profileSubMenus = [
+  PROFILE_SETTINGS,
+  ADDRESSES,
+  CREDIT_CARDS
+]
+
+const directStoreSubMenus = [
+  RESELLER_ABOUT,
+  MY_STORES,
+  RESELLER_ORDERS,
+  RESELLER_PAYOUTS
+]
+
+const proDesignSubMenus = [
+  PRO_DESIGN_PROJECTS
+]
+
 class Menu extends React.PureComponent<Props, {}> {
   state = {
     openKeys: [''],
-    sportSelected: null
+    sportSelected: null,
+    defaultSelected: ['']
   }
 
-  componentWillReceiveProps({ menuOpen }: Props) {
+  componentWillReceiveProps({ menuOpen, history }: Props) {
     if (menuOpen === false) {
-      this.setState({ openKeys: [''] })
+      this.setState({ openKeys: [''], defaultSelected: [''] })
+    } else {
+      const { location: { search } } = history
+      const queryParams = queryString.parse(search)
+      const { option } = queryParams
+      const { openKeys, defaultSelected } = this.state
+      if (profileSubMenus.includes(option) && !openKeys.includes(PROFILE_MENU)) {
+        this.setState({ openKeys: ['', PROFILE_MENU] })
+      } else if (directStoreSubMenus.includes(option) && !openKeys.includes(RESELLER)) {
+        this.setState({ openKeys: ['', RESELLER] })
+      } else if (proDesignSubMenus.includes(option) && !openKeys.includes(PRO_DESIGN)) {
+        this.setState({ openKeys: ['', PRO_DESIGN] })
+      }
+      if (!defaultSelected.includes(option)) {
+        this.setState({ defaultSelected: [option] })
+      }
     }
   }
 
@@ -150,6 +199,8 @@ class Menu extends React.PureComponent<Props, {}> {
       formatMessage
     } = this.props
 
+    const { defaultSelected, openKeys } = this.state
+
     if (loading) {
       return (
         <div>
@@ -171,11 +222,11 @@ class Menu extends React.PureComponent<Props, {}> {
 
     const menuAccount = sideMenu.map(({ title, options: submenus, beta }) =>
       submenus.length ?
-      (((title === AFFILIATES && affiliateEnabled) || 
-        (title === RESELLER && resellerEnabled) ||
-        (title === PRO_DESIGN && showProDesign)
-      )
-      || (title !== AFFILIATES && title !== RESELLER && title !== PRO_DESIGN)) &&
+        (((title === AFFILIATES && affiliateEnabled) ||
+          (title === RESELLER && resellerEnabled) ||
+          (title === PRO_DESIGN && showProDesign)
+        )
+          || (title !== AFFILIATES && title !== RESELLER && title !== PRO_DESIGN)) &&
         <StyledSubMenu
           key={title}
           title={
@@ -222,7 +273,7 @@ class Menu extends React.PureComponent<Props, {}> {
       <Container>
         <Bottom>{loginButton}</Bottom>
         <SwipeableViews
-          {... {containerStyle }}
+          {... { containerStyle }}
           index={openMenuAccount ? 1 : 0}
           disabled={true}
           animateHeight={true}
@@ -232,7 +283,7 @@ class Menu extends React.PureComponent<Props, {}> {
             onSelect={this.handleClick}
             defaultSelectedKeys={['']}
             defaultOpenKeys={['']}
-            openKeys={this.state.openKeys}
+            openKeys={openKeys}
             onOpenChange={this.onOpenChange}
             style={menuStyle}
           >
@@ -243,7 +294,8 @@ class Menu extends React.PureComponent<Props, {}> {
             onSelect={this.handleClick}
             defaultSelectedKeys={['']}
             defaultOpenKeys={['']}
-            openKeys={this.state.openKeys}
+            openKeys={openKeys}
+            selectedKeys={[...defaultSelected]}
             onOpenChange={this.onOpenChange}
             style={menuStyle}
           >

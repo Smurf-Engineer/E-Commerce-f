@@ -41,6 +41,12 @@ export default defineMessages({
     id: 'screens.Account.menu.creditCards',
     defaultMessage: 'Credit Cards'
   },
+  creditCardsDescription: {
+    id: 'screens.Account.menu.creditCardsDescription',
+    defaultMessage: 'Jakroo does not save any card information on its '
+      + 'website or application servers.</br>For your security full credit '
+      + 'card information is saved only on the STRIPE encrypted payment processor servers.'
+  },
   profileSettings: {
     id: 'screens.Account.menu.profileSettings',
     defaultMessage: 'Profile'
@@ -99,7 +105,7 @@ export default defineMessages({
   },
   profileMenu: {
     id: 'screens.Account.profileMenu',
-    defaultMessage: 'PROFILE SETTINGS'
+    defaultMessage: 'ACCOUNT SETTINGS'
   },
   reseller: {
     id: 'screens.Account.reseller',

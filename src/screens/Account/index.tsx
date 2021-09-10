@@ -68,6 +68,7 @@ import {
   Content,
   Title,
   ScreenTitle,
+  ScreenTitleDescription,
   menuStyle,
   OptionMenu,
   FiltersTitle,
@@ -229,7 +230,7 @@ export class Account extends React.Component<Props, {}> {
   }
 
   handleGoBack = () => {
-    const { history } = this.props
+    const { history } = this.props
     history.goBack()
   }
 
@@ -451,7 +452,7 @@ export class Account extends React.Component<Props, {}> {
                     <Container>
                       <Content width={'100%'}>
                         <ScreenTitle show={noOrderScreenFlag}>
-                          {!excludeBack[currentScreenValue] && 
+                          {!excludeBack[currentScreenValue] &&
                             <BackButton onClick={this.handleGoBack}>
                               <Icon type="left" />
                               {intl.formatMessage(messages.goBack)}
@@ -461,6 +462,13 @@ export class Account extends React.Component<Props, {}> {
                             <FormattedMessage {...messages[currentScreenValue]} />
                           )}
                         </ScreenTitle>
+                        {currentScreenValue === CREDIT_CARDS && (
+                          <ScreenTitleDescription
+                            dangerouslySetInnerHTML={{
+                              __html: intl.formatMessage(messages.creditCardsDescription)
+                            }}
+                          />
+                        )}
                         {currentScreen}
                       </Content>
                     </Container>
@@ -498,6 +506,13 @@ export class Account extends React.Component<Props, {}> {
                     <ScreenTitle show={noOrderScreenFlag}>
                       {!!messages[currentScreenValue] && (
                         <FormattedMessage {...messages[currentScreenValue]} />
+                      )}
+                      {currentScreenValue === CREDIT_CARDS && (
+                        <ScreenTitleDescription
+                          dangerouslySetInnerHTML={{
+                            __html: intl.formatMessage(messages.creditCardsDescription)
+                          }}
+                        />
                       )}
                     </ScreenTitle>
                     {currentScreen}

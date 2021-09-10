@@ -82,20 +82,12 @@ export const resellerOptions = [
     options: []
   },
   {
-    title: ADDRESSES,
-    options: []
-  },
-  {
-    title: CREDIT_CARDS,
-    options: []
-  },
-  {
-    title: PROFILE_SETTINGS,
-    options: []
-  },
-  {
     title: NOTIFICATIONS,
     options: []
+  },
+  {
+    title: PROFILE_MENU,
+    options: [PROFILE_SETTINGS, ADDRESSES, CREDIT_CARDS]
   },
   {
     title: PRO_DESIGN,
