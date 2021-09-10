@@ -587,9 +587,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       case Sections.COLORS:
         return {
           continueDisable:
-            fromScratch && (selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
-              (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
-              (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)),
+            !admProject && fromScratch && 
+              (selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
+                (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
+                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)
+              ),
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
