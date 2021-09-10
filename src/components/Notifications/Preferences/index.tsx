@@ -28,7 +28,7 @@ import {
   InputTitleContainer,
   Label
 } from './styledComponents'
-import { NotificationOption, NotificationSettings } from '../../../types/common'
+import { NotificationOption, NotificationSettings, UserType } from '../../../types/common'
 import { Message } from '../../../types/common'
 import { SPLIT_BY_CAPITAL_REGEX } from '../constants'
 
@@ -43,6 +43,7 @@ interface PhoneSetting {
 }
 
 interface Props {
+  user: UserType
   loadingSettings: Boolean
   notificationSettings: NotificationSetting
   phoneSettings: PhoneSetting
@@ -113,9 +114,9 @@ class Preferences extends React.Component<Props, {}> {
   }
 
   handlePhoneChange = (phone: string) => {
-    const { updatePhone } = this.props
+    const { user, updatePhone } = this.props
     this.updatePhoneSetting(
-      { phone },
+      { userId: user ? user.id : '', phone },
       updatePhone,
       messages.updateNotificationSuccessMessage
     )
@@ -336,7 +337,14 @@ class Preferences extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('notificationSettings').toJS()
+const mapStateToProps = (state: any) => {
+  const notificationSettigs = state.get('notificationSettings').toJS()
+  const app = state.get('app').toJS()
+  return {
+    ...notificationSettigs,
+    ...app
+  }
+}
 
 const PreferencesEnhance = compose(
   graphql(profileNotificationSettingsQuery, {

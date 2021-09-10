@@ -50,9 +50,9 @@ export const UpdateNewsletterSettingMutation = graphql(
 
 export const UpdatePhoneSettingMutation = graphql(
   gql`
-    mutation updatePhone($phone: String!) {
-      setPhoneSetting(phone: $phone) {
-        message
+    mutation changeUserPhone($userId: String!, $phone: String!) {
+      profile: changeUserPhone(userId: $userId, phone: $phone) {
+        phone
       }
     }
   `,
