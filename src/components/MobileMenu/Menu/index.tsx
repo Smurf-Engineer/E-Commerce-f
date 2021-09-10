@@ -92,14 +92,15 @@ class Menu extends React.PureComponent<Props, {}> {
       const { location: { search } } = history
       const queryParams = queryString.parse(search)
       const { option } = queryParams
-      if (profileSubMenus.includes(option) && !this.state.openKeys.includes(PROFILE_MENU)) {
+      const { openKeys, defaultSelected } = this.state
+      if (profileSubMenus.includes(option) && !openKeys.includes(PROFILE_MENU)) {
         this.setState({ openKeys: ['', PROFILE_MENU] })
-      } else if (directStoreSubMenus.includes(option) && !this.state.openKeys.includes(RESELLER)) {
+      } else if (directStoreSubMenus.includes(option) && !openKeys.includes(RESELLER)) {
         this.setState({ openKeys: ['', RESELLER] })
-      } else if (proDesignSubMenus.includes(option) && !this.state.openKeys.includes(PRO_DESIGN)) {
+      } else if (proDesignSubMenus.includes(option) && !openKeys.includes(PRO_DESIGN)) {
         this.setState({ openKeys: ['', PRO_DESIGN] })
       }
-      if (!this.state.defaultSelected.includes(option)) {
+      if (!defaultSelected.includes(option)) {
         this.setState({ defaultSelected: [option] })
       }
     }
@@ -198,6 +199,8 @@ class Menu extends React.PureComponent<Props, {}> {
       formatMessage
     } = this.props
 
+    const { defaultSelected, openKeys } = this.state
+
     if (loading) {
       return (
         <div>
@@ -280,7 +283,7 @@ class Menu extends React.PureComponent<Props, {}> {
             onSelect={this.handleClick}
             defaultSelectedKeys={['']}
             defaultOpenKeys={['']}
-            openKeys={this.state.openKeys}
+            openKeys={openKeys}
             onOpenChange={this.onOpenChange}
             style={menuStyle}
           >
@@ -291,8 +294,8 @@ class Menu extends React.PureComponent<Props, {}> {
             onSelect={this.handleClick}
             defaultSelectedKeys={['']}
             defaultOpenKeys={['']}
-            openKeys={this.state.openKeys}
-            selectedKeys={[...this.state.defaultSelected]}
+            openKeys={openKeys}
+            selectedKeys={[...defaultSelected]}
             onOpenChange={this.onOpenChange}
             style={menuStyle}
           >
