@@ -760,6 +760,7 @@
   "screens.Compliance.bsciContent15": "Proposition 65, officially known as the Safe Drinking Water and Toxic Enforcement Act of 1986, was enacted to protect the state’s drinking water sources from being contaminated with chemicals known to cause cancer, birth defects, or other reproductive harm, and requires businesses to inform Californians about exposures to such chemicals. JAKROO products have been tested by Bureau Veritas and are Prop 65 compliant.",
   "screens.IntakeForm.Notes.projectName": "Pro Design Project Name",
   "screens.IntakeForm.Notes.name": "Project Name",
+  "screens.IntakeForm.Notes.title": "Jakroo - Pro Design",
   "screens.IntakeForm.Notes.missingField": "You're missing a required field!",
   "screens.IntakeForm.Notes.ideas": "Briefly describe your design ideas",
   "screens.IntakeForm.Notes.placeholder": "15 characters minimum required.",

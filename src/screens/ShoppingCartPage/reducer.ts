@@ -27,7 +27,9 @@ import {
   SET_TOP_SIZE_ITEM_DETAIL_ACTION,
   SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION,
   SET_UPGRADE_ITEM_DETAIL_ACTION,
-  SET_VARIABLE_VALUE
+  SET_VARIABLE_VALUE,
+  VERIFY_ITEMS,
+  CLEAR_CART
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -43,7 +45,8 @@ export const initialState = fromJS({
   showReviewDesignModal: false,
   openFitInfo: false,
   selectedIndex: 0,
-  highlightFields: false
+  highlightFields: false,
+  itemsVerified: false
 })
 
 const shoppingCartPageReducer: Reducer<any> = (
@@ -55,6 +58,11 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.set('someKey', action.someValue)
     case SET_ITEMS_ACTION:
       return state.set('cart', fromJS(action.items))
+    case CLEAR_CART:
+      return state.merge({
+        cart: null,
+        itemsVerified: true
+      })
     case ADD_ITEM_DETAIL_ACTION: {
       const { index } = action
       const color = state.getIn(['cart', index, 'itemDetails', 0, 'color'])
@@ -63,6 +71,8 @@ const shoppingCartPageReducer: Reducer<any> = (
         (itemDetails: any) => itemDetails.push(fromJS({ color, quantity: 1 }))
       )
     }
+    case VERIFY_ITEMS:
+      return state.set('itemsVerified', action.verified)
     case SET_STORE_TERMS:
       return state.set('storeTerms', action.checked)
     case OPEN_STORE_INFO:

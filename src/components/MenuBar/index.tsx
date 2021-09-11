@@ -138,7 +138,9 @@ class MenuBar extends React.Component<Props, StateProps> {
     updating: false
   }
   componentWillUnmount() {
-    navigator.serviceWorker.removeEventListener('message', this.drawNotification)
+    if (navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.removeEventListener('message', this.drawNotification)
+    }
   }
   async componentWillMount() {
     const {
@@ -152,10 +154,14 @@ class MenuBar extends React.Component<Props, StateProps> {
     if (user) {
       await firebaseInit()
       const token = await getToken()
-      await upsertNotification({
-        variables: { token }
-      })
-      navigator.serviceWorker.addEventListener('message', this.drawNotification)
+      if (token) {
+        await upsertNotification({
+          variables: { token }
+        })
+      }
+      if (navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.addEventListener('message', this.drawNotification)
+      }
     }
   }
 
