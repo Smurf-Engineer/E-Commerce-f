@@ -128,6 +128,8 @@ export class StoreFront extends React.Component<Props, {}> {
     const titleProp = queryParams ? queryParams.titleProp : ''
     const bannerProp = queryParams ? queryParams.bannerProp : ''
     const storedCode = getSessionCode(storeId)
+    // tslint:disable-next-line: max-line-length
+    const shareStoreUrl = `https://designlab.jakroo.com/store-front?storeId=${storeId}&titleProp=${titleProp}&bannerProp=${bannerProp}`
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
@@ -135,6 +137,8 @@ export class StoreFront extends React.Component<Props, {}> {
             meta={[
               { property: 'og:title', content: titleProp ? decodeURIComponent(titleProp) : 'My Team Store' },
               { property: 'og:description', content: 'Visit my Team Store on Jakroo'},
+              { property: 'og:url', content: shareStoreUrl },
+              { property: 'og:type', content: 'article' },
               {
                 property: 'og:image',
                 content: bannerProp ? bannerProp 

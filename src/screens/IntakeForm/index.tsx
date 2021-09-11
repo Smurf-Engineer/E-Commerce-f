@@ -1025,6 +1025,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         <Helmet
           meta={[
             { property: 'og:title', content: 'PRO Design Intake Form' },
+            { property: 'og:url', content: 'https://designlab.jakroo.com/pro-design' },
+            { property: 'og:type', content: 'article' },
             { property: 'og:image', content: 'https://designlab.jakroo.com/static/media/start_pro_design.7c056bae.jpg' }
           ]}
           title={formatMessage(messages.title)}
