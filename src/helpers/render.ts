@@ -40,9 +40,9 @@ const renderHtml = (styleTags: any, html: any, helmet: any) => {
           <meta charSet='utf-8' />
           <meta property="og:title" content="Designlab by Jakroo" />
           <meta property="og:description" content="JAKROO Custom Apparel" />
-          <meta property="og:image" content="https://i.ytimg.com/vi/kLedyokBB0g/maxresdefault.jpg" />
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
           ${helmet.meta.toString()}
+          <meta property="og:image" content="https://i.ytimg.com/vi/kLedyokBB0g/maxresdefault.jpg" />
           ${helmet.title.toString()}
           ${
             assets.client.css
