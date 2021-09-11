@@ -290,7 +290,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   private catalogDiv: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
-    navigator.serviceWorker.addEventListener('message', this.reloadMessages)
+    if (navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.addEventListener('message', this.reloadMessages)
+    }
     const { history, user, openLoginAction: openLoginModalAction } = this.props
     const userSaved = localStorage.getItem('user')
     if (!user && !userSaved) {
@@ -308,7 +310,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
   }
   componentWillUnmount() {
-    navigator.serviceWorker.removeEventListener('message', this.reloadMessages)
+    if (navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.removeEventListener('message', this.reloadMessages)
+    }
   }
   componentWillMount() {
     const { user, client } = this.props

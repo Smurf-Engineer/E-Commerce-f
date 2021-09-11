@@ -88,6 +88,7 @@ import {
 } from './constants'
 import ReactDOM from 'react-dom'
 import LockerScreen from './LockerScreen'
+import Helmet from 'react-helmet'
 
 const { info, confirm } = Modal
 
@@ -1021,6 +1022,13 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         hideFooter={true}
         darkMode={true}
       >
+        <Helmet
+          meta={[
+            { property: 'og:title', content: 'PRO Design Intake Form' },
+            { property: 'og:image', content: 'https://designlab.jakroo.com/static/media/start_pro_design.7c056bae.jpg' }
+          ]}
+          title={formatMessage(messages.title)}
+        />
         <IntakeContainer
           ref={(listObject: any) => {
             this.intakeRef = listObject

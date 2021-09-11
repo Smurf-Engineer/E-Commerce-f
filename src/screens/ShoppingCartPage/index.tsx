@@ -58,6 +58,8 @@ import closeIcon from '../../assets/cancel-button.svg'
 import { getShoppingCartData, getPriceRangeByItem, getItemQuantity } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
+import { verifyTeamStoreQuery } from './data'
+import { message } from 'antd'
 
 const { warning } = Modal
 
@@ -86,6 +88,8 @@ interface Props extends RouteComponentProps<any> {
   openStoreInfo: boolean
   selectedIndex: number
   highlightFields: boolean
+  itemsVerified: boolean
+  verifyItems: (verified: boolean) => void
   openStoreInfoAction: (open: boolean) => void
   setStoreTerms: (checked: boolean) => void
   setItemsAction: (items: Product[]) => void
@@ -138,6 +142,7 @@ interface Props extends RouteComponentProps<any> {
     upgrade: ItemDetailType
   ) => void
   setInitialData: (query: any) => void
+  clearCart: () => void
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[], reset: boolean) => void
@@ -246,16 +251,41 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setInitialData(query)
   }
 
-  componentDidUpdate(oldProps: Props) {
-    const { cart } = this.props
+  async componentDidUpdate(oldProps: Props) {
+    const { cart, itemsVerified, client: { query }, clearCart } = this.props
     const { cart: oldCart } = oldProps
     if (!isEqual(cart, oldCart)) {
       this.saveCart()
     }
+    if (!itemsVerified && cart && cart.length) {
+      const fixedItem = find(cart, 'isFixed')
+      if (fixedItem) {
+        const sameTeam = every(cart, ['teamStoreId', fixedItem.teamStoreId])
+        if (sameTeam) {
+          const { teamStoreId } = fixedItem || {}
+          const response = await query({
+            query: verifyTeamStoreQuery,
+            variables: { shortId: teamStoreId },
+            fetchPolicy: 'network-only'
+          })
+          const enabled = get(response, 'data.verifyTeamStore.enabled', false)
+          const onDemandMode = get(response, 'data.verifyTeamStore.on_demand_mode', false)
+          const cutoffDate = get(response, 'data.verifyTeamStore.cutoff_date', '')
+          if (!enabled || !cutoffDate || onDemandMode) {
+            clearCart()
+            message.info('Expired batch store items have been removed from your cart')
+          }
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
+    const { verifyItems, itemsVerified } = this.props
     this.saveCart(true)
+    if (itemsVerified) {
+      verifyItems(false)
+    }
   }
 
   saveCart = (reset: boolean = false) => {

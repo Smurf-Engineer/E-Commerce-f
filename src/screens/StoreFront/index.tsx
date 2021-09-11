@@ -17,6 +17,7 @@ import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import StoreFrontContent from '../../components/StoreFrontContent'
 import { getSessionCode } from './thunkActions'
+import Helmet from 'react-helmet'
 
 interface Params extends QueryProps {
   teamStoreId: String
@@ -124,10 +125,24 @@ export class StoreFront extends React.Component<Props, {}> {
     } = this.props
     const queryParams = queryString.parse(search)
     const storeId = queryParams ? queryParams.storeId || '' : ''
+    const titleProp = queryParams ? queryParams.titleProp : ''
+    const bannerProp = queryParams ? queryParams.bannerProp : ''
     const storedCode = getSessionCode(storeId)
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
+          <Helmet
+            meta={[
+              { property: 'og:title', content: titleProp ? decodeURIComponent(titleProp) : 'My Team Store' },
+              { property: 'og:description', content: 'Visit my Team Store on Jakroo'},
+              {
+                property: 'og:image',
+                content: bannerProp ? bannerProp 
+                : 'https://designlab.jakroo.com/static/media/teamStoreSearch.9279d162.jpg'
+              }
+            ]}
+            title={titleProp}
+          />
           <StoreFrontContent
             formatMessage={intl.formatMessage}
             openQuickViewAction={openQuickView}

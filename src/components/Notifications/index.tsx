@@ -76,9 +76,11 @@ class Notifications extends React.Component<Props, {}> {
   }
 
   async componentDidMount() {
-    navigator.serviceWorker.addEventListener('message', (notification) => {
-      this.reloadNotifications()
-    })
+    if (navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.addEventListener('message', (notification) => {
+        this.reloadNotifications()
+      })
+    }
   }
 
   reloadNotifications = async () => {

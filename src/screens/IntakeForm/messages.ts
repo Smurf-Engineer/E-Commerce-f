@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'screens.IntakeForm.chooseProducts',
     defaultMessage: 'Select Your Products'
   },
+  title: {
+    id: 'screens.IntakeForm.title',
+    defaultMessage: 'Jakroo - Pro Design'
+  },
   addProduct: {
     id: 'screens.IntakeForm.addProduct',
     defaultMessage: 'Select a Product to Add'

@@ -26,7 +26,9 @@ import {
   SET_TOP_SIZE_ITEM_DETAIL_ACTION,
   SET_BOTTOM_SIZE_ITEM_DETAIL_ACTION,
   SET_UPGRADE_ITEM_DETAIL_ACTION,
-  SET_VARIABLE_VALUE
+  SET_VARIABLE_VALUE,
+  VERIFY_ITEMS,
+  CLEAR_CART
 } from './constants'
 import {
   AnyAction,
@@ -58,6 +60,11 @@ export const openStoreInfoAction = (open: boolean): AnyAction => ({
 export const setStoreTerms = (checked: boolean): AnyAction => ({
   type: SET_STORE_TERMS,
   checked
+})
+
+export const verifyItems = (verified: boolean): AnyAction => ({
+  type: VERIFY_ITEMS,
+  verified
 })
 
 export const deleteItemDetailAction = (
@@ -191,6 +198,10 @@ export const removeItemAction = (index: number): AnyAction => ({
 export const setTotalAction = (total: number): AnyAction => ({
   type: SET_TOTAL_ACTION,
   total
+})
+
+export const clearCart = (): AnyAction => ({
+  type: CLEAR_CART,
 })
 
 export const setSubtotalAction = (subtotal: number): AnyAction => ({

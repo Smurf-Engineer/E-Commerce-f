@@ -302,8 +302,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const teamSizeId = get(getTeamStore, 'team_size_id', 0)
     const priceRanges = getTeamStore ? getTeamStore.priceRanges || [] : []
     const bulletin = get(getTeamStore, 'bulletin', '')
-    const shareStoreUrl = `${config.baseUrl
-      }store-front?storeId=${teamStoreShortId}`
+    // tslint:disable-next-line: max-line-length
+    const shareStoreUrl = `${config.baseUrl}store-front?storeId=${teamStoreShortId}&titleProp=${encodeURIComponent(teamStoreName)}&bannerProp=${teamStoreBanner}`
 
     const totalDesigns = get(getTeamStore, 'totalDesigns', 0)
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1

@@ -11,6 +11,16 @@ export const getTeamDesignTotal = gql`
   }
 `
 
+export const verifyTeamStoreQuery = gql`
+  query verifyTeamStore($shortId: String!) {
+    verifyTeamStore(shortId: $shortId) {
+      cutoff_date
+      on_demand_mode
+      enabled
+    }
+  }
+`
+
 export const getProductQuery = gql`
   query GetProductByID($id: Int!) {
     product(id: $id, onlyActive: false) {

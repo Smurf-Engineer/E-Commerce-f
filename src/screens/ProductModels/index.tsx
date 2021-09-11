@@ -247,7 +247,12 @@ export class ProductModels extends React.Component<Props, {}> {
     }
     return (
       <Container>
-        <Helmet title={formatMessage(messages.title)} />
+        <Helmet
+          meta={[
+            { property: 'og:title', content: 'PRO Design Intake Form' }
+          ]}
+          title={formatMessage(messages.title)}
+        />
         <Header>
           <Logo src={logo} />
           <Title>{formatMessage(messages.title)}</Title>
