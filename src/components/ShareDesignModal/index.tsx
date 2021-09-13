@@ -41,7 +41,7 @@ declare global {
 interface Props {
   open: boolean
   savedDesignId?: string
-
+  picture?: string
   url?: string
   modalTitle?: string
   messageForShare?: string
@@ -53,11 +53,12 @@ class ShareDesignModal extends React.Component<Props, {}> {
   private copyInput: any
 
   handleShareOnFacebook = (designURL: string) => () => {
-    const { messageForShare } = this.props
+    const { messageForShare, picture } = this.props
     window.FB.ui(
       {
         method: 'share',
         href: designURL,
+        picture: picture || 'https://designlab.jakroo.com/static/media/teamStoreSearch.9279d162.jpg',
         display: 'popup',
         quote: messageForShare || 'Check my awesome design!'
       },
