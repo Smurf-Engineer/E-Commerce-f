@@ -579,6 +579,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
                     <Share
                       open={openShare}
+                      picture={teamStoreBanner}
                       modalTitle={formatMessage(messages.shareModalTitle)}
                       requestClose={this.handleOpenShareModal}
                       url={shareStoreUrl}
