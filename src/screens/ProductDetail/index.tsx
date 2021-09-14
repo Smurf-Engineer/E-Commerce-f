@@ -64,7 +64,11 @@ import {
   CustomizeButton,
   DealerTitle,
   SizeChart,
-  InfoTag
+  InfoTag,
+  MobileButtonTemplate,
+  ActionButtonsRow,
+  ButtonTemplate,
+  Download
 } from './styledComponents'
 import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
@@ -260,6 +264,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       id: productId,
       mtl,
       chart,
+      templateZip,
       bannerMaterials,
       details: detailsOptions,
       mediaFiles,
@@ -681,13 +686,19 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     </MobileButton>
                   </MobileButtonWrapper>
                 )}
+                {templateZip && (
+                  <MobileButtonTemplate onClick={this.openTemplate}>
+                    <Download type="download" />
+                    {formatMessage(messages.downloadTemplates)}
+                  </MobileButtonTemplate>
+                )}
                 <Description>{description}</Description>
                 <BannerMaterialSection>
                   {bannerMaterials.map((banner: ProductFile) => (
                     <BannerMaterial src={banner.url} />
                   ))}
                 </BannerMaterialSection>
-                <ButtonsRow>
+                <ActionButtonsRow>
                   {!isRetail && (
                     <StyledButtonWrapper>
                       <StyledButton onClick={this.openDesignModal}>
@@ -696,7 +707,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                       </StyledButton>
                     </StyledButtonWrapper>
                   )}
-                </ButtonsRow>
+                  {templateZip && (
+                    <ButtonTemplate onClick={this.openTemplate}>
+                      <Download type="download" />
+                      {formatMessage(messages.downloadTemplates)}
+                    </ButtonTemplate>
+                  )}
+                </ActionButtonsRow>
                 {isRetail && collectionSelection}
                 {productInfo}
               </ProductData>
@@ -738,6 +755,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   openDesignModal = () => {
     const { setDesignModalOpenAction } = this.props
     setDesignModalOpenAction(true)
+  }
+  openTemplate = () => {
+    const { data: { product: productData } } = this.props
+    const { templateZip } = productData
+    window.open(templateZip)
   }
   toggleFitsModal = (showFits: boolean) => () => {
     this.setState({ showFits })

@@ -590,3 +590,45 @@ export const InfoTag = styled.div`
     margin-top: -3px;
   }
 `
+
+export const ActionButtonsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0 25px;
+
+  .ant-btn {
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+  }
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-flow: column;
+  }
+`
+
+export const MobileButtonTemplate = styled.div`
+  display: none;
+  justify-content: center;
+  height: 40px;
+  color: ${BLUE};
+  font-size: 14px;
+  font-weight: bold;
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: flex;
+  }
+`
+
+export const ButtonTemplate = styled.div`
+  color: ${BLUE};
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: none;
+  }
+`
+
+export const Download = styled(Icon)`
+  margin-right: 12px;
+`
