@@ -43,6 +43,7 @@ interface Props {
   currentPage: number
   indexAddressSelected: number
   limit: number
+  showCard: boolean
   showBillingForm: boolean
   isEuSubsidiary: boolean
   isFixedTeamstore: boolean
@@ -76,6 +77,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   }
   render() {
     const {
+      showCard,
       formatMessage,
       cardHolderName,
       billingAddress: {
@@ -134,54 +136,58 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <Title>{formatMessage(messages.methodCreditCard)}</Title>
-        <MyCardsRow>
-          <MyCards
-            {...{
-              formatMessage,
-              country,
-              showCardFormAction,
-              showCardForm,
-              selectCardToPayAction,
-              selectedCard,
-              isEuSubsidiary
-            }}
-          />
-        </MyCardsRow>
-        <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
-          <Row>
-            <Column>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.cardNumber)}</Label>
-                <RequiredSpan>*</RequiredSpan>
-              </InputTitleContainer>
-              <ContainerInput>
-                <CardElement
-                  onReady={this.handleReady}
-                  hidePostalCode={true}
-                  style={StripeCardElement}
-                />
-              </ContainerInput>
-              {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
-            </Column>
-          </Row>
-          <Row>
-            <Column>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.cardholderName)}</Label>
-                <RequiredSpan>*</RequiredSpan>
-              </InputTitleContainer>
-              <StyledInput
-                id={'cardHolderName'}
-                value={cardHolderName}
-                onChange={this.handleInputChange}
+        {showCard && 
+          <>
+            <Title>{formatMessage(messages.methodCreditCard)}</Title>
+            <MyCardsRow>
+              <MyCards
+                {...{
+                  formatMessage,
+                  country,
+                  showCardFormAction,
+                  showCardForm,
+                  selectCardToPayAction,
+                  selectedCard,
+                  isEuSubsidiary
+                }}
               />
-              {!cardHolderName && hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
-              )}
-            </Column>
-          </Row>
-        </AnimateHeight>
+            </MyCardsRow>
+            <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
+              <Row>
+                <Column>
+                  <InputTitleContainer>
+                    <Label>{formatMessage(messages.cardNumber)}</Label>
+                    <RequiredSpan>*</RequiredSpan>
+                  </InputTitleContainer>
+                  <ContainerInput>
+                    <CardElement
+                      onReady={this.handleReady}
+                      hidePostalCode={true}
+                      style={StripeCardElement}
+                    />
+                  </ContainerInput>
+                  {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
+                </Column>
+              </Row>
+              <Row>
+                <Column>
+                  <InputTitleContainer>
+                    <Label>{formatMessage(messages.cardholderName)}</Label>
+                    <RequiredSpan>*</RequiredSpan>
+                  </InputTitleContainer>
+                  <StyledInput
+                    id={'cardHolderName'}
+                    value={cardHolderName}
+                    onChange={this.handleInputChange}
+                  />
+                  {!cardHolderName && hasError && (
+                    <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+                  )}
+                </Column>
+              </Row>
+            </AnimateHeight>
+          </>
+        }
         <ContainerBilling>
           <Title>{formatMessage(messages.billingAddress)}</Title>
           {renderAddresses(4, false, false)}
@@ -234,7 +240,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         zipCode,
         phone
       },
-      sameBillingAndShipping,
       invalidBillingFormAction,
       setStripeErrorAction,
       setLoadingBillingAction,
@@ -242,13 +247,13 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       nextStep,
       selectedCard,
       stripe,
+      showCard,
       createPaymentIntent,
       isEuSubsidiary
     } = this.props
     const selectedCardId = get(selectedCard, 'id', '')
 
     const emptyForm =
-      !sameBillingAndShipping &&
       (!firstName ||
         !lastName ||
         !street ||
@@ -257,8 +262,12 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         !city ||
         !zipCode ||
         !phone)
-    if ((!cardHolderName && !selectedCardId) || emptyForm) {
+    if ((!cardHolderName && !selectedCardId && showCard) || emptyForm) {
       invalidBillingFormAction(true)
+      return
+    }
+    if (!showCard) {
+      nextStep()
       return
     }
     const stripeTokenData = {
