@@ -605,6 +605,9 @@ export const ActionButtonsRow = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     flex-flow: column;
   }
+  @media (min-width: 480px) and (max-width: 940px) {
+    display: block;
+  }
 `
 
 export const MobileButtonTemplate = styled.div`
@@ -626,6 +629,10 @@ export const ButtonTemplate = styled.div`
   cursor: pointer;
   @media (min-width: 320px) and (max-width: 480px) {
     display: none;
+  }
+  @media (min-width: 480px) and (max-width: 940px) {
+    height: 40px;
+    line-height: 40px;
   }
 `
 
