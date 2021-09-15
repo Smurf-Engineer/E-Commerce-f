@@ -535,6 +535,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       selectedColors,
       selectedEditColors,
       selectedDesign,
+      adminProjectUserId,
       fromDesign,
       selectedPrimaryColor,
       selectedEditPrimaryColor,
@@ -606,7 +607,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.NOTES:
         return {
-          continueDisable: !projectName || !projectDescription || !validLength,
+          continueDisable: !projectName || !projectDescription || !validLength || (!!admProject && !adminProjectUserId),
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
