@@ -123,13 +123,13 @@ export class Notes extends React.Component<Props, {}> {
   }
 
   handleOnChange = async (value: SelectValue) => {
-    const { setUserToSearch } = this.props
+    const { setUserToSearch, setAdminProjectUser } = this.props
     try {
       const parsedValue = value.toString()
-
       if (containsNumberAndLetters(parsedValue)) {
         setUserToSearch(parsedValue.trim())
       }
+      setAdminProjectUser('')
     } catch (error) {
       message.error(error.message)
     }
@@ -241,7 +241,7 @@ export class Notes extends React.Component<Props, {}> {
                 {formatMessage(messages.selectUser)} <Required>*</Required>
               </Label>
               <StyledSearch
-                onChange={this.debounceSearchProduct}
+                onSearch={this.debounceSearchProduct}
                 dataSource={searchResults}
                 onSelect={this.handleOnSelect}
                 placeholder={formatMessage(messages.searchBy)}
