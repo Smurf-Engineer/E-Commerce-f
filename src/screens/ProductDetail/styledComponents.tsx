@@ -637,5 +637,8 @@ export const ButtonTemplate = styled.div`
 `
 
 export const Download = styled(Icon)`
-  margin-right: 12px;
+  margin-right: 10px;
+  stroke: ${BLUE};
+  stroke-width: 30px;
+  font-size: 17px;
 `
