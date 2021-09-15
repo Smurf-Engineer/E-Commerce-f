@@ -15,6 +15,7 @@ export const GetProductsByIdQuery = gql`
       mpn
       flatlock
       chart
+      templateZip: template_zip
       branding
       title
       bibBrace {

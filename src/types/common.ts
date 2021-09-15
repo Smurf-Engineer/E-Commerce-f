@@ -287,6 +287,8 @@ export interface Product {
   colors?: ProductColors[]
   mpn?: string
   twoPieces?: boolean
+  chart?: string
+  templateZip?: string
 }
 
 export type DesignType = {

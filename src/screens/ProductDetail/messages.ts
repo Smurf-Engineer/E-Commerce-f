@@ -120,5 +120,9 @@ export default defineMessages({
   customize: {
     id: 'screens.ProductDetail.customize',
     defaultMessage: 'Customize'
+  },
+  downloadTemplates: {
+    id: 'screens.ProductDetail.downloadTemplates',
+    defaultMessage: 'Download Templates'
   }
 })
