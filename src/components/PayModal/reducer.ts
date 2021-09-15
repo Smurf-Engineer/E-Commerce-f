@@ -37,6 +37,7 @@ export const initialState = fromJS({
   billingApartment: '',
   billingCountry: '',
   billingStateProvince: '',
+  billingStateProvinceCode: '',
   billingCity: '',
   shippingSave: false,
   billingSave: false,
@@ -73,6 +74,7 @@ const payModalReducer: Reducer<any> = (state = initialState, action) => {
           billingStreet: '',
           billingApartment: '',
           billingCountry: '',
+          billingStateProvinceCode: '',
           billingStateProvince: '',
           billingCity: '',
           billingZipCode: '',
@@ -113,6 +115,7 @@ const payModalReducer: Reducer<any> = (state = initialState, action) => {
           city,
           zipCode,
           phone,
+          stateProvinceCode,
           stateProvince
         } = address
 
@@ -124,6 +127,7 @@ const payModalReducer: Reducer<any> = (state = initialState, action) => {
           billingCountry: country,
           billingStateProvince: stateProvince,
           billingCity: city,
+          billingStateProvinceCode: stateProvinceCode,
           billingZipCode: zipCode,
           billingPhone: phone
         }

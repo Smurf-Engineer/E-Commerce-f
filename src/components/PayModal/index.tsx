@@ -2,7 +2,7 @@
  * PayModal Component - Created by miguelcanobbio on 23/05/18.
  */
 import * as React from 'react'
-import { compose, withApollo } from 'react-apollo'
+import { compose, graphql, withApollo } from 'react-apollo'
 import {
   CheckIcon,
   CloseIcon,
@@ -47,20 +47,34 @@ import { connect } from 'react-redux'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { EU_SUBSIDIARY_COUNTRIES, PaymentOptions } from '../../screens/Checkout/constants'
 import messages from './messages'
-import { AddressType, CreditCardData, IbanData, PaymentIntent, ServiceItem, StripeCardData } from '../../types/common'
+import {
+  AddressType,
+  CreditCardData,
+  IbanData,
+  NetsuiteTax,
+  PaymentIntent,
+  QueryProps,
+  ServiceItem,
+  StripeCardData,
+  TaxAddressObj
+} from '../../types/common'
 import { PHONE_MINIMUM } from '../../constants'
 import { AddAddressMutation, CurrencyQuery } from '../../screens/Checkout/data'
-import { CreatePaymentIntentMutation, isScaPaymentQuery, PlaceOrderServiceMutation } from './data'
+import { CreatePaymentIntentMutation, isScaPaymentQuery, PlaceOrderServiceMutation, getTaxQuery } from './data'
 import get from 'lodash/get'
 import upperFirst from 'lodash/upperFirst'
 import Steps from 'antd/lib/steps'
 import CheckoutSummary from './CheckoutSummary'
+import { getTaxesServices } from '../../utils/utilsCheckout'
 
 const stepperTitles = ['PAYMENT', 'REVIEW']
 const { CREDITCARD, PAYPAL } = PaymentOptions
 const { Step } = Steps
 const { confirm } = Modal
 
+interface DataTaxes extends QueryProps {
+  taxes: NetsuiteTax
+}
 interface Props {
   open: boolean
   intl: InjectedIntl
@@ -72,6 +86,8 @@ interface Props {
   currentStep: number
   cardHolderName: string
   billingFirstName: string
+  taxShipQuery?: DataTaxes
+  billingStateProvinceCode: string
   billingLastName: string
   placeOrderService: any
   billingStreet: string
@@ -194,7 +210,6 @@ class PayModal extends React.Component<Props, {}> {
       openConfirm: false
     })
     saveCountryAction(countryCode)
-    this.nextStep()
   }
 
   nextStep = () => {
@@ -210,6 +225,7 @@ class PayModal extends React.Component<Props, {}> {
       intl: { formatMessage },
       billingCountry,
       billingStateProvince,
+      billingStateProvinceCode,
       billingCity,
       billingZipCode,
       billingPhone
@@ -229,7 +245,7 @@ class PayModal extends React.Component<Props, {}> {
         apartment: billingApartment,
         country: billingCountry,
         stateProvince: billingStateProvince,
-        stateProvinceCode: billingStateProvince,
+        stateProvinceCode: billingStateProvinceCode,
         city: billingCity,
         zipCode: billingZipCode,
         phone: billingPhone
@@ -372,6 +388,7 @@ class PayModal extends React.Component<Props, {}> {
       billingStateProvince,
       billingCity,
       billingZipCode,
+      billingStateProvinceCode,
       billingPhone,
       paymentMethod,
       stripeToken,
@@ -389,7 +406,7 @@ class PayModal extends React.Component<Props, {}> {
       apartment: billingApartment,
       country: billingCountry,
       stateProvince: billingStateProvince,
-      stateProvinceCode: billingStateProvince,
+      stateProvinceCode: billingStateProvinceCode,
       city: billingCity,
       zipCode: billingZipCode,
       phone: billingPhone
@@ -522,6 +539,8 @@ class PayModal extends React.Component<Props, {}> {
       cardHolderName,
       requestClose,
       billingFirstName,
+      taxShipQuery,
+      billingStateProvinceCode,
       billingLastName,
       billingStreet,
       billingApartment,
@@ -556,7 +575,7 @@ class PayModal extends React.Component<Props, {}> {
       apartment: billingApartment,
       country: billingCountry,
       stateProvince: billingStateProvince,
-      stateProvinceCode: billingStateProvince,
+      stateProvinceCode: billingStateProvinceCode,
       city: billingCity,
       zipCode: billingZipCode,
       phone: billingPhone
@@ -589,8 +608,15 @@ class PayModal extends React.Component<Props, {}> {
     if (!checked && paymentMethod === PaymentOptions.PAYPAL && showOrderButton) {
       this.confirmOrder(true)
     }
+    const taxRates = get(taxShipQuery, 'taxes', undefined)
+    const subTotal = items.reduce((sum, item) => sum += item.price, 0)
 
-    const total = items.reduce((sum, item) => sum += item.price, 0)
+    const taxes = getTaxesServices(billingCountry, subTotal, taxRates)
+    const taxGst = get(taxes, 'taxGst', 0)
+    const taxPst = get(taxes, 'taxPst', 0)
+    const taxFee = get(taxes, 'taxFee', 0)
+    const taxesAmount = get(taxes, 'taxesAmount', 0)
+    const total = subTotal + taxGst + taxPst + taxFee
     const currency = currentCurrency || config.defaultCurrency
     return (
       <Modal
@@ -633,6 +659,27 @@ class PayModal extends React.Component<Props, {}> {
                     <ItemColumn uppercase={true} width="72px">{price} {currency}</ItemColumn>
                   </ItemRow>
                 )}
+                {taxGst > 0 &&
+                  <ItemRow>
+                    <ItemColumn width="180px">GST/HST</ItemColumn>
+                    <ItemColumn width="310px">Taxes</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{taxGst} {currency}</ItemColumn>
+                  </ItemRow>
+                }
+                {taxPst > 0 &&
+                  <ItemRow>
+                    <ItemColumn width="180px">PST</ItemColumn>
+                    <ItemColumn width="310px">Taxes</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{taxPst} {currency}</ItemColumn>
+                  </ItemRow>
+                }
+                {taxFee > 0 &&
+                  <ItemRow>
+                    <ItemColumn width="180px">Taxes Fee</ItemColumn>
+                    <ItemColumn width="310px">Taxes ({taxesAmount}%)</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{taxFee} {currency}</ItemColumn>
+                  </ItemRow>
+                }
               </ItemList>
               <StyledSwipeableViews
                 action={actions => {
@@ -662,7 +709,7 @@ class PayModal extends React.Component<Props, {}> {
                     </MethodButton>
                   </ContainerMethods>
                   <PayForm>
-                    {paymentMethod === CREDITCARD && (
+                    {paymentMethod && (
                       <StripeProvider stripe={stripe}>
                         <Elements>
                           <CreditCardForm
@@ -686,6 +733,7 @@ class PayModal extends React.Component<Props, {}> {
                               paymentClientSecret,
                               stripe
                             }}
+                            showCard={paymentMethod === CREDITCARD}
                             createPaymentIntent={this.createPaymentIntent}
                             nextStep={this.nextStep}
                             hasError={billingHasError}
@@ -735,6 +783,13 @@ class PayModal extends React.Component<Props, {}> {
   }
 }
 
+interface OwnProps {
+  billingCountry?: string
+  billingStateProvince?: string
+  billingZipCode?: number
+  billingStateProvinceCode?: string
+}
+
 const mapStateToProps = (state: any) => {
   const payModalProps = state.get('payModal').toJS()
   const langProps = state.get('languageProvider').toJS()
@@ -752,7 +807,30 @@ const PayModalEnhanced = compose(
   CreatePaymentIntentMutation,
   AddAddressMutation,
   withApollo,
-  connect(mapStateToProps, { ...PayModalActions, ...thunkActions })
+  connect(mapStateToProps, { ...PayModalActions, ...thunkActions }),
+  graphql(getTaxQuery, {
+    name: 'taxShipQuery',
+    options: ({
+        billingCountry: country,
+        billingStateProvince,
+        billingZipCode,
+        billingStateProvinceCode
+      }: OwnProps) => {
+      const taxAddress: TaxAddressObj = country &&
+        billingStateProvince &&
+        billingZipCode && {
+        country,
+        stateName: billingStateProvince,
+        state: billingStateProvinceCode,
+        zipCode: billingZipCode
+      }
+      return {
+        skip: !country || !billingStateProvince || !taxAddress,
+        variables: { country, shipAddress: taxAddress },
+        fetchPolicy: 'network-only'
+      }
+    }
+  }),
 )(PayModal)
 
 export default PayModalEnhanced

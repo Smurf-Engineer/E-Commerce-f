@@ -915,6 +915,7 @@ export interface IbanData {
 export interface ServiceItem {
   name: string
   description: string
+  itemId?: string
   price: number
 }
 

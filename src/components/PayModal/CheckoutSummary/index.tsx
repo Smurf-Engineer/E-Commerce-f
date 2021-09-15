@@ -79,7 +79,6 @@ const CheckoutSummary = ({
   onPaypalError,
   onPaypalCancel,
   currentCurrency,
-  billingAddress,
   onPlaceOrder,
   placingOrder = false,
   subsidiaryQuery,

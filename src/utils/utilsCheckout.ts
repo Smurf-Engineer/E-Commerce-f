@@ -109,6 +109,54 @@ export const getTaxesAndDiscount = (
   }
 }
 
+export const getTaxesServices = (
+  countrySubsidiary: string,
+  subtotal: number,
+  taxRates?: NetsuiteTax,
+) => {
+  // get tax fee
+  const taxesAmount = taxRates ? taxRates.total : 0
+
+  let taxVatTotal = 0
+  // taxes
+  let taxGst = 0
+  let taxPst = 0
+  let taxFee = 0
+  let taxVat = 0
+  if (taxesAmount) {
+    let taxTotal = 0
+
+    switch (countrySubsidiary.toLowerCase()) {
+      case COUNTRY_CODE_US:
+        // for USA the tax is calculated with this formula (subtotal + proDesignReview - discountAmount) * taxRate%
+        if (taxRates) {
+          taxTotal = (subtotal) * (taxesAmount / 100) // calculate tax
+          taxFee = roundTaxes(taxTotal) // round to 2 decimals
+        }
+        break
+      case COUNTRY_CODE_CANADA:
+        if (taxRates) {
+          // for CANADA the taxes are calculated
+          taxGst = (subtotal) * (taxRates.rateGst / 100)
+          taxPst = (subtotal) * (taxRates.ratePst / 100) // calculate tax
+          taxGst = roundTaxes(taxGst) // round to 2 decimals
+          taxPst = roundTaxes(taxPst) // round to 2 decimals
+        }
+        break
+      default:
+        break
+    }
+  }
+  return {
+    taxGst,
+    taxPst,
+    taxFee,
+    taxVat,
+    taxVatTotal,
+    taxesAmount
+  }
+}
+
 export const roundDecimals = (n: number) => {
   return Math.round(n * 100) / 100
 }
