@@ -625,7 +625,7 @@ export const MobileButtonTemplate = styled.div`
 export const ButtonTemplate = styled.div`
   color: ${BLUE};
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   @media (min-width: 320px) and (max-width: 480px) {
     display: none;
