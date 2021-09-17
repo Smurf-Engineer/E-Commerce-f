@@ -14,9 +14,9 @@ const AboutUs = ({ formatMessage }: Props) => {
   return (
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
-      <Text>
+      {/* <Text>
         <Span link="/about-us-page">{formatMessage(messages.company)}</Span>
-      </Text>
+      </Text> */}
       {/* TODO: Remove after verify it wount be needed 
       <Text>
         <Span link="https://www.jakroo.com/us/technology.html">
