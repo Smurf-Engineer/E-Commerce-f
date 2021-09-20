@@ -9,6 +9,7 @@ export const Container = styled.div`
   flex-direction: row;
   margin-right: -14px;
   padding: 0px 0px 0px 16px;
+  transition: all .25s;
 `
 
 export const LoadingContainer = styled.div`
