@@ -2,11 +2,11 @@
  * DropdownList Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
-import Popover from 'antd/lib/popover'
 import { connect } from 'react-redux'
 import { compose, withApollo } from 'react-apollo'
 import get from 'lodash/get'
 import Menu from 'antd/lib/menu'
+import Popover from 'antd/lib/popover'
 import queryString from 'query-string'
 import { History } from 'history'
 import MenuSports from '../MenuSports'
@@ -179,9 +179,10 @@ export class DropdownList extends React.PureComponent<Props> {
           <Menu.Item key={name}>
             <Popover
               overlayStyle={overStyle}
+              overlayClassName="innerClass"
               trigger="hover"
               placement="bottom"
-              visible={menuOpen}
+              visible={index === 1}
               mouseEnterDelay={0.3}
               onVisibleChange={this.handleOnHideSportsMenu(index)}
               content={
@@ -194,7 +195,7 @@ export class DropdownList extends React.PureComponent<Props> {
                     name,
                     user
                   }}
-                  visible={menuOpen}
+                  visible={index === 1}
                   type={index}
                   onPressSeeAll={this.handleOnSeeAll}
                   onPressQuickView={this.handleOnQuickView}

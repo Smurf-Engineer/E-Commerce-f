@@ -169,7 +169,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
               currentCurrency
             }}
             onPressThumbnail={this.onPressThumbnail}
-            width={'80%'}
+            width={'91%'}
             onPressSeeAll={this.onPressSeeAll}
           />
         )}

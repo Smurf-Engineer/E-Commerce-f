@@ -11,8 +11,7 @@ export const Container = styled.div`
   width: ${({ width }: PropsContainer) => width};
   display: flex;
   flex-direction: row;
-  overflow: auto;
-  white-space: nowrap;
+  flex-wrap: wrap;
 `
 
 export const ContainerLoading = styled.div`

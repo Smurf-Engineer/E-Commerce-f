@@ -34,6 +34,12 @@ body {
   width: 100%;
 }
 
+.innerClass .ant-popover-inner {
+  background-color: #ffffffe0;
+  backdrop-filter: blur(9px);
+  transition: all .25s;
+}
+
 .masonry-grid_column {
   padding-left: 3px;
   background-clip: padding-box;

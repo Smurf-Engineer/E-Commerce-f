@@ -15,6 +15,7 @@ export const Container = styled.div`
   width: 72%;
   justify-content: space-between;
   flex-direction: row;
+  transition: all .25s;
 `
 
 interface OptionDropdownProps {
