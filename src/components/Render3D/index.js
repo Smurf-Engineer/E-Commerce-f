@@ -217,7 +217,7 @@ class Render3D extends PureComponent {
           outputSvg,
           outputPng
         } = design
-        const { colorAccessories, asImage } = this.props
+        const { colorAccessories, asImage, customProduct } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -270,7 +270,7 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign || (outputSvg && fromImage) || asImage) {
+        if ((proDesign || (outputPng && customProduct)) || (outputSvg && fromImage) || asImage) {
           if ((actualImage || (outputSvg && !outputPng)) && !asImage) {
             const imageExtension = getFileExtension(actualImage)
             if (imageExtension === PNG_EXTENSION) {
@@ -642,8 +642,8 @@ class Render3D extends PureComponent {
     colorAccessories,
     fromImage = false
   ) => {
-    const { product = {}, flatlockColor, proDesign, highResolution } = design
-    const { stitchingValue, asImage, designSearch, hidePredyed, modelObj, modelMtl } = this.props
+    const { product = {}, flatlockColor, proDesign, highResolution, outputPng } = design
+    const { stitchingValue, asImage, designSearch, hidePredyed, modelObj, modelMtl, customProduct } = this.props
     if (design.canvas && asImage) {
       await this.getFontsFromCanvas(design.canvas)
     }
@@ -732,7 +732,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign && !fromImage && !asImage) {
+          if (!proDesign && !(outputPng && customProduct) && !fromImage && !asImage) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -773,7 +773,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
-          if (!proDesign && !fromImage && !asImage) {
+          if (!proDesign && !(outputPng && customProduct) && !fromImage && !asImage) {
             areas.forEach(
               (map, index) =>
               (children[
