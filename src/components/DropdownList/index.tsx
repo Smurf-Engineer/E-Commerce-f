@@ -182,7 +182,7 @@ export class DropdownList extends React.PureComponent<Props> {
               overlayClassName="innerClass"
               trigger="hover"
               placement="bottom"
-              visible={index === 1}
+              visible={menuOpen}
               mouseEnterDelay={0.3}
               onVisibleChange={this.handleOnHideSportsMenu(index)}
               content={
@@ -195,7 +195,7 @@ export class DropdownList extends React.PureComponent<Props> {
                     name,
                     user
                   }}
-                  visible={index === 1}
+                  visible={menuOpen}
                   type={index}
                   onPressSeeAll={this.handleOnSeeAll}
                   onPressQuickView={this.handleOnQuickView}
