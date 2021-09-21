@@ -327,7 +327,7 @@ const ProductSlide = ({
       />
       {isHovered && (!selectProduct && !hideCustomButton) && (
         <ButtonContainer
-          {...{ myLockerList }}
+          {...{ myLockerList, fromTop }}
           onClick={customizable ? onPressCustomize : onPressThumbnail}
         >
           <CustomizeButton>{labelButton}</CustomizeButton>

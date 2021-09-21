@@ -67,9 +67,14 @@
 .innerClass {
 	.ant-popover-inner {
 		background-color: #ffffffe0;
-    backdrop-filter: blur(9px);
-    transition: all .25s;
-	}
+		backdrop-filter: blur(9px);
+		transition: all .25s;
+		@media not all and (min-resolution: .001dpcm) {
+      @supports (-webkit-appearance:none) {
+        background-color: white !important;
+      }
+    }
+  }
 }
 
 .rc-drawer-overlay {
