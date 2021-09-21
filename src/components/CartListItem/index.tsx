@@ -442,7 +442,7 @@ export class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  {(canReorder && (active || onlyProDesign)) && renderAddToCartButton}
+                  {(canReorder && (active || onlyProDesign)) && false && renderAddToCartButton}
                 </ItemDetails>
               </Container>
             )
@@ -461,7 +461,7 @@ export class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
-                  {(canReorder && (active || onlyProDesign)) && renderAddToCartButton}
+                  {(canReorder && (active || onlyProDesign)) && false && renderAddToCartButton}
                 </div>
               </Container>
             )
