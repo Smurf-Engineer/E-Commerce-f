@@ -457,7 +457,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             />
           </StyledText>
           <Items>
-            {!teamStoreId && owner && !savingPdf && (
+            {!teamStoreId && owner && !savingPdf && false && (
               <TitleStyled>
                 {formatMessage(messages.items)}
                 <AddToCartButton
