@@ -131,7 +131,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
     const sportName = sports[type].name
     return (
       <Container>
-        <Filters width={'15%'}>
+        <Filters width={'10%'}>
           <FilterList
             filters={genderOptions}
             filterSelected={genderSelected}
@@ -168,6 +168,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
               formatMessage,
               currentCurrency
             }}
+            fromTop={true}
             onPressThumbnail={this.onPressThumbnail}
             width={'91%'}
             onPressSeeAll={this.onPressSeeAll}

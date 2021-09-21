@@ -8,6 +8,7 @@ export const Container = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: row;
+  white-space: nowrap;
 `
 
 export const Text = styled.div`

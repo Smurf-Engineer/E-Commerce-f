@@ -17,9 +17,10 @@ export const productsQuery = gql`
       category: $category
       sport: $sport
       sportGroup: $sportGroup
-      limit: 6
+      limit: 10
       order: "id"
       onlyCustom: true
+      fromTop: true
     ) {
       fullCount
       products {

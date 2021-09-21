@@ -57,6 +57,7 @@ interface Props {
   hideQuickView?: boolean
   urlProduct: string
   myLockerList?: boolean
+  fromTop?: boolean
   currentCurrency: string
   disableSlider?: boolean
   customizable?: boolean
@@ -93,6 +94,7 @@ const ProductSlide = ({
   proStatus,
   isHovered,
   deleteItem,
+  fromTop,
   isTopProduct,
   images,
   image,
@@ -321,7 +323,7 @@ const ProductSlide = ({
       <ThumbnailImage
         onClick={!selectProduct ? onPressThumbnail : undefined}
         src={thumbnail}
-        {...{ fitContainer, isProDesign }}
+        {...{ fitContainer, isProDesign, fromTop }}
       />
       {isHovered && (!selectProduct && !hideCustomButton) && (
         <ButtonContainer
