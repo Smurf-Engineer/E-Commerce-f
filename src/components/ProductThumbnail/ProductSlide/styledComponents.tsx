@@ -204,6 +204,7 @@ export const Arrow = styled.img``
 
 interface ButtonContainerProps {
   myLockerList?: boolean
+  fromTop?: boolean
 }
 
 export const ButtonContainer = styled.div`
@@ -215,6 +216,9 @@ export const ButtonContainer = styled.div`
     myLockerList ? '70px' : '170px'};
   user-select: none;
   width: 100%;
+  ${({ fromTop }: ButtonContainerProps) => fromTop ? `
+    top: 140px;
+  ` : ''}
 `
 
 export const CustomizeButton = styled.div`

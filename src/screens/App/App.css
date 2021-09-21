@@ -38,6 +38,11 @@ body {
   background-color: #ffffffe0;
   backdrop-filter: blur(9px);
   transition: all .25s;
+  @media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) {
+      background-color: white !important;
+    }
+  }
 }
 
 .masonry-grid_column {
