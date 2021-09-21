@@ -12,6 +12,7 @@ type StyledProps = {
   isProDesign?: boolean
   showTooltips?: boolean
   selectedIndex?: number
+  fromTop?: boolean
 }
 
 export const ImageContainer = styled.div`
@@ -140,6 +141,10 @@ export const ThumbnailImage = styled.img`
   object-fit: cover;
   border-radius: 3px;
   background: ${({ isProDesign }: StyledProps) => (isProDesign ? GRAY_LIGHTEST : 'unset')};
+  ${({ fromTop }: StyledProps) => fromTop ? `
+    max-width: 188px;
+    height: 182px;
+  ` : ''}
   @media (max-width: 767px) {
     max-width: ${({ isProDesign }: StyledProps) => (isProDesign ? '162px' : '220px')};
   }

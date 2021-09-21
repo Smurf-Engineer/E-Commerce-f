@@ -21,6 +21,7 @@ interface Props {
   genderFilter?: Filter
   sportFilter: Filter
   reseller?: Reseller
+  fromTop?: boolean
   onPressSeeAll: () => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
@@ -37,6 +38,7 @@ export const ProductHorizontalList = ({
   onPressQuickView,
   width = '60%',
   reseller,
+  fromTop,
   genderFilter,
   formatMessage,
   onPressThumbnail,
@@ -102,6 +104,7 @@ export const ProductHorizontalList = ({
           type,
           description,
           priceRange,
+          fromTop,
           isTopProduct,
           yotpoId,
           currentCurrency,

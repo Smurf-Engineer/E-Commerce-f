@@ -10,6 +10,7 @@ interface StyleProps {
   withBorder?: boolean
   withMargin?: boolean
   selectProduct?: boolean
+  fromTop?: boolean
   isSelected?: boolean
   fitContainer?: boolean
 }
@@ -21,7 +22,11 @@ export const Container = styled.section`
   border: 3px solid;
   border-radius: 6px;
   border-color: ${({ isSelected }: StyleProps) => (isSelected ? RED : TRANSPARENT)};
-
+  ${({ fromTop }: StyleProps) => fromTop ? `
+    width: 188px;
+    margin: 0 9px;
+    margin-bottom: 9px;
+  ` : ''}
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0 auto;
     width: auto;
@@ -130,6 +135,11 @@ export const Type = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  ${({ fromTop }: StyleProps) => fromTop ? `
+    width: 178px;
+    font-size: 13px;
+    font-family: Avenir;
+  ` : ''}
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
@@ -179,6 +189,9 @@ export const Label = styled.div`
   font-size: 12px;
   line-height: 16px;
   user-select: none;
+  ${({ fromTop }: StyleProps) => fromTop ? `
+    font-size: 10px;
+  ` : ''}
 `
 export const ImgIcon = styled.img`
   height: 15px;
@@ -193,6 +206,9 @@ export const Price = styled.div`
   font-size: 12px;
   font-weight: 600;
   line-height: 16px;
+  ${({ fromTop }: StyleProps) => fromTop ? `
+    font-size: 11px;
+  ` : ''}
 `
 
 const fadeIn = keyframes`

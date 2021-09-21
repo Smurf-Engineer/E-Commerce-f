@@ -77,6 +77,7 @@ interface Props {
   proDesignAssigned?: boolean
   selectProduct?: boolean
   isSelected?: boolean
+  fromTop?: boolean
   selectedIndex?: number
   clickDisabled?: boolean
   fitContainer?: boolean
@@ -256,6 +257,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       type,
       images,
       description,
+      fromTop,
       priceRange,
       isTopProduct,
       footer,
@@ -329,7 +331,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       ))
 
     const colorOptions = customizable ? (
-      <Label>
+      <Label {...{ fromTop }}>
         <ImgIcon src={colorWheelIcon} />
         {customizableLabel}
       </Label>
@@ -359,7 +361,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     }
     return (
       <Container
-        {...{ withMargin, selectProduct, isSelected, fitContainer }}
+        {...{ withMargin, selectProduct, isSelected, fitContainer, fromTop }}
         onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
         {!!notifications && <NotificationsBadge>{notifications > 9 ? '+9' : notifications}</NotificationsBadge>}
         <ImageSlide
@@ -372,6 +374,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             isHovered,
             images,
             currentImage,
+            fromTop,
             labelButton,
             image,
             hideCustomButton,
@@ -408,7 +411,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
           footer
         ) : (
           <Footer>
-            <Type {...{ fitContainer }}>
+            <Type {...{ fitContainer, fromTop }}>
               {type}
               <GendersContainer>
                 {menAvailable && <MenIcon type="man" />}
@@ -418,7 +421,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             <Description {...{ fitContainer }}>{description}</Description>
             <InfoContainer>
               {!isProDesign ? colorOptions : null}
-              <Price>{price}</Price>
+              <Price {...{ fromTop }}>{price}</Price>
             </InfoContainer>
             {isProDesign &&
               <Description fitContainer={true}>
