@@ -308,6 +308,8 @@
   "components.ResellerSignup.rememberMe": "Remember me",
   "components.ResellerSignup.gstLabel": "GST # or Business Number",
   "components.ResellerSignup.yes": "Yes",
+  "components.ResellerSignup.phone": "Phone (mobile)",
+  "components.ResellerSignup.badPhoneFormat": "Phone number must be at least 10 digits",
   "components.ResellerSignup.title": "SEE WHY RETAIL SHOPS ARE PARTNERING WITH JAKROO",
   "components.ResellerSignup.signupTitle": "BECOME A JAKROO RESELLER TODAY!",
   "components.ResellerSignup.advertisement": "VERIFICATION",

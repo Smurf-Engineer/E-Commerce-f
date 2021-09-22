@@ -191,7 +191,9 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     const {
       currentTarget: { value, id }
     } = evt
-    evt.persist()
+    if (evt.persist) {
+      evt.persist()
+    }
     this.setState({ [id]: value } as any)
   }
   handleChangeCurrency = (value: string) => {
@@ -501,7 +503,6 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                 <InputDiv>
                   <Label>
                     <FormattedMessage {...messages.phone} />
-                    <RequiredSymbol>*</RequiredSymbol>
                   </Label>
                   <PhoneInput
                     country={'us'}
@@ -510,7 +511,7 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
                       this.handleInputChange({ currentTarget: { id: 'phone', value } })
                     }}
                     inputProps={{ autoComplete: 'jv2' }}
-                    inputStyle={{ borderRadius: 0 }}
+                    inputStyle={{ borderRadius: 0, width: '100%' }}
                     copyNumbersOnly={false}
                   />
                 </InputDiv>
@@ -759,11 +760,15 @@ export class ResellerSignup extends React.Component<Props, StateProps> {
     if (password !== confirmPassword) {
       message.error(formatMessage(messages.passwordLengthError))
     }
-    if (!firstName || !lastName || !email || !password || !confirmPassword || !phone || !currency
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !currency
       || !website || !businessName || !selectedRegion
       || (currency === US_CURRENCY && !fileName) || (currency === CA_CURRENCY && !gst)
     ) {
       message.error(formatMessage(messages.requiredFieldsError))
+      return
+    }
+    if (phone && phone.length < 10) {
+      message.error(formatMessage(messages.badPhoneFormat))
       return
     }
     if ((
