@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.ResellerSignup.resellerInfo',
     defaultMessage: 'Reseller Information'
   },
+  badPhoneFormat: {
+    id: 'components.ResellerSignup.badPhoneFormat',
+    defaultMessage: 'Phone number must be at least 10 digits'
+  },
   create: {
     id: 'components.ResellerSignup.create',
     defaultMessage: 'Create'
@@ -47,7 +51,7 @@ export default defineMessages({
   },
   phone: {
     id: 'components.ResellerSignup.phone',
-    defaultMessage: 'Phone'
+    defaultMessage: 'Phone (mobile)'
   },
   password: {
     id: 'components.ResellerSignup.password',
