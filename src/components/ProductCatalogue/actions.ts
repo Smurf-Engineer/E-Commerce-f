@@ -13,7 +13,8 @@ import {
   SET_SELECTED_HOME_FILTERS,
   SET_ALL_GENDERS,
   SELECT_PRODUCT,
-  DESELECT_PRODUCT
+  DESELECT_PRODUCT,
+  SET_SEARCH_TEXT
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -72,4 +73,9 @@ export const selectProductAction = (productId: number) => ({
 export const deselectProductAction = (productId: number) => ({
   type: DESELECT_PRODUCT,
   productId
+})
+
+export const setSearchTextAction = (searchText: string) => ({
+  type: SET_SEARCH_TEXT,
+  searchText
 })

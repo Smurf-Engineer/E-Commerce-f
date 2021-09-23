@@ -24,5 +24,9 @@ export default defineMessages({
   hightestPriceLabel: {
     id: 'components.ProductCatalogueThumbnailsList.hightestPriceLabel',
     defaultMessage: 'Highest Price'
+  },
+  search: {
+    id: 'components.ProductCatalogueThumbnailsList.search',
+    defaultMessage: 'Search'
   }
 })

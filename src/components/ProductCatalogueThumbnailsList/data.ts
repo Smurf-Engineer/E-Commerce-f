@@ -12,6 +12,7 @@ export const GetProductsQuery = gql`
     $limit: Int
     $order: String
     $offset: Int
+    $searchText: String
   ) {
     products(
       contentTile: $contentTile
@@ -24,6 +25,7 @@ export const GetProductsQuery = gql`
       limit: $limit
       order: $order
       offset: $offset
+      text: $searchText
     ) {
       fullCount
       products {

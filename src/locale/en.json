@@ -374,6 +374,7 @@
   "components.ProductCatalogueThumbnailsList.topSellerLabel": "Top Seller",
   "components.ProductCatalogueThumbnailsList.lowestPriceLabel": "Lowest Price",
   "components.ProductCatalogueThumbnailsList.hightestPriceLabel": "Highest Price",
+  "components.ProductCatalogueThumbnailsList.search": "Search",
   "components.ProductCatalogueThumbnailsList.emptyResults": "No results found",
   "components.ProductCatalogueThumbnailsList.addToCart": "ADD TO CART",
   "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",

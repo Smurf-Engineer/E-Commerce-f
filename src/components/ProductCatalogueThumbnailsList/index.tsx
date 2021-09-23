@@ -87,6 +87,7 @@ interface Props {
   selectedItems?: Product[]
   fromIntakeForm?: boolean
   adminProject?: boolean
+  searchText?: string
   handleCheckChange: (product: Product, checked: boolean, key?: number) => void
 }
 
@@ -488,6 +489,7 @@ type OwnProps = {
   skip?: number
   designs?: DesignType[]
   selectProduct?: boolean
+  searchText?: string
 }
 
 const ThumbnailsListEnhance = compose(
@@ -511,7 +513,8 @@ const ThumbnailsListEnhance = compose(
       orderBy,
       skip,
       designs,
-      selectProduct
+      selectProduct,
+      searchText
     }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
@@ -525,7 +528,8 @@ const ThumbnailsListEnhance = compose(
           fitStyle: fitFilters ? fitFilters : null,
           limit: limit ? limit : null,
           order: orderBy ? orderBy : null,
-          offset: skip ? skip : null
+          offset: skip ? skip : null,
+          searchText
         },
         skip: !!designs
       }
