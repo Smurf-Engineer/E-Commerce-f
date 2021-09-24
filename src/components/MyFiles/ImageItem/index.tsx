@@ -21,6 +21,7 @@ import {
   ExtLabel
 } from './styledComponents'
 import { ImageFile } from '../../../types/common'
+import { getFileExtension } from '../../../utils/utilsFiles'
 import infoIcon from '../../../assets/helpicon.png'
 import LowQualityFlag from '../../../assets/warning_flag.png'
 import {
@@ -60,8 +61,8 @@ const ImageItem = ({
   const onDelete = () => onClickDelete(id)
   const completeName = fileUrl.split('/').pop()
   const name = completeName && completeName.split('-').pop()
-  const nameAndExt = name ? name.split('.') : ''
-  const hasExtension = name && nameAndExt.length === 2
+  const fileExtension = name ? getFileExtension(name).substring(1) : ''
+  const fileName = (fileExtension && name) ? name.split('.').slice(0, -1).join('.') : ''
   const isMobile = window && window.matchMedia('(max-width: 767px)').matches
   const openInfo = () => {
     setSeen()
@@ -113,15 +114,15 @@ const ImageItem = ({
         </>
       }
       <Image src={fileUrl} />
-      {hasExtension ? (
+      {fileExtension ? (
         <ExtLabel
-          color={extColorDict[nameAndExt[1].toLowerCase()]
-            ? extColorDict[nameAndExt[1].toLowerCase()]
+          color={extColorDict[fileExtension]
+            ? extColorDict[fileExtension]
             : extColorDict.other}
-        >{nameAndExt[1]}</ExtLabel>
+        >{fileExtension}</ExtLabel>
       ) : null}
       <Bottom>
-        <Name>{(hasExtension ? nameAndExt[0] : name) || completeName}</Name>
+        <Name>{(fileExtension ? fileName : name) || completeName}</Name>
         <Delete onClick={onDelete}>{formatMessage(messages.delete)}</Delete>
       </Bottom>
     </Container>
