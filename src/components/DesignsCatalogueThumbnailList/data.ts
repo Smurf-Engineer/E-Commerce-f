@@ -31,6 +31,7 @@ export const GetProductsQuery = gql`
         shortDescription: short_description
         collections
         isTopProduct
+        youthCombined: youth_combined
         weight
         twoPieces: two_pieces
         genders {
@@ -44,6 +45,7 @@ export const GetProductsQuery = gql`
         sizeRange: size_range {
           id
           name
+          isYouth: is_youth
         }
         priceRange {
           quantity

@@ -83,6 +83,7 @@ export const getProductQuery = gql`
       shortDescription: short_description
       category_id
       categoryName: category_name
+      youthCombined: youth_combined
       tags
       modelSize: model_size
       season
@@ -128,6 +129,7 @@ export const getProductQuery = gql`
       sizeRange: size_range {
         id
         name
+        isYouth: is_youth
       }
       collections
       isTopProduct

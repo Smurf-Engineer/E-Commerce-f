@@ -114,6 +114,7 @@ export const getDesignQuery = gql`
         branding
         guideline
         predyedlabel
+        youthCombined: youth_combined
         hasPredyed: has_predyed
         bumpMap: bump_map
         flatlock
@@ -142,6 +143,7 @@ export const getDesignQuery = gql`
         sizeRange: size_range {
           id
           name
+          isYouth: is_youth
         }
         priceRange {
           quantity

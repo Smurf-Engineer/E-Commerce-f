@@ -5,6 +5,7 @@ export const getProductQuery = gql`
     product(id: $id, onlyActive: false) {
       weight
       mpn
+      youthCombined: youth_combined
       shortDescription: short_description
       fitStyles {
         id
@@ -13,6 +14,7 @@ export const getProductQuery = gql`
       sizeRange: size_range {
         id
         name
+        isYouth: is_youth
       }
     }
   }

@@ -59,9 +59,11 @@ export const getSingleTeamStore = gql`
               id
               name: description
             }
+            youthCombined: youth_combined
             sizeRange: size_range {
               id
               name
+              isYouth: is_youth
             }
             images: pictures {
               front: front_image
@@ -126,9 +128,11 @@ export const getTeamStoreMutation = graphql(
                 id
                 name: description
               }
+              youthCombined: youth_combined
               sizeRange: size_range {
                 id
                 name
+                isYouth: is_youth
               }
               images: pictures {
                 front: front_image

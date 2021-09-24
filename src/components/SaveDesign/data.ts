@@ -36,6 +36,7 @@ export const saveDesignName = graphql(
           description: short_description
           shortDescription: short_description
           collections
+          youthCombined: youth_combined
           isTopProduct
           weight
           priceRange {
@@ -55,6 +56,7 @@ export const saveDesignName = graphql(
           sizeRange: size_range {
             id
             name
+            isYouth: is_youth
           }
           images: pictures {
             front: front_image
@@ -109,6 +111,7 @@ export const saveDesignChanges = graphql(
           yotpoId: yotpo_id
           name
           type: name
+          youthCombined: youth_combined
           description: short_description
           shortDescription: short_description
           collections
@@ -132,6 +135,7 @@ export const saveDesignChanges = graphql(
           sizeRange: size_range {
             id
             name
+            isYouth: is_youth
           }
           images: pictures {
             front: front_image
