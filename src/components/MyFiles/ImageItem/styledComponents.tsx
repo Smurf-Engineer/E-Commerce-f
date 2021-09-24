@@ -3,10 +3,19 @@
  */
 import Popover from 'antd/lib/popover'
 import styled from 'styled-components'
-import { GRAY_DARK, RED } from '../../../theme/colors'
+import {
+  GRAY_DARK,
+  GRAY_LIGHTEST,
+  RED,
+  WHITE
+} from '../../../theme/colors'
 
 interface StyledProps {
   showTooltips?: boolean
+}
+
+interface ExtProps {
+  color?: string
 }
 
 export const Container = styled.div`
@@ -27,7 +36,7 @@ export const Image = styled.img`
   width: 220px;
   height: 220px;
   object-fit: contain;
-  background-color: #f1f4f5;
+  background-color: ${GRAY_LIGHTEST};
 
   @media (min-width: 388px) and (max-width: 467px) {
     width: 180px;
@@ -46,7 +55,7 @@ export const Bottom = styled.div`
 `
 
 export const Name = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   line-height: 22px;
   font-weight: 600;
@@ -62,7 +71,7 @@ export const Name = styled.div`
 `
 
 export const Delete = styled.div`
-  color: #e61737;
+  color: ${RED};
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 23px;
@@ -149,3 +158,17 @@ export const buttonStyle = {
   background: 'none',
   color: RED
 }
+
+export const ExtLabel = styled.div`
+  background-color: ${({ color = GRAY_DARK }: ExtProps) => color};
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  padding: 4px 20px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  color: ${WHITE};
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+`
