@@ -164,7 +164,7 @@ class MyFiles extends React.Component<Props, {}> {
   }
 
   uploadAction = async (file: File) => {
-    const { uploadFileAction, data } = this.props
+    const { uploadFileAction, data } = this.props
     const blurScore = await mesaureImageQuality(file)
     await uploadFileAction(file, blurScore as number)
     await data.refetch()
@@ -207,7 +207,7 @@ class MyFiles extends React.Component<Props, {}> {
         const objectUrl = URL.createObjectURL(file)
         img.onload = async () => {
           const width = getSizeInCentimeters(img.width)
-          const height = getSizeInCentimeters(img.height) 
+          const height = getSizeInCentimeters(img.height)
           if (width <= MAX_CM && height <= MAX_CM) {
             await this.uploadAction(file)
           } else {
@@ -218,9 +218,9 @@ class MyFiles extends React.Component<Props, {}> {
               okButtonProps: {
                 style: buttonStyle
               },
-              content: 
-                <SizeBody 
-                  dangerouslySetInnerHTML={{__html: formatMessage(messages.sizeBody, { width, height })}}
+              content:
+                <SizeBody
+                  dangerouslySetInnerHTML={{ __html: formatMessage(messages.sizeBody, { width, height }) }}
                 />
             })
           }
