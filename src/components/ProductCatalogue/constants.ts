@@ -10,6 +10,7 @@ export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_LIMIT`
 export const SHOW_TYPE_FILTER = `${namespace}/SHOW_TYPE_FILTER`
 export const SET_SELECTED_FILTERS = `${namespace}/SET_SELECTED_FILTERS`
 export const SET_SELECTED_HOME_FILTERS = `${namespace}/SET_SELECTED_HOME_FILTERS`
+export const SET_SEARCH_TEXT = `${namespace}/SET_SEARCH_TEXT`
 
 export const OPEN_SIDEBAR_MOBILE = `${namespace}/OPEN_SIDEBAR_MOBILE`
 

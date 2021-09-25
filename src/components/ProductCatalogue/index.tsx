@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import UpperCase from 'lodash/upperCase'
+import debounce from 'lodash/debounce'
 import MediaQuery from 'react-responsive'
 import Drawer from 'rc-drawer'
 import includes from 'lodash/includes'
@@ -25,7 +26,8 @@ import {
   FiltersColumn,
   FiltersTitle,
   ResultsColumn,
-  Icon
+  Icon,
+  SearchInput
 } from './styledComponents'
 import { QueryProps, ClickParam, Filter, Product } from '../../types/common'
 import { GetFiltersQuery } from './data'
@@ -54,6 +56,7 @@ interface Data extends QueryProps {
 interface StateProps {
   showTypeFilters: boolean
   filters: FilterType[]
+  searchValue: string
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -79,6 +82,7 @@ interface Props extends RouteComponentProps<any> {
   fromIntakeForm?: boolean
   adminProject?: boolean
   isEdit?: boolean
+  searchText: string
   changeQuantity: (key: number) => void
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
@@ -92,14 +96,20 @@ interface Props extends RouteComponentProps<any> {
   setAllGendersAction: () => void
   onSelectProduct: (product: Product) => void
   onDeselectProduct: (productId: number, listName: string, key?: number) => void
+  setSearchTextAction: (searchText: string) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
   state = {
     showTypeFilters: false,
     showcollectionFilters: true,
-    filters: []
+    filters: [],
+    searchValue: ''
   }
+  raiseSearchWhenUserStopsTyping = debounce(
+    () => this.props.setSearchTextAction(this.state.searchValue),
+    600
+  )
 
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -176,6 +186,16 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     onDeselectProduct(product.id, SELECTEED_ITEMS, key)
   }
 
+  handleSearchInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    this.setState({ searchValue: value }, () => {
+      this.raiseSearchWhenUserStopsTyping()
+    })
+  }
+
   render() {
     const {
       history,
@@ -201,8 +221,10 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       selectedItems,
       hideFilters = [],
       fromIntakeForm = false,
-      adminProject = false
+      adminProject = false,
+      searchText
     } = this.props
+    const { searchValue } = this.state
     if (loading || !filtersArray || !filtersArray.length) {
       return null
     }
@@ -256,24 +278,24 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const categoriesFiltered = { ...defaultCategories, ...categoryFilters }
     const seasonsFiltered = { ...defaultSeasons, ...seasonFilters }
     const stylesFiltered = { ...defaultFitStyles, ...fitStyleFilters }
-    const filters = fromIntakeForm ? 
-    [
-      collectionFilters,
-      sportsFiltered,
-      categoriesFiltered,
-      seasonsFiltered,
-      stylesFiltered,
-      gendersFiltered
-    ] : 
-    [
-      collectionFilters,
-      gendersFiltered,
-      sportsFiltered,
-      categoriesFiltered,
-      seasonsFiltered,
-      stylesFiltered,
-      typeFilters
-    ]
+    const filters = fromIntakeForm ?
+      [
+        collectionFilters,
+        sportsFiltered,
+        categoriesFiltered,
+        seasonsFiltered,
+        stylesFiltered,
+        gendersFiltered
+      ] :
+      [
+        collectionFilters,
+        gendersFiltered,
+        sportsFiltered,
+        categoriesFiltered,
+        seasonsFiltered,
+        stylesFiltered,
+        typeFilters
+      ]
 
     const {
       COLLECTION,
@@ -385,6 +407,13 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         {intl.formatMessage(messages.filtersTitle)}
                         <Icon type="down" />
                       </FiltersTitle>
+                      {adminProject ?
+                        <SearchInput
+                          value={searchValue}
+                          onChange={this.handleSearchInputChange}
+                          placeholder={intl.formatMessage(messages.search)}
+                        /> : null
+                      }
                       <ProductsThumbnailList
                         formatMessage={intl.formatMessage}
                         collectionFilters={collectionIndexes}
@@ -413,7 +442,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                           contentTile,
                           selectedItems,
                           fromIntakeForm,
-                          adminProject
+                          adminProject,
+                          searchText
                         }}
                       />
                     </ResultsColumn>
@@ -431,6 +461,13 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                   {renderFilters}
                 </FiltersColumn>
                 <ResultsColumn>
+                  {adminProject ?
+                    <SearchInput
+                      value={searchValue}
+                      onChange={this.handleSearchInputChange}
+                      placeholder={intl.formatMessage(messages.search)}
+                    /> : null
+                  }
                   <ProductsThumbnailList
                     formatMessage={intl.formatMessage}
                     collectionFilters={collectionIndexes}
@@ -459,7 +496,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       contentTile,
                       selectedItems,
                       fromIntakeForm,
-                      adminProject
+                      adminProject,
+                      searchText
                     }}
                   />
                 </ResultsColumn>

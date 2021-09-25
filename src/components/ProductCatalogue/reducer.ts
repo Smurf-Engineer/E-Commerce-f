@@ -17,7 +17,8 @@ import {
   SET_ALL_GENDERS,
   cyclingGroup,
   SELECT_PRODUCT,
-  DESELECT_PRODUCT
+  DESELECT_PRODUCT,
+  SET_SEARCH_TEXT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -37,7 +38,8 @@ export const initialState = fromJS({
   fit_styleFilters: {},
   typeFilters: {},
   TemperatureFilters: {},
-  openSidebar: false
+  openSidebar: false,
+  searchText: ''
 })
 
 const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -86,7 +88,7 @@ const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action)
       return state.merge({
         sportFilters: { [ROADBIKE]: true },
         categoryFilters: { [CATEGORY_FILTER]: true },
-        collectionFilters: { [INLINE_FILTER]: false  }
+        collectionFilters: { [INLINE_FILTER]: false }
       })
     case SET_ALL_GENDERS:
       return state.merge({
@@ -108,6 +110,8 @@ const intakeProductCatalogReducer: Reducer<any> = (state = initialState, action)
       const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
       return state.set('selectedItems', updatedSelectedItems)
     }
+    case SET_SEARCH_TEXT:
+      return state.merge({ searchText: action.searchText, currentPage: 1 })
     default:
       return state
   }
