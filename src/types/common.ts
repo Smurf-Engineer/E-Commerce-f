@@ -766,6 +766,7 @@ export type ItemDetailType = {
   id?: number
   name?: string | boolean
   gender?: string
+  isYouth?: boolean
 }
 
 export type BlockImage = {

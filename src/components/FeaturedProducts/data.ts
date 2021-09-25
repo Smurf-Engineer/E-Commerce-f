@@ -13,6 +13,7 @@ export const GetProductsQuery = gql`
       collections
       isTopProduct
       weight
+      youthCombined: youth_combined
       customizable: design_center
       retailMen: men_retail
       retailWomen: women_retail
@@ -40,6 +41,7 @@ export const GetProductsQuery = gql`
       sizeRange: size_range {
         id
         name
+        isYouth: is_youth
       }
       colors {
         name

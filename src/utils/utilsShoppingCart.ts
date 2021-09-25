@@ -96,6 +96,7 @@ export const getShoppingCartData = (
 
     shoppingCart.map(cartItem => {
       const quantitySum = getItemQuantity(cartItem)
+      const youthCombined = get(cartItem, 'product.youthCombined', false)
       let teamStoreRange = 0
       if (cartItem.fixedPrices && cartItem.fixedPrices.length) {
         teamStoreRange = 0
@@ -135,8 +136,21 @@ export const getShoppingCartData = (
             ]
           : priceRange
 
+      let youthDiscount = 0
+
+      if (youthCombined) {
+        const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
+          if (item.size && item.size.isYouth) {
+            sum += item.quantity
+          }
+          return sum
+        // tslint:disable-next-line: align
+        }, 0)
+        youthDiscount = priceRange.price * 0.15 * amountYouths
+      }
+
       // increase the total
-      totalSum = totalSum + priceRange.price * quantitySum
+      totalSum = totalSum + (priceRange.price * quantitySum) - youthDiscount
     })
   }
   return {

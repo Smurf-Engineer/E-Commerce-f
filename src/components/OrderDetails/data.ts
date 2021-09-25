@@ -77,6 +77,7 @@ export const getOrderQuery = gql`
           isTopProduct
           weight
           mpn
+          youthCombined: youth_combined
           twoPieces: two_pieces
           upgradeOne: upgrade_one {
             id
@@ -135,6 +136,7 @@ export const getOrderQuery = gql`
           sizeRange: size_range {
             id
             name
+            isYouth: is_youth
           }
           images: pictures {
             front: front_image

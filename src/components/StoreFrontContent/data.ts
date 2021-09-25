@@ -79,6 +79,7 @@ export const getSingleTeamStore = gql`
             type: name
             onlyProDesign: only_pro_design
             description: short_description
+            youthCombined: youth_combined
             shortDescription: short_description
             collections
             isTopProduct
@@ -101,6 +102,7 @@ export const getSingleTeamStore = gql`
             sizeRange: size_range {
               id
               name
+              isYouth: is_youth
             }
             images: pictures {
               front: front_image

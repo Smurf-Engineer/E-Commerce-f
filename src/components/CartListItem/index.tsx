@@ -246,7 +246,7 @@ export class CartListItem extends React.Component<Props, {}> {
   }
 
   getPriceRangeByQuantity = (quantity: string) => {
-    const { cartItem, currentCurrency } = this.props
+    const { cartItem, currentCurrency = '' } = this.props
     return find(cartItem.product.priceRange, {
       quantity,
       abbreviation: currentCurrency || config.defaultCurrency
@@ -309,6 +309,7 @@ export class CartListItem extends React.Component<Props, {}> {
     )
     const mpnCode = get(cartItem, 'product.mpn', '')
     const active = get(cartItem, 'product.active', false)
+    const youthCombined = get(cartItem, 'product.youthCombined', false)
     const onlyProDesign = get(cartItem, 'product.onlyProDesign', false)
     const isTeamStore = get(cartItem, 'teamStoreId', '')
     // get prices from currency
@@ -327,12 +328,25 @@ export class CartListItem extends React.Component<Props, {}> {
       priceRange && priceRange.price === 0
         ? currencyPrices[currencyPrices.length - 1]
         : priceRange
+    
+    let youthDiscount = 0
+
+    if (youthCombined) {
+      const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
+        if (item.size && item.size.isYouth) {
+          sum += item.quantity
+        }
+        return sum
+      // tslint:disable-next-line: align
+      }, 0)
+      youthDiscount = priceRange ? (priceRange.price * 0.15) * amountYouths : ((unitPrice || 0) * 0.15) * amountYouths
+    }
 
     const itemTotal = priceRange
       ? priceRange.price * quantitySum
       : unitPrice || 0 * quantitySum
-    const total = productTotal || itemTotal
-    const unitaryPrice = unitPrice || get(priceRange, 'price')
+    const total = (productTotal || itemTotal) - youthDiscount
+    const unitaryPrice = youthDiscount > 0 ? total / quantitySum : unitPrice || get(priceRange, 'price')
 
     const symbol = currencySymbol || '$'
 

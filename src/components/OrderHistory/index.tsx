@@ -21,6 +21,7 @@ interface Props {
   orderBy: string
   sort: sorts
   orderId: string
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
@@ -47,7 +48,7 @@ class OrderHistory extends React.Component<Props, {}> {
   }
 
   render() {
-    const { currentPage, orderBy, sort, formatMessage, orderId } = this.props
+    const { currentPage, orderBy, currentCurrency, sort, formatMessage, orderId } = this.props
 
     return (
       <SwipeableViews
@@ -70,7 +71,7 @@ class OrderHistory extends React.Component<Props, {}> {
           onReturn={this.handleOnOrderClick}
           from={ORDER_HISTORY}
           goToCart={this.goToCart}
-          {...{ orderId, formatMessage }}
+          {...{ orderId, formatMessage, currentCurrency }}
         />
       </SwipeableViews>
     )
@@ -103,7 +104,11 @@ class OrderHistory extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('orderHistory').toJS()
+const mapStateToProps = (state: any) => {
+  const langProps = state.get('languageProvider').toJS()
+  const orderHistory = state.get('orderHistory').toJS()
+  return {...orderHistory, ...langProps}
+}
 
 const OrderHistoryEnhance = compose(
   connect(mapStateToProps, { ...OrderHistoryActions })

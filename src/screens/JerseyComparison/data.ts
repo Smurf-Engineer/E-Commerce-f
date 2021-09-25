@@ -58,6 +58,7 @@ export const GetProductsToCompareQuery = gql`
       customizable: design_center
       description
       details
+      youthCombined: youth_combined
       materials: materials_info
       temperatures: temperature_range
       weight
@@ -73,6 +74,7 @@ export const GetProductsToCompareQuery = gql`
       sizeRange: size_range {
         id
         name
+        isYouth: is_youth
       }
       collections
       isTopProduct

@@ -51,6 +51,7 @@ export const desginsQuery = gql`
           shortDescription: short_description
           collections
           isTopProduct
+          youthCombined: youth_combined
           weight
           twoPieces: two_pieces
           priceRange {
@@ -70,6 +71,7 @@ export const desginsQuery = gql`
           sizeRange: size_range {
             id
             name
+            isYouth: is_youth
           }
           images: pictures {
             front: front_image
@@ -124,6 +126,7 @@ export const duplicateDesignMutation = gql`
           shortDescription: short_description
           collections
           isTopProduct
+          youthCombined: youth_combined
           weight
           twoPieces: two_pieces
           priceRange {
@@ -143,6 +146,7 @@ export const duplicateDesignMutation = gql`
           sizeRange: size_range {
             id
             name
+            isYouth: is_youth
           }
           images: pictures {
             front: front_image

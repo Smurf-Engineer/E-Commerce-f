@@ -57,6 +57,7 @@ export const GetProductsByIdQuery = gql`
       obj
       mtl
       bumpMap: bump_map
+      youthCombined: youth_combined
       materials: materials_info
       temperatures: temperature_range
       weight
@@ -72,6 +73,7 @@ export const GetProductsByIdQuery = gql`
       sizeRange: size_range {
         id
         name
+        isYouth: is_youth
       }
       collections
       isTopProduct

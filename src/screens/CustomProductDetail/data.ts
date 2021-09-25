@@ -43,6 +43,7 @@ export const GetDesignByIdQuery = gql`
         customizable: design_center
         description
         details
+        youthCombined: youth_combined
         relatedItemTag: related_item_tag
         materials: materials_info
         temperatures: temperature_range
@@ -68,6 +69,7 @@ export const GetDesignByIdQuery = gql`
         sizeRange: size_range {
           id
           name
+          isYouth: is_youth
         }
         collections
         isTopProduct
