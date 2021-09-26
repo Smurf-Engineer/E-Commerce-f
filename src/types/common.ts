@@ -60,6 +60,7 @@ export interface Filter {
   id: number
   name: string
   image?: string
+  isYouth?: boolean
 }
 
 export interface SelectedType extends Filter { }
