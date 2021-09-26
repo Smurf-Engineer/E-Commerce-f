@@ -271,7 +271,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       colors,
       relatedItemTag,
       fitStyles,
-      sizeRange,
+      youthCombined,
+      sizeRange: sizesProduct,
       modelSize,
       title = MAIN_TITLE,
       infoFlag,
@@ -397,14 +398,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       )
     )
 
+    let sizeRange = sizesProduct
+    
+    if (youthCombined && selectedGender && !!selectedGender.name) {
+      const youthSelected = selectedGender.name === 'Youth'
+      sizeRange = sizesProduct.filter((genderItem) => genderItem.isYouth === youthSelected)
+    }
+
     const availableSizes = sizeRange.map(
-      ({ id, name: sizeName }: SelectedType, index: number) => (
+      ({ id, name: sizeName, isYouth }: SelectedType, index: number) => (
         <div key={index}>
           <SectionButton
             oneSize={sizeName === oneSize}
             id={String(id)}
             selected={id === selectedSize.id}
-            onClick={this.handleSelectedSize({ id, name: sizeName })}
+            onClick={this.handleSelectedSize({ id, name: sizeName, isYouth })}
           >
             {sizeName}
           </SectionButton>
@@ -775,8 +783,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
-    const { setSelectedGenderAction } = this.props
+    const { setSelectedGenderAction, selectedSize, setSelectedSizeAction, data } = this.props
     setSelectedGenderAction(gender)
+    const youthCombined = get(data, 'product.youthCombined', false)
+    if (youthCombined) {
+      const youthSizeSelected = selectedSize && selectedSize.isYouth
+      const genderYouth = gender && gender.name === 'Youth'
+      if (!genderYouth && youthSizeSelected || genderYouth && !youthSizeSelected) {
+        setSelectedSizeAction({})
+      }
+    }
   }
 
   handleSelectedSize = (size: SelectedType) => () => {

@@ -352,6 +352,7 @@ class CartListItemTable extends React.Component<Props, State> {
     const isRetailProduct = !cartItem.designId
 
     const colors = get(cartItem, 'product.colors', [])
+    const youthCombined = get(cartItem, 'product.youthCombined', false)
     const colorImg = get(cartItem, 'itemDetails[0].colorImage', '')
     const withColorColumn = (isRetailProduct && !!colors.length) || !!colorImg
     const withTwoPieces = get(cartItem, 'product.twoPieces', false)
@@ -416,14 +417,7 @@ class CartListItemTable extends React.Component<Props, State> {
       )
     })
 
-    const sizes: SizeFilter[] = get(cartItem, 'product.sizeRange', [])
-    const sizeOptions = sizes.map((size) => {
-      return (
-        <Option key={size.id} value={size.name}>
-          {size.name}
-        </Option>
-      )
-    })
+    let sizes: SizeFilter[] = get(cartItem, 'product.sizeRange', [])
 
     const oneOptions = get(upgradeOne, 'options', [])
     const upgradeOneOptions = oneOptions.map(({ name, id }) => {
@@ -462,6 +456,10 @@ class CartListItemTable extends React.Component<Props, State> {
           secondUpgrade
         } = item
         const colorName = color && color.name
+        if (youthCombined) {
+          const youthSelected = gender && gender.name === 'Youth'
+          sizes = sizes.filter((genderItem) => genderItem.isYouth === youthSelected)
+        }
         const colorObject = find(colors, { name: colorName })
         return !onlyRead ? (
           <Row 
@@ -509,7 +507,11 @@ class CartListItemTable extends React.Component<Props, State> {
                 disabled={cartItem.fixedCart || !sizes.length}
                 highlightFields={highlightFields && !size && !!sizes.length}
               >
-                {sizeOptions}
+                {sizes.map((sizeItem) => 
+                  <Option key={sizeItem.id} value={sizeItem.name}>
+                    {sizeItem.name}
+                  </Option>
+                )}
               </StyledSelect>
             </Cell>}
             {withTwoPieces && <><Cell>
@@ -523,7 +525,11 @@ class CartListItemTable extends React.Component<Props, State> {
                 disabled={cartItem.fixedCart || !sizes.length}
                 highlightFields={highlightFields && !size && !!sizes.length}
               >
-                {sizeOptions}
+                {sizes.map((sizeItem) => 
+                  <Option key={sizeItem.id} value={sizeItem.name}>
+                    {sizeItem.name}
+                  </Option>
+                )}
               </StyledSelect>
             </Cell>
               <Cell>
@@ -537,7 +543,11 @@ class CartListItemTable extends React.Component<Props, State> {
                   disabled={cartItem.fixedCart || !sizes.length}
                   highlightFields={highlightFields && !size && !!sizes.length}
                 >
-                  {sizeOptions}
+                  {sizes.map((sizeItem) => 
+                    <Option key={sizeItem.id} value={sizeItem.name}>
+                      {sizeItem.name}
+                    </Option>
+                  )}
                 </StyledSelect>
               </Cell></>}
             <Cell>
