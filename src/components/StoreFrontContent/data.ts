@@ -91,6 +91,7 @@ export const getSingleTeamStore = gql`
             }
             fitStyles {
               id
+              info
               name: description
             }
             priceRange {

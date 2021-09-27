@@ -131,6 +131,7 @@ export const getOrderQuery = gql`
           }
           fitStyles {
             id
+            info
             name: description
           }
           sizeRange: size_range {

@@ -51,6 +51,7 @@ export const saveDesignName = graphql(
           }
           fitStyles {
             id
+            info
             name: description
           }
           sizeRange: size_range {
@@ -130,6 +131,7 @@ export const saveDesignChanges = graphql(
           }
           fitStyles {
             id
+            info
             name: description
           }
           sizeRange: size_range {

@@ -196,22 +196,24 @@ class FitInfo extends React.Component<Props, {}> {
               </StyledRow>
               <SizingTable>{sizingTable}</SizingTable>
             </Col>
-            <Col span={12}>
-              <TitleLabel>
-                <FormattedMessage {...messages.fitStyles} />
-              </TitleLabel>
-              <RadioGroup
-                defaultValue={fitStyle}
-                style={radioGroupStyle}
-                onChange={this.onFitChange}
-              >
-                {fitStylesList}
-              </RadioGroup>
-              <ImageContainer>
-                <img style={ImageStyle} src={fitStyleImage} />
-              </ImageContainer>
-              <StyledFooterLabel>{fitStyleDescription}</StyledFooterLabel>
-            </Col>
+            {fitStylesList.length > 0 && 
+              <Col span={12}>
+                <TitleLabel>
+                  <FormattedMessage {...messages.fitStyles} />
+                </TitleLabel>
+                <RadioGroup
+                  defaultValue={fitStyle}
+                  style={radioGroupStyle}
+                  onChange={this.onFitChange}
+                >
+                  {fitStylesList}
+                </RadioGroup>
+                <StyledFooterLabel>{fitStyleDescription}</StyledFooterLabel>
+                <ImageContainer>
+                  <img style={ImageStyle} src={fitStyleImage} />
+                </ImageContainer>
+              </Col>
+            }
           </StyledRow>
         </Modal>
       </Container>

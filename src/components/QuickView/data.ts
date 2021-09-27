@@ -22,6 +22,7 @@ export const QuickViewQuery = gql`
       }
       fitStyles {
         id
+        info
         name: description
       }
       materials: materials_info

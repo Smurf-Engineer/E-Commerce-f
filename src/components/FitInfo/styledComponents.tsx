@@ -92,7 +92,7 @@ export const radioGroupStyle = {
 export const ImageContainer = styled.div`
   background-color: ${GRAY_LIGHTEST};
   cursor: pointer;
-  margin-top: 45px;
+  margin-top: 18px;
   position: relative;
   text-align: center;
   user-select: none;
@@ -108,6 +108,6 @@ export const StyledFooterLabel = styled.div`
   height: 30%;
   line-height: 22px;
   margin-bottom: 10px;
-  margin-top: 10px;
+  margin-top: 21px;
   width: 100%;
 `
