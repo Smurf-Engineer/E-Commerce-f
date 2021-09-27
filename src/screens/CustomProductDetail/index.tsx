@@ -340,6 +340,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       sizeRange.map(({ id, name: sizeName, isYouth }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
+            range={true}
             selected={id === selectedSize.id}
             onClick={this.handleSelectedSize({
               id: Number(id),

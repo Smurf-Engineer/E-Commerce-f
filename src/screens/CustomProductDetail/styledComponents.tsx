@@ -68,7 +68,7 @@ export const SizeChart = styled.img`
   max-width: 128px;
   width: 100%;
   object-fit: contain;
-  margin: 6px 0 28px 0;
+  margin: 0 0 30px 0;
   &:hover {
     cursor: pointer;
   }
@@ -247,9 +247,9 @@ export const SectionTitle = styled.div`
 `
 export const SectionButtonsContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
 
   @media (min-width: 320px) and (max-width: 768px) {
-    flex-wrap: wrap;
     justify-content: center;
   }
 
@@ -261,6 +261,7 @@ export const SectionButtonsContainer = styled.div`
 interface ButtonProps {
   selected: boolean
   large?: boolean
+  range?: boolean
 }
 
 export const SectionButton = styled.div`
@@ -274,6 +275,7 @@ export const SectionButton = styled.div`
   height: 50px;
   margin-right: 14px;
   padding: 14px;
+  margin-bottom: ${({ range }: ButtonProps) => range ? '14px' : 'unset'};
   justify-content: center;
   width: ${({ large }: ButtonProps) => (large ? '139px;' : '55px;')};
 
