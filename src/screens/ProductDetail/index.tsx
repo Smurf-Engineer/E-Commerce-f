@@ -409,6 +409,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       ({ id, name: sizeName, isYouth }: SelectedType, index: number) => (
         <div key={index}>
           <SectionButton
+            range={true}
             oneSize={sizeName === oneSize}
             id={String(id)}
             selected={id === selectedSize.id}
