@@ -53,6 +53,7 @@ export const GetDesignQuery = gql`
         }
         fitStyles {
           id
+          info
           name: description
         }
         priceRange {
@@ -103,6 +104,7 @@ export const GetProductsByIdQuery = gql`
       }
       fitStyles {
         id
+        info
         name: description
       }
       collections
@@ -147,6 +149,7 @@ export const getTeamStoresRelated = gql`
         collections
         fitStyles {
           id
+          info
           name: description
         }
         isTopProduct

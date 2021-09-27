@@ -40,6 +40,7 @@ export const GetProductsQuery = gql`
         }
         fitStyles {
           id
+          info
           name: description
         }
         sizeRange: size_range {

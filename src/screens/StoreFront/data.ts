@@ -57,6 +57,7 @@ export const getSingleTeamStore = gql`
             }
             fitStyles {
               id
+              info
               name: description
             }
             youthCombined: youth_combined
@@ -126,6 +127,7 @@ export const getTeamStoreMutation = graphql(
               }
               fitStyles {
                 id
+                info
                 name: description
               }
               youthCombined: youth_combined

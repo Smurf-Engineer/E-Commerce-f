@@ -23,6 +23,7 @@ export const GetProductsQuery = gql`
       }
       fitStyles {
         id
+        info
         name: description
       }
       priceRange {

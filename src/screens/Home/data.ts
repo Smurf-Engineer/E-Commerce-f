@@ -71,6 +71,7 @@ export const getHomepageInfo = gql`
         }
         fitStyles {
           id
+          info
           name: description
         }
         priceRange {

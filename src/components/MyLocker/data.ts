@@ -66,6 +66,7 @@ export const desginsQuery = gql`
           }
           fitStyles {
             id
+            info
             name: description
           }
           sizeRange: size_range {
@@ -141,6 +142,7 @@ export const duplicateDesignMutation = gql`
           }
           fitStyles {
             id
+            info
             name: description
           }
           sizeRange: size_range {

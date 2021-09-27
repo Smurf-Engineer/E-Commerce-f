@@ -97,6 +97,7 @@ export const getProDesignProject = gql`
           }
           fitStyles {
             id
+            info
             name: description
           }
           priceRange {
