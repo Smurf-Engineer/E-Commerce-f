@@ -417,7 +417,9 @@ class CartListItemTable extends React.Component<Props, State> {
       )
     })
 
-    let sizes: SizeFilter[] = get(cartItem, 'product.sizeRange', [])
+    const sizesOriginal = get(cartItem, 'product.sizeRange', [])
+
+    let sizes: SizeFilter[] = sizesOriginal
 
     const oneOptions = get(upgradeOne, 'options', [])
     const upgradeOneOptions = oneOptions.map(({ name, id }) => {
@@ -456,6 +458,7 @@ class CartListItemTable extends React.Component<Props, State> {
           secondUpgrade
         } = item
         const colorName = color && color.name
+        sizes = sizesOriginal
         if (youthCombined) {
           const youthSelected = gender && gender.name === 'Youth'
           sizes = sizes.filter((genderItem) => genderItem.isYouth === youthSelected)
