@@ -79,6 +79,7 @@ export const getSingleTeamStore = gql`
             type: name
             onlyProDesign: only_pro_design
             description: short_description
+            hideFitStyles: hide_fit_styles
             youthCombined: youth_combined
             shortDescription: short_description
             collections

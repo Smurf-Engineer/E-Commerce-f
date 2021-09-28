@@ -77,6 +77,7 @@ export const getOrderQuery = gql`
           isTopProduct
           weight
           mpn
+          hideFitStyles: hide_fit_styles
           youthCombined: youth_combined
           twoPieces: two_pieces
           upgradeOne: upgrade_one {

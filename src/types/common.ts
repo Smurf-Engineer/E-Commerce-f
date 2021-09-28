@@ -269,6 +269,7 @@ export interface Product {
   genderId: number
   productTotal?: number
   onlyProDesign?: boolean
+  hideFitStyles?: boolean
   unitPrice?: number
   sizeRange: ItemDetailType[]
   obj?: string

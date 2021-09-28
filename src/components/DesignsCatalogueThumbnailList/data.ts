@@ -32,6 +32,7 @@ export const GetProductsQuery = gql`
         collections
         isTopProduct
         youthCombined: youth_combined
+        hideFitStyles: hide_fit_styles
         weight
         twoPieces: two_pieces
         genders {

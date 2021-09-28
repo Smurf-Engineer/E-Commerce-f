@@ -57,6 +57,7 @@ export const GetProductsByIdQuery = gql`
       obj
       mtl
       bumpMap: bump_map
+      hideFitStyles: hide_fit_styles
       youthCombined: youth_combined
       materials: materials_info
       temperatures: temperature_range

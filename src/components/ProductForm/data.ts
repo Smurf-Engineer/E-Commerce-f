@@ -83,6 +83,7 @@ export const getProductQuery = gql`
       shortDescription: short_description
       category_id
       categoryName: category_name
+      hideFitStyles: hide_fit_styles
       youthCombined: youth_combined
       tags
       modelSize: model_size

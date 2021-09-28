@@ -353,6 +353,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const colors = get(cartItem, 'product.colors', [])
     const youthCombined = get(cartItem, 'product.youthCombined', false)
+    const hideFitStyles = get(cartItem, 'product.hideFitStyles', false)
     const colorImg = get(cartItem, 'itemDetails[0].colorImage', '')
     const withColorColumn = (isRetailProduct && !!colors.length) || !!colorImg
     const withTwoPieces = get(cartItem, 'product.twoPieces', false)
@@ -459,8 +460,8 @@ class CartListItemTable extends React.Component<Props, State> {
         } = item
         const colorName = color && color.name
         sizes = sizesOriginal
+        const youthSelected = gender && gender.name === 'Youth'
         if (youthCombined) {
-          const youthSelected = gender && gender.name === 'Youth'
           sizes = sizes.filter((genderItem) => genderItem.isYouth === youthSelected)
         }
         const colorObject = find(colors, { name: colorName })
@@ -561,7 +562,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 optionFilterProp="children"
                 value={fit ? fit.name : undefined}
                 selectWidth={fitSelectWidth}
-                disabled={cartItem.fixedCart || !fits}
+                disabled={cartItem.fixedCart || !fits || (hideFitStyles && youthSelected)}
                 highlightFields={highlightFields && !fit && fits}
               >
                 {fitOptions}
