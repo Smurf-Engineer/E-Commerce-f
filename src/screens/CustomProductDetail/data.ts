@@ -43,6 +43,7 @@ export const GetDesignByIdQuery = gql`
         customizable: design_center
         description
         details
+        hideFitStyles: hide_fit_styles
         youthCombined: youth_combined
         relatedItemTag: related_item_tag
         materials: materials_info

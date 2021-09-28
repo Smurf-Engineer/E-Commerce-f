@@ -60,6 +60,7 @@ export const getSingleTeamStore = gql`
               info
               name: description
             }
+            hideFitStyles: hide_fit_styles
             youthCombined: youth_combined
             sizeRange: size_range {
               id
@@ -130,6 +131,7 @@ export const getTeamStoreMutation = graphql(
                 info
                 name: description
               }
+              hideFitStyles: hide_fit_styles
               youthCombined: youth_combined
               sizeRange: size_range {
                 id

@@ -52,6 +52,7 @@ export const desginsQuery = gql`
           collections
           isTopProduct
           youthCombined: youth_combined
+          hideFitStyles: hide_fit_styles
           weight
           twoPieces: two_pieces
           priceRange {
@@ -128,6 +129,7 @@ export const duplicateDesignMutation = gql`
           collections
           isTopProduct
           youthCombined: youth_combined
+          hideFitStyles: hide_fit_styles
           weight
           twoPieces: two_pieces
           priceRange {

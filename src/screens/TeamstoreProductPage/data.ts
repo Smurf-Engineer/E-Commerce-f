@@ -45,6 +45,7 @@ export const GetDesignQuery = gql`
           id
           name: gender
         }
+        hideFitStyles: hide_fit_styles
         youthCombined: youth_combined
         sizeRange: size_range {
           id

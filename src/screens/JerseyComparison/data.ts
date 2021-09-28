@@ -58,6 +58,7 @@ export const GetProductsToCompareQuery = gql`
       customizable: design_center
       description
       details
+      hideFitStyles: hide_fit_styles
       youthCombined: youth_combined
       materials: materials_info
       temperatures: temperature_range

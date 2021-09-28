@@ -272,6 +272,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       relatedItemTag,
       fitStyles,
       youthCombined,
+      hideFitStyles,
       sizeRange: sizesProduct,
       modelSize,
       title = MAIN_TITLE,
@@ -399,9 +400,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     )
 
     let sizeRange = sizesProduct
-    
+    const youthSelected = selectedGender.name === 'Youth'
     if (youthCombined && selectedGender && !!selectedGender.name) {
-      const youthSelected = selectedGender.name === 'Youth'
       sizeRange = sizesProduct.filter((genderItem) => genderItem.isYouth === youthSelected)
     }
 
@@ -483,7 +483,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const fitSection = !!availableFits && (
+    const fitSection = !!availableFits && !(hideFitStyles && youthSelected) && (
       <SectionRow>
         <SectionTitleContainer>
           <SectionTitle>{formatMessage(messages.fitLabel)}</SectionTitle>
@@ -784,15 +784,19 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
-    const { setSelectedGenderAction, selectedSize, setSelectedSizeAction, data } = this.props
+    const { setSelectedGenderAction, selectedSize, setSelectedSizeAction, setSelectedFitAction, data } = this.props
     setSelectedGenderAction(gender)
     const youthCombined = get(data, 'product.youthCombined', false)
+    const hideFitStyles = get(data, 'product.hideFitStyles', false)
+    const genderYouth = gender && gender.name === 'Youth'
     if (youthCombined) {
       const youthSizeSelected = selectedSize && selectedSize.isYouth
-      const genderYouth = gender && gender.name === 'Youth'
       if (!genderYouth && youthSizeSelected || genderYouth && !youthSizeSelected) {
         setSelectedSizeAction({})
       }
+    }
+    if (genderYouth && hideFitStyles) {
+      setSelectedFitAction({})
     }
   }
 
@@ -864,11 +868,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       data: { product }
     } = this.props
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    const hideFitStyles = get(product, 'hideFitStyles', false)
+    const youthGender = selectedGender && selectedGender.name === 'Youth'
     if (fitStyles.length && fitStyles[0].id) {
       return (
         selectedSize.id >= 0 &&
-        selectedFit &&
-        selectedFit.id &&
+        ((selectedFit &&
+          selectedFit.id && !(hideFitStyles && youthGender)) || (hideFitStyles && youthGender)) &&
         selectedColor.id &&
         selectedGender.id
       )

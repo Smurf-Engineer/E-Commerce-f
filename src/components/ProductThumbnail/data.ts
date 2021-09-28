@@ -5,6 +5,7 @@ export const getProductQuery = gql`
     product(id: $id, onlyActive: false) {
       weight
       mpn
+      hideFitStyles: hide_fit_styles
       youthCombined: youth_combined
       shortDescription: short_description
       fitStyles {

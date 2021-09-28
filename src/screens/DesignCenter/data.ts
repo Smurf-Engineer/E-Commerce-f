@@ -114,6 +114,7 @@ export const getDesignQuery = gql`
         branding
         guideline
         predyedlabel
+        hideFitStyles: hide_fit_styles
         youthCombined: youth_combined
         hasPredyed: has_predyed
         bumpMap: bump_map

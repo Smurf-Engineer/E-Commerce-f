@@ -61,6 +61,7 @@ export const getHomepageInfo = gql`
         collections
         isTopProduct
         weight
+        hideFitStyles: hide_fit_styles
         youthCombined: youth_combined
         customizable: design_center
         retailMen: men_retail

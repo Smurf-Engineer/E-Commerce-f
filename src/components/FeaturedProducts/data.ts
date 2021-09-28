@@ -14,6 +14,7 @@ export const GetProductsQuery = gql`
       isTopProduct
       weight
       youthCombined: youth_combined
+      hideFitStyles: hide_fit_styles
       customizable: design_center
       retailMen: men_retail
       retailWomen: women_retail

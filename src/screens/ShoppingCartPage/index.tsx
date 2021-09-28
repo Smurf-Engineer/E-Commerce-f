@@ -431,7 +431,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   isAllSetInProduct = (cartItem: CartItems) => {
     const {
       itemDetails,
-      product: { genders, fitStyles, sizeRange, twoPieces }
+      product: { genders, fitStyles, sizeRange, twoPieces, hideFitStyles }
     } = cartItem
     const checkGender = genders.length && genders[0].id
     const checkFit = fitStyles.length && fitStyles[0].id
@@ -441,7 +441,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       if (checkGender && !has(details, 'gender')) {
         return false
       }
-      if (checkFit && !has(details, 'fit')) {
+      const youthSelected = details.gender && details.gender.name === 'Youth'
+      if (checkFit && !has(details, 'fit') && !(hideFitStyles && youthSelected)) {
         return false
       }
       if (!twoPieces && checkSize && !has(details, 'size')) {

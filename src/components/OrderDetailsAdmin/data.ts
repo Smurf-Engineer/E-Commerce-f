@@ -70,6 +70,7 @@ export const getOrderQuery = gql`
           shortDescription: short_description
           collections
           isTopProduct
+          hideFitStyles: hide_fit_styles
           youthCombined: youth_combined
           weight
           mpn
