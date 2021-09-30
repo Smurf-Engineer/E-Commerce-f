@@ -1193,10 +1193,18 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </ApproveButton>
                 <RequestEdit
                   disabled={itemStatus !== CUSTOMER_PREVIEW}
-                  onClick={requestedEdits >= limitRequests ? this.handleOpenRequest : this.handleOpenRequest}
+                  onClick={requestedEdits >= limitRequests ? 
+                    (user && (user.id === 'rydjiGhdm' || user.id === 'HkAbiKp_X') ? 
+                      this.openPurchaseModal : this.handleOpenRequest) : 
+                      this.handleOpenRequest
+                    }
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                    {formatMessage(messages[requestedEdits >= limitRequests ? 'requestEdit' : 'requestEdit'])}
+                  {formatMessage(messages[requestedEdits >= limitRequests ? 
+                    (user && (user.id === 'rydjiGhdm' || user.id === 'HkAbiKp_X') ? 
+                      'purchaseMore' : 'requestEdit') : 
+                      'requestEdit'
+                  ])}
                   </RequestText>
                   <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
                 </RequestEdit>
