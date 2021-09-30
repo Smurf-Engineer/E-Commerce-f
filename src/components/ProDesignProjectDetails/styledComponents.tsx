@@ -288,8 +288,18 @@ export const ImageText = styled.div`
 
 export const Products = styled.div`
   margin: 42px 0;
+  margin-right: 28px;
   display: flex;
   flex-direction: column;
+  section {
+    margin-right: 28px;
+    @media (max-width: 768px) {
+      margin-right: 0px;
+    }
+  }
+  @media (max-width: 768px) {
+    margin-right: 0px;
+  }
 `
 
 export const Designs = styled.div`
@@ -326,8 +336,8 @@ export const AddProductButton = styled.div`
   border: 1px dashed ${RED};
   height: 216px;
   margin-top: 13px;
-  margin-left: 18px;
-  max-width: 198px;
+  margin-left: 4px;
+  max-width: 212px;
   width: 100%;
   border-radius: 3px;
   color: ${RED};

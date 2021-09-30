@@ -416,6 +416,13 @@ export const RequestButtons = styled.div`
   flex-flow: column;
   justify-content: center;
   align-items: center;
+  @media (min-width: 1024px) {
+    z-index: 999;
+    position: fixed;
+    bottom: 75px;
+    max-width: 371px;
+    width: 100%;
+  }
   @media (max-width: 1023px) {
     display: none;
   }
@@ -674,6 +681,9 @@ export const CancelButton = styled(Button)`
 export const ChatMessages = styled.div`
   flex: 1;
   overflow-y: scroll;
+  @media (min-width: 1024px) {
+    max-height: calc(100vh - 386px);
+  }
   ${({ highlight }: RowProps) => highlight ? `
     animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) 1s both;
     @keyframes shake-horizontal {
