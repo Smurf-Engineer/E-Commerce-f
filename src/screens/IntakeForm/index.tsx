@@ -566,7 +566,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
         }
       case Sections.PRODUCTS:
         return {
-          continueDisable: selectedItems.length < 1 || (!admProject && quantities > 3),
+          continueDisable: selectedItems.length < 1 || (!admProject && quantities > 5),
           showPreviousButton: !projectId && !admProject,
           continueButtonText,
           previousButtonText
@@ -685,7 +685,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { selectProductAction, location: { search }, selectedItems, intl: { formatMessage } } = this.props
     const queryParams = queryString.parse(search)
     const { id: projectId, admUser, admProject } = queryParams || {}
-    if (admProject || (selectedItems.length < (!!projectId && !admUser ? 1 : 3))) {
+    if (admProject || (selectedItems.length < (!!projectId && !admUser ? 1 : 5))) {
       return selectProductAction(product)
     }
     const title = formatMessage(messages.maxProductsTitle)
@@ -779,7 +779,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     const { id: projectId } = queryParams || {}
     switch (currentScreen) {
       case Sections.PRODUCTS:
-        if (quantities > 3 || selectedItems.length < 1) {
+        if (quantities > 5 || selectedItems.length < 1) {
           const title = formatMessage(messages.maxProductsTitle)
           const body = formatMessage(messages[!projectId ? 'maxProductsBody' : 'maxProductsOne'])
           const accept = formatMessage(messages.gotIt)
