@@ -21,7 +21,9 @@ import {
   FlexWrapper,
   DeleteLabel,
   DiscountAmout,
-  CouponName
+  CouponName,
+  InvoiceLink,
+  InvoiceIcon
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
@@ -41,6 +43,7 @@ interface Props {
   taxGst?: number
   taxVat?: number
   totalSum?: number
+  invoiceLink?: string
   currencySymbol?: string
   showDiscount?: boolean
   showCouponInput?: boolean
@@ -69,6 +72,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       formatMessage,
       showCouponInput,
       onlyRead,
+      invoiceLink,
       variables = 0,
       showDiscount = true,
       proDesignReview = 0,
@@ -213,6 +217,12 @@ export class OrderSummary extends React.Component<Props, {}> {
           <FormattedMessage {...messages.total} />
           <div>{`${symbol} ${netTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
+        {invoiceLink &&
+          <InvoiceLink href={invoiceLink}>
+            <InvoiceIcon type="file-done" />
+            {formatMessage(messages.invoiceLink)}
+          </InvoiceLink>
+        }
       </Container>
     )
   }
