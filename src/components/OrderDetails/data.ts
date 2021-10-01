@@ -33,6 +33,7 @@ export const getOrderQuery = gql`
       billingZipCode: billing_address_zip_code
       shippingTax: shipping_tax
       taxAmount: tax_amount
+      invoiceLink: invoice_link
       shippingAmount: shipping_amount
       currency {
         shortName: short_name

@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { Container, Cell } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
+import { INVOICE_SENT, PAYMENT_ISSUE } from '../../../constants'
 
 interface Props {
   date: string
@@ -31,7 +32,9 @@ const ItemOrder = ({
       <Cell>{date}</Cell>
       <Cell>{estimatedDate}</Cell>
       <Cell color={'#e61737'}>{trackingNumber}</Cell>
-      <Cell textAlign={'right'}>{upperFirst(status)}</Cell>
+      <Cell textAlign={'right'}>
+        {upperFirst(status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
+      </Cell>
     </Container>
   )
 }

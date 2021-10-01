@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import { WHITE, BLUE, GRAY_LIGHT, GRAY_DARK, RED, GREEN } from '../../theme/colors'
+import Icon from 'antd/lib/icon'
 
 interface TotalProps {
   onlyRead?: boolean
@@ -104,6 +105,30 @@ export const TotalOrderItem = styled.div`
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
+`
+
+export const InvoiceLink = styled.a`
+  width: 98px;
+  display: flex;
+  margin-top: 25px;
+  justify-content: space-between;
+  align-items: center;
+  color: ${BLUE};
+  transition: all .25s;
+  &:hover {
+    i {
+      color: ${RED} !important;
+    }
+    color: ${RED} !important;
+    text-decoration: underline;
+  }
+`
+
+export const InvoiceIcon = styled(Icon)`
+  margin-bottom: 1px;
+  color: ${BLUE};
+  font-size: 16px;
+  transition: all .25s;
 `
 
 export const YouSavedOrderItem = styled.div`

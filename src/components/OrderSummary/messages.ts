@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'screens.ShoppingCartPage.taxes',
     defaultMessage: 'Taxes'
   },
+  invoiceLink: {
+    id: 'screens.ShoppingCartPage.invoiceLink',
+    defaultMessage: 'Invoice Link'
+  },
   taxesGst: {
     id: 'screens.ShoppingCartPage.taxesGst',
     defaultMessage: 'GST/HST'

@@ -71,7 +71,7 @@ import iconFedex from '../../assets/fedexicon.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
-import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64 } from '../../constants'
+import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64, INVOICE_SENT } from '../../constants'
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
@@ -200,6 +200,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingLastName,
       shippingStreet,
       owner,
+      invoiceLink,
       shippingApartment,
       shippingPhone,
       shippingCountry,
@@ -417,8 +418,8 @@ export class OrderDetails extends React.Component<Props, {}> {
                     }
                   </Info>
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
-                  <Info {...{ savingPdf }} redColor={status === PAYMENT_ISSUE}>
-                    {netsuiteStatus || status}
+                  <Info {...{ savingPdf }} redColor={status === PAYMENT_ISSUE || status === INVOICE_SENT}>
+                    {netsuiteStatus || (status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
                   </Info>
                   <Info {...{ savingPdf }}>
                     {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
@@ -440,6 +441,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                   formatMessage,
                   taxGst,
                   taxPst,
+                  invoiceLink,
                   variables,
                   upgrades,
                   taxVat,
