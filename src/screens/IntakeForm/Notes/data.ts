@@ -24,7 +24,7 @@ export const GetColorsQuery = gql`
 
 export const getUsers = gql`
   query GetUsersNameQuery($pattern: String!) {
-    userSearch: getUserSearch(pattern: $pattern) {
+    userSearch: getUserSearch(pattern: $pattern, limit: 50) {
       id
       name
       email

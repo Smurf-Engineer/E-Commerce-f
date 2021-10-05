@@ -59,7 +59,11 @@ import {
   DownloadInvoice,
   DownloadIcon,
   DataDiv,
-  SavingContainer
+  SavingContainer,
+  ModalTitle,
+  WarningIcon,
+  buttonStyle,
+  InfoBody
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -76,6 +80,7 @@ import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
 
+const { warning } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
 const PRO_DESIGN_FEE = 15
 
@@ -88,7 +93,7 @@ interface Props {
   data?: Data
   from: string
   currentCurrency: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, variables?: {}) => string
   onReturn: (id: string) => void
   deleteOrder: (variables: {}) => Promise<any>
   goToCart: () => void
@@ -102,7 +107,8 @@ export class OrderDetails extends React.Component<Props, {}> {
     showPricing: false,
     showOrder: false,
     showIssue: false,
-    savingPdf: false
+    savingPdf: false,
+    showPaymentIssue: true
   }
   private copyInput: any
   private html2pdf: any
@@ -113,6 +119,31 @@ export class OrderDetails extends React.Component<Props, {}> {
   openFedexTracking = (trackingNumber: string) => () => {
     if (trackingNumber) {
       window.open(`${FEDEX_URL}?trknbr=${trackingNumber}`)
+    }
+  }
+  componentWillUnmount() {
+    this.setState({ showPaymentIssue: true })
+  }
+  componentDidUpdate() {
+    const { data, formatMessage } = this.props
+    const { showPaymentIssue } = this.state
+    const invoiceLink = get(data, 'orderQuery.invoiceLink', '')
+    const status = get(data, 'orderQuery.status', '')
+    if (status === INVOICE_SENT && !!invoiceLink && showPaymentIssue) {
+      this.setState({ showPaymentIssue: false })
+      warning({
+        title: <ModalTitle>{formatMessage(messages.paymentIssueTitle)}</ModalTitle>,
+        width: 564,
+        okText: formatMessage(messages.gotIt),
+        icon: <WarningIcon theme="filled" type="exclamation-circle" />,
+        okButtonProps: {
+          style: buttonStyle
+        },
+        content:
+          <InfoBody dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.paymentIssueInfo, { link: invoiceLink })
+          }} />
+      })
     }
   }
   downloadInvoice = async () => {
@@ -152,13 +183,17 @@ export class OrderDetails extends React.Component<Props, {}> {
       element.style.width = 'auto'
     }
   }
+  handleOnReturn = () => {
+    const { onReturn } = this.props
+    this.setState({ showPaymentIssue: true })
+    onReturn('')
+  }
   render() {
     const {
       data,
       orderId,
       from,
       formatMessage,
-      onReturn,
       currentCurrency
     } = this.props
 
@@ -176,8 +211,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       showIssue,
       savingPdf
     } = this.state
-
-    const handleOnReturn = () => onReturn('')
 
     const getBackMessage =
       from === ORDER_HISTORY ? messages.backToHistory : messages.backToOverview
@@ -200,7 +233,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingLastName,
       shippingStreet,
       owner,
-      invoiceLink,
       shippingApartment,
       shippingPhone,
       shippingCountry,
@@ -343,7 +375,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             />
           </ErrorMessage>
         )}
-        <ViewContainer onClick={handleOnReturn}>
+        <ViewContainer onClick={this.handleOnReturn}>
           <Icon type="left" />
           <span>{formatMessage(getBackMessage)}</span>
         </ViewContainer>
@@ -419,7 +451,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                   </Info>
                   <Info {...{ savingPdf }}>{estimatedDate}</Info>
                   <Info {...{ savingPdf }} redColor={status === PAYMENT_ISSUE || status === INVOICE_SENT}>
-                    {netsuiteStatus || (status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
+                    {netsuiteStatus || (status === INVOICE_SENT ? PAYMENT_ISSUE : status)}
                   </Info>
                   <Info {...{ savingPdf }}>
                     {lastDrop ? moment(lastDrop).format('DD/MM/YYYY HH:mm') : '-'}
@@ -441,7 +473,6 @@ export class OrderDetails extends React.Component<Props, {}> {
                   formatMessage,
                   taxGst,
                   taxPst,
-                  invoiceLink,
                   variables,
                   upgrades,
                   taxVat,

@@ -21,6 +21,15 @@ export default defineMessages({
     id: 'components.OrderDetails.receipt',
     defaultMessage: 'Receipt'
   },
+  gotIt: {
+    id: 'components.OrderDetails.gotIt',
+    defaultMessage: 'Got it!'
+  },
+  paymentIssueInfo: {
+    id: 'components.OrderDetails.paymentIssueInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'There was a problem processing payment for your order and your order is on hold. To avoid delivery delays, please remit payment for your order using our <a href="{link}">secure payment page</a>. If payment is not received within 5 days, your order will be cancelled and you will need to contact customer service to reinstate your order. For any questions, you can reach us at 1-800-485-7067 (US) or 1-877-252-5766 (Canada) or use our online chat during business hours'
+  },
   faqTitle: {
     id: 'components.OrderDetails.faqTitle',
     defaultMessage: 'FREQUENTLY ASKED QUESTIONS'
@@ -205,5 +214,9 @@ export default defineMessages({
     id: 'components.OrderDetails.paymentIssue',
     // tslint:disable-next-line:max-line-length
     defaultMessage: `We've encountered a problem when attempting to process your payment. Please contact <a href="mailto:customdesign@jakroousa.com">Customer Support</a> via email or chat within 48 hours or next business day to avoid delays and maintain your original delivery date.`
-  }
+  },
+  paymentIssueTitle: {
+    id: 'components.OrderDetails.paymentIssueTitle',
+    defaultMessage: 'Payment Issue'
+  },
 })
