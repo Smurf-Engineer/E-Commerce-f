@@ -76,7 +76,7 @@ export const notificationsQuery = gql`
   }
 `
 
-export  const notificationsSubscription = gql`
+export const notificationsSubscription = gql`
   subscription newNotification {
     newNotification {
       id
@@ -129,5 +129,18 @@ export const setAllAsRead = graphql(
   `,
   {
     name: 'readAllNotifications'
+  }
+)
+
+export const deleteNotificationMutation = graphql(
+  gql`
+    mutation deleteNotification($shortId: String!) {
+      notification: deleteNotification(shortId: $shortId, isAdmin: false) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'deleteNotification'
   }
 )

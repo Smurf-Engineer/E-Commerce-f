@@ -31,7 +31,8 @@ import {
   notificationsQuery,
   setAsRead,
   setAllAsRead,
-  upsertNotificationToken
+  upsertNotificationToken,
+  deleteNotificationMutation
 } from './data'
 import messageSent from '../../assets/message_sent.wav'
 import logo from '../../assets/jakroo_logo.svg'
@@ -117,6 +118,7 @@ interface Props {
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   saveAndBuy: (buy: boolean) => void
   readNotification: (variables: {}) => Promise<NotificationsRead>
+  deleteNotification: (variables: {}) => Promise<MessagePayload>
   readAllNotifications: (variables: {}) => Promise<MessagePayload>
   upsertNotification: (variables: {}) => Promise<MessagePayload>
 }
@@ -271,6 +273,23 @@ class MenuBar extends React.Component<Props, StateProps> {
     })
     window.location.href = `${config.baseUrl}${url}`
   }
+  handleOnDeleteNotification = async (notificationId: number) => {
+    const { deleteNotification, notificationsData, intl: { formatMessage } } = this.props
+    try {
+      this.setState({ updating: true })
+      await deleteNotification({
+        variables: {
+          shortId: notificationId
+        }
+      })
+      await notificationsData.refetch()
+      this.setState({ updating: false })
+    } catch (e) {
+      console.error(e)
+      this.setState({ updating: false })
+      AntdMessage.error(formatMessage(messages.errorUpdating))
+    }
+  }
   markAllNotificationsAsRead = async () => {
     const { readAllNotifications, notificationsData, intl: { formatMessage } } = this.props
     try {
@@ -338,25 +357,25 @@ class MenuBar extends React.Component<Props, StateProps> {
         {formatMessage(messages.title)}
       </TopText>
     ) : (
-        <Logout
-          {...{
-            history,
-            formatMessage,
-            affiliateEnabled,
-            resellerPending,
-            approvedReseller,
-            showProDesign,
-            resellerEnabled,
-            darkMode
-          }}
-          title={formatMessage(messages.myAccount, { user: userName })}
-          logout={logoutAction}
-          openMenu={this.openMenu}
-          openedMenu={openMenu}
-          closeMenu={this.closeMenu}
-          goTo={this.handleOnGoTo}
-        />
-      )
+      <Logout
+        {...{
+          history,
+          formatMessage,
+          affiliateEnabled,
+          resellerPending,
+          approvedReseller,
+          showProDesign,
+          resellerEnabled,
+          darkMode
+        }}
+        title={formatMessage(messages.myAccount, { user: userName })}
+        logout={logoutAction}
+        openMenu={this.openMenu}
+        openedMenu={openMenu}
+        closeMenu={this.closeMenu}
+        goTo={this.handleOnGoTo}
+      />
+    )
 
     const regionsCodes =
       !loadingRegions && regionsResult.map((region) => region.code)
@@ -386,14 +405,14 @@ class MenuBar extends React.Component<Props, StateProps> {
         <div />
       </BottomRow>
     ) : (
-        <BottomRow>
-          <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-          <DropdownList
-            {...{ history, formatMessage, currentCurrency, regionsCodes, user }}
-          />
-          <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
-        </BottomRow>
-      )
+      <BottomRow>
+        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+        <DropdownList
+          {...{ history, formatMessage, currentCurrency, regionsCodes, user }}
+        />
+        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
+      </BottomRow>
+    )
 
     return (
       <div>
@@ -471,6 +490,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                     regionButton={menuRegion}
                     proDesign={darkMode}
                     onPressNotification={this.handleOnPressNotification}
+                    onDeleteNotification={this.handleOnDeleteNotification}
                     onPressMarkAllAsRead={this.markAllNotificationsAsRead}
                     updatingNotifications={updating}
                   />
@@ -556,6 +576,7 @@ const MenuBarEnhanced = compose(
   }),
   setAsRead,
   setAllAsRead,
+  deleteNotificationMutation,
   upsertNotificationToken
 )(MenuBar)
 export default MenuBarEnhanced
