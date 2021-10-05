@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { SelectValue } from 'antd/lib/select'
 import Icon from 'antd/lib/icon'
 import message from 'antd/lib/message'
-import { isPhoneNumber, containsNumberAndLetters } from '../../../utils/utilsFiles'
+import { isPhoneNumber } from '../../../utils/utilsFiles'
 import DataSelected from '../Review/DataSelected'
 import { EditorState, convertFromRaw } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -126,7 +126,7 @@ export class Notes extends React.Component<Props, {}> {
     const { setUserToSearch, setAdminProjectUser } = this.props
     try {
       const parsedValue = value.toString()
-      if (containsNumberAndLetters(parsedValue)) {
+      if (!!parsedValue) {
         setUserToSearch(parsedValue.trim())
       }
       setAdminProjectUser('')

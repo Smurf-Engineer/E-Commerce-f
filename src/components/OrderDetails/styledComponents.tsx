@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
 import { RED, BLUE, GRAY_DARK, RED_TRANSPARENT_LIGHT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
+import { AVENIR_NEXT } from '../../theme/fonts'
 
 interface DivProps {
   savingPdf?: boolean
@@ -20,6 +21,37 @@ export const LoadingContainer = styled.div`
 export const Container = styled.div`
   position: relative;
 `
+
+export const ModalTitle = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`
+
+export const InfoBody = styled.div`
+  color: ${GRAY_DARK};
+  font-family: ${AVENIR_NEXT};
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: -38px;
+  a {
+    color: ${BLUE};
+    text-decoration: underline;
+  }
+`
+
+export const WarningIcon = styled(Icon)``
+
+export const buttonStyle = {
+  background: BLUE,
+  border: 'none',
+}
 
 export const ViewContainer = styled.div`
   display: flex;
