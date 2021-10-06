@@ -83,6 +83,7 @@ interface Props extends RouteComponentProps<any> {
   adminProject?: boolean
   isEdit?: boolean
   searchText: string
+  isAdmin?: boolean
   changeQuantity: (key: number) => void
   setFilterAction: (filter: {}) => void
   clearFiltersAction: () => void
@@ -211,6 +212,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       limit,
       skip,
       isEdit,
+      isAdmin,
       changeQuantity,
       currentPage,
       fakeWidth,
@@ -434,6 +436,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                           orderBy,
                           limit,
                           isEdit,
+                          isAdmin,
                           changeQuantity,
                           openQuickView,
                           history,
@@ -490,6 +493,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       isEdit,
                       openQuickView,
                       history,
+                      isAdmin,
                       sortByLabel: '',
                       changeQuantity,
                       currentPage,

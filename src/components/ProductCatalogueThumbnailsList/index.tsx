@@ -487,6 +487,7 @@ type OwnProps = {
   limit?: number
   orderBy?: string
   skip?: number
+  isAdmin?: boolean
   designs?: DesignType[]
   selectProduct?: boolean
   searchText?: string
@@ -510,6 +511,7 @@ const ThumbnailsListEnhance = compose(
       seasonFilters,
       fitFilters,
       limit,
+      isAdmin,
       orderBy,
       skip,
       designs,
@@ -529,7 +531,8 @@ const ThumbnailsListEnhance = compose(
           limit: limit ? limit : null,
           order: orderBy ? orderBy : null,
           offset: skip ? skip : null,
-          searchText
+          searchText,
+          onlyActive: !isAdmin
         },
         skip: !!designs
       }
