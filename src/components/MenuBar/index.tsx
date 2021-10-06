@@ -283,11 +283,11 @@ class MenuBar extends React.Component<Props, StateProps> {
         }
       })
       await notificationsData.refetch()
-      this.setState({ updating: false })
     } catch (e) {
       console.error(e)
-      this.setState({ updating: false })
       AntdMessage.error(formatMessage(messages.errorUpdating))
+    } finally {
+      this.setState({ updating: false })
     }
   }
   markAllNotificationsAsRead = async () => {
@@ -296,11 +296,11 @@ class MenuBar extends React.Component<Props, StateProps> {
       this.setState({ updating: true })
       await readAllNotifications({ variables: {} })
       await notificationsData.refetch()
-      this.setState({ updating: false })
     } catch (e) {
       console.error(e)
-      this.setState({ updating: false })
       AntdMessage.error(formatMessage(messages.errorUpdating))
+    } finally {
+      this.setState({ updating: false })
     }
   }
 
