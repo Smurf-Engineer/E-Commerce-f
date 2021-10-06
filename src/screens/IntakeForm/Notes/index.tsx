@@ -1,7 +1,7 @@
 import * as React from 'react'
 import debounce from 'lodash/debounce'
 import { compose, graphql } from 'react-apollo'
-import { getUsers } from './data'
+import { getUsers, getUser } from './data'
 import { RouteComponentProps } from 'react-router-dom'
 import { SelectValue } from 'antd/lib/select'
 import Icon from 'antd/lib/icon'
@@ -63,6 +63,7 @@ interface Props extends RouteComponentProps<any> {
   validLength?: boolean
   lockerDesign: DesignType
   adminProject: boolean
+  adminSelectedUser?: string
   userToSearch: string
   data: Data
   onChangeInput: (key: string, value: string) => void
@@ -77,7 +78,8 @@ interface Props extends RouteComponentProps<any> {
 }
 
 interface Data extends QueryProps {
-  userSearch: UserSearchResult[]
+  userSearch: UserSearchResult[],
+  adminUserSearch: UserSearchResult
 }
 
 let Editor = () => <></>
@@ -87,7 +89,8 @@ export class Notes extends React.Component<Props, {}> {
   state = {
     editorReady: false,
     editorState: undefined,
-    contentState: null
+    contentState: null,
+    searchTextChanged: false
   }
 
   constructor(props: Props) {
@@ -124,6 +127,7 @@ export class Notes extends React.Component<Props, {}> {
 
   handleOnChange = async (value: SelectValue) => {
     const { setUserToSearch, setAdminProjectUser } = this.props
+    this.setState({ searchTextChanged: true })
     try {
       const parsedValue = value.toString()
       if (!!parsedValue) {
@@ -217,21 +221,28 @@ export class Notes extends React.Component<Props, {}> {
       richTextEditorReady,
       adminProject,
       goToPage,
-      data
+      data,
+      adminSelectedUser
     } = this.props
-    const { editorReady, editorState } = this.state
+    const { editorReady, editorState, searchTextChanged } = this.state
     const searchResults = adminProject ?
       data &&
       !data.loading &&
-      data.userSearch.map(
-        (item: UserSearchResult) => {
-          return {
-            value: item.shortId,
-            text: `${item.id} - ${item.name} - ${item.email}`
+      ((!searchTextChanged && adminSelectedUser && data.adminUserSearch) ? [{
+        value: data.adminUserSearch.shortId,
+        text: `${data.adminUserSearch.id} - ${data.adminUserSearch.name
+          } - ${data.adminUserSearch.email}`
+      }] :
+        data.userSearch.map(
+          (item: UserSearchResult) => {
+            return {
+              value: item.shortId,
+              text: `${item.id} - ${item.name} - ${item.email}`
+            }
           }
-        }
-      )
+        ))
       : []
+
     return (
       <MainContainer>
         <Container>
@@ -245,6 +256,9 @@ export class Notes extends React.Component<Props, {}> {
                 dataSource={searchResults}
                 onSelect={this.handleOnSelect}
                 placeholder={formatMessage(messages.searchBy)}
+                defaultValue={data && data.adminUserSearch && data.adminUserSearch.shortId
+                  ? `${data.adminUserSearch.id} - ${data.adminUserSearch.name
+                  } - ${data.adminUserSearch.email}` : ''}
               >
                 <StyledInput
                   suffix={
@@ -344,6 +358,7 @@ export class Notes extends React.Component<Props, {}> {
 
 type OwnProps = {
   userToSearch?: string
+  adminSelectedUser?: string
 }
 
 const NotesEnhance = compose(
@@ -355,6 +370,18 @@ const NotesEnhance = compose(
           pattern: userToSearch
         },
         skip: !userToSearch,
+        fetchPolicy: 'network-only'
+      }
+    }
+  }),
+  graphql<Data>(getUser, {
+    options: (ownprops: OwnProps) => {
+      const { adminSelectedUser } = ownprops
+      return {
+        variables: {
+          userId: adminSelectedUser
+        },
+        skip: !adminSelectedUser,
         fetchPolicy: 'network-only'
       }
     }
