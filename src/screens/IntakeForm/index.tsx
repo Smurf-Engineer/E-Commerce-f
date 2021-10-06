@@ -1089,6 +1089,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
               hideFilters={['collection', 'season', 'fit_style']}
               fromIntakeForm={true}
               adminProject={admProject}
+              isAdmin={!!admUser || !!admProject}
               changeQuantity={this.handleChangeQuantity}
               isEdit={!!projectId && !admUser}
               {...{ history, formatMessage, selectedItems }} /> : null}

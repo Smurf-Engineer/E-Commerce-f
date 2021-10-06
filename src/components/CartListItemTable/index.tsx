@@ -210,13 +210,33 @@ class CartListItemTable extends React.Component<Props, State> {
   }
 
   handleGenderChange = (value: any, detail: number) => {
-    const { setDetailGender, itemIndex, cartItem } = this.props
+    const { setDetailGender, itemIndex, cartItem, setUpgradeOption } = this.props
 
     const selectedGender = find(cartItem.product.genders, {
       name: value
     }) as ItemDetailType
 
     setDetailGender(itemIndex, detail, selectedGender)
+    const youthCombined = get(cartItem, 'product.youthCombined', false)
+    if (youthCombined && selectedGender && selectedGender.name === 'Youth') {
+      setUpgradeOption(itemIndex, detail, true, null)
+      setUpgradeOption(itemIndex, detail, false, null)
+    } else if (selectedGender && selectedGender.name !== 'Youth') {
+      const upgradeOne = get(cartItem, 'product.upgradeOne', {})
+      const { options = [] } = upgradeOne || {}
+      const defaultUpgradeOne = upgradeOne.defaultOption !== -1 ? options[upgradeOne.defaultOption] : {}
+      const firstUpgrade = get(cartItem, ['itemDetails', detail, 'firstUpgrade'], {})
+      if (!firstUpgrade || !firstUpgrade.shortId) {
+        setUpgradeOption(itemIndex, detail, true, defaultUpgradeOne)
+      }
+      const upgradeTwo = get(cartItem, 'product.upgradeTwo', {})
+      const { options: optionsTwo = [] } = upgradeTwo || {}
+      const defaultUpgradeTwo = upgradeTwo.defaultOption !== -1 ? optionsTwo[upgradeTwo.defaultOption] : {}
+      const secondUpgrade = get(cartItem, ['itemDetails', detail, 'secondUpgrade'], {})
+      if (!secondUpgrade || !secondUpgrade.shortId) {
+        setUpgradeOption(itemIndex, detail, false, defaultUpgradeTwo)
+      }
+    }
   }
 
   handleUpgradeChange = (value: string, detail: number, isFirst: boolean) => {
@@ -575,6 +595,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   showSearch={false}
                   placeholder={formatMessage(messages.upgradeOne)}
                   optionFilterProp="children"
+                  disabled={youthCombined && youthSelected}
                   value={firstUpgrade ? firstUpgrade.name : undefined}
                   selectWidth={fitSelectWidth}
                   allowClear={upgradeOne.defaultOption === -1}
@@ -590,6 +611,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   showSearch={false}
                   placeholder={formatMessage(messages.upgradeTwo)}
                   optionFilterProp="children"
+                  disabled={youthCombined && youthSelected}
                   value={secondUpgrade ? secondUpgrade.name : undefined}
                   selectWidth={fitSelectWidth}
                   allowClear={upgradeTwo.defaultOption === -1}
