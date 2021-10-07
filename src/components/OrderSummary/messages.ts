@@ -23,7 +23,7 @@ export default defineMessages({
   },
   invoiceLink: {
     id: 'screens.ShoppingCartPage.invoiceLink',
-    defaultMessage: 'Invoice Link'
+    defaultMessage: 'Payment Link'
   },
   taxesGst: {
     id: 'screens.ShoppingCartPage.taxesGst',
