@@ -274,9 +274,10 @@ export const setFileTermsAction = (checked: boolean) => ({
   checked
 })
 
-export const setAdminProjectUserIdAction = (userId: string) => ({
+export const setAdminProjectUserIdAction = (userId: string, prepopulateUserText: string) => ({
   type: SET_ADMIN_PROJECT_USER_ID,
-  userId
+  userId,
+  prepopulateUserText
 })
 
 export const setUserToSearchAction = (value: string) => ({

@@ -100,6 +100,7 @@ export const initialState = fromJS({
   renamingFile: false,
   fileTermsAccepted: false,
   adminProjectUserId: '',
+  prepopulateUserText: '',
   userToSearch: ''
 })
 
@@ -319,7 +320,7 @@ const intakeFormReducer: Reducer<any> = (
     case SET_FILE_TERMS:
       return state.merge({ fileTermsAccepted: action.checked, highlight: false })
     case SET_ADMIN_PROJECT_USER_ID:
-      return state.merge({ adminProjectUserId: action.userId })
+      return state.merge({ adminProjectUserId: action.userId, prepopulateUserText: action.prepopulateUserText })
     case SET_USER_TO_SEARCH:
       return state.merge({ userToSearch: action.value })
     default:

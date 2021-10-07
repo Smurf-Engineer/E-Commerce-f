@@ -63,6 +63,8 @@ interface Props extends RouteComponentProps<any> {
   validLength?: boolean
   lockerDesign: DesignType
   adminProject: boolean
+  adminSelectedUser?: string
+  prepopulateUserText?: string
   userToSearch: string
   data: Data
   onChangeInput: (key: string, value: string) => void
@@ -87,7 +89,8 @@ export class Notes extends React.Component<Props, {}> {
   state = {
     editorReady: false,
     editorState: undefined,
-    contentState: null
+    contentState: null,
+    searchTextChanged: false
   }
 
   constructor(props: Props) {
@@ -124,6 +127,7 @@ export class Notes extends React.Component<Props, {}> {
 
   handleOnChange = async (value: SelectValue) => {
     const { setUserToSearch, setAdminProjectUser } = this.props
+    this.setState({ searchTextChanged: true })
     try {
       const parsedValue = value.toString()
       if (!!parsedValue) {
@@ -217,21 +221,27 @@ export class Notes extends React.Component<Props, {}> {
       richTextEditorReady,
       adminProject,
       goToPage,
-      data
+      data,
+      adminSelectedUser,
+      prepopulateUserText
     } = this.props
-    const { editorReady, editorState } = this.state
+    const { editorReady, editorState, searchTextChanged } = this.state
     const searchResults = adminProject ?
-      data &&
-      !data.loading &&
-      data.userSearch.map(
-        (item: UserSearchResult) => {
-          return {
-            value: item.shortId,
-            text: `${item.id} - ${item.name} - ${item.email}`
+      (!searchTextChanged && adminSelectedUser) ? [{
+        value: adminSelectedUser,
+        text: prepopulateUserText
+      }]
+        : data &&
+        !data.loading &&
+        data.userSearch.map(
+          (item: UserSearchResult) => {
+            return {
+              value: item.shortId,
+              text: `${item.id} - ${item.name} - ${item.email}`
+            }
           }
-        }
-      )
-      : []
+        ) : []
+
     return (
       <MainContainer>
         <Container>
@@ -245,6 +255,7 @@ export class Notes extends React.Component<Props, {}> {
                 dataSource={searchResults}
                 onSelect={this.handleOnSelect}
                 placeholder={formatMessage(messages.searchBy)}
+                defaultValue={adminSelectedUser}
               >
                 <StyledInput
                   suffix={

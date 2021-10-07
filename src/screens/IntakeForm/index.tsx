@@ -157,6 +157,7 @@ interface Props extends RouteComponentProps<any> {
   lockerDesign: DesignType
   adminProjectUserId: string
   userToSearch: string
+  prepopulateUserText: string
   setDesignSelectedAction: (id: string, design: DesignType) => void
   setPaginationDataAction: (offset: number, page: number) => void
   setHighlight: (active: boolean) => void
@@ -202,7 +203,7 @@ interface Props extends RouteComponentProps<any> {
   onSetRenamingFile: (loading: boolean) => void
   changeLocalNameAction: (id: number, value: string) => void
   setFileTermsAction: (checked: boolean) => void
-  setAdminProjectUserIdAction: (userId: string) => void
+  setAdminProjectUserIdAction: (userId: string, prepopulateUserText: string) => void
   setUserToSearchAction: (value: string) => void
 }
 
@@ -216,7 +217,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
   }
   private intakeRef: any
   componentDidMount() {
-    const { location, selectedItems, selectProductAction } = this.props
+    const { location, selectedItems, selectProductAction, setAdminProjectUserIdAction } = this.props
     if (location.state && !selectedItems.length) {
       const { state: { product } } = location
       selectProductAction(product)
@@ -235,9 +236,16 @@ export class IntakeFormPage extends React.Component<Props, {}> {
     this.setState({ isMobile, isTablet })
     const { location: { search }, goToPage } = this.props
     const queryParams = queryString.parse(search)
-    const { id: projectId, admProject } = queryParams || {}
+    const { id: projectId, admProject, user: adminSelectedUser } = queryParams || {}
     if (!!projectId || !!admProject) {
       goToPage(Sections.PRODUCTS)
+
+      if (!!adminSelectedUser) {
+        const prepopulateUserText = window.sessionStorage.getItem(adminSelectedUser) || ''
+        window.sessionStorage.removeItem(adminSelectedUser)
+
+        setAdminProjectUserIdAction(adminSelectedUser, prepopulateUserText)
+      }
     }
   }
   componentDidUpdate(oldProps: Props) {
@@ -589,11 +597,11 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       case Sections.COLORS:
         return {
           continueDisable:
-            !admProject && fromScratch && 
-              (selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
-                (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
-                (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)
-              ),
+            !admProject && fromScratch &&
+            (selectedPaletteIndex === CUSTOM_PALETTE_INDEX ?
+              (selectedColors.length === 0 || selectedPrimaryColor.length === 0) :
+              (selectedEditColors.length === 0 || selectedEditPrimaryColor.length === 0)
+            ),
           showPreviousButton: true,
           continueButtonText,
           previousButtonText
@@ -943,7 +951,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       setFileTermsAction,
       setAdminProjectUserIdAction,
       userToSearch,
-      setUserToSearchAction
+      setUserToSearchAction,
+      prepopulateUserText
     } = this.props
     const { isMobile, isTablet, richTextEditorReady } = this.state
 
@@ -958,7 +967,7 @@ export class IntakeFormPage extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
-    const { id: projectId, admUser, admProject } = queryParams || {}
+    const { id: projectId, admUser, admProject, user: adminSelectedUser } = queryParams || {}
     const paletteName = get(dataColor, ['rows', selectedPaletteIndex, 'name'], '')
 
     const colorLabels = arrayColors.reduce((obj, { value, name }: Color) => {
@@ -1196,7 +1205,9 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   fromScratch,
                   currentCurrency,
                   richTextEditorReady,
-                  userToSearch
+                  userToSearch,
+                  adminSelectedUser,
+                  prepopulateUserText
                 }}
                 onChangeInput={onSetInputAction}
                 goToPage={this.handleOnSelectTab}
