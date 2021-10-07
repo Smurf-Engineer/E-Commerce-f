@@ -168,7 +168,7 @@ export class SwipeItem extends React.PureComponent<Props, State> {
     return (
       <SwipeItemLi
         className="swipeItem"
-        style={{ height: this.state.height + 'px', transition: 'height 250ms ease-in-out' }}
+        style={{ minHeight: this.state.height + 'px', transition: 'height 250ms ease-in-out' }}
         onTouchStart={touchStartEvent => this.handleTouchStart(touchStartEvent)}
         onTouchMove={touchMoveEvent => this.handleTouchMove(touchMoveEvent)}
         onTouchEnd={() => this.handleTouchEnd()}

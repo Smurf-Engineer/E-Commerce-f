@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardoquintero on 25/08/20.
  */
 import styled from 'styled-components'
-import { RED, GRAY_DARK, GRAY, RED_BRIGHT, BLUE } from '../../../theme/colors'
+import { RED, GRAY_DARK, GRAY, RED_BRIGHT, BLUE, WHITE } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -10,6 +10,8 @@ export const Container = styled.div`
   padding: 8px;
   position: relative;
   cursor: pointer;
+  background: ${WHITE};
+
   &.new {
     background: ${RED_BRIGHT};
     &::after {
