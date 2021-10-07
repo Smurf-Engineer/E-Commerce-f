@@ -108,6 +108,12 @@ export class OrderSummary extends React.Component<Props, {}> {
 
     return (
       <Container>
+        {invoiceLink &&
+          <InvoiceLink href={invoiceLink}>
+            <InvoiceIcon type="file-done" />
+            {formatMessage(messages.invoiceLink)}
+          </InvoiceLink>
+        }
         <SummaryTitle>
           <FormattedMessage {...messages.summaryTitle} />
         </SummaryTitle>
@@ -217,12 +223,6 @@ export class OrderSummary extends React.Component<Props, {}> {
           <FormattedMessage {...messages.total} />
           <div>{`${symbol} ${netTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
-        {invoiceLink &&
-          <InvoiceLink href={invoiceLink}>
-            <InvoiceIcon type="file-done" />
-            {formatMessage(messages.invoiceLink)}
-          </InvoiceLink>
-        }
       </Container>
     )
   }

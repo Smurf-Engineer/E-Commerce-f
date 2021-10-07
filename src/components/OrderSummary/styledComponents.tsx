@@ -13,6 +13,7 @@ interface TotalProps {
 }
 
 export const Container = styled.div`
+  position: relative;
   @media (max-width: 480px) {
     margin-top: 30px;
   }
@@ -108,9 +109,10 @@ export const TotalOrderItem = styled.div`
 `
 
 export const InvoiceLink = styled.a`
-  width: 98px;
+  width: 110px;
   display: flex;
-  margin-top: 25px;
+  position: absolute;
+  top: -38px;
   justify-content: space-between;
   align-items: center;
   color: ${BLUE};

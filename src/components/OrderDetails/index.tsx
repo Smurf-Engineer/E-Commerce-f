@@ -209,7 +209,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       showPricing,
       showOrder,
       showIssue,
-      savingPdf
+      savingPdf,
+      showPaymentIssue
     } = this.state
 
     const getBackMessage =
@@ -233,6 +234,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingLastName,
       shippingStreet,
       owner,
+      invoiceLink,
       shippingApartment,
       shippingPhone,
       shippingCountry,
@@ -469,6 +471,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 currencySymbol={currency.shortName}
                 proDesignReview={proDesign && PRO_DESIGN_FEE}
                 couponName={coupon}
+                invoiceLink={!showPaymentIssue ? invoiceLink : ''}
                 {...{
                   formatMessage,
                   taxGst,
