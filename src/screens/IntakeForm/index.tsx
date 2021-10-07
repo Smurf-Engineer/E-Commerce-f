@@ -157,6 +157,7 @@ interface Props extends RouteComponentProps<any> {
   lockerDesign: DesignType
   adminProjectUserId: string
   userToSearch: string
+  prepopulateUserText: string
   setDesignSelectedAction: (id: string, design: DesignType) => void
   setPaginationDataAction: (offset: number, page: number) => void
   setHighlight: (active: boolean) => void
@@ -202,7 +203,7 @@ interface Props extends RouteComponentProps<any> {
   onSetRenamingFile: (loading: boolean) => void
   changeLocalNameAction: (id: number, value: string) => void
   setFileTermsAction: (checked: boolean) => void
-  setAdminProjectUserIdAction: (userId: string) => void
+  setAdminProjectUserIdAction: (userId: string, prepopulateUserText: string) => void
   setUserToSearchAction: (value: string) => void
 }
 
@@ -240,7 +241,10 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       goToPage(Sections.PRODUCTS)
 
       if (!!adminSelectedUser) {
-        setAdminProjectUserIdAction(adminSelectedUser)
+        const prepopulateUserText = window.sessionStorage.getItem(adminSelectedUser) || ''
+        window.sessionStorage.removeItem(adminSelectedUser)
+
+        setAdminProjectUserIdAction(adminSelectedUser, prepopulateUserText)
       }
     }
   }
@@ -947,7 +951,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
       setFileTermsAction,
       setAdminProjectUserIdAction,
       userToSearch,
-      setUserToSearchAction
+      setUserToSearchAction,
+      prepopulateUserText
     } = this.props
     const { isMobile, isTablet, richTextEditorReady } = this.state
 
@@ -1201,7 +1206,8 @@ export class IntakeFormPage extends React.Component<Props, {}> {
                   currentCurrency,
                   richTextEditorReady,
                   userToSearch,
-                  adminSelectedUser
+                  adminSelectedUser,
+                  prepopulateUserText
                 }}
                 onChangeInput={onSetInputAction}
                 goToPage={this.handleOnSelectTab}

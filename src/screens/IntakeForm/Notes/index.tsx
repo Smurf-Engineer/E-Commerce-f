@@ -1,7 +1,7 @@
 import * as React from 'react'
 import debounce from 'lodash/debounce'
 import { compose, graphql } from 'react-apollo'
-import { getUsers, getUser } from './data'
+import { getUsers } from './data'
 import { RouteComponentProps } from 'react-router-dom'
 import { SelectValue } from 'antd/lib/select'
 import Icon from 'antd/lib/icon'
@@ -64,6 +64,7 @@ interface Props extends RouteComponentProps<any> {
   lockerDesign: DesignType
   adminProject: boolean
   adminSelectedUser?: string
+  prepopulateUserText?: string
   userToSearch: string
   data: Data
   onChangeInput: (key: string, value: string) => void
@@ -78,8 +79,7 @@ interface Props extends RouteComponentProps<any> {
 }
 
 interface Data extends QueryProps {
-  userSearch: UserSearchResult[],
-  adminUserSearch: UserSearchResult
+  userSearch: UserSearchResult[]
 }
 
 let Editor = () => <></>
@@ -222,17 +222,17 @@ export class Notes extends React.Component<Props, {}> {
       adminProject,
       goToPage,
       data,
-      adminSelectedUser
+      adminSelectedUser,
+      prepopulateUserText
     } = this.props
     const { editorReady, editorState, searchTextChanged } = this.state
     const searchResults = adminProject ?
-      data &&
-      !data.loading &&
-      ((!searchTextChanged && adminSelectedUser && data.adminUserSearch) ? [{
-        value: data.adminUserSearch.shortId,
-        text: `${data.adminUserSearch.id} - ${data.adminUserSearch.name
-          } - ${data.adminUserSearch.email}`
-      }] :
+      (!searchTextChanged && adminSelectedUser) ? [{
+        value: adminSelectedUser,
+        text: prepopulateUserText
+      }]
+        : data &&
+        !data.loading &&
         data.userSearch.map(
           (item: UserSearchResult) => {
             return {
@@ -240,8 +240,7 @@ export class Notes extends React.Component<Props, {}> {
               text: `${item.id} - ${item.name} - ${item.email}`
             }
           }
-        ))
-      : []
+        ) : []
 
     return (
       <MainContainer>
@@ -256,9 +255,7 @@ export class Notes extends React.Component<Props, {}> {
                 dataSource={searchResults}
                 onSelect={this.handleOnSelect}
                 placeholder={formatMessage(messages.searchBy)}
-                defaultValue={data && data.adminUserSearch && data.adminUserSearch.shortId
-                  ? `${data.adminUserSearch.id} - ${data.adminUserSearch.name
-                  } - ${data.adminUserSearch.email}` : ''}
+                defaultValue={adminSelectedUser}
               >
                 <StyledInput
                   suffix={
@@ -358,7 +355,6 @@ export class Notes extends React.Component<Props, {}> {
 
 type OwnProps = {
   userToSearch?: string
-  adminSelectedUser?: string
 }
 
 const NotesEnhance = compose(
@@ -370,18 +366,6 @@ const NotesEnhance = compose(
           pattern: userToSearch
         },
         skip: !userToSearch,
-        fetchPolicy: 'network-only'
-      }
-    }
-  }),
-  graphql<Data>(getUser, {
-    options: (ownprops: OwnProps) => {
-      const { adminSelectedUser } = ownprops
-      return {
-        variables: {
-          userId: adminSelectedUser
-        },
-        skip: !adminSelectedUser,
         fetchPolicy: 'network-only'
       }
     }

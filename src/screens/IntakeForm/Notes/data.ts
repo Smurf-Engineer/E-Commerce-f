@@ -32,14 +32,3 @@ export const getUsers = gql`
     }
   }
 `
-
-export const getUser = gql`
-  query GetUserQuery($userId: String!) {
-    adminUserSearch: getUserById(userId: $userId) {
-      id
-      name
-      email
-      shortId: short_id
-    }
-  }
-`
