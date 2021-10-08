@@ -409,7 +409,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         {intl.formatMessage(messages.filtersTitle)}
                         <Icon type="down" />
                       </FiltersTitle>
-                      {adminProject ?
+                      {isAdmin ?
                         <SearchInput
                           value={searchValue}
                           onChange={this.handleSearchInputChange}
@@ -464,7 +464,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                   {renderFilters}
                 </FiltersColumn>
                 <ResultsColumn>
-                  {adminProject ?
+                  {isAdmin ?
                     <SearchInput
                       value={searchValue}
                       onChange={this.handleSearchInputChange}
