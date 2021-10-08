@@ -25,7 +25,8 @@ export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
 })
 
-export const setOrderIdAction = (orderId: string): AnyAction => ({
+export const setOrderIdAction = (orderId: string, isService?: boolean): AnyAction => ({
   type: SET_ORDER_ID,
-  orderId
+  orderId,
+  isService
 })

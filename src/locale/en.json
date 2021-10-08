@@ -62,7 +62,7 @@
   "screens.DesignApproval.baseColors": "Base Colors",
   "screens.DesignApproval.approvedCode": "APPROVED",
   "screens.DesignApproval.congratulations": "Congratulations! You have approved your design. Your design is now available in your LOCKER to purchase or Add to a Team Store",
-  "screens.DesignApproval.available": "Available Free Edits",
+  "screens.DesignApproval.available": "Available Edits",
   "screens.DesignApproval.inDesign": "In Design",
   "screens.DesignApproval.designName": "Design Name:",
   "screens.DesignApproval.designNo": "Design No:",

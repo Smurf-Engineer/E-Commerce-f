@@ -11,27 +11,29 @@ interface Props {
   estimatedDate: string
   trackingNumber?: string
   status: string
+  service: string
   shortId: string
-  onOrderClick: (shortId: string) => void
+  onOrderClick: (shortId: string, isService?: boolean) => void
 }
 
 const ItemOrder = ({
   date,
   estimatedDate,
   trackingNumber = '-',
+  service,
   status,
   shortId,
   onOrderClick
 }: Props) => {
   const handleOnClick = () => {
-    onOrderClick(shortId)
+    onOrderClick(shortId, !!service)
   }
   return (
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
       <Cell>{date}</Cell>
       <Cell>{estimatedDate}</Cell>
-      <Cell color={'#e61737'}>{trackingNumber}</Cell>
+      <Cell color={!service ? '#e61737' : ''}>{service || trackingNumber}</Cell>
       <Cell textAlign={'right'}>
         {upperFirst(status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
       </Cell>

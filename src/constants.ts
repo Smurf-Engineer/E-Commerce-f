@@ -105,6 +105,13 @@ export const PREORDER = 'Pre-Order'
 export const CANCELLED = 'Cancelled'
 export const ERROR = 'Error'
 
+export enum PaymentOptions {
+  PAYPAL = 'paypal',
+  CREDITCARD = 'creditcard',
+  IBAN = 'iban',
+  INVOICE = 'invoice'
+}
+
 /* Quantity */
 export const PERSONAL = 'Personal'
 export const MESSAGE_TIME = 4

@@ -11,6 +11,7 @@ import {
   ContainerMethods,
   HeaderImages,
   HeadersDiv,
+  MethodIcon,
   ItemColumn,
   ItemList,
   ItemRow,
@@ -27,13 +28,15 @@ import {
   StepWrapper,
   StyledIcon,
   StyledSwipeableViews,
-  SummaryContainer
+  SummaryContainer,
+  PaypalIcon
 } from './styledComponents'
 import withError from '../WithError'
 import withLoading from '../WithLoading'
 import config from '../../config'
 import payAnimation from '../../assets/payanimation.png'
 import payCompletedGif from '../../assets/paycompletedcard.gif'
+import paypalLogo from '../../assets/Paypal.svg'
 import jakrooLogo from '../../assets/jakroo_logo.svg'
 import ModalCountry from '../ConfirmCountryDialog'
 import zenscroll from 'zenscroll'
@@ -67,7 +70,7 @@ import Steps from 'antd/lib/steps'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxesServices } from '../../utils/utilsCheckout'
 
-const stepperTitles = ['PAYMENT', 'REVIEW']
+const stepperTitles = ['PAYMENT', 'REVIEW', 'NOTES']
 const { CREDITCARD, PAYPAL } = PaymentOptions
 const { Step } = Steps
 const { confirm } = Modal
@@ -624,6 +627,7 @@ class PayModal extends React.Component<Props, {}> {
         footer={null}
         closable={false}
         width={'630px'}
+        style={{ maxWidth: 'calc(93vw)' }}
       >
         <Container>
           {!loadingPlaceOrder && <CloseIcon onClick={requestClose} type="cross" />}
@@ -656,28 +660,28 @@ class PayModal extends React.Component<Props, {}> {
                   <ItemRow {...{ key }}>
                     <ItemColumn width="180px">{name}</ItemColumn>
                     <ItemColumn width="310px">{description}</ItemColumn>
-                    <ItemColumn uppercase={true} width="72px">{price} {currency}</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{currency} {(price || 0).toFixed(2)}</ItemColumn>
                   </ItemRow>
                 )}
-                {taxGst > 0 &&
+                {taxGst > 0 && currentStep === 1 &&
                   <ItemRow>
                     <ItemColumn width="180px">GST/HST</ItemColumn>
                     <ItemColumn width="310px">Taxes</ItemColumn>
-                    <ItemColumn uppercase={true} width="72px">{taxGst} {currency}</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{currency} {(taxGst || 0).toFixed(2)}</ItemColumn>
                   </ItemRow>
                 }
-                {taxPst > 0 &&
+                {taxPst > 0 && currentStep === 1 &&
                   <ItemRow>
                     <ItemColumn width="180px">PST</ItemColumn>
                     <ItemColumn width="310px">Taxes</ItemColumn>
-                    <ItemColumn uppercase={true} width="72px">{taxPst} {currency}</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{currency} {(taxPst || 0).toFixed(2)}</ItemColumn>
                   </ItemRow>
                 }
-                {taxFee > 0 &&
+                {taxFee > 0 && currentStep === 1 &&
                   <ItemRow>
-                    <ItemColumn width="180px">Taxes Fee</ItemColumn>
-                    <ItemColumn width="310px">Taxes ({taxesAmount}%)</ItemColumn>
-                    <ItemColumn uppercase={true} width="72px">{taxFee} {currency}</ItemColumn>
+                    <ItemColumn width="180px">Taxes</ItemColumn>
+                    <ItemColumn width="310px">({taxesAmount}%)</ItemColumn>
+                    <ItemColumn uppercase={true} width="72px">{currency} {(taxFee || 0).toFixed(2)}</ItemColumn>
                   </ItemRow>
                 }
               </ItemList>
@@ -699,13 +703,14 @@ class PayModal extends React.Component<Props, {}> {
                       selected={paymentMethod === CREDITCARD}
                       onClick={this.handleCreditCardClick}
                     >
+                      <MethodIcon twoToneColor="#009cde" type="credit-card" theme="twoTone" />
                       {formatMessage(messages.methodCreditCard)}
                     </MethodButton>
                     <MethodButton
                       selected={paymentMethod === PAYPAL}
                       onClick={this.handlePaypalClick}
                     >
-                      {formatMessage(messages.methodPaypal)}
+                      <PaypalIcon src={paypalLogo} />
                     </MethodButton>
                   </ContainerMethods>
                   <PayForm>

@@ -38,12 +38,17 @@ export default defineMessages({
     id: 'screens.DesignApproval.editRequestedTitle',
     defaultMessage: 'EDIT REQUESTED'
   },
+  editRequestInfo: {
+    id: 'screens.DesignApproval.editRequestInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: '<p>Jakroo Pro Design <strong>includes 1 initial design + 2 free edits per item.</strong><u>Each additional edit requires a small fee.</u></p><p>All pro design is personally handled by our own professionally trained design team based out of our California and Wisconsin creative offices.</p><p>Their mission is all about bringing your creative ideas to life and well, making you look great!</p>'
+  },
   takeToLocker: {
     id: 'screens.DesignApproval.takeToLocker',
     defaultMessage: 'Take me to My Locker'
   },
-  congratulations: {
-    id: 'screens.DesignApproval.congratulations',
+  congratulationsMessage: {
+    id: 'screens.DesignApproval.congratulationsMessage',
     // tslint:disable-next-line: max-line-length
     defaultMessage: 'Congratulations! Your Design is approved and available in your LOCKER to purchase or add to a Team Store.'
   },
@@ -57,7 +62,7 @@ export default defineMessages({
   },
   backToMyProject: {
     id: 'screens.DesignApproval.backToMyProject',
-    defaultMessage: 'Back to My Pro Projects'
+    defaultMessage: 'Back to {project}'
   },
   close: {
     id: 'screens.DesignApproval.close',
@@ -128,7 +133,7 @@ export default defineMessages({
   },
   available: {
     id: 'screens.DesignApproval.available',
-    defaultMessage: 'Available Free Edits'
+    defaultMessage: 'Available Edits'
   },
   savedProduct: {
     id: 'screens.DesignApproval.savedProduct',

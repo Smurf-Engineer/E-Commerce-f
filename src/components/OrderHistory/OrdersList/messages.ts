@@ -27,7 +27,7 @@ export default defineMessages({
   },
   trackingNumber: {
     id: 'components.OrdersList.trackingNumber',
-    defaultMessage: 'Tracking Number'
+    defaultMessage: 'Tracking Number/Service'
   },
   tracking: {
     id: 'components.OrdersList.tracking',

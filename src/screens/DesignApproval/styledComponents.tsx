@@ -31,6 +31,7 @@ import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import Icon from 'antd/lib/icon'
+import Popover from 'antd/lib/popover'
 import DraggableModal from 'react-modal-resizable-draggable'
 import { AVENIR_MEDIUM } from '../../theme/fonts'
 
@@ -450,6 +451,8 @@ export const RequestEdit = styled(Button)`
   padding: 4px;
   font-size: 12px;
   align-items: center;
+  min-height: 42px;
+  justify-content: center;
   border-radius: 3px;
   background: ${WHITE};
   transition: all .25s;
@@ -460,6 +463,66 @@ export const RequestEdit = styled(Button)`
     cursor: pointer;
     background: ${RED};
     color: ${WHITE};
+  }
+`
+
+export const StyledTooltip = styled(Popover)`
+  z-index: 12;
+  position: absolute;
+  left: calc(100% - 115px);
+  bottom: 14px;
+  @media (max-width: 1439px) {
+    right: -4px;
+    left: unset;
+  }
+`
+
+export const StyledTooltipMobile = styled(Popover)`
+  z-index: 12;
+  right: 30px;
+  top: -28px;
+  position: absolute;
+`
+
+export const InfoIconMobile = styled(Icon)`
+  font-size: 18px;
+  color: ${BLUE};
+  z-index: 20;
+`
+
+export const IconTitle = styled(Icon)`
+  margin: 0 auto;
+  color: ${BLUE};
+  width: 100%;
+  font-size: 21px;
+  margin-top: -8px;
+  display: block;
+  margin-bottom: 17px;
+`
+
+export const TextBody = styled.div``
+
+export const TooltipBody = styled.div`
+  padding-top: 16px;
+  padding-left: 8px;
+  padding-right: 10px;
+  max-width: 376px;
+  width: 100%;
+  @media (max-width: 767px) {
+    padding-top: 30px;
+    padding-left: 19px;
+    padding-right: 17px;
+  }
+`
+
+export const InfoIcon = styled(Icon)`
+  margin-left: 9px;
+  font-size: 16px;
+  vertical-align: sub;
+  color: ${BLUE};
+  z-index: 20;
+  &:hover {
+    cursor: pointer;
   }
 `
 

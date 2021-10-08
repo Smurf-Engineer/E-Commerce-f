@@ -397,7 +397,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             </DownloadInvoice>
           }
         </Div>
-        <DataDiv ref={content => (this.copyInput = content)}>
+        <DataDiv ref={content => (this.copyInput = content)} {...{ savingPdf }}>
           <OrderInfo {...{ savingPdf }}>
             <OrderDelivery>
               <DeliveryInfo>
