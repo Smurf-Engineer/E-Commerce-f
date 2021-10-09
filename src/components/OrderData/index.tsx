@@ -30,7 +30,10 @@ import {
   DownloadInvoice,
   DownloadIcon,
   StyledInfoText,
-  SavingContainer
+  SavingContainer,
+  FedexLabel,
+  OpenIcon,
+  FedexIcon
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -39,10 +42,10 @@ import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
 import withLoading from '../WithLoading'
-
+import iconFedex from '../../assets/fedexicon.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import iconSepa from '../../assets/Sepa.svg'
-import { QueryProps, OrderDataInfo } from '../../types/common'
+import { QueryProps, OrderDataInfo, FulfillmentNetsuite } from '../../types/common'
 import CartListItem from '../CartListItem'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 import PaymentData from '../PaymentData'
@@ -51,6 +54,7 @@ import ReactDOM from 'react-dom'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
 
+const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
 const PRO_DESIGN_FEE = 15
 
 interface Data extends QueryProps {
@@ -75,7 +79,9 @@ class OrderData extends React.Component<Props, {}> {
     showPricing: false,
     showOrder: false,
     showIssue: false,
-    savingPdf: false
+    savingPdf: false,
+    showArrive: false,
+    showReturn: false
   }
   private copyInput: any
   private html2pdf: any
@@ -159,6 +165,11 @@ class OrderData extends React.Component<Props, {}> {
     const stateValue = this.state[id]
     this.setState({ [id]: !stateValue } as any)
   }
+  openFedexTracking = (trackingNumber: string) => () => {
+    if (trackingNumber) {
+      window.open(`${FEDEX_URL}?trknbr=${trackingNumber}`)
+    }
+  }
   render() {
     const {
       formatMessage,
@@ -170,6 +181,7 @@ class OrderData extends React.Component<Props, {}> {
           estimatedDate,
           firstName,
           lastName,
+          netsuite,
           street,
           phone,
           city,
@@ -211,11 +223,22 @@ class OrderData extends React.Component<Props, {}> {
       showPricing,
       showOrder,
       showIssue,
-      savingPdf
+      savingPdf,
+      showArrive,
+      showReturn
     } = this.state
 
     const card = get(payment, 'stripeCharge.cardData', {})
+    const netsuiteObject = get(netsuite, 'orderStatus')
 
+    const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
+    const fulfillments = get(
+      netsuiteObject,
+      'fulfillments',
+      [] as FulfillmentNetsuite[]
+    )
+    const packages = get(fulfillments, '[0].packages')
+    const trackingNumber = packages && packages.replace('<BR>', ', ')
     const paymentMethodInfo =
       paymentMethod === PaymentOptions.CREDITCARD ? (
         <PaymentData {...{ card }} />
@@ -330,13 +353,23 @@ class OrderData extends React.Component<Props, {}> {
               </OrderNumberContainer>
             }
             <OrderNumberContainer {...{ savingPdf }}>
+              <TitleStyled>{formatMessage(messages.trackingNumber)}</TitleStyled>
+              {trackingNumber ?
+                <FedexLabel onClick={this.openFedexTracking(trackingNumber)}>
+                  {trackingNumber}
+                  <OpenIcon type="select" />
+                  <FedexIcon src={iconFedex} />
+                </FedexLabel> : '-'
+              }
+            </OrderNumberContainer>
+            <OrderNumberContainer {...{ savingPdf }}>
               <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
               <StyledText>{estimatedDate}</StyledText>
             </OrderNumberContainer>
             <OrderNumberContainer {...{ savingPdf }}>
               <TitleStyled>{formatMessage(messages.orderStatus)}</TitleStyled>
               <StyledText redColor={status === PAYMENT_ISSUE}>
-                {status}
+                {netsuiteStatus || status}
               </StyledText>
             </OrderNumberContainer>
             <StyledInfoText>
@@ -473,6 +506,77 @@ class OrderData extends React.Component<Props, {}> {
                 <div
                   dangerouslySetInnerHTML={{
                     __html: formatMessage(messages.orderAnswer)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showArrive"
+                title={formatMessage(messages.arriveQuestion)}
+                showContent={showArrive}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.arriveQuestionDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showReturn"
+                title={formatMessage(messages.returnQuestion)}
+                showContent={showReturn}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.returnQuestionDesc)
+                  }}
+                />
+              </ProductInfo>
+            </FAQBody>
+          </FAQSection>
+        }
+        {!teamStoreId && !savingPdf &&
+          <FAQSection>
+            <Title>
+              {formatMessage(messages.faqTitle)}
+            </Title>
+            <FAQBody>
+              <ProductInfo
+                id="showPricing"
+                titleWidth={'100%'}
+                title={formatMessage(messages.makeChange)}
+                showContent={showPricing}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.makeChangeDescription)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showIssue"
+                richText={true}
+                title={formatMessage(messages.orderArrive)}
+                showContent={showIssue}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.orderArriveDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showOrder"
+                title={formatMessage(messages.returnPolicy)}
+                showContent={showOrder}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.returnPolicyDesc)
                   }}
                 />
               </ProductInfo>

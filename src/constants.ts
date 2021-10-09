@@ -138,6 +138,37 @@ export const MODEL_SIZES = {
   xLarge: 200
 }
 
+export const blackMeshes = {
+  'FINAL JV2_Design_Mesh' : true,
+  'FINAL ELEMENT Jakroo_White': true
+}
+
+export const doubleSideMeshes = {
+  'FINAL ELEMENT left_front' : true,
+  'FINAL ELEMENT right_front' : true,
+  'FINAL ELEMENT back' : true,
+  'FINAL ELEMENT hood_top' : true,
+  'FINAL ELEMENT hood_right' : true,
+  'FINAL ELEMENT hood_left' : true,
+  'FINAL ELEMENT left_sidepanel' : true,
+  'FINAL ELEMENT right_sidepanel' : true,
+  'FINAL ELEMENT left_sleeve1' : true,
+  'FINAL ELEMENT left_sleeve2' : true,
+  'FINAL ELEMENT right_sleeve1' : true,
+  'FINAL ELEMENT right_sleeve2' : true,
+  'FINAL ELEMENT right_shoulder' : true,
+  'FINAL ELEMENT right_shoulder1' : true,
+  'FINAL ELEMENT front_zip1' : true,
+  'FINAL ELEMENT front_zip2' : true,
+  'FINAL ELEMENT right_zip_pocket' : true,
+  'FINAL ELEMENT left_zip_pocket' : true,
+
+}
+
+export const blackProducts = {
+  322: true
+}
+
 // Affiliate status
 export const PENDING = `Pending approval`
 export const APPROVED = 'Approved'

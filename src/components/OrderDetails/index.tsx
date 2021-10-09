@@ -39,7 +39,6 @@ import {
   ShippingBillingCard,
   SubTitle,
   StyledImage,
-  Annotation,
   LoadingContainer,
   OrderActions,
   DeleteButton,
@@ -108,7 +107,9 @@ export class OrderDetails extends React.Component<Props, {}> {
     showOrder: false,
     showIssue: false,
     savingPdf: false,
-    showPaymentIssue: true
+    showPaymentIssue: true,
+    showArrive: false,
+    showReturn: false
   }
   private copyInput: any
   private html2pdf: any
@@ -210,7 +211,9 @@ export class OrderDetails extends React.Component<Props, {}> {
       showOrder,
       showIssue,
       savingPdf,
-      showPaymentIssue
+      showPaymentIssue,
+      showArrive,
+      showReturn
     } = this.state
 
     const getBackMessage =
@@ -569,7 +572,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           />
         }
         {(teamStoreId && owner) && !savingPdf &&
-          (status === PREORDER || canUpdatePayment) ? (
+          (status === PREORDER || canUpdatePayment) &&
             <OrderActions>
               <ButtonWrapper>
                 <Button type="primary" onClick={this.handleOnEditOrder}>
@@ -584,9 +587,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 {formatMessage(messages.deleteOrder)}
               </DeleteButton>
             </OrderActions>
-          ) : (
-            <Annotation>{formatMessage(messages.annotation)}</Annotation>
-          )}
+        }
         {!!teamStoreId && !savingPdf &&
           <FAQSection>
             <Title>
@@ -628,6 +629,77 @@ export class OrderDetails extends React.Component<Props, {}> {
                 <div
                   dangerouslySetInnerHTML={{
                     __html: formatMessage(messages.orderAnswer)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showArrive"
+                title={formatMessage(messages.arriveQuestion)}
+                showContent={showArrive}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.arriveQuestionDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showReturn"
+                title={formatMessage(messages.returnQuestion)}
+                showContent={showReturn}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.returnQuestionDesc)
+                  }}
+                />
+              </ProductInfo>
+            </FAQBody>
+          </FAQSection>
+        }
+        {!teamStoreId && !savingPdf &&
+          <FAQSection>
+            <Title>
+              {formatMessage(messages.faqTitle)}
+            </Title>
+            <FAQBody>
+              <ProductInfo
+                id="showPricing"
+                titleWidth={'100%'}
+                title={formatMessage(messages.makeChange)}
+                showContent={showPricing}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.makeChangeDescription)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showIssue"
+                richText={true}
+                title={formatMessage(messages.orderArrive)}
+                showContent={showIssue}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.orderArriveDesc)
+                  }}
+                />
+              </ProductInfo>
+              <ProductInfo
+                id="showOrder"
+                title={formatMessage(messages.returnPolicy)}
+                showContent={showOrder}
+                toggleView={this.toggleProductInfo}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: formatMessage(messages.returnPolicyDesc)
                   }}
                 />
               </ProductInfo>

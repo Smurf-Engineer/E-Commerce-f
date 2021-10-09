@@ -131,6 +131,29 @@ export const OrderNumberContainer = styled.div`
   }
 `
 
+export const FedexLabel = styled.div`
+  color: ${BLUE};
+  text-decoration: underline;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
+export const OpenIcon = styled(Icon)`
+  margin-left: 8px;
+  transform: scaleX(-1);
+  font-size: 12px;
+`
+
+export const FedexIcon = styled.img`
+  max-width: 32px;
+  object-fit: contain;
+  margin-left: 8px;
+  margin-bottom: 2px;
+`
+
 export const TitleStyled = styled.div`
   width: 300px;
   color: #5f6062;

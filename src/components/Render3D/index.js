@@ -32,6 +32,9 @@ import {
 } from './styledComponents'
 import { modelPositions } from './config'
 import {
+  blackProducts,
+  doubleSideMeshes,
+  blackMeshes,
   MESH,
   PREDYED_TRANSPARENT,
   BIB_BRACE,
@@ -443,6 +446,7 @@ class Render3D extends PureComponent {
     const { stitchingValue, asImage, hidePredyed } = this.props
 
     const {
+      id,
       obj,
       mtl,
       flatlock,
@@ -591,6 +595,17 @@ class Render3D extends PureComponent {
             )
             if (gripTapeIndex >= 0) {
               object.children[gripTapeIndex].material.color.set(WHITE)
+            }
+            if (children && blackProducts[id]) {
+              children.forEach((meshItem, indexMesh) => {
+                if (meshItem && doubleSideMeshes[meshItem.name]) {
+                  object.children[indexMesh].material.side = THREE.DoubleSide
+                }
+                if (meshItem && blackMeshes[meshItem.name]) {
+                  object.children[indexMesh].material.transparent = true
+                  object.children[indexMesh].material.color.set(WHITE)
+                }
+              })
             }
             /* Assign materials */
             const isFirefox = navigator && navigator.userAgent.indexOf('Firefox') !== -1
@@ -772,6 +787,17 @@ class Render3D extends PureComponent {
           )
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(WHITE)
+          }
+          if (children && blackProducts[product.id]) {
+            children.forEach((meshItem, indexMesh) => {
+              if (meshItem && doubleSideMeshes[meshItem.name]) {
+                object.children[indexMesh].material.side = THREE.DoubleSide
+              }
+              if (meshItem && blackMeshes[meshItem.name]) {
+                object.children[indexMesh].material.transparent = true
+                object.children[indexMesh].material.color.set(WHITE)
+              }
+            })
           }
           if (!proDesign && !(outputPng && customProduct) && !fromImage && !asImage) {
             areas.forEach(

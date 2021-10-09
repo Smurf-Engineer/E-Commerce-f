@@ -26,6 +26,15 @@ export const getOrderQuery = gql`
       billingStateProvince: billing_address_state_province
       billingZipCode: billing_address_zip_code
       billingCountry: billing_address_country
+      netsuite: netsuit_order {
+        orderStatus {
+          internalId
+          orderStatus
+          fulfillments {
+            packages
+          }
+        }
+      }
       shippingTax: shipping_tax
       currency {
         shortName: short_name
