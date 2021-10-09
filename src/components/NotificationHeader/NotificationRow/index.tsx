@@ -3,7 +3,8 @@
  */
 import * as React from 'react'
 import moment from 'moment'
-import { Container, Description, Date, Title } from './styledComponents'
+import { Container, Description, Date, Title, DeleteButton } from './styledComponents'
+import { SwipeItem } from './SwipeItem'
 
 interface Props {
   title: string
@@ -16,20 +17,29 @@ interface Props {
   onPress: (id: string) => void
 }
 
-const NotificationRow = ({ id, title, message, metaMessage, date, read, url, onPress }: Props) => {
+const NotificationRow = ({ id, title, message, metaMessage, date, read, url, onPress, onDelete }: Props) => {
   const handleOnPress = () => {
     onPress(id, url)
   }
+  const handleDelete = () => {
+    onDelete(id)
+  }
   return (
-    <Container className={!read ? 'new' : ''} onClick={handleOnPress}>
-      <Title>{title}</Title>
-      <Description
-        dangerouslySetInnerHTML={{
-          __html: metaMessage || message
-        }}
-      />
-      <Date>{moment(date).calendar()}</Date>
-    </Container>
+    <SwipeItem
+      actionButtonOffset={90}
+      onClick={handleOnPress}
+      actionButton={<DeleteButton onClick={handleDelete}>Delete</DeleteButton>}
+    >
+      <Container className={!read ? 'new' : ''}>
+        <Title>{title}</Title>
+        <Description
+          dangerouslySetInnerHTML={{
+            __html: metaMessage || message
+          }}
+        />
+        <Date>{moment(date).calendar()}</Date>
+      </Container>
+    </SwipeItem>
   )
 }
 

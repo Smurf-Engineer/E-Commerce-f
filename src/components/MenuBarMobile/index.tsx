@@ -31,6 +31,7 @@ interface Props {
   updatingNotifications?: boolean
   saveAndBuy: (buy: boolean) => void
   onPressNotification?: (id: number, url: string) => void
+  onDeleteNotification?: (id: number) => void
   onPressMarkAllAsRead: () => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -54,6 +55,7 @@ export const MenuBarMobile = ({
   formatMessage,
   buyNowHeader,
   onPressNotification,
+  onDeleteNotification,
   onPressMarkAllAsRead,
   notifications = [],
   saveAndBuy,
@@ -67,7 +69,7 @@ export const MenuBarMobile = ({
   return (
     <Container darkMode={proDesign} {...{ hide }}>
       {!buyNowHeader &&
-        <Menu 
+        <Menu
           {...{
             history,
             resellerEnabled,
@@ -95,6 +97,7 @@ export const MenuBarMobile = ({
               notifications,
               history,
               onPressNotification,
+              onDeleteNotification,
               onPressMarkAllAsRead,
               formatMessage
             }}

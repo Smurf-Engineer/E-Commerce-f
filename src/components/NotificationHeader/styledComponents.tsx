@@ -29,6 +29,8 @@ export const NotificationList = styled.div`
   max-height: 300px;
   overflow-y: scroll;
   padding-left: 16px;
+  max-width: 512px;
+  width: 100%;
 `
 
 export const Empty = styled.div`
@@ -36,7 +38,8 @@ export const Empty = styled.div`
 `
 
 export const overlayStyle = {
-  width: '276'
+  maxWidth: '386px',
+  width: '100%'
 }
 
 export const overlayMobileStyle = {

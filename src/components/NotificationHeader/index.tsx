@@ -19,6 +19,7 @@ interface Props {
   updating?: boolean
   formatMessage: (messageDescriptor: Message) => string
   onPressNotification?: (id: number, url: string) => void
+  onDeleteNotification?: (id: number) => void
   onPressMarkAllAsRead: () => void
 }
 
@@ -36,6 +37,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
       notifications = [],
       formatMessage,
       onPressNotification,
+      onDeleteNotification,
       onPressMarkAllAsRead,
       updating
     } = this.props
@@ -49,6 +51,7 @@ export class NotificationHeader extends React.PureComponent<Props, {}> {
             <NotificationRow
               {...{ title, message, date, read, metaMessage, id, url }}
               onPress={onPressNotification}
+              onDelete={onDeleteNotification}
             />
           ))}
         </NotificationList>

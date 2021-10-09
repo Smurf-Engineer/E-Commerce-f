@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardoquintero on 25/08/20.
  */
 import styled from 'styled-components'
-import { RED, GRAY_DARK, GRAY, RED_TRANSPARENT_BRIGHT, BLUE } from '../../../theme/colors'
+import { RED, GRAY_DARK, GRAY, RED_BRIGHT, BLUE, WHITE } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -10,8 +10,10 @@ export const Container = styled.div`
   padding: 8px;
   position: relative;
   cursor: pointer;
+  background: ${WHITE};
+
   &.new {
-    background: ${RED_TRANSPARENT_BRIGHT};
+    background: ${RED_BRIGHT};
     &::after {
       content: '';
       background: ${RED};
@@ -62,4 +64,32 @@ export const Date = styled.div`
 `
 
 export const Row = styled.div`
+`
+
+export const SwipeItemLi = styled.div`
+  position: relative;
+  overflow: hidden;
+`
+
+export const SwipeItemContent = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+`
+
+export const DeleteButton = styled.div`
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  right: 1px;
+  display: flex;
+  background: ${RED};
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  color: white;
+  text-transform: uppercase;
+  z-index: 100;
 `
