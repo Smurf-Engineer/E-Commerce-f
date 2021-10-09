@@ -30,6 +30,8 @@ import {
   CanvasElements
 } from '../../../../screens/DesignCenter/constants'
 import {
+  doubleSideMeshes,
+  blackMeshes,
   MESH,
   RED_TAG,
   FLATLOCK,
@@ -486,6 +488,17 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set('#ffffff')
           }
+          if (children) {
+            children.forEach((meshItem, indexMesh) => {
+              if (meshItem && doubleSideMeshes[meshItem.name]) {
+                object.children[indexMesh].material.side = THREE.DoubleSide
+              }
+              if (meshItem && blackMeshes[meshItem.name]) {
+                object.children[indexMesh].material.transparent = true
+                object.children[indexMesh].material.color.set(WHITE)
+              }
+            })
+          }
 
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
@@ -495,15 +508,15 @@ class Render3D extends PureComponent {
 
           reversedAreas.forEach(
             (map, index) =>
-              (object.children[
-                objectChilds + index
-              ].material = new THREE.MeshPhongMaterial({
-                map,
-                bumpMap,
-                side: THREE.FrontSide,
-                color: reverseColors[index],
-                transparent: true
-              }))
+            (object.children[
+              objectChilds + index
+            ].material = new THREE.MeshPhongMaterial({
+              map,
+              bumpMap,
+              side: THREE.FrontSide,
+              color: reverseColors[index],
+              transparent: true
+            }))
           )
 
           /* Canvas */

@@ -105,6 +105,13 @@ export const PREORDER = 'Pre-Order'
 export const CANCELLED = 'Cancelled'
 export const ERROR = 'Error'
 
+export enum PaymentOptions {
+  PAYPAL = 'paypal',
+  CREDITCARD = 'creditcard',
+  IBAN = 'iban',
+  INVOICE = 'invoice'
+}
+
 /* Quantity */
 export const PERSONAL = 'Personal'
 export const MESSAGE_TIME = 4
@@ -129,6 +136,37 @@ export const MODEL_SIZES = {
   medium: 140,
   large: 170,
   xLarge: 200
+}
+
+export const blackMeshes = {
+  'FINAL JV2_Design_Mesh' : true,
+  'FINAL ELEMENT Jakroo_White': true
+}
+
+export const doubleSideMeshes = {
+  'FINAL ELEMENT left_front' : true,
+  'FINAL ELEMENT right_front' : true,
+  'FINAL ELEMENT back' : true,
+  'FINAL ELEMENT hood_top' : true,
+  'FINAL ELEMENT hood_right' : true,
+  'FINAL ELEMENT hood_left' : true,
+  'FINAL ELEMENT left_sidepanel' : true,
+  'FINAL ELEMENT right_sidepanel' : true,
+  'FINAL ELEMENT left_sleeve1' : true,
+  'FINAL ELEMENT left_sleeve2' : true,
+  'FINAL ELEMENT right_sleeve1' : true,
+  'FINAL ELEMENT right_sleeve2' : true,
+  'FINAL ELEMENT right_shoulder' : true,
+  'FINAL ELEMENT right_shoulder1' : true,
+  'FINAL ELEMENT front_zip1' : true,
+  'FINAL ELEMENT front_zip2' : true,
+  'FINAL ELEMENT right_zip_pocket' : true,
+  'FINAL ELEMENT left_zip_pocket' : true,
+
+}
+
+export const blackProducts = {
+  322: true
 }
 
 // Affiliate status

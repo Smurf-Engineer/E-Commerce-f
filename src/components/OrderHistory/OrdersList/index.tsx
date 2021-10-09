@@ -38,7 +38,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   onSortClick: (label: string, sort: sorts) => void
-  onOrderClick: (shortId: string) => void
+  onOrderClick: (shortId: string, isService?: boolean) => void
   onChangePage: (page: number) => void
 }
 
@@ -119,7 +119,7 @@ const OrdersList = ({
 
   const orderItems = orders.map(
     (
-      { shortId, date, estimatedDate, status, netsuite }: OrderHistory,
+      { shortId, date, estimatedDate, status, netsuite, service }: OrderHistory,
       index: number
     ) => {
       const netsuiteObject = get(netsuite, 'orderStatus')
@@ -135,7 +135,7 @@ const OrdersList = ({
         <ItemOrder
           key={index}
           status={netsuiteStatus || status}
-          {...{ shortId, date, estimatedDate, onOrderClick, trackingNumber }}
+          {...{ shortId, date, estimatedDate, onOrderClick, trackingNumber, service }}
         />
       )
     }

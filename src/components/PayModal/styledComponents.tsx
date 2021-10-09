@@ -5,7 +5,7 @@ import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import SwipeableViews from 'react-swipeable-views'
 import styled from 'styled-components'
-import { BLACK_SHADOW, BLUE, GRAY_DARK, GRAY_LIGHT, WHITE } from '../../theme/colors'
+import { BLACK_SHADOW, BLUE, GRAY_DARK, GRAY_LIGHT, GRAY_SOFT, WHITE } from '../../theme/colors'
 
 interface DivProps {
   invoice?: boolean
@@ -33,12 +33,20 @@ export const ContainerMethods = styled.div`
   /* justify-content: space-between; TODO: uncomment when left payment methods*/
 `
 
+export const MethodIcon = styled(Icon)``
+
+export const PaypalIcon = styled.img`
+  width: 100%;
+  padding: 0 27px;
+  margin-bottom: 3px;
+`
+
 export const MethodButton = styled(Button)`
   background-color: ${WHITE};
-  border: 2px solid ${GRAY_LIGHT};
+  border: 2px solid ${GRAY_SOFT};
   border-radius: 2px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-  color: ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_LIGHT)};
+  color: ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_SOFT)};
   height: 40px;
   margin-left: 5px;
   width: 138.23px;
@@ -52,7 +60,7 @@ export const MethodButton = styled(Button)`
   }
 
   border: 0.5px solid
-    ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_LIGHT)};
+    ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_SOFT)};
 `
 
 export const StepWrapper = styled.div`

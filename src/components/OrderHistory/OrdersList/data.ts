@@ -17,6 +17,7 @@ export const getOrdersQuery = gql`
         id
         shortId: short_id
         date: created_at
+        service
         estimatedDate: estimated_date
         status
         teamstoreId: teamstore_id

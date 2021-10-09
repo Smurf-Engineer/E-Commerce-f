@@ -15,7 +15,8 @@ export const initialState = fromJS({
   currentPage: 1,
   orderBy: 'id',
   sort: 'desc',
-  orderId: ''
+  orderId: '',
+  isService: false
 })
 
 const accountReducer: Reducer<any> = (state = initialState, action) => {
@@ -25,7 +26,7 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
     case SET_ORDER_ID:
-      return state.set('orderId', action.orderId)
+      return state.merge({ orderId: action.orderId, isService: action.isService })
     case RESET_DATA:
       return initialState
     default:

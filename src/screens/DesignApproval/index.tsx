@@ -100,7 +100,12 @@ import {
   FileName,
   FullTitle,
   IncomingMessage,
+  StyledTooltipMobile,
+  InfoIconMobile,
   InfoDiv,
+  InfoIcon,
+  IconTitle,
+  TextBody,
   InfoText,
   Initials,
   JakrooLogo,
@@ -146,11 +151,13 @@ import {
   StyledIcon,
   StyledTabs,
   StyledTitle,
+  StyledTooltip,
   StyledUpload,
   stylesDraggable,
   stylesDraggableMobile,
   TabContent,
   TextAreaStyled,
+  TooltipBody,
   TypeLabel,
   UploadButton,
   UserIcon,
@@ -532,6 +539,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   promptEditRequest = (approved?: boolean) => {
     const { data, intl: { formatMessage }, location } = this.props
     const projectDesigns = get(data, 'projectItem.project.designs', []) as DesignType[]
+    const projectName = get(data, 'projectItem.project.name', '')
     const search = location ? location.search : ''
     const queryParams = queryString.parse(search)
     const filteredDesigns = projectDesigns.filter((item: DesignType) => 
@@ -568,7 +576,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </PromptLink>
             </> :
             <PromptLink onClick={approved ? this.goToLocker : this.backToProjects}>
-              {formatMessage(messages[approved ? 'takeToLocker' : 'backToMyProject'])}
+              {formatMessage(messages[approved ? 'takeToLocker' : 'backToMyProject'], { project: projectName })}
             </PromptLink>
           }
         </PromptBody>
@@ -597,9 +605,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   backToProjects = () => {
-    const { history } = this.props
+    const { history, data } = this.props
     Modal.destroyAll()
-    history.push('/account?option=proDesignProjects')
+    const projectId = get(data, 'projectItem.project.id', '')
+    history.push(`/account?option=proDesignProjects&id=${projectId}`)
   }
 
   handlePromptApprove = () => {
@@ -979,7 +988,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       <MessageBody
                         dangerouslySetInnerHTML={{
                           __html: messageType === CUSTOMER_APPROVED ? 
-                            formatMessage(messages.congratulations) :
+                            formatMessage(messages.congratulationsMessage) :
                             incomingMessage
                         }}
                       />
@@ -1032,22 +1041,39 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           >
             {formatMessage(messages.approve)}
           </ApproveButton>
+          {requestedEdits >= limitRequests &&
+            <StyledTooltip
+              trigger="hover"
+              content={
+                <TooltipBody>
+                  <IconTitle theme="filled" type="info-circle" />
+                  <TextBody
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.editRequestInfo)
+                    }}
+                  />
+                </TooltipBody>
+              }
+            >
+              <InfoIcon type="info-circle" />
+            </StyledTooltip>
+          }
           <RequestEdit
             disabled={itemStatus !== CUSTOMER_PREVIEW}
             onClick={requestedEdits >= limitRequests ? 
-              (user && (user.id === 'rydjiGhdm' || user.id === 'HkAbiKp_X') ? 
+              (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
                 this.openPurchaseModal : this.handleOpenRequest) : 
                 this.handleOpenRequest
               }
           >
             <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
               {formatMessage(messages[requestedEdits >= limitRequests ? 
-                (user && (user.id === 'rydjiGhdm' || user.id === 'HkAbiKp_X') ? 
+                (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
                   'purchaseMore' : 'requestEdit') : 
                   'requestEdit'
               ])}
             </RequestText>
-            <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
+            {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
           </RequestEdit>
         </RequestButtons>
       </DesignChat> : null
@@ -1194,20 +1220,37 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <RequestEdit
                   disabled={itemStatus !== CUSTOMER_PREVIEW}
                   onClick={requestedEdits >= limitRequests ? 
-                    (user && (user.id === 'rydjiGhdm' || user.id === 'HkAbiKp_X') ? 
+                    (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
                       this.openPurchaseModal : this.handleOpenRequest) : 
                       this.handleOpenRequest
                     }
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
                   {formatMessage(messages[requestedEdits >= limitRequests ? 
-                    (user && (user.id === 'rydjiGhdm' || user.id === 'HkAbiKp_X') ? 
+                    (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
                       'purchaseMore' : 'requestEdit') : 
                       'requestEdit'
                   ])}
                   </RequestText>
-                  <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>
+                  {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
                 </RequestEdit>
+                {requestedEdits >= limitRequests &&
+                  <StyledTooltipMobile
+                    trigger="click"
+                    content={
+                      <TooltipBody>
+                        <IconTitle theme="filled" type="info-circle" />
+                        <TextBody
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(messages.editRequestInfo)
+                          }}
+                        />
+                      </TooltipBody>
+                    }
+                  >
+                    <InfoIconMobile type="info-circle" />
+                  </StyledTooltipMobile>
+                }
               </MobileRequestButtons>
               {!!itemStatus &&
                 <RenderSection>

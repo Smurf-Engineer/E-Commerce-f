@@ -67,6 +67,9 @@ import {
   modelPositions
 } from './config'
 import {
+  blackProducts,
+  doubleSideMeshes,
+  blackMeshes,
   MESH,
   RED_TAG,
   FLATLOCK,
@@ -706,19 +709,30 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
+          if (children && blackProducts[product.id]) {
+            children.forEach((meshItem, indexMesh) => {
+              if (meshItem && doubleSideMeshes[meshItem.name]) {
+                object.children[indexMesh].material.side = THREE.DoubleSide
+              }
+              if (meshItem && blackMeshes[meshItem.name]) {
+                object.children[indexMesh].material.transparent = true
+                object.children[indexMesh].material.color.set(WHITE)
+              }
+            })
+          }
           const svgColors = designHasChanges ? areaColors : colors
 
           areas.forEach(
             (map, index) =>
-              (children[
-                objectChildCount + index
-              ].material = new THREE.MeshPhongMaterial({
-                map,
-                side: THREE.FrontSide,
-                color: svgColors[index],
-                bumpMap,
-                transparent: true
-              }))
+            (children[
+              objectChildCount + index
+            ].material = new THREE.MeshPhongMaterial({
+              map,
+              side: THREE.FrontSide,
+              color: svgColors[index],
+              bumpMap,
+              transparent: true
+            }))
           )
 
           /* Canvas */
@@ -1534,7 +1548,8 @@ class Render3D extends PureComponent {
       const { onApplyCanvasEl } = this.props
       fabric.loadSVGFromURL(src, (objects, options) => {
         const id = idElement || shortid.generate()
-        const shape = fabric.util.groupSVGElements(objects || [], options)
+        const newObjects = objects && objects.length > 0 ? objects.filter((item) => item.visible) : []
+        const shape = fabric.util.groupSVGElements(newObjects || [], options)
         const isClipArtGroup = shape.type === CanvasElements.Group
         const shapeObject = {
           id,
@@ -1596,7 +1611,8 @@ class Render3D extends PureComponent {
     const { fileUrl: src, size: imageSize, id: fileId, type } = file
     fabric.loadSVGFromURL(src, (objects, options) => {
       const id = idElement || shortid.generate()
-      const shape = fabric.util.groupSVGElements(objects || [], options)
+      const newObjects = objects && objects.length > 0 ? objects.filter((item) => item.visible) : []
+      const shape = fabric.util.groupSVGElements(newObjects || [], options)
       const shapeObject = {
         id,
         fileId,

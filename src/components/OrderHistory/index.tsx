@@ -14,19 +14,21 @@ import OrderDetails from '../OrderDetails'
 import SwipeableViews from 'react-swipeable-views'
 import queryString from 'query-string'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
+import OrderServiceDetails from '../OrderServiceDetails'
 
 interface Props {
   history: any
   currentPage: number
   orderBy: string
   sort: sorts
+  isService: boolean
   orderId: string
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setOrderIdAction: (orderId: string) => void
+  setOrderIdAction: (orderId: string, isService?: boolean) => void
 }
 
 class OrderHistory extends React.Component<Props, {}> {
@@ -48,7 +50,7 @@ class OrderHistory extends React.Component<Props, {}> {
   }
 
   render() {
-    const { currentPage, orderBy, currentCurrency, sort, formatMessage, orderId } = this.props
+    const { currentPage, orderBy, currentCurrency, sort, formatMessage, orderId, isService, history } = this.props
 
     return (
       <SwipeableViews
@@ -67,12 +69,18 @@ class OrderHistory extends React.Component<Props, {}> {
             interactiveHeaders={true}
           />
         </Container>
-        <OrderDetails
-          onReturn={this.handleOnOrderClick}
-          from={ORDER_HISTORY}
-          goToCart={this.goToCart}
-          {...{ orderId, formatMessage, currentCurrency }}
-        />
+        {isService ?
+          <OrderServiceDetails
+            {...{ orderId, formatMessage, history }}
+            onReturn={this.handleOnOrderClick}
+          /> :
+          <OrderDetails
+            onReturn={this.handleOnOrderClick}
+            from={ORDER_HISTORY}
+            goToCart={this.goToCart}
+            {...{ orderId, formatMessage, currentCurrency }}
+          />
+        }
       </SwipeableViews>
     )
   }
@@ -92,9 +100,9 @@ class OrderHistory extends React.Component<Props, {}> {
     setOrderByAction(label, sort)
   }
 
-  handleOnOrderClick = (orderId: string) => {
+  handleOnOrderClick = (orderId: string, isService?: boolean) => {
     const { setOrderIdAction } = this.props
-    setOrderIdAction(orderId)
+    setOrderIdAction(orderId, isService)
   }
 
   handleOnChangePage = (page: number) => {
