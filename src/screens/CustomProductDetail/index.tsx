@@ -82,7 +82,7 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Spin from 'antd/lib/spin'
-import { APPROVED } from '../../constants'
+import { APPROVED, PREDYED_TRANSPARENT } from '../../constants'
 import { getRangeLabel } from '../../utils/utilsShoppingCart'
 
 const MAX_AMOUNT_PRICES = 4
@@ -216,6 +216,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const teamOnDemand = get(design, 'teamOnDemand', false)
     const isReseller = get(design, 'isReseller', false)
     const teamName = get(design, 'teamName', '')
+    const predyedName = get(design, 'predyedName', '')
     const proDesign = get(design, 'proDesign', false)
     const {
       images: imagesArray,
@@ -573,6 +574,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   <Render3D
                     customProduct={true}
                     textColor="white"
+                    hidePredyed={predyedName === PREDYED_TRANSPARENT}
                     {...{ designId, modelSize }}
                     zoomedIn={true}
                     asImage={phone}

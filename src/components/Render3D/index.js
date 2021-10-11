@@ -754,7 +754,7 @@ class Render3D extends PureComponent {
           }
           /* Transparent predyed  */
           if (
-            ((design.predyedColor === PREDYED_TRANSPARENT && !designSearch) || (hidePredyed && designSearch))
+            ((design.predyedColor === PREDYED_TRANSPARENT && !customProduct) || (hidePredyed && customProduct))
             && product.hasPredyed
           ) {
             const brandingObj = children[meshIndex].clone()

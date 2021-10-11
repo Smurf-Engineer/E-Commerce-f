@@ -14,6 +14,7 @@ export const GetDesignByIdQuery = gql`
       totalOrders: total_orders
       teamEnable: team_enable
       teamName: team_name
+      predyedName: predyed_name
       teamOnDemand: team_on_demand_mode
       isReseller: is_reseller
       resellerPrice: reseller_price {
