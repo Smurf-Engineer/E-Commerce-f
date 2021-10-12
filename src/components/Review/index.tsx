@@ -94,6 +94,8 @@ class Review extends React.PureComponent<Props, {}> {
         const {
           designId,
           designImage,
+          proCertified,
+          proDesign,
           designName,
           teamStoreItem,
           teamStoreId,
@@ -128,7 +130,7 @@ class Review extends React.PureComponent<Props, {}> {
             itemIndex={index}
             onlyRead={true}
             currencySymbol={currencyPrices[0].shortName}
-            {...{ cartItem, isFixed, teamStoreItem }}
+            {...{ cartItem, isFixed, teamStoreItem, proDesign, proCertified }}
           />
         )
       })

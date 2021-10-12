@@ -8,6 +8,8 @@ export const saveDesignName = graphql(
         designId: id
         designName: name
         designImage: image
+        proCertified: pro_certified
+        proDesign: pro_design
         shortId: short_id
         svg: output_svg
         designCode: code
@@ -90,6 +92,8 @@ export const saveDesignChanges = graphql(
         designId: id
         designName: name
         designImage: image
+        proCertified: pro_certified
+        proDesign: pro_design
         svg: output_svg
         designCode: code
         shared

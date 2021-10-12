@@ -114,7 +114,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       thumbnailsList = designs.map(
         (
           {
-            design: { id, shortId, name, product: productData, image, code },
+            design: { id, shortId, name, product: productData, image, code, proDesign, proCertified },
             totalOrders,
             resellerRange,
             priceRange: fixedRange,
@@ -269,6 +269,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                       teamStoreItem={itemShortId}
                       teamStoreId={teamStoreShortId}
                       fixedPrices={isResellerOwner ? [] : priceRange}
+                      {...{ proCertified, proDesign }}
                     />
                   )
                 }

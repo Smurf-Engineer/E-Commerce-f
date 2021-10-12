@@ -138,6 +138,8 @@ export const getOrderQuery = gql`
         designId
         designName
         designImage
+        proCertified
+        proDesign
         variableOne
         variableTwo
         designCode

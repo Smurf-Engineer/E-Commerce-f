@@ -289,6 +289,8 @@ export class CartListItem extends React.Component<Props, {}> {
       designId,
       designName,
       designImage,
+      proCertified,
+      proDesign,
       isReseller = false,
       totalOrder = 0,
       designCode,
@@ -430,7 +432,7 @@ export class CartListItem extends React.Component<Props, {}> {
         label={formatMessage(cartListItemMsgs.reorder)}
         renderForThumbnail={false}
         item={cartItem}
-        {...{ formatMessage, designId, designName, designImage, teamStoreId }}
+        {...{ formatMessage, designId, designName, designImage, proCertified, proDesign, teamStoreId }}
         teamStoreName={teamStoreName}
         withoutTop={true}
         myLockerList={false}

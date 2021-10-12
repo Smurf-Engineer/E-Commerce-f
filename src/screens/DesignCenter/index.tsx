@@ -834,6 +834,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         name,
         shared,
         id,
+        proCertified,
         image: designImage,
         canvas: designCanvas,
         outputSvg
@@ -862,6 +863,8 @@ export class DesignCenter extends React.Component<Props, {}> {
           designCode: code,
           designId: id,
           designImage,
+          proDesign,
+          proCertified,
           designName: name,
           product: designProduct,
           shared,

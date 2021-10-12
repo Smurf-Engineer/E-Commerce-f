@@ -261,6 +261,8 @@ class OrderData extends React.Component<Props, {}> {
         const {
           designId,
           designImage,
+          proCertified,
+          proDesign: proDesignItem,
           designName,
           product: { images, name, shortDescription, priceRange },
           productTotal,
@@ -296,10 +298,12 @@ class OrderData extends React.Component<Props, {}> {
               productTotal,
               unitPrice,
               cartItem,
+              proCertified,
               currentCurrency
             }}
             currencySymbol={currency.shortName}
             key={index}
+            proDesign={proDesignItem}
             image={itemImage}
             title={itemTitle}
             description={itemDescription}

@@ -65,6 +65,8 @@ export const saveToCartAction = (item: DesignSaved) => {
       { designId: get(item, 'designId') },
       { designName: get(item, 'designName') },
       { designImage: get(item, 'designImage') },
+      { proCertified: get(item, 'proCertified') },
+      { proDesign: get(item, 'proDesign') },
       { designCode: get(item, 'designCode') }
     )
     if (typeof window !== 'undefined') {

@@ -70,6 +70,8 @@ interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  proDesign?: boolean
+  proCertified?: boolean
   isFixed?: boolean
   isReseller?: boolean
   teamStoreId?: string
@@ -199,9 +201,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       showReviewDesignModal,
       cart
     } = this.props
-    const isCustom = find(cart, 'designId')
     const teamStore = find(cart, 'teamStoreId')
-    if (!!isCustom && !teamStore) {
+    const isCustom = cart ? cart.some((item) => item.designId && !item.proCertified && !item.proDesign) : false
+    if (isCustom && !teamStore) {
       if (showReviewDesignModal) {
         showReviewDesignModalAction(false)
         return
@@ -553,6 +555,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setBottomDetailSize={this.handleSetBottomDetailSize}
           removeItem={this.handleRemoveItem}
           disable={cartItem.fixedCart}
+          proCertified={cartItem.proCertified}
+          proDesign={cartItem.proDesign}
           {...{ history, openFitInfoAction, openFitInfo, highlightFields }}
         />
       )

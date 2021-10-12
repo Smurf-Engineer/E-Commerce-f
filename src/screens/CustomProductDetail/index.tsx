@@ -208,6 +208,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const teamStoreShortId = queryParams.team
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
+    const proCertified = get(design, 'proCertified')
     const designCode = get(design, 'code', '')
     const totalOrders = get(design, 'totalOrders', 0)
     const fixedPrices = get(design, 'teamPrice', [])
@@ -495,7 +496,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             teamStoreId={teamStoreShortId}
             isReseller={isReseller && !ownedDesign}
             fixedPrices={isReseller && ownedDesign ? [] : teamPrice}
-            {...{ designId, designName, designImage, teamStoreItem, formatMessage }}
+            {...{ designId, designName, designImage, teamStoreItem, formatMessage, proCertified, proDesign }}
             teamStoreName={teamName}
           />
         }

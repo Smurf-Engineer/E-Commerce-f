@@ -70,6 +70,8 @@ export const getSingleTeamStore = gql`
           name
           image
           shortId: short_id
+          proDesign: pro_design
+          proCertified: pro_certified
           product {
             id
             code

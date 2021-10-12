@@ -189,6 +189,8 @@ export const getOrderQuery = gql`
         productTotal
         designName
         designImage
+        proCertified
+        proDesign
         designCode
         teamStoreId
         teamStoreItem

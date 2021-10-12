@@ -159,6 +159,7 @@ class PayModal extends React.Component<Props, {}> {
     showPricing: false,
     payCompleted: false
   }
+  private paySection: any
   private swipeableActions: any
   componentDidMount() {
     if (window.Stripe) {
@@ -213,6 +214,7 @@ class PayModal extends React.Component<Props, {}> {
       openConfirm: false
     })
     saveCountryAction(countryCode)
+    setTimeout(() => { this.scrollPayForm() }, 600)
   }
 
   nextStep = () => {
@@ -526,9 +528,20 @@ class PayModal extends React.Component<Props, {}> {
     }
   }
 
+  scrollPayForm = () => {
+    if (window) {
+      const node = document.querySelector('.ant-modal-wrap')
+      if (node) {
+        const intakeScroller = zenscroll.createScroller(node, 0)
+        intakeScroller.intoView(this.paySection, 250)
+      }
+    }
+  }
+
   handleCreditCardClick = () => {
     const { setPaymentMethodAction } = this.props
     setPaymentMethodAction(CREDITCARD)
+    setTimeout(() => { this.scrollPayForm() }, 1200)
   }
   render() {
     const {
@@ -685,6 +698,11 @@ class PayModal extends React.Component<Props, {}> {
                   </ItemRow>
                 }
               </ItemList>
+              <div
+                ref={section => {
+                  this.paySection = section
+                }}
+              >
               <StyledSwipeableViews
                 action={actions => {
                   this.swipeableActions = actions
@@ -774,6 +792,7 @@ class PayModal extends React.Component<Props, {}> {
                   />
                 </SummaryContainer>
               </StyledSwipeableViews>
+              </div>
               <ModalCountry
                 {...{ formatMessage }}
                 open={openConfirm}
