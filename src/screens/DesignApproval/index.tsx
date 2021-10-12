@@ -825,6 +825,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       shortId: designId,
       createdAt: createdAtDesign,
       image: designImage,
+      proCertified,
+      proDesign,
       code: designCode,
       shared
     } = design
@@ -882,6 +884,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       designCode: designCode || itemCode,
       designId: designSerialId,
       designImage,
+      proCertified,
+      proDesign,
       designName,
       product,
       shared,
@@ -1200,7 +1204,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       label={formatMessage(messages.addToCart)}
                       onClick={this.handleAddToCart}
                       item={proDesignModel}
-                      {...{ designName, designImage, formatMessage, designId }}
+                      {...{ designName, designImage, formatMessage, designId, proCertified, proDesign }}
                     />
                   </ButtonWrapper>
                 </BottomButtons>
@@ -1252,7 +1256,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltipMobile>
                 }
               </MobileRequestButtons>
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId &&
                     <Render3D

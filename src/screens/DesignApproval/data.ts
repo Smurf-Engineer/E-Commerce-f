@@ -80,6 +80,8 @@ export const getProdesignItemQuery = gql`
         canvas_files
         pro_design
         preflight_check
+        proDesign: pro_design
+        proCertified: pro_certified
         stitchingValue: flatlock
         predyedName: predyed_name
         stitchingName: flatlock_code

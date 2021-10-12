@@ -296,6 +296,8 @@ export class OrderDetails extends React.Component<Props, {}> {
         const {
           designId,
           designImage,
+          proCertified,
+          proDesign: proDesignItem,
           designName,
           product: { images, name, shortDescription },
           productTotal,
@@ -339,9 +341,11 @@ export class OrderDetails extends React.Component<Props, {}> {
               formatMessage,
               productTotal,
               unitPrice,
+              proCertified,
               cartItem,
               currentCurrency
             }}
+            proDesign={proDesignItem}
             currencySymbol={currency.shortName}
             key={index}
             image={itemImage}

@@ -114,7 +114,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       itemDetails: [{ quantity: 1 }]
     })
     const { added } = this.state
-    const { shortId, designName, designImage } = savedDesign
+    const { shortId, designName, designImage, proCertified, proDesign } = savedDesign
     return (
       <Container>
         <ButtonsContainer>
@@ -150,7 +150,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                   onClick={this.handleAddToCart}
                   item={itemToAdd}
                   designId={shortId}
-                  {...{ designName, designImage, formatMessage }}
+                  {...{ designName, designImage, proCertified, proDesign, formatMessage }}
                 />
               </ButtonWrapper>
             </BottomButtons>
