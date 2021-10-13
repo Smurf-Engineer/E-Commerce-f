@@ -66,7 +66,9 @@ import {
   InfoDescription,
   InvoiceAnimation,
   StyledSpin,
-  InfoBatch
+  InfoBatch,
+  ProcessingDiv,
+  SpinStyled
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -92,7 +94,6 @@ import Modal from 'antd/lib/modal'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
-import Spin from 'antd/lib/spin'
 import { message } from 'antd'
 import some from 'lodash/some'
 
@@ -572,7 +573,10 @@ class Checkout extends React.Component<Props, {}> {
             <PlaceOrderLoading>
               <ModalLoading>
                 <InvoiceAnimation src={invoiceAnimation} />
-                <Spin />
+                <ProcessingDiv>
+                  {intl.formatMessage(messages.processing)}
+                  <SpinStyled />
+                </ProcessingDiv>
               </ModalLoading>
             </PlaceOrderLoading>
           )}

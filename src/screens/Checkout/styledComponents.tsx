@@ -154,6 +154,17 @@ export const PlaceOrderLoading = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 100;
+  animation: fade-in-bottom 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-bottom {
+    0% {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `
 
 export const ModalTitle = styled.div`
@@ -202,8 +213,9 @@ export const ModalLoading = styled.div`
   align-items: center;
   background: white;
   padding: 8px;
-  border-radius: 23px;
+  border-radius: 14px;
   box-shadow: 0px 3px 8px -2px ${GRAY_DARK};
+  padding-bottom: 18px;
 `
 
 export const InfoBody = styled.div`
@@ -215,6 +227,18 @@ export const InfoBody = styled.div`
   margin-top: 12px;
   margin-bottom: 12px;
   margin-left: -38px;
+`
+
+export const ProcessingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-family: Avenir-Medium;
+  align-items: center;
+`
+
+export const SpinStyled = styled(Spin)`
+  margin-left: 16px;
 `
 
 export const InfoText = styled.div``
