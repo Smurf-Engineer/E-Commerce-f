@@ -186,7 +186,7 @@ export default defineMessages({
   },
   selectFile: {
     id: 'screens.DesignApproval.selectFile',
-    defaultMessage: 'Select File'
+    defaultMessage: 'Select File(s)'
   },
   reply: {
     id: 'screens.DesignApproval.reply',

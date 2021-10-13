@@ -10,7 +10,8 @@ import {
   SET_REPLY,
   SET_SENDING_NOTE,
   SET_APPROVE_LOADING,
-  SET_EDIT_PROJECT
+  SET_EDIT_PROJECT,
+  DELETE_FILE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -37,6 +38,11 @@ export const setEditProject = (project: number, product: number): AnyAction => (
 
 export const setFileAction = (file: string): AnyAction => ({
   type: SET_FILE,
+  file
+})
+
+export const deleteFileAction = (file: string): AnyAction => ({
+  type: DELETE_FILE,
   file
 })
 

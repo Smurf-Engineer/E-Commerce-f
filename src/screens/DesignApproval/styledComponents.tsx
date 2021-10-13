@@ -262,7 +262,7 @@ export const AvailableCircle = styled.div`
 `
 
 export const StatusLabel = styled.div`
-  background: ${({ color }: ColorProps) => color || GRAY_STRONG};
+  background: ${({ color }: ColorProps) => color || GRAY_STRONG};
   border-radius: 2px;
   text-transform: uppercase;
   font-size: 12px;
@@ -565,7 +565,7 @@ export const DraggableModalStyled = styled(DraggableModal)`
   border-radius: 3px;
   max-width: 612px;
   width: 100% !important;
-  max-height: 366px;
+  max-height: 440px;
   height: 100% !important;
   align-self: center;
   box-shadow: 0px 2px 7px 0px ${GRAY_DARK};
@@ -716,7 +716,6 @@ export const TypeLabel = styled.div`
 `
 
 export const FileName = styled.div`
-  width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -1064,7 +1063,7 @@ export const Color = styled.div`
   border-radius: 50%;
   border: 1px solid
     ${({ color }: ColorProps) =>
-      color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
+    color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
   background-color: ${({ color }: ColorProps) => color || WHITE};
   align-self: center;
 `
@@ -1241,17 +1240,17 @@ export const InfoText = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: ${({ noMargin}: RowProps) => noMargin ? 'unset' : '16px'};
+  margin-bottom: ${({ noMargin }: RowProps) => noMargin ? 'unset' : '16px'};
   margin-top: ${({ marginTop }: RowProps) => marginTop ? '-4px' : 'unset'};
   .ant-btn-primary  {
-    background-color: ${({ secondary }: RowProps) => secondary  ? WHITE : BLUE};
-    border-color: ${({ secondary }: RowProps) => secondary  ? GRAY_STRONG : BLUE};
+    background-color: ${({ secondary }: RowProps) => secondary ? WHITE : BLUE};
+    border-color: ${({ secondary }: RowProps) => secondary ? GRAY_STRONG : BLUE};
     width: 138px;
     color: ${({ selected }: RowProps) => selected ? WHITE : GRAY_DARK};
   }
   .ant-btn-primary:hover {
-    background-color: ${({ secondary }: RowProps) => secondary  ? GRAY_LIGHT : BLUE};
-    border-color: ${({ secondary }: RowProps) => secondary  ? GRAY_LIGHT : BLUE};
+    background-color: ${({ secondary }: RowProps) => secondary ? GRAY_LIGHT : BLUE};
+    border-color: ${({ secondary }: RowProps) => secondary ? GRAY_LIGHT : BLUE};
   }
 `
 
@@ -1260,3 +1259,17 @@ export const okButtonStyles = {
   border: 'none',
   borderRadius: '2px'
 }
+
+export const FileContainer = styled.div`
+
+`
+
+export const DeleteFile = styled(Icon)`
+  color: ${RED};
+  margin-left: 10px;
+  padding-top: 2px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+`
