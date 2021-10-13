@@ -55,6 +55,7 @@ import {
   StepIcon,
   CheckIcon,
   PlaceOrderLoading,
+  ModalLoading,
   okButtonStyles,
   ModalTitle,
   InfoBody,
@@ -244,9 +245,13 @@ class Checkout extends React.Component<Props, {}> {
     stripe: null,
     checked: false,
   }
+  componentDidMount() {
+    window.onbeforeunload = () => true
+  }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
+    window.onbeforeunload = null
   }
   render() {
     const {
@@ -565,7 +570,10 @@ class Checkout extends React.Component<Props, {}> {
 
           {(loadingPlaceOrder || paymentIntentLoading) && (
             <PlaceOrderLoading>
-              <Spin />
+              <ModalLoading>
+                <InvoiceAnimation src={invoiceAnimation} />
+                <Spin />
+              </ModalLoading>
             </PlaceOrderLoading>
           )}
         </Container>

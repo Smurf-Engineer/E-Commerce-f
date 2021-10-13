@@ -196,6 +196,16 @@ export const InvoiceAnimation = styled.img`
   object-fit: contain;
 `
 
+export const ModalLoading = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  background: white;
+  padding: 8px;
+  border-radius: 23px;
+  box-shadow: 0px 3px 8px -2px ${GRAY_DARK};
+`
+
 export const InfoBody = styled.div`
   color: ${GRAY_DARK};
   font-family: ${AVENIR_NEXT};
