@@ -55,6 +55,7 @@ import {
   StepIcon,
   CheckIcon,
   PlaceOrderLoading,
+  ModalLoading,
   okButtonStyles,
   ModalTitle,
   InfoBody,
@@ -65,7 +66,9 @@ import {
   InfoDescription,
   InvoiceAnimation,
   StyledSpin,
-  InfoBatch
+  InfoBatch,
+  ProcessingDiv,
+  SpinStyled
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -91,7 +94,6 @@ import Modal from 'antd/lib/modal'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE, PHONE_MINIMUM } from '../../constants'
-import Spin from 'antd/lib/spin'
 import { message } from 'antd'
 import some from 'lodash/some'
 
@@ -244,9 +246,13 @@ class Checkout extends React.Component<Props, {}> {
     stripe: null,
     checked: false,
   }
+  componentDidMount() {
+    window.onbeforeunload = () => true
+  }
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
+    window.onbeforeunload = null
   }
   render() {
     const {
@@ -565,7 +571,13 @@ class Checkout extends React.Component<Props, {}> {
 
           {(loadingPlaceOrder || paymentIntentLoading) && (
             <PlaceOrderLoading>
-              <Spin />
+              <ModalLoading>
+                <InvoiceAnimation src={invoiceAnimation} />
+                <ProcessingDiv>
+                  {intl.formatMessage(messages.processing)}
+                  <SpinStyled />
+                </ProcessingDiv>
+              </ModalLoading>
             </PlaceOrderLoading>
           )}
         </Container>

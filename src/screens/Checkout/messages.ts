@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.Checkout.confirm',
     defaultMessage: 'Confirm'
   },
+  processing: {
+    id: 'screens.Checkout.processing',
+    defaultMessage: 'Processing order...'
+  },
   warningQuantity: {
     id: 'screens.Checkout.warningQuantity',
     // tslint:disable-next-line: max-line-length

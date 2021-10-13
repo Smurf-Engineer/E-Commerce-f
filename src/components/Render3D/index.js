@@ -554,7 +554,8 @@ class Render3D extends PureComponent {
             }
 
             const frontMaterial = new THREE.MeshPhongMaterial({
-              color: 0xdbdde0,
+              color: blackProducts[id] && !textureSvg ? BLACK : 0xdbdde0,
+              transparent: blackProducts[id],
               map: textureSvg,
               side: THREE.FrontSide,
               bumpMap: bumpMapObj
@@ -742,6 +743,7 @@ class Render3D extends PureComponent {
           })
 
           const frontMaterial = new THREE.MeshPhongMaterial({
+            transparent: blackProducts[product.id],
             map: texture,
             side: THREE.FrontSide,
             bumpMap: bumpMap
