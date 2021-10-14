@@ -263,6 +263,23 @@ export const DocIcon = styled(Icon)`
   }
 `
 
+export const LogoImage = styled.img`
+  width: 200px;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 30px;
+  color: ${GRAY_DARK};
+  background: ${GRAY_LIGHTEST};
+  padding: 34%;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 160px;
+  }
+`
+
 export const Color = styled.div`
   margin-bottom: 50px;
   display: flex;

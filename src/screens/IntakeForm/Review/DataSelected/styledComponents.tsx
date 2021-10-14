@@ -126,6 +126,22 @@ export const DocIcon = styled(Icon)`
   }
 `
 
+export const LogoImage = styled.img`
+  width: 110px;
+  height: 110px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 28px;
+  color: ${GRAY_DARK};
+  background: ${GRAY_LIGHTEST};
+  padding: 34%;
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 160px;
+  }
+`
+
 export const InspirationName = styled.div`
   width: 100%;
   text-align: center;

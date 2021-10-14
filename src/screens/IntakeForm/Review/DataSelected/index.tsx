@@ -21,14 +21,17 @@ import {
   PaletteName,
   InspirationName,
   DocIcon,
-  LockerGrid
+  LockerGrid,
+  LogoImage
 } from './styledComponents'
-import { getFileNameFromUrl } from '../../../../utils/utilsFiles'
+import aiLogo from '../../../../assets/ailogo.png'
+import epsLogo from '../../../../assets/epslogo.png'
+import { getFileExtension, getFileNameFromUrl } from '../../../../utils/utilsFiles'
 import ColorBar from '../../../../components/ColorBar'
 import messages from '../messages'
 import { Message, InspirationType, ImageFile, Product, DesignType } from '../../../../types/common'
 import { Sections, CUSTOM_PALETTE_INDEX, InspirationTag } from '../../constants'
-import { DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE } from '../../../../constants'
+import { DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE, POSTSCRIPT_TYPE } from '../../../../constants'
 import ProductThumbnailStore from '../../../../components/ProductThumbnailStore'
 
 const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
@@ -167,9 +170,12 @@ export class DataSelected extends React.Component<Props, {}> {
               <Images>
                 {selectedFiles.length ? selectedFiles.map((assetItem, index) => {
                   const { fileUrl, name, type } = assetItem
+                  const extension = getFileExtension(fileUrl)
                   return (<ImageContainer key={index}>
                     {docTypes.includes(type) ?
-                      <DocIcon type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> : <Image src={fileUrl} />
+                      <DocIcon type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> : 
+                      (type === POSTSCRIPT_TYPE ?
+                        <LogoImage src={extension === '.ai' ? aiLogo : epsLogo} /> : <Image src={fileUrl} />)
                     }
                     <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
                   </ImageContainer>)

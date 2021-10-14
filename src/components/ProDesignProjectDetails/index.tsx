@@ -44,9 +44,10 @@ import {
   ProjectDescriptor,
   ProjectContainer,
   LockerGrid,
-  Designs
+  Designs,
+  LogoImage
 } from './styledComponents'
-import { getFileNameFromUrl } from '../../utils/utilsFiles'
+import { getFileExtension, getFileNameFromUrl } from '../../utils/utilsFiles'
 import ColorBar from '../ColorBar'
 import messages from './messages'
 import { Message, InspirationType, ColorsDataResult, ProDesignItem, MessagePayload } from '../../types/common'
@@ -57,8 +58,11 @@ import {
   DOCX_TYPE,
   DOC_TYPE,
   PDF_TYPE,
+  POSTSCRIPT_TYPE,
   ZIP_TYPE
 } from '../../constants'
+import aiLogo from '../../assets/ailogo.png'
+import epsLogo from '../../assets/epslogo.png'
 import { InspirationTag } from '../../screens/IntakeForm/constants'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
@@ -286,10 +290,14 @@ export class Review extends React.Component<Props, {}> {
                     {files.length ? files.map((assetItem, index) => {
                       const { fileUrl, type, name } = assetItem
                       const openFile = () => window.open(fileUrl)
+                      const extension = getFileExtension(fileUrl)
                       return (<ImageContainer key={index}>
                         {docTypes.includes(type) ?
-                          <DocIcon onClick={openFile} type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> 
-                          : <Image src={fileUrl} />
+                          <DocIcon onClick={openFile} type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> :
+                          (type === POSTSCRIPT_TYPE ?
+                            <LogoImage onClick={openFile} src={extension === '.ai' ? aiLogo : epsLogo} /> : 
+                            <Image src={fileUrl} />
+                          )
                         }
                         <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
                       </ImageContainer>)
