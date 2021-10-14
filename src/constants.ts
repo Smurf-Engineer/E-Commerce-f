@@ -161,8 +161,11 @@ export const doubleSideMeshes = {
   'FINAL ELEMENT front_zip1' : true,
   'FINAL ELEMENT front_zip2' : true,
   'FINAL ELEMENT right_zip_pocket' : true,
-  'FINAL ELEMENT left_zip_pocket' : true,
+  'FINAL ELEMENT left_zip_pocket' : true
+}
 
+export const onlyPro = {
+  322: true
 }
 
 export const blackProducts = {

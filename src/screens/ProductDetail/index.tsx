@@ -73,7 +73,7 @@ import {
 import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
-import { APPROVED, MAIN_TITLE } from '../../constants'
+import { APPROVED, MAIN_TITLE, onlyPro } from '../../constants'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import Render3D from '../../components/Render3D'
@@ -762,8 +762,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     setDesignModalOpenAction(false)
   }
   openDesignModal = () => {
-    const { setDesignModalOpenAction } = this.props
-    setDesignModalOpenAction(true)
+    const { setDesignModalOpenAction, data } = this.props
+    const productId = get(data, 'product.id', '')
+    if (onlyPro[productId]) {
+      this.goToProDesign()
+    } else {
+      setDesignModalOpenAction(true)
+    }
   }
   openTemplate = () => {
     const { data: { product: productData } } = this.props
