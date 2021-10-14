@@ -194,6 +194,7 @@ export const DOC_TYPE = 'application/msword' // .doc
 export const ZIP_TYPE = 'application/zip' // .zip
 export const DOCX_TYPE = 'application/application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
 export const PDF_TYPE = 'application/pdf' // .pdf
+export const POSTSCRIPT_TYPE = 'application/postscript' // .eps, .ai
 
 // BASE 64 Images
 // tslint:disable-next-line: max-line-length

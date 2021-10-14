@@ -35,6 +35,22 @@ export const DocIcon = styled(Icon)`
   }
 `
 
+export const LogoImage = styled.img`
+  width: 300px;
+  height: 300px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 48px;
+  color: ${GRAY_DARK};
+  background: ${GRAY_LIGHTEST};
+  padding: 34%;
+  @media (max-width: 768px) {
+    width: 130px;
+    height: 130px;
+  }
+`
+
 export const ImageContainer = styled.div`
   width: 300px;
   display: flex;
@@ -67,9 +83,15 @@ export const Button = styled.div`
 
 export const DeleteButton = styled(Button)`
   color: ${RED};
+  &:hover {
+    cursor: pointer;
+  }
 `
 export const EditButton = styled.div`
   color: ${BLUE};
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const ImageText = styled.div`
