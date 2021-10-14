@@ -19,7 +19,7 @@ import {
 import messages from './messages'
 import ProductThumbnail from '../ProductThumbnail'
 import get from 'lodash/get'
-import { APPROVED } from '../../constants'
+import { APPROVED, onlyPro } from '../../constants'
 
 interface Data extends QueryProps {
   productSearch: Product[]
@@ -143,9 +143,29 @@ export class SearchResults extends React.Component<Props, {}> {
       </AnimateHeight>
     )
   }
+  goToProDesign = (id: string) => {
+    const { data, history } = this.props
+    const products = get(data, 'productSearch', [])
+    const product = products.find((item) => item.id === id) || {}
+    const productObj = {
+      ...product,
+      type: product.name
+    }
+    history.push({
+      pathname: `/pro-design`,
+      state: {
+        product: productObj
+      }
+    })
+  }
+
   gotoCustomize = (id: string) => {
     const { history } = this.props
-    history.push(`/design-center?id=${id}`)
+    if (onlyPro[id]) {
+      this.goToProDesign(id)
+    } else {
+      history.push(`/design-center?id=${id}`)
+    }
   }
 }
 

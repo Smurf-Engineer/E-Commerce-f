@@ -33,7 +33,7 @@ import { saveInLocalStorage } from './api'
 import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import { DATE_FORMAT } from '../../constants'
+import { DATE_FORMAT, onlyPro } from '../../constants'
 import moment from 'moment'
 
 const LIMIT_PRICE_RANGE = 3
@@ -148,9 +148,30 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     this.setState({ currentImage })
   }
 
+  goToProDesign = (product: Product) => {
+    const {
+      history,
+    } = this.props
+    const productObj = {
+      ...product,
+      type: product.name,
+      description: product.shortDescription
+    }
+    history.push({
+      pathname: `/pro-design`,
+      state: {
+        product: productObj
+      }
+    })
+  }
+
   handleOnPressCustomize = () => {
-    const { onPressCustomize, id } = this.props
-    onPressCustomize(id)
+    const { onPressCustomize, id, product } = this.props
+    if (onlyPro[id]) {
+      this.goToProDesign(product)
+    } else {
+      onPressCustomize(id)
+    }
   }
 
   handleOnPressQuickView = (event: React.MouseEvent) => {
