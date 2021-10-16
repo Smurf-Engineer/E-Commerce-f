@@ -25,6 +25,7 @@ export const getProdesignItemQuery = gql`
       code: design_code
       showNotification
       limitRequests: limit_requests
+      paidRequests: paid_requests
       product {
         id
         productId: id
@@ -111,6 +112,7 @@ export const getProdesignItemQuery = gql`
         file
         design
         code
+        paid
         requireAnswer: require_answer
         parentMessageId: parent_message_id
         answer {

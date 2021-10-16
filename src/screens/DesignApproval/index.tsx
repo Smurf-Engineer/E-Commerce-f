@@ -368,7 +368,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       const { client, data: storedData } = this.props
       const projectItem = get(storedData, 'projectItem', {})
       const itemId = get(projectItem, 'projectItem.id', '') as string
-      projectItem.limitRequests += 1
+      projectItem.paidRequests += 1
       client.writeQuery({
         query: getProdesignItemQuery,
         variables: { shortId: itemId },
@@ -808,7 +808,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const highlight = get(projectItem, 'showNotification', false) as boolean
     const projectDesigns = get(projectItem, 'project.designs', []) as DesignType[]
     const itemStatus = get(projectItem, 'status', '') as string
-    const limitRequests = get(projectItem, 'limitRequests', 0) as number
+    const requestsLimit = get(projectItem, 'limitRequests', 0) as number
+    const paidRequests = get(projectItem, 'paidRequests', 0) as number
+    const limitRequests = paidRequests + requestsLimit
     const predyedColors = get(predyedData, 'getPredyedColors', [])
     const {
       id: designSerialId,
