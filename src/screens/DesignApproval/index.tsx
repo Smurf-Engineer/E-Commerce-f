@@ -40,7 +40,7 @@ import Layout from '../../components/MainLayout'
 import * as designsActions from './actions'
 import * as designsApiActions from './api'
 import AntdTabs from 'antd/lib/tabs'
-import { 
+import {
   QueryProps,
   Font,
   UserType,
@@ -300,7 +300,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (navigator && navigator.serviceWorker) {
       navigator.serviceWorker.addEventListener('message', this.reloadMessages)
     }
-    const { history, user, openLoginAction: openLoginModalAction } = this.props
+    const { history, user, openLoginAction: openLoginModalAction } = this.props
     const userSaved = localStorage.getItem('user')
     if (!user && !userSaved) {
       this.setState({ retryLoad: true })
@@ -308,7 +308,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       return
     }
     const search = get(history, 'location.search', '')
-    const { project, product } = queryString.parse(search)
+    const { project, product } = queryString.parse(search)
     if (!!project && !!product) {
       this.handleEditProject(project, product)
     }
@@ -331,7 +331,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   componentDidUpdate(prevProps: Props) {
     const { data, user } = this.props
     const { data: oldData, user: oldUser } = prevProps
-    const { retryLoad } = this.state
+    const { retryLoad } = this.state
     const oldMessages = get(oldData, 'projectItem.messages', [])
     const newMessages = get(data, 'projectItem.messages', [])
     if (user !== oldUser && retryLoad) {
@@ -345,11 +345,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     }
   }
   handleEditProject = (project?: number, product?: number) => {
-    const { setEditProject } = this.props 
+    const { setEditProject } = this.props
     setEditProject(project, product)
   }
   reloadMessages = async (notification: Notification) => {
-    const { data: notificationData } = notification
+    const { data: notificationData } = notification
     const payload = get(notificationData, 'firebase-messaging-msg-data.data', notificationData)
     const { notification_type } = payload
     if (notification_type === PROJECT_MESSAGE || notification_type === PROJECT_REVIEW) {
@@ -460,7 +460,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     try {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
-      const { id: itemId } = queryParams || {}
+      const { id: itemId } = queryParams || {}
       if (itemId) {
         setSendingAction(true)
         if (parentMessageId) {
@@ -479,6 +479,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               })
               const messagesArray = get(storedData, 'projectItem.messages', [])
               messagesArray.push(responseMessage)
+              const updateRequireIndex = messagesArray.findIndex((e: ProDesignMessage) =>
+                e.id === Number(parentMessageId)
+              )
+              messagesArray[updateRequireIndex].requireAnswer = false
               setTimeout(() => { this.scrollMessages() }, 1000)
               store.writeQuery({
                 query: getProdesignItemQuery,
@@ -542,13 +546,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const projectName = get(data, 'projectItem.project.name', '')
     const search = location ? location.search : ''
     const queryParams = queryString.parse(search)
-    const filteredDesigns = projectDesigns.filter((item: DesignType) => 
+    const filteredDesigns = projectDesigns.filter((item: DesignType) =>
       item.status === CUSTOMER_PREVIEW && item.id !== queryParams.id
     )
     info({
       title: <FullTitle secondary={approved}>
-              {formatMessage(messages[approved ? 'approvedCode' : 'editRequestedTitle'])}
-            </FullTitle>,
+        {formatMessage(messages[approved ? 'approvedCode' : 'editRequestedTitle'])}
+      </FullTitle>,
       icon: ' ',
       width: '470px',
       className: 'centeredButtons',
@@ -561,7 +565,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           <PromptSubtitle>
             {formatMessage(messages[approved ? 'congratulations' : 'editRequestedSubtitle'])}
           </PromptSubtitle>
-          {!approved && 
+          {!approved &&
             <PrompText>
               {formatMessage(messages.editRequestedBody)}
             </PrompText>
@@ -572,7 +576,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 {formatMessage(messages.editsLeft, { amount: filteredDesigns.length })}
               </PromptSubtitle>
               <PromptLink onClick={this.reviewAnother}>
-                  {formatMessage(messages.continueWithReview)}
+                {formatMessage(messages.continueWithReview)}
               </PromptLink>
             </> :
             <PromptLink onClick={approved ? this.goToLocker : this.backToProjects}>
@@ -594,7 +598,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const search = location ? location.search : ''
     const queryParams = queryString.parse(search)
     const projectDesigns = get(data, 'projectItem.project.designs', []) as DesignType[]
-    const nextDesign = projectDesigns.find((item: DesignType) => 
+    const nextDesign = projectDesigns.find((item: DesignType) =>
       item.status === CUSTOMER_PREVIEW && item.id !== queryParams.id
     )
     if (nextDesign && projectDesigns.length > 0) {
@@ -633,14 +637,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         <InfoText
           dangerouslySetInnerHTML={{
             __html: formatMessage(messages.infoApprove)
-        }} />
+          }} />
       )
     })
   }
 
   approveDesign = async () => {
     const {
-      intl: { formatMessage } ,
+      intl: { formatMessage },
       setApproveDesign,
       data,
       setApproveLoading,
@@ -692,7 +696,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   handleAddToCart = () => {
-    const { data } = this.props
+    const { data } = this.props
     const status = get(data, 'projectItem.status', '')
     if (status === CUSTOMER_APPROVED) {
       return true
@@ -740,7 +744,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
   changeDesign = (design: string) => () => {
     if (design) {
-      const { intl: { formatMessage } } = this.props
+      const { intl: { formatMessage } } = this.props
       this.setState({ designToApply: design })
       AntdMessage.success(formatMessage(messages.designApplied))
     }
@@ -837,7 +841,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       predyedlabel,
       modelSize,
       name: productName
-    } = product || {}
+    } = product || {}
 
     const variants = get(dataVariants, 'getVariants', [])
     let modelObj
@@ -847,7 +851,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       modelObj = obj
       modelMtl = mtl
     }
-    const stylesToApply = typeof window !== 'undefined' && 
+    const stylesToApply = typeof window !== 'undefined' &&
       window.innerWidth > 614 ? stylesDraggable : stylesDraggableMobile
     const predyedValue = predyedName || PREDYED_DEFAULT
     const hidePredyed = predyedValue === PREDYED_TRANSPARENT
@@ -933,7 +937,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           break
       }
       return arr
-    // tslint:disable-next-line: align
+      // tslint:disable-next-line: align
     }, [])
     const fileName = file ? getFileWithExtension(file) : ''
     const chatLog = requestMessages.length > 0 ?
@@ -954,7 +958,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           ref={(listMsgs: any) => { this.listMsg = listMsgs }}
         >
           {chatLog.map((
-            { 
+            {
               id,
               message: incomingMessage,
               createdAt: createdMessage,
@@ -965,82 +969,83 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               code: messageCode,
               file: messageFile,
               parentMessageId: parentId,
-            }: ProDesignMessage, 
+            }: ProDesignMessage,
             key: number
-            ) => {
-              const fromSystem = messageType === FROM_ADMIN || messageType === CUSTOMER_APPROVED
-              let codeColor = ORANGE
-              if (messageType === FROM_ADMIN && id !== -1) {
-                codeColor = GRAY_DARK
-              } else if (messageType === CUSTOMER_APPROVED) {
-                codeColor = GREEN_STATUS
-              }
-              return (
-                <IncomingMessage isAdmin={fromSystem} {...{ key }} >
-                  <MessageHeader isAdmin={fromSystem}>
-                    <Initials>
-                      {fromSystem ?
-                        <JakrooLogo src={JakRooLogo} /> : <UserIcon type="user" />
-                      }
-                    </Initials>                        
-                  </MessageHeader>
-                  <InfoDiv isAdmin={fromSystem}>
-                    <MessageBox highlight={chatLog && chatLog.length && highlight}>
-                      {(!!parentId && answer) &&
-                        <ParentText>
-                          {answer.message}
-                        </ParentText>
-                      }
-                      <MessageBody
-                        dangerouslySetInnerHTML={{
-                          __html: messageType === CUSTOMER_APPROVED ? 
-                            formatMessage(messages.congratulationsMessage) :
-                            incomingMessage
-                        }}
-                      />
-                        
-                      {required && 
-                        <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
-                          {formatMessage(messages.required)}
-                        </RequiredText>
-                      }
-                      {!!messageFile &&
-                        <MessageFile onClick={this.openFile(messageFile)}>
-                          <Clip type="paper-clip" />
-                          <FileName>
-                            {getFileWithExtension(messageFile || '')}
-                          </FileName>
-                        </MessageFile>
-                      }
-                      {messageType === NEW_PRODUCT &&
-                        <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
-                      }
-                      {(!!messageCode || messageType === CUSTOMER_APPROVED) &&
-                        <CodeLabel
-                          {...{ codeColor }}
-                          codeColor={designToApply !== designFile ? codeColor : FACEBOOKBLUE}
-                          isAdmin={fromSystem}
-                          onClick={this.changeDesign(designFile)}
-                          secondary={!!designFile}
-                        >
-                          {messageType === CUSTOMER_APPROVED ? formatMessage(messages.approvedCode) : messageCode}
-                        </CodeLabel>
-                      }
-                    </MessageBox>
-                    <DateMessage>
-                      {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
-                    </DateMessage>
-                  </InfoDiv>
-                </IncomingMessage>
-            )}
+          ) => {
+            const fromSystem = messageType === FROM_ADMIN || messageType === CUSTOMER_APPROVED
+            let codeColor = ORANGE
+            if (messageType === FROM_ADMIN && id !== -1) {
+              codeColor = GRAY_DARK
+            } else if (messageType === CUSTOMER_APPROVED) {
+              codeColor = GREEN_STATUS
+            }
+            return (
+              <IncomingMessage isAdmin={fromSystem} {...{ key }} >
+                <MessageHeader isAdmin={fromSystem}>
+                  <Initials>
+                    {fromSystem ?
+                      <JakrooLogo src={JakRooLogo} /> : <UserIcon type="user" />
+                    }
+                  </Initials>
+                </MessageHeader>
+                <InfoDiv isAdmin={fromSystem}>
+                  <MessageBox highlight={chatLog && chatLog.length && highlight}>
+                    {(!!parentId && answer) &&
+                      <ParentText>
+                        {answer.message}
+                      </ParentText>
+                    }
+                    <MessageBody
+                      dangerouslySetInnerHTML={{
+                        __html: messageType === CUSTOMER_APPROVED ?
+                          formatMessage(messages.congratulationsMessage) :
+                          incomingMessage
+                      }}
+                    />
+
+                    {required &&
+                      <RequiredText onClick={this.replyMessage(id, incomingMessage)}>
+                        {formatMessage(messages.required)}
+                      </RequiredText>
+                    }
+                    {!!messageFile &&
+                      <MessageFile onClick={this.openFile(messageFile)}>
+                        <Clip type="paper-clip" />
+                        <FileName>
+                          {getFileWithExtension(messageFile || '')}
+                        </FileName>
+                      </MessageFile>
+                    }
+                    {messageType === NEW_PRODUCT &&
+                      <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
+                    }
+                    {(!!messageCode || messageType === CUSTOMER_APPROVED) &&
+                      <CodeLabel
+                        {...{ codeColor }}
+                        codeColor={designToApply !== designFile ? codeColor : FACEBOOKBLUE}
+                        isAdmin={fromSystem}
+                        onClick={this.changeDesign(designFile)}
+                        secondary={!!designFile}
+                      >
+                        {messageType === CUSTOMER_APPROVED ? formatMessage(messages.approvedCode) : messageCode}
+                      </CodeLabel>
+                    }
+                  </MessageBox>
+                  <DateMessage>
+                    {createdMessage ? moment(createdMessage).format('DD/MM/YYYY HH:mm') : '-'}
+                  </DateMessage>
+                </InfoDiv>
+              </IncomingMessage>
+            )
+          }
           )}
         </ChatMessages>
         <RequestButtons>
           <ApproveButton
             loading={approveLoading}
             disabled={
-              approveLoading || 
-              itemStatus !== CUSTOMER_PREVIEW || 
+              approveLoading ||
+              itemStatus !== CUSTOMER_PREVIEW ||
               (!!designToApply && outputPng !== designToApply)
             }
             onClick={this.handlePromptApprove}
@@ -1066,17 +1071,17 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           }
           <RequestEdit
             disabled={itemStatus !== CUSTOMER_PREVIEW}
-            onClick={requestedEdits >= limitRequests ? 
-              (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
-                this.openPurchaseModal : this.handleOpenRequest) : 
-                this.handleOpenRequest
-              }
+            onClick={requestedEdits >= limitRequests ?
+              (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
+                this.openPurchaseModal : this.handleOpenRequest) :
+              this.handleOpenRequest
+            }
           >
             <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-              {formatMessage(messages[requestedEdits >= limitRequests ? 
-                (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
-                  'purchaseMore' : 'requestEdit') : 
-                  'requestEdit'
+              {formatMessage(messages[requestedEdits >= limitRequests ?
+                (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
+                  'purchaseMore' : 'requestEdit') :
+                'requestEdit'
               ])}
             </RequestText>
             {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
@@ -1121,7 +1126,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           {installedFonts.length ? (
             <GoogleFontLoader fonts={installedFonts} />
           ) : null}
-          {loading && !error && <LoadingContainer><Spin size="large" /></LoadingContainer> }
+          {loading && !error && <LoadingContainer><Spin size="large" /></LoadingContainer>}
           <BlackBarMobile>
             <BackButton onClick={this.goToHome}>
               <LeftArrow type="left-circle" />
@@ -1140,7 +1145,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               <StyledTabs activeKey={selectedKey} onTabClick={this.onTabClickAction}>
                 <TabPane tab={<Tab label={APPROVAL} icon={messageIcon} />} key={APPROVAL}>
                   <TabContent>
-                    {chatComponent}                      
+                    {chatComponent}
                   </TabContent>
                 </TabPane>
                 <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
@@ -1163,7 +1168,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </DesignLabel>
                 </NameLabel>
               }
-              {!!itemStatus && 
+              {!!itemStatus &&
                 <StatusLabel color={statusColor}>
                   {itemLabels[itemStatus] || formatMessage(messages.inDesign)}
                 </StatusLabel>
@@ -1215,8 +1220,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <ApproveButton
                   loading={approveLoading}
                   disabled={
-                    approveLoading || 
-                    itemStatus !== CUSTOMER_PREVIEW || 
+                    approveLoading ||
+                    itemStatus !== CUSTOMER_PREVIEW ||
                     (!!designToApply && outputPng !== designToApply)
                   }
                   onClick={this.handlePromptApprove}
@@ -1225,18 +1230,18 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </ApproveButton>
                 <RequestEdit
                   disabled={itemStatus !== CUSTOMER_PREVIEW}
-                  onClick={requestedEdits >= limitRequests ? 
-                    (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
-                      this.openPurchaseModal : this.handleOpenRequest) : 
-                      this.handleOpenRequest
-                    }
+                  onClick={requestedEdits >= limitRequests ?
+                    (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
+                      this.openPurchaseModal : this.handleOpenRequest) :
+                    this.handleOpenRequest
+                  }
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                  {formatMessage(messages[requestedEdits >= limitRequests ? 
-                    (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ? 
-                      'purchaseMore' : 'requestEdit') : 
+                    {formatMessage(messages[requestedEdits >= limitRequests ?
+                      (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
+                        'purchaseMore' : 'requestEdit') :
                       'requestEdit'
-                  ])}
+                    ])}
                   </RequestText>
                   {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
                 </RequestEdit>
@@ -1292,7 +1297,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             <CollapseWrapper>
               <CollapseMobile
                 defaultActiveKey={chatLog && chatLog.length && highlight ? '1' : ''}
-                accordion={true} 
+                accordion={true}
                 destroyInactivePanel={true}
               >
                 <PanelMobile
@@ -1313,7 +1318,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 >
                   {chatComponent}
                 </PanelMobile>
-                <PanelMobile 
+                <PanelMobile
                   header={
                     <PanelTitle>
                       <PanelIcon src={colorIcon} />
@@ -1333,46 +1338,47 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                   key="3"
                 >
-                  {(!loading && product) && 
+                  {(!loading && product) &&
                     <Products secondary={true}>
                       {projectDesigns.map((
-                        { 
+                        {
                           id,
                           name: nameDesign,
                           image,
                           status: designStatus,
-                          product: { name: nameProduct, pictures = [{ front: ''}] }
-                        }: DesignType, 
+                          product: { name: nameProduct, pictures = [{ front: '' }] }
+                        }: DesignType,
                         index: number) => {
-                          const designReady = 
-                            designStatus === CUSTOMER_APPROVED || designStatus === CUSTOMER_PREVIEW
-                          let colorStatus = null
-                          switch (designStatus) {
-                            case PREFLIGHT_STATUS:
-                              colorStatus = WHITE
-                              break
-                            case CUSTOMER_APPROVED:
-                              colorStatus = GREEN_STATUS
-                              break
-                            case CUSTOMER_PREVIEW:
-                              colorStatus = ORANGE_STATUS
-                              break
-                            default:
-                              colorStatus = BLUE_STATUS
-                              break
-                          }
-                          return (
-                            <ProjectDesign onClick={this.goToDesign(id)} key={index}>
-                              <ProLabel>
-                                <ProStatus backgroundColor={colorStatus}>
-                                  {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
-                                </ProStatus>
-                              </ProLabel>
-                              <DesignImage src={designReady ? image : pictures[0].front} />
-                              <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
-                              <ProductName>{nameProduct}</ProductName>
-                            </ProjectDesign>
-                        )}
+                        const designReady =
+                          designStatus === CUSTOMER_APPROVED || designStatus === CUSTOMER_PREVIEW
+                        let colorStatus = null
+                        switch (designStatus) {
+                          case PREFLIGHT_STATUS:
+                            colorStatus = WHITE
+                            break
+                          case CUSTOMER_APPROVED:
+                            colorStatus = GREEN_STATUS
+                            break
+                          case CUSTOMER_PREVIEW:
+                            colorStatus = ORANGE_STATUS
+                            break
+                          default:
+                            colorStatus = BLUE_STATUS
+                            break
+                        }
+                        return (
+                          <ProjectDesign onClick={this.goToDesign(id)} key={index}>
+                            <ProLabel>
+                              <ProStatus backgroundColor={colorStatus}>
+                                {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
+                              </ProStatus>
+                            </ProLabel>
+                            <DesignImage src={designReady ? image : pictures[0].front} />
+                            <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
+                            <ProductName>{nameProduct}</ProductName>
+                          </ProjectDesign>
+                        )
+                      }
                       )}
                     </Products>
                   }
@@ -1392,46 +1398,47 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {formatMessage(messages.products)}
                 </StyledTitle>
                 <Products>
-                {(!loading && product) && 
+                  {(!loading && product) &&
                     <Products>
                       {projectDesigns.map((
-                        { 
+                        {
                           id,
                           name: nameDesign,
                           image,
                           status: designStatus,
-                          product: { name: nameProduct, pictures = [{ front: ''}] }
-                        }: DesignType, 
+                          product: { name: nameProduct, pictures = [{ front: '' }] }
+                        }: DesignType,
                         index: number) => {
-                          const designReady = 
-                            designStatus === CUSTOMER_APPROVED || designStatus === CUSTOMER_PREVIEW
-                          let colorStatus = null
-                          switch (designStatus) {
-                            case PREFLIGHT_STATUS:
-                              colorStatus = WHITE
-                              break
-                            case CUSTOMER_APPROVED:
-                              colorStatus = GREEN_STATUS
-                              break
-                            case CUSTOMER_PREVIEW:
-                              colorStatus = ORANGE_STATUS
-                              break
-                            default:
-                              colorStatus = BLUE_STATUS
-                              break
-                          }
-                          return (
-                            <ProjectDesign onClick={this.goToDesign(id)} key={index}>
-                              <ProLabel>
-                                <ProStatus backgroundColor={colorStatus}>
-                                  {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
-                                </ProStatus>
-                              </ProLabel>
-                              <DesignImage src={designReady ? image : pictures[0].front} />
-                              <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
-                              <ProductName>{nameProduct}</ProductName>
-                            </ProjectDesign>
-                        )}
+                        const designReady =
+                          designStatus === CUSTOMER_APPROVED || designStatus === CUSTOMER_PREVIEW
+                        let colorStatus = null
+                        switch (designStatus) {
+                          case PREFLIGHT_STATUS:
+                            colorStatus = WHITE
+                            break
+                          case CUSTOMER_APPROVED:
+                            colorStatus = GREEN_STATUS
+                            break
+                          case CUSTOMER_PREVIEW:
+                            colorStatus = ORANGE_STATUS
+                            break
+                          default:
+                            colorStatus = BLUE_STATUS
+                            break
+                        }
+                        return (
+                          <ProjectDesign onClick={this.goToDesign(id)} key={index}>
+                            <ProLabel>
+                              <ProStatus backgroundColor={colorStatus}>
+                                {itemLabels[designStatus] || itemLabels[IN_DESIGN]}
+                              </ProStatus>
+                            </ProLabel>
+                            <DesignImage src={designReady ? image : pictures[0].front} />
+                            <DesignName secondary={!nameDesign}>{nameDesign || 'Pending'}</DesignName>
+                            <ProductName>{nameProduct}</ProductName>
+                          </ProjectDesign>
+                        )
+                      }
                       )}
                     </Products>
                   }
@@ -1464,83 +1471,83 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             />
           </Modal>
           {(itemStatus || project) &&
-          <DraggableModalStyled
-            {...stylesToApply}
-            isOpen={openRequest || !!project}
-            disableResize={true}
-          >
-            <ModalTitle>
-              {!project ? 
-                formatMessage(messages[!!parentMessageId ? 'enterAnswer' : 'enterEditNotes']) :
-                formatMessage(messages.enterDesignInstructions)
-              }</ModalTitle>
-            {!!parentMessageId &&
-              <ParentText>
-                {parentMessage}
-              </ParentText>
-            }
-            {(!parentMessageId && !project) &&
-              <RequestsTitle>
-                <AvailableLabel>
-                  {formatMessage(messages.available)}
-                </AvailableLabel>
-                <AvailableCircle>
-                  {limitRequests - requestedEdits}
-                </AvailableCircle>
-              </RequestsTitle>
-            }
-            <TextAreaStyled
-              value={note}
-              disabled={sendingNote}
-              placeholder={formatMessage(messages[!project ? 'sendCustomerMessage' : 'addNotes'])}
-              onChange={this.handleChangeNote}
-              maxLength={768}
-              autosize={{ minRows: 4, maxRows: 12 }}
-              rows={4}
-            />
-            <ModalSubtitle>{formatMessage(messages.fileQuestion)}</ModalSubtitle>
-            <StyledUpload
-              listType="picture-card"
-              className="avatar-uploader"
-              disabled={uploadingFile}
-              customRequest={this.uploadFile}
-              showUploadList={false}
-              beforeUpload={this.beforeUpload}
+            <DraggableModalStyled
+              {...stylesToApply}
+              isOpen={openRequest || !!project}
+              disableResize={true}
             >
-              <UploadButton>
-                {uploadingFile ? 
-                  <Spin size="small" />
-                  : <>
+              <ModalTitle>
+                {!project ?
+                  formatMessage(messages[!!parentMessageId ? 'enterAnswer' : 'enterEditNotes']) :
+                  formatMessage(messages.enterDesignInstructions)
+                }</ModalTitle>
+              {!!parentMessageId &&
+                <ParentText>
+                  {parentMessage}
+                </ParentText>
+              }
+              {(!parentMessageId && !project) &&
+                <RequestsTitle>
+                  <AvailableLabel>
+                    {formatMessage(messages.available)}
+                  </AvailableLabel>
+                  <AvailableCircle>
+                    {limitRequests - requestedEdits}
+                  </AvailableCircle>
+                </RequestsTitle>
+              }
+              <TextAreaStyled
+                value={note}
+                disabled={sendingNote}
+                placeholder={formatMessage(messages[!project ? 'sendCustomerMessage' : 'addNotes'])}
+                onChange={this.handleChangeNote}
+                maxLength={768}
+                autosize={{ minRows: 4, maxRows: 12 }}
+                rows={4}
+              />
+              <ModalSubtitle>{formatMessage(messages.fileQuestion)}</ModalSubtitle>
+              <StyledUpload
+                listType="picture-card"
+                className="avatar-uploader"
+                disabled={uploadingFile}
+                customRequest={this.uploadFile}
+                showUploadList={false}
+                beforeUpload={this.beforeUpload}
+              >
+                <UploadButton>
+                  {uploadingFile ?
+                    <Spin size="small" />
+                    : <>
                       <StyledIcon type="upload" />
                       {formatMessage(messages.selectFile)}
                     </>
                   }
-              </UploadButton>
-            </StyledUpload>
-            {!!fileName &&
-              <FileLabel>
-                <Clip type="paper-clip" />
-                <FileName>
-                  {fileName}
-                </FileName>
-              </FileLabel>
-            }
-            <ButtonContainer>
-              <CancelButton
-                disabled={sendingNote}
-                onClick={this.handleCloseRequest}
-              >
-                {formatMessage(messages.cancel)}
-              </CancelButton>
-              <SaveButton
-                loading={sendingNote}
-                disabled={!note || sendingNote || (!parentMessageId && note.length < 15)}
-                onClick={this.addMessage}
-              >
-                {formatMessage(messages[!!parentMessageId ? 'reply' : 'send'])}
-              </SaveButton>
-            </ButtonContainer>
-          </DraggableModalStyled>}
+                </UploadButton>
+              </StyledUpload>
+              {!!fileName &&
+                <FileLabel>
+                  <Clip type="paper-clip" />
+                  <FileName>
+                    {fileName}
+                  </FileName>
+                </FileLabel>
+              }
+              <ButtonContainer>
+                <CancelButton
+                  disabled={sendingNote}
+                  onClick={this.handleCloseRequest}
+                >
+                  {formatMessage(messages.cancel)}
+                </CancelButton>
+                <SaveButton
+                  loading={sendingNote}
+                  disabled={!note || sendingNote || (!parentMessageId && note.length < 15)}
+                  onClick={this.addMessage}
+                >
+                  {formatMessage(messages[!!parentMessageId ? 'reply' : 'send'])}
+                </SaveButton>
+              </ButtonContainer>
+            </DraggableModalStyled>}
           <PayModal
             open={openPurchase}
             callback={this.successPurchase}
@@ -1600,7 +1607,7 @@ const DesignsEnhance = compose(
       }
     }
   }),
-  graphql(getEditRequestPrices, {name: 'editRequestData' }),
+  graphql(getEditRequestPrices, { name: 'editRequestData' }),
   graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
   graphql(getPredyedColors, { name: 'predyedData' }),
   graphql(addProductProjectMutation, { name: 'addProductProject' }),
