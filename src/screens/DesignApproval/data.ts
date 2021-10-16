@@ -191,6 +191,7 @@ export const addProMessageMutation = gql`
       code
       file
       design
+      paid
       parentMessageId: parent_message_id
       requireAnswer: require_answer
       userName: user_name
