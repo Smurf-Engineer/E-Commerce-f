@@ -27,7 +27,7 @@ import {
   PricesRow,
   AvailablePrices,
   Description,
-  AvailableLabel,
+  // AvailableLabel,
   HowItFits,
   BuyNowOptions,
   BannerMaterialSection,
@@ -75,7 +75,7 @@ import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
 import ProductInfo from '../../components/ProductInfo'
 import config from '../../config/index'
-import { ProductGenders } from '../ProductDetail/constants'
+// import { ProductGenders } from '../ProductDetail/constants'
 import YotpoSection from '../../components/YotpoSection'
 import { BLUE, GRAY_DARK } from '../../theme/colors'
 import BreadCrumbs from '../../components/BreadCrumbs'
@@ -89,7 +89,7 @@ const MAX_AMOUNT_PRICES = 4
 const teamStoreLabels = ['regularPrice', 'teamPrice']
 const purchaseLabels = ['regularPrice', 'listPrice']
 const resellerLabels = ['purchasePrice', 'listPrice']
-const { Men, Women, Unisex } = ProductGenders
+// const { Men, Women, Unisex } = ProductGenders
 
 interface Data extends QueryProps {
   design: DesignType
@@ -303,18 +303,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           )
       )
 
-    const maleGender = genders.find(x => x.name === Men)
-    const femaleGender = genders.find(x => x.name === Women)
-    const unisexGender = genders.find(x => x.name === Unisex)
+    // const maleGender = genders.find(x => x.name === Men)
+    // const femaleGender = genders.find(x => x.name === Women)
+    // const unisexGender = genders.find(x => x.name === Unisex)
 
-    let genderMessage = messages.maleGenderLabel
-    if (unisexGender) {
-      genderMessage = messages.unisexGenderLabel
-    } else if (femaleGender) {
-      genderMessage = maleGender
-        ? messages.unisexGenderLabel
-        : messages.femaleGenderLabel
-    }
+    // let genderMessage = messages.maleGenderLabel
+    // if (unisexGender) {
+    //   genderMessage = messages.unisexGenderLabel
+    // } else if (femaleGender) {
+    //   genderMessage = maleGender
+    //     ? messages.unisexGenderLabel
+    //     : messages.femaleGenderLabel
+    // }
 
     const availableGenders = genders.map(
       ({ id, name: genderName }: SelectedType, key: number) => (
@@ -643,7 +643,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   {...{ rating, totalReviews }}
                 />
                 <Description>{description}</Description>
-                <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
+                {/* <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel> */}
                 <BannerMaterialSection>
                   {bannerMaterials.map((banner: ProductFile) => (
                     <BannerMaterial src={banner.url} />
