@@ -162,7 +162,9 @@ import {
   UploadButton,
   UserIcon,
   VariantButton,
-  Variants
+  Variants,
+  FileContainer,
+  DeleteFile
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -244,7 +246,7 @@ interface Props extends RouteComponentProps<any> {
   user: UserType
   openRequest: boolean
   note: string
-  file: string
+  file: [string]
   sendingNote: boolean
   history: History
   currentCurrency: string
@@ -277,6 +279,7 @@ interface Props extends RouteComponentProps<any> {
   uploadFileAction: (file: UploadFile) => void
   restoreUserSessionAction: (client: any) => void
   setOpenModal: (open: boolean) => void
+  deleteFileAction: (file: string) => void
 }
 
 export class DesignApproval extends React.Component<Props, StateProps> {
@@ -468,7 +471,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             variables: {
               itemId,
               message: note,
-              file,
+              file: JSON.stringify(file),
               parentMessageId
             },
             update: (store: any, responseData: ProDesignMessage) => {
@@ -786,7 +789,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       uploadingFile,
       file,
       sendingNote,
-      intl
+      intl,
+      deleteFileAction
     } = this.props
     const { formatMessage } = intl
     const {
@@ -939,7 +943,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       return arr
       // tslint:disable-next-line: align
     }, [])
-    const fileName = file ? getFileWithExtension(file) : ''
+    console.log('file = ', file)
+    const fileNames = file && file.length ? file.map(e => getFileWithExtension(e)) : []
     const chatLog = requestMessages.length > 0 ?
       requestMessages :
       [{
@@ -979,6 +984,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             } else if (messageType === CUSTOMER_APPROVED) {
               codeColor = GREEN_STATUS
             }
+
+            let files = []
+            if (!!messageFile) {
+              try {
+                files = JSON.parse(messageFile)
+              } catch (e) {
+                files.push(messageFile)
+              }
+            }
+
             return (
               <IncomingMessage isAdmin={fromSystem} {...{ key }} >
                 <MessageHeader isAdmin={fromSystem}>
@@ -1008,14 +1023,14 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                         {formatMessage(messages.required)}
                       </RequiredText>
                     }
-                    {!!messageFile &&
-                      <MessageFile onClick={this.openFile(messageFile)}>
+                    {files.map((fileString: string, index: number) =>
+                      <MessageFile onClick={this.openFile(fileString)} key={index}>
                         <Clip type="paper-clip" />
                         <FileName>
-                          {getFileWithExtension(messageFile || '')}
+                          {getFileWithExtension(fileString || '')}
                         </FileName>
                       </MessageFile>
-                    }
+                    )}
                     {messageType === NEW_PRODUCT &&
                       <TypeLabel>{formatMessage(messages.newDesign)}</TypeLabel>
                     }
@@ -1509,7 +1524,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               <StyledUpload
                 listType="picture-card"
                 className="avatar-uploader"
-                disabled={uploadingFile}
+                disabled={uploadingFile || (file && file.length === 5)}
                 customRequest={this.uploadFile}
                 showUploadList={false}
                 beforeUpload={this.beforeUpload}
@@ -1524,14 +1539,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                 </UploadButton>
               </StyledUpload>
-              {!!fileName &&
-                <FileLabel>
-                  <Clip type="paper-clip" />
-                  <FileName>
-                    {fileName}
-                  </FileName>
-                </FileLabel>
-              }
+              <FileContainer>
+                {file && file.length ?
+                  file.map((e, i) => (
+                    <FileLabel>
+                      <Clip type="paper-clip" />
+                      <FileName>
+                        {fileNames[i]}
+                      </FileName>
+                      <DeleteFile type="delete" onClick={() => deleteFileAction(e)} />
+                    </FileLabel>
+                  ))
+                  : null
+                }
+              </FileContainer>
               <ButtonContainer>
                 <CancelButton
                   disabled={sendingNote}

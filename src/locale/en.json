@@ -83,7 +83,7 @@
   "screens.DesignApproval.approve": "Approve",
   "screens.DesignApproval.colors": "Color Specs",
   "screens.DesignApproval.back": "Back to Project",
-  "screens.DesignApproval.selectFile": "Select File",
+  "screens.DesignApproval.selectFile": "Select File(s)",
   "screens.DesignApproval.reply": "Reply",
   "screens.DesignApproval.sizeError": "File must be smaller than 20MB!",
   "screens.DesignApproval.fileQuestion": "Do you have a file you would like to include with your notes?",
