@@ -33,6 +33,7 @@ import ProductInfo from '../../components/ProductInfo'
 import { QueryProps, Product, PriceRange } from '../../types/common'
 import { QuickViewQuery } from './data'
 import config from '../../config/index'
+import { onlyPro } from '../../constants'
 
 interface State {
   showDescription: boolean
@@ -262,10 +263,33 @@ export class QuickView extends React.Component<Props, State> {
     })
   }
 
+  goToProDesign = () => {
+    const {
+      history,
+      data: { product }
+    } = this.props
+    const productObj = {
+      ...product,
+      type: product.name,
+      description: product.shortDescription
+    }
+    history.push({
+      pathname: `/pro-design`,
+      state: {
+        product: productObj
+      }
+    })
+  }
+
   gotoCustomize = () => {
-    const { history, handleClose, productId } = this.props
+    const { history, handleClose, productId, data } = this.props
     handleClose()
-    history.push(`/design-center?id=${productId}`)
+    const product = get(data, 'product', '')
+    if (product && onlyPro[productId]) {
+      this.goToProDesign()
+    } else {
+      history.push(`/design-center?id=${productId}`)
+    }
   }
 
   gotoProductPage = () => {

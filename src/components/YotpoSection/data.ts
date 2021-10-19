@@ -5,6 +5,18 @@ export const getRelatedProducts = gql`
     products: getRelatedProducts(id: $productId, relatedTag: $relatedItemTag) {
       id
       type: name
+      code
+      name
+      mpn
+      chart
+      flatlock
+      category_id
+      title
+      branding
+      gender_id
+      retail_version
+      details
+      active
       description: short_description
       images: pictures {
         front: front_image

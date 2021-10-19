@@ -8,7 +8,7 @@ import Modal from 'antd/lib/modal'
 import { isPhoneNumber } from '../../../utils/utilsFiles'
 import moment, { Moment } from 'moment'
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import { DATE_FORMAT_STARTING_YEAR } from '../../../constants'
+import { DATE_FORMAT_STARTING_YEAR, onlyPro } from '../../../constants'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
   Container,
@@ -128,7 +128,7 @@ export class Notifications extends React.Component<Props, {}> {
 
   handleOnSelectTeamSize = (size: string) => {
     const { onSelectTeamSize, formatMessage, history, mainProduct } = this.props
-    if (size === '1') {
+    if (size === '1' && mainProduct && !onlyPro[mainProduct]) {
       confirm({
         title: formatMessage(messages.information),
         okText: formatMessage(messages.designLab),

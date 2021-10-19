@@ -12,10 +12,13 @@ import {
   EditButton,
   DeleteButton,
   DocIcon,
+  LogoImage,
 } from './styledComponents'
 import { ImageFile, Message } from '../../../../types/common'
-import { getFileNameFromUrl } from '../../../../utils/utilsFiles'
-import { DOCX_TYPE, DOC_TYPE, PDF_TYPE, ZIP_TYPE } from '../../../../constants'
+import aiLogo from '../../../../assets/ailogo.png'
+import epsLogo from '../../../../assets/epslogo.png'
+import { getFileExtension, getFileNameFromUrl } from '../../../../utils/utilsFiles'
+import { DOCX_TYPE, DOC_TYPE, PDF_TYPE, POSTSCRIPT_TYPE, ZIP_TYPE } from '../../../../constants'
 
 const docTypes = [DOC_TYPE, ZIP_TYPE, DOCX_TYPE, PDF_TYPE]
 
@@ -38,10 +41,13 @@ const ImageList = ({
         const { fileUrl, id, name, type } = file
         const handleDeleteItem = () => deleteImage(id)
         const handleOpenRename = () => onOpenRenameModal(true, id)
+        const extension = getFileExtension(fileUrl)
         return (
           <ImageContainer key={index}>
             {docTypes.includes(type) ?
-              <DocIcon type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> : <Image src={fileUrl} />
+              <DocIcon type={type === ZIP_TYPE ? 'file-zip' : 'file'} /> : 
+              (type === POSTSCRIPT_TYPE ?
+                <LogoImage src={extension === '.ai' ? aiLogo : epsLogo} /> : <Image src={fileUrl} />)
             }
             <ImageText>{name || getFileNameFromUrl(fileUrl)}</ImageText>
             <ActionButtons>

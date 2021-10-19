@@ -161,8 +161,11 @@ export const doubleSideMeshes = {
   'FINAL ELEMENT front_zip1' : true,
   'FINAL ELEMENT front_zip2' : true,
   'FINAL ELEMENT right_zip_pocket' : true,
-  'FINAL ELEMENT left_zip_pocket' : true,
+  'FINAL ELEMENT left_zip_pocket' : true
+}
 
+export const onlyPro = {
+  322: true
 }
 
 export const blackProducts = {
@@ -194,6 +197,7 @@ export const DOC_TYPE = 'application/msword' // .doc
 export const ZIP_TYPE = 'application/zip' // .zip
 export const DOCX_TYPE = 'application/application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
 export const PDF_TYPE = 'application/pdf' // .pdf
+export const POSTSCRIPT_TYPE = 'application/postscript' // .eps, .ai
 
 // BASE 64 Images
 // tslint:disable-next-line: max-line-length
