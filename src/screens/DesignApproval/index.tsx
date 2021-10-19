@@ -943,7 +943,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       return arr
       // tslint:disable-next-line: align
     }, [])
-    console.log('file = ', file)
+
     const fileNames = file && file.length ? file.map(e => getFileWithExtension(e)) : []
     const chatLog = requestMessages.length > 0 ?
       requestMessages :
