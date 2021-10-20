@@ -29,6 +29,26 @@ export default defineMessages({
     id: 'screens.DesignApproval.designApplied',
     defaultMessage: 'Design applied'
   },
+  paid: {
+    id: 'screens.DesignApproval.paid',
+    defaultMessage: 'PAID'
+  },
+  free: {
+    id: 'screens.DesignApproval.free',
+    defaultMessage: 'FREE'
+  },
+  designEdits: {
+    id: 'screens.DesignApproval.designEdits',
+    defaultMessage: 'Design Edits'
+  },
+  used: {
+    id: 'screens.DesignApproval.used',
+    defaultMessage: 'Used'
+  },
+  availableOnly: {
+    id: 'screens.DesignApproval.availableOnly',
+    defaultMessage: 'Available'
+  },
   editAutoMessage: {
     id: 'screens.DesignApproval.editAutoMessage',
     // tslint:disable-next-line: max-line-length

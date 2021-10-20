@@ -418,7 +418,7 @@ export const RequestButtons = styled.div`
   justify-content: center;
   align-items: center;
   @media (min-width: 1024px) {
-    z-index: 999;
+    z-index: 8;
     position: fixed;
     bottom: 75px;
     max-width: 371px;
@@ -427,6 +427,21 @@ export const RequestButtons = styled.div`
   @media (max-width: 1023px) {
     display: none;
   }
+`
+
+export const PaidLabel = styled.div`
+  background: ${({ secondary }: RowProps) => secondary ? '#9dd95b' : '#55c2eb'};
+  color: ${WHITE};
+  align-self: flex-start;
+  padding: 2px 8px;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 3px;
+  word-break: keep-all;
+  transition: all .2s;
+  max-width: 47px;
+  width: 100%;
 `
 
 export const MobileRequestButtons = styled.div`
@@ -1109,7 +1124,6 @@ export const CodeLabel = styled.div`
       color: ${GRAY_DARK};
     }
   `};
-  
 `
 
 export const CodeColor = styled.div`
@@ -1237,6 +1251,69 @@ export const QuickView = styled.img`
 export const InfoText = styled.div`
   margin-left: -38px;
   margin-bottom: 4px;
+`
+
+export const EditSquares = styled.div`
+  display: flex;
+  flex-flow: column;
+  animation: fade-in-left 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-left {
+    0% {
+      transform: translateX(-10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+`
+
+export const EditTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 10px;
+`
+
+export const Squares = styled.div`
+  display: flex;
+`
+
+export const EditSquareDiv = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+`
+
+export const UsedSquare = styled.div`
+  width: 32px;
+  height: 32px;
+  font-weight: bold;
+  color: white;
+  background: #55c2eb;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const AvailableSquare = styled.div`
+  width: 32px;
+  height: 32px;
+  font-weight: bold;
+  color: #464646;
+  background: ${({ secondary }: RowProps) => secondary ? '#f9c2c2' : '#e1e1e1'};
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const LabelSquare = styled.div`
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: bold;
 `
 
 export const ButtonWrapper = styled.div`
