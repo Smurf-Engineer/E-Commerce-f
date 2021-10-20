@@ -23,7 +23,9 @@ import {
   DiscountAmout,
   CouponName,
   InvoiceLink,
-  InvoiceIcon
+  InvoiceIcon,
+  TaxDiv,
+  PercentDiv
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
@@ -104,8 +106,12 @@ export class OrderSummary extends React.Component<Props, {}> {
       !!proDesignReview ||
       !!taxFee ||
       !!shippingTotal ||
+      !!upgrades ||
+      !!variables ||
       (!onlyRead && discount > 0)
-
+    const realDiscount = discount > subtotal ? subtotal : discount
+    const taxPercent = taxFee > 0 ? 
+      taxFee / (shippingTotal + upgrades + variables + proDesignReview + subtotal - realDiscount) : 0
     return (
       <Container>
         {invoiceLink &&
@@ -136,16 +142,16 @@ export class OrderSummary extends React.Component<Props, {}> {
           <FormattedMessage {...messages.subtotal} />
           <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
         </OrderItem>
-        <OrderItem hide={!upgrades} secondary={true}>
-          <FormattedMessage {...messages.upgrades} />
-          <div>{`${symbol} ${upgrades.toFixed(2)}`}</div>
-        </OrderItem>
-        <OrderItem hide={!variables}>
-          <FormattedMessage {...messages.variables} />
-          <div>{`${symbol} ${variables.toFixed(2)}`}</div>
-        </OrderItem>
         <CalculationsWrapper>
           <Divider withMargin={amountsDivider} />
+          <OrderItem hide={!upgrades} secondary={true}>
+            <FormattedMessage {...messages.upgrades} />
+            <div>{`${symbol} ${upgrades.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!variables}>
+            <FormattedMessage {...messages.variables} />
+            <div>{`${symbol} ${variables.toFixed(2)}`}</div>
+          </OrderItem>
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
@@ -182,7 +188,12 @@ export class OrderSummary extends React.Component<Props, {}> {
           </OrderItem>
           {/* taxes */}
           <OrderItem hide={!taxFee}>
-            <FormattedMessage {...messages.taxes} />
+            <TaxDiv>
+              <FormattedMessage {...messages.taxes} />
+              <PercentDiv>
+                ({(taxPercent * 100).toFixed(2)}%)
+              </PercentDiv>
+            </TaxDiv>
             <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
           </OrderItem>
           <OrderItem hide={!taxGst}>

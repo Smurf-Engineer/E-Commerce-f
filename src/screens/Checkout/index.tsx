@@ -545,7 +545,7 @@ class Checkout extends React.Component<Props, {}> {
                 shipAddressCountry={shippingAddress.country}
                 formatMessage={intl.formatMessage}
                 currencySymbol={symbol}
-                totalWithoutDiscount={totalWithoutDiscount + proDesignReview}
+                totalWithoutDiscount={totalWithoutDiscount}
                 onPaypalSuccess={this.onPaypalSuccess}
                 onPaypalCancel={this.onPaypalCancel}
                 onPaypalError={this.onPaypalError}

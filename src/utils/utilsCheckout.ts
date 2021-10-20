@@ -88,7 +88,7 @@ export const getTaxesAndDiscount = (
           // PST = (subtotal + proDesignReview - discountAmount) * pstRate%
           taxGst = (subtotal + proDesignFee + upgrades + variables + shippingTotal - realDiscount) * 
                     (taxRates.rateGst / 100)
-          taxPst = (subtotal + proDesignFee + upgrades + variables - realDiscount) * 
+          taxPst = (subtotal + proDesignFee + upgrades + variables + shippingTotal - realDiscount) * 
                     (taxRates.ratePst / 100) // calculate tax
           taxGst = roundTaxes(taxGst) // round to 2 decimals
           taxPst = roundTaxes(taxPst) // round to 2 decimals

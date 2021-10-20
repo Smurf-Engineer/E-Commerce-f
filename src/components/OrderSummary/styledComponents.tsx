@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, BLUE, GRAY_LIGHT, GRAY_DARK, RED, GREEN } from '../../theme/colors'
+import { WHITE, BLUE, GRAY_LIGHT, GRAY_DARK, RED, GREEN, GRAY_SOFT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
 interface TotalProps {
@@ -82,6 +82,20 @@ export const OrderItem = styled.div`
 export const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
+`
+
+export const TaxDiv = styled.div`
+  display: flex;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  color: ${GRAY_DARK};
+`
+
+export const PercentDiv = styled.div`
+  margin-left: 10px;
+  color: ${GRAY_SOFT};
+  font-size: 14px;
 `
 
 export const DeleteLabel = styled.div`
