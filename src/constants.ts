@@ -165,7 +165,7 @@ export const doubleSideMeshes = {
 }
 
 export const onlyPro = {
-  7: true
+  322: true
 }
 
 export const blackProducts = {
