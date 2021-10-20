@@ -166,8 +166,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handleOnPressCustomize = () => {
-    const { onPressCustomize, id, product } = this.props
-    if (onlyPro[id]) {
+    const { onPressCustomize, id, product, myLockerList, isStoreThumbnail } = this.props
+    if (onlyPro[id] && !myLockerList && !isStoreThumbnail) {
       this.goToProDesign(product)
     } else {
       onPressCustomize(id)
