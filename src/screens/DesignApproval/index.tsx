@@ -164,7 +164,15 @@ import {
   VariantButton,
   Variants,
   FileContainer,
-  DeleteFile
+  DeleteFile,
+  EditSquares,
+  EditTitle,
+  Squares,
+  EditSquareDiv,
+  UsedSquare,
+  LabelSquare,
+  AvailableSquare,
+  PaidLabel
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -970,6 +978,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               type: messageType,
               requireAnswer: required,
               answer,
+              paid,
               design: designFile,
               code: messageCode,
               file: messageFile,
@@ -1044,6 +1053,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       >
                         {messageType === CUSTOMER_APPROVED ? formatMessage(messages.approvedCode) : messageCode}
                       </CodeLabel>
+                    }
+                    {messageType === EDIT &&
+                      <PaidLabel secondary={paid}>
+                        {formatMessage(messages[paid ? 'paid' : 'free'])}
+                      </PaidLabel>
                     }
                   </MessageBox>
                   <DateMessage>
@@ -1200,6 +1214,29 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <ModelTitle>{productName}</ModelTitle>
                   <QuickView onClick={this.handleOpenQuickView} src={quickView} />
                 </RowTitle>
+                {!!itemStatus && projectItemId && !loading &&
+                  <EditSquares>
+                    <EditTitle>{formatMessage(messages.designEdits)}</EditTitle>
+                    <Squares>
+                      <EditSquareDiv>
+                        <UsedSquare>
+                          {requestedEdits}
+                        </UsedSquare>
+                        <LabelSquare>
+                          {formatMessage(messages.used)}
+                        </LabelSquare>
+                      </EditSquareDiv>
+                      <EditSquareDiv>
+                        <AvailableSquare secondary={(limitRequests - requestedEdits) <= 0}>
+                          {limitRequests - requestedEdits}
+                        </AvailableSquare>
+                        <LabelSquare>
+                          {formatMessage(messages.availableOnly)}
+                        </LabelSquare>
+                      </EditSquareDiv>
+                    </Squares>
+                  </EditSquares>
+                }
               </ButtonsContainer>
               {variants.length > 1 && (
                 <Variants secondary={itemStatus !== PREFLIGHT_STATUS && !!designId}>

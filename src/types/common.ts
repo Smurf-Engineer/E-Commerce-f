@@ -144,6 +144,7 @@ export type ProDesignMessage = {
   file?: string
   code?: string
   design?: string
+  paid?: boolean
   requireAnswer?: boolean
   answer?: ProDesignMessage
   parentMessageId?: number
