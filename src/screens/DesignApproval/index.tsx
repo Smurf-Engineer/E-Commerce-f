@@ -507,7 +507,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             variables: {
               itemId,
               message: note,
-              file,
+              file: JSON.stringify(file),
               parentMessageId
             },
             refetchQueries: [{
@@ -535,7 +535,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             project,
             product,
             message: note,
-            file
+            file: JSON.stringify(file)
           }
         })
         const responseId = get(response, 'data.addProductProject.shortId', '')
