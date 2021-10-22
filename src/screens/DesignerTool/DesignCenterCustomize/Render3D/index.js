@@ -55,6 +55,7 @@ import {
 import logo from '../../../../assets/jakroo_logo.svg'
 import { LoadScripts } from '../../../../utils/scriptLoader'
 import { threeDScripts } from '../../../../utils/scripts'
+import { WHITE } from '../../../../theme/colors'
 
 const NONE = -1
 
@@ -154,7 +155,8 @@ class Render3D extends PureComponent {
     renderer.setPixelRatio(devicePixelRatio)
     renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
-
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
     /* Camera */
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
@@ -174,10 +176,69 @@ class Render3D extends PureComponent {
       0xffffff,
       DIRECTIONAL_LIGHT_INTENSITY
     )
-    directionalLight.position.copy(camera.position)
-
+    const cameraPosition = {
+      x: 0,
+      y: 100,
+      z: 0
+    }
+    directionalLight.position.copy(cameraPosition)
+    const leftLight = { x: -100, y: 70, z: 64 }
+    const leftDirectionLight = new THREE.DirectionalLight(
+      new THREE.Color('rgb(240,255,255)'),
+      0.3
+    )
+    leftDirectionLight.position.copy(leftLight)
+    const rightLight = { x: 100, y: 84, z: 51 }
+    const rightDirectionLight = new THREE.DirectionalLight(
+      new THREE.Color('rgb(240,255,255)'),
+      0.3
+    )
+    rightDirectionLight.position.copy(rightLight)
+    const backLight = { x: 0, y: 118, z: -75 }
+    const backDirectionLight = new THREE.DirectionalLight(
+      new THREE.Color('rgb(201, 226, 255)'),
+      0.4
+    )
+    backDirectionLight.position.copy(backLight)
     scene.add(camera)
     scene.add(ambient)
+    // scene.add(directionalLight)
+    scene.add(rightDirectionLight)
+    scene.add(leftDirectionLight)
+    scene.add(backDirectionLight)
+
+    directionalLight.castShadow = true;
+    directionalLight.shadowDarkness = 1;
+    directionalLight.shadow.darkness = 1;
+    directionalLight.shadowCameraVisible = true;
+    directionalLight.shadow.camera.visible = true;
+    directionalLight.shadow.camera.near = 60;
+    directionalLight.shadow.camera.far = 135;
+    directionalLight.shadow.camera.right = 25;
+    directionalLight.shadow.camera.left = - 25;
+    directionalLight.shadow.camera.top = 25;
+    directionalLight.shadow.camera.bottom = - 25;
+    directionalLight.shadow.mapSize.width = 28;
+    directionalLight.shadow.mapSize.height = 28;
+
+    const geometry = new THREE.PlaneGeometry(10, 10);
+    const material = new THREE.ShadowMaterial({
+      side: THREE.BackSide,
+      opacity: 0.4,
+      color: 0xaaaaaa
+    });
+
+    const ground = new THREE.Mesh(geometry, material);
+    ground.scale.multiplyScalar(5);
+    ground.rotateX(Math.PI / 2);
+    ground.position.y = -30;
+    ground.castShadow = false;
+    ground.receiveShadow = true;
+
+    // const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+    // scene.add(cameraHelper)
+
+    scene.add(ground);
     scene.add(directionalLight)
 
     /* Loaders */
@@ -461,7 +522,7 @@ class Render3D extends PureComponent {
           // Back material
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
-            color: '#000000'
+            color: WHITE
           })
           // Setup the texture layers
           const areasLayers = areas.map(() =>
@@ -636,7 +697,7 @@ class Render3D extends PureComponent {
   }
 
   lightUpdate = () => {
-    this.directionalLight.position.copy(this.camera.position)
+    // this.directionalLight.position.copy(this.camera.position)
   }
 
   cameraUpdate = ({ x, y, z }) => {

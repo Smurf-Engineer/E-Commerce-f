@@ -91,6 +91,8 @@ class Render3D extends PureComponent {
       renderer.setPixelRatio(window.devicePixelRatio)
       renderer.setClearColor(0x000000, 0)
       renderer.setSize(clientWidth, clientHeight)
+      renderer.shadowMap.enabled = true
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap
       /* Camera */
       const camera = new THREE.PerspectiveCamera(
         25,
@@ -114,10 +116,69 @@ class Render3D extends PureComponent {
         0xffffff,
         DIRECTIONAL_LIGHT_INTENSITY
       )
-      directionalLight.position.copy(camera.position)
-
+      const cameraPosition = {
+        x: 0,
+        y: 100,
+        z: 0
+      }
+      directionalLight.position.copy(cameraPosition)
+      const leftLight = { x: -100, y: 70, z: 64 }
+      const leftDirectionLight = new THREE.DirectionalLight(
+        new THREE.Color('rgb(240,255,255)'),
+        0.3
+      )
+      leftDirectionLight.position.copy(leftLight)
+      const rightLight = { x: 100, y: 84, z: 51 }
+      const rightDirectionLight = new THREE.DirectionalLight(
+        new THREE.Color('rgb(240,255,255)'),
+        0.3
+      )
+      rightDirectionLight.position.copy(rightLight)
+      const backLight = { x: 0, y: 118, z: -75 }
+      const backDirectionLight = new THREE.DirectionalLight(
+        new THREE.Color('rgb(201, 226, 255)'),
+        0.4
+      )
+      backDirectionLight.position.copy(backLight)
       scene.add(camera)
       scene.add(ambient)
+      // scene.add(directionalLight)
+      scene.add(rightDirectionLight)
+      scene.add(leftDirectionLight)
+      scene.add(backDirectionLight)
+
+      directionalLight.castShadow = true;
+      directionalLight.shadowDarkness = 1;
+      directionalLight.shadow.darkness = 1;
+      directionalLight.shadowCameraVisible = true;
+      directionalLight.shadow.camera.visible = true;
+      directionalLight.shadow.camera.near = 60;
+      directionalLight.shadow.camera.far = 135;
+      directionalLight.shadow.camera.right = 25;
+      directionalLight.shadow.camera.left = - 25;
+      directionalLight.shadow.camera.top = 25;
+      directionalLight.shadow.camera.bottom = - 25;
+      directionalLight.shadow.mapSize.width = 28;
+      directionalLight.shadow.mapSize.height = 28;
+
+      const geometry = new THREE.PlaneGeometry(10, 10);
+      const material = new THREE.ShadowMaterial({
+        side: THREE.BackSide,
+        opacity: 0.4,
+        color: 0xaaaaaa
+      });
+
+      const ground = new THREE.Mesh(geometry, material);
+      ground.scale.multiplyScalar(5);
+      ground.rotateX(Math.PI / 2);
+      ground.position.y = -30;
+      ground.castShadow = false;
+      ground.receiveShadow = true;
+
+      // const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+      // scene.add(cameraHelper)
+
+      scene.add(ground);
       scene.add(directionalLight)
 
       this.scene = scene
@@ -125,6 +186,7 @@ class Render3D extends PureComponent {
       this.renderer = renderer
       this.controls = controls
       this.directionalLight = directionalLight
+      this.environmentLight = ambient
 
       this.container.appendChild(this.renderer.domElement)
 
@@ -150,7 +212,8 @@ class Render3D extends PureComponent {
       colorAccessories,
       product: newProduct,
       modelMtl,
-      hidePredyed: newPredyed
+      hidePredyed: newPredyed,
+      light: newLight
     } = nextProps
     const {
       product,
@@ -160,7 +223,8 @@ class Render3D extends PureComponent {
       data: { design: oldDesign = {} } = {},
       actualImage: oldImage = '',
       colorAccessories: oldColorAccessories,
-      hidePredyed
+      hidePredyed,
+      light: oldLight
     } = this.props
     const { firstLoad } = this.state
     const imageChanged = !isEqual(actualImage, oldImage)
@@ -193,6 +257,9 @@ class Render3D extends PureComponent {
           this.renderModel(design, actualImage, colorAccessories, imageChanged)
         }, 100)
       }
+    }
+    if (oldLight !== newLight) {
+      this.setAmbientLight(newLight)
     }
   }
 
@@ -330,6 +397,12 @@ class Render3D extends PureComponent {
     }
   }
 
+  setAmbientLight = (light) => {
+    if (this.environmentLight) {
+      this.environmentLight.color.set(light ? new THREE.Color(light) : 0xffffff)
+    }
+  }
+
   onError = (xhr) => console.error('Error: ' + xhr)
 
   start = () => {
@@ -354,7 +427,7 @@ class Render3D extends PureComponent {
     if (showDragmessage) {
       this.setState({ showDragmessage: false })
     }
-    this.directionalLight.position.copy(this.camera.position)
+    // this.directionalLight.position.copy(this.camera.position)
   }
 
   render() {
@@ -542,7 +615,7 @@ class Render3D extends PureComponent {
             /* Inside material */
             const insideMaterial = new THREE.MeshPhongMaterial({
               side: THREE.BackSide,
-              color: BLACK
+              color: WHITE
             })
             const bumpMapObj = textureLoader.load(bumpMap)
 
@@ -739,7 +812,7 @@ class Render3D extends PureComponent {
           /* Inside material */
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
-            color: BLACK
+            color: WHITE
           })
 
           const frontMaterial = new THREE.MeshPhongMaterial({

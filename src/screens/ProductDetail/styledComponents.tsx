@@ -19,7 +19,8 @@ import {
   BLUE_SKY,
   GREEN_STATUS,
   BLACK_3D_LIGHT,
-  BLACK_3D_DARK
+  BLACK_3D_DARK,
+  GRAY_LIGHTEST
 } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
@@ -166,8 +167,44 @@ export const StyledLink = styled.a`
   }
 `
 
+export const ColorButtons = styled.div`
+  display: flex;
+  flex-flow: column;
+  position: absolute;
+  left: 25px;
+  top: 20px;
+  z-index: 3;
+  animation: fade-in-left 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
+  @keyframes fade-in-left {
+    0% {
+      transform: translateX(-7px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+`
+
+export const ToneButton = styled.img`
+  object-fit: contain;
+  height: 27px;
+  width: 27px;
+  background: ${({ selected }: StyledProps) => selected ? GRAY_LIGHTEST : WHITE};
+  padding: 5px;
+  margin-bottom: 8px;
+  border-radius: 25px;
+  box-shadow: ${({ selected }: StyledProps) => selected ? 'unset' : `0px 2px 3px -1px ${GRAY_DARK}`};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
 export const ModelContainer = styled.div`
-  background: ${BLACK_3D_DARK};
+  background: linear-gradient(90deg, transparent, #e9e9e9, transparent);
   display: flex;
   justify-content: space-around;
   align-items: center;
