@@ -51,7 +51,9 @@ import {
   layoutStyle,
   LoadingContainer,
   SizeChart,
-  InfoTag
+  InfoTag,
+  ColorButtons,
+  ToneButton
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -66,6 +68,9 @@ import {
   BreadRoute, IProfileSettings
 } from '../../types/common'
 import sizeChartSvg from '../../assets/sizechart.svg'
+import sunny from '../../assets/sunny.png'
+import cloudy from '../../assets/cloudy.png'
+import moon from '../../assets/moonlight.png'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
 import ImagesSlider from '../../components/ImageSlider'
@@ -131,6 +136,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class CustomProductDetail extends React.Component<Props, {}> {
+  state = {
+    tone: ''
+  }
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     this.handleSetLoading(false)
@@ -139,6 +147,21 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
+  }
+
+  setTone = (evt: React.MouseEvent) => {
+    if (evt) {
+      evt.stopPropagation()
+      const { currentTarget: { id } } = evt
+      if (id) {
+        const { tone } = this.state
+        if (tone === id) {
+          this.setState({ tone: '' })
+        } else {
+          this.setState({ tone: id })
+        }
+      }
+    }
   }
 
   render() {
@@ -245,6 +268,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       infoFlag,
       infoMessage
     } = product
+    const { tone } = this.state
     const totalReviews = get(yotpoAverageScore, 'total', 0)
     const rating = get(yotpoAverageScore, 'averageScore', 0)
     const genderId = selectedGender ? selectedGender.id : 0
@@ -572,12 +596,33 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             <Content>
               <ImagePreview>
                 <RenderContainer>
+                  <ColorButtons>
+                    <ToneButton
+                      selected={tone === 'rgb(255, 255, 206)'}
+                      id="rgb(255, 255, 206)"
+                      onClick={this.setTone}
+                      src={sunny} 
+                    />
+                    <ToneButton
+                      selected={tone === 'rgb(158, 192, 247)'}
+                      id="rgb(158, 192, 247)"
+                      onClick={this.setTone}
+                      src={cloudy}  
+                    />
+                    <ToneButton
+                      selected={tone === 'rgb(120, 126, 138)'}
+                      id="rgb(120, 126, 138)"
+                      onClick={this.setTone}
+                      src={moon} 
+                    />
+                  </ColorButtons>
                   <Render3D
                     customProduct={true}
                     textColor="white"
                     hidePredyed={predyedName === PREDYED_TRANSPARENT}
                     {...{ designId, modelSize }}
                     zoomedIn={true}
+                    light={tone}
                     asImage={phone}
                   />
                   {

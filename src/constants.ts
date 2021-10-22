@@ -23,8 +23,8 @@ export const HIGH_RESOLUTION_CANVAS = 2048
 export const PHONE_POSITION = -3
 export const PHONE_FIELD = 'phone'
 export const VARIABLE_PRICE = 10.00
-export const AMBIENT_LIGHT_INTENSITY = 0.2
-export const DIRECTIONAL_LIGHT_INTENSITY = 0.9
+export const AMBIENT_LIGHT_INTENSITY = 0.5
+export const DIRECTIONAL_LIGHT_INTENSITY = 0
 export const ILLUSTRATOR_PIXELS_PER_CM = 28.346
 export const TABLET_RES = 768
 export const DESKTOP_RES = 1024
@@ -132,8 +132,8 @@ export const MAIN_TITLE = 'Online Jersey Design Center - Designlab by Jakroo'
 
 /* Zoom Size Products */
 export const MODEL_SIZES = {
-  small: 120,
-  medium: 140,
+  small: 130,
+  medium: 150,
   large: 170,
   xLarge: 200
 }

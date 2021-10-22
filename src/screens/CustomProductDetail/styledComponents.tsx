@@ -3,10 +3,11 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, BLACK_BG } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST } from '../../theme/colors'
 
 interface DivProps {
   isTeamStore?: boolean
+  selected?: boolean
 }
 
 export const Container = styled.div`
@@ -48,9 +49,46 @@ export const ProductData = styled.div`
     width: 100%;
   }
 `
+
+export const ColorButtons = styled.div`
+  display: flex;
+  flex-flow: column;
+  position: absolute;
+  left: 25px;
+  top: 20px;
+  z-index: 3;
+  animation: fade-in-left 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
+  @keyframes fade-in-left {
+    0% {
+      transform: translateX(-7px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+`
+
+export const ToneButton = styled.img`
+  object-fit: contain;
+  height: 27px;
+  width: 27px;
+  background: ${({ selected }: DivProps) => selected ? GRAY_LIGHTEST : WHITE};
+  padding: 5px;
+  margin-bottom: 8px;
+  border-radius: 25px;
+  box-shadow: ${({ selected }: DivProps) => selected ? 'unset' : `0px 2px 3px -1px ${GRAY_DARK}`};
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
 export const RenderContainer = styled.div`
   position: relative;
-  background: ${BLACK_BG};
+  background: linear-gradient(90deg, transparent, #e9e9e9, transparent);
   display: flex;
   justify-content: space-around;
   align-items: center;
