@@ -113,7 +113,7 @@ export class Designs extends React.Component<Props, {}> {
         {installedFonts.length ? (
           <GoogleFontLoader fonts={installedFonts} />
         ) : null}
-        {!loadingModel && 
+        {!loadingModel && false &&
           <ColorButtons>
             <ToneButton
               selected={tone === 'rgb(255, 255, 206)'}

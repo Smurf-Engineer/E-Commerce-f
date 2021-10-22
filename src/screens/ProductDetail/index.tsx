@@ -64,8 +64,8 @@ import {
   CustomizeButton,
   DealerTitle,
   SizeChart,
-  ColorButtons,
-  ToneButton,
+  // ColorButtons,
+  // ToneButton,
   InfoTag,
   MobileButtonTemplate,
   ActionButtonsRow,
@@ -74,9 +74,9 @@ import {
 } from './styledComponents'
 import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
-import sunny from '../../assets/sunny.png'
-import cloudy from '../../assets/cloudy.png'
-import moon from '../../assets/moonlight.png'
+// import sunny from '../../assets/sunny.png'
+// import cloudy from '../../assets/cloudy.png'
+// import moon from '../../assets/moonlight.png'
 import Modal from '../../components/Common/JakrooModal'
 import { APPROVED, MAIN_TITLE, onlyPro } from '../../constants'
 import Ratings from '../../components/Ratings'
@@ -623,7 +623,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   <div>
                     {customizable && obj && mtl ? (
                       <ModelContainer>
-                        <ColorButtons>
+                        {/* <ColorButtons>
                           <ToneButton
                             selected={tone === 'rgb(255, 255, 206)'}
                             id="rgb(255, 255, 206)"
@@ -642,7 +642,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                             onClick={this.setTone}
                             src={moon} 
                           />
-                        </ColorButtons>
+                        </ColorButtons> */}
                         <Render3D
                           customProduct={true}
                           designId={0}

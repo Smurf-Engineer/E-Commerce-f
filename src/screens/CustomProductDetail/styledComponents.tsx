@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST } from '../../theme/colors'
+import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST, BLACK_BG } from '../../theme/colors'
 
 interface DivProps {
   isTeamStore?: boolean
@@ -88,7 +88,7 @@ export const ToneButton = styled.img`
 
 export const RenderContainer = styled.div`
   position: relative;
-  background: linear-gradient(90deg, transparent, #e9e9e9, transparent);
+  background: ${BLACK_BG};
   display: flex;
   justify-content: space-around;
   align-items: center;

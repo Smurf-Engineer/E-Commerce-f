@@ -204,7 +204,7 @@ export const ToneButton = styled.img`
 `
 
 export const ModelContainer = styled.div`
-  background: linear-gradient(90deg, transparent, #e9e9e9, transparent);
+  background: ${BLACK_3D_DARK};
   display: flex;
   justify-content: space-around;
   align-items: center;
