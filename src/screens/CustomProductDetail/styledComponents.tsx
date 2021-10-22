@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import { WHITE, GREEN_BRIGHT, GRAY_DARK, GREEN_STATUS, GRAY_LIGHTEST } from '../../theme/colors'
+import Input from 'antd/lib/input'
 
 interface DivProps {
   isTeamStore?: boolean
@@ -88,7 +89,7 @@ export const ToneButton = styled.img`
 
 export const RenderContainer = styled.div`
   position: relative;
-  background: linear-gradient(90deg, transparent, #e9e9e9, transparent);
+  background: transparent;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -130,12 +131,21 @@ export const BannerMaterial = styled.img`
 export const TitleName = styled.div`
   margin-right: 8px;
 `
+
+export const StyledInput = styled(Input)`
+  position: absolute;
+  top: 10px;
+  max-width: 148px;
+  left: 35px;
+  z-index: 3;
+`
+
 export const HowItFits = styled.div`
   margin: 16px 0;
   margin-bottom: 16px;
   height: 40px;
   width: 190px;
-  color: white;
+  color: #b1b1b1;;
   border: 2px solid #dcdcdc;
   border-radius: 25px;
   display: flex;
@@ -144,7 +154,7 @@ export const HowItFits = styled.div`
   font-size: 16px;
   transition: all 0.2s ease;
   z-index: 2;
-  background: #2b2b2c73;
+  background: transparent;
   cursor: pointer;
   &:hover {
     background: gainsboro;

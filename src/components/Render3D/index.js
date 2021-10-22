@@ -124,13 +124,13 @@ class Render3D extends PureComponent {
       directionalLight.position.copy(cameraPosition)
       const leftLight = { x: -100, y: 70, z: 64 }
       const leftDirectionLight = new THREE.DirectionalLight(
-        new THREE.Color('rgb(240,255,255)'),
+        0xffffff,
         0.3
       )
       leftDirectionLight.position.copy(leftLight)
       const rightLight = { x: 100, y: 84, z: 51 }
       const rightDirectionLight = new THREE.DirectionalLight(
-        new THREE.Color('rgb(240,255,255)'),
+        0xffffff,
         0.3
       )
       rightDirectionLight.position.copy(rightLight)
@@ -164,8 +164,8 @@ class Render3D extends PureComponent {
       const geometry = new THREE.PlaneGeometry(10, 10);
       const material = new THREE.ShadowMaterial({
         side: THREE.BackSide,
-        opacity: 0.4,
-        color: 0xaaaaaa
+        opacity: 0.2,
+        color: new THREE.Color('rgb(0, 0, 0)')
       });
 
       const ground = new THREE.Mesh(geometry, material);
@@ -615,7 +615,7 @@ class Render3D extends PureComponent {
             /* Inside material */
             const insideMaterial = new THREE.MeshPhongMaterial({
               side: THREE.BackSide,
-              color: WHITE
+              color: BLACK
             })
             const bumpMapObj = textureLoader.load(bumpMap)
 
@@ -812,7 +812,7 @@ class Render3D extends PureComponent {
           /* Inside material */
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
-            color: WHITE
+            color: BLACK
           })
 
           const frontMaterial = new THREE.MeshPhongMaterial({

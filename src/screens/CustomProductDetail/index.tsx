@@ -52,8 +52,9 @@ import {
   LoadingContainer,
   SizeChart,
   InfoTag,
-  ColorButtons,
-  ToneButton
+  StyledInput,
+  // ColorButtons,
+  // ToneButton
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -68,9 +69,9 @@ import {
   BreadRoute, IProfileSettings
 } from '../../types/common'
 import sizeChartSvg from '../../assets/sizechart.svg'
-import sunny from '../../assets/sunny.png'
-import cloudy from '../../assets/cloudy.png'
-import moon from '../../assets/moonlight.png'
+// import sunny from '../../assets/sunny.png'
+// import cloudy from '../../assets/cloudy.png'
+// import moon from '../../assets/moonlight.png'
 import Modal from '../../components/Common/JakrooModal'
 import Render3D from '../../components/Render3D'
 import ImagesSlider from '../../components/ImageSlider'
@@ -164,6 +165,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
   }
 
+  changeTone = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.setState({ tone: value })
+  }
+
   render() {
     const {
       intl,
@@ -181,6 +189,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       showFitsModal,
       loading,
       phone,
+      user,
       selectedTopSize,
       selectedBottomSize
     } = this.props
@@ -596,7 +605,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
             <Content>
               <ImagePreview>
                 <RenderContainer>
-                  <ColorButtons>
+                  {/* <ColorButtons>
                     <ToneButton
                       selected={tone === 'rgb(255, 255, 206)'}
                       id="rgb(255, 255, 206)"
@@ -615,7 +624,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                       onClick={this.setTone}
                       src={moon} 
                     />
-                  </ColorButtons>
+                  </ColorButtons> */}
+                  {(user && (user.id === 'HkuTqBauQ' || user.id === 'H1R0yFr0V')) &&
+                    <StyledInput onChange={this.changeTone} value={tone} />
+                  }
                   <Render3D
                     customProduct={true}
                     textColor="white"
