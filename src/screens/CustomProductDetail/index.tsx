@@ -52,6 +52,7 @@ import {
   LoadingContainer,
   SizeChart,
   InfoTag,
+  StyledInput,
   // ColorButtons,
   // ToneButton
 } from './styledComponents'
@@ -164,6 +165,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     }
   }
 
+  changeTone = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.setState({ tone: value })
+  }
+
   render() {
     const {
       intl,
@@ -181,6 +189,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       showFitsModal,
       loading,
       phone,
+      user,
       selectedTopSize,
       selectedBottomSize
     } = this.props
@@ -616,6 +625,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                       src={moon} 
                     />
                   </ColorButtons> */}
+                  {(user && (user.id === 'HkuTqBauQ' || user.id === 'H1R0yFr0V')) &&
+                    <StyledInput onChange={this.changeTone} value={tone} />
+                  }
                   <Render3D
                     customProduct={true}
                     textColor="white"

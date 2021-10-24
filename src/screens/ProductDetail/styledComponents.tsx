@@ -18,7 +18,6 @@ import {
   BLUE,
   BLUE_SKY,
   GREEN_STATUS,
-  BLACK_3D_LIGHT,
   BLACK_3D_DARK,
   GRAY_LIGHTEST
 } from '../../theme/colors'
@@ -127,7 +126,7 @@ export const HowItFits = styled.div`
   font-size: 16px;
   transition: all 0.2s ease;
   z-index: 2;
-  background: ${BLACK_3D_LIGHT};
+  background: transparent;
   cursor: pointer;
   &:hover {
     background: gainsboro;
@@ -204,7 +203,7 @@ export const ToneButton = styled.img`
 `
 
 export const ModelContainer = styled.div`
-  background: ${BLACK_3D_DARK};
+  background: #4a4a4a;
   display: flex;
   justify-content: space-around;
   align-items: center;
