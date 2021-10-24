@@ -615,7 +615,7 @@ class Render3D extends PureComponent {
             /* Inside material */
             const insideMaterial = new THREE.MeshPhongMaterial({
               side: THREE.BackSide,
-              color: BLACK
+              color: WHITE
             })
             const bumpMapObj = textureLoader.load(bumpMap)
 
@@ -812,7 +812,7 @@ class Render3D extends PureComponent {
           /* Inside material */
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
-            color: BLACK
+            color: WHITE
           })
 
           const frontMaterial = new THREE.MeshPhongMaterial({
