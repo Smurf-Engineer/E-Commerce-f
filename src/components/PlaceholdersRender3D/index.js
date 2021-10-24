@@ -262,7 +262,7 @@ class Render3D extends PureComponent {
     rightDirectionLight.position.copy(rightLight)
     const backLight = { x: 0, y: 118, z: -75 }
     const backDirectionLight = new THREE.DirectionalLight(
-      new THREE.Color('rgb(201, 226, 255)'),
+      0xffffff,
       0.4
     )
     backDirectionLight.position.copy(backLight)
