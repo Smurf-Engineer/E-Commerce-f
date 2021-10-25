@@ -197,7 +197,8 @@ class Render3D extends PureComponent {
           const frontMaterial = new THREE.MeshPhongMaterial({
             map: textures.texture,
             bumpMap: textures.bumpMap,
-            side: THREE.FrontSide
+            side: THREE.FrontSide,
+            color: 0xdbdde0
           })
 
           const { children } = object
