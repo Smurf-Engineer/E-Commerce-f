@@ -822,7 +822,8 @@ class Render3D extends PureComponent {
             transparent: blackProducts[product.id],
             map: texture,
             side: THREE.FrontSide,
-            bumpMap: bumpMap
+            bumpMap: bumpMap,
+            color: 0xdbdde0
           })
           /* Assign materials */
           if (!proDesign && !(outputPng && customProduct) && !fromImage && !asImage) {
