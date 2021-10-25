@@ -71,8 +71,8 @@ export const TutorialButton = styled.div`
 export const TutorialIcon = styled.img``
 
 export const Render = styled.div`
-  width: 800px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
   cursor: grab;
   overflow: hidden;
   @media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
