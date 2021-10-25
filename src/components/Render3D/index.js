@@ -678,6 +678,9 @@ class Render3D extends PureComponent {
                 if (meshItem && blackMeshes[meshItem.name]) {
                   object.children[indexMesh].material.transparent = true
                   object.children[indexMesh].material.color.set(WHITE)
+                  if (meshItem.name === 'FINAL JV2_Design_Mesh') {
+                    object.children[indexMesh].visible = false
+                  }
                 }
               })
             }
