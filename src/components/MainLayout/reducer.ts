@@ -32,6 +32,7 @@ export const initialState = fromJS({
   saveAndBuy: false,
   fonts: {},
   countryName: '',
+  countryCode: '',
   regionName: '',
   city: ''
 })
@@ -90,6 +91,7 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case SET_USER_LOCATION_INFO_ACTION:
       return state.merge({
         countryName: action.countryName,
+        countryCode: action.countryCode,
         regionName: action.regionName,
         city: action.city
       })

@@ -113,6 +113,7 @@ interface Props {
   darkMode?: boolean
   notificationsData: NotificationsData
   countryName: string
+  countryCode: string
   regionName: string
   city: string
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
@@ -332,6 +333,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       darkMode = false,
       notificationsData,
       countryName,
+      countryCode,
       regionName,
       city
     } = this.props
@@ -508,6 +510,7 @@ class MenuBar extends React.Component<Props, StateProps> {
             formatMessage,
             initialCountryCode,
             countryName,
+            countryCode,
             regionName,
             city
           }}

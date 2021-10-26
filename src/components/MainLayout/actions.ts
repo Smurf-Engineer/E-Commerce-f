@@ -79,9 +79,15 @@ export const setInstalledFontsAction = (fonts: any) => ({
   fonts
 })
 
-export const setUserLocationInfoAction = (countryName: string, regionName: string, city: string) => ({
+export const setUserLocationInfoAction = (
+  countryName: string,
+  countryCode: string,
+  regionName: string,
+  city: string
+) => ({
   type: SET_USER_LOCATION_INFO_ACTION,
   countryName,
+  countryCode,
   regionName,
   city
 })
