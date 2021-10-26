@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
-import { BLACK, RED, GRAY_DARK, BLUE, GREEN_DARK, GRAY_LIGHT, GRAY_LIGHTEST } from '../../theme/colors'
+import { BLACK, RED, GRAY_DARK, BLUE, GREEN_DARK, GRAY_LIGHT, GRAY_LIGHTEST, DARKER_GRAY } from '../../theme/colors'
 import Input from 'antd/lib/input/Input'
 import Icon from 'antd/lib/icon'
 import Badge from 'antd/lib/badge'
@@ -121,6 +121,9 @@ export const DeliveryLabels = styled.div`
 `
 export const DeliveryLabel = styled.div`
   margin-bottom: 12px;
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
 `
 export const DeliveryData = styled.div`
   color: #5f6062;
@@ -132,7 +135,7 @@ export const DeliveryData = styled.div`
 
   @media (max-width: 963px) and (min-width: 320px) {
     margin-left: 9%;
-    width: 100px;
+    width: 150px;
   }
 `
 
@@ -158,6 +161,9 @@ export const Info = styled.div`
       color: ${BLACK};
       cursor: pointer;
     }
+  }
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
   }
 `
 export const OrderSummaryContainer = styled.div`
@@ -234,16 +240,42 @@ export const ThumbnailImage = styled.img`
   object-fit: cover;
   background: ${GRAY_LIGHTEST};
   border-radius: 3px;
+  @media (max-width: 680px) {
+    width: 98px;
+    height: 98px;
+  }
 `
 
 export const ItemInfo = styled.div`
   margin-left: 32px;
+  @media (max-width: 680px) {
+    margin-left: 20px;
+  }
 `
 
 export const DescriptionLabel = styled.div`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 12px;
+`
+
+export const DesignDescription = styled.div`
+  max-width: 460px;
+  width: 100%;
+  margin-top: 28px;
+  position: absolute;
+  @media (max-width: 680px) {
+    position: unset;
+  }
+`
+
+export const TaxDiv = styled.div``
+
+export const TaxPercent = styled.div`
+  margin-left: 10px;
+  font-size: 12px;
+  color: ${DARKER_GRAY};
+  display: inline-block;
 `
 
 export const DesignInfo = styled.div`

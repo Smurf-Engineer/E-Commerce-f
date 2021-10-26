@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'components.ServiceOrderDetails.deliveryDate',
     defaultMessage: 'Estimated delivery date'
   },
+  projectName: {
+    id: 'components.ServiceOrderDetails.projectName',
+    defaultMessage: 'Pro Design Project'
+  },
   netsuiteId: {
     id: 'components.ServiceOrderDetails.netsuiteId',
     defaultMessage: 'Netsuite Order ID:'
