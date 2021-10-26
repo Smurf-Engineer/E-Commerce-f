@@ -30,6 +30,7 @@ interface Props {
   open: boolean
   initialCountryCode: string
   countryName: string
+  countryCode: string
   regionName: string
   city: string
   requestClose: () => void
@@ -66,6 +67,7 @@ export class Login extends React.Component<Props, StateProps> {
       login,
       initialCountryCode,
       countryName,
+      countryCode,
       regionName,
       city
     } = this.props
@@ -106,6 +108,7 @@ export class Login extends React.Component<Props, StateProps> {
               formatMessage,
               initialCountryCode,
               countryName,
+              countryCode,
               regionName,
               city
             }}
@@ -119,19 +122,20 @@ export class Login extends React.Component<Props, StateProps> {
         </NotAMemberLabel>
       </div>
     ) : (
-        <SignUp
-          closeSignUp={this.showLogin}
-          login={this.onSignedUp}
-          {...{
-            requestClose,
-            formatMessage,
-            initialCountryCode,
-            countryName,
-            regionName,
-            city
-          }}
-        />
-      )
+      <SignUp
+        closeSignUp={this.showLogin}
+        login={this.onSignedUp}
+        {...{
+          requestClose,
+          formatMessage,
+          initialCountryCode,
+          countryName,
+          countryCode,
+          regionName,
+          city
+        }}
+      />
+    )
     return (
       <JakrooModal
         open={open}

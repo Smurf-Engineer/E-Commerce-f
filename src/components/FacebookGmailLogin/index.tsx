@@ -31,6 +31,7 @@ interface Props {
   signUpView: boolean
   adminLogin?: boolean
   countryName: string
+  countryCode: string
   regionName: string
   city: string
 }
@@ -89,9 +90,9 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       loginWithFacebook,
       requestClose,
       handleLogin,
-      initialCountryCode,
       formatMessage,
       countryName,
+      countryCode,
       regionName,
       city
     } = this.props
@@ -101,7 +102,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       const response = await loginWithFacebook({
         variables: {
           token,
-          countryCode: initialCountryCode,
+          countryCode,
           countryName,
           regionName,
           city
@@ -136,10 +137,10 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       loginWithGoogle,
       requestClose,
       handleLogin,
-      initialCountryCode,
       formatMessage,
       adminLogin = false,
       countryName,
+      countryCode,
       regionName,
       city
     } = this.props
@@ -149,7 +150,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       const response = await loginWithGoogle({
         variables: {
           token,
-          countryCode: initialCountryCode,
+          countryCode,
           isAdmin: adminLogin,
           countryName,
           regionName,

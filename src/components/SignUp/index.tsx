@@ -49,6 +49,7 @@ interface Props {
   initialCountryCode: string
   login: (user: object) => void
   countryName: string
+  countryCode: string
   regionName: string
   city: string
 }
@@ -82,9 +83,9 @@ class SignUp extends React.Component<Props, StateProps> {
       closeSignUp,
       requestClose,
       formatMessage,
-      initialCountryCode,
       login,
       countryName,
+      countryCode,
       regionName,
       city
     } = this.props
@@ -101,7 +102,7 @@ class SignUp extends React.Component<Props, StateProps> {
     } = this.state
 
     const countrySelected = countryName ? countryName : selectedCountryName
-    const countryCodeSelected = initialCountryCode ? initialCountryCode : selectedCountry
+    const countryCodeSelected = countryCode ? countryCode : selectedCountry
     return (
       <Container>
         <SocialMediaContainer>
@@ -109,20 +110,20 @@ class SignUp extends React.Component<Props, StateProps> {
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          {!countryName && 
+          {!countryName &&
             <CountryContainer {...{ countrySelected }}>
-            <Label>{formatMessage(messages.countryLabel)}</Label>
-            <CountrySelect
-              {...{ formatMessage }}
-              selectedCountry={
-                selectedCountry
-                  ? `${selectedCountry}-${selectedCountryId}`
-                  : undefined
-              }
-              loading={data && data.loading}
-              handleCountryChange={this.handleCountryChange}
-              countries={data.countries}
-            />
+              <Label>{formatMessage(messages.countryLabel)}</Label>
+              <CountrySelect
+                {...{ formatMessage }}
+                selectedCountry={
+                  selectedCountry
+                    ? `${selectedCountry}-${selectedCountryId}`
+                    : undefined
+                }
+                loading={data && data.loading}
+                handleCountryChange={this.handleCountryChange}
+                countries={data.countries}
+              />
             </CountryContainer>
           }
           {!!countrySelected &&
@@ -137,7 +138,8 @@ class SignUp extends React.Component<Props, StateProps> {
               }}
               countryName={countrySelected}
               initialCountryCode={countryCodeSelected}
-            /> 
+              countryCode={countryCodeSelected}
+            />
           }
         </SocialMediaContainer>
         {!!countrySelected &&
@@ -262,9 +264,9 @@ class SignUp extends React.Component<Props, StateProps> {
       signUpUser,
       formatMessage,
       closeSignUp,
-      initialCountryCode,
       login,
       countryName,
+      countryCode,
       regionName,
       city
     } = this.props
@@ -284,7 +286,7 @@ class SignUp extends React.Component<Props, StateProps> {
       last_name: lastName,
       password,
       newsletter_subscribed: newsLetter,
-      countryCode: initialCountryCode ? initialCountryCode : selectedCountry,
+      country_code: countryCode ? countryCode : selectedCountry,
       country_name: countryName ? countryName : selectedCountryName,
       region_name: regionName,
       city

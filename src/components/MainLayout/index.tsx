@@ -87,6 +87,7 @@ interface Props extends RouteComponentProps<any> {
   darkMode?: boolean
   hideDetails: boolean
   countryName: string
+  countryCode: string
   regionName: string
   city: string
   openResellerAction: (open: boolean) => void
@@ -99,7 +100,7 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
-  setUserLocationInfoAction: (countryName: string, regionName: string, city: string) => void
+  setUserLocationInfoAction: (countryName: string, countryCode: string, regionName: string, city: string) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -148,8 +149,8 @@ class MainLayout extends React.Component<Props, {}> {
     setInstalledFontsAction(fonts)
 
     try {
-      const { country_name, region, city } = await ipLocation()
-      setUserLocationInfoAction(country_name, region, city)
+      const { country_name, country_code, region, city } = await ipLocation()
+      setUserLocationInfoAction(country_name, country_code, region, city)
     } catch (e) {
       console.log(e)
     }
@@ -254,6 +255,7 @@ class MainLayout extends React.Component<Props, {}> {
       setAccountScreen,
       darkMode,
       countryName,
+      countryCode,
       regionName,
       city
     } = this.props
@@ -305,6 +307,7 @@ class MainLayout extends React.Component<Props, {}> {
               darkMode,
               user,
               countryName,
+              countryCode,
               regionName,
               city
             }}
