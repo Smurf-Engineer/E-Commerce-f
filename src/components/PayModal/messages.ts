@@ -19,7 +19,7 @@ export default defineMessages({
   },
   payment: {
     id: 'components.PayModal.payment',
-    defaultMessage: 'Payment'
+    defaultMessage: 'Payment Method'
   },
   orderNumber: {
     id: 'components.PayModal.orderNumber',

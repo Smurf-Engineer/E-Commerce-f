@@ -79,7 +79,7 @@ export default defineMessages({
   },
   payment: {
     id: 'components.OrderDetails.payment',
-    defaultMessage: 'Payment'
+    defaultMessage: 'Payment Method'
   },
   notFound: {
     id: 'components.OrderDetails.notFound',
