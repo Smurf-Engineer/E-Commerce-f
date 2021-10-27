@@ -56,11 +56,15 @@ import {
   PriceLabel,
   SummaryTitle,
   TotalLabel,
-  PriceDiv
+  PriceDiv,
+  DesignDescription,
+  TaxDiv,
+  TaxPercent
 } from './styledComponents'
 import MyAddress from '../MyAddress'
 
 import iconPaypal from '../../assets/Paypal.svg'
+import jakrooLogo from '../../assets/Jackroologo.svg'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../constants'
 import { withRouter } from 'react-router-dom'
@@ -152,6 +156,8 @@ export class ServiceOrderDetailsAdmin extends React.Component<Props, State> {
         shortName: currencyName
       },
       paymentMethod,
+      taxAmount,
+      projectName,
       billingFirstName,
       billingLastName,
       billingStreet,
@@ -205,11 +211,13 @@ export class ServiceOrderDetailsAdmin extends React.Component<Props, State> {
                     {formatMessage(messages.orderDate)}
                   </DeliveryLabel>
                   <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
+                  {!!projectName && <DeliveryLabel>{formatMessage(messages.projectName)}</DeliveryLabel>}
                 </DeliveryLabels>
                 <DeliveryData>
                   <Info>{shortId}</Info>
                   <Info>{orderDate}</Info>
                   <Info>{status}</Info>
+                  {!!projectName && <Info>{projectName}</Info>}
                 </DeliveryData>
               </DeliveryInfo>
             </OrderDelivery>
@@ -220,21 +228,28 @@ export class ServiceOrderDetailsAdmin extends React.Component<Props, State> {
               <TotalLabel>
                 {formatMessage(messages.subtotal)}
                 <PriceDiv>
-                  {currencyName} {subtotal}
+                  {currencyName} {(subtotal || 0).toFixed(2)}
                 </PriceDiv>
               </TotalLabel>
-              {(taxFee || taxGst || taxPst) &&
+              {(taxFee || taxGst || taxPst) ?
                 <TotalLabel>
-                  {formatMessage(messages[taxFee ? 'taxes' : (taxGst ? 'taxGst' : 'taxPst')])}
+                  <TaxDiv>
+                    {formatMessage(messages[taxFee ? 'taxes' : (taxGst ? 'taxGst' : 'taxPst')])}
+                    {taxFee > 0 &&
+                      <TaxPercent>
+                        ({taxAmount}%)
+                      </TaxPercent>
+                    }
+                  </TaxDiv>
                   <PriceDiv>
-                    {currencyName} {taxFee || taxGst || taxPst}
+                    {currencyName} {(taxFee || taxGst || taxPst || 0).toFixed(2)}
                   </PriceDiv>
-                </TotalLabel>
+                </TotalLabel> : null
               }
               <TotalLabel bold={true}>
                 {formatMessage(messages.total)}
                 <PriceDiv>
-                  {currencyName} {total}
+                  {currencyName} {(total || 0).toFixed(2)}
                 </PriceDiv>
               </TotalLabel>
             </OrderSummaryContainer>
@@ -244,7 +259,7 @@ export class ServiceOrderDetailsAdmin extends React.Component<Props, State> {
             <CartList>
               {cart.map((item, key: number) =>
                 <CartItem {...{ key }}>
-                  <ThumbnailImage src={item.designImage} />
+                  <ThumbnailImage src={item.designImage || jakrooLogo} />
                   <ItemInfo>
                     <DescriptionLabel>
                       {item.name}
@@ -259,9 +274,14 @@ export class ServiceOrderDetailsAdmin extends React.Component<Props, State> {
                         {item.designCode}
                       </DesignCode>
                     }
+                    {item.description &&
+                      <DesignDescription>
+                        {item.description.length > 200 ? `${item.description.substring(0, 200)}...` : item.description}
+                      </DesignDescription>
+                    }
                   </ItemInfo>
                   <PriceLabel>
-                    {item.price} {currencyName}
+                    {currencyName} {(item.price || 0).toFixed(2)} 
                   </PriceLabel>
                 </CartItem>
               )}

@@ -10,9 +10,11 @@ export const getOrderQuery = gql`
       id
       shortId: short_id
       charge_id
+      projectName: project_name
       taxFee: tax_fee
       taxGst: tax_gst
       taxPst: tax_pst
+      taxAmount: tax_amount
       paymentMethod: payment_method
       billingFirstName: billing_address_first_name
       billingLastName: billing_address_last_name
@@ -43,6 +45,7 @@ export const getOrderQuery = gql`
       cart {
         name
         price
+        description
         designImage: design_image
         designName: design_name
         designId: design_id

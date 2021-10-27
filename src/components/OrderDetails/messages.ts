@@ -190,7 +190,7 @@ export default defineMessages({
   },
   payment: {
     id: 'components.OrderDetails.payment',
-    defaultMessage: 'Payment'
+    defaultMessage: 'Payment Method'
   },
   annotation: {
     id: 'components.OrderDetails.annotation',

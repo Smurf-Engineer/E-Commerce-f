@@ -31,7 +31,7 @@ export default defineMessages({
   },
   payment: {
     id: 'components.Review.payment',
-    defaultMessage: 'Payment'
+    defaultMessage: 'Payment Method'
   },
   edit: {
     id: 'components.Review.edit',
