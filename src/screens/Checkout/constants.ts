@@ -58,7 +58,7 @@ export enum PaymentOptions {
 }
 
 export enum PaymentTerms {
-  RECEIPT = 'Due upon Receipt',
+  RECEIPT = 'Due Immediately',
   FIFTY = '50% Down, 50% at Shipping',
   NET15 = 'Net 15 Days',
   NET30 = 'Net 30 Days'
