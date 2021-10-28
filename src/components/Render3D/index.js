@@ -119,7 +119,7 @@ class Render3D extends PureComponent {
       const cameraPosition = {
         x: -4,
         y: 100,
-        z: -4
+        z: -1
       }
       directionalLight.position.copy(cameraPosition)
       const leftLight = { x: -100, y: 70, z: 64 }
@@ -424,6 +424,7 @@ class Render3D extends PureComponent {
     if (showDragmessage) {
       this.setState({ showDragmessage: false })
     }
+    console.log('🔴this.camera.position:', this.camera.position)
     // this.directionalLight.position.copy(this.camera.position)
   }
 
