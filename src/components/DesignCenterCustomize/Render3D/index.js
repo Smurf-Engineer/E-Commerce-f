@@ -331,9 +331,9 @@ class Render3D extends PureComponent {
       DIRECTIONAL_LIGHT_INTENSITY
     )
     const cameraPosition = {
-      x: 0,
+      x: -4,
       y: 100,
-      z: 0
+      z: -4
     }
     directionalLight.position.copy(cameraPosition)
     const leftLight = { x: -100, y: 70, z: 64 }
