@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import { GRAY_DARK, RED, BLUE, WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ export const Container = styled.div`
 export const LoginLabel = styled.div`
   height: 25px;
   width: 100%;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -37,7 +38,7 @@ export const RememberMeRow = styled.div`
   flex-direction: row-reverse;
   justify-content: space-between;
   height: 19px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 19px;
   text-align: right;
@@ -52,8 +53,8 @@ export const JoinNowLabel = styled.span`
   }
 `
 export const StyledLoginButton = styled(Button)`
-  background-color: #fff;
-  border-color: #e61737;
+  background-color: ${WHITE};
+  border-color: ${RED};
   border-radius: 0px;
   height: 50px;
   margin-bottom: 10px;
@@ -63,7 +64,7 @@ export const StyledLoginButton = styled(Button)`
 export const NotAMemberLabel = styled.div`
   height: 22px;
   width: 100%;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   line-height: 22px;
   text-align: center;
@@ -74,4 +75,23 @@ export const ForgotPasswordLabel = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+export const LoginFailedView = styled.div`
+  text-align: center;
+`
+
+export const LoginFailed = styled.div`
+  margin: 0 10px;
+  font-size: 15px;
+  p {
+    margin-bottom: 2px;
+  }
+`
+
+export const OkButton = styled(Button)`
+  background: ${BLUE};
+  color: ${WHITE};
+  margin-top: 10px;
+  align-items: center;
 `

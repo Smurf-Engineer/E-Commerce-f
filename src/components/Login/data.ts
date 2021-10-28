@@ -11,6 +11,7 @@ export const mailLogin = graphql(
           name: first_name
           lastName: last_name
           email
+          socialMethod: social_method
         }
         token
       }
