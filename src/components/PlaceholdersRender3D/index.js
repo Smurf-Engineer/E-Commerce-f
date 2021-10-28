@@ -243,9 +243,9 @@ class Render3D extends PureComponent {
     const ambient = new THREE.AmbientLight(0xffffff, AMBIENT_LIGHT_INTENSITY)
     const directionalLight = new THREE.DirectionalLight(0xffffff, DIRECTIONAL_LIGHT_INTENSITY)
     const cameraPosition = {
-      x: 0,
+      x: -4,
       y: 100,
-      z: 0
+      z: -4
     }
     directionalLight.position.copy(cameraPosition)
     const leftLight = { x: -100, y: 70, z: 64 }

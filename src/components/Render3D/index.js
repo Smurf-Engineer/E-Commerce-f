@@ -117,9 +117,9 @@ class Render3D extends PureComponent {
         DIRECTIONAL_LIGHT_INTENSITY
       )
       const cameraPosition = {
-        x: 0,
+        x: -4,
         y: 100,
-        z: 0
+        z: -4
       }
       directionalLight.position.copy(cameraPosition)
       const leftLight = { x: -100, y: 70, z: 64 }
@@ -174,9 +174,6 @@ class Render3D extends PureComponent {
       ground.position.y = -30;
       ground.castShadow = false;
       ground.receiveShadow = true;
-
-      // const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-      // scene.add(cameraHelper)
 
       scene.add(ground);
       scene.add(directionalLight)
