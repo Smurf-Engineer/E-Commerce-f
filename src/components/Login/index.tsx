@@ -18,7 +18,10 @@ import {
   StyledLoginButton,
   NotAMemberLabel,
   JoinNowLabel,
-  ForgotPasswordLabel
+  ForgotPasswordLabel,
+  LoginFailedView,
+  LoginFailed,
+  OkButton
 } from './styledComponents'
 import JakrooModal from '../Common/JakrooModal'
 import FacebookGmailLogin from '../FacebookGmailLogin'
@@ -48,6 +51,8 @@ interface StateProps {
   password: string
   validEmail: boolean
   validPassword: boolean
+  loginFailed: boolean
+  loginFailedReason: string
 }
 
 export class Login extends React.Component<Props, StateProps> {
@@ -56,7 +61,9 @@ export class Login extends React.Component<Props, StateProps> {
     email: '',
     password: '',
     validEmail: false,
-    validPassword: false
+    validPassword: false,
+    loginFailed: false,
+    loginFailedReason: 'email' // 'email', 'google', 'facebook'
   }
   render() {
     const {
@@ -71,57 +78,73 @@ export class Login extends React.Component<Props, StateProps> {
       regionName,
       city
     } = this.props
-    const { isLoginIn, email, password } = this.state
-    const renderView = isLoginIn ? (
-      <div>
-        <LoginLabel>
-          <FormattedMessage {...messages.login} />
-        </LoginLabel>
-        <FormContainer>
-          <StyledInput
-            id="email"
-            placeholder={formatMessage(messages.emailLabel)}
-            value={email}
-            onChange={this.handleInputChange}
-          />
-          <StyledInput
-            id="password"
-            type={formatMessage(messages.passwordLabel)}
-            placeholder="Password"
-            value={password}
-            onChange={this.handleInputChange}
-          />
-          <RememberMeRow>
-            {/* {UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED} */}
-            {/* <Checkbox>{formatMessage(messages.rememberMe)}</Checkbox>*/}
-            <ForgotPasswordLabel onClick={handleForgotPassword}>
-              {formatMessage(messages.forgotPassword)}
-            </ForgotPasswordLabel>
-          </RememberMeRow>
-          <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
-            {formatMessage(messages.loginButtonLabel)}
-          </StyledLoginButton>
-          <FacebookGmailLogin
-            handleLogin={login}
-            {...{
-              requestClose,
-              formatMessage,
-              initialCountryCode,
-              countryName,
-              countryCode,
-              regionName,
-              city
+    const { isLoginIn, loginFailed, loginFailedReason, email, password } = this.state
+    const loginFailedMessage = loginFailedReason === 'email'
+      ? messages.msgLoginFailed
+      : messages.msgLoginFailedSocial
+    const renderView = isLoginIn ? loginFailed
+      ? (
+        <LoginFailedView>
+          <LoginFailed
+            dangerouslySetInnerHTML={{
+              __html: formatMessage(loginFailedMessage, { social: loginFailedReason })
             }}
           />
-        </FormContainer>
-        <NotAMemberLabel>
-          {formatMessage(messages.notAMember)}
-          <JoinNowLabel onClick={this.handleJoinNow}>
-            {formatMessage(messages.joinNow)}
-          </JoinNowLabel>
-        </NotAMemberLabel>
-      </div>
-    ) : (
+          <OkButton onClick={this.handleLoginFailedModal}>
+            {formatMessage(messages.ok)}
+          </OkButton>
+        </LoginFailedView>
+      )
+      : (
+        <div>
+          <LoginLabel>
+            <FormattedMessage {...messages.login} />
+          </LoginLabel>
+          <FormContainer>
+            <StyledInput
+              id="email"
+              placeholder={formatMessage(messages.emailLabel)}
+              value={email}
+              onChange={this.handleInputChange}
+            />
+            <StyledInput
+              id="password"
+              type={formatMessage(messages.passwordLabel)}
+              placeholder="Password"
+              value={password}
+              onChange={this.handleInputChange}
+            />
+            <RememberMeRow>
+              {/* {UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED} */}
+              {/* <Checkbox>{formatMessage(messages.rememberMe)}</Checkbox>*/}
+              <ForgotPasswordLabel onClick={handleForgotPassword}>
+                {formatMessage(messages.forgotPassword)}
+              </ForgotPasswordLabel>
+            </RememberMeRow>
+            <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
+              {formatMessage(messages.loginButtonLabel)}
+            </StyledLoginButton>
+            <FacebookGmailLogin
+              handleLogin={login}
+              {...{
+                requestClose,
+                formatMessage,
+                initialCountryCode,
+                countryName,
+                countryCode,
+                regionName,
+                city
+              }}
+            />
+          </FormContainer>
+          <NotAMemberLabel>
+            {formatMessage(messages.notAMember)}
+            <JoinNowLabel onClick={this.handleJoinNow}>
+              {formatMessage(messages.joinNow)}
+            </JoinNowLabel>
+          </NotAMemberLabel>
+        </div>
+      ) : (
       <SignUp
         closeSignUp={this.showLogin}
         login={this.onSignedUp}
@@ -192,9 +215,16 @@ export class Login extends React.Component<Props, StateProps> {
       const loginData = await loginWithEmail({ variables: { email, password } })
       const data = get(loginData, 'data.login', false)
       if (data) {
+        const token = get(data, 'token', '')
+        if (!token) {
+          const social = get(data, 'user.socialMethod', 'email')
+          this.setState({ loginFailed: true, loginFailedReason: social })
+          return
+        }
+
         const userData = {
           id: get(data, 'user.shortId', ''),
-          token: get(data, 'token', ''),
+          token,
           name: get(data, 'user.name', ''),
           lastName: get(data, 'user.lastName'),
           email: get(data, 'user.email'),
@@ -215,6 +245,10 @@ export class Login extends React.Component<Props, StateProps> {
       message.error(errorMessage)
       console.error(error)
     }
+  }
+
+  handleLoginFailedModal = () => {
+    this.setState({ loginFailed: false })
   }
 }
 
