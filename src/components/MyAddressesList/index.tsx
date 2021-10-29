@@ -51,6 +51,7 @@ interface Props {
   deleteLoading: boolean
   currentPage: number
   billingAddress?: boolean
+  small?: boolean
   changePage: (pageNumber: number) => void
   formatMessage: (messageDescriptor: any) => string
   showAddressFormAction: (show: boolean, index?: number) => void
@@ -94,6 +95,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
       deleteLoading,
       paginationAlignment,
       currentPage,
+      small,
       changePage,
       billingAddress,
       data
@@ -147,6 +149,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
             showConfirmDeleteAction,
             isSelected,
             phone,
+            small,
             defaultBilling,
             defaultShipping
           }}
@@ -166,7 +169,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
     })
 
     const addressesList = (
-      <AddressesList {...{ listForMyAccount }}>{adressesList}</AddressesList>
+      <AddressesList {...{ listForMyAccount, small }}>{adressesList}</AddressesList>
     )
 
     const deleteAddressModal = (

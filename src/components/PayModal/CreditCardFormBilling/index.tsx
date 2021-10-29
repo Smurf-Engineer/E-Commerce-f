@@ -122,6 +122,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           listForMyAccount={false}
           billingAddress={true}
           showForm={showBillingForm}
+          small={true}
           showAddressFormAction={showBillingAddressFormAction}
           {...{
             withPagination,
