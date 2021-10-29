@@ -5,7 +5,17 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
 
-export const Container = styled.div``
+interface DivProps {
+  small?: boolean
+}
+
+export const Container = styled.div`
+  ${({ small }: DivProps) => small ? `
+    div {
+      font-size: 12px !important; 
+    }
+  ` : ''}
+`
 
 export const Text = styled.div`
   color: #5f6062;
@@ -28,7 +38,7 @@ export const ItalicText = styled.div`
 export const StyledCheckbox = styled(Checkbox)`
   height: 22px;
   color: #5f6062;
-  font-size: 16px;
+  font-size: ${({ small }: DivProps) => small ? '14px' : '16px'};
   letter-spacing: 0.2px;
   line-height: 22px;
   margin: 5px 0;

@@ -9,6 +9,7 @@ type StyledProps = {
   paginationAlignment?: string
   listForMyAccount?: boolean
   marginBottom?: string
+  small?: boolean
 }
 
 export const Container = styled.div`
@@ -57,7 +58,10 @@ export const AddressesList = styled.div`
       : 'repeat(auto-fit, minmax(150px, min-content))'};
   grid-gap: 60px;
   margin-bottom: 30px;
-
+  ${({ small }: StyledProps) => small ? `
+    grid-template-columns: repeat(auto-fit,minmax(142px, min-content));
+    grid-gap: 22px;
+  ` : ''}
   @media (max-width: 700px) {
     grid-template-columns: repeat(2, minmax(140px, min-content));
     grid-gap: 20px;

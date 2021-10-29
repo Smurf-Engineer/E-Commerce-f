@@ -1315,7 +1315,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltipMobile>
                 }
               </MobileRequestButtons>
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId &&
                     <Render3D

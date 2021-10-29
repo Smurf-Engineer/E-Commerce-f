@@ -27,6 +27,7 @@ interface Props {
   isSelected?: boolean
   showSecondaryButtons?: boolean
   hideBottomButtons?: boolean
+  small?: boolean
   formatMessage: (messageDescriptor: any) => string
   selectAddressAction?: (index: number) => void
   showAddressFormAction?: (show: boolean, index?: number) => void
@@ -47,6 +48,7 @@ const MyAddress = ({
   formatMessage,
   showSecondaryButtons,
   hideBottomButtons,
+  small,
   isSelected = false,
   selectAddressAction = () => { },
   showAddressFormAction = () => { },
@@ -62,7 +64,7 @@ const MyAddress = ({
     selectAddressAction(addressIndex as number)
   }
   const buttons = !showSecondaryButtons ? (
-    <StyledCheckbox checked={isSelected} onChange={handleOnSelectAddress}>
+    <StyledCheckbox {...{ small }}checked={isSelected} onChange={handleOnSelectAddress}>
       {formatMessage(messages.useThisAddress)}
     </StyledCheckbox>
   ) : (
@@ -88,7 +90,7 @@ const MyAddress = ({
       <ItalicText>{formatMessage(footerMessageText)}</ItalicText>
     ) : null
   return (
-    <Container {...{ showSecondaryButtons, isSelected }}>
+    <Container {...{ showSecondaryButtons, isSelected, small }}>
       <Text>{name}</Text>
       <Text>{street}</Text>
       {apartment && <Text>{apartment}</Text>}

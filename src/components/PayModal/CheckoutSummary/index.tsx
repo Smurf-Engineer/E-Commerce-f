@@ -134,7 +134,7 @@ const CheckoutSummary = ({
             {formatMessage(messages.total)}
           </TotalLabel>
           <TotalValue>
-            {total} {currency}
+            {currency} {(total || 0).toFixed(2)} 
           </TotalValue>
         </TotalDiv>
       </OrderSummary>

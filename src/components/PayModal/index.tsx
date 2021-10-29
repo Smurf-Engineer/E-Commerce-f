@@ -533,10 +533,11 @@ class PayModal extends React.Component<Props, {}> {
       const node = document.querySelector('.ant-modal-wrap')
       if (node) {
         const intakeScroller = zenscroll.createScroller(node, 0)
-        if (isPaypal) {
+        const isNotMobile = window && window.matchMedia('(min-width: 700px)').matches
+        if (isPaypal || isNotMobile) {
           intakeScroller.toY(node.scrollHeight, 250)
         } else {
-          intakeScroller.intoView(this.paySection, 200, 200)
+          intakeScroller.intoView(this.paySection, 200)
         }
       }
     }
@@ -643,7 +644,7 @@ class PayModal extends React.Component<Props, {}> {
         visible={open}
         footer={null}
         closable={false}
-        width={'630px'}
+        width={'700px'}
         style={{ maxWidth: 'calc(93vw)' }}
       >
         <Container>
@@ -670,13 +671,13 @@ class PayModal extends React.Component<Props, {}> {
                 </SelectPayment>
                 <HeadersDiv>
                   <ItemColumn bold={true} width="180px">{formatMessage(messages.item)}</ItemColumn>
-                  <ItemColumn bold={true} width="310px">{formatMessage(messages.description)}</ItemColumn>
+                  <ItemColumn bold={true} width="360px">{formatMessage(messages.description)}</ItemColumn>
                   <ItemColumn bold={true} width="72px">{formatMessage(messages.price)}</ItemColumn>
                 </HeadersDiv>
                 {items.map(({ name, price, description }: ServiceItem, key: number) =>
                   <ItemRow {...{ key }}>
                     <ItemColumn width="180px">{name}</ItemColumn>
-                    <ItemColumn width="310px">{description}</ItemColumn>
+                    <ItemColumn width="360px">{description}</ItemColumn>
                     <ItemColumn uppercase={true} width="72px">{currency} {(price || 0).toFixed(2)}</ItemColumn>
                   </ItemRow>
                 )}
@@ -791,11 +792,7 @@ class PayModal extends React.Component<Props, {}> {
                   />
                 </SummaryContainer>
               </StyledSwipeableViews>
-              <div
-                ref={section => {
-                  this.paySection = section
-                }}
-              />
+              
               <ModalCountry
                 {...{ formatMessage }}
                 open={openConfirm}
@@ -804,6 +801,11 @@ class PayModal extends React.Component<Props, {}> {
               />
             </>
           }
+          <div
+            ref={section => {
+              this.paySection = section
+            }}
+          />
         </Container>
       </Modal>
     )
