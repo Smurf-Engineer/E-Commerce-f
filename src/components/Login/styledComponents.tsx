@@ -78,7 +78,18 @@ export const ForgotPasswordLabel = styled.div`
 `
 
 export const LoginFailedView = styled.div`
+  animation: fade-in-bottom 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   text-align: center;
+  @keyframes fade-in-bottom {
+    0% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `
 
 export const LoginFailed = styled.div`
