@@ -102,6 +102,9 @@ export const Cell = styled.div`
     display: none;
   }
  }
+ align-self: stretch;
+ display: inline-flex;
+ align-items: center;
 `
 
 interface TitleProps {

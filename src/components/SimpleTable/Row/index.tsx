@@ -61,7 +61,7 @@ class Row extends React.PureComponent<Props, {}> {
 
     return (
       <div>
-        <TableRow className={clickable && 'clickable'} onClick={handleOnClickRow}>
+        <TableRow className={clickable && 'clickable'}>
           {headerTitles.map(
             (header, rowIndex) => {
               const currentItem = item[header.fieldName] || item
@@ -71,6 +71,7 @@ class Row extends React.PureComponent<Props, {}> {
                 <Cell
                   key={rowIndex}
                   width={header.tabletWidth}
+                  onClick={handleOnClickRow}
                   className={unread && header.fieldName === 'message' && 'unread'}
                 >
                   {header.fieldName !== 'image' ? (
@@ -86,7 +87,12 @@ class Row extends React.PureComponent<Props, {}> {
                   )}
                 </Cell>
               ) :
-                <Cell key={rowIndex} width={header.tabletWidth} className={unread && 'badge'} />
+                <Cell
+                  onClick={handleOnClickRow}
+                  key={rowIndex}
+                  width={header.tabletWidth}
+                  className={unread && 'badge'}
+                />
             }
           )}
           <Cell width={15}>

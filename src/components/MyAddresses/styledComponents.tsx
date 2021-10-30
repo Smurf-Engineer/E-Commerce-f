@@ -44,14 +44,17 @@ export const ButtonWrapper = styled.div`
     background-color: ${BUTTON_COLOR};
     color: ${WHITE};
   }
+  @media (max-width: 1024px) {
+    text-align: center;
+  }
 `
 
 export const StyledEmptyButton = styled(Button)`
-  height: 50px;
-  width: 221px;
-  border: 2px solid ${BUTTON_COLOR};
-  border-radius: 2px;
-  font-size: 16px;
+  height: 44px;
+  width: 200px;
+  border: 1px solid ${BUTTON_COLOR};
+  border-radius: 5px;
+  font-size: 14px;
   line-height: 22px;
   text-align: center;
   margin-bottom: 20px;

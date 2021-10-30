@@ -17,6 +17,7 @@ export const verifyTeamStoreQuery = gql`
       cutoff_date
       on_demand_mode
       enabled
+      closed
     }
   }
 `

@@ -52,6 +52,8 @@ interface Props {
   currentPage: number
   billingAddress?: boolean
   small?: boolean
+  shipping?: boolean
+  simple?: boolean
   changePage: (pageNumber: number) => void
   formatMessage: (messageDescriptor: any) => string
   showAddressFormAction: (show: boolean, index?: number) => void
@@ -84,6 +86,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
   render() {
     const {
       showForm,
+      shipping,
       formatMessage,
       listForMyAccount = false,
       showAddressFormAction,
@@ -96,6 +99,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
       paginationAlignment,
       currentPage,
       small,
+      simple,
       changePage,
       billingAddress,
       data
@@ -150,6 +154,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
             isSelected,
             phone,
             small,
+            shipping,
+            simple,
             defaultBilling,
             defaultShipping
           }}
@@ -167,9 +173,18 @@ export class MyAddressesList extends React.Component<Props, {}> {
         />
       )
     })
-
+    const highRes = window && window.matchMedia('(min-width: 1380px)').matches
     const addressesList = (
-      <AddressesList {...{ listForMyAccount, small }}>{adressesList}</AddressesList>
+      <AddressesList
+        grid={
+          indexAddressSelected !== -1 && 
+          highRes && !small && shipping && 
+          addressesFiltered && addressesFiltered.length > 3
+        }
+        {...{ listForMyAccount, small, shipping, simple }}
+      >
+        {adressesList}
+      </AddressesList>
     )
 
     const deleteAddressModal = (

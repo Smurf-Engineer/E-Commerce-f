@@ -4,6 +4,7 @@
 
 // TODO: REMOVE COMENTED CODE AFTER TEST
 import * as React from 'react'
+import zenscroll from 'zenscroll'
 import AnimateHeight from 'react-animate-height'
 // import Modal from 'antd/lib/modal'
 
@@ -15,6 +16,7 @@ import MyAddresses from '../MyAddressesList'
 import ShippingAddressForm from '../ShippingAddressForm'
 
 import { AddressType, ClickParam } from '../../types/common'
+import ReactDOM from 'react-dom'
 
 interface Props {
   shippingAddress: AddressType
@@ -39,6 +41,21 @@ interface Props {
 }
 
 export class Shipping extends React.PureComponent<Props, {}> {
+  private listRef: any
+
+  showAddressForm = (show: boolean) => {
+    const { showAddressFormAction } = this.props
+    showAddressFormAction(show)
+    setTimeout(() => this.scrollBotom(), 700)
+  }
+
+  scrollBotom = () => {
+    if (window) {
+      const node = ReactDOM.findDOMNode(this.listRef) as HTMLElement
+      zenscroll.center(node, 250)
+    }
+  }
+  
   render() {
     const {
       showContent,
@@ -56,7 +73,6 @@ export class Shipping extends React.PureComponent<Props, {}> {
       },
       hasError,
       formatMessage,
-      showAddressFormAction,
       showForm,
       selectDropdownAction,
       inputChangeAction,
@@ -113,9 +129,10 @@ export class Shipping extends React.PureComponent<Props, {}> {
           renderForModal={renderInModal}
           changePage={this.handlechangePage}
           listForMyAccount={false}
+          showAddressFormAction={this.showAddressForm}
+          shipping={true}
           {...{
             withPagination,
-            showAddressFormAction,
             showForm,
             indexAddressSelected,
             currentPage,
@@ -142,8 +159,16 @@ export class Shipping extends React.PureComponent<Props, {}> {
           <Icon type="right" />
         </ViewAllAddresses> */}
         {renderAddresses(4, false, false)}
-        <AnimateHeight duration={500} height={showForm ? 'auto' : 0}>
-          <Title>{formatMessage(messages.title)}</Title>
+        <AnimateHeight
+          ref={(listObject: any) => {
+            this.listRef = listObject
+          }}
+          duration={500}
+          height={showForm ? 'auto' : 0}
+        >
+          <Title>
+            {formatMessage(messages.title)}
+          </Title>
           <ShippingAddressForm
             {...{
               firstName,
