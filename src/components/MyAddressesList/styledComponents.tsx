@@ -10,6 +10,9 @@ type StyledProps = {
   listForMyAccount?: boolean
   marginBottom?: string
   small?: boolean
+  shipping?: boolean
+  simple?: boolean
+  grid?: boolean
 }
 
 export const Container = styled.div`
@@ -51,21 +54,30 @@ export const AddAddressBtn = styled(Button)`
 `
 
 export const AddressesList = styled.div`
-  display: grid;
-  grid-template-columns: ${({ listForMyAccount }: StyledProps) =>
-    listForMyAccount
-      ? 'repeat(4, minmax(170px, min-content))'
-      : 'repeat(auto-fit, minmax(150px, min-content))'};
-  grid-gap: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   margin-bottom: 30px;
+  @media (max-width: 1024px) {
+    justify-content: ${({ shipping, simple }: StyledProps) => shipping || simple ? 'flex-start' : 'space-evenly'};
+  }
   ${({ small }: StyledProps) => small ? `
+    display: grid;
     grid-template-columns: repeat(auto-fit,minmax(142px, min-content));
     grid-gap: 22px;
+    @media (max-width: 700px) {
+      grid-template-columns: repeat(2, minmax(140px, min-content));
+      grid-gap: 20px;
+    }
   ` : ''}
-  @media (max-width: 700px) {
-    grid-template-columns: repeat(2, minmax(140px, min-content));
-    grid-gap: 20px;
-  }
+  ${({ grid }: StyledProps) => grid ? `
+    display: flex;
+    flex-flow: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-height: 600px;
+  ` : ''}
 `
 
 export const ViewAllAddresses = styled.div`

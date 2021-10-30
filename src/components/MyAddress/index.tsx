@@ -10,7 +10,16 @@ import {
   StyledCheckbox,
   StyledButton,
   EditButton,
-  SecondaryButtons
+  SecondaryButtons,
+  CardContainer,
+  CardText,
+  MapsDiv,
+  DataDiv,
+  CircleIcon,
+  TitleDiv,
+  ValueDiv,
+  PinIcon,
+  ButtonIcon
 } from './styledComponents'
 
 interface Props {
@@ -21,6 +30,8 @@ interface Props {
   zipCode: string
   country: string
   phone?: string
+  shipping?: boolean
+  simple?: boolean
   defaultBilling?: boolean
   defaultShipping?: boolean
   addressIndex?: number
@@ -43,6 +54,8 @@ const MyAddress = ({
   country,
   defaultBilling,
   defaultShipping,
+  shipping,
+  simple,
   addressIndex,
   phone,
   formatMessage,
@@ -69,12 +82,12 @@ const MyAddress = ({
     </StyledCheckbox>
   ) : (
       <SecondaryButtons>
-        <EditButton type="primary" onClick={handleOnEdit}>
-          {formatMessage(messages.edit)}
-        </EditButton>
         <StyledButton onClick={handleOnDelete}>
-          {formatMessage(messages.delete)}
+          <ButtonIcon type="delete" />{formatMessage(messages.delete)}
         </StyledButton>
+        <EditButton onClick={handleOnEdit}>
+          <ButtonIcon type="edit" />{formatMessage(messages.edit)}
+        </EditButton>
       </SecondaryButtons>
     )
   let footerMessageText
@@ -87,10 +100,16 @@ const MyAddress = ({
   }
   const footerMessage =
     showSecondaryButtons && footerMessageText ? (
-      <ItalicText>{formatMessage(footerMessageText)}</ItalicText>
+      <ItalicText><PinIcon theme="filled" type="pushpin" />{formatMessage(footerMessageText)}</ItalicText>
     ) : null
-  return (
-    <Container {...{ showSecondaryButtons, isSelected, small }}>
+
+  // tslint:disable-next-line: max-line-length
+  const shippingAddressName = street ? encodeURIComponent(`${street} ${zipCode} ${city} ${country}`) : ''
+  // tslint:disable-next-line: max-line-length
+  const shippingAddressMap = `https://maps.google.com/maps?width=100%25&height=600&hl=en&q=${shippingAddressName}&t=&z=14&ie=UTF8&iwloc=B&output=embed`
+
+  return (small || simple) ?
+    <Container {...{ showSecondaryButtons, isSelected, small, simple }}>
       <Text>{name}</Text>
       <Text>{street}</Text>
       {apartment && <Text>{apartment}</Text>}
@@ -101,7 +120,87 @@ const MyAddress = ({
       {footerMessage}
       {!hideBottomButtons ? buttons : null}
     </Container>
-  )
+  : 
+  <CardContainer {...{ showSecondaryButtons, isSelected, small, shipping }}>
+    <MapsDiv>
+      <iframe
+        width="100%"
+        height={shipping && !isSelected ? '0' : '200'}
+        frameborder="0"
+        scrolling="no"
+        marginheight="0"
+        marginwidth="0"
+        style={{ transition: 'all .25s' }}
+        allowfullscreen={true}
+        src={shippingAddressMap}
+      />
+    </MapsDiv>
+    <DataDiv>
+      <CircleIcon theme="filled"  type="environment"/>
+      <CardText>
+        <TitleDiv>
+          {formatMessage(messages.name)}
+        </TitleDiv>
+        <ValueDiv>
+          {name}
+        </ValueDiv>
+      </CardText>
+      <CardText>
+        <TitleDiv>
+          {formatMessage(messages.street)}
+        </TitleDiv>
+        <ValueDiv>
+          {street}
+        </ValueDiv>
+      </CardText>
+      {apartment && 
+        <CardText>
+          <TitleDiv>
+            {formatMessage(messages.apartment)}
+          </TitleDiv>
+          <ValueDiv>
+            {apartment}
+          </ValueDiv>
+        </CardText>
+      }
+      <CardText>
+        <TitleDiv>
+          {formatMessage(messages.city)}
+        </TitleDiv>
+        <ValueDiv>
+          {city}
+        </ValueDiv>
+      </CardText>
+      <CardText>
+        <TitleDiv>
+          {formatMessage(messages.zipCode)}
+        </TitleDiv>
+        <ValueDiv>
+          {zipCode}
+        </ValueDiv>
+      </CardText>
+      <CardText>
+        <TitleDiv>
+          {formatMessage(messages.country)}
+        </TitleDiv>
+        <ValueDiv>
+          {country}
+        </ValueDiv>
+      </CardText>
+      {!!phone &&
+        <CardText>
+          <TitleDiv>
+            {formatMessage(messages.phone)}
+          </TitleDiv>
+          <ValueDiv>
+            {phone}
+          </ValueDiv>
+        </CardText>
+      }
+      {footerMessage}
+      {!hideBottomButtons ? buttons : null}
+    </DataDiv>
+  </CardContainer>
 }
 
 export default MyAddress

@@ -40,7 +40,9 @@ export const BottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-right: 10%;
-
+  @media (max-width: 1024px) {
+    margin-right: 0;
+  }
   @media (max-width: 768px) {
     flex-wrap: wrap;
     margin-right: 0;
@@ -55,7 +57,7 @@ export const CardNumber = styled.div`
 
 export const InfoContainer = styled.div`
   @media (max-width: 768px) {
-    width: 50%;
+    width: 48%;
     margin-bottom: 20px;
   }
 `

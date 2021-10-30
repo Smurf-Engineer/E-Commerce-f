@@ -540,6 +540,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               <SubTitle>{formatMessage(messages.billingAddress)}</SubTitle>
               <MyAddress
                 hideBottomButtons={true}
+                simple={true}
                 name={`${billingFirstName} ${billingLastName}`}
                 street={billingStreet}
                 city={`${billingCity}, ${billingStateProvince}`}

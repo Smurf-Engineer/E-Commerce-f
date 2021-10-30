@@ -21,6 +21,34 @@ export default defineMessages({
     id: 'components.MyAddress.delete',
     defaultMessage: 'Delete'
   },
+  name: {
+    id: 'components.MyAddress.name',
+    defaultMessage: 'Name'
+  },
+  street: {
+    id: 'components.MyAddress.street',
+    defaultMessage: 'Street & Number'
+  },
+  apartment: {
+    id: 'components.MyAddress.apartment',
+    defaultMessage: 'Apartment'
+  },
+  zipCode: {
+    id: 'components.MyAddress.zipCode',
+    defaultMessage: 'ZIP Code'
+  },
+  city: {
+    id: 'components.MyAddress.city',
+    defaultMessage: 'City & State/Province'
+  },
+  country: {
+    id: 'components.MyAddress.country',
+    defaultMessage: 'Country'
+  },
+  phone: {
+    id: 'components.MyAddress.phone',
+    defaultMessage: 'Phone #'
+  },
   defaultShipping: {
     id: 'components.MyAddress.defaultShipping',
     defaultMessage: 'Default shipping address'

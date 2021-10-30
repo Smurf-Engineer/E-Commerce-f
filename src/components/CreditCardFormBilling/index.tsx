@@ -124,6 +124,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           changePage={this.handlechangePage}
           listForMyAccount={false}
           billingAddress={true}
+          simple={true}
           showForm={showBillingForm}
           showAddressFormAction={showBillingAddressFormAction}
           {...{
@@ -203,6 +204,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
               name={`${firstName} ${lastName}`}
               city={`${city}, ${stateProvince}`}
               addressIndex={-1}
+              simple={true}
               hideBottomButtons={true}
             />
           )) ||
