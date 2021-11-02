@@ -2,6 +2,7 @@ import { CartItems, PriceRange } from '../types/common'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
 import { VARIABLE_PRICE } from '../constants'
+import { CA_CURRENCY } from '../components/ResellerAbout/constants'
 
 export const getShoppingCartData = (
   shoppingCart: CartItems[],
@@ -21,6 +22,7 @@ export const getShoppingCartData = (
   let moreThanOneItem = false
   let upgradesTotal = 0
   let variablesTotal = 0
+  let youthTotal = 0
   if (shoppingCart) {
     shoppingCart.map((cartItem, index) => {
       const quantities = cartItem.itemDetails.map(itemDetail => {
@@ -137,7 +139,6 @@ export const getShoppingCartData = (
           : priceRange
 
       let youthDiscount = 0
-
       if (youthCombined) {
         const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
           if (item.size && item.size.isYouth) {
@@ -149,12 +150,24 @@ export const getShoppingCartData = (
         youthDiscount = priceRange.price * 0.15 * amountYouths
       }
 
+      if (currency === CA_CURRENCY) {
+        const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
+          if (item.size && item.size.isYouth) {
+            sum += item.quantity
+          }
+          return sum
+        // tslint:disable-next-line: align
+        }, 0)
+        youthTotal += priceRange.price * (youthCombined ? 0.85 : 1) * amountYouths
+      }
+
       // increase the total
       totalSum = totalSum + (priceRange.price * quantitySum) - youthDiscount
     })
   }
   return {
     total: totalSum,
+    youthTotal,
     weightSum,
     upgradesTotal,
     variablesTotal,

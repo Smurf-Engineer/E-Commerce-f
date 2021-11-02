@@ -399,7 +399,15 @@ class Checkout extends React.Component<Props, {}> {
       europeStripeAccount &&
       !preorder
 
-    const { total, totalWithoutDiscount, weightSum, symbol, upgradesTotal, variablesTotal } = shoppingCartData
+    const {
+      total,
+      totalWithoutDiscount,
+      youthTotal,
+      weightSum,
+      symbol,
+      upgradesTotal,
+      variablesTotal
+    } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
@@ -554,6 +562,7 @@ class Checkout extends React.Component<Props, {}> {
                 placingOrder={loadingPlaceOrder || paymentIntentLoading}
                 onPlaceOrder={this.handleOnPlaceOrder}
                 {...{
+                  youthTotal,
                   showOrderButton,
                   couponCode,
                   showDiscount,

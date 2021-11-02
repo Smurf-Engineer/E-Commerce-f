@@ -42,6 +42,7 @@ interface Props {
   taxShipQuery?: Data
   subsidiaryQuery?: SubsidiarySCA
   subtotal: number
+  youthTotal?: number
   shipping?: number
   totalWithoutDiscount?: number
   discount?: number
@@ -73,6 +74,7 @@ interface Props {
 const CheckoutSummary = ({
   paymentMethod,
   subtotal,
+  youthTotal,
   country,
   shipAddressCountry,
   weight,
@@ -145,7 +147,8 @@ const CheckoutSummary = ({
     country,
     productsPrices,
     upgrades,
-    variables
+    variables,
+    youthTotal
   )
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue

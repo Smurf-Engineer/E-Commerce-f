@@ -20,7 +20,8 @@ export const getTaxesAndDiscount = (
   country?: string,
   productsPrices?: ProductPrice[],
   upgrades: number = 0,
-  variables: number = 0
+  variables: number = 0,
+  youthTotal: number = 0 
 ) => {
   // get tax fee
   const taxesAmount = taxRates && taxRates.total
@@ -88,7 +89,7 @@ export const getTaxesAndDiscount = (
           // PST = (subtotal + proDesignReview - discountAmount) * pstRate%
           taxGst = (subtotal + proDesignFee + upgrades + variables + shippingTotal - realDiscount) * 
                     (taxRates.rateGst / 100)
-          taxPst = (subtotal + proDesignFee + upgrades + variables + shippingTotal - realDiscount) * 
+          taxPst = ((subtotal - youthTotal) + proDesignFee + upgrades + variables + shippingTotal - realDiscount) * 
                     (taxRates.ratePst / 100) // calculate tax
           taxGst = roundTaxes(taxGst) // round to 2 decimals
           taxPst = roundTaxes(taxPst) // round to 2 decimals
