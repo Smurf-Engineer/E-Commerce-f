@@ -72,6 +72,7 @@ const OrdersList = ({
               <Header>{formatMessage(messages.date)}</Header>
               <Header>{formatMessage(messages.estimatedDate)}</Header>
               <Header>{formatMessage(messages.tracking)}</Header>
+              <Header>{formatMessage(messages.amount)}</Header>
               <Header textAlign={'right'}>
                 {formatMessage(messages.status)}
               </Header>
@@ -105,6 +106,12 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
+              id={'total_amount'}
+              label={formatMessage(messages.amount)}
+              sort={orderBy === 'total_amount' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
               id={'status'}
               label={formatMessage(messages.status)}
               justifyContent={'flex-end'}
@@ -119,7 +126,7 @@ const OrdersList = ({
 
   const orderItems = orders.map(
     (
-      { shortId, date, estimatedDate, status, netsuite, service }: OrderHistory,
+      { shortId, date, estimatedDate, status, netsuite, service, totalAmount, currency }: OrderHistory,
       index: number
     ) => {
       const netsuiteObject = get(netsuite, 'orderStatus')
@@ -135,7 +142,8 @@ const OrdersList = ({
         <ItemOrder
           key={index}
           status={netsuiteStatus || status}
-          {...{ shortId, date, estimatedDate, onOrderClick, trackingNumber, service }}
+          currency={currency && currency.shortName ? currency.shortName.toUpperCase() : ''}
+          {...{ shortId, date, estimatedDate, onOrderClick, trackingNumber, service, totalAmount }}
         />
       )
     }
