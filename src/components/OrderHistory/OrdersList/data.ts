@@ -20,6 +20,10 @@ export const getOrdersQuery = gql`
         service
         estimatedDate: estimated_date
         status
+        currency {
+          shortName: short_name
+        }
+        totalAmount: total_amount
         teamstoreId: teamstore_id
         netsuite: netsuit_order {
           orderStatus {

@@ -11,6 +11,8 @@ interface Props {
   estimatedDate: string
   trackingNumber?: string
   status: string
+  totalAmount: number
+  currency: string
   service: string
   shortId: string
   onOrderClick: (shortId: string, isService?: boolean) => void
@@ -22,6 +24,8 @@ const ItemOrder = ({
   trackingNumber = '-',
   service,
   status,
+  totalAmount,
+  currency,
   shortId,
   onOrderClick
 }: Props) => {
@@ -34,6 +38,7 @@ const ItemOrder = ({
       <Cell>{date}</Cell>
       <Cell>{estimatedDate}</Cell>
       <Cell color={!service ? '#e61737' : ''}>{service || trackingNumber}</Cell>
+      <Cell>{currency} {totalAmount}</Cell>
       <Cell textAlign={'right'}>
         {upperFirst(status === INVOICE_SENT ? `${PAYMENT_ISSUE} (${INVOICE_SENT})` : status)}
       </Cell>

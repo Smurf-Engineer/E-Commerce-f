@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'components.OrdersList.tracking',
     defaultMessage: 'Tracking'
   },
+  amount: {
+    id: 'components.OrdersList.amount',
+    defaultMessage: 'Amount'
+  },
   status: {
     id: 'components.OrdersList.status',
     defaultMessage: 'Status'
