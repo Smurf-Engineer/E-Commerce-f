@@ -107,9 +107,9 @@ class SignUp extends React.Component<Props, StateProps> {
       selectedRegion = ''
     } = this.state
 
-    const countrySelected = selectedCountryName ? selectedCountryName : countryName
-    const countryCodeSelected = selectedCountry ? selectedCountry : countryCode
-    const regionSelected = selectedRegion ? selectedRegion : regionName
+    const countrySelected = selectedCountryName || countryName
+    const countryCodeSelected = selectedCountry || countryCode
+    const regionSelected = selectedRegion || regionName
     const showCountrySelector = !countryName || countryCode === 'US' || countryCode === 'CA'
     const showProvinceSelector = ((countryCode === 'US' || countryCode === 'CA') && !selectedCountry)
       || (selectedCountry === 'US' || selectedCountry === 'CA')
@@ -326,9 +326,9 @@ class SignUp extends React.Component<Props, StateProps> {
       last_name: lastName,
       password,
       newsletter_subscribed: newsLetter,
-      country_code: selectedCountry ? selectedCountry : countryCode,
-      country_name: selectedCountryName ? selectedCountryName : countryName,
-      region_name: selectedRegion ? selectedRegion : regionName,
+      country_code: selectedCountry || countryCode,
+      country_name: selectedCountryName || countryName,
+      region_name: selectedRegion || regionName,
       city: (selectedRegion === regionName && city) ? city : ''
     }
 
