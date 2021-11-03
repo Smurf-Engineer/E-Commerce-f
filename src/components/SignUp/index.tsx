@@ -92,7 +92,7 @@ class SignUp extends React.Component<Props, StateProps> {
       countryName,
       countryCode,
       regionName,
-      city
+      city = ''
     } = this.props
     const {
       name,
@@ -115,7 +115,6 @@ class SignUp extends React.Component<Props, StateProps> {
       || (selectedCountry === 'US' || selectedCountry === 'CA')
     const showSignupForm = !!countrySelected && (!showProvinceSelector || (showProvinceSelector && !!selectedRegion))
 
-    console.log('test::region = ', selectedRegion)
     return (
       <Container>
         <SocialMediaContainer>
@@ -162,12 +161,12 @@ class SignUp extends React.Component<Props, StateProps> {
               {...{
                 requestClose,
                 formatMessage,
-                city
               }}
               regionName={regionSelected}
               countryName={countrySelected}
               initialCountryCode={countryCodeSelected}
               countryCode={countryCodeSelected}
+              city={regionSelected === regionName ? city : ''}
             />
           }
         </SocialMediaContainer>
@@ -330,7 +329,7 @@ class SignUp extends React.Component<Props, StateProps> {
       country_code: selectedCountry ? selectedCountry : countryCode,
       country_name: selectedCountryName ? selectedCountryName : countryName,
       region_name: selectedRegion ? selectedRegion : regionName,
-      city
+      city: (selectedRegion === regionName && city) ? city : ''
     }
 
     if (!validateEmail(email.toLowerCase())) {
