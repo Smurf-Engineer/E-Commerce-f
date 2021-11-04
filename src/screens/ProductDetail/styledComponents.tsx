@@ -203,7 +203,7 @@ export const ToneButton = styled.img`
 `
 
 export const ModelContainer = styled.div`
-  background: white;
+  background: #4a4a4a;
   display: flex;
   justify-content: space-around;
   align-items: center;
