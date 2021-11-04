@@ -1217,7 +1217,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {itemLabels[itemStatus] || formatMessage(messages.inDesign)}
                 </StatusLabel>
               }
-              {designToApply || outputPng &&
+              {(!!designToApply || readyToShow) &&
                 <PrintPreviewLabel selected={openPrintPreview} onClick={this.openPreview}>
                   <PrintPreviewIcon src={printPreviewImg} />
                 </PrintPreviewLabel>
