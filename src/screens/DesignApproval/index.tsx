@@ -16,6 +16,7 @@ import Button from 'antd/lib/button'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
+import printPreviewImg from '../../assets/printpreview.svg'
 import messageSent from '../../assets/message_sent.wav'
 import colorIcon from '../../assets/color_white.svg'
 import viewDesignsIcon from '../../assets/view_designs_icon.svg'
@@ -172,7 +173,14 @@ import {
   UsedSquare,
   LabelSquare,
   AvailableSquare,
-  PaidLabel
+  PaidLabel,
+  PrintPreviewIcon,
+  PrintPreviewLabel,
+  PreviewDiv,
+  CloseIcon,
+  PreviewImg,
+  DownloadDiv,
+  DownloadIcon
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -301,7 +309,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     itemToAdd: {},
     designToApply: '',
     selectedVariant: -1,
-    retryLoad: false
+    retryLoad: false,
+    openPrintPreview: false
   }
   private listMsg: any
   private chatDiv: any
@@ -778,6 +787,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     openQuickView(productId, null, undefined, true)
   }
 
+  openPreview = () => {
+    const { openPrintPreview } = this.state
+    this.setState({ openPrintPreview: !openPrintPreview })
+  }
+
   render() {
     const {
       fontsData,
@@ -809,7 +823,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       designToApply,
       openAddToStoreModal,
       teamStoreId,
-      selectedVariant
+      selectedVariant,
+      openPrintPreview
     } = this.state
     const currency = currentCurrency || config.defaultCurrency
     const fontList: Font[] = get(fontsData, 'fonts', [])
@@ -1202,6 +1217,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   {itemLabels[itemStatus] || formatMessage(messages.inDesign)}
                 </StatusLabel>
               }
+              {designToApply || outputPng &&
+                <PrintPreviewLabel selected={openPrintPreview} onClick={this.openPreview}>
+                  <PrintPreviewIcon src={printPreviewImg} />
+                </PrintPreviewLabel>
+              }
+              <PreviewDiv selected={openPrintPreview}>
+                <DownloadDiv onClick={this.openFile(designToApply || outputPng)}>
+                  {formatMessage(messages.download)}
+                  <DownloadIcon type="download" />
+                </DownloadDiv>
+                <CloseIcon onClick={this.openPreview} type="cross" />
+                <PreviewImg src={designToApply || outputPng} />
+              </PreviewDiv>
               <ButtonsContainer>
                 {readyToShow &&
                   <ButtonWrapper secondary={true}>

@@ -278,6 +278,108 @@ export const StatusLabel = styled.div`
   width: 100%;
 `
 
+export const PrintPreviewLabel = styled.div`
+  z-index: 10;
+  max-width: 124px;
+  width: 100%;
+  right: 0px;
+  position: absolute;
+  top: 83px;
+  padding: 8px;
+  background: ${WHITE};
+  border-radius: 5px;
+  border-top-right-radius: 0px
+  border-bottom-right-radius: 0px
+  box-shadow: 1px 1px 3px 0px #a7a7a7;
+  transition: all .25s;
+  ${({ selected }: RowProps) => selected ? `
+    box-shadow: inset 1px 1px 4px 0px #9f9f9f;
+    background: #ebebeb;
+  ` : ''}
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+  @media (max-width: 768px) {
+    top: 128px;
+    right: -16px;
+  }
+`
+
+export const PrintPreviewIcon = styled.img`
+  max-width: 86px;
+`
+
+export const PreviewDiv = styled.div`
+  z-index: 13;
+  height: calc(100% - 72px);
+  background: ${WHITE};
+  top: 60px;
+  padding: 32px 12px;
+  padding-bottom: 8px;
+  position: absolute;
+  border-radius: 3px;
+  box-shadow: 1px 2px 7px 0px #a7a7a7;
+  transition: all .25s;
+  display: ${({ selected }: RowProps) => selected ? 'auto' : 'none'};
+  animation: fade-in-right 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in-right {
+    0% {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @media (max-width: 1023px) {
+    margin: 0 28px;
+    max-height: calc(100% - 158px);
+    height: auto;
+  }
+`
+
+export const DownloadDiv = styled.div`
+  display: flex;
+  align-items: center;
+  align-self: center;
+  position: absolute;
+  top: 14px;
+  left: calc(50% - 50px);
+  z-index: 17;
+  color: ${BLUE};
+  text-decoration: underline;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`
+
+export const DownloadIcon = styled(Icon)`
+  margin-left: 6px;
+`
+
+export const CloseIcon = styled(Icon)`
+  right: 15px;
+  position: absolute;
+  top: 15px;
+  font-size: 16px;
+  &:hover {
+    cursor: pointer;
+  }
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+`
+
+export const PreviewImg = styled.img`
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+`
+
 export const Layouts = styled.div`
   display: flex;
   @media (max-width: 1023px) {
@@ -829,7 +931,7 @@ export const LayoutRight = styled.div`
   flex: 1;
   position: relative;
   display: flex;
-  flex-flow: column;
+  justify-content: center;
 `
 
 export const Products = styled.div`
