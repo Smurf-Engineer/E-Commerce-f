@@ -805,7 +805,6 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       approveLoading,
       note,
       history,
-      user,
       dataVariants,
       predyedData,
       uploadingFile,
@@ -1115,18 +1114,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           }
           <RequestEdit
             disabled={itemStatus !== CUSTOMER_PREVIEW}
-            onClick={requestedEdits >= limitRequests ?
-              (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
-                this.openPurchaseModal : this.handleOpenRequest) :
-              this.handleOpenRequest
-            }
+            onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
           >
             <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-              {formatMessage(messages[requestedEdits >= limitRequests ?
-                (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
-                  'purchaseMore' : 'requestEdit') :
-                'requestEdit'
-              ])}
+              {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
             </RequestText>
             {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
           </RequestEdit>
@@ -1310,18 +1301,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </ApproveButton>
                 <RequestEdit
                   disabled={itemStatus !== CUSTOMER_PREVIEW}
-                  onClick={requestedEdits >= limitRequests ?
-                    (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
-                      this.openPurchaseModal : this.handleOpenRequest) :
-                    this.handleOpenRequest
-                  }
+                  onClick={requestedEdits >= limitRequests ? this.openPurchaseModal : this.handleOpenRequest}
                 >
                   <RequestText secondary={itemStatus !== CUSTOMER_PREVIEW}>
-                    {formatMessage(messages[requestedEdits >= limitRequests ?
-                      (user && (user.id === 'rydjiGhdm' || user.id === 'H1R0yFr0V') ?
-                        'purchaseMore' : 'requestEdit') :
-                      'requestEdit'
-                    ])}
+                    {formatMessage(messages[requestedEdits >= limitRequests ? 'purchaseMore' : 'requestEdit'])}
                   </RequestText>
                   {requestedEdits < limitRequests && <EditsLabel>{requestedEdits} of {limitRequests}</EditsLabel>}
                 </RequestEdit>
