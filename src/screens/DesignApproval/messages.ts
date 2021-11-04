@@ -212,6 +212,10 @@ export default defineMessages({
     id: 'screens.DesignApproval.reply',
     defaultMessage: 'Reply'
   },
+  download: {
+    id: 'screens.DesignApproval.download',
+    defaultMessage: 'Download file'
+  },
   sizeError: {
     id: 'screens.DesignApproval.sizeError',
     defaultMessage: 'File must be smaller than 20MB!'
