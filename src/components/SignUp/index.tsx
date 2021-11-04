@@ -33,6 +33,7 @@ import {
 import messages from './messages'
 import { validateEmail } from '../../utils/utilsFunctions'
 import CountrySelect from '../CountrySelect'
+import RegionSelect from '../RegionSelect'
 import { countriesQuery } from './data'
 import { QueryProps, Country } from '../../types/common'
 
@@ -63,6 +64,8 @@ interface StateProps {
   selectedCountry: string | undefined
   selectedCountryName: string | undefined
   selectedCountryId: string | undefined
+  selectedRegion: string | undefined
+  selectedRegionCode: string | undefined
 }
 
 class SignUp extends React.Component<Props, StateProps> {
@@ -75,7 +78,9 @@ class SignUp extends React.Component<Props, StateProps> {
     newsLetter: false,
     selectedCountry: '',
     selectedCountryName: '',
-    selectedCountryId: ''
+    selectedCountryId: '',
+    selectedRegion: '',
+    selectedRegionCode: ''
   }
   render() {
     const {
@@ -87,7 +92,7 @@ class SignUp extends React.Component<Props, StateProps> {
       countryName,
       countryCode,
       regionName,
-      city
+      city = ''
     } = this.props
     const {
       name,
@@ -98,11 +103,18 @@ class SignUp extends React.Component<Props, StateProps> {
       newsLetter,
       selectedCountry = '',
       selectedCountryId = '',
-      selectedCountryName = ''
+      selectedCountryName = '',
+      selectedRegion = ''
     } = this.state
 
-    const countrySelected = countryName ? countryName : selectedCountryName
-    const countryCodeSelected = countryCode ? countryCode : selectedCountry
+    const countrySelected = selectedCountryName || countryName
+    const countryCodeSelected = selectedCountry || countryCode
+    const regionSelected = selectedRegion || regionName
+    const showCountrySelector = !countryName || countryCode === 'US' || countryCode === 'CA'
+    const showProvinceSelector = ((countryCode === 'US' || countryCode === 'CA') && !selectedCountry)
+      || (selectedCountry === 'US' || selectedCountry === 'CA')
+    const showSignupForm = !!countrySelected && (!showProvinceSelector || (showProvinceSelector && !!selectedRegion))
+
     return (
       <Container>
         <SocialMediaContainer>
@@ -110,8 +122,8 @@ class SignUp extends React.Component<Props, StateProps> {
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          {!countryName &&
-            <CountryContainer {...{ countrySelected }}>
+          {showCountrySelector && <>
+            <CountryContainer>
               <Label>{formatMessage(messages.countryLabel)}</Label>
               <CountrySelect
                 {...{ formatMessage }}
@@ -125,24 +137,40 @@ class SignUp extends React.Component<Props, StateProps> {
                 countries={data.countries}
               />
             </CountryContainer>
-          }
-          {!!countrySelected &&
+          </>}
+          {showProvinceSelector && <>
+            <CountryContainer {...{ countrySelected }}>
+              <Label>{formatMessage(messages.regionLabel)}</Label>
+              <RegionSelect
+                {...{ formatMessage }}
+                country={selectedCountryId}
+                countryName={selectedCountryName}
+                region={
+                  selectedRegion
+                    ? `${selectedRegion}`
+                    : undefined
+                }
+                handleRegionChange={this.handleRegionChange}
+              />
+            </CountryContainer>
+          </>}
+          {showSignupForm &&
             <FacebookGmailLogin
               signUpView={true}
               handleLogin={login}
               {...{
                 requestClose,
                 formatMessage,
-                regionName,
-                city
               }}
+              regionName={regionSelected}
               countryName={countrySelected}
               initialCountryCode={countryCodeSelected}
               countryCode={countryCodeSelected}
+              city={regionSelected === regionName ? city : ''}
             />
           }
         </SocialMediaContainer>
-        {!!countrySelected &&
+        {showSignupForm &&
           <>
             <HaveAnAccountRow>
               {formatMessage(messages.haveAccount)}
@@ -222,7 +250,9 @@ class SignUp extends React.Component<Props, StateProps> {
       newsLetter: false,
       selectedCountry: '',
       selectedCountryId: '',
-      selectedCountryName: ''
+      selectedCountryName: '',
+      selectedRegion: '',
+      selectedRegionCode: ''
     })
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -244,6 +274,15 @@ class SignUp extends React.Component<Props, StateProps> {
     })
   }
 
+  handleRegionChange = (
+    value: any, regionCode: string
+  ) => {
+    this.setState({
+      selectedRegion: value,
+      selectedRegionCode: regionCode
+    })
+  }
+
   toggleCheckbox = () => {
     const { newsLetter } = this.state
     this.setState({ newsLetter: !newsLetter })
@@ -258,16 +297,17 @@ class SignUp extends React.Component<Props, StateProps> {
       repeatPassword,
       newsLetter,
       selectedCountry = '',
-      selectedCountryName = ''
+      selectedCountryName = '',
+      selectedRegion = ''
     } = this.state
     const {
       signUpUser,
       formatMessage,
       closeSignUp,
       login,
-      countryName,
-      countryCode,
-      regionName,
+      countryName = '',
+      countryCode = '',
+      regionName = '',
       city
     } = this.props
 
@@ -286,10 +326,10 @@ class SignUp extends React.Component<Props, StateProps> {
       last_name: lastName,
       password,
       newsletter_subscribed: newsLetter,
-      country_code: countryCode ? countryCode : selectedCountry,
-      country_name: countryName ? countryName : selectedCountryName,
-      region_name: regionName,
-      city
+      country_code: selectedCountry || countryCode,
+      country_name: selectedCountryName || countryName,
+      region_name: selectedRegion || regionName,
+      city: (selectedRegion === regionName && city) ? city : ''
     }
 
     if (!validateEmail(email.toLowerCase())) {
