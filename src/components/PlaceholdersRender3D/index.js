@@ -742,7 +742,7 @@ class Render3D extends PureComponent {
           /* Back material */
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
-            color: WHITE
+            color: new THREE.Color('#fafafa')
           })
 
           // Setup the texture layers
