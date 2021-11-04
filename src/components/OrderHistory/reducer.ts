@@ -13,7 +13,7 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   currentPage: 1,
-  orderBy: 'id',
+  orderBy: 'short_id',
   sort: 'desc',
   orderId: '',
   isService: false
