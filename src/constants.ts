@@ -76,6 +76,9 @@ export const itemLabels = {
   [IN_DESIGN]: 'In Design'
 }
 
+// Discount types
+export const FREE_SHIP = 'Free Ship'
+
 /* Link Types */
 export const LINK_TYPE_ROUTE = 'route'
 export const LINK_TYPE_URL = 'url'

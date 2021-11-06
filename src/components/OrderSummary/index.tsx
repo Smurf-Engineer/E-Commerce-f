@@ -25,11 +25,13 @@ import {
   InvoiceLink,
   InvoiceIcon,
   TaxDiv,
-  PercentDiv
+  PercentDiv,
+  ShippingValue
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
 import moment from 'moment'
+import { FREE_SHIP } from '../../constants'
 
 interface Props {
   onlyRead?: boolean
@@ -74,6 +76,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       formatMessage,
       showCouponInput,
       onlyRead,
+      couponCode,
       invoiceLink,
       variables = 0,
       showDiscount = true,
@@ -92,7 +95,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       couponName = '',
       admin = false
     } = this.props
-
+    const freeShipping = couponCode && couponCode.freeShipping
     const extraFee = proDesignReview + taxFee + taxPst + taxGst + shippingTotal + upgrades + variables
     const symbol = currencySymbol || '$'
     const saved =
@@ -111,7 +114,10 @@ export class OrderSummary extends React.Component<Props, {}> {
       (!onlyRead && discount > 0)
     const realDiscount = discount > subtotal ? subtotal : discount
     const taxPercent = taxFee > 0 ? 
-      taxFee / (shippingTotal + upgrades + variables + proDesignReview + subtotal - realDiscount) : 0
+      taxFee / 
+        ((freeShipping ? 0 : shippingTotal) + upgrades + variables + proDesignReview + subtotal - realDiscount) 
+      : 0
+    const discountValue = freeShipping ? discount + shippingTotal : discount
     return (
       <Container>
         {invoiceLink &&
@@ -158,7 +164,17 @@ export class OrderSummary extends React.Component<Props, {}> {
               <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
-          {discount > 0 && (
+          {freeShipping &&
+            <OrderItem hide={!shippingTotal}>
+              <FormattedMessage
+                {...messages[couponCode && couponCode.type !== FREE_SHIP ? 'freeShipping' : 'shipping']}
+              />
+              <ShippingValue crossed={couponCode && couponCode.type !== FREE_SHIP}>
+                {`${symbol} ${shippingTotal.toFixed(2)}`}
+              </ShippingValue>
+            </OrderItem>
+          }
+          {discountValue > 0 && (
             <OrderItem>
               <FlexWrapper>
                 <div>{formatMessage(messages.discountLabel)}</div>
@@ -169,7 +185,7 @@ export class OrderSummary extends React.Component<Props, {}> {
                 )}
               </FlexWrapper>
               <DiscountAmout>
-                {`- ${symbol} ${discount.toFixed(2)}`}
+                {`- ${symbol} ${discountValue.toFixed(2)}`}
               </DiscountAmout>
             </OrderItem>
           )}
@@ -182,10 +198,12 @@ export class OrderSummary extends React.Component<Props, {}> {
             </OrderItem>
           )}
           {/* shipping */}
-          <OrderItem hide={!shippingTotal}>
-            <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
-          </OrderItem>
+          {!freeShipping &&
+            <OrderItem hide={!shippingTotal}>
+              <FormattedMessage {...messages.shipping} />
+              <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+            </OrderItem>
+          }
           {/* taxes */}
           <OrderItem hide={!taxFee}>
             <TaxDiv>

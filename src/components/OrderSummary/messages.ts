@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'screens.ShoppingCartPage.shipping',
     defaultMessage: 'Shipping'
   },
+  freeShipping: {
+    id: 'screens.ShoppingCartPage.freeShipping',
+    defaultMessage: 'Free Shipping'
+  },
   zipCodePlaceholder: {
     id: 'screens.ShoppingCartPage.zipCodePlaceholder',
     defaultMessage: 'Zip/Postal Code'

@@ -60,6 +60,8 @@ export const getTaxesAndDiscount = (
     }
   }
 
+  const freeShipping = couponCode && couponCode.freeShipping
+
   discount = roundDecimals(discount) // round to 2 decimals
   // taxes
   let taxGst = 0
@@ -74,7 +76,7 @@ export const getTaxesAndDiscount = (
         // for USA the tax is calculated with this formula (subtotal + proDesignReview - discountAmount) * taxRate%
         if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
           taxTotal =
-            (subtotal + proDesignFee + upgrades + variables + shippingTotal - realDiscount) *
+            (subtotal + proDesignFee + upgrades + variables + (freeShipping ? 0 : shippingTotal) - realDiscount) *
             (taxesAmount / 100) // calculate tax
           taxFee = roundTaxes(taxTotal) // round to 2 decimals
         }
@@ -87,10 +89,13 @@ export const getTaxesAndDiscount = (
           // for CANADA the taxes are calculated
           // GST = ((subtotal + proDesignReview - discountAmount) * gstRate%) + (shipping * shippingRate%)
           // PST = (subtotal + proDesignReview - discountAmount) * pstRate%
-          taxGst = (subtotal + proDesignFee + upgrades + variables + shippingTotal - realDiscount) * 
-                    (taxRates.rateGst / 100)
-          taxPst = ((subtotal - youthTotal) + proDesignFee + upgrades + variables + shippingTotal - realDiscount) * 
-                    (taxRates.ratePst / 100) // calculate tax
+          taxGst = 
+            (subtotal + proDesignFee + upgrades + variables + (freeShipping ? 0 : shippingTotal) - realDiscount) * 
+            (taxRates.rateGst / 100)
+          taxPst = (
+            (subtotal - youthTotal) + proDesignFee + upgrades + variables + 
+            (freeShipping ? 0 : shippingTotal) - realDiscount) * 
+            (taxRates.ratePst / 100) // calculate tax
           taxGst = roundTaxes(taxGst) // round to 2 decimals
           taxPst = roundTaxes(taxPst) // round to 2 decimals
         }
@@ -106,7 +111,8 @@ export const getTaxesAndDiscount = (
     taxVat,
     taxVatTotal,
     taxesAmount,
-    discount
+    discount,
+    freeShipping
   }
 }
 

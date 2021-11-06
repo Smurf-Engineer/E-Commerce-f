@@ -65,6 +65,7 @@ export const Divider = styled.div`
 interface DisplayProps {
   hide?: boolean
   secondary?: boolean
+  crossed?: boolean
 }
 
 export const OrderItem = styled.div`
@@ -77,6 +78,10 @@ export const OrderItem = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
+`
+
+export const ShippingValue = styled.div`
+  text-decoration: ${({ crossed }: DisplayProps) => crossed ? 'line-through' : 'unset'};
 `
 
 export const FlexWrapper = styled.div`

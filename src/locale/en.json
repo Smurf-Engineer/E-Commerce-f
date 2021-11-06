@@ -1683,6 +1683,7 @@
   "screens.ShoppingCartPage.taxes": "Taxes",
   "screens.ShoppingCartPage.variables": "Personalization",
   "screens.ShoppingCartPage.shipping": "Shipping",
+  "screens.ShoppingCartPage.freeShipping": "Free Shipping",
   "screens.ShoppingCartPage.youSaved": "You Saved {percent}%",
   "screens.ShoppingCartPage.total": "Total",
   "screens.ShoppingCartPage.estimate": "Estimate",

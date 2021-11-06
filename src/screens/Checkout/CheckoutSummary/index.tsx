@@ -135,7 +135,8 @@ const CheckoutSummary = ({
     taxFee,
     taxVat,
     taxVatTotal,
-    discount: discountValue
+    discount: discountValue,
+    freeShipping
   } = getTaxesAndDiscount(
     countrySubsidiary,
     shippingAddressCountry,
@@ -159,7 +160,7 @@ const CheckoutSummary = ({
     totalSum =
       subtotal / (1 + taxVatTotal) +
       taxVat +
-      shippingTotal +
+      (freeShipping ? 0 : shippingTotal) +
       upgrades +
       variables +
       proDesignFee -
@@ -170,7 +171,7 @@ const CheckoutSummary = ({
       upgrades +
       variables +
       proDesignFee +
-      shippingTotal +
+      (freeShipping ? 0 : shippingTotal) +
       taxFee +
       taxGst +
       taxPst -
