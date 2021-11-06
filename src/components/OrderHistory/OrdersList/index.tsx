@@ -82,9 +82,9 @@ const OrdersList = ({
         return (
           <Row>
             <HeaderTable
-              id={'id'}
+              id={'short_id'}
               label={formatMessage(messages.orderNumber)}
-              sort={orderBy === 'id' ? sort : 'none'}
+              sort={orderBy === 'short_id' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable

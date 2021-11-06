@@ -115,7 +115,7 @@ class OrderHistory extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const langProps = state.get('languageProvider').toJS()
   const orderHistory = state.get('orderHistory').toJS()
-  return {...orderHistory, ...langProps}
+  return { ...orderHistory, ...langProps }
 }
 
 const OrderHistoryEnhance = compose(
