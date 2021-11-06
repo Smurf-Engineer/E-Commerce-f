@@ -42,6 +42,7 @@ interface Props {
   taxShipQuery?: Data
   subsidiaryQuery?: SubsidiarySCA
   subtotal: number
+  youthTotal?: number
   shipping?: number
   totalWithoutDiscount?: number
   discount?: number
@@ -73,6 +74,7 @@ interface Props {
 const CheckoutSummary = ({
   paymentMethod,
   subtotal,
+  youthTotal,
   country,
   shipAddressCountry,
   weight,
@@ -133,7 +135,8 @@ const CheckoutSummary = ({
     taxFee,
     taxVat,
     taxVatTotal,
-    discount: discountValue
+    discount: discountValue,
+    freeShipping
   } = getTaxesAndDiscount(
     countrySubsidiary,
     shippingAddressCountry,
@@ -145,7 +148,8 @@ const CheckoutSummary = ({
     country,
     productsPrices,
     upgrades,
-    variables
+    variables,
+    youthTotal
   )
   const discount =
     discountValue > totalWithoutDiscount ? totalWithoutDiscount : discountValue
@@ -156,7 +160,7 @@ const CheckoutSummary = ({
     totalSum =
       subtotal / (1 + taxVatTotal) +
       taxVat +
-      shippingTotal +
+      (freeShipping ? 0 : shippingTotal) +
       upgrades +
       variables +
       proDesignFee -
@@ -167,7 +171,7 @@ const CheckoutSummary = ({
       upgrades +
       variables +
       proDesignFee +
-      shippingTotal +
+      (freeShipping ? 0 : shippingTotal) +
       taxFee +
       taxGst +
       taxPst -

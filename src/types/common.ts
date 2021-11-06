@@ -1066,6 +1066,8 @@ export interface OrderDataInfo {
   teamStoreName?: string
   teamStoreId?: string
   coupon?: string
+  couponType?: string
+  freeShipping?: boolean
 }
 
 export interface TextFormat {
@@ -1597,6 +1599,7 @@ export interface Colors {
 export interface CouponCode {
   code: string
   type: couponType
+  freeShipping?: boolean
   discountAmount?: string
   rate?: string
   restrictionType?: string
@@ -1611,7 +1614,7 @@ export interface Message {
 export interface Index {
   index: number
 }
-type couponType = '%' | 'flat'
+type couponType = '%' | 'flat' | 'Free Ship'
 
 export interface Font {
   id?: number

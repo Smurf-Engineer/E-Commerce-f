@@ -213,6 +213,8 @@ export const getOrderQuery = gql`
       onDemand: on_demand_mode
       email
       coupon: coupon_code
+      couponType: coupon_type
+      freeShipping: free_shipping
     }
   }
 `

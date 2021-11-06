@@ -163,6 +163,8 @@ export const getOrderQuery = gql`
       lastDrop: last_drop
       teamStoreName: teamstore_name
       coupon: coupon_code
+      couponType: coupon_type
+      freeShipping: free_shipping
     }
   }
 `

@@ -271,7 +271,9 @@ export class OrderDetails extends React.Component<Props, {}> {
       lastDrop,
       canUpdatePayment,
       onDemand,
-      coupon
+      coupon,
+      couponType,
+      freeShipping
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
@@ -478,6 +480,7 @@ export class OrderDetails extends React.Component<Props, {}> {
                 currencySymbol={currency.shortName}
                 proDesignReview={proDesign && PRO_DESIGN_FEE}
                 couponName={coupon}
+                couponCode={{ type: couponType, freeShipping }}
                 invoiceLink={!showPaymentIssue ? invoiceLink : ''}
                 {...{
                   formatMessage,

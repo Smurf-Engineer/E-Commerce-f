@@ -185,6 +185,8 @@ class OrderData extends React.Component<Props, {}> {
           street,
           phone,
           city,
+          freeShipping,
+          couponType,
           invoiceTerms,
           stateProvince,
           zipCode,
@@ -455,6 +457,7 @@ class OrderData extends React.Component<Props, {}> {
               youSaved={!!coupon && discount}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
               couponName={coupon}
+              couponCode={{ type: couponType, freeShipping }}
               {...{
                 formatMessage,
                 taxGst,

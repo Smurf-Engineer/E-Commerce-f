@@ -9,6 +9,7 @@ export const applyPromoCodeMutation = graphql(
         discountAmount
         type
         rate
+        freeShipping
         restrictionType
         products
       }
