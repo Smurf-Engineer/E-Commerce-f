@@ -95,7 +95,7 @@ export default defineMessages({
   },
   proDesigner: {
     id: 'screens.ShoppingCartPage.proDesigner',
-    defaultMessage: 'Design Fee'
+    defaultMessage: 'Design Check'
   },
   couponApplied: {
     id: 'screens.Checkout.couponApplied',
