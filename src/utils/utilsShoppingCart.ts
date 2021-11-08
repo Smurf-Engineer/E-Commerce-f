@@ -2,11 +2,12 @@ import { CartItems, PriceRange } from '../types/common'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
 import { VARIABLE_PRICE } from '../constants'
-import { CA_CURRENCY } from '../components/ResellerAbout/constants'
+import { COUNTRY_CODE_CANADA } from '../screens/Checkout/constants'
 
 export const getShoppingCartData = (
   shoppingCart: CartItems[],
-  currency: string
+  currency: string,
+  shippingCountry?: string
 ) => {
   let totalSum = 0
   let weightSum = 0
@@ -150,7 +151,7 @@ export const getShoppingCartData = (
         youthDiscount = priceRange.price * 0.15 * amountYouths
       }
 
-      if (currency === CA_CURRENCY) {
+      if (shippingCountry && shippingCountry.toLocaleLowerCase() === COUNTRY_CODE_CANADA) {
         const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
           if (item.size && item.size.isYouth) {
             sum += item.quantity

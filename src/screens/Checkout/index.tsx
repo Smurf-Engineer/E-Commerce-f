@@ -387,7 +387,8 @@ class Checkout extends React.Component<Props, {}> {
 
     const shoppingCartData = getShoppingCartData(
       shoppingCart,
-      currentCurrency || config.defaultCurrency
+      currentCurrency || config.defaultCurrency,
+      shippingAddress ? shippingAddress.country : ''
     )
     const europeStripeAccount = EU_SUBSIDIARY_COUNTRIES.includes(
       billingCountry.toLowerCase()
