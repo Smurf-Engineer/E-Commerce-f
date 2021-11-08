@@ -151,7 +151,7 @@ export const getShoppingCartData = (
         youthDiscount = priceRange.price * 0.15 * amountYouths
       }
 
-      if (shippingCountry && shippingCountry.toLocaleLowerCase() === COUNTRY_CODE_CANADA) {
+      if (shippingCountry && shippingCountry.toLowerCase() === COUNTRY_CODE_CANADA) {
         const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
           if (item.size && item.size.isYouth) {
             sum += item.quantity
