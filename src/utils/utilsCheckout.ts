@@ -97,7 +97,7 @@ export const getTaxesAndDiscount = (
             (freeShipping ? 0 : shippingTotal) - realDiscount) * 
             (taxRates.ratePst / 100) // calculate tax
           taxGst = roundTaxes(taxGst) // round to 2 decimals
-          taxPst = roundTaxes(taxPst) // round to 2 decimals
+          taxPst = roundTaxes(taxPst > 0 ? taxPst : 0) // round to 2 decimals
         }
         break
       default:

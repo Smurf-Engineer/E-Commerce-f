@@ -11,6 +11,10 @@ export const getOrderQuery = gql`
       shortId: short_id
       charge_id
       netsuit_order_id
+      userId: user_id
+      resellerComission:reseller_comission
+      resellerInline: reseller_inline
+      resellerMargin: reseller_margin
       cutoffDate: cutoff_date
       paymentMethod: payment_method
       invoiceTerms: invoice_terms
@@ -183,6 +187,7 @@ export const getOrderQuery = gql`
           quantity
         }
         designId
+        designOwner
         unitPrice
         variableOne
         variableTwo
