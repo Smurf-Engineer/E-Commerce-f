@@ -28,16 +28,16 @@ export const getTaxesAndDiscount = (
 
   let discount = 0
   let taxVatTotal = 0
-
+  let discountPst = 0
   if (couponCode) {
     const { type, rate, restrictionType, products = [] } = couponCode
     const restrictions = restrictionType ? restrictionType.split(',') : []
-
     switch (type) {
       case PERCENTAGE_PROMO: // '%'
         if (!restrictions.includes(DESIGN)) {
           // calculate discount with (subtotal + proDesignFee) * percentageDiscount
           discount = (subtotal + proDesignFee + upgrades + variables) * (Number(rate) / 100)
+          discountPst = (subtotal - youthTotal + proDesignFee + upgrades + variables) * (Number(rate) / 100)
         } else {
           discount = productsPrices.reduce((totalDiscount: number, design) => {
             if (!products.includes(design.designId)) {
@@ -50,10 +50,12 @@ export const getTaxesAndDiscount = (
             )
             // tslint:disable-next-line: align
           }, 0)
+          discountPst = discount
         }
         break
       case FLAT_PROMO: // 'flat
         discount = Number(rate)
+        discountPst = Number(rate)
         break
       default:
         break
@@ -71,6 +73,7 @@ export const getTaxesAndDiscount = (
   if (taxesAmount && country) {
     let taxTotal = 0
     const realDiscount = discount > subtotal ? subtotal : discount
+    const realPstDiscount = discountPst > subtotal ? subtotal : discountPst
     switch (countrySubsidiary.toLowerCase()) {
       case COUNTRY_CODE_US:
         // for USA the tax is calculated with this formula (subtotal + proDesignReview - discountAmount) * taxRate%
@@ -94,7 +97,7 @@ export const getTaxesAndDiscount = (
             (taxRates.rateGst / 100)
           taxPst = (
             (subtotal - youthTotal) + proDesignFee + upgrades + variables + 
-            (freeShipping ? 0 : shippingTotal) - realDiscount) * 
+            (freeShipping ? 0 : shippingTotal) - realPstDiscount) * 
             (taxRates.ratePst / 100) // calculate tax
           taxGst = roundTaxes(taxGst) // round to 2 decimals
           taxPst = roundTaxes(taxPst > 0 ? taxPst : 0) // round to 2 decimals
