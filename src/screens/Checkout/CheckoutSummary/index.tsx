@@ -212,7 +212,7 @@ const CheckoutSummary = ({
       <OrderSummary
         weight={weight.toString()}
         showCouponInput={true}
-        youSaved={discount + previousDiscount}
+        youSaved={previousDiscount}
         {...{
           subtotal,
           formatMessage,

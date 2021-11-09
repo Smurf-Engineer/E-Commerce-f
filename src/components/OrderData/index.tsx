@@ -53,6 +53,7 @@ import ProductInfo from '../ProductInfo'
 import ReactDOM from 'react-dom'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import Spin from 'antd/lib/spin'
+import filter from 'lodash/filter'
 
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
 const PRO_DESIGN_FEE = 15
@@ -183,6 +184,10 @@ class OrderData extends React.Component<Props, {}> {
           lastName,
           netsuite,
           street,
+          userId,
+          resellerComission = 0,
+          resellerInline = 0,
+          resellerMargin = 0,
           phone,
           city,
           freeShipping,
@@ -256,6 +261,7 @@ class OrderData extends React.Component<Props, {}> {
     let subtotal = 0
     let upgrades = 0
     let variables = 0
+    let totalWithoutDiscount = 0
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderList = cart
@@ -263,14 +269,33 @@ class OrderData extends React.Component<Props, {}> {
         const {
           designId,
           designImage,
+          designOwner,
           proCertified,
           proDesign: proDesignItem,
           designName,
-          product: { images, name, shortDescription, priceRange },
+          product: { images, name, shortDescription, priceRange: productRange },
           productTotal,
           unitPrice,
           itemDetails,
         } = cartItem
+        let priceRange = productRange
+        const isReseller = resellerComission > 0 || resellerInline > 0
+        if ((userId === designOwner && isReseller) || (isReseller && !designId)) {
+          let comissionToApply = cartItem.designId ? resellerComission :  resellerInline
+          if (cartItem.teamStoreId && cartItem.designId) {
+            comissionToApply = resellerMargin
+          }
+          priceRange = priceRange.map((priceItem) => {
+            const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+            return { ...priceItem, price }
+          })
+        }
+        const quantitySum = itemDetails.reduce((a, b) => a + b.quantity, 0)
+        const currencyPrices = filter(priceRange, {
+          abbreviation: currency && currency.shortName ? currency.shortName.toLowerCase() : 'usd'
+        })
+
+        totalWithoutDiscount += quantitySum * (currencyPrices && currencyPrices[0] ? currencyPrices[0].price : 0)
 
         const subUpgrade = itemDetails.reduce((sum, { quantity, upgradeOnePrice = 0, upgradeTwoPrice = 0}) =>
           sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
@@ -453,8 +478,8 @@ class OrderData extends React.Component<Props, {}> {
               shippingTotal={shippingAmount}
               onlyRead={true}
               currencySymbol={currency.shortName}
-              totalWithoutDiscount={subtotal}
-              youSaved={!!coupon && discount}
+              totalWithoutDiscount={totalWithoutDiscount}
+              youSaved={totalWithoutDiscount - subtotal}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
               couponName={coupon}
               couponCode={{ type: couponType, freeShipping }}

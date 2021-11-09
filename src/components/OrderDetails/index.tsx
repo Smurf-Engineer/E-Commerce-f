@@ -78,6 +78,7 @@ import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64, INVOICE_SE
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
+import filter from 'lodash/filter'
 
 const { warning } = Modal
 const FEDEX_URL = 'https://www.fedex.com/fedextrack/'
@@ -237,6 +238,10 @@ export class OrderDetails extends React.Component<Props, {}> {
       shippingLastName,
       shippingStreet,
       owner,
+      userId,
+      resellerComission = 0,
+      resellerInline = 0,
+      resellerMargin = 0,
       invoiceLink,
       shippingApartment,
       shippingPhone,
@@ -291,6 +296,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     let subtotal = 0
     let upgrades = 0
     let variables = 0
+    let totalWithoutDiscount = 0
     const cartItems = cart || []
     const showDiscount = cartItems.some(({ isReseller }) => !isReseller)
     const renderItemList = cart
@@ -301,13 +307,31 @@ export class OrderDetails extends React.Component<Props, {}> {
           proCertified,
           proDesign: proDesignItem,
           designName,
-          product: { images, name, shortDescription },
+          designOwner,
+          product: { images, name, shortDescription, priceRange: productRange },
           productTotal,
           unitPrice,
           teamStoreItem,
           itemDetails
         } = cartItem
+        let priceRange = productRange
+        const isReseller = resellerComission > 0 || resellerInline > 0
+        if ((userId === designOwner && isReseller) || (isReseller && !designId)) {
+          let comissionToApply = cartItem.designId ? resellerComission :  resellerInline
+          if (cartItem.teamStoreId && cartItem.designId) {
+            comissionToApply = resellerMargin
+          }
+          priceRange = priceRange.map((priceItem) => {
+            const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+            return { ...priceItem, price }
+          })
+        }
+        const quantitySum = itemDetails.reduce((a, b) => a + b.quantity, 0)
+        const currencyPrices = filter(priceRange, {
+          abbreviation: currency && currency.shortName ? currency.shortName.toLowerCase() : 'usd'
+        })
 
+        totalWithoutDiscount += quantitySum * (currencyPrices && currencyPrices[0] ? currencyPrices[0].price : 0)
         // This function is used to SUM all the upgrades prices applied to a product and have it on the subtotal
         // Upgrades prices * quantities
         const subUpgrade = itemDetails.reduce((sum, { quantity, upgradeOnePrice = 0, upgradeTwoPrice = 0}) =>
@@ -326,11 +350,6 @@ export class OrderDetails extends React.Component<Props, {}> {
         subtotal += productTotal || 0
         cartItem.isFixed = onDemand === false
         cartItem.teamStoreItem = teamStoreItem
-        const priceRange = {
-          quantity: '0',
-          price: 0,
-          shortName: ''
-        }
 
         const itemImage = designId ? designImage || '' : images[0].front
         const itemTitle = designId ? designName || '' : name
@@ -353,7 +372,11 @@ export class OrderDetails extends React.Component<Props, {}> {
             image={itemImage}
             title={itemTitle}
             description={itemDescription}
-            price={priceRange}
+            price={{
+              quantity: '0',
+              price: 0,
+              shortName: ''
+            }}
             itemIndex={index}
             onlyRead={true}
             canReorder={!teamStoreId && owner && !savingPdf}
@@ -475,8 +498,8 @@ export class OrderDetails extends React.Component<Props, {}> {
                 onlyRead={true}
                 totalSum={total}
                 shippingTotal={shippingAmount}
-                totalWithoutDiscount={subtotal}
-                youSaved={!!coupon && discount}
+                totalWithoutDiscount={totalWithoutDiscount}
+                youSaved={totalWithoutDiscount - subtotal}
                 currencySymbol={currency.shortName}
                 proDesignReview={proDesign && PRO_DESIGN_FEE}
                 couponName={coupon}

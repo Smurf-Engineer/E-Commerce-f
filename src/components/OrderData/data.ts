@@ -5,10 +5,14 @@ export const getOrderQuery = gql`
     orderData: getOrder(orderId: $orderId) {
       id
       status
+      userId: user_id
       orderDate: created_at
       estimatedDate: estimated_date
       paymentMethod: payment_method
       invoiceTerms: invoice_terms
+      resellerComission:reseller_comission
+      resellerInline: reseller_inline
+      resellerMargin: reseller_margin
       firstName: shipping_address_first_name
       lastName: shipping_address_last_name
       apartment: shipping_address_apartment
@@ -137,6 +141,7 @@ export const getOrderQuery = gql`
         }
         designId
         designName
+        designOwner
         designImage
         proCertified
         proDesign
