@@ -132,7 +132,7 @@ class Preferences extends React.Component<Props, {}> {
     switch (currentValue) {
       case NotificationOption.EMAIL:
         if (selected === 'email') {
-          if (key === 'notifyProductService' || key === 'notifyTeamStore' || key === 'notifyDesignLab') {
+          if (key === 'notifyProductService' || key === 'notifyTeamStore') {
             newValue = NotificationOption.NONE
           }
         } else {
@@ -143,7 +143,7 @@ class Preferences extends React.Component<Props, {}> {
         if (selected === 'email') {
           newValue = NotificationOption.BOTH
         } else {
-          if (key === 'notifyProductService' || key === 'notifyTeamStore' || key === 'notifyDesignLab') {
+          if (key === 'notifyProductService' || key === 'notifyTeamStore') {
             newValue = NotificationOption.NONE
           }
         }
