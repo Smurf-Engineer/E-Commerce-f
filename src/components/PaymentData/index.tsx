@@ -24,7 +24,7 @@ const PaymentData = ({ card, iban }: Props) => {
   if (card) {
     const { expMonth, name, last4, expYear, brand } = card
     const month = expMonth > 9 ? expMonth : `0${expMonth}`
-    return (
+    return name ? (
       <Container>
         <PaymentText>{name}</PaymentText>
         <CardNumber>
@@ -33,7 +33,7 @@ const PaymentData = ({ card, iban }: Props) => {
         </CardNumber>
         <PaymentText>{`EXP ${month}/${expYear}`}</PaymentText>
       </Container>
-    )
+    ) : <Container />
   }
   if (iban) {
     const { name, last4, email } = iban

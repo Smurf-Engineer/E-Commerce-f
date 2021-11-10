@@ -39,7 +39,7 @@ export default defineMessages({
   },
   notifyDesignLab: {
     id: 'components.Notifications.Preferences.notifyDesignLab',
-    defaultMessage: 'Designlab Notifications'
+    defaultMessage: 'DesignLab Notifications'
   },
   notifyDesignLabComment: {
     id: 'components.Notifications.Preferences.notifyDesignLabComment',
