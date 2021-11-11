@@ -564,7 +564,7 @@ class Render3D extends PureComponent {
           case CanvasElements.Polygon:
           case CanvasElements.Path: {
             const element = await getClipArtCanvasElement(el)
-            canvas.path[elId] = element
+            canvas[el.isImage ? 'image' : 'path'][elId] = element
             paths.push(el)
             break
           }
