@@ -136,7 +136,7 @@ class Logout extends React.PureComponent<Props, {}> {
         </Item>
       </Menu>
     )
-    const isTablet = window && window.matchMedia(
+    const isTablet = typeof window !== 'undefined' && window.matchMedia(
       '(min-width: 481px) and (max-width: 1024px)'
     ).matches
     return (
