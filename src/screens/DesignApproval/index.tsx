@@ -1233,7 +1233,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <ModelTitle>{productName}</ModelTitle>
                   <QuickView onClick={this.handleOpenQuickView} src={quickView} />
                 </RowTitle>
-                {!!itemStatus && projectItemId && !loading &&
+                {!!itemStatus && projectItemId && !loading && itemStatus !== CUSTOMER_APPROVED &&
                   <EditSquares>
                     <EditTitle>{formatMessage(messages.designEdits)}</EditTitle>
                     <Squares>
