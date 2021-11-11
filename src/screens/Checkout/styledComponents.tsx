@@ -52,9 +52,11 @@ export const StepsContainer = styled.div`
 `
 
 export const SummaryContainer = styled.div`
-  width: 25%;
+  width: 26%;
   padding-left: 20px;
-
+  @media (max-width: 1024px) {
+    width: 29%;
+  }
   @media (max-width: 480px) {
     width: 100%;
     padding: 0;

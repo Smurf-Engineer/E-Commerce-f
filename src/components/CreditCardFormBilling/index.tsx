@@ -72,7 +72,7 @@ interface Props {
 }
 
 const PAYMENT_TYPE_CARD = 'card'
-class CreditCardFormBilling extends React.Component<Props, {}> {
+export class CreditCardFormBilling extends React.Component<Props, {}> {
   state = {
     cardElement: null
   }
@@ -384,4 +384,4 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   }
 }
 
-export default injectStripe(CreditCardFormBilling)
+export default injectStripe(CreditCardFormBilling, { withRef: true })

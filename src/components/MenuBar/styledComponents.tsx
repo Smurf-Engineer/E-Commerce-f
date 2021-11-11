@@ -2,7 +2,7 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled from 'styled-components'
-import { WHITE, BLACK_SEMILIGHT, DARK_TEXT, RED } from '../../theme/colors'
+import { WHITE, BLACK_SEMILIGHT } from '../../theme/colors'
 
 type ThemeProps = {
   darkMode: boolean
@@ -42,7 +42,6 @@ export const TopRow = styled.div`
 `
 
 export const Icon = styled(icon)`
-  color: ${RED};
   margin-right: 14px;
   padding-left: 8px;
   font-size: 15px;
@@ -51,12 +50,28 @@ export const TopText = styled.div`
   cursor: pointer;
   font-size: 14px;
   color: ${({ darkMode }: ThemeProps) =>
-    darkMode ? WHITE : DARK_TEXT};
+    darkMode ? WHITE : '#bb5555'};
   font-family: ${AVENIR_MEDIUM};
   height: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid #bb5555;
+  color: #bb5555;
+  padding-top: 13px;
+  padding-right: 11px;
+  padding-left: 5px;
+  font-size: 11px;
+  padding-bottom: 12px;
+  margin-top: -14px;
+  margin-bottom: -14px;
+  border-radius: 25px;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    background: #bb5555;
+    color: ${WHITE};
+  }
   @media (max-width: 991px) {
     align-items: center;
     display: flex;

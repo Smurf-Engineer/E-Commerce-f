@@ -246,6 +246,7 @@ class Checkout extends React.Component<Props, {}> {
     stripe: null,
     checked: false,
   }
+  payReference: any
   componentDidMount() {
     window.onbeforeunload = () => true
   }
@@ -516,6 +517,7 @@ class Checkout extends React.Component<Props, {}> {
                     showBillingAddressFormAction,
                     paymentClientSecret
                   }}
+                  setPayRef={(payRef: any) => this.payReference = payRef}
                   setStripeCardDataAction={this.setStripeCardDataAction}
                   showContent={currentStep === PaymentTab}
                   setSelectedAddress={this.handleOnSelectAddress}
@@ -560,12 +562,14 @@ class Checkout extends React.Component<Props, {}> {
                 onPaypalError={this.onPaypalError}
                 upgrades={upgradesTotal}
                 variables={variablesTotal}
+                handleNextStep={this.nextStepSummary}
                 placingOrder={loadingPlaceOrder || paymentIntentLoading}
                 onPlaceOrder={this.handleOnPlaceOrder}
                 {...{
                   youthTotal,
                   showOrderButton,
                   couponCode,
+                  currentStep,
                   showDiscount,
                   setCouponCodeAction,
                   deleteCouponCodeAction,
@@ -989,6 +993,20 @@ class Checkout extends React.Component<Props, {}> {
       }
       return designsPrice
     })
+  }
+  nextStepSummary = async () => {
+    const { currentStep } = this.props
+    const { PaymentTab } = CheckoutTabs
+    if (currentStep === PaymentTab) {
+      await this.triggerPayValidation()
+    } else {
+      this.nextStep()
+    }
+  }
+  triggerPayValidation = async () => {
+    if (this.payReference) {
+      await this.payReference.getWrappedInstance().handleOnContinue()
+    }
   }
   getStripeAccount = (subsidiary: number = 0) => {
     if (subsidiary === EUROPE) {

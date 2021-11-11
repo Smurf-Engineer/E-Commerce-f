@@ -48,6 +48,7 @@ interface Props {
   isFixedTeamstore: boolean
   invoice: boolean
   invoiceTerms: string
+  setPayRef: (payRef: any) => void
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -179,6 +180,7 @@ class Payment extends React.PureComponent<Props, {}> {
       showBillingAddressFormAction,
       paymentClientSecret,
       createPaymentIntent,
+      setPayRef,
       isFixedTeamstore
     } = this.props
     const { stripe, openConfirm } = this.state
@@ -220,8 +222,9 @@ class Payment extends React.PureComponent<Props, {}> {
           paymentClientSecret,
           createPaymentIntent,
           isFixedTeamstore,
-          stripe
+          stripe,
         }}
+        ref={(payRef: any) => { setPayRef(payRef) }}
         isInvoice={paymentMethod === INVOICE}
         setStripeCardDataAction={this.setStripeCardData}
         selectDropdownAction={this.handleOnDropdownAction}

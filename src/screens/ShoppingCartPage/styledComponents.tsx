@@ -9,9 +9,11 @@ import {
   GRAY_LIGHT,
   BLUE,
   WHITE,
-  GRAY
+  GRAY,
+  BLUE_BRIGHT
 } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   display: flex;
@@ -47,7 +49,10 @@ export const SideBar = styled.div`
   width: 20%;
   padding-left: 15px;
   padding-right: 20px;
-
+  max-width: 390px;
+  @media (max-width: 1024px) {
+    width: 23%;
+  }
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -182,18 +187,29 @@ const disabledBackground = '#F5F5F5'
 
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
+  margin-top: 18px;
   .ant-btn-primary {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? disabledBackground : BLUE};
+      disabled ? disabledBackground : '#69a1e3'};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? disabledBorder : BLUE};
+      disabled ? disabledBorder : '#69a1e3'};
+    box-shadow: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? 'none' : '0px 2px 5px 0px #c3c3c3'};
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .ant-btn-primary:hover {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? disabledBackground : BLUE};
+      disabled ? disabledBackground : BLUE_BRIGHT};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? disabledBorder : BLUE};
+      disabled ? disabledBorder : BLUE_BRIGHT};
   }
+`
+
+export const CheckoutIcon = styled(Icon)`
+  margin-right: 8px;
 `
 
 interface CheckoutButtonProps {

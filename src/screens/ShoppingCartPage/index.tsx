@@ -39,7 +39,8 @@ import {
   CloseIcon,
   StoreInfo,
   ButtonContainer,
-  ContinueButton
+  ContinueButton,
+  CheckoutIcon
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -611,6 +612,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                       type="primary"
                       onClick={onCheckoutClick}
                     >
+                      <CheckoutIcon type="audit" />
                       <FormattedMessage {...messages.checkout} />
                     </CheckoutButton>
                   </ButtonWrapper>
