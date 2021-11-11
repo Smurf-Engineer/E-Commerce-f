@@ -14,6 +14,11 @@ interface TotalProps {
 
 export const Container = styled.div`
   position: relative;
+  ${({ showCouponInput }: TotalProps) => showCouponInput ? `
+    box-shadow: 0px 2px 7px -1px lightgrey;
+    padding: 14px 19px;
+    border-radius: 10px;
+  ` : ''}
   @media (max-width: 480px) {
     margin-top: 30px;
   }
@@ -47,6 +52,7 @@ export const SummaryTitle = styled.div`
   letter-spacing: 0.11px;
   line-height: 22px;
   margin-bottom: 25px;
+  display: inline-flex;
 `
 
 interface DividerProps {
@@ -178,6 +184,17 @@ export const ZipCodeInputWrapper = styled.div`
       border-color: ${BLUE};
     }
   }
+`
+
+export const CouponIcon = styled(Icon)`
+  margin-left: -3px;
+  color: ${BLUE};
+`
+
+export const SummaryIcon = styled(Icon)`
+  margin-right: 10px;
+  font-size: 18px;
+  color: ${BLUE};
 `
 
 export const CollapseWrapper = styled.div`

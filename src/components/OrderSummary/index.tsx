@@ -26,7 +26,9 @@ import {
   InvoiceIcon,
   TaxDiv,
   PercentDiv,
-  ShippingValue
+  ShippingValue,
+  CouponIcon,
+  SummaryIcon
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
@@ -119,7 +121,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       : 0
     const discountValue = freeShipping ? discount + shippingTotal : discount
     return (
-      <Container>
+      <Container {...{ showCouponInput }}>
         {invoiceLink &&
           <InvoiceLink href={invoiceLink}>
             <InvoiceIcon type="file-done" />
@@ -127,6 +129,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           </InvoiceLink>
         }
         <SummaryTitle>
+          <SummaryIcon type="shopping"/>
           <FormattedMessage {...messages.summaryTitle} />
         </SummaryTitle>
         {(totalWithoutDiscount > 0 && showDiscount) && (
@@ -139,7 +142,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           <YouSavedOrderItem {...{ onlyRead }}>
             {formatMessage(messages.youSaved, {
               percent: savedPercent,
-              isAdmin: !admin ? 'You' : ''
+              isAdmin: !admin ? 'You ' : ''
             })}
             <div>{`${symbol} ${saved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
@@ -230,19 +233,22 @@ export class OrderSummary extends React.Component<Props, {}> {
         {amountsDivider && <Divider />}
         {!onlyRead && showCouponInput ? (
           <CollapseWrapper>
-            <Collapse bordered={false}>
-              <Panel header={formatMessage(messages.discountCode)} key="1">
-                <ZipCodeInputWrapper>
-                  <InputSearch
-                    id="url"
-                    enterButton={formatMessage(messages.apply)}
-                    placeholder={formatMessage(messages.promoCodePlaceholder)}
-                    size="default"
-                    onSearch={this.onApplyCouponCode}
-                  />
-                </ZipCodeInputWrapper>
-              </Panel>
-            </Collapse>
+            {!couponCode && 
+              <Collapse bordered={false}>
+                <Panel header={formatMessage(messages.discountCode)} key="1">
+                  <ZipCodeInputWrapper>
+                    <InputSearch
+                      id="url"
+                      enterButton={formatMessage(messages.apply)}
+                      placeholder={formatMessage(messages.promoCodePlaceholder)}
+                      size="default"
+                      prefix={<CouponIcon type="tag" />}
+                      onSearch={this.onApplyCouponCode}
+                    />
+                  </ZipCodeInputWrapper>
+                </Panel>
+              </Collapse>
+            }
           </CollapseWrapper>
         ) : null}
         <TotalOrderItem

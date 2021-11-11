@@ -9,6 +9,9 @@ import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
+  PlaceIcon,
+  ContinueIcon,
+  ContinueButton,
   paypalButtonStyle,
   PlaceOrderButton
 } from './styledComponents'
@@ -51,6 +54,7 @@ interface Props {
   weight: number
   upgrades?: number
   variables?: number
+  currentStep?: number
   shipAddress?: TaxAddressObj
   shipAddressCountry?: string
   proDesignReview?: number
@@ -65,6 +69,7 @@ interface Props {
   productsPrices: ProductPrice[]
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
+  handleNextStep?: () => void
   onPaypalSuccess: (payment: any) => void
   onPaypalCancel: (data: AnalyserNode) => void
   onPaypalError: (err: any) => void
@@ -94,6 +99,8 @@ const CheckoutSummary = ({
   onPaypalCancel,
   currentCurrency,
   onPlaceOrder,
+  currentStep,
+  handleNextStep,
   placingOrder = false,
   shipping,
   subsidiaryQuery,
@@ -201,14 +208,21 @@ const CheckoutSummary = ({
       />
     ) : (
         <PlaceOrderButton loading={placingOrder} disabled={placingOrder} onClick={handleOnPlaceOrder}>
+          <PlaceIcon type="check" />
           {formatMessage(messages.placeOrder)}
         </PlaceOrderButton>
       )
 
-  const orderButton = showOrderButton && orderButtonComponent
+  const continueButton = 
+    <ContinueButton onClick={handleNextStep}>
+      {formatMessage(messages.continue)}
+      <ContinueIcon type="right" />
+    </ContinueButton>
+
+  const orderButton = showOrderButton ? orderButtonComponent : continueButton
   return (
     <Container>
-      <MediaQuery maxWidth={480}>{orderButton}</MediaQuery>
+      <MediaQuery maxWidth={480}>{currentStep === 2 ? orderButton : null}</MediaQuery>
       <OrderSummary
         weight={weight.toString()}
         showCouponInput={true}

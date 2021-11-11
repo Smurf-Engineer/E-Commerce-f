@@ -136,12 +136,20 @@ class Logout extends React.PureComponent<Props, {}> {
         </Item>
       </Menu>
     )
+    const isTablet = window && window.matchMedia(
+      '(min-width: 481px) and (max-width: 1024px)'
+    ).matches
     return (
       <MediaQuery minWidth={992}>
         {matches => {
           if (matches) {
             return (
-              <PopoverStyled overlayStyle={overStyle} trigger="hover" placement="bottomRight" content={logoutMenu}>
+              <PopoverStyled
+                overlayStyle={overStyle}
+                trigger={isTablet ? 'click' : 'hover'}
+                placement="bottomRight"
+                content={logoutMenu}
+              >
                 <Text {...{darkMode}}>{toUpper(title)}</Text>
               </PopoverStyled>
             )
