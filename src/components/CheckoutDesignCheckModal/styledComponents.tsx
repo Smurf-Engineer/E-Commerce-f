@@ -89,7 +89,7 @@ export const ReviewButton = styled(Button)`
   height: 50px;
   width: 220px;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: bold;
   background-color: ${RED};
   color: ${WHITE};
   border-radius: 5px;
