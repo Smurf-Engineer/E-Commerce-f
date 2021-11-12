@@ -14,6 +14,7 @@ export const GetProductsQuery = gql`
     $offset: Int
     $searchText: String
     $onlyActive: Boolean
+    $isAdminIntake: Boolean
   ) {
     products(
       contentTile: $contentTile
@@ -28,6 +29,7 @@ export const GetProductsQuery = gql`
       offset: $offset
       text: $searchText
       onlyActive: $onlyActive
+      isAdminIntake: $isAdminIntake
     ) {
       fullCount
       products {
