@@ -490,6 +490,7 @@ type OwnProps = {
   isAdmin?: boolean
   designs?: DesignType[]
   selectProduct?: boolean
+  fromIntakeForm?: boolean
   searchText?: string
 }
 
@@ -514,6 +515,7 @@ const ThumbnailsListEnhance = compose(
       isAdmin,
       orderBy,
       skip,
+      fromIntakeForm,
       designs,
       selectProduct,
       searchText
@@ -532,7 +534,8 @@ const ThumbnailsListEnhance = compose(
           order: orderBy ? orderBy : null,
           offset: skip ? skip : null,
           searchText,
-          onlyActive: !isAdmin
+          onlyActive: !isAdmin,
+          isAdminIntake: isAdmin && fromIntakeForm
         },
         skip: !!designs
       }
