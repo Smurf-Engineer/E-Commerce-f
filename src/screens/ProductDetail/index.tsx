@@ -107,7 +107,7 @@ import { threeDScripts } from '../../utils/scripts'
 import BreadCrumbs from '../../components/BreadCrumbs'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
-const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
+const COMPARABLE_PRODUCTS = ['FONDO', 'NOVA PRO', 'FORZA', 'ULTRA']
 const WHITENAME = 'White'
 
 interface ProfileData extends QueryProps {

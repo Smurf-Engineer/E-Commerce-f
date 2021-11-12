@@ -122,7 +122,7 @@ export const PriceColumn = styled.div`
 export const StyledImage = styled.img`
   object-fit: contain;
   width: 100%;
-
+  margin-bottom: 22px;
   &:hover {
     cursor: pointer;
   }
