@@ -65,8 +65,8 @@ export class JerseyComparison extends React.Component<Props, {}> {
       </InfoText>
     ))
 
-    const mainJerseys = jerseysInfo.map(({ name, images = [], description }, i) => {
-      const image = images[0] ? images[0].front : ''
+    const mainJerseys = jerseysInfo.map(({ name, images = [], description, id }, i) => {
+      const image = images[0] ? (id === 63 ? images[0].thumbnail : images[0].front) : ''
       return (
         <Column key={i}>
           <div onClick={this.handleOnClickJersey(name)}>

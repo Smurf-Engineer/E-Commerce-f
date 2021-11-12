@@ -81,6 +81,7 @@ export const GetProductsToCompareQuery = gql`
       isTopProduct
       intendedUse: intended_use
       images: original_pictures {
+        thumbnail
         front: front_image
         back: back_image
         left: left_image
