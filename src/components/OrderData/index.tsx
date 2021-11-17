@@ -37,7 +37,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
-import { PURCHASE, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64 } from '../../constants'
+import { PURCHASE, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64, excludeVariables } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -301,9 +301,10 @@ class OrderData extends React.Component<Props, {}> {
           sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
         // tslint:disable-next-line: align
         , 0)
+        const productId = get(cartItem, 'product.id', '')
         const subVariables = itemDetails.reduce((sum, { quantity, variableOneValue, variableTwoValue }) => {
           if ((variableOneValue && variableOneValue.trim()) || (variableTwoValue && variableTwoValue.trim())) {
-            sum += (VARIABLE_PRICE * quantity)
+            sum += ((excludeVariables[productId] ? 0 : VARIABLE_PRICE) * quantity)
           }
           return sum
         }
