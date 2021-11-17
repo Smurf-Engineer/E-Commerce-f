@@ -134,7 +134,7 @@ export const OrderTitle = styled.div`
   letter-spacing: 0.1px;
   line-height: 19px;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 22px;
   max-width: 267px;
 `
 
@@ -258,16 +258,16 @@ export const ImageBanner = styled.img`
 export const CalendarView = styled.div`
   height: 78px;
   width: 81px;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin-right: 7px;
+  margin-left: 7px;
   border: 2px solid #8c8c8c;
   border-radius: 2px;
 `
 
 export const CalendarFinalView = styled.div`
   height: 78px;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin-right: 7px;
+  margin-left: 7px;
   border: 2px solid ${RED};
   border-radius: 2px;
   max-width: 80px;
@@ -281,25 +281,49 @@ export const CalendarTitle = styled.div`
   color: ${WHITE};
   background-color: #8c8c8c;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  font-size: 12px;
+`
+
+export const CutOffDiv = styled.div`
+  margin-top: 7px;
+  font-size: 10px;
+  margin-bottom: -10px;
+`
+
+export const CutOffTime = styled.div`
+  margin-top: 18px;
+  font-size: 10px;
+  max-width: 174px;
 `
 
 export const CalendarFinalTitle = styled.div`
   text-align: center;
+  width: 100%;
   height: 22px;
   color: ${WHITE};
   background-color: ${RED};
   text-transform: uppercase;
   padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
   font-size: 12px;
 `
 
 export const CalendarDay = styled.div`
-  text-align: center;
   width: 100%;
-  height: 80%;
   font-size: 36px;
   font-weight: bold;
   color: ${GRAY_DARK};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 20px);
 `
 
 export const DatesContainer = styled.div`
@@ -318,6 +342,7 @@ export const DatesContainer = styled.div`
 export const Dates = styled.div`
   display: flex;
   flex-flow: row;
+  align-items: flex-start;
 `
 export const FlexContainer = styled.div`
   display: flex;
@@ -352,7 +377,7 @@ export const ButtonsContainer = styled.div`
 
 export const DatesTitle = styled.div`
   color: ${GRAY_DARK};
-  font-size: 14px;
+  font-size: 10px;
   max-width: 170px;
   letter-spacing: 0.15px;
   line-height: 16px;

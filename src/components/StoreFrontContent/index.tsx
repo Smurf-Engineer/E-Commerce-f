@@ -9,6 +9,7 @@ import find from 'lodash/find'
 import Spin from 'antd/lib/spin'
 import message from 'antd/lib/message'
 import moment from 'moment'
+import momentTz from 'moment-timezone'
 import messages from './messages'
 import { getSingleTeamStore, profileSettingsQuery } from './data'
 import {
@@ -57,7 +58,9 @@ import {
   PricesButton,
   MainContainer,
   AssistanceDiv,
-  SectionLink
+  SectionLink,
+  CutOffDiv,
+  CutOffTime
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
@@ -286,7 +289,6 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     const display = get(getTeamStore, 'display', false)
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
     const closed = get(getTeamStore, 'closed', false)
-
     const isThereCutoffDate = !invalidDateExp.test(cutOffDay)
 
     const deliveryDayOrdinal = get(
@@ -311,6 +313,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     // const maxValueOfY = items.length
     //   ? Math.max(...items.map(o => o.totalOrders))
     //   : 0
+    // tslint:disable-next-line: max-line-length
+    const cutOffMoment = cutOffDay && cutOffMonth ? momentTz.tz(`${cutOffDay} ${cutOffMonth}`, 'DD MMMM', 'America/Los_Angeles').local().format('dddd, MMMM Do, h:mm a') : ''
     const dayOrdinal = deliveryDay ? moment(deliveryDay, 'D').format('Do') : ''
     return (
       <Container>
@@ -398,6 +402,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                                     <CalendarTitle>{cutOffMonth}</CalendarTitle>
                                     <CalendarDay>{cutOffDay}</CalendarDay>
                                   </CalendarView>
+                                  <CutOffDiv>
+                                    <FormattedMessage {...messages.cutOffTime} />
+                                  </CutOffDiv>
                                 </CalendarContainer>
                               )}
                               {display && (
@@ -422,6 +429,13 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                               )}
                             </Dates>
                           )}
+                          {!closed && cutOffMoment &&
+                            <CutOffTime>
+                              Store closes 
+                              <strong> {cutOffMoment}</strong>
+                              , your local time
+                            </CutOffTime>
+                          }
                         </DatesContainer>
                       </SideBar>
                     </TopContainer>
