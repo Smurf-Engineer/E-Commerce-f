@@ -254,9 +254,11 @@ class ProDesignProjects extends React.Component<Props, {}> {
           <div>
             <Head>
               <Subtitle>
-                <Title>
-                  <FormattedMessage {...messages.title} />
-                </Title>
+                {mainHeaderItems && mainHeaderItems.length > 0 &&
+                  <Title>
+                    <FormattedMessage {...messages.title} />
+                  </Title>
+                }
                 <FormattedMessage {...messages.subtitle} />
               </Subtitle>
               <AddButton onClick={this.goToCreate}><FormattedMessage {...messages.addProject} /></AddButton>

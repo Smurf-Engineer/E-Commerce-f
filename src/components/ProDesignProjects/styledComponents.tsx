@@ -106,7 +106,8 @@ export const CarouselContainer = styled.div`
     margin-right: 0px;
   }
   img {
-    max-height: 328px !important;
+    object-fit: contain !important;
+    width: 100% !important;
     border-radius: 3px !important;
   }
   & .slick-prev {
