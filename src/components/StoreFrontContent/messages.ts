@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'screens.StoreFrontContent.storeOpen',
     defaultMessage: 'STORE OPEN'
   },
+  cutOffTime: {
+    id: 'screens.StoreFrontContent.cutOffTime',
+    defaultMessage: '12:00 am PST time'
+  },
   storeClosed: {
     id: 'screens.StoreFrontContent.storeClosed',
     defaultMessage: 'STORE CLOSED'

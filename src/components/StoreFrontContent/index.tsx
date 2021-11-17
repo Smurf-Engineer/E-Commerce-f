@@ -57,7 +57,8 @@ import {
   PricesButton,
   MainContainer,
   AssistanceDiv,
-  SectionLink
+  SectionLink,
+  CutOffDiv
 } from './styledComponents'
 import PinSVG from '../../assets/pin.svg'
 import config from '../../config/index'
@@ -398,6 +399,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                                     <CalendarTitle>{cutOffMonth}</CalendarTitle>
                                     <CalendarDay>{cutOffDay}</CalendarDay>
                                   </CalendarView>
+                                  <CutOffDiv>
+                                    <FormattedMessage {...messages.cutOffTime} />
+                                  </CutOffDiv>
                                 </CalendarContainer>
                               )}
                               {display && (
