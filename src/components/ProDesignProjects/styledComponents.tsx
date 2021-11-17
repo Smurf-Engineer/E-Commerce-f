@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Badge from 'antd/lib/badge'
-import { GRAY_DARK, GRAY_LIGHT, RED, RED_TRANSPARENT, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
+import { BLACK, BLUE, GRAY_DARK, GRAY_LIGHT, RED, RED_TRANSPARENT, WHITE, WHITE_TRANSPARENT } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 import { AVENIR_NEXT } from '../../theme/fonts'
 
@@ -60,13 +60,19 @@ export const Subtitle = styled.div`
   }
 `
 
+export const Title = styled.div`
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 18px;
+`
+
 export const Head = styled.div`
   display: flex;
   justify-content: space-between;
   padding-right: 32px;
   align-items: center;
   @media (max-width: 768px) {
-    padding-left: 32px;
+    padding-left: 12px;
   }
   @media (max-width: 425px) {
     flex-flow: column;
@@ -78,16 +84,58 @@ export const AddButton = styled.div`
   width: 100%;
   padding: 10px 6px;
   max-width: 128px;
-  border: 2px solid ${RED};
-  color: ${RED};
+  border: 2px solid ${BLUE};
+  color: ${BLUE};
   transition: all .25s;
+  margin-left: 28px;
   @media (max-width: 425px) {
     margin-top: 28px;
   }
   &:hover {
     cursor: pointer;
-    background: ${RED};
+    background: ${BLUE};
     color: ${WHITE};
+  }
+`
+
+export const CarouselContainer = styled.div`
+  margin-top: -87px;
+  margin-bottom: 28px;
+  margin-right: 34px;
+  @media (max-width: 768px) {
+    margin-right: 0px;
+  }
+  img {
+    object-fit: contain !important;
+    width: 100% !important;
+    border-radius: 3px !important;
+  }
+  & .slick-prev {
+    margin-left: 30px;
+  }
+  & .slick-next {
+    margin-right: 20px;
+  }
+  .slick-dots {
+    bottom: 25px;
+    li {
+      button {
+        opacity: 0.6;
+        background: none !important;
+      }
+      button:before {
+        opacity: 1;
+        color: #e7e7e7;
+        filter: drop-shadow(0px 0px 1px white);
+        font-size: 12px !important;
+      }
+      &.slick-active {
+        button {
+          opacity: 1;
+          color: #3e3d3d !important;
+        }
+      }
+    }
   }
 `
 
@@ -118,6 +166,30 @@ export const ScreenTitle = styled.div`
   @media (max-width: 768px) and (min-width: 320px) {
     margin-bottom: 24px;
   }
+`
+
+export const FAQSection = styled.div`
+  text-align: center;
+  margin-top: 56px;
+  margin-right: 28px;
+  @media (max-width: 767px) {
+    margin-right: 0;
+  }
+`
+
+export const FAQBody = styled.div`
+  text-align: left;
+  font-size: 15px;
+  margin-bottom: 54px;
+  b {
+    display: block;
+  }
+`
+
+export const FaqTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 28px;
+  font-size: 18px;
 `
 
 export const ListContainer = styled.div`
@@ -225,6 +297,21 @@ export const InfoSection = styled.div`
   height: 64px;
   font-style: italic;
   justify-content: space-between;
+`
+
+export const Arrow = styled.img`
+  height: 60px !important;
+  width: 50px !important;
+  padding: 20px !important;
+  text-align: center !important;
+  z-index: 1 !important;
+  background-color: ${BLACK} !important;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07) !important;
+  &:hover {
+    opacity: 0.7;
+  }
 `
 
 export const buttonStyle = {
