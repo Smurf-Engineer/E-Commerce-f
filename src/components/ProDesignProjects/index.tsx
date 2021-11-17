@@ -28,21 +28,33 @@ import {
   ModalTitle,
   cancelButtonStyle,
   buttonStyle,
-  InfoBody
+  InfoBody,
+  CarouselContainer,
+  Title
 } from './styledComponents'
 import messages from './messages'
-import { QueryProps, Project, Message, ProjectsResult, MessagePayload } from '../../types/common'
+import {
+  QueryProps,
+  Project,
+  Message,
+  ProjectsResult,
+  MessagePayload,
+  HeaderImagePlaceHolder,
+  HomepageImagesType
+} from '../../types/common'
 import EmptyContainer from '../EmptyContainer'
 import Pagination from 'antd/lib/pagination/Pagination'
 import moment from 'moment'
 import get from 'lodash/get'
 import { PROJECTS_LIMIT, Pages } from './constants'
-import { deleteProjectMutation, getProDesignProjects } from './data'
+import { deleteProjectMutation, getHomepageInfo, getProDesignProjects } from './data'
 import Spin from 'antd/lib/spin'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { DATE_FORMAT } from '../../constants'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
+import Carousel from 'antd/lib/carousel'
+import CarouselItem from '../CarouselItem'
 
 const { confirm } = Modal
 
@@ -57,6 +69,7 @@ interface Props {
   currentSection: number
   userId: number
   history: History
+  carouselImages: HomepageImagesType[]
   deleteProject: (variables: {}) => Promise<MessagePayload>
   formatMessage: (messageDescriptor: Message) => string
   setCurrentPageAction: (page: number) => void
@@ -145,6 +158,13 @@ class ProDesignProjects extends React.Component<Props, {}> {
     openQuickView(id, yotpoId, gender, true)
   }
 
+  handleGoToUrl = (link?: string) => () => {
+    const { history } = this.props
+    if (link) {
+      history.push(`/${link}`)
+    }
+  }
+
   goToList = () => {
     const { setCurrentSectionAction, list } = this.props
     setCurrentSectionAction(Pages.LIST)
@@ -159,6 +179,7 @@ class ProDesignProjects extends React.Component<Props, {}> {
   render() {
     const {
       list,
+      carouselImages,
       history,
       currentPage,
       projectId,
@@ -171,19 +192,50 @@ class ProDesignProjects extends React.Component<Props, {}> {
     const { deleting } = this.state
     const projects = get(list, 'projectsResult.projects', [])
     const fullCount = get(list, 'projectsResult.fullCount', 0)
-   
+    const mainHeaderImages = get(carouselImages, 'getHomepageContent.mainHeaderImages', [])
+    const carouselSettings = get(carouselImages, 'getHomepageContent.carouselSettings', {})
+    const {
+      slideTransition,
+      slideDuration
+    } = carouselSettings || {}
+    const mainHeaderItems = mainHeaderImages.map(
+      (item: HeaderImagePlaceHolder, index: number) => (
+        <div>
+          <CarouselItem
+            key={index}
+            onClick={this.handleGoToUrl(item.url)}
+            {...{ item }}
+          />
+        </div>
+      )
+    )
     return (
       <Container>
-        {!!projectId &&
+        {!!projectId ?
           <BackContainer onClick={this.goToList}>
             <Icon type="left" />
             <span>{formatMessage(messages.back)}</span>
-          </BackContainer>
+          </BackContainer> :
+          mainHeaderItems.length ? (
+            <CarouselContainer>
+              <Carousel
+                autoplaySpeed={slideDuration}
+                fade={slideTransition === 'fade'}
+                autoplay={true}
+                pauseOnHover={false}
+              >
+                {mainHeaderItems}
+              </Carousel>
+            </CarouselContainer>
+          ) : null
         }
         <SwipeableViews disabled={true} index={currentSection}>
           <div>
             <Head>
               <Subtitle>
+                <Title>
+                  <FormattedMessage {...messages.title} />
+                </Title>
                 <FormattedMessage {...messages.subtitle} />
               </Subtitle>
               <AddButton onClick={this.goToCreate}><FormattedMessage {...messages.addProject} /></AddButton>
@@ -271,6 +323,15 @@ const mapStateToProps = (state: any) => state.get('proDesignProjects').toJS()
 const ProDesignProjectsEnhance = compose(
   connect(mapStateToProps, { ...AffiliatesActions, openQuickViewAction }),
   graphql(deleteProjectMutation, { name: 'deleteProject' }),
+  graphql(getHomepageInfo, {
+    name: 'carouselImages',
+    options:
+    {
+      variables: {
+        sportRoute: 'pro-design'
+      }
+    }
+  }),
   graphql<Data>(getProDesignProjects, {
     name: 'list',
     options: ({ currentPage, orderBy, sort }: OwnProps) => {

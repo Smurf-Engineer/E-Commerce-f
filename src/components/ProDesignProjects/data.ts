@@ -43,3 +43,23 @@ export const deleteProjectMutation = gql`
     }
   }
 `
+
+export const getHomepageInfo = gql`
+  query getHomepageContent($sportRoute: String) {
+    getHomepageContent(sportRoute: $sportRoute) {
+      mainHeaderImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
+        assetType: type
+      }
+      carouselSettings {
+        slideTransition: slide_transition
+        slideDuration: slide_duration
+        secondarySlideTransition: secondary_slide_transition
+        secondarySlideDuration: secondary_slide_duration
+      }
+    }
+  }
+`
