@@ -74,7 +74,14 @@ import iconFedex from '../../assets/fedexicon.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 import PaymentData from '../PaymentData'
 import { PaymentOptions } from '../../screens/Checkout/constants'
-import { PREORDER, PAYMENT_ISSUE, VARIABLE_PRICE, JAKROO_LOGO_BASE64, INVOICE_SENT } from '../../constants'
+import {
+  PREORDER,
+  PAYMENT_ISSUE,
+  VARIABLE_PRICE,
+  JAKROO_LOGO_BASE64,
+  INVOICE_SENT,
+  excludeVariables
+} from '../../constants'
 import ProductInfo from '../ProductInfo'
 import { getSizeInCentimeters } from '../../utils/utilsFiles'
 import ReactDOM from 'react-dom'
@@ -338,9 +345,10 @@ export class OrderDetails extends React.Component<Props, {}> {
           sum + (upgradeOnePrice * quantity) + (quantity * upgradeTwoPrice)
         // tslint:disable-next-line: align
         , 0)
+        const productId = get(cartItem, 'product.id', '')
         const subVariables = itemDetails.reduce((sum, { quantity, variableOneValue, variableTwoValue }) => {
           if ((variableOneValue && variableOneValue.trim()) || (variableTwoValue && variableTwoValue.trim())) {
-            sum += (VARIABLE_PRICE * quantity)
+            sum += ((excludeVariables[productId] ? 0 : VARIABLE_PRICE) * quantity)
           }
           return sum
         }// tslint:disable-next-line: align

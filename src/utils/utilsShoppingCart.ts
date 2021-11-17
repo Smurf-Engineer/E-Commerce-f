@@ -1,7 +1,7 @@
 import { CartItems, PriceRange } from '../types/common'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
-import { VARIABLE_PRICE } from '../constants'
+import { excludeVariables, VARIABLE_PRICE } from '../constants'
 import { COUNTRY_CODE_CANADA } from '../screens/Checkout/constants'
 
 export const getShoppingCartData = (
@@ -49,13 +49,13 @@ export const getShoppingCartData = (
       if (quantitySum > maxquantity) {
         maxquantity = quantitySum
       }
-
+      const productId = get(cartItem, 'product.id', '')
       const sumUpgrade = cartItem.itemDetails.reduce((sum, itemDetail) => {
         if (
           (itemDetail.variableOneValue && itemDetail.variableOneValue.trim()) || 
           (itemDetail.variableTwoValue && itemDetail.variableTwoValue.trim())
         ) {
-          variablesTotal += (VARIABLE_PRICE * itemDetail.quantity)
+          variablesTotal += ((excludeVariables[productId] ? 0 : VARIABLE_PRICE) * itemDetail.quantity)
         }
         if (itemDetail.firstUpgrade) {
           const price = itemDetail.firstUpgrade[currency] || 0

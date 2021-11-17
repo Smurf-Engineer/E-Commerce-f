@@ -167,6 +167,12 @@ export const doubleSideMeshes = {
   'FINAL ELEMENT left_zip_pocket' : true
 }
 
+export const excludeVariables = {
+  323: true,
+  324: true,
+  325: true
+}
+
 export const onlyPro = {
   322: true
 }
