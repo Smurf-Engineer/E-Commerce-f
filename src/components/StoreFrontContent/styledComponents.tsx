@@ -294,6 +294,12 @@ export const CutOffDiv = styled.div`
   margin-bottom: -10px;
 `
 
+export const CutOffTime = styled.div`
+  margin-top: 18px;
+  font-size: 10px;
+  max-width: 174px;
+`
+
 export const CalendarFinalTitle = styled.div`
   text-align: center;
   width: 100%;
