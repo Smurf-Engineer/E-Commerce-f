@@ -167,6 +167,30 @@ export const ScreenTitle = styled.div`
   }
 `
 
+export const FAQSection = styled.div`
+  text-align: center;
+  margin-top: 56px;
+  margin-right: 28px;
+  @media (max-width: 767px) {
+    margin-right: 0;
+  }
+`
+
+export const FAQBody = styled.div`
+  text-align: left;
+  font-size: 15px;
+  margin-bottom: 54px;
+  b {
+    display: block;
+  }
+`
+
+export const FaqTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 28px;
+  font-size: 18px;
+`
+
 export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;

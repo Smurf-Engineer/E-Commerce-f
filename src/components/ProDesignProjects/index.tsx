@@ -30,7 +30,10 @@ import {
   buttonStyle,
   InfoBody,
   CarouselContainer,
-  Title
+  Title,
+  FAQSection,
+  FAQBody,
+  FaqTitle
 } from './styledComponents'
 import messages from './messages'
 import {
@@ -55,6 +58,7 @@ import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Carousel from 'antd/lib/carousel'
 import CarouselItem from '../CarouselItem'
+import ProductInfo from '../ProductInfo'
 
 const { confirm } = Modal
 
@@ -80,7 +84,12 @@ interface Props {
 
 class ProDesignProjects extends React.Component<Props, {}> {
   state = {
-    deleting: false
+    deleting: false,
+    showFirst: false,
+    showSecond: false,
+    showThird: false,
+    showFourth: false,
+    showFifth: false
   }
   componentDidMount() {
     const {
@@ -165,6 +174,11 @@ class ProDesignProjects extends React.Component<Props, {}> {
     }
   }
 
+  toggleProductInfo = (id: string) => {
+    const stateValue = this.state[id]
+    this.setState({ [id]: !stateValue } as any)
+  }
+
   goToList = () => {
     const { setCurrentSectionAction, list } = this.props
     setCurrentSectionAction(Pages.LIST)
@@ -189,7 +203,14 @@ class ProDesignProjects extends React.Component<Props, {}> {
     } = this.props
 
     const { loading } = list || {}
-    const { deleting } = this.state
+    const {
+      deleting,
+      showFirst,
+      showSecond,
+      showThird,
+      showFourth,
+      showFifth
+    } = this.state
     const projects = get(list, 'projectsResult.projects', [])
     const fullCount = get(list, 'projectsResult.fullCount', 0)
     const mainHeaderImages = get(carouselImages, 'getHomepageContent.mainHeaderImages', [])
@@ -297,6 +318,78 @@ class ProDesignProjects extends React.Component<Props, {}> {
                 onChange={this.handleOnChangePage}
               />
             </ListContainer>
+            <FAQSection>
+              <FaqTitle>
+                {formatMessage(messages.faqTitle)}
+              </FaqTitle>
+              <FAQBody>
+                <ProductInfo
+                  id="showFirst"
+                  titleWidth={'100%'}
+                  title={formatMessage(messages.firstQuestion)}
+                  showContent={showFirst}
+                  toggleView={this.toggleProductInfo}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.firstAnswer)
+                    }}
+                  />
+                </ProductInfo>
+                <ProductInfo
+                  id="showSecond"
+                  titleWidth={'100%'}
+                  title={formatMessage(messages.secondQuestion)}
+                  showContent={showSecond}
+                  toggleView={this.toggleProductInfo}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.secondAnswer)
+                    }}
+                  />
+                </ProductInfo>
+                <ProductInfo
+                  id="showThird"
+                  title={formatMessage(messages.thirdQuestion)}
+                  titleWidth={'100%'}
+                  showContent={showThird}
+                  toggleView={this.toggleProductInfo}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.thirdAnswer)
+                    }}
+                  />
+                </ProductInfo>
+                <ProductInfo
+                  id="showFourth"
+                  title={formatMessage(messages.fourthQuestion)}
+                  titleWidth={'100%'}
+                  showContent={showFourth}
+                  toggleView={this.toggleProductInfo}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.fourthAnswer)
+                    }}
+                  />
+                </ProductInfo>
+                <ProductInfo
+                  id="showFifth"
+                  title={formatMessage(messages.fifthQuestion)}
+                  titleWidth={'100%'}
+                  showContent={showFifth}
+                  toggleView={this.toggleProductInfo}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: formatMessage(messages.fifthAnswer)
+                    }}
+                  />
+                </ProductInfo>
+              </FAQBody>
+            </FAQSection>
           </div>
           <div>
             <Review
