@@ -429,7 +429,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                               )}
                             </Dates>
                           )}
-                          {!closed && cutOffMoment &&
+                          {!closed && cutOffMoment && isThereCutoffDate && !onDemandMode &&
                             <CutOffTime>
                               Store closes 
                               <strong> {cutOffMoment}</strong>
