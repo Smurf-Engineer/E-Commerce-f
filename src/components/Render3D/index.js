@@ -424,7 +424,6 @@ class Render3D extends PureComponent {
     if (showDragmessage) {
       this.setState({ showDragmessage: false })
     }
-    console.log('🔴this.camera.position:', this.camera.position)
     // this.directionalLight.position.copy(this.camera.position)
   }
 
@@ -434,6 +433,7 @@ class Render3D extends PureComponent {
       customProduct,
       designSearch,
       isProduct,
+      fullHeight,
       isAdmin,
       fromShare,
       data = {},
@@ -458,7 +458,7 @@ class Render3D extends PureComponent {
     const circleIcon = <Icon type="loading" style={{ fontSize: 64 }} spin />
 
     return (
-      <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
+      <Container {...{ fullHeight }} designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
         {loadingModel && isProduct && (
           <ProgressProduct type="circle" percent={progress + 1} />
         )}
@@ -491,7 +491,7 @@ class Render3D extends PureComponent {
           </Details>
         )}
         <Render
-          {...{ customProduct, designSearch }}
+          {...{ customProduct, designSearch, fullHeight }}
           id="render-3d"
           innerRef={(container) => (this.container = container)}
         >

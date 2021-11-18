@@ -14,6 +14,9 @@ export const Container = styled.div`
     height: 25em;
   }
   position: relative;
+  ${({ fullHeight }) => fullHeight ? `
+    height: 100%;
+  ` : ''}
 `
 
 export const Render = styled.div`
@@ -25,6 +28,9 @@ export const Render = styled.div`
     height: 25em;
   }
   text-align: center;
+  ${({ fullHeight }) => fullHeight ? `
+    height: 100%;
+  ` : ''}
 `
 
 export const Model = styled.div`

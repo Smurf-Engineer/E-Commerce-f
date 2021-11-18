@@ -82,7 +82,7 @@ export default defineMessages({
   howMuchDesc: {
     id: 'components.AffiliatesAbout.howMuchDesc',
     defaultMessage: `
-    <p>Members earn 10% on the fully priced sales from their own custom stores. Orders with a discount do not qualify 
+    <p>Members earn 5% on the fully priced sales from their own custom stores. Orders with a discount do not qualify 
     for the PayDay affiliate commissions. Commissions are based on the net sale amount less any applied shipping and 
     taxes and paid out to you in the currency based on your country of residence you designated during sign-up.</p>
     <p>At this time, only residents of the United States or Canada are eligible for the PayDay program. As such, 

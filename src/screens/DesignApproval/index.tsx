@@ -1330,6 +1330,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 <RenderSection>
                   {(readyToShow || designToApply) && designId &&
                     <Render3D
+                      fullHeight={true}
                       customProduct={true}
                       actualImage={designToApply}
                       textColor="white"
@@ -1346,6 +1347,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   }
                   {!readyToShow && product &&
                     <Render3D
+                      fullHeight={true}
                       customProduct={true}
                       designId={0}
                       isProduct={true}
