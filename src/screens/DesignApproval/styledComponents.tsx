@@ -1085,8 +1085,11 @@ export const RenderSection = styled.div`
   align-items: center;
   display: flex;
   margin-bottom: 28px;
+  height: calc(100% - 100px);
+  margin-top: 88px;
   @media (max-width: 1023px) {
     margin-bottom: 168px;
+    height: calc(100% - 207px);
   }
 `
 

@@ -313,7 +313,7 @@ const ProductSlide = ({
         )}
       </ImageTop>
       {isProDesign && proStatus ?
-        <ProLabel>
+        <ProLabel onClick={onPressThumbnail}>
           <ProStatus backgroundColor={statusColor}>
             {itemLabels[proStatus] || itemLabels[IN_DESIGN]}
           </ProStatus>

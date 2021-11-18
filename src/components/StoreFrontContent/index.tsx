@@ -314,7 +314,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     //   ? Math.max(...items.map(o => o.totalOrders))
     //   : 0
     // tslint:disable-next-line: max-line-length
-    const cutOffMoment = cutOffDay && cutOffMonth ? momentTz.tz(`${cutOffDay} ${cutOffMonth}`, 'DD MMMM', 'America/Los_Angeles').local().format('dddd, MMMM Do, h:mm a') : ''
+    const cutOffMoment = cutOffDay && cutOffMonth ? momentTz.tz(`${cutOffDay} ${cutOffMonth} 23:59`, 'DD MMMM HH:mm', 'America/Los_Angeles').local().format('dddd, MMMM Do, h:mm a') : ''
     const dayOrdinal = deliveryDay ? moment(deliveryDay, 'D').format('Do') : ''
     return (
       <Container>
