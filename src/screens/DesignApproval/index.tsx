@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import get from 'lodash/get'
+import debounce from 'lodash/debounce'
 import GoogleFontLoader from 'react-google-font-loader'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { compose, graphql, withApollo } from 'react-apollo'
@@ -245,6 +246,7 @@ interface EditRequestData extends QueryProps {
 }
 
 interface StateProps {
+  showRenderWindow: boolean
   selectedKey: string
   openShare: boolean
   openBottom: boolean
@@ -300,6 +302,7 @@ interface Props extends RouteComponentProps<any> {
 
 export class DesignApproval extends React.Component<Props, StateProps> {
   state = {
+    showRenderWindow: true,
     selectedKey: APPROVAL,
     openShare: false,
     openBottom: false,
@@ -335,10 +338,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     if (/mobile/i.test(navigator.userAgent)) {
       setTimeout(() => { window.scrollTo(0, 1) }, 3000)
     }
+    if (window) {
+      window.addEventListener('resize', this.resizeRender, false)
+    }
   }
   componentWillUnmount() {
     if (navigator && navigator.serviceWorker) {
       navigator.serviceWorker.removeEventListener('message', this.reloadMessages)
+    }
+    if (window) {
+      window.removeEventListener('resize', this.resizeRender, false)
     }
   }
   componentWillMount() {
@@ -439,6 +448,16 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       AntdMessage.error(formatMessage(messages.sizeError))
     }
     return isLt2M
+  }
+
+  resizeRender = () => {
+    console.log('🔴resizeRender')
+    this.setState({ showRenderWindow: false })
+    debounce(() => {
+      console.log('🟢reloading!!')
+      this.setState({ showRenderWindow: true })
+    // tslint:disable-next-line: align
+    }, 1500)()
   }
 
   handleChangeNote = (evt: React.FormEvent<HTMLTextAreaElement>) => {
@@ -815,6 +834,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const {
+      showRenderWindow,
       selectedKey,
       openBottom,
       openPurchase,
@@ -1328,7 +1348,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
               </MobileRequestButtons>
               {!!itemStatus &&
                 <RenderSection>
-                  {(readyToShow || designToApply) && designId &&
+                  {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D
                       fullHeight={true}
                       customProduct={true}
@@ -1345,7 +1365,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       zoomedIn={true}
                     />
                   }
-                  {!readyToShow && product &&
+                  {!readyToShow && product && showRenderWindow &&
                     <Render3D
                       fullHeight={true}
                       customProduct={true}
