@@ -451,10 +451,8 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   resizeRender = () => {
-    console.log('🔴resizeRender')
     this.setState({ showRenderWindow: false })
     debounce(() => {
-      console.log('🟢reloading!!')
       this.setState({ showRenderWindow: true })
     // tslint:disable-next-line: align
     }, 1500)()
