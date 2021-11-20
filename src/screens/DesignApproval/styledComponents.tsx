@@ -279,7 +279,7 @@ export const StatusLabel = styled.div`
 `
 
 export const PrintPreviewLabel = styled.div`
-  z-index: 10;
+  z-index: 8;
   max-width: 124px;
   width: 100%;
   right: 0px;
@@ -514,18 +514,14 @@ export const InfoDiv = styled.div`
 `
 
 export const RequestButtons = styled.div`
-  margin: 12px 2px;
   display: flex;
-  flex-flow: column;
-  justify-content: center;
+  z-index: 7;
+  position: absolute;
+  max-width: 378px;
+  width: 100%;
+  bottom: 30px;
   align-items: center;
-  @media (min-width: 1024px) {
-    z-index: 8;
-    position: fixed;
-    bottom: 75px;
-    max-width: 371px;
-    width: 100%;
-  }
+  justify-content: center;
   @media (max-width: 1023px) {
     display: none;
   }
@@ -561,7 +557,7 @@ export const MobileRequestButtons = styled.div`
 
 export const RequestEdit = styled(Button)`
   display: flex;
-  height: auto;
+  height: 40px;
   flex-flow: column;
   border: 1px solid ${RED};
   width: 90%;
@@ -581,14 +577,17 @@ export const RequestEdit = styled(Button)`
     background: ${RED};
     color: ${WHITE};
   }
+  @media (max-width: 1023px) {
+    height: auto;
+  }
 `
 
 export const StyledTooltip = styled(Popover)`
   z-index: 12;
   position: absolute;
-  left: calc(100% - 115px);
+  right: -28px
   bottom: 14px;
-  @media (max-width: 1439px) {
+  @media (max-width: 1023px) {
     right: -4px;
     left: unset;
   }
@@ -861,7 +860,7 @@ export const ChatMessages = styled.div`
   flex: 1;
   overflow-y: scroll;
   @media (min-width: 1024px) {
-    max-height: calc(100vh - 386px);
+    max-height: calc(100% - 45px);
   }
   ${({ highlight }: RowProps) => highlight ? `
     animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) 1s both;
@@ -1060,8 +1059,8 @@ export const buttonPrompt = {
 export const ApproveButton = styled(Button)`
   padding: 9px;
   width: 90%;
-  height: auto;
-  margin-bottom: 12px;
+  height: 40px;
+  margin-right: 30px;
   border-radius: 2px;
   color: white;
   background: ${BLUE};
@@ -1074,8 +1073,7 @@ export const ApproveButton = styled(Button)`
     color: ${BLUE};
   }
   @media (max-width: 1023px) {
-    margin-bottom: 0;
-    margin-right: 20px;
+    height: auto;
   }
 `
 
@@ -1085,7 +1083,7 @@ export const RenderSection = styled.div`
   align-items: center;
   display: flex;
   margin-bottom: 28px;
-  height: calc(100% - 100px);
+  height: calc(100% - 150px);
   margin-top: 88px;
   @media (max-width: 1023px) {
     margin-bottom: 168px;
