@@ -337,7 +337,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     isDesktopRes: false,
     openBottomSheet: false
   }
-
+  private saveClass: any
   componentWillUnmount() {
     const { clearStoreAction } = this.props
     clearStoreAction()
@@ -382,6 +382,16 @@ export class DesignCenter extends React.Component<Props, {}> {
   toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
     const open = !this.state.openBottomSheet
     this.setState({ openBottomSheet: open })
+  }
+
+  openPreview = async () => {
+    if (this.saveClass) {
+      const instance = get(this.saveClass.getWrappedInstance(), 'wrappedInstance.wrappedInstance', null)
+      if (instance) {
+        const result = await instance.generateSVG()
+        console.log('🟢result:', result)
+      }
+    }
   }
 
   handleAfterSaveDesign = async (
@@ -1061,6 +1071,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   loggedUserId,
                   userCode
                 }}
+                openPreview={this.openPreview}
                 designId={get(dataDesign, 'designData.shortId', '')}
                 userEmail={email}
                 name={firstName}
@@ -1162,6 +1173,9 @@ export class DesignCenter extends React.Component<Props, {}> {
             )}
           </SwipeableViews>
           <SaveDesign
+            ref={(saveClass: any) => {
+              this.saveClass = saveClass
+            }}
             {...{
               productId,
               formatMessage,

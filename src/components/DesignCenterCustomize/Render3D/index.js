@@ -46,7 +46,12 @@ import {
   Variants,
   VariantButton,
   MobileHintIcon,
-  DesignCheckButton
+  DesignCheckButton,
+  PrintPreviewLabel,
+  PrintPreviewIcon,
+  PrintPreviewDiv,
+  PrintImage,
+  LoadingSpinner
 } from './styledComponents'
 import {
   viewPositions,
@@ -125,6 +130,7 @@ import {
   getImageCanvas
 } from './utils'
 import HelpModal from '../../Common/JakrooModal'
+import printPreviewImg from '../../../assets/printpreview.svg'
 import quickView from '../../../assets/quickview.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
@@ -1571,6 +1577,7 @@ class Render3D extends PureComponent {
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
     const {
+      openPreview,
       onPressQuickView,
       undoEnabled,
       redoEnabled,
@@ -1733,6 +1740,12 @@ class Render3D extends PureComponent {
           onClickClear={this.handleOnClickClear}
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
+        <PrintPreviewLabel hide={false} onClick={openPreview}>
+          <PrintPreviewIcon src={printPreviewImg} />
+          <PrintPreviewDiv hide={false}>
+            <LoadingSpinner size="large" />
+          </PrintPreviewDiv>
+        </PrintPreviewLabel>
         <Slider value={zoom} onChangeZoom={this.handleOnChangeZoom} />
         {config.tutorialsTabActive === 'true' && (
           <TutorialButton onClick={this.handleGoToTutorials}>

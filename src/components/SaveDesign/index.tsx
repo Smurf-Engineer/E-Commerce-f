@@ -288,6 +288,74 @@ export class SaveDesign extends React.Component<Props, State> {
     }
   }
 
+  generateSVG = async () => {
+    const {
+      productId,
+      colors,
+      design,
+      hasBranding,
+      predyedColor,
+      saveDesign,
+      hasFlatlock,
+      hasZipper,
+      hasBibBrace,
+      hasBinding,
+      stitchingColor,
+      zipperColor,
+      bindingColor,
+      bibColor,
+    } = this.props
+    const { canvasJson, styleId, highResolution } = design
+    let objects = []
+    if (canvasJson) {
+      try {
+        const canvasObj = JSON.parse(canvasJson)
+        objects = get(canvasObj, 'objects', [])
+      } catch (e) {
+        message.error(e)
+      }
+    }
+
+    try {
+      const designObj: DesignInput = {
+        name: 'SVG-Design',
+        product_id: productId,
+        image: '-',
+        styleId,
+        canvas: canvasJson,
+        hasFluorescent: false,
+        high_resolution: highResolution === void 0 ? true : highResolution
+      }
+
+      /* Accessory colors */
+      if (hasFlatlock) {
+        designObj.flatlock_code = stitchingColor.name
+        designObj.flatlock = stitchingColor.value
+      }
+      if (hasZipper) {
+        designObj.zipper_color = zipperColor
+      }
+      if (hasBinding) {
+        designObj.binding_color = bindingColor
+      }
+      if (hasBibBrace) {
+        designObj.bib_brace_color = bibColor
+      }
+      if (hasBranding) {
+        designObj.predyed_name = predyedColor
+      }
+
+      const svg = await saveDesign({
+        variables: { design: designObj, colors, justSVG: true }
+      })
+      return svg
+    } catch (error) {
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      message.error(errorMessage)
+    }
+  }
+
   handleSaveChanges = async (qualityWarning = false) => {
     const {
       colors,
@@ -568,7 +636,8 @@ const SaveDesignEnhance = compose(
     options: ({ isUserAuthenticated }) => ({
       skip: !isUserAuthenticated,
       notifyOnNetworkStatusChange: true
-    })
+    }),
+    withRef: true
   })
 )(SaveDesign)
 export default SaveDesignEnhance

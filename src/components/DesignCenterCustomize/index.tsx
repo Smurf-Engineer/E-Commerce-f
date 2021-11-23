@@ -131,6 +131,7 @@ interface Props {
   showGuidelines: boolean
   // Redux actions
   onClickGuides: () => void
+  openPreview: () => void
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -306,6 +307,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCanvasElementTextChanged,
       onReApplyImageEl,
       onCanvasElementDuplicated,
+      openPreview,
       designHasChanges,
       isUserAuthenticated,
       isEditing,
@@ -475,6 +477,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               loggedUserId,
               designId,
               proAssistId,
+              openPreview,
               userEmail,
               name,
               lastName,

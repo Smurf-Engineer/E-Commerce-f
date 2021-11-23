@@ -3,6 +3,7 @@
  */
 import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
+import Spinner from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
 import {
   RED,
@@ -68,6 +69,56 @@ export const TutorialButton = styled.div`
   padding: 8px;
   cursor: pointer;
 `
+
+export const PrintPreviewLabel = styled.div`
+  z-index: 8;
+  max-width: ${({ hide }) => hide ? '124px' : 'calc(100% - 25px)'};
+  width: 100%;
+  right: 0px;
+  position: absolute;
+  top: 151px;
+  display: flex;
+  padding: 8px;
+  background: ${WHITE};
+  border-radius: 5px;
+  border-top-right-radius: 0px
+  border-bottom-right-radius: 0px
+  box-shadow: 1px 1px 3px 0px #a7a7a7;
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+  @media (max-width: 768px) {
+    top: 128px;
+    right: -16px;
+  }
+`
+
+export const PrintPreviewIcon = styled.img`
+  max-width: 86px;
+`
+
+export const PrintPreviewDiv = styled.div`
+  display: inline-flex;
+  margin-left: 98px;
+  width: calc(100% - 105px);
+  height: calc(100vh - 288px);
+  top: -80px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background: white;
+  border-radius: 5px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  box-shadow: 1px 1px 3px 0px #a7a7a7;
+`
+
+export const PrintImage = styled.img``
+
+export const LoadingSpinner = styled(Spinner)``
+
 export const TutorialIcon = styled.img``
 
 export const Render = styled.div`
