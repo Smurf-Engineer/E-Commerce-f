@@ -337,7 +337,7 @@ class CartListItemTable extends React.Component<Props, State> {
   }
 
   handleOpenUpgrade = (upgrade: UpgradeItem) => () => {
-    const { name, modalImage, mobileImage, url } = upgrade || {}
+    const { modalImage, mobileImage, url } = upgrade || {}
     const { formatMessage } = this.props
     info({
       icon: ' ',
@@ -350,7 +350,6 @@ class CartListItemTable extends React.Component<Props, State> {
       },
       content:
         <InfoBody>
-          <InfoTitle>{`${name} options`}</InfoTitle>
           <InfoImage src={modalImage} />
           <InfoImageMobile src={mobileImage} />
           <InfoURL target="_blank" href={url}>{url}</InfoURL>

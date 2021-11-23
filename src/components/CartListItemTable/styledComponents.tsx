@@ -231,7 +231,8 @@ export const InfoDescription = styled.div`
 
 export const InfoImage = styled.img`
   max-width: 886px;
-  margin: 26px 0;
+  margin: 4px 0;
+  margin-top: 0px;
   display: block;
   @media (max-width: 768px) {
     display: none;
@@ -240,9 +241,10 @@ export const InfoImage = styled.img`
 
 export const InfoImageMobile = styled.img`
   max-width: 886px;
-  margin: 26px 0;
+  margin: 4px 0;
   width: 100%;
   display: none;
+  margin-top: 0px;
   @media (max-width: 768px) {
     display: block;
   }
