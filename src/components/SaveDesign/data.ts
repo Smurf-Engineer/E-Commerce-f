@@ -73,7 +73,22 @@ export const saveDesignName = graphql(
     }
   `,
   {
-    name: 'saveDesign'
+    name: 'saveDesign',
+    withRef: true
+  }
+)
+
+export const compileSVGMutation = graphql(
+  gql`
+    mutation compileSVG($design: DesignInput!, $colors: [String]!) {
+      design: compileSVG(design: $design, colors: $colors) {
+        outputSvg: output_svg
+      }
+    }
+  `,
+  {
+    name: 'compileSVG',
+    withRef: true
   }
 )
 
@@ -156,7 +171,8 @@ export const saveDesignChanges = graphql(
     }
   `,
   {
-    name: 'saveDesignAs'
+    name: 'saveDesignAs',
+    withRef: true
   }
 )
 

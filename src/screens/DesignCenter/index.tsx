@@ -335,9 +335,11 @@ export class DesignCenter extends React.Component<Props, {}> {
     isPhoneRes: false,
     isTabletRes: false,
     isDesktopRes: false,
-    openBottomSheet: false
+    openBottomSheet: false,
+    openPreviewModal: false,
+    previewImage: ''
   }
-
+  private saveClass: any
   componentWillUnmount() {
     const { clearStoreAction } = this.props
     clearStoreAction()
@@ -382,6 +384,26 @@ export class DesignCenter extends React.Component<Props, {}> {
   toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
     const open = !this.state.openBottomSheet
     this.setState({ openBottomSheet: open })
+  }
+
+  openPreview = async (savedDesign: SaveDesignType) => {
+    const { openPreviewModal } = this.state
+    if (this.saveClass && !openPreviewModal) {
+      const instance = get(this.saveClass.getWrappedInstance(), 'wrappedInstance.wrappedInstance.wrappedInstance', null)
+      if (instance) {
+        this.setState({ previewImage: '', openPreviewModal: true })
+        const result = await instance.generateSVG(savedDesign)
+        const image = get(result, 'data.design.outputSvg', '')
+        if (image) {
+          this.setState({ previewImage: image })
+        } else {
+          this.setState({ openPreviewModal: false })
+          Message.error('Error generating preview image.')
+        }
+      }
+    } else {
+      this.setState({ openPreviewModal: false, previewImage: '' })
+    }
   }
 
   handleAfterSaveDesign = async (
@@ -712,7 +734,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = this.props
 
     const { formatMessage } = intl
-    const { openBottomSheet, isPhoneRes, isTabletRes, isDesktopRes } = this.state
+    const { openBottomSheet, isPhoneRes, isTabletRes, isDesktopRes, previewImage, openPreviewModal } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
       PreviewTab: PreviewTabIndex,
@@ -1004,6 +1026,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   paletteName,
                   palettes,
                   text,
+                  previewImage,
+                  openPreviewModal,
                   productName,
                   canvas,
                   selectedElement,
@@ -1061,6 +1085,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   loggedUserId,
                   userCode
                 }}
+                openPreview={this.openPreview}
                 designId={get(dataDesign, 'designData.shortId', '')}
                 userEmail={email}
                 name={firstName}
@@ -1162,6 +1187,9 @@ export class DesignCenter extends React.Component<Props, {}> {
             )}
           </SwipeableViews>
           <SaveDesign
+            ref={(saveClass: any) => {
+              this.saveClass = saveClass
+            }}
             {...{
               productId,
               formatMessage,
