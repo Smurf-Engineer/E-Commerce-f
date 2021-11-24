@@ -4,6 +4,7 @@
 import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import Spinner from 'antd/lib/spin'
+import AntdIcon from 'antd/lib/icon'
 import AntdButton from 'antd/lib/button'
 import {
   RED,
@@ -13,6 +14,7 @@ import {
   GRAY_LIGHT,
   GRAY_DARK,
   BLUE_DARK,
+  BLACK_SHADOW,
   GRAY_LIGHTEST,
   WHITE_SMOKE
 } from '../../../theme/colors'
@@ -70,11 +72,18 @@ export const TutorialButton = styled.div`
   cursor: pointer;
 `
 
+export const ClosePreview = styled(AntdIcon)`
+  margin-left: -4px;
+  display: flex;
+  align-items: center;
+  color: ${RED};
+`
+
 export const PrintPreviewLabel = styled.div`
-  z-index: 8;
+  z-index: 11;
   max-width: ${({ hide }) => hide ? '124px' : 'calc(100% - 25px)'};
   width: 100%;
-  right: 0px;
+  right: -14px;
   position: absolute;
   top: 151px;
   display: flex;
@@ -87,11 +96,39 @@ export const PrintPreviewLabel = styled.div`
   transition: all .25s;
   &:hover {
     cursor: pointer;
-    opacity: 0.5;
   }
-  @media (max-width: 768px) {
-    top: 128px;
-    right: -16px;
+  @media (max-width: 1024px) {
+    top: ${({ hide }) => hide ? '211px' : '151px'};
+    max-width: ${({ hide }) => hide ? '124px' : '100%'};
+  }
+  @media (max-width: 767px) {
+    bottom: 12px;
+    top: unset;
+  }
+`
+
+export const LabelClick = styled.div`
+  margin-top: -5px;
+  margin-bottom: 5px;
+`
+
+export const BackgroundGray = styled.div`
+  width: 100%;
+  height: 100%;
+  background: ${BLACK_SHADOW};
+  position: fixed;
+  top: 0;
+  left: 200vw;
+  z-index: 10;
+  transition: all .25s;
+  animation: fade-in 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `
 
@@ -113,9 +150,28 @@ export const PrintPreviewDiv = styled.div`
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   box-shadow: 1px 1px 3px 0px #a7a7a7;
+  visibility: ${({ hide }) => hide ? 'hidden' : 'visible'};
+  transition: all .25s;
+  flex-flow: column;
+  padding-top: 22px;
+  @media (min-height: 1440px) {
+    height: calc(100vh - 370px);
+  }
+  @media (max-width: 767px) {
+    max-height: 228px;
+    top: unset;
+    bottom: 0px;
+    border-bottom-left-radius: 0;
+    justify-content: flex-start;
+  }
 `
 
-export const PrintImage = styled.img``
+export const PrintImage = styled.img`
+  object-fit: contain;
+  width: 100%;
+  max-height: 100%;
+  padding: 6px 8px;
+`
 
 export const LoadingSpinner = styled(Spinner)``
 

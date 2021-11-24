@@ -335,7 +335,9 @@ export class DesignCenter extends React.Component<Props, {}> {
     isPhoneRes: false,
     isTabletRes: false,
     isDesktopRes: false,
-    openBottomSheet: false
+    openBottomSheet: false,
+    openPreviewModal: false,
+    previewImage: ''
   }
   private saveClass: any
   componentWillUnmount() {
@@ -384,13 +386,23 @@ export class DesignCenter extends React.Component<Props, {}> {
     this.setState({ openBottomSheet: open })
   }
 
-  openPreview = async () => {
-    if (this.saveClass) {
-      const instance = get(this.saveClass.getWrappedInstance(), 'wrappedInstance.wrappedInstance', null)
+  openPreview = async (savedDesign: SaveDesignType) => {
+    const { openPreviewModal } = this.state
+    if (this.saveClass && !openPreviewModal) {
+      const instance = get(this.saveClass.getWrappedInstance(), 'wrappedInstance.wrappedInstance.wrappedInstance', null)
       if (instance) {
-        const result = await instance.generateSVG()
-        console.log('🟢result:', result)
+        this.setState({ previewImage: '', openPreviewModal: true })
+        const result = await instance.generateSVG(savedDesign)
+        const image = get(result, 'data.design.outputSvg', '')
+        if (image) {
+          this.setState({ previewImage: image })
+        } else {
+          this.setState({ openPreviewModal: false })
+          Message.error('Error generating preview image.')
+        }
       }
+    } else {
+      this.setState({ openPreviewModal: false, previewImage: '' })
     }
   }
 
@@ -722,7 +734,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = this.props
 
     const { formatMessage } = intl
-    const { openBottomSheet, isPhoneRes, isTabletRes, isDesktopRes } = this.state
+    const { openBottomSheet, isPhoneRes, isTabletRes, isDesktopRes, previewImage, openPreviewModal } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
       PreviewTab: PreviewTabIndex,
@@ -1014,6 +1026,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   paletteName,
                   palettes,
                   text,
+                  previewImage,
+                  openPreviewModal,
                   productName,
                   canvas,
                   selectedElement,

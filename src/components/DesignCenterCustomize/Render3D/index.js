@@ -29,6 +29,9 @@ import {
   TutorialIcon,
   DragText,
   ProAssistText,
+  BackgroundGray,
+  ClosePreview,
+  LabelClick,
   ViewControls,
   ViewButton,
   ButtonWrapper,
@@ -700,6 +703,17 @@ class Render3D extends PureComponent {
         reject(e)
       }
     })
+
+  openPrint = (e) => {
+    const { previewImage } = this.props
+    if (previewImage) {
+      if (e) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
+      window.open(previewImage)
+    }
+  }
 
   clearScene = () => {
     const object = this.scene.getObjectByName(MESH_NAME)
@@ -1514,6 +1528,48 @@ class Render3D extends PureComponent {
 
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
+  openPreview = () => {
+    const {
+      showGuidelines,
+      selectVariantAction,
+      onClickGuides,
+      openPreview
+    } = this.props
+    const { retrySave } = this.state
+    if (showGuidelines && !retrySave) {
+      this.setState({ retrySave: true }, () => onClickGuides(false))
+      return
+    }
+    selectVariantAction(-1)
+    if (this.renderer) {
+      const {
+        currentStyle,
+        isMobile,
+        isEditing,
+        design
+      } = this.props
+      if (!isMobile) {
+        this.canvasTexture.forEachObject((el) => {
+          el.set({
+            opacity: 1,
+            backgroundColor: null
+          })
+        })
+        this.canvasTexture.discardActiveObject()
+        this.canvasTexture.renderAll()
+      }
+      const highResolution = (isEditing && design.highResolution) || !isEditing
+      const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+      const canvasJson = JSON.stringify(designCanvas)
+      const saveDesign = {
+        canvasJson,
+        styleId: currentStyle.id,
+        highResolution
+      }
+      openPreview(saveDesign)
+    }
+  }
+
   takeDesignPicture = (automaticSave = false) => {
     const {
       isUserAuthenticated,
@@ -1577,7 +1633,6 @@ class Render3D extends PureComponent {
   render() {
     const { showDragmessage, currentView, progress, showHelpModal } = this.state
     const {
-      openPreview,
       onPressQuickView,
       undoEnabled,
       redoEnabled,
@@ -1589,6 +1644,8 @@ class Render3D extends PureComponent {
       openResetDesignModal,
       designHasChanges,
       product,
+      previewImage,
+      openPreviewModal,
       isMobile,
       openResetPlaceholderModal,
       currentStyle,
@@ -1600,6 +1657,9 @@ class Render3D extends PureComponent {
     if (isMobile) {
       return (
         <MobileContainer>
+          {openPreviewModal &&
+            <BackgroundGray />
+          }
           <Render
             id="render-3d"
             innerRef={(container) => (this.container = container)}
@@ -1643,6 +1703,18 @@ class Render3D extends PureComponent {
               ))}
             </Variants>
           )}
+          {!loadingModel &&
+            <PrintPreviewLabel hide={!openPreviewModal} onClick={this.openPreview}>
+              {openPreviewModal && <ClosePreview type="cross" />}
+              <PrintPreviewIcon src={printPreviewImg} />
+              <PrintPreviewDiv onClick={this.openPrint} hide={!openPreviewModal}>
+                {!!previewImage && <LabelClick>Click/Tap to open</LabelClick>}
+                {!!previewImage ?
+                  <PrintImage src={previewImage} /> :
+                  <LoadingSpinner size="large" />}
+              </PrintPreviewDiv>
+            </PrintPreviewLabel>
+          }
         </MobileContainer>
       )
     }
@@ -1669,6 +1741,9 @@ class Render3D extends PureComponent {
 
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
+        {openPreviewModal &&
+          <BackgroundGray />
+        }
         <Row>
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
@@ -1740,12 +1815,18 @@ class Render3D extends PureComponent {
           onClickClear={this.handleOnClickClear}
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
-        <PrintPreviewLabel hide={false} onClick={openPreview}>
-          <PrintPreviewIcon src={printPreviewImg} />
-          <PrintPreviewDiv hide={false}>
-            <LoadingSpinner size="large" />
-          </PrintPreviewDiv>
-        </PrintPreviewLabel>
+        {!loadingModel &&
+          <PrintPreviewLabel hide={!openPreviewModal} onClick={this.openPreview}>
+            {openPreviewModal && <ClosePreview type="cross" />}
+            <PrintPreviewIcon src={printPreviewImg} />
+            <PrintPreviewDiv onClick={this.openPrint} hide={!openPreviewModal}>
+              {!!previewImage && <LabelClick>Click/Tap to open</LabelClick>}
+              {!!previewImage ?
+                <PrintImage src={previewImage} /> :
+                <LoadingSpinner size="large" />}
+            </PrintPreviewDiv>
+          </PrintPreviewLabel>
+        }
         <Slider value={zoom} onChangeZoom={this.handleOnChangeZoom} />
         {config.tutorialsTabActive === 'true' && (
           <TutorialButton onClick={this.handleGoToTutorials}>

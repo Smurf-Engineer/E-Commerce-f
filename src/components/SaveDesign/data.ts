@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 
 export const saveDesignName = graphql(
   gql`
-    mutation saveDesign($design: DesignInput!, $colors: [String]!, $justSVG: Boolean) {
-      savedDesign: saveDesign(design: $design, colors: $colors, justSVG: $justSVG) {
+    mutation saveDesign($design: DesignInput!, $colors: [String]!) {
+      savedDesign: saveDesign(design: $design, colors: $colors) {
         designId: id
         designName: name
         designImage: image
@@ -74,6 +74,20 @@ export const saveDesignName = graphql(
   `,
   {
     name: 'saveDesign',
+    withRef: true
+  }
+)
+
+export const compileSVGMutation = graphql(
+  gql`
+    mutation compileSVG($design: DesignInput!, $colors: [String]!) {
+      design: compileSVG(design: $design, colors: $colors) {
+        outputSvg: output_svg
+      }
+    }
+  `,
+  {
+    name: 'compileSVG',
     withRef: true
   }
 )

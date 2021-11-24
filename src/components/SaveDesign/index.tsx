@@ -38,7 +38,7 @@ import {
   ImageFile
 } from '../../types/common'
 import { NEW_DESIGN_SAVED } from '../../constants'
-import { saveDesignName, saveDesignChanges, userfilesQuery } from './data'
+import { saveDesignName, saveDesignChanges, userfilesQuery, compileSVGMutation } from './data'
 import { getDesignQuery } from '../../screens/DesignCenter/data'
 import { BLUE, GRAY_DISABLE } from '../../theme/colors'
 import get from 'lodash/get'
@@ -111,6 +111,7 @@ interface Props {
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: Message, values?: any) => string
   saveDesign: (variables: {}) => void
+  compileSVG: (variables: {}) => void
   saveDesignAs: (variables: {}) => void
   afterSaveDesign: (
     id: string,
@@ -288,14 +289,13 @@ export class SaveDesign extends React.Component<Props, State> {
     }
   }
 
-  generateSVG = async () => {
+  generateSVG = async (savedDesign: SaveDesignType) => {
     const {
       productId,
       colors,
-      design,
       hasBranding,
       predyedColor,
-      saveDesign,
+      compileSVG,
       hasFlatlock,
       hasZipper,
       hasBibBrace,
@@ -305,16 +305,7 @@ export class SaveDesign extends React.Component<Props, State> {
       bindingColor,
       bibColor,
     } = this.props
-    const { canvasJson, styleId, highResolution } = design
-    let objects = []
-    if (canvasJson) {
-      try {
-        const canvasObj = JSON.parse(canvasJson)
-        objects = get(canvasObj, 'objects', [])
-      } catch (e) {
-        message.error(e)
-      }
-    }
+    const { canvasJson, styleId, highResolution } = savedDesign
 
     try {
       const designObj: DesignInput = {
@@ -345,8 +336,8 @@ export class SaveDesign extends React.Component<Props, State> {
         designObj.predyed_name = predyedColor
       }
 
-      const svg = await saveDesign({
-        variables: { design: designObj, colors, justSVG: true }
+      const svg = await compileSVG({
+        variables: { design: designObj, colors }
       })
       return svg
     } catch (error) {
@@ -632,6 +623,7 @@ export class SaveDesign extends React.Component<Props, State> {
 const SaveDesignEnhance = compose(
   saveDesignName,
   saveDesignChanges,
+  compileSVGMutation,
   graphql<ImageData, Props>(userfilesQuery, {
     options: ({ isUserAuthenticated }) => ({
       skip: !isUserAuthenticated,
