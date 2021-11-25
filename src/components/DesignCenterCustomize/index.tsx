@@ -133,7 +133,7 @@ interface Props {
   openPreviewModal: boolean
   // Redux actions
   onClickGuides: () => void
-  openPreview: () => void
+  openPreview: (design: SaveDesignType) => void
   selectVariantAction: (index: number) => void
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void

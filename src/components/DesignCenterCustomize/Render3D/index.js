@@ -29,9 +29,6 @@ import {
   TutorialIcon,
   DragText,
   ProAssistText,
-  BackgroundGray,
-  ClosePreview,
-  LabelClick,
   ViewControls,
   ViewButton,
   ButtonWrapper,
@@ -52,7 +49,6 @@ import {
   DesignCheckButton,
   PrintPreviewLabel,
   PrintPreviewIcon,
-  PrintPreviewDiv,
   PrintImage,
   LoadingSpinner
 } from './styledComponents'
@@ -1517,7 +1513,7 @@ class Render3D extends PureComponent {
 
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
-  openPreviewAction = () => {
+  openPreviewAction = async () => {
     const {
       showGuidelines,
       selectVariantAction,
@@ -1557,10 +1553,10 @@ class Render3D extends PureComponent {
           styleId: currentStyle.id,
           highResolution
         }
-        openPreview(saveDesign)
+        await openPreview(saveDesign)
       }
     } else {
-      openPreview({})
+      await openPreview({})
     }
   }
 
@@ -1694,27 +1690,6 @@ class Render3D extends PureComponent {
               ))}
             </Variants>
           )}
-          {!loadingModel &&
-            <PrintPreviewLabel hide={true} onClick={this.openPreviewAction}>
-              <PrintPreviewIcon src={printPreviewImg} />
-              <Modal
-                style={{ maxWidth: 'calc(100% - 22px)' }}
-                bodyStyle={{
-                  padding: '8px',
-                  paddingTop: '43px',
-                  textAlign: 'center'
-                }}
-                onCancel={this.openPreviewAction}
-                footer={null}
-                width="100%"
-                visible={openPreviewModal}
-              >
-                {!!previewImage ?
-                  <PrintImage src={previewImage} /> :
-                  <LoadingSpinner size="large" />}
-              </Modal>
-            </PrintPreviewLabel>
-          }
         </MobileContainer>
       )
     }
@@ -1741,9 +1716,6 @@ class Render3D extends PureComponent {
 
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
-        {openPreviewModal &&
-          <BackgroundGray />
-        }
         <Row>
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
@@ -1816,14 +1788,32 @@ class Render3D extends PureComponent {
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
         {!loadingModel &&
-          <PrintPreviewLabel hide={!openPreviewModal} onClick={this.openPreviewAction}>
+          <PrintPreviewLabel hide={true} onClick={this.openPreviewAction}>
             <PrintPreviewIcon src={printPreviewImg} />
-            <PrintPreviewDiv hide={!openPreviewModal}>
-              {openPreviewModal && <ClosePreview type="cross" />}
+            <Modal
+              style={{
+                maxWidth: '925px',
+                minHeight: '128px',
+                maxHeight: '768px',
+                padding: '0 20px'
+              }}
+              bodyStyle={{
+                padding: '8px',
+                paddingTop: '43px',
+                alignItems: 'center',
+                minHeight: '328px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+              onCancel={this.openPreviewAction}
+              footer={null}
+              width="100%"
+              visible={openPreviewModal}
+            >
               {!!previewImage ?
                 <PrintImage src={previewImage} /> :
                 <LoadingSpinner size="large" />}
-            </PrintPreviewDiv>
+            </Modal>
           </PrintPreviewLabel>
         }
         <Slider value={zoom} onChangeZoom={this.handleOnChangeZoom} />
