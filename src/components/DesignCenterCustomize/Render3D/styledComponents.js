@@ -175,6 +175,7 @@ export const PrintImage = styled.img`
   width: 100%;
   max-height: 100%;
   padding: 6px 8px;
+  max-height: calc(100vh - 171px);
   @media (max-width: 767px) {
     padding: 0px;
   }
