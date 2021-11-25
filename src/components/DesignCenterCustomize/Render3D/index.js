@@ -704,17 +704,6 @@ class Render3D extends PureComponent {
       }
     })
 
-  openPrint = (e) => {
-    const { previewImage } = this.props
-    if (previewImage) {
-      if (e) {
-        e.stopPropagation()
-        e.preventDefault()
-      }
-      window.open(previewImage)
-    }
-  }
-
   clearScene = () => {
     const object = this.scene.getObjectByName(MESH_NAME)
     if (!!object) {
@@ -1528,45 +1517,50 @@ class Render3D extends PureComponent {
 
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
-  openPreview = () => {
+  openPreviewAction = () => {
     const {
       showGuidelines,
       selectVariantAction,
       onClickGuides,
-      openPreview
+      openPreview,
+      openPreviewModal
     } = this.props
     const { retrySave } = this.state
-    if (showGuidelines && !retrySave) {
-      this.setState({ retrySave: true }, () => onClickGuides(false))
-      return
-    }
-    selectVariantAction(-1)
-    if (this.renderer) {
-      const {
-        currentStyle,
-        isMobile,
-        isEditing,
-        design
-      } = this.props
-      if (!isMobile) {
-        this.canvasTexture.forEachObject((el) => {
-          el.set({
-            opacity: 1,
-            backgroundColor: null
+    if (!openPreviewModal) {
+      if (showGuidelines && !retrySave) {
+        this.setState({ retrySave: true }, () => onClickGuides(false))
+        return
+      }
+      selectVariantAction(-1)
+      if (this.renderer) {
+        const {
+          currentStyle,
+          isMobile,
+          isEditing,
+          design
+        } = this.props
+        if (!isMobile) {
+          this.canvasTexture.forEachObject((el) => {
+            el.set({
+              opacity: 1,
+              backgroundColor: null
+            })
           })
-        })
-        this.canvasTexture.discardActiveObject()
-        this.canvasTexture.renderAll()
+          this.canvasTexture.discardActiveObject()
+          this.canvasTexture.renderAll()
+        }
+        const highResolution = (isEditing && design.highResolution) || !isEditing
+        const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+        const canvasJson = JSON.stringify(designCanvas)
+        const saveDesign = {
+          canvasJson,
+          styleId: currentStyle.id,
+          highResolution
+        }
+        openPreview(saveDesign)
       }
-      const highResolution = (isEditing && design.highResolution) || !isEditing
-      const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
-      const canvasJson = JSON.stringify(designCanvas)
-      const saveDesign = {
-        canvasJson,
-        styleId: currentStyle.id,
-        highResolution
-      }
-      openPreview(saveDesign)
+    } else {
+      openPreview({})
     }
   }
 
@@ -1657,9 +1651,6 @@ class Render3D extends PureComponent {
     if (isMobile) {
       return (
         <MobileContainer>
-          {openPreviewModal &&
-            <BackgroundGray />
-          }
           <Render
             id="render-3d"
             innerRef={(container) => (this.container = container)}
@@ -1704,15 +1695,24 @@ class Render3D extends PureComponent {
             </Variants>
           )}
           {!loadingModel &&
-            <PrintPreviewLabel hide={!openPreviewModal} onClick={this.openPreview}>
-              {openPreviewModal && <ClosePreview type="cross" />}
+            <PrintPreviewLabel hide={true} onClick={this.openPreviewAction}>
               <PrintPreviewIcon src={printPreviewImg} />
-              <PrintPreviewDiv onClick={this.openPrint} hide={!openPreviewModal}>
-                {!!previewImage && <LabelClick>Click/Tap to open</LabelClick>}
+              <Modal
+                style={{ maxWidth: 'calc(100% - 22px)' }}
+                bodyStyle={{
+                  padding: '8px',
+                  paddingTop: '43px',
+                  textAlign: 'center'
+                }}
+                onCancel={this.openPreviewAction}
+                footer={null}
+                width="100%"
+                visible={openPreviewModal}
+              >
                 {!!previewImage ?
                   <PrintImage src={previewImage} /> :
                   <LoadingSpinner size="large" />}
-              </PrintPreviewDiv>
+              </Modal>
             </PrintPreviewLabel>
           }
         </MobileContainer>
@@ -1816,11 +1816,10 @@ class Render3D extends PureComponent {
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
         {!loadingModel &&
-          <PrintPreviewLabel hide={!openPreviewModal} onClick={this.openPreview}>
-            {openPreviewModal && <ClosePreview type="cross" />}
+          <PrintPreviewLabel hide={!openPreviewModal} onClick={this.openPreviewAction}>
             <PrintPreviewIcon src={printPreviewImg} />
-            <PrintPreviewDiv onClick={this.openPrint} hide={!openPreviewModal}>
-              {!!previewImage && <LabelClick>Click/Tap to open</LabelClick>}
+            <PrintPreviewDiv hide={!openPreviewModal}>
+              {openPreviewModal && <ClosePreview type="cross" />}
               {!!previewImage ?
                 <PrintImage src={previewImage} /> :
                 <LoadingSpinner size="large" />}

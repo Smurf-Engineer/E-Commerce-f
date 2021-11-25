@@ -73,10 +73,14 @@ export const TutorialButton = styled.div`
 `
 
 export const ClosePreview = styled(AntdIcon)`
-  margin-left: -4px;
-  display: flex;
-  align-items: center;
-  color: ${RED};
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  background: #4a4a4a;
+  border-radius: 25px;
+  padding: 4px;
+  font-size: 10px;
+  color: ${WHITE};
 `
 
 export const PrintPreviewLabel = styled.div`
@@ -171,9 +175,16 @@ export const PrintImage = styled.img`
   width: 100%;
   max-height: 100%;
   padding: 6px 8px;
+  @media (max-width: 767px) {
+    padding: 0px;
+  }
 `
 
-export const LoadingSpinner = styled(Spinner)``
+export const LoadingSpinner = styled(Spinner)`
+  @media (max-width: 767px) {
+    margin-bottom: 12px;
+  }
+`
 
 export const TutorialIcon = styled.img``
 
