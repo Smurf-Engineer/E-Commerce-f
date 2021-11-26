@@ -29,7 +29,12 @@ import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
-import { Header, Footer, EditorWrapper } from './styledComponents'
+import {
+  Header,
+  Footer,
+  EditorWrapper,
+  EditorCloseButton,
+} from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
 import { getAlertsQuery, getFonts } from './data'
@@ -127,6 +132,7 @@ class MainLayout extends React.Component<Props, {}> {
     contentUpdated: false,
     editorReady: false,
     Editor: null,
+    showAlert: true,
   }
 
   constructor(props: Props) {
@@ -279,6 +285,12 @@ class MainLayout extends React.Component<Props, {}> {
     }
   }
 
+  closeAlertHandler = () => {
+    this.setState({
+      showAlert: false,
+    })
+  }
+
   render() {
     const {
       children,
@@ -321,7 +333,7 @@ class MainLayout extends React.Component<Props, {}> {
       regionName,
       city,
     } = this.props
-    const { editorReady, editorState, Editor } = this.state
+    const { editorReady, editorState, Editor, showAlert } = this.state
     const { formatMessage } = intl
     let numberOfProducts = 0
 
@@ -346,9 +358,12 @@ class MainLayout extends React.Component<Props, {}> {
       <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         {/* Carousel for the alerts */}
-        {editorReady && typeof window !== 'undefined' ? (
+        {showAlert && editorReady && typeof window !== 'undefined' ? (
           <EditorWrapper>
             <Editor {...{ editorState }} toolbarHidden={true} readOnly={true} />
+            <EditorCloseButton onClick={this.closeAlertHandler}>
+              +
+            </EditorCloseButton>
           </EditorWrapper>
         ) : null}
         <Helmet defaultTitle={MAIN_TITLE} />

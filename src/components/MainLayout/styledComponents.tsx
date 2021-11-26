@@ -61,9 +61,23 @@ export const Footer = styled.div`
 `
 
 export const EditorWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ORANGE;
+
+  .rdw-editor-wrapper {
+    flex: 1;
+  }
   .rdw-editor-main {
     display: flex;
     justify-content: center;
-    background-color: ORANGE;
   }
+`
+
+export const EditorCloseButton = styled.span`
+  cursor: pointer;
+  font-size: 2rem;
+  transform: rotate(45deg);
+  padding-left: 1rem;
+  padding-right: 1rem;
 `
