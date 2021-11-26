@@ -63,7 +63,7 @@ export interface Filter {
   isYouth?: boolean
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -1163,7 +1163,7 @@ export enum NotificationOption {
   EMAIL = 0,
   SMS = 1,
   BOTH = 2,
-  NONE = 3
+  NONE = 3,
 }
 
 export interface NotificationSettings {
@@ -1980,4 +1980,12 @@ export type Project = {
 export type ProjectsResult = {
   fullCount: number
   projects: Project[]
+}
+
+export interface Alert {
+  id: number
+  sequence: number
+  content: string
+  startDate: string
+  endDate: string
 }

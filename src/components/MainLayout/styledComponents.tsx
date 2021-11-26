@@ -35,12 +35,13 @@ export const Header = styled.div`
   line-height: 0px;
   padding: 0px;
   z-index: 10;
-  -webkit-transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
   @media (min-width: 992px) {
     height: ${HEADER_HEIGHT}px;
   }
   @media (max-width: 991px) {
-    margin-bottom: ${({ hideTopHeader }: HeaderProps) => hideTopHeader ? 0 : '70px'};
+    margin-bottom: ${({ hideTopHeader }: HeaderProps) =>
+      hideTopHeader ? 0 : '70px'};
   }
 `
 
@@ -56,5 +57,13 @@ export const Footer = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 24px;
+  }
+`
+
+export const EditorWrapper = styled.div`
+  .rdw-editor-main {
+    display: flex;
+    justify-content: center;
+    background-color: ORANGE;
   }
 `
