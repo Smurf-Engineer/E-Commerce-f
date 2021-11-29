@@ -63,9 +63,9 @@ export const Footer = styled.div`
 
 export const StyledCarousel = styled(Carousel)`
   .slick-dots {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
     height: 100%;
     top: 0;
     right: 1rem;

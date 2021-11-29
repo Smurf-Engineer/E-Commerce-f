@@ -228,7 +228,12 @@ class MainLayout extends React.Component<Props, {}> {
       this.setState({
         editors: editors.map((editor, index) => {
           const { editorReady, contentUpdated } = editor
-          if (alerts[index].content && !contentUpdated && editorReady) {
+          if (
+            alerts[index] &&
+            alerts[index].content &&
+            !contentUpdated &&
+            editorReady
+          ) {
             try {
               const blocksContent = JSON.parse(alerts[index].content)
               const editorState = EditorState.createWithContent(
@@ -352,7 +357,12 @@ class MainLayout extends React.Component<Props, {}> {
       city,
     } = this.props
     const { editors, showAlert } = this.state
-    const readyEditors = editors.filter((editor) => editor.editorReady)
+    const readyEditors = editors.filter(
+      (editor) =>
+        editor.editorReady &&
+        editor.editorState &&
+        editor.editorState.getCurrentContent().hasText()
+    )
     const { formatMessage } = intl
     let numberOfProducts = 0
 
