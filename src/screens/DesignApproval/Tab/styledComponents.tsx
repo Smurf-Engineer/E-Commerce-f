@@ -12,13 +12,13 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: ${GRAY_DARK};
-  font-size: 12px;
+  font-size: 11px;
   line-height: 19px;
   margin-top: 4px;
   text-align: center;
 `
 export const Icon = styled.img`
-  max-height: 31px;
+  max-height: 28px;
   height: 100%;
   object-fit: contain;
 `

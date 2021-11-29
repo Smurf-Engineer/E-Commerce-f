@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'screens.DesignApproval.paid',
     defaultMessage: 'PAID'
   },
+  teamMembers: {
+    id: 'screens.DesignApproval.teamMembers',
+    defaultMessage: 'Team Members'
+  },
   free: {
     id: 'screens.DesignApproval.free',
     defaultMessage: 'FREE'

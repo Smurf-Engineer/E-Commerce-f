@@ -17,6 +17,8 @@ import Button from 'antd/lib/button'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
+import teamIcon from '../../assets/team.svg'
+import commentsIcon from '../../assets/comments.svg'
 import printPreviewImg from '../../assets/printpreview.svg'
 import messageSent from '../../assets/message_sent.wav'
 import colorIcon from '../../assets/color_white.svg'
@@ -71,6 +73,7 @@ import {
   BlackBarMobile,
   BottomButtons,
   BottomSheetWrapper,
+  AddMemberButton,
   ButtonContainer,
   buttonPrompt,
   ButtonsContainer,
@@ -181,13 +184,17 @@ import {
   CloseIcon,
   PreviewImg,
   DownloadDiv,
-  DownloadIcon
+  DownloadIcon,
+  Collaboration,
+  CollabInfo,
+  CollabTitle,
+  CollabDescription
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Tab from './Tab'
 import Modal from 'antd/lib/modal'
-import { COLOR, APPROVAL } from './constants'
+import { COLOR, APPROVAL, COLLAB, COMMENTS } from './constants'
 import {
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
@@ -1134,6 +1141,26 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         </Accesories>
       </Colors> : null
 
+    const collabComponent = !!itemStatus ?
+      <Collaboration>
+        <ApprovalTitle>{formatMessage(messages.teamMembers)}</ApprovalTitle>
+        <CollabInfo>
+          <CollabTitle>
+            Team Collaboration  
+          </CollabTitle>
+          <CollabDescription>
+            Invite members to collaborate on your project . 
+            You can invite up to 5 members to your project.
+            Members will be able to view and comment on  all designs in your project
+          </CollabDescription>
+          <AddMemberButton>
+            + Invite Members
+          </AddMemberButton>
+        </CollabInfo>
+      </Collaboration> : null
+
+    const commentsComponent = null
+
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
@@ -1157,9 +1184,19 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           <Layouts>
             {!!itemStatus &&
               <StyledTabs activeKey={selectedKey} onTabClick={this.onTabClickAction}>
+                <TabPane tab={<Tab label={COLLAB} icon={teamIcon} />} key={COLLAB}>
+                  <TabContent>
+                    {collabComponent}
+                  </TabContent>
+                </TabPane>
                 <TabPane tab={<Tab label={APPROVAL} icon={messageIcon} />} key={APPROVAL}>
                   <TabContent>
                     {chatComponent}
+                  </TabContent>
+                </TabPane>
+                <TabPane tab={<Tab label={COMMENTS} icon={commentsIcon} />} key={COMMENTS}>
+                  <TabContent>
+                    {commentsComponent}
                   </TabContent>
                 </TabPane>
                 <TabPane tab={<Tab label={COLOR} icon={colorIcon} />} key={COLOR}>
@@ -1344,7 +1381,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   </StyledTooltipMobile>
                 }
               </MobileRequestButtons>
-              {!!itemStatus &&
+              {!!itemStatus && false &&
                 <RenderSection>
                   {(readyToShow || designToApply) && designId && showRenderWindow &&
                     <Render3D

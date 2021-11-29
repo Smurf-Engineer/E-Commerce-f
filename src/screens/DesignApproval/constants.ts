@@ -17,3 +17,5 @@ export const SET_EDIT_PROJECT = `${namespace}/SET_EDIT_PROJECT`
 // Tabs Key
 export const APPROVAL = 'approval'
 export const COLOR = 'color'
+export const COLLAB = 'collab'
+export const COMMENTS = 'comments'

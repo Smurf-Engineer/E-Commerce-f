@@ -473,11 +473,11 @@ export const StyledTabs = styled(AntdTabs)`
     width: 100%;
   }
   .ant-tabs-tab {
-    width: 50%;
+    width: 25%;
     margin: 0;
   }
   .ant-tabs-ink-bar {
-    width: 50%;
+    width: 25%;
   }
   .ant-tabs-bar {
     margin: 0;
@@ -1453,3 +1453,24 @@ export const DeleteFile = styled(Icon)`
     opacity: 0.6;
   }
 `
+
+export const Collaboration = styled.div`
+  padding: 0 14px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  @media (max-width: 1023px) {
+    padding: 0;
+    height: calc(100vh - 277px);
+  }
+`
+
+export const CollabInfo = styled.div``
+
+export const CollabTitle = styled.div``
+
+export const CollabDescription = styled.div``
+
+export const AddMemberButton = styled.div``
