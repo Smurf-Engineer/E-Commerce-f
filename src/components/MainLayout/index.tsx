@@ -33,7 +33,7 @@ import {
   Header,
   Footer,
   EditorWrapper,
-  EditorCloseButton,
+  StyledCarousel,
 } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
@@ -128,18 +128,24 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   state = {
-    editorState: false,
-    contentUpdated: false,
-    editorReady: false,
-    Editor: null,
+    editors: Array(3).fill({
+      editorState: false,
+      contentUpdated: false,
+      editorReady: false,
+      Editor: null,
+    }),
     showAlert: true,
   }
 
   constructor(props: Props) {
     super(props)
+    const { editors } = this.state
     if (typeof window !== undefined) {
       this.setState({
-        editorState: EditorState.createEmpty(),
+        editors: editors.map((editor) => ({
+          ...editor,
+          editorState: EditorState.createEmpty(),
+        })),
       })
     }
   }
@@ -154,10 +160,14 @@ class MainLayout extends React.Component<Props, {}> {
 
   async componentDidMount() {
     if (typeof window !== undefined) {
+      const { editors } = this.state
       const Editor = require('react-draft-wysiwyg').Editor
       this.setState({
-        editorReady: true,
-        Editor,
+        editors: editors.map((editor, index) => ({
+          ...editor,
+          editorReady: true,
+          Editor,
+        })),
       })
     }
 
@@ -202,32 +212,40 @@ class MainLayout extends React.Component<Props, {}> {
     return get(alertsData, 'alerts', [])
   }
 
-  componentDidUpdate() {
-    const { user, disableAssist } = this.props
+  componentDidUpdate(prevProps: Props) {
+    const { user, disableAssist, alertsData } = this.props
     if (!disableAssist) {
       openSupport(user)
     }
 
-    const alerts = this.getAllAlerts()
-    if (!alerts || !alerts.length) {
-      return
-    }
-    if (typeof window !== undefined) {
-      const { editorReady, contentUpdated } = this.state
-      if (alerts[1].content && !contentUpdated && editorReady) {
-        try {
-          const blocksContent = JSON.parse(alerts[1].content)
-          const editorState = EditorState.createWithContent(
-            convertFromRaw(blocksContent)
-          )
-          this.setState({
-            contentUpdated: true,
-            editorState,
-          })
-        } catch (e) {
-          console.error('Error:', e)
-        }
+    if (typeof window !== undefined && alertsData !== prevProps.alertsData) {
+      const alerts = this.getAllAlerts()
+      if (!alerts || !alerts.length) {
+        return
       }
+
+      const { editors } = this.state
+      this.setState({
+        editors: editors.map((editor, index) => {
+          const { editorReady, contentUpdated } = editor
+          if (alerts[index].content && !contentUpdated && editorReady) {
+            try {
+              const blocksContent = JSON.parse(alerts[index].content)
+              const editorState = EditorState.createWithContent(
+                convertFromRaw(blocksContent)
+              )
+              return {
+                ...editor,
+                contentUpdated: true,
+                editorState,
+              }
+            } catch (e) {
+              console.error('Error:', e)
+            }
+          }
+          return editor
+        }),
+      })
     }
   }
 
@@ -333,7 +351,8 @@ class MainLayout extends React.Component<Props, {}> {
       regionName,
       city,
     } = this.props
-    const { editorReady, editorState, Editor, showAlert } = this.state
+    const { editors, showAlert } = this.state
+    const readyEditors = editors.filter((editor) => editor.editorReady)
     const { formatMessage } = intl
     let numberOfProducts = 0
 
@@ -358,14 +377,25 @@ class MainLayout extends React.Component<Props, {}> {
       <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         {/* Carousel for the alerts */}
-        {showAlert && editorReady && typeof window !== 'undefined' ? (
-          <EditorWrapper>
-            <Editor {...{ editorState }} toolbarHidden={true} readOnly={true} />
-            <EditorCloseButton onClick={this.closeAlertHandler}>
-              +
-            </EditorCloseButton>
-          </EditorWrapper>
-        ) : null}
+        {showAlert && typeof window !== 'undefined' && readyEditors.length > 0 && (
+          <StyledCarousel autoplay={true} pauseOnHover={true}>
+            {readyEditors.map((editor, index) => {
+              const { editorState, Editor } = editor
+              return (
+                <EditorWrapper key={index}>
+                  <Editor
+                    {...{ editorState }}
+                    toolbarHidden={true}
+                    readOnly={true}
+                  />
+                  {/* <EditorCloseButton onClick={this.closeAlertHandler}>
+                    +
+                  </EditorCloseButton> */}
+                </EditorWrapper>
+              )
+            })}
+          </StyledCarousel>
+        )}
         <Helmet defaultTitle={MAIN_TITLE} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar

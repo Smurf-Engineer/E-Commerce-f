@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 12/02/18.
  */
 import styled from 'styled-components'
+import Carousel from 'antd/lib/carousel'
 import { WHITE, AUBERGINE } from '../../theme/colors'
 
 const HEADER_TOP_SIZE = 38
@@ -57,6 +58,36 @@ export const Footer = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 24px;
+  }
+`
+
+export const StyledCarousel = styled(Carousel)`
+  .slick-dots {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    top: 0;
+    right: 1rem;
+  }
+  .slick-dots li {
+    margin: 0 0.5rem;
+  }
+  .slick-dots li button {
+    height: 0;
+  }
+  .slick-dots li button:before {
+    background: none;
+    border-radius: 100px;
+    border: 1px solid black;
+    content: '';
+    height: 24px;
+    width: 24px;
+    opacity: 1;
+  }
+  .slick-dots li.slick-active button:before {
+    background: black;
+    opacity: 1;
   }
 `
 
