@@ -10,6 +10,7 @@ import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
 import { EditorState, convertFromRaw } from 'draft-js'
+import moment from 'moment'
 import { MAIN_TITLE } from '../../constants'
 import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
@@ -129,12 +130,15 @@ class MainLayout extends React.Component<Props, {}> {
 
   state = {
     editors: Array(3).fill({
+      sequence: undefined,
       editorState: false,
       contentUpdated: false,
       editorReady: false,
       Editor: null,
     }),
     showAlert: true,
+    startDates: Array(3).fill(''),
+    endDates: Array(3).fill(''),
   }
 
   constructor(props: Props) {
@@ -224,6 +228,15 @@ class MainLayout extends React.Component<Props, {}> {
         return
       }
 
+      const { startDates, endDates } = this.state
+      const newStartDates = [...startDates]
+      const newEndDates = [...endDates]
+
+      alerts.forEach((alert) => {
+        newStartDates[alert.sequence] = alert.startDate
+        newEndDates[alert.sequence] = alert.endDate
+      })
+
       const { editors } = this.state
       this.setState({
         editors: editors.map((editor, index) => {
@@ -241,6 +254,7 @@ class MainLayout extends React.Component<Props, {}> {
               )
               return {
                 ...editor,
+                sequence: index,
                 contentUpdated: true,
                 editorState,
               }
@@ -248,8 +262,10 @@ class MainLayout extends React.Component<Props, {}> {
               console.error('Error:', e)
             }
           }
-          return editor
+          return { ...editor, sequence: index }
         }),
+        startDates: newStartDates,
+        endDates: newEndDates,
       })
     }
   }
@@ -356,7 +372,7 @@ class MainLayout extends React.Component<Props, {}> {
       regionName,
       city,
     } = this.props
-    const { editors, showAlert } = this.state
+    const { editors, showAlert, startDates, endDates } = this.state
     const readyEditors = editors.filter(
       (editor) =>
         editor.editorReady &&
@@ -388,22 +404,40 @@ class MainLayout extends React.Component<Props, {}> {
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         {/* Carousel for the alerts */}
         {showAlert && typeof window !== 'undefined' && readyEditors.length > 0 && (
-          <StyledCarousel autoplay={true} pauseOnHover={true}>
-            {readyEditors.map((editor, index) => {
-              const { editorState, Editor } = editor
-              return (
-                <EditorWrapper key={index}>
-                  <Editor
-                    {...{ editorState }}
-                    toolbarHidden={true}
-                    readOnly={true}
-                  />
-                  {/* <EditorCloseButton onClick={this.closeAlertHandler}>
-                    +
-                  </EditorCloseButton> */}
-                </EditorWrapper>
+          <StyledCarousel
+            autoplay={true}
+            autoplaySpeed={5 * 1000}
+            pauseOnHover={true}
+          >
+            {readyEditors
+              .filter(
+                (editor) =>
+                  (!startDates[editor.sequence] ||
+                    moment(new Date()).isSameOrAfter(
+                      startDates[editor.sequence],
+                      'day'
+                    )) &&
+                  (!endDates[editor.sequence] ||
+                    moment(new Date()).isSameOrBefore(
+                      endDates[editor.sequence],
+                      'day'
+                    ))
               )
-            })}
+              .map((editor, index) => {
+                const { editorState, Editor } = editor
+                return (
+                  <EditorWrapper key={index}>
+                    <Editor
+                      {...{ editorState }}
+                      toolbarHidden={true}
+                      readOnly={true}
+                    />
+                    {/* <EditorCloseButton onClick={this.closeAlertHandler}>
+                      +
+                    </EditorCloseButton> */}
+                  </EditorWrapper>
+                )
+              })}
           </StyledCarousel>
         )}
         <Helmet defaultTitle={MAIN_TITLE} />
