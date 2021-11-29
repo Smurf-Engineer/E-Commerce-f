@@ -1,7 +1,6 @@
 /**
  * Links info
  */
-import config from '../../config'
 import { LINK_TYPE_ROUTE, LINK_TYPE_URL } from '../../constants'
 
 const links = [
@@ -17,9 +16,7 @@ const links = [
   },
   {
     label: 'pricing',
-    url: `${
-      config.storageUrl
-    }/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`,
+    url: `http://www.jakroo.com/JV2PRICING.pdf`,
     type: LINK_TYPE_URL
   },
   {
