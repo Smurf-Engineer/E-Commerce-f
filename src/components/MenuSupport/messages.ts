@@ -19,7 +19,7 @@ export default defineMessages({
   },
   pricing: {
     id: 'components.menuSupport.pricing',
-    defaultMessage: 'Pricing chart'
+    defaultMessage: 'Price List'
   },
   warranty: {
     id: 'components.menuSupport.warranty',
