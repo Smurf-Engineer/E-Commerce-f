@@ -135,7 +135,6 @@ class MainLayout extends React.Component<Props, {}> {
       editorReady: false,
       Editor: null,
     }),
-    showAlert: true,
   }
 
   constructor(props: Props) {
@@ -310,12 +309,6 @@ class MainLayout extends React.Component<Props, {}> {
     }
   }
 
-  closeAlertHandler = () => {
-    this.setState({
-      showAlert: false,
-    })
-  }
-
   render() {
     const {
       children,
@@ -358,7 +351,7 @@ class MainLayout extends React.Component<Props, {}> {
       regionName,
       city,
     } = this.props
-    const { editors, showAlert } = this.state
+    const { editors } = this.state
     const readyEditors = editors.filter(
       (editor) =>
         editor.editorReady &&
@@ -389,7 +382,7 @@ class MainLayout extends React.Component<Props, {}> {
       <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         {/* Carousel for the alerts */}
-        {showAlert && typeof window !== 'undefined' && readyEditors.length > 0 && (
+        {typeof window !== 'undefined' && readyEditors.length > 0 && (
           <StyledCarousel
             autoplay={true}
             autoplaySpeed={5 * 1000}
