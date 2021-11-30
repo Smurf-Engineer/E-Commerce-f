@@ -95,6 +95,7 @@ export const EditorWrapper = styled.div`
   display: flex;
   align-items: center;
   background-color: ORANGE;
+  max-height: 50px;
 
   .rdw-editor-wrapper {
     flex: 1;
