@@ -26,12 +26,10 @@ export const getPermissionsQuery = gql`
 
 export const getAlertsQuery = gql`
   query alerts {
-    alerts: getAlerts {
+    alerts: getValidAlerts {
       id
       sequence
       content
-      startDate: start_date
-      endDate: end_date
     }
   }
 `

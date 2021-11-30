@@ -68,10 +68,10 @@ export const StyledCarousel = styled(Carousel)`
     justify-content: flex-end !important;
     height: 100%;
     top: 0;
-    right: 1rem;
+    right: 16px;
   }
   .slick-dots li {
-    margin: 0 0.5rem;
+    margin: 0 8px;
   }
   .slick-dots li button {
     height: 0;
@@ -103,12 +103,4 @@ export const EditorWrapper = styled.div`
     display: flex;
     justify-content: center;
   }
-`
-
-export const EditorCloseButton = styled.span`
-  cursor: pointer;
-  font-size: 2rem;
-  transform: rotate(45deg);
-  padding-left: 1rem;
-  padding-right: 1rem;
 `
