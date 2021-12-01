@@ -272,9 +272,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
             fetchPolicy: 'network-only'
           })
           const enabled = get(response, 'data.verifyTeamStore.enabled', false)
-          const onDemandMode = get(response, 'data.verifyTeamStore.on_demand_mode', false)
+          const onDemandMode = get(response, 'data.verifyTeamStore.on_demand_mode', true)
           const cutoffDate = get(response, 'data.verifyTeamStore.cutoff_date', '')
-          const closed = get(response, 'data.verifyTeamStore.closed', '')
+          const closed = get(response, 'data.verifyTeamStore.closed', true)
           if (!enabled || !cutoffDate || onDemandMode || closed) {
             clearCart()
             message.info('Expired batch store items have been removed from your cart')
