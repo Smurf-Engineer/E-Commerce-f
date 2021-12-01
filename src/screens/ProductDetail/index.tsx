@@ -70,7 +70,7 @@ import {
   MobileButtonTemplate,
   ActionButtonsRow,
   ButtonTemplate,
-  Download
+  Download,
 } from './styledComponents'
 import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
@@ -97,7 +97,9 @@ import {
   ProductColors,
   ProductFile,
   ItemDetailType,
-  BreadRoute, IProfileSettings, UserType
+  BreadRoute,
+  IProfileSettings,
+  UserType,
 } from '../../types/common'
 import config from '../../config/index'
 import YotpoSection from '../../components/YotpoSection'
@@ -165,7 +167,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: false,
     showFits: false,
-    tone: ''
+    tone: '',
   }
 
   componentWillUnmount() {
@@ -177,7 +179,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       data: { product },
       // setSelectedFitAction, // TODO: refactor if needed
-      setSelectedColorAction
+      setSelectedColorAction,
     } = this.props
     LoadScripts(threeDScripts)
     zenscroll.toY(0, 0)
@@ -203,7 +205,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   setTone = (evt: React.MouseEvent) => {
     if (evt) {
       evt.stopPropagation()
-      const { currentTarget: { id } } = evt
+      const {
+        currentTarget: { id },
+      } = evt
       if (id) {
         const { tone } = this.state
         if (tone === id) {
@@ -232,21 +236,29 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       currentCurrency,
       data: { product: productData, error, loading },
       phone,
-      designModalOpen
+      designModalOpen,
     } = this.props
 
     const { formatMessage } = intl
-    const { status, inline, comission } = get(profileData, 'profileData.reseller', {})
+    const { status, inline, comission } = get(
+      profileData,
+      'profileData.reseller',
+      {}
+    )
     const isReseller = status === APPROVED
     let product = productData
 
-    const isRetail = product && (product.retailMen || product.retailWomen || !product.customizable)
+    const isRetail =
+      product &&
+      (product.retailMen || product.retailWomen || !product.customizable)
 
     if (isReseller) {
       const originalPriceRange = get(productData, 'priceRange', [])
       const comissionToApply = isRetail ? inline : comission
       const purchasePrices = originalPriceRange.map((priceItem) => {
-        const price = (priceItem.price * (1 - (comissionToApply / 100))).toFixed(2)
+        const price = (priceItem.price * (1 - comissionToApply / 100)).toFixed(
+          2
+        )
         return { ...priceItem, price }
       })
       product = { ...product, priceRange: purchasePrices }
@@ -298,15 +310,15 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       modelSize,
       title = MAIN_TITLE,
       infoFlag,
-      infoMessage
+      infoMessage,
     } = product
-    const { tone } = this.state
+    const { tone } = this.state
     const moreTag = relatedItemTag ? relatedItemTag.replace(/_/g, ' ') : ''
 
     let renderPrices
 
     const {
-      location: { search }
+      location: { search },
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -334,7 +346,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     let retailPrice
 
     const currencyPrices = filter(product.priceRange, {
-      abbreviation: currentCurrency || config.defaultCurrency
+      abbreviation: currentCurrency || config.defaultCurrency,
     })
 
     const symbol = currencyPrices[0].shortName
@@ -352,7 +364,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     )
 
     const getRetailPrice = find(currencyPrices, {
-      quantity: 'Personal'
+      quantity: 'Personal',
     }) as PriceRange
 
     retailPrice = (
@@ -424,7 +436,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     let sizeRange = sizesProduct
     const youthSelected = selectedGender.name === 'Youth'
     if (youthCombined && selectedGender && !!selectedGender.name) {
-      sizeRange = sizesProduct.filter((genderItem) => genderItem.isYouth === youthSelected)
+      sizeRange = sizesProduct.filter(
+        (genderItem) => genderItem.isYouth === youthSelected
+      )
     }
 
     const availableSizes = sizeRange.map(
@@ -522,7 +536,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       size: selectedSize,
       gender: selectedGender,
       color: selectedColor,
-      quantity: 1
+      quantity: 1,
     }
     itemDetails.push(detail)
 
@@ -549,7 +563,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </ButtonsRow>
     )
 
-    const sizeChartButton = !!chart && <SizeChart onClick={this.goToChart} src={sizeChartSvg} />
+    const sizeChartButton = !!chart && (
+      <SizeChart onClick={this.goToChart} src={sizeChartSvg} />
+    )
 
     const collectionSelection = (
       <BuyNowOptions>
@@ -583,20 +599,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const routes: BreadRoute[] = [
       {
         url: '/',
-        label: 'Home'
-      }
+        label: 'Home',
+      },
     ]
     switch (previousRoute) {
       case 'product-catalogue':
         routes.push({
           url: '/product-catalogue',
-          label: formatMessage(messages.productCatalog)
+          label: formatMessage(messages.productCatalog),
         })
         break
       case 'design-center':
         routes.push({
           url: `/design-center?id=${productId}`,
-          label: formatMessage(messages.designCenter)
+          label: formatMessage(messages.designCenter),
         })
         break
       default:
@@ -604,7 +620,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
     routes.push({
       selected: true,
-      label: name
+      label: name,
     })
 
     return (
@@ -652,9 +668,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           light={tone}
                           {...{ product, modelSize }}
                         />
-                        {
-                          infoFlag && <InfoTag>{infoMessage}</InfoTag>
-                        }
+                        {infoFlag && <InfoTag>{infoMessage}</InfoTag>}
                         <HowItFits onClick={this.toggleFitsModal(true)}>
                           <FormattedMessage {...messages.howItFits} />
                         </HowItFits>
@@ -674,7 +688,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                                 images,
                                 moreImages,
                                 loadingImage,
-                                setLoadingImageAction
+                                setLoadingImageAction,
                               }}
                             />
                           </Modal>
@@ -688,7 +702,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           images,
                           moreImages,
                           loadingImage,
-                          setLoadingImageAction
+                          setLoadingImageAction,
                         }}
                       />
                     )}
@@ -722,7 +736,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
-                {isReseller && <DealerTitle>{formatMessage(messages.dealerPricing)}</DealerTitle>}
+                {isReseller && (
+                  <DealerTitle>
+                    {formatMessage(messages.dealerPricing)}
+                  </DealerTitle>
+                )}
                 <PricesRow>{isRetail ? retailPrice : renderPrices}</PricesRow>
                 <Ratings
                   stars={5}
@@ -786,7 +804,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               name,
               history,
               formatMessage,
-              currentCurrency
+              currentCurrency,
             }}
           />
         </Container>
@@ -814,7 +832,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
   }
   openTemplate = () => {
-    const { data: { product: productData } } = this.props
+    const {
+      data: { product: productData },
+    } = this.props
     const { templateZip } = productData
     window.open(templateZip)
   }
@@ -832,14 +852,23 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
-    const { setSelectedGenderAction, selectedSize, setSelectedSizeAction, setSelectedFitAction, data } = this.props
+    const {
+      setSelectedGenderAction,
+      selectedSize,
+      setSelectedSizeAction,
+      setSelectedFitAction,
+      data,
+    } = this.props
     setSelectedGenderAction(gender)
     const youthCombined = get(data, 'product.youthCombined', false)
     const hideFitStyles = get(data, 'product.hideFitStyles', false)
     const genderYouth = gender && gender.name === 'Youth'
     if (youthCombined) {
       const youthSizeSelected = selectedSize && selectedSize.isYouth
-      if (!genderYouth && youthSizeSelected || genderYouth && !youthSizeSelected) {
+      if (
+        (!genderYouth && youthSizeSelected) ||
+        (genderYouth && !youthSizeSelected)
+      ) {
         setSelectedSizeAction({})
       }
     }
@@ -866,7 +895,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   gotoCustomize = () => {
     const {
       history,
-      data: { product }
+      data: { product },
     } = this.props
     const productId = get(product, 'id')
 
@@ -876,18 +905,18 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   goToProDesign = () => {
     const {
       history,
-      data: { product }
+      data: { product },
     } = this.props
     const productObj = {
       ...product,
       type: product.name,
-      description: product.shortDescription
+      description: product.shortDescription,
     }
     history.push({
       pathname: `/pro-design`,
       state: {
-        product: productObj
-      }
+        product: productObj,
+      },
     })
   }
 
@@ -913,7 +942,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedGender,
       selectedColor,
       selectedFit,
-      data: { product }
+      data: { product },
     } = this.props
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
     const hideFitStyles = get(product, 'hideFitStyles', false)
@@ -921,8 +950,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     if (fitStyles.length && fitStyles[0].id) {
       return (
         selectedSize.id >= 0 &&
-        ((selectedFit &&
-          selectedFit.id && !(hideFitStyles && youthGender)) || (hideFitStyles && youthGender)) &&
+        ((selectedFit && selectedFit.id && !(hideFitStyles && youthGender)) ||
+          (hideFitStyles && youthGender)) &&
         selectedColor.id &&
         selectedGender.id
       )
@@ -954,7 +983,7 @@ const mapStateToProps = (state: any) => {
     ...menuSports,
     ...langProps,
     ...responsive,
-    ...app
+    ...app,
   }
 }
 
@@ -974,23 +1003,23 @@ const ProductDetailEnhance = compose(
   graphql(profileSettingsQuery, {
     options: ({ user }: OwnProps) => ({
       fetchPolicy: 'network-only',
-      skip: !user
+      skip: !user,
     }),
     name: 'profileData',
   }),
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {
-        location: { search }
+        location: { search },
       } = ownprops
       const queryParams = queryString.parse(search)
       return {
         variables: {
-          id: queryParams ? queryParams.id : null
+          id: queryParams ? queryParams.id : null,
         },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       }
-    }
+    },
   })
 )(ProductDetail)
 
