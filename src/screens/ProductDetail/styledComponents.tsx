@@ -19,7 +19,7 @@ import {
   BLUE_SKY,
   GREEN_STATUS,
   BLACK_3D_DARK,
-  GRAY_LIGHTEST
+  GRAY_LIGHTEST,
 } from '../../theme/colors'
 import Icon from 'antd/lib/icon'
 
@@ -173,7 +173,7 @@ export const ColorButtons = styled.div`
   left: 25px;
   top: 20px;
   z-index: 3;
-  animation: fade-in-left 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
+  animation: fade-in-left 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) 2s both;
   @keyframes fade-in-left {
     0% {
       transform: translateX(-7px);
@@ -190,12 +190,14 @@ export const ToneButton = styled.img`
   object-fit: contain;
   height: 27px;
   width: 27px;
-  background: ${({ selected }: StyledProps) => selected ? GRAY_LIGHTEST : WHITE};
+  background: ${({ selected }: StyledProps) =>
+    selected ? GRAY_LIGHTEST : WHITE};
   padding: 5px;
   margin-bottom: 8px;
   border-radius: 25px;
-  box-shadow: ${({ selected }: StyledProps) => selected ? 'unset' : `0px 2px 3px -1px ${GRAY_DARK}`};
-  transition: all .25s;
+  box-shadow: ${({ selected }: StyledProps) =>
+    selected ? 'unset' : `0px 2px 3px -1px ${GRAY_DARK}`};
+  transition: all 0.25s;
   &:hover {
     cursor: pointer;
     opacity: 0.5;
@@ -321,9 +323,9 @@ export const StyledButton = styled.div`
   border-radius: 2px;
   cursor: pointer;
   font-weight: 600;
-  background-color: ${WHITE};
+  background: ${BLUE};
+  color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-  color: ${BLUE};
   font-size: 16px;
   display: flex;
   transition: all 0.2s;
@@ -333,8 +335,8 @@ export const StyledButton = styled.div`
     display: none;
   }
   &:hover {
-    background: ${BLUE};
-    color: ${WHITE};
+    background-color: ${WHITE};
+    color: ${BLUE};
   }
 `
 
@@ -448,7 +450,7 @@ export const SectionButton = styled.div`
   height: 50px;
   margin-right: 14px;
   padding: 14px;
-  margin-bottom: ${({ range }: ButtonProps) => range ? '14px' : 'unset'};
+  margin-bottom: ${({ range }: ButtonProps) => (range ? '14px' : 'unset')};
   justify-content: center;
   width: ${({ large, oneSize }: ButtonProps) => {
     let width = oneSize ? 'auto' : '55px'
@@ -602,7 +604,7 @@ export const Loading = styled.div`
 `
 
 export const layoutStyle = {
-  backgroundColor: WHITE
+  backgroundColor: WHITE,
 }
 
 export const InfoTag = styled.div`
@@ -618,7 +620,7 @@ export const InfoTag = styled.div`
   font-size: 17px;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 0;
     height: 0;
