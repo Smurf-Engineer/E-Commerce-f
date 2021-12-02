@@ -27,6 +27,7 @@ import Layout from '../../components/MainLayout'
 import config from '../../config/index'
 import { GetProductsToCompareQuery } from './data'
 import { QueryProps, Product } from '../../types/common'
+import { imagesObject } from './jerseysInfo'
 
 interface Data extends QueryProps {
   product: Product[]
@@ -66,7 +67,7 @@ export class JerseyComparison extends React.Component<Props, {}> {
     ))
 
     const mainJerseys = jerseysInfo.map(({ name, images = [], description, id }, i) => {
-      const image = images[0] ? (id === 63 ? images[0].thumbnail : images[0].front) : ''
+      const image = imagesObject[id] || (images[0] ? images[0].front : '')
       return (
         <Column key={i}>
           <div onClick={this.handleOnClickJersey(name)}>

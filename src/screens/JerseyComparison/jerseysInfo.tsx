@@ -1,5 +1,11 @@
 import messages from './messages'
 
+export const imagesObject = {
+  63: 'https://storage.googleapis.com/jakroo/product-imagesJV2/ULTRA.png',
+  262: 'https://storage.googleapis.com/jakroo/product-imagesJV2/FORZA.png',
+  164: 'https://storage.googleapis.com/jakroo/product-imagesJV2/NOVAPRO.png'
+}
+
 const jerseysInfo = [
   {
     title: messages.fondoTitle,
