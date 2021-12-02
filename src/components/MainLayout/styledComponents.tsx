@@ -62,6 +62,7 @@ export const Footer = styled.div`
 `
 
 export const StyledCarousel = styled(Carousel)`
+  background-color: ORANGE;
   .slick-dots {
     display: flex !important;
     align-items: center !important;
@@ -69,9 +70,16 @@ export const StyledCarousel = styled(Carousel)`
     height: 100%;
     top: 0;
     right: 16px;
-  }
-  .slick-dots li {
-    margin: 0 8px;
+    width: auto;
+    @media (max-width: 768px) {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: unset;
+      top: unset;
+      right: unset;
+      width: 100%;
+    }
   }
   .slick-dots li button {
     height: 0;
@@ -81,9 +89,10 @@ export const StyledCarousel = styled(Carousel)`
     border-radius: 100px;
     border: 1px solid black;
     content: '';
-    height: 24px;
-    width: 24px;
+    height: 12px;
+    width: 12px;
     opacity: 1;
+    margin-top: 4px;
   }
   .slick-dots li.slick-active button:before {
     background: black;
@@ -95,13 +104,20 @@ export const EditorWrapper = styled.div`
   display: flex;
   align-items: center;
   background-color: ORANGE;
-  max-height: 50px;
-
+  height: auto;
+  
   .rdw-editor-wrapper {
     flex: 1;
   }
   .rdw-editor-main {
     display: flex;
     justify-content: center;
+  }
+  span {
+    background-color: transparent !important;
+  }
+  @media (max-width: 768px) {
+    padding: 0 13px;
+    margin-bottom: 28px;
   }
 `
