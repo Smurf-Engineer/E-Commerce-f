@@ -27,10 +27,11 @@ export const Text = styled.div`
 export const ComplianceLogos = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `
 
 export const StyledImg = styled.img`
   margin-bottom: 10px;
   align-self: flex-end;
+  width: 70px;
 `
