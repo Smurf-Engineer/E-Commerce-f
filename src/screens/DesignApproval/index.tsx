@@ -1151,7 +1151,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           <CollabDescription>
             Invite members to collaborate on your project . 
             You can invite up to 5 members to your project.
-            Members will be able to view and comment on  all designs in your project
+            Members will be able to view and comment on  all designs in your project.
           </CollabDescription>
           <AddMemberButton>
             + Invite Members

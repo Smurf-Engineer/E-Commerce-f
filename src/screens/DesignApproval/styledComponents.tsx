@@ -1467,10 +1467,32 @@ export const Collaboration = styled.div`
   }
 `
 
-export const CollabInfo = styled.div``
+export const CollabInfo = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  margin-top: 14px;
+`
 
-export const CollabTitle = styled.div``
+export const CollabTitle = styled.div`
+  text-align: left;
+  font-weight: bold;
+`
 
-export const CollabDescription = styled.div``
+export const CollabDescription = styled.div`
+  text-align: left;
+  margin-top: 8px;
+`
 
-export const AddMemberButton = styled.div``
+export const AddMemberButton = styled.div`
+  padding: 6px 12px;
+  border-radius: 4px;
+  background: rgb(68, 104, 249);
+  margin-top: 12px;
+  color: ${WHITE};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+`
