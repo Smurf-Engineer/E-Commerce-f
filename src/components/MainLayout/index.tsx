@@ -384,7 +384,7 @@ class MainLayout extends React.Component<Props, {}> {
         {/* Carousel for the alerts */}
         {typeof window !== 'undefined' && readyEditors.length > 0 && (
           <StyledCarousel
-            autoplay={false}
+            autoplay={true}
             autoplaySpeed={5 * 1000}
             pauseOnHover={true}
           >
