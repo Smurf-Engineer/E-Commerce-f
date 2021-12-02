@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 12/02/18.
  */
 import styled from 'styled-components'
+import Carousel from 'antd/lib/carousel'
 import { WHITE, AUBERGINE } from '../../theme/colors'
 
 const HEADER_TOP_SIZE = 38
@@ -35,12 +36,13 @@ export const Header = styled.div`
   line-height: 0px;
   padding: 0px;
   z-index: 10;
-  -webkit-transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
   @media (min-width: 992px) {
     height: ${HEADER_HEIGHT}px;
   }
   @media (max-width: 991px) {
-    margin-bottom: ${({ hideTopHeader }: HeaderProps) => hideTopHeader ? 0 : '70px'};
+    margin-bottom: ${({ hideTopHeader }: HeaderProps) =>
+      hideTopHeader ? 0 : '70px'};
   }
 `
 
@@ -56,5 +58,66 @@ export const Footer = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 24px;
+  }
+`
+
+export const StyledCarousel = styled(Carousel)`
+  background-color: ORANGE;
+  .slick-dots {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    height: 100%;
+    top: 0;
+    right: 16px;
+    width: auto;
+    @media (max-width: 768px) {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: unset;
+      top: unset;
+      right: unset;
+      width: 100%;
+    }
+  }
+  .slick-dots li button {
+    height: 0;
+  }
+  .slick-dots li button:before {
+    background: none;
+    border-radius: 100px;
+    border: 1px solid black;
+    content: '';
+    height: 12px;
+    width: 12px;
+    opacity: 1;
+    margin-top: 4px;
+  }
+  .slick-dots li.slick-active button:before {
+    background: black;
+    opacity: 1;
+  }
+`
+
+export const EditorWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ORANGE;
+  height: auto;
+  
+  .rdw-editor-wrapper {
+    flex: 1;
+  }
+  .rdw-editor-main {
+    display: flex;
+    justify-content: center;
+  }
+  span {
+    background-color: transparent !important;
+  }
+  @media (max-width: 768px) {
+    padding: 0 13px;
+    margin-bottom: 28px;
   }
 `

@@ -23,3 +23,13 @@ export const getPermissionsQuery = gql`
     }
   }
 `
+
+export const getAlertsQuery = gql`
+  query alerts {
+    alerts: getValidAlerts {
+      id
+      sequence
+      content
+    }
+  }
+`

@@ -3,12 +3,13 @@
  */
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { compose, withApollo } from 'react-apollo'
+import { compose, graphql, withApollo } from 'react-apollo'
 import GoogleFontLoader from 'react-google-font-loader'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
+import { EditorState, convertFromRaw } from 'draft-js'
 import { MAIN_TITLE } from '../../constants'
 import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
@@ -20,16 +21,23 @@ import {
   CartItems,
   UserType,
   Font,
-  SimpleFont
+  SimpleFont,
+  QueryProps,
+  Alert,
 } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
-import { Header, Footer } from './styledComponents'
+import {
+  Header,
+  Footer,
+  EditorWrapper,
+  StyledCarousel,
+} from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
-import { getFonts } from './data'
+import { getAlertsQuery, getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
@@ -41,7 +49,12 @@ import { ipLocation } from '../../utils/utilsIpLocation'
 
 const { Content } = Layout
 
+interface AlertsData extends QueryProps {
+  alertsData: Alert[]
+}
+
 interface Props extends RouteComponentProps<any> {
+  alertsData: AlertsData
   children: React.ReactChildren
   intl: InjectedIntl
   history: any
@@ -100,16 +113,42 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
-  setUserLocationInfoAction: (countryName: string, countryCode: string, regionName: string, city: string) => void
+  setUserLocationInfoAction: (
+    countryName: string,
+    countryCode: string,
+    regionName: string,
+    city: string
+  ) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
   static defaultProps = {
     hideBottomHeader: false,
-    hideFooter: false
+    hideFooter: false,
   }
 
-  state = {}
+  state = {
+    editors: Array(3).fill({
+      sequence: undefined,
+      editorState: false,
+      contentUpdated: false,
+      editorReady: false,
+      Editor: null,
+    }),
+  }
+
+  constructor(props: Props) {
+    super(props)
+    const { editors } = this.state
+    if (typeof window !== undefined) {
+      this.setState({
+        editors: editors.map((editor) => ({
+          ...editor,
+          editorState: EditorState.createEmpty(),
+        })),
+      })
+    }
+  }
 
   componentWillMount() {
     const { user, client } = this.props
@@ -120,15 +159,27 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   async componentDidMount() {
+    if (typeof window !== undefined) {
+      const { editors } = this.state
+      const Editor = require('react-draft-wysiwyg').Editor
+      this.setState({
+        editors: editors.map((editor, index) => ({
+          ...editor,
+          editorReady: true,
+          Editor,
+        })),
+      })
+    }
+
     const {
       openLoginAction,
       history: {
-        location: { search, pathname }
+        location: { search, pathname },
       },
       user,
       getFontsData,
       setInstalledFontsAction,
-      setUserLocationInfoAction
+      setUserLocationInfoAction,
     } = this.props
 
     const { login } = queryString.parse(search)
@@ -156,10 +207,51 @@ class MainLayout extends React.Component<Props, {}> {
     }
   }
 
-  componentDidUpdate() {
-    const { user, disableAssist } = this.props
+  getAllAlerts = (): Alert[] => {
+    const { alertsData } = this.props
+    return get(alertsData, 'alerts', [])
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { user, disableAssist, alertsData } = this.props
     if (!disableAssist) {
       openSupport(user)
+    }
+
+    if (typeof window !== undefined && alertsData !== prevProps.alertsData) {
+      const alerts = this.getAllAlerts()
+      if (!alerts || !alerts.length) {
+        return
+      }
+
+      const { editors } = this.state
+      this.setState({
+        editors: editors.map((editor, index) => {
+          const { editorReady, contentUpdated } = editor
+          if (
+            alerts[index] &&
+            alerts[index].content &&
+            !contentUpdated &&
+            editorReady
+          ) {
+            try {
+              const blocksContent = JSON.parse(alerts[index].content)
+              const editorState = EditorState.createWithContent(
+                convertFromRaw(blocksContent)
+              )
+              return {
+                ...editor,
+                sequence: index,
+                contentUpdated: true,
+                editorState,
+              }
+            } catch (e) {
+              console.error('Error:', e)
+            }
+          }
+          return { ...editor, sequence: index }
+        }),
+      })
     }
   }
 
@@ -178,8 +270,8 @@ class MainLayout extends React.Component<Props, {}> {
     const {
       openLogoutModalAction,
       history: {
-        location: { pathname }
-      }
+        location: { pathname },
+      },
     } = this.props
 
     if (CONFIRM_LOGOUT.includes(pathname)) {
@@ -204,8 +296,8 @@ class MainLayout extends React.Component<Props, {}> {
       deleteUserSession,
       client,
       history: {
-        location: { pathname }
-      }
+        location: { pathname },
+      },
     } = this.props
     client.resetStore()
     deleteUserSession()
@@ -257,8 +349,15 @@ class MainLayout extends React.Component<Props, {}> {
       countryName,
       countryCode,
       regionName,
-      city
+      city,
     } = this.props
+    const { editors } = this.state
+    const readyEditors = editors.filter(
+      (editor) =>
+        editor.editorReady &&
+        editor.editorState &&
+        editor.editorState.getCurrentContent().hasText()
+    )
     const { formatMessage } = intl
     let numberOfProducts = 0
 
@@ -282,6 +381,27 @@ class MainLayout extends React.Component<Props, {}> {
     return (
       <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
+        {/* Carousel for the alerts */}
+        {typeof window !== 'undefined' && readyEditors.length > 0 && (
+          <StyledCarousel
+            autoplay={false}
+            autoplaySpeed={5 * 1000}
+            pauseOnHover={true}
+          >
+            {readyEditors.map((editor, index) => {
+              const { editorState, Editor } = editor
+              return (
+                <EditorWrapper key={index}>
+                  <Editor
+                    {...{ editorState }}
+                    toolbarHidden={true}
+                    readOnly={true}
+                  />
+                </EditorWrapper>
+              )
+            })}
+          </StyledCarousel>
+        )}
         <Helmet defaultTitle={MAIN_TITLE} />
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
@@ -309,7 +429,7 @@ class MainLayout extends React.Component<Props, {}> {
               countryName,
               countryCode,
               regionName,
-              city
+              city,
             }}
             loggedIn={!!user}
             saveAndBuy={saveAndBuyAction}
@@ -395,13 +515,19 @@ const mapStateToProps = (state: any) => {
     ...responsive,
     ...app,
     shoppingCart: { ...shoppingCart },
-    designCenter: { ...designCenter }
+    designCenter: { ...designCenter },
   }
 }
 
 const LayoutEnhance = compose(
   withApollo,
   getFonts,
+  graphql(getAlertsQuery, {
+    options: {
+      fetchPolicy: 'network-only',
+    },
+    name: 'alertsData',
+  }),
   connect(
     mapStateToProps,
     {
@@ -409,7 +535,7 @@ const LayoutEnhance = compose(
       ...LocaleActions,
       ...mainLayoutActions,
       openWithoutSaveModalAction: openOutWithoutSaveModalAction,
-      setAccountScreen: setDefaultScreenAction
+      setAccountScreen: setDefaultScreenAction,
     }
   )
 )(MainLayout)
