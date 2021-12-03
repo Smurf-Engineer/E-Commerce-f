@@ -1135,7 +1135,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
       </Colors> : null
 
     return (
-      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
+      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true} hideAlerts={true}>
         <Container>
           {installedFonts.length ? (
             <GoogleFontLoader fonts={installedFonts} />
