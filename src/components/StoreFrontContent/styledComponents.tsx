@@ -397,7 +397,7 @@ export const AssistanceDiv = styled.div`
   right: 0;
   width: fit-content;
   margin: auto;
-  padding: 20px 75px;
+  padding: 10px 50px;
   text-align: center;
   font-size: 18px;
   background-color: ${GREEN_LIGHT};
