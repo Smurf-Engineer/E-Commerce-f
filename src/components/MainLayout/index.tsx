@@ -98,6 +98,7 @@ interface Props extends RouteComponentProps<any> {
   fontsData: any
   fonts: []
   darkMode?: boolean
+  hideAlerts?: boolean
   hideDetails: boolean
   countryName: string
   countryCode: string
@@ -330,6 +331,7 @@ class MainLayout extends React.Component<Props, {}> {
       hideTopHeader,
       hideBottomHeader,
       hideFooter,
+      hideAlerts,
       fakeWidth,
       teamStoresHeader,
       hideQuickViewSliderButtons,
@@ -382,7 +384,7 @@ class MainLayout extends React.Component<Props, {}> {
       <Layout {...{ style }}>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         {/* Carousel for the alerts */}
-        {typeof window !== 'undefined' && readyEditors.length > 0 && (
+        {typeof window !== 'undefined' && readyEditors.length > 0 && !hideAlerts && (
           <StyledCarousel
             autoplay={true}
             autoplaySpeed={5 * 1000}
