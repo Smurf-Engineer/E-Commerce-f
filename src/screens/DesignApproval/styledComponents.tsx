@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdTabs from 'antd/lib/tabs'
+import Select from 'antd/lib/select'
 import Collapse from 'antd/lib/collapse'
 import {
   BLUE,
@@ -25,7 +26,10 @@ import {
   GREEN_PAYDAY,
   BLACK_LABEL,
   GREEN_STATUS,
-  BLUE_SOFT
+  BLUE_SOFT,
+  GRAY_SKELETON,
+  COLOR_IN_DESIGN,
+  DARKER_GRAY
 } from '../../theme/colors'
 import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
@@ -922,7 +926,7 @@ export const MessageHeader = styled.div`
 
 export const TabContent = styled.div`
   display: flex;
-  height: calc(100vh - 221px);
+  height: calc(100vh - 215px);
   flex-flow: column;
 `
 
@@ -1461,6 +1465,8 @@ export const Collaboration = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
   @media (max-width: 1023px) {
     padding: 0;
     height: calc(100vh - 277px);
@@ -1494,5 +1500,72 @@ export const AddMemberButton = styled.div`
   &:hover {
     opacity: 0.7;
     cursor: pointer;
+  }
+`
+
+export const CollabMembers = styled.div`
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid ${GRAY_SKELETON};
+`
+
+export const MembersList = styled.div`
+  margin-top: 24px;
+`
+
+export const Member = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+`
+
+export const MemberImage = styled(Icon)`
+  background: ${({ codeColor }: RowProps) => codeColor || COLOR_IN_DESIGN};
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  font-size: 20px;
+  margin-right: 18px;
+  opacity: 0.75;
+  color: ${WHITE};
+`
+
+export const MemberData = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column;
+  align-items: flex-start;
+  font-size: 12px;
+  flex: 1;
+`
+
+export const MemberName = styled.div`
+  font-weight: bold;
+  text-align: left;
+`
+
+export const MemberEmail = styled.div`
+  text-align: left;
+`
+
+export const MemberDate = styled.div`
+  color: ${DARKER_GRAY};
+  text-align: left;
+`
+
+export const MemberType = styled(Select)`
+  min-width: 108px;
+  margin-right: 10px;
+  font-size: 12px;
+`
+
+export const MemberDelete = styled(Icon)`
+  transition: all .25s;
+  &:hover {
+    cursor: pointer;
+    color: ${RED};
   }
 `

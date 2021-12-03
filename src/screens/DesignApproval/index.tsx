@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import AntdMessage from 'antd/lib/message'
 import Button from 'antd/lib/button'
+import Select from 'antd/lib/select'
 import messageIcon from '../../assets/approval_log.svg'
 import JakRooLogo from '../../assets/Jackroologo.svg'
 import quickView from '../../assets/quickview.svg'
@@ -188,13 +189,23 @@ import {
   Collaboration,
   CollabInfo,
   CollabTitle,
-  CollabDescription
+  CollabDescription,
+  CollabMembers,
+  MembersList,
+  Member,
+  MemberData,
+  MemberDate,
+  MemberDelete,
+  MemberEmail,
+  MemberImage,
+  MemberName,
+  MemberType
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
 import Tab from './Tab'
 import Modal from 'antd/lib/modal'
-import { COLOR, APPROVAL, COLLAB, COMMENTS } from './constants'
+import { COLOR, APPROVAL, COLLAB, COMMENTS, memberColors, memberTypeOptions } from './constants'
 import {
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
@@ -233,6 +244,7 @@ import {
 import PayModal from '../../components/PayModal'
 import config from '../../config'
 
+const Option = Select.Option
 const { confirm, info } = Modal
 const { TabPane } = AntdTabs
 
@@ -1157,6 +1169,31 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             + Invite Members
           </AddMemberButton>
         </CollabInfo>
+        <CollabMembers>
+          <CollabTitle>
+            My Team
+          </CollabTitle>
+          <MembersList>
+            {[1, 2, 3].map((item, key) =>
+              <Member {...{ key }}>
+                <MemberImage codeColor={memberColors[Math.floor(key % 7)]} type="user" />
+                <MemberData>
+                  <MemberName>Name: John Appleseed</MemberName>
+                  <MemberEmail>johnappleseed@hotmail.com</MemberEmail>
+                  <MemberDate>Date Added: 10/02/2021</MemberDate>
+                </MemberData>
+                <MemberType>
+                  {memberTypeOptions.map((value: string, index: number) => (
+                    <Option key={index} value={value}>
+                      {value}
+                    </Option>
+                  ))}
+                </MemberType>
+                <MemberDelete type="delete" />
+              </Member>
+            )}
+          </MembersList>
+        </CollabMembers>
       </Collaboration> : null
 
     const commentsComponent = null
