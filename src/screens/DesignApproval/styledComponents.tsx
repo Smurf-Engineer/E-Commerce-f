@@ -390,12 +390,12 @@ export const Layouts = styled.div`
 export const Variants = styled.div`
   display: flex;
   flex-flow: column;
-  top: ${({ secondary }: RowProps) => (secondary ? '92px' : '38px')};
+  top: ${({ secondary, selected }: RowProps) => selected && secondary ? '192px' : (secondary ? '92px' : '38px')};
   z-index: 4;
   left: 28px;
   position: absolute;
   @media (max-width: 1023px) {
-    top: ${({ secondary }: RowProps) => (secondary ? '92px' : '42px')};
+    top: ${({ secondary, selected }: RowProps) => selected && secondary ? '192px' : (secondary ? '92px' : '42px')};
     left: 18px;
   }
 `

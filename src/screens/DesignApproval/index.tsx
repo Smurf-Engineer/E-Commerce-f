@@ -1237,7 +1237,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 }
               </ButtonsContainer>
               {variants.length > 1 && (
-                <Variants secondary={itemStatus !== PREFLIGHT_STATUS && !!designId}>
+                <Variants
+                  secondary={itemStatus !== PREFLIGHT_STATUS && !!designId}
+                  selected={itemStatus !== CUSTOMER_APPROVED && !!designId}
+                >
                   {variants.map(({ icon }, index) => (
                     <VariantButton
                       key={index}
