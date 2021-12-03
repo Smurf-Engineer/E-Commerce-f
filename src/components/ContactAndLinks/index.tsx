@@ -14,10 +14,11 @@ import {
   ComplianceLogos,
   StyledImg,
   ContainerMobile,
-  Row
+  Row,
 } from './styledComponents'
 import BSCILogo from '../../assets/BSCI_logo.svg'
 import CaliPropLogo from '../../assets/californiaprop65.svg'
+import PeopleForBikesLogo from '../../assets/people-for-bikes.png'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -26,13 +27,18 @@ interface Props {
   history?: any
 }
 
-const ContactAndLinks = ({ formatMessage, fakeWidth, history, openReseller = () => {} }: Props) => {
+const ContactAndLinks = ({
+  formatMessage,
+  fakeWidth,
+  history,
+  openReseller = () => {},
+}: Props) => {
   return (
     <MediaQuery
       minWidth={768}
       values={{ width: fakeWidth, deviceWidth: fakeWidth }}
     >
-      {matches => {
+      {(matches) => {
         if (matches) {
           return (
             <Container>
@@ -42,6 +48,9 @@ const ContactAndLinks = ({ formatMessage, fakeWidth, history, openReseller = () 
               <AboutUs {...{ history, formatMessage }} />
               <Teams {...{ history, formatMessage, openReseller }} />
               <ComplianceLogos>
+                <a href="/compliance">
+                  <StyledImg alt="logo" src={PeopleForBikesLogo} />
+                </a>
                 <a href="/compliance">
                   <StyledImg alt="logo" src={BSCILogo} />
                 </a>
@@ -66,6 +75,7 @@ const ContactAndLinks = ({ formatMessage, fakeWidth, history, openReseller = () 
                 </div>
               </Row>
               <ComplianceLogos>
+                <StyledImg alt="logo" src={PeopleForBikesLogo} />
                 <StyledImg alt="logo" src={BSCILogo} />
                 <StyledImg alt="logo" src={CaliPropLogo} />
               </ComplianceLogos>
