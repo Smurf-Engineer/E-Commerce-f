@@ -142,12 +142,12 @@ class MainLayout extends React.Component<Props, {}> {
     super(props)
     const { editors } = this.state
     if (typeof window !== undefined) {
-      this.setState({
+      this.state = {
         editors: editors.map((editor) => ({
           ...editor,
           editorState: EditorState.createEmpty(),
         })),
-      })
+      }
     }
   }
 

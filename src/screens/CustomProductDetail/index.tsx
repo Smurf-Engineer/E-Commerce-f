@@ -391,13 +391,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const availableTopSizes =
       twoPieces &&
       sizeRange &&
-      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
+      sizeRange.map(({ id, name: sizeName, isYouth }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
             selected={id === selectedTopSize.id}
             onClick={this.handleSelectedTopSize({
               id: Number(id),
-              name: String(sizeName)
+              name: String(sizeName),
+              isYouth
             })}
           >
             {sizeName}
@@ -408,13 +409,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const availableBottomSizes =
       twoPieces &&
       sizeRange &&
-      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
+      sizeRange.map(({ id, name: sizeName, isYouth }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
             selected={id === selectedBottomSize.id}
             onClick={this.handleSelectedBottomSize({
               id: Number(id),
-              name: String(sizeName)
+              name: String(sizeName),
+              isYouth
             })}
           >
             {sizeName}
@@ -760,7 +762,17 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
-    const { setSelectedGenderAction, selectedSize, setSelectedSizeAction, setSelectedFitAction, data } = this.props
+    const {
+      setSelectedGenderAction,
+      selectedSize,
+      setSelectedSizeAction,
+      setSelectedFitAction,
+      data,
+      selectedTopSize,
+      selectedBottomSize,
+      setSelectedTopSizeAction,
+      setSelectedBottomSizeAction
+    } = this.props
     setSelectedGenderAction(gender)
     const youthCombined = get(data, 'design.product.youthCombined', false)
     const hideFitStyles = get(data, 'design.product.hideFitStyles', false)
@@ -769,6 +781,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       const youthSizeSelected = selectedSize && selectedSize.isYouth
       if (!genderYouth && youthSizeSelected || genderYouth && !youthSizeSelected) {
         setSelectedSizeAction({})
+      }
+      const youthTopSize = selectedTopSize && selectedTopSize.isYouth
+      if (!genderYouth && youthTopSize || genderYouth && !youthTopSize) {
+        setSelectedTopSizeAction({})
+      }
+      const youthBottomSize = selectedBottomSize && selectedBottomSize.isYouth
+      if (!genderYouth && youthBottomSize || genderYouth && !youthBottomSize) {
+        setSelectedBottomSizeAction({})
       }
     }
     if (genderYouth && hideFitStyles) {
