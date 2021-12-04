@@ -1366,7 +1366,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                       zoomedIn={true}
                     />
                   }
-                  {!readyToShow && product && showRenderWindow &&
+                  {!readyToShow && product && showRenderWindow && !designToApply &&
                     <Render3D
                       fullHeight={true}
                       customProduct={true}
