@@ -335,7 +335,11 @@ export class CartListItem extends React.Component<Props, {}> {
 
     if (youthCombined) {
       const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
-        if (item.size && item.size.isYouth) {
+        if (
+            (item.size && item.size.isYouth) || 
+            (item.topSize && item.topSize.isYouth) || 
+            (item.bottomSize && item.bottomSize.isYouth)
+          ) {
           sum += item.quantity
         }
         return sum

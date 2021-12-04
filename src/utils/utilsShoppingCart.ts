@@ -142,7 +142,11 @@ export const getShoppingCartData = (
       let youthDiscount = 0
       if (youthCombined) {
         const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
-          if (item.size && item.size.isYouth) {
+          if (
+            (item.size && item.size.isYouth) || 
+            (item.topSize && item.topSize.isYouth) || 
+            (item.bottomSize && item.bottomSize.isYouth)
+          ) {
             sum += item.quantity
           }
           return sum
@@ -153,7 +157,11 @@ export const getShoppingCartData = (
 
       if (shippingCountry && shippingCountry.toLowerCase() === COUNTRY_CODE_CANADA) {
         const amountYouths = cartItem.itemDetails.reduce((sum, item) => {
-          if (item.size && item.size.isYouth) {
+          if (
+            (item.size && item.size.isYouth) || 
+            (item.topSize && item.topSize.isYouth) || 
+            (item.bottomSize && item.bottomSize.isYouth)
+          ) {
             sum += item.quantity
           }
           return sum

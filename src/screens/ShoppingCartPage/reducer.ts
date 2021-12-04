@@ -110,7 +110,8 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.updateIn(
         ['cart', action.index, 'itemDetails', action.detailIndex],
         (detailItem: any) => {
-          const updateItem = detailItem.set('gender', action.gender).delete('size').delete('fit')
+          const updateItem = detailItem.set('gender', action.gender)
+            .delete('size').delete('fit').delete('topSize').delete('bottomSize')
           return updateItem
         }
       )
