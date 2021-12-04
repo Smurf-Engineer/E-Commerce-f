@@ -12,7 +12,9 @@ import {
   GRAY_SKELETON,
   BLUE,
   GRAY_DARK,
-  RED
+  RED,
+  GREEN_LIGHT,
+  GREEN_DARK,
 } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
@@ -345,6 +347,7 @@ export const Dates = styled.div`
   align-items: flex-start;
 `
 export const FlexContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -383,15 +386,23 @@ export const DatesTitle = styled.div`
   line-height: 16px;
   text-align: center;
   padding-bottom: 5px;
-  font-weight: ${({ onDemandMode }: DivProps) => onDemandMode ? 'bold' : 'normal'};
+  font-weight: ${({ onDemandMode }: DivProps) =>
+    onDemandMode ? 'bold' : 'normal'};
 `
 
 export const AssistanceDiv = styled.div`
   position: absolute;
-  width: 100%;
+  top: 0;
   left: 0;
-  margin-top: 8px;
+  right: 0;
+  width: fit-content;
+  margin: auto;
+  padding: 10px 50px;
   text-align: center;
+  font-size: 18px;
+  background-color: ${GREEN_LIGHT};
+  border-radius: 20px;
+  border: 1px solid ${GREEN_DARK};
   @media (max-width: 764px) {
     justify-content: center;
     margin-top: 18px;
@@ -400,7 +411,7 @@ export const AssistanceDiv = styled.div`
 `
 
 export const SectionLink = styled.a`
-  color: ${BLUE}; 
+  color: ${BLUE};
   &:hover {
     cursor: pointer;
   }
