@@ -157,6 +157,12 @@ export const GendersContainer = styled.div`
   align-items: center;
 `
 
+export const YouthLabel = styled.div`
+  font-size: 10px;
+  color: #549c8c;
+  margin-right: 5px;
+`
+
 export const Description = styled.div`
   user-select: none;
   color: #8c8c8c;

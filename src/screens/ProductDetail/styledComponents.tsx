@@ -72,6 +72,14 @@ export const SizeChart = styled.img`
   }
 `
 
+export const YouthLabel = styled.div`
+  font-size: 12px;
+  color: #549c8c;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: bottom;
+`
+
 export const WomenIcon = styled(Icon)`
   margin-left: 8px;
   color: deeppink;

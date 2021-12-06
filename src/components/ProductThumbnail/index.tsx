@@ -23,7 +23,8 @@ import {
   BuyLoader,
   ImgIcon,
   RetailColors,
-  NotificationsBadge
+  NotificationsBadge,
+  YouthLabel
 } from './styledComponents'
 import messages from './messages'
 import { getProductQuery } from './data'
@@ -370,6 +371,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     )
     let menAvailable = false
     let womenAvailable = false
+    let youthAvailable = false
     if (product && !!product.genders) {
       product.genders.forEach(gender => {
         if (gender.name === 'Men') {
@@ -377,6 +379,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
         }
         if (gender.name === 'Women') {
           womenAvailable = true
+        }
+        if (gender.name === 'Youth') {
+          youthAvailable = true
         }
       })
     }
@@ -435,6 +440,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             <Type {...{ fitContainer, fromTop }}>
               {type}
               <GendersContainer>
+                {youthAvailable && <YouthLabel><FormattedMessage {...messages.youth} /></YouthLabel>}
                 {menAvailable && <MenIcon type="man" />}
                 {womenAvailable && <WomenIcon type="woman" />}
               </GendersContainer>

@@ -71,6 +71,7 @@ import {
   ActionButtonsRow,
   ButtonTemplate,
   Download,
+  YouthLabel,
 } from './styledComponents'
 import sizeChartSvg from '../../assets/sizechart.svg'
 import colorWheel from '../../assets/Colorwheel.svg'
@@ -585,6 +586,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     )
     let menAvailable = false
     let womenAvailable = false
+    let youthAvailable = false
     if (genders) {
       genders.forEach((genderItem: ItemDetailType) => {
         if (genderItem.name === 'Men') {
@@ -592,6 +594,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         }
         if (genderItem.name === 'Women') {
           womenAvailable = true
+        }
+        if (genderItem.name === 'Youth') {
+          youthAvailable = true
         }
       })
     }
@@ -730,6 +735,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                       {name}
                       {menAvailable && <MenIcon type="man" />}
                       {womenAvailable && <WomenIcon type="woman" />}
+                      {youthAvailable && <YouthLabel>{formatMessage(messages.youth)}</YouthLabel>}
                     </Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     <Subtitle>{`MPN: ${mpnCode}`}</Subtitle>
