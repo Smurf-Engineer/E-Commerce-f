@@ -12,9 +12,7 @@ import {
   GRAY_SKELETON,
   BLUE,
   GRAY_DARK,
-  RED,
-  GREEN_LIGHT,
-  GREEN_DARK,
+  RED
 } from '../../theme/colors'
 type DivProps = {
   onDemandMode?: boolean
@@ -397,13 +395,17 @@ export const AssistanceDiv = styled.div`
   right: 0;
   width: fit-content;
   margin: auto;
-  padding: 10px 50px;
+  padding: 10px 25px;
   text-align: center;
-  font-size: 18px;
-  background-color: ${GREEN_LIGHT};
-  border-radius: 20px;
-  border: 1px solid ${GREEN_DARK};
-  @media (max-width: 764px) {
+  font-size: 16px;
+  background-color: #e6ffe5;
+  border-radius: 8px;
+  border: 1px solid #9bd390;
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding: 10px 18px;
+  }
+  @media (max-width: 740px) {
     justify-content: center;
     margin-top: 18px;
     position: unset;
@@ -412,6 +414,8 @@ export const AssistanceDiv = styled.div`
 
 export const SectionLink = styled.a`
   color: ${BLUE};
+  margin-top: 8px;
+  display: block;
   &:hover {
     cursor: pointer;
   }

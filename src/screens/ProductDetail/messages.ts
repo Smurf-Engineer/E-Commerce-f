@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'screens.ProductDetail.howItFits',
     defaultMessage: 'SEE HOW IT FITS'
   },
+  youth: {
+    id: 'screens.ProductDetail.youth',
+    defaultMessage: 'Youth'
+  },
   productNotFound: {
     id: 'screens.ProductDetail.productNotFound',
     defaultMessage: 'Error: Product not found.'
