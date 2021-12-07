@@ -239,10 +239,10 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 onPressQuickView={handleOnClickView}
               />
             </Cell>
-            <Cell width={10} tabletWidth={10}>
+            <Cell width={8} tabletWidth={8}>
               <Name>{name}</Name>
             </Cell>
-            <Cell width={10} tabletWidth={10}>
+            <Cell width={12} tabletWidth={12}>
               <Description>{description}</Description>
             </Cell>
             {isReseller && (

@@ -45,8 +45,8 @@ const PERSONAL = 'Personal'
 const teamTitles: Header[] = [
   { message: '', width: 5, tabletWidth: 5 },
   { message: '', width: 19, tabletWidth: 19 },
-  { message: 'name', width: 12, tabletWidth: 12 },
-  { message: 'description', width: 10, tabletWidth: 10 },
+  { message: 'name', width: 10, tabletWidth: 10 },
+  { message: 'description', width: 12, tabletWidth: 12 },
   { message: 'regularPrice', width: 10, tabletWidth: 10 },
   { message: 'fixedPrice', width: 10, tabletWidth: 10, withHelp: true },
   { message: 'quantity', width: 10, tabletWidth: 10 },
@@ -57,8 +57,8 @@ const teamTitles: Header[] = [
 const resellerTitles: Header[] = [
   { message: '', width: 5, tabletWidth: 5 },
   { message: '', width: 19, tabletWidth: 15 },
-  { message: 'name', width: 12, tabletWidth: 12 },
-  { message: 'description', width: 10, tabletWidth: 10 },
+  { message: 'name', width: 10, tabletWidth: 10 },
+  { message: 'description', width: 12, tabletWidth: 12 },
   {
     message: 'currency',
     width: 10,
