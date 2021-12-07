@@ -8,7 +8,7 @@ interface RowProps {
 
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
-import { GRAY_DARK, BLUE } from '../../theme/colors'
+import { GRAY_DARK, BLUE, GREEN_BRIGHT } from '../../theme/colors'
 import { AVENIR_NEXT } from '../../theme/fonts'
 import Popover from 'antd/lib/popover'
 
@@ -25,8 +25,7 @@ export const Table = styled.div`
   }
 `
 
-export const InfoIcon = styled(Icon)`
-`
+export const InfoIcon = styled(Icon)``
 
 export const PopoverStyled = styled(Popover)`
   cursor: pointer;
@@ -215,5 +214,9 @@ export const InfoBody = styled.div`
 
 export const buttonStyle = {
   background: BLUE,
-  border: 'none'
+  border: 'none',
 }
+
+export const TeamPrice = styled.span`
+  color: ${GREEN_BRIGHT};
+`

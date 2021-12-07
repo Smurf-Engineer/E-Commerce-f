@@ -13,7 +13,11 @@ import {
   Question,
   ModalTitle,
   buttonStyle,
-  InfoBody, PopoverStyled, PopoverText, InfoIcon
+  InfoBody,
+  PopoverStyled,
+  PopoverText,
+  InfoIcon,
+  TeamPrice,
 } from './styledComponents'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
@@ -40,29 +44,53 @@ const PERSONAL = 'Personal'
 
 const teamTitles: Header[] = [
   { message: '', width: 5, tabletWidth: 5 },
-  { message: '', width: 20, tabletWidth: 20 },
-  { message: '', width: 10, tabletWidth: 10 },
-  { message: '', width: 10, tabletWidth: 10 },
+  { message: '', width: 19, tabletWidth: 19 },
+  { message: 'name', width: 10, tabletWidth: 10 },
+  { message: 'description', width: 12, tabletWidth: 12 },
   { message: 'regularPrice', width: 10, tabletWidth: 10 },
   { message: 'fixedPrice', width: 10, tabletWidth: 10, withHelp: true },
   { message: 'quantity', width: 10, tabletWidth: 10 },
   { message: 'visible', width: 10, tabletWidth: 10 },
-  { message: '', width: 15, tabletWidth: 10 }
+  { message: '', width: 15, tabletWidth: 10 },
 ]
 
 const resellerTitles: Header[] = [
   { message: '', width: 5, tabletWidth: 5 },
-  { message: '', width: 20, tabletWidth: 20 },
-  { message: '', width: 10, tabletWidth: 10 },
-  { message: '', width: 10, tabletWidth: 10 },
-  { message: 'currency', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'currencyDesc' },
-  { message: 'teamPrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'msrpDesc' },
-  { message: 'purchasePrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'dealerPrice' },
-  { message: 'yourPrice', width: 10, tabletWidth: 10, withHelp: true, helpMessage: 'listPriceDesc' },
+  { message: '', width: 19, tabletWidth: 15 },
+  { message: 'name', width: 10, tabletWidth: 10 },
+  { message: 'description', width: 12, tabletWidth: 12 },
+  {
+    message: 'currency',
+    width: 10,
+    tabletWidth: 10,
+    withHelp: true,
+    helpMessage: 'currencyDesc',
+  },
+  {
+    message: 'teamPrice',
+    width: 10,
+    tabletWidth: 10,
+    withHelp: true,
+    helpMessage: 'msrpDesc',
+  },
+  {
+    message: 'purchasePrice',
+    width: 10,
+    tabletWidth: 10,
+    withHelp: true,
+    helpMessage: 'dealerPrice',
+  },
+  {
+    message: 'yourPrice',
+    width: 10,
+    tabletWidth: 10,
+    withHelp: true,
+    helpMessage: 'listPriceDesc',
+  },
   { message: 'profit', width: 10, tabletWidth: 10 },
   { message: 'yourMargin', width: 10, tabletWidth: 10 },
   { message: 'visible', width: 10, tabletWidth: 10 },
-  { message: '', width: 15, tabletWidth: 10 }
+  { message: '', width: 15, tabletWidth: 10 },
 ]
 
 interface Props {
@@ -110,9 +138,9 @@ class LockerTable extends React.PureComponent<Props, {}> {
       icon: ' ',
       okText: formatMessage(messsages.gotIt),
       okButtonProps: {
-        style: buttonStyle
+        style: buttonStyle,
       },
-      content: <InfoBody>{formatMessage(messsages.aboutTeamInfo)}</InfoBody>
+      content: <InfoBody>{formatMessage(messsages.aboutTeamInfo)}</InfoBody>,
     })
   }
 
@@ -130,19 +158,26 @@ class LockerTable extends React.PureComponent<Props, {}> {
       resellerComission,
       teamSizeRange,
       currentCurrency = config.defaultCurrency,
-      onDemand = true
+      onDemand = true,
     } = this.props
     const headerTitles = isReseller ? resellerTitles : teamTitles
     const itemsSelected = items.map(
       (
-        { design, visible, totalOrders, priceRange, resellerRange = [] }: LockerTableType,
+        {
+          design,
+          visible,
+          totalOrders,
+          priceRange,
+          resellerRange = [],
+        }: LockerTableType,
         index
       ) => {
         const name = get(design, 'name')
+        const code = get(design, 'code')
         const product = get(design, 'product')
         const productPrices = get(product, 'priceRange')
         const pricesArray = filter(productPrices, {
-          abbreviation: currentCurrency || config.defaultCurrency
+          abbreviation: currentCurrency || config.defaultCurrency,
         })
         const startingPrice = this.getTierPrice(pricesArray)
         const targetPrice = this.getTierPrice(pricesArray, teamSizeRange)
@@ -154,7 +189,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
         const type = get(product, 'type')
         const regularPrice = get(
           find(pricesArray, {
-            quantity: PERSONAL
+            quantity: PERSONAL,
           }),
           'price',
           0
@@ -164,8 +199,14 @@ class LockerTable extends React.PureComponent<Props, {}> {
             ? get(find(priceRange, ['abbreviation', currentCurrency]), 'price')
             : startingPrice
 
-        const resellerPrice = get(find((resellerRange), ['abbreviation', currentCurrency]), 'price')
-        const currencyIndex = findIndex((resellerRange), ['abbreviation', currentCurrency])
+        const resellerPrice = get(
+          find(resellerRange, ['abbreviation', currentCurrency]),
+          'price'
+        )
+        const currencyIndex = findIndex(resellerRange, [
+          'abbreviation',
+          currentCurrency,
+        ])
         let currentRangePrice = 0
 
         pricesArray.some((current: PriceRange, rangeIndex: number) => {
@@ -208,10 +249,16 @@ class LockerTable extends React.PureComponent<Props, {}> {
               yotpoId,
               totalOrders,
               formatMessage,
-              onDemand
+              onDemand,
             }}
             key={index}
-            description={`${type} ${description}`}
+            description={
+              <div>
+                <p style={{ marginBottom: `0.2rem` }}>{type}</p>
+                <p style={{ marginBottom: `0.2rem` }}>{description}</p>
+                <b>{code}</b>
+              </div>
+            }
             currentOrders={totalOrders}
             fixedPrice={currentPrice}
             visible={visible}
@@ -226,33 +273,42 @@ class LockerTable extends React.PureComponent<Props, {}> {
       <Table>
         <HeaderRow>
           {headerTitles.map(
-            ({ width, tabletWidth, message, withHelp, helpMessage }, key) => (
-              <Cell {...{ key, width, tabletWidth }}>
-                <Title>
-                  {message ? formatMessage(messsages[message]) : ''}
-                </Title>
-                {isReseller && withHelp && !!helpMessage &&
-                  <PopoverStyled
-                    trigger="click"
-                    content={
-                      <PopoverText
-                        dangerouslySetInnerHTML={{
-                          __html: formatMessage(messsages[helpMessage])
-                        }}
-                      />
-                    }
-                  >
-                    <InfoIcon type="info-circle" />
-                  </PopoverStyled>
-                }
-                {withHelp && isFixed && (
-                  <Question
-                    onClick={this.onTogglePriceModal}
-                    type="question-circle"
-                  />
-                )}
-              </Cell>
-            )
+            ({ width, tabletWidth, message, withHelp, helpMessage }, key) => {
+              const formattedMessage = message
+                ? formatMessage(messsages[message])
+                : ''
+              return (
+                <Cell {...{ key, width, tabletWidth }}>
+                  <Title>
+                    {message === 'fixedPrice' ? (
+                      <TeamPrice>{formattedMessage}</TeamPrice>
+                    ) : (
+                      formattedMessage
+                    )}
+                  </Title>
+                  {isReseller && withHelp && !!helpMessage && (
+                    <PopoverStyled
+                      trigger="click"
+                      content={
+                        <PopoverText
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(messsages[helpMessage]),
+                          }}
+                        />
+                      }
+                    >
+                      <InfoIcon type="info-circle" />
+                    </PopoverStyled>
+                  )}
+                  {withHelp && isFixed && (
+                    <Question
+                      onClick={this.onTogglePriceModal}
+                      type="question-circle"
+                    />
+                  )}
+                </Cell>
+              )
+            }
           )}
         </HeaderRow>
         {renderTable}

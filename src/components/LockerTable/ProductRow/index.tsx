@@ -20,7 +20,7 @@ import {
   MoreIcon,
   MobileLocker,
   DesktopLocker,
-  DragCell
+  DragCell,
 } from '../styledComponents'
 import { Align, StyledInput } from './styledComponents'
 import Checkbox from 'antd/lib/checkbox'
@@ -65,9 +65,9 @@ const rowSource = {
   beginDrag(props: Props) {
     return {
       id: props.productId,
-      index: props.index
+      index: props.index,
     }
-  }
+  },
 }
 
 const rowTarget = {
@@ -95,7 +95,7 @@ const rowTarget = {
     props.moveRow(dragIndex, hoverIndex)
 
     monitor.getItem().index = hoverIndex
-  }
+  },
 }
 
 interface Header {
@@ -106,13 +106,13 @@ interface Header {
 const headerTitles: Header[] = [
   { message: 'regularPrice', width: 30 },
   { message: 'fixedPrice', width: 30 },
-  { message: 'visible', width: 40 }
+  { message: 'visible', width: 40 },
 ]
 
 const resellerMobileTitles: Header[] = [
   { message: 'teamPrice', width: 30 },
   { message: 'purchasePrice', width: 30 },
-  { message: 'visible', width: 40 }
+  { message: 'visible', width: 40 },
 ]
 
 class ProductRow extends React.PureComponent<Props, {}> {
@@ -125,8 +125,15 @@ class ProductRow extends React.PureComponent<Props, {}> {
     handleOnSetPrice(Number(value), currencyIndex, index)
   }
   validateInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { fixedPrice = 0, currencyIndex, index, handleOnSetPrice } = this.props
-    const { target: { value } } = event
+    const {
+      fixedPrice = 0,
+      currencyIndex,
+      index,
+      handleOnSetPrice,
+    } = this.props
+    const {
+      target: { value },
+    } = event
     if (value < fixedPrice) {
       handleOnSetPrice(Number(fixedPrice), currencyIndex, index)
     }
@@ -153,7 +160,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
       formatMessage,
       regularPrice,
       fixedPrice = 0,
-      hideQuickView
+      hideQuickView,
     } = this.props
 
     const handleOnClick = () => {
@@ -174,10 +181,17 @@ class ProductRow extends React.PureComponent<Props, {}> {
         <Title>{message ? formatMessage(messages[message]) : ''}</Title>
       </Cell>
     ))
-    const purchasePrice = (fixedPrice * (1 - (resellerComission / 100))).toFixed(2)
-    const profit = ((resellerPrice || fixedPrice) - Number(purchasePrice)).toFixed(2)
+    const purchasePrice = (fixedPrice * (1 - resellerComission / 100)).toFixed(
+      2
+    )
+    const profit = (
+      (resellerPrice || fixedPrice) - Number(purchasePrice)
+    ).toFixed(2)
     const badInput = resellerPrice < fixedPrice
-    const gainMargin = (Number(profit) * 100 / Number(resellerPrice || fixedPrice)).toFixed(2)
+    const gainMargin = (
+      (Number(profit) * 100) /
+      Number(resellerPrice || fixedPrice)
+    ).toFixed(2)
     const renderView = (
       <>
         <MobileLocker>
@@ -207,7 +221,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
           </Row>
           <Row rowPadding={'0'}>
             <Align align="right" componentWidth={'100%'}>
-              <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
+              <DeleteButton onClick={handleOnClick}>REMOVE</DeleteButton>
             </Align>
           </Row>
         </MobileLocker>
@@ -225,24 +239,24 @@ class ProductRow extends React.PureComponent<Props, {}> {
                 onPressQuickView={handleOnClickView}
               />
             </Cell>
-            <Cell width={10} tabletWidth={10}>
+            <Cell width={8} tabletWidth={8}>
               <Name>{name}</Name>
             </Cell>
-            <Cell width={10} tabletWidth={10}>
+            <Cell width={12} tabletWidth={12}>
               <Description>{description}</Description>
             </Cell>
-            {isReseller && 
+            {isReseller && (
               <Cell width={10} tabletWidth={10}>
                 <Price>{currentCurrency}</Price>
               </Cell>
-            }
+            )}
             <Cell width={10} tabletWidth={10}>
               <Price>{`$${isReseller ? fixedPrice : regularPrice}`}</Price>
             </Cell>
             <Cell width={10} tabletWidth={10}>
               <Price>{`$${isReseller ? purchasePrice : fixedPrice}`}</Price>
             </Cell>
-            {isReseller &&
+            {isReseller && (
               <Cell width={10} tabletWidth={10}>
                 <StyledInput
                   {...{ badInput }}
@@ -253,22 +267,22 @@ class ProductRow extends React.PureComponent<Props, {}> {
                   value={resellerPrice}
                 />
               </Cell>
-            }
+            )}
             <Cell width={10} tabletWidth={10}>
               <Price>{isReseller ? `$${profit}` : totalOrders}</Price>
             </Cell>
-            {isReseller &&
+            {isReseller && (
               <Cell width={10} tabletWidth={10}>
                 <Price>{gainMargin}%</Price>
               </Cell>
-            }
+            )}
             <Cell width={10} tabletWidth={10}>
               <Center>
                 <Checkbox checked={visible} onChange={handleOnClickVisible} />
               </Center>
             </Cell>
             <Cell width={15} tabletWidth={10}>
-              <DeleteButton onClick={handleOnClick}>DELETE</DeleteButton>
+              <DeleteButton onClick={handleOnClick}>REMOVE</DeleteButton>
             </Cell>
           </Row>
         </DesktopLocker>
@@ -283,12 +297,15 @@ const DragSourceHOC = DragSource(
   rowSource,
   (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   })
 )
-const DropTargetHOC = DropTarget(ItemTypes.ROW, rowTarget, connect => ({
-  connectDropTarget: connect.dropTarget()
+const DropTargetHOC = DropTarget(ItemTypes.ROW, rowTarget, (connect) => ({
+  connectDropTarget: connect.dropTarget(),
 }))
 
-const ProductRowEnhance = compose(DragSourceHOC, DropTargetHOC)(ProductRow)
+const ProductRowEnhance = compose(
+  DragSourceHOC,
+  DropTargetHOC
+)(ProductRow)
 export default ProductRowEnhance

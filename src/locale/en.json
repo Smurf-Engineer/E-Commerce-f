@@ -477,6 +477,8 @@
   "components.FooterThumbnailTeamStore.listPrice": "List price",
   "components.FooterThumbnailTeamStore.estimatedPrice": "Estimated price",
   "components.FooterThumbnailTeamStore.currentPrice": "Current price",
+  "components.LockerTable.name": "Name",
+  "components.LockerTable.description": "Description",
   "screens.teamstoreProductPage.dynamicPriceDropTitle": "DYNAMIC PRICE DROP",
   "screens.teamstoreProductPage.everybodyWinsText": "With JAKROO's Dynamic Price Drop, everybody wins!",
   "screens.teamstoreProductPage.asTeamMemberText": "As team members place their orders and reache te next discount level, the price automatically drops for everyone, even for those who placed ther order before the drop",
