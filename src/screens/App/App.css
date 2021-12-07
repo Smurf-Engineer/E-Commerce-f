@@ -22,6 +22,10 @@ body {
   padding: 0;
 }
 
+.rounded-corner .ant-modal-content {
+  border-radius: 14px;
+}
+
 .rc-drawer,
 .rc-drawer-content {
   position: relative;

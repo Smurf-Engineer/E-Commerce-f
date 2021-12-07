@@ -1569,3 +1569,129 @@ export const MemberDelete = styled(Icon)`
     color: ${RED};
   }
 `
+
+export const PendingDiv = styled.div`
+  display: flex;
+  margin-top: 2px;
+`
+
+export const PendingLabel = styled.div`
+  font-style: italic;
+  color: ${RED};
+`
+
+export const Resend = styled.div`
+  margin-left: 32px;
+  color: ${BLUE};
+  font-weight: bold;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+`
+
+export const InviteContainer = styled.div`
+  margin: 12px 20px;
+`
+
+export const InviteTitle = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Avenir;
+`
+
+export const MailsContainer = styled.div`
+  margin-top: 22px;
+`
+
+export const EmailsLabel = styled.div`
+  font-weight: bold;
+`
+
+export const StyledEmailTags = styled.div`
+  margin-top: 16px;
+  border: 1px solid #d4d5d6;
+  padding: 10px 8px;
+  border-radius: 5px;
+  .input {
+    display: inline-block;
+    width: auto;
+    height: 28px;
+    box-sizing: border-box;
+    font: inherit;
+    border-radius: 0.2rem;
+    border: none;
+    color: #565656;
+    -webkit-appearance: none;
+  }
+
+  .input:focus {
+    border-color: cornflowerblue;
+    outline: none;
+  }
+
+  .input.has-error {
+    border-color: tomato;
+  }
+
+  .error {
+    margin: 0;
+    font-size: 90%;
+    color: tomato;
+  }
+
+  .tag-item {
+    background-color: #d4d5d6;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 30px;
+    height: 30px;
+    padding: 0 4px 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.3rem 0.3rem 0;
+  }
+
+  .tag-item > .button {
+    background-color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    margin-left: 10px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
+export const SendInvitationButton = styled.div`
+  padding: 6px 12px;
+  border-radius: 4px;
+  background: rgb(68, 104, 249);
+  margin-top: 12px;
+  color: ${WHITE};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+`
+
+export const BottomSection = styled.div``
+
+export const InviteLink = styled.div``
+
+export const InviteLinkLabel = styled.div``
+
+export const CopyLinkButton = styled.div``
+
+export const GearIcon = styled(Icon)``
+
+export const InfoIconLink = styled(Icon)``

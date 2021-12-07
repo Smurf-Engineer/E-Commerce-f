@@ -77,6 +77,7 @@ import {
   AddMemberButton,
   ButtonContainer,
   buttonPrompt,
+  InviteContainer,
   ButtonsContainer,
   ButtonWrapper,
   CancelButton,
@@ -199,7 +200,21 @@ import {
   MemberEmail,
   MemberImage,
   MemberName,
-  MemberType
+  MemberType,
+  PendingDiv,
+  PendingLabel,
+  Resend,
+  InviteTitle,
+  MailsContainer,
+  EmailsLabel,
+  StyledEmailTags,
+  SendInvitationButton,
+  BottomSection,
+  CopyLinkButton,
+  GearIcon,
+  InfoIconLink,
+  InviteLink,
+  InviteLinkLabel
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -332,7 +347,10 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     designToApply: '',
     selectedVariant: -1,
     retryLoad: false,
-    openPrintPreview: false
+    openPrintPreview: false,
+    items: [],
+    value: '',
+    error: null
   }
   private listMsg: any
   private chatDiv: any
@@ -828,6 +846,67 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     this.setState({ openPrintPreview: !openPrintPreview })
   }
 
+  handleKeyDown = evt => {
+    if (['Enter', 'Tab', ','].includes(evt.key)) {
+      evt.preventDefault()
+      var value = this.state.value.trim()
+      if (value && this.isValid(value)) {
+        this.setState({
+          items: [...this.state.items, this.state.value],
+          value: ''
+        })
+      }
+    }
+  }
+
+  handleChange = (evt: any) => {
+    this.setState({
+      value: evt.target.value,
+      error: null
+    })
+  }
+
+  handleDelete = (item: any) => {
+    this.setState({
+      items: this.state.items.filter(i => i !== item)
+    })
+  }
+
+  handlePaste = (evt: any) => {
+    evt.preventDefault()
+    var paste = evt.clipboardData.getData('text')
+    var emails = paste.match(/[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/g)
+    if (emails) {
+      var toBeAdded = emails.filter((email: string) => !this.isInList(email))
+      this.setState({
+        items: [...this.state.items, ...toBeAdded]
+      })
+    }
+  }
+
+  isValid = (email: string) => {
+    let error = null
+    if (this.isInList(email)) {
+      error = `${email} has already been added.`
+    }
+    if (!this.isEmail(email)) {
+      error = `${email} is not a valid email address.`
+    }
+    if (error) {
+      this.setState({ error })
+      return false
+    }
+    return true
+  }
+
+  isInList = (email: string) => {
+    return this.state.items.includes(email)
+  }
+
+  isEmail = (email: string) => {
+    return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email)
+  }
+
   render() {
     const {
       fontsData,
@@ -1181,6 +1260,11 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                   <MemberName>Name: John Appleseed</MemberName>
                   <MemberEmail>johnappleseed@hotmail.com</MemberEmail>
                   <MemberDate>Date Added: 10/02/2021</MemberDate>
+                  <MemberDate>Invited: 10/02/2021</MemberDate>
+                  <PendingDiv>
+                    <PendingLabel>Pending</PendingLabel>
+                    <Resend>Resend</Resend>
+                  </PendingDiv>
                 </MemberData>
                 <MemberType>
                   {memberTypeOptions.map((value: string, index: number) => (
@@ -1194,6 +1278,51 @@ export class DesignApproval extends React.Component<Props, StateProps> {
             )}
           </MembersList>
         </CollabMembers>
+        <Modal
+          visible={true}
+          footer={null}
+          wrapClassName="rounded-corner"
+          width={'545px'}
+        >
+          <InviteContainer>
+            <InviteTitle>Invite to JAKROO Team</InviteTitle>
+            <MailsContainer>
+              <EmailsLabel>Emails</EmailsLabel>
+              <StyledEmailTags>
+                {this.state.items.map(item => (
+                  <div className="tag-item" key={item}>
+                    {item}
+                    <button
+                      type="button"
+                      className="button"
+                      onClick={() => this.handleDelete(item)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                <input
+                  className={'input ' + (this.state.error && ' has-error')}
+                  value={this.state.value}
+                  placeholder={this.state.items.length > 0 ? null : 'You can copy and paste a list of emails...'}
+                  onKeyDown={this.handleKeyDown}
+                  onChange={this.handleChange}
+                  onPaste={this.handlePaste}
+                />
+                {this.state.error && <p className="error">{this.state.error}</p>}
+              </StyledEmailTags>
+              <SendInvitationButton>Send Invitations</SendInvitationButton>
+              <BottomSection>
+                <InviteLink>
+                  <GearIcon type="attach" />
+                  <InviteLinkLabel>Team invite link</InviteLinkLabel>
+                  <InfoIconLink type="info" />
+                </InviteLink>
+                <CopyLinkButton>Copy link</CopyLinkButton>
+              </BottomSection>
+            </MailsContainer>
+          </InviteContainer>
+        </Modal>
       </Collaboration> : null
 
     const commentsComponent = null
