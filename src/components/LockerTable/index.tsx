@@ -56,8 +56,8 @@ const teamTitles: Header[] = [
 
 const resellerTitles: Header[] = [
   { message: '', width: 5, tabletWidth: 5 },
-  { message: '', width: 20, tabletWidth: 20 },
-  { message: 'name', width: 10, tabletWidth: 10 },
+  { message: '', width: 19, tabletWidth: 15 },
+  { message: 'name', width: 12, tabletWidth: 12 },
   { message: 'description', width: 10, tabletWidth: 10 },
   {
     message: 'currency',
