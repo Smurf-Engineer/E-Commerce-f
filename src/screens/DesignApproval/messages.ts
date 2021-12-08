@@ -331,6 +331,10 @@ export default defineMessages({
   },
   userUpdated: {
     id: 'screens.DesignApproval.userUpdated',
-    defaultMessage: 'User updated!'
+    defaultMessage: 'Role updated!'
+  },
+  memberDeleted: {
+    id: 'screens.DesignApproval.memberDeleted',
+    defaultMessage: 'Member removed!'
   },
 })

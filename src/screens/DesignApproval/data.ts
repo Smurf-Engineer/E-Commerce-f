@@ -318,6 +318,14 @@ export const changeMemberRoleMutation = gql`
   }
 `
 
+export const deleteMemberMutation = gql`
+  mutation deleteMember($memberId: String!) {
+    deleteMember(memberId: $memberId) {
+      message
+    }
+  }
+`
+
 export const getEditRequestPrices = gql`
   query getEditRequestPrices {
     editRequestPrices: getEditRequestPrices {

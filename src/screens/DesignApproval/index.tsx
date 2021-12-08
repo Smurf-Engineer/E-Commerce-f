@@ -36,7 +36,8 @@ import {
   getVariantsFromProduct,
   getEditRequestPrices,
   sendInvitationsMutation,
-  changeMemberRoleMutation
+  changeMemberRoleMutation,
+  deleteMemberMutation
 } from './data'
 import {
   openLoginAction
@@ -338,6 +339,7 @@ interface Props extends RouteComponentProps<any> {
     hideSliderButtons?: boolean
   ) => void
   setApproveLoading: (loading: boolean) => void
+  deleteMember: (variables: {}) => Promise<MessagePayload>
   changeMemberRole: (variables: {}) => Promise<MessagePayload>
   sendInvitations: (variables: {}) => Promise<MessagePayload>
   addProductProject: (variables: {}) => Promise<MessagePayload>
@@ -800,6 +802,32 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           { variables: { role: value, memberId }
         })
         AntdMessage.success(formatMessage(messages.userUpdated))
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    }
+  }
+
+  onDeleteMember = async (evt: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      data,
+      intl: { formatMessage },
+      deleteMember
+    } = this.props
+    try {
+      const {
+        currentTarget: { id: memberId }
+      } = evt
+      if (!!memberId) {
+        const membersArray = get(data, 'projectItem.project.members', [])
+        const index = membersArray.findIndex((item) => item.shortId === memberId)
+        membersArray.splice(index, 1)
+        set(data, 'projectItem.project.members', membersArray)
+        this.forceUpdate()
+        await deleteMember(
+          { variables: { memberId }
+        })
+        AntdMessage.success(formatMessage(messages.memberDeleted))
       }
     } catch (e) {
       AntdMessage.error(e.message)
@@ -1406,7 +1434,7 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     </Option>
                   ))}
                 </MemberType>
-                <MemberDelete type="delete" />
+                <MemberDelete id={member.shortId} onClick={this.onDeleteMember} type="delete" />
               </Member>
             )}
           </MembersList>
@@ -2072,6 +2100,7 @@ const DesignsEnhance = compose(
       }
     }
   }),
+  graphql(deleteMemberMutation, { name: 'deleteMember' }),
   graphql(changeMemberRoleMutation, { name: 'changeMemberRole' }),
   graphql(sendInvitationsMutation, { name: 'sendInvitations' }),
   graphql(getEditRequestPrices, { name: 'editRequestData' }),
