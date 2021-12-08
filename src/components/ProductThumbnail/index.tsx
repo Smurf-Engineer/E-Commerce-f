@@ -440,9 +440,9 @@ export class ProductThumbnail extends React.Component<Props, {}> {
             <Type {...{ fitContainer, fromTop }}>
               {type}
               <GendersContainer>
-                {youthAvailable && <YouthLabel><FormattedMessage {...messages.youth} /></YouthLabel>}
                 {menAvailable && <MenIcon type="man" />}
                 {womenAvailable && <WomenIcon type="woman" />}
+                {youthAvailable && <YouthLabel><FormattedMessage {...messages.youth} /></YouthLabel>}
               </GendersContainer>
             </Type>
             <Description {...{ fitContainer }}>{description}</Description>

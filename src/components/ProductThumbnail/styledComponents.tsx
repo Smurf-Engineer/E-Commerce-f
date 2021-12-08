@@ -160,7 +160,7 @@ export const GendersContainer = styled.div`
 export const YouthLabel = styled.div`
   font-size: 10px;
   color: #549c8c;
-  margin-right: 5px;
+  margin-left: 3px;
 `
 
 export const Description = styled.div`
