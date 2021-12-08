@@ -129,6 +129,20 @@ export const getProdesignItemQuery = gql`
         status
         createdAt: created_at
         updatedAt: updated_at
+        customer
+        customerEmail: customer_email
+        members {
+          id
+          shortId: short_id
+          userId: user_id
+          firstName: first_name
+          lastName: last_name
+          dateInvited: date_invited
+          dateAdded: date_added
+          role
+          projectId: project_id
+          email
+        }
         designs {
           id: short_id
           name
@@ -270,6 +284,34 @@ export const addTeamStoreItemMutation = gql`
     addTeamStoreItem(
       teamStoreItem: $teamStoreItem
       teamStoreId: $teamStoreId
+    ) {
+      message
+    }
+  }
+`
+
+export const sendInvitationsMutation = gql`
+  mutation sendInvitations(
+    $projectId: String!
+    $emails: [String]!
+  ) {
+    sendInvitations(
+      projectId: $projectId
+      emails: $emails
+    ) {
+      message
+    }
+  }
+`
+
+export const changeMemberRoleMutation = gql`
+  mutation changeMemberRole(
+    $role: String!
+    $memberId: String!
+  ) {
+    changeMemberRole(
+      role: $role
+      memberId: $memberId
     ) {
       message
     }

@@ -1,4 +1,4 @@
-import { COMMENTER_TYPE, APPROVER_TYPE } from '../../constants'
+import { COMMENTER_ROLE, APPROVER_ROLE } from '../../constants'
 import {
     BLUE_STATUS,
     GREEN_BRIGHT,
@@ -43,6 +43,6 @@ export const memberColors = [
 ]
 
 export const memberTypeOptions = [
-    COMMENTER_TYPE,
-    APPROVER_TYPE
+    COMMENTER_ROLE,
+    APPROVER_ROLE
 ]

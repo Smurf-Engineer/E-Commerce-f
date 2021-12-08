@@ -34,7 +34,9 @@ import {
   getPredyedColors,
   getProdesignItemQuery,
   getVariantsFromProduct,
-  getEditRequestPrices
+  getEditRequestPrices,
+  sendInvitationsMutation,
+  changeMemberRoleMutation
 } from './data'
 import {
   openLoginAction
@@ -214,7 +216,15 @@ import {
   GearIcon,
   InfoIconLink,
   InviteLink,
-  InviteLinkLabel
+  InviteLinkLabel,
+  ConfirmEmailTags,
+  InfoConfirmation,
+  ConfirmBottom,
+  CancelInvitation,
+  StyledSpinInvitation,
+  CollabWarning,
+  MemberOwnerLabel,
+  StarIcon
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -222,8 +232,10 @@ import Tab from './Tab'
 import Modal from 'antd/lib/modal'
 import { COLOR, APPROVAL, COLLAB, COMMENTS, memberColors, memberTypeOptions } from './constants'
 import {
+  COMMENTER_ROLE,
   CUSTOMER_APPROVED,
   CUSTOMER_PREVIEW,
+  DATE_FORMAT,
   EDIT,
   FROM_ADMIN,
   IN_DESIGN,
@@ -246,6 +258,7 @@ import ShareDesignModal from '../../components/ShareDesignModal'
 import AddToCartButton from '../../components/AddToCartButton'
 import AddToTeamStore from '../../components/AddToTeamStore'
 import unset from 'lodash/unset'
+import set from 'lodash/set'
 import {
   BLUE_STATUS,
   BLACK,
@@ -280,6 +293,10 @@ interface EditRequestData extends QueryProps {
 }
 
 interface StateProps {
+  items: String[]
+  savingInvitations: boolean
+  showConfirmInvites: boolean
+  openInviteModal: boolean
   showRenderWindow: boolean
   selectedKey: string
   openShare: boolean
@@ -321,6 +338,8 @@ interface Props extends RouteComponentProps<any> {
     hideSliderButtons?: boolean
   ) => void
   setApproveLoading: (loading: boolean) => void
+  changeMemberRole: (variables: {}) => Promise<MessagePayload>
+  sendInvitations: (variables: {}) => Promise<MessagePayload>
   addProductProject: (variables: {}) => Promise<MessagePayload>
   addItemToStore: (variables: {}) => Promise<MessagePayload>
   setApproveDesign: (variables: {}) => Promise<ProDesignMessage>
@@ -350,11 +369,15 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     openPrintPreview: false,
     items: [],
     value: '',
-    error: null
+    error: null,
+    openInviteModal: false,
+    showConfirmInvites: false,
+    savingInvitations: false
   }
   private listMsg: any
   private chatDiv: any
   private catalogDiv: any
+  private emailInput: any
   async componentDidMount() {
     await LoadScripts(threeDScripts)
     if (navigator && navigator.serviceWorker) {
@@ -501,6 +524,25 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = evt
     const { changeNoteAction } = this.props
     changeNoteAction(value)
+  }
+
+  openInviteModal = () => {
+    this.setState({ openInviteModal: true, showConfirmInvites: false })
+  }
+
+  closeInviteModal = () => {
+    this.setState({ openInviteModal: false, showConfirmInvites: false, items: [] })
+  }
+
+  showConfirmInvites = () => {
+    const { items } = this.state
+    if (items && items.length > 0) {
+      this.setState({ showConfirmInvites: true })
+    }
+  }
+
+  closeConfirmInvites = () => {
+    this.setState({ showConfirmInvites: false })
   }
 
   openMessages = () => {
@@ -716,6 +758,54 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     })
   }
 
+  sendInvitationsAction = async () => {
+    const {
+      intl: { formatMessage },
+      sendInvitations,
+      data,
+    } = this.props
+    try {
+      const projectId = get(data, 'projectItem.project.shortId', '')
+      if (!!projectId) {
+        const { items: emails } = this.state
+        this.setState({ savingInvitations: true })
+        await sendInvitations({ variables: { projectId, emails } })
+        data.refetch()
+        AntdMessage.success(formatMessage(messages.invitationsSent))
+        this.closeInviteModal()
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    } finally {
+      this.setState({ savingInvitations: false })
+    }
+  }
+
+  onSelectRole = async (value: string, memberId: string) => {
+    const {
+      data,
+      intl: { formatMessage },
+      changeMemberRole
+    } = this.props
+    try {
+      if (!!memberId) {
+        const membersArray = get(data, 'projectItem.project.members', [])
+        const newMembers = membersArray.map(element => {
+          element.role = element.shortId === memberId ? value : COMMENTER_ROLE
+          return element
+        })
+        set(data, 'projectItem.project.members', newMembers)
+        this.forceUpdate()
+        await changeMemberRole(
+          { variables: { role: value, memberId }
+        })
+        AntdMessage.success(formatMessage(messages.userUpdated))
+      }
+    } catch (e) {
+      AntdMessage.error(e.message)
+    }
+  }
+
   approveDesign = async () => {
     const {
       intl: { formatMessage },
@@ -866,10 +956,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     })
   }
 
-  handleDelete = (item: any) => {
+  handleDelete = (item: any, e: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation()
+      e.preventDefault()
+    }
     this.setState({
       items: this.state.items.filter(i => i !== item)
     })
+  }
+
+  focusOnInput = () => {
+    if (this.emailInput) {
+      this.emailInput.focus()
+    }
   }
 
   handlePaste = (evt: any) => {
@@ -930,6 +1030,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const {
+      savingInvitations,
+      showConfirmInvites,
+      openInviteModal,
       showRenderWindow,
       selectedKey,
       openBottom,
@@ -958,6 +1061,9 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     const paidRequests = get(projectItem, 'paidRequests', 0) as number
     const limitRequests = paidRequests + requestsLimit
     const predyedColors = get(predyedData, 'getPredyedColors', [])
+    const projectMembers = get(projectItem, 'project.members', [])
+    const ownerName = get(projectItem, 'project.customer', '')
+    const ownerEmail = get(projectItem, 'project.customerEmail', '')
     const {
       id: designSerialId,
       predyedName,
@@ -1237,36 +1343,63 @@ export class DesignApproval extends React.Component<Props, StateProps> {
         <ApprovalTitle>{formatMessage(messages.teamMembers)}</ApprovalTitle>
         <CollabInfo>
           <CollabTitle>
-            Team Collaboration  
+            {formatMessage(messages.teamCollaborationTitle)}
           </CollabTitle>
           <CollabDescription>
-            Invite members to collaborate on your project . 
-            You can invite up to 5 members to your project.
-            Members will be able to view and comment on  all designs in your project.
+            {formatMessage(messages.teamCollaborationDesc)}
           </CollabDescription>
-          <AddMemberButton>
-            + Invite Members
+          <CollabWarning>
+            {formatMessage(messages.teamCollabWarning)}
+          </CollabWarning>
+          <AddMemberButton
+            disabled={projectMembers.length >= 5}
+            onClick={projectMembers.length >= 5 ? () => {} : this.openInviteModal}
+          >
+            {formatMessage(messages.inviteMembers)}
           </AddMemberButton>
         </CollabInfo>
         <CollabMembers>
           <CollabTitle>
-            My Team
+            {formatMessage(messages.myTeam)}
           </CollabTitle>
           <MembersList>
-            {[1, 2, 3].map((item, key) =>
+            <Member>
+              <StarIcon type="star" theme="filled" />
+              <MemberImage codeColor={'#395CA9'} type="user" />
+              <MemberData>
+                <MemberName>{formatMessage(messages.name)} {ownerName || '-'}</MemberName>
+                <MemberEmail>{ownerEmail || '-'}</MemberEmail>
+              </MemberData>
+              <MemberOwnerLabel>
+                {formatMessage(messages.owner)}
+              </MemberOwnerLabel>
+            </Member>
+            {projectMembers.map((member, key: number) =>
               <Member {...{ key }}>
                 <MemberImage codeColor={memberColors[Math.floor(key % 7)]} type="user" />
                 <MemberData>
-                  <MemberName>Name: John Appleseed</MemberName>
-                  <MemberEmail>johnappleseed@hotmail.com</MemberEmail>
-                  <MemberDate>Date Added: 10/02/2021</MemberDate>
-                  <MemberDate>Invited: 10/02/2021</MemberDate>
-                  <PendingDiv>
-                    <PendingLabel>Pending</PendingLabel>
-                    <Resend>Resend</Resend>
-                  </PendingDiv>
+                  <MemberName>{formatMessage(messages.name)} {member.firstName || '-'} {member.lastName}</MemberName>
+                  <MemberEmail>{member.email}</MemberEmail>
+                  {member.dateAdded &&
+                    <MemberDate>
+                      {formatMessage(messages.dateAdded)} {moment(member.dateAdded).local().format(DATE_FORMAT)}
+                    </MemberDate>
+                  }
+                  {member.dateInvited &&
+                    <MemberDate>
+                      {formatMessage(messages.dateInvited)} {moment(member.dateInvited).local().format(DATE_FORMAT)}
+                    </MemberDate>
+                  }
+                  {!member.dateAdded &&
+                    <PendingDiv>
+                      <PendingLabel>{formatMessage(messages.pending)}</PendingLabel>
+                      <Resend>{formatMessage(messages.resend)}</Resend>
+                    </PendingDiv>
+                  }
                 </MemberData>
-                <MemberType>
+                <MemberType
+                  onChange={(e: string) => this.onSelectRole(e, member.shortId)}
+                  value={member.role}>
                   {memberTypeOptions.map((value: string, index: number) => (
                     <Option key={index} value={value}>
                       {value}
@@ -1279,49 +1412,89 @@ export class DesignApproval extends React.Component<Props, StateProps> {
           </MembersList>
         </CollabMembers>
         <Modal
-          visible={true}
+          visible={openInviteModal}
           footer={null}
+          onCancel={this.closeInviteModal}
           wrapClassName="rounded-corner"
           width={'545px'}
         >
-          <InviteContainer>
-            <InviteTitle>Invite to JAKROO Team</InviteTitle>
-            <MailsContainer>
-              <EmailsLabel>Emails</EmailsLabel>
-              <StyledEmailTags>
+          {!showConfirmInvites ? 
+            <InviteContainer>
+              <InviteTitle>{formatMessage(messages.inviteToTeam)}</InviteTitle>
+              <MailsContainer>
+                <EmailsLabel>{formatMessage(messages.emails)}</EmailsLabel>
+                <StyledEmailTags onClick={this.focusOnInput} secondary={this.state.items.length > 0}>
+                  {this.state.items.map(item => (
+                    <div className="tag-item" key={item}>
+                      {item}
+                      <button
+                        type="button"
+                        className="button"
+                        onClick={(e) => this.handleDelete(item, e)}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                  <input
+                    ref={(emailInput) => { this.emailInput = emailInput }} 
+                    className={'input ' + (this.state.error && ' has-error')}
+                    value={this.state.value}
+                    placeholder={this.state.items.length > 0 ? null : 'You can copy and paste a list of emails...'}
+                    onKeyDown={this.handleKeyDown}
+                    onChange={this.handleChange}
+                    onPaste={this.handlePaste}
+                  />
+                  {this.state.error && <p className="error">{this.state.error}</p>}
+                </StyledEmailTags>
+                <SendInvitationButton
+                  disabled={!this.state.items.length}
+                  onClick={this.showConfirmInvites}
+                >
+                  {formatMessage(messages.sendInvitations)}
+                </SendInvitationButton>
+                <BottomSection>
+                  <InviteLink>
+                    <GearIcon type="link" />
+                    <InviteLinkLabel>{formatMessage(messages.teamInviteLink)}</InviteLinkLabel>
+                    <InfoIconLink type="question-circle" theme="filled" />
+                  </InviteLink>
+                  <CopyLinkButton>{formatMessage(messages.copyLink)}</CopyLinkButton>
+                </BottomSection>
+              </MailsContainer>
+            </InviteContainer> :
+            <InviteContainer>
+              <InviteTitle>{formatMessage(messages.confirmTitle)}</InviteTitle>
+              <ConfirmEmailTags>
                 {this.state.items.map(item => (
                   <div className="tag-item" key={item}>
                     {item}
                     <button
                       type="button"
                       className="button"
-                      onClick={() => this.handleDelete(item)}
+                      onClick={(e) => this.handleDelete(item, e)}
                     >
                       &times;
                     </button>
                   </div>
                 ))}
-                <input
-                  className={'input ' + (this.state.error && ' has-error')}
-                  value={this.state.value}
-                  placeholder={this.state.items.length > 0 ? null : 'You can copy and paste a list of emails...'}
-                  onKeyDown={this.handleKeyDown}
-                  onChange={this.handleChange}
-                  onPaste={this.handlePaste}
-                />
-                {this.state.error && <p className="error">{this.state.error}</p>}
-              </StyledEmailTags>
-              <SendInvitationButton>Send Invitations</SendInvitationButton>
-              <BottomSection>
-                <InviteLink>
-                  <GearIcon type="attach" />
-                  <InviteLinkLabel>Team invite link</InviteLinkLabel>
-                  <InfoIconLink type="info" />
-                </InviteLink>
-                <CopyLinkButton>Copy link</CopyLinkButton>
-              </BottomSection>
-            </MailsContainer>
-          </InviteContainer>
+              </ConfirmEmailTags>
+              <InfoConfirmation>
+                {formatMessage(messages.infoConfirmation)}
+              </InfoConfirmation>
+              <ConfirmBottom>
+                <SendInvitationButton
+                  disabled={!this.state.items.length || savingInvitations}
+                  onClick={this.sendInvitationsAction}
+                >
+                  {savingInvitations ? <StyledSpinInvitation size="small" /> : formatMessage(messages.addToTeamCollab)}
+                </SendInvitationButton>
+                <CancelInvitation onClick={this.closeConfirmInvites}>
+                  {formatMessage(messages.cancel)}
+                </CancelInvitation>
+              </ConfirmBottom>
+            </InviteContainer>
+          }
         </Modal>
       </Collaboration> : null
 
@@ -1899,6 +2072,8 @@ const DesignsEnhance = compose(
       }
     }
   }),
+  graphql(changeMemberRoleMutation, { name: 'changeMemberRole' }),
+  graphql(sendInvitationsMutation, { name: 'sendInvitations' }),
   graphql(getEditRequestPrices, { name: 'editRequestData' }),
   graphql(addTeamStoreItemMutation, { name: 'addItemToStore' }),
   graphql(getPredyedColors, { name: 'predyedData' }),

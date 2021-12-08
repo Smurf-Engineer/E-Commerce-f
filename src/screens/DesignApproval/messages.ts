@@ -247,5 +247,90 @@ export default defineMessages({
   purchaseMore: {
     id: 'screens.DesignApproval.purchaseMore',
     defaultMessage: 'PURCHASE MORE EDITS'
-  }
+  },
+  teamCollaborationTitle: {
+    id: 'screens.DesignApproval.teamCollaborationTitle',
+    defaultMessage: 'Team Collaboration'
+  },
+  teamCollaborationDesc: {
+    id: 'screens.DesignApproval.teamCollaborationDesc',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'Invite members to collaborate on your project. You can invite up to 5 members to your project. Members will be able to view and comment on all designs in your project.'
+  },
+  inviteMembers: {
+    id: 'screens.DesignApproval.inviteMembers',
+    defaultMessage: '+ Invite Members'
+  },
+  myTeam: {
+    id: 'screens.DesignApproval.myTeam',
+    defaultMessage: 'My Team'
+  },
+  name: {
+    id: 'screens.DesignApproval.name',
+    defaultMessage: 'Name:'
+  },
+  dateAdded: {
+    id: 'screens.DesignApproval.dateAdded',
+    defaultMessage: 'Date Added:'
+  },
+  dateInvited: {
+    id: 'screens.DesignApproval.dateInvited',
+    defaultMessage: 'Invited:'
+  },
+  pending: {
+    id: 'screens.DesignApproval.pending',
+    defaultMessage: 'Pending'
+  },
+  resend: {
+    id: 'screens.DesignApproval.resend',
+    defaultMessage: 'Resend'
+  },
+  inviteToTeam: {
+    id: 'screens.DesignApproval.inviteToTeam',
+    defaultMessage: 'Invite to JAKROO Team'
+  },
+  emails: {
+    id: 'screens.DesignApproval.emails',
+    defaultMessage: 'Emails'
+  },
+  sendInvitations: {
+    id: 'screens.DesignApproval.sendInvitations',
+    defaultMessage: 'Send Invitations'
+  },
+  teamInviteLink: {
+    id: 'screens.DesignApproval.teamInviteLink',
+    defaultMessage: 'Team invite link'
+  },
+  copyLink: {
+    id: 'screens.DesignApproval.copyLink',
+    defaultMessage: 'Copy link'
+  },
+  confirmTitle: {
+    id: 'screens.DesignApproval.confirmTitle',
+    defaultMessage: 'Invite people to collaborate on your Pro Design project.'
+  },
+  infoConfirmation: {
+    id: 'screens.DesignApproval.infoConfirmation',
+    defaultMessage: 'Invited users will be able to view and comment on your design dashboard.'
+  },
+  addToTeamCollab: {
+    id: 'screens.DesignApproval.addToTeamCollab',
+    defaultMessage: 'Add to team'
+  },
+  invitationsSent: {
+    id: 'screens.DesignApproval.invitationsSent',
+    defaultMessage: 'Invitations sent!'
+  },
+  teamCollabWarning: {
+    id: 'screens.DesignApproval.teamCollabWarning',
+    defaultMessage: 'Only members with the approval role will be able to approve or request edits.'
+  },
+  owner: {
+    id: 'screens.DesignApproval.owner',
+    defaultMessage: 'Owner'
+  },
+  userUpdated: {
+    id: 'screens.DesignApproval.userUpdated',
+    defaultMessage: 'User updated!'
+  },
 })
