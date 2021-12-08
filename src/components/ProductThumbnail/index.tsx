@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { withRouter } from 'react-router'
 import { compose, withApollo } from 'react-apollo'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
 import Message from 'antd/lib/message'
 import filter from 'lodash/filter'
 import get from 'lodash/get'
@@ -36,6 +36,7 @@ import colorWheelIcon from '../../assets/Colorwheel.svg'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { DATE_FORMAT, onlyPro } from '../../constants'
 import moment from 'moment'
+import StartDesignModal from '../StartDesignModal'
 
 const LIMIT_PRICE_RANGE = 3
 const WHITENAME = 'White'
@@ -44,6 +45,7 @@ interface Props {
   id: number
   type?: string
   product: Product
+  intl: InjectedIntl
   images?: ImageType
   image?: string
   description?: string
@@ -102,7 +104,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
     loading: false,
     isMobile: false,
     isTablet: false,
-    currentImage: 0
+    currentImage: 0,
+    designModalOpen: false
   }
 
   componentDidMount() {
@@ -167,11 +170,11 @@ export class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handleOnPressCustomize = () => {
-    const { onPressCustomize, id, product, myLockerList, isStoreThumbnail } = this.props
+    const { id, product, myLockerList, isStoreThumbnail } = this.props
     if (onlyPro[id] && !myLockerList && !isStoreThumbnail) {
       this.goToProDesign(product)
     } else {
-      onPressCustomize(id)
+      this.setState({ designModalOpen: true })
     }
   }
 
@@ -213,6 +216,22 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       } else {
         history.push(this.getUrlProduct())
       }
+    }
+  }
+
+  closeDesignModal = () => {
+    this.setState({ designModalOpen: false })
+  }
+
+  goToProDesignModal = () => {
+    const { product } = this.props
+    this.goToProDesign(product)
+  }
+
+  goToCustomize = () => {
+    const { onPressCustomize, id } = this.props
+    if (id) {
+      onPressCustomize(id)
     }
   }
 
@@ -287,7 +306,6 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       image,
       product,
       createdAt,
-      formatMessage,
       showTooltips,
       setSeen,
       withMargin,
@@ -302,6 +320,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       disableSlider,
       backgroundColor,
       colors,
+      intl,
       proStatus,
       isProDesign,
       reversePriceRange,
@@ -315,7 +334,8 @@ export class ProductThumbnail extends React.Component<Props, {}> {
       proCertified = false,
       qualityWarning = false
     } = this.props
-    const { isHovered, currentImage, loading } = this.state
+    const { formatMessage } = intl
+    const { isHovered, currentImage, loading, designModalOpen } = this.state
     const currencyPrices =
       priceRange &&
       filter(priceRange, {
@@ -390,6 +410,13 @@ export class ProductThumbnail extends React.Component<Props, {}> {
         {...{ withMargin, selectProduct, isSelected, fitContainer, fromTop }}
         onClick={selectProduct ? this.onHandleCheckChangeImage : undefined}>
         {!!notifications && <NotificationsBadge>{notifications > 9 ? '+9' : notifications}</NotificationsBadge>}
+        <StartDesignModal
+          open={designModalOpen}
+          onClose={this.closeDesignModal}
+          {...{ formatMessage }}
+          goToCustomize={this.goToCustomize}
+          goToProDesign={this.goToProDesignModal}
+        />
         <ImageSlide
           {...{
             type,
@@ -463,6 +490,7 @@ export class ProductThumbnail extends React.Component<Props, {}> {
 }
 
 const ProductThumbnailEnhance = compose(
+  injectIntl,
   withRouter,
   withApollo
 )(ProductThumbnail)

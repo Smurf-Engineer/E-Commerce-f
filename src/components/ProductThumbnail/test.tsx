@@ -16,6 +16,9 @@ describe('<ProductThumbnail />', () => {
           isTopProduct={false}
           onPressCustomize={() => {}}
           onPressQuickView={() => {}}
+          intl={{
+            formatMessage: () => ''
+          }}
           yotpoId="fondo"
         />
       </MemoryRouter>,
