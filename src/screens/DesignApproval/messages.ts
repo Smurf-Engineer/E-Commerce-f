@@ -337,4 +337,13 @@ export default defineMessages({
     id: 'screens.DesignApproval.memberDeleted',
     defaultMessage: 'Member removed!'
   },
+  linkInfo: {
+    id: 'screens.DesignApproval.linkInfo',
+    // tslint:disable-next-line: max-line-length
+    defaultMessage: 'People with this link will have <strong>read only</strong> access to your project and be able to see all information on the project'
+  },
+  copiedLink: {
+    id: 'screens.DesignApproval.copiedLink',
+    defaultMessage: 'Link copied!'
+  },
 })

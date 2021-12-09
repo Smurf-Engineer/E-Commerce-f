@@ -225,7 +225,9 @@ import {
   StyledSpinInvitation,
   CollabWarning,
   MemberOwnerLabel,
-  StarIcon
+  StarIcon,
+  StyledPopOver,
+  PopoverText
 } from './styledComponents'
 import { LoadScripts } from '../../utils/scriptLoader'
 import { threeDScripts } from '../../utils/scripts'
@@ -294,7 +296,9 @@ interface EditRequestData extends QueryProps {
 }
 
 interface StateProps {
-  items: String[]
+  items: string[]
+  value: string
+  error: string
   savingInvitations: boolean
   showConfirmInvites: boolean
   openInviteModal: boolean
@@ -965,7 +969,20 @@ export class DesignApproval extends React.Component<Props, StateProps> {
   }
 
   handleKeyDown = evt => {
-    if (['Enter', 'Tab', ','].includes(evt.key)) {
+    if (['Enter', 'Tab', ',', ' '].includes(evt.key)) {
+      evt.preventDefault()
+      var value = this.state.value.trim()
+      if (value && this.isValid(value)) {
+        this.setState({
+          items: [...this.state.items, this.state.value],
+          value: ''
+        })
+      }
+    }
+  }
+
+  handleBlur = evt => {
+    if (evt) {
       evt.preventDefault()
       var value = this.state.value.trim()
       if (value && this.isValid(value)) {
@@ -994,6 +1011,18 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     })
   }
 
+  copyShareLink = () => {
+    const { intl: { formatMessage }, data } = this.props
+    const itemId = get(data, 'projectItem.id', '')
+    const tempInput = document.createElement('input')
+    tempInput.value = `${config.baseUrl}approval?id=${itemId}`
+    document.body.appendChild(tempInput)
+    tempInput.select()
+    document.execCommand('copy')
+    document.body.removeChild(tempInput)
+    AntdMessage.success(formatMessage(messages.copiedLink))
+  }
+
   focusOnInput = () => {
     if (this.emailInput) {
       this.emailInput.focus()
@@ -1002,19 +1031,45 @@ export class DesignApproval extends React.Component<Props, StateProps> {
 
   handlePaste = (evt: any) => {
     evt.preventDefault()
-    var paste = evt.clipboardData.getData('text')
-    var emails = paste.match(/[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/g)
+    const paste = evt.clipboardData.getData('text')
+    const emails = paste.match(/[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/g)
     if (emails) {
-      var toBeAdded = emails.filter((email: string) => !this.isInList(email))
+      const { data } = this.props
+      const { items } = this.state
+      const projectMembers = get(data, 'projectItem.project.members', [])
+      const projectMembersMails = projectMembers.map((item) => item.email.trim().toLowerCase())
+      const itemsLower = items.map((item: string) => item.trim().toLowerCase())
+      const toBeAdded = emails.filter(
+        (email: string) => !this.isInList(email, [...projectMembersMails, ...itemsLower])
+      )
+      const arrayCleaned = toBeAdded.slice(0, 5 - (items.length + projectMembers.length))
       this.setState({
-        items: [...this.state.items, ...toBeAdded]
+        items: [...this.state.items, ...arrayCleaned]
       })
     }
   }
 
+  isAllowed = (email: string) => {
+    if (email) {
+      const cleanMail = email.trim().toLowerCase()
+      return !(/^[a-zA-Z0-9_.+-]+@((jakroousa.com|jakroo.ca))$/g.test(cleanMail))
+    }
+    return false
+  }
+
   isValid = (email: string) => {
     let error = null
-    if (this.isInList(email)) {
+    const { data } = this.props
+    const { items } = this.state
+    const projectMembers = get(data, 'projectItem.project.members', [])
+    const projectMembersMails = projectMembers.map((item) => item.email.trim().toLowerCase())
+    const itemsLower = items.map((item: string) => item.trim().toLowerCase())
+    if (!this.isAllowed(email)) {
+      error = 'This email domain is not allowed'
+      this.setState({ error })
+      return false
+    }
+    if (this.isInList(email, [...projectMembersMails, ...itemsLower])) {
       error = `${email} has already been added.`
     }
     if (!this.isEmail(email)) {
@@ -1027,8 +1082,13 @@ export class DesignApproval extends React.Component<Props, StateProps> {
     return true
   }
 
-  isInList = (email: string) => {
-    return this.state.items.includes(email)
+  isInList = (email: string, items: string[]) => {
+    if (email) {
+      const cleanMail = email.trim().toLowerCase()
+      const valid = this.isAllowed(cleanMail)
+      return (items.includes(cleanMail) || !valid)
+    }
+    return true
   }
 
   isEmail = (email: string) => {
@@ -1468,10 +1528,12 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                     ref={(emailInput) => { this.emailInput = emailInput }} 
                     className={'input ' + (this.state.error && ' has-error')}
                     value={this.state.value}
+                    disabled={this.state.items.length >= 5 || (projectMembers.length + this.state.items.length) >= 5}
                     placeholder={this.state.items.length > 0 ? null : 'You can copy and paste a list of emails...'}
                     onKeyDown={this.handleKeyDown}
                     onChange={this.handleChange}
                     onPaste={this.handlePaste}
+                    onBlur={this.handleBlur}
                   />
                   {this.state.error && <p className="error">{this.state.error}</p>}
                 </StyledEmailTags>
@@ -1483,11 +1545,24 @@ export class DesignApproval extends React.Component<Props, StateProps> {
                 </SendInvitationButton>
                 <BottomSection>
                   <InviteLink>
-                    <GearIcon type="link" />
-                    <InviteLinkLabel>{formatMessage(messages.teamInviteLink)}</InviteLinkLabel>
-                    <InfoIconLink type="question-circle" theme="filled" />
+                    <GearIcon onClick={this.copyShareLink} type="link" />
+                    <InviteLinkLabel onClick={this.copyShareLink}>
+                      {formatMessage(messages.teamInviteLink)}
+                    </InviteLinkLabel>
+                    <StyledPopOver
+                      overlayClassName="innerClassTooltip"
+                      title={
+                        <PopoverText
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessage(messages.linkInfo)
+                          }}
+                        />
+                      }
+                    >
+                      <InfoIconLink type="question-circle" theme="filled" />
+                    </StyledPopOver>
                   </InviteLink>
-                  <CopyLinkButton>{formatMessage(messages.copyLink)}</CopyLinkButton>
+                  <CopyLinkButton onClick={this.copyShareLink}>{formatMessage(messages.copyLink)}</CopyLinkButton>
                 </BottomSection>
               </MailsContainer>
             </InviteContainer> :

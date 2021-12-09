@@ -35,6 +35,7 @@ import TextArea from 'antd/lib/input/TextArea'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import Icon from 'antd/lib/icon'
+import Tooltip from 'antd/lib/tooltip'
 import Popover from 'antd/lib/popover'
 import Spin from 'antd/lib/spin'
 import DraggableModal from 'react-modal-resizable-draggable'
@@ -1652,6 +1653,10 @@ export const StyledEmailTags = styled.div`
     border-color: tomato;
   }
 
+  .input:disabled {
+    background: unset;
+  }
+
   .error {
     margin: 0;
     font-size: 90%;
@@ -1729,6 +1734,12 @@ export const InviteLink = styled.div`
 
 export const InviteLinkLabel = styled.div`
   margin-left: 10px;
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `
 
 export const CopyLinkButton = styled.div`
@@ -1749,6 +1760,12 @@ export const CopyLinkButton = styled.div`
 
 export const GearIcon = styled(Icon)`
   color: ${BLACK};
+  transition: all .25s;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `
 
 export const InfoIconLink = styled(Icon)`
@@ -1846,4 +1863,15 @@ export const StarIcon = styled(Icon)`
   bottom: 0;
   color: #ffca00;
   z-index: 2;
+`
+
+export const StyledPopOver = styled(Tooltip)`
+  cursor: pointer;
+`
+
+export const PopoverText = styled.div`
+  max-width: 256px;
+  width: 100%;
+  font-size: 12px;
+  color: ${BLACK};
 `
