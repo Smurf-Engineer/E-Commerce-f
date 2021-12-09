@@ -233,10 +233,17 @@ export const MobileContainer = styled.div`
   perspective: 340px;
   margin: 0 18px;
   -webkit-perspective: 340px;
+  display: inline;
 `
 
 export const CloseIcon = styled.img`
   position: fixed;
-  right: 0;
-  top: -15vh;
+  right: 19px;
+  top: 28px;
+  z-index: 2;
+  background: black;
+  padding: 9px;
+  max-width: 33px;
+  border-radius: 25px;
+  border: 1px solid rgb(99, 98, 98);
 `
