@@ -13,7 +13,7 @@ interface ThemeProps {
 export const Container = styled.div`
   align-items: center;
   background-color: ${({ darkMode }: ThemeProps) =>
-  darkMode ? BLACK_SEMILIGHT : WHITE};
+    darkMode ? BLACK_SEMILIGHT : WHITE};
   border-bottom: 1px solid gainsboro;
   display: ${({ hide }: ThemeProps) => (!hide ? 'flex' : 'none')};
   height: 70px;
@@ -21,9 +21,8 @@ export const Container = styled.div`
   line-height: 16px;
   z-index: 9;
   padding: 0px 16px 0 10px;
-  position: fixed;
   width: 100%;
-  -webkit-transform:translateZ(10px);
+  -webkit-transform: translateZ(10px);
 `
 
 export const Logo = styled.img`
@@ -33,8 +32,7 @@ export const Logo = styled.img`
 export const Icon = styled.img``
 
 export const Text = styled.div`
-  color: ${({ darkMode }: ThemeProps) =>
-  darkMode ? WHITE : DARK_TEXT};
+  color: ${({ darkMode }: ThemeProps) => (darkMode ? WHITE : DARK_TEXT)};
 `
 
 export const Button = styled(AntButton)`
