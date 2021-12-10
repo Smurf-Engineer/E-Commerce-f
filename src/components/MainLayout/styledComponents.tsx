@@ -40,10 +40,6 @@ export const Header = styled.div`
   @media (min-width: 992px) {
     height: ${HEADER_HEIGHT}px;
   }
-  @media (max-width: 991px) {
-    margin-bottom: ${({ hideTopHeader }: HeaderProps) =>
-      hideTopHeader ? 0 : '70px'};
-  }
 `
 
 export const Footer = styled.div`
@@ -105,7 +101,7 @@ export const EditorWrapper = styled.div`
   align-items: center;
   background-color: ORANGE;
   height: auto;
-  
+
   .rdw-editor-wrapper {
     flex: 1;
   }

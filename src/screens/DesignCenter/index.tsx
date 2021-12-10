@@ -26,11 +26,11 @@ import {
   SELECTED_SYMBOL,
   SELECTED_PRODUCT,
   TABLET_RES,
-  DESKTOP_RES
+  DESKTOP_RES,
 } from '../../constants'
 import {
   openQuickViewAction,
-  openLoginAction
+  openLoginAction,
 } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
 import * as designCenterApiActions from './api'
@@ -54,7 +54,7 @@ import {
   Title,
   ErrorMessage,
   BackCircle,
-  BackIcon
+  BackIcon,
 } from './styledComponents'
 import {
   Palette,
@@ -90,7 +90,7 @@ import {
   UserInfo,
   DesignLabInfo,
   ProAssistItem,
-  UserType
+  UserType,
 } from '../../types/common'
 import {
   getProductQuery,
@@ -101,7 +101,7 @@ import {
   getDesignLabInfo,
   getVariantsFromProduct,
   getProAssist,
-  getProTicket
+  getProTicket,
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -337,7 +337,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     isDesktopRes: false,
     openBottomSheet: false,
     openPreviewModal: false,
-    previewImage: ''
+    previewImage: '',
   }
   private saveClass: any
   componentWillUnmount() {
@@ -349,8 +349,8 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       designHasChanges,
       responsive,
-      location: { search },
-      intl: { formatMessage }
+      location: { search },
+      intl: { formatMessage },
     } = this.props
     LoadScripts(threeDScripts)
     if (
@@ -373,10 +373,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       this.setState({ isPhoneRes, isTabletRes, isDesktopRes })
     }
     const queryParams = queryString.parse(search)
-    const { id, designId } = queryParams || {}
+    const { id, designId } = queryParams || {}
     if (id && !designId && defaultBindings[id]) {
       const { setAccessoryColorAction } = this.props
-      const { value = 'black' } = defaultBindings[id] || {}
+      const { value = 'black' } = defaultBindings[id] || {}
       setAccessoryColorAction(value, 'bindingColor')
     }
   }
@@ -387,9 +387,13 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   openPreview = async (savedDesign: SaveDesignType) => {
-    const { openPreviewModal } = this.state
+    const { openPreviewModal } = this.state
     if (this.saveClass && !openPreviewModal) {
-      const instance = get(this.saveClass.getWrappedInstance(), 'wrappedInstance.wrappedInstance.wrappedInstance', null)
+      const instance = get(
+        this.saveClass.getWrappedInstance(),
+        'wrappedInstance.wrappedInstance.wrappedInstance',
+        null
+      )
       if (instance) {
         this.setState({ previewImage: '', openPreviewModal: true })
         const result = await instance.generateSVG(savedDesign)
@@ -417,11 +421,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       saveDesignIdAction,
       history,
       saveToCartAction,
-      responsive
+      responsive,
     } = this.props
-    const {
-      isPhoneRes
-    } = this.state
+    const { isPhoneRes } = this.state
     saveDesignIdAction(id, svgUrl, design, updateColors)
     if (!goToCart) {
       const isMobile = (!!responsive && responsive.phone) || isPhoneRes
@@ -437,7 +439,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   handleOpenQuickView = () => {
     const {
       dataDesign,
-      location: { search }
+      location: { search },
     } = this.props
     const queryParams = queryString.parse(search)
     const productId = get(dataDesign, 'designData.product.id', queryParams.id)
@@ -468,7 +470,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       openOutWithoutSaveModalAction,
       routeToGoWithoutSave,
-      history
+      history,
     } = this.props
     openOutWithoutSaveModalAction(false)
     if (!routeToGoWithoutSave) {
@@ -482,7 +484,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       currentTab,
       setCurrentTabAction,
-      openOutWithoutSaveModalAction
+      openOutWithoutSaveModalAction,
     } = this.props
     if (currentTab !== DesignTabs.CustomizeTab) {
       setCurrentTabAction(DesignTabs.CustomizeTab)
@@ -509,7 +511,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       teamStoreId,
       openAddToTeamStoreModalAction,
       intl: { formatMessage },
-      designName
+      designName,
     } = this.props
 
     const storeName = itemToAdd.team_store_name
@@ -518,7 +520,7 @@ export class DesignCenter extends React.Component<Props, {}> {
 
     try {
       const { data } = await addItemToStore({
-        variables: { teamStoreItem: itemToAdd, teamStoreId }
+        variables: { teamStoreItem: itemToAdd, teamStoreId },
       })
       const responseMessage = get(data, 'addTeamStoreItem.message')
       if (responseMessage) {
@@ -537,7 +539,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       designName,
       dataDesign,
-      intl: { formatMessage }
+      intl: { formatMessage },
     } = this.props
     const name = get(dataDesign, 'designData.product.name', '')
     Message.success(
@@ -555,7 +557,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     window.dataLayer.push({
       event: COLOR_COMBO_SELECTED,
       label: name,
-      design: get(style, 'name', '')
+      design: get(style, 'name', ''),
     })
     setPaletteAction(colors)
   }
@@ -565,7 +567,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     window.dataLayer.push({
       event: SELECTED_COLOR,
       label: colorName,
-      design: get(style, 'name', '')
+      design: get(style, 'name', ''),
     })
     setColorAction(color)
   }
@@ -576,7 +578,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       window.dataLayer.push({
         event: SELECTED_FONT,
         label: value,
-        design: get(style, 'name', '')
+        design: get(style, 'name', ''),
       })
     }
     setTextFormatAction(key, value)
@@ -588,7 +590,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       window.dataLayer.push({
         event: SELECTED_SYMBOL,
         label: name,
-        design: get(style, 'name', '')
+        design: get(style, 'name', ''),
       })
     }
     setSelectedItemAction(item)
@@ -730,22 +732,29 @@ export class DesignCenter extends React.Component<Props, {}> {
       dataDesignLabInfo,
       ticket,
       userId,
-      proAssist
+      proAssist,
     } = this.props
 
     const { formatMessage } = intl
-    const { openBottomSheet, isPhoneRes, isTabletRes, isDesktopRes, previewImage, openPreviewModal } = this.state
+    const {
+      openBottomSheet,
+      isPhoneRes,
+      isTabletRes,
+      isDesktopRes,
+      previewImage,
+      openPreviewModal,
+    } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
       PreviewTab: PreviewTabIndex,
       ThemeTab: ThemeTabIndex,
-      StyleTab: StyleTabIndex
+      StyleTab: StyleTabIndex,
     } = DesignTabs
     const { phone, tablet, desktop } = responsiveValues
     const responsive = {
       phone: phone || isPhoneRes,
       tablet: tablet || isTabletRes,
-      desktop: desktop || isDesktopRes
+      desktop: desktop || isDesktopRes,
     }
     const isMobile = !!responsive && responsive.phone
     const redirect = <Redirect to={DEFAULT_ROUTE} />
@@ -859,7 +868,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         proCertified,
         image: designImage,
         canvas: designCanvas,
-        outputSvg
+        outputSvg,
       } = designData
       if (predyedName) {
         originPredyed = predyedName
@@ -869,7 +878,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         flatlockColor,
         bibBraceColor: bibBraceAccesoryColor,
         bindingColor: bindingAccesoryColor,
-        zipperColor: zipperAccesoryColor
+        zipperColor: zipperAccesoryColor,
       }
       tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
@@ -897,7 +906,7 @@ export class DesignCenter extends React.Component<Props, {}> {
           bindingColor: bindingAccesoryColor,
           flatlockCode,
           flatlockColor,
-          zipperColor: zipperAccesoryColor
+          zipperColor: zipperAccesoryColor,
         }
         tabSelected = PreviewTabIndex
       }
@@ -914,15 +923,15 @@ export class DesignCenter extends React.Component<Props, {}> {
       </LoadingContainer>
     )
 
-    const bindingDefault = defaultBindings[productId] || {}
-    const { name: bindingName } = bindingDefault || {}
+    const bindingDefault = defaultBindings[productId] || {}
+    const { name: bindingName } = bindingDefault || {}
 
     const isUserAuthenticated = !!user
-    const predyedColor = productConfig && productConfig.hasPredyed ? selectedPredyed : null
+    const predyedColor =
+      productConfig && productConfig.hasPredyed ? selectedPredyed : null
     return (
       <Layout
         {...{ history, intl }}
-        hideTopHeader={responsive.tablet}
         hideBottomHeader={true}
         disableAssist={true}
         hideFooter={true}
@@ -978,7 +987,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     formatMessage,
                     productId,
                     isMobile,
-                    placeholders
+                    placeholders,
                   }}
                 />
               )}
@@ -1005,7 +1014,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     styleIndex,
                     productId,
                     themeId,
-                    isMobile
+                    isMobile,
                   }}
                   complexity={complexity + 1}
                 />
@@ -1083,7 +1092,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   colorChartModalFormOpen,
                   tutorialPlaylist,
                   loggedUserId,
-                  userCode
+                  userCode,
                 }}
                 openPreview={this.openPreview}
                 designId={get(dataDesign, 'designData.shortId', '')}
@@ -1172,7 +1181,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   stitchingColor,
                   bindingColor,
                   zipperColor,
-                  bibColor
+                  bibColor,
                 }}
                 canvas={designObject.canvasJson}
                 product={productConfig}
@@ -1207,7 +1216,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               isMobile,
               predyedColor,
               automaticSave,
-              setAutomaticSave
+              setAutomaticSave,
             }}
             productMpn={get(product, 'mpn', '')}
             design={!!design.canvasJson ? design : designObject}
@@ -1251,10 +1260,10 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div />
           )}
           {tabSelected === CustomizeTabIndex &&
-            !loadingData &&
-            isMobile &&
-            !swipingView &&
-            !loadingModel ? (
+          !loadingData &&
+          isMobile &&
+          !swipingView &&
+          !loadingModel ? (
             <MobileDesignCenterInspiration
               styleId={currentStyle.id}
               open={openBottomSheet}
@@ -1296,7 +1305,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onClick={this.handleOnSaveOutWithoutSaveModal}
             >
               {formatMessage(messages.outWithoutSaveDesignModalSave)}
-            </StyledButton>
+            </StyledButton>,
           ]}
           closable={false}
           maskClosable={false}
@@ -1317,11 +1326,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       const productSelected = get(dataProduct, 'product.name', '')
       window.dataLayer.push({
         event: SELECTED_PRODUCT,
-        label: productSelected
+        label: productSelected,
       })
       window.dataLayer.push({
         event: SELECTED_THEME,
-        label: name
+        label: name,
       })
     }
   }
@@ -1333,7 +1342,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       openLoginAction: openLoginModalAction,
       user,
       intl: { formatMessage },
-      setTicketAction
+      setTicketAction,
     } = this.props
     if (user) {
       try {
@@ -1364,12 +1373,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       requestColorChart,
       setSendingColorChartAction,
       formatMessage,
-      onOpenColorChartFormAction
+      onOpenColorChartFormAction,
     } = this.props
     setSendingColorChartAction(true)
     try {
       const response = await requestColorChart({
-        variables: { userInfo }
+        variables: { userInfo },
       })
       setSendingColorChartAction(false)
       onOpenColorChartFormAction(false)
@@ -1425,7 +1434,7 @@ const DesignCenterEnhance = compose(
       ...designCenterApiActions,
       openQuickViewAction,
       openLoginAction,
-      saveAndBuyAction
+      saveAndBuyAction,
     }
   ),
   graphql<DataProduct>(getProductQuery, {
@@ -1434,10 +1443,10 @@ const DesignCenterEnhance = compose(
       const queryParams = queryString.parse(search)
       return {
         skip: !queryParams.id,
-        variables: { id: queryParams.id }
+        variables: { id: queryParams.id },
       }
     },
-    name: 'dataProduct'
+    name: 'dataProduct',
   }),
   graphql<DataDesign>(getDesignLabInfo, {
     options: () => ({
@@ -1446,11 +1455,11 @@ const DesignCenterEnhance = compose(
         date: {
           day: moment().date(),
           month: moment().month(),
-          year: moment().year()
-        }
-      }
+          year: moment().year(),
+        },
+      },
     }),
-    name: 'dataDesignLabInfo'
+    name: 'dataDesignLabInfo',
   }),
   graphql<DataDesign>(getDesignQuery, {
     options: ({ location }: OwnProps) => {
@@ -1460,10 +1469,10 @@ const DesignCenterEnhance = compose(
       return {
         skip: !queryParams.designId,
         variables: { designId: queryParams.designId },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       }
     },
-    name: 'dataDesign'
+    name: 'dataDesign',
   }),
   graphql(getVariantsFromProduct, {
     options: ({ dataDesign, location }: OwnProps) => {
@@ -1474,18 +1483,18 @@ const DesignCenterEnhance = compose(
         fetchPolicy: 'network-only',
         skip: !productId,
         variables: {
-          id: productId
-        }
+          id: productId,
+        },
       }
     },
-    name: 'dataVariants'
+    name: 'dataVariants',
   }),
   graphql(getProAssist, {
     name: 'proAssist',
     options: ({ user }: OwnProps) => ({
       fetchPolicy: 'network-only',
-      skip: !user
-    })
+      skip: !user,
+    }),
   }),
   graphql(getColorsQuery, { name: 'colorsList' }),
   graphql(requestColorChartMutation, { name: 'requestColorChart' })
